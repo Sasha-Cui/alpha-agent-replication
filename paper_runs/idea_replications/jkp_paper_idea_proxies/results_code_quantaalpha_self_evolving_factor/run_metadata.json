@@ -1,0 +1,26 @@
+{
+  "benchmarks": {
+    "CAPM_JKP": [
+      "jkp_topn_mkt"
+    ],
+    "FF3_JKP": [
+      "jkp_topn_mkt",
+      "char__be_me",
+      "char__market_equity"
+    ],
+    "FF5MOM_JKP": [
+      "jkp_topn_mkt",
+      "char__be_me",
+      "char__at_gr1",
+      "char__market_equity",
+      "char__ope_be",
+      "char__ret_12_1"
+    ]
+  },
+  "candidate_csv": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_quantaalpha_self_evolving_factor.csv",
+  "candidate_id": "code_quantaalpha_self_evolving_factor",
+  "factor_panel_csv": "paper_runs/idea_replications/jkp_paper_idea_proxies/jkp_benchmark_factor_panel.csv",
+  "input_policy": "candidate and benchmark returns built only from read-only JKP/return_data_assembly inputs",
+  "return_col": "candidate_return",
+  "target_annual_volatility": 0.07
+}

@@ -1,0 +1,22 @@
+{
+  "benchmarks": {
+    "FF3_OFFICIAL": [
+      "Mkt-RF",
+      "SMB",
+      "HML"
+    ],
+    "FF5MOM_OFFICIAL": [
+      "Mkt-RF",
+      "SMB",
+      "HML",
+      "RMW",
+      "CMA",
+      "Mom"
+    ]
+  },
+  "candidate_csv": "paper_runs/042_guruagents/candidate_returns.csv",
+  "candidate_id": "042_guruagents_equal_weight_5agents_official_results_2022_2025",
+  "factor_source": "Kenneth French official monthly factors via pandas_datareader",
+  "return_col": "candidate_return",
+  "target_annual_volatility": 0.07
+}

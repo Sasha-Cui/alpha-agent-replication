@@ -1,0 +1,802 @@
+The Alpha Illusion: Reported Alpha from LLM
+Trading Agents Should Not Be Treated as Deployment
+Evidence
+Yuxuan Ye1,∗ Jun Han2,∗ Ao Hu3 Juncheng Bu4 Yiyi Chen1
+Liangjian Wen3 Danilo Mandic5,† Danny Dongning Sun6,† Xu Yinghui1,† Zenglin Xu1,†
+1Fudan University 2Shanghai University of Finance and Economics
+3Southwest University of Finance and Economics 4Northeastern University
+5Imperial College London 6Peng Cheng Laboratory
+zenglinxu@fudan.edu.cn
+∗Equal contribution. †Corresponding authors.
+Abstract
+End-to-end LLM trading agents have moved quickly from research curiosity to a
+small ecosystem of named systems, including FinCon, FinMem, TradingAgents,
+FinAgent, QuantAgent, and FLAG-Trader. Several of these report headline Sharpe
+ratios that would be material if read at face value on a deployment desk, and
+associated benchmarks such as FinBen report trading-task Sharpe statistics in the
+same range. The gap between architecture research and deployment claim has been
+crossed too freely on both sides of the academia–industry divide. We take a position
+on that gap:reported alpha from end-to-end LLM trading agents should not
+be treated as deployment evidence. Before such returns can support claims of de-
+ployable trading capability, they must survive structural validity tests for temporal
+integrity, real-world frictions, counterfactual robustness, predictive calibration, nu-
+merical execution, and multi-agent disaggregation. Current public evidence cannot
+yet distinguish robust predictive ability from temporal contamination, unmodeled
+frictions, short-window Sharpe uncertainty, narrative fitting, and parametric priors.
+The problem is not only evaluative but structural. Language confidence is not
+tradable probability, narrative reasoning is not numerical execution, and model
+priors may become undisclosed implicit factor exposures. We contribute a mini-
+mum reporting protocol suite, P1–P6, with tiered applicability by claim strength,
+and a conservative modular alternative that uses LLMs as auditable information
+interfaces upstream of independent calibration, risk, and execution modules. Code
+and reproduction harness:https://github.com/hj1650782738/Trading.
+1 Introduction
+End-to-end LLM trading agents sit at the intersection of two communities whose evaluative languages
+have drifted apart. The quantitative-trading industry asks a deployment question: can a language-
+model agent generate net returns under live execution? Academia, over the past two years, has moved
+in a different but equally valid direction—exploring new architectures and expanding the design
+space. NeurIPS 2024 accepted FinCon [ 30] (manager–analyst hierarchy with portfolio decisions)
+on the main track; alongside FinMem [29], TradingAgents [25], FinAgent [33], QuantAgent [27],
+and FLAG-Trader [28], this body of work is best read as exploratory architecture research, which
+is the appropriate stance for a fast-moving area. The benchmarking side has moved in parallel:
+FinBen [26], a holistic financial-LLM benchmark on the NeurIPS 2024 Datasets and Benchmarks
+Preprint.
+arXiv:2605.16895v1 [cs.CE] 16 May 2026
+Figure 1: One-year reproduction of TradingAgents (TA) and QuantAgent (QA) vs. Buy-and-Hold
+(B&H) (equal-weight TSLA/NVDA/KO/XOM/MSTR, $100K start). “Net” charges commission,
+token cost, spread, and market impact; “Gross” is the pre-friction trajectory. Setup and per-asset
+breakdown in Appendix B.
+Track (36 datasets, 24 tasks), reports a FinTrade subtask Sharpe that we use later as an evaluation
+anchor rather than as a trading framework. The benchmark-to-deployment gap is itself a known
+ML pathology: Lipton and Steinhardt [12] catalogue how loose evaluation, narrative inflation, and
+metric–mechanism conflation recur across subfields, and trading is where that conflation is most
+concrete.
+The difficulty arises one step downstream. Because no shared boundary separates “exploratory
+architecture” from “deployable system,” readers sometimes carry headline numbers from short, in-
+cutoff backtests with single-component cost models forward as deployment evidence. When industry
+attempts deployment and discovers the gap, the reaction overshoots into “academic LLM-trading
+work cannot be relied on,” and the two communities stop reading each other on the right terms:
+the careful exploratory contribution gets dismissed, and industry treats academia as out of touch.
+The conflation has concrete shape—a plausible investment narrative is not a tradable probability;
+a short positive return is not robust alpha; and a multi-agent debate pipeline is not aggregation
+of independent experts. Without protocols ruling out training-corpus contamination, unaccounted
+frictions, short-sample significance, miscalibration, numerical-execution errors, and parametric-prior
+exposure, backtestable but non-deployable agents enter the literature under “high-Sharpe” headlines,
+and teams arrive at real markets with miscalibrated expectations.
+We argue: until they pass structural validity tests, the alpha reported by end-to-end LLM
+trading systems should not be interpreted as evidence of deployable trading capability.This
+position does not deny LLM value in finance; the strongest same-side evidence [ 16] shows that
+LLMs can extract semantic signals from news headlines that correlate with short-term market
+reactions, which is precisely the modular use of LLMs we endorse. When evidence is insufficient to
+support a deployment interpretation, the safer design lets the LLM enter the trading pipeline through
+independent calibration, risk, execution, and audit modules rather than directly bearing final trading
+decisions.
+Our aim is to defend the academic exploratory role rather than to police it. We make three contri-
+butions: (i) we unify temporal contamination, friction, multiple-testing, miscalibration, numerical
+execution, and parametric-prior issues into a single “reported alpha is not deployment evidence”
+framework; (ii) we propose a minimum reporting protocol P1–P6 tiered by claim strength, giving
+authors, reviewers, and deployment teams a common yardstick; (iii) we describe a conservative
+modular practice—LLMs as auditable information interfaces upstream of independent calibration,
+risk, and execution modules. The focus is evidentiary, not a new strategy or benchmark.
+2 Reported Alpha Does Not Yet Constitute Deployment Evidence
+Existing results from end-to-end LLM trading systems should not be dismissed: the returns they report
+should first be understood as historical backtest or prototype evidence, not deployment evidence.
+A short-window positive trajectory does not automatically imply transferable, auditable, deployable
+2
+trading capability; reported alpha must first rule out three confounders: temporal contamination,
+real-world friction, and researcher degrees of freedom.
+2.1 What Positive Agent Results Do and Do Not Show
+These systems explore distinct engineering forms—layered memory, analyst/trader/risk role hierar-
+chies, multimodal ingestion, manager–analyst CVaR risk control, HFT-style indicator/pattern/trend
+agents, and PPO fine-tuning with a Sharpe-increment reward—and make “can an LLM trade directly”
+a meaningful question. But the published evaluations sit on short, prompt-specific windows, with
+publication-time headline numbers that are uniformly strong (per-system windows and per-ticker
+Sharpe summary in Appendix A, Figure 3; FinCon [30] reaches per-ticker Sharpe 2.37 and portfolio
+Sharpe 3.27; QuantAgent reports 50.7–63.7% directional accuracy on HFT bars). These numbers evi-
+dence “a positive-return trajectory under the given protocol,” not deployment-grade alpha (post-cutoff,
+point-in-time, dynamic-universe, full-friction). In the contamination-free real-market evaluation of
+Chen et al. [2], most LLM agents struggle to consistently outperform passive buy-and-hold once
+temporal leakage and execution realism are controlled.
+2.2 Temporal Contamination: When Backtests Measure Memory Rather than Prediction
+Temporal contamination is where LLM trading evaluation is harder than traditional quantitative
+backtesting. Traditional look-ahead bias usually comes from explicit data errors—using future prices,
+future earnings revisions, or post-hoc index constituents. But LLM contamination can be more subtle:
+even when the experimental code feeds only contemporaneously visible information, the model
+weights, post-training data, or retrieval corpora may already have absorbed post-event news, market
+post-mortems, price-path summaries, and year-end reviews. The model need not explicitly access
+future prices to leak future information through semantic memory.
+The most direct quantitative anchor is Li et al. [11]: comparing LLM trading agents inside vs. outside
+their pretraining cutoff, FinMem’s total return drops by ≈71.85% and QuantAgent’s Sharpe by
+≈51.48% once the window crosses the cutoff, directly quantifying the contamination component of
+reported alpha. Merchant and Levy [19] mechanistically corroborate this with Divergence Decoding,
+which strips future semantic memory at inference time—supporting the more fundamental claim
+thatcontamination is not only a prompt or retrieval-timestamp problem, but may have already
+entered model parameters and semantic associations.
+The contamination problem also cuts in the opposite direction. Shah et al. [23] show that even within
+the reported cutoff, LLM financial knowledge is sharply biased by firm size and recency—LLMs
+answer revenue questions accurately for 54.17% of large-cap firms in 2017 but only 6.32% in 1995,
+with hallucination rates rising for larger and more recent firms; Kang and Liu [9] document the same
+factual hallucination pattern in finance more broadly. So a strong backtest in a recent, mega-cap-heavy
+window is doubly fragile: it may both leak future information through semantic memory and rest
+on knowledge gaps for the smaller or older firms real deployment must also handle. Both directions
+point to the same conclusion:LLM financial knowledge is not point-in-time reliable.
+We therefore argue: post-cutoff and contamination-free evaluation is not a bonus but a minimum
+prerequisite. If an end-to-end LLM trading system performs well only inside or under unclear
+contamination relative to the model’s knowledge cutoff, the more plausible interpretation is “the
+backtest performance may include historical semantic memory” rather than “the model learned to
+predict the market.”
+2.3 Real-World Friction: Better Prediction Does Not Imply Higher Net Return
+Trading systems are ultimately evaluated by net returns—not explanation quality, directional accuracy,
+or gross-return curves. Any gross-to-net translation obeys a minimum decomposition:
+PnLnet = PnL gross −
+X
+t
+
+c· |∆wt|+s t · |∆wt|+κ· |∆w t|β
+
+,(1)
+where c is commission, st is the bid–ask spread at time t, and κ, βcharacterize temporary market
+impact (β≈1 under the standard Almgren and Chriss [1] setup), with order-book resilience and
+execution-cost dynamics modeled by Obizhaeva and Wang[21]. The decomposition is descriptive,
+3
+not optional: every term must be estimated, deducted, and audited, otherwise the gap between reported
+gross PnL and deployable net PnL remains open. For multi-agent LLM systems, the right-hand side
+must additionally include token costs and inference latency; returns are eroded not only by market
+friction but also by the system’s own inference cost.
+Jang et al. [7] provide a direct counterexample: after RL training, BTC market-state classification
+accuracy improves markedly, yet cumulative returns under simulated trading decline—the core
+implication of equation (1): optimizing a gross-side proxy (classification accuracy, sharper direction,
+more coherent rationales, longer debates) does not optimize the net-side reality of equation (1).
+Across FinMem, TradingAgents, FinAgent, FinCon, and QuantAgent, 35 of 40 system × friction-
+component cells are unmodeled (coverage matrix in Appendix B, Figure 4); reported gross Sharpe
+is therefore an upper bound on any deployable net Sharpe. Figure 1 anchors this gap on a one-
+year, five-ticker reproduction of TradingAgents and QuantAgent: charging commission, token cost,
+spread, and market impact (full setup in Appendix B), portfolio Sharpe drops from 0.43→0.22 for
+TradingAgents and from −0.96→ −1.15for QuantAgent, and both agents end below buy-and-hold.
+In multi-agent debate scenarios the cost-eats-return problem becomes more systemic: Zhang et al.
+[32] report that across 36 configurations (4 models ×9 benchmarks), multi-agent debate wins under
+20%of the time, and adding rounds or agents does not improve—and may degrade—performance.
+2.4 Short Windows and Search Space: High Sharpe Does Not Stand Automatically
+The third confound comes from short-window estimation and researcher degrees of freedom. Many
+LLM trading papers report high Sharpe ratios, high cumulative returns, or significant outperformance
+versus a benchmark over a few-month or single-year window. But the financial econometrics literature
+has long established that short-window Sharpe estimates carry substantial uncertainty, and repeated
+search over candidate signals, rule sets, and window choices inflates the false-positive rate.
+Lo [15] gives the Sharpe standard-error approximation
+SE( cSR)≈
+q
+K+ cSR
+2
+/2
+T ,(2)
+with K= 1 for period Sharpe and K= 252 for annualized-from-daily Sharpe; unless papers disclose
+which convention they use, headline Sharpes are not comparable across systems. Uncertainty is
+largest precisely in the headline-friendly regime of small T and large cSR. Figure 2 plots the resulting
+95% CI half-width and overlays representative LLM-trading headlines; the FinBen GPT-4 FinTrade
+Sharpe of 1.51±1.08 (std exceeding half the mean) [26] sits in the same quadrant, so standard errors
+routinely exceed typical between-system gaps.
+Researcher degrees of freedom worsen the problem. Traditional quant strategies have degrees of free-
+dom in factor definitions, look-back windows, rebalance frequencies, transaction-cost assumptions,
+and portfolio weights; LLM systems add model versions, temperature, system prompts, few-shot
+examples, RAG corpora, memory length, agent personas, debate rounds, output-parsing rules, and
+tool-call strategies. The empirical asset pricing literature already shows that even with disciplined ML
+pipelines, monthly stock-level R2 rarely exceeds ≈0.4% and portfolio-level R2 ≈1 –2% [3]; against
+this ceiling, multi-decade factor-zoo work [ 5] long ago argued for a t-statistic hurdle near 3.0 to
+control for multiple testing. Novy-Marx and Velikov[20] demonstrate that LLMs can be used to filter
+and produce full papers from over30,000candidate signals, warning of industrialized HARKing.
+3 From Evaluation Confounds to Structural Mismatches
+A natural objection to Section 2 is that stricter post-cutoff data, full friction modeling, and statistical
+testing remedy everything. Better evaluation discipline is necessary but not sufficient: end-to-end
+LLM trading still faces three structural mismatches—language confidence is not tradable probability;
+financial narrative ability is not numerical execution; parametric priors in model weights can become
+undisclosed implicit factor exposures.
+3.1 Language Confidence Is Not Tradable Probability
+Trading systems require not a “plausible-sounding” explanation but a probability object that can
+be calibrated, sized, and risk-constrained. Position sizing, stop-loss thresholds, risk budgeting, and
+4
+Figure 2: Heatmap of 95% CI half-width of period Sharpe under Lo [15] (eq. 2, K=1), over
+cSR∈[0,8] and T∈[20,500] daily observations. The dashed line marks where the 95% CI just
+covers zero. Overlaid headline Sharpes from TradingAgents, FinMem, FinAgent, and FinCon [30]
+are illustrative (FinCon: single-stock NFLX 2.37 and best portfolio (TSLA,MSFT,PFE) 3.27 );
+QuantAgent is omitted because it reports HFT directional accuracy rather than daily-frequency
+Sharpe. Annualized headlines use eq. 2 with K=252. The overlays are illustrative of reporting
+uncertainty rather than re-estimations of the original papers’ confidence intervals, since original
+Sharpe conventions are not always comparable.
+portfolio optimization all depend on some form of conditional probability or conditional return
+distribution. By contrast, an LLM’s natural output comes from a next-token distribution over the
+language space, optimized to produce text that is more likely, more coherent, and more preference-
+aligned under the corpus distribution. Confidence in the language space and conditional probability
+in the financial-return space are not the same object.
+Calibration is the quantifiable form of this distinction. Kadavath et al. [8] show that LLMs’ self-
+reported confidence about their own answers, while non-trivially informative, is systematically
+miscalibrated and degrades sharply on out-of-distribution inputs—a pattern directly inherited by
+any system that pipes verbal confidence into trade sizing. Guo et al. [4] provides the widely used
+Expected Calibration Error:
+ECE =
+MX
+m=1
+|Bm|
+n
+acc(Bm)−conf(B m)
+,(3)
+where {Bm}M
+m=1 partitions samples by predicted confidence. ECE measures the weighted average
+distance between “claimed probability” and “empirical frequency”; any system that uses an LLM’s
+self-reported confidence as a position input implicitly commits to ECE≈0 , and that commitment
+must be measured independently rather than substantiated by tone. Guo et al. [4]’s findings come
+from discriminative image classifiers, so the cross-domain extrapolation here is indirect (consistent
+direction, but evidence drawn from a different domain); the financial domain has same-side empirics,
+most directly Lee et al. [10]’s counterfactual interventions—even when reverse evidence is explicitly
+presented, self-reported model confidence and direction-flip behavior do not strictly cohere.
+Our claim is not that Guo et al. [4] directly proves LLM trading miscalibration, but that any system
+converting verbal confidence into position size inherits a measurable calibration obligation. Shen
+et al. [24] formalize the downstream side: calibration error in predictions fed to decision algorithms
+translates into bounded suboptimality of the induced action, making calibration a precondition for
+any decision-rule built on the predicted distribution.
+3.2 Financial Narrative Ability Is Not Numerical Execution
+The second mismatch is the gap between narrative reasoning and numerical execution. LLMs can
+explain complex financial concepts—options payoff structure, macro-event impact, balance-sheet
+changes, sector-rotation logic, or the intuition of a trading strategy. But trading systems ultimately
+execute numerical operations: computing risk exposure, estimating volatility, handling cash flows,
+controlling leverage, satisfying portfolio constraints, setting stops, and slicing orders.
+5
+TraderBench operationalizes this gap: it places financial agents in static-knowledge tasks, analytical-
+reasoning tasks, options trading, and adversarial crypto-trading scenarios, and evaluates them with
+realizable metrics including Sharpe, returns, drawdown, P&L, Greeks, and risk management [31]. Its
+public summary shows that extended thinking substantially improves retrieval-style tasks but barely
+helps trading performance; in options tasks the models exhibit a clear conceptual-vs-computational
+gap—they can recognize strategies or explain concepts but struggle to quantify P&L, Greeks, and
+risk exposure precisely. Ma et al. [18] provides a complementary same-side anchor: in a virtual
+zero-sum stock market with bid–ask interactions, LLM agents struggle with text-only numerical
+reasoning—they perform notably better when the same numerical state is rendered as a chart than
+when it is presented as text, indicating that the bottleneck is numerical execution rather than financial
+vocabulary.This is precisely our point: speaking finance fluently is not the same as computing it
+correctly under real trading constraints.
+FinToolBench [17] further shows that financial tool use must be evaluated on finance-critical dimen-
+sions such as call-level compliance, timeliness, intent alignment, and domain alignment, rather than
+binary execution success alone. We therefore treat tool-calling as a necessary safety patch, not a
+sufficient architectural fix.
+3.3 Parametric Priors as Undisclosed Implicit Factor Exposures
+The third mismatch occurs at the weight layer. An LLM is not a neutral processor of financial infor-
+mation. Its pretraining corpus contains historical news, market commentary, investment narratives,
+company coverage, social-media discussion, and ex-post post-mortems; preference optimization
+further rewards clear, helpful, explanatory, human-aligned answers. Together, these processes can
+produce stable default preferences when the model is faced with financial questions—for example, a
+tilt toward mega-cap tech, narratively interesting companies, or mainstream sectors.
+We propose this as an explanatory framework rather than an established unified mechanism, called
+PARAMETRICPRIORLOCK-IN. It refers to: prior to any real-time input, the model weights already
+contain stable industry, size, style, or narrative tilts; these tilts shape the final trade recommendation
+but, unlike traditional factor exposures, are typically not explicitly disclosed, measured, or risk-
+constrained. A traditional quant portfolio with technology, mega-cap, momentum, quality, value, or
+contrarian exposure can be measured by factor regression, sector neutralization, and a risk model; in
+end-to-end LLM trading systems, style preference may hide inside natural-language reasoning and
+surface as “apparently autonomous analysis.”
+PPL admits a minimal counterfactual diagnostic. Following Lee et al. [10], we define the view-flip
+rate under reverse-evidence strengthρ∈[0,1]as
+ϕvol(ρ) = Pr[ ˆat+1 ̸= ˆat |e t, ρ],(4)
+where ˆat is the baseline view and ˆat+1 is the view updated with reverse evidence et at strength
+ρ. We do not claim a Bayesian-rational agent must drive ϕvol →1 : strong reverse evidence may
+rationally call for reduced confidence or smaller position size rather than a sign flip. We claim instead
+a weaker monotonicity: a well-updating agent should exhibit a monotone response in at least one of
+(i) direction-flip rate, (ii) self-reported confidence, or (iii) realized position size as ρ increases; an
+agent locked by parametric prior fails this monotonicity on all three axes simultaneously. Lee et al.
+[10]’s counterfactual interventions provide same-side evidence; Appendix D expands the supporting
+findings on sector tilts, cross-model homogeneity, and the ineffectiveness of persona prompts and
+multi-agent debate at removing the shared prior.
+For trading systems, such tilts are not ordinary text bias butundisclosed implicit factor exposures.
+3.4 Why Common Patches Do Not Solve the Problem in Isolation
+The four standard optimistic responses—scale, longer context / RAG, tool-calling, and multi-agent
+debate—are addressed individually in Section 6, Concerns 2–5; none alone supports an end-to-
+end deployment claim, and the benchmark-to-deployment gap is not unique to finance: web-agent
+and general LLM-agent benchmarks display the same overestimation under longer, friction-laden,
+adversarial trajectories [13, 34], with trading being the same pathology under harsher friction.
+6
+Table 1: Six minimum-evidence protocols for LLM trading deployment claims. Each row is a single
+failure mode such that failing it disqualifies a deployment-strength reading of the reported numbers.
+Evidentiary anchors are listed inline in Sections 2–3.
+Protocol Failure mode Minimum reporting If unmet
+Group A. Evidence-source confounds
+P1. Temporal
+integrity
+Time-travel alpha; pretrain-
+ing or retrieval leakage; se-
+mantic future leakage
+Model version, knowledge cutoff, post-
+training boundary, retrieval-corpus times-
+tamps, memory-update rules; at least one
+post-cutoff or point-in-time window
+At most historical-backtest
+evidence
+P2. Dynamic
+universe
+Survivorship bias; ex-post-
+cleaned samples; static uni-
+verses overstating returns
+Time-varying tradable universe; delisting
+and suspension handling; liquidity filters;
+index-component changes; borrow and
+short-sale constraints
+Alpha may come from ex-
+post-filtered universes
+P3. Counter-
+factual
+robustness
+Parametric prior lock-in; in-
+sensitivity to reverse evi-
+dence; implicit sector or
+style tilts
+Direction-flip rate, confidence shift,
+position-size shift under strong reverse
+evidence; sector-neutral and style-neutral
+prompt tests
+Recommendations may re-
+flect priors, not information
+Group B. Evidence-to-decision-mapping confounds
+P4.
+Epistemic
+calibration
+Language confidence mis-
+read as trading probability;
+uncalibrated self-reported
+confidence
+ECE, reliability curves, regime-conditioned
+calibration, out-of-sample calibration of any
+probability or confidence score used in siz-
+ing or risk control
+LLM confidence should
+not control sizing
+P5. Realistic
+implementa-
+tion
+Gross-alpha illusion; accu-
+rate prediction with negative
+net return; token and latency
+costs cannibalizing returns
+Layered gross-to-net cleansing: spread, slip-
+page, commission, market impact, borrow
+cost, execution delay, token cost, inference
+latency
+Profits cannot show deploy-
+ability
+P6.
+Multi-agent
+disaggrega-
+tion
+Multi-agent consensus illu-
+sion; correlated errors across
+same-source models; echo-
+chamber and groupthink dy-
+namics
+Single-agent baseline, role similarity, dis-
+agreement rate, debate-round cost, coordi-
+nation latency, multi-agent net-return delta
+Debate is not independent-
+expert aggregation
+4 Minimum-Evidence Protocols for Deployment Claims
+We argue: reported alpha from end-to-end LLM trading systems should not be treated as
+evidence of deployable trading capability until it survives structural validity tests.When a
+paper interprets trading returns as deployment-ready alpha or autonomous trading ability, it must
+carry a heavier evidentiary burden. We propose six reporting protocols P1–P6 that we treat as a
+minimum necessary screening protocol, not a sufficient certification: passing P1–P6 does not by
+itself imply real-world deployability—operational risk, model governance, order routing, capacity,
+tail-risk behavior, and adversarial market impact remain open. Rather, P1–P6 are a compact set of
+failure modes such thatfailing any one of themis, on present evidence, sufficient to disqualify a
+deployment-strength reading of the reported numbers.
+Why these six.P1–P3 control evidence-source confounds (window, sample, prior); P4–P6 control
+evidence-to-decision-mapping confounds (probability object, net cleansing, independence). The two
+groups partition the “evidence → decision” chain without overlap, and we restrict the list to failure
+modes that are LLM-specific or substantially amplified by LLMs (general-finance confounds such as
+factor drift are well-covered in the traditional quantitative literature).
+Tiered applicability.P1–P6 should apply in a tiered way according to claim strength:
+Reference implementation.A reproducible audit harness covering P1 (post-cutoff window), P2
+(dynamic universe), and P5 (full friction cleansing)—a one-year, five-ticker reproduction of Tradin-
+gAgents and QuantAgent under the unified execution model and friction taxonomy of Figure 4—is
+7
+Table 2: Tiered protocol requirements by claim strength. Stronger claims demand strictly stronger
+evidence: each row inherits the protocols of the row above, and the right column shows the language
+that remains defensible under that evidence floor.
+Claim strength Required protocols Permissible language
+LLM-as-text-extractor
+or research aid
+P1 (light), P3 (light) “improves information extraction”; “semantic features have
+marginal contribution”
+Historical backtest or
+prototype
+P1 + P2 + P5 (minimum) “produces a positive-return trajectory in this window”; no de-
+ployment language
+Deployable alpha claimFull P1–P5 “retains net return under structural tests”
+Autonomous trading
+ability
+Full P1–P6 “retains net return after multi-agent disaggregation”
+released at https://github.com/hj1650782738/Trading. Per-ticker gross/net metrics appear
+in Appendix B.
+5 A Modular Alternative: LLMs as Auditable Information Interfaces
+We are not proposing a new framework. This section describes the conservative modular practice that
+naturally results when the P1–P6 protocols of Section 4 are engineered into compliance: LLMs enter
+as auditable information interfaces upstream of independent calibration, risk, and execution modules,
+rather than as final trading-decision authority. This is consistent with Lopez-Lira and Tang [16], who
+show LLMs extract semantic signals correlated with short-term market reactions.
+Standard quantitative pipelines have long separated alpha research, risk modeling, portfolio con-
+struction, and execution into independent modules with explicit interfaces and audits—this division
+predates LLMs and appears across active-portfolio textbooks and openly documented financial-ML
+platforms such as FinRL-Meta [14] (which explicitly separates data, environment, and agent layers
+and encodes backtest rules and risk control as independent components). The pipeline runs in six
+stages—(1) information extraction, (2) feature construction, (3) signal synthesis, (4) probability
+calibration, (5) sizing and risk control, and (6) execution and audit—with a defensible LLM role
+concentrated at Stage 1 (schema-bound extraction from news, filings, calls) and tapering off into
+observer/explainer roles at Stages 5–6; full owner / role / audit-object decomposition is in Appendix
+E (Table 5), which also walks an 8-K guidance cut through Stages 1–6 as a concrete example.
+Position implication.The defensible role for LLMs in trading is as an auditable upstream interface,
+not as final decision authority. Authors should mark this boundary across the six stages before making
+deployment claims; reviewers should check that final authority does not rest on an uncalibrated LLM;
+deployment teams should ensure Stages 4–6 are owned by independent modules that can override
+LLM outputs.
+6 Alternative Views, Objections, and Limitations
+We argue: reported alpha from end-to-end LLM trading systems should not be treated as
+evidence of deployable trading capability until it survives structural validity tests.Sections 2–3
+addressed technical objections inline; here we address paradigm-level objections that double as live
+limitations of our position—each concession marks a subclaim of ours that would be narrowed if the
+proponent supplied evidence under the relevant P1–P6 protocols.
+Concern 1.We attack a strawman: most papers only claim backtest performance, not deployment
+readiness.Response. Partially correct.We do not contest local “research prototype” framings.
+Our target is the slippage from reported returns into capability language—abstracts, talks, and
+downstream surveys repackaging the same numbers as “LLMs can trade.” P1–P6 are calibrated
+against deployment-grade claims, not against research existence.
+Concern 2.Larger models, longer context, and stronger RAG will close the key information
+gaps.Response. Partially correct.These improvements act primarily on the input layer; they do
+not automatically produce calibratable return probabilities, auditable position controls, or remove
+8
+industry/size/style priors in model weights. Merchant and Levy [19] indicate that RAG and prompt
+restrictions alone do not eliminate pretraining semantic memory. If, over a pre-specified post-cutoff
+horizon across multiple regimes, scale + RAG simultaneously improves ECE and net returns (P1,
+P4), our Section 3.1 subclaim should be narrowed.
+Concern 3.Ensembles and multi-agent debate can cancel single-model bias.Response. Partially
+correctonly if error sources are sufficiently independent. Zhang et al. [32] report sub-20% debate
+win rates across 36 configurations and Henning et al. [6] show headline multi-agent gains do not
+consistently replicate across model families and seeds; the AMA live-trading benchmark [22] further
+findsagent architecture, not backbone choice, dominates outcome variation under identical execution
+rules—“add another LLM agent” is not the same as “add an independent expert.” Authors claiming
+multi-agent improvement must report single-agent ablation, role similarity, disagreement rate, and
+net-return delta after controlling homogeneity and coordination cost (P5, P6).
+Concern 4.LLMs have genuine financial-semantic value, so end-to-end approaches need not fail.
+Response. Orthogonal—semantic value [16] supports the modular practice in Section 5, not direct
+end-to-end deployment. If LLM-derived sentiment is genuinely predictive, it should enter downstream
+models as a feature with ablation, calibration, and post-friction validation.
+Concern 5.Tool-calling and RL fine-tuning have already changed the architecture.Response. Par-
+tially correct.FLAG-Trader [ 28] fine-tunes a 135M LLM with PPO and a Sharpe-increment reward
+and reports outperforming buy-and-hold on a small ticker set. We treat this as engineering progress,
+not refutation: the published evaluation does not yet jointly satisfy P1 (post-cutoff disclosure), P5
+(full friction cleansing), and P3 (counterfactual robustness). The decisive question is whether final
+decision authority remains with an LLM that is not independently calibrated; if a future revision
+passes P3–P5, our Section 3 subclaim should be narrowed.
+Concern 6.P1–P6 are too strict for early-stage prototypes.Response. Correct—Table 2 tiers
+requirements by claim strength. Prototypes need only avoid deployment language; an early-stage
+paper may report a positive-return trajectory provided it does not get promoted to “deployable alpha.”
+Layered falsifiability.Subclaim-level revisions: (i) significant post-friction net returns over a
+pre-specified post-cutoff horizon across regimes narrow Section 2; (ii) calibrated LLM confidence
+(pre-specified ECE) used for sizing narrows Section 3.1; (iii) significant multi-agent net-return deltas
+after controlling homogeneity and coordination cost narrow Concern 3.
+7 Conclusion
+The two-year arc of end-to-end LLM trading agents has been productive on its own terms: it forced
+concrete questions about how language models behave when asked to produce orderable decisions,
+and the resulting catalogue of architectures has real research value. The trouble starts when this
+exploratory progress is reported as deployment progress—headline Sharpe numbers from short,
+in-cutoff windows carried into abstracts, talks, and follow-up surveys as if they had already answered
+the deployment question.
+Our argument has been narrow but specific. Public evidence cannot yet distinguish robust predictive
+ability from temporal contamination, unmodeled friction, short-sample noise, narrative fitting, and
+parametric prior; and even were every evaluation step cleaned up, three structural gaps would remain—
+language confidence is not tradable probability, narrative ability is not numerical execution, and model
+priors can become undisclosed implicit factor exposures. P1–P6 and the modular alternative are not a
+new framework but the minimum bookkeeping that lets a reader tell which kind of evidence a paper
+is offering—historical backtest, prototype, deployable claim, or autonomous trading ability—and lets
+reviewers hold each level of claim to its matching evidence floor.
+We do not propose to police the academic literature; the exploratory contribution it has made is real
+and worth defending. We propose only to let it speak with the right scope. A backtest is a backtest, a
+prototype is a prototype, and a deployment claim is a deployment claim. Until reported alpha clears
+the structural tests of Section 4, it is more honestly read as exploratory evidence than as deployable
+trading capability—and the modular practice of Section 5 is the route that lets LLMs continue to
+enter trading systems without standing as the final source of trading authority.
+9
+References
+[1] Robert Almgren and Neil Chriss. Optimal execution of portfolio transactions.Journal of Risk,
+3(2):5–39, 2000.
+[2] Yanxu Chen, Zijun Yao, Yantao Liu, Amy Xin, Jin Ye, Jianing Yu, Lei Hou, and Juanzi Li.
+StockBench: Can LLM agents trade stocks profitably in real-world markets?arXiv preprint
+arXiv:2510.02209, 2025.
+[3] Shihao Gu, Bryan Kelly, and Dacheng Xiu. Empirical asset pricing via machine learning.The
+Review of Financial Studies, 33(5):2223–2273, 2020.
+[4] Chuan Guo, Geoff Pleiss, Yu Sun, and Kilian Q. Weinberger. On calibration of modern neural
+networks. InInternational Conference on Machine Learning (ICML), pages 1321–1330. PMLR,
+2017.
+[5] Campbell R. Harvey, Yan Liu, and Heqing Zhu. . . .and the cross-section of expected returns.
+The Review of Financial Studies, 29(1):5–68, 2016.
+[6] Thomas Henning, Siddhartha M. Ojha, Ross Spoon, Jiatong Han, and Colin F. Camerer. LLM
+agents do not replicate human market traders: Evidence from experimental finance.arXiv
+preprint arXiv:2502.15800, 2025.
+[7] Youwon Jang, Joochan Kim, and Byoung-Tak Zhang. The losing winner: An LLM agent that
+predicts the market but loses money. InNeurIPS 2025 Workshop on Generative AI in Finance,
+2025. OpenReview:https://openreview.net/forum?id=FzahgVWy59.
+[8] Saurav Kadavath, Tom Conerly, Amanda Askell, Tom Henighan, Dawn Drain, Ethan Perez,
+Nicholas Schiefer, Zac Hatfield-Dodds, Nova DasSarma, Eli Tran-Johnson, Scott Johnston,
+Sheer El-Showk, Andy Jones, Nelson Elhage, Tristan Hume, Anna Chen, Yuntao Bai, Sam
+Bowman, Stanislav Fort, Deep Ganguli, Danny Hernandez, Josh Jacobson, Jackson Kernion,
+Shauna Kravec, Liane Lovitt, Kamal Ndousse, Catherine Olsson, Sam Ringer, Dario Amodei,
+Tom Brown, Jack Clark, Nicholas Joseph, Ben Mann, Sam McCandlish, Chris Olah, and Jared
+Kaplan. Language models (mostly) know what they know.arXiv preprint arXiv:2207.05221,
+2022.
+[9] Haoqiang Kang and Xiao-Yang Liu. Deficiency of large language models in finance: An
+empirical examination of hallucination.arXiv preprint arXiv:2311.15548, 2023.
+[10] Hoyoung Lee, Junhyuk Seo, Suhwan Park, Junhyeong Lee, Wonbin Ahn, Chanyeol Choi,
+Alejandro Lopez-Lira, and Yongjae Lee. Your AI, not your view: The bias of LLMs in
+investment analysis.arXiv preprint arXiv:2507.20957, 2025. ACM International Conference
+on AI in Finance (ICAIF) 2025.
+[11] Xiangyu Li, Yawen Zeng, Xiaofen Xing, Jin Xu, and Xiangmin Xu. Profit mirage: Revisiting
+information leakage in LLM-based financial agents.arXiv preprint arXiv:2510.07920, 2025.
+[12] Zachary C. Lipton and Jacob Steinhardt. Troubling trends in machine learning scholarship.
+arXiv preprint arXiv:1807.03341, 2018. Presented at ICML 2018: The Debates.
+[13] Xiao Liu, Hao Yu, Hanchen Zhang, Yifan Xu, Xuanyu Lei, Hanyu Lai, Yu Gu, Hangliang Ding,
+Kaiwen Men, Kejuan Yang, Shudan Zhang, Xiang Deng, Aohan Zeng, Zhengxiao Du, Chenhui
+Zhang, Sheng Shen, Tianjun Zhang, Yu Su, Huan Sun, Minlie Huang, Yuxiao Dong, and Jie
+Tang. AgentBench: Evaluating LLMs as agents. InInternational Conference on Learning
+Representations (ICLR), 2024. arXiv:2308.03688.
+[14] Xiao-Yang Liu, Jingyang Rui, Jiechao Gao, Liuqing Yang, Hongyang Yang, Zhaoran Wang,
+Christina Dan Wang, and Jian Guo. FinRL-Meta: A universe of near-real market environments
+for data-driven deep reinforcement learning in quantitative finance. InNeurIPS 2021 Workshop
+on Data-Centric AI, 2021. arXiv:2112.06753.
+[15] Andrew W. Lo. The statistics of Sharpe ratios.Financial Analysts Journal, 58(4):36–52, 2002.
+10
+[16] Alejandro Lopez-Lira and Yuehua Tang. Can ChatGPT forecast stock price movements? Return
+predictability and large language models.arXiv preprint arXiv:2304.07619, 2023.
+[17] Jiaxuan Lu, Kong Wang, Yemin Wang, Qingmei Tang, Hongwei Zeng, Xiang Chen, Jiahao Pi,
+Shujian Deng, Lingzhi Chen, Yi Fu, Kehua Yang, and Xiao Sun. FinToolBench: Evaluating
+LLM agents for real-world financial tool use.arXiv preprint arXiv:2603.08262, 2026.
+[18] Tianmi Ma, Jiawei Du, Wenxin Huang, Wenjie Wang, Liang Xie, Xian Zhong, and Joey Tianyi
+Zhou. Agent trading arena: A study on numerical understanding in LLM-based agents.arXiv
+preprint arXiv:2502.17967, 2025.
+[19] Humzah Merchant and Bradford Levy. A fast and effective solution to the problem of look-ahead
+bias in LLMs.arXiv preprint arXiv:2512.06607, 2025.
+[20] Robert Novy-Marx and Mihail Z. Velikov. AI-powered (finance) scholarship. NBER Working
+Paper 33363, National Bureau of Economic Research, 2025.
+[21] Anna A. Obizhaeva and Jiang Wang. Optimal trading strategy and supply/demand dynamics.
+Journal of Financial Markets, 16(1):1–32, 2013.
+[22] Lingfei Qian, Xueqing Peng, Yan Wang, Vincent Jim Zhang, Huan He, Hanley Smith, Yi Han,
+Yueru He, Haohang Li, Yupeng Cao, Yangyang Yu, Alejandro Lopez-Lira, Peng Lu, Jian-Yun
+Nie, Guojun Xiong, Jimin Huang, and Sophia Ananiadou. When agents trade: Live multi-market
+trading benchmark for LLM agents.arXiv preprint arXiv:2510.11695, 2025.
+[23] Agam Shah, Liqin Ye, Sebastian Jaskowski, Wei Xu, and Sudheer Chava. Beyond the reported
+cutoff: Where large language models fall short on financial knowledge. InConference on
+Language Modeling (COLM), 2025. arXiv:2504.00042.
+[24] Judy Hanwen Shen, Ellen Vitercik, and Anders Wikum. Algorithms with calibrated ma-
+chine learning predictions. InInternational Conference on Machine Learning (ICML), 2025.
+arXiv:2502.02861.
+[25] Yijia Xiao, Edward Sun, Di Luo, and Wei Wang. TradingAgents: Multi-agents LLM financial
+trading framework.arXiv preprint arXiv:2412.20138, 2024.
+[26] Qianqian Xie, Weiguang Han, Zhengyu Chen, Ruoyu Xiang, Xiao Zhang, Yueru He, Mengxi
+Xiao, Dong Li, Yongfu Dai, Duanyu Feng, Yijing Xu, Haoqiang Kang, Ziyan Kuang, Chenhan
+Yuan, Kailai Yang, Zheheng Luo, Tianlin Zhang, Zhiwei Liu, Guojun Xiong, Zhiyang Deng,
+Yuechen Jiang, Zhiyuan Yao, Haohang Li, Yangyang Yu, Gang Hu, Jiajia Huang, Xiao-Yang Liu,
+Alejandro Lopez-Lira, Benyou Wang, Yanzhao Lai, Hao Wang, Min Peng, Sophia Ananiadou,
+and Jimin Huang. FinBen: A holistic financial benchmark for large language models. In
+Advances in Neural Information Processing Systems Datasets and Benchmarks Track (NeurIPS
+D&B), 2024. arXiv:2402.12659.
+[27] Fei Xiong, Xiang Zhang, Aosong Feng, Siqi Sun, and Chenyu You. QuantAgent: Price-driven
+multi-agent LLMs for high-frequency trading.arXiv preprint arXiv:2509.09995, 2025.
+[28] Guojun Xiong, Zhiyang Deng, Keyi Wang, Yupeng Cao, Haohang Li, Yangyang Yu, Xueqing
+Peng, Mingquan Lin, Kaleb E. Smith, Xiao-Yang Liu, Jimin Huang, Sophia Ananiadou, and
+Qianqian Xie. FLAG-Trader: Fusion LLM-agent with gradient-based reinforcement learning
+for financial trading.arXiv preprint arXiv:2502.11433, 2025.
+[29] Yangyang Yu, Haohang Li, Zhi Chen, Yuechen Jiang, Yang Li, Denghui Zhang, Rong Liu,
+Jordan W. Suchow, and Khaldoun Khashanah. FinMem: A performance-enhanced LLM trading
+agent with layered memory and character design.arXiv preprint arXiv:2311.13743, 2023.
+[30] Yangyang Yu, Zhiyuan Yao, Haohang Li, Zhiyang Deng, Yupeng Cao, Zhi Chen, Jordan W.
+Suchow, Rong Liu, Zhenyu Cui, Zhaozhuo Xu, Denghui Zhang, Koduvayur Subbalakshmi,
+Guojun Xiong, Yueru He, Jimin Huang, Dong Li, and Qianqian Xie. FinCon: A synthe-
+sized LLM multi-agent system with conceptual verbal reinforcement for enhanced financial
+decision making. InAdvances in Neural Information Processing Systems (NeurIPS), 2024.
+arXiv:2407.06567.
+11
+[31] Xiaochuang Yuan, Hui Xu, Silvia Xu, Cui Zou, and Jing Xiong. TraderBench: How robust are
+AI agents in adversarial capital markets?arXiv preprint arXiv:2603.00285, 2026.
+[32] Hangfan Zhang, Zhiyao Cui, Jianhao Chen, Xinrun Wang, Qiaosheng Zhang, Zhen Wang,
+Dinghao Wu, and Shuyue Hu. Stop overvaluing multi-agent debate—we must rethink evaluation
+and embrace model heterogeneity.arXiv preprint arXiv:2502.08788, 2025.
+[33] Wentao Zhang, Lingxuan Zhao, Haochong Xia, Shuo Sun, Jiaze Sun, Molei Qin, Xinyi Li,
+Yuqing Zhao, Yilei Zhao, Xinyu Cai, Longtao Zheng, Xinrun Wang, and Bo An. A multimodal
+foundation agent for financial trading: Tool-augmented, diversified, and generalist. InProceed-
+ings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD),
+2024. arXiv:2402.18485.
+[34] Shuyan Zhou, Frank F. Xu, Hao Zhu, Xuhui Zhou, Robert Lo, Abishek Sridhar, Xianyi Cheng,
+Tianyue Ou, Yonatan Bisk, Daniel Fried, Uri Alon, and Graham Neubig. WebArena: A realistic
+web environment for building autonomous agents. InInternational Conference on Learning
+Representations (ICLR), 2024. arXiv:2307.13854.
+A Per-Ticker Reported Sharpe across Three LLM Trading Systems
+For reference, Figure 3 shows ticker-level headline Sharpe ratios as published by four LLM trading
+systems with comparable Sharpe-based reporting. QuantAgent [ 27] is omitted because it reports
+directional accuracy and short-window relative excess return on HFT instruments rather than daily-
+frequency Sharpe.
+Figure 3: Reported Sharpe per (system × ticker) for four LLM trading systems. Bars show headline
+Sharpe as published by FinMem (6 mo, Oct 2022 – Apr 2023), TradingAgents (3 mo, Jan – Mar
+2024), FinAgent (7 mo, Jun 2023 – Jan 2024), and FinCon [30] (8.5 mo, Oct 2022 – Jun 2023). All
+numbers are gross of friction except FinAgent, which models commission only.
+B Friction Coverage and Per-Asset Metrics from the Reproduction
+Friction coverage across systems.Figure 4 maps the eight standard cost components onto five
+representative end-to-end LLM trading frameworks. Only commissions are explicitly modeled by all
+five; market impact, latency, slippage, financing, taxes, and token cost are absent in the majority of
+systems—35of40system×friction cells unmodeled.
+Per-asset breakdown of the empirical reproduction.Table 3 reports the per-asset met-
+rics underlying the portfolio curves of Figure 1 (Section 2.3). The setting is the same:1-
+year backtest, 2025-01 to 2026-01, $100K initial capital, equal-weight five-ticker portfolio
+(TSLA/NVDA/KO/XOM/MSTR); net charges commission, token cost, spread, and market
+impact. Aggregated, buy-and-hold ends at $104.8K; TradingAgents at $106.4K gross / $102.3K net;
+QuantAgent at$81.4K gross /$77.9K net.
+12
+Figure 4: Friction-modeling coverage of FinMem, TradingAgents, FinAgent, FinCon, and QuantA-
+gent across eight standard cost components.
+Table 3: Per-asset gross and net daily-trading metrics from our reproduction harness. CR: cumulative
+return; SR: Sharpe ratio; MDD: maximum drawdown; subscripts g/n: gross/net. The net column
+charges commission, token cost, spread, and market impact. The TCost column reports the com-
+mission component only (token cost is amortized at the portfolio level). Buy&Hold net subtracts a
+one-time entry cost; TCost is omitted for display.
+Asset Agent CRg (%) SR g MDDg (%) CRn (%) SR n MDDn (%) TCost ($)
+Buy&Hold +9.61 0.45 49.41 +9.56 0.45 49.44 -
+TSLA TradingAgents -2.01 0.23 55.50 -10.17 0.09 58.33 1,632
+QuantAgent -26.07 -0.32 49.68 -29.12 -0.38 51.42 609
+Buy&Hold +37.16 0.85 41.62 +37.11 0.85 41.64 -
+NVDA TradingAgents +16.32 0.59 29.66 +11.49 0.48 30.34 967
+QuantAgent -56.07 -1.79 56.07 -59.30 -1.91 59.28 646
+Buy&Hold +12.82 0.76 11.24 +12.77 0.76 11.25 -
+KO TradingAgents -10.84 -0.87 17.89 -17.17 -1.42 22.34 1,265
+QuantAgent -2.64 -0.08 13.94 -7.04 -0.36 16.80 878
+Buy&Hold +12.75 0.58 16.42 +12.70 0.58 16.43 -
+XOM TradingAgents +11.26 0.55 16.39 +10.71 0.54 16.40 111
+QuantAgent -28.29 -1.49 36.87 -31.57 -1.67 39.58 657
+Buy&Hold -48.26 -0.59 65.69 -48.31 -0.59 65.71 -
+MSTR TradingAgents +17.41 0.62 52.16 +16.89 0.61 52.48 105
+QuantAgent +20.15 0.61 44.96 +16.62 0.56 46.35 707
+What devours the gap between gross and net.The gross-to-net distance for the two agent curves
+is the cumulative sum of the terms in equation (1); the subset we charge—commission, token cost,
+spread, and market impact—turns CR g =−2.01% into CRn =−10.17% for TradingAgents on
+TSLA, and CRg =−10.84% into CRn =−17.17% on KO. Net buy-and-hold still beats both agents
+on 4 of 5 tickers; the only exception is MSTR, where buy-and-hold itself drew down −48.31%.
+These numbers corroborate the central judgment of Section 2.3:reported gross Sharpe is an upper
+bound, not a deployable number. The same conclusion is reinforced by the Sharpe-uncertainty
+argument of Section 2.4—over one year (≈252 daily observations), the 95% CI half-width of an
+agent’s net Sharpe is large enough to span the entire buy-and-hold-vs-agent gap.
+C Counterexamples and Classification of Representative Systems
+We classify systems / papers by their relation to our thesis: (a) apparent conflict but explainable via
+P1–P6; (b) compatible with our thesis; (d) approaching the modular solution and supportive. Among
+public evidence we have not yet found a definitive (c) challenge counterexample; if discovered, it
+would trigger the layered falsifiability conditions.
+D Parametric Prior Lock-in: Detailed Same-Side Evidence
+This appendix expands the same-side evidence behind the monotonicity claim of Section 3. Lee et al.
+[10]’s counterfactual interventions show three patterns relevant to PPL:
+13
+Table 4: Representative systems and their relation to the thesis.
+System or paper Class Note
+FinMem [29] and TradingAgents [25] (a) Report short-window positive returns but lack P1 (cutoff), P5 (cleans-
+ing), and P6 (disaggregation); fits Section 2.4
+FinCon [30] (NeurIPS 2024 main) (a) manager–analyst multi-agent + conceptual verbal reinforcement; per-
+ticker Sharpe 0.335–2.370, portfolio Sharpe up to 3.269; OOS win-
+dow Oct 2022 – Jun 2023 still constrained by P1 cutoff and P5 cleans-
+ing
+FinAgent [33] (a) Multimodal inputs and tool calls but only deducts commission inside
+reward; remaining frictions unmodeled—see Figure 4
+QuantAgent [27] (a) and (d) Reports headline Sharpe 1.76–2.02 on HFT instruments—surface-
+level a counterexample to our thesis. On inspection, the architecture
+is mostly modular: the LLM emits structured reasoning over Indica-
+tor/Pattern/Trend/Risk roles, while execution and the 5 bp stop-loss
+are off-LLM components. We therefore read it as already approxi-
+mating the modular boundary advocated in Section 5, with residual
+P1 (cutoff disclosure) and P5 (full-friction net) gaps as the remaining
+deployment-evidence gaps.
+FLAG-Trader [28] (a) RL fine-tune of a 135M LLM with PPO actor–critic and Sharpe-
+increment reward; reports SR ≈1.36 –1.73 on a small ticker set +
+BTC, but evaluation lacks explicit cutoff disclosure (P1) and friction
+cleansing beyond commission prompt mention (P5)
+FinBen [26] (NeurIPS 2024 D&B) (b) Holistic benchmark over 36 datasets and 24 tasks; GPT-4 FinTrade
+Sharpe 1.51±1.08 (std exceeds half the mean) is a direct anchor for
+P1 + P5
+FinRL-Meta [14] (d) Already adopts modular division of labor, consistent with the induc-
+tive practice of Section 5
+Merchant and Levy [19] (Divergence
+Decoding)
+(b) Mechanistic anchor for P1: shows look-ahead bias is embedded in
+model parameters, supporting our argument rather than serving as a
+counterexample
+• Even when explicit reverse evidence is presented, models cling to existing sector tilts and
+style narratives—view-flip rates remain low and self-reported confidence does not contract
+proportionally.
+• Models from the same ecosystem, pretraining corpus, or alignment paradigm exhibit highly
+converged sector and theme preferences, suggesting the prior is shared across what would
+otherwise be treated as “independent” agents.
+• Persona prompts, multi-model voting, and multi-agent debate produce surface-level rhetori-
+cal differences but do not remove the underlying homogeneous prior; multi-agent agreement
+is therefore a poor proxy for independent expert agreement.
+Quantitative anchors from Lee et al. [10].The cross-model Tech-vs-Defensive bias-score gap
+(Figure 5a) ranges from 0.09 (GPT-4.1: 0.13 vs. 0.04) to 0.36 (Mistral-24B: 0.38 vs. 0.02), and is
+statistically significant for every model evaluated (p <0.001 on independent-samples t-test in Lee et
+al. Table 1). On the volumetric flip-rate side (Figure 5b), at the most adversarial ratio (2|3, i.e. 60%
+counter-evidence), the strongest-prior model (Llama4-Scout) reverses its view in only ≈8% of cases
+while GPT-4.1—the lowest-bias model—reverses in≈30% , a 3.8× gap that grows monotonically
+with the model’s own sector-bias score in panel (a). The same monotone correspondence appears
+under intensity-driven flips (Lee et al. Figure 7): even at ∆ = 10 (counter-evidence claimed price
+impact 2× supporting), the high-bias models stay below φint = 0.6, well below “perfect rational
+update.” Panels (a) and (b) jointly motivate treating direction-flip rate, confidence shift, and position-
+size shift as the three monotonicity axes of P3.
+These patterns motivate treating P3 (counterfactual robustness) as a core protocol rather than an
+optional ablation: a system whose recommendations do not move under reverse-evidence prompts
+cannot be distinguished from one operating on parametric prior alone.
+14
+Figure 5: Two faces of parametric prior lock-in, after Lee et al. [10].(a)Sector bias score πs ∈
+[−1,+1] for the most- vs. least-favored sector (Technology vs. Consumer Defensive) across six
+LLMs; all six show a positive Tech tilt with a within-model gap that is statistically significant
+(p <0.001).(b)View-flip rate φvol as a function of counter-evidence share, read off Lee et al.’s
+reported volume ratios {0|2,1|3,2|4,1|2,2|3} corresponding to {100%,75%,66%,66%,60%}
+counter-evidence (the two 66% ratios are averaged for clarity). At 100% counter-evidence, all models
+flip near 1.0; at 60% counter-evidence the strong-prior models (Llama4-Scout, DeepSeek-V3) barely
+flip (<0.15 ), and the same models with the strongest sector tilts in panel (a) sit lowest in panel (b).
+The cross-axis correspondence is the empirical signature of PPL: a higher latent prior translates into
+a stickier posterior under reverse evidence.
+Table 5: Common stage structure of modular quantitative trading systems (referenced from Section
+5).
+Stage Owner Reasonable LLM role Audit object
+1. Information ex-
+traction
+LLM-led, schema-bound Extract structured propositions
+from news, filings, calls, announce-
+ments
+Source span, publication time, re-
+trieval time, entity/event labels
+2. Feature construc-
+tion
+Quant module Provides candidate structured in-
+puts, does not set feature weights
+Point-in-time feature table, missing-
+data handling, normalization rules
+3. Signal synthesis Quant model One of many information sources Ablation and marginal contribution
+of LLM-derived features
+4. Probability cali-
+bration
+Independent statistical
+module
+Does not provide self-rated trading
+probabilities
+ECE, reliability curves, regime-
+conditioned calibration, out-of-
+sample stability
+5. Sizing and risk
+control
+Portfolio and risk mod-
+ules
+Explains sources of risk, does not
+directly determine size
+Factor exposures, sector exposures,
+leverage, drawdown, liquidity con-
+straints
+6. Execution and au-
+dit
+Execution system Observer or summarizer Order log, fill prices, slippage,
+latency, failed orders, risk-stop
+records
+E Worked Example: 8-K Guidance Cut Through the Modular Pipeline
+This appendix walks the modular stage structure (Table 5) on a concrete event, as a description of
+existing practice rather than a proposal. Suppose at time t an 8-K is released stating that company X
+is cutting next-quarter revenue guidance.
+• Stage 1(LLM extraction): emits JSON {entity: X, event: ’guidance_cut’,
+evidence_quote: ’...’, source_time: t, retrieval_time: t+δ}.
+• Stage 2(feature construction): the quant system maps it to a surprise feature, joined with
+historical EPS surprise and guidance-revision history.
+• Stage 3(signal synthesis): the quant model measures IC and marginal contribution on
+multi-year panel data.
+15
+•Stage 4(calibration): an independent calibration module assesses out-of-sample ECE.
+• Stage 5(sizing and risk control): the portfolio module enforces sector-neutral risk-budget
+caps.
+• Stage 6(execution and audit): the execution system records timestamps, slippage, and
+risk-control intercepts.
+The LLM leads Stage 1; in subsequent stages it is at most an observer or explainer. The point of the
+example is not the architecture itself—which is standard—but that compliance with P1–P6 (cutoff
+disclosure, calibration, friction cleansing, multi-agent disaggregation) is achievedby construction
+once final decision authority is moved off the LLM.
+16

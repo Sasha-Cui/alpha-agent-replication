@@ -1,0 +1,22 @@
+{
+  "agent_sheets": [
+    "Benjamin_Graham_Returns",
+    "Warren_Buffett_Returns",
+    "Joel_Greenblatt_Returns",
+    "Joseph_Piotroski_Returns",
+    "Edward_Altman_Returns"
+  ],
+  "candidate_definition": "equal-weight average of the five shipped GuruAgents daily agent return streams, compounded monthly",
+  "candidate_returns_csv": "paper_runs/042_guruagents/candidate_returns.csv",
+  "individual_candidate_paths": [
+    "paper_runs/042_guruagents/candidate_returns_benjamin_graham.csv",
+    "paper_runs/042_guruagents/candidate_returns_warren_buffett.csv",
+    "paper_runs/042_guruagents/candidate_returns_joel_greenblatt.csv",
+    "paper_runs/042_guruagents/candidate_returns_joseph_piotroski.csv",
+    "paper_runs/042_guruagents/candidate_returns_edward_altman.csv"
+  ],
+  "month_end": "2025-03-31",
+  "month_start": "2022-04-30",
+  "n_months": 36,
+  "source_workbook": "external_repos/GuruAgents/results_22_24/multi_agent_backtest_results.xlsx"
+}

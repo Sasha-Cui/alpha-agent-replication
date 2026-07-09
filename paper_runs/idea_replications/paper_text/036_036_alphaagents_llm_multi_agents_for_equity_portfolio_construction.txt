@@ -1,0 +1,727 @@
+AlphaAgents: Large Language Model based Multi-Agents for
+Equity Portfolio Constructions
+Tianjiao Zhao
+tina.zhao@blackrock.com
+BlackRock, Inc.
+Atlanta, GA, USA
+Jingrao Lyu
+jingrao.lyu@blackrock.com
+BlackRock, Inc.
+Atlanta, GA, USA
+Stokes Jones
+stokes.jones@blackrock.com
+BlackRock, Inc.
+Atlanta, GA, USA
+Harrison Garber
+harrison.garber@blackrock.com
+BlackRock, Inc.
+Atlanta, GA, USA
+Stefano Pasquali
+stefano.pasquali@blackrock.com
+BlackRock, Inc.
+New York, NY, USA
+Dhagash Mehta
+dhagash.mehta@blackrock.com
+BlackRock, Inc.
+New York, NY, USA
+ABSTRACT
+The field of artificial intelligence (AI) agents is evolving rapidly,
+driven by the capabilities of Large Language Models (LLMs) to
+autonomously perform and refine tasks with human-like efficiency
+and adaptability. In this context, multi-agent collaboration has
+emerged as a promising approach, enabling multiple AI agents
+to work together to solve complex challenges. This study investi-
+gates the application of role-based multi-agent systems to support
+stock selection in equity research and portfolio management. We
+present a comprehensive analysis performed by a team of special-
+ized agents and evaluate their stock-picking performance against
+established benchmarks under varying levels of risk tolerance. Fur-
+thermore, we examine the advantages and limitations of employing
+multi-agent frameworks in equity analysis, offering critical insights
+into their practical efficacy and implementation challenges.
+1 INTRODUCTION
+Equity portfolio management has traditionally relied on human
+research analysts for guidance on portfolio construction and moni-
+toring. This involves gathering and processing substantial amounts
+of information related to the current performance and anticipated
+future performance of individual equities within a portfolio. Ana-
+lysts must actively collect, analyze, and synthesize this information
+to form well-informed judgments. Typical inputs for equity re-
+search include financial disclosures (e.g., 10-K and 10-Q reports),
+earnings calls, price targets, financial ratios, valuation analyses,
+market news, sector research reports, and notes from company
+visits, among others. The need to analyze this vast array of diverse
+and voluminous information presents significant challenges to an-
+alysts in supporting their investment teams to generate alpha for
+clients, in addition to personal perspectives and prior investment
+experiences that often influence their interpretation, potentially
+leading fund managers to overlook alpha opportunities. AI offers
+an obvious advantage in rapidly processing large volumes of data
+and extracting actionable insights, ultimately aiding analysts in the
+pursuit of alpha [23].
+Recent advances in LLMs, particularly in multi-agent framework
+[31], have significantly expanded AI’s ability to handle complex
+reasoning and decision-making using unstructured data [29]. AI
+agents, built on LLMs, now incorporate advanced functionalities
+such as planning, memory management, and tool usage. In this
+work, we propose a novel multi-agent investment framework that
+leverages LLM-powered collaboration and debate to collect and syn-
+thesize equity research inputs. By employing a team of specialized
+agents capable of reasoning over market data and fundamentals,
+we demonstrate that this collaborative framework can improve the
+investment process and outcomes.
+In addition, we explore how LLM based agentic system can
+mitigate congnitive biases, a central theme in Behavioral Finance.
+Rooted in Kahneman and Tversky’s Prospect Theory [17], this field
+has shown that biases like loss aversion and overconfidence often
+lead to suboptimal investment decisions [4]. Although previous has
+recognized these challenges [3, 6, 8], practical solutions remain lim-
+ited [7]. Approaches such as awareness checklists [13] or efficient
+frontier anchoring [11] often fail to address the unconscious nature
+of these biases [28]. We argue that multi-agent LLM systems can
+help overcome these limitations by complementing human equity
+research, reducing cognitive biases and simultaneously mitigating
+AI-specific issues such as hallucination through collaborative task
+delegation to unbiased AI agents.
+1.1 Related Work
+Early applications of agent-based systems in finance have predom-
+inantly relied on Reinforcement Learning (RL) for portfolio man-
+agement [18, 21, 27] which are typically task-specific and operate
+on structured data rather than being powered by language models.
+Recent advances in LLMs [22] have catalyzed the emergence of
+LLM-based autonomous agents [30]. These agents exhibit strong
+capabilities across domains such as strategic decision-making [19],
+reflective reasoning [24], external tool usage [20], memory-based
+learning [9], and grounded planning [26]. In particular, ollaborative
+LLM agents [1] have demonstrated effectiveness in coordinating
+tasks through dialogue and debate.
+FinRobot [32] addresses financial statement analysis through
+agentic specialization. FinMem [33] integrates structured financial
+data with layered memory, although its effectiveness is constrained
+by news coverage. MarketSenseAI [12] incorporates five specialized
+agents to parse distinct financial modalities. FinAgent [34] further
+expands capabilities by handling multimodal financial data. Finally,
+FinVerse [2] wraps more than 600 financial APIs inside a crew of
+retrieval-and-tool-calling agents to answer ad-hoc investor queries.
+Despite these advances, the use of multi-agent LLMs for system-
+atic stock selection and portfolio construction remains relatively
+arXiv:2508.11152v1 [q-fin.ST] 15 Aug 2025
+Zhao et al.
+unexplored. Prior studies often emphasize chain-of-thought prompt-
+ing but neglect structured agent interaction strategies. Moreover,
+the role of agent-specific risk tolerance in shaping financial decision
+outcomes has received little attention.
+This work addresses these gaps by introducing a role-based multi-
+agent system for equity research and screening. It incorporates
+cooperative and adversarial reasoning, leverages domain-specific
+tools for each agent, and integrates explicit risk tolerance profiles.
+The proposed framework offers a novel contribution to multi-agent
+decision-making in equity portfolio construction.
+2 METHODOLOGY
+2.1 Multi-agent System for Equity Research
+Equity research and portfolio management require the comprehen-
+sive collection and analysis of diverse data sources, encompassing
+both textual and numerical information. Examples include corpo-
+rate financial disclosures, earnings calls, and quantitative analyses
+derived from historical stock prices and trading volumes. In this
+study, we demonstrate the application of a multi-agent framework
+to enhance equity analysis and stock selection. Specifically, we de-
+veloped three specialized micro-agents, each endowed with distinct
+expertise and toolsets. These agents are designed to emulate the
+specialized roles and responsibilities typically performed by equity
+analysts within a human portfolio management team.
+The three specialized AI agents collaborate to analyze individual
+stocks and produce comprehensive stock analysis reports. This
+collaborative approach mitigates human behavioral biases and
+enhances the quality of reasoning by leveraging diverse domain-
+specific expertise among the agents. The agents may reach differing
+conclusions when analyzing the same problem, due to either rea-
+soning divergences or underlying hallucination issues. To address
+this, the framework incorporates an internal debating mechanism,
+allowing agents to engage in discussions when their analyses di-
+verge. This process continues until consensus is achieved, thereby
+improving the multi-agent reasoning capability and reducing hallu-
+cinations, as supported by recent research [10].
+The system diagram presented in Figure 1 illustrates the high-
+level workflow, with the specific roles and responsibilities of each
+specialist agent detailed below.
+• Fundamental Agent: Traditionally, fundamental equity
+analysis has been the cornerstone of equity research, in-
+volving in-depth assessments of a stock’s value through the
+examination of 10-K and 10-Q reports, sector and company
+trends, and financial statement data. Here, we automate
+this labor-intensive process using an LLM agent capable
+of qualitatively and quantitatively analyzing an equity’s
+projected trajectory and financial performance.
+• Sentiment Agent: Financial markets often react to pat-
+terns influenced by news or changes in analyst ratings. Such
+news may pertain to company operating events, recent an-
+alyst evaluations, executive changes, or insider trading dis-
+closures. To address this, the Sentiment Agent is designed
+as a specialist to analyze financial news and provide recom-
+mendations based on the prevailing sentiment toward an
+equity and its potential impact on stock prices.
+• Valuation Agent: Current and historical prices and vol-
+umes capture market expectations of stock performance
+and offer insights into whether a stock is reasonably priced
+based on price and volume trends. The Valuation Agent
+is designed to analyze stock prices and volumes, provid-
+ing a valuation assessment to inform the stock’s relative
+significance within a portfolio.
+While this study uses only three agents, the framework is de-
+signed for scalability and can easily incorporate additional agents.
+For example, portfolio managers may benefit from a Technical Anal-
+ysis Agent for short-term trend detection or a Macro Economist
+Agent focused on economic policy and macroeconomic data. Fu-
+ture work will explore a more extensive multi-agent system that
+integrates a broader set of specialized agents.
+2.2 Methodology for Constructing Agents
+2.2.1 System Data Description. The primary data sources utilized
+in the system are listed in Table 1, including 10-K and 10-Q financial
+disclosures, Bloomberg financial news, and historical stock price
+and volume data from Yahoo Finance. Each agent is granted access
+only to the data relevant to its specific role and assigned task.
+Feature Availability Description
+Ticker All Agents Unique symbol of a publicly
+traded company’s stock
+Price (Open,
+High, Low,
+Close)
+Valuation
+Agent
+The initial, highest, lowest, and
+final trading price of a stock
+within a specific trading period
+Volume Valuation
+Agent
+The total number of shares
+traded during a specific period
+10K/10Q Fundamental
+Agent
+Financial disclosure data
+(includes discussion of major
+company prospectus and
+financial statements).
+Bloomberg ID Sentiment
+Agent
+Ticker’s corresponding unique
+identifier for Bloomberg News
+News Body Sentiment
+Agent
+The main textual content of a
+news article detailing news,
+company disclosure, and
+analyst rating change.
+Table 1: Feature description
+2.2.2 Role Prompting. Role prompting is a prompt engineering
+technique [25] that involves guiding a conversational agent by
+assigning it a specific role or context, enabling the LLM to generate
+responses that are more relevant and contextually appropriate. In
+our multi-agent setup, we utilized role prompting for the three
+agents by clearly defining their functions and objectives to enhance
+task-specific performance and accuracy.
+(1) Valuation Agent: "As a valuation equity analyst, your pri-
+mary responsibility is to analyze the valuation trends of a
+given asset or portfolio over an extended time horizon. To com-
+plete the task, you must analyze the historical valuation data
+of the asset or portfolio provided, identify trends and patterns
+AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions
+Figure 1: System diagram of multi-agent collaboration and debate for stock analysis
+in valuation metrics over time, and interpret the implications
+of these trends for investors or stakeholders. "
+(2) Sentiment Agent: "As a sentiment equity analyst your pri-
+mary responsibility is to analyze the financial news, analyst
+ratings and disclosures related to the underlying security;
+and analyze its implication and sentiment for investors or
+stakeholders. "
+(3) Fundamental Agent: " As a fundamental financial equity
+analyst your primary responsibility is to analyze the most
+recent 10K report provided for a company. You have access to a
+powerful tool that can help you extract relevant information
+from the 10K. Your analysis should be based solely on the
+information that you retrieve using this tool. You can interact
+with this tool using natural language queries. The tool will
+understand your requests and return relevant text snippets
+and data points from the 10K document. Keep checking if you
+have answered the users’ question to avoid looping. "
+2.2.3 Agent Tools. Each agent was equipped with specific tools
+and data tailored to its designated task.
+For the valuation agent, we provided a computational tool to
+calculate the volatility and return of the stock.
+The annualized cumulative return 𝑅annualized is calculated (as-
+suming 252 trading days in a year) as:
+𝑅annualized =
+
+(1+ 𝑅cumulative)
+252
+𝑛
+
+− 1,
+where 𝑅cumulative is the cumulative return and 𝑛 is the number of
+trading days. Annualized volatility, 𝜎annualized , is computed as:
+𝜎annualized = 𝜎daily×
+√
+252,
+where 𝜎daily denotes daily volatility.
+For the sentiment agent, a LLM-based summarization tool was
+granted to condense each news item before providing an overar-
+ching sentiment analysis. This tool employs reflection-enhanced
+prompting, in which the model is explicitly instructed to reason,
+critique, and refine its summary. The guiding prompt is" "provide
+a concise summary along with an informed recommendation on
+whether to invest in this stock". The model is encouraged to rea-
+son through or evaluate the content before summarizing, often
+involving multiple steps like summarizing, critiquing, and refining,
+which leads to more coherent and insightful summaries compared
+to direct extractive methods. Unlike a RAG tool, a summarization
+tool allows the sentiment agent to learn through all the data and to
+provide its opinion.
+For the fundamental agent, we provided agent tool augments of
+both 10K/10Q data pull and RAG tool tailored for financial statement
+analysis for it to analyze the equity from different perspectives.
+• Fundamental Report Pull Tool: The agent is prompted
+with capability to generate yfinance API calls for the specific
+stock he is involved. Within the tool, we include iterative
+API call checks to ensure the API call is correct and data is
+properly retrieved.
+• Financial Report RAG Tool: The agent can further use
+this tool to perform an analysis based on the fundamental
+reports retrieved to perform a fundamental analysis. Within
+the RAG tool, we leveraged context trucking based on report
+sections to keep relevant information and use GPT 4-o
+as embedding model. The tool incorporate instruction of
+domain expertise guide of how to analyze different section
+of the financial reports. The agent will use the RAG tool
+several times to perform an analysis answering questions
+relevant to cash flow and income, operations and gross
+margin, areas of concern and progress towards its stated
+objectives.
+2.2.4 Multi-Agents Workflow. We utilize the Microsoft AutoGen
+framework [31] as the infrastructure for our multi-agent system,
+leveraging its group chat and assistant agent capabilities. Autogen
+Studio serves as the user interface. The communication workflow
+is illustrated in Figure 2 and the prompts for the group chat agent
+are provided below.
+Multi-agent Collaboration: To coordinate the three specialist
+agents, a group chat assistant was designed to consolidate their
+Zhao et al.
+Figure 2: The AlphaAgents agentic communication workflow
+diagram.
+Figure 3: Multi-agent Debate Example on Zscaler
+inputs and generate a collaborative stock analysis report. The group
+chat assistant is prompted as below:
+Prompt: "You are a helpful assistant skilled at coordinating a group
+of other agents to solve a task. You make sure that every agent in
+the group chat has a chance to speak at least twice. When all agents
+provide their analysis, consolidate inputs of all agent into a report.
+Reply "TERMINATE" at the end when everything is done. "
+Multi-agent Debate: Debate is managed via a Round Robin
+approach[31]: each agent receives the query along with peer analy-
+ses, and the discussion continues until consensus is reached.
+Prompt: "You are a helpful assistant skilled at coordinating a group
+of other agents to solve a task. You make sure that every agent in
+the group chat has a chance to speak at least twice. Each agent can
+not decide for the whole group. They are tasked with coming to a
+consensus. You must invoke all agents before deciding to Terminate.
+Reply "TERMINATE" at the end when everything is done. "
+2.2.5 LLM Model. After experimenting with various GPT models,
+we chose GPT4o as the model for our experiments.
+2.3 Impact of the Agent Risk Tolerance
+Risk tolerance plays a pivotal role in shaping investor behavior
+and portfolio decisions [5], yet its influence on AI agent behavior
+remains underexplored. We illustrate this through agent responses
+conditioned on risk profiles: a valuation agent issues a "Sell" for
+Company A under a risk-averse prompt, citing high volatility de-
+spite recent outperformance, while the same agent recommends a
+Figure 4: Multi-agent Debate Process Illustration
+"Buy" under a risk-neutral profile, emphasizing momentum with
+caution.
+To model this systematically, we design agents for both risk-
+averse and risk-neutral scenarios using prompt engineering to em-
+bed investor traits directly into agent instructions. This mimics
+how human clients express preferences, enabling agents to inter-
+pret risk contextually rather than through fixed thresholds. While
+a risk-seeking profile was also tested, its outputs were nearly in-
+distinguishable from the risk-neutral case and excluded from final
+evaluation highlighting a limitation of prompt-based differentiation
+for adjacent risk profiles.
+3 EV ALUATION METRICS
+LLM evaluation remains an evolving and challenging research area,
+especially to find benchmark of agent performance across diverse
+scenarios within a unified framework [16]. There have been various
+automatic evaluation methods based on LLMs proposed in recent
+research [14].
+AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions
+Figure 5: Multi-agent Debate Consensus Illustration
+3.1 RAG Evaluation
+For our multi-agent system, we deployed Arize Phoenix1 to imple-
+ment retrieval and relevance evaluation metrics for RAG [15] for
+the fundamental and sentiment agents (as they perform their tasks
+mainly based on RAG and summarization). Common metrics of
+faithfullness and relevance scores were provided as part of Phoenix
+pipeline. Evaluating the valuation agent is challenging as it per-
+forms numerical analytics with no easy ground truth. To reduce
+hallucination, we constructed mathematical tools for the valuation
+agent to calculate volatility and valuation metrics. Also using Arize
+Phoenix, we constantly monitored the valuation agent and checked
+if it was using the mathematical tool we provided to answer the
+question.
+3.2 Back-testing as a Down-stream Metric
+Evaluating multi-agent debates, which involve reasoning and sound-
+ness checks, poses significant challenges. To address this, human
+review is employed to verify the logical coherence of the debates.
+For greater transparency in multi-agent reasoning, all discussion
+histories are logged as a supplementary output, allowing users to
+review and, if necessary, override the agents’ conclusions.
+To assess the system’s performance, we conducted experiments
+evaluating its capabilities in both multi-agent collaboration and
+debating, focusing on equity analysis and stock selection as key
+tasks. These experiments also served as a measure of the proposed
+system’s effectiveness in improving investment outcomes.
+1https://github.com/Arize-ai/phoenix
+For this experiment, we randomly selected 15 stocks in technol-
+ogy sector to serve as both the stock-picking pool and the bench-
+mark. The focus was solely on stock selection, with subsequent
+tasks such as portfolio diversification or optimization falling out-
+side the scope of this study. All stocks were assigned equal weights
+based on agent recommendations. Future research will explore func-
+tionality to adjust stock weights according to the LLM’s confidence
+in its recommendations, where stronger confidence (e.g., a strong
+BUY) would correspond to higher weight allocations.
+Using the proposed multi-agent framework, we first generated a
+detailed stock analysis report for each stock. A debate mechanism
+then aggregated perspectives from the fundamental, sentiment, and
+valuation agents, each issuing a BUY or SELL based on their spe-
+cialization and specified risk tolerance. The debate continued until
+consensus was reached on inclusion in the portfolio. The resulting
+multi-agent portfolio was constructed by modifying a benchmark
+portfolio. For comparison, single-agent portfolios from the funda-
+mental and valuation agents were also created; the sentiment agent
+was excluded due to insufficient news coverage in some cases.
+To evaluate the performance of an agent-picked portfolio, we
+back-tested the multi-agent performance against the benchmark
+portfolio and compared the risk-adjusted return and Sharpe ratio.
+The agents were trained using data and news from January 2024.
+Based on each agent’s responses and their final decisions following
+debate and collaboration, we constructed the corresponding portfo-
+lios: the valuation agent portfolio, news sentiment agent portfolio,
+fundamental agent portfolio, and the final multi-agent portfolio, all
+initialized on February 1, 2024. The performance of these portfolios
+was monitored over a four-month period, with their risk-adjusted
+returns compared to evaluate effectiveness.
+The risk-adjusted returns (Sharpe Ratio) is calculated using:
+𝑆 =
+𝑅𝑝− 𝑅𝑓
+𝜎𝑝
+Where 𝑅p is the expected return of portfolio, 𝑅f is the risk-free
+rate, which serves as a baseline, and 𝜎p is the standard deviation
+of portfolio, which measures how much the return varys. Here for
+Risk free rate we are using one month treasury rate.
+4 RESULT
+4.1 Stock Analysis Report Generation
+In the experiment, the group chat agent coordinated with the spe-
+cialist agents to collectively generate a stock analysis report for
+each stock. To provide a concrete example, below is the summary of
+results from the agents collaborating to produce a comprehensive
+analysis report for a sample company Z.
+(1) Positive Indicators Overall Performance: Company Z’s
+stock increased by approximately 13.56% from January 2nd
+to January 30th, outperforming the SP 500’s increase of
+roughly 3.85%. The stock shows higher volatility with no-
+table price swings, which could lead to higher returns if the
+market moves favorably.
+Market Leadership: Company Z has been recognized as the
+exclusive leader in the Forrester Wave for SaaS Security
+Posture Management for Q4 2023, highlighting its strong
+Zhao et al.
+market position and commitment to providing advanced
+security solutions.
+Annual Meeting Outcomes: The election of Jay Chaudhry as
+a Class III director and the ratification of PricewaterhouseC-
+oopers LLP as the independent auditor suggest stability and
+continuity in leadership and financial oversight. The ap-
+proval of executive compensation by stockholders indicates
+confidence in the management team.
+Progress Towards Goals: Company Z has made significant
+progress towards its 2023 goals with initiatives such as the
+Senior Leadership Program, partnerships with executive
+coaching organizations, and offering tuition reimbursement
+for employee career growth. The company also experienced
+revenue growth, expanded its customer base, and stream-
+lined operations through a restructuring plan.
+(2) Concerns Higher Risk: The higher volatility of Company
+Z’s stock entails greater risk, with the price equally likely
+to go down as well as up. The trade volumes for Company
+Z’s stock are relatively lower than the SP 500, potentially
+leading to less liquidity and difficulty in buying or selling
+the stock. Insider Selling: Recent sales by multiple directors,
+including Amit Sinha and Karen Blasing, might indicate
+that insiders believe the stock is fairly valued or overvalued.
+The proposed sales of Company Z shares by the Sinha
+Family Incentive Trust and the Sinha Education Excellence
+Trust raise concerns about the long-term confidence in the
+company’s stock. Financial Metrics: Company Z’s cash flow
+for the year 2023 is significantly higher than its net income,
+as reported in the SEC Filing 10-K. The operating margin
+for Company Z is -14.5%, indicating that the company is
+operating at a loss. Despite a net loss in the fiscal year
+2023, Company Z has shown an improvement in revenue
+growth, with the net loss amount decreasing compared to
+the previous fiscal year.
+(3) Conclusion Investment Considerations: Investors with
+a higher risk tolerance may view Company Z’s stock as
+a good entry point, given its potential for higher returns
+balanced against the risk. Conversely, more conservative
+investors may prefer to consider other alternative oppor-
+tunities or wait for greater price stability. While company
+Z’s market leadership and positive outcomes from annual
+meeting are encouraging, recent insider selling and fre-
+quent transactions by associated trusts suggest caution.
+Close monitoring the stock is recommended, with consider-
+ation given to purchasing during market dips or following
+further positive developments.
+4.2 Stock Selection Result
+4.2.1 Risk-Seeking/Risk-Neutral Agents: The valuation agent uses
+the benchmark portfolio directly, implying it does not differentiate
+its selection from the market baseline. The fundamental agent
+expands upon the benchmark by including a broader set of stocks,
+suggesting a strategy that emphasizes diversification and poten-
+tially considers additional financial fundamentals or growth signals
+beyond the baseline. Themulti-agent system includes most of the
+Figure 6: Risk Neutral Portfolio Performance: the multi-
+agent portfolio outperforms both single-agent portfolios in
+terms of cumulative return and rolling Sharpe ratio
+fundamental agent’s picks but appears slightly more curated, indi-
+cating coordination among agents may help refine or consolidate
+decisions while retaining broader exposure.
+4.2.2 Risk-A verse Agents: The valuation agent adopts a strategy
+that narrows the selection, excluding several stocks present in the
+risk-neutral set. This suggests a more conservative filtering based
+on valuation criteria, likely emphasizing lower volatility or more
+stable fundamentals. The fundamental agent focuses on a small
+subset of stocks, favoring those that may offer stability or strong
+balance sheets, consistent with a defensive investment posture.
+The multi-agent strategy further consolidates the portfolio to a
+handful of overlapping picks, reflecting cautious consensus among
+valuation and fundamental signals in high-risk scenarios.
+4.3 Back-Test Results
+The portfolios constructed by a valuation agent and a fundamen-
+tal agent are compared to those selected through a multi-agent
+framework. Portfolio selection occurred on February 1, 2024, with
+performance measured over the subsequent four months. To facili-
+tate a dynamic performance assessment, a rolling Sharpe ratio was
+calculated throughout the evaluation period.
+The rolling Sharpe Ratio is defined as:
+𝑆rolling(𝑡) =
+𝑅𝑝,𝑡−𝑤+1:𝑡− 𝑅𝑓
+𝜎𝑝,𝑡−𝑤+1:𝑡
+where the mean portfolio return over the window 𝑤 is:
+𝑅𝑝,𝑡−𝑤+1:𝑡 = 1
+𝑤
+𝑡∑︁
+𝑖=𝑡−𝑤+1
+𝑅𝑝,𝑖
+AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions
+Figure 7: Risk Averse Portfolio Performance: all portfolios
+experience larger drawdowns
+and the corresponding standard deviation is:
+𝜎𝑝,𝑡−𝑤+1:𝑡 =
+vut
+1
+𝑤− 1
+𝑡∑︁
+𝑖=𝑡−𝑤+1
+(𝑅𝑝,𝑖− 𝑅𝑝,𝑡−𝑤+1:𝑡)2
+Results are presented in Figures 6, 7 and 8. In the risk-neutral setting,
+the proposed multi-agent outperforms the benchmark as well as the
+single agent framework during the testing window. The sentiment
+and valuation agents, which analyze on a short historical horizon
+of 1 to 3 months, are more effective for short-term forecasting. In
+contrast, the fundamental agent focuses on the long-term potential
+by analyzing company fundamentals, such as information from 10-
+K filings. By combining these perspectives, the multi-agent system
+effectively balances short-term and long-term insights. As a result,
+it achieves superior performance compared to the single agent
+framework and outperforms all other benchmark portfolios.
+In the risk-averse setting, all agent-selected portfolios followed a
+conservative investment strategy, leading to underperformance rel-
+ative to the benchmark. This outcome was partly due to the strong
+gains of the technology sector during the testing period. Given that
+technology stocks are typically more volatile, they were largely ex-
+cluded from the risk-averse portfolios. While this reduced exposure
+effectively limited downside risk, it also constrained the poten-
+tial for upside gains. This disparity highlights the classic trade-off
+between risk mitigation and return potential: during a predomi-
+nantly bullish market, portfolios with higher risk tolerance tend
+to outperform, particularly those including high-growth sectors
+such as technology. In contrast, conservative portfolios prioritize
+lower volatility, which inherently limits their ability to capitalize
+on robust market rallies.
+Figure 8: Risk neutral vs Risk averse: Comparing risk-neutral
+and risk-averse strategies, risk-neutral portfolios consis-
+tently achieve higher cumulative returns across all agent
+types
+However, as shown in Figure 7, the multi-agent portfolio achieved
+relatively stronger performance than both the valuation and funda-
+mental portfolios, particularly during the early stages of the testing
+period. This suggests that the integration of conservative strate-
+gies from both the valuation and fundamental agents allowed the
+multi-agent framework to more effectively balance risk and re-
+turn. While all three approaches maintained a risk-averse posture,
+the multi-agent portfolio exhibited slightly lower volatility and
+reduced drawdowns, indicating an ability to mitigate losses more
+effectively than the individual strategies. Although the analysis is
+limited in scope, the observed reduction in downside risk support
+the framework’s intended conservative design.
+Figure 8 shows that among all the scenarios the risk averse
+agent will lead to lower returns as it cautiously selects more stable
+stock and yields to lower returns under a bullish market, which
+is an obvious artifact of the risk aversion. On the other hand, the
+results exhibit that the multi-agent portfolio shows an ability to fill
+a gap between the fundamental agent and the valuation agent, and
+balance the risk tolerance impact between these agents as well.
+Zhao et al.
+5 CONCLUSION
+We presented AlphaAgents, a modular multi-agent debate frame-
+work for stock analysis and selection, demonstrating that coordi-
+nated agent reasoning can enhance decision quality and mitigate
+human cognitive biases. Comprising specialized fundamental, sen-
+timent, and valuation agents, the system synthesizes diverse per-
+spectives through structured collaboration, yielding robust stock
+assessments and explainable outputs. While not yet a full portfolio
+optimization engine, AlphaAgents represents a foundational step
+toward agentic investment systems.
+Our backtesting results indicate that multi-agent debate im-
+proves analytical rigor, especially in scenarios involving conflicting
+signals or partial agent reliability. Moreover, agents’ discussion logs
+provide transparent reasoning trails, addressing a key challenge in
+evaluating collaborative AI systems.
+AlphaAgents aligns with established portfolio construction frame-
+works and discretionary investment workflows. While currently
+focused on stock selection, it can serve as a modular input to models
+like Mean-Variance Optimization or Black-Litterman, by supplying
+agent-driven signals for return estimation and scenario analysis.
+The system’s structure mirrors the way discretionary managers
+synthesize diverse research inputs.
+The debate mechanism also reflects investment committee-style
+reasoning, where differing perspectives are reconciled through
+discussion. This makes AlphaAgents well-suited for augmenting
+or automating human-in-the-loop decision-making in institutional
+settings. With improved infrastructure and better data integration,
+such frameworks can become scalable, transparent components of
+future portfolio management systems.
+6 ACKNOWLEDGEMENT
+The views expressed here are those of the authors alone and not of
+BlackRock, Inc.
+REFERENCES
+[1] Saaket Agashe, Yue Fan, and Xin Eric Wang. 2023. Evaluating multi-agent
+coordination abilities in large language models. arXiv preprint arXiv:2310.03903
+(2023).
+[2] Siyu An, Qin Li, Junru Lu, Di Yin, and Xing Sun. 2024. FinVerse: An Autonomous
+Agent System for Versatile Financial Analysis. arXiv preprint arXiv:2406.06379
+(2024).
+[3] Anu Antony. 2020. Behavioral finance and portfolio management: Review of
+theory and literature. Journal of Public Affairs 20, 2 (2020), e1996.
+[4] H Kent Baker and John R Nofsinger. 2010. Behavioral finance: investors, corpora-
+tions, and markets. Vol. 6. John Wiley & Sons.
+[5] Mitali Baruah and Abhishek Kiritkumar Parikh. 2018. Impact of risk tolerance
+and demographic factors on financial investment decision. International Journal
+of Financial Management 8, 1 (2018), 36–48.
+[6] Franco Caparrelli, Anna Maria D’Arcangelis, and Alexander Cassuto. 2004. Herd-
+ing in the Italian stock market: a case of behavioral finance. The Journal of
+Behavioral Finance 5, 4 (2004), 222–230.
+[7] Greg B Davies and Peter Brooks. 2017. Practical Challenges of Implementing
+Behavioral Finance: Reflections from the Field. Financial Behavior: Players,
+Services, Products, and Markets (2017), 542–560.
+[8] Werner FM De Bondt and Richard H Thaler. 1995. Financial decision-making in
+markets and firms: A behavioral perspective. Handbooks in operations research
+and management science 9 (1995), 385–410.
+[9] Qingxiu Dong, Lei Li, Damai Dai, Ce Zheng, Zhiyong Wu, Baobao Chang, Xu
+Sun, Jingjing Xu, and Zhifang Sui. 2022. A survey on in-context learning. arXiv
+preprint arXiv:2301.00234 (2022).
+[10] Yilun Du, Shuang Li, Antonio Torralba, Joshua B Tenenbaum, and Igor Mordatch.
+2023. Improving factuality and reasoning in language models through multiagent
+debate. arXiv preprint arXiv:2305.14325 (2023).
+[11] Harold Evensky. 2017. Applications of Client Behavior: A Practitioner’s Perspec-
+tive. Financial Behavior: Players, Services, Products, and Markets. H. Kent Baker,
+Greg Filbeck, and Victor Ricciardi, editors (2017), 523–541.
+[12] George Fatouros, Kostas Metaxas, John Soldatos, and Manos Karathanassis. 2025.
+Marketsenseai 2.0: Enhancing stock analysis through llm agents. arXiv preprint
+arXiv:2502.00415 (2025).
+[13] Hubert Fromlet. 2001. Behavioral finance-theory and practical application:
+Systematic analysis of departures from the homo oeconomicus paradigm are
+essential for realistic financial research and analysis. Business economics (2001),
+63–69.
+[14] Mingqi Gao, Xinyu Hu, Jie Ruan, Xiao Pu, and Xiaojun Wan. 2024. Llm-based
+nlg evaluation: Current status and challenges. arXiv preprint arXiv:2402.01383
+(2024).
+[15] Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan, Yuxi Bi, Yi Dai,
+Jiawei Sun, and Haofen Wang. 2023. Retrieval-augmented generation for large
+language models: A survey. arXiv preprint arXiv:2312.10997 (2023).
+[16] Taicheng Guo, Xiuying Chen, Yaqi Wang, Ruidi Chang, Shichao Pei, Nitesh V
+Chawla, Olaf Wiest, and Xiangliang Zhang. 2024. Large language model
+based multi-agents: A survey of progress and challenges. arXiv preprint
+arXiv:2402.01680 (2024).
+[17] Daniel Kahneman and Amos Tversky. 2013. Prospect theory: An analysis of
+decision under risk. In Handbook of the fundamentals of financial decision making:
+Part I. World Scientific, 99–127.
+[18] Jinho Lee, Raehyun Kim, Seok-Won Yi, and Jaewoo Kang. 2020. MAPS: Multi-
+agent reinforcement learning-based portfolio management system.arXiv preprint
+arXiv:2007.05402 (2020).
+[19] Junyou Li, Qin Zhang, Yangbin Yu, Qiang Fu, and Deheng Ye. 2024. More agents
+is all you need. arXiv preprint arXiv:2402.05120 (2024).
+[20] Minghao Li, Yingxiu Zhao, Bowen Yu, Feifan Song, Hangyu Li, Haiyang Yu,
+Zhoujun Li, Fei Huang, and Yongbin Li. 2023. Api-bank: A comprehensive
+benchmark for tool-augmented llms. arXiv preprint arXiv:2304.08244 (2023).
+[21] Cong Ma, Jiangshe Zhang, Zongxin Li, and Shuang Xu. 2023. Multi-agent
+deep reinforcement learning algorithm with trend consistency regularization
+for portfolio management. Neural Computing and Applications 35, 9 (2023),
+6589–6601.
+[22] Humza Naveed, Asad Ullah Khan, Shi Qiu, Muhammad Saqib, Saeed Anwar,
+Muhammad Usman, Naveed Akhtar, Nick Barnes, and Ajmal Mian. 2023. A com-
+prehensive overview of large language models. arXiv preprint arXiv:2307.06435
+(2023).
+[23] Yuqi Nie, Yaxuan Kong, Xiaowen Dong, John M Mulvey, H Vincent Poor, Qing-
+song Wen, and Stefan Zohren. 2024. A Survey of Large Language Models
+for Financial Applications: Progress, Prospects and Challenges. arXiv preprint
+arXiv:2406.11903 (2024).
+[24] Matthew Renze and Erhan Guven. 2024. Self-Reflection in LLM Agents: Effects
+on Problem-Solving Performance. arXiv preprint arXiv:2405.06682 (2024).
+[25] Pranab Sahoo, Ayush Kumar Singh, Sriparna Saha, Vinija Jain, Samrat Mondal,
+and Aman Chadha. 2024. A systematic survey of prompt engineering in large
+language models: Techniques and applications. arXiv preprint arXiv:2402.07927
+(2024).
+[26] Chan Hee Song, Jiaman Wu, Clayton Washington, Brian M Sadler, Wei-Lun
+Chao, and Yu Su. 2023. Llm-planner: Few-shot grounded planning for embodied
+agents with large language models. In Proceedings of the IEEE/CVF International
+Conference on Computer Vision . 2998–3009.
+[27] Richard S Sutton. 2018. Reinforcement learning: An introduction. A Bradford
+Book (2018).
+[28] Richard J Taffler and David A Tuckett. 2010. Emotional finance: The role of the
+unconscious in financial decisions. Behavioral finance: Investors, corporations,
+and markets (2010), 95–112.
+[29] Yashar Talebirad and Amirhossein Nadiri. 2023. Multi-agent collaboration:
+Harnessing the power of intelligent llm agents. arXiv preprint arXiv:2306.03314
+(2023).
+[30] Lei Wang, Chen Ma, Xueyang Feng, Zeyu Zhang, Hao Yang, Jingsen Zhang,
+Zhiyuan Chen, Jiakai Tang, Xu Chen, Yankai Lin, et al. 2024. A survey on large
+language model based autonomous agents. Frontiers of Computer Science 18, 6
+(2024), 186345.
+[31] Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Shaokun Zhang, Erkang
+Zhu, Beibin Li, Li Jiang, Xiaoyun Zhang, and Chi Wang. 2023. Autogen: Enabling
+next-gen llm applications via multi-agent conversation framework.arXiv preprint
+arXiv:2308.08155 (2023).
+[32] Hongyang Yang, Boyu Zhang, Neng Wang, Cheng Guo, Xiaoli Zhang, Likun Lin,
+Junlin Wang, Tianyu Zhou, Mao Guan, Runjia Zhang, et al. 2024. FinRobot: An
+Open-Source AI Agent Platform for Financial Applications using Large Language
+Models. arXiv preprint arXiv:2405.14767 (2024).
+[33] Yangyang Yu, Haohang Li, Zhi Chen, Yuechen Jiang, Yang Li, Denghui Zhang,
+Rong Liu, Jordan W. Suchow, and Khaldoun Khashanah. 2023. FinMem: A
+Performance-Enhanced LLM Trading Agent with Layered Memory and Character
+Design. arXiv preprint arXiv:2311.13743 (2023).
+AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions
+[34] Wentao Zhang, Lingxuan Zhao, Haochong Xia, Shuo Sun, Jiaze Sun, Molei Qin,
+Xinyi Li, Yuqing Zhao, Yilei Zhao, Xinyu Cai, et al. 2024. A Multimodal Founda-
+tion Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist.
+In Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and
+Data Mining. 4314–4325.

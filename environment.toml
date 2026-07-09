@@ -1,0 +1,23 @@
+# Environment manifest. Keep this file tracked; do not track installed packages or virtualenv directories.
+schema_version = 1
+project = "alpha_evolve"
+central_registry = "/home/zc362/project_pi_btk22/zc362/environments"
+policy = "Installed packages live in the central registry; this project tracks only source code and environment specifications."
+
+[[environment]]
+name = "main"
+central_alias = "alpha-evolve"
+interpreter = "/home/zc362/project_pi_btk22/zc362/environments/current/alpha-evolve/bin/python"
+python = "3.9"
+usage = "Alpha-evolve meta-analysis scripts; external repos keep their own native specs."
+
+[specs]
+package = ["external_repos/*/pyproject.toml"]
+requirements = ["external_repos/*/requirements.txt"]
+native_locks = ["external_repos/*/uv.lock", "external_repos/*/poetry.lock"]
+
+[dependencies]
+direct = ["pandas", "numpy", "matplotlib", "pyarrow"]
+
+[notes]
+items = ["Do not vendor external repo packages into this project tree."]

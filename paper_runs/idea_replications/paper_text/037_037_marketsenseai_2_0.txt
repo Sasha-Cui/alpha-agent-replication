@@ -1,0 +1,1026 @@
+MarketSenseAI 2.0: Enhancing Stock Analysis
+through LLM Agents
+George Fatouros1,2, Kostas Metaxas 1,3, John Soldatos 2, Manos Karathanassis 3
+1Alpha Tensor Technologies
+2Innov-Acts
+3KM Cube Asset Management
+{george, kostas}@alpha-tensor.ai,{gfatouros, jsoldat}@innov-acts.com,{kostas, manos}@km3am.com
+Abstract—MarketSenseAI is a novel framework for holistic
+stock analysis which leverages Large Language Models (LLMs) to
+process financial news, historical prices, company fundamentals
+and the macroeconomic environment to support decision mak-
+ing in stock analysis and selection. In this paper, we present
+the latest advancements on MarketSenseAI, driven by rapid
+technological expansion in LLMs. Through a novel architecture
+combining Retrieval-Augmented Generation and LLM agents,
+the framework processes SEC filings and earnings calls, while
+enriching macroeconomic analysis through systematic processing
+of diverse institutional reports. We demonstrate a significant
+improvement in fundamental analysis accuracy over the previous
+version. Empirical evaluation on S&P 100 stocks over two
+years (2023-2024) shows MarketSenseAI achieving cumulative
+returns of 125.9% compared to the index return of 73.5%,
+while maintaining comparable risk profiles. Further validation
+on S&P 500 stocks during 2024 demonstrates the framework’s
+scalability, delivering a 33.8% higher Sortino ratio than the
+market. This work marks a significant advancement in applying
+LLM technology to financial analysis, offering insights into the
+robustness of LLM-driven investment strategies.
+Index Terms—Large Language Models, LLM Agents, Finan-
+cial Analysis, Stock Selection, MarketSenseAI
+I. INTRODUCTION
+MarketSenseAI1 is a holistic framework designed to lever-
+age Large Language Models (LLMs) for stock analysis and
+selection. By processing financial news, historical stock prices,
+company fundamentals, and macroeconomic data, it aims to
+support multifaceted decision-making processes in modern
+financial markets. Since its initial inception [1], the framework
+has evolved in tandem with rapid advancements in LLM
+technology, introducing enhanced capabilities for data-driven
+investment strategies.
+The motivation for developing MarketSenseAI arises from
+the limitations of existing systematic stock analysis ap-
+proaches. Many methods rely on time-series modeling, some-
+times supplemented by sentiment indicators, yet seldom inte-
+grate the broad scope of available data. A significant challenge
+also lies in handling data with varying sampling frequencies:
+macroeconomic indicators and fundamental factors typically
+follow lower-frequency release schedules than market data,
+Part of this research was funded by European Union Commission through
+Project FAME with grant number 101092639.
+1MarketSenseAI is available at https://www.marketsense-ai.com/
+requiring sophisticated integration methods to ensure consis-
+tency.
+Although AI-based solutions employing machine learning
+or deep learning provide systematic frameworks for stock
+prediction [2]–[4], they often focus on isolated data types
+(e.g., sentiment or historical returns) without leveraging the
+wealth of relevant financial texts as well as the context of
+those texts. Consequently, investment strategies frequently
+emphasize price trends, fundamental ratios, or macroeconomic
+variables in isolation, overlooking the collective dependencies
+among these factors [5], [6]. Unlike traditional quantitative
+models that operate as black boxes, MarketSenseAI supplies
+detailed explanations for its investment decisions, thereby
+enhancing transparency and user trust [7].
+Even approaches that incorporate textual data (e.g., news or
+earnings call transcripts) tend to center on predicting sentiment
+indicators rather than conducting in-depth qualitative analysis
+[8], [9]. This fragmentation is further compounded by lim-
+ited human resources for processing heterogeneous financial
+information at scale. In this context, integrating structured
+financial data with unstructured financial information becomes
+a challenge—one that MarketSenseAI seeks to address.
+However, the successful application of LLMs in finance also
+poses notable challenges. First, even state of the art LLMs
+have constraints on context window size, limiting their ability
+to process large documents such as 10-K filings or detailed
+macroeconomic reports [10], [11]. Second, model outputs can
+be sensitive to prompt engineering choices and broader design
+decisions, complicating issues such as backtesting and repli-
+cability [12]. Third, consistently interpreting—and accurately
+handling—quantitative metrics like risk measures and financial
+ratios can be difficult due to the probabilistic nature of LLMs
+[13], [14]. Additionally, ensuring models remain current with
+newly released data is non-trivial, particularly as most pre-
+trained LLMs have fixed cut-off dates [15].
+In response to these challenges, the contributions of this
+paper focus on demonstrating how recent advances in LLM
+architectures can strengthen fundamental and macroeconomic
+analyses within the MarketSenseAI framework:
+1)Refined Fundamental Analysis: We introduce a Chain-
+of-Agents (CoA) approach that enables granular han-
+dling of large-scale financial data—such as 10-Q, 10-K
+arXiv:2502.00415v2 [q-fin.CP] 3 Oct 2025
+reports, and earnings call transcripts—to deliver more
+accurate assessments of a company’s financial standing.
+2)Enhanced Macroeconomic Analysis: A dedicated
+Retrieval-Augmented Generation (RAG) module, em-
+ploying semantic chunking and Hypothetical Dense Em-
+beddings (HyDE)-based retrieval, processes a broader
+range of expert reports and indicators, providing the
+macroeconomic context often missing in traditional an-
+alytics.
+3)Detailed Real-World Evaluation: Experiments using
+S&P 100 stocks for a two-year period (2023–2024) and
+S&P 500 stocks for 2024 illustrate the robustness of
+our proposed system, revealing a notable improvement
+in fundamental analysis accuracy and consistent excess
+returns of 8.0–18.9% with comparable risk over bench-
+mark indices.
+These enhancements position MarketSenseAI as a candidate
+for both retail and institutional investors seeking advanced
+analytics. By merging multiple data streams and applying
+specialized LLM agents, MarketSenseAI demonstrates how
+AI-driven strategies can yield improved investment recommen-
+dations and deeper market insights.
+The remainder of this paper is structured as follows: Sec-
+tion II provides a literature review examining current research
+in LLM-based systems for financial analysis. Section III
+details updates to the MarketSenseAI architecture, including
+agent responsibilities and data flow. Section IV presents our
+experimental design, covering datasets, evaluation metrics, and
+baseline comparisons. Section V discusses empirical findings
+from S&P 100 and S&P 500 stocks, including performance
+metrics, risk-adjusted returns, and a factor analysis. Finally,
+Section VI concludes with key insights and outlines future
+developments for MarketSenseAI.
+II. BACKGROUND ANDRELATEDWORK
+Recent advances in LLMs have spurred a wave of research
+into their applicability to diverse financial tasks, including
+fundamental analysis, alpha discovery, and portfolio decision-
+making. This section surveys closely related work in four
+main areas: (i) LLM-based fundamental analysis, (ii) advanced
+methods in LLM-driven investment analysis, (iii) retrieval-
+augmented techniques, (iv) the significance of SEC filings and
+earnings conference calls in fundamental research, and (v) the
+impact of the macroeconomic environment on stock analysis.
+A. LLM-Based Fundamental Analysis
+A growing body of literature investigates how LLMs can
+replicate or surpass human analysts’ capabilities for pars-
+ing and interpreting financial statements. For instance, [16]
+demonstrate that GPT-4 can execute ratio analysis and detect
+trends via Chain-of-Thought (CoT) prompting [17], yield-
+ing interpretable explanations and confidence assessments for
+binary earnings forecasts. Similarly, [18] employ GPT-4 to
+generate high-return factors grounded in economic reasoning,
+thereby laying a foundation for quantitative investment mod-
+els. Both studies highlight LLMs’ ability to extract structured
+insights, such as financial ratios and performance patterns,
+directly from extensive textual documents.
+B. Advanced Methods in LLM-Driven Investment Analysis
+Beyond processing financial disclosures, LLMs have also
+been employed to generate alpha signals and optimize trad-
+ing strategies. [19] introduce Alpha-GPT, which couples
+human expertise with automated alpha discovery to refine
+trading signals. Similarly, TradingGPT [20] adopts a multi-
+agent, layered memory architecture for collaborative decision-
+making—though its evaluation results are limited. Meanwhile,
+[21] apply sentiment analysis, model ensembles, and in-
+context learning to predict returns in the Chinese equity
+market, achieving promising accuracy. More recently, [22]
+demonstrate that GPT-4, leveraged through in-context learning,
+can produce stock ratings (e.g., buy, hold, sell) from funda-
+mental reports and news data—outperforming human analysts
+in certain scenarios.
+C. Retrieval-Augmented Techniques
+RAG [23] has emerged as one of the most prevalent applica-
+tions of LLMs in production systems [24], allowing models to
+incorporate extensive corpora beyond their internal parameters
+and input context. This approach is particularly valuable for
+finance, where multi-faceted data—regulatory filings, market
+news, economic reports—can be vast and continually updated.
+Recent research focuses on advanced chunking, query ex-
+pansion, and re-ranking algorithms to mitigate context loss
+when processing large documents [25], [26], though optimal
+methodologies may vary depending on data size, structure,
+and recency requirements. For instance, in stock analysis, the
+date-aware document retrieval becomes essential yet is often
+overlooked in standard similarity searches. Although a few
+recent works propose RAG pipelines tailored to financial tasks
+[27], [28], there remains a gap in comprehensive, domain-
+specific solutions optimized for financial analytics.
+D. Importance of Filings and Earnings Calls in Fundamental
+Research
+A substantial body of empirical evidence underscores the
+critical role of SEC filings (e.g., 10-K and 10-Q) and earnings
+conference calls in shaping market outcomes and guiding
+investment decisions. Studies by [29], [30] report that changes
+in language complexity, disclosure content, and tonal shifts
+within filings predict returns, risk profiles, and management
+quality. [31], [32] emphasize the importance of footnote anal-
+ysis for identifying hidden risks, while [33] demonstrate how
+readability and clarity can serve as proxies for managerial
+competence and earnings transparency.
+Earnings conference calls exert a similarly influential role
+in price discovery. [34] find that trading volumes and volatility
+spike during these events, especially in Q&A sessions where
+spontaneous managerial insights can move markets. [35] show
+that the tone of calls offer predictive power regarding a firm’s
+future performance, while [36] reveal how the qualitative
+tone of calls influences both subsequent returns and analyst
+revisions. [37], [38] note that these qualitative cues provide
+additional signals beyond quantitative metrics, and may even
+reveal deceptive statements. Finally, [32] document how ana-
+lysts with direct access to earnings calls can generate more
+precise forecasts. Together, these findings establish filings
+and conference calls as indispensable avenues for uncovering
+deeper insights into a firm’s performance and strategy.
+Emerging research highlights transformative potential of
+LLMs in financial disclosures and analysis. For instance tools
+like ChatReport [39] and XBRL-Agent [40] show LLMs can
+democratize analysis of dense reports through automated ex-
+traction of sustainability metrics and financial concepts, though
+challenges persist in numerical accuracy and hallucination
+mitigation. [41] validate LLMs’ viability in parsing earnings
+call sentiment, while [42] reveal their capacity to generate
+multi-perspective analytical reports approaching human qual-
+ity. These advances suggest LLMs could reshape fundamental
+analysis workflows, but require careful governance to preserve
+informational integrity.
+E. Macroeconomic environment impact in stock analysis
+While fundamental metrics and firm-specific disclosures
+remain critical, macroeconomic indicators (e.g., GDP growth,
+inflation rates, interest rates), central bank policies, geopo-
+litical factors, and trade agreements between nations provide
+a broader context that can significantly influence investment
+outcomes [43]. Fluctuations in these external conditions can
+affect corporate earnings, valuation models, and overall market
+sentiment—ultimately impacting both short- and long-term
+trading strategies.
+Expert analysis from leading financial institutions plays
+a crucial role in interpreting these complex macroeconomic
+relationships. Research and opinionated reports from invest-
+ment banks and central banks provide valuable insights into
+emerging trends, policy implications, and potential market
+impacts that may not be immediately apparent in quantitative
+data alone [44]. These expert opinions are particularly valuable
+when analyzing interconnected global markets where local
+expertise and institutional knowledge become essential for
+understanding market dynamics.
+Incorporating macro-level context and expert insights along-
+side firm-level data can lead to more robust and adaptive
+models, particularly when combined with LLM-based frame-
+works capable of integrating multiple data streams. Notably,
+macroeconomic forces often vary in their impact across dif-
+ferent stocks and sectors. For example, US tariffs on imported
+goods from China can weigh heavily on industries reliant on
+specific commodities or products [45]. However, many existing
+quantitative and LLM-based stock-analysis models typically
+overlook these broader economic factors and expert interpre-
+tations, revealing a gap in current approaches to investment
+research.
+Fig. 1: Conceptual Architecture of MarketSenseAI, highlight-
+ing for a selected stock (i.e., Nvidia on Jan. 3, 2025). The
+agents’ outputs have been condensed for illustration purposes.
+III. METHODS
+A. Overview of MarketSenseAI components
+The MarketSenseAI framework, detailed in [1], is designed
+as a modular system that synthesizes various types of financial
+information—from daily news and corporate fundamentals
+to market dynamics and macroeconomic data—to generate
+actionable investment signals. As shown in Fig. 1 the system
+consists of five primary LLM agents:
+1)News Agent: Responsible for aggregating and condens-
+ing relevant news articles pertaining to a given stock.
+Each day’s raw text is first distilled into a concise sum-
+mary, which is then integrated with previous summaries
+to form a progressive narrative of recent developments.
+This mechanism ensures that older but still-relevant
+news (e.g., open legal cases) remains part of the evolving
+context.
+2)Fundamentals Agent: Focuses on analyzing each com-
+pany’s financial statements (e.g., balance sheets, income
+statements, and cash flow reports). To handle large
+and often complex numerical data, these statements are
+preprocessed and reduced into abbreviated formats (e.g.,
+grouping figures in “million” or “billion”) before the
+LLM extracts key insights. The system compares recent
+quarters to highlight shifts in profitability, revenue, or
+leverage ratios, laying the groundwork for fundamental
+analysis. Besides the numerical figures, the updated
+agent analyzes SEC filings and earnings call transcripts
+as analyzed at Section III-B.
+3)Dynamics Agent: Examines historical price movements
+and contextualizes them against industry peers and the
+broader market (i.e., S&P 500). By incorporating risk
+metrics like volatility, Sharpe Ratio, and maximum
+drawdown statistics, this component provides a risk-
+adjusted lens on how the target stock performs relative
+to both its closest competitors and the general market.
+4)Macroeconomic Agent: Collates and synthesizes key
+macro-level reports, including investment bank outlooks,
+central bank announcements, and broader geopolitical or
+sector-specific research. The generated summary distills
+multiple sources into a concise snapshot of prevailing
+economic conditions (e.g., interest rate policies, inflation
+trends, and global demand shifts). The resulting macro-
+level insight helps the system account for external forces
+that may affect individual stocks or entire sectors.
+5)Signal Agent: The final component integrates the tex-
+tual outputs from the previous four modules—news,
+fundamentals, price dynamics, and macroeconomic out-
+look—into a single decision-making process. Imple-
+mented via a CoT prompting strategy, the LLM reviews
+each aggregated summary to produce an investment
+signal (buy,hold, orsell). It also provides a writ-
+ten explanation that traces the reasoning behind each
+recommendation, thereby enhancing transparency and
+interpretability.
+Each of these components can be run and leveraged by
+stakeholders independently. This modularity not only allows
+new information sources to be plugged in but also enables
+flexibility in how data are refreshed (e.g., daily news versus
+quarterly fundamentals).
+B. Enhanced fundamentals analysis
+The Fundamentals Agent in MarketSenseAI has been sig-
+nificantly enhanced to go beyond the numerical analysis of
+financial statements by incorporating three sequential LLM
+processes (Fig. 2). While the previous version focused primar-
+ily on extracting trends and ratios from standard reports (e.g.,
+balance sheets, income statements, and cash flow statements),
+the updated agent now processes disclosures, footnotes, and
+strategic insights found in 10-Q and 10-K SEC filings. More-
+over, it accounts for the qualitative dimension of earnings
+call transcripts, including their Q&A sessions. These additions
+enable deeper context and transparency by capturing forward-
+looking guidance, managerial tone, and strategic outlooks that
+are not apparent from numerical data alone.
+1) A Three-Layer Approach to Integrating Qualitative and
+Quantitative Data:To generate a holistic fundamental sum-
+mary for a given company, the agent orchestrates three primary
+LLM processes:
+1)Filing Summary: Textual information from SEC filings
+is summarized with particular emphasis on disclosures,
+risk factors, and strategic initiatives. These elements help
+Fig. 2: Fundamentals Agent architecture. Processes in red
+boxes depict the new processes responsible for integrating the
+company notes and disclosures from SEC filings and insights
+from earning call’s press conference.
+explain the reasons behind fluctuations or significant
+changes in key financial metrics.
+2)Earnings Call Summary: Earnings call transcripts are
+processed separately to extract management’s qualitative
+signals, such as sentiment, confidence, and forward-
+looking statements. This phase focuses on the execu-
+tive team’s tone, discussions on partnerships or product
+launches, and any macro-level considerations that may
+influence long-term performance.
+3)Fundamental Consolidation: The outputs from the first
+two processes are combined with the latest five quar-
+ters of numerical data—covering profitability, revenue
+growth, debt levels, cash flow, and liquidity—into a final
+LLM task. This consolidated analysis delivers a cohesive
+narrative, one that not only summarizes the quantitative
+metrics but also contextualizes them with the insights
+gleaned from the filings and earnings call.
+Compared to the previous version of MarketSenseAI, this
+multi-stage method ensures that both factual and interpretive
+aspects of a company’s financial health are captured. The
+agent can now highlight the drivers behind profit surges
+or downturns, discuss newly disclosed risks, and evaluate
+potential shifts in management strategy.
+2) Evaluating the Impact of SEC Filings and Earnings
+Calls:To assess how SEC filings and earnings call data
+affect the Fundamentals Agent’s outputs, we conducted a
+sentiment analysis on 1,500 generated summaries covering
+S&P500 stocks at three different points in time. The Fin-
+BERT model was utilized to obtain the sentiment of each
+generated summary [46]. TableI and Fig. 3 reveal distinct
+patterns between outputs with and without this additional
+text-based information. When incorporating filings and calls
+data, the analysis showed a slightly less positive average
+sentiment (Mean = 0.31) with more moderate variance (Std
+(a)
+ (b)
+Fig. 3: Analysis of Fundamentals Agent’s sentiment output: (a)
+histogram distribution and (b) scatter plot comparison. Points
+below the line indicate cases where sentiment improved after
+incorporating filings and earnings call data.
+Dev = 0.28). In contrast, analyses based on numerical data
+alone exhibited more positively skewed results (Mean = 0.36)
+with a wider spread of sentiment values (Std Dev = 0.40).
+This moderation in sentiment when including filings data is
+particularly noteworthy as SEC filings require companies to
+disclosure risks and uncertainties in dedicated sections, even
+when their financial metrics appear strong, thus providing a
+more balanced perspective of the company’s outlook.
+Although the two setups differ in their sentiment distribu-
+tions, the variability in scores underscores how qualitative in-
+sights can moderate an otherwise upbeat narrative based solely
+on numerical trends. Notably, the mean difference of 0.24 and
+a maximum difference of 0.96 suggest that incorporating the
+text from filings and calls can reveal otherwise unrecognized
+risks or strategic realignments.
+TABLE I: Statistics of sentiment analysis of Fundamentals
+Agent’s output across stocks and dates.
+Statistic Sentiment (Full) a Sentiment (Basic) b Difference
+Mean 0.31 0.36 0.24
+Std. Dev. 0.28 0.40 0.17
+Minimum -0.61 -0.85 0.00
+25th Percentile 0.12 0.08 0.10
+Median 0.37 0.44 0.21
+75th Percentile 0.53 0.72 0.33
+Maximum 0.88 1.00 0.96
+aFull includes SEC Filings and Earnings Call transcripts.
+bBasic includes only numerical data from quarterly statements.
+We also investigated how this enhanced Fundamentals
+Agent influencesfinalinvestment signals in MarketSenseAI
+(Fig. 4). While the overall distribution of text sentiment
+in the system’s signal explanations remains consistent (4a),
+roughly5%of signals were downgraded frombuytohold
+or upgraded fromselltoholdonce the system considered
+insights from the filings and earning calls (4b). This outcome
+shows that combining qualitative context with quantitative
+metrics produces a more complete assessment, one that can
+shift investment recommendations in the presence of textual
+information.
+Taken together, these results highlight the updated Funda-
+(a)
+ (b)
+Fig. 4: Analysis of Signal Agent’s sentiment output: (a)
+histogram distribution and (b) scatter plot comparison. Points
+in the yellow and green boxes indicate cases where the
+incorporation of filings and earnings call data results in a
+change of the stock signal.
+mentals Agent’s ability to integrate domain-specific textual
+sources to generate more insightful analyses. By incorporating
+details on forward-looking statements, strategy, and potential
+pitfalls, the agent ensures that generated recommendations are
+grounded in a broader, more comprehensive understanding of
+each company’s position and prospects.
+C. Macroeconomic Analysis Improvements
+The Macroeconomic Agent, which functions as an
+economist within MarketSenseAI, has been enhanced to pro-
+cess a broader range of institutional reports through a robust
+data-ingestion and generation pipeline (Fig. 5 and 6). These
+updates address known limitations of LLMs such as con-
+strained context windows, the tendency to generate hallucina-
+tions, and oversimplification—by systematically incorporating
+diverse macroeconomic data from authoritative sources. As
+a result, the Macroeconomic Agent can provide more com-
+prehensive and context-rich analysis on factors that influence
+stock performance.
+1) Data Injection:The data injection stage (Fig. 5) is de-
+signed to efficiently collect, process, and store macroeconomic
+reports from multiple sources, including central banks (e.g.,
+FED, ECB), statistical bureaus, the International Monetary
+Fund, the Bank for International Settlements, and sell-side
+reports from global investment banks such as JPMorgan and
+BlackRock. We have implemented institution-specific parsing
+scripts that handle the unique formatting and structure of
+reports from each source, ensuring consistent and accurate data
+extraction across different providers.
+Metadata Extraction and Filtering:Once a document
+is parsed, we identify key attributes like publication date,
+publisher, and URL. These metadata not only ensure document
+provenance but also enables the system to sequence reports
+chronologically. Next, an LLM-powered classifier determines
+whether the text is relevant to macroeconomic analysis. Irrel-
+evant documents (e.g., marketing brochures) are discarded at
+this step.
+Fig. 5: Macroeconomic Agent’s functions during data injec-
+tion.
+Content Cleaning and Summarization:For relevant doc-
+uments, another LLM process removes extraneous text (e.g.,
+disclaimers, duplicate headers) and produces a summary cap-
+turing the document’s core insights. Large files (over 30
+pages) are broken into smaller chunks; each chunk is cleaned,
+summarized, and then consolidated into a single refined repre-
+sentation of the entire document. This approach preserves vital
+macroeconomic details without overwhelming LLM context
+limits.
+Storage and Indexing:The cleaned content, along with
+metadata, is stored. Parallelly, a look up table is updated
+with relevant metadata to maintain an organized inventory
+of all processed documents. Afterward, we conduct semantic
+chunking of new reports [47]; each chunk is embedded and
+stored in a Vector Datastore for fast, similarity-based retrieval.
+By chunking on natural boundaries (e.g., the end of a section
+or a shift in economic theme), the system ensures granular and
+semantically coherent indexing of macroeconomic information
+[48].
+2) Macroeconomic Data Generation:As illustrated in
+Fig. 6, theData Generationstage transforms user queries
+into a comprehensive macroeconomic consensus by retrieving,
+consolidating, and synthesizing relevant information from the
+vectorized knowledge base. Although MarketSenseAI primar-
+ily uses this mechanism to produce concise macro summaries
+for single-stock analysis, the underlying design also supports
+broader financial applications, such as powering a conversa-
+tional assistant or analyzing proprietary research.
+All the input queries to Macroecomic Agent, first undergo
+metadata filtering, which narrows the set of candidate docu-
+ments by date or source. From there, retrieval strategies differ
+based on the use case:
+•MarketSenseAI(Predefined Queries & HyDE): For
+single-stock analysis, we employ a HyDE approach on a
+fixed set of queries (e.g., “U.S. macro outlook,” “invest-
+ment opportunities and risks”). This yields brief, rounded
+macroeconomic insights without overburdening the final
+signal-generation stage. An example of this output is
+Fig. 6: Macroeconomic Agent’s functions during data gener-
+ation.
+given at Table II.
+•Other Use Cases(Optimized Retrieval with Query
+Expansion): For open-ended or complex queries, the
+system uses expanded embeddings and refined prompts
+to improve coverage, particularly when user requests
+are ambiguous or partial. By generating multiple query
+variants, the agent captures broader document matches
+and delivers more comprehensive responses.
+After extracting the top-nrelevant text chunks via similarity
+search, we feed them into macroeconomic-focused prompt
+that guides the LLM to use the information available in the
+retrieved chunks to response to the input query. This process
+ensures flexible adaptation to different requirements—from
+highly targeted stock-specific analyses to more exploratory,
+institution-wide research queries.
+3) Retrieval Performance Evaluation:To assess the re-
+trieval pipeline’s ability to handle macroeconomic queries of
+varying complexity, we tested three methods (Simple,Opti-
+mized, andHyDE) across different chunk sizes, evaluating
+context recall,context precision,answer relevancy, andfaith-
+fulness[49]. Each approach shapes how queries are trans-
+formed before performing semantic similarity searches in the
+vector database, thereby influencing which top-nchunks are
+retrieved. The results in Table III demonstrate the effectiveness
+of different retrieval methods across varying chunk sizes for
+complex macroeconomic queries. These findings offer several
+key insights:
+•Context Precisionremains high (≥0.98) in all configu-
+rations, indicating that even when queries span multiple
+reports, irrelevant chunks are not in the top-nresults.
+This supports the validity of the data injection presented
+in Section III-C1.
+•Answer Relevancyexhibits the greatest variability. Both
+HyDEandOptimizedaugment the query with additional
+context, improving alignment between the query vector
+and chunk embeddings. This makes retrieved chunks
+more likely to address the question which is especially
+beneficial for broader prompts that require drawing infor-
+mation from multiple sources.
+•Faithfulness(i.e., factual accuracy) tends to increase with
+larger chunk sizes, suggesting that a broader context
+helps mitigate omissions or misunderstandings. Com-
+plex queries, such as identifying contradictory viewpoints
+across documents, benefit most from expanded chunk
+TABLE II: Macroeconomic Agent’s Output (January 3, 2025) used in MarketSenseAI
+Category Key Findings
+Global Market Consensus US Markets:S&P 500 and Nasdaq show significant gains despite Chicago PMI decline and GDP forecast revisions;Labor Market:Remains tight, supporting consumer spending;European Markets:UK
+benefits from rising housing prices and weaker pound, other major indexes declining;Asian Markets:Japan faces yen weakening, China shows tentative recovery with stimulus;Emerging Markets:Turkey
+shows resilience, Mexico balancing monetary strategies;Bond Market:Opportunities in high-quality fixed income and green bonds
+Contradictory Market Signals US Economic Indicators:Strong foreign demand for US securities vs PMI drop and GDP forecast revisions;Inflation & Rates:Mixed signals affecting monetary policy and market stability, varying expectations
+for interest rate trajectories;Global Performance:Strong US stocks vs challenges in Japan and China;Investment Strategies:Divergent recommendations between US assets and global diversification;Sector
+Opportunities:Growth in China’s tertiary industry vs US equity resilience
+Positive Market Indicators US Equities:Strong annual gains in large-cap growth stocks;Fixed Income:Attractive yields and spreads;Emerging Markets:Favorable pricing and long-term potential;China Tech:Strategic emerging
+industries showing growth potential;Sustainability:Climate innovation offering new investment opportunities
+Risk Factors & Negative Indi-
+cators
+US Manufacturing:Significant drop in Chicago PMI and GDP forecast revisions;Japan:Continued manufacturing contraction and economic uncertainty;China:Declining industrial profits and weak
+manufacturing data;Consumer Metrics:Decline in US consumer confidence;Market Dynamics:High likelihood of reversal in momentum stocks;International Position:Growing US reliance on foreign
+capital
+sizes.
+•Simpleretrieval, while occasionally competitive in recall,
+is consistently weaker in relevancy because it lacks query
+expansions or concept additions to better match chunks
+in the vector store. Consequently, it struggles to surface
+the most pertinent segments for multi-faceted queries.
+•Increase of Chunksimproves the performance across all
+methods indicating the high quality of the stored content
+in the vector database. Retrieval of more chucks seems to
+be particularly beneficial for questions requiring synthesis
+of information across multiple reports or identification of
+subtle differences in economic outlooks.
+TABLE III: Performance Comparison of Retrieval Methods by
+Chunk Size
+Top-n Method Recall Precision Relevancy Faithfulness Overall
+3
+HyDE 0.77 1.00 0.76 0.94 0.87
+Optimized 0.67 1.00 0.75 0.89 0.83
+Simple 0.75 1.00 0.48 0.86 0.77
+5
+HyDE 0.79 0.99 0.66 0.94 0.85
+Optimized 0.79 0.99 0.56 0.96 0.82
+Simple 0.85 0.99 0.48 0.93 0.82
+7
+HyDE 0.91 1.00 0.66 0.98 0.89
+Optimized 0.85 1.00 0.66 0.97 0.87
+Simple 0.86 0.99 0.57 0.95 0.84
+In practice, the results demonstrate that both HyDE and Op-
+timized methods, especially with more chunks, provide robust
+frameworks for extracting relevant macroeconomic insights
+from diverse, large-scale reports. Their superior performance
+in handling complex queries spanning multiple documents and
+identifying diverse economic themes makes them particularly
+well-suited for macroeconomic analysis tasks.
+IV. EXPERIMENTS
+This section details our empirical methodology for evaluat-
+ing MarketSenseAI’s efficacy in stock analysis and rating.
+A. Data
+We evaluated MarketSenseAI using stocks from the S&P
+100 and S&P 500 indices. For S&P 100 stocks, our analysis
+covers January 2023 to December 2024, providing a two-
+year evaluation under varying market conditions. We extended
+our analysis to the broader S&P 500 universe for calendar
+year 2024, when comprehensive data became available for
+the expanded set of stocks. This approach enables assessment
+of both the model’s long-term consistency through S&P 100
+stocks and its scalability to a larger opportunity set through
+the S&P 500 analysis. The input data included:
+•Stock-specific data: Financial news, quarterly state-
+ments, SEC filings, earnings call transcripts, and histori-
+cal price data.
+•Macroeconomic Data: Textual data from investment
+reports, central bank publications (e.g., Federal Reserve,
+European Central Bank), and other institutional sources.
+This included expert analyses, monetary policy discus-
+sions, and sector-specific research.
+Monthly trading signals were generated to align with estab-
+lished portfolio rebalancing practices. The S&P 500 results
+for 2024 were analyzed independently to evaluate model
+generalizability across a broader market universe.
+B. Technology Stack
+The GPT-4o model serves as the primary LLM for all
+processes requiring model inference [50], while the system
+maintains an LLM-agnostic architecture that allows seamless
+integration of alternative models via API. For portfolio anal-
+ysis and strategy validation, we utilized VectorBTPro, which
+provided robust tools for backtesting financial strategies while
+accounting from transaction costs. To assess the RAG methods
+outlined in Section III-C, we employed the Ragas framework
+[51], leveraging GPT-4o-mini for cost efficiency. While this
+choice may have impacted evaluation results compared to
+the full-scale GPT-4o model, this did not affect the relative
+comparison of the methods under evaluation.
+The vector datastore is based on Pinecone and the agents
+within the system are built on OpenAI’s client. The RAG
+processes leverage the LlamaIndex framework.
+For data collection, macroeconomic reports are scraped us-
+ing tools like Playwrite, combined with custom scripts tailored
+to specific data sources. SEC filings are sourced directly from
+the SEC’s EDGAR API, while earnings call transcripts are
+obtained via RapidAPI, which aggregates data from platforms
+such as SeekingAlpha and MarketBeat.
+C. Evaluation Approach
+In addition to the agent-specific evaluation presented in
+Section III, we evaluate the quality of MarketSenseAI’s signals
+by constructing portfolios and comparing their performance
+against relevant benchmarks. Specifically, we focus on long-
+only portfolios based on MarketSenseAI’sbuysignals, imple-
+mented in two forms: equally weighted and market capital-
+ization weighted. These portfolios are compared against their
+corresponding equally or market cap weighted benchmark
+(S&P 100 or S&P 500) to assess the system’s effectiveness in
+generating actionable investment signals. The evaluated sig-
+nals/strategies and their relevant benchmarks are presented in
+Table IV. Typical performance and risk metrics were used for
+assessing both the MarketSenseAI-based and the benchmark
+portfolios, including: total return (cumulative portfolio returns
+over the period), Sharpe ratio (risk-adjusted return relative
+to volatility), Sortino ratio (return relative to downside risk),
+volatility (standard deviation of returns), win rate (percentage
+of profitable trades), and maximum drawdown (MDD, peak-
+to-trough portfolio loss).
+TABLE IV: Investment Strategies and Benchmark Portfolios
+Abbreviation Description
+MS Equally weighted portfolio rebalanced monthly based on thebuysignals of
+MarketSenseAI
+MS-Cap Capitalization-weighted portfolio rebalanced monthly based on thebuysig-
+nals of MarketSenseAI
+S&P100-Eq Equally weighted portfolio of all the stocks of the S&P 100 index (tracked
+by the EQWL ETF)
+S&P100 Capitalization-weighted S&P 100 index (tracked by the OEF ETF)
+S&P500-Eq Equally weighted portfolio of all the stocks of the S&P 500 index (tracked
+by the RSP ETF)
+S&P500 Capitalization-weighted S&P 500 index (tracked by the SPY ETF)
+V. RESULTS
+This section evaluates MarketSenseAI’s stock selection ca-
+pability through empirical testing on the S&P 100 (2023-
+2024) and S&P 500 (2024) universes. Results demonstrate
+the system’s ability to identify outperforming equities, gen-
+erating superior risk-adjusted returns across different portfolio
+construction methodologies.
+A. Overall Performance Overview
+MarketSenseAI’s ability to identify outperforming equi-
+ties is evident across multiple dimensions. In the S&P 100
+universe, the system’s selected stocks achieved a 125.9%
+cumulative return under market cap-weighting (MS-Cap), sig-
+nificantly surpassing the S&P 100 index return of 73.5%
+(Table V). This outperformance persisted in equal-weighted
+portfolios (MS-Eq), where selected equities returned 55.7%
+versus 42.3% for the equal-weighted S&P 100. Critically, these
+gains were not achieved through excessive risk-taking: the
+MS-Cap portfolio exhibited a 16% higher Sortino ratio (4.43
+vs. 3.82) compared to the cap-weighted benchmark, despite
+experiencing higher volatility.
+TABLE V: Performance Metrics (2023-2024)
+Portfolio Returna Sharpe Sortino Vol MDD MDDdb
+S&P 100 Analysis (2023-2024)
+MS-Eq 55.7 (53.2) 2.13 3.25 15.6 9.2 65
+S&P 100 Eq 42.3 (42.3) 1.89 2.85 14.1 10.7 92
+MS-Cap 125.9
+(123.0)
+2.76 4.43 22.3 13.8 82
+S&P 100 73.5 (73.5) 2.52 3.82 16.4 9.7 77
+S&P 500 Analysis (2024)
+MS-Eq 25.8 (24.5) 2.4 3.68 14.3 6.7 52
+S&P 500 Eq 12.8 (12.8) 1.33 1.91 13.8 7.1 73
+MS-Cap 48.7 (47.8) 2.87 4.39 20.8 12.5 53
+S&P 500 25.6 (25.6) 2.26 3.28 15.1 8.4 46
+aValues in parentheses represent the total returns (%) after transaction costs (10bps/trade).
+bThe duration of Maximum Drawdown (MDD) in days.
+The system’s selection capability scaled effectively with
+market breadth. When applied to the S&P 500 universe dur-
+ing 2024, MarketSenseAI’s selected equities delivered 25.8%
+(a)
+ (b)
+Fig. 7: Cumulative returns of MarketSenseAIbuymonthly
+signals against the market: (a) S&P 100 stock universe (2023-
+2024) and (b) S&P 500 stock universe (2024).
+returns in equal-weighted portfolios compared to 12.8% for
+the S&P 500 Equal Weight benchmark, representing a 102%
+relative outperformance. This expansion to a broader universe
+also improved risk-adjusted performance, with the Sortino
+ratio increasing from 3.25 (S&P 100 MS-Eq) to 3.68 (S&P 500
+MS-Eq). Alpha generation improved correspondingly, rising
+from 8.0% in the S&P 100 MS-Eq to 18.9% in the S&P 500
+MS-Eq (Table VI), confirming the system’s enhanced ability
+to identify opportunities in larger universes.
+TABLE VI: Performance Attribution Analysis
+Portfolio Beta Alpha (%) Total
+Trades
+Win Rate
+(%)
+Buy Signals a
+S&P 100 Analysis (2023-2024)
+MS-Eq 0.96 8.0 584 77.1 35.1 (7.95)
+MS-Cap 1.24 10.6 548 77.0 35.1 (7.95)
+S&P 500 Analysis (2024)
+MS-Eq 0.92 18.9 1200 78.0 144.8 (30.8)
+MS-Cap 1.27 17.6 1229 77.0 144.8 (30.8)
+aValues in the parentheses represent the standard deviation of the average number of buy signals
+per month.
+Furthermore, despite selecting higher-volatility equities,
+MarketSenseAI-based portfolios recovered quite fast from
+drawdowns, while maintaining a comparable maximum draw-
+downs with the benchmarks. This resilience is visually con-
+firmed in Fig. 7, where the system’s cumulative returns exhibit
+fast recoveries during market stress periods yet with an upward
+trend.
+The attribution analysis (Table VI) reveals additional in-
+sights. With a 77–78% win rate across implementations, the
+system demonstrates remarkable consistency in signal pre-
+cision. The positive alpha (17.6–18.9%) and elevated beta
+(1.24–1.27) of the S&P 500 portfolios suggest MarketSenseAI
+successfully identifies high-beta stocks with idiosyncratic up-
+side potential. Furthermore, the stable monthly signal gen-
+eration—35.1 ±7.95 buy signals for S&P 100 and 144.8
+±30.8 for S&P 500—indicates systematic selection rather than
+concentrated bets.
+B. Factor Analysis and Risk Decomposition
+To elucidate the drivers of MarketSenseAI’s outperfor-
+mance, we decompose portfolio returns (MS-Eq - S&P 100)
+using the Carhart four-factor [52] and Fama-French five-
+factor [53] models. Both models explain a substantial portion
+of return variance (R 2 = 88.4%and85.4%, respectively),
+validating their applicability. Key findings are summarized in
+Table VII and discussed below.
+1) Market Exposure and Size Bias:MarketSenseAI exhibits
+near-neutral market exposure (β= 0.95–0.96). The negative
+SMB coefficients (−0.13to−0.22,p <0.01) reflect a
+tilt toward large-cap stocks, aligning with the S&P 100/500
+universes2.
+2) Value and Momentum Factors:Both models confirm
+consistent value exposure (HML = 0.08–0.11,p <0.01) 3,
+underscoring the Fundamentals Agent’s ability to identify
+undervalued equities through financial statement analysis. The
+Carhart model’s strong momentum loading (Mom = 0.18,
+p ¡ 0.01) highlights MarketSenseAI’s integration of price
+trends via the Dynamics Agent, a feature often absent in
+traditional fundamental models. This synergy between value
+and momentum aligns with the system’s architecture, where
+LLM-driven news sentiment and price dynamics reinforce
+fundamental insights.
+3) Profitability and Investment Factors:The five-factor
+model reveals insignificant loadings on profitability (RMW)
+and investment (CMA)4, suggesting these factors play minimal
+roles in MarketSenseAI’s strategy. This suggests Market-
+SenseAI’s returns are not systematically driven by these tradi-
+tional style factors. The system’s integration of multiple data
+sources may help identify alpha sources beyond conventional
+factor premiums.
+4) Alpha Generation and Unexplained Returns:The anal-
+ysis reveals a significant residual alpha (+8.0%, Table VI)
+and substantial unexplained returns (12–15%) that cannot be
+attributed to traditional risk factors. These results suggest po-
+tential value generation beyond conventional factor exposure,
+they may reflect MarketSenseAI’s consideration of multiple
+data sources such as news narratives, macroeconomic context,
+and forward-looking disclosures which enable the identifica-
+tion of idiosyncratic opportunities overlooked by factor-based
+models.
+TABLE VII: Factor Model Results
+Factor Carhart 4-Factor Fama-French 5-Factor
+Mkt-RF (β) 0.936∗∗∗ 0.958∗∗∗
+SMB -0.131∗∗∗ -0.221∗∗∗
+HML 0.110∗∗∗ 0.081∗∗∗
+Mom 0.178∗∗∗ –
+RMW – -0.015
+CMA – 0.044
+R2 0.884 0.854
+Note: ∗∗∗ p <0.01, ∗∗ p <0.05, ∗ p <0.1. Dashes (–) indicate
+factor not included in model. Market factor (Mkt-RF) shows near-
+unity exposure, SMB reflects large-cap bias, HML demonstrates
+value exposure, and Mom captures momentum effects.
+VI. CONCLUSIONS
+This paper presented significant advancements in the Mar-
+ketSenseAI framework, demonstrating the efficacy of inte-
+grating LLM agents and retrieval-augmented techniques for
+2SMB: size premium (small minus big capitalization stocks).
+3HML: value premium (high minus low book-to-market ratio stocks).
+4RMW: profitability premium (robust minus weak firms); CMA: investment
+premium (conservative minus aggressive investment policies).
+holistic stock analysis. By addressing critical challenges such
+as context window limitations, data frequency mismatches,
+and the integration of qualitative and quantitative information,
+the framework introduced a Chain-of-Agents approach for
+granular fundamental analysis and a RAG module enhanced
+with HyDE for macroeconomic context. These advancements
+enable deeper, more comprehensive analysis of SEC filings,
+earnings calls, and expert reports, which traditional models
+often overlook.
+Empirical evaluations on S&P 100 (2023–2024) and S&P
+500 (2024) stocks validate MarketSenseAI’s efficacy. While
+the S&P 500 analysis was limited to 2024 due to data
+availability, the system’s ability to scale to a larger universe
+(500 stocks) while improving performance underscores its
+robust stock-picking capabilities. The framework generated
+significantly higher cumulative returns and consistent alpha,
+outperforming competitive benchmarks across risk-adjusted
+metrics. Factor analysis revealed that returns stem not only
+from exposure to value and momentum factors but also from
+unique alpha sources, likely attributable to the framework’s
+versatile data integration and analysis.
+Future development will focus on two key directions:
+technological advancement through integration of reasoning-
+enabled LLMs and market expansion to global and small-
+cap indices. These enhancements aim to further improve the
+system’s analytical capabilities while testing its adaptability
+across diverse market conditions.
+MarketSenseAI represents a significant step forward in
+applying LLMs to financial analysis, offering both institutional
+and retail investors a transparent, data-driven approach to
+investment decision-making. By successfully addressing fun-
+damental challenges such as processing lengthy documents,
+mitigating hallucination risks, and integrating multiple data
+sources, this work establishes a foundation for building more
+intelligent investment frameworks.
+REFERENCES
+[1] G. Fatouros, K. Metaxas, J. Soldatos, and D. Kyriazis, “Can large
+language models beat wall street? evaluating gpt-4’s impact on financial
+decision-making with marketsenseai,”Neural Computing and Applica-
+tions, pp. 1–26, 2024.
+[2] L. Bacco, L. Petrosino, D. Arganese, L. V ollero, M. Papi, and
+M. Merone, “Investigating stock prediction using lstm networks and
+sentiment analysis of tweets under high uncertainty: A case study of
+north american and european banks,”IEEE Access, 2024.
+[3] G. Sonkavde, D. S. Dharrao, A. M. Bongale, S. T. Deokate,
+D. Doreswamy, and S. K. Bhat, “Forecasting stock market prices using
+machine learning and deep learning models: A systematic review, per-
+formance analysis and discussion of implications,”International Journal
+of Financial Studies, vol. 11, no. 3, p. 94, 2023.
+[4] G. Fatouros, G. Makridis, D. Kotios, J. Soldatos, M. Filippakis, and
+D. Kyriazis, “Deepvar: a framework for portfolio risk assessment
+leveraging probabilistic deep neural networks,”Digital finance, vol. 5,
+no. 1, pp. 29–56, 2023.
+[5] J. Brooks, N. Feilbogen, Y . H. Ooi, and A. Akant, “Economic
+trend,” AQR Capital Management, Tech. Rep., 2023, retrieved
+January 6, 2025. [Online]. Available: https://www.aqr.com/-/media/
+AQR/Documents/Whitepapers/Economic-Trend .pdf?sc lang=en
+[6] Macrosynergy, “Fundamental value strategies,” 2023, retrieved January
+6, 2025. [Online]. Available: https://macrosynergy.com/research/
+fundamental-value-strategies/
+[7] P. Mavrepis, G. Makridis, G. Fatouros, V . Koukos, M. M. Separdani,
+and D. Kyriazis, “Xai for all: Can large language models simplify
+explainable ai?”arXiv preprint arXiv:2401.13110, 2024.
+[8] G. Fatouros, J. Soldatos, K. Kouroumali, G. Makridis, and D. Kyriazis,
+“Transforming sentiment analysis in the financial domain with chatgpt,”
+Machine Learning with Applications, vol. 14, p. 100508, 2023.
+[9] I. K. Nti, A. F. Adekoya, and B. A. Weyori, “A systematic review
+of fundamental and technical analysis of stock market predictions,”
+Artificial Intelligence Review, vol. 53, no. 4, pp. 3007–3057, 2020.
+[10] L. Wang, X. Chen, X. Deng, H. Wen, M. You, W. Liu, Q. Li, and J. Li,
+“Prompt engineering in consistency and reliability with the evidence-
+based guideline for llms,”npj Digital Medicine, vol. 7, no. 1, p. 41,
+2024.
+[11] T. Li, G. Zhang, Q. D. Do, X. Yue, and W. Chen, “Long-
+context llms struggle with long in-context learning,”arXiv preprint
+arXiv:2404.02060, 2024.
+[12] J. Yang, H. Jin, R. Tang, X. Han, Q. Feng, H. Jiang, S. Zhong, B. Yin,
+and X. Hu, “Harnessing the power of llms in practice: A survey on
+chatgpt and beyond,”ACM Transactions on Knowledge Discovery from
+Data, vol. 18, no. 6, pp. 1–32, 2024.
+[13] D. Zheng, M. Lapata, and J. Z. Pan, “Large language models as reliable
+knowledge bases?”arXiv preprint arXiv:2407.13578, 2024.
+[14] I. Mirzadeh, K. Alizadeh, H. Shahrokhi, O. Tuzel, S. Bengio,
+and M. Farajtabar, “Gsm-symbolic: Understanding the limitations of
+mathematical reasoning in large language models,”arXiv preprint
+arXiv:2410.05229, 2024.
+[15] X. Liu, Z. Wu, X. Wu, P. Lu, K.-W. Chang, and Y . Feng, “Are
+llms capable of data-based statistical and causal reasoning? bench-
+marking advanced quantitative reasoning with data,”arXiv preprint
+arXiv:2402.17644, 2024.
+[16] A. Kim, M. Muhn, and V . Nikolaev, “Financial statement analysis with
+large language models,”arXiv preprint arXiv:2407.17866, 2024.
+[17] J. Wei, X. Wang, D. Schuurmans, M. Bosma, F. Xia, E. Chi, Q. V . Le,
+D. Zhouet al., “Chain-of-thought prompting elicits reasoning in large
+language models,”Advances in neural information processing systems,
+vol. 35, pp. 24 824–24 837, 2022.
+[18] Y . Cheng and K. Tang, “Gpt’s idea of stock factors,”Quantitative
+Finance, pp. 1–26, 2024.
+[19] S. Wang, H. Yuan, L. Zhou, L. M. Ni, H.-Y . Shum, and J. Guo, “Alpha-
+gpt: Human-ai interactive alpha mining for quantitative investment,”
+arXiv preprint arXiv:2308.00016, 2023.
+[20] Y . Li, Y . Yu, H. Li, Z. Chen, and K. Khashanah, “Tradinggpt: Multi-
+agent system with layered memory and distinct characters for enhanced
+financial trading performance,”arXiv preprint arXiv:2309.03736, 2023.
+[21] L. Tan, H. Wu, and X. Zhang, “Large language models and return
+prediction in china,”Available at SSRN 4712248, 2023.
+[22] K. Papasotiriou, S. Sood, S. Reynolds, and T. Balch, “Ai in investment
+analysis: Llms for equity stock ratings,” inProceedings of the 5th ACM
+International Conference on AI in Finance, 2024, pp. 419–427.
+[23] P. Lewis, E. Perez, A. Piktus, F. Petroni, V . Karpukhin, N. Goyal,
+H. K ¨uttler, M. Lewis, W.-t. Yih, T. Rockt ¨aschelet al., “Retrieval-
+augmented generation for knowledge-intensive nlp tasks,”Advances in
+Neural Information Processing Systems, vol. 33, pp. 9459–9474, 2020.
+[24] Menlo Ventures, “2024: The state of generative ai in the enterprise,”
+https://menlovc.com/2024-the-state-of-generative-ai-in-the-enterprise/,
+2024, retrieved January 5, 2025.
+[25] S. Setty, H. Thakkar, A. Lee, E. Chung, and N. Vidra, “Improving re-
+trieval for rag based question answering models on financial documents,”
+arXiv preprint arXiv:2404.07221, 2024.
+[26] A. J. Yepes, Y . You, J. Milczek, S. Laverde, and R. Li, “Financial report
+chunking for effective retrieval augmented generation,”arXiv preprint
+arXiv:2402.05131, 2024.
+[27] M. Arslan, S. Munawar, and C. Cruz, “Business insights using rag–llms:
+a review and case study,”Journal of Decision Systems, pp. 1–30, 2024.
+[28] B. Zhang, H. Yang, T. Zhou, M. Ali Babar, and X.-Y . Liu, “Enhancing
+financial sentiment analysis via retrieval augmented large language
+models,” inProceedings of the fourth ACM international conference
+on AI in finance, 2023, pp. 349–356.
+[29] T. Loughran and B. McDonald, “When is a liability not a liability?
+textual analysis, dictionaries, and 10-ks,”The Journal of finance, vol. 66,
+no. 1, pp. 35–65, 2011.
+[30] H. Eugene Baker III and D. D. Kare, “Relationship between annual
+report readability and corporate financial performance,”Management
+Research News, vol. 15, no. 1, pp. 1–4, 1992.
+[31] J. Y . Campbell, J. Hilscher, and J. Szilagyi, “In search of distress risk,”
+The Journal of finance, vol. 63, no. 6, pp. 2899–2939, 2008.
+[32] W. J. Mayew, M. Sethuraman, and M. Venkatachalam, “Md&a disclosure
+and the firm’s ability to continue as a going concern,”The Accounting
+Review, vol. 90, no. 4, pp. 1621–1651, 2015.
+[33] S. S. Dikolli, J. C. Heater, W. J. Mayew, and M. Sethuraman, “Cfo
+co-option and ceo compensation,” 2019.
+[34] R. Frankel, M. Johnson, and D. J. Skinner, “An empirical examination
+of conference calls as a voluntary disclosure medium,”Journal of
+Accounting Research, vol. 37, no. 1, pp. 133–150, 1999.
+[35] W. J. Mayew and M. Venkatachalam, “The power of voice: Managerial
+affective states and future firm performance,”The Journal of Finance,
+vol. 67, no. 1, pp. 1–43, 2012.
+[36] S. M. Price, J. S. Doran, D. R. Peterson, and B. A. Bliss, “Earnings
+conference calls and stock returns: The incremental informativeness of
+textual tone,”Journal of Banking & Finance, vol. 36, no. 4, pp. 992–
+1011, 2012.
+[37] F. Li, “Annual report readability, current earnings, and earnings per-
+sistence,”Journal of Accounting and economics, vol. 45, no. 2-3, pp.
+221–247, 2008.
+[38] D. F. Larcker and A. A. Zakolyukina, “Detecting deceptive discussions
+in conference calls,”Journal of Accounting Research, vol. 50, no. 2, pp.
+495–540, 2012.
+[39] J. Ni, J. Bingler, C. Colesanti-Senni, M. Kraus, G. Gostlow, T. Schi-
+manski, D. Stammbach, S. A. Vaghefi, Q. Wang, N. Webersinkeet al.,
+“Chatreport: Democratizing sustainability disclosure analysis through
+llm-based tools,”arXiv preprint arXiv:2307.15770, 2023.
+[40] S. Han, H. Kang, B. Jin, X.-Y . Liu, and S. Y . Yang, “Xbrl agent:
+Leveraging large language models for financial report analysis,” in
+Proceedings of the 5th ACM International Conference on AI in Finance,
+2024, pp. 856–864.
+[41] T. R. Cook, S. Kazinnik, A. L. Hansen, and P. McAdam, “Evaluating
+local language models: An application to financial earnings calls,”
+Available at SSRN 4627143, 2023.
+[42] T. Goldsack, Y . Wang, C. Lin, and C.-C. Chen, “From facts to insights:
+A study on the generation and evaluation of analytical reports for
+deciphering earnings calls,”arXiv preprint arXiv:2410.01039, 2024.
+[43] B. Kwon, T. Park, F. Perez-Cruz, and P. Rungcharoenkitkul, “Large
+language models: a primer for economists1,”BIS Quarterly Review,
+p. 37, 2024.
+[44] R. Abaidoo and E. K. Agyapong, “Inflation uncertainty, macroeconomic
+instability and the efficiency of financial institutions,”Journal of Eco-
+nomics and Development, vol. 25, no. 2, pp. 134–152, 2023.
+[45] NVIDIA Corporation, “Form 10-q quarterly report,” U.S. Securities and
+Exchange Commission, SEC Filing 0001045810-22-000166, October
+2022. [Online]. Available: https://www.sec.gov/ix?doc=/Archives/edgar/
+data/1045810/000104581022000166/nvda-20221030.htm
+[46] A. H. Huang, H. Wang, and Y . Yang, “Finbert: A large language
+model for extracting information from financial text,”Contemporary
+Accounting Research, vol. 40, no. 2, pp. 806–841, 2023.
+[47] J. Zhao, Z. Ji, P. Qi, S. Niu, B. Tang, F. Xiong, and Z. Li, “Meta-
+chunking: Learning efficient text segmentation via logical perception,”
+arXiv preprint arXiv:2410.12788, 2024.
+[48] T. Taipalus, “Vector database management systems: Fundamental con-
+cepts, use-cases, and current challenges,”Cognitive Systems Research,
+vol. 85, p. 101216, 2024.
+[49] Ragas, “Documentation of metrics,” 2025, accessed: 2025-01-10.
+[Online]. Available: https://docs.ragas.io/en/v0.1.21/concepts/metrics/
+index.html
+[50] A. Hurst, A. Lerer, A. P. Goucher, A. Perelman, A. Ramesh, A. Clark,
+A. Ostrow, A. Welihinda, A. Hayes, A. Radfordet al., “Gpt-4o system
+card,”arXiv preprint arXiv:2410.21276, 2024.
+[51] S. Es, J. James, L. Espinosa-Anke, and S. Schockaert, “Ragas: Au-
+tomated evaluation of retrieval augmented generation,”arXiv preprint
+arXiv:2309.15217, 2023.
+[52] M. M. Carhart, “On persistence in mutual fund performance,”The
+Journal of Finance, vol. 52, no. 1, pp. 57–82, 1997.
+[53] E. F. Fama and K. R. French, “A five-factor asset pricing model,”Journal
+of Financial Economics, vol. 116, no. 1, pp. 1–22, 2015.

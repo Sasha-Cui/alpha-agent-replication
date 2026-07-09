@@ -1,0 +1,491 @@
+{
+  "all_metrics_csv": "paper_runs/idea_replications/jkp_paper_idea_proxies/paper_idea_proxy_all_benchmark_metrics.csv",
+  "candidate_definitions": {
+    "alpha_jungle_price_volume_momentum": {
+      "paper_idea": "Alpha-Jungle examples combine price percentage change, volume, volatility, and formula diversity in an MCTS alpha search.",
+      "paper_ref": "007 Alpha-Jungle",
+      "proxy_formula": "rank(ret_3_1)+rank(turnover_126d)+rank(dolvol_126d)-rank(turnover_var_126d)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "alpha_jungle_volatility_compression_trend": {
+      "paper_idea": "Alpha-Jungle examples include moving-average price changes and standard-deviation operators; this proxy tests trend after volatility compression.",
+      "paper_ref": "007 Alpha-Jungle",
+      "proxy_formula": "rank(ret_3_1)+rank(ret_12_1)-rank(rvol_21d)-rank(ivol_capm_21d)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "alphaagents_risk_averse_quality_lowrisk": {
+      "paper_idea": "AlphaAgents risk-averse portfolios emphasize lower volatility and stable fundamentals.",
+      "paper_ref": "036 AlphaAgents",
+      "proxy_formula": "rank(qmj)+rank(ope_be)+rank(be_me)-rank(rvol_252d)-rank(beta_252d)-rank(debt_at)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "alphaagents_risk_neutral_fundamental_momentum": {
+      "paper_idea": "AlphaAgents risk-neutral portfolios emphasize valuation plus fundamentals/growth/momentum.",
+      "paper_ref": "036 AlphaAgents",
+      "proxy_formula": "rank(ret_12_1)+rank(sale_gr1)+rank(ope_be)+rank(be_me)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "alphacrafter_full_stack_multifactor": {
+      "paper_idea": "AlphaCrafter combines mined factors, regime screening, and risk-constrained trading; this proxy tests a diversified value-quality-momentum-low-risk factor ensemble.",
+      "paper_ref": "018 AlphaCrafter",
+      "proxy_formula": "rank(be_me)+rank(ope_be)+rank(ret_12_1)+rank(qmj)-rank(at_gr1)-rank(rvol_252d)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "alphalogics_value_quality_growth": {
+      "paper_idea": "AlphaLogics emphasizes market-logic-driven, interpretable factor generation; this proxy tests value, quality, growth, and leverage logic.",
+      "paper_ref": "015 AlphaLogics",
+      "proxy_formula": "rank(be_me)+rank(ope_be)+rank(gp_me)+rank(sale_gr1)-rank(debt_at)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_agentictrading_lab_allocation": {
+      "paper_idea": "AgenticTrading is listed as an agentic trading lab/infrastructure repo.",
+      "paper_ref": "050 AgenticTrading",
+      "proxy_formula": "rank(ret_12_1)+rank(qmj)+rank(dolvol_126d)-rank(rvol_252d)-rank(beta_252d)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_ai_hedge_fund_buffett_munger": {
+      "paper_idea": "virattt/ai-hedge-fund is a practitioner multi-agent hedge-fund style repo with value/quality investor personas.",
+      "paper_ref": "052 ai-hedge-fund",
+      "proxy_formula": "rank(qmj)+rank(qmj_prof)+rank(ope_be)+rank(gp_me)+rank(cash_at)-rank(debt_at)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_ai_trader_value_quality": {
+      "paper_idea": "AI-Trader is a practitioner LLM trading repo listed as implementation evidence.",
+      "paper_ref": "049 AI-Trader",
+      "proxy_formula": "rank(be_me)+rank(qmj)+rank(ope_be)+rank(cash_at)-rank(debt_at)-rank(rvol_252d)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_alpha_r1_reasoning_screen": {
+      "paper_idea": "Alpha-R1 is listed as alpha screening with LLM reasoning via reinforcement learning.",
+      "paper_ref": "017 Alpha-R1",
+      "proxy_formula": "rank(qmj)+rank(ope_be)+rank(ret_12_1)-rank(debt_at)-rank(rvol_252d)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_alphaforge_program_factor": {
+      "paper_idea": "AlphaForge is listed as an implementation repo for LLM-assisted factor/strategy generation.",
+      "paper_ref": "022 AlphaForge",
+      "proxy_formula": "rank(be_me)+rank(ret_12_1)+rank(ope_be)+rank(dolvol_126d)-rank(rvol_252d)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_alphagen_symbolic_factor": {
+      "paper_idea": "AlphaGen is a symbolic alpha generation/search repo listed in the source table.",
+      "paper_ref": "022 AlphaGen",
+      "proxy_formula": "rank(ret_12_1)-rank(ret_1_0)+rank(be_me)+rank(ope_be)-rank(rvol_252d)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_alphaquanter_tool_orchestrated_rl": {
+      "paper_idea": "AlphaQuanter is listed as an end-to-end tool-orchestrated agentic RL stock trading system.",
+      "paper_ref": "027 AlphaQuanter",
+      "proxy_formula": "rank(ret_3_1)+rank(ret_12_1)+rank(turnover_126d)-rank(rvol_21d)-rank(beta_252d)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_finmem_memory_trend": {
+      "paper_idea": "FinMem is listed as an LLM trading agent with layered memory and character design.",
+      "paper_ref": "028 FinMem",
+      "proxy_formula": "rank(ret_12_1)-rank(ret_1_0)+rank(qmj_safety)+rank(cash_at)-rank(rvol_252d)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_quantaalpha_self_evolving_factor": {
+      "paper_idea": "QuantaAlpha is listed as an LLM-driven self-evolving framework for factor mining.",
+      "paper_ref": "004 QuantaAlpha",
+      "proxy_formula": "rank(ret_12_1)+rank(ope_be)+rank(gp_me)+rank(qmj)-rank(rvol_252d)-rank(debt_at)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_tradingagents_multi_agent": {
+      "paper_idea": "TradingAgents is a multi-agent LLM financial trading framework with analyst/trader/risk-style roles.",
+      "paper_ref": "023 TradingAgents",
+      "proxy_formula": "rank(ret_12_1)+rank(dolvol_126d)+rank(qmj_safety)+rank(sale_gr1)-rank(rvol_252d)-rank(beta_252d)",
+      "replication_scope": "code_link_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "code_vibe_trading_prompt_allocation": {
+      "paper_idea": "Vibe-Trading is a practitioner prompt-driven trading repo listed in the source table.",
+      "paper_ref": "053 Vibe-Trading",
+      "proxy_formula": "rank(ret_12_1)+rank(qmj)+rank(dolvol_126d)-rank(rvol_252d)",
+      "replication_scope": "code_link_in_spirit_proxy_low_evidence",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "contesttrade_internal_contest_trailing_sharpe": {
+      "paper_idea": "ContestTrade uses an internal contest/ranking mechanism among agents. This proxy selects the JKP idea sleeve with the best trailing 36-month realized Sharpe using only past generated JKP returns.",
+      "paper_ref": "024 ContestTrade",
+      "proxy_formula": "monthly winner among idea sleeves by trailing 36m Sharpe, min 24m history",
+      "strategy": "meta_sleeve_selection_trailing_sharpe"
+    },
+    "efs_momentum_low_vol_breakout": {
+      "paper_idea": "EFS appendix describes evolved factors combining momentum, mean return, low volatility/stability, and breakout logic.",
+      "paper_ref": "002 EFS",
+      "proxy_formula": "rank(ret_3_1)+rank(ret_6_1)+rank(ret_12_1)-rank(rvol_21d)-rank(rvol_252d)+rank(rmax5_rvol_21d)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "efs_short_reversal_low_noise": {
+      "paper_idea": "EFS discusses regime shifts toward mean reversion and downside/noise filtering in sideways markets.",
+      "paper_ref": "002 EFS",
+      "proxy_formula": "-rank(ret_1_0)-rank(rvol_21d)+rank(qmj_safety)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "efs_sparse_top5_momentum_low_vol": {
+      "paper_idea": "EFS uses sparse top scoring asset selection; this tests a literal sparse top-5 proxy using the momentum/low-volatility score.",
+      "paper_ref": "002 EFS",
+      "proxy_formula": "top5 equal-weight long-only excess return from efs_momentum_low_vol_breakout score",
+      "strategy": "long_only_top5_equal_weighted"
+    },
+    "fama_value_momentum_interpretable": {
+      "paper_idea": "FAMA mines interpretable financial factors and cites momentum-style financial principles; this proxy tests a simple interpretable value/momentum/profitability factor.",
+      "paper_ref": "010 FAMA",
+      "proxy_formula": "rank(be_me)+rank(ret_12_1)+rank(ope_be)-rank(market_equity)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "finvision_trend_dip_risk_control": {
+      "paper_idea": "FinVision prompts prioritize holding strong upward trends, buying dips within uptrends, and risk management.",
+      "paper_ref": "040 FinVision",
+      "proxy_formula": "rank(ret_12_1)-rank(ret_1_0)-rank(rvol_21d)+rank(qmj_safety)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "guru_altman_distress_avoidance": {
+      "paper_idea": "Edward Altman-style distress avoidance: earnings/cash/debt coverage and downside-risk control.",
+      "paper_ref": "042 GuruAgents",
+      "proxy_formula": "rank(ebitda_debt)+rank(cash_at)+rank(ni_me)-rank(debt_at)-rank(rvol_252d)-rank(betadown_252d)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "guru_buffett_quality_compounder": {
+      "paper_idea": "Warren Buffett-style quality compounder: durable quality/profitability/growth with low leverage.",
+      "paper_ref": "042 GuruAgents",
+      "proxy_formula": "rank(qmj)+rank(qmj_growth)+rank(qmj_prof)+rank(ope_be)+rank(gp_me)-rank(debt_at)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "guru_equal_weight_style_ensemble": {
+      "paper_idea": "GuruAgents combines multiple investment-guru sleeves; this is an equal-weight score ensemble of the five guru proxies.",
+      "paper_ref": "042 GuruAgents",
+      "proxy_formula": "average Graham, Buffett, Greenblatt, Piotroski, Altman proxy scores",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "guru_graham_deep_value_defensive": {
+      "paper_idea": "Benjamin Graham-style defensive value: cheap, liquid, profitable, low leverage, low risk.",
+      "paper_ref": "042 GuruAgents",
+      "proxy_formula": "rank(be_me)+rank(cash_at)+rank(ope_be)-rank(debt_at)-rank(rvol_252d)-rank(beta_252d)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "guru_greenblatt_magic_formula": {
+      "paper_idea": "Joel Greenblatt-style magic formula: earnings yield plus business quality/return on capital.",
+      "paper_ref": "042 GuruAgents",
+      "proxy_formula": "rank(ebit_mev)+rank(ope_be)+rank(gp_mev)+rank(be_me)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "guru_piotroski_fscore_proxy": {
+      "paper_idea": "Joseph Piotroski-style F-score: profitability, operating cash flow, accrual quality, leverage, issuance, and asset turnover.",
+      "paper_ref": "042 GuruAgents",
+      "proxy_formula": "rank(ni_me)+rank(ocf_me)-rank(oaccruals_at)-rank(debt_gr1)-rank(eqnetis_me)+rank(at_turnover)+rank(sale_gr1)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "hedgeagents_balanced_lowrisk_alpha": {
+      "paper_idea": "HedgeAgents is framed as balanced-aware trading; this proxy tests quality/value alpha with explicit low beta/downside-risk control.",
+      "paper_ref": "044 HedgeAgents",
+      "proxy_formula": "rank(qmj)+rank(be_me)+rank(ope_be)-rank(rvol_252d)-rank(beta_252d)-rank(betadown_252d)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "marketsense_value_momentum_quality": {
+      "paper_idea": "MarketSenseAI factor analysis discusses value and momentum loadings, with fundamentals and price dynamics reinforcing selection.",
+      "paper_ref": "037 MarketSenseAI 2.0",
+      "proxy_formula": "rank(be_me)+rank(ret_12_1)+rank(qmj)+rank(sale_gr1)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "mm_drex_dynamic_router_proxy": {
+      "paper_idea": "MM-DREX dynamically routes trend, reversal, breakout, and risk/positioning experts.",
+      "paper_ref": "032 MM-DREX",
+      "proxy_formula": "rank(ret_12_1)-rank(ret_1_0)+rank(rmax5_rvol_21d)-rank(rvol_21d)+rank(qmj_safety)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_alpha_gpt2_full_pipeline": {
+      "paper_idea": "Alpha-GPT 2.0 expands interactive alpha mining into alpha modeling and analysis over a full quantitative investment workflow.",
+      "paper_ref": "012 Alpha-GPT 2.0",
+      "proxy_formula": "rank(be_me)+rank(ret_12_1)+rank(qmj)+rank(sale_gr1)-rank(rvol_252d)-rank(beta_252d)",
+      "replication_scope": "paper_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_alpha_gpt_interactive_formula": {
+      "paper_idea": "Alpha-GPT is a human-AI interactive formulaic alpha mining system that summarizes and modifies top-performing symbolic alphas.",
+      "paper_ref": "011 Alpha-GPT",
+      "proxy_formula": "rank(be_me)+rank(ret_12_1)+rank(ope_be)+rank(gp_me)-rank(debt_at)",
+      "replication_scope": "paper_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_alphaagentevo_evolved_seed": {
+      "paper_idea": "AlphaAgentEvo frames alpha mining as self-evolving agentic reinforcement learning that refines seed alphas through reward-guided trajectories.",
+      "paper_ref": "016 AlphaAgentEvo",
+      "proxy_formula": "rank(ret_12_1)+rank(ret_6_1)+rank(ope_be)+rank(qmj_safety)-rank(rvol_252d)-rank(at_gr1)-rank(eqnetis_me)",
+      "replication_scope": "paper_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_chain_of_alpha_formula_chain": {
+      "paper_idea": "Chain-of-Alpha is described as chained formula generation and optimization using market data and backtest feedback.",
+      "paper_ref": "013 Chain-of-Alpha",
+      "proxy_formula": "rank(ret_12_1)-rank(ret_1_0)+rank(rmax5_rvol_21d)+rank(turnover_126d)-rank(rvol_252d)",
+      "replication_scope": "paper_in_spirit_proxy_from_title_and_source_summary",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_cogalpha_code_evolved_hybrid": {
+      "paper_idea": "CogAlpha represents alphas as executable code and evolves diverse economically interpretable signals through a multi-agent quality-checking hierarchy.",
+      "paper_ref": "009 CogAlpha",
+      "proxy_formula": "rank(ret_12_1)+rank(ret_3_1)+rank(dolvol_126d)+rank(qmj)-rank(bidaskhl_21d)-rank(rvol_252d)-rank(turnover_var_126d)",
+      "replication_scope": "paper_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_factorengine_program_knowledge": {
+      "paper_idea": "FactorEngine turns domain knowledge and reports into executable factor programs, with closed-loop verification and portfolio feedback.",
+      "paper_ref": "020 FactorEngine",
+      "proxy_formula": "rank(be_me)+rank(ope_be)+rank(gp_me)+rank(ocf_me)-rank(oaccruals_at)-rank(debt_at)-rank(at_gr1)",
+      "replication_scope": "paper_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_factormad_debate_interpretable": {
+      "paper_idea": "FactorMAD is a multi-agent debate framework for interpretable stock alpha factor mining.",
+      "paper_ref": "014 FactorMAD",
+      "proxy_formula": "rank(be_me)+rank(ope_be)+rank(qmj_safety)+rank(ret_12_1)-rank(debt_at)-rank(rvol_252d)",
+      "replication_scope": "paper_in_spirit_proxy_from_title_and_source_summary",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_factorminer_memory_diverse_library": {
+      "paper_idea": "FactorMiner uses modular skills and experience memory to build a diverse low-redundancy library of formulaic alpha factors.",
+      "paper_ref": "008 FactorMiner",
+      "proxy_formula": "rank(ret_12_1)+rank(be_me)+rank(ope_be)+rank(qmj_safety)+rank(at_turnover)-rank(rvol_252d)-rank(debt_at)-rank(eqnetis_me)",
+      "replication_scope": "paper_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_finagent_multimodal_generalist": {
+      "paper_idea": "FinAgent is a multimodal, tool-augmented generalist trading agent with diversified trading and risk-aware tool use.",
+      "paper_ref": "030 FinAgent",
+      "proxy_formula": "long-only top decile by rank(qmj)+rank(ret_12_1)+rank(dolvol_126d)+rank(cash_at)-rank(rvol_252d)-rank(beta_252d)-rank(debt_at)",
+      "replication_scope": "paper_in_spirit_proxy",
+      "strategy": "long_only_top_decile_value_weighted"
+    },
+    "paper_flag_trader_gradient_policy": {
+      "paper_idea": "FLAG-Trader fuses LLM agents with gradient/RL-style policy optimization for sequential trading decisions.",
+      "paper_ref": "031 FLAG-Trader",
+      "proxy_formula": "rank(ret_3_1)+rank(ret_12_1)-rank(ret_1_0)+rank(qmj_safety)-rank(rvol_21d)-rank(beta_252d)",
+      "replication_scope": "paper_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_janus_q_event_driven_proxy": {
+      "paper_idea": "Janus-Q is an event-driven trading framework that models heterogeneous event impact and optimizes reward-gated trading decisions.",
+      "paper_ref": "034 Janus-Q",
+      "proxy_formula": "rank(rmax5_rvol_21d)+rank(ret_1_0)+rank(turnover_126d)+rank(qmj_safety)-rank(rvol_21d)-rank(bidaskhl_21d)",
+      "replication_scope": "paper_in_spirit_proxy_no_news_events_available",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_llmfactor_explainable_price_news": {
+      "paper_idea": "LLMFactor extracts explainable factors from text/news and historical prices to predict stock movement.",
+      "paper_ref": "019 LLMFactor",
+      "proxy_formula": "rank(ret_12_1)+rank(sale_gr1)+rank(gp_me)+rank(dolvol_126d)-rank(rvol_252d)",
+      "replication_scope": "paper_in_spirit_proxy_no_news_available",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_mountainlion_multimodal_allocation": {
+      "paper_idea": "MountainLion coordinates multimodal RAG agents for price forecasting, news-driven reasoning, risk evaluation, and strategic allocation.",
+      "paper_ref": "038 MountainLion",
+      "proxy_formula": "rank(ret_12_1)+rank(qmj)+rank(qmj_safety)+rank(sale_gr1)-rank(rvol_252d)-rank(beta_252d)",
+      "replication_scope": "paper_in_spirit_proxy_no_news_available",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_p1gpt_structured_workflow": {
+      "paper_idea": "P1GPT fuses technical, fundamental, news, and sectoral analysis through a layered multi-agent workflow with embedded risk assessment.",
+      "paper_ref": "039 P1GPT",
+      "proxy_formula": "rank(ret_12_1)+rank(be_me)+rank(ope_be)+rank(sale_gr1)+rank(qmj_safety)-rank(rvol_252d)-rank(debt_at)",
+      "replication_scope": "paper_in_spirit_proxy_no_news_available",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_quantagents_risk_controlled_system": {
+      "paper_idea": "QuantAgents combines market/news/risk/strategy agents, memory, event-impact optimization, and risk-control meetings for simulated trading.",
+      "paper_ref": "043 QuantAgents",
+      "proxy_formula": "rank(ret_12_1)+rank(qmj_safety)+rank(dolvol_126d)+rank(cash_at)-rank(rvol_252d)-rank(beta_252d)-rank(debt_at)",
+      "replication_scope": "paper_in_spirit_proxy_no_news_available",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "paper_timi_minutes_technical_proxy": {
+      "paper_idea": "Trade in Minutes decouples strategy development from rapid execution, using technical indicators, strategy adaptation, and risk control in volatile markets.",
+      "paper_ref": "035 Trade in Minutes",
+      "proxy_formula": "rank(ret_1_0)+rank(ret_3_1)+rank(rmax1_21d)+rank(turnover_126d)-rank(rvol_21d)-rank(bidaskhl_21d)",
+      "replication_scope": "paper_in_spirit_proxy_monthly_minutes_approximation",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "quantagent_three_soldiers_trend": {
+      "paper_idea": "QuantAgent appendix includes ThreeSoldier candlestick-style trend continuation signals with volume/body-size confirmation.",
+      "paper_ref": "026 QuantAgent Holy Grail",
+      "proxy_formula": "rank(ret_1_0)+rank(ret_3_1)+rank(turnover_126d)-rank(rvol_21d)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "quantagent_volatility_breakout": {
+      "paper_idea": "QuantAgent appendix includes a VolatilityBreakoutSignal based on high breaking above a threshold relative to ATR.",
+      "paper_ref": "026 QuantAgent Holy Grail",
+      "proxy_formula": "rank(rmax5_rvol_21d)+rank(ret_1_0)+rank(ret_3_1)-rank(rvol_21d)",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "repo_alphaagent_decay_resistant_quality": {
+      "paper_idea": "AlphaAgent regularizes LLM factor search for originality, hypothesis consistency, and complexity control to counter alpha decay and crowding.",
+      "paper_ref": "003 AlphaAgent",
+      "proxy_formula": "rank(ope_be)+rank(ocf_me)+rank(qmj_safety)+rank(at_turnover)-rank(oaccruals_at)-rank(eqnetis_me)-rank(debt_gr1)",
+      "replication_scope": "repo_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "repo_alphabench_formulaic_price_volume": {
+      "paper_idea": "AlphaBench frames LLM alpha mining as formula generation from price and volume operators, then portfolio evaluation by Sharpe and related metrics.",
+      "paper_ref": "001 AlphaBench",
+      "proxy_formula": "rank(ret_12_1)+rank(ret_6_1)+rank(rmax5_rvol_21d)+rank(dolvol_126d)-rank(rvol_252d)-rank(turnover_var_126d)",
+      "replication_scope": "repo_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "repo_alphaforgebench_executable_multifactor": {
+      "paper_idea": "AlphaForgeBench evaluates LLMs as quantitative researchers generating executable alpha factors and factor-based trading strategies.",
+      "paper_ref": "045 AlphaForgeBench",
+      "proxy_formula": "rank(be_me)+rank(ope_be)+rank(ret_12_1)+rank(qmj)+rank(dolvol_126d)-rank(rvol_252d)-rank(debt_at)",
+      "replication_scope": "repo_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "repo_alphaprobe_dag_diverse_factor_blend": {
+      "paper_idea": "AlphaPROBE treats alpha mining as DAG-guided factor evolution, selecting promising parents while preserving factor-pool diversity and stability.",
+      "paper_ref": "021 AlphaPROBE",
+      "proxy_formula": "rank(ret_12_1)-rank(ret_1_0)+rank(be_me)+rank(ope_be)+rank(qmj_safety)+rank(turnover_126d)-rank(rvol_252d)-rank(debt_at)",
+      "replication_scope": "repo_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "repo_deepfund_prudent_fund_manager": {
+      "paper_idea": "DeepFund models a multi-agent fund workflow with fundamental, technical, policy/news, insider-style analysts, portfolio management, and risk control.",
+      "paper_ref": "048 DeepFund",
+      "proxy_formula": "long-only top decile by rank(qmj)+rank(ope_be)+rank(gp_me)+rank(cash_at)+rank(ret_12_1)-rank(debt_at)-rank(rvol_252d)-rank(beta_252d)",
+      "replication_scope": "repo_in_spirit_proxy",
+      "strategy": "long_only_top_decile_value_weighted"
+    },
+    "repo_fincon_cvar_risk_controlled_allocator": {
+      "paper_idea": "FinCon uses manager/analyst hierarchy plus dual-level risk control, including CVaR-style monitoring, for portfolio decisions.",
+      "paper_ref": "029 FinCon",
+      "proxy_formula": "long-only top decile by rank(ret_12_1)+rank(ope_be)+rank(qmj_safety)+rank(dolvol_126d)-rank(rvol_252d)-rank(beta_252d)-rank(betadown_252d)",
+      "replication_scope": "repo_in_spirit_proxy",
+      "strategy": "long_only_top_decile_value_weighted"
+    },
+    "repo_livetradebench_live_allocation_proxy": {
+      "paper_idea": "LiveTradeBench evaluates live multi-asset portfolio allocation under price/news uncertainty with explicit risk-return allocation decisions.",
+      "paper_ref": "047 LiveTradeBench",
+      "proxy_formula": "long-only top decile by rank(ret_12_1)+rank(qmj)+rank(qmj_safety)+rank(dolvol_126d)-rank(rvol_252d)-rank(beta_252d)",
+      "replication_scope": "repo_in_spirit_proxy",
+      "strategy": "long_only_top_decile_value_weighted"
+    },
+    "repo_quantagent_hft_price_pattern": {
+      "paper_idea": "QuantAgent is a price-driven multi-agent HFT system centered on short-horizon technical indicators, chart patterns, trend state, and risk-aware execution.",
+      "paper_ref": "025 QuantAgent HFT",
+      "proxy_formula": "rank(ret_1_0)+rank(ret_3_1)+rank(rmax1_21d)+rank(rmax5_rvol_21d)+rank(turnover_126d)-rank(bidaskhl_21d)-rank(rvol_21d)",
+      "replication_scope": "repo_in_spirit_proxy_monthly_hft_approximation",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "repo_quantevolver_return_sharpe_proxy": {
+      "paper_idea": "QuantEvolver uses executable seed expressions and reinforcement fine-tuning; this row repeats its risk-adjusted momentum seed in the unified in-spirit table.",
+      "paper_ref": "005 QuantEvolver",
+      "proxy_formula": "ret_12_1 / abs(rvol_252d)",
+      "replication_scope": "repo_seed_jkp_proxy_unified",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "repo_rd_agent_factor_model_compact_ensemble": {
+      "paper_idea": "R&D-Agent-Quant presents a data-centric factor/model co-optimization loop aiming for compact, robust factor sets rather than one-off generated alphas.",
+      "paper_ref": "006 R&D-Agent-Quant",
+      "proxy_formula": "rank(be_me)+rank(ope_be)+rank(gp_me)+rank(ret_12_1)-rank(rvol_252d)-rank(beta_252d)-rank(at_gr1)",
+      "replication_scope": "repo_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "repo_tradetrap_robust_safety_proxy": {
+      "paper_idea": "TradeTrap is primarily a robustness/stress-test framework; the in-spirit proxy tests the conservative safety/liquidity posture implied by its mitigation concerns.",
+      "paper_ref": "051 TradeTrap",
+      "proxy_formula": "rank(qmj_safety)+rank(dolvol_126d)+rank(cash_at)-rank(rvol_252d)-rank(beta_252d)-rank(bidaskhl_21d)-rank(debt_at)",
+      "replication_scope": "repo_in_spirit_proxy_robustness_not_alpha_claim",
+      "strategy": "long_short_decile_value_weighted"
+    },
+    "repo_trading_r1_risk_adjusted_reasoning": {
+      "paper_idea": "Trading-R1 frames trading as reasoning/RL over market state and rewards; the JKP proxy tests a risk-adjusted trend/reversal reward signal.",
+      "paper_ref": "033 Trading-R1",
+      "proxy_formula": "rank(ret_3_1)+rank(ret_12_1)-rank(ret_1_0)+rank(qmj_safety)-rank(rvol_21d)-rank(rmax5_21d)",
+      "replication_scope": "repo_in_spirit_proxy",
+      "strategy": "long_short_decile_value_weighted"
+    }
+  },
+  "candidate_paths": {
+    "alpha_jungle_price_volume_momentum": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_alpha_jungle_price_volume_momentum.csv",
+    "alpha_jungle_volatility_compression_trend": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_alpha_jungle_volatility_compression_trend.csv",
+    "alphaagents_risk_averse_quality_lowrisk": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_alphaagents_risk_averse_quality_lowrisk.csv",
+    "alphaagents_risk_neutral_fundamental_momentum": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_alphaagents_risk_neutral_fundamental_momentum.csv",
+    "alphacrafter_full_stack_multifactor": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_alphacrafter_full_stack_multifactor.csv",
+    "alphalogics_value_quality_growth": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_alphalogics_value_quality_growth.csv",
+    "code_agentictrading_lab_allocation": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_agentictrading_lab_allocation.csv",
+    "code_ai_hedge_fund_buffett_munger": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_ai_hedge_fund_buffett_munger.csv",
+    "code_ai_trader_value_quality": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_ai_trader_value_quality.csv",
+    "code_alpha_r1_reasoning_screen": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_alpha_r1_reasoning_screen.csv",
+    "code_alphaforge_program_factor": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_alphaforge_program_factor.csv",
+    "code_alphagen_symbolic_factor": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_alphagen_symbolic_factor.csv",
+    "code_alphaquanter_tool_orchestrated_rl": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_alphaquanter_tool_orchestrated_rl.csv",
+    "code_finmem_memory_trend": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_finmem_memory_trend.csv",
+    "code_quantaalpha_self_evolving_factor": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_quantaalpha_self_evolving_factor.csv",
+    "code_tradingagents_multi_agent": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_tradingagents_multi_agent.csv",
+    "code_vibe_trading_prompt_allocation": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_code_vibe_trading_prompt_allocation.csv",
+    "contesttrade_internal_contest_trailing_sharpe": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_contesttrade_internal_contest_trailing_sharpe.csv",
+    "efs_momentum_low_vol_breakout": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_efs_momentum_low_vol_breakout.csv",
+    "efs_short_reversal_low_noise": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_efs_short_reversal_low_noise.csv",
+    "efs_sparse_top5_momentum_low_vol": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_efs_sparse_top5_momentum_low_vol.csv",
+    "fama_value_momentum_interpretable": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_fama_value_momentum_interpretable.csv",
+    "finvision_trend_dip_risk_control": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_finvision_trend_dip_risk_control.csv",
+    "guru_altman_distress_avoidance": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_guru_altman_distress_avoidance.csv",
+    "guru_buffett_quality_compounder": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_guru_buffett_quality_compounder.csv",
+    "guru_equal_weight_style_ensemble": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_guru_equal_weight_style_ensemble.csv",
+    "guru_graham_deep_value_defensive": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_guru_graham_deep_value_defensive.csv",
+    "guru_greenblatt_magic_formula": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_guru_greenblatt_magic_formula.csv",
+    "guru_piotroski_fscore_proxy": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_guru_piotroski_fscore_proxy.csv",
+    "hedgeagents_balanced_lowrisk_alpha": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_hedgeagents_balanced_lowrisk_alpha.csv",
+    "marketsense_value_momentum_quality": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_marketsense_value_momentum_quality.csv",
+    "mm_drex_dynamic_router_proxy": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_mm_drex_dynamic_router_proxy.csv",
+    "paper_alpha_gpt2_full_pipeline": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_alpha_gpt2_full_pipeline.csv",
+    "paper_alpha_gpt_interactive_formula": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_alpha_gpt_interactive_formula.csv",
+    "paper_alphaagentevo_evolved_seed": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_alphaagentevo_evolved_seed.csv",
+    "paper_chain_of_alpha_formula_chain": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_chain_of_alpha_formula_chain.csv",
+    "paper_cogalpha_code_evolved_hybrid": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_cogalpha_code_evolved_hybrid.csv",
+    "paper_factorengine_program_knowledge": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_factorengine_program_knowledge.csv",
+    "paper_factormad_debate_interpretable": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_factormad_debate_interpretable.csv",
+    "paper_factorminer_memory_diverse_library": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_factorminer_memory_diverse_library.csv",
+    "paper_finagent_multimodal_generalist": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_finagent_multimodal_generalist.csv",
+    "paper_flag_trader_gradient_policy": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_flag_trader_gradient_policy.csv",
+    "paper_janus_q_event_driven_proxy": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_janus_q_event_driven_proxy.csv",
+    "paper_llmfactor_explainable_price_news": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_llmfactor_explainable_price_news.csv",
+    "paper_mountainlion_multimodal_allocation": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_mountainlion_multimodal_allocation.csv",
+    "paper_p1gpt_structured_workflow": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_p1gpt_structured_workflow.csv",
+    "paper_quantagents_risk_controlled_system": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_quantagents_risk_controlled_system.csv",
+    "paper_timi_minutes_technical_proxy": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_paper_timi_minutes_technical_proxy.csv",
+    "quantagent_three_soldiers_trend": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_quantagent_three_soldiers_trend.csv",
+    "quantagent_volatility_breakout": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_quantagent_volatility_breakout.csv",
+    "repo_alphaagent_decay_resistant_quality": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_alphaagent_decay_resistant_quality.csv",
+    "repo_alphabench_formulaic_price_volume": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_alphabench_formulaic_price_volume.csv",
+    "repo_alphaforgebench_executable_multifactor": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_alphaforgebench_executable_multifactor.csv",
+    "repo_alphaprobe_dag_diverse_factor_blend": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_alphaprobe_dag_diverse_factor_blend.csv",
+    "repo_deepfund_prudent_fund_manager": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_deepfund_prudent_fund_manager.csv",
+    "repo_fincon_cvar_risk_controlled_allocator": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_fincon_cvar_risk_controlled_allocator.csv",
+    "repo_livetradebench_live_allocation_proxy": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_livetradebench_live_allocation_proxy.csv",
+    "repo_quantagent_hft_price_pattern": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_quantagent_hft_price_pattern.csv",
+    "repo_quantevolver_return_sharpe_proxy": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_quantevolver_return_sharpe_proxy.csv",
+    "repo_rd_agent_factor_model_compact_ensemble": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_rd_agent_factor_model_compact_ensemble.csv",
+    "repo_tradetrap_robust_safety_proxy": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_tradetrap_robust_safety_proxy.csv",
+    "repo_trading_r1_risk_adjusted_reasoning": "paper_runs/idea_replications/jkp_paper_idea_proxies/candidate_returns_repo_trading_r1_risk_adjusted_reasoning.csv"
+  },
+  "end": "2024-12-31",
+  "factor_panel_csv": "paper_runs/idea_replications/jkp_paper_idea_proxies/jkp_benchmark_factor_panel.csv",
+  "ff5mom_summary_csv": "paper_runs/idea_replications/jkp_paper_idea_proxies/paper_idea_proxy_ff5mom_summary.csv",
+  "input_policy": "candidate and benchmark returns built only from read-only JKP USA.parquet; no China, yfinance, paper-shipped returns, official French factors, or external return files",
+  "min_side": 20,
+  "n_months": 305,
+  "n_rows_loaded_after_filters": 305000,
+  "quantile": 0.1,
+  "start": "1999-07-31",
+  "top_n_by_me_per_month": 1000,
+  "usa_path": "${ALPHA_EVOLVE_JKP_ROOT}/data/processed/characteristics/USA.parquet"
+}

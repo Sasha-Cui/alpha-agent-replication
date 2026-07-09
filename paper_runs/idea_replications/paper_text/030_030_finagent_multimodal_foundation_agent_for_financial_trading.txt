@@ -1,0 +1,2599 @@
+A Multimodal Foundation Agent for Financial Trading:
+Tool-Augmented, Diversified, and Generalist
+Wentao Zhang
+Nanyang Technological University
+Singapore
+wt.zhang@ntu.edu.sg
+Lingxuan Zhao∗
+Haochong Xia∗
+Nanyang Technological University
+Singapore
+{zhao0375,haochong001}@e.ntu.edu.sg
+Shuo Sun
+Nanyang Technological University
+Singapore
+shuo003@e.ntu.edu.sg
+Jiaze Sun
+National University of Singapore
+Singapore
+e0564914@u.nus.edu
+Molei Qin
+Xinyi Li
+Yuqing Zhao
+Nanyang Technological University
+Singapore
+{molei001,lixi0067,ZHAO0348}@e.ntu.edu.sg
+Yilei Zhao
+Zhejiang University
+China
+yilei_zhao@zju.edu.cn
+Xinyu Cai
+Longtao Zheng
+Nanyang Technological University
+Singapore
+{xinyu009,longtao001}@e.ntu.edu.sg
+Xinrun Wang†
+Singapore Management University
+Singapore
+xrwang@smu.edu.sg
+Bo An†
+Nanyang Technological University
+Skywork AI
+Singapore
+boan@ntu.edu.sg
+ABSTRACT
+Financial trading is a crucial component of the markets, informed
+by a multimodal information landscape encompassing news, prices,
+and Kline charts, and encompasses diverse tasks such as quantita-
+tive trading and high-frequency trading with various assets. While
+advanced AI techniques like deep learning and reinforcement learn-
+ing are extensively utilized in finance, their application in financial
+trading tasks often faces challenges due to inadequate handling of
+multimodal data and limited generalizability across various tasks.
+To address these challenges, we presentFinAgent, a multimodal
+foundational agent with tool augmentation for financial trading.
+FinAgent’s market intelligence module processes a diverse range
+of data—numerical, textual, and visual—to accurately analyze the
+financial market. Its unique dual-level reflection module not only
+enables rapid adaptation to market dynamics but also incorpo-
+rates a diversified memory retrieval system, enhancing the agent’s
+ability to learn from historical data and improve decision-making
+processes. The agent’s emphasis on reasoning for actions fosters
+trust in its financial decisions. Moreover,FinAgent integrates es-
+tablished trading strategies and expert insights, ensuring that its
+∗Lingxuan Zhao and Haochong Xia contributed equally to this research.
+†Corresponding Authors.
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for components of this work owned by others than the
+author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or
+republish, to post on servers or to redistribute to lists, requires prior specific permission
+and/or a fee. Request permissions from permissions@acm.org.
+KDD ’24, August 25–29, 2024, Barcelona, Spain
+© 2024 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+ACM ISBN 979-8-4007-0490-1/24/08
+https://doi.org/10.1145/3637528.3671801
+trading approaches are both data-driven and rooted in sound fi-
+nancial principles. With comprehensive experiments on 6 financial
+datasets, including stocks and Crypto, FinAgent significantly out-
+performs 12 state-of-the-art baselines in terms of 6 financial metrics
+with over 36% average improvement on profit. Specifically, a 92.27%
+return (a 84.39% relative improvement) is achieved on one dataset.
+Notably, FinAgent is the first advanced multimodal foundation
+agent designed for financial trading tasks.
+CCS CONCEPTS
+• Information systems→ Data mining; • Computing method-
+ologies→ Machine learning; • Applied computing→ Elec-
+tronic commerce.
+KEYWORDS
+Large Language Models, Quantitative Trading, Financial AI Agents
+ACM Reference Format:
+Wentao Zhang, Lingxuan Zhao, Haochong Xia, Shuo Sun, Jiaze Sun, Molei
+Qin, Xinyi Li, Yuqing Zhao, Yilei Zhao, Xinyu Cai, Longtao Zheng, Xinrun
+Wang, and Bo An. 2024. A Multimodal Foundation Agent for Financial
+Trading: Tool-Augmented, Diversified, and Generalist. In Proceedings of the
+30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+(KDD ’24), August 25–29, 2024, Barcelona, Spain. ACM, New York, NY, USA,
+43 pages. https://doi.org/10.1145/3637528.3671801
+1 INTRODUCTION
+Financial markets are essential for economic stability, facilitating
+capital allocation and risk management. Financial trading systems,
+developed from technical analysis strategies [ 8], enhance these
+markets by enabling efficient trading. Rule-based trading systems
+are rigid and struggle to adapt to market volatility, often resulting
+arXiv:2402.18485v3 [q-fin.TR] 28 Jun 2024
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+FinAgent
+AssetDailyPriceVisualDataAssetNewsExpertGuidance
+Inputs
+SellHoldBuyThe Buydecision made on 2023-06-01 appears to be correct…ReasoningAction&
+Data
+Figure 1: Overview of FinAgent.
+in underperformance in evolving markets. Reinforcement learning-
+based systems[1] demonstrate enhanced adaptability but encounter
+substantial obstacles, such as the need for extensive training data
+and the inexplainability of decision-making processes. Additionally,
+they struggle with generalizing across diverse market conditions,
+are sensitive to market noise, and often fail to integrate multi-
+modal market intelligence like news and reports into their analysis.
+The financial trading landscape demands more advanced machine-
+learning methods to address complex market dynamics, seeking to
+move beyond the limitations of rule-based and RL methods.
+Recently, Large Language Models (LLMs) have showcased their
+potential in a range of decision-making tasks when applied in AI
+agents [27, 34, 42, 56], marking a significant expansion beyond
+natural language processing into more complex, task-specific func-
+tions. This advancement includes the integration of memory and
+planning modules, which enable these agents to adapt within dy-
+namic environments, akin to human cognitive processes. This evo-
+lution has been further pushed by the advent of multimodal LLMs
+like GPT-4V [25], which enhances the capabilities of LLMs by pro-
+cessing both textual and visual data. Moreover, the integration of
+tool-augmented models like Toolformer [32] empowers LLMs to
+utilize external tools, thus elevating their decision-making abilities
+in complex scenarios. This combination of adaptability and en-
+hanced processing capabilities offers new possibilities in fields such
+as fintech, where nuanced analysis and adaptation are important.
+LLMs have demonstrated remarkable capabilities in analyzing
+and interpreting financial data, as evidenced by developments like
+BloombergGPT [47], and FinGPT [49]. However, there is a natural
+gap between QA tasks and sequential decision-making in trading.
+Although FinMEM [55] is an LLM trading agent with a human-
+aligned memory mechanism and character design, the full capa-
+bilities of LLMs as comprehensive autonomous trading systems
+remain underexplored, particularly in their ability to interpret mul-
+timodal data and utilize diverse tools. The challenges in navigating
+the complexities of financial markets are identified as follows:
+• Ch1: Insufficient Multimodal Data Processing Ability . Pro-
+cessing numerical, textual, and visual market intelligence data
+significantly requires advanced analytical methods to extract key
+insights and predict market trends.
+• Ch2: Imprecise information retrieval . Mixing retrieval with
+main tasks and relying on brief summaries causes imprecise
+searches, introducing irrelevant data and reducing performance.
+• Ch3: Adaptability in Rapidly Evolving Markets . Financial
+trading requires the ability to quickly adapt to fluctuating market
+conditions. Traditional methods often fall short, highlighting the
+necessity for models capable of responding to real-time data and
+adjusting strategies according to historical market trends.
+• Ch4: Integration of Domain Knowledge. Current models
+often struggle to integrate established methods such as expert
+guidance and advanced trading tools effectively, leading to a
+decline in both the effectiveness and depth of market analysis.
+• Ch5. Reasoning for Actions. The black-box nature of many so-
+phisticated AI models, directly giving results of decisions without
+providing the reasoning process.
+To address the challenges of adapting the multimodal LLMs
+to the dynamic and information-rich financial trading tasks, we
+presentFinAgent, a multimodal foundation agent that integrates
+both textual and visual information for a comprehensive analysis
+of market dynamics and historical trading patterns. Specifically,
+FinAgent’s market intelligence module processes multimodal data,
+such as numerical, textual, and visual, to provide precise analysis
+of financial market trends, offering insights for future trading tasks
+(Ch1). A uniquely designed dual-level reflection module is devel-
+oped, capable of not only rapidly adapting to market dynamics but
+also enhancing the agent’s ability to learn from historical data and
+improve its decision-making process (Ch2).FinAgent introduces
+a diversified memory retrieval system for the market intelligence
+and reflection modules, separating trading and retrieval tasks to
+enhance focus on their specific functions and minimize noise in the
+results (Ch3). Finally, the decision-making module incorporates
+expert knowledge, comprising both supplementary expert guid-
+ance and auxiliary expert strategies, to guide the agent’s decisions.
+This emphasis on providing reasoned explanations for actions fos-
+ters trust in its financial decisions (Ch4 & Ch5). Specifically, our
+contributions are four-fold:
+• We introduce the market intelligence module, which is able to
+extract key insights from multimodal datasets encompassing
+asset prices, visual representations, news, and expert analyses,
+offering a multifaceted view across various markets.
+• We not only generate summaries for trading tasks but also pro-
+vide query fields for retrieval tasks. These query texts include
+different retrieval types, tailored to enable focused retrieval of
+specific types of information.
+• Our duel-level reflection module combines a low-level reflection
+that analyzes market price movement for insights, while the high-
+level reflection assesses past trading decisions for improvement,
+emulating the learning process in decision-making.
+• We employ a suite of tools inFinAgent, including expert guid-
+ance and technical indicator-based advanced trading strategies,
+to infuse domain knowledge in financial trading.
+With comprehensive experiments on 6 financial datasets, including
+stocks and Crypto, FinAgent significantly outperforms 12 state-
+of-the-art baselines in terms of 6 financial metrics with over 36%
+average improvement on profit. Specifically, a 92.27% return (a
+84.39% relative improvement) is achieved on one dataset. Notably,
+FinAgent is the first advanced multimodal foundation agent de-
+signed for financial trading tasks.
+2 RELATED WORK
+2.1 LLM Agents for Decision Making
+The field of artificial intelligence and natural language processing
+has reached a significant milestone with the emergence of LLMs
+like ChatGPT [23] and GPT-4 [24]. BloombergGPT [47] introduced
+the first LLM in the finance domain, combining financial and text
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+Table 1: Comparison of FinAgent versus trading strategies and LLM agents. Brief introduction can be found in Section 5.3.
+Method Market Intelligence Tool Use Inference & Extension
+News Reports Price Visual Data Info Tools Preference Training Scheme Planning Explainability Generalization
+Rule-based ✗ ✗ ✓ ✗ ✗ ✗ ✗ Hyper-parameter Tuning Myopic - Single trading task
+RL method ✗ ✗ ✓ ✗ ✗ ✗ ✗ Model training Sequential ✗ Single trading task
+FinGPT ✓ ✗ ✓ ✗ ✗ ✗ ✗ LLM Fine-tuning Myopic ✓ Limited trading tasks
+FinMem ✓ ✓ ✓ ✗ ✗ ✗ ✓ Reflection Myopic ✓ Multiple trading tasks
+FinAgent ✓ ✓ ✓ ✓ ✓ ✓ ✓ Reflection Sequential ✓ Multiple trading tasks
+data, but without public access. FinGPT [ 49] proposed the first
+open-source finance LLMs, incorporating reinforcement learning
+with human feedback.
+While LLMs achieve impressive performance in NLP tasks [4, 41],
+more works explored the capability of LLMs to function not just as
+language processors but as agents capable of performing complex
+tasks. Initiatives like AutoGPT [ 50] and MetaGPT [ 11], Voyager
+[42], and AI agents [27, 34] expand LLMs’ capabilities to complex
+tasks involving reasoning and collaboration, significantly advanc-
+ing technology and impacting daily life. FinMEM [55] presents an
+LLM agent with a human-aligned memory mechanism and charac-
+ter design for automated trading.
+Recently, there has been growing interest in enhancing LLM
+agents with external tools and modular methods as AI agents.
+Tool-augmented Language Models (TALM) [ 21, 26, 32, 40] have
+been evaluated through recent benchmarks, such as ScienceQA and
+TabMWP [3, 16, 17, 19, 35, 45], designed to assess their ability to
+tackle intricate reasoning challenges, particularly those requiring
+the use of external tools. These improvements enable LLMs to re-
+trieve current information through web searches [21] and to apply
+specialized knowledge from external sources [54].
+However, a major limitation of LLM agents is their dependence
+on text-based information, which limits their perception and inter-
+action with the environment. Introducing models equipped with
+vision capabilities, such as the latest iteration of GPT-4V [25], marks
+a pivotal breakthrough. There has also been the emergence of mul-
+timodal agents [18, 52, 56] utilizing the visual capabilities of mul-
+timodal large language models to perform tasks previously un-
+achievable by text-only agents. Most existing LLMs in finance focus
+on NLP tasks, and their potential in trading is not fully explored.
+FinAgent is a multi-modal, tool-augmented LLM foundation agent
+for financial trading to bridge the gap.
+2.2 AI for Financial Trading
+AI techniques have been widely used in various financial trading
+tasks. RNN-based such as GRU [ 22] and LSTM [ 43] models are
+popular for stock prediction since they are specifically designed to
+capture temporal patterns in sequential data. Another direction of
+work employs graph-based DL models to model pair-wise relations
+between stocks. For instance, Feng et al. [9] enhance graph convo-
+lutional networks (GCNs) with temporal convolutions for mining
+inter-stock relations. Sawhney et al. [29] focus on stock industry
+data and links between company CEOs. Tree-based models [ 13]
+also achieve robust performance. Xu and Cohen [48] propose a
+variational autoencoder architecture to extract latent information
+from tweets. Chen et al. [2] enhance trading strategy design with
+the investment behaviors of professional fund managers. Other
+data sources such as economics news [12] and earning calls [30]
+are also used to improve the prediction performance. Sun et al. [39]
+introduce a novel three-stage ensemble learning method. Reinforce-
+ment learning [38] has achieved success in finance with algorithms,
+platform [37], and evaluation toolkits [36]. However, most of these
+methods are hindered by their focus on price data and limited gen-
+eralization, necessitating advanced techniques that can integrate
+multimodal intelligence and navigate complex market dynamics.
+3 PROBLEM FORMULATION
+We first introduce the Markov Decision Process (MDP) formulation
+of financial trading. Later on, we provide the formal formulation
+of FinAgent, which integrates LLMs into the RL pipeline to enable
+flexible reasoning and decision-making in financial trading.
+3.1 Financial Trading as MDP
+A financial trading task involves sequentially making investment
+decisions (e.g., buy/sell stocks) to maximize total profit under cer-
+tain risk tolerance [38]. We formulate it as an MDP under a classic
+RL scenario following [14, 37], where an agent (investor) interacts
+with an environment (the financial market) to make actions (invest-
+ment decisions) at discrete time to earn rewards (profits). The MDP
+is constructed by a 5-tuple(S,A,T,𝑅,𝛾). Specifically, S is a finite
+set of states.A is a finite set of actions. The state transition function
+T : S×A× S→[ 0, 1] encapsulates transition probabilities between
+states based on chosen actions. The reward function𝑅 : S×A→ 𝑅
+quantifies the immediate reward of taking an action in a state. The
+discount factor is𝛾∈[ 0, 1). A policy𝜋 : S×A→[ 0, 1] assigns
+each state𝑠∈ S a distribution over actions, where𝑎∈A has prob-
+ability𝜋(𝑎|𝑠). During training, the agent is in charge of making
+investment decisions at each time step through one whole trading
+period and tries to learn an optimal policy (investment strategy)
+that maximizes the expected sum of discounted reward (overall
+profit):𝜋𝜃∗ = arg max𝜋𝜃 E𝜋𝜃[Í𝑇
+𝑖=0𝛾𝑖𝑟𝑡+𝑖|𝑠𝑡 =𝑠].
+Specifically, we focus on single asset (e.g., stock or Crypto) trad-
+ing. A state represents RL agents’ perception on the financial mar-
+ket based on price information, limited order book [28], technical
+indicators, trend prediction [53], financial news [31], experts’ in-
+vestment behaviors [7] and overall market status [46]. The action
+space includes three choices to buy, sell or hold the asset [6, 15]. The
+reward function leverages the change of market capitals (earned/lost
+money) [15] with consideration of commission fee [37, 44].
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+3.2 Problem Formulation
+We further integrate multimodal LLMs into the RL framework
+[5], enabling the flexible definition of the reasoning processes. In
+FinAgent formulation, we focus on the necessity of defining, learn-
+ing, and applying these processes independently. We extend the
+classic RL optimization problem forFinAgent as follows:
+𝜋𝜃∗ = arg max
+𝜋𝜃
+E𝜋𝜃
+h∑︁𝑇
+𝑖=0𝛾𝑖𝑟𝑡+𝑖|𝑠𝑡 =𝑠,𝜇𝑡 =𝜇
+i
+, (1)
+where𝑟𝑡 is the reward at the time step𝑡 that depends on the envi-
+ronmental state𝑠𝑡 and action𝑎𝑡 .𝜇(·) are specialized modules that
+encapsulate beneficial internal reasoning processes. Note that a
+state contains multimodal information including textual, numerical,
+and visual data. Faced with a task𝜆 and equipped with a memory
+𝑀𝑒𝑚𝜆
+𝑡 and a tool𝑇𝑜𝑜𝑙𝜆
+𝑡 ,FinAgent acting as the multimodal LLM
+agent, determines its action𝑎𝑡 through the following process:
+𝜋FinAgent(𝑎𝑡|𝑠𝑡,𝜇𝑡)≡D 𝜆
+
+𝐿𝐿𝑀
+
+𝜙𝜆
+𝐷(𝑠𝑡,𝜇𝑡)
+
+𝜇𝑡 =𝜇(𝑠𝑡,𝑀𝑒𝑚𝜆
+𝑡,𝑇𝑜𝑜𝑙 𝜆
+𝑡)
+(2)
+where𝜙(·) is a task-relevant prompt generator. The prompt is then
+passed to a multimodal LLM, from which a response is generated. Fi-
+nally, the response is parsed through the task-specific action parsing
+functionD𝜆(·) to perform compatible actions in the environment.
+FinAgent is a multimodal LLMs agent in this framework specif-
+ically designed for financial trading, which contains five core mod-
+ules, namely market intelligence module ( M), memory module
+(Mem), low-level reflection module (L), high-level reflection module
+(H) and decision-making module (D). We can define the 𝜇𝑡 and
+other modules as follows:
+𝜇𝑡 =𝜇(𝑠𝑡,𝑀𝑒𝑚𝜆
+𝑡,𝑇𝑜𝑜𝑙 𝜆
+𝑡) =𝜇(𝑀𝜆
+𝑡,𝐿𝜆
+𝑡,𝐻𝜆
+𝑡,𝑇𝑜𝑜𝑙 𝜆
+𝑡)
+𝑀𝜆
+𝑡 =𝐿𝐿𝑀(𝜙𝜆
+𝑀(𝑠𝑡,𝑀𝑒𝑚𝑀,𝜆
+𝑡 ))
+𝐿𝜆
+𝑡 =𝐿𝐿𝑀(𝜙𝜆
+𝐿(𝑀𝜆
+𝑡,𝐾𝐶𝑡,𝑀𝑒𝑚𝐿,𝜆
+𝑡 ))
+𝐻𝜆
+𝑡 =𝐿𝐿𝑀(𝜙𝜆
+𝐻(𝑀𝜆
+𝑡,𝑇𝐶𝑡,𝑀𝑒𝑚𝐻,𝜆
+𝑡 )),
+(3)
+where𝑀,𝑀𝑒𝑚,𝐿,𝐻,𝐷 correspond to each module respectively,
+𝑀𝑒𝑚∗,𝜆 denotes the memory of𝑀,𝐿, and𝐻.𝐾𝐶 and𝑇𝐶 represent
+the Kline chart and Trading chart.𝜙𝜆∗ denotes the prompt generator
+corresponding to each module associated with task𝜆.
+Therefore, with the integration of memory mechanism, aug-
+mented tools, and several designed modules, the overall objective
+of FinAgent is to find policies as described in Eq. (2) to optimize
+total discounted returns:
+𝜋∗
+FinAgent = arg max
+𝜋(·),𝝁(·)
+E𝜋
+h∑︁𝑇
+𝑖=0𝛾𝑖𝑟𝑡+𝑖|𝑠𝑡 =𝑠,𝜇𝑡 =𝜇
+i
+s.t. 𝜋(𝑎𝑡|𝑠𝑡,𝜇𝑡) =D𝜆
+
+𝐿𝐿𝑀
+
+𝜙𝜆
+𝐷(𝑠𝑡,𝜇𝑡)
+
+𝑤𝑖𝑡ℎ𝐸𝑞. (3) ∀𝑡.
+(4)
+4 FINAGENT FRAMEWORK
+As shown in Figure 3, the FinAgent framework comprises five
+core modules. Specifically, the market intelligence module (§4.1) is
+responsible for collecting, collating, summarizing, and analyzing
+market information, which includes daily updates on stock news,
+prices, and monthly and quarterly financial reports. The low-level
+reflection module ( §4.3) establishes the inherent correlation be-
+tween market intelligence and price changes. And the high-level
+reflection module (§4.3) involves reflecting on market conditions,
+price changes, and other factors in the context of outcomes from
+past trading decisions, which aims to derive insights from previous
+experiences and identify potential improvement in profitability by
+assessing the efficacy of historical decisions and offering recom-
+mendations for future decision-making processes. The primary role
+of the memory module ( §4.2) is to support the aforementioned
+three modules by offering storage capabilities and vector retrieve
+functions. The tool-augmented decision-making module (§4.4) in-
+tegrates the aforementioned information, along with augmented
+tools and trader preferences, to make final investment decisions
+with a comprehensive analysis.
+4.1 Market Intelligence Module
+To make profitable investment decisions, it is beneficial to collect,
+summarize, analyze, and extract key insights from various multi-
+modal financial data sources. We design the market intelligence
+module to achieve this goal. Market intelligence typically involves
+daily data about the macro environment, current market conditions
+or investors’ sentiments that inform investment and trading deci-
+sions. In FinAgent, we harness the power of both the latest and
+historical news, financial reports, and asset prices related to the
+targeted asset in order to inform and optimize trading decisions.
+Latest Market Intelligence. This module mainly consists of asset
+news and daily asset prices. However, it is not confined to these
+elements alone. Any information impacting the market can be
+encompassed within our framework as part of the latest market
+intelligence. The objective of this component is to evaluate the
+sentiment1 of each market intelligence item regarding its influence
+on future asset prices and to provide a detailed summary of whether
+the market has recently exhibited bearish or bullish tendencies,
+thereby assisting in informed decision-making.
+Nevertheless, historical data can offer insights into patterns that
+might influence future pricing and potentially affect current and
+upcoming market dynamics. For instance, if a past product launch
+significantly boosted a company’s stock, a recent launch might have
+a similar effect2. We hope to incorporate these historical experiences
+and patterns intoFinAgent’s considerations. This inspired us to add
+two additional functional layers: retrieving relevant information
+from past market intelligence and summarizing key insights and
+historical experiences from them.
+Diversified Retrieval Operation. A straightforward approach
+involves using the summary of the latest market intelligence as the
+query text and then employing an LLM to extract its semantically
+rich embeddings. This allows for retrieving past market intelligence
+with similar content through vector similarity. However, adopting
+this approach inevitably comes with two significant shortcomings:
+i) the summary of recent market intelligence is primarily aimed
+at supporting subsequent trading decision tasks, not for retrieval
+tasks. The significant gap between these two objectives can lead to
+unsatisfactory retrieval results; ii) some noise unrelated to the re-
+trieval task may be contained in the summary, directly affecting the
+retrieval results. To address these challenges, diversified retrieval
+is implemented inFinAgent. Specifically, we have introduced an
+additional query text field to the output of the latest market intelli-
+gence component, which is dedicated to serving retrieval tasks in
+parallel with the summary that caters to trading tasks. It is worth
+1Market intelligence can be categorized as positive, negative, or neutral based on its
+impact on market perceptions and potential outcomes.
+2Some news will detail the percentage increase or decrease in a company’s stock price
+after some event occurs.
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+5
+5
+Memory
+High-level 
+Reflection
+Market Intelligence 
+Memory
+Low-level 
+Reflection Memory
+High-level 
+Reflection Memory
+Memory
+Price Change Short-Term Price 
+Change Description
+Medium-Term Price 
+Change Description
+Long-Term Price 
+Change Description
+Low-level Reflection
+Diversified 
+Retrieval
+High-level
+Reflection
+ Reflection
+Results
+Diversified 
+Retrieval
+High-level Reflection
+Trading Curve
+Previous Action and Reasoning
+ Day t-3
+ Day t-2
+ Day t-1
+Query Text
+Retrieve the 
+Past HLR
+5
+Latest Market 
+Intelligence (Day t)
+Summarize
+Query Text 
+Summary 
+Diversified 
+Retrieval
+Retrieve the Past MI
+Summarize Summary 
+Past Market Intelligence 
+(Before Day t)
+Market Intelligence
+Auxiliary 
+Information
+Auxiliary
+ Agent
+Guidance
+Sentiment
+MACD
+KDJ&RSI
+ZMR
+Decision
+Trader Preference
+Aggressive
+Conservative
+Action and 
+Reasoning (Day t)
+Decision-
+making
+Augmented 
+Tools
+Decision
+-making
+Augmented Tools
+Low-level 
+Reflection
+FinAgent
+1
+2 3
+4 5
+Market 
+Intelligence
+ Reflection 
+Results
+Query Text 
+Low-level
+Reflection
+Kline with Technical Indicators
+Kline with Technical Indicators
+Retrieve the 
+Past LLR
+Figure 2: The overall architecture of FinAgent. The ordinal numbers in the figure represent the order of execution, where
+augmented tools are implemented with the decision-making module.
+emphasizing that we can define various retrieval types3 to enable
+an agent to retrieve past market intelligence from multiple perspec-
+tives, in multiple senses, and with a purpose. As shown in Figure 3,
+there are𝑀 retrieval types, so retrieving top𝐾 historical market
+intelligence separately can form a combination of𝑀×𝐾 market
+intelligence in the past. This approach assigns specific retrieval
+types to each piece of historical information accompanying the
+summaries. This nuanced labeling facilitates a more targeted and
+efficient search and retrieval process.
+Past Market Intelligence. Once similar past market intelligence is
+searched, it undergoes the summarising step, delivering key insights
+tailored to augment trading decisions. This meticulous approach
+ensures that only the most relevant information is incorporated,
+mitigating the impact of noise and maximizing the utility of histor-
+ical data in informing trading strategies.
+4.2 Memory Module
+The memory mechanism [5, 27, 56] is crucial in LLM Agents for
+effectively handling extensive texts, grasping the context, ensuring
+the coherence of conversations, and improving the agent’s com-
+prehension and logical abilities. In the context of multimodal LLM
+agents for financial trading, memory mechanisms play a crucial
+role in three main aspects: i) Acuity. This feature enables multi-
+modal LLM agents to use market news, financial reports, and other
+information for better market forecasting. By analyzing historical
+data and current events, these agents can predict market trends and
+asset prices more accurately, aiding in effective trading decisions. ii)
+Adaptability. As market conditions change rapidly, memory mecha-
+nisms allow multimodal LLM agents to quickly learn and adapt. By
+continuously analyzing market data and trading outcomes, these
+agents adjust their strategies to handle volatility and seize new
+opportunities. iii) Amendability. It helps multimodal LLM agents
+learn from past mistakes and successful trades. By reflecting on
+these experiences, agents can avoid repeating errors and improve
+3The retrieval types include short-term, medium/long-term market impacts, asset price
+increase/decrease, market trends bearish/bullish, news/reports, etc.
+their trading strategies. This continuous learning enhances their
+performance and creates more robust, efficient trading strategies.
+To realize the 3A superiority - Acuity, Adaptability, and Amend-
+ability - in the memory mechanism, our development of the mem-
+ory module employed a vector storage architecture. This module is
+composed of three main components: market intelligence memory
+(service for (§4.1)), low-level reflection memory (service for (§4.3)),
+and high-level reflection memory (service for ( §4.3)). As shown
+in Figure 3, the summarize operation creates a query text field for
+each module, enhancing memory storage and retrieval. The market
+intelligence module uniquely retrieves past data through query
+text, using vector representations for efficient matching based on
+the vector similarity. All analyses and summaries from the market
+intelligence, low-level reflection, and high-level reflection modules
+are stored in the memory module. This integration equips the agent
+with extensive market data and insights, improving its decision-
+making capabilities.
+4.3 Reflection Module
+A reflection module is incorporated into the agent’s design to em-
+ulate the cognitive learning process inherent in human decision-
+making. The reflection framework is divided into low-level reflec-
+tion and high-level reflection, each serving distinct purposes to
+enhance the agent’s trading decisions. The low-level reflection
+module involves reflecting on the relationship between the agent’s
+observations (e.g., news, financial reports, Kline chart and technical
+indicators) and the resultant price movements in the market, draw-
+ing connections between the provided information and the actual
+price changes. Whereas the high-level reflection step examines past
+decisions, tracking both the agent’s actions and the subsequent
+price movements in order to learn from past successes or mistakes.
+Low-level Reflection Module The primary focus of the low-level
+reflection module is to analyze the connection between the given
+market intelligence together with the Kline chart and technical
+indicators and past and future price changes to enhance decision-
+making. After taking in the price change data, the module generates
+detailed analysis for varying temporal horizons, spanning short-
+term, medium-term to long-term perspectives. The emphasis is
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+ResponseAnalysis: New AR/VR headset anticipated at WWDC, significant interest shown.…Summary: Positive sentiment prevails with expectations around Apple's new AR/VR…The overall market sentiment appears POSITIVE in the medium term…Query: (for diversified retrieval, separated by retrieval types.) - short_term_query: Customer withdrawals challenges, Meta Quest 3 competitive pressure, sell the news event around Apple Reality…- medium_term_query: WWDC Apple AR/VR headset expectations…- long_term_query: NSA spy allegations, CEO pay adjustments and austerity…
+Latest Market IntelligenceInput: Latest market intelligence such as daily stock news and financial reportsPrompt: Latest market intelligence and prices are as follows: Apple‘s VR debut...Based on the above information, you should analyze the key insights and summarize the market intelligence. Please strictly follow the following constraints and output formats:“analysis”: This field is used to extract key insights from the above information…“summary”: This field is used to summarize the analysis and extract key investment insights…“query”: This field will be used to retrieve past market intelligence…
+GPT-4
+Past Market IntelligenceInput: Past market intelligence that retrieved by diversified retrievalPrompt: Past market intelligence and prices are as follows: Apple targets 50 new or rebuilt retail stores through 2027…Based on the above information, you should analyze the key insights… “analysis”: This field is used to extract key insights from the above information…“summary”: This field is used to summarize the analysis and extract key investment insights…
+ResponseAnalysis: Upcoming Apple event may generate excitement, potentially pushing AAPL to record highs. Duration: SHORT-TERM. Sentiment: POSITIVE…Summary: Apple shows resilience and innovation strength, which are likely to maintain investor confidence and could drive the company's market value upward…
+Low-level ReflectionInput: Summaries of latest and past market intelligence, Kline chart and price movementsPrompt: As the above Kline chart shows, Short-Term: Over the past 1 days, the price movement ratio has shown an increase of 1.60%., Medium-Term…you should analyze the above information on the reasoning that lead to past to now price movements.…“reasoning”: This field will be used for trading decisions…provide the detailed reasoning to determine how the above information that lead to the price movements…“query”: This field will be used to retrieve past reasoning for price movements…
+ResponseReasoning: The short-term price increase of 1.60% for AAPL can be attributed to recent positive market sentiment surrounding Apple's upcoming AR/VR product line. Over the past week, AAPL has seen a 3.38% rise can be linked to positive expectations of new product releases…Query: Short-term growth in AAPL's price is driven by reactions to product excitement and concerns, medium-term gains come from the positive…ResponseReasoning: The BUY decision made on 2023-06-01 appears to have been correct. This decision aligned well with the market sentiment and the Kline chart analysis..Improvement: However, constant vigilance and responsiveness to both upward and downward market signals are crucial. For future scenario balancing, it could involve dynamic trade adjustments such as setting stop-losses to mitigate risks…Summary: The success of the BUY decision on 2023-06-01 underscores the importance of comprehensive market analysis, incorporating factors such as market sentiment…Query: The price movement analysis and technical indicators provided a compelling case for a bullish trend, thereby justifying the action to buy…
+High-level ReflectionInput: Summaries of latest and past market intelligence, reasoning of low-level reflection, trading chart , historical action and reasoningPrompt: Trading decision and reasoning made by your assistant for the past 14 days are as follows: 2023-06-01. BUY. The analysis indicates a bullish future trend, aligning with the need to consider a BUY in such a scenario…“reasoning”: You should reflect on the decisions made at each time were right or wrong and give reasoning…“improvement”: If there are bad decisions, are you likely to revise them and maximise the return? If so, how would you revise them?...“summary”: Provide a summary of the lessons learnt from the success / mistakes that can be adapted to future trading decisions…“query”: This field will be used to retrieve past reflection of the decisions, so you should...Decision-makingInput: Summaries of latest and past market intelligence, reasoningaboutthe price movements, summary about the trading decisions, trader preference and augmented tools.Prompt: You should step-by-step analyze above information. And provide the reasoning for what you should to BUY, SELL or HOLD on the asset…“analysis”: You should analyze how the above information may affect the results of your decisions. 1. When analyzing the summary of market intelligence, you should determine whether the market intelligence are positive, negative or neutral…“reasoning”: You should provide the detailed reasoning to determine the decision result executed on the current observation for the trading task…“action": Consider the above information together to give an exact BUY, HOLD and SELL decision result…
+ResponseAnalysis: The overall information for Apple Inc. (AAPL) presents a positive sentiment in the medium term, with expected positive impacts from the company‘s new AR/VR product line…Reasoning: The decision to BUY is based on several factors: Firstly, despite the presence of negative sentiment concerning the NSA spy allegations and customer withdrawals, the market intelligence is largely positive due to the expected impact of Apple's new AR/VR product line which influences a positive medium-term outlook…Action: BUY
+GPT-4
+GPT-4V
+GPT-4V
+GPT-4
+Figure 3: Case studies of FinAgent. We only display the partial prompt for brevity.
+placed on identifying potential patterns in the price movements of
+the targeted stock and deriving insights from how the given market
+intelligence summaries and Kline chart analysis can lead to such
+price movements. In order to facilitate future access and reference,
+the module generates a query field containing a concise summary
+of learned lessons, ensuring efficient retrieval and application of
+insights in subsequent decision-making endeavors.
+Table 2: Differences between reflection of low and high
+Reflection Low-level Reflection High-level Reflection
+Target Price Movements Trading Decisions
+Visual Data Kline Chart Trading Chart
+Market Understanding Micro Macro
+Function Adaptability Amendability
+High-level Reflection Module The high-level reflection mod-
+ule is designed to provide analysis and reflections on past trading
+decisions. Besides the past trading decisions and their underlying
+reasoning, this module incorporates a graphical representation of
+buy and sell points on a trading chart, coupled with a cumulative
+return plot, to offer an intuitive representation of the efficacy of his-
+torical decisions. The initial phase assesses each trading decision’s
+correctness, identifying successes and mistakes. Subsequently, the
+module recommends improvements or corrective actions tailored to
+each identified mistake or success, fostering a continuous learning
+process. Beyond individual decision analysis, the module generates
+overarching lessons from both successes and mistakes, providing
+a summary that can be adapted to future trading decisions and a
+query text to facilitate the retrieval of relevant reflections. This iter-
+ative learning process equips the agent with a dynamic knowledge
+base that evolves with each decision and allows the trading agent
+to draw connections between similar scenarios, applying learned
+lessons for more informed decision-making.
+4.4 Tool-Augmented Decision-making Module
+The decision-making module integrates key inputs, including mar-
+ket intelligence summaries, low-level reflection about price move-
+ment analyses, and reflections on past decisions. Augmented tools
+with professional investment guidance and traditional trading strate-
+gies like MACD Crossover, KDJ with RSI Filter and Mean Reversion
+are also considered. The module analyzes sentiment in market in-
+telligence, predicts bullish or bearish trends from price movements,
+reflects on lessons learned, and evaluates professional guidance
+and traditional indicators. Decisions are derived from combining
+insights from these analyses, also considering the current financial
+position, leading to a final decision—whether to buy, sell, or hold
+the asset. Leveraging the Chain-of-Thought (COT) approach and
+in-context learning principles, our trading decision-making mod-
+ule not only executes trades but also provides reasoning, ensuring
+that each decision is rooted in a comprehensive understanding of
+market dynamics and contextual knowledge.
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+5 EXPERIMENT SETUP
+Our research aims to conduct a thorough evaluation ofFinAgent’s
+trading effectiveness, underscoring its unique capability to func-
+tion efficiently with a significantly reduced historical data training
+window. This assessment also involves leveraging multimodal data
+inputs, incorporating both informational and agent-assistive aug-
+mented tools, along with a multi-perspective diversified retrieval.
+This approach is intended to enhance the understanding of mar-
+ket dynamics and sentiments, enabling more comprehensive and
+logical decision-making processes along with substantiated expla-
+nations. To validate its effectiveness, we have conducted a series of
+experiments to address the following research questions (RQs):
+• RQ1: IsFinAgent outperforming current state-of-the-art trading
+agents and handling tasks that challenge other algorithms?
+• RQ2: What is the effectiveness of each component of FinAgent
+in contributing to its overall performance?
+• RQ3: Does the integration of augmented tools in FinAgent lead
+to a distinguishable improvement in its trading performance?
+• RQ4: How effective is the diversified retrieval inFinAgent?
+5.1 Datasets
+Table 3: Dataset statistics detailing the chronological period
+and the number of each data source for each asset.
+Asset AAPL AMZN GOOGL MSFT TSLA ETHUSD
+Trading Date From 2022-06-01 to 2024-01-01 (398 trading days)
+Asset Price 398 × (open, high, low, close, adj_close)
+Visual Data 398 × (Kline Chart, Trading Chart)
+Asset News 9748 10007 7923 8178 10076 2611
+Expert Guidance 593 509 488 393 600 −
+To conduct a thorough evaluation ofFinAgent, we evaluate it
+across 6 real-world datasets. These included five datasets from the
+US stock markets, and one is the cryptocurrency. Each of them has
+multiple forms of data that come from various sources. Specifically,
+i) Asset Price at the day-level, including price data for open, high,
+low, close, and adj close. ii)Visual Data consists of historical Kline
+charts and trading charts, which are visual representations of asset
+market data and trading process on a daily basis. iii) Asset News
+coverage with daily updates from various esteemed sources such as
+Bloomberg Technology, Seeking Alpha and CNBC Television, en-
+suring a diverse and thorough perspective on the financial markets.
+iv) Expert Guidance provided by financial experts as the auxil-
+iary information, aiming to furnish a thorough and well-rounded
+comprehension of market status. We summarize statistics of the 6
+datasets in Table 3 and further elaborate on them in Appendix B.
+Our diversified portfolio includes five major stocks: Apple Inc.
+(AAPL), Amazon.com Inc. (AMZN), Alphabet Inc. (GOOGL), Mi-
+crosoft Corporation (MSFT), and Tesla Inc. (TSLA) and a prominent
+cryptocurrency named Ethereum (ETHUSD). This selection aims
+to showcaseFinAgent’s versatility and consistency across various
+financial assets. Chosen for their extensive news coverage and rep-
+resentation of different market sectors, these data provide a robust
+basis for assessing FinAgent’s generalization capabilities across
+diverse financial environments. For dataset split, the data from the
+latter half of the year is allocated for testing (2023-06-01∼ 2024-01-
+01) purposes, while the data from the penultimate year is utilized
+for training (2022-06-01∼ 2023-06-01).
+5.2 Evaluation Metrics
+We compareFinAgent and baselines in terms of 6 financial metrics
+following [28, 37], which include 1 profit metric: annual return rate
+(ARR), 3 risk-adjusted profit metrics: Sharpe ratio (SR), Calmar ratio
+(CR), Sortino ratio (SOR), and 2 risk metrics: maximum drawdown
+(MDD), volatility (VOL). Definitions and formulas are as follows:
+• Annual Rate of Return (ARR) is the annualized average return
+rate, calculated as𝐴𝑅𝑅 = 𝑉𝑇−𝑉0
+𝑉0 ×𝐶
+𝑇 , where𝑇 is the total number
+of trading days, and𝐶 = 252 is the number of trading days within
+a year.𝑉𝑇 and𝑉0 represent the final and initial portfolio values.
+• Sharpe Ratio (SR) measures risk-adjusted returns of portfolios.
+It is defined as𝑆𝑅 = E[r]
+𝜎[r] , where E[·] is the expectation,𝜎[·] is
+the standard deviation, r =[𝑉1−𝑉0
+𝑉0 ,𝑉2−𝑉1
+𝑉1 ,..., 𝑉𝑇−𝑉𝑇−1
+𝑉𝑇−1 ]𝑇 denotes
+the historical sequence of the return rate.
+• Volatility (VOL) is the variation in an investment’s return over
+time, measured as the standard deviation𝜎[r].
+• Maximum Drawdown (MDD) measures the largest loss from
+any peak to show the worst case. It is defined as:𝑀𝐷𝐷 = max𝑇
+𝑖=0
+𝑃𝑖−𝑅𝑖
+𝑃𝑖 ,
+where𝑅𝑖 = Î𝑇
+𝑖=1
+𝑉𝑖
+𝑉𝑖−1 and𝑃𝑖 = max𝑇
+𝑖=1𝑅𝑖.
+• Calmar Ratio (CR) compares average annualized return to
+maximum drawdown, assessing risk-adjusted performance. It is
+defined as𝐶𝑅 = E[r]
+𝑀𝐷𝐷 .
+• Sortino Ratio (SoR) is a risk-adjusted measure that focuses
+on the downside risk of a portfolio. It is defined as𝑆𝑜𝑅 = E[r]
+𝐷𝐷 ,
+where𝐷𝐷 is the standard deviation of negative return.
+5.3 Baselines
+We compare and evaluate the trading performance of FinAgent
+with four widely accepted conventional rule-based trading strate-
+gies (B&H, MACD, KDJ&RSI and ZMR) and eight advanced algo-
+rithms. Among these, price prediction models based on machine
+learning and deep learning (ML & DL-based) include LGBM[51],
+LSTM[51], and Transformer[51]. SAC [10], PPO [33] and DQN
+[20] are three models employed deep reinforcement learning (RL-
+based) methods, FinGPT [49] is based on LLM, and another is
+FinMem [55] that based on LLM Agents. The following will pro-
+vide a brief introduction to each model:
+• Rule-based
+– Buy-and-Hold (B&H) involves holding assets for an extended
+period, regardless of short-term market fluctuations, assuming
+that long-term returns will be more favorable.
+– Moving Average Convergence Divergence (MACD) is a tech-
+nical analysis tool that uses MACD indicator and signal line
+crossovers to identify trading signals and market trends.
+– KDJ with RSI Filter (KDJ&RSI) integrates the KDJ indicator for
+detecting market extremes with the RSI indicator for momentum
+analysis to identify precise trading signals in financial markets.
+– Z-score Mean Reversion (ZMR) assumes that the price will
+revert to its mean over time with the metric of Z-score.
+• ML&DL-based
+– LGBM [51] uses a series of tree models to predict price fluctua-
+tions and provide buy and sell signals.
+– LSTM [51] utilizes long short-term memory to improve the ac-
+curacy of price predictions.
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Table 4: Performance comparison of all methods on six profitable metrics. Results in red, yellow and green show the best,
+second best and third best results on each dataset. The improvement row is the FinAgent over the best-performing baselines.
+Categories Models
+AAPL AMZN GOOGL MSFT TSLA ETHUSD
+ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓
+Market B&H 13.0 0.6 14.78 42.33 1.08 17.38 22.47 0.71 12.97 22.49 0.84 12.92 37.4 0.72 32.65 29.26 0.87 23.21
+Rule-based
+MACD 11.86 0.72 10.38 14.27 0.71 7.84 -18.0 -0.89 20.07 15.23 0.77 8.34 -4.9 -0.02 14.15 10.24 0.47 24.32
+KDJ&RSI 2.17 0.17 11.88 19.38 0.65 17.27 24.39 2.13 2.03 18.84 1.06 7.78 2.14 0.17 24.73 8.87 0.51 16.95
+ZMR -3.91 -0.22 8.88 18.73 0.84 7.89 32.51 1.45 5.38 9.86 0.71 6.22 -7.28 -0.09 19.9 29.35 1.23 13.11
+ML&DL-based
+LGBM 16.93 1.47 2.52 29.34 0.72 17.41 24.77 0.7 12.98 19.28 0.67 12.96 15.57 0.84 3.88 24.91 0.72 22.96
+LSTM 10.97 0.54 11.95 15.91 0.46 17.41 24.86 0.7 12.98 18.86 0.68 11.75 17.36 0.78 4.44 36.09 1.03 21.5
+Transformer 17.11 0.96 7.53 32.66 1.11 4.96 13.69 0.46 12.93 17.44 1.46 2.59 39.7 1.04 8.17 31.0 1.02 12.93
+RL-based
+DQN 7.92 0.4 14.88 27.43 1.17 5.27 34.4 1.39 7.15 30.44 1.18 10.56 15.07 0.44 28.12 29.81 1.18 9.53
+SAC 24.84 1.12 11.98 38.33 1.07 13.84 23.8 0.75 13.07 22.02 0.82 12.92 42.22 0.87 26.19 17.84 0.76 10.06
+PPO 13.26 0.61 14.78 21.17 0.7 13.84 38.29 1.3 8.45 11.32 0.48 17.51 33.64 0.78 28.35 34.75 1.31 11.12
+LLM-based FinGPT -5.46 -0.17 16.23 42.93 1.1 18.94 12.28 0.44 13.0 25.1 0.97 9.84 38.43 0.75 31.47 21.57 0.68 25.56
+FinMem 23.78 1.11 10.39 40.07 1.03 18.53 31.27 1.11 8.97 40.58 1.5 7.48 50.04 0.92 25.77 44.72 1.27 13.59
+Ours FinAgent 31.9 1.43 10.4 65.1 1.61 13.2 56.15 1.78 8.45 44.74 1.79 5.57 92.27 2.01 12.14 43.08 1.18 12.72
+Improvement(%) 28.39 - - 51.64 37.61 - 46.64 - - 10.25 19.33 - 84.39 93.27 - - - -
+07/02/2024, 00:05 Awesome-pyecharts
+localhost:63342/FinAgentPrivate/runs/total_proﬁt_2x3_box.html?_ijt=tbu5jmbbuo49gdrgaccv86m757&_ij_reload=RELOAD_ON_SAVE 1/1
+Figure 4: Performance comparison over time between FinAgent and other benchmarks across all assets.
+– Transformer [51] models leverage self-attention mechanisms
+to enhance the precision of price forecasts.
+• RL-based
+– SAC [10] is an off-policy actor-critic algorithm that optimizes
+trading strategies using entropy regularization and soft value
+functions in continuous action spaces.
+– PPO [33] updates trading policies iteratively to balance explo-
+ration and exploitation, ensuring stability and sample efficiency.
+– DQN [20] uses deep neural networks to approximate the action-
+value function and make trading decisions from market data.
+• LLM-based
+– FinGPT [49] is an open-source LLM framework for converting
+financial news and prices into financial decisions.
+– FinMem [55] is an advanced LLM agent framework for auto-
+mated trading, fine-tuned to boost investment returns.
+5.4 Implementation Details
+AlthoughFinAgent’s training and inference can be done without a
+GPU, we utilized a single NVIDIA RTX A6000 GPU for our bench-
+mark methods. To ensure equitable comparison, all benchmarks
+are conducted within the same RL environment for both training
+and evaluation. The following experiments related to FinAgent all
+have diversified retrieval if not specifically noted. Details on the
+benchmark and experiments setup are provided in Appendix ??.
+6 EXPERIMENTAL RESULTS
+Comparison with Baselines (RQ1). We comparedFinAgent with
+9 baseline methods in terms of 6 financial metrics. Table 4 and Figure
+4 demonstrate our method significantly outperforms existing base-
+lines, especially remarkable improvements in profitability, and set-
+ting a new benchmark in the field. The full results and case studies of
+FinAgent are avaliable in Appendix C.FinAgent’s performance on
+the five stocks, as measured by ARR% and SR, with enhancements
+of at least 10% and 19%, compared to the best-performing baseline,
+respectively. Notably, its performance on the TSLA dataset stands
+out even more, achieving 84% and 118% improvement, significantly
+outperforming all other baselines. Across all datasets, FinAgent is
+the only method that consistently outperforms the broader mar-
+ket in terms of profitability. In contrast, FinMem falls short on
+the AMZN dataset, where its ARR% is 40%, underperforming the
+market’s Buy & Hold (B&H) strategy at 42%. This underscores the
+superior stability and robustness of FinAgent compared to other
+baselines. We can also observe that rule-based methods are optimal
+in controlling risk, but not outstanding in capturing returns. This is
+because rule-based model methods are robust to outliers and noise
+in the data and thus can reduce decision risk. It is worth noting
+that high returns often come with high risks. Hence,FinAgent rep-
+resents a slight compromise on risk control. This result relates to
+our chosen investor preference of an aggressive trader. Therefore,
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+FinAgent can take on slightly higher risk to achieve substantially
+greater returns. It allows FinAgent to optimize performance by
+balancing risk and reward effectively.
+Figure 4 illustrates thatFinAgent’s performance surpasses other
+methods regarding cumulative returns, particularly on the TSLA
+dataset. Leveraging market intelligence and the reflection mech-
+anism, FinAgent anticipates a significant stock price drop post-
+September 14, 2023. By taking a short position, it can effectively
+hedge against potential trading losses and generate high returns.
+It’s important to note that our approach yields slightly lower re-
+turns than FinMem on the cryptocurrency ETH, primarily because
+our auxiliary agents are specialized strategies tailored for stocks,
+not for cryptocurrencies with higher trading frequency. Further
+insights from the ablation study section forFinAgent reveal that
+employing a generalized auxiliary agent for cryptocurrency could
+potentially increase returns to 54%, compared to the current 44%.
+This significant difference will be elaborated upon in the forthcom-
+ing ablation studies.
+7 ABLATION STUDIES
+7.1 Effectiveness of Each Component (RQ2)
+In Table 5, we study the effectiveness of market intelligence (M),
+low-level reflection (L), high-level reflection (H) and augmented
+tools (T). When compared to using solelyM and ML, the integration
+of the low-level reflection module leads to an impressive increase
+in ARR% by 45% to 101% for TSLA, and ETHUSD, and cutting risk
+by 14% to 44%. When comparing the ML and MLH, the addition of
+the high-level reflection module significantly enhances the ARR%
+and SR, while notably reducing risk. This improvement comes with
+a minor trade-off: a slight 7% rise in MDD% for TSLA. Compared to
+MLH and MLHT, there’s a minor improvement in stock profitability.
+However, the performance of ETH cryptocurrency dropped by over
+20% due to the introduction of rule-based methods as auxiliary
+agents, which are specialized only for stocks.
+Table 5: Ablation studies over different components. √ in-
+dicates adding the component to FinAgent. Red and green
+indicate performance improvement and reduction.
+M L H T TSLA ETHUSD
+ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓√ 39.01 0.90 22.54 16.21 0.63 15.93√ 39.27 0.77 30.15 25.97 0.77 24.43√√ 57.16(+45.56%) 1.02 (+33.14%) 25.77(-14.52%) 52.33(+101.48%) 1.34(+72.99%) 13.59(-44.39%)√√√ 89.25(+56.14%) 1.46(+42.86%) 27.62(+7.18%) 54.80(+4.73%) 1.40(+5.09%) 11.74(-13.57%)√√√√92.27(+3.38%) 2.01(+37.84%) 12.14(-56.04%) 43.08(-21.39%) 1.18(-16.09%) 12.72(+8.30%)
+7.2 Effectiveness of Augmented Tools (RQ3)
+As previously discussed, while the addition of auxiliary agents to
+stock investments results in profit improvements, it causes a consid-
+erable performance decline in cryptocurrencies. Thus, we conduct
+the experiment that decisions are made solely by augmented tools,
+such as rule-based methods serving as auxiliary agents. We con-
+ducted the experiment in which various auxiliary agents provided
+both decisions and their explanations. These inputs are directly
+integrated into FinAgent’s decision-making module without other
+modules’ involvement in the final decision process. As shown in
+Table 4 and Table 5, the 16% ARR% for solely T method starkly
+contrasts with the 29% ARR% of B&H in ETHUSD, highlighting the
+inefficacy of the stock-specific rule-based methods for cryptocurren-
+cies and demonstrating that introducing to FinAgent significantly
+affects performance. This suggests that investors should not indis-
+criminately add auxiliary agents for investment support. Instead,
+they must meticulously select agents that match the characteristics
+of the market to avoid detrimental impact on performance.
+7.3 Effectiveness of Diversified Retrieval (RQ4)
+As shown in Figure 5(a), we compare the performance of FinAgent
+with or without diversified retrieval on AAPL, and find that the use
+of diversified retrieval can contribute an obvious improvement in
+ARR and SR. As shown in Figure 5(b), we extract different types of
+market intelligence that AAPL diversified retrieve to daily on the
+validation set and filter out individuals with the same content under
+the same type. We perform t-SNE visualization of its LLM extracted
+embedding, and we can find that the LLM extracted embedding has
+a clear distinction between different retrieval types, which proves
+the effectiveness of our method.
+ARR SR
+(a)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4
+Performance
+Method
+FinAgent
+w/o-Diversified-Retrieval
+100
+ 50
+ 0 50 100
+(b)
+100
+50
+0
+50
+100
+t-SNE for Diversified Retrieved Market Intelligence
+Retrieval Type
+medium_term
+short_term
+long_term
+Figure 5: (a) Performance of FinAgent with/without diver-
+sified retrieval on AAPL. (b) Visualization of diversified re-
+trieved market intelligence embedding by t-SNE on AAPL.
+8 CONCLUSION AND FUTURE WORK
+This paper introduces FinAgent, a financial trading agent pow-
+ered by LLM that exhibits high reasoning ability and generalizabil-
+ity.FinAgent is a multimodal agent that integrates both textual
+and visual data, enabling a comprehensive understanding of mar-
+ket dynamics and historical trading behaviors. It is designed to
+independently leverage auxiliary tools for detailed market data
+analysis over different time scales. With its multi-perspective and
+diverse retrieval approach,FinAgent effectively identifies correla-
+tions between current market conditions and past market patterns
+and trends and integrates market information to make final and
+effective decisions. For future research directions, we will apply
+FinAgent to other financial tasks, such as portfolio management,
+where LLM is used to rank each stock according to the observed
+market intelligence and make the stock selection.
+9 ACKNOWLEDGMENTS
+This project is supported by the National Research Foundation,
+Singapore under its Industry Alignment Fund – Pre-positioning
+(IAF-PP) Funding Initiative. Any opinions, findings and conclu-
+sions or recommendations expressed in this material are those of
+the author(s) and do not reflect the views of National Research
+Foundation, Singapore.
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+REFERENCES
+[1] Bo An, Shuo Sun, and Rundong Wang. 2022. Deep reinforcement learning for
+quantitative trading: Challenges and opportunities. IEEE Intelligent Systems 37, 2
+(2022), 23–26.
+[2] Chi Chen, Li Zhao, Jiang Bian, Chunxiao Xing, and Tie-Yan Liu. 2019. Investment
+behaviors can tell what inside: Exploring stock intrinsic properties for stock
+trend prediction. In Proceedings of the 25th ACM SIGKDD International Conference
+on Knowledge Discovery & Data Mining . 2376–2384.
+[3] Wenhu Chen, Ming Yin, Max Ku, Pan Lu, Yixin Wan, Xueguang Ma, Jianyu
+Xu, Xinyi Wang, and Tony Xia. 2023. Theoremqa: A theorem-driven question
+answering dataset. arXiv preprint arXiv:2305.12524 (2023).
+[4] Aakanksha Chowdhery, Sharan Narang, Jacob Devlin, Maarten Bosma, Gaurav
+Mishra, Adam Roberts, Paul Barham, Hyung Won Chung, Charles Sutton, Se-
+bastian Gehrmann, et al. 2023. Palm: Scaling language modeling with pathways.
+Journal of Machine Learning Research 24, 240 (2023), 1–113.
+[5] Filippos Christianos, Georgios Papoudakis, Matthieu Zimmer, Thomas Coste,
+Zhihao Wu, Jingxuan Chen, Khyati Khandelwal, James Doran, Xidong Feng,
+Jiacheng Liu, Zheng Xiong, Yicheng Luo, Jianye Hao, Kun Shao, Haitham Bou-
+Ammar, and Jun Wang. 2023. Pangu-Agent: A fine-tunable generalist agent with
+structured reasoning. arXiv:2312.14878 [cs.AI]
+[6] Yue Deng, Feng Bao, Youyong Kong, Zhiquan Ren, and Qionghai Dai. 2016. Deep
+direct reinforcement learning for financial signal representation and trading.
+IEEE Transactions on Neural Networks and Learning Systems 28, 3 (2016), 653–664.
+[7] Yi Ding, Weiqing Liu, Jiang Bian, Daoqiang Zhang, and Tie-Yan Liu. 2018. Investor-
+imitator: A framework for trading knowledge extraction. InProceedings of the 24th
+ACM SIGKDD International Conference on Knowledge Discovery & Data Mining .
+1310–1319.
+[8] Robert D Edwards, John Magee, and WH Charles Bassetti. 2018.Technical analysis
+of stock trends. CRC press.
+[9] Fuli Feng, Xiangnan He, Xiang Wang, Cheng Luo, Yiqun Liu, and Tat-Seng Chua.
+2019. Temporal relational ranking for stock prediction. ACM Transactions on
+Information Systems (TOIS) 37, 2 (2019), 1–30.
+[10] Tuomas Haarnoja, Aurick Zhou, Kristian Hartikainen, George Tucker, Sehoon
+Ha, Jie Tan, Vikash Kumar, Henry Zhu, Abhishek Gupta, Pieter Abbeel, et al. 2018.
+Soft actor-critic algorithms and applications. arXiv preprint arXiv:1812.05905
+(2018).
+[11] Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu Zheng, Yuheng Cheng,
+Ceyao Zhang, Jinlin Wang, Zili Wang, Steven Ka Shing Yau, Zijuan Lin, Liyang
+Zhou, Chenyu Ran, Lingfeng Xiao, Chenglin Wu, and Jürgen Schmidhuber.
+2023. MetaGPT: Meta programming for a multi-agent collaborative framework.
+arXiv:2308.00352 [cs.AI]
+[12] Ziniu Hu, Weiqing Liu, Jiang Bian, Xuanzhe Liu, and Tie-Yan Liu. 2018. Listening
+to chaotic whispers: A deep learning framework for news-oriented stock trend
+prediction. In Proceedings of the 11th ACM International Conference on Web Search
+and Data Mining (WSDM) . 261–269.
+[13] Guolin Ke, Qi Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma,
+Qiwei Ye, and Tie-Yan Liu. 2017. Lightgbm: A highly efficient gradient boosting
+decision tree. Advances in neural information processing systems 30 (2017).
+[14] Xiao-Yang Liu, Hongyang Yang, Qian Chen, Runjia Zhang, Liuqing Yang, Bowen
+Xiao, and Christina Dan Wang. 2020. FinRL: A deep reinforcement learning
+library for automated stock trading in quantitative finance. Deep RL Workshop,
+NeurIPS 2020 (2020).
+[15] Yang Liu, Qi Liu, Hongke Zhao, Zhen Pan, and Chuanren Liu. 2020. Adaptive
+quantitative trading: An imitative deep reinforcement learning approach. In
+Proceedings of the AAAI Conference on Artificial Intelligence , Vol. 34. 2128–2135.
+[16] Pan Lu, Hritik Bansal, Tony Xia, Jiacheng Liu, Chunyuan Li, Hannaneh Hajishirzi,
+Hao Cheng, Kai-Wei Chang, Michel Galley, and Jianfeng Gao. 2023. Mathvista:
+Evaluating mathematical reasoning of foundation models in visual contexts.
+arXiv preprint arXiv:2310.02255 (2023).
+[17] Pan Lu, Swaroop Mishra, Tanglin Xia, Liang Qiu, Kai-Wei Chang, Song-Chun Zhu,
+Oyvind Tafjord, Peter Clark, and Ashwin Kalyan. 2022. Learn to explain: Multi-
+modal reasoning via thought chains for science question answering. Advances in
+Neural Information Processing Systems 35 (2022), 2507–2521.
+[18] Pan Lu, Baolin Peng, Hao Cheng, Michel Galley, Kai-Wei Chang, Ying Nian Wu,
+Song-Chun Zhu, and Jianfeng Gao. 2023. Chameleon: Plug-and-Play composi-
+tional reasoning with large language models. arXiv:2304.09842 [cs.CL]
+[19] Pan Lu, Liang Qiu, Kai-Wei Chang, Ying Nian Wu, Song-Chun Zhu, Tanmay
+Rajpurohit, Peter Clark, and Ashwin Kalyan. 2022. Dynamic prompt learning
+via policy gradient for semi-structured mathematical reasoning. arXiv preprint
+arXiv:2209.14610 (2022).
+[20] Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis
+Antonoglou, Daan Wierstra, and Martin Riedmiller. 2013. Playing atari with deep
+reinforcement learning. arXiv preprint arXiv:1312.5602 (2013).
+[21] Reiichiro Nakano, Jacob Hilton, Suchir Balaji, Jeff Wu, Long Ouyang, Christina
+Kim, Christopher Hesse, Shantanu Jain, Vineet Kosaraju, William Saunders, et al.
+2021. Webgpt: Browser-assisted question-answering with human feedback.arXiv
+preprint arXiv:2112.09332 (2021).
+[22] David MQ Nelson, Adriano CM Pereira, and Renato A de Oliveira. 2017. Stock
+market’s price movement prediction with LSTM neural networks. In 2017 Inter-
+national Joint Conference on Neural Networks (IJCNN) . 1419–1426.
+[23] OpenAI. 2021. Chatgpt. https://openai.com/research/chatgpt
+[24] OpenAI. 2023. GPT-4 Technical Report. arXiv:2303.08774 [cs.AI]
+[25] OpenAI. 2023. GPT-4V(ision) system card. https://openai.com/research/gpt-4v-
+system-card
+[26] Aaron Parisi, Yao Zhao, and Noah Fiedel. 2022. Talm: Tool augmented language
+models. arXiv preprint arXiv:2205.12255 (2022).
+[27] Joon Sung Park, Joseph C. O’Brien, Carrie J. Cai, Meredith Ringel Morris, Percy
+Liang, and Michael S. Bernstein. 2023. Generative Agents: Interactive simulacra
+of human behavior. arXiv:2304.03442 [cs.HC]
+[28] Molei Qin, Shuo Sun, Wentao Zhang, Haochong Xia, Xinrun Wang, and Bo An.
+2023. Earnhft: Efficient hierarchical reinforcement learning for high frequency
+trading. arXiv preprint arXiv:2309.12891 (2023).
+[29] Ramit Sawhney, Shivam Agarwal, Arnav Wadhwa, and Rajiv Shah. 2020. Deep
+attentive learning for stock movement prediction from social media text and
+company correlations. In Proceedings of the 2020 Conference on Empirical Methods
+in Natural Language Processing (EMNLP) . 8415–8426.
+[30] Ramit Sawhney, Piyush Khanna, Arshiya Aggarwal, Taru Jain, Puneet Mathur,
+and Rajiv Shah. 2020. VolTAGE: Volatility forecasting via text-audio fusion
+with graph convolution networks for earnings calls. In Proceedings of the 2020
+Conference on Empirical Methods in Natural Language Processing (EMNLP) . 8001–
+8013.
+[31] Ramit Sawhney, Arnav Wadhwa, Shivam Agarwal, and Rajiv Shah. 2021. Quanti-
+tative day trading from natural language using reinforcement learning. In Pro-
+ceedings of the 2021 Conference of the North American Chapter of the Association
+for Computational Linguistics: Human Language Technologies . 4018–4030.
+[32] Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta Raileanu, Maria Lomeli,
+Luke Zettlemoyer, Nicola Cancedda, and Thomas Scialom. 2023. Toolformer: Lan-
+guage models can teach themselves to use tools. arXiv preprint arXiv:2302.04761
+(2023).
+[33] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+2017. Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347
+(2017).
+[34] Theodore R Sumers, Shunyu Yao, Karthik Narasimhan, and Thomas L Griffiths.
+2023. Cognitive architectures for language agents.arXiv preprint arXiv:2309.02427
+(2023).
+[35] Liangtai Sun, Yang Han, Zihan Zhao, Da Ma, Zhennan Shen, Baocai Chen, Lu
+Chen, and Kai Yu. 2023. Scieval: A multi-level large language model evaluation
+benchmark for scientific research. arXiv preprint arXiv:2308.13149 (2023).
+[36] Shuo Sun, Molei Qin, Xinrun Wang, and Bo An. 2023. PRUDEX-Compass: To-
+wards systematic evaluation of reinforcement learning in financial markets.
+Transactions on Machine Learning Research (2023).
+[37] Shuo Sun, Molei Qin, wentao zhang, Haochong Xia, Chuqiao Zong, Jie Ying,
+Yonggang Xie, Lingxuan Zhao, Xinrun Wang, and Bo An. 2023. TradeMaster: A
+holistic quantitative trading platform empowered by reinforcement learning. In
+Thirty-seventh Conference on Neural Information Processing Systems Datasets and
+Benchmarks Track.
+[38] Shuo Sun, Rundong Wang, and Bo An. 2023. Reinforcement learning for quan-
+titative trading. ACM Transactions on Intelligent Systems and Technology 14, 3
+(2023), 1–29.
+[39] Shuo Sun, Xinrun Wang, Wanqi Xue, Xiaoxuan Lou, and Bo An. 2023. Mastering
+stock markets with efficient mixture of diversified trading experts. In Proceedings
+of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+(KDD ’23). 2109–2119.
+[40] Romal Thoppilan, Daniel De Freitas, Jamie Hall, Noam Shazeer, Apoorv Kul-
+shreshtha, Heng-Tze Cheng, Alicia Jin, Taylor Bos, Leslie Baker, Yu Du, et al. 2022.
+Lamda: Language models for dialog applications. arXiv preprint arXiv:2201.08239
+(2022).
+[41] Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne
+Lachaux, Timothée Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal
+Azhar, et al. 2023. Llama: Open and efficient foundation language models. arXiv
+preprint arXiv:2302.13971 (2023).
+[42] Guanzhi Wang, Yuqi Xie, Yunfan Jiang, Ajay Mandlekar, Chaowei Xiao, Yuke Zhu,
+Linxi Fan, and Anima Anandkumar. 2023. Voyager: An open-ended embodied
+agent with large language models. arXiv preprint arXiv: Arxiv-2305.16291 (2023).
+[43] Jia Wang, Tong Sun, Benyuan Liu, Yu Cao, and Hongwei Zhu. 2019. CLVSA:
+A convolutional LSTM based variational sequence-to-sequence model with at-
+tention for predicting trends of financial markets. In Proceedings of the 28th
+International Joint Conference on Artificial Intelligence (IJCAI) . 3705–3711.
+[44] Rundong Wang, Hongxin Wei, Bo An, Zhouyan Feng, and Jun Yao. 2021. Com-
+mission fee is not enough: A hierarchical reinforced framework for portfolio
+management. In Proceedings of the AAAI Conference on Artificial Intelligence ,
+Vol. 35. 626–633.
+[45] Xiaoxuan Wang, Ziniu Hu, Pan Lu, Yanqiao Zhu, Jieyu Zhang, Satyen Subra-
+maniam, Arjun R Loomba, Shichang Zhang, Yizhou Sun, and Wei Wang. 2023.
+Scibench: Evaluating college-level scientific problem-solving abilities of large
+language models. arXiv preprint arXiv:2307.10635 (2023).
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+[46] Zhicheng Wang, Biwei Huang, Shikui Tu, Kun Zhang, and Lei Xu. 2021. Deep-
+Trader: a deep reinforcement learning approach for risk-return balanced portfolio
+management with market conditions Embedding. In Proceedings of the AAAI
+Conference on Artificial Intelligence, Vol. 35. 643–650.
+[47] Shijie Wu, Ozan Irsoy, Steven Lu, Vadim Dabravolski, Mark Dredze, Sebas-
+tian Gehrmann, Prabhanjan Kambadur, David Rosenberg, and Gideon Mann.
+2023. Bloomberggpt: A large language model for finance. arXiv preprint
+arXiv:2303.17564 (2023).
+[48] Yumo Xu and Shay B Cohen. 2018. Stock movement prediction from tweets and
+historical prices. In Proceedings of the 56th Annual Meeting of the Association for
+Computational Linguistics (ACL). 1970–1979.
+[49] Hongyang Yang, Xiao-Yang Liu, and Christina Dan Wang. 2023. FinGPT: Open-
+Source Financial Large Language Models. arXiv preprint arXiv:2306.06031 (2023).
+[50] Hui Yang, Sifu Yue, and Yunzhong He. 2023. Auto-GPT for Online Decision
+Making: Benchmarks and Additional Opinions. arXiv:2306.02224 [cs.AI]
+[51] Xiao Yang, Weiqing Liu, Dong Zhou, Jiang Bian, and Tie-Yan Liu. 2020. Qlib: An
+AI-oriented quantitative investment platform. arXiv preprint arXiv:2009.11189
+(2020).
+[52] Zhengyuan Yang, Linjie Li, Jianfeng Wang, Kevin Lin, Ehsan Azarnasab,
+Faisal Ahmed, Zicheng Liu, Ce Liu, Michael Zeng, and Lijuan Wang. 2023.
+MM-REACT: Prompting ChatGPT for multimodal reasoning and action.
+arXiv:2303.11381 [cs.CV]
+[53] Yunan Ye, Hengzhi Pei, Boxin Wang, Pin-Yu Chen, Yada Zhu, Ju Xiao, and Bo Li.
+2020. Reinforcement-learning based portfolio management with augmented asset
+movement prediction states. In Proceedings of the AAAI Conference on Artificial
+Intelligence, Vol. 34. 1112–1119.
+[54] Wenhao Yu, Dan Iter, Shuohang Wang, Yichong Xu, Mingxuan Ju, Soumya Sanyal,
+Chenguang Zhu, Michael Zeng, and Meng Jiang. 2022. Generate rather than
+retrieve: Large language models are strong context generators. arXiv preprint
+arXiv:2209.10063 (2022).
+[55] Yangyang Yu, Haohang Li, Zhi Chen, Yuechen Jiang, Yang Li, Denghui Zhang,
+Rong Liu, Jordan W. Suchow, and Khaldoun Khashanah. 2023. FinMem: A
+performance-enhanced LLM trading agent with layered memory and character
+design. arXiv:2311.13743 [q-fin.CP]
+[56] Chi Zhang, Zhao Yang, Jiaxuan Liu, Yucheng Han, Xin Chen, Zebiao Huang,
+Bin Fu, and Gang Yu. 2023. AppAgent: Multimodal agents as smartphone users.
+arXiv:2312.13771 [cs.CV]
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+A DETAILS OF NOTATIONS
+We provide the main notations in Table 6.
+Table 6: Notations in the paper.
+Notation Description
+𝑡 Current day
+𝑇 Total trading days
+𝑡 − 𝑠,𝑡 +𝑠 Short-term price analysis from 𝑡− 𝑠 to 𝑡 and 𝑡 to 𝑠
+𝑡 − 𝑚,𝑡 +𝑚 Medium-term price analysis from 𝑡− 𝑚 to 𝑡 and 𝑡
+to 𝑚
+𝑡 − 𝑙,𝑡 +𝑙 Long-term price analysis from 𝑡 − 𝑙 to 𝑡 and 𝑡 to 𝑙
+S A finite set of states
+𝑠𝑡 State of day 𝑡
+A A finite set of actions
+𝑎𝑡 Action of day 𝑡
+T Transition function
+𝑅 Reward function
+𝑟𝑡 Reward of day 𝑡 with 𝑠𝑡 and 𝑎𝑡
+𝛾 Discount factor
+𝜋 Policy
+𝜇(·) Specialized modules for reasoning
+𝜇𝑡 Specialized modules of day 𝑡
+𝜆 Financial trading task
+𝑀𝑒𝑚 𝜆
+𝑡 Memory of day 𝑡 in the task 𝜆
+𝑇𝑜𝑜𝑙 𝜆
+𝑡 Tool of day 𝑡 in the task 𝜆
+𝜙(·) Task-relevant prompt generator
+D𝜆
+𝑡 Action parsing function
+𝑀𝜆
+𝑡 ,𝐿 𝜆
+𝑡 ,𝐻 𝜆
+𝑡 M, L, H modules
+𝜙𝜆
+𝑀,𝜙 𝜆
+𝐿,𝜙 𝜆
+𝐻 Prompt generator for M, L, H
+𝑀𝑒𝑚 𝑀,𝜆
+𝑡 ,𝑀𝑒𝑚 𝐿,𝜆
+𝑡 ,𝑀𝑒𝑚 𝐻,𝜆
+𝑡 Memory of M, L, H modules of day 𝑡 in the task 𝜆
+𝐾𝐶 𝑡 Kline chart of day 𝑡
+𝑇𝐶 𝑡 Trading chart of day 𝑡
+𝑆𝐿𝑀𝐼 𝑡 Summary of latest market intelligence of day 𝑡
+𝑄𝐿𝑀𝐼 𝑡 = {𝑄𝐿
+1,...,𝑄 𝐿
+𝑀} 𝑀 query texts for retrieving past market intelli-
+gence of day 𝑡
+𝐾 Retrieved topk items
+𝑄𝑃
+𝑖,𝑗 Retrieval type 𝑖 and top 𝑗 retrieved past market
+latest intelligence
+𝑆𝑃𝑀𝐼 𝑡 Summary of past market intelligence of day 𝑡
+𝐿𝐿𝑅 𝑆𝑇
+𝑡 ,𝐿𝐿𝑅 𝑀𝑇
+𝑡 ,𝐿𝐿𝑅 𝐿𝑇
+𝑡 Low-level reflection results at short term, medium
+term and long term impact
+𝑄𝐿𝐿𝑅 𝑡 Query text for low-level reflection of day 𝑡
+𝑃𝐿𝐿𝑅 𝑆𝑇
+𝑡 ,𝑃𝐿𝐿𝑅 𝑀𝑇
+𝑡 ,𝑃𝐿𝐿𝑅 𝐿𝑇
+𝑡 retrieved topk low-level reflection in short term,
+medium term and long term
+𝐻𝐿𝑅 𝑡 High-level reflection results of day 𝑡
+𝑄𝐻𝐿𝑅 𝑡 Query text for high-level reflection of day 𝑡
+𝑃𝐻𝐿𝑅 𝑡 Retrieved topk high-level reflection of day 𝑡
+B DETAILS OF DATASETS AND PROCESSING
+To conduct a thorough evaluation of FinAgent, we evaluate it across 6 real-world datasets. These included five datasets from the US stock
+markets and one is the cryptocurrency. Each of them have multiple forms of data that come from various sources. Specifically, i) Asset
+Price at the day-level, including price data for open, high, low, close, and adj close; ii) Visual Data consists of historical Kline charts and
+trading charts, which are visual representations of asset market data and trading process on a daily basis; iii) Asset News coverage with
+daily updates from various esteemed sources, including Bloomberg Technology, Seeking Alpha, CNBC Television, and more, ensuring a
+diverse and thorough perspective on the financial markets; iv) Expert Guidance provided by financial experts as the auxiliary information,
+aiming to furnish a thorough and well-rounded comprehension of market status. We summarize statistics of the 6 datasets in Table 3 and
+further elaborate on them as follows:
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+Table 7: Performance comparison of all methods on six profitable metrics. Results in red, yellow and green show the best,
+second best and third best results on each dataset. Improvement is the FinAgent over the best-performing baselines.
+Categories Models AAPL AMZN GOOGL MSFT TSLA ETHUSD
+ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓ ARR%↑ SR↑ MDD%↓
+Market B&H 13.0024 0.5998 14.7809 42.3337 1.0834 17.3848 22.4726 0.7108 12.9705 22.4942 0.8373 12.9214 37.4009 0.7239 32.6523 29.2588 0.8655 23.2077
+Rule-based
+MACD 11.8642 0.7221 10.3799 14.2748 0.7056 7.841 -18.0034 -0.8867 20.0718 15.2322 0.7704 8.3445 -4.8974 -0.0203 14.1546 10.236 0.4689 24.3238KDJ&RSI 2.1737 0.1746 11.8789 19.3757 0.6495 17.2746 24.391 2.1282 2.03 18.8415 1.0587 7.7806 2.137 0.1695 24.727 8.8745 0.5098 16.9536ZMR -3.9084 -0.2186 8.8819 18.7289 0.8412 7.8938 32.5112 1.4533 5.3845 9.8637 0.7106 6.221 -7.2806 -0.0863 19.9048 29.3519 1.2294 13.1098
+ML&DL-based
+LGBM 16.9268 1.4708 2.5204 29.3395 0.7187 17.414 24.7746 0.6958 12.9814 19.2771 0.6668 12.9616 15.575 0.843 3.8844 24.9111 0.7154 22.9568LSTM 10.9742 0.5363 11.9535 15.9051 0.4588 17.414 24.8583 0.6989 12.9814 18.8603 0.6779 11.7544 17.3617 0.7796 4.4384 36.0865 1.0254 21.5043Transformer 17.115 0.957 7.5295 32.6621 1.1134 4.9593 13.692 0.4571 12.9253 17.4417 1.4553 2.5895 39.701 1.0445 8.1721 31.0038 1.0205 12.9309
+RL-based DQN 7.9236 0.401 14.8785 27.4305 1.1701 5.2736 34.4026 1.3859 7.1473 30.4406 1.1782 10.5612 15.0693 0.443 28.1204 29.8052 1.1826 9.5297SAC 24.8449 1.1234 11.9776 38.3318 1.0733 13.8432 23.8034 0.7506 13.0667 22.0218 0.8177 12.9214 42.2209 0.8727 26.1947 17.8439 0.7635 10.0587PPO 13.2619 0.6096 14.7809 21.1745 0.6965 13.8432 38.2907 1.2982 8.4536 11.3219 0.4831 17.5054 33.6444 0.7767 28.3527 34.7469 1.3096 11.1171
+LLM-basedFinGPT -5.4632 -0.1731 16.2268 42.9331 1.1026 18.9359 12.277 0.4444 13.0013 25.1012 0.9667 9.8426 38.4338 0.7504 31.474 21.5746 0.6801 25.562FinMem 23.7809 1.1073 10.3872 40.07 1.034 18.5279 31.2716 1.1073 8.9706 40.5757 1.4989 7.4838 50.0353 0.9233 25.7714 44.717 1.2738 13.587
+FinAgent(Our)
+No-finetuned -2.0047 -0.0216 16.7567 41.6548 1.3959 5.2678 21.108 0.682 13.0719 22.6483 0.8373 12.9214 38.0164 1.2951 12.0609 23.4038 0.7924 23.231w/o-MLH 18.5186 0.9882 11.8842 62.3106 1.6379 11.3999 37.3308 1.2657 4.0 18.297 0.8945 9.6792 39.0087 0.8971 22.5376 16.2106 0.6329 15.9325w/o-LHT 12.6872 0.5849 14.7806 43.2195 1.1057 14.6786 17.414 0.5763 13.006 18.4571 0.7108 14.2551 39.2704 0.7662 30.1507 25.9708 0.7718 24.4314w/o-HT 21.3044 0.9777 13.6424 47.3916 1.2032 15.5038 29.3235 1.0177 8.9706 39.9073 1.4777 7.4838 57.1638 1.0201 25.7714 52.3265 1.3351 13.587w/o-T 33.7509 1.5205 8.1783 63.8116 1.7009 9.7325 52.1066 1.8228 8.3106 42.5213 1.4909 7.6998 89.2532 1.4573 27.6213 54.804 1.403 11.7427FinAgent 31.8972 1.4326 10.4032 65.0998 1.6096 13.198 56.1542 1.7786 8.4532 44.7359 1.7884 5.5732 92.2677 2.0088 12.143 43.0822 1.1773 12.7171
+Improvement(%) 35.8464 3.3791 - 51.6308 45.3636 - 46.6523 - - 10.2529 19.3142 - 84.4052 92.3217 - 22.5574 7.1319 -
+Categories Models AAPL AMZN GOOGL MSFT TSLA ETHUSD
+SOR↑ CR↑ VOL↓ SOR↑ CR↑ VOL↓ SOR↑ CR↑ VOL↓ SOR↑ CR↑ VOL↓ SOR↑ CR↑ VOL↓ SOR↑ CR↑ VOL↓
+Market B&H 16.5846 0.9589 0.0114 35.1804 2.4319 0.0188 18.5186 1.9025 0.0167 26.5133 1.8135 0.0135 23.3319 1.3856 0.0301 23.2235 1.3831 0.0222
+Rule-based
+MACD 13.7755 1.1877 0.0082 19.2452 1.9176 0.0103 -20.917 -0.8883 0.0097 18.7485 1.8966 0.0099 -0.4067 -0.0544 0.0182 10.8951 0.5433 0.0166KDJ&RSI 3.3994 0.2578 0.0084 16.6915 1.2471 0.016 36.6655 11.4076 0.0052 19.5346 2.4169 0.0085 3.3617 0.2737 0.0192 7.7786 0.6106 0.012ZMR -2.9977 -0.37 0.0072 9.5853 2.4473 0.011 35.1125 5.7782 0.0103 12.9275 1.6385 0.0069 -1.8214 -0.1642 0.0182 21.4433 2.1715 0.0137
+ML&DL-based
+LGBM 45.2444 6.5825 0.0049 26.2943 1.8469 0.0193 19.7497 2.082 0.0167 22.6593 1.5993 0.0134 12.1981 4.0837 0.0081 21.8037 1.2503 0.0217LSTM 14.5498 0.9915 0.0095 14.7442 1.1241 0.0184 19.5489 2.0865 0.0167 21.5244 1.7144 0.0128 16.1653 4.0391 0.0099 27.1716 1.7031 0.0193Transformer 28.3604 2.288 0.0078 27.8371 6.5258 0.0125 11.5053 1.2619 0.0154 19.7493 6.6012 0.0051 34.1884 4.8624 0.0164 27.864 2.4209 0.0166
+RL-based DQN 10.3705 0.6266 0.0111 29.7698 5.1156 0.0111 37.7389 4.619 0.0114 32.8642 2.8493 0.0122 11.0394 0.7399 0.0225 24.6279 3.0545 0.0143SAC 33.5676 2.0552 0.0105 32.432 2.766 0.0112 19.3937 1.9708 0.0165 26.0662 1.7829 0.0135 26.2869 1.441 0.0251 13.3918 1.9199 0.0146PPO 16.766 0.9747 0.0113 20.3167 1.6735 0.0159 42.7201 4.3691 0.0136 14.7808 0.7484 0.013 19.1547 1.3203 0.0231 27.2416 2.9836 0.0147
+LLM-basedFinGPT -4.6731 -0.246 0.0111 34.8082 2.2545 0.0186 11.6596 1.1842 0.0167 30.1935 2.5867 0.0127 23.1813 1.4402 0.0291 18.5817 1.0131 0.0221FinMem 29.8819 2.2731 0.0102 33.0779 2.1843 0.0188 34.7826 3.4572 0.0134 47.1061 5.1266 0.0123 25.8819 2.0887 0.028 34.1492 3.1349 0.0194
+FinAgent(Our)
+No-finetuned -0.5635 -0.0295 0.011 46.9773 7.5705 0.0127 17.5637 1.7864 0.0164 26.6949 1.8259 0.0135 17.2111 3.0426 0.0136 19.6504 1.1081 0.0188w/o-MLH 20.8183 1.5678 0.009 53.4328 4.9724 0.0166 24.9489 2.9016 0.0137 22.0401 1.9273 0.01 20.3649 1.8355 0.0221 14.0758 1.1917 0.0174w/o-LHT 16.15 0.9396 0.0114 35.1674 2.9256 0.0186 15.1339 1.552 0.0168 22.4806 1.3883 0.0133 22.2082 1.5162 0.0286 21.0778 1.2131 0.0222w/o-HT 29.5194 1.576 0.0105 40.4896 2.9758 0.0184 33.6191 3.2906 0.0139 46.4396 5.054 0.0123 28.3015 2.2956 0.0278 37.172 3.6027 0.0212w/o-T 46.6145 3.9301 0.0101 50.1096 5.9255 0.0162 62.2508 5.7201 0.0125 40.3937 5.2137 0.0129 41.5642 2.9306 0.0266 37.4619 4.2958 0.0208FinAgent 44.2812 2.9424 0.0102 52.5602 4.4841 0.0176 62.2992 6.0365 0.0138 49.6249 7.4209 0.0111 45.4139 6.4543 0.0187 31.0159 3.3078 0.0207
+Improvement(%) 3.0282 - - 51.8823 16.0088 - 45.8311 - - 5.3471 12.4174 - 32.8342 32.7390 - 9.7007 37.0315 -
+Asset. We selected a varied portfolio comprising five stocks Apple Inc. (AAPL), Amazon.com Inc. (AMZN), Alphabet Inc. (GOOGL),
+Microsoft Corporation (MSFT), and Tesla Inc. (TSLA), a foreign exchange pair, and a prominent cryptocurrency, Ethereum (ETH). This
+selection aims to showcase FinAgent’s versatility and consistency across various financial assets. Chosen for their extensive news coverage
+and representation of different market sectors, these data provide a robust basis for assessing FinAgent’s generalization capabilities across
+diverse financial environments.
+Price and News. We acquired price and news data for all assets from Financial Modeling Prep4 (FMP), wherein the price data encompasses
+including open, high, low, clos, and adj close. The news data is sourced from renowned market analysis and stock research platforms, notably
+including Seeking Alpha and so on. This selection ensures a comprehensive dataset, integrating both quantitative financial metrics and
+qualitative market insights.
+Visual Data. Within the textual data framework, we furnishFinAgent with visual information, specifically including historical Kline
+charts and trading line charts, to enhance its analytical capabilities. The tool employed for this plotting task is the pyecharts 5, a specialized
+library for financial data visualization.
+Expert Guidance. Expert Guidance is provided as a distinct component of the auxiliary information by augmented tools. This selection
+ensures a comprehensive dataset, integrating professional analysts and individual investors insights, fostering a diverse range of perspectives
+in the investment community. We obtained the expert professional analysis from Seeking Alpha6. Seeking Alpha is a popular platform
+among investors and financial analysts, is renowned for its diverse professional analysis, providing valuable insights from seasoned analysts
+across the financial market spectrum.
+Trading Date. For dataset split, the data from the latter half of the year is allocated for testing (2023-06-01 7∼ 2024-01-01) purposes,
+while the data from the penultimate year is utilized for training (2022-06-01∼ 2023-06-01).
+C DETAILS OF COMPARISON WITH BASELINES
+We compared FinAgent with 9 baseline methods in terms of 6 financial metrics. Table 7 and Figure 4 demonstrate our method significantly
+outperforms existing baselines, especially remarkable improvements in profitability, and setting a new benchmark in the field.
+4FMP API provides data about stock historical price and news, company financial statements, and cryptocurrencies. Entry is https://site.financialmodelingprep.com.
+5https://github.com/pyecharts/pyecharts
+6https://seekingalpha.com/
+7Dates follow the YYYY-MM-DD format, e.g., "2023-06-01" for June 1st, 2023.
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+D DETAILS OF BENCHMARK METHODS
+We compare and evaluate the trading performance ofFinAgent with four widely accepted conventional benchmark trading strategies (B&H,
+MACD, KDJ&RSI and ZMR) and five advanced algorithms. Among these, SAC [10], PPO [33] and DQN [20] are three models employed
+deep reinforcement learning (RL) methods, FinGPT [49] is based on LLM, and another is FinMem [55] that based on LLM Agents. The
+following will provide a brief introduction to each model:
+• Rule-based
+– Buy-and-Hold (B&H) involves holding assets for an extended period, regardless of short-term market fluctuations, assuming that
+long-term returns will be more favorable.
+– Moving Average Convergence Divergence (MACD) is a technical analysis tool that uses MACD indicator and signal line crossovers to
+identify trading signals and market trends.
+– KDJ with RSI Filter (KDJ&RSI) integrates the KDJ indicator for detecting market extremes with the RSI indicator for momentum
+analysis to identify precise trading signals in financial markets.
+– Z-score Mean Reversion (ZMR) assumes that the price will revert to its mean over time with the metric of Z-score.
+• RL-based
+– SAC [10] is an off-policy actor-critic algorithm that optimizes trading strategies using entropy regularization and soft value functions in
+continuous action spaces.
+– PPO [33] updates trading policies iteratively to balance exploration and exploitation, ensuring stability and sample efficiency.
+– DQN [20] uses deep neural networks (DNNs) to make trading decisions by approximating the action-value function based on market data.
+• LLM-based
+– FinGPT [49] is an open-source LLM framework designed to transform textual and numerical inputs into insightful financial decisions,
+asserting its advantage over conventional B&H strategies.
+– FinMem [55] is an advanced LLM agent framework for automated trading, optimized through fine-tuning the agent’s perceptual span
+and character settings, significantly enhancing trading performance and boosting cumulative investment returns.
+E DETAILS OF WORKFLOW OF FINAGENT
+In this section we focus on FinAgent’s workflow and code implementation.
+E.1 Main Entry
+We follow the RL process, as shown in the code below, where we initialize the dataset and construct environment for subsequent training
+and inference.
+1 # load config
+2 cfg = Config.fromfile(config_path)
+3 # build dataset
+4 dataset = DATASET.build(cfg.dataset)
+5 # build environment
+6 env = ENVIRONMENT.build(cfg.environment)
+7 # init environment
+8 state, info = env.reset()
+9 # execute steps
+10 while True:
+11 action = run_step(cfg, state, info, ...)
+12 state, reward, done, truncated, info = env.step(action)
+13 if done:
+14 break
+15 # done
+E.2 Run Step
+The whole process is mainly through the global params storage and transimit parameters, we do not list the parameter transmition process
+in detail here. To execute each step, the following primary procedures are adhered to:
+1 # global params
+2 params = dict()
+3 # plot Kline chart
+4 kline_path = plots.plot_kline(state, info, ...)
+5 params.update({"kline_path": kline_path})
+6 # prepare tools params
+7 tools_params = prepared_tools_params(state, info, ...)
+8 params.update(tools_params)
+9 # 01 - latest market intelligence
+10 template = read_resource_file(...) # load latest market intelligence prompt template
+11 lmi = PROMPT.build(...) # build instance
+12 lmi_res = lmi.run(state, info, params, template,...) # run
+13 # 02 - retrieve the past market intelligence
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+14 retrieved_params = retrieve_pmi(state, info, params, memory, diverse_query, ...)
+15 params.update(retrieved_params)
+16 # 03 - add latest market intelligence to memory
+17 lmi.add_to_memory(lmi_res, memory, ...)
+18 # 04 - past market intelligence
+19 template = read_resource_file(...) # load past market intelligence prompt template
+20 pmi = PROMPT.build(...) # build instance
+21 pmi_res = pmi.run(state, info, params, template,...) # run
+22 # 05 - low-level reflection
+23 template = read_resource_file(...) # load low level reflection prompt template
+24 llr = PROMPT.build(...) # build instance
+25 llr_res = llr.run(state, info, params, template,...) # run
+26 # 06 - retrieve the past low-level reflection
+27 retrieved_params = retrieve_pllr(state, info, params, memory, diverse_query, ...)
+28 params.update(retrieved_params)
+29 # 07 - add low-level reflection to memory
+30 llr.add_to_memory(llr_res, memory, ...)
+31 # plot trading chart
+32 trading_path = plots.plot_trading(state, info, ...)
+33 params.update({"trading_path": trading_path})
+34 # 08 - high-level reflection
+35 template = read_resource_file(...) # load high level reflection prompt template
+36 hlr = PROMPT.build(...) # build instance
+37 hlr_res = hlr.run(state, info, params, template,...) # run
+38 # 09 - retrieve the past high-level reflection
+39 retrieved_params = retrieve_phlr(state, info, params, memory, diverse_query, ...)
+40 params.update(retrieved_params)
+41 # 10 - add high-level reflection to memory
+42 hlr.add_to_memory(hlr_res, memory, ...)
+43 # 11 - decision-making
+44 template = read_resource_file(...) # load decision-making prompt template
+45 decision = PROMPT.build(...) # build instance
+46 decision_res = decision.run(state, info, params, template,...) # run
+47 action, reasoning = decision_res["action"], decision_res["reasoing"]
+F DETAILS OF PROMPT DESIGN
+Our prompt templates are designed modularly, featuring separate templates for the latest and past market intelligence, low-level reflection,
+high-level reflection, and decision-making modules. These templates include variables marked as "$$key$$" within the "params" dictionary.
+Our template utilizes HTML for its ability to combine formatting with user-friendly visualizations. In our testing, we find that JSON’s strict
+formatting requirements frequently lead to errors. As a result, we opt for XML, a format with more flexible standards. XML is easy to parse,
+and extracting fields is simpler, making it an ideal output format for GPT-4. Next, we use the "params" to populate the template with the
+relevant fields. Following this, we employ an HTML parsing tool to create the JSON message format GPT-4 API demands. We then make API
+requests to obtain the response output. An example of low level reflection template running is shown as the following Figure 6.
+Lastly, we extract the necessary field information using an XML parsing tool as depicted in Figure 7. Each of these iframe modules is
+carefully designed by us, and we will show each of them in the following subsections.
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Low-level reflection template with iframe modules 
+Replace the html with the corresponding iframe module and params
+User-friendly visualizations
+Messageto GPT-4 API
+Figure 6: An example of low level reflection template running.
+Responded XML from GPT-4 Parsed Results
+Figure 7: Example of parsing the results of a low-level reflection template running that call to GPT-4 get responded XML.
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+F.1 Market Intelligence
+Market intelligence consists of 2 templates and 7 iframe modules, the XML templates of which are detailed as follows:
+Latest Market Intelligence Template.
+1 <!DOCTYPE html>
+2 <html lang="en">
+3 <head>
+4 <meta charset="UTF-8">
+5 <meta name="viewport" content="width=device-width,␣initial-scale=1.0">
+6 <title>Summary of Latest Market Intelligence</title>
+7 </head>
+8 <body>
+9
+10 <iframe name="system_content_trading"></iframe>
+11
+12 <div class="message" role="user">
+13 <iframe name="market_intelligence_task_description_trading"></iframe>
+14
+15 <div class="market_intelligence">
+16 <p class="placeholder">The following market intelligence (e.g., news, financial reports) contains latest (i.e., today)
+information related to $$asset_symbol$$, including the corresponding dates, headlines, and contents, with each item
+distinguished by a unique ID. Furthermore, if the day is not closed for trading, the section also provides the open, high,
+low, close, and adjusted close prices.
+17 <br><br>Latest market intelligence and prices are as follows:
+18 <br>$$latest_market_intelligence$$
+19 </p>
+20 </div>
+21
+22 <iframe name="market_intelligence_effects_trading"></iframe>
+23
+24 <iframe name="market_intelligence_latest_summary_prompt_trading"></iframe>
+25
+26 <iframe name="market_intelligence_latest_summary_output_format_trading"></iframe>
+27
+28 </div>
+29
+30 </body>
+31 </html>
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Past Market Intelligence Template.
+1 <!DOCTYPE html>
+2 <html lang="en">
+3 <head>
+4 <meta charset="UTF-8">
+5 <meta name="viewport" content="width=device-width,␣initial-scale=1.0">
+6 <title>Summary of Past Market Intelligence</title>
+7 </head>
+8 <body>
+9
+10 <iframe name="system_content_trading"></iframe>
+11
+12 <div class="message" role="user">
+13 <iframe name="market_intelligence_task_description_trading"></iframe>
+14
+15 <div class="market_intelligence">
+16 <p class="placeholder">The following market intelligence (e.g., news, financial reports) contains past (i.e., before today)
+information related to $$asset_symbol$$, including the corresponding dates, headlines, and contents, with each item
+distinguished by a unique ID. Furthermore, if the day is not closed for trading, the section also provides the open, high,
+low, close, and adjusted close prices.
+17 <br><br>Past market intelligence and prices are as follows:
+18 <br>$$past_market_intelligence$$
+19 </p>
+20 </div>
+21
+22 <iframe name="market_intelligence_effects_trading"></iframe>
+23
+24 <iframe name="market_intelligence_past_summary_prompt_trading"></iframe>
+25
+26 <iframe name="market_intelligence_past_summary_output_format_trading"></iframe>
+27 </div>
+28
+29 </body>
+30 </html>
+System Content.
+1 <div class="message" role="system">
+2 <p class="text">You are an expert trader who have sufficient financial experience and provides expert guidance. Imagine working in a
+real market environment where you have access to various types of information (e.g., daily real-time market price, news,
+financial reports, professional investment guidance and market sentiment) relevant to financial markets. You will be able to view
+visual data that contains comprehensive information, including Kline charts accompanied by technical indicators, historical
+trading curves and cumulative return curves. And there will be some auxiliary strategies providing you with explanations for
+trading decisions. You are capable of deeply analyzing, understanding, and summarizing information, and use these information to
+make informed and wise trading decisions (i.e., BUY, HOLD and SELL).
+3 </p>
+4 </div>
+Task Description.
+1 <div class="task_description">
+2 <p class="placeholder">You are currently focusing on summarizing and extracting the key insights of the market intelligence of a
+$$asset_type$$ known as $$asset_name$$, which is denoted by the symbol $$asset_symbol$$. This $$asset_type$$ is publicly traded
+and is listed on the $$asset_exchange$$. Its primary operations are within the $$asset_sector$$ sector, specifically within the
+$$asset_industry$$ industry. To provide you with a better understanding, here is a brief description of $$asset_name$$:
+$$asset_description$$. In this role, your current goal as an analyst is to conduct a comprehensive summary of the market
+intelligence of the asset represented by the symbol $$asset_symbol$$. To do so effectively, you will rely on a comprehensive set
+of information as follows:
+3 </p>
+4 </div>
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+Market Intelligence Effects.
+1 <div class="market_intelligence_effects">
+2 <p class="placeholder">Considering the effects of market intelligence can be in the following ways:
+3 <br>1. If there is market intelligence UNRELATED to asset prices, you should ignore it. For example, advertisements on some news
+platforms.
+4 <br>2. Based on the duration of their effects on asset prices, market intelligence can be divided into three types:
+5 <br> - SHORT-TERM market intelligence can significantly impact asset prices over the next few days.
+6 <br> - MEDIUM-TERM market intelligence is likely to impact asset prices for the upcoming few weeks.
+7 <br> - LONG-TERM market intelligence should have an impact on asset prices for the next several months.
+8 <br> - If the duration of the market intelligence impact is not clear, then you should consider it as LONG-TERM.
+9 <br>3. According to market sentiment, market intelligence can be divided into three types:
+10 <br> - POSITIVE market intelligence typically has favorable effects on asset prices. You should focus more on the favorable effects,
+but do not ignore the unfavorable effects:
+11 <br> - Favorable: Positive market intelligence boosts investor confidence, increases asset demand, enhances asset image, and
+reflects asset health. It may lead to increased buying activity and a potential increase in asset prices.
+12 <br> - Unfavorable: Positive market intelligence can lead to market overreaction and volatility, short-term investment focus, risk
+of price manipulation, and may have only a temporary effect on stock prices. It may contribute to a decline in asset prices.
+13 <br> - NEGATIVE market intelligence typically has unfavorable effects on asset prices. You should focus more on the unfavorable
+effects, but do not ignore the favorable effects:
+14 <br> - Favorable: Negative market intelligence act as a market correction mechanism, provide crucial investment information,
+ultimately contributing to the long-term health of the market and the asset prices.
+15 <br> - Unfavorable: Negative market intelligence lead to investor panic and a short-term decline in stock prices, as well as cause
+long-term damage to a company's reputation and brand, adversely contributing to a decline in asset prices.
+16 <br> - NEUTRAL market intelligence describes an event that has an uncertain impact on the asset price with no apparent POSITIVE or
+NEGATIVE bias.
+17 <br> - If the market intelligence is RELATED to the $$asset_name$$, but it's not clear whether the sentiment is positive or
+negative. Then you should consider it as NEUTRAL.
+18 <br>4. Market intelligence related to the asset collaborators or competitors may influence the asset prices.
+19 <br>5. Because the past market intelligence has a lower effect on the present, you should pay MORE attention to the latest market
+intelligence.
+20 </p>
+21 </div>
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Latest Market Intelligence Prompt.
+1 <div class="prompt">
+2 <p class="placeholder">Based on the above information, you should analyze the key insights and summarize the market intelligence.
+Please strictly follow the following constraints and output formats:
+3 <br><br>"analysis": This field is used to extract key insights from the above information. You should analyze step-by-step and
+follow the rules as follows and do not miss any of them:
+4 <br>1. Please disregard UNRELATED market intelligence.
+5 <br>2. For each piece of market intelligence, you should analyze it and extract key insights according to the following steps:
+6 <br> - Extract the key insights that can represent this market intelligence. It should NOT contain IDs, $$asset_name$$ or
+$$asset_symbol$$.
+7 <br> - Analyze the market effects duration and provide the duration of the effects on asset prices. You are only allowed to select
+the only one of the three types: SHORT-TERM, MEDIUM-TERM and LONG-TERM.
+8 <br> - Analyze the market sentiment and provide the type of market sentiment. A clear preference over POSITIVE or NEGATIVE is much
+better than being NEUTRAL. You are only allowed to select the only one of the three types: POSITIVE, NEGATIVE and NEUTRAL.
+9 <br>3. The analysis you provide for each piece of market intelligence should be concise and clear, with no more than 40 tokens per
+piece.
+10 <br>4. Your analysis MUST be in the following format:
+11 <br> - ID: 000001 - Analysis that you provided for market intelligence 000001.
+12 <br> - ID: 000002 - Analysis that you provided for market intelligence 000002.
+13 <br> - ...
+14
+15 <br><br>"summary": This field is used to summarize the above analysis and extract key investment insights. You should summarize
+step-by-step and follow the rules as follows and do not miss any of them:
+16 <br>1. Please disregard UNRELATED market intelligence.
+17 <br>2. Because this field is primarily used for decision-making in trading tasks, you should focus primarily on asset related key
+investment insights.
+18 <br>3. Please combine and summarize market intelligence on similar sentiment tendencies and duration of effects on asset prices.
+19 <br>4. You should provide an overall analysis of all the market intelligence, explicitly provide a market sentiment (POSITIVE,
+NEGATIVE or NEUTRAL) and provide a reasoning for the analysis.
+20 <br>5. Summary that you provided for market intelligence should contain IDs (e.g., ID: 000001, 000002).
+21 <br>6. The summary you provide should be concise and clear, with no more than 300 tokens.
+22
+23 <br><br>"query": This field will be used to retrieve past market intelligence based on the duration of effects on asset prices. You
+should summarize step-by-step the above analysis and extract key insights. Please follow the rules as follows and do not miss
+any of them:
+24 <br>1. Please disregard UNRELATED market intelligence.
+25 <br>2. Because this field is primarily used for retrieving past market intelligence based on the duration of effects on asset
+prices, you should focus primarily on asset related key insights and duration of effects.
+26 <br>3. Please combine the analysis of market intelligence on similar duration of effects on asset prices.
+27 <br>4. You should provide a query text for each duration of effects on asset prices, which can be associated with several pieces of
+market intelligence.
+28 <br> - The query text that you provide should be primarily keywords from the original market intelligence contained.
+29 <br> - The query text that you provide should NOT contain IDs, $$asset_name$$ or $$asset_symbol$$.
+30 <br> - The query text that you provide should be concise and clear, with no more than 100 tokens per query.
+31 </p>
+32 </div>
+Latest Market Intelligence Output Format.
+1 <div class="output_format">
+2 <p class="text">You should ONLY return a valid XML object. You MUST FOLLOW the XML output format as follows:
+3 <br>&lt;output&gt;
+4 <br>&lt;string name="analysis"&gt;- ID: 000001 - Analysis that you provided for market intelligence 000001. - ID: 000002 - Analysis
+that you provided for market intelligence 000002...&lt;/string&gt;
+5 <br>&lt;string name="summary"&gt;The summary that you provided.&lt;/string&gt;
+6 <br>&#9;&lt;map name="query"&gt;
+7 <br>&#9;&#9;&lt;string name="short_term_query"&gt;Query text that you provided for SHORT-TERM.&lt;/string&gt;
+8 <br>&#9;&#9;&lt;string name="medium_term_query"&gt;Query text that you provided for MEDIUM-TERM.&lt;/string&gt;
+9 <br>&#9;&#9;&lt;string name="long_term_query"&gt;Query text that you provided for LONG-TERM.&lt;/string&gt;
+10 <br>&#9;&lt;/map&gt;
+11 <br>&lt;/output&gt;
+12 </p>
+13 </div>
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+Past Market Intelligence Prompt.
+1 <div class="prompt">
+2 <p class="text">Based on the above information, you should analyze the key insights and summarize the market intelligence. Please
+strictly follow the following constraints and output formats:
+3 <br><br>"analysis": This field is used to extract key insights from the above information. You should analyze step-by-step and
+follow the rules as follows and do not miss any of them:
+4 <br>1. Please disregard UNRELATED market intelligence.
+5 <br>2. For each piece of market intelligence, you should analyze it and extract key insights according to the following steps:
+6 <br> - Extract the key insights that can represent this market intelligence. It should NOT contain IDs, $$asset_name$$ or
+$$asset_symbol$$.
+7 <br> - Analyze the market effects duration and provide the duration of the effects on asset prices. You are only allowed to select
+the only one of the three types: SHORT-TERM, MEDIUM-TERM and LONG-TERM.
+8 <br> - Analyze the market sentiment and provide the type of market sentiment. A clear preference over POSITIVE or NEGATIVE is much
+better than being NEUTRAL. You are only allowed to select the only one of the three types: POSITIVE, NEGATIVE and NEUTRAL.
+9 <br>3. The analysis you provide for each piece of market intelligence should be concise and clear, with no more than 40 tokens per
+piece.
+10 <br>4. Your analysis MUST be in the following format:
+11 <br> - ID: 000001 - Analysis that you provided for market intelligence 000001.
+12 <br> - ID: 000002 - Analysis that you provided for market intelligence 000002.
+13 <br> - ...
+14
+15 <br><br>"summary": This field is used to summarize the above analysis and extract key investment insights. You should summarize
+step-by-step and follow the rules as follows and do not miss any of them:
+16 <br>1. Please disregard UNRELATED market intelligence.
+17 <br>2. Because this field is primarily used for decision-making in trading tasks, you should focus primarily on asset related key
+investment insights.
+18 <br>3. Please combine and summarize market intelligence on similar sentiment tendencies and duration of effects on asset prices.
+19 <br>4. You should provide an overall analysis of all the market intelligence, explicitly provide a market sentiment (POSITIVE,
+NEGATIVE or NEUTRAL) and provide a reasoning for the analysis.
+20 <br>5. Summary that you provided for market intelligence should contain IDs (e.g., ID: 000001, 000002).
+21 <br>6. The summary you provide should be concise and clear, with no more than 300 tokens.
+22 </p>
+23 </div>
+Past Market Intelligence Output Format.
+1 <div class="output_format">
+2 <p class="text">You should ONLY return a valid XML object. You MUST FOLLOW the XML output format as follows:
+3 <br>&lt;output&gt;
+4 <br>&lt;string name="analysis"&gt;- ID: 000001 - Analysis that you provided for market intelligence 000001. - ID: 000002 - Analysis
+that you provided for market intelligence 000002...&lt;/string&gt;
+5 <br>&lt;string name="summary"&gt;The summary that you provided.&lt;/string&gt;
+6 <br>&lt;/output&gt;
+7 </p>
+8 </div>
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+F.2 Low-level Reflection
+Low-level reflection consists of 1 template and 7 iframe modules, the XML templates of which are detailed as follows:
+Low-level Reflection Template.
+1 <!DOCTYPE html>
+2 <html lang="en">
+3 <head>
+4 <meta charset="UTF-8">
+5 <meta name="viewport" content="width=device-width,␣initial-scale=1.0">
+6 <title>Low-level Reflection for Trading</title>
+7 </head>
+8
+9 <body>
+10 <iframe name="system_content_trading"></iframe>
+11
+12 <div class="message" role="user">
+13 <iframe name="low_level_reflection_task_description_trading"></iframe>
+14
+15 <div class="market_intelligence">
+16 <p class="placeholder">The following are summaries of the latest (i.e., today) and past (i.e., before today) market intelligence
+(e.g., news, financial reports) you've provided.
+17 <br><br>The following is a summary from your assistant of the past market intelligence:
+18 <br>$$past_market_intelligence_summary$$
+19 <br><br>The following is a summary from your assistant of the latest market intelligence:
+20 <br>$$latest_market_intelligence_summary$$
+21 </p>
+22 </div>
+23
+24 <iframe name="market_intelligence_effects_trading"></iframe>
+25
+26 <iframe name="low_level_reflection_kline_chart_trading"></iframe>
+27
+28 <iframe name="low_level_reflection_price_change_description_with_next_trading"></iframe>
+29
+30 <iframe name="low_level_reflection_effects_trading"></iframe>
+31
+32 <iframe name="low_level_reflection_prompt_with_next_trading"></iframe>
+33
+34 <iframe name="low_level_reflection_output_format_trading"></iframe>
+35 </div>
+36
+37 </body>
+38 </html>
+System Content.
+1 <div class="message" role="system">
+2 <p class="text">You are an expert trader who have sufficient financial experience and provides expert guidance. Imagine working in a
+real market environment where you have access to various types of information (e.g., daily real-time market price, news,
+financial reports, professional investment guidance and market sentiment) relevant to financial markets. You will be able to view
+visual data that contains comprehensive information, including Kline charts accompanied by technical indicators, historical
+trading curves and cumulative return curves. And there will be some auxiliary strategies providing you with explanations for
+trading decisions. You are capable of deeply analyzing, understanding, and summarizing information, and use these information to
+make informed and wise trading decisions (i.e., BUY, HOLD and SELL).
+3 </p>
+4 </div>
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+Task Description.
+1 <div class="task_description">
+2 <p class="placeholder">You are currently focusing on analyzing the price movement of a $$asset_type$$ known as $$asset_name$$, which is
+denoted by the symbol $$asset_symbol$$. This corporation is publicly traded and is listed on the $$asset_exchange$$. Its primary
+operations are within the $$asset_sector$$ sector, specifically within the $$asset_industry$$ industry. To provide you with a
+better understanding, here is a brief description of $$asset_name$$: $$asset_description$$. In this role, your objective is to
+act as an analyst and formulate predictions regarding the future price movement of the asset represented by the symbol
+$$asset_symbol$$. To do so effectively, you will rely on a comprehensive set of information and data as follows.
+3 </p>
+4 </div>
+Kline chart.
+1 <div class="kline_chart">
+2 <p class="text">The following is a Kline chart with Moving Average (MA) and Bollinger Bands (BB) technical indicators.
+3 <br>1.Moving Average (MA) is a trend indicator that is calculated by averaging the price over a period of time. The MA is used to
+smooth out price fluctuations and highlight longer-term trends or cycles.
+4 <br>2.Bollinger Bands (BB) are a technical analysis tool based on moving averages and standard deviations, which are used to
+identify overbought and oversold conditions.
+5 <br> - Bollinger Band Upper (BBU): The upper band is calculated by adding 2 standard deviations to the moving average.
+6 <br> - Bollinger Band Lower (BBL): The lower band is calculated by subtracting 2 standard deviations from the moving average.
+7 <br> - When the bandwidth (the distance between the upper and lower bands) widens, it indicates increased market volatility; when
+it narrows, it indicates reduced volatility.
+8 <br>3.The Kline chart shows the price movements of the asset over time.
+9 <br> - The "horizontal␣axis" is the date and the "vertical␣axis" is the price.
+10 <br> - The wider part of the candlestick, known as the "real␣body" represents the range between the opening and closing prices.
+Lines extending from the top and bottom of the body, also called "shadows" or "tails" indicate the high and low prices during
+the period.
+11 <br> - The "GREEN" candlestick indicates that the closing price is higher than the opening price, and the "RED" candlestick
+indicates that the closing price is lower than the opening price.
+12 <br> - The "BLUE" line is MA5, the "GREEN" line is BBL, the "YELLOW" line is BBU.
+13 <br> - The "GREY␣BALLOON␣MARKER" is today's date.
+14 </p>
+15 <img src="$$kline_path$$">
+16 </div>
+Price Change Description.
+1 <div class="price_change_description">
+2 <p class="placeholder">As the above Kline chart shows, today's date is $$date$$. The chart's date range is from past
+$$long_term_past_date_range$$ days to next $$long_term_next_date_range$$ days. Additionally, the price movements within this
+range can be categorized into three time horizons:
+3 <br>1. Short-Term: Over the past $$short_term_past_date_range$$ days, the price movement ratio has shown
+$$short_term_past_price_movement$$, and for the next $$short_term_next_date_range$$ days, it indicates
+$$short_term_next_price_movement$$.
+4 <br>2. Medium-Term: Over the past $$medium_term_past_date_range$$ days, the price movement ratio has shown
+$$medium_term_past_price_movement$$, and for the next $$medium_term_next_date_range$$ days, it indicates
+$$medium_term_next_price_movement$$.
+5 <br>3. Long-Term: Over the past $$long_term_past_date_range$$ days, the price movement ratio has shown
+$$long_term_past_price_movement$$, and for the next $$long_term_next_date_range$$ days, it indicates
+$$long_term_next_price_movement$$.
+6 <br>* For each price movement, you should not only focus on the starting price and ending price but also pay attention to the price
+change trends.
+7 </p>
+8 </div>
+Low-level Reflection Effects.
+1 <div class="low_level_reflection_effects">
+2 <p class="text">Lessons learnt from analysis of price movments can be considered in the following ways:
+3 <br>1. Momentum is a term used in financial market analysis to describe the tendency of asset prices to keep moving in their
+current direction over time. It is often used to predict short-term price movements based on historical trends. The basic
+premise of momentum is that securities that have performed well in the past are likely to continue performing well, while
+those that have performed poorly are likely to continue performing poorly.
+4 <br>2. Identify the potential price movements patterns and characteristics of this particular asset and incorporate these insights
+into your further analysis and reflections when applicable.
+5 </p>
+6 </div>
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Low-level Reflection Prompt.
+1 <div class="prompt">
+2 <p class="text">Based on the above information, you should analyze the summary of market intelligence and the Kline chart on the
+reasoning that lead to past to feature price movements. Then output the results as the following constraints:
+3 <br><br>"reasoning": This field will be used for trading decisions. You should think step-by-step and provide the detailed
+reasoning to determine how the summary of market intelligence and Kline chart that lead to the price movements. Please
+strictly follow the following constraints and output formats:
+4 <br>1. There should be three fields under this field, corresponding to the three time horizons: "short_term_reasoning", "
+medium_term_reasoning", and "long_term_reasonig".
+5 <br> - "short_term_reasoning": Reasoning about the price movements at the Short-Term.
+6 <br> - "medium_term_reasoning": Reasoning about the price movements at the Medium-Term.
+7 <br> - "long_term_reasoning": Reasoning about the price movements at the Long-Term.
+8 <br>3. For the reasoning of each time horizon, you should analyze step-by-step and follow the rules as follows and do not miss any
+of them:
+9 <br> - Price movements should involve a shift in trend from the past to the future.
+10 <br> - You should analyze the summary of market intelligence that lead to the price movements. And you should pay MORE attention to
+the effect of latest market intelligence on price movements.
+11 <br> - You should conduct a thorough analysis of the Kline chart, focusing on price changes. And provide the reasoning driving
+these price movements.
+12 <br> - The reasoning you provide for each time horizon should be concise and clear, with no more than 300 tokens.
+13 <br><br>"query": This field will be used to retrieve past reasoning for price movements, so you should step-by-step analyze and
+extract the key information that represent each piece of reasoning based on the above analysis. You need to follow the rules
+and do not miss any of them:
+14 <br>1. Analyzing and summarizing reasoning of each time horizon, condensing it into a concise sentence of no more than 100 tokens
+to extract key information.
+15 </p>
+16 </div>
+Low-level Reflection Output Format.
+1 <div class="output_format">
+2 <p class="text">You should ONLY return a valid XML object. You MUST FOLLOW the XML output format as follows:
+3 <br>&lt;output&gt;
+4 <br>&#9;&lt;map name="reasoning"&gt;
+5 <br>&#9;&#9;&lt;string name="short_term_reasoning"&gt;Reasoning about the Short-Term price movements.&lt;/string&gt;
+6 <br>&#9;&#9;&lt;string name="medium_term_reasoning"&gt;Reasoning about the Medium-Term price movements.&lt;/string&gt;
+7 <br>&#9;&#9;&lt;string name="long_term_reasoning"&gt;Reasoning about the Long-Term price movements.&lt;/string&gt;
+8 <br>&#9;&lt;/map&gt;
+9 <br>&#9;&lt;string name="query"&gt;The key sentence should be utilized to retrieve past reasoning for price movements.&lt;/string&
+gt;
+10 <br>&lt;/output&gt;
+11 </p>
+12 </div>
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+F.3 High-level Reflection
+High-level reflection consists of 1 template and 6 iframe modules, the XML templates of which are detailed as follows:
+High-level Reflection Template.
+1 <!DOCTYPE html>
+2 <html lang="en">
+3 <head>
+4 <meta charset="UTF-8">
+5 <meta name="viewport" content="width=device-width,␣initial-scale=1.0">
+6 <title>High Level Reflection for Trading</title>
+7 </head>
+8 <body>
+9 <iframe name="system_content_trading"></iframe>
+10
+11 <div class="message" role="user">
+12 <iframe name="high_level_reflection_task_description_trading"></iframe>
+13
+14 <div class="market_intelligence">
+15 <p class="placeholder">The following are summaries of the latest (i.e., today) and past (i.e., before today) market intelligence
+(e.g., news, financial reports) you've provided.
+16 <br><br>The following is a summary from your assistant of the past market intelligence:
+17 <br>$$past_market_intelligence_summary$$
+18 <br><br>The following is a summary from your assistant of the latest market intelligence:
+19 <br>$$latest_market_intelligence_summary$$
+20 </p>
+21 </div>
+22
+23 <iframe name="market_intelligence_effects_trading"></iframe>
+24
+25 <div class="low_level_reflection">
+26 <p class="placeholder">The analysis of price movements provided by your assistant across three time horizons: Short-Term, Medium
+-Term, and Long-Term.
+27 <br><br>Past analysis of price movements are as follows:
+28 <br>$$past_low_level_reflection$$
+29 <br><br>Latest analysis of price movements are as follows:
+30 <br>$$latest_low_level_reflection$$
+31 </p>
+32 </div>
+33
+34 <iframe name="low_level_reflection_effects_trading"></iframe>
+35
+36 <iframe name="high_level_reflection_trading_chart_trading"></iframe>
+37
+38 <iframe name="high_level_reflection_prompt_trading"></iframe>
+39
+40 <iframe name="high_level_reflection_output_format_trading"></iframe>
+41 </div>
+42
+43 </body>
+44 </html>
+System Content.
+1 <div class="message" role="system">
+2 <p class="text">You are an expert trader who have sufficient financial experience and provides expert guidance. Imagine working in a
+real market environment where you have access to various types of information (e.g., daily real-time market price, news,
+financial reports, professional investment guidance and market sentiment) relevant to financial markets. You will be able to view
+visual data that contains comprehensive information, including Kline charts accompanied by technical indicators, historical
+trading curves and cumulative return curves. And there will be some auxiliary strategies providing you with explanations for
+trading decisions. You are capable of deeply analyzing, understanding, and summarizing information, and use these information to
+make informed and wise trading decisions (i.e., BUY, HOLD and SELL).
+3 </p>
+4 </div>
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Task Description.
+1 <div class="task_description">
+2 <p class="placeholder">You are currently targeting the trading decisions of a $$asset_type$$ known as $$asset_name$$, which is denoted
+by the symbol $$asset_symbol$$. This $$asset_type$$ is publicly traded and is listed on the $$asset_exchange$$. Its primary
+operations are within the $$asset_sector$$ sector, specifically within the $$asset_industry$$ industry. To provide you with a
+better understanding, here is a brief description of $$asset_name$$: $$asset_description$$. In this role, your objective is to
+make correct trading decisions during the trading process of the asset represented by the $$asset_symbol$$, and considering step-
+by-step about the decision reasoning. To do so effectively, you will rely on a comprehensive set of information as follows.
+3 </p>
+4 </div>
+Trading chart.
+1 <div class="trading_chart">
+2 <p class="placeholder">The following figure showing the Adj Close price movements with trading decisions (e.g., BUY and SELL), together
+with another plot showing the cumulative returns below. The price movements of the traded asset after the trading decisions can
+be seen in the figure.
+3 <br>1. The first chart is the trading chart, which shows the price movements and trading decisions of the trade over time.
+4 <br> - The "horizontal␣axis" is the date and the "vertical␣axis" is the Adj Close price.
+5 <br> - The "GREEN" rhombic marker indicates the "BUY" decision, the "RED" balloon marker indicates the "SELL" decision, no sign
+indicates that a "HOLD" decision is made.
+6 <br>2. The second chart is the cumulative returns chart, which shows the cumulative returns of the trade over time.
+7 <br> - The "horizontal␣axis" is the date and the "vertical␣axis" is the cumulative returns.
+8 <br> - Cumulative return greater than 0 indicates a profit, while less than 0 signifies a loss.
+9 </p>
+10 <img src="$$trading_path$$">
+11 <p class="placeholder"> Trading decision and reasoing made by your assistant for the past $$previous_action_look_back_days$$ days are
+as follows:
+12 <br>$$previous_action_and_reasoning$$
+13 </p>
+14 </div>
+High-level Reflection Effects.
+1 <div class="high_level_reflection_effects">
+2 <p class="text">Lessons learnt from reflection of the past trading decisions can be considered in the following ways:
+3 <br>1. Learning about the correct and wrong experiences of past trading decisions can provide guidance for subsequent decisions
+that have maximized profit.
+4 </p>
+5 </div>
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+High-level Reflection Prompt.
+1 <div class="prompt">
+2 <p class="text">Based on the above information, you should think step-by-step and provide the detailed analysis and summary to
+highlight key investment insights. Then output the results as the following constraints:
+3 <br><br>"reasoning": You should reflect on whether the decisions made at each point in time were right or wrong and give reasoning.
+You need to follow the rules and do not miss any of them:
+4 <br>1. If the trading decision was right or wrong (a right trading decision would lead to an increase in return and a wrong
+decision does otherwise).
+5 <br>2. Analyse the contributing factors of the success decision / mistake, considering the market intelligences, Kline chart
+analysis, technical indicators, technical signals and analysis of price movements and the weightage of each factor in the
+decision-making.
+6 <br><br>"improvement": If there are bad decisions, are you likely to revise them and maximise the return? If so, how would you
+revise them? You need to follow the rules and do not miss any of them:
+7 <br>1. Suggest improvements or corrective actions for each identified mistake/success.
+8 <br>2. Detailed list of improvements (e.g., 2023-01-03: HOLD to BUY) to the trading decisions that could have been made to improve
+the return.
+9 <br><br>"summary": Provide a summary of the lessons learnt from the success / mistakes that can be adapted to future trading
+decisions, where you can draw connections between similar scenarios and apply learnt lessons.
+10 <br><br>"query": This field will be used to retrieve past reflection of the trading decisions, so you should step-by-step analyze
+and extract the key information that represent each piece of reasoning based on the above analysis. You need to follow the
+rules and do not miss any of them:
+11 <br>1. Analyze and summarize the "summary", and condensing it into a concise sentence of no more than 1000 tokens to extract key
+information.
+12 </p>
+13 </div>
+High-level Reflection Output Format.
+1 <div class="output_format">
+2 <p class="text">You should ONLY return a valid XML object. You MUST FOLLOW the XML output format as follows:
+3 <br>&lt;output&gt;
+4 <br>&#9;&lt;string name="reasoning"&gt;Reflection about trading decision.&lt;/string&gt;
+5 <br>&#9;&lt;string name="improvement"&gt;Improvements or corrective decisions.&lt;/string&gt;
+6 <br>&#9;&lt;string name="summary"&gt;Analysis and summary.&lt;/string&gt;
+7 <br>&#9;&lt;string name="query"&gt;Query for the past reflection of the trading decisions.&lt;/string&gt;
+8 <br>&lt;/output&gt;
+9 </p>
+10 </div>
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+F.4 Decision-making
+Decision-making consists of 1 template and 7 iframe modules, the XML templates of which are detailed as follows:
+Decision-making Template.
+1 <!DOCTYPE html>
+2 <html lang="en">
+3 <head>
+4 <meta charset="UTF-8">
+5 <meta name="viewport" content="width=device-width,␣initial-scale=1.0">
+6 <title>Decision Making Template for Trading</title>
+7 </head>
+8 <body>
+9 <iframe name="system_content_trading"></iframe>
+10
+11 <div class="message" role="user">
+12 <iframe name="decision_task_description_trading"></iframe>
+13
+14 <iframe name="decision_trader_preference_trading"></iframe>
+15
+16 <div class="market_intelligence">
+17 <p class="placeholder">The following are summaries of the latest (i.e., today) and past (i.e., before today) market intelligence
+(e.g., news, financial reports) you've provided.
+18 <br><br>The following is a summary from your assistant of the past market intelligence:
+19 <br>$$past_market_intelligence_summary$$
+20 <br><br>The following is a summary from your assistant of the latest market intelligence:
+21 <br>$$latest_market_intelligence_summary$$
+22 </p>
+23 </div>
+24
+25 <iframe name="market_intelligence_effects_trading"></iframe>
+26
+27 <div class="low_level_reflection">
+28 <p class="placeholder">The analysis of price movements provided by your assistant across three time horizons: Short-Term, Medium
+-Term, and Long-Term.
+29 <br><br>Past analysis of price movements are as follows:
+30 <br>$$past_low_level_reflection$$
+31 <br><br>Latest analysis of price movements are as follows:
+32 <br>$$latest_low_level_reflection$$
+33 <br><br>Please consider these reflections, identify the potential price movements patterns and characteristics of this
+particular stock and incorporate these insights into your further analysis and reflections when applicable.
+34 </p>
+35 </div>
+36
+37 <iframe name="low_level_reflection_effects_trading"></iframe>
+38
+39 <div class="high_level_reflection">
+40 <p class="placeholder">As follows are the analysis provided by your assistant about the reflection on the trading decisions you
+made during the trading processs, and evaluating if they were correct or incorrect, and considering if there are
+opportunities for optimization to achieve maximum returns.
+41 <br><br>Past reflections on the trading decisions are as follows:
+42 <br>$$past_high_level_reflection$$
+43 <br><br>Latest reflections on the trading decisions are as follows:
+44 <br>$$latest_high_level_reflection$$
+45 </p>
+46 </div>
+47
+48 <iframe name="high_level_reflection_effects_trading"></iframe>
+49
+50 <iframe name="decision_guidance_trading"></iframe>
+51
+52 <iframe name="decision_strategy_trading"></iframe>
+53
+54 <iframe name="decision_state_description_trading"></iframe>
+55
+56 <iframe name="decision_prompt_trading"></iframe>
+57
+58 <iframe name="decision_output_format_trading"></iframe>
+59
+60 </div>
+61
+62 </body>
+63 </html>
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+System Content.
+1 <div class="message" role="system">
+2 <p class="text">You are an expert trader who have sufficient financial experience and provides expert guidance. Imagine working in a
+real market environment where you have access to various types of information (e.g., daily real-time market price, news,
+financial reports, professional investment guidance and market sentiment) relevant to financial markets. You will be able to view
+visual data that contains comprehensive information, including Kline charts accompanied by technical indicators, historical
+trading curves and cumulative return curves. And there will be some auxiliary strategies providing you with explanations for
+trading decisions. You are capable of deeply analyzing, understanding, and summarizing information, and use these information to
+make informed and wise trading decisions (i.e., BUY, HOLD and SELL).
+3 </p>
+4 </div>
+Task Description.
+1 <div class="task_description">
+2 <p class="placeholder">You are currently targeting the trading of a company known as $$asset_name$$, which is denoted by the symbol
+$$asset_symbol$$. This corporation is publicly traded and is listed on the $$asset_exchange$$. Its primary operations are within
+the $$asset_sector$$ sector, specifically within the $$asset_industry$$ industry. To provide you with a better understanding,
+here is a brief description of $$asset_name$$: $$asset_description$$. In this role, your objective is to make correct trading
+decisions during the trading process of the asset represented by the $$asset_symbol$$, and considering step by step about the
+decision reasoning. To do so effectively, you will rely on a comprehensive set of information and data as follows. </p>
+3 </div>
+Trading Preference.
+1 <div class="trader_preference">
+2 <p class="placeholder">$$trader_preference$$</p>
+3 </div>
+Decision-making Guidance.
+1 <div class="guidance">
+2 <p class="placeholder">As follows are the professional investment guidances, including headlines, content, and market sentiment.
+3 <br>$$guidance$$
+4 </p>
+5 </div>
+G DETAILS OF FINAGENT ANALYSIS
+We provide a detailed analysis of FinAgent’s performance in this section and will provide some decision-making case studies.
+G.1 Case Study I
+FinAgent’s decision-making prowess showcases a sophisticated blend of comprehensive analysis, adaptability, and rigorous risk manage-
+ment, each playing a pivotal role in navigating the intricate dynamics of financial markets. The methodology is rooted in a deep analysis
+that encompasses an array of factors such as market intelligence, price trends, and expert investment advice. This holistic approach enables
+FinAgent to distill actionable insights from complex data streams, as demonstrated in Example 1 where the BUY decision was informed by
+a confluence of positive market sentiment toward Apple’s innovative AR/VR product line and a bullish price trajectory across different
+timelines.
+The essence of FinAgent’s strategy lies in its remarkable adaptability and commitment to learning from historical trading patterns. This
+aspect is vividly illustrated in Example 2, where a SELL decision was guided by an analysis revealing a negative medium to long-term market
+sentiment, underscoring FinAgent’s capacity to preemptively adjust its positions in anticipation of future market movements.
+Correcting the earlier oversight, Example 3 indeed underscores a SELL decision, driven by a nuanced evaluation of mixed market
+sentiments, immediate negative challenges potentially impacting AAPL’s stock price, and the critical constraint of limited cash reserves.
+This example highlightsFinAgent’s strategic foresight and prudence. Despite recognizing the technical strength and a bullish trend in the
+long-term price movement analysis,FinAgent opts to sell, prioritizing liquidity and risk mitigation over speculative gains in the face of
+significant immediate uncertainties and financial limitations.
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Decision-making Strategy.
+1 <div class="strategy">
+2 <p class="placeholder">As follows are the trading strategies, including current state-based investment decisions and investment
+explanations.
+3 <br><br> 1. MACD Crossover Strategy - This strategy generates buy signals when the MACD line crosses above the signal line,
+indicative of bullish momentum, and sell signals when it crosses below, signaling bearish momentum. It's ideal for those who
+are comfortable with fast-paced market dynamics and are adept at anticipating trend changes. The strategy's reliance on trend
+continuation makes it less suitable for range-bound or choppy markets, hence appealing primarily to risk-seeking, proactive
+traders.
+4 <br>$$strategy1$$
+5 <br><br> 2. KDJ with RSI Filter Strategy - This strategy works best in sideways or ranging markets, where it employs the KDJ for
+momentum signals and RSI as a filter to pinpoint potential reversals. It's designed for traders who are methodical and patient
+, preferring to wait for clear signals before executing trades. This strategy is well-suited for risk-aware traders who are
+not necessarily aggressive but are keen on capturing opportunities that arise from market inefficiencies.
+6 <br>$$strategy2$$
+7 <br><br> 3. Mean Reversion Strategy - This strategy assumes that prices will revert to their mean over time, generating buy signals
+when the z-score shows significant deviation below the mean (oversold), and sell signals when it deviates above (overbought).
+It works best in stable, range-bound markets and is less effective in trending or highly volatile environments. This strategy
+caters to cautious traders who look for statistical evidence of price anomalies and prefer a more deliberative trading style,
+focusing on long-term stability over short-term gains.
+8 <br>$$strategy4$$
+9 </p>
+10 </div>
+Decision-making Prompt.
+1 <div class="prompt">
+2 <p class="text">Based on the above information, you should step-by-step analyze the summary of the market intelligence. And provide the
+reasoning for what you should to BUY, SELL or HOLD on the asset. Please strictly follow the following constraints and output
+formats:
+3 <br><br>"analysis": You should analyze step-by-step how the above information may affect the results of your decisions. You need to
+follow the rules as follows and do not miss any of them:
+4 <br>1. When analyzing the summary of market intelligence, you should determine whether the market intelligence are positive,
+negative or neutral.
+5 <br> - If the overall is neurtal, your decision should pay less attention to the summary of market intelligence.
+6 <br> - If the overall is positive or negative. you should give a decision result based on this.
+7 <br>2. When analyzing the analysis of price movements, you should determine whether the future trend is bullish or bearish and
+reflect on the lessons you've learned.
+8 <br> - If the future trend is bullish, you should consider a BUY instead of a HOLD to increase your profits.
+9 <br> - If the future trend is bearish, you should consider a SELL instead of a HOLD to prevent further losses.
+10 <br> - You should provide your decision result based on the analysis of price movements.
+11 <br>3. When analyzing the analysis of the past trading decisions, you should reflect on the lessons you've learned.
+12 <br> - If you have missed a BUY opportunity, you should BUY as soon as possible to increase your profits.
+13 <br> - If you have missed a SELL, you should SELL immediately to prevent further losses.
+14 <br> - You should provide your decision result based on the reflection of the past trading decisions.
+15 <br>4. When analyzing the professional investment guidances, you should determine whether the guidances show the trend is bullish
+or bearish. And provide your decision results.
+16 <br>5. When analyzing the decisions and explanations of some trading strategies, you should consider the results and explanations
+of their decisions together. And provide your decision results.
+17 <br>6. When providing the final decision, you should pay less attention to the market intelligence whose sentiment is neutral or
+unrelated.
+18 <br>7. When providing the final decision, you should pay more attention to the market intelligence which will cause an immediate
+impact on the price.
+19 <br>8. When providing the final decision, if the overall market intelligence is mixed up, you should pay more attention to the
+professional investment guidances, and consider which guidance is worthy trusting based on historical price.
+20 <br>9. Before making a decision, you must check the current situation. If your CASH reserve is lower than the current Adj Close
+Price, then the decision result should NOT be BUY. Similarly, the decision result should NOT be SELL if you have no existing
+POSITION.
+21 <br>10. Combining the results of all the above analysis and decisions, you should determine whether the current situation is
+suitable for BUY, SELL or HOLD. And provide your final decision results.
+22
+23 <br><br>"reasoning": You should think step-by-step and provide the detailed reasoning to determine the decision result executed on
+the current observation for the trading task. Please strictly follow the following constraints and output formats:
+24 <br>1.You should provide the reasoning for each point of the "analysis" and the final results you provide.
+25
+26 <br><br>"action": Based on the above information and your analysis. Please strictly follow the following constraints and output
+formats:
+27 <br>1.You can only output one of BUY, HOLD and SELL.
+28 <br>2.The above information may be in the opposite direction of decision-making (e.g., BUY or SELL), but you should consider step-
+by-step all of the above information together to give an exact BUY or SELL decision result.
+29 </p>
+30 </div>
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+Decision-making Output Format.
+1 <div class="output_format">
+2 <p class="text">You should ONLY return a valid XML object. You MUST FOLLOW the XML output format as follows:
+3 <br>&lt;output&gt;
+4 <br>&#9;&lt;string name="analysis"&gt;Analysis that you provided.&lt;/string&gt;
+5 <br>&#9;&lt;string name="action"&gt;BUY&lt;/string&gt;
+6 <br>&#9;&lt;string name="reasoning"&gt;Reasoning about the decision result that you provided.&lt;/string&gt;
+7 <br>&lt;/output&gt;
+8 </p>
+9 </div>
+Example 1:Action: BUYReasoning: The decision to BUY is based on…
+Example 2:Action: SELLReasoning: The decision to SELL is based on several analyses… Example 3:Action: SELLReasoning: Both in the short and long term with significant immediate negative…
+Figure 8: Performance analysis of FinAgent for AAPL.
+Example 1.
+1 Action: BUY
+2 Reasoning: The decision to BUY is based on several factors: Firstly, despite the presence of negative sentiment concerning the NSA spy
+allegations and customer withdrawals, the market intelligence is largely positive due to the expected impact of Apple's new AR/VR
+product line which influences a positive medium-term outlook.Secondly, the consistent price gain across all time horizons - short,
+medium, and long-term - supports a bullish future trend, aligning with the momentum principle of financial market analysis. Past
+reflections on trading decisions indicate that not buying was a missed opportunity for profit, suggesting that a BUY decision now
+would be timely to capture potential gains. Although professional investment guidances show mixed sentiment, the historical
+performance of the company, continued innovation, and the influential design culture suggest a more bullish long-term perspective.
+The trading strategies, while currently indicating HOLD, do not provide a strong counterargument against buying, as they suggest no
+clear downward trend and no sell signals have been generated. Lastly, the financial ability to make a purchase (sufficient CASH with
+no existing POSITION) supports the initiation of a new position in AAPL stock. Considering these combined factors, particularly the
+medium-term positive market sentiment and upward price trend, a BUY decision appears to be the appropriate action to potentially
+maximize returns.
+In conclusion,FinAgent’s strategic approach to decision-making, illustrated through these examples, emphasizes the importance of a
+balanced, informed, and cautious investment strategy. By synthesizing comprehensive market analysis, drawing lessons from past trading
+experiences, and meticulously managing risks,FinAgent adeptly maneuvers through market volatility. This disciplined methodology not
+only optimizes potential returns but also diligently minimizes exposure to adverse market swings, demonstrating the criticality of adaptability
+and prudent risk assessment in achieving sustainable investment success.
+G.2 Case Study: II
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Example 2.
+1 Action: SELL
+2 Reasoning: The decision to SELL is based on several analyses: 1. Market intelligence indicates mixed sentiment but with a discernible lean
+towards negativity in the medium to long term, suggesting potential for price depreciation in the future. While there are short-term
+bullish sentiments expressed in the intelligence, these are considered less influential in the decision-making process due to the
+prevailing medium and long-term negative outlooks. 2. The price movement analysis, showing recent declines and a lack of consistent
+positive trend in the medium to long-term, corroborates the intelligence sentiment and advocates for a SELL to mitigate potential
+future losses. 3. Reflections on past trading decisions have indicated that selling in the early stages of a bearish trend can
+prevent significant losses, emphasizing that future trading decisions should consider both the bearish sentiment and momentum. 4.In
+the absence of professional investment guidance, the decision is primarily based on market sentiment, price movement analysis, and
+reflections on past decisions, all pointing towards a precautionary SELL. 4. The mixed signals from trading strategies present an
+uncertain direction for the stock's immediate future. Without a strong indication for a BUY or continuation to HOLD, the prudent
+course of action is to SELL. 5. Lastly, financial constraints that limit further buying when cash reserves are low also support a
+SELL position to avoid liquidity issues. Collectively, these points direct the decision towards selling the current holdings with the
+aim of avoiding potential medium to long-term losses, despite any short-term bullish trends.
+Example 3.
+1 Action: SELL
+2 Reasoning: My analysis reveals mixed market sentiment both in the short and long term, with significant immediate negative challenges
+likely impacting AAPL's price adversely. Despite professional investment guidance indicating technical strength and long-term price
+movement analysis suggesting a bullish trend, the immediate negative factors outweigh the potential for ongoing gains. A critical
+factor influencing the decision is the limited cash reserve, which not only prevents buying at the current stock price but also
+underscores the need for liquidity and risk mitigation. Past trading decisions highlight the importance of adjusting positions in
+response to prevailing market conditions, even when they suggest a departure from an overall bullish sentiment. The absence of a
+clear signal from the provided trading strategies further supports a shift towards a SELL decision. My reasoning is grounded in a
+comprehensive analysis of market intelligence, market trends, professional investment guidances, trading strategies, and financial
+constraints, all of which collectively point to SELL as the prudent action under current circumstances.
+Example 1:Action: BUYReasoning: The decision to BUY is influenced by…
+Example 2:Action: SELLReasoning: The summary of the latest market intelligence indicates…
+Example 3:Action: BUYReasoning: The market intelligence points to a blend of positive long-term developments…
+Figure 9: Performance analysis of FinAgent for GOOGL.
+The decision-making approach ofFinAgent, as showcased through the examples, underscores a comprehensive and nuanced understanding
+of the market, demonstrating several core strengths that contribute to its effective trading strategy.
+Firstly, in Example 1, FinAgent’s decision to BUY is informed by a detailed analysis of market intelligence that points to a positive
+long-term outlook for Alphabet Inc. This example highlightsFinAgent’s ability to integrate diverse sources of market intelligence, including
+sector-specific developments in cloud and AI, and investor sentiment, into its decision-making process. It reflects a strategic consideration
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+Example 1.
+1 Action: BUY
+2 Reasoning: The decision to BUY is influenced by the summary of market intelligence, which leans toward a positive long-term outlook for
+Alphabet Inc., indicating strengthened areas like cloud and AI sectors, and persistent investor confidence, despite short-term
+concerns. Reflecting on past price movements and the upward trend in the latest short-term analysis confirms the bullish momentum,
+which aligns with the past lessons on the importance of acting on bullish signals and positive sentiment. Additionally, the
+reflection on past trading decisions advises us not to miss out on BUY opportunities when the overall trend and market sentiment are
+positive. Finally, with the absence of any current position and sufficient cash reserves, the constraints are satisfied for making a
+purchase decision. Therefore, taking into account the bullish market outlook, positive price trend, and our capacity to act, the
+correct decision at this point is to BUY.
+Example 2.
+1 Action: SELL
+2 Reasoning: Evaluation of the current market's risk of correction or downturn, a strategic SELL decision is considered. The decision to
+sell is further bolstered by the lack of liquidity to purchase additional shares and the desire to capitalize on the current stock
+value before any potential market adjustments that could erode gains. Additionally, reflections on past trading strategies underscore
+the risk of missing optimal selling points during bullish trends due to an overly conservative approach. Consequently, in light of
+the existing market optimism, the choice to SELL aims to preemptively secure profits and improve liquidity, providing a more flexible
+stance to navigate future market uncertainties and capitalize on buying opportunities at lower prices. This action respects
+financial limitations while strategically positioning for potential market recalibrations.
+Example 3.
+1 Action: BUY
+2 Reasoning: The market intelligence presents a nuanced picture, highlighting short-term challenges alongside significant long-term
+opportunities, particularly with advancements in AI and a relaxation of regulatory pressures. This analysis points to a mild bearish
+trend in the short to medium term but underscores the positive long-term implications of these technological and regulatory
+developments. Past reflections on trading decisions emphasize the importance of seizing bullish momentum when it aligns with long-
+term growth prospects. Contrary to previous constraints, my current cash reserve is ample, exceeding the Adj Close Price, which
+positions me well to take advantage of the buying opportunity. Given the market's recent positive response, indicating early
+recognition of the long-term potential, there's a clear rationale for a BUY decision. This action is not only feasible due to the
+sufficient cash reserves but is also strategically sound, aiming to capitalize on the anticipated long-term appreciation. The
+decision to BUY, therefore, aligns perfectly with both the financial capability to make such a purchase and the optimistic long-term
+outlook. This strategic move is intended to pre-emptively lock in potential long-term gains before these prospects are fully priced
+into the market, leveraging the current financial flexibility to strengthen the portfolio's position for future growth.
+of both current market conditions and future growth prospects, showcasing the importance of acting on bullish signals when the overall
+market sentiment and trend analysis suggest potential for appreciation.
+Example 2 presents a scenario where FinAgent opts for a SELL decision, emphasizing risk management and liquidity considerations.
+The reasoning behind the sell decision illustrates FinAgent’s capacity to preemptively navigate potential market downturns or corrections
+by capitalizing on current stock values. This decision is particularly noteworthy for its forward-looking nature, aiming to secure profits
+and improve liquidity in anticipation of future market uncertainties. It demonstratesFinAgent’s adaptability and its ability to incorporate
+reflections on past trading strategies to avoid missing optimal selling points, underscoring a proactive approach to risk management.
+In Example 3, the decision to BUY despite short-term challenges, based on the strength of long-term opportunities, particularly ad-
+vancements in AI and regulatory relaxations, showcasesFinAgent’s strategic foresight. This example illustrates howFinAgent leverages
+comprehensive market analysis to identify and act on long-term growth prospects, even in the face of temporary market downturns.
+The ample cash reserve facilitates this decision, highlighting the importance of financial flexibility in capitalizing on strategic buying
+opportunities.
+Collectively, these examples demonstrateFinAgent’s strengths in leveraging detailed market analysis, integrating short and long-term
+market trends, managing risks proactively, and maintaining financial flexibility to make informed trading decisions.FinAgent is characterized
+by a balance of strategic foresight, adaptability, and a disciplined consideration of past trading reflections, positioning it to capitalize on
+market opportunities while navigating potential risks effectively.
+G.3 Case Study III
+The decision-making capabilities of FinAgent, as illustrated through examples, reveal a sophisticated blend of strategic insight and
+analytical depth in navigating the cryptocurrency market. This approach leverages comprehensive market analysis, integrating market
+intelligence, historical trends, and technical indicators like the Moving Average (MA5) and Bollinger Bands, to inform its trading decisions.
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Example 1:Action: SELLReasoning: The reasoning behind the decision to SELL is based on…
+Example 2:Action: BUYReasoning: Considering the market intelligence, the predominance of long-term positive…
+Figure 10: Performance analysis of FinAgent for ETHUSD.
+Example 1.
+1 Action: SELL
+2 Reasoning: The decision to SELL the ETHUSD pair is a strategic outcome of integrating market intelligence, historical trend analysis,
+technical indicators, and risk management principles, revealing a comprehensive picture of the market's downward trajectory. Negative
+sentiment prevails in the short to medium term, suggesting further depreciation, a view supported by consistent downtrends in
+historical price movements. Technical analyses, including the Moving Average (MA5) and Bollinger Bands, underscore the bearish
+momentum, with the ETHUSD pair's position near the lower Bollinger Band indicating not just an oversold state but the persistence of
+the bearish trend. Financial considerations, especially the current position's loss and insufficient cash reserves for additional
+purchases, necessitate a sell to prevent further losses. This decision, shaped by lessons from past trades and the observed
+continuity of the downtrend, aligns with a strategy focused on capital protection and risk management amidst negative market
+sentiment. Thus, selling is identified as the most prudent action to mitigate risks and capitalize on informed market analysis.
+Example 2.
+1 Action: BUY
+2 Reasoning: The decision to BUY ETH/USD is strongly supported by a blend of market intelligence indicating long-term positive sentiment,
+technical analysis via MA5 and Bollinger Bands, and the advantage of having sufficient cash reserves. The MA5 confirms the asset's
+robust momentum by showcasing its price consistently above this short-term moving average, highlighting a sustained bullish trend.
+Concurrently, Bollinger Bands signal the asset's strength and potential for further growth as it trends towards or breaches the upper
+band, indicative of high market performance and volatility in favor of an upward trajectory. This comprehensive analysis, coupled
+with the financial readiness to invest, aligns with an aggressive strategy to capitalize on the anticipated bullish market dynamics.
+The convergence of positive long-term outlooks, technical indicators underscoring the continuation of upward trends, and liquidity
+positions BUY as a strategically sound decision aimed at leveraging expected market gains.
+Example 1 showcasesFinAgent’s methodical use of data to make a SELL decision on the ETHUSD pair, reflecting a commitment to capital
+protection and risk management amidst negative market trends. This demonstrates FinAgent’s strength in crafting informed strategies that
+prioritize long-term capital security over short-term gains, illustrating a prudent approach to trading in volatile markets.
+Example 2 illustrates the proactive side of FinAgent, where a BUY decision is made based on a positive market outlook. This decision,
+supported by solid technical analysis and sufficient liquidity, shows FinAgent’s ability to seize market opportunities, highlighting its
+adaptability and aggressive strategy to leverage potential market upswings for significant gains.
+FinAgent’s strategic and analytical framework, as evidenced by these examples, effectively balances risk and reward, demonstrating a
+nuanced understanding of the cryptocurrency market’s complexities. The methodical integration of diverse data points into coherent trading
+strategies underscoresFinAgent’s capability to navigate market dynamics adeptly.
+While the cryptocurrency market’s inherent volatility poses challenges,FinAgent’s approach exhibits a level of resilience. The firm’s
+strategic decisions, though cautious, are not overly conservative but are designed to adapt to market conditions, seeking to optimize outcomes
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+within the realm of calculated risk. Moving forward, refining analytical models and strategies to further align with the unpredictable nature
+of cryptocurrencies remains an area for gradual enhancement. By continuing to evolve its decision-making framework, FinAgent aims
+to maintain its strategic edge while mitigating the impacts of market volatility, positioning it well for sustained success in the dynamic
+landscape of cryptocurrency trading.
+H DETAILS OF BENCHMARK ANALYSIS
+H.1 Analysis of Rule-based Strategies for Trading
+We examine four fundamental rule-based strategies using technical indicators, chosen for their broad coverage of market scenarios and
+strategic diversity in trading. Moving Average Convergence Divergence (MACD) and stochastic oscillators combined with Bollinger Bands
+represent trend-following methods fundamental to capturing market momentum. In contrast, KDJ with RSI Filter and Z-score Mean
+Reversion offer insights into potential market reversals, crucial for risk management and exploiting countertrend opportunities. Together,
+these strategies encompass a wide spectrum of trading situations, from following prevailing trends to identifying reversal points, thereby
+providing a comprehensive decision-making toolkit. To set a benchmark, these strategies use the same market state and trading environment
+as other RL benchmark methods. In the training stage, we applied OPTUNA for hyperparameter optimization to adapt them to the financial
+instrument traded.
+H.1.1 Moving A verage Convergence Divergence (MACD) Crossover Strategy. This strategy utilizes MACD indicators for trend-following,
+generating buy/sell signals based on bullish or bearish momentum shifts, making it suitable for moderate-risk traders favoring clear market
+trends.
+Figure 11: Performance analysis of MACD for AAPL.
+ Figure 12: Performance analysis of MACD for GOOGL.
+Limitation 1: Sub-optimal position-changing points. The MACD strategy often exhibits delayed reactions to market changes, leading
+to sub-optimal position-changing points. This lag is particularly pronounced in fast-moving or volatile markets. For example, in the case of
+stocks like AAPL as marked in Fig. 11, where market dynamics can shift rapidly, the MACD might signal a buy or sell too late, thereby
+missing the optimal entry or exit points. This limitation is intrinsic to the MACD’s reliance on historical moving averages, making it less
+effective in markets that experience quick reversals or where the trend direction changes frequently.
+Limitation 2: Incapability of handling volatility. The MACD strategy struggles in highly volatile markets due to its dependency on
+moving averages, which may not accurately reflect current market conditions under such circumstances. In volatile trading environments
+like the marked period in Fig.12, the MACD can generate misleading signals, leading to a series of unprofitable trades. The standard signal
+thresholds of MACD may not be adaptable enough for all market conditions, particularly in volatile settings. This limitation underscores the
+need for a more dynamic approach, possibly integrating adaptive thresholds that account for the prevailing market volatility.
+Limitation 3: High turnover rate results in high transaction fee. A significant drawback of the MACD strategy is its tendency to
+generate a high turnover rate, as shown in the marked periods of Fig.13 and Fig.14, leading to substantial transaction costs. In financial
+markets where transaction fees are considerable, like the stock market, frequent trading by MACD can significantly lower profit margins.
+H.1.2 KDJ&RSI Strategy. This strategy merges the KDJ stochastic oscillator and RSI to identify overbought or oversold conditions, issuing
+buy or sell signals based on momentum and RSI thresholds, ideal for risk-averse traders preferring extreme market conditions.
+Limitation 1: Lack of generalization ability. The KDJ&RSI strategy, while useful in certain market conditions, is not a universally
+applicable strategy. It lacks generalization across different market environments due to its sensitivity to specific parameters and market
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Figure 13: Performance analysis of MACD for ETHUSD.
+ Figure 14: Performance analysis of MACD for MSFT.
+Figure 15: Performance analysis of KDJ&RSI for AAPL.
+ Figure 16: Performance analysis of KDJ&RSI for TSLA.
+trends. This means that its performance can vary greatly between different stocks. Despite the hyper-partmeters are trained with historical
+data, it is still not able to get profitable results on some instruments as shown in Fig. 15, 16.
+H.1.3 Z-score Mean Reversion. This strategy employs z-score mean reversion, generating buy or sell signals when prices deviate significantly
+from the mean, making it suitable for risk-averse traders who capitalize on price normalization.
+Limitation 1: Sub-optimal decision due to insensitivity to market trend. The ZMR trading strategy, while adept at capturing
+dramatic shifts in market patterns, often exhibits a notable insensitivity to more stable, long-term market trends. This limitation becomes
+particularly apparent in its tendency to make sub-optimal trading decisions during periods of gradual market changes. A clear example of
+this can be observed in the trading behavior of AAPL, as depicted in the marked period of Fig. 17. The strategy decided to sell after the price
+met the reverting point, missing the bullish trend afterward. The strategy’s focus on mean reversion overlooks the significance of persistent
+trend movements, leading to sub-optimal trading outcomes.
+Limitation 2: Poor performance in non-mean-reverting Market conditions. A significant limitation of the z-score mean-reversion
+trading strategy is its poor performance in market conditions that do not exhibit mean-reverting behavior. The strategy inherently assumes
+that stock prices will revert to their historical mean, which is often not the case in trending or momentum-driven markets. In such
+environments, where prices consistently move in one direction without reverting, the mean-reversion strategy can result in sustained losses.
+This is particularly evident in strongly bullish or bearish markets, where the strategy may continuously take counter-trend positions, leading
+to adverse trading outcomes. The inability of the mean-reversion strategy to adapt to non-mean-reverting market conditions highlights its
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+Figure 17: Performance analysis of ZMR for AAPL.
+ Figure 18: Performance analysis of ZMR for ETHUSD.
+lack of versatility and the potential risk of relying solely on historical mean-reversion patterns. This is evident by the trading decisions in
+TSLA as shown in Fig. 18 .
+H.2 Analysis of Using FinAgent as a router for technical indicators-driven strategies for trading.
+We examined the potential of FinAgent to function as decision-making routers within a Mixture-of-Experts (MoE) framework of trading
+strategies. This experiment setting only utilized the decision module of FinAgent, intentionally excluding components such as market
+intelligence, memory, and reflection modules. This exclusion eliminates the necessity for a training phase for FinAgent. The strategies
+implemented in this research have undergone fine-tuning using Optuna on a designated training dataset. Each strategy’s effectiveness is
+meticulously documented and provided to the LLM, enabling it to make informed decisions based on the detailed performance data.
+According to the numerical data presented in Table 4, the FinAgent router, while not always achieving the optimal strategy outcome,
+consistently delivers robust and positive trading results. This observation is further substantiated by the analysis of trading behavior across
+various assets, which exhibits less extreme behavior than using a single trading strategy. This suggests that the FinAgent router is capable of
+adapting its decision-making process to various market conditions. Although there is an improvement compared to employing single trading
+strategies, we have also identified certain limitations. These limitations are further addressed by other modules within the FinAgent system.
+Figure 19: Performance analysis of using FinAgent as a
+strategy router for ETHUSD.
+Figure 20: Performance analysis of using FinAgent as a
+strategy router for AAPL.
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Limitation 1: Gap in using multiple strategies to make a single decision In the role of a router, FinAgent demonstrates variable
+preferences for strategy decisions at each stage. This variability introduces a potential risk of unprofitable trading in such sequential
+decision-making scenarios, as each strategy operates based on unique assumptions. For instance, consider the period highlighted in Fig. 19.
+Within this short timeframe, multiple buy and sell decisions are executed. The buy decisions are mostly influenced by the KDJ&RSI and
+SO&BB strategies, which signal a buying opportunity. On the other hand, the sell decisions are primarily guided by the ZMR strategy, which
+indicates a strong sell signal during the same period.
+Limitation 2: Limited performance with weak strategies. The router’s performance is constrained by the effectiveness of the
+underlying strategies. This limitation becomes evident in scenarios where all strategies demonstrate weak performance. An example of this
+can be observed during the period marked in Fig. 20. As illustrated in Fig. 11, Fig. 15, and Fig. 17, none of the strategies managed to generate a
+profit during this period. In the absence of other FinAgent modules, such as reflection, the decision-making capability of the router is limited.
+Limitation 3: Result is sensitive to prompt engineering and randomness. In our experiments, we observed a distinct variation in
+the trading decisions when modifying the decision prompt and executing the agent across different trials. Owing to the inherent nature of
+the API service provided by OpenAI, controlling the randomness in the responses is not feasible. This limitation adds to the risk factor when
+relying solely on the decision module in FinAgent for robustness.
+H.3 Analysis of RL for Trading
+Reinforcement learning has been applied to trading with varying degrees of success. Traditional algorithms like PPO (Proximal Policy
+Optimization), DQN(Deep Q-learning), and SAC(Soft Actor-Critic) have shown potential but also limitations in stock prediction accuracy
+and practicality due to large data requirements. To set a benchmark, these algorithms are trained in uniform conditions and same dataset,
+using OPTUNA for hyperparameter optimization, to explore their effectiveness in trading and provide insights into their applicability and
+optimization for investment decision-making.
+H.3.1 Analysis of PPO for trading.
+The Proximal Policy Optimization (PPO) model, when applied to stock trading, exhibits notable drawbacks that can impact its overall
+performance. One significant limitation is the tendency for the model to remain idle for extended periods. This proclivity for inactivity
+stems from the algorithm’s cautious learning process, prioritizing risk avoidance over seeking potential gains. Consequently, during these
+prolonged idle phases, the model may miss lucrative trading opportunities, leading to suboptimal returns. This issue becomes particularly
+pronounced in dynamic and rapidly changing stock market conditions, where the hesitancy of the PPO model may hinder its ability to
+capitalize on favorable market movements. The model’s conservative nature becomes particularly evident in Figure 21, where it remains idle
+even as the cumulative return drops below 0, highlighting its reluctance to capitalize on favourable market movements. This limitation
+underscores the need to refine the PPO algorithm to balance risk management better and seize profitable opportunities in dynamic market
+environments.
+Figure 21: Performance analysis of PPO for AAPL.
+ Figure 22: Performance analysis of PPO for GOOGL.
+Another drawback associated with PPO in stock trading lies in its challenge to achieve optimal timing for buying and selling. The model
+may encounter difficulties in accurately predicting short-term price movements, resulting in purchasing stocks at relatively high prices
+or missing opportunities to buy at lower prices. This suboptimal timing can directly impact the model’s overall performance, leading to
+lower returns and less effective utilization of available capital. The inherent uncertainty and volatility of stock markets pose challenges for
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+PPO models to consistently make well-timed decisions, highlighting the complexity of accurately forecasting market movements. Figure 22
+exemplifies this issue, where the model fails to capture the low-value on September 27, 2023, resulting in a decision to buy at a relatively high
+price and subsequently leading to suboptimal income. This highlights the need for improved timing mechanisms within the PPO algorithm
+to enhance its effectiveness in navigating the uncertainties of stock markets.
+To address these drawbacks, it becomes imperative to fine-tune the model parameters and optimize the training process. Additionally,
+augmenting the PPO model with complementary techniques or incorporating more sophisticated features, such as sentiment analysis and
+macroeconomic indicators, can enhance its decision-making capabilities. Regular monitoring and adjustments are crucial to adapting the
+model to changing market conditions, mitigating the impact of extended idle periods, and improving its ability to time trades effectively. By
+embracing a holistic approach that combines machine learning with domain expertise, one can work towards overcoming these limitations
+and developing a more robust and adaptive stock trading algorithm.
+H.3.2 Analysis of DQN Algorithm for Stock Trading.
+Though the implementation of the Deep Q-Network (DQN) algorithm in stock trading can yield relatively positive results in the long
+term, its effectiveness in navigating market complexities has shown limitations.
+Figure 23: Performance analysis of DQN for GOOGL.
+ Figure 24: Performance analysis of DQN for AMZN.
+One primary drawback of the DQN algorithm is its inability to balance risk and reward effectively. It often adopts a conservative stance,
+potentially leading to missed opportunities for significant gains during bullish market phases. Conversely, in bearish conditions, the model’s
+failure to swiftly adjust its strategy can result in prolonged holding of depreciating assets, exacerbating losses. This is evident in Figure??,
+where the model fails to capture the high-value point, selling at a lower price on a later day, September 27, 2023, and missing the chance for
+better earnings. Additionally, it takes no action and remains in a zero position during the bullish phase from October 26, 2023, to November
+23, 2023, missing this period of increase. A similar issue occurs in the implementation of AMZN, missing the bullish phase from October 23,
+2023, to December 2023.
+Another drawback of DQN in this context is its susceptibility to market volatility and unpredictable nature, which can lead to suboptimal
+decision-making. This issue is particularly noticeable in Figure 25, where DQN’s performance in managing the ETHUSD asset demonstrates
+a pattern of delayed reactions, often lagging behind rapid market movements, especially from July 18, 2023, to August 15, 2023, during
+periods of extreme price fluctuations.
+To address these challenges, it is crucial to refine the DQN algorithm by incorporating advanced features, such as sophisticated market
+indicators, real-time data analysis, and diverse market data. Enhancing the algorithm’s sensitivity to market dynamics and integrating
+effective risk management strategies can improve its decision-making quality. Regular updates of the model with current market data and
+trends are essential to maintain its relevance and accuracy in a rapidly changing financial landscape.
+H.3.3 Analysis of SAC Algorithm for Stock Trading.
+The Soft Actor-Critic (SAC) algorithm, when applied to stock trading, demonstrates certain strengths but also faces challenges that limit
+its performance. The introduction of entropy regularization enables the agent to better explore unknown states, learning to formulate
+strategies through interaction with the environment in order to maximize the expected cumulative reward. However, it still encounters
+difficulties when dealing with the intricacies of the stock market.
+One limitation observed in the implementation of SAC is its handling of market ·volatility, especially in high-fluctuation environments
+like cryptocurrency trading. For instance, when trade on Ethereum (ETHUSD), as depicted in Figure 26, SAC tends to be overly cautious. It
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Figure 25: Performance analysis of DQN for ETHUSD.
+ Figure 26: Performance analysis of SAC for ETHUSD.
+Figure 27: Performance analysis of SAC for MSFT.
+ Figure 28: Performance analysis of SAC for AMZN.
+performed two buy actions around Nov 15, 2023, during a bullish phase. These decisions were made over a relatively long-term observation,
+which led to missed opportunities during significant market movements. This conservative approach, though avoiding potential losses, can
+result in the model not fully capitalizing on the profitable market trends.
+Similarly, in the stock market, SAC’s performance varies based on the specific characteristics of each stock. For example, with Microsoft
+(MSFT) and Amazon (AMZN), depicted in Figures 28 and 27, SAC struggles to optimally time its entry and exit points. For AMAZ, it sold the
+holding stocks on October 19, 2023, missing several peaks and losing potential higher returns. For MSFT, it performed sold operations on
+November 10, 2023, when the bullish market trend still went on. Both late responses to market uptrends and premature exits from profitable
+positions affect the overall return on trading.
+In summary, while SAC offers a robust framework for reinforcement learning tasks, its application in the dynamic and volatile stock
+requires careful tuning and enhancement to better leverage its capabilities.
+H.4 Analysis of FinGPT for Trading
+FinGPT’s performance in predicting stock prices has exhibited several significant flaws, highlighting critical limitations in its ability to
+provide reliable insights for investment decisions.
+Limitation 1: Failure to capitalize on peak price opportunities. During a specific period, FinGPT missed the chance to sell the stock
+at its zenith, opting instead to hold onto it. Unfortunately, this strategy proved detrimental as the stock’s value plummeted below the initial
+purchase price, leading to avoidable financial losses. This reveals a deficiency in FinGPT’s adaptive decision-making, as it neglected to adjust
+its strategy despite the clear opportunity to maximize returns. For example, on July 10, 2023, FinGPT made a buy action for MSFT at a price
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+of $330.46. Despite reaching a peak price of $358 on July 18, 2023, FinGPT continued to hold the stock, ultimately making a misprediction
+about a further increase. The reasoning behind this misprediction involved positive developments, market conditions, and the anticipation of
+strong earnings. However, the model failed to adjust its strategy and sold the stock at a lower price of $336.37 on July 26, 2023, resulting in a
+significant loss as shown in Figure 31.
+Limitation 2: Wrong prediction for a sharp price drop. Another noted pattern of inaccurate predictions by FinGPT in stock market
+forecasting raises serious concerns about its reliability as a tool for investment guidance. The model’s propensity to erroneously predict
+increases in stock prices, leading to unexpected downturns, suggests a fundamental flaw in its predictive capabilities, rendering it unsuitable
+for investors seeking profitable opportunities.
+A glaring example of FinGPT’s failure in predictive accuracy occurred in its handling of TSLA (Tesla) stocks on October 8, 2023. The model
+recommended purchasing TSLA stocks at a specific price of $245.34, operating under the assumption that the stock would subsequently
+experience an upward trajectory. However, this prediction proved grossly inaccurate, as the stock value deviated significantly from the
+forecasted trajectory, plummeting to $215.49 by August 18, 2023. Figure 32 shows the details of this failure.
+This significant misalignment between FinGPT’s predictions and the actual market trajectory exposed its limitation in adapting to dynamic
+conditions and eroded the confidence of investors who relied on its recommendations. The incident highlights the imperative need for
+continuous improvement in FinGPT’s algorithms to enhance its predictive accuracy, ensuring investors receive more reliable guidance in
+fluctuating financial landscapes.
+The inability of FinGPT to accurately anticipate the dynamic nature of financial markets emphasizes the critical need for refining its
+predictive algorithms. This refinement is crucial to ensure a more nuanced and accurate understanding of market dynamics, ultimately
+enhancing the model’s reliability as a tool for investment guidance. The incident with TSLA is a compelling example of the imperative
+nature of continuous improvement in FinGPT’s capabilities to meet the demands of a rapidly changing and unpredictable financial landscape.
+Furthermore, this incident with TSLA serves as a poignant reminder of the evolving challenges within the financial landscape, necessitating
+ongoing efforts to fine-tune FinGPT’s algorithms.
+Limitation 3: Wrong prediction for a stock price surge. Conversely, when FinGPT wrongly predicts a decrease in stock prices, it opts
+to sell, but the actual market behaviour contradicts its forecast by demonstrating a continued increase in stock value. This inconsistency in
+predicting market trends raises questions about the model’s effectiveness in providing actionable insights aligned with real-world financial
+dynamics. For example, on June 7, 2023, the model recommended selling AAPL stocks, forecasting a 1-2% decrease based on positive
+developments and potential concerns. The cited positive developments included the expected valuation of $4 trillion by 2025 and the
+successful launch of the Vision Pro. However, the market response contradicted FinGPT’s projection, as the stock price increased for three
+consecutive days, as shown in Figure 29. This highlights a substantial misalignment between the model’s analysis and the market dynamics,
+exposing a critical flaw in its ability to anticipate short-term stock movements accurately.
+Limitation 4: Mismatch between the action and reasoning. The further drawback of FinGPT is its tendency to recommend continuous
+holding of stocks, even when successful price predictions are made. Despite accurately forecasting market movements, the model often fails
+to provide timely and proactive investment strategies. This inclination towards recommending a prolonged holding strategy may cause
+investors to miss out on valuable opportunities for profit maximization. For example, during the period spanning from June 6, 2023, to July
+6, 2023, FinGPT showcased an impressive ability to predict all price changes for GOOGL accurately. However, a critical flaw emerged in
+its decision-making process, as the model consistently maintained the same investment action without adapting to the foreseen market
+dynamics. Despite believing that the stock was destined to experience a decline in the near future, as shown in Figure 30, FinGPT failed to
+promptly translate this insight into a strategic move such as selling the stock. This lack of agility in responding to its predictions represents
+a significant shortcoming. The essence of successful trading lies not only in the accurate anticipation of market trends but also in the timely
+execution of appropriate actions to capitalize on those predictions or, conversely, to mitigate potential losses. FinGPT’s inability to recalibrate
+its investment strategy when confronted with predicted downturns accentuates a key area where the model could significantly improve its
+decision-making capabilities. While the model excels in forecasting, integrating a more dynamic and proactive approach to trading would
+enhance its overall efficacy. Financial markets are renowned for their fluidity and susceptibility to rapid changes, making adaptability a
+crucial element for success. The failure to adjust to evolving conditions hampers the model’s ability to navigate market complexities and leads
+to missed opportunities to leverage favourable price fluctuations. This limitation underscores the critical necessity of incorporating a more
+responsive decision-making approach into FinGPT’s functionality. The dynamic nature of financial markets requires accurate predictions
+and the ability to interpret changing conditions swiftly and proactively, ensuring that FinGPT remains a valuable and reliable tool.
+Table 8: AMZN wrong prediction for 3 consecutive days
+Symbol Date Price Change Action Prediction
+AMZN 11/10 -0.97 HOLD ... increase by 0-1% ...
+AMZN 14/10 3.21 HOLD ... decrease by 0.5-1% ...
+AMZN 15/10 -2.6 HOLD ... increase by 0-1% ...
+KDD ’24, August 25–29, 2024, Barcelona, Spain Wentao Zhang et al.
+Figure 29: Performance analysis of FinGPT for AAPL.
+ Figure 30: Performance analysis of FinGPT for GOOGL.
+Figure 31: Performance analysis of FinGPT for MSFT.
+ Figure 32: Performance analysis of FinGPT for TSLA.
+Limitation 5: Meaningless prediction after consecutive failures. The last notable drawback of FinGPT is when FinGPT encounters
+three consecutive wrong predictions. In response, the model generates explanations that lack substance and offer little value to investors.
+These responses often involve generic statements, such as "it’s difficult to predict the exact stock price movement, " accompanied by vague
+positive and negative factors. This tendency to provide meaningless responses further diminishes FinGPT’s credibility and utility in guiding
+investment decisions during challenging periods. For example, The prediction FinGPT made on November 16, 2023, for AMZN, after the
+wrong prediction from November 11, 2023, to November 15, 2023, as shown in Table 8, instead of providing a meaningful analysis or adjusting
+its approach, the model generated a generic response, acknowledging the difficulty of predicting stock movements and offering vague
+positive factors and potential concerns. This lack of nuanced reasoning and the provision of a seemingly irrelevant response indicates a
+weakness in the model’s ability to learn from its mistakes and adjust its predictions coherently.
+H.5 Analysis of FinMem for Trading
+FinMem primarily relies on layered memory to retrieve historical news and financial reports, and depends on the reflection mechanism to
+contemplate the potential connections between this information and future price movements. In this section, we conduct a detailed analysis
+of the decision-making results and reasoning provided by FinMem during the decision-making process.
+Limitation 1: Incorrect decision-making due to partially positive market news. The wrong buying decision was generated on 4
+August 2023 as shown in Figure 33. The overall AAPL stock price from 1 August 2023 to 20 August 2023 was a continuous downward trend.
+On August 4, 2023, most of the news was negative for AAPL. For example, "Huawei’s upgraded mobile operating system might intensify
+competition in the smartphone sector, " and "Apple’s loss of $3T market value due to lower iPhone demand, " etc. There were only two pieces
+A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist KDD ’24, August 25–29, 2024, Barcelona, Spain
+Figure 33: Performance analysis of FinMem for AAPL.
+ Figure 34: Performance analysis of FinMem for MSFT.
+Figure 35: Performance analysis of FinMem for TSLA.
+ Figure 36: Performance analysis of FinMem for ETHUSD.
+of positive news: "Services revenue offsets iPhone sales drag in earnings report, " and "Subscription-based business model indicates growth
+potential. " However, FinMem ignored the long-term downward trend and provided a buying rationale based on the belief that the earnings
+report and subscription-based business model could generate positive signals for stock price appreciation. This erroneous buying decision
+led to a shift in returns from 6% to -3%.
+Limitation 2: The cash is insufficient for more shares but provides a buying decision result. As shown in the Figure 34, our
+setting is that buying means going all in, while selling means going all out. In the chart, it can be seen that there were two buying operations,
+and although the stock price declined, the remaining cash was not sufficient to support further buying. FinMem lacks a clear understanding
+of the environment and its own current situation, which could lead to decisions that contradict reality. InFinAgent, we have a specially
+designed state description iframe module to avoid this situation.
+Limitation 3: Unstable decision-making. FinMem’s decisions are unstable, as shown in Figure 35 and 36, where FinMem made
+numerous buy-then-sell and sell-then-buy operations. Although in a stable market with minor price fluctuations, this would not significantly
+impact the return rate, in a highly volatile market, a single unstable operation could lead to substantial losses. We analyze the main reasons
+for this phenomenon from two aspects. First, market information is complex and often contains both positive and negative news, making
+it difficult to clearly determine what causes stock price fluctuations. Second, FinMem is unable to perceive the historical record of past
+decisions. It cannot clearly identify the historical conditions of the current choice of decision, leading to unstable decision-making.

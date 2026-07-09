@@ -1,0 +1,14 @@
+{
+  "run_id": "048_deepfund",
+  "paper": "DeepFund",
+  "execution_state": "blocked_on_historical_run",
+  "verdict": "blocked_no_approved_historical_return_stream_reproduction_path",
+  "valid_return_data_used": false,
+  "metric_status": "not_computable_from_approved_inputs",
+  "allowed_return_inputs": [
+    "${ALPHA_EVOLVE_JKP_ROOT}",
+    "${ALPHA_EVOLVE_RETURN_DATA_ROOT}"
+  ],
+  "reason": "The repo does not expose an approved historical USA/JKP reproduction path usable under the current return-data rule.",
+  "ff3_ff5mom_status": "not_run_blocked"
+}

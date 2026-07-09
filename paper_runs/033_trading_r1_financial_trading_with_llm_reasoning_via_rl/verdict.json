@@ -1,0 +1,12 @@
+{
+  "run_id": "033_trading_r1_financial_trading_with_llm_reasoning_via_rl",
+  "paper": "Trading-R1 - Financial Trading with LLM Reasoning via RL",
+  "execution_state": "blocked_no_public_codebase",
+  "verdict": "blocked_placeholder_repo_no_executable_code",
+  "valid_return_data_used": false,
+  "allowed_return_inputs": [
+    "${ALPHA_EVOLVE_JKP_ROOT}",
+    "${ALPHA_EVOLVE_RETURN_DATA_ROOT}"
+  ],
+  "reason": "The public repo is README-only/release-soon and contains no executable code or candidate returns to adapt."
+}

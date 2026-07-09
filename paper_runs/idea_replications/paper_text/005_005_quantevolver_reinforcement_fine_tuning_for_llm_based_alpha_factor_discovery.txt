@@ -1,0 +1,1581 @@
+1
+From Feedback Loops to Policy Updates:
+Reinforcement Fine-Tuning for
+LLM-Based Alpha Factor Discovery
+Lingzhe Zhang, Tong Jia ∗, Yunpeng Zhai, Zixuan Xie, Chiming Duan,
+Minghua He, Philip S. Yu,Fellow, IEEEand Ying Li ∗,Member, IEEE
+Abstract—Modern quantitative trading increasingly relies on
+systematic models to extract predictive signals from large-scale
+financial data, where alpha factor discovery plays a central
+role in transforming market observations into tradable signals.
+Recent LLM-based methods have shown promise in automating
+factor generation, but most of them still rely on prompt-level
+generation–evaluation–feedback loops for iterative optimization.
+As the loop becomes longer, repeatedly appended historical
+candidates and feedback can cause context explosion, increase
+inference cost, dilute useful information, and introduce feedback
+drift. Moreover, these methods often depend on very large LLMs
+whose stable generation preferences may lead to structurally
+similar expressions, redundant candidates, and search stagnation.
+To address these limitations, we propose QUANTEVOLVER, a
+self-evolving alpha factor discovery framework based on rein-
+forcement fine-tuning. Instead of accumulating feedback in the
+prompt, QUANTEVOLVERconverts executable quantitative eval-
+uation into policy updates, enabling a Miner LLM to internalize
+historical optimization experience through parameter learning.
+Specifically, QUANTEVOLVERconstructs high-quality seed fac-
+tors, builds diverse seed–time-window training tasks, generates
+executable Factor DSL expressions, evaluates them through
+Regime Backtest, and optimizes the Miner LLM with Diversity-
+Complementarity Reward. During training, high-quality factors
+are continuously accumulated in a Mined Factor Database, which
+serves as the final discovered factor library. Extensive exper-
+iments on three realistic market benchmarks demonstrate the
+effectiveness of QUANTEVOLVER, which consistently improves
+the primary evaluation metric of each task over existing LLM-
+based alpha factor discovery baselines, produces higher-quality
+and more complementary factor pools.
+Index Terms—Quantitative Factor Discovery, Reinforcement
+Fine-Tuning, Large Languge Model
+I. INTRODUCTION
+Modern quantitative trading increasingly relies on system-
+atic models to extract predictive signals from large-scale
+financial data. Unlike many conventional prediction settings,
+financial markets are highly noisy, weakly structured, and non-
+stationary: useful signals are often sparse, unstable across
+regimes, and easily overwhelmed by spurious correlations.
+Lingzhe Zhang, Tong Jia, Chiming Duan, Minghua He and Ying Li are
+with Peking University, Beijing, China. Yunpeng Zhai is with Alibaba Group,
+China. Zixuan Xie are with Nanjing University, Nanjing, China. Philip S. Yu
+are with University of Illinois Chicago, United States.
+Email:{zhang.lingzhe, duanchiming, hemh2120}@stu.pku.edu.cn,
+{jia.tong, li.ying}@pku.edu.cn, zhaiyunpeng.zyp@alibaba-inc.com and
+psyu@uic.edu
+* Corresponding author: Tong Jia, e-mail: (jia.tong@pku.edu.cn); Ying Li,
+e-mail: (li.ying@pku.edu.cn)
+As a result, the central challenge in quantitative research is
+not merely to fit historical observations, but to continuously
+discover robust and economically meaningful signals that can
+generalize across assets, time periods, and market conditions.
+Alpha factors provide a fundamental abstraction for this
+challenge. An alpha factor is a numerical signal designed to
+capture predictive patterns related to future returns, risks, or
+cross-sectional asset rankings. However, alpha factor discovery
+remains a challenging search problem. First, the candidate
+space is combinatorially large, as factors can be composed
+from diverse market variables, mathematical operators, tem-
+poral windows, and normalization schemes. Second, finan-
+cial signals are typically weak, noisy, and regime-dependent,
+making it difficult to distinguish genuinely predictive factors
+from spurious historical correlations. Third, useful factors
+should not only achieve strong empirical performance, but also
+remain robust across time periods and market conditions, while
+providing non-redundant information beyond existing signals.
+These challenges make the scalable and reliable discovery of
+alpha factors a central problem in quantitative finance.
+To address the difficulty of alpha factor discovery, extensive
+studies have explored automated factor mining beyond man-
+ual factor engineering. Existing non-LLM methods generally
+fall into two categories. The first category adopts rule-based
+symbolic search, such as genetic programming, symbolic
+regression, and operator-template enumeration [1]–[6]. These
+methods represent alpha factors as symbolic expressions and
+explore the candidate space through predefined operators, mu-
+tation rules, crossover operations, or syntactic constraints. The
+second category introduces learning-guided generation, where
+trainable models or reinforcement learning policies are used to
+construct, rank, or select factor expressions based on historical
+evaluations or previously discovered factors [5], [7]–[11].
+Although these methods reduce manual engineering effort,
+their search processes are still largely shaped by predefined
+operators, action spaces, expression templates, or task-specific
+objectives. As a result, they often struggle to flexibly compose
+factor expressions from high-level market semantics, scenario
+descriptions, and prior research hypotheses.
+Large language models (LLMs) offer a promising way to
+alleviate these limitations. With their capabilities in sym-
+bolic reasoning, code-like generation, and instruction follow-
+ing [12]–[42], LLMs can generate and refine alpha expressions
+from alpha libraries, market contexts, human instructions,
+and empirical feedback. Existing LLM-based frameworks
+arXiv:2605.15412v1 [cs.CE] 14 May 2026
+2
+have therefore evolved from interactive factor generation to
+feedback-driven and search-augmented alpha mining. Early
+systems, such as Alpha-GPT [43] and FAMA [44], use LLMs
+as factor miners or interactive assistants. Later frameworks,
+such as QuantAgent [45], AlphaBench [46], and AlphaA-
+gent [47], further involve LLMs in factor evaluation and refine-
+ment by incorporating historical experiment records, human
+knowledge, or market insights. More recent search-augmented
+and agentic methods, including LLM-powered MCTS [48],
+R&D-Agent [49], and QuantaAlpha [50], combine LLM gen-
+eration with backtesting feedback, multi-agent workflows, or
+evolutionary exploration.
+Oracle LLM
+Factor
+Generate
+Feedback
+Backtest
+Append to Prompt
+Miner LLM
+Factor
+Generate
+Feedback
+Backtest rφ
+Reward
+Model
+Policy Update
+θt+1=θt + α▽θJ(πθ)
+yi
+ri
+πθ
+Fig. 1. LLM-Based Alpha Factor Discovery: From Feedback Loops to Policy
+Updates.
+Although these LLM-based methods have demonstrated
+promising results in generating effective alpha factors, they
+still largely rely on prompt-level feedback loops for iterative
+optimization, as illustrated in Figure 1. This design is flexible
+and easy to implement, but becomes increasingly inefficient
+and unstable when scaled to large factor mining campaigns,
+leading to two key challenges:
+•Context explosion and feedback drift.Existing LLM-
+based factor mining methods often rely on multi-round
+generation–evaluation–feedback loops, where historical can-
+didates, evaluation results, and feedback signals are re-
+peatedly appended to the prompt. As the loop becomes
+longer, the accumulated context increases inference cost,
+dilutes useful feedback, and introduces irrelevant or outdated
+information. This makes the feedback-driven optimization
+process increasingly unstable and may gradually drift away
+from the original factor mining objective.
+•Large-model dependence and search stagnation.Existing
+methods typically depend on very large LLMs to generate
+syntactically valid and semantically meaningful factor ex-
+pressions. However, such models often exhibit stable gen-
+eration preferences inherited from pretraining and prompt-
+ing, repeatedly producing structurally similar expressions or
+reusing familiar operator patterns. This limits exploration
+diversity, causes redundant factor candidates, and weakens
+the ability to discover genuinely novel alpha signals at scale.
+To fill these gaps, we propose QUANTEVOLVER 1, a self-
+evolving alpha factor discovery framework based on reinforce-
+ment fine-tuning.
+To addressChallenge 1, QUANTEVOLVERreplaces prompt-
+level feedback accumulation with reinforcement fine-tuning.
+As illustrated in Figure 1, instead of appending long histories
+1https://github.com/QuantLLM/QuantEvolver
+of generated factors, evaluation results, and refinement feed-
+back to the prompt, each training round only uses bounded
+generation–evaluation feedback. The optimization experience
+accumulated across rounds is then internalized into the policy
+model through parameter updates. In this way, QUANTE-
+VOLVERuses implicit optimization memory to replace explicit
+long-context feedback histories, reducing context growth and
+mitigating feedback drift during large-scale factor mining.
+To addressChallenge 2, QUANTEVOLVERadopts a
+lightweight LLM (parameter≤30B) as the base policy
+and continuously evolves its generation distribution through
+executable quantitative rewards. Each generated DSL factor
+expression is compiled and evaluated on historical market
+data, and the resulting reward is used to update the policy
+toward more effective factor proposals. Moreover, we design
+DiCo Reward, aDiversity-Complementarity reward mecha-
+nism that calibrates raw predictive performance with novelty,
+redundancy, behavioral diversity, and complementarity signals.
+This reward design encourages the policy to generate factors
+that are not only predictive, but also structurally diverse, be-
+haviorally distinct, and complementary to existing candidates.
+Beyond these two designs, QUANTEVOLVERfurther in-
+troduces a seeded task construction strategy to stabilize re-
+inforcement fine-tuning. Specifically, an oracle LLM is first
+used to construct a high-quality seed pool by generating
+candidate factor expressions, checking DSL validity, empir-
+ically scoring candidates, and selecting elite non-redundant
+seeds. The selected seeds are then expanded by a task bank
+builder into regime-aware training tasks, where each task
+contains a seed expression, time split, factor family, mutation
+hints, and scenario metadata. This design provides meaningful
+starting points and structured training contexts, enabling the
+lightweight LLM to focus on improving and diversifying
+promising factor candidates rather than searching from scratch.
+We conduct experiments on three realistic market bench-
+marks spanning short-horizon single-asset direction prediction,
+high-frequency cross-sectional factor mining, and daily equity
+ETF factor discovery. The results show that QUANTEVOLVER
+consistently improves the primary evaluation metric of each
+task over existing LLM-based alpha factor discovery meth-
+ods. Specifically, QUANTEVOLVERachieves a 7.8% relative
+improvement in directional accuracy on the single-asset di-
+rection prediction task. On the high-frequency cross-sectional
+benchmark, it exceeds the strongest baseline by 109.5% in
+best out-of-sample RankIC and by 186.9% in top-10 out-of-
+sample RankIC mean. On the daily equity ETF benchmark,
+QUANTEVOLVERfurther produces a high-quality and fuseable
+factor pool, achieving strong out-of-sample RankIC under a
+conventional equity-market evaluation protocol. These results
+demonstrate that QUANTEVOLVERis effective across hetero-
+geneous factor discovery settings, from high-frequency digital-
+asset prediction to daily equity factor mining. In summary, the
+key contributions of this work are as follows:
+•We introduce a policy-update-driven paradigm for LLM-
+based alpha factor discovery. Specifically, we replace
+prompt-level feedback accumulation with reinforcement
+fine-tuning, allowing a small language model to internalize
+3
+historical optimization experience through parameter up-
+dates and progressively improve its factor generation policy.
+•Built upon the above paradigm, we propose QUANTE-
+VOLVER, a self-evolving alpha factor discovery framework.
+QUANTEVOLVERcombines oracle-based seed construction,
+regime-aware task bank building, executable quantitative
+evaluation, and DiCo Reward to provide stable training tasks
+and reward signals that encourage predictive, diverse, and
+complementary alpha factors.
+•We validate the effectiveness of QUANTEVOLVERon three
+realistic market benchmarks. Extensive experiments show
+that QUANTEVOLVERsurpasses state-of-the-art LLM-based
+methods on the primary evaluation metrics, especially in
+terms of factor quality, diversity, and out-of-sample effec-
+tiveness.
+II. BACKGROUND
+In this section, we present the essential background of this
+paper, including the formal definition of alpha factor discovery
+and the emerging use of reinforcement fine-tuning (RFT) for
+adapting LLMs to task-specific feedback.
+A. Alpha Factor Discovery
+Alpha factors are numerical signals designed to capture pre-
+dictive patterns in financial markets. Given historical market
+observations, such as prices, volumes, returns, and derived
+technical indicators, an alpha factor maps these observations
+into a scalar signal that can be used for forecasting future
+returns, ranking assets, or constructing trading portfolios.
+At a fundamental level, an alpha factor can be viewed as
+a function from market observations to numerical signals.
+Therefore, many alpha factors can be naturally expressed
+in a formulaic form, where market variables are composed
+through mathematical operators, time-series transformations,
+and cross-sectional operations.
+For example, a simple momentum-style factor may compute
+the recent return trend of an asset, while a reversal-style
+factor may rank assets according to short-term price declines.
+A formulaic alpha factor can be expressed as a symbolic
+expression, such as Equation 1.
+f= rank(ts mean(return,5)),(1)
+Here,ts meancomputes a moving average over a five-
+period window andranknormalizes the resulting values across
+assets. Such expressions are compact and executable: once
+the variables and operators are defined, the expression can
+be directly applied to historical market data to produce factor
+values.
+Formally, letXdenote historical market data and letL
+denote a domain-specific language (DSL) that defines the valid
+variables, operators, and composition rules for constructing
+alpha expressions. An alpha factor can be represented as an
+expressionf∈ L, which maps market dataXto a factor value
+sequence as Equation 2.
+zf =f(X).(2)
+Here, the outputz f denotes the factor values produced
+by applying expressionfto market dataX. Given a target
+market outcomey, such as future return or cross-sectional
+asset ranking, the empirical quality offcan be measured by
+an evaluation functionM(z f , y). Common evaluation signals
+include predictive accuracy, information coefficient (IC), rank
+information coefficient (RankIC), and portfolio-level perfor-
+mance indicators.
+In practical quantitative pipelines, alpha factors are rarely
+used in isolation. Instead, multiple factors are usually com-
+bined into a factor set and further fused into a composite
+signal for prediction, ranking, or portfolio construction. Given
+a discovered factor set as shown in Equation 3.
+F={f 1, f2, . . . , fn}, f i ∈ L,(3)
+The corresponding factor values can be denoted as Equa-
+tion 4.
+ZF = [zf1 , zf2 , . . . , zfn ],(4)
+Here, eachz fi is computed according to Equation 2. A
+downstream fusion model or aggregation functiongcan then
+combine these factor values into a final predictive signal as
+Equation 5.
+s=g(Z F ).(5)
+It illustrates why factor discovery is not only about finding
+individually strong factors. If newly discovered factors are
+highly redundant, they may provide limited incremental value
+after fusion. Therefore, an effective factor set should contain
+factors that are predictive, diverse, and complementary to each
+other.
+The goal of alpha factor discovery is to search for a
+set of factor expressionsFthat achieves strong empirical
+performance under validation protocols and provides useful
+signals for downstream fusion. This problem is challenging
+because the candidate space grows rapidly with the number
+of variables, operators, temporal windows, and composition
+patterns. Moreover, financial signals are noisy and regime-
+dependent, so factors that appear effective in one period
+may fail to generalize in another. In practice, discovered
+factors are also expected to provide incremental value beyond
+existing factor libraries, since highly similar expressions often
+contribute limited new information.
+B. Reinforcement Fine-Tuning
+Reinforcement fine-tuning (RFT) is a training paradigm that
+adapts language models using task-specific reward signals. Un-
+like supervised fine-tuning (SFT), which learns from reference
+outputs or demonstrations, RFT allows a model to generate
+candidate outputs, receive rewards from an external evalua-
+tor, and update its policy according to the evaluated quality
+of these outputs. This makes RFT suitable for structured
+generation tasks where high-quality outputs are difficult to
+exhaustively annotate but can be assessed through task-specific
+feedback, such as mathematical reasoning, code generation,
+and tool-use planning [51], [52].
+4
+Formally, given an input promptx, a language model policy
+πθ generates an outputy∼π θ(· |x). A reward function
+R(x, y)evaluates the quality of the generated output. The
+objective of RFT is to update the policy parametersθto
+maximize the expected reward as Equation 6.
+max
+θ
+Ex∼D, y∼πθ(·|x) [R(x, y)].(6)
+Here, RFT converts task feedback into parameter-level pol-
+icy updates. Through repeated optimization, the model can
+gradually internalize task-specific preferences and improve its
+generation behavior, rather than relying only on in-context
+examples or manually written feedback prompts.
+Modern RFT methods differ in how rewards are collected
+and how policy updates are performed. Proximal Policy Op-
+timization (PPO) [53] is widely used because it stabilizes
+policy updates through clipped objectives or trust-region-
+style constraints. Direct Preference Optimization (DPO) [54]
+simplifies preference optimization by directly learning from
+preference pairs without explicitly training a separate reward
+model. More recently, Group Relative Policy Optimization
+(GRPO) [55] has been used to improve reasoning-oriented
+language models by comparing multiple sampled completions
+under the same prompt. Specifically, for a promptx, GRPO
+samples a group ofKoutputs as Equation 7.
+Y(x) ={y 1, y2, . . . , yK}, y i ∼π θold (· |x).(7)
+Each output receives a rewardR(x, yi)from a task-specific
+evaluator. The relative advantage of each output can then be
+estimated by normalizing rewards within the group as shown
+in Equation 8.
+ˆAi = R(x, yi)−mean({R(x, yj)}K
+j=1)
+std({R(x, yj)}K
+j=1) .(8)
+Here, GRPO encourages the model to increase the probabil-
+ity of outputs that outperform other candidates generated under
+the same prompt, while suppressing relatively poor outputs.
+This group-wise comparison is useful for structured generation
+tasks, where multiple candidates may be syntactically valid but
+differ substantially in task-level quality.
+Despite the success of RFT in reasoning, code generation,
+and other structured generation tasks, its use in LLM-based
+alpha factor discovery remains underexplored. Existing LLM-
+based alpha mining methods mainly rely on prompt-level
+interaction and iterative feedback, while few studies investigate
+whether reinforcement fine-tuning can directly improve the
+factor generation policy itself.
+III. METHODOLOGY
+The workflow of QUANTEVOLVERis illustrated in Fig-
+ure 2. Given a user-specified factor mining scenario, QUAN-
+TEVOLVERfirst performs seed construction, where the raw
+scenario is refined into a structured factor scenario and an or-
+acle LLM generates raw seed candidates. These candidates are
+then validated, scored, and deduplicated to form a high-quality
+seed pool. By combining the selected seeds with different
+time splits in the backtesting period, QUANTEVOLVERfurther
+constructs a task bank that provides diverse and structured
+training instances for subsequent reinforcement fine-tuning.
+Based on the task bank, QUANTEVOLVERconducts RFT-
+based factor discovery with a miner LLM. The miner LLM
+iteratively generates candidate factor expressions, receives
+executable quantitative feedback, and is updated through in-
+the-loop GRPO fine-tuning. To guide this process, QUANTE-
+VOLVERintroduces DiCo Reward (Diversity-Complementarity
+Reward), which encourages the model to discover factors with
+strong predictive quality, diversity, and complementarity. High-
+quality factors generated throughout training are continuously
+stored in a mined factor database, and the final output is a
+validated factor library tailored to the target scenario.
+A. Seed Construction
+The goal of seed construction is to provide high-quality
+starting points for reinforcement fine-tuning. Instead of asking
+the miner LLM to explore the entire factor expression space
+from scratch, QUANTEVOLVERconstructs a compact seed
+pool from a user-specified factor mining scenario or a prepared
+scenario configuration. This design improves the stability of
+subsequent policy optimization and guides the miner LLM
+toward promising regions of the factor space.
+Given a raw user scenariou, QUANTEVOLVERmay first
+perform scenario refinement to convert it into a structured
+factor scenario as Equation 9, wherescontains task-specific
+information such as the target market, prediction horizon,
+available variables, factor constraints, and evaluation objective.
+s=ϕ refine(u),(9)
+Based on the structured scenarios, a strong LLM or a
+prepared seed source proposes a set of raw seed candidates
+as Equation 10, where eachc i is a candidate factor expression
+written in the predefined factor expression language.
+Craw ={c 1, c2, . . . , cm}=ϕ seed(s),(10)
+The raw candidates are then filtered through DSL validation,
+empirical scoring, and canonical deduplication. First, DSL val-
+idation checks whether each candidate expression satisfies the
+syntax, operator, and type constraints of the factor language.
+LetLdenote the valid expression space. The valid candidate
+set is defined as Equation 11.
+Cvalid ={c i ∈ Craw |c i ∈ L}.(11)
+Second, each valid candidate is executed on historical
+market data and assigned an empirical score. Given market
+dataXand an evaluation metricM(·), the score of candidate
+ci is computed as Equation 12.
+q(ci) =M(c i(X)).(12)
+Here,q(c i)measures the initial empirical quality of the can-
+didate under the target scenario. The specific metric is selected
+according to the benchmark objective, such as DirAcc for
+directional prediction or RankIC for cross-sectional ranking.
+5
+Oracle LLM
+Seed Construction
+Raw Seed 
+Candidates
+Validation
+Scoring
+Deduplication
+Seed Pool
+Factor Scenario
+Scenario
+Refinement
+Time Split
+×
+Task Bank
+Miner LLM
+Factor DSL Regime Backtest
+DiCo Reward
+Factor
+Realizer
+GRPO Fine-Tuning
+Mined
+Factor
+Database
+Good?
+Y
+N
+Support
+RFT-Based Factor Discovery
+GPUs
+Fig. 2. Overall Framework of QUANTEVOLVER.
+Third, QUANTEVOLVERremoves redundant candidates to
+avoid constructing a seed pool dominated by duplicated or
+near-identical expressions. In implementation, candidates are
+ranked by their empirical scores and greedily selected using
+canonical expression signatures, such as normalized AST
+hashes. A candidate is retained only if it passes the quality
+filter and its canonical form has not already been selected as
+Equation 13, whereτ q is the quality threshold,h(·)denotes
+the canonical expression signature, andH selected is the set of
+signatures of already selected seeds. The resulting seed poolS
+contains valid, effective, and non-redundant factor expressions.
+S= TopK ({c i ∈ Cvalid |q(c i)≥τ q, h(ci)/∈ Hselected})
+(13)
+After obtaining the seed pool, QUANTEVOLVERconstructs
+a task bank for reinforcement fine-tuning. Let Equation 14
+denote a set of evaluation windows in the backtesting period.
+W={w j}n
+j=1 ={(start j,end j)}n
+j=1 (14)
+Each window specifies the market interval on which gener-
+ated factors are evaluated during RFT. For each seedf∈ S
+and each time windoww j ∈ W, QUANTEVOLVERconstructs
+a seeded factor mining task as Equation 15, wherefis the seed
+expression,sis the structured scenario,w j is the evaluation
+window, andodenotes the corresponding factor discovery
+objective.
+τf,j = (f, s, wj, o)(15)
+The full task bank is then defined as the Cartesian product
+between the seed pool and the evaluation windows as Equa-
+tion 16.
+B={τ f,j |f∈ S, wj ∈ W}.(16)
+Each task inBprovides a structured training instance for
+the miner LLM. It specifies which seed expression should be
+improved, under which market scenario it should be optimized,
+and on which historical window it should be evaluated. By
+combining seeds with multiple evaluation windows, the task
+bank exposes the miner LLM to diverse market conditions and
+reduces the risk that reinforcement fine-tuning overfits to a
+single historical interval. This seeded task construction allows
+QUANTEVOLVERto focus policy optimization on improving
+and diversifying promising factor candidates, rather than per-
+forming unconstrained exploration from scratch.
+B. RFT-Based Factor Discovery
+After constructing the task bank, QUANTEVOLVERper-
+forms RFT-based factor discovery to optimize the factor
+generation distribution of the Miner LLM. Different from
+prompt-level feedback loops that repeatedly append previous
+candidates and feedback into the context, QUANTEVOLVER
+uses reinforcement fine-tuning to convert executable quan-
+titative evaluation into parameter updates. As illustrated in
+Figure 2, the Miner LLM generates candidate expressions
+in the Factor DSL, the Factor Realizer converts them into
+executable factor computations, the Regime Backtest module
+evaluates their empirical performance on historical market
+windows, and high-quality factors are accumulated in the
+Mined Factor Database.
+Formally, letBdenote the task bank constructed in the
+previous subsection. Each taskτ∈ Bcontains a seed ex-
+pression, a structured market scenario, an evaluation window,
+and a factor discovery objective. Given a taskτ, the Miner
+LLM, modeled as a policyπ θ, generates a candidate factor
+expression as Equation 17.
+ˆf∼π θ(· |τ).(17)
+Here, ˆfdenotes a newly generated or mutated factor expres-
+sion conditioned on the task information. In the main setting,
+6
+ˆfis required to follow the predefined Factor DSL syntax. For
+DSL-free ablations, the same framework can instead evaluate
+generated Python Backtrader factor code.
+To make the generated candidate evaluable, QUANTE-
+VOLVERuses the Factor Realizer to parse and convert the Fac-
+tor DSL expression into executable factor code. Letψ realize(·)
+denote the realization function. The executable implementation
+of ˆfis obtained as Equation 18, wherep ˆf is executable
+code that can be applied to historical market data. If the
+generated output violates the required format, fails Factor
+DSL validation, contains unsupported operators, or cannot be
+executed safely, it is treated as invalid and assigned a low
+reward.
+p ˆf =ψ realize( ˆf),(18)
+For each valid executable candidatep ˆf , QUANTEVOLVER
+performs Regime Backtest on the historical evaluation window
+specified byτ. LetX τ denote the market data in this window
+and lety τ denote the corresponding future-return target. The
+factor values generated byp ˆf are computed as Equation 19.
+z ˆf =p ˆf (X τ ).(19)
+The Regime Backtest module then compares the generated
+factor values against the target outcome as Equation 20,
+whereψ bt(·)denotes the task-specific backtesting function
+ande ˆf contains empirical evaluation results, such as DirAcc,
+IC, RankIC, coverage, validity status, and auxiliary statistics.
+The primary metric depends on the benchmark objective: for
+example, DirAcc is used for single-asset directional prediction,
+while RankIC is used for cross-sectional ranking or single-
+asset rank correlation tasks.
+e ˆf =ψ bt
+
+z ˆf , yτ , τ
+
+,(20)
+Based on the backtesting result, QUANTEVOLVERcomputes
+the training reward as Equation 21, whereAdenotes the
+current Mined Factor Database and auxiliary archives used
+during training. The detailed design ofR DiCo is introduced in
+the next subsection.
+r ˆf =R DiCo
+
+ˆf , eˆf , τ,A
+
+,(21)
+During training, candidates that pass empirical-quality and
+coverage requirements are inserted into the Mined Factor
+Database. Letη( ˆf , eˆf )be a selection function that determines
+whether a generated candidate should be retained as Equa-
+tion 22.
+A ← A ∪
+n
+ˆf|η( ˆf , eˆf ) = 1
+o
+.(22)
+In implementation, this database-level selection checks
+whether the candidate is executable, satisfies minimum metric
+and coverage thresholds, and is not an exact duplicate of an
+already saved factor. Candidates that do not pass the selection
+criterion are discarded after their rewards have contributed to
+policy optimization.
+The Miner LLM is updated using group-based reinforce-
+ment fine-tuning with GRPO. For each taskτ, the Miner LLM
+samples a group ofKcandidate outputs as Equation 23.
+Gτ ={ ˆf1, ˆf2, . . . ,ˆfK}, ˆfk ∼π θ(· |τ).(23)
+Each candidate ˆfk is realized by the Factor Realizer,
+evaluated by Regime Backtest, and assigned a rewardr k
+according to Equation 21. These rewards are then passed to the
+GRPO optimizer, which performs group-wise policy updates
+as described in the background section. This process increases
+the likelihood of candidates that receive higher executable
+rewards under the same task, while suppressing invalid or low-
+quality generations.
+Overall, RFT-based factor discovery treats reinforcement
+fine-tuning as a search-distribution optimization mechanism.
+The Miner LLM is continuously improved through policy
+updates, but the final output of QUANTEVOLVERis not merely
+the fine-tuned model. Instead, high-quality factors discovered
+throughout training are accumulated in the Mined Factor
+Database, and the final result is a validated factor set tailored
+to the target scenario.
+C. DiCo Reward
+DiCo Reward, short for Diversity-Complementarity Reward,
+is designed to guide RFT-based factor discovery beyond pure
+predictive performance. A reward based only on empirical
+score may cause the Miner LLM to repeatedly exploit a small
+set of similar expressions. Therefore, DiCo Reward augments
+the task-specific predictive reward with lightweight shaping
+terms that encourage structural diversity and behavioral com-
+plementarity. The required expression-level, family-level, and
+behavior-level records are maintained in the Mined Factor
+Database.
+Given the generated factor ˆfand its Regime Backtest
+resulte ˆf , DiCo Reward first extracts a task-specific predictive
+rewardr pred( ˆf) =g(e ˆf ), whereg(·)extracts the primary
+metric from the backtesting result. Depending on the bench-
+mark, this metric can be directional accuracy, IC, RankIC,
+or mean cross-sectional RankIC. Invalid, non-executable, or
+insufficient-coverage candidates receive a low reward.
+To discourage direct repetition, DiCo Reward applies an
+exact-repeat penaltyr exact( ˆf) =−λ exactIexact( ˆf), where
+Iexact( ˆf)indicates whether the normalized expression hash
+of ˆfhas already appeared in the Mined Factor Database.
+This prevents the policy from receiving the same reward for
+repeatedly generating the same expression.
+Beyond exact duplicates, many factors may share the same
+structural template while differing only in local constants, such
+as lookback windows. QUANTEVOLVERtherefore maintains
+structural family records in the Mined Factor Database. Let
+ρ( ˆf)denote the family signature of ˆf, and letN A(ρ( ˆf))be the
+number of previously observed factors from the same family
+in the Mined Factor Database. The family-level shaping term
+is written as Equation 24, whereI new( ˆf)indicates that ˆf
+is a high-quality factor from a previously unseen structural
+family, andI over( ˆf)indicates that ˆfbelongs to an overused
+7
+low-quality family. This design allows useful local refinement
+within a family while discouraging excessive exploitation of
+weak templates.
+rfam( ˆf) =λ newInew( ˆf)−λ famIover( ˆf),(24)
+For tasks where behavioral profiles are available, DiCo
+Reward further introduces a complementarity term. Letb( ˆf)
+denote the behavior profile of ˆf, such as prediction vectors
+in single-asset timing tasks or cross-sectional rank vectors in
+RankIC tasks. We define the maximum behavioral similarity
+to elite factors in the Mined Factor Database as Equation 25.
+cmax( ˆf) = max
+f∈A elite
+corr
+ 
+b( ˆf), b(f)
+
+.(25)
+The complementarity shaping term is then defined as Equa-
+tion 26, whereI low( ˆf)indicates sufficiently low behavioral
+correlation with elite factors in the Mined Factor Database,
+and[x] + = max(x,0). This term rewards behaviorally distinct
+candidates and penalizes candidates that are highly correlated
+with already mined elite factors.
+rcomp( ˆf) =λ lowIlow( ˆf)−λ corr[cmax( ˆf)−τ corr]+.(26)
+The final reward combines the predictive and shaping com-
+ponents can be calculate as Equation 27.
+r ˆf = clip (rpred +r exact +r fam +r comp, rmin, rmax).(27)
+In practice, the predictive component remains the dominant
+signal, while the diversity and complementarity terms serve
+as lightweight regularization. Different tasks may enable dif-
+ferent subsets of these components depending on the available
+behavioral profiles. For example, cross-sectional RankIC tasks
+can use rank-vector behavior records, while simpler settings
+may only use exact-repeat and structural-family records.
+Overall, DiCo Reward encourages the Miner LLM to dis-
+cover factors that are not only empirically strong, but also
+structurally diverse and behaviorally complementary to the
+existing Mined Factor Database. This helps reduce mode
+collapse during RFT and improves the quality of the final
+factor library.
+IV. EVALUTION
+In this section, we evalute QUANTEVOLVERfrom 5 per-
+spectives. overall evalution, ablation study, hyberparameter
+sensitivity, training reward analysis, profitability case study.
+A. Experimental Setup
+Unless otherwise stated, QUANTEVOLVERis instantiated
+with theQwen3-14Bbase model. For downstream evaluation,
+all methods are assessed under a unified post-selection and
+fusion protocol: candidate factors are first evaluated indi-
+vidually, then ranked by validation performance, filtered by
+decorrelation, and finally fused into a multi-factor signal using
+equal weighting. By default, we adopt validation-guided decor-
+related selection with a correlation threshold of0.7and report
+results from the resulting fused portfolio. All experiments
+are conducted on a local compute server equipped with 160
+Intel(R) Xeon(R) CPU cores, 1.8 TiB RAM, and 8 NVIDIA
+H20 GPUs.
+B. Metrics
+We evaluate the discovered alpha factors from both predic-
+tive accuracy and ranking quality. Given a factorf, letz i,t
+denote the factor value of assetiat timet, and letr i,t+1
+denote the future return of the same asset in the next period.
+We use four commonly adopted metrics: directional accuracy
+(DirAcc), information coefficient (IC), rank information coef-
+ficient (RankIC), and information coefficient information ratio
+(ICIR).
+Directional Accuracy (DirAcc).DirAcc measures whether
+the factor correctly predicts the direction of future returns. It
+is defined as the proportion of samples where the sign of the
+factor signal is consistent with the sign of the future return
+as Equation 28, whereΩdenotes the set of valid asset-time
+samples andI[·]is the indicator function. A higher DirAcc
+indicates stronger directional forecasting ability.
+DirAcc(f) = 1
+|Ω|
+X
+(i,t)∈Ω
+I[sign(z i,t) = sign(ri,t+1)],(28)
+Information Coefficient (IC).IC measures the linear corre-
+lation between factor values and future returns. For each time
+t, we compute the cross-sectional Pearson correlation between
+{zi,t}Nt
+i=1 and{r i,t+1}Nt
+i=1 as Equation 29, whereN t is the
+number of valid assets at timet.
+ICt(f) = corr i (zi,t, ri,t+1),(29)
+The overall IC is then computed as the average over all
+evaluation periods as Equation 30.
+IC(f) = 1
+T
+TX
+t=1
+ICt(f).(30)
+A higher absolute IC indicates stronger linear association
+between the factor signal and future returns. In our evaluation,
+we report IC in the direction where larger values indicate better
+predictive performance.
+Rank Information Coefficient (RankIC).RankIC mea-
+sures the rank correlation between factor values and future
+returns. It is computed as the cross-sectional Spearman corre-
+lation at each time step as Equation 31 and averaged over all
+evaluation periods as Equation 32.
+RankICt(f) = corr i (rank(zi,t),rank(r i,t+1)),(31)
+RankIC(f) = 1
+T
+TX
+t=1
+RankICt(f).(32)
+RankIC is widely used for cross-sectional factor evaluation
+because it focuses on whether the factor can correctly rank
+assets by future performance.
+8
+Information Coefficient Information Ratio (ICIR).ICIR
+measures the stability of IC over time. It is defined as the
+mean IC divided by the standard deviation of IC as Equa-
+tion 33, whereϵis a small constant for numerical stability.
+A higher ICIR indicates that the factor not only has strong
+predictive correlation, but also maintains stable performance
+across different periods.
+ICIR(f) = mean
+ 
+{ICt(f)} T
+t=1
+
+std
+ 
+{ICt(f)} T
+t=1
+
++ϵ ,(33)
+C. Compared Approaches & Benchmark
+We compare QUANTEVOLVERwith four representative
+LLM-based alpha factor discovery methods. For a fair compar-
+ison, all methods use Qwen-3.6-Plus as the backbone LLM and
+are evaluated under the same factor expression space, market
+variables, operator definitions, and validation protocol.
+AlphaBench[46] is a systematic benchmark framework
+for evaluating LLMs in formulaic alpha factor mining. It
+studies LLM capabilities across factor generation, factor eval-
+uation, and factor searching, and serves as a representative
+prompt-based LLM alpha mining baseline. :contentRefer-
+ence[oaicite:0]index=0
+QuantaAlpha[50] is an evolutionary LLM-driven alpha
+mining framework. It treats each end-to-end mining run as a
+trajectory and improves generated factors through trajectory-
+level mutation and crossover, while enforcing semantic con-
+sistency among hypotheses, factor expressions, and executable
+code. :contentReference[oaicite:1]index=1
+R&D-Agent[49] is an LLM-based automated research-and-
+development framework for data-driven solution building. It
+adopts a dual-agent design, where a Researcher proposes ideas
+based on performance feedback and a Developer implements
+or refines solutions based on execution feedback. We adapt it
+to alpha factor discovery by treating factor proposal, imple-
+mentation, and empirical evaluation as an iterative data-driven
+research workflow. :contentReference[oaicite:2]index=2
+Alpha-Jungle[48] refers to the LLM-powered MCTS
+framework for formulaic alpha factor mining. It combines
+LLM-based symbolic formula generation with Monte Carlo
+Tree Search, using quantitative backtesting feedback to guide
+exploration and frequent-subtree avoidance to improve search
+efficiency. :contentReference[oaicite:3]index=3
+We evaluate all methods on three benchmarks, denoted as
+A,B, andΓ, which cover single-asset direction prediction,
+high-frequency cross-sectional factor mining, and daily equity
+ETF factor discovery.
+BenchmarkA: real-asset 5-minute directional predic-
+tion.BenchmarkAis constructed from the 5-minute market
+data of a real liquid asset. At each timestamp, the task is to
+predict whether the asset price will increase in the next 5-
+minute interval compared with the current price. Any positive
+future price change is labeled as an upward movement, while
+non-positive movement is labeled as non-upward. Since the
+task is a single-asset binary directional prediction problem,
+directional accuracy (DirAcc) is used as the primary metric.
+BenchmarkB: high-frequency cross-sectional factor dis-
+covery with hourly rebalancing.BenchmarkBis constructed
+from high-frequency multi-asset data collected from a major
+digital-asset exchange. At each hourly rebalancing timestamp,
+a discovered factor assigns scores to multiple tradable assets,
+and the evaluation measures whether these scores can correctly
+rank assets by their subsequent returns over the next holding
+period. This benchmark reflects a realistic high-frequency
+cross-sectional factor mining setting with hourly portfolio
+rebalancing, where the method must discover factors that
+generalize across assets and remain effective under frequent
+market updates. We use IC, RankIC, and ICIR as evaluation
+metrics, with RankIC as the primary metric.
+BenchmarkΓ: daily CSI 300 ETF factor discovery.
+BenchmarkΓis constructed from daily market data of CSI 300
+ETF constituents. The task is to discover daily alpha factors
+that predict future asset returns or cross-sectional rankings
+under a standard equity factor evaluation protocol. Compared
+with BenchmarksAandB, this benchmark represents a
+lower-frequency and more conventional equity-market factor
+discovery setting. We evaluate generated factors using IC,
+RankIC, and ICIR, and use RankIC as the primary metric.
+Together, the three benchmarks evaluate alpha factor dis-
+covery under complementary settings: BenchmarkAfocuses
+on short-horizon single-asset direction prediction, Benchmark
+Bfocuses on high-frequency cross-sectional ranking, and
+BenchmarkΓfocuses on daily equity ETF factor discovery.
+D. Overall Evaluation
+Table I reports the overall performance of QUANTEVOLVER
+and representative LLM-based alpha factor discovery baselines
+on the three benchmarks. The highlighted columns indicate the
+primary metric of each benchmark: DirAcc for BenchmarkA
+and RankIC for BenchmarksBandΓ. Overall, QUANTE-
+VOLVERachieves the best performance on the primary metric
+across all three benchmarks, demonstrating its effectiveness
+under heterogeneous factor discovery settings.
+On BenchmarkA, which focuses on short-horizon single-
+asset directional prediction, QUANTEVOLVERachieves the
+highest DirAcc of 53.22%, outperforming the strongest base-
+line R&D-Agent at 52.59%. Although several baselines obtain
+higher auxiliary IC or ICIR values, these metrics are not
+the primary objective of this directional prediction task. The
+improvement in DirAcc indicates that reinforcement fine-
+tuning helps the Miner LLM discover factors that are better
+aligned with the target decision rule of next-interval price
+direction.
+On BenchmarkB, which evaluates high-frequency cross-
+sectional factor mining, QUANTEVOLVERobtains the
+strongest RankIC of 0.0586, substantially exceeding the best
+baseline RankIC of 0.0337. It also achieves the highest IC
+and ICIR, reaching 0.0500 and 50.2644, respectively. These
+results show that QUANTEVOLVERnot only improves the
+primary ranking metric, but also produces factors with stronger
+linear correlation and more stable information coefficients over
+time. The consistent advantage across IC, RankIC, and ICIR
+suggests that the discovered factors generalize better across
+assets in a high-frequency cross-sectional setting.
+On BenchmarkΓ, the daily equity ETF factor discovery
+benchmark, QUANTEVOLVERachieves the best RankIC of
+9
+TABLE I
+OVERALLEVALUATION
+Method A B Γ
+DirAcc* IC RankIC ICIR DirAcc IC RankIC* ICIR DirAcc IC RankIC* ICIR
+AlphaBench 51.82%0.01470.0362 0.6139 49.57% 0.0288 0.0337 24.404055.56%0.1480 0.1688 2.6021
+QuantaAlpha 52.15% 0.0095 0.03133.600449.41% 0.0216 0.0235 24.4209 54.03% 0.1144 0.1003 2.0239
+R&D-Agent 52.59% 0.00020.05270.9779 49.40% 0.0188 0.0205 19.0101 53.31% 0.1001 0.0589 -0.8667
+Alpha-Jungle 52.25% 0.0023 0.0357 1.5664 49.39% 0.0185 0.0200 19.2806 48.92% 0.0369 -0.0008 -0.7166
+QUANTEVOLVER 53.22%-0.0058 0.0481 1.119149.96% 0.0500 0.0586 50.264453.49%0.1502 0.1923 5.4289
+0.1923 and the best ICIR of 5.4289. It also obtains the
+highest IC of 0.1502, slightly outperforming AlphaBench.
+Although AlphaBench achieves the highest DirAcc, RankIC
+is the primary metric for this benchmark because the task
+focuses on factor ranking quality rather than binary direction
+prediction. The strong RankIC and ICIR results indicate that
+QUANTEVOLVERcan discover daily equity factors with both
+high predictive ranking quality and stable out-of-sample be-
+havior.
+These results support two main observations. First, QUAN-
+TEVOLVERconsistently improves the primary task metric
+across all benchmarks, showing that policy-update-driven fac-
+tor discovery is effective beyond a single market or evaluation
+protocol. Second, the gains are most pronounced on the two
+ranking-oriented benchmarks, where the ability to generate
+diverse and complementary factor candidates is especially
+important. This confirms that QUANTEVOLVERis not merely
+optimizing isolated factor expressions, but learning a stronger
+factor generation policy that transfers across different alpha
+discovery scenarios.
+E. Ablation Study
+Table II presents the ablation results on BenchmarkB,
+where RankIC is the primary metric. We study three key
+components of QUANTEVOLVER: seed construction (Seed),
+diversity-aware reward shaping (Div), and the Factor DSL
+constraint (DSL). The full model, which uses all three compo-
+nents, achieves the best performance across all metrics, with
+an IC of 0.0500, a RankIC of 0.0586, and an ICIR of 50.2644.
+TABLE II
+ABLATIONRESULTS ONDATASETB
+Seed Div DSL IC RankIC* ICIR
+✓ ✓ ✓ 0.0500 0.0586 50.2644
+✓ ✓ 0.0421 0.0505 45.8038
+✓ ✓ 0.0434 0.0519 44.2189
+✓ 0.0461 0.0540 44.3755
+0.0001 0.0002 0.2506
+Removing either seed construction or diversity shaping
+leads to a clear performance drop. Without diversity shaping,
+RankIC decreases from 0.0586 to 0.0505, suggesting that the
+Miner LLM tends to over-exploit similar factor patterns when
+diversity and complementarity signals are absent. Without seed
+construction, RankIC decreases to 0.0519, indicating that high-
+quality seed factors provide useful starting points for RFT and
+help guide the search toward promising regions of the factor
+space. These results show that both seed initialization and
+diversity-aware reward shaping contribute to effective factor
+discovery.
+Interestingly, the variant without both Seed and Div but still
+using the Factor DSL achieves a RankIC of 0.0540, which
+is lower than the full model but remains competitive. This
+suggests that the Factor DSL itself provides an important
+inductive bias by restricting the search space to executable and
+financially meaningful factor expressions. However, adding
+seed construction and diversity-aware shaping on top of the
+DSL further improves both factor quality and stability.
+The last row removes the Factor DSL and lets the model
+generate unconstrained factor code. Its performance collapses
+to a RankIC of only 0.0002 and an ICIR of 0.2506. This
+demonstrates that unconstrained code generation is unreliable
+for RFT-based factor discovery: generated programs are more
+likely to be invalid, unstable, or poorly aligned with the
+evaluation objective. In contrast, the Factor DSL provides a
+structured action space that makes reinforcement fine-tuning
+feasible and sample-efficient.
+Overall, the ablation study confirms that the strongest per-
+formance comes from the combination of all three compo-
+nents. The Factor DSL ensures executable and well-formed
+factor generation, seed construction provides high-quality
+starting points, and diversity-aware reward shaping prevents
+repetitive exploitation while encouraging complementary dis-
+coveries.
+F . Hyperparameter Sensitivity
+Figure 3 studies the sensitivity of factor fusion performance
+to two important hyperparameters on BenchmarkB: the
+number of selected factorskand the correlation threshold used
+during factor selection. Since BenchmarkBuses RankIC as
+the primary metric, we report the fused out-of-sample RankIC
+under different hyperparameter settings.
+Figure 3(a) shows that QUANTEVOLVERconsistently out-
+performs all baselines across different top-ksettings. Its Ran-
+kIC remains around 0.050 even when only the top three to
+five factors are selected, and steadily improves as more high-
+quality factors are included. The performance increases from
+0.0498 atk= 5to 0.053 atk= 10, 0.0562 atk= 20,
+and reaches its best value of 0.0587 aroundk= 25. The
+10
+3 5 8 1012 15 20 25 30 40 50
+Top-k
+0.010
+0.020
+0.030
+0.040
+0.050
+0.060Full-period RankIC
+AlphaBench
+QuantaAlpha
+R&D-Agent
+Alpha-Jungle
+QuantEvolver
+(a) Top-kSensitivity
+0.50 0.60 0.70 0.75 0.80 0.85 0.90 0.95
+Correlation Threshold 
+0.010
+0.020
+0.030
+0.040
+0.050
+0.060Full-period RankIC
+AlphaBench
+QuantaAlpha
+R&D-Agent
+Alpha-Jungle
+QuantEvolver (b) Correlation-Threshold Sensitivity
+Fig. 3. Hyberparameter Sensitivity Experiment on DatasetB
+result remains nearly unchanged atk= 30with a RankIC of
+0.0586, and only slightly decreases whenkis further enlarged.
+This trend indicates that QUANTEVOLVERproduces a rich and
+stable factor pool: adding more selected factors improves the
+fused signal up to a moderate scale, while the performance
+remains robust when the selected set becomes larger.
+Figure 3(b) examines the effect of the correlation thresh-
+old used during factor selection. A lower threshold imposes
+a stricter decorrelation constraint among selected factors.
+QUANTEVOLVERachieves the strongest performance under
+stricter thresholds, reaching a RankIC of 0.0620 at threshold
+0.50 and 0.0601 at threshold 0.60. As the threshold becomes
+looser, the RankIC decreases to around 0.052–0.054, sug-
+gesting that controlling redundancy among selected factors is
+important for obtaining a stronger fused signal. This result
+indicates that the mined factor pool contains many individually
+predictive candidates, but effective fusion still benefits from
+explicitly preserving complementary information.
+Overall, the sensitivity analysis shows that QUANTE-
+VOLVERis robust to fusion hyperparameters. It maintains a
+clear advantage over baseline methods across a wide range of
+top-kvalues and correlation thresholds, while the best configu-
+rations favor a moderately sized factor set with relatively strict
+decorrelation. This further supports that QUANTEVOLVER
+discovers not only isolated strong factors, but also a diverse
+and complementary factor pool suitable for multi-factor fusion.
+G. Mining Process Analysis
+Figure 4 provides a closer look at the mining dynamics of
+QUANTEVOLVERand its ablated variants on DatasetB. In
+Figure 4(a), the full QUANTEVOLVERdesign exhibits a more
+stable and consistently improving reward trajectory over search
+progress, indicating that the combination of seed initialization
+and diversity-aware exploration helps the search process move
+toward more promising regions of the factor space. Removing
+either component leads to a weaker or less stable optimization
+trend, while removing both causes the mining process to
+become substantially less effective.
+Figure 4(b) further examines the quality of high-scoring
+discovered factors. The full method maintains the strongest
+rolling top-10% score over most of the search process, show-
+ing that QUANTEVOLVERnot only improves the average
+optimization trajectory but also discovers stronger high-quality
+candidates more reliably. In contrast, the ablated variants either
+improve more slowly or plateau at lower quality levels. These
+0 20 40 60 80 100
+Search Progress (\%)
+-0.80
+-0.60
+-0.40
+-0.20
+0.00
+Critic Score Mean (8-step MA)
+Main
+No Div
+No Seed + Div
+No Seed / No Div
+(a) Training Reward Dynamics
+0 20 40 60 80 100
+Search Progress (\%)
+2.00
+2.50
+3.00
+3.50
+4.00
+4.50
+5.00
+5.50Rolling Top-10\% Score Main
+No Div
+No Seed + Div
+No Seed / No Div (b) High-Quality Factor Discovery
+Fig. 4. Mining process analysis on DatasetB.
+results suggest that seed-based initialization and diversity-
+aware search are both important for sustaining effective factor
+discovery throughout the mining process.
+H. Profitability Case Study
+Figure 5 presents a profitability case study on BenchmarkB
+by converting discovered cross-sectional factors into a simple
+long–short portfolio. At each rebalancing timestamp, assets
+are ranked by the factor signal, and the portfolio takes long
+positions in the top-ranked assets and short positions in the
+bottom-ranked assets. This experiment is not intended to be a
+fully optimized trading system; instead, it serves as a practical
+sanity check on whether the higher RankIC achieved by
+QUANTEVOLVERcan translate into economically meaningful
+returns.
+2025-11 2025-12 2026-01 2026-02 2026-03 2026-04 2026-05
+Time
+1.00
+1.20
+1.40
+1.60
+1.80
+2.00
+2.20Net Asset Value
+1.37
+1.85
+2.26Alpha101 Alpha158 QuantEvolver
+Fig. 5. Cumulative Return Comparison on DatasetB
+The results show that the QUANTEVOLVER-based portfolio
+produces the strongest cumulative return among all compared
+factor sets. Over the evaluation period from November 2025 to
+April 2026, the net asset value of QUANTEVOLVERincreases
+from 1.00 to about2.26, corresponding to a cumulative return
+of approximately125.6%. In comparison, Alpha158 reaches
+a final net asset value of about1.85, while Alpha101 reaches
+about1.37. Thus, QUANTEVOLVERnot only improves the
+statistical ranking metric reported in previous sections, but also
+leads to a substantially stronger long–short return curve.
+The return trajectory also indicates that QUANTEVOLVER
+maintains a persistent advantage over the classical alpha sets.
+Although all methods experience short-term fluctuations and
+drawdowns, the QUANTEVOLVERcurve begins to separate
+from the baselines after the early evaluation period and
+continues to compound more rapidly. This suggests that the
+mined factors capture cross-sectional return signals that remain
+11
+effective over time rather than producing only isolated high-IC
+observations.
+Overall, this case study provides additional evidence that
+the factor pool discovered by QUANTEVOLVERis not merely
+statistically predictive, but also economically useful under a
+simple portfolio construction protocol. The stronger cumula-
+tive return supports the practical relevance of policy-update-
+driven factor discovery for high-frequency cross-sectional al-
+pha mining.
+V. RELATEDWORK
+A. LLM-Based Quantitative Finance
+With the rapid development of large language models
+(LLMs), increasing efforts have explored their applications in
+quantitative finance. From the perspective of financial tasks,
+existing work can be broadly divided into five categories:
+data analysis, investment research, trading, investment man-
+agement, and risk management [56].
+Data analysis focuses on using LLMs to process heteroge-
+neous financial information, such as earnings-call transcripts,
+annual reports, financial news, SEC filings, and social media
+posts. Representative tasks include financial text summariza-
+tion, named entity recognition, relation extraction, event clas-
+sification, and sentiment analysis [57]–[59]. Domain-specific
+financial LLMs, such as FinBERT, BloombergGPT, FinGPT,
+FinMA, InvestLM, FinTral, and ICE-Intern, further improve
+financial language understanding by adapting general language
+models to financial corpora or instruction data [60]–[66].
+Investment research aims to support market analysis, asset
+evaluation, forecasting, and investment hypothesis generation.
+Existing work studies LLMs for event classification, financial
+sentiment analysis, time-series forecasting, and investment
+reasoning over market data and textual information [67]–
+[71]. More closely related to this paper, recent studies apply
+LLMs to alpha factor mining, where LLMs are used as factor
+miners, evaluators, interactive assistants, or search controllers
+to generate and refine formulaic alpha expressions [43]–[50].
+Trading focuses on using LLMs to support strategy execu-
+tion and trading decision-making. In this setting, LLMs may
+interpret market states, summarize relevant signals, reason over
+trading opportunities, or generate executable trading decisions
+based on historical prices, news, reports, and sentiment in-
+formation [72]–[75]. Other works further explore memory-
+augmented or agentic trading systems, where LLM agents
+coordinate market observation, reflection, and decision-making
+over time [76]–[79].
+Investment management studies how LLMs can assist
+portfolio-level reasoning, asset allocation, financial question
+answering, and investment recommendation. Representative
+benchmarks and models focus on answering complex financial
+questions over reports, tables, and market information, requir-
+ing numerical reasoning, multi-hop reasoning, and risk-return
+trade-off analysis [80]–[82]. These studies show the potential
+of LLMs to support portfolio construction and investment
+decision workflows, but also reveal challenges in long-context
+reasoning, numerical calculation, and adaptation to dynamic
+financial data.
+Risk management applies LLMs to tasks such as fraud
+detection, default risk prediction, compliance analysis, and
+financial risk monitoring. Existing studies and benchmarks
+examine how LLMs can identify abnormal transactions, assess
+borrower risk, and support regulatory or compliance-oriented
+analysis [83]–[85]. These applications require models to han-
+dle imbalanced data, evolving risk patterns, and interpretable
+financial evidence.
+Overall, LLM-based quantitative finance has evolved from
+financial information processing toward investment research,
+trading support, portfolio reasoning, and risk monitoring. This
+paper belongs to the investment research direction, with a
+specific focus on LLM-based alpha factor discovery.
+B. Alpha Factor Discovery
+Alpha factor discovery aims to automatically identify pre-
+dictive signals from historical market data. Existing methods
+can be broadly categorized according to how they explore the
+factor expression space.
+Early automated methods mainly rely on rule-based sym-
+bolic search. These methods represent alpha factors as sym-
+bolic expressions and search over the expression space us-
+ing genetic programming, symbolic regression, evolutionary
+search, operator-template enumeration, or grammar-based con-
+straints [1]–[6]. By explicitly defining variables, operators,
+and composition rules, symbolic-search methods can generate
+executable and interpretable factor expressions. However, their
+exploration process is often constrained by hand-crafted muta-
+tion rules, crossover strategies, search heuristics, or syntactic
+templates, making it difficult to scale efficiently to large and
+semantically rich factor spaces.
+Another line of work introduces learning-guided factor
+generation. Instead of relying purely on heuristic symbolic
+search, these methods use trainable models, reinforcement
+learning policies, or neural generators to guide the construc-
+tion, ranking, and selection of alpha expressions [5], [7]–[11].
+For example, reinforcement-learning-based methods formulate
+factor discovery as a sequential expression-construction prob-
+lem, where an agent selects variables and operators according
+to empirical rewards. Neural and generative methods further
+learn factor-generation patterns from historical evaluations
+or previously discovered factors. These approaches improve
+search adaptivity, but they usually require predefined action
+spaces, expression templates, or task-specific training objec-
+tives, and their generation ability is still limited by the learned
+search policy rather than open-ended semantic composition.
+Recently, LLM-based methods have provided a new
+paradigm for alpha factor discovery. Leveraging their symbolic
+reasoning, code-like generation, and instruction-following ca-
+pabilities, LLMs can generate and refine factor expressions
+from alpha libraries, market contexts, user instructions, and
+empirical feedback [43]–[50]. Existing LLM-based frame-
+works have explored interactive factor mining, factor eval-
+uation and refinement, search-augmented generation, multi-
+agent workflows, and evolutionary exploration. These methods
+improve the flexibility of alpha mining, but most of them still
+use LLMs as prompt-driven miners, evaluators, or agents.
+12
+Our work is positioned at the intersection of learning-
+guided factor generation and LLM-based alpha mining. Unlike
+rule-based symbolic search, QUANTEVOLVERleverages a
+language-model policy to generate DSL factor expressions.
+Unlike existing prompt-driven LLM-based methods, it uses
+reinforcement fine-tuning as a search-distribution optimization
+mechanism during factor mining. The goal is not merely
+to obtain a deployable factor-mining agent, but to collect,
+validate, and select a high-quality mined factor set throughout
+the training process.
+VI. CONCLUSION
+In this paper, we study LLM-based alpha factor discovery
+and identify two key limitations of existing prompt-level op-
+timization methods: context explosion and search stagnation.
+To address these challenges, we propose QUANTEVOLVER,
+a self-evolving alpha factor discovery framework based on
+reinforcement fine-tuning. Instead of accumulating historical
+candidates and feedback in the prompt, QUANTEVOLVER
+converts executable quantitative evaluation into policy updates,
+enabling a Miner LLM to internalize optimization experience
+through parameter learning and progressively improve its
+factor generation policy. Experiments on three realistic market
+benchmarks demonstrate that QUANTEVOLVERconsistently
+discovers stronger and more robust alpha factors than repre-
+sentative LLM-based baselines.
+REFERENCES
+[1] T. Zhang, Y . Li, Y . Jin, and J. Li, “Autoalpha: an efficient hierarchical
+evolutionary algorithm for mining alpha factors in quantitative invest-
+ment,” arXiv preprint arXiv:2002.08245, 2020.
+[2] W. Ren, Y . Qin, and Y . Li, “Alpha mining and enhancing via warm
+start genetic programming for quantitative investment,” arXiv preprint
+arXiv:2412.00896, 2024.
+[3] Z. Kakushadze, “101 formulaic alphas,” Wilmott, vol. 2016, no. 84, pp.
+72–81, 2016.
+[4] I. Arnaldo, K. Krawiec, and U.-M. O’Reilly, “Multiple regression
+genetic programming,” in Proceedings of the 2014 annual conference
+on genetic and evolutionary computation, 2014, pp. 879–886.
+[5] H. Yang, D. Hao, Z. Wang, Q. Shi, and X. Li, “Alpha discovery via
+grammar-guided learning and search,” arXiv preprint arXiv:2601.22119,
+2026.
+[6] T. Ren, R. Zhou, J. Jiang, J. Liang, Q. Wang, and Y . Peng, “Riskminer:
+Discovering formulaic alphas via risk seeking monte carlo tree search,”
+in Proceedings of the 5th ACM International Conference on AI in
+Finance, 2024, pp. 752–760.
+[7] S. Yu, H. Xue, X. Ao, F. Pan, J. He, D. Tu, and Q. He, “Generating
+synergistic formulaic alpha collections via reinforcement learning,” in
+Proceedings of the 29th ACM SIGKDD conference on knowledge
+discovery and data mining, 2023, pp. 5476–5486.
+[8] F. Xu, Y . Yin, X. Zhang, T. Liu, S. Jiang, and Z. Zhang, “Alpha2:
+Discovering logical formulaic alphas using deep reinforcement learning,”
+arXiv preprint arXiv:2406.16505, 2024.
+[9] Z. Zhu and K. Zhu, “Alphaqcm: Alpha discovery in finance with distribu-
+tional reinforcement learning,” in Forty-second International Conference
+on Machine Learning, 2025.
+[10] H. Shi, W. Song, X. Zhang, J. Shi, C. Luo, X. Ao, H. Arian, and L. A.
+Seco, “Alphaforge: A framework to mine and dynamically combine
+formulaic alpha factors,” in Proceedings of the AAAI conference on
+artificial intelligence, vol. 39, no. 12, 2025, pp. 12 524–12 532.
+[11] B. Chen, H. Ding, N. Shen, J. Huang, T. Guo, L. Liu, and M. Zhang,
+“Alphasage: Structure-aware alpha mining via gflownets for robust
+exploration,” arXiv preprint arXiv:2509.25055, 2025.
+[12] L. Zhang, T. Jia, M. Jia, Y . Wu, A. Liu, Y . Yang, Z. Wu, X. Hu, P. Yu,
+and Y . Li, “A survey of aiops in the era of large language models,”ACM
+Computing Surveys, 2025.
+[13] L. Zhang, T. Jia, X. Tan, X. Huang, M. Jia, H. Liu, Z. Wu, and Y . Li,
+“E-log: Fine-grained elastic log-based anomaly detection and diagnosis
+for databases,” IEEE Transactions on Services Computing, 2025.
+[14] L. Zhang, T. Jia, M. Jia, H. Liu, Y . Yang, Z. Wu, and Y . Li, “Towards
+close-to-zero runtime collection overhead: Raft-based anomaly diagnosis
+on system faults for distributed storage system,” IEEE Transactions on
+Services Computing, 2024.
+[15] L. Zhang, T. Jia, M. Jia, Y . Li, Y . Yang, and Z. Wu, “Multivariate log-
+based anomaly detection for distributed database,” in Proceedings of the
+30th ACM SIGKDD Conference on Knowledge Discovery and Data
+Mining, 2024, pp. 4256–4267.
+[16] L. Zhang, T. Jia, K. Wang, M. Jia, Y . Yang, and Y . Li, “Reducing
+events to augment log-based anomaly detection models: An empirical
+study,” in Proceedings of the 18th ACM/IEEE International Symposium
+on Empirical Software Engineering and Measurement, 2024, pp. 538–
+548.
+[17] L. Zhang, T. Jia, M. Jia, Y . Wu, H. Liu, and Y . Li, “Scalalog: Scalable
+log-based failure diagnosis using llm,” in ICASSP 2025-2025 IEEE
+International Conference on Acoustics, Speech and Signal Processing
+(ICASSP). IEEE, 2025, pp. 1–5.
+[18] L. Zhang, Y . Zhai, T. Jia, X. Huang, C. Duan, and Y . Li, “Agentfm:
+Role-aware failure management for distributed databases with llm-driven
+multi-agents,” arXiv preprint arXiv:2504.06614, 2025.
+[19] L. Zhang, Y . Zhai, T. Jia, C. Duan, S. Yu, J. Gao, B. Ding, Z. Wu, and
+Y . Li, “Thinkfl: Self-refining failure localization for microservice sys-
+tems via reinforcement fine-tuning,” arXiv preprint arXiv:2504.18776,
+2025.
+[20] L. Zhang, T. Jia, Y . Zhai, L. Pan, C. Duan, M. He, M. Jia, and
+Y . Li, “Agentic memory enhanced recursive reasoning for root cause
+localization in microservices,” arXiv preprint arXiv:2601.02732, 2026.
+[21] L. Zhang, T. Jia, M. Jia, and Y . Li, “Logdb: Multivariate log-based
+failure diagnosis for distributed databases (extended from multilog),”
+arXiv preprint arXiv:2505.01676, 2025.
+[22] L. Zhang, T. Jia, M. Jia, Y . Wu, H. Liu, and Y . Li, “Xraglog: A resource-
+efficient and context-aware log-based anomaly detection method using
+retrieval-augmented generation,” inAAAI 2025 Workshop on Preventing
+and Detecting LLM Misinformation (PDLM), 2025.
+[23] L. Zhang, L. Fang, C. Duan, M. He, L. Pan, P. Xiao, S. Huang,
+Y . Zhai, X. Hu, P. S. Yu et al., “A survey on parallel text generation:
+From parallel decoding to diffusion language models,” arXiv preprint
+arXiv:2508.08712, 2025.
+[24] L.-Z. Zhang, X.-D. Huang, Y .-K. Wang, J.-L. Qiao, S.-X. Song, and J.-
+M. Wang, “Time-tired compaction: An elastic compaction scheme for
+lsm-tree based time-series database,” Advanced Engineering Informatics,
+vol. 59, p. 102224, 2024.
+[25] Y . Kang, X. Huang, S. Song, L. Zhang, J. Qiao, C. Wang, J. Wang, and
+J. Feinauer, “Separation or not: On handing out-of-order time-series data
+in leveled lsm-tree,” in2022 IEEE 38th International Conference on Data
+Engineering (ICDE). IEEE, 2022, pp. 3340–3352.
+[26] L. Zhang, T. Jia, K. Wang, W. Hong, C. Duan, M. He, and Y . Li,
+“Adaptive root cause localization for microservice systems with multi-
+agent recursion-of-thought,” arXiv preprint arXiv:2508.20370, 2025.
+[27] H. Liu, Y . Ma, X. Huang, L. Zhang, T. Jia, and Y . Li, “Ora: Job runtime
+prediction for high-performance computing platforms using the online
+retrieval-augmented language model,” in Proceedings of the 39th ACM
+International Conference on Supercomputing, 2025, pp. 884–894.
+[28] L. Zhang, Y . Zhai, T. Jia, C. Duan, M. He, L. Pan, Z. Liu, B. Ding, and
+Y . Li, “Microremed: Benchmarking llms in microservices remediation,”
+arXiv preprint arXiv:2511.01166, 2025.
+[29] L. Pan, Z. Fu, Y . Zhai, S. Tao, S. Guan, S. Huang, L. Zhang,
+Z. Liu, B. Ding, F. Henry et al., “Omni-safetybench: A benchmark for
+safety evaluation of audio-visual large language models,” arXiv preprint
+arXiv:2508.07173, 2025.
+[30] M. He, T. Jia, C. Duan, P. Xiao, L. Zhang, K. Wang, Y . Wu, Y . Li,
+and G. Huang, “Walk the talk: Is your log-based software reliability
+maintenance system really reliable?” arXiv preprint arXiv:2509.24352,
+2025.
+[31] L. Pan, S. Tao, Y . Zhai, Z. Fu, L. Fang, M. He, L. Zhang, Z. Liu, B. Ding,
+A. Liu et al., “d-treerpo: Towards more reliable policy optimization for
+diffusion language models,” arXiv preprint arXiv:2512.09675, 2025.
+[32] W. Hong, Y . Wu, L. Zhang, C. Duan, P. Xiao, M. He, X. Yang, and Y . Li,
+“Cslparser: A collaborative framework using small and large language
+models for log parsing,” in 2025 IEEE 36th International Symposium
+on Software Reliability Engineering (ISSRE). IEEE, 2025, pp. 61–72.
+[33] M. He, C. Duan, P. Xiao, T. Jia, S. Yu, L. Zhang, W. Hong, J. Han,
+Y . Wu, Y . Li et al., “United we stand: Towards end-to-end log-
+based fault diagnosis via interactive multi-task learning,” arXiv preprint
+arXiv:2509.24364, 2025.
+13
+[34] L. Zhang, T. Jia, Y . Zhai, L. Pan, C. Duan, M. He, P. Xiao, and Y . Li,
+“Hypothesize-then-verify: Speculative root cause analysis for microser-
+vices with pathwise parallelism,” arXiv preprint arXiv:2601.02736,
+2026.
+[35] X. Huang, H. Liu, Y . Wu, L. Zhang, T. Jia, Y . Li, and Z. Wu, “Uda-rcl:
+Unsupervised domain adaptation for microservice root cause localization
+utilizing multimodal data,” IEEE Transactions on Services Computing,
+2025.
+[36] H. Liu, X. Huang, M. Jia, L. Zhang, T. Jia, Z. Wu, and Y . Li, “Aaad:
+Asynchronous inter-variable relationship-aware anomaly detection for
+multivariate time series,” in 2025 IEEE International Conference on
+Multimedia and Expo (ICME). IEEE, 2025, pp. 1–6.
+[37] C. Duan, M. He, P. Xiao, T. Jia, X. Zhang, Z. Zhong, X. Luo,
+Y . Niu, L. Zhang, S. Yu et al., “Logaction: Consistent cross-system
+anomaly detection through logs via active domain adaptation,” in
+2025 40th IEEE/ACM International Conference on Automated Software
+Engineering (ASE). IEEE, 2025, pp. 700–712.
+[38] L. Zhang, T. Jia, W. Hong, M. Wang, C. Duan, M. He, R. Wang, X. Peng,
+M. Wang, G. Zhang et al., “Runtimeslicer: Towards generalizable unified
+runtime state representation for failure management,” arXiv preprint
+arXiv:2603.21495, 2026.
+[39] L. Zhang, T. Jia, M. Wang, W. Hong, C. Duan, M. He, R. Wang,
+X. Peng, M. Wang, G. Zhang et al., “Efficient failure management for
+multi-agent systems with reasoning trace representation,” arXiv preprint
+arXiv:2603.21522, 2026.
+[40] L. Zhang, Y . Zhai, T. Jia, M. He, C. Duan, Z. Liu, B. Ding, and
+Y . Li, “E2e-reme: Towards end-to-end microservices auto-remediation
+via experience-simulation reinforcement fine-tuning,” arXiv preprint
+arXiv:2604.11094, 2026.
+[41] P. Xiao, C. Duan, M. He, T. Jia, Y . Wu, J. Xu, G. Gao, L. Zhang,
+W. Hong, Y . Li et al., “Coorlog: Efficient-generalizable log anomaly
+detection via adaptive coordinator in software evolution,” in 2025
+40th IEEE/ACM International Conference on Automated Software
+Engineering (ASE). IEEE, 2025, pp. 1119–1131.
+[42] L. Zhang, T. Jia, Y . Zhai, L. Fang, K. Zheng, H. Liu, X. Huang, P. S. Yu,
+and Y . Li, “Towards robust llm post-training: Automatic failure manage-
+ment for reinforcement fine-tuning,” arXiv preprint arXiv:2605.04431,
+2026.
+[43] S. Wang, H. Yuan, L. Zhou, L. Ni, H. Y . Shum, and J. Guo, “Alpha-
+gpt: Human-ai interactive alpha mining for quantitative investment,” in
+Proceedings of the 2025 Conference on Empirical Methods in Natural
+Language Processing: System Demonstrations, 2025, pp. 196–206.
+[44] Z. Li, R. Song, C. Sun, W. Xu, Z. Yu, and J.-R. Wen, “Can large
+language models mine interpretable financial factors more effectively?
+a neural-symbolic factor mining agent model,” in Findings of the
+Association for Computational Linguistics: ACL 2024, 2024, pp. 3891–
+3902.
+[45] S. Wang, H. Yuan, L. M. Ni, and J. Guo, “Quantagent: Seeking holy
+grail in trading by self-improving large language model,” arXiv preprint
+arXiv:2402.03755, 2024.
+[46] H. Luo, H. T. Ko, J. Chen, D. Sun, Y . Zhang, and C. Liu, “Al-
+phabench: Benchmarking large language models in formulaic alpha
+factor mining,” in The Fourteenth International Conference on Learning
+Representations.
+[47] Z. Tang, Z. Chen, J. Yang, J. Mai, Y . Zheng, K. Wang, J. Chen,
+and L. Lin, “Alphaagent: Llm-driven alpha mining with regularized
+exploration to counteract alpha decay,” in Proceedings of the 31st ACM
+SIGKDD Conference on Knowledge Discovery and Data Mining V .2,
+2025, pp. 2813–2822.
+[48] Y . Shi, Y . Duan, and J. Li, “Navigating the alpha jungle: An llm-powered
+mcts framework for formulaic alpha factor mining,” in Proceedings of
+the AAAI Conference on Artificial Intelligence, vol. 40, no. 2, 2026,
+pp. 997–1005.
+[49] Y . Li, X. Yang, X. Yang, X. Wang, W. Liu, and J. Bian, “R&d-agent-
+quant: a multi-agent framework for data-centric factors and model joint
+optimization,” Advances in Neural Information Processing Systems,
+vol. 38, 2026.
+[50] J. Han, S. Zhang, W. Li, Z. Yang, Y . Dong, T. Hu, J. Yuan, X. Yu,
+Y . Zhu, F. Lou et al., “Quantaalpha: An evolutionary framework for
+llm-driven alpha mining,” arXiv preprint arXiv:2602.07085, 2026.
+[51] P. F. Christiano, J. Leike, T. Brown, M. Martic, S. Legg, and D. Amodei,
+“Deep reinforcement learning from human preferences,” Advances in
+neural information processing systems, vol. 30, 2017.
+[52] D. M. Ziegler, N. Stiennon, J. Wu, T. B. Brown, A. Radford, D. Amodei,
+P. Christiano, and G. Irving, “Fine-tuning language models from human
+preferences,” arXiv preprint arXiv:1909.08593, 2019.
+[53] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, “Prox-
+imal policy optimization algorithms,” arXiv preprint arXiv:1707.06347,
+2017.
+[54] R. Rafailov, A. Sharma, E. Mitchell, C. D. Manning, S. Ermon, and
+C. Finn, “Direct preference optimization: Your language model is
+secretly a reward model,” Advances in Neural Information Processing
+Systems, vol. 36, pp. 53 728–53 741, 2023.
+[55] Z. Shao, P. Wang, Q. Zhu, R. Xu, J. Song, X. Bi, H. Zhang, M. Zhang,
+Y . Li, Y . Wuet al., “Deepseekmath: Pushing the limits of mathematical
+reasoning in open language models,” arXiv preprint arXiv:2402.03300,
+2024.
+[56] Y . Dong, F. Wu, K. Zhang, Y . Dai, S. Zhang, W. Ye, S. Chen, and
+Z.-Q. Cheng, “Large language model agents in finance: A survey
+bridging research, practice, and real-world deployment,” Findings of
+the Association for Computational Linguistics: EMNLP, vol. 2025, pp.
+17 889–17 907, 2025.
+[57] R. Mukherjee, A. Bohra, A. Banerjee, S. Sharma, M. Hegde, A. Shaikh,
+S. Shrivastava, K. Dasgupta, N. Ganguly, S. Ghosh et al., “Ectsum: A
+new benchmark dataset for bullet point summarization of long earnings
+call transcripts,” in Proceedings of the 2022 Conference on Empirical
+Methods in Natural Language Processing, 2022, pp. 10 893–10 906.
+[58] H. Li, Q. Peng, X. Mou, Y . Wang, Z. Zeng, and M. F. Bashir, “Ab-
+stractive financial news summarization via transformer-bilstm encoder
+and graph attention-based decoder,” IEEE/ACM Transactions on Audio,
+Speech, and Language Processing, vol. 31, pp. 3190–3205, 2023.
+[59] S. Sharma, T. Nayak, A. Bose, A. K. Meena, K. Dasgupta, N. Ganguly,
+and P. Goyal, “Finred: A dataset for relation extraction in financial
+domain,” in Companion Proceedings of the Web Conference 2022, 2022,
+pp. 595–597.
+[60] Z. Liu, D. Huang, K. Huang, Z. Li, and J. Zhao, “Finbert: A pre-trained
+financial language representation model for financial text mining,” in
+Proceedings of the twenty-ninth international conference on international
+joint conferences on artificial intelligence, 2021, pp. 4513–4519.
+[61] S. Wu, O. Irsoy, S. Lu, V . Dabravolski, M. Dredze, S. Gehrmann,
+P. Kambadur, D. Rosenberg, and G. Mann, “Bloomberggpt: A large
+language model for finance,” arXiv preprint arXiv:2303.17564, 2023.
+[62] H. Yang, X.-Y . Liu, and C. D. Wang, “Fingpt: Open-source financial
+large language models,” arXiv preprint arXiv:2306.06031, 2023.
+[63] Q. Xie, W. Han, X. Zhang, Y . Lai, M. Peng, A. Lopez-Lira, and
+J. Huang, “Pixiu: a large language model, instruction data and evalua-
+tion benchmark for finance,” in Proceedings of the 37th International
+Conference on Neural Information Processing Systems, 2023, pp.
+33 469–33 484.
+[64] Y . Yang, Y . Tang, and K. Y . Tam, “Investlm: A large language model
+for investment using financial domain instruction tuning,” arXiv preprint
+arXiv:2309.13064, 2023.
+[65] G. Bhatia, H. Cavusoglu, M. Abdul-Mageed et al., “Fintral: A family
+of gpt-4 level multimodal financial large language models,” in Findings
+of the Association for Computational Linguistics: ACL 2024, 2024, pp.
+13 064–13 087.
+[66] G. Hu, K. Qin, C. Yuan, M. Peng, A. Lopez-Lira, B. Wang, S. Ana-
+niadou, J. Huang, and Q. Xie, “No language is an island: Unifying
+chinese and english in financial large language models, instruction data,
+and benchmarks,” arXiv preprint arXiv:2403.06249, 2024.
+[67] J. Lee, H. L. Youn, N. Stevens, J. Poon, and S. C. Han, “Fednlp: an
+interpretable nlp system to decode federal reserve communications,”
+in Proceedings of the 44th international ACM SIGIR conference on
+research and development in information retrieval, 2021, pp. 2560–2564.
+[68] A. Shah, S. Paturi, and S. Chava, “Trillion dollar words: A new financial
+dataset, task & market analysis,” in Proceedings of the 61st Annual
+Meeting of the Association for Computational Linguistics (V olume1:
+Long Papers), 2023, pp. 6664–6679.
+[69] A. Sinha and T. Khandait, “Impact of news on the commodity market:
+Dataset and results,” in Future of Information and Communication
+Conference. Springer, 2021, pp. 589–601.
+[70] X. Yu, Z. Chen, and Y . Lu, “Harnessing llms for temporal data-a study
+on explainable financial time series forecasting,” in Proceedings of the
+2023 conference on empirical methods in natural language processing:
+industry track, 2023, pp. 739–753.
+[71] Y . Hu, Y . Li, P. Liu, Y . Zhu, N. Li, T. Dai, S.-t. Xia, D. Cheng,
+and C. Jiang, “Fintsb: A comprehensive and practical benchmark for
+financial time series forecasting,” arXiv preprint arXiv:2502.18834,
+2025.
+[72] U. Gupta, “Gpt-investar: Enhancing stock investment strategies through
+annual report analysis with large language models,” arXiv preprint
+arXiv:2309.03079, 2023.
+14
+[73] Q. Xie, W. Han, Z. Chen, R. Xiang, X. Zhang, Y . He, M. Xiao, D. Li,
+Y . Dai, D. Fenget al., “Finben: A holistic financial benchmark for large
+language models,” Advances in Neural Information Processing Systems,
+vol. 37, pp. 95 716–95 743, 2024.
+[74] H. Li, Y . Cao, Y . Yu, S. R. Javaji, Z. Deng, Y . He, Y . Jiang, Z. Zhu,
+K. Subbalakshmi, J. Huang et al., “Investorbench: A benchmark for
+financial decision-making tasks with llm-based agent,” in Proceedings
+of the 63rd Annual Meeting of the Association for Computational
+Linguistics (V olume1: Long Papers), 2025, pp. 2509–2525.
+[75] Y . Lu, Y . Hu, H. Foroosh, W. Jin, and F. Liu, “Strux: An llm for decision-
+making with structured explanations,” in Proceedings of the 2025
+Conference of the Nations of the Americas Chapter of the Association
+for Computational Linguistics: Human Language Technologies (V olume
+2: Short Papers), 2025, pp. 131–141.
+[76] Y . Yu, H. Li, Z. Chen, Y . Jiang, Y . Li, J. W. Suchow, D. Zhang, and
+K. Khashanah, “Finmem: A performance-enhanced llm trading agent
+with layered memory and character design,” IEEE Transactions on Big
+Data, 2025.
+[77] J. Li, Y . Bian, G. Wang, Y . Lei, D. Cheng, Z. Ding, and C. Jiang, “Cfgpt:
+Chinese financial assistant with large language model,” arXiv preprint
+arXiv:2309.10654, 2023.
+[78] C. Zhang, X. Liu, Z. Zhang, M. Jin, L. Li, Z. Wang, W. Hua, D. Shu,
+S. Zhu, X. Jin et al., “When ai meets finance (stockagent): Large lan-
+guage model-based stock trading in simulated real-world environments,”
+arXiv preprint arXiv:2407.18957, 2024.
+[79] Y . Xiao, E. Sun, D. Luo, and W. Wang, “Tradingagents: Multi-agents
+llm financial trading framework,” in The First MARW: Multi-Agent AI
+in the Real World Workshop at AAAI 2025.
+[80] Z. Chen, S. Li, C. Smiley, Z. Ma, S. Shah, and W. Y . Wang, “Convfinqa:
+Exploring the chain of numerical reasoning in conversational finance
+question answering,” in Proceedings of the 2022 conference on empirical
+methods in natural language processing, 2022, pp. 6279–6292.
+[81] C. Choi, J. Kwon, J. Ha, H. Choi, C. Kim, Y . Lee, J.-y. Sohn, and
+A. Lopez-Lira, “Finder: Financial dataset for question answering and
+evaluating retrieval-augmented generation,” in Proceedings of the 6th
+ACM International Conference on AI in Finance, 2025, pp. 638–646.
+[82] X. Li, Z. Li, C. Shi, Y . Xu, Q. Du, M. Tan, and J. Huang, “Al-
+phafin: Benchmarking financial analysis with retrieval-augmented stock-
+chain framework,” in Proceedings of the 2024 joint international
+conference on computational linguistics, language resources and
+evaluation (LREC-COLING 2024), 2024, pp. 773–783.
+[83] N. Balasubramanian, Y . Ye, and M. Xu, “Substituting human decision-
+making with machine learning: Implications for organizational learning,”
+Academy of Management Review, vol. 47, no. 3, pp. 448–465, 2022.
+[84] Y . Yin, Y . Yang, J. Yang, and Q. Liu, “Finpt: Financial risk prediction
+with profile tuning on pretrained foundation models,” arXiv preprint
+arXiv:2308.00065, 2023.
+[85] D. Feng, Y . Dai, J. Huang, Y . Zhang, Q. Xie, W. Han, Z. Chen,
+A. Lopez-Lira, and H. Wang, “Empowering many, biasing a few:
+Generalist credit scoring through large language models,” arXiv preprint
+arXiv:2310.00566, 2023.

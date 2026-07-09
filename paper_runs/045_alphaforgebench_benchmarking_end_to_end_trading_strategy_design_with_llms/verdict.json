@@ -1,0 +1,14 @@
+{
+  "run_id": "045_alphaforgebench_benchmarking_end_to_end_trading_strategy_design_with_llms",
+  "paper": "AlphaForgeBench \u2014 Benchmarking End-to-End Trading Strategy Design with LLMs",
+  "execution_state": "blocked_on_return_path_adapter",
+  "verdict": "blocked_aggregate_metrics_only_no_dated_jkp_return_stream",
+  "valid_return_data_used": false,
+  "metric_status": "not_computable_from_approved_inputs",
+  "allowed_return_inputs": [
+    "${ALPHA_EVOLVE_JKP_ROOT}",
+    "${ALPHA_EVOLVE_RETURN_DATA_ROOT}"
+  ],
+  "reason": "The repo is benchmark infrastructure and aggregate metrics, not an approved-input dated candidate return stream.",
+  "ff3_ff5mom_status": "not_run_blocked"
+}

@@ -1,0 +1,3207 @@
+Cognitive Alpha Mining via LLM-Driven Code-Based Evolution
+Fengyuan Liu2,3* Yi Huang1 Sichun Luo2,3 Yuqi Wang2,3 Yazheng Yang2,3
+Xinye Li2,3 Zefa Hu1 Junlan Feng1 Qi Liu2,3*
+1Jiutian Research, China Mobile
+2School of Computing and Data Science, The University of Hong Kong
+3Grace Investment Machine
+Correspondence:oxfengyuan@gmail.com,liuqi@cs.hku.hk
+Abstract
+Discovering effective predictive signals, or “al-
+phas,” from financial data with high dimen-
+sionality and extremely low signal-to-noise ra-
+tio remains a difficult open problem. Despite
+progress in deep learning, genetic program-
+ming, and, more recently, large language model
+(LLM)–based factor generation, existing ap-
+proaches still explore only a narrow region of
+the vast alpha search space. Neural models tend
+to produce opaque and fragile patterns, while
+symbolic or formula-based methods often yield
+redundant or economically ungrounded expres-
+sions that generalize poorly. Although different
+in form, these paradigms share a key limita-
+tion: none can conduct broad, structured, and
+human-like exploration that balances logical
+consistency with creative leaps. To address this
+gap, we introduce theCognitive Alpha Mining
+Framework (CogAlpha), which combines code-
+level alpha representation with LLM-driven rea-
+soning and evolutionary search. Treating LLMs
+as adaptive cognitive agents, our framework it-
+eratively refines, mutates, and recombines al-
+pha candidates through multi-stage prompts
+and financial feedback. This synergistic de-
+sign enables deeper thinking, richer structural
+diversity, and economically interpretable alpha
+discovery, while greatly expanding the effective
+search space. Experiments on 5 stock datasets
+from 3 stock markets demonstrate that CogAl-
+pha consistently discovers alphas with supe-
+rior predictive accuracy, robustness, and gen-
+eralization over existing methods. Our results
+highlight the promise of aligning evolutionary
+optimization with LLM-based reasoning for au-
+tomated and explainable alpha discovery.
+1 Introduction
+Alpha mining is the process of discovering predic-
+tive financial signals, or “alphas,” from financial
+markets such as the stock market to forecast future
+asset returns. However, since financial markets are
+*Corresponding author
+characterized by high dimensionality, time-varying
+volatility (Engle, 1982), and a low signal-to-noise
+ratio, it remains challenging to identify explainable,
+reliable, and diverse alphas that support sustainable
+profitability and effective risk management. Over
+the decades, alpha mining has undergone several
+major transformations: from manual construction,
+to machine learning–driven automation, and more
+recently, to generative and reasoning-based explo-
+ration using LLMs (Guo et al., 2024a).
+In the earliest stage, alpha factors were manually
+designed by financial experts, grounded in eco-
+nomic intuition and empirical observation. Classic
+examples include the Fama–French factors (Fama
+and French, 1992) and various documented finan-
+cial anomalies (Harvey et al., 2016; Hou et al.,
+2017). These human-crafted alphas are inter-
+pretable and theoretically sound. However, the
+design process is inherently labor-intensive and in-
+efficient. As financial markets became increasingly
+complex and data-rich, manual approaches strug-
+gled to scale, resulting in diminishing returns and
+crowding among similar strategies.
+To enhance efficiency, researchers began lever-
+aging machine learning models for alpha discov-
+ery. Some studies directly employed neural net-
+works (Duan et al., 2022; Xu et al., 2021a,b) to
+implicitly extract complex and nonlinear alpha
+structures from market data through deep learn-
+ing. These neural approaches demonstrate strong
+predictive power and the ability to capture high-
+dimensional and nonlinear dependencies. However,
+they also suffer from inherent weaknesses: such
+models often behave as black boxes, making it diffi-
+cult to trace the underlying decision logic or assess
+their robustness under changing market conditions.
+As a result, their performance tends to degrade
+when exposed to regime shifts or unseen patterns.
+In contrast, formula-based approaches (Zhang et al.,
+2020, 2023) aim to identify alphas represented by
+explicit mathematical expressions. Many methods
+arXiv:2511.18850v3 [cs.CL] 20 Apr 2026
+based on genetic programming (GP) (Cui et al.,
+2021; Lin et al., 2019; Patil, 2023; Schmidt and
+Lipson, 2010; Su et al., 2022) and reinforcement
+learning (RL) (Liu et al., 2021; Yu et al., 2023; Shi
+et al., 2025a) frameworks have been proposed to au-
+tomatically search symbolic formula spaces. These
+methods provide transparent expressions that are
+easy to reproduce and evaluate. Nonetheless, the re-
+sulting formulas are often overly complex or redun-
+dant and frequently lack solid economic or finan-
+cial rationale, causing weak generalization and lim-
+ited stability in real trading environments. Despite
+their differences, both neural and formula-based
+paradigms share a common limitation: their search
+processes are inefficient and narrow in scope. Nei-
+ther can emulate human-like reasoning that com-
+bines logical consistency with leap-style creativity,
+leaving a critical gap between algorithmic explo-
+ration and genuine conceptual innovation.
+Recently, LLMs (Li et al., 2025) have been in-
+troduced into alpha mining due to their knowledge
+integration, abstraction, and generative reasoning
+capabilities. LLMs can synthesize financial knowl-
+edge and propose novel formulaic representations
+at scale. Nevertheless, most existing LLM-based
+approaches (Shi et al., 2025b; Tang et al., 2025)
+still rely on formula stacking and pattern repetition
+rather than genuine reasoning or structural inno-
+vation. As a result, the generated factors tend to
+be redundant and susceptible to crowding effects,
+which limits their sustainability in dynamic mar-
+ket environments. The key research gap lies in
+how to evolve LLMs from merepattern replica-
+torsinto genuinecognitive thinkers. Specifically,
+there remains an unmet need for frameworks that
+enable LLMs to perform deeper thinking, richer
+structural diversity, and economically grounded
+exploration, thereby improving the long-term sta-
+bility and robustness of the discovered alpha fac-
+tors. Achieving this would move the field beyond
+brute-force search or shallow formula generation
+toward a more knowledge-driven and explainable
+paradigm for alpha discovery.
+To bridge this gap, we propose a novel frame-
+work namedCogAlpha(Cognitive Alpha Mining).
+The name highlights two key aspects of our ap-
+proach:CognitiveandAlpha. The termCognitive
+refers to leveraging iterative feedback from prior
+generations and agents to enable adaptive genera-
+tion, thereby moving beyond shallow pattern recog-
+nition toward human-like analytical reasoning. The
+termAlphacorresponds to the central goal of dis-
+covering profitable signals in quantitative finance.
+By integrating an evolutionary search process that
+induces deeper thinking in LLMs, together with
+a seven-level agent hierarchy and a multi-agent
+quality checker, COGALPHAnaturally embodies
+our vision of advancing toward Cognitive Alpha
+Mining.
+The remainder of this paper is organized as fol-
+lows. Section 2 reviews related work on LLM-
+driven alpha mining and deeper LLM thinking. Sec-
+tion 3 presents the proposed CogAlpha framework
+in detail, highlighting its seven-level agent hier-
+archy, multi-agent quality checker, and thinking
+evolution components. Section 4 states the experi-
+mental setting and reports experimental results on
+five different stock datasets, with a primary focus
+on the CSI300, demonstrating the superiority of
+our approach. Section 5 concludes the paper and
+outlines promising directions for future research.
+The main contributions of this work are summa-
+rized as follows:
+• We introduce the concept ofCognitive Alpha
+Mining, which opens a new direction for auto-
+mated, robust, and explainable alpha discov-
+ery, and we formalize it through the proposed
+COGALPHAframework.
+• We propose a novel method, COGALPHA,
+which leverages an evolutionary search pro-
+cess that induces deeper thinking in LLMs,
+together witha Seven-Level Agent Hierarchy
+anda Multi-Agent Quality Checker.
+• Extensive experiments on five datasets from 3
+stock markets demonstrate the effectiveness of
+COGALPHAframework. The alphas extracted
+by our method exhibit stronger predictive per-
+formance, greater stability, and improved in-
+terpretability compared with baselines.
+2 Related Work
+Alpha Mining with LLMAlpha mining is a fun-
+damental task in quantitative finance, aimed at dis-
+covering predictive signals, i.e., alpha factors, for
+stock markets. Previous approaches have primarily
+relied on human experts (Fama and French, 1992),
+genetic programming (GP) (Cui et al., 2021; Lin
+et al., 2019; Patil, 2023; Schmidt and Lipson, 2010;
+Su et al., 2022), reinforcement learning (RL) (Liu
+et al., 2021; Yu et al., 2023; Shi et al., 2025a), or
+deep learning (Duan et al., 2022; Xu et al., 2021a,b)
+to explore the vast factor space. However, these
+methods all have inherent limitations: they may be
+inefficient, produce overly complex solutions, or
+suffer from limited interpretability.
+Recently, LLMs, with their extensive world
+knowledge and strong reasoning capabilities, have
+been introduced into alpha mining. For exam-
+ple, AutoAlpha (Kou et al., 2024) employs LLMs
+to evaluate and select superior alpha candidates,
+and agentic frameworks have also been incorpo-
+rated to enhance adaptivity and automation. Al-
+phaAgent (Tang et al., 2025) introduces an agent-
+based architecture with regularization strategies
+to mine decay-resistant alpha factors, AlphaJun-
+gle (Shi et al., 2025b) presents an LLM-powered
+Monte Carlo Tree Search (MCTS) framework in
+which the LLM performs multi-step formula refine-
+ment, and RD-Agent(Q) (Li et al., 2025) proposes
+a data-centric feedback loop with factor–model co-
+optimization that enables continuous factor adap-
+tation under dynamic market conditions. However,
+despite these advances, existing LLM-based alpha
+mining methods still rely on formulaic search repre-
+sentations, which restrict exploration to shallow re-
+gions of the factor space and fail to fully align with
+LLMs’ strengths in reasoning and code generation.
+In contrast, we leverage LLMs to directly perform
+code-based evolution, enabling exploration of a
+broader and deeper search space.
+Evolving LLM ThinkingTo further explore the
+potential of large language models (LLMs), nu-
+merous methods have been proposed to enhance
+their thinking and reasoning capabilities. Recent
+studies have investigated integrating genetic and
+evolutionary algorithms (EAs) with LLMs. For ex-
+ample, Mind Evolution (Lee et al., 2025) employs
+an evolutionary search strategy to scale inference-
+time computation in large language models. Wiz-
+ardLM (Xu et al., 2024) enhances LLM perfor-
+mance by automatically generating large volumes
+of open-domain instructions across diverse topics
+and difficulty levels. EvoPrompt (Guo et al., 2024b)
+combines evolutionary algorithms with LLMs to
+optimize prompts using operators such as initializa-
+tion, selection, crossover, mutation, and evaluation,
+all guided by an LLM; this approach outperforms
+both human-designed and traditional automated
+prompts. FunSearch (Romera-Paredes et al., 2024)
+applies an LLM-guided evolutionary search to dis-
+cover mathematical heuristics, excelling in con-
+structing novel mathematical objects and advanc-
+ing algorithmic discovery. AlphaEvolve (Novikov
+et al., 2025) further scales this idea by introduc-
+ing an autonomous evolutionary coding pipeline,
+where LLMs generate code variants and evalua-
+tors iteratively assess and refine them. Beyond
+these studies, evolutionary approaches combined
+with LLMs have also been explored in text gen-
+eration (Xiao and Chen, 2023; Jobanputra et al.,
+2025) and code generation (Pinna et al., 2024; Hem-
+berg et al., 2024). Despite these advances, none
+of the existing works specifically focus on extract-
+ing effective signals from highly volatile financial
+markets. To this end, we propose COGALPHA,
+which leverages an evolutionary search process
+that induces deeper thinking in LLMs, in collab-
+oration with a seven-level agent hierarchy and a
+multi-agent quality checker, to generate robust and
+interpretable alpha factors.
+3 Approach
+The Cognitive Alpha Mining Framework
+(COGALPHA) is designed to simulate human-like
+reasoning and discover more sophisticated, logical,
+and interpretable alpha solutions. It employs an
+evolutionary search strategy that induces deeper
+thinking in LLMs, together with a seven-level
+agent hierarchy and a multi-agent quality checker,
+to perform alpha mining. Each alpha produced by
+CogAlphais accompanied by detailed comments
+that explain its logic, clarify its underlying
+idea, and present the corresponding formula.
+Following the comments, the implementation code
+is provided. In this section, we introduce the core
+components of COGALPHAand explain how each
+part functions within the overall framework.
+3.1 Seven-Level Agent Hierarchy
+The only raw factors available areopen,high,low,
+close, andvolume(OHLCV). Based on the five
+factors, we design a seven-level agent hierarchy
+to explore alphas as comprehensively as possible.
+This hierarchy consists of 21 unique agents. As
+shown in Figure 2, from a macroscopic (Level I) to
+a microscopic (Level VII) perspective, these agents
+are organized into seven hierarchical levels. Each
+agent is dedicated to exploring a distinct alpha-
+discovery direction and independently generates
+a set of alpha factors according to its designated
+exploration strategy. The following provides a brief
+overview of each level’s exploration domain, and
+more details are provided in Appendix A.1.
+Level I: Market Structure & Cycle Layer
+(AgentMarketCycle,AgentVolatilityRegime) — Ex-
+plores large-scale temporal structures such as long-
+term trends, market phases, and cyclical state tran-
+sitions inferred from daily OHLCV dynamics.
+Level II: Extreme Risk & Fragility Layer
+(AgentTailRisk,AgentCrashPredictor) — Models
+tail-risk exposure, crash precursors, and systemic
+fragility patterns that indicate potential regime
+breakdowns or stress accumulation.
+Level III: Price–Volume Dynamics Layer
+(AgentLiquidity,AgentOrderImbalance,Agent-
+PriceVolumeCoherence,AgentVolumeStructure) —
+Captures the interaction between price and trading
+activity—liquidity, order imbalance, and coherence
+between price movement and volume behavior.
+Level IV: Price–Volatility Behavior Layer
+(AgentDailyTrend,AgentReversal,AgentRangeVol,
+AgentLagResponse,AgentVolAsymmetry) — Ana-
+lyzes trend persistence, short-term reversal, volatil-
+ity clustering, and asymmetric price dynamics as
+the core source of predictive alpha.
+Level V: Multi-Scale Complexity Layer(Agent-
+Drawdown,AgentFractal) — Measures cross-scale
+irregularity, fractal roughness, drawdown–recovery
+geometry, and long-memory characteristics in time-
+series structure.
+Level VI: Stability & Regime-Gating Layer
+(AgentRegimeGating,AgentStability) — Assesses
+temporal stability and constructs adaptive gating
+mechanisms that regulate signal activation under
+varying market conditions.
+Level VII: Geometric & Fusion Layer(Agent-
+BarShape,AgentCreative,AgentComposite,Agen-
+tHerding) — Focuses on geometric pattern rep-
+resentation (candlestick morphology) and multi-
+factor fusion, combining independent signals into
+coherent composites.
+3.2 Diversified Guidance
+To achieve more precise and comprehensive ex-
+ploration along each alpha-discovery direction, we
+extend the original guidance generation with five
+paraphrasing modes:light,moderate,creative,di-
+vergent, andconcrete. Thelightversion performs
+minimal rewording to maintain almost identical
+meaning, ensuring linguistic consistency for base-
+line comparison. Themoderateversion introduces
+natural phrasing variations to enrich expression
+while keeping the same analytical focus. Thecre-
+ativeversion adds interpretative depth and research-
+oriented nuance to inspire alternative reasoning
+within the same conceptual boundary. Thediver-
+gentversion explores new but related analytical
+perspectives, helping generate complementary hy-
+potheses beyond the original phrasing. Finally, the
+concreteversion transforms abstract descriptions
+into measurable, implementation-oriented forms by
+specifying possible formulas, ratios, or statistical
+operations. Together, these five paraphrasing styles
+enable broader semantic coverage and deeper fac-
+tor reasoning without departing from the original
+analytical intent. More details about those para-
+phrasing modes are provided in Appendix A.2.
+3.3 Multi-Agent Quality Checker
+To verify the validity and quality of the gener-
+ated alpha codes, we design aMulti-Agent Quality
+Checker—comprising theJudge Agent,Logic Im-
+provement Agent,Code Quality Agent, andCode
+Repair Agent. All alpha codes that pass the quality
+checker are stored in the candidate pool; otherwise,
+invalid codes are sent back to the multi-agent sys-
+tem for repair. Codes that cannot be repaired or
+improved after several attempts are discarded.
+As illustrated in Figure 1, theCode Quality
+Agentfirst detects issues such as syntax errors, for-
+matting inconsistencies, and runtime bugs. If such
+issues are found, theCode Repair Agentattempts to
+fix the problematic alpha codes based on the feed-
+back provided by theCode Quality Agent. Next,
+theJudge Agentevaluates whether an alpha factor
+is logically consistent, technically correct, and eco-
+nomically meaningful. If improvement is needed,
+theLogic Improvement Agentrefines and enhances
+alpha codes that fail theJudge Agent’s assessment.
+After passing all quality checks, each code is exe-
+cuted. We evaluate numerical stability by detecting
+runtime errors, the proportion ofNaNvalues, over-
+flow/underflow, and distinct values per day. Codes
+that fail are either rejected or sent back to earlier
+agents for correction. If it runs successfully, a unit
+test is performed to examine potential information
+leakage. Codes that pass the unit test are deemed
+qualified and stored in the candidate pool. More
+details are shown in Appendix A.3.
+3.4 Fitness Evaluation
+After passing the Multi-Agent Quality Checker,
+each alpha is evaluated using five predictive power
+metrics: Information Coefficient (IC), Information
+Raw 7-L Hierarchy 5-M Evaluation Thinking Evolution 5-M Evaluation Candidates PoolQuality Checker Quality Checker
+Code Quality
+Judger
+Execute Code
+Code Repair
+Qualified 
+Code
+def factor_phase_angle_close_ema10_30_day_close(df):
+ """Phase‑angle between 10‑day and 30‑day EMA of
+ close price. Fast and slow EMAs capture short‑ and
+ medium‑term trends; an epsilon prevents 
+ division‑by‑zero in the arctan2 denominator."""
+ df_copy = df.copy()
+ fast = talib.EMA(df_copy['day_close'].astype(float), 
+ timeperiod=10)
+ slow = talib.EMA(df_copy['day_close'].astype(float), 
+ timeperiod=30)
+ eps = np.finfo(float).eps
+ angle = np.arctan2(fast - slow, fast + slow + eps)
+ df_copy.loc[:, 
+ 'factor_phase_angle_close_ema10_30_day_close'] 
+ = angle
+ return df_copy['
+ 
+factor_phase_angle_close_ema10_30_day_close']
+BC
+E
+DE
+D
+C
+B
+AF
+Crossover and Mutation
+IC, RankIC, ICIR, RankICIR, MI
+Open
+Quality Checker
+7 Level Task-specific Agents
+Ⅰ: Market Structure & Cycle
+Ⅱ: Extreme Risk & Fragility
+Ⅲ: Price–Volume Dynamics
+Ⅳ: Price–Volatility Behavior
+Ⅴ: Multi-Scale Complexity 
+Ⅵ: Stability & Regime-Gating
+Ⅶ: Geometric & Fusion
+High Low Close Vol
+Alpha A
+Alpha B
+7-L Hierarchy
+ 5-M Evaluation Candidates Pool
+BF
+Good
+Bad
+Mutation
+Crossover
+Top Candidates
+Thinking Evolution
+Working Stream
+Logic Improve
+Alpha
+Unit Test
+Figure 1:Overview of CogAlpha.The Seven-Level Agent Hierarchy produces initial alphas derived from the
+OHLCV data. The Multi-Agent Quality Checker verifies the validity and quality of each generated alpha code. The
+Filtering module evaluates all alpha codes using five predictive power metrics. Finally, the Thinking Evolution
+module iteratively refines and recombines qualified candidates through deeper reasoning by LLMs in each iteration.
+Coefficient Information Ratio (ICIR), Rank Infor-
+mation Coefficient (RankIC), Rank Information
+Coefficient Information Ratio (RankICIR), and
+Mutual Information (MI). The first 4 metrics mea-
+sure the linear relationship between the alpha and
+the target return, whereasMIcaptures the nonlin-
+ear dependency between them. Detailed definitions
+of these metrics are provided in Appendix B.3.
+We set threshold values to identifyqualifiedand
+elitealphas. Alphas whose five evaluation metrics
+all exceed the 65th percentile among all alphas in
+the same generation are classified asqualified al-
+phas, while those exceeding the 80th percentile are
+consideredelite alphas. We constrain each metric
+by a minimum bound to prevent the dominance
+of outliers:ICandRankICare bounded below by
+0.005,ICIRandRankICIRby 0.05, andMIby
+0.02. For elite factors, the minimum bounds are
+slightly higher: 0.01 forICandRankIC, 0.1 for
+ICIRandRankICIR, and 0.02 forMI. The qualified
+alphas form the new parent pool and are passed
+to the next iteration, whereas the elite alphas are
+carried forward and stored in the final candidate
+pool. Additionally, the top two elite alphas from
+the previous generation are carried forward to the
+next generation to preserve high-quality solutions.
+3.5 Adaptive Generation
+After each fitness evaluation, there exists a popula-
+tion of valid alphas and another of invalid alphas,
+each with different underlying causes. To ensure
+that agents can continuously learn from previous
+generations, information about both valid and in-
+valid alphas is incorporated into the prompt. For
+each generation, we randomly select two valid al-
+phas and two worst-performing invalid alphas as
+guiding samples. Each selected alpha is first ana-
+lyzed and summarized to explain why it is valid or
+invalid. Subsequently, the combined fitness results
+and analytical summaries of the selected alphas are
+incorporated into the generation prompts, based on
+which new alphas are generated.
+3.6 Thinking Evolution
+To guide the LLM to reason more deeply about
+alpha searching, we employThinking Evolution
+to enhance its alpha-mining capability. All qual-
+ified alphas are evolved through this process. As
+illustrated in Figure 1,Thinking Evolutionimple-
+ments a genetic-style optimization process in natu-
+ral language space, where candidate alpha codes un-
+dergo mutation and crossover operations expressed
+through textual prompts. It consists of 2 agents: the
+Mutation Agentand theCrossover Agent. TheMu-
+tation Agentslightly modifies a given alpha code to
+introduce variability, whereas theCrossover Agent
+generates a new alpha code by combining two ex-
+isting ones. Three types of evolution are conducted:
+mutation only, crossover only, and crossover fol-
+lowed by mutation. After each evolution step, the
+resulting alpha codes are examined by the Multi-
+Agent Quality Checker. This process continues
+until all generations are completed.
+4 Experiments
+In this section, we first describe the experimental
+settings and compare our framework with the base-
+lines. Then, we demonstrate the interpretability
+and evolutionary process of the generated alphas.
+Finally, we study the sensitivity of our method to
+different metric thresholds.
+4.1 Experimental Settings
+DatasetsOur experiments are mainly conducted
+on the CSI300 (China Securities Index 300). Its
+components consist of 300 large-cap A-share
+stocks in the Chinese market. We primarily use
+the 10-day return as the prediction target, with
+buying and selling at the open price. The dataset
+is split chronologically into training (2011/01/01-
+2019/12/31), validation (2020/01/01-2020/12/31),
+and test (2021/01/01-2024/12/01) periods. Four
+other datasets (CSI500, S&P500, HSI, and HSCI)
+from three different stock markets (China, U.S. and
+HK) are also tested. More details and results are
+provided in Appendix B.1 and Appendix B.11.
+ModelIn our paper, all agents are based ongpt-
+oss-120b(OpenAI, 2025a) by default. For the
+task-specific agents in the seven-level agent hierar-
+chy and the thinking-evolution agents, the tempera-
+ture is randomly selected from {0.7, 0.8, 0.9, 1.0,
+1.1, 1.2} to encourage diversity. For the agents in
+the multi-agent quality checker, the temperature is
+fixed at 0.8. The maximum token length is set to
+4096. By default, LightGBM (Ke et al., 2017) is
+used to train the alphas generated by our method.
+Training SettingThe size of the initial pool is
+set to 80, meaning that the minimum number of
+alphas generated by the task-specific agents is 80.
+The parent pool size is set to 32, indicating that
+after filtering, at most 32 alphas are retained and
+passed to the next generation. The children’s pool
+is set to be three times the size of the parent pool,
+meaning that the minimum number of alphas gen-
+erated by the evolutionary agents is 96. By default,
+each task-specific agent leads a complete evolu-
+tionary cycle, which consists of 24 generations and
+3 inner sub-cycles, with each sub-cycle compris-
+ing 8 generations. Thus, each task-specific agent
+initiates the evolutionary search 3 times. In addi-
+tion, every 2 generations, new alphas generated
+by the task-specific agents are filtered and injected
+into the parent pool. For each generation, the top
+two elite alphas from the previous generation are
+always carried forward to the next. All alphas con-
+taining more than 30% NaN values or failing the
+multi-agent quality checker are discarded. All ex-
+periments are conducted on NVIDIA H100 GPUs.
+EvaluationWe use four predictive power metrics
+to evaluate the performance of alpha combinations:
+the Information Coefficient (IC), Information Co-
+efficient Information Ratio (ICIR), Rank Informa-
+tion Coefficient (RankIC), and Rank Information
+Coefficient Information Ratio (RankICIR). The
+ICmeasures the linear correlation between alpha
+values and subsequent total returns, reflecting the
+overall predictive power of the alpha. TheICIR
+quantifies the stability and temporal consistency
+ofIC. TheRankICandRankICIRare similar to
+ICandICIR, respectively, but they measure the
+monotonic relationship between the alpha and sub-
+sequent total returns rather than linear correlation.
+In addition, two performance indicators are em-
+ployed: the Information Ratio (IR) and Annualized
+Excess Return (AER). TheIRevaluates the risk-
+adjusted excess return, and theAERmeasures the
+annualized excess cumulative return over a given
+period. Detailed definitions and formulas of these
+metrics are provided in Appendix B.3.
+4.2 Comparison with Baselines
+We conduct a comprehensive evaluation of CO-
+GALPHAby comparing it against 21 benchmark
+methods from various application domains (see Ta-
+ble 1). First, we select 7 commonly used machine
+learning models in quantitative finance: Linear Re-
+gression, MLP, Random Forest (Breiman, 2001),
+LightGBM (Ke et al., 2017), XGBoost (Chen and
+Guestrin, 2016), CatBoost (Prokhorenkova et al.,
+2018), and AdaBoost (Freund and Schapire, 1997).
+Next, we include 4 representative deep learning
+models: GRU (Cho et al., 2014), LSTM (Hochre-
+iter and Schmidhuber, 1997), CNN (LeCun et al.,
+2002), and Transformer (Vaswani et al., 2017). We
+further incorporate two widely used alpha libraries,
+Alpha-158 (Microsoft, 2025a) and Alpha-360 (Mi-
+crosoft, 2025b), as baseline factor sets. We also
+include two closely related automated alpha min-
+ing methods, AutoAlpha (Kou et al., 2024) and Al-
+phaAgent (Tang et al., 2025), for comparison. In ad-
+dition, six LLMs are evaluated to assess their capac-
+ity for alpha mining. Among them, two are closed-
+source models: GPT-4.1 (OpenAI, 2025), a non-
+Models Dataset Horizon
+CSI300
+IC RankIC ICIR RankICIR AER IR
+Machine-Learning
+Linear
+CSI300 10 days
+0.0165 0.0211 0.1612 0.1655 -0.0076 -0.0756
+MLP 0.0227 0.0327 0.2227 0.3037 0.0678 0.9351
+RandomForest 0.0240 0.0410 0.29320.43850.0784 0.8381
+LightGBM 0.0269 0.0412 0.2811 0.3327 0.0878 1.0980
+XGBoost 0.0257 0.0376 0.2783 0.4093 0.1081 1.3166
+CatBoost 0.0197 0.0239 0.2196 0.3043 0.0462 0.5373
+Adaboost 0.0187 0.0284 0.2709 0.3369 0.1138 1.2633
+Deep-Learning
+Transformer
+CSI300 10 days
+-0.0090 -0.0022 -0.0800 -0.0181 0.0492 0.6361
+GRU 0.0074 0.0176 0.0747 0.1370 0.0335 0.3386
+LSTM 0.0096 0.0216 0.0886 0.1619 0.0593 0.6030
+CNN 0.0268 0.0392 0.2432 0.3117 0.0763 0.9642
+Libraries and Methods
+Alpha158
+CSI300 10 days
+0.0358 0.0402 0.2737 0.2866 0.0946 0.8556
+Alpha3600.0200 0.0136 0.1674 0.1067 0.1198 1.0762
+AutoAlpha 0.0211 0.0177 0.2030 0.1588 0.0658 0.6307
+AlphaAgent 0.0246 0.0289 0.2407 0.2721 0.1072 1.2310
+LLM
+Llama3 8B
+CSI300 10 days
+0.0121 -0.0074 0.0972 -0.0540 0.0520 0.5077
+Llama3 70B 0.0205 0.0229 0.1786 0.1915 0.0681 0.6312
+gpt-oss-20B 0.0061 0.0075 0.0613 0.0680 0.0464 0.4885
+gpt-oss-120B 0.0300 0.0318 0.2501 0.2595 0.0789 0.8015
+GPT-4.1 0.0118 0.0114 0.1069 0.1037 0.0360 0.3628
+o3 0.0019 -0.0050 0.0203 -0.0475 0.0218 0.2278
+CogAlpha gpt-oss-120B CSI300 10 days0.0591 0.0814 0.34100.43500.1639 1.8999
+Table 1: Performance comparison between COGALPHAand 21 baseline methods on the CSI 300 constituent stock
+dataset. The best performance values for each task are highlighted inbold.
+reasoning model, and o3 (OpenAI, 2025b), a rea-
+soning model. The remaining four are open-source
+models of different scales and origins: Llama3-8B,
+Llama3-70B (Grattafiori et al., 2024), GPT-OSS-
+20B, and GPT-OSS-120B (OpenAI, 2025a). For
+methods and LLMs that generate alpha factors, we
+evaluate performance using multi-factor combina-
+tions constructed from the 20 generated alphas.
+As shown in Table 1, traditional machine learn-
+ing methods generally exhibit better overall perfor-
+mance than deep learning methods. There is no sub-
+stantial performance gap between traditional ma-
+chine learning models and existing alpha libraries
+or LLM-driven methods that mine formulaic alphas.
+Moreover, from the four predictive metrics of AL-
+PHA158 and ALPHA360, we observe that a larger
+number of alpha factors does not necessarily lead
+to higher IC or RankIC values. For open-source
+LLMs, larger models generally exhibit stronger
+alpha-mining capabilities than smaller ones. Sur-
+prisingly, the two closed-source models perform
+poorly, with the reasoning-oriented model achiev-
+ing the worst performance among all evaluated
+LLMs. Overall, COGALPHAconsistently outper-
+forms all baseline methods, achieving superior re-
+sults across all evaluation metrics. The only ex-
+ception is the Random Forest model, which may
+be attributed to the fact that the signals generated
+by Random Forest exhibit highly stable RankIC
+values with very low standard deviation, leading to
+a higher RankICIR.
+4.3 Ablation Study
+In this section, we evaluate the effectiveness of each
+component of CogAlapha: Adaptive Generation
+(A), Diversified Guidance (G), Seven-Level Agent
+Hierarchy (H), and Thinking Evolution (E). As
+shown in Table 3 in Appendix B.7, the four parts
+can, to some extent, improve the effectiveness and
+performance of alpha mining.
+4.4 Interpretability of Generated Alpha
+In this section, we analyze the interpretability of
+the generated alphas. Each alpha produced byCo-
+gAlphais accompanied by detailed comments that
+explain its logic, clarify its underlying idea, and
+present the corresponding formula. Following the
+comments, the implementation code is provided.
+The Python code in Listing 1 is an example of
+a generated alpha. It measures theliquidity im-
+pact: the price rise (high – close) per unit of traded
+volume.
+Alpha = dayhigh −day close
+dayvolume +ε .(1)
+A large positive value indicates that the stock price
+increased sharply while trading volume remained
+low, implying thin liquidity and a higher expected
+short-term return. This design can be interpreted as
+a measure of theprice impact per unit of traded vol-
+ume. In market microstructure theory, this reflects
+the liquidity constraint between price movements
+and trading volume: large price changes under low
+volume often signal poor liquidity, an imbalanced
+order book, and markets where small trades can
+move prices significantly. Such conditions may im-
+ply short-term reversal or momentum effects, con-
+sistent with the findings ofContinuous Auctions
+and Insider Trading(Kyle, 1985) andIlliquidity
+and Stock Returns(Amihud, 2002) on price impact
+and illiquidity-return relationships.
+Listing 1: Initial alpha measuring liquidity impact
+1 d e f f a c t o r _ u p w a r d _ i m p a c t _ p e r _ v o l ( d f ) :
+2 " " " L i q u i d i t y - i m p a c t : p r i c e r i s e ( h i g h - c l o s e ) p e r u n i t o f
+t r a d e d volume . A l a r g e p o s i t i v e v a l u e means t h e
+s t o c k moved up s t r o n g l y w h i l e volume s t a y e d low ,
+i n d i c a t i n g t h i n l i q u i d i t y and h i g h e r e x p e c t e d s h o r t
+- term r e t u r n .
+3 Formula : ( h i g h - c l o s e ) / ( volume +ε) . " " "
+4 df_copy = d f . copy ( )
+5 eps = 1 e - 9
+6 df_copy [ ’ p r i c e _ u p ’ ] = df_copy [ ’ h i g h ’ ] - df_copy [ ’ c l o s e ’ ]
+7 df_copy [ ’ f a c t o r _ u p w a r d _ i m p a c t _ p e r _ v o l ’ ] = df_copy [ ’
+p r i c e _ u p ’ ] / ( df_copy [ ’ volume ’ ] + eps )
+8 r e t u r n df_copy [ ’ f a c t o r _ u p w a r d _ i m p a c t _ p e r _ v o l ’ ]
+4.5 Evolution of Alphas
+To demonstrate the evolution capability ofCogAl-
+pha, we show an example of how liquidity-related
+alphas evolve over multiple iterations. Each gen-
+erated alpha is evaluated by predictive metrics (IC
+and RankIC). Poorly performing alphas are auto-
+matically filtered out, while stronger ones are pre-
+served and further evolved.
+The first version (Listing 1) represents an initial
+manually designed alpha. It measures the liquidity
+impact as the price rise (high−close) per unit
+of traded volume. Its metrics are:IC: 0.0090,
+RankIC: 0.0061. Through mutation, the model
+generates an alternative formulation (Listing 2 in
+Appendix B.9) that uses the full daily price range
+(high−low) instead of the closing difference. This
+captures broader intraday liquidity behavior. Its
+metrics slightly decrease toIC: 0.0073,RankIC:
+0.0021, and thus this version is discarded in later
+rounds. After several evolutionary rounds, CogAl-
+pha produces a more refined version (Listing 3 in
+Appendix B.9). It normalizes the absolute daily
+price move by dollar volume and applies a tanh
+transformation to ensure boundedness and robust-
+ness. The evolved alpha achieves significantly im-
+proved performance withIC: 0.0141andRankIC:
+0.0087, showing the ability of the evolutionary
+mechanism to refine quantitative factors effectively.
+After a complete evolution cycle, CogAlpha is
+able to generate a large number of single-factor al-
+phas with strong predictive power, many of which
+achieveabsolute IC values above 0.05andab-
+solute RankIC values above 0.07. This demon-
+strates the framework’s capacity to autonomously
+explore and optimize factor space toward higher-
+performing and more interpretable alphas.
+4.6 Generalization to Different Settings
+To test the generalization of CogAlpha, we con-
+duct experiments on five different datasets (CSI300,
+CSI500, S&P500, HSI, HSCI) from three differ-
+ent stock markets (China, U.S., and HK), using
+two training methods (LightGBM and Ridge) and
+two prediction horizons (10 days and 30 days). As
+shown in Table 5 in Appendix B.11, our method
+consistently performs well across different settings.
+4.7 Different Fitness Threshold
+In this section, we analyze the sensitivity of our
+method to different threshold settings used for fil-
+tering alpha factors. To maintain the quality of the
+selected alphas, we experiment with three threshold
+pairs: (65, 80), (80, 90), and (85, 95). In each pair,
+the former value represents the percentile thresh-
+old forqualified factorsthat advance to the next
+generation, while the latter corresponds to the per-
+centile threshold forelite factorsthat are directly
+stored in the final candidate pool. For compari-
+son, we also establish a baseline configuration to
+ensure the quality consistency of filtered alphas.
+Specifically, thresholds for each predictive metric
+are determined based on the empirical distribution
+of factor scores. We constrain each metric by a min-
+imum bound to prevent the dominance of outliers:
+ICandRankICare bounded below by 0.005,ICIR
+andRankICIRby 0.05, andMIby 0.02. For elite
+factors, the minimum bounds are slightly higher:
+0.01 forICandRankIC, 0.1 forICIRandRankI-
+CIR, and 0.02 forMI. As shown in Figure 3 in
+Appendix B.10, the threshold pair (65, 80) yields
+better overall performance. This result may be at-
+tributed to the larger parent pool size under this con-
+figuration, which encourages evolutionary search
+to explore a broader alpha space and mitigates the
+risk of premature convergence to local optima.
+5 Conclusion
+In this work, we study how to extract interpretable
+and reliable alpha signals from financial markets
+characterized by high volatility and a low signal-to-
+noise ratio. We introduce the concept ofCognitive
+Alpha Mining, which opens a new direction for
+automated, robust, and explainable alpha discov-
+ery. We further propose COGALPHA, a multi-agent
+framework powered by deeper-thinking LLMs. Ex-
+tensive experiments demonstrate the effectiveness
+of our approach. In future work, we plan to imple-
+ment our method in live trading environments to
+further validate its practical performance.
+Limitations
+The CogAlpha framework is intended for academic
+use only and does not provide any financial opin-
+ions. The backtesting simulations are implemented
+and executed entirely within the Qlib framework,
+which may not fully replicate the conditions of live
+trading environments. Additionally, due to the in-
+herent randomness of LLM outputs, reproducing
+exactly the same alphas in each run can be chal-
+lenging. Furthermore, the execution time of the
+experiments is influenced by the size of the dataset,
+with larger datasets potentially leading to longer
+processing times.
+Ethical Considerations
+All datasets used in this paper were downloaded
+from public sources and are publicly available.
+We used OpenAI’s ChatGPT-5.2 for grammar
+checking and suggestions, but manually verified
+all edits. No AI-generated content was directly
+included in the final submission.
+Users of the CogAlpha framework and its related
+code are responsible for sourcing their own finan-
+cial data and independently evaluating the risks
+associated with the generated factors and models
+in their specific contexts. It is crucial to approach
+the agent-generated code, data, and models with
+care and perform comprehensive verification. The
+CogAlpha framework does not offer financial ad-
+vice and is not intended to substitute the expertise
+of qualified financial professionals in the creation,
+evaluation, and approval of financial products.
+Acknowledgement:Funded by China Mobile
+– HKU Joint Innovation Centre (R24113J4,
+R26110S3)
+References
+AASTocks. 2025. Hong kong stock market index –
+hsi and others. https://www.aastocks.com/en/
+stocks/market/index/hk-index-con.aspx. Ac-
+cessed: 2025-12-05.
+Yakov Amihud. 2002. Illiquidity and stock returns:
+cross-section and time-series effects.Journal of fi-
+nancial markets, 5(1):31–56.
+Ran Aroussi. 2024. yfinance: Download market data
+from yahoo! finance’s api. https://pypi.org/
+project/yfinance/. Accessed: 2025-12-05.
+Leo Breiman. 2001. Random forests.Machine learning,
+45(1):5–32.
+Tianqi Chen and Carlos Guestrin. 2016. Xgboost: A
+scalable tree boosting system. InProceedings of
+the 22nd acm sigkdd international conference on
+knowledge discovery and data mining, pages 785–
+794.
+Kyunghyun Cho, Bart Van Merriënboer, Caglar Gul-
+cehre, Dzmitry Bahdanau, Fethi Bougares, Holger
+Schwenk, and Yoshua Bengio. 2014. Learning
+phrase representations using rnn encoder-decoder
+for statistical machine translation.arXiv preprint
+arXiv:1406.1078.
+Can Cui, Wei Wang, Meihui Zhang, Gang Chen, Zhao-
+jing Luo, and Beng Chin Ooi. 2021. Alphaevolve: A
+learning framework to discover novel alphas in quan-
+titative investment. InProceedings of the 2021 Inter-
+national conference on management of data, pages
+2208–2216.
+Yitong Duan, Lei Wang, Qizhong Zhang, and Jian Li.
+2022. Factorvae: A probabilistic dynamic factor
+model based on variational autoencoder for predict-
+ing cross-sectional stock returns. InProceedings of
+the AAAI conference on artificial intelligence, vol-
+ume 36, pages 4468–4476.
+Robert F Engle. 1982. Autoregressive conditional het-
+eroscedasticity with estimates of the variance of
+united kingdom inflation.Econometrica: Journal
+of the econometric society, pages 987–1007.
+Eugene F Fama and Kenneth R French. 1992. The
+cross-section of expected stock returns.the Journal
+of Finance, 47(2):427–465.
+Yoav Freund and Robert E Schapire. 1997. A decision-
+theoretic generalization of on-line learning and an
+application to boosting.Journal of computer and
+system sciences, 55(1):119–139.
+Aaron Grattafiori, Abhimanyu Dubey, Abhinav Jauhri,
+Abhinav Pandey, Abhishek Kadian, Ahmad Al-
+Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten,
+Alex Vaughan, and 1 others. 2024. The llama 3 herd
+of models.arXiv preprint arXiv:2407.21783.
+Jian Guo, Saizhuo Wang, Lionel M Ni, and Heung-
+Yeung Shum. 2024a. Quant 4.0: engineering quan-
+titative investment with automated, explainable, and
+knowledge-driven artificial intelligence.Frontiers of
+Information Technology & Electronic Engineering,
+25(11):1421–1445.
+Qingyan Guo, Rui Wang, Junliang Guo, Bei Li, Kaitao
+Song, Xu Tan, Guoqing Liu, Jiang Bian, and Yujiu
+Yang. 2024b. Connecting large language models
+with evolutionary algorithms yields powerful prompt
+optimizers. InThe Twelfth International Conference
+on Learning Representations.
+Hang Seng Indexes Company. 2025. Hang
+seng composite index – all indexes. https:
+//www.hsi.com.hk/eng/indexes/all-indexes/
+hsci?from=companyhomepages.com. Accessed:
+2025-12-05.
+Campbell R Harvey, Yan Liu, and Heqing Zhu. 2016.
+. . . and the cross-section of expected returns.The
+Review of Financial Studies, 29(1):5–68.
+Erik Hemberg, Stephen Moskal, and Una-May O’Reilly.
+2024. Evolving code with a large language model.
+Genetic Programming and Evolvable Machines,
+25(2):21.
+Sepp Hochreiter and Jürgen Schmidhuber. 1997. Long
+short-term memory.Neural computation, 9(8):1735–
+1780.
+Kewei Hou, Chen Xue, and Lu Zhang. 2017. Replicat-
+ing anomalies. Technical report, National Bureau of
+Economic Research.
+Vedant Dhaval Jobanputra, Basam Thilaknath Reddy,
+Sri Ganesh Bhojanapalli, Krishna Aditya SV S, Baga-
+vathi Chandrasekara, and Ritwik Murali. 2025. Llm-
+aided evolutionary algorithms for haiku generation.
+InProceedings of the Genetic and Evolutionary Com-
+putation Conference Companion, pages 2584–2587.
+Guolin Ke, Qi Meng, Thomas Finley, Taifeng Wang,
+Wei Chen, Weidong Ma, Qiwei Ye, and Tie-Yan Liu.
+2017. Lightgbm: A highly efficient gradient boost-
+ing decision tree.Advances in neural information
+processing systems, 30.
+Zhizhuo Kou, Holam Yu, Junyu Luo, Jingshu Peng,
+Xujia Li, Chengzhong Liu, Juntao Dai, Lei Chen,
+Sirui Han, and Yike Guo. 2024. Automate strategy
+finding with llm in quant investment.arXiv preprint
+arXiv:2409.06289.
+Albert S Kyle. 1985. Continuous auctions and insider
+trading.Econometrica: Journal of the Econometric
+Society, pages 1315–1335.
+Yann LeCun, Léon Bottou, Yoshua Bengio, and Patrick
+Haffner. 2002. Gradient-based learning applied to
+document recognition.Proceedings of the IEEE,
+86(11):2278–2324.
+Kuang-Huei Lee, Ian Fischer, Yueh-Hua Wu, Dave
+Marwood, Shumeet Baluja, Dale Schuurmans, and
+Xinyun Chen. 2025. Evolving deeper llm thinking.
+arXiv preprint arXiv:2501.09891.
+Yuante Li, Xu Yang, Xiao Yang, Minrui Xu, Xisen
+Wang, Weiqing Liu, and Jiang Bian. 2025. R&d-
+agent-quant: A multi-agent framework for data-
+centric factors and model joint optimization.arXiv
+preprint arXiv:2505.15155.
+Xiaoming Lin, Ye Chen, Ziyu Li, and Kang He. 2019.
+Stock alpha mining based on genetic algorithm.Tech-
+nical Report, Huatai Securities Research Center.
+Xiao-Yang Liu, Hongyang Yang, Jiechao Gao, and
+Christina Dan Wang. 2021. Finrl: Deep reinforce-
+ment learning framework to automate trading in quan-
+titative finance. InProceedings of the second ACM
+international conference on AI in finance, pages 1–9.
+Microsoft. 2025a. Alpha 158 from microsoft qlib.
+https://github.com/microsoft/qlib/blob/
+85cc74846b5af2e3e6d18666a2f6e399396980b9/
+qlib/contrib/data/loader.py#L61. Accessed:
+2025-05-12.
+Microsoft. 2025b. Alpha 360 from microsoft qlib.
+https://github.com/microsoft/qlib/blob/
+85cc74846b5af2e3e6d18666a2f6e399396980b9/
+qlib/contrib/data/loader.py#L4. Accessed:
+2025-05-12.
+Alexander Novikov, Ngân V ˜u, Marvin Eisenberger,
+Emilien Dupont, Po-Sen Huang, Adam Zsolt Wag-
+ner, Sergey Shirobokov, Borislav Kozlovskii, Fran-
+cisco JR Ruiz, Abbas Mehrabian, and 1 others. 2025.
+Alphaevolve: A coding agent for scientific and algo-
+rithmic discovery.arXiv preprint arXiv:2506.13131.
+OpenAI. 2025a. GPT-OSS-120B & GPT-OSS-20B
+model card.arXiv preprint arXiv:2508.10925.
+OpenAI. 2025b. Introducing deep re-
+search. https://openai.com/index/
+introducing-deep-research/. Accessed:
+2025-09-24.
+OpenAI. 2025. Introducing GPT-4.1 in the api. https:
+//openai.com/index/gpt-4-1/. Accessed: 2025-
+11-11.
+Rahul Ramesh Patil. 2023. Ai-infused algorithmic trad-
+ing: Genetic algorithms and machine learning in
+high-frequency trading.International Journal For
+Multidisciplinary Research, 5(5).
+Giovanni Pinna, Damiano Ravalico, Luigi Rovito, Luca
+Manzoni, and Andrea De Lorenzo. 2024. Enhanc-
+ing large language models-based code generation by
+leveraging genetic improvement. InEuropean Con-
+ference on Genetic Programming (Part of EvoStar),
+pages 108–124. Springer.
+Liudmila Prokhorenkova, Gleb Gusev, Aleksandr
+V orobev, Anna Veronika Dorogush, and Andrey
+Gulin. 2018. Catboost: unbiased boosting with cat-
+egorical features.Advances in neural information
+processing systems, 31.
+Bernardino Romera-Paredes, Mohammadamin
+Barekatain, Alexander Novikov, Matej Balog,
+M Pawan Kumar, Emilien Dupont, Francisco JR
+Ruiz, Jordan S Ellenberg, Pengming Wang, Omar
+Fawzi, and 1 others. 2024. Mathematical discoveries
+from program search with large language models.
+Nature, 625(7995):468–475.
+Michael D Schmidt and Hod Lipson. 2010. Age-fitness
+pareto optimization. InProceedings of the 12th an-
+nual conference on Genetic and evolutionary compu-
+tation, pages 543–544.
+Hao Shi, Weili Song, Xinting Zhang, Jiahe Shi, Cuicui
+Luo, Xiang Ao, Hamid Arian, and Luis Angel Seco.
+2025a. Alphaforge: A framework to mine and dy-
+namically combine formulaic alpha factors. InPro-
+ceedings of the AAAI Conference on Artificial Intelli-
+gence, volume 39, pages 12524–12532.
+Yu Shi, Yitong Duan, and Jian Li. 2025b. Navigat-
+ing the alpha jungle: An llm-powered mcts frame-
+work for formulaic factor mining.arXiv preprint
+arXiv:2505.11122.
+Zhaofan Su, Jianwu Lin, and Chengshan Zhang. 2022.
+Genetic algorithm based quantitative factors construc-
+tion. In2022 IEEE 20th International Conference
+on Industrial Informatics (INDIN), pages 650–655.
+IEEE.
+Ziyi Tang, Zechuan Chen, Jiarui Yang, Jiayao Mai,
+Yongsen Zheng, Keze Wang, Jinrui Chen, and Liang
+Lin. 2025. Alphaagent: Llm-driven alpha mining
+with regularized exploration to counteract alpha de-
+cay.arXiv preprint arXiv:2502.16789.
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob
+Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz
+Kaiser, and Illia Polosukhin. 2017. Attention is all
+you need.Advances in neural information processing
+systems, 30.
+Le Xiao and Xiaolin Chen. 2023. Enhancing llm with
+evolutionary fine tuning for news summary genera-
+tion.arXiv preprint arXiv:2307.02839.
+Can Xu, Qingfeng Sun, Kai Zheng, Xiubo Geng,
+Pu Zhao, Jiazhan Feng, Chongyang Tao, Qingwei
+Lin, and Daxin Jiang. 2024. Wizardlm: Empowering
+large pre-trained language models to follow complex
+instructions. InThe Twelfth International Conference
+on Learning Representations.
+Wentao Xu, Weiqing Liu, Lewen Wang, Yingce Xia,
+Jiang Bian, Jian Yin, and Tie-Yan Liu. 2021a. Hist:
+A graph-based framework for stock trend forecast-
+ing via mining concept-oriented shared information.
+arXiv preprint arXiv:2110.13716.
+Wentao Xu, Weiqing Liu, Chang Xu, Jiang Bian, Jian
+Yin, and Tie-Yan Liu. 2021b. Rest: Relational event-
+driven stock trend forecasting. InProceedings of the
+web conference 2021, pages 1–10.
+Xiao Yang, Weiqing Liu, Dong Zhou, Jiang Bian,
+and Tie-Yan Liu. 2020. Qlib: An ai-oriented
+quantitative investment platform.arXiv preprint
+arXiv:2009.11189.
+Shuo Yu, Hongyan Xue, Xiang Ao, Feiyang Pan, Jia He,
+Dandan Tu, and Qing He. 2023. Generating syner-
+gistic formulaic alpha collections via reinforcement
+learning. InProceedings of the 29th ACM SIGKDD
+Conference on Knowledge Discovery and Data Min-
+ing, pages 5476–5486.
+Jiayi Zhang, Simon Yu, Derek Chong, Anthony Si-
+cilia, Michael R Tomz, Christopher D Manning, and
+Weiyan Shi. 2025. Verbalized sampling: How to mit-
+igate mode collapse and unlock llm diversity.arXiv
+preprint arXiv:2510.01171.
+Tianping Zhang, Yuanqi Li, Yifei Jin, and Jian Li. 2020.
+Autoalpha: an efficient hierarchical evolutionary al-
+gorithm for mining alpha factors in quantitative in-
+vestment.arXiv preprint arXiv:2002.08245.
+Tianping Zhang, Zheyu Aqa Zhang, Zhiyuan Fan,
+Haoyan Luo, Fengyuan Liu, Qian Liu, Wei Cao, and
+Li Jian. 2023. Openfe: Automated feature generation
+with expert-level performance. InInternational Con-
+ference on Machine Learning, pages 41880–41901.
+PMLR.
+A Approach
+A.1 Seven-Level Agent Hierarchy
+•Level 1: Market Structure & Cycle Layer
+AgentMarketCycleexplores long-term cycli-
+cal transitions and phase shifts in price dy-
+namics, revealing hidden market rhythms
+and structural turning points.AgentVolatil-
+ityRegimedetects transitions between calm
+and turbulent volatility states, characterizing
+regime persistence and clustering behavior.
+•Level 2: Extreme Risk & Fragility Layer
+AgentTailRiskquantifies downside sensitiv-
+ity and tail-event exposure, modeling how
+negative shocks propagate through time.
+AgentCrashPredictoridentifies early warning
+signals of market collapses by tracking volatil-
+ity compression, liquidity depletion, and struc-
+tural fragility patterns.
+•Level 3: Price–Volume Dynamics Layer
+AgentLiquiditymeasures market depth and
+trading frictions through price impact and
+turnover variability.AgentOrderImbalance
+captures directional pressure from one-sided
+participation inferred from daily OHLCV pat-
+terns.AgentPriceVolumeCoherenceexamines
+synchronization and divergence between price
+and volume changes, revealing energy align-
+ment or decoupling.AgentVolumeStructure
+analyzes the statistical shape and concentra-
+tion of trading activity to understand partici-
+pation rhythm and clustering.
+Level I: Market Structure & Cycle Layer
+AgentMarketCycle,AgentVolatilityRegime
+Level II: Extreme Risk & Fragility Layer
+AgentTailRisk,AgentCrashPredictor
+Level III: Price–Volume Dynamics Layer
+AgentLiquidity,AgentOrderImbalance,
+AgentPriceVolumeCoherence,AgentVolumeStructure
+Level IV: Price–Volatility Behavior Layer
+AgentDailyTrend,AgentReversal,
+AgentRangeVol,AgentLagResponse,AgentVolAsymmetry
+Level V: Multi-Scale Complexity Layer
+AgentDrawdown,AgentFractal
+Level VI: Stability & Regime-Gating Layer
+AgentRegimeGating,AgentStability
+Level VII: Geometric & Fusion Layer
+AgentBarShape,AgentCreative,
+AgentComposite,AgentHerding
+Micro←Macro
+Figure 2:Seven-Level Agent Hierarchy(Top–Down Pyramid). The pyramid illustrates the seven-level agent
+hierarchy from macro-structural reasoning to micro-level fusion.
+•Level 4: Price–Volatility Behavior Layer
+AgentDailyTrendmodels directional persis-
+tence and multi-day momentum strength to
+uncover sustained price movements.Agen-
+tReversalcaptures mean-reversion and short-
+term overreaction corrections following tran-
+sient mispricings.AgentRangeVolinvesti-
+gates range-based volatility dynamics, includ-
+ing compression–expansion cycles in daily
+price ranges.AgentLagResponsestudies de-
+layed price adjustments and lagged feed-
+back between volatility, volume, and re-
+turns.AgentVolAsymmetrymeasures asym-
+metric volatility between upward and down-
+ward price moves, highlighting skewed risk
+behavior.
+•Level 5: Multi-Scale Complexity Layer
+AgentDrawdownevaluates the depth, duration,
+and recovery geometry of cumulative losses,
+emphasizing temporal resilience.AgentFrac-
+talassesses multi-scale roughness and long-
+memory characteristics through cross-horizon
+variability and structural irregularity.
+•Level 6: Stability & Regime-Gating Layer
+AgentRegimeGatingconstructs adaptive gates
+that modulate signal activation depending on
+volatility, trend, or liquidity states.AgentSta-
+bilityquantifies temporal consistency and per-
+sistence in returns or derived signals, empha-
+sizing robustness and smoothness.
+•Level 7: Geometric & Fusion Layer
+AgentCompositefuses multiple independent
+factors into coherent composites, emphasiz-
+ing synergy and orthogonality among signals.
+AgentCreativeapplies non-linear transforma-
+tions, reparametrizations, or soft gating to gen-
+erate novel feature representations.AgentBar-
+Shapeencodes candlestick geometry—body,
+shadow, and symmetry—into continuous and
+interpretable quantitative descriptors.Agen-
+tHerdingdetects collective crowding behavior
+and directional alignment within OHLCV dy-
+namics, reflecting market consensus intensity.
+A.2 Diversified Guidance
+• Light: Performs minimal rewording to main-
+tain nearly identical meaning while improv-
+ing clarity and linguistic fluency. It serves
+as a baseline for consistency testing across
+linguistic variations.
+• Moderate: Rephrases the content naturally
+with mild enrichment or stylistic variation.
+This helps capture nuanced semantic differ-
+ences and tests factor robustness under slightly
+altered descriptive framing.
+• Creative: Introduces expressive, research-
+oriented rewording that adds interpretative
+depth. This style aims to inspire novel ana-
+lytical angles or alternative reasoning patterns
+that remain aligned with the original domain.
+Level Layer Name Description
+I Market Structure & Cycle Layer Explores large-scale temporal structures such as long-
+term trends, market phases, and cyclical state transitions
+inferred from daily OHLCV dynamics.
+II Extreme Risk & Fragility Layer Models tail-risk exposure, crash precursors, and sys-
+temic fragility patterns that signal potential regime break-
+downs or stress accumulation.
+III Price–V olume Dynamics Layer Captures the interactions between price and trading activ-
+ity—liquidity, order imbalance, and coherence between
+price movement and volume behavior.
+IV Price–V olatility Behavior Layer Analyzes trend persistence, short-term reversals, volatil-
+ity clustering, and asymmetric price dynamics as core
+sources of predictive alpha.
+V Multi-Scale Complexity Layer Measures cross-scale irregularities, fractal roughness,
+drawdown–recovery geometry, and long-memory char-
+acteristics in time-series structures.
+VI Stability & Regime-Gating Layer Assesses temporal stability and constructs adaptive gat-
+ing mechanisms that regulate signal activation under
+varying market conditions.
+VII Geometric & Fusion Layer Focuses on geometric pattern representation (candlestick
+morphology) and multi-factor fusion, combining inde-
+pendent signals into coherent composite factors.
+Table 2: Seven-Level Agent Hierarchy of COGALPHAand their corresponding conceptual focuses.
+• Divergent: Produces exploratory rewrites
+from new but relevant analytical viewpoints,
+often shifting emphasis toward different sub-
+mechanisms within the same conceptual
+framework. This encourages broader hypothe-
+sis generation and factor diversity.
+• Concrete: Makes the guidance more specific
+and implementation-oriented by introducing
+measurable quantities such as statistical for-
+mulas, ratios, or example computations. This
+version bridges conceptual factor ideas with
+practical implementation cues.
+A.3 Multi-Agent Quality Checker
+As shown in Figure 1, the Multi-Agent Quality
+Checker operates through the following sequence:
+Code Quality Agent.It performs the first-pass
+audit of the raw LLM-generated code. It de-
+tects syntactic errors, undefined variables, format-
+ting inconsistencies, invalid library calls, and po-
+tential runtime failures using static analysis and
+lightweight interpreter checks. This agent ensures
+that the code is structurally well-formed before
+deeper semantic inspection takes place.
+Code Repair Agent.If the Code Quality Agent
+identifies issues, the Code Repair Agent attempts
+to fix them autonomously. Repairs include correct-
+ing import statements, rewriting malformed expres-
+sions, resolving type mismatches, and rewriting
+unstable numerical operations. This agent ensures
+that the factor is at least syntactically and opera-
+tionally viable.
+Judge Agent.Once the code is syntactically
+clean, the Judge Agent evaluates the factor at a
+semantic level. It assesses whether the factor is:
+• Logically consistent: correct operator ordering,
+coherent data flow, no degenerate expressions;
+• Technically correct: valid use of rolling win-
+dows, transforms, and TA-Lib functions;
+• Economically meaningful: obeys financial intu-
+ition and avoids fabricated indicators.
+Factors that fail this semantic audit are routed to
+the Logic Improvement Agent.
+Logic Improvement Agent.This agent refines
+factors that exhibit weak or inconsistent logic. It
+restructures formulas, adjusts window parameters,
+replaces dubious transformations, eliminates redun-
+dant operations, and enhances the overall financial
+interpretability while preserving the original mod-
+eling intent. This refinement improves robustness
+without altering the factor’s core hypothesis.
+Execution and Numerical Stability Check.Af-
+ter passing the logical audits, the code is executed
+in a restricted sandbox. We evaluate numerical
+stability by detecting runtime errors,NaNpropaga-
+tion, overflow/underflow, invalid logarithms, and
+unstable normalizations. Codes that fail are re-
+jected or sent back to earlier agents for correction.
+Temporal Leakage Unit Test.Finally, Static
+Safety conducts a domain-specific leakage test to
+ensure that the factor does not use future informa-
+tion. This test detects forward-looking shifts (e.g.,
+shift(-1)), misaligned rolling windows, or im-
+plicit temporal violations that may pass standard
+code-safety tools. Only factors with zero leakage
+are accepted.
+Output.Codes that pass all agents form a pool
+of safe, executable, and leakage-free alpha factors.
+These factors constitute the foundation for the next
+stage,Thinking Evolution, which focuses on im-
+proving reasoning reliability and logical effective-
+ness. By enforcing strict correctness at the code
+level first, CogAlpha ensures that all evolution oc-
+curs on top of a solid and trustworthy computa-
+tional base.
+A.4 Fitness Evaluation
+The threshold values for the five predictive power
+metrics may vary depending on the dataset. For
+example, on the CSI300, we constrain each metric
+with a minimum bound to prevent the dominance
+of outliers:ICandRankICare bounded below by
+0.005,ICIRandRankICIRby 0.05, andMIby
+0.02. For elite factors, the minimum bounds are
+slightly higher: 0.01 forICandRankIC, 0.1 for
+ICIRandRankICIR, and 0.02 forMI. However,
+on the S&P500, we apply similar constraints to
+prevent the dominance of outliers:ICandRankIC
+are bounded below by 0.005,ICIRandRankICIR
+by 0.05, andMIby 0.012. For elite factors, the
+minimum bounds are slightly higher: 0.01 forIC
+andRankIC, 0.1 forICIRandRankICIR, and 0.012
+forMI. This is because it is harder to mine alpha
+signals in a more effective stock market.
+Non-linear relationships (e.g., MI) suggest that
+the market may not be fully efficient, and certain
+information may not be fully reflected in prices,
+thus providing opportunities for factor investing.
+Non-linear factor models are better able to capture
+complex patterns in the market and may offer op-
+portunities for excess returns, especially when the
+market is not fully efficient.
+B Experiments
+B.1 Datasets
+Our experiments are mainly conducted on the
+CSI300 (China Securities Index 300). Its com-
+ponents consist of 300 large-cap A-share stocks
+in the Chinese market. We primarily use the
+10-day return as the prediction target, with buy-
+ing and selling at the open price. The dataset
+is split chronologically into training (2011/01/01-
+2019/12/31), validation (2020/01/01-2020/12/31),
+and test (2021/01/01-2024/12/01) periods. On the
+same dataset, we also use a 30-day return as the
+prediction target.
+CSI500 (China Securities Index 500) consists
+of 500 relatively smaller but liquid companies in
+China. We primarily use the 10-day return as the
+prediction target, with buying and selling at the
+open price. The dataset is split chronologically
+into training (2011/01/01-2019/12/31), validation
+(2020/01/01-2020/12/31), and test (2021/01/01-
+2024/12/01) periods.
+Three other datasets from two different stock
+markets (U.S. and HK) are also used. The S&P500
+is the Standard & Poor’s 500 Index, and its com-
+ponents include 500 of the largest publicly traded
+companies in the U.S. stock market. The dataset
+is split chronologically into training (2007/01/01-
+2014/12/31), validation (2015/01/01-2015/12/31),
+and test (2016/01/01-2020/12/01) periods.
+The HSI (Hang Seng Index) tracks the perfor-
+mance of the largest and most liquid companies
+listed on the Hong Kong Stock Exchange. Cur-
+rently, according to (AASTocks, 2025), it has
+89 stocks. The dataset is split chronologically
+into training (2011/01/01-2019/12/31), validation
+(2020/01/01-2020/12/31), and test (2021/01/01-
+2025/12/01) periods.
+The HSCI (Hang Seng China Enterprises Index)
+covers about the top 95th percentile of the total
+market capitalization of companies listed on the
+Main Board of the Stock Exchange of Hong Kong.
+Currently, according to (Hang Seng Indexes Com-
+pany, 2025), it includes 509 stocks. The dataset
+is split chronologically into training (2011/01/01-
+2019/12/31), validation (2020/01/01-2020/12/31),
+and test (2021/01/01-2025/12/01) periods.
+The CSI300, CSI500, and S&P500 datasets are
+downloaded from the Qlib platform (Yang et al.,
+2020). The HSI and HSCI datasets are downloaded
+from Yahoo Finance (Aroussi, 2024). All back-
+testing simulations are implemented and executed
+entirely within the Qlib framework.
+B.2 Backtest
+The top-50/drop-5 strategy is a ranking-based port-
+folio construction method that selects the top 50
+stocks with the highest predicted returns while lim-
+iting daily portfolio turnover. On each trading
+day, the portfolio retains previously selected high-
+ranking stocks and replaces at most5 positions. All
+trades are executed at the opening price. The open
+cost is set to 0.05%, and the close cost is set to
+0.15%. A minimum transaction fee of 5 CNY is
+applied to each trade.
+B.3 Metrics
+We use five factor predictive power metrics: Infor-
+mation Coefficient (IC), Information Coefficient
+Information Ratio (ICIR), Rank Information Co-
+efficient (RankIC), Rank Information Coefficient
+Information Ratio (RankICIR), and Mutual Infor-
+mation (MI). Assume there are Nt assets at time
+t. Let fi,t represent the predicted returns for asset
+i at time t, and rt+1 represent the total return over
+the subsequent period, from t to t+ 1 . The evalu-
+ation spans over T time periods. We also use two
+performance metrics: AER and IR.
+TheInformation Coefficient (IC)measures the
+linear correlation between factor values and subse-
+quent total returns. It is the average of each linear
+cross-sectional relationship between factor values
+and subsequent returns at time t over all T periods:
+IC = 1
+T
+TX
+t=1
+ICt
+ICt =
+PNt
+i=1(fi,t − ¯ft)(ri,t+1 −¯rt+1)qPNt
+i=1(fi,t − ¯ft)2
+qPNt
+i=1(ri,t+1 −¯rt+1)2
+(2)
+TheInformation Coefficient Information Ra-
+tio (ICIR)evaluates the stability ofICacross time:
+ICIR = E[ICt]
+Std[ICt] ≈ IC
+Std({ICt}T
+t=1) ,(3)
+whereICdenotes the time-averagedIC t.
+TheRank Information Coefficient (RankIC)
+measures the monotonic relationship between the
+factor and the subsequent total returns. Let
+ui,t = rank(fi,t), v i,t = rank(ri,t+1),
+and their means ¯ut,¯vt across Nt assets. Analogous
+to IC, RankIC over periodTcan be expressed as:
+RankIC = 1
+T
+TX
+t=1
+RankICt
+RankICt =
+PNt
+i=1(ui,t −¯ut)(vi,t −¯vt)qPNt
+i=1(ui,t −¯ut)2
+qPNt
+i=1(vi,t −¯vt)2
+.
+(4)
+Analogous to ICIR, theRankIC Information
+Ratio (RankICIR)measures the temporal stability
+of RankIC:
+RankICIR = E[RankICt]
+Std[RankICt] ≈ RankIC
+Std({RankICt}T
+t=1) .
+(5)
+TheMutual Information (MI)captures the non-
+linear dependence between factor values and the
+subsequent total returns. It measures the reduction
+in uncertainty ofRgiven knowledge ofF:
+MI(F, R) =
+Z Z
+p(f, r) log p(f, r)
+p(f)p(r) d f dr,(6)
+where p(f, r)denotes the joint density of factor f
+and return r, and p(f), p(r) are their respective
+marginal densities. A higher MI implies a stronger
+(possibly nonlinear) dependency between the factor
+and subsequent returns.
+Annualized Excess Return (AER).Following
+Qlib’s implementation, we compute daily excess
+returns as
+rt =r port
+t −r bench
+t −cost t,
+where rport
+t is the portfolio return, rbench
+t is the
+benchmark return, and costt is the transaction cost.
+The average daily excess return is
+µ= 1
+T
+TX
+t=1
+rt,
+and the annualized excess return is obtained via
+arithmetic scaling:
+AER =µ×N,
+where N is the number of trading periods in a year
+(e.g.,N= 252for daily returns).
+Models Dataset Horizon
+CSI300
+IC RankIC ICIR RankICIR AER IR
+Agent
+CSI300 10 days
+0.0300 0.0318 0.2501 0.2595 0.0789 0.8015
+Agent_E 0.0219 0.0420 0.1932 0.3322 0.0808 0.8999
+Agent_EA 0.0315 0.0491 0.2568 0.3583 0.0825 1.0145
+Agent_EAG 0.0414 0.0501 0.3239 0.3599 0.1245 1.4668
+Agent_EAGH (CogAlpha)0.0591 0.0814 0.3410 0.4350 0.1639 1.8999
+Table 3: Ablation study of COGALPHA.Adenotes Adaptive Generation,Gdenotes Diversified Guidance,H
+denotes the Seven-Level Agent Hierarchy, andEdenotes Thinking Evolution. The best performance values for each
+task are highlighted inbold.
+Information Ratio (IR).The standard deviation
+of daily excess returns is
+σ=
+vuut 1
+T−1
+TX
+t=1
+(rt −µ) 2.
+Qlib annualizes the Information Ratio using
+IR = µ
+σ
+√
+N .
+B.4 Training Setting
+The size of the initial pool is set to 80, meaning that
+the minimum number of alphas generated by the
+task-specific agents is 80. The parent pool size is
+set to 32, indicating that after filtering, at most 32
+alphas are retained and passed to the next genera-
+tion. The children’s pool is set to be three times the
+size of the parent pool, meaning that the minimum
+number of alphas generated by the evolutionary
+agents is 96. By default, each task-specific agent
+leads a complete evolutionary cycle, which consists
+of 24 generations and 3 inner sub-cycles, with each
+sub-cycle comprising 8 generations. Thus, each
+task-specific agent initiates the evolutionary search
+3 times. In addition, every 2 generations, new al-
+phas generated by the task-specific agents are fil-
+tered and injected into the parent pool. For each
+generation, the top two elite alphas from the pre-
+vious generation are always carried forward to the
+next. All alphas containing more than 30% NaN
+values or failing the multi-agent quality checker
+are discarded. All experiments are conducted on
+NVIDIA H100 GPUs.
+We use rolling training with a rolling step of
+126. Two models are employed in this work: the
+LGBMRegressorandRidgemodels. TheLGBMRe-
+gressoris configured with a learning rate of 0.0001,
+32 leaves per tree, a maximum depth of 12, and
+regularization terms (reg_alpha andreg_lambda)
+set to 1.0. The model uses a total of 1000 trees with
+sampling techniques (feature and bagging fractions
+set to 0.8) to reduce overfitting. For theRidge
+model, the regularization strength (alpha) is set to
+10, which controls the regularization applied to the
+model to prevent overfitting.
+We employ two stopping conditions for the evo-
+lutionary process. By default, evolution runs for
+a fixed number of predefined steps. We addition-
+ally incorporate a plateau-based early stopping rule,
+where we track the elite-pool performance and com-
+pute the improvement between two consecutive
+windows of lengthplateau_win, defined as
+δ= mean(curr)−mean(prev).
+If δ≤0.001 , the evolution for that island or run is
+terminated.
+B.5 Computational Cost
+On the CSI300 dataset, generating a single alpha
+factor typically takes 5–9 seconds, and completing
+one generation takes approximately 1 hour.
+For comparison, deep learning models running
+on GPU exhibit the following training times: CNN,
+GRU, and LSTM models require around 20 min-
+utes, while Transformer-based models take approx-
+imately 40 minutes. For traditional machine learn-
+ing models running on CPU, AdaBoost requires
+around 6 hours, Random Forest takes approxi-
+mately 40 minutes, LightGBM completes in about
+2 minutes, and linear models typically require only
+5–10 seconds.
+For all main experiments, we use a single H100
+GPU. The evolutionary process is conducted using
+a local model ( gpt-oss-120b), which incurs no
+API cost.
+B.6 Randomness of LLMs
+Due to the inherent randomness in the outputs of
+large models, the results may vary with each run.
+However, factor mining is different from other ex-
+periments in that good factors can be accumulated
+Configuration IC RankIC ICIR RankICIR
+P16_G24_H8 0.0362 0.05080.31680.3805
+P32_G24_H8 0.0315 0.0475 0.2364 0.3379
+P48_G24_H8 0.0199 0.0285 0.1835 0.2480
+P32_G24_H20.0394 0.06250.31280.4364
+P32_G24_H4 0.0281 0.0477 0.2309 0.3507
+P32_G24_H12 0.0340 0.0524 0.2928 0.3759
+P32_G8_H8 0.0283 0.0447 0.2413 0.3542
+P32_G16_H8 0.0326 0.0433 0.2505 0.3458
+Table 4: Hyperparameter analysis on CSI300 (10-day
+horizon).
+and stored. Therefore, the experimental results pre-
+sented in this paper reflect the outcomes after a
+single round of factor mining.
+B.7 Ablation Study
+We evaluate the effectiveness of each component of
+CogAlapha: Adaptive Generation (A), Diversified
+Guidance (G), Seven-Level Agent Hierarchy (H),
+and Thinking Evolution (E). As shown in Table 3,
+the four parts can, to some extent, improve the
+effectiveness and performance of alpha mining.
+B.8 Hyperparameter Design and Analysis
+Our hyperparameter design is inspired by two prior
+works (Lee et al., 2025; Zhang et al., 2025). In (Lee
+et al., 2025), the parent pool size is set to 5 for
+each island/agent, with 10 generations per cycle.
+In (Zhang et al., 2025), it is suggested that allowing
+LLMs to generate a batch of responses (e.g., 5) at
+once improves diversity.
+In our setting, we employ 21 heterogeneous
+agents and adopt the golden ratio, which is com-
+monly used in quantitative finance for balanced
+allocation, to randomly select 13 agents for con-
+structing the initial factor pool. Following (Lee
+et al., 2025; Zhang et al., 2025), each selected agent
+generates approximately 5–6 alpha factors, result-
+ing in an initial pool of around 80 factors. We then
+apply the golden ratio again to form a parent pool
+of size 32. Given three distinct evolution operators,
+the resulting children pool size is3×32 = 96.
+To analyze the impact of hyperparame-
+ters, we conduct ablation experiments on the
+AgentMarketCycleagent under different configu-
+rations. We denote each configuration asP·_G·_H·,
+whereP is the parent pool size,G is the number of
+generations per cycle, and H is the length of sub-
+cycles. The results on the CSI300 dataset with a
+10-day horizon are summarized in Table 4.
+From the results, the configuration P32_G24_H2
+achieves the best overall performance. Neverthe-
+less, other configurations may still yield competi-
+tive results and are capable of discovering effective
+alpha factors. We therefore argue that there is no
+universally optimal hyperparameter setting across
+different time periods and market conditions. In-
+stead, maintaining diversity in hyperparameter con-
+figurations is beneficial for more comprehensive
+alpha factor discovery.
+B.9 Evolution of Alphas
+To demonstrate the evolution capability ofCogAl-
+pha, we show an example of how liquidity-related
+alphas evolve over multiple iterations. Each gen-
+erated alpha is evaluated by predictive metrics (IC
+and RankIC). Poorly performing alphas are auto-
+matically filtered out, while stronger ones are pre-
+served and further evolved.
+Listing 2: Mutated alpha variant using full price range
+1 d e f f a c t o r _ d a y h i g h _ i m p a c t _ p e r _ v o l ( d f ) :
+2 " " " P r i c e - i m p a c t proxy : ( h i g h - low ) p e r u n i t o f volume .
+3 L a r g e r v a l u e s i n d i c a t e t h a t p r i c e moves a l o t w h i l e
+l i t t l e volume t r a d e s , s i g n a l l i n g t h i n l i q u i d i t y . " " "
+4 df_copy = d f . copy ( )
+5 df_copy [ ’ p r i c e _ r a n g e ’ ] = df_copy [ ’ h i g h ’ ] - df_copy [ ’ low ’
+]
+6 df_copy [ ’ f a c t o r _ d a y h i g h _ i m p a c t _ p e r _ v o l ’ ] = df_copy [ ’
+p r i c e _ r a n g e ’ ] / ( df_copy [ ’ volume ’ ] + 1 e - 9 )
+7 r e t u r n df_copy [ ’ f a c t o r _ d a y h i g h _ i m p a c t _ p e r _ v o l ’ ]
+The first version (Listing 1) represents an initial
+manually designed alpha. It measures the liquidity
+impact as the price rise (high−close) per unit of
+traded volume. Its metrics are:IC: 0.0090,Ran-
+kIC: 0.0061. Through mutation, the model gen-
+erates an alternative formulation (Listing 2) that
+uses the full daily price range (high−low) instead
+of the closing difference. This captures broader
+intraday liquidity behavior. Its metrics slightly de-
+crease toIC: 0.0073,RankIC: 0.0021, and thus
+this version is discarded in later rounds.
+Listing 3: Evolved alpha after multi-round optimization
+1 d e f f a c t o r _ p r i c e _ i m p a c t _ p e r _ v o l _ t a n h _ 1 d ( d f ) :
+2 " " " Impact proxy : a b s o l u t e d a i l y p r i c e move p e r d o l l a r
+volume .
+3 S t e p s :
+4 1 ) Compute a b s o l u t e p r i c e move ( | C l o s e - Open | ) .
+5 2 ) Compute d o l l a r volume ( Volume * C l o s e ) .
+6 3 ) Form raw i m p a c t = a b s o l u t e move / ( d o l l a r volume +ε)
+.
+7 4 ) Apply t a n h t o bound t h e f a c t o r w i t h i n ( - 1 , 1 ) . " " "
+8 df_copy = d f . copy ( )
+9 eps = 1 e - 9
+10 df_copy . l o c [ : , " abs_move " ] = ( df_copy [ " c l o s e " ] - df_copy
+[ " open " ] ) . abs ( )
+11 df_copy . l o c [ : , " d o l l a r _ v o l " ] = df_copy [ " volume " ] *
+df_copy [ " c l o s e " ]
+12 df_copy . l o c [ : , " raw_impact " ] = df_copy [ " abs_move " ] / (
+df_copy [ " d o l l a r _ v o l " ] + eps )
+13 df_copy . l o c [ : , " f a c t o r _ p r i c e _ i m p a c t _ p e r _ v o l _ t a n h _ 1 d " ] =
+np . t a n h ( df_copy [ " raw_impact " ] )
+14 r e t u r n df_copy [ " f a c t o r _ p r i c e _ i m p a c t _ p e r _ v o l _ t a n h _ 1 d " ]
+After several evolutionary rounds, CogAlpha
+produces a more refined version (Listing 3). It
+Figure 3:Performance of CogAlpha on different fitness threshold
+normalizes the absolute daily price move by dol-
+lar volume and applies a tanh transformation to
+ensure boundedness and robustness. The evolved
+alpha achieves significantly improved performance
+withIC: 0.0141andRankIC: 0.0087, showing
+the ability of the evolutionary mechanism to refine
+quantitative factors effectively.
+After a complete evolution cycle, CogAlpha is
+able to generate a large number of single-factor al-
+phas with strong predictive power, many of which
+achieveabsolute IC values above 0.05andab-
+solute RankIC values above 0.07. This demon-
+strates the framework’s capacity to autonomously
+explore and optimize factor space toward higher-
+performing and more interpretable alphas. The
+following are a few examples of elite alphas:
+factor_lownorm_slopecos_30d_low:Train
+metrics (raw): IC = -0.0498, RankIC = -0.0791,
+ICIR = -0.3416, RankICIR = -0.5016;Test metrics
+(Ridge): IC = 0.0507, RankIC = 0.0704, ICIR =
+0.3116, RankICIR = 0.4262
+Listing 4: Evolved alpha after multi-round optimization
+1 d e f f a c t o r _ l o w n o r m _ s l o p e c o s _ 3 0 d _ l o w ( d f ) :
+2 " " "Low - p r i c e r e l a t i v e t o i t s 30 - day EMA m u l t i p l i e d by a
+c y c l e - a l i g n e d s l o p e* c o s i n e .
+3 S t e p s :
+4 1 . N o r m a l i s e t h e low p r i c e by i t s 30 - day EMA - > dynamic
+s u p p o r t l e v e l .
+5 2 . E s t i m a t e t h e s o f t - s i g n s l o p e o f l o g - p r i c e vs . l o g -
+volume (E W M A cov / v a r ) - > s h o r t - term t r e n d .
+6 3 . Compute t h e EMA- 1 2 / - 48 c o s i n e t o c a p t u r e t h e dominant
+market c y c l e p h a s e .
+7 4 . Combine s l o p e and c o s i n e ( s l o p e * c o s i n e ) a s a s i n g l e "
+c y c l e f a c t o r " .
+8 5 . M u l t i p l y t h e n o r m a l i s e d low by t h e c y c l e f a c t o r ; t h e
+p r o d u c t i s h i g h when p r i c e i s n e a r s u p p o r t and t h e
+c y c l e d i r e c t i o n i s f a v o u r a b l e . " " "
+9 df_copy = d f . copy ( )
+10 eps = 1 e - 9
+11
+12 # 1 . N o r m a l i s e d low p r i c e ( s u p p o r t l e v e l )
+13 low_ema30 = df_copy [ ’ low ’ ] . ewm( span =30 , a d j u s t = F a l s e ) .
+mean ( )
+14 norm_low = df_copy [ ’ low ’ ] / ( low_ema30 + eps )
+15
+16 # 2 . S o f t - s i g n s l o p e o f l o g - p r i c e vs . l o g - volume
+17 l o g _ r e t = np . l o g ( df_copy [ ’ c l o s e ’ ] / df_copy [ ’ c l o s e ’ ] .
+s h i f t ( 1 ) )
+18 l o g _ v o l = np . l o g ( df_copy [ ’ volume ’ ] / df_copy [ ’ volume ’ ] .
+s h i f t ( 1 ) )
+19 cov = l o g _ r e t . ewm( h a l f l i f e =20 , a d j u s t = F a l s e ) . cov ( l o g _ v o l
+)
+20 v a r = l o g _ v o l . ewm( h a l f l i f e =20 , a d j u s t = F a l s e ) . v a r ( ) + eps
+21 s l o p e _ r a w = cov / v a r
+22 s l o p e = s l o p e _ r a w / ( 1 . 0 + s l o p e _ r a w . abs ( ) )
+23
+24 # 3 . EMA- 1 2 / - 48 c o s i n e ( c y c l e p h a s e )
+25 ema12 = df_copy [ ’ c l o s e ’ ] . ewm( span =12 , a d j u s t = F a l s e ) . mean
+( )
+26 ema48 = df_copy [ ’ c l o s e ’ ] . ewm( span =48 , a d j u s t = F a l s e ) . mean
+( )
+27 c o s _ p h a s e = ema12 / np . s q r t ( ema12 ** 2 + ema48 ** 2 + eps )
+28
+29 # 4 . Cycle f a c t o r = s l o p e * c o s i n e
+30 c y c l e _ f a c t o r = s l o p e * c o s _ p h a s e
+31
+32 # 5 . F i n a l f a c t o r
+33 df_copy [ ’ f a c t o r _ l o w n o r m _ s l o p e c o s _ 3 0 d _ l o w ’ ] = norm_low *
+c y c l e _ f a c t o r
+34
+35 r e t u r n df_copy [ ’ f a c t o r _ l o w n o r m _ s l o p e c o s _ 3 0 d _ l o w ’ ]
+factor_pressure_drawdown_fisher_10d:Train
+metrics (raw): IC = -0.0473, RankIC = -0.0668,
+ICIR = -0.3749, RankICIR = -0.4473;Test metrics
+(LightGBM): IC = 0.0491, RankIC = 0.069, ICIR
+= 0.2717, RankICIR = 0.3604
+Listing 5: Evolved alpha after multi-round optimization
+1 d e f f a c t o r _ p r e s s u r e _ d r a w d o w n _ f i s h e r _ 1 0 d ( d f ) :
+2 " " " P r e s s u r e median * F i s h e r - c o r r (20 d ) * drawdown EMA- 8 .
+3 1 . p r e s s u r e = | C-O| * l o g 1 p (V) , median o v e r 10 days .
+4 2 . drawdown = - (C - r o l l i n g _ m a x _ 2 5 2 ) / r o l l i n g _ m a x _ 2 5 2 ,
+EMA- 8 smoothed .
+5 3 . f i s h e r = F i s h e r - t r a n s f o r m o f 20 - day c o r r ( l o g r e t u r n s ,
+l o g volume ) .
+6 4 . f a c t o r = p r e s s u r e _ m e d 1 0 * f i s h e r _ c o r r * t a n h (
+decayed_dd ) . " " "
+7 df_copy = d f . copy ( )
+8 eps = 1 e - 12
+9
+10 # 1 . p r e s s u r e median (10 d )
+Dataset Horizon Models Training Method IC RankIC ICIR RankICIR
+CSI300
+10 days
+CNN CNN 0.0268 0.0392 0.2432 0.3117
+Linear Linear 0.0165 0.0211 0.1612 0.1655
+XGBoost XGBoost 0.0257 0.0376 0.2783 0.4093
+CogAlpha Ridge 0.0539 0.07140.3471 0.4380
+CogAlpha LightGBM0.0591 0.08140.3410 0.4350
+30 days
+CNN CNN 0.0445 0.0644 0.4118 0.6023
+Linear Linear 0.0222 0.0482 0.2174 0.4218
+XGBoost XGBoost 0.0402 0.0507 0.4181 0.5896
+CogAlpha Ridge 0.0815 0.1069 0.4408 0.5403
+CogAlpha LightGBM0.0886 0.1243 0.4933 0.6740
+CSI500 10 days
+CNN CNN 0.0353 0.0490 0.2615 0.3959
+Linear Linear 0.0273 0.0391 0.2787 0.3671
+XGBoost XGBoost 0.0282 0.0290 0.2458 0.3046
+CogAlpha Ridge0.0455 0.0738 0.2903 0.4752
+S&P500 10 days
+CNN CNN -0.0040 -0.0028 -0.0508 -0.0325
+Linear Linear 0.0031 0.0004 0.0408 0.0045
+XGBoost XGBoost -0.0020 0.0045 -0.0434 0.0670
+CogAlpha Ridge0.0217 0.0226 0.2189 0.1726
+HSI 10 days
+CNN CNN 0.0218 0.0177 0.1603 0.1248
+Linear Linear 0.0218 0.0158 0.1647 0.0967
+XGBoost XGBoost -0.0031 0.0003 -0.0272 0.0026
+CogAlpha Ridge0.0327 0.0400 0.1903 0.2330
+HSCI 10 days
+CNN CNN 0.0385 0.0242 0.4006 0.2304
+Linear Linear 0.0171 0.0142 0.2258 0.1401
+XGBoost XGBoost 0.0295 0.0144 0.3153 0.1690
+CogAlpha Ridge0.0562 0.0495 0.5396 0.4394
+Table 5: Performance comparison of COGALPHAacross different datasets, horizons, and training methods. Results
+are grouped by dataset, with IC, RankIC, ICIR, and RankICIR reported for each configuration. The best performance
+values for each task are highlighted inbold.
+11 p r e s s u r e _ r a w = ( df_copy [ ’ c l o s e ’ ] - df_copy [ ’ open ’ ] ) . abs
+( ) * np . l o g 1 p ( df_copy [ ’ volume ’ ] )
+12 p r e s s u r e _ m e d 1 0 = p r e s s u r e _ r a w . r o l l i n g ( window =10 ,
+m i n _ p e r i o d s =10) . median ( )
+13
+14 # 2 . EMA- 8 drawdown magnitude
+15 r o l l _ m a x = df_copy [ ’ c l o s e ’ ] . r o l l i n g ( window =252 ,
+m i n _ p e r i o d s =1) . max ( )
+16 drawdown = - ( ( df_copy [ ’ c l o s e ’ ] - r o l l _ m a x ) / ( r o l l _ m a x +
+eps ) )
+17 decayed_dd = drawdown . ewm( span =8 , a d j u s t = F a l s e ) . mean ( )
+18
+19 # 3 . F i s h e r - t r a n s f o r m e d 20 - day r e t u r n - volume c o r r e l a t i o n
+20 l o g _ r e t = np . l o g ( df_copy [ ’ c l o s e ’ ] + eps ) . d i f f ( )
+21 l o g _ v o l = np . l o g ( df_copy [ ’ volume ’ ] + eps ) . d i f f ( )
+22 c o r r 2 0 = l o g _ r e t . r o l l i n g ( window =20 , m i n _ p e r i o d s =20) . c o r r
+( l o g _ v o l )
+23 f i s h e r _ c o r r = np . a r c t a n h ( c o r r 2 0 . c l i p ( - 0 . 9 9 9 , 0 . 9 9 9 ) )
+24
+25 # 4 . Combine
+26 f a c t o r = p r e s s u r e _ m e d 1 0 * f i s h e r _ c o r r * np . t a n h (
+decayed_dd )
+27
+28 f a c t o r _ n a m e = ’ f a c t o r _ p r e s s u r e _ d r a w d o w n _ f i s h e r _ 1 0 d ’
+29 f a c t o r . name = f a c t o r _ n a m e
+30 df_copy [ f a c t o r _ n a m e ] = f a c t o r
+31 r e t u r n df_copy [ f a c t o r _ n a m e ]
+factor_herd_drawdown_synergy_gate_ema10
+:Train metrics (raw): IC = -0.0552, RankIC =
+-0.0742, ICIR = -0.475, RankICIR = -0.5141;
+Test metrics (LightGBM): IC = 0.0503, RankIC =
+0.0663, ICIR = 0.3017, RankICIR = 0.392
+Listing 6: Evolved alpha after multi-round optimization
+1 d e f f a c t o r _ h e r d _ d r a w d o w n _ s y n e r g y _ g a t e _ e m a 1 0 ( d f ) :
+2 " " " Herd - drawdown s y n e r g y w i t h a p r i c e - t r e n d g a t e and a
+s t a b i l i t y f i l t e r .
+3 S t e p s ( 5 ) :
+4 1 ) Core h e r d s i g n a l = t a n h ( h e r d _ c o r r _ r e t v o l _ 2 0 d *
+h e r d _ f i s h e r _ 2 0 d _ r o l l i n g w i n s o r ) .
+5 Tanh bounds t h e p r o d u c t , r e d u c i n g e x t r e m e v a l u e s .
+6 2 ) Trend g a t e = s i g n (C-O) * t a n h ( ( C-O) / sigma20 ) where
+sigma20 i s t h e 20 - day r o l l i n g s t d o f c l o s e .
+7 C a p t u r e s d i r e c t i o n a l i t y w h i l e l i m i t i n g i n f l u e n c e o f
+n o i s y p r i c e moves .
+8 3 ) Raw s y n e r g y = c o r e *
+d r a w d o w n _ s t e a d i n e s s _ e n e r g y _ t a n h _ r e g i m e _ 1 0 d*
+t r e n d _ g a t e .
+9 Combines herd , drawdown energy , and p r i c e d i r e c t i o n .
+10 4 ) S t a b i l i t y = 1 / ( 1 + MAD20( b o d y _ r a t i o ) ) w i t h
+b o d y _ r a t i o = (C-O) / ( H- L+ε) .
+11 M A D p r o v i d e s a r o b u s t d i s p e r s i o n measure ; t h e
+s t a b i l i t y term down - w e i g h t s v o l a t i l e c a n d l e s .
+12 5 ) EMA- 10 ( t i c k e r - wise ) smooths r a w _ s y n e r g y * s t a b i l i t y ,
+y i e l d i n g a s t a b l e , l a g g e d f a c t o r . " " "
+13 df_copy = d f . copy ( )
+14 eps = np . f i n f o ( f l o a t ) . eps
+15
+16 # 1 . bounded h e r d c o r e
+17 c o r e = np . t a n h ( df_copy [ ’ f a c t o r _ h e r d _ c o r r _ r e t v o l _ 2 0 d ’ ] *
+18 df_copy [ ’
+f a c t o r _ h e r d _ f i s h e r _ 2 0 d _ r o l l i n g w i n s o r
+’ ] )
+19
+20 # 2 . a s y m m e t r i c p r i c e - t r e n d g a t e (20 - day c l o s e s t d p e r
+t i c k e r )
+21 p r i c e _ c h a n g e = df_copy [ ’ c l o s e ’ ] - df_copy [ ’ open ’ ]
+22 s t d 2 0 = df_copy [ ’ c l o s e ’ ] . groupby ( l e v e l = ’ t i c k e r ’ ) .
+t r a n s f o r m (
+23 lambda s : s . r o l l i n g ( window =20 , m i n _ p e r i o d s =1) . s t d ( )
+24 )
+25 t r e n d _ g a t e = np . s i g n ( p r i c e _ c h a n g e ) * np . t a n h (
+p r i c e _ c h a n g e / ( s t d 2 0 + eps ) )
+26
+27 # 3 . raw s y n e r g y w i t h drawdown - e n e r g y f a c t o r
+28 r a w _ s y n e r g y = c o r e * df_copy [ ’
+f a c t o r _ d r a w d o w n _ s t e a d i n e s s _ e n e r g y _ t a n h _ r e g i m e _ 1 0 d ’ ]
+* t r e n d _ g a t e
+29
+30 # 4 . s t a b i l i t y g a t e v i a M A D o f body r a t i o
+31 b o d y _ r a t i o = p r i c e _ c h a n g e / ( df_copy [ ’ h i g h ’ ] - df_copy [ ’
+low ’ ] + eps )
+32 mad20 = b o d y _ r a t i o . groupby ( l e v e l = ’ t i c k e r ’ ) . t r a n s f o r m (
+33 lambda s : s . r o l l i n g ( window =20 , m i n _ p e r i o d s =10) . a p p l y
+(
+34 lambda w: np . median ( np . abs (w - np . median (w) ) ) ,
+raw= F a l s e )
+35 )
+36 s t a b i l i t y = 1 . 0 / ( 1 . 0 + mad20 )
+37
+38 # 5 . EMA- 10 smoothing p e r t i c k e r , p r e s e r v i n g ( d a t e ,
+t i c k e r ) i n d e x
+39 s y n e r g y = r a w _ s y n e r g y * s t a b i l i t y
+40 r e s u l t = s y n e r g y . groupby ( l e v e l = ’ t i c k e r ’ , g r o u p _ k e y s =
+F a l s e ) . a p p l y (
+41 lambda s : s . ewm( span =10 , a d j u s t = F a l s e ) . mean ( )
+42 )
+43 r e s u l t . name = ’ f a c t o r _ h e r d _ d r a w d o w n _ s y n e r g y _ g a t e _ e m a 1 0 ’
+44
+45 df_copy [ ’ f a c t o r _ h e r d _ d r a w d o w n _ s y n e r g y _ g a t e _ e m a 1 0 ’ ] =
+r e s u l t
+46 r e t u r n df_copy [ ’ f a c t o r _ h e r d _ d r a w d o w n _ s y n e r g y _ g a t e _ e m a 1 0 ’
+]
+B.10 Different Fitness Threshold
+We analyze the sensitivity of our method to dif-
+ferent threshold settings used for filtering alpha
+factors. To maintain the quality of the selected
+alphas, we experiment with three threshold pairs:
+(65, 80), (80, 90), and (85, 95). In each pair, the
+former value represents the percentile threshold for
+qualified factorsthat advance to the next genera-
+tion, while the latter corresponds to the percentile
+threshold forelite factorsthat are directly stored
+in the final candidate pool. For comparison, we
+also establish a baseline configuration to ensure
+the quality consistency of filtered alphas. Specif-
+ically, thresholds for each predictive metric are
+determined based on the empirical distribution of
+factor scores. We constrain each metric by a mini-
+mum bound to prevent the dominance of outliers:
+ICandRankICare bounded below by 0.005,ICIR
+andRankICIRby 0.05, andMIby 0.02. For elite
+factors, the minimum bounds are slightly higher:
+0.01 forICandRankIC, 0.1 forICIRandRankI-
+CIR, and 0.02 forMI. As shown in Figure 3, the
+threshold pair (65, 80) yields better overall perfor-
+mance. This result may be attributed to the larger
+parent pool size under this configuration, which en-
+courages evolutionary search to explore a broader
+alpha space and mitigates the risk of premature
+convergence to local optima.
+B.11 Generalization to Different Settings
+We test the generalization of CogAlpha on different
+datasets (CSI300, CSI500, S&P500, HSI, HSCI),
+training methods (LightGBM, Ridge), and hori-
+zons (10 days, 30 days). As shown in Table 5, our
+method consistently performs well across different
+settings.
+• The CSI300 dataset is split chronologically
+into training (2011/01/01-2019/12/31), val-
+idation (2020/01/01-2020/12/31), and test
+(2021/01/01-2024/12/01) periods.
+• The CSI500 dataset is split chronologically
+into training (2011/01/01-2019/12/31), val-
+idation (2020/01/01-2020/12/31), and test
+(2021/01/01-2024/12/01) periods.
+• The S&P500 dataset is split chronologically
+into training (2007/01/01-2014/12/31), val-
+idation (2015/01/01-2015/12/31), and test
+(2016/01/01-2020/12/01) periods.
+• The HSI dataset is split chronologically
+into training (2011/01/01-2019/12/31), val-
+idation (2020/01/01-2020/12/31), and test
+(2021/01/01-2025/12/01) periods.
+• The HSCI dataset is split chronologically
+into training (2011/01/01-2019/12/31), val-
+idation (2020/01/01-2020/12/31), and test
+(2021/01/01-2025/12/01) periods.
+C Prompt Design
+C.1 Seven-Level Agent Hierarchy
+Seven-Level Agent Hierarchy – Base Agent
+You are a senior quantitative factor engi-
+neer. Below is the schema of the input
+DataFrame and a list of{columns_num}
+existing factors:
+{columns_desc}
+The input DataFrame consists ofdaily ag-
+gregated factors— i.e., each row repre-
+sents a single trading day’s features for a
+given stock, already aggregated to daily fre-
+quency.
+Please generate{num_per_request}new
+and original quantitative factor functions
+that are distinct from the existing ones.
+Each factor should be implemented as a
+complete Python function.
+—
+### Analysis of Effective Factors and
+Innovation Directions:
+Below is a condensed CoT-style summary
+built from recent successful cases, explain-
+ing why they work well.
+Mini-Chain from Survivors (Observation
+→Cause→Fix):
+{effective_CoT}
+Based on these strengths, focus on incor-
+porating similar principles in new factor
+creation. Seek innovative methods to gen-
+erate more efficient, robust, and adapt-
+able factors, ensuring they work well in
+diverse market conditions while avoiding
+look-ahead/leakage and redundancy.
+—
+### Analysis of Ineffective Factors and
+Innovation Directions:
+Below is a condensed CoT-style summary
+built from recent failure cases, explaining
+why they fail.
+Mini-Chain from Failures (Observation →
+Cause→Fix):
+{ineffective_CoT}
+Based on these failures, focus on avoiding
+similar issues in new factor creation. Seek
+innovative methods to generate more effec-
+tive, robust, and adaptable factors, ensuring
+they work well in diverse market conditions.
+—
+### Requirements:
+- The input ‘DataFrame‘ has a MultiIndex of
+(date, ticker), and has already been grouped
+by ticker:
+• Each input ‘DataFrame‘ is a time se-
+ries of a single stock.
+- Output: A ‘pd.Series‘ indexed by ‘(date,
+ticker)‘ with thesame nameas the function.
+- Each function must:
+• Have a descriptive, unique name:
+factor_<logic>_<transformation(s)>
+_<window(s)>_<field>.
+• Include a clear docstring explaining
+the logic and formula.
+• Balance predictive power with eco-
+nomic/financial interpretability.
+• Use an output column name that ex-
+actly matches the function name.
+• Be concise, precise, and readable.
+• Build new alpha factors based on ex-
+isting ones.
+—
+### Factor Design Guidance:
+You are encouraged to explore a wide va-
+riety of signals and techniques related to
+{factor_type}, including but not limited to:
+• List of common techniques / example
+categories
+• List of possible interactions or ad-
+vanced ideas
+Please do NOT limit yourself to simple for-
+mulas or common patterns. You are ex-
+pected to innovate, introduce mathemati-
+cally sophisticated or unconventional struc-
+tures, and combine multiple concepts where
+reasonable.
+The goal is to generate factors that arepre-
+dictive,robust, andeconomically inter-
+pretable, while beingstructurally diverse
+from existing factors.
+—
+### Pre-imported libraries you can use
+(current versions):
+•"np" : import numpy as np (numpy
+version: 2.2.6)
+•"pd" : import pandas as pd(pandas
+version: 2.2.3)
+•"stats" : from scipy import stats
+(scipy version: 1.15.3)
+•"talib" : import talib (talib ver-
+sion: 0.5.1)
+•"math" : import math (built-in mod-
+ule)
+Coding Guidelines:
+• Ensure the code is robust, efficient, and
+optimized:
+– Handle edge cases and exceptions
+(e.g., NaN values).
+– Minimize unnecessary computa-
+tions and prefer vectorized opera-
+tions (e.g., pandas, numpy).
+–Ensure numerical stability.
+– Strict Rule: Nested loops are
+absolutely forbidden.
+* You mustneverwrite any
+form of loop inside another
+loop.
+* Forbidden patterns include
+but are not limited to:
+·forinsidefor
+·whileinsidewhile
+·forinsidewhile
+·whileinsidefor
+* Any nested iteration structure
+isprohibited, regardless of
+indentation depth.
+* The use of while True or
+any potentially infinite loop
+isstrictly prohibited.
+• When filtering or assigning val-
+ues in a DataFrame, always
+use df_copy.loc[row_indexer,
+col_indexer] = value.
+• Code should be clean, maintainable,
+and efficient for large datasets:
+– Use descriptive variable names
+and minimize memory usage.
+– Avoid creating unnecessary
+copies of large DataFrames.
+—
+### Output format specification:
+• Do NOT use markdown (like
+“‘python).
+• Do NOT add any explanation or com-
+ments outside the function.
+• Each function must be wrapped inside:
+«function N»...«/function N».
+• All generated code must be executable
+and numerically stable.
+• Always define intermediate columns
+(e.g.,df_copy[’x’]) before referenc-
+ing them later.
+• The returned Seriesmustbe named
+exactly the same as the function name.
+• Each function should follow this for-
+mat:
+1<<function N>>
+2def factor_xyz(df):
+3"""Explain the logic. One
+clear idea. Short
+formula. No redundant
+stacking."""
+4df_copy = df.copy()
+5# factor computation
+6return df_copy["factor_xyz
+"]
+7<</function N>>
+Seven-Level Agent Hierarchy – BarShape
+You are an expert in **candlestick geometry
+and bar-shape pattern analysis** using daily
+factors. Below is the schema of the input
+DataFrame and a list of{columns_num}
+existing **daily-level factors**:
+{columns_desc}
+Please generate **{num_per_request}new
+and original bar-shape-based alpha factor
+functions** to forecast **10-day forward
+returns**.
+Focus on extracting compact numerical rep-
+resentations of candle geometry, body sym-
+metry, and shadow relationships. Avoid sim-
+ple pattern labeling; design continuous and
+interpretable shape metrics.
+—
+### Analysis of Effective Factors and In-
+novation Directions:
+Same as the Base Agent.
+—
+### Analysis of Ineffective Factors and
+Innovation Directions:
+Same as the Base Agent.
+—
+### Requirements:
+Same as the Base Agent.
+—
+### Factor Design Guidance:
+Translate candle geometry into quantitative
+signals:
+• ratios: (close-open)/(high-low), (high-
+close)/(close-low), etc.;
+• shadow asymmetry or balance indica-
+tors;
+• body-to-range normalization and per-
+sistence over recent days;
+• rolling geometry stability or asymme-
+try;
+• short-run shape momentum: recent
+trend in candle proportions.
+Encourage creativity and interpretability:
+derive smooth, bounded, differentiable func-
+tions using existing factors.
+—
+### Pre-imported libraries you can use
+(current versions):
+Same as the Base Agent.
+—
+### Output format specification:
+Same as the Base Agent.
+Seven-Level Agent Hierarchy – Composite
+You are an expert in **composite factor
+construction and information fusion**
+using existing features. Below is the
+schema of the input DataFrame and a list
+of{columns_num}existing **daily-level
+factors**:
+{columns_desc}
+Please generate **{num_per_request}new
+and original composite alpha factor func-
+tions** to forecast **10-day forward re-
+turns**.
+Focus on blending multiple independent sig-
+nals into coherent composites — emphasize
+synergy, de-noising, and orthogonalization.
+Avoid simple linear averages or sums.
+—
+### Analysis of Effective Factors and In-
+novation Directions:
+Same as the Base Agent.
+—
+### Analysis of Ineffective Factors and
+Innovation Directions:
+Same as the Base Agent.
+—
+### Requirements:
+Same as the Base Agent.
+—
+### Factor Design Guidance:
+Fuse signals through structured, inter-
+pretable transformations:
+• weighted or volatility-adjusted aver-
+ages of trend, volume, and range fea-
+tures;
+• orthogonal combination: remove re-
+dundancy, amplify orthogonal content;
+• regime-weighted composites: dy-
+namic weights based on volatility or
+liquidity states;
+• robust normalization before fusion (z-
+score or rank-scaling);
+• include non-linear combination terms
+(e.g., product, ratio) but keep compact.
+Strive for elegant, minimal composite forms
+with complementary subcomponents and
+clear economic intuition.
+—
+### Pre-imported libraries you can use
+(current versions):
+Same as the Base Agent.
+—
+### Output format specification:
+Same as the Base Agent.
+Seven-Level Agent Hierarchy – MarketCy-
+cle
+You are an expert in **market cycle
+and phase-state modeling** using daily
+OHLCV data. Below is the schema
+of the input DataFrame and a list of
+{columns_num}existing **daily-level
+factors**:
+{columns_desc}
+The input DataFrame consists of **daily ag-
+gregated OHLCV data** — each row rep-
+resents a single trading day’s features for
+a given stock, already aggregated to daily
+frequency.
+Please generate **{num_per_request}new
+and original market-cycle-oriented alpha
+factor functions** to forecast **10-day for-
+ward returns**.
+Try to reveal hidden cyclicality, rhythm,
+or alternating phases in the price–volatility
+structure. Avoid simple moving-average
+crossovers or standard trend indicators; seek
+higher-level temporal dynamics.
+—
+### Analysis of Effective Factors and In-
+novation Directions:
+Same as the Base Agent.
+—
+### Analysis of Ineffective Factors and
+Innovation Directions:
+Same as the Base Agent.
+—
+### Requirements:
+Same as the Base Agent.
+—
+### Factor Design Guidance: Market Cy-
+cle Exploration
+Investigate periodic or phase-shift patterns
+from OHLCV sequences:
+• smooth transformations of returns or
+log(price) to reveal cyclical oscilla-
+tions;
+• phase difference between short-term
+and long-term smoothed price signals;
+• normalized curvature of cumulative re-
+turns or EMA trajectories;
+• alternating volatility compression/ex-
+pansion interpreted as "cycle turns";
+• dynamic amplitude measures (e.g., ra-
+tio of short/long energy in returns).
+Encourage creativity: discover alternative
+representations of cyclical energy, hidden
+harmonics, or state oscillations beyond con-
+ventional moving averages.
+—
+### Pre-imported libraries you can use
+(current versions):
+Same as the Base Agent.
+—
+### Output format specification:
+Same as the Base Agent.
+...
+More details of the prompts for these agents will
+be shown in the GitHub repository.
+C.2 Multi-Agent Quality Checker
+Multi-Agent Quality Checker – Code Qual-
+ity
+You are a code reviewer for quantitative al-
+pha factors. Your task is to review the given
+Python code (representing a factor function)
+for the following issues:
+1.Syntax errors(Python syntax and run-
+time issues).
+2.Pandas-specific issues, including:
+• Chained indexing or
+SettingWithCopyWarning
+• Missing .copy() when modifying the
+DataFrame
+• Use of undefined intermediate vari-
+ables
+• Incorrect or ambiguous indexing
+3.Output format and naming:
+• The returned Seriesmust be named
+exactly the same as the function
+name
+• All intermediate columns must be de-
+fined before they are used
+• Code must benumerically stable
+(avoid inf, NaN propagation where
+possible)
+• When filtering or assign-
+ing values, always use
+df_copy.loc[row_indexer,
+col_indexer] = value
+4.Loop structure constraints:
+• Nested loops are absolutely forbid-
+den.
+–Noforinsidefor
+–Nowhileinsidewhile
+–Noforinsidewhile
+–Nowhileinsidefor
+• Any nested iteration structure is pro-
+hibited.
+• Infinite or unbounded loops (e.g.,
+while True) are strictly forbidden.
+• If nested loops appear, mark the review
+asFAIL, explain why, and suggest vec-
+torized alternatives.
+«function»
+{code}
+«/function»
+### Hard Complexity Constraints
+• Single theme, minimal path: one clear
+idea per factor.
+• Hard cap: max 5 logical steps. If >3,
+docstring must justify the necessity.
+• No redundant stacking
+(e.g., zscore(zscore(x)),
+rank(rank(x))).
+• No theme mixing or unnecessary com-
+plexity.
+### Code Format Specification
+• Input DataFrame has MultiIndex (date,
+ticker) and represents a single stock’s
+time series.
+• Output: a pd.Series with thesame
+nameas the function.
+• Provide instructions on how to fix is-
+sues before generating corrected code.
+• No markdown code blocks.
+• All functions must be wrapped in
+«function N»...«/function N».
+• All intermediate columns must be ex-
+plicitly defined.
+• Returned Series must match the func-
+tion name exactly.
+### Factor Design Guidance
+• Use clean, robust, interpretable formu-
+las.
+• Maximum 5 logical steps.
+• Avoid unnecessary stacking or engi-
+neered tricks.
+• Keep factors generalizable and eco-
+nomically interpretable.
+• Strict prohibition of nested loops.
+### Output Format Specification
+• Candidate factors must obey all Hard
+Constraints.
+• Each function must follow the struc-
+ture:
+1<<function N>>
+2def factor_xyz(df):
+3"""Explain the logic. One
+clear idea. Short
+formula. No redundant
+stacking."""
+4df_copy = df.copy()
+5# factor computation
+6return df_copy["factor_xyz
+"]
+7<</function N>>
+### Response Format Rules
+• Start with exactly one of:
+–The code is correct.
+–The code needs some
+adjustments.
+• If correct, stop.
+• If adjustments are needed:
+–List all issues found.
+–Provide corrected function in the
+exact required format.
+Multi-Agent Quality Checker – Code Re-
+pair
+You are an expert interaction factor engineer.
+Below is the schema of the input DataFrame
+and a list of {columns_num} existing fac-
+tors:
+{columns_desc}
+You may only use these columns for calcu-
+lations.Do NOT use any other columns
+not listed here.
+The following Python function failed to exe-
+cute. Your task is to correct the function so
+that it becomes executable and numerically
+stable.
+### Hard Complexity Constraints (must-
+follow)
+• Single theme, minimal path: each fac-
+tor must represent one clear idea.
+• Hard cap: never exceed 5 logical steps;
+if >3 , the docstring must justify the
+extra steps.
+• No redundancy or unnecessary
+nesting (e.g., zscore(zscore(x)),
+rank(rank(x))).
+• No theme mixing: do not combine un-
+related ideas.
+• Avoid unnecessary complexity.
+—
+### Original function:
+—
+«faulty code»
+{old_code}
+«/faulty code»
+—
+### Error message when running:
+{error}
+—
+### Requirements:
+• Input DataFrame has MultiIndex (date,
+ticker), already grouped by ticker:
+each DataFrame is a time series of a
+single stock.
+• Output must be apd.Series indexed
+by (date, ticker) with thesame name
+as the function.
+• Each function must:
+–Have a descriptive name:
+factor_<logic>_<transformation(s)>
+_<window(s)>_<field>
+– Include a clear docstring explain-
+ing the logic
+– Balance interpretability with pre-
+dictive potential
+– Build factors only from existing
+columns
+—
+### Factor Design Guidance
+• Capture one essential intuition.
+• Ensure interpretability and robustness.
+• Prefer short formulas and vectorized
+operations.
+• Maximum 5 steps.
+—
+### Revision Instructions
+• Read the error message carefully.
+• Provide detailed instructions on how
+to fix issues.
+• Revise the function accordingly.
+• If a column is missing or invalid, it
+must not be used; replace or redesign
+accordingly.
+• You may create a new function if nec-
+essary.
+• Ensure the revised function is logically
+sound and economically meaningful.
+—
+### Pre-imported libraries you can use
+(current versions):
+•"np" : import numpy as np (numpy
+version: 2.2.6)
+•"pd" : import pandas as pd(pandas
+version: 2.2.3)
+•"stats" : from scipy import stats
+(scipy version: 1.15.3)
+•"talib" : import talib (talib ver-
+sion: 0.5.1)
+•"math" : import math (built-in mod-
+ule)
+Coding Guidelines
+• Ensure the code is robust, efficient, and
+optimized:
+– Handle edge cases and exceptions
+(e.g., NaN values).
+– Minimize unnecessary computa-
+tions and prefer vectorized opera-
+tions (e.g., pandas, numpy).
+–Ensure numerical stability.
+– Strict Rule: Nested loops are
+absolutely forbidden.
+* You mustneverwrite any
+form of loop inside another
+loop.
+* Forbidden patterns include
+but are not limited to:
+·forinsidefor
+·whileinsidewhile
+·forinsidewhile
+·whileinsidefor
+* Any nested iteration structure
+isprohibited, regardless of
+indentation depth.
+* The use of while True or
+any potentially infinite loop
+isstrictly prohibited.
+• When filtering or assigning val-
+ues in a DataFrame, always
+use df_copy.loc[row_indexer,
+col_indexer] = value.
+• Code should be clean, maintainable,
+and efficient for large datasets:
+– Use descriptive variable names
+and minimize memory usage.
+– Avoid creating unnecessary
+copies of large DataFrames.
+—
+### Output format specification:
+• Candidates should strictly comply with
+the Hard Complexity Constraints.
+• Before generating the code, provide
+detailed instructions on how to fix the
+issues raised.
+• Do NOT use markdown (like
+“‘python).
+• Do NOT add any explanation or com-
+ments outside the function.
+• Each function must be wrapped inside:
+«function N»...«/function N».
+• All generated code must be executable
+and numerically stable.
+• Always define intermediate columns
+(e.g.,df_copy[’x’]) before referenc-
+ing them later.
+• The returned Seriesmustbe named
+exactly the same as the function name.
+• Each function should follow this for-
+mat:
+1<<function N>>
+2def factor_xyz(df):
+3"""Explain the logic. One
+clear idea. Short
+formula. No redundant
+stacking."""
+4df_copy = df.copy()
+5# factor computation
+6return df_copy["factor_xyz
+"]
+7<</function N>>
+Multi-Agent Quality Checker – Judger
+You are an expert quantitative researcher
+and alpha factor reviewer for a professional
+factor research team.
+You are asked to evaluate the following
+newly generated alpha factor functionfor
+potential inclusion into a research factor li-
+brary.
+Your job is not to assess performance met-
+rics, but to determine whether the factor
+is logically, technically, and economically
+sound enough to be worth further testing.
+Your evaluation should focus onPractical
+Soundness, with a professional mindset:
+1. Does the factor have anyfuture infor-
+mation leakage?
+2. Is the factor calculationcorrect and
+internally consistent?
+3. Is the factor logiceconomically in-
+terpretable(even if exploratory or
+novel)?
+4. Does the factor avoid obviouserrors
+(such as invalid operations, unpro-
+tected division by zero, undefined re-
+sults)?
+5. Is the factorefficiently implemented
+(avoids unnecessary loops, leverages
+vectorized operations, and is suitable
+for large-scale backtesting)?
+6. Does the factor strictlyavoid any
+nested loops or potentially infinite
+loops?
+• Nested loops areforbiddenat
+any depth:
+–forinsidefor
+–whileinsidewhile
+–forinsidewhile
+–whileinsidefor
+• The use of while True or any
+loop that can run indefinitely is
+prohibited.
+—
+### Factor under review:
+«function»
+{code}
+«/function»
+The input DataFrame has a MultiIndex of
+(date, ticker), grouped by ticker (i.e., a time
+series per stock). Each input DataFrame is
+a time series of a single stock. The func-
+tion outputs a pd.Series indexed by (date,
+ticker), with the same name as the function.
+IMPORTANT: The input DataFrame is
+sortedin chronological order, from the
+earliest date at the top to the most recent
+date at the bottom. This is critical for evalu-
+ating time series-based factors and avoiding
+information leakage.
+—
+### Evaluation Guidelines:
+• Youmust rejectfactors with any form
+offuture information leakage– this
+is a critical error.
+• You should reject factors that havelog-
+ical errors,data issues, orimplemen-
+tation mistakes.
+• Pay special attention to operations like
+rolling means, groupby transforms,
+shifting, or reversing time series: en-
+sure these only use past and present
+data relative to each row, never future
+data.
+• Be mindful of efficiency: avoid factors
+that are unnecessarily slow (e.g., un-
+necessary loops, non-vectorized oper-
+ations) – the factor should be suitable
+for large-scale backtesting on millions
+of records.
+• Beopen-minded: even unconven-
+tional factor ideas may be worth ex-
+ploring.
+• Provide clear, specific and action-
+able feedback if improvements can be
+made.
+• Anyfororwhileloop inside another
+for or while loop isstrictly prohib-
+ited, as it indicates poor scalability and
+inefficiency for large cross-sectional
+datasets.
+• Never use constructs likewhile True
+or any loop that lacks a clear and finite
+termination condition.
+—
+### Please format your response strictly
+as:
+Practical Soundness: [Concise
+analysis — what is good, what needs
+improvement, if any.]
+Final Recommendation: Accept /
+Reject
+Feedback for Improvement: [Precise
+suggestions for how the factor
+engineer can improve this factor
+— e.g. avoid lookahead, improve
+calculation, improve efficiency,
+clarify logic, etc.]
+Multi-Agent Quality Checker – Logic Im-
+provement
+You are an expert interaction factor engineer.
+Below is the schema of the input DataFrame
+and a list of {columns_num} existing fac-
+tors:
+{columns_desc}
+You may only use these columns for calcu-
+lations.Do NOT use any other columns
+not listed here. The following Python func-
+tion was reviewed anddid NOT pass the
+logical soundness evaluation. Your task is
+to revise and improve this function so that:
+1. It is economically and financially inter-
+pretable.
+2. It is logically sound according to finan-
+cial principles.
+3. It addresses the specific feedback pro-
+vided below.
+—
+### Original function:
+«previous function»
+{old_code}
+«/previous function»
+—
+### Hard Complexity Constraints (must-
+follow)
+Remember:Simple factors are often the
+most powerful and stable.
+• Single theme, minimal path: each fac-
+tor must represent one clear idea.
+• Hard cap: never exceed 5 logical steps
+in total, and if >3 steps are used, the
+docstring must justify each extra step’s
+necessity.
+• No redundancy / nesting: for-
+bid stacked or decorative trans-
+forms (e.g., zscore(zscore(x)),
+rank(rank(x)), deep EMA chains
+without rationale).
+• No theme mixing: do not combine un-
+related ideas.
+• Avoid nested or layered operations.
+• Avoid unnecessary complexity or logic
+stacking.
+### JudgeAgent feedback (reason for re-
+jection):
+{dynamic_feedback}
+### Requirements:
+• The inputDataFrame has a MultiIndex
+of (date, ticker), and has already been
+grouped by ticker:
+– Each input DataFrame is a time
+series of a single stock.
+• Output: A pd.Series indexed by
+(date, ticker) with thesame nameas
+the function.
+• Each function must:
+– Have a descriptive, unique name:
+factor_<logic>_<transformation(s)>
+_<window(s)>_<field>
+– Include a clear docstring explain-
+ing the logic and formula.
+– Balance predictive power with
+economic/financial interpretabil-
+ity.
+– The output column name must
+match the function name.
+– Be concise, precise, and readable.
+– Build new alpha factors based on
+existing ones.
+Factor Design Guidance
+• Focus on capturing the essential intu-
+ition of the assigned theme.
+• Ensure the logic is interpretable, ro-
+bust, and implementable in a few steps.
+• Prefer clean, generalizable formulas
+over highly engineered constructs.
+• Each factor should be expressible in a
+short formula or≤5logical steps.
+• Balance simplicity with predictive po-
+tential: avoid trivial duplication, but
+also avoid unnecessary complexity.
+—
+### Revision instructions:
+• Carefully read the JudgeAgent feed-
+back.
+• Provide detailed instructions on how
+to fix the issues raised.
+• Revise the function accordingly to ad-
+dress the issues pointed out.
+• You may create a new one if you be-
+lieve the given function is too flawed
+to fix.
+• Ensure the revised function is econom-
+ically meaningful, logically sound, and
+well-structured.
+• You may introduce new logic, transfor-
+mations, or corrections as needed.
+• Make sure the output is a
+pandas.Series indexed by (date,
+ticker).
+—
+### Pre-imported libraries you can use
+(current versions):
+•"np" : import numpy as np (numpy
+version: 2.2.6)
+•"pd" : import pandas as pd(pandas
+version: 2.2.3)
+•"stats" : from scipy import stats
+(scipy version: 1.15.3)
+•"talib" : import talib (talib ver-
+sion: 0.5.1)
+•"math" : import math (built-in mod-
+ule)
+Coding Guidelines:
+• Ensure the code is robust, efficient, and
+optimized:
+– Handle edge cases and exceptions
+(e.g., NaN values).
+– Minimize unnecessary computa-
+tions and prefer vectorized opera-
+tions (e.g., pandas, numpy).
+–Ensure numerical stability.
+• Strict Rule: Nested loops are abso-
+lutely forbidden.
+– You mustneverwrite any form
+of loop inside another loop.
+– Forbidden patterns include but
+are not limited to:
+* forinsidefor
+* whileinsidewhile
+* forinsidewhile
+* whileinsidefor
+– Any nested iteration structure is
+prohibited, regardless of indenta-
+tion depth.
+– The use of while True or any
+potentially infinite loop isstrictly
+prohibited.
+• When filtering or assigning val-
+ues in a DataFrame, always
+use df_copy.loc[row_indexer,
+col_indexer] = value.
+• Code should be clean, maintainable,
+and efficient for large datasets:
+– Use descriptive variable names
+and minimize memory usage.
+– Avoid creating unnecessary
+copies of large dataframes.
+—
+### Output format specification:
+• Candidates should strictly comply with
+the Hard Complexity Constraints.
+• Before generating the code, provide
+detailed instructions on how to fix the
+issues raised.
+• Do NOT use markdown (like
+“‘python).
+• Do NOT add any explanation or com-
+ments outside the function.
+• Each function must be wrapped inside:
+«function N»...«/function N».
+• All generated code must be executable
+and numerically stable.
+• Always define intermediate columns
+(e.g.,df_copy[’x’]) before referenc-
+ing them later.
+• The returned Seriesmustbe named
+exactly the same as the function name.
+• Each function should follow this for-
+mat:
+1<<function N>>
+2def factor_xyz(df):
+3"""Explain the logic. One
+clear idea. Short
+formula. No redundant
+stacking."""
+4df_copy = df.copy()
+5# factor computation
+6return df_copy["factor_xyz
+"]
+7<</function N>>
+C.3 Thinking Evolution
+Thinking Evolution – Crossover
+You are an expert quantitative factor engi-
+neer specialized in **factor evolution and
+crossover design**.
+{intro}
+### Hard Complexity Constraints (must-
+follow)
+Remember:Simple factors are often the
+most powerful and stable.
+• Single theme, minimal path: each fac-
+tor must represent one clear idea.
+• Hard cap: never exceed 5 logical steps
+in total, and if >3 steps are used, the
+docstring must justify each extra step’s
+necessity.
+• No redundancy / nesting: for-
+bid stacked or decorative trans-
+forms (e.g., zscore(zscore(x)),
+rank(rank(x)), deep EMA chains
+without rationale).
+• No theme mixing: do not combine un-
+related ideas.
+• Avoid nested or layered operations.
+• Avoid unnecessary complexity or logic
+stacking.
+Your task is to generate a new alpha factor
+by **intelligently combining the following
+two parent factors**:
+—
+### Parent Factor 1:«parent factor 1»
+{parent_factor_1_code}
+«/parent factor 1»
+—
+### Parent Factor 2:«parent factor 2»
+{parent_factor_2_code}
+«/parent factor 2»
+—
+### Design objectives:
+• Be creative and think deeply before
+taking the next step.
+• Create a new alpha factor that com-
+bines the **core insights and signals**
+of both parent factors.
+• Introduce meaningful **interactions**
+between the parent factors (non-linear,
+dynamic, cross-sectional, temporal).
+• The new factor should offer **po-
+tentially superior predictive power**
+and richer structure than either parent
+alone.
+• Avoid simple additive combinations —
+instead, design **structurally novel**
+interactions.
+• The new factor must remain inter-
+pretable and have clear financial intu-
+ition.
+—
+### Requirements:
+• The inputDataFrame has a MultiIndex
+of (date, ticker), and has already been
+grouped by ticker:
+– Each input DataFrame is a time
+series of a single stock.
+• Output: A pd.Series indexed by
+(date, ticker) with thesame nameas
+the function.
+• Each function must:
+– Have a descriptive, unique name:
+factor_<logic>_<transformation(s)>
+_<window(s)>_<field>
+– Include a clear docstring explain-
+ing the logic and formula.
+– Balance predictive power with
+economic/financial interpretabil-
+ity.
+– The output column name must
+match the function name.
+– Be concise, precise, and readable.
+– Build new alpha factors based on
+existing ones.
+### Factor Design Guidance:
+• Focus on capturing the essential intu-
+ition of the assigned theme.
+• Ensure the logic is interpretable, ro-
+bust, and implementable in a few steps.
+• Prefer clean, generalizable formulas
+over highly engineered constructs.
+• Each factor should be expressible in a
+short formula or≤5logical steps.
+• Balance simplicity with predictive po-
+tential: avoid trivial duplication, but
+also avoid unnecessary complexity.
+—
+{extra_guidance}
+—
+### Pre-imported libraries you can use
+(current versions):
+•"np" : import numpy as np (numpy
+version: 2.2.6)
+•"pd" : import pandas as pd(pandas
+version: 2.2.3)
+•"stats" : from scipy import stats
+(scipy version: 1.15.3)
+•"talib" : import talib (talib ver-
+sion: 0.5.1)
+•"math" : import math (built-in mod-
+ule)
+Coding Guidelines:
+• Ensure the code is robust, efficient, and
+optimized:
+– Handle edge cases and exceptions
+(e.g., NaN values).
+– Minimize unnecessary computa-
+tions and prefer vectorized opera-
+tions (e.g., pandas, numpy).
+–Ensure numerical stability.
+• Strict Rule: Nested loops are abso-
+lutely forbidden.
+– You mustneverwrite any form
+of loop inside another loop.
+– Forbidden patterns include but
+are not limited to:
+* forinsidefor
+* whileinsidewhile
+* forinsidewhile
+* whileinsidefor
+– Any nested iteration structure is
+prohibited, regardless of indenta-
+tion depth.
+– The use of while True or any
+potentially infinite loop isstrictly
+prohibited.
+• Code should be clean, maintainable,
+and efficient for large datasets:
+– Use descriptive variable names
+and minimize memory usage.
+– Avoid creating unnecessary
+copies of large dataframes.
+—
+### Output format specification:
+• Candidates should strictly comply with
+the Hard Complexity Constraints.
+• Before generating the code, provide
+detailed instructions on how to fix the
+issues raised.
+• Do NOT use markdown (like
+“‘python).
+• Do NOT add any explanation or com-
+ments outside the function.
+• Each function must be wrapped inside:
+«function N»...«/function N».
+• All generated code must be executable
+and numerically stable.
+• Always define intermediate columns
+(e.g.,df_copy[’x’]) before referenc-
+ing them later.
+• The returned Seriesmustbe named
+exactly the same as the function name.
+• Each function should follow this for-
+mat:
+1<<function N>>
+2def factor_xyz(df):
+3"""Explain the logic. One
+clear idea. Short
+formula. No redundant
+stacking."""
+4df_copy = df.copy()
+5# factor computation
+6return df_copy["factor_xyz
+"]
+7<</function N>>
+Thinking Evolution – Mutation
+You are an expert quantitative factor engi-
+neer specialized in **factor mutation and
+optimization**.
+{intro}
+### Hard Complexity Constraints (must-
+follow)
+Remember:Simple factors are often the
+most powerful and stable.
+• Single theme, minimal path: each fac-
+tor must represent one clear idea.
+• Hard cap: never exceed 5 logical steps
+in total, and if >3 steps are used, the
+docstring must justify each extra step’s
+necessity.
+• No redundancy / nesting: for-
+bid stacked or decorative trans-
+forms (e.g., zscore(zscore(x)),
+rank(rank(x)), deep EMA chains
+without rationale).
+• No theme mixing: do not combine un-
+related ideas.
+• Avoid nested or layered operations.
+• Avoid unnecessary complexity or logic
+stacking.
+Your task is to generate an improved version
+of the following alpha factor by applying
+**intelligent mutations**:
+—
+### Original Factor:«original factor»
+{original_factor_code}
+«/original factor»
+—
+### Design objectives:
+• Be creative and think deeply before
+taking the next step.
+• Preserve the **core intuition** and
+signal of the original factor.
+• Apply meaningful **mutations** to
+improve predictive power and robust-
+ness.
+• Possible mutations include:
+– Non-linear transformations (log,
+exp, rank, winsorization)
+–Cross-sectional normalization
+–Time window adjustments
+–Interaction with other features
+– Smoothing or stability enhance-
+ments
+–Adding interaction terms
+• The mutated factor should be **clearly
+distinct** from the original while
+maintaining conceptual lineage.
+• The mutated factor should still
+be mathematically valid and inter-
+pretable.
+—
+### Requirements:
+• The inputDataFrame has a MultiIndex
+of (date, ticker), and has already been
+grouped by ticker:
+– Each input DataFrame is a time
+series of a single stock.
+• Output: A pd.Series indexed by
+(date, ticker) with thesame nameas
+the function.
+• Each function must:
+– Have a descriptive, unique name:
+factor_<logic>_<transformation(s)>
+_<window(s)>_<field>
+– Include a clear docstring explain-
+ing the logic and formula.
+– Balance predictive power with
+economic/financial interpretabil-
+ity.
+– The output column name must
+match the function name.
+– Be concise, precise, and readable.
+– Build new alpha factors based on
+existing ones.
+### Factor Design Guidance:
+• Focus on capturing the essential intu-
+ition of the assigned theme.
+• Ensure the logic is interpretable, ro-
+bust, and implementable in a few steps.
+• Prefer clean, generalizable formulas
+over highly engineered constructs.
+• Each factor should be expressible in a
+short formula or≤5logical steps.
+• Balance simplicity with predictive po-
+tential: avoid trivial duplication, but
+also avoid unnecessary complexity.
+—
+{extra_guidance}
+—
+### Pre-imported libraries you can use
+(current versions):
+•"np" : import numpy as np (numpy
+version: 2.2.6)
+•"pd" : import pandas as pd(pandas
+version: 2.2.3)
+•"stats" : from scipy import stats
+(scipy version: 1.15.3)
+•"talib" : import talib (talib ver-
+sion: 0.5.1)
+•"math" : import math (built-in mod-
+ule)
+Coding Guidelines:
+• Ensure the code is robust, efficient, and
+optimized:
+– Handle edge cases and exceptions
+(e.g., NaN values).
+– Minimize unnecessary computa-
+tions and prefer vectorized opera-
+tions (e.g., pandas, numpy).
+–Ensure numerical stability.
+• Strict Rule: Nested loops are abso-
+lutely forbidden.
+– You mustneverwrite any form
+of loop inside another loop.
+– Forbidden patterns include but
+are not limited to:
+* forinsidefor
+* whileinsidewhile
+* forinsidewhile
+* whileinsidefor
+– Any nested iteration structure is
+prohibited, regardless of indenta-
+tion depth.
+– The use of while True or any
+potentially infinite loop isstrictly
+prohibited.
+• Code should be clean, maintainable,
+and efficient for large datasets:
+– Use descriptive variable names
+and minimize memory usage.
+– Avoid creating unnecessary
+copies of large dataframes.
+—
+### Output format specification:
+• Candidates should strictly comply with
+the Hard Complexity Constraints.
+• Before generating the code, provide
+detailed instructions on how to fix the
+issues raised.
+• Do NOT use markdown (like
+“‘python).
+• Do NOT add any explanation or com-
+ments outside the function.
+• Each function must be wrapped inside:
+«function N»...«/function N».
+• All generated code must be executable
+and numerically stable.
+• Always define intermediate columns
+(e.g.,df_copy[’x’]) before referenc-
+ing them later.
+• The returned Seriesmustbe named
+exactly the same as the function name.
+• Each function should follow this for-
+mat:
+1<<function N>>
+2def factor_xyz(df):
+3"""Explain the logic. One
+clear idea. Short
+formula. No redundant
+stacking."""
+4df_copy = df.copy()
+5# factor computation
+6return df_copy["factor_xyz
+"]
+7<</function N>>

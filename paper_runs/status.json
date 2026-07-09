@@ -1,0 +1,29 @@
+{
+  "registry_rows": 42,
+  "queued_rows": 0,
+  "queued_reimplementation_or_skip_decision_rows": 0,
+  "completed_jkp_proxy_test_rows": 1,
+  "blocked_jkp_scope_incompatible_rows": 2,
+  "blocked_no_public_codebase_rows": 29,
+  "blocked_rows": 37,
+  "legacy_non_jkp_diagnostic_rows": 2,
+  "completed_no_direct_strategy_returns_rows": 2,
+  "state_counts": {
+    "blocked_jkp_scope_incompatible": 2,
+    "blocked_no_public_codebase": 29,
+    "blocked_on_data_adapter": 1,
+    "blocked_on_historical_run": 1,
+    "blocked_on_jkp_adapter": 1,
+    "blocked_on_replay_adapter": 1,
+    "blocked_on_return_path_adapter": 2,
+    "completed_jkp_proxy_test": 1,
+    "completed_no_direct_strategy_returns": 2,
+    "legacy_non_jkp_diagnostic": 2
+  },
+  "scope_policy": "valid returns must come only from read-only jkp-data or return_data_assembly inputs; do not use China/A-share data, yfinance, paper-shipped return files, official French factors, external benchmark CSVs, or any returns outside the two approved folders for valid experiments",
+  "allowed_read_only_return_inputs": [
+    "${ALPHA_EVOLVE_JKP_ROOT}",
+    "${ALPHA_EVOLVE_RETURN_DATA_ROOT}"
+  ],
+  "repository_metrics_report": "paper_runs/REPOSITORY_FF5MOM_METRICS.md"
+}

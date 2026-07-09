@@ -1,0 +1,1087 @@
+Published as a conference paper at ICLR 2026
+TRADE INMINUTES! RATIONALITY-DRIVENAGENTIC
+SYSTEM FORQUANTITATIVEFINANCIALTRADING
+Zifan Song1,2 Kaitao Song2 Guosheng Hu3 Ding Qi1 Junyao Gao1 Xiaohua Wang4
+Dongsheng Li2 Cairong Zhao1∗
+1Tongji University 2Microsoft Research Asia 3University of Bristol 4Fudan University
+ABSTRACT
+Recent advancements in large language models (LLMs) and agentic systems have
+shown exceptional decision-making capabilities, revealing significant potential
+for autonomic finance. Current financial trading agents predominantly simulate
+anthropomorphic roles that inadvertently introduce emotional biases and rely on
+peripheral information, while being constrained by the necessity for continuous
+inference during deployment. In this paper, we pioneer the harmonization of
+strategic depth in agents with the mechanical rationality essential for quantita-
+tive trading. Consequently, we presentTiMi(TradeinMinutes), a rationality-
+driven multi-agent system that architecturally decouples strategy development from
+minute-level deployment.TiMileverages specialized LLM capabilities of semantic
+analysis, code programming, and mathematical reasoning within a comprehensive
+policy-optimization-deploymentchain. Specifically, we propose a two-tier analyti-
+cal paradigm from macro patterns to micro customization, layered programming
+design for trading bot implementation, and closed-loop optimization driven by
+mathematical reflection. Extensive evaluations across 200+ trading pairs in stock
+and cryptocurrency markets empirically validate the efficacy ofTiMiin stable
+profitability, action efficiency, and risk control under volatile market dynamics.
+1 INTRODUCTION
+Recent breakthroughs in large language models (LLMs) (OpenAI, 2023; Grattafiori et al., 2024) have
+demonstrated significant potential for solving complex tasks. Researchers are continuously advancing
+the fundamental capabilities of LLMs through innovations in model architectures (Cai et al., 2024;
+Guo et al., 2025), training paradigms (Ding et al., 2023; Wang et al., 2025), and data scaling (Song
+et al., 2024; Zhu et al., 2025). Concurrently, a systematic research paradigm is emerging: leveraging
+LLMs as core cognitive engines to construct agentic systems (Zhang et al., 2025; Hu et al., 2024) with
+autonomous decision-making and execution capabilities. This approach transcends the limitations
+of single-model improvements by integrating semantic understanding, logical reasoning, and tool
+utilization abilities into dynamic workflows through modular architectural design and strategic task
+decomposition, aiming to track long-term challenges in real-world scenarios.
+This paper focuses on quantitative finance (Wilmott, 2013; Sun et al., 2023), where the required
+composite capabilities (e.g., real-time decision-making, risk control, and strategy iteration) present
+a highly practical yet challenging domain for autonomous agent research. Classical rule-based
+strategies (Platen & Heath, 2006), while maintaining stable performance under specific market
+patterns, struggle to adapt to complex dynamics such as non-linear fluctuations and black swan
+events in the financial ecosystem. Notably, existing research on LLM-powered financial trading
+agents (Ding et al., 2024; Li et al., 2023; Xiao et al., 2025) emphasizes role-playing analysis and
+decision-making, including financial assistants and news-driven or debate-driven variants. Although
+these anthropomorphic approaches effectively leverage the strengths of LLMs in processing textual
+information, they pay less attention to the advancements in code programming and mathematical
+reasoning capabilities, which can be the key to achievingmechanical rationalityin financial trading.
+“We don’t let anyone predict the market—we let the models speak. ”—— James Simons
+∗Corresponding author (zhaocairong@tongji.edu.cn). Work done during Zifan’s internship at MSRA.
+1
+arXiv:2510.04787v2 [cs.MA] 9 Feb 2026
+Published as a conference paper at ICLR 2026
+OFFLINE ENVIRONMENT LIVE ENVIRONMENT
+I. Policy Stage II. Optimization Stage III. Deployment Stage 
+General Strategies 𝒮𝒮
+Macro Analysis
+Agent 𝒜𝒜ma
+𝜙𝜙
+𝜓𝜓
+Strategy Adaptation
+Agent 𝒜𝒜sa
+𝜙𝜙
+𝛾𝛾
+qualify 
+trading
+pairs 𝒫𝒫
+Pair-specific
+Customization 𝒮𝒮𝒫𝒫
+Bot Evolution
+Agent 𝒜𝒜be
+𝜓𝜓
+Reflection
+Agent 𝒜𝒜fr
+𝛾𝛾
+stat-arbgridtrend
+…
+[BTC]
+· hybrid
+· 𝜏𝜏-Uni.
+· VaR99
+…
+[ETH]
+· vol-surf.
+· tailing-𝜇𝜇
+· iceberg
+…
+[XMR]
+· VECM
+· ES5d
+· TWAP
+…
+…
+Θ
+Trading Bots ℬ Action Feedback ℱ
+[Performance] ARR, MDD …
+[Risk] corner case, funding …
+[Stability] slippage, connection …
+…
+follow
+programming 
+laws ℒ
+simulate
+Θ∗
+Advanced Bots ℬ∗
+𝒜𝒜be
+ℬ∗
+refine
+Hierarchical
+Feedback ℱ∗
+stratfuncparam
+ℳ𝒫𝒫 Θ𝒫𝒫
+∗
+deploy
+Market & Param
+𝒕𝒕𝟏𝟏
+Minute-level Dynamics
+𝒕𝒕𝟐𝟐 𝒕𝒕𝟑𝟑 𝒕𝒕𝟒𝟒 𝒕𝒕𝟓𝟓 𝒕𝒕𝟔𝟔 𝒕𝒕𝟕𝟕 … 𝒕𝒕𝒏𝒏
+U.S. Stock Mainstream Coin Altcoin
+Adaptive
+TiMi
+Liquidity Depth
+Action
+Frequency
+Price
+Volatility
+Position
+Management
+Risk
+Control
+Transaction
+Cost
+Regulatory 
+Complexity
+REQ: Specialized LLM Capabilities @ Semantic Analysis 𝜙𝜙 ◦ Code Programming 𝜓𝜓 ◦ Mathematical Reasoning 𝛾𝛾 REQ: Tuned Bots ℬ∗ ◦ Parameter 𝛩𝛩∗
+Market Data ℳ
+Figure 1:Architecture of the proposedTiMisystem comprising three stages: policy, optimization,
+and deployment.TiMiimplements a decoupling mechanism where the initial two stages develop
+and optimize prototype trading bots through offline simulations by leveraging specialized LLM
+capabilities, while the deployment stage executes thoroughly refined bots with tuned parameters in
+live trading. This paradigm separates complex reasoning from time-sensitive execution, enabling
+bothcomprehensive strategy developmentandquantitative-level efficiencyacross market dynamics.
+To delve deeper, we identify three key aspects driving this exploration: (1)market analysis paradigms
+— the simulation of human trading organizations (e.g., sentiment/news analysts, traders with varying
+risk preferences) in previous research inadvertently introduces interference from emotional biases and
+subjective judgments simulated by agents; (2)supporting data selection— unstructured peripheral
+information regarding target trading pairs (e.g., heterogeneous news on social media, project reports)
+frequently contains misleading signals and temporal lags, which is particularly problematic for
+retail investors, as dependence on such publicly available information may lead to missed trading
+opportunities or substantial exposure to adverse market movements; (3)system deployment efficiency
+— the lengthy reasoning and negotiation among multiple agents significantly increase computational
+costs and action delays during practical deployment, which, in high-volatility trading environments,
+can manifest as execution slippage and opportunity costs.
+In light of these considerations, we introduceTiMi(TradeinMinutes) depicted in Figure 1, a
+novel agentic system that achieves minute-level dynamic trading through rational decision-making.
+Regarding market analysis, we design top-level agents to capture and analyze patterns, deriving
+macro strategies from technical indicators, while specialized agents optimize strategies at the micro
+level based on specific trading pair characteristics. For data selection, we utilize objective technical
+indicators of target pairs (e.g., volume and amplitude) with dynamically updated time windows to
+adapt to market fluctuations. To enhance deployment efficiency, we decouple analysis from execution
+by transforming strategies into programmatic trading bots through bot evolution agents (i.e., Code
+LLMs). This approach enables minute-level quantitative trading with low latency, eliminating the
+computational costs and time consumption associated with continuous multi-agent inference. Es-
+sentially, we collect deployment feedback and employ reflection agents with reasoning capabilities,
+formulating mathematical problems (e.g., linear programming) from representative cases to determine
+optimal parameters. These parameters are then submitted to bot evolution agents for hierarchical
+refinement across parameter, function, and strategy layers. Through this architecture, we effectively
+leverage the specialized capabilities of agents in semantic analysis, code programming, and mathemat-
+ical reasoning, establishing a completeclosed-loopsystem encompassing market analysis, strategy
+customization, programmatic deployment, and feedback iteration.
+We perform live trading experiments on over 200 trading pairs across the U.S. stock index and
+cryptocurrency markets, reporting comprehensive metrics including Annual Rate of Return, Sharpe
+ratio, and Maximum Drawdown. The proposedTiMidemonstrates a competitive advantage among
+quantitative, ML/RL-based, and LLM-agent methods, particularly in challenging altcoin markets.
+Crucially, we present the systematic evolution of trading bots and conduct in-depth analytical studies
+with visualizing representative transactions from actual deployments, thereby examining the capacity
+ofTiMiunder various market dynamics. The core contributions of our work are threefold:
+2
+Published as a conference paper at ICLR 2026
+• We introduceTiMi(TradeinMinutes), a rationality-driven agentic system for quantitative
+financial trading that effectively leverages the complementary capabilities of different LLM
+variants across semantic analysis, code programming, and mathematical reasoning.
+• OurTiMisystem pioneers several key innovations: (1) strategic decoupling of strategy devel-
+opment from real-time deployment; (2) a two-tier analytical paradigm from macro patterns
+to micro customization; (3) a layered programming design for trading bot implementation;
+and (4) a closed-loop optimization system driven by mathematical reflection.
+• Through comprehensive evaluations across 200+ diverse trading pairs, we empirically
+validate the efficacy ofTiMiin profitability, deployment efficiency, and risk mitigation,
+offering an exploration for developing customizable agentic trading systems.
+2 RATIONALITY-DRIVENMULTI-AGENTSYSTEM
+2.1 PRELIMINARY
+We aim to develop an agentic system with a comprehensivepolicy-deployment-optimizationchain
+to navigate market dynamics. Theoretically, each trading environment can be modeled as a tuple
+(M,W,S,F,J) , where M represents the market, W represents the targeted time window,S defines
+the strategy space, F denotes feedback signals, and J denotes evaluation functions. The trading
+system is expected to achieve: (1) analysis: M×W → S, which transforms observed market patterns
+into trading strategies; (2) deployment: M × S → F, which converts strategies into transactions and
+collects feedback during actions; and (3) optimization: S × F → S∗, which refines strategies based
+on transaction feedback. Given a trading policy π∈ Sparameterized by Θ, ourTiMiis dedicated to
+maximizingJ(π Θ)through a rationality-driven agentic system detailed in subsequent sections.
+2.2 MULTI-AGENT ARCHITECTURE WITH DECOUPLED ANALYSIS AND DEPLOYMENT
+Building upon the mechanical rationality, we formulate a multi-agent architecture leveraging spe-
+cialized LLM capabilities in semantic analysis, code programming, and mathematical reasoning,
+thereby mitigating the inherent limitations of lacking adaptability (rule-based approaches) or intro-
+ducing emotional biases (anthropomorphic simulations). Simultaneously, we advocate for decoupling
+analysis from deployment to separate strategy preparation from time-sensitive execution.
+Multi-agent design.As presented on the left side of Figure 1, ourTiMicomprises four specialized
+agents that interact in a coordinated workflow to transform market data into executable trading
+actions: (1)macro analysis agent Ama — identifies macro-level market patterns and formulates
+general trading strategies S based on technical indicators; (2)strategy adaptation agent Asa —
+customizes macro strategies S into pair-specific rules SP with initialized parameters ΘP by analyzing
+characteristics of trading pairs P; (3)bot evolution agent Abe — creates and optimizes programmatic
+trading bots B from trading strategies and feedback reflection; (4)feedback reflection agent Afr —
+reflects upon action feedback F to obtain more precise and hierarchical feedback F ∗ with refined
+parameters Θ∗ w.r.t. B. Let ϕ, ψ, and γ respectively represent the capabilities of semantic analysis,
+code programming, and mathematical reasoning, the completeTiMisystem can be formulated as a
+composition of these agent functions:
+Ama ◦ϕ◦ψ:M × W → S,Asa ◦ϕ◦γ:S × P → SP ×Θ P ,
+Abe ◦ψ:S ×Θ× L → B,Afr ◦γ:B × F ×Θ→ F∗ ×Θ ∗,
+T(M,W) =A be(Asa(Ama(M,W),P),L)(M;A fr(B,F,Θ)).
+(1)
+where ◦ indicates a conceptual combination of functionalities (i.e., the agents perform defined
+mapping tasks by invoking embedded core capabilities), T(M,W) represents the system operating
+on the market M with the time windowW, and L denotes programming laws (detailed in Section 2.4).
+Decoupling mechanism.We achieve the decoupling of analysis and deployment through a three-
+stage process: (1)policy stage— complex reasoning and strategy development occur in an offline
+environment, fully leveraging the capabilities of specialized agents, including actions of Ama, Asa,
+and Abe to generate prototype trading bots B with initialized parameter Θ; (2)optimization stage
+— the prototype bots undergoes simulation in offline environments (e.g., live or historical markets)
+to gather feedback F including technical execution traceback and risk corner cases, to iteratively
+conduct offline agent interactions and achieve advanced trading bots B∗ =A be(B;A fr(B,F,Θ)) ; (3)
+3
+Published as a conference paper at ICLR 2026
+deployment stage— following thorough optimization, the trading bot that has successfully passed
+simulation tests can be deployed in live trading environments with low latency and execution costs (a
+concrete implementation is discussed in Section 3). This mechanism eliminates the requirement for
+continuous model inference during actual deployment and creates an efficiency advantage, quantified
+as η= cagent×n
+cpolicy+coptimization+cbot×n, where cagent/cbot is the agent/bot inference cost per trade,n is the number
+of trading actions, and canalysis is the offline analysis cost. As n increases in high-volatility markets,
+the efficiency ratio approaches limn→∞ η= cagent
+cbot
+. Given that typically cbot ≪c agent, this represents
+anefficiencyandresponsivenessimprovement that scales with trading frequency. Concurrently, the
+decoupling enables in-depth strategy refinement during the optimization stage without temporal
+constraints, contributing to enhanced efficacy and more robust trading performance.
+2.3 ANALYTICAL PARADIGM FROM MACRO PATTERNS TO MICRO CUSTOMIZATION
+We implement a two-tier paradigm for strategy initialization: from market-wide analysis to pair-
+specific customization. It is designed to offer advantages in bothstatistical significanceandstrategic
+adaptabilitycompared to monolithic approaches.
+Macro strategy analysis.In theory (Hasbrouck, 2007; Lo et al., 2000), financial markets funda-
+mentally possess periodic behavioral patterns under specific conditions (e.g., within short-term time
+windows), which can be identified through a combination of technical indicators and statistical meth-
+ods. Consequently, the foundation of our system is the macro analysis agent Ama, which performs
+rational analysis of market patterns. Initialized through the definition of technical indicators I, Ama
+captures the state space encompassing all observable market conditions across time scales W. This
+enables the generation of a general strategy set S, specifically oriented toward patterns demonstrating
+statistical significance. Formally, the operational mechanism ofA ma can be expressed as:
+Ama(M,W;I) =ϕ({ψ i(M, w)|w∈ W, i∈ I})→ S.(2)
+here, the function ψi(M, w)denotes a programming process that extracts relevant market data within
+time windowwand applies indicatorito transform this data into analytically useful features.
+Pair-specific customization.Different trading pairs often exhibit heterogeneous behaviors due to
+their unique characteristics. To track this, we introduce strategy adaptation agent Asa that systemati-
+cally refines the general strategy set for specific trading pairs. Our methodology employs a two-step
+process: initially, we perform semantic analysis ϕ(S, p)|p∈ P → Sp to select and adapt strategies
+from the general setS, thereby creating pair-specific strategy candidatesSp; subsequently, we conduct
+mathematical reasoning γ(Sp, p)|p∈ P →Θp to optimize the parameter set Θp for these strategies.
+Crucially, this customization encompasses strategy prioritization based on historical performance,
+parameter calibration tailored to pair-specific volatility profiles, and adaptive risk management rules
+that account for critical factors such as market liquidity.
+2.4 IMPLEMENTATION OF TRADING BOTS WITH LAYERED PROGRAMMING DESIGN
+To transform strategic insights into executable trading bots, we implement a layered programming
+policy that enhances modularity and facilitates systematic refinement. Our bot evolution agent Abe
+constructs trading bots B by decomposing them into three hierarchical layers: strategy, function,
+and parameter. The strategy layer encapsulates decision-making logic derived from Sp, including
+signal generation, position sizing, and entry/exit criteria. The functional layer provides computational
+mechanisms required by the strategy, implementing technical indicators, data preprocessing, and
+order execution routines that are reusable across different strategies. The parameter layer manages
+the adjustable parameters that fine-tune the behavior of the trading strategy and its functions. This
+architecture enables Abe to efficiently transform pair-specific strategies into algorithmic procedures
+while facilitating the decoupling mechanism between policy and development stages.
+Programming laws.We present three core laws L that govern the code programming ψ of Abe: (1)
+functional cohesion law— each functional component must address exactly one responsibility; (2)
+unidirectional dependency law— dependencies flow strictly from higher to lower layers; and (3)
+parameter externalization law— all adjustable values must be extracted from implementation code
+and centrally managed. These principles are designed for Abe to enable systematic construction of
+trading bots that support the feedback-driven refinement process initiated by Afr while maintaining
+architectural integrity across optimization cycles.
+4
+Published as a conference paper at ICLR 2026
+2.5 CLOSED-LOOP OPTIMIZATION DRIVEN BY MATHEMATICAL REFLECTION
+In the optimization stage, trading bots are simulated in live or historical markets to periodically collect
+action feedback F, encompassing trading performance metrics, risk event records, and execution
+statistics. The feedback reflection agent Afr deconstructs this feedback and formulates precise
+optimization plans, which are then transmitted toA be for programmatic refinement. In this way, we
+establish a rationality-driven evolutionary process toward a robust and reliable system.
+Mathematical reasoning for parameter solving.Our feedback reflection agent Afr employs
+mathematical reasoning γ in a three-step optimization process: first organizing risk scenarios from
+feedback F and transforming them into linear programming problems; then solving for the feasible
+parameter solution space; and finally optimizing parameters within the constrained space to maximize
+performance. This optimization can be formally expressed as (exemplified in Appendix A):
+Θ∗ = arg max
+Θ∈C(Θ)
+X
+ωiJi(Θ,F)s.t.C(Θ) ={Θ∈R n |A(R)Θ⪯b(R)}. (3)
+where C(Θ) defines the feasible parameter space, ωi and Ji denote i-th objective weight and evalua-
+tion metric (e.g., win rate) respectively, whileA(R) and b(R) represent the constraint matrix and
+threshold vector derived from risk scenarios R=γ(F) , implementing parameter restrictions through
+component-wise inequality ⪯. Critical to this process is the ability of Afr to recognize trade-offs
+between competing objectives and establish Pareto-efficient parameter configurations.
+Hierarchical optimization.We propose a hierarchical optimization scheme that propagates refine-
+ments from the parameter level (i.e., the parameter layer of B) upward through the trading system. At
+the parameter level, we focus on fine-tuning numerical values within constraints. When parameter
+adjustments prove insufficient to meet requirements (e.g., failing risk simulations), Afr escalates
+to function level and substitutes algorithmic components. The highest level of intervention occurs
+at the strategy layer, where fundamental decision-making rules encoded in Sp undergo structural
+modifications. This tiered manner, as exemplified in Figure 2, offers dual advantages: it adheres to
+the principle ofminimal interventionby prioritizing lower-level adjustments that preserve strategic
+continuity, and it establishes a natural complexity progression that enables testing less disruptive
+modifications before implementing more fundamental changes.
+Algorithm 1:TiMiImplementation for B∗
+1Input:marketM, minute-level deployment timet.
+2Parameter:execution intervalsT 1, look-back periodT 2,
+3volume/volatility thresholdV req/Φreq, capital allocationA,
+4price/quantity distributionM P /MQ, profit/loss pointsH.
+5foreach execution timet=t e ∈T 1 do
+6retrieve marketMfor all trading pairs;
+7 select pairs P={p|V p,te ≥V req ∧Φ p,te ≥Φ req},
+where volatilityΦ p,te is calculated by
+maxt∈T2 {Op (t),Cp (t)}−mint∈T2 {Op (t),Cp (t)}
+Cp (te) .
+8foreach qualified pairp∈ Pdo
+9foreach order leveli∈ {1,2, ..., m}do
+10P i =P recent ×(1±Φ p)MP [i];
+11Q i =A×M Q[i]×c m ×c f ;
+12place limit order(P i, Qi).
+13while∃I∈T 1 : [te, t]⊆Ido
+14foreach positiondo
+15monitor profit/loss atP entry ×(1±Φ p,t)H[i];
+16 close where Pentry ×Q < A/λwhen profitable.
+17Return:action feedbackF.
+𝓑𝓑 𝓑𝓑∗C1 C2 C3 C4 …
+P. [Perf]
+Update 𝐴𝐴;
+Update Η.
+F. [Stability]
+Refine API 
+connector.
+F. [Efficiency]
+Add thread 
+executor;
+Add dynamic 
+cache.
+P. [Risk]
+Update Μ𝑃𝑃;
+Update Μ𝑄𝑄.
+F. [Stability]
+Add exception.
+F. [Interface]
+Update real-
+time feedback.
+S. [Rule]
+Restrict pair 
+applicability.
+P. [Perf]
+Update Μ𝑄𝑄;
+Apply {𝑐𝑐f, 𝑐𝑐e}.
+F. [Regulation]
+Control API 
+concurrency;
+Modify order
+sequence;
+Clear tiny 
+positions.
+P. [Risk]
+Update Τ1;
+Update Τ2;
+Update Μ𝑃𝑃;
+Update Φreq.
+S. [Rule]
+Design order 
+deactivation 
+mechanism.
+F. [Risk]
+Adjust order 
+attributes.
+S. [Rule]
+Restrict pair 
+applicability.
+S. Strategy Layer
+F. Function Layer
+P. Parameter Layer
+Optimization
+Flow
+Figure 2:Evolution map of the trading bots B.
+We present deliberate optimization cycles (C1-C4)
+w.r.t.parameter, function, and strategy layers —
+showcasing how hierarchical optimizationprogres-
+sivelydrives sophisticated trading capabilities.
+3 TRADE INMINUTES
+In this section, we present a concrete implementation of advanced trading bots B∗ (detailed in
+Algorithm 1) that demonstrates the practical deployment of the proposedTiMisystem, with particular
+emphasis on parameter configuration, order execution logic, position management, and risk control.
+Parameter configuration.TiMiestablishes crucial parametric variables governing trading operations,
+including temporal constraints T1,T 2 defining minute-level execution intervals and volatility look-
+back period respectively, and risk allocation amountA for capital distribution. Additionally, minimum
+5
+Published as a conference paper at ICLR 2026
+trading volume threshold Vreq ensures sufficient liquidity, while parameter Φreq serves as the volatility
+criterion for trading pair qualification. The system incorporates matrix-based parameters MP =
+[p1, p2, ..., pm] and MQ = [q1, q2, ..., qm] controlling order distribution alongside quantity scaling
+coefficient {cm, cf, ce} for adjustment of market capitalization, funding rates, and position entry. Here,
+profit/loss thresholdsH= [h 1, h2, ..., hk]are adopted for position management.
+Order execution logic.Starting with retrieving market data through API endpoints, the system
+calculates essential indicators within the execution period [te, te + ∆t1]∈T 1, including price
+metrics, volatility indices, and funding rates. Then trading pairs P={p|V p,te ≥V req ∧Φ p,te ≥Φ req}
+satisfying volume and volatility requirements are qualified by filtering rules, estimated through
+Φp,te =
+maxt∈T2 {Op(t),Cp(t)}−mint∈T2 {Op(t),Cp(t)}
+Cp(te) , where T2 ={t e −τ, te −τ+ ∆t 2, ..., te}
+represents a sequence of time points determined by the estimation window τ and time step ∆t2, and
+Op(t)/Cp(t) represents the opening/closing price of the K-line corresponding to pairp during interval
+[t−∆t 2, t]. Specifically,TiMiimplements a precision-engineered grid strategy with minute-level
+dynamics, placing orders at optimized price levels Pi =P recent ×(1±Φ) MP [i] for selected pairs.
+Order quantity Qi is calculated by Qi =A×M Q[i]×c m ×c f. For positioned assets,TiMiapplies a
+proportional scaling factor( P
+Pentry
+)ce to dynamically adjust allocation when positions move.
+Position management.During deployment, the system continuously monitors positions and market
+dynamics. Upon reaching profit/loss thresholds Pentry ×(1±Φ) H[i],TiMiexecutes partial position
+closures through a progressive realization manner. Meanwhile, positions where Pentry ×Q < A/λ
+(with λ as position size divisor) are automatically closed when profitable, optimizing capital efficiency.
+Risk control.TiMiintegrates sophisticated mechanisms for risk mitigation, ensuring robust trading
+across varied market dynamics. Essentially, the system employs mathematically optimized parameter
+matrices MP and MQ that have undergone rigorous refinement through the feedback reflection
+agents Afr, with these parameters solved within a constrained feasible solution space derived from
+extensive risk scenario simulations. Simultaneously, capital allocation is precisely governed by the
+A parameter, limiting exposure per asset and preventing concentration risk. Additionally, ourTiMi
+performs price deviation control to prevent order placement during abnormal market conditions when
+significant discrepancies exist between the latest and mark prices.
+4 EXPERIMENTS
+4.1 IMPLEMENTATION DETAILS
+Backbone LLMs.As articulated in Section 2, the core design philosophy ofTiMileverages special-
+ized LLM capabilities. We strategically adopt DeepSeek-V3 for semantic analysis, Qwen2.5-Coder-
+32B-Instruct for code programming, and DeepSeek-R1 for mathematical reasoning. Besides, we
+develop a hybrid implementation that combines local inference (small models) and API-based infer-
+ence (large models), facilitating flexible upgrading and optimal performance-efficiency trade-offs.
+Agentic Implementation.We develop a hybrid communication protocol that combines XML-based
+message envelopes with JSON payloads to facilitate inter-agent data exchange. The XML layer
+encapsulates essential metadata (e.g., sender identity and contextual domain), while the JSON payload
+carries domain-specific content. Our agents operate within a deterministic environment equipped with
+system-level capabilities, including local file operations and verifiable API invocations. Crucially,
+we implement procedural posterior checks whereTiMiprogrammatically verifies generated scripts
+and mathematical solutions within controlled sandboxes, capturing execution tracebacks to ensure
+computational outputs and parameter derivations satisfy predefined constraints before deployment.
+Deployment.Benefiting from our decoupling mechanism,TiMirequires a CPU-only runtime
+environment during the deployment stage. The trading bots developed by the agents Abe and Afr
+are implemented in Python and integrated with exchange APIs through standardized connectors.
+Additionally,TiMiachieves error-handling routines to manage connectivity issues, rate limits, and
+unexpected market conditions, ensuring operational continuity under suboptimal circumstances.
+Simulation and live trading.We conduct extensive experiments across both U.S. stock index futures
+and cryptocurrency markets to evaluate the versatility and robustness ofTiMiunder diverse market
+conditions. We implement a progressive validation: initial strategy development using historical data,
+followed by trading simulation with real-time market data, and culminating in live trading evaluation.
+6
+Published as a conference paper at ICLR 2026
+Table 1:Backtestingcomparisonon 2024 historical data across U.S. stock index futures and
+cryptocurrency markets. Optimal/suboptimal results are indicated bybold/underline , respectively.
+Method U.S. Stock Index Futures Mainstream Coin Futures Altcoin Futures
+ARR%↑SR↑MDD%↓ ARR%↑SR↑MDD%↓ ARR%↑SR↑MDD%↓
+Quantitative Methods
+MACD 3.8 0.42 14.5 12.6 0.84 18.4 4.2 0.36 32.8
+Momentum 8.0 0.73 16.8 15.7 0.93 21.4 -2.8 -0.40 38.3
+Grid Trading -2.8 -0.35 10.2 -8.3 -0.72 22.6 9.4 0.72 18.7
+Pairs Trading 2.3 0.407.4 -6.8 -0.67 16.3 -5.7 -0.4614.5
+ETF&PCA 4.6 0.49 13.9 7.2 0.62 15.8 6.3 0.69 17.2
+TSMOM 10.50.81 19.7 18.41.15 17.2 1.5 0.05 41.6
+OFI 2.1 0.34 11.8 8.9 0.66 19.3 7.8 0.64 23.9
+ML&RL Methods
+LSTM 3.2 0.36 15.3 9.4 0.88 17.8 -16.8 -0.89 25.4
+DQN 8.3 0.69 18.6 9.7 0.83 20.5 -9.3 -0.80 38.7
+DDPG 5.4 0.52 17.4 14.8 1.09 14.0 8.6 0.65 26.2
+Autoformer 4.9 0.43 16.5 13.2 0.97 16.4 17.5 0.98 24.8
+PatchTST 6.7 0.58 18.1 12.5 0.90 17.6 11.2 0.82 23.5
+LLM-based Agents
+FinGPT 5.8 0.57 15.7 6.6 0.59 19.8 7.4 0.61 31.2
+FinMem 5.2 0.54 14.8 11.3 0.96 17.4 -8.9 -0.60 19.6
+TradingAgents 6.3 0.60 16.2 17.9 1.12 20.3 9.7 0.72 29.6
+TiMi (ours) 8.9 0.84 10.5 16.5 1.25 12.1 23.7 1.27 26.0
+Evaluation metrics.The primary metrics include Annual Rate of Return (ARR), which measures the
+change in investment value over a year as ARR = Vfinal−Vinitial
+Vinitial
+, where Vfinal and Vinitial represent final
+and initial values; Sharpe Ratio (SR), quantifying excess return per unit of risk asSR = R−Rf
+σp
+, where
+Ris average portfolio return,R f is risk-free rate, andσ p is standard deviation of excess return; and
+Maximum Drawdown (MDD), representing the largest peak-to-trough decline asMDD = Vtrough−Vpeak
+Vpeak
+,
+whereV peak andV trough are the highest value before and lowest value after the largest drop.
+Baselines.We compareTiMiagainst three representative categories: (1)quantitative methods, includ-
+ing MACD (Wang & Kim, 2018) optimized by historical volatility, momentum strategy (Jegadeesh
+& Titman, 1993), grid trading (Griffin et al., 2003), pairs trading (Gatev et al., 2006), ETF&PCA-
+based statistical arbitrage (Avellaneda & Lee, 2010), time-series momentum (TSMOM) (Moskowitz
+et al., 2012), and order flow imbalance (OFI) strategy (Cont & De Larrard, 2013); (2)ML&RL
+methods, spanning time-series forecasting (LSTM (Sunny et al., 2020), Autoformer (Wu et al.,
+2021), PatchTST (Nie et al., 2022)) and reinforcement learning (DQN (Mnih et al., 2013),
+DDPG (Liu et al., 2020)); (3)LLM-based agents, including news-driven FinGPT (Liu et al., 2023),
+memory-augmented FinMem (Yu et al., 2024a), and multi-agent TradingAgents (Xiao et al., 2025).
+Table 2:Data (type&duration)
+requirementandSortino Ratio
+comparison (altcoin). M: market
+indicators; N: peripheral news.
+Method Data Req. Sortino↑
+Grid M>30m 0.16
+ETF&PCA M>7d -0.33
+DDPG M>12h 0.57
+PatchTST M>3d 0.67
+FinMem M&N>1d 0.41
+TradingAgents M&N>3d 0.58
+TiMi (ours) M>4h 0.91
+4.2 EMPIRICAL RESULTS
+Backtesting comparison.We evaluate on 2024 historical data
+to establish baseline performance. As detailed in Table 1, trend-
+following methods (e.g., TSMOM) capitalize on ETF-driven trends
+in mainstream coin markets, while LLM-agents exploit news and
+potential posterior information. Crucially,TiMiharmonizes high
+profitability with rigorous risk control, achieving superior stability
+and risk-adjusted returns (notably SR 1.27 in Altcoins). This high-
+lights the robustness of our system in high-volatility, reflexive assets
+where traditional momentum or pure semantic analysis struggle.
+Live trading comparison.Table 2 and Table 3 present comprehen-
+sive performance metrics evaluated in live trading environments.
+TiMiappears to outperform competing approaches, achieving ARR
+7
+Published as a conference paper at ICLR 2026
+Table 3:Live tradingcomparison of mainstream methodsacross U.S. stock index futures and
+cryptocurrency markets from 2025 January to April. TF and NP represent the trading frequency
+and number of supported trading pairs for each method (“∗” denotes estimated results from partial
+experiments). The optimal and suboptimal results are indicated byboldand underline , respectively.
+Method U.S. Stock Index FuturesMainstream Coin FuturesAltcoin Futures NP↑TFARR%↑SR↑MDD%↓ ARR%↑SR↑MDD%↓ ARR%↑SR↑MDD%↓
+Quantitative Methods
+MACD 2.1 0.32 22.4 -5.9 -0.66 38.3 -12.5 -0.85 41.3 213daily
+Momentum 1.5 0.23 25.5 -6.2 -0.58 31.0 -8.4 -0.67 37.5 213daily
+Grid Trading 3.2 0.42 17.2 3.2 0.25 25.9 1.8 0.15 28.4 213hourly
+Pairs Trading 0.8 0.0811.0 2.8 0.22 27.4 4.5 0.49 25.6 213daily
+ETF&PCA 4.1 0.50 19.1 -2.5 -0.2622.3 -4.8 -0.31 27.3 75minute
+TSMOM 3.8 0.44 24.9 -9.5 -0.77 40.8 -10.2 -0.78 42.9 213daily
+OFI -1.9 -0.18 18.4 5.2 0.58 27.8 5.4 0.52 29.3 213second
+ML&RL Methods
+LSTM 1.2 0.12 18.4 1.8 0.14 28.5 2.8 0.26 28.2 70∗ daily
+DQN 1.7 0.11 25.2 -1.0 -0.06 31.7 -2.3 -0.18 39.0 70∗ daily
+DDPG 5.1 0.53 22.7 5.8 0.63 27.9 5.9 0.54 38.1 150∗ daily
+Autoformer 4.4 0.48 21.1 4.9 0.47 28.4 8.3 0.66 42.5 120∗ daily
+PatchTST 5.5 0.62 22.8 2.7 0.25 29.0 6.4 0.63 35.4 120∗ daily
+LLM-based Agents
+FinGPT 5.1 0.57 22.6 -3.7 -0.31 29.5 -6.2 -0.60 30.6 81daily
+FinMem 3.6 0.45 19.7 4.4 0.45 27.3 3.8 0.3923.7 50∗ daily
+TradingAgents 4.8 0.50 20.4 5.4 0.63 25.6 5.5 0.57 28.3 28∗ daily
+TiMi (ours) 6.4 0.74 20.3 8.0 0.79 25.1 13.7 0.86 32.8 213 minute
+ORDER LATENCY (MS) CAPITAL UTILIZATION 
+RATE (%)
+Grid
+ETF&PCA
+DDPG
+PatchTST
+FinGPT
+FinMem
+TiMi
+Action Latency (ms) Capital Utilization Rate (%)
+62
+153
+342 258
+18,645
+25,071
+137
+73.8
+58.4
+34.5 35.2
+42.3 40.8
+63.7
+180×
+faster
+Profit/Loss Ratio (Capital) 
+- Grid: 1.22
+- TradingAgents: 1.32
+- TiMi: 1.53
+Grid
+TiMi
+TradingAgents
+ETF&PCA
+DDPG
+PatchTST
+FinMem
+Figure 3:Comparison of action la-
+tency(left) andcapital utilization
+(right) for representative methods.
+Grid ETF&PCA DDPG PatchTST FinMem TradingAgents TiMi
+Annual Rate of Return (ARR %) 
+tail risk 
+events < 2%
+Figure 4:Comparative performance (ARR) distributions
+of different methods across trading pairs.
+of 6.4%, 8.0%, and 13.7% across U.S. stock index futures, mainstream cryptocurrencies, and altcoin
+markets, respectively. Notably, our system demonstrates stable risk-adjusted returns with promising
+Sharpe&Sortino Ratios and competitive drawdown control, indicating robust trading sustainability.
+Crucially, the minute-level trading frequency enables our deployed bots to capitalize on short-term
+market inefficiencies that daily-frequency methods necessarily overlook. Furthermore,TiMi’s ex-
+tensive market coverage ( NP = 213 ) matches that of quantitative approaches while surpassing
+previous ML&RL and agent methods, which typically support fewer trading pairs due to convergence
+challenges and data requirements for trading action (evidenced in Table 2, m/h/d: minute/hour/day).
+These empirical results thus confirm the transformation of our rationality-driven paradigm towards
+demonstrable trading efficacy in market dynamics.
+Action efficiency and capital management.On the left side of Figure 3, we record the inference-only
+time of one action cycle per trading pair. Benefiting from architectural decoupling, ourTiMiachieves
+latency on par with quantitative methods, which is fundamentally unattainable for continuous-model-
+inference approaches. On the right side, we calculate Capital Utilization Rate as avgP ( deployed capital
+available capital ).
+TiMishows clear advantages among learning-based approaches, indicating the ability to capitalize on
+a broader range of trading opportunities while maintaining strategic position sizing. Additionally, we
+provide the ratio between profits/losses generated per unit of invested capital, andTiMipossesses a
+competitive ratio of 1.53, outperforming both Grid (1.22) and TradingAgents (1.32) approaches. This
+metric is significant as it quantifies the efficacy to balance profitable and loss-making trades.
+8
+Published as a conference paper at ICLR 2026
+Table 4: Component-wise ablation studies simulated within the 2024 crytocurrency market.
+Method Configuration ARR%↑SR↑MDD%↓Live Deployment
+TiMi full system 20.9 1.23 15.3stable
+A†
+fr variantparameter-only optimization 12.5 0.92 16.3logic inconsist
+A‡
+fr variantsemantic-only reflection 1.1 0.05 25.1stable
+w/oA sa unified strategy 15.2 0.95 28.4stable
+w/oA fr prototype botB 1.1 0.05 25.1runtime unstable
+w/oA sa &A fr minimal baseline -4.5 -0.21 34.2runtime unstable
+4.3 ANALYTICAL STUDY
+In-depth analysis of performance distribution.According to the distribution results in Figure 4,
+most significantly,TiMiexhibits markedlyperformance stabilitywith reduced variance ( σ = 11.03%)
+and rare tail events (<2%), indicating more consistent returns over market dynamics compared to
+alternatives. This characteristic is particularly valuable in algorithmic trading where catastrophic
+drawdowns often negate long-term performance advantages. It is evident when contrasting with RL
+approaches like DDPG, which despite showing competitive median returns, suffers from extreme
+volatility (σ = 29.64%) that undermines its reliability in practical deployment. The rationality-driven
+multi-agent design ofTiMiappears to effectivelynavigate the inherent trade-offbetween return
+maximization and risk minimization that challenges trading systems, achieving a more favorable
+risk-adjusted profile through its hierarchical optimization and mathematical reflection.
+-15
+-5
+5
+15
+25
+35 ℬ
+C1
+C3
+Cumulative Return (CR %) 
+Jun. Mar. May. Jul. Sept. Nov.
+ℬ(3)
+ℬ(1)
+ℬ
+𝓑𝓑∗
+Figure 5:Comparison of trading bot
+variants: B, B∗, and their intermediate
+versions (1/3-cycle optimization), simu-
+lated in 2024 cryptocurrency markets.
+Ablation study of agents and optimization.Employ-
+ing the macro analysis agent Ama and bot evolution agent
+Abe as the operational backbone, we conduct granular
+component-wise ablation experiments simulated in the
+2024 crytocurrency market to isolate the contributions of
+agent specialization (i.e., Asa and Afr) and our optimization
+mechanism. As quantified in Table 4, removing Asa nearly
+doubles Maximum Drawdown to 28.4%, underscoring its
+critical role in harmonizing diverse assets for consistent
+risk exposure (e.g., stable utility tokens vs. high-volatility
+meme coins). Regarding optimization, the semantic-only
+A‡
+fr ensures stability via syntax resolution yet stagnates
+in profitability. Conversely, the parameter-onlyA†
+fr yields
+theoretical gains but proveslogically inconsistentfor live
+deployment due to code-parameter dissonance, while the unoptimized baselines succumb toruntime
+instability. Consequently, only the full system sustains thepolicy-deployment-optimizationchain, a
+synergy corroborated by the evolutionary trajectory in Figure 5; here, the unoptimized B stagnates
+near break-even and B(1) suffers degradation despite transient 35% peaks, exposing the brittleness of
+shallow parameter tuning without structural adaptation, whereas the stabilized B(3) culminates in B∗
+achieving consistent returns over 20%, validating the iterative efficacy of constraint-based solving
+and hierarchical interventions detailed in Section 2.5 and Figure 2.
+Transaction visualization.We present empirical evidence ofTiMiefficacy upon minute-level
+transactions across four representative cryptocurrency pairs visualized in Figure 6. The candlestick
+charts illustrate the adaptive order strategy implemented in B∗, with buy (↑) and sell (↓) indicators
+precisely demarcating transaction points. Notably, higher-volatility pairs such as SIGN/USDT
+(82.21%) and OM/USDT (74.39%) yield superior profitability metrics (+32.75% and +10.78%
+PnL respectively) with correspondingly higher order densities (39 and 28 valid orders), thereby
+demonstrating the capability of the system to capitalize on price oscillations. Conversely, lower-
+volatility assets like TRUMP/USDT and XRP/USDT have more conservative trading patterns. These
+visualizations substantiate that the parameter matrices MP and MQ, tuned by deep optimization
+cycles with mathematical feedback, can effectivelymodulate order execution intensityto pair-specific
+volatility while maintaining robust risk management over diverse market conditions, including
+sustained directional movements, consolidation phases, and extreme price actions.
+9
+Published as a conference paper at ICLR 2026
+Case #1 V-shaped Recovery Case #2 Strong Uptrend & Consolidation Case #3 Head and Shoulders Top Pattern Case #4 Stealth Decline & Vertical Reversal
+OM/USDT @2025-04-15
+- Intraday volume: 1.63B
+- Intraday volatility: 74.39%
+- Valid orders: 61
+- Realized PnL: +10.78%
+XRP/USDT @2025-04-07 
+- Intraday volume: 6.97B
+- Intraday volatility: 20.39%
+- Valid orders: 2
+- Realized PnL: +1.19%
+TRUMP/USDT @2025-04-24
+- Intraday volume: 1.71B
+- Intraday volatility: 15.67%
+- Valid orders: 33
+- Realized PnL: +5.56%
+SIGN/USDT @2025-04-29
+- Intraday volume: 1.67B
+- Intraday volatility: 82.21%
+- Valid orders: 45
+- Realized PnL: +32.75%
+Figure 6:Detailed transactions ofTiMion four representative cryptocurrency trading pairs.
+These 15-minute candlestick charts display market movements with green candles indicating price
+increases and red candles showing price decreases. Buy (↑) and sell (↓) actions performed byTiMiare
+marked on each chart, demonstrating its robust trading capabilities across various market dynamics
+including uptrends, downtrends, consolidation periods, and extreme price movements.
+5 RELATEDWORK
+LLM-powered agentic system.Agentic systems built upon LLMs can be categorized into agentic
+workflows and autonomous agents (Zhuge et al., 2023; Hong et al., 2024a; Zhang et al., 2024b) by
+autonomy level. The former follows predefined processes with multiple LLM invocations, while the
+latter employs flexible decision-making. Agentic workflows can be broadly categorized into general
+and domain-specific types. Workflows further separate into general approaches (Wei et al., 2022;
+Madaan et al., 2023) and domain-specific ones (e.g., code generation (Hong et al., 2024b; Zhong et al.,
+2024a), data analysis (Xie et al., 2024; Li et al., 2024a), and mathematical problem-solving (Zhong
+et al., 2024b; Xin et al., 2024)). Research advances agentic optimization through automated prompt
+optimization (Fernando et al., 2024; Yang et al., 2024), hyperparameter optimization (Saad-Falcon
+et al., 2024), and workflow optimization (Hu et al., 2024; Zhang et al., 2025). The proposedTiMi
+for financial trading exemplifies domain-specific implementation, while its hierarchical reflection
+provides insights into agentic optimization, and we will continuously explore the potential of our
+rationality-driven agentic system as a generalist.
+Agents for financial trading.Financial trading agents fall into three architectures (Ding et al., 2024):
+news-driven, reflection-driven, and factor optimization frameworks. News-driven agents (Zhang et al.,
+2023; Wang et al., 2024a) incorporate up-to-date news and events to make informed decisions, with
+approaches like FinMem (Yu et al., 2024a), FinAgent (Zhang et al., 2024c), and CryptoTrade (Li
+et al., 2024b). Reflection-driven agents (Xing, 2025; Koa et al., 2024) enhance decisions through
+reflection and debating. For instance, StockAgent (Zhang et al., 2024a) and TradingAgents (Xiao
+et al., 2025) implement multi-agent frameworks to simulate investor trading behavior and conduct
+role-based collaboration, and Fincon (Yu et al., 2024b) introduces conceptual verbal reinforcement to
+refine decision making. Beyond direct trading, other agents (Wang et al., 2024b; 2023) function as
+alpha factor optimizers for quantitative strategies. In this paper, we harmonize the strategic depth
+of agents with the mechanical rationality expected for quantitative trading, and pioneer a decoupled
+paradigm emphasizing progressive strategy development and quantitative-level deployment.
+6 CONCLUSION
+In this paper, we presentTiMi, a multi-agent system designed with mechanical rationality for algo-
+rithmic trading that decouples complex analysis from time-sensitive execution. Through a three-stage
+process (policy, optimization, and deployment),TiMidemonstrates promising and stable performance
+across diverse financial markets. Our key innovations lie in: (1) a multi-agent architecture leveraging
+specialized LLM capabilities in semantic analysis, code programming, and mathematical reasoning;
+(2) a decoupling mechanism separating analysis from deployment; (3) a two-tier analytical paradigm
+from macro patterns to micro customization; (4) a layered programming design for trading bot
+implementation; and (5) a closed-loop optimization system driven by mathematical reflection.
+Limitations and ethics statement.The necessity of the optimization stage limits the zero-shot
+performance of trading bots developed byTiMiwhen porting to new markets. From a broader perspec-
+tive, advancements in automatic trading systems may affect market dynamics and liquidity provision,
+while issues of market fairness and accessibility may also widen the gap between institutional and
+retail investors. We aim to explore the development of customizable agentic trading systems, and this
+paper does not constitute investment advice —investment is risky, be cautious before entering.
+10
+Published as a conference paper at ICLR 2026
+REFERENCES
+Marco Avellaneda and Jeong-Hyun Lee. Statistical arbitrage in the us equities market.Quantitative
+Finance, 10(7):761–782, 2010. 7
+Zheng Cai, Maosong Cao, Haojiong Chen, Kai Chen, Keyu Chen, Xin Chen, Xun Chen, Zehui Chen,
+Zhi Chen, Pei Chu, et al. Internlm2 technical report.arXiv preprint arXiv:2403.17297, 2024. 1
+Rama Cont and Adrien De Larrard. Price dynamics in a markovian limit order market.SIAM Journal
+on Financial Mathematics, 4(1):1–25, 2013. 7
+Han Ding, Yinheng Li, Junhao Wang, and Hang Chen. Large language model agent in financial
+trading: A survey.arXiv preprint arXiv:2408.06361, 2024. 1, 10
+Ning Ding, Yujia Qin, Guang Yang, Fuchao Wei, Zonghan Yang, Yusheng Su, Shengding Hu, Yulin
+Chen, Chi-Min Chan, Weize Chen, et al. Parameter-efficient fine-tuning of large-scale pre-trained
+language models.Nature Machine Intelligence, 5(3):220–235, 2023. 1
+Chrisantha Fernando, Dylan Sunil Banarse, Henryk Michalewski, Simon Osindero, and Tim
+Rockt¨aschel. Promptbreeder: Self-referential self-improvement via prompt evolution. InIn-
+ternational Conference on Machine Learning, pp. 13481–13544. PMLR, 2024. 10
+Evan Gatev, William N Goetzmann, and K Geert Rouwenhorst. Pairs trading: Performance of a
+relative-value arbitrage rule.The review of financial studies, 19(3):797–827, 2006. 7
+Aaron Grattafiori, Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad
+Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Alex Vaughan, et al. The llama 3 herd of
+models.arXiv preprint arXiv:2407.21783, 2024. 1
+John M Griffin, Jeffrey H Harris, and Selim Topaloglu. The dynamics of institutional and individual
+trading.The Journal of Finance, 58(6):2285–2320, 2003. 7
+Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu,
+Shirong Ma, Peiyi Wang, Xiao Bi, et al. Deepseek-r1: Incentivizing reasoning capability in llms
+via reinforcement learning.arXiv preprint arXiv:2501.12948, 2025. 1
+Joel Hasbrouck.Empirical market microstructure: The institutions, economics, and econometrics of
+securities trading. Oxford University Press, 2007. 4
+Sirui Hong, Yizhang Lin, Bang Liu, Bangbang Liu, Binhao Wu, Ceyao Zhang, Chenxing Wei,
+Danyang Li, Jiaqi Chen, Jiayi Zhang, et al. Data interpreter: An llm agent for data science.arXiv
+preprint arXiv:2402.18679, 2024a. 10
+Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu Zheng, Yuheng Cheng, Jinlin Wang, Ceyao
+Zhang, Zili Wang, Steven Ka Shing Yau, Zijuan Lin, Liyang Zhou, Chenyu Ran, Lingfeng
+Xiao, Chenglin Wu, and J ¨urgen Schmidhuber. Metagpt: Meta programming for A multi-agent
+collaborative framework. InICLR. OpenReview.net, 2024b. 10
+Shengran Hu, Cong Lu, and Jeff Clune. Automated design of agentic systems.arXiv preprint
+arXiv:2408.08435, 2024. 1, 10
+Narasimhan Jegadeesh and Sheridan Titman. Returns to buying winners and selling losers: Implica-
+tions for stock market efficiency.The Journal of finance, 48(1):65–91, 1993. 7
+Kelvin JL Koa, Yunshan Ma, Ritchie Ng, and Tat-Seng Chua. Learning to generate explainable
+stock predictions using self-reflective large language models. InProceedings of the ACM Web
+Conference 2024, pp. 4304–4315, 2024. 10
+Boyan Li, Yuyu Luo, Chengliang Chai, Guoliang Li, and Nan Tang. The dawn of natural language to
+SQL: are we fully ready?Proc. VLDB Endow., 17(11):3318–3331, 2024a. 10
+Yang Li, Yangyang Yu, Haohang Li, Zhi Chen, and Khaldoun Khashanah. Tradinggpt: Multi-agent
+system with layered memory and distinct characters for enhanced financial trading performance.
+arXiv preprint arXiv:2309.03736, 2023. 1
+11
+Published as a conference paper at ICLR 2026
+Yuan Li, Bingqiao Luo, Qian Wang, Nuo Chen, Xu Liu, and Bingsheng He. Cryptotrade: A reflective
+llm-based agent to guide zero-shot cryptocurrency trading. InProceedings of the 2024 Conference
+on Empirical Methods in Natural Language Processing, pp. 1094–1106, 2024b. 10
+Xiao-Yang Liu, Hongyang Yang, Qian Chen, Runjia Zhang, Liuqing Yang, Bowen Xiao, and
+Christina Dan Wang. Finrl: A deep reinforcement learning library for automated stock trading in
+quantitative finance.arXiv preprint arXiv:2011.09607, 2020. 7
+Xiao-Yang Liu, Guoxuan Wang, Hongyang Yang, and Daochen Zha. Fingpt: Democratizing internet-
+scale data for financial large language models.arXiv preprint arXiv:2307.10485, 2023. 7
+Andrew W Lo, Harry Mamaysky, and Jiang Wang. Foundations of technical analysis: Computational
+algorithms, statistical inference, and empirical implementation.The journal of finance, 55(4):
+1705–1765, 2000. 4
+Aman Madaan, Niket Tandon, Prakhar Gupta, Skyler Hallinan, Luyu Gao, Sarah Wiegreffe, Uri Alon,
+Nouha Dziri, Shrimai Prabhumoye, Yiming Yang, et al. Self-refine: Iterative refinement with
+self-feedback. InThirty-seventh Conference on Neural Information Processing Systems, 2023. 10
+V olodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglou, Daan
+Wierstra, and Martin Riedmiller. Playing atari with deep reinforcement learning.arXiv preprint
+arXiv:1312.5602, 2013. 7
+Tobias J Moskowitz, Yao Hua Ooi, and Lasse Heje Pedersen. Time series momentum.Journal of
+financial economics, 104(2):228–250, 2012. 7
+Yuqi Nie, Nam H Nguyen, Phanwadee Sinthong, and Jayant Kalagnanam. A time series is worth 64
+words: Long-term forecasting with transformers.arXiv preprint arXiv:2211.14730, 2022. 7
+OpenAI. Gpt-4 technical report. Technical report, 2023. 1
+Eckhard Platen and David Heath.A benchmark approach to quantitative finance. Springer Science &
+Business Media, 2006. 1
+Jon Saad-Falcon, Adrian Gamarra Lafuente, Shlok Natarajan, Nahum Maru, Hristo Todorov,
+Etash Guha, E. Kelly Buchanan, Mayee Chen, Neel Guha, Christopher R ´e, and Azalia Mirho-
+seini. Archon: An architecture search framework for inference-time techniques.arXiv preprint
+arXiv:2409.15254, 2024. 10
+Zifan Song, Yudong Wang, Wenwei Zhang, Kuikun Liu, Chengqi Lyu, Demin Song, Qipeng Guo,
+Hang Yan, Dahua Lin, Kai Chen, et al. Alchemistcoder: Harmonizing and eliciting code capability
+by hindsight tuning on multi-source data. InThe Thirty-eighth Annual Conference on Neural
+Information Processing Systems, 2024. 1
+Shuo Sun, Molei Qin, Wentao Zhang, Haochong Xia, Chuqiao Zong, Jie Ying, Yonggang Xie,
+Lingxuan Zhao, Xinrun Wang, and Bo An. Trademaster: a holistic quantitative trading platform
+empowered by reinforcement learning.Advances in Neural Information Processing Systems, 36:
+59047–59061, 2023. 1
+Md Arif Istiake Sunny, Mirza Mohd Shahriar Maswood, and Abdullah G Alharbi. Deep learning-
+based stock price prediction using lstm and bi-directional lstm model. In2020 2nd novel intelligent
+and leading emerging sciences conference (NILES), pp. 87–92. IEEE, 2020. 7
+Jiachen T Wang, Prateek Mittal, Dawn Song, and Ruoxi Jia. Data shapley in one training run. InThe
+Thirteenth International Conference on Learning Representations, 2025. 1
+Jian Wang and Junseok Kim. Predicting stock price trend using macd optimized by historical volatility.
+Mathematical Problems in Engineering, 2018(1):9280590, 2018. 7
+Meiyun Wang, Kiyoshi Izumi, and Hiroki Sakaji. Llmfactor: Extracting profitable factors through
+prompts for explainable stock movement prediction.arXiv preprint arXiv:2406.10811, 2024a. 10
+Saizhuo Wang, Hang Yuan, Leon Zhou, Lionel M Ni, Heung-Yeung Shum, and Jian Guo. Alpha-gpt:
+Human-ai interactive alpha mining for quantitative investment.arXiv preprint arXiv:2308.00016,
+2023. 10
+12
+Published as a conference paper at ICLR 2026
+Saizhuo Wang, Hang Yuan, Lionel M Ni, and Jian Guo. Quantagent: Seeking holy grail in trading by
+self-improving large language model.arXiv preprint arXiv:2402.03755, 2024b. 10
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V Le, Denny
+Zhou, et al. Chain-of-thought prompting elicits reasoning in large language models.Advances in
+Neural Information Processing Systems, 35:24824–24837, 2022. 10
+Paul Wilmott.Paul Wilmott on quantitative finance. John Wiley & Sons, 2013. 1
+Haixu Wu, Jiehui Xu, Jianmin Wang, and Mingsheng Long. Autoformer: Decomposition transformers
+with auto-correlation for long-term series forecasting.Advances in neural information processing
+systems, 34:22419–22430, 2021. 7
+Yijia Xiao, Edward Sun, Di Luo, and Wei Wang. Tradingagents: Multi-agents llm financial trading
+framework, 2025. URLhttps://arxiv.org/abs/2412.20138. 1, 7, 10
+Yupeng Xie, Yuyu Luo, Guoliang Li, and Nan Tang. Haichart: Human and AI paired visualization
+system.Proc. VLDB Endow., 17(11):3178–3191, 2024. 10
+Huajian Xin, Daya Guo, Zhihong Shao, Zhizhou Ren, Qihao Zhu, Bo Liu, Chong Ruan, Wenda Li,
+and Xiaodan Liang. Deepseek-prover: Advancing theorem proving in llms through large-scale
+synthetic data.arXiv preprint arXiv:2405.14333, 2024. 10
+Frank Xing. ‘designing heterogeneous llm agents for financial sentiment analysis.arXiv preprint
+arXiv:2401.05799, 2025. 10
+Chengrun Yang, Xuezhi Wang, Yifeng Lu, Hanxiao Liu, Quoc V . Le, Denny Zhou, and Xinyun Chen.
+Large language models as optimizers. InICLR. OpenReview.net, 2024. 10
+Yangyang Yu, Haohang Li, Zhi Chen, Yuechen Jiang, Yang Li, Denghui Zhang, Rong Liu, Jordan W
+Suchow, and Khaldoun Khashanah. Finmem: A performance-enhanced llm trading agent with
+layered memory and character design. InProceedings of the AAAI Symposium Series, volume 3,
+pp. 595–597, 2024a. 7, 10
+Yangyang Yu, Zhiyuan Yao, Haohang Li, Zhiyang Deng, Yuechen Jiang, Yupeng Cao, Zhi Chen,
+Jordan Suchow, Zhenyu Cui, Rong Liu, et al. Fincon: A synthesized llm multi-agent system with
+conceptual verbal reinforcement for enhanced financial decision making.Advances in Neural
+Information Processing Systems, 37:137010–137045, 2024b. 10
+Chong Zhang, Xinyi Liu, Zhongmou Zhang, Mingyu Jin, Lingyao Li, Zhenting Wang, Wenyue Hua,
+Dong Shu, Suiyuan Zhu, Xiaobo Jin, et al. When ai meets finance (stockagent): Large language
+model-based stock trading in simulated real-world environments.arXiv preprint arXiv:2407.18957,
+2024a. 10
+Haohan Zhang, Fengrui Hua, Chengjin Xu, Hao Kong, Ruiting Zuo, and Jian Guo. Unveiling the
+potential of sentiment: can large language models predict chinese stock price movements?arXiv
+preprint arXiv:2306.14222, 2023. 10
+Jiayi Zhang, Chuang Zhao, Yihan Zhao, Zhaoyang Yu, Ming He, and Jianping Fan. Mobileexperts:
+A dynamic tool-enabled agent team in mobile devices.CoRR, abs/2407.03913, 2024b. 10
+Jiayi Zhang, Jinyu Xiang, Zhaoyang Yu, Fengwei Teng, Xiong-Hui Chen, Jiaqi Chen, Mingchen
+Zhuge, Xin Cheng, Sirui Hong, Jinlin Wang, et al. Aflow: Automating agentic workflow generation.
+InThe Thirteenth International Conference on Learning Representations, 2025. 1, 10
+Wentao Zhang, Lingxuan Zhao, Haochong Xia, Shuo Sun, Jiaze Sun, Molei Qin, Xinyi Li, Yuqing
+Zhao, Yilei Zhao, Xinyu Cai, et al. A multimodal foundation agent for financial trading: Tool-
+augmented, diversified, and generalist. InProceedings of the 30th ACM SIGKDD Conference on
+Knowledge Discovery and Data Mining, pp. 4314–4325, 2024c. 10
+Li Zhong, Zilong Wang, and Jingbo Shang. Debug like a human: A large language model debugger
+via verifying runtime execution step by step. InACL (Findings), pp. 851–870. Association for
+Computational Linguistics, 2024a. 10
+13
+Published as a conference paper at ICLR 2026
+Qihuang Zhong, Kang Wang, Ziyang Xu, Juhua Liu, Liang Ding, Bo Du, and Dacheng Tao. Achiev-
+ing¿ 97% on gsm8k: Deeply understanding the problems makes llms perfect reasoners.arXiv
+preprint arXiv:2404.14963, 2024b. 10
+Lianghui Zhu, Xinggang Wang, and Xinlong Wang. Judgelm: Fine-tuned large language models are
+scalable judges. InThe Thirteenth International Conference on Learning Representations, 2025. 1
+Mingchen Zhuge, Haozhe Liu, Francesco Faccio, Dylan R Ashley, R´obert Csord´as, Anand Gopalakr-
+ishnan, Abdullah Hamdi, Hasan Abed Al Kader Hammoud, Vincent Herrmann, Kazuki Irie, et al.
+Mindstorms in natural language-based societies of mind.arXiv preprint arXiv:2305.17066, 2023.
+10
+14
+Published as a conference paper at ICLR 2026
+A DELVE INTOMATHEMATICALREASONING FORPARAMETERSOLVING
+In this section, we provide threepracticalcases ofTiMiimplementation for B∗. Each case illustrates a
+distinct mode commonly encountered in algorithmic trading. Through these representative scenarios,
+we aim to show howTiMiconverts qualitative risk into quantitative optimization, thereby bridging
+the gap between observed trading pathologies and systematic parameter refinement.
+A.1 CASE#1: POSITIONSIZECONTROLUNDERMARKETVOLATILITY
+After a simulation period, the system collects feedbackFfor a trading bot operating on OM/USDT
+pair. The feedback (organized instructureddata) includes: (1)performance metricsof final return,
+max drawdown, and Sharpe Ratio; (2)trade logswith detailed records of valid transactions and
+positions; (3)market dataincluding K-lines for OM/USDT (typically including minute-level and
+hourly data), volatility, liquidity, funding rate changes, and market capitalization.
+The feedback records that the bot incurred a significant drawdown over 50% during a sharp, 30-
+minute market downturn. An excessively dense series of buy orders was executed as the price fell,
+leading to an oversized and deeply underwater position. The feedback reflection agent Afr analyzes
+this feedback and identifies a risk scenario R=γ(F) thatthe order density and size do not adapt
+sufficiently to sudden volatility spikes.
+Subsequently, Afr translates this risk scenario into a formal mathematical constraint (linear pro-
+gramming problem), with the goal of limiting potential losses in similar future cases. As illus-
+trated in Section 3, the relevant parameters appear to be the order quantity distribution matrix
+MQ = [q 1, q2, ..., qm] with the capital allocation A, and the quantity for the i-th level order is
+Qi =A×M Q[i]×c m ×c f. Consequently, the agent can establish a direct constraint on the total
+position size, where the size of all filled buy orders under the extreme scenario must not exceed a
+maximum sizeQ max. Specially, we obtain a linear inequality for the parametersq i:
+mX
+i=1
+Qi ≤Q max =⇒
+mX
+i=1
+qi ≤ Qmax
+A×c m ×c f
+(4)
+where Qmax can be derived from risk tolerance (i.e., determined by global capital and parallel trading
+volume). This forms a specific variant of the inequality A(R)Θ⪯b(R) from Equation 3. In this
+case, the parameter vector Θ contains the elements qi to be optimized, the corresponding row in the
+constraint matrix A(R) would be [1,1, ...,1], and the corresponding value in the constraint vector
+b(R)would be Qmax
+A×cm×cf
+.
+A.2 CASE#2: ORDERBOUNDARYCALIBRATION FORPRICESURGEEVENTS
+Following a simulated trading period with a bot on DOGE/USDT,TiMicollects structured feedbackF,
+including: (1)performance metricsindicating catastrophic portfolio decline and excessive maximum
+drawdown; (2)trade logsshowing that the highest-level sell order was triggered while prices continued
+to surge, resulting in rapidly accumulating losses; and (3)market datacontaining minute-level K-line
+information capturing the price surge incident.
+To start with, the feedback reflection agent Afr analyzes this feedback and identifies a critical risk
+scenario R=γ(F) :the upper boundary of the order group was inadequately calibrated for the
+volatility observed during the failure event. Then, Afr translates this risk scenario into a formal
+mathematical constraint.
+According to Algorithm 1, price levels are determined by the order distribution matrix MP =
+[p1, p2, ..., pm]. Thus, the agent can establish a constraint on the highest price exponent relative to
+the absolute peak price during the surge: Pbefore ×(1 + Φ) pm > Ppeak. By taking the logarithm, we
+get the solvable inequality for the parameterp m:
+pm > log(Ppeak/Pbefore)
+log(1 + Φ) (5)
+where Ppeak and Pbefore are extracted from the market data. This constraint establishes an evidence-
+based lower bound forp m within the inequality systemA(R)Θ⪯b(R).
+15
+Published as a conference paper at ICLR 2026
+A.3 CASE#3: ADAPTIVEPROFIT-TAKINGUNDERTRENDINGMARKETCONDITIONS
+After a simulation period on NQ index futures, the system collects structured feedback F from the
+trading bot, comprising: (1)performance metrics, including final return, profit factor, and comparison
+with buy-and-hold return; (2)trade logs, including detailed records indicating systematic premature
+closure of profitable long positions; (3)market dataK-lines for NQ futures, trend strength indicators
+(e.g., ADX), and historical volatility across trending versus range-bound periods.
+The feedback indicates that the deployed bot, while consistently making small profits, underperformed
+during a sustained market rally. Its profit factor was high, but the total return was lower than a simple
+buy-and-hold strategy. An analysis of the trade logs shows that profitable long positions were closed
+too early, capturing only a fraction of the actual upward price movement. The feedback reflection
+agent Afr analyzes this feedback and identifies a risk scenario (or, anopportunity cost) R=γ(F)
+thatthe profit-taking thresholds are overly conservative and not adapted to strong trend persistence.
+Sequentially, Afr translates this opportunity cost scenario into a formal mathematical constraint.
+As discussed in Section 3, the relevant parameters include the profit/loss threshold matrix H=
+[h1, h2, ..., hk], which determines the exit points Pentry ×(1±Φ) H[i]. Thus, the agent can establish a
+constraint on the minimum profit-taking level, where the first profit target for any position must be set
+wide enough to capture at least the average price movement observed during prior trending phases.
+Next, we obtain a linear inequality for the parameter h1. The first profit-taking price, P1 =P entry ×
+(1 + Φ)h1, must satisfy:
+P1 −P entry ≥∆P trend (6)
+where ∆Ptrend denotes the average profitable movement during a market trend. This leads to the
+inequality (1+Φ) h1 ≥1+ ∆Ptrend
+Pentry
+, and it can be simplified by taking logs toh1 ≥log 1+Φ(1+ ∆Ptrend
+Pentry
+).
+B DETAILS ONIMPLEMENTATIONSPECIFICS FORDEPLOYMENT
+Reproducibility statement.To facilitate replication, we provide further implementation details of the
+TiMisystem, covering order specifics, exchange selection, risk control mechanisms, transaction cost
+modeling, and action latency control. These technical details demonstrate the practical considerations
+necessary for deploying the system in live trading environments. Crucially, we will open-source the
+implementation ofTiMiproduct for deployment and release the key corner case list (from both back
+simulation and live deployment).
+Order types and exchange selection.TiMiemploys three order types for specific trading functions:
+(1) LIMIT orders serve as the exclusive mechanism for opening positions based on volatility-derived
+formulas; (2) TAKE PROFIT and STOP orders are dynamically placed and cancelled during position
+monitoring; and (3) MARKET orders are utilized for risk management purposes, including liquidating
+low-risk positions and executing global profit/loss events. We select top-tier exchanges with high
+liquidity,i.e., CME for stock index futures and Binance for cryptocurrencies.
+Transaction costs and slippage modeling.We model and mitigate two primary costs: or-
+der fees and periodic funding rates.TiMiemploys LIMIT orders for entry to capture favor-
+able maker fees and eliminate entry slippage. Beyond static fees,TiMiadapts to funding rates
+on a per-pair basis. For instance, high funding rates trigger an order reduction (even deacti-
+vation) to avoid accumulating positions with prohibitive holding costs. And a pre-trade price
+deviation check is conducted to prevent unintended actions during extreme volatility and poten-
+tial slippage. Real records of transaction costs can be found in the Supplementary Material.
+Table 5:Decomposition of action latency
+(ms) for the deployedTiMi.
+Latency Source Avg. Std. Dev. P99
+(1) Market Retrieval 85 12 115
+(2) Internal Logic 5 <1 5
+(3) Trade Request 47 8 65
+Total End-to-End 137 15 185
+Action latency control.In Table 5, we present detailed
+records of latency with variance. The primary source
+of latency and, more importantly, tail latency, isexter-
+nal: network I/O associated with RTT to the exchange.
+In a stable network environment, the action latency of
+TiMiis robust. To track the external issues,TiMihas
+progressively implemented engineering optimizations
+(e.g., dynamic cache and thread executor as shown in
+Figure 2) with a series of safeguards, including timeouts,
+state checks, and circuit breakers.
+16
+Published as a conference paper at ICLR 2026
+Table 6: Ablation study of the strategy adaptation agent Asa simulated in 2025 altcoin markets. σARR
+represents the standard deviation of annualized returns across pairs, indicating cross-pair stability.
+Method Configuration ARR%↑SR↑MDD%↓σ ARR%↓
+TiMi full system 13.7 0.86 32.811.0
+w/oA sa unified strategy 10.4 0.71 38.2 19.5
+Failover mechanisms for error handling.At the function level, all external API interactions are
+wrapped in exception-handling logic with rate limit management. At the process level, failures in
+concurrent tasks are isolated to guarantee service continuity. Besides,TiMiintegrates a price deviation
+check and periodically clears orphaned orders, preventing erroneous actions under market anomalies.
+At the system level, state information is fetched directly from the exchange, enabling a stateless
+execution logic. This allows the bots to recover at any time without losing trading context.
+C ABLATIONANALYSIS OFAGENTCOMPONENTS
+Above all, ourTiMisystem is designed as ahighly synergisticarchitecture. The agents are not
+merely a collection of components, their functionalities are deeply interlinked to perform thepolicy-
+deployment-optimizationchain. To further understand the contribution of each agent, we offer a
+component-wise ablation study below:
+• Macro analysis agent Ama and bot evolution agent Abe: Ama provides the initial strategic
+hypothesis from market data, and Abe translates abstract strategies into executable code,
+serving as the essential bridge to deployment. Consequently, these agents form theindis-
+pensable backboneof ourTiMi, and the absence of them would render the entire system
+non-operational, precluding their ablation.
+• Strategy adaptation agent Asa: In Table 6, we further provide the ablation results of Asa
+simulated in the altcoin future market (2025). The key insight is that while Asa provides
+improvement in risk-adjusted returns, its most critical contribution (lower variance in returns
+across pairs) is enhancing robustness and performance consistency in a diverse market.
+• Feedback reflection agent Afr: The efficacy of Afr is empirically validated by the ablation
+study in Table 4 and Figure 5. The prototype bot B, lacking the optimization stage, stagnates
+near break-even performance. In contrast, the advanced bot B∗, progressively refined by
+Afr, achieves consistent growth and a final return exceeding 20%. Crucially, Afr achieves
+parameter solving by operating within the proposed hierarchical optimization scheme. As
+illustrated in Section 2.5 and visualized in Figure 2, the necessity of this scheme is confirmed
+by the unstable transient gains of bots after only shallow parameter-level tuning versus the
+sustained profitability of those refined at higher functional and strategic layers.
+D THEUSE OFLARGELANGUAGEMODELS(LLMS)
+We use LLMs solely for checking grammar and polishing writing. Importantly, LLMs did not
+contribute to the conception of the research problem or the development of the core methodology.
+17

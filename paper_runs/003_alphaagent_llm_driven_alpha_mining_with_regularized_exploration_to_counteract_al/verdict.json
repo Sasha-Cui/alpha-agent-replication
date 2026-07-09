@@ -1,0 +1,7 @@
+{
+  "n_delivered_registry_entries": 8,
+  "n_expression_files": 13,
+  "reason": "real public factor-mining code and delivered factor expressions exist, but no dated strategy returns or FF3/FF5Mom analysis are shipped",
+  "required_adapter": "AlphaAgent DSL expressions to same-universe monthly long-short candidate returns",
+  "verdict": "not_serious_no_strategy_return_series"
+}

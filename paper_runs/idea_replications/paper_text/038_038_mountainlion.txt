@@ -1,0 +1,1606 @@
+MountainLion: A Multi-Modal LLM-Based Agent System for
+Interpretable and Adaptive Financial Trading
+Siyi Wu1, Junqiao Wang2, Zhaoyang Guan3, Leyi Zhao4, Xinyuan Song5, Xinyu Ying6, Dexu Yu7
+Jinhao Wang7,Hanlin Zhang 8,Michele Pak 9,Yangfan He 10,Yi Xin 11,Jianhui Wang 12,Tianyu Shi 13*
+1 The University of Texas at Arlington 2 Sichuan University 3 Northwestern University
+4 Indiana University 5 Emory University 6 Nankai University 7 MountainLion Research
+8 Xi’an University of Electronic Science and Technology 9 Kyoto University
+10 University of North Carolina at Chapel Hill 11 Nanjing university
+12 Tsinghua University 13 University of Toronto
+Abstract
+Cryptocurrency trading is a challenging task
+requiring the integration of heterogeneous
+data from multiple modalities. Traditional
+deep learning and reinforcement learning
+approaches typically demand large training
+datasets and encode diverse inputs into numer-
+ical representations, often at the cost of in-
+terpretability. Recent progress in large lan-
+guage model (LLM)-based agents has demon-
+strated the capacity to process multi-modal
+data and support complex investment decision-
+making. Building on these advances, we
+presentMountainLion, a multi-modal, multi-
+agent system for financial trading that co-
+ordinates specialized LLM-based agents to
+interpret financial data and generate invest-
+ment strategies. MountainLion processes tex-
+tual news, candlestick charts, and trading
+signal charts to produce high-quality finan-
+cial reports, while also enabling modification
+of reports and investment recommendations
+through data-driven user interaction and ques-
+tion answering. A central reflection mod-
+ule analyzes historical trading signals and out-
+comes to continuously refine decision pro-
+cesses, and the system is capable of real-time
+report analysis, summarization, and dynamic
+adjustment of investment strategies. Empiri-
+cal results confirm that MountainLion system-
+atically enriches technical price triggers with
+contextual macroeconomic and capital flow
+signals, providing a more interpretable, robust,
+and actionable investment framework that im-
+proves returns and strengthens investor confi-
+dence.
+1 Introduction
+Cryptocurrency trading requires fast, explain-
+able decision-making across multiple modali-
+ties—including real-time market data, news narra-
+tives, social signals, and historical indicators (Liu
+et al., 2022). Traditional deep learning (DL) and
+*Corresponding author.tys@cs.toronto.edu
+reinforcement learning (RL) approaches encode
+such data into latent numeric vectors, often sacri-
+ficing transparency and adaptability (Chen et al.,
+2020a; Nakamoto, 2008). Moreover, most sys-
+tems rely on static architectures that lack respon-
+siveness to evolving market sentiment and regula-
+tory context.
+Recent progress in Large Language Models
+(LLMs), particularly when paired with Retrieval-
+Augmented Generation (RAG)(Lewis et al.,
+2020), has opened new directions for grounded,
+real-time, and interpretable financial reasoning.
+LLM-based financial systems such as(Zhang et al.,
+2021) have explored combining technical indica-
+tors with LLM-driven summarization. Moreover,
+the introduction of LLM agents (Xu et al., 2023)
+has further strengthened the capabilities of finan-
+cial systems by enabling dynamic, interactive, and
+multi-turn analysis pipelines. In particular, finan-
+cial report generation can benefit from this agent-
+based framework, which supports continuous re-
+finement through iterative, dialogue-like reason-
+ing (Wu et al., 2023b). This agent-based paradigm
+not only facilitates the integration of diverse data
+sources but also enhances the accuracy and diver-
+sity of investment strategies (Wu et al., 2023a).
+In this work, we introduceMountainLion,
+a multi-agent, RAG-enabled financial analysis
+framework tailored to cryptocurrency markets.
+Traditional QA-style pipelines typically employ
+static deep learning or reinforcement learning
+models that return fixed, predetermined answers
+to each query (Mnih et al., 2015; Seo et al., 2016).
+In contrast, MountainLion dynamically generates
+customized and up-to-date responses by leverag-
+ing multi-agent collaboration, real-time informa-
+tion retrieval, and graph-based reasoning. Its re-
+flective, modular architecture actively synthesizes
+personalized answers, supported by a RAG back-
+bone and coordinated agent-based interactions.
+arXiv:2507.20474v3 [q-fin.TR] 19 Sep 2025
+Figure 1 highlights this contrast.
+DL/RL
+LLM
+Query
+Static Answer
+Query
+LLM Core 
+Reasoning
+Real-time 
+Information 
+Retrieval
+GraphRAG
+ML 
+Algorithms
+Multi-Agent 
+RAG Report 
+Generation 
+Price 
+Forecasting
+Updated 
+Customized 
+Answers
+a) Traditional Method b) MountainLion
+News-Driven 
+Recommendat
+ion
+Figure 1: Comparison of (a) traditional DL/RL-based
+static QA pipelines and (b) our MountainLion frame-
+work. MountainLion produces updated, personalized
+answers through multi-agent collaboration, RAG, and
+reflective reasoning.
+MountainLion consists of four core modules:
+•User Interface (UI)provides an interactive
+dashboard where users can receive alerts, cus-
+tomize preferences, and monitor system outputs.
+•Core Business Logichandles multi-agent report
+generation, price forecasting, and news-driven
+recommendation services.
+•AI Engineincludes LLM-based reasoning
+agents, real-time retrieval modules, graph-based
+RAG (GraphRAG) (Sun et al., 2023) compo-
+nents, and ML-based predictive models.
+•Database Layerintegrates data from ex-
+changes, news aggregators, and on-chain met-
+rics, storing structured outputs like predictions
+and reports.
+Within this architecture, our system deploys spe-
+cialized LLM agents assigned to roles such as
+news analysis, chart interpretation, sentiment as-
+sessment, and KOL (Key Opinion Leader) track-
+ing. These agents collaborate through a shared
+reflection module that evaluates the accuracy and
+consequences of prior outputs to refine future rea-
+soning. RAG modules provide access to external,
+up-to-date information during inference, reducing
+hallucination and improving response quality.
+Extensive experiments and ablation studies
+demonstrate that visual reflection not only boosts
+medium-term forecasting accuracy but also sup-
+ports high-quality financial report generation with
+iterative refinement through multi-turn reasoning.
+By accommodating flexible investment horizons,
+the system enables short-term execution triggers,
+mid-term allocation planning, and long-term
+portfolio management within a unified, agent-
+based, interpretable framework that can scale to
+real-world cryptocurrency trading needs.
+2 Related Work
+LLMs in Financial Forecasting.Recent efforts
+have combined LLMs with financial analytics for
+enhanced interpretability. (Zhang et al., 2021)
+explore LLM summarization for price classifica-
+tion, overbought/oversold detection, and technical
+crossover detection. (Li et al., 2024) propose a
+reflection-based LLM trading agent. (Wu et al.,
+2023a; Yang et al., 2023) further highlight LLM
+agents for financial dialogue and benchmarking.
+However, these systems primarily rely on textual
+inputs, lacking integration with real-time market
+dynamics and visual data.
+Sentiment-Aware Modeling.Extracting and in-
+terpreting investor sentiment from social media
+platforms like Twitter/X and Reddit has proven
+valuable. (Alonso and Delgado, 2020) introduced
+CryptoBERT, while (Xu et al., 2021) employ per-
+plexity scoring for relevance ranking. (Si et al.,
+2021; Ma et al., 2023) further explore advanced
+sentiment models in social financial contexts. Our
+system expands on this by incorporating influ-
+encer (KOL) tracking and sentiment consistency
+verification using bot detection and engagement
+analysis.
+Adaptive News and Regulation Awareness.
+(Liu et al., 2021) explore named entity recog-
+nition and keyword filtering for financial event
+extraction. While effective, most lack contex-
+tual reasoning or real-time annotation. (Yang
+et al., 2021; Wang et al., 2023) address multi-
+lingual and prompt-based financial event under-
+standing. We incorporate multilingual support and
+RAG-enabled semantic filtering, enhancing inter-
+pretability of evolving regulatory narratives (Lee
+and Kim, 2022).
+Investment Strategy and Portfolio Optimiza-
+tion.Medium-to-long-term strategy modeling
+has focused on macro signals and risk-balanced al-
+location (Li and Wang, 2023). Dollar-cost averag-
+ing (DCA) and event-triggered rebalancing show
+promise (Lee and Kim, 2022). (Yang et al., 2020;
+Shen et al., 2021) further explore portfolio opti-
+mization through deep learning and multi-agent
+methods. MountainLion adopts a dual-agent col-
+laboration framework to align reports with invest-
+ment horizons and hedge exposure via inverse cor-
+relation modeling.
+On-Chain and Visual Signals.Studies like
+(Nguyen et al., 2023) and industry analysis high-
+light the predictive strength of wallet movements
+and miner flows. (Chen et al., 2020b; Liu et al.,
+2023) further discuss on-chain activity analytics
+for volatility and risk forecasting. Our system uti-
+lizes OHLC data (Sezer et al., 2020) across mul-
+tiple granularities (1d, 1h, 5m), stored in a struc-
+tured MySQL database for longitudinal forecast-
+ing (Kim and Shin, 2019).
+3 System Design
+MountainLionis a modular and extensible frame-
+work for quantitative investment analysis in the
+Web3 ecosystem. It addresses key challenges
+in cryptocurrency analytics by integrating diverse
+data sources, real-time market data, news senti-
+ment, and on-chain activity, into a unified AI-
+driven decision-making pipeline. The platform
+provides data-driven insights to support trend fore-
+casting, risk evaluation, and strategic allocation.
+3.1 Architecture Overview
+MountainLion adopts a layered architecture de-
+signed for modularity. Its four principal layers:
+User Interface, Core Business, AI Engine, and
+Database, are depicted in Figure 2.
+User Interface
+ Multi-Agent RAG 
+Report Generation 
+Price Forecasting
+News-Driven 
+Recommendation
+LLM Core 
+Reasoning
+Real-time 
+Information 
+Retrieval
+GraphRAG
+ML Algorithms
+Trading Platform 
+Data Retrieval
+News Data
+Retrieval
+Results Data 
+(Reports, 
+Predicts, etc.)
+Vector Data
+(GraphRAG)
+MountainLion System Architecture
+UI Core Business AI Engine Database
+Figure 2: MountainLion system architecture: modu-
+lar design across UI, Core Business, AI Engine, and
+Database layers.
+User Interface Layer: The UI provides a mul-
+tilingual, real-time interaction dashboard support-
+ing both chat and visual analytics.
+Core Business LayerIt implements domain-
+specific functionalities that orchestrate financial
+reasoning. It combines a multi-agent RAG-based
+report generation pipeline (Yang et al., 2023) with
+modules for price forecasting and news-driven
+recommendations (Lewis et al., 2020). By blend-
+ing technical signals, sentiment analysis, and fun-
+damental macroeconomic perspectives, this layer
+ensures that generated investment strategies adapt
+to evolving narratives and user contexts across
+multiple time horizons.
+AI Engine LayerIt serves as the reasoning
+backbone, featuring an LLM-powered coordina-
+tion module, continuous real-time retrieval from
+exchanges and news sources, and a GraphRAG
+mechanism (Peng et al., 2024) for graph-
+structured semantic enrichment. Complemented
+by classical statistical and machine learning mod-
+els, this layer supports robust, explainable, and
+data-driven predictions, addressing both inter-
+pretability and adaptability.
+Database LayerIt provides scalable storage and
+retrieval for trading data, news articles, generated
+reports, and dense semantic embeddings. This
+ensures that MountainLion maintains consistency,
+supports traceable workflows, and can efficiently
+handle the diverse data types required for modern
+cryptocurrency investment analytics.
+3.2 Report Generation and Optimization
+To generate context-aware digital asset reports,
+MountainLionimplements a structured multi-
+stage pipeline that coordinates agent collabora-
+tion, signal validation, and semantic refinement.
+As shown in Figure 3, the process consists of: (1)
+task decomposition and specialization, (2) paral-
+lel analysis, and (3) report synthesis and enhance-
+ment.
+3.2.1 Agent-Based Task Decomposition
+A user-defined report requestTis first clas-
+sified and routed to specialized expert agents
+{A1, A2, A3, A4}. TheTechnical Analysis Agent
+(A1)Processes historical price and volume data to
+compute classical technical indicators (e.g., RSI,
+MACD, Bollinger Bands). Outputs include sup-
+port/resistance zones and volume trends. Next,
+theMarket Dynamics Agent (A 2)Synthesizes
+external signals such as real-time news, capital
+flow, and sentiment indexes. Then, theTrading
+Recommendation Agent (A 3)Integrates outputs
+A2A Framework Core Architecture
+TaskManager
+Gtobal Registry
+TaskRunner
+Agent Factory
+Generate Technical 
+Analysis Report
+(report_num=1)
+Generate Market 
+Dynamics Report
+(report_num=2)
+Generate Trading 
+Recommendation
+(report_num=3)
+REG Analysis
+Search Result 
+Validation
+Filter High-
+Quality Results
+Report Integration 
+and Generation
+Generate Semantic 
+Analysis Report
+Report Correction
+Final Report
+Figure 3: Overview of the Report Generation Pipeline
+fromA 1 andA 2, generating multi-horizon trading
+strategies across different timescales. Finally, the
+Semantic Agent (A 4)Refines the combined out-
+puts through LLM-based analysis, enhancing co-
+herence, logical flow, and lexical consistency.
+3.2.2 Report Enhancement and Optimization
+To ensure reliability, each agentA i formulates an
+information retrieval queryQ i, which is evalu-
+ated based on relevance, recency, and source cred-
+ibility. The validated signals resulting from each
+query, denoted asS ⋆
+Qi, are then synthesized into
+the agent-specific partial reportR i. These partial
+reports are integrated through a centralized func-
+tion to produce a consolidated draft report:
+Rraw =f integrate(R1,R 2,R 3,R 4).(1)
+To align this draft report with prevailing mar-
+ket conditions, a final-stage enhancement is ap-
+plied using a Perplexity-based retriever. Specifi-
+cally, external signalsS pplx are retrieved through
+prompts derived from the content ofR raw, yield-
+ing the final enhanced report:
+Renhanced =f augment(Rraw,S pplx).(2)
+Intermediate partial reportsR i are cached follow-
+ing time-sensitive policies, with freshness checks
+conducted prior to re-execution to avoid redundant
+computation and maintain responsiveness.
+The full formulation of agent-specific reasoning
+functions, along with their intermediate repre-
+sentations, scoring criteria, prompt construction
+methodology, and caching strategy, is detailed in
+Appendix B. This multi-agent, retrieval-enhanced
+framework ensures that MountainLion generates
+investment reports that are timely, data-grounded,
+and semantically robust.
+3.3 Price Forecasting
+To support timely investment decisions and en-
+hance the credibility of financial analyses from
+a statistical perspective,MountainLionadopts a
+dual-path price forecasting framework that com-
+bines statistical learning with LLM-based reason-
+ing. The forecasting module operates two coor-
+dinated parallel tracks to generate timely and re-
+liable price predictions across multiple granular
+time horizons, denoted asT ∈ {1d,1h,5min}, as
+illustrated in Figure 4.
+Price Forecasting
+Trading 
+Platform API
+Candlestick 
+Chart Data
+LLM Prediction 
+Model
+Classic ML 
+Algorithm
+Prediction Result 
+Integration
+Accuracy 
+Assessment
+ Format Output
+Predicted Price
+Data Pre-
+Processing
+Figure 4: Architecture of the Price Forecasting System.
+First, the LLM-Based Forecasting path processes
+structured OHLCV (open, high, low, close, vol-
+ume) data alongside sentiment embeddings ex-
+tracted from financial news, allowing the language
+model to generate multi-step forecasts conditioned
+on both quantitative and qualitative signals.
+Second, the ML-Based Forecasting path applies
+classical machine learning models, such as ridge
+regression and decision trees, to engineered tech-
+nical features, providing lightweight and low-
+latency predictive outputs.
+The outputs from these two forecasting tracks, de-
+noted as ˆYLLM and ˆYML, are aligned and integrated
+through a weighted fusion function:
+ˆYfinal =f fusion( ˆYLLM, ˆYML)(3)
+where the weights are adaptively updated accord-
+ing to the rolling historical accuracy of each pre-
+dictor.
+Forecast evaluation is based on two principal cri-
+teria: absolute accuracy, which measures the mag-
+nitude of prediction error, and directional cor-
+rectness (win rate), which quantifies trend align-
+ment. To enhance interpretability for end users, a
+template-conditioned text generatorg text automat-
+ically converts these numerical forecasts into natu-
+ral language summaries tailored for investor com-
+munication.
+Each forecast horizonTdefines the prediction
+granularity, for example using two future candles
+for daily forecasts, or 24 steps for five-minute in-
+tervals, as discussed by Bandara et al. (Bandara
+et al., 2020). All prediction results are systemat-
+ically archived in resolution-specific tables to fa-
+cilitate evaluation and downstream decision mod-
+ules.
+Full specifications of input data formats, mathe-
+matical derivations of the fusion and weighting
+functions, and details of the adaptive performance
+adjustment loop are provided in Appendix C.
+3.4 News-Driven Recommendation System
+To support sentiment-aware investment decisions,
+MountainLionincorporates a news-driven rec-
+ommendation engine that fuses user intent, news
+semantics, and graph-based reasoning. As shown
+in Figure 5, the system integrates multi-source
+information retrieval, contextual entity analysis,
+and LLM-based summarization to produce inter-
+pretable trading insights.
+News-Driven Recommendation
+News Data
+Retrieval
+LLM 
+Recommendation 
+Engine
+Knowledge 
+Graph 
+Construction
+Analysis Result 
+Integration
+LLM Analysis 
+Enhancement
+ Format Output
+Final Recommendation
+Data Pre-
+Processing
+User Request
+User Intent 
+Analysis
+Feedback
+Learning
+Figure 5: Architecture of the News-Driven Recommen-
+dation System
+3.4.1 News Processing and Semantic
+Enrichment
+MountainLioncontinuously ingests financial
+news from APIs, RSS feeds (Orr, 2003), and cu-
+rated portals to enrich its market situational aware-
+ness. A semantic annotation module classifies
+each article according to sentiment polarity (for
+example,BullishorBearish) and extracts
+salient entities, such as tokens, events, and organi-
+zations, via named entity recognition (NER) tech-
+niques (Li et al., 2022). These annotations allow
+the system to build structured news representa-
+tions that support graph-based modeling, cluster-
+ing, and time-sensitive filtering aligned with the
+user’s investment horizon.
+A dynamic knowledge graph (Hogan et al., 2021)
+is constructed to encode semantic relationships
+among news items and extracted entities. In this
+graph, nodes represent either documents or named
+entities, while edges capture co-occurrence or
+context-derived associations. This graph structure
+supports multi-hop reasoning, enabling grounded
+summarization of news content and evidence-
+backed investment recommendations.
+When a user submits a query, the system infers
+implicit preferences, including target asset cate-
+gories, risk appetite, and investment time frames,
+and uses these to compose retrieval prompts. An
+instruction-tuned LLM then generates investment
+recommendations by integrating evidence from re-
+trieved news documents and the graph context.
+Finally, user engagement signals, such as click-
+through rates and feedback ratings, are continu-
+ously logged and incorporated into a lightweight
+feedback policy module, like in (Joachims, 2002),
+which refines both retrieval and summarization
+strategies over time. The formal definitions, graph
+construction methodology, query parsing frame-
+work, and associated optimization procedures are
+detailed in Appendix D.
+To illustrate the practical utility and end-to-end
+capabilities of the MountainLion framework, we
+present a demonstration scenario that highlights its
+integration of data ingestion, multi-modal analy-
+sis, and real-time user interaction. Additional im-
+plementation details, including extended configu-
+ration parameters and dataset samples supporting
+this scenario, are provided in Appendix A.
+4 Case Study
+4.1 Overall Comparison Analysis
+The refined investment recommendations system-
+atically improved on the original baseline by in-
+tegrating dynamic market signals and macroeco-
+nomic context. Figure 6 illustrates these before-
+and-after refinements.
+Short term (1–4 weeks):The original guidance
+relied on general support/resistance and breakout
+triggers with limited justification. The refined
+approach incorporated concrete on-chain indica-
+tors, such as a rising number of 1+ BTC wallets
+and increased liquidation volume among lever-
+aged traders, improving the credibility of short-
+term signals despite their limited persistence.
+Medium term (1–6 months):The initial rec-
+ommendations lacked macroeconomic awareness.
+The enhanced version addressed this by incor-
+porating ETF inflows, regulatory clarity in ma-
+jor markets (U.S. and EU), and policy easing sig-
+nals, making the strategy more practical and inter-
+pretable for institutional and mid-sized investors.
+Long term (6+ months):Originally, long-term
+advice focused only on portfolio allocation ratios.
+The enhanced recommendations integrated insti-
+tutional adoption trends and the structural tight-
+ening of BTC supply from reduced exchange re-
+serves, thereby reinforcing the long-term invest-
+ment thesis with clearer justification.
+Overall, these refinements deliver a more robust,
+persuasive, and actionable investment strategy by
+layering market sentiment, policy signals, and fun-
+damental supply-demand dynamics across all time
+horizons. A detailed line-by-line explanation of
+these improvements is provided in Appendix E.
+4.2 Enhancing Web3 Investment
+Recommendations with LLMs
+Experiment Setup. To establish a fair eval-
+uation protocol, we designed a minimal base-
+line strategy relying exclusively on technical in-
+dicators. This baseline incorporated standard
+elements such as support and resistance lev-
+els. Three investment horizons were defined for
+consistent comparison: short term (1–4weeks),
+medium term (1–6months), and long term (be-
+yond 6 months). Importantly, this baseline ex-
+cluded macroeconomic releases, on-chain flow
+data, and ETF activity, providing a neutral and
+controlled foundation to quantify the incremen-
+tal contributions of advanced language models.
+Building on this baseline, we evaluated three state-
+of-the-art LLM-based agents: ChatGPT-4o (Ope-
+nAI, 2024), DeepSeek V3 (DeepSeek, 2024), and
+Grok-3 (xAI, 2024). Each model was tasked with
+refining the generated financial reports and invest-
+ment recommendations by leveraging historical
+price data, real-time market signals, and relevant
+news narratives. The goal was to assess how ef-
+fectively these models could enhance report qual-
+ity, interpretability, and strategic decision-making
+beyond the purely technical baseline.
+Experiment resultAcross the three evaluated
+models, consistent patterns emerged in refining the
+baseline strategy. ChatGPT-4o leveraged whale
+accumulation metrics, ETF net inflow triggers,
+and dynamic volatility thresholds to guide par-
+tial profit-taking. DeepSeek V3 emphasized pol-
+icy overlays, on-chain flows, and adaptive cash
+buffers, while Grok-3 prioritized on-chain whale
+transfers, IMF-based classification signals, and
+dynamic redeployment based on ETF momen-
+tum. The results support a blended approach to
+investment reports, with the 1–6 month horizon
+emerging as the optimal window for balancing
+institutional narratives, policy shifts, and execu-
+tion flexibility. These results suggest that LLM-
+driven analysis can enhance medium-term cryp-
+tocurrency investment strategies with improved
+adaptability and interpretability.
+5 Conclusion
+In this paper, we presentedMountainLion,
+a multi-agent, RAG-enabled financial analysis
+framework designed for the challenges of cryp-
+tocurrency trading. By integrating specialized
+LLM agents, graph-based retrieval reasoning, and
+a reflective decision module, MountainLion en-
+ables interpretable, real-time, and adaptive re-
+sponses across diverse financial modalities. Our
+system supports dynamic financial report genera-
+tion and refinement, integrating textual news, vi-
+sual market signals, and on-chain data to deliver
+personalized investment recommendations. Em-
+pirical evaluations confirm that MountainLion im-
+proves medium-term forecasting accuracy while
+enhancing transparency and adaptability. This
+agent-based architecture lays a scalable and exten-
+sible foundation for robust cryptocurrency trading
+intelligence, capable of meeting the evolving de-
+mands of modern financial markets.
+References
+Jorge Alonso and Pablo Delgado. 2020. cryptobert:
+A contextual language model for cryptocurrency sen-
+timent classification.IEEE Transactions on Computa-
+tional Social Systems, 7(6):1405–1415.
+Kosala Bandara, Christoph Bergmeir, and Stefan Smyl.
+2020. Forecasting across time horizons: An empiri-
+cal evaluation of multiresolution lstm models for time
+series forecasting.Expert Systems with Applications,
+140:112896.
+Rishi Bommasani, Drew A Hudson, Ehsan Adeli, Russ
+Altman, Simran Arora, Sydney von Arx, Michael
+Bernstein, Jeannette Bohg, Antoine Bosselut, Emma
+Brunskill, and 1 others. 2021. On the opportuni-
+ties and risks of foundation models.arXiv preprint
+arXiv:2108.07258.
+Xiaoyu Chen, Yifan Zhu, and Rui Wang. 2020a. Pre-
+dicting cryptocurrency prices with deep learning: The
+case of bitcoin.Finance Research Letters, 32:101085.
+Yunsu Chen, Juhee Kim, and Seong G. Kang. 2020b.
+Bitcoin volatility forecasting with a glimpse into
+buy and sell volumes.Finance Research Letters,
+35:101300.
+DeepSeek. 2024. Deepseek-v3 model card. Available
+at https://deepseek.com/models/v3.
+Aidan Hogan, Eva Blomqvist, Michael Cochez, Clau-
+dia d’Amato, Gerard de Melo, Claudio Gutierrez, Jose
+Emilio Labra Gayo, Roberto Navigli, Sebastian Neu-
+maier, Axel Polleres, and et al. 2021. Knowledge
+graphs.ACM Computing Surveys, 54(4):1–37.
+Thorsten Joachims. 2002. Optimizing search engines
+using clickthrough data.Proceedings of the ACM
+SIGKDD International Conference on Knowledge Dis-
+covery and Data Mining (KDD), pages 133–142.
+Taehyun Kim and Daehyung Shin. 2019. Forecasting
+cryptocurrency prices using cnn and lstm.Expert Sys-
+tems with Applications, 134:135–144.
+Joon Lee and Soo Kim. 2022. Strategic rebalancing of
+crypto portfolios with macroeconomic signals.Quan-
+titative Finance, 22(7):1234–1249.
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio
+Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich
+Küttler, Mike Lewis, Wen-tau Yih, Tim Rocktäschel,
+and 1 others. 2020. Retrieval-augmented generation
+for knowledge-intensive nlp tasks.Advances in neural
+information processing systems, 33:9459–9474.
+Jun Li, Xiaoya Zhang, Lei Liu, and Heng Ji. 2022. A
+survey on named entity recognition: Tasks, methods,
+and future directions.Frontiers of Computer Science,
+16(6):166409.
+Meng Li and Kai Wang. 2023. Macro-driven crypto in-
+vestment strategies using regulatory and on-chain sig-
+nals.Journal of Financial Data Science, 5(1):22–38.
+Yuan Li, Bingqiao Luo, Qian Wang, Nuo Chen,
+Xu Liu, and Bingsheng He. 2024. Cryptotrade: A re-
+flective llm-based agent to guide zero-shot cryptocur-
+rency trading. InProceedings of the 2024 Conference
+on Empirical Methods in Natural Language Process-
+ing, pages 1094–1106.
+Wei Liu, Tao Zhang, and Yuxuan He. 2021. Cryp-
+toalert: Event-driven news recommendation for cryp-
+tocurrency trading. InProceedings of the Web Confer-
+ence (WWW).
+Xiaoqi Liu, Kai Zhang, Mu Chen, and Xiang
+Ren. 2023. Blockchain data analytics: Applica-
+tions, opportunities, and challenges.arXiv preprint
+arXiv:2306.13642.
+Yang Liu, Xiaoyang Wu, Jun Li, and Yifan Wang.
+2022. A survey on cryptocurrency trading: Price
+prediction, portfolio management, and explainable
+decision-making.ACM Computing Surveys, 55(7):1–
+38.
+Xiang Ma, Yifan Zhang, Rui Zhang, Ming Li, Yijun
+Liu, and Qiang Zhang. 2023. Smfinbert: A social me-
+dia financial sentiment analysis model. InProceedings
+of the 61st Annual Meeting of the Association for Com-
+putational Linguistics, pages 1254–1264.
+V olodymyr Mnih, Koray Kavukcuoglu, David Sil-
+ver, Andrei A Rusu, Joel Veness, Marc G Bellemare,
+Alex Graves, Martin Riedmiller, Andreas K Fidjeland,
+Georg Ostrovski, Stig Petersen, and 1 others. 2015.
+Human-level control through deep reinforcement learn-
+ing. InNature, volume 518, pages 529–533.
+Satoshi Nakamoto. 2008. Bitcoin: A peer-to-peer elec-
+tronic cash system.Bitcoin.org. White paper.
+An Pham Ngoc Nguyen, Tai Tan Mai, Marija Bezbrad-
+ica, and Martin Crane. 2023. V olatility and returns con-
+nectedness in cryptocurrency markets: Insights from
+graph-based methods.Physica A: Statistical Mechan-
+ics and its Applications, 632:129349.
+OpenAI. 2024. Gpt-4o technical report. Available at
+https://openai.com/research/gpt-4o.
+K. Orr. 2003. Rss: Lightweight syndication of dynamic
+web content.IEEE Internet Computing, 7(5):56–58.
+Boci Peng, Yun Zhu, Yongchao Liu, Xiaohe Bo,
+Haizhou Shi, Chuntao Hong, Yan Zhang, and Siliang
+Tang. 2024. Graph retrieval-augmented generation: A
+survey.arXiv preprint arXiv:2408.08921.
+Minjoon Seo, Aniruddha Kembhavi, Ali Farhadi, and
+Hannaneh Hajishirzi. 2016. Bidirectional attention
+flow for machine comprehension.arXiv preprint
+arXiv:1611.01603.
+Omer Berat Sezer, Muammer Ulas Gudelek, and Ah-
+met Murat Ozbayoglu. 2020. Financial time series
+forecasting with deep learning: A systematic litera-
+ture review: 2005–2019.Applied Soft Computing,
+90:106181.
+Zhongxiang Shen, Wei Zhuang, and Zhi Ding. 2021.
+Multi-agent deep reinforcement learning for portfolio
+optimization. InIEEE International Conference on Big
+Data, pages 2164–2171.
+Jin Si, Subhabrata Mukherjee, and Bing Liu. 2021. A
+survey of sentiment analysis techniques for social me-
+dia texts.ACM Transactions on Intelligent Systems and
+Technology (TIST), 12(2):1–42.
+Yi Sun, Xueliang Li, Huaiyu Xu, Xiang Ren, and Kai
+Zhang. 2023. Graphrag: Leveraging graph reason-
+ing for retrieval-augmented generation.arXiv preprint
+arXiv:2312.03716.
+Hugo Touvron, Louis Martin, Kevin Stone, Peter Al-
+bert, Amjad Almahairi, Yasmine Babaei, Niklas Bash-
+lykov, Naman Batra, Prajjwal Bhargava, Shagun Bhos-
+ale, and 1 others. 2023. LLaMA 2: Open foun-
+dation and fine-tuned chat models. arXiv preprint
+arXiv:2307.09288.
+Chengyu Wang, Xueliang Li, Xiang Ren, and Xueqi
+Liu. 2023. Multilingual financial event extrac-
+tion with transferable prompting.arXiv preprint
+arXiv:2305.11279.
+Xinyi Wu, Yichao Qian, Huaiyu Xu, Xiang Ren, and
+Xueqi Liu. 2023a. Financialgpt: Large language model
+for financial task-oriented dialogues.arXiv preprint
+arXiv:2311.08685.
+Xinyi Wu, Huaiyu Xu, Yichao Qian, Xiang Ren,
+Mu Chen, and Xueqi Liu. 2023b. A survey of
+financial large language models.arXiv preprint
+arXiv:2310.02280.
+xAI. 2024. Grok-3 overview. Available at
+https://x.ai/grok3.
+Huaiyu Xu, Xueqi Liu, Xiang Ren, Mu Chen, Xueliang
+Li, and Kai Zhang. 2023. A survey of large language
+models as agents.arXiv preprint arXiv:2312.05664.
+Jing Xu, Liang Zhao, and Rui Liu. 2021. Perplexity-
+guided news relevance ranking for financial decision-
+making. InProceedings of the 2021 Conference on
+Empirical Methods in Natural Language Processing
+(EMNLP).
+Stephen Yang, Luca Deep, and David Levin.
+2020. Deep portfolio theory.Quantitative Finance,
+20(9):1421–1437.
+Yi Yang, Xiang Sun, Bill Yuchen Lin, and Xiang Ren.
+2021. Finbert: A pretrained language model for finan-
+cial communications. InProceedings of the 2021 Con-
+ference on Empirical Methods in Natural Language
+Processing, pages 927–935.
+Zhenyu Yang, Bill Yuchen Lin, Tianyu Zhao, Yuwei
+Chen, Xiao Liu, Kai Zhang, and Xiang Ren. 2023.
+Agentbench: Benchmarking large language model
+agents. InarXiv preprint arXiv:2308.07255.
+Lei Zhang, Hao Liu, and Zhiwei Xu. 2021. Btc-trader:
+Deep technical pattern recognition for bitcoin trading
+signal generation. InProceedings of the 30th Interna-
+tional Joint Conference on Artificial Intelligence (IJ-
+CAI).
+A Demonstration Scenario
+A.1 Pipeline Walk-through
+The full cryptocurrency analysis workflow pro-
+ceeds as follows:
+Step 1: Input PreparationAll cryptocurrency
+queries are processed through structured API end-
+points, with data fields matching the schema
+defined in the Vue.js component system. For
+market analysis and historical context, real-time
+data is fetched from multiple sources includ-
+ing K-line data (getKlineInfo), coin list-
+ings (getCoinList), and prediction models
+(getPredictInfo). User authentication to-
+kens and session management are established
+through the request interceptor system.
+Step 2: ExecutionWe demonstrate the system’s
+adaptive capabilities by running both preset anal-
+ysis and conversational AI modes. The standard
+analysis pipeline is executed through:
+1// Preset analysis mode
+2router.push({
+3path: ‘/crypto/${coinCode}‘,
+4query: { type: ’preset’, analysis:
+’comprehensive’ }
+5})
+6
+7// AI chat mode
+8router.push({
+9path: ‘/chat/${sessionId}‘,
+10query: { type: ’newChat’, context:
+’crypto’ }
+11})
+For the AI-enhanced analysis, we incorporate real-
+time market data and trigger the intelligent re-
+sponse system through thesendchatAPI end-
+point. The system automatically evaluates market
+conditions including price volatility thresholds,
+trading volume patterns, technical indicator sig-
+nals, and temporal constraints. When conditions
+are satisfied, the system applies dynamic analy-
+sis including technical analysis weights, trend as-
+sessment parameters, and prediction model coeffi-
+cients.
+This triggers multi-dimensional analysis includ-
+ing: (1) Technical analysis across oscillator indi-
+cators and moving averages with gauge visualiza-
+tions; (2) Price prediction modeling using histori-
+cal K-line data and machine learning algorithms;
+(3) Market sentiment analysis combining social
+media data and trading patterns; (4) Fund flow
+monitoring with real-time capital movement track-
+ing and risk assessment.
+Step 3: Output and InterpretationThe result-
+ing output consists of several coordinated com-
+ponents. An interactive dashboard presents cryp-
+tocurrency price charts, technical analysis gauges,
+and prediction visualizations to support data-
+driven exploration. Complementing this, compre-
+hensive analysis reports provide detailed trend as-
+sessments, buy/sell recommendations, and market
+sentiment indicators. A real-time chat interface of-
+fers AI-powered investment insights with conver-
+sation history and sharing capabilities to enhance
+user engagement. Furthermore, multi-language
+support is integrated with localized financial ter-
+minology and cultural adaptation strategies to ad-
+dress the needs of diverse regional markets.
+A.2 Insights
+MountainLion demonstrated significant efficacy in
+mitigating the complexities of information over-
+load in the Web3 domain. By utilizing a LLAMA2
+13B model (Touvron et al., 2023), fine-tuned on
+extensive Web3 industry-specific data (Liu et al.,
+2023), MountainLion automated the filtering and
+categorization of critical information. This mecha-
+nism notably reduced investor cognitive load, dis-
+tilling essential insights from large volumes of
+data. Specifically, the automated filtration process
+enhanced relevant information retrieval efficiency
+by over 40% compared to manual processes.
+Real-time Market AdaptationThe project’s real-
+time analytics capability substantially improved
+investor responsiveness to market volatility. By
+integrating real-time chain data with instantaneous
+market news, MountainLion effectively identified
+potential shifts in market dynamics ahead of tra-
+ditional alert systems. Instances included precise
+detection of whale activity involving significant
+transactions (≥10M USD) with a confidence score
+exceeding 0.85, enabling timely strategic adjust-
+ments.
+Multi-dimensional Investment AnalysisThe
+multi-signal analytical framework deployed by
+MountainLion proved instrumental in providing
+holistic investment assessments. By analyzing
+not only token prices but also broader indica-
+tors such as project visions, community engage-
+ment, and historical trends, MountainLion accu-
+rately gauged investment viability. Empirical vali-
+Investment Recommendations
+Short-term (1–4 weeks):
+Consider entries in the $94,300–$95,500 support zone or on breakout 
+confirmation above $98,800 with increased volume; implement take–
+profit levels at $100,000 and $102,000–$105,000 with a primary stop–
+loss at $92,800.
+Medium-term (1–6 months):
+Implement a tiered accumulation strategy with 20% of planned position 
+at $94,300, 30% at $90,000, and 50% below $85,000; consider scaling 
+out 20% at $105,000, 30% at $120,000, 20% at $150,000, and holding 
+30% for long–term growth.
+Long-term (6+ months):
+Maintain 5–10% portfolio allocation for conservative investors and up 
+to 15–20% for aggressive investors, with a distribution of 60% core 
+holding, 25% trading portion, and 15% strategic reserve for market 
+dislocations.
+Before Refined by Perplexity
+Investment Recommendations
+Short-term (1–4 weeks):
+Consider entries in the $94,300–$95,500 support zone or on breakout 
+confirmation above $98,800 with increased volume; implement take–
+profit levels at $100,000 and $102,000–$105,000 with a primary stop–
+loss at $92,800.
+Increased accumulation of 1+ BTC wallets and a sudden 3.2% rise in 
+liquidation volume from leveraged traders suggest heightened volatility 
+and stronger short-term upside potential.
+Medium-term (1–6 months):
+Implement a tiered accumulation strategy with 20% of planned position 
+at $94,300, 30% at $90,000, and 50% below $85,000; consider scaling 
+out 20% at $105,000, 30% at $120,000, 20% at $150,000, and holding 
+30% for long–term growth.
+Watch for sustained ETF inflows and the potential market reaction to 
+further macroeconomic easing or regulatory clarity in the U.S. and EU.
+Long-term (6+ months):
+Maintain 5–10% portfolio allocation for conservative investors and up 
+to 15–20% for aggressive investors, with a distribution of 60% core 
+holding, 25% trading portion, and 15% strategic reserve for market 
+dislocations.
+Rising institutional adoption and decreasing exchange reserves indicate 
+a tightening supply structure favorable to long-term appreciation.
+After Refined by Perplexity
+Figure 6: Comparison between the input report (left) and the output report (right) after refinement by our Moun-
+tainLion system. The output report integrates contextual signals such as on-chain wallet accumulation, leveraged
+liquidation events, ETF inflows, and institutional adoption patterns, resulting in a more data-grounded, timely, and
+interpretable financial narrative. This highlights how MountainLion systematically enhances investment reports
+through real-time retrieval and semantic reasoning.
+dation indicated a 28% improvement in investment
+decision accuracy when investors utilized Moun-
+tainLion’s comprehensive assessments versus tra-
+ditional, singular-dimension analyses.
+Strategic GenAI Predictive PowerMoun-
+tainLion leveraged predictive modeling tech-
+niques significantly enhanced by GenAI algo-
+rithms (Bommasani et al., 2021), delivering reli-
+able forecasts of market conditions. For instance,
+GenAI integration improved short-term price pre-
+diction accuracy by 15% compared to baseline
+models. Notably, the adaptive forecasting mecha-
+nism, factoring in macroeconomic conditions, reg-
+ulatory trends, and sentiment analysis, substan-
+tially mitigated risks associated with investment
+decision-making under uncertainty.
+Enhanced User Engagement through Simpli-
+fied InterfaceUser interaction analysis revealed
+that MountainLion’s intuitive interface, combined
+with simplified technical explanations provided by
+GenAI, dramatically reduced barriers to entry for
+non-technical users. Data showed a 35% increase
+in user engagement duration and a notable in-
+crease in platform adoption rates among novice in-
+vestors, underscoring the effectiveness of its user-
+centric design.
+B Detailed Formulations for Report
+Generation
+This appendix elaborates the formal formulations
+and computational details underlying Mountain-
+Lion’s multi-agent report generation pipeline, with
+explicit definitions for each agent, validation pro-
+cedure, prompt construction, and caching policies.
+B.1 Agent Computation Functions
+The report generation framework involves four
+specialized agentsA i, each responsible for a dis-
+tinct analytic function.
+Technical Analysis Agent (A 1)Given histori-
+cal market dataD tech, the technical analysis agent
+computes a set of canonical indicators, includ-
+ing the relative strength indexf RSI, moving aver-
+age convergence divergencefMACD, and Bollinger
+bandsf Bollinger. It also derives support levelsz sup
+and trend strength metricsv trend, summarized as:
+R1 =f TA(Dtech)
+=
+
+fRSI, fMACD, fBollinger, zsup, vtrend
+ 
+. (4)
+Market Dynamics Agent (A 2)For real-time
+trading context, the market dynamics agent pro-
+cesses live signals including news sentimentN t,
+regulation signalsR t, funding flowsF t, and social
+signalsS t, aggregated through:
+R2 =f MD(Nt, Rt,F t,S t).(5)
+Trading Recommendation Agent (A 3)This
+agent synthesizes partial reports from multiple
+pathways, leveragingR 1 andR 2, along with a
+broader data contextD multi, to generate trading
+strategies via:
+R3 =f TR(R1,R 2,D multi) =
+4[
+k=1
+fk(Dk),(6)
+where eachf k denotes a specific rule-based or sta-
+tistical subcomponent acting on data subsetD k.
+Semantic Analysis Agent (A 4)Finally, an
+LLM-driven semantic analysis agent refines the
+integrated knowledge from prior agents:
+R4 =f SA(R1,R 2,R 3),(7)
+capturing latent narrative consistency and user-
+facing interpretability signals.
+B.2 Validation and Scoring Logic
+Each retrieval query results j ∈ SQi is assessed
+according to a composite scoring function that
+weighs relevance, recency, and credibility:
+Score(sj) =α 1 ·Relevance(s j) +α 2 ·Recency(s j)
++α 3 ·Credibility(s j),
+(8)
+whereα 1,α 2, andα 3 are tunable coefficients to
+reflect the system’s strategic emphasis on different
+quality criteria.
+B.3 Prompt Construction and Real-Time
+Retrieval
+Based on these validated signals, a structured
+prompt is formulated to guide retrieval-augmented
+reasoning. Its schema is:
+P(γ, t) :=Prompt(c1, . . . , c8;γ, t),(9)
+wherec 1 toc 8 denote contextual elements,γis a
+confidence threshold, andtis the temporal scope.
+Final signal retrieval is then executed through a
+Perplexity-based retriever:
+Spplx =F pplx(P,R raw),(10)
+which enriches the draft report with relevant exter-
+nal evidence.
+B.4 Caching Policy
+To optimize runtime performance and maintain
+system responsiveness, the partial resultsR i com-
+puted by each agent are subject to a caching pol-
+icy. Each agent output is stored in a cache with a
+time-to-live parameterτ i, defined by:
+τi =
+
+
+
+30minutes,ifi= 1 (technical analysis)
+6hours,ifi= 2 (market dynamics)
+dynamic,ifi= 3 (recommendation agent)
+(11)
+where the dynamic expiration fori= 3is de-
+termined based on user interaction frequency and
+data update rates. Before executing a fresh com-
+putation, the system first checks the cache validity
+using:
+ift now −t cached < τi,then reuseR i.(12)
+If the cached data remains fresh according toτ i,
+it is reused directly to avoid unnecessary recom-
+putation, thus preserving computational resources
+and reducing latency. Otherwise, the agent recom-
+putes the result and refreshes the cache entry. This
+policy balances freshness of data with system effi-
+ciency, and is crucial to supporting near real-time
+updates under high user query volume.
+B.5 Report Enhancement and Optimization
+Once all partial agent outputsR 1,R 2,R 3,R 4
+have been validated and assembled, a centralized
+integration step combines them into a preliminary
+draft report:
+Rraw =f integrate(R1,R 2,R 3,R 4).(13)
+This integration functionf integrate resolves con-
+flicts between signals and prioritizes higher-
+confidence sources based on historical agent ac-
+curacy and recency of their updates.
+To further align the report with current market dy-
+namics, a Perplexity-based retrieval module is ap-
+plied. Specifically, retrieval prompts are derived
+from the content ofR raw, guiding external evi-
+dence gathering:
+Renhanced =f augment(Rraw,S pplx)(14)
+whereS pplx represents real-time signals retrieved
+from external sources using Perplexity-based
+query ranking. The augmentation function
+faugment refines the report’s narrative, updates sta-
+tistical confidence estimates, and adjusts trend in-
+ferences according to the freshest external knowl-
+edge.
+In summary, the combination of agent-specific
+caching, centralized integration, and retrieval-
+based enhancement enables MountainLion to con-
+tinuously generate investment reports that are
+robust, statistically grounded, and dynamically
+aligned with evolving market conditions. The
+modular and adaptive design supports both high-
+frequency refresh rates and user-personalized in-
+teractions, providing a scalable framework for
+real-time financial decision support.
+C Forecasting Model Details
+This appendix provides a rigorous breakdown of
+the dual-path forecasting framework employed by
+MountainLion, including input structures, model-
+ing logic, output definitions, fusion strategy, and
+evaluation procedures.
+C.1 Input Representation
+At each time stept, the raw K-line (OHLCV) data
+is represented as:
+Xt ={o t, ht, lt, ct, vt}(15)
+whereo t,h t,l t,c t, andv t denote the open, high,
+low, close, and volume at timet, respectively.
+These observations are aggregated over specific
+windows to capture both medium-term and short-
+term dynamics, resulting in the following aggre-
+gated sequences:
+X (14D),X (48H) ,(16)
+which are then paired with sentiment embeddings
+derived from historical newsN hist and real-time
+newsN realtime. The complete input tuple is formu-
+lated as:
+I=
+
+X (14D),X (48H) ,N hist,N realtime, γ, t0
+
+,
+(17)
+whereγdenotes a confidence threshold andt 0 the
+reference timestamp for forecasting alignment.
+C.2 Model Outputs
+The forecasting module operates two coordinated
+tracks:
+LLM TrackThe LLM-based predictor outputs
+multi-step sequences over a forecast horizonT, re-
+turning predicted OHLCV tuples:
+ˆYLLM =
+n
+(ti,ˆoi, ˆhi, ˆli,ˆci,ˆvi)
+oT
+i=1
+.(18)
+ML TrackFor the ML-based predictor, a fea-
+ture engineering stage expands the raw K-line data
+with simple derived statistics:
+xt = [ot, ht, lt, ct, vt, ht −l t, ct −o t],(19)
+where price range(h t −l t)and price movement
+(ct −o t)complement the original features. Using
+models such as polynomial regression or ensemble
+decision trees, the ML module then predicts the
+next price vector:
+yt+1 =f ML(xt).(20)
+C.3 Fusion and Evaluation
+To consolidate the complementary strengths of the
+LLM-based and ML-based forecasting tracks, the
+final prediction is constructed as a convex combi-
+nation of their outputs:
+ˆYfinal =α· ˆYLLM + (1−α)· ˆYML.(21)
+Here, the coefficientα∈[0,1]serves as a tunable
+weight that balances the expressive capacity of the
+language model with the statistical stability of the
+ML predictor. By adjustingα, the system can em-
+phasize LLM-driven multi-step reasoning when
+textual sentiment signals are informative, or con-
+versely prioritize ML-based local patterns when
+price history dominates. This weighted fusion
+strategy provides a flexible mechanism to adap-
+tively integrate heterogeneous signals.
+To maintain robustness over time,αis periodi-
+cally re-optimized using rolling validation accu-
+racy scores, ensuring that the contribution of each
+track reflects its relative predictive performance on
+recent data. In this way, the fusion is not static
+but adapts to evolving market conditions and data
+drift.
+For quantitative evaluation, two complementary
+metrics are introduced. The first is absolute accu-
+racy, capturing the relative error of the predicted
+closing priceˆct compared to the true observedc t:
+Accuracy= 1− |ˆct −c t|
+ct
+.(22)
+This measures proportional error, standardizing
+across different price magnitudes, and directly re-
+flects how close the model’s numeric prediction is
+to market reality.
+The second evaluation dimension considers direc-
+tional correctness, or *win rate*, which assesses
+whether the model correctly predicts the direction
+of price movement:
+ω= 1
+T
+TX
+i=1
+I[sign(ˆci −ˆci−1) =sign(c i −c i−1)],
+(23)
+whereI[·]is an indicator function that returns 1 if
+the predicted direction matches the actual direc-
+tion, and 0 otherwise. This metric is essential for
+investment contexts, where correct trend direction
+may be more valuable than precise price levels. By
+combining absolute accuracy with directional cor-
+rectness, the evaluation captures both price-level
+fidelity and market timing performance, providing
+a holistic view of the forecasting system.
+C.4 Postprocessing and Adaptation
+Following fusion and evaluation, the model’s
+numeric forecasts are further transformed into
+investor-readable language. This is achieved
+through a template-conditioned text generator:
+Rtext =g text( ˆYfinal, ω,Accuracy,News),(24)
+whereg text(·)uses predefined linguistic templates
+and contextual news signals to produce coherent,
+actionable narrative reports. This design ensures
+that users receive not only raw numeric data but
+also understandable interpretations, improving ac-
+cessibility and trust in the model’s outputs.
+To maintain long-term consistency, an adaptation
+mechanism monitors rolling model performance.
+Specifically, a moving average of accuracy over a
+window of lengthWis calculated as:
+Accuracym = 1
+W
+WX
+j=1
+Accuracyj,(25)
+which smooths short-term fluctuations while
+tracking persistent changes in predictive quality.
+If this rolling accuracy falls below a predefined
+thresholdδ, the system interprets it as a perfor-
+mance degradation event, triggering an adaptive
+update to the fusion weight:
+if Accuracym < δ⇒α m ↓.(26)
+This rule ensures that when the LLM-driven
+component underperforms (for example due to
+a regime shift or sentiment misalignment), its
+weightα m is reduced, thereby allocating greater
+influence to the ML-based predictor. This closed-
+loop mechanism improves the system’s resilience
+to distribution shifts, concept drift, or external
+shocks, sustaining reliable and interpretable in-
+vestment forecasts over time.
+Altogether, these detailed formulations define a
+rigorous framework for combining multiple fore-
+casting modalities, balancing accuracy and inter-
+pretability, and adapting dynamically to evolving
+market behavior. The combination of linear fu-
+sion, complementary evaluation, text generation,
+and adaptive weighting creates a robust forecast-
+ing architecture suitable for high-stakes financial
+applications.
+C.5 Prediction Result
+The evaluation results summarized in Table 1
+demonstrate the robustness and adaptability of the
+proposed forecasting framework across a diverse
+set of cryptocurrency tokens. The cross-validation
+(CV) scores and mean squared error (MSE) met-
+rics provide quantitative evidence of prediction
+performance. Most tokens, such as ADA, ARB,
+SOL, DOGE, and MATIC, exhibit excellent or
+good fit, with low MSE values indicating stable
+generalization. In particular, TRX achieved the
+best performance, with minimal error and high
+consistency.
+Although BTC and ETH showed larger MSE and
+CV scores, these deviations are interpretable given
+their higher market capitalization and the associ-
+ated structural non-stationarities in their time se-
+ries, which could be further addressed by special-
+ized volatility modeling. Overall, the combination
+of linear fusion, rolling adaptive weighting, and
+graph-enhanced prompt reasoning achieves reli-
+able predictive accuracy and directional correct-
+ness across varied market conditions, highlighting
+the framework’s suitability for high-stakes, real-
+time investment decision support.
+D News Recommendation
+Implementation Details
+This appendix provides a rigorous and detailed
+formulation of MountainLion’s news recommen-
+dation and semantic enrichment modules, explain-
+Token Alpha CV Score (Best) MSE (Test) Model Evaluation
+ADA 1 -0.000496 0.000396 Excellent fit, highly stable
+BTC 1 -1,997,859.43 3,211,419.56 Large error, unstable trend (likely underfitting
+large-cap behavior)
+ARB 1 -0.000421 0.000199 Very good
+SOL 1 -0.000459 0.000159 Good model, potentially high volatility
+XRP 0.1 -0.000221 0.001122 Medium fit, moderate noise
+DOGE 1 -0.000362 4.25E-05 Very good
+TRX 0.01 -9.87E-06 6.40E-06 Best performer
+ETH 1 -2,169,147.17 3,016,065.13 Large error, unstable for ETH
+MATIC 1 -0.000432 0.000341 Stable, medium confidence
+BNB 1 -945.57 180.95 High deviation, unstable in 7-day window
+Table 1: Forecasting Results Across Tokens
+ing each step of the pipeline from raw data inges-
+tion to final feedback-driven adaptation.
+D.1 News Structuring
+Let the raw news stream collected from APIs, RSS
+feeds (Orr, 2003), and curated portals be denoted
+by
+Nraw ={n 1, n2, . . . , nT },(27)
+where each news itemn i is structured as a tuple
+ni = (hi, bi, ti, si, σi),(28)
+withh i representing the headline,b i the article
+body,t i the timestamp,s i the source, andσ i the
+set of crypto tokens or entities mentioned in the
+article.
+Since timeliness is crucial for financial relevance,
+a recency-based filtering mechanism is applied:
+ni ∈ Nfiltered ⇐ ⇒ti ∈[t 0 −∆, t0],(29)
+where the window size∆is dynamically selected
+depending on the user’s investment horizon (e.g.,
+intraday, weekly).
+D.2 Semantic Enrichment
+The filtered articles undergo semantic annotation,
+first through sentiment classification:
+Sentiment(ni) =
+(
+Bullish,iff LLM(ni)> τ
+Bearish,otherwise,
+(30)
+wheref LLM is a sentiment inference head within a
+large language model, andτis a tunable threshold
+controlling the confidence of bullish signals.
+Next, named entity recognition (NER) is applied
+to extract relevant entities:
+E(n i) ={e|e∈ T ent},(31)
+with a type set defined as
+Tent ={ORG,PER,EVT,CRYPTO},(32)
+covering organizations, persons, events, and cryp-
+tocurrency identifiers. This enrichment step en-
+sures the news data is structured for downstream
+graph construction and user personalization.
+D.3 Knowledge Graph Construction
+To model relationships between news articles and
+extracted entities, a directed attributed graph is
+formulated:
+G= (V,E),(33)
+where each nodev∈ Vcorresponds to either a
+news itemn i or an entitye j, and the edges encode
+associations:
+(ni, ej)∈ E ⇐ ⇒ej ∈ E(ni).(34)
+This knowledge graph supports multi-hop expan-
+sion and relevance propagation, enabling reason-
+ing chains that connect diverse news fragments
+through shared entities or topics (Hogan et al.,
+2021).
+D.4 User Intent Interpretation
+When a user initiates a recommendation request,
+the system interprets their implicit investment
+preferences as a vector:
+Intent(u) = (C, r, τ),(35)
+whereCdenotes the asset category (for example,
+Layer2 protocols),rrepresents risk tolerance, and
+τencodes the investment time horizon.
+Based on this intent, a prompt planner constructs
+a query set:
+Q={q 1, . . . , qn}(36)
+that guides the retrieval process, ensuring that the
+results align with user-defined objectives and risk
+profiles.
+D.5 Recommendation Generation
+Using the filtered and semantically enriched news,
+the system generates a personalized recommenda-
+tion summary:
+Su =f rec(Nfiltered,Intent(u),G),(37)
+wheref rec is a large language model decoder con-
+ditioned on graph-enhanced prompts, explicitly
+justifying each recommendation based on the rel-
+evant news evidence and the reasoning chain en-
+coded inG.
+D.6 Feedback Adaptation
+Finally, MountainLion incorporates user feedback
+to continually refine its summarization and rank-
+ing strategies. Suppose each user interaction is
+recorded as a triplet(u, S u, y), whereydenotes
+the observed engagement outcome (for example,
+click, dwell time, or explicit rating). A lightweight
+policy gradient update is then applied to adjust the
+retrieval model’s parameters:
+θt+1 =θ t −η· ∇θL(Su, y),(38)
+with learning rateηand loss functionLcaptur-
+ing user preferences. This online update process
+ensures that the recommendation module progres-
+sively aligns with user behavior and changing in-
+terests (Joachims, 2002), thus maintaining both
+relevance and interpretability over time.
+In summary, this formulation demonstrates how
+MountainLion transforms raw financial news into
+structured, enriched, and graph-encoded knowl-
+edge, then adapts this knowledge for user-
+personalized recommendations through continual
+feedback-driven optimization. Each step—from
+recency filtering to semantic annotation, graph
+modeling, and feedback loops—contributes to a
+robust and interpretable news-driven decision sup-
+port pipeline.
+E Line-by-Line Analysis and
+Comparison
+In the short-term recommendation (1–4 weeks),
+the enhanced version introduces concrete on-chain
+indicators such as the increase of wallets hold-
+ing 1+ BTC and a notable 3.2% rise in liquida-
+tion volume among leveraged traders. These addi-
+tional metrics effectively illustrate real-time cap-
+ital movement and market sentiment, thus rein-
+forcing the credibility of short-term breakout sig-
+nals. However, these metrics, while effective for
+quick decision-making, inherently have limited
+persistence and predictive capability compared to
+medium- or long-term macro factors.
+For the medium-term recommendation (1–6
+months), the refined content specifically high-
+lights sustained ETF inflows, macroeconomic eas-
+ing, and regulatory developments in major mar-
+kets (U.S. and EU). These improvements inte-
+grate external, real-world influences, significantly
+elevating the depth and practicality of the in-
+vestment advice. Rather than isolating technical
+analysis, the enhanced strategy now incorporates
+broader market conditions, thereby boosting in-
+terpretability and trustworthiness. Consequently,
+this logic is more appealing and applicable to gen-
+eral investors, mid-sized institutions, and long-
+term strategic positioning.
+The long-term recommendation (6+ months) em-
+phasizes fundamental factors such as rising insti-
+tutional adoption and declining exchange reserves,
+which together imply a tightening supply structure
+favorable to sustained appreciation. By incorpo-
+rating these longer-term supply-demand dynam-
+ics, the enhanced version substantially strength-
+ens the rationale for maintaining long-term portfo-
+lio positions, providing solid justification beyond
+mere portfolio allocation percentages.
+In conclusion, the enhanced analyses for each
+timeframe systematically complement and rein-
+force the original content by embedding addi-
+tional market indicators, external macroeconomic
+and policy dynamics, and long-term fundamental
+logic. This layered improvement clarifies the ra-
+tionale, increases persuasiveness, and ultimately
+enhances overall recommendation robustness.
+E.1 Summary
+The long-term strategy remains primarily
+allocation-oriented and does not fundamentally
+rely on short-term signals, making these refine-
+ments more of an incremental enhancement than
+a structural overhaul. In contrast, the mid-term
+strategy benefits most from combining technical
+logic with capital flow and policy drivers, signif-
+icantly improving its explanatory and predictive
+capabilities. By linking price action to real-world
+forces such as capital allocation and regulatory
+changes, the refined mid-term strategy goes be-
+yond pattern-based signals to capture the broader
+market landscape. This integrated perspective
+is particularly well suited for general investors
+and mid-sized institutions seeking a robust and
+transparent basis for building positions.
+F Prompt design
+This section details the prompt design strategies
+employed in MountainLion to effectively elicit
+high-quality responses from large language mod-
+els. We outline the principles, structures, and spe-
+cific prompt templates that guide the system’s rea-
+soning, retrieval augmentation, and user-adaptive
+interactions. The following descriptions provide
+both conceptual motivations and practical imple-
+mentation details of the prompt engineering pro-
+cess.
+F.1 General input prompt
+F.1.1 Prompt 1
+1Please improve the AI report (mlion)
+based on the macro factors I gave you
+and the related market sentiment.
+2The formatting is required to be the
+same, with the same headings for each
+paragraph.
+3
+4Here is the AI report: ..........
+5Here is the macro factors market
+sentiment: ..........
+6
+7Only additions or improvements are
+bolded, the rest are not bolded except
+for the headings.
+F.1.2 Prompt 2
+1Please enhance the AI report (mlion)
+by incorporating the macroeconomic
+factors and related market sentiment
+provided below.
+2The formatting must remain consistent,
+including identical paragraph
+headings.
+3
+4Only newly added or improved content
+should be marked in bold, while all
+other text should remain unbolded
+except for the headings.
+5
+6Here is the AI report: ..........
+7Here are the macroeconomic factors and
+market sentiment: ..........
+F.2 Prompt based on Perplexity API
+1Search for macro-related stuff based
+on this report of mine, e.g. whale
+activity, market sentiment, macro
+trend analysis, policy, news surface.
+F.3 Perplexity Chinese-English Prompt
+1Search for macro-related content based
+on this AI report of mine, such as
+whale activity, market sentiment,
+macro trend analysis, policies, news
+facets, and so on.
+2The related content generated at the
+same time is presented partly in
+Chinese and partly in English.
+3The AI report is below: ..........
+F.4 Prompt for updating Data Source
+F.4.1 Short-term forecast Prompt (within
+0-24 hours)
+The objective of this prompt is to capture real-time
+market volatility signals, detect abnormal trading
+operations, and identify sudden shifts in market
+sentiment within short-term horizons of 0 to 24
+hours. This focus supports timely adjustments to
+investment strategies in response to rapid and po-
+tentially disruptive market changes.
+1You are tasked with enhancing a crypto
+report for {crypto_symbol}, focusing
+on the **next 24 hours **. Please
+retrieve and summarize the most
+relevant, high-frequency signals that
+may impact its short-term price
+movement.
+2
+3Focus on:
+41. Real-time RSI or MACD divergence
+signals
+52. Whale Alert transactions (>$10M)
+63. Funding rate spikes across major
+exchanges
+74. Unusual Twitter or Reddit activity
+surges
+85. Exchange inflow/outflow alerts
+96. Any breaking news or exchange
+service issues
+10
+11Search window: last 24h
+12Output: top 5-10 concise findings in
+JSON format (source, snippet, time,
+url)
+F.5 Mid-term forecast (1 week to 1 month)
+The objective of this prompt is to extract mid-term
+market signals spanning one week to one month,
+with emphasis on exchange-traded fund (ETF)
+flows, Smart Money movement patterns, evolving
+sentiment trends, key opinion leader (KOL) pre-
+dictions, and relevant on-chain data. These factors
+collectively inform a more stable investment out-
+look beyond immediate market fluctuations.
+1You are enhancing a market outlook
+report for {crypto_symbol} in the **
+next 7-30 days **. Summarize the most
+impactful medium-term drivers of trend
+continuation or reversal.
+2
+3Focus areas:
+41. Spot ETF inflows/outflows (
+SoSoValue / Farside UK)
+52. Smart money or whale positioning (
+Glassnode, CryptoQuant, Arkham)
+63. Twitter/Reddit sentiment shifts or
+narrative changes
+74. KOL perspectives (Arthur Hayes,
+Adam Cochran, etc.)
+85. Regulatory news, SEC or exchange
+investigations
+96. Network activity changes (e.g.
+active addresses, transaction count)
+10
+11Search window: past 7-30 days
+12Output: JSON with 5-10 findings (
+source, snippet, time, url)
+F.6 Long-term forecast prompt (January to
+one year)
+The objective of this prompt is to support year-
+scale trend judgment by focusing on long-term
+factors, including macroeconomic indicators, pol-
+icy developments, institutional investment pat-
+terns, and cross-asset correlations. These elements
+provide a foundation for strategic investment plan-
+ning over extended horizons.
+1You are improving a long-term forecast
+for {crypto_symbol} over the **next
+3-12 months **. Provide high-confidence
+macro-level insights that could
+affect BTC market structure or
+valuation.
+2
+3Focus areas:
+41. FOMC rate path, inflation
+expectations (CPI, PCE)
+52. Global recession risk, macro
+instability, oil/gold/US dollar
+correlations
+63. Spot ETF adoption scale and
+institutional allocation trends
+74. Strategic whale accumulation or
+Coinbase wallet movements
+85. BTC/Nasdaq/DXY or BTC/gold
+correlation pattern shifts
+96. Long-form KOL essays or economic
+reports (Hayes, IMF, World Bank)
+10
+11Search window: past 1-3 months
+12Output format: top 5-10 macro
+indicators with short summary, source,
+and link

@@ -1,0 +1,18 @@
+{
+  "run_id": "029_fincon_synthesized_llm_multi_agent_system_with_conceptual_verbal_reinforcement",
+  "paper": "FinCon - Synthesized LLM Multi-Agent System with Conceptual Verbal Reinforcement",
+  "execution_state": "blocked_jkp_scope_incompatible",
+  "verdict": "blocked_no_jkp_candidate_returns_yfinance_synthetic_inputs",
+  "valid_return_data_used": false,
+  "allowed_return_inputs": [
+    "${ALPHA_EVOLVE_JKP_ROOT}",
+    "${ALPHA_EVOLVE_RETURN_DATA_ROOT}"
+  ],
+  "disallowed_inputs_not_used_for_returns": [
+    "yfinance downloaded close prices",
+    "repo-local cached stock_data if generated from yfinance",
+    "synthetic news/filing/ECC streams"
+  ],
+  "reason": "The public repo provides an agent framework and internal Sharpe calculation but no shipped USA/JKP candidate return stream or FF3/FF5Mom-compatible benchmark evaluation path.",
+  "ff3_ff5mom_status": "not_run_no_jkp_candidate_returns"
+}

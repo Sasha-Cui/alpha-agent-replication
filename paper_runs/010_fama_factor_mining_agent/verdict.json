@@ -1,0 +1,13 @@
+{
+  "run_id": "010_fama_factor_mining_agent",
+  "paper": "FAMA \u2014 Factor Mining Agent",
+  "execution_state": "blocked_no_public_codebase",
+  "verdict": "blocked_no_confirmed_public_repository_no_valid_metrics",
+  "valid_return_data_used": false,
+  "metric_status": "not_computable_no_confirmed_public_repository",
+  "allowed_return_inputs": [
+    "${ALPHA_EVOLVE_JKP_ROOT}",
+    "${ALPHA_EVOLVE_RETURN_DATA_ROOT}"
+  ],
+  "reason": "No confirmed public codebase or approved-input candidate return stream exists in the registry."
+}

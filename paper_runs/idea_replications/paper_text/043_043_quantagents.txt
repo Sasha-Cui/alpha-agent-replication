@@ -1,0 +1,2435 @@
+QuantAgents: Towards Multi-agent Financial System via
+Simulated Trading
+Xiangyu Li1*, Yawen Zeng1*, Xiaofen Xing1, Jin Xu1,2, Xiangmin Xu3,1†
+1South China University of Technology
+2Pazhou Lab
+3Foshan University
+{65603605lxy, yawenzeng11}@gmail.com, xmxu@scut.edu.cn
+Abstract
+In this paper, our objective is to develop a
+multi-agent financial system that incorporates
+simulated trading, a technique extensively
+utilized by financial professionals. While
+current LLM-based agent models demonstrate
+competitive performance, they still exhibit
+significant deviations from real-world fund
+companies. A critical distinction lies in the
+agents’ reliance on “post-reflection”, partic-
+ularly in response to adverse outcomes, but
+lack a distinctly human capability: long-term
+prediction of future trends. Therefore, we
+introduceQuantAgents, a multi-agent system
+integrating simulated trading, to comprehen-
+sively evaluate various investment strategies
+and market scenarios without assuming actual
+risks. Specifically, QuantAgents comprises
+four agents: a simulated trading analyst, a risk
+control analyst, a market news analyst, and
+a manager, who collaborate through several
+meetings. Moreover, our system incentivizes
+agents to receive feedback on two fronts: per-
+formance in real-world markets and predictive
+accuracy in simulated trading. Extensive
+experiments demonstrate that our framework
+excels across all metrics, yielding an overall
+return of nearly 300% over the three years
+(https://quantagents.github.io/).
+1 Introduction
+In the data-driven era, the ascendancy of artificial
+intelligence has sparked transformative changes
+within the financial area (Kou et al., 2019).
+Advancements in large language models (LLMs),
+notably exemplified by systems like FinGPT (Yang
+et al., 2023a) and FinReport (Li et al., 2024), are
+significantly elevating the automation and intel-
+ligence levels in financial analysis and decision-
+making. These frameworks not only enhance
+the scope and profundity of financial analysis but
+*Equal contribution.
+†Corresponding Author.
+Risk Control
+Profitability
+Explainability
+Reliability
+Diversity
+Universality
+country
+assettype
+time-scale
+riskrisk-adjusted
+extreme market
+profit
+alpha-decay
+equity
+curve
+profile
+variability
+rank order t-SNE
+entropy
+correlation
+rolling
+window
+ZMR TSM SAC DeepTrader AlphaMix+
+FinGPT FinMem FinAgent HedgeAgents QuantAgents
+1
+Figure 1: Our method has surpassed all baselines on the
+PRUDEX (Sun et al., 2023a) benchmark.
+also facilitate the generation of comprehensive
+financial reports. Particularly noteworthy are LLM-
+based agent systems such as FinAgent (Zhang
+et al., 2024), which possess the capacity to emulate
+human decision-making processes. These systems
+demonstrate prowess in iterative self-improvement
+via tools, memory, and reflection capabilities,
+thereby enabling them to execute intricate financial
+operations adeptly (Yang et al., 2023b).
+However, despite the strong performance of
+these agent-based systems in evaluations, signif-
+icant disparities persist between their operational
+pipeline and those of real-world fund companies.
+A critical distinction lies in the agents’ reliance
+on “post-reflection”, where thinking and learning
+occur after events, particularly in response to
+adverse outcomes (Yang et al., 2023b; Park et al.,
+2023). While this approach aids in learning
+from past errors, it overlooks a distinct human
+capability:long-term prediction of future trends.
+This prediction and response to future events are
+pivotal in financial markets (Buz and de Melo,
+2023). Financial practitioners recognize that while
+arXiv:2510.04643v1 [cs.AI] 6 Oct 2025
+ℳ!
+StrategyMemoryMarket InformationReports Memory
+Memories (3)
+Simulated Trading AnalystBob 
+Risk Control Analyst DaveMarket News Analyst Emily
+ManagerOtto
+ℳ"ℳ#
+Summarized Query𝑸𝒕
+Large Language Model MemoryRetrieval
+AgentAction𝑨𝒕
+Market PriceMarket News
+Buy/Sell/HoldExecute Asset Allocation
+Tools(26)Technical Indicators AnalysisMarket Dynamics AnnotationNews Analysis
+Initiate Risk Assessment Protocols
+Actions (10)
+UpdateUpdate
+…
+…
+Decision Making
+Risk Mitigation Measures
+Quantitative analysis
+RiskAnalysisMarketAnalysis
+New strategy proposal
+Risk OptimizationEvent-Impact Optimization
+Quantitative Risk Evaluation
+Risk AssessmentScore Market Sentiment Analysis
+🚨Risk Alert
+Market Analysis Meeting
+Strategy Development Meeting
+Risk Alert Meeting
+SingleAgent WorkflowMulti-Agents Coordination
+Discussion
+ReportsStrategies
+Risks
+Discussion
+Discussion
+Figure 2: The workflow of QuantAgents, which is equipped with 26 tools, 3 types of memory to execute 10
+actions. Furthermore, three meetings, i.e., market analysis, strategy development, risk alert meeting will assist in
+decision-making (e.g., buy).
+market fluctuations are frequently unpredictable,
+sound investment decisions hinge on forward-
+looking market analysis. Consequently,simulated
+tradingserves as an invaluable predictive instru-
+ment widely embraced by financial experts, aug-
+menting their daily operations. This tool enables
+practitioners to experiment with diverse investment
+strategies devoid of actual risks, thereby enhancing
+their comprehension to market dynamics.
+Therefore, this paper introduces an innovative
+multi-agent financial system namedQuantAgents,
+designed to achieve long-term forecasting by
+simulated trading. This system not only learns from
+actual market but also anticipates and adjusts to
+market fluctuations through virtual trading environ-
+ments. Specifically, QuantAgents comprises four
+agents: a simulated trading analyst, a risk control
+analyst, a market news analyst, and a manager, who
+collaborate through several meetings. Moreover,
+this system incentivizes agents to receive feedback
+on two fronts: performance in real markets and
+predictive accuracy in simulated trading. This
+dual reward mechanism aims to encourage agents
+to make more precise and forward-thinking deci-
+sions in intricate and dynamic financial markets.
+Through this approach, we hope narrow the gap
+between LLM-based agents and human financial
+experts, offering fresh perspectives and tools for
+advancing the financial industry in the future.
+• To the best of our knowledge, this paper
+represents the first endeavor in developing a
+multi-agent financial trading system integrated
+with simulated trading, configured similarly to
+that of human quant traders.
+• We design a dual reward mechanism to coordi-
+nate agent behaviors, i.e., rewards from the real
+market and rewards from simulated trading. In
+this way, agents are encouraged to make more
+forward-looking decisions within the complex
+and dynamic financial markets.
+• Extensive experiments demonstrate that our
+framework excels across all metrics, yielding
+an overall return of nearly 300%. Meanwhile,
+we will release all datasets and codes for the
+convenience of the research community1.
+2 Related Work
+2.1 LLM-based financial system
+Quantitative finance is an interdisciplinary field
+that integrates finance with mathematical and
+statistical methods to address complex financial
+challenges (Kou et al., 2019; Kanamura et al.,
+2021). With the advent of large language models
+(LLMs), an increasing number of researchers are
+leveraging cutting-edge technologies in finance.
+Yang et al. (2023a) proposed FinGPT, which
+enables a thorough understanding of financial
+events and facilitates news analysis. Li et al.
+(2024) introduced FinRport, a framework that
+1https://quantagents.github.io/
+amalgamates diverse information to generate com-
+prehensive financial reports on a regular basis.
+Compared to conventional models (Yu and Yuan,
+2011; Wang et al., 2021a), these LLM-based
+approaches improve the accuracy and efficiency
+of market forecasting. However, these methods
+have yet to be fully learn from real-world fund
+companies, and essential components such as
+simulated trading have not been included.
+2.2 Multi-Agent Framewrok
+LLM-based agent systems, leveraging their cog-
+nitive and generative capabilities, have the ability
+to perform a range of complex tasks, including
+knowledge integration, information retention, log-
+ical reasoning, and strategic planning (Sumers
+et al., 2023; Pan and Zeng, 2023; Chen et al.,
+2025; Gu et al., 2025). Furthermore, initiatives
+based on multi-agent systems, such as “The Sims”
+from Stanford University (Park et al., 2023), have
+demonstrated the formidable power of collective
+intelligence. Through the collaboration of multiple
+agents, multi-agent systems are expected to make
+significant contributions in fields such as finance
+(Zhang et al., 2024), offering innovative approaches
+and sophisticated solutions for complex challenges
+(Hong et al., 2023; Wu et al., 2023).
+3 Proposed Method
+3.1 Preliminaries
+QuantAgents is a multi-agent system designed to
+manage a fund company operating with NASDAQ-
+100 index components2. The inputs for this system
+include financial data such as stock prices, financial
+news, and company financial reports, which guide
+the execution of trading actions in both simulated
+and real-world environments.
+3.2 Overall Framework
+QuantAgents comprises four specialized agents,
+each contributing to different aspects of fund
+management, as presented in Table 1. These agents
+collaborate by participating in various meetings to
+assist manager Otto in decision-making. Among
+these meetings, market analysis meetings are held
+weekly to produce market reports, while strategy
+analysis meetings also occur weekly, focusing on
+enhancing investment strategies through simulated
+trading. Additionally, risk alert meetings are
+convened are triggered as needed.
+2https://www.nasdaq.com/solutions/nasdaq-100
+Table 1: QuantAgents comprises four agents.
+Agent Profession Responsibility
+Otto Manager Executes Decisions
+Bob Simulated Trading AnalystTesting Strategies
+Dave Risk Control Analyst Evaluates Risks
+Emily Market News Analyst Provides Reports
+3.3 Definitions of Single Agent
+3.3.1 Tools.
+Each agent in QuantAgents is equipped with a set
+of financial analysis toolsT , comprising 26 distinct
+tools such as Technical Indicator Analysis, News
+Event Extraction, and Portfolio Stress Testing3.
+3.3.2 Actions.
+Each agent is defined by a detailed profile that
+specifies its description and permissions, ensuring
+a well-defined operational scope. The actions A
+include 10 types, such as Buy, Sell, and Hold.
+Each agent’s profile specifies its description and
+permissions, defining its operational scope.
+3.3.3 Memories.
+The memory system M of each agent consists
+of three types: Market Information Memory
+(MI), which stores historical data including stock
+prices, financial news, and economic indicators;
+Strategy Memory (MS), which contains analysis
+of strategies in both simulated trading and real-
+world trading; and Report Memory (MR), which
+comprise in-depth analyses of markets, industries,
+and companies.
+3.3.4 Single Agent Workflow.
+Our QuantAgents employs a reflection-driven
+decision-making process, integrating LLM-based
+agents into a reinforcement learning framework.
+This workflow includes memory retrieval, decision
+making, and reflection update.
+Firstly, we retrieve reliable experiential memo-
+ries to augment decision-making. At time step t, a
+summarized query Qt is compiled from inputs (e.g.,
+stock prices, financial news) and used to retrieve
+K= 10 similar cases Mret from the memory set
+M={M I ,M S,M R}.
+Based on the retrieved experiences Mret, we
+redefine a reinforcement learning framework to
+pursue the optimal investment strategyµ t.
+3For a detailed introduction to each component of agents,
+please refer to our Appendix.
+πθ∗ = arg max
+πθ
+Eπθ [
+TX
+t=0
+γ(rt)|s t =s, µt =µ],
+(1)
+where rt is a reward from real-world trading, γ is
+the discount factor and the state st includes market
+indicators and other relevant financial data. Actions
+at are determined by:
+π(at |s t, µt)≡ D(LLM(ϕD(st,M ret, µt))),
+(2)
+where µt is the trading strategy. The prompt
+template ϕD(·) is meticulously designed, and fed
+into an LLM, then the response from the LLM is
+processed by the parsing function D(·) to obtain
+an action. The policyπ θ is updated using gradient
+ascent. Finally, we update the MI in real time.
+The all market information (e.g., stock prices), the
+summarized query Qt, and reflections on the action
+are all continuously updated in MI to guide future
+decisions. A simplified prompt is as follows4,
+<Prompt Template>
+You are {Dave Profile}. The market environment
+today includes {Prices}, {News}. Through
+financial analysis tools, {Tool Results} can be
+obtained. The output format should be JSON, such
+as {Examples}.
+3.4 Coordination of Multi-Agents
+To simulate real-world fund companies, functions
+such as simulated trading and market reports are
+integrated into our framework with collaboration
+among the four agents. In this section, we will
+provide a detailed introduction to the three types of
+collaborative meetings, followed by the decision-
+making process employed by manager Otto.
+3.4.1 Market Analysis Meeting
+The Market Analysis Meeting, scheduled weekly
+following the last trading day, integrates the
+expertise of Emily, Bob, and Dave, to generate
+a comprehensive market report covering news anal-
+ysis, industry analysis, individual stock analysis
+and more. The collaborative approach ensures
+a balanced perspective, combining qualitative
+insights with quantitative rigor.
+• Emily first uses the FinReport tool (Li et al.,
+2024) to conduct an overall analysis based on
+4The templates will change based on different tasks
+indicated byϕ (·), fully disclosed in the Appendix.
+Simulated TradingRealTradingWeek7
+NewStrategySetμ’
+Strategyμ
+FinalStrategyμ*
+Action
+Strategy Development Meeting
+Figure 3: Our framework has been optimized to obtain
+rewards from both simulated and real-world trading.
+historical data and news inputs, encompassing
+economic indicators, global trends, and geopolit-
+ical influences.
+• Bob will then provide a quantitative analysis
+based on Emily’s report, utilizing statistical
+tools including trend forecasting (Chaudhari
+and Thakkar, 2023), factor analysis (Fama and
+French, 2015), and other relevant methods. The
+analysis will incorporate historical data and
+news inputs to evaluate market trends, industry
+performance, and individual stock metrics.
+• Dave will deliver a risk analysis using the V olatil-
+ity Assessment Tool (Mieg, 2022), focusing on
+market volatility, risks within specific industries,
+and vulnerabilities of individual stocks.
+The conclusions drawn by the three analysts
+will be fed into the LLM in a prompt template
+ϕR(·), resulting in a comprehensive market report,
+which is then stored in the Reports Memory MR
+for future decision.
+3.4.2 Strategy Development Meeting
+The strategy analysis meeting is held weekly
+after the last trading day. This meeting is
+crucial for implementing simulated trading to test
+new strategies µ
+′
+t. During this meeting, Bob is
+responsible for testing new strategies, while Emily
+and Dave provide advice on market conditions and
+risk management. This meeting ensures that all
+new strategies are rigorously evaluated and refined
+before deployment.
+• Bob will conduct simulated trading to test
+all potential new strategies, and outline their
+characteristics along with possible optimization
+approaches. As depicted in Figure 3, Bob will
+utilize statistical tools such as the Simulation
+Optimization Toolkit (Ha and Mueller, 2024)
+and the Strategy Analysis Suite (Gaikwad et al.,
+2012), along with all the data prior to the current
+time (e.g. Week 7) to undertake a simulated
+trading backtest. Bob will select the strategies
+that perform best in the historical data to form a
+new strategy setµ
+′ 5 .
+• Dave performs a risk analysis on the new strategy
+using the RiskAnalyzer toolkit (Yang et al., 2020)
+, and suggests optimization directions from risk
+management.
+• Emily conducts market analysis on the new
+strategy and proposes optimization directions
+based on market events.
+Finally, the three analysts consolidate their
+findings, encompassing the detailed characteristics
+and risk assessments of the new strategy µt+1, into
+the strategy memoryM S to aid action decisions.
+3.4.3 Risk Alert Meeting
+The risk alert meeting is triggered by a risk
+threshold to mitigate investment risk, which is
+defined as the combination of Portfolio Beta (βp),
+Liquidity Ratio (LR), Sector Exposure (SEj), and
+V olatility (σp) as follows,
+Rscore =w 1βp+w2( 1
+LR )+w3 max(SEj)+w4σp
+(3)
+where wi are risk factor weights. This meeting will
+be triggered onceR score >0.75.
+• The Risk Score Assessment tool (Alexander,
+2008) is used by Dave to get a comprehensive risk
+analysis, including portfolio Beta value, Value at
+Risk (VaR), and sector concentration.
+• Bob conducts quantitative analysis using the
+StressTestPro tool (Koliai, 2016), which takes
+historical data and stress scenarios as inputs and
+outputs a risk severity score η∈[0,1] , helping
+to evaluate potential market impacts.
+• Emily uses the SentimentAnalyzer tool (Araci,
+2019) to analyze market sentiment τ∈[−1,1]
+for high-risk assets. This tool processes financial
+news and social media data to generate a
+sentiment score reflecting the market’s positive,
+neutral, or negative stance.
+5We construct a strategy pool consisting of multiple index
+permutations, detailed in the Supplementary Material.
+Ultimately, the conclusions drawn by the three
+agents mentioned above are integrated by Otto to
+make decisions regarding high-risk situations. The
+modified policyπ risk
+θ∗ is:
+πrisk
+θ∗ = arg max
+πθ
+Eπθ [
+TX
+t=0
+γ((1−λ)r t +λr risk
+t )],
+(4)
+where λ is a risk adjustment factor, and the risk-
+based reward is rrisk
+t =f(R score, η, τ). This
+approach ensures that our QuantAgents remains
+responsive to urgent risk situations while maintain-
+ing its long-term learning capabilities.
+3.4.4 Decision Making from Otto.
+Manager Otto synthesizes all information and
+executes trading actions according to the optimal
+strategy. With the introduction of simulated trading,
+Otto now receives rewards from two distinct
+sources: real- world trading and the simulated
+trading of strategies. As depicted in Figure 3, Otto
+conducts the action in accordance with the policy
+µ at the present moment (e.g., Week 7), along with
+the newly available policy µ
+′
+, as the final policy
+µ∗.
+Consequently, Eqn. 1 will be revised as follows:
+πθ∗ = arg max
+πθ
+Eπθ
+" TX
+t=0
+γ
+ 
+wsim
+t rsim
+t
++w real
+t rreal
+t
+
+#
+(5)
+where rsim
+t is the reward from the simulated
+trading, and rreal
+t is the reward from the real-world
+trading environment. wsim
+t and wreal
+t are adaptive
+weights. The adaptive weights are updated based
+on the relative performance:
+wsim
+t =σ
+ Pt
+i=t−n rsim
+iPt
+i=t−n(rsim
+i +r real
+i )
+!
+,
+wreal
+t = 1−w sim
+t
+(6)
+where σ(·) is the sigmoid function and n is the
+number of recent time steps considered.
+4 Experiments
+4.1 Datasets
+The constituents of the NASDAQ-100 from January
+1, 2010, to December 31, 2023, will serve as the
+Table 2: Cumulative Returns Comparison of our QuantAgents and all baselines.Boldrepresents optimal
+performance, while underline represents suboptimal.
+Categories Models ARR(%) TR(%) SR CR SoR MDD(%) V oL(%) ENT ENB
+Market Index NDX 9.84 32.52 0.64 1.38 13.07 35.58 1.52 — —
+MV 11.3 37.87 0.72 3.27 22.05 64.15 5.79 1.01 1.02
+Classical ZMR 4.19 13.1 0.63 2.52 18.43 72.89 5.82 1.43 1.09
+TSM 5.68 18.02 0.64 3.11 17.27 58.36 5.65 1.03 1.07
+SAC 22.14 82.23 0.84 2.99 23.63 40.13 2.85 1.49 1.11
+RL-based DeepTrader 32.06 130.29 1.27 7.16 30.31 29.16 2.81 1.88 1.19
+AlphaMix+ 32.51 132.72 1.49 5.76 30.66 40.71 2.85 2.76 1.36
+FinGPT 36.71 155.52 1.66 6.34 42.31 37.99 2.83 1.94 1.21
+LLM-based FinMem 37.73 161.25 1.89 6.16 43.02 40.19 2.82 2.25 1.24
+FinAgent 45.31 206.83 2.25 6.98 47.66 38.48 2.92 2.71 1.38
+HedgeAgents 49.25 230.39 2.41 6.53 45.21 23.65 1.99 2.68 1.35
+Ours QuantAgents 58.68 299.55 3.11 11.38 66.94 16.86 1.43 2.97 1.49
+Improvement(%)19.15 30.02 29.05 58.94 40.45 28.71 5.92 7.61 7.97
+evaluation dataset. This dataset includes daily
+trading data for each stock, comprising open,
+high, low, and closing prices, as well as trading
+volume, along with 60 standard technical indicators
+for analysis. Moreover, we incorporated daily
+news updates, company financial reports, and
+macroeconomic policy information for each asset.
+These data were sourced from Yahoo Finance for
+market data and the Alpaca News API for texts.
+4.2 Evaluation Metrics
+We compare all models in terms of 9 financial
+metrics following (Sun et al., 2023b; Qin et al.,
+2023), which include 2 profit metrics: Total
+Return (TR), Annual Return Rate (ARR); 3 risk-
+adjusted profit metrics: Sharpe Ratio (SR), Calmar
+Ratio (CR), Sortino Ratio (SOR); 2 risk metrics:
+Maximum Drawdown (MDD), V olatility (VOl);
+and 2 diversity metrics: Entropy (ENT) and Effect
+Number of Bets (ENB). Higher values are preferred
+for all metrics except MDD and VOL, where lower
+values indicate better performance.
+4.3 Implementation Details
+The dataset will be temporal split, with data
+from January 1, 2010, to December 31, 2020,
+constituting the training set, and data from January
+1, 2021, to December 31, 2023, serving as
+the test set. For LLM-based approaches like
+QuantAgents, we adopt “GPT-4o-2024-05-13” as
+the foundation model, setting the temperature to 0.7
+to balance consistency and creativity. The memory
+module operates as a similarity-based storage and
+retrieval system, utilizing the text-embedding-3-
+large model(OpenAI, 2023) for text vectorization.
+The retrieval process is configured to return the top
+2021-01 2021-05 2021-09 2022-01 2022-05 2022-09 2023-01 2023-05 2023-09 2024-01
+-50%
+0%
+50%
+100%
+150%
+200%
+250%
+300%
+Cumulative Returns of All Methods
+NDX
+MV
+ZMR
+TSM
+SAC
+DeepTrader
+AlphaMix+
+FinGPT
+FinMem
+FinAgent
+HedgeAgents
+QuantAgents
+Figure 4: Cumulative Returns Comparison.
+10 results for efficient information recall.
+4.4 Overall Performance Comparison
+Table 2 presents a comprehensive comparison of
+QuantAgents against a diverse set of baseline mod-
+els. These baselines include 1) three classical rule-
+based quantitative investment strategies: MV(Yu
+and Yuan, 2011), ZMR(Eeckhoudt and Laeven,
+2018), and TSM(Moskowitz et al., 2012); 2)
+three reinforcement learning-based financial agents:
+SAC (Haarnoja et al., 2018), DeepTrader(Wang
+et al., 2021b), and AlphaMix+(Sun et al., 2023a); 3)
+and four LLM-based methods: FinGPT(Yang et al.,
+2023a), FinMem(Yu et al., 2023), FinAgent(Zhang
+et al., 2024) and HedgeAgents(Li et al., 2025). The
+following observations can be made:
+1) RL-based methods outperform rule-based
+strategies in both profitability and risk-adjusted
+performance. For instance, DeepTrader achieves
+an annualized return rate (ARR) of 32.06% and
+a Sharpe ratio (SR) of 1.27, surpassing the best-
+performing classical strategy (MV) with an ARR
+of 11.3% and SR of 0.72.
+2) LLM-based methods further improve upon
+RL-based approaches, showcasing the power of
+Table 3: Ablation analysis on three conference.✓denote the inclusion of components.
+MAM SDM RAM ARR(%) TR(%) SR CR SoR MDD(%) V oL(%) ENT ENB
+✓ 40.89 179.66 1.81 5.27 51.23 28.61 1.66 1.73 1.22
+✓ 43.25 193.97 1.93 6.27 53.41 24.99 1.63 1.89 1.33
+✓ 35.53 148.93 1.88 5.94 52.01 21.73 1.34 1.65 1.19
+✓ ✓ 48.59 228.07 2.79 8.54 58.85 19.21 1.38 2.37 1.39
+✓ ✓ 46.42 213.94 2.51 7.82 55.21 20.52 1.28 2.18 1.35
+✓ ✓ 52.71 256.12 2.86 9.14 61.46 21.85 1.33 2.55 1.43
+✓ ✓ ✓ 58.68 299.55 3.11 11.38 66.94 16.86 1.23 2.97 1.49
+TR
+SRCR
+SoR
+Vol
+MDD ENT
+ENB
+48
+57
+49
+50
+2816
+72
+68
+ChatGLM3-6B
+TR
+SRCR
+SoR
+Vol
+MDD ENT
+ENB
+54
+63
+58
+56
+2415
+76
+71
+Llama-2-13b-chat
+TR
+SRCR
+SoR
+Vol
+MDD ENT
+ENB
+61
+6061
+54
+2517
+80
+75
+Qwen2-72B-Instruct
+TR
+SRCR
+SoR
+Vol
+MDD ENT
+ENB
+84
+73
+63
+66
+2416
+84
+77
+GPT-4-1106-preview
+TR
+SRCR
+SoR
+Vol
+MDD ENT
+ENB
+81
+7278
+59
+2217
+86
+82
+Claude 3.5 Sonnet
+TR
+SRCR
+SoR
+Vol
+MDD ENT
+ENB
+92
+8482
+75
+1714
+90
+84
+GPT-4o-2024-05-13
+Figure 5: Ablation analysis on several LLM backbones, from open-source to closed-source models. The numbers
+presented in the figure have been normalized and converted into percentage values.
+large-scale language models in financial decision-
+making. FinAgent achieves an impressive ARR
+of 45.31% and SR of 2.25, significantly outper-
+forming the top RL-based model, AlphaMix+
+(ARR: 32.51%, SR: 1.49). The cumulative returns
+graph Figure 4 clearly illustrates the superior
+performance trajectory of LLM-based methods,
+particularly from mid-2022 onwards.
+3) QuantAgents, our proposed multi-agent
+system, demonstrates superior performance across
+all evaluation metrics, achieving the highest ARR
+(58.68%) and SR (3.11), surpassing the best
+baseline (HedgeAgents) by 19.15% and 30.02%.
+QuantAgents also excels in risk management with
+the lowest MDD (16.86%) and V oL (1.43%),
+while achieving the highest portfolio diversity with
+ENT (2.97) and ENB (1.49), indicating a more
+balanced and robust investment strategy. Figure
+4 vividly showcases QuantAgents’ outstanding
+performance, with its cumulative returns curve
+consistently above all other methods, reaching
+approximately 300% by the end of the test period.
+This remarkable performance can be attributed to
+the synergistic collaboration of specialized agents
+within QuantAgents, each contributing unique
+expertise in investment management, strategy
+development, risk control, and market analysis.
+4.5 Ablation Study
+4.5.1 Effectiveness of Each Meeting
+We conducted an ablation study to evaluate the
+contribution of each meeting module in QuantA-
+gents. Table 3 presents the performance metrics
+for different combinations of Market Analysis
+Meeting (MAM), Strategy Development Meeting
+(SDM), and Risk Assessment Meeting (RAM).
+We have the following observations: 1) MAM
+significantly enhances profitability and portfolio
+diversity, as evidenced by its high ARR (40.89%)
+and ENT (1.73) when used alone. Its exclusion
+from two-meeting combinations reduces ARR
+and ENT, highlighting its critical role in trend
+identification and diversification. 2) SDM enhances
+risk-adjusted returns and portfolio efficiency, with
+the highest single-meeting SR (1.93) and CR
+(6.27). Its inclusion in two-meeting setups consis-
+tently improves these metrics. The SDM-MAM
+combination achieves the highest two-meeting
+SR (2.86) and CR (9.14), demonstrating SDM’s
+effectiveness in strategy formulation. 3) RAM
+demonstrates strength in risk management and
+volatility reduction. Despite having the lowest
+standalone ARR (35.53%), it achieves the lowest
+single-meeting MDD (21.73%) and V oL (1.34%).
+In two-meeting configurations,RAM improves risk
+metrics, notably reducing MDD when combined
+with SDM. 4) The synergistic effect of all three
+meetings is evident in our QuantAgents, which
+outperforms all partial combinations across all
+metrics. It achieves the highest ARR (58.68%),
+SR (3.11), and ENT (2.97), while maintaining the
+lowest MDD (16.86%) and V oL (1.23%).
+4.5.2 Effectiveness of LLM Backbone
+To evaluate the performance of different LLMs
+as the backbone, we selected 6 representative
+(a) (b)
+NASDAQ Market Research ReportExecutive Summary:The NASDAQ 100 Index showed strong performancein 2021, driven by vaccination progress, economic recovery, and accommodative monetary policy. However, there are notable opportunities and risks. This report provides a concise analysis of macro trends, key industries, and individual stocks, along with investment recommendations.Macro Market Analysis•Growth Drivers: Vaccination progress, economic recovery, and accommodative monetary policy.•Risk Factors: Inflation pressures, elevated valuations , COVID-19 variants, and geopolitical tensions.•Technical Indicators: RSI near overbought levels, weakening MACD, and declining trading volumes.•Market Sentiment: Low VIX, high call/put ratio.Industry Analysis•Semiconductors: Strong revenue growth, domestic production focus, risk of oversupply.•Cloud Computing: Rapid market expansion, hybrid strategies, growth in edge computing.•Electric Vehicles: Increasing market share, government incentives, battery advancements, rising raw material costs. Stock Analysis•NVIDIA (NVDA): Strong growth in AI, data centers, and gaming. Uncertainties in key acquisitions .•Amazon (AMZN): Strong revenue growth, logistics investments, positive market sentiment.•Tesla (TSLA): Rapid delivery growth, expanding production, long-term uptrend, market demand fluctuations. Investment Recommendations•Portfolio Strategy: Reduce portfolio beta, increase cash allocation, shift towards value stocks.•Sector Allocation: , Increase in semiconductors, Balanced exposure to cloud computing, cautious on EVs.•Stock Recommendations: Overweight NVIDIA, neutral on Amazon, reduce Tesla exposure.•Risk Management: Set stop-loss levels, use index puts for protection, monitor macro indicators.Conclusion:The NASDAQ Market remains on a positive path, but vigilance is required. Balanced strategies and regular monitoring are key to navigating market dynamics.
+Date:2021-07-02 Strategy Development Meeting
+Date:2022-09-30
+Significant Decline
+Weekly PerformanceSignificant Increase
+Weekly Performance
+Current Strategy Performance:Weekly return: -1.8%, Sharpe Ratio: 0.85, Win rate: 32%...... Over two months, two significant drawdowns revealed issues in stock selection and exposure management.
+New Strategy Proposal:Introduced a hybrid strategy combining long-term momentum with short-term reversal, emphasizing high ROE, low debt ratio stocks, and volatility weighting.……Strategy Risk Control:We integrating a stop-loss mechanism and diversifying industry exposure. Incorporating macroeconomic indicators will allow for strategic adjustments……
+Strategy Market Sentiment Enhancement: I recommend enhancing our strategy with macroeconomic indicators and Treasury yield curve analysis……
+ Steady FluctuationDownward AdjustmentStrategy Summary: Multi-factor approach shows potential but needs refinement. Plans include reducing tech exposure, boosting energy and defensive sectorsboosting energy and defensive sectors, raising cash to 15-18%, and improving risk management with stop-losses ……
+Figure 6: Visualizations of Market Research Report and Strategy Development Meeting.
+models, including ChatGLM3-6B(GLM et al.,
+2024), Llama-2-13b-chat(Touvron et al., 2023),
+Qwen2-72B-Instruct(Yang et al., 2024), GPT-4-
+1106-preview(OpenAI et al., 2024), Claude 3.5
+Sonnet(Anthropic, 2024), and GPT-4o-2024-05-
+13(Wu et al., 2024). Each of these models serves as
+the brain of QuantAgents, as shown in Figure 5. We
+have the following observations: 1) QuantAgents
+achieves consistent performance across diverse
+LLM backbones, showcasing its adaptability
+through a robust multi-agent architecture. 2) Larger
+models, such as Qwen2-72B-Instruct, outperform
+smaller ones like Llama-2-13b-chat, likely due
+to their superior capacity to handle complex
+financial data and detect subtle market patterns.
+3) Closed-source models like Claude 3.5 Sonnet
+outperform open-source ones, such as Qwen2-72B-
+Instruct, likely due to proprietary training data and
+advanced fine-tuning techniques enhancing their
+understanding of financial contexts. Therefore, we
+select GPT-4o as the core of QuantAgents. Notably,
+our system has accumulated a total cost of $180
+over the three years, averaging only $0.17 per day!
+4.6 Visualization
+4.6.1 Market Analysis Meeting
+Figure 6 (a) showcases the visualization of market
+research report dated 2021-07-02, generated after
+the market analysis meeting. The report encapsu-
+lates key market insights in a structured layout, pro-
+gressing from an executive summary highlighting
+the NASDAQ 100 Index’s strong 2021 performance
+to specific investment recommendations.
+4.6.2 Strategy Development Meeting
+Figure 6 (b) presents the visualization of a strategy
+development meeting held on 2022-09-30. The
+upper left shows the current strategy’s performance,
+marked by a -1.8% weekly return and significant
+drawdowns due to issues in stock selection and
+exposure management. The upper right shows a six-
+month backtest of the new strategy, yielding 35.3%
+return and a 1.85 Sharpe Ratio. Dave suggested
+mitigating risks through stop-loss mechanisms
+and diversified industry exposure. Emily recom-
+mended incorporating macroeconomic indicators
+and adjusting positions in overvalued tech stocks.
+Otto summarized the strategy, emphasizing risk
+management and dynamic adjustments.
+4.7 Real-World Investment Performance
+We evaluated its live trading performance in the
+A-stock and HK-stock markets from Q3 2024 to
+Q1 2025. Figure 11 shows cumulative returns,
+QuantAgents delivered superior returns of 111.87%
+(Sharpe Ratio: 2.02, Win Rate: 61.23%) in A-
+stocks and 97.69% (Sharpe Ratio: 1.76, Win Rate:
+59.71%) in HK-stocks, highlighting exceptional
+profitability and risk management across diverse
+market conditions.
+5 Conclusions
+In this paper, we present a sophisticated multi-agent
+financial system, QuantAgents that incorporates
+simulated trading, configured similarly to that of
+human quant traders. Furthermore, our system
+encourages agents to receive feedback on their
+performance in the real market and their predictive
+accuracy in simulated trading. Compared to
+2024-07 2024-08 2024-09 2024-10 2024-11 2024-12 2025-01 2025-02 2025-03 2025-04
+0%
+20%
+40%
+60%
+80%
+100%
+Cumulative Returns of A-Stock and HK-Stock (2024 Q3-2025 Q1)
+A-Stock Cumulative Returns
+HK-Stock Cumulative Returns
+Date of RAM (R_score > 0.75)
+Figure 7: Cumulative Returns of QuantAgents during
+live trading (24Q3-25Q1). RAM were held 36 times in
+the A-stock and 46 times in the HK stock market.
+baselines and variations in meeting structures,
+our framework demonstrated strong performance
+across all metrics, resulting in an impressive overall
+return of nearly 300%.
+Limitations
+We still have the following limitations: 1) In terms
+of generalization, our QuantAgents is modular
+and flexible, designed to adapt to various market
+scenarios. We will explore generalization further
+in future work. 2) Although backtesting may be
+affected by potential LLM information leakage,
+QuantAgents’ effectiveness is proven through
+impeccable live trading performance in A-stock
+and HK-stock markets over three quarters. We
+plan to validate it across global markets and report
+performance periodically.
+Ethical Impact
+We respect intellectual property rights and comply
+with relevant laws and regulations. The documents
+in our dataset are publicly available, and we have
+taken careful measures to ensure that the docu-
+ments in our dataset do not contain any personal
+sensitive information. In addition, our work is
+only for research purposes, not for commercial
+purposes.
+Acknowledgments
+This work is supported in part by the National
+Natural Science Foundation of China (62372187),
+in part by the National Key Research and Develop-
+ment Program of China (2022YFC3601005) and in
+part by the Guangdong Provincial Key Laboratory
+of Human Digital Twin (2022B1212010004). The
+authors are highly grateful to the anonymous
+reviewers for their careful reading and insightful
+comments.
+References
+Carol Alexander. 2008.Market Risk Analysis, Volume
+III: Pricing, Hedging, and Trading Financial Instru-
+ments. Wiley.
+Anthropic. 2024. Claude 3.5 sonnet. Available on
+https://claude.ai/. Accessed: 2024-07-15.
+Dogu Araci. 2019. Finbert: Financial sentiment
+analysis with pre-trained language models.Preprint,
+arXiv:1908.10063.
+Tolga Buz and Gerard de Melo. 2023. Democratization
+of retail trading: Can reddit’s wallstreetbets outper-
+form investment bank analysts?arXiv preprint.
+Kinjal Chaudhari and Ankit Thakkar. 2023. Data fusion
+with factored quantization for stock trend prediction
+using neural networks.Information Processing &
+Management, 60(3):103293.
+Peng Chen, Pi Bu, Yingyao Wang, Xinyi Wang, Ziming
+Wang, Jie Guo, Yingxiu Zhao, Qi Zhu, Jun Song,
+Siran Yang, Jiamang Wang, and Bo Zheng. 2025.
+Combatvla: An efficient vision-language-action
+model for combat tasks in 3d action role-playing
+games.Preprint, arXiv:2503.09527.
+Louis R. Eeckhoudt and Roger J. A. Laeven. 2018.
+Dual moments and risk attitudes.Preprint,
+arXiv:1612.03347.
+Eugene F. Fama and Kenneth R. French. 2015. A five-
+factor asset pricing model.Journal of Financial
+Economics, 116(1):1–22.
+Abhijeet Gaikwad, Viet_Dung Doan, Mireille Bossy,
+Françoise Baude, and Frédéric Abergel. 2012. Su-
+perquant financial benchmark suite for performance
+analysis of grid middlewares. InModeling, Sim-
+ulation and Optimization of Complex Processes,
+pages 103–113, Berlin, Heidelberg. Springer Berlin
+Heidelberg.
+Team GLM, Aohan Zeng, et al. 2024. Chatglm: A
+family of large language models from glm-130b to
+glm-4 all tools.Preprint, arXiv:2406.12793.
+Jihao Gu, Qihang Ai, Yingyao Wang, Pi Bu, Jingxuan
+Xing, Zekun Zhu, Wei Jiang, Ziming Wang, Yingxiu
+Zhao, Ming-Liang Zhang, Jun Song, Yuning Jiang,
+and Bo Zheng. 2025. Mobile-r1: Towards interactive
+reinforcement learning for vlm-based mobile agent
+via task-level rewards.Preprint, arXiv:2506.20332.
+Yunsoo Ha and Juliane Mueller. 2024. Adaptive
+sampling bi-fidelity stochastic trust region method
+for derivative-free stochastic optimization.Preprint,
+arXiv:2408.04625.
+Tuomas Haarnoja, Aurick Zhou, Kristian Hartikainen,
+George Tucker, Sehoon Ha, Jie Tan, Vikash Kumar,
+Henry Zhu, Abhishek Gupta, Pieter Abbeel, et al.
+2018. Soft actor-critic algorithms and applications.
+arXiv preprint arXiv:1812.05905.
+Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu
+Zheng, Yuheng Cheng, Ceyao Zhang, Jinlin Wang,
+Zili Wang, Steven Ka Shing Yau, Zijuan Lin,
+Liyang Zhou, Chenyu Ran, Lingfeng Xiao, Chenglin
+Wu, and Jürgen Schmidhuber. 2023. Metagpt:
+Meta programming for a multi-agent collaborative
+framework.Preprint, arXiv:2308.00352.
+Takashi Kanamura, Lasse Homann, and Marcel
+Prokopczuk. 2021. Pricing analysis of wind power
+derivatives for renewable energy risk management.
+Applied Energy, 304:117827.
+Lyes Koliai. 2016. Extreme risk modeling: An evt–pair-
+copulas approach for financial stress tests.Journal
+of Banking Finance, 70:1–22.
+Gang Kou, Xiangrui Chao, Yi Peng, Fawaz E Alsaadi,
+Enrique Herrera Viedma, et al. 2019. Machine
+learning methods for systemic risk analysis in
+financial sectors.
+Xiangyu Li, Xinjie Shen, Yawen Zeng, Xiaofen Xing,
+and Jin Xu. 2024. Finreport: Explainable stock
+earnings forecasting via news factor analyzing model.
+Preprint, arXiv:2403.02647.
+Xiangyu Li, Yawen Zeng, Xiaofen Xing, Jin Xu, and
+Xiangmin Xu. 2025. Hedgeagents: A balanced-
+aware multi-agent financial trading system.Preprint,
+arXiv:2502.13165.
+Harald A Mieg. 2022. V olatility as a transmitter of
+systemic risk: Is there a structural risk in finance?
+Risk Analysis, 42(9):1952–1964.
+Tobias J Moskowitz, Yao Hua Ooi, and Lasse Heje
+Pedersen. 2012. Time series momentum.Journal of
+financial economics, 104(2):228–250.
+OpenAI. 2023. text-embedding-3-large.
+Available at: https://openai.com/index/
+new-embedding-models-and-api-updates/.
+OpenAI, Josh Achiam, et al. 2024. Gpt-4 technical
+report.Preprint, arXiv:2303.08774.
+Keyu Pan and Yawen Zeng. 2023. Do llms possess
+a personality? making the mbti test an amazing
+evaluation for large language models.Preprint,
+arXiv:2307.16180.
+Joon Sung Park, Joseph C. O’Brien, Carrie J. Cai,
+Meredith Ringel Morris, Percy Liang, and Michael S.
+Bernstein. 2023. Generative agents: Interac-
+tive simulacra of human behavior.Preprint,
+arXiv:2304.03442.
+Molei Qin, Shuo Sun, Wentao Zhang, Haochong
+Xia, Xinrun Wang, and Bo An. 2023. Earnhft:
+Efficient hierarchical reinforcement learning for high
+frequency trading.arXiv preprint arXiv:2309.12891.
+Theodore R Sumers, Shunyu Yao, Karthik Narasimhan,
+and Thomas L Griffiths. 2023. Cognitive ar-
+chitectures for language agents.arXiv preprint
+arXiv:2309.02427.
+Shuo Sun, Molei Qin, Xinrun Wang, and Bo An. 2023a.
+Prudex-compass: Towards systematic evaluation of
+reinforcement learning in financial markets.Preprint,
+arXiv:2302.00586.
+Shuo Sun, Molei Qin, wentao zhang, Haochong Xia,
+Chuqiao Zong, Jie Ying, Yonggang Xie, Lingxuan
+Zhao, Xinrun Wang, and Bo An. 2023b. Trademaster:
+A holistic quantitative trading platform empowered
+by reinforcement learning. InThirty-seventh Con-
+ference on Neural Information Processing Systems
+Datasets and Benchmarks Track.
+Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert,
+et al. 2023. Llama 2: Open foundation and fine-tuned
+chat models.Preprint, arXiv:2307.09288.
+Zhicheng Wang, Biwei Huang, Shikui Tu, Kun Zhang,
+and Lei Xu. 2021a. Deeptrader: a deep reinforcement
+learning approach for risk-return balanced portfolio
+management with market conditions embedding. In
+Proceedings of the AAAI Conference on Artificial
+Intelligence, volume 35, pages 643–650.
+Zhicheng Wang, Biwei Huang, Shikui Tu, Kun Zhang,
+and Lei Xu. 2021b. Deeptrader: A deep reinforce-
+ment learning approach for risk-return balanced port-
+folio management with market conditions embedding.
+Proceedings of the AAAI Conference on Artificial
+Intelligence, 35(1):643–650.
+Shijie Wu, Ozan Irsoy, Steven Lu, Vadim Dabravolski,
+Mark Dredze, Sebastian Gehrmann, Prabhanjan
+Kambadur, David Rosenberg, and Gideon Mann.
+2023. Bloomberggpt: A large language model for
+finance.arXiv preprint arXiv:2303.17564.
+Yiqi Wu, Xiaodan Hu, Ziming Fu, Siling Zhou, and
+Jiangong Li. 2024. Gpt-4o: Visual perception perfor-
+mance of multimodal large language models in piglet
+activity understanding.Preprint, arXiv:2406.09781.
+An Yang, Baosong Yang, Binyuan Hui, et al.
+2024. Qwen2 technical report.arXiv preprint
+arXiv:2407.10671.
+Hongyang Yang, Xiao-Yang Liu, and Christina Dan
+Wang. 2023a. Fingpt: Open-source financial large
+language models.arXiv preprint arXiv:2306.06031.
+Hui Yang, Sifu Yue, and Yunzhong He. 2023b. Auto-
+gpt for online decision making: Benchmarks and
+additional opinions.Preprint, arXiv:2306.02224.
+Xiao Yang, Weiqing Liu, Dong Zhou, Jiang Bian, and
+Tie-Yan Liu. 2020. Qlib: An ai-oriented quantitative
+investment platform.Preprint, arXiv:2009.11189.
+Jianfeng Yu and Yu Yuan. 2011. Investor sentiment
+and the mean–variance relation.Journal of Financial
+Economics, 100(2):367–381.
+Yangyang Yu, Haohang Li, Zhi Chen, Yuechen Jiang,
+Yang Li, Denghui Zhang, Rong Liu, Jordan W.
+Suchow, and Khaldoun Khashanah. 2023. Finmem:
+A performance-enhanced llm trading agent with
+layered memory and character design.Preprint,
+arXiv:2311.13743.
+Wentao Zhang, Lingxuan Zhao, Haochong Xia, Shuo
+Sun, Jiaze Sun, Molei Qin, Xinyi Li, Yuqing Zhao,
+Yilei Zhao, Xinyu Cai, Longtao Zheng, Xinrun Wang,
+and Bo An. 2024. A multimodal foundation agent for
+financial trading: Tool-augmented, diversified, and
+generalist.Preprint, arXiv:2402.18485.
+A Overview of Appendix
+We have nearly 15 pages of this appendix, compris-
+ing the following subsections for the convenience
+of readers:
+More details about of our framework
+• Definitions of Single Agent: This section
+provides comprehensive instructions on tools,
+memory, and other details.
+• Prompt Templates for Various Tasks: This
+section details the prompt templates used for
+various tasks within our framework.
+• Profiles of Agents: A thorough exposition
+presenting detailed profiles of each agent.
+• Construction of the Strategy Pool: This section
+elaborates on the methodology employed for
+constructing the strategy pool, which is pivotal
+for evaluating and refining trading strategies
+within the QuantAgents framework.
+More details about of our setting
+• PRUDEX Evaluation Benchmark: An evalu-
+ation benchmark assessing performance across
+multiple dimensions.
+• Details of Dataset Setup: Includes details of our
+datasets.
+• Details of Evaluation Metrics: Includes the
+calculation of associated metrics.
+• Details of Baselines: Comprehensive descrip-
+tions of our competitors.
+More additional experiments
+• Experiment of Ablation Study: Additional
+experiments focusing on ablation study.
+• Single-Asset Performance Comparison: This
+section presents a performance comparison for
+a single-asset scenario, focusing on Apple Inc.
+(AAPL) stock from 2021 to 2023, to evaluate the
+effectiveness of QuantAgents against baseline
+models.
+• Empirical Evaluation of QuantAgents in Live
+Trading: This section describes the performance
+of QuantAgents in real-world trading scenarios
+within the Chinese market, covering Q1-Q3 of
+2024.
+B Definitions of Single Agent
+In this section, we will provide a comprehensive
+overview of the composition and execution process
+of a single agent, designed to simulate the human
+decision-making process in investments.Each agent
+comprises a range of financial analysis tools,
+along with definitions for action, memory, profile,
+reflection and the execution workflow.
+B.1 Tool
+The tool module T encompasses a comprehensive
+suite of technical and analytical tools for invest-
+ment decision-making, including:
+•t 1:Technical Indicator Analysis, providing
+analysis of traditional technical indicators such
+as moving averages, relative strength index, and
+others;
+•t 2:Sentiment Analysis from Social Media,
+gauging market sentiment through the analysis
+of social media platforms;
+•t 3:Algorithmic Trading Strategies, employing
+algorithms to identify trading opportunities and
+execute trades;
+•t 4:Regulatory Change Impact Analysis,
+assessing the potential impact of regulatory
+changes on the market;
+•t 5:Economic Indicator Forecasting, predicting
+future economic conditions by analyzing leading
+economic indicators;
+•t 6:Corporate Earnings Analysis, scrutinizing
+financial reports to evaluate corporate perfor-
+mance;
+•t 7:NASDAQ-100 Index Component Track-
+ing, monitoring the performance of individual
+components within the NASDAQ-100 Index;
+•t 8:Sector Performance Evaluation, assessing
+the performance of different industry sectors for
+sector-specific investment decisions;
+•t 9:Risk-Adjusted Return Analysis, measuring
+the return of an investment in relation to its risk;
+•t 10:Portfolio Diversification Tools, aiding in
+the strategic distribution of investments across
+various asset classes;
+•t 11:Central Bank Policy Analysis, interpreting
+the implications of central bank policies on
+currency values and economic conditions;
+•t 12:Global Macroeconomic Trend Analysis,
+examining large-scale economic trends and their
+impact on global markets;
+•t 13:Currency Pair Correlation Matrix, study-
+ing the correlation between different currency
+pairs for informed trading decisions;
+•t 14:Interest Rate Differential Analysis, ana-
+lyzing the effects of interest rate differentials on
+currency exchange rates;
+•t 15:Asset Allocation Optimization, strategi-
+cally allocating investments to maximize returns
+and minimize risk;
+•t 16:Risk Management Frameworks, employ-
+ing frameworks to identify, assess, and mitigate
+investment risks;
+•t 17:Portfolio Stress Testing, simulating the
+impact of extreme market conditions on the
+portfolio to evaluate its resilience;
+•t 18:Derivatives Strategy Formulation, creat-
+ing strategies involving derivatives to hedge risks
+and enhance returns;
+•t 19:Fund Performance Evaluation, measuring
+and assessing the performance of investment
+funds against benchmarks and objectives;
+•t 20:FinReport, generating detailed financial
+reports to provide insights into company and
+market performance;
+•t 21:Trend Forecasting, predicting future market
+trends based on historical data and predictive
+analytics;
+•t 22:Volatility Assessment Tool, analyzing
+market volatility to better inform investment
+decisions;
+•t 23:Simulation Optimization Toolkit, opti-
+mizing trading strategies through simulation
+techniques;
+•t 24:Strategy Analysis Suite, providing com-
+prehensive analysis of investment strategies for
+performance evaluation;
+•t 25:RiskAnalyzer Toolkit, assessing and
+quantifying various risk factors in the investment
+portfolio;
+•t 26:Risk Score Assessment Tool, calculating a
+risk score to guide investment decisions based on
+the overall risk profile.
+B.2 Action
+The specific actions A that agent can execute
+include:
+•a 1:Buy/Sell/Hold the current assets, making
+decisions on whether to acquire new assets,
+divest existing ones, or maintain the current
+position;
+•a 2:Adjust the quantity and price of securities
+to be bought or sold, fine-tuning the volume and
+pricing strategy for securities transactions;
+•a 3:Set or modify trading stop-loss, take-profit,
+and other trading strategy conditions, imple-
+menting or revising parameters for automated
+trading strategies to manage risk and lock in
+profits;
+•a 4:Adjust the risk exposure of the investment
+portfolio, allocating budget weights and modify-
+ing the portfolio to achieve the desired level of
+risk exposure;
+•a 5:Execute Asset Allocation, strategically
+distributing investment capital across various
+asset classes to optimize the portfolio’s risk and
+return profile;
+•a 6:Initiate Risk Assessment Protocols, begin-
+ning the process of evaluating potential risks and
+determining the appropriate measures to mitigate
+them;
+•a 7:Authorize Capital Deployment, approving
+the use of funds for investment opportunities in
+line with the asset allocation strategy;
+•a 8:Enforce Compliance with Regulatory
+Standards, ensuring that all investment activities
+adhere to the legal and regulatory framework
+governing financial markets.
+•a 1:Buy/Sell/Hold the current assets, making
+decisions on whether to acquire new assets,
+divest existing ones, or maintain the current
+position;
+•a 2:Adjust the quantity and price of securities
+to be bought or sold, fine-tuning the volume and
+pricing strategy for securities transactions;
+•a 3:Set or modify trading stop-loss, take-profit,
+and other trading strategy conditions, imple-
+menting or revising parameters for automated
+trading strategies to manage risk and lock in
+profits;
+•a 4:Adjust the risk exposure of the investment
+portfolio, allocating budget weights and modify-
+ing the portfolio to achieve the desired level of
+risk exposure;
+•a 5:Execute Asset Allocation, strategically
+distributing investment capital across various
+asset classes to optimize the portfolio’s risk and
+return profile;
+•a 6:Enforce Compliance with Regulatory
+Standards, ensuring that all investment activities
+adhere to the legal and regulatory framework
+governing financial markets;
+•a 7:Rebalance Portfolio, adjusting the portfolio
+to maintain the desired asset allocation and risk
+profile in response to market changes;
+•a 8:Conduct Market Scanning, continuously
+monitoring the market for new investment oppor-
+tunities and potential risks;
+•a 9:Initiate Hedging Strategies, implementing
+hedging techniques such as derivatives to protect
+the portfolio against adverse market movements;
+•a 10:Generate Financial Reports, producing
+detailed reports on portfolio performance, risk
+exposure, and compliance status for internal and
+external stakeholders.
+B.3 Memory
+For an agent the Memory moduleM is designed to
+store and manage three main types of information:
+• Market Information Memory( MI). This
+memory component stores historical data, includ-
+ing stock prices, financial news, and economic
+indicators, all of which are relevant to the
+investment decisions made by the agents.
+• Strategy Memory( MS). This memory com-
+ponent contains a comprehensive analysis of
+strategies employed in both simulated trading
+environments and real-world trading scenarios,
+allowing the agents to refine their approaches
+based on past performance.
+• Report Memory( MR). This memory com-
+ponent comprises in-depth analyses of markets,
+industries, and companies, serving as a reference
+for the agents when generating investment
+reports and making informed decisions.
+B.4 Profile
+The profile module provides a comprehensive
+specification of an agent’s identity, responsibilities,
+and operational boundaries, ensuring a well-
+structured and controlled environment for intel-
+ligent investment decision-making. The agent’s
+Profile includes the following main components:
+• Basic Information: This encompasses the
+agent type, background information and role
+assignments.
+• Action Permissions: The set of actions that the
+agent is authorized to perform.
+• Tool Permissions: The collection of analytical
+tools and resources accessible to the agent for
+decision-making.
+• Market Information Permissions: The scope
+of market data and news that the agent is allowed
+to access.
+• Team Background: Provides an overview of the
+team’s structure, the agents’ collaborative roles,
+and the collective goals within the QuantAgents
+framework.
+B.5 Reflection
+The reflection process represents the core decision-
+making component of the agent. It leverages the
+LLM foundation to analyze the input information
+and generate a reflective output based on the
+specific task objective. Let It denote the set
+of inputs available to the agent at time t. The
+reflection process can be formulated as:
+Rγ
+t =R(γ,I t) (7)
+Where R(·) represents reflection function, γ
+represents the current reflective task. The output
+Rγ
+t is the agent’s reflection at timet.
+The reflection process can be further decom-
+posed into multiple stages, representing the agent’s
+thought process: i) Information Preprocessing:
+The agent filters and organizes the input infor-
+mation It based on relevance and importance;
+ii)Context Understanding: The agent analyzes
+the preprocessed information to develop a com-
+prehensive understanding of the current market
+context; iii)Goal Alignment: The agent aligns its
+analysis with the specific investment objectives
+and constraints defined in its Profile; iv)Strategy
+Formulation: Based on the context understanding
+and goal alignment, the agent formulates potential
+investment strategies and evaluates their risks and
+rewards; v)Decision Making: The agent selects the
+most suitable strategy, considering its accumulated
+experience, and generates the final Reflection
+output Rγ
+t . The Reflection process is iterative
+and continuously updated as new information
+becomes available, enabling the agents to adapt
+their investment decisions dynamically in response
+to changing market conditions.
+C Prompt Templates for Various Tasks
+In this section, we detail the prompt templates used
+for various tasks within the QuantAgents frame-
+work. These templates are essential for guiding
+the Large Language Model (LLM) to generate
+accurate and context-specific outputs, supporting
+the decision-making processes of different agents.
+• Market Analysis:For tasks related to market
+analysis, the prompt template focuses on deliver-
+ing a comprehensive evaluation of current market
+conditions, including key financial indicators and
+recent news. An example template is:
+<Prompt Template>
+You are {Emily Profile}, a Market Ana-
+lyst. Today’s market overview includes the
+following data: {Current Prices}, {Recent
+News}. Utilize the available financial
+analysis tools to generate insights. Present
+the results in JSON format, including key
+metrics such as {Tool Results}.
+• Strategy Development:For strategy develop-
+ment tasks, the prompt template is designed
+to capture detailed information about strategy
+formulation and performance evaluation. An
+example template is:
+<Prompt Template>
+You are {Bob Profile}, a Strategy Analyst.
+The current strategy is defined by {Strategy
+Parameters}, and the simulation results
+are as follows: {Simulation Data}. Opti-
+mize the strategy to enhance {Performance
+Metrics} and provide recommendations
+in JSON format, highlighting areas for
+improvement.
+• Risk Management:For risk management tasks,
+the prompt template emphasizes the assessment
+and mitigation of financial risks. An example
+template is:
+<Prompt Template>
+You are {Dave Profile}, a Risk Analyst.
+Current risk metrics include {Risk Indi-
+cators}, and recent risk events are {Risk
+Events}. Evaluate the overall risk expo-
+sure and propose effective risk mitigation
+strategies. Output should be in JSON
+format, with detailed recommendations for
+risk management.
+• Investment Decision:For investment decision
+tasks, the prompt template is designed to guide
+the evaluation of potential investment opportu-
+nities based on market conditions and strategic
+objectives. An example template is:
+<Prompt Template>
+You are {Otto Profile}, an Investment
+Manager. Evaluate the following investment
+opportunities: {Investment Options}. Con-
+sidering the current market data {Market
+Data}, determine the optimal investment
+strategy and provide a JSON-formatted
+recommendation outlining the suggested
+actions.
+D Profiles of Agents
+This appendix provides an exhaustive outline of
+the QuantAgents team member profiles, which
+are integral to our investment decision-making
+simulation. The profiles are articulated using
+XML, chosen for its flexibility and robustness in
+structuring and representing complex data. XML’s
+self-descriptive nature and the ability to define
+custom tags make it an ideal choice for encoding
+the intricate details of each agent’s profile. It
+allows for a high degree of customization and
+scalability, which is essential for simulating a
+dynamic and complex environment such as a hedge
+fund’s investment strategy.
+E Construction of the Strategy Pool
+This section elaborates on the methodology em-
+ployed for constructing the strategy pool, refer-
+enced in the Strategy Development Meeting section.
+The strategy pool is pivotal for evaluating and
+refining trading strategies within the QuantAgents
+framework.
+• Strategy Pool Definition:The strategy pool
+encompasses a diverse array of trading strategies
+derived from permutations of various indices and
+parameters. This comprehensive array ensures a
+broad exploration of potential strategies, facili-
+tating the identification of those most effective
+under varying market conditions.
+• Permutations of Indices and Parameters:The
+construction of the strategy pool involves gener-
+ating permutations across multiple indices and
+trading parameters. Each permutation represents
+a unique combination of factors such as technical
+indicators, risk management rules, and trading
+signals. This methodology enables a thorough
+evaluation of strategies across different market
+environments.
+• Data Utilization:Historical and real-time
+market data form the basis for simulating the
+performance of each strategy within the pool.
+This data includes stock prices, trading volumes,
+economic indicators, and other pertinent financial
+metrics. By applying strategies to this data, we
+assess their effectiveness and make informed
+decisions regarding their potential deployment.
+• Performance Evaluation and Selection:Strate-
+gies within the pool are rigorously evaluated
+based on key performance metrics, including
+return on investment (ROI), risk-adjusted returns,
+and maximum drawdown. Strategies demonstrat-
+ing superior performance metrics are selected for
+further testing and refinement. This evaluation
+ensures that only the most promising strategies
+advance to the subsequent stages of development.
+•Dynamic Updates:The strategy pool is subject
+to continuous updates based on new market
+data and performance feedback. This adaptive
+approach ensures that the pool remains relevant
+and responsive to evolving market conditions,
+integrating new insights and methodologies into
+strategy development.
+The strategic construction and maintenance of
+the strategy pool are crucial for the effective
+functioning of the QuantAgents framework.
+F PRUDEX Evaluation Benchmark
+PRUDEX-Compass is a systematic evaluation
+framework for methods in financial markets, con-
+sisting of six axes with a total of 17 measures. Each
+axis represents a critical aspect of the evaluation,
+and the measures provide detailed insights into the
+performance of the methods across these aspects.
+The following is PRUDEX’s specific explanation
+of the dimensions it assesses.
+Profitability.In line with the primary goal of
+Quantitative Trading (QT) to maximize profits,
+this criterion assesses the capacity of Financial
+Reinforcement Learning (FinRL) methods to ac-
+cumulate market capital. It extends beyond mere
+returns to encompass the stability and consistency
+of strategies in achieving substantial profits.
+Risk-Control.Given the inherent trade-off
+between profitability and risk in financial contexts,
+this element is pivotal. It reflects the industry’s
+emphasis on managing both systemic and unsys-
+tematic risks, which is crucial for FinRL method
+evaluation.
+Universality.The financial market’s complexity,
+with its myriad assets and varying temporal and
+stylistic dimensions, poses a challenge. This crite-
+rion evaluates the versatility of FinRL methods in
+delivering satisfactory performance across diverse
+trading environments. It aligns with contemporary
+machine learning trends, such as transfer and meta-
+learning.
+Diversity.Financial diversification, a strategy
+to spread capital across different assets to mitigate
+risk, is highlighted by this axis. It addresses the
+current oversight in FinRL method evaluation con-
+cerning diversity, which is essential for bolstering
+profitability and managing risk.
+Reliability.The performance variability of
+RL methods, their sensitivity to various factors,
+including random seeds and market fluctuations,
+can impede reliability—critical for high-stakes
+The Profile of Investment Manager Otto
+< p r o f i l e >
+<name> Otto < / name>
+< d e s c r i p t i o n >You a r e Otto , t h e I n v e s t m e n t Manager who l e a d s t h e i n v e s t m e n t team and
+o v e r s e e s t h e e n t i r e p o r t f o l i o . Your r e s p o n s i b i l i t y i s t o make f i n a l i n v e s t m e n t
+d e c i s i o n s , e n s u r i n g t h a t t h e p o r t f o l i o i s well − d i v e r s i f i e d and a l i g n e d w i t h t h e
+fund ' s o b j e c t i v e s . You i n t e g r a t e i n s i g h t s from o t h e r a g e n t s t o c r a f t a c o h e s i v e
+i n v e s t m e n t s t r a t e g y t h a t b a l a n c e s r i s k and r e t u r n . Your l e a d e r s h i p e n s u r e s t h a t
+t h e p o r t f o l i o r e m a i n s a d a p t i v e t o c h a n g i n g market c o n d i t i o n s , and your s t r a t e g i c
+v i s i o n d r i v e s t h e o v e r a l l s u c c e s s o f t h e i n v e s t m e n t fund . < / d e s c r i p t i o n >
+< b a s i c I n f o r m a t i o n >
+< agentType > P o r t f o l i o Management Agent < / agentType >
+< r o l e > I n v e s t m e n t Manager < / r o l e >
+< r e s p o n s i b l e F o r > O v e r s e e i n g and managing t h e i n v e s t m e n t p o r t f o l i o < / r e s p o n s i b l e F o r
+>
+< r o l e A s s i g n m e n t > F i n a l d e c i s i o n −making and s t r a t e g y o v e r s i g h t . < / r o l e A s s i g n m e n t >
+</ b a s i c I n f o r m a t i o n >
+< a c t i o n P e r m i s s i o n s >
+< a c t i o n > M a k e F i n a l I n v e s t m e n t D e c i s i o n s < / a c t i o n >
+< a c t i o n > A l l o c a t e I n v e s t m e n t B u d g e t < / a c t i o n >
+< a c t i o n > A p p r o v e S t r a t e g i e s < / a c t i o n >
+< a c t i o n > M o n i t o r P o r t f o l i o P e r f o r m a n c e < / a c t i o n >
+< a c t i o n > A d j u s t P o r t f o l i o A l l o c a t i o n < / a c t i o n >
+< a c t i o n >EngageInRiskManagement < / a c t i o n >
+</ a c t i o n P e r m i s s i o n s >
+< t o o l P e r m i s s i o n s >
+< t o o l > A s s e t A l l o c a t i o n O p t i m i z a t i o n < / t o o l >
+< t o o l >Risk − A d j u s t e d R e t u r n A n a l y s i s < / t o o l >
+< t o o l > C e n t r a l Bank P o l i c y A n a l y s i s < / t o o l >
+< t o o l > I n t e r e s t Rate D i f f e r e n t i a l A n a l y s i s < / t o o l >
+< t o o l > D e r i v a t i v e s S t r a t e g y F o r m u l a t i o n < / t o o l >
+< t o o l > P o r t f o l i o D i v e r s i f i c a t i o n Tools < / t o o l >
+</ t o o l P e r m i s s i o n s >
+< m a r k e t I n f o r m a t i o n P e r m i s s i o n s >
+<scope > H i s t o r i c a l T r a d i n g Data < / scope >
+<scope >Real − t i m e Market Data < / scope >
+<scope > P o r t f o l i o P e r f o r m a n c e Data < / scope >
+<scope >Economic I n d i c a t o r s < / scope >
+<scope > Market S e n t i m e n t A n a l y s i s < / scope >
+</ m a r k e t I n f o r m a t i o n P e r m i s s i o n s >
+<teamBackground >
+< d e s c r i p t i o n > Otto , a s t h e I n v e s t m e n t Manager i n t h e QuantAgents framework ,
+c o o r d i n a t e s t h e a c t i v i t i e s o f a l l a g e n t s and e n s u r e s t h e a l i g n m e n t o f
+s t r a t e g i e s w i t h t h e o v e r a l l i n v e s t m e n t g o a l s . His r o l e i s c e n t r a l t o t h e
+fund ' s s u c c e s s , a s he i n t e g r a t e s d i v e r s e i n s i g h t s i n t o a u n i f i e d s t r a t e g y
+and manages t h e p o r t f o l i o t o maximize r e t u r n s and manage r i s k s . < / d e s c r i p t i o n
+>
+</ teamBackground >
+</ p r o f i l e >
+The Profile of Strategy Analyst Bob
+< p r o f i l e >
+<name>Bob< / name>
+< d e s c r i p t i o n >You a r e Bob , a S t r a t e g y A n a l y s t s p e c i a l i z i n g i n t h e d e v e l o p m e n t and
+t e s t i n g o f q u a n t i t a t i v e t r a d i n g s t r a t e g i e s . Your e x p e r t i s e l i e s i n
+d e s i g n i n g and s i m u l a t i n g v a r i o u s i n v e s t m e n t s t r a t e g i e s , u s i n g advanced
+modeling t e c h n i q u e s t o o p t i m i z e p e r f o r m a n c e i n d i v e r s e market c o n d i t i o n s .
+Your d e c i s i o n s a r e d a t a − d r i v e n , l e v e r a g i n g h i s t o r i c a l and r e a l − t i m e d a t a t o
+r e f i n e and v a l i d a t e s t r a t e g i e s b e f o r e t h e y a r e d e p l o y e d i n l i v e t r a d i n g . You
+a l s o c o l l a b o r a t e c l o s e l y w i t h o t h e r a g e n t s t o e n s u r e t h a t s t r a t e g i e s a l i g n
+w i t h o v e r a l l p o r t f o l i o g o a l s , and you c o n t i n u o u s l y i t e r a t e on s t r a t e g i e s
+b a s e d on f e e d b a c k and p e r f o r m a n c e a n a l y s i s . < / d e s c r i p t i o n >
+< b a s i c I n f o r m a t i o n >
+< agentType > S t r a t e g y Development Agent< / agentType >
+< r o l e > S t r a t e g y A n a l y s t < / r o l e >
+< r e s p o n s i b l e F o r > D e v e l o p i n g and t e s t i n g q u a n t i t a t i v e s t r a t e g i e s < /
+r e s p o n s i b l e F o r >
+< r o l e A s s i g n m e n t > S t r a t e g y d e s i g n and s i m u l a t i o n . < / r o l e A s s i g n m e n t >
+< / b a s i c I n f o r m a t i o n >
+< a c t i o n P e r m i s s i o n s >
+< a c t i o n > D e v e l o p S t r a t e g y < / a c t i o n >
+< a c t i o n > S i m u l a t e S t r a t e g y < / a c t i o n >
+< a c t i o n > A d j u s t S t r a t e g y P a r a m e t e r s < / a c t i o n >
+< a c t i o n > A n a l y z e S t r a t e g y P e r f o r m a n c e < / a c t i o n >
+< a c t i o n > O p t i m i z e S t r a t e g y < / a c t i o n >
+< a c t i o n > D e p l o y S t r a t e g y < / a c t i o n >
+< / a c t i o n P e r m i s s i o n s >
+< t o o l P e r m i s s i o n s >
+< t o o l > T e c h n i c a l I n d i c a t o r A n a l y s i s < / t o o l >
+< t o o l > S t r a t e g y A n a l y s i s S u i t e < / t o o l >
+< t o o l > S i m u l a t i o n O p t i m i z a t i o n T o o l k i t < / t o o l >
+< t o o l > V o l a t i l i t y Assessment Tool < / t o o l >
+< t o o l > R i s k A n a l y z e r t o o l k i t < / t o o l >
+< t o o l >Economic I n d i c a t o r F o r e c a s t i n g < / t o o l >
+< / t o o l P e r m i s s i o n s >
+< m a r k e t I n f o r m a t i o n P e r m i s s i o n s >
+< s c o p e > H i s t o r i c a l T r a d i n g Data < / s c o p e >
+< s c o p e >Real − t i m e Market Data < / s c o p e >
+< s c o p e > P o r t f o l i o P e r f o r m a n c e Data < / s c o p e >
+< / m a r k e t I n f o r m a t i o n P e r m i s s i o n s >
+<teamBackground >
+< d e s c r i p t i o n >The QuantAgents framework f u n c t i o n s a s a s o p h i s t i c a t e d a s s e t
+management system , i n t e g r a t i n g m u l t i p l e s p e c i a l i z e d a g e n t s t o a c h i e v e
+o p t i m a l i n v e s t m e n t outcomes . Bob , a s t h e S t r a t e g y A n a l y s t , c o l l a b o r a t e s
+w i t h o t h e r a g e n t s l i k e Otto , t h e I n v e s t m e n t Manager , t o a l i g n s t r a t e g y
+d e v e l o p m e n t w i t h o v e r a l l p o r t f o l i o management g o a l s , e n s u r i n g r o b u s t and
+a d a p t i v e t r a d i n g s y s t e m s . < / d e s c r i p t i o n >
+< / teamBackground >
+< / p r o f i l e >
+The Profile of Risk Control Analyst Dave
+< p r o f i l e >
+<name>Dave < / name>
+< d e s c r i p t i o n >You a r e Dave , a Risk C o n t r o l A n a l y s t f o c u s e d on t h e c o m p r e h e n s i v e
+e v a l u a t i o n and m i t i g a t i o n o f i n v e s t m e n t r i s k s . Your r o l e i s t o m o n i t o r t h e
+p o r t f o l i o ' s r i s k e x p o s u r e , a s s e s s t h e r i s k i m p l i c a t i o n s o f t r a d i n g
+s t r a t e g i e s , and implement m e a s u r e s t o s a f e g u a r d a g a i n s t p o t e n t i a l l o s s e s .
+Your e x p e r t i s e i n r i s k management t o o l s and frameworks a l l o w s you t o
+i d e n t i f y and a d d r e s s v u l n e r a b i l i t i e s w i t h i n t h e i n v e s t m e n t p o r t f o l i o ,
+e n s u r i n g t h a t t h e o v e r a l l r i s k r e m a i n s w i t h i n a c c e p t a b l e l i m i t s . You work
+c l o s e l y w i t h o t h e r a g e n t s t o e n s u r e t h a t r i s k c o n s i d e r a t i o n s a r e i n t e g r a l t o
+a l l i n v e s t m e n t d e c i s i o n s . < / d e s c r i p t i o n >
+< b a s i c I n f o r m a t i o n >
+< agentType > Risk Management Agent < / agentType >
+< r o l e > Risk C o n t r o l A n a l y s t < / r o l e >
+< r e s p o n s i b l e F o r > Risk m o n i t o r i n g and m i t i g a t i o n < / r e s p o n s i b l e F o r >
+< r o l e A s s i g n m e n t > Risk a s s e s s m e n t and c o n t r o l . < / r o l e A s s i g n m e n t >
+</ b a s i c I n f o r m a t i o n >
+< a c t i o n P e r m i s s i o n s >
+< a c t i o n > E v a l u a t e R i s k E x p o s u r e < / a c t i o n >
+< a c t i o n > I m p l e m e n t R i s k C o n t r o l s < / a c t i o n >
+< a c t i o n > M o n i t o r P o r t f o l i o R i s k < / a c t i o n >
+< a c t i o n > T r i g g e r R i s k A l e r t s < / a c t i o n >
+< a c t i o n > A d j u s t R i s k P a r a m e t e r s < / a c t i o n >
+< a c t i o n > P e r f o r m S t r e s s T e s t i n g < / a c t i o n >
+</ a c t i o n P e r m i s s i o n s >
+< t o o l P e r m i s s i o n s >
+< t o o l > Risk Management Frameworks < / t o o l >
+< t o o l > P o r t f o l i o S t r e s s T e s t i n g < / t o o l >
+< t o o l > R i s k A n a l y z e r t o o l k i t < / t o o l >
+< t o o l > Risk S c o r e Assessment t o o l < / t o o l >
+< t o o l > R e g u l a t o r y Change Impact A n a l y s i s < / t o o l >
+< t o o l >Economic I n d i c a t o r F o r e c a s t i n g < / t o o l >
+</ t o o l P e r m i s s i o n s >
+< m a r k e t I n f o r m a t i o n P e r m i s s i o n s >
+<scope > H i s t o r i c a l T r a d i n g Data < / scope >
+<scope >Real − t i m e Market Data < / scope >
+<scope > P o r t f o l i o P e r f o r m a n c e Data < / scope >
+<scope > P o r t f o l i o Risk Data < / scope >
+<scope > Market V o l a t i l i t y Data < / scope >
+</ m a r k e t I n f o r m a t i o n P e r m i s s i o n s >
+<teamBackground >
+< d e s c r i p t i o n > I n t h e QuantAgents framework , Dave p l a y s a c r u c i a l r o l e i n
+m a i n t a i n i n g t h e b a l a n c e between r i s k and r e t u r n by c o n t i n u o u s l y
+m o n i t o r i n g and a d j u s t i n g t h e p o r t f o l i o ' s r i s k p r o f i l e . Working i n
+c o n j u n c t i o n w i t h o t h e r a g e n t s , Dave e n s u r e s t h a t r i s k management i s a
+c o r e component o f a l l i n v e s t m e n t s t r a t e g i e s , c o n t r i b u t i n g t o t h e o v e r a l l
+s t a b i l i t y and s u c c e s s o f t h e p o r t f o l i o . < / d e s c r i p t i o n >
+</ teamBackground >
+</ p r o f i l e >
+The Profile of Market Analyst Emily
+< p r o f i l e >
+<name>Emily< / name>
+< d e s c r i p t i o n >You a r e Emily , a Market A n a l y s t d e d i c a t e d t o c o n d u c t i n g t h o r o u g h
+r e s e a r c h on markets , i n d u s t r i e s , and companies . Your work i n v o l v e s g a t h e r i n g
+and a n a l y z i n g v a s t amounts o f d a t a t o p r o d u c e d e t a i l e d r e p o r t s t h a t i n f o r m
+i n v e s t m e n t d e c i s i o n s . Your i n s i g h t s i n t o market t r e n d s , s e c t o r p e r f o r m a n c e ,
+and company f u n d a m e n t a l s a r e c r i t i c a l f o r i d e n t i f y i n g p o t e n t i a l i n v e s t m e n t
+o p p o r t u n i t i e s and r i s k s . You a l s o p r o v i d e t i m e l y u p d a t e s and r ecommend ations
+t o e n s u r e t h a t t h e i n v e s t m e n t team i s well − i n f o r m e d a b o u t t h e l a t e s t market
+d e v e l o p m e n t s . < / d e s c r i p t i o n >
+< b a s i c I n f o r m a t i o n >
+< agentType >Market R e s e a r c h Agent< / agentType >
+< r o l e >Market A n a l y s t < / r o l e >
+< r e s p o n s i b l e F o r > C o n d u c t i n g market r e s e a r c h and a n a l y s i s < / r e s p o n s i b l e F o r >
+< r o l e A s s i g n m e n t > R e s e a r c h and r e p o r t i n g . < / r o l e A s s i g n m e n t >
+< / b a s i c I n f o r m a t i o n >
+< a c t i o n P e r m i s s i o n s >
+< a c t i o n > C o n d u c t M a r k e t R e s e a r c h < / a c t i o n >
+< a c t i o n > A n a l y z e I n d u s t r y T r e n d s < / a c t i o n >
+< a c t i o n > EvaluateCompanyPerformance < / a c t i o n >
+< a c t i o n > G e n e r a t e I n v e s t m e n t R e p o r t s < / a c t i o n >
+< a c t i o n > P r o v i d e M a r k e t U p d a t e s < / a c t i o n >
+< a c t i o n > RecommendInvestmentActions < / a c t i o n >
+< / a c t i o n P e r m i s s i o n s >
+< t o o l P e r m i s s i o n s >
+< t o o l > S e c t o r P e r f o r m a n c e E v a l u a t i o n < / t o o l >
+< t o o l > C o r p o r a t e E a r n i n g s A n a l y s i s < / t o o l >
+< t o o l >Trend F o r e c a s t i n g < / t o o l >
+< t o o l >Fund P e r f o r m a n c e E v a l u a t i o n < / t o o l >
+< t o o l > G l o b a l Macroeconomic Trend A n a l y s i s < / t o o l >
+< t o o l > F i n R e p o r t < / t o o l >
+< / t o o l P e r m i s s i o n s >
+< m a r k e t I n f o r m a t i o n P e r m i s s i o n s >
+< s c o p e >Market Data < / s c o p e >
+< s c o p e > I n d u s t r y R e p o r t s < / s c o p e >
+< s c o p e >Company F i n a n c i a l Data < / s c o p e >
+< / m a r k e t I n f o r m a t i o n P e r m i s s i o n s >
+<teamBackground >
+< d e s c r i p t i o n >Emily , a s t h e Market A n a l y s t w i t h i n t h e QuantAgents framework ,
+i s r e s p o n s i b l e f o r p r o v i d i n g t h e team w i t h in − d e p t h market i n t e l l i g e n c e .
+Her r e s e a r c h s u p p o r t s t h e d e c i s i o n −making p r o c e s s by d e l i v e r i n g
+a c c u r a t e and a c t i o n a b l e i n s i g h t s , making h e r a key c o n t r i b u t o r t o t h e
+s u c c e s s o f t h e o v e r a l l i n v e s t m e n t s t r a t e g y . < / d e s c r i p t i o n >
+< / teamBackground >
+< / p r o f i l e >
+Table 4: Summary of evaluation measures for the PRUDEX-Compass framework.
+Axes Measures Descriptions
+Profitability Profit Assesses the capability of FinRL methods to accumulate market capital.
+Alpha Decay Indicates the decline in investment strategy effectiveness over time due to market changes.
+Equity Curve Represents the portfolio value’s progression over time.
+Risk-Control Risk Evaluates the level of risk assumed by FinRL methods.
+Risk-adjusted Profit Normalizes profit against the risk factors, including volatility and downside risk.
+Extreme Market Measures the performance of FinRL methods during unpredictable market events.
+Universality Country Covers performance across a spectrum of financial markets globally.
+Asset Type Includes a variety of asset classes in the evaluation.
+Time-Scale Accounts for different trading frequencies in the analysis.
+Diversity t-SNE Utilizes statistical methods to visualize the diversity of data points.
+Entropy Applies information theory to measure the diversity of trading behaviors.
+Correlation Examines the interrelation between assets to assess strategy diversity.
+Diversity Heatmap Graphically displays investment decision diversity across assets.
+Reliability Performance Profile Provides a visual summary of the empirical score distribution of FinRL methods.
+Variability Analyzes the consistency of performance across varying conditions.
+Rolling Window Evaluates the adaptability of FinRL methods over sequential time periods.
+Rank Comparison Offers a comparative ranking of methods based on performance metrics.
+Explainability - This axis is reserved for future discussions on the interpretability of FinRL models.
+financial applications. This axis focuses on the
+reliability of RL methods within the quantitative
+trading domain.
+Explainability.Trust in a model is paramount
+for its adoption. Explainability encompasses
+techniques that clarify a model’s behavior, aiding
+users in understanding model effectiveness under
+different market conditions and in rectifying erro-
+neous actions. In the regulated financial sector, this
+is particularly important for model accountability,
+oversight, and auditing.
+In our study, the QuantAgents method has under-
+gone evaluation using the PRUDEX-Compass and
+has achieved superior scores across all dimensions,
+showcasing its robustness and effectiveness in
+financial market simulations.
+G Details of Dataset Setup
+This appendix provides a detailed explanation of
+the technical indicators created in the dataset for
+this paper, along with their calculation methods
+and significance. The technical indicators are as
+follows, a total of 60 indicators.
+Delta:Delta is a term from options trading
+that measures the rate of change of an option’s
+price relative to the underlying asset’s price. In
+the context of stock technical analysis, it might be
+adapted to reflect sensitivity to market factors.
+Permutation (Zero-based):In stock analysis,
+permutation could be used to analyze sequences of
+price movements or market conditions, though its
+application is not standard.
+Log Return:Log return is calculated using the
+natural logarithm and is given by:
+Log Return= ln
+ Price at timet
+Price at timet−1
+
+Max in Range:This is the highest stock price
+within a specified range.
+Min in Range:This is the lowest stock price
+within the same range.
+Middle:The middle value is the average of the
+close, high, and low prices:
+Middle= Close+High+Low
+3
+Comparison Operators:These operators are
+used to establish conditions based on the relation-
+ship between data points:
+•≤(less than or equal to)
+•≥(greater than or equal to)
+•<(less than)
+•>(greater than)
+•=(equal to)
+•̸=(not equal to)
+Count (Both Backward c and Forward f c):
+This refers to the tally of occurrences of a condition
+or event in a dataset, observed both retrospectively
+and prospectively.
+Cross:Crosses indicate when one moving
+average crosses another, signifying potential trend
+changes:
+• Upward Cross- bullish signal when a short-term
+average crosses above a long-term average.
+• Downward Cross- bearish signal when a short-
+term average crosses below a long-term average.
+SMA (Simple Moving Average):The SMA is
+the average of a selected number of time periods
+and is calculated as follows:
+SMA= 1
+n
+nX
+i=1
+Pricei
+where n is the number of periods and Pricei is the
+price in periodi.
+EMA (Exponential Moving Average):The
+EMA gives more weight to recent prices, and it
+is calculated using the formula:
+EMA=
+Pricet −EMA y
+1 +y
+
++EMA y
+where Pricet is the current price,EMAy is the EMA
+of the previous period, and y is the number of
+periods.
+MSTD (Moving Standard Deviation):The
+moving standard deviation measures the average
+amount by which prices deviate from the SMA over
+a period and is calculated as:
+MSTD=
+vuut 1
+n−1
+nX
+i=1
+(Pricei −SMA) 2
+MV AR (Moving Variance):The moving
+variance is similar to the moving standard deviation
+but represents the squared deviations:
+MV AR= 1
+n−1
+nX
+i=1
+(Pricei −SMA) 2
+RSV (Raw Stochastic Value):The RSV is used
+in the calculation of the Stochastic Oscillator and
+is given by:
+RSV= Closet −Low n
+Highn −Low n
+×100
+where Closet is the closing price of the current
+period, Lown is the lowest price in the last n
+periods, and Highn is the highest price in the same
+period.
+RSI (Relative Strength Index):The RSI is a
+momentum oscillator that measures the speed and
+change of price movements:
+RSI= 100−
+
+100÷
+
+1 + Average Gains
+Average Losses
+
+KDJ (Stochastic Oscillator):The KDJ is a
+combination of three lines: K, D, and J, which
+are derived from the RSV and smoothed to identify
+trends:
+K=SMA(RSV,3)
+D=SMA(K,3)
+J= 3×K−2×D
+Bolling (Bollinger Band):Bollinger Bands
+consist of a simple moving average plus and
+minus a standard deviation, providing a measure of
+volatility:
+Upper Band=SMA+k×MSTD
+Lower Band=SMA−k×MSTD
+where k is a constant that determines the width of
+the bands.
+MACD (Moving Average Convergence Di-
+vergence):The MACD is a trend-following
+momentum indicator that shows the relationship
+between two EMAs:
+MACD=EMA(12)−EMA(26)
+with a signal line, usually a 9-day EMA of the
+MACD line.
+CR (Energy Index):The CR is a volume-based
+indicator that measures the difference between high
+and low prices to assess market strength:
+CR= Sum of middle values
+Sum of high-low ranges
+WR (Williams Overbought/Oversold index):
+The WR is a momentum indicator that compares
+the closing price to the high and low range over a
+period:
+WR= Highest High−Close
+Highest High−Lowest Low × −100
+CCI (Commodity Channel Index):The CCI
+is designed to measure the difference between an
+asset’s current price and its average price over a
+certain period:
+CCI= Pricet −MA(Price t, n)
+MD(Pricet, n)/0.015
+where MA is the moving average, MD is the mean
+deviation, andnis the period.
+TR (True Range):The True Range is a measure
+of market volatility and is defined as the maximum
+of the following:
+TR= max(Hight −Low t,|High t −Close t−1|,
+|Lowt −Close t−1|)
+where Hight and Lowt are the high and low prices
+for the current period, and Closet−1 is the closing
+price of the previous period.
+ATR (Average True Range):The Average True
+Range is a moving average of the True Range,
+typically calculated over 14 periods:
+ATR=SMA(TR,14)
+DMA (Difference of Moving Averages):The
+DMA is the difference between two moving
+averages, such as a 10-day and a 50-day:
+DMA=MA(10)−MA(50)
+DMI (Directional Moving Index):The DMI
+is a set of indicators that measure the strength of a
+price move in a particular direction.
++DI (Positive Directional Indicator):The +DI
+indicates the strength of upward moves:
++DI= H−L m
+TD
+-DI (Negative Directional Indicator):The -DI
+indicates the strength of downward moves:
+−DI= Lm −L
+TD
+where H is the high for the period, L is the low, Lm
+is the lowest low for the period, and TD is the True
+Range.
+ADX (Average Directional Movement Index):
+The ADX is a measure of the strength of a trend,
+regardless of direction:
+ADX= 14×ADX 14 +Current ADX
+15
+ADXR (Smoothed Moving Average of ADX):
+The ADXR is a smoothed version of the ADX,
+providing a longer-term view:
+ADXR= ADX+Previous ADXR
+2
+TRIX (Triple Exponential Moving Average):
+The TRIX is a momentum indicator that uses a
+triple smoothing of the EMA:
+TRIX= Triple EMA(Price, n)−Previous TRIX
+Previous TRIX
+TEMA (Triple Exponential Moving Average):
+The TEMA is similar to the TRIX but is designed
+to be less lagging:
+TEMA= 3×EMA(Price, n)
+−3×EMA(EMA(Price, n), n)
++EMA(EMA(EMA(Price, n), n), n)
+VR (Volume Variation Index):The VR is a
+volume-based indicator that compares the volume
+of up days to the volume of down days:
+VR= Up V olume−Down V olume
+Up V olume+Down V olume×100
+MFI (Money Flow Index):The MFI is a
+volume-weighted indicator that compares money
+flow to price change:
+MFI= Money Flow
+Average Money Flow ×100
+VWMA (Volume Weighted Moving Average):
+The VWMA is an average price that gives more
+weight to volumes:
+VWMA=
+P(Price×V olume)P V olume
+CHOP (Choppiness Index):The CHOP index
+measures market volatility and is calculated using
+the standard deviation of price changes.
+KER (Kaufman’s Efficiency Ratio):The
+KER is a momentum indicator that compares the
+difference between the high and low of the period
+to the high of the period:
+KER= High−Low
+High
+KAMA (Kaufman’s Adaptive Moving Aver-
+age):The KAMA is a moving average that adapts
+to market conditions:
+KAMA= Previous KAMA×(1 +ER)
+1 +ER+Smoothing Factor
+where ER is the efficiency ratio.
+PPO (Percentage Price Oscillator):The PPO
+is a momentum oscillator that compares two
+moving averages:
+PPO=
+EMA(Short Period)−EMA(Long Period)
+EMA(Long Period)
+
+×100
+StochRSI (Stochastic RSI):The Stochastic RSI
+applies the stochastics formula to the RSI indicator,
+resulting in two lines: %K and %D. It is calculated
+as:
+%K= RSI−Min RSI
+Max RSI−Min RSI ×100
+%D=SMA(%K,3)
+WT (LazyBear’s Wave Trend):LazyBear’s
+Wave Trend is a trend-following indicator that uses
+a combination of moving averages and price action
+to identify the trend direction.
+Supertrend:The Supertrend indicator, which
+consists of an Upper Band and a Lower Band, is a
+volatility-based band that changes direction when
+the price touches it:
+Upper Band=Previous Close+ATR×Multiplier
+Lower Band=Previous Close−ATR×Multiplier
+Aroon: Aroon OscillatorThe Aroon Oscillator
+is the difference between the Aroon Up and Aroon
+Down lines:
+Aroon Oscillator=Aroon Up−Aroon Down
+Z: Z-ScoreThe Z-Score is a statistical measure-
+ment that describes a score’s relationship to the
+mean of a group of scores:
+Z= (X−µ)
+σ
+where X is the value, µ is the mean, and σ is the
+standard deviation.
+AO (Awesome Oscillator):The Awesome
+Oscillator is a momentum indicator that compares
+the 5-period and 34-period SMAs:
+AO=SMA(5)−SMA(34)
+BOP (Balance of Power):The Balance of
+Power is a candlestick-based indicator that com-
+pares the opening and closing price to the high and
+low of the period:
+BOP=
+Close−Open
+High−Low
+
+×V olume
+MAD (Mean Absolute Deviation):The Mean
+Absolute Deviation is a measure of volatility that
+averages the absolute deviations from a data set’s
+mean:
+MAD= 1
+n
+nX
+i=1
+|Xi −µ|
+ROC (Rate of Change):The Rate of Change is
+a momentum indicator that measures the percent-
+age change in price over a specific period:
+ROC=
+Pricet −Price t−n
+Pricet−n
+
+×100
+Coppock: Coppock CurveThe Coppock Curve
+is a combination of a 14-month rate of change and
+an 11-month weighted rate of change, smoothed by
+a 10-month average:
+Coppock Curve= ROC(14) + 0.15×ROC(11)
+1 + 0.15
+Ichimoku: Ichimoku CloudThe Ichimoku
+Cloud is a comprehensive charting system that
+includes five lines:
+Tenkan-sen=SMA(High,9) +SMA(Low,9)
+Kijun-sen=SMA(High,26) +SMA(Low,26)
+Senkou Span A= Tenkan-sen+Kijun-sen
+2
+Senkou Span B= SMA(High,52)
+2 +
+SMA(Low,52)
+2
+CTI (Correlation Trend Indicator):The Cor-
+relation Trend Indicator measures the correlation
+between two moving averages to identify trend
+strength:
+CTI= SMA(Price, n)−SMA(Price, m)
+SMA(Price, n) +SMA(Price, m)
+LRMA (Linear Regression Moving Average):
+The Linear Regression Moving Average is a trend-
+based indicator that uses the least squares method
+to fit a line to the data:
+LRMA=b 0 +b 1 ×Time
+where b0 and b1 are the intercept and slope
+coefficients from the linear regression.
+ERI (Elder-Ray Index):The Elder-Ray Index
+consists of two lines, the %B (bull power) and %S
+(bear power), which are calculated as follows:
+%B= High+Low+Close
+3
+%S= High+Low−Close
+3
+FTR (Gaussian Fisher Transform Price Re-
+versals Indicator):The Fisher Transform is a
+statistical tool that converts price data into a
+Gaussian normal distribution to identify potential
+reversals:
+FTR= ln
+High+Low
+2
+
+RVGI (Relative Vigor Index):The Relative
+Vigor Index is a momentum indicator that uses the
+difference between two moving averages to assess
+market vigor:
+RVGI= MA(Price, n)−MA(Price, m)
+MA(Price, m) ×100
+Inertia (Inertia Indicator):The Inertia Indica-
+tor is a trend-following indicator that measures the
+rate of change in price momentum:
+Inertia= Pricet −Price t−1
+Pricet−1
+×100
+KST (Know Sure Thing):The KST is a com-
+plex indicator that combines various components,
+including moving averages and rate of change, to
+identify trends:
+KST=RS+ROC+ST+M
+where RS is the raw score, ROC is the rate of
+change, ST is the signal, and M is the percentage
+of the smoothed data.
+PGO (Pretty Good Oscillator):The Pretty
+Good Oscillator is a momentum indicator that
+compares the current price to a moving average:
+PGO=Price t −MA(Price, n)
+PSL (Psychological Line):The Psychological
+Line is a trend-following indicator that uses the
+percentage of bullish and bearish days:
+PSL= Number of Bullish Days
+Total Number of Days ×100
+PVO (Percentage Volume Oscillator):The
+Percentage V olume Oscillator compares the vol-
+ume of up days to the volume of down days as a
+percentage:
+PVO=
+Up V olume−Down V olume
+Up V olume+Down V olume
+
+×100
+QQE (Quantitative Qualitative Estimation):
+The Quantitative Qualitative Estimation is a
+method that combines quantitative data with
+qualitative analysis to provide a comprehensive
+assessment:
+QQE=Quantitative Score+Qualitative Score
+H Details of Evaluation Metrics
+Profit Metrics:
+• Total Return (TR): The percentage change of
+net value over a time horizonh. It is defined as:
+T R=
+ nt+h −n t
+nt
+
+×100%
+• Annual Return Rate (ARR): The average
+annual profit of a strategy, calculated as the
+compound annual growth rate of the net value. It
+is given by:
+ARR=
+  nt+h
+nt
+−1
+ 1
+h
+!
+×100%
+Risk-Adjusted Profit Metrics:
+• Sharpe Ratio (SR): The return per unit of
+deviation. It is calculated as:
+SR= E[r]−r f
+σ[r]
+• Sortino Ratio (SoR): A variation that considers
+only the downside risk. It is given by:
+SoR= E[r]−r f
+σdown[r]
+• Calmar Ratio (CR): The annualized return per
+unit of maximum drawdown. It is defined as:
+CR= ARR
+M DD
+Risk Metrics:
+• Volatility (Vol): The standard deviation of the
+return vector r, measuring the uncertainty of the
+return rate. It is calculated as:
+V ol=
+√
+252×σ[r]
+• Maximum Drawdown (MDD): The largest
+single drop from peak to trough before a new
+peak is achieved. It is defined as:
+M DD= max
+0≤τ≤T
+
+max
+0≤t≤τ
+ nt −n τ
+nt
+
+Diversity Metrics:
+• Entropy (ENT): A measure of the diversity of
+bets taken by a strategy, calculated using the
+Shannon entropy formula. It is given by:
+EN T=−
+NX
+i=1
+pi log(pi)
+• Effect Number of Bets (ENB): A measure of
+the effective number of bets that contribute to the
+portfolio’s performance. It is calculated as:
+EN B= 1PN
+i=1(pi log(pi))2
+I Details of Baselines
+To comprehensively evaluate the performance
+of QuantAgents in investment decision-making,
+we selected a variety of classical and cutting-edge
+baseline models for comparison. These include
+three classical rule-based quantitative investment
+strategies (Classical methods): MV , ZMR, and
+TSM; three reinforcement learning-based financial
+agents (RL-based methods): SAC, DeepTrader, and
+AlphaMix+; and three investment methods based
+on LLM models (LLM-based methods): FinGPT,
+FinMem, and FinAgent. A brief introduction to
+each method is provided below:
+•Classical Methods
+– Mean-Variance (MV)is a traditional portfolio
+optimization strategy that seeks to maximize
+returns for a given level of risk, or equivalently,
+minimize risk for a given level of expected
+returns.
+– Z-score Mean Reversion (ZMR)assumes that
+asset prices will revert to their mean over time,
+using Z-scores to measure the deviation from
+the mean and identify overbought or oversold
+conditions.
+– Time Series Momentum (TSM)is a strategy
+that exploits momentum in financial markets by
+investing in assets that have performed well in
+the past and shorting those that have not.
+•RL-based Methods
+– Soft Actor-Critic (SAC)is a state-of-the-art off-
+policy reinforcement learning algorithm that uses
+entropy regularization to balance exploration and
+exploitation in trading strategies.
+– DeepTraderis a deep reinforcement learning
+method that optimizes investment policy by
+embedding macro market conditions to dynam-
+ically adjust the proportion between long and
+short funds, aiming to lower the risk of market
+fluctuations.
+– AlphaMix+leverages mixture-of-experts and
+risk-sensitive approaches to make diversified
+risk-aware investment decisions, focusing on
+a comprehensive evaluation framework that
+includes profitability, risk-control, and other
+critical axes.
+•LLM-based Methods
+– FinGPTis an open-source LLM framework
+that processes textual and numerical inputs to
+generate insightful financial decisions, offering
+advantages over traditional strategies.
+– FinMemis an advanced LLM agent framework
+for automated trading, optimized through fine-
+tuning to enhance performance and returns.
+– FinAgentis a multimodal foundational agent
+designed for financial trading tasks, incorporat-
+ing market intelligence and a dual-level reflection
+module to adapt to market dynamics and improve
+decision-making processes.
+– HedgeAgentsis a multi-agent financial trading
+system leveraging LLMs for robust hedging
+strategies, featuring specialized analysts and
+a manager coordinating via conferences to
+optimize returns and risk management.
+J Experiment of Ablation Study
+J.1 Effectiveness of Each Conference
+Cumulative returns of ablation analysis on three
+conference, as shown in Figure 8 .
+Table 5: Performance comparison of different LLM as the backbone for QuantAgents on 9 evaluation metrics.
+LLM ARR(%) TR(%) SR CR SoR MDD(%) V oL(%) ENT ENB
+ChatGLM3-6B 37.32 158.99 2.14 6.89 45.98 28.56 1.62 2.41 1.22
+Llama-2-13b-chat 40.38 176.66 2.35 8.08 50.77 24.15 1.51 2.53 1.26
+Qwen2-72B-Instruct 44.13 199.41 2.23 8.59 49.22 24.52 1.77 2.66 1.33
+GPT-4-1106-preview 53.77 263.63 2.71 8.76 60.11 23.79 1.61 2.79 1.38
+Claude 3.5 Sonnet 57.95 294.07 2.67 10.87 53.74 22.33 1.76 2.86 1.47
+GPT-4o-2024-05-1358.68 299.55 3.11 11.38 66.94 16.86 1.43 2.97 1.49
+2021-01 2021-05 2021-09 2022-01 2022-05 2022-09 2023-01 2023-05 2023-09 2024-01
+0%
+50%
+100%
+150%
+200%
+250%
+300%
+Cumulative Returns of Ablation Analysis on Three Conference
+QuantAgents
+Quant_Only_MAM
+Quant_Only_SDM
+Quant_Only_RAM
+Quant_Without_MAM
+Quant_Without_SDM
+Quant_Without_RAM
+Figure 8: Cumulative Returns of Ablation Analysis on
+Three Conference
+2021-01 2021-05 2021-09 2022-01 2022-05 2022-09 2023-01 2023-05 2023-09 2024-01
+0%
+50%
+100%
+150%
+200%
+250%
+300%
+Cumulative Returns of QuantAgents Based On Different LLM
+ChatGLM3-6B
+Llama-2-13b-chat
+Qwen2-72B-Instruct
+GPT-4-1106-preview
+Claude 3.5 Sonnet
+GPT-4o-2024-05-13
+Figure 9: Cumulative Returns of QuantAgents Based
+on Different LLM
+J.2 Effectiveness of LLM Backbone
+For using different LLM as the backbone for Quan-
+tAgents, their experimental results are presented
+in Table 5, and the cumulative returns chart is in
+Figure 9.
+K Single-Asset Performance Comparison
+To evaluate the effectiveness of all models in a
+single-asset scenario, we conducted experiments
+on Apple Inc. (AAPL) stock from 2021-01-01 to
+2023-12-31. Figure 10 illustrates the performance
+comparison between QuantAgents and baseline
+models.
+The results demonstrate a clear performance
+hierarchy: 1) RL-based methods outperform
+rule-based strategies in managing AAPL stock.
+For instance, SAC achieved a cumulative return
+2021-012021-052021-092022-012022-052022-092023-012023-052023-092024-01
+-25%
+0%
+25%
+50%
+75%
+100%
+125%
+150%
+175%
+AAPL
+AAPL
+MV
+TSM
+ZMR
+AlphaMix+
+DeepTrader
+SAC
+FinGPT
+FinMem
+FinAgent
+QuantAgents
+Figure 10: Performance comparison of QuantAgents
+and baseline models on AAPL stock from January 2021
+to December 2023.
+2024-07 2024-08 2024-09 2024-10 2024-11 2024-12 2025-01 2025-02 2025-03 2025-04
+0%
+20%
+40%
+60%
+80%
+100%
+Cumulative Returns of A-Stock and HK-Stock (2024 Q3-2025 Q1)
+A-Stock Cumulative Returns
+HK-Stock Cumulative Returns
+Date of RAM (R_score > 0.75)
+Figure 11: Cumulative Returns of QuantAgents during
+live trading (24Q3-25Q1). RAM were held 36 times in
+the A-stock and 46 times in the HK stock market.
+of 69.20% compared to TSM’s 49.92%. This
+superiority stems from RL methods’ ability to
+adapt to AAPL’s high volatility and learn from
+historical price patterns, enabling more dynamic
+trading strategies. 2) LLM-based methods surpass
+RL-based approaches in AAPL trading. For
+example, FinAgent reached a 135.02% cumulative
+return, compared to DeepTrader’s 83.22%. This
+improvement is attributed to LLMs’ capacity to pro-
+cess and interpret AAPL-specific news, earnings
+reports, and market sentiments, allowing for more
+informed decision-making in response to company
+events and sector trends. 3) QuantAgents exhibits
+superior performance with a 163.38% cumulative
+return on AAPL, significantly outperforming all
+baselines. This exceptional performance stems
+from its multi-agent architecture, which allows for
+specialized analysis of AAPL’s price movements,
+market sentiment, and sector trends.
+The integration of advanced LLMs enables
+QuantAgents to process AAPL-related news and
+financial reports more effectively. Additionally, the
+dual reward mechanism enhances QuantAgents’
+ability to balance risk and return specifically for
+AAPL stock, resulting in more stable performance
+during both bullish and bearish periods in the stock.
+L Empirical Evaluation of QuantAgents
+in Live Trading
+Table 6: Performance Metrics of QuantAgents in Live
+Trading (Q3 2024–Q1 2025).
+Market Total Return (%) Sharpe Ratio Win Rate (%)
+A-stocks 111.87 2.02 61.23
+HK-stocks 97.69 1.76 59.71
+To rigorously validate the efficacy of Quan-
+tAgents, we conducted an extensive evaluation
+of its live trading performance in the A-stock
+(Shanghai and Shenzhen) and HK-stock (Hong
+Kong) markets over the period from Q3 2024
+to Q1 2025. These markets were selected due
+to their distinct characteristics: A-stocks exhibit
+high volatility and liquidity driven by domestic
+retail investors, while HK-stocks are influenced by
+international capital flows and stricter regulatory
+frameworks. This diversity tests QuantAgents’
+adaptability to varying market dynamics.
+The experimental setup involved deploying
+QuantAgents in a live trading environment with
+a diversified portfolio, adhering to real-world
+constraints such as transaction costs and market
+impact. Risk Alert Meetings (RAM) were con-
+vened to monitor and mitigate potential downturns,
+occurring 36 times for A-stocks and 46 times for
+HK-stocks, reflecting the latter’s higher volatility.
+Figure 11 illustrates the cumulative returns over the
+evaluation period.
+QuantAgents achieved superior returns of
+111.87% in the A-stock market, with a Sharpe
+Ratio of 2.02 and a Win Rate of 61.23%,
+demonstrating robust profitability under volatile
+conditions. In the HK-stock market, it recorded
+returns of 97.69%, with a Sharpe Ratio of 1.76
+and a Win Rate of 59.71%, showcasing consistent
+performance despite international market complex-
+ities. These results, detailed in Table 6, highlight
+QuantAgents’ exceptional profitability and risk
+management capabilities across diverse market
+conditions, underscoring its potential for real-world
+financial applications.
+M Conclusions of Appendix
+In this nearly 15 page appendix, we provide
+additional details about our framework (Section
+Definitions of Single Agent, Prompt Templates for
+Various Tasks,Profiles of Agents), experimental
+settings (Section PRUDEX Evaluation Benchmark,
+Details of Dataset Setup, Details of Evaluation
+Metrics, Details of Baselines, Construction of the
+Strategy Pool), and a more additional experiments
+(Section Experiment of Ablation Study, Single-
+Asset Performance Comparison,Empirical Evalu-
+ation of QuantAgents in Live Trading). We hope
+that our efforts will serve as a source of inspiration
+for more readers!

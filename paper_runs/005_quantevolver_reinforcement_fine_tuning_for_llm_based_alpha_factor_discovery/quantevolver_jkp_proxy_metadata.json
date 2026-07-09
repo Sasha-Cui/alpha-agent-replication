@@ -1,0 +1,40 @@
+{
+  "candidate_definitions": {
+    "quantevolver_price_zscore_reversal_120_proxy": {
+      "jkp_proxy": "-ret_12_1",
+      "notes": "Monthly USA proxy for price displacement reversal using negative JKP twelve-minus-one momentum.",
+      "seed_expr": "neg(zscore(last(close(120)), close(120)))",
+      "seed_name": "price_zscore_reversal_120"
+    },
+    "quantevolver_return_sharpe_60_proxy": {
+      "jkp_proxy": "ret_12_1 / rvol_252d",
+      "notes": "Monthly USA proxy for risk-adjusted return momentum using JKP twelve-minus-one momentum scaled by annual daily realized volatility.",
+      "seed_expr": "div(ts_mean(returns(60)), ts_std(returns(60)))",
+      "seed_name": "return_sharpe_60"
+    },
+    "quantevolver_volume_price_corr_proxy": {
+      "jkp_proxy": "corr_1260d",
+      "notes": "Closest available JKP USA proxy for long-window price/volume correlation.",
+      "seed_expr": "corr(returns(60), log_arr(volume(60)))",
+      "seed_name": "volume_price_corr"
+    }
+  },
+  "candidate_paths": {
+    "quantevolver_price_zscore_reversal_120_proxy": "paper_runs/005_quantevolver_reinforcement_fine_tuning_for_llm_based_alpha_factor_discovery/candidate_returns_quantevolver_price_zscore_reversal_120_proxy.csv",
+    "quantevolver_return_sharpe_60_proxy": "paper_runs/005_quantevolver_reinforcement_fine_tuning_for_llm_based_alpha_factor_discovery/candidate_returns_quantevolver_return_sharpe_60_proxy.csv",
+    "quantevolver_volume_price_corr_proxy": "paper_runs/005_quantevolver_reinforcement_fine_tuning_for_llm_based_alpha_factor_discovery/candidate_returns_quantevolver_volume_price_corr_proxy.csv"
+  },
+  "end": "2024-12-31",
+  "factor_panel_csv": "paper_runs/005_quantevolver_reinforcement_fine_tuning_for_llm_based_alpha_factor_discovery/jkp_benchmark_factor_panel.csv",
+  "input_policy": "read-only JKP USA.parquet only; no native QuantEvolver return data used",
+  "min_side": 20,
+  "n_months": 305,
+  "n_rows_loaded_after_filters": 305000,
+  "paper": "QuantEvolver",
+  "quantile": 0.1,
+  "source_repo": "external_repos/QuantEvolver",
+  "source_seed_file": "external_repos/QuantEvolver/examples/seed_candidates.yaml",
+  "start": "1999-07-31",
+  "top_n_by_me_per_month": 1000,
+  "usa_path": "${ALPHA_EVOLVE_JKP_ROOT}/data/processed/characteristics/USA.parquet"
+}

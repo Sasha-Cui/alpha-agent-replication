@@ -1,0 +1,11 @@
+{
+  "datasets": [
+    "F-F_Research_Data_Factors",
+    "F-F_Research_Data_5_Factors_2x3",
+    "F-F_Momentum_Factor"
+  ],
+  "end": "2025-10",
+  "returns_are_decimal": true,
+  "source": "pandas_datareader famafrench Kenneth French Data Library",
+  "start": "2025-10"
+}

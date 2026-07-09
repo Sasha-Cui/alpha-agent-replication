@@ -1,0 +1,14 @@
+{
+  "run_id": "047_livetradebench_seeking_real_world_alpha_with_llms",
+  "paper": "LiveTradeBench \u2014 Seeking Real-World Alpha with LLMs",
+  "execution_state": "blocked_on_return_path_adapter",
+  "verdict": "blocked_no_jkp_live_or_replay_return_path_logging",
+  "valid_return_data_used": false,
+  "metric_status": "not_computable_from_approved_inputs",
+  "allowed_return_inputs": [
+    "${ALPHA_EVOLVE_JKP_ROOT}",
+    "${ALPHA_EVOLVE_RETURN_DATA_ROOT}"
+  ],
+  "reason": "The repo is live/replay benchmark infrastructure without approved-input dated portfolio return logs.",
+  "ff3_ff5mom_status": "not_run_blocked"
+}

@@ -1,0 +1,25 @@
+{
+  "benchmark_cols": [
+    "be_me",
+    "at_gr1",
+    "market_equity",
+    "ope_be",
+    "ret_12_1"
+  ],
+  "candidate_cols": [
+    "qmj"
+  ],
+  "candidate_paths": {
+    "qmj": "paper_runs/jkp_scope_smoke_qmj/candidate_returns_jkp_qmj.csv"
+  },
+  "end": "2024-12-31",
+  "factor_panel_csv": "paper_runs/jkp_scope_smoke_qmj/jkp_benchmark_factor_panel.csv",
+  "input_policy": "read-only JKP USA.parquet; generated artifacts written outside input folders",
+  "min_side": 20,
+  "n_months": 305,
+  "n_rows_loaded_after_filters": 305000,
+  "quantile": 0.1,
+  "start": "1999-07-31",
+  "top_n_by_me_per_month": 1000,
+  "usa_path": "${ALPHA_EVOLVE_JKP_ROOT}/data/processed/characteristics/USA.parquet"
+}

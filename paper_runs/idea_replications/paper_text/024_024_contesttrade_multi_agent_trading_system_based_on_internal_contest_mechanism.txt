@@ -1,0 +1,821 @@
+ContestTrade: A Multi-Agent Trading System Based on Internal Contest
+Mechanism
+Li Zhao1, Rui Sun1, Zuoyou Jiang1, Bo Yang1, Yuxiao Bai2,
+Mengting Chen2, Xinyang Wang1, Jing Li1, Zuo Bai1 2
+1Stepfun
+2FinStep
+baizuo@stepfun.com; baizuo@finstep.cn
+Abstract
+In financial trading, large language model (LLM)-based
+agents demonstrate significant potential. However, the high
+sensitivity to market noise undermines the performance of
+LLM-based trading systems. To address this limitation, we
+propose a novel multi-agent system featuring an internal
+competitive mechanism inspired by modern corporate man-
+agement structures. The system consists of two specialized
+teams: (1) Data Team - responsible for processing and con-
+densing massive market data into diversified text factors,
+ensuring they fit the model’s constrained context. (2) Re-
+search Team - tasked with making parallelized multipath
+trading decisions based on deep research methods. The core
+innovation lies in implementing a real-time evaluation and
+ranking mechanism within each team, driven by authentic
+market feedback. Each agent’s performance undergoes con-
+tinuous scoring and ranking, with only outputs from top-
+performing agents being adopted. The design enables the sys-
+tem to adaptively adjust to dynamic environment, enhances
+robustness against market noise and ultimately delivers supe-
+rior trading performance. Experimental results demonstrate
+that our proposed system significantly outperforms prevailing
+multi-agent systems and traditional quantitative investment
+methods across diverse evaluation metrics. ContestTrade is
+open-sourced on GitHub at https://github.com/FinStep-AI/
+ContestTrade.
+Introduction
+The financial sector is undergoing a profound transforma-
+tion with the rise of LLM-based agents (Wu et al. 2023;
+Bai et al. 2023; Liu et al. 2021). These agents (Ding et al.
+2024) excel at processing complex market information and
+assisting human analysts within a broader decision-making
+pipeline, offering interpretable outputs through natural lan-
+guage explanations and, when integrated with external tools,
+can flexibly incorporate diverse information sources, includ-
+ing news, numerical data, and sentiment indicators. Recent
+advancements highlight LLMs’ potential to automate com-
+plex trading decisions and achieve competitive performance
+in dynamic markets (Lopez-Lira and Tang 2024; Fatouros
+et al. 2024; Zhang et al. 2024a).
+However, market volatility and noise (Malkiel 1973; En-
+gle 1982) pose significant challenges. High sensitivity to
+noise often leads to inconsistent decision-making and un-
+dermines performance. Traditional single-agent approaches,
+while processing vast data, struggle to capture intricate tem-
+poral dependencies and resolve conflicting signals, espe-
+cially during market turbulence, where noise obscures pat-
+terns and leads to suboptimal decisions.
+Awareness of these challenges has fueled interest in multi-
+agent systems (LeBaron 2006), leveraging role specializa-
+tion for enhanced robustness (Byrd, Hybinette, and Balch
+2020). Inspired by collaborative investment firms, research
+agents are exploring frameworks where specialized agents
+collectively process information more effectively, distribut-
+ing cognitive load and enabling complementary analytical
+perspectives.
+Despite these advances, current multi-agent frameworks
+face limitations. Existing systems often use fixed data
+pipelines, struggling to adapt to shifting market regimes.
+Many frameworks make decisions based solely on indi-
+vidual agents’ historical returns, which is often insuffi-
+cient for generating robust, high-quality signals in dynamic
+markets. Furthermore, current LLM-only agents often lack
+the sophisticated analytical tools and quantitative reasoning
+needed for complex market scenarios.
+To address these limitations, we propose ContestTrade
+(A Multi-Agent Trading System Based on Internal Con-
+test Mechanism). This novel framework enhances trading
+performance in noisy environments by integrating real-time
+competitive evaluation with a Deep Research methodology
+empowering agents with comprehensive financial tools.
+The main contributions of this work are threefold:
+1. We adapt the recently popularized Deep Research
+methodology to the financial trading domain. Our ap-
+proach equips LLM agents to autonomously plan and uti-
+lize specialized financial tools, thereby significantly en-
+hancing trading signal quality.
+2. We establish a novel internal contest mechanism driven
+by authentic market feedback. This mechanism operates
+within each team to ensure only optimal outputs are
+adopted, fostering continuous self-optimization for ro-
+bustness against market noise.
+3. We integrate these innovations within an efficient two-
+tiered, team-based multi-agent framework that addresses
+context limitations and demonstrates a new paradigm for
+collaborative and competitive financial AI.
+arXiv:2508.00554v3 [q-fin.TR] 18 Aug 2025
+Figure 1: The ContestTrade Framework Architecture, showing the complete pipeline from multi-source data input to final
+signals.
+Related Works
+LLMs are revolutionizing trading workflows as autonomous
+decision-making agents and sophisticated signal discovery
+tools. LLMFactor (Wang, Izumi, and Sakaji 2024) extracts
+factors from text for explainable stock movement predic-
+tion. Frameworks like FinGPT (Luukkonen et al. 2023) and
+FinRobot (Yang et al. 2024) provide open-source resources,
+while TradingGPT (Li et al. 2023) emulates human cogni-
+tion for trading. The SEP framework (Koa et al. 2024) fur-
+ther enhances this by enabling explainable predictions via
+self-reflection. As alpha miners, QuantAgent (Wang, Yuan,
+and Ni 2024) refines its knowledge through real-world test-
+ing. AlphaGPT (Wang et al. 2023) and AlphaGPT 2.0 (Yuan,
+Wang, and Guo 2024) pioneer ”Human-in-the-Loop” strate-
+gies, translating human insights into effective alphas through
+interactive prompt engineering.
+A critical challenge is agent-level adaptability in volatile
+markets, often addressed by self-reflection. FinMem (Li
+et al. 2024) introduces a memory module for data assimi-
+lation and continuous decision refinement. Similarly, FinA-
+gent (Zhang et al. 2024b) uses a dual-level reflection and
+diversified memory retrieval for rapid adaptation from his-
+torical data, focusing on individual agent robustness.
+Beyond individual capabilities, recent research focuses on
+structuring multi-agent interactions. HAD (Xing 2024) em-
+ploys agents (e.g., mood, rhetoric) that collaborate and syn-
+thesize insights through discussions. TradingAgents (Xiao
+et al. 2024) employs specialized agents (e.g., analysts,
+traders) that collaborate and synthesize insights through
+debates. FinCon (Yu et al. 2025) implements a manager-
+analyst hierarchy, enabling synchronized collaboration with
+dual-level risk control. These systems establish a strong
+baseline for collaborative multi-agent financial systems.
+Finally, achieving a deep understanding of complex mar-
+ket dynamics is a fundamental challenge. An emerging
+direction leverages large-scale multi-agent simulation to
+model emergent behaviors. The MASS framework (Guo
+et al. 2025), for instance, aims for superior market un-
+derstanding by progressively increasing agent numbers and
+optimizing their distribution through reverse optimization.
+These studies underscore the importance of scale and emer-
+gent dynamics for profound market comprehension.
+Architecture
+As illustrated in Figure 1, our ContestTrade multi-agent
+trading system operates through a structured, dual-stage
+pipeline, emulating investment firm dynamics. The architec-
+ture comprises two specialized teams: the Data Team and the
+Research Team.
+Our framework begins with Data Agents processing raw
+market data into textual factors. A key innovation is our in-
+ternal contest mechanism, which continuously evaluates and
+forecasts the performance of each agent. The system then
+constructs an optimized factor portfolio by strategically ag-
+gregating the Data Analysis Agents’ outputs based on their
+predicted efficacy. This portfolio is then passed to Research
+Agents, who conduct parallel analyses and enter a second
+stage of competition. From their resulting proposals, a sin-
+gle, actionable asset allocation strategy is synthesized. This
+dual-stage competitive framework, centered on predictive
+evaluation, ensures that final decisions are guided only by
+the most robust insights, thereby enhancing adaptivity and
+filtering out market noise.
+Data Team Design
+The Data Team plays a critical upstream role in our multi-
+agent trading system, designed to distill vast volumes of raw
+market data into high-quality, context-friendly textual fac-
+tors that are optimized for the constrained context windows
+of large language models (LLMs). By doing so, it directly
+Figure 2: The Data Team Architecture, showing the work-
+flow of market data analysis.
+mitigates the challenge of information overload and satisfies
+the need for concise, high-signal representations suitable for
+downstream reasoning.
+Team Composition and Operational Workflow The
+Data Team comprises multiple Data Analysis Agents op-
+erating in parallel, each following a similar workflow from
+data ingestion to textual factor generation, while processing
+distinct slices of market data. This parallel architecture im-
+proves efficiency and broadens the scope of the information
+coverage. The operational workflow for each agent is illus-
+trated in Figure 2.
+1. Dynamic Information Prioritization and Extensive
+Reading: Each day, every agent dynamically generates
+a specific focus–or ”preference”–aligned with the short-
+term trading strategy. This preference guides the intel-
+ligent filtering of vast market information, allowing the
+model to focus on core readings. For example, an agent
+might prioritize companies that exhibit significant earn-
+ings growth or recent product launches. Guided by this
+preference, the agent extensively reads titles from the
+most relevant raw data sources, including real-time news,
+corporate financial statements, company announcements,
+and other diverse data sources. From the preliminary re-
+view, the agent eventually narrows down to several hun-
+dred high-relevance reading items for a deeper analysis.
+2. Parallel Intensive Reading and Summarization: Af-
+ter initial filtering, the agents engage in parallel intensive
+reading and summarization. This stage leverages the in-
+trinsic capabilities of LLM, eliminating the need for con-
+ventional natural language processing (NLP) tools and
+enabling seamless end-to-end information synthesis.
+3. Textual Factor Generation through Context-
+Engineering: The culmination of each agent’s process
+is the creation of a textual factor: an unstructured
+natural language summary that encapsulates the agent’s
+synthesized insights from the day’s market information.
+To ensure compatibility with downstream models and
+adhere to strict input limitations, each agent’s output
+is rigorously capped at 4k tokens. This is precisely
+managed through specific max token len settings
+and meticulous context engineering via crafted prompts
+within the LLM.
+Figure 3: The Trading Strategy Architecture, showing the
+workflow of trading signal making.
+The collective output of the Data Team is a series of inde-
+pendent textual factors, generated by each individual agent.
+These factors are then aggregated to form a combined tex-
+tual input. This consolidated input is directly fed into the
+Research Team, which is also composed of LLM agents,
+providing them with a comprehensive and distilled mar-
+ket overview to inform parallelized multipath trading deci-
+sions. Each team incorporates independent internal evalua-
+tion mechanisms to optimize their respective outputs.
+The collection of textual factors from all agents in the
+Data Team serves as raw material for the team’s key deliv-
+erable. Through an internal evaluation process that assesses
+the effectiveness of each agent’s contributions, an optimized
+portfolio of the most promising factors is constructed. This
+distilled portfolio, representing the team’s collective mar-
+ket information, is then passed to the Research Team as
+the foundation for their subsequent analysis and decision-
+making.
+Research Team Design
+The Research Team serves as a critical bridge between dis-
+tilled market insights and actionable trading signals. Its pri-
+mary objective is to generate precise and well-supported
+trading recommendations by leveraging the textual factors
+from the Data Team and conducting further in-depth analy-
+sis. This team is designed to produce parallelized multipath
+trading decisions. It explores diverse trading opportunities
+across various assets or strategies concurrently.
+Team Composition and Operational Workflow The Re-
+search Team is composed of multiple autonomous Research
+Agents, each operating independently. Every agent is initial-
+ized with a distinct “trading beliefs“, dynamically generated
+by large language models conditioned on predefined trading
+principles. This approach allows for a diverse set of perspec-
+tives and strategic approaches, fostering heterogeneity and
+robustness in the team’s overall decision-making process.
+As illustrated in Figure 3, each Research Agent follows a
+sophisticated Plan + ReAct (Yao et al. 2023) framework to
+enable iterative planning, reasoning, and tool usage in order
+to formulate informed trading decisions:
+1. Input Reception and Initial Planning: Agents receive
+the aggregated textual factors from the Data Team.
+Guided by their pre-configured “trading beliefs“, they
+autonomously plan their next steps to identify potential
+trading opportunities aligned with their strategic bias.
+2. Information Gathering (React Loop): As part of their
+planning and subsequent reacting, agents leverage a com-
+prehensive suite of specialized financial tools to acquire
+additional information crucial for their decision-making.
+These tools facilitate a deeper dive into market condi-
+tions, company specifics, and broader economic trends.
+3. In-depth Analysis and Signal Generation: With the
+gathered information, agents conduct thorough analyses,
+integrating the textual factors with the newly-retrieved
+data through their tools. This step culminates in the gen-
+eration of a specific trading signal.
+Each Research Agent’s final deliverable is a structured trad-
+ing signal, comprising a Trading Symbol (the specific finan-
+cial instrument), a clear Action (buy, hold, or sell), an Evi-
+dence List containing data-backed justifications, and a Lim-
+itation Claim outlining any assumptions or uncertainties un-
+derlying the recommendation.
+Table 1: Description of the specialized financial tool suite
+available to Research Agents.
+Tool Name Description
+Web Search Generic web information re-
+trieval.
+Financial News Searches for relevant financial
+news articles.
+Corp. Announcement Searches for company financial
+announcements and reports.
+Market Data Accesses stock market data
+(prices, technical indicators,
+statistics).
+Financial Statement Retrieves detailed financial state-
+ment data for companies.
+Stock Analysis Triggers detailed stock analysis:
+Pattern, Price, Financial, Corre-
+lation, News.
+Stock Symbol Search Identifies company stock infor-
+mation by keywords.
+Stock Screener Filters stocks based on specified
+natural language conditions.
+All tools are implemented with strict temporal constraints,
+allowing agents to query data within specified time ranges to
+ensure both relevance and temporal consistency.
+Contest Mechanism: A General Adaptive
+Framework
+The Contest Mechanism The core of ContestTrade is
+an internal contest mechanism designed to enhance system
+adaptivity in dynamic markets. Its primary objective is to
+channel resources preferentially towards agents with consis-
+tently proven effectiveness, ensuring that the system’s final
+output is driven by the most robust strategies. This mech-
+anism is formalized as a three-phase ”Quantify-Predict-
+Allocate” model. The entire process can be conceptualized
+as a pipeline that transforms a set of competing agents ( A)
+into a final allocation decision, represented by a weight vec-
+tor (Wt):
+A
+fquant
+− − − → {qi,t}
+fpredict
+− − − → {ˆui,t+n}
+πallocate
+− − − − → Wt (1)
+This pipeline first quantifies the historical performance of
+each agenti, yielding a unified set of scores {qi,t} at time
+t. It then predicts the future utility {ˆui,t+n} over the next n
+steps. Finally, allocates resources based on these predictions.
+This general mechanism provides a unified foundation for
+the two distinct teams within the proposed system:
+1. Data Analyst Contest: Data Analysis Agents compete
+to construct an optimal information portfolio for the re-
+search agents.
+2. Researcher Contest: Research Agents compete to
+achieve optimal capital allocation for the final trading.
+Data Analyst Contest
+Optimization Objective The objective of the Data Ana-
+lyst Contest is to construct an optimal factor portfolio, Ft,
+from the universe of all available factors, Ft, to maximize
+the Research Agent’s final Decision Value ( DV ) (Chroma
+2024). This value is modeled as a product of Information
+Value (V ) and Decision Capability (DC):
+DV (Ft) = V (Ft) · DC where V (Ft) =
+X
+i∈Ft
+vi. (2)
+Considering the complexity of investment analysis, research
+shows that an LLM’s Decision Capability (DC) exhibits de-
+cay with respect to the total context length L (?Modarressi
+et al. 2025). This phenomenon can be effectively approxi-
+mated by a sigmoid function with a performance inflection
+point of L0 (Zhou et al. 2025):
+DC (L) = 1
+1 + ek(L−L0) (3)
+This capability constraint implies that we cannot naively
+maximize information value by simply expanding the port-
+folio. Therefore, the optimization objective becomes select-
+ing a subset Ft ⊆ Ft that maximizes:
+max
+Ft⊆Ft
+ X
+i∈Ft
+vi
+!
+· 1
+1 + ek(
+P
+i∈Ft li−L0) (4)
+where vi and li denote the latent value and length of an in-
+dividual factor i, respectively.
+Owing to the shape of the sigmoid function, it is clearly
+shown that an optimal effective context length,L∗ < L0, ex-
+ists. This insight reduces our overall goal into two primary
+challenges: (1) finding a quantifiable proxy, qi, for the un-
+observable latent value vi, and (2) developing an allocation
+policy, πt, to dynamically form the optimal portfolio.
+Algorithm 1: ZI Trader
+Input: A single Observation obs
+Output: The quantified value (reward) for obs
+1: obs reward ← 0
+2: RatedSymbols ← GroundAndRate(obs)
+3: // Each rating is an integer in {−2, −1, 0, 1, 2}
+4: for each s in RatedSymbols do
+5: reward = s.rating × PriceChange(s.code, t + 1)
+6: obs reward = obs reward + reward
+7: end for
+8: return obs reward
+Quantification via a Zero-Intelligence Trader To quan-
+tify a factor’s latent value (vi) with an objective proxy, qi,t,
+we simulate a Zero-Intelligence (ZI) Trader (Gode and Sun-
+der 1993). This approach is inspired by the premise that
+a high-value factor should be profitable even without any
+external information or complex reasoning. Our simulated
+trader therefore operates on each atomic statement (”Ob-
+servation”) extracted from the factor, intentionally operat-
+ing under the constraint of limited analysis and no exter-
+nal context. This ensures qi,t reflects the inherent predic-
+tive power of the information itself, independent of agent-
+specific strategies or external signals. We formally define the
+score as:
+qi,t =
+X
+obs∈Fi,t
+ZI(obs) (5)
+where Fi,t is the set of observations comprising factor i at
+time t, and the ZI(·) function is detailed in Algorithm 1.
+Prediction The non-stationary nature of financial markets
+often manifesting as style rotation—periodic shifts in domi-
+nant investment factors—renders static factor-selection poli-
+cies suboptimal. To overcome these challenges, our frame-
+work must dynamically identify factors poised to perform
+well. We hypothesize that factor performance exhibits short-
+term momentum. This empirical hypothesis is validated by
+the Rank Information Coefficient (RIC) between average
+factor scores across different time horizons. We observe:
+RIC(qt−m:t, qt:t+n) ≫ RIC(qt−M :t, qt:t+N ) (6)
+where M ≫ m, N ≫ n. This indicates the correlation
+is significant for short-term windows (with optimal values
+found at m = 5, n= 3) but decays rapidly over longer hori-
+zons.
+This allows us to frame the prediction as a supervised
+learning problem. We train a model to map a feature vec-
+tor derived from a factor’s recent score sequence, xi,t =
+Φ(qi,t−m+1:t), to its expected future score ˆµi,t+n and
+volatility ˆσi,t+n. We then define the factor’s predicted util-
+ity ˆui,t+n as its predicted risk-adjusted score, ˆui,t+n =
+ˆµi,t+n/ˆσi,t+n. To mitigate overfitting and maintain model
+simplicity, we use LightGBM with a small number of esti-
+mators and default hyperparameters.
+Allocation The allocation policy πallocate determines the fi-
+nal weight vector Wt for the Data Analyst Contest. The al-
+location is a binary selection, represented by a weight vector
+Wt with elements wi,t ∈ {0, 1}.
+This selection is formulated as a 0/1 Knapsack problem,
+where the objective is to find the optimal weight vector Wt
+that maximizes the total predicted utility, subject to the ef-
+fective context length constraint, L∗.:
+Wt = argmax
+Wt∈{0,1}N
+NX
+i=1
+ˆui,t+n · wi,t s.t.
+NX
+i=1
+li · wi,t ≤ L∗
+(7)
+Informed by prior work on effective LLM context limits,
+we set L0 to 32k (Modarressi et al. 2025). We then set the
+capacity for the factor portfolio toL∗ = 16k, which reserves
+the remaining context (L0 − L∗) for downstream reasoning
+within the Research Agents. This optimization problem is
+solved using a standard dynamic programming algorithm,
+and the portfolio is reconstructed every n days to ensure the
+factors are continually adapted to market dynamics.
+Researcher Contest
+Optimization Objective The objective is to dynamically
+allocate capital among research agents to maximize the port-
+folio’s future risk-adjusted return. While theoretically a clas-
+sic portfolio optimization problem, accurately forecasting
+the inter-strategy covariance matrix ( Σt+n) is prohibitively
+difficult. Therefore, our framework focuses on robustly pre-
+dicting the performance of each individual agent.
+Quantification via Hybrid Assessment To effectively
+quantify an agent’s potential, we move beyond simple histor-
+ical metrics. We construct a judger-augmented performance
+score, qi,t, that provides a more holistic assessment. This
+score vector is composed of two parts:
+• Realized Performance: Standard quantitative metrics
+calculated over a trailing m-day window (e.g., realized
+Sharpe Ratio).
+• Judgmental Quality: A vector of qualitative scores from
+an LLM Judger Panel, which assesses the logical sound-
+ness and evidence quality of each agent’s submitted trad-
+ing signal.
+Prediction Agent’s performance, as measured by our hy-
+brid score qi,t, exhibits short-term momentum. Our analy-
+sis reveals an optimal prediction window of n = 5 days
+for strategies, longer than the n = 3 for information fac-
+tors. This aligns with the intuition that reasoned investment
+strategies possess greater performance inertia. The predic-
+tion task is thus to learn a function that maps the histori-
+cal sequence of judger-augmented scores, qi,t−m+1:t, to an
+agent’s future utility, ˆui,t+n (its predicted Sharpe Ratio).
+Consistent with the approach used for factor prediction, we
+employ LightGBM for this task, reusing the same simple
+and robust setup.
+Allocation For capital allocation, we employ a practical
+heuristic policy, πt, based on the predicted utilities. This
+Predicted Sharpe Ratio-Weighted approach allocates capital
+proportionally to agents with positive predicted Sharpe Ra-
+tios. The weight wi,t for agent i is an instance of the frame-
+work’s weight vector Wt and is calculated as:
+wi,t = max(0, ˆui,t+n)PN
+j=1 max(0, ˆuj,t+n)
+(8)
+Experiments
+Experiment Setup
+This section outlines our comprehensive experimental de-
+sign, detailing the datasets, baselines, model configurations,
+and metrics used to evaluate our multi-agent trading system.
+Our experiments utilize a real-world financial dataset en-
+compassing news, corporate financials, and market data. To
+ensure a robust and leak-free evaluation, we strictly partition
+the data by time. The testing period (January-June 2025)
+is chosen to be entirely after the knowledge cutoff of our
+LLMs, eliminating potential leakage from their pre-training
+data. Correspondingly, all internal model training and pa-
+rameter calibration, such as for the LightGBM models and
+momentum windows (m,n), are confined exclusively to the
+preceding training period (July-December 2024) to avoid
+any look-ahead bias. Trading simulations are conducted at
+a daily frequency on the A-share market, strictly adhering
+to T+1 settlement, daily price limits, and a 0.001 transaction
+cost.
+We benchmark our system’s short-term, multi-stock
+trading performance against diverse strategies, including
+Broad Market Index (CSI ALL Share), Rule-based Meth-
+ods (MACD, RSI&KDJ), Machine Learning (LGBM),
+Deep Learning (LSTM), Deep Reinforcement Learn-
+ing(A2C,PPO) and Multi-Agent Systems like MASS (Guo
+et al. 2025).
+For LLM configuration, we primarily use DeepSeek-V3
+(DeepSeek-AI et al. 2024) as the backbone LLM since it is
+open-sourced, so that the experiments can be easily repro-
+duced. Data Analysis Agents utilize DeepSeek-V3 model.
+Research Agents in the Research Team also use DeepSeek-
+V3 for Plan+React stages, but switch to DeepSeek-R1 for
+critical signal generation due to its enhanced reasoning ca-
+pabilities.
+We employ two categories of metrics for evaluation. Strat-
+egy Performance Metrics assess the final portfolio’s prof-
+itability and risk, including Cumulative Return (CR), Sharpe
+Ratio (SR), and Maximum Drawdown (MDD). The second
+category, Contest Effectiveness Metrics, evaluates the pre-
+dictive power of our internal contest mechanisms. These in-
+clude the Rank Information Coefficient (Rank IC) and In-
+formation Coefficient Information Ratio (ICIR), which are
+used to validate the effectiveness of the contests in both the
+Data and Research teams.While Rank IC and ICIR are not
+direct measures of profitability, they are crucial for validat-
+ing the predictive quality of the factors and signals selected
+by our contests. The consistently high scores in these metrics
+demonstrate that our mechanism effectively identifies high-
+quality inputs, which in turn is the primary driver of the final
+portfolio’s outperformance.
+Main Results
+As shown in Table 2 and Figure 4, our proposed framework,
+ContestTrade, significantly outperforms all baseline mod-
+els across all strategy performance metrics. It achieves a Cu-
+mulative Return (CR) of 52.80%, a Sharpe Ratio (SR) of
+3.12, and a Maximum Drawdown (MDD) of only 12.41%.
+Compared to other multi-agent approaches like MASS,
+Figure 4: Portfolio value over time. This figure compares
+the net value of the ContestTrade portfolio against various
+baseline strategies, demonstrating its performance over the
+experimental period.
+Table 2: Strategy performance comparison with baseline
+models. The best performance for each metric is highlighted
+in bold.
+Model CR (%) SR MDD (%)
+CSI ALL Share 4.42 0.46 13.75
+Rule-based Methods
+MACD 2.69 0.10 10.65
+RSI&KDJ 8.19 0.47 8.30
+ML-based Methods
+LGBM -25.94 -1.30 34.17
+LSTM 8.34 0.51 29.56
+DRL-based Methods
+A2C 7.89 0.69 18.84
+PPO 15.07 1.33 17.11
+Multi-Agent Methods
+MASS -19.12 -1.76 24.55
+ContestTrade (Ours) 52.80 3.12 12.41
+which employs fixed-agent cooperation without competitive
+selection, ContestTrade demonstrates vastly superior prof-
+itability and significantly better risk-adjusted returns. Even
+against strong traditional methods like RSI&KDJ, LSTM
+and PPO, ContestTrade shows substantial improvements in
+both return generation and risk management. The results
+clearly highlight ContestTrade’s robust performance, vali-
+dating the efficacy of our proposed competitive, multi-agent
+framework in navigating complex financial markets.
+To further investigate the source of ContestTrade’s su-
+perior performance, we evaluated the effectiveness of each
+internal contest mechanism within our framework. Table 3
+presents these results, reporting the predictive power (Rank
+IC and ICIR) of the final trading signals or factors selected
+by each team’s contest. The data demonstrates the high ef-
+fectiveness of both contest mechanisms. The factor ranks
+predicted by the Data Analyst Contest achieved a strong
+mean Rank IC of 0.054 and an ICIR of 0.13, indicating not
+only high-quality factor identification but also remarkable
+consistency. Similarly, The signal ranks predicted by the Re-
+search Agent performed strongly with a Rank IC of 0.079
+and ICIR of 0.18. Collectively, these results validate that our
+internal contest mechanisms are crucial drivers, effectively
+distilling noisy market information into valuable strategy.
+Table 3: Experiments on the effectiveness of the internal
+contest mechanism. We report the predictive performance
+for both the Data Analyst and Researcher contests.
+Component / Prediction Rank IC ICIR
+Data Analyst Contest 0.054 0.13
+Researcher Contest 0.079 0.18
+Ablation Studies
+To validate the effectiveness and necessity of the key com-
+ponents within our ContestTrade framework, we conduct a
+comprehensive ablation study. We design several variants of
+our full model by removing one critical component at a time
+and then evaluate the impact on the overall strategy perfor-
+mance, measured by CR, SR, and MDD. The configurations
+are as follows:
+• w/o LLM Judge: We disabled the LLM-based judging
+in the Researcher Contest. Final signals were randomly
+chosen from a Research Agent’s proposal, quantifying
+the LLM judge’s contribution.
+• w/o Contest - Researcher: This variant removes the
+entire competitive evaluation mechanism from the Re-
+search Team, with final signals selected randomly. This
+isolates the impact of inter-agent contests on perfor-
+mance.
+• w/o Contest - Data Analyst: We disabled the compet-
+itive evaluation within the Data Team. A randomly se-
+lected agent’s textual factor served as input, quantifying
+the contest mechanism’s contribution to data processing
+and denoising.
+• w/o Deep Research: Research Agents in the Research
+Team formulated signals solely on initial plans and tex-
+tual factors, without using specialized financial tools for
+Deep Research. This evaluates autonomous information
+gathering.
+• w/o All: This most aggressive ablation removes both
+Data Analyst Contest and Researcher Contest, plus Re-
+search Agents’ Deep Research capability. This provides a
+baseline understanding of performance without any core
+proposed mechanisms.
+As shown in Figure 5 and Table 4, our ablation study
+clearly demonstrates that every component within Con-
+testTrade is crucial for its superior performance. The Re-
+searcher Contest mechanism, particularly its Deep Research
+and LLM Judge, works synergistically to deliver high Cu-
+mulative Return (CR), Sharpe Ratio (SR), and low Maxi-
+mum Drawdown (MDD). Removing any part significantly
+Figure 5: Portfolio value over time. This figure compares
+the portfolio value of the full ContestTrade model against
+various ablated configurations over time.
+Table 4: Ablation study of the key components within
+our ContestTrade framework. ”w/o” indicates removing the
+specified component.
+Configuration CR (%) SR MDD (%)
+ContestTrade (Full Model) 52.80 3.12 12.41
+w/o LLM Judge 50.55 2.57 13.48
+w/o Contest - Researcher 32.83 1.78 16.70
+w/o Contest - Data Analyst 42.85 2.01 13.47
+w/o Deep Research 43.75 2.08 20.55
+w/o All 3.01 0.07 26.63
+degrades results, with full removal leading to catastrophic
+performance drops. This highlights the indispensable role of
+each design element in robust portfolio management.
+Conclusion & Future works
+In this paper, we introduced ContestTrade, a novel multi-
+agent framework addressing the challenges of inconsistent
+decision-making and market noise in LLM-based trading
+systems. Drawing inspiration from institutional investment
+practices, ContestTrade features Data team, Research team
+and internal contest mechanisms that continuously evaluate
+agent and select high-quality outputs. Our experiments con-
+firm ContestTrade’s superior performance over a range of
+baseline strategies across key metrics, showing higher re-
+turns, better risk-adjusted performance, and lower downside
+risk. Furthermore, the high Rank IC and ICIR from internal
+contest validate its competitive, performance-based quantifi-
+cation and prediction.
+Our contributions include a dynamic multi-agent architec-
+ture with internal contest, Deep Research methodology with
+financial toolkits, and robust information denoising. Future
+work involves larger-scale simulations, stronger reasoning
+frameworks, broader market applications (e.g., U.S. equi-
+ties, forex), and diverse data integration, establishing Con-
+testTrade as a generalizable and scalable paradigm for intel-
+ligent, autonomous trading.
+References
+Bai, J.; Bai, S.; Chu, Y .; Cui, Z.; Dang, K.; Deng, X.; Fan,
+Y .; Ge, W.; Han, Y .; Huang, F.; Hui, B.; et al. 2023. QWEN
+TECHNICAL REPORT. arXiv preprint arXiv:2309.16609.
+Byrd, D.; Hybinette, M.; and Balch, T. H. 2020. ABIDES:
+Towards High-Fidelity Multi-Agent Market Simulation. In
+Proceedings of the 2020 ACM SIGSIM Conference on Prin-
+ciples of Advanced Discrete Simulation, SIGSIM-PADS ’20,
+11–22. New York, NY , USA: Association for Computing
+Machinery. ISBN 9781450375924.
+Chroma. 2024. Context Rot: How LLMs Degrade with Con-
+text. https://research.trychroma.com/context-rot.
+DeepSeek-AI; Liu, A.; Feng, B.; Xue, B.; Wang, B.; Wu,
+B.; Lu, C.; Zhao, C.; Deng, C.; Zhang, C.; Ruan, C.; Dai,
+D.; Guo, D.; Yang, D.; Chen, D.; Ji, D.; Li, E.; Lin, F.; Dai,
+F.; Luo, F.; Hao, G.; Chen, G.; Li, G.; Zhang, H.; Bao, H.;
+Xu, H.; Wang, H.; Zhang, H.; Ding, H.; Xin, H.; Gao, H.;
+Li, H.; Qu, H.; Cai, J. L.; Liang, J.; Guo, J.; Ni, J.; Li, J.;
+Wang, J.; Chen, J.; Chen, J.; Yuan, J.; Qiu, J.; Li, J.; Song,
+J.; Dong, K.; Hu, K.; Gao, K.; Guan, K.; Huang, K.; Yu, K.;
+Wang, L.; Zhang, L.; Xu, L.; Xia, L.; Zhao, L.; Wang, L.;
+Zhang, L.; Li, M.; Wang, M.; Zhang, M.; Zhang, M.; Tang,
+M.; Li, M.; Tian, N.; Huang, P.; Wang, P.; Zhang, P.; Wang,
+Q.; Zhu, Q.; Chen, Q.; Du, Q.; Chen, R. J.; Jin, R. L.; Ge, R.;
+Zhang, R.; Pan, R.; Wang, R.; Xu, R.; Zhang, R.; Chen, R.;
+Li, S. S.; Lu, S.; Zhou, S.; Chen, S.; Wu, S.; Ye, S.; Ye, S.;
+Ma, S.; Wang, S.; Zhou, S.; Yu, S.; Zhou, S.; Pan, S.; Wang,
+T.; Yun, T.; Pei, T.; Sun, T.; Xiao, W. L.; and Zeng, W. 2024.
+DeepSeek-V3 Technical Report. CoRR, abs/2412.19437.
+Ding, H.; Wang, J.; Li, Y .; and Chen, H. 2024. Large Lan-
+guage Model Agent in Financial Trading: A Survey. arXiv
+preprint arXiv:2408.06361.
+Engle, R. F. 1982. Autoregressive Conditional Het-
+eroscedasticity with Estimates of the Variance of UK Infla-
+tion. Econometrica, 50(4): 987–1008.
+Fatouros, G.; Metaxas, K.; Soldatos, J.; and Kyriazis, D.
+2024. Can Large Language Models Beat Wall Street? Un-
+veiling the Potential of AI in Stock Selection.arXiv preprint
+arXiv:2401.03737.
+Gode, D. K.; and Sunder, S. 1993. Allocative Efficiency of
+Markets with Zero-Intelligence Traders: Market as a Partial
+Substitute for Individual Rationality. Journal of Political
+Economy, 101(1): 119–137.
+Guo, T.; Shen, H.; Huang, J.; Mao, Z.; Luo, J.; Chen, Z.; Liu,
+X.; Xia, B.; Liu, L.; Ma, Y .; and Zhang, M. 2025. MASS:
+Multi-Agent Simulation Scaling for Portfolio Construction.
+arXiv preprint arXiv:2505.10278.
+Koa, K. J.; Ma, Y .; Ng, R.; and Chua, T.-S. 2024. Learn-
+ing to Generate Explainable Stock Predictions using Self-
+Reflective Large Language Models. In The Web Conference
+2024.
+LeBaron, B. 2006. Agent-Based Computational Finance. In
+Tesfatsion, L.; and Judd, K. L., eds.,Handbook of Computa-
+tional Economics, volume 2, 1187–1233. Elsevier.
+Li, H.; Yu, Y .; Chen, Z.; Jiang, Y .; Li, Y .; Zhang, D.; Liu,
+R.; Suchow, J. W.; and Khashanah, K. 2024. FinMem: A
+Performance-Enhanced LLM Trading Agent with Layered
+Memory and Character Design. In ICLR 2024 Workshop on
+Large Language Model (LLM) Agents.
+Li, Y .; Yu, Y .; Li, H.; Chen, Z.; and Khashanah, K. 2023.
+TradingGPT: Multi-Agent System with Layered Memory
+and Distinct Characters for Enhanced Financial Trading Per-
+formance. Papers 2309.03736, arXiv.org.
+Liu, Z.; Huang, D.; Huang, K.; Li, Z.; and Zhao, J. 2021.
+FinBERT: a pre-trained financial language representation
+model for financial text mining. In Proceedings of the
+Twenty-Ninth International Joint Conference on Artificial
+Intelligence, IJCAI’20. ISBN 9780999241165.
+Lopez-Lira, A.; and Tang, Y . 2024. Can ChatGPT Forecast
+Stock Price Movements? Return Predictability and Large
+Language Models. arXiv preprint arXiv:2304.07619.
+Luukkonen, R.; Komulainen, V .; Luoma, J.; Eskelinen, A.;
+Kanerva, J.; Kupari, H.-M.; Ginter, F.; Laippala, V .; Muen-
+nighoff, N.; Piktus, A.; Wang, T.; Tazi, N.; Scao, T.; Wolf,
+T.; Suominen, O.; Sairanen, S.; Merioksa, M.; Heinonen, J.;
+Vahtola, A.; Antao, S.; and Pyysalo, S. 2023. FinGPT: Large
+Generative Models for a Small Language. In Bouamor, H.;
+Pino, J.; and Bali, K., eds., Proceedings of the 2023 Confer-
+ence on Empirical Methods in Natural Language Process-
+ing, 2710–2726. Singapore: Association for Computational
+Linguistics.
+Malkiel, B. G. 1973. A Random Walk Down Wall Street .
+W.W. Norton & Company. ISBN 978-0393358384.
+Modarressi, A.; Deilamsalehy, H.; Dernoncourt, F.; Bui, T.;
+Rossi, R. A.; Yoon, S.; and Schuetze, H. 2025. NoLiMa:
+Long-Context Evaluation Beyond Literal Matching. In
+Forty-second International Conference on Machine Learn-
+ing.
+Wang, M.; Izumi, K.; and Sakaji, H. 2024. LLMFactor: Ex-
+tracting Profitable Factors through Prompts for Explainable
+Stock Movement Prediction. In Ku, L.-W.; Martins, A.; and
+Srikumar, V ., eds.,Findings of the Association for Compu-
+tational Linguistics: ACL 2024, 3120–3131. Bangkok, Thai-
+land: Association for Computational Linguistics.
+Wang, S.; Yuan, H.; and Ni, J., Lionel M. and Guo.
+2024. QuantAgent: Seeking Holy Grail in Trading by
+Self-Improving Large Language Model. arXiv preprint
+arXiv:2402.03755.
+Wang, S.; Yuan, H.; Zhou, L.; Ni, H.-Y ., Lionel
+M. and Shum; and Guo, J. 2023. Alpha-GPT: Human-AI
+Interactive Alpha Mining for Quantitative Investment.arXiv
+preprint arXiv:2308.00016.
+Wu, S.; Irsoy, O.; Lu, S.; Dabravolski, V .; Dredze, M.;
+Gehrmann, S.; Kambadur, P.; Rosenberg, D.; and Mann, G.
+2023. BloombergGPT: A Large Language Model for Fi-
+nance. arXiv preprint arXiv:2303.17564.
+Xiao, Y .; Sun, E.; Luo, D.; and Wang, W. 2024. Tradin-
+gAgents: Multi-Agents LLM Financial Trading Framework.
+arXiv preprint arXiv:2412.20138.
+Xing, F. Z. 2024. HAD: Heterogeneous multi-Agent frame-
+work for Financial sentiment analysis. arXiv preprint
+arXiv:2401.05799.
+Yang, H.; Zhang, B.; Wang, N.; Guo, C.; Zhang, X.; Lin, L.;
+Wang, J.; Zhou, T.; Guan, M.; Zhang, R.; and Wang, C. D.
+2024. FinRobot: An Open-Source AI Agent Platform for
+Financial Applications using Large Language Models.arXiv
+preprint arXiv:2405.14767.
+Yao, S.; Zhao, J.; Yu, D.; Du, N.; Shafran, I.; Narasimhan,
+K.; and Cao, Y . 2023. React: Synergizing reasoning and
+acting in language models. In International Conference on
+Learning Representations (ICLR).
+Yu, Y .; Yao, Z.; Li, H.; Deng, Z.; Jiang, Y .; Cao, Y .; Chen,
+Z.; Suchow, J. W.; Cui, Z.; Liu, R.; Xu, Z.; Zhang, D.; Sub-
+balakshmi, K.; Xiong, G.; He, Y .; Huang, J.; Li, D.; and
+Xie, Q. 2025. FINCON: a synthesized LLM multi-agent
+system with conceptual verbal reinforcement for enhanced
+financial decision making. In Proceedings of the 38th In-
+ternational Conference on Neural Information Processing
+Systems, NIPS ’24. Red Hook, NY , USA: Curran Associates
+Inc. ISBN 9798331314385.
+Yuan, H.; Wang, S.; and Guo, J. 2024. Alpha-GPT 2.0:
+Human-in-the-Loop AI for Quantitative Investment. arXiv
+preprint arXiv:2402.09746.
+Zhang, H.; Hua, F.; Xu, C.; Kong, H.; Zuo, R.; and Guo,
+J. 2024a. Unveiling the Potential of Sentiment: Can Large
+Language Models Predict Chinese Stock Price Movements?
+arXiv preprint arXiv:2306.14222.
+Zhang, W.; Zhao, L.; Xia, H.; Sun, S.; Sun, J.; Qin, M.;
+Li, X.; Zhao, Y .; Zhao, Y .; Cai, X.; Zheng, L.; Wang, X.;
+and An, B. 2024b. A Multimodal Foundation Agent for
+Financial Trading: Tool-Augmented, Diversified, and Gen-
+eralist. In Proceedings of the 30th ACM SIGKDD Confer-
+ence on Knowledge Discovery and Data Mining, KDD ’24,
+4314–4325. New York, NY , USA: Association for Comput-
+ing Machinery. ISBN 9798400704901.
+Zhou, Y .; Liu, H.; Chen, Z.; Tian, Y .; and Chen, B. 2025.
+GSM-Infinite: How Do your LLMs Behave over Infinitely
+Increasing Reasoning Complexity and Context Length? In
+Forty-second International Conference on Machine Learn-
+ing.

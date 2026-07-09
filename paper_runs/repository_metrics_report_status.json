@@ -1,0 +1,13 @@
+{
+  "computed_jkp_only_repository_rows": 1,
+  "output_files": [
+    "paper_runs/repository_ff5mom_metrics_summary.csv",
+    "paper_runs/repository_candidate_ff5mom_metrics.csv",
+    "paper_runs/paper_ff5mom_metrics_summary.csv",
+    "paper_runs/REPOSITORY_FF5MOM_METRICS.md"
+  ],
+  "paper_metric_rows": 44,
+  "repositories_beating_ff5mom_at_5pct": 0,
+  "repository_candidate_rows": 16,
+  "repository_rows": 14
+}

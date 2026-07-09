@@ -1,0 +1,1163 @@
+Findings of the Association for Computational Linguistics: ACL 2024 , pages 3891–3902
+August 11-16, 2024 ©2024 Association for Computational Linguistics
+Can Large Language Models Mine Interpretable Financial Factors More
+Effectively? A Neural-Symbolic Factor Mining Agent Model
+Zhiwei Li1, Ran Song2, Caihong Sun1 ∗, Wei Xu1,3, Zhengtao Yu2, Ji-Rong Wen1,4
+1 School of Information, Renmin University of China, Beijing, China
+2 Faculty of Information Engineering and Automation,
+Kunming University of Science and Technology, Kunming, China
+3 School of Smart Governance, Renmin University of China, Beijing, China
+4 Gaoling School of Artificial Intelligence, Renmin University of China, Beijing, China
+{lizhiwei2,chsun,weixu,jrwen}@ruc.edu.cn,
+song_ransr@163.com, ztyu@hotmail.com
+Abstract
+Finding interpretable factors for stock returns
+is the most vital issue in the empirical asset
+pricing domain. As data-driven methods, ex-
+isting factor mining models can be categorized
+into symbol-based and neural-based models.
+Symbol-based models are interpretable but in-
+efficient, while neural-based approaches are
+efficient but lack interpretability. Hence, min-
+ing interpretable factors effectively presents
+a significant challenge. Inspired by the suc-
+cess of Large Language Models (LLMs) in
+various tasks, we propose a FActor Mining
+Agent (FAMA) model that enables LLMs to
+integrate the strengths of both neural and sym-
+bolic models for factor mining. In this pa-
+per, FAMA consists of two main components:
+Cross-Sample Selection (CSS) and Chain-of-
+Experience (CoE). CSS addresses the homo-
+geneity challenges in LLMs during factor min-
+ing by assimilating diverse factors as in-context
+samples, whereas CoE enables LLMs to lever-
+age past successful mining experiences, expe-
+diting the mining of effective factors. Exper-
+imental evaluations on real-world stock mar-
+ket data demonstrate the effectiveness of our
+approach by surpassing the SOTA RankIC by
+0.006 and RankICIR by 0.105 in predicting
+S&P 500 returns. Furthermore, the investment
+simulation shows that our model can achieve
+superior performance with an annualized return
+of 38.4% and a Sharpe ratio of 667.2%.
+1 Introduction
+The task of predicting market trends in finance
+presents a formidable challenge, given the in-
+tricate interplay of various factors (Hou et al.,
+2011), such as the dynamics of demand and sup-
+ply (Hendricks and Singhal, 2009), market senti-
+ment (Verma and Soydemir, 2009) and government
+regulations (Ali Imran et al., 2020). In the field of
+∗ Corresponding author
+*
+Stock AAPL
+Close
+Open
+...
+Factor Formula
+Factor1=close/open
+Factor2=log(close)
+...
+0.4 0.7 0.5 0.9
+Stock A
+Close
+Open
+...
+Factor Feature
+Date,Stock Close Price Factor 
+Value ...
+(2021-01-04,A) 118.64 0.42 ...
+(2021-01-04,AAPL) 129.41 0.57 ...
+... ... ... ...
+*
+*
+LLM
+CoE&CSS
+(c) Neuro-symbolic Factor Method
+0.3 0.4 0.5 0.6
+Factor1 = close/open
+NewFactor = log(close/open)
+(a) Symbolic Factor Method
+Factor2 = log(close)
+Symbol Regression Model
+Factor Formula
+Feature Extractor
+(b) Neuro Factor Method
+Factor1 = close/open
+Factor2 = log(close) 0.1 0.7 0.3 0.7
+NewFactor = log((close-open)/(high-low))
+Market Data
+Figure 1: An illustration of three distinct factor mining
+approaches: (a) symbolic factor model, (b) neural factor
+model, and (c) our proposed neural-symbolic model.
+quantitative trading, the conventional approaches
+often extract factors as indicative signals for mar-
+ket trends from raw historical stock data first, then
+serve them as input features for machine learning
+models (Sharpe, 1964; Ross, 2013; Duan et al.,
+2022). A pivotal step in this process entails discern-
+ing and extracting effective factors that demonstrate
+robust predictive capabilities for market trends (Ng
+et al., 1992). As an illustrative example, the Cap-
+ital Asset Pricing Model (CAPM) (Sharpe, 1964)
+employed the market’s excess return as a predictive
+factor for the return of a financial asset, thereby
+contributing a seminal factor to finance.
+Hence discovering factors with high returns
+has been a trendy topic among investors and re-
+searchers. The prevailing methods for mining fac-
+tors can be in general divided into two groups,
+3891
+namely symbolic factor and neural factor models.
+As illustrated in Figure 1(a), in symbolic factor
+models, factors are represented as symbolic ex-
+pressions, then symbolic regression (Makke and
+Chawla, 2024) serves as a common technique for
+factor mining (Jin et al., 2019; Zhang et al., 2020;
+Chen et al., 2021; Cui et al., 2021). For instance,
+considering two factors,Factor 1 = “close/open”
+andFactor 2 = “log(close)”, the factor values are
+calculated by the opening and closing price, then
+the two factors are inputted into a symbolic regres-
+sion model to generate a novel factor,NewFactor
+= “log(close/open)”. The interpretability of the
+symbolic factor model arises from the explicit rep-
+resentation of the calculation process for the factors.
+However, due to the vast search space of symbolic
+factors, mining with symbolic factor models of-
+ten proves inefficient. Conversely, neural factor
+approaches, gaining recent popularity, transform
+factors into numerical features to optimize factor
+extraction. As depicted in Figure 1(b), neural factor
+models predict market trends by extracting numer-
+ical factor features from stock data through fea-
+ture extractors (Kelly et al., 2019; Gu et al., 2021;
+Duan et al., 2022). Compared with symbolic factor
+models, neural factor models exhibit proficiency
+in extracting effective numerical factors. However,
+the financial interpretability in neural factor mod-
+els struggles with implicit features. The question
+we are facing is: Can an effective approach be de-
+vised for mining financially interpretable factors
+conducive to predicting market trends?
+Recent advancements in LLMs have demon-
+strated success across financial tasks, including
+sentiment analysis (Guo et al., 2023) and financial
+text generation (Yang et al., 2023b). Thanks to its
+powerful In-Context Learning (ICL) ability (Brown
+et al., 2020), we conceptualize LLMs as a neuro-
+symbolic model illustrated in Figure 1(c) that
+bridges two distinct representations, i.e., numerical
+and symbolic factors, aiming to achieve efficient
+mining of interpretable ones. It is facile to consider
+utilizing the factors disclosed (Kakushadze, 2016)
+as contextual examples to generate new factors
+through ICL. Since the disclosed factors are often
+limited in number, high correlation, and low com-
+plexity, direct mining factors using ICL encounter
+challenges. These issues can be summarized in two
+aspects: (1) The heightened homogeneity observed
+among factors, characterized by the uniform struc-
+ture, culminates in the generation of the singular
+factor form through ICL. (2) The presence of a
+noteworthy proportion of ineffective factors acts
+as an impediment, hindering ICL from effectively
+exploring novel patterns. Therefore, the efficacy of
+mining effective factors using LLMs is contingent
+upon selecting diversity-guiding factors as contex-
+tual samples to mitigate homogeneity. Additionally,
+encouraging ICL to explore new patterns is key to
+increasing the proportion of effective factors.
+In this paper, we present the FActor Min-
+ing Agent (FAMA), consisting of two main
+parts: Cross-Sample Selection (CSS) and Chain-
+of-Experience (CoE) methods. CSS is designed
+to ensure the diversification of factor mining by
+amalgamating low correlation classes of factors
+as contextual samples, which empowers LLMs to
+incorporate diversity-guiding factors and mitigate
+the homogeneity of mined factors. CoE efficiently
+encourages ICL to explore new paradigms by in-
+corporating the paths of mining effective factors
+as experiential prompts, which contributes to the
+further optimization of factor mining in LLMs. Our
+experimental results show better performance of
+our model in predicting stock market returns com-
+pared to previous approaches. Moreover, our model
+also demonstrates a superior annualized return and
+Sharpe ratio in the investment simulations.
+Our contributions can be summarized as follows:
+• To the best of our knowledge, we are the first
+ones to use LLMs as a bridge between sym-
+bolic and neural representations in the task of
+factor mining.
+• We propose a factor mining agent (FAMA)
+to facilitate LLMs as factor miners, in which
+its components CSS and CoE are designed to
+tackle homogeneity issues and encourage ICL
+in exploring new directions, respectively.
+• We expand the capabilities of LLMs to per-
+form factor mining tasks and present a series
+of experiments to demonstrate the effective-
+ness of our proposed model.
+2 Problem Formulation
+2.1 Financial Factor
+Consider a stock dataset forN stocks overT trad-
+ing days. The features of all stocks are denoted
+as X = [x1,x 2,...,x N ]. Consider theM features,
+such as open and close prices, pertaining to each
+stockj, denoted as xj ∈ RM ×T . We define the
+3892
+factor space as F, where each factor f ∈ Fis
+defined as f : RM ×T → RT . The value of fac-
+tor f on stock j is defined as f (xj)∈ RT . To
+conveniently represent the symbolic form of fac-
+tors, we employ the symbol function s(f ) to de-
+note the symbolic text of factor fi. For example,
+s(f101) = “((close−open)/(high−low))”.
+2.2 Factor Distance and Correlation
+In practice, factor categorization has traditionally
+depended on artificial classification rooted in fi-
+nancial principles, such as momentum (Carhart,
+1997) and trend (Han et al., 2016) factors. De-
+spite the demonstrated high accuracy associated
+with this approach, it involves a labor-intensive
+process. To enhance the efficiency of factor classi-
+fication, we advocate for a quantitative exploration
+of correlations among factors. We consider the
+factor spaceF is equipped with a distance map-
+pingd :F×F→ R, thereby establishing it as a
+complete distance space (F,d ), then correlations
+between factors can be defined within this space
+(F,d ) asr :F×F→ [−1, 1]. This approach en-
+ables a more efficient analysis of factor correlations
+without a labor-intensive process.
+2.3 Factor Mining
+The goal of factor mining is to produce a new set
+of factors F ⊂F that will lead to better predic-
+tive performance of stocks in their portfolios. To
+evaluate the predictive performance of factors, we
+employ the Rank Information Coefficient (RankIC).
+RankIC measures the correlation between a factor’s
+ranking in equity exposure and its subsequent re-
+turn ranking. The RankIC on periodt and average
+RankICγ is defined as follows:
+RankIC t(f,r j) = Corr (orderf
+t−1,order rj
+t ),
+γ(f ) = 1
+N
+1
+T
+N∑
+j=1
+T∑
+t=1
+RankIC t(f,r j),
+(1)
+whereorderf
+t−1 signifies the factor value ranking
+at time t− 1, and orderrj
+t represents the return
+ranking of stock j at time t, with Corr (x,y ) de-
+noting the correlation coefficient between vectors
+x andy. Given a factor set F ={f1,...,f p}, its
+effectiveness is assessed by computing the average
+RankIC of the factors within the set, as described
+below:
+γ(F ) = Ei[γ(fi)],f i∈F. (2)
+The objective of factor mining is to commence
+with an initial set of factors, denoted as F0, and
+iteratively mine new factors to enhance the overall
+predictive performance. This process involves a
+total ofm mining iterations. The set of factors ob-
+tained after thei-th mining iteration is represented
+asFi. Therefore, we aim for the sequence of aver-
+age predictive performance metrics to satisfy the
+following relation:
+γ(F0)≤γ(F1)≤···≤ γ(Fm) (3)
+3 Factor Mining Agent
+As illustrated in Figure 2, our proposed FActor
+Mining Agent (FAMA) consists of two main parts:
+(1) Cross-Sample Selection (CSS) and (2) Chain-
+of-Experience (CoE). FAMA improves the mining
+factor effectiveness through iterative mining. In
+each iteration, FAMA generates diversity guiding
+factors via CSS and empirical paths through CoE
+as prompts fed into LLMs for mining factors.
+3.1 Definitions
+To measure the distance and correlation between
+factors quantitatively mentioned in Section 2.2, we
+start with calculating the weighted average price of
+the stock pool. It is defined as:
+p = wX, (4)
+where w ∈ Rn denotes the total market value
+weight corresponding to the company’s stock. Sub-
+sequently, we calculate the factor exposure vi of
+factorfi at the weighted average price p and em-
+ploy z-score normalization as:
+vi = fi(p)−mean(fi(p))
+std(fi(p)) . (5)
+Consequently, we define the distance between two
+factors as:
+d(fi,f j) =∥vi− vj∥2. (6)
+Then, the correlation coefficient between the fac-
+tors is defined as:
+r(fi,f j) = Corr(vi, vj)
+=
+∑ T
+t=1(vit− vi)(vjt− vj)∑ T
+t=1(vit− vi)2(vjt− vj)2.
+(7)
+3893
+Date Close Price Open Price ...
+(2015-01-02) 2058.19 2058.89 ...
+(2015-01-05) 2020.57 2054.43 ...
+... ... ... ...
+factor1 = close/open factor2 = (high * low)^0.5
+Date Factor1 value Factor2 value ...
+(2015-01-02) -0.06 -1.03 ...
+(2015-01-05) -1.93 -1.07 ...
+... ... ... ...
+Factor1 Factor2
+...
+Factor 
+Factor1
+Factor2
+...
+Stock 
+Close
+Open
+...
+You are a quantization factor generator. 
+### Input
+Examples: [“close/open”, “(high*low)^0.5”]
+Experience Chain: “close/open” -> “((close-open)/(high-low)” 
+Generate new factors.
+LLM
+### Answer
+“((close-open)/(high-low))^0.5”
+Factor Value Calculation
+Factor Clustering
+Data Loading
+(c) Cross Sample Selection
+Factor Data Stock Data CoE Data
+(b) Chain-of-Experience
+Factor 1
+...
+Cluster 1 Cluster 2
+Factor 2
+Example Generation
+Factor 1
+...
+Cluster 1 Cluster 2
+Factor 2
+CoE
+Chain1
+Chain2
+...
+Previous CoE(k-1) 
+Initial CoE Generation
+((close-open)/(high-low))
+high/low close/openhigh-low
+high/low close/openhigh-low
+high/low close/open
+Case1: Middle Case2: Tail
+Correlation Calculation
+high/low close/openhigh-low
+((close-open)/(high-low))
+CoE Splitting
+CoE(k) Generation
+Most Correlated Factor Matching
+Factor1
+CoE Extension
+high/low close/openhigh-low
+((close-open)/(high-low))
+high/low close/openhigh-low
+((close-open)/(high-low))
+Factor2
+### Answer
+“((close-open)/(high-low))”
+FAMA(CI-(k-1)) LLM
+Experience Chain: 
+high-low -> high/low -> close/open
+(a) Data
+(d) FAMA(CI-n)
+FAMA(CI-k)
+Figure 2: An overview of the FAMA model. FAMA(CI-n) denotes thenth iteration of the FAMA model. Initially,
+(a) the input factors, stock data, and experience chain data are fed into the FAMA model. Subsequently, (b) the
+CoE module utilizes the outcomes of FAMA(CI-(k− 1)) to produce a novel CoEk, and incorporates the diverse
+guidance factors generated by the (c) CSS module to formulate a prompt. Lastly, the prompt is fed into the LLMs to
+mine a new factor of FAMA(CI-k) as illustrated in (d), which is then stored in the factor database.
+3.2 Cross-Sample Selection
+The CSS selects low-correlation guiding factors
+as contexts thereby avoiding homogeneity of the
+generated factors. It categorizes the factors into
+different classes, sampling from the classes to get
+a context sample of diversity factors. Here, we pro-
+pose a clustering algorithm based on KMeans (Kr-
+ishna and Murty, 1999) for factor clustering. The
+factor value vi of factor fi obtained from Equa-
+tion 5 is used for clustering. Initially, we ran-
+domly selectk factor values as clustering centers
+{µ1, µ2,··· , µk}. For each factor value vi, its
+class is calculated asc(fi) = argminj∥vi− µj∥2.
+Subsequently, we update the clustering center using
+the formula:
+µj = 1∑
+c(fi)=j
+1
+∑
+c(fi)=j
+vi. (8)
+We define the loss of the factor cluster model as:
+J =
+k∑
+i=1
+∑
+c(fj )=i
+∥vj− µi∥2. (9)
+The optimal classification is defined as:
+c∗ =argmin
+c
+J. (10)
+We denote the set of factors Ci belonging to the
+same classi as:
+Ci ={fj|c∗(fj) = i}. (11)
+Subsequently, we randomly draw a samplef i from
+each categoryCi to get a factor combination:
+FC = [f 1,f 2,··· ,f k], fi∈Ci. (12)
+Finally,l(l≤k) factors in the factor combination
+FC are selected as context samples:
+S = [s(f i1),s (f i2),··· ,s (f il)],f ij∈FC.
+(13)
+3.3 Chain-of-Experience
+This part aims to involve past successful mining
+experiences in ICL to facilitate factor mining ef-
+fectiveness. The generation of experience chains
+is divided into two phases: the initial generation
+phase and the enhanced generation phase. In the
+initial phase, we employ the initial set of factors for
+generation. Following the acquisition of the previ-
+ous factor clustering resultsCi through Equation 11
+and with the size of Ci denoted as pi, the initial
+experience chain for categoryCi is generated. This
+generation process relies on the ranking result ofγ
+as defined in Equation 1, which can be described
+3894
+as follows:
+CoE 0
+i =s(f (i)
+1 )→s(f (i)
+2 )→···→ s(f (i)
+pi ),
+γ(f (i)
+1 )≤γ(f (i)
+2 )≤···≤ γ(f (i)
+pi ).
+(14)
+In the enhanced phase, the experience chain
+utilized in the previous step is denoted as
+CoE (k−1)
+i . We choose ICL-generated factorf ∗(i)
+withCoE (k−1)
+i having a higherγ than all chain fac-
+tors. Then, we compute the correlation r defined
+in Equation 7 for the new factorf ∗(i) and factors
+onCoE (k−1)
+i to get the highest correlation factor
+f (i)
+h . If the matched factorf (i)
+h is at the end of the
+chainCi, the new factor is treated as an extension
+of the experience. Otherwise, the new factorf ∗(i)
+represents a new experience, and it is introduced
+into the chain subsequent to a split triggered by the
+matching factorf (i)
+h . This process can be defined
+uniformly as:
+CoEk
+i =s(f (i)
+1 )→···→ s(f (i)
+h )→s(f ∗(i)),
+r(f (i)
+h ,f ∗(i))≥r(f (i)
+j ,f ∗(i)),∀0≤j≤pi.
+(15)
+Our proposed Factor Mining Agent (FAMA)
+synergistically integrates the Cross-Sample Selec-
+tion (CSS), as outlined in Section 3.2, and the
+Chain-of-Experience (CoE), explicated in Section
+3.3, thereby automating the generation of diversity-
+guiding factor samples and experience chains for
+iterative factor mining. Within each iteration, an
+initial step involves clustering the factors within
+the collection into distinct categories, serving as
+preparation for subsequent CSS and CoE processes.
+We then proceed by leveraging the samples gen-
+erated through CSS as in-context examples. Sub-
+sequently, we select the most pertinent experience
+chain. Finally, we amalgamate these components
+into a prompt, which is subsequently inputted into
+the LLM to generate new factors. If the resultant
+factor demonstrates improved performance metrics,
+it will be incorporated into the experience chain.
+This inclusive step fosters the development of a new
+experience chain for subsequent iterations, thus nur-
+turing the iterative refinement process. The specific
+operational framework of FAMA is delineated in
+Algorithm 1. Detailed elucidations of the functions
+integral to the algorithmic execution are provided
+in Appendix A.
+Algorithm 1: Factor Mining Agent
+Data: Initial factor setF0 ={f1,··· ,f n}, number
+of miningm, minimum factor numberu.
+Result: Final factor setFm, experience chain set
+CoE m.
+1 Generate initial experience chain set
+CoE 0 ={e1,··· ,e k}; // 14
+2 fori← 1 tom do
+3 Initialize new factor setFi and chain setCoE i;
+4 C← Cluster(Fi−1);// 11
+5 S← SelectSamples(C); // 13
+6 foreachs∈S do
+7 e← MatchCoE(s,CoE (i−1));
+8 prompt←s +e;
+9 f′← LLM(prompt);
+10 ifγ(f′) >max(γ(f )),∀f∈e then
+11 e′←GenChain(e,f′); // 15
+12 CoE i←CoE i∪{e′};
+13 Fi←Fi∪{f′};
+14 if (γ(Fi)>γ(Fi−1)) & ( |Fi|≥ u) then
+15 break;
+16 returnFm,CoE m;
+4 Experiments
+Our experimental investigation revolves around ad-
+dressing three key questions:
+• Q1: How does our proposed model compare
+to prior factor mining models?
+• Q2: Which factors within the experience
+chain contribute to the enhancement of the
+RankIC&RankICIR?
+• Q3: How does our model perform under a
+more realistic investment situation?
+4.1 Experiment Settings
+We begin by employing 38 factors from Al-
+pha101 (Kakushadze, 2016) as our initial factor
+setF0. To establish the number of clustersm, we
+utilize manual application of financial knowledge
+to classify the initial factors into distinct categories.
+Through this process, we ascertain that the initial
+factors achieve reasonable categorization when the
+number of categories is set to 7; hence, m is se-
+lected as 7. The number of randomly sampled
+factorsl is designated as 2, and the minimum fac-
+tor number u is defined as 15. We selected text-
+davinci-0021 as the LLM for factor mining, con-
+figuring the following parameters: temperature=0
+and max_tokens=1500. We retained the default
+1https://platform.openai.com/docs/model-index-for-
+researchers
+3895
+Category Model Interpretability Training data usage RankIC RankICIR
+Symbolic
+Alpha101 /enc-33 - 0.018(0.000) 0.200(0.000)
+GP /enc-33 100% 0.017(0.005) 0.141(0.034)
+LLM /enc-33 - 0.015(0.008) 0.139(0.011)
+Neural
+DTransformer /enc-35 100% 0.025(0.005) 0.124(0.015)
+ALSTM /enc-35 100% 0.028(0.006) 0.167(0.021)
+FactorV AE /enc-35 100% 0.048(0.008) 0.379(0.042)
+Neural
+Symbolic
+FAMA(C) /enc-33 10% 0.023(0.006) 0.204(0.019)
+FAMA(I-1) /enc-33 10% 0.016(0.006) 0.149(0.017)
+FAMA(CI-3) /enc-33 10% 0.030(0.008) 0.372(0.031)
+FAMA(CI-7) /enc-33 10% 0.054(0.010) 0.485(0.051)
+Table 1: The performance of the compared models in returns prediction on the test dataset. Higher values for RankIC
+and RanksICIR indicate superior performance. Interpretability indicates that the mined factors are financially
+interpretable. LLM is the result of directly mining factors using LLMs. The term FAMA(C) corresponds to the
+CSS model. Additionally, FAMA(I-n) signifies the application of the CoE iteration n. The bold part highlights
+the best-performing model in the evaluation. The mean and standard deviation of results from 10 experiments are
+reported. The results of {LLM, FAMA(C), FAMA(I-1), FAMA(CI-3), FAMA(CI-7)} elucidate the ablation result of
+CSS and CoE methods.
+parameters specified in the OpenAI API documen-
+tation2 for any additional settings. The full factors
+and prompt examples are listed in Appendix B and
+Appendix D.
+4.2 Datasets
+Given that these factors are specifically crafted
+for the U.S. stock market, we opt for the corre-
+sponding U.S. stock index, namely the S&P500 as
+the stock set. Our dataset comprises all stocks
+from the S&P500 index, with a focus on key
+fields including closing price, opening price, low
+price, high price and volume. The temporal
+scope of the stock data spans from 2015/01/01
+to 2022/01/01. The dataset is divided into a
+training set (2015/01/01-2020/01/01), a valida-
+tion set (2020/01/01-2021/01/01) and a test set
+(2021/01/01-2022/01/01). In our model, we only
+use stock data for the time period 2020/06/01-
+2021/01/01 as the training and validation set, which
+is 10% amount of the provided training set.
+4.3 Baselines
+We explored SOTA models in recent years for com-
+parison, encompassing both symbolic factor mod-
+els and neural factor models as follows:
+• Alpha101 (Kakushadze, 2016) publicly dis-
+closed by WorldQuant LLC 3, accompanied
+2https://platform.openai.com/docs/api-
+reference/completions/create
+3https://www.worldquant.com/
+by precise code-based definitions. It serves
+as our initial set of factors from which our
+factors are derived.
+• GP (Chen et al., 2021) Genetic programming
+algorithms create new factors through the mu-
+tation of factor expression trees, a widely cited
+model in factor mining.
+• ALSTM (Qin et al., 2017) proposes a frame-
+work based on attentional mechanisms and
+long and short-term memory to predict stock
+trends.
+• DTransformer (Wang et al., 2022) forecasts
+market indices by leveraging fundamental
+rules characterizing stock market dynamics
+through an encoder-decoder architecture and
+a full attention mechanism.
+• FactorV AE (Duan et al., 2022) generates a
+prior risk factor return rate within the Varia-
+tional Autoencoder (V AE) framework. It re-
+fines the prior factor return rate to approxi-
+mate the posterior factor return rate.
+4.4 Cross-Sectional Returns Prediction
+In this experiment, we employ both the neural and
+symbolic factor models to forecast future stock re-
+turns for answering Q1. The RankIC is calculated
+between the forecasted and actual stock returns, as
+3896
+defined in Equation 2. For symbolic models, fac-
+tors with RankIC greater than 0.01 in 2020/06/01-
+2021/01/01 were selected to form a test factor set.
+To better illustrate the relationship between pre-
+diction effectiveness and risk, we introduce the
+RankICIR, defined as the ratio of the mean value
+of the RankIC to the standard deviation:
+RankICIR = Ef [Ej[ γ(f )
+σRankIC t(f,rj )
+]]. (16)
+As evidenced in Table 1, FAMA demonstrates
+superior performance compared to the most recent
+benchmark, FactorV AE. FAMA exhibits improve-
+ments of 0.006 on RankIC and 0.106 on RankICIR.
+In addition, it can be observed from Table 1, that
+both CSS and CoE exhibit improvement in factor
+mining effects. Achieving satisfactory prediction
+results using CSS or CoE individually faces chal-
+lenges. When CSS and CoE are employed together,
+the predictive performance of the model improves
+with an increasing number of mining iterations.
+-0.04
+-0.02
+0
+0.02
+0.04
+1 2 3 4 5 6 7
+Number of factors in a sample
+Rank IC
+-0.4
+-0.2
+0
+0.2
+0.4
+1 2 3 4 5 6 7
+Number of factors in a sample
+Rank ICIR
+(a) CoE Iteration Number
+0
+0.01
+0.02
+0.03
+0.04
+0.05
+0.06
+0 1 2 3 4 5 6 7
+Number of iterations
+Rank IC
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0 1 2 3 4 5 6 7
+Number of iterations
+Rank ICIR
+(b) CSS Factor Number
+Figure 3: The results of parameter effects. Subfigure
+(a) illustrates RankIC and RankICIR in relation to the
+number of CoE iterations. Meanwhile, Subfigure (b)
+portrays the plot of RankIC and RankICIR with respect
+to the number of CSS samples.
+To explore the impact of the number of CoE iter-
+ations on the model, we set the CoE iterations from
+1 to 7 and verify the effect of the corresponding iter-
+ations. Results in Figure 3(a) show that the model’s
+prediction effectiveness gradually improves with
+an increase in CoE iterations. The improvement
+effect of CoE largely depends on the generation
+effect of the previous round of factors.
+To explore the impact of sample number selec-
+tion on the model, we changed the number of cross-
+sample selections and conducted experiments. As
+shown in Figure 3(b), until the number of samples
+is 3, increasing the number of samples improves the
+performance of the model. When the quantity of
+samples surpasses a threshold of three, the efficacy
+of the model shows a decrement. This observation
+signifies that an excessive abundance of samples
+fails to enhance the performance.
+4.5 Randomized Modification of
+Chain-of-Experience
+0
+0.01
+0.02
+0.03
+0.04
+0.05
+Initial Head Middle Tail
+Rank IC
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+Initial Head Middle Tail
+Rank ICIR
+Figure 4: Impact of randomly deleting CoE nodes at
+different locations on model prediction. Initial is the
+performance of factors generated by retaining the com-
+plete experience chain of factors. Head, Middle, Tail
+are the performance of factors generated after randomly
+deleting the factors located at the head, middle, and tail
+of the experience chain.
+In the pursuit of unraveling the fundamental com-
+ponents of the CoE function, we conducted an ex-
+periment that entailed the random deletion of nodes
+within the CoE. The objective of this endeavor is to
+address the inquiry encapsulated in Q2. Nodes are
+categorized into head nodes, middle nodes, and tail
+nodes. Given that intermediate nodes may con-
+sist of multiple nodes, we randomly select one
+among them as the middle node. In each round
+of CoEs, we systematically delete the head node,
+middle node, and tail node, utilizing the modified
+CoEs for factor mining. The results, averaged over
+multiple rounds, are depicted in Figure 4. We ob-
+served that the removal of initial nodes enhances
+the performance of factor mining. This observation
+suggests that the inclusion of an excessive number
+of low-performing nodes compromises the efficacy
+of factor mining in the LLM. Thus, it becomes im-
+perative to adjust the length of the chain over time
+for optimal results.
+4.6 Portfolio Investment Simulation
+We intend to answer Q3 by designing an invest-
+ment simulation of the stock market. For symbolic
+models, we use the test factors in Section 4.4 and
+allocate funds for each factorfi as follows:
+wi = RankIC past
+i∑ n
+i=0RankIC past
+i
+, (17)
+3897
+whereRankIC past
+i represents the mean RankIC
+value during 2020/06/01-2021/01/01. We choose
+stocks with the top 20% factor value to buy and
+sell them in next day.
+We evaluate the portfolio investment perfor-
+mance using standard metrics, including Annu-
+alized Return (AR), V olatility (V ol), and Sharpe
+Ratios (SR):
+AR = (1 +R)252/N− 1, (18)
+Vol =σp∗
+√
+252, (19)
+SR = (Rp−Rf )
+σp
+∗
+√
+252, (20)
+whereR represents the cumulative return rate,N
+is the total number of trading days,σp is the daily
+standard deviation of the portfolio, Rp is the ex-
+pected daily return rate of the portfolio,Rf is the
+risk-free rate 4.
+Models AR( ↑) V ol( ↓) SR( ↑)
+S&P500 26.3% 11.5% 209.3%
+GP 11.2% 6.8% 159.2%
+Alpha101 19.7% 4.5% 406.1%
+ALSTM 25.4% 22.5% 89.3%
+DTransformer 27.8% 24.7% 93.5%
+FactorV AE 31.8% 22.8% 132.2%
+FAMA 38.4% 4.9% 667.2%
+Table 2: Portfolio investment performance of the com-
+pared models on the test datasets.↑ indicates a larger
+value is better,↓ indicates a smaller value is better. The
+S&P500 represents a portfolio comprising all S&P500
+stocks.
+As depicted in Table 2, the symbol-based ap-
+proach exhibits lower volatility but yields compar-
+atively lower returns. Conversely, neuro-based ap-
+proaches show higher returns, albeit accompanied
+by elevated volatility. It is noteworthy that our ap-
+proach adeptly strikes a balance between returns
+and volatility, demonstrating a consistent perfor-
+mance throughout the investment simulation with-
+out experiencing significant fluctuations. This deli-
+cate equilibrium is achieved while concurrently re-
+alizing a commendable return, highlighting the ro-
+bustness and stability inherent in our model. FAMA
+surpasses current SOTA models, in the context of
+portfolio investment simulation. Specifically, there
+is a notable increase of 6.6% in AR and a substan-
+tial improvement of 261.1% in the SR.
+4For simplicity, we set the risk-free rate to zero.
+5 Related Work
+5.1 Financial Factor Mining
+The initial phase of factor mining involves the man-
+ual mining of factors. The Capital Asset Pricing
+Model (CAPM) (Sharpe, 1964), posits that the
+expected return of a financial asset primarily de-
+pends on the market’s excess return. This con-
+tributed a groundbreaking factor to the financial
+field. To refine this conceptual framework, the
+Fama-French 3-factor model (Fama and French,
+1993) extends the CAPM by introducing size and
+value risk factors alongside market risk factors.
+However, manual factor mining is considered labor-
+intensive. To address this limitation and efficiently
+mine effective factors in the market, various sym-
+bolic factor-based models have been proposed. Au-
+toAlpha (Zhang et al., 2020) expedites the identi-
+fication of promising factor search spaces through
+the utilization of genetic algorithms. Furthermore,
+AlphaEvolve (Cui et al., 2021) has developed a
+factor mining framework grounded in AutoML, fa-
+cilitating the evolution of initial factors into new
+factors characterized by excess returns and cor-
+relations. Factors derived through symbolic fac-
+tor models exhibit clear factor calculation steps,
+making them easily interpretable. However, con-
+strained by the vast symbolic factor target space,
+these models are generally challenging to optimize.
+This has prompted increased interest in the easy-to-
+optimize neural factor models. In a recent study,
+AE (Gu et al., 2021) introduces a novel latent fac-
+tor conditional asset pricing model employing an
+autoencoder. Additionally, FactorV AE (Duan et al.,
+2022) integrates a dynamic factor model with a
+variational autoencoder to approximate the optimal
+factor model. The neural factor model, a method
+for extracting numerical characteristic factors from
+stock data through feature extraction, is known for
+its heightened optimization efficiency (Md et al.,
+2023; Lai et al., 2023; Wei et al., 2023). Despite
+this advantage, factors constrained by implicit fea-
+tures present challenges in terms of artificial iden-
+tification, resulting in a lack of interpretability in
+neural factor models. In response to this, our pro-
+posed model takes a strategic approach by combin-
+ing symbolic factors and leveraging neural factors
+for feature extraction, achieving both financial in-
+terpretability and high efficiency in the realm of
+factor mining. This neural-symbolic model aims
+to strike a balance, achieving both financial inter-
+pretability and high efficiency in the realm of factor
+3898
+mining.
+5.2 Financial Large Language Model
+LLMs find extensive application in the financial
+sector, spanning portfolio management, financial
+risk modeling, financial text mining, and financial
+advisory (Li et al., 2023). They hold promise in ele-
+vating the intelligence level of accounting practices
+and driving advancements in financial management
+intelligence (Minggao et al., 2023). Two prevalent
+methodologies exist for integrating LLMs into fi-
+nance. The first method involves enhancing the
+financial text comprehension capabilities of LLMs
+through fine-tuning with specialized financial cor-
+pora (Yang et al., 2023a; Wu et al., 2023). The
+second approach employs prompt engineering, en-
+abling generic LLMs to directly undertake vari-
+ous financial tasks such as predicting future stock
+trends (Lopez-Lira and Tang, 2023) and offering
+investment advice (Ko and Lee, 2024). The deploy-
+ment of LLMs in the financial sector encounters
+numerous complex challenges, including business
+requirements, industry barriers, data privacy con-
+cerns, accountability, ethical considerations, and
+the knowledge gap between financial professionals
+and AI specialists (Lee et al., 2024). Firstly, there
+is a significant difficulty in collecting and process-
+ing high-quality financial data in diverse formats.
+Furthermore, LLMs are prone to generating infor-
+mation that, while seemingly plausible, may lack
+accuracy due to their inherent propensity for hal-
+lucinations. In addition, financial texts typically
+have stringent timeliness requirements, and the dif-
+ficulty of updating LLMs complicates the handling
+of such time-sensitive financial information.
+6 Conclusion
+In this paper, we consider Large Language Mod-
+els (LLMs) as a neural symbolic model for finan-
+cial factor mining. To facilitate LLMs to pursue
+our task, we proposed a model called Factor Min-
+ing Agent (FAMA), which comprises two integral
+components: Cross-Sample Selection (CSS) and
+Chain-of-Experience (CoE). CSS mitigates the ho-
+mogeneity in the mined factors by amalgamating di-
+verse guidance factors. CoE encourages In-Context
+Learning (ICL) to explore novel factor paradigms
+by leveraging the paths leading to the mining of
+effective factors as experiential prompts. Both CSS
+and CoE components are integrated into our factor
+mining agent to effectively mine financially inter-
+pretable factors. Experimental results demonstrate
+the effectiveness of our proposed approach. Our
+future work includes exploring more avenues to
+enhance the optimization of factor mining and ad-
+dressing the hallucination phenomenon of LLMs.
+Limitations
+When employing LLMs for factor mining, we ob-
+served the hallucination phenomenon of LLMs
+within the financial domain that introduces inter-
+ference in the factor mining process. In future
+endeavors, our emphasis will be directed towards
+mitigating the hallucination effects of LLMs in the
+context of factor mining.
+Ethics Statement
+We utilize the OpenAI API in strict adherence to
+the OpenAI User Rules for the generation of finan-
+cial factors, ensuring the absence of harmful and
+unethical information. Our approach has under-
+gone validation in historical market scenarios and
+expressly does not offer any form of investment
+advice.
+Acknowledgements
+This work was supported by the National Nat-
+ural Science Foundation of China (Grant No.
+72271233, U23A20388), Suzhou Key Laboratory
+of Artificial Intelligence and Social Governance
+Technologies (SZS2023007), Smart Social Gov-
+ernance Technology and Innovative Application
+Platform (YZCXPT2023101) and Key Research
+and Development Program of Yunnan Province
+(202303AP140008).
+References
+Zulfiqar Ali Imran, Abdullah Ejaz, Cristi Spulbar,
+Ramona Birau, and Periyapatna Sathyanarayana
+Rao Nethravathi. 2020. Measuring the impact of gov-
+ernance quality on stock market performance in de-
+veloped countries. Economic Research-Ekonomska
+Istraživanja, 33(1):3406–3426.
+Tom Brown, Benjamin Mann, Nick Ryder, Melanie
+Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind
+Neelakantan, Pranav Shyam, Girish Sastry, Amanda
+Askell, et al. 2020. Language models are few-shot
+learners. Advances in neural information processing
+systems, 33:1877–1901.
+Mark M Carhart. 1997. On persistence in mutual fund
+performance. The Journal of finance, 52(1):57–82.
+3899
+Tianxiang Chen, Wei Chen, and Luyao Du. 2021. An
+empirical study of financial factor mining based on
+gene expression programming. In 2021 4th Interna-
+tional Conference on Advanced Electronic Materials,
+Computers and Software Engineering (AEMCSE) ,
+pages 1113–1117. IEEE.
+Can Cui, Wei Wang, Meihui Zhang, Gang Chen, Zhao-
+jing Luo, and Beng Chin Ooi. 2021. Alphaevolve:
+A learning framework to discover novel alphas in
+quantitative investment. In Proceedings of the 2021
+International Conference on Management of Data ,
+pages 2208–2216.
+Yitong Duan, Lei Wang, Qizhong Zhang, and Jian Li.
+2022. Factorvae: A probabilistic dynamic factor
+model based on variational autoencoder for predict-
+ing cross-sectional stock returns. In Proceedings of
+the AAAI Conference on Artificial Intelligence, vol-
+ume 36, pages 4468–4476.
+Eugene F Fama and Kenneth R French. 1993. Com-
+mon risk factors in the returns on stocks and bonds.
+Journal of financial economics, 33(1):3–56.
+Shihao Gu, Bryan Kelly, and Dacheng Xiu. 2021. Au-
+toencoder asset pricing models. Journal of Econo-
+metrics, 222(1):429–450.
+Yue Guo, Zian Xu, and Yi Yang. 2023. Is chatgpt a fi-
+nancial expert? evaluating language models on finan-
+cial natural language processing. In Findings of the
+Association for Computational Linguistics: EMNLP
+2023, pages 815–821.
+Yufeng Han, Guofu Zhou, and Yingzi Zhu. 2016. A
+trend factor: Any economic gains from using infor-
+mation over investment horizons? Journal of Finan-
+cial Economics, 122(2):352–375.
+Kevin B Hendricks and Vinod R Singhal. 2009.
+Demand-supply mismatches and stock market reac-
+tion: Evidence from excess inventory announcements.
+Manufacturing & Service Operations Management,
+11(3):509–524.
+Kewei Hou, G Andrew Karolyi, and Bong-Chan Kho.
+2011. What factors drive global stock returns? The
+Review of Financial Studies, 24(8):2527–2574.
+Ying Jin, Weilin Fu, Jian Kang, Jiadong Guo, and Jian
+Guo. 2019. Bayesian symbolic regression. arXiv
+preprint arXiv:1910.08892.
+Zura Kakushadze. 2016. 101 formulaic alphas. Wilmott,
+2016(84):72–81.
+Bryan T Kelly, Seth Pruitt, and Yinan Su. 2019. Charac-
+teristics are covariances: A unified model of risk and
+return. Journal of Financial Economics, 134(3):501–
+524.
+Hyungjin Ko and Jaewook Lee. 2024. Can chatgpt
+improve investment decisions? from a portfolio man-
+agement perspective. Finance Research Letters, page
+105433.
+K Krishna and M Narasimha Murty. 1999. Genetic
+k-means algorithm. IEEE Transactions on Sys-
+tems, Man, and Cybernetics, Part B (Cybernetics) ,
+29(3):433–439.
+Tzu-Ya Lai, Wen Jung Cheng, and Jun-En Ding. 2023.
+Sequential graph attention learning for predicting dy-
+namic stock trends (student abstract). In Proceedings
+of the AAAI Conference on Artificial Intelligence ,
+volume 37, pages 16244–16245.
+Jean Lee, Nicholas Stevens, Soyeon Caren Han, and
+Minseok Song. 2024. A survey of large lan-
+guage models in finance (finllms). arXiv preprint
+arXiv:2402.02315.
+Yinheng Li, Shaofei Wang, Han Ding, and Hang Chen.
+2023. Large language models in finance: A survey.
+In Proceedings of the Fourth ACM International Con-
+ference on AI in Finance, pages 374–382.
+Alejandro Lopez-Lira and Yuehua Tang. 2023. Can
+chatgpt forecast stock price movements? return pre-
+dictability and large language models. Return Pre-
+dictability and Large Language Models (April 6,
+2023).
+Nour Makke and Sanjay Chawla. 2024. Interpretable
+scientific discovery with symbolic regression: a re-
+view. Artificial Intelligence Review, 57(1):2.
+Abdul Quadir Md, Sanjit Kapoor, Chris Junni A V ,
+Arun Kumar Sivaraman, Kong Fah Tee, H Sabireen,
+and N Janakiraman. 2023. Novel optimization
+approach for stock price forecasting using multi-
+layered sequential lstm. Applied Soft Computing ,
+134:109830.
+Li Minggao, Yi Fengchao, Li Yagang, et al. 2023. Re-
+search on the application of llm in power finance
+middle platform. In 2023 2nd Asian Conference on
+Frontiers of Power and Energy (ACFPE), pages 282–
+289. IEEE.
+Victor Ng, Robert F Engle, and Michael Rothschild.
+1992. A multi-dynamic-factor model for stock re-
+turns. Journal of Econometrics, 52(1-2):245–266.
+Yao Qin, Dongjin Song, Haifeng Cheng, Wei Cheng,
+Guofei Jiang, and Garrison W Cottrell. 2017. A dual-
+stage attention-based recurrent neural network for
+time series prediction. In Proceedings of the 26th
+International Joint Conference on Artificial Intelli-
+gence, pages 2627–2633.
+Stephen A Ross. 2013. The arbitrage theory of capital
+asset pricing. In Handbook of the fundamentals of fi-
+nancial decision making: Part I, pages 11–30. World
+Scientific.
+William F Sharpe. 1964. Capital asset prices: A theory
+of market equilibrium under conditions of risk. The
+journal of finance, 19(3):425–442.
+3900
+Rahul Verma and GökÇe Soydemir. 2009. The impact
+of individual and institutional investor sentiment on
+the market price of risk. The Quarterly Review of
+Economics and Finance, 49(3):1129–1145.
+Chaojie Wang, Yuanyuan Chen, Shuqi Zhang, and Qi-
+uhui Zhang. 2022. Stock market index prediction
+using deep transformer model. Expert Systems with
+Applications, 208:118128.
+Zikai Wei, Anyi Rao, Bo Dai, and Dahua Lin. 2023.
+Hirevae: an online and adaptive factor model based
+on hierarchical and regime-switch vae. In Proceed-
+ings of the Thirty-Second International Joint Confer-
+ence on Artificial Intelligence, pages 4903–4911.
+Shijie Wu, Ozan Irsoy, Steven Lu, Vadim Dabravolski,
+Mark Dredze, Sebastian Gehrmann, Prabhanjan Kam-
+badur, David Rosenberg, and Gideon Mann. 2023.
+Bloomberggpt: A large language model for finance.
+arXiv preprint arXiv:2303.17564.
+Hongyang Yang, Xiao-Yang Liu, and Christina Dan
+Wang. 2023a. Fingpt: Open-source financial large
+language models. FinLLM Symposium at IJCAI
+2023.
+Yi Yang, Yixuan Tang, and Kar Yan Tam. 2023b. In-
+vestlm: A large language model for investment using
+financial domain instruction tuning. arXiv preprint
+arXiv:2309.13064.
+Tianping Zhang, Yuanqi Li, Yifei Jin, and Jian Li. 2020.
+Autoalpha: An efficient hierarchical evolutionary al-
+gorithm for mining alpha factors in quantitative in-
+vestment. arXiv preprint arXiv:2002.08245.
+A Algorithm
+Function Description
+Cluster generate factor clustering sets
+SelectSample select factors as in-context samples
+MatchCoE match the relevant CoE
+GenChain generate a new CoE
+Table 3: Algorithm function description.
+B Factor
+We select the following factors (alphas) from Al-
+pha101 (Kakushadze, 2016) as the initial factor set:
+“002, 003, 004, 005, 006, 008, 011, 012, 013, 014,
+015, 016, 017, 018, 019, 020, 022, 025, 026, 028,
+029, 030, 031, 032, 033, 034, 035, 036, 037, 038,
+039, 040, 041, 042, 043, 044, 045, 047, 050, 052,
+053, 054, 055, 057, 060, 061, 062, 064, 065, 066,
+068, 071, 072, 073, 074, 075, 077, 078, 081, 083,
+084, 085, 086, 088, 092, 094, 095, 096, 098, 099,
+101”.
+C Additional Experiment
+Model RankIC RankICIR
+gpt-3.5-turbo 0.054 0.481
+text-davinci-003 0.056 0.492
+Table 4: The performance of FAMA using other LLMs
+in returns prediction.
+3901
+D Prompt
+“function_definition” is from “Functions and Operators” in Alpha101 (Kakushadze, 2016).
+Instruction
+You are an alpha generator. You should follow the following rules:
+1. The inputs are the alpha factors that are currently performing well, and you are
+required to output a new alpha factor that is generated from the fusion of
+these factors, and your factor must be different from the input factor.
+2. Do not repeat example answer.
+3. You should return new different factors in a json array.
+4. The specific function is defined as follows:
+{function_definition}
+5. Follow the path in "improve_path". -> Indicates that the following factors have
+better performance than the previous factors. You should refer it to build new
+alpha.
+Input Example
+alphas: ["(-1 * correlation(open, volume, 10))"]
+generate_factor_num: 1
+improve_path: "close/open" -> "rank(close)/rank(open)"
+Output Example
+["rank(correlation(open, volume, 10) / rank(open))"]
+3902

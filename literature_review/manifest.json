@@ -1,0 +1,28 @@
+{
+  "code_link_rows": 31,
+  "code_links_csv": "${ALPHA_EVOLVE_REPO}/literature_review/code_links.csv",
+  "code_parser_note": "Removed false-positive repo token unofficial/implementation from FinCon caveat text.",
+  "download_log_csv": "${ALPHA_EVOLVE_REPO}/literature_review/download_log.csv",
+  "manual_pdf_copies": {
+    "1": {
+      "bytes": 1627252,
+      "destination": "${ALPHA_EVOLVE_REPO}/literature_review/papers/01_alphabench_benchmarking_large_language_models_in_formulaic_alpha_factor_mining.pdf",
+      "source": "local_manual_download"
+    },
+    "16": {
+      "bytes": 3833859,
+      "destination": "${ALPHA_EVOLVE_REPO}/literature_review/papers/16_alphaagentevo_evolution_oriented_alpha_mining_via_self_evolving_agentic_rl.pdf",
+      "source": "local_manual_download"
+    }
+  },
+  "numbered_references_parsed": 55,
+  "paper_link_rows": 42,
+  "paper_links_csv": "${ALPHA_EVOLVE_REPO}/literature_review/paper_links.csv",
+  "papers_dir": "${ALPHA_EVOLVE_REPO}/literature_review/papers",
+  "papers_storage_dir": "literature_review/papers",
+  "pdf_download_failures_or_skips": 3,
+  "pdfs_downloaded": 39,
+  "reference_parser_note": "Reference [53] has escaped quotes in the title and is included in code_links.csv provenance.",
+  "source": "${ALPHA_EVOLVE_REPO}/literature_review/source_pasted_text.txt",
+  "table_rows_parsed": 56
+}

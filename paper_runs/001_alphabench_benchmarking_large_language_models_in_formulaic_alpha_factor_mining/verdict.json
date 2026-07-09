@@ -1,0 +1,11 @@
+{
+  "reason": "real public benchmark/toolchain code exists, but no shipped candidate return stream or Sharpe/FF3/FF5Mom performance analysis exists",
+  "required_adapter": "factor expressions to same-universe long-short monthly candidate returns",
+  "usable_artifacts": [
+    "factor expression pool",
+    "Alpha101/Alpha158-style factor libraries",
+    "Qlib/Assay factor evaluation code",
+    "small IC/RankIC SQLite cache"
+  ],
+  "verdict": "not_serious_no_strategy_return_series"
+}

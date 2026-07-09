@@ -1,0 +1,6 @@
+{
+  "input_policy": "no return data outside jkp-data or return_data_assembly may be used",
+  "reason": "public framework code exists, but no shipped USA/JKP candidate factors, predictions, or return streams are available for direct FF3/FF5Mom testing",
+  "required_adapter": "RD-Agent qlib loop to JKP USA schema and monthly long-short candidate returns",
+  "verdict": "blocked_requires_jkp_adapter_no_shipped_usa_candidate"
+}

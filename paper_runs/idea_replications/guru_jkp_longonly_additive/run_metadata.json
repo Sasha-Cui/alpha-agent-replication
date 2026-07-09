@@ -1,0 +1,26 @@
+{
+  "book_definitions": {
+    "jkp119_significant_metadata_long_only": "119 abr_jkp rows with significance=1; included because no explicit jkp132 list was found in approved folders",
+    "jkp153_all_metadata_long_only": "all 153 abr_jkp rows with directions in factor_details.xlsx"
+  },
+  "candidate_constructions": {
+    "jkp_tercile_vw_cap": "top tercile by composite Guru score using non-microcap breakpoints and capped value weights; primary match to JKP pfs convention",
+    "top1000_decile_vw": "top decile among largest 1000 by me with value weights; closest to earlier exploratory proxy universe",
+    "top_decile_vw_cap": "top decile by composite Guru score using non-microcap breakpoints and capped value weights"
+  },
+  "candidate_ids": [
+    "guru_buffett_quality_compounder",
+    "guru_equal_weight_style_ensemble",
+    "guru_two_winner_equal_weight_combo"
+  ],
+  "end_book": "2024-12-31",
+  "end_signal": "2024-11-30",
+  "factor_details_path": "${ALPHA_EVOLVE_JKP_ROOT}/data/factor_details.xlsx",
+  "input_policy": "read-only JKP USA inputs only; no China, no external returns, no yfinance, no paper-shipped returns",
+  "nyse_cutoffs_path": "${ALPHA_EVOLVE_JKP_ROOT}/data/processed/other_output/nyse_cutoffs.parquet",
+  "pfs_path": "${ALPHA_EVOLVE_JKP_ROOT}/data/processed/portfolios/pfs.parquet",
+  "primary_book": "equal-weight average of directed long-only JKP characteristic legs from pfs.parquet, using ret_vw_cap",
+  "start_book": "1999-08-31",
+  "start_signal": "1999-07-31",
+  "usa_path": "${ALPHA_EVOLVE_JKP_ROOT}/data/processed/characteristics/USA.parquet"
+}

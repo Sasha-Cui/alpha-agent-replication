@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alpha-agent-replication"
+version = "0.1.0"
+description = "Reproducible JKP/TextBenchmark replication utilities for alpha-agent papers and repositories."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Sasha Cui" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+  "numpy>=1.23",
+  "pandas>=1.5",
+  "pyarrow>=10",
+  "scipy>=1.9",
+]
+
+[project.optional-dependencies]
+french = ["pandas-datareader>=0.10"]
+dev = ["pytest>=7", "ruff>=0.5"]
+
+[project.scripts]
+alpha-evolve-build-jkp = "alpha_evolve.jkp:main"
+alpha-evolve-evaluate = "alpha_evolve.performance:main"
+alpha-evolve-evaluate-jkp = "alpha_evolve.jkp_performance:main"
+alpha-evolve-run-quantevolver = "alpha_evolve.quantevolver:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

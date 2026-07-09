@@ -1,0 +1,14 @@
+{
+  "run_id": "021_alphaprobe",
+  "paper": "AlphaPROBE",
+  "execution_state": "blocked_on_data_adapter",
+  "verdict": "blocked_no_usa_jkp_candidate_returns_requires_expression_adapter",
+  "valid_return_data_used": false,
+  "metric_status": "not_computable_from_approved_inputs",
+  "allowed_return_inputs": [
+    "${ALPHA_EVOLVE_JKP_ROOT}",
+    "${ALPHA_EVOLVE_RETURN_DATA_ROOT}"
+  ],
+  "reason": "The repo has public code but no official USA/JKP factor expressions or candidate return stream to evaluate from the approved folders.",
+  "ff3_ff5mom_status": "not_run_blocked"
+}

@@ -1,0 +1,19 @@
+{
+  "max_months_per_candidate": 1,
+  "n_extracted_candidate_paths": 18,
+  "primary_candidate": "tradetrap_deepseek_base",
+  "primary_ff_statuses": [
+    {
+      "benchmark_set": "FF3_OFFICIAL",
+      "n_overlap_months": 1,
+      "status": "insufficient_overlap"
+    },
+    {
+      "benchmark_set": "FF5MOM_OFFICIAL",
+      "n_overlap_months": 1,
+      "status": "insufficient_overlap"
+    }
+  ],
+  "reason": "public code and shipped equity curves exist, but the candidate return history has only one monthly observation, so FF3/FF5Mom performance analysis is not statistically meaningful",
+  "verdict": "not_serious_insufficient_overlap"
+}

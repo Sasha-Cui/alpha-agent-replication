@@ -1,0 +1,1802 @@
+EFS: E VOLUTIONARY FACTOR SEARCHING FOR SPARSE
+PORTFOLIO OPTIMIZATION USING LARGE LANGUAGE MODELS
+Haochen Luo1, Yuan Zhang2, Chen Liu1
+1City University of Hong Kong, 2Shanghai University of Finance and Economics
+chester.hc.luo@my.cityu.edu.hk, zhang.yuan@mail.shufe.edu.cn, chen.liu@cityu.edu.hk
+ABSTRACT
+Sparse portfolio optimization is a fundamental yet challenging problem in quantitative fi-
+nance, since traditional approaches heavily relying on historical return statistics and static
+objectives can hardly adapt to dynamic market regimes. To address this issue, we propose
+Evolutionary Factor Search (EFS), a novel framework that leverages large language mod-
+els (LLMs) to automate the generation and evolution of alpha factors for sparse portfolio
+construction. By reformulating the asset selection problem as a top-m ranking task guided
+by LLM-generated factors, EFS incorporates an evolutionary feedback loop to iteratively
+refine the factor pool based on performance. Extensive experiments on five Fama-French
+benchmark datasets and three real-market datasets (US50, HSI45 and CSI300) demon-
+strate that EFS significantly outperforms both statistical-based and optimization-based
+baselines, especially in larger asset universes and volatile conditions. Comprehensive ab-
+lation studies validate the importance of prompt composition, factor diversity, and LLM
+backend choice. Our results highlight the promise of language-guided evolution as a robust
+and interpretable paradigm for portfolio optimization under structural constraints.
+1 Introduction
+Sparse portfolio optimization aims to construct a portfolio by selecting at mostm assets from a universe ofn candidates
+to optimize key performance metrics, such as cumulative return, risk, or risk-adjusted return. Due to the combinatorial
+nature of the selection constraint (ℓ0-norm) and the non-convexity of most financial objectives, the problem is known
+to be NP-hard [Lin et al., 2024a] and lacks efficient closed-form solutions.
+To tackle this impoartant yet challenging problem, classical approaches utilize greedy selection, convex relaxation,
+mixed-integer programming, and sparsity-regularized optimization models [Brodie et al., 2009, Lai et al., 2018, Dai
+and Wen, 2018, Kremer et al., 2020, Gunjan and Bhattacharyya, 2023, Lin et al., 2024a] to compute the exact solutions
+or their approximations under simplifying assumptions. However, they suffer from two critical limitations: (1) the
+generated investment suggestions lack interpretability and are less understandable to general public; (2) the algorithms
+are often sensitive to the hyperparameter choices, leading to unstable performance across market regimes.
+To enhance interpretability and adaptability, recent strategies have adopted factor-based portfolio construction [Ang,
+2014, Fan et al., 2016], where we search factors to map an asset’s historical features, such as prices, returns, or volatil-
+ity, into a score indicating its relative attractiveness. These factors guiding asset ranking and investment allocation
+are usually called alpha factors and widely employed in both academia and industry. Despite more transparent, such
+approaches pose new challenges: identifying effective factors often requires deep domain expertise, manual tuning,
+and frequent re-validation. Moreover, many factors have poor transferability across different market conditions and
+usually degrade quickly in live markets. To address this, recent studies have explored machine learning techniques for
+alpha factor discovery [Zhang et al., 2020, Yu et al., 2023a], but the vast search space of asset combinations limits
+the scalability and effectiveness of these methods. In addition, as shown in Figure 1, many factor libraries crafted by
+existing methods (e.g., from Qlib [Yang et al., 2020]) suffer from sparse decay, a phenomenon where sharp perfor-
+mance drops in sparse regimes (e.g., selecting top-10 assets). Sparse decay issue makes it challenging to apply existing
+arXiv:2507.17211v1 [q-fin.PM] 23 Jul 2025
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+methods in sparse portfolio optimization and indicates that many factors crafted by them are not precise enough to
+identify the very best assets under the sparse constraint. In summary, we need more expressive and adaptive factor
+generation frameworks to address the concerns above from multiple aspects.
+20 40 60 80 100 120 140
+T op-k
+0.00
+0.02
+0.04
+0.06
+0.08Annualized Return
+CSI300
+Annualized Return
+Information Ratio
+Alpha158
+Alpha360
+20 40 60 80 100 120 140
+T op-k
+0.06
+0.04
+0.02
+0.00
+0.02
+0.04
+0.06
+0.08
+Annualized Return
+CSI500
+Annualized Return
+Information Ratio
+Alpha158
+Alpha360
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4
+Information Ratio
+0.2
+0.0
+0.2
+0.4
+0.6
+0.8
+Information Ratio
+Figure 1: Performance of factors from Alpha158 and Alpha360 under different portfolio sparsity in the markets of
+CSI300 (left figure) and CSI500 (right figure). The horizontal axis indicate the size of the portfolio. Solid lines rep-
+resent annualized returns using the left vertical axis, while dashed lines represent information ratios using the right
+vertical axis. We can see both factor pools demonstrate a sharp performance decline for sparse portfolio, highlighting
+the sparse decay phenomenon.
+On the other hand, large language models (LLMs) have shown impressive capabilities in financial applications, in-
+cluding forecasting [Yu et al., 2023c,b] and multimodal market analysis [Bhatia et al., 2024, Yu et al., 2024]. These
+works demonstrate that LLMs can effectively model complex patterns in financial data. However, most LLM-based
+applications focus narrowly on predictive tasks Yu et al. [2023c], Nie et al. [2024], Zhao et al. [2024], such as price
+movement classification or sentiment analysis, without addressing the downstream challenges of portfolio construc-
+tion. Given LLMs’ generative nature and ability to synthesize new patterns, recent studies have begun exploring their
+use in alpha factor discovery [Wang et al., 2023, Yuan et al., 2024, Wang et al., 2024, Li et al., 2024, Shi et al., 2025a,b,
+Tang et al., 2025]. While existing research shows the potential of LLMs for generating investment factors, these ap-
+proaches have two key limitations. First, they rely heavily on human guidance, and treat factor mining as a static,
+one-shot process. This neglects the dynamic nature of financial markets, where alpha signals often decay. Second,
+studies frequently test these factors on large portfolios of 50 or more assets. This approach overlooks the practical
+constraints of real-world portfolio management, where factors like implementation costs, risk control, and the need
+for interpretability necessitate focusing on a much smaller, sparse set of assets.
+To address the limitations in current alpha mining algorithms and the challenges of sparse portfolio optimization, we
+propose Evolutionary Factor Search (EFS). EFS is a novel framework that leverages LLMs to autonomously generate,
+evolve, and select alpha factors under ℓ0 constraints. Our approach bridges the generative power of LLMs with the
+structural rigor of sparse portfolio optimization. Instead of relying on static factor libraries or one-shot discovery,
+EFS implements a feedback-driven evolutionary process, where new factors are synthesized, backtested, and refined
+iteratively based on their portfolio-level performance. This dynamic adaptation enables the construction of sparse,
+high-performing portfolios that remain robust across shifting market environments and generate excess returns in the
+long term. The primary contributions of this work include:
+• We introduce EFS, an autonomous framework that unifies LLM-driven creativity with rigirous quantitative
+evaluation. EFS iteratively synthesizes, backtests and refines alpha factors, using performance feedback to
+guide an evolutionary search for novel, high-performing strategies.
+• Our framework generates a single, monolithic scoring function, creating a transparent, end-to-end solution
+for alpha mining. By directly producing a final asset scoring function, EFS eliminates the common need for
+intermediate machine learning models to aggregate signals, resulting in a more streamlined and interpretable
+process.
+• We reframe sparse portfolio optimization as an LLM-guided asset ranking task. Instead of merely identifying
+factors, our method produces a direct top- m ranking of assets, inherently addressing real-world constraints
+like risk control, limited capital, and the need for interpretable, sparse portfolios.
+2
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+• We demonstrate state-of-the-art performance against leading quantitative benchmarks. Furthermore, exten-
+sive ablation studies validate the significant impact of key framework components, including our prompt
+engineering, search depth, and sparsity-aware weight allocation mechanism.
+2 Related Works
+Sparse Portfolio Optimization. Sparse portfolio optimization has been extensively explored through a range
+of methodological innovations designed to balance return, risk and sparsity. One line of work incorporates ℓ0-
+regularization into the Markowitz framework [Witt and Dobbins, 1979] to encourage sparsity and enhance out-of-
+sample stability [Brodie et al., 2009, Fastrich et al., 2015]. By contrast, another line of works focuses on index tracking
+under strict ℓ0-constraints, offering methods that provide explicit control over asset selection and tracking error [Li
+et al., 2022]. Furthermore, some other approaches [Lai et al., 2018] leverage optimization techniques such as ADMM
+to solve short-term sparse portfolio problems, particularly relevant in high-frequency trading contexts. To promote
+diversity, some studies introduce structured sparsity through grouped penalties like the SLOPE regularization [Kre-
+mer et al., 2020]. More recent works [Lin et al., 2024b] propose unified frameworks using indicator relaxations and
+proximal algorithms for optimizing sparse mean-CVaR portfolios. In addition, efficient global solvers have been de-
+veloped for maximizing Sharpe ratios under cardinality constraints [Lin et al., 2024a]. While effective, all approaches
+discussed here are often bound to predefined numerical formulations and lack adaptability to evolving market contexts.
+Alpha Factors Mining. Alpha factor mining evolves dramatically with the advancement of machine learning. Early
+approaches employ classical machine learning approaches such as evolutionary algorithms [Zhang et al., 2020] and
+reinforcement learning (RL) [Yu et al., 2023a] to generate and refine alpha factors. These approaches are summarized
+in a theoretical framework in [Shi et al., 2025a]. However, these traditional methods lack operational diversity and
+suffer from engineering complexity, restricting their ability to generate expressive and adaptive factors.
+Recent works leverage large language models (LLMs) to enhance factor mining. The Alpha-GPT series [Wang et al.,
+2023, Yuan et al., 2024] pioneered human-AI collaborative factor generation, though it still relies on manual feedback
+and lacks full autonomy. Further studies employ financial signals as guidance to polish LLM-generated factors [Wang
+et al., 2024] or use symbolic experience chains to improve their interpretability [Li et al., 2024]. The latest work
+apply Monte-Carlo trees for more effective factor searching [Shi et al., 2025b]. While these methods demonstrate the
+potential of LLMs in factor mining, they primarily operate in a static manner, failing to account for the dynamic nature
+of financial markets.
+Automated Algorithm Design Driven by LLMs. The factor mining task shares key similarities with automated
+algorithm design: both require exploring complex search spaces to discover high-performing and interpretable solu-
+tions. Recent advancements have leveraged LLMs to automate the design of algorithms and heuristics, particularly for
+combinatorial optimization. For example, the Evolution of Heuristics (EoH) framework [Liu et al., 2024] combines
+LLMs with evolutionary computation to generate optimization heuristics autonomously. Extending this, the MEoH
+framework [Yao et al., 2025] introduces multi-objective optimization to balance solution quality and efficiency using
+a dominance-dissimilarity mechanism for population management. Further innovations like ReEvo [Ye et al., 2024]
+integrate reflective evolution, where LLMs iteratively critique and refine solutions to enhance reasoning. These frame-
+works demonstrate the promising potential of LLMs to automate the creation of adaptive, high-performance heuristics,
+which is a capability equally critical for dynamic factor mining in finance.
+3 Preliminaries
+3.1 Portfolio Optimization under ℓ0 Norm.
+Portfolio optimization aims to determine the allocation of capital acrossn assets to maximize investment performance
+while controlling risks. The sparse portfolio problem under the ℓ0-norm constraint seeks portfolio weights w ∈ Rn
+that optimize a given objective, subject to budget, non-negativity, and sparsity constraints:
+maximizew g(w) subject to w⊤1 = 1, w ≥ 0, ∥w∥0 ≤ m, (1)
+where ∥w∥0 denotes the ℓ0-norm of w, i.e. the number of nonzero entries in w, and thus m specifies the maximum
+number of assets selected in the portfolio. Without the loss of generality, we assume unit total investment and let the
+non-negative vector w in a simplex. In a sequential decision making process of T steps, we may adjust the portfolio
+weights w to approximate the optimality of Problem (1) in each time stamp t = 0, . . . , Tand use rt+1 to represent
+the corresponding realized total return. In this context, we use Pt = Qt
+s=1 rs to represent the cumulative asset value
+in each time stamp and consider key performance metrics as below:
+3
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+• Cumulative Wealth (CW) is the total portfolio return ratio, i.e., CW = PT − P0.
+• Sharpe Ratio (SR) measures the average return earned in excess of the risk-free rate per unit of volatility. Given a
+series of realized portfolio returns {rt}t=0,...,T and risk-free return rf , it is computed as SR = ¯rp−rf
+std[rp] , where ¯rp =
+1
+T
+PT
+t=1 rt is the average portfolio return, and std(rp) is the standard deviation of portfolio returns. To annualize the
+Sharpe ratio calculated from daily (monthly) returns, it’s standard practice to multiply it by the square root of 252
+(12), which represents the approximate number of trading days (months) in a year.
+• Maximum Drawdown (MDD) is the worst-case loss over a specified period, i.e., MDD = max1≤i≤j≤T
+
+Pi−Pj
+Pi
+
+.
+The metrics mentioned above are broadly employed in existing literature [Lin et al., 2024a,b]. An ideal investment
+policy should have high CW, SR but low MDD.
+Sub
+Close
+Open
+Div
+KMID: ($close - $open) / $open
+Open
+OPEN_REF: Ref($open, {window}) / $close
+Ref
+Open
+Close
+Div
+window
+...
+XGBoost,
+LGBM, ...
+Score
+Factors'Output Aggregation
+Factors‘ output
+Aggregation 
+Model
+Figure 2: Example of alpha factors with their tree-structures in Alpha158 (Left) and how multiple factors’ outputs are
+aggregated using models such as XGBoost or LightGBM to produce a final score (Right).
+3.2 Factor Searching
+In quantitative finance, an alpha factor is a function that assigns a numerical score to each asset based on its historical
+characteristics and technical indicators such as price, return and volatility. Formally, given an asset i = 1, . . . , n, its
+historical data over a look-back window of lengthT with d features is represented as a matrixXi ∈ Rd×T , where each
+row corresponds to a different feature (e.g., price, volume) and each column corresponds to a time stamp. An alpha
+factor f maps this matrix to a scalar score f (Xi), where a higher score implies greater desirability under a specified
+investment objective (e.g., higher return, lower risk). A typical alpha factor f consists of multiple raw features (e.g.
+prices, returns), constants and operators. The operators we consider include (1) unary operators (e.g., abs (·), log(·));
+(2) binary operations (e.g., +, −, ×, /); (3) time-series operations (e.g., Sum(volume, 5d)). Therefore, an alpha factor
+can be represented by a tree structure, with leaf nodes representing the raw features or constants and internal nodes
+representing operators. We demonstrate some examples in Figure 2.
+The goal of alpha factor search is to discover interpretable expressions that provide robust trading signals from noisy
+market data. These factors can be used directly to rank and select assets for a portfolio. Alternatively, they can be fed
+into complex downstream models, such as MLPs, for return prediction. This latter approach, however, often intro-
+duces significant model complexity, reduces interpretability, and increases the risk of overfitting. Traditional discovery
+methods like genetic programming are often inefficient, as they explore a vast combinatorial space without semantic
+awareness.
+Standard evaluation metrics, such as the Information Coefficient (IC) and Information Ratio (IR) [Grinold and Kahn,
+2000] assess a factor’s overall predictive power. However, our focus is on sparse portfolio optimization, where only a
+small number of top assets are selected. Consequently, these standard metrics are less relevant than those that specif-
+ically measure a factor’s ability to discriminate among the best-performing assets. Therefore, we prioritize Rhank
+Information Coefficient (RankIC) and related rank-based measures in our evaluation:
+• Rank Information Coefficient (RankIC) quantifies the cross-sectional correlation between the factor scores at
+time t and the real asset returns at time t + 1, based on their ranks. Mathematically, it is defined as the Spearman
+rank correlation: RankIC (f ) = ρ(rank(s(t)), rank(r(t+1))) where s(t) is the vector of factor scores, r(t+1) is the
+vector of real returns in the next trading day and rank(·) denotes the cross-sectional ranking operator. By using the
+performance ranks, RankIC focuses purely on the ordering consistency between factor signals and realized returns,
+making it robust to differences in scale and distribution. A higher RankIC indicates stronger predictive alignment.
+4
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+• Rank Information Coefficient Information Ratio (RankICIR) is a crucial metric for assessing the stability and
+reliability of a factor’s predictive power. While the average RankIC measures a factor’s effectiveness, the Ran-
+kICIR evaluates its consistency over time by penalizing for volatility in its performance. It is analogous to a
+Sharpe ratio for the factor’s information content, where a higher value signifies a more robust and dependable
+factor. It is calculated as the sample mean of the RankIC time-erioes divided by its sample standard deviation:
+RankICIR(f ) = mean(RankICt(f ))
+std(RankICt(f )) , where mean(·) and std(·) represents the sample mean and sample standard devia-
+tion of the factor’s RankIC calculated across the entire evaluation period.
+4 Methodology
+In contrast to traditional methods, large language models (LLMs) leverage their strong priors over financial opera-
+tions and code structures to efficiently navigate the vast combinatorial search space of factor expressions. This enables
+end-to-end generation of meaningful, executable scoring functions that directly produce asset-level scores incorpo-
+rating sparsity constraints. By bypassing intermediate predictive models, our approach reduces overfitting risks while
+improving transparancy. Motivated by these advantages, we proposeEvolutionary Factor Search (EFS), a novel LLM-
+guided framework that unifies alpha factor discovery and sparse portfolio optimization.
+Our methodology identifies the most attractive investment opportunities from a universe of n assets, each represented
+by a feature matrix Xi. The core of the EFS framework is a collection of k distinct alpha factors, {fj}k
+j=1, each
+designed to capture different components of an asset’s expected return. The evaluation process begins by applying
+each factor fj to every asset’s feature matrix Xi. This yields a factor-specific score, f i
+j, for each asset i under each
+factor j. These scores are then aggregated into a single, comprehensive attractiveness score, si, for asset by taking
+average: si = k−1 Pk
+j=1 f i
+j. Finally, we construct a sparese portfolio by ranking all assets based on their composite
+scores {si}n
+i=1 and selecting the top m performers. Within the resulting portfolio, assets are assigned either equal
+weighting or weights proportional to their attractiveness scores.
+The primary innovation of EFS lies in its use of LLMs to continuously evolve the alpha factors, {fj}k
+j=1. The LLM
+refines the factors by synthesizing insights from three key areas: Backtesting performance (Analyzing historical results
+to identify what works); Structural reasoning (Applying economic and domain metrics); Data-informed feedback
+(Incorporating new information as it becomes available). This adaptive, factor-driven mechanism enables EFS to build
+interpretable and dynamic portfolio that consistently achieve superior performance compared to traditional methods.
+4.1 LLM-Powered Evolutionary Factor Search
+We propose an LLM-powered single-stage factor generation framework. Instead of using hand-crafted grammars
+or feature-based learning models, we directly prompt large language models to output executable scoring func-
+tions—compact formulas that transform historical price signals into ranking scores for asset selection. Our method
+treats LLMs as structured generators: given performance summaries and structural templates from previous factors,
+the LLM produces new candidate expressions using guided mutation and crossover instructions. These operations are
+encoded at the computation graph level (e.g., swapping or mutating subtrees), allowing high flexibility while preserv-
+ing functional coherence.
+Compared to conventional methods, our design introduces three key advantages:
+• End-to-End Generation: Instead of decoupling factor design and model fitting, our system generates scoring
+functions that are directly used for portfolio ranking, avoiding intermediate training stages.
+• Controllable Mutation via Prompts: By structuring prompts to include mutation/crossover operations, we
+achieve a controllable and interpretable factor editing process that is easier to implement than rule-based
+symbolic mutation.
+• High Interpretability: The resulting factors remain human-readable formulas, whose structure can be traced
+and interpreted post-hoc for economic insight or debugging.
+This single-shot generation strategy enables both fast adaptation and strong transparency, making it suitable for dy-
+namic markets where fast deployment and interpretability are critical.
+4.2 Portfolio Optimization Under Autonomous Factor Search
+Motivated by the LLM-powered evolutionary factor search introduced above, EFS as our proposed framework incor-
+porates autonomous factor discovery into portfolio optimization. It leverages LLMs for both the generation of new
+5
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+Experts
+Static BacktestBacktest Report
+Design Factors
+Continuous Backtest
+Backtest Reports
+LLMs
+Current Factors
+Evolution Generation
+Optimizer... Assets Bucket ...
+Sparse Solution on Portfolio Weights
+Sparse Portfolio Optimization
+Factor-Guided Investment
+EFS (Ours)
+factor_10_v2
+factor_12_v1
+factor_15_v3
+factor_30_v3
+factor_23v2_20v1
+...
+factor_02_v1
+factor_20v2_13v2
+Factor Performance (Top-K)
+Current Factor Pool
+factor_10_v3
+factor_12_v2
+factor_23v2_20v2
+factor_10v2_12v1
+factor_15_v3
+factor_30_v4
+factor_23v2_20v1_v2
+LLMs Generation
+factor_10_v3
+factor_12_v2
+factor_10v2_12v1
+factor_15_v3
+factor_23v2_20v1_v2
+Filter
++ Update Factor Pool
+Filtered Generated Factors
+Operate
+Factor 
+Pools
+...
+Factor Candidates
+Warm-Up Stage
+Assets Scores 
+(1 x K x N)
+Aggregated Scores
+Templates
+Below are some factors expressions
+used for assets selection with their
+recent performances: ...
+Can you improve or generate new
+factors by the following rules: ...
+ExpressionsPerformances Rules
+Assets History Info 
+(T x N)
+Pick Top-K
+...
+Searching Process in Single Step
+Sparse Portfolio Optimization by Factors
+Generated Factors
+OpA1
+OpA2 OpA3
+Ef3Ef1 Ef2
+OpA1(OpA2(Ef1,Ef2),OpA3(Ef3))
+OpA1
+OpA2
+Mutation
+OpA3
+Ef3'Ef1 Ef2
+OpA1(OpA2(Ef1,Ef2),OpA3(Ef3'))
+OpB1
+OpB2
+Eg1 Eg2
+Eg3
+OpB1(OpB2(Eg1,Eg2),Eg3)
+Cross Over
+OpA1(OpB2(Eg1,Eg2),OpA3(Ef3))
+OpB1(OpA2(Ef1,Ef2),Eg3)
+Evolutionary Operations on Factors During Searching
+Initial Factors
+New Type
+Improve
+Different Factor Categories
+Different Factor Generations
+New Factor Pattern
+m-Sparsed Portfolio
+Search Checkpoint
+Selected Asset
+Figure 3: The proposed Evolutionary Factor Search (EFS) framework unifies LLM-guided alpha factor generation
+with sparse portfolio optimization. At each search step, top-performing factors from the current pool are used to
+construct prompts for LLM-based generation of new candidate factors through mutation and crossover operations.
+These candidates are filtered to retain high-quality and diverse versions, and the factor pool is updated accordingly.
+The bottom panel illustrates the warm-up and selection process: factor scores are computed based on historical asset
+data, top-m assets are selected, and sparse portfolios are constructed using normalized or weighted scores. On the
+right, the factor population evolves through improvements and structural recombinations, enabling the emergence of
+novel and interpretable factor patterns.
+alpha factors and the construction of sparse, adaptive portfolios. The end-to-end process consists of two main stages:
+(1) Factor Library Warmup, and (2) Iterative Factor Evolution and Portfolio Construction.
+1. Factor Library Warmup. We begin with a set of seed alpha factors from basic factors shown in Table-4, denoted
+as {f1, f2, . . . ,fk}. During the warmup phase, each factor is evaluated across an initial look-back window to collect
+performance statistics, such as RankIC and cumulative wealth, to provide the initial guidance for the subsequent LLM-
+driven search, which forms the knowledge base for evolution. Under the condition of sufficient backtesting history, we
+can optionally apply preliminary LLM-driven searches based on historical performance in this phase, which generates
+simple refined variants of the seed factors.
+2. Prompt Design. To guide LLMs in generating high-quality alpha factors, we construct prompts that combine
+strict task definitions with dynamic evaluation feedback. The system prompt defines the role, formatting, constraints,
+and valid transformation actions (e.g., mutation, crossover), ensuring functional correctness and semantic control.
+Meanwhile, the user prompt provides recent top-performing factors and their anonymized performance metrics (e.g.,
+RankIC, Sharpe), offering grounded context without exposing any raw data such as tickers or timestamps. This design
+ensures safe, generalizable, and traceable generation, while enabling closed-loop optimization in the factor evolution
+process.
+3. Iterative Evolution and Portfolio Optimization. As the portfolio is rolled forward in time, we define a search
+frequency S (typically weekly) and conduct the following step within each search interval.
+(a) Factor Evaluation and Generation. EFS evaluates the current pool of factors using recent portfolio (e.g. Sharpe
+Ratio) and factor-specific metrics (e.g. RankIC). Top-performing factors are selected, and their descriptions and per-
+6
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+formance summaries are used as prompts for the LLM to generate new candidate factors via mutation and crossover
+at the computation graph level.
+(b) Library Update and Pruning. The candidate factors generated by the LLM are validated and added to the alpha
+factor pool. Factors that fail to meet adaptive benchmark criteria are pruned, ensuring the pool remains both high-
+performing and diverse.
+(c) Portfolio Construction. During each rebalancing period, asset selection is performed by: Calculating the scores
+si = k−1 Pk
+j=1 f i
+j for each asset i, where f i
+j is the j-th factor value for asset i; Selecting the top m assets by score.
+Let {si}m
+i=1 represent the scores of selected assets. We consider two weighting strategies: Equal weighting, wi = 1
+m;
+Positive score weighting, wi = max{si,0}Pm
+j=1 max{sj ,0}.
+(d) Rolling Backtesting and Evaluation. Daily portfolio returns are computed by applying the constructed weights
+to next-day asset returns, with performance tracked across multiple benchmarks for robustness.
+This search-and-optimization cycle repeats until a maximum step limit or desired factor pool size is reached, yielding
+a continuously improved factor library and robust, adaptive trading strategies.
+5 Experiments
+In this section, we conduct comprehensive experiments and analyses to demonstrate (1) how factor-based asset selec-
+tion enhances performance in sparse portfolio optimization; (2) how our proposed EFS identifies high-quality alpha
+factors; (3) how LLM-powered EFS further boosts the performance in real-world investment.
+5.1 Experimental Setup
+Datasets. We evaluate all competing methods on two categories of datasets: widely-used academic benchmarks and
+custom-built, real-world asset pools. We first use five standard benchmark datasets from Kenneth R. French Data
+Library [Fama and French, 2023]: FF25, FF32, FF49, FF100 and FF100MEOP. As is standard in the literature, these
+datasets are based on monthly return frequencies, and each contains 623 records. The number in each dataset’s name
+(e.g., 25) refers to the number of constituent portfolios.
+To assess performance in practical scenarios, we construct three distinct asset pools using daily closing prices from
+major global markets. The timeframes are intentionally selected to cover diverse market regimes, including both bull
+and bear periods: US market (US50), comprises the top 50 U.S. large-cap stocks by market capitalization, selected from
+the S&P 500 and NASDAQ indices, with data spanning from 2019 to 2024; Hong Kong market (HSI45), includes the
+top 45 companies from the Hang Seng Technology Index, based on market capitalization, from 2022 to 2025; Mainland
+China Market (CSI300), consists of all constituent stocks of the CSI 300 Index during the same period as HSI45. This
+dataset is designed to test scalability and performance within a much larger asset universe.serves to simulate portfolio
+selection under a large asset universe.
+This combined evaluation framework allows us to validate our model’s performance against established academic
+benchmarks while also demonstrating its robustness and practical applicability in real-world trading environments
+with higher-frequency data.
+Methods. To evaluate the performance of our EFS framework, we benchmark it against a comprehensive suite of
+established portfolio construction methodologies. These baselines are divided into two main categories: traditional
+non-sparse portfolio strategies and modern sparse portfolio models. Non-sparse benchmarks include: Equal weight-
+ing (1/N) portfolio; Minimum conditional Value at Risk (Min-CVaR) optimization; Maximum Sharpe Ratio (Max-
+Sharpe) optimization. Sparse benchmarks include: SSPO Lai et al. [2018]; General machine learning selectors consist
+of XGBoost and LightGBM (LGBM); State-of-the-art sparse strategies consist of mSSRM-PGA Lin et al. [2024a] and
+ASMCVaR Lin et al. [2024b].
+Evaluation. To comprehensively evaluate portfolio performance and factor quality, we adopt several widely-used
+metrics, including Cumulative Wealth (CW), Sharpe Ratio (SR), and Maximum Drawdown (MDD). For all evaluations,
+we compute daily Sharpe Ratios using a zero risk-free rate, as our backtesting horizon spans multiple interest rate
+regimes, and using a fixed rate may introduce bias.
+Implement and Parameters Details. Given the use of online LLM services and the volatile nature of financial mar-
+kets, the overall performance of our framework may vary across runs due to three main factors: (1) stochastic quality
+of LLM outputs, (2) occasional market events that align with certain factors, and (3) the compounding effects across
+long backtesting periods. Specifically, for each market dataset, to mitigate noise from individual LLM outputs and
+7
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+Table 1: Cumulative Wealth (CW ↑), Sharpe Ratio (SR ↑), and Maximum Drawdown (MDD ↓) for various portfolio
+optimization models across five Fama-French benchmark datasets (FF25, FF32, FF49, FF100, FF100MEOP). Arrows
+indicate preferred direction of performance.
+Group Method FF25 FF32 FF49 FF100 FF100MEOP
+CW↑ SR↑ MDD↓ CW↑ SR↑ MDD↓ CW↑ SR↑ MDD↓ CW↑ SR↑ MDD↓ CW↑ SR↑ MDD↓
+Baseline1/N 374.13 0.229 0.548452.84 0.225 0.541254.67 0.207 0.527389.44 0.210 0.549371.33 0.209 0.532SSPO 76.70 0.140 0.784 15.37 0.100 0.733 62.27 0.114 0.878 1.21 0.046 0.823 9.97 0.086 0.814Min-cVaR 386.71 0.239 0.538289.93 0.231 0.507207.53 0.248 0.411155.70 0.203 0.540258.01 0.220 0.513Max-Sharpe 553.10 0.243 0.582718.62 0.251 0.552210.94 0.234 0.419386.86 0.223 0.570379.62 0.229 0.509
+m=10 LGBM 281.49 0.217 0.559530.49 0.226 0.552169.18 0.189 0.588216.81 0.189 0.484284.60 0.198 0.522XGB 292.22 0.220 0.523551.77 0.225 0.537354.46 0.206 0.525392.18 0.200 0.496269.10 0.193 0.520mSSRM-PGA 606.840 0.241 0.583748.590 0.249 0.550168.990 0.222 0.445379.390 0.216 0.582305.860 0.222 0.498ASMCVaR 638.190 0.252 0.481670.400 0.244 0.452409.180 0.224 0.471491.120 0.228 0.524405.380 0.220 0.502EFS-DeepSeek639.660 0.251 0.509923.5200.244 0.532692.9100.228 0.5321232.860 0.238 0.547342.660 0.201 0.517+ Scores to Weights1064.560 0.254 0.495797.710 0.233 0.538441.480 0.187 0.5891464.970 0.240 0.454359.860 0.201 0.524EFS-GPT 4.1 708.340 0.255 0.498613.920 0.232 0.535565.070 0.222 0.5371836.340 0.253 0.486555.4900.215 0.542+ Scores to Weights1408.4400.273 0.498847.350 0.234 0.498593.180 0.200 0.6092434.5100.257 0.511461.870 0.203 0.617
+m=15 LGBM 312.50 0.221 0.550541.42 0.229 0.552194.64 0.196 0.593223.94 0.191 0.492301.82 0.202 0.526XGB 308.41 0.223 0.527491.32 0.223 0.554377.05 0.214 0.518364.16 0.201 0.516355.87 0.204 0.505mSSRM-PGA 601.250 0.240 0.583744.910 0.249 0.550171.950 0.223 0.445415.540 0.222 0.573306.340 0.223 0.502ASMCVaR 676.350 0.252 0.500690.990 0.243 0.466526.840 0.235 0.453523.490 0.230 0.526518.800 0.227 0.505EFS-DeepSeek546.030 0.246 0.507715.550 0.239 0.535586.140 0.231 0.505983.840 0.233 0.549371.130 0.206 0.530+ Scores to Weights1049.530 0.254 0.496735.640 0.231 0.537427.200 0.187 0.5801353.380 0.239 0.453343.860 0.200 0.532EFS-GPT 4.1 530.260 0.246 0.520608.880 0.234 0.529533.610 0.228 0.5001289.850 0.244 0.504565.4100.217 0.533+ Scores to Weights1364.5400.272 0.497840.1400.234 0.498638.7900.203 0.6022060.5900.254 0.513455.940 0.204 0.610
+m=20 LGBM 336.90 0.225 0.540468.51 0.225 0.552207.05 0.200 0.566249.65 0.194 0.509332.51 0.205 0.532XGB 346.15 0.227 0.543482.98 0.225 0.545307.56 0.211 0.516349.19 0.201 0.503357.33 0.205 0.525mSSRM-PGA 601.260 0.240 0.583744.910 0.249 0.550171.970 0.223 0.445422.390 0.223 0.573304.770 0.223 0.502ASMCVaR 653.380 0.249 0.504731.320 0.244 0.479530.760 0.234 0.463583.510 0.232 0.533508.860 0.225 0.516EFS-DeepSeek460.940 0.239 0.518634.170 0.236 0.548592.020 0.236 0.498882.040 0.230 0.545406.980 0.210 0.521+ Scores to Weights1029.550 0.253 0.498721.730 0.231 0.537412.480 0.187 0.5781320.880 0.240 0.453338.070 0.200 0.530EFS-GPT 4.1 458.540 0.239 0.526580.230 0.234 0.533509.440 0.231 0.4941082.460 0.239 0.508544.2700.218 0.538+ Scores to Weights1334.5000.271 0.498847.8700.234 0.498642.5300.204 0.6071980.9900.253 0.519446.040 0.204 0.606
+transient market conditions, we repeat the factor search process three times and report performance under aggregated
+evaluation, where all discovered factors across the three runs are pooled together into a unified factor library, and then
+re-evaluated in a single backtest.
+We choose two common online LLM services: GPT-4.1 and DeepSeek-V3. In our experiments, we adopt a fixed
+lookback window of T = 30 for computing alpha factors, as prior work Lin et al. [2024a] and our tests show minimal
+sensitivity to window size. Moreover, most factor designs (e.g., momentum, mean reversion) rely on short-term price
+patterns, making longer windows unnecessary. Considering implementation constraints and LLM context limits, we
+use only two variables—closing price and returns—for factor construction. All factor scores are normalized to the
+range [-1, 1], and we select top-5 scoring assets at each step. To isolate factor quality, we apply equal weighting to
+selected assets throughout.
+5.2 Results of Portfolio Performance
+We evaluate our method on both benchmark portfolios from the Fama-French library and real-market datasets (US50,
+HSI45 and CSI300). Results are reported in Table 1 and Table 2 using standard performance metrics: Cumulative
+Wealth (CW), Sharpe Ratio (SR), and Maximum Drawdown (MDD).
+Benchmark Dataset Results. Table 1 presents results across five Fama-French benchmark datasets. Under the stan-
+dard sparse setting (m = 10), our proposed EFS framework achieves the best performance across all asset pools,
+with only minor differences between the GPT-4.1 and DeepSeek backends, demonstrating the robustness of our LLM-
+guided evolution process. Notably, the performance gap widens as the dataset size increases, confirming the scalability
+and advantage of EFS in larger universes (e.g., FF100, FF100MEOP). Furthermore, when increasing the cardinality,
+i.e. a large m, we observe significant gains by incorporating a score-to-weight mapping, which improves capital allo-
+cation while preserving sparsity. This enhancement yields consistently stronger results than existing baselines in both
+return and risk metrics, especially under challenging high-dimensional settings.
+Real-Market Dataset Performance. Table 2 presents results for the US50, HSI45 and CSI300 datasets. Under the
+standard 10-asset selection ( m = 10 ), our EFS framework achieves state-of-the-art performance across all metrics,
+substantially outperforming both traditional baselines and recent optimization methods. On US50, EFS-GPT (CW =
+39.67, SR = 0.154) and EFS-DeepSeek (CW = 32.99, SR = 0.149) deliver 7× improvement over the 1/N baseline.
+When expanding to 15 assets ( m = 15 ), EFS maintains competitive Sharpe Ratio and drawdown control, despite
+slight CW declines, attributable to equal-weight allocation distributing capital across lower-ranked assets. Crucially,
+EFS still exceeds all baselines in SR and MDD metrics, demonstrating robustness.
+8
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+Table 2: Evaluation of Cumulative Wealth (CW↑), Sharpe Ratio (SR ↑), and Maximum Drawdown (MDD ↓) on real-
+market datasets (US50, HSI45 and CSI300) for different model variants. Our EFS approach significantly outperforms
+traditional baselines.
+US50 HSI45 CSI300
+Group Method CW ↑ SR↑ MDD↓ CW↑ SR↑ MDD↓ CW↑ SR↑ MDD↓
+Baseline
+1/N 4.562 0.072 0.344 1.333 0.029 0.409 1.087 0.014 0.214
+Min-cVaR 1.779 0.038 0.314 1.628 0.063 0.244 0.992 0.003 0.286
+Max-Sharpe 4.495 0.061 0.461 1.428 0.043 0.300 1.008 0.007 0.333
+m=10
+LGBM 4.182 0.063 0.332 1.611 0.038 0.367 2.334 0.072 0.225
+XGBoost 6.313 0.077 0.328 1.581 0.035 0.440 1.420 0.032 0.345
+mSSRM-PGA 5.121 0.059 0.569 0.766 -0.003 0.547 0.881 0.002 0.399
+ASMCVaR 10.259 0.073 0.582 2.481 0.052 0.453 1.453 0.030 0.462
+EFS-DeepSeek 25.101 0.132 0.288 3.463 0.080 0.385 3.437 0.079 0.327
+EFS-GPT 22.905 0.130 0.260 2.789 0.067 0.292 4.962 0.098 0.301
+m=15
+LGBM 3.899 0.062 0.328 1.588 0.037 0.387 1.812 0.055 0.250
+XGBoost 5.607 0.076 0.319 1.586 0.036 0.420 1.348 0.029 0.344
+mSSRM-PGA 4.976 0.062 0.477 0.766 -0.003 0.547 0.787 -0.010 0.384
+ASMCVaR 11.124 0.074 0.566 2.647 0.054 0.434 1.658 0.035 0.424
+EFS-DeepSeek 13.978 0.114 0.298 2.364 0.061 0.406 2.510 0.067 0.298
+EFS-GPT 14.707 0.117 0.278 2.277 0.058 0.307 3.218 0.082 0.246
+For CSI300’s larger asset universe, EFS shows strong generalization: EFS-GPT achieves peak performance (CW =
+3.86, SR = 0.086) at m = 10, and maintains stability at m = 15, confirming the framework’s scalability.
+Moreover, both LLM backends, including GPT-4.1 and DeepSeek, demonstrate comparable performance, suggesting
+the generality of the EFS framework across different language model infrastructures. While some variability in re-
+sults is observed due to the stochastic nature of LLM outputs and market fluctuations, we find that both the average
+and aggregated evaluation settings yield consistently strong results—particularly on US50 and CSI300. On HSI45,
+although CW slightly drops under m = 15, the Sharpe Ratio and Drawdown remain competitive, further supporting
+the robustness of our approach.
+Figure 4 presents the performance of our framework on the US50 and HSI45 datasets as we vary the number of top
+factors selected for portfolio construction. This analysis is motivated by the need to understand how many LLM-
+generated factors should be retained to balance performance and stability. We observe that CW remains consistently
+high when using up to 10 factors, demonstrating the strong quality and ranking ability of the factor evolution process.
+Interestingly, the 15-asset portfolio (orange line) shows less sensitivity to the number of factors than the 10-asset case,
+likely because its diversified allocation reduces the impact of individual factor quality. Across most settings, even the
+worst-case results remain well above traditional baselines, as shown by the dashed ASMCVaR lines, except for HSI45
+under m = 15, where performance occasionally aligns with the baseline. Meanwhile, the RankIC curves remain stable,
+indicating the predictive consistency of the selected factors.
+2 4 6 8 10
+US50 Dataset / Num. of Factors
+10
+20
+30
+40
+50CW
+2 4 6 8 10
+HSI45 Dataset / Num. of Factors
+2.0
+2.5
+3.0
+3.5
+4.0
+4.5
+0.01
+0.00
+0.01
+0.02
+0.03
+0.04
+0.05
+Avg. Rank IC
+0.01
+0.00
+0.01
+0.02
+0.03
+0.04
+0.05
+Avg. Rank IC
+10 Assets CW 15 Assets CW RankIC ASMCVaR (m=10) ASMCVaR (m=15)
+Figure 4: Cumulative Wealth (CW) and RankIC metrics on the US50 and HSI45 datasets using EFS-GPT 4.1. The
+plots compare performance across different numbers of factors (1–10) and asset counts (m = 10, m = 15). Solid lines
+represent mean CW, shaded areas indicate standard deviation, and dashed lines show ASMCVaR baselines.
+9
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+5.3 Ablation Studies
+To analyze the contribution of key components in our EFS framework, we conduct a series of ablation studies summa-
+rized in Table 3. All experiments are run on the DeepSeek backend with three repeated trials, and results are reported
+in the form of “mean ± standard deviation” under 3 runs. We focus on two major aspects: the information included in
+the LLM prompt, and the composition of the initial factor library.
+For prompt composition, we evaluate the variants that exclude (1) using nonsparse backtest result ( m = 25 ) for
+searching (w/o sparse heuristic) (2) numeric backtest metrics (w/o Numeric), (3) quality indicators such as stability
+or consistency (w/o Quality), and (4) performance-based feedback like RankIC and Recall@N (w/o Performance). To
+assess the role of prior knowledge, we remove (5) all technical analysis (TA) based seed factors (w/o TA), and (6)
+evaluate the performance of the initial handcrafted library without LLM-generated factors (Initial Factor).
+From Table 3, we observe that the inclusion of TA factors and performance feedback plays a critical role in both
+portfolio returns and factor quality. Notably, removing performance metrics results in the steepest performance drop,
+indicating that backtest-driven feedback is essential for effective factor evolution. Similarly, eliminating TA-based seed
+formulas leads to weak and unstable portfolios, highlighting their value as structural priors.
+Table 3: Overall real-market portfolio performance metrics (CW = Cumulative Wealth, SR = Sharpe Ratio, MDD =
+Maximum Drawdown, RankIC = Rank Information Coefficient, RankICIR = Rank Information Coefficient Informa-
+tion Ratio)
+US50 HSI45
+Method CW ↑ SR↑ MDD↓ RankIC↑ RankICIR↑ CW↑ SR↑ MDD↓ RankIC↑ RankICIR↑
+Initial Factor 6.254 0.081 0.449 0.005 0.352 1.364 0.031 0.386 0.018 0.950EFS-Deepseek 32.993±6.044 0.149±0.003 0.260±0.013 0.027±0.001 1.582±0.050 3.193±0.923 0.076±0.015 0.387±0.026 0.022±0.001 1.412±0.103
+w/o Sparse Heuristic 19.248±3.642 0.125±0.003 0.346±0.048 0.020±0.004 1.262±0.265 2.198±1.094 0.051±0.030 0.391±0.051 0.027±0.015 1.508±0.828w/o Numeric 23.414±3.814 0.133±0.007 0.324±0.042 0.023±0.004 1.334±0.201 2.943±0.516 0.072±0.007 0.372±0.024 0.024±0.002 1.435±0.118w/o Quality 24.152±7.988 0.133±0.016 0.297±0.052 0.021±0.003 1.178±0.202 2.402±0.404 0.060±0.010 0.429±0.023 0.016±0.003 1.011±0.200w/o Performance 9.549±5.869 0.094±0.019 0.327±0.053 0.009±0.009 0.487±0.467 1.168±0.036 0.020±0.002 0.369±0.025 0.009±0.002 0.522±0.106w/o TA Factors 5.367±1.652 0.074±0.011 0.394±0.043 0.002±0.004 0.117±0.241 1.875±1.354 0.037±0.037 0.359±0.062 0.008±0.016 0.494±0.940
+M=5 39.126±17.516 0.101±0.010 0.460±0.042 0.017±0.002 1.036±0.079 2.448±0.155 0.058±0.006 0.441±0.010 0.024±0.002 1.384±0.092M=15 13.246±8.741 0.084±0.022 0.454±0.057 0.012±0.005 0.701±0.228 2.004±0.767 0.044±0.022 0.452±0.037 0.026±0.008 1.417±0.450M=20 11.952±5.272 0.071±0.003 0.428±0.109 0.003±0.000 0.187±0.004 2.029±0.088 0.044±0.002 0.469±0.024 0.021±0.005 1.257±0.214
+To investigate the impact of generation volume on performance, we vary the number of LLM-generated candidate
+factors M per search step. As shown in Table 3, generating fewer candidates (e.g., M = 5) yields stronger average
+portfolio performance but with higher variance, suggesting that smaller generations are more focused yet potentially
+less stable. Conversely, increasing M introduces greater diversity but dilutes overall quality, leading to a consistent
+drop in metrics such as Sharpe Ratio, RankIC, and RankICIR.
+We attribute this degradation to two main factors. First, when generating many factors in a single step, the limited
+context window and generation budget of LLMs often lead to shorter or lower-quality outputs, including redundant or
+trivial expressions. Second, larger batches reduce the evolutionary pressure in early-stage search, making it harder to
+converge on high-performing factors, especially under sparse portfolio constraints. These findings highlight a trade-
+off between exploration breadth and generation precision in LLM-driven factor evolution, and suggest that moderate
+generation sizes may yield a better balance between diversity and performance stability.
+To explore the impact of warm-up duration, we experiment with varying the number of pre-backtest search steps
+to expand the initial factor library. Interestingly, the results show limited performance gains from longer warm-up
+phases. This suggests that historical factor mining alone without tight coupling to the evaluation process fails to
+capture the evolving nature of financial markets. In contrast, our co-evolutionary design, which tightly integrates
+factor generation and online backtesting, enables the system to adapt to current market dynamics more effectively.
+This is further validated in the following experiment: we conduct an additional experiment where we terminate the
+evolution process at intermediate checkpoints (i.e., record ratio in [0.1, 0.9]) and freeze the current factor pool for all
+subsequent portfolio decisions. As shown in Figure 5, both portfolio performance and factor quality metrics improve
+steadily with more evolution. This confirms that the evolutionary process continuously enhances both predictive power
+and robustness of the factor pool, and that longer searches lead to significantly better outcomes, even under limited
+LLM query budgets.
+5.4 Analysis and Discussion
+Our experimental results demonstrate that the proposed EFS framework achieves consistent and significant improve-
+ments in real-market portfolio performance across multiple datasets. Both cumulative wealth and risk-adjusted metrics
+10
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+Record Ratio
+10
+20
+30
+40Cumulative Wealth (CW)
+Portfolio Performance
+0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+Record Ratio
+0.005
+0.000
+0.005
+0.010
+0.015
+0.020
+0.025
+0.030
+0.035
+Avg Rank IC
+Factor Quality
+0.08
+0.10
+0.12
+0.14
+0.16
+Sharpe Ratio
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+ICIR
+Figure 5: Left: Portfolio performance of the US50 dataset under varying record ratios with 5 selected factors. The plot
+shows cumulative wealth (CW) and Sharpe Ratio (SR) with ±1 standard deviation error bands. Right: Factor quality
+evaluation across record ratios: the average RankIC (green) and RankICIR (purple).
+such as Sharpe Ratio show clear advantages over traditional baselines and recent optimization-based methods, under
+various asset selection settings.
+These performance gains stem from our LLM-driven, end-to-end factor generation pipeline. As illustrated in Figure 10,
+the selected assets exhibit strong temporal alignment with market regimes: EFS tends to allocate toward growth-
+leading stocks in bull markets and shifts to more stable assets during downturns. Further, our targeted analysis of
+specific market phases in Figure 8 confirms this adaptability, where EFS consistently outperforms baselines by limiting
+drawdowns in bear markets while capturing more upside in rallies.
+Beyond portfolio-level performance, we examine the nature of generated factors. As shown in Figure 12, factor scores
+display dynamic patterns across time and markets, suggesting that EFS maintains responsiveness to shifting financial
+conditions. Finally, a qualitative review of selected LLM-generated factors (Figure 7) reveals that these expressions
+are not only executable but also interpretable: they often reflect reasonable trading intuitions encoded through com-
+plex yet readable code structures. This highlights EFS’s unique strength: integrating signal quality, adaptability, and
+transparency in a unified framework.
+6 Conclusion
+In this work, we propose EFS, a language model-guided framework for sparse portfolio optimization under ℓ0 con-
+straints. By transforming the asset selection problem into a factor-based ranking task, our method uses LLMs to
+autonomously evolve and refine alpha factors over time. Experiments on benchmark and real-world datasets show
+that our approach consistently improves portfolio performance through dynamic, adaptable factor discovery. In future
+work, we plan to integrate multimodal data sources to enrich factor semantics, develop more robust prompt filtering
+and fallback mechanisms, and explore scalable solutions, such as offline distillation or parallel querying, to support
+large-scale, stable factor evolution.
+References
+Andrew Ang. Asset management: A systematic approach to factor investing. Oxford University Press, 2014.
+Gagan Bhatia, El Moatez Billah Nagoudi, Hasan Cavusoglu, and Muhammad Abdul-Mageed. FinTral: A family
+of GPT-4 level multimodal financial large language models. In Lun-Wei Ku, Andre Martins, and Vivek Sriku-
+mar, editors, Findings of the Association for Computational Linguistics: ACL 2024, pages 13064–13087, Bangkok,
+Thailand, August 2024. Association for Computational Linguistics. doi: 10.18653/v1/2024.findings-acl.774. URL
+https://aclanthology.org/2024.findings-acl.774/.
+Joshua Brodie, Ingrid Daubechies, Christine De Mol, Domenico Giannone, and Ignace Loris. Sparse and stable
+markowitz portfolios. Proceedings of the National Academy of Sciences, 106(30):12267–12272, 2009.
+11
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+Zhifeng Dai and Fenghua Wen. A generalized approach to sparse and stable portfolio optimization problem. Journal
+of Industrial and Management Optimization, 14(4):1651–1666, 2018.
+Eugene F Fama and Kenneth R French. Production of us rm-rf, smb, and hml in the fama-french data library.Chicago
+Booth Research Paper, (23-22), 2023.
+Jianqing Fan, Alex Furger, and Dacheng Xiu. Incorporating global industrial classification standard into portfolio
+allocation: A simple factor-based large covariance matrix estimator with high-frequency data. Journal of Business
+& Economic Statistics, 34(4):489–503, 2016.
+Bj¨orn Fastrich, Sandra Paterlini, and Peter Winker. Constructing optimal sparse portfolios using regularization meth-
+ods. Computational Management Science, 12(3):417–434, 2015.
+Richard C Grinold and Ronald N Kahn. Active portfolio management. McGraw Hill New York, 2000.
+Abhishek Gunjan and Siddhartha Bhattacharyya. A brief review of portfolio optimization techniques. Artificial
+Intelligence Review, 56(5):3847–3886, 2023.
+Philipp J Kremer, Sangkyun Lee, Małgorzata Bogdan, and Sandra Paterlini. Sparse portfolio selection via the sorted
+ℓ1-norm. Journal of Banking & Finance, 110:105687, 2020.
+Zhao-Rong Lai, Pei-Yi Yang, Liangda Fang, and Xiaotian Wu. Short-term sparse portfolio optimization based on
+alternating direction method of multipliers. Journal of Machine Learning Research, 19(63):1–28, 2018.
+Xiao Peng Li, Zhang-Lei Shi, Chi-Sing Leung, and Hing Cheung So. Sparse index tracking with k-sparsity or ϵ-
+deviation constraint via ℓ0-norm minimization. IEEE Transactions on Neural Networks and Learning Systems, 34
+(12):10930–10943, 2022.
+Zhiwei Li, Ran Song, Caihong Sun, Wei Xu, Zhengtao Yu, and Ji-Rong Wen. Can large language models mine
+interpretable financial factors more effectively? a neural-symbolic factor mining agent model. In Lun-Wei Ku,
+Andre Martins, and Vivek Srikumar, editors,Findings of the Association for Computational Linguistics: ACL 2024,
+pages 3891–3902, Bangkok, Thailand, August 2024. Association for Computational Linguistics. doi: 10.18653/v1/
+2024.findings-acl.233. URL https://aclanthology.org/2024.findings-acl.233/.
+Yizun Lin, Zhao-Rong Lai, and Cheng Li. A globally optimal portfolio for m-sparse sharpe ratio maximization.
+In The Thirty-eighth Annual Conference on Neural Information Processing Systems , 2024a. URL https://
+openreview.net/forum?id=p54CYwdjVP.
+Yizun Lin, Yangyu Zhang, Zhao-Rong Lai, and Cheng Li. Autonomous sparse mean-CVaR portfolio optimiza-
+tion. In Ruslan Salakhutdinov, Zico Kolter, Katherine Heller, Adrian Weller, Nuria Oliver, Jonathan Scarlett,
+and Felix Berkenkamp, editors, Proceedings of the 41st International Conference on Machine Learning , vol-
+ume 235 of Proceedings of Machine Learning Research , pages 30440–30456. PMLR, 21–27 Jul 2024b. URL
+https://proceedings.mlr.press/v235/lin24w.html.
+Fei Liu, Tong Xialiang, Mingxuan Yuan, Xi Lin, Fu Luo, Zhenkun Wang, Zhichao Lu, and Qingfu Zhang. Evolution of
+heuristics: Towards efficient automatic algorithm design using large language model. In Ruslan Salakhutdinov, Zico
+Kolter, Katherine Heller, Adrian Weller, Nuria Oliver, Jonathan Scarlett, and Felix Berkenkamp, editors, Proceed-
+ings of the 41st International Conference on Machine Learning , volume 235 of Proceedings of Machine Learning
+Research, pages 32201–32223. PMLR, 21–27 Jul 2024. URL https://proceedings.mlr.press/v235/
+liu24bs.html.
+Yuqi Nie, Yaxuan Kong, Xiaowen Dong, John M Mulvey, H Vincent Poor, Qingsong Wen, and Stefan Zohren. A
+survey of large language models for financial applications: Progress, prospects and challenges. arXiv preprint
+arXiv:2406.11903, 2024.
+Hao Shi, Weili Song, Xinting Zhang, Jiahe Shi, Cuicui Luo, Xiang Ao, Hamid Arian, and Luis Angel Seco. Al-
+phaforge: A framework to mine and dynamically combine formulaic alpha factors. Proceedings of the AAAI
+Conference on Artificial Intelligence , 39(12):12524–12532, Apr. 2025a. doi: 10.1609/aaai.v39i12.33365. URL
+https://ojs.aaai.org/index.php/AAAI/article/view/33365.
+Yu Shi, Yitong Duan, and Jian Li. Navigating the alpha jungle: An llm-powered mcts framework for formulaic factor
+mining, 2025b. URL https://arxiv.org/abs/2505.11122.
+12
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+Ziyi Tang, Zechuan Chen, Jiarui Yang, Jiayao Mai, Yongsen Zheng, Keze Wang, Jinrui Chen, and Liang Lin. Al-
+phaagent: Llm-driven alpha mining with regularized exploration to counteract alpha decay, 2025. URL https:
+//arxiv.org/abs/2502.16789.
+Saizhuo Wang, Hang Yuan, Leon Zhou, Lionel M. Ni, Heung-Yeung Shum, and Jian Guo. Alpha-gpt: Human-ai
+interactive alpha mining for quantitative investment, 2023. URL https://arxiv.org/abs/2308.00016.
+Yining Wang, Jinman Zhao, and Yuri Lawryshyn. GPT-signal: Generative AI for semi-automated feature engineering
+in the alpha research process. In Chung-Chi Chen, Tatsuya Ishigaki, Hiroya Takamura, Akihiko Murai, Suzuko
+Nishino, Hen-Hsen Huang, and Hsin-Hsi Chen, editors, Proceedings of the Eighth Financial Technology and Nat-
+ural Language Processing and the 1st Agent AI for Scenario Planning , pages 42–53, Jeju, South Korea, 3 August
+2024. -. URL https://aclanthology.org/2024.finnlp-2.4/.
+Stephen F Witt and Richard Dobbins. The markowitz contribution to portfolio theory.Managerial finance, 5(1):3–17,
+1979.
+Xiao Yang, Weiqing Liu, Dong Zhou, Jiang Bian, and Tie-Yan Liu. Qlib: An ai-oriented quantitative investment
+platform, 2020. URL https://arxiv.org/abs/2009.11189.
+Shunyu Yao, Fei Liu, Xi Lin, Zhichao Lu, Zhenkun Wang, and Qingfu Zhang. Multi-objective evolution of heuris-
+tic using large language model. Proceedings of the AAAI Conference on Artificial Intelligence , 39(25):27144–
+27152, Apr. 2025. doi: 10.1609/aaai.v39i25.34922. URL https://ojs.aaai.org/index.php/AAAI/
+article/view/34922.
+Haoran Ye, Jiarui Wang, Zhiguang Cao, Federico Berto, Chuanbo Hua, Haeyeon Kim, Jinkyoo Park, and Guojie Song.
+Reevo: Large language models as hyper-heuristics with reflective evolution. In Advances in Neural Information
+Processing Systems, 2024. https://github.com/ai4co/reevo.
+Shuo Yu, Hongyan Xue, Xiang Ao, Feiyang Pan, Jia He, Dandan Tu, and Qing He. Generating synergistic formulaic
+alpha collections via reinforcement learning. In Proceedings of the 29th ACM SIGKDD Conference on Knowledge
+Discovery and Data Mining, pages 5476–5486, 2023a.
+Xinli Yu, Zheng Chen, Yuan Ling, Shujing Dong, Zongyi Liu, and Yanbin Lu. Temporal data meets llm–explainable
+financial time series forecasting. arXiv preprint arXiv:2306.11025, 2023b.
+Xinli Yu, Zheng Chen, and Yanbin Lu. Harnessing LLMs for temporal data - a study on explainable finan-
+cial time series forecasting. In Mingxuan Wang and Imed Zitouni, editors, Proceedings of the 2023 Confer-
+ence on Empirical Methods in Natural Language Processing: Industry Track , pages 739–753, Singapore, De-
+cember 2023c. Association for Computational Linguistics. doi: 10.18653/v1/2023.emnlp-industry.69. URL
+https://aclanthology.org/2023.emnlp-industry.69/.
+Yangyang Yu, Zhiyuan Yao, Haohang Li, Zhiyang Deng, YuechePn Jiang, Yupeng Cao, Zhi Chen, Jordan Suchow,
+Zhenyu Cui, Rong Liu, et al. Fincon: A synthesized llm multi-agent system with conceptual verbal reinforcement
+for enhanced financial decision making. Advances in Neural Information Processing Systems, 37:137010–137045,
+2024.
+Hang Yuan, Saizhuo Wang, and Jian Guo. Alpha-gpt 2.0: Human-in-the-loop ai for quantitative investment, 2024.
+URL https://arxiv.org/abs/2402.09746.
+Tianping Zhang, Yuanqi Li, Yifei Jin, and Jian Li. Autoalpha: an efficient hierarchical evolutionary algorithm for
+mining alpha factors in quantitative investment, 2020. URL https://arxiv.org/abs/2002.08245.
+Huaqin Zhao, Zhengliang Liu, Zihao Wu, Yiwei Li, Tianze Yang, Peng Shu, Shaochen Xu, Haixing Dai, Lin Zhao,
+Hanqi Jiang, Yi Pan, Junhao Chen, Yifan Zhou, Gengchen Mai, Ninghao Liu, and Tianming Liu. Revolutionizing
+finance with llms: An overview of applications and insights, 2024. URL https://arxiv.org/abs/2401.
+11641.
+13
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+A Algorithm Details
+A.1 Algorithm of EFS Framework
+In this section, we present the detailed procedure of our proposed LLM-Guided Evolutionary Factor Search framework,
+which integrates dynamic factor generation, population pruning, and backtesting under sparse portfolio constraints.
+The full workflow is summarized in Algorithm 1.
+Algorithm 1 LLM-Guided Evolutionary Factor Search and Sparse Portfolio Optimization
+1: Input: Return matrix R, window Nt, search interval s, drop threshold Tdrop, initial library Ainit
+2: Initialize factor pool F ← Ainit, current time t ← 1
+3: Initialize performance tracker P[α] for all α ∈ F
+4: // Warm-up: evaluate initial factor performance
+5: for t = 1 to Nt do
+6: for each factor α ∈ Fdo
+7: Evaluate score and update P[α][t]
+8: end for
+9: end for
+10: Initialize portfolio value V ← 1.0, baseline value B ← 1.0
+11: for t = Nt + 1 to T do
+12: if t mod s = 0 then
+13: // Clean factor pool before LLM generation
+14: F , P ←clean factor pool(F , P, max size, keep top n)
+15: Generate performance report Rperf ← recent P[α] from t − s to t − 1
+16: Generate prompt using top-performing factors via filter factor versions on Rperf
+17: Call LLM with retry:
+18: Agen, success ← call llm with retry(prompt, model)
+19: if success then
+20: F ← F ∪ Agen
+21: else
+22: Log failure and proceed with current pool F
+23: end if
+24: end if
+25: // Evaluate new factors and update performance
+26: for each α ∈ Fdo
+27: Compute current score αt and update P[α][t]
+28: if α is newly generated then
+29: Validate α and check against benchmark
+30: if α fails validation or underperforms benchmark then
+31: F ← F \ {α}
+32: end if
+33: end if
+34: end for
+35: // Select factor subset and execute backtest
+36: Select top k valid factors Ft ← filter factor versions(P)
+37: Compute asset scores st using Ft
+38: Normalize scores, compute weights wt, handle NaNs or fallback to equal weight
+39: Compute portfolio return rt = w⊤
+t rt
+40: if error or invalid return then
+41: Set rt ← ¯rt (market average)
+42: end if
+43: Update portfolio value V ← V · rt
+44: Update baseline B ← B · ¯rt
+45: end for
+46: Output: Final factor pool F, performance metrics (CW, ICIR)
+To ensure reliable factor generation and effective population management, we incorporate two key components in our
+evolutionary framework: call llm with retry and filter factor versions. Given the instability and
+14
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+occasional rate limits of online LLM services, call llm with retry is designed to repeatedly query the LLM
+until a successful response is received or a retry limit is reached. It validates that the number of generated factors
+and their syntactic correctness exceed predefined thresholds before accepting the output. This mechanism ensures
+robustness and continuity in the evolutionary loop, especially in real-time or large-scale experiments.
+Meanwhile, filter factor versions serves as a critical filtering module to balance performance selection
+and population diversity. Since each alpha factor may have multiple evolving versions (e.g., momentum v1, momen-
+tum v2, etc.), this function retains only the latest version and the best-performing version (based on a specified quality
+metric such as final value or mean rankic) for each base factor type. This not only reduces redundancy in the factor
+pool but also preserves diversity by allowing structurally different variants of the same conceptual factor to coexist.
+As a result, the factor population maintains both quality and variety, which are crucial for sustained exploration and
+adaptive portfolio construction.
+A.2 Algorithm of Searching Record Aggregation
+To enhance the robustness of our evolutionary factor search, we design a distributed-style parallel searching mecha-
+nism, where multiple independent search processes are executed concurrently. At each step, we aggregate the factors
+discovered across these parallel searches by merging their performance records and factor pools. This aggregation not
+only enlarges the effective factor pool size, allowing for greater diversity and exploration and also helps mitigate the
+variance that may arise between individual searchers due to stochastic outputs. Importantly, this strategy reduces the
+impact of service quality fluctuations in online LLMs by smoothing out anomalies or failures in any single search
+process, thereby yielding more stable and reliable factor evolution results.
+Algorithm 2 Aggregate Factor Search Records
+1: Input: List of checkpoint paths P, record limit N, ratio limit r
+2: Load search records R1, R2, . . . ,Rk from paths P
+3: Determine aligned length L = min{len(Ri)}
+4: if N >1 then
+5: L ← min(L, N)
+6: end if
+7: if r <1 then
+8: L ← min(L, ⌊L · r⌋)
+9: end if
+10: Truncate all Ri to length L
+11: Initialize merged record list M ←[]
+12: for t = 1 to L do
+13: Initialize merged performance map Pm, quality map Qm, expression map Em
+14: for each record list Ri do
+15: Extract record at step t: Rt
+i
+16: Filter portfolio performance and quality using filter factor versions
+17: for each factor f in filtered performance do
+18: Get final value vf and mean RankIC qf
+19: if f not in Pm or vf > Pm[f ] then
+20: Update Pm[f ] ← vf , Qm[f ] ← qf
+21: Update Em[f ] from expression library or record
+22: else if vf = Pm[f ] and qf > Qm[f ] then
+23: Update Qm[f ] ← qf
+24: end if
+25: end for
+26: end for
+27: Append merged result at step t to M
+28: end for
+29: return M
+B Factor Library Details
+We design our initial factor library based on a set of fundamental and widely adopted price-based operations, ensuring
+both interpretability and generality. As summarized in Table 4, the library includes basic statistical measures such as
+15
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+mean return, volatility, and momentum, as well as standard technical indicators like moving averages, Bollinger Band
+width, and RSI. Each factor is constructed using atomic operations on historical price or return sequences, providing
+a transparent and modular starting point for further factor evolution.
+Table 4: Factor Library Details: Type and Mathematical Definitions
+Factor Name Type Mathematical Definition Description
+mean return w Basic 1
+w
+Pw
+i=1 rt−i Mean of past w returns
+std return w Basic
+q
+1
+w
+Pw
+i=1(rt−i − ¯r)2 Standard deviation of pastw returns
+momentum w Basic Pt
+Pt−w
+− 1 Price momentum over windoww
+max drawdown w Basic min
+
+Pi−maxj≤i Pj
+maxj≤i Pj
+
+, i= t − w, . . . , t Max drawdown in the window
+sharpe ratio w Basic ¯r
+σr
+Sharpe ratio of past w returns
+volatility w Basic std (log(Pi/Pi−1)), i= t − w + 1, . . . , tV olatility using log returns
+price position w Basic Pt−min(Pt−w+1:t)
+max(Pt−w+1:t)−min(Pt−w+1:t) Price position in range
+log return 1 Basic log
+
+Pt
+Pt−1
+
+1-step log return
+ma w TA 1
+w
+Pw−1
+i=0 Pt−i Simple moving average
+bb width w TA 2·σP
+MAw
+Bollinger Band width (std normalized
+by MA)
+ema ratio w TA Pt
+EMAw
+Ratio of price to EMA
+rsi 14 TA 100 − 100
+1+ Avg Gain
+Avg Loss
+Relative Strength Index over 14 days
+The initial factor library is intentionally kept concise for two main reasons. First, the selected factors already cover
+the fundamental operations commonly used to characterize financial time series, such as measures of return, volatility,
+momentum, and standard technical indicators. Second, we deliberately start from these basic atomic operations rather
+than adopting existing complex factor pools (e.g., Alpha101) because many of those factors involve advanced con-
+structs like cross-sectional ranking or multi-asset relationships. At this stage, generating Python functions via LLMs
+to handle such cross-asset logic remains challenging and does not align with our design goal of producing independent,
+interpretable evaluation functions for single asset. Moreover, since our framework aims to demonstrate how an LLM
+can evolve factor expressions from the simplest building blocks, we intentionally avoid including human-engineered
+factors to ensure that any performance gains reflect the evolution process rather than inherited domain knowledge.
+C Dataset Details
+To eliminate scale differences across stocks and ensure compatibility with existing optimization-based sparse portfolio
+methods, we first compute the daily relative returns as:
+rt = pclose,t
+pclose,t−1
+(2)
+These returns are used as input features for factor evaluation and portfolio construction. To reconstruct a normalized
+price series, we set the initial price of all assets to 100 and iteratively apply the relative returns:
+pt = 100 ×
+tY
+i=1
+ri (3)
+This normalization ensures that all assets begin from a common scale, facilitating fair comparison across the asset
+universe and aligning with the assumptions of most sparse portfolio optimization frameworks.
+C.1 Benchmark
+We use five widely-adopted benchmark datasets—FF25, FF32, FF49, FF100, and FF100MEOP—from the Kenneth
+R. French Data Library, following the setting in Lin et al. [2024a,b]. Each dataset contains monthly price-relative
+16
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+sequences, where each ”asset” corresponds to a portfolio formed by sorting U.S. stocks based on firm-specific char-
+acteristics. Specifically, FF25 and FF32 are constructed based on book-to-market ratio (BE/ME) and investment level;
+FF49 includes 49 industry-based portfolios; FF100 is formed using market equity (ME) and BE/ME; and FF100MEOP
+uses ME and operating profitability. We exclude FF25EU from our experiments because it contains only 390 monthly
+records—significantly fewer than the 622 records in the other datasets—making it difficult to accumulate sufficient
+search steps for robust factor evolution and performance evaluation.
+C.2 Market Data
+For the Hong Kong market, we construct our asset universe based on the HSI Tech Index constituents as of April
+2025. However, since some companies were listed relatively late and lack sufficient historical data, we replace them
+with similar firms from the same industry within the broader HSI index. To reduce potential bias caused by the overall
+underperformance of the Hong Kong market before mid-2024, we randomly select and add 15 large-cap blue-chip
+stocks from the HSI index. This supplementation is done without using past performance as a criterion, ensuring that
+the asset pool remains statistically balanced and representative, while maintaining neutrality in the evaluation process.
+For the CSI300 market, we construct our asset universe based on all CSI300 constituent companies during the selection
+period. However, we identify 13 companies whose IPO dates are too recent to provide sufficient historical data for
+factor evaluation and backtesting. Given that these represent only a small fraction of the total index constituents (13
+out of 300), we simply exclude these firms and proceed with the remaining 287 companies.
+Table 5: Hong Kong Stock Tickers with Full Company Names in the HSI Dataset
+Ticker Company Name Ticker Company Name Ticker Company Name
+1928.HK SANDS CHINA LTD 9868.HK XPeng Inc. 9633.HK Nongfu Spring
+1929.HK CHOW TAI FOOK 0285.HK BYD ELECTRONIC 9618.HK JD.com, Inc.
+2382.HK Sunny Optical 0388.HK HKEX 0939.HK CCB
+1024.HK KUAISHOU-W 1810.HK XIAOMI-W 3690.HK Meituan
+0241.HK ALI HEALTH 9626.HK Bilibili Inc. 0268.HK KINGDEE INT’L
+3888.HK Kingsoft Corp. 0981.HK SMIC 9992.HK Pop Mart
+9988.HK Alibaba Group 0005.HK HSBC HOLDINGS 1088.HK CHINA SHENHUA
+1398.HK ICBC 9999.HK NetEase, Inc. 0941.HK CHINA MOBILE
+0522.HK ASMPT 3908.HK CICC 0700.HK TENCENT
+9961.HK Trip.com 1347.HK HUA HONG SEMI 1211.HK BYD COMPANY
+0020.HK SENSETIME 2899.HK Zijin Mining 2338.HK Weichai Power
+0992.HK LENOVO GROUP 2015.HK Li Auto Inc. 6690.HK Haier Smart Home
+6066.HK CSC Financial 0772.HK CHINA LIT 6618.HK JD Health
+9888.HK Baidu 2318.HK Ping An Insurance 0780.HK TONGCHENG TRA VEL
+0945.HK MANULIFE 0386.HK SINOPEC CORP 3328.HK Bank of Communications
+Table 6: U.S. Stock Symbols with Exact Company Names of US50 Dataset
+Ticker Company Name Ticker Company Name Ticker Company Name
+AAPL Apple ADI Analog Devices ADBE Adobe
+ADP Automatic Data Processing ADSK Autodesk AMD Advanced Micro Devices
+AMAT Applied Materials AMGN Amgen AMZN Amazon
+APP Applovin ASML ASML Holding A VGO Broadcom
+BA Boeing BKNG Booking Holdings CDNS Cadence Design Systems
+CMCSA Comcast COST Costco CSCO Cisco Systems
+CSX CSX Corporation CTAS Cintas Corporation FTNT Fortinet
+GILD Gilead Sciences GOOG Alphabet (Class C) BRK-B Berkshire Hathaway (Class B)
+HON Honeywell INTC Intel INTU Intuit
+ISRG Intuitive Surgical KLAC KLA Corporation LIN Linde plc
+LRCX Lam Research MELI MercadoLibre META Meta Platforms
+MRVL Marvell Technology MSFT Microsoft MU Micron Technology
+NFLX Netflix NVDA NVIDIA PANW Palo Alto Networks
+PEP PepsiCo PLTR Palantir QCOM Qualcomm
+ROP Roper Technologies SBUX Starbucks SNPS Synopsys
+TMUS T-Mobile US TSLA Tesla TSM TSMC
+TXN Texas Instruments VRTX Vertex Pharmaceuticals
+17
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+D Prompts Design
+To effectively leverage the reasoning and generation capabilities of large language models (LLMs) for financial factor
+discovery, we carefully design our prompt structure with multiple functional components. Each prompt includes the
+following key elements: (1) a clear objective description, specifying the task (e.g., improving or evolving alpha
+factors for top- k asset selection); (2) a set of factor-specific information, such as the original implementation (in
+Python), historical backtest performance (e.g., rank IC, recall, precision), and factor quality indicators (e.g., stability,
+uniqueness); and (3) detailed formatting constraints to guide model output. These constraints help reduce syntactic
+or logical errors and include explicit rules on function naming conventions, parameter usage, permitted data structures
+(e.g., price, return vectors), and a whitelist of mathematical operations. To maintain high-quality code generation,
+we additionally enforce coding standards such as avoiding external dependencies, ensuring numerical stability (e.g.,
+NaN-safe operations), and requiring vectorized NumPy implementations.
+D.1 EFS System Prompt
+EFS SYSTEM PROMPT
+You are a world-class quantitative researcher and Python programmer specializing
+in alpha factor design for asset ranking.
+Your task is to generate high-quality Python factor functions that are evolved
+versions of provided factors.
+STRICT REQUIREMENTS:
+1. Output ONLY a Python list of function strings - no comments or explanations
+2. Each function MUST:
+- Be bug-free and executable
+- Maintain identical input signature: prices, window - Use only numpy (as np),
+don’t depend on any external function or variable, you need to do computation all
+inside function
+- Handle edge cases (short series, NaNs)
+- Clearly indicate if combining or modifying existing factors
+3. Absolute prohibitions:
+- No external functions
+- No hardcoded values that should be parameters
+- No pandas or other libraries
+- No comments in output code
+4. Factor name rules: [factor name part] [window size] v[version number], the
+window size can only be the following value: 3, 7, 14, 21
+5. Value of output factor: For factors, higher value means better asset, please
+make sure the output value is positive related to performance of assets.
+ACTION SPACE:
+1. Improve existing factors by mutation:
+- Modifying parameters (e.g., inner parameters)
+- Adjusting logic
+- Updating inside operators for factors
+2. Improve existing factors by crossover:
+- Combining two existing factors to create a new one if you think they can work
+together
+- Restart version number from v1 for new factors
+IMPROVEMENT CRITERIA:
+1. Version increments must show clear:
+- if you improve from a given version, increase 1 to version number, the
+version number can only be integer like v1, v2, v3, don’t include any other
+character.
+- Performance enhancement
+- Robustness improvement
+- Computational efficiency
+- if you create a new factor by crossover from other two, restart version
+number from v1, and use the name like: factor1 comb factor2, where factor1 and
+factor2 are the names of the two factors you combined.
+2. Combined factors should demonstrate:
+- Logical interaction
+- Complementary strengths
+18
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+- Better risk-adjusted returns
+- Don’t make combined factors too complex, try to keep it simple and easy to
+understand.
+For string version of function, you should be very careful about format of
+python, for example:
+"def test run avg(*args, **kwargs):\n a=np.array(prices) \n if a: \n print(a) \n
+return np.mean(kwargs[’prices’]) \n"
+Be careful of symbol split the line, the different space of tab for if statement.
+Output example:
+["def momentum 7 v3(prices, window=10): return ...",
+"def breakout comb meanrevert 21 v1(prices, window=20): return ..."]
+D.2 Searching Step Prompt
+Prompt: LLM-Generated Factor Optimization
+You are a professional quantitative researcher.
+Design and optimize alpha factors using ONLY price data.
+Existing Library Factors:
+<str_lib_factor>
+Previous LLM-Generated Factors:
+<str_gen_factor>
+Recent Performance Metrics:
+<recent_performance>
+Sample of Performance and Factor Quality Information
+Performance Information:
+Factor mean return std return sharpe ratio max drawdown final value
+max min ratio comb momentum3 v2 0.00375 0.01335 0.28047 -0.05990 124.48487
+drawdowncomb sharpe 14 v5 0.00360 0.01242 0.28959 -0.03885 123.48065
+drawdowncomb sharpe 14 v2 0.00360 0.01242 0.28959 -0.03885 123.48065
+drawdowncomb sharpe 14 v1 0.00360 0.01242 0.28959 -0.03885 123.48065
+drawdowncomb sharpe 14 v3 0.00360 0.01242 0.28959 -0.03885 123.48065
+Factor Quality Information:
+Factor mean rankic std rankic mean recall@20 std recall@20
+drawdown comb momentum 14 v6 0.055634 0.215905 0.417500 0.107170
+sharpe ratio 14 0.047617 0.192138 0.405833 0.123522
+drawdown comb momentum comb rsi 14 v1 0.047588 0.214157 0.421667 0.103427
+drawdown comb momentum comb rsi 14 v2 0.047588 0.214157 0.421667 0.103427
+sharpe ratio 14 v5 0.047463 0.191842 0.405833 0.123522
+E Additional Details in Experiments
+E.1 Experiment Settings
+Hyperparameters and Settings. For our experinment, for all methods, we don’t include transaction cost; we use
+default hyper parameters for mSSRM-PGA Lin et al. [2024a] and ASMCVaR Lin et al. [2024b] from their open-
+source code.
+For machine learning-based sparse portfolio strategies using XGBoost and LightGBM, at each decision step, we train
+a model on sliding windows of historical price and return features, with periodic retraining every fixed number of steps
+19
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+to simulate realistic model updating. The model outputs asset-level scores, which are normalized and used to select
+the top-m assets with equal weighting.
+Due to the nature of our algorithm, for all experiments conducted using EFS, we compute the daily portfolio return
+using a 1/N baseline strategy during the warm-up phase—i.e., from the start point until the first evolution step begins.
+In contrast, for optimization-based baselines, since these methods can generate results based on a small historical
+window, we evaluate them from the very first step, assuming historical data are already available.
+Data Safety Guarantee.To ensure the integrity and fairness of our experimental setup, we strictly control the informa-
+tion provided to the LLM. Specifically, we only expose the model to abstractfactor definitions and their corresponding
+backtest performance metrics (e.g., rank IC, Sharpe ratio), without revealing any specific stock identifiers, price series,
+or temporal indicators (e.g., dates or market phases). During the evaluation phase, we execute the portfolio backtest
+based solely on the factors generated in each search iteration, without involving the LLM in any subsequent computa-
+tion or refinement. This design eliminates the possibility of data leakage and ensures that the backtest performance is
+unaffected by any external knowledge, including information potentially known to the LLM before its training cutoff
+date. Our pipeline thus guarantees a strict separation between the data used for search and the unseen future used for
+evaluation.
+E.2 Analysis of Behaviors in Factor Generation
+Compared to traditional symbolic regression or heuristic search methods, large language models (LLMs) offer a dis-
+tinct advantage in enabling end-to-end generation of executable factor code. This paradigm shift allows LLMs to fully
+leverage their generative capabilities by producing directly usable and structurally diverse alpha factors in a single
+step, without requiring predefined templates or restricted operator sets. Moreover, we observe that LLMs demonstrate
+remarkable creativity in generating complex, composite factors that are difficult to discover using conventional meth-
+ods. These include multi-component expressions that fuse statistical indicators, momentum signals, risk adjustments,
+and stability metrics into a single function.
+Throughout the evolutionary process, we identified several notable behavioral patterns of LLMs. First, LLMs fre-
+quently perform fine-grained hyperparameter tuning within existing factor structures, subtly adjusting exponents or
+scaling constants to optimize behavior. Second, they exhibit the ability to fuse distinct factor structures , effectively
+performing crossover operations by combining the logic of unrelated base signals into new composite forms.
+def volatility_comb_sharpe_21_v3(prices, window=21):
+    log_returns = np.diff(np.log(prices[-window:]))
+    vol = np.std(log_returns)
+    mean_ret = np.mean(log_returns)
+    std_ret = np.std(log_returns)
+    sharpe = np.sign(mean_ret) * (abs(mean_ret)**4.2 / (std_ret + 1e-6))
+    return np.exp(-vol**2.0) * (1 + sharpe)
+def volatility_comb_sharpe_21_v4(prices, window=21):
+    log_returns = np.diff(np.log(prices[-window:]))
+    vol = np.std(log_returns)
+    mean_ret = np.mean(log_returns)
+    std_ret = np.std(log_returns)
+    sharpe = np.sign(mean_ret) * (abs(mean_ret)**4.5 / (std_ret + 1e-6))
+    return np.exp(-vol**2.2) * (1 + sharpe)
+def return_skewness_score(...):
+    log_returns = np.diff(np.log(prices[-window:]))
+    mean = np.mean(log_returns)
+    std = np.std(log_returns)
+    skew = np.mean(((log_returns - mean) / std) ** 3)
+    return np.exp(-abs(skew))
+def bollinger_band_score(...):
+    ma = moving_average(prices, window)
+    std = np.std(prices[-window:])
+    width = (2 * std) / (ma + 1e-6) 
+ 
+    return 1 / (1 + width)
+def skewness_comb_bb_21_v1(...):
+    log_returns = np.diff(np.log(prices[-window:]))
+    skew = ...
+    ma = np.mean(prices[-window:])
+    std = np.std(prices[-window:])
+    bb_width = (2 * std) / (ma + 1e-6)
+    return np.exp(-abs(skew)) * (1 / (1 + bb_width))
+(a) Single Factor Improvement (b) Factor Crossover
+Figure 6: Illustration of different behaviors in LLM-guided factor generation. (a) shows a single-factor improvement
+where the LLM adjusts internal hyperparameters (e.g., exponent coefficients) to optimize factor behavior while pre-
+serving its structural form. (b) demonstrates a factor crossover operation, where two structurally distinct base factors
+(skewness and Bollinger band) are combined into a new composite expression. These examples highlight the LLM’s
+capacity to explore both local refinements and global recombinations within the factor expression space.
+In addition to structural flexibility, the generated factors often exhibit strong interpretability. As shown in Figure 7,
+many factors encode intuitive trading logic, such as momentum confirmation with volatility filtering or breakout detec-
+tion under low-noise conditions. The factor pool also covers a wide range of styles and statistical properties, indicating
+that LLMs can adaptively utilize different types of signals.
+By analyzing factor compositions across different time periods, we observe that the LLMs are able to produce
+environment-aware factors. For instance, during bull markets, factors emphasize trend continuation; in bear markets,
+20
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+they shift toward mean reversion or downside risk control; and in sideways markets, they focus on noise filtering or
+breakout identification. This adaptability suggests that LLMs inherently capture temporal regime features, and tailor
+factor expressions accordingly.
+def complex_factor_1(prices, window=14):
+import numpy as np
+a = np.asarray(prices)
+if len(a)<max(3,window) or np.any(np.isnan(a[-window:])): 
+ return 0.0 
+w = min(window,3)
+weights = np.exp(np.linspace(-1.5,0.2,w))
+weights /= weights.sum()
+ema = np.dot(a[-w:],weights)
+rel = (a[-1] - ema)/(np.abs(ema)+1e-6)
+ma = np.mean(a[-window:])
+std = np.std(a[-window:])
+width = (2*std)/(ma+1e-6)
+bb_score = 1/(1+width)
+return np.tanh(np.abs(rel)) * bb_score
+Handle Invalid Input
+Capture Movement Signal
+Capture Risk Signal
+What this factor Capture?
+1. Significant Short-Term Price Deviation (Momentum
+Component). Tanh norm converts deviations to [0,1) range:
+Values near 0 → Price hovering near EMA (no momentum) 
+Values approaching 1 → Strong directional breakout 
+2. Low Overall Volatility (Stability Component)
+Calculates standard Bollinger Band width Inverts volatility to
+create stability score:
+1 = Extremely narrow bands (high stability)
+0 = Extremely wide bands (high volatility)
+The combined signal suggests:
+✔ High-Probability Breakouts
+When both conditions align (strong momentum + low volatility),
+the signal identifies:
+(1) Early trend initiation in calm markets
+(2) High-potential continuation patterns
+(3) Reliable support/resistance breaks
+✖ Avoids False Signals
+(1) Breakouts during high volatility
+(2) Small price movements in stable conditions
+def complex_factor_2(prices, window=7):
+if len(prices) < window+2: return 0.0
+arr=np.array(prices[-(window+2):])
+if np.isnan(arr).any(): return 0.0
+logrets=np.diff(np.log(arr))
+mean_ret=np.mean(logrets[-window:])
+momentum=(arr[-1]/(arr[-window-1]+1e-8))-1
+mean_abs=np.mean(np.abs(logrets))
+std=np.std(logrets)+1e-8
+v=(mean_abs/(std+1e-8))*np.abs(mean_ret+1.05)
+return mean_ret*momentum*v
+What This Factor Captures?
+Individual Components Effect
+7-Day Mean Return - Identifies the prevailing trend direction
+(positive=uptrend, negative=downtrend)
+7-Day Momentum - Measures recent price acceleration strength
+Volatility Adjustment - Assesses trend quality by filtering out
+noisy movements
+Combined Effect:
+✔ Spots high-probability trends with: Clear direction (Mean
+Return); Strong momentum (Momentum); Low noise (Volatility
+Adjustment)
+✖ Automatically filters: Choppy, directionless markets; High-
+volatility false breakouts; Weak, unconvincing trends
+Figure 7: Examples of complex alpha factors generated by LLMs, along with their functional components and inter-
+pretability analysis. (Top) This factor combines a short-term deviation signal (based on EMA-normalized momentum)
+with a volatility-stability component (inverted Bollinger Band width), aiming to identify high-probability breakouts in
+calm markets. (Bottom) This factor fuses 7-day mean return, normalized momentum, and a volatility-adjusted weight
+to detect trend strength while suppressing noise. The right-hand panels summarize what each factor captures and how
+different sub-components contribute to interpretable trading logic. These examples illustrate the potential of LLMs to
+autonomously compose expressive, multi-layered signals that reflect real-world investment reasoning.
+E.3 Additional Results
+Portfolio Performance under Transaction Cost.We conduct experiments by applying transaction costs on portfolio
+changes to assess the real-world robustness of our strategy. Specifically, we evaluate two widely-used cost settings:
+c = 0 .1% and c = 0 .2%, applied to each reallocation step. The experiments are conducted under m = 10 across
+US50, HSI45, and CSI300 datasets.
+As shown in Table 7, incorporating transaction costs significantly affects cumulative wealth (CW), particularly under
+higher cost levels. Nevertheless, our method maintains strong performance, especially on US50 and CSI300, where the
+net returns remain competitive even after cost deductions. This demonstrates that the generated factors are not overly
+sensitive to short-term noise and still capture meaningful market signals.
+We attribute the performance drop primarily to the use of an equal-weighting strategy, which does not optimize for
+turnover and may result in frequent portfolio shifts. Without additional sparsity constraints on asset selection, the
+top-k assets can change substantially at each step, amplifying transaction costs. Future improvements could include
+turnover-aware selection mechanisms. Since factor scores for top-ranked assets are often close in value, a holding-
+aware filtering step could be applied to prioritize assets already in the portfolio, thus reducing unnecessary trades
+while preserving performance.
+21
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+Table 7: Backtest results under transaction costs c = 0 .1% and c = 0 .2%. Metrics shown are Cumulative Wealth
+(CW), Sharpe Ratio (SR), and Maximum Drawdown (MDD) across datasets US50, HSI45, and CSI300.
+c Method US50 HSI45 CSI300
+CW SR MDD CW SR MDD CW SR MDD
+- EFS-GPT 4.139.746±15.484 0.154±0.013 0.252±0.0213.338±0.770 0.076±0.012 0.324±0.0413.862±0.802 0.086±0.011 0.290±0.079EFS-DeepSeek32.709±6.244 0.149±0.003 0.261±0.0143.203±0.906 0.076±0.015 0.385±0.0242.451±0.412 0.060±0.010 0.356±0.022
+0.1% EFS-GPT 4.125.293±10.802 0.135±0.016 0.256±0.0212.710±0.571 0.065±0.011 0.340±0.0492.624±0.425 0.064±0.008 0.354±0.093EFS-DeepSeek22.058±4.053 0.133±0.003 0.265±0.0152.643±0.775 0.065±0.015 0.410±0.0231.668±0.227 0.039±0.008 0.434±0.012
+0.2% EFS-GPT 4.116.114±7.464 0.117±0.018 0.260±0.0222.201±0.422 0.054±0.011 0.358±0.0561.785±0.208 0.043±0.006 0.412±0.103EFS-DeepSeek14.876±2.646 0.117±0.003 0.270±0.0162.182±0.665 0.054±0.016 0.433±0.0221.136±0.130 0.018±0.007 0.502±0.009
+Portfolio Analysis. In this section, we analyze how the profits were generated in our EFS framework. We first examine
+the cumulative return curves across three datasets, as shown in Figure 11. Our LLM-generated portfolios exhibit two
+critical advantages: (1) the ability to preserve value during bear markets, maintaining stability even under broad market
+drawdowns, and (2) the capacity to amplify returns during bull markets by timely capturing growth opportunities.
+These traits demonstrate strong adaptability and robustness in diverse market regimes.
+2022-01 2022-03 2022-05 2022-07 2022-09 2022-11 2023-01
+Date
+0.6
+0.7
+0.8
+0.9
+1.0
+1.1
+1.2
+1.3Normalized Value (Start=1)
+2022 Portfolio Performance (Bear Market)
+gpt-4.1 #1
+gpt-4.1 #2
+gpt-4.1 #3
+deepseek-chat #1
+deepseek-chat #2
+deepseek-chat #3
+1/N Baseline
+ASMCVaR (m=10)
+2023-01 2023-03 2023-05 2023-07 2023-09 2023-11 2024-01
+Date
+1.00
+1.25
+1.50
+1.75
+2.00
+2.25
+2.50
+2.75
+2023 Portfolio Performance (Bull Market)
+(a) US50 Performance in Bull (2023) and Bear Markets (2022)
+2022-04 2022-06 2022-08 2022-10 2022-12
+Date
+0.6
+0.7
+0.8
+0.9
+1.0
+1.1
+1.2
+1.3
+1.4Normalized Value (Start=1)
+2022 Portfolio Performance (Bear Market)
+gpt-4.1 #1
+gpt-4.1 #2
+gpt-4.1 #3
+deepseek-chat #1
+deepseek-chat #2
+deepseek-chat #3
+1/N Baseline
+ASMCVaR (m=10)
+2024-01 2024-03 2024-05 2024-07 2024-09 2024-11 2025-01
+Date
+1.00
+1.25
+1.50
+1.75
+2.00
+2.25
+2.50
+2024 Portfolio Performance (Bull Market)
+(b) HSI45 Performance in Bull (2024) and Bear Markets (2022)
+Figure 8: Individual portfolio performance comparison during bull and bear market phases. These plots highlight the
+performance sensitivity of different strategies to market regimes.
+To further investigate how these profits were achieved, we analyze the asset composition of the portfolios. Figure 9
+displays the most frequently selected tickers over the entire backtesting period, while Figure 10 shows detailed se-
+22
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+lection breakdowns for specific years in the US50 and HSI45 datasets. We observe that EFS consistently identifies
+high-potential assets. For instance, in the US market, despite the significant downturn in 2022, our model frequently
+selected stocks such as GILD (Gilead Sciences), which exhibited strong counter-trend performance, and BRK-B (Berk-
+shire Hathaway), known for its defensive stability. This shows that even in adverse macroeconomic conditions, our
+factor discovery mechanism is able to uncover resilient or contrarian opportunities.
+TSLA NVDA AMD MELI PLTR FTNT MRVL LRCX PANW KLAC
+Ticker
+0
+100
+200
+300
+400
+500
+600
+700Number of Selections
+US50 T op 10 Selected Tickers
+0005.HK0941.HK0945.HK3328.HK1088.HK1398.HK0939.HK0386.HK0992.HK9992.HK
+Ticker
+0
+50
+100
+150
+200
+250
+300
+350
+400
+HSI45 T op 10 Selected Tickers
+300502.SZ300394.SZ688256.SS600026.SS300308.SZ601127.SS605117.SS601689.SS600188.SS300418.SZ
+Ticker
+0
+20
+40
+60
+80
+100
+120
+CSI300 T op 10 Selected Tickers
+5
+10
+15
+20
+25
+30
+Return Rate
+0.50
+0.75
+1.00
+1.25
+1.50
+1.75
+2.00
+2.25
+Return Rate
+0
+1
+2
+3
+4
+5
+6
+Return Rate
+Figure 9: Top 10 most frequently selected assets by EFS over the full backtest period for each market: US50 (left),
+HSI45 (middle), and CSI300 (right). Bar height indicates the number of selection occurrences, while the color shade
+reflects the cumulative return of each asset during the period. This highlights the model’s preference for consistently
+high-performing stocks.
+TSLA MELI AMD NVDA LRCX AAPL CDNS KLAC SNPS MRVL
+Ticker
+0
+25
+50
+75
+100
+125
+150
+175
+200Number of Selections
+US50 2020 T op 10 Tickers
+GILD PEP
+AMGNBRK-B ADP TMUS VRTX ROP
+CMCSACSCO
+Ticker
+0
+20
+40
+60
+80
+100
+120
+US50 2022 T op 10 Tickers
+NVDA TSLA AMD MELI FTNT PLTR PANW MRVL APP META
+Ticker
+0
+25
+50
+75
+100
+125
+150
+175
+US50 2023 T op 10 Tickers
+0005.HK0945.HK9633.HK0939.HK1088.HK9868.HK0941.HK3328.HK1810.HK9992.HK
+Ticker
+0
+20
+40
+60
+80
+100
+120
+140Number of Selections
+HSI45 2023 T op 10 Tickers
+0005.HK0941.HK0945.HK1088.HK3328.HK0939.HK2899.HK1398.HK9992.HK0700.HK
+Ticker
+0
+20
+40
+60
+80
+100
+120
+140
+HSI45 2024 T op 10 Tickers
+0005.HK1810.HK2338.HK0981.HK1398.HK9868.HK1211.HK0268.HK3328.HK2899.HK
+Ticker
+0
+5
+10
+15
+20
+25
+30
+35
+HSI45 2025 T op 10 Tickers
+1
+2
+3
+4
+5
+6
+7
+Return Rate
+0.3
+0.2
+0.1
+0.0
+0.1
+0.2
+Return Rate
+0.5
+1.0
+1.5
+2.0
+2.5
+Return Rate
+0.0
+0.1
+0.2
+0.3
+Return Rate
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+Return Rate
+0.2
+0.3
+0.4
+0.5
+0.6
+Return Rate
+Figure 10: Annual snapshots of the top 10 most frequently selected assets under EFS in representative years for US50
+(top row: 2020, 2022, 2023) and HSI45 (bottom row: 2023, 2024, 2025). Bar height denotes the number of selections
+within the given year, while the color encodes the annual return rate of each asset. This illustrates EFS’s dynamic asset
+preference and adaptability to varying market environments.
+Moreover, in 2023, without any explicit macroeconomic input, the model captured the semiconductor boom by select-
+ing NVDA and AMD—both key players in the AI and hardware surge—demonstrating implicit awareness of sectoral
+trends. In Hong Kong markets, similar patterns are observed. During 2022–2023, when the HSI experienced a pro-
+longed downturn, the model favored conservative financial assets such as 0005.HK (HSBC). As the market rebounded
+in late 2023 and 2024, the portfolios began shifting toward growth-oriented stocks like 9992.HK (Pop Mart), aligning
+with sentiment-driven and thematic plays in consumer markets.
+These results reflect that our LLM-guided factor evolution exhibits behavior analogous to that of sophisticated human
+investors—favoring defense in downturns and seeking growth in recovery phases—without being explicitly trained on
+23
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+macroeconomic indicators. The emerging portfolio patterns reveal that EFS not only adapts to market regimes but also
+autonomously captures meaningful economic signals through factor selection.
+Factor Scores Analysis. To better understand the underlying dynamics of factor behaviors throughout the investment
+horizon, we visualize the temporal evolution of factor scores in Figures 12a, 12b, and 12c, covering the US50, HSI45,
+and CSI300 datasets respectively. From these heatmaps, several key insights emerge:
+• i. Dynamic Adaptation to Market Regimes. The distribution and sparsity patterns of factor scores vary signif-
+icantly across different market stages, indicating that the LLM-generated factors are not static. For instance, in
+bearish regimes (e.g., early 2022 for CSI300), most factor scores are clustered near neutral or low values, whereas
+during bullish periods (e.g., late 2023 for HSI45), stronger signals emerge.
+• ii. Consistency of High-Scoring Factors. We observe temporal continuity in certain high-scoring factors, often
+aligned with stocks that exhibit sustained uptrends. This reflects the model’s ability to retain momentum information
+across time without explicit memory mechanisms.
+• iii. Emergent Sparsity Patterns. Across datasets, factor sparsity appears to adjust naturally. For example, during
+volatile or uncertain market conditions, fewer dominant factors appear, suggesting a cautious allocation strategy.
+Conversely, in more stable or trending markets, factor scores become denser and more directional.
+Factor Scores to Weights Allocation on Market Dataset. To validate our factor-based approach, we conducted
+additional experiments converting raw factor scores to optimized portfolio weights, implementing a sparsity constraint
+of m=10 assets. Figure 13b presents the temporal evolution of portfolio values, comparing: (1) the market baseline, (2)
+the optimization-based ASMCVaR benchmark, and (3) three distinct factor search regimes from our methodology. The
+results demonstrate that our sparse weighting transformation consistently outperforms both the passive market baseline
+and active optimization benchmark across multiple market regimes. Notably, all three factor search variants exhibit: (a)
+superior capital preservation during the 2022 bear market, and (b) enhanced participation during bull markets. This dual
+effectiveness emerges from our method’s dynamic weighting mechanism, which automatically adjusts concentration
+- maintaining diversified exposure during high-volatility periods while aggressively overweighting top-scoring assets
+during market rallies.
+To further examine the robustness and behavior of our weighting scheme, we conducted an ablation study by adjusting
+the temperature parameter τ in the score-to-weight transformation. As shown in Table 8, this temperature controls the
+sharpness of score concentration when allocating weights. Unexpectedly, under certain settings (e.g., US50, m = 10,
+τ = 2.0), EFS produced exceptionally high final wealth. Upon inspecting the portfolio logs, we found that this was
+due to the model assigning nearly all capital to a few assets that experienced extreme upward movements. This be-
+havior, amplified by compounding returns and high confidence scores, led to explosive terminal gains. While such
+concentrated portfolios may overcome human conservatism and exploit rare alpha opportunities, they also introduce
+substantial tail risk. Fortunately, as shown in our earlier equal-weight experiments, EFS already achieves solid perfor-
+mance without aggressive weighting. Therefore, for practical applications, we recommend adopting equal-weighted
+or temperature-smoothed versions (e.g., τ ∈ [0.5, 1.0]) to balance performance with robustness and reduce exposure
+to outlier overfitting.
+Table 8: Portfolio performance using scores to weight under different temperature settings
+US50 HSI45
+temp=0.1 temp=0.5 temp=1.0 temp=2.0 temp=0.1 temp=0.5 temp=1.0 temp=2.0
+m Model CW SR CW SR CW SR CW SR CW SR CW SR CW SR CW SR
+10 DeepSeek179.554 0.142247.376 0.147318.868 0.149389.010 0.1486.104 0.0966.246 0.0955.876 0.0894.901 0.078GPT-4.1 132.178 0.151180.417 0.155245.845 0.157332.340 0.1545.758 0.0876.084 0.0876.545 0.0877.486 0.088
+15 DeepSeek153.509 0.137220.427 0.144293.589 0.147371.420 0.1475.494 0.0925.884 0.0935.682 0.0884.837 0.078GPT-4.1 108.623 0.146150.682 0.150211.567 0.153303.639 0.1524.458 0.0774.984 0.0805.613 0.0826.792 0.085
+24
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+2019-04-012019-08-012019-12-012020-04-012020-08-012020-12-012021-04-012021-08-012021-12-012022-04-012022-08-012022-12-012023-04-012023-08-012023-12-012024-04-012024-08-012024-12-01
+Date
+0
+10
+20
+30
+40
+50
+60Portfolio Value
+Portfolio Performance Comparison
+Dataset: US50
+gpt-4.1 #1
+gpt-4.1 #2
+gpt-4.1 #3
+deepseek-chat #1
+deepseek-chat #2
+deepseek-chat #3
+Average Baseline
+ASMCVaR (m=10)
+2022-05-01 2022-09-01 2023-01-01 2023-05-01 2023-09-01 2024-01-01 2024-05-01 2024-09-01 2025-01-01
+Date
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+4.0
+4.5Portfolio Value
+Portfolio Performance Comparison
+Dataset: HSI45
+gpt-4.1 #1
+gpt-4.1 #2
+gpt-4.1 #3
+deepseek-chat #1
+deepseek-chat #2
+deepseek-chat #3
+Average Baseline
+ASMCVaR (m=10)
+2022-03-01 2022-07-01 2022-11-01 2023-03-01 2023-07-01 2023-11-01 2024-03-01 2024-07-01 2024-11-01 2025-03-01
+Date
+1
+2
+3
+4
+5Portfolio Value
+Portfolio Performance Comparison
+Dataset: CSI300
+gpt-4.1 #1
+gpt-4.1 #2
+gpt-4.1 #3
+deepseek-chat #1
+deepseek-chat #2
+deepseek-chat #3
+Average Baseline
+ASMCVaR (m=10)
+Figure 11: Portfolio performance comparison across US50, HSI45, and CSI300 datasets. Each plot shows the evolution
+of LLM-generated portfolios versus baselines and the ASMCVaR benchmark over time.
+25
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+0
+10
+20
+30
+40 Feature Index
+1.00
+ 0.75
+ 0.50
+ 0.25
+ 0.00 0.25 0.50 0.75 1.00
+Factor Score
+2019-02-20 2020-02-10 2021-01-29 2022-01-19 2023-01-10 2024-01-02 2024-12-20
+Date
+2.5
+5.0CW
+(a) US50 dataset
+0
+10
+20
+30
+40 Feature Index
+1.00
+ 0.75
+ 0.50
+ 0.25
+ 0.00 0.25 0.50 0.75 1.00
+Factor Score
+2022-02-22 2022-08-26 2023-03-02 2023-09-06 2024-03-12 2024-09-16 2025-03-24
+Date
+0.75
+1.00
+1.25CW
+(b) HSI45 dataset
+0
+50
+100
+150
+200
+250 Feature Index
+1.00
+ 0.75
+ 0.50
+ 0.25
+ 0.00 0.25 0.50 0.75 1.00
+Factor Score
+2022-02-25 2022-09-06 2023-03-24 2023-10-11 2024-04-24 2024-11-08 2025-05-27
+Date
+0.8
+1.0
+1.2CW
+(c) CSI300 dataset
+Figure 12: Factor score heatmaps and corresponding baseline curves across three datasets.
+26
+EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models
+2019-04-012019-08-012019-12-012020-04-012020-08-012020-12-012021-04-012021-08-012021-12-012022-04-012022-08-012022-12-012023-04-012023-08-012023-12-012024-04-012024-08-012024-12-01
+0%
+25%
+50%
+100%
+300%
+700%
+900%
+1150%
+1400%
+1900%
+3900%
+7900%
+9900%
+12400%
+14900%
+19900%
+39900%
+79900%
+99900%Portfolio Value (log scale)
+Portfolio Performance Comparison (Log Scale)
+Dataset: US50, Model: gpt-4.1
+Portfolio 1
+Portfolio 2
+Portfolio 3
+Baseline 1/N
+ASMCVaR (m=10)
+(a) US50 Portfolio Performance
+2022-05-01 2022-09-01 2023-01-01 2023-05-01 2023-09-01 2024-01-01 2024-05-01 2024-09-01 2025-01-01
+-20%
+0%
+25%
+50%
+100%
+300%Portfolio Value (log scale)
+Portfolio Performance Comparison (Log Scale)
+Dataset: HSI45, Model: gpt-4.1
+Portfolio 1
+Portfolio 2
+Portfolio 3
+Baseline 1/N
+ASMCVaR (m=10)
+(b) HSI45 Portfolio Performance
+Figure 13: Factor-based sparse solution portfolio performance comparison. Both plots show cumulative returns on a
+logarithmic scale (y-axis), demonstrating the relative performance of different portfolio strategies. Figure 13a displays
+results for the US50, while Figure 13b shows performance for the HSI45.
+27

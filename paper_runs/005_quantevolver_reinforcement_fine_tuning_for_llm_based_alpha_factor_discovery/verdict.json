@@ -1,0 +1,35 @@
+{
+  "candidate_proxy_count": 3,
+  "ff5mom_rows": [
+    {
+      "alpha_annualized": 0.0032849190887483,
+      "alpha_tstat_hac": 0.6514961447297817,
+      "candidate_id": "quantevolver_return_sharpe_60_proxy",
+      "candidate_standalone_oos_sharpe": 0.3159540989730854,
+      "combined_minus_old_sharpe": 0.0104596756531498,
+      "n_overlap_months": 305,
+      "r_squared": 0.9006303823574426
+    },
+    {
+      "alpha_annualized": -3.735392143086269e-17,
+      "alpha_tstat_hac": -5.442556562580609,
+      "candidate_id": "quantevolver_price_zscore_reversal_120_proxy",
+      "candidate_standalone_oos_sharpe": -0.3211416503312398,
+      "combined_minus_old_sharpe": 0.8426245560160306,
+      "n_overlap_months": 305,
+      "r_squared": 1.0
+    },
+    {
+      "alpha_annualized": -0.0094343615248744,
+      "alpha_tstat_hac": -1.0695973990169954,
+      "candidate_id": "quantevolver_volume_price_corr_proxy",
+      "candidate_standalone_oos_sharpe": -0.1690184418480686,
+      "combined_minus_old_sharpe": 0.0191670231864033,
+      "n_overlap_months": 305,
+      "r_squared": 0.5545369319185297
+    }
+  ],
+  "input_policy": "returns built only from read-only jkp-data USA.parquet",
+  "reason": "No shipped candidate return stream; JKP proxies for shipped seed ideas are either spanned by FF5Mom or not positive/significant after FF5Mom controls.",
+  "verdict": "not_relevant_after_jkp_ff5mom_proxy_test"
+}

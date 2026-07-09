@@ -1,0 +1,1430 @@
+Janus-Q: End-to-End Event-Driven Trading via
+Hierarchical-Gated Reward Modeling
+Xiang Li∗
+xli906@connect.hkust-gz.edu.cn
+The Hong Kong University of Science
+and Technology (Guangzhou)
+Guangzhou, China
+Zikai Wei∗
+weizikai@idea.edu.cn
+International Digital Economy
+Academy
+Shenzhen, China
+Yiyan Qi
+qiyiyan@idea.edu.cn
+International Digital Economy
+Academy
+Shenzhen, China
+Wanyun Zhou
+wzhou266@connect.hkust-gz.edu.cn
+The Hong Kong University of Science
+and Technology (Guangzhou)
+Guangzhou, China
+Xiang Liu
+xliu886@connect.hkust-gz.edu.cn
+The Hong Kong University of Science
+and Technology (Guangzhou)
+Guangzhou, China
+Penglei Sun
+psun012@connect.hkust-gz.edu.cn
+The Hong Kong University of Science
+and Technology (Guangzhou)
+Guangzhou, China
+Jian Guo
+guojian@idea.edu.cn
+International Digital Economy
+Academy
+Shenzhen, China
+Yongqi Zhang†
+yongqizhang@hkust-gz.edu.cn
+The Hong Kong University of Science
+and Technology (Guangzhou)
+Guangzhou, China
+Xiaowen Chu†
+xwchu@hkust-gz.edu.cn
+The Hong Kong University of Science
+and Technology (Guangzhou)
+Guangzhou, China
+Abstract
+Financial market movements are often driven by discrete financial
+events conveyed through news, whose impacts are heterogeneous,
+abrupt, and difficult to capture under purely numerical prediction
+objectives. These limitations have motivated growing interest in
+using textual information as the primary source of trading signals
+in learning-based systems. Two key challenges hinder existing ap-
+proaches: (1) the absence of large-scale, event-centric datasets that
+jointly model news semantics and statistically grounded market
+reactions, and (2) the misalignment between language model rea-
+soning and financially valid trading behavior under dynamic market
+conditions. To address these challenges, we proposeJanus-Q, an
+end-to-end event-driven trading framework that elevates financial
+news events from auxiliary signals to primary decision units. Janus-
+Q unifies event-centric data construction and model optimization
+under a two-stage paradigm. Stage I focuses on event-centric data
+construction, building a large-scale financial news event dataset
+comprising62,400articles annotated with10fine -grained event
+types, associated stocks, sentiment labels, and event-driven cumu-
+lative abnormal return (CAR). Stage II performs decision-oriented
+fine-tuning, combining supervised learning with reinforcement
+learning guided by a Hierarchical Gated Reward Model (HGRM),
+∗Equal Contribution.
+†Corresponding author.
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for components of this work owned by others than the
+author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or
+republish, to post on servers or to redistribute to lists, requires prior specific permission
+and/or a fee. Request permissions from permissions@acm.org.
+Conference’17, Washington, DC, USA
+©2026 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+ACM ISBN 978-x-xxxx-xxxx-x/YYYY/MM
+https://doi.org/10.1145/nnnnnnn.nnnnnnn
+which explicitly captures trade-offs among multiple trading objec-
+tives. Extensive experiments demonstrate that Janus-Q achieves
+more consistent, interpretable, and profitable trading decisions than
+market indices and LLM baselines, improving the Sharpe Ratio by
+up to102.0%while increasing direction accuracy by over17.5%
+compared to the strongest competing strategies.
+Keywords
+Event Trading, Reinforcement Learning, SFT
+ACM Reference Format:
+Xiang Li, Zikai Wei, Yiyan Qi, Wanyun Zhou, Xiang Liu, Penglei Sun, Jian
+Guo, Yongqi Zhang, and Xiaowen Chu. 2026. Janus-Q: End-to-End Event-
+Driven Trading via Hierarchical-Gated Reward Modeling. In.ACM, New
+York, NY, USA, 16 pages. https://doi.org/10.1145/nnnnnnn.nnnnnnn
+1 Introduction
+Financial markets have long been studied through the lens of time-
+series modeling, where asset prices or returns are predicted di-
+rectly from historical numerical signals such as prices, volumes,
+and technical indicators [45, 49]. Despite decades of methodologi-
+cal advances, purely numerical forecasting remains fundamentally
+challenging due to severe noise, non-stationarity, and frequent
+regime shifts in real-world markets [9, 21]. These limitations have
+motivated growing interest in incorporating alternative informa-
+tion sources, including financial news, corporate disclosures, and
+social media, into learning-based trading systems [32, 48, 50].
+However, a key characteristic of real financial markets is often
+overlooked: asset price movements are rarely driven by smooth
+temporal dynamics alone. Instead, they are frequently precipitated
+by discrete and interpretable events, such as earnings announce-
+ments, mergers and acquisitions, or risk disclosures, which can
+abruptly shift investor expectations and asset valuations [22, 31].
+These events constitute the primary mechanism through which
+arXiv:2602.19919v2 [cs.CL] 27 Feb 2026
+Conference’17, July 2017, Washington, DC, USA Xiang Li et al.
+Figure 1: Comparison of traditional time-series–driven trad-
+ing and event-driven trading strategies.
+new information is incorporated into prices. Crucially, different
+event categories induce highly heterogeneous market responses in
+terms of direction, magnitude, and temporal persistence. Treating
+such structurally distinct events as homogeneous signals inevitably
+obscures their economic meaning and limits decision quality.
+Although most market-moving events are communicated through
+unstructured financial news, existing learning-based trading sys-
+tems have yet to fully exploit event-level information. The dom-
+inant paradigm embeds textual news and fuses it with historical
+price sequences under numerical forecasting objectives [ 14, 46].
+Under this formulation, textual information is typically treated as
+an auxiliary modality, rather than as a primary driver of trading de-
+cisions [8, 16, 25]. As a result, learned policies are often dominated
+by recent price dynamics, even when those dynamics contradict the
+semantic implications of newly released events. Figure 1 illustrates
+this structural mismatch between time-series–driven and event-
+driven trading paradigms. This limitation stems primarily from the
+lack of structured supervision at the event level. While prior work
+has explored sentiment labels or coarse market reactions [18, 29, 34],
+two fundamental challenges remain largely unaddressed.
+Challenge 1 (Ch1): Lack of Event–Market Granularity.Ex-
+isting financial datasets fail to jointly modelwhat event occurred,
+which assets were affected and with what semantic polarity,how
+the market responded over time, andthe coverage of event domains.
+Without fine-grained event categories and statistically grounded
+post-event outcomes, models struggle to distinguish economically
+meaningful news from noise or to reason about heterogeneous mar-
+ket responses across event types [4, 10, 26]. As shown in Table 1,
+most existing resources either focus on narrow domains (e.g., risk
+or macro events) or provide coarse labels without jointly model-
+ing sentiment and impact magnitude (e.g., CAR). General-domain
+datasets suitable for event-driven trading remain particularly scarce.
+Moreover, approaches that infer event impact directly from raw
+price sequences are heavily confounded by market-wide and firm-
+specific factors, making it difficult to isolate causal event effects or
+learn heterogeneous event-to-market mappings.
+Challenge 2 (Ch2): Misalignment Between Semantic Rea-
+soning and Market Reality.Beyond data limitations, aligning
+language model reasoning with empirical market behavior remains
+nontrivial. Although large language models (LLM) can generate flu-
+ent and plausible interpretations of financial news, their semantic
+judgments are not inherently grounded in realized market out-
+comes [44, 51]. In practice, semantic polarity does not map linearly
+to price movements: apparently positive announcements may trig-
+ger corrections due to priced-in expectations, while negative news
+can be absorbed by the market and followed by stabilization or
+rebound. Consequently, purely supervised learning risks capturing
+superficial correlations, whereas profit-driven optimization alone
+often induces spurious strategies that exploit short-term noise [20].
+To address these challenges, we proposeJanus-Q, a two-stage
+event-driven trading framework that elevates financial news events
+from auxiliary features to primary decision units. First, to tackle
+(Ch1), we construct a large-scale financial event dataset compris-
+ing62,400expert-annotated news articles, each labeled with fine-
+grained event types, associated stocks, semantic polarity, and cu-
+mulative abnormal returns (CAR), which capture event-induced
+abnormal returns by aggregating deviations from expected, event-
+free price dynamics over statistically defined event windows.
+Building on this dataset, we develop a decision-oriented training
+paradigm that directly maps financial news events to executable
+trading actions. As illustrated in Figure 2, the framework adopts
+a multi-step optimization paradigm. Supervised fine -tuning first
+establishes a reasoning-aware mapping from event descriptions to
+expected CAR, effectively integrating textual semantics, market sig-
+nals, and firm-specific features. Subsequently, a Hierarchical Gated
+Reward Model (HGRM) is introduced for reinforcement fine-tuning.
+This component explicitly addresses the semantic–market gap
+(Ch2) by decomposing the trading reward into interpretable com-
+ponents reflecting event-type consistency, directional accuracy, and
+return-magnitude reliability. The hierarchical structure further acts
+as a form of semantic regularization, constraining the learned pol-
+icy to realize profits through financially grounded reasoning rather
+than spurious reward exploitation, while maintaining sensitivity to
+risk and transaction costs.
+Extensive experiments demonstrate that Janus-Q consistently
+outperforms market indices, time-series–oriented models, and both
+vanilla and financial LLM baselines. On average, Janus-Q improves
+direction accuracy by17.5%and event-type accuracy by18.2%over
+the strongest competing methods. Ablation studies further confirm
+the critical role of HGRM in achieving these gains. The principal
+contributions of this paper are as follows:
+• We construct a large-scale dataset of62,400financial news
+articles manually annotated with10event types, associated
+stocks, semantic labels, and event-driven abnormal returns,
+forming a unified benchmark for event-level market impact
+analysis.
+• We proposeJanus-Q, the first end-to-end event-driven trad-
+ing framework that directly maps financial news events to
+trading decisions, unifying event interpretation and market
+response learning via HGRM-guided optimization.
+• We evaluate Janus-Q through extensive experiments and find
+that it delivers strong and consistent trading performance,
+improving the Sharpe Ratio by102.0%and direction accu-
+racy by5.4%compared with the runner-up strategy, while
+Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling Conference’17, July 2017, Washington, DC, USA
+maintaining a comparable maximum drawdown. These re-
+sults confirm the effective alignment between event under-
+standing and trading decisions.
+2 Related Work
+2.1 Event-Driven Modeling
+Early studies on event-driven market analysis originate from econo-
+metric and statistical finance, where discrete corporate or macroeco-
+nomic events are treated as exogenous shocks and analyzed through
+abnormal return dynamics around predefined event windows. The
+classical event study methodology formalized this process by esti-
+mating expected returns from factor models and attributing devia-
+tions to the information content of events, establishing a standard
+toolkit for measuring market reactions [23]. As textual disclosures
+and news became increasingly accessible, subsequent research in-
+corporated qualitative information into event analysis, showing that
+media tone and sentiment convey economically meaningful signals
+that explain and predict short-horizon market movements beyond
+purely price-based features [ 30]. Building on this line, machine
+learning (ML) and deep learning (DL) approaches began to integrate
+textual information with market data, shifting from handcrafted
+sentiment indicators toward learning event semantics directly from
+text. Ding et al. [6] extract structured events from news and learn
+dense event representations to model both short-term and long-
+term effects on stock movements, with subsequent work further
+enhancing event representations by incorporating richer contextual
+and temporal signals [7]. More recently, Wang et al. [33] introduce
+StockMem, an event-reflection memory framework that organizes
+news into structured events and leverages their temporal evolu-
+tion to retrieve analogous historical scenarios, supporting more
+explainable stock movement prediction. However, despite richer
+event representations, existing pipelines remain prediction-oriented
+and treat events primarily as inputs, without explicitly modeling
+event-level properties such as historical context or relative impor-
+tance to support decision -oriented trading objectives. Moreover,
+the field still lacks a comprehensive, standardized dataset for trad-
+ing. Following this direction, we propose an event-centric dataset
+that integrates event categorization, sentiment annotation, and
+CAR-based evaluation of event impacts.
+2.2 LLM for Trading
+Recent studies have explored LLMs for trading-related tasks, mo-
+tivated by their ability to process unstructured financial texts and
+to provide explicit reasoning through chain-of-thought genera-
+tion [37, 42]. Unlike classical ML or DL models that operate as
+black-box predictors relying on past numerical data and struggling
+with abrupt market shifts, LLMs can articulate intermediate causal
+rationales when interpreting complex market events and respond
+adaptively to sudden market shocks [2, 27]. Yang et al.[41] adapt
+instruction-tuned LLM for financial analysis and trading, show-
+ing that they effectively extract market-relevant semantics from
+financial texts. Zhang et al.[44] proposeFinAgent, an LLM -based
+financial agent that interacts with market environments and ex-
+ternal tools to support trading and portfolio management. Xiao et
+al. [36] study multi-agent trading frameworks powered by LLM,
+where language models coordinate decision-making through com-
+munication and tool usage in simulated markets. More recently,
+Xiao et al. [35] introduceTrading-R1, which applies reinforcement
+learning to enhance LLM reasoning for trading decisions, high-
+lighting the potential of RL-based fine-tuning for aligning language
+model outputs with trading actions. In parallel, Li et al. [19] propose
+RETuning, a framework that improves stock movement prediction
+by refining inference-time reasoning with reflective and evidence-
+based analysis over rich textual inputs. Despite these advances,
+current LLM-based trading systems face two complementary limi-
+tations. First, trading decisions are often treated as opaque actions
+primarily driven by price or volume signals, with textual infor-
+mation only weakly integrated into the decision process. Second,
+reinforcement learning–based methods typically rely on heuristic,
+linearly additive reward designs in which competing objectives
+may offset one another, limiting their ability to model economically
+meaningful trade-offs. Motivated by these limitations, we propose
+aHierarchical-Gated Reward Modelthat aligns event-level semantic
+reasoning with market-grounded trading outcomes.
+3 Methodology
+This section describes thewhyandhowof event-driven trading.
+As illustrated in Figure 2, our framework is divided into two core
+paradigms: Stage I, which focuses on data construction, and Stage II,
+which focuses on model training.
+3.1 Event Centric Data Construction
+Why: The natural question guiding the collection of this dataset is:
+how will this event affect the associated asset in terms of direction and
+magnitude, and how does its impact differ from that of other event
+types?How: To address this, we construct an event-centric dataset
+that captures both the market impact and the semantic interpreta-
+tion of financial news events. Specifically, motivated by classical
+event study methodology [22], we first quantify impact magnitude
+through Event-to-CAR modeling, and then associate each event
+with category labels and structured semantic annotations to sup-
+port event-level supervision. Event type annotations are conducted
+by a panel of six domain professionals, including fund researchers
+and securities analysts, ensuring consistency, financial relevance,
+and reliability.
+3.1.1 Event-to-CAR Modeling.Given a news event for stock 𝑖 oc-
+curring at event time𝑡0, we quantify its market impact using the
+CAR computed over a predefined event window. Let 𝑟𝑖,𝑡 denote
+the return of stock 𝑖 on trading day 𝑡. We define two time inter-
+vals: anestimation window Test =(𝑇 0,𝑇 1] precedes the event and is
+used to estimate event-free normal returns, and anevent window
+Tevt =(𝑇 1,𝑇 2] captures abnormal price reactions associated with
+the event, including potential pre-event leakage and delayed mar-
+ket adjustment. Here𝑇0,𝑇1, and𝑇2 specify the temporal boundaries
+of the estimation and event windows relative to 𝑡0. The timing
+structure is illustrated in Figure 5.
+• Market Model (MR)To remove broad market movements, we
+estimate the expected return of each stock𝑖 using the market model
+over the estimation windowTest:
+𝑟𝑖,𝑡 =𝛼 𝑖+𝛽 𝑖𝑟𝑚(𝑖),𝑡 +𝜀 𝑖,𝑡, 𝑡∈T est.(1)
+Conference’17, July 2017, Washington, DC, USA Xiang Li et al.
+Table 1: Comparison of key characteristics of financial event datasets, including event typing, sentiment annotation, market
+impact magnitude, domain scope, event-type granularity, dataset scale, and language coverage.
+Dataset Event Typing Open Source Sentiment Impact Magnitude (CAR) Domain # Event Types Size Language
+ChFinAnn [47]✓ ✓ ✗ ✗Risky 5 32,040 CN
+DuEE-Fin [10]✓ ✗ ✗ ✗General 13 15,000 CN
+FNSPID [8]✗ ✓ ✓ ✗/ / 15,700,000 EN
+SEntFiN [26]✗ ✓ ✓ ✗/ / 10,753 EN
+CAMEF [46]✓ ✗ ✓ ✗Macro 7 2,596 EN
+CSMAR [33]✓ ✗ ✗ ✗General 13 / CN
+DocFEE [4]✓ ✓ ✗ ✗Risky 9 19,044 CN
+Ours ✓ ✓ ✓ ✓ General 10 62,400 CN
+Reasoning CoT
+News
+Market data
+Inc. Profile
+Stage I: Event-centric data construction
+SFT GRPO
+Reward
+Rule
+Event Type
+Format
+Direction
+Strength
+PNL
+> trade cost
+< trade cost
+<Market influence> ..
+1. 2. <CAR Analysis>..
+<Conclusion> ...
+HGRM
+Inference
+Trading signals
+Template
+Trading log
+2024/10/30 …BYD…merge.. BYD BUY
+2024/10/30 BOC…freeze… BOC SELL
+2024/10/31 Morgan rate … TUOPU HOLD
+…
+[System] You are a Senior Financial Analyst specializing in news impact analysis…
+Candidates: <Event List: Equity, Asset, Risk, Regulation...>
+Requirements: 1. Identify <Event Type>; 2. Predict <Market Reaction (Dir/Str/CAR)>;
+3. Provide <Detailed Reasoning Chain>…
+[User] Context: <Company Info> \n News: <Time & Content> \n Data: <Pre-event 
+Market Status> \n Action: Analyze impact and output trading conclusion...
+Magnitude (MSE)
+MR
+RM
+CARRaw Series
+Stage II: Finetuning
+Figure 2: Overview of the proposed two-stage event-driven trading framework. Stage I focuses on event-centric data construction
+with market-grounded supervision, while Stage II performs decision-oriented fine-tuning via supervised and reinforcement
+learning.
+where𝑟𝑚(𝑖),𝑡 is the return of the benchmark market index se-
+lected for stock𝑖. We choose the benchmark index𝑚(𝑖) according
+to the market-cap segment of stock𝑖 (e.g., large-/mid-/small-cap)
+so that𝑟 𝑚(𝑖),𝑡 matches its investable universe.
+Given the parameters ˆ𝛼𝑖 and ˆ𝛽𝑖 estimated from the estimation
+windowTest via an ordinary least squares fit of the market model
+[13], we evaluate the fitted model on the event window to obtain
+abnormal returns (AR) as
+𝐴𝑅MR
+𝑖,𝑡 =𝑟 𝑖,𝑡−   ˆ𝛼𝑖+ ˆ𝛽𝑖𝑟𝑚(𝑖),𝑡
+, 𝑡∈T evt.(2)
+• Risk Model (RM) NeutralizationMarket-adjusted returns may
+still contain systematic style/industry effects. We further neutralize
+𝐴𝑅MR
+𝑖,𝑡 using a multi-factor risk model onTevt:
+𝐴𝑅MR
+𝑖,𝑡 =𝛾 𝑖+x⊤
+𝑖,𝑡 𝝀𝑡+𝑢 𝑖,𝑡, 𝑡∈T evt.(3)
+wherex 𝑖,𝑡 denotes the Barra factor exposures of stock𝑖(e.g., style
+and industry exposures under risk model), 𝝀𝑡 are the correspond-
+ing factor returns/premia at time𝑡,𝛾𝑖 is a stock-specific intercept
+capturing persistent effects not explained by the factors, and𝑢𝑖,𝑡 is
+the idiosyncratic component.
+We apply the estimated factor premia to obtain thefactor-neutral
+abnormal return within the event window:
+𝐴𝑅𝑖,𝑡 =𝐴𝑅 MR
+𝑖,𝑡 −x⊤
+𝑖,𝑡b𝝀𝑡, 𝑡∈T evt.(4)
+Details of the risk model specification and factor definitions are
+provided in Appendix A.3.
+Cumulative Abnormal Return (CAR).We then aggregate ab-
+normal returns over the event window to obtain the cumulative
+abnormal return:
+𝐶𝐴𝑅𝑖 =
+∑︁
+𝑡∈T evt
+𝐴𝑅𝑖,𝑡.(5)
+The resulting CAR summarizes the total abnormal price movement
+attributable to the event, capturing both potential pre-event infor-
+mation leakage and delayed post-event market adjustment.
+3.1.2 Event Taxonomy and Sentiment Annotation.The cumulative
+abnormal return (CAR) defined above serves as theimpact magni-
+tudeof an event, quantifying its realized economic effect on asset
+Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling Conference’17, July 2017, Washington, DC, USA
+prices. To complement this market-grounded signal, we further
+associate each event with structured semantic labels.
+Formally, each event is represented by a ground-truth label
+𝑦={𝑐,𝑑,𝑠,𝑒} , where 𝑐 denotes the realized CAR and 𝑒∈ E is
+the annotated event type. In our formulation, the direction𝑑 (pos-
+itive, negative, or neutral) and the trading strength 𝑠 (strong or
+weak) are deterministically derived from𝑐: the direction is obtained
+via the sign function 𝑑=sign(𝑐) , while the trading strength is
+determined by a predefined threshold𝜏 that specifies whether the
+magnitude of the market impact is sufficient to justify the execution
+of the trade. Together,𝑑 and𝑠 serve assemanticthat characterizes
+how the market reacts to an event, complementing the quantitative
+impact magnitude𝑐. The detailed taxonomy of event types, the cor-
+responding annotation criteria, and the dataset format are provided
+in Appendix A.1.2.
+3.2 Decision-Oriented Finetuning
+Why: (1) Purely supervised finetuning cannot ensure that model
+reasoning translates into market-consistent decisions. (2) Existing
+reinforcement learning–based methods often rely on heuristic, ad-
+ditively designed rewards, where competing objectives may offset
+each other, limiting their ability to model economically meaningful
+trade-offs.How: Building on the event-centric dataset, we perform
+decision-oriented fine-tuning to align model reasoning with exe-
+cutable trading actions. This stage follows a multi-step training
+paradigm. We first apply supervised fine-tuning (SFT) to stabilize
+structured event reasoning, and then perform reinforcement fine-
+tuning using Group Relative Policy Optimization (GRPO) to directly
+optimize trading decisions. To ensure that reinforcement learning is
+guided by economically meaningful signals, we design a structured
+reward mechanism, detailed below.
+3.2.1 Hierarchical-Gated Reward Modeling.To bridge semantic
+event understanding with executable trading actions, we propose a
+Hierarchical-Gated Reward Model(HGRM) that provides structured
+supervision for reinforcement-based fine-tuning. For a given stock
+𝑖 at event time 𝑡0, the model generates a response that is inter-
+preted as a composite prediction ˆ𝑦={ ˆ𝑐, ˆ𝑑, ˆ𝑠, ˆ𝑒}, where ˆ𝑐 denotes
+the predicted cumulative abnormal return (CAR), ˆ𝑑 represents the
+predicted direction (positive, negative, neutral), ˆ𝑠 indicates whether
+a trade should be executed (strong or weak). and ˆ𝑒corresponds to
+the inferred event type.
+For model outputs, we first extract the predicted direction ˆ𝑑
+and trading strength ˆ𝑠 from the generated response ˆ𝑦 when these
+attributes are explicitly stated. If either ˆ𝑑 or ˆ𝑠 is absent, the missing
+component is independently inferred from the predicted CAR ˆ𝑐,
+with ˆ𝑑=sign( ˆ𝑐)and ˆ𝑠determined using the same threshold𝜏.
+3.2.2 Hard gate: Direction correctness.We first enforce a hard di-
+rection gate𝑔dir∈{ 0, 1} to prevent spurious profits under incorrect
+market polarity. The direction score is defined as
+𝑠dir( ˆ𝑑,𝑑)=
+ 
+
+1, ˆ𝑑=𝑑,
+−𝜆dir, ˆ𝑑=−𝑑,
+0,otherwise,
+(6)
+where𝜆dir > 1assigns a stronger penalty to opposite directions
+than to ambiguous cases involving neutral. When𝑠dir < 0, we set
+𝑔dir = 0to block all subsequent reward contributions and avoid
+rewarding trades with incorrect directional alignment.
+3.2.3 Soft gate: Event-type consistency.We introduce an event-type
+soft gate that discounts rewards when the predicted event category
+is incorrect:
+𝑠evt( ˆ𝑒,𝑒)=
+ 
+
+1, ˆ𝑒=𝑒,
+−𝜆evt, ˆ𝑒≠𝑒,
+−𝜆miss, ˆ𝑒=∅,
+𝑚evt =
+(
+1, ˆ𝑒=𝑒
+𝛼,otherwise, (7)
+Here,𝑠evt( ˆ𝑒,𝑒) provides a signed supervision signal for event-
+type correctness, while𝑚evt acts as a multiplicative discount on
+trading rewards. The penalty parameters 𝜆evt > 0and 𝜆miss > 0
+control the strength of penalization for incorrect and missing event-
+type predictions (i.e., ˆ𝑒=∅ ), respectively. The discount factor
+𝛼∈( 0, 1) reduces the contribution of profit-based rewards when the
+predicted event type does not match the ground truth, encouraging
+consistency between the understanding of the event and the trading
+outcomes.
+3.2.4 Trading reward: cost-aware PnL with strength regularization.
+To reflect economically meaningful outcomes, we define a cost-
+aware single-event trading payoff based on the realized CAR𝑐:
+PnL( ˆ𝑑,𝑐)=
+ 
+
+𝑐−𝜅, ˆ𝑑=positive,
+−𝑐−𝜅, ˆ𝑑=negative,
+0, ˆ𝑑=neutral,
+(8)
+where𝜅 denotes the transaction cost. The payoff is activated only
+when the predicted trading strength is ˆ𝑠=strong , scaled by the
+event-type discount factor 𝑚evt and the realized profit and loss
+PnL( ˆ𝑑,𝑐) , and set to zero otherwise. To stabilize reinforcement
+learning, the resulting reward is clipped to a symmetric range
+[−𝜌,𝜌] , where𝜌> 0is a predefined bound. We denote the resulting
+clipped profit-based reward as𝑟 pnl =clip(𝑚 evt·PnL( ˆ𝑑,𝑐),−𝜌,𝜌).
+In addition, we regularize the predicted trading strength to dis-
+courage degenerate strategies. False-positive decisions (predicting
+strong when no trade is warranted) and false-negative decisions
+(predicting weak when profitable opportunities exist) are penalized
+with asymmetric costs, preventing the model from collapsing to
+always-trade or never-trade behaviors.
+3.2.5 Magnitude shaping and process reward.To provide fine-grained
+supervision beyond direction, we add a magnitude shaping term
+when the direction is not blocked:
+𝑟mag =exp
+
+−| ˆ𝑐−𝑐|
+𝜎
+
+,(9)
+where𝜎 controls the tolerance scale. We also include a lightweight
+process reward𝑟proc that evaluates the presence of required rea-
+soning sections and penalizes overly long responses and excessive
+self-questioning.
+3.2.6 Overall reward.We compose the final HGRM reward hier-
+archically, where higher-level gates control whether lower-level
+rewards are activated:
+𝑅=𝑤 dir𝑠dir
++𝑔 dir
+
+𝑤evt𝑠evt+𝑤 pnl𝑟pnl+𝑤 mag𝑟mag+𝑤 proc𝑟proc
+
+. (10)
+Conference’17, July 2017, Washington, DC, USA Xiang Li et al.
+where𝑔dir∈{ 0, 1} blocks lower-level rewards when the predicted
+direction is opposite to the realized movement (i.e.,𝑠dir < 0). The
+Algorithm 1 formalizes the hierarchical gated reward modeling
+procedure. The corresponding training configurations and imple-
+mentation details are provided in Appendix A.1.1.
+4 Experiment Results
+4.1 Experiment Setup
+Given a universe of stocks S, for any stock 𝑠∈S on a trading
+day𝑡, we evaluate a long–short trading strategy driven by Janus-Q.
+The trading process is defined as follows.(1) Signal Generation.
+Janus-Q analyzes all news events released between the market
+open at9 :30on day 𝑡 and the market open at9 :30on day 𝑡+1,
+and produces a directional signal 𝛾𝑠,𝑡 ∈ {Long,Short,Hold} for
+each stock𝑠.(2) Event-weighted Signal Aggregation.On each
+trading day𝑡, news signals are aggregated at the portfolio level
+using event-type weights𝑤𝑘 estimated from historical post-event
+abnormal returns. The daily budget is allocated across event types
+and evenly split within each type using only information available
+before day 𝑡+1market open.(3) Entry Rule.If the aggregated
+signal𝛾𝑠,𝑡 indicates a long (short) position, we initiate a long (short)
+trade at the opening price 𝑜𝑠,𝑡+1 on day𝑡+1.(4) Exit Rule.The
+position is held until the last trading day within the subsequent
+two trading days, denoted as𝜏(𝑡) , at which point the stock is sold
+at the closing price𝑐 𝑠,𝜏(𝑡) .
+4.2 Evaluation Objective
+We conduct a comprehensive evaluation to assess the effectiveness
+of Janus-Q in event-driven trading. Our evaluation is designed to
+examine both overall trading performance and the contribution
+of key design components, with a particular focus on decision
+alignment, reward modeling, and human-consistent understanding.
+To this end, we structure our experiments around the following
+research questions (RQs):
+• RQ1:Does Janus-Q consistently outperform market indices and
+competitive model baselines in terms of trading performance and
+decision accuracy?
+• RQ2:How does each core component of Janus-Q contribute to
+its overall trading performance?
+• RQ3:How effective are diversified reward objectives in improving
+learning stability and decision-oriented trading performance?
+• RQ4:To what extent does Janus-Q align with human judgments
+in interpreting financial events?
+4.3 Dataset & Metrics
+We evaluate our model on a multi-source dataset that integrates
+both textual and financial information. Raw news articles are col-
+lected from the Datayes platform1, spanning the period from Janu-
+ary 1, 2023 to January 25, 2025. Corresponding stock price data for
+backtesting are retrieved from Tushare2, covering the period from
+January 1, 2023 to February 6, 2025. All data are chronologically
+split into a 4:4:1:1 ratio for historical statistics, training, validation,
+1https://www.datayes.com
+2https://tushare.pro
+and testing. Additionally, we incorporate corporate profiles, includ-
+ing industry category and market share—sourced from the Wind
+platform3 to support semantic enrichment.
+To evaluate the performance of our model, we adopt six metrics:
+Mean Absolute Error (MAE),Root Mean Square Error (RMSE),
+Direction Accuracy (DA),Event Type Accuracy (ETA),Sharpe
+Ratio (SR), andMaximum Drawdown (MDD). Together, these
+metrics provide a comprehensive view of both predictive quality
+and practical investment performance of our model.
+4.4 Baseline
+Our proposed approach is evaluated against four categories of
+baselines:
+• Market Indices.Market indices serve as standard passive in-
+vestment benchmarks. We report results on several representative
+indices, including theCSI 300,CSI 500, andCSI 1000, which col-
+lectively cover large-, mid-, and small-cap segments of the Chinese
+equity market.
+• Time-Series-Oriented LLM.We include a set of LLM specifically
+designed for modeling temporal and sequential data, which adapt
+LLM architectures to time-series forecasting tasks. Representative
+models in this category include Time-MQA [15], ChatTS-14B [39],
+and TimeMaster [43].
+• Financial Domain-Specific LLM.We evaluate several open-
+source language models pre-trained or fine-tuned on financial cor-
+pora, including FinMA [38], DISC-FinLLM [3], and Stock-Chain [17].
+These models are designed to capture financial semantics and
+domain-specific patterns, enabling direct application to market
+analysis and trading-related evaluation.
+• General-Purpose LLM.We further include widely used general-
+purpose language models, including QwQ-32B [40], Claude-3-Haiku
+[24], GPT-4o-mini [11], DeepSeek-v3.1-nex-n1 [1], Grok-3-mini-
+beta [12], Qwen2.5-7B [28], and Gemini-2.5-flash [5], which are not
+specifically tuned for financial tasks.
+4.5 Experimental Results
+4.5.1 Baseline Comparison (RQ1).We compare Janus-Q against 16
+baseline methods across six general evaluation metrics. Figure 3
+depicts a market regime characterized by a correction phase, fol-
+lowed by a broad pullback and consolidation, reflecting the waning
+influence of favorable Chinese fiscal policy signals and subsequent
+index-level corrections. During this period, all three benchmark
+indices fail to sustain positive risk-adjusted returns, with Sharpe
+Ratios remaining negative throughout. Most time-aware models
+and financial LLM exhibit similar patterns, either enduring persis-
+tent drawdowns or demonstrating weak, oscillatory NAV trajecto-
+ries that closely mirror the underlying market dynamics. Among
+general-purpose LLM, only QwQ-32B and DeepSeek-v3.1-nex-n1
+achieve positive Sharpe Ratios; however, their NAV curves remain
+highly volatile and lack sustained upward momentum. In contrast,
+Janus-Q exhibits a distinctly different trajectory. It effectively cap-
+tures the sharp upswing observed in late December and maintains
+a stable and consistent growth trend thereafter. By the end of the
+evaluation window, Janus-Q achieves the highest cumulative return
+among all compared methods, highlighting its superior ability to
+3https://www.wind.com.cn
+Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling Conference’17, July 2017, Washington, DC, USA
+Figure 3: Cumulative returns of each baseline strategy on the financial news dataset from November 12, 2024 to February 6,
+2025. The figure shows the net asset value (NA V) curves over the backtesting period.
+Table 2: Performance comparison across Market Indices, Vanilla LLM, Time-aware LLM, and Financial LLM.
+Model MAE↓RMSE↓DA↑ETA↑SR↑MDD↓
+Market Indices
+CSI 300 – – – – -1.8027 0.0945
+CSI 500 – – – – -1.6074 0.1423
+CSI 1000 – – – – -0.1036 0.1456
+TimeLLM
+Time-MQA 0.0427 0.2651 0.4732 0.5958 -4.2184 0.1589
+ChatTS-14B 0.0932 0.3271 0.4995 0.6223 -4.2827 0.1675
+TimeMaster 0.0472 0.1015 0.4472 0.6263 -5.9237 0.1981
+FinLLM
+Stock-Chain 0.1352 0.3226 0.4510 0.4364 -5.3581 0.1800
+FinMA 0.0947 0.2531 0.4550 0.5714 -6.9668 0.2358
+DISC-FinLLM 0.0707 0.1672 0.4286 0.5608 -4.6307 0.2139
+Vanilla LLM
+QwQ-32B 0.0437 0.0839 0.4674 0.7080 0.6481 0.0979
+Claude-3-Haiku 0.0384 0.0557 0.4547 0.4884 -5.4698 0.1395
+GPT-4o-mini 0.0387 0.0558 0.4700 0.7508 -3.8759 0.1060
+DeepSeek-v3.1-nex-n1 0.0541 0.1214 0.4365 0.6811 0.3710 0.1300
+Grok-3-mini-beta 0.0369 0.0559 0.4795 0.5417 -2.2698 0.0855
+Qwen2.5-7B 0.0377 0.0551 0.4114 0.4879 -3.9154 0.1177
+Gemini-2.5-flash 0.0534 0.0730 0.4276 0.6797 -2.08990.0805
+Finetuning LLM Janus-Q (Ours) 0.0349 0.0541 0.5869 0.8009 1.3088 0.1196
+adapt to shifting market conditions and translate predictive preci-
+sion into tangible trading gains.
+The quantitative results in Table 2 corroborate these findings.
+Janus-Q consistently outperforms all baselines on both decision-
+level and trading-level metrics. It achieves the lowest CAR predic-
+tion error, reducing MAE by 18.3% relative to the best time-aware
+model and by 50.6% over the strongest financial LLM baseline; even
+against the best vanilla LLM, Janus-Q still lowers error by 5.4%. Its
+direction accuracy further exceeds the best time-aware, financial,
+and vanilla LLM baselines by 17.5%, 29.0%, and 22.4%, respectively.
+Notably, domain-specific FinLLM underperform most vanilla LLM,
+likely due to task–domain mismatch during finetuning and architec-
+tural or context-length constraints that hinder effective modeling
+of long, complex news narratives. Meanwhile, time-aware models
+remain inferior in backtesting performance despite explicitly in-
+corporating textual features. This indicates that merely injecting
+textual cues as auxiliary inputs is insufficient for robust trading,
+reinforcing the value of directly optimizing the event-to-decision
+mapping. These decision-level gains translate into significantly
+better trading outcomes. Janus-Q attains a Sharpe Ratio of 1.3088,
+Conference’17, July 2017, Washington, DC, USA Xiang Li et al.
+Table 3: Ablation study of Janus-Q. Each variant removes a
+single source-level or structural component from the full
+model.
+Methods MAE DA ETA SR
+w/o CAR 0.0387 0.5261 0.7796 0.8690
+w/o Co. Info 0.0353 0.5464 0.7790 0.9608
+w/o SFT 0.0381 0.4429 0.6771 -5.2848
+w/o GRPO 0.0355 0.5459 0.7881 1.1330
+Janus-Q (Full) 0.0349 0.5869 0.8009 1.3088
+Table 4: Ablation study of diversified reward objectives in
+HGRM. Each variant removes a single reward component
+from the full model.
+Methods MAE DA ETA SR
+w/o Event Type 0.03450.5819 0.7817 1.2107
+w/o Direction 0.0357 0.5589 0.7896 1.2788
+w/o Magnitude 0.0347 0.5653 0.7843 1.1558
+w/o PNL 0.0354 0.5799 0.7868 1.1953
+HGRM (Full) 0.03490.5869 0.8009 1.3088
+more than doubling that of the runner-up QwQ-32B and yielding a
+relative improvement above 102.0%. In contrast, both time-aware
+and financial LLM baselines exhibit negative Sharpe Ratios over
+the same test horizon. Although some baselines achieve marginally
+lower drawdowns, this comes at the cost of substantially reduced
+returns, whereas Janus-Q attains a more favorable balance between
+profitability and stability with superior risk-adjusted performance.
+4.6 Ablation Study
+4.6.1 Effectiveness of Each Component (RQ2).Table 3 reports the
+ablation study evaluating the contribution of each main compo-
+nent in Janus-Q. Removing any component consistently degrades
+performance, confirming that the framework’s effectiveness arises
+from the synergy among its core modules. Among all variants,
+eliminating supervised fine-tuning leads to the most pronounced
+deterioration, with direction accuracy declining by over 14% and
+trading performance shifting from a robustly positive regime to a
+distinctly negative Sharpe Ratio. This finding underscores its funda-
+mental role in establishing a reliable decision-making foundation.
+In comparison, removing reinforcement optimization causes a mod-
+erate yet consistent decline of approximately 13% in Sharpe Ratio,
+suggesting that reinforcement learning primarily fine-tunes and en-
+hances an already acquired policy rather than replacing supervised
+learning. Ablating CAR supervision or company-level information
+results in smaller but still noticeable reductions in both predic-
+tive accuracy and profitability, demonstrating that market impact
+cues and firm-specific context make meaningful contributions to
+effective event-driven trading.
+4.6.2 Effectiveness of Diversified Reward Objectives (RQ3).Table 4
+examines the impact of removing individual reward objectives from
+the full HGRM. Overall, all ablated variants underperform the full
+model, indicating that diversified reward objectives play comple-
+mentary roles in learning stable and effective trading policies. Re-
+moving the direction-related objective leads to the most pronounced
+drop in decision quality, with direction accuracy decreasing by over
+4.8%, while the impact on trading performance remains compar-
+atively moderate, likely because the model still captures a large
+fraction of high-impact signals. In contrast, removing event-type
+supervision slightly reduces prediction error and leads to a mod-
+est decline in trading performance, as the absence of event-type
+signals affects position weighting and weakens the allocation of
+capital across heterogeneous events. A detailed analysis of this
+effect is provided in Appendix, as illustrated in Figure 7 and Fig-
+ure 8. Eliminating magnitude or profit-and-loss objectives results
+in more pronounced performance degradation, reducing the Sharpe
+Ratio by approximately 11.7% and 8.7%, respectively. In compari-
+son, the full HGRM achieves the highest decision accuracy and the
+strongest trading performance, demonstrating that jointly optimiz-
+ing diversified reward objectives is critical for stable learning and
+decision-oriented event-driven trading.
+4.7 Case Study
+4.7.1 Human Alignment in Event Interpretation (RQ4).Figure 4 re-
+ports a direct comparison among Janus-Q, strong LLM baselines,
+and human evaluations in event interpretation. The evaluation is
+conducted on 200 randomly selected samples from the test dataset.
+To obtain a representative measure of human judgment, we re-
+cruit three participants with varying levels of financial expertise,
+including a finance major student, a securities analyst, and a CFA
+certificant. This design captures a spectrum of professional back-
+grounds and mitigates potential bias from individual knowledge
+gaps. Their judgments are aggregated through majority voting to
+form a balanced human consensus benchmark. For direction pre-
+diction, Janus-Q demonstrates substantial agreement with both
+humans and other models, achieving tie rates between 40.5% and
+52.0%, win rates of up to 37.8% against DeepSeek-v3.1-nex-n1, and
+loss rates not exceeding 25.0%. The alignment becomes even more
+pronounced in event-type understanding, where tie cases dominate
+across comparisons, accounting for 74.0% to 83.0%, and loss rates
+remain below 5.0% for all counterparts, including human judges. In
+addition, Janus-Q secures non-trivial win rates ranging from 14.0%
+to 21.0%, suggesting that its deviations from human judgment are
+infrequent and occur in a controlled manner rather than reflecting
+systematic semantic discrepancies. Overall, these results show that
+Janus-Q demonstrates a higher level of accuracy in event interpreta-
+tion compared to the average performance of human evaluators, as
+variations in human judgment may arise from the subjective nature
+of the evaluation. Janus-Q also retains the flexibility required for
+decision-oriented and context-sensitive trading behavior.
+5 Conclusion
+This paper investigates event-driven trading as an alternative to
+conventional time-series-centric formulations and demonstrates
+that explicitly modeling financial news events as primary decision
+units leads to more reliable and interpretable trading behavior. We
+propose Janus-Q, a two-stage event-driven trading framework that
+directly maps financial events to trading decisions. The framework
+Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling Conference’17, July 2017, Washington, DC, USA
+Figure 4: Visualization of comparative evaluation results
+between humans and models.
+first constructs a large-scale event-centric dataset that serves as a
+unified benchmark for event-level market impact analysis by link-
+ing fine-grained event semantics with empirically grounded market
+reactions. Building on this foundation, Janus-Q adopts a multi-step
+training paradigm that combines supervised reasoning alignment
+with reinforcement fine-tuning under a hierarchical gated reward
+scheme. Extensive experiments show that Janus-Q consistently sur-
+passes both market indices and strong large-language-model base-
+lines in decision accuracy and trading performance, highlighting
+the importance of aligning language model reasoning with finan-
+cially meaningful objectives. In future work, we plan to extend this
+framework to support finer-grained event structures, richer mul-
+timodal inputs, and cross-market backtesting, further advancing
+event-driven learning for real-world financial trading.
+References
+[1] Yuxuan Cai, Lu Chen, Qiaoling Chen, Yuyang Ding, Liwen Fan, Wenjie Fu, Yufei
+Gao, Honglin Guo, Pinxue Guo, Zhenhua Han, et al. 2025. Nex-N1: Agentic Models
+Trained via a Unified Ecosystem for Large-Scale Environment Construction.arXiv
+preprint arXiv:2512.04987(2025).
+[2] Bokai Cao, Saizhuo Wang, Xinyi Lin, Xiaojun Wu, Haohan Zhang, Lionel M Ni,
+and Jian Guo. 2025. From deep learning to LLMs: a survey of AI in quantitative
+investment.arXiv preprint arXiv:2503.21422(2025).
+[3] Wei Chen, Qiushi Wang, Zefei Long, Xianyin Zhang, Zhongtian Lu, Bingxuan Li,
+Siyuan Wang, Jiarong Xu, Xiang Bai, Xuanjing Huang, et al. 2023. Disc-finllm: A
+chinese financial large language model based on multiple experts fine-tuning.
+arXiv preprint arXiv:2310.15205(2023).
+[4] Yubo Chen, Tong Zhou, Sirui Li, and Jun Zhao. 2025. A dataset for document
+level Chinese financial event extraction.Scientific Data12, 1 (2025), 772.
+[5] Gheorghe Comanici, Eric Bieber, Mike Schaekermann, Ice Pasupat, Noveen
+Sachdeva, Inderjit Dhillon, Marcel Blistein, Ori Ram, Dan Zhang, Evan Rosen,
+et al. 2025. Gemini 2.5: Pushing the frontier with advanced reasoning, multi-
+modality, long context, and next generation agentic capabilities.arXiv preprint
+arXiv:2507.06261(2025).
+[6] Xiao Ding, Yue Zhang, Ting Liu, and Junwen Duan. 2015. Deep learning for
+event-driven stock prediction.. InIjcai, Vol. 15. 2327–2333.
+[7] Xiao Ding, Yue Zhang, Ting Liu, and Junwen Duan. 2016. Knowledge-driven
+event embedding for stock prediction. InProceedings of coling 2016, the 26th
+international conference on computational linguistics: Technical papers. 2133–2142.
+[8] Zihan Dong, Xinyu Fan, and Zhiyuan Peng. 2024. Fnspid: A comprehensive
+financial news dataset in time series. InProceedings of the 30th ACM SIGKDD
+Conference on Knowledge Discovery and Data Mining. 4918–4927.
+[9] Eugene F Fama. 1970. Efficient capital markets: A review of theory and empirical
+work.The journal of Finance25, 2 (1970), 383–417.
+[10] Cuiyun Han, Jinchuan Zhang, Xinyu Li, Guojin Xu, Weihua Peng, and Zengfeng
+Zeng. 2022. Duee-fin: A large-scale dataset for document-level event extraction.
+InCCF International Conference on Natural Language Processing and Chinese
+Computing. Springer, 172–183.
+[11] Aaron Hurst, Adam Lerer, Adam P Goucher, Adam Perelman, Aditya Ramesh,
+Aidan Clark, AJ Ostrow, Akila Welihinda, Alan Hayes, Alec Radford, et al. 2024.
+Gpt-4o system card.arXiv preprint arXiv:2410.21276(2024).
+[12] Gangwei Jiang, Yahui Liu, Zhaoyi Li, Wei Bi, Fuzheng Zhang, Linqi Song, Ying
+Wei, and Defu Lian. 2025. What makes a good reasoning chain? uncovering
+structural patterns in long chain-of-thought reasoning. InProceedings of the 2025
+Conference on Empirical Methods in Natural Language Processing. 6501–6525.
+[13] James W Kolari and Seppo Pynnönen. 2010. Event study testing with cross-
+sectional correlation of abnormal returns.The Review of financial studies23, 11
+(2010), 3996–4025.
+[14] Yaxuan Kong, Yoontae Hwang, Marcus Kaiser, Chris Vryonides, Roel Oomen,
+and Stefan Zohren. 2025. Fusing Narrative Semantics for Financial Volatility
+Forecasting. InProceedings of the 6th ACM International Conference on AI in
+Finance. 683–691.
+[15] Yaxuan Kong, Yiyuan Yang, Yoontae Hwang, Wenjie Du, Stefan Zohren,
+Zhangyang Wang, Ming Jin, and Qingsong Wen. 2025. Time-mqa: Time se-
+ries multi-task question answering with context enhancement.arXiv preprint
+arXiv:2503.01875(2025).
+[16] Shuqi Li, Yuebo Sun, Yuxin Lin, Xin Gao, Shuo Shang, and Rui Yan. 2024. Causal-
+Stock: Deep end-to-end causal discovery for news-driven multi-stock movement
+prediction.Advances in Neural Information Processing Systems37 (2024), 47432–
+47454.
+[17] Xiang Li, Zhenyu Li, Chen Shi, Yong Xu, Qing Du, Mingkui Tan, and Jun Huang.
+2024. Alphafin: Benchmarking financial analysis with retrieval-augmented stock-
+chain framework. InProceedings of the 2024 joint international conference on
+computational linguistics, language resources and evaluation (LREC-COLING 2024).
+773–783.
+[18] Xiang Li, Penglei Sun, Wanyun Zhou, Zikai Wei, Yongqi Zhang, and Xiaowen
+Chu. 2025. FinKario: Event-Enhanced Automated Construction of Financial
+Knowledge Graph.arXiv preprint arXiv:2508.00961(2025).
+[19] Xueyuan Lin, Cehao Yang, Ye Ma, Ming Li, Rongjunchen Zhang, Yang Ni, Xiaojun
+Wu, Chengjin Xu, Jian Guo, and Hui Xiong. 2025. RETuning: Upgrading Inference-
+Time Scaling for Stock Movement Prediction with Large Language Models.arXiv
+preprint arXiv:2510.21604(2025).
+[20] Xiao-Yang Liu, Ziyi Xia, Hongyang Yang, Jiechao Gao, Daochen Zha, Ming Zhu,
+Christina Dan Wang, Zhaoran Wang, and Jian Guo. 2024. Dynamic datasets and
+market environments for financial reinforcement learning.Machine Learning
+113, 5 (2024), 2795–2839.
+[21] Andrew W Lo. 2004. The adaptive markets hypothesis: Market efficiency from an
+evolutionary perspective.Journal of Portfolio Management, Forthcoming(2004).
+[22] A Craig MacKinlay. 1997. Event studies in economics and finance.Journal of
+economic literature35, 1 (1997), 13–39.
+[23] A Craig MacKinlay. 1997. Event studies in economics and finance.Journal of
+economic literature35, 1 (1997), 13–39.
+Conference’17, July 2017, Washington, DC, USA Xiang Li et al.
+[24] Musfiqur Rahman, SayedHassan Khatoonabadi, Ahmad Abdellatif, and Emad
+Shihab. 2024. Automatic detection of llm-generated code: A case study of claude
+3 haiku.arXiv preprint arXiv:2409.01382(2024).
+[25] Raeid Saqur, Ken Kato, Nicholas Vinden, and Frank Rudzicz. 2024. Nifty financial
+news headlines dataset.arXiv preprint arXiv:2405.09747(2024).
+[26] Ankur Sinha, Satishwar Kedas, Rishu Kumar, and Pekka Malo. 2022. SEntFiN 1.0:
+Entity-aware sentiment analysis for financial news.Journal of the Association for
+Information Science and Technology73, 9 (2022), 1314–1335.
+[27] Hariom Tatsat and Ariye Shater. 2025. Beyond the black box: Interpretability of
+llms in finance.arXiv preprint arXiv:2505.24650(2025).
+[28] Qwen Team et al. 2024. Qwen2 technical report.arXiv preprint arXiv:2407.10671
+2, 3 (2024).
+[29] Paul C Tetlock. 2007. Giving content to investor sentiment: The role of media in
+the stock market.The Journal of finance62, 3 (2007), 1139–1168.
+[30] Paul C Tetlock. 2007. Giving content to investor sentiment: The role of media in
+the stock market.The Journal of finance62, 3 (2007), 1139–1168.
+[31] Rex Thompson. 1995. Empirical methods of event studies in corporate finance.
+Handbooks in Operations Research and Management Science9 (1995), 963–992.
+[32] Chang Wang, Fotis Papailias, and Carmine Ventre. 2026. Dynamic estimation
+of sample covariance matrices via hierarchical clustering.Quantitative Finance
+(2026), 1–22.
+[33] He Wang, Wenyilin Xiao, Songqiao Han, and Hailiang Huang. 2025. StockMem:
+An Event-Reflection Memory Framework for Stock Forecasting.arXiv preprint
+arXiv:2512.02720(2025).
+[34] Mengyu Wang, Tiejun Ma, and Shay B Cohen. 2025. Pre-training Time Series
+Models with Stock Data Customization. InProceedings of the 31st ACM SIGKDD
+Conference on Knowledge Discovery and Data Mining V. 2. 3019–3030.
+[35] Yijia Xiao, Edward Sun, Tong Chen, Fang Wu, Di Luo, and Wei Wang. 2025.
+Trading-r1: Financial trading with llm reasoning via reinforcement learning.
+arXiv preprint arXiv:2509.11420(2025).
+[36] Yijia Xiao, Edward Sun, Di Luo, and Wei Wang. 2024. TradingAgents: Multi-
+agents LLM financial trading framework.arXiv preprint arXiv:2412.20138(2024).
+[37] Qianqian Xie, Weiguang Han, Zhengyu Chen, Ruoyu Xiang, Xiao Zhang, Yueru
+He, Mengxi Xiao, Dong Li, Yongfu Dai, Duanyu Feng, et al . 2024. Finben: A
+holistic financial benchmark for large language models.Advances in Neural
+Information Processing Systems37 (2024), 95716–95743.
+[38] Qianqian Xie, Weiguang Han, Xiao Zhang, Yanzhao Lai, Min Peng, Alejandro
+Lopez-Lira, and Jimin Huang. 2023. Pixiu: A comprehensive benchmark, instruc-
+tion dataset and large language model for finance.Advances in Neural Information
+Processing Systems36 (2023), 33469–33484.
+[39] Zhe Xie, Zeyan Li, Xiao He, Longlong Xu, Xidao Wen, Tieying Zhang, Jian-
+jun Chen, Rui Shi, and Dan Pei. 2024. Chatts: Aligning time series with llms
+via synthetic data for enhanced understanding and reasoning.arXiv preprint
+arXiv:2412.03104(2024).
+[40] An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng,
+Bowen Yu, Chang Gao, Chengen Huang, Chenxu Lv, et al. 2025. Qwen3 technical
+report.arXiv preprint arXiv:2505.09388(2025).
+[41] Hongyang Yang, Xiao-Yang Liu, and Christina Dan Wang. 2025. FinGPT: Open-
+Source Financial Large Language Models. arXiv:2306.06031 [q-fin.ST] https:
+//arxiv.org/abs/2306.06031
+[42] Yangyang Yu, Zhiyuan Yao, Haohang Li, Zhiyang Deng, Yuechen Jiang, Yupeng
+Cao, Zhi Chen, Jordan Suchow, Zhenyu Cui, Rong Liu, et al . 2024. Fincon: A
+synthesized llm multi-agent system with conceptual verbal reinforcement for
+enhanced financial decision making.Advances in Neural Information Processing
+Systems37 (2024), 137010–137045.
+[43] Junru Zhang, Lang Feng, Xu Guo, Yuhan Wu, Yabo Dong, and Duanqing Xu. 2025.
+TimeMaster: Training Time-Series Multimodal LLMs to Reason via Reinforcement
+Learning.arXiv preprint arXiv:2506.13705(2025).
+[44] Wentao Zhang, Lingxuan Zhao, Haochong Xia, Shuo Sun, Jiaze Sun, Molei Qin,
+Xinyi Li, Yuqing Zhao, Yilei Zhao, Xinyu Cai, et al. 2024. A multimodal founda-
+tion agent for financial trading: Tool-augmented, diversified, and generalist. In
+Proceedings of the 30th acm sigkdd conference on knowledge discovery and data
+mining. 4314–4325.
+[45] Xu Zhang, Zhengang Huang, Yunzhi Wu, Xun Lu, Erpeng Qi, Yunkai Chen,
+Zhongya Xue, Qitong Wang, Peng Wang, and Wei Wang. 2025. Multi-period
+learning for financial time series forecasting. InProceedings of the 31st ACM
+SIGKDD Conference on Knowledge Discovery and Data Mining V. 1. 2848–2859.
+[46] Yang Zhang, Wenbo Yang, Jun Wang, Qiang Ma, and Jie Xiong. 2025. CAMEF:
+Causal-augmented multi-modality event-driven financial forecasting by inte-
+grating time series patterns and salient macroeconomic announcements. InPro-
+ceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data
+Mining V. 2. 3867–3878.
+[47] Shun Zheng, Wei Cao, Wei Xu, and Jiang Bian. 2019. Doc2EDAG: An end-to-end
+document-level framework for Chinese financial event extraction.arXiv preprint
+arXiv:1904.07535(2019).
+[48] Tianyu Zhou, Pinqiao Wang, Yilin Wu, and Hongyang Yang. 2024. Finrobot:
+Ai agent for equity research and valuation with large language models.arXiv
+preprint arXiv:2411.08804(2024).
+[49] Wanyun Zhou, Saizhuo Wang, Mihai Cucuringu, Zihao Zhang, Xiang Li, Jian
+Guo, Chao Zhang, and Xiaowen Chu. 2025. DeltaLag: Learning Dynamic Lead-
+Lag Patterns in Financial Markets. InProceedings of the 6th ACM International
+Conference on AI in Finance. 422–430.
+[50] Wanyun Zhou, Saizhuo Wang, Xiang Li, Yiyan Qi, Jian Guo, and Xiaowen Chu.
+2025. Unleashing Expert Opinion from Social Media for Stock Prediction.arXiv
+preprint arXiv:2504.10078(2025).
+[51] Yuanchen Zhou, Shuo Jiang, Jie Zhu, Junhui Li, Lifan Guo, Feng Chen, and Chi
+Zhang. 2025. Fin-prm: A domain-specialized process reward model for financial
+reasoning in large language models.arXiv preprint arXiv:2508.15202(2025).
+Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling Conference’17, July 2017, Washington, DC, USA
+Table 5: SFT training hyperparameters.
+Hyperparameter Value / Setting
+Data Configuration
+Max sequence length 1400
+Dataset shuffling True
+Training Configuration
+Epochs{1,2,3}
+Train micro-batch size per device 8
+Gradient accumulation steps 4
+Total effective batch size8×4×𝑁 GPU
+Precision BF16
+Gradient checkpointing True
+Evaluation steps 100
+Logging steps 10
+Optimizer & LR Scheduler
+Optimizer torch.optim.AdamW
+Learning rate5×10 −6
+Warmup ratio 0.2
+Weight decay 0.01
+AdamW betas 0.9, 0.999
+LoRA Configuration
+LoRA rank𝑟8
+LoRA alpha𝛼16
+LoRA dropout 0.1
+Task typeCAUSAL_LM
+A Appendix
+A.1 Hyperparameters & Datasets & Metrics
+A.1.1 Training details.We adopt a two-phase training strategy
+consisting of supervised fine-tuning (SFT) followed by reinforce-
+ment fine-tuning (RFT) to stabilize event reasoning and optimize
+trading decisions. All experiments are conducted on8× NVIDIA
+A100 GPUs (40GB).
+• Supervised fine-tuning.We first apply SFT with LoRA adap-
+tation to initialize a reasoning-aware policy that predicts event
+semantics and market impact in a stable manner. The detailed hy-
+perparameter configuration for SFT is summarized in Table 5.
+• Reinforcement fine-tuning.Building on the initialized SFT
+policy, we further perform reinforcement fine-tuning using Group
+Relative Policy Optimization (GRPO) together with the proposed
+hierarchical-gated reward model, to directly optimize decision-
+oriented trading objectives. The detailed hyperparameter settings
+for GRPO are reported in Table 6.
+A.1.2 Dataset.We construct a large-scale Chinese equity dataset
+covering 5,282 A-share stocks, integrating structured market data
+with multi-source textual information. Formally, the dataset con-
+sists of a collection of event instances, each corresponding to a
+financial news event associated with a specific traded asset and
+Table 6: GRPO training hyperparameters.
+Hyperparameter Value / Range
+Training Configuration
+Epochs{1,2,3}
+Batch size{1,2,4}
+Learning rate{1e−6,2e−6,5e−6}
+Max grad norm{0.5,1.0}
+Ref Configuration
+PPO epochs{1,2}
+Samples per prompt{2,4,8}
+Initial KL coefficient{0.05,0.1,0.2}
+Target KL{0.01,0.02}
+Clip range{0.1,0.2}
+Normalize advantage by std {True, False}
+Data Configuration
+Max prompt length{3000,4196}
+Max response length{4196,8192}
+Data Shuffling {True, False}
+System Configuration
+Number of GPUs{1,2,4,8}
+Number of nodes{1,2}
+vLLM inference {True, False}
+DeepSpeed ZeRO stage {None, ZeRO-2, ZeRO-3}
+Mixed precision {FP16, BF16}
+Table 7: Summary of event-centric dataset.
+Field Description
+News Raw financial news article
+Event time (𝑡0) Publication timestamp of the news
+StockInfo (𝑖) Associated traded asset and its basic profile
+Event type (𝑒) Sematic category of event
+Direction (𝑑) Market reaction direction: positive / negative /
+neutral
+Strength (𝑠) Trading strength indicator: strong / weak
+CAR (𝑐) Cumulative abnormal return
+timestamp. each event instance is represented as a structured record:
+Devent ={(News,𝑡 0,StockInfo,𝑒,𝑑,𝑠,𝑐)} , following the format de-
+fined in Table 7. Here,Newsdenotes the original news text, 𝑡0 the
+event timestamp,StockInfothe associated traded asset, 𝑒 the fine-
+grained event type,𝑑 the directional label,𝑠 the strength indicator,
+and𝑐the event-driven cumulative abnormal return.
+Daily price and volume data are obtained from Tushare, while
+textual signals are collected from the Datayes platform, comple-
+mented by firm-level profile information from Wind. To support
+stable event statistics and avoid information leakage, the dataset
+Conference’17, July 2017, Washington, DC, USA Xiang Li et al.
+Figure 5: Temporal structure of the event study framework.
+is chronologically partitioned into a historical window for statisti-
+cal estimation, followed by non-overlapping training, validation,
+and test splits. Detailed data ranges and split configurations are
+summarized in Table 8.
+To characterize temporal dependencies around each event, we
+adopt a standard event-study timeline consisting of three individual
+intervals: an estimation windowTest=(𝑇 0,𝑇1], an event window
+Tevt=(𝑇 1,𝑇2], and a post -event windowTpost=(𝑇 2,𝑇3], as
+illustrated in Figure 5. The estimation window precedes the event
+timestamp𝑡0 and provides a stable basis for estimating event-free
+normal returns, ensuring that model calibration remains unaffected
+by upcoming market reactions. A short lag betweenTest andTevt
+is introduced to mitigate possible information leakage from early
+disclosures. The event windowTevt captures immediate abnormal
+price responses, while the post -event windowTpost extending
+to𝑇3 reflects subsequent return drift and adjustment dynamics.
+This study focuses on market reactions withinTevt and does not
+model long-horizon price dynamics withinTpost , where returns
+generally revert toward their normal state.
+Beyond scale, the dataset is distinguished by its rich seman-
+tic structure and high-quality financial annotations. Each event is
+categorized into a diverse set of event types, includingpersonal
+behavior,equity change,asset change,dividend,risk warning,financ-
+ing,financial status,violation,industry, andrating adjustment. This
+taxonomy is designed to cover a broad spectrum of firm-specific
+actions and external market signals, capturing heterogeneous in-
+formation sources that are known to drive stock price movements.
+Moreover, each event is associated withsentiment labels and paired
+with its cumulative abnormal return, enabling direct supervision at
+both the semantic and economic levels. This dataset is intended to
+support future academic research on financial event understanding,
+market impact analysis, and event-driven modeling.
+A.1.3 Metrics.To evaluate the performance of Janus-Q, we adopt
+a set of complementary metrics that jointly assess event-level pre-
+diction accuracy, decision correctness, and trading performance.
+Mean Absolute Error (MAE):
+MAE= 1
+𝑁
+𝑁∑︁
+𝑖=1
+| ˆ𝑐𝑖−𝑐 𝑖|
+Root Mean Square Error (RMSE):
+RMSE=
+vut
+1
+𝑁
+𝑁∑︁
+𝑖=1
+( ˆ𝑐𝑖−𝑐 𝑖)2
+where ˆ𝑐𝑖 is the predicted CAR, and𝑐𝑖 is the true CAR. MAE mea-
+sures the average deviation between the predicted and true values
+of abnormal returns, capturing the overall accuracy of the predic-
+tions. RMSE assesses the sensitivity of the model to large errors,
+penalizing large deviations more heavily than MAE.
+Direction Accuracy (DA):
+DA= 1
+𝑁
+𝑁∑︁
+𝑖=1
+I
+
+sign( ˆ𝑑𝑖)=sign(𝑑 𝑖)
+
+where I is the indicator function, ˆ𝑑𝑖 is the predicted direction, and𝑑𝑖
+is the true direction. DA evaluates whether the predicted direction
+of the market movement aligns with the actual result achieved,
+providing information on the accuracy of the model’s direction
+prediction.
+Event Type Accuracy (ETA):
+ETA= 1
+𝑁
+𝑁∑︁
+𝑖=1
+I( ˆ𝑒𝑖 =𝑒 𝑖)
+where ˆ𝑒𝑖 is the predicted event type, and𝑒𝑖 is the true event type.
+ETA measures the correctness of the event semantic interpretation,
+ensuring that the model accurately identifies the event type. Cor-
+rectly distinguishing between event types enhances downstream
+trading performance by enabling portfolio allocations tailored to
+different events.
+To evaluate practical trading effectiveness, we report theSharpe
+Ratio (SR):
+SR= E[𝑟]
+𝜎𝑟
+where E[𝑟] is the expected return, and 𝜎𝑟 is the standard devia-
+tion of returns. SR measures the risk-adjusted return, providing an
+indication of the strategy’s profitability relative to its volatility.
+Maximum Drawdown (MDD):
+MDD=max
+𝑡
+ peak(𝑡)−trough(𝑡)
+peak(𝑡)
+
+where peak(𝑡) is the highest portfolio value up to time 𝑡, and
+trough(𝑡) is the lowest portfolio value after time𝑡. MDD quantifies
+the worst peak-to-trough loss, assessing the strategy’s resilience
+during market downturns.
+Together, these metrics provide a balanced evaluation of predic-
+tive reliability, decision consistency, and real-world trading perfor-
+mance.
+A.2 Event empirical study
+A.2.1 Historical CAR Statistics.Figure 6 illustrates the distribu-
+tion of post-event cumulative abnormal returns across different
+event categories. We observe substantial heterogeneity in both dis-
+persion and tail behavior among event types. Risk-related events
+such asRisk WarningandViolationexhibit wider distributions and
+heavier tails, indicating higher uncertainty and asymmetric mar-
+ket reactions, as well as a greater prevalence of extreme outcomes
+that may offer opportunities for outsized abnormal returns. In con-
+trast, routine corporate events includingDividendandIndustry
+announcements show more concentrated distributions around zero,
+suggesting relatively stable and predictable impacts. These differ-
+ences highlight that event categories are associated with distinct
+risk return profiles, motivating event-aware modeling rather than
+uniform treatment of news signals.
+Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling Conference’17, July 2017, Washington, DC, USA
+Table 8: Dataset Statistics
+Country Stock Split Date Range Price Text / Company Info
+CN 5282
+Historical Stat 2023/01/01 – 2023/10/24
+Tushare Datayes / WindTrain 2023/10/25 – 2024/08/27
+Validation 2024/08/28 – 2024/11/11
+Test 2024/11/12 – 2025/01/25
+Figure 6: Distribution of post-event cumulative abnormal
+returns across event categories.
+A.2.2 Historical Magnitude.Figure 7 reports the mean absolute
+post-event CAR for each event type, reflecting the average strength
+of market reactions regardless of direction. Events related to reg-
+ulatory or risk disclosures, such asRisk WarningandViolation,
+exhibit the largest magnitudes, with mean absolute CAR exceeding
+0.05 and 0.03, respectively, indicating pronounced and economi-
+cally meaningful market responses. In contrast, softer informational
+events, includingPersonal BehaviorandRating Adjustment, show
+substantially smaller impacts, with average magnitudes below 0.02.
+This ranking confirms that not all news carries equal economic
+significance and suggests that event magnitude provides a natural
+prior for allocating trading attention and position size, motivat-
+ing magnitude-aware weighting in event-driven trading strategies.
+To preserve temporal relevance, such magnitude-based weights
+are periodically re-estimated over rolling windows, allowing the
+strategy to adapt to evolving market conditions and shifting event
+dynamics.
+A.2.3 Impact of Event Type Weighting on Trading Performance.Fig-
+ure 8 compares the net asset value (NAV) trajectories of the Equal-
+Weighted and Type-Weighted Janus-Q strategies. While both strate-
+gies benefit from event-driven signals, the Type-Weighted variant
+achieves higher cumulative returns and exhibits greater stability
+during periods of heightened market volatility. Notably, between
+early and mid-December 2024, the Equal-Weighted strategy expe-
+riences pronounced drawdowns and temporarily enters negative
+territory, reflecting overexposure to low-impact or noisy events.
+In contrast, the Type-Weighted strategy remains comparatively
+stable throughout the same interval, as capital allocation is concen-
+trated on historically high-impact events. The advantage becomes
+most apparent around high-impact event clusters, where weighting
+events by their historical CAR magnitudes enables more efficient
+Figure 7: Mean absolute post-event cumulative abnormal
+returns by event category.
+Figure 8: Net asset value (NA V) comparison between the
+Equal-Weighted and Type-Weighted Janus-Q strategies.
+capital allocation. These results demonstrate that incorporating
+event-level statistical priors effectively transforms heterogeneous
+market reactions into tangible trading gains.
+A.3 Risk Model Settings
+To isolate event-driven abnormal returns from systematic risk expo-
+sures, we adopt a standard multi-factor risk model consistent with
+theCNE5framework widely used in the Chinese equity market. 4
+CNE5 is a Barra-style equity risk model that decomposes stock re-
+turns into market, industry, and style-driven components, enabling
+robust neutralization of common risk premia.
+In our implementation, the factor exposure vectorx 𝑖,𝑡 includes
+both industry factors and a set of non-financial style factors, cover-
+ing:Size,Liquidity,Volatility,Momentum, andReversal. These fac-
+tors capture systematic return patterns unrelated to firm-specific
+events, such as liquidity shocks, short-term reversals, or broad
+4https://www.msci.com/documents/10199/2935796a-0a80-4050-934a-12966d1e2518
+Conference’17, July 2017, Washington, DC, USA Xiang Li et al.
+market sentiment. We fully reproduce the factor construction and
+cross-sectional regression procedure following the CNE5 specifi-
+cation. By removing the estimated factor-driven component from
+market-adjusted returns, the resulting abnormal returns more accu-
+rately reflect idiosyncratic, event-induced price movements rather
+than generic style or industry effects.
+A.4 Supplementary Experiments
+(a) Total Return
+ (b) Sharpe Ratio
+Figure 9: Sensitivity analysis of backtesting performance
+with respect to the holding period.
+A.4.1 Sensitive Analysis of Holding Period.Based on the experimen-
+tal results in Table 2, we select the three best-performing models
+for further evaluation. Figure 9 examines the sensitivity of per-
+formance to the holding period. As the holding horizon increases,
+most baseline models exhibit pronounced performance degradation.
+For instance, QwQ-32B achieves a positive total return of 0.0567
+and a Sharpe Ratio of 1.7642 at a one-day holding period but turns
+negative by day three, with its Sharpe Ratio falling below−1.5at
+longer horizons. A similar though milder decline is observed for
+DeepSeek-v3.1-nex-n1, whose total return decreases from 0.0138
+at one day to−0.1169at ten days. This deterioration arises from
+the accumulation of overlapping event-driven positions, which in-
+creases exposure to unrelated market fluctuations as the holding
+horizon extends.
+In contrast, Janus-Q demonstrates markedly greater robustness
+across holding periods. It reaches peak performance at short hori-
+zons, with a total return of 0.122 and a Sharpe Ratio of 1.8074 at one
+day, while maintaining positive returns up to nine days. Even at
+a ten-day horizon, its performance declines smoothly rather than
+collapsing, retaining a positive Sharpe Ratio of 0.398. This stability
+suggests that Janus-Q implicitly models the temporal decay of event
+influence and avoids excessive position persistence.
+The CSI 300 benchmark remains unchanged across horizons, as
+it follows a static buy-and-hold strategy that is insensitive to event
+timing. Overall, these findings indicate that in unconstrained set-
+tings, event-driven strategies benefit from shorter holding periods
+that align with the transient nature of news impacts. Prolonged
+horizons lead to overlapping exposures and amplified drawdowns,
+while appropriate position control and horizon-aware exposure
+limits, examined later in our experiments, can help mitigate such
+degradation.
+A.4.2 Sensitive Analysis of Maximum Position Ratio.Building on
+the previous analysis of holding-period sensitivity, Figure 10 presents
+a complementary experiment examining how position control af-
+fects performance under different trading frequencies. Specifically,
+it analyzes backtesting performance with respect to the maximum
+(a) Holding Period = 5
+ (b) Holding Period = 10
+Figure 10: Sensitivity analysis of backtesting performance
+with respect to the maximum position ratio.
+position ratio, using 5-day and 10-day holding periods as represen-
+tative examples.
+The maximum position ratio constrains the portfolio’s total no-
+tional exposure relative to its net asset value (NAV). A ratio of𝑘×
+limits the combined exposure of all open positions to𝑘 times the
+current NAV, thereby regulating both leverage and the extent to
+which multiple signals can be executed concurrently. The∞ setting
+corresponds to the default configuration in the main experiments,
+where no explicit upper bound on the position ratio is applied.
+As shown in Figure 10, excessively restrictive position limits (e.g.,
+1×) tend to impair performance, as the strategy becomes capital-
+constrained and must strictly adhere to the fixed holding period,
+missing profitable intermediate signals. Increasing the limit to mod-
+erate levels (e.g.,2× or3×) generally enhances performance by
+enabling partial overlap among positions and fuller utilization of
+concurrent signals. However, relaxing the constraint too much can
+again degrade performance, as excessive exposure leads to the accu-
+mulation of stale positions whose diminishing returns offset gains
+from newly arriving events.
+Overall, these results reveal a trade-off between capital efficiency
+and signal freshness, indicating that moderate position limits pro-
+vide the most balanced performance. Moreover, appropriate posi-
+tion control allows event-driven strategies to adapt to longer hold-
+ing horizons and different trading frequencies, effectively stabilizing
+returns while maintaining responsiveness to new information.
+A.5 Prompts in Janus-Q
+A.5.1 Prompt for Reasoning Chain of Thought.Figure 11 illustrates
+the prompt used to elicit structured reasoning chains for post-hoc
+analysis of event-driven market reactions. The prompt guides the
+model to explain event categorization and observed cumulative
+abnormal returns by explicitly considering event characteristics,
+market expectations, and historical context. By enforcing a fixed
+multi-part structure, this prompt facilitates interpretable reasoning
+and supports qualitative inspection of the model’s event-to-market
+understanding.
+A.5.2 Prompt for Training Template.Figure 12 presents the training
+prompt template used during supervised fine-tuning. The template
+requires the model to jointly predict event type, impact direction,
+trading intensity, and expected abnormal return, while producing a
+concise rationale. Historical CAR statistics are provided as contex-
+tual references rather than hard constraints, encouraging the model
+Janus-Q: End-to-End Event-Driven Trading via Hierarchical-Gated Reward Modeling Conference’17, July 2017, Washington, DC, USA
+Algorithm 1Hierarchical-Gated Reward Modeling (HGRM)
+Require: Model responseR, ground truth(𝑐,𝑒) , threshold𝜏, trans-
+action cost𝜅, clip bound𝜌, discount𝛼
+Ensure:Reward𝑅
+1:Parse prediction{ ˆ𝑐, ˆ𝑑, ˆ𝑠, ˆ𝑒}fromR
+2:if ˆ𝑑is missingthen
+3: ˆ𝑑←sign( ˆ𝑐)
+4:end if
+5:if ˆ𝑠is missingthen
+6: ˆ𝑠←strongif| ˆ𝑐|>𝜏elseweak
+7:end if
+8:Derive𝑑←sign(𝑐),𝑠←strongif|𝑐|>𝜏elseweak
+// Hard gate: direction correctness
+9:Compute direction score𝑠 dir( ˆ𝑑,𝑑)
+10:Set hard gate𝑔 dir←1(𝑠 dir≥0)
+// Soft modulation: event-type consistency
+11:Compute event score𝑠 evt( ˆ𝑒,𝑒)
+12:Set discount factor𝑚 evt←1if ˆ𝑒=𝑒else𝛼
+// Cost-aware trading payoff
+13:Computepnl←PnL( ˆ𝑑,𝑐,𝜅)
+14:if𝑔 dir =0then
+15:𝑟 pnl←0⊲no trade executed
+16:else
+17:𝑟 pnl←clip(𝑚 evt·Pnl,−𝜌,𝜌)
+18:end if
+// Magnitude shaping and process reward
+19:if𝑔 dir =1then
+20:𝑟 mag←exp(−| ˆ𝑐−𝑐|/𝜎)
+21:Compute process reward𝑟 proc
+22:else
+23:𝑟 mag←0;𝑟 proc←0
+24:end if
+// Final hierarchical reward
+25:𝑅←𝑤 dir𝑠dir+𝑔 dir
+
+𝑤evt𝑠evt+𝑤 pnl𝑟pnl+𝑤 mag𝑟mag+𝑤 proc𝑟proc
+
+26:return𝑅
+to balance empirical priors with event-specific reasoning. This de-
+sign aligns model outputs with downstream decision objectives in
+event-driven trading.
+Conference’17, July 2017, Washington, DC, USA Xiang Li et al.
+Prompt for Reasoning Chain of Thought
+System Prompt:
+You are a professional financial analyst specializing in event-driven market analysis.
+User Prompt:
+You are given a piece of financial news and its realized market reaction. Analyze why this market impact occurred.
+ 
+ 
+[Task]
+Explain why this news is categorized as "{event_type}" and why it leads to a CAR of {car_value}
+[News Information]: {Company, Industry, Time, Content}
+[Market Response]: {Event Type, CAR, Impact Direction, Trading Intensity}
+.
+Your analysis may consider:
+- Event characteristics and firm fundamentals
+- Market expectations and investor sentiment
+- Industry or macroeconomic background
+- Pre-event stock price trend (CAR history)
+- Historical impact statistics of this event category
+[Format Required]
+Your response must contain exactly four parts, each with 2–4 sentences:
+1. Nature of the Event 2. Market Impact Mechanism 3. CAR Magnitude and Trading Intensity Analysis 
+4. Comprehensive Conclusion 
+Figure 11: Prompt for reasoning chain of thought.
+Prompt for Training Template
+System Prompt:
+Y ouare a senior financial analyst specializing in event classification and event-driven stock return analysis.
+Given event info include types & historical stats:
+{Personal Behavior, Equity Change, Asset Change, Dividend, Risk Warning, Financing, Financial Status,
+Violation, Industry, Rating Adjustment}. & {event_stats_section}
+User Prompt:
+Y ouare given a piece of financial news and its realized market reaction. Analyze why this market impact occurred.
+[Company Info]: {Company, Ticker, Industry, Market share}
+[News Info]: {Time, News content}
+[Data Info]:{car history}(note: pre-event car series)
+[T ask]
+Analyze the expected stock price impact of this news.
+Y ouroutput must contain the following four parts:
+1. [Event Type] 2. [Market Reaction (CAR Prediction)] (a. Direction: {Positive, Negative, Neutral}
+b. Trading Intensity: {Strong, Weak} c. Expected CAR) 3. [Reasoning] 4. [Conclusion]
+Notes:
+- Historical statistics are for reference only and should not be mechanically applied;
+- Focus on the uniqueness of the news: event scale, degree of surprise, market environment, company/industry
+characteristics;
+- Simple trading suggestions can be provided in the conclusion.
+Figure 12: Prompt for training template.

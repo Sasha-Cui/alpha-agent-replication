@@ -1,0 +1,27 @@
+{
+  "candidate_definition": "monthly returns from shipped TradeTrap agent_viewer total_asset paths; first month uses initial_cash as prior value",
+  "candidate_paths": [
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_gpt_5.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_gpt_5_with_news.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_gpt_5_reverseexpectations.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_claude_base.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_claude_with_news.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_claude_state_tampering.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_deepseek_valuecell_base.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_deepseek_valuecell_prompt_injection.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_deepseek_deepseek_reverse_expectations_injection.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_deepseek_deepseek_base.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_gemini_base.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_gemini_with_memory_long_time.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_gemini_with_memory_with_think_and_summary.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_gpt_valuecell.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_gpt_ai_trader.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_qwen_qwen3_max.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_qwen_qwen3_max_with_news.csv",
+    "paper_runs/051_tradetrap/candidate_returns_agents_data_qwen_qwen3_max_reverseexpectations.csv"
+  ],
+  "max_months": 1,
+  "n_candidates": 18,
+  "source_viewer_dir": "external_repos/TradeTrap/agent_viewer/data",
+  "summary_csv": "paper_runs/051_tradetrap/tradetrap_viewer_return_paths_summary.csv"
+}

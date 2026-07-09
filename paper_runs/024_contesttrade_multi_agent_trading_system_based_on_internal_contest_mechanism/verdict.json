@@ -1,0 +1,14 @@
+{
+  "run_id": "024_contesttrade_multi_agent_trading_system_based_on_internal_contest_mechanism",
+  "paper": "ContestTrade \u2014 Multi-Agent Trading System Based on Internal Contest Mechanism",
+  "execution_state": "blocked_on_replay_adapter",
+  "verdict": "blocked_no_jkp_replay_return_stream",
+  "valid_return_data_used": false,
+  "metric_status": "not_computable_from_approved_inputs",
+  "allowed_return_inputs": [
+    "${ALPHA_EVOLVE_JKP_ROOT}",
+    "${ALPHA_EVOLVE_RETURN_DATA_ROOT}"
+  ],
+  "reason": "The repo has public code but no approved-input dated portfolio return stream or replay adapter for USA/JKP returns.",
+  "ff3_ff5mom_status": "not_run_blocked"
+}

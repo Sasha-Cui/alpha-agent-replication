@@ -1,0 +1,179 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+\setlength{\emergencystretch}{3em}
+
+\title{LLM Alpha-Agent Replication Report}
+\author{Sasha Cui}
+\date{July 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report evaluates whether recent LLM- and agent-based alpha-mining papers and
+public repositories contain reproducible, economically meaningful equity return
+signals once they are placed into a common monthly USA-equity asset-pricing
+benchmark. I audit the source universe in two layers. First, I ask whether each
+public repository can itself produce a dated return stream from approved local
+inputs. Second, when direct code is absent or unusable, I translate the stated
+economic idea into an explicit JKP-USA proxy and test it against FF5+Mom,
+JKP132, and TextBenchmark/NewsFactor-style benchmarks. The conclusion is
+negative for repo-level alpha discovery: direct public code does not produce a
+valid FF5+Mom-beating JKP return stream, and the few in-spirit survivors are
+overwhelmingly classic value, quality, profitability, momentum, and low-risk
+composites.
+\end{abstract}
+
+\section{Question}
+
+The empirical question is deliberately narrow. Let \(r_t\in\mathbb{R}\) be the
+monthly excess return of a candidate strategy at month \(t\), and let
+\(f_t\in\mathbb{R}^{K}\) be the benchmark factor return vector. A finance-agent
+paper or repository is treated as economically convincing only if it yields a
+dated return stream \(r_t\) that survives common benchmark tests:
+\[
+  r_t = \alpha + \beta^\top f_t + \epsilon_t.
+\]
+The relevant claim is not whether LLMs can help financial research. The relevant
+claim is whether public finance-agent repositories have discovered new alpha in a
+form that survives standard asset-pricing controls and portfolio-usefulness
+tests.
+
+\section{Benchmark Design}
+
+The audit has two layers:
+\begin{enumerate}
+  \item Direct-code audit: can the public repository itself produce dated monthly
+  USA-equity returns from approved local inputs?
+  \item In-spirit JKP replication: if direct code is absent or unusable, can the
+  stated economic idea be translated into an explicit JKP-USA proxy and tested
+  against the same benchmark environment?
+\end{enumerate}
+
+Valid candidate and benchmark returns use only approved local research inputs
+from the JKP/USA return panel and the existing TextBenchmark/NewsFactor factor
+panel. China/A-share returns, yfinance or live downloads, paper-shipped return
+streams, official French downloads, and external return CSVs are not counted as
+valid metrics.
+
+The first benchmark is FF5+Mom:
+\[
+  f_t =
+  (\mathrm{MKT}_t,\mathrm{HML}_t,\mathrm{ME}_t,\mathrm{INV}_t,
+  \mathrm{OP}_t,\mathrm{MOM}_t)^\top,
+\]
+implemented from JKP-built USA factors. The stricter additive benchmark evaluates
+candidates against CAPM, JKP132, and the TextBenchmark/NewsFactor sleeve.
+
+\section{Metrics}
+
+For a candidate return \(r_t\), the reported diagnostics are annualized Sharpe,
+annualized alpha, HAC/Newey-West alpha \(t\)-statistic, appraisal ratio, GRS
+statistic and \(p\)-value, factor-span Sharpe lift, and long-only book Sharpe
+improvement. The appraisal ratio is
+\[
+  AR=\sqrt{12}\frac{\widehat{\alpha}}{\widehat{\sigma}_{\epsilon}},
+\]
+and the factor-span Sharpe lift is
+\[
+  \Delta SR = \sqrt{SR_{\mathrm{old}}^2 + AR^2} - SR_{\mathrm{old}}.
+\]
+The strict FF5+Mom rule requires positive annualized alpha, positive appraisal
+ratio, HAC alpha \(t>1.96\), positive span lift, and GRS rejection at the 5\%
+level. The strict additive rule further requires survival against
+CAPM+JKP132+TextBenchmark, positive long-only delta Sharpe, and at least a 1\%
+optimized candidate weight.
+
+\section{Headline Counts}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lr}
+\toprule
+Quantity & Count \\
+\midrule
+Literature inventory & 42 paper rows \\
+Code-link inventory & 31 rows \\
+Unique source references & 55 \\
+Direct cloned/repo audit & 14 repos \\
+Code-link repo evidence pass & 28 GitHub repos \\
+Direct repo-code rows with valid JKP-only numeric returns & 1 \\
+Direct repo-code rows beating FF5+Mom & 0 \\
+Source refs translated into JKP-USA proxies & 51 of 55 \\
+JKP-USA candidate proxies backtested & 62 \\
+Strict FF5+Mom beaters among in-spirit proxies & 8 of 62 \\
+Strict additive candidates after TextBenchmark and JKP132 & 3 of 62 \\
+\bottomrule
+\end{tabular}
+\caption{Headline replication counts. Full ledgers are tracked in
+\texttt{paper\_runs/} and summarized in \texttt{report.md}.}
+\end{table}
+
+\section{Interpretation}
+
+The direct-code conclusion is negative. QuantEvolver is the only repository with
+valid JKP-only numeric seed-proxy metrics, and its selected declared-direction
+seed has Sharpe \(0.316\), annualized alpha \(0.33\%\), HAC \(t=0.651\), appraisal
+ratio \(0.149\), GRS \(p=0.4778\), and factor-span lift \(0.010\). It does not
+beat FF5+Mom.
+
+The in-spirit proxy layer finds eight strict FF5+Mom beaters, but these are not
+credible evidence of new agentic alpha. They are almost entirely value, quality,
+profitability, safety, momentum, low-leverage, and low-volatility composites.
+After adding JKP132 and TextBenchmark/NewsFactor, only three of sixty-two
+candidates remain strict positives. Those survivors are Greenblatt-style value
+and profitability, a multi-guru value, quality, and distress ensemble, and a
+value, profitability, momentum, and quality-minus-risk composite. The full
+CAPM+JKP132+TextBenchmark span explains roughly 93.5\% to 95.8\% of their monthly
+return variance.
+
+The right interpretation is therefore not that LLMs are irrelevant. It is that
+unverified finance-agent alpha claims should be treated as research-process
+artifacts until they produce dated returns that survive common benchmarks. This
+supports a more disciplined role for LLMs in financial research: constructing new,
+structured, auditable information objects from economically rich source material,
+then testing those objects in a standard portfolio framework.
+
+\section{Reproducibility}
+
+The canonical Markdown report is \texttt{report.md}. The compact tracked ledgers,
+verdicts, source tables, and performance figures live under \texttt{paper\_runs/}.
+The most important artifacts are:
+\begin{itemize}
+  \item \texttt{paper\_runs/REPOSITORY\_FF5MOM\_METRICS.md}
+  \item \texttt{paper\_runs/idea\_replications/PAPER\_DERIVED\_REPLICATION\_LEDGER.md}
+  \item \path{paper_runs/performance_analysis/textbenchmark/TEXTBENCHMARK_PERFORMANCE_REPORT.md}
+  \item \texttt{paper\_runs/performance\_analysis/figures/FIGURE\_MANIFEST.md}
+\end{itemize}
+
+\begin{thebibliography}{99}
+\bibitem{carhart1997} Carhart, Mark M. 1997. On Persistence in Mutual Fund Performance. \emph{Journal of Finance} 52(1), 57--82.
+\bibitem{cochrane2005} Cochrane, John H. 2005. \emph{Asset Pricing}. Revised edition. Princeton University Press.
+\bibitem{donoho2024} Donoho, David. 2024. Data Science at the Singularity. \emph{Harvard Data Science Review}. arXiv:2310.00865.
+\bibitem{ff2015} Fama, Eugene F., and Kenneth R. French. 2015. A Five-Factor Asset Pricing Model. \emph{Journal of Financial Economics} 116(1), 1--22.
+\bibitem{ctf2025} Hellum, Oliver, Theis Ingerslev Jensen, Bryan T. Kelly, and Lasse Heje Pedersen. 2025. The Power of the Common Task Framework. SSRN 5242901.
+\bibitem{jkp2023} Jensen, Theis Ingerslev, Bryan T. Kelly, and Lasse Heje Pedersen. 2023. Is There a Replication Crisis in Finance? \emph{Journal of Finance} 78(5), 2465--2518.
+\bibitem{jkpfactors2026} JKP Factors. 2026. Global Factor Data. \url{https://jkpfactors.com/}.
+\bibitem{karpathy2026} Karpathy, Andrej. 2026. \emph{autoresearch: AI agents running research on single-GPU nanochat training automatically}. \url{https://github.com/karpathy/autoresearch}.
+\bibitem{kx2023} Kelly, Bryan T., and Dacheng Xiu. 2023. Financial Machine Learning. NBER Working Paper 31502.
+\bibitem{upsa2023} Kelly, Bryan T., Semyon Malamud, Mohammad Pourmohammadi, and Fabio Trojani. 2023, revised 2025. Universal Portfolio Shrinkage. NBER Working Paper 32004.
+\bibitem{markowitz1952} Markowitz, Harry. 1952. Portfolio Selection. \emph{Journal of Finance} 7(1), 77--91.
+\bibitem{openai2024o1} OpenAI. 2024. OpenAI o1 System Card. \url{https://openai.com/index/openai-o1-system-card/}.
+\bibitem{deepmind2026gemini31} Google DeepMind. 2026. Gemini 3.1 Pro Model Card. \url{https://deepmind.google/models/model-cards/gemini-3-1-pro/}.
+\bibitem{xai2025grok41} xAI. 2025. Grok 4.1 Model Card. \url{https://data.x.ai/2025-11-17-grok-4-1-model-card.pdf}.
+\bibitem{qwen2025qwen3} Yang, An, et al. 2025. Qwen3 Technical Report. arXiv:2505.09388.
+\end{thebibliography}
+
+\end{document}
