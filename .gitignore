@@ -236,6 +236,7 @@ tmp_scratch/
 # Alpha-evolve scratch/vendor outputs
 external_repos/
 external_repos_code_links/
+literature_review/papers
 literature_review/papers/
 paper_runs/full_loop/
 paper_runs/idea_replications/paper_pdf_tmp/
