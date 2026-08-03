@@ -241,3 +241,22 @@ literature_review/papers/
 paper_runs/full_loop/
 paper_runs/idea_replications/paper_pdf_tmp/
 scripts/__pycache__/
+
+# Submission evidence publication boundary. Keep compact manifests, ledgers,
+# aggregate estimates, and robustness summaries; regenerate the large monthly
+# reconstruction matrices and network-discovery cache from licensed inputs.
+paper_runs/submission_evidence/**/candidate_monthly*.csv
+paper_runs/submission_evidence/**/factor_monthly*.csv
+paper_runs/submission_evidence/artifact_audit/artifact_audit_cache.json
+
+# Generated manuscript products and local visual-QA material. Paper source,
+# bibliography, deterministic figures, and generated TeX tables remain tracked.
+docs/paper/*.aux
+docs/paper/*.bbl
+docs/paper/*.blg
+docs/paper/*.fdb_latexmk
+docs/paper/*.fls
+docs/paper/*.pdf
+docs/paper/*.status
+output/
+tmp/

@@ -6,7 +6,10 @@
 - `scripts/`: compatibility entry points and research runners.
 - `literature_review/*.csv`, `literature_review/*.json`, and `literature_review/source_pasted_text.txt`: source inventory and audit inputs.
 - `paper_runs/`: compact tracked ledgers, verdicts, summaries, small reproducibility CSVs, and final report figures under `paper_runs/performance_analysis/figures/`.
-- `report.md`, `README.md`, `pyproject.toml`, `environment.toml`, and this `docs/` directory, including the compact TeX report.
+- `paper_runs/submission_evidence/`: frozen locks, manifests, aggregate estimates,
+  multiplicity results, diagnostic summaries, and hashes of excluded reconstruction
+  artifacts.
+- `report.md`, `README.md`, `pyproject.toml`, `environment.toml`, and this `docs/` directory, including manuscript source, bibliography, generated tables, and deterministic figure PDFs.
 
 ## Exclude
 
@@ -16,6 +19,12 @@ The following are intentionally ignored because they are generated, local, priva
 - cloned/vendor repositories: `external_repos/`, `external_repos_code_links/`.
 - downloaded paper PDFs and temporary extraction payloads: `literature_review/papers/`, `paper_runs/idea_replications/paper_pdf_tmp/`.
 - run logs and scratch outputs: `logs/`, `runs/`, `artifacts/`, `tmp_scratch/`, `paper_runs/full_loop/`.
+- high-volume monthly candidate and factor reconstruction matrices under
+  `paper_runs/submission_evidence/`; their checksums remain in tracked run
+  manifests and the licensed inputs plus tracked runners regenerate them.
+- network-discovery caches, which may contain transient third-party payloads.
+- compiled manuscript PDFs, TeX auxiliary files, source archives, and local page
+  renderings under `output/`, `docs/paper/`, and `tmp/`.
 
 ## Path Policy
 
@@ -23,4 +32,7 @@ Repository-local files are discovered relative to the checkout. External data de
 
 ## License
 
-No license file has been selected in this change. Pick the intended license before publication, then add the license file and matching `pyproject.toml` metadata.
+Original source code and tests are licensed under Apache-2.0. Original
+documentation, manuscript material, figures, tables, and registry annotations
+are licensed under CC BY 4.0. Third-party artifacts and market data retain their
+own terms; see `LICENSES/README.md` and `LICENSES/THIRD_PARTY.md`.

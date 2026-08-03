@@ -1,0 +1,6 @@
+Alpha Agent Replication
+Copyright 2026 Sasha Cui
+
+This product includes project-authored software made available under the
+Apache License, Version 2.0. Third-party materials retain their own copyright,
+license, and data-use terms as documented in THIRD_PARTY.md.

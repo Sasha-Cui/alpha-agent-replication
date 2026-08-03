@@ -9,6 +9,7 @@ description = "Reproducible JKP/TextBenchmark replication utilities for alpha-ag
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [{ name = "Sasha Cui" }]
+license = { file = "LICENSES/CODE_LICENSE.txt" }
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
@@ -21,6 +22,7 @@ dependencies = [
   "pandas>=1.5",
   "pyarrow>=10",
   "scipy>=1.9",
+  "statsmodels>=0.14",
 ]
 
 [project.optional-dependencies]
