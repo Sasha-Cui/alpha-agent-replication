@@ -1,0 +1,104 @@
+system_id|system_name|stratum|main_FT|primary_record|official_artifact|old_refs|lineage_dedup_notes|inclusion_exclusion_rationale
+SYS-AGENTIC-AI-SCREENING|Agentic AI Screening|F|Y|https://arxiv.org/abs/2603.23300||—|New verified omission; distinct screening method.|IN: agentic alpha-screening method.
+SYS-AGORA|Agora — AI Trading's Alpha Singularity|F|Y|https://arxiv.org/abs/2606.29194||—|Agora is the system; paper title is not a second lineage.|IN: agentic alpha-discovery method.
+SYS-ALPHA-AGENT|AlphaAgent|F|Y|https://arxiv.org/abs/2502.16789|https://github.com/RndmVariableQ/AlphaAgent|3|Paper and official repository are one lineage; distinct from AlphaAgentEvo.|IN: LLM-driven formulaic alpha mining.
+SYS-ALPHA-AGENT-EVO|AlphaAgentEvo|F|Y|https://openreview.net/forum?id=lNmZrawUMu||16|Successor-named method is methodologically distinct from AlphaAgent.|IN: self-evolving agentic-RL alpha mining.
+SYS-ALPHA-CRAFTER|AlphaCrafter|F|Y|https://arxiv.org/abs/2605.05580||18|Single full-stack formula-mining lineage.|IN: mines and screens cross-sectional factors.
+SYS-ALPHA-GPT|Alpha-GPT lineage|F|Y|https://arxiv.org/abs/2308.00016 ; https://aclanthology.org/2025.emnlp-demos.14/ ; https://arxiv.org/abs/2402.09746||11;12|v1 arXiv and EMNLP are one release; Alpha-GPT 2.0 is a successor release within the same lineage.|IN: human-in-the-loop formulaic alpha mining.
+SYS-ALPHA-JUNGLE|Alpha-Jungle|F|Y|https://arxiv.org/abs/2505.11122||7|One MCTS-guided formula-mining lineage.|IN: LLM-guided formulaic alpha search.
+SYS-ALPHA-LOGICS|AlphaLogics|F|Y|https://arxiv.org/abs/2603.20247||15|One market-logic-driven factor-generation lineage.|IN: agentic interpretable factor generation.
+SYS-ALPHA-MEMO|AlphaMemo|F|Y|https://arxiv.org/abs/2606.20625|https://github.com/jarrettyu/AlphaMemo|—|Paper and official implementation are one lineage; data availability remains a fidelity field.|IN: memory-supported alpha discovery.
+SYS-ALPHA-R1|Alpha-R1|F|Y|https://arxiv.org/abs/2512.23515|https://github.com/FinStep-AI/Alpha-R1|17|Paper and repository are one lineage; distinct from AlphaAgent systems.|IN: reasoning/RL alpha screening.
+SYS-ALPHA-SCHEMA|AlphaSchema|F|Y|https://arxiv.org/abs/2607.26642||—|New verified omission.|IN: schema-based alpha discovery.
+SYS-AUTOMATE-STRATEGY|Automate Strategy Finding with LLM in Quant Investment|F|Y|https://aclanthology.org/2025.findings-emnlp.1005/ ; https://arxiv.org/abs/2409.06289|https://github.com/kouzhizhuo/Automate-Strategy-Finding-with-LLM-in-Quant-investment|—|ACL and arXiv are publication manifestations of one system.|IN: automated LLM strategy/factor discovery.
+SYS-CHAIN-OF-ALPHA|Chain-of-Alpha|F|Y|https://arxiv.org/abs/2508.06312||13|One chained formula-generation lineage.|IN: formulaic alpha generation and optimization.
+SYS-COG-ALPHA|CogAlpha|F|Y|https://arxiv.org/abs/2511.18850||9|One code-evolution lineage.|IN: executable alpha evolution.
+SYS-EFS|EFS|F|Y|https://arxiv.org/abs/2507.17211||2|One evolutionary factor-search lineage.|IN: LLM factor search with sparse portfolio construction.
+SYS-EMPIRICAL-ASSET-PRICING-LLM|Empirical Asset Pricing with Large Language Model Agents|F|Y|https://arxiv.org/abs/2409.17266||—|New verified omission.|IN: LLM-agent asset-pricing/factor construction.
+SYS-FACTOR-ENGINE|FactorEngine|F|Y|https://arxiv.org/abs/2603.16365||20|One program-level factor-discovery lineage.|IN: knowledge-infused executable factor discovery.
+SYS-FACTOR-MAD|FactorMAD|F|Y|https://doi.org/10.1145/3768292.3770377||14|One multi-agent debate lineage.|IN: interpretable alpha-factor mining.
+SYS-FACTOR-MINER|FactorMiner|F|Y|https://arxiv.org/abs/2602.14670||8|One skills-and-memory factor-mining lineage.|IN: self-evolving factor discovery.
+SYS-FAMA|FAMA — Factor Mining Agent|F|Y|https://aclanthology.org/2024.findings-acl.233/||10|One neural-symbolic factor-mining lineage.|IN: LLM-based interpretable factor mining.
+SYS-GPT-SIGNAL|GPT-Signal|F|Y|https://arxiv.org/abs/2410.18448||—|New verified omission.|IN: LLM-generated investment signals.
+SYS-HUBBLE|Hubble|F|Y|https://arxiv.org/abs/2604.09601||—|New verified omission.|IN: agentic alpha/factor discovery.
+SYS-LLM-FACTOR|LLMFactor|F|Y|https://arxiv.org/abs/2406.10811||19|One prompt-based factor-extraction lineage.|IN: profitable/explainable factor extraction.
+SYS-MAD-EVOLVE|MadEvolve|F|Y|https://arxiv.org/abs/2605.23007||—|New verified omission.|IN: multi-agent evolutionary alpha discovery.
+SYS-QUANTA-ALPHA|QuantaAlpha|F|Y|https://arxiv.org/abs/2602.07085|https://github.com/QuantaAlpha/QuantaAlpha|4|Paper and repository are one lineage.|IN: LLM-driven self-evolving factor mining.
+SYS-QUANT-EVOLVER|QuantEvolver|F|Y|https://arxiv.org/abs/2605.15412|https://github.com/QuantLLM/QuantEvolver|5|Paper and repository are one lineage.|IN: reinforcement-fine-tuned alpha-factor discovery.
+SYS-RD-AGENT-QUANT|R&D-Agent-Quant|F|Y|https://aka.ms/RD-Agent-Tech-Report|https://github.com/microsoft/RD-Agent|6|Quant workflow is one application lineage within the official R&D-Agent artifact.|IN: agentic factor/model co-optimization.
+SYS-TREEVO|TreEvo|F|Y|https://arxiv.org/abs/2508.16334||—|New verified omission.|IN: evolutionary alpha/factor discovery.
+SYS-XALPHA|XALPHA|F|Y|https://arxiv.org/abs/2607.08332||—|XAlpha and XALPHA denote one system.|IN: formulaic alpha-discovery method.
+SYS-ALPHA-AGENTS|AlphaAgents|T|Y|https://arxiv.org/abs/2508.11152||36|One equity-portfolio multi-agent lineage.|IN: produces portfolio decisions.
+SYS-ALPHA-QUANTER|AlphaQuanter|T|Y|https://aclanthology.org/2026.findings-acl.456/|https://github.com/horizon-llm/AlphaQuanter|27|Old repository identity resolves to the official-paper repository under horizon-llm.|IN: sequential tool-augmented RL trading agent.
+SYS-ATLAS|ATLAS|T|Y|https://arxiv.org/abs/2510.15949||—|New verified omission.|IN: sequential trading/portfolio agent.
+SYS-BLIND-TRADE|BlindTrade|T|Y|https://arxiv.org/abs/2603.17692||—|New verified omission.|IN: sequential trading system.
+SYS-CONTEST-TRADE|ContestTrade|T|Y|https://arxiv.org/abs/2508.00554|https://github.com/FinStep-AI/ContestTrade|24|Paper and official repository are one lineage.|IN: multi-agent sequential trading system.
+SYS-CRYPTO-TRADE|CryptoTrade|T|Y|https://aclanthology.org/2024.emnlp-main.63/|https://github.com/Xtra-Computing/CryptoTrade|41|Paper and repository are one lineage; task incompatibility does not remove it from the broad denominator.|IN: reflective sequential cryptocurrency agent.
+SYS-FACTFIN|FactFin|T|Y|https://arxiv.org/abs/2510.07920||—|Profit Mirage defines FactFin and FinLake-Bench as distinct systems.|IN: named sequential trading system.
+SYS-FIN-AGENT|FinAgent|T|Y|https://arxiv.org/abs/2402.18485||30|One multimodal trading-agent lineage.|IN: produces sequential trading actions.
+SYS-FIN-ANALYST|Fin-Analyst at FinMMEval Task 3|T|Y|https://arxiv.org/abs/2607.12233||—|Participant is distinct from the benchmark and CLaC participant.|IN: eight-specialist LLM trading system.
+SYS-FIN-CON|FinCon|T|Y|https://arxiv.org/abs/2407.06567|https://github.com/The-FinAI/FinCon|29|Paper and listed repository are one lineage; MXGao-A/FAgent is not separate.|IN: multi-agent portfolio/trading method.
+SYS-FIN-MEM|FinMem|T|Y|https://arxiv.org/abs/2311.13743|https://github.com/pipiku915/finmem-llm-stocktrading|28|Paper and official implementation are one lineage.|IN: memory-augmented sequential trading agent.
+SYS-FIN-POS|FinPos|T|Y|https://arxiv.org/abs/2510.27251||—|New verified omission.|IN: sequential position/trading system.
+SYS-FIN-RL-DEEPSEEK|FinRL-DeepSeek|T|Y|https://arxiv.org/abs/2502.07393|https://github.com/benstaf/FinRL_DeepSeek|—|Paper and linked implementation are one lineage.|IN: LLM-assisted RL trading system.
+SYS-FIN-RS|FinRS|T|Y|https://arxiv.org/abs/2511.12599||—|New verified omission.|IN: sequential financial decision system.
+SYS-FIN-VISION|FinVision|T|Y|https://arxiv.org/abs/2411.08899||40|One multi-agent stock-prediction/trading lineage.|IN: downstream sequential portfolio/trading decisions.
+SYS-FLAG-TRADER|FLAG-Trader|T|Y|https://aclanthology.org/2025.findings-acl.716/||31|One LLM-policy/RL lineage.|IN: sequential trading policy.
+SYS-GURU-AGENTS|GuruAgents|T|Y|https://arxiv.org/abs/2510.01664|https://github.com/yejining99/GuruAgents|42|Paper and repository are one lineage.|IN: prompt-guided portfolio decisions.
+SYS-HEDGE-AGENTS|HedgeAgents|T|Y|https://arxiv.org/abs/2502.13165||44|One balanced-aware trading lineage.|IN: multi-agent trading/hedging system.
+SYS-JANUS-Q|Janus-Q|T|Y|https://arxiv.org/abs/2602.19919||34|One event-driven trading lineage.|IN: produces sequential event-conditioned trades.
+SYS-MACI|MACI — LLM-Powered Multi-Agent System for Automated Crypto Portfolio Management|T|Y|https://arxiv.org/abs/2501.00826||—|MACI and the descriptive paper title denote one system.|IN: automated sequential crypto portfolio manager.
+SYS-MACRO-ECONOMISTS-MACHINE|Macro Economists in the Machine|T|Y|https://arxiv.org/abs/2606.08283||—|New verified omission.|IN: agent-generated investment/portfolio decisions.
+SYS-MARKET-SENSE-AI|MarketSenseAI lineage|T|Y|https://arxiv.org/abs/2502.00415 ; https://arxiv.org/abs/2604.17327||37|Later validation paper merges into the existing lineage.|IN: sequential stock-analysis/trading system.
+SYS-MASS|MASS|T|Y|https://arxiv.org/abs/2505.10278|https://github.com/gta0804/MASS|—|Paper and official repository are one lineage.|IN: multi-agent sequential trading system.
+SYS-METAPS|MetaPS|T|Y|https://arxiv.org/abs/2606.22385||—|New verified omission.|IN: sequential portfolio-strategy system.
+SYS-MM-DREX|MM-DREX|T|Y|https://arxiv.org/abs/2509.05080||32|One routed-expert trading lineage.|IN: sequential financial trading decisions.
+SYS-MOUNTAIN-LION|MountainLion|T|Y|https://arxiv.org/abs/2507.20474||38|One multimodal agent lineage.|IN: sequential trading/portfolio decisions.
+SYS-P1GPT|P1GPT|T|Y|https://arxiv.org/abs/2510.23032||39|One multi-agent workflow lineage.|IN: produces investment decisions.
+SYS-QUANT-AGENT-HFT|QuantAgent — Price-Driven Multi-Agent LLMs for High-Frequency Trading|T|Y|https://arxiv.org/abs/2509.09995|https://github.com/Y-Research-SBU/QuantAgent|25|Distinct authors, task, and architecture from the 2024 QuantAgent.|IN: sequential high-frequency trading agent.
+SYS-QUANT-AGENT-SELF-IMPROVING|QuantAgent — Seeking Holy Grail in Trading by Self-Improving LLM|T|Y|https://arxiv.org/abs/2402.03755||26|Distinct 2024 lineage despite the shared generic name.|IN: sequential self-improving trading agent.
+SYS-QUANT-AGENTS|QuantAgents|T|Y|https://arxiv.org/abs/2510.04643||43|One simulated-trading multi-agent lineage.|IN: sequential trading system.
+SYS-RAPTOR|RAPTOR|T|Y|https://openreview.net/forum?id=ziuTkKhgT0|https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing|—|Anonymous OpenReview snapshot is the linked artifact.|IN: reasoned portfolio trading and rebalancing.
+SYS-SHARP|SHARP|T|Y|https://arxiv.org/abs/2605.06822||—|New verified omission.|IN: sequential trading/portfolio system.
+SYS-STRAT-LLM|Strat-LLM|T|Y|https://arxiv.org/abs/2605.06024|https://Strat-LLM.github.io|—|Project page is linked but is not asserted to be source code.|IN: LLM-generated sequential strategy system.
+SYS-TRADE-IN-MINUTES|Trade in Minutes!|T|Y|https://arxiv.org/abs/2510.04787||35|One rationality-driven agentic trading lineage.|IN: sequential quantitative trading system.
+SYS-TRADING-AGENTS|TradingAgents|T|Y|https://arxiv.org/abs/2412.20138|https://github.com/TauricResearch/TradingAgents|23|Paper and repository are one lineage.|IN: multi-agent sequential financial trading.
+SYS-TRADING-GROUP|TradingGroup|T|Y|https://arxiv.org/abs/2508.17565||—|New verified omission.|IN: group-agent sequential trading system.
+SYS-TRADING-R1|Trading-R1|T|Y|https://arxiv.org/abs/2509.11420|https://github.com/TauricResearch/Trading-R1|33|Distinct method from TradingAgents; placeholder status is an artifact field.|IN: RL-trained trading-reasoning system.
+SYS-TRUST-TRADE|TrustTrade|T|Y|https://arxiv.org/abs/2603.22567||—|New verified omission.|IN: sequential trading-agent method.
+SYS-AGENT-MARKET-ARENA|Agent Market Arena|B|N|https://arxiv.org/abs/2510.11695 ; https://doi.org/10.1145/3774904.3792821|https://huggingface.co/spaces/TheFinAI/Agent-Market-Arena ; https://ama.thefin.ai/live|—|ArXiv benchmark and WWW arena titles are one lineage.|OUT: benchmark/arena, not one alpha-generating method.
+SYS-AGENT-TRADING-ARENA|Agent Trading Arena|B|N|https://aclanthology.org/2025.findings-emnlp.294/|https://github.com/MTMQuantAI/Agent-Trading-Arena|—|Distinct from TradeArena and Agent Market Arena; endogenous-price simulation.|OUT: market-simulation benchmark.
+SYS-AGENTIC-TRADING-LAB|AgenticTrading Lab|B|N||https://github.com/Open-Finance-Lab/AgenticTrading|50|One evaluation/playground lineage despite duplicate seed appearances.|OUT: evaluation platform, not a standalone method.
+SYS-AI-TRADER|AI-Trader|B|N||https://github.com/HKUDS/AI-Trader|49|Seed evidence treats this as a live/data-uncontaminated benchmark.|OUT: benchmark/platform rather than one method.
+SYS-ALPHA-BENCH|AlphaBench|B|N|https://alphabench.cc/|https://github.com/CityU-MLO/AlphaBench|1|Benchmark paper/project and repository are one lineage.|OUT: formula-alpha benchmark, not a candidate method.
+SYS-ALPHA-EVAL|AlphaEval|B|N|https://arxiv.org/abs/2508.13174|https://github.com/LeoDingggg/AlphaEval|—|Canonical repository distinguished from unrelated projects.|OUT: formula-alpha evaluation benchmark.
+SYS-ALPHA-FORGE-BENCH|AlphaForgeBench|B|N|https://arxiv.org/abs/2602.18481|https://github.com/finbrain-lab-hkustgz/AlphaForgeBench|45|Distinct benchmark from the AlphaForge method.|OUT: strategy-design benchmark.
+SYS-ALPHA-QT-BENCH|AlphaQT-Bench|B|N|https://aclanthology.org/2026.findings-acl.138/||—|New verified omission.|OUT: quantitative-trading benchmark.
+SYS-DEEP-FUND|DeepFund|B|N|https://arxiv.org/abs/2505.11065|https://github.com/HKUSTDial/DeepFund|48|Paper and live-benchmark artifact are one lineage.|OUT: live fund-investment benchmark.
+SYS-FIN-EVO|FinEvo|B|N|https://arxiv.org/abs/2602.00948||—|Ecological/diagnostic environment, not a new strategy.|OUT: diagnostic environment.
+SYS-FINLAKE-BENCH|FinLake-Bench — FinLeak-Bench alias|B|N|https://arxiv.org/abs/2510.07920||—|FactFin is a distinct row; naming inconsistency is preserved.|OUT: leakage/memorization benchmark.
+SYS-FINMMEVAL-T3|FinMMEval 2026 Task 3|B|N|https://arxiv.org/abs/2602.10886|https://mbzuai-nlp.github.io/CLEF-2026-FinMMEval-Lab/ ; https://huggingface.co/collections/MBZUAI/finmmeval-lab-clef2026|—|Umbrella task is distinct from participant systems.|OUT: shared-task benchmark.
+SYS-FINSABER|FINSABER lineage|B|N|https://doi.org/10.1145/3770854.3785702 ; https://arxiv.org/abs/2505.07078|https://github.com/waylonli/FINSABER|—|Versioned benchmark releases form one lineage.|OUT: benchmark, not trading method.
+SYS-INVESTOR-BENCH|InvestorBench|B|N|https://aclanthology.org/2025.acl-long.126/ ; https://arxiv.org/abs/2412.18174||—|ACL and arXiv records are one benchmark lineage.|OUT: investor-agent benchmark.
+SYS-KTD-FIN|KTD-Fin|B|N|https://arxiv.org/abs/2605.28359||—|New verified omission.|OUT: benchmark/evaluation record.
+SYS-LIVE-TRADE-BENCH|LiveTradeBench|B|N|https://arxiv.org/abs/2511.03628|https://github.com/ulab-uiuc/live-trade-bench|47|Paper and official live/replay artifact are one lineage.|OUT: live evaluation benchmark.
+SYS-NEXT-FUND|NextFund|B|N|https://arxiv.org/abs/2607.11141|https://paradoox.cn/nextfund/|—|Linked artifact is a demo platform, not asserted source code.|OUT: fund-agent evaluation platform.
+SYS-PORT-BENCH|PortBench|B|N|https://arxiv.org/abs/2605.27887|https://github.com/AgenticFinLab/portbench|—|Paper and official artifact are one lineage.|OUT: portfolio-agent benchmark.
+SYS-QUANT-CODE-BENCH|QuantCode-Bench|B|N|https://arxiv.org/abs/2604.15151|https://github.com/LimexAILab/QuantCode-Bench|46|Paper and repository are one benchmark lineage.|OUT: executable-strategy code-generation benchmark.
+SYS-STOCK-BENCH|StockBench|B|N|https://arxiv.org/abs/2510.02209|https://github.com/ChenYXxxx/stockbench|—|Project and repository are one lineage.|OUT: stock-agent benchmark.
+SYS-TRADE-ARENA|TradeArena|B|N|https://arxiv.org/abs/2605.28850|https://github.com/weich97/TradeArena|—|Distinct exogenous testbed from Agent Trading Arena.|OUT: trading-agent testbed.
+SYS-TRADE-TRAP|TradeTrap|B|N|https://arxiv.org/abs/2512.02261|https://github.com/Yanlewen/TradeTrap|51|Paper and stress-test repository are one lineage.|OUT: reliability/audit harness.
+SYS-ALPHA-ILLUSION|The Alpha Illusion reporting protocol|B|N|https://arxiv.org/abs/2605.16895|https://github.com/hj1650782738/Trading|55|Audit paper plus reproduction harness; not an alpha strategy.|OUT: reporting protocol and reproducibility audit.
+SYS-AICRYPTO-ASSISTANT|AICrypto-Assistant|C|N|https://doi.org/10.36287/setsci.24.2.017 ; https://www.set-science.com/manage/uploads/ICOF2025_00101/SETSCI_ICOF2025_00101_002.pdf||—|Human-mediated advisory platform evaluated with participants.|OUT: advisory/community platform, not F/T method.
+SYS-AI-HEDGE-FUND|virattt/ai-hedge-fund|C|N||https://github.com/virattt/ai-hedge-fund|52|Repository-only practitioner/educational lineage.|OUT: community implementation without a verified primary method record.
+SYS-MOSS-TRADE-BOT-SKILLS|moss-trade-bot-skills|C|N||https://github.com/moss-site/moss-trade-bot-skills|54|Tooling/skills for building bots, not one strategy method.|OUT: community tooling.
+SYS-NOFX|NOFX|C|N||https://github.com/NoFxAiOS/nofx|—|AGPL-3.0 community trading terminal; no primary method paper.|OUT: community platform.
+SYS-VIBE-TRADING|Vibe-Trading|C|N||https://github.com/HKUDS/Vibe-Trading|53|Repository-only personal-agent lineage.|OUT: community implementation without verified primary method record.
+SYS-ALPHA2|Alpha^2|M|N|https://arxiv.org/abs/2406.16505|https://github.com/x35f/alpha2|—|Official repository contains pseudocode rather than a runnable version.|OUT: mechanistic non-LLM comparator.
+SYS-ALPHA-EVOLVE-FINANCE|AlphaEvolve — financial evolutionary method|M|N|https://arxiv.org/abs/2103.16196||—|Disambiguated from Google's 2025 coding agent.|OUT: non-LLM evolutionary comparator.
+SYS-ALPHA-FORGE|AlphaForge|M|N|https://arxiv.org/abs/2406.18394|https://github.com/DulyHao/AlphaForge|22|Curated-list seed resolved to primary paper and official repo.|OUT: mechanistic formula-alpha comparator.
+SYS-ALPHA-GEN|AlphaGen|M|N|https://doi.org/10.1145/3580305.3599831|https://github.com/RL-MLDM/alphagen|22|Curated-list seed resolved as a separate official system.|OUT: RL formula-alpha comparator.
+SYS-ALPHA-PROBE|AlphaPROBE|M|N|https://arxiv.org/abs/2602.11917|https://github.com/gta0804/AlphaPROBE|21|Paper and repository are one non-LLM-first lineage.|OUT: mechanistic alpha-mining comparator.
+SYS-AUTO-ALPHA|AutoAlpha|M|N|https://arxiv.org/abs/2002.08245||—|Recovered historical comparator.|OUT: mechanistic/non-LLM alpha discovery.
+SYS-CLAC-FINMMEVAL|CLaC at FinMMEval Task 3|M|N|https://arxiv.org/abs/2607.16028||—|Sentiment-augmented deep RL; distinct from LLM participant and benchmark.|OUT: non-LLM/deep-RL comparator.
+SYS-RISK-MINER|RiskMiner|M|N|https://arxiv.org/abs/2402.07080||—|Recovered risk-aware comparator.|OUT: mechanistic/non-LLM comparator.
