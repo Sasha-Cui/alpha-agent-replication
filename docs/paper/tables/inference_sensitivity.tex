@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\caption{Prespecified inference sensitivity across HAC lags and circular block lengths.}
+\label{tab:inference-sensitivity}
+\begingroup
+\color{Ink}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+\color{Navy}\textbf{Specification} & \color{Navy}\textbf{Nominal +} & \color{Navy}\textbf{Holm +} & \color{Navy}\textbf{BH +} & \color{Navy}\textbf{BY +} & \color{Navy}\textbf{Max-|t| +} & \color{Navy}\textbf{2pp LB} \\
+\midrule
+HAC lag 0 & 21 & 10 & 17 & 13 & --- & --- \\
+HAC lag 3 & 21 & 11 & 18 & 13 & --- & --- \\
+HAC lag 6 & 21 & 10 & 18 & 13 & --- & --- \\
+HAC lag 12 & 22 & 10 & 19 & 13 & --- & --- \\
+Block 3 & --- & --- & --- & --- & 11 & 4 \\
+Block 6 & --- & --- & --- & --- & 12 & 4 \\
+Block 12 & --- & --- & --- & --- & 12 & 4 \\
+\bottomrule
+\end{tabular}
+\par\vspace{0.25em}\footnotesize\color{Ink}\emph{Note:} Counts require a positive point alpha. HAC rows recompute two-sided p-values and pad the 27 estimable hypotheses with 35 p=1 failures before Holm, BH, and BY adjustment. Block rows apply paired max-|t| inference to the 27 estimable paths; 2pp LB counts simultaneous lower bounds at or above two percentage points. Dashes denote a procedure not defined for that sensitivity row.
+\endgroup
+\end{table}

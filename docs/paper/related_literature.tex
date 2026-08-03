@@ -1,0 +1,250 @@
+\subsection{Two distinct empirical objects}
+
+The literature commonly described as ``LLM alpha'' contains two different
+empirical objects.  Formulaic and cross-sectional systems generate, search,
+score, or select an executable factor or factor portfolio.  We denote these
+systems by stratum \(F\).  Their output can usually be represented as a dated
+cross-sectional score,
+\[
+    s_t = g_\theta(X_{\leq t},\mathcal{O},\mathcal{M}_t)
+    \in \mathbb{R}^{N_t},
+\]
+where \(X_{\leq t}\) is the information available by formation date \(t\),
+\(\mathcal{O}\) is an operator or strategy language, and \(\mathcal{M}_t\)
+denotes any search memory or feedback state.  Alpha-GPT, FAMA, AlphaAgent,
+Alpha-Jungle, Chain-of-Alpha, FactorMiner, Hubble, and AlphaCrafter illustrate
+the progression from prompted formula generation to constrained program
+search, memory, and adaptive factor-to-execution pipelines
+\citep{li2023alphagpt,LiEtAl2024FAMA,TangEtAl2025AlphaAgent,shi2025alphajungle,cao2025chainofalpha,wang2026factorminer,shi2026hubble,yuan2026alphacrafter}.
+Recent work also combines LLM screening with conventional portfolio
+estimation, making the stock-selection step, rather than only the weight
+optimizer, an explicit object of study \citep{caner2026agenticscreening}.
+
+Sequential trading and portfolio systems, denoted by stratum \(T\), instead
+emit dated orders, positions, or portfolio weights.  Their empirical object is
+a policy,
+\[
+    (a_t,w_t) = \pi_\theta(h_t,\mathcal{M}_t,\mathcal{T}_t),
+\]
+where \(h_t\) is the observable history, \(\mathcal{M}_t\) is an evolving
+memory or reflection state, and \(\mathcal{T}_t\) is the set of tools available
+at date \(t\).  FinMem and FinAgent emphasize memory, multimodal perception,
+and tool use; FinCon and TradingAgents add manager--analyst hierarchies or
+role-specialized deliberation; and more recent systems add prompt adaptation,
+position-aware risk control, or direct portfolio construction
+\citep{YuEtAl2024FinMem,zhang2024finagent,YuEtAl2024FinCon,XiaoEtAl2024TradingAgents,papadakis2025atlas,tian2025tradinggroup,liu2025finpos,guo2025mass}.
+The distinction is operational rather than semantic.  An \(F\) system can in
+principle be placed on a common point-in-time panel and operator contract.  A
+\(T\) system must be replayed through its entire observe--reason--act--execute
+path because its next decision depends on earlier actions and state.  Replacing
+either object with a thematically similar published characteristic does not
+reproduce the generator, search process, memory, execution rule, or dated
+output.  We therefore call such substitutions \emph{mechanism-inspired
+proxies}, not replications.
+
+This distinction complements the asset-pricing replication literature.
+Published predictor returns tend to attenuate out of sample and after
+publication, while large-scale reassessments show that specification,
+construction, and multiple-testing choices materially affect which anomalies
+survive \citep{McLeanPontiff2016,HarveyLiuZhu2016,hou2020replicating,ChenZimmermann2022,JensenKellyPedersen2023}.
+Agentic systems add further researcher degrees of freedom---model version,
+prompt, tools, memory, search budget, stochastic seed, and execution
+semantics---to the familiar data-mining problem.  White's reality check,
+Hansen's superior-predictive-ability test, and the deflated Sharpe ratio thus
+remain relevant even when the search procedure is expressed in natural
+language rather than in a conventional optimizer
+\citep{White2000RealityCheck,Hansen2005SPA,BaileyLopezDePrado2014DSR}.
+
+\subsection{Frozen census protocol}
+
+We constructed a public-system census through 2026-08-02 23:59 UTC.  The unit
+of observation is a \emph{named system/version lineage}, not a paper, a
+repository, a benchmark row, or a citation.  Publications, repositories,
+model cards, and demonstrations are linked many-to-one to a lineage.  Searches
+covered arXiv categories cs.AI, cs.CL, cs.LG, cs.CE, q-fin.CP, q-fin.PM,
+q-fin.ST, and q-fin.TR; the ACL Anthology; OpenReview; the ACM Digital Library;
+and SSRN.  Crossref and OpenAlex records were used to reconcile titles and
+publication versions.  GitHub was used only for exact-title, author-linked, or
+publication-linked artifacts.  We combined three prespecified query families:
+LLM/agent terms with alpha mining, factor discovery, formulaic alpha, or
+strategy generation; LLM/agent terms with trading, portfolio, or stock
+selection and a return, Sharpe, backtest, or live-evaluation term; and
+benchmark, audit, reproducibility, or leakage terms with alpha mining or
+trading agents.  Backward and forward searches began from AlphaBench,
+AlphaQT-Bench, FINSABER, and the Agentic Trading audit
+\citep{alphabench2026,LuoEtAl2026AlphaQT,LiEtAl2026FINSABER,XiaEtAl2026AgenticTrading}.
+Curated lists were discovery aids only and never counted as systems.
+
+Inclusion required an operational investment output.  An \(F\) lineage had to
+generate, score, search, or select an executable factor, cross-sectional score,
+or factor portfolio.  A \(T\) lineage had to emit dated tradable actions or
+weights and report a closed-loop historical, paper-trading, or live
+evaluation.  Static question answering, report generation, and forecasts with
+no tradable output were excluded.  Generic financial assistants and private
+claims inaccessible by the cutoff were also excluded.  Endogenous market
+simulations were retained as evaluation environments but not as candidate
+alpha systems.  Exclusions and boundary decisions remain in a separate ledger
+so that the denominator cannot be revised after observing replication outcomes.
+
+The registry separates five mutually exclusive strata.  Strata \(F\) and
+\(T\) form the planned system denominator.  Stratum \(B\) contains benchmarks,
+audits, and evaluation environments; \(C\) contains public community software
+without a sufficiently specified scholarly system claim; and \(M\) contains
+non-LLM or mechanistic comparators.  Table~\ref{tab:census-strata} reports the
+frozen counts.  The resulting corpus has 103 lineages, of which 67 are in the
+primary \(F+T\) denominator.  The remaining 36 records contextualize artifact
+availability and evaluation but are not treated as candidate agent returns.
+The earlier 55-reference working list mixed papers, repositories, benchmarks,
+and systems and therefore was not used as a denominator.  Reconciliation and
+systematic searching added 48 named lineages to that seed material; a later
+MarketSenseAI validation paper was linked to its existing lineage rather than
+counted again.
+
+Here ``frozen'' refers to the census cutoff, lineage dispositions, and fixed
+denominators.  It does not imply that the later return analysis remained an
+untouched holdout; the post-outcome evaluator repairs and limited-liability
+amendment are disclosed in the common-task design.
+
+\begin{table}[t]
+    \centering
+    \small
+    \caption{Frozen public-system census at the 2026-08-02 cutoff.}
+    \label{tab:census-strata}
+    \begin{tabular}{clrc}
+        \toprule
+        Stratum & Operational definition & \(N\) & In main set \\
+        \midrule
+        \(F\) & Formulaic/cross-sectional alpha & 29 & Yes \\
+        \(T\) & Sequential trading/portfolio & 38 & Yes \\
+        \(B\) & Benchmark/audit/environment & 23 & No \\
+        \(C\) & Community software & 5 & No \\
+        \(M\) & Mechanistic comparator & 8 & No \\
+        \midrule
+        All & Named system/version lineages & 103 & 67 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Deduplication was substantive rather than string-based.  The Alpha-GPT arXiv
+preprint and EMNLP demonstration are two publications of its first release;
+Alpha-GPT~2.0 is recorded as a successor release within the same lineage
+\citep{li2023alphagpt,WangEtAl2025AlphaGPT,YuanEtAl2024AlphaGPT2}.  FINSABER's main and
+reproduction branches are versioned artifacts of one benchmark, and the arXiv
+and announced WWW manifestations for Agent Market Arena are one benchmark lineage
+\citep{LiEtAl2026FINSABER,zhang2026agentmarketarena}.  The later MarketSenseAI
+validation study is evidence attached to the existing MarketSenseAI lineage,
+not a new system \citep{FatourosMetaxas2026SignalOrNoise}.  Conversely, FactFin and
+FinLake-Bench (also called FinLeak-Bench in the paper body) are separate named
+operational objects---a strategy framework and a leakage benchmark---even
+though they share one publication \citep{li2025profitmirage}.  AlphaForge and
+AlphaGen remain distinct methods, and the two QuantAgent records remain
+distinct because they have different authors, tasks, and architectures.
+Finally, Agent Market Arena, Agent Trading Arena, and TradeArena are distinct:
+respectively a live multi-market benchmark, an endogenous zero-sum market
+simulation, and an auditable exogenous-market testbed
+\citep{zhang2026agentmarketarena,ma2025agenttradingarena,xue2026tradearena}.
+
+Across the frozen registry, artifact audit, and native-fidelity ledger, we
+record every lineage's primary publication, official-artifact basis, cutoff
+revision, license, native task, output contract, evaluator, execution attempt
+where applicable, and fidelity.
+Artifact availability is graded from no public artifact path (R0), through a
+descriptive artifact (R1) and executable components (R2), to a packaged
+runnable structure (R3).  These are static packaging tiers, not evidence that
+an artifact executed successfully or produced dated returns.  Fidelity is classified separately as
+official-native, official-adapted, independent reimplementation,
+mechanism-inspired, unavailable, legally unusable, or technically
+incompatible.  A failed installation is therefore an artifact failure, not a
+zero return; a paper-only record is not evidence that the underlying method
+lacks alpha; and a mechanism-inspired proxy is not promoted to an agent
+replication.
+
+\subsection{What external evaluations establish}
+
+The benchmark literature does not support treating reported headline returns
+as commensurable estimates.  AlphaQT-Bench separates syntax and executability
+from causal safety, functional correctness, and structural compliance,
+showing why a formula that parses is not necessarily a valid quantitative
+program \citep{LuoEtAl2026AlphaQT}.  AlphaEval likewise evaluates formula
+alphas through a dedicated execution and financial-quality pipeline rather
+than accepting surface-form plausibility \citep{ding2025alphaeval}.  These
+benchmarks motivate a first-stage validity gate before any economic comparison.
+
+Longer and more standardized trading evaluations generally report substantial
+attenuation.  FINSABER evaluates LLM investment strategies over more than 20
+years and over 100 symbols and reports that advantages observed in short
+experiments deteriorate over the longer horizon \citep{LiEtAl2026FINSABER}.
+StockBench evaluates 82 trading days from March through June 2025 with three
+runs per configuration and reports that most evaluated agents fail to beat
+buy-and-hold \citep{ChenEtAl2025StockBench}.  KTD-Fin evaluates ten agents on the
+CSI~300 over 2024--2026; after masking asset identities and applying Barra-style
+attribution, it reports that much apparent return reflects passive exposure or
+style tilts rather than stock-selection alpha \citep{ZhuEtAl2026KTDFin}.  PortBench
+spans six asset classes and ten years and reports that 90\% of evaluated
+model--profile combinations fail an equal-weight benchmark, with severe losses
+in stress episodes \citep{ZhaoChenSu2026PortBench}.  These results establish that
+evaluation horizon, baseline, identity masking, factor attribution, and stress
+coverage can reverse a ranking.  They do not establish that every omitted
+system has zero alpha, because the benchmarks differ in assets, prompts,
+available tools, model versions, and execution contracts.
+
+Artifact audits identify a separate evidentiary bottleneck.  The Agentic
+Trading audit screened 92 candidate papers and retained 77, but classified only
+19 as closed-loop trading studies.  Among those 19, it found two with temporal
+splits, one with transaction costs, one addressing universe or survivorship
+construction, and 11 specifying execution semantics; 15 were paper-only and
+none reached its exact native-reproduction tier \citep{XiaEtAl2026AgenticTrading}.
+Those counts describe reporting and artifact availability under the audit's
+scope; they are not performance estimates.  They nevertheless show why a
+paper-count denominator and a runnable-system denominator answer different
+questions.
+
+Profit Mirage provides direct evidence on temporal contamination, but its
+causal interpretation requires care.  Under the authors' implementation, five
+well-known agents re-evaluated with GPT-4o exhibit Sharpe-ratio declines of
+51.48\%--62.23\% and total-return declines of 50.18\%--71.85\% after the
+model's stated knowledge cutoff.  In counterfactual tests, 69.03\%--82.13\% of
+actions remain unchanged after material input perturbations, and the companion
+2,000-item FinLake/FinLeak benchmark finds high recall of historical market
+facts \citep{li2025profitmirage}.  These findings are consistent with
+memorization contributing to backtest performance.  They do not by themselves
+identify the causal share of decay attributable to pretraining leakage rather
+than regime change, implementation differences, or model--tool interactions.
+Our design therefore treats the model cutoff as a contamination risk and uses
+point-in-time inputs under the disclosed amended evaluator; it does not subtract a presumed ``leakage effect''
+from returns.
+
+The evidence is not uniformly negative.  A longitudinal MarketSenseAI study
+reports live-generated S\&P~500 signals over 19 months with average monthly
+return of 2.18\% versus 1.15\% for the benchmark, a Monte Carlo
+\(p\)-value of 0.003, and an information-coefficient information ratio of
+0.489 with \(p=0.024\); its 35-month S\&P~100 comparison is positive but not
+statistically significant \citep{FatourosMetaxas2026SignalOrNoise}.  Because this is a
+follow-up from the system's own research lineage rather than an independent
+replication, we treat it as external-time evidence, not independent
+verification.  In a more constrained comparison, Macro Economists in the
+Machine holds the macro inputs and portfolio engine fixed across LLM and rule
+agents over 124 weekly rebalances.  It reports Sharpe improvements of 0.044 and
+0.040 for the Hawkish and Debate agents relative to the rule agent (both block
+bootstrap \(p<0.10\)) and a net advantage surviving one-way trading costs up
+to 30 basis points.  The Debate agent does not beat the best single agent
+(difference \(-0.004\), \(p=0.769\)); the sample covers one rate cycle and the
+reported \(p\)-values are not adjusted for multiple comparisons
+\citep{wang2026macroeconomists}.  Fin-Analyst supplies a further live common-
+window observation: over the short FinMMEval evaluation it reports a 13.51\%
+TSLA return, 28.33 percentage points above buy-and-hold, while its BTC system
+finishes approximately flat and the asset ranking reverses relative to the
+interim leaderboard \citep{rashid2026finanalyst}.  The reversal is evidence
+about short-window ranking instability as much as it is evidence about the
+agent.
+
+Taken together, the literature supports an artifact-to-evidence attrition
+design rather than a league table of incomparable Sharpe ratios.  We audit
+every one of the 67 \(F+T\) lineages under the frozen rules, preserve failures,
+attempt native execution when the public requirements make that attempt
+identified and proportionate, report native-protocol evidence when it is
+recoverable, and restrict common-task comparisons to outputs that satisfy the
+same point-in-time information, execution, and cost contract.  This separates
+three questions that prior work often conflates: whether a public artifact
+exists, whether it can generate the claimed dated output, and whether that
+output earns robust net alpha under a common evaluator.
