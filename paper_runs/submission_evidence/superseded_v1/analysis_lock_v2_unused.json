@@ -1,0 +1,53 @@
+{
+  "bootstrap_block_months": 6,
+  "bootstrap_minimum_replications": 2000,
+  "bootstrap_seed": 20260802,
+  "candidate_family_size": 62,
+  "cost_sensitivity_bps_one_way": [
+    0,
+    5,
+    10,
+    25,
+    50
+  ],
+  "created_at_utc": "2026-08-03T01:14:09.897241+00:00",
+  "cutoff_utc": "2026-08-02T23:59:59Z",
+  "decision_owner": "Sasha Cui",
+  "file_sha256": {
+    "docs/confirmatory_analysis_protocol.md": "6e04305028a0518bff2c90ca03a1e0d3f4829030608db50ffd9b02126f8b91fd",
+    "docs/current_project_execution_decisions.md": "a9d03636a347d11b8bfdb453f1f244d54e9e86b2f4d7ecf2e102210020d8b31e",
+    "literature_review/census_v1/system_registry.csv": "a7da46a0ba2f0548da14db34e5600396133ac2dc4a24315eda52ae6a68d6f3a0",
+    "literature_review/code_links.csv": "960386f93dde13ecf4e7ac408d4c7410c2702e8a8af7258db8b809960862b827",
+    "literature_review/paper_links.csv": "e7ada6e518dd9415a92b31792a339c09e044a0dce5da89659930f9c306bbc764",
+    "paper_runs/submission_evidence/frozen_candidate_registry.csv": "150074a08819007288228e21b35f635c42175dd329be6d0fc7cc5e89c70157b9",
+    "scripts/run_paper_idea_jkp_proxies.py": "ff076d99b59b187d50019370ac8b3458c489bd547056d0d6425ddf6124ecd5d4",
+    "scripts/run_submission_evidence.py": "80066ca5c84d063d77cd435adc0cfb21adafa98b9ff602db0d3fccdd0a2a2550",
+    "src/alpha_evolve/submission_analysis.py": "bdba7413a732e84e0b1a28505be51ec2c9ed9b4b918a57b1f5f6cb4ced4917e2",
+    "tests/test_submission_analysis.py": "ef4bf974ef692c7c51cb7ad935c61a6ee72f3d4847a3a1894b981c16ecc46b4f"
+  },
+  "holdout_label": "geographic/domain validation; overlapping dates, not a temporal holdout",
+  "holdout_markets": [
+    "CAN",
+    "FRA",
+    "DEU",
+    "ITA",
+    "JPN",
+    "GBR"
+  ],
+  "holdout_outcomes_viewed_before_lock": false,
+  "multiplicity_primary": "Holm FWER with paired block-bootstrap max-|t| confirmation",
+  "openrouter_spend_usd_before_lock": 0.0,
+  "paid_api_calls_before_lock": 0,
+  "prelock_inspection": "file availability, date ranges, and cross-sectional counts only",
+  "primary_cost_bps_one_way": 10,
+  "primary_system_denominator_F_plus_T": 67,
+  "schema_version": 1,
+  "system_registry_total": 103,
+  "system_stratum_counts": {
+    "B": 23,
+    "C": 5,
+    "F": 29,
+    "M": 8,
+    "T": 38
+  }
+}

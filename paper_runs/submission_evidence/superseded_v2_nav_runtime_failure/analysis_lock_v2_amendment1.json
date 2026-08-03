@@ -1,0 +1,117 @@
+{
+  "amended_lock_created_after_g7_outcome_access": true,
+  "amendment_reason": "independent code audit found future-return availability in formation, incorrect long-short NAV drift, mismatched country sets, and different ordinary/bootstrap calendars",
+  "amendment_timestamp_utc": "2026-08-03T00:00:00Z",
+  "analysis_parameters": {
+    "allowed_missing_return_policies": [
+      "zero",
+      "adverse_100"
+    ],
+    "formation_end": "2024-11-30",
+    "formation_start": "1999-07-31",
+    "min_side": 20,
+    "minimum_bootstrap_replications": 2000,
+    "quantile": 0.1,
+    "top_n": 1000
+  },
+  "bootstrap_block_months": 6,
+  "bootstrap_minimum_replications": 2000,
+  "bootstrap_seed": 20260802,
+  "candidate_family_size": 62,
+  "corrected_g7_outputs_viewed_before_this_lock": false,
+  "cost_sensitivity_bps_one_way": [
+    0,
+    5,
+    10,
+    25,
+    50
+  ],
+  "created_at_utc": "2026-08-03T01:36:45.188572+00:00",
+  "cutoff_utc": "2026-08-02T23:59:59Z",
+  "data_inputs": {
+    "CAN": {
+      "bytes": 915440268,
+      "path": "/home/zc362/project_pi_btk22/zc362/jkp-data/data/processed/characteristics/CAN.parquet",
+      "sha256": "b07170b3d845548e39fd2e63b1538bd0318773d36ed9f39ed02dacbedc9b0a97"
+    },
+    "DEU": {
+      "bytes": 343508182,
+      "path": "/home/zc362/project_pi_btk22/zc362/jkp-data/data/processed/characteristics/DEU.parquet",
+      "sha256": "b370bc6b9abe2b1fd4218353e58877bb2f60cffb2540af6a21b93b6a168d6f71"
+    },
+    "FRA": {
+      "bytes": 348639585,
+      "path": "/home/zc362/project_pi_btk22/zc362/jkp-data/data/processed/characteristics/FRA.parquet",
+      "sha256": "14aa9ef4c138e4766e5a2e4a1ef470d95fa44a30ac7ad2eedee076ea8c02ed9d"
+    },
+    "GBR": {
+      "bytes": 798607599,
+      "path": "/home/zc362/project_pi_btk22/zc362/jkp-data/data/processed/characteristics/GBR.parquet",
+      "sha256": "2bd0cab26f0eb1386b42bcb398d517324e85c9fd159ee0d55c187baa30c5f9a7"
+    },
+    "ITA": {
+      "bytes": 141647988,
+      "path": "/home/zc362/project_pi_btk22/zc362/jkp-data/data/processed/characteristics/ITA.parquet",
+      "sha256": "e8d638fe8b7086223e5bfc6a9519792a4ca10f9f8b3e1ee26129835b90784142"
+    },
+    "JPN": {
+      "bytes": 1532995987,
+      "path": "/home/zc362/project_pi_btk22/zc362/jkp-data/data/processed/characteristics/JPN.parquet",
+      "sha256": "70abbf00af794e3dfb49fbedd11a2e4977d08391bfed708beb58a430570f2bc2"
+    },
+    "USA": {
+      "bytes": 4987651237,
+      "path": "/home/zc362/project_pi_btk22/zc362/jkp-data/data/processed/characteristics/USA.parquet",
+      "sha256": "89de9e4cb90e2eda3bfacd8f139119876bf1cf1c0653886226994d5b6e71eeec"
+    }
+  },
+  "decision_owner": "Sasha Cui",
+  "file_sha256": {
+    "docs/confirmatory_analysis_protocol.md": "eb46fc3bd2e0e6ed108c3bfa91a0b69dcb045fe326af69fabe64627dbace07f3",
+    "docs/current_project_execution_decisions.md": "a9d03636a347d11b8bfdb453f1f244d54e9e86b2f4d7ecf2e102210020d8b31e",
+    "literature_review/census_v1/system_registry.csv": "a7da46a0ba2f0548da14db34e5600396133ac2dc4a24315eda52ae6a68d6f3a0",
+    "literature_review/code_links.csv": "960386f93dde13ecf4e7ac408d4c7410c2702e8a8af7258db8b809960862b827",
+    "literature_review/paper_links.csv": "e7ada6e518dd9415a92b31792a339c09e044a0dce5da89659930f9c306bbc764",
+    "paper_runs/submission_evidence/frozen_candidate_registry.csv": "150074a08819007288228e21b35f635c42175dd329be6d0fc7cc5e89c70157b9",
+    "scripts/freeze_submission_analysis.py": "b321c530f2c6c05c975525ecc0919616825d621d9a5e2b7ea04dc77078fb52c0",
+    "scripts/run_paper_idea_jkp_proxies.py": "ff076d99b59b187d50019370ac8b3458c489bd547056d0d6425ddf6124ecd5d4",
+    "scripts/run_submission_evidence.py": "e5e52363f78f1dab9bc74ecdf42aeb4fd15fd7fd9cb6cad8165fcb20c198b33e",
+    "src/alpha_evolve/submission_analysis.py": "24989a95c01cb7c4b9f933361a0fd1f50b5ece7e31a98f73359c47e32553d5d2",
+    "tests/test_submission_analysis.py": "84dd653a334c7a47d80cb0638089570fa0132662c421d928b670c3b82d6b5eba",
+    "tests/test_submission_runner.py": "c0f55ef9cefb59aef0c0975bea79625245fe5f5e5af2c16f8f5134c0876480d9"
+  },
+  "holdout_label": "geographically external amended validation; overlapping dates, not a pristine temporal holdout",
+  "holdout_markets": [
+    "CAN",
+    "FRA",
+    "DEU",
+    "ITA",
+    "JPN",
+    "GBR"
+  ],
+  "initial_lock_created_before_g7_outcome_access": true,
+  "initial_prelock_inspection": "file availability, date ranges, and cross-sectional counts only",
+  "lock_stage": "post-outcome correctness amendment; pre-corrected-rerun",
+  "multiplicity_primary": "Holm FWER with paired block-bootstrap max-|t| confirmation",
+  "openrouter_spend_usd_before_lock": 0.0,
+  "paid_api_calls_before_lock": 0,
+  "primary_cost_bps_one_way": 10,
+  "primary_system_denominator_F_plus_T": 67,
+  "retrospective_markets": [
+    "USA"
+  ],
+  "schema_version": 2,
+  "superseded_initial_lock": {
+    "path": "paper_runs/submission_evidence/superseded_v1/analysis_lock_v1_original.json",
+    "sha256": "6f830cea6a756938de4eace58d6ae9bf62d47c779fa7f2acfdef1e23968f5616"
+  },
+  "superseded_output_path": "paper_runs/submission_evidence/superseded_v1/g7_ex_us_lookahead_and_calendar_bug",
+  "system_registry_total": 103,
+  "system_stratum_counts": {
+    "B": 23,
+    "C": 5,
+    "F": 29,
+    "M": 8,
+    "T": 38
+  }
+}

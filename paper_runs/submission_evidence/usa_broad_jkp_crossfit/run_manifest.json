@@ -1,0 +1,52 @@
+{
+  "analysis_label": "post_hoc_exploratory_broad_jkp_crossfit",
+  "created_at_utc": "2026-08-03T23:36:26.218736+00:00",
+  "factor_panel": "/home/zc362/project_pi_btk22/zc362/external-factor-data/performance_analysis/results/current/multifactor_value_add_20260624/benchmark_factor_panel.csv",
+  "factor_panel_sha256": "f22f3e49d62d81530eaa84ddbf0c153fc6e08e723260edba37f98efb9e082260",
+  "factor_panel_month_label": "formation month shifted forward one month to corrected evaluator realization month",
+  "market_alignment_correlation": 0.9993633983234792,
+  "candidate_monthly": "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv",
+  "candidate_monthly_sha256": "819fa3b0e87113d29188e01fc9fb74cd43d58e2b67f93976c9e29f9ef4431c1a",
+  "benchmark": "unpenalized market plus JKP value, size, investment, profitability, and momentum; ridge-controlled remaining 127 JKP characteristic-factor returns",
+  "unpenalized_factor_columns": [
+    "capm_top1000_mkt",
+    "char__be_me",
+    "char__market_equity",
+    "char__at_gr1",
+    "char__ope_be",
+    "char__ret_12_1"
+  ],
+  "slope_estimator": "rolling partial ridge; six primary factors unpenalized, other factors ridge-regularized with training-only validation and standardization; no training intercept subtracted from test residual",
+  "train_months": 120,
+  "validation_months": 24,
+  "ridge_lambdas": [
+    0.1,
+    1.0,
+    10.0,
+    100.0,
+    1000.0
+  ],
+  "cost_bps_one_way": 10.0,
+  "n_common_months": 246,
+  "common_start": "2001-08-31",
+  "common_end": "2022-01-31",
+  "n_evaluation_months": 126,
+  "evaluation_start": "2011-08-31",
+  "evaluation_end": "2022-01-31",
+  "hac_lags": 4,
+  "bootstrap_reps": 5000,
+  "block_length": 6,
+  "bootstrap_seed": 20260803,
+  "max_t_critical_95": 3.2455685713824374,
+  "counts": {
+    "positive_alpha": 23,
+    "nominal_positive": 1,
+    "holm_positive": 0,
+    "max_t_positive": 0,
+    "simultaneous_lower_bound_at_least_2pp": 0
+  },
+  "output_sha256": {
+    "broad_jkp_crossfit_results.csv": "9212ed4db4f9afe1040147e10bf453a1fe3f64e1527171c344fac8702ad8161d",
+    "broad_jkp_crossfit_residuals.csv": "bdc75261a9bbda8392521dcd692ab1262abc6e88c62b1c451c62a8807d403921"
+  }
+}

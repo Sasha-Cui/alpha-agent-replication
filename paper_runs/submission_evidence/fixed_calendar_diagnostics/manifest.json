@@ -1,0 +1,47 @@
+{
+  "calendar": {
+    "end": "2024-12-31",
+    "n_months": 293,
+    "start": "2000-08-31"
+  },
+  "candidate_count": 27,
+  "classification": "post_hoc_fixed_calendar_diagnostic",
+  "cost_bps_one_way": 10,
+  "created_at_utc": "2026-08-03T02:58:05.161580+00:00",
+  "factor_columns": [
+    "jkp_topn_mkt",
+    "char__be_me",
+    "char__at_gr1",
+    "char__market_equity",
+    "char__ope_be",
+    "char__ret_12_1"
+  ],
+  "input_sha256": {
+    "candidate_monthly_all_markets.csv": "9ea811ff3c152c5c2eeb628587c550540bd39982b65e2524725bb9925708376a",
+    "candidate_monthly_country_equal.csv": "feba874813fa8e054d9044e1f279cc499b80f8677261dde87d4285946a03e4a1",
+    "candidate_primary_results.csv": "0454bf2f03c2f088372acfff5d3a1f61f35c6fe325ccadc44f8f6927c88d8604",
+    "factor_monthly_all_markets.csv": "cb2cf201aeefebe4dc4dfb9ac435f93fca4ce798a2805b170f489fed46a60d53",
+    "factor_monthly_country_equal.csv": "f43fe03ded57ad68a180b93cac9fc6381cf2ffdde6d40c79f6e1b5f7c3d792e9",
+    "run_manifest.json": "afe31347a3c4c765d46837f63ac451673a3fd6562d273bbfb3b5ef03193fc72c"
+  },
+  "markets": [
+    "CAN",
+    "FRA",
+    "DEU",
+    "ITA",
+    "JPN",
+    "GBR"
+  ],
+  "output_sha256": {
+    "fixed_calendar_country_loo.csv": "d7cf248ff4bcca61b3e41d460a0cae26dcfcebf86bc5ede0d02db695ed9653bd"
+  },
+  "primary_analysis_lock_sha256": "dba132b6366e03f65a65b90549ca9d3e7a39313a60d42f43ea00407b0a6694e2",
+  "rationale": "Hold the primary executable-candidate set and 293-month calendar fixed so country and leave-one-country-out comparisons do not inherit country-specific executable-set calendars.",
+  "schema_version": 1,
+  "script_sha256": "2f30abcb12a85e194570a2fc84879b42a5054091d80e28383a228384beff9dbe",
+  "usa_g7_common_calendar": {
+    "end": "2024-12-31",
+    "n_months": 281,
+    "start": "2001-08-31"
+  }
+}
