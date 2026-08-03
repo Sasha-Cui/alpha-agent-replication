@@ -1,0 +1,97 @@
+{
+  "analysis_lock_created_at_utc": "2026-08-03T01:48:15.398944+00:00",
+  "analysis_lock_sha256": "dba132b6366e03f65a65b90549ca9d3e7a39313a60d42f43ea00407b0a6694e2",
+  "bootstrap": {
+    "block_length": 6,
+    "n_bootstrap": 2000,
+    "n_candidates": 62,
+    "n_common_months": 281,
+    "seed": 20260802,
+    "simultaneous_critical_value": 3.2080805187637695,
+    "white_reality_check_style_p_value": 0.010494752623688156
+  },
+  "bootstrap_block_sensitivity": [
+    {
+      "block_length": 3,
+      "n_bootstrap": 2000,
+      "n_candidates": 62,
+      "n_common_months": 281,
+      "seed": 20260802,
+      "simultaneous_critical_value": 3.2671510349861763,
+      "white_reality_check_style_p_value": 0.013993003498250875
+    },
+    {
+      "block_length": 12,
+      "n_bootstrap": 2000,
+      "n_candidates": 62,
+      "n_common_months": 281,
+      "seed": 20260802,
+      "simultaneous_critical_value": 3.1757617747468156,
+      "white_reality_check_style_p_value": 0.011494252873563218
+    }
+  ],
+  "costs_bps_one_way": [
+    0,
+    5,
+    10,
+    25,
+    50
+  ],
+  "created_at_utc": "2026-08-03T02:10:29.244492+00:00",
+  "end": "2024-11-30",
+  "family_sample_policy": "complete common candidate-factor calendar at every cost",
+  "formation_end": "2024-11-30",
+  "formation_start": "1999-07-31",
+  "formation_uses_next_month_return_availability": false,
+  "input_files": {
+    "USA": {
+      "bytes": 4987651237,
+      "path": "/home/zc362/project_pi_btk22/zc362/jkp-data/data/processed/characteristics/USA.parquet",
+      "sha256": "89de9e4cb90e2eda3bfacd8f139119876bf1cf1c0653886226994d5b6e71eeec"
+    }
+  },
+  "limited_liability_policy": "a candidate with realized total portfolio return <= -100% in any included market is a complete-path implementation failure, is never restarted or recapitalized, remains in the 62-hypothesis denominator with p=1, and does not determine the executable-candidate common calendar",
+  "markets": [
+    "USA"
+  ],
+  "min_side": 20,
+  "missing_next_month_return_policy": "zero",
+  "missing_total_return_for_drift_policy": "zero when reconstructed total return is missing; exposure recorded separately",
+  "numpy": "2.0.2",
+  "openrouter_spend_usd": 0.0,
+  "output_sha256": {
+    "bootstrap_block_sensitivity.csv": "ed0ecff4c0239e39bc1261b9cee2a932ebf9956e0e87618f6b60b06944cab98a",
+    "candidate_cost_alpha_results.csv": "118452d79a375637a10e14f9285f22f93167b14d6b116acb60b4f5730b0496e6",
+    "candidate_country_results.csv": "ccbc21825426f5eae73a73110bc1e600af9d1a6fc6cc1756e8ce31cfa1122d23",
+    "candidate_leave_one_country_out.csv": "efbfe33aec350268db609bb29f05540706c7ea13e878742b3d9856f5fe5118bf",
+    "candidate_metadata.csv": "e978260cd352aea6703248abe6cfdc35473f120678998c49723bd9485d2a4870",
+    "candidate_monthly_USA.csv": "819fa3b0e87113d29188e01fc9fb74cd43d58e2b67f93976c9e29f9ef4431c1a",
+    "candidate_monthly_all_markets.csv": "819fa3b0e87113d29188e01fc9fb74cd43d58e2b67f93976c9e29f9ef4431c1a",
+    "candidate_monthly_country_equal.csv": "28fe7e30b0af99468d47ba5192e85d3db6d86786e74203cb36ea1fe85fc6caeb",
+    "candidate_path_failures.csv": "19274870f4fd50cb8f1599e79e400e330cb37e5ea3ef2a6171abed35cda54f2b",
+    "candidate_primary_results.csv": "a6b6e7cc9a751eb86cc151ba4555ece3f2821fe88d7c5b4ea66b36d7da8245b2",
+    "factor_monthly_USA.csv": "2cc4d8aca7c2eec8146226e61e0bcb8d8d00499a58eb75b3e5007e9d402a99c6",
+    "factor_monthly_all_markets.csv": "2cc4d8aca7c2eec8146226e61e0bcb8d8d00499a58eb75b3e5007e9d402a99c6",
+    "factor_monthly_country_equal.csv": "ed00f4c2208277ca03e7b2c94b8e2d26b3509a33732b247363c838fbe492b089",
+    "hac_lag_sensitivity.csv": "f4c389b766bc9f3b5fbea0dc27bb8b209f6baed06dc66ff0bc50dfb2d3dd772c",
+    "missing_return_exposure_summary.csv": "9c8f13e060206b16041de65a10197240406a0c71b58f033c9f67e2c800f3a69c",
+    "multiplicity_adjustments.csv": "ed87dcd6e1abf8268077681715631f6abf274868f439f63e36e50f9019f7188a",
+    "turnover_summary.csv": "a6ccac2326b3262aa2922271e83283f334ce47819559366da2d9a88a5e8566aa"
+  },
+  "paid_api_calls": 0,
+  "pandas": "2.3.3",
+  "path_failure_candidates": 0,
+  "path_failure_events": 0,
+  "platform": "Linux-5.14.0-570.119.1.el9_6.x86_64-x86_64-with-glibc2.34",
+  "primary_cost_bps_one_way": 10,
+  "python": "3.9.21 (main, May 11 2026, 00:00:00) \n[GCC 11.5.0 20240719 (Red Hat 11.5.0-5)]",
+  "quantile": 0.1,
+  "realized_return_end": "2024-12-31",
+  "realized_return_start": "1999-08-31",
+  "schema_version": 1,
+  "start": "1999-07-31",
+  "tag": "usa_retrospective_corrected",
+  "top_n": 1000,
+  "weight_drift_policy": "all risky weights divided by common post-return strategy NAV",
+  "weight_drift_return": "one-month-ahead USD total return reconstructed from the next consecutive JKP row"
+}
