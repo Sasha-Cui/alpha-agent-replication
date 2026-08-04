@@ -1,0 +1,8 @@
+source_category,mapping_fidelity_tier,candidates,indexed_sources
+benchmark_or_audit,M0_narrative_translation,6,6
+community_repository,M0_narrative_translation,2,2
+formula_or_factor_method,M0_narrative_translation,19,18
+formula_or_factor_method,M1_example_or_motif_partial_support,6,3
+formula_or_factor_method,M2_released_seed_expression,1,1
+sequential_trading_or_portfolio_method,M0_narrative_translation,22,20
+sequential_trading_or_portfolio_method,M1_named_rule_partial_support,6,1

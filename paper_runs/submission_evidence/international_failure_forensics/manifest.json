@@ -1,0 +1,27 @@
+{
+  "analysis_label": "post_hoc_international_failure_forensics",
+  "created_at_utc": "2026-08-04T16:13:40.946301+00:00",
+  "source_failures_sha256": "abe00d2757ee3b6f6134186cb79a6c3c2470b1c5a3179ffc2450963a0e810f87",
+  "failure_events": 40,
+  "failure_candidates": 35,
+  "failure_markets": {
+    "CAN": 5,
+    "DEU": 2,
+    "FRA": 31,
+    "GBR": 1,
+    "ITA": 1
+  },
+  "failure_months": 9,
+  "single_extreme_short_position_dominates": 40,
+  "extreme_short_classifications_total": 40,
+  "events_in_two_largest_month_cells": 24,
+  "failures_remaining_cap_1_0": 0,
+  "failures_remaining_cap_2_0": 1,
+  "failures_remaining_cap_5_0": 1,
+  "failures_remaining_cap_10_0": 7,
+  "interpretation": "Capping is a post-hoc diagnostic, not a corrected return policy. Concentrated failures are treated as a data/implementation alarm and removed from headline performance evidence.",
+  "output_sha256": {
+    "failure_event_forensics.csv": "009bb655f5bb0dc8776d924fbb56495411777eb685da36f7d6491c103d4d6d0f",
+    "failure_month_summary.csv": "4829c5c43f06a654e3f8d1850f73b78eda305abe2eb1a1588626b5c3df6711f6"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "analysis_label": "post_hoc_mapping_discretion_audit",
+  "created_at_utc": "2026-08-04T16:11:34.790428+00:00",
+  "registry_sha256": "150074a08819007288228e21b35f635c42175dd329be6d0fc7cc5e89c70157b9",
+  "usa_results_sha256": "a6b6e7cc9a751eb86cc151ba4555ece3f2821fe88d7c5b4ea66b36d7da8245b2",
+  "mapping_outcome_blind": false,
+  "independent_second_coder": false,
+  "exact_common_task_claims_identified": 0,
+  "sensitivity": {
+    "candidate_count": 62,
+    "indexed_source_count": 51,
+    "named_source_rows": 52,
+    "sources_with_multiple_coded_mappings": 5,
+    "candidates_covered_by_existing_alternatives": 15,
+    "one_mapping_per_source_combinations": 144,
+    "combination_holm_discovery_count_min": 1,
+    "combination_holm_discovery_count_max": 1,
+    "combination_unique_discovery_sets": [
+      "repo_alphaagent_decay_resistant_quality"
+    ],
+    "method_source_candidate_count_post_hoc": 54,
+    "method_source_holm_discoveries_post_hoc": [
+      "repo_alphaagent_decay_resistant_quality"
+    ],
+    "limitation": "This sensitivity varies only mappings already present in the frozen family. It does not quantify alternative formulas for singly mapped sources and is a lower bound on mapping uncertainty."
+  },
+  "output_sha256": {
+    "mapping_audit.csv": "6bd748ceb9c3e018b7a14ff8ca638c37293e6d7c1bdee9ee2777837f41cb22ba",
+    "source_scope_summary.csv": "82b4c1b827358fdea43046cb7ee0bdae3ba3999974c36468a85a866ae791c05e",
+    "within_source_mapping_sensitivity.csv": "9b8cececa9d9e9cfeb999ff473296b97b9972ebb36b466b04679654bc21e3305",
+    "mapping_combination_sensitivity.csv": "c513af118993e9495366c3d66c6ccea097a04f10fadbc22f6cf1102aec4ff91f"
+  }
+}
