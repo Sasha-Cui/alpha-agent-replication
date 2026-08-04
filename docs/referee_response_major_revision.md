@@ -38,6 +38,7 @@ The anonymous artifact builder packages the census, screening and execution reco
 
 ## Minor comments
 
+- The 67 entries are now explicitly described as system lineages in an availability census, not 67 replications or necessarily 67 one-to-one papers. A complete 67-row primary-record bibliography is included in the artifact. The main paper separately names and cites all 14 targeted implementation attempts and the five papers underlying the 13 source-grounded component tests.
 - The 67-system census, 55-source corpus, 51 mapped indices, and 62 portfolios are reconciled in the first methods subsection.
 - The nine licenses are separated from the 14 execution attempts.
 - The positive AlphaAgent-related row is always called a researcher-authored AlphaAgent-inspired mechanism proxy, with its 0.48% simultaneous lower bound.

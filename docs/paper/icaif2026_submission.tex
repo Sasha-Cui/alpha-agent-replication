@@ -54,7 +54,7 @@ Financial AI systems now search factor expressions, debate investment theses, re
 
 That question contains two different failure modes. A system may be impossible to evaluate because its code, data adapter, trained state, or dated output is unavailable. Alternatively, a testable return path may exist but fail an asset-pricing benchmark. Treating both as zero alpha is wrong; stopping at ``not reproducible'' is also incomplete. We therefore use the highest-fidelity feasible route and label the estimand at every step. Native or code-backed returns, when available, test a released implementation. When they are unavailable, reconstruction must give the public idea a serious opportunity to work: preserve source-supported content, choose a favorable reasonable implementation, encode ambiguity as variants, and disclose every substitution. A narrative mapping can stress-test an economic story, but its failure cannot be charged to the source.
 
-This distinction changes the paper's claim. We do not test whether financial agents, as a class, can discover alpha. We test whether their \emph{public evidence} establishes alpha under an independently specified common task. Our U.S. portfolio results are retrospective historical spanning diagnostics conditional on researcher-authored mappings. They do not demonstrate prospective discovery and cannot correct for prior factor mining or publication selection \cite{HarveyLiuZhu2016,BaileyEtAl2017PBO}.
+This distinction changes the paper's claim. We do not test whether financial agents, as a class, can discover alpha. We test whether their \emph{public evidence} establishes alpha under an independently specified common task. Our U.S. portfolio results are retrospective historical spanning diagnostics conditional on researcher-authored mappings. They do not demonstrate prospective discovery and cannot correct for prior factor mining or publication selection \cite{HarveyLiuZhu2016}.
 
 We make four contributions. First, a 67-system artifact census records public availability, pinned revisions, native dated output, and exact blocking stages. Second, a direct-code audit separates one testable adaptation from 13 non-evaluable attempts. Third, a good-faith reconstruction contract specifies claim extraction, evidence priority, favorable implementation, alternative mappings, outcome-blind review, and the boundary of permissible negative inference. Fourth, a row-level ledger applies that boundary to 62 U.S. mappings and reports costs, factor spanning, familywise inference, and sensitivity. The central finding is not ``the papers fail.'' It is narrower: the released evidence and 13 source-grounded component tests do not establish broad, economically material U.S. alpha; 49 narrative translations remain exploratory only.
 
@@ -70,9 +70,9 @@ We make four contributions. First, a 67-system artifact census records public av
 
 \subsection{Denominators and inferential targets}
 
-The three headline denominators are related but not interchangeable. The census contains 67 formula-discovery or trading systems. A separate source-discovery corpus contains 55 indexed records suitable for economic coding; 51 indices are translated into 62 candidate portfolios because five sources have multiple already-coded interpretations. One index names two systems, so the ledger has 52 named source rows. The 62 portfolios are the statistical family. None of the 51 mapped sources contains an explicit exact match to the full common claim ``monthly U.S. top-1,000 equity alpha relative to our six-factor model.'' Consequently, our outcome is a common-task spanning result, not a reproduction of 51 identically stated original alpha claims.
+The three headline denominators are related but not interchangeable. The census contains 67 \emph{system lineages}, not 67 replications and not necessarily 67 one-to-one papers. Its purpose is public-evidence availability. A complete 67-row bibliographic registry lists every primary record and artifact in the supplement. The performance work is narrower: 14 targeted public implementations (Table~\ref{tab:direct-scope}) and 13 source-grounded component mappings from five papers (Table~\ref{tab:grounded-scope}). A separate source-discovery corpus contains 55 indexed records suitable for economic coding; 51 indices are translated into 62 candidate portfolios because five sources have multiple already-coded interpretations. One index names two systems, so the ledger has 52 named source rows. The 62 portfolios are the statistical family. None of the 51 mapped sources contains an explicit exact match to the full common claim ``monthly U.S. top-1,000 equity alpha relative to our six-factor model.'' Consequently, our outcome is a common-task spanning result, not a reproduction of 51 identically stated original alpha claims.
 
-The 14 targeted repositories are a diagnostic subset of public implementations, not the nine artifacts with an observed reuse license. License presence is a census field; the execution audit also inspected locally available public snapshots without redistributing them. We report 0 of 1 testable code-backed paths beating the benchmark. The remaining 13 attempts are classified by blocking stage and never enter a performance denominator.
+The 14 targeted repositories are a diagnostic implementation set, not another name for the 67-system census and not the nine artifacts with an observed reuse license. Eight attempts belong to the 67 formula/trading lineages; five benchmarks and one mechanistic comparator were added because their repositories appeared useful for evaluation. License presence is a census field; the execution audit also inspected locally available public snapshots without redistributing them. We report 0 of 1 testable code-backed paths beating the benchmark. The remaining 13 attempts are classified by blocking stage and never enter a performance denominator.
 
 \begin{table}[t]
 \centering
@@ -98,6 +98,33 @@ We freeze repository URLs and revisions, record whether dated signals, positions
 
 We attempted 14 implementations selected for apparent code availability and relevance. Twelve contain public code, one is ambiguous unofficial code, and one is a placeholder. The sole computable adaptation is a QuantEvolver released seed expression evaluated on the JKP panel, not a trained QuantEvolver agent. Its annualized six-factor alpha is 0.33\% ($t=0.65$), so it does not beat the benchmark. The package preserves the 13 blocking records separately: absent native output, missing inputs or adapters, incompatible task, or non-executable artifact. This makes the negative performance denominator one, not fourteen.
 
+\begin{table*}[t]
+\centering
+\caption{The 14 targeted implementation attempts. These are the systems whose public code or shipped outputs we actually inspected for a return path; eight belong to the 67-system F/T census.}
+\label{tab:direct-scope}
+\scriptsize
+\begin{tabular}{p{0.19\textwidth}p{0.24\textwidth}p{0.50\textwidth}}
+\toprule
+\textbf{System} & \textbf{Released object / native task} & \textbf{Audit result} \\
+\midrule
+AlphaAgent \cite{TangEtAl2025AlphaAgent} & China A-share factor-mining code & No shipped dated strategy return series. \\
+AlphaBench \cite{alphabench2026} & Formula-mining benchmark code & Executable benchmark components, but no dated strategy returns. \\
+AlphaForgeBench \cite{ZhangEtAl2026AlphaForgeBench} & End-to-end strategy-design benchmark & Aggregate metrics only; no dated common-task return stream. \\
+AlphaPROBE \cite{GuoEtAl2026AlphaPROBE} & Graph-based factor-mining comparator & No approved JKP adapter or released dated expressions/returns. \\
+ContestTrade \cite{ZhaoEtAl2025ContestTrade} & Sequential multi-agent trading code & No replay adapter or shipped common-task returns. \\
+DeepFund \cite{LiEtAl2025DeepFund} & Live fund-investment benchmark & No approved historical reproduction path for the common panel. \\
+FinCon \cite{YuEtAl2024FinCon} & Sequential multi-agent trading system & Available implementation was unofficial/ambiguous and task-incompatible. \\
+GuruAgents \cite{KimEtAl2025GuruAgents} & Nasdaq-100 guru-persona portfolios & Shipped non-JKP backtest is inspectable but incompatible with the common task. \\
+LiveTradeBench \cite{YuEtAl2025LiveTradeBench} & Live stock/prediction-market benchmark & No frozen historical return path compatible with the evaluator. \\
+QuantAgent \cite{XiongEtAl2025QuantAgent} & Hourly/4-hour HFT across stocks, futures, and crypto & Intraday native task cannot be represented by monthly JKP data. \\
+QuantEvolver \cite{ZhangEtAl2026QuantEvolver} & Factor-discovery framework plus seed expressions & One released seed expression is testable; $\alpha=0.33\%$, $t=0.65$. Not a trained-agent run. \\
+R\&D-Agent-Quant \cite{YangEtAl2025RDAgent} & General R\&D-Agent framework and quant workflow & No shipped U.S. candidate returns or completed JKP adapter. \\
+TradeTrap \cite{YanEtAl2025TradeTrap} & Trading-agent reliability harness & Shipped results are a non-JKP diagnostic, not a common-task return path. \\
+Trading-R1 \cite{XiaoEtAl2025TradingR1} & RL-trained trading-reasoning system & Public repository snapshot is a placeholder without executable system code. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
 \subsection{Mechanism mapping and disclosed discretion}
 
 When direct evaluation is unavailable, we map public descriptions to point-in-time JKP characteristics \cite{JensenKellyPedersen2023}. The governing principle is benefit of the doubt: the reconstruction should help the documented idea express its signal, not construct an easy-to-reject surrogate. The supplement formalizes an eight-step contract.
@@ -107,6 +134,24 @@ First, a claim card records the source locator, original domain, frequency, univ
 Sixth, a source-protection rule limits interpretation. Released expressions, named rules, and worked examples are \emph{source-grounded component tests}; they may speak only to that component under the common task. Narrative translations are \emph{exploratory favorable stress tests}; their failure cannot count as evidence against the source. Seventh, the preferred design requires a second reviewer to adjudicate source fidelity without seeing returns. Eighth, the public reconstruction card records supported and researcher-supplied elements, favorable choices, omissions, alternatives, freeze status, outcome access, reviewer status, and the exact negative-evidence boundary.
 
 The present mappings predate this formal contract, so the audit applies its source-protection rule retrospectively rather than claiming compliance that did not occur. Each row records the source index and category, source name, economic rationale, exact score, portfolio rule, source support for ingredients/signs/weighting, omitted components, benefit-of-the-doubt choices, and permitted interpretation. The coding tiers are shown in Table~\ref{tab:mapping}. A narrative translation is deliberately labeled M0 even when economically favorable.
+
+\begin{table*}[t]
+\centering
+\caption{The five papers underlying the 13 source-grounded component tests. ``Source-grounded'' applies to the named component, not the full native agent or original evaluation.}
+\label{tab:grounded-scope}
+\scriptsize
+\begin{tabular}{p{0.18\textwidth}p{0.35\textwidth}p{0.40\textwidth}}
+\toprule
+\textbf{Source ($N$ mappings)} & \textbf{Original idea and task} & \textbf{Component implemented in our common task} \\
+\midrule
+EFS \cite{LuoEtAl2025EFS} (3) & LLM evolutionary factor search for sparse top-$m$ portfolios on Fama--French and US50/HSI45/CSI300 datasets. & Momentum/low-volatility/breakout score; reversal/low-noise score; and a sparse equal-weight top-five variant. \\
+QuantEvolver \cite{ZhangEtAl2026QuantEvolver} (1) & Reinforcement fine-tuning generates executable factor-DSL expressions across market benchmarks. & The released risk-adjusted-momentum seed $\mathrm{ret}_{12,1}/|\mathrm{rvol}_{252}|$; portfolio formation remains ours. \\
+Alpha-Jungle \cite{ShiEtAl2025AlphaJungle} (2) & LLM-guided MCTS searches symbolic stock factors using price, volume, and volatility operators. & A price/volume/momentum score and a trend-after-volatility-compression score based on documented examples. \\
+FAMA \cite{LiEtAl2024FAMA} (1) & Neural-symbolic factor mining evaluated by RankIC/RankICIR and an S\&P 500 investment simulation. & A simple interpretable value--momentum--profitability score motivated by the paper's factor examples. \\
+GuruAgents \cite{KimEtAl2025GuruAgents} (6) & Prompt-guided agents emulate five named investor philosophies in a Nasdaq-100 backtest. & Graham, Buffett, Greenblatt, Piotroski, and Altman characteristic screens plus their equal-weight ensemble. \\
+\bottomrule
+\end{tabular}
+\end{table*}
 
 \begin{table}[t]
 \centering
@@ -190,7 +235,7 @@ These limits motivate a release standard for future financial-agent work: revisi
 
 \section{Anonymous Empirical Artifact}
 
-The submission package is designed to make the audit inspectable without redistributing restricted security-level data. It contains the good-faith reconstruction protocol; the 67-system census; the 55-source ledger; all 62 formulas; source-supported content, researcher choices, favorable implementation rules, task-card status, anti-strawman role, and negative-evidence boundary; the freeze timestamp and hash; aggregate monthly U.S. candidate and factor returns; broad-factor residuals; multiplicity results; international event forensics; scripts; tests; and a SHA-256 inventory. The row-level ledger states explicitly that mappings were not outcome-blind and had no second coder. Restricted raw market data are referenced by source path and input hash rather than redistributed.
+The submission package is designed to make the audit inspectable without redistributing restricted security-level data. It contains the complete 67-lineage bibliography and primary-record URLs; the exact 14-code-attempt inventory; the five-paper, 13-component source-grounded inventory; the good-faith reconstruction protocol; the 55-source ledger; all 62 formulas; source-supported content, researcher choices, favorable implementation rules, anti-strawman role, and negative-evidence boundary; aggregate monthly U.S. candidate and factor returns; broad-factor residuals; international event forensics; scripts; tests; and a SHA-256 inventory. The row-level ledger states explicitly that mappings were not outcome-blind and had no second coder. Restricted raw market data are referenced by source path and input hash rather than redistributed.
 
 Deterministic builders regenerate manuscript macros and figures from hash-verified outputs. Tests cover timing, portfolio weights, drift, costs, HAC calculations, familywise adjustments, mapping-combination sensitivity, and international event reconstruction. This artifact is part of the contribution: hashes establish integrity only because the underlying aggregate objects and code are included.
 
