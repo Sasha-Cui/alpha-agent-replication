@@ -20,6 +20,7 @@ def sha256(path: Path) -> str:
 
 REQUIRED = [
     "docs/confirmatory_analysis_protocol.md",
+    "docs/good_faith_reconstruction_protocol.md",
     "paper_runs/submission_evidence/analysis_lock.json",
     "paper_runs/submission_evidence/artifact_audit/artifact_audit.csv",
     "paper_runs/submission_evidence/artifact_audit/artifact_audit_summary.csv",
@@ -30,6 +31,8 @@ REQUIRED = [
     "paper_runs/submission_evidence/mapping_audit/source_scope_summary.csv",
     "paper_runs/submission_evidence/mapping_audit/within_source_mapping_sensitivity.csv",
     "paper_runs/submission_evidence/mapping_audit/mapping_combination_sensitivity.csv",
+    "paper_runs/submission_evidence/mapping_audit/source_grounded_subset_results.csv",
+    "paper_runs/submission_evidence/mapping_audit/source_grounded_subset_summary.csv",
     "paper_runs/submission_evidence/mapping_audit/manifest.json",
     "paper_runs/repository_ff5mom_metrics_summary.csv",
     "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv",
@@ -68,6 +71,8 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
 - The 62 U.S. portfolios are researcher-authored historical mechanism mappings, not
   native agent returns. They were frozen after U.S. outcomes were inspected and were
   not independently double-coded.
+- Thirteen mappings are source-grounded component tests. The other 49 are favorable
+  narrative stress tests whose failures cannot count as evidence against their sources.
 - The broad-factor analysis is post hoc and its bootstrap resamples fixed out-of-sample
   residuals rather than rerunning rolling tuning.
 - International performance is not headline evidence. The included forensic ledger
@@ -76,7 +81,10 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
 ## Entry points
 
 - `paper_runs/submission_evidence/mapping_audit/mapping_audit.csv`: every mapping,
-  formula, fidelity code, source-support field, omission, freeze timestamp, and hash.
+  formula, fidelity code, source-support field, benefit-of-the-doubt choice,
+  anti-strawman role, negative-evidence boundary, omission, freeze timestamp, and hash.
+- `docs/good_faith_reconstruction_protocol.md`: the claim-card, evidence-priority,
+  favorable-implementation, alternative-mapping, and source-protection rules.
 - `paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv`:
   aggregate monthly U.S. candidate returns.
 - `paper_runs/submission_evidence/international_failure_forensics/`: event-level audit.

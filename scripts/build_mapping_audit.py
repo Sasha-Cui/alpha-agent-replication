@@ -21,6 +21,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_REGISTRY = ROOT / "paper_runs/submission_evidence/frozen_candidate_registry.csv"
 DEFAULT_RESULTS = ROOT / "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_primary_results.csv"
+DEFAULT_BROAD_RESULTS = ROOT / "paper_runs/submission_evidence/usa_broad_jkp_crossfit/broad_jkp_crossfit_results.csv"
 DEFAULT_LOCK = ROOT / "paper_runs/submission_evidence/analysis_lock.json"
 DEFAULT_OUTPUT = ROOT / "paper_runs/submission_evidence/mapping_audit"
 
@@ -99,6 +100,56 @@ def omitted_components(row: pd.Series) -> str:
     return "; ".join(dict.fromkeys(omissions))
 
 
+def good_faith_fields(row: pd.Series) -> tuple[str, str, str, str, str, str, str]:
+    """Define what a mapping may and may not say about its source.
+
+    The classification is intentionally conservative. A generous common-task
+    implementation is not upgraded to a source replication merely because it
+    performs well or poorly.
+    """
+    tier = str(row["mapping_fidelity_tier"])
+    strategy = str(row.get("strategy", ""))
+    if tier == "M2_released_seed_expression":
+        role = "source_grounded_component_test"
+        extraction = "released expression preserved; evaluator portfolio rule remains researcher supplied"
+        preservation = "released score ingredients and signs"
+        boundary = "may evaluate the released seed expression under the common task; not the trained agent or original study"
+        anti_strawman = "eligible_for_component_level_interpretation_only"
+    elif tier.startswith("M1_"):
+        role = "source_grounded_component_test"
+        extraction = "named rule, example, or economic motif preserved; complete tested formula not supplied by source"
+        preservation = "source-named rule or example-level mechanism"
+        boundary = "may evaluate the documented component only; not the native system, full paper, or original metric"
+        anti_strawman = "eligible_for_component_level_interpretation_only"
+    else:
+        role = "exploratory_favorable_stress_test"
+        extraction = "narrative mechanism translated by researcher; exact tested formula is not source supplied"
+        preservation = "directional economic narrative only"
+        boundary = "cannot count as evidence against the source; tests only the researcher's favorable economic translation"
+        anti_strawman = "exploratory_only_no_negative_inference"
+    if strategy == "long_only_top5_equal_weighted":
+        help_rule = (
+            "use the source-motivated score in its favorable direction and implement sparse top-five equal weighting; "
+            "report gross and cost-adjusted results"
+        )
+    elif strategy.startswith("long_only"):
+        help_rule = (
+            "use the source-motivated score in its favorable direction and hold the highest-score names long only; "
+            "report gross and cost-adjusted results"
+        )
+    else:
+        help_rule = (
+            "use the source-motivated score in its favorable direction and expose the full top-minus-bottom decile spread "
+            "with one unit notional per leg; report gross and cost-adjusted results"
+        )
+    task_card = (
+        "incomplete_in_frozen_ledger: original domain, frequency, universe, objective, and claimed metric must be read "
+        "from the cited source before any source-specific conclusion"
+    )
+    orientation = "pre-freeze outcome influence not excludable; no post-freeze sign reversal or candidate deletion"
+    return role, extraction, preservation, help_rule, boundary, anti_strawman, task_card + "; " + orientation
+
+
 def build_audit(registry: pd.DataFrame, lock: dict) -> pd.DataFrame:
     audit = registry.copy()
     audit["source_index"] = audit["paper_ref"].astype(str).str.extract(r"^(\d{3})")[0].astype(int)
@@ -131,6 +182,17 @@ def build_audit(registry: pd.DataFrame, lock: dict) -> pd.DataFrame:
         "released seed expression",
         "paraphrased source rationale; no exact source text supports the complete tested formula",
     )
+    good_faith = audit.apply(good_faith_fields, axis=1, result_type="expand")
+    good_faith.columns = [
+        "good_faith_empirical_role",
+        "claim_extraction_status",
+        "source_content_preserved",
+        "benefit_of_doubt_implementation",
+        "negative_evidence_boundary",
+        "anti_strawman_status",
+        "task_card_and_orientation_status",
+    ]
+    audit = pd.concat([audit, good_faith], axis=1)
     columns = [
         "source_index",
         "source_name",
@@ -156,8 +218,60 @@ def build_audit(registry: pd.DataFrame, lock: dict) -> pd.DataFrame:
         "mapping_freeze_sha256",
         "independent_second_coder",
         "source_evidence_status",
+        "good_faith_empirical_role",
+        "claim_extraction_status",
+        "source_content_preserved",
+        "benefit_of_doubt_implementation",
+        "negative_evidence_boundary",
+        "anti_strawman_status",
+        "task_card_and_orientation_status",
     ]
     return audit[columns].sort_values(["source_index", "source_name", "candidate_id"]).reset_index(drop=True)
+
+
+def source_grounded_subset(
+    audit: pd.DataFrame, primary: pd.DataFrame, broad: pd.DataFrame
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Post-hoc diagnostic restricted to released/named/example-supported components."""
+    grounded = audit.loc[
+        audit["good_faith_empirical_role"].eq("source_grounded_component_test"),
+        ["candidate_id", "paper_ref", "mapping_fidelity_tier", "negative_evidence_boundary"],
+    ].copy()
+    frames = []
+    summaries = []
+    for label, results in [("six_factor_primary", primary), ("broad_jkp_post_hoc", broad)]:
+        merged = grounded.merge(
+            results[["candidate_id", "alpha_annualized", "p_value_two_sided"]],
+            on="candidate_id",
+            how="left",
+            validate="1:1",
+        )
+        if merged[["alpha_annualized", "p_value_two_sided"]].isna().any().any():
+            raise ValueError(f"missing {label} result in source-grounded subset")
+        pvalues = np.where(
+            merged["alpha_annualized"].to_numpy(dtype=float) > 0,
+            merged["p_value_two_sided"].to_numpy(dtype=float),
+            1.0,
+        )
+        merged["subset_holm_p_value"] = holm_adjust(pvalues)
+        merged.insert(0, "benchmark", label)
+        frames.append(merged)
+        summaries.append(
+            {
+                "benchmark": label,
+                "analysis_label": "post_hoc_source_grounded_component_subset",
+                "candidate_count": int(len(merged)),
+                "median_alpha_annualized": float(merged["alpha_annualized"].median()),
+                "nominal_positive_5pct": int(
+                    ((merged["alpha_annualized"] > 0) & (merged["p_value_two_sided"] <= 0.05)).sum()
+                ),
+                "holm_positive_5pct_within_subset": int(
+                    ((merged["alpha_annualized"] > 0) & (merged["subset_holm_p_value"] <= 0.05)).sum()
+                ),
+                "interpretation": "component-level only; no source-level or native-agent negative inference",
+            }
+        )
+    return pd.concat(frames, ignore_index=True), pd.DataFrame(summaries)
 
 
 def mapping_sensitivity(audit: pd.DataFrame, results: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
@@ -247,15 +361,18 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--registry", type=Path, default=DEFAULT_REGISTRY)
     parser.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
+    parser.add_argument("--broad-results", type=Path, default=DEFAULT_BROAD_RESULTS)
     parser.add_argument("--lock", type=Path, default=DEFAULT_LOCK)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
 
     registry = pd.read_csv(args.registry)
     results = pd.read_csv(args.results)
+    broad_results = pd.read_csv(args.broad_results)
     lock = json.loads(args.lock.read_text(encoding="utf-8"))
     audit = build_audit(registry, lock)
     within, combinations, sensitivity = mapping_sensitivity(audit, results)
+    grounded_detail, grounded_summary = source_grounded_subset(audit, results, broad_results)
 
     source_summary = (
         audit.groupby(["source_category", "mapping_fidelity_tier"], as_index=False)
@@ -268,6 +385,8 @@ def main() -> None:
         "source_scope_summary.csv": source_summary,
         "within_source_mapping_sensitivity.csv": within,
         "mapping_combination_sensitivity.csv": combinations,
+        "source_grounded_subset_results.csv": grounded_detail,
+        "source_grounded_subset_summary.csv": grounded_summary,
     }
     for name, frame in paths.items():
         frame.to_csv(args.output_dir / name, index=False)
@@ -279,6 +398,16 @@ def main() -> None:
         "mapping_outcome_blind": False,
         "independent_second_coder": False,
         "exact_common_task_claims_identified": 0,
+        "good_faith_reconstruction": {
+            "source_grounded_component_tests": int(
+                audit["good_faith_empirical_role"].eq("source_grounded_component_test").sum()
+            ),
+            "exploratory_favorable_stress_tests": int(
+                audit["good_faith_empirical_role"].eq("exploratory_favorable_stress_test").sum()
+            ),
+            "source_level_negative_claims_permitted": 0,
+            "orientation_caveat": "pre-freeze U.S. outcome influence cannot be excluded",
+        },
         "sensitivity": sensitivity,
         "output_sha256": {name: sha256(args.output_dir / name) for name in paths},
     }

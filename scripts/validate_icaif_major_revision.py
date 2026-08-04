@@ -66,6 +66,29 @@ def main() -> int:
     require(not mapping_manifest["mapping_outcome_blind"], "mapping unexpectedly marked outcome blind")
     require(not mapping_manifest["independent_second_coder"], "mapping unexpectedly marked double coded")
     require(mapping_manifest["exact_common_task_claims_identified"] == 0, "exact common-task count changed")
+    require(mapping_manifest["good_faith_reconstruction"]["source_grounded_component_tests"] == 13,
+            "source-grounded component count changed")
+    require(mapping_manifest["good_faith_reconstruction"]["exploratory_favorable_stress_tests"] == 49,
+            "narrative stress-test count changed")
+    require(mapping_manifest["good_faith_reconstruction"]["source_level_negative_claims_permitted"] == 0,
+            "source-level negative inference was improperly enabled")
+    require(sum(row["anti_strawman_status"] == "eligible_for_component_level_interpretation_only"
+                for row in mapping) == 13, "component-level anti-strawman roles changed")
+    require(sum(row["anti_strawman_status"] == "exploratory_only_no_negative_inference"
+                for row in mapping) == 49, "narrative anti-strawman roles changed")
+    grounded_summary = {row["benchmark"]: row for row in rows(
+        evidence / "mapping_audit/source_grounded_subset_summary.csv")}
+    six_grounded = grounded_summary["six_factor_primary"]
+    broad_grounded = grounded_summary["broad_jkp_post_hoc"]
+    require(int(six_grounded["candidate_count"]) == 13, "six-factor grounded denominator changed")
+    require(int(six_grounded["nominal_positive_5pct"]) == 1, "six-factor grounded nominal count changed")
+    require(int(six_grounded["holm_positive_5pct_within_subset"]) == 0,
+            "six-factor grounded Holm count changed")
+    require(abs(float(six_grounded["median_alpha_annualized"]) - 0.0088150683489442) < 1e-12,
+            "six-factor grounded median changed")
+    require(int(broad_grounded["nominal_positive_5pct"]) == 0 and
+            int(broad_grounded["holm_positive_5pct_within_subset"]) == 0,
+            "broad grounded discoveries changed")
 
     direct = rows(root / "paper_runs/repository_ff5mom_metrics_summary.csv")
     require(len(direct) == 14, "direct audit denominator changed")
@@ -105,7 +128,9 @@ def main() -> int:
     tex = (root / "docs/paper/icaif2026_submission.tex").read_text(encoding="utf-8")
     for required in ["Does Public Evidence Support Financial-Agent Alpha Claims?",
                      "one yields a testable code-backed adaptation", "not outcome-blind",
-                     "does \\emph{not} rerun rolling estimation", "excluded from headline performance inference"]:
+                     "does \\emph{not} rerun rolling estimation", "excluded from headline performance inference",
+                     "benefit of the doubt", "failure cannot count as evidence against the source",
+                     "13 source-grounded component tests"]:
         require(required in tex, f"required disclosure absent: {required}")
     for forbidden in ["Do Financial AI Agents Discover Alpha?", "AlphaAgent survivor", "Robust result"]:
         require(forbidden not in tex, f"forbidden overclaim present: {forbidden}")
@@ -114,7 +139,10 @@ def main() -> int:
         text = subprocess.run(["pdftotext", str(args.pdf), "-"], check=True, text=True,
                               capture_output=True).stdout
         require("Does Public Evidence Support Financial-Agent Alpha Claims?" in text, "wrong PDF title")
-        require("all 40 international insolvency events" in text, "forensic abstract disclosure absent")
+        require("producing 40 events" in text, "international forensic disclosure absent")
+        require("13 source-grounded component tests" in text, "good-faith subset disclosure absent")
+        require("cannot count as evidence against the source" in text,
+                "anti-strawman source-protection disclosure absent")
         require("AlphaAgent survivor" not in text, "forbidden PDF phrase")
     print("major-revision validation passed")
     return 0

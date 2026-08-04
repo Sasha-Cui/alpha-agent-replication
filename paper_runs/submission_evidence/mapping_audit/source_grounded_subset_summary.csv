@@ -1,0 +1,3 @@
+benchmark,analysis_label,candidate_count,median_alpha_annualized,nominal_positive_5pct,holm_positive_5pct_within_subset,interpretation
+six_factor_primary,post_hoc_source_grounded_component_subset,13,0.0088150683489442,1,0,component-level only; no source-level or native-agent negative inference
+broad_jkp_post_hoc,post_hoc_source_grounded_component_subset,13,-0.0200220807319153,0,0,component-level only; no source-level or native-agent negative inference

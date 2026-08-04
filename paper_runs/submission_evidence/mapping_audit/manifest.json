@@ -1,11 +1,17 @@
 {
   "analysis_label": "post_hoc_mapping_discretion_audit",
-  "created_at_utc": "2026-08-04T16:11:34.790428+00:00",
+  "created_at_utc": "2026-08-04T16:31:08.374453+00:00",
   "registry_sha256": "150074a08819007288228e21b35f635c42175dd329be6d0fc7cc5e89c70157b9",
   "usa_results_sha256": "a6b6e7cc9a751eb86cc151ba4555ece3f2821fe88d7c5b4ea66b36d7da8245b2",
   "mapping_outcome_blind": false,
   "independent_second_coder": false,
   "exact_common_task_claims_identified": 0,
+  "good_faith_reconstruction": {
+    "source_grounded_component_tests": 13,
+    "exploratory_favorable_stress_tests": 49,
+    "source_level_negative_claims_permitted": 0,
+    "orientation_caveat": "pre-freeze U.S. outcome influence cannot be excluded"
+  },
   "sensitivity": {
     "candidate_count": 62,
     "indexed_source_count": 51,
@@ -25,9 +31,11 @@
     "limitation": "This sensitivity varies only mappings already present in the frozen family. It does not quantify alternative formulas for singly mapped sources and is a lower bound on mapping uncertainty."
   },
   "output_sha256": {
-    "mapping_audit.csv": "6bd748ceb9c3e018b7a14ff8ca638c37293e6d7c1bdee9ee2777837f41cb22ba",
+    "mapping_audit.csv": "fb1ef4d68cf2048a0cab552f48382610da721fe4786dc84ccd9cc26ef0343f31",
     "source_scope_summary.csv": "82b4c1b827358fdea43046cb7ee0bdae3ba3999974c36468a85a866ae791c05e",
     "within_source_mapping_sensitivity.csv": "9b8cececa9d9e9cfeb999ff473296b97b9972ebb36b466b04679654bc21e3305",
-    "mapping_combination_sensitivity.csv": "c513af118993e9495366c3d66c6ccea097a04f10fadbc22f6cf1102aec4ff91f"
+    "mapping_combination_sensitivity.csv": "c513af118993e9495366c3d66c6ccea097a04f10fadbc22f6cf1102aec4ff91f",
+    "source_grounded_subset_results.csv": "e9c5476645ab72cca5271690cca3545690dddb185e33a6f6072ed4bddfc89188",
+    "source_grounded_subset_summary.csv": "1e27f596521d29d3faecd2baacbc4e417a7ade5799f82a8ab847fdf452ac38df"
   }
 }
