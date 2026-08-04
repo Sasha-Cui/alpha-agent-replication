@@ -50,7 +50,7 @@ def fmt_pct(value: float) -> str:
 
 
 def command(name: str, value: str | int) -> str:
-    return f"\\newcommand{{\\{name}}}{{{value}}}"
+    return f"\\newcommand{{\\{name}}}{{{value}\\xspace}}"
 
 
 def verify_run(run_dir: Path) -> dict:
@@ -113,10 +113,20 @@ def main() -> int:
     run_dir = root / "paper_runs/submission_evidence/usa_retrospective_corrected"
     international_dir = root / "paper_runs/submission_evidence/g7_ex_us_corrected"
     broad_dir = root / "paper_runs/submission_evidence/usa_broad_jkp_crossfit"
+    mapping_dir = root / "paper_runs/submission_evidence/mapping_audit"
+    forensic_dir = root / "paper_runs/submission_evidence/international_failure_forensics"
     paper_dir = root / "docs/paper"
     manifest = verify_run(run_dir)
     verify_run(international_dir)
     broad_manifest = verify_broad_run(broad_dir)
+    mapping_manifest = json.loads((mapping_dir / "manifest.json").read_text(encoding="utf-8"))
+    forensic_manifest = json.loads((forensic_dir / "manifest.json").read_text(encoding="utf-8"))
+    for filename, expected in mapping_manifest["output_sha256"].items():
+        if sha256(mapping_dir / filename) != expected:
+            raise RuntimeError(f"mapping-audit hash mismatch: {filename}")
+    for filename, expected in forensic_manifest["output_sha256"].items():
+        if sha256(forensic_dir / filename) != expected:
+            raise RuntimeError(f"international-forensic hash mismatch: {filename}")
 
     primary = pd.read_csv(run_dir / "candidate_primary_results.csv")
     costs = pd.read_csv(run_dir / "candidate_cost_alpha_results.csv")
@@ -194,6 +204,15 @@ def main() -> int:
         command("BroadBestMaxTP", f"{float(broad_best['max_abs_t_p_value']):.3f}"),
         command("BroadBestSimultaneousLowerPct", fmt_pct(float(broad_best["simultaneous_ci_low_annualized"]))),
         command("BroadMarketAlignmentCorrelation", f"{float(broad_manifest['market_alignment_correlation']):.3f}"),
+        command("MappingNarrativeCount", 49),
+        command("MappingPartialCount", 12),
+        command("MappingReleasedSeedCount", 1),
+        command("MappingAlternativeCandidateCount", int(mapping_manifest["sensitivity"]["candidates_covered_by_existing_alternatives"])),
+        command("MappingCombinationCount", int(mapping_manifest["sensitivity"]["one_mapping_per_source_combinations"])),
+        command("InternationalFailureEventCount", int(forensic_manifest["failure_events"])),
+        command("InternationalFailureCandidateCount", int(forensic_manifest["failure_candidates"])),
+        command("InternationalExtremeShortCount", int(forensic_manifest["single_extreme_short_position_dominates"])),
+        command("InternationalTwoCellCount", int(forensic_manifest["events_in_two_largest_month_cells"])),
     ]
     paper_dir.mkdir(parents=True, exist_ok=True)
     result_path = paper_dir / "icaif2026_results.tex"
@@ -235,7 +254,7 @@ def main() -> int:
     box(8.8, 3.15, 2.75, 1.3, "Direct result", "0 paths beat FF5+Mom", TEAL)
     box(3.0, 0.55, 2.15, 1.3, "Reconstruction route", "51 of 55 source ideas\ntranslated", GOLD)
     box(5.9, 0.55, 2.15, 1.3, "Common U.S. test", "62 frozen proxy portfolios", GOLD)
-    box(8.8, 0.55, 2.75, 1.3, "Robust result", "1 six-factor FWE survivor;\n0 broad-JKP FWE survivors", TEAL)
+    box(8.8, 0.55, 2.75, 1.3, "Conditional result", "1 six-factor FWE survivor;\n0 broad-JKP FWE survivors", TEAL)
     arrow = dict(arrowstyle="-|>", color="#53677A", lw=1.5, mutation_scale=12)
     ax.annotate("", xy=(3.0, 3.8), xytext=(2.25, 2.7), arrowprops=arrow)
     ax.annotate("", xy=(3.0, 1.2), xytext=(2.25, 2.3), arrowprops=arrow)

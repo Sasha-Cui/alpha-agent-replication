@@ -12,6 +12,7 @@
 \usepackage{xcolor}
 \usepackage{microtype}
 \usepackage{siunitx}
+\usepackage{xspace}
 
 \definecolor{PaperWhite}{HTML}{FFFFFF}
 \definecolor{BodyBlack}{HTML}{111827}
@@ -21,11 +22,10 @@
 \hypersetup{colorlinks=true,linkcolor=BodyBlack,citecolor=BodyBlack,urlcolor=RuleBlue}
 
 \newcommand{\bps}[1]{#1~bp}
-\newcommand{\artifacttier}[1]{\textsf{#1}}
 \input{generated_results.tex}
 \input{icaif2026_results.tex}
 
-\title{Do Financial AI Agents Discover Alpha? Reproducing Claims and Testing Their Economic Mechanisms}
+\title{Does Public Evidence Support Financial-Agent Alpha Claims?\\An Artifact Audit and Historical Spanning Test}
 
 \author{Anonymous Author(s)}
 \affiliation{\institution{Anonymous Institution}}
@@ -36,226 +36,164 @@
 \acmDOI{}
 
 \begin{abstract}
-Financial AI systems increasingly report profitable factors and trading policies, but the central scientific question is whether the claimed alpha survives independent reconstruction and standard asset-pricing controls. We answer it with a two-route audit. For claims with public code, we attempt to obtain dated U.S. equity returns directly; when the claimed system cannot produce an admissible return path, we implement the closest defensible version of its stated economic idea and label the resulting portfolio as a mechanism proxy, not an agent replication. The frozen census contains 67 formula-discovery or trading methods. Only 20 link a public artifact, three preserve dated native output, and just one of 14 targeted codebases yields a computable JKP-based seed-proxy path; it does not beat a market, value, size, investment, profitability, and momentum benchmark. We translate 51 of 55 claim-bearing sources into 62 frozen U.S. portfolios. Net of 10-basis-point one-way costs, median annualized six-factor alpha is $-0.05\%$; six estimates are nominally positive, one survives familywise inference, and none has a simultaneous lower bound above two percentage points. A post-hoc rolling control using the market and all 132 JKP characteristic factors leaves one nominal result and no familywise discovery. The evidence does not support a broad claim that public financial agents discover new, economically material U.S. equity alpha. It instead identifies a narrow set of familiar quality, profitability, value, momentum, and low-risk composites whose apparent performance depends on benchmark breadth, costs, multiplicity, and geography.
+Financial-agent papers increasingly report profitable factors and trading policies, yet public evidence rarely permits independent alpha testing. We contribute an evidence hierarchy, a system-level artifact census, and a common historical spanning test that keeps reproducibility failures distinct from performance failures. Among 67 formula-discovery or trading systems, 20 list a public artifact and three ship dated native output, but none ships output compatible with our common U.S. equity task. Of 14 targeted implementation attempts, one yields a testable code-backed adaptation; its released seed-expression proxy does not beat a six-factor benchmark. We then audit 62 researcher-authored U.S. mechanism mappings from 51 source indices. These are historical translations, not native agent returns: 49 rely on narrative interpretation, the mappings were frozen after U.S. outcomes had been inspected, and no independent second coder was used. Over August 2001--December 2024, median annualized six-factor alpha net of 10-basis-point one-way costs is \USMedianAlphaPct. Six estimates are nominally positive and one survives familywise correction, but the familywise result is absent at Newey--West lags 0 and 12; no simultaneous lower bound exceeds a two-percentage-point reporting threshold. A post-hoc 133-factor rolling spanning diagnostic yields no familywise discovery. Finally, security-level reconstruction shows that all \InternationalFailureEventCount international insolvency events are dominated by a single extreme positive return on a short position, so we exclude international performance from the headline evidence. Public artifacts and favorable historical mappings therefore do not establish broad, economically material U.S. alpha. The contribution is an auditable method for separating unavailable evidence, lower-fidelity economic tests, and benchmark failure.
 \end{abstract}
 
 \ccsdesc[500]{Computing methodologies~Multi-agent systems}
 \ccsdesc[500]{Applied computing~Economics}
 \ccsdesc[300]{General and reference~Empirical studies}
 
-\keywords{financial agents, large language models, alpha, asset pricing, reproducibility, multiple testing}
+\keywords{financial agents, alpha, asset pricing, reproducibility, multiple testing, empirical audit}
 
 \begin{document}
 \maketitle
 
 \section{Introduction}
 
-Large language models and multi-agent systems now generate factor expressions, debate investment theses, retrieve news, call analytical tools, and revise portfolios. Many papers evaluate these systems by reporting alpha, Sharpe ratios, or trading gains \cite{TangEtAl2025AlphaAgent,LiEtAl2024FAMA,WangEtAl2025AlphaGPT,ZhangEtAl2026QuantEvolver,DuanEtAl2025FactorMAD}. The economically important question is simpler than the surrounding architectures: \emph{do the reported systems contain alpha that survives independent scrutiny?}
+Financial AI systems now search factor expressions, debate investment theses, retrieve news, and revise portfolios. Their evaluations often report Sharpe ratios, raw trading gains, benchmark outperformance, or alpha \cite{LiEtAl2024FAMA,TangEtAl2025AlphaAgent,WangEtAl2025AlphaGPT,ZhangEtAl2026QuantEvolver,DuanEtAl2025FactorMAD}. The scientific question is not whether these architectures are interesting. It is whether the evidence released with them supports the claimed incremental return.
 
-That question cannot be answered by a repository census alone. If code and dated outputs are available, the strongest test is to rerun the claimed strategy. If they are not, ``not reproducible'' is an intermediate finding, not the end of the analysis. The next best test is to reconstruct the published rule or economic mechanism as closely as public evidence permits, then ask whether that reconstruction earns net abnormal returns under a common evaluator. The fidelity loss must be explicit: a deterministic value--quality portfolio is not an LLM agent, but it can still test whether the economic content offered to explain the agent's return is incremental to known factors.
+That question contains two different failure modes. A system may be impossible to evaluate because its code, data adapter, trained state, or dated output is unavailable. Alternatively, a testable return path may exist but fail an asset-pricing benchmark. Treating both as zero alpha is wrong; stopping at ``not reproducible'' is also incomplete. We therefore use the highest-fidelity feasible route and label the estimand at every step. Native or code-backed returns, when available, test a released implementation. When they are unavailable, a transparent mechanism mapping can test whether the documented economic idea spans familiar factors. It cannot identify an agent's contribution.
 
-We operationalize this logic in two routes (Figure~\ref{fig:pipeline}). The \emph{direct-code route} attempts to produce dated U.S. equity returns from public implementations and approved local inputs. The \emph{reconstruction route} applies when native execution is unavailable or inadmissible: paper text, repository documentation, and released formulas are translated into frozen, point-in-time characteristic portfolios. Both routes terminate in an alpha test; missing code determines which route is possible, not whether the claim is examined.
+This distinction changes the paper's claim. We do not test whether financial agents, as a class, can discover alpha. We test whether their \emph{public evidence} establishes alpha under an independently specified common task. Our U.S. portfolio results are retrospective historical spanning diagnostics conditional on researcher-authored mappings. They do not demonstrate prospective discovery and cannot correct for prior factor mining or publication selection \cite{HarveyLiuZhu2016,BaileyEtAl2017PBO}.
+
+We make four contributions. First, a 67-system artifact census records public availability, pinned revisions, native dated output, and exact blocking stages. Second, a direct-code audit separates one testable adaptation from 13 non-evaluable attempts. Third, a row-level mapping ledger exposes every formula, source-support category, omitted component, freeze hash, and alternative already coded. Fourth, we subject 62 U.S. mappings to trading costs, six-factor and broad-factor spanning, familywise inference, and explicit sensitivity tests. The central empirical finding is not ``no strategy works.'' It is narrower and more useful: the released evidence does not establish broad, economically material U.S. alpha, and the one primary familywise result is specification-fragile.
 
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/claim_to_test_pipeline.pdf}
-  \caption{Every reported alpha claim is pursued through the highest-fidelity feasible route. Failure to obtain native returns triggers an explicitly lower-fidelity reconstruction; it does not end the economic test. FWE denotes familywise-error-controlled inference.}
-  \Description{A two-branch diagram from reported alpha claims. Fourteen public implementations enter a direct-code route, producing one code-backed U.S. test and zero six-factor beaters. Fifty-one of fifty-five source ideas enter a reconstruction route, producing 62 U.S. proxy portfolios, one six-factor familywise survivor, and zero broad-JKP familywise survivors.}
+  \caption{Evidence routes and estimands. A missing native path is an evidence failure, not a zero return. A mechanism mapping tests historical economic content, not agent performance. FWE denotes familywise-error-controlled inference.}
+  \Description{Two routes from public financial-agent claims. Fourteen implementation attempts yield one testable adaptation and no six-factor beater. Fifty-one source indices yield 62 researcher-authored U.S. mappings, one conditional six-factor familywise result, and no broad-factor familywise result.}
   \label{fig:pipeline}
 \end{figure*}
 
-Three research questions follow. \textbf{RQ1}: How often can public financial-agent claims be converted directly into dated return evidence? \textbf{RQ2}: When native evidence is absent, do closest-defensible reconstructions earn net U.S. equity alpha after costs, factor controls, and search-wide inference? \textbf{RQ3}: Which apparent survivors remain after a broad JKP factor control, and how do the same mechanisms behave outside the United States?
+\section{Evidence Design}
 
-The answers are substantially negative but scientifically useful. Among 67 formula-discovery or trading methods, 20 link an artifact, 18 remain reachable, and three preserve dated output. Of 14 targeted public-code implementations, only a QuantEvolver seed-proxy path produces admissible JKP-based numerical returns; its annualized six-factor alpha is 0.33\% ($t=0.651$), and no direct-code row passes the benchmark gate. We then translate 51 of 55 claim-bearing sources into 62 U.S. mechanism proxies. All execute, yet at \bps{10} one-way costs the median six-factor alpha is \USMedianAlphaPct{}, only the AlphaAgent-inspired quality proxy survives Holm and paired maximum-$|t|$ inference, and its simultaneous lower bound is only \USBestSimultaneousLowerPct{}. A rolling post-hoc control that nests the six primary factors and regularizes the remaining 127 JKP factors yields no familywise discovery. Thus the evidence does not support a general public-agent alpha claim, even after we replace missing native systems with favorable, economically recognizable reconstructions.
+\subsection{Denominators and inferential targets}
 
-The contribution is not a leaderboard. It is an empirical adjudication design for heterogeneous claims: pursue native evidence where possible, continue with the closest transparent reconstruction where necessary, retain all attempts in the denominator, and separate agent novelty from the return of familiar factor composites. This connects the reproducibility question to the economic one rather than allowing either to substitute for the other.
+The three headline denominators are related but not interchangeable. The census contains 67 formula-discovery or trading systems. A separate source-discovery corpus contains 55 indexed records suitable for economic coding; 51 indices are translated into 62 candidate portfolios because five sources have multiple already-coded interpretations. One index names two systems, so the ledger has 52 named source rows. The 62 portfolios are the statistical family. None of the 51 mapped sources contains an explicit exact match to the full common claim ``monthly U.S. top-1,000 equity alpha relative to our six-factor model.'' Consequently, our outcome is a common-task spanning result, not a reproduction of 51 identically stated original alpha claims.
 
-\section{Related Work and Evidentiary Standard}
-
-Financial-agent research spans formula mining \cite{TangEtAl2025AlphaAgent,LiEtAl2024FAMA,WangEtAl2025AlphaGPT,WangEtAl2026FactorMiner,ZhangEtAl2026QuantEvolver}, multi-agent factor debate \cite{DuanEtAl2025FactorMAD}, and sequential portfolio systems \cite{XiaoEtAl2024TradingAgents,YuEtAl2024FinMem,KimEtAl2025GuruAgents}. Dedicated benchmarks and surveys report leakage, unstable reasoning, concentrated styles, and weak long-horizon performance in particular settings \cite{alphabench2026,DingEtAl2026TradingSurvey,ChenEtAl2025StockBench,LiEtAl2026FINSABER,LuoEtAl2026AlphaQT,ZhuEtAl2026KTDFin,ZhaoChenSu2026PortBench}. Our question differs: rather than compare language-model scores, we ask whether the return claim associated with each system survives a common asset-pricing test.
-
-We distinguish four evidence levels. A \emph{native replication} reruns the public implementation, inputs, portfolio rule, and claimed target without an economically material substitution. A \emph{code-backed adapted test} retains released expressions or seed logic but supplies the common data adapter and evaluator. An \emph{independent reimplementation} ports a sufficiently explicit rule. A \emph{mechanism proxy} maps a documented idea to available characteristics while omitting central language, search, memory, or execution components. Only the first level can reproduce a native agent claim; the lower levels answer the narrower question of whether its released economic content contains alpha. Common-task methodology supports comparability only when this estimand boundary remains visible \cite{HellumEtAl2025CommonTask}.
-
-Large strategy families create a second evidentiary requirement. Nominal $t$-statistics are not discoveries when dozens of correlated formulas were examined \cite{HarveyLiuZhu2016,BaileyEtAl2017PBO}. We therefore retain the entire frozen family, deduct costs, report effect sizes, and use Holm and paired maximum-statistic inference. A result is economically confirmed only when its simultaneous lower confidence bound exceeds two annualized percentage points.
-
-\section{Research Design}
-
-\subsection{Frozen census and direct-code attempts}
-
-The public cutoff is 2 August 2026. Searches cover arXiv categories in AI, language, learning, computational finance, portfolio management, statistics, and trading; ACL Anthology, OpenReview, ACM Digital Library, and SSRN; backward and forward citation chains from prominent benchmarks; and exact-title or author-linked GitHub artifacts. Crossref and OpenAlex support deduplication. The unit is a named system lineage rather than a paper or repository.
-
-The census contains \SystemCount{} lineages: 29 formula-discovery systems, 38 sequential trading or portfolio systems, 23 benchmarks or audits, five community systems, and eight mechanistic comparators. The first two strata form the fixed 67-method denominator. Table~\ref{tab:evidence} reports nested public-evidence states; an unavailable artifact is never assigned a zero return.
+The 14 targeted repositories are a diagnostic subset of public implementations, not the nine artifacts with an observed reuse license. License presence is a census field; the execution audit also inspected locally available public snapshots without redistributing them. We report 0 of 1 testable code-backed paths beating the benchmark. The remaining 13 attempts are classified by blocking stage and never enter a performance denominator.
 
 \begin{table}[t]
-  \caption{From public claims to testable evidence.}
-  \label{tab:evidence}
-  \centering
-  \color{BodyBlack}
-  \small
-  \setlength{\tabcolsep}{3.2pt}
-  \begin{tabular}{lrr}
-    \toprule
-    Evidence state & Count & Denominator \\
-    \midrule
-    Formula/trading methods & 67 & 67 \\
-    Artifact linked & 20 & 67 \\
-    Artifact reachable & 18 & 67 \\
-    Observed reuse license & 9 & 67 \\
-    Dated native output preserved & 3 & 67 \\
-    \midrule
-    Public implementations attempted & 14 & 14 \\
-    Real public-code repositories & 12 & 14 \\
-    Computable JKP-based code path & 1 & 14 \\
-    Code paths beating FF5+Mom & 0 & 14 \\
-    \midrule
-    Claim-bearing sources translated & 51 & 55 \\
-    Frozen U.S. proxy portfolios & 62 & 62 \\
-    \bottomrule
-  \end{tabular}
-  \vspace{2pt}
-  \parbox{\columnwidth}{\footnotesize The 67-system census and 55-source mechanism corpus use different units. The latter is a de-duplicated literature/code evidence set from which one source can generate several frozen portfolios.}
+\centering
+\caption{Evidence hierarchy and what each result identifies.}
+\label{tab:hierarchy}
+\small
+\begin{tabular}{p{0.20\columnwidth}p{0.29\columnwidth}p{0.39\columnwidth}}
+\toprule
+\textbf{Stage} & \textbf{Evidence/result} & \textbf{Permitted interpretation} \\
+\midrule
+System census & 67 systems; 20 artifacts; 3 dated outputs & Public evidence availability only \\
+Targeted code audit & 14 attempts; 1 testable, 13 non-evaluable & 0 of 1 beats six factors; no performance claim for 13 \\
+Mechanism mapping & 62 mappings; 1 primary FWE, 0 material & Conditional historical spanning of researcher mappings \\
+Broad diagnostic & 133 factors; 0 FWE results & Post-hoc diagnostic, not confirmatory evidence \\
+International forensic audit & 40 events; all dominated by one short-held return & Data/implementation alarm; no performance inference \\
+\bottomrule
+\end{tabular}
 \end{table}
 
-The targeted execution audit contains 14 public implementations tied to the claim corpus: 12 real public-code repositories, one ambiguous unofficial repository, and one placeholder. We inspect the released runner, data interface, strategy output, and claimed evaluation surface, then attempt the closest U.S.-JKP execution permitted by public materials and approved inputs. Outcomes distinguish missing return adapters, incompatible tasks, unavailable historical services, invalid outputs, and valid but unsuccessful tests. We do not contact authors, infer licenses, use paper-shipped returns from unapproved universes, buy data, or fabricate missing signals.
+\subsection{Artifact and direct-code route}
 
-\subsection{Closest-defensible reconstruction}
+We freeze repository URLs and revisions, record whether dated signals, positions, or returns are shipped, and classify a public path as native only when it represents the released system rather than an analyst-authored substitute. Of 67 systems, 20 list an artifact, 18 are reachable at the audit date, nine have an observed reuse license, and three contain dated native output. Those three outputs concern different assets or tasks; none is compatible with the common panel.
 
-When direct execution cannot produce admissible returns, we read the paper and repository evidence and translate the stated idea into the closest available U.S.-equity characteristic rule. Fifty-one of 55 sources are mappable; four concern a benchmark without a strategy, crypto, general tooling, or no alpha rule. The resulting 62 candidates include 56 value-weighted long--short decile portfolios, four long-only top-decile portfolios, one equal-weighted top-five portfolio, and one trailing-Sharpe sleeve selector.
+We attempted 14 implementations selected for apparent code availability and relevance. Twelve contain public code, one is ambiguous unofficial code, and one is a placeholder. The sole computable adaptation is a QuantEvolver released seed expression evaluated on the JKP panel, not a trained QuantEvolver agent. Its annualized six-factor alpha is 0.33\% ($t=0.65$), so it does not beat the benchmark. The package preserves the 13 blocking records separately: absent native output, missing inputs or adapters, incompatible task, or non-executable artifact. This makes the negative performance denominator one, not fourteen.
 
-Every ingredient, sign, strategy direction, portfolio rule, source label, and family member is frozen. Examples include the exact value--profitability--momentum motif associated with FAMA, the Greenblatt and Graham screens associated with GuruAgents, and a quality--cash-flow--safety formulation associated with AlphaAgent. These are deliberately favorable economic translations: they preserve the claimed intuition while removing stochastic language generation, memory, debate, and tool use. Consequently, success can establish that a documented mechanism has incremental returns; it cannot establish that an LLM discovered the mechanism or caused the return.
+\subsection{Mechanism mapping and disclosed discretion}
 
-\subsection{Primary U.S. universe, portfolios, and costs}
+When direct evaluation is unavailable, we map public descriptions to point-in-time JKP characteristics \cite{JensenKellyPedersen2023}. Each row in the supplement records the source index and category, source name, economic rationale, exact score, portfolio rule, source support for ingredients/signs/weighting, original domain mismatch, omitted agent components, and evidence category. The coding tiers are shown in Table~\ref{tab:mapping}. A narrative translation is deliberately labeled M0 even when economically favorable.
 
-The main universe is U.S. equities. We use point-in-time security characteristics from the Jensen--Kelly--Pedersen (JKP) data build \cite{JensenKellyPedersen2023,JKPGlobalFactorData2026}. Its U.S. security history is built from CRSP through WRDS. Signals observed at month-end are paired only with the supplied next consecutive month's excess return, \texttt{ret\_exc\_lead1m}. Eligible securities require a valid formation date, positive market equity, and all characteristics used by the score; future-return availability is never a formation filter. Within each month we retain the largest 1,000 eligible securities.
+\begin{table}[t]
+\centering
+\caption{Mapping fidelity and U.S. results by tier.}
+\label{tab:mapping}
+\small
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Evidence tier} & \textbf{$N$} & \textbf{Median alpha} & \textbf{Holm $+$} \\
+\midrule
+M0 narrative translation & 49 & $-0.10\%$ & 1 \\
+M1 example/motif support & 6 & $-0.71\%$ & 0 \\
+M1 named-rule support & 6 & $3.12\%$ & 0 \\
+M2 released seed expression & 1 & $-0.28\%$ & 0 \\
+\bottomrule
+\end{tabular}
+\par\vspace{0.2em}\footnotesize Annualized six-factor alpha net of \bps{10} one-way costs. ``Holm $+$'' counts positive estimates surviving Holm at 5\%.
+\end{table}
 
-Long--short strategies buy the highest score decile and short the lowest, value weighted, with at least 20 securities per side. Long-only rules follow their frozen top-decile or top-five specification. Turnover compares target weights with drifted pre-trade weights using one post-return strategy-NAV denominator. Candidate returns are net of \bps{10} one-way costs; 0, 5, 25, and \bps{50} are sensitivities. A strategy path at or below a $-100\%$ monthly total return is stopped rather than clipped or recapitalized.
+The ledger makes three adverse facts explicit. First, \MappingNarrativeCount mappings are narrative translations and \MappingPartialCount have partial source support; only one uses a released expression. Second, the registry hash was frozen on 3 August 2026 after U.S. outcomes had already been inspected. The coding is therefore not outcome-blind, notwithstanding its immutable final hash. Third, no independent second coder was used. The reported p-values quantify sampling variation conditional on these formulas; they do not incorporate mapping discretion.
 
-\subsection{Primary and broad factor controls}
+We can measure only a lower bound on that discretion. Five sources already have multiple coded mappings, covering \MappingAlternativeCandidateCount candidates. Selecting one mapping per source yields \MappingCombinationCount combinations; the same AlphaAgent-inspired quality proxy is the sole Holm discovery in every combination. This does not validate singly mapped formulas, nor does it replace independent coding. It shows only that the headline count is unchanged within the alternatives that happened to be coded.
 
-For proxy $j$ we first estimate
-\begin{equation}
-  r^n_{j,t}=\alpha_j+\beta_j^{\top}f_t+u_{j,t},
-  \label{eq:alpha}
-\end{equation}
-where $f_t$ contains a country-local market return and value, size, investment, profitability, and momentum factor returns constructed under the same portfolio rules. The U.S. common sample contains \USRegressionMonthCount{} months from \USRegressionStartMonth{} through \USRegressionEndMonth{}. The endpoint is $12\widehat{\alpha}_j$.
+\subsection{Common U.S. task and estimators}
 
-Because 132 JKP characteristic factors are central to the novelty question, we add a post-hoc broad-span diagnostic that avoids the legacy underdetermined regression. The earlier same-sample fit used 134 regressors on 270 months and therefore cannot support a confirmatory claim. In the replacement diagnostic, the market and five primary factors are always unpenalized; the remaining 127 JKP factor loadings use ridge regularization. At each evaluation month, loadings use only the previous 120 months. The penalty is selected separately for each candidate from $\{0.1,1,10,100,1000\}$ using the first 96 training months and the final 24 as a validation block, then refitted on all 120 months. The training intercept is not removed from the next-month residual, so the mean residual remains an out-of-sample alpha estimand. This produces \BroadEvaluationMonthCount{} evaluation months from \BroadEvaluationStartMonth{} through \BroadEvaluationEndMonth{}.
+The primary panel is monthly U.S. common equity from August 2001 through December 2024. At each formation month we retain the 1,000 largest positive-market-equity securities, compute signals using information available at formation, and hold for the next month. Most mappings are value-weighted top-minus-bottom deciles; long-only mappings are explicitly labeled. Long and short legs each carry unit notional, so a long-short portfolio has gross exposure two. Missing realized returns are zero-filled under the locked primary policy and audited separately.
 
-The cached broad factor panel labels next-month returns by formation month, whereas the corrected evaluator labels them by realization month. We shift the panel forward once and require its market return to correlate at least 0.99 with the evaluator market; the observed correlation is \BroadMarketAlignmentCorrelation{}. This alignment rule and both rejected diagnostic runs are preserved in the audit trail. The broad result is explicitly exploratory because it was designed after primary U.S. outcomes were known.
+Turnover uses drifted pre-trade weights. Candidate returns are net of \bps{10} per unit of traded notional one way. We do not model borrow fees, financing, locate constraints, nonlinear impact, or capacity. Excess returns use the risk-free rate for the cash component. The market, size, value, investment, profitability, and momentum benchmark factors are gross, not charged the candidate cost model. Thus the test asks whether an implementable-cost candidate beats standard published gross factors; it is not a symmetric comparison of two equally costed tradable products.
 
-\subsection{Inference and international extension}
-
-Individual estimates use two-sided Newey--West inference \cite{NeweyWest1987}. Holm controls familywise error across all 62 candidates \cite{Holm1979}; BH and BY are descriptive \cite{BenjaminiHochberg1995,BenjaminiYekutieli2001}. A paired circular block bootstrap resamples months jointly across candidates and factors. Maximum-$|t|$ statistics give adjusted $p$-values and simultaneous intervals. Failed paths receive $p=1$ in Holm/FDR families. We require a positive point estimate for a positive claim and a simultaneous lower bound of at least two percentage points for economic confirmation.
-
-Only after the U.S. analysis do we extend the frozen formulas to Canada, France, Germany, Italy, Japan, and the United Kingdom. These files come from the same February 2026 processed JKP build; its non-U.S. security histories use Compustat Global through WRDS, and prices, market equity, return indices, total returns, and excess returns are converted to U.S. dollars by the upstream pipeline. Country sleeves are formed independently and equally weighted. This extension is secondary: an initial run revealed formation-timing, NAV-drift, country-pooling, and calendar defects, and a later run exposed nonpositive NAV. Corrected results apply the same limited-liability rule and preserve all superseded outputs. The extension is therefore a disclosed stress test, not a pristine holdout.
+For candidate $i$ we estimate
+\[
+r_{i,t}^{\mathrm{net}}=\alpha_i+\beta_i' f_t+\varepsilon_{i,t}.
+\]
+The primary Newey--West lag is the automatic rule $\lfloor4(T/100)^{2/9}\rfloor$ (four at $T=281$) \cite{NeweyWest1987}. We report two-sided nominal tests, Holm correction across all 62 candidates \cite{Holm1979}, and paired moving-block maximum-$|t|$ inference with 2,000 bootstrap replications and a six-month block. Block lengths three and twelve and HAC lags 0, 3, 6, and 12 are sensitivities. A simultaneous lower bound of at least two annual percentage points is a pragmatic reporting threshold selected by the project owner after U.S. outcomes were available; it is not a preregistered decision rule.
 
 \section{Results}
 
-\subsection{Direct reproduction yields no benchmark-beating path}
+\subsection{Primary U.S. historical spanning test}
 
-Public packaging is sparse: only 20 of 67 methods link an artifact, and three preserve dated output. More importantly, the 14-codebase execution audit produces just one admissible numerical U.S.-JKP result. QuantEvolver's released seed logic supports a code-backed return/Sharpe proxy, not a native trained-agent return. That path has annualized alpha 0.33\%, HAC $t=0.651$, information ratio 0.149, GRS $p=0.478$, and factor-span Sharpe lift 0.010. It does not pass the six-factor benchmark gate. The other 13 rows lack an admissible strategy return for reasons recorded separately from performance: missing return interfaces, incompatible frequency or market, unavailable services or data adapters, aggregate metrics without positions, or placeholder code.
+All 62 paths are executable for \USRegressionMonthCount months. At \bps{10}, median annualized six-factor alpha is \USMedianAlphaPct (interquartile range \USAlphaIQRPct); \USPositiveAlphaCount point estimates are positive, \USNominalCount are nominally significant, and \USHolmPositiveCount survives Holm and paired maximum-$|t|$ inference. No simultaneous lower bound exceeds two percentage points. The largest estimate, 6.93\%, belongs to a \emph{researcher-authored AlphaAgent-inspired quality mechanism proxy}; the software did not generate this portfolio, and its simultaneous lower bound is only 0.48\%.
 
-This is where the reconstruction route matters. The direct result alone would justify ``public alpha not established,'' but not ``no economic content.'' Testing the 62 closest-defensible portfolios asks the stronger question: even if we give each public claim a transparent, favorable implementation of its documented mechanism, how much U.S. alpha remains?
+The apparent discovery is fragile to serial-correlation choices. Across fixed Newey--West lags 0/3/6/12, nominal positive counts are \USHACLagNominalCounts and Holm counts are \USHACLagHolmCounts. The familywise result therefore exists at lags 3 and 6 but not at 0 or 12. Block-length changes leave the maximum-statistic count at one, but that does not cure mapping or publication-selection uncertainty.
 
-\subsection{Primary U.S. result: one statistical survivor, none material}
-
-Table~\ref{tab:mainresults} summarizes the answer. All 62 U.S. proxy paths execute. At \bps{10}, median annualized six-factor alpha is \USMedianAlphaPct{} (IQR \USAlphaIQRPct{}); \USPositiveAlphaCount{} estimates are positive and six are nominally positive. Only one survives both Holm ($p=.035$) and paired max-$|t|$ adjustment ($p=.024$). No simultaneous lower bound exceeds two percentage points.
-
-\begin{table*}[t]
-  \caption{Alpha evidence by route and benchmark.}
-  \label{tab:mainresults}
-  \centering
-  \color{BodyBlack}
-  \small
-  \setlength{\tabcolsep}{5.5pt}
-  \begin{tabular}{lrrrrrr}
-    \toprule
-    Route / benchmark & Testable / planned & Positive & Nominal & Holm & Max-$|t|$ & Simultaneous LB $\geq 2$ pp \\
-    \midrule
-    Direct public code, U.S. FF5+Mom & 1 / 14 & 1 & 0 & 0 & --- & 0 \\
-    U.S. mechanisms, six factors & 62 / 62 & 30 & 6 & 1 & 1 & 0 \\
-    U.S. mechanisms, rolling broad JKP & 62 / 62 & 23 & 1 & 0 & 0 & 0 \\
-    International mechanisms, six factors & 27 / 62 & 24 & 21 & 11 & 12 & 4 \\
-    \bottomrule
-  \end{tabular}
-  \vspace{2pt}
-  \parbox{0.96\textwidth}{\footnotesize U.S. rows are net of \bps{10} one-way costs. The direct-code denominator retains all 14 attempts, but only one has a return estimate. The broad-JKP row is a post-hoc rolling diagnostic over \BroadEvaluationMonthCount{} months. International Holm/FDR corrections retain all 62 planned hypotheses with failed paths assigned $p=1$; maximum-$|t|$ is defined on 27 executable paths.}
-\end{table*}
-
-The sole six-factor familywise survivor is linked to AlphaAgent. We test this ``decay-resistant quality'' mechanism solely as the frozen score
-\begin{equation}
-\begin{split}
-  &\operatorname{rank}(\mathrm{ope/be})+\operatorname{rank}(\mathrm{ocf/me})
-  +\operatorname{rank}(\mathrm{safety})\\
-  &\quad+\operatorname{rank}(\mathrm{asset\ turnover})
-  -\operatorname{rank}(\mathrm{accruals})\\
-  &\quad-\operatorname{rank}(\mathrm{net\ equity\ issuance})
-  -\operatorname{rank}(\mathrm{debt\ growth}).
-\end{split}
-\end{equation}
-Its annualized six-factor alpha is \USBestAlphaPct{}, but the simultaneous lower bound is only \USBestSimultaneousLowerPct{}. Economically, this is a profitability, cash-flow quality, safety, low-accrual, low-issuance, and low-debt-growth composite. The result may support nonlinear quality screening; it is not evidence that the AlphaAgent software generated the tested portfolio or discovered a new anomaly.
-
-The broad control sharpens the interpretation. Over its shorter rolling evaluation window, the same AlphaAgent proxy is the only nominal positive: alpha \BroadBestAlphaPct{}, raw $p=\BroadBestRawP$. It does not survive Holm ($p=\BroadBestHolmP$) or maximum-$|t|$ inference ($p=\BroadBestMaxTP$), and its simultaneous lower bound is \BroadBestSimultaneousLowerPct{}. No other broad-JKP candidate is nominally positive. Thus there are \emph{no} statistically defensible U.S. strategies ``on top of JKP132'' in this analysis. The three classic composites previously flagged by the 134-regressor same-sample fit---Greenblatt, a multi-guru ensemble, and AlphaCrafter---are retained as a superseded exploratory diagnostic, not counted as discoveries.
-
-\subsection{Costs remove broad apparent profitability}
-
-The gross cross-sectional median alpha is \USMedianGrossAlphaPct{}, compared with \USMedianAlphaPct{} at \bps{10}. Median within-candidate alpha drag is \USMedianCostDragPct{}, reflecting median monthly traded notional of \USMedianTurnover{} per dollar of strategy capital. Positive point estimates fall from \USPositiveAtZero{} at zero cost to \USPositiveAtTen{} at \bps{10}, \USPositiveAtTwentyFive{} at \bps{25}, and \USPositiveAtFifty{} at \bps{50} (Figure~\ref{fig:cost}). The main conclusion is also stable to HAC lags 0, 3, 6, and 12: nominal positives number \USHACLagNominalCounts{} and Holm discoveries \USHACLagHolmCounts{}, respectively. Block lengths 3, 6, and 12 retain one maximum-$|t|$ discovery and zero material confirmations.
+Trading costs explain much of the cross-section. Median gross alpha is \USMedianGrossAlphaPct, compared with \USMedianAlphaPct at \bps{10}; median candidate-level cost drag is \USMedianCostDragPct. Positive-alpha counts fall from \USPositiveAtZero at zero cost to \USPositiveAtFive, \USPositiveAtTen, \USPositiveAtTwentyFive, and \USPositiveAtFifty at 5, 10, 25, and 50 basis points (Figure~\ref{fig:cost}).
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.95\columnwidth]{figures/usa_cost_sensitivity.pdf}
-  \caption{U.S. six-factor alpha across the prespecified cost schedule. Thin lines show all 62 reconstructions; the dark line and band show the median and interquartile range.}
-  \Description{A cost-sensitivity plot where the median annualized U.S. alpha declines from about 2.15 percent gross to near zero at ten basis points and becomes negative at higher costs.}
+  \includegraphics[width=\columnwidth]{figures/usa_cost_sensitivity.pdf}
+  \caption{Annualized six-factor alpha across one-way trading-cost assumptions. Thin lines are candidate mappings; the band is the interquartile range. Benchmark factors remain gross.}
+  \Description{Candidate alphas generally decline as one-way trading costs rise from zero to fifty basis points. The median crosses slightly below zero at ten basis points.}
   \label{fig:cost}
 \end{figure}
 
-\subsection{Which strategies appear positive outside the United States?}
+These results support a precise finding: favorable characteristic translations rarely provide economically material incremental U.S. return after costs and search-wide inference. They do not show that the unavailable native agents would earn the same returns, and they do not establish prospective discovery.
 
-The international extension is the source of the superficially surprising ``many significant alphas.'' It is not a U.S. JKP132 result. It is a six-factor result conditional on the 27 of 62 paths that remain solvent across all six countries. Among those 27, 11 survive Holm and 12 survive maximum-$|t|$ inference; four have simultaneous lower bounds above two percentage points. The other 35 strategies generate 40 limited-liability events and have no alpha estimate. France accounts for 31 events, and 25 of all events occur in May 2022 or November 2024.
+\subsection{Post-hoc broad-factor diagnostic}
 
-Table~\ref{tab:intlsurvivors} names every Holm survivor. The list is economically revealing: value, profitability, quality, momentum, cash, low leverage, low beta, and low volatility dominate. Four materially confirmed rows are FactorMAD, the Graham proxy, AI-Trader, and FAMA. These are returns to familiar composite screens in a secondary geography, not evidence that native agents generated novel signals. Moreover, only \SameWindowSignAgreementCount{} jointly estimable proxies share the same sign between the U.S. and international extension, and the common-calendar alpha-rank correlation is \SameWindowUSGSevenSpearman{}.
+The broader diagnostic uses the market plus 132 JKP characteristic factors. Its source factor panel ends in December 2021; factors are shifted to the candidate return month, yielding a common panel through January 2022. With a 120-month trailing window, evaluation therefore runs from August 2011 through January 2022 (\BroadEvaluationMonthCount months), not through 2024. The shorter sample is a data-availability constraint, not an unexplained loss of candidate observations.
 
-\begin{table*}[t]
-  \caption{All international six-factor Holm discoveries, conditional on complete execution.}
-  \label{tab:intlsurvivors}
-  \centering
-  \color{BodyBlack}
-  \scriptsize
-  \setlength{\tabcolsep}{3.8pt}
-  \begin{tabular}{lp{0.54\textwidth}rrr}
-    \toprule
-    Source-linked proxy & Frozen economic mechanism & Alpha (\%) & Holm $p$ & Simultaneous LB (\%) \\
-    \midrule
-    \input{tables/international_holm_survivors.tex}\\
-    \bottomrule
-  \end{tabular}
-  \vspace{2pt}
-  \parbox{0.96\textwidth}{\footnotesize All estimates are annualized, net of \bps{10}, and benchmarked only against country-local market, value, size, investment, profitability, and momentum factors. A simultaneous lower bound above 2.00 is the prespecified materiality criterion. These portfolios are mechanism proxies, not outputs of the named systems.}
-\end{table*}
+At each evaluation month, the ridge penalty is selected anew from past data: 96 months for fitting and 24 for validation, with the low-dimensional core unpenalized. The selected model is refit on all 120 past months and produces a one-month-ahead residual. The 5,000-replication moving-block bootstrap resamples centered, already-estimated out-of-sample residuals; it does \emph{not} rerun rolling estimation or penalty selection. Its uncertainty is conditional on the realized fitting path and may be optimistic. This analysis was designed after primary outcomes and is descriptive, not a robustness confirmation.
 
-The conditional foreign result does not overturn the U.S. conclusion. It instead adds two boundary conditions. First, familiar factor combinations can be profitable in less-saturated or differently composed markets even when they add little in the United States. Second, an attractive alpha table can coexist with severe path failure: selecting only 27 survivors would hide more than half the planned family. The secondary extension therefore informs geography and implementation risk, not agentic novelty.
+There are \BroadPositiveAlphaCount positive estimates and one nominal result, but zero Holm discoveries, zero maximum-$|t|$ discoveries, and zero simultaneous lower bounds above two percentage points. The best raw $p$-value is \BroadBestRawP; its Holm value is \BroadBestHolmP and maximum-statistic value is \BroadBestMaxTP. This strengthens the spanning interpretation, but only as post-hoc evidence over the truncated period.
 
-\section{Scientific Value, Limitations, and Implications}
+\subsection{International extension: forensic result, not alpha evidence}
 
-The paper's principal scientific value is to turn an ambiguous reproducibility debate into an alpha-adjudication design. ``No runnable repository'' is not treated as proof of no alpha. Instead, it triggers a lower-fidelity but still substantive test. This makes the negative result harder to dismiss: direct public code supplies no benchmark-beating path, and favorable reconstructions of the missing systems yield little robust U.S. alpha after costs and search-wide inference.
+The international extension is excluded from headline performance inference. Thirty-five of 62 paths cross nonpositive net asset value, producing \InternationalFailureEventCount events: 31 in France, five in Canada, two in Germany, one in Britain, and one in Italy. Security-level reconstruction reproduces every recorded event to numerical tolerance. In all \InternationalExtremeShortCount cases, one extreme positive security return held on the short side accounts for at least half of the portfolio loss. Two France return-month cells contain \InternationalTwoCellCount events; the largest held returns reach implausibly extreme multiples.
 
-The second value is explanatory. The few positive rows are not mysterious agent outputs; their formulas expose the underlying economics. The U.S. survivor is a quality and conservative-financing composite. The international survivors are recognizable value--profitability--momentum--low-risk screens. This distinction matters for AI research. A system can be useful for automating hypothesis formation, code generation, redundancy checks, or research documentation without having discovered a new priced anomaly. Demonstrating AI-generated alpha requires an ablation or provenance design that separates the agent's contribution from the return of its input factor library.
+As a diagnostic, capping individual security total returns at +100\% eliminates all insolvency events; caps of +200\%, +500\%, and +1,000\% leave 1, 1, and 7 events. These caps are not an admissible corrected return policy and are not used to report alpha. The concentration could reflect corporate actions, return construction, stale prices, or interactions between short weights and extreme observations. Without independent security-level validation, the extension is a data/implementation alarm. The supplement preserves every event, security identifier, weight, return, contribution, reconstruction error, and cap diagnostic.
 
-The third value is methodological. The broad-JKP audit shows why benchmark dimension and time alignment are not implementation details. An unregularized 134-regressor fit on 270 observations can manufacture impressive residual $t$-statistics; a factor panel shifted by one month can manufacture even larger ones. Rolling past-trained slopes, an unpenalized low-dimensional core, familywise inference, and a hard market-alignment check convert that fragile analysis into a defensible diagnostic with zero discoveries.
+\section{What the Evidence Does and Does Not Establish}
 
-The evidence has important limits. First, the census is a dated public snapshot and cannot guarantee closure in a rapidly changing preprint literature. Second, author contact was prohibited, so the artifact results measure public reproducibility rather than private willingness to share. Third, all 62 U.S. proxies are retrospective: their ingredients were developed or inspected on the U.S. panel, and the broad-JKP diagnostic was specified after primary outcomes. The results are therefore an adversarial audit of known claims, not prospective strategy discovery. Fourth, every proxy omits some combination of language generation, memory, retrieval, tool use, timing, and endogenous execution; proxy failure does not prove native-agent failure, while proxy success cannot be attributed to an agent. Fifth, the international extension required disclosed post-outcome correctness amendments and loses 35 paths to limited liability. Finally, monthly top-1,000 portfolios and linear costs omit nonlinear impact, borrow availability, financing, capacity, and the institutional details of intraday, derivative, crypto, and market-making systems.
+The results have scientific value in three places. First, they quantify the gap between a paper claim and an inspectable return stream. Only one of 14 targeted implementations reaches a common code-backed performance test, while the other 13 remain auditable evidence failures. Second, they show that recognizable economic stories can be tested even when native execution is impossible, provided those tests are labeled as lower fidelity. Third, they demonstrate how costs, factor breadth, and familywise inference change conclusions that would look positive under gross returns and nominal tests.
 
-These limits point to a concrete release standard. A financial-agent alpha claim should preserve revision-pinned code, an environment manifest, immutable dated signal or position hashes, exact universe and timing rules, cost conventions, baseline returns, model and prompt versions, random seeds, search breadth, and failed-candidate counts. Proprietary model weights and licensed row-level data need not be redistributed for these evidence objects to exist. With them, native replication can replace mechanism reconstruction; without them, the economic content can still be tested, but the agentic contribution remains unidentified.
+The design also has firm limits. Many systems were released after the December 2024 end of the U.S. return panel. We do not claim a publication-date out-of-sample test: there are too few or zero post-release months for much of the corpus, and the mappings themselves were frozen in 2026 after outcome inspection. The historical tests cannot distinguish discovery from repackaging of known characteristics. Holm correction controls sampling multiplicity across the 62 fixed mappings; it does not correct the literature's search process, the unpublished mapping universe, or publication selection.
 
-\paragraph{Reproducibility and responsible use.}
-All headline values are generated from hash-locked registries, protocol files, result manifests, and deterministic builders. Synthetic tests cover timing, ranks, long--short weights, drift, costs, limited liability, HAC inference, multiplicity, and paired resampling. Restricted security-level market data are not redistributed; aggregate results and input hashes preserve provenance. No orders were transmitted, and the results are retrospective research evidence rather than investment advice.
+Common-task comparability also trades away native fidelity. Monthly top-1,000 characteristic portfolios omit language generation, memory, retrieval, debate, timing, daily or intraday execution, dynamic risk allocation, non-equity instruments, and tool-driven adaptation. A mapping failure cannot prove that its native agent fails; a mapping success cannot be attributed to an agent. Table~\ref{tab:mapping} shows that the strongest-looking M0 result is precisely in the lowest-fidelity class.
 
-\paragraph{AI-assistance disclosure.}
-Generative AI tools assisted literature organization, code drafting, diagnostic review, and prose editing. The human author remains responsible for source selection, formula mappings, protocol decisions, statistical specifications, citation verification, and every claim reported here.
+These limits motivate a release standard for future financial-agent work: revision-pinned code; an environment manifest; immutable dated signals, positions, or returns; universe and timing rules; cost and financing conventions; model, prompt, and seed versions; search breadth and failed-candidate counts; and original benchmark definitions. An agentic contribution further requires provenance or ablation that separates the agent from its factor library and human-authored search space.
+
+\section{Anonymous Empirical Artifact}
+
+The submission package is designed to make the audit inspectable without redistributing restricted security-level data. It contains the 67-system census, the 55-source ledger, all 62 formulas, source-support and fidelity fields, the freeze timestamp and hash, repository screening decisions, execution-status logs, aggregate monthly U.S. candidate and factor returns, turnover and cost outputs, broad-factor residuals, multiplicity results, international event forensics, superseded-run notices, analysis scripts, tests, manifests, and a machine-readable inventory of SHA-256 hashes. The row-level mapping ledger states explicitly that mappings were not outcome-blind and had no second coder. Restricted raw market data are referenced by source path and input hash rather than redistributed.
+
+Deterministic builders regenerate manuscript macros and figures from hash-verified outputs. Tests cover timing, portfolio weights, drift, costs, HAC calculations, familywise adjustments, mapping-combination sensitivity, and international event reconstruction. This artifact is part of the contribution: hashes establish integrity only because the underlying aggregate objects and code are included.
+
+\paragraph{Responsible use and AI assistance.}
+No orders were transmitted. Results are retrospective research evidence, not investment advice. Generative AI assisted literature organization, code drafting, diagnostic review, and prose editing; the human author is responsible for source selection, mappings, protocol choices, statistical specifications, citation verification, and all reported claims.
 
 \section{Conclusion}
 
-We ask whether public financial AI systems contain the alpha they report. Most claims cannot be evaluated natively from their public artifacts, but the analysis does not stop there: we attempt public code, then construct the closest transparent version of each documented economic mechanism. The direct route yields one computable code-backed U.S. path and no six-factor beater. The reconstruction route yields 62 executable U.S. portfolios, one six-factor familywise survivor, no economically confirmed effect, and no familywise survivor under a rolling broad-JKP control. The apparent foreign successes are conditional six-factor results among 27 executable paths and are dominated by familiar factor composites. The combined evidence supports a precise conclusion: public financial agents may help organize quantitative research, but the released evidence does not establish that they discover new, robust, economically material U.S. equity alpha.
+Public financial-agent evidence does not currently establish broad, economically material U.S. alpha. The direct-code route yields one testable adaptation and no benchmark beater; 13 other attempts are reproducibility or compatibility failures, not negative returns. The lower-fidelity route yields 62 transparent historical mappings, one specification-fragile six-factor familywise result, no effect clearing the materiality threshold, and no familywise result in a post-hoc broad-factor diagnostic. The international extension fails a security-level plausibility audit and is not used as performance evidence.
+
+The paper's contribution is therefore constructive rather than categorical. It supplies an evidence hierarchy and an inspectable workflow for determining what public artifacts can support, for pursuing the economic content of otherwise non-evaluable claims, and for stopping the interpretation exactly where fidelity and design no longer permit it.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{icaif2026_references}
