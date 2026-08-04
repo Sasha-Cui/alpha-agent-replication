@@ -7,6 +7,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import shutil
 import subprocess
 
 
@@ -26,6 +27,17 @@ def sha256(path: Path) -> str:
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
+
+
+def pdf_text(path: Path) -> str:
+    """Extract PDF text with the system utility or the project environment fallback."""
+    if shutil.which("pdftotext"):
+        return subprocess.run(
+            ["pdftotext", str(path), "-"], check=True, text=True, capture_output=True
+        ).stdout
+    from pypdf import PdfReader
+
+    return "\n".join(page.extract_text() or "" for page in PdfReader(path).pages)
 
 
 def holm_positive_count(group) -> int:
@@ -90,6 +102,17 @@ def main() -> int:
             int(broad_grounded["holm_positive_5pct_within_subset"]) == 0,
             "broad grounded discoveries changed")
 
+    census_scope = rows(evidence / "replication_scope/system_census_bibliography.csv")
+    direct_scope = rows(evidence / "replication_scope/direct_code_attempt_inventory.csv")
+    grounded_scope = rows(evidence / "replication_scope/source_grounded_component_inventory.csv")
+    require(len(census_scope) == 67, "system-lineage census bibliography is not complete")
+    require(len(direct_scope) == 14, "direct-code attempt inventory is not 14")
+    require(sum(row["in_67_system_census"] == "yes" for row in direct_scope) == 8,
+            "direct attempts inside the 67-system census changed")
+    require(len(grounded_scope) == 13, "source-grounded component inventory is not 13")
+    require(len({row["source_index"] for row in grounded_scope}) == 5,
+            "source-grounded paper count is not five")
+
     direct = rows(root / "paper_runs/repository_ff5mom_metrics_summary.csv")
     require(len(direct) == 14, "direct audit denominator changed")
     testable = [row for row in direct if row["metric_status"] == "computed_jkp_only"]
@@ -130,19 +153,32 @@ def main() -> int:
                      "one yields a testable code-backed adaptation", "not outcome-blind",
                      "does \\emph{not} rerun rolling estimation", "excluded from headline performance inference",
                      "benefit of the doubt", "failure cannot count as evidence against the source",
-                     "13 source-grounded component tests"]:
+                     "13 source-grounded component tests", "The 14 targeted implementation attempts",
+                     "The five papers underlying the 13 source-grounded component tests"]:
         require(required in tex, f"required disclosure absent: {required}")
     for forbidden in ["Do Financial AI Agents Discover Alpha?", "AlphaAgent survivor", "Robust result"]:
         require(forbidden not in tex, f"forbidden overclaim present: {forbidden}")
+    bibliography_text = "\n".join([
+        (root / "docs/paper/icaif2026_references.bib").read_text(encoding="utf-8"),
+        (root / "docs/paper/references.bib").read_text(encoding="utf-8"),
+        tex,
+    ])
+    for forbidden in ["López de Prado", "LopezDePrado", "BaileyEtAl2017PBO",
+                      "BaileyLopezDePrado2014DSR", "bailey2014deflated"]:
+        require(forbidden not in bibliography_text, f"prohibited citation remains: {forbidden}")
 
     if args.pdf:
-        text = subprocess.run(["pdftotext", str(args.pdf), "-"], check=True, text=True,
-                              capture_output=True).stdout
+        text = pdf_text(args.pdf)
         require("Does Public Evidence Support Financial-Agent Alpha Claims?" in text, "wrong PDF title")
         require("producing 40 events" in text, "international forensic disclosure absent")
         require("13 source-grounded component tests" in text, "good-faith subset disclosure absent")
         require("cannot count as evidence against the source" in text,
                 "anti-strawman source-protection disclosure absent")
+        require("The 14 targeted implementation attempts" in text, "direct-code inventory absent")
+        require("The five papers underlying the 13 source-grounded component tests" in text,
+                "source-grounded paper inventory absent")
+        require("López de Prado" not in text and "Lopez de Prado" not in text,
+                "prohibited author remains in PDF")
         require("AlphaAgent survivor" not in text, "forbidden PDF phrase")
     print("major-revision validation passed")
     return 0

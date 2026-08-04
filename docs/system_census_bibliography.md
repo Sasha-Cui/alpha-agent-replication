@@ -1,0 +1,72 @@
+# Complete 67-system census bibliography
+
+The unit is a system lineage, not necessarily one paper. This list is the complete
+F/T availability census. It must not be read as 67 replications.
+
+- `SYS-AGENTIC-AI-SCREENING` - **Agentic AI Screening** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2603.23300).
+- `SYS-AGORA` - **Agora — AI Trading's Alpha Singularity** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2606.29194).
+- `SYS-ALPHA-GPT` - **Alpha-GPT lineage** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2308.00016), [2](https://aclanthology.org/2025.emnlp-demos.14/), [3](https://arxiv.org/abs/2402.09746).
+- `SYS-ALPHA-JUNGLE` - **Alpha-Jungle** (F); role: `source_grounded_component_test`; primary record: [1](https://arxiv.org/abs/2505.11122).
+- `SYS-ALPHA-R1` - **Alpha-R1** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2512.23515).
+- `SYS-ALPHA-AGENT` - **AlphaAgent** (F); role: `targeted_code_attempt`; primary record: [1](https://arxiv.org/abs/2502.16789).
+- `SYS-ALPHA-AGENT-EVO` - **AlphaAgentEvo** (F); role: `availability_census_only`; primary record: [1](https://openreview.net/forum?id=lNmZrawUMu).
+- `SYS-ALPHA-CRAFTER` - **AlphaCrafter** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2605.05580).
+- `SYS-ALPHA-LOGICS` - **AlphaLogics** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2603.20247).
+- `SYS-ALPHA-MEMO` - **AlphaMemo** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2606.20625).
+- `SYS-ALPHA-SCHEMA` - **AlphaSchema** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2607.26642).
+- `SYS-AUTOMATE-STRATEGY` - **Automate Strategy Finding with LLM in Quant Investment** (F); role: `availability_census_only`; primary record: [1](https://aclanthology.org/2025.findings-emnlp.1005/), [2](https://arxiv.org/abs/2409.06289).
+- `SYS-CHAIN-OF-ALPHA` - **Chain-of-Alpha** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2508.06312).
+- `SYS-COG-ALPHA` - **CogAlpha** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2511.18850).
+- `SYS-EFS` - **EFS** (F); role: `source_grounded_component_test`; primary record: [1](https://arxiv.org/abs/2507.17211).
+- `SYS-EMPIRICAL-ASSET-PRICING-LLM` - **Empirical Asset Pricing with Large Language Model Agents** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2409.17266).
+- `SYS-FAMA` - **FAMA — Factor Mining Agent** (F); role: `source_grounded_component_test`; primary record: [1](https://aclanthology.org/2024.findings-acl.233/).
+- `SYS-FACTOR-ENGINE` - **FactorEngine** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2603.16365).
+- `SYS-FACTOR-MAD` - **FactorMAD** (F); role: `availability_census_only`; primary record: [1](https://doi.org/10.1145/3768292.3770377).
+- `SYS-FACTOR-MINER` - **FactorMiner** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2602.14670).
+- `SYS-GPT-SIGNAL` - **GPT-Signal** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2410.18448).
+- `SYS-HUBBLE` - **Hubble** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2604.09601).
+- `SYS-LLM-FACTOR` - **LLMFactor** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2406.10811).
+- `SYS-MAD-EVOLVE` - **MadEvolve** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2605.23007).
+- `SYS-QUANT-EVOLVER` - **QuantEvolver** (F); role: `targeted_code_attempt_and_source_grounded_component_test`; primary record: [1](https://arxiv.org/abs/2605.15412).
+- `SYS-QUANTA-ALPHA` - **QuantaAlpha** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2602.07085).
+- `SYS-RD-AGENT-QUANT` - **R&D-Agent-Quant** (F); role: `targeted_code_attempt`; primary record: [1](https://aka.ms/RD-Agent-Tech-Report).
+- `SYS-TREEVO` - **TreEvo** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2508.16334).
+- `SYS-XALPHA` - **XALPHA** (F); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2607.08332).
+- `SYS-ATLAS` - **ATLAS** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2510.15949).
+- `SYS-ALPHA-AGENTS` - **AlphaAgents** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2508.11152).
+- `SYS-ALPHA-QUANTER` - **AlphaQuanter** (T); role: `availability_census_only`; primary record: [1](https://aclanthology.org/2026.findings-acl.456/).
+- `SYS-BLIND-TRADE` - **BlindTrade** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2603.17692).
+- `SYS-CONTEST-TRADE` - **ContestTrade** (T); role: `targeted_code_attempt`; primary record: [1](https://arxiv.org/abs/2508.00554).
+- `SYS-CRYPTO-TRADE` - **CryptoTrade** (T); role: `availability_census_only`; primary record: [1](https://aclanthology.org/2024.emnlp-main.63/).
+- `SYS-FLAG-TRADER` - **FLAG-Trader** (T); role: `availability_census_only`; primary record: [1](https://aclanthology.org/2025.findings-acl.716/).
+- `SYS-FACTFIN` - **FactFin** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2510.07920).
+- `SYS-FIN-ANALYST` - **Fin-Analyst at FinMMEval Task 3** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2607.12233).
+- `SYS-FIN-AGENT` - **FinAgent** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2402.18485).
+- `SYS-FIN-CON` - **FinCon** (T); role: `targeted_code_attempt`; primary record: [1](https://arxiv.org/abs/2407.06567).
+- `SYS-FIN-MEM` - **FinMem** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2311.13743).
+- `SYS-FIN-POS` - **FinPos** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2510.27251).
+- `SYS-FIN-RL-DEEPSEEK` - **FinRL-DeepSeek** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2502.07393).
+- `SYS-FIN-RS` - **FinRS** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2511.12599).
+- `SYS-FIN-VISION` - **FinVision** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2411.08899).
+- `SYS-GURU-AGENTS` - **GuruAgents** (T); role: `targeted_code_attempt_and_source_grounded_component_test`; primary record: [1](https://arxiv.org/abs/2510.01664).
+- `SYS-HEDGE-AGENTS` - **HedgeAgents** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2502.13165).
+- `SYS-JANUS-Q` - **Janus-Q** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2602.19919).
+- `SYS-MACI` - **MACI — LLM-Powered Multi-Agent System for Automated Crypto Portfolio Management** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2501.00826).
+- `SYS-MASS` - **MASS** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2505.10278).
+- `SYS-MM-DREX` - **MM-DREX** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2509.05080).
+- `SYS-MACRO-ECONOMISTS-MACHINE` - **Macro Economists in the Machine** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2606.08283).
+- `SYS-MARKET-SENSE-AI` - **MarketSenseAI lineage** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2502.00415), [2](https://arxiv.org/abs/2604.17327).
+- `SYS-METAPS` - **MetaPS** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2606.22385).
+- `SYS-MOUNTAIN-LION` - **MountainLion** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2507.20474).
+- `SYS-P1GPT` - **P1GPT** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2510.23032).
+- `SYS-QUANT-AGENT-HFT` - **QuantAgent — Price-Driven Multi-Agent LLMs for High-Frequency Trading** (T); role: `targeted_code_attempt`; primary record: [1](https://arxiv.org/abs/2509.09995).
+- `SYS-QUANT-AGENT-SELF-IMPROVING` - **QuantAgent — Seeking Holy Grail in Trading by Self-Improving LLM** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2402.03755).
+- `SYS-QUANT-AGENTS` - **QuantAgents** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2510.04643).
+- `SYS-RAPTOR` - **RAPTOR** (T); role: `availability_census_only`; primary record: [1](https://openreview.net/forum?id=ziuTkKhgT0).
+- `SYS-SHARP` - **SHARP** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2605.06822).
+- `SYS-STRAT-LLM` - **Strat-LLM** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2605.06024).
+- `SYS-TRADE-IN-MINUTES` - **Trade in Minutes!** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2510.04787).
+- `SYS-TRADING-R1` - **Trading-R1** (T); role: `targeted_code_attempt`; primary record: [1](https://arxiv.org/abs/2509.11420).
+- `SYS-TRADING-AGENTS` - **TradingAgents** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2412.20138).
+- `SYS-TRADING-GROUP` - **TradingGroup** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2508.17565).
+- `SYS-TRUST-TRADE` - **TrustTrade** (T); role: `availability_census_only`; primary record: [1](https://arxiv.org/abs/2603.22567).
