@@ -115,6 +115,7 @@ def main() -> int:
     broad_dir = root / "paper_runs/submission_evidence/usa_broad_jkp_crossfit"
     mapping_dir = root / "paper_runs/submission_evidence/mapping_audit"
     forensic_dir = root / "paper_runs/submission_evidence/international_failure_forensics"
+    waterfall_path = root / "paper_runs/submission_evidence/replication_scope/work_level_evidence_waterfall.csv"
     paper_dir = root / "docs/paper"
     manifest = verify_run(run_dir)
     verify_run(international_dir)
@@ -127,6 +128,27 @@ def main() -> int:
     for filename, expected in forensic_manifest["output_sha256"].items():
         if sha256(forensic_dir / filename) != expected:
             raise RuntimeError(f"international-forensic hash mismatch: {filename}")
+
+    waterfall = pd.read_csv(waterfall_path)
+    if len(waterfall) != 98 or waterfall["canonical_work_id"].nunique() != 98:
+        raise RuntimeError("work-level evidence waterfall is not a 98-work partition")
+    waterfall_counts = {
+        "retained": int((waterfall["screen_decision"] == "retained_formula_or_trading").sum()),
+        "excluded": int((waterfall["screen_decision"] == "screened_out").sum()),
+        "reconstructed": int((waterfall["good_faith_reconstruction"] == "yes").sum()),
+        "availability_only": int((waterfall["reconstruction_fidelity"] == "availability_only").sum()),
+        "grounded_works": int((waterfall["reconstruction_fidelity"] == "source_grounded_component_test").sum()),
+        "narrative_works": int((waterfall["reconstruction_fidelity"] == "narrative_favorable_stress_test").sum()),
+        "retained_code_attempts": int((waterfall["direct_code_route"] == "retained_code_attempt").sum()),
+        "diagnostic_code_attempts": int((waterfall["direct_code_route"] == "diagnostic_code_attempt").sum()),
+        "mappings": int(waterfall["mapping_count"].sum()),
+    }
+    if waterfall_counts != {
+        "retained": 69, "excluded": 29, "reconstructed": 40,
+        "availability_only": 29, "grounded_works": 5, "narrative_works": 35,
+        "retained_code_attempts": 8, "diagnostic_code_attempts": 6, "mappings": 50,
+    }:
+        raise RuntimeError(f"work-level evidence waterfall changed: {waterfall_counts}")
 
     primary = pd.read_csv(run_dir / "candidate_primary_results.csv")
     costs = pd.read_csv(run_dir / "candidate_cost_alpha_results.csv")
@@ -231,38 +253,43 @@ def main() -> int:
         "figure.facecolor": WHITE,
         "savefig.facecolor": WHITE,
     })
-    fig, ax = plt.subplots(figsize=(11.2, 4.8), facecolor=WHITE)
+    fig, ax = plt.subplots(figsize=(11.2, 5.0), facecolor=WHITE)
     ax.set_facecolor(WHITE)
     ax.set_xlim(0, 12)
-    ax.set_ylim(0, 5)
+    ax.set_ylim(0, 5.4)
     ax.axis("off")
 
-    def box(x, y, width, height, title, detail, color):
+    def box(x, y, width, height, title, detail, color, fill=WHITE):
         from matplotlib.patches import FancyBboxPatch
         patch = FancyBboxPatch(
             (x, y), width, height,
             boxstyle="round,pad=0.04,rounding_size=0.08",
-            linewidth=1.4, edgecolor=color, facecolor=WHITE,
+            linewidth=1.4, edgecolor=color, facecolor=fill,
         )
         ax.add_patch(patch)
-        ax.text(x + width / 2, y + height * 0.64, title, ha="center", va="center", color=color, fontsize=11, fontweight="bold")
+        ax.text(x + width / 2, y + height * 0.64, title, ha="center", va="center", color=color, fontsize=10, fontweight="bold")
         ax.text(x + width / 2, y + height * 0.30, detail, ha="center", va="center", color=INK, fontsize=8.5)
 
-    box(0.2, 1.75, 2.05, 1.5, "Reported alpha claims", "103 lineages; 67 methods\nin the primary census", NAVY)
-    box(3.0, 3.15, 2.15, 1.3, "Direct-code route", "14 public implementations\nattempted", BLUE)
-    box(5.9, 3.15, 2.15, 1.3, "Code-backed test", "1 valid U.S. JKP path", BLUE)
-    box(8.8, 3.15, 2.75, 1.3, "Direct result", "0 paths beat FF5+Mom", TEAL)
-    box(3.0, 0.55, 2.15, 1.3, "Reconstruction route", "51 of 55 source ideas\ntranslated", GOLD)
-    box(5.9, 0.55, 2.15, 1.3, "Common U.S. test", "62 frozen proxy portfolios", GOLD)
-    box(8.8, 0.55, 2.75, 1.3, "Conditional result", "1 six-factor FWE survivor;\n0 broad-JKP FWE survivors", TEAL)
+    box(0.2, 2.10, 1.75, 1.25, "Screened corpus", "98 works\n103 system lineages", NAVY)
+    box(2.55, 3.55, 2.10, 1.20, "Retained methods", "69 works / 67 lineages\n30 formula + 39 trading", BLUE)
+    box(2.55, 0.45, 2.10, 1.30, "Screened out", "29 works\nbenchmarks, comparators,\nor adjacent systems", GOLD)
+    box(5.30, 3.55, 2.05, 1.20, "Good-faith route", "40 works\n50 common-task mappings", BLUE)
+    box(5.30, 2.05, 2.05, 1.20, "Availability only", "29 retained works\nno performance inference", GOLD)
+    box(8.00, 3.55, 1.65, 1.20, "Grounded", "5 works\n13 component tests", TEAL)
+    box(10.05, 3.55, 1.65, 1.20, "Narrative", "35 works\n37 favorable\nstress tests", GOLD)
+    box(8.00, 1.25, 3.70, 1.35, "Overlapping direct-code audit", "8 retained + 6 diagnostic\n14 attempts; 0 native replications\n1 seed-expression adaptation", NAVY)
     arrow = dict(arrowstyle="-|>", color="#53677A", lw=1.5, mutation_scale=12)
-    ax.annotate("", xy=(3.0, 3.8), xytext=(2.25, 2.7), arrowprops=arrow)
-    ax.annotate("", xy=(3.0, 1.2), xytext=(2.25, 2.3), arrowprops=arrow)
-    ax.annotate("", xy=(5.9, 3.8), xytext=(5.15, 3.8), arrowprops=arrow)
-    ax.annotate("", xy=(8.8, 3.8), xytext=(8.05, 3.8), arrowprops=arrow)
-    ax.annotate("", xy=(5.9, 1.2), xytext=(5.15, 1.2), arrowprops=arrow)
-    ax.annotate("", xy=(8.8, 1.2), xytext=(8.05, 1.2), arrowprops=arrow)
-    ax.text(6.0, 4.78, "Two routes from a reported alpha claim to testable evidence", ha="center", va="top", fontsize=13, fontweight="bold", color=NAVY)
+    dashed = dict(arrowstyle="-|>", color="#53677A", lw=1.35, linestyle="--", mutation_scale=12)
+    ax.annotate("", xy=(2.55, 4.15), xytext=(1.95, 3.05), arrowprops=arrow)
+    ax.annotate("", xy=(2.55, 1.15), xytext=(1.95, 2.35), arrowprops=arrow)
+    ax.annotate("", xy=(5.30, 4.15), xytext=(4.65, 4.15), arrowprops=arrow)
+    ax.annotate("", xy=(5.30, 2.65), xytext=(4.65, 3.75), arrowprops=arrow)
+    ax.annotate("", xy=(8.00, 4.15), xytext=(7.35, 4.15), arrowprops=arrow)
+    ax.annotate("", xy=(10.05, 4.15), xytext=(7.35, 4.15), arrowprops=arrow)
+    ax.annotate("", xy=(8.00, 1.92), xytext=(4.65, 3.75), arrowprops=dashed)
+    ax.annotate("", xy=(8.00, 1.55), xytext=(4.65, 1.15), arrowprops=dashed)
+    ax.text(6.0, 5.27, "Work-level corpus and evidence waterfall", ha="center", va="top", fontsize=13, fontweight="bold", color=NAVY)
+    ax.text(6.0, 0.14, "Solid arrows partition works; dashed arrows mark the overlapping 14-attempt code audit.", ha="center", va="bottom", fontsize=8.5, color=INK)
     save_figure(fig, paper_dir / "figures/claim_to_test_pipeline.pdf")
 
     fig, ax = plt.subplots(figsize=(9.6, 5.6), facecolor=WHITE)
