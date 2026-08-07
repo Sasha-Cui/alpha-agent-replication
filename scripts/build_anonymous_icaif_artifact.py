@@ -21,7 +21,11 @@ def sha256(path: Path) -> str:
 REQUIRED = [
     "docs/confirmatory_analysis_protocol.md",
     "docs/good_faith_reconstruction_protocol.md",
+    "docs/full_corpus_bibliography.md",
     "docs/system_census_bibliography.md",
+    "docs/paper/census_primary_records.bib",
+    "docs/paper/generated_corpus_citations.tex",
+    "literature_review/census_v1/primary_record_metadata.csv",
     "paper_runs/submission_evidence/analysis_lock.json",
     "paper_runs/submission_evidence/artifact_audit/artifact_audit.csv",
     "paper_runs/submission_evidence/artifact_audit/artifact_audit_summary.csv",
@@ -38,6 +42,7 @@ REQUIRED = [
     "paper_runs/submission_evidence/replication_scope/system_census_bibliography.csv",
     "paper_runs/submission_evidence/replication_scope/direct_code_attempt_inventory.csv",
     "paper_runs/submission_evidence/replication_scope/source_grounded_component_inventory.csv",
+    "paper_runs/submission_evidence/replication_scope/pretrim_primary_record_inventory.csv",
     "paper_runs/repository_ff5mom_metrics_summary.csv",
     "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv",
     "paper_runs/submission_evidence/usa_retrospective_corrected/factor_monthly_USA.csv",
@@ -55,11 +60,14 @@ REQUIRED = [
     "paper_runs/submission_evidence/international_failure_forensics/failure_month_summary.csv",
     "paper_runs/submission_evidence/international_failure_forensics/manifest.json",
     "scripts/build_mapping_audit.py",
+    "scripts/build_census_citation_assets.py",
     "scripts/build_replication_scope_assets.py",
+    "scripts/refresh_census_primary_record_metadata.py",
     "scripts/diagnose_international_failures.py",
     "scripts/build_icaif2026_submission_assets.py",
     "scripts/validate_icaif_major_revision.py",
     "tests/test_mapping_audit.py",
+    "tests/test_census_citation_assets.py",
     "tests/test_replication_scope_assets.py",
     "tests/test_international_failure_forensics.py",
 ]
@@ -79,7 +87,8 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
   not independently double-coded.
 - Thirteen mappings are source-grounded component tests. The other 49 are favorable
   narrative stress tests whose failures cannot count as evidence against their sources.
-- The 67 entries are system lineages in an availability census, not 67 replications.
+- The pre-trim screen contains 103 lineages backed by 98 canonical works. The retained
+  availability census contains 67 lineages backed by 69 formally cited works, not 67 replications.
   Fourteen public implementations were targeted, only eight of which belong to the
   67-system F/T census; five benchmarks and one comparator were diagnostic additions.
 - The broad-factor analysis is post hoc and its bootstrap resamples fixed out-of-sample
@@ -95,6 +104,8 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
 - `docs/good_faith_reconstruction_protocol.md`: the claim-card, evidence-priority,
   favorable-implementation, alternative-mapping, and source-protection rules.
 - `docs/system_census_bibliography.md`: all 67 system lineages and primary records.
+- `docs/full_corpus_bibliography.md`: all 98 pre-trim canonical works, including the
+  69 works supporting retained F/T lineages.
 - `paper_runs/submission_evidence/replication_scope/`: the exact 14 code attempts and
   13 source-grounded component mappings from five source papers.
 - `paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv`:

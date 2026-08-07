@@ -7,6 +7,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 import subprocess
 
@@ -105,6 +106,8 @@ def main() -> int:
     census_scope = rows(evidence / "replication_scope/system_census_bibliography.csv")
     direct_scope = rows(evidence / "replication_scope/direct_code_attempt_inventory.csv")
     grounded_scope = rows(evidence / "replication_scope/source_grounded_component_inventory.csv")
+    pretrim_scope = rows(evidence / "replication_scope/pretrim_primary_record_inventory.csv")
+    citation_metadata = rows(root / "literature_review/census_v1/primary_record_metadata.csv")
     require(len(census_scope) == 67, "system-lineage census bibliography is not complete")
     require(len(direct_scope) == 14, "direct-code attempt inventory is not 14")
     require(sum(row["in_67_system_census"] == "yes" for row in direct_scope) == 8,
@@ -112,6 +115,33 @@ def main() -> int:
     require(len(grounded_scope) == 13, "source-grounded component inventory is not 13")
     require(len({row["source_index"] for row in grounded_scope}) == 5,
             "source-grounded paper count is not five")
+    require(len(pretrim_scope) == len(citation_metadata) == 104,
+            "pre-trim primary-record inventory is not 104")
+    require(len({row["canonical_work_id"] for row in citation_metadata}) == 98,
+            "pre-trim canonical work count is not 98")
+    require(sum(row["main_ft"] == "yes" for row in citation_metadata) == 71,
+            "retained primary-record link count is not 71")
+    retained_works = {row["canonical_work_id"] for row in citation_metadata
+                      if row["main_ft"] == "yes"}
+    require(len(retained_works) == 69, "retained canonical work count is not 69")
+    preferred = [row for row in citation_metadata if row["preferred_citation"] == "yes"]
+    require(len(preferred) == 98, "preferred citation count is not 98")
+    census_bib = (root / "docs/paper/census_primary_records.bib").read_text(encoding="utf-8")
+    bib_keys = set(re.findall(r"^@\w+\{([^,]+),", census_bib, flags=re.MULTILINE))
+    require(bib_keys == {row["bibtex_key"] for row in preferred},
+            "generated corpus bibliography does not cover every canonical work")
+    citation_macros = (root / "docs/paper/generated_corpus_citations.tex").read_text(encoding="utf-8")
+    cited_corpus_keys = {
+        key.strip()
+        for body in re.findall(r"\\cite\{([^}]+)\}", citation_macros)
+        for key in body.split(",")
+        if key.strip()
+    }
+    retained_preferred_keys = {
+        row["bibtex_key"] for row in preferred if row["canonical_work_id"] in retained_works
+    }
+    require(cited_corpus_keys == retained_preferred_keys,
+            "manuscript macros do not cite all and only the 69 retained works")
 
     direct = rows(root / "paper_runs/repository_ff5mom_metrics_summary.csv")
     require(len(direct) == 14, "direct audit denominator changed")
@@ -154,13 +184,20 @@ def main() -> int:
                      "does \\emph{not} rerun rolling estimation", "excluded from headline performance inference",
                      "benefit of the doubt", "failure cannot count as evidence against the source",
                      "13 source-grounded component tests", "The 14 targeted implementation attempts",
-                     "The five papers underlying the 13 source-grounded component tests"]:
+                     "The five papers underlying the 13 source-grounded component tests",
+                     "103 candidate system lineages backed by 98 distinct works",
+                     "Reproducibility and Audit Trail", "generated_corpus_citations.tex",
+                     "census_primary_records"]:
         require(required in tex, f"required disclosure absent: {required}")
-    for forbidden in ["Do Financial AI Agents Discover Alpha?", "AlphaAgent survivor", "Robust result"]:
+    for forbidden in ["Do Financial AI Agents Discover Alpha?", "AlphaAgent survivor", "Robust result",
+                      "Anonymous Empirical Artifact"]:
         require(forbidden not in tex, f"forbidden overclaim present: {forbidden}")
+    require("supplement" not in tex.casefold(), "paper improperly depends on a supplement")
     bibliography_text = "\n".join([
         (root / "docs/paper/icaif2026_references.bib").read_text(encoding="utf-8"),
         (root / "docs/paper/references.bib").read_text(encoding="utf-8"),
+        census_bib,
+        (root / "literature_review/census_v1/primary_record_metadata.csv").read_text(encoding="utf-8"),
         tex,
     ])
     for forbidden in ["López de Prado", "LopezDePrado", "BaileyEtAl2017PBO",
@@ -169,6 +206,8 @@ def main() -> int:
 
     if args.pdf:
         text = pdf_text(args.pdf)
+        normalized_text = re.sub(r"\s+", " ", text)
+        folded_text = normalized_text.casefold()
         require("Does Public Evidence Support Financial-Agent Alpha Claims?" in text, "wrong PDF title")
         require("producing 40 events" in text, "international forensic disclosure absent")
         require("13 source-grounded component tests" in text, "good-faith subset disclosure absent")
@@ -177,6 +216,14 @@ def main() -> int:
         require("The 14 targeted implementation attempts" in text, "direct-code inventory absent")
         require("The five papers underlying the 13 source-grounded component tests" in text,
                 "source-grounded paper inventory absent")
+        require("103 candidate system lineages" in normalized_text and "98 distinct works" in normalized_text,
+                "pre-trim breadth disclosure absent")
+        require("69 works" in normalized_text, "retained bibliography breadth disclosure absent")
+        require("reproducibility and audit trail" in folded_text,
+                "self-contained audit section absent")
+        require("supplement" not in folded_text, "PDF improperly depends on a supplement")
+        from pypdf import PdfReader
+        require(len(PdfReader(args.pdf).pages) <= 8, "PDF exceeds ICAIF's eight-page total limit")
         require("López de Prado" not in text and "Lopez de Prado" not in text,
                 "prohibited author remains in PDF")
         require("AlphaAgent survivor" not in text, "forbidden PDF phrase")
