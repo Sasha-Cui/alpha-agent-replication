@@ -107,6 +107,7 @@ def main() -> int:
     direct_scope = rows(evidence / "replication_scope/direct_code_attempt_inventory.csv")
     grounded_scope = rows(evidence / "replication_scope/source_grounded_component_inventory.csv")
     pretrim_scope = rows(evidence / "replication_scope/pretrim_primary_record_inventory.csv")
+    waterfall = rows(evidence / "replication_scope/work_level_evidence_waterfall.csv")
     citation_metadata = rows(root / "literature_review/census_v1/primary_record_metadata.csv")
     require(len(census_scope) == 67, "system-lineage census bibliography is not complete")
     require(len(direct_scope) == 14, "direct-code attempt inventory is not 14")
@@ -126,6 +127,29 @@ def main() -> int:
     require(len(retained_works) == 69, "retained canonical work count is not 69")
     preferred = [row for row in citation_metadata if row["preferred_citation"] == "yes"]
     require(len(preferred) == 98, "preferred citation count is not 98")
+    require(len(waterfall) == len({row["canonical_work_id"] for row in waterfall}) == 98,
+            "work-level evidence waterfall is not a 98-work partition")
+    require(sum(row["screen_decision"] == "retained_formula_or_trading" for row in waterfall) == 69
+            and sum(row["screen_decision"] == "screened_out" for row in waterfall) == 29,
+            "98-to-69 screen waterfall changed")
+    require(sum(row["good_faith_reconstruction"] == "yes" for row in waterfall) == 40
+            and sum(row["reconstruction_fidelity"] == "availability_only" for row in waterfall) == 29,
+            "69-to-40 reconstruction waterfall changed")
+    require(sum(int(row["mapping_count"]) for row in waterfall) == 50,
+            "retained works no longer produce 50 mappings")
+    require(sum(row["reconstruction_fidelity"] == "source_grounded_component_test"
+                for row in waterfall) == 5,
+            "source-grounded work count changed")
+    require(sum(row["reconstruction_fidelity"] == "narrative_favorable_stress_test"
+                for row in waterfall) == 35,
+            "narrative reconstructed-work count changed")
+    require(sum(row["direct_code_route"] == "retained_code_attempt" for row in waterfall) == 8
+            and sum(row["direct_code_route"] == "diagnostic_code_attempt" for row in waterfall) == 6,
+            "retained/diagnostic code-attempt split changed")
+    require(sum(row["native_agent_replication"] == "yes" for row in waterfall) == 0
+            and sum(row["code_backed_adaptation"] == "yes_released_seed_expression"
+                    for row in waterfall) == 1,
+            "native/code-backed replication outcome changed")
     census_bib = (root / "docs/paper/census_primary_records.bib").read_text(encoding="utf-8")
     bib_keys = set(re.findall(r"^@\w+\{([^,]+),", census_bib, flags=re.MULTILINE))
     require(bib_keys == {row["bibtex_key"] for row in preferred},
@@ -137,11 +161,8 @@ def main() -> int:
         for key in body.split(",")
         if key.strip()
     }
-    retained_preferred_keys = {
-        row["bibtex_key"] for row in preferred if row["canonical_work_id"] in retained_works
-    }
-    require(cited_corpus_keys == retained_preferred_keys,
-            "manuscript macros do not cite all and only the 69 retained works")
+    require(cited_corpus_keys == {row["bibtex_key"] for row in preferred},
+            "manuscript macros do not cite all 98 screened works")
 
     direct = rows(root / "paper_runs/repository_ff5mom_metrics_summary.csv")
     require(len(direct) == 14, "direct audit denominator changed")
@@ -180,12 +201,15 @@ def main() -> int:
 
     tex = (root / "docs/paper/icaif2026_submission.tex").read_text(encoding="utf-8")
     for required in ["Does Public Evidence Support Financial-Agent Alpha Claims?",
-                     "one yields a testable code-backed adaptation", "not outcome-blind",
+                     "yields a testable code-backed adaptation", "not outcome-blind",
                      "does \\emph{not} rerun rolling estimation", "excluded from headline performance inference",
                      "benefit of the doubt", "failure cannot count as evidence against the source",
                      "13 source-grounded component tests", "The 14 targeted implementation attempts",
                      "The five papers underlying the 13 source-grounded component tests",
                      "103 candidate system lineages backed by 98 distinct works",
+                     "All 98 works are cited", "\\ReconstructedWorkCount retained works",
+                     "\\RetainedMappingCount common-task mappings",
+                     "29 remain availability-only", "eight retained works entered the code audit",
                      "Reproducibility and Audit Trail", "generated_corpus_citations.tex",
                      "census_primary_records"]:
         require(required in tex, f"required disclosure absent: {required}")
@@ -219,11 +243,22 @@ def main() -> int:
         require("103 candidate system lineages" in normalized_text and "98 distinct works" in normalized_text,
                 "pre-trim breadth disclosure absent")
         require("69 works" in normalized_text, "retained bibliography breadth disclosure absent")
+        require("All 98 works are cited" in normalized_text,
+                "complete screened-corpus citation disclosure absent")
+        require("40 retained works" in normalized_text and "50 common-task mappings" in normalized_text,
+                "retained reconstruction waterfall absent")
+        require("29 remain availability-only" in normalized_text,
+                "availability-only retained-work disclosure absent")
+        require("eight retained works entered the code audit" in normalized_text,
+                "retained code-route disclosure absent")
         require("reproducibility and audit trail" in folded_text,
                 "self-contained audit section absent")
         require("supplement" not in folded_text, "PDF improperly depends on a supplement")
         from pypdf import PdfReader
         require(len(PdfReader(args.pdf).pages) <= 8, "PDF exceeds ICAIF's eight-page total limit")
+        bbl = (root / "docs/paper/icaif2026_submission.bbl").read_text(encoding="utf-8")
+        require(len(re.findall(r"^\\bibitem", bbl, flags=re.MULTILINE)) >= 108,
+                "compiled bibliography does not contain all 98 corpus works plus methods")
         require("López de Prado" not in text and "Lopez de Prado" not in text,
                 "prohibited author remains in PDF")
         require("AlphaAgent survivor" not in text, "forbidden PDF phrase")

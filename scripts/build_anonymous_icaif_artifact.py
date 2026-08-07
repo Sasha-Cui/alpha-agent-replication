@@ -43,6 +43,7 @@ REQUIRED = [
     "paper_runs/submission_evidence/replication_scope/direct_code_attempt_inventory.csv",
     "paper_runs/submission_evidence/replication_scope/source_grounded_component_inventory.csv",
     "paper_runs/submission_evidence/replication_scope/pretrim_primary_record_inventory.csv",
+    "paper_runs/submission_evidence/replication_scope/work_level_evidence_waterfall.csv",
     "paper_runs/repository_ff5mom_metrics_summary.csv",
     "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv",
     "paper_runs/submission_evidence/usa_retrospective_corrected/factor_monthly_USA.csv",
@@ -89,8 +90,13 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
   narrative stress tests whose failures cannot count as evidence against their sources.
 - The pre-trim screen contains 103 lineages backed by 98 canonical works. The retained
   availability census contains 67 lineages backed by 69 formally cited works, not 67 replications.
+  All 98 screened works are cited in the paper. Forty retained works receive 50
+  good-faith mappings; 29 retained works remain availability-only. Five works support
+  13 component tests, while 35 support 37 narrative-only favorable stress tests.
   Fourteen public implementations were targeted, only eight of which belong to the
   67-system F/T census; five benchmarks and one comparator were diagnostic additions.
+  No native-agent replication was completed; one released seed expression yielded a
+  code-backed adaptation.
 - The broad-factor analysis is post hoc and its bootstrap resamples fixed out-of-sample
   residuals rather than rerunning rolling tuning.
 - International performance is not headline evidence. The included forensic ledger
@@ -107,7 +113,8 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
 - `docs/full_corpus_bibliography.md`: all 98 pre-trim canonical works, including the
   69 works supporting retained F/T lineages.
 - `paper_runs/submission_evidence/replication_scope/`: the exact 14 code attempts and
-  13 source-grounded component mappings from five source papers.
+  13 source-grounded component mappings from five source papers, plus the 98-work
+  evidence waterfall reconciling screening, code attempts, and reconstruction coverage.
 - `paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv`:
   aggregate monthly U.S. candidate returns.
 - `paper_runs/submission_evidence/international_failure_forensics/`: event-level audit.
