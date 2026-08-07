@@ -24,6 +24,7 @@
 \newcommand{\bps}[1]{#1~bp}
 \input{generated_results.tex}
 \input{icaif2026_results.tex}
+\input{generated_corpus_citations.tex}
 
 \title{Does Public Evidence Support Financial-Agent Alpha Claims?\\An Artifact Audit and Historical Spanning Test}
 
@@ -36,7 +37,7 @@
 \acmDOI{}
 
 \begin{abstract}
-Financial-agent papers increasingly report profitable factors and trading policies, yet public evidence rarely permits independent alpha testing. We contribute an evidence hierarchy, a good-faith reconstruction contract, and a common historical spanning test that keeps reproducibility failures distinct from performance failures. Among 67 formula-discovery or trading systems, 20 list a public artifact and three ship dated native output, but none ships output compatible with our common U.S. equity task. Of 14 targeted implementation attempts, one yields a testable code-backed adaptation; its released seed-expression proxy does not beat a six-factor benchmark. We also audit 62 researcher-authored U.S. mechanism mappings from 51 source indices. To prevent strawman inference, only 13 mappings supported by a released expression, named rule, or source example are interpreted as component tests; their median annualized six-factor alpha is 0.88\%, one is nominally positive, and none survives Holm. The other 49 are favorable narrative stress tests and cannot count as evidence against their sources. Across all 62, median alpha net of 10-basis-point one-way costs is \USMedianAlphaPct, one result survives primary familywise correction, no simultaneous lower bound exceeds two percentage points, and the familywise result is absent at Newey--West lags 0 and 12. The mappings were frozen after U.S. outcomes had been inspected and had no independent second coder, so all mapping results are retrospective and conditional. A post-hoc 133-factor diagnostic yields no familywise discovery. Public artifacts and source-grounded component tests therefore do not establish broad, economically material U.S. alpha; narrative proxies are reported only as generous stress tests.
+Financial-agent papers increasingly report profitable factors and trading policies, yet public evidence rarely permits independent alpha testing. We contribute an evidence hierarchy, a good-faith reconstruction contract, and a common historical spanning test that keeps reproducibility failures distinct from performance failures. We screen 103 candidate system lineages backed by 98 distinct works and retain 67 formula-discovery or trading lineages backed by 69 works. Twenty retained systems list a public artifact and three ship dated native output, but none ships output compatible with our common U.S. equity task. Of 14 targeted implementation attempts, one yields a testable code-backed adaptation; its released seed-expression proxy does not beat a six-factor benchmark. We also audit 62 researcher-authored U.S. mechanism mappings from 51 source indices. To prevent strawman inference, only 13 mappings supported by a released expression, named rule, or source example are interpreted as component tests; their median annualized six-factor alpha is 0.88\%, one is nominally positive, and none survives Holm. The other 49 are favorable narrative stress tests and cannot count as evidence against their sources. Across all 62, median alpha net of 10-basis-point one-way costs is \USMedianAlphaPct, one result survives primary familywise correction, no simultaneous lower bound exceeds two percentage points, and the familywise result is absent at Newey--West lags 0 and 12. The mappings were frozen after U.S. outcomes had been inspected and had no independent second coder, so all mapping results are retrospective and conditional. A post-hoc 133-factor diagnostic yields no familywise discovery. Public artifacts and source-grounded component tests therefore do not establish broad, economically material U.S. alpha; narrative proxies are reported only as generous stress tests.
 \end{abstract}
 
 \ccsdesc[500]{Computing methodologies~Multi-agent systems}
@@ -50,7 +51,7 @@ Financial-agent papers increasingly report profitable factors and trading polici
 
 \section{Introduction}
 
-Financial AI systems now search factor expressions, debate investment theses, retrieve news, and revise portfolios. Their evaluations often report Sharpe ratios, raw trading gains, benchmark outperformance, or alpha \cite{LiEtAl2024FAMA,TangEtAl2025AlphaAgent,WangEtAl2025AlphaGPT,ZhangEtAl2026QuantEvolver,DuanEtAl2025FactorMAD}. The scientific question is not whether these architectures are interesting. It is whether the evidence released with them supports the claimed incremental return.
+Financial AI systems now search factor expressions, debate investment theses, retrieve news, and revise portfolios. Their evaluations often report Sharpe ratios, raw trading gains, benchmark outperformance, or alpha \cite{CensusACL2024findingsacl233,CensusArxiv250216789,CensusACL2025emnlpdemos14,CensusArxiv260515412,CensusDOI10114537682923770377}. The scientific question is not whether these architectures are interesting. It is whether the evidence released with them supports the claimed incremental return.
 
 That question contains two different failure modes. A system may be impossible to evaluate because its code, data adapter, trained state, or dated output is unavailable. Alternatively, a testable return path may exist but fail an asset-pricing benchmark. Treating both as zero alpha is wrong; stopping at ``not reproducible'' is also incomplete. We therefore use the highest-fidelity feasible route and label the estimand at every step. Native or code-backed returns, when available, test a released implementation. When they are unavailable, reconstruction must give the public idea a serious opportunity to work: preserve source-supported content, choose a favorable reasonable implementation, encode ambiguity as variants, and disclose every substitution. A narrative mapping can stress-test an economic story, but its failure cannot be charged to the source.
 
@@ -70,7 +71,7 @@ We make four contributions. First, a 67-system artifact census records public av
 
 \subsection{Denominators and inferential targets}
 
-The three headline denominators are related but not interchangeable. The census contains 67 \emph{system lineages}, not 67 replications and not necessarily 67 one-to-one papers. Its purpose is public-evidence availability. A complete 67-row bibliographic registry lists every primary record and artifact in the supplement. The performance work is narrower: 14 targeted public implementations (Table~\ref{tab:direct-scope}) and 13 source-grounded component mappings from five papers (Table~\ref{tab:grounded-scope}). A separate source-discovery corpus contains 55 indexed records suitable for economic coding; 51 indices are translated into 62 candidate portfolios because five sources have multiple already-coded interpretations. One index names two systems, so the ledger has 52 named source rows. The 62 portfolios are the statistical family. None of the 51 mapped sources contains an explicit exact match to the full common claim ``monthly U.S. top-1,000 equity alpha relative to our six-factor model.'' Consequently, our outcome is a common-task spanning result, not a reproduction of 51 identically stated original alpha claims.
+The three headline denominators are related but not interchangeable. The pre-trim registry contains \PretrimLineageCount candidate system lineages backed by \PretrimWorkCount canonical works after six duplicate publication manifestations are collapsed. Applying the frozen criteria retains \RetainedLineageCount lineages backed by \RetainedWorkCount works. The 30 formula-discovery works comprise records released through 2025 \FormulaCorpusCitationsThroughTwentyFive\ and in 2026 \FormulaCorpusCitationsTwentySix. The 39 trading works span records through 2024 \TradingCorpusCitationsThroughTwentyFour, in 2025 \TradingCorpusCitationsTwentyFive, and in 2026 \TradingCorpusCitationsTwentySix. This is an availability census, not 67 replications. The performance work is narrower: 14 targeted public implementations (Table~\ref{tab:direct-scope}) and 13 source-grounded component mappings from five papers (Table~\ref{tab:grounded-scope}). A separate source-discovery corpus contains 55 indexed records suitable for economic coding; 51 indices are translated into 62 candidate portfolios because five sources have multiple already-coded interpretations. One index names two systems, so the ledger has 52 named source rows. The 62 portfolios are the statistical family. None of the 51 mapped sources contains an explicit exact match to the full common claim ``monthly U.S. top-1,000 equity alpha relative to our six-factor model.'' Consequently, our outcome is a common-task spanning result, not a reproduction of 51 identically stated original alpha claims.
 
 The 14 targeted repositories are a diagnostic implementation set, not another name for the 67-system census and not the nine artifacts with an observed reuse license. Eight attempts belong to the 67 formula/trading lineages; five benchmarks and one mechanistic comparator were added because their repositories appeared useful for evaluation. License presence is a census field; the execution audit also inspected locally available public snapshots without redistributing them. We report 0 of 1 testable code-backed paths beating the benchmark. The remaining 13 attempts are classified by blocking stage and never enter a performance denominator.
 
@@ -107,27 +108,27 @@ We attempted 14 implementations selected for apparent code availability and rele
 \toprule
 \textbf{System} & \textbf{Released object / native task} & \textbf{Audit result} \\
 \midrule
-AlphaAgent \cite{TangEtAl2025AlphaAgent} & China A-share factor-mining code & No shipped dated strategy return series. \\
+AlphaAgent \cite{CensusArxiv250216789} & China A-share factor-mining code & No shipped dated strategy return series. \\
 AlphaBench \cite{alphabench2026} & Formula-mining benchmark code & Executable benchmark components, but no dated strategy returns. \\
 AlphaForgeBench \cite{ZhangEtAl2026AlphaForgeBench} & End-to-end strategy-design benchmark & Aggregate metrics only; no dated common-task return stream. \\
 AlphaPROBE \cite{GuoEtAl2026AlphaPROBE} & Graph-based factor-mining comparator & No approved JKP adapter or released dated expressions/returns. \\
-ContestTrade \cite{ZhaoEtAl2025ContestTrade} & Sequential multi-agent trading code & No replay adapter or shipped common-task returns. \\
+ContestTrade \cite{CensusArxiv250800554} & Sequential multi-agent trading code & No replay adapter or shipped common-task returns. \\
 DeepFund \cite{LiEtAl2025DeepFund} & Live fund-investment benchmark & No approved historical reproduction path for the common panel. \\
-FinCon \cite{YuEtAl2024FinCon} & Sequential multi-agent trading system & Available implementation was unofficial/ambiguous and task-incompatible. \\
-GuruAgents \cite{KimEtAl2025GuruAgents} & Nasdaq-100 guru-persona portfolios & Shipped non-JKP backtest is inspectable but incompatible with the common task. \\
+FinCon \cite{CensusArxiv240706567} & Sequential multi-agent trading system & Available implementation was unofficial/ambiguous and task-incompatible. \\
+GuruAgents \cite{CensusArxiv251001664} & Nasdaq-100 guru-persona portfolios & Shipped non-JKP backtest is inspectable but incompatible with the common task. \\
 LiveTradeBench \cite{YuEtAl2025LiveTradeBench} & Live stock/prediction-market benchmark & No frozen historical return path compatible with the evaluator. \\
-QuantAgent \cite{XiongEtAl2025QuantAgent} & Hourly/4-hour HFT across stocks, futures, and crypto & Intraday native task cannot be represented by monthly JKP data. \\
-QuantEvolver \cite{ZhangEtAl2026QuantEvolver} & Factor-discovery framework plus seed expressions & One released seed expression is testable; $\alpha=0.33\%$, $t=0.65$. Not a trained-agent run. \\
-R\&D-Agent-Quant \cite{YangEtAl2025RDAgent} & General R\&D-Agent framework and quant workflow & No shipped U.S. candidate returns or completed JKP adapter. \\
+QuantAgent \cite{CensusArxiv250909995} & Hourly/4-hour HFT across stocks, futures, and crypto & Intraday native task cannot be represented by monthly JKP data. \\
+QuantEvolver \cite{CensusArxiv260515412} & Factor-discovery framework plus seed expressions & One released seed expression is testable; $\alpha=0.33\%$, $t=0.65$. Not a trained-agent run. \\
+R\&D-Agent-Quant \cite{CensusArxiv250514738} & General R\&D-Agent framework and quant workflow & No shipped U.S. candidate returns or completed JKP adapter. \\
 TradeTrap \cite{YanEtAl2025TradeTrap} & Trading-agent reliability harness & Shipped results are a non-JKP diagnostic, not a common-task return path. \\
-Trading-R1 \cite{XiaoEtAl2025TradingR1} & RL-trained trading-reasoning system & Public repository snapshot is a placeholder without executable system code. \\
+Trading-R1 \cite{CensusArxiv250911420} & RL-trained trading-reasoning system & Public repository snapshot is a placeholder without executable system code. \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
 \subsection{Mechanism mapping and disclosed discretion}
 
-When direct evaluation is unavailable, we map public descriptions to point-in-time JKP characteristics \cite{JensenKellyPedersen2023}. The governing principle is benefit of the doubt: the reconstruction should help the documented idea express its signal, not construct an easy-to-reject surrogate. The supplement formalizes an eight-step contract.
+When direct evaluation is unavailable, we map public descriptions to point-in-time JKP characteristics \cite{JensenKellyPedersen2023}. The governing principle is benefit of the doubt: the reconstruction should help the documented idea express its signal, not construct an easy-to-reject surrogate. The following eight-step contract governs every mapping.
 
 First, a claim card records the source locator, original domain, frequency, universe, objective, metric and benchmark, inputs and timing, explicit formula or named rule, portfolio constraints, and agent-specific components. Second, evidence is prioritized: released expression; equation or pseudocode; worked example or named rule; narrative mechanism; then title or summary. Lower-level evidence cannot override a released rule. Third, every supported ingredient, sign, lag, interaction, and constraint is preserved before imposing the common evaluator. Fourth, ambiguity is resolved favorably but without return-based tuning: use the source-stated direction, expose the full top-minus-bottom decile spread for cross-sectional scores, honor explicit long-only or sparse top-$k$ rules, report gross and net results, and avoid unrequested filters that suppress the signal. Fifth, materially reasonable alternatives should all be coded before return inspection and remain in the multiplicity family. No sign is reversed, unsuccessful candidate deleted, or variant selected because of test-period returns.
 
@@ -144,11 +145,11 @@ The present mappings predate this formal contract, so the audit applies its sour
 \toprule
 \textbf{Source ($N$ mappings)} & \textbf{Original idea and task} & \textbf{Component implemented in our common task} \\
 \midrule
-EFS \cite{LuoEtAl2025EFS} (3) & LLM evolutionary factor search for sparse top-$m$ portfolios on Fama--French and US50/HSI45/CSI300 datasets. & Momentum/low-volatility/breakout score; reversal/low-noise score; and a sparse equal-weight top-five variant. \\
-QuantEvolver \cite{ZhangEtAl2026QuantEvolver} (1) & Reinforcement fine-tuning generates executable factor-DSL expressions across market benchmarks. & The released risk-adjusted-momentum seed $\mathrm{ret}_{12,1}/|\mathrm{rvol}_{252}|$; portfolio formation remains ours. \\
-Alpha-Jungle \cite{ShiEtAl2025AlphaJungle} (2) & LLM-guided MCTS searches symbolic stock factors using price, volume, and volatility operators. & A price/volume/momentum score and a trend-after-volatility-compression score based on documented examples. \\
-FAMA \cite{LiEtAl2024FAMA} (1) & Neural-symbolic factor mining evaluated by RankIC/RankICIR and an S\&P 500 investment simulation. & A simple interpretable value--momentum--profitability score motivated by the paper's factor examples. \\
-GuruAgents \cite{KimEtAl2025GuruAgents} (6) & Prompt-guided agents emulate five named investor philosophies in a Nasdaq-100 backtest. & Graham, Buffett, Greenblatt, Piotroski, and Altman characteristic screens plus their equal-weight ensemble. \\
+EFS \cite{CensusArxiv250717211} (3) & LLM evolutionary factor search for sparse top-$m$ portfolios on Fama--French and US50/HSI45/CSI300 datasets. & Momentum/low-volatility/breakout score; reversal/low-noise score; and a sparse equal-weight top-five variant. \\
+QuantEvolver \cite{CensusArxiv260515412} (1) & Reinforcement fine-tuning generates executable factor-DSL expressions across market benchmarks. & The released risk-adjusted-momentum seed $\mathrm{ret}_{12,1}/|\mathrm{rvol}_{252}|$; portfolio formation remains ours. \\
+Alpha-Jungle \cite{CensusArxiv250511122} (2) & LLM-guided MCTS searches symbolic stock factors using price, volume, and volatility operators. & A price/volume/momentum score and a trend-after-volatility-compression score based on documented examples. \\
+FAMA \cite{CensusACL2024findingsacl233} (1) & Neural-symbolic factor mining evaluated by RankIC/RankICIR and an S\&P 500 investment simulation. & A simple interpretable value--momentum--profitability score motivated by the paper's factor examples. \\
+GuruAgents \cite{CensusArxiv251001664} (6) & Prompt-guided agents emulate five named investor philosophies in a Nasdaq-100 backtest. & Graham, Buffett, Greenblatt, Piotroski, and Altman characteristic screens plus their equal-weight ensemble. \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -221,7 +222,7 @@ There are \BroadPositiveAlphaCount positive estimates and one nominal result, bu
 
 The international extension is excluded from headline performance inference. Thirty-five of 62 paths cross nonpositive net asset value, producing \InternationalFailureEventCount events: 31 in France, five in Canada, two in Germany, one in Britain, and one in Italy. Security-level reconstruction reproduces every recorded event to numerical tolerance. In all \InternationalExtremeShortCount cases, one extreme positive security return held on the short side accounts for at least half of the portfolio loss. Two France return-month cells contain \InternationalTwoCellCount events; the largest held returns reach implausibly extreme multiples.
 
-As a diagnostic, capping individual security total returns at +100\% eliminates all insolvency events; caps of +200\%, +500\%, and +1,000\% leave 1, 1, and 7 events. These caps are not an admissible corrected return policy and are not used to report alpha. The concentration could reflect corporate actions, return construction, stale prices, or interactions between short weights and extreme observations. Without independent security-level validation, the extension is a data/implementation alarm. The supplement preserves every event, security identifier, weight, return, contribution, reconstruction error, and cap diagnostic.
+As a diagnostic, capping individual security total returns at +100\% eliminates all insolvency events; caps of +200\%, +500\%, and +1,000\% leave 1, 1, and 7 events. These caps are not an admissible corrected return policy and are not used to report alpha. The concentration could reflect corporate actions, return construction, stale prices, or interactions between short weights and extreme observations. Without independent security-level validation, the extension is a data/implementation alarm. The frozen forensic ledger retains every event, security identifier, weight, return, contribution, reconstruction error, and cap diagnostic.
 
 \section{What the Evidence Does and Does Not Establish}
 
@@ -233,11 +234,11 @@ Common-task comparability also trades away native fidelity. Monthly top-1,000 ch
 
 These limits motivate a release standard for future financial-agent work: revision-pinned code; an environment manifest; immutable dated signals, positions, or returns; universe and timing rules; cost and financing conventions; model, prompt, and seed versions; search breadth and failed-candidate counts; and original benchmark definitions. An agentic contribution further requires provenance or ablation that separates the agent from its factor library and human-authored search space.
 
-\section{Anonymous Empirical Artifact}
+\section{Reproducibility and Audit Trail}
 
-The submission package is designed to make the audit inspectable without redistributing restricted security-level data. It contains the complete 67-lineage bibliography and primary-record URLs; the exact 14-code-attempt inventory; the five-paper, 13-component source-grounded inventory; the good-faith reconstruction protocol; the 55-source ledger; all 62 formulas; source-supported content, researcher choices, favorable implementation rules, anti-strawman role, and negative-evidence boundary; aggregate monthly U.S. candidate and factor returns; broad-factor residuals; international event forensics; scripts; tests; and a SHA-256 inventory. The row-level ledger states explicitly that mappings were not outcome-blind and had no second coder. Restricted raw market data are referenced by source path and input hash rather than redistributed.
+The evidence ledger makes the audit inspectable without redistributing restricted security-level data. It contains all 103 screened lineages, 104 record URLs collapsed to 98 canonical works, the exact 14-code-attempt inventory, the five-paper/13-component inventory, all 62 formulas, mapping decisions, aggregate monthly U.S. returns, broad-factor residuals, international event forensics, scripts, tests, and a SHA-256 inventory. It states explicitly that mappings were not outcome-blind and had no second coder. Restricted raw data are referenced by source path and input hash rather than redistributed.
 
-Deterministic builders regenerate manuscript macros and figures from hash-verified outputs. Tests cover timing, portfolio weights, drift, costs, HAC calculations, familywise adjustments, mapping-combination sensitivity, and international event reconstruction. This artifact is part of the contribution: hashes establish integrity only because the underlying aggregate objects and code are included.
+Deterministic builders regenerate manuscript macros and figures from hash-verified outputs. Tests cover timing, portfolio weights, drift, costs, HAC calculations, familywise adjustments, mapping-combination sensitivity, citation coverage, and international event reconstruction. The paper's claims do not depend on an unsubmitted appendix; the source counts, selection rule, tested systems, grounded mappings, estimands, and inferential limits are reported here.
 
 \paragraph{Responsible use and AI assistance.}
 No orders were transmitted. Results are retrospective research evidence, not investment advice. Generative AI assisted literature organization, code drafting, diagnostic review, and prose editing; the human author is responsible for source selection, mappings, protocol choices, statistical specifications, citation verification, and all reported claims.
@@ -249,6 +250,6 @@ Public financial-agent evidence does not currently establish broad, economically
 The paper's contribution is therefore constructive rather than categorical. It supplies an evidence hierarchy and an inspectable good-faith workflow for giving unreleased ideas their strongest reasonable test, while stopping interpretation exactly where fidelity and design no longer permit attribution.
 
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{icaif2026_references}
+\bibliography{icaif2026_references,census_primary_records}
 
 \end{document}

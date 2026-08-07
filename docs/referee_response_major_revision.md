@@ -34,11 +34,17 @@ The revision states gross exposure two for long-short portfolios; candidate cost
 
 ## 8. Inspectable artifact
 
-The anonymous artifact builder packages the census, screening and execution records, all formulas and mapping fields, aggregate monthly U.S. candidate and factor returns, cost and inference outputs, broad residuals, international event forensics, scripts, tests, and a SHA-256 inventory. Restricted security-level data are not redistributed. The artifact README states the interpretive boundaries rather than relying on hashes alone.
+The anonymous artifact builder packages the pre-trim and retained-corpus ledgers, verified primary-record metadata, screening and execution records, all formulas and mapping fields, aggregate monthly U.S. candidate and factor returns, cost and inference outputs, broad residuals, international event forensics, scripts, tests, and a SHA-256 inventory. Restricted security-level data are not redistributed. The artifact README states the interpretive boundaries rather than relying on hashes alone.
+
+## 9. Corpus breadth and citation coverage
+
+We reconstructed the denominator from the original registry rather than equating URLs, systems, and papers. Before screening, the registry contains 103 candidate system lineages represented by 105 registry links and 104 distinct URLs. Six pairs are duplicate publication manifestations of the same work (for example, arXiv and proceedings versions), yielding 98 distinct scholarly works. The retained F/T census contains 67 lineages represented by 71 URL records and 69 distinct works: 30 formula-discovery works and 39 trading works.
+
+The revision now cites every one of those 69 retained works in the main paper. A generated 98-entry BibTeX database and a human-readable full-corpus bibliography account for all retained and excluded works, while a machine-readable inventory records the canonical-work identifier, preferred citation manifestation, lineage membership, F/T status, and screening rationale for every pre-trim record. The manuscript no longer relies on an unavailable supplement for the census bibliography. Its final reference list contains 79 entries: all 69 retained works plus ten methodological and benchmark references.
 
 ## Minor comments
 
-- The 67 entries are now explicitly described as system lineages in an availability census, not 67 replications or necessarily 67 one-to-one papers. A complete 67-row primary-record bibliography is included in the artifact. The main paper separately names and cites all 14 targeted implementation attempts and the five papers underlying the 13 source-grounded component tests.
+- The 67 entries are now explicitly described as system lineages in an availability census, not 67 replications or necessarily 67 one-to-one papers. They resolve to 69 distinct retained works because some lineages aggregate multiple primary records; all 69 are cited in the paper. The 103 pre-trim lineages resolve to 98 distinct works after duplicate publication manifestations are collapsed.
 - The 67-system census, 55-source corpus, 51 mapped indices, and 62 portfolios are reconciled in the first methods subsection.
 - The nine licenses are separated from the 14 execution attempts.
 - The positive AlphaAgent-related row is always called a researcher-authored AlphaAgent-inspired mechanism proxy, with its 0.48% simultaneous lower bound.
