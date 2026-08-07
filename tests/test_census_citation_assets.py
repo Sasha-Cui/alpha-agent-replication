@@ -51,9 +51,28 @@ def test_generated_bibliography_and_macros_cover_the_declared_universe() -> None
         for body in re.findall(r"\\cite\{([^}]+)\}", macros)
         for key in body.split(",")
     }
-    retained_works = {row["canonical_work_id"] for row in rows if row["main_ft"] == "yes"}
-    expected = {row["bibtex_key"] for row in preferred if row["canonical_work_id"] in retained_works}
+    expected = {row["bibtex_key"] for row in preferred}
     assert cited == expected
+
+
+def test_work_level_waterfall_reconciles_every_canonical_work() -> None:
+    with (
+        ROOT
+        / "paper_runs/submission_evidence/replication_scope/work_level_evidence_waterfall.csv"
+    ).open(newline="", encoding="utf-8") as stream:
+        rows = list(csv.DictReader(stream))
+    assert len(rows) == len({row["canonical_work_id"] for row in rows}) == 98
+    assert sum(row["screen_decision"] == "retained_formula_or_trading" for row in rows) == 69
+    assert sum(row["screen_decision"] == "screened_out" for row in rows) == 29
+    assert sum(row["good_faith_reconstruction"] == "yes" for row in rows) == 40
+    assert sum(int(row["mapping_count"]) for row in rows) == 50
+    assert sum(row["reconstruction_fidelity"] == "source_grounded_component_test" for row in rows) == 5
+    assert sum(row["reconstruction_fidelity"] == "narrative_favorable_stress_test" for row in rows) == 35
+    assert sum(row["reconstruction_fidelity"] == "availability_only" for row in rows) == 29
+    assert sum(row["direct_code_route"] == "retained_code_attempt" for row in rows) == 8
+    assert sum(row["direct_code_route"] == "diagnostic_code_attempt" for row in rows) == 6
+    assert sum(row["native_agent_replication"] == "yes" for row in rows) == 0
+    assert sum(row["code_backed_adaptation"] == "yes_released_seed_expression" for row in rows) == 1
 
 
 def test_latex_conversion_removes_unsupported_cjk_aliases() -> None:

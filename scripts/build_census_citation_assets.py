@@ -12,6 +12,65 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parents[1]
 PROHIBITED = ("López de Prado", "Lopez de Prado", "LopezDePrado")
 
+# Frozen crosswalk from the source-level reconstruction ledger to the canonical
+# scholarly works in the 98-work census. These 40 works produce 50 retained-
+# corpus mappings; the remaining 12 mappings come from non-retained diagnostics.
+MAPPING_SOURCE_TO_WORK_ID = {
+    "EFS": "CensusArxiv250717211",
+    "AlphaAgent": "CensusArxiv250216789",
+    "QuantaAlpha": "CensusArxiv260207085",
+    "QuantEvolver": "CensusArxiv260515412",
+    "R&D-Agent-Quant": "CensusArxiv250514738",
+    "Alpha-Jungle": "CensusArxiv250511122",
+    "FactorMiner": "CensusArxiv260214670",
+    "CogAlpha": "CensusArxiv251118850",
+    "FAMA": "CensusACL2024findingsacl233",
+    "Alpha-GPT": "WorkAlphaGPT",
+    "Alpha-GPT 2.0": "CensusArxiv240209746",
+    "Chain-of-Alpha": "CensusArxiv250806312",
+    "FactorMAD": "CensusDOI10114537682923770377",
+    "AlphaLogics": "CensusArxiv260320247",
+    "AlphaAgentEvo": "CensusORlNmZrawUMu",
+    "Alpha-R1": "CensusArxiv251223515",
+    "AlphaCrafter": "CensusArxiv260505580",
+    "LLMFactor": "CensusArxiv240610811",
+    "FactorEngine": "CensusArxiv260316365",
+    "TradingAgents": "CensusArxiv241220138",
+    "ContestTrade": "CensusArxiv250800554",
+    "QuantAgent HFT": "CensusArxiv250909995",
+    "QuantAgent Holy Grail": "CensusArxiv240203755",
+    "AlphaQuanter": "CensusACL2026findingsacl456",
+    "FinMem": "CensusArxiv231113743",
+    "FinCon": "CensusArxiv240706567",
+    "FinAgent": "CensusArxiv240218485",
+    "FLAG-Trader": "CensusACL2025findingsacl716",
+    "MM-DREX": "CensusArxiv250905080",
+    "Trading-R1": "CensusArxiv250911420",
+    "Janus-Q": "CensusArxiv260219919",
+    "Trade in Minutes": "CensusArxiv251004787",
+    "AlphaAgents": "CensusArxiv250811152",
+    "MarketSenseAI 2.0": "CensusArxiv250200415",
+    "MountainLion": "CensusArxiv250720474",
+    "P1GPT": "CensusArxiv251023032",
+    "FinVision": "CensusArxiv241108899",
+    "GuruAgents": "CensusArxiv251001664",
+    "QuantAgents": "CensusArxiv251004643",
+    "HedgeAgents": "CensusArxiv250213165",
+}
+SOURCE_GROUNDED_WORK_IDS = {
+    "CensusArxiv250717211", "CensusArxiv260515412", "CensusArxiv250511122",
+    "CensusACL2024findingsacl233", "CensusArxiv251001664",
+}
+RETAINED_DIRECT_WORK_IDS = {
+    "CensusArxiv250216789", "CensusArxiv250800554", "CensusArxiv240706567",
+    "CensusArxiv251001664", "CensusArxiv250909995", "CensusArxiv260515412",
+    "CensusArxiv250514738", "CensusArxiv250911420",
+}
+DIAGNOSTIC_DIRECT_WORK_IDS = {
+    "CensusWebalphabenchcc", "CensusArxiv260218481", "CensusArxiv260211917",
+    "CensusArxiv250511065", "CensusArxiv251103628", "CensusArxiv251202261",
+}
+
 
 def read_csv(path: Path, delimiter: str = ",") -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8-sig") as stream:
@@ -104,6 +163,7 @@ def main() -> int:
     (root / "docs/paper/census_primary_records.bib").write_text(bibliography, encoding="utf-8")
 
     retained = [row for row in preferred if row["main_ft"] == "yes"]
+    excluded = [row for row in preferred if row["main_ft"] == "no"]
     formula_rows = [row for row in retained if "F" in row["strata"].split("; ")]
     trading_rows = [row for row in retained if "T" in row["strata"].split("; ")]
     formula_keys = [row["bibtex_key"] for row in formula_rows]
@@ -115,6 +175,13 @@ def main() -> int:
         r"\newcommand{\PretrimWorkCount}{98\xspace}",
         r"\newcommand{\RetainedLineageCount}{67\xspace}",
         r"\newcommand{\RetainedWorkCount}{69\xspace}",
+        r"\newcommand{\ExcludedWorkCount}{29\xspace}",
+        r"\newcommand{\ReconstructedWorkCount}{40\xspace}",
+        r"\newcommand{\AvailabilityOnlyWorkCount}{29\xspace}",
+        r"\newcommand{\RetainedMappingCount}{50\xspace}",
+        r"\newcommand{\RetainedNarrativeWorkCount}{35\xspace}",
+        r"\newcommand{\RetainedNarrativeMappingCount}{37\xspace}",
+        r"\newcommand{\SourceGroundedWorkCount}{5\xspace}",
         citation_macro("FormulaCorpusCitationsThroughTwentyFive",
                        [row["bibtex_key"] for row in formula_rows if int(row["year"]) <= 2025]),
         citation_macro("FormulaCorpusCitationsTwentySix",
@@ -125,9 +192,88 @@ def main() -> int:
                        [row["bibtex_key"] for row in trading_rows if int(row["year"]) == 2025]),
         citation_macro("TradingCorpusCitationsTwentySix",
                        [row["bibtex_key"] for row in trading_rows if int(row["year"]) == 2026]),
+        citation_macro("ExcludedCorpusCitationsThroughTwentyFour",
+                       [row["bibtex_key"] for row in excluded if int(row["year"]) <= 2024]),
+        citation_macro("ExcludedCorpusCitationsTwentyFive",
+                       [row["bibtex_key"] for row in excluded if int(row["year"]) == 2025]),
+        citation_macro("ExcludedCorpusCitationsTwentySix",
+                       [row["bibtex_key"] for row in excluded if int(row["year"]) == 2026]),
         "",
     ]
     (root / "docs/paper/generated_corpus_citations.tex").write_text("\n".join(macro_lines), encoding="utf-8")
+
+    mapping = read_csv(root / "paper_runs/submission_evidence/mapping_audit/mapping_audit.csv")
+    source_counts: dict[str, int] = {}
+    for row in mapping:
+        source_counts[row["source_name"]] = source_counts.get(row["source_name"], 0) + 1
+    require(set(MAPPING_SOURCE_TO_WORK_ID) <= set(source_counts),
+            "retained mapping crosswalk contains a source absent from the mapping ledger")
+    mapped_work_ids = set(MAPPING_SOURCE_TO_WORK_ID.values())
+    preferred_work_ids = {row["canonical_work_id"] for row in preferred}
+    retained_work_ids = {row["canonical_work_id"] for row in retained}
+    require(len(mapped_work_ids) == 40 and mapped_work_ids <= retained_work_ids,
+            "retained reconstructed-work crosswalk is not 40 works")
+    require(sum(source_counts[name] for name in MAPPING_SOURCE_TO_WORK_ID) == 50,
+            "retained works do not produce exactly 50 mappings")
+    require(len(SOURCE_GROUNDED_WORK_IDS) == 5 and SOURCE_GROUNDED_WORK_IDS <= mapped_work_ids,
+            "source-grounded work crosswalk is not five retained works")
+    require(len(RETAINED_DIRECT_WORK_IDS) == 8 and RETAINED_DIRECT_WORK_IDS <= mapped_work_ids,
+            "retained direct-code crosswalk is not eight reconstructed works")
+    require(len(DIAGNOSTIC_DIRECT_WORK_IDS) == 6
+            and DIAGNOSTIC_DIRECT_WORK_IDS <= preferred_work_ids - retained_work_ids,
+            "diagnostic direct-code crosswalk is not six excluded works")
+
+    sources_by_work: dict[str, list[str]] = {}
+    for source_name, work_id in MAPPING_SOURCE_TO_WORK_ID.items():
+        sources_by_work.setdefault(work_id, []).append(source_name)
+    waterfall_fields = [
+        "canonical_work_id", "bibtex_key", "title", "year", "screen_decision",
+        "direct_code_route", "native_agent_replication", "code_backed_adaptation",
+        "good_faith_reconstruction", "mapping_count", "reconstruction_fidelity",
+        "negative_inference_boundary",
+    ]
+    waterfall_rows = []
+    for row in preferred:
+        work_id = row["canonical_work_id"]
+        mapped_sources = sources_by_work.get(work_id, [])
+        mapping_count = sum(source_counts[name] for name in mapped_sources)
+        if work_id in RETAINED_DIRECT_WORK_IDS:
+            direct_route = "retained_code_attempt"
+        elif work_id in DIAGNOSTIC_DIRECT_WORK_IDS:
+            direct_route = "diagnostic_code_attempt"
+        else:
+            direct_route = "not_targeted"
+        if work_id in SOURCE_GROUNDED_WORK_IDS:
+            fidelity = "source_grounded_component_test"
+            boundary = "component_only_not_native_agent_or_full_paper"
+        elif work_id in mapped_work_ids:
+            fidelity = "narrative_favorable_stress_test"
+            boundary = "no_negative_inference_about_source"
+        elif row["main_ft"] == "yes":
+            fidelity = "availability_only"
+            boundary = "no_performance_inference"
+        else:
+            fidelity = "screened_out"
+            boundary = "not_in_retained_performance_corpus"
+        waterfall_rows.append({
+            "canonical_work_id": work_id,
+            "bibtex_key": row["bibtex_key"],
+            "title": row["title"],
+            "year": row["year"],
+            "screen_decision": "retained_formula_or_trading" if row["main_ft"] == "yes" else "screened_out",
+            "direct_code_route": direct_route,
+            "native_agent_replication": "no",
+            "code_backed_adaptation": "yes_released_seed_expression" if work_id == "CensusArxiv260515412" else "no",
+            "good_faith_reconstruction": "yes" if work_id in mapped_work_ids else "no",
+            "mapping_count": str(mapping_count),
+            "reconstruction_fidelity": fidelity,
+            "negative_inference_boundary": boundary,
+        })
+    waterfall = root / "paper_runs/submission_evidence/replication_scope/work_level_evidence_waterfall.csv"
+    with waterfall.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=waterfall_fields)
+        writer.writeheader()
+        writer.writerows(waterfall_rows)
 
     output = root / "paper_runs/submission_evidence/replication_scope/pretrim_primary_record_inventory.csv"
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -139,7 +285,7 @@ def main() -> int:
     sections = [
         ("Retained formula-discovery works", [row for row in retained if "F" in row["strata"].split("; ")]),
         ("Retained trading works", [row for row in retained if "T" in row["strata"].split("; ")]),
-        ("Screened-out benchmark, comparator, and adjacent works", [row for row in preferred if row["main_ft"] == "no"]),
+        ("Screened-out benchmark, comparator, and adjacent works", excluded),
     ]
     markdown = [
         "# Complete pre-trim source bibliography",
@@ -147,7 +293,7 @@ def main() -> int:
         "The screened universe contains **103 system lineages** represented by 105 registry links,",
         "104 distinct URLs, and **98 canonical scholarly works** after duplicate publication",
         "manifestations are collapsed. The retained formula/trading sample contains **67 lineages**",
-        "and **69 canonical works**. Every retained work is cited in the ICAIF manuscript.",
+        "and **69 canonical works**. All 98 screened works are cited in the ICAIF manuscript.",
         "",
     ]
     for heading, group in sections:
@@ -173,6 +319,10 @@ def main() -> int:
         "retained_canonical_works": len(retained),
         "formula_works": len(formula_keys),
         "trading_works": len(trading_keys),
+        "excluded_works": len(excluded),
+        "reconstructed_retained_works": len(mapped_work_ids),
+        "retained_mappings": sum(source_counts[name] for name in MAPPING_SOURCE_TO_WORK_ID),
+        "availability_only_retained_works": len(retained_work_ids - mapped_work_ids),
     })
     return 0
 

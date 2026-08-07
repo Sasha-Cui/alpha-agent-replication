@@ -3,7 +3,7 @@
 The screened universe contains **103 system lineages** represented by 105 registry links,
 104 distinct URLs, and **98 canonical scholarly works** after duplicate publication
 manifestations are collapsed. The retained formula/trading sample contains **67 lineages**
-and **69 canonical works**. Every retained work is cited in the ICAIF manuscript.
+and **69 canonical works**. All 98 screened works are cited in the ICAIF manuscript.
 
 ## Retained formula-discovery works (30)
 
