@@ -6,6 +6,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -55,6 +56,18 @@ def holm_positive_count(group) -> int:
             break
     return sum(index in rejected and float(row["alpha_annualized"]) > 0
                for index, row in enumerate(group))
+
+
+def holm_count(p_values) -> int:
+    """Return the number of sequential Holm rejections at familywise 5%."""
+    ordered = sorted(float(value) for value in p_values)
+    rejected = 0
+    for rank, value in enumerate(ordered):
+        if value <= .05 / (len(ordered) - rank):
+            rejected += 1
+        else:
+            break
+    return rejected
 
 
 def main() -> int:
@@ -222,11 +235,35 @@ def main() -> int:
 
     costs = rows(evidence / "usa_retrospective_corrected/candidate_cost_alpha_results.csv")
     cost_holm = []
+    threshold_counts = []
     for cost in (0, 5, 10, 25, 50):
         group = [row for row in costs if row["status"] == "ok" and
                  int(float(row["cost_bps_one_way"])) == cost]
         cost_holm.append(holm_positive_count(group))
+        material_p = [
+            .5 * math.erfc(
+                ((float(row["alpha_annualized"]) - .02) /
+                 (12. * float(row["alpha_se_monthly"]))) / math.sqrt(2.)
+            )
+            for row in group
+        ]
+        threshold_counts.append((
+            cost,
+            sum(float(row["alpha_annualized"]) > 0 for row in group),
+            sum(float(row["alpha_annualized"]) > 0 and
+                float(row["p_value_two_sided"]) <= .05 for row in group),
+            holm_positive_count(group),
+            sum(float(row["alpha_annualized"]) >= .02 for row in group),
+            holm_count(material_p),
+        ))
     require(cost_holm == [1, 1, 1, 0, 0], f"cost-grid Holm counts changed: {cost_holm}")
+    require(threshold_counts == [
+        (0, 46, 7, 1, 33, 0),
+        (5, 42, 7, 1, 21, 0),
+        (10, 30, 6, 1, 16, 0),
+        (25, 18, 1, 0, 10, 0),
+        (50, 10, 0, 0, 1, 0),
+    ], f"gross-to-net threshold counts changed: {threshold_counts}")
 
     broad = rows(evidence / "usa_broad_jkp_crossfit/broad_jkp_crossfit_results.csv")
     require(len(broad) == 62 and {int(float(row["n_benchmark_factors"])) for row in broad} == {133},
@@ -257,7 +294,7 @@ def main() -> int:
                      "cutoff-bounded systematic screen rather than a complete universe",
                      "these statistics are descriptive conditional diagnostics",
                      "The position-adverse unit-move stress",
-                     "supplies numerical anchors behind Figure",
+                     "makes the zero-cost baseline explicit",
                      "not an independent out-of-sample discovery test",
                      "\\USGrossPositiveBreakEvenMedianBps",
                      "Reproducibility and Audit Trail", "generated_corpus_citations.tex",
@@ -314,8 +351,9 @@ def main() -> int:
                 "missing-return sensitivity absent")
         require("reproducibility and audit trail" in folded_text,
                 "self-contained audit section absent")
-        require("Numerical anchors for Figure" in text and
-                all(token in normalized_text for token in ("0.316", "6.93%", "4.46%")),
+        require("Gross-to-net alpha thresholds" in text and
+                all(token in normalized_text for token in
+                    ("2.15%", "7.76%", "0.316", "6.93%", "4.46%")),
                 "alpha/t-stat/Sharpe anchor table absent")
         require("supplement" not in folded_text, "PDF improperly depends on a supplement")
         from pypdf import PdfReader
