@@ -9,7 +9,7 @@ Build from the repository root:
 
 ```sh
 python scripts/build_icaif2026_submission.py
-python scripts/validate_icaif2026_format.py
+python scripts/validate_submission_package.py
 ```
 
 The final CMT upload is `output/pdf/icaif2026_submission.pdf`. Do not upload

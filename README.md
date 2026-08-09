@@ -2,7 +2,15 @@
 
 This repository is the central record for the Alpha Agent Replication project and its ICAIF 2026 submission. It contains the screened literature corpus, artifact and implementation audits, good-faith source-to-implementation mappings, frozen empirical summaries, paper source, validation code, and reviewable submission PDF.
 
-The paper asks what current public artifacts substantiate about financial-agent alpha. The 98-work evidence screen narrows to 69 retained operational works, 40 reconstructed works, and 13 source-anchored partial component tests from five works. The mapping-based results are retrospective conditional diagnostics, not a native-agent leaderboard or a categorical claim that financial agents cannot discover alpha.
+The paper asks whether financial LLM agents discover alpha beyond familiar
+asset-pricing factors. The evidence screen covers 98 works, retains 69 for the
+operational census, reconstructs 50 strategies from 40 papers, and evaluates
+every reconstruction against the same CAPM, FF3, FF5-plus-momentum, and JKP132
+benchmark ladder. Profitable-looking returns largely disappear under the broad
+factor benchmark: median annualized alpha falls from 9.97% under CAPM to
+-1.69% under JKP132, with zero Holm-adjusted survivors. These retrospective
+mapping results are not native-agent replications and do not identify model
+pretraining as the causal mechanism.
 
 ## Collaborator Handoff
 
@@ -19,7 +27,7 @@ provenance boundary is enforced by the handoff manifest and tests.
 
 ## Current ICAIF Submission
 
-- [`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf) - final eight-page anonymous submission PDF.
+- [`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf) - current seven-page anonymous submission PDF.
 - [`docs/paper/icaif2026_submission.tex`](docs/paper/icaif2026_submission.tex) - submission source using the vendored ACM 2.19 template.
 - [`docs/source_anchor_review_packet.md`](docs/source_anchor_review_packet.md) - page-anchored audit of the 13 closest source mappings.
 - [`docs/full_corpus_bibliography.md`](docs/full_corpus_bibliography.md) - all 98 screened canonical works.
@@ -30,21 +38,20 @@ Build and validate the submission from the repository root:
 ```bash
 python scripts/build_icaif2026_submission_assets.py
 python scripts/build_icaif2026_submission.py
-python scripts/validate_icaif_submission.py --pdf output/pdf/icaif2026_submission.pdf
+python scripts/validate_submission_package.py
 ```
 
-The exact designated PDF is eight pages and hash-pinned, but it predates the
-stricter ACM 2.19 validation infrastructure: it currently passes 65 of 71
-format checks, and the newer locked-evidence wording gate does not yet pass.
-See [`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md) before treating it
-as submission-ready. Large licensed security-level inputs and regenerated
-monthly reconstruction matrices remain outside Git; their paths and SHA-256
-hashes are recorded in the run manifests.
+The canonical source and PDF pass all 71 ACM-format checks and the current
+locked-evidence wording gate. Their hashes and the exact validation commands
+are recorded in [`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md).
+Large licensed security-level inputs and regenerated monthly reconstruction
+matrices remain outside Git; their paths and SHA-256 hashes are recorded in the
+run manifests.
 
 ## Repository Layout
 
 - `src/alpha_evolve/` - importable Python package for JKP return construction, benchmark evaluation, path policy, and shared utilities.
-- `scripts/` - backwards-compatible command wrappers and research-specific runners.
+- `scripts/` - research runners, deterministic artifact builders, and validation entry points.
 - `literature_review/` - source inventory used to build the paper/repository universe.
 - `paper_runs/` - compact tracked replication ledgers, summaries, verdicts, small CSV outputs, and final report figures.
 - `paper_runs/handoff/` - compact 50-strategy collaborator index and hash-pinned scope manifest.
@@ -86,16 +93,24 @@ export ALLOW_LEGACY_NON_JKP_RETURNS=1
 Build monthly JKP long-short candidate returns:
 
 ```bash
-alpha-evolve-build-jkp   --candidate-cols ret_12_1,be_me   --out-dir paper_runs/example_jkp
+alpha-evolve-build-jkp \
+  --candidate-cols ret_12_1,be_me \
+  --out-dir paper_runs/example_jkp
 ```
 
 Evaluate a candidate against a JKP-built factor panel:
 
 ```bash
-alpha-evolve-evaluate-jkp   --candidate-id example   --candidate-csv paper_runs/example_jkp/candidate_returns_jkp_ret_12_1.csv   --factor-panel-csv paper_runs/example_jkp/jkp_benchmark_factor_panel.csv   --out-dir paper_runs/example_jkp/results
+alpha-evolve-evaluate-jkp \
+  --candidate-id example \
+  --candidate-csv paper_runs/example_jkp/candidate_returns_jkp_ret_12_1.csv \
+  --factor-panel-csv paper_runs/example_jkp/jkp_benchmark_factor_panel.csv \
+  --out-dir paper_runs/example_jkp/results
 ```
 
-The old `scripts/*.py` commands still work from a checkout; they now delegate to the package where practical.
+The `scripts/*.py` entry points remain available for research-specific and
+submission workflows; reusable portfolio and performance logic lives under
+`src/alpha_evolve/`.
 
 ## Open-Source Licensing
 

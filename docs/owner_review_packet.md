@@ -1,5 +1,8 @@
 # Owner review packet
 
+> **LEGACY EVIDENCE-AUDIT RECORD.** This packet belongs to the archived
+> `alpha_agent_replication.tex` workflow, not the current ICAIF submission.
+
 > **OWNER STATUS: PENDING — NOT APPROVED FOR SUBMISSION**
 
 This packet is generated from the immutable evidence outputs. It does not substitute for Sasha Cui's factual, statistical, citation, license, and visual review.

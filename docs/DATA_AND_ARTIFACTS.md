@@ -62,8 +62,8 @@ sha256sum output/pdf/icaif2026_submission.pdf
 Expected canonical hashes:
 
 ```text
-7f88792a69c3be2e78306daaa4e457dacaed583c18c29b3710de8aa574ab9d03  docs/paper/icaif2026_submission.tex
-183443caa9f773e7aca10141c2c057b0efb98cda8a28b46fa1b1f041f98e76a4  output/pdf/icaif2026_submission.pdf
+656bc442f93ea74de92434883dbdacc3711328ce12ceaa625c5503813dd14d6c  docs/paper/icaif2026_submission.tex
+311cd1f799a70fe0208a7e3f7ce410c54bd9af9a749fe9605bec94dab6af8b35  output/pdf/icaif2026_submission.pdf
 ```
 
 The handoff manifest records SHA-256 hashes for the mapping audit, matched

@@ -63,27 +63,25 @@ and should receive independent citation-level review before stronger use.
 There is one tracked compiled manuscript:
 
 - `output/pdf/icaif2026_submission.pdf`
-- SHA-256: `183443caa9f773e7aca10141c2c057b0efb98cda8a28b46fa1b1f041f98e76a4`
+- SHA-256: `311cd1f799a70fe0208a7e3f7ce410c54bd9af9a749fe9605bec94dab6af8b35`
 
 Its corresponding source is:
 
 - `docs/paper/icaif2026_submission.tex`
-- SHA-256: `7f88792a69c3be2e78306daaa4e457dacaed583c18c29b3710de8aa574ab9d03`
+- SHA-256: `656bc442f93ea74de92434883dbdacc3711328ce12ceaa625c5503813dd14d6c`
 
-The exact designated artifact is not yet submission-ready under the stricter
-validators merged from `origin/main`: it passes 65 of 71 format checks, and the
-newer locked-evidence wording gate stops at its first mismatch. The six format
-issues and replacement checklist are recorded in
-[`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md). Do not silently
-replace the canonical PDF or describe it as validator-clean.
+The designated artifact is seven US-Letter pages, uses the vendored ACM 2.19
+template, passes all 71 format checks, and passes the locked-evidence wording
+gate. The exact commands and current hashes are recorded in
+[`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md).
 
 The other tracked PDFs under `docs/paper/figures/` are figures, not alternate
 paper versions. `report.md` and `docs/alpha_agent_replication_report.tex` are
 research reports, not competing ICAIF submission versions.
 
-The matched benchmark ladder is a later tracked empirical extension. It is
-useful for the next paper iteration, but the canonical PDF remains the rigorous
-public-artifact evidence audit identified above.
+The matched four-rung benchmark ladder and nearest-JKP-factor analysis are
+part of the canonical paper. The older public-artifact manuscript and owner
+review packet remain only as clearly labeled research provenance.
 
 ## Repository map
 
@@ -99,7 +97,7 @@ public-artifact evidence audit identified above.
 - `paper_runs/handoff/`: compact collaborator-facing result index.
 - `docs/paper/`: canonical TeX, bibliography, generated tables/macros, figures,
   and vendored ACM 2.19 template.
-- `output/pdf/icaif2026_submission.pdf`: canonical eight-page PDF.
+- `output/pdf/icaif2026_submission.pdf`: canonical seven-page PDF.
 - `LICENSES/`: code, documentation, and third-party licensing boundaries.
 
 See [`docs/EXPERIMENT_INDEX.md`](docs/EXPERIMENT_INDEX.md) for the experiment-
@@ -147,7 +145,7 @@ The paper tables and figures are generated from tracked frozen summaries:
 ```bash
 python scripts/build_icaif2026_submission_assets.py
 python scripts/build_icaif2026_submission.py
-python scripts/validate_icaif_submission.py --pdf output/pdf/icaif2026_submission.pdf
+python scripts/validate_submission_package.py
 ```
 
 The PDF build additionally requires TeX Live and Poppler-compatible PDF tools.
