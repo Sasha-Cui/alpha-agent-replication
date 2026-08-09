@@ -6,10 +6,10 @@ import argparse
 import csv
 import hashlib
 import json
-from pathlib import Path
 import re
 import shutil
 import subprocess
+from pathlib import Path
 
 
 def rows(path: Path):
@@ -184,6 +184,8 @@ def main() -> int:
     testable = [row for row in direct if row["metric_status"] == "computed_jkp_only"]
     require(len(testable) == 1, "direct testable denominator changed")
     require(not any(row["beats_ff5mom_at_5pct"] == "True" for row in direct), "direct beater found")
+    require(abs(float(testable[0]["candidate_standalone_oos_sharpe"]) - 0.3159540989730854) < 1e-12,
+            "direct seed-adaptation Sharpe changed")
 
     primary = [row for row in rows(evidence / "usa_retrospective_corrected/candidate_primary_results.csv")
                if row["status"] == "ok"]
@@ -255,6 +257,8 @@ def main() -> int:
                      "cutoff-bounded systematic screen rather than a complete universe",
                      "these statistics are descriptive conditional diagnostics",
                      "The position-adverse unit-move stress",
+                     "supplies numerical anchors behind Figure",
+                     "not an independent out-of-sample discovery test",
                      "\\USGrossPositiveBreakEvenMedianBps",
                      "Reproducibility and Audit Trail", "generated_corpus_citations.tex",
                      "census_primary_records"]:
@@ -310,6 +314,9 @@ def main() -> int:
                 "missing-return sensitivity absent")
         require("reproducibility and audit trail" in folded_text,
                 "self-contained audit section absent")
+        require("Numerical anchors for Figure" in text and
+                all(token in normalized_text for token in ("0.316", "6.93%", "4.46%")),
+                "alpha/t-stat/Sharpe anchor table absent")
         require("supplement" not in folded_text, "PDF improperly depends on a supplement")
         from pypdf import PdfReader
         require(len(PdfReader(args.pdf).pages) <= 8, "PDF exceeds ICAIF's eight-page total limit")
