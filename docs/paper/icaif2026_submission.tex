@@ -3,8 +3,6 @@
 \setcopyright{none}
 \settopmatter{printacmref=true}
 \renewcommand\footnotetextcopyrightpermission[1]{}
-\pagestyle{plain}
-\setlength{\headheight}{16pt}
 
 \usepackage{booktabs}
 \usepackage{graphicx}
@@ -25,7 +23,7 @@
 \input{icaif2026_results.tex}
 \input{generated_corpus_citations.tex}
 
-\title{Can Public Artifacts Substantiate Financial-Agent Alpha?\\A 98-Work Evidence Audit and Descriptive Spanning Exercise}
+\title[Do Financial LLM Agents Discover New Alpha?]{Do Financial LLM Agents Discover New Alpha?\\A 98-Work Audit and 50-Strategy Factor-Spanning Study}
 
 \author{Anonymous Author(s)}
 \affiliation{\institution{Anonymous Institution}}
@@ -34,113 +32,48 @@
 \acmYear{2026}
 \copyrightyear{2026}
 \acmDOI{}
+\acmISBN{}
 
 \begin{abstract}
-Most reported alpha claims for LLM financial agents do not hold up to independent scrutiny. A cutoff-bounded systematic screen yields 103 candidate lineages backed by 98 distinct cited works; frozen rules retain 69 formula-discovery or trading works and exclude 29 visible benchmarks, comparators, audits, or adjacent works. Forty retained works receive 50 good-faith common-task mappings; 29 remain availability-only. A separate 14-attempt code audit yields no native-agent replication and one testable released seed-expression adaptation, which does not beat a six-factor benchmark. Among 13 source-grounded component tests from five works, median annualized alpha is 0.88\%, one estimate is nominally positive, and none survives within-subset Holm correction. The other 49 mappings are favorable narrative translations. At 10-basis-point one-way costs, family median alpha is \USMedianAlphaPct versus \USMedianGrossAlphaPct gross; the sole conditional Holm result comes from a researcher-authored proxy, is specification-fragile, and has a simultaneous lower bound below two percentage points. A post-hoc 133-factor diagnostic yields no familywise result. The literature therefore substantially overstates the evidence for LLM-generated alpha: native agents are rarely reproducible, and the testable evidence does not demonstrate robust, economically material alpha. Because mappings were frozen after U.S. outcomes were inspected and had no independent second coder, these statistics are descriptive conditional diagnostics, not confirmatory inference. This conclusion concerns the reported evidence, not whether every unavailable agent must fail.
+Financial LLM agents often produce strategies that look profitable, but apparent profitability is not the same as new alpha. We screen 98 distinct works, retain 69 formula-discovery or trading papers, and construct 50 good-faith U.S. strategy reconstructions for all 40 retained works with sufficient public content; the other 29 remain availability-only. Holding returns, costs, and evaluation months fixed, median annualized one-month-ahead residual return falls from 9.97\% under CAPM to 3.17\% under FF3, 2.69\% under FF5 plus momentum, and $-1.69\%$ under the market plus 132 Jensen--Kelly--Pedersen (JKP) factors. The corresponding numbers of Holm-adjusted positive results are 6, 1, 2, and 0 out of 50. Factor overlap is direct: the median strategy's strongest absolute correlation with a JKP factor is 0.81, and 47 of 50 exceed 0.50. Among 38 mapped papers with verified full text, none reports a factor-adjusted intercept and none uses JKP132. These results support a precise interpretation: LLM agents can rediscover profitable factor-zoo ideas, yet the public evidence does not establish return information incremental to a broad known-factor library. A plausible mechanism is that finance-trained or finance-prompted agents recombine concepts prevalent in the literature while papers evaluate them against benchmarks too narrow to detect that reuse. Because the reconstructions and benchmark ladder were designed after U.S. outcomes were inspected, the estimates are descriptive spanning diagnostics, not confirmatory tests of native-agent performance.
 \end{abstract}
 
 \ccsdesc[500]{Computing methodologies~Multi-agent systems}
 \ccsdesc[500]{Applied computing~Economics}
 \ccsdesc[300]{General and reference~Empirical studies}
 
-\keywords{financial agents, alpha, asset pricing, reproducibility, multiple testing, empirical audit}
+\keywords{financial agents, alpha, asset pricing, factor zoo, reproducibility, multiple testing}
 
 \begin{document}
 \maketitle
 
 \section{Introduction}
 
-LLM-agent papers increasingly claim that their systems can discover profitable factors, outperform benchmarks, or generate investment alpha \cite{CensusACL2024findingsacl233,CensusArxiv250216789,CensusACL2025emnlpdemos14,CensusArxiv260515412,CensusDOI10114537682923770377}. Our audit finds that these claims generally do not withstand independent scrutiny. None of 14 targeted code audits reproduces a native agent, the closest source-grounded tests yield no familywise-adjusted evidence of alpha, and the few positive findings depend on researcher-authored proxies or fragile specifications.
+LLM-agent papers increasingly report profitable factors, superior trading performance, or investment alpha \cite{CensusACL2024findingsacl233,CensusArxiv250216789,CensusACL2025emnlpdemos14,CensusArxiv260515412,CensusDOI10114537682923770377}. Many of those strategies may indeed earn positive returns relative to the papers' chosen baselines. The central empirical question, however, is whether they add return information beyond familiar asset-pricing factors. A profitable strategy that repackages low-risk, momentum, quality, or valuation exposures is not new alpha merely because an LLM generated or selected it.
 
-Reported alpha can fail scrutiny in two ways. First, the system may be unevaluable because its code, data adapter, trained state, or dated output is unavailable. In that case, the alpha claim lacks reproducible support; we do not impute a zero return. Second, a testable return path may exist but fail an asset-pricing benchmark. We therefore use the highest-fidelity feasible route and label the estimand at every step. Native or code-backed returns test released implementations. When they are unavailable, reconstruction preserves source-supported content, chooses a favorable reasonable implementation, encodes ambiguity as variants, and discloses every substitution.
+Our evidence separates these claims. Across 50 reconstructions from 40 retained papers, apparent alpha remains positive against CAPM, FF3, and FF5 plus momentum, but collapses when the benchmark expands to the market plus 132 JKP characteristic factors \cite{JensenKellyPedersen2023}. Median annualized residual return moves from 9.97\% under CAPM to $-1.69\%$ under the broad model, and the Holm-adjusted discovery count falls from six to zero. The return series themselves point to the same explanation: 47 of 50 have an absolute correlation of at least 0.50 with their nearest JKP factor, and the median nearest-factor correlation is 0.81.
 
-The target of inference is the reported evidence, not the unknowable performance of an unavailable agent. We ask whether public artifacts establish alpha under an independently specified common task. Our U.S. portfolios are retrospective spanning diagnostics conditional on researcher-authored mappings; they neither demonstrate prospective discovery nor correct for prior factor mining or publication selection \cite{HarveyLiuZhu2016}. This boundary does not weaken the conclusion: the literature presents alpha as an empirical result, and the released evidence generally fails to substantiate that result.
+This pattern is consequential because the source papers generally do not ask the spanning question. Of the \SourceBenchmarkVerifiedCount mapped papers whose full text we verified, \SourceBenchmarkNoRegressionCount report no asset-pricing regression, one reports multifactor loadings without an intercept, \SourceBenchmarkAdjustedAlphaCount report factor-adjusted alpha, and \SourceBenchmarkJKPCount use JKP132. Consequently, a strategy can look novel under return, Sharpe, predictive, or narrow-factor comparisons while reproducing an established anomaly. The paper's claim is therefore not that all 98 screened works are ``bad'' or that every unavailable native agent must fail. It is that the published evidence does not substantiate the stronger claim of alpha incremental to the known factor zoo.
 
-We make four contributions: a cutoff-bounded 98-work evidence waterfall; a direct-code audit separating one testable expression adaptation from non-evaluable attempts; a good-faith reconstruction contract with an explicit attribution boundary; and a 62-row U.S. ledger with cost, missing-return, spanning, and multiplicity diagnostics. The central finding is simple: most reported alpha claims do not hold up. The agents are rarely reproducible, the closest source-grounded evidence has no adjusted alpha, and the broader diagnostic's lone adjusted result is a fragile researcher-authored proxy rather than agent output.
+A plausible mechanism connects the benchmark omission to the observed overlap. Many systems prompt, retrieve, or search over financial concepts and symbolic factor expressions \cite{CensusACL2024findingsacl233,CensusArxiv250511122,CensusArxiv260515412}. Finance text is saturated with canonical anomaly ideas, so recombination can rediscover economically meaningful signals without generating genuinely new return information. We do not observe proprietary pretraining corpora and cannot identify this mechanism causally; the benchmark ladder and correlation map establish absorption, not why a particular model selected a factor.
 
-\begin{figure*}[t]
-  \centering
-  \includegraphics[width=0.92\textwidth]{figures/claim_to_test_pipeline.pdf}
-  \caption{Work-level corpus and evidence waterfall. Ribbon widths are proportional to work counts as 98 canonical works narrow to 69 retained, 40 reconstructed, and five supporting 13 source-grounded component tests. The dashed-outline band reports the separate, overlapping code audit. A missing native path is an evidence failure, not a zero return, and a mechanism mapping tests historical economic content rather than agent performance.}
-  \Description{A proportional flow diagram. The 98 screened works split into 69 retained methods and 29 excluded works. The 69 retained works split into 40 reconstructed works and 29 availability-only works. The 40 reconstructed works split into five works supporting 13 source-grounded component tests and 35 works supporting 37 narrative stress tests. A separate dashed-outline band reports an overlapping code audit covering eight retained and six diagnostic works, yielding no native-agent replication and one seed-expression adaptation.}
-  \label{fig:pipeline}
-\end{figure*}
+\textbf{Contributions.} We make four contributions. First, we provide a cutoff-bounded 98-work evidence waterfall that distinguishes 69 retained works, 40 reconstructed works, and 29 availability-only works without imputing failures as zero returns. Second, we evaluate all 50 retained reconstructions on one matched benchmark ladder, from CAPM through JKP132, rather than numerically backtesting only the five papers with the strongest source grounding. Third, we map every strategy return series to all 132 JKP factors and identify the factor families that absorb the claimed alpha. Fourth, we audit the benchmarks used in the mapped source papers and separate the primary factor-spanning result from a secondary 14-attempt reproducibility audit and other sensitivity analyses.
+
+\textbf{One-sentence takeaway.} Financial LLM agents often recover strategies that look like alpha against narrow benchmarks, but the reconstructed returns mostly repackage known factor-zoo exposures and provide no familywise evidence of incremental alpha beyond JKP132.
 
 \section{Evidence Design}
 
-\subsection{Denominators and inferential targets}
+\subsection{Corpus, denominators, and evidence routes}
 
-The screen covers database inception through 2 August 2026. Three query families combine LLM/agent terms with alpha or strategy discovery; trading, portfolios, returns, or backtests; and benchmark, audit, artifact, or leakage terms. Sources are arXiv's relevant CS and q-fin categories, ACL Anthology, OpenReview, ACM DL, and SSRN, plus citation chasing from AlphaBench, AlphaQT-Bench, FINSABER, and the Agentic Trading survey. Crossref/OpenAlex resolve duplicates; GitHub locates only record-linked artifacts. The artifact releases queries, routes, rules, canonical records, deduplication notes, and row rationales. Raw hit counts, rankings, and timestamps were not preserved, so this is a cutoff-bounded systematic screen rather than a complete universe.
+The screen covers database inception through 2 August 2026. Three query families combine LLM/agent terms with alpha or strategy discovery; trading, portfolios, returns, or backtests; and benchmark, audit, artifact, or leakage terms. Sources are arXiv's relevant CS and q-fin categories, ACL Anthology, OpenReview, ACM DL, and SSRN, plus citation chasing from AlphaBench, AlphaQT-Bench, FINSABER, and the Agentic Trading survey. Crossref/OpenAlex resolve duplicates; GitHub locates only record-linked artifacts. Raw hit counts and rankings were not preserved, so this is a cutoff-bounded systematic screen rather than a complete universe.
 
-The registry has \PretrimLineageCount lineages, 104 record URLs, and \PretrimWorkCount works after six duplicate manifestations are collapsed. All 98 works are cited. Formula discovery (F) and trading agents (T) are retained; benchmarks/audits (B), community software (C), and mechanistic comparators (M) remain visible with reasons. Frozen rules exclude \ExcludedWorkCount works \ExcludedCorpusCitationsThroughTwentyFour\ \ExcludedCorpusCitationsTwentyFive\ \ExcludedCorpusCitationsTwentySix. The \RetainedWorkCount retained works in \RetainedLineageCount lineages comprise 30 formula works \FormulaCorpusCitationsThroughTwentyFive\ \FormulaCorpusCitationsTwentySix and 39 trading works \TradingCorpusCitationsThroughTwentyFour\ \TradingCorpusCitationsTwentyFive\ \TradingCorpusCitationsTwentySix. Thus 98/69/67 are screened works/retained works/lineages, not replication counts.
+The registry has \PretrimLineageCount lineages, 104 record URLs, and \PretrimWorkCount works after six duplicate manifestations are collapsed. All 98 works are cited. Frozen rules retain 30 formula-discovery and 39 trading works \FormulaCorpusCitationsThroughTwentyFive\ \FormulaCorpusCitationsTwentySix\ \TradingCorpusCitationsThroughTwentyFour\ \TradingCorpusCitationsTwentyFive\ \TradingCorpusCitationsTwentySix and exclude 29 benchmarks, audits, community tools, or mechanistic comparators with recorded reasons \ExcludedCorpusCitationsThroughTwentyFour\ \ExcludedCorpusCitationsTwentyFive\ \ExcludedCorpusCitationsTwentySix. Thus 98/69/40/50 denote screened works, retained works, reconstructed works, and reconstructed strategies; they are not competing replication counts.
 
-We construct \RetainedMappingCount mappings for \ReconstructedWorkCount retained works: five works support 13 source-grounded component tests and 35 support 37 narrative stress tests. The other 29 remain availability-only because no frozen, supported common-panel mapping exists; no proxy or zero alpha is imputed. Twelve mappings from 11 excluded diagnostic sources produce the prespecified 62-portfolio family. Its legacy discovery list has 55 records and 51 mapped indices (one names two systems). None states our exact monthly U.S. top-1,000 six-factor claim, so this is a common-task diagnostic, not 51 claim replications.
-
-The overlapping code route covers eight retained works and six excluded diagnostics (Table~\ref{tab:direct-scope}). We complete zero native-agent replications. One QuantEvolver seed expression yields a testable code-backed adaptation; 13 blocked attempts never enter a performance denominator. Repository, license, execution, and performance status remain separate fields.
-
-\begin{table}[t]
-\centering
-\caption{Evidence hierarchy and what each result identifies.}
-\label{tab:hierarchy}
-\small
-\begin{tabular}{@{}p{0.20\columnwidth}p{0.29\columnwidth}p{0.39\columnwidth}@{}}
-\toprule
-\textbf{Stage} & \textbf{Evidence/result} & \textbf{Permitted interpretation} \\
-\midrule
-Corpus screen & 98 works $\rightarrow$ 69 retained + 29 excluded & All records cited; exclusions remain auditable \\
-Retained coverage & 69 works $\rightarrow$ 40 reconstructed + 29 availability-only & No proxy or zero return imputed to availability-only works \\
-Targeted code audit & 8 retained + 6 diagnostic attempts; 0 native; 1 adaptation & Expression-level result only; no performance claim for 13 \\
-Mechanism mapping & 50 retained + 12 diagnostic mappings; 13 grounded, 49 narrative & Component evidence only; no narrative null charged to a source \\
-Broad diagnostic & 133 factors; 0 FWE results & Post-hoc diagnostic, not confirmatory evidence \\
-International forensic audit & 40 events; all dominated by one short-held return & Data/implementation alarm; no performance inference \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Artifact and direct-code route}
-
-The first reason reported alpha claims do not hold up is a reproducibility gap. We freeze URLs/revisions and require dated output from the released system for a native path. Of 67 retained lineages, 20 list an artifact, 18 are reachable, nine have a reuse license, and three ship dated native output; none matches the common task. Among 14 targeted implementations, one released QuantEvolver seed expression yields a testable code-backed adaptation, not a trained-agent run. Its annualized six-factor alpha is 0.33\% ($t=0.65$). The other 13 have explicit output, input/adapter, task, or executability blockers. Thus no native-agent result is reproduced, and only one non-native adaptation enters the performance denominator.
+We construct \RetainedMappingCount mappings for \ReconstructedWorkCount retained works. Five works support 13 source-grounded component tests, while 35 works support 37 favorable in-spirit reconstructions. The other 29 retained works remain availability-only because no frozen common-panel mapping is supportable; we neither invent a proxy nor assign zero alpha. One of the 50 strategies adapts a released QuantEvolver seed expression, 12 reconstruct source-grounded components, and 37 translate higher-level narratives. Every estimate inherits that provenance: a reconstruction tests the historical economic content we implemented, not the unavailable native agent.
 
 \begin{table*}[t]
 \centering
-\caption{The 14 targeted implementation attempts. Verdicts assess whether released artifacts provide a testable native-agent return path; eight systems belong to the 67-system F/T census.}
-\label{tab:direct-scope}
-\scriptsize
-\begin{tabular}{p{0.19\textwidth}p{0.24\textwidth}p{0.50\textwidth}}
-\toprule
-\textbf{System} & \textbf{Released object / native task} & \textbf{Audit verdict and basis} \\
-\midrule
-AlphaAgent \cite{CensusArxiv250216789} & China A-share factor-mining code & \textbf{Fail:} no shipped dated strategy return series. \\
-AlphaBench \cite{alphabench2026} & Formula-mining benchmark code & \textbf{Fail:} executable benchmark components, but no dated strategy returns. \\
-AlphaForgeBench \cite{ZhangEtAl2026AlphaForgeBench} & End-to-end strategy-design benchmark & \textbf{Fail:} aggregate metrics only; no dated common-task return stream. \\
-AlphaPROBE \cite{GuoEtAl2026AlphaPROBE} & Graph-based factor-mining comparator & \textbf{Fail:} no approved JKP adapter or released dated expressions/returns. \\
-ContestTrade \cite{CensusArxiv250800554} & Sequential multi-agent trading code & \textbf{Fail:} no replay adapter or shipped common-task returns. \\
-DeepFund \cite{LiEtAl2025DeepFund} & Live fund-investment benchmark & \textbf{Fail:} no approved historical reproduction path for the common panel. \\
-FinCon \cite{CensusArxiv240706567} & Sequential multi-agent trading system & \textbf{Fail:} available implementation was unofficial/ambiguous and task-incompatible. \\
-GuruAgents \cite{CensusArxiv251001664} & Nasdaq-100 guru-persona portfolios & \textbf{Fail:} shipped non-JKP backtest is inspectable but incompatible with the common task. \\
-LiveTradeBench \cite{YuEtAl2025LiveTradeBench} & Live stock/prediction-market benchmark & \textbf{Fail:} no frozen historical return path compatible with the evaluator. \\
-QuantAgent \cite{CensusArxiv250909995} & Hourly/4-hour HFT across stocks, futures, and crypto & \textbf{Fail:} intraday native task cannot be represented by monthly JKP data. \\
-QuantEvolver \cite{CensusArxiv260515412} & Factor-discovery framework plus seed expressions & \textbf{Partial:} one released seed expression is testable; $\alpha=0.33\%$, $t=0.65$. It is not a trained-agent run. \\
-R\&D-Agent-Quant \cite{CensusArxiv250514738} & General R\&D-Agent framework and quant workflow & \textbf{Fail:} no shipped U.S. candidate returns or completed JKP adapter. \\
-TradeTrap \cite{YanEtAl2025TradeTrap} & Trading-agent reliability harness & \textbf{Fail:} shipped results are a non-JKP diagnostic, not a common-task return path. \\
-Trading-R1 \cite{CensusArxiv250911420} & RL-trained trading-reasoning system & \textbf{Fail:} public repository snapshot is a placeholder without executable system code. \\
-\bottomrule
-\end{tabular}
-\end{table*}
-
-\subsection{Mechanism mapping and disclosed discretion}
-
-When direct evaluation is unavailable, we map public descriptions to point-in-time JKP characteristics \cite{JensenKellyPedersen2023}. This formalizes a good-faith, in-spirit reconstruction: preserve the strongest supported content, disclose every substitution, and give the idea the benefit of the doubt rather than construct an easy-to-reject surrogate.
-
-The eight-step contract records a claim card; prioritizes released expressions, equations, examples/rules, narratives, then summaries; preserves supported ingredients, signs, lags, interactions, and constraints; and resolves ambiguity favorably without return tuning. Source-stated direction, explicit long-only or sparse top-$k$ rules, and both gross and net results are preserved. Reasonable alternatives should be coded before outcomes and remain in the multiplicity family; no sign, candidate, or variant may be selected using test returns.
-
-A source-protection rule lets released expressions, named rules, and examples speak only to that component under the common task. Narrative translations are favorable stress tests whose failure cannot count as evidence against the source. Preferred review uses a second, outcome-blind coder. The public card records supported and supplied elements, favorable choices, omissions, alternatives, freeze/outcome/reviewer status, and the negative-evidence boundary.
-
-The mappings predate this contract, so we apply only its source-protection rule retrospectively. Each row records the source, rationale, score, portfolio rule, support, omissions, favorable choices, and permitted interpretation. Table~\ref{tab:mapping} labels narrative translations M0 even when favorable.
-
-\begin{table*}[t]
-\centering
-\caption{The five papers underlying the 13 source-grounded component tests. ``Source-grounded'' applies to the named component, not the full native agent or original evaluation.}
+\caption{The five papers underlying the 13 source-grounded component tests. ``Source-grounded'' applies to the named component, not the full native agent or original evaluation. The other 37 retained strategies are explicitly labeled in-spirit reconstructions.}
 \label{tab:grounded-scope}
 \scriptsize
 \begin{tabular}{p{0.18\textwidth}p{0.35\textwidth}p{0.40\textwidth}}
@@ -148,41 +81,17 @@ The mappings predate this contract, so we apply only its source-protection rule 
 \textbf{Source ($N$ mappings)} & \textbf{Original idea and task} & \textbf{Component implemented in our common task} \\
 \midrule
 EFS \cite{CensusArxiv250717211} (3) & LLM evolutionary factor search for sparse top-$m$ portfolios on Fama--French and US50/HSI45/CSI300 datasets. & Momentum/low-volatility/breakout score; reversal/low-noise score; and a sparse equal-weight top-five variant. \\
-QuantEvolver \cite{CensusArxiv260515412} (1) & Reinforcement fine-tuning generates executable factor-DSL expressions across market benchmarks. & The released risk-adjusted-momentum seed $\mathrm{ret}_{12,1}/|\mathrm{rvol}_{252}|$; portfolio formation remains ours. \\
-Alpha-Jungle \cite{CensusArxiv250511122} (2) & LLM-guided MCTS searches symbolic stock factors using price, volume, and volatility operators. & A price/volume/momentum score and a trend-after-volatility-compression score based on documented examples. \\
-FAMA \cite{CensusACL2024findingsacl233} (1) & Neural-symbolic factor mining evaluated by RankIC/RankICIR and an S\&P 500 investment simulation. & A simple interpretable value--momentum--profitability score motivated by the paper's factor examples. \\
-GuruAgents \cite{CensusArxiv251001664} (6) & Prompt-guided agents emulate five named investor philosophies in a Nasdaq-100 backtest. & Graham, Buffett, Greenblatt, Piotroski, and Altman characteristic screens plus their equal-weight ensemble. \\
+QuantEvolver \cite{CensusArxiv260515412} (1) & Reinforcement fine-tuning generates executable factor-DSL expressions across market benchmarks. & Released risk-adjusted-momentum seed $\mathrm{ret}_{12,1}/|\mathrm{rvol}_{252}|$; portfolio formation remains ours. \\
+Alpha-Jungle \cite{CensusArxiv250511122} (2) & LLM-guided MCTS searches symbolic stock factors using price, volume, and volatility operators. & Price/volume/momentum and trend-after-volatility-compression scores based on documented examples. \\
+FAMA \cite{CensusACL2024findingsacl233} (1) & Neural-symbolic factor mining evaluated by RankIC/RankICIR and an S\&P 500 simulation. & Interpretable value--momentum--profitability score motivated by the paper's examples. \\
+GuruAgents \cite{CensusArxiv251001664} (6) & Prompt-guided agents emulate named investor philosophies in a Nasdaq-100 backtest. & Graham, Buffett, Greenblatt, Piotroski, and Altman screens plus their ensemble. \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
-\begin{table}[t]
-\centering
-\caption{Mapping fidelity and U.S. results by tier.}
-\label{tab:mapping}
-\small
-\begin{tabular}{lrrr}
-\toprule
-\textbf{Evidence tier} & \textbf{$N$} & \textbf{Median alpha} & \textbf{Cond. Holm $+$} \\
-\midrule
-M0 narrative translation & 49 & $-0.10\%$ & 1 \\
-M1 example/motif support & 6 & $-0.71\%$ & 0 \\
-M1 named-rule support & 6 & $3.12\%$ & 0 \\
-M2 released seed expression & 1 & $-0.28\%$ & 0 \\
-\bottomrule
-\end{tabular}
-\par\vspace{0.2em}\footnotesize Annualized six-factor alpha net of \bps{10} one-way costs. Holm values are conditional on the realized mappings and are descriptive.
-\end{table}
+\subsection{Common U.S. task}
 
-The second reason the claims do not hold up is that the closest testable content shows no robust alpha. Combining M1 and M2 yields 13 source-grounded component tests. Their median six-factor alpha is 0.88\%; one is nominally positive and none survives Holm within the 13-test subset. Under the post-hoc broad benchmark, median alpha is $-2.00\%$, with zero nominal or Holm-positive results. The 49 M0 rows do not rescue the claim: their median alpha is $-0.10\%$, and the sole full-family Holm result is a researcher-authored translation rather than agent output. Component tests do not reproduce native agents, but they show that the strongest reconstructable content does not deliver robust alpha under the common task.
-
-The ledger makes three adverse facts explicit. First, \MappingNarrativeCount mappings are narrative translations and therefore barred from source-level negative inference; \MappingPartialCount have partial support and only one uses a released expression. Second, the registry was frozen after U.S. outcomes had been inspected, so its immutable hash does not make coding outcome-blind. Third, no independent second coder was used. The mapping choice set is unknown; Holm and bootstrap calculations therefore quantify sampling variation only conditional on these 62 realized formulas. We treat every resulting $p$-value and interval as descriptive, not confirmatory, even when a conditional adjustment is below 5\%.
-
-We can measure only a lower bound on that discretion. Five sources already have multiple coded mappings, covering \MappingAlternativeCandidateCount candidates. Selecting one mapping per source yields \MappingCombinationCount combinations; the same AlphaAgent-inspired quality proxy is the sole Holm discovery in every combination. This does not validate singly mapped formulas, nor does it replace independent coding. It shows only that the headline count is unchanged within the alternatives that happened to be coded.
-
-\subsection{Common U.S. task and descriptive estimators}
-
-The primary panel is monthly U.S. common equity from August 2001 through December 2024. At formation month $t$, the universe $\mathcal U_t$ contains the 1,000 largest positive-market-equity securities, and mapping $i$ produces a point-in-time score $s_{ijt}=g_i(x_{jt})$. For the usual value-weighted long--short mapping, let $H_{it}$ and $L_{it}$ denote its top and bottom deciles and let $m_{jt}>0$ be market equity. The frozen target weights are
+The monthly U.S. panel runs from August 2001 through December 2024. At formation month $t$, the universe $\mathcal U_t$ contains the 1,000 largest positive-market-equity common stocks, and mapping $i$ produces point-in-time score $s_{ijt}=g_i(x_{jt})$. For the standard value-weighted long--short mapping, with top and bottom deciles $H_{it}$ and $L_{it}$ and market equity $m_{jt}>0$, target weights are
 \begin{equation}
 w_{ijt}=\begin{cases}
 m_{jt}/\sum_{k\in H_{it}}m_{kt}, & j\in H_{it},\\
@@ -191,111 +100,98 @@ m_{jt}/\sum_{k\in H_{it}}m_{kt}, & j\in H_{it},\\
 \end{cases}
 \label{eq:weights}
 \end{equation}
-Thus each leg carries unit notional; labeled long-only and sparse top-$k$ mappings use their stated rules. Formation never conditions on next-month return availability. Define $R^{e,*}_{j,t+1}=R^e_{j,t+1}$ when the held excess return is observed and $R^{e,*}_{j,t+1}=0$ otherwise; weights are never renormalized using future coverage. A severe stress instead assigns $-\operatorname{sgn}(w_{ijt})$ to a missing return, or $-100\%$ for a long and $+100\%$ for a short; it is not a delisting-return estimate.
+Labeled long-only and sparse top-$k$ mappings preserve their stated rules. Formation never conditions on next-month return availability. Missing held returns receive zero in the primary analysis without renormalizing surviving weights; an adverse unit-move stress is reported separately.
 
-Turnover restores target exposure from drifted pre-trade weights. With total security return $R^{\mathrm{tot}}_{j,t}$,
+Turnover restores target exposure from drifted pre-trade weights. With total security return $R^{\mathrm{tot}}_{j,t}$ and held excess return $R^{e,*}_{j,t+1}$,
 \begin{align}
-\widetilde w_{ij,t^-}
- &=\frac{w_{ij,t-1}(1+R^{\mathrm{tot}}_{j,t})}
- {1+\sum_k w_{ik,t-1}R^{\mathrm{tot}}_{k,t}}, \notag\\
-\tau_{it}&=\sum_j\lvert w_{ijt}-\widetilde w_{ij,t^-}\rvert, \notag\\
-r^{\mathrm{net}}_{i,t+1}(c)
- &=\sum_j w_{ijt}R^{e,*}_{j,t+1}-c\tau_{it}.
+\widetilde w_{ij,t^-}&=\frac{w_{ij,t-1}(1+R^{\mathrm{tot}}_{j,t})}
+ {1+\sum_k w_{ik,t-1}R^{\mathrm{tot}}_{k,t}},
+&\tau_{it}&=\sum_j|w_{ijt}-\widetilde w_{ij,t^-}|,\notag\\
+r^{\mathrm{net}}_{i,t+1}(c)&=\sum_j w_{ijt}R^{e,*}_{j,t+1}-c\tau_{it},
+&&c\in\{0,5,10,25,50\}\times10^{-4}.
 \label{eq:net-return}
 \end{align}
-The one-way rate $c$ spans $\{0,5,10,25,50\}\times10^{-4}$, with \bps{10} primary. This linear model omits borrow, financing, locate constraints, nonlinear impact, and capacity. Benchmark factors remain gross, so costed-candidate alpha is a deliberately conservative asymmetric comparison.
+The primary one-way rate is \bps{10}. This linear cost model omits borrow, financing, nonlinear impact, and capacity; gross benchmark factors make the comparison conservative.
 
-For each executable candidate, we estimate the six-factor model with $f_t\in\mathbb{R}^6$ and its HAC statistic
+\subsection{Matched benchmark ladder and factor overlap}
+
+The headline analysis restricts attention to all 50 strategies associated with the 40 reconstructed retained works and fixes their net returns, 126 evaluation months (August 2011--January 2022), and inference across four benchmarks. For benchmark $b$, slopes use a rolling 120-month window. The broad model contains the market and 132 JKP characteristic returns; the six FF5-plus-momentum analogues remain unpenalized, and ridge penalizes the other 127 slopes. The penalty $\lambda\in\{0.1,1,10,100,1000\}$ minimizes mean-squared error over the last 24 months of each training window before refitting on all 120 months. CAPM, FF3, and FF5 plus momentum use unpenalized rolling OLS. For each test month,
 \begin{align}
-r^{\mathrm{net}}_{i,t}&=\alpha_i+\beta_i^{\top}f_t+\varepsilon_{i,t}, \notag\\
-T_i&=\frac{\widehat\alpha_i}
- {\widehat{\mathrm{se}}_{\mathrm{NW}}(\widehat\alpha_i)},\qquad
-L_T=\left\lfloor4(T/100)^{2/9}\right\rfloor .
-\label{eq:factor-model}
+\widehat\theta_{it}^{(b)}(\lambda)
+&=\arg\min_{\theta=(a,\beta)}
+ \left\{\sum_{s=t-120}^{t-1}(r_{is}-a-\beta^\top f_s^{(b)})^2\right.\notag\\
+&\hspace{7em}\left.+\lambda\|P_b\beta\|_2^2\right\},\\
+e_{it}^{(b)}&=r_{it}-\widehat\beta_{it}^{(b)\top}f_t^{(b)},
+&\widehat\alpha_i^{(b)}&=12\,\overline e_i^{(b)},
+\label{eq:rolling-spanning}
 \end{align}
-The Newey--West rule gives $L_T=4$ at $T=281$ \cite{NeweyWest1987}. For ordered two-sided $p$-values $p_{(1)}\le\cdots\le p_{(m)}$, Holm adjustment is
+where $P_b$ exempts the six base returns from penalization. Omitting the fitted intercept from $e_{it}^{(b)}$ makes its mean the factor-unexplained return. HAC statistics use $L=4$; Holm and a 5,000-replication moving-block maximum-$|t|$ procedure control the 50-strategy family conditional on the mappings.
+
+To identify familiar economic content directly, we correlate each strategy with every JKP factor over the 246 common months:
 \begin{equation}
-p^{\mathrm H}_{(k)}=
-\max_{\ell\le k}\min\{1,(m-\ell+1)p_{(\ell)}\},
-\qquad m=62,
-\label{eq:holm}
+\rho_{ik}=\operatorname{Corr}(r_{i},f^{\mathrm{JKP}}_{k}),
+\qquad k_i^*=\arg\max_{1\le k\le132}|\rho_{ik}|.
+\label{eq:factor-match}
 \end{equation}
-where non-estimable planned paths enter with $p=1$ \cite{Holm1979}. Paired moving-block draws jointly resample candidate and factor months. For $B=2{,}000$, block length six, and fixed original HAC standard errors, the single-step family statistic is
-\begin{align}
-T_i^{*(b)}&=\frac{\widehat\alpha_i^{*(b)}-\widehat\alpha_i}
- {\widehat{\mathrm{se}}_{\mathrm{NW}}(\widehat\alpha_i)},
-&M^{*(b)}&=\max_i\lvert T_i^{*(b)}\rvert, \notag\\
-\widehat p_i^{\max}
- &=\frac{1+\sum_{b=1}^{B}\mathbf{1}\{M^{*(b)}\ge\lvert T_i\rvert\}}
- {B+1},
-&\mathrm{LB}^{\mathrm{sim}}_i
- &=12\left(\widehat\alpha_i-q_{.95}\widehat{\mathrm{se}}_{\mathrm{NW},i}\right).
-\label{eq:max-t}
-\end{align}
-Here $q_{.95}$ is the 95th percentile of $M^{*}$. Block lengths three and twelve and HAC lags 0, 3, 6, and 12 are sensitivities. A simultaneous lower bound of at least two annual percentage points is a pragmatic reporting threshold selected after U.S. outcomes were available, not a preregistered rule.
+This nearest-factor statistic is descriptive. Correlation does not identify the agent's inputs or prove that a source paper copied a factor; it tests whether the reconstructed return path resembles a known factor return.
 
 \section{Results}
 
-\subsection{Reported alpha under the common U.S. task}
+\subsection{Apparent alpha is absorbed by known factors}
 
-The common-task results do not support the reported alpha. Among the 13 source-grounded component tests, median annualized six-factor alpha is 0.88\%; one estimate is nominally positive and none survives within-subset Holm correction. Expanding to all 62 executable paths does not change the conclusion. At \bps{10}, median alpha is \USMedianAlphaPct (interquartile range \USAlphaIQRPct); \USPositiveAlphaCount estimates are positive, \USNominalCount have nominal $p<.05$, and one has conditional Holm and maximum-$|t|$ values below .05. No simultaneous lower bound exceeds two percentage points. The sole adjusted result is the largest estimate, 6.93\%, from a \emph{researcher-authored AlphaAgent-inspired quality proxy}; the software did not generate it, and its simultaneous lower bound is only 0.48\%.
+Figure~\ref{fig:benchmark-ladder} states the paper's main result. Under CAPM, \LadderCAPMPositiveCount of 50 strategies have positive estimated alpha, \LadderCAPMNominalCount are nominally positive, and \LadderCAPMHolmCount survive Holm; median annualized alpha is \LadderCAPMMedianAlphaPct. FF3 reduces the median to \LadderFFThreeMedianAlphaPct and leaves \LadderFFThreeHolmCount Holm result. FF5 plus momentum yields median \LadderFFFiveMomMedianAlphaPct and \LadderFFFiveMomHolmCount Holm results. Once the benchmark includes JKP132, the median becomes \LadderJKPMedianAlphaPct: only \LadderJKPPositiveCount estimates remain positive, one is nominally positive, and none survives Holm or maximum-$|t|$ adjustment. The median attenuation from FF5 plus momentum to JKP132 is \LadderMedianFFFiveMomToJKPAttenuationPct per year.
 
-That lone result is statistically fragile. Across fixed Newey--West lags 0/3/6/12, nominal positive counts are \USHACLagNominalCounts and Holm counts are \USHACLagHolmCounts: the adjusted count is one only at lags 3 and 6. Block-length changes leave the maximum-statistic count at one, but they do not address mapping discretion or publication selection. A result that depends on a researcher-authored proxy and selected serial-correlation specifications is not robust evidence of agent-generated alpha.
-
-Trading costs further weaken the claim. Median alpha falls from \USMedianGrossAlphaPct gross to \USMedianAlphaAtFivePct at \bps{5} and \USMedianAlphaPct at \bps{10}; positive counts across 0/5/10/25/50 bp are \USPositiveAtZero/\USPositiveAtFive/\USPositiveAtTen/\USPositiveAtTwentyFive/\USPositiveAtFifty, while conditional Holm counts are \USCostHolmCounts. Among 46 gross-positive mappings, median break-even cost is \USGrossPositiveBreakEvenMedianBps bp (IQR \USGrossPositiveBreakEvenIQRBps). Even gross returns produce only one conditional adjusted result, and no simultaneous lower bound reaches the two-percentage-point materiality threshold.
-
-Missing-return exposure is small in weight but economically nontrivial under an extreme imputation. The median mapping's mean missing gross-weight share is \USMedianCandidateMeanMissingPct (maximum across mappings \USMaxCandidateMeanMissingPct). The position-adverse unit-move stress changes family median alpha to \USAdverseMissingMedianAlphaPct, leaves \USAdverseMissingPositiveCount positive estimates, and leaves zero nominal or conditional Holm positives. This does not identify delisting returns; it shows that zero fill is consequential and that adverse missing outcomes do not create evidence of alpha.
-
-\begin{figure}[t]
+\begin{figure*}[t]
   \centering
-  \includegraphics[width=\columnwidth]{figures/usa_cost_sensitivity.pdf}
-  \caption{Annualized six-factor alpha across one-way trading-cost assumptions. Thin lines are candidate mappings; the band is the interquartile range. Benchmark factors remain gross.}
-  \Description{Candidate alphas generally decline as one-way trading costs rise from zero to fifty basis points. The median crosses slightly below zero at ten basis points.}
-  \label{fig:cost}
-\end{figure}
+  \includegraphics[width=0.86\textwidth]{figures/matched_benchmark_ladder.pdf}
+  \caption{Matched benchmark ladder for all 50 retained strategy reconstructions from 40 papers, net of \bps{10} one-way costs. Candidate returns and the 126 evaluation months are identical across models. CAPM, FF3, and FF5 plus momentum use rolling OLS; the broad specification leaves the six base factors unpenalized and ridge-controls the remaining JKP factors. Annotations report positive estimates, positive two-sided HAC tests at 5\%, and positive Holm-adjusted tests. Because the mappings and ladder are post-hoc, ``one-month-ahead'' describes factor fitting, not prospective agent discovery.}
+  \Description{Four box plots show annualized one-month-ahead residual means for 50 strategies. The median falls sharply from CAPM through FF3 and FF5 plus momentum and becomes negative after adding the JKP factor library. Holm-positive counts fall to zero in the broad model.}
+  \label{fig:benchmark-ladder}
+\end{figure*}
 
-Taken together, the evidence explains why the reported alpha does not hold up. The closest source-grounded tests provide no familywise evidence of incremental return, and the broader family produces only one fragile result that cannot be attributed to an agent. These findings reject the strength of the published evidence; they do not assign zero returns to unavailable native systems.
+The result is not driven only by the 37 in-spirit translations. Among the 13 released-expression or source-grounded component strategies, \LadderGroundedFFThreePositiveCount have positive FF3 alpha and \LadderGroundedFFFiveMomPositiveCount have positive FF5-plus-momentum alpha, but only \LadderGroundedJKPPositiveCount remain positive under JKP132. The benchmark expansion therefore changes the economic conclusion even for the highest-fidelity subset. It also clarifies the role of the five papers in Table~\ref{tab:grounded-scope}: they define an attribution tier, not the numerical backtest denominator.
 
-\subsection{Post-hoc broad-factor diagnostic}
+\subsection{Which known factors absorb the returns?}
 
-The broader factor benchmark does not rescue the alpha claim. It uses the market plus 132 JKP factors. The source panel ends in December 2021; after shifting factors to return months and a 120-month trailing window, evaluation spans August 2011--January 2022 (\BroadEvaluationMonthCount months), not 2024.
+The correlation map supplies the missing economic interpretation. Across the 50 strategies, the median $|\rho_{i k_i^*}|$ is \LadderMedianTopAbsCorrelation; \LadderTopCorrelationOverHalfCount have a nearest-factor absolute correlation of at least 0.50. Although \LadderUniqueTopFactorCount different JKP characteristics appear as a closest match, Table~\ref{tab:top-jkp-matches} shows concentration in low-risk, 52-week-high, volatility, quality, momentum, and valuation families. Betting-against-beta alone is the nearest analogue for 12 strategies and 52-week-high proximity for eight.
 
-Each month selects the ridge penalty on 96 past fit and 24 validation months, refits on all 120, and emits a one-month-ahead residual. The 5,000-replication block bootstrap resamples already-estimated residuals; it does \emph{not} rerun rolling estimation or penalty selection. Conditional on this possibly optimistic realized path and designed after primary outcomes, it is descriptive, not robustness confirmation.
+\input{tables/top_jkp_factor_matches.tex}
 
-There are \BroadPositiveAlphaCount positive estimates and one nominal result, but zero conditional Holm or maximum-$|t|$ results and zero simultaneous lower bounds above two percentage points. The best raw $p$-value is \BroadBestRawP; its Holm value is \BroadBestHolmP and maximum-statistic value is \BroadBestMaxTP. This is directionally consistent with spanning, but remains a post-hoc diagnostic over a truncated period.
+The signs are economically coherent. Risk-aware and stable-quality systems often align with low-beta or low-volatility returns. Their correlations with positively oriented volatility factors can therefore be negative. Trend and breakout strategies align positively with 52-week-high and momentum factors, while fundamental agents align with quality or valuation. JKP132 does not merely add statistical flexibility: it spans the same economic motifs that dominate the reconstructed agent strategies.
 
-\subsection{International extension: forensic result, not alpha evidence}
+The source benchmark audit explains why papers can miss this absorption. Among \SourceBenchmarkVerifiedCount verified mapped papers, \SourceBenchmarkNoRegressionCount contain no asset-pricing factor regression and \SourceBenchmarkLoadingsOnlyCount reports loadings without a factor-adjusted intercept; none reports factor-adjusted alpha or uses JKP132. Source evaluations instead emphasize predictive scores, cumulative or excess returns, Sharpe ratios, buy-and-hold comparisons, agent baselines, or factor loadings. Those outcomes can establish usefulness relative to a chosen task, but they cannot establish incremental alpha beyond the factor zoo.
 
-The international extension is excluded from headline performance inference. Thirty-five paths cross nonpositive NAV, producing \InternationalFailureEventCount events (31 France, five Canada, two Germany, one Britain, one Italy). Security-level reconstruction matches every event; in all \InternationalExtremeShortCount, one extreme positive return held short causes at least half the loss. Two France month-cells contain \InternationalTwoCellCount events.
+\subsection{Fidelity, costs, and secondary diagnostics}
 
-Return caps of +100\%/+200\%/+500\%/+1,000\% leave 0/1/1/7 events, but are not admissible corrections. Corporate actions, return construction, stale prices, or short-weight interactions may be responsible. Without independent security-level validation, this is a data/implementation alarm; the ledger retains every event, identifier, weight, return, contribution, error, and cap diagnostic.
+The longer 2001--2024 six-factor exercise provides an implementation sensitivity, not the headline matched ladder. Among the 13 source-grounded component tests, median annualized six-factor alpha is 0.88\%; one is nominally positive and none survives Holm within that subset. Across the broader 62-row ledger, which adds 12 mappings from excluded diagnostic sources, median alpha at \bps{10} is \USMedianAlphaPct and one researcher-authored AlphaAgent-inspired quality proxy survives conditional Holm. That result is not agent output, disappears under some fixed HAC choices, and has a simultaneous lower bound of only 0.48\%.
 
-\section{Why the Reported Alpha Claims Do Not Hold Up}
+Trading costs weaken rather than create the result. Median six-factor alpha falls from \USMedianGrossAlphaPct gross to \USMedianAlphaAtFivePct at \bps{5} and \USMedianAlphaPct at \bps{10}; positive counts across 0/5/10/25/50 bp are \USPositiveAtZero/\USPositiveAtFive/\USPositiveAtTen/\USPositiveAtTwentyFive/\USPositiveAtFifty. An adverse missing-return stress leaves zero nominal or Holm positives. A separate 133-factor diagnostic over the 62-row ledger yields one nominal result but zero Holm or maximum-$|t|$ results.
 
-Three findings drive the conclusion. First, public releases do not reproduce any native agent in 14 targeted audits. Second, the 13 closest source-grounded component tests produce no familywise-adjusted alpha. Third, the sole adjusted result in the broader family is a researcher-authored proxy, disappears under some HAC choices, and never clears the familywise materiality threshold. The literature therefore substantially overstates the evidence for LLM-generated alpha.
+The international extension is forensic rather than performance evidence. Thirty-five paths cross nonpositive NAV; security-level reconstruction shows that every event is dominated by one extreme positive return held short. Without independent validation of those returns and corporate actions, we retain the event ledger but exclude international alpha from the paper's conclusion.
 
-This conclusion is strong but specific: most reported alpha claims do not survive independent evidentiary scrutiny. It is not a claim that every unavailable native agent must lose money. Many systems postdate the December 2024 return panel, and mappings were frozen in 2026 after outcome inspection. The exercise cannot distinguish discovery from repackaging of known characteristics. Holm adjustment covers sampling multiplicity only across the 62 realized formulas; it does not cover researcher mapping choices, the literature's search process, unpublished mappings, or publication selection. Without an independently coded, outcome-blind reconstruction, performance results remain descriptive.
+\section{Interpretation and Limits}
 
-Common-task comparability omits language, memory, retrieval, debate, native timing/execution, dynamic allocation, non-equities, and tool adaptation. A mapping failure cannot prove native-agent failure, and a mapping success cannot be attributed to an agent. This limitation matters for agent-level claims but does not rehabilitate the published evidence: authors who report alpha bear the burden of releasing artifacts that make the result independently testable.
+The evidence supports a strong but bounded statement. LLM-agent strategies can produce economically meaningful returns and may automate factor discovery, formula search, or portfolio construction. What the public results do not establish is \emph{new} alpha: against JKP132, the reconstructed family has negative median residual return and no multiplicity-adjusted positive result. The direct correlation evidence links that attenuation to familiar factor families rather than treating a larger benchmark as an unexplained statistical black box.
 
-Benchmark practice outside finance offers a model: ABC separates task/outcome validity and reporting \cite{ZhuEtAl2025ABC}; Terminal-Bench uses containerized coding tasks, executable tests, human solutions, and failure analysis \cite{MerrillEtAl2026TerminalBench}. Financial-agent releases additionally need pinned code/environments; dated signals, positions, or returns; universe, timing, cost, financing, model, prompt, and seed definitions; search breadth and failures; and provenance or ablation separating agent contribution from factor libraries and human search spaces.
+The proposed mechanism remains a hypothesis. Financial LLM systems operate on pretrained knowledge, prompts, retrieved text, hand-specified operators, or factor DSLs that can foreground established anomalies. If evaluation then uses buy-and-hold, Sharpe, predictive metrics, or FF3/FF5, rediscovery can be reported as alpha because the benchmark omits the relevant exposure. Our audit verifies the second link---broad factor adjustment is absent---and the return correlations verify factor overlap. It does not observe proprietary training examples or causally attribute any strategy to memorization.
 
-\section{Reproducibility and Audit Trail}
+Three limitations prevent a stronger agent-level claim. First, 37 of 50 strategies are favorable in-spirit reconstructions, 12 are source-grounded component tests, and only one adapts released code; none is a native-agent return replication. Second, mappings and the benchmark ladder were frozen after U.S. outcomes had been inspected and had no independent second coder. Holm and bootstrap procedures cover sampling multiplicity across realized formulas, not mapping discretion, prior factor mining, or publication selection \cite{HarveyLiuZhu2016}. Third, common-task portfolios omit language, memory, retrieval, debate, native timing, dynamic allocation, non-equities, and execution. A reconstruction failure cannot prove native-agent failure, and reconstruction success cannot be attributed to an agent.
 
-The ledger contains the search protocol/routes; 103 lineages, 104 URLs, and 98 dispositions; 14 code attempts; the five-paper/13-component inventory; 62 formulas/decisions; aggregate U.S. returns; cost, missing-return, broad, and international diagnostics; scripts, tests, and hashes. It states that raw hits were not preserved, mappings were not outcome-blind, and no second coder was used. Restricted security data are referenced by path and hash.
+\section{Reproducibility and Secondary Code Audit}
 
-Deterministic builders regenerate macros/figures from verified outputs. Tests cover timing, weights, drift, costs, inference, mapping sensitivity, citations, and event reconstruction. Claims do not depend on an unsubmitted appendix.
+The secondary repository audit targets 14 implementations: eight retained systems and six excluded diagnostic works. It reproduces zero native agents. One released QuantEvolver seed expression supports a testable code-backed adaptation with annualized six-factor alpha of 0.33\% ($t=0.65$); the other 13 attempts have recorded output, input/adapter, task, licensing, or executability blockers and do not enter a performance denominator. Keeping this audit secondary avoids conflating repository availability with the 40-paper/50-strategy spanning analysis.
+
+The artifact ledger contains the search protocol and 98 dispositions; the 50 strategy definitions and provenance fields; the source-paper benchmark coding; all 6,600 strategy--JKP correlations; the four-model benchmark panel; cost, missing-return, and multiplicity outputs; and the 14 code-attempt records. Deterministic builders verify hashes and regenerate tables and figures. Tests cover timing, weights, drift, costs, factor alignment, rolling estimation, denominators, correlation completeness, and claim values.
 
 \paragraph{Responsible use and AI assistance.}
 No orders were transmitted. Results are retrospective research evidence, not investment advice. Generative AI assisted literature organization, code drafting, diagnostic review, and prose editing; the human author is responsible for source selection, mappings, protocol choices, statistical specifications, citation verification, and all reported claims.
 
 \section{Conclusion}
 
-Most reported alpha claims for LLM financial agents do not hold up to independent scrutiny. The 98-work screen narrows to 69 retained works, 40 reconstructed works, and five works supporting source-grounded component tests. The code route reproduces no native agent; its sole testable seed adaptation does not beat the benchmark. Among 13 source-grounded components, one estimate is nominally positive and none is Holm-positive. The broader 62-row family yields one conditional result, but it comes from a researcher-authored proxy, is HAC-fragile, and does not clear the materiality threshold. The post-hoc 133-factor diagnostic yields no adjusted result, while international performance is excluded after a plausibility failure.
+Financial LLM-agent papers often identify profitable strategies; our result is not that those returns are fictitious. The result is that profitability against a narrow benchmark is being mistaken for new alpha. Across all 50 retained reconstructions from 40 papers, median annualized residual return falls from 9.97\% under CAPM to $-1.69\%$ under the market plus JKP132, and the Holm-adjusted discovery count falls to zero. The median strategy has 0.81 absolute correlation with its closest JKP factor, with the strongest concentration in low-risk, 52-week-high, volatility, quality, momentum, and valuation families.
 
-The message is not that every LLM agent is incapable of producing alpha. It is that the literature's empirical case is much weaker than its claims: native systems are rarely reproducible, and the strongest testable evidence does not demonstrate robust, economically material alpha. The paper supplies an evidence hierarchy and an inspectable workflow for separating credible alpha evidence from unsupported performance claims.
+The evidence supports a coherent story: finance-oriented agents recombine ideas already abundant in the factor literature, while source papers rarely use a benchmark broad enough to distinguish rediscovery from innovation. This mechanism is plausible rather than causally identified, but the empirical implication is clear. Claims of LLM-generated alpha should report broad factor spanning, factor overlap, multiplicity correction, costs, and dated reproducible outputs before treating agent-produced returns as incremental investment information.
 
-\balance
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{icaif2026_references,census_primary_records}
 

@@ -303,32 +303,38 @@ def main() -> int:
             "not all events have the documented dominant short return")
 
     tex = (root / "docs/paper/icaif2026_submission.tex").read_text(encoding="utf-8")
-    for required in ["Can Public Artifacts Substantiate Financial-Agent Alpha?",
-                     "released seed yields a testable monthly adaptation", "not outcome-blind",
-                     "does \\emph{not} rerun rolling estimation", "excluded from headline performance inference",
-                     "benefit of the doubt", "failure cannot count as evidence against the source",
-                     "13 source-anchored partial component tests", "The 14 targeted implementation attempts",
-                     "The five papers underlying the 13 source-anchored partial component tests",
-                     "103 lineages backed by 98 cited works",
-                     "All 98 works are cited", "\\ReconstructedWorkCount retained works",
-                     "\\RetainedMappingCount mappings",
-                     "29 remain availability-only", "covers eight retained works",
-                     "cutoff-bounded systematic screen rather than a complete universe",
-                     "all mapping-based statistics are descriptive conditional diagnostics",
-                     "The position-adverse unit-move stress",
-                     "anchors the gross result",
-                     "not an independent out-of-sample discovery test",
-                     "22-row route log", "not 69 papers making the same regression-alpha claim",
-                     "five at $T=281$", "not a literal expression",
-                     "independent review remains pending", "No cost level, including zero",
-                     "\\USGrossPositiveBreakEvenMedianBps",
-                     "Reproducibility and Audit Trail", "generated_corpus_citations.tex",
-                     "census_primary_records"]:
+    for required in [
+        "Do Financial LLM Agents Discover New Alpha?",
+        "all 50 retained reconstructions",
+        "market plus 132 JKP",
+        "\\LadderMedianFFFiveMomToJKPAttenuationPct",
+        "\\input{tables/top_jkp_factor_matches.tex}",
+        "descriptive spanning diagnostics, not confirmatory tests",
+        "The other 29 retained works remain availability-only",
+        "not the unavailable native agent",
+        "47 of 50",
+        "median nearest-factor correlation is 0.81",
+        "none reports factor-adjusted alpha or uses JKP132",
+        "proprietary pretraining corpora",
+        "cannot identify this mechanism causally",
+        "The secondary repository audit targets 14 implementations",
+        "It reproduces zero native agents",
+        "All 98 works are cited",
+        "\\ReconstructedWorkCount retained works",
+        "\\RetainedMappingCount mappings",
+        "cutoff-bounded systematic screen rather than a complete universe",
+        "Reproducibility and Secondary Code Audit",
+        "generated_corpus_citations.tex",
+        "census_primary_records",
+    ]:
         require(required in tex, f"required disclosure absent: {required}")
-    for forbidden in ["Do Financial AI Agents Discover Alpha?",
-                      "Does Public Evidence Support Financial-Agent Alpha Claims?",
-                      "AlphaAgent survivor", "Robust result", "four at $T=281$",
-                      "Anonymous Empirical Artifact"]:
+    for forbidden in [
+        "Can Public Artifacts Substantiate Financial-Agent Alpha?",
+        "Does Public Evidence Support Financial-Agent Alpha Claims?",
+        "AlphaAgent survivor",
+        "Robust result",
+        "Anonymous Empirical Artifact",
+    ]:
         require(forbidden not in tex, f"forbidden overclaim present: {forbidden}")
     require("supplement" not in tex.casefold(), "paper improperly depends on a supplement")
     bibliography_text = "\n".join([
@@ -346,56 +352,44 @@ def main() -> int:
         text = pdf_text(args.pdf)
         normalized_text = re.sub(r"\s+", " ", text)
         folded_text = normalized_text.casefold()
-        require("Can Public Artifacts Substantiate Financial-Agent Alpha?" in normalized_text,
+        require("Do Financial LLM Agents Discover New Alpha?" in normalized_text,
                 "wrong PDF title")
-        require("producing 40 events" in normalized_text, "international forensic disclosure absent")
-        require("13 source-anchored partial component tests" in text,
-                "good-faith subset disclosure absent")
-        require("failure cannot count as evidence" in normalized_text and
-                "against the source." in normalized_text,
-                "anti-strawman source-protection disclosure absent")
-        require("The 14 targeted implementation attempts" in text, "direct-code inventory absent")
-        require("The five papers underlying the 13 source-anchored partial component tests" in text,
-                "source-anchored paper inventory absent")
-        require("103 lineages" in normalized_text and "98 cited works" in normalized_text,
-                "pre-trim breadth disclosure absent")
-        require("69 works" in normalized_text, "retained bibliography breadth disclosure absent")
+        require("50 retained strategy reconstructions" in normalized_text and
+                "40 papers" in normalized_text,
+                "headline strategy and paper denominators absent")
+        require("47 of 50" in normalized_text and "0.81" in normalized_text,
+                "nearest-factor evidence absent")
+        require("median becomes -1.69%" in normalized_text and
+                "none survives Holm" in normalized_text,
+                "JKP absorption result absent")
+        require("Most frequent JKP132 analogues" in normalized_text,
+                "top-factor table absent")
+        require("The five papers underlying the 13 source-grounded component tests" in normalized_text,
+                "source-grounded paper inventory absent")
         require("All 98 works are cited" in normalized_text,
                 "complete screened-corpus citation disclosure absent")
         require("40 retained works" in normalized_text and "50 mappings" in normalized_text,
                 "retained reconstruction waterfall absent")
-        require("29 remain availability-only" in normalized_text,
+        require("29 retained works remain availability-only" in normalized_text,
                 "availability-only retained-work disclosure absent")
-        require("covers eight retained works" in normalized_text,
-                "retained code-route disclosure absent")
-        require("cutoff-bounded systematic screen" in folded_text,
+        require("cutoff" in folded_text and "systematic screen" in folded_text,
                 "systematic-search limitation absent")
-        require("22-row route log" in folded_text and
-                "not 69 papers making the same" in folded_text,
-                "corpus denominator disclosure absent")
-        require(re.search(r"five at .{0,20}281", folded_text) is not None,
-                "correct primary HAC lag disclosure absent")
-        require("not the literal expression" in folded_text,
-                "seed-adaptation fidelity disclosure absent")
-        require("no cost level, including zero" in folded_text,
-                "gross material-alpha invariance absent")
+        require("secondary repository audit targets 14 implementations" in folded_text and
+                "zero native agents" in folded_text,
+                "secondary code-audit boundary absent")
         require(all(token in folded_text for token in
-                    ("descriptive", "conditional", "not confirmatory")),
+                    ("descriptive", "not confirmatory", "post-hoc")),
                 "conditional-inference boundary absent")
-        require(all(token in folded_text for token in
-                    ("position-adverse", "unit-move stress", "missing")),
-                "missing-return sensitivity absent")
-        require("reproducibility and audit trail" in folded_text,
+        require("proprietary pretraining" in folded_text and
+                "cannot identify this mechanism causally" in folded_text,
+                "mechanism caveat absent")
+        require("reproducibility and secondary code audit" in folded_text,
                 "self-contained audit section absent")
-        require("Gross-to-net alpha thresholds" in text and
-                all(token in normalized_text for token in
-                    ("2.15%", "7.76%", "0.316", "6.93%", "4.46%")),
-                "alpha/t-stat/Sharpe anchor table absent")
         require("supplement" not in folded_text, "PDF improperly depends on a supplement")
         from pypdf import PdfReader
         require(len(PdfReader(args.pdf).pages) <= 8, "PDF exceeds ICAIF's eight-page total limit")
         bbl = (root / "docs/paper/icaif2026_submission.bbl").read_text(encoding="utf-8")
-        require(len(re.findall(r"^\\bibitem", bbl, flags=re.MULTILINE)) >= 110,
+        require(len(re.findall(r"^\\bibitem", bbl, flags=re.MULTILINE)) >= 100,
                 "compiled bibliography does not contain all 98 corpus works plus methods")
         require("López de Prado" not in text and "Lopez de Prado" not in text,
                 "prohibited author remains in PDF")

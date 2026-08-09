@@ -14,8 +14,8 @@ PAPER = ROOT / "docs" / "paper"
 EXPECTED_CLASS_SHA256 = "2f949e6e3f2a79f2cdc218b9dcdbaa7dd451adb4ee0be1af6dc7ebe00b318ea7"
 EXPECTED_BST_SHA256 = "8ec002c927068bfc5b3cfe71b66aa4767b9e485530ac3c67ba5c064df4c2e6ac"
 EXPECTED_TITLE = (
-    "Can Public Artifacts Substantiate Financial-Agent Alpha? "
-    "A 98-Work Evidence Audit and Descriptive Spanning Exercise"
+    "Do Financial LLM Agents Discover New Alpha? "
+    "A 98-Work Audit and 50-Strategy Factor-Spanning Study"
 )
 
 
@@ -115,7 +115,7 @@ def main() -> int:
         require(author_metadata is None or author_metadata.group(1).strip() in {"", "Anonymous Author(s)"},
                 "PDF Author metadata is not anonymous")
         require("Anonymous Author(s)" in text, "rendered title block is not anonymous")
-        require("Can Public Artifacts Substantiate Financial-Agent Alpha?" in text,
+        require("Do Financial LLM Agents Discover New Alpha?" in text,
                 "rendered paper title is missing")
         require("References" in text, "references are missing from the PDF")
         require("978-x-xxxx-xxxx-x" not in text and "YYYY/MM" not in text,
