@@ -1,0 +1,44 @@
+{
+  "claim_boundary": {
+    "in_spirit_reconstructions": 37,
+    "interpretation": "The 50 rows are implemented common-task mappings, not 50 native agent replications or independent confirmations of paper claims.",
+    "native_agent_replications": 0,
+    "released_code_component_adaptations": 1,
+    "source_grounded_paper_components": 12
+  },
+  "coverage": {
+    "benchmark_specifications_per_strategy": 4,
+    "papers": 40,
+    "strategies": 50
+  },
+  "excluded_data": {
+    "external_repository_contents_included": false,
+    "jkp_factor_panel_included": false,
+    "monthly_strategy_returns_included": false,
+    "security_level_data_included": false
+  },
+  "inputs": {
+    "benchmark_comparison": {
+      "path": "paper_runs/submission_evidence/retained_benchmark_ladder/strategy_benchmark_comparison.csv",
+      "sha256": "ac8660da065def0f50ea6d7463b0d057319c8eef08b1a41f277352e0980ad46c"
+    },
+    "mapping_audit": {
+      "path": "paper_runs/submission_evidence/mapping_audit/mapping_audit.csv",
+      "sha256": "fb1ef4d68cf2048a0cab552f48382610da721fe4786dc84ccd9cc26ef0343f31"
+    },
+    "top_factor_diagnostics": {
+      "path": "paper_runs/submission_evidence/retained_benchmark_ladder/strategy_top_jkp_factors.csv",
+      "sha256": "92c468fc7f77366efdd06d701fad6bc5381157fc104e399882145b5da642a0a4"
+    }
+  },
+  "outputs": {
+    "strategy_result_index": {
+      "columns": 58,
+      "path": "paper_runs/handoff/strategy_result_index.csv",
+      "rows": 50,
+      "sha256": "283e5c39d381572a3fbfcb56eb078436d2c6a7407c7a471c712a3569da1e6c89"
+    }
+  },
+  "purpose": "Compact collaborator index of frozen, already-derived results",
+  "schema_version": 1
+}
