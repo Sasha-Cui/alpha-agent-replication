@@ -210,6 +210,10 @@ Missing-return exposure is small in weight but economically nontrivial under an 
   \label{fig:cost}
 \end{figure}
 
+Table~\ref{tab:alpha-sharpe-anchor} supplies numerical anchors behind Figure~\ref{fig:cost}. At 10 bp, the cross-sectional median next-month realized Sharpe ratio is 0.12. The largest $\hat{\alpha}$ row has Sharpe 0.74, $\hat{\alpha}=6.93\%$, and HAC $t=3.45$, but it is the M0 researcher-authored AlphaAgent-inspired quality mapping, not an agent output. The largest source-grounded component has Sharpe 0.61 and $\hat{\alpha}=4.46\%$ ($t=2.07$), yet its conditional Holm value is one. On the separate direct-code route, the one released QuantEvolver seed adaptation has Sharpe 0.316 and six-factor $\hat{\alpha}=0.33\%$ ($t=0.65$). These are returns realized at $t+1$ from signals formed at $t$; they are not an independent out-of-sample discovery test because the formula/mapping layer was not selected on a clean holdout.
+
+\input{tables/alpha_sharpe_anchor.tex}
+
 These results support two deliberately separated findings. The 13 source-grounded mappings provide no familywise evidence that their documented components add U.S. alpha under the common task. The other 49 show what happens to generous characteristic translations, but cannot be used to reject the originating papers. Neither result shows what an unavailable native agent would earn, and neither establishes prospective discovery.
 
 \subsection{Post-hoc broad-factor diagnostic}
