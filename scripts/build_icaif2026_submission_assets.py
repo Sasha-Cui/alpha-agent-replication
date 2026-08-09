@@ -629,7 +629,7 @@ def main() -> int:
     label(x_scope, 1.67, "SCREENED OUT", "29 works", SLATE, PALE_SLATE)
     label(x_coverage, 4.06, "RECONSTRUCTED", "40 works | 50 mappings", BLUE, PALE_BLUE)
     label(x_coverage, 2.46, "AVAILABILITY ONLY", "29 works | no alpha inference", SLATE, PALE_SLATE)
-    label(x_tier, 4.56, "SOURCE-GROUNDED", "5 works | 13 component tests", TEAL, PALE_TEAL)
+    label(x_tier, 4.56, "SOURCE-ANCHORED", "5 works | 13 partial tests", TEAL, PALE_TEAL)
     label(x_tier, 3.58, "NARRATIVE STRESS TESTS", "35 works | 37 favorable mappings", GOLD, PALE_GOLD)
 
     audit = FancyBboxPatch(
@@ -680,7 +680,7 @@ def main() -> int:
     ax.text(
         6.0,
         5.50,
-        "Evidence waterfall: from 98 works to 13 source-grounded component tests",
+        "Evidence waterfall: 98 works to 13 source-anchored partial tests",
         ha="center",
         va="top",
         fontsize=12.8,
