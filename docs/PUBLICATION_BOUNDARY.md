@@ -5,6 +5,8 @@
 - `src/alpha_evolve/`: reusable package code.
 - `scripts/`: compatibility entry points and research runners.
 - `literature_review/*.csv`, `literature_review/*.json`, and `literature_review/source_pasted_text.txt`: source inventory and audit inputs.
+- `literature_review/papers/`: the 39 downloaded source-paper PDFs recorded by
+  `literature_review/download_log.csv`.
 - `paper_runs/`: compact tracked ledgers, verdicts, summaries, small reproducibility CSVs, and final report figures under `paper_runs/performance_analysis/figures/`.
 - `paper_runs/submission_evidence/`: frozen locks, manifests, aggregate estimates,
   multiplicity results, diagnostic summaries, and hashes of excluded reconstruction
@@ -21,7 +23,7 @@ The following are intentionally ignored because they are generated, local, priva
 
 - virtualenvs and package installs: `.venv/`, `.venv_*/`, `__pycache__/`.
 - cloned/vendor repositories: `external_repos/`, `external_repos_code_links/`.
-- downloaded paper PDFs and temporary extraction payloads: `literature_review/papers/`, `paper_runs/idea_replications/paper_pdf_tmp/`.
+- temporary paper-extraction payloads: `paper_runs/idea_replications/paper_pdf_tmp/`.
 - run logs and scratch outputs: `logs/`, `runs/`, `artifacts/`, `tmp_scratch/`, `paper_runs/full_loop/`.
 - high-volume monthly candidate and factor reconstruction matrices under
   `paper_runs/submission_evidence/`; their checksums remain in tracked run

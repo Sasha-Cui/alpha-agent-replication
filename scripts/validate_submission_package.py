@@ -18,6 +18,8 @@ from pathlib import Path
 
 
 CANONICAL_PDF = Path("output/pdf/icaif2026_submission.pdf")
+PAPER_PDF_DIR = Path("literature_review/papers")
+EXPECTED_PAPER_PDF_COUNT = 39
 CANONICAL_SOURCE = Path("docs/paper/icaif2026_submission.tex")
 HANDOFF_FILES = (
     Path("paper_runs/handoff/strategy_result_index.csv"),
@@ -39,7 +41,6 @@ REQUIRED_PATHS = (
 EXCLUDED_TRACKED_PREFIXES = (
     "external_repos/",
     "external_repos_code_links/",
-    "literature_review/papers/",
     "tmp/",
 )
 EXCLUDED_TRACKED_SUFFIXES = (".parquet", ".pyc", ".pyo")
@@ -94,6 +95,23 @@ def validate_publication_boundary(root: Path) -> dict[str, int]:
     if output_pdfs != [CANONICAL_PDF.as_posix()]:
         raise AssertionError(f"ambiguous tracked submission PDFs: {output_pdfs}")
 
+    paper_pdf_prefix = f"{PAPER_PDF_DIR.as_posix()}/"
+    paper_pdfs = sorted(
+        name
+        for name in tracked_names
+        if name.startswith(paper_pdf_prefix) and name.endswith(".pdf")
+    )
+    if len(paper_pdfs) != EXPECTED_PAPER_PDF_COUNT:
+        raise AssertionError(
+            f"expected {EXPECTED_PAPER_PDF_COUNT} tracked source-paper PDFs, "
+            f"found {len(paper_pdfs)}"
+        )
+    invalid_pdfs = [
+        name for name in paper_pdfs if (root / name).read_bytes()[:5] != b"%PDF-"
+    ]
+    if invalid_pdfs:
+        raise AssertionError(f"tracked source-paper files are not PDFs: {invalid_pdfs}")
+
     oversized = sorted(
         (path.stat().st_size, relative.as_posix())
         for relative in tracked
@@ -105,6 +123,7 @@ def validate_publication_boundary(root: Path) -> dict[str, int]:
     return {
         "tracked_files": len(tracked),
         "tracked_output_pdfs": len(output_pdfs),
+        "tracked_source_pdfs": len(paper_pdfs),
         "oversized_tracked_files": len(oversized),
     }
 

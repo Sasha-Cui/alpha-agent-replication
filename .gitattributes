@@ -4,3 +4,6 @@
 scripts/run_retained_benchmark_ladder.py -delta
 scripts/run_textbenchmark_performance_analysis.py -delta
 tests/test_retained_benchmark_ladder.py -delta
+
+# Keep downloaded source papers opaque in diffs and merges.
+literature_review/papers/*.pdf binary

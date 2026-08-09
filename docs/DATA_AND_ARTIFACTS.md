@@ -30,6 +30,14 @@ The repository also contains compact cost curves, HAC/block sensitivities,
 multiplicity tables, turnover summaries, missing-return diagnostics, country
 summaries, figures, generated TeX macros, and JSON manifests.
 
+## Included source papers
+
+The repository includes the 39 downloaded source-paper PDFs under
+`literature_review/papers/`. Their canonical URLs, filenames, download
+statuses, and byte counts are recorded in `literature_review/download_log.csv`
+and `literature_review/paper_links.csv`. These third-party papers retain their
+own licenses and should not be interpreted as project-authored artifacts.
+
 ## Deliberately not included
 
 | Excluded material | Reason | How a collaborator proceeds |
@@ -38,7 +46,6 @@ summaries, figures, generated TeX macros, and JSON manifests.
 | JKP factor-panel time series | User explicitly does not need this exported; derived results are sufficient for initial handoff | Rebuild locally from authorized inputs or set `ALPHA_EVOLVE_FACTOR_PANEL` |
 | Monthly candidate and factor reconstruction matrices | High-volume, reproducible intermediates derived from restricted inputs | Run the tracked portfolio builders; verify input/output hashes in manifests |
 | `external_repos/` and `external_repos_code_links/` | Large third-party clones with independent licenses and mutable upstream histories | Use the artifact audit's URLs, revisions, license fields, and blockers to acquire allowed versions |
-| Downloaded paper PDFs | Copyright and size | Use canonical bibliography, DOI/arXiv/ACL/OpenReview URLs, and source locators |
 | Virtual environments, package caches, logs, and scratch | Machine-specific or regenerable | Install from `pyproject.toml`; use `environment.toml` on Bouchet |
 | Alternate compiled manuscript versions | Avoid ambiguity during handoff | Use the one canonical PDF and its matching TeX source |
 
