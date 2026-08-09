@@ -258,5 +258,9 @@ docs/paper/*.fdb_latexmk
 docs/paper/*.fls
 docs/paper/*.pdf
 docs/paper/*.status
-output/
+# Keep the current reviewable submission in GitHub while ignoring other builds.
+output/*
+!output/pdf/
+output/pdf/*
+!output/pdf/icaif2026_submission.pdf
 tmp/

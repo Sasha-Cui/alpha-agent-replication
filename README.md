@@ -1,8 +1,26 @@
 # Alpha Agent Replication
 
-This repository contains the publishable core of the `alpha_evolve` audit: a reproducible scan of LLM/agentic alpha-mining papers and public repositories against JKP-USA and TextBenchmark-style performance tests.
+This repository is the central record for the Alpha Agent Replication project and its ICAIF 2026 submission. It contains the screened literature corpus, artifact and implementation audits, good-faith source-to-implementation mappings, frozen empirical summaries, paper source, validation code, and reviewable submission PDF.
 
-The headline finding is negative: direct public-code replications did not produce convincing new alpha beyond JKP/TextBenchmark, and the few in-spirit survivors are mostly classic value, quality, profitability, momentum, and low-risk composites.
+The paper asks what current public artifacts substantiate about financial-agent alpha. The 98-work evidence screen narrows to 69 retained operational works, 40 reconstructed works, and 13 source-anchored partial component tests from five works. The mapping-based results are retrospective conditional diagnostics, not a native-agent leaderboard or a categorical claim that financial agents cannot discover alpha.
+
+## Current ICAIF Submission
+
+- [`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf) - final eight-page anonymous submission PDF.
+- [`docs/paper/icaif2026_submission.tex`](docs/paper/icaif2026_submission.tex) - submission source using the vendored ACM 2.19 template.
+- [`docs/source_anchor_review_packet.md`](docs/source_anchor_review_packet.md) - page-anchored audit of the 13 closest source mappings.
+- [`docs/full_corpus_bibliography.md`](docs/full_corpus_bibliography.md) - all 98 screened canonical works.
+- [`paper_runs/submission_evidence/`](paper_runs/submission_evidence/) - frozen aggregate evidence, manifests, mapping ledgers, and robustness outputs.
+
+Build and validate the submission from the repository root:
+
+```bash
+python scripts/build_icaif2026_submission_assets.py
+python scripts/build_icaif2026_submission.py
+python scripts/validate_icaif_submission.py --pdf output/pdf/icaif2026_submission.pdf
+```
+
+The final PDF currently passes all 71 ICAIF format checks and the locked-evidence validation. Large licensed security-level inputs and regenerated monthly reconstruction matrices remain outside Git; their paths and SHA-256 hashes are recorded in the run manifests.
 
 ## Repository Layout
 
@@ -10,6 +28,7 @@ The headline finding is negative: direct public-code replications did not produc
 - `scripts/` - backwards-compatible command wrappers and research-specific runners.
 - `literature_review/` - source inventory used to build the paper/repository universe.
 - `paper_runs/` - compact tracked replication ledgers, summaries, verdicts, small CSV outputs, and final report figures.
+- `output/pdf/icaif2026_submission.pdf` - tracked current submission artifact.
 - `report.md` - final replication report.
 - `docs/alpha_agent_replication_report.tex` - compact TeX version of the replication report for paper citation and circulation.
 - `docs/PUBLICATION_BOUNDARY.md` - tracked-vs-generated publication boundary.
