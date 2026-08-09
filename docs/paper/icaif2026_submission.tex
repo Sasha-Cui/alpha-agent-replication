@@ -103,27 +103,27 @@ We freeze URLs/revisions and require dated output from the released system for a
 
 \begin{table*}[t]
 \centering
-\caption{The 14 targeted implementation attempts. These are the systems whose public code or shipped outputs we actually inspected for a return path; eight belong to the 67-system F/T census.}
+\caption{The 14 targeted implementation attempts. Verdicts assess whether released artifacts provide a testable native-agent return path; eight systems belong to the 67-system F/T census.}
 \label{tab:direct-scope}
 \scriptsize
 \begin{tabular}{p{0.19\textwidth}p{0.24\textwidth}p{0.50\textwidth}}
 \toprule
-\textbf{System} & \textbf{Released object / native task} & \textbf{Audit result} \\
+\textbf{System} & \textbf{Released object / native task} & \textbf{Audit verdict and basis} \\
 \midrule
-AlphaAgent \cite{CensusArxiv250216789} & China A-share factor-mining code & No shipped dated strategy return series. \\
-AlphaBench \cite{alphabench2026} & Formula-mining benchmark code & Executable benchmark components, but no dated strategy returns. \\
-AlphaForgeBench \cite{ZhangEtAl2026AlphaForgeBench} & End-to-end strategy-design benchmark & Aggregate metrics only; no dated common-task return stream. \\
-AlphaPROBE \cite{GuoEtAl2026AlphaPROBE} & Graph-based factor-mining comparator & No approved JKP adapter or released dated expressions/returns. \\
-ContestTrade \cite{CensusArxiv250800554} & Sequential multi-agent trading code & No replay adapter or shipped common-task returns. \\
-DeepFund \cite{LiEtAl2025DeepFund} & Live fund-investment benchmark & No approved historical reproduction path for the common panel. \\
-FinCon \cite{CensusArxiv240706567} & Sequential multi-agent trading system & Available implementation was unofficial/ambiguous and task-incompatible. \\
-GuruAgents \cite{CensusArxiv251001664} & Nasdaq-100 guru-persona portfolios & Shipped non-JKP backtest is inspectable but incompatible with the common task. \\
-LiveTradeBench \cite{YuEtAl2025LiveTradeBench} & Live stock/prediction-market benchmark & No frozen historical return path compatible with the evaluator. \\
-QuantAgent \cite{CensusArxiv250909995} & Hourly/4-hour HFT across stocks, futures, and crypto & Intraday native task cannot be represented by monthly JKP data. \\
-QuantEvolver \cite{CensusArxiv260515412} & Factor-discovery framework plus seed expressions & One released seed expression is testable; $\alpha=0.33\%$, $t=0.65$. Not a trained-agent run. \\
-R\&D-Agent-Quant \cite{CensusArxiv250514738} & General R\&D-Agent framework and quant workflow & No shipped U.S. candidate returns or completed JKP adapter. \\
-TradeTrap \cite{YanEtAl2025TradeTrap} & Trading-agent reliability harness & Shipped results are a non-JKP diagnostic, not a common-task return path. \\
-Trading-R1 \cite{CensusArxiv250911420} & RL-trained trading-reasoning system & Public repository snapshot is a placeholder without executable system code. \\
+AlphaAgent \cite{CensusArxiv250216789} & China A-share factor-mining code & \textbf{Fail:} no shipped dated strategy return series. \\
+AlphaBench \cite{alphabench2026} & Formula-mining benchmark code & \textbf{Fail:} executable benchmark components, but no dated strategy returns. \\
+AlphaForgeBench \cite{ZhangEtAl2026AlphaForgeBench} & End-to-end strategy-design benchmark & \textbf{Fail:} aggregate metrics only; no dated common-task return stream. \\
+AlphaPROBE \cite{GuoEtAl2026AlphaPROBE} & Graph-based factor-mining comparator & \textbf{Fail:} no approved JKP adapter or released dated expressions/returns. \\
+ContestTrade \cite{CensusArxiv250800554} & Sequential multi-agent trading code & \textbf{Fail:} no replay adapter or shipped common-task returns. \\
+DeepFund \cite{LiEtAl2025DeepFund} & Live fund-investment benchmark & \textbf{Fail:} no approved historical reproduction path for the common panel. \\
+FinCon \cite{CensusArxiv240706567} & Sequential multi-agent trading system & \textbf{Fail:} available implementation was unofficial/ambiguous and task-incompatible. \\
+GuruAgents \cite{CensusArxiv251001664} & Nasdaq-100 guru-persona portfolios & \textbf{Fail:} shipped non-JKP backtest is inspectable but incompatible with the common task. \\
+LiveTradeBench \cite{YuEtAl2025LiveTradeBench} & Live stock/prediction-market benchmark & \textbf{Fail:} no frozen historical return path compatible with the evaluator. \\
+QuantAgent \cite{CensusArxiv250909995} & Hourly/4-hour HFT across stocks, futures, and crypto & \textbf{Fail:} intraday native task cannot be represented by monthly JKP data. \\
+QuantEvolver \cite{CensusArxiv260515412} & Factor-discovery framework plus seed expressions & \textbf{Partial:} one released seed expression is testable; $\alpha=0.33\%$, $t=0.65$. It is not a trained-agent run. \\
+R\&D-Agent-Quant \cite{CensusArxiv250514738} & General R\&D-Agent framework and quant workflow & \textbf{Fail:} no shipped U.S. candidate returns or completed JKP adapter. \\
+TradeTrap \cite{YanEtAl2025TradeTrap} & Trading-agent reliability harness & \textbf{Fail:} shipped results are a non-JKP diagnostic, not a common-task return path. \\
+Trading-R1 \cite{CensusArxiv250911420} & RL-trained trading-reasoning system & \textbf{Fail:} public repository snapshot is a placeholder without executable system code. \\
 \bottomrule
 \end{tabular}
 \end{table*}
