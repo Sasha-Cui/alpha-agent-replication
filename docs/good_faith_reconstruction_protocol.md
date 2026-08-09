@@ -102,10 +102,12 @@ The public ledger must contain:
 
 This protocol was formalized after the existing mappings and U.S. outcomes had been inspected. It therefore cannot retroactively make those choices outcome-blind. The audit classifies:
 
-- 1 released-expression component test;
+- 1 monthly JKP adaptation of a released 60-bar return/volatility seed;
 - 12 named-rule or example-supported component tests;
 - 49 narrative favorable stress tests.
 
-The 13 source-grounded component tests may be summarized as a post-hoc subset, with their own multiplicity correction, but only at component level. The 49 narrative translations are retained to show the performance of generous economic interpretations; their null results are not evidence that the underlying papers or agents fail.
+The 13 source-anchored partial component tests may be summarized as a post-hoc subset, with their own multiplicity correction, but only at component level. The QuantEvolver row preserves the released seed's risk-adjusted-momentum idea but changes the 60-bar return and volatility operators to a 12-month return and 252-day volatility proxy; it is therefore not the literal released expression. The other 12 retain only examples, motifs, or named rules. The page-anchored transformations and omissions are exposed in `docs/source_anchor_review_packet.md` and its machine-readable CSV. Independent review of that packet remains pending and does not repair the retrospective design.
+
+The 49 narrative translations are retained to show the performance of generous economic interpretations; their null results are not evidence that the underlying papers or agents fail.
 
 Future additions must complete the claim card and outcome-blind review before execution. A source author correction should be added as a versioned alternative rather than silently replacing the frozen mapping.

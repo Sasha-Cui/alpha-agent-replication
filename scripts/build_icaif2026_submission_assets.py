@@ -7,16 +7,15 @@ import hashlib
 import json
 import math
 import os
-from pathlib import Path
 import tempfile
+from pathlib import Path
 from typing import Any
 
-import matplotlib
-
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+plt.switch_backend("Agg")
 
 
 WHITE = "#FFFFFF"
@@ -119,7 +118,12 @@ def style_axis(ax) -> None:
 def save_figure(fig, destination: Path) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     fig.patch.set_facecolor(WHITE)
-    fig.savefig(destination, bbox_inches="tight", facecolor=WHITE)
+    fig.savefig(
+        destination,
+        bbox_inches="tight",
+        facecolor=WHITE,
+        metadata={"Creator": "alpha-agent-replication", "CreationDate": None, "ModDate": None},
+    )
     plt.close(fig)
 
 
@@ -183,10 +187,26 @@ def main() -> int:
     costs = pd.read_csv(run_dir / "candidate_cost_alpha_results.csv")
     turnover = pd.read_csv(run_dir / "turnover_summary.csv")
     hac = pd.read_csv(run_dir / "hac_lag_sensitivity.csv")
+    mapping_audit = pd.read_csv(mapping_dir / "mapping_audit.csv")
+    direct_summary = pd.read_csv(root / "paper_runs/repository_ff5mom_metrics_summary.csv")
     missing_summary = pd.read_csv(missing_dir / "policy_summary.csv").set_index("policy")
     ok = primary.loc[primary["status"] == "ok"].copy()
     if len(primary) != 62 or len(ok) != 62:
         raise RuntimeError("U.S. primary family is not 62/62 executable")
+
+    direct_ok = direct_summary.loc[direct_summary["metric_status"] == "computed_jkp_only"].copy()
+    if len(direct_ok) != 1 or direct_ok.iloc[0]["candidate_id"] != "quantevolver_return_sharpe_60_proxy":
+        raise RuntimeError("direct-code summary does not contain the sole QuantEvolver seed adaptation")
+    direct_row = direct_ok.iloc[0]
+    expected_direct = {
+        "candidate_standalone_oos_sharpe": 0.3159540989730854,
+        "alpha_annualized": 0.0032849190887483,
+        "alpha_tstat_hac": 0.6514961447297817,
+        "n_overlap_months": 305.0,
+    }
+    for field, expected in expected_direct.items():
+        if not math.isclose(float(direct_row[field]), expected, rel_tol=0.0, abs_tol=1e-12):
+            raise RuntimeError(f"direct-code {field} changed")
 
     alpha = ok["alpha_annualized"].astype(float)
     cost_ok = costs.loc[costs["status"] == "ok"].copy()
@@ -377,8 +397,158 @@ def main() -> int:
         temp_path = Path(handle.name)
     os.replace(temp_path, result_path)
 
+    def holm_count(p_values: list[float]) -> int:
+        ordered = sorted(float(value) for value in p_values)
+        rejected = 0
+        for rank, value in enumerate(ordered):
+            if value <= 0.05 / (len(ordered) - rank):
+                rejected += 1
+            else:
+                break
+        return rejected
+
+    cost_grid_rows = []
+    for cost_bps in schedule:
+        group = cost_ok.loc[cost_ok["cost_bps_one_way"] == cost_bps].copy()
+        material_p = [
+            0.5 * math.erfc(
+                ((float(row["alpha_annualized"]) - 0.02) /
+                 (12.0 * float(row["alpha_se_monthly"]))) / math.sqrt(2.0)
+            )
+            for _, row in group.iterrows()
+        ]
+        cost_grid_rows.append({
+            "cost_bps": cost_bps,
+            "median_alpha": float(group["alpha_annualized"].median()),
+            "median_sharpe": float(group["sharpe_annualized"].median()),
+            "positive": int((group["alpha_annualized"] > 0).sum()),
+            "nominal_positive": int(((group["alpha_annualized"] > 0) &
+                                     (group["p_value_two_sided"] <= 0.05)).sum()),
+            "holm_positive": cost_holm_counts[schedule.index(cost_bps)],
+            "point_material": int((group["alpha_annualized"] >= 0.02).sum()),
+            "nominal_material": int(sum(value <= 0.05 for value in material_p)),
+            "holm_material": holm_count(material_p),
+        })
+    observed_cost_counts = [
+        (row["cost_bps"], row["positive"], row["nominal_positive"],
+         row["holm_positive"], row["point_material"], row["nominal_material"],
+         row["holm_material"])
+        for row in cost_grid_rows
+    ]
+    expected_cost_counts = [
+        (0, 46, 7, 1, 33, 3, 0),
+        (5, 42, 7, 1, 21, 1, 0),
+        (10, 30, 6, 1, 16, 1, 0),
+        (25, 18, 1, 0, 10, 1, 0),
+        (50, 10, 0, 0, 1, 0, 0),
+    ]
+    if observed_cost_counts != expected_cost_counts:
+        raise RuntimeError(f"gross-to-net threshold family changed: {observed_cost_counts}")
+
+    tier_by_candidate = mapping_audit.set_index("candidate_id")["mapping_fidelity_tier"]
+    gross_ok = cost_ok.loc[cost_ok["cost_bps_one_way"] == 0].copy()
+    net_ok = cost_ok.loc[cost_ok["cost_bps_one_way"] == 10].copy()
+    top_row = gross_ok.loc[gross_ok["alpha_annualized"].idxmax()]
+    grounded_ids = tier_by_candidate.loc[
+        tier_by_candidate != "M0_narrative_translation"
+    ].index
+    grounded = gross_ok.loc[gross_ok["candidate_id"].isin(grounded_ids)]
+    grounded_top = grounded.loc[grounded["alpha_annualized"].idxmax()]
+    released_ids = tier_by_candidate.loc[
+        tier_by_candidate == "M2_released_seed_expression"
+    ].index
+    released = gross_ok.loc[gross_ok["candidate_id"].isin(released_ids)]
+    if len(released) != 1:
+        raise RuntimeError("released-seed mapping family is not one row")
+    released_row = released.iloc[0]
+
+    def proxy_code(candidate_id: str) -> str:
+        return "P-" + hashlib.sha256(candidate_id.encode("utf-8")).hexdigest()[:6].upper()
+
+    def paired_metrics(candidate_id: str) -> tuple[pd.Series, pd.Series]:
+        gross_rows = gross_ok.loc[gross_ok["candidate_id"] == candidate_id]
+        net_rows = net_ok.loc[net_ok["candidate_id"] == candidate_id]
+        if len(gross_rows) != 1 or len(net_rows) != 1:
+            raise RuntimeError(f"gross/net row missing for {candidate_id}")
+        return gross_rows.iloc[0], net_rows.iloc[0]
+
+    anchor_rows = []
+    for label, selected in (
+        (f"Largest $\\hat{{\\alpha}}$: {proxy_code(str(top_row['candidate_id']))} (M0)", top_row),
+        (f"Largest grounded: {proxy_code(str(grounded_top['candidate_id']))} (M1)", grounded_top),
+        (f"Released-seed mapping: {proxy_code(str(released_row['candidate_id']))} (M2)", released_row),
+    ):
+        gross_row, net_row = paired_metrics(str(selected["candidate_id"]))
+        anchor_rows.append((label, gross_row, net_row))
+    anchor_lines = [
+        "% Generated by scripts/build_icaif2026_submission_assets.py; do not edit by hand.",
+        r"\begin{table}[t]",
+        r"\centering",
+        r"\caption{Gross-to-net alpha thresholds and numerical anchors for Figure~\ref{fig:cost}.}",
+        r"\label{tab:alpha-sharpe-anchor}",
+        r"\scriptsize",
+        r"\setlength{\tabcolsep}{1.65pt}",
+        r"\textit{Panel A: familywide threshold audit}\\[-0.2em]",
+        r"\begin{tabular}{@{}rrrrrrrrr@{}}",
+        r"\toprule",
+        (
+            "\\textbf{Cost} & \\textbf{Med. $\\hat{\\alpha}$} & \\textbf{Med. $SR$} & "
+            "\\multicolumn{3}{c}{\\textbf{$\\alpha>0$}} & "
+            "\\multicolumn{3}{c}{\\textbf{$\\alpha>2\\%$}} \\\\"
+        ),
+        r"\cmidrule(lr){4-6}\cmidrule(l){7-9}",
+        (
+            " & & & \\textbf{Point} & \\textbf{Raw} & \\textbf{Holm} & "
+            "\\textbf{Point} & \\textbf{Raw} & \\textbf{Holm} \\\\"
+        ),
+        r"\midrule",
+    ]
+    for row in cost_grid_rows:
+        anchor_lines.append(
+            f"{row['cost_bps']} bp & {100.0 * row['median_alpha']:.2f}\\% & "
+            f"{row['median_sharpe']:.3f} & {row['positive']} & {row['nominal_positive']} & "
+            f"{row['holm_positive']} & {row['point_material']} & {row['nominal_material']} & "
+            f"{row['holm_material']} \\\\"
+        )
+    anchor_lines.extend([
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\par\vspace{0.35em}\textit{Panel B: selected gross and 10-bp mapping rows}\\[-0.2em]",
+        r"\begin{tabular}{@{}p{0.39\columnwidth}rrrrrr@{}}",
+        r"\toprule",
+        " & \\multicolumn{3}{c}{\\textbf{Gross (0 bp)}} & \\multicolumn{3}{c}{\\textbf{Net (10 bp)}} \\\\",
+        r"\cmidrule(lr){2-4}\cmidrule(l){5-7}",
+        (
+            "\\textbf{Evidence line} & \\textbf{$SR$} & \\textbf{$\\hat{\\alpha}$} & \\textbf{$t$} & "
+            "\\textbf{$SR$} & \\textbf{$\\hat{\\alpha}$} & \\textbf{$t$} \\\\"
+        ),
+        r"\midrule",
+    ])
+    for label, gross_row, net_row in anchor_rows:
+        anchor_lines.append(
+            f"{label} & {float(gross_row['sharpe_annualized']):.3f} & "
+            f"{100.0 * float(gross_row['alpha_annualized']):.2f}\\% & "
+            f"{float(gross_row['alpha_t_hac']):.2f} & {float(net_row['sharpe_annualized']):.3f} & "
+            f"{100.0 * float(net_row['alpha_annualized']):.2f}\\% & "
+            f"{float(net_row['alpha_t_hac']):.2f} \\\\"
+        )
+    anchor_lines.extend([
+        r"Direct seed adaptation (gross only) & 0.316 & 0.33\% & 0.65 & --- & --- & --- \\",
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\par\vspace{0.2em}\footnotesize U.S. mapping rows cover 2001--2024. In the $\alpha>0$ columns, Raw means positive $\hat{\alpha}$ with two-sided HAC $p\leq.05$ and Holm adjusts across 62 mappings. For $\alpha>2\%$, Raw and Holm use one-sided HAC tests of $H_0:\alpha\leq2\%$; that materiality threshold was selected after outcomes and remains descriptive. $SR$ annualizes next-month realized returns, which are one-period-ahead but not an independent discovery holdout. The direct released-seed adaptation is a separate gross 1999--2024 path. Panel B rows are selected by evidence role, not significance.",
+        r"\end{table}",
+    ])
+    anchor_path = paper_dir / "tables/alpha_sharpe_anchor.tex"
+    anchor_path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", dir=anchor_path.parent, delete=False, encoding="utf-8") as handle:
+        handle.write("\n".join(anchor_lines) + "\n")
+        temp_anchor_path = Path(handle.name)
+    os.replace(temp_anchor_path, anchor_path)
+
     plt.rcParams.update({
         "font.size": 10,
+        "font.family": "DejaVu Sans",
         "axes.labelcolor": INK,
         "axes.edgecolor": RULE,
         "xtick.color": INK,
@@ -386,225 +556,193 @@ def main() -> int:
         "text.color": INK,
         "figure.facecolor": WHITE,
         "savefig.facecolor": WHITE,
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
     })
-    fig, ax = plt.subplots(figsize=(11.2, 5.0), facecolor=WHITE)
+    fig, ax = plt.subplots(figsize=(11.2, 4.7), facecolor=WHITE)
     ax.set_facecolor(WHITE)
     ax.set_xlim(0, 12)
-    ax.set_ylim(0, 5.7)
+    ax.set_ylim(0, 5.15)
     ax.axis("off")
 
-    from matplotlib.path import Path as MplPath
-    from matplotlib.patches import FancyBboxPatch, PathPatch, Rectangle
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
 
-    SLATE = "#718096"
+    SLATE = "#66788A"
     PALE_BLUE = "#EAF2FA"
     PALE_TEAL = "#E6F4F2"
     PALE_GOLD = "#FBF2DF"
-    PALE_SLATE = "#EEF1F4"
+    PALE_SLATE = "#EEF2F5"
 
-    def ribbon(x0, x1, source, target, color, alpha=0.25):
-        source_low, source_high = source
-        target_low, target_high = target
-        control = 0.43 * (x1 - x0)
-        vertices = [
-            (x0, source_low),
-            (x0 + control, source_low),
-            (x1 - control, target_low),
-            (x1, target_low),
-            (x1, target_high),
-            (x1 - control, target_high),
-            (x0 + control, source_high),
-            (x0, source_high),
-            (x0, source_low),
-        ]
-        codes = [
-            MplPath.MOVETO,
-            MplPath.CURVE4,
-            MplPath.CURVE4,
-            MplPath.CURVE4,
-            MplPath.LINETO,
-            MplPath.CURVE4,
-            MplPath.CURVE4,
-            MplPath.CURVE4,
-            MplPath.CLOSEPOLY,
-        ]
+    card_width = 2.42
+    top_y, top_height = 2.62, 1.10
+    lower_y, lower_height = 1.18, 1.04
+    stage_x = [1.40, 4.45, 7.50, 10.55]
+
+    def card(cx, y, height, title, value, detail, color, fill):
+        left = cx - card_width / 2
         ax.add_patch(
-            PathPatch(
-                MplPath(vertices, codes),
-                facecolor=color,
+            FancyBboxPatch(
+                (left, y),
+                card_width,
+                height,
+                boxstyle="round,pad=0.03,rounding_size=0.05",
+                linewidth=1.1,
                 edgecolor=color,
-                linewidth=0.7,
-                alpha=alpha,
-                zorder=1,
+                facecolor=fill,
+                zorder=4,
             )
         )
-
-    def node(x, span, color):
-        low, high = span
         ax.add_patch(
             Rectangle(
-                (x - 0.08, low),
-                0.16,
-                high - low,
+                (left, y),
+                0.10,
+                height,
                 facecolor=color,
-                edgecolor=WHITE,
-                linewidth=0.7,
-                zorder=3,
+                edgecolor=color,
+                linewidth=0,
+                zorder=5,
+            )
+        )
+        text_x = left + 0.22
+        ax.text(
+            text_x,
+            y + height - 0.22,
+            title,
+            ha="left",
+            va="center",
+            fontsize=8.0,
+            fontweight="bold",
+            color=color,
+            zorder=6,
+        )
+        ax.text(
+            text_x,
+            y + height - 0.56,
+            value,
+            ha="left",
+            va="center",
+            fontsize=11.7,
+            fontweight="bold",
+            color=INK,
+            zorder=6,
+        )
+        ax.text(
+            text_x,
+            y + 0.18,
+            detail,
+            ha="left",
+            va="center",
+            fontsize=7.7,
+            color=INK,
+            zorder=6,
+        )
+
+    def connector(x0, y0, x1, y1, color, width=1.7, curve=0.0):
+        ax.add_patch(
+            FancyArrowPatch(
+                (x0, y0),
+                (x1, y1),
+                arrowstyle="-|>",
+                mutation_scale=10,
+                linewidth=width,
+                color=color,
+                connectionstyle=f"arc3,rad={curve}",
+                shrinkA=2,
+                shrinkB=2,
+                zorder=2,
             )
         )
 
-    def label(x, y, title, detail, color, fill, align="left", title_size=9.5):
-        offset = 0.17 if align == "left" else -0.17
-        ha = "left" if align == "left" else "right"
-        ax.text(
-            x + offset,
-            y + 0.12,
-            title,
-            ha=ha,
-            va="center",
-            fontsize=title_size,
-            fontweight="bold",
-            color=color,
-            zorder=4,
-            bbox=dict(boxstyle="round,pad=0.16", facecolor=fill, edgecolor="none", alpha=0.96),
+    top_center = top_y + top_height / 2
+    lower_center = lower_y + lower_height / 2
+    half_width = card_width / 2
+    for index in range(3):
+        connector(
+            stage_x[index] + half_width,
+            top_center,
+            stage_x[index + 1] - half_width,
+            top_center,
+            BLUE if index < 2 else TEAL,
+            width=2.0,
         )
-        ax.text(
-            x + offset,
-            y - 0.18,
-            detail,
-            ha=ha,
-            va="center",
-            fontsize=8.3,
-            color=INK,
-            zorder=4,
-            bbox=dict(boxstyle="round,pad=0.12", facecolor=fill, edgecolor="none", alpha=0.96),
+        connector(
+            stage_x[index] + half_width,
+            top_center - 0.20,
+            stage_x[index + 1] - half_width,
+            lower_center,
+            SLATE if index < 2 else GOLD,
+            width=1.25,
+            curve=0.08,
         )
-
-    x_screen, x_scope, x_coverage, x_tier = 0.85, 3.55, 6.45, 9.25
-    scale = 3.05 / 98.0
-    screened = (1.55, 4.60)
-    screened_excluded = (screened[0], screened[0] + 29 * scale)
-    screened_retained = (screened_excluded[1], screened[1])
-
-    retained = (2.43, 2.43 + 69 * scale)
-    excluded = (1.22, 1.22 + 29 * scale)
-    retained_availability_source = (retained[0], retained[0] + 29 * scale)
-    retained_reconstructed_source = (retained_availability_source[1], retained[1])
-
-    reconstructed = (3.35, 3.35 + 40 * scale)
-    availability = (2.12, 2.12 + 29 * scale)
-    reconstructed_narrative_source = (reconstructed[0], reconstructed[0] + 35 * scale)
-    reconstructed_grounded_source = (reconstructed_narrative_source[1], reconstructed[1])
-
-    narrative = (3.05, 3.05 + 35 * scale)
-    grounded = (4.48, 4.48 + 5 * scale)
-
-    ribbon(x_screen, x_scope, screened_retained, retained, BLUE)
-    ribbon(x_screen, x_scope, screened_excluded, excluded, SLATE, alpha=0.20)
-    ribbon(x_scope, x_coverage, retained_reconstructed_source, reconstructed, BLUE)
-    ribbon(x_scope, x_coverage, retained_availability_source, availability, SLATE, alpha=0.20)
-    ribbon(x_coverage, x_tier, reconstructed_grounded_source, grounded, TEAL, alpha=0.28)
-    ribbon(x_coverage, x_tier, reconstructed_narrative_source, narrative, GOLD, alpha=0.23)
-
-    node(x_screen, screened, NAVY)
-    node(x_scope, retained, BLUE)
-    node(x_scope, excluded, SLATE)
-    node(x_coverage, reconstructed, BLUE)
-    node(x_coverage, availability, SLATE)
-    node(x_tier, grounded, TEAL)
-    node(x_tier, narrative, GOLD)
 
     stage_headers = [
-        (x_screen, "01  LITERATURE SCREEN"),
-        (x_scope, "02  SCOPE DECISION"),
-        (x_coverage, "03  COMMON-TASK COVERAGE"),
-        (x_tier, "04  EVIDENCE TIER"),
+        "01  SCREEN",
+        "02  SCOPE",
+        "03  COVERAGE",
+        "04  EVIDENCE",
     ]
-    for x, text_value in stage_headers:
+    for x, text_value in zip(stage_x, stage_headers):
         ax.text(
             x,
-            4.95,
+            4.18,
             text_value,
             ha="center",
             va="center",
-            fontsize=8.5,
+            fontsize=8.8,
             fontweight="bold",
             color=SLATE,
-            zorder=5,
+            zorder=6,
         )
-        ax.plot([x - 0.62, x + 0.62], [4.82, 4.82], color=RULE, linewidth=0.8, zorder=2)
+        ax.plot([x - 0.56, x + 0.56], [4.02, 4.02], color=RULE, linewidth=0.9, zorder=2)
 
-    label(x_screen, 3.18, "SCREENED CORPUS", "98 works | 103 lineages", NAVY, WHITE, align="right")
-    label(x_scope, 3.88, "RETAINED METHODS", "69 works | 67 lineages", BLUE, PALE_BLUE)
-    label(x_scope, 1.67, "SCREENED OUT", "29 works", SLATE, PALE_SLATE)
-    label(x_coverage, 4.06, "RECONSTRUCTED", "40 works | 50 mappings", BLUE, PALE_BLUE)
-    label(x_coverage, 2.46, "AVAILABILITY ONLY", "29 works | no alpha inference", SLATE, PALE_SLATE)
-    label(x_tier, 4.56, "SOURCE-GROUNDED", "5 works | 13 component tests", TEAL, PALE_TEAL)
-    label(x_tier, 3.58, "NARRATIVE STRESS TESTS", "35 works | 37 favorable mappings", GOLD, PALE_GOLD)
+    card(stage_x[0], top_y, top_height, "SCREENED CORPUS", "98 works", "103 lineages", NAVY, "#F5F8FB")
+    card(stage_x[1], top_y, top_height, "RETAINED METHODS", "69 works", "67 lineages", BLUE, PALE_BLUE)
+    card(stage_x[1], lower_y, lower_height, "SCREENED OUT", "29 works", "excluded with reasons", SLATE, PALE_SLATE)
+    card(stage_x[2], top_y, top_height, "RECONSTRUCTED", "40 works", "50 mappings", BLUE, PALE_BLUE)
+    card(stage_x[2], lower_y, lower_height, "AVAILABILITY ONLY", "29 works", "no alpha imputed", SLATE, PALE_SLATE)
+    card(stage_x[3], top_y, top_height, "SOURCE-ANCHORED", "13 partial tests", "from 5 works", TEAL, PALE_TEAL)
+    card(stage_x[3], lower_y, lower_height, "NARRATIVE TESTS", "37 mappings", "from 35 works", GOLD, PALE_GOLD)
 
     audit = FancyBboxPatch(
-        (2.00, 0.20),
-        9.55,
-        0.72,
-        boxstyle="round,pad=0.04,rounding_size=0.06",
-        linewidth=1.15,
+        (0.20, 0.12),
+        11.60,
+        0.78,
+        boxstyle="round,pad=0.03,rounding_size=0.05",
+        linewidth=1.0,
         edgecolor=NAVY,
         facecolor="#F5F8FB",
         linestyle=(0, (4, 3)),
-        zorder=2,
+        zorder=3,
     )
     ax.add_patch(audit)
-    ax.text(
-        3.12,
-        0.68,
-        "OVERLAPPING CODE AUDIT",
-        ha="center",
-        va="center",
-        fontsize=8.3,
-        fontweight="bold",
-        color=NAVY,
-        zorder=4,
-    )
-    ax.text(
-        3.12,
-        0.42,
-        "not part of the work partition",
-        ha="center",
-        va="center",
-        fontsize=7.4,
-        color=SLATE,
-        zorder=4,
-    )
+    ax.text(0.48, 0.64, "SEPARATE CODE AUDIT", ha="left", va="center", fontsize=8.4,
+            fontweight="bold", color=NAVY, zorder=5)
+    ax.text(0.48, 0.38, "overlaps the work corpus", ha="left", va="center", fontsize=7.3,
+            color=SLATE, zorder=5)
     audit_metrics = [
-        (4.90, "14", "attempts"),
-        (6.45, "8 + 6", "retained + diagnostic"),
-        (8.25, "0", "native replications"),
-        (10.10, "1", "seed adaptation"),
+        (4.00, "14", "attempts"),
+        (6.00, "8 + 6", "retained + diagnostic"),
+        (8.05, "0", "native replications"),
+        (10.25, "1", "seed adaptation"),
     ]
-    for separator_x in (4.25, 5.60, 7.35, 9.15):
-        ax.plot([separator_x, separator_x], [0.34, 0.79], color=RULE, linewidth=0.8, zorder=3)
+    for separator_x in (3.05, 4.95, 7.02, 9.13):
+        ax.plot([separator_x, separator_x], [0.27, 0.75], color=RULE, linewidth=0.8, zorder=4)
     for x, value, description in audit_metrics:
-        ax.text(x, 0.67, value, ha="center", va="center", fontsize=10.2, fontweight="bold", color=NAVY, zorder=4)
-        ax.text(x, 0.40, description, ha="center", va="center", fontsize=7.6, color=INK, zorder=4)
+        ax.text(x, 0.63, value, ha="center", va="center", fontsize=10.6,
+                fontweight="bold", color=NAVY, zorder=5)
+        ax.text(x, 0.36, description, ha="center", va="center", fontsize=7.5,
+                color=INK, zorder=5)
 
     ax.text(
         6.0,
-        5.50,
-        "Evidence waterfall: from 98 works to 13 source-grounded component tests",
+        4.88,
+        "Public-evidence waterfall: from screened works to testable components",
         ha="center",
-        va="top",
-        fontsize=12.8,
+        va="center",
+        fontsize=12.4,
         fontweight="bold",
         color=NAVY,
-    )
-    ax.text(
-        6.0,
-        1.02,
-        "Ribbon widths are proportional to work counts; availability-only works are never assigned zero returns.",
-        ha="center",
-        va="bottom",
-        fontsize=8.1,
-        color=INK,
+        zorder=6,
     )
     save_figure(fig, paper_dir / "figures/claim_to_test_pipeline.pdf")
 
@@ -888,6 +1026,7 @@ def main() -> int:
     print(f"wrote {paper_dir / 'figures/g7_alpha_forest.pdf'}")
     print(f"wrote {paper_dir / 'figures/usa_g7_transfer.pdf'}")
     print(f"wrote {table_path}")
+    print(f"wrote {anchor_path}")
     return 0
 
 

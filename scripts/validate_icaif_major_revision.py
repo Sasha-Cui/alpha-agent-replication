@@ -6,10 +6,11 @@ import argparse
 import csv
 import hashlib
 import json
-from pathlib import Path
+import math
 import re
 import shutil
 import subprocess
+from pathlib import Path
 
 
 def rows(path: Path):
@@ -57,6 +58,18 @@ def holm_positive_count(group) -> int:
                for index, row in enumerate(group))
 
 
+def holm_count(p_values) -> int:
+    """Return the number of sequential Holm rejections at familywise 5%."""
+    ordered = sorted(float(value) for value in p_values)
+    rejected = 0
+    for rank, value in enumerate(ordered):
+        if value <= .05 / (len(ordered) - rank):
+            rejected += 1
+        else:
+            break
+    return rejected
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
@@ -69,6 +82,7 @@ def main() -> int:
     for name, expected in mapping_manifest["output_sha256"].items():
         require(sha256(evidence / "mapping_audit" / name) == expected, f"mapping hash: {name}")
     mapping = rows(evidence / "mapping_audit/mapping_audit.csv")
+    anchor_packet = rows(evidence / "mapping_audit/source_anchor_review_packet.csv")
     require(len(mapping) == 62, "mapping family is not 62")
     tiers = {}
     for row in mapping:
@@ -89,6 +103,24 @@ def main() -> int:
                 for row in mapping) == 13, "component-level anti-strawman roles changed")
     require(sum(row["anti_strawman_status"] == "exploratory_only_no_negative_inference"
                 for row in mapping) == 49, "narrative anti-strawman roles changed")
+    require(len(anchor_packet) == 13 and
+            len({row["source_index"] for row in anchor_packet}) == 5,
+            "source-anchor review packet scope changed")
+    require(all(row["source_locator"] and row["researcher_supplied_changes"]
+                for row in anchor_packet), "source-anchor packet is not inspectable")
+    require(all(row["exact_original_claim_match"] == "no" and
+                row["mapping_frozen_before_returns"] == "no" and
+                row["independent_outcome_blind_review"] == "no"
+                for row in anchor_packet), "source-anchor packet overstates fidelity")
+    require(all(row["audit_status"] ==
+                "post_hoc_source_anchor_audit; independent review pending"
+                for row in anchor_packet), "source-anchor review status changed")
+    quant_anchor = next(row for row in anchor_packet if row["candidate_id"] ==
+                        "repo_quantevolver_return_sharpe_proxy")
+    require("60-bar" in quant_anchor["source_supported_content"] and
+            "12-month" in quant_anchor["researcher_supplied_changes"] and
+            "not the literal released expression" in quant_anchor["researcher_supplied_changes"],
+            "QuantEvolver horizon adaptation is not explicit")
     grounded_summary = {row["benchmark"]: row for row in rows(
         evidence / "mapping_audit/source_grounded_subset_summary.csv")}
     six_grounded = grounded_summary["six_factor_primary"]
@@ -184,10 +216,14 @@ def main() -> int:
     testable = [row for row in direct if row["metric_status"] == "computed_jkp_only"]
     require(len(testable) == 1, "direct testable denominator changed")
     require(not any(row["beats_ff5mom_at_5pct"] == "True" for row in direct), "direct beater found")
+    require(abs(float(testable[0]["candidate_standalone_oos_sharpe"]) - 0.3159540989730854) < 1e-12,
+            "direct seed-adaptation Sharpe changed")
 
     primary = [row for row in rows(evidence / "usa_retrospective_corrected/candidate_primary_results.csv")
                if row["status"] == "ok"]
     require(len(primary) == 62, "U.S. family is not fully executable")
+    require({int(float(row["hac_lags"])) for row in primary} == {5},
+            "primary HAC lag is not five")
     require(sum(float(row["alpha_annualized"]) > 0 and float(row["holm_p_value"]) <= .05
                 for row in primary) == 1, "U.S. Holm count changed")
     require(sum(float(row["simultaneous_ci_low_annualized"]) >= .02 for row in primary) == 0,
@@ -220,11 +256,36 @@ def main() -> int:
 
     costs = rows(evidence / "usa_retrospective_corrected/candidate_cost_alpha_results.csv")
     cost_holm = []
+    threshold_counts = []
     for cost in (0, 5, 10, 25, 50):
         group = [row for row in costs if row["status"] == "ok" and
                  int(float(row["cost_bps_one_way"])) == cost]
         cost_holm.append(holm_positive_count(group))
+        material_p = [
+            .5 * math.erfc(
+                ((float(row["alpha_annualized"]) - .02) /
+                 (12. * float(row["alpha_se_monthly"]))) / math.sqrt(2.)
+            )
+            for row in group
+        ]
+        threshold_counts.append((
+            cost,
+            sum(float(row["alpha_annualized"]) > 0 for row in group),
+            sum(float(row["alpha_annualized"]) > 0 and
+                float(row["p_value_two_sided"]) <= .05 for row in group),
+            holm_positive_count(group),
+            sum(float(row["alpha_annualized"]) >= .02 for row in group),
+            sum(value <= .05 for value in material_p),
+            holm_count(material_p),
+        ))
     require(cost_holm == [1, 1, 1, 0, 0], f"cost-grid Holm counts changed: {cost_holm}")
+    require(threshold_counts == [
+        (0, 46, 7, 1, 33, 3, 0),
+        (5, 42, 7, 1, 21, 1, 0),
+        (10, 30, 6, 1, 16, 1, 0),
+        (25, 18, 1, 0, 10, 1, 0),
+        (50, 10, 0, 0, 1, 0, 0),
+    ], f"gross-to-net threshold counts changed: {threshold_counts}")
 
     broad = rows(evidence / "usa_broad_jkp_crossfit/broad_jkp_crossfit_results.csv")
     require(len(broad) == 62 and {int(float(row["n_benchmark_factors"])) for row in broad} == {133},
@@ -243,25 +304,30 @@ def main() -> int:
 
     tex = (root / "docs/paper/icaif2026_submission.tex").read_text(encoding="utf-8")
     for required in ["Can Public Artifacts Substantiate Financial-Agent Alpha?",
-                     "yields a testable code-backed adaptation", "not outcome-blind",
+                     "released seed yields a testable monthly adaptation", "not outcome-blind",
                      "does \\emph{not} rerun rolling estimation", "excluded from headline performance inference",
                      "benefit of the doubt", "failure cannot count as evidence against the source",
-                     "13 source-grounded component tests", "The 14 targeted implementation attempts",
-                     "The five papers underlying the 13 source-grounded component tests",
-                     "103 candidate lineages backed by 98 distinct cited works",
+                     "13 source-anchored partial component tests", "The 14 targeted implementation attempts",
+                     "The five papers underlying the 13 source-anchored partial component tests",
+                     "103 lineages backed by 98 cited works",
                      "All 98 works are cited", "\\ReconstructedWorkCount retained works",
                      "\\RetainedMappingCount mappings",
                      "29 remain availability-only", "covers eight retained works",
                      "cutoff-bounded systematic screen rather than a complete universe",
-                     "these statistics are descriptive conditional diagnostics",
+                     "all mapping-based statistics are descriptive conditional diagnostics",
                      "The position-adverse unit-move stress",
+                     "anchors the gross result",
+                     "not an independent out-of-sample discovery test",
+                     "22-row route log", "not 69 papers making the same regression-alpha claim",
+                     "five at $T=281$", "not a literal expression",
+                     "independent review remains pending", "No cost level, including zero",
                      "\\USGrossPositiveBreakEvenMedianBps",
                      "Reproducibility and Audit Trail", "generated_corpus_citations.tex",
                      "census_primary_records"]:
         require(required in tex, f"required disclosure absent: {required}")
     for forbidden in ["Do Financial AI Agents Discover Alpha?",
                       "Does Public Evidence Support Financial-Agent Alpha Claims?",
-                      "AlphaAgent survivor", "Robust result",
+                      "AlphaAgent survivor", "Robust result", "four at $T=281$",
                       "Anonymous Empirical Artifact"]:
         require(forbidden not in tex, f"forbidden overclaim present: {forbidden}")
     require("supplement" not in tex.casefold(), "paper improperly depends on a supplement")
@@ -283,13 +349,15 @@ def main() -> int:
         require("Can Public Artifacts Substantiate Financial-Agent Alpha?" in normalized_text,
                 "wrong PDF title")
         require("producing 40 events" in normalized_text, "international forensic disclosure absent")
-        require("13 source-grounded component tests" in text, "good-faith subset disclosure absent")
-        require("cannot count as evidence against the source" in text,
+        require("13 source-anchored partial component tests" in text,
+                "good-faith subset disclosure absent")
+        require("failure cannot count as evidence" in normalized_text and
+                "against the source." in normalized_text,
                 "anti-strawman source-protection disclosure absent")
         require("The 14 targeted implementation attempts" in text, "direct-code inventory absent")
-        require("The five papers underlying the 13 source-grounded component tests" in text,
-                "source-grounded paper inventory absent")
-        require("103 candidate lineages" in normalized_text and "98 distinct cited works" in normalized_text,
+        require("The five papers underlying the 13 source-anchored partial component tests" in text,
+                "source-anchored paper inventory absent")
+        require("103 lineages" in normalized_text and "98 cited works" in normalized_text,
                 "pre-trim breadth disclosure absent")
         require("69 works" in normalized_text, "retained bibliography breadth disclosure absent")
         require("All 98 works are cited" in normalized_text,
@@ -302,6 +370,15 @@ def main() -> int:
                 "retained code-route disclosure absent")
         require("cutoff-bounded systematic screen" in folded_text,
                 "systematic-search limitation absent")
+        require("22-row route log" in folded_text and
+                "not 69 papers making the same" in folded_text,
+                "corpus denominator disclosure absent")
+        require(re.search(r"five at .{0,20}281", folded_text) is not None,
+                "correct primary HAC lag disclosure absent")
+        require("not the literal expression" in folded_text,
+                "seed-adaptation fidelity disclosure absent")
+        require("no cost level, including zero" in folded_text,
+                "gross material-alpha invariance absent")
         require(all(token in folded_text for token in
                     ("descriptive", "conditional", "not confirmatory")),
                 "conditional-inference boundary absent")
@@ -310,6 +387,10 @@ def main() -> int:
                 "missing-return sensitivity absent")
         require("reproducibility and audit trail" in folded_text,
                 "self-contained audit section absent")
+        require("Gross-to-net alpha thresholds" in text and
+                all(token in normalized_text for token in
+                    ("2.15%", "7.76%", "0.316", "6.93%", "4.46%")),
+                "alpha/t-stat/Sharpe anchor table absent")
         require("supplement" not in folded_text, "PDF improperly depends on a supplement")
         from pypdf import PdfReader
         require(len(PdfReader(args.pdf).pages) <= 8, "PDF exceeds ICAIF's eight-page total limit")
