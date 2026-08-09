@@ -256,40 +256,67 @@ def main() -> int:
     fig, ax = plt.subplots(figsize=(11.2, 5.0), facecolor=WHITE)
     ax.set_facecolor(WHITE)
     ax.set_xlim(0, 12)
-    ax.set_ylim(0, 5.4)
+    ax.set_ylim(0, 5.6)
     ax.axis("off")
 
-    def box(x, y, width, height, title, detail, color, fill=WHITE):
-        from matplotlib.patches import FancyBboxPatch
+    from matplotlib.patches import FancyBboxPatch
+
+    def box(x, y, width, height, title, detail, color, fill=WHITE, detail_size=8.5):
         patch = FancyBboxPatch(
             (x, y), width, height,
             boxstyle="round,pad=0.04,rounding_size=0.08",
             linewidth=1.4, edgecolor=color, facecolor=fill,
         )
         ax.add_patch(patch)
-        ax.text(x + width / 2, y + height * 0.64, title, ha="center", va="center", color=color, fontsize=10, fontweight="bold")
-        ax.text(x + width / 2, y + height * 0.30, detail, ha="center", va="center", color=INK, fontsize=8.5)
+        ax.text(
+            x + width / 2, y + height * 0.67, title,
+            ha="center", va="center", color=color, fontsize=9.5, fontweight="bold",
+        )
+        ax.text(
+            x + width / 2, y + height * 0.28, detail,
+            ha="center", va="center", color=INK, fontsize=detail_size,
+        )
 
-    box(0.2, 2.10, 1.75, 1.25, "Screened corpus", "98 works\n103 system lineages", NAVY)
-    box(2.55, 3.55, 2.10, 1.20, "Retained methods", "69 works / 67 lineages\n30 formula + 39 trading", BLUE)
-    box(2.55, 0.45, 2.10, 1.30, "Screened out", "29 works\nbenchmarks, comparators,\nor adjacent systems", GOLD)
-    box(5.30, 3.55, 2.05, 1.20, "Good-faith route", "40 works\n50 common-task mappings", BLUE)
-    box(5.30, 2.05, 2.05, 1.20, "Availability only", "29 retained works\nno performance inference", GOLD)
-    box(8.00, 3.55, 1.65, 1.20, "Grounded", "5 works\n13 component tests", TEAL)
-    box(10.05, 3.55, 1.65, 1.20, "Narrative", "35 works\n37 favorable\nstress tests", GOLD)
-    box(8.00, 1.25, 3.70, 1.35, "Overlapping direct-code audit", "8 retained + 6 diagnostic\n14 attempts; 0 native replications\n1 seed-expression adaptation", NAVY)
+    box(0.20, 2.65, 1.75, 1.20, "Screened corpus", "98 works\n103 system lineages", NAVY)
+    box(2.55, 3.85, 2.10, 1.05, "Retained methods", "69 works / 67 lineages\n30 formula + 39 trading", BLUE)
+    box(2.55, 1.95, 2.10, 1.10, "Screened out", "29 works\nbenchmarks, comparators,\nor adjacent systems", GOLD, detail_size=7.8)
+    box(5.30, 3.85, 2.05, 1.05, "Reconstructed works", "40 works\n50 common-task mappings", BLUE)
+    box(5.30, 2.45, 2.05, 1.05, "Availability only", "29 retained works\nno proxy or alpha inference", GOLD, detail_size=8.1)
+    box(8.00, 3.85, 3.70, 1.05, "Source-grounded component tests", "5 works / 13 mappings", TEAL)
+    box(8.00, 2.45, 3.70, 1.05, "Favorable narrative stress tests", "35 works / 37 mappings", GOLD)
+
+    audit = FancyBboxPatch(
+        (2.55, 0.45), 9.15, 1.05,
+        boxstyle="round,pad=0.04,rounding_size=0.08",
+        linewidth=1.4, edgecolor=NAVY, facecolor="#F5F8FB", linestyle="--",
+    )
+    ax.add_patch(audit)
+    ax.text(
+        7.125, 1.13, "OVERLAPPING DIRECT-CODE AUDIT (NOT A PARTITION)",
+        ha="center", va="center", color=NAVY, fontsize=9.3, fontweight="bold",
+    )
+    ax.text(
+        7.125, 0.76,
+        "14 attempts = 8 retained + 6 diagnostic | 0 native-agent replications | 1 seed-expression adaptation",
+        ha="center", va="center", color=INK, fontsize=8.2,
+    )
+
     arrow = dict(arrowstyle="-|>", color="#53677A", lw=1.5, mutation_scale=12)
-    dashed = dict(arrowstyle="-|>", color="#53677A", lw=1.35, linestyle="--", mutation_scale=12)
-    ax.annotate("", xy=(2.55, 4.15), xytext=(1.95, 3.05), arrowprops=arrow)
-    ax.annotate("", xy=(2.55, 1.15), xytext=(1.95, 2.35), arrowprops=arrow)
-    ax.annotate("", xy=(5.30, 4.15), xytext=(4.65, 4.15), arrowprops=arrow)
-    ax.annotate("", xy=(5.30, 2.65), xytext=(4.65, 3.75), arrowprops=arrow)
-    ax.annotate("", xy=(8.00, 4.15), xytext=(7.35, 4.15), arrowprops=arrow)
-    ax.annotate("", xy=(10.05, 4.15), xytext=(7.35, 4.15), arrowprops=arrow)
-    ax.annotate("", xy=(8.00, 1.92), xytext=(4.65, 3.75), arrowprops=dashed)
-    ax.annotate("", xy=(8.00, 1.55), xytext=(4.65, 1.15), arrowprops=dashed)
-    ax.text(6.0, 5.27, "Work-level corpus and evidence waterfall", ha="center", va="top", fontsize=13, fontweight="bold", color=NAVY)
-    ax.text(6.0, 0.14, "Solid arrows partition works; dashed arrows mark the overlapping 14-attempt code audit.", ha="center", va="bottom", fontsize=8.5, color=INK)
+    ax.annotate("", xy=(2.55, 4.37), xytext=(1.95, 3.55), arrowprops=arrow)
+    ax.annotate("", xy=(2.55, 2.50), xytext=(1.95, 2.95), arrowprops=arrow)
+    ax.annotate("", xy=(5.30, 4.37), xytext=(4.65, 4.37), arrowprops=arrow)
+    ax.annotate("", xy=(5.30, 2.98), xytext=(4.65, 4.02), arrowprops=arrow)
+    ax.annotate("", xy=(8.00, 4.37), xytext=(7.35, 4.37), arrowprops=arrow)
+    ax.annotate("", xy=(8.00, 2.98), xytext=(7.35, 4.02), arrowprops=arrow)
+    ax.text(
+        6.0, 5.46, "Work-level corpus and evidence waterfall",
+        ha="center", va="top", fontsize=13, fontweight="bold", color=NAVY,
+    )
+    ax.text(
+        6.0, 0.13,
+        "Solid arrows partition works; the dashed-outline band reports a separate, overlapping code audit.",
+        ha="center", va="bottom", fontsize=8.4, color=INK,
+    )
     save_figure(fig, paper_dir / "figures/claim_to_test_pipeline.pdf")
 
     fig, ax = plt.subplots(figsize=(9.6, 5.6), facecolor=WHITE)
