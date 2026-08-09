@@ -315,17 +315,65 @@ def main() -> int:
         temp_path = Path(handle.name)
     os.replace(temp_path, result_path)
 
+    def holm_count(p_values: list[float]) -> int:
+        ordered = sorted(float(value) for value in p_values)
+        rejected = 0
+        for rank, value in enumerate(ordered):
+            if value <= 0.05 / (len(ordered) - rank):
+                rejected += 1
+            else:
+                break
+        return rejected
+
+    cost_grid_rows = []
+    for cost_bps in schedule:
+        group = cost_ok.loc[cost_ok["cost_bps_one_way"] == cost_bps].copy()
+        material_p = [
+            0.5 * math.erfc(
+                ((float(row["alpha_annualized"]) - 0.02) /
+                 (12.0 * float(row["alpha_se_monthly"]))) / math.sqrt(2.0)
+            )
+            for _, row in group.iterrows()
+        ]
+        cost_grid_rows.append({
+            "cost_bps": cost_bps,
+            "median_alpha": float(group["alpha_annualized"].median()),
+            "median_sharpe": float(group["sharpe_annualized"].median()),
+            "positive": int((group["alpha_annualized"] > 0).sum()),
+            "nominal_positive": int(((group["alpha_annualized"] > 0) &
+                                     (group["p_value_two_sided"] <= 0.05)).sum()),
+            "holm_positive": cost_holm_counts[schedule.index(cost_bps)],
+            "point_material": int((group["alpha_annualized"] >= 0.02).sum()),
+            "holm_material": holm_count(material_p),
+        })
+    observed_cost_counts = [
+        (row["cost_bps"], row["positive"], row["nominal_positive"],
+         row["holm_positive"], row["point_material"], row["holm_material"])
+        for row in cost_grid_rows
+    ]
+    expected_cost_counts = [
+        (0, 46, 7, 1, 33, 0),
+        (5, 42, 7, 1, 21, 0),
+        (10, 30, 6, 1, 16, 0),
+        (25, 18, 1, 0, 10, 0),
+        (50, 10, 0, 0, 1, 0),
+    ]
+    if observed_cost_counts != expected_cost_counts:
+        raise RuntimeError(f"gross-to-net threshold family changed: {observed_cost_counts}")
+
     tier_by_candidate = mapping_audit.set_index("candidate_id")["mapping_fidelity_tier"]
-    top_row = ok.loc[ok["alpha_annualized"].idxmax()]
+    gross_ok = cost_ok.loc[cost_ok["cost_bps_one_way"] == 0].copy()
+    net_ok = cost_ok.loc[cost_ok["cost_bps_one_way"] == 10].copy()
+    top_row = gross_ok.loc[gross_ok["alpha_annualized"].idxmax()]
     grounded_ids = tier_by_candidate.loc[
         tier_by_candidate != "M0_narrative_translation"
     ].index
-    grounded = ok.loc[ok["candidate_id"].isin(grounded_ids)]
+    grounded = gross_ok.loc[gross_ok["candidate_id"].isin(grounded_ids)]
     grounded_top = grounded.loc[grounded["alpha_annualized"].idxmax()]
     released_ids = tier_by_candidate.loc[
         tier_by_candidate == "M2_released_seed_expression"
     ].index
-    released = ok.loc[ok["candidate_id"].isin(released_ids)]
+    released = gross_ok.loc[gross_ok["candidate_id"].isin(released_ids)]
     if len(released) != 1:
         raise RuntimeError("released-seed mapping family is not one row")
     released_row = released.iloc[0]
@@ -333,64 +381,72 @@ def main() -> int:
     def proxy_code(candidate_id: str) -> str:
         return "P-" + hashlib.sha256(candidate_id.encode("utf-8")).hexdigest()[:6].upper()
 
-    anchor_rows = [
-        (
-            "Cross-sectional median (62 mappings)",
-            float(ok["sharpe_annualized"].median()),
-            float(ok["alpha_annualized"].median()),
-            float(ok["alpha_t_hac"].median()),
-            None,
-        ),
-        (
-            f"Largest $\\hat{{\\alpha}}$: {proxy_code(str(top_row['candidate_id']))} (M0)",
-            float(top_row["sharpe_annualized"]),
-            float(top_row["alpha_annualized"]),
-            float(top_row["alpha_t_hac"]),
-            float(top_row["holm_p_value"]),
-        ),
-        (
-            f"Largest grounded $\\hat{{\\alpha}}$: {proxy_code(str(grounded_top['candidate_id']))} (M1)",
-            float(grounded_top["sharpe_annualized"]),
-            float(grounded_top["alpha_annualized"]),
-            float(grounded_top["alpha_t_hac"]),
-            float(grounded_top["holm_p_value"]),
-        ),
-        (
-            f"Released-seed mapping: {proxy_code(str(released_row['candidate_id']))} (M2)",
-            float(released_row["sharpe_annualized"]),
-            float(released_row["alpha_annualized"]),
-            float(released_row["alpha_t_hac"]),
-            float(released_row["holm_p_value"]),
-        ),
-        (
-            "Direct seed adaptation (1 of 14 attempts)",
-            float(direct_row["candidate_standalone_oos_sharpe"]),
-            float(direct_row["alpha_annualized"]),
-            float(direct_row["alpha_tstat_hac"]),
-            None,
-        ),
-    ]
+    def paired_metrics(candidate_id: str) -> tuple[pd.Series, pd.Series]:
+        gross_rows = gross_ok.loc[gross_ok["candidate_id"] == candidate_id]
+        net_rows = net_ok.loc[net_ok["candidate_id"] == candidate_id]
+        if len(gross_rows) != 1 or len(net_rows) != 1:
+            raise RuntimeError(f"gross/net row missing for {candidate_id}")
+        return gross_rows.iloc[0], net_rows.iloc[0]
+
+    anchor_rows = []
+    for label, selected in (
+        (f"Largest $\\hat{{\\alpha}}$: {proxy_code(str(top_row['candidate_id']))} (M0)", top_row),
+        (f"Largest grounded: {proxy_code(str(grounded_top['candidate_id']))} (M1)", grounded_top),
+        (f"Released-seed mapping: {proxy_code(str(released_row['candidate_id']))} (M2)", released_row),
+    ):
+        gross_row, net_row = paired_metrics(str(selected["candidate_id"]))
+        anchor_rows.append((label, gross_row, net_row))
     anchor_lines = [
         "% Generated by scripts/build_icaif2026_submission_assets.py; do not edit by hand.",
         r"\begin{table}[t]",
         r"\centering",
-        r"\caption{Numerical anchors for Figure~\ref{fig:cost} and the direct-code route.}",
+        r"\caption{Gross-to-net alpha thresholds and numerical anchors for Figure~\ref{fig:cost}.}",
         r"\label{tab:alpha-sharpe-anchor}",
         r"\scriptsize",
-        r"\begin{tabular}{@{}p{0.48\columnwidth}rrrr@{}}",
+        r"\setlength{\tabcolsep}{2.1pt}",
+        r"\textit{Panel A: familywide threshold audit}\\[-0.2em]",
+        r"\begin{tabular}{@{}rrrrrrrr@{}}",
         r"\toprule",
-        "\\textbf{Evidence line} & \\textbf{$SR_{t+1}$} & \\textbf{$\\hat{\\alpha}$} & \\textbf{HAC $t$} & \\textbf{Holm $p$} \\\\",
+        (
+            "\\textbf{Cost} & \\textbf{Med. $\\hat{\\alpha}$} & \\textbf{Med. $SR$} & "
+            "\\textbf{$\\hat{\\alpha}>0$} & \\textbf{Raw $+$} & \\textbf{Holm $+$} & "
+            "\\textbf{$\\hat{\\alpha}\\geq2\\%$} & \\textbf{Holm $>2\\%$} \\\\"
+        ),
         r"\midrule",
     ]
-    for label, sharpe, alpha_value, t_value, holm_value in anchor_rows:
-        holm_text = "---" if holm_value is None else f"{holm_value:.3f}"
+    for row in cost_grid_rows:
         anchor_lines.append(
-            f"{label} & {sharpe:.3f} & {100.0 * alpha_value:.2f}\\% & {t_value:.2f} & {holm_text} \\\\"
+            f"{row['cost_bps']} bp & {100.0 * row['median_alpha']:.2f}\\% & "
+            f"{row['median_sharpe']:.3f} & {row['positive']} & {row['nominal_positive']} & "
+            f"{row['holm_positive']} & {row['point_material']} & {row['holm_material']} \\\\"
         )
     anchor_lines.extend([
         r"\bottomrule",
         r"\end{tabular}",
-        r"\par\vspace{0.2em}\footnotesize The first four rows use the 2001--2024 U.S. mapping family net of 10-bp one-way costs; the last uses the gross 1999--2024 released-seed adaptation. $SR_{t+1}$ is the annualized Sharpe ratio of returns realized one month after signal formation. That timing is mechanically one-period-ahead, but it is not an independent discovery holdout because mapping choice was not outcome-blind. Rows are selected by reporting role, not by a significance cutoff.",
+        r"\par\vspace{0.35em}\textit{Panel B: selected gross and 10-bp mapping rows}\\[-0.2em]",
+        r"\begin{tabular}{@{}p{0.39\columnwidth}rrrrrr@{}}",
+        r"\toprule",
+        " & \\multicolumn{3}{c}{\\textbf{Gross (0 bp)}} & \\multicolumn{3}{c}{\\textbf{Net (10 bp)}} \\\\",
+        r"\cmidrule(lr){2-4}\cmidrule(l){5-7}",
+        (
+            "\\textbf{Evidence line} & \\textbf{$SR$} & \\textbf{$\\hat{\\alpha}$} & \\textbf{$t$} & "
+            "\\textbf{$SR$} & \\textbf{$\\hat{\\alpha}$} & \\textbf{$t$} \\\\"
+        ),
+        r"\midrule",
+    ])
+    for label, gross_row, net_row in anchor_rows:
+        anchor_lines.append(
+            f"{label} & {float(gross_row['sharpe_annualized']):.3f} & "
+            f"{100.0 * float(gross_row['alpha_annualized']):.2f}\\% & "
+            f"{float(gross_row['alpha_t_hac']):.2f} & {float(net_row['sharpe_annualized']):.3f} & "
+            f"{100.0 * float(net_row['alpha_annualized']):.2f}\\% & "
+            f"{float(net_row['alpha_t_hac']):.2f} \\\\"
+        )
+    anchor_lines.extend([
+        r"Direct seed adaptation (gross only) & 0.316 & 0.33\% & 0.65 & --- & --- & --- \\",
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\par\vspace{0.2em}\footnotesize U.S. mapping rows cover 2001--2024. Raw $+$ is positive $\hat{\alpha}$ with two-sided HAC $p\leq.05$; Holm $+$ adjusts that test across 62 mappings. Holm $>2\%$ applies Holm to one-sided HAC tests of $H_0:\alpha\leq2\%$; the materiality threshold was selected after outcomes and remains descriptive. $SR$ annualizes next-month realized returns, which are one-period-ahead but not an independent discovery holdout. The direct released-seed adaptation is a separate gross 1999--2024 path. Panel B rows are selected by evidence role, not significance.",
         r"\end{table}",
     ])
     anchor_path = paper_dir / "tables/alpha_sharpe_anchor.tex"
