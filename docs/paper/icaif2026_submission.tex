@@ -4,7 +4,6 @@
 \settopmatter{printacmref=true}
 \renewcommand\footnotetextcopyrightpermission[1]{}
 \pagestyle{plain}
-\raggedbottom
 \setlength{\headheight}{16pt}
 
 \usepackage{booktabs}
@@ -84,7 +83,7 @@ The overlapping code route covers eight retained works and six excluded diagnost
 \caption{Evidence hierarchy and what each result identifies.}
 \label{tab:hierarchy}
 \small
-\begin{tabular}{p{0.20\columnwidth}p{0.29\columnwidth}p{0.39\columnwidth}}
+\begin{tabular}{@{}p{0.20\columnwidth}p{0.29\columnwidth}p{0.39\columnwidth}@{}}
 \toprule
 \textbf{Stage} & \textbf{Evidence/result} & \textbf{Permitted interpretation} \\
 \midrule
@@ -254,6 +253,7 @@ Public artifacts do not establish broad, economically material U.S. financial-ag
 
 The paper's contribution is therefore constructive rather than categorical. It supplies an evidence hierarchy and an inspectable good-faith workflow for giving unreleased ideas their strongest reasonable test, while stopping interpretation exactly where fidelity and design no longer permit attribution.
 
+\balance
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{icaif2026_references,census_primary_records}
 
