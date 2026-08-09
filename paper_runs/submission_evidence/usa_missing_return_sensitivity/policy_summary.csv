@@ -1,0 +1,3 @@
+policy,n_estimable,median_alpha_annualized,q25_alpha_annualized,q75_alpha_annualized,positive_alpha_count,nominal_positive_5pct,holm_positive_5pct,max_t_positive_5pct,simultaneous_lower_bound_above_2pp,median_candidate_mean_missing_return_gross_weight,max_candidate_mean_missing_return_gross_weight,maximum_monthly_missing_return_gross_weight
+zero_primary,62,-0.000521765397201834,-0.012646725301407175,0.0205236469803884,30,6,1,1,0,0.0019781568495817006,0.004303208402939034,0.2
+position_adverse_100,62,-0.048404310807554085,-0.06563280780677835,-0.020722016758473204,4,0,0,0,0,0.0019781568495817006,0.004303208402939034,0.2

@@ -1,0 +1,7 @@
+policy,scope,n_estimable,median_alpha_annualized,positive_alpha_count,nominal_positive_5pct,holm_positive_5pct_within_scope
+zero_primary,all_mappings,62,-0.000521765397201834,30,6,1
+zero_primary,source_grounded_components,13,0.0088150683489442,7,1,0
+zero_primary,narrative_stress_tests,49,-0.0010291730844794,23,5,1
+position_adverse_100,all_mappings,62,-0.048404310807554085,4,0,0
+position_adverse_100,source_grounded_components,13,-0.046262829648346646,0,0,0
+position_adverse_100,narrative_stress_tests,49,-0.050545791966761525,4,0,0

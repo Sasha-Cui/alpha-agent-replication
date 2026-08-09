@@ -1,0 +1,27 @@
+{
+  "analysis_label": "post_hoc_referee_requested_missing_return_sensitivity",
+  "bootstrap": {
+    "block_length": 6,
+    "n_bootstrap": 2000,
+    "n_candidates": 62,
+    "n_common_months": 281,
+    "seed": 20260802,
+    "simultaneous_critical_value": 3.2075803515515022,
+    "white_reality_check_style_p_value": 0.8265867066466767
+  },
+  "input_sha256": {
+    "paper_runs/submission_evidence/mapping_audit/mapping_audit.csv": "fb1ef4d68cf2048a0cab552f48382610da721fe4786dc84ccd9cc26ef0343f31",
+    "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_metadata.csv": "e978260cd352aea6703248abe6cfdc35473f120678998c49723bd9485d2a4870",
+    "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_country_equal.csv": "28fe7e30b0af99468d47ba5192e85d3db6d86786e74203cb36ea1fe85fc6caeb",
+    "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_primary_results.csv": "a6b6e7cc9a751eb86cc151ba4555ece3f2821fe88d7c5b4ea66b36d7da8245b2",
+    "paper_runs/submission_evidence/usa_retrospective_corrected/factor_monthly_country_equal.csv": "ed00f4c2208277ca03e7b2c94b8e2d26b3509a33732b247363c838fbe492b089"
+  },
+  "interpretation": "Intentionally severe stress, not an expected-return or delisting-return estimate.",
+  "output_sha256": {
+    "candidate_primary_results.csv": "7bb8519b1660ab2559a5c7f26a78166ab30a8c1e98647a1b95b4b981e61c4a22",
+    "missing_exposure_by_candidate.csv": "de50e0fab26259dbd220d264d08bc5f10fc89ae3f9c0d1c0797463a1d19a6448",
+    "policy_summary.csv": "8dad2a5f460938df417725879709a68cefb440409270ba2fb043276e37b28651",
+    "scope_summary.csv": "4d831934f092e5975c7e47ed90ced14ae851b55672a3bb824603682df322836c"
+  },
+  "policy": "At frozen weights, assign -100% to a missing long return and +100% to a missing short return; formation, turnover, factors, and mappings unchanged."
+}
