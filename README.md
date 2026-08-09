@@ -4,6 +4,19 @@ This repository is the central record for the Alpha Agent Replication project an
 
 The paper asks what current public artifacts substantiate about financial-agent alpha. The 98-work evidence screen narrows to 69 retained operational works, 40 reconstructed works, and 13 source-anchored partial component tests from five works. The mapping-based results are retrospective conditional diagnostics, not a native-agent leaderboard or a categorical claim that financial agents cannot discover alpha.
 
+## Collaborator Handoff
+
+Start with [`COLLABORATOR_HANDOFF.md`](COLLABORATOR_HANDOFF.md), the experiment
+map in [`docs/EXPERIMENT_INDEX.md`](docs/EXPERIMENT_INDEX.md), and the compact
+50-row result dataframe in
+[`paper_runs/handoff/strategy_result_index.csv`](paper_runs/handoff/strategy_result_index.csv).
+
+The 50 rows are genuinely implemented and backtested common-task strategies,
+but they are not 50 native-agent replications. They comprise one released-code
+component adaptation, 12 source-grounded paper components, and 37 in-spirit
+reconstructions. The direct-code audit reproduces zero native agents. This
+provenance boundary is enforced by the handoff manifest and tests.
+
 ## Current ICAIF Submission
 
 - [`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf) - final eight-page anonymous submission PDF.
@@ -20,7 +33,13 @@ python scripts/build_icaif2026_submission.py
 python scripts/validate_icaif_submission.py --pdf output/pdf/icaif2026_submission.pdf
 ```
 
-The final PDF currently passes all 71 ICAIF format checks and the locked-evidence validation. Large licensed security-level inputs and regenerated monthly reconstruction matrices remain outside Git; their paths and SHA-256 hashes are recorded in the run manifests.
+The exact designated PDF is eight pages and hash-pinned, but it predates the
+stricter ACM 2.19 validation infrastructure: it currently passes 65 of 71
+format checks, and the newer locked-evidence wording gate does not yet pass.
+See [`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md) before treating it
+as submission-ready. Large licensed security-level inputs and regenerated
+monthly reconstruction matrices remain outside Git; their paths and SHA-256
+hashes are recorded in the run manifests.
 
 ## Repository Layout
 
@@ -28,6 +47,7 @@ The final PDF currently passes all 71 ICAIF format checks and the locked-evidenc
 - `scripts/` - backwards-compatible command wrappers and research-specific runners.
 - `literature_review/` - source inventory used to build the paper/repository universe.
 - `paper_runs/` - compact tracked replication ledgers, summaries, verdicts, small CSV outputs, and final report figures.
+- `paper_runs/handoff/` - compact 50-strategy collaborator index and hash-pinned scope manifest.
 - `output/pdf/icaif2026_submission.pdf` - tracked current submission artifact.
 - `report.md` - final replication report.
 - `docs/alpha_agent_replication_report.tex` - compact TeX version of the replication report for paper citation and circulation.

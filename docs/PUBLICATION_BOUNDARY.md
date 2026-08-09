@@ -10,6 +10,10 @@
   multiplicity results, diagnostic summaries, and hashes of excluded reconstruction
   artifacts.
 - `report.md`, `README.md`, `pyproject.toml`, `environment.toml`, and this `docs/` directory, including manuscript source, bibliography, generated tables, and deterministic figure PDFs.
+- `COLLABORATOR_HANDOFF.md` and `paper_runs/handoff/`: collaborator navigation,
+  a compact 50-strategy aggregate result index, its deterministic builder, and
+  a hash-pinned scope manifest.
+- `output/pdf/icaif2026_submission.pdf`: the single canonical compiled manuscript.
 
 ## Exclude
 
@@ -23,8 +27,9 @@ The following are intentionally ignored because they are generated, local, priva
   `paper_runs/submission_evidence/`; their checksums remain in tracked run
   manifests and the licensed inputs plus tracked runners regenerate them.
 - network-discovery caches, which may contain transient third-party payloads.
-- compiled manuscript PDFs, TeX auxiliary files, source archives, and local page
-  renderings under `output/`, `docs/paper/`, and `tmp/`.
+- alternate compiled manuscript PDFs, TeX auxiliary files, source archives, and
+  local page renderings under `output/`, `docs/paper/`, and `tmp/`; the canonical
+  `output/pdf/icaif2026_submission.pdf` is the sole tracked exception.
 
 ## Path Policy
 
