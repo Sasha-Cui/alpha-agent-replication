@@ -1,0 +1,111 @@
+{
+  "analysis_label": "post_hoc_matched_retained_benchmark_ladder",
+  "created_at_utc": "2026-08-09T20:14:58.201812+00:00",
+  "interpretation": "descriptive spanning analysis conditional on 50 retained mappings; not native-agent replication and not confirmatory inference",
+  "factor_panel": "/home/zc362/project_pi_btk22/zc362/external-factor-data/performance_analysis/results/current/multifactor_value_add_20260624/benchmark_factor_panel.csv",
+  "factor_panel_sha256": "f22f3e49d62d81530eaa84ddbf0c153fc6e08e723260edba37f98efb9e082260",
+  "candidate_monthly": "/nfs/roberts/project/pi_btk22/zc362/ideas/alpha_evolve/paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv",
+  "candidate_monthly_sha256": "819fa3b0e87113d29188e01fc9fb74cd43d58e2b67f93976c9e29f9ef4431c1a",
+  "mapping_audit": "/nfs/roberts/project/pi_btk22/zc362/ideas/alpha_evolve/paper_runs/submission_evidence/mapping_audit/mapping_audit.csv",
+  "mapping_audit_sha256": "fb1ef4d68cf2048a0cab552f48382610da721fe4786dc84ccd9cc26ef0343f31",
+  "market_alignment_correlation": 0.9993633983234792,
+  "strategy_count": 50,
+  "paper_count": 40,
+  "implementation_basis_counts": {
+    "in_spirit_reconstruction": 37,
+    "source_grounded_paper_component": 12,
+    "released_code_component_adaptation": 1
+  },
+  "common_months": 246,
+  "common_start": "2001-08-31",
+  "common_end": "2022-01-31",
+  "train_months": 120,
+  "validation_months": 24,
+  "evaluation_months": 126,
+  "evaluation_start": "2011-08-31",
+  "evaluation_end": "2022-01-31",
+  "cost_bps_one_way": 10.0,
+  "hac_lags": 4,
+  "bootstrap_reps": 5000,
+  "block_length": 6,
+  "bootstrap_seed": 20260809,
+  "model_results": {
+    "capm": {
+      "benchmark_label": "CAPM",
+      "factor_returns": 1,
+      "unpenalized_returns": 1,
+      "ridge_lambdas": [
+        0.0
+      ],
+      "max_t_critical_95": 3.0639869629657315,
+      "positive_alpha": 44,
+      "nominal_positive": 28,
+      "holm_positive": 6,
+      "max_t_positive": 7,
+      "median_alpha_annualized": 0.09969953120376876
+    },
+    "ff3": {
+      "benchmark_label": "FF3",
+      "factor_returns": 3,
+      "unpenalized_returns": 3,
+      "ridge_lambdas": [
+        0.0
+      ],
+      "max_t_critical_95": 3.1510655804909136,
+      "positive_alpha": 41,
+      "nominal_positive": 5,
+      "holm_positive": 1,
+      "max_t_positive": 1,
+      "median_alpha_annualized": 0.03174133902485045
+    },
+    "ff5_mom": {
+      "benchmark_label": "FF5+Momentum",
+      "factor_returns": 6,
+      "unpenalized_returns": 6,
+      "ridge_lambdas": [
+        0.0
+      ],
+      "max_t_critical_95": 3.1596678986172706,
+      "positive_alpha": 41,
+      "nominal_positive": 7,
+      "holm_positive": 2,
+      "max_t_positive": 2,
+      "median_alpha_annualized": 0.02687343013443779
+    },
+    "ff5_mom_jkp132": {
+      "benchmark_label": "FF5+Momentum+JKP132",
+      "factor_returns": 133,
+      "unpenalized_returns": 6,
+      "ridge_lambdas": [
+        0.1,
+        1.0,
+        10.0,
+        100.0,
+        1000.0
+      ],
+      "max_t_critical_95": 3.223561877689974,
+      "positive_alpha": 17,
+      "nominal_positive": 1,
+      "holm_positive": 0,
+      "max_t_positive": 0,
+      "median_alpha_annualized": -0.01693910365368496
+    }
+  },
+  "factor_correlation_summary": {
+    "factor_count": 132,
+    "strategy_factor_pairs": 6600,
+    "median_top_absolute_correlation": 0.8149680398391483,
+    "top_absolute_correlation_at_least_0_5": 47,
+    "unique_top_factors": 21
+  },
+  "output_sha256": {
+    "strategy_benchmark_results.csv": "41917a29557bd3fed615607ec8b111a2c3b15e791090aa2b047b62ead3c12cb0",
+    "strategy_benchmark_comparison.csv": "ac8660da065def0f50ea6d7463b0d057319c8eef08b1a41f277352e0980ad46c",
+    "paper_benchmark_summary.csv": "dd2853f5fd790d9e66607bea8f138bf0734c45b25c0195d6658dc3091447b014",
+    "benchmark_summary.csv": "4902559ad2323fe144b81f4ad43f408cdf33b3950f22e50204bbba3008c3adb3",
+    "benchmark_residuals.csv": "e4aa3be0d03f7128d6323c69f7e7fd7e8c22d63de3afb0c8f269dac47f523cc4",
+    "strategy_jkp_factor_correlations.csv": "c279c95eee2ed5aa4a29591ed781ec0f7b944856e71d0139d0437345b373d759",
+    "strategy_top_jkp_factors.csv": "92c468fc7f77366efdd06d701fad6bc5381157fc104e399882145b5da642a0a4",
+    "top_jkp_factor_frequency.csv": "2a223434ca7695222c470c26defed2fb4afe483d4d2901285f2b4a9e0e375722"
+  }
+}

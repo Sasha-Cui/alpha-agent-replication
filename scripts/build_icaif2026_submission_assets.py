@@ -81,6 +81,21 @@ def verify_broad_run(run_dir: Path) -> dict:
     return manifest
 
 
+def verify_retained_ladder(run_dir: Path) -> dict:
+    manifest = json.loads((run_dir / "run_manifest.json").read_text(encoding="utf-8"))
+    for filename, expected in manifest["output_sha256"].items():
+        actual = sha256(run_dir / filename)
+        if actual != expected:
+            raise RuntimeError(f"retained-ladder hash mismatch: {filename}")
+    if manifest.get("analysis_label") != "post_hoc_matched_retained_benchmark_ladder":
+        raise RuntimeError("retained benchmark ladder has the wrong analysis label")
+    if manifest.get("strategy_count") != 50 or manifest.get("paper_count") != 40:
+        raise RuntimeError("retained benchmark ladder has the wrong denominator")
+    if int(manifest.get("evaluation_months", 0)) != 126:
+        raise RuntimeError("retained benchmark ladder has the wrong calendar")
+    return manifest
+
+
 def verify_missing_sensitivity(run_dir: Path) -> dict:
     manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
     if manifest.get("analysis_label") != "post_hoc_referee_requested_missing_return_sensitivity":
@@ -123,6 +138,7 @@ def main() -> int:
     run_dir = root / "paper_runs/submission_evidence/usa_retrospective_corrected"
     international_dir = root / "paper_runs/submission_evidence/g7_ex_us_corrected"
     broad_dir = root / "paper_runs/submission_evidence/usa_broad_jkp_crossfit"
+    ladder_dir = root / "paper_runs/submission_evidence/retained_benchmark_ladder"
     missing_dir = root / "paper_runs/submission_evidence/usa_missing_return_sensitivity"
     mapping_dir = root / "paper_runs/submission_evidence/mapping_audit"
     forensic_dir = root / "paper_runs/submission_evidence/international_failure_forensics"
@@ -131,6 +147,7 @@ def main() -> int:
     manifest = verify_run(run_dir)
     verify_run(international_dir)
     broad_manifest = verify_broad_run(broad_dir)
+    ladder_manifest = verify_retained_ladder(ladder_dir)
     verify_missing_sensitivity(missing_dir)
     mapping_manifest = json.loads((mapping_dir / "manifest.json").read_text(encoding="utf-8"))
     forensic_manifest = json.loads((forensic_dir / "manifest.json").read_text(encoding="utf-8"))
@@ -191,6 +208,34 @@ def main() -> int:
     if len(broad) != 62 or int(broad["n_benchmark_factors"].iloc[0]) != 133:
         raise RuntimeError("broad-JKP result is not a complete 62 by 133-factor audit")
     broad_best = broad.sort_values("alpha_annualized", ascending=False).iloc[0]
+    ladder_results = pd.read_csv(ladder_dir / "strategy_benchmark_results.csv")
+    ladder_summary = pd.read_csv(ladder_dir / "benchmark_summary.csv")
+    ladder_comparison = pd.read_csv(ladder_dir / "strategy_benchmark_comparison.csv")
+    top_factor_frequency = pd.read_csv(ladder_dir / "top_jkp_factor_frequency.csv")
+    top_factor_rows = pd.read_csv(ladder_dir / "strategy_top_jkp_factors.csv")
+    if len(ladder_results) != 200 or ladder_results["candidate_id"].nunique() != 50:
+        raise RuntimeError("retained benchmark ladder is not a complete 50 by 4 panel")
+    if len(ladder_comparison) != 50 or ladder_comparison["canonical_work_id"].nunique() != 40:
+        raise RuntimeError("retained strategy comparison does not cover 40 papers")
+    expected_models = {"capm": 1, "ff3": 3, "ff5_mom": 6, "ff5_mom_jkp132": 133}
+    observed_models = (
+        ladder_results.groupby("benchmark_id")["n_benchmark_returns"].first().to_dict()
+    )
+    if observed_models != expected_models:
+        raise RuntimeError(f"matched benchmark definitions changed: {observed_models}")
+    ladder_all = ladder_summary[ladder_summary["implementation_basis"].eq("all_retained")]
+    ladder_all = ladder_all.set_index("benchmark_id").loc[list(expected_models)]
+    ladder_grounded = ladder_results[
+        ~ladder_results["implementation_basis"].eq("in_spirit_reconstruction")
+    ]
+    ladder_in_spirit = ladder_results[
+        ladder_results["implementation_basis"].eq("in_spirit_reconstruction")
+    ]
+    top_one = top_factor_rows[
+        top_factor_rows["factor_rank_by_absolute_correlation"].eq(1)
+    ]
+    if len(ladder_grounded) != 13 * 4 or len(ladder_in_spirit) != 37 * 4 or len(top_one) != 50:
+        raise RuntimeError("retained provenance or top-factor partition changed")
 
     lag_counts = []
     for lag in (0, 3, 6, 12):
@@ -278,6 +323,43 @@ def main() -> int:
         command("BroadBestMaxTP", f"{float(broad_best['max_abs_t_p_value']):.3f}"),
         command("BroadBestSimultaneousLowerPct", fmt_pct(float(broad_best["simultaneous_ci_low_annualized"]))),
         command("BroadMarketAlignmentCorrelation", f"{float(broad_manifest['market_alignment_correlation']):.3f}"),
+        command("RetainedBacktestPaperCount", 40),
+        command("RetainedBacktestStrategyCount", 50),
+        command("LadderEvaluationMonthCount", int(ladder_manifest["evaluation_months"])),
+        command("LadderCAPMPositiveCount", int(ladder_all.loc["capm", "positive_alpha_estimates"])),
+        command("LadderCAPMNominalCount", int(ladder_all.loc["capm", "nominal_positive_5pct"])),
+        command("LadderCAPMHolmCount", int(ladder_all.loc["capm", "holm_positive_5pct"])),
+        command("LadderCAPMMedianAlphaPct", fmt_pct(float(ladder_all.loc["capm", "median_alpha_annualized"]))),
+        command("LadderFFThreePositiveCount", int(ladder_all.loc["ff3", "positive_alpha_estimates"])),
+        command("LadderFFThreeNominalCount", int(ladder_all.loc["ff3", "nominal_positive_5pct"])),
+        command("LadderFFThreeHolmCount", int(ladder_all.loc["ff3", "holm_positive_5pct"])),
+        command("LadderFFThreeMedianAlphaPct", fmt_pct(float(ladder_all.loc["ff3", "median_alpha_annualized"]))),
+        command("LadderFFFiveMomPositiveCount", int(ladder_all.loc["ff5_mom", "positive_alpha_estimates"])),
+        command("LadderFFFiveMomNominalCount", int(ladder_all.loc["ff5_mom", "nominal_positive_5pct"])),
+        command("LadderFFFiveMomHolmCount", int(ladder_all.loc["ff5_mom", "holm_positive_5pct"])),
+        command("LadderFFFiveMomMedianAlphaPct", fmt_pct(float(ladder_all.loc["ff5_mom", "median_alpha_annualized"]))),
+        command("LadderJKPPositiveCount", int(ladder_all.loc["ff5_mom_jkp132", "positive_alpha_estimates"])),
+        command("LadderJKPNominalCount", int(ladder_all.loc["ff5_mom_jkp132", "nominal_positive_5pct"])),
+        command("LadderJKPHolmCount", int(ladder_all.loc["ff5_mom_jkp132", "holm_positive_5pct"])),
+        command("LadderJKPMedianAlphaPct", fmt_pct(float(ladder_all.loc["ff5_mom_jkp132", "median_alpha_annualized"]))),
+        command("LadderMedianFFThreeToJKPAttenuationPct", fmt_pct(float(
+            ladder_comparison["alpha_attenuation_ff3_to_jkp132"].median()
+        ))),
+        command("LadderMedianFFFiveMomToJKPAttenuationPct", fmt_pct(float(
+            ladder_comparison["alpha_attenuation_ff5_mom_to_jkp132"].median()
+        ))),
+        command("LadderMedianTopAbsCorrelation", f"{float(top_one['absolute_correlation'].median()):.2f}"),
+        command("LadderTopCorrelationOverHalfCount", int((top_one["absolute_correlation"] >= 0.5).sum())),
+        command("LadderUniqueTopFactorCount", int(top_one["jkp_factor_id"].nunique())),
+        command("LadderGroundedFFThreePositiveCount", int(
+            ladder_grounded.loc[ladder_grounded["benchmark_id"].eq("ff3"), "positive_alpha_estimate"].sum()
+        )),
+        command("LadderGroundedFFFiveMomPositiveCount", int(
+            ladder_grounded.loc[ladder_grounded["benchmark_id"].eq("ff5_mom"), "positive_alpha_estimate"].sum()
+        )),
+        command("LadderGroundedJKPPositiveCount", int(
+            ladder_grounded.loc[ladder_grounded["benchmark_id"].eq("ff5_mom_jkp132"), "positive_alpha_estimate"].sum()
+        )),
         command("MappingNarrativeCount", 49),
         command("MappingPartialCount", 12),
         command("MappingReleasedSeedCount", 1),
@@ -549,6 +631,107 @@ def main() -> int:
     for label in legend.get_texts():
         label.set_color(INK)
     save_figure(fig, paper_dir / "figures/usa_cost_sensitivity.pdf")
+
+    benchmark_order = ["capm", "ff3", "ff5_mom", "ff5_mom_jkp132"]
+    benchmark_labels = ["CAPM", "FF3", "FF5 + Mom.", "FF5 + Mom.\\n+ JKP132"]
+    benchmark_colors = [BLUE, "#4C8CCB", TEAL, GOLD]
+    benchmark_labels = [label.replace("\\n", "\n") for label in benchmark_labels]
+    benchmark_data = [
+        100.0
+        * ladder_results.loc[
+            ladder_results["benchmark_id"].eq(benchmark_id),
+            "alpha_annualized",
+        ].to_numpy(dtype=float)
+        for benchmark_id in benchmark_order
+    ]
+    fig, ax = plt.subplots(figsize=(9.2, 5.5), facecolor=WHITE)
+    style_axis(ax)
+    boxes = ax.boxplot(
+        benchmark_data,
+        tick_labels=benchmark_labels,
+        patch_artist=True,
+        widths=0.58,
+        showfliers=True,
+        medianprops={"color": INK, "linewidth": 2.0},
+        whiskerprops={"color": INK, "linewidth": 1.0},
+        capprops={"color": INK, "linewidth": 1.0},
+        flierprops={
+            "marker": "o",
+            "markerfacecolor": WHITE,
+            "markeredgecolor": NAVY,
+            "markersize": 3.5,
+            "alpha": 0.75,
+        },
+    )
+    for patch, color in zip(boxes["boxes"], benchmark_colors):
+        patch.set_facecolor(color)
+        patch.set_edgecolor(INK)
+        patch.set_alpha(0.82)
+    ax.axhline(0, color=INK, linewidth=0.9, zorder=0)
+    ax.set_ylabel("Annualized out-of-sample alpha (%)")
+    ax.set_title("Apparent alpha attenuates as the benchmark expands", pad=12)
+    ax.grid(axis="y", alpha=0.35)
+    ax.set_axisbelow(True)
+    for position, benchmark_id in enumerate(benchmark_order, start=1):
+        row = ladder_all.loc[benchmark_id]
+        text_value = (
+            f"+: {int(row['positive_alpha_estimates'])}/50  "
+            f"nom.: {int(row['nominal_positive_5pct'])}  "
+            f"Holm: {int(row['holm_positive_5pct'])}"
+        )
+        ax.text(
+            position,
+            0.98,
+            text_value,
+            transform=ax.get_xaxis_transform(),
+            ha="center",
+            va="top",
+            fontsize=7.1,
+            color=INK,
+            bbox={"facecolor": WHITE, "edgecolor": RULE, "alpha": 0.94, "pad": 2.0},
+        )
+    save_figure(fig, paper_dir / "figures/matched_benchmark_ladder.pdf")
+
+    readable_factors = {
+        "betabab_1260d": "Betting-against-beta",
+        "prc_highprc_252d": "52-week-high proximity",
+        "rvol_21d": "Realized volatility",
+        "ivol_capm_252d": "Idiosyncratic volatility",
+        "qmj_safety": "Quality-minus-junk safety",
+        "ret_12_1": "12--1 momentum",
+    }
+    factor_plot = top_factor_frequency.head(6).iloc[::-1].copy()
+    factor_plot["label"] = factor_plot["jkp_factor_id"].map(readable_factors).fillna(
+        factor_plot["jkp_factor_id"]
+    )
+    fig, ax = plt.subplots(figsize=(9.0, 4.6), facecolor=WHITE)
+    style_axis(ax)
+    bars = ax.barh(
+        factor_plot["label"],
+        factor_plot["n_strategies"],
+        color=TEAL,
+        edgecolor=INK,
+        linewidth=0.8,
+    )
+    for bar, correlation in zip(
+        bars,
+        factor_plot["median_absolute_correlation"],
+    ):
+        ax.text(
+            bar.get_width() + 0.2,
+            bar.get_y() + bar.get_height() / 2,
+            f"median |r|={correlation:.2f}",
+            va="center",
+            ha="left",
+            fontsize=8.0,
+            color=INK,
+        )
+    ax.set_xlabel("Number of strategies for which factor is the closest JKP match")
+    ax.set_title("The closest known exposures concentrate in low-risk and momentum factors")
+    ax.set_xlim(0, max(factor_plot["n_strategies"]) + 5)
+    ax.grid(axis="x", alpha=0.35)
+    ax.set_axisbelow(True)
+    save_figure(fig, paper_dir / "figures/top_jkp_factor_matches.pdf")
 
     international = pd.read_csv(international_dir / "candidate_primary_results.csv")
     international_ok = (

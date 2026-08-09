@@ -56,6 +56,15 @@ REQUIRED = [
     "paper_runs/submission_evidence/usa_broad_jkp_crossfit/broad_jkp_crossfit_residuals.csv",
     "paper_runs/submission_evidence/usa_broad_jkp_crossfit/broad_jkp_crossfit_results.csv",
     "paper_runs/submission_evidence/usa_broad_jkp_crossfit/run_manifest.json",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/strategy_benchmark_results.csv",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/strategy_benchmark_comparison.csv",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/paper_benchmark_summary.csv",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/benchmark_summary.csv",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/benchmark_residuals.csv",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/strategy_jkp_factor_correlations.csv",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/strategy_top_jkp_factors.csv",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/top_jkp_factor_frequency.csv",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/run_manifest.json",
     "paper_runs/submission_evidence/g7_ex_us_corrected/candidate_path_failures.csv",
     "paper_runs/submission_evidence/international_failure_forensics/failure_event_forensics.csv",
     "paper_runs/submission_evidence/international_failure_forensics/failure_month_summary.csv",
@@ -66,11 +75,13 @@ REQUIRED = [
     "scripts/refresh_census_primary_record_metadata.py",
     "scripts/diagnose_international_failures.py",
     "scripts/build_icaif2026_submission_assets.py",
+    "scripts/run_retained_benchmark_ladder.py",
     "scripts/validate_icaif_major_revision.py",
     "tests/test_mapping_audit.py",
     "tests/test_census_citation_assets.py",
     "tests/test_replication_scope_assets.py",
     "tests/test_international_failure_forensics.py",
+    "tests/test_retained_benchmark_ladder.py",
 ]
 
 README = """# Anonymous ICAIF 2026 empirical artifact
@@ -99,6 +110,12 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
   code-backed adaptation.
 - The broad-factor analysis is post hoc and its bootstrap resamples fixed out-of-sample
   residuals rather than rerunning rolling tuning.
+- The matched retained-strategy ladder holds the 50 mappings, 10 bp cost, 126 evaluation
+  months, and rolling estimator fixed across CAPM, FF3, FF5+Momentum, and the market plus
+  132 JKP characteristic returns. The latter contains the FF5+Momentum analogues and
+  therefore has 133 total benchmark returns, not 138 duplicated returns.
+- Only one retained strategy uses a released code expression; 12 reconstruct documented
+  paper components and 37 are in-spirit narrative reconstructions.
 - International performance is not headline evidence. The included forensic ledger
   shows why all 40 insolvency events are treated as a data/implementation alarm.
 
