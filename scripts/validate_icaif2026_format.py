@@ -68,6 +68,8 @@ def main() -> int:
     require(r"\acmConference[ICAIF '26]{7th ACM International Conference on AI in Finance}{November 14--17, 2026}{Milan, Italy}" in source,
             "conference name, dates, or location do not match the official call")
     require(r"\acmYear{2026}" in source, "ACM year is not 2026")
+    require(r"\acmDOI{}" in source and r"\acmISBN{}" in source,
+            "unassigned DOI or ISBN metadata is not explicitly blank")
     require(r"\bibliographystyle{ACM-Reference-Format}" in source,
             "ACM numeric bibliography style is not selected")
     require(r"\keywords{" in source and source.count(r"\ccsdesc") >= 1,
@@ -116,6 +118,8 @@ def main() -> int:
         require("Can Public Artifacts Substantiate Financial-Agent Alpha?" in text,
                 "rendered paper title is missing")
         require("References" in text, "references are missing from the PDF")
+        require("978-x-xxxx-xxxx-x" not in text and "YYYY/MM" not in text,
+                "PDF contains an unassigned ACM production placeholder")
         require(not re.search(r"^\s*(?:Appendix|Supplementary Materials?)\s*$", text,
                               flags=re.IGNORECASE | re.MULTILINE),
                 "PDF contains an appendix or supplement heading")
