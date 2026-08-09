@@ -19,6 +19,7 @@ def main() -> int:
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--pdf", type=Path)
     parser.add_argument("--log", type=Path)
+    parser.add_argument("--bbl", type=Path)
     parser.add_argument("--require-build-log", action="store_true")
     args = parser.parse_args()
 
@@ -34,16 +35,19 @@ def main() -> int:
         format_command.extend(("--log", str(args.log.resolve())))
     if args.require_build_log:
         format_command.append("--require-build-log")
+    evidence_command = [
+        sys.executable,
+        str(root / "scripts/validate_icaif_major_revision.py"),
+        "--root",
+        str(root),
+        "--pdf",
+        str(pdf),
+    ]
+    if args.bbl:
+        evidence_command.extend(("--bbl", str(args.bbl.resolve())))
     commands = (
         format_command,
-        (
-            sys.executable,
-            str(root / "scripts/validate_icaif_major_revision.py"),
-            "--root",
-            str(root),
-            "--pdf",
-            str(pdf),
-        ),
+        evidence_command,
     )
     for command in commands:
         subprocess.run(command, check=True)

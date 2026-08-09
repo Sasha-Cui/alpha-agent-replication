@@ -74,6 +74,11 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--pdf", type=Path)
+    parser.add_argument(
+        "--bbl",
+        type=Path,
+        help="Explicit compiled bibliography for release-build validation",
+    )
     args = parser.parse_args()
     root = args.root.resolve()
     evidence = root / "paper_runs/submission_evidence"
@@ -388,12 +393,21 @@ def main() -> int:
         require("supplement" not in folded_text, "PDF improperly depends on a supplement")
         from pypdf import PdfReader
         require(len(PdfReader(args.pdf).pages) <= 8, "PDF exceeds ICAIF's eight-page total limit")
-        bbl = (root / "docs/paper/icaif2026_submission.bbl").read_text(encoding="utf-8")
-        require(len(re.findall(r"^\\bibitem", bbl, flags=re.MULTILINE)) >= 100,
-                "compiled bibliography does not contain all 98 corpus works plus methods")
         require("López de Prado" not in text and "Lopez de Prado" not in text,
                 "prohibited author remains in PDF")
         require("AlphaAgent survivor" not in text, "forbidden PDF phrase")
+    if args.bbl is not None:
+        bbl_path = args.bbl.resolve()
+        require(
+            bbl_path.is_file(),
+            f"explicit compiled bibliography is missing: {bbl_path}",
+        )
+        if bbl_path.is_file():
+            bbl = bbl_path.read_text(encoding="utf-8")
+            require(
+                len(re.findall(r"^\\bibitem", bbl, flags=re.MULTILINE)) >= 100,
+                "compiled bibliography does not contain all 98 corpus works plus methods",
+            )
     print("major-revision validation passed")
     return 0
 

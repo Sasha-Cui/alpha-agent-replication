@@ -59,14 +59,16 @@ python scripts/build_icaif2026_submission.py
 python scripts/validate_icaif_submission.py \
   --pdf output/pdf/icaif2026_submission.pdf \
   --log docs/paper/icaif2026_submission.log \
+  --bbl docs/paper/icaif2026_submission.bbl \
   --require-build-log
 ```
 
 This mode reports `ICAIF RELEASE-BUILD AUDIT PASSED: 71 checks`. An explicit
 missing log, a log from the wrong layout/anonymity mode, an overfull box,
 undefined citations or references, or a fatal TeX marker fails validation.
-Logs remain ignored because they contain machine-specific paths and are not
-canonical publication artifacts.
+An explicitly supplied compiled bibliography must contain at least 100 entries.
+Logs and compiled bibliography files remain ignored because they are generated
+build residue rather than canonical publication artifacts.
 
 ## Interpretation and operational boundaries
 

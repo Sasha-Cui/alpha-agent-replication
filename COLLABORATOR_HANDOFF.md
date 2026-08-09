@@ -162,6 +162,7 @@ python scripts/build_icaif2026_submission.py
 python scripts/validate_icaif_submission.py \
   --pdf output/pdf/icaif2026_submission.pdf \
   --log docs/paper/icaif2026_submission.log \
+  --bbl docs/paper/icaif2026_submission.bbl \
   --require-build-log
 ```
 
