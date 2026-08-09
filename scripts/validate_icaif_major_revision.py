@@ -109,6 +109,21 @@ def main() -> int:
     pretrim_scope = rows(evidence / "replication_scope/pretrim_primary_record_inventory.csv")
     waterfall = rows(evidence / "replication_scope/work_level_evidence_waterfall.csv")
     citation_metadata = rows(root / "literature_review/census_v1/primary_record_metadata.csv")
+    search_log = rows(root / "literature_review/census_v1/search_log.csv")
+    search_protocol = (root / "literature_review/census_v1/search_protocol.md").read_text(
+        encoding="utf-8"
+    )
+    require(len(search_log) == 22, "search route log does not contain all planned routes")
+    for query in ("Q1", "Q2", "Q3"):
+        require(sum(row["query_family"] == query for row in search_log) == 5,
+                f"search route coverage changed for {query}")
+    require(all(row["completed_by_utc"] == "2026-08-02T23:59:59Z" for row in search_log),
+            "search cutoff changed")
+    require(all(row["raw_hit_count_preserved"] == "no" for row in search_log),
+            "search log incorrectly claims preserved raw hit counts")
+    for required in ("cutoff-bounded systematic screen", "result pages, rankings, and hit counts",
+                     "Crossref and OpenAlex", "Borderline records"):
+        require(required in search_protocol, f"search-protocol disclosure absent: {required}")
     require(len(census_scope) == 67, "system-lineage census bibliography is not complete")
     require(len(direct_scope) == 14, "direct-code attempt inventory is not 14")
     require(sum(row["in_67_system_census"] == "yes" for row in direct_scope) == 8,
@@ -184,6 +199,33 @@ def main() -> int:
         holm_by_lag.append(holm_positive_count(group))
     require(holm_by_lag == [0, 1, 1, 0], f"HAC sensitivity changed: {holm_by_lag}")
 
+    missing_dir = evidence / "usa_missing_return_sensitivity"
+    missing_manifest = json.loads((missing_dir / "manifest.json").read_text())
+    require(missing_manifest["analysis_label"] ==
+            "post_hoc_referee_requested_missing_return_sensitivity",
+            "missing-return sensitivity has wrong analysis label")
+    for name, expected in missing_manifest["output_sha256"].items():
+        require(sha256(missing_dir / name) == expected, f"missing-return hash: {name}")
+    missing_summary = {row["policy"]: row for row in rows(missing_dir / "policy_summary.csv")}
+    require(set(missing_summary) == {"zero_primary", "position_adverse_100"},
+            "missing-return policy set changed")
+    adverse = missing_summary["position_adverse_100"]
+    require(int(adverse["n_estimable"]) == 62, "adverse missing-return family is not 62")
+    require(abs(float(adverse["median_alpha_annualized"]) - (-0.048404310807554085)) < 1e-12,
+            "adverse missing-return median changed")
+    require(int(adverse["positive_alpha_count"]) == 4 and
+            int(adverse["nominal_positive_5pct"]) == 0 and
+            int(adverse["holm_positive_5pct"]) == 0,
+            "adverse missing-return positive counts changed")
+
+    costs = rows(evidence / "usa_retrospective_corrected/candidate_cost_alpha_results.csv")
+    cost_holm = []
+    for cost in (0, 5, 10, 25, 50):
+        group = [row for row in costs if row["status"] == "ok" and
+                 int(float(row["cost_bps_one_way"])) == cost]
+        cost_holm.append(holm_positive_count(group))
+    require(cost_holm == [1, 1, 1, 0, 0], f"cost-grid Holm counts changed: {cost_holm}")
+
     broad = rows(evidence / "usa_broad_jkp_crossfit/broad_jkp_crossfit_results.csv")
     require(len(broad) == 62 and {int(float(row["n_benchmark_factors"])) for row in broad} == {133},
             "broad factor family changed")
@@ -200,20 +242,26 @@ def main() -> int:
             "not all events have the documented dominant short return")
 
     tex = (root / "docs/paper/icaif2026_submission.tex").read_text(encoding="utf-8")
-    for required in ["Does Public Evidence Support Financial-Agent Alpha Claims?",
+    for required in ["Can Public Artifacts Substantiate Financial-Agent Alpha?",
                      "yields a testable code-backed adaptation", "not outcome-blind",
                      "does \\emph{not} rerun rolling estimation", "excluded from headline performance inference",
                      "benefit of the doubt", "failure cannot count as evidence against the source",
                      "13 source-grounded component tests", "The 14 targeted implementation attempts",
                      "The five papers underlying the 13 source-grounded component tests",
-                     "103 candidate system lineages backed by 98 distinct works",
+                     "103 candidate lineages backed by 98 distinct cited works",
                      "All 98 works are cited", "\\ReconstructedWorkCount retained works",
-                     "\\RetainedMappingCount common-task mappings",
-                     "29 remain availability-only", "eight retained works entered the code audit",
+                     "\\RetainedMappingCount mappings",
+                     "29 remain availability-only", "covers eight retained works",
+                     "cutoff-bounded systematic screen rather than a complete universe",
+                     "these statistics are descriptive conditional diagnostics",
+                     "The position-adverse unit-move stress",
+                     "\\USGrossPositiveBreakEvenMedianBps",
                      "Reproducibility and Audit Trail", "generated_corpus_citations.tex",
                      "census_primary_records"]:
         require(required in tex, f"required disclosure absent: {required}")
-    for forbidden in ["Do Financial AI Agents Discover Alpha?", "AlphaAgent survivor", "Robust result",
+    for forbidden in ["Do Financial AI Agents Discover Alpha?",
+                      "Does Public Evidence Support Financial-Agent Alpha Claims?",
+                      "AlphaAgent survivor", "Robust result",
                       "Anonymous Empirical Artifact"]:
         require(forbidden not in tex, f"forbidden overclaim present: {forbidden}")
     require("supplement" not in tex.casefold(), "paper improperly depends on a supplement")
@@ -232,32 +280,41 @@ def main() -> int:
         text = pdf_text(args.pdf)
         normalized_text = re.sub(r"\s+", " ", text)
         folded_text = normalized_text.casefold()
-        require("Does Public Evidence Support Financial-Agent Alpha Claims?" in text, "wrong PDF title")
-        require("producing 40 events" in text, "international forensic disclosure absent")
+        require("Can Public Artifacts Substantiate Financial-Agent Alpha?" in normalized_text,
+                "wrong PDF title")
+        require("producing 40 events" in normalized_text, "international forensic disclosure absent")
         require("13 source-grounded component tests" in text, "good-faith subset disclosure absent")
         require("cannot count as evidence against the source" in text,
                 "anti-strawman source-protection disclosure absent")
         require("The 14 targeted implementation attempts" in text, "direct-code inventory absent")
         require("The five papers underlying the 13 source-grounded component tests" in text,
                 "source-grounded paper inventory absent")
-        require("103 candidate system lineages" in normalized_text and "98 distinct works" in normalized_text,
+        require("103 candidate lineages" in normalized_text and "98 distinct cited works" in normalized_text,
                 "pre-trim breadth disclosure absent")
         require("69 works" in normalized_text, "retained bibliography breadth disclosure absent")
         require("All 98 works are cited" in normalized_text,
                 "complete screened-corpus citation disclosure absent")
-        require("40 retained works" in normalized_text and "50 common-task mappings" in normalized_text,
+        require("40 retained works" in normalized_text and "50 mappings" in normalized_text,
                 "retained reconstruction waterfall absent")
         require("29 remain availability-only" in normalized_text,
                 "availability-only retained-work disclosure absent")
-        require("eight retained works entered the code audit" in normalized_text,
+        require("covers eight retained works" in normalized_text,
                 "retained code-route disclosure absent")
+        require("cutoff-bounded systematic screen" in folded_text,
+                "systematic-search limitation absent")
+        require(all(token in folded_text for token in
+                    ("descriptive", "conditional", "not confirmatory")),
+                "conditional-inference boundary absent")
+        require(all(token in folded_text for token in
+                    ("position-adverse", "unit-move stress", "missing")),
+                "missing-return sensitivity absent")
         require("reproducibility and audit trail" in folded_text,
                 "self-contained audit section absent")
         require("supplement" not in folded_text, "PDF improperly depends on a supplement")
         from pypdf import PdfReader
         require(len(PdfReader(args.pdf).pages) <= 8, "PDF exceeds ICAIF's eight-page total limit")
         bbl = (root / "docs/paper/icaif2026_submission.bbl").read_text(encoding="utf-8")
-        require(len(re.findall(r"^\\bibitem", bbl, flags=re.MULTILINE)) >= 108,
+        require(len(re.findall(r"^\\bibitem", bbl, flags=re.MULTILINE)) >= 110,
                 "compiled bibliography does not contain all 98 corpus works plus methods")
         require("López de Prado" not in text and "Lopez de Prado" not in text,
                 "prohibited author remains in PDF")
