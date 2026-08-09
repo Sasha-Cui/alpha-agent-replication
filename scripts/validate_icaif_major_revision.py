@@ -254,15 +254,16 @@ def main() -> int:
                 float(row["p_value_two_sided"]) <= .05 for row in group),
             holm_positive_count(group),
             sum(float(row["alpha_annualized"]) >= .02 for row in group),
+            sum(value <= .05 for value in material_p),
             holm_count(material_p),
         ))
     require(cost_holm == [1, 1, 1, 0, 0], f"cost-grid Holm counts changed: {cost_holm}")
     require(threshold_counts == [
-        (0, 46, 7, 1, 33, 0),
-        (5, 42, 7, 1, 21, 0),
-        (10, 30, 6, 1, 16, 0),
-        (25, 18, 1, 0, 10, 0),
-        (50, 10, 0, 0, 1, 0),
+        (0, 46, 7, 1, 33, 3, 0),
+        (5, 42, 7, 1, 21, 1, 0),
+        (10, 30, 6, 1, 16, 1, 0),
+        (25, 18, 1, 0, 10, 1, 0),
+        (50, 10, 0, 0, 1, 0, 0),
     ], f"gross-to-net threshold counts changed: {threshold_counts}")
 
     broad = rows(evidence / "usa_broad_jkp_crossfit/broad_jkp_crossfit_results.csv")

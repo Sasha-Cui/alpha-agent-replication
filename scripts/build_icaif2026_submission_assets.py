@@ -344,19 +344,21 @@ def main() -> int:
                                      (group["p_value_two_sided"] <= 0.05)).sum()),
             "holm_positive": cost_holm_counts[schedule.index(cost_bps)],
             "point_material": int((group["alpha_annualized"] >= 0.02).sum()),
+            "nominal_material": int(sum(value <= 0.05 for value in material_p)),
             "holm_material": holm_count(material_p),
         })
     observed_cost_counts = [
         (row["cost_bps"], row["positive"], row["nominal_positive"],
-         row["holm_positive"], row["point_material"], row["holm_material"])
+         row["holm_positive"], row["point_material"], row["nominal_material"],
+         row["holm_material"])
         for row in cost_grid_rows
     ]
     expected_cost_counts = [
-        (0, 46, 7, 1, 33, 0),
-        (5, 42, 7, 1, 21, 0),
-        (10, 30, 6, 1, 16, 0),
-        (25, 18, 1, 0, 10, 0),
-        (50, 10, 0, 0, 1, 0),
+        (0, 46, 7, 1, 33, 3, 0),
+        (5, 42, 7, 1, 21, 1, 0),
+        (10, 30, 6, 1, 16, 1, 0),
+        (25, 18, 1, 0, 10, 1, 0),
+        (50, 10, 0, 0, 1, 0, 0),
     ]
     if observed_cost_counts != expected_cost_counts:
         raise RuntimeError(f"gross-to-net threshold family changed: {observed_cost_counts}")
@@ -403,14 +405,19 @@ def main() -> int:
         r"\caption{Gross-to-net alpha thresholds and numerical anchors for Figure~\ref{fig:cost}.}",
         r"\label{tab:alpha-sharpe-anchor}",
         r"\scriptsize",
-        r"\setlength{\tabcolsep}{2.1pt}",
+        r"\setlength{\tabcolsep}{1.65pt}",
         r"\textit{Panel A: familywide threshold audit}\\[-0.2em]",
-        r"\begin{tabular}{@{}rrrrrrrr@{}}",
+        r"\begin{tabular}{@{}rrrrrrrrr@{}}",
         r"\toprule",
         (
             "\\textbf{Cost} & \\textbf{Med. $\\hat{\\alpha}$} & \\textbf{Med. $SR$} & "
-            "\\textbf{$\\hat{\\alpha}>0$} & \\textbf{Raw $+$} & \\textbf{Holm $+$} & "
-            "\\textbf{$\\hat{\\alpha}\\geq2\\%$} & \\textbf{Holm $>2\\%$} \\\\"
+            "\\multicolumn{3}{c}{\\textbf{$\\alpha>0$}} & "
+            "\\multicolumn{3}{c}{\\textbf{$\\alpha>2\\%$}} \\\\"
+        ),
+        r"\cmidrule(lr){4-6}\cmidrule(l){7-9}",
+        (
+            " & & & \\textbf{Point} & \\textbf{Raw} & \\textbf{Holm} & "
+            "\\textbf{Point} & \\textbf{Raw} & \\textbf{Holm} \\\\"
         ),
         r"\midrule",
     ]
@@ -418,7 +425,8 @@ def main() -> int:
         anchor_lines.append(
             f"{row['cost_bps']} bp & {100.0 * row['median_alpha']:.2f}\\% & "
             f"{row['median_sharpe']:.3f} & {row['positive']} & {row['nominal_positive']} & "
-            f"{row['holm_positive']} & {row['point_material']} & {row['holm_material']} \\\\"
+            f"{row['holm_positive']} & {row['point_material']} & {row['nominal_material']} & "
+            f"{row['holm_material']} \\\\"
         )
     anchor_lines.extend([
         r"\bottomrule",
@@ -446,7 +454,7 @@ def main() -> int:
         r"Direct seed adaptation (gross only) & 0.316 & 0.33\% & 0.65 & --- & --- & --- \\",
         r"\bottomrule",
         r"\end{tabular}",
-        r"\par\vspace{0.2em}\footnotesize U.S. mapping rows cover 2001--2024. Raw $+$ is positive $\hat{\alpha}$ with two-sided HAC $p\leq.05$; Holm $+$ adjusts that test across 62 mappings. Holm $>2\%$ applies Holm to one-sided HAC tests of $H_0:\alpha\leq2\%$; the materiality threshold was selected after outcomes and remains descriptive. $SR$ annualizes next-month realized returns, which are one-period-ahead but not an independent discovery holdout. The direct released-seed adaptation is a separate gross 1999--2024 path. Panel B rows are selected by evidence role, not significance.",
+        r"\par\vspace{0.2em}\footnotesize U.S. mapping rows cover 2001--2024. In the $\alpha>0$ columns, Raw means positive $\hat{\alpha}$ with two-sided HAC $p\leq.05$ and Holm adjusts across 62 mappings. For $\alpha>2\%$, Raw and Holm use one-sided HAC tests of $H_0:\alpha\leq2\%$; that materiality threshold was selected after outcomes and remains descriptive. $SR$ annualizes next-month realized returns, which are one-period-ahead but not an independent discovery holdout. The direct released-seed adaptation is a separate gross 1999--2024 path. Panel B rows are selected by evidence role, not significance.",
         r"\end{table}",
     ])
     anchor_path = paper_dir / "tables/alpha_sharpe_anchor.tex"
