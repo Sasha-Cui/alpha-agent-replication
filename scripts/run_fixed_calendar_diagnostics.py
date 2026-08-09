@@ -17,7 +17,6 @@ import json
 from pathlib import Path
 import tempfile
 
-import numpy as np
 import pandas as pd
 
 from alpha_evolve.submission_analysis import alpha_regression

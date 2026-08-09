@@ -43,6 +43,19 @@ where = ["src"]
 line-length = 120
 target-version = "py39"
 
+[tool.ruff.lint.per-file-ignores]
+# These standalone entry points bootstrap the local package path before imports.
+"scripts/diagnose_international_failures.py" = ["E402"]
+"scripts/evaluate_candidate_returns_french.py" = ["E402"]
+"scripts/evaluate_guru_jkp_longonly_additive.py" = ["E402"]
+"scripts/freeze_submission_analysis.py" = ["E402"]
+"scripts/run_paper_idea_jkp_proxies.py" = ["E402"]
+"scripts/run_submission_evidence.py" = ["E402"]
+"scripts/run_textbenchmark_performance_analysis.py" = ["E402"]
+"scripts/run_usa_missing_return_sensitivity.py" = ["E402"]
+"tests/test_referee_robustness.py" = ["E402"]
+"tests/test_submission_runner.py" = ["E402"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]

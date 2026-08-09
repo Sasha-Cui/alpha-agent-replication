@@ -94,7 +94,7 @@ def main() -> int:
     adverse = pd.read_csv(paths[7])
     usa = pd.read_csv(paths[8])
     claims = pd.read_csv(paths[9])
-    fixed_calendar = pd.read_csv(paths[10])
+    _fixed_calendar = pd.read_csv(paths[10])
 
     if len(registry) != 103 or int(registry["main_FT"].eq("Y").sum()) != 67:
         raise RuntimeError("registry denominator changed")

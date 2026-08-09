@@ -20,12 +20,11 @@ from alpha_evolve.performance import (
     PSEUDOINVERSE_RCOND,
     TARGET_ANNUAL_VOLATILITY,
     annualized_sharpe,
-    annualized_volatility,
     max_tangency_sharpe,
     newey_west_intercept_se,
     target_vol_scale,
 )
-from alpha_evolve.policy import LEGACY_NON_JKP_MESSAGE, require_legacy_non_jkp_opt_in
+from alpha_evolve.policy import require_legacy_non_jkp_opt_in
 
 MIN_OVERLAP_MONTHS = 24
 BENCHMARKS = {

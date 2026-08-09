@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 
 from .paths import DEFAULT_FACTOR_PANEL
-from .policy import LEGACY_NON_JKP_MESSAGE, require_legacy_non_jkp_opt_in
+from .policy import require_legacy_non_jkp_opt_in
 
 ANALYSIS_WINDOW_START = pd.Timestamp("1999-07-31")
 ANALYSIS_WINDOW_END = pd.Timestamp("2021-12-31")

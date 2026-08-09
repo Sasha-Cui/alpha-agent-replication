@@ -16,7 +16,6 @@ from .performance import (
     PSEUDOINVERSE_RCOND,
     TARGET_ANNUAL_VOLATILITY,
     annualized_sharpe,
-    annualized_volatility,
     max_tangency_sharpe,
     newey_west_intercept_se,
     target_vol_scale,
