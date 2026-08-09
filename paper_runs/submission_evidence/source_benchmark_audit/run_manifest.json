@@ -1,0 +1,23 @@
+{
+  "analysis_label": "source_paper_benchmark_audit_and_heterogeneity",
+  "created_at_utc": "2026-08-09T20:52:45.567366+00:00",
+  "interpretation": "descriptive source-paper benchmark coding; negative coding requires verified full text; not outcome-blind",
+  "paper_count": 40,
+  "strategy_count": 50,
+  "verified_full_text_papers": 38,
+  "unresolved_papers": 2,
+  "verified_without_asset_pricing_regression": 37,
+  "verified_with_multifactor_loadings_only": 1,
+  "verified_reporting_factor_adjusted_intercept": 0,
+  "verified_using_jkp132": 0,
+  "input_sha256": {
+    "paper_runs/submission_evidence/source_benchmark_audit/source_benchmark_audit.csv": "ef146b63665b61e96fdfcd21653aaa366c498a38aa7964440e60006fb89f4eea",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/strategy_benchmark_comparison.csv": "ac8660da065def0f50ea6d7463b0d057319c8eef08b1a41f277352e0980ad46c",
+    "paper_runs/submission_evidence/retained_benchmark_ladder/paper_benchmark_summary.csv": "dd2853f5fd790d9e66607bea8f138bf0734c45b25c0195d6658dc3091447b014"
+  },
+  "output_sha256": {
+    "strategy_source_benchmark_results.csv": "9b8ecdec5b6734a23b443d8aaa1e712060fe418486e91ec36022c29dcaa63151",
+    "source_benchmark_summary.csv": "6627a1cdeb333b31003f24ac6e96666aff8ccb535a696e8430c9cff29aab0701",
+    "source_benchmark_heterogeneity.csv": "7937a0e1d4e02127d5919ff5d2f019be1ad74e8eccd662f8ec0789b9af222b33"
+  }
+}

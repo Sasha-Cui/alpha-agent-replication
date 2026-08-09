@@ -1,0 +1,8 @@
+metric,value
+mapped_papers,40
+verified_full_text_papers,38
+unresolved_papers,2
+verified_without_asset_pricing_regression,37
+verified_with_multifactor_loadings_only,1
+verified_reporting_factor_adjusted_intercept,0
+verified_using_jkp132,0
