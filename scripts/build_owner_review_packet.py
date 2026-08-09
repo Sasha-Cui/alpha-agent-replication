@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the author's evidence-vetting packet from final immutable outputs."""
+"""Build the archived evidence-audit manuscript's owner-review packet."""
 from __future__ import annotations
 
 import hashlib
@@ -174,6 +174,9 @@ def main() -> int:
 
     lines = [
         "# Owner review packet",
+        "",
+        "> **LEGACY EVIDENCE-AUDIT RECORD.** This packet belongs to the archived",
+        "> `alpha_agent_replication.tex` workflow, not the current ICAIF submission.",
         "",
         "> **OWNER STATUS: PENDING — NOT APPROVED FOR SUBMISSION**",
         "",

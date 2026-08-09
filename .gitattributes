@@ -1,0 +1,6 @@
+# Keep the history-sanitized benchmark runners and their regression test as
+# standalone pack objects. This prevents an old private-path blob from being
+# shipped as a delta base in fresh public clones.
+scripts/run_retained_benchmark_ladder.py -delta
+scripts/run_textbenchmark_performance_analysis.py -delta
+tests/test_retained_benchmark_ladder.py -delta
