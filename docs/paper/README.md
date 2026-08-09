@@ -10,14 +10,26 @@ generated assets.
 Build and validate from the repository root:
 
 ```bash
+python scripts/validate_submission_package.py
+```
+
+That fresh-clone mode runs 62 source/PDF checks and never looks for ignored
+build residue. For a release build, regenerate the assets and PDF and request
+the nine additional log checks explicitly:
+
+```bash
 python scripts/build_icaif2026_submission_assets.py
 python scripts/build_icaif2026_submission.py
-python scripts/validate_submission_package.py
+python scripts/validate_icaif_submission.py \
+  --pdf output/pdf/icaif2026_submission.pdf \
+  --log docs/paper/icaif2026_submission.log \
+  --require-build-log
 ```
 
 The build writes the single submission artifact to
 `output/pdf/icaif2026_submission.pdf`. The current PDF is seven pages and
-passes all 71 ACM-format checks plus the locked-evidence wording gate.
+its recorded release build passes all 71 checks plus the locked-evidence
+wording gate.
 
 The empirical results are retrospective factor-spanning diagnostics for 50
 good-faith strategy mappings from 40 papers. They are not 50 native-agent

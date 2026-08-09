@@ -21,6 +21,7 @@ def sha256(path: Path) -> str:
 REQUIRED = [
     "docs/confirmatory_analysis_protocol.md",
     "docs/good_faith_reconstruction_protocol.md",
+    "docs/SCIENTIFIC_AUDIT.md",
     "docs/source_anchor_review_packet.md",
     "docs/full_corpus_bibliography.md",
     "docs/system_census_bibliography.md",
@@ -46,6 +47,7 @@ REQUIRED = [
     "paper_runs/submission_evidence/replication_scope/source_grounded_component_inventory.csv",
     "paper_runs/submission_evidence/replication_scope/pretrim_primary_record_inventory.csv",
     "paper_runs/submission_evidence/replication_scope/work_level_evidence_waterfall.csv",
+    "paper_runs/submission_evidence/replication_scope/mapping_scope_ledger.csv",
     "paper_runs/repository_ff5mom_metrics_summary.csv",
     "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv",
     "paper_runs/submission_evidence/usa_retrospective_corrected/factor_monthly_USA.csv",

@@ -18,6 +18,9 @@ Start with [`COLLABORATOR_HANDOFF.md`](COLLABORATOR_HANDOFF.md), the experiment
 map in [`docs/EXPERIMENT_INDEX.md`](docs/EXPERIMENT_INDEX.md), and the compact
 50-row result dataframe in
 [`paper_runs/handoff/strategy_result_index.csv`](paper_runs/handoff/strategy_result_index.csv).
+For an adversarial claim-by-claim review, use
+[`docs/SCIENTIFIC_AUDIT.md`](docs/SCIENTIFIC_AUDIT.md), including the explicit
+98/69/40/50/62/14 denominator reconciliation.
 
 The 50 rows are genuinely implemented and backtested common-task strategies,
 but they are not 50 native-agent replications. They comprise one released-code
@@ -36,14 +39,26 @@ provenance boundary is enforced by the handoff manifest and tests.
 Build and validate the submission from the repository root:
 
 ```bash
-python scripts/build_icaif2026_submission_assets.py
-python scripts/build_icaif2026_submission.py
 python scripts/validate_submission_package.py
 ```
 
-The canonical source and PDF pass all 71 ACM-format checks and the current
-locked-evidence wording gate. Their hashes and the exact validation commands
-are recorded in [`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md).
+This fresh-clone gate performs 62 source/PDF artifact checks and does not depend
+on ignored LaTeX auxiliary files. A release build adds nine explicit build-log
+checks:
+
+```bash
+python scripts/build_icaif2026_submission_assets.py
+python scripts/build_icaif2026_submission.py
+python scripts/validate_icaif_submission.py \
+  --pdf output/pdf/icaif2026_submission.pdf \
+  --log docs/paper/icaif2026_submission.log \
+  --require-build-log
+```
+
+The current release evidence passes all 71 checks and the locked-evidence
+wording gate. The two validation scopes, software prerequisites, hashes, and
+exact commands are recorded in
+[`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md).
 Large licensed security-level inputs and regenerated monthly reconstruction
 matrices remain outside Git; their paths and SHA-256 hashes are recorded in the
 run manifests.

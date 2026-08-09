@@ -132,3 +132,54 @@ def test_factor_correlation_ledger_is_complete() -> None:
             "median_top_absolute_correlation"
         ],
     )
+
+
+def test_headline_factor_frequencies_and_correlation_window_are_exact() -> None:
+    frequency = pd.read_csv(OUTPUT / "top_jkp_factor_frequency.csv")
+    expected_top_six = {
+        "betabab_1260d": (12, -1),
+        "prc_highprc_252d": (8, 1),
+        "rvol_21d": (3, -1),
+        "ivol_capm_252d": (3, -1),
+        "qmj_safety": (3, 1),
+        "ret_12_1": (3, 1),
+    }
+    observed = frequency.set_index("jkp_factor_id")
+    for factor_id, (expected_count, expected_sign) in expected_top_six.items():
+        row = observed.loc[factor_id]
+        assert int(row["n_strategies"]) == expected_count
+        assert np.sign(float(row["median_signed_correlation"])) == expected_sign
+
+    assert int(frequency.head(6)["n_strategies"].sum()) == 32
+    assert int(frequency.head(10)["n_strategies"].sum()) == 39
+    assert int(frequency["n_strategies"].sum()) == 50
+
+    correlations = pd.read_csv(OUTPUT / "strategy_jkp_factor_correlations.csv")
+    assert set(correlations["n_common_months"]) == {246}
+    assert set(correlations["common_start"]) == {"2001-08-31"}
+    assert set(correlations["common_end"]) == {"2022-01-31"}
+
+
+def test_every_strategy_has_one_deterministic_rank_per_factor() -> None:
+    correlations = pd.read_csv(OUTPUT / "strategy_jkp_factor_correlations.csv")
+    grouped = correlations.groupby("candidate_id")
+    assert set(grouped.size()) == {132}
+    for _, group in grouped:
+        assert sorted(group["factor_rank_by_absolute_correlation"]) == list(
+            range(1, 133)
+        )
+        assert group["jkp_factor_id"].nunique() == 132
+
+
+def test_factor_correlation_ties_use_factor_id_as_stable_tiebreaker() -> None:
+    frame = pd.DataFrame(
+        {
+            "candidate": [1.0, 2.0, 3.0, 4.0],
+            "char__z": [1.0, 2.0, 3.0, 4.0],
+            "char__a": [-1.0, -2.0, -3.0, -4.0],
+        }
+    )
+    ranked = MODULE.rank_factor_correlations(
+        frame, "candidate", ["char__z", "char__a"]
+    )
+    assert ranked["jkp_factor_column"].tolist() == ["char__a", "char__z"]

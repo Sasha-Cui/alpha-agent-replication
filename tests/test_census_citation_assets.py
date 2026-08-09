@@ -77,3 +77,44 @@ def test_work_level_waterfall_reconciles_every_canonical_work() -> None:
 
 def test_latex_conversion_removes_unsupported_cjk_aliases() -> None:
     assert MODULE.latex_text("Ran Song (宋燃)") == "Ran Song"
+
+
+def test_mapping_scope_ledger_reconciles_62_candidates_to_headline_50() -> None:
+    with (
+        ROOT
+        / "paper_runs/submission_evidence/replication_scope/mapping_scope_ledger.csv"
+    ).open(newline="", encoding="utf-8") as stream:
+        rows = list(csv.DictReader(stream))
+
+    included = [row for row in rows if row["headline_50_scope"] == "included"]
+    excluded = [row for row in rows if row["headline_50_scope"] == "excluded"]
+    assert len(rows) == len({row["candidate_id"] for row in rows}) == 62
+    assert len(included) == 50
+    assert len(excluded) == 12
+    assert len({row["canonical_work_id"] for row in included}) == 40
+    assert {row["screen_main_ft"] for row in included} == {"Y"}
+    assert {row["screen_main_ft"] for row in excluded} == {"N"}
+    assert {
+        row["mapping_fidelity_tier"] for row in excluded
+    } == {"M0_narrative_translation"}
+    assert {
+        row["source_category"] for row in excluded
+    } == {
+        "formula_or_factor_method",
+        "benchmark_or_audit",
+        "community_repository",
+    }
+    assert {
+        category: sum(row["source_category"] == category for row in excluded)
+        for category in {row["source_category"] for row in excluded}
+    } == {
+        "formula_or_factor_method": 4,
+        "benchmark_or_audit": 6,
+        "community_repository": 2,
+    }
+    assert all(
+        row["headline_scope_reason"].startswith(
+            "excluded: screened lineage has main_FT=N; OUT:"
+        )
+        for row in excluded
+    )

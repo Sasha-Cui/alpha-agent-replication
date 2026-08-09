@@ -77,6 +77,35 @@ def read_csv(path: Path, delimiter: str = ",") -> list[dict[str, str]]:
         return list(csv.DictReader(stream, delimiter=delimiter))
 
 
+def normalized_name(value: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", value.casefold())
+
+
+def registry_row_for_mapping(
+    registry: list[dict[str, str]], source_index: str, source_name: str
+) -> dict[str, str]:
+    target_index = str(int(source_index))
+    candidates = [
+        row
+        for row in registry
+        if target_index
+        in {str(int(value)) for value in re.findall(r"\d+", row["old_refs"])}
+    ]
+    if len(candidates) > 1:
+        target_name = normalized_name(source_name)
+        candidates = [
+            row
+            for row in candidates
+            if target_name in normalized_name(row["system_name"])
+            or normalized_name(row["system_name"]) in target_name
+        ]
+    require(
+        len(candidates) == 1,
+        f"mapping source does not resolve to one screened lineage: {source_name}",
+    )
+    return candidates[0]
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
@@ -222,6 +251,100 @@ def main() -> int:
     require(len(DIAGNOSTIC_DIRECT_WORK_IDS) == 6
             and DIAGNOSTIC_DIRECT_WORK_IDS <= preferred_work_ids - retained_work_ids,
             "diagnostic direct-code crosswalk is not six excluded works")
+
+    preferred_by_system_id = {
+        system_id: row["canonical_work_id"]
+        for row in preferred
+        for system_id in row["system_ids"].split("; ")
+        if system_id
+    }
+    mapping_scope_fields = [
+        "source_index",
+        "source_name",
+        "candidate_id",
+        "source_category",
+        "mapping_fidelity_tier",
+        "screened_system_id",
+        "screened_system_name",
+        "screen_stratum",
+        "screen_main_ft",
+        "screen_rationale",
+        "canonical_work_id",
+        "headline_50_scope",
+        "headline_scope_reason",
+        "negative_evidence_boundary",
+    ]
+    mapping_scope_rows = []
+    for mapping_row in mapping:
+        source_name = mapping_row["source_name"]
+        registry_row = registry_row_for_mapping(
+            registry, mapping_row["source_index"], source_name
+        )
+        included = source_name in MAPPING_SOURCE_TO_WORK_ID
+        canonical_work_id = (
+            MAPPING_SOURCE_TO_WORK_ID[source_name]
+            if included
+            else preferred_by_system_id.get(
+                registry_row["system_id"], "not_applicable_no_scholarly_work"
+            )
+        )
+        if included:
+            scope_reason = (
+                "included: frozen crosswalk links the mapping to one of the "
+                "40 reconstructed works in the 69-work retained F/T corpus"
+            )
+        else:
+            scope_reason = (
+                "excluded: screened lineage has main_FT=N; "
+                + registry_row["inclusion_exclusion_rationale"]
+            )
+        mapping_scope_rows.append(
+            {
+                "source_index": mapping_row["source_index"],
+                "source_name": source_name,
+                "candidate_id": mapping_row["candidate_id"],
+                "source_category": mapping_row["source_category"],
+                "mapping_fidelity_tier": mapping_row["mapping_fidelity_tier"],
+                "screened_system_id": registry_row["system_id"],
+                "screened_system_name": registry_row["system_name"],
+                "screen_stratum": registry_row["stratum"],
+                "screen_main_ft": registry_row["main_FT"],
+                "screen_rationale": registry_row["inclusion_exclusion_rationale"],
+                "canonical_work_id": canonical_work_id,
+                "headline_50_scope": "included" if included else "excluded",
+                "headline_scope_reason": scope_reason,
+                "negative_evidence_boundary": mapping_row[
+                    "negative_evidence_boundary"
+                ],
+            }
+        )
+    included_scope = [
+        row for row in mapping_scope_rows if row["headline_50_scope"] == "included"
+    ]
+    excluded_scope = [
+        row for row in mapping_scope_rows if row["headline_50_scope"] == "excluded"
+    ]
+    require(len(included_scope) == 50 and len(excluded_scope) == 12,
+            "mapping-scope ledger is not a 50/12 partition")
+    require(len({row["canonical_work_id"] for row in included_scope}) == 40,
+            "included mapping-scope rows do not cover 40 works")
+    require(all(row["screen_main_ft"] == "Y" for row in included_scope),
+            "an included mapping comes from a screened-out lineage")
+    require(all(row["screen_main_ft"] == "N" for row in excluded_scope),
+            "an excluded diagnostic mapping comes from a retained F/T lineage")
+    require(all(row["mapping_fidelity_tier"] == "M0_narrative_translation"
+                for row in excluded_scope),
+            "excluded diagnostic mappings are not all narrative translations")
+    mapping_scope_path = (
+        root
+        / "paper_runs/submission_evidence/replication_scope/mapping_scope_ledger.csv"
+    )
+    with mapping_scope_path.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(
+            stream, fieldnames=mapping_scope_fields, lineterminator="\n"
+        )
+        writer.writeheader()
+        writer.writerows(mapping_scope_rows)
 
     sources_by_work: dict[str, list[str]] = {}
     for source_name, work_id in MAPPING_SOURCE_TO_WORK_ID.items():

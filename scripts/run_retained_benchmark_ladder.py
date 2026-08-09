@@ -200,6 +200,24 @@ def strongest_benchmark(row: pd.Series, suffix: str) -> str:
     return strongest
 
 
+def rank_factor_correlations(
+    frame: pd.DataFrame, candidate_id: str, factor_columns: list[str]
+) -> pd.DataFrame:
+    correlations = frame[factor_columns].corrwith(frame[candidate_id]).dropna()
+    ranked = pd.DataFrame(
+        {
+            "jkp_factor_column": correlations.index,
+            "correlation": correlations.to_numpy(dtype=float),
+        }
+    )
+    ranked["absolute_correlation"] = ranked["correlation"].abs()
+    return ranked.sort_values(
+        ["absolute_correlation", "jkp_factor_column"],
+        ascending=[False, True],
+        kind="stable",
+    ).reset_index(drop=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
@@ -544,19 +562,17 @@ def main() -> int:
     correlation_rows: list[dict[str, object]] = []
     for candidate_id in candidate_ids:
         meta = crosswalk_by_id.loc[candidate_id]
-        correlations = (
-            merged[characteristic_columns]
-            .corrwith(merged[candidate_id])
-            .dropna()
-            .sort_values(key=lambda values: values.abs(), ascending=False)
+        correlations = rank_factor_correlations(
+            merged, candidate_id, characteristic_columns
         )
         if len(correlations) != 132:
             raise ValueError(
                 f"JKP correlation vector is incomplete for {candidate_id}"
             )
-        for factor_rank, (factor_column, correlation) in enumerate(
-            correlations.items(), start=1
-        ):
+        for zero_based_rank, correlation_row in correlations.iterrows():
+            factor_rank = zero_based_rank + 1
+            factor_column = str(correlation_row["jkp_factor_column"])
+            correlation = float(correlation_row["correlation"])
             correlation_rows.append(
                 {
                     "canonical_work_id": meta["canonical_work_id"],

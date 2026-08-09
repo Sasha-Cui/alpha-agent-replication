@@ -29,6 +29,10 @@ It is a 50-row, 58-column join of paper identity, mapping provenance,
 attribution limits, CAPM/FF3/FF5+momentum/JKP132 derived estimates, inference
 flags, and closest-factor diagnostics. Its hashes and scope boundary are in
 [`paper_runs/handoff/manifest.json`](paper_runs/handoff/manifest.json).
+The claim-by-claim red-team entry point is
+[`docs/SCIENTIFIC_AUDIT.md`](docs/SCIENTIFIC_AUDIT.md). The 62-to-50
+selection is row-explicit in
+`paper_runs/submission_evidence/replication_scope/mapping_scope_ledger.csv`.
 
 ## Current empirical status
 
@@ -70,9 +74,11 @@ Its corresponding source is:
 - `docs/paper/icaif2026_submission.tex`
 - SHA-256: `656bc442f93ea74de92434883dbdacc3711328ce12ceaa625c5503813dd14d6c`
 
-The designated artifact is seven US-Letter pages, uses the vendored ACM 2.19
-template, passes all 71 format checks, and passes the locked-evidence wording
-gate. The exact commands and current hashes are recorded in
+The designated artifact is seven US-Letter pages and uses the vendored ACM
+2.19 template. The fresh-clone gate passes 62 source/PDF artifact checks without
+an ignored build log; the separately recorded release build passes 71 checks
+when its log is supplied explicitly. Both modes pass the locked-evidence
+wording gate. The exact commands and current hashes are recorded in
 [`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md).
 
 The other tracked PDFs under `docs/paper/figures/` are figures, not alternate
@@ -140,12 +146,23 @@ python scripts/build_collaborator_handoff.py
 
 ### Level B: rebuild publication assets
 
-The paper tables and figures are generated from tracked frozen summaries:
+The paper tables and figures are generated from tracked frozen summaries. The
+default package gate validates a fresh clone and the tracked prebuilt PDF:
+
+```bash
+python scripts/validate_submission_package.py
+```
+
+For the stricter release-build audit, compile first and supply the resulting
+ignored log explicitly:
 
 ```bash
 python scripts/build_icaif2026_submission_assets.py
 python scripts/build_icaif2026_submission.py
-python scripts/validate_submission_package.py
+python scripts/validate_icaif_submission.py \
+  --pdf output/pdf/icaif2026_submission.pdf \
+  --log docs/paper/icaif2026_submission.log \
+  --require-build-log
 ```
 
 The PDF build additionally requires TeX Live and Poppler-compatible PDF tools.

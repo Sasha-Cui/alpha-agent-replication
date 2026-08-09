@@ -15,6 +15,7 @@ and what must be acquired or regenerated separately.
 | `mapping_audit/source_anchor_review_packet.csv` | 13 | 13 | Page-anchored review of the closest source-supported components |
 | `replication_scope/direct_code_attempt_inventory.csv` | 14 | 12 | Native/code-attempt blockers and outcomes |
 | `replication_scope/work_level_evidence_waterfall.csv` | 98 | 12 | Distinct-work screening and empirical role |
+| `replication_scope/mapping_scope_ledger.csv` | 62 | 14 | Row-level reconciliation of the 50 headline mappings and 12 excluded diagnostics |
 | `source_benchmark_audit/source_benchmark_audit.csv` | 40 | 8 | Full-text access status and original-paper benchmark coding |
 | `source_benchmark_audit/strategy_source_benchmark_results.csv` | 50 | 50 | Source benchmark coding joined to the matched strategy ladder |
 | `usa_retrospective_corrected/candidate_primary_results.csv` | 62 | 38 | Compact U.S. primary regression and inference results |
