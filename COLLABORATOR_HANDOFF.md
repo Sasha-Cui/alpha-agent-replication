@@ -1,118 +1,85 @@
 # Collaborator Handoff
 
-This repository is the working research record for the Alpha Agent Replication
-project and its ICAIF 2026 submission. It is organized so a collaborator can
-audit the claims immediately, reproduce the compact derived artifacts without
-licensed inputs, and identify which full empirical runs require separately
-authorized data.
+This repository contains the research record for the Alpha Agent Replication
+project and its ICAIF 2026 submission. It supports immediate claim auditing,
+rebuilding compact public artifacts, and identifying runs that require
+separately authorized data.
+The repository favors machine-readable evidence and deterministic checks over
+narrative claims, so each headline number has a traceable artifact.
 
 ## Read this first
 
-The repository really does contain 50 implemented and backtested strategy
-mappings covering 40 retained papers. Those 50 rows must not be described as
-50 native-agent replications:
+The repository contains 50 implemented and backtested strategy mappings from
+40 retained papers. They comprise 0 end-to-end native-agent replications, 1
+released-code component adaptation, 12 source-grounded paper components, and
+37 researcher-authored in-spirit reconstructions.
 
-- 0 are end-to-end native-agent replications.
-- 1 is a released-code component adaptation.
-- 12 are source-grounded paper components.
-- 37 are researcher-authored, in-spirit reconstructions.
-
-All 50 have executable formulas, frozen candidate identifiers, realized
-common-task returns in the controlled research run, and a matched four-rung
-benchmark evaluation. The Git repository publishes the resulting aggregate
-tables and diagnostics, not the licensed security-level inputs, factor-panel
+Each mapping has an executable formula, frozen candidate identifier, controlled
+common-task returns, and matched four-rung benchmark results. Git publishes
+aggregate tables and diagnostics, not licensed security-level inputs, factor
 time series, or monthly strategy-return matrices.
 
-The fastest audit entry point is
-[`paper_runs/handoff/strategy_result_index.csv`](paper_runs/handoff/strategy_result_index.csv).
-It is a 50-row, 58-column join of paper identity, mapping provenance,
-attribution limits, CAPM/FF3/FF5+momentum/JKP132 derived estimates, inference
-flags, and closest-factor diagnostics. Its hashes and scope boundary are in
-[`paper_runs/handoff/manifest.json`](paper_runs/handoff/manifest.json).
-The claim-by-claim red-team entry point is
-[`docs/SCIENTIFIC_AUDIT.md`](docs/SCIENTIFIC_AUDIT.md). The 62-to-50
-selection is row-explicit in
-`paper_runs/submission_evidence/replication_scope/mapping_scope_ledger.csv`.
+Start with [`paper_runs/handoff/strategy_result_index.csv`](paper_runs/handoff/strategy_result_index.csv),
+a 50-row, 58-column index joining paper identity, provenance, attribution
+limits, benchmark estimates, inference flags, and closest-factor diagnostics.
+Its scope and hashes are in [`paper_runs/handoff/manifest.json`](paper_runs/handoff/manifest.json).
+Use [`docs/SCIENTIFIC_AUDIT.md`](docs/SCIENTIFIC_AUDIT.md) for the claim audit
+and `paper_runs/submission_evidence/replication_scope/mapping_scope_ledger.csv`
+for the row-level 62-to-50 selection.
 
 ## Current empirical status
 
-The matched benchmark ladder evaluates the same 50 strategies over the same
-126 out-of-sample months, from 2011-08-31 through 2022-01-31, at a 10-basis-
-point one-way cost. The count of positive alpha estimates falls from 44 under
-CAPM to 41 under FF3, 41 under FF5 plus momentum, and 17 under the market plus
-132 JKP characteristics. Holm-positive counts are 6, 1, 2, and 0,
-respectively. Forty-seven of 50 strategies have an absolute correlation of at
-least 0.50 with their closest JKP characteristic factor.
+The benchmark ladder evaluates all 50 strategies over the same 126 months
+(2011-08-31 through 2022-01-31) at a 10-basis-point one-way cost. Positive
+alpha estimates number 44 under CAPM, 41 under FF3, 41 under FF5 plus momentum,
+and 17 under the market plus 132 JKP characteristics; Holm-positive counts are
+6, 1, 2, and 0. Forty-seven strategies have absolute correlation of at least
+0.50 with their closest JKP factor.
 
-These are retrospective, conditional spanning diagnostics. The mappings were
-not frozen before U.S. outcomes were inspected and were not independently
-second-coded. They do not prove what an unavailable native agent would have
-earned, nor do they establish that model pretraining caused factor
-rediscovery.
+These are retrospective conditional spanning diagnostics. Mappings were not
+frozen before U.S. outcomes or independently second-coded. Results neither
+estimate unavailable native agents nor establish a causal pretraining channel.
 
-The separate 14-attempt public-code audit reproduces zero native agents. One
-released QuantEvolver seed supports a component adaptation; the other attempts
-retain explicit output, adapter, task, or executability blockers. Blocked
-attempts are evidence failures, not zero-return observations.
-
-A source-benchmark audit covers all 40 mapped papers. Thirty-eight had verified
-full PDF or HTML text: 37 had no identified asset-pricing spanning regression,
-and one reported Carhart-four and FF5 loadings without the factor-adjusted
-intercept. None used JKP132. Two papers remain unresolved because only partial
-records were accessible. This coding is descriptive, was not outcome-blind,
-and should receive independent citation-level review before stronger use.
+The separate 14-attempt code audit reproduces zero native agents. One
+QuantEvolver seed supports a component adaptation; remaining attempts retain
+documented blockers. A blocker records an evidence limitation; it is not
+encoded as a zero return. A source-benchmark audit covers all 40 mapped papers:
+38 had verified full text, 37 had no identified asset-pricing spanning
+regression, and one reported Carhart-four and FF5 loadings without a
+factor-adjusted intercept. None used JKP132; two remain unresolved from partial
+records. The coding is descriptive and not outcome-blind.
 
 ## Canonical paper
 
-There is one tracked compiled manuscript:
+| Artifact | SHA-256 |
+| --- | --- |
+| `output/pdf/icaif2026_submission.pdf` | `311cd1f799a70fe0208a7e3f7ce410c54bd9af9a749fe9605bec94dab6af8b35` |
+| `docs/paper/icaif2026_submission.tex` | `656bc442f93ea74de92434883dbdacc3711328ce12ceaa625c5503813dd14d6c` |
 
-- `output/pdf/icaif2026_submission.pdf`
-- SHA-256: `311cd1f799a70fe0208a7e3f7ce410c54bd9af9a749fe9605bec94dab6af8b35`
-
-Its corresponding source is:
-
-- `docs/paper/icaif2026_submission.tex`
-- SHA-256: `656bc442f93ea74de92434883dbdacc3711328ce12ceaa625c5503813dd14d6c`
-
-The designated artifact is seven US-Letter pages and uses the vendored ACM
-2.19 template. The fresh-clone gate passes 62 source/PDF artifact checks without
-an ignored build log; the separately recorded release build passes 71 checks
-when its log is supplied explicitly. Both modes pass the locked-evidence
-wording gate. The exact commands and current hashes are recorded in
-[`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md).
-
-The other tracked PDFs under `docs/paper/figures/` are figures, not alternate
-paper versions. `report.md` and `docs/alpha_agent_replication_report.tex` are
-research reports, not competing ICAIF submission versions.
-
-The matched four-rung benchmark ladder and nearest-JKP-factor analysis are
-part of the canonical paper. The older public-artifact manuscript and owner
-review packet remain only as clearly labeled research provenance.
+The PDF is seven US-Letter pages using vendored ACM 2.19. The fresh-clone gate
+passes 62 source/PDF checks without build residue; the explicit release build
+passes 71 checks. Both pass locked-evidence validation. See
+[`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md). PDFs under
+`docs/paper/figures/` are figures; other research reports and older manuscript
+materials are labeled provenance, not alternate submissions. The matched
+benchmark ladder and nearest-JKP-factor analysis appear in the canonical paper.
 
 ## Repository map
 
-- `src/alpha_evolve/`: reusable portfolio, path-policy, JKP adapter, and
-  performance-evaluation code.
-- `scripts/`: research runners, frozen-audit builders, paper builders, and
-  validators.
+- `src/alpha_evolve/`: reusable portfolio and evaluation code.
+- `scripts/`: runners, builders, and validators.
 - `tests/`: unit and artifact-consistency tests.
-- `literature_review/`: 98-work corpus records, queries, canonical metadata,
-  links, and screening rules.
-- `paper_runs/submission_evidence/`: frozen aggregate estimates, manifests,
-  mapping ledgers, robustness outputs, failure forensics, and benchmark ladder.
-- `paper_runs/handoff/`: compact collaborator-facing result index.
-- `docs/paper/`: canonical TeX, bibliography, generated tables/macros, figures,
-  and vendored ACM 2.19 template.
-- `output/pdf/icaif2026_submission.pdf`: canonical seven-page PDF.
-- `LICENSES/`: code, documentation, and third-party licensing boundaries.
+- `literature_review/`: 98-work corpus, metadata, and screening rules.
+- `paper_runs/submission_evidence/`: aggregate evidence and manifests.
+- `paper_runs/handoff/`: collaborator result index.
+- `docs/paper/`: canonical source, tables, figures, and ACM template.
+- `output/pdf/icaif2026_submission.pdf`: canonical compiled paper.
+- `LICENSES/`: publication and third-party boundaries.
 
-See [`docs/EXPERIMENT_INDEX.md`](docs/EXPERIMENT_INDEX.md) for the experiment-
-to-code map and [`docs/DATA_AND_ARTIFACTS.md`](docs/DATA_AND_ARTIFACTS.md) for
-the tracked/excluded data boundary.
+See [`docs/EXPERIMENT_INDEX.md`](docs/EXPERIMENT_INDEX.md) and
+[`docs/DATA_AND_ARTIFACTS.md`](docs/DATA_AND_ARTIFACTS.md).
 
 ## First-hour setup
-
-Use Python 3.9 or newer:
 
 ```bash
 python -m venv .venv
@@ -123,22 +90,20 @@ python scripts/build_collaborator_handoff.py
 git diff --exit-code -- paper_runs/handoff
 ```
 
-On Bouchet, the maintained environment is outside the checkout:
+On Bouchet, use the central environment rather than installing into a local
+`.venv` symlink:
 
 ```bash
 /nfs/roberts/project/pi_btk22/zc362/environments/current/alpha-evolve/bin/python -m pytest -q
 ```
 
-Do not install packages into a project-local `.venv` symlink on Bouchet. Use
-the central environment policy described in the project instructions.
-
 ## Reproduction levels
 
-### Level A: audit the frozen evidence
+### Level A: audit frozen evidence
 
-No external data are needed. Review the handoff index, mapping audit, source-
-anchor packet, direct-code inventory, benchmark summaries, manifests, tests,
-paper source, and PDF. Rebuild the collaborator index with:
+No external data are required. Review the handoff index, mapping audit,
+source-anchor packet, direct-code inventory, benchmark summaries, manifests,
+tests, paper source, and PDF. Rebuild the index with:
 
 ```bash
 python scripts/build_collaborator_handoff.py
@@ -146,15 +111,13 @@ python scripts/build_collaborator_handoff.py
 
 ### Level B: rebuild publication assets
 
-The paper tables and figures are generated from tracked frozen summaries. The
-default package gate validates a fresh clone and the tracked prebuilt PDF:
+Validate tracked summaries and the prebuilt PDF with:
 
 ```bash
 python scripts/validate_submission_package.py
 ```
 
-For the stricter release-build audit, compile first and supply the resulting
-ignored log explicitly:
+For an explicit release build:
 
 ```bash
 python scripts/build_icaif2026_submission_assets.py
@@ -166,42 +129,11 @@ python scripts/validate_icaif_submission.py \
   --require-build-log
 ```
 
-The PDF build additionally requires TeX Live and Poppler-compatible PDF tools.
+Compilation requires TeX Live and Poppler-compatible tools.
 
-### Level C: rerun portfolio construction and benchmark estimation
+### Level C: rerun empirical estimation
 
-This level requires separately authorized JKP security-level data and the
-factor panel. Configure the `ALPHA_EVOLVE_*` paths documented in `README.md`.
-The repository intentionally does not export those data. The full runners
-write high-volume monthly matrices that remain ignored; their compact results
-and manifests are the publication artifacts.
-
-## Recommended continuation order
-
-1. Obtain an independent, outcome-blind second coder for the 50 mappings and
-   record disagreements rather than silently changing formulas.
-2. Prioritize native-agent releases that include dated signals, positions, or
-   returns; do not count a repository as a replication merely because it has
-   source code.
-3. Freeze a prospective or genuinely untouched holdout before any new mapping
-   or factor-choice iteration.
-4. Revalidate the international security-level inputs before making any G7
-   performance claim; the current international extension is excluded after a
-   plausibility failure.
-5. Add borrow, financing, capacity, and nonlinear-impact evidence if the claim
-   moves from statistical alpha toward implementable trading performance.
-6. Update the canonical manuscript only after the evidence tables, generated
-   macros, validators, and PDF all agree.
-
-## Non-negotiable interpretation rules
-
-- Never call the 50-row mapping set “50 replicated agents.”
-- Never turn an unavailable or blocked agent into a zero return.
-- Never attribute an in-spirit reconstruction's performance to the source
-  agent.
-- Keep native execution, component adaptation, source-grounded reconstruction,
-  and narrative reconstruction as separate provenance fields.
-- Keep licensed and third-party inputs outside Git; publish hashes, paths,
-  schemas, aggregate results, and regeneration code instead.
-- Treat all mapping-based inference as descriptive until a clean outcome-blind
-  reconstruction and holdout exist.
+This requires authorized JKP security-level data and the factor panel. Configure
+the `ALPHA_EVOLVE_*` paths in `README.md`. Full runners write ignored monthly
+matrices; compact results and manifests are the publication artifacts. The
+repository intentionally does not export the licensed inputs.
