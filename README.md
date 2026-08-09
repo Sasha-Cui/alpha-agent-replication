@@ -71,7 +71,7 @@ Counted experiments use read-only local research inputs. Defaults point to the B
 export ALPHA_EVOLVE_REPO=/path/to/alpha-agent-replication
 export ALPHA_EVOLVE_JKP_ROOT=/path/to/jkp-data
 export ALPHA_EVOLVE_JKP_USA=/path/to/USA.parquet
-export ALPHA_EVOLVE_factor_data_ROOT=/path/to/external-factor-data
+export ALPHA_EVOLVE_FACTOR_DATA_ROOT=/path/to/factor-data
 export ALPHA_EVOLVE_FACTOR_PANEL=/path/to/benchmark_factor_panel.csv
 ```
 

@@ -24,6 +24,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
+from alpha_evolve.paths import DEFAULT_FACTOR_PANEL
 from build_census_citation_assets import MAPPING_SOURCE_TO_WORK_ID
 from run_broad_jkp_crossfit import (
     BASE_FACTOR_COLUMNS,
@@ -35,10 +36,6 @@ from run_broad_jkp_crossfit import (
 )
 
 
-DEFAULT_FACTOR_PANEL = Path(
-    "/home/zc362/project_pi_btk22/zc362/factor-data/"
-    "benchmark_factor_panel.csv"
-)
 DEFAULT_USA_RESULTS = Path("paper_runs/submission_evidence/usa_retrospective_corrected")
 DEFAULT_MAPPING_AUDIT = Path(
     "paper_runs/submission_evidence/mapping_audit/mapping_audit.csv"

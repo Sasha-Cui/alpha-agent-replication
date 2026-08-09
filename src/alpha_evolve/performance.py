@@ -3,7 +3,7 @@
 
 Input contract: CSV with `month` and a candidate return column, default
 `candidate_return`. Returns must be monthly decimal returns. The script aligns to
-the fixed external-factor-data 1999-07-31..2021-12-31 window, scales the candidate
+the fixed external-panel window from 1999-07-31 through 2021-12-31, scales the candidate
 and benchmark factor columns to 7% annual realized volatility on the overlap
 sample, and reports standalone Sharpe, factor alpha, HAC t-stat, appraisal ratio,
 and factor-span delta Sharpe.

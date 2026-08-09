@@ -26,17 +26,17 @@ DEFAULT_JKP_USA = _env_path(
     "ALPHA_EVOLVE_JKP_USA",
     DEFAULT_JKP_ROOT / "data/processed/characteristics/USA.parquet",
 )
-DEFAULT_factor_data_ROOT = _env_path(
-    "ALPHA_EVOLVE_factor_data_ROOT",
-    "/home/zc362/project_pi_btk22/zc362/external-factor-data",
+DEFAULT_FACTOR_DATA_ROOT = _env_path(
+    "ALPHA_EVOLVE_FACTOR_DATA_ROOT",
+    "/home/zc362/project_pi_btk22/zc362/factor-data",
 )
 DEFAULT_RETURN_DATA_ROOT = _env_path(
     "ALPHA_EVOLVE_RETURN_DATA_ROOT",
-    DEFAULT_factor_data_ROOT / "return_pipeline/return_data_assembly",
+    DEFAULT_FACTOR_DATA_ROOT / "return_pipeline/return_data_assembly",
 )
 DEFAULT_FACTOR_PANEL = _env_path(
     "ALPHA_EVOLVE_FACTOR_PANEL",
-    DEFAULT_factor_data_ROOT
+    DEFAULT_FACTOR_DATA_ROOT
     / "performance_analysis/results/current/multifactor_value_add_20260624/benchmark_factor_panel.csv",
 )
 

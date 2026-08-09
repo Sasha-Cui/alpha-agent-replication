@@ -12,4 +12,4 @@ Shipped usable artifacts inspected:
 
 What is missing for the requested benchmark: no panel parquet, no factor memmap values, no portfolio weights, no dated candidate return stream, and no Sharpe/FF3/FF5Mom comparison. The repository itself notes that the factor memmap and panel data are not part of the Git checkout and must be rebuilt or downloaded separately.
 
-Current status: not directly benchmarkable under the common FF3/FF5Mom protocol. To advance this paper, port one or more delivered DSL factors to the same US monthly universe used by the external-factor-data factor panel, form a long-short candidate portfolio, and then run `scripts/evaluate_candidate_returns.py`.
+Current status: not directly benchmarkable under the common FF3/FF5Mom protocol. To advance this paper, port one or more delivered DSL factors to the same US monthly universe used by the external same-universe factor panel, form a long-short candidate portfolio, and then run `scripts/evaluate_candidate_returns.py`.

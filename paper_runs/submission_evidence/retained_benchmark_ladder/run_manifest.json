@@ -2,7 +2,7 @@
   "analysis_label": "post_hoc_matched_retained_benchmark_ladder",
   "created_at_utc": "2026-08-09T20:14:58.201812+00:00",
   "interpretation": "descriptive spanning analysis conditional on 50 retained mappings; not native-agent replication and not confirmatory inference",
-  "factor_panel": "/home/zc362/project_pi_btk22/zc362/external-factor-data/performance_analysis/results/current/multifactor_value_add_20260624/benchmark_factor_panel.csv",
+  "factor_panel": "external_authorized_input:benchmark_factor_panel.csv",
   "factor_panel_sha256": "f22f3e49d62d81530eaa84ddbf0c153fc6e08e723260edba37f98efb9e082260",
   "candidate_monthly": "/nfs/roberts/project/pi_btk22/zc362/ideas/alpha_evolve/paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv",
   "candidate_monthly_sha256": "819fa3b0e87113d29188e01fc9fb74cd43d58e2b67f93976c9e29f9ef4431c1a",

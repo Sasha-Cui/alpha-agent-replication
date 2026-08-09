@@ -23,12 +23,8 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
+from alpha_evolve.paths import DEFAULT_FACTOR_PANEL
 
-DEFAULT_FACTOR_PANEL = Path(
-    "/home/zc362/project_pi_btk22/zc362/external-factor-data/"
-    "performance_analysis/results/current/multifactor_value_add_20260624/"
-    "benchmark_factor_panel.csv"
-)
 DEFAULT_USA_RESULTS = Path(
     "paper_runs/submission_evidence/usa_retrospective_corrected"
 )

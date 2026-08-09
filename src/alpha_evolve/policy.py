@@ -5,7 +5,7 @@ import os
 
 APPROVED_INPUT_POLICY = (
     "Valid counted experiments must use only read-only JKP data or the "
-    "external-factor-data return-data assembly. Paper-shipped, live, yfinance, "
+    "external factor-data project return-data assembly. Paper-shipped, live, yfinance, "
     "China/A-share, crypto, or official-French-download returns are legacy "
     "diagnostics and must not be counted as valid alpha evidence."
 )

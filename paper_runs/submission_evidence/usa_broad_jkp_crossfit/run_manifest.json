@@ -1,7 +1,7 @@
 {
   "analysis_label": "post_hoc_exploratory_broad_jkp_crossfit",
   "created_at_utc": "2026-08-03T23:36:26.218736+00:00",
-  "factor_panel": "/home/zc362/project_pi_btk22/zc362/external-factor-data/performance_analysis/results/current/multifactor_value_add_20260624/benchmark_factor_panel.csv",
+  "factor_panel": "external_authorized_input:benchmark_factor_panel.csv",
   "factor_panel_sha256": "f22f3e49d62d81530eaa84ddbf0c153fc6e08e723260edba37f98efb9e082260",
   "factor_panel_month_label": "formation month shifted forward one month to corrected evaluator realization month",
   "market_alignment_correlation": 0.9993633983234792,

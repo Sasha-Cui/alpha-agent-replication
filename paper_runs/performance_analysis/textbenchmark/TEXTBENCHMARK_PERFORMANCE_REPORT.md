@@ -10,7 +10,7 @@ Generated: `2026-07-05T05:03:13.229455+00:00`
 - Fixed analysis window: `1999-07-31_to_2021-12-31_270m`.
 - Scaling: all candidate and benchmark return streams are scaled to `7%` annualized volatility on the overlap sample before alpha/appraisal/GRS and MVO diagnostics.
 - Existing book diagnostic: long-only max-Sharpe allocation over `JKP132 + TextBenchmark`, then over `JKP132 + TextBenchmark + candidate`.
-- Input policy: no external returns were used; this reads only alpha_evolve JKP proxy candidate returns and the external-factor-data STATE factor panel.
+- Input policy: no external returns were used; this reads only alpha_evolve JKP proxy candidate returns and the authorized external factor-state panel.
 
 ## Headline Counts
 

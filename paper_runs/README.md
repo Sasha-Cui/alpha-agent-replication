@@ -1,6 +1,6 @@
 # Alpha Evolve Paper Runs
 
-This directory tracks paper-by-paper execution against the same-universe FF3 and FF5Mom benchmark definitions from `external-factor-data/performance_analysis`.
+This directory tracks paper-by-paper execution against the configured external same-universe FF3 and FF5Mom benchmark definitions.
 
 Each paper run must produce a dated monthly return series before benchmark metrics are reported:
 

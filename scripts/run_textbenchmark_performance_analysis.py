@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Run alpha_evolve candidate returns through the STATE/TextBenchmark performance contract.
+"""Evaluate repository-derived candidates against a configured benchmark panel.
 
-The runner reads only:
-- alpha_evolve candidate returns generated from the JKP-USA proxy loop.
-- a cached external benchmark-factor panel.
-
-It writes all derived artifacts under alpha_evolve.
+The runner joins JKP-USA proxy candidate returns produced in this repository
+with an authorized external benchmark-factor panel. All derived reports and
+tables remain inside the repository's configured output directory.
 """
 from __future__ import annotations
 
