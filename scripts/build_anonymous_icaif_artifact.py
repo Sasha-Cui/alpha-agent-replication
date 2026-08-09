@@ -21,6 +21,7 @@ def sha256(path: Path) -> str:
 REQUIRED = [
     "docs/confirmatory_analysis_protocol.md",
     "docs/good_faith_reconstruction_protocol.md",
+    "docs/source_anchor_review_packet.md",
     "docs/full_corpus_bibliography.md",
     "docs/system_census_bibliography.md",
     "docs/paper/census_primary_records.bib",
@@ -38,6 +39,7 @@ REQUIRED = [
     "paper_runs/submission_evidence/mapping_audit/mapping_combination_sensitivity.csv",
     "paper_runs/submission_evidence/mapping_audit/source_grounded_subset_results.csv",
     "paper_runs/submission_evidence/mapping_audit/source_grounded_subset_summary.csv",
+    "paper_runs/submission_evidence/mapping_audit/source_anchor_review_packet.csv",
     "paper_runs/submission_evidence/mapping_audit/manifest.json",
     "paper_runs/submission_evidence/replication_scope/system_census_bibliography.csv",
     "paper_runs/submission_evidence/replication_scope/direct_code_attempt_inventory.csv",
@@ -61,6 +63,7 @@ REQUIRED = [
     "paper_runs/submission_evidence/international_failure_forensics/failure_month_summary.csv",
     "paper_runs/submission_evidence/international_failure_forensics/manifest.json",
     "scripts/build_mapping_audit.py",
+    "scripts/build_source_anchor_review_packet.py",
     "scripts/build_census_citation_assets.py",
     "scripts/build_replication_scope_assets.py",
     "scripts/refresh_census_primary_record_metadata.py",
@@ -68,6 +71,7 @@ REQUIRED = [
     "scripts/build_icaif2026_submission_assets.py",
     "scripts/validate_icaif_major_revision.py",
     "tests/test_mapping_audit.py",
+    "tests/test_source_anchor_review_packet.py",
     "tests/test_census_citation_assets.py",
     "tests/test_replication_scope_assets.py",
     "tests/test_international_failure_forensics.py",
@@ -86,7 +90,7 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
 - The 62 U.S. portfolios are researcher-authored historical mechanism mappings, not
   native agent returns. They were frozen after U.S. outcomes were inspected and were
   not independently double-coded.
-- Thirteen mappings are source-grounded component tests. The other 49 are favorable
+- Thirteen mappings are source-anchored partial component tests. The other 49 are favorable
   narrative stress tests whose failures cannot count as evidence against their sources.
 - The pre-trim screen contains 103 lineages backed by 98 canonical works. The retained
   availability census contains 67 lineages backed by 69 formally cited works, not 67 replications.
@@ -95,8 +99,8 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
   13 component tests, while 35 support 37 narrative-only favorable stress tests.
   Fourteen public implementations were targeted, only eight of which belong to the
   67-system F/T census; five benchmarks and one comparator were diagnostic additions.
-  No native-agent replication was completed; one released seed expression yielded a
-  code-backed adaptation.
+  No native-agent replication was completed; one released 60-bar return/volatility
+  seed yielded a monthly JKP adaptation, not a literal expression replication.
 - The broad-factor analysis is post hoc and its bootstrap resamples fixed out-of-sample
   residuals rather than rerunning rolling tuning.
 - International performance is not headline evidence. The included forensic ledger
@@ -109,11 +113,14 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
   anti-strawman role, negative-evidence boundary, omission, freeze timestamp, and hash.
 - `docs/good_faith_reconstruction_protocol.md`: the claim-card, evidence-priority,
   favorable-implementation, alternative-mapping, and source-protection rules.
+- `docs/source_anchor_review_packet.md` and the corresponding CSV: page/section or
+  pinned-repository anchors, supported content, and researcher-supplied changes for
+  the 13 closest mappings. This post-hoc packet awaits independent review.
 - `docs/system_census_bibliography.md`: all 67 system lineages and primary records.
 - `docs/full_corpus_bibliography.md`: all 98 pre-trim canonical works, including the
   69 works supporting retained F/T lineages.
 - `paper_runs/submission_evidence/replication_scope/`: the exact 14 code attempts and
-  13 source-grounded component mappings from five source papers, plus the 98-work
+  13 source-anchored partial component mappings from five source papers, plus the 98-work
   evidence waterfall reconciling screening, code attempts, and reconstruction coverage.
 - `paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv`:
   aggregate monthly U.S. candidate returns.
