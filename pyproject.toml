@@ -18,6 +18,7 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Information Analysis",
 ]
 dependencies = [
+  "matplotlib>=3.7",
   "numpy>=1.23",
   "pandas>=1.5",
   "pyarrow>=10",

@@ -7,16 +7,15 @@ import hashlib
 import json
 import math
 import os
-from pathlib import Path
 import tempfile
+from pathlib import Path
 from typing import Any
 
-import matplotlib
-
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+plt.switch_backend("Agg")
 
 
 WHITE = "#FFFFFF"
@@ -297,6 +296,7 @@ def main() -> int:
 
     plt.rcParams.update({
         "font.size": 10,
+        "font.family": "DejaVu Sans",
         "axes.labelcolor": INK,
         "axes.edgecolor": RULE,
         "xtick.color": INK,
@@ -304,6 +304,8 @@ def main() -> int:
         "text.color": INK,
         "figure.facecolor": WHITE,
         "savefig.facecolor": WHITE,
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
     })
     fig, ax = plt.subplots(figsize=(11.2, 5.0), facecolor=WHITE)
     ax.set_facecolor(WHITE)
@@ -311,8 +313,8 @@ def main() -> int:
     ax.set_ylim(0, 5.7)
     ax.axis("off")
 
-    from matplotlib.path import Path as MplPath
     from matplotlib.patches import FancyBboxPatch, PathPatch, Rectangle
+    from matplotlib.path import Path as MplPath
 
     SLATE = "#718096"
     PALE_BLUE = "#EAF2FA"
@@ -384,7 +386,7 @@ def main() -> int:
             fontweight="bold",
             color=color,
             zorder=4,
-            bbox=dict(boxstyle="round,pad=0.16", facecolor=fill, edgecolor="none", alpha=0.96),
+            bbox={"boxstyle": "round,pad=0.16", "facecolor": fill, "edgecolor": "none", "alpha": 0.96},
         )
         ax.text(
             x + offset,
@@ -395,7 +397,7 @@ def main() -> int:
             fontsize=8.3,
             color=INK,
             zorder=4,
-            bbox=dict(boxstyle="round,pad=0.12", facecolor=fill, edgecolor="none", alpha=0.96),
+            bbox={"boxstyle": "round,pad=0.12", "facecolor": fill, "edgecolor": "none", "alpha": 0.96},
         )
 
     x_screen, x_scope, x_coverage, x_tier = 0.85, 3.55, 6.45, 9.25
