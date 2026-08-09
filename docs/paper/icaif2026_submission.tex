@@ -182,15 +182,57 @@ We can measure only a lower bound on that discretion. Five sources already have 
 
 \subsection{Common U.S. task and descriptive estimators}
 
-The primary panel is monthly U.S. common equity from August 2001 through December 2024. At each formation month we retain the 1,000 largest positive-market-equity securities, compute signals using information available at formation, and hold for the next month. Most mappings are value-weighted top-minus-bottom deciles; long-only mappings are labeled. Long and short legs each carry unit notional. The locked primary policy assigns zero at the frozen weight when a held next-month return is missing; this avoids selecting or renormalizing holdings using future coverage. We report missing gross-weight exposure and a deliberately severe stress assigning $-100\%$ to a missing long return and $+100\%$ to a missing short return. It is not an expected delisting-return estimate.
+The primary panel is monthly U.S. common equity from August 2001 through December 2024. At formation month $t$, the universe $\mathcal U_t$ contains the 1,000 largest positive-market-equity securities, and mapping $i$ produces a point-in-time score $s_{ijt}=g_i(x_{jt})$. For the usual value-weighted long--short mapping, let $H_{it}$ and $L_{it}$ denote its top and bottom deciles and let $m_{jt}>0$ be market equity. The frozen target weights are
+\begin{equation}
+w_{ijt}=\begin{cases}
+m_{jt}/\sum_{k\in H_{it}}m_{kt}, & j\in H_{it},\\
+-m_{jt}/\sum_{k\in L_{it}}m_{kt}, & j\in L_{it},\\
+0, & \text{otherwise}.
+\end{cases}
+\label{eq:weights}
+\end{equation}
+Thus each leg carries unit notional; labeled long-only and sparse top-$k$ mappings use their stated rules. Formation never conditions on next-month return availability. Define $R^{e,*}_{j,t+1}=R^e_{j,t+1}$ when the held excess return is observed and $R^{e,*}_{j,t+1}=0$ otherwise; weights are never renormalized using future coverage. A severe stress instead assigns $-\operatorname{sgn}(w_{ijt})$ to a missing return, or $-100\%$ for a long and $+100\%$ for a short; it is not a delisting-return estimate.
 
-Turnover uses drifted pre-trade weights. The locked \bps{10} one-way charge is a transparent reference point, not a security-specific estimate; we therefore report the entire 0/5/10/25/50-bp curve and candidate break-even costs. Borrow, financing, locate constraints, nonlinear impact, and capacity are omitted. Benchmark factors are gross, so costed-candidate alpha is a deliberately asymmetric, conservative comparison rather than two equally costed tradable products.
+Turnover restores target exposure from drifted pre-trade weights. With total security return $R^{\mathrm{tot}}_{j,t}$,
+\begin{align}
+\widetilde w_{ij,t^-}
+ &=\frac{w_{ij,t-1}(1+R^{\mathrm{tot}}_{j,t})}
+ {1+\sum_k w_{ik,t-1}R^{\mathrm{tot}}_{k,t}}, \notag\\
+\tau_{it}&=\sum_j\lvert w_{ijt}-\widetilde w_{ij,t^-}\rvert, \notag\\
+r^{\mathrm{net}}_{i,t+1}(c)
+ &=\sum_j w_{ijt}R^{e,*}_{j,t+1}-c\tau_{it}.
+\label{eq:net-return}
+\end{align}
+The one-way rate $c$ spans $\{0,5,10,25,50\}\times10^{-4}$, with \bps{10} primary. This linear model omits borrow, financing, locate constraints, nonlinear impact, and capacity. Benchmark factors remain gross, so costed-candidate alpha is a deliberately conservative asymmetric comparison.
 
-For candidate $i$ we estimate
-\[
-r_{i,t}^{\mathrm{net}}=\alpha_i+\beta_i' f_t+\varepsilon_{i,t}.
-\]
-The primary Newey--West lag is the automatic rule $\lfloor4(T/100)^{2/9}\rfloor$ (four at $T=281$) \cite{NeweyWest1987}. We report two-sided nominal tests, Holm correction across all 62 candidates \cite{Holm1979}, and paired moving-block maximum-$|t|$ inference with 2,000 bootstrap replications and a six-month block. Block lengths three and twelve and HAC lags 0, 3, 6, and 12 are sensitivities. A simultaneous lower bound of at least two annual percentage points is a pragmatic reporting threshold selected by the project owner after U.S. outcomes were available; it is not a preregistered decision rule.
+For each executable candidate, we estimate the six-factor model with $f_t\in\mathbb{R}^6$ and its HAC statistic
+\begin{align}
+r^{\mathrm{net}}_{i,t}&=\alpha_i+\beta_i^{\top}f_t+\varepsilon_{i,t}, \notag\\
+T_i&=\frac{\widehat\alpha_i}
+ {\widehat{\mathrm{se}}_{\mathrm{NW}}(\widehat\alpha_i)},\qquad
+L_T=\left\lfloor4(T/100)^{2/9}\right\rfloor .
+\label{eq:factor-model}
+\end{align}
+The Newey--West rule gives $L_T=4$ at $T=281$ \cite{NeweyWest1987}. For ordered two-sided $p$-values $p_{(1)}\le\cdots\le p_{(m)}$, Holm adjustment is
+\begin{equation}
+p^{\mathrm H}_{(k)}=
+\max_{\ell\le k}\min\{1,(m-\ell+1)p_{(\ell)}\},
+\qquad m=62,
+\label{eq:holm}
+\end{equation}
+where non-estimable planned paths enter with $p=1$ \cite{Holm1979}. Paired moving-block draws jointly resample candidate and factor months. For $B=2{,}000$, block length six, and fixed original HAC standard errors, the single-step family statistic is
+\begin{align}
+T_i^{*(b)}&=\frac{\widehat\alpha_i^{*(b)}-\widehat\alpha_i}
+ {\widehat{\mathrm{se}}_{\mathrm{NW}}(\widehat\alpha_i)},
+&M^{*(b)}&=\max_i\lvert T_i^{*(b)}\rvert, \notag\\
+\widehat p_i^{\max}
+ &=\frac{1+\sum_{b=1}^{B}\mathbf{1}\{M^{*(b)}\ge\lvert T_i\rvert\}}
+ {B+1},
+&\mathrm{LB}^{\mathrm{sim}}_i
+ &=12\left(\widehat\alpha_i-q_{.95}\widehat{\mathrm{se}}_{\mathrm{NW},i}\right).
+\label{eq:max-t}
+\end{align}
+Here $q_{.95}$ is the 95th percentile of $M^{*}$. Block lengths three and twelve and HAC lags 0, 3, 6, and 12 are sensitivities. A simultaneous lower bound of at least two annual percentage points is a pragmatic reporting threshold selected after U.S. outcomes were available, not a preregistered rule.
 
 \section{Results}
 
