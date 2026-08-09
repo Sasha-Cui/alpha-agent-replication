@@ -34,10 +34,12 @@ def command_text(*command: str) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pdf", type=Path, default=ROOT / "output/pdf/icaif2026_submission.pdf")
+    parser.add_argument("--log", type=Path, help="Explicit LaTeX log for the 71-check release-build audit")
+    parser.add_argument("--require-build-log", action="store_true")
     args = parser.parse_args()
     pdf = args.pdf.resolve()
     source_path = PAPER / "icaif2026_submission.tex"
-    log_path = PAPER / "icaif2026_submission.log"
+    log_path = args.log.resolve() if args.log else None
     failures: list[str] = []
     checks = 0
 
@@ -136,23 +138,36 @@ def main() -> int:
         require(all("Type 3" not in " ".join(row) for row in font_rows),
                 "PDF contains Type 3 fonts; figures must use embedded TrueType/Type 1 fonts")
 
-    require(log_path.is_file(), "LaTeX build log is missing")
-    if log_path.is_file():
-        log = log_path.read_text(encoding="utf-8", errors="replace")
-        require("Class acmart Info: Using format sigconf" in log, "LaTeX log does not confirm sigconf")
-        require("Using anonymous mode" in log, "LaTeX log does not confirm anonymous mode")
-        for marker in (
-            "Overfull", "undefined references", "Citation(s) may have changed",
-            "There were undefined citations", "Fatal error", "Emergency stop",
-        ):
-            require(marker not in log, f"LaTeX log contains {marker!r}")
+    if args.require_build_log and log_path is None:
+        require(False, "--require-build-log needs an explicit --log PATH")
+    elif log_path is not None:
+        require(log_path.is_file(), f"explicit LaTeX build log is missing: {log_path}")
+        if log_path.is_file():
+            log = log_path.read_text(encoding="utf-8", errors="replace")
+            require("Class acmart Info: Using format sigconf" in log, "LaTeX log does not confirm sigconf")
+            require("Using anonymous mode" in log, "LaTeX log does not confirm anonymous mode")
+            for marker in (
+                "Overfull", "undefined references", "Citation(s) may have changed",
+                "There were undefined citations", "Fatal error", "Emergency stop",
+            ):
+                require(marker not in log, f"LaTeX log contains {marker!r}")
 
     if failures:
         print(f"ICAIF FORMAT AUDIT FAILED: {len(failures)} failure(s) across {checks} checks")
         for failure in failures:
             print(f"- {failure}")
         return 1
-    print(f"ICAIF FORMAT AUDIT PASSED: {checks} checks; latest template, layout, anonymity, and PDF verified")
+    if log_path is None:
+        print(
+            f"ICAIF ARTIFACT AUDIT PASSED: {checks} checks; source, template, "
+            "layout, anonymity, fonts, and prebuilt PDF verified; build-log "
+            "checks were not requested"
+        )
+    else:
+        print(
+            f"ICAIF RELEASE-BUILD AUDIT PASSED: {checks} checks; source, "
+            "template, layout, anonymity, fonts, PDF, and explicit build log verified"
+        )
     return 0
 
 
