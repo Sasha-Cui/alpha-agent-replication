@@ -74,7 +74,7 @@
   "decision_owner": "Sasha Cui",
   "file_sha256": {
     "docs/confirmatory_analysis_protocol.md": "0a0515cedbb211362356d4a3a28693696ae18edfd89d4298266588ea21fa8285",
-    "docs/current_project_execution_decisions.md": "a9d03636a347d11b8bfdb453f1f244d54e9e86b2f4d7ecf2e102210020d8b31e",
+    "docs/current_project_execution_decisions.md": "13c36af814ee0e5b33b37d9c73b3b928dddc28517421d903cd540490fb3f7be2",
     "literature_review/census_v1/system_registry.csv": "a7da46a0ba2f0548da14db34e5600396133ac2dc4a24315eda52ae6a68d6f3a0",
     "literature_review/code_links.csv": "960386f93dde13ecf4e7ac408d4c7410c2702e8a8af7258db8b809960862b827",
     "literature_review/paper_links.csv": "e7ada6e518dd9415a92b31792a339c09e044a0dce5da89659930f9c306bbc764",
@@ -98,6 +98,8 @@
   "initial_lock_created_before_g7_outcome_access": true,
   "initial_prelock_inspection": "file availability, date ranges, and cross-sectional counts only",
   "lock_stage": "post-outcome and post-runtime-failure correctness amendments; pre-evaluable-corrected-rerun",
+  "provenance_refresh_reason": "Public-history sanitation changed one documentation-only reference; empirical inputs, parameters, executable analysis code, and result files are unchanged.",
+  "provenance_refresh_timestamp_utc": "2026-08-09T00:00:00Z",
   "multiplicity_primary": "Holm FWER with paired block-bootstrap max-|t| confirmation",
   "openrouter_spend_usd_before_lock": 0.0,
   "paid_api_calls_before_lock": 0,

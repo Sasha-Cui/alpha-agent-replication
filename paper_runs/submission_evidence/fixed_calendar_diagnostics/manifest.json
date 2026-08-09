@@ -35,7 +35,7 @@
   "output_sha256": {
     "fixed_calendar_country_loo.csv": "d7cf248ff4bcca61b3e41d460a0cae26dcfcebf86bc5ede0d02db695ed9653bd"
   },
-  "primary_analysis_lock_sha256": "dba132b6366e03f65a65b90549ca9d3e7a39313a60d42f43ea00407b0a6694e2",
+  "primary_analysis_lock_sha256": "b580d23f3459553767789fed349f524761e11f44982ef2459f02240613292428",
   "rationale": "Hold the primary executable-candidate set and 293-month calendar fixed so country and leave-one-country-out comparisons do not inherit country-specific executable-set calendars.",
   "schema_version": 1,
   "script_sha256": "2f30abcb12a85e194570a2fc84879b42a5054091d80e28383a228384beff9dbe",
