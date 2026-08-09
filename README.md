@@ -58,6 +58,16 @@ alpha-evolve-evaluate-jkp   --candidate-id example   --candidate-csv paper_runs/
 
 The old `scripts/*.py` commands still work from a checkout; they now delegate to the package where practical.
 
-## Publication Status
+## Open-Source Licensing
 
-The code and compact replication artifacts are organized for public review. One legal/project-governance decision remains outside code: choose and add an explicit license before treating the repository as fully open-source.
+Alpha Agent Replication is open-source software intended to help researchers
+audit and replicate claims about large-language-model and agent-based alpha
+mining. The project's original source code, tests, and build scripts are
+licensed under the Apache License, Version 2.0; see [`LICENSE`](LICENSE).
+
+The manuscript, project-authored protocols, figures, tables, and original
+registry annotations are licensed under Creative Commons Attribution 4.0
+International. Third-party papers, repositories, software, and market data
+retain their own terms and are not relicensed here. Some replication inputs
+must therefore be obtained separately from their authorized sources. See
+[`LICENSES/README.md`](LICENSES/README.md) for the complete licensing map.
