@@ -5,7 +5,7 @@
 - `src/alpha_evolve/`: reusable package code.
 - `scripts/`: compatibility entry points and research runners.
 - `literature_review/*.csv`, `literature_review/*.json`, and `literature_review/source_pasted_text.txt`: source inventory and audit inputs.
-- `literature_review/papers/`: the 39 downloaded source-paper PDFs recorded by
+- `literature_review/papers/`: the 45 downloaded source-paper PDFs recorded by
   `literature_review/download_log.csv`.
 - `paper_runs/`: compact tracked ledgers, verdicts, summaries, small reproducibility CSVs, and final report figures under `paper_runs/performance_analysis/figures/`.
 - `paper_runs/submission_evidence/`: frozen locks, manifests, aggregate estimates,
