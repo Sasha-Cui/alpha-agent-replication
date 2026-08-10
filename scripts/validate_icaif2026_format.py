@@ -15,7 +15,7 @@ EXPECTED_CLASS_SHA256 = "2f949e6e3f2a79f2cdc218b9dcdbaa7dd451adb4ee0be1af6dc7ebe
 EXPECTED_BST_SHA256 = "8ec002c927068bfc5b3cfe71b66aa4767b9e485530ac3c67ba5c064df4c2e6ac"
 EXPECTED_TITLE = (
     "Do Financial LLM Agents Discover New Alpha? "
-    "A 98-Work Audit and 50-Strategy Factor-Spanning Study"
+    "A 98-Work Audit, 50-Strategy Factor-Spanning Study, and Prompt Replay"
 )
 
 

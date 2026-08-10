@@ -105,6 +105,16 @@ def verify_missing_sensitivity(run_dir: Path) -> dict:
     return manifest
 
 
+def verify_prompt_replay(run_dir: Path) -> dict:
+    manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
+    if manifest.get("replay_run_id") != "guruagents_full_20260809T010651Z":
+        raise RuntimeError("GuruAgents prompt replay has the wrong live-run identifier")
+    for filename, metadata in manifest.get("outputs", {}).items():
+        if sha256(run_dir / filename) != metadata["sha256"]:
+            raise RuntimeError(f"GuruAgents prompt-replay hash mismatch: {filename}")
+    return manifest
+
+
 def style_axis(ax) -> None:
     ax.set_facecolor(WHITE)
     ax.tick_params(colors=INK, labelcolor=INK)
@@ -147,6 +157,10 @@ def main() -> int:
     missing_dir = root / "paper_runs/submission_evidence/usa_missing_return_sensitivity"
     mapping_dir = root / "paper_runs/submission_evidence/mapping_audit"
     forensic_dir = root / "paper_runs/submission_evidence/international_failure_forensics"
+    prompt_replay_dir = root / "paper_runs/prompt_replay/guruagents/performance"
+    prompt_replay_live_path = (
+        root / "paper_runs/prompt_replay/guruagents/LIVE_RUN_RESULTS.json"
+    )
     waterfall_path = root / "paper_runs/submission_evidence/replication_scope/work_level_evidence_waterfall.csv"
     paper_dir = root / "docs/paper"
     manifest = verify_run(run_dir)
@@ -166,6 +180,7 @@ def main() -> int:
                 f"source-paper benchmark audit hash mismatch: {filename}"
             )
     verify_missing_sensitivity(missing_dir)
+    prompt_replay_manifest = verify_prompt_replay(prompt_replay_dir)
     mapping_manifest = json.loads((mapping_dir / "manifest.json").read_text(encoding="utf-8"))
     forensic_manifest = json.loads((forensic_dir / "manifest.json").read_text(encoding="utf-8"))
     for filename, expected in mapping_manifest["output_sha256"].items():
@@ -246,6 +261,83 @@ def main() -> int:
     ladder_comparison = pd.read_csv(ladder_dir / "strategy_benchmark_comparison.csv")
     top_factor_frequency = pd.read_csv(ladder_dir / "top_jkp_factor_frequency.csv")
     top_factor_rows = pd.read_csv(ladder_dir / "strategy_top_jkp_factors.csv")
+    prompt_replay_live = json.loads(prompt_replay_live_path.read_text(encoding="utf-8"))
+    prompt_attribution = pd.read_csv(prompt_replay_dir / "replay_attribution_ladder.csv")
+    prompt_attribution_by_candidate = pd.read_csv(
+        prompt_replay_dir / "replay_attribution_by_candidate.csv"
+    )
+    prompt_regressions = pd.read_csv(prompt_replay_dir / "alpha_regressions.csv")
+    prompt_loadings = pd.read_csv(prompt_replay_dir / "static_factor_loadings.csv")
+    prompt_economics = pd.read_csv(prompt_replay_dir / "economic_performance.csv")
+    expected_prompt_benchmarks = [
+        "official_ff_capm_matched_jkp_window",
+        "official_ff3_matched_jkp_window",
+        "official_ff5_momentum_matched_jkp_window",
+        "official_ff5_momentum_plus_jkp_bab",
+        "official_ff5_momentum_plus_jkp_lowrisk",
+    ]
+    if prompt_attribution["benchmark"].tolist() != expected_prompt_benchmarks:
+        raise RuntimeError("GuruAgents attribution ladder order changed")
+    if not (
+        prompt_attribution["identified_replay_paths"].eq(12).all()
+        and prompt_attribution["n_months_min"].eq(33).all()
+        and prompt_attribution["n_months_max"].eq(33).all()
+    ):
+        raise RuntimeError("GuruAgents matched attribution sample changed")
+    prompt_attribution = prompt_attribution.set_index("benchmark")
+    prompt_ff5 = prompt_attribution.loc[
+        "official_ff5_momentum_matched_jkp_window"
+    ]
+    prompt_bab = prompt_attribution.loc["official_ff5_momentum_plus_jkp_bab"]
+    prompt_lowrisk = prompt_attribution.loc[
+        "official_ff5_momentum_plus_jkp_lowrisk"
+    ]
+    prompt_bab_candidates = prompt_attribution_by_candidate[
+        prompt_attribution_by_candidate["benchmark"].eq(
+            "official_ff5_momentum_plus_jkp_bab"
+        )
+    ]
+    prompt_bab_attenuated = int(
+        prompt_bab_candidates["alpha_attenuation_from_ff5_momentum"].gt(0).sum()
+    )
+    prompt_bab_loadings = prompt_loadings[
+        prompt_loadings["benchmark"].eq("official_ff5_momentum_plus_jkp_bab")
+        & prompt_loadings["factor"].eq("char__betabab_1260d")
+        & prompt_loadings["candidate_id"].str.startswith("replay__")
+    ]
+    if len(prompt_bab_loadings) != 12 or prompt_bab_attenuated != 11:
+        raise RuntimeError("GuruAgents BAB attribution count changed")
+    prompt_replay_regressions = prompt_regressions[
+        prompt_regressions["series_type"].eq("replay")
+    ]
+
+    def replay_holm_positive_count(benchmark: str) -> int:
+        frame = prompt_replay_regressions[
+            prompt_replay_regressions["benchmark"].eq(benchmark)
+        ]
+        return int(
+            (
+                frame["alpha_annualized"].gt(0)
+                & frame["alpha_pvalue_holm_replay_family"].le(0.05)
+            ).sum()
+        )
+
+    prompt_compressed_holm = replay_holm_positive_count(
+        "jkp132_compressed_pre2022_pca5"
+    )
+    prompt_ridge_holm = replay_holm_positive_count(
+        "jkp132_full_lomo_ridge_exploratory"
+    )
+    prompt_best = prompt_economics[
+        prompt_economics["series_type"].eq("replay")
+        & prompt_economics["return_basis"].eq("net_10bp")
+    ].sort_values("annualized_sharpe", ascending=False).iloc[0]
+    if (
+        prompt_replay_live.get("replay_experiments") != 190
+        or prompt_replay_live.get("successful_experiments") != 190
+        or prompt_replay_manifest.get("replay_run_id") != prompt_replay_live.get("run_id")
+    ):
+        raise RuntimeError("GuruAgents live replay completion record changed")
     if len(ladder_results) != 200 or ladder_results["candidate_id"].nunique() != 50:
         raise RuntimeError("retained benchmark ladder is not a complete 50 by 4 panel")
     if len(ladder_comparison) != 50 or ladder_comparison["canonical_work_id"].nunique() != 40:
@@ -438,6 +530,26 @@ def main() -> int:
         command("InternationalFailureCandidateCount", int(forensic_manifest["failure_candidates"])),
         command("InternationalExtremeShortCount", int(forensic_manifest["single_extreme_short_position_dominates"])),
         command("InternationalTwoCellCount", int(forensic_manifest["events_in_two_largest_month_cells"])),
+        command("PromptReplayExperimentCount", int(prompt_replay_live["replay_experiments"])),
+        command("PromptReplaySuccessfulCount", int(prompt_replay_live["successful_experiments"])),
+        command("PromptReplayCostUSD", f"\\${float(prompt_replay_live['cumulative_openrouter_cost_usd']):.2f}"),
+        command("PromptReplayArchivedJaccard", f"{float(prompt_replay_live['results']['archived-final']['mean_ticker_jaccard']):.3f}"),
+        command("PromptReplayToolJaccard", f"{float(prompt_replay_live['results']['tool-routing']['mean_ticker_jaccard']):.3f}"),
+        command("PromptReplayPathCount", int(prompt_regressions.loc[prompt_regressions["series_type"].eq("replay"), "candidate_id"].nunique())),
+        command("PromptReplayMatchedPathCount", int(prompt_ff5["identified_replay_paths"])),
+        command("PromptReplayFactorMonthCount", int(prompt_ff5["n_months_min"])),
+        command("PromptReplayFFFiveMomMedianAlphaPct", fmt_pct(float(prompt_ff5["median_alpha_annualized"]))),
+        command("PromptReplayBABMedianAlphaPct", fmt_pct(float(prompt_bab["median_alpha_annualized"]))),
+        command("PromptReplayLowRiskMedianAlphaPct", fmt_pct(float(prompt_lowrisk["median_alpha_annualized"]))),
+        command("PromptReplayBABAttenuatedCount", prompt_bab_attenuated),
+        command("PromptReplayBABPositiveLoadingCount", int(prompt_bab_loadings["loading"].gt(0).sum())),
+        command("PromptReplayFFFiveMomHolmCount", int(prompt_ff5["holm_positive_count"])),
+        command("PromptReplayBABHolmCount", int(prompt_bab["holm_positive_count"])),
+        command("PromptReplayLowRiskHolmCount", int(prompt_lowrisk["holm_positive_count"])),
+        command("PromptReplayCompressedHolmCount", prompt_compressed_holm),
+        command("PromptReplayRidgeHolmCount", prompt_ridge_holm),
+        command("PromptReplayBestReturnPct", fmt_pct(float(prompt_best["annualized_geometric_return"]))),
+        command("PromptReplayBestSharpe", f"{float(prompt_best['annualized_sharpe']):.2f}"),
     ]
     paper_dir.mkdir(parents=True, exist_ok=True)
     result_path = paper_dir / "icaif2026_results.tex"
@@ -479,6 +591,48 @@ def main() -> int:
         handle.write("\n".join(top_factor_lines) + "\n")
         temp_top_factor_path = Path(handle.name)
     os.replace(temp_top_factor_path, top_factor_path)
+
+    prompt_labels = {
+        "official_ff_capm_matched_jkp_window": "Official CAPM",
+        "official_ff3_matched_jkp_window": "Official FF3",
+        "official_ff5_momentum_matched_jkp_window": "Official FF5+Mom",
+        "official_ff5_momentum_plus_jkp_bab": "+ JKP BAB",
+        "official_ff5_momentum_plus_jkp_lowrisk": "+ JKP low-risk block",
+    }
+    prompt_table_lines = [
+        "% Generated by scripts/build_icaif2026_submission_assets.py; do not edit by hand.",
+        r"\begin{table}[t]",
+        r"\centering",
+        r"\caption{Prompt-replayed GuruAgents factor attribution. Every row uses the same 12 paths and 33 realized months, net of 10-bp one-way costs.}",
+        r"\label{tab:guru-prompt-attribution}",
+        r"\scriptsize",
+        r"\setlength{\tabcolsep}{3.5pt}",
+        r"\begin{tabular}{@{}lrrr@{}}",
+        r"\toprule",
+        r"\textbf{Benchmark} & \textbf{Median $\alpha$} & \textbf{$\alpha>0$} & \textbf{Holm $+$} \\",
+        r"\midrule",
+    ]
+    for benchmark in expected_prompt_benchmarks:
+        row = prompt_attribution.loc[benchmark]
+        prompt_table_lines.append(
+            f"{prompt_labels[benchmark]} & {fmt_pct(float(row['median_alpha_annualized']))} & "
+            f"{int(row['positive_alpha_count'])}/12 & {int(row['holm_positive_count'])}/12 \\\\"
+        )
+    prompt_table_lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\par\vspace{0.2em}\footnotesize The BAB row adds only JKP \texttt{betabab\_1260d}. The low-risk block adds BAB, conventional and Dimson beta, downside beta, idiosyncratic and realized volatility, and quality-safety returns. Holm adjustment is within the 12 replay paths. Full JKP132 OLS is unidentified in 33 months.",
+            r"\end{table}",
+        ]
+    )
+    prompt_table_path = paper_dir / "tables/guruagents_prompt_replay_attribution.tex"
+    with tempfile.NamedTemporaryFile(
+        "w", dir=prompt_table_path.parent, delete=False, encoding="utf-8"
+    ) as handle:
+        handle.write("\n".join(prompt_table_lines) + "\n")
+        temp_prompt_table_path = Path(handle.name)
+    os.replace(temp_prompt_table_path, prompt_table_path)
 
     def holm_count(p_values: list[float]) -> int:
         ordered = sorted(float(value) for value in p_values)
@@ -1102,6 +1256,7 @@ def main() -> int:
     print(f"wrote {paper_dir / 'figures/usa_g7_transfer.pdf'}")
     print(f"wrote {table_path}")
     print(f"wrote {anchor_path}")
+    print(f"wrote {prompt_table_path}")
     return 0
 
 

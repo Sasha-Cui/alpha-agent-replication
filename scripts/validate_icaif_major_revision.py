@@ -331,6 +331,12 @@ def main() -> int:
         "Reproducibility and Secondary Code Audit",
         "generated_corpus_citations.tex",
         "census_primary_records",
+        "Public-prompt replay",
+        "What changes when the LLM is actually prompted?",
+        "\\input{tables/guruagents_prompt_replay_attribution.tex}",
+        "\\PromptReplayBABMedianAlphaPct",
+        "does not fully absorb the strongest replay result",
+        "unrestricted JKP132 OLS",
     ]:
         require(required in tex, f"required disclosure absent: {required}")
     for forbidden in [
@@ -390,6 +396,15 @@ def main() -> int:
                 "mechanism caveat absent")
         require("reproducibility and secondary code audit" in folded_text,
                 "self-contained audit section absent")
+        require("public-prompt replay" in folded_text and
+                "what changes when the llm is actually prompted?" in folded_text,
+                "prompt-replay methods or results section absent")
+        require("5.80%" in normalized_text and "2.59%" in normalized_text and
+                "11 of 12" in normalized_text,
+                "prompt-replay BAB attribution absent")
+        require("one archived-final buffett replay remains holm-positive" in folded_text and
+                "unrestricted jkp132 ols" in folded_text,
+                "prompt-replay identification boundary absent")
         require("supplement" not in folded_text, "PDF improperly depends on a supplement")
         from pypdf import PdfReader
         require(len(PdfReader(args.pdf).pages) <= 8, "PDF exceeds ICAIF's eight-page total limit")

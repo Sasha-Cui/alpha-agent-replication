@@ -28,7 +28,7 @@ python scripts/validate_icaif_submission.py \
 ```
 
 The build writes the single submission artifact to
-`output/pdf/icaif2026_submission.pdf`. The current PDF is seven pages and
+`output/pdf/icaif2026_submission.pdf`. The current PDF is eight pages and
 its recorded release build passes all 71 checks plus the locked-evidence
 wording gate.
 
@@ -38,10 +38,18 @@ replications. Unavailable artifacts are never encoded as zero returns, and the
 paper does not claim that model pretraining causally produced factor
 rediscovery.
 
-Restricted security-level inputs, the external factor panel, and high-volume
-monthly reconstruction matrices remain outside Git. The repository publishes
-their schemas and hashes together with compact aggregate results and
-regeneration code.
+The manuscript also reports a separate, fully executed GuruAgents prompt
+replay: 190/190 GPT-4o agent-quarter-mode cells, 24 costed return paths, and a
+matched official Fama--French-to-JKP-BAB attribution ladder. That experiment is
+not counted among the 50 formula/component mappings or the 14-target code
+audit, and its 33-month factor window does not identify unrestricted JKP132
+OLS.
+
+Restricted security-level inputs and raw upstream market data remain outside
+Git. The authorized GuruAgents collaborator bundle publishes the derived
+monthly holdings, returns, traded notional, official Fama--French and extended
+JKP factor panels, fitted values, residuals, penalties, loadings, schemas, and
+hashes, subject to the licensing cautions in its manifest.
 
 ## Archived evidence-audit manuscript
 

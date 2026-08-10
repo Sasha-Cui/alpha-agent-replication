@@ -7,17 +7,17 @@ tracked aggregate evidence on Bouchet.
 
 | Artifact | SHA-256 |
 | --- | --- |
-| `docs/paper/icaif2026_submission.tex` | `a2b95524a843e57fe3d8ed6b36b8c22eb6e96d85bebe0c80563c740f06dfc0ee` |
-| `output/pdf/icaif2026_submission.pdf` | `529aa46ecac2fcf4bd1c52946a68e03e647bf6faff142587cbedf1116d8dee93` |
+| `docs/paper/icaif2026_submission.tex` | `20d7743406ce14be1e3a20fbce839b6575cd590f27fcfdbb055b36a410c733d1` |
+| `output/pdf/icaif2026_submission.pdf` | `90e6471868c795dc4fe30a95f04a761e3627400aeb33d927a7f653d464df0d82` |
 
-The PDF is seven US-Letter pages, unencrypted, anonymous, and built with the
+The PDF is eight US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
 rendered pages were visually checked for clipping, overlaps, and unreadable
 labels.
 
 ## Passing checks
 
-- Repository test suite: 65 passed.
+- Repository test suite: 85 passed.
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
@@ -76,6 +76,9 @@ Passing validation means that the source, PDF, aggregate evidence, generated
 handoff, and stated claims are internally consistent. It does not convert the
 50 mappings into native-agent replications, make the retrospective mapping
 exercise confirmatory, or establish a causal pretraining mechanism.
+The separate GuruAgents experiment is a public-prompt replay with archived
+deterministic tool observations, not an independent reconstruction of the
+source data or a 33-month unrestricted JKP132 test.
 
 The legacy `docs/paper/alpha_agent_replication.tex`, owner-review packet, and
 their historical build script document an earlier evidence-audit manuscript.
