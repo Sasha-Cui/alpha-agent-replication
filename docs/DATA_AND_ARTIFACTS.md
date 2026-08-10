@@ -55,6 +55,50 @@ present in `paper_runs/handoff/strategy_result_index.csv`. Closest-factor names,
 correlations, alpha estimates, and inference flags are derived aggregate
 statistics already contained in the frozen research outputs.
 
+## Obtaining JKP inputs for an end-to-end rerun
+
+The compact public artifacts can be audited without licensed data. Rebuilding
+the security-level portfolios requires the JKP stock-level monthly panel; this
+input is intentionally not redistributed here.
+
+1. Download public JKP factor returns from the official
+   [JKP data library](https://www.jkpfactors.com/data) when only the factor
+   benchmarks are needed.
+2. For the headline security-level reconstruction, obtain authorized access to
+   the monthly JKP characteristic/return panel. The official
+   [JKP WRDS guide](https://www.jkpfactors.com/jkp-wrds-guide) documents the
+   WRDS route and its CRSP/Compustat prerequisites. An equivalent local build
+   from the official JKP code and appropriately licensed source data is also
+   acceptable.
+3. Preserve the acquired files read-only and record their SHA-256 hashes. A
+   conventional local layout is:
+
+   ```text
+   /path/to/jkp-data/data/processed/characteristics/USA.parquet
+   ```
+
+4. Point the runners to the authorized files rather than copying them into the
+   repository:
+
+   ```bash
+   export ALPHA_EVOLVE_JKP_ROOT=/path/to/jkp-data
+   export ALPHA_EVOLVE_JKP_USA=/path/to/jkp-data/data/processed/characteristics/USA.parquet
+   export ALPHA_EVOLVE_FACTOR_PANEL=/path/to/benchmark_factor_panel.csv
+   ```
+
+5. Compare the acquired-input hashes and all regenerated-output hashes with the
+   applicable `run_manifest.json` and analysis lock before interpreting any
+   numerical difference. Follow `docs/EXPERIMENT_INDEX.md` for the runner and
+   output associated with each empirical stage.
+
+The website's factor-return downloads are sufficient to audit or rebuild factor
+benchmarks, but they do not replace the licensed stock-level panel needed to
+reconstruct the 50 portfolios. With that authorized panel available, the
+tracked runners can regenerate the omitted monthly matrices and compact result
+files. The public repository therefore separates *redistributable audit
+artifacts* from *access-dependent end-to-end computation*; it does not claim
+that licensed observations are bundled in a fresh clone.
+
 ## Integrity and regeneration
 
 Every counted run directory contains a manifest or is covered by the analysis

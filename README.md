@@ -94,7 +94,7 @@ The Bouchet environment manifest is kept in `environment.toml`. Installed packag
 
 ## External Inputs
 
-Counted experiments use read-only local research inputs. Defaults point to the Bouchet project layout, and public users can override them:
+Counted experiments use read-only local research inputs. The official [JKP data library](https://www.jkpfactors.com/data) supplies public factor returns, while the [JKP WRDS guide](https://www.jkpfactors.com/jkp-wrds-guide) explains authorized access to the stock-level panel required for end-to-end portfolio reconstruction. See [`docs/DATA_AND_ARTIFACTS.md`](docs/DATA_AND_ARTIFACTS.md) for the exact boundary and hash-verification procedure. Defaults point to the Bouchet project layout, and public users can override them:
 
 ```bash
 export ALPHA_EVOLVE_REPO=/path/to/alpha-agent-replication
