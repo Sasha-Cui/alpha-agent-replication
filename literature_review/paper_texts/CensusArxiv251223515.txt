@@ -1,0 +1,781 @@
+                                                             Alpha-R1: Alpha Screening with LLM Reasoning via
+                                                                          Reinforcement Learning
+                                                              Zuoyou Jiang∗†                                     Li Zhao∗                                      Rui Sun
+                                                     Shanghai Jiao Tong University                                StepFun                                     StepFun
+                                                           Shanghai, China                                    Shanghai, China                             Shanghai, China
+                                                       zuoyou.jiang@sjtu.edu.cn                             zhaoli@stepfun.com                          sunrui@stepfun.com
+
+                                                                Ruohan Sun†                                   Zhongjian Li†                                     Jing Li
+                                                     Shanghai Jiao Tong University                     Shanghai Jiao Tong University                           StepFun
+arXiv:2512.23515v1 [q-fin.TR] 29 Dec 2025
+
+
+
+
+                                                           Shanghai, China                                   Shanghai, China                               Shanghai, China
+                                                       ruohan.sun@sjtu.edu.cn                            zhongjian.li@sjtu.edu.cn                       futureli@stepfun.com
+
+                                                                 Daxin Jiang                                     Zuo Bai‡                                   Cheng Hua‡
+                                                                  StepFun                                     FinStep, StepFun                     Shanghai Jiao Tong University
+                                                              Shanghai, China                                 Shanghai, China                            Shanghai, China
+                                                            djiang@stepfun.com                         baizuo@{finstep.cn,stepfun.com}                cheng.hua@sjtu.edu.cn
+
+                                            Abstract                                                                     growth of market data, has culminated in the high-dimensional
+                                            Signal decay and regime shifts pose recurring challenges for data-           phenomenon known as the Factor Zoo [8].
+                                            driven investment strategies in non-stationary markets. Conven-                 At the same time, advancements in natural language process-
+                                            tional time-series and machine learning approaches, which rely               ing (NLP) have empowered the extraction of valuable sentiment
+                                            primarily on historical correlations, often struggle to generalize           signals from extensive unstructured data sources, such as news
+                                            when the economic environment changes. While large language                  and financial reports [28]. The field has witnessed a paradigm shift
+                                            models (LLMs) offer strong capabilities for processing unstructured          from general-purpose architectures toward domain-specific founda-
+                                            information, their potential to support quantitative factor screening        tion models. Notable examples, including BloombergGPT [44] and
+                                            through explicit economic reasoning remains underexplored. Exist-            FinGPT [26], have validated the effectiveness of pre-training and
+                                            ing factor-based methods typically reduce alphas to numerical time           fine-tuning on financial datasets, often leveraging efficient adapta-
+                                            series, overlooking the semantic rationale that determines when a            tion methods like LoRA [16]. These specialized models have set new
+                                            factor is economically relevant.                                             performance standards [47], demonstrating superior capabilities
+                                               We propose Alpha-R1, an 8B-parameter reasoning model trained              in tasks such as sentiment analysis and named entity recognition
+                                            via reinforcement learning for context-aware alpha screening. Alpha-         compared to generalist models [29, 49, 51].
+                                            R1 reasons over factor logic and real-time news to evaluate alpha               However, a key gap remains in unifying these data streams. Tra-
+                                            relevance under changing market conditions, selectively activating           ditional numerical indicators and textual signals are often treated as
+                                            or deactivating factors based on contextual consistency. Empirical           separate modalities, combined through static weighting schemes or
+                                            results across multiple asset pools show that Alpha-R1 consistently          heuristic rules rather than within a unified framework that captures
+                                            outperforms benchmark strategies and exhibits improved robust-               their semantic interactions in dynamic decision-making. Recent
+                                            ness to alpha decay. The full implementation and resources are               advances in large language models (LLMs) have substantially ex-
+                                            available at https://github.com/FinStep-AI/Alpha-R1.                         panded the scope of automated reasoning. NLP has shifted from
+                                                                                                                         task-specific supervision toward promptable, general-purpose sys-
+                                            Keywords                                                                     tems that, augmented with chain-of-thought reasoning and rein-
+                                                                                                                         forcement learning, can address increasingly complex cognitive
+                                            Large Language Models, Reinforcement Learning, Alpha Screening,              tasks.
+                                            Quantitative Trading                                                            The integration of these systems into factor investing is far from
+                                                                                                                         mature. The financial domain is characterized by inherent non-
+                                            1    Introduction                                                            stationarity, noise, and high dimensionality [8, 13], necessitating
+                                                                                                                         adaptive reasoning to navigate uncertainty, such as assessing the
+                                            The paradigm of factor investing has remained a cornerstone of
+                                                                                                                         relative merit of value versus momentum factors under shifting
+                                            modern asset management since the seminal work of Fama and
+                                                                                                                         macroeconomic conditions. These demands stand in stark contrast
+                                            French [7]. Theoretical evolution, ranging from the foundational
+                                                                                                                         to the deterministic nature of coding or mathematical benchmarks
+                                            CAPM [37] to multi-factor models [3], coupled with the exponential
+                                                                                                                         typically employed for LLMs [14]. Although alternative method-
+                                                                                                                         ologies like sparsity-based machine learning (e.g., Lasso) are avail-
+                                            ∗ Both authors contributed equally to this research.
+                                                                                                                         able [9], they frequently suffer from poor interpretability and insta-
+                                            † Work done during an internship at FinStep and StepFun.
+                                            ‡ Corresponding author.
+                                                                                                                         bility during market regime changes. Conversely, general-purpose
+                                                                                                                                    Jiang et al.
+
+
+LLMs typically lack alignment with financial principles, making it       to the financial domain. Instead of relying on subjective human
+difficult to produce verifiable justifications for factor selection or   preferences, we construct an objective reward signal based on real-
+transparent decision traces [40].                                        ized market performance, such as volatility-adjusted returns. This
+    Current research on LLMs in finance has largely focused on           design aligns the model’s reasoning process with realistic trading
+factor mining, namely the discovery of novel signals from textual        objectives and supports sequential decision-making under uncer-
+or multimodal data. This line of work is closely related to open-        tainty.
+domain question answering, where the primary goal is information            Finally, we conduct extensive backtesting across multiple as-
+extraction. A growing literature leverages the generative capabili-      set pools beyond standard market indices. The results show that
+ties of LLMs for this purpose. For instance, Cheng et al. [5] showed     Alpha-R1 consistently outperforms state-of-the-art benchmarks
+that GPT-4 can generate factors with high Sharpe ratios supported        and traditional factor strategies, demonstrating robustness to alpha
+by economic rationales, while Wang et al. [42] proposed prompt-          decay and the ability to deliver explainable, superior risk-adjusted
+based extraction methods for profitable factors. To further opera-       performance across market regimes.
+tionalize factor generation, Cao [2] introduced Chain-of-Alpha, a
+dual-chain architecture that generates seed factors and iteratively      2 Related Work
+refines them using backtesting feedback. Related frameworks, in-
+                                                                         2.1 LLMs in Quantitative Trading
+cluding Alpha-GPT [43, 48] and R&D-Agent-Quant [24], explore
+human-in-the-loop and multi-agent systems to bridge hypothesis           2.1.1 Financial Foundation Models and Adaptation. Before the ad-
+generation and code implementation. To address alpha decay, Tang         vent of reasoning-centric approaches, the adaptation of LLMs to
+et al. [39] proposed regularization based on abstract syntax trees to    finance primarily focused on domain-specific pre-training and in-
+encourage factor originality. More recently, Kou et al. [21] utilize     struction tuning. BloombergGPT [44] established a benchmark by
+LLMs to extract trading signals from multimodal data, including          training on a massive mixed corpus of financial and general data.
+financial text and market information.                                   To democratize access, open-source efforts like FinGPT [26] and
+    As factor generation capabilities improve, evaluation has emerged    Instruct-FinGPT [49] utilized efficient fine-tuning techniques to
+as a key bottleneck. To address this, Ding et al. [6] proposed AlphaE-   adapt general-purpose models for financial tasks. Additionally, BBT-
+val, a five-dimensional framework that evaluates factors without         Fin [29] and XuanYuan 2.0 [51] have explored Chinese financial
+backtesting. Nevertheless, a fundamental gap remains between             benchmarks, while PIXIU [47] provided a comprehensive evalua-
+broad factor mining and the path-dependent reasoning required            tion framework for these instruction-tuned models.
+for systematic factor screening. Recent efforts such as Trading-         2.1.2 LLMs for Alpha Factor Generation. The integration of LLMs
+R1 [45], Fin-R1 [27], and FinO1 [33] enhance reasoning capabilities      has catalyzed a paradigm shift in quantitative trading, particularly
+in financial LLMs, yet factor screening decisions remain highly          within the domain of alpha factor mining, where models automate
+context-dependent and time-varying. A factor that performs well          the discovery of novel, interpretable predictive signals. Contempo-
+in an inflationary regime may become ineffective, or even harmful,       rary research has evolved from simple signal generation to sophis-
+during a recession.                                                      ticated agent-based frameworks. A prominent research trajectory
+    To address these structural limitations, we propose Alpha-R1,        focuses on mitigating alpha decay through iterative refinement. For
+a dynamic investment framework anchored by a specialized rea-            instance, AlphaAgent [39] introduces a framework that enforces
+soning model trained via reinforcement learning. Distinct from           factor originality and robustness using abstract syntax tree (AST)
+generic LLM applications or purely agentic frameworks [15, 46],          similarity measures. Complementing this, Chain-of-Alpha [2] pro-
+Alpha-R1 serves as the system’s cognitive core, designed to support      poses a dual-chain architecture consisting of a factor generation
+the sequential reasoning required for dynamic factor screening.          chain and a factor optimization chain to iteratively refine candidate
+It inductively reasons over heterogeneous market information to          factors based on feedback from backtesting. Similarly, AlphaForge
+assess the economic relevance of candidate factors and construct         [38] adopts a two-stage generative and predictive neural network
+portfolios aligned with prevailing market conditions. In addition,       to enhance the mining process. Beyond fully autonomous systems,
+Alpha-R1 attributes return sources in a structured manner, enabling      recent work has also explored human-AI collaboration [43, 48].
+transparent explanations of factor selection decisions. This design
+addresses both the opacity of traditional quantitative models and        2.1.3 LLM-based Quant Agents. Moving beyond the paradigm of
+the static reasoning of existing financial LLMs, advancing regime-       discrete factor mining, the research frontier has expanded towards
+aware and interpretable portfolio construction.                          developing holistic, AI-driven agents capable of orchestrating the
+    Our primary contributions are as follows. First, we develop a        entire investment lifecycle. A primary research trajectory focuses
+practical investment framework that bridges static quantitative          on fine-tuning LLMs for direct return forecasting. Guo and Haupt-
+models and dynamic market environments. By synthesizing het-             mann [12] demonstrate that adapting models to unstructured data,
+erogeneous information, including macroeconomic indicators and           such as news flow, substantially enhances stock selection capabil-
+news narratives, the framework enables regime-aware factor screen-       ities, while also providing critical comparative insights into the
+ing and dynamically adjusts portfolio exposure based on the se-          efficacy of encoder-only (e.g., DeBERTa) versus decoder-only (e.g.,
+mantic alignment between factor rationales and prevailing market         Mistral) architectures.
+conditions.                                                                  To address the downstream complexities of execution and risk
+    Second, we design a specialized reasoning core by adapting the       management, however, the field is increasingly pivoting towards
+reinforcement learning from human feedback (RLHF) paradigm               multi-agent orchestration. Kou et al. [21] propose a hierarchical
+Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning
+
+
+framework where LLMs function as specialized alpha generators,            learning from human feedback (RLHF), was introduced to bolster
+with distinct agents responsible for dynamic weight optimization.         instruction-following capabilities [32]. This paradigm predomi-
+This architectural philosophy that segregates signal generation           nantly relies on proximal policy optimization (PPO) [35], which
+from risk control parallels the modular design of reinforcement           utilizes a learned value function to estimate advantages and ensure
+learning systems such as QF-FRL [5] and general multi-agent frame-        training stability via a clipped surrogate objective. However, the
+works like MetaGPT [15]. This trend culminates in comprehen-              requirement to maintain a value model incurs significant mem-
+sive ecosystems like TradingGPT [25], FinMem [23], and FinA-              ory and computational overhead. Moreover, traditional RLHF faces
+gent [1, 50], which employ multimodal perception [21] and collabo-        challenges such as reward hacking and instability [4, 22]. To miti-
+rative agent workflows (e.g., TradingAgents [46]) to autonomously         gate these, alternative preference optimization methods like direct
+navigate the full spectrum of trading activities. Additionally, Koa       preference optimization (DPO) [34] and simple preference optimiza-
+et al. [20] integrated self-reflection mechanisms to refine predic-       tion (SimPO) [31] have been proposed to bypass explicit reward
+tions, addressing hallucination issues common in these complex            modeling.
+agents [17].                                                                 To circumvent computational bottlenecks in reasoning-intensive
+                                                                          tasks, recent methodological advancements have increasingly fa-
+2.2     Methods for Screening Alpha Factors                               vored critic-free optimization paradigms. Notably, group relative
+2.2.1 Machine Learning in Regularized and Sparsity-Driven Selec-          policy optimization (GRPO) [36] has emerged as a robust alter-
+tion. The most direct machine learning approach to addressing             native. Diverging from PPO, GRPO eschews the need for a sepa-
+the Factor Zoo is the application of sparsity-inducing regulariza-        rate value network by approximating the baseline via the mean
+tion, such as Lasso [41]. This method imposes sparsity by adding a        rewards of a group of outputs sampled from the current policy.
+penalty term, effectively shrinking the coefficients of irrelevant or     This group-relative formulation significantly reduces the compu-
+redundant factors to zero. Building on this principle, Mai et al. [30]    tational footprint of RL training while preserving optimization
+adopt the Lasso method to address severe multicollinearity among          stability. DeepSeek-R1 [11] exemplifies the efficacy of this para-
+feature indicators in the A-share market, finding that it yields su-      digm in fostering self-evolving reasoning chains. This paradigm is
+perior stability and predictive accuracy compared to traditional          now permeating the financial domain; for instance, Trading-R1 [45]
+unregularized linear methods.                                             utilizes a curriculum of supervised fine-tuning and RL to structure
+                                                                          investment theses, while Fin-R1 [27] and FinO1 [33] explore the
+2.2.2 Machine Learning in Tree-Based and Non-Linear Screening.            transferability of reasoning capabilities to financial tasks. This di-
+A second pathway leverages tree-based ensemble models. Gu et al.          rectly motivates our adoption of this critic-free architecture for
+[10] provided a milestone comparison of ML methods, establishing          Alpha-R1, optimizing factor screening logic against objective mar-
+that neural networks and regression trees demonstrate exceptional         ket feedback.
+performance in capturing nonlinear interactions for return pre-
+diction. In this approach, factors are typically screened based on        3 Methodology
+feature importance scores. Mai et al. [30] employed tree-based mod-       3.1 Data, Memory, and Factor Baselines
+els and deep feedforward Neural Networks to evaluate the efficacy
+of factors selected by Lasso. Their results confirmed the efficacy of     We establish the foundational data structures, historical context,
+non-linear models in portfolio management, consistently identify-         and quantitative benchmarks through a systematic process.
+ing key predictive factors such as momentum and earnings yield            3.1.1 Raw Data Abstraction. We first transform heterogeneous raw
+across varying market regimes.                                            data into structured textual atomic units. At each time step 𝑡, we
+                                                                          construct two complementary market descriptors:
+2.2.3 Deep Learning in Factor Compression. In contrast to select-
+                                                                                                               price
+ing a sparse subset of factors, deep learning techniques offer an              • Price Market Description (𝑆𝑡 ): Summarizes information
+alternative by compressing the high-dimensional factor universe                  from technical indicators, trading volume, and sector rota-
+into a low-dimensional set of latent representations. This is typi-              tion patterns.
+cally achieved through autoencoders or similar architectures. While            • News Market Description (𝑆𝑡news ): Encodes information
+effective at dimension reduction, a fundamental limitation lies in               from financial news and macroeconomic announcements
+the opaque black box nature of these models, which often obscures                to capture prevailing market sentiment.
+the economic interpretation of the resulting latent factors. To ad-       3.1.2 Iterative Memory Construction. We employ an iterative mem-
+dress this, Mai et al. [30] propose a hybrid CPCA framework that          ory construction pipeline to capture long-term market context. This
+combines clustering with Principal Component Analysis (PCA) to            process aggregates the atomic textual units into a coherent histori-
+construct lower-dimensional investment factors while maintaining                                     price
+                                                                          cal narrative. Let 𝐼 𝑤 = {𝑆𝑡 , 𝑆𝑡news }𝑡 ∈𝑤 denote the set of market
+a degree of interpretability often lost in purely deep learning-based
+                                                                          descriptions within week 𝑤. The weekly market summary 𝑀𝑤 is
+approaches.
+                                                                          updated recursively using a large language model:
+2.3     Reinforcement Learning for LLMs                                                        𝑀𝑤 = 𝐹 LLM (𝐼 𝑤 ⊕ 𝑀𝑤−1 ).                    (1)
+Reinforcement learning has established itself as a cornerstone par-          After iterating through the entire backtest period, we obtain
+adigm for aligning LLMs with human intent and augmenting their            the comprehensive backtest period market description (𝑀global ).
+reasoning faculties [19]. The dominant framework, reinforcement           This encapsulates the structural evolution and regime shifts of the
+                                                                                                                                                                                                       Jiang et al.
+
+
+                                                                                                      Alpha Description                                  Alpha Performance           Global Memory   Alpha
+ Step1: Raw Data Abstraction
+
+
+                LLM                           LLM                         Backbone Model 🔥                                                                               GRPO Optimization
+ Raw Data
+
+ Step2: Iterative Memory Construction
+                                                                      Semantic State Description                                                                               Alpha-R1 ❄
+                                              LLM
+
+
+
+
+                                                                                                                      Screened Alpha
+                   ×n
+
+
+
+
+                                              LLM
+                                                                                                                                                                                    …
+                               …                                                 …
+                   ×n
+       …
+
+
+
+
+                                              …
+
+                                                       …
+                                              LLM                                                                                                                              Linear Model
+
+
+
+
+                                                                                                                          Alpha with Linear weight
+                                                                                LLM
+                   ×n
+
+
+
+
+ Step3: Factor Backtesting
+
+                         Factor Backtesting
+                                                                                                                                                                                     …
+                                                                                 …
+                                  …                                                                                                                                          Factor Backtesting
+
+
+
+
+Figure 1: Alpha-R1 Framework Overview. The pipeline follows a sequential logic: (a) Preparation: Abstracting raw technical
+indicators and financial news into atomic textual units to construct a global historical memory (𝑀𝑔𝑙𝑜𝑏𝑎𝑙 ), coupled with systematic
+factor backtesting; (b) Semantic Construction: Mapping quantitative performance metrics into structured semantic factor
+profiles (𝛼𝑑𝑒𝑠 ) and synthesizing dynamic market states (𝑆𝑡 ); (c) Reasoning & Optimization: Performing context-aware alpha
+screening via a reasoning core that evaluates 𝛼𝑑𝑒𝑠 against 𝑆𝑡 , with the policy iteratively refined through GRPO.
+
+                                                                                                                  price
+market, forming the long-term historical memory required for the                         atomic units, (𝑆𝑡                                , 𝑆𝑡news ), we synthesize the instantaneous market
+subsequent semantic profiling.                                                           state:
+                                                                                                                                                                      price
+3.1.3 Factor Backtesting. To establish the ground truth for factor                                                                                   𝑆𝑡 = 𝐹 LLM (𝑆𝑡           , 𝑆𝑡news ).                      (3)
+behavior, we perform a backtest on the entire factor pool U over                         The resulting state captures the prevailing index dynamics, domi-
+the historical window. For each factor 𝑖, we obtain a quantitative                       nant sector themes, and capital flow patterns, providing the situa-
+performance vector 𝑃𝑖 , which includes key metrics such as returns,                      tional context for subsequent factor selection decisions.
+volatility, and decay characteristics. This dataset serves as the ob-
+jective basis for linking market memory with factor effectiveness.                       3.3        The Alpha-R1 Reasoning Model
+                                                                                         The Alpha-R1 model serves as the central reasoning agent for factor
+3.2         Profiling and State Description                                              screening and selection. At each decision time 𝑡, a semantic decision
+Building on the prepared data foundation and long-term market                            context 𝐶𝑡 is constructed by combining two components:
+memory, we construct the semantic state representations required
+for decision-making.                                                                                                                                  𝐶𝑡 = {𝛼 des,𝑖 }𝑖 ∈ U ⊕ 𝑆𝑡 ,                              (4)
+3.2.1 Factor Semantic Descriptions. This stage maps quantitative                         where:
+signals into structured semantic representations. We combine the
+                                                                                                   • {𝛼 des,𝑖 } denotes the set of semantic factor descriptions for
+global market description from the backtest period, 𝑀global , with
+                                                                                                     the candidate pool U.
+the factor-specific backtest results 𝑃𝑖 . An LLM then generates a
+                                                                                                   • 𝑆𝑡 is the contemporaneous semantic market state synthe-
+semantic profile 𝛼 des,𝑖 for each factor 𝑖:
+                                                                                                     sized via 𝐹 LLM as defined in Equation 3, which encapsulates
+                                    𝛼 des,𝑖 = 𝐹 LLM (𝑀global, 𝑃𝑖 ).            (2)                   price dynamics and news narratives at time 𝑡.
+
+Each profile articulates the factor’s underlying mechanism, its suit-                       Based on this high-dimensional semantic context 𝐶𝑡 , Alpha-R1
+ability across market regimes (e.g., high-volatility environments),                      performs inference to output the final selected factor list, denoted
+and its limitations or failure conditions. These semantic descriptions                   as A𝑡 . We interpret this mechanism as a context-conditioned gating
+serve as an instruction manual for the reasoning core in subsequent                      process where the LLM functions as a network that activates or
+decision-making.                                                                         deactivates factors based on semantic alignment between (i) fac-
+                                                                                         tor mechanism profiles and failure conditions, and (ii) the current
+3.2.2 Asset Pool State Description. To characterize the current in-                      market state summarized from price dynamics and news narratives.
+vestment environment, we construct an asset pool state description.                      This delegation of non-stationarity adaptation to the reasoning core
+In contrast to the long-term market memory, this representation                          allows the system to navigate regime shifts without the instability
+is generated dynamically for each decision day 𝑡. Using the daily                        of purely numerical re-estimation.
+Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning
+
+
+   Theoretically, we interpret our framework as a context-conditioned                   where 𝑉𝑖 denotes the previous-day value of factor 𝑖, and
+sparse linear model. The fixed linear scorer provides a stable, low-                    unselected factors contribute zero.
+variance mapping from factor exposures to stock ranking. In regime-                 (3) Portfolio Construction: Stocks are ranked by predicted re-
+switching markets, the dominant error source is often model mis-                        turns, and the top 𝑁 are selected to form an equal-weighted
+specification rather than within-regime estimation. While a purely                      portfolio.
+dynamic linear model must re-estimate coefficients from limited                     (4) Base Reward Calculation: Compute the excess return over
+and noisy samples—inducing high variance and overreaction to                            the benchmark over a holding period 𝐻 , scaled for the
+transient correlations—our approach reduces misspecification and                        reward function:
+estimation noise. By conditioning factor activation on richer state in-                                                               
+                                                                                       𝑅base = Returnport (A𝑡 , 𝐻 ) − Returnbench (𝐻 ) × 100,    (7)
+formation and enforcing parsimonious selection, Alpha-R1 achieves
+more robust out-of-sample performance.                                                  where 𝐻 denotes the holding period (e.g., 𝐻 = 5 days) used
+                                                                                        for both the portfolio and the benchmark returns.
+3.4     Reinforcement Learning via GRPO with                                       Quality-Adjusted Reward with LLM-as-Judge Evaluation. We in-
+        Market Feedback                                                         corporate reasoning quality into the reward through LLM-as-a-
+We optimize the Alpha-R1 reasoning model using reinforcement                    judge evaluation, in which an external large language model auto-
+learning. This design enables learning directly from objective mar-             matically assesses the model’s generated reasoning. A consistency
+ket feedback, adapting the RLHF paradigm to replace subjective                  penalty 𝑃consistency is computed as
+human preferences with performance-based financial signals. The
+reward function combines quantitative portfolio outcomes with                                    𝑃consistency = 𝐹 Judge (𝐶𝑡 , A𝑡 , response),     (8)
+assessments of reasoning quality, and training is carried out using             where 𝐹 Judge denotes a judge LLM (e.g., Claude 3.5 Haiku) that
+Group Relative Policy Optimization (GRPO) to ensure stable and                  evaluates dimensions such as logical coherence, linguistic fluency,
+efficient policy updates.                                                       and information redundancy. The variable response represents the
+                                                                                full textual output generated by the Alpha-R1 reasoning core, which
+3.4.1 Backbone Model and Stability. We adopt Qwen3-8B as the                    encompasses both the chain-of-thought reasoning process and the
+backbone model for its strong reasoning capabilities. This initial-             final selected factor list A𝑡 . The resulting score is normalized as
+ization accelerates convergence during reinforcement learning and               𝑃norm = 𝑃 consistency /10.0 and applied asymmetrically to adjust the
+improves the consistency and structure of generated outputs. In                 base reward:
+the absence of such a warm start, models are prone to overfitting
+superficial heuristics, leading to unstable or incoherent reasoning.
+                                                                                                         (
+                                                                                                           𝑅base × (1 − 𝑃norm ) if 𝑅base > 0
+The pre-trained backbone provides a stable foundation that pre-                            𝑅adjusted =                                        .   (9)
+                                                                                                           𝑅base × (1 + 𝑃norm ) if 𝑅base ≤ 0
+serves prior knowledge, allowing reinforcement learning to refine
+the model’s reasoning behavior.                                                    Structural Penalties. We incorporate a comprehensive structural
+                                                                                penalty 𝑃structural to enforce output discipline. This term qualita-
+3.4.2 Multi-Component Reward Function with Market Feedback.
+                                                                                tively combines the requirements for parsimony and validity: it
+We design a multi-component reward function that balances market
+                                                                                encourages the model to select a concise set of factors to avoid
+performance with reasoning discipline:
+                                                                                over-complexity, while strictly penalizing the generation of un-
+                      𝑅final = 𝑅adjusted − 𝑃 structural,                  (5)   parsable or non-existent factors to ensure the reasoning results are
+                                                                                executable within the quantitative backtesting framework.
+where 𝑅adjusted captures market-based performance feedback, and
+𝑃structural denotes the structural penalties that regulate action va-           3.4.3 GRPO Optimization with Market-Aligned Objectives. We em-
+lidity and sparsity. The reward components are computed through                 ploy Group Relative Policy Optimization (GRPO) to fine-tune the
+the following pipeline.                                                         Alpha-R1 model. The normalized advantage estimate is computed
+                                                                                as:
+   Rule-based Performance Reward. Market feedback is obtained via
+a backtesting procedure based on a linear factor model trained on                            𝑟𝑖 − mean(𝑟 )                           𝜋𝜃 (𝑜𝑖,𝑡 | 𝑞, 𝑜𝑖,<𝑡 )
+four years of historical data. We adopt a linear specification for                     𝐴ˆ𝑖 =               ,        𝜌𝑡(𝑖 ) (𝜃 ) =                             ,   (10)
+                                                                                                 std(𝑟 )                            𝜋𝜃 old (𝑜𝑖,𝑡 | 𝑞, 𝑜𝑖,<𝑡 )
+three reasons: it provides a stable and interpretable mapping from
+factor exposures to expected returns, enables direct attribution                where 𝜌𝑡(𝑖 ) (𝜃 ) denotes the probability ratio between the current
+of performance to selected factors, and avoids introducing non-                 and old policies. The GRPO objective function is defined as:
+stationarity into the reward signal during reinforcement learning
+                                                                                                                             |𝑜𝑖 |
+                                                                                                                "
+by keeping the evaluation model fixed.                                                                              𝐺
+                                                                                                                 1 ∑︁ 1 ∑︁            
+                                                                                        𝐽GRPO (𝜃 ) = E𝑞,{𝑜𝑖 }                      min 𝜌𝑡(𝑖 ) (𝜃 )𝐴ˆ𝑖 ,
+      (1) Linear Model: We use fixed regression coefficients 𝛽𝑖 esti-                                            𝐺 𝑖=1 |𝑜𝑖 | 𝑡 =1
+          mated from historical data.                                                                                                               #
+                                                                                                                                                               (11)
+      (2) For each stock, predicted returns are computed using the                                                    (𝑖 )                      ˆ
+                                                                                                                clip 𝜌 (𝜃 ), 1 − 𝜖, 1 + 𝜖 𝐴𝑖
+                                                                                                                         𝑡
+          selected factor set A𝑡 :
+                                                                                                     − 𝛽E𝑞 [𝐷 KL (𝜋𝜃 (· | 𝑞)∥𝜋ref (· | 𝑞))] ,
+                                           ∑︁
+                  𝑅𝑒𝑡𝑢𝑟𝑛 predicted = 𝛽 0 +    (𝛽𝑖 × 𝑉𝑖 ),        (6)
+                                            𝑖 ∈ A𝑡                                where:
+                                                                                                                                        Jiang et al.
+
+
+      • 𝑞 represents the input context, including market state and               • IPO Exclusion: Stocks are strictly excluded from trading on
+        factor descriptions;                                                       their initial listing day to avoid extreme volatility distor-
+      • 𝑜𝑖 represents the 𝑖-th response in the group of size 𝐺;                    tions.
+      • 𝜋𝜃 , 𝜋old , and 𝜋ref denote the current, sampling, and reference         • Transaction Costs: A transaction fee of 0.1% (10 bps) is ap-
+        policies, respectively;                                                    plied to both buy and sell orders to account for commissions
+      • 𝛽 controls the KL-divergence regularization strength, and                  and slippage.
+        𝜖 is the clipping parameter.                                       The daily portfolio return 𝑅𝑡 is computed as the aggregate re-
+   The objective function consists of two primary components: (1) a        turn across all 𝐻 slots, providing an overall measure of execution-
+clipped surrogate objective that encourages policy updates towards         adjusted strategy performance.
+higher advantage, and (2) a KL-divergence regularization term pre-
+venting deviation from the reference model. This ensures stable            4     Experiments
+training while optimizing for the market-aligned reward defined in
+                                                                           This section presents a comprehensive empirical evaluation of
+Equation 5. Through this approach, Alpha-R1 learns to select factor
+                                                                           Alpha-R1. We benchmark Alpha-R1 against a range of traditional
+combinations that not only generate superior excess returns but
+                                                                           quantitative strategies and state-of-the-art large language models
+also exhibit coherent and interpretable reasoning patterns.
+                                                                           (LLMs) to assess its effectiveness in dynamic market environments.
+                                                                           Our evaluation is guided by the following research questions:
+3.5    Portfolio Construction and Execution                                   Q1: Does Alpha-R1 consistently outperform traditional machine
+To translate factor selection into realized market performance, we         learning baselines and reasoning LLMs across distinct asset pools?
+implement a practical execution mechanism that accounts for liq-              Q2: What are the contributions of individual components (e.g.,
+uidity constraints and transaction costs. Given the factor set A𝑡          news, price, semantic descriptions) to the model’s performance?
+selected by Alpha-R1, portfolio positions are constructed using a             Q3: Does the semantic gating mechanism of Alpha-R1 offer
+slot rotation strategy and executed via volume-weighted average            tangible advantages over traditional heuristic gating strategies?
+price (VWAP)–based trading.                                                   Q4: How sensitive is the model’s performance to hyperparame-
+                                                                           ter variations?
+3.5.1 Slot Rotation Mechanism. To mitigate the high turnover costs
+typically associated with daily rebalancing, we divide the total
+                                                                           4.1    Experimental Setup
+capital 𝐶 into 𝐻 independent sub-portfolios (referred to as slots),
+where 𝐻 corresponds to the holding period (e.g., 𝐻 = 5 days). On           4.1.1 Dataset and Dynamic Factor Zoo. We construct a dynamic
+any given trading day 𝑡, only the specific slot indexed by 𝑘 = 𝑡           factor zoo by filtering the Alpha101 library [18], retaining 82 compu-
+(mod 𝐻 ) undergoes rebalancing:                                            tationally feasible factors. To avoid look-ahead bias, the experiments
+                                                                           are temporally segmented:
+                    𝑃𝑡,𝑘 = Rebalance(𝑃𝑡 −1,𝑘 , A𝑡 ),                (12)       Pre-training Phase (2020.01.01 – 2023.12.31): Used solely to esti-
+                                                                           mate the fixed coefficients 𝛽𝑖 for the linear reward model described
+where 𝑃𝑡,𝑘 represents the holdings of the 𝑘-th slot. The remaining         in Section 3.4.
+𝐻 − 1 slots remain passive. This approach effectively smooths out              Training Phase (2024.07.01 – 2024.12.31): Using constituent stocks
+the equity curve and reduces the average daily turnover rate to 1/𝐻 ,      from the CSI 300, we simulate a high-turnover environment. To
+allowing for broader market coverage without incurring excessive           encourage semantic reasoning rather than factor memorization, we
+friction costs.                                                            adopt a randomized factor augmentation scheme: for each trading
+                                                                           date, 300 training samples are generated, each with a randomly
+3.5.2 VWAP-based Execution and Constraints. Unlike simplified              selected subset of 40 factors drawn from the full pool of 82 as the
+backtesting engines that assume execution at the opening price             state input.
+𝑃open , we employ a volume-weighted average price (VWAP) model                 Testing Phase (2025.01.01 – 2025.06.30): For strictly out-of-sample
+to better approximate realized trading costs. For a selected stock 𝑠,      evaluation, we construct a fixed candidate set of 40 factors selected
+the execution price 𝑃ˆ𝑠,𝑡 is computed using transaction data from          based on historical RankIC performance over 2023–2024. Evaluation
+the first 30 minutes of the trading session (09:31–10:00):                 is conducted on both the CSI 300 (large-cap, in-domain) and the CSI
+                      Í30                                                  1000 (small-cap, out-of-domain) universes to assess generalization
+                ˆ           (𝑃𝑟𝑖𝑐𝑒𝑠,𝑡,𝑖 × 𝑉 𝑜𝑙𝑢𝑚𝑒𝑠,𝑡,𝑖 )
+                𝑃𝑠,𝑡 = 𝑖=1 Í30                           .      (13)       across asset pools. While both are temporally out-of-sample, the
+                               𝑖=1 𝑉 𝑜𝑙𝑢𝑚𝑒𝑠,𝑡,𝑖                            CSI 1000 evaluates zero-shot spatial generalization.
+This interval corresponds to the period of highest market liquidity        4.1.2 Baselines and Model Configuration. We compare Alpha-R1
+and provides a conservative estimate of execution slippage. To             against two classes of baselines. The first consists of traditional
+ensure market realism, the execution process enforces the following        quantitative strategies, including statistical methods (PCA), tree-
+constraints:                                                               based ensembles (XGBoost and LightGBM), and deep reinforce-
+      • Limit-Move Constraints: Buy orders are rejected if the stock       ment learning approaches (A2C and PPO). The second class com-
+        hits the upper price limit (Limit-Up) during the execution         prises reasoning-enabled large language models, including Gem-
+        window, and sell orders are deferred if the stock is locked        ini 2.5 Pro Thinking, Claude 3.7 Sonnet Thinking, DeepSeek-R1,
+        at the lower price limit (Limit-Down).                             and the base model Qwen3-8B.
+Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning
+
+
+Table 1: Main Experiment Results. Performance comparison of Alpha-R1 against baselines across two asset pools (Testing Period:
+2025.01.01 – 2025.06.30). Results are reported as the average of 5 independent runs. CR: Cumulative Return, AR: Annualized
+Return, SR: Sharpe Ratio, MDD: Maximum Drawdown. The best results are highlighted in bold.
+
+
+                                                            Asset Pool CSI 300 (In-Domain)               Asset Pool CSI 1000 (Out-of-Domain)
+  Type             Method
+                                                           CR (%)         AR (%)    SR     MDD (%)       CR (%)     AR (%)      SR         MDD (%)
+                   Buy & Hold                                3.03          6.70     0.33     10.49         9.64      22.14      0.80        16.87
+                   PCA                                      -0.48          0.40    -0.06     14.69         6.24      16.09      0.59        16.13
+                   XGBoost                                 -10.03         -21.65   -1.54     15.33         4.34      11.77      0.45        19.12
+  Non-LLM
+                   LightGBM                                 -5.10         -10.26   -0.83     13.43        -5.37      -6.92     -0.26        23.88
+                   A2C                                      -5.52         -11.12   -0.85     11.22        11.80      26.30      1.15        14.00
+                   PPO                                       0.89          3.28     0.11     11.67        -6.44      -7.62     -0.25        29.31
+                   Gemini 2.5 Pro Thinking                  -7.04         -14.45   -1.01     15.08        -8.73     -15.38     -0.58        28.37
+                   Claude 3.7 Sonnet Thinking               -5.41         -10.23   -0.63     13.58        3.80      13.26       0.43        16.98
+  LLM              DeepSeek-R1                              -5.98         -11.93   -0.82     14.88        -7.58     -12.87     -0.50        27.89
+                   Qwen3-8B                                 -6.32         -12.41   -0.77     16.35        2.73      10.23       0.29        21.78
+                   Alpha-R1 (Ours)                         12.99          27.59    1.62       6.76        42.49     78.18      4.03         9.25
+
+
+
+
+                   (a) Net Value - Asset Pool CSI 300                                                (b) Net Value - Asset Pool CSI 1000
+
+Figure 2: Cumulative Net Value Curves. Comparison of wealth accumulation trajectories on the 2025 testing set. (a) On the CSI 300,
+Alpha-R1 outperforms all baselines with lower drawdown. (b) On the Out-of-Domain CSI 1000, Alpha-R1 demonstrates superior
+zero-shot transferability, whereas traditional RL models exhibit inconsistent performance: A2C shows improved returns but
+with higher volatility, while PPO suffers from significant drawdowns, indicating overfitting and limited generalization.
+
+
+   Consistent with the execution protocol described in Section 3.5,                 4.1.3 Evaluation Protocol. Performance is evaluated using cumu-
+we employ a slot rotation strategy with a holding period of 𝐻 = 5                   lative return (CR), annualized return (AR), Sharpe ratio (SR), and
+days, managing five concurrent sub-portfolios. Each slot selects                    maximum drawdown (MDD). To reduce the impact of random ini-
+𝑇𝑜𝑝𝑁 = 10 stocks, and trades are executed using 30-minute VWAP                      tialization, all reported backtesting results are averaged over five
+prices with a fixed bilateral transaction cost of 0.1%.                             independent runs.
+   To prevent data leakage and ensure a fair evaluation, all bench-
+mark LLMs have pre-training data cutoffs strictly no later than De-
+                                                                                    4.2    Performance Evaluation
+cember 31, 2024. Alpha-R1 adopts Qwen3-8B as its backbone model.
+Inference is performed deterministically with temperature=0 and                     We first evaluate the capacity of Alpha-R1 to generate excess re-
+top_p=0.7.                                                                          turns. Table 1 details the quantitative metrics, while Figure 2 visu-
+                                                                                    alizes the wealth accumulation trajectories.
+                                                                                                                                   Jiang et al.
+
+
+4.2.1 Comparative Analysis on In-Domain Testing (CSI 300). As           factor activation on richer state information (summarized from
+shown in Table 1 and Figure 2a, Alpha-R1 achieves the strongest         price dynamics and news narratives) and enforcing parsimonious
+performance on the CSI 300 domain.                                      selection, our approach reduces misspecification and estimation
+     • Comparison with tree-based models. Gradient boosting meth-       noise. This mechanism enables robust zero-shot transfer by cap-
+       ods such as XGBoost, while effective on static prediction        turing higher-level economic relationships rather than relying on
+       tasks, perform poorly in this setting (e.g., cumulative re-      noisy, domain-specific statistical regularities.
+       turn of -10.03%). This highlights a critical limitation: in
+       non-stationary markets, the dominant error source is often       4.3    Ablation Study
+       model misspecification rather than within-regime estima-         To dissect the contributions of individual components, we conduct a
+       tion. A purely dynamic model that re-estimates coefficients      series of ablation experiments to isolate the impact of key modules
+       from limited and noisy samples induces high variance and         in Alpha-R1. All ablation variants are trained from scratch using
+       can overreact to transient correlations as historical correla-   the modified framework to ensure a fair comparison.
+       tions deteriorate.                                               4.3.1 Ablation Variants. We consider the following four variants
+     • Comparison with reinforcement learning methods. Deep RL          to evaluate the necessity of data inputs, factor representations, and
+       approaches such as A2C and PPO struggle to adapt to the          the training objective:
+       non-stationary market environment. A2C achieves a nega-
+                                                                              • w/o News: Removes market news information from the state
+       tive cumulative return of -5.52% with a Sharpe ratio of -0.85,
+                                                                                space 𝑆𝑡 , forcing the model to rely solely on price data and
+       while PPO shows only marginal positive returns (0.89%)
+                                                                                factor values.
+       with a low Sharpe ratio of 0.11. This suggests that numerical
+                                                                              • w/o Market Price: Removes market price trends from 𝑆𝑡 ,
+       RL agents, despite their ability to learn sequential decision-
+                                                                                retaining only news narratives and factor values.
+       making, are vulnerable to distributional shifts and fail to
+                                                                              • w/o Semantic Description: Replaces the natural language de-
+       capture the semantic relationships that govern factor effec-
+                                                                                scriptions of factors with their raw mathematical formulas
+       tiveness across different market regimes.
+                                                                                to test if the LLM relies on semantic reasoning or pattern
+     • Comparison with generic reasoning LLMs. Models such as
+                                                                                matching.
+       Claude 3.7 Sonnet and DeepSeek-R1 demonstrate strong
+                                                                              • w/o RL Optimization: Uses the backbone model (Qwen3-8B)
+       general reasoning ability but lack domain-specific financial
+                                                                                without the reinforcement learning alignment pipeline.
+       grounding. As a result, they fail to adequately account for
+       risk constraints, leading to substantial drawdowns (approx-
+       imately 15–16%) and negative Sharpe ratios.                      Table 2: Ablation Study Results. Performance contribution of
+     • Performance of Alpha-R1. By interpreting our framework as        different components (Testing Period: 2025.01.01 – 2025.06.30
+       a context-conditioned sparse linear model, Alpha-R1 attains      on CSI 300).
+       a Sharpe ratio of 1.62 while limiting maximum drawdown
+       to 6.76%. The fixed linear scorer provides a stable, low-
+                                                                         Method                        CR (%)   AR (%)     SR     MDD (%)
+       variance mapping, while the LLM reasoning core functions
+       as a gating network that activates or deactivates factors         Alpha-R1 (Full)               12.99     27.59    1.62     6.76
+       based on semantic alignment. This allows for stable and           Buy & Hold (CSI 300 Index)      3.03     6.70     0.33    10.49
+       risk-aware decision-making even as market regimes shift.          w/o Market Price               10.24     22.42    1.24    12.87
+                                                                         w/o News                        8.75     19.61    1.03    12.01
+4.2.2 Zero-Shot Generalization on Out-of-Domain (CSI 1000). The          w/o Semantic Description        7.26     16.76    0.83    13.32
+CSI 1000 experiment (Figure 2b) evaluates the model’s ability to         w/o RL Optimization            -6.32    -12.41   -0.77    16.35
+generalize under a zero-shot setting. Compared with the CSI 300,
+the CSI 1000 represents a small-cap universe with higher volatility
+                                                                        4.3.2 Results and Analysis. Table 2 provides a quantitative decom-
+and more pronounced idiosyncratic dynamics.
+                                                                        position of the performance contributions attributable to each mod-
+   Numerical reinforcement learning agents, such as A2C and PPO,
+                                                                        ule within the Alpha-R1 framework. By systematically ablating
+exhibit limited generalization beyond the training domain. On the
+                                                                        key components, we elucidate the specific mechanisms driving
+CSI 300, A2C achieves a negative cumulative return of -5.52% with
+                                                                        the model’s superior risk-adjusted returns. The empirical evidence
+a Sharpe ratio of -0.85, while PPO shows marginal positive returns
+                                                                        supports three principal conclusions regarding the architecture’s
+(0.89%) with a low Sharpe ratio of 0.11. When transferred to the
+                                                                        efficacy:
+CSI 1000, A2C shows improved performance (cumulative return
+of 11.80%) but PPO suffers significant degradation with a negative         The Imperative of Reinforcement Learning Alignment. The most
+return of -6.44% and a maximum drawdown of 29.31%, indicating           profound performance disparity is observed between the full model
+sensitivity to domain-specific statistical patterns and overfitting     and the w/o RL Optimization variant. The unaligned base model
+issues.                                                                 (Qwen3-8B) fails to generate positive alpha, yielding a Sharpe Ratio
+   In contrast, Alpha-R1 maintains strong performance on the out-       of -0.77, identical to the w/o RL Optimization case. This finding
+of-domain CSI 1000 universe, achieving a cumulative return of           corroborates the hypothesis that general-purpose reasoning ca-
+42.49% and a Sharpe ratio of 4.03. This confirms the advantage of       pabilities, while necessary, are insufficient for the stochastic and
+delegating non-stationarity adaptation to the LLM. By conditioning      adversarial nature of financial markets. The RL alignment process
+Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning
+
+
+
+
+           (a) CSI 300: Sharpe Ratio                           (b) CSI 300: Cumulative Return                   (c) CSI 300: Max Drawdown
+
+
+
+
+           (d) CSI 1000: Sharpe Ratio                         (e) CSI 1000: Cumulative Return                   (f) CSI 1000: Max Drawdown
+
+Figure 3: Parameter Sensitivity and Generalization Analysis. The heatmaps illustrate the impact of varying TopN and Holding-
+Days. Green regions indicate favorable performance (High Sharpe/Return, Low Drawdown), while Red regions indicate poor
+performance. The broad Green clusters across both asset pools confirm the strategy’s robustness.
+
+
+acts as a crucial transformation layer, grounding the LLM’s broad                for detecting regime shifts than historical price momentum alone.
+semantic knowledge into specific, risk-aware actionable policies.                However, the full model exhibits the lowest Maximum Drawdown
+Without this targeted optimization, the model’s latent reasoning                 (6.76%), significantly outperforming both data-truncated variants.
+capacity cannot be effectively translated into profitable trading                This indicates a synergistic effect: while news provides high-level
+decisions.                                                                       context, price dynamics offer granular trend confirmation, and their
+                                                                                 integration is essential for minimizing tail risk and ensuring robust
+   Semantic Reasoning Over Mathematical Memorization. The degra-
+                                                                                 execution.
+dation in performance observed in the w/o Semantic Description
+                                                                                    In synthesis, the superior performance of Alpha-R1 is not at-
+variant—where natural language factor descriptions are replaced
+                                                                                 tributable to any single isolated component but emerges from the
+by raw mathematical formulas—highlights the model’s reliance on
+                                                                                 holistic integration of semantic understanding, multi-modal context
+semantic reasoning. The Sharpe Ratio declines by approximately
+                                                                                 awareness, and rigorous RL-based alignment.
+49% (from 1.62 to 0.83). This substantial gap suggests that Alpha-R1
+does not merely memorize statistical patterns associated with fac-
+tor formulas. Instead, it leverages the semantic richness of natural             4.4    Semantic vs. Heuristic Gating Strategies
+language to infer the economic rationale behind factors, enabling
+                                                                                 To validate the superiority of our semantic gating mechanism, we
+more robust selection in changing market regimes compared to
+                                                                                 compare it against traditional heuristic gating strategies. We con-
+purely symbolic processing.
+                                                                                 sider:
+   Synergistic Integration of Multi-Modal Signals. The ablation of
+informational inputs reveals the complementary nature of news                          • Lasso: A classic sparse linear model selecting factors via 𝐿1
+narratives and price dynamics. Excluding market news (w/o News)                          regularization.
+results in a more severe deterioration of the Sharpe Ratio (dropping                   • IC Momentum: A momentum-based heuristic selecting the
+to 1.03) compared to removing price trends (1.24). This implies                          top 10 factors based on their recent average IC over a 20-day
+that qualitative news data serves as a superior leading indicator                        window.
+                                                                                                                                                     Jiang et al.
+
+
+Table 3: Gating Strategy Comparison. Performance of Alpha-                 Policy Optimization (GRPO), in which training is guided by objec-
+R1 (Semantic Gating) versus heuristic gating methods (Lasso                tive market outcomes instead of subjective human feedback.
+and IC Momentum) on the CSI 300 testing set.                                  Extensive empirical results show that Alpha-R1 consistently
+                                                                           outperforms traditional machine learning baselines and generic
+    Method                        CR (%)   AR (%)     SR     MDD (%)       reasoning LLMs across multiple asset pools. Notably, Alpha-R1
+    Alpha-R1 (Semantic Gating)     12.99    27.59    1.62      6.76        demonstrates strong zero-shot generalization when transferred
+                                                                           from the CSI 300 to the CSI 1000 universe, maintaining stable and
+    Lasso                           1.58     4.63     0.20    11.12
+                                                                           profitable performance in a previously unseen, high-volatility envi-
+    IC Momentum                    -6.33    -12.55   -0.80    13.29
+                                                                           ronment, where conventional reinforcement learning agents expe-
+                                                                           rience marked degradation. These findings suggest that grounding
+                                                                           factor selection in semantic reasoning and market feedback pro-
+   As shown in Table 3, Alpha-R1 significantly outperforms both            vides a viable approach for mitigating alpha decay and addressing
+heuristic baselines. While Lasso achieves a small positive return          non-stationarity in financial markets.
+(1.58%), it lags behind the semantic gating approach. IC Momentum
+performs poorly (-6.33% CR), likely because historical IC measures
+                                                                           References
+often fail to persist in highly dynamic regimes. In contrast, Alpha-        [1] Bokai Cao, Saizhuo Wang, Xinyi Lin, Xiaojun Wu, Haohan Zhang, Lionel M. Ni,
+R1’s semantic gating leverages market context to adaptively select              and Jian Guo. 2025. From Deep Learning to LLMs: A Survey of AI in Quantitative
+factors, demonstrating superior robustness to regime shifts.                    Investment. arXiv:2503.21422 [q-fin.CP] https://arxiv.org/abs/2503.21422
+                                                                            [2] Lang Cao. 2025. Chain-of-Alpha: Unleashing the Power of Large Language
+                                                                                Models for Alpha Mining in Quantitative Trading. https://arxiv.org/abs/2508.
+4.5     Robustness and Generalization                                           06312 arXiv:2508.06312.
+                                                                            [3] Mark M. Carhart. 1997. On Persistence in Mutual Fund Performance. The Journal
+To assess the strategy’s resilience, we conduct a parameter sensi-              of Finance 52, 1 (1997), 57–82. doi:10.1111/j.1540-6261.1997.tb03808.x
+tivity analysis visualized via heatmaps in Figure 3.                        [4] Stephen Casper, Xander Davies, Claudia Shi, Thomas Krendl Gilbert, Jérémy
+                                                                                Scheurer, Javier Rando, Rachel Freedman, Tomek Korbak, David Lindner, Pedro
+                                                                                Freire, Tony Tong Wang, Samuel Marks, Charbel-Raphael Segerie, Micah Carroll,
+4.5.1 Parameter Sensitivity (CSI 300). The top row of Figure 3 visu-            Andi Peng, Phillip J.K. Christoffersen, Mehul Damani, Stewart Slocum, Usman
+alizes performance metrics on the in-domain asset pool. We observe              Anwar, Anand Siththaranjan, Max Nadeau, Eric J Michaud, Jacob Pfau, Dmitrii
+broad green regions indicating high Sharpe Ratios across a wide                 Krasheninnikov, Xin Chen, Lauro Langosco, Peter Hase, Erdem Biyik, Anca
+                                                                                Dragan, David Krueger, Dorsa Sadigh, and Dylan Hadfield-Menell. 2023. Open
+range of settings (e.g., Holding Days 3–10). Notably, performance               Problems and Fundamental Limitations of Reinforcement Learning from Human
+remains stable even as 𝑇𝑜𝑝𝑁 increases from 5 to 20. This suggests               Feedback. Transactions on Machine Learning Research (2023). https://arxiv.org/
+that Alpha-R1 identifies a cluster of effective factors rather than             abs/2307.15217 Survey Certification, Featured Certification.
+                                                                            [5] Chao Cheng, Bin Chen, Zhe Xiao, et al. 2024. Quantum Finance and Fuzzy Rein-
+relying on a single outlier signal, thereby reducing concentration              forcement Learning-Based Multi-Agent Trading System. International Journal of
+risk.                                                                           Fuzzy Systems 26 (2024), 2224–2245. doi:10.1007/s40815-024-01731-1
+                                                                            [6] Hongjun Ding, Binqi Chen, Jinsheng Huang, Taian Guo, Zhengyang Mao, Guoyi
+                                                                                Shao, Lutong Zou, Luchen Liu, and Ming Zhang. 2025. AlphaEval: A Com-
+4.5.2 Zero-Shot Generalization (CSI 1000). The bottom row of Fig-               prehensive and Efficient Evaluation Framework for Formula Alpha Mining.
+ure 3 highlights the model’s performance on the out-of-domain CSI               arXiv:2508.13174 [cs.AI] https://arxiv.org/abs/2508.13174
+1000 asset pool. Despite the significant shift in asset characteristics,    [7] Eugene F. Fama and Kenneth R. French. 1993. Common risk factors in the
+                                                                                returns on stocks and bonds. Journal of Financial Economics 33, 1 (1993), 3–56.
+the heatmaps display a consistent distribution of high-performance              doi:10.1016/0304-405X(93)90023-5
+green clusters similar to the in-domain testing set. This confirms          [8] Gang Feng, Stefano Giglio, and Dacheng Xiu. 2020. Taming the Factor Zoo: A
+that Alpha-R1 possesses strong zero-shot generalization capabili-               Test of New Factors. The Journal of Finance 75, 3 (2020), 1327–1370. doi:10.1111/
+                                                                                jofi.12883
+ties. Unlike traditional models that degrade rapidly outside their          [9] Joachim Freyberger, Alejandro J. Salgado, and Andriy Shkilko. 2020. Dissecting
+training distribution, Alpha-R1 leverages its semantic understand-              Characteristics Nonparametrically. The Review of Financial Studies 33, 5 (2020),
+                                                                                2326–2377. https://www.jstor.org/stable/48574462
+ing of market regimes to dynamically adjust factor selections for          [10] Shihao Gu, Bryan Kelly, and Dacheng Xiu. 2020. Empirical Asset Pricing via
+the new asset pool, delivering robust risk-adjusted returns without             Machine Learning. The Review of Financial Studies 33, 5 (2020), 2223–2273.
+retraining.                                                                     doi:10.1093/rfs/hhaa009
+                                                                           [11] Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Peiyi Wang, Qihao Zhu,
+                                                                                Runxin Xu, Ruoyu Zhang, Shirong Ma, Xiao Bi, Xiaokang Zhang, Xingkai Yu,
+5     Conclusion                                                                Yu Wu, Z. F. Wu, Zhibin Gou, Zhihong Shao, Zhuoshu Li, Ziyi Gao, Aixin Liu,
+                                                                                Bing Xue, Bingxuan Wang, Bochao Wu, Bei Feng, Chengda Lu, Chenggang
+This paper introduces Alpha-R1, a semantics-driven approach to                  Zhao, Chengqi Deng, Chong Ruan, Damai Dai, Deli Chen, Dongjie Ji, Erhang Li,
+quantitative investment that shifts the focus from static factor min-           Fangyun Lin, Fucong Dai, Fuli Luo, Guangbo Hao, Guanting Chen, Guowei Li,
+                                                                                H. Zhang, Hanwei Xu, Honghui Ding, Huazuo Gao, Hui Qu, Hui Li, Jianzhong
+ing to context-aware reasoning. Rather than relying solely on histor-           Guo, Jiashi Li, Jingchang Chen, Jingyang Yuan, Jinhao Tu, Junjie Qiu, Junlong Li,
+ical correlations, Alpha-R1 employs a reinforcement-learning–trained            J. L. Cai, Jiaqi Ni, Jian Liang, Jin Chen, Kai Dong, Kai Hu, Kaichao You, Kaige
+large language model to reason over the economic rationale under-               Gao, Kang Guan, Kexin Huang, Kuai Yu, Lean Wang, Lecong Zhang, Liang
+                                                                                Zhao, Litong Wang, Liyue Zhang, Lei Xu, Leyi Xia, Mingchuan Zhang, Minghua
+lying factor performance and its dependence on evolving market                  Zhang, Minghui Tang, Mingxu Zhou, Meng Li, Miaojun Wang, Mingming Li,
+conditions.                                                                     Ning Tian, Panpan Huang, Peng Zhang, Qiancheng Wang, Qinyu Chen, Qiushi
+                                                                                Du, Ruiqi Ge, Ruisong Zhang, Ruizhe Pan, Runji Wang, R. J. Chen, R. L. Jin,
+   By constructing a dual-layer semantic context that integrates                Ruyi Chen, Shanghao Lu, Shangyan Zhou, Shanhuang Chen, Shengfeng Ye,
+long-term market memory with real-time information, Alpha-R1                    Shiyu Wang, Shuiping Yu, Shunfeng Zhou, Shuting Pan, S. S. Li, Shuang Zhou,
+connects unstructured data sources with quantitative decision-                  Shaoqing Wu, Tao Yun, Tian Pei, Tianyu Sun, T. Wang, Wangding Zeng, Wen
+                                                                                Liu, Wenfeng Liang, Wenjun Gao, Wenqin Yu, Wentao Zhang, W. L. Xiao, Wei
+making in a unified manner. Methodologically, we develop a market-              An, Xiaodong Liu, Xiaohan Wang, Xiaokang Chen, Xiaotao Nie, Xin Cheng, Xin
+aligned reinforcement learning framework based on Group Relative                Liu, Xin Xie, Xingchao Liu, Xinyu Yang, Xinyuan Li, Xuecheng Su, Xuheng Lin,
+Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning
+
+
+     X. Q. Li, Xiangyue Jin, Xiaojin Shen, Xiaosha Chen, Xiaowen Sun, Xiaoxiang               NeurIPS 2023 Workshop on Instruction Tuning and Instruction Following. https:
+     Wang, Xinnan Song, Xinyi Zhou, Xianzu Wang, Xinxia Shan, Y. K. Li, Y. Q.                 //arxiv.org/abs/2307.10485
+     Wang, Y. X. Wei, Yang Zhang, Yanhong Xu, Yao Li, Yao Zhao, Yaofeng Sun,             [27] Zhaowei Liu, Xin Guo, Fangqi Lou, Lingfeng Zeng, Jinyi Niu, Zixuan Wang, Jiajie
+     Yaohui Wang, Yi Yu, Yichao Zhang, Yifan Shi, Yiliang Xiong, Ying He, Yishi Piao,         Xu, Weige Cai, Ziwei Yang, Xueqian Zhao, Chao Li, Sheng Xu, Dezhi Chen, Yun
+     Yisong Wang, Yixuan Tan, Yiyang Ma, Yiyuan Liu, Yongqiang Guo, Yuan Ou,                  Chen, Zuo Bai, and Liwen Zhang. 2025. Fin-R1: A Large Language Model for
+     Yuduan Wang, Yue Gong, Yuheng Zou, Yujia He, Yunfan Xiong, Yuxiang Luo,                  Financial Reasoning through Reinforcement Learning. arXiv:2503.16252 [cs.CL]
+     Yuxiang You, Yuxuan Liu, Yuyang Zhou, Y. X. Zhu, Yanping Huang, Yaohui Li,               https://arxiv.org/abs/2503.16252
+     Yi Zheng, Yuchen Zhu, Yunxian Ma, Ying Tang, Yukun Zha, Yuting Yan, Z. Z.           [28] Alejandro Lopez-Lira and Yuehua Tang. 2023. Can ChatGPT Forecast Stock
+     Ren, Zehui Ren, Zhangli Sha, Zhe Fu, Zhean Xu, Zhenda Xie, Zhengyan Zhang,               Price Movements? Return Predictability and Large Language Models. https:
+     Zhewen Hao, Zhicheng Ma, Zhigang Yan, Zhiyu Wu, Zihui Gu, Zijia Zhu, Zijun               //arxiv.org/abs/2304.07619 arXiv:2304.07619.
+     Liu, Zilin Li, Ziwei Xie, Ziyang Song, Zizheng Pan, Zhen Huang, Zhipeng Xu,         [29] Dakuan Lu, Hengkui Wu, Jiaqing Liang, Yipei Xu, Qianyu He, Yipeng Geng,
+     Zhongyu Zhang, and Zhen Zhang. 2025. DeepSeek-R1 incentivizes reasoning in               Mengkun Han, Yingsi Xin, and Yanghua Xiao. 2023. BBT-Fin: Comprehensive
+     LLMs through reinforcement learning. Nature 645, 8081 (Sept. 2025), 633–638.             Construction of Chinese Financial Domain Pre-trained Language Model, Corpus
+     doi:10.1038/s41586-025-09422-z                                                           and Benchmark. arXiv:2302.09432 [cs.CL] https://arxiv.org/abs/2302.09432
+[12] Tian Guo and Emmanuel Hauptmann. 2024. Fine-Tuning Large Language Models            [30] Jifang Mai, Shaohua Zhang, Haiqing Zhao, and Lijun Pan. 2024. Factor Invest-
+     for Stock Return Prediction Using Newsflow. In Proceedings of the 2024 Conference        ment or Feature Selection Analysis? Mathematics 13, 1 (2024), 9. doi:10.3390/
+     on Empirical Methods in Natural Language Processing: Industry Track, Franck              math13010009
+     Dernoncourt, Daniel Preoţiuc-Pietro, and Anastasia Shimorina (Eds.). Association    [31] Yu Meng, Mengzhou Xia, and Danqi Chen. 2024. SimPO: Simple Preference Opti-
+     for Computational Linguistics, Miami, Florida, US, 1028–1045. doi:10.18653/v1/           mization with a Reference-Free Reward. In The Thirty-eighth Annual Conference
+     2024.emnlp-industry.77                                                                   on Neural Information Processing Systems. https://arxiv.org/abs/2405.14734
+[13] Jinghai He, Cheng Hua, Chunyang Zhou, and Zeyu Zheng. 2025. Reinforcement-          [32] Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela
+     Learning Portfolio Allocation with Dynamic Embedding of Market Information.              Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John
+     arXiv preprint arXiv:2501.17992 (2025). https://arxiv.org/abs/2501.17992                 Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda
+[14] Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn               Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe. 2022. Training
+     Song, and Jacob Steinhardt. 2021. Measuring Massive Multitask Language Un-               language models to follow instructions with human feedback. In Proceedings
+     derstanding. arXiv:2009.03300 [cs.CY] https://arxiv.org/abs/2009.03300                   of the 36th International Conference on Neural Information Processing Systems
+[15] Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu Zheng, Yuheng Cheng,                    (New Orleans, LA, USA) (NIPS ’22). Curran Associates Inc., Red Hook, NY, USA,
+     Jinlin Wang, Ceyao Zhang, Zili Wang, Steven Ka Shing Yau, Zijuan Lin, Liyang             Article 2011, 15 pages. https://arxiv.org/abs/2203.02155
+     Zhou, Chenyu Ran, Lingfeng Xiao, Chenglin Wu, and Jürgen Schmidhuber. 2024.         [33] Lingfei Qian, Weipeng Zhou, Yan Wang, Xueqing Peng, Han Yi, Yilun Zhao,
+     MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework.                     Jimin Huang, Qianqian Xie, and Jian yun Nie. 2025. Fino1: On the Transfer-
+     In The Twelfth International Conference on Learning Representations. https:              ability of Reasoning-Enhanced LLMs and Reinforcement Learning to Finance.
+     //arxiv.org/abs/2308.00352                                                               arXiv:2502.08127 [cs.CL] https://arxiv.org/abs/2502.08127
+[16] Edward J Hu, yelong shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean       [34] Rafael Rafailov, Archit Sharma, Eric Mitchell, Christopher D Manning, Stefano
+     Wang, Lu Wang, and Weizhu Chen. 2022. LoRA: Low-Rank Adaptation of                       Ermon, and Chelsea Finn. 2023. Direct Preference Optimization: Your Language
+     Large Language Models. In International Conference on Learning Representations.          Model is Secretly a Reward Model. In Thirty-seventh Conference on Neural Infor-
+     https://arxiv.org/abs/2106.09685                                                         mation Processing Systems. https://arxiv.org/abs/2305.18290
+[17] Ziwei Ji, Tiezheng Yu, Yan Xu, Nayeon Lee, Etsuko Ishii, and Pascale Fung.          [35] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+     2023. Towards Mitigating LLM Hallucination via Self Reflection. In Findings              2017. Proximal Policy Optimization Algorithms. arXiv:1707.06347 [cs.LG] https:
+     of the Association for Computational Linguistics: EMNLP 2023, Houda Bouamor,             //arxiv.org/abs/1707.06347
+     Juan Pino, and Kalika Bali (Eds.). Association for Computational Linguistics,       [36] Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei
+     Singapore, 1827–1843. doi:10.18653/v1/2023.findings-emnlp.123                            Zhang, Mingchuan Zhang, Y. K. Li, Y. Wu, and Daya Guo. 2024. DeepSeek-
+[18] Zura Kakushadze. 2016. 101 formulaic alphas. Wilmott 2016, 84 (2016), 72–81.             Math: Pushing the Limits of Mathematical Reasoning in Open Language Models.
+     https://doi.org/10.1002/wilm.10525                                                       arXiv:2402.03300 [cs.CL] https://arxiv.org/abs/2402.03300
+[19] Timo Kaufmann, Paul Weng, Viktor Bengs, and Eyke Hüllermeier. 2025. A Survey        [37] William F. Sharpe. 1964. Capital Asset Prices: A Theory of Market Equilibrium
+     of Reinforcement Learning from Human Feedback. Transactions on Machine                   under Conditions of Risk. The Journal of Finance 19, 3 (1964), 425–442. doi:10.
+     Learning Research (2025). https://arxiv.org/abs/2312.14925 Survey Certification.         1111/j.1540-6261.1964.tb02865.x
+[20] Kelvin J.L. Koa, Yunshan Ma, Ritchie Ng, and Tat-Seng Chua. 2024. Learning to       [38] Hao Shi, Weili Song, Xinting Zhang, Jiahe Shi, Cuicui Luo, Xiang Ao, Hamid
+     Generate Explainable Stock Predictions using Self-Reflective Large Language              Arian, and Luis Angel Seco. 2025. AlphaForge: a framework to mine and dynam-
+     Models. In Proceedings of the ACM Web Conference 2024 (WWW ’24). ACM,                    ically combine formulaic alpha factors (AAAI’25/IAAI’25/EAAI’25). AAAI Press,
+     4304–4315. doi:10.1145/3589334.3645611                                                   Article 1392, 9 pages. doi:10.1609/aaai.v39i12.33365
+[21] Zhizhuo Kou, Holam Yu, Junyu Luo, Jingshu Peng, Xujia Li, Chengzhong Liu,           [39] Ziyi Tang, Zechuan Chen, Jiarui Yang, Jiayao Mai, Yongsen Zheng, Keze Wang,
+     Juntao Dai, Lei Chen, Sirui Han, and Yike Guo. 2025. Automate Strategy Finding           Jinrui Chen, and Liang Lin. 2025. AlphaAgent: LLM-Driven Alpha Mining with
+     with LLM in Quant Investment. In Findings of the Association for Computational           Regularized Exploration to Counteract Alpha Decay (KDD ’25). Association for
+     Linguistics: EMNLP 2025, Christos Christodoulopoulos, Tanmoy Chakraborty,                Computing Machinery, New York, NY, USA, 2813–2822. doi:10.1145/3711896.
+     Carolyn Rose, and Violet Peng (Eds.). Association for Computational Linguistics,         3736838
+     Suzhou, China, 18517–18533. doi:10.18653/v1/2025.findings-emnlp.1005                [40] Hariom Tatsat and Ariye Shater. 2025. Beyond the Black Box: Interpretability of
+[22] Nathan Lambert, Valentina Pyatkin, Jacob Morrison, LJ Miranda, Bill Yuchen               LLMs in Finance. arXiv:2505.24650 [cs.CE] https://arxiv.org/abs/2505.24650
+     Lin, Khyathi Chandu, Nouha Dziri, Sachin Kumar, Tom Zick, Yejin Choi, Noah A.       [41] Robert Tibshirani. 1996. Regression Shrinkage and Selection via the Lasso.
+     Smith, and Hannaneh Hajishirzi. 2025. RewardBench: Evaluating Reward Mod-                Journal of the Royal Statistical Society: Series B (Methodological) 58, 1 (1996),
+     els for Language Modeling. In Findings of the Association for Computational              267–288. doi:10.1111/j.2517-6161.1996.tb02080.x
+     Linguistics: NAACL 2025, Luis Chiruzzo, Alan Ritter, and Lu Wang (Eds.). Asso-      [42] Meiyun Wang, Kiyoshi Izumi, and Hiroki Sakaji. 2024. LLMFactor: Extracting
+     ciation for Computational Linguistics, Albuquerque, New Mexico, 1755–1797.               Profitable Factors through Prompts for Explainable Stock Movement Prediction.
+     doi:10.18653/v1/2025.findings-naacl.96                                                   In Findings of the Association for Computational Linguistics: ACL 2024, Lun-Wei
+[23] Haohang Li, Yangyang Yu, Zhi Chen, Yuechen Jiang, Yang Li, Denghui Zhang,                Ku, Andre Martins, and Vivek Srikumar (Eds.). Association for Computational
+     Rong Liu, Jordan W. Suchow, and Khaldoun Khashanah. 2024. FinMem: A                      Linguistics, Bangkok, Thailand, 3120–3131. doi:10.18653/v1/2024.findings-acl.185
+     Performance-Enhanced LLM Trading Agent with Layered Memory and Character            [43] Saizhuo Wang, Hang Yuan, Leon Zhou, Lionel Ni, Heung-Yeung Shum, and Jian
+     Design. In ICLR 2024 Workshop on Large Language Model (LLM) Agents. https:               Guo. 2025. Alpha-GPT: Human-AI Interactive Alpha Mining for Quantitative
+     //arxiv.org/abs/2311.13743                                                               Investment. In Proceedings of the 2025 Conference on Empirical Methods in Natural
+[24] Yuante Li, Xu Yang, Xiao Yang, Xisen Wang, Weiqing Liu, and Jiang Bian. 2025.            Language Processing: System Demonstrations, Ivan Habernal, Peter Schulam, and
+     R&D-Agent-Quant: A Multi-Agent Framework for Data-Centric Factors and                    Jörg Tiedemann (Eds.). Association for Computational Linguistics, Suzhou, China,
+     Model Joint Optimization. In The Thirty-ninth Annual Conference on Neural                196–206. doi:10.18653/v1/2025.emnlp-demos.14
+     Information Processing Systems Datasets and Benchmarks Track. https://arxiv.        [44] Shijie Wu, Ozan Irsoy, Steven Lu, Vadim Dabravolski, Mark Dredze, Sebastian
+     org/abs/2505.15155                                                                       Gehrmann, Prabhanjan Kambadur, David Rosenberg, and Gideon Mann. 2023.
+[25] Yang Li, Yangyang Yu, Haohang Li, Zhi Chen, and Khaldoun Khashanah. 2023.                BloombergGPT: A Large Language Model for Finance. arXiv:2303.17564 [cs.LG]
+     TradingGPT: Multi-Agent System with Layered Memory and Distinct Characters               https://arxiv.org/abs/2303.17564
+     for Enhanced Financial Trading Performance. arXiv:2309.03736 [q-fin.PM] https:      [45] Yijia Xiao, Edward Sun, Tong Chen, Fang Wu, Di Luo, and Wei Wang. 2025.
+     //arxiv.org/abs/2309.03736                                                               Trading-R1: Financial Trading with LLM Reasoning via Reinforcement Learning.
+[26] Xiao-Yang Liu, Guoxuan Wang, Hongyang Yang, and Daochen Zha. 2023. FinGPT:
+     Democratizing Internet-scale Data for Financial Large Language Models. In
+                                                                                                                                                                  Jiang et al.
+
+
+     arXiv:2509.11420 [q-fin.TR] https://arxiv.org/abs/2509.11420                          [49] Boyu Zhang, Hongyang Yang, and Xiao-Yang Liu. 2023. Instruct-FinGPT: Fi-
+[46] Yijia Xiao, Edward Sun, Di Luo, and Wei Wang. 2025. TradingAgents: Multi-                  nancial Sentiment Analysis by Instruction Tuning of General-Purpose Large
+     Agents LLM Financial Trading Framework. In The First MARW: Multi-Agent AI                  Language Models. arXiv:2306.12659 [cs.CL] https://arxiv.org/abs/2306.12659
+     in the Real World Workshop at AAAI 2025. https://arxiv.org/abs/2412.20138             [50] Wentao Zhang, Lingxuan Zhao, Haochong Xia, Shuo Sun, Jiaze Sun, Molei Qin,
+[47] Qianqian Xie, Weiguang Han, Xiao Zhang, Yanzhao Lai, Min Peng, Alejandro                   Xinyi Li, Yuqing Zhao, Yilei Zhao, Xinyu Cai, Longtao Zheng, Xinrun Wang,
+     Lopez-Lira, and Jimin Huang. 2023. PIXIU: a large language model, instruction              and Bo An. 2024. A Multimodal Foundation Agent for Financial Trading: Tool-
+     data and evaluation benchmark for finance. In Proceedings of the 37th International        Augmented, Diversified, and Generalist. In Proceedings of the 30th ACM SIGKDD
+     Conference on Neural Information Processing Systems (New Orleans, LA, USA)                 Conference on Knowledge Discovery and Data Mining (Barcelona, Spain) (KDD
+     (NIPS ’23). Curran Associates Inc., Red Hook, NY, USA, Article 1454, 16 pages.             ’24). Association for Computing Machinery, New York, NY, USA, 4314–4325.
+     https://arxiv.org/abs/2306.05443                                                           doi:10.1145/3637528.3671801
+[48] Hang Yuan, Saizhuo Wang, and Jian Guo. 2024. Alpha-GPT 2.0: Human-in-                 [51] Xuanyu Zhang, Qing Yang, and Dongliang Xu. 2023. XuanYuan 2.0: A
+     the-Loop AI for Quantitative Investment. https://arxiv.org/abs/2402.09746                  Large Chinese Financial Chat Model with Hundreds of Billions Parameters.
+     arXiv:2402.09746.                                                                          arXiv:2305.12002 [cs.CL] https://arxiv.org/abs/2305.12002
+

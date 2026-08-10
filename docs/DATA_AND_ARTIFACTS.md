@@ -39,6 +39,41 @@ are in `literature_review/census_v1/primary_record_metadata.csv`. These
 third-party papers retain their own licenses and should not be interpreted as
 project-authored artifacts.
 
+Six of those papers are also preserved under their exact census source IDs in
+`literature_review/source_pdfs/`, so source-benchmark references can be resolved
+without translating the human-readable paper filenames:
+
+| System | Preserved source-ID PDF |
+| --- | --- |
+| AlphaQuanter | `CensusACL2026findingsacl456.pdf` |
+| FinMem | `CensusArxiv231113743.pdf` |
+| TradingAgents | `CensusArxiv241220138.pdf` |
+| R&D-Agent | `CensusArxiv250514738.pdf` |
+| Alpha-R1 | `CensusArxiv251223515.pdf` |
+| QuantaAlpha | `CensusArxiv260207085.pdf` |
+
+These are byte-identical preservation copies, not six additional distinct
+papers. `literature_review/source_material_manifest.csv` records their paths,
+sizes, and SHA-256 hashes.
+
+## Included paper text companions
+
+Nine useful UTF-8 text extracts are tracked under
+`literature_review/paper_texts/`: the six source-ID papers above plus the
+current ContestTrade (`CensusArxiv250800554`), MM-ARC
+(`CensusArxiv250905080`), and AlphaCrafter (`CensusArxiv260505580`) records.
+They support search, citation checking, and source-benchmark review without
+replacing the corresponding PDF as the authoritative visual record.
+
+Regenerate the source-ID copies, extracts, and hash manifest with Poppler:
+
+```bash
+module load poppler/25.07.0-GCC-13.3.0  # or provide pdftotext on PATH
+python scripts/build_paper_companion_material.py
+git diff --exit-code -- literature_review/source_pdfs \
+  literature_review/paper_texts literature_review/source_material_manifest.csv
+```
+
 ## Deliberately not included
 
 | Excluded material | Reason | How a collaborator proceeds |

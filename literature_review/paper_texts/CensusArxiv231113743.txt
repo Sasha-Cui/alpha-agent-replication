@@ -1,0 +1,1243 @@
+                                           F IN M EM : A P ERFORMANCE -E NHANCED LLM T RADING AGENT
+                                                 WITH L AYERED M EMORY AND C HARACTER D ESIGN
+
+
+
+                                                                 Yangyang Yu∗ , Haohang Li∗ , Zhi Chen∗ , Yuechen Jiang∗ , Yang Li∗
+                                                               Denghui Zhang, Rong Liu, Jordan W. Suchow, Khaldoun Khashanah†
+                                                                                  Stevens Institute of Technology
+arXiv:2311.13743v2 [q-fin.CP] 3 Dec 2023
+
+
+
+
+                                                                                   Hoboken, NJ, United States
+                                                     {yyu44, hli113, zchen100, yjiang52, yli269, dzhang42, rliu20, jws}@stevens.edu
+
+
+
+
+                                                                                                   A BSTRACT
+                                                      Recent advancements in Large Language Models (LLMs) have exhibited notable efficacy in question-
+                                                      answering (QA) tasks across diverse domains. Their prowess in integrating extensive web knowledge
+                                                      has fueled interest in developing LLM-based autonomous agents. While LLMs are efficient in
+                                                      decoding human instructions and deriving solutions by holistically processing historical inputs,
+                                                      transitioning to purpose-driven agents requires a supplementary rational architecture to process
+                                                      multi-source information, establish reasoning chains, and prioritize critical tasks. Addressing this,
+                                                      we introduce F IN M EM, a novel LLM-based agent framework devised for financial decision-making.
+                                                      It encompasses three core modules: Profiling, to customize the agent’s characteristics; Memory,
+                                                      with layered message processing, to aid the agent in assimilating hierarchical financial data; and
+                                                      Decision-making, to convert insights gained from memories into investment decisions. Notably,
+                                                      F IN M EM’s memory module aligns closely with the cognitive structure of human traders, offering
+                                                      robust interpretability and real-time tuning. Its adjustable cognitive span allows for the retention
+                                                      of critical information beyond human perceptual limits, thereby enhancing trading outcomes. This
+                                                      framework enables the agent to self-evolve its professional knowledge, react agilely to new investment
+                                                      cues, and continuously refine trading decisions in the volatile financial environment. We first compare
+                                                      F IN M EM with various algorithmic agents on a scalable real-world financial dataset, underscoring its
+                                                      leading trading performance in stocks. We then fine-tuned the agent’s perceptual span and character
+                                                      setting to achieve a significantly enhanced trading performance. Collectively, F IN M EM presents a
+                                                      cutting-edge LLM agent framework for automated trading, boosting cumulative investment returns.
+                                           KEYWODS: Financial AI, Large Language Model, Trading Algorithms, Deep Learning, Financial Technology
+
+                                           1       Introduction
+                                           With the influx of diverse financial data streams from the web, traders face a deluge of information from various sources.
+                                           This requires them rapidly to understand, memorize, and filtrate crucial events for investment decisions. However,
+                                           innate cognitive limitations restrict human traders from processing information within their perception and memory
+                                           capacity, a span much narrower than the actual volume of available information [5]. Consequently, insufficiently
+                                           considering or even dismissing critical events affecting trading decisions becomes increasingly concerning as data
+                                           availability expands. To overcome the physical limitations in the memory systems of human traders, researchers have
+                                           been consistently working on designing autonomous trading agent systems. These systems need to thoroughly integrate
+                                           all available information and possess a sophisticated design in the agent’s backbone algorithm to deliver enhanced
+                                           trading performance.
+                                           The evolution of autonomous trading systems has transitioned from the initial rule-based trading strategies [12] to more
+                                           advanced machine-learning-based algorithms [19]. In recent years, Reinforcement Learning (RL)-based agents [14],
+                                               †
+                                                 Corresponding author. Email: kkhashan@stevens.edu
+                                               *
+                                                 Equal contribution, with author order decided by dice roll.
+                                               2
+                                                 The source code of this project can be found via: F IN M EM LLM Trading
+especially those employing Deep Reinforcement Learning (DRL) [29] as backbone algorithms, garner joint attention
+of both academia and industry. Leveraging both RL principles and deep learning, DRL agents effectively handle and
+learn from scalable and diverse financial data, including stock prices, key financial indicators, and market sentiments.
+They utilize deep neural networks to extract expressive features from input data, representing the complex financial
+market environment, which enhances their comprehension ability. Retaining the key features of RL agents, they learn
+through interaction with a predefined environment to maximize investment gain over time. Research suggests DRLs can
+meet the crucial needs of trading agents to process and make informed decisions from large volumes of data. However,
+certain inherent features of DRL algorithms exhibit notable deficiencies in financial applications. Firstly, DRL agents
+exhibit a lack of interpretability concerning the rationale behind their decisions [4]. They are often described as
+“black boxes,” where the internal processes and computational layers leading to a specific decision are neither easily
+understandable nor transparent. Secondly, DRL agents find it challenging to effectively integrate textual data
+with numerical features. Text data plays a vital role in finance, since the majority of market information is conveyed
+through news articles and financial reports. However, transforming text data to embeddings considerably increases
+input space dimensionality, making learning more computationally demanding. Plus, empirical studies have shown
+that combining textual representations with numerical financial indicators often leads to convergence challenges [15].
+Therefore, a backbone algorithm with transparent reasoning and the enhanced ability to capture investment-related
+textual insights comprehensively is essential.
+Recent advancements in Large Language Models (LLMs), like Generative Pre-trained Transformers (GPTs) [34], offer
+viable solutions for developing trading agents, alleviating previous concerns. With carefully designed prompts, the
+LLM-based agent is able to provide reasons and outcomes in plain text. This allows for immediate observation and
+prompt adjustment of its reasoning process. Employing LLMs as the backbone algorithms for agents also overcomes
+the constraint of isolated environments. This is achieved through their vast pre-existing knowledge and the effective
+integration of valuable insights from a variety of data sources, including both textual and numerical. When equipped
+with suitable prompt templates, this approach significantly enhances decision-making capabilities [50]. Studies indicate
+that prompt-guided reasoning significantly improves problem-solving rates across various domains [24]. Notably, a
+growing body of research has focused on utilizing LLMs to make informed trading decisions for stocks and funds by
+continuously interacting with financial environment information [55, 52]. However, in currently available approaches,
+LLMs primarily serve as a QA role rather than functioning as autonomous agents. The potential issue with these
+approaches is the incapability of fully understanding the varying timeliness associated with different types of
+financial data. These financial LLM agents, despite outperforming traditional trading benchmarks, generally process
+information indiscriminately through QA iterations, lacking the ability to memorize influential messages. Furthermore,
+their method of acknowledging the timeliness of financial data is heavily dependent on the uncertain and laborious
+LLM fine-tuning process. These insufficiencies undermine their ability to update the knowledge base in a daily manner,
+meaning they lack a memory component. As a result, they may struggle to prioritize significant and influential memory
+events effectively. Additionally, current literature on LLM-based trading agents lacks a comparative analysis between
+these applications and other autonomous trading systems, such as DRL agents.
+To bridge this gap, we present F IN M EM, an innovative LLM-based autonomous trading agent with a novel layered
+memory system and dynamic character design. Unlike previous LLM agents in finance, F IN M EM encompasses a
+memory module adept at processing multi-source financial data with varying timeliness and self-adaptive character
+setting for fitting into volatile market environments.
+Our concept is initially inspired by the Generative Agents framework by Park et al. [35], aimed at enhancing the
+efficient retrieval of key events for general-purpose LLM agents. This framework features a unique character design
+and seed memory, activating the agent upon specific query through prompts. It prioritizes events in a unified memory
+stream, ranked by a linear combination of recency, relevancy, and importance. The framework outlined in [35] provides
+a foundational structure for LLM agent design. It includes a profiling module for character definition, a memory
+module for experience recording and critical information retrieval, and an action module to guide actions based on the
+retrieved memories. This structure effectively facilitates goal achievement for the agent in a general social environment.
+However, Park et al.’s framework struggles with comprehending financial data with varying timeliness and
+importance, like daily news versus quarterly and annual reports. Key challenges involve quantifying the timeliness of
+different information sources, optimizing information retrieval, and enhancing trading decisions with detailed analysis.
+To tackle these challenges, we further propose F IN M EM with the following improvements.
+F IN M EM maintains a modular approach similar to Park et al. [35], but features novel design of profiling and memory
+modules. Its specialized profiling module equips F IN M EM with a trading-task-specific professional background,
+enhancing robustness to market fluctuations via offering self-adaptive risk inclination option. F IN M EM’s memory
+module innovatively incorporates working memory and layered long-term memory components, ideal for stratified
+information processing. Its working memory acts as a dynamic “workspace,” enabling operations like summarization,
+observation, and reflection on multi-source information to facilitate trading decisions. Its long-term memory, structured
+
+
+                                                            2
+into shallow, intermediate, and deep layers [9], manages varied decay rates to satisfy the need to retain distinct types of
+financial information within different time scales based on their corresponding timeliness. For instance, daily news,
+with its immediate effects on stock markets, is channeled into the shallow processing layer. Meanwhile, annual company
+reports, exerting a more prolonged impact, are processed in the deep layer by F IN M EM. Each layer in F IN M EM
+prioritizes memory events based on the assemble of recency, relevancy, and importance close to Park et al.’s method.
+However, it introduces new measurements for recency and importance, specifically tailored to better rank financial
+data according to their unique time sensitivity. F IN M EM’s memory mechanism can also transit significantly impactful
+investment memory events to deeper processing layers, ensuring their retention for extended periods. F IN M EM’s
+memory module can mirror the human cognitive system [47] and facilitate agile, real-time decisions [46]. It enables
+continuous evolution in professional knowledge through structured summarizing, retrospecting past experiences, and
+reacting to new trading scenarios. Additionally, F IN M EM includes a decision-making module capable of deriving
+investment decisions by considering top-ranked memory events and current market conditions.
+Through experiments, we show that F IN M EM exhibits an outstanding ability to stratify and leverage the various levels
+of market insights, significantly improving the quality of trading decisions. We claim that F IN M EM provides these key
+contributions:
+F IN M EM presents a state-of-the-art LLM-based trading agent with a human-aligned memory mechanism and
+character design, particularly crafted to capture investment insights from the financial market. In its agent memory
+module design, F IN M EM innovatively emulates human working and layered long-term memory mechanisms. This
+approach effectively harnesses the time-sensitive aspects of financial data, capturing crucial investment insights and
+thereby boosting trading performance. F IN M EM’s profiling module includes a dynamic character setting feature,
+offering seed information about professional backgrounds and adjustable risk inclinations. Additionally, it continuously
+updates domain knowledge as the trading experience grows, thereby enhancing F IN M EM’s capabilities. Ablation
+studies demonstrate that F IN M EM can learn from past trading experiences and evolve its knowledge base through
+continuous market interaction, maintaining robustness in complex markets for profitable trading decisions.
+F IN M EM can utilize its distinctive features to expand the agent’s perceptual range beyond the human limitation
+to make well-informed trading decisions. Cognitive research indicates that human working memory can recall only
+five to nine events at a time [30]. This limitation, while preventing information overload, can yield insufficient insight
+for precise decision-making. In contrast, F IN M EM’s memory module transcends this constraint. It allows adjusting
+cognitive load by selecting a flexible number of top-ranked events from each layer of its hierarchical long-term memory,
+allowing F IN M EM to maintain agility and deliver superior trading decisions in data-rich contexts.
+F IN M EM achieves impressive trading performance using training data that is limited in volume and spans a
+short time period. Our experiments indicate that training F IN M EM with daily collected data over just six months
+to a year is enough to produce robust and notable trading results. This timeframe is considerably shorter than what
+other comparable models require. This efficiency is achieved through the optimal utilization of multi-source incoming
+data and the precise identification of key signals for trading decisions. Furthermore, it’s noteworthy that F IN M EM’s
+effectiveness is demonstrated on smaller datasets and with general-purpose LLMs. Its capabilities are anticipated to be
+further amplified with access to larger, higher-quality financial datasets and LLMs fine-tuned specifically for financial
+applications.
+In this paper, we begin by explaining the three core modules of F IN M EM. Subsequently, we emphasize its superior
+trading performance compared to a range of representative algorithmic agents. We further explore how F IN M EM
+achieves its optimal performance, examining adjustments in three key aspects: backbone algorithms, working memory
+capacity, and character settings.
+
+
+2     Related Work
+
+2.1   Backbone Algorithms of Contemporary Autonomous Trading Agents
+
+The development of trading agents has evolved over several decades, influenced by advancements in technology, finance,
+and computational methodologies. Conventionally, a rule-based algorithm for trading stocks is an automated strategy
+that operates based on a predefined set of rules[7, 49, 37]. These rules are often derived from historical market patterns
+and trading experience. Compared with rule-based algorithms that use predefined rules and conditions, Reinforcement
+Learning provides a way for agents to learn by interacting with an environment and receiving feedback in the form
+of rewards or penalties. [10, 22]. Deep learning models can be integrated with RL to handle large and complex state
+spaces, like those in stock markets. Such models are often referred to as Deep Reinforcement Learning (DRL) [53, 54].
+For example, Deep Q-Network (DQN) [44], Advantage Actor-Critic (A2C) [56], and Proximal Policy Optimization
+(PPO) [27] are popular algorithms for such tasks. Using DRL agents as automated financial trading backbones, face
+
+
+                                                            3
+two key issues: 1) A lack of interpretability, as their decisions, rooted in complex computations and high-dimensional
+representations, are challenging to articulate [4]. 2) They struggle to fully leverage textual financial information due
+to the high-dimensional nature and computational intensity of rich text embeddings [11, 13]. Consequently, DRL
+agents often rely on extracting textual sentiment [39], sidestepping the direct use of embeddings [6, 3], leading to an
+incomplete representation of crucial market information embedded in news and macroeconomic policies.
+
+2.2   Advancements from LLMs to LLM Autonomous Agents
+
+The evolution of LLMs has reshaped artificial intelligence and natural language processing. From foundational
+embeddings like Word2Vec [16] and GloVe [38], the field advanced with the introduction of sequential modeling like
+Long Short-Term Memory (LSTM) [18] and early transformer models of Bidirectional Encoder Representations from
+Transformers (BERT) [11]. Today, the new-generation LLMs, like Generative Pre-trained Transformer series (GPTs)
+[40, 34] and LLM Meta AI (Llamas) [48], stand out in diverse QA tasks. The trend leans towards LLM agents. While
+LLM agents for domain-specific tasks have been extensively researched [20, 25, 36], their application in financial
+trading remains underexplored. Existing studies in this domain, such as [52, 55], often lack open-source availability or
+have not considered an architecture specifically tailored to fit the unique environment of finance markets. Thus, there’s
+significant value in further investigating advanced, transparent LLM agents for trading.
+
+2.3   Architecture Design of LLM Autonomous Agent
+
+As Wang et al.[50] emphasizes, an effective architecture for LLMs serving autonomous agents is essential. Typically,
+this structure comprises modules like profiling, memory, planning, and actions, though not all may be essential for every
+application. There are cases of two modules (e.g., planning and action modules) being integrated as one component
+([35]). The design variations are numerous. For instance, profiling has been achieved through methods like handcrafting
+[57], generation by LLMs [51], and alignment with real-world datasets [2]. Among these modules, the memory
+component is essential. Acting as the operational core, it aligns an agent’s actions with real-world tasks. Research
+indicates that leveraging insights from cognitive science studies on human memory [50, 45] can enhance this alignment.
+Thus, a well-structured trading LLM agent, comprising aptly designed modules, can sharply tackle the complexities of
+financial markets to make informed decisions.
+
+3     Architecture of F IN M EM
+In this section, we comprehensively detail the three core components of F IN M EM, namely the profiling, memory,
+and decision-making modules. The profiling module empowers F IN M EM to adaptively tailor character setting for
+specific trading tasks. Memory module leverages diverse time-efficiency attributes of financial data, enhancing its
+trading efficacy. The decision-making module enables F IN M EM to synchronize its memory streams with market facts,
+facilitating high-quality trading decisions. The details and notations associated with these three modules are provided in
+the subsequent sections.
+
+3.1   Profiling Module
+
+The profiling module empowers F IN M EM to develop a dynamic agent character specifically designed to navigate the
+complex dynamics of financial markets effectively.
+The dynamic character of F IN M EM comprises two principal components, as depicted in Figure 1: firstly, a foundational
+professional knowledge base akin to a trading expert, and secondly, an agent with three distinct investment risk
+inclinations. The first component includes two types of information: an introduction to the primary trading sectors
+relevant to the company stock F IN M EM will trade in, and a concise overview of the historical financial performance
+of the specified ticker, spanning from the beginning to the end of the training period. Before initiating trades in a
+new company’s stock, F IN M EM accesses and updates this sector-specific and historical financial data from a backend
+database. This professional background setting narrows down information and memory events pertinent to specific
+trading tasks.
+The second component of F IN M EM’s design, illustrated in Figure 1, encompasses three distinct risk inclination options:
+risk-seeking, risk-averse, and a self-adaptive risk character. The risk-seeking setting gears F IN M EM towards an
+aggressive, high-reward approach, while the risk-averse setting gears it towards a conservative, lower-risk strategy. A
+distinctive aspect of F IN M EM is its ability to dynamically alternate between these risk settings in response to current
+market conditions. Specifically, it shifts risk preferences when the Cumulative Return falls to below zero within a brief
+period, such as three days, and reversely. This flexible design functions as a protective mechanism, mitigating prolonged
+
+
+                                                            4
+  LLMs                                     ...                        Ticker: TSLA                             Current Date: 2023-01-24                                     Predicting Date: 2022-01-25
+                                                                                                                jj
+
+
+  FinMem Profiling Module
+
+     Generate Background Knowledge:
+   As an expert trading agent who have sufficient financial experience of trading {TSLA}.
+   - Trading Sectors: {Tesla, Inc.} ({TSLA}) primarily operates in the Consumer Cyclical and electric vehicle (EV) sectors, specifically within the Auto Manufacturers industry. This classification reflects Tesla's core business
+                       activities, which include designing, developing, manufacturing, and selling electric vehicles and related products and services. ....
+   - Historical Financial Performance Overview (Before Testing period): {Tesla Inc.} have expanded its product line to include not only various car models but also solar energy products and energy storage solutions.
+                                                     Its primary revenue source remained its EV segment, led by the success of the Model 3 and Model Y vehicles. Over the past years, Tesla had shown substantial growth ...
+
+
+
+
+     Choose One of The Risk Inclination:
+                               Risk-Seeking Trading Agent                                            Self-Adaptive Character Trading Agent                                        Risk-Averse Trading Agent
+
+              Character: As a risk-seeking trading agent, you are drawn to                 Character: You can switch your risk preference based on：                 Character: As a risk-averse trading agent, you prioritize
+              the thrill of high-risk, high-reward opportunities in trading.               When the cumulative return is positive, you are a risk-                  stability and steady growth in trading, focusing on:
+              Your strategy is bold and clear:                                             seeking investor ...                                                     - Selecting investments with low volatility and
+               - Chase the potential for substantial gains, even if it means               But when the cumulative return is negative, you are a risk-               predictable returns.
+                  embracing significant uncertainty.                                       averse investor ...                                                      - Choosing established stocks like {TSLA} for
+               - Target volatile investments with {TSLA}, where the risk is                                                                                           consistent performance.
+                  as high as the possible return.                                                                                                                   - Valuing gradual, reliable gains over the chance of
+               - Accept the chance of considerable losses as the entry fee                                                                                             high but uncertain returns.
+                 for the pursuit of exceptional rewards.                                                                                                            Your conservative trading style is centered on
+              Your trading style is aggressive and focused on leveraging                                                                                            minimizing risk and safeguarding capital for long-term
+              risk for the possibility of outsized returns with stock.                                                                                              appreciation.
+
+
+
+
+                                                              Top Memory Events Examples:
+                                                              - (ID: 3357) Tesla Seeing $500B Eroded From Valuation In 2 Months Is Buy Opportunity: Analyst sees 100% upside Tesla Inc.
+                                                                           (NASDAQ: TSLA) shares are going through a lean patch and it has stirred anxiety among retail investors...
+                                                              - (ID: 3404) Tesla Offers US Buyers Discount: How You Can Get Model 3 Or Model Y For Cheaper right now Tesla Inc.
+                                                                           (NASDAQ: TSLA) cars could be cheaper if you opt to buy one ahead of the new year....
+                                                              -(ID: 3417) Elon Musk's Call For 'Epic' Q4 At Risk As Tesla Reportedly Trims China-Made Model Y Production In Dec
+                                                                           by 20% Tesla Inc. ...
+                                                              - (ID: 1) Considering the information provided, Tesla has shown robust financial performance with a significant increase in
+                                                                        revenues. Despite a net loss in Q4 2022, the company's revenues increased by 89% year-over-year which was
+                                                                        mainly driven by an increase in vehicle deliveries...
+
+
+
+
+FinMem Trading Decisions
+
+
+
+             Risk-Seeking Trading Agent                                                              Self-Adaptive Character Trading Agent                                       Risk-Averse Trading Agent
+
+             Trading Decision: BUY                                                     Trading Decision: BUY                                                    Trading Decision: HOLD
+             Investment reason: Despite the presence of negative sentiment in          Investment reason: Given the shallow and intermediate memory             Investment Reason: The mixed signals from Tesla's
+             deep memory messages (3417), the stock is exhibiting positive             messages, analysts are seeing the current low price as a buying          memory messages (3357,3404, 3417), such as the
+             momentum along with encouraging shallow and intermediate                  opportunity (3357, 3404). The deep memory information indicates a        potential buy opportunity due to a significant valuation drop
+             memory messages (3357, 3404), signaling potential future gains. As        potential risk with Tesla trimming production (3417), but the            and production challenges in China, lead me to maintain a
+             a risk-seeking investor, this combination of factors presents a           reflection term information shows a robust financial performance         hold position. The company's strong financial performance,
+             persuasive case for purchasing.                                           over the past 10 years (1). Furthermore, the investor holds only 1       evidenced by increased revenues despite a net loss,
+                                                                                       share of TSLA, suggesting that buying more could potentially yield       suggests stability, aligning with a cautious investment
+                                                                                       a good return in the future.                                             approach.
+
+
+
+
+Figure 1: The prompt template for F IN M EM’s profiling module. It includes two key elements of its character setting:
+professional background knowledge and three distinct investment risk inclinations. In the self-adaptive risk inclination
+option, the omitted texts align with the detailed descriptions provided for the risk-seeking and risk-averse inclinations.
+
+
+
+
+                                                                                                                5
+downturns in turbulent market environments. During the initial stage of the training phase, F IN M EM is configured with
+a chosen risk preference, each supplemented with comprehensive textual explanations through LLM prompts. These
+guidelines shape how F IN M EM processes incoming messages and determines its subsequent actions in alignment with
+its designated risk inclination. The system maintains a catalog of all risk inclinations and their detailed explanations in
+a backlog, enabling seamless adaptation to different stocks by switching among these risk profiles as needed.
+The dynamic character setting in F IN M E’s profiling module provides subjective and professional background knowledge
+and flexible choice of risk inclinations. It provides crucial context for filtering and retrieving trading-relevant information
+and memory events, thus improving accurate inferencing and adaptability to fluctuating market conditions.
+
+3.2      Memory Module
+
+The memory module of F IN M EM emulates a human trader’s cognitive system so that it can efficiently process
+hierarchical financial information and prioritize the critical messages for high-quality investment decisions. Furthermore,
+it adjusts the memory span flexibly, enabling the agent to operate on a wider range of events over a longer retrieval
+period. F IN M EM’s memory module, illustrated in Figure 2, comprises working and long-term memory with layered
+processing capability and is initiated by a specific investment inquiry.
+
+                                                                                                                                         Summarize
+                                                    Market Environment
+                                                                                                                                         Observe
+                                                                                                           Daily                         Reflect
+              Daily Market News             Company 10-Q Reports             Company 10-K Reports          Stock                         Retrieve
+                                                                                                           Price                         Transit
+
+
+
+
+                                                              FinMem's Working Memory                                   Immediate Reflection Output:
+          Trigger
+                                                                                                                        1) Agent's Investment decision:
+      Stock Ticker: TSLA                                              Operations                                           Buy Or Sell Or Hold?
+         Trading Day:                                                                                                   2) Cumulative return.
+         2023-01-24                                                                                                     2) Reasoning details.
+                                                                      Immediately       Extended
+                                                  Summarize             Reflect          Reflect           Observse     3) Highest influential layered long-
+                                                                                Reflect                                    term memory IDs.
+
+
+
+
+             Daily Market                       Company 10-Q Report                     Extended      Company 10-K
+             News Insights                           Insights                           Relfection    Report Insights
+                                  Access                                    Access
+                                  Counter                                   Counter
+      Shallow Processing Layer              Intermediate Processing Layer                  Deep Processing Layer
+
+                                                         Access Counter
+
+                                               Layered Long Term Memory
+
+Figure 2: Memory module structure of F IN M EM with a detailed view of components, operations, and workflow. The
+ cognitive architectures of F IN M EM’s memory module have two core components – Working Memory and Layered
+                                               Long-term Memory.
+
+
+3.2.1       Working memory
+Working memory refers to the human cognitive system’s functions for temporary storage and diverse operations. We
+incorporate this concept into F IN M EM’s memory module development, creating a central workspace for informed
+decision-making. Unlike human working memory, having a maximum capacity of seven plus or minus two memory
+events [30], F IN M EM has the ability to expand the capacity based on specific requirements. Tailored for converting
+financial data into trading actions, F IN M EM’s working memory encompasses three key operations: summarization,
+observation, and reflection. The mechanisms by which they interact and operate as an integrated decision-making
+workflow are detailed in the middle box of Figure 2. Additionally, the LLM prompt template that underpins these
+processes is thoroughly outlined in 3.
+Summarization: F IN M EM leverages external market data to derive critical investment insights and sentiments tailored
+to specific stock trading queries, such as “Can you make an investment decision on TSLA on 1/24/2023?”. As
+
+
+                                                                                6
+illustrated in Figure 3 (2), this system condenses the original text into a compact yet informative paragraph, thereby
+enhancing F IN M EM’s processing efficiency. It efficiently extracts and summarizes pertinent data and sentiments
+for stock investment decisions, demonstrated here using Tesla Inc. as an example. Subsequently, F IN M EM directs
+these insights to an appropriate layer within its long-term memory architecture, selecting the layer based on the time
+sensitivity of the information.
+Observation: Triggered the same inquiry, F IN M EM initiates an observation operation to gather market facts. The
+information available to F IN M EM varies between the training and testing phases.
+During the training phase, F IN M EM has access to comprehensive stock price data within the specified period. Upon
+receiving trading inquiries that specify a stock ticker and date, F IN M EM focuses on the daily adjusted closing price
+differences, comparing the following day’s price with the current day’s. These price differences are utilized as market
+ground labels. Specifically, a decrease in price suggests a “Sell” action, while an increase or no change in price indicates
+a “Buy” action.
+During the testing phase, at a specific time point, F IN M EM loses the ability to access future price data. Its focus
+shifts to the analysis of historical stock price movements, depending on a retrospective evaluation of the cumulative
+return from the last M trading days to infer future market trends. This phase, characterized by the absence of foreseen
+market grounds, serves as a critical assessment of F IN M EM’s development. It tests whether the system has adequately
+established logical connections between stock price trends and various financial information sources, such as news,
+reports, and indicators. This stage is key in evaluating F IN M EM’s capability of independently evolving its trading
+strategies for subsequent tasks, leveraging its analysis and interpretation of historical data patterns.
+Reflection: Two types of reflections exist, immediate and extended reflection. (a) Immediate reflection is activated
+upon receiving a daily trading inquiry for a specific ticker. Using LLM and specific prompts exemplified in Figure 3 (2),
+the agent merges market indications and top-K-ranked events from each long-term memory layer. Market indications
+are derived from the outcomes of the observation operation and differ between the training and testing phases. During
+testing, this process yields three types of outputs: the trading direction (“Buy”, “Sell”, or “Hold”), the underlying
+rationale for this decision, and the most influential memory events, along with their IDs from each layer that informed
+the decision. In the training phase, specifying the trading direction is unnecessary, as F IN M EM is already informed of
+future stock movement directions. The top-K-ranked memory events encapsulate key insights and sentiments derived
+from critical investment-related incoming messages, all distilled by F IN M EM’s advanced summarization capabilities.
+(b) Extended reflection reevaluates immediate reflection outcomes for a ticker over a specified M -day trace period.
+It encompasses data like stock price trends, trading returns, and action rationales from multiple immediate reflec-
+tions. While immediate reflection enables direct trading execution and records current feedback, extended reflection
+summarizes market trends and reassesses recent Cumulative Return on investment. Extended reflection is eventually
+transmitted and stored in the deep processing layer to emphasize its criticality (detailed introduced in Section 3.2.2) of
+long-term memory. K and M are hyperparameters to adjust F IN M EM’s working memory capacity and information
+retrieval ability. F IN M EM gains the flexibility of integrating comprehensive information into well-informed decisions
+by fine-tuning them.
+
+3.2.2   Layered long-term memory
+F IN M EM’s long-term memory organizes hierarchical financial data insights in a stratified structure, as illustrated in
+the lower section of Figure 2. Drawing inspiration from the varying decay speeds in the human cognitive system’s
+information processing layers [9], F IN M EM employs a layered structure to accommodate the diverse time sensitivities
+inherent to different types of financial data. This structure categorizes summarized insights by their timeliness and
+decay rates. Insights are derived by the working memory’s summarization operation. Those directed to deeper layers
+receive smaller decay rates, indicating longer retention, while those in shallower layers are assigned larger decay rates
+for shorter retention.
+
+                                        γlE = SRecency
+                                               E
+                                                      l
+                                                           E
+                                                        + SRelevancyl
+                                                                         E
+                                                                      + SImportancel
+                                                                                     ,                                   (1)
+where each memory event is only associated with one score and can only belong to a single layer.
+
+Upon receiving an investment inquiry, F IN M EM retrieves the top-K pivotal memory events from each layer and
+channels them to the immediate reflection component of the working memory. These events are chosen according to the
+descending order of their information retrieval score, denoted as γlE , where l belongs to the set shallow, intermediate,
+deep, as specified in Equation 5. E denotes a given memory event. This score, adapted from Park et al. [35] but
+with modified recency and importance computations, especially tailoring to handle data with various timelines. It
+
+
+                                                              7
+(1)             Multi-sourced
+              Input information
+                                             (2)    LLMs                     ...        Ticker: TSLA          Current Date: 2023-01-24                  Predicting Date: 2023-01-25
+                                                   Summarize:
+                                                   Range: Long Documents such as company 10-K and 10-Q reports; daily market news
+                                                   Prompts: - 1)Summarize the contents: Summarize the provided documents/texts into a concise summary of {1000} tokens to extract key investment insights.
+                    Sorting                                 - 2)Summarize and interpret investment sentiment: The positive, neutral and negative scores are for understanding the
+                                                                investment sentiments, opinions, or emotions. They are ratios for proportions of text that fall in each category and can be added
+                                                                up to be 1... For example, positive news about a company can lift investor sentiment, encouraging more buying activity which in
+                                                                turn can push stock prices higher...
+       Summarize              Observe
+                                                   Observe:
+                                                   Range: Stock trend changes based on adjusted daily closed prices.
+                                                   Prompt: The information below provides a summary of stock price fluctuations over the previous few days, which is the "momentum" of a stock. It reflects
+      Layered Long-       Financial market                 the trend of a stock. Momentum is based on the idea that securities that have performed well in the past will continue to perform well, and
+       term Memory             Facts                       conversely, securities that have performed poorly will continue to perform poorly.
+                                                           - training: On {2023-01-24}, the momentum of {TSLA}, indicated by the price difference between the current and the next trading day,
+                                                                       was an increase of {$5.4}.
+                                                           - testing: On {2023-01-24}, the historical momentum of {TSLA}, as measured by its cumulative logarithmic returns in the
+                                                                      past {3} days, was { 7.476%}.
+         Retrieve
+
+                                                   Reflect:
+                                                   Range: Memory events retrieved from layered long term memory, daily market facts, interaction insights among extended and immediate reflection.
+                                                   Prompt:
+         Essential
+                                                   - training: Given the following information, can you explain to me why the financial market fluctuation from current day to the next day behaves like
+      memory events
+                                                               this? You need to provide summary information and the IDs of the information to support your summary.
+      from each layer
+                                                   - testing: Given the information, can you make an investment decision? Please consider the short-term, mid-term and long-term information, the reflection
+                                                              information. Please also consider the momentum of the stock price.
+                                                               {When the cumulative returns are positive, you are a risk-seeking investor... And when the cumulative returns are
+                        Reflect                                negative, you are a risk-averse investor...}
+                                                               Considering how many shares of the stock you as an investor are holding now, you should provide exactly one of the following
+                                                               investment decisions: buy and sell. When it is hard to make a buy-or-sell decision, you could go with hold option. You also need to provide the IDs
+                                                               of the information to support your decision.
+
+                                                   Trading decision: Buy.
+              Investment decisions                 Reason: Given the shallow and intermediate memory messages, analysts are seeing the current low price as a buying opportunity (3357, 3404). The deep
+             and reflecting outcomes               memory information indicates a potential risk with Tesla trimming production (3417), but the reflection term information shows a robust financial performance
+                                                   over the past 10 years (1). Furthermore, the investor holds only 1 share of TSLA, suggesting that buying more could potentially yield a good return in the
+                                                   future.
+
+
+
+Figure 3: (1) The decision-making module workflow of the F IN M EM trading agent retrieves critical memory events to
+inform specific decisions. (2) LLM prompt template used by F IN M EM to interact with incoming financial information.
+
+
+encapsulates three metrics: recency, relevancy, and importance. Individual metric scores exceeding 1.0 are scaled to the
+[0,1] range before being summed. The modification is to achieve the layered processing function and represent the
+various periodicity of the financial environment.
+                                                                                               E
+                                                                   E                      − δQ
+                                                                  SRecency l
+                                                                             =e                  l   ,     δ E = tP − tE ,                                                                                      (2)
+
+where δ E refers to the time difference between the memory event occurrence and the trading inquiry arrival.
+Qshallow = 14, Qintermediate = 90, and Qdeep = 365 correspond to day counts of two weeks, a quarter, and a year for
+shallow, intermediate, and deep processing layers, respectively.
+
+                                                                                                                   E
+Upon a trade inquiry P arrival in processing layer l via LLM prompt, the agent computes the recency score SRecency      l
+                   E
+per Equation.2. SRecency l
+                           inversely correlates with  the time gap between the inquiry and the event’s memory  timestamp,
+mirroring Ebbinghaus’s forgetting curve [33]. The stability term Ql in Equation.2 partially controls memory decay rates
+across layers, indicating longer memory persistence in the long-term layer with a higher stability value. In the context
+of trading, company annual reports, such as Form 10-Ks, are considered to have more extended timeliness compared
+to daily financial news. Therefore, they are assigned a higher stability value and are categorized within the deeper
+processing layer. This classification reflects their extended relevance and impact in financial decision-making scenarios.
+
+
+                                                                       E                         mE · mP
+                                                                      SRelevancy  =                                                                                                                             (3)
+                                                                                l              ∥mE ∥2 × ∥mP ∥2
+
+                                     E
+The relevancy score, denoted as Srelevancy  l
+                                              , quantifies the cosine similarity between the embedding vectors. These
+vectors are derived from the textual content of the memory event, mE , and the LLM prompt query, mP , using OpenAI’s
+“text-embedding-ada-002” model, as depicted in Equation 3. The LLM prompt query incorporates inputs related to
+trading inquiries and the trading agent’s character setting.
+                      E
+The importance score SImportancel
+                                  is computed using the value vlE from a uniform piecewise scoring function (Formula 4),
+multiplied by a degrading ratio θl (Formula 5) as per Equation 6. The likelihood of higher vlE values increases
+from shallow to deep layers. θl measures the diminishing importance of an event over time, which has a close
+form design of [35]. But our approach tailors θl to the stratified structure of long-term memory. It adopts unique
+exponential functions for each layer. The base αl for each layer is a hyperparameter, set to follow the sequence:
+
+
+                                                                                                     8
+αshallow < αintermediate < αdeep . These values correlate with the rate at which their importance degrades after a
+certain period, providing another angle to measure importance variances across different memory types. Through
+experimentation, we set αshallow = 0.9, αintermediate = 0.967 and αdeep = 0.988. This ensures that θl decreases to a
+threshold score of 5 after intervals of 30, 90, and 365 days for shallow, intermediate, and deep layers, respectively. The
+                                   E               E
+three-piece-wise functions for SImportance  l
+                                              and SRecency l
+                                                             enable F IN M EM to have layered processing in the long-term
+                                                              E                        E
+memory component. Memory events are purged when SRecency           l
+                                                                     is below 0.05 or SImportancel
+                                                                                                   is under 5 (pre-scaling).
+
+                                                 
+                                                 40 with probability p1
+                                            vlE = 60 with probability p2                                                 (4)
+                                                 
+                                                   80 with probability p3
+
+                                                E
+                                     θl = (αl )δ ,     l = shallow, intermediate, deep,                                  (5)
+
+where p1 + p2 + p3 = 1, but their values vary by shallow, intermediate, and deep processing. when shallow
+processing p1 , p2 , p3 = {0.8, 0.15, 0.05}, intermediate processing, p1 , p2 , p3 = {0.05, 0.8, 0.15} and deep processing,
+p1 , p2 , p3 = {0.05, 0.15, 0.8}.
+
+                                                     E
+                                                    SImportance l
+                                                                  = vlE ∗ θl ,                                           (6)
+
+Furthermore, an access counter function oversees the transfer of memory events among layers, ensuring that significant
+events influencing trading decisions ascend from shallower to deeper layers for extended retention and recurrent access
+by F IN M EM. Conversely, less pertinent events gradually diminish. This process is facilitated by the LLM validation
+tool Guardrails AI [17], which monitors critical memory IDs across different layers. An event identified as pivotal for
+                                                                                  E
+investment success receives an additional 5 points in its importance score SImportance    l
+                                                                                            . Upon meeting the criteria for
+                                                       E
+upgrading to a deeper layer, an event’s recency score SRecencyl is reset to 1.0, emphasizing its importance and preventing
+rapid decay. By implementing this access counter, F IN M EM effectively identifies and prioritizes key events, taking into
+account their nature and frequency of retrieval.
+
+3.3   Decision-making Module
+
+The decision-making module of F IN M EM efficiently integrates operational outcomes from the profiling and memory
+modules to support well-informed investment decisions, as depicted in Figure 3 (1). In its daily trading decisions,
+F IN M EM is asked to select from three distinct actions for a single share of a specific stock by Guardrails AI text
+validation function: “Buy”, “Sell”, or “Hold”. Additionally, the inputs and results required by F IN M EM’s decision-
+making module vary between its training and testing phases, with each phase’s specifics detailed as follows:
+During the training phase, F IN M EM accesses a wide array of multi-source information relevant to the entire time period.
+When F IN M EM is prompted with trading inquiries containing stock ticker and date, as well as trader character-related
+texts, it concurrently initiates observation and summarization operations in its working memory. F IN M EM observes
+the market ground labels mentioned in the description about the observation operation in Section 3.2.1, which involve
+daily adjusted price differences between consecutive days, indicative of “Buy” or “Sell” actions. Utilizing these price
+change signals, F IN M EM identifies and prioritizes the top-K memories, ranking them based on retrieval scores from
+each long-term memory layer. This procedure enables F IN M EM to produce comprehensive reflections that provide
+a well-founded rationale and in-depth inference of the correlation between market ground labels and the memories
+retrieved. Through repeated trading operations, reflections, and memory events with significant impact, transition to a
+deeper memory processing layer, getting preserved for guiding future investment decisions during the testing phase.
+In the testing phase, where F IN M EM cannot access future price data, it relies on the Cumulative Return over the
+previous M trading days to anticipate future market trends. To compensate for the absence of future market price
+information, F IN M EM utilizes enhanced reflections derived from immediate reflections spanning an M -trading-day
+period as supplementary references. When faced with a specific trading inquiry, F IN M EM integrates insights from
+various sources, including historical Cumulative Return, outcomes from extended reflection, and the Top-K retrieved
+memories. This comprehensive approach enables F IN M EM to execute well-informed trading decisions.
+It should be noted that F IN M EM generates executable actions exclusively in the immediate reflection operation of the
+testing phase. Since the trading direction is guided by the actual price trend, the training phase of F IN M EM does not
+make investment decisions. Instead, this phase is dedicated to accumulating trading experience through comparing
+
+
+                                                                9
+market trends with incoming multi-source financial messages. Additionally, during this phase, F IN M EM develops
+a memory module enriched with a comprehensive knowledge base, thereby evolving its capability for independent
+decision-making in future trading activities.
+
+
+4     Experiments Setups
+
+We aim to evaluate the trading performance of F IN M EM. And we further illustrate its unique advantages of requiring
+significantly less historical trading time window to train and take full use of key financial data time series as well as
+textual information. Specifically, we conducted several experiments to study the following research questions (RQs):
+
+       • RQ1: Is F IN M EM capable of outperforming contemporary state-of-the-art algorithmic trading agents?
+       • RQ2: Are there tasks that challenge other trading algorithms but are manageable by F IN M EM?
+       • RQ3: Which LLM is best suited to form the backbone framework of F IN M EM?
+       • RQ4: Does equipping F IN M EM with different risk inclination choices truly differentiate its trading perfor-
+         mance?
+       • RQ5: Can F IN M EM effectively filter and prioritize information to facilitate informed trading decisions?
+
+In the rest of the section, we begin by introducing the real-world financial dataset used in our experiments. We then
+describe the comparative algorithmic agents and list several widely used financial metrics. Our experiments fall into two
+categories: 1) The comparative experiments of F IN M EM versus other algorithmic trading agents, and F IN M EM using
+different LLMs as backbone algorithms. 2) The ablation studies evaluate the effects of F IN M EM’s adjustable cognitive
+span and the role of the trader’s dynamic character settings, particularly the risk inclinations, on its trading performance.
+Through experiments, F IN M EM demonstrates to outperform other comparative algorithmic agents. Furthermore, we are
+able to show that its profiling and memory modules are sophisticated and tailored to effectively address the intricacies
+of the financial landscape, resulting in superior trading performance.
+
+4.1   Datasets And Database Structure:
+
+We assessed F IN M EM’s performance using multi-source financial data from August 15, 2021, to April 25, 2023, sourced
+from reputable financial databases and APIs like Yahoo Finance (via yfinance) and Alpaca News API, detailed explained
+in Table 1. The stock tickers used in our comparative experiments are detailed in Figure 4. These were selected because
+they are among those with the highest volumes of accessible news text data, and they are spread across various trading
+sectors. This selection provides ample data to evaluate F IN M EM’s generalization capabilities. Additionally, Tesla,
+Inc. (TSLA) was specifically chosen for ablation studies due to its association with the largest amount of textual data,
+offering sufficient information to assess performance differences for the F IN M EM’s key features like cognitive spans.
+The raw multi-source input data, initially stored in the “Raw Financial Data Warehouse”, are diverged into F IN M EM’s
+“Layered Long-term Memory Data Warehouse” based on timeliness through working memory’s summarization operation
+in Figure 2. The deep processing layer holds annual reports (Form 10K’s) insights, the intermediate layer contains
+quarterly reports (Form 10Q’s) insights, and the shallow layer accommodates daily financial news insights.
+We leveraged the open-source vector database FAISS [23] for constructing the memory warehouse of F IN M EM,
+benefiting from its rapid querying in high-dimensional vectors and compatibility with OpenAI for cosine-similarity-
+based semantic searches on specific tickers. This setup facilitates efficient top-ranked event retrieval. Data categorization
+and memory module workflow are also illustrated in Figure 2
+
+4.2   Baseline And Comparative models:
+
+We assess F IN M EM’s trading performance in comparison to five advanced algorithmic agents and a commonly accepted
+baseline trading strategy. Among these, three models employ Deep Reinforcement Learning (DRL) approaches, while
+the remaining two are based on Large Language LLMs. Brief descriptions of each are provided below:
+Buy-and-Hold strategy (B&H):
+A passive investment approach, where an investor purchases stocks and holds onto them for an extended period
+regardless of market fluctuations, is commonly used as a baseline for comparison of stock trading strategies.
+DRL trading agents:
+
+
+                                                            10
+ Raw Financial Data Warehouse
+ News data associated with ticker indexes: News data is sourced from the Alpaca News API, which utilizes Benzinga
+ as its backend provider.
+ Corporate quarter filings indexes: Quarterly reports (Form 10-Q) are required by the U.S. Securities and Exchange
+ Commission (SEC).
+ Corporate annual filings indexes: Annual reports (Form 10-K) required by the U.S. Securities and Exchange
+ Commission (SEC).
+ Stock price records: Daily stock open-high-close-volume (OHLCV) data from Yahoo Finance.
+
+ F IN M EM’s Layered Long-term Memory Data Warehouse
+ Shallow Processing: Insights of real-time market news extracted by LLM. Updated daily.
+ Intermediate Processing: Insights of 10-Q filings extracted by LLM. Updated quarterly.
+ Deep Processing: 10-K fillings, all summarized by LLM. Updated yearly. Extended reflections for the stock in
+ response to the trading inquiry include F IN M EM’s cumulative trading returns, decision-making processes, trade
+ volumes, and underlying reasons. Updated daily.
+                             Table 1: Raw data and memory warehouses of F IN M EM
+
+
+
+
+     Figure 4: The distribution of news in scraped from Alpaca News API for the five stocks in the experiments
+
+
+As the F IN M EM is practiced and examined on the basis of single stock trading and discrete trading actions, we
+choose three advanced DRL algorithms fitting into the same scenarios according to the previous and shown expressive
+performance in the work of Liu et al. [28, 26]. The DRL training agents only take numeric features as inputs.
+
+      • Proximal Policy Optimization (PPO): PPO [42] is employed in stock trading due to its stability and
+        efficiency. One salient advantage of PPO is that it maintains a balance between exploration and exploitation by
+        bounding the policy update, preventing drastic policy changes.
+      • Deep Q-Network (DQN): DQN [32] is an adaptation of Q-learning, that can be used to optimize invest-
+        ment strategies. Unlike traditional Q-learning that relies on a tabular approach for storing Q-values, DQN
+        generalizes Q-value estimation across states using deep learning, making it more scalable for complex trading
+        environments.
+      • Advantage Actor-Critic (A2C): A2C [31] is applied to optimize trading actions in the financial environment.
+        It operates by simultaneously updating both the policy (actor) and the value (critic) functions, providing a
+        balance between exploration and exploitation.
+
+LLM trading agents:
+We evaluate F IN M EM against two LLM agents in the context of stock trading. The first LLM agent, known for its
+proficiency in general-purpose tasks, serves as a baseline. The second agent, a leading-edge LLM in trading, has been
+acclaimed for its promising performance in stock market operations.
+
+
+                                                         11
+Figure 5: Cumulative return comparison over time between F IN M EM and other algorithmic agents across five stocks.
+
+
+
+
+  Figure 6: Cumulative Return comparison over time between F IN M EM and other algorithmic agents on Coinbase
+                                            Global, Inc. (COIN).
+
+
+
+      • General-purpose Generative Agents – GA: The generative AI agent by Park et al. [36], originally intended
+        to simulate realistic human behavior and make everyday decisions, has been adapted here for specific stock
+        trading tasks. This agent’s architecture includes a memory module that employs recency, relevance, and
+        importance metrics to extract pivotal memory events for informed decision-making. However, it does not
+        provide a layered memory module to effectively differentiate the time sensitivities unique to various types of
+        financial data. Additionally, although it features a profiling module to define agent attributes like professional
+        background, the model does not include a mechanism for self-adaptive risk preference. In our experiments, we
+        modified the original prompt template created by Park et al., which was intended for general daily tasks, to suit
+        financial investment tasks. The textual elements of this revised template closely align with those of F IN M EM,
+        with the exception of two components that are absent in this version of general-purpose Generative Agents.
+
+      • LLM trading agents – F IN GPT: A novel open-source LLM framework specialized for converting incoming
+        textual and numeric information into informed financial decision-making, introduced by Yang et al. [55]. It
+        claims superiority over the traditional buy-and-hold strategy.
+
+
+                                                          12
+4.3        Evaluation Metrics:
+
+We employ five widely-used metrics in finance to compare the investment rewards of F IN M EM against other algorithmic
+trading agents. Here are their introductions:
+
+            • Cumulative Return [21]: Cumulative Return is a key trading performance metric because it provides a
+              comprehensive insight into investment performance, especially for strategies that emphasize long-term growth
+              and reinvestment. The effectiveness of different investment strategies is evaluated based on their Cumulative
+              Returns, which reflect the total change in value over time. In this study, we compute Cumulative Returns over
+              the specified period by summing daily logarithmic returns, as outlined in Equation 7. This method is widely
+              accepted in the finance area due to its ability to precisely capture minor price fluctuations and symmetrically
+              address gains and losses. In essence, a higher Cumulative Return typically indicates a more effective strategy.
+
+                                                                          n
+                                                                          X
+                                              Cumulative Return =             ri
+                                                                          t=1
+                                                                           n                                 
+                                                                          X              pt+1
+                                                                      =         ln                  · actiont ,                   (7)
+                                                                          t=1
+                                                                                          pt
+
+              where ri represents the logarithmic return for day t + 1, pt is the closing price on day t, pt+1 is the closing
+              price on day t + 1, and actiont denotes the trading decision made by the model for that day.
+            • Sharpe Ratio [43]: Sharpe Ratio is another core metric for evaluating investment performance and adjusting
+              returns for risk. It is calculated by dividing the portfolio’s average excess return (Rp ) over the risk-free rate (Rf )
+              by its volatility (σp ), as shown in Equation 8. This metric adjusts returns for risk, with a higher ratio indicating
+              better risk-adjusted performance. Essential in comparing different portfolios or strategies, it contextualizes
+              performance against similar investments. Although a Sharpe Ratio above 1 is typically considered favorable
+              and above 2 as excellent, these benchmarks can vary depending on the context of comparison.
+
+                                                                                   Rp − Rf
+                                                            Sharpe Ratio =                                                        (8)
+                                                                                      σp
+            • Annualized Volatility and Daily Volatility[8]: Annualized Volatility (Annum-Volatility) is calculated as the
+              Daily Volatility (standard deviation of daily logarithmic returns) multiplied by the square root of the typical
+              number of trading days in a year (252) as outlined in Equation 9, is vital for assessing investment risk. This
+              measure reflects the extent of fluctuation in a security or market index’s returns over a year, indicating potential
+              deviations from average returns. It’s especially relevant for investors with specific risk profiles, such as those
+              who are risk-averse, who may prefer portfolios demonstrating lower annualized volatility.
+
+                                                                                                      √
+                                                 Annum-Volatility = Daily Volatility ×                    252                     (9)
+            • Max Drawdown [1]: Max Drawdown is a metric for assessing risk. It represents the most significant decrease
+              in a portfolio’s value, from its highest (Ppeak ) to its lowest point (Ptrough ) until a new peak emerges, detailed in
+              Equation 10. Indicative of investment strategy robustness, a smaller Max Drawdown suggests reduced risk.
+
+                                                                                   Ppeak − Ptrough
+                                                   Max Drawdown = max(                             )                             (10)
+                                                                                        Ppeak
+
+In our experiments and ablation studies, we recorded the metric outcomes as an average from five repeated trials.
+
+5         Experiments:
+5.1        Implementation Details:
+
+In the Trading Agents Comparison, F IN M EM employs GPT-4-Turbo as its backbone algorithm. The temperature
+parameter of the model was set at 0.7 to maintain a balance between response content consistency and model creativity.
+      3
+          The bold numbers in this and subsequent tables signify the best performance for the respective metrics.
+
+
+                                                                    13
+ Ticker   Model               Cumulative Return (%)   Sharpe Ratio    Daily Volatility (%)   Annualized Volatility (%)   Max Drawdown (%)
+          Buy and Hold              -18.6312            -0.5410             4.4084                   69.9818                  55.3208
+          F IN M EM                 61.7758*            2.6789              2.9522                   46.8649                  10.7996
+          Generative Agents          13.4636            0.5990              2.8774                   45.6774                  24.3177
+ TSLA     FinGPT                     -7.4554            -0.2795             3.4145                   54.2027                  42.3993
+          A2C                        13.7067            0.3979              4.4096                   70.0009                  52.3308
+          PPO                         1.2877            0.0374              4.4110                   70.0232                  54.3264
+          DQN                        33.3393            0.9694              4.4027                   69.8900                  52.0033
+          Buy and Hold               35.5111            1.4109              3.1964                   50.7410                  20.9263
+          F IN M EM                 36.4485*            2.0168              2.2951                   36.4342                  15.8495
+          Generative Agents          32.0058            1.5965              2.5460                   40.4168                  16.9893
+ NFLX     FinGPT                      9.0090            0.4266              2.6819                   42.5732                  28.2705
+          A2C                        14.6155            0.5788              3.2071                   50.9112                  25.0184
+          PPO                         8.4121            0.3330              3.2086                   50.9344                  25.0184
+          DQN                       -12.2067            -0.4833             3.2078                   50.9217                  28.7017
+          Buy and Hold              -10.7739            -0.4980             2.7697                   43.9674                  33.6828
+          F IN M EM                  4.8850*            0.2327              2.6872                   42.6576                  22.9294
+          Generative Agents         -13.9271            -0.9981             1.7864                   28.3576                  27.7334
+ AMZN     FinGPT                    -29.6781            -2.1756             1.7464                   27.7225                  28.4838
+          A2C                        -6.3591            -0.2938             2.7706                   43.9819                  26.1275
+          PPO                        -8.4194            -0.3891             2.7702                   43.9761                  33.6828
+          DQN                       -29.9820            -1.3906             2.7603                   43.8177                  38.3740
+          Buy and Hold               14.6949            0.8359              2.2326                   35.4411                  15.0097
+          F IN M EM                 23.2613*            1.4402              2.0512                   32.5617                  14.9889
+          Generative Agents         -18.1031            -1.6057             1.4318                   22.7285                  24.2074
+ MSFT     FinGPT                      5.7356            0.4430              1.6442                   26.1008                  12.8459
+          A2C                         0.4598            0.0261              2.2357                   35.4913                  23.6781
+          PPO                        12.8067            0.7282              2.2333                   35.4532                  19.5355
+          DQN                        14.7397            0.8385              2.2326                   35.4408                  25.1845
+          Buy and Hold              -30.0071            -0.5150             6.7517                   107.1795                 60.5084
+          F IN M EM                 34.9832*            0.7170              5.6538                   89.7515                  35.7526
+          Generative Agents          3.4627             0.0896              4.4783                   71.0908                  32.0957
+ COIN     FinGPT                    -88.7805            -1.9507             5.2736                   83.7153                  73.5774
+          A2C                           -                   -                  -                         -                       -
+          PPO                           -                   -                  -                         -                       -
+          DQN                           -                   -                  -                         -                       -
+
+Table 2: Overall trading performance comparison during testing period between F IN M EM and other algorithmic agents
+       across five stocks.* indicates that the result of the Wilcoxon signed-rank test is statistically significant.3
+
+
+
+
+  Figure 7: Cumulative Return of F IN M EM on trading Tesla, Inc. (TSLA) stock Over an Extended Testing Period.
+
+
+                                                                     14
+It was trained on financial data from August 17, 2021, to October 05, 2022, and underwent testing with data from
+October 06, 2022, to April 10, 2023. The training period was chosen to account for the seasonal nature of corporate
+financial reporting and the duration of data retention in F IN M EM’s memory module. The selected training duration
+ensures the inclusion of at least one publication cycle of either Form 10-Q, classified as intermediate memory, or Form
+10-K, regarded as deep memory, or in some instances, both. This strategy ensures that the experiences retained in
+F IN M EM are still influential during the testing phase for a significant period. Additionally, the training duration allowed
+F IN M EM sufficient time to establish inferential links between financial news, market indicators, and stock market
+trends, thereby accumulating substantial experience. Furthermore, we set the number of top memory events retrieved
+from each layer of long-term memory at 5. We ran F IN M EM using each of the three available risk inclination settings.
+The reported performance outcomes are based on the setting that achieved the highest cumulative return during the
+testing phase.
+To maintain consistency in the comparison, the training and testing phases for the other two LLM-based agents were
+aligned with those of F IN M EM. For parameters of other LLM-based agents that are not encompassed by F IN M EM’s
+configuration, they were kept in accordance with their original settings as specified in their respective source codes.
+Considering that DRL algorithms need extensive training data for stable and converged results, and given our daily
+evaluation of trading performance, we extended the DRL agents’ training period to roughly a 10-year span, from
+January 1, 2012, to October 05, 2022, for a fair comparison. The testing period was kept consistent with the other
+models. The DRL algorithms were implemented using Stable Baselines 3 [41].
+F IN M EM’s performance was benchmarked against that of the most effective comparative model, using Cumulative
+Return and Sharpe Ratio as the primary evaluation metrics. The statistical significance of F IN M EM’s superior
+performance was ascertained through the non-parametric Wilcoxon signed-rank test, which is particularly apt for the
+non-Gaussian distributed data.
+
+
+5.2   Algorithmic Trading Agents Comparison (RQ1 & RQ2)
+
+In this experiment, we assess the stock trading performance of F IN M EM against other models, focusing on stocks from
+five companies in different trading sectors: Tesla, Inc. (TSLA), Netflix, Inc. (NFLX), Amazon.com, Inc. (AMZN),
+Microsoft Corporation (MSFT), and Coinbase Global, Inc. (COIN). The performance of all algorithmic trading agents
+across five key metrics is consolidated in Table 2. Given the pivotal role of Cumulative Return in evaluating trading
+performance over time, we present detailed time series plots in Figure 5 and Figure 6. It’s important to note that the
+trading performance of F IN M EM for COIN was exclusively compared with LLM trading agents and the baseline.
+This is because Coinbase Global, Inc. completed its IPO in April 2021 and, as a result, had not accumulated enough
+trading data to facilitate stable outcomes with Deep Reinforcement Learning (DRL) algorithms. These plots illustrate
+the changes in Cumulative Return for each of the five companies throughout the testing phase, offering an in-depth
+comparison of performance.
+In response to RQ1, the trading outcomes presented in Table 2 reveal that F IN M EM outperforms all other algorithmic
+trading agents and the B&H baseline strategy in terms of Cumulative Return and Sharpe Ratio. F IN M EM’s superiority
+is statistically significant when compared to the second-best trading strategy. Specifically, for TSLA and NFLX,
+F IN M EM’s strategy achieves Sharpe Ratios exceeding 2.0 and Cumulative Returns surpassing 0.35 while maintaining
+the lowest Volatility and Max Drawdown. These indicators underscore F IN M EM’s ability to generate higher returns
+per unit of risk. In the case of MSFT and NFLX, F IN M EM also records a Sharpe Ratio above 1.0 and a Cumulative
+Return over 0.2, coupled with relatively low Volatility and Max Drawdown, demonstrating its impressive trading
+performance. For AMZN and COIN, F IN M EM consistently delivers positive Cumulative Returns and superior Sharpe
+Ratios, outperforming other strategies that yield negative values for these metrics. Additionally, its Volatility and Max
+Drawdown are on the lower end. Hence, these results collectively demonstrate F IN M EM’s robust trading performance
+across a diverse range of trading sectors. Specifically, F IN M EM exhibits superior performance compared to the two
+other LLM agents in our study, F IN GPT and the general-purpose generative agent developed by Park et al. This
+underscores the effectiveness of F IN M EM’s unique profiling and memory structure, which are particularly tailored for
+LLM agents dealing with financial data, significantly enhancing their investment decision-making capabilities.
+In response to RQ2, the main challenge for DRL trading agents is that they require training data with a large volume
+and extended time span, which are hard to achieve when operating on stocks with limited historical data. As shown
+in Table 2, our experiments reveal that F IN M EM achieves superior trading performance with a much shorter training
+duration compared to DRL trading agents trained on data spanning nearly a decade. This efficiency makes F IN M EM
+particularly useful for newly public companies like Coinbase Global, Inc., which have limited trading histories. DRL
+agents often face convergence issues due to inadequate training data in such cases. Moreover, even among LLM-based
+trading agents suited for shorter training periods, F IN M EM’s performance stands out, as illustrated in Figure 6.
+
+
+                                                             15
+                    Figure 8: The optimal risk inclination for F IN M EM when trading different stocks.
+
+
+To further assess F IN M EM’s adaptability to limited training data, we narrowed the training period down to an even
+shorter period, spanning from August 17, 2021, to February 10, 2022. We then extended the testing phase to cover from
+February 11, 2022, to April 25, 2023. This evaluation focused on the stock of Tesla, Inc., which has the largest volume
+of news data. The trading performance of F IN M EM during this period is depicted in Figure 7. Remarkably, using less
+than six months of daily frequency data for training, which encompassed the publication of one Form 10-K and one
+Form 10-Q, F IN M EM consistently ranked high in gains and attained the highest cumulative return after the latter half of
+December 2022.
+The consistently strong trading performance of F IN M EM can be attributed to its innovative profiling and memory
+module design. This design enables F IN M EM to effectively integrate, comprehend, and prioritize key information from
+both textual and numerical data. The flexibility of F IN M EM’s profiling module in selecting risk inclinations plays a
+pivotal role in its ability to both exploit rising market trends and safeguard assets during downturns. A prime example is
+TSLA, which achieved its best trading results under a self-adaptive risk setting in F IN M EM. This configuration enables
+F IN M EM to pursue a conservative and cautious strategy when facing negative short-term cumulative returns. On the
+other hand, with positive short-term returns, F IN M EM switches to an optimistic and assertive approach, thus avoiding
+excessive passivity. This self-adaptive risk inclination proved effective for most stocks, apart from MSFT as shown
+in Table 8. For MSFT, a risk-seeking inclination was most beneficial, resonating with its general bullish in the stock
+market. Additionally, the memory module’s core features, including varied retention times for different information
+types and critical memory transitions, equip F IN M EM to capture essential information for well-informed investment
+decisions.
+
+6     Ablation Studies
+We conducted three distinct ablation studies to evaluate key component alternatives in F IN M EM. These studies
+concentrated on the backbone algorithm, the memory module’s cognitive capacity, and the character setting in the
+profiling module, particularly examining the aspect of risk inclination. These studies were done using the stock of Tesla,
+Inc., with a more compact training period from March 14, 2022, to June 15, 2022, and a testing period from June 16,
+2022, to December 28, 2022. This shorter duration was chosen for budgetary efficiency, yet it remains sufficient to
+differentiate the functionality of each component.
+
+6.1     F IN M EM Backbone Algorithm Comparison (RQ3)
+
+    Metric                       B&H       GPT 3.5-Turbo      GPT4     GPT4-Turbo      davinci-003    Llama2-70b-chat
+    Cumulative Return (%)       -66.9497       16.1501       62.6180      54.6958         1.6308           -52.7233
+    Sharpe Ratio                -2.0845        2.1589         2.2251       2.4960         0.8515           -2.8532
+    Daily Volatility (%)         3.8050        0.8862         3.3339       2.5960         0.2269            2.1891
+    Annualized Volatility (%)   60.4020        14.0683       52.9237      41.2100         3.6018           34.7503
+    Max Drawdown (%)            67.3269        1.1073        17.4012      12.5734         0.8408           44.7168
+
+Table 3: Comparison of trading performance during the testing period for F IN M EM using different LLMs as backbone
+                                                   algorithms.
+
+In our first study, we evaluated the trading performance of F IN M EM using various LLMs as its backbone algorithms.
+The LLMs under consideration included davinci-003, GPT 3.5-Turbo, GPT4, GPT4-Turbo, and Llama2-70b-chat. The
+
+
+                                                            16
+   Figure 9: Comparison of overall Cumulative Returns over time for F IN M EM using different LLMs as backbone
+                                                  algorithms.
+
+
+parameter settings were consistent with its optimal performance in the comparative experiment detailed in Section 5,
+and the risk inclination was configured to be self-adaptive. All other model settings were maintained as outlined in
+Section 5.1. The results of this evaluation are compiled in Table 3.
+In response to RQ3, Addressing Research Question 3, the findings demonstrate that F IN M EM, powered by GPT-4
+and GPT-4 Turbo, delivered superior trading results during the test phase. Specifically, GPT-4 recorded the highest
+cumulative return, while GPT-4-Turbo exhibited the most favorable Sharpe Ratio. GPT 3.5-Turbo’s performance was
+also noteworthy, following closely behind. As depicted in Figure 9, though slightly lower than market baseline (B&H),
+F IN M EM with GPT-4-Turbo led in cumulative returns before October 2022. This period was characterized by relative
+stability and a modest upward trend in TSLA stock. After October 2022, with TSLA undergoing increased volatility
+and a notable downward trend, the cumulative return trajectory for F IN M EM with GPT-4-Turbo exhibited significantly
+lower volatility and sustained stable returns not markedly lower than those of GPT-4. These results indicate that GPT-4
+Turbo is the most suitable backbone algorithm for F IN M EM.
+F IN M EM configured with davinci-003 and Llama2-70b-chat exhibited the lowest Annualized Volatility and Max
+Drawdown, yet their Cumulative Return and Sharpe Ratio were underwhelming. As illustrated in Figure 9, both
+models defaulted to a “Hold” strategy beyond a certain point during periods of intense fluctuation in TSLA stock. The
+unsatisfactory performance of davinci-003 may be attributed to its limited capability, as an earlier generation language
+model, to capture and understand nuanced yet decisive information.
+We selected Llama2-70b-chat as it was deemed to possess stronger in-context learning and instruction-following
+capabilities compared to other Llama family models with fewer parameters, as noted in Zhao et al. [58]. Nonetheless,
+in the context of stock trading, it still demonstrated challenges in adequately comprehending key messages necessary
+for effective trading decisions. The comparatively poorer performance of Llama2-70b-chat can also be attributed to its
+shorter context window, especially when compared to the GPT models. When integrated with F IN M EM, it needs to
+simplify prompts and shorten the length of retrieved memory insights, which could potentially result in some loss of
+context. The exceptional trading result demonstrated by GPT-4-Turbo across all models was a main factor in choosing
+it as the backbone algorithm for F IN M EM in our earlier comparative analysis with other algorithmic trading agents.
+
+
+6.2   Influence about varying the F IN M EM character design (RQ4)
+
+In our second study, we focused on evaluating the influence of F IN M EM’s profiling module on its trading effectiveness.
+Specifically, our assessment centered on the effects of customizing trader profiles according to specific stock trading,
+with a particular focus on risk inclination. As depicted in Figure 8, we equipped F IN M EM with three distinct risk
+
+
+                                                          17
+ Figure 10: Comparison of Cumulative Return during with different risk inclinations setting in F IN M EM’s profiling
+                                                   module.
+
+
+profiles: risk-seeking, risk-averse, and a self-adaptive character. We executed a comparative analysis of F IN M EM’s
+performance across these risk profiles, maintaining consistency in all other settings as outlined in Section 5.1.
+In response to RQ4, Table 4 delineates the varied trading performance across different risk profiles. The self-adaptive
+profile enabled F IN M EM to achieve the most favorable trading performance, as it was the only one to secure a positive
+Cumulative Return and a Sharpe Ratio exceeding 2.0, along with the least Max Drawdown by the end of the testing
+phase. Figure 10 illustrates F IN M EM’s capacity to adeptly navigate substantial stock price volatility and to strategically
+modulate its trading behavior when necessary. In contrast, the risk-seeking profile, while beneficial during a stable or
+bullish market as evidenced by MSFT’s performance in Figure 5, exhibited increased volatility and a decline in the face
+of a market downturn. The risk-averse profile, on the other hand, maintained a more conservative stance, often opting
+to hold positions. This approach resulted in a Cumulative Return trajectory that generally lagged behind the market
+baseline, reflecting a degree of overcaution that limited trading activity and potential gains, particularly in a bullish
+market.
+
+               Metric                            B&H        Self Adaptive     Risk Seeking      Risk Averse
+               Cumulative Return (%)           -66.9497        54.6958           -19.4132         -12.4679
+               Sharpe Ratio                     -2.0845           2.4960         -0.7866           -1.5783
+               Daily Volatility (%)             3.9527            2.7419          3.2722           1.7744
+               Annualized Volatility (%)        3.8050            2.5960          2.9236           0.9358
+             Max-Drawdown (%)                67.3269        12.5734         45.0001           15.9882
+Table 4: Comparison of overall trading performance during the testing period with different risk inclinations setting in
+                                            F IN M EM’s profiling module.
+
+
+
+6.3   Impact of adjusting the capacity of F IN M EM working memory (RQ5)
+
+In our third study, we explored whether appropriately tuning the memory retrieval bandwidth of F IN M EM could enhance
+its trading performance. This bandwidth is tied to the working memory’s capacity within its memory module. As
+depicted in Figure 2, F IN M EM retrieves the top-K memory events from its long-term memory in response to a trading
+inquiry. The working memory capacity is thus set at 3 × K, mirroring the human cognitive system’s limit of processing
+immediate messages upon specific stimuli (3 refers to the three processing layers in long-term memory). By varying the
+
+
+                                                             18
+K hyperparameter, F IN M EM can expand this capacity far beyond the human cognitive scope. We aimed to determine
+whether such flexibility in adjusting memory bandwidth translates to improvements in F IN M EM’s performance.
+
+
+                 Metric                            B&H           Top 1    Top 3       Top 5      Top 10
+
+                 Cumulative Return (%)           -66.9497    52.0936     29.4430     54.6958    79.4448
+
+                 Sharpe Ratio                    -2.0845      1.8642      1.1214     2.4960      2.7469
+
+                 Daily Volatility (%)             3.8050      3.3105      3.1105     2.5960      3.4262
+
+                 Annualized Volatility (%)       60.4020     52.5529     49.3779     41.2100    54.3891
+
+               Max Drawdown (%)               67.3269 25.2355 27.0972 12.5734 17.1360
+Table 5: Comparison of overall trading performance during the testing period with different configurations of working
+                                                memory capacity.
+
+
+As demonstrated in Table 5, we adjusted the hyperparameter K to alter the number of memory events retrieved from
+shallow, intermediate, and deep long-term memory layers in F IN M EM. We tested K values of 1, 3, 5, and 10, exploring
+F IN M EM’s working memory capabilities at levels below, near, and above the human cognitive limit. For all these K
+settings, we maintained a self-adaptive risk inclination, while other settings were consistent with those described in
+Section 5.1.
+Across all K configurations, F IN M EM outperformed the Buy & Hold baseline, indicating the effectiveness of its
+memory module in processing diverse information and capturing critical events, which subsequently enhanced its
+trading performance, as evidenced by positive Cumulative Returns and Sharpe Ratios. Notably, higher K values, like 5
+and 10, enabled F IN M EM to achieve the best Cumulative Returns and Sharpe Ratios exceeding 2.0. With K set to 1,
+F IN M EM still performed moderately well by capturing the most critical memory events of each layer.
+An in-depth analysis in Figure 11, which shows the Cumulative Return over time for various K settings, reveals that a
+K value of 5 is optimal for trading TSLA stock, consistently delivering robust performance with the lowest Volatility
+and Max-Drawdown. Before mid-October 2022, when the stock market was relatively stable and slightly upward,
+F IN M EM’s trading actions aligned well with market trends (referring to B&H) and avoided significant losses. During
+periods of high volatility and continuous downturns (post-mid-October 2022), it maintained earnings by reducing
+“Buy” actions and favoring more “Hold” and “Sell” strategies. However, setting K to 10, while effective during market
+volatility, resulted in significant losses in stable market conditions. The issue may stem from the disproportionately
+loose capacity constraints on incoming information relative to the volume of incoming data. The broad memory
+retrieval bandwidth might have mixed trivial messages with critical ones, hampering F IN M EM’s decision precision.
+This challenge becomes especially evident in neutral market conditions, where the influx of information includes a mix
+of varying market sentiments and trends.
+Addressing RQ5, appropriately tuning the number of memory events (Top-K in the F IN M EM memory module can
+significantly enhance its trading performance. The aforementioned study illustrates that F IN M EM can achieve optimal
+results by effectively assimilating key signals from a sufficient quantity of filtered memories across each layer. However,
+the optimal value for K may vary depending on the volume and quality of incoming information.
+
+
+7   Conclusion and future work
+
+In this paper, we introduce F IN M EM, an innovative automated trading agent framework featuring an adjustable cognitive
+memory structure and dynamic character design. Our research demonstrates its capacity to enhance stock trading
+performance substantially using real-world financial datasets. Additionally, the efficacy of each critical component
+within F IN M EM is thoroughly demonstrated in our ablation studies, highlighting their roles in optimizing trading
+outcomes.
+Its unique features of human-like cognitive memory modules and dynamic character design enable it to tackle the
+complexities of financial environments and respond aptly to new situations. Compared to other LLM trading agents,
+F IN M EM’s memory module equips it with the capability to better comprehend financial data featured by various
+timeliness and organize them as a self-evolving long-term memory layer. The dynamic character design endows
+F IN M EM with critical professional insights, enabling efficient filtering of impactful messages from incoming financial
+
+
+                                                            19
+           Figure 11: Cumulative Return over time for with different F IN M EM working memory capacity.
+
+
+data for trading actions. Additionally, the integration of multiple risk profiles enhances F IN M EM’s adaptability to a
+range of market conditions.
+F IN M EM’s exceptional performance underscores its remarkable ability to transform diverse financial data into well-
+informed investment strategies. Its proficiency in integrating various financial data types is further accentuated by
+a notably reduced training duration, which offers advantages for trading with newly established companies. In our
+approach, we utilized a limited range and quality of financial news and reports, employing general-purpose LLMs
+as the backbone algorithms. However, F IN M EM is fully compatible with LLMs specifically fine-tuned for financial
+applications. We anticipate that its trading efficacy will be elevated further with access to a more comprehensive and
+higher-quality dataset, coupled with LLMs tailored specifically for financial contexts.
+While primarily designed for financial decision-making, the F IN M EM framework boasts a versatility that extends to
+domains such as IT consulting and business reporting, where actions are driven by time-sensitive information. Looking
+ahead, an intriguing direction for development is the creation of a multi-agent trading system, rooted in the F IN M EM
+platform, aimed at enhancing investment portfolio optimization. This system, featuring diverse professional backgrounds
+in its profiling modules, enables concurrent operations and trading across a variety of financial products. It dynamically
+adjust trading targets based on a sequential assessment of key trading performance indicators. Simultaneously, it can
+timely reallocate investment proportions for each financial product category, leveraging peer-to-peer communication
+and systematic performance analysis. Supported by LLMs, this multi-agent trading system is poised to assemble an
+optimized investment portfolio through its strategically planned operations.
+
+References
+ [1]   Andrew Ang and Joseph Chen. “Downside Risk”. In: Journal of Portfolio Management 29.4 (2003), pp. 103–112.
+ [2]   Lisa P Argyle et al. “Out of one, many: Using language models to simulate human samples”. In: Political Analysis
+       31.3 (2023), pp. 337–351.
+ [3]   Loukia Avramelou et al. “Deep reinforcement learning for financial trading using multi-modal features”. In:
+       Expert Systems with Applications (2023), p. 121849.
+ [4]   Surjeet Balhara et al. “A survey on deep reinforcement learning architectures, applications and emerging trends”.
+       In: IET Communications (2022).
+ [5]   Fischer Black. “Noise”. In: The journal of finance 41.3 (1986), pp. 528–543.
+ [6]   Yu-Fu Chen and Szu-Hao Huang. “Sentiment-influenced trading system based on multimodal deep reinforcement
+       learning”. In: Applied Soft Computing 112 (2021), p. 107788.
+
+
+
+                                                           20
+ [7]   Tai-Liang Chen. “Forecasting the Taiwan stock market with a novel momentum-based fuzzy time-series”. In:
+       Review of Economics & Finance 2 (2012), pp. 38–50.
+ [8]   John H. Cochrane. “Volatility Tests and Efficient Markets: A Review Essay”. In: Journal of Monetary Economics
+       22.3 (1988), pp. 463–485.
+ [9]   Fergus IM Craik and Robert S Lockhart. “Levels of processing: A framework for memory research”. In: Journal
+       of verbal learning and verbal behavior 11.6 (1972), pp. 671–684.
+[10]   Quang-Vinh Dang. “Reinforcement learning in stock trading”. In: International conference on computer science,
+       applied mathematics and applications. Springer. 2019, pp. 311–322.
+[11]   Jacob Devlin et al. “Bert: Pre-training of deep bidirectional transformers for language understanding”. In: arXiv
+       preprint arXiv:1810.04805 (2018).
+[12]   Robert D Edwards, John Magee, and WH Charles Bassetti. Technical analysis of stock trends. CRC press, 2018.
+[13]   Kawin Ethayarajh. “How contextual are contextualized word representations? Comparing the geometry of BERT,
+       ELMo, and GPT-2 embeddings”. In: arXiv preprint arXiv:1909.00512 (2019).
+[14]   Thomas G Fischer. Reinforcement learning in financial markets-a survey. Tech. rep. FAU Discussion Papers in
+       Economics, 2018.
+[15]   Samuel J Gershman and Bence P Ölveczky. “The neurobiology of deep reinforcement learning”. In: Current
+       Biology 30.11 (2020), R629–R632.
+[16]   Yoav Goldberg and Omer Levy. “word2vec Explained: deriving Mikolov et al.’s negative-sampling word-
+       embedding method”. In: arXiv preprint arXiv:1402.3722 (2014).
+[17]   Guardrails AI. https://docs.guardrailsai.com. Open source library for interacting with Large Language
+       Models.
+[18]   Sepp Hochreiter and Jürgen Schmidhuber. “Long short-term memory”. In: Neural computation 9.8 (1997),
+       pp. 1735–1780.
+[19]   Boming Huang et al. “Automated trading systems statistical and machine learning methods and hardware
+       implementation: a survey”. In: Enterprise Information Systems 13.1 (2019), pp. 132–144.
+[20]   Ziheng Huang et al. “Memory sandbox: Transparent and interactive memory management for conversational
+       agents”. In: arXiv preprint arXiv:2308.01542 (2023).
+[21]   John Hull. Risk Management and Financial Institutions. John Wiley & Sons, 2007.
+[22]   O Jangmin et al. “Adaptive stock trading with dynamic asset allocation using reinforcement learning”. In:
+       Information Sciences 176.15 (2006), pp. 2121–2147.
+[23]   Jeff Johnson, Matthijs Douze, and Hervé Jégou. “Billion-scale similarity search with GPUs”. In: IEEE Transac-
+       tions on Big Data 7.3 (2019), pp. 535–547.
+[24]   Yifei Li et al. “Making language models better reasoners with step-aware verifier”. In: Proceedings of the 61st
+       Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). 2023, pp. 5315–5333.
+[25]   Mark Liffiton et al. “Codehelp: Using large language models with guardrails for scalable support in programming
+       classes”. In: arXiv preprint arXiv:2308.06921 (2023).
+[26]   Xiao-Yang Liu et al. “FinRL-Meta: Market environments and benchmarks for data-driven financial reinforcement
+       learning”. In: Advances in Neural Information Processing Systems 35 (2022), pp. 1835–1849.
+[27]   Xiao-Yang Liu et al. “FinRL: A deep reinforcement learning library for automated stock trading in quantitative
+       finance”. In: arXiv preprint arXiv:2011.09607 (2020).
+[28]   Xiao-Yang Liu et al. “FinRL: Deep reinforcement learning framework to automate trading in quantitative finance”.
+       In: ACM International Conference on AI in Finance (ICAIF) (2021).
+[29]   Adrian Millea. “Deep reinforcement learning for trading—A critical survey”. In: Data 6.11 (2021), p. 119.
+[30]   George A Miller. “The magical number seven, plus or minus two: Some limits on our capacity for processing
+       information.” In: Psychological review 63.2 (1956), p. 81.
+[31]   Volodymyr Mnih et al. “Asynchronous methods for deep reinforcement learning”. In: International conference
+       on machine learning. PMLR. 2016, pp. 1928–1937.
+[32]   Volodymyr Mnih et al. “Playing atari with deep reinforcement learning”. In: arXiv preprint arXiv:1312.5602
+       (2013).
+[33]   Jaap MJ Murre and Joeri Dros. “Replication and analysis of Ebbinghaus’ forgetting curve”. In: PloS one 10.7
+       (2015), e0120644.
+[34]   OpenAI. GPT-4 Technical Report. 2023. arXiv: 2303.08774 [cs.CL].
+
+
+
+
+                                                          21
+[35] Joon Sung Park et al. “Generative Agents: Interactive Simulacra of Human Behavior”. In: Proceedings of the
+     36th Annual ACM Symposium on User Interface Software and Technology. UIST ’23. San Francisco, CA, USA:
+     Association for Computing Machinery, 2023. ISBN: 9798400701320. DOI: 10.1145/3586183.3606763. URL:
+     https://doi.org/10.1145/3586183.3606763.
+[36] Joon Sung Park et al. “Social simulacra: Creating populated prototypes for social computing systems”. In:
+     Proceedings of the 35th Annual ACM Symposium on User Interface Software and Technology. 2022, pp. 1–18.
+[37] Eero Pätäri and Mika Vilska. “Performance of moving average trading strategies over varying stock market
+     conditions: the Finnish evidence”. In: Applied Economics 46.24 (2014), pp. 2851–2872.
+[38] Jeffrey Pennington, Richard Socher, and Christopher D Manning. “Glove: Global vectors for word representation”.
+     In: Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP). 2014,
+     pp. 1532–1543.
+[39] Tidor-Vlad Pricope. “Deep reinforcement learning in quantitative algorithmic trading: A review”. In: arXiv
+     preprint arXiv:2106.00123 (2021).
+[40] Alec Radford et al. “Improving language understanding by generative pre-training”. In: (2018).
+[41] Antonin Raffin et al. “Stable-Baselines3: Reliable Reinforcement Learning Implementations”. In: Journal of
+     Machine Learning Research 22.268 (2021), pp. 1–8. URL: http://jmlr.org/papers/v22/20-1364.html.
+[42] John Schulman et al. “Proximal policy optimization algorithms”. In: arXiv preprint arXiv:1707.06347 (2017).
+[43] William F. Sharpe. “The Sharpe Ratio”. In: The Journal of Portfolio Management 21.1 (1994), pp. 49–58.
+[44] Yong Shi et al. “Stock trading rule discovery with double deep Q-network”. In: Applied Soft Computing 107
+     (2021), p. 107320.
+[45] Theodore Sumers et al. “Cognitive architectures for language agents”. In: arXiv preprint arXiv:2309.02427
+     (2023).
+[46] Ron Sun. “Desiderata for cognitive architectures”. In: Philosophical psychology 17.3 (2004), pp. 341–373.
+[47] John Sweller. “Human cognitive architecture: Why some instructional procedures work and others do not.” In:
+     (2012).
+[48] Hugo Touvron et al. “Llama: Open and efficient foundation language models”. In: arXiv preprint
+     arXiv:2302.13971 (2023).
+[49] Rashesh Vaidya. “Moving Average Convergence-Divergence (MACD) Trading Rule: An Application in Nepalese
+     Stock Market" NEPSE"”. In: Quantitative Economics and Management Studies 1.6 (2020), pp. 366–374.
+[50] Lei Wang et al. “A survey on large language model-based autonomous agents”. In: arXiv preprint
+     arXiv:2308.11432 (2023).
+[51] Lei Wang et al. “RecAgent: A Novel Simulation Paradigm for Recommender Systems”. In: arXiv preprint
+     arXiv:2306.02552 (2023).
+[52] Shijie Wu et al. “Bloomberggpt: A large language model for finance”. In: arXiv preprint arXiv:2303.17564
+     (2023).
+[53] Xing Wu et al. “Adaptive stock trading strategies with deep reinforcement learning methods”. In: Information
+     Sciences 538 (2020), pp. 142–158.
+[54] Zhuoran Xiong et al. “Practical deep reinforcement learning approach for stock trading”. In: arXiv preprint
+     arXiv:1811.07522 (2018), pp. 1–7.
+[55] Hongyang Yang, Xiao-Yang Liu, and Christina Dan Wang. “FinGPT: Open-Source Financial Large Language
+     Models”. In: arXiv preprint arXiv:2306.06031 (2023).
+[56] Hongyang Yang et al. “Deep reinforcement learning for automated stock trading: An ensemble strategy”. In:
+     Proceedings of the first ACM international conference on AI in finance. 2020, pp. 1–8.
+[57] Hongxin Zhang et al. “Building cooperative embodied agents modularly with large language models”. In: arXiv
+     preprint arXiv:2307.02485 (2023).
+[58] Wayne Xin Zhao et al. “A survey of large language models”. In: arXiv preprint arXiv:2303.18223 (2023).
+
+
+
+
+                                                        22
+

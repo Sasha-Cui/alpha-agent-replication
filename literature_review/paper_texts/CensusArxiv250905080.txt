@@ -1,0 +1,1078 @@
+                                                       MM-ARC: Multimodal Adaptive Routing of Capital with
+                                                               Robustness-Audited Strategy Pools
+                                                       Yang Chen                         Yuchen Cao                   Jacky Keung                    Leilei Gan                  Kun Kuang
+                                                     Zhejiang University          City University of Hong Kong   City University of Hong Kong      Zhejiang University         Zhejiang University
+                                                      Hangzhou, China                   Hong Kong, China               Hong Kong, China             Hangzhou, China             Hangzhou, China
+                                                    ychen2014@zju.edu.cn          cynthcao2-c@my.cityu.edu.hk     jacky.keung@cityu.edu.hk        leileigan@zju.edu.cn        kunkuang@zju.edu.cn
+
+                                                    Yueheng Jiang                      Zhaozhao Ma                    Jianping Zhu                     Fei Wu                    Jinpeng Li∗
+                                                     Zhejiang University               Zhejiang University           Dalian University of          Zhejiang University         Zhejiang University
+                                                      Hangzhou, China                   Hangzhou, China                  Technology                 Hangzhou, China              Hangzhou, China
+                                                    yuehengj@zju.edu.cn              zhaozhaoma@zju.edu.cn              Dalian, China               wufei@zju.edu.cn          lijinpeng@zju.edu.cn
+                                                                                                                   zhujp@mail.dlut.edu.cn
+
+                                            Abstract                                                                              its signals compete for capital, violate market constraints, or disap-
+                                            Financial trading systems must convert multimodal market history                      pear after turnover and transaction costs. The central problem is
+                                            into executable positions while limiting overfitting from repeated                    therefore not perception alone, but the conversion of multimodal
+                                            strategy search. We introduce MM-ARC (MultiModal Adaptive                             evidence into a synchronized, executable portfolio.
+                                            Routing of Capital), which routes capital across trend, reversal,                         Financial language models and multimodal agents broaden the
+                                            breakout, and exposure-control experts using aligned chart, nu-                       information interface of trading systems [21, 22, 24, 25]. Their fore-
+arXiv:2509.05080v3 [q-fin.TR] 27 Jul 2026
+
+
+
+
+                                            merical, and technical-text views. Within each market, regime-                        casts and reasoning, however, neither allocate capital among in-
+                                            conditioned strategy pools are shared with bounded asset-specific                     compatible trading behaviors nor reconcile their target exposures
+                                            adjustments. Robustness-Audited Bayesian Optimization (RABO)                          under a common portfolio budget. Ordinary mixture-of-experts
+                                            filters candidates proposed by Bayesian optimization on purged                        routing selects representations or computation paths; a trading
+                                            validation blocks using after-cost benchmark exceedance, lower-                       router must instead allocate capital, with direct consequences for
+                                            tail performance, stability, and turnover; a common portfolio layer                   exposure, turnover, and drawdown [6, 13].
+                                            then produces market-feasible orders. We evaluate 62 instruments                          Adaptation creates an opposing risk. A fixed strategy pool is
+                                            across five asset classes using five training seeds and a frozen July                 too rigid under regime shifts, but selecting the best Bayesian opti-
+                                            2025–June 2026 trading holdout. Under an all-in one-way cost of                       mization (BO) backtest or accepting unconstrained LLM-generated
+                                            10 basis points per unit of executed turnover, MM-ARC attains                         strategies enlarges the effective hypothesis space and amplifies data
+                                            an equal-market Sharpe ratio of 1.33 and maximum drawdown                             snooping [2, 3, 8, 18]. A credible adaptive pool must therefore use
+                                            of −13.7%, versus 0.53 and −18.3% for the LLMoE-style routing                         only historically visible information and judge candidates by the
+                                            baseline. The global learned-static control reaches 1.12 and −15.3%,                  distribution—including lower-tail and drawdown behavior—rather
+                                            respectively. Paired block-bootstrap intervals favor the prespecified                 than the peak of their validation outcomes.
+                                            contrasts, while ablation point estimates are consistent with con-                        We propose MM-ARC, an execution-aware pipeline that con-
+                                            tributions from visual inputs, adaptive routing, exposure control,                    nects multimodal perception, adaptive capital routing, interpretable
+                                            and robustness-audited admission. Family-level data-snooping tests                    strategy experts, robustness-audited search, and market-feasible
+                                            also reject their prespecified nulls (SPA 𝑝 = .039; Reality Check                     portfolio construction. We evaluate the complete pipeline on point-
+                                            𝑝 = .021); we therefore interpret the evidence as benchmark-relative                  in-time records for 62 instruments from five asset classes using a
+                                            support within the evaluated candidate family and holdout, not as                     one-year frozen trading holdout and a common after-cost portfolio-
+                                            universal or future-regime superiority.                                               construction layer. The paper makes three contributions:
+
+                                            CCS Concepts
+                                            • Computing methodologies → Machine learning; • Applied                                    • Adaptive multimodal capital routing. A shared encoder
+                                            computing → Economics.                                                                       fuses aligned views, and a regime-conditioned router allo-
+                                                                                                                                         cates capital over interpretable trend, reversal, breakout, and
+                                            Keywords                                                                                     exposure-control experts before market-feasibility projec-
+                                                                                                                                         tion.
+                                            multimodal learning, capital routing, robust strategy selection, fi-                       • Market-shared expert strategy pools. Instead of 744 asset-
+                                            nancial trading, backtest overfitting                                                        specific pools, MM-ARC uses 60 pools indexed by market,
+                                                                                                                                         expert, and regime. Bounded, schema-valid asset-specific pa-
+                                            1    Introduction                                                                            rameter adjustments (residuals) preserve strategy semantics
+                                            Financial markets are non-stationary decision environments in                                and reduce repeated search.
+                                            which useful evidence is distributed across price sequences, chart                         • Robustness-audited admission. RABO combines bench-
+                                            structure, and textual market summaries. A model that predicts                               mark exceedance, validation lower-tail performance, median
+                                            direction accurately can nevertheless fail as a trading system when                          behavior, local parameter stability, and turnover. It thereby
+                                                                                                                                         trades validation peaks for stronger lower-tail and draw-
+                                            ∗ Corresponding author: Jinpeng Li (lijinpeng@zju.edu.cn).                                   down behavior.
+                                                                                                                              1
+                                                                                                                                              Chen et al.
+
+
+   Across five separately settled market portfolios under the nor-               Every expert emits a target exposure ℎ𝑡 +1|𝑡,𝑢,𝑘 ∈ [−1, 1] in the
+malized all-in 10-bps protocol, the arithmetic means of SR and MDD            same unit: a fraction of market-portfolio NAV before routing. To
+are 1.33 and −13.7%, versus .53 and −18.3% for the closest routing            make these targets tradable, their router-weighted signals are syn-
+baseline. These are favorable holdout point differences of .80 in             chronized on the native market calendar and projected onto the
+SR and 4.6 percentage points in MDD. SPA (𝑝 = .039) and Reality               feasible set C𝑚 , which encodes position, leverage, short-sale, cash,
+Check (𝑝 = .021) also reject their prespecified family-level nulls,           and turnover limits:
+providing benchmark-relative evidence after data-snooping cor-                                                 
+                                                                                                                 𝑤𝑡,𝑢,𝑘 ℎ𝑡 +1|𝑡,𝑢,𝑘
+                                                                                                                                    
+rection on this holdout without implying dominance over every                                    𝑣𝑡 +1|𝑡,𝑚,𝑘 =                               ,
+                                                                                                                      |U𝑚 |           𝑢 ∈ U𝑚
+candidate or future regimes.
+                                                                                                                 𝐾
+                                                                                                                ∑︁
+                                                                                                  ℎ𝑡raw
+                                                                                                     +1|𝑡,𝑚 =         𝑣𝑡 +1|𝑡,𝑚,𝑘 ,                 (3a)
+2   Related Work                                                                                                𝑘=1
+Financial LLM agents. Financial LLMs and agents support text                         ℎ𝑡∗+1|𝑡,𝑚 = arg min ∥ℎ − ℎ𝑡raw       2            ∗
+                                                                                                                 +1|𝑡,𝑚 ∥ 2 + 𝜆𝑞 ∥ℎ − ℎ𝑡,𝑚 ∥ 1 .    (3b)
+understanding, memory, forecasting, and multi-step trading work-                                     ℎ∈ C𝑚
+flows [19–24]. MM-ARC addresses a narrower portfolio problem:                 Projection is performed separately for each market portfolio and
+translating multimodal states into capital weights, target exposures,         reconciles both expert disagreement and cross-asset constraints.
+and feasible orders rather than producing open-ended analyses or              The order 𝑞𝑡 +1,𝑚 = ℎ𝑡∗+1|𝑡,𝑚 − ℎ𝑡,𝑚∗ is submitted at the next tradable
+executable code.                                                              open, with cost and return booked to 𝑡 + 1; no expert receives credit
+   Multimodal forecasting. Financial models increasingly com-                 for exposure removed by projection.
+bine structured series, images, and language, while Time-LLM                     Settlement deducts applicable commissions, slippage, taxes, roll
+and Time-VLM-style methods adapt foundation models to tem-                    costs, funding, and soft feasibility penalties from realized next-
+poral prediction [10, 12, 25]. Unlike systems that fuse independent           period returns through 𝐶𝑚 (𝑞). The learning target then discounts
+news, filings, or macroeconomic text, MM-ARC uses visual and                  net returns and penalizes drawdown and volatility. All penalty
+structured-text representations derived causally from the same ob-            weights are selected on validation records and frozen before the
+served OHLCV window and evaluates them by after-cost portfolio                trading holdout:
+performance rather than forecasting accuracy alone.                                                       ⊤
+                                                                                                  ∗
+   Routing and expert trading. Modular trading systems and                             𝑟𝑡net
+                                                                                          +1,𝑚 = ℎ𝑡 +1|𝑡,𝑚    𝑟𝑡asset
+                                                                                                                 +1,𝑚 − 𝐶𝑚 (𝑞𝑡 +1,𝑚 ),            (4a)
+MoE models encourage specialization, but their routers commonly                                   "𝑇                                          #
+direct representations or select predictors [6, 13]. In MM-ARC, the                                ∑︁                                      
+                                                                                           (𝑚)
+                                                                                         𝐽net  =E       𝛾 𝑡 𝑟𝑡net
+                                                                                                               +1,𝑚 − 𝜆dd DD𝑡,𝑚 − 𝜆vol 𝜎𝑡,𝑚     . (4b)
+router instead produces simplex-valued capital allocations over                                    𝑡 =0
+interpretable strategy experts and is evaluated through after-cost
+portfolio contributions, turnover, exposure, and regime-conditioned           This closes the two-level decision process: asset-level observations
+outcomes.                                                                     determine expert targets, but only synchronized market holdings
+   Backtest overfitting and robust search. Reality Check, Su-                 determine reward, risk, and the reported portfolio metrics.
+perior Predictive Ability (SPA), Probability of Backtest Overfitting
+(PBO), Deflated Sharpe Ratio, and System Parameter Permutation                4 MM-ARC Framework
+diagnose selection risk; Bayesian optimization and LABO guide                 4.1 Multimodal Market Representation
+search [2–4, 8, 14, 16–18]. RABO embeds past-only cross-block                 The representation stage asks what information is available at
+distribution audits in admission and capital weighting.                       the decision cutoff and why multiple views are useful. Qwen3-
+                                                                              VL-8B-Instruct encodes aligned chart, 100-observation numerical,
+3   Problem Formulation                                                       and structured technical-summary views derived from the same
+Let 𝑚 ∈ M index a market and 𝑢 ∈ U𝑚 an asset. At decision time                OHLCV record [1]. These views expose visual patterns, numerical
+𝑡, the model encodes only observations available by that cutoff:              scale, and technical semantics without introducing an independent
+                                                                              information source.
+           𝑜𝑡,𝑢 = (𝑉𝑡,𝑢 , 𝑋𝑡,𝑢 , 𝐿𝑡,𝑢 ),   𝑧𝑡,𝑢 = Enc𝜂 (𝑜𝑡,𝑢 ),    (1)           We use 4-bit QLoRA for parameter-efficient adaptation [5, 9].
+where the chart, temporal, and structured-text views share the same           Supervised regime learning produces the prior 𝑝𝑡,𝑢 from training
+timestamp. This cutoff-aligned state prevents later records from              records; its labels are not deployment inputs. The encoder, schema
+entering the decision.                                                        generator, and optional fidelity evaluator share only the base check-
+    The capital router converts state into continuous expert weights.         point, not adapters, prompts, output heads, or calibration records.
+It combines 𝑧𝑡,𝑢 , market 𝑚, the supervised fine-tuning (SFT) prior           Appendix A specifies view construction and label timing, and Ap-
+𝑝𝑡,𝑢 , and pool evidence 𝑐𝑚,rob , where 𝑟ˆ                                    pendix B documents task isolation.
+                               𝑟ˆ𝑡,𝑢         𝑡,𝑢 = arg max𝑟 𝑝𝑡,𝑢,𝑟 and
+𝜂𝑔 ≥ 0 controls the evidence tilt:
+                                                          
+                                                                              4.2    Adaptive Capital Routing
+                                                      𝑟ˆ𝑡,𝑢 ∈ Δ ,
+                                                    rob        𝐾              The router determines how much capital each interpretable expert
+        𝑤𝑡,𝑢 = softmax 𝑓𝜙 (𝑧𝑡,𝑢 , 𝑚) + 𝐵𝑚 𝑝𝑡,𝑢 + 𝜂𝑔𝑐𝑚,              (2)
+                                                                              receives. Equation (2) combines the fused market state with the
+with 𝐾 = 4. The simplex makes routing a capital reallocation among            SFT prior and the admitted pools’ robustness evidence, producing
+experts rather than a hard expert switch.                                     continuous simplex weights rather than selecting one expert. The
+                                                                          2
+MM-ARC: Adaptive Routing of Capital
+
+
+
+
+Figure 1: Overview of MM-ARC. The solid path maps each asset’s observed multimodal history to a fused state, continuous
+expert-capital weights, target exposures, and market-level portfolio construction. Dashed arrows denote robustness weighting
+and training feedback rather than online information flow.
+
+prior stabilizes state conditioning, while lower-tail evidence tilts        parameter adjustment (residual) is
+capital toward pools that remain reliable on past validation blocks.                                              
+   After SFT, the backbone is frozen and the adapters, router, and                     𝜃𝑢,𝑗 = ΠΘ𝑠 𝑗 𝜃¯𝑗 + 𝐷𝑠 𝑗 𝛿𝑢,𝑗 ,        ∥𝛿𝑢,𝑗 ∥ ∞ ≤ 𝜖𝜃 ,       (6)
+expert heads are optimized with post-projection, after-cost actor–          It can change only active numeric parameters, never operators,
+critic reward. Entropy regularization discourages collapse, a prior         entry/exit logic, or risk constraints. Zero-centered regularization
+penalty stabilizes the transition from SFT, and a weight-turnover           and declared bounds preserve shared strategy semantics; fitting
+penalty discourages unnecessary reallocations. Five independent             uses only training data or historically visible validation blocks.
+runs use seeds 42–46, with checkpoints selected on validation
+records. Full training and executed-credit definitions appear in            4.4    Robustness-Audited Strategy Admission
+Appendix E.
+                                                                            Admission asks whether a candidate is reliable across past vali-
+                                                                            dation blocks, not whether it attains the single highest validation
+4.3    Expert Strategy Pools and Asset Adaptation                           return. Each candidate 𝑥 = (𝑠, 𝜃 ) is therefore evaluated on synchro-
+The four experts encode trend, reversal, breakout, and exposure             nized tradable market portfolios:
+control. Candidates use typed, expert-specific schemas instead of                     𝐽pool (𝑥; B𝑏 , 𝑚, 𝑘, 𝑟 ) = 𝐽net (Port𝑚 (𝑥, 𝑘, 𝑟 ; B𝑏 )) ,
+free-form executable code; Appendix C gives their grammar and                                                                              𝐵        (7)
+validation fields.                                                                               𝐷𝑚,𝑘,𝑟 (𝑥) = {𝐽pool (𝑥; B𝑏 , 𝑚, 𝑘, 𝑟 )}𝑏=1
+                                                                                                                                         𝑚,𝑟
+                                                                                                                                             .
+   For market 𝑚, expert 𝑘, and regime 𝑟 , the shared market–expert–         Here Port𝑚 is the tradable market portfolio after applying the com-
+regime strategy pool is                                                     mon projection and cost ledger. Appendix C gives the leave-one-
+                                                                            asset influence diagnostic and sparse-cell shrinkage rule.
+             P𝑚,𝑘,𝑟 = {(𝑠 𝑗 , 𝜃¯𝑗 , 𝑐 rob
+                                          𝑀  pool                              Bayesian optimization proposes schema–parameter pairs within
+                                      𝑗 )} 𝑗=1 ,    𝑀pool = 5.    (5)
+                                                                            the declared grammar. RABO evaluates their past-only distributions
+                                                                            and combines five within-update ranks:
+Five markets, four experts, and three regimes yield 60 shared pools
+rather than 62 × 4 × 3 = 744. For asset 𝑢, the bounded asset-specific        𝑆 RABO (𝑥𝑖 ) = .30𝑅𝑃 + .30𝑅𝑄 cand,val + .15𝑅med + .15𝑅stab − .10𝑅turn, (8)
+                                                                                                            5
+                                                                        3
+                                                                                                                                                Chen et al.
+
+
+The terms rank matched-block benchmark exceedance, the valida-                       5.1    Observed Market Data and Temporal
+tion 5% quantile, median behavior, local parameter stability, and                           Protocol
+realized turnover. The five highest audited candidates enter the
+                                                                                     The benchmark contains 62 real instruments: 10 A-shares, 15 U.S. eq-
+pool. Appendix D provides the reproducible benchmark, stability
+                                                                                     uities, 15 ETFs, 20 futures, and Bitcoin and Ethereum. Core-market
+neighborhood, controls, and DF-RABO efficiency study.
+                                                                                     histories begin in January 2017; cryptocurrency histories begin in
+   Selection and routing use related but distinct quantities. Equa-
+                                                                                     January 2021; all records end on June 30, 2026. The temporal modal-
+tion (8) ranks candidates within one update; after admission, the
+                                                                                     ity contains OHLCV and technical indicators, the visual modality
+pool-level robustness score for expert 𝑘 is
+                                                                                     contains charts rendered from the same causal window, and the
+                                                                                     text modality contains deterministic technical summaries, regime
+                       pool                                                          descriptions, support/resistance levels, and volume analysis. Asset-
+     rob      © 𝑄 5 (𝐷𝑚,𝑘,𝑟 ) − 𝑞 min ª                          pool                specific calendars are retained.
+    𝑐𝑚,𝑟,𝑘 = 𝜎­                       ® 𝑃𝐷 pool (𝐽net > 𝐽bench )𝑆𝑚,𝑘,𝑟 ,   (9)
+                        𝜏𝑔                𝑚,𝑘,𝑟                                         The split follows one global calendar. Training ends in December
+              «                       ¬
+                                                                                     2023, validation spans January 2024 through June 2025, and the 90-
+                                                                                     observation labeling horizon is purged at split boundaries. Table 1
+Here 𝐽bench is the matched-block after-cost score of the predeclared                 distinguishes the one-year frozen trading holdout from the shorter
+fixed-seed strategy reference for the same market, expert, regime,                   regime-label evaluation. Throughout the holdout, all learned and
+and validation block. The reference uses the same synchronized                       selected states remain fixed; only forward inference, order gen-
+portfolio construction and cost ledger, is fixed before BO and RABO,                 eration, and ex post scoring are permitted. Regime-classification
+and is never reselected candidate by candidate. 𝑆 pool is mean local                 metrics end on January 31, 2026 (January 30 for exchange-traded
+stability, while 𝑞 min and 𝜏𝑔 are validation-frozen. Thus an admitted                sessions) because they require a 90-session forward label. Trading
+pool with deteriorating lower-tail evidence is down-weighted rather                  evaluation requires only next-period settlement and therefore con-
+than treated as equally reliable.                                                    tinues through June 30, 2026. Every input, supervisory label, and
+   Under Online-WF, pool updates occur every 20 trading days or                      candidate score carries a cutoff timestamp, and any source time
+after a predeclared persistent-regime or validation-decay trigger.                   later than its decision time is rejected.
+Every update at 𝜏 uses only observations through 𝜏. During the                          The normalized 10-bps and market-specific 18/8/6/5/25-bps cost
+frozen trading holdout used for the main tables, schema generation,                  protocols are fixed before model selection and are never selected
+search, pool membership, adapters, router, and expert heads are all                  using validation performance.
+fixed before the holdout boundary.                                                      Corporate actions are handled before feature construction; fu-
+                                                                                     tures use lagged dominant-contract stitching and a separate roll
+                                                                                     ledger; cryptocurrency retains its 24/7 calendar. Appendix A reports
+4.5     Market-Feasible Portfolio Construction
+                                                                                     data provenance, membership, missingness, and cutoff checks.
+Expert targets become orders only after synchronized, market-
+specific portfolio construction. Equations (3a)–(3b) aggregate the
+asset-level expert targets and project them onto position, leverage,
+short-sale, cash, and turnover constraints. All trainable methods                    5.2    Baselines, Training, and Fair Comparison
+and compatible baselines use this same layer; A-shares additionally                  The comparison covers Buy-and-Hold, a TPE-searched technical
+impose long-only feasibility.                                                        baseline, PPO, Time-VLM-style forecasting followed by the common
+   At decision time 𝑡, the system uses records available through the                 allocation layer, FinAgent (adapted), and LLMoE-style routing [7,
+market close and submits the projected order at the next tradable                    13, 15, 24, 25]. FinAgent and LLMoE-style are protocol-adapted
+open. Equation (4a) settles realized holdings and applicable costs, so               local implementations because their native universes, information
+reward and reported performance depend only on executed portfo-                      interfaces, and portfolio layers are not directly interchangeable
+lios. Training attribution uses post-projection exposure and realized                with ours. This labeling avoids treating a local reproduction as the
+turnover cost; exact reconciliation, leave-one-expert-out diagnos-                   original paper’s reported result.
+tics, the QP, and priority clipping are specified in Appendices E and                   The controls are chosen to isolate successive capabilities. Buy-
+F.                                                                                   and-Hold fixes the observed market path and supplies a passive
+                                                                                     reference. Stochastic technical search uses seeds 42–46 to initialize
+                                                                                     independent TPE-based BO runs with identical predeclared rules,
+5     Experimental Setup                                                             parameter domains, validation objective, and fixed budget, then
+We organize the evaluation around four questions: RQ1, how MM-                       freezes each validation winner for the holdout; its variation thus
+ARC’s equal-market after-cost risk–return performance compares                       reflects optimizer randomness, not different market histories. PPO
+with the baselines, together with market-level heterogeneity rel-                    tests continuous exposure control without the multimodal shared-
+ative to the passive benchmark; RQ2, whether adaptive capital                        pool architecture. Time-VLM-style maps aligned multimodal fore-
+routing, aligned modalities, and expert specialization contribute                    casts to target positions but lacks regime-conditioned shared pools.
+beyond matched controls; RQ3, whether RABO improves lower-tail                       FinAgent (adapted) retains an agent-style decision interface under
+behavior relative to peak-based BO selection; and RQ4, whether                       the common data and portfolio setting. LLMoE-style is the closest
+market-shared pools reduce measured search workload without                          routing control: it uses four routed experts but removes the com-
+losing portfolio quality.                                                            plete shared-pool and robustness-audit mechanism. The ablations
+                                                                                 4
+MM-ARC: Adaptive Routing of Capital
+
+
+
+
+Figure 2: RABO pool construction and robustness-gated routing. At causal cutoff 𝜏, typed grammars and BO generate legal
+candidates; purged past-only blocks provide the five ranks in 𝑆 RABO , and a full after-cost walk-forward audit admits the top five
+to shared market–expert–regime pools with bounded asset residuals. Pool lower-tail quality, benchmark exceedance, and mean
+                               rob , which scales the corresponding expert’s router weight.
+stability are multiplied into 𝑐𝑚,𝑟,𝑘
+
+Table 1: Temporal protocol and observed multi-market benchmark. Session counts cover the complete July 2025–June 2026
+frozen trading holdout for each training seed.
+A. Phase                    Dates                                                       Permitted use
+
+Training                    Core: Jan. 2017–Dec. 2023; crypto: Jan. 2021–Dec. 2023      Model and base-strategy fitting
+Validation                  Jan. 2024–Jun. 2025                                         Checkpoint, RABO-weight, Top-𝐾 , refresh-threshold, and model-hyperparameter selection; 90-observation boundary
+                                                                                        purge
+Frozen trading holdout      Jul. 1, 2025–Jun. 30, 2026                                  Forward inference, orders, and ex post scoring only; all learned and selected states fixed
+Regime-label evaluation     Jul. 1, 2025–Jan. 31, 2026                                  Classification metrics requiring the 90-session forward label; Jan. 30 is the last exchange-traded session
+Online-WF (supplementary)   Same initial state and trading period                       Past-only causal updates; reported separately from the holdout result
+
+B. Market        Instruments     Sessions/seed     Annualization      Exposure support        Applicable cost components
+
+A-shares                    10              242                 252        [0, .95]           commission, slippage, sell-side stamp duty
+U.S. equities               15              251                 252      [ −.95, .95]         commission, slippage
+ETFs                        15              251                 252      [ −.95, .95]         commission, slippage
+Futures                     20              251                 252      [ −.95, .95]         commission, slippage, roll
+Cryptocurrency               2              365                 365      [ −.95, .95]         commission, slippage, funding
+
+
+
+additionally replace adaptive capital weights with uniform alloca-                                       from holdout averages. The adaptive-routing claim is evaluated
+tion, remove or corrupt one modality, flatten the expert structure,                                      against this control rather than against uniform weights or a single
+remove exposure control, and exchange RABO for peak-, quantile-,                                         validation-best expert alone.
+or turnover-based admission.                                                                                Every trainable method uses the same training/validation cutoffs,
+   To isolate state dependence from the benefit of merely learning a                                     tradable universe, rebalance clock, and five seeds. Every method
+non-uniform expert mixture, we prespecify a learned-static-weight                                        that emits a target position is passed through the same market-
+control for each training seed. It retains the same encoder, four                                        feasibility projection and cost accounting. Buy-and-Hold uses the
+experts, strategy pools, portfolio projection, cost ledger, validation                                   common observed benchmark path and is therefore identical across
+objective, turnover constraint, and search budget as the full router,                                    training seeds. Checkpoint selection, BO/RABO weights, active-
+but optimizes one fixed simplex vector using validation records                                          pool size, refresh thresholds, and all ablation settings are determined
+only:                                                                                                    on training and validation records and frozen before the trading
+                   (𝑠 )              (𝑠 )                                                                holdout.
+                 𝑤 static = arg max 𝐽val  (𝑤),
+                               𝑤 ∈Δ4                                                                        All model and strategy selection ends before the holdout: check-
+                                                                                           (10)
+                    (𝑠 )    (𝑠 )                                                                         points never use holdout targets, candidates are evaluated only
+                   𝑤𝑡,𝑢 = 𝑤 static for every holdout 𝑡, 𝑢.
+                                                                                                         on purged validation blocks, and reporting uses fixed prediction
+During the holdout this control does not read 𝑧𝑡,𝑢 , the regime                                          and order records. For each learned method, a seed identifies a
+prior, or robustness-gate evidence. Its weights are never inferred                                       complete independent training run rather than a resampling of the
+                                                                                                    5
+                                                                                                                                         Chen et al.
+
+
+same return path. Five-seed dispersion therefore measures opti-              6 Results and Analysis
+mization stability, while the block bootstrap separately captures
+                                                                             6.1 Main Cross-Market Performance
+serial dependence in the held-out portfolio record.
+                                                                             Table 2 reports the one-year frozen trading holdout under the nor-
+                                                                             malized all-in 10-bps protocol. Equal-market averages five sepa-
+                                                                             rately settled portfolio metrics; MDD is not a pooled-curve draw-
+5.3    Execution, Metrics, and Statistical Inference                         down. MM-ARC records TR 14.1%, SR 1.33, and MDD −13.7%, com-
+All main results use one normalized, all-in charge on executed               pared with 10.4%, .53, and −18.3% for the closest routing baseline,
+one-way turnover:                                                            LLMoE-style. The corresponding effect sizes are .80 in SR and 4.6
+                                                                             percentage points in MDD, while annualized one-way turnover
+                                                                             falls from 12.5× to 7.2×.
+                                                                                The market-level results remain heterogeneous. U.S. Buy-and-
+         norm
+        𝐶𝑡,𝑚  = 𝑐 norm ∥𝑞𝑡,𝑚 ∥ 1,    𝑐 norm = 10−3 = 10 bps,     (11)        Hold has higher raw TR than MM-ARC (32.3% versus 24.2%), al-
+                                                                             though MM-ARC records SR 1.55 and MDD −16.5% there. Cryp-
+                                                                             tocurrency is MM-ARC’s weakest market portfolio (SR .94; MDD
+                                                                             −20.6%). Retaining this failure case in the equal-market aggregate
+where ∥𝑞𝑡,𝑚 ∥ 1 is the absolute executed change as a fraction of             makes the evidence about risk-adjusted performance and draw-
+market-portfolio NAV. Hence 100% one-way turnover costs 0.10%                down control rather than universal raw-return dominance.
+of NAV; buying a fully invested position and later liquidating it               Table 3 reports matched method differences and their paired
+costs approximately 0.20% in total. Commission, slippage, sell-side          block-bootstrap intervals. Against LLMoE-style, ΔSR = +.80 with
+stamp duty, roll cost, and funding fields allocate this single charge        CI [.26, 1.46]; the risk-effect point estimates are ΔMDD = +4.6 and
+                                                                                 port
+for attribution and are not added on top. For sensitivity analysis,          Δ𝑄 5,20𝑑 = +2.15 percentage points. Against global learned-static
+predictions, gross returns, and orders are held fixed while 𝑐 norm           weights, the corresponding differences are +.21, +1.6, and +1.38,
+changes over {0, 5, 10, 20, 50} bps. The separate market-specific            with the SR CI [.10, .39]. Against market-specific learned-static
+setting replaces Equation (11), rather than supplementing it, with           weights, ΔSR = +.12 with CI [.06, .21]. Under the prespecified
+effective rates of 18/8/6/5/25 bps for A-shares, U.S. equities, ETFs,        benchmark and candidate-family construction, SPA (𝑝 = .039) and
+futures, and cryptocurrency.                                                 Reality Check (𝑝 = .021) reject their family-level nulls. The family-
+   We compute total return (TR), Sharpe ratio (SR), maximum draw-            level evidence therefore supports benchmark-relative superiority
+                                                         port                within the evaluated family and holdout, but not dominance over ev-
+down (MDD), annualized one-way turnover, and 𝑄 5,20𝑑 , the 5th
+percentile of rolling 20-session after-cost portfolio returns. The           ery candidate or future-regime generalization. Block-length results
+daily risk-free rate is zero; exchange-traded markets use 252 ses-           appear in Appendix G.
+sions per year and cryptocurrency uses 365. Annualized one-way
+turnover is 𝐴𝑚𝑇𝑚−1 𝑡 ∥𝑞𝑡,𝑚 ∥ 1 . Equations (23)–(26) give the remain-
+                    Í
+ing ledger-level definitions and the equal-market reporting operator.
+                                                                             6.2    Routing, Modalities, and Expert Structure
+Metrics are first computed for each seed–market portfolio and then           Panel A of Table 4 answers RQ2. The router records TR 14.1%, SR
+equally averaged over the five markets. Mean and seed SD summa-              1.33, MDD −13.7%, and Q5 −8.22%; global static gives 13.5%, 1.12,
+rize five matched runs. The primary method-difference CI uses 1,200          −15.3%, and −9.60%, while market-specific static gives 13.8%, 1.21,
+draws from a 10-session market-stratified circular-block bootstrap           −14.5%, and −8.85%. Uniform and validation-best weights reach SR
+applied to matched seed–market–time-block differences; method-               .88 and .98; removing or corrupting the visual view lowers SR to
+level marginal CIs are retained in Appendix G. White’s Reality               1.14 and .85.
+Check and Hansen’s SPA test address family-level data snooping.                 Panel C evaluates expert decomposition. A flat pool reaches SR
+Holm-adjusted two-sided 𝑡-tests pair the five equal-market seed              .90, and removing exposure control deepens MDD from −13.7% to
+aggregates and are reported only as auxiliary optimization-stability         −18.2%. Thus, the exposure expert is not merely an interpretability
+evidence in the appendix.                                                    label: it materially changes the executed risk profile. The benefit of
+   The evidence criteria are fixed before reading the holdout results.       the full four-expert model over the flat-pool control also supports
+RQ1 requires an equal-market comparison against all baselines                the use of semantic restrictions during strategy search.
+together with explicit market-level heterogeneity and failure-case
+reporting for MM-ARC and the passive benchmark, rather than one
+favorable point estimate. RQ2 requires matched routing, modality,            6.3    RABO and Shared-Pool Analysis
+and expert controls with identical dates and settlement. RQ3 re-             Panel D answers RQ3. BO-best delivers the highest TR (15.0%) but
+                                                                                   port
+quires comparing BO and RABO on the same portfolio-level lower-              has 𝑄 5,20𝑑 = −11.85% and MDD −17.3%. Full RABO gives −8.22%
+tail variable, together with return and drawdown. RQ4 requires               and −13.7% at TR 14.1%. The Q5-only rule is marginally better
+completed-job counts and hardware logs, not pool-count arithmetic            on the designated quantile (−8.20%), but lower on SR (1.14 versus
+alone. A favorable paired test is not used to override an unfavorable        1.33) and worse on MDD (−14.2% versus −13.7%). The composite
+SPA or Reality Check result.                                                 audit therefore trades 0.9 percentage points of TR relative to the
+   Appendices A and H document the evaluation protocol, ledger               validation-peak selector for a broader improvement in lower-tail
+schemas, and reconciliation definitions.                                     and drawdown behavior.
+                                                                         6
+MM-ARC: Adaptive Routing of Capital
+
+
+Table 2: Equal-market results over the July 2025–June 2026 frozen trading holdout under the normalized 10-bps (0.10%) one-way
+all-in cost. Values are mean ± sample SD over the five matched runs in Table 16: training seeds for learned methods and TPE/BO
+seeds for stochastic technical search.
+                                      Method                       TR% (Mean ± Seed SD)          SR (Mean ± Seed SD)          MDD% (Mean ± Seed SD)
+                                      B&H                               14.0 ± 0.0                     0.58 ± 0.00                   -24.7 ± 0.0
+                                      Stoch. technical search            8.9 ± 0.9                     0.45 ± 0.03                   -20.3 ± 0.6
+                                      PPO                                8.4 ± 0.6                     0.45 ± 0.06                   -18.3 ± 0.3
+                                      Time-VLM-style                     9.7 ± 0.9                     0.49 ± 0.06                   -18.5 ± 0.5
+                                      FinAgent (adapted)                 8.7 ± 0.8                     0.44 ± 0.03                   -20.6 ± 0.3
+                                      LLMoE-style                       10.4 ± 0.9                     0.53 ± 0.05                   -18.3 ± 0.4
+                                      MM-ARC                            14.1 ± 0.9                     1.33 ± 0.06                   -13.7 ± 0.2
+
+
+Table 3: Difference-focused evidence on the frozen holdout. Effects are the first-named method minus the control; positive
+               port
+ΔMDD and Δ𝑄 5,20𝑑 are favorable. The 95% CIs are obtained by resampling matched seed–market–time-block differences. SPA
+and Reality Check are family-level diagnostics shown once.
+
+                                                                                                                                                                                    Reality
+                                                                                                                                      port
+ Comparison                                              ΔSR             95% CI       ΔMDD (pp)                      95% CI        Δ𝑄 5,20𝑑 (pp)          95% CI       SPA 𝑝        Check 𝑝
+
+ MM-ARC − LLMoE-style                                 +0.80        [0.26, 1.46]                  +4.6          [2.03, 6.94]                  +2.15    [.78, 3.56]        .039            .021
+ MM-ARC − global learned static                       +0.21        [0.10, 0.39]                  +1.6           [.25, 2.70]                  +1.38    [.30, 2.57]            —              —
+ MM-ARC − market-specific learned static              +0.12          [.06, .21]                  +0.8           [.05, 1.32]                  +0.63    [.15, 1.14]            —              —
+ Full RABO − BO-best                                  +0.31          [.13, .55]                  +3.6          [1.36, 5.68]                  +3.63   [1.64, 5.65]            —              —
+
+                                                                                                                                                                port
+Table 4: Five-seed mean ablations on the frozen holdout. Metrics are equal-market summaries and 𝑄 5,20𝑑 is the common
+rolling-20-session lower-tail statistic. Global learned-static weights follow Eq. (10).
+                                                                                                                                      port
+                                                 Panel              Variant                             TR%       SR     MDD%       𝑄 5,20𝑑 %
+
+                                                                    Regime-tilted router                14.1     1.33     -13.7         -8.22
+                                                                    Global learned static weights       13.5     1.12      -15.3         -9.60
+                                                 A: Routing         Market-specific learned static      13.8     1.21      -14.5         -8.85
+                                                                    Uniform weights                     11.3     0.88      -16.6       -11.60
+                                                                    Validation-best expert              12.0     0.98      -17.6       -12.00
+                                                                    Full aligned views                  14.1     1.33     -13.7         -8.22
+                                                 B: Modalities      Temporal + text                     12.6     1.14      -15.3       -10.91
+                                                                    Corrupted visual                    10.9     0.85      -17.2       -11.35
+                                                                    Four semantic experts               14.1     1.33     -13.7         -8.22
+                                                 C: Experts         Flat pool                           11.1     0.90      -17.3       -11.62
+                                                                    No exposure control                 13.0     1.10      -18.2       -13.64
+                                                                    Fixed seed pool                     10.2     0.79      -18.4       -11.61
+                                                                    BO-best                             15.0     1.02      -17.3       -11.85
+                                                                    Turnover-matched BO                 14.3     0.99      -16.2         -9.87
+                                                                    Q5-only audit                       13.2     1.14      -14.2         -8.20
+                                                 D: Pools/search
+                                                                    Equal-weight audit                  13.6     1.20      -14.5         -9.59
+                                                                    Asset-specific RABO                 13.9     1.26      -13.9         -8.57
+                                                                    Shared, no residual                 13.4     1.22      -14.2         -9.36
+                                                                    Shared + residual (full)            14.1     1.33     -13.7         -8.22
+
+
+
+   The shared-plus-residual design reaches SR 1.33, compared with                                    Table 5: Shared + residual minus asset-specific RABO. Posi-
+1.26 for asset-specific RABO and 1.22 for sharing without residuals.                                 tive differences favor the shared design. Confidence intervals
+Relative to asset-specific RABO, its point differences are +0.2 per-                                 use the same 1,200-draw matched seed–market–time-block
+centage points in TR, +.07 in SR, +0.2 percentage points in MDD,                                     circular-block bootstrap as the primary comparisons.
+                                   port
+and +0.35 percentage points in 𝑄 5,20𝑑 . Table 5 reports the matched-                                Metric                                               Point difference   Paired-block 95% CI
+block intervals for these differences. All four intervals cross zero, so                             TR (percentage points)                                          +0.2         [−1.4, +2.0]
+the comparison does not establish a quality difference between the                                   SR                                                             +0.07        [−0.20, +0.37]
+                                                                                                     MDD (percentage points)                                         +0.2         [−1.3, +1.5]
+shared and asset-specific designs. The observed pattern is consis-                                     port
+                                                                                                     𝑄 5,20𝑑 (percentage points)                                    +0.35         [−0.9, +1.5]
+tent with market-level sharing providing common evidence while
+bounded asset-specific adjustments preserve useful heterogeneity;
+workload reduction is evaluated separately below.
+                                                                                                     the median slightly lower, whereas BO-best retains higher full-
+                                                                                                     period TR. In panel (b), trend peaks in uptrends (.29), reversal in
+                                                                                                     downtrends (.32), and exposure control in sideways periods (.25).
+6.4    Mechanism, Workload, and Cost Diagnostics                                                     Temporal weight variance is .00192, pairwise symmetric KL diver-
+Figure 3(a) compares BO-best and RABO on the same rolling after-                                     gence is .00677, and entropy is 1.363. These modest but systematic
+cost portfolio variable. RABO shifts Q5 rightward while leaving                                      state-dependent tilts are consistent with adaptive capital routing
+                                                                                             7
+                                                                                                                                       Chen et al.
+
+
+                  (a) Same-variable lower tail                                             (b) Regime-Tilted Capital Weights
+
+
+
+
+Figure 3: Mechanism diagnostics. Panel (a) marks Q5 with dashed lines and the median with dotted lines; shaded bands are 95%
+seed–market cluster-bootstrap intervals. Panel (b) summarizes capital weights over the three regimes that index the shared
+pools.
+
+within a diversified expert mixture, rather than hard expert selec-         when a fast volatility transition outpaces the frozen pool. Longer
+tion or discrete regime switching.                                          forward paper trading and prospectively declared causal refresh
+   For RQ4, structural sharing reduces the pool count from 744 asset-       checks are therefore required.
+specific pools to 60 market–expert–regime pools. The measured                  Statistical scope. SPA (𝑝 = .039) and Reality Check (𝑝 = .021) re-
+workload also falls: complete backtests decline from 43,192 to 3,594,       ject their family-level nulls under the prespecified benchmark, can-
+and end-to-end time from 31.6 to 4.6 hours, including 0.42 hours of         didate set, and performance differential. These results strengthen
+residual fitting. CPU time falls from 126.4 to 18.7 hours, GPU time         the benchmark-relative evidence after data-snooping correction
+from 18.2 to 3.2 hours, and peak memory from 28.4 to 21.8 GB under          on the observed holdout, but they do not show that MM-ARC
+the same environment. The smaller proportional wall-clock gain              dominates every candidate or that the advantage generalizes to
+relative to the pool-count reduction reflects fixed orchestration,          future regimes. Five seeds measure optimization variability, not
+data loading, and residual-fitting overheads.                               uncertainty over alternative market histories; the block bootstrap
+   Holding predictions, gross returns, and orders fixed, increasing         captures dependence within the same holdout rather than variation
+the normalized all-in rate from 10 to 50 bps reduces MM-ARC TR              across future regimes.
+from 14.1% to 10.8% and SR from 1.33 to 1.00; LLMoE-style falls from           Universe and information scope. The 62 instruments across
+10.4% to 4.8% and from .53 to .24. Under the replacement market-            five asset classes do not represent the complete investable universe,
+specific 18/8/6/5/25-bps schedule, MM-ARC records TR 13.9% and              and survivorship bias may remain where point-in-time membership
+SR 1.31, versus LLMoE-style SR 0.50. The qualitative comparison is          is unavailable. The text view is derived from market records, so the
+therefore not tied to the normalized 10-bps point.                          study does not test independent news, filings, or macroeconomic
+                                                                            reasoning. Larger and more heterogeneous universes may also
+6.5    Research-Question Synthesis                                          require sector- or liquidity-level parents rather than one shared
+The four analyses support a qualified conclusion. RQ1 favors MM-            hierarchy per market.
+ARC in risk-adjusted point estimates and paired intervals, and                 Execution and capacity scope. The common ledger models
+both family-level tests reject their prespecified nulls, although           commissions, slippage, stamp duty, roll cost, funding, position caps,
+the market-level results retain meaningful heterogeneity. RQ2’s             and turnover, but not every queue, borrow, outage, capacity, or
+matched controls favor adaptive routing over both learned-static al-        nonlinear market-impact effect. Capacity-aware simulation and
+ternatives and support the modalities and architecture. RQ3 shows           forward execution are needed before interpreting the observed
+a 0.9-point TR trade-off for shallower MDD and a less negative Q5.          results as deployable scale.
+RQ4 shows lower pool count and measured work. These findings
+connect architectural choices to executed outcomes without relying          8   Conclusion
+on one headline metric.                                                     On this frozen holdout, MM-ARC yields favorable risk-adjusted and
+                                                                            drawdown estimates relative to the closest routing baseline and
+7     Discussion and Limitations                                            both learned-static controls, and SPA and Reality Check reject their
+Temporal scope. The July 2025–June 2026 frozen trading holdout              prespecified family-level nulls. Retained ablations and workload
+is one historical realization and cannot establish adaptation across        measurements are consistent with contributions from adaptive
+longer market cycles. In the retained cryptocurrency failure, seed 46       routing, the visual view, exposure control, RABO, and shared-pool
+loses 20.5% between January 18 and February 5, 2026, showing that           workload reduction. Together, these results support a benchmark-
+positive full-period TR and SR can coexist with a concentrated loss         relative advantage within the evaluated candidate family and period,
+                                                                        8
+MM-ARC: Adaptive Routing of Capital
+
+
+Table 6: Measured search workload under a fixed hardware and software environment. Counts include completed jobs; time
+and peak memory come from the recorded resource logs.
+                                          Design                 Gen.    Valid   BO prop.    Backtests   Residual h    E2E h   CPU h     GPU h    Peak GB
+                                          Asset-specific RABO    4,464   3,578      47,616      43,192          0.00    31.6     126.4     18.2       28.4
+                                          Shared + residual       360     291        3,840       3,594          0.42     4.6      18.7      3.2       21.8
+ Measurement environment. EPYC 7543P/256 GB/A100 40 GB; Python 3.11, PyTorch 2.7.1/CUDA 12.8; four FIFO workers, batch 1, cache off, failures/retries included; E2E includes all stages through table
+ write-out. One-second psutil/nvidia-smi sampling; three-run E2E ranges: 30.9–32.4 h and 4.4–4.8 h.
+
+
+without claiming dominance over every candidate or future-regime
+superiority.
+
+
+
+
+                                                                                                  9
+                                                                                             Chen et al.
+
+
+References
+ [1] Shuai Bai et al. 2025. Qwen3-VL Technical Report. arXiv:2511.21631
+ [2] David H. Bailey, Jonathan M. Borwein, Marcos Lopez de Prado, and Qiji Jim Zhu.
+     2016. The Probability of Backtest Overfitting. Journal of Computational Finance
+     20, 4 (2016), 39–69.
+ [3] David H. Bailey and Marcos Lopez de Prado. 2014. The Deflated Sharpe Ratio:
+     Correcting for Selection Bias, Backtest Overfitting, and Non-Normality. The
+     Journal of Portfolio Management 40, 5 (2014), 94–107.
+ [4] Zhuo Chen, Xinzhe Yuan, Jianshu Zhang, Jinzong Dong, Ruichen Zhou, Yingchun
+     Niu, Tianhang Zhou, Yu Yang Fredrik Liu, Yuqiang Li, Nanyang Ye, and Qinying
+     Gu. 2026. LABO: LLM-Accelerated Bayesian Optimization through Broad Ex-
+     ploration and Selective Experimentation. Proceedings of the 43rd International
+     Conference on Machine Learning.
+ [5] Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. 2023.
+     QLoRA: Efficient Finetuning of Quantized LLMs. In Advances in Neural Informa-
+     tion Processing Systems, Vol. 36.
+ [6] Qianggang Ding, Haochen Shi, Jiadong Guo, and Bang Liu. 2024. Tradexpert:
+     Revolutionizing trading with mixture of expert llms. arXiv:2411.00782
+ [7] Tuomas Haarnoja, Aurick Zhou, Pieter Abbeel, and Sergey Levine. 2018. Soft
+     actor-critic: Off-policy maximum entropy deep reinforcement learning with a
+     stochastic actor. In Proceedings of the 35th International Conference on Machine
+     Learning (Proceedings of Machine Learning Research, Vol. 80). PMLR, Stockholm,
+     Sweden, 1861–1870.
+ [8] Peter Reinhard Hansen. 2005. A Test for Superior Predictive Ability. Journal of
+     Business & Economic Statistics 23, 4 (2005), 365–380.
+ [9] Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean
+     Wang, Lu Wang, and Weizhu Chen. 2021. LoRA: Low-Rank Adaptation of Large
+     Language Models. arXiv preprint arXiv:2106.09685 (2021).
+[10] Ming Jin, Shiyu Wang, Lintao Ma, Zhixuan Chu, James Zhang, Xiaoming Shi,
+     Pin-Yu Chen, Yuxuan Liang, Yuan-fang Li, Shirui Pan, et al. 2024. Time-LLM:
+     Time Series Forecasting by Reprogramming Large Language Models. The Twelfth
+     International Conference on Learning Representations. https://openreview.net/
+     forum?id=Unb5CVPtae
+[11] Marc C. Kennedy and Anthony O’Hagan. 2000. Predicting the Output from a
+     Complex Computer Code When Fast Approximations Are Available. Biometrika
+     87, 1 (2000), 1–13. doi:10.1093/biomet/87.1.1
+[12] Sang Il Lee and Seong Joon Yoo. 2019. Multimodal Deep Learning for Finance:
+     Integrating and Forecasting International Stock Markets. arXiv:1903.06478
+[13] Kuan-Ming Liu and Ming-Chih Lo. 2025. LLM-Based Routing in Mixture of
+     Experts: A Novel Framework for Trading. arXiv:2501.09636
+[14] Robert Pardo. 2008. The Evaluation and Optimization of Trading Strategies (2nd
+     ed.). John Wiley & Sons.
+[15] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+     2017. Proximal policy optimization algorithms. arXiv:1707.06347
+[16] Jasper Snoek, Hugo Larochelle, and Ryan P. Adams. 2012. Practical Bayesian
+     Optimization of Machine Learning Algorithms. In Advances in Neural Information
+     Processing Systems, Vol. 25. Curran Associates, Inc., Lake Tahoe, Nevada, USA,
+     2951–2959.
+[17] Dave Walton. 2014. Know Your System! Turning Data Mining from Bias to
+     Benefit through System Parameter Permutation. 2014 NAAIM Wagner Award
+     Winner (2014). doi:10.2139/ssrn.2423187
+[18] Halbert White. 2000. A Reality Check for Data Snooping. Econometrica 68, 5
+     (2000), 1097–1126.
+[19] Sheng Wu, Ozan Irsoy, Shuohang Lu, Valentin Dabravolski, Mark Dredze, Se-
+     bastian Gehrmann, Prabhanjan Kambadur, David Rosenberg, and Gideon Mann.
+     2023. BloombergGPT: A Large Language Model for Finance. arXiv:2303.17564
+[20] Yijia Xiao, Edward Sun, Di Luo, and Wei Wang. 2024. TradingAgents: Multi-
+     agents LLM financial trading framework. arXiv:2412.20138
+[21] Qianqian Xie, Weiguang Han, Xiao Zhang, Yanzhao Lai, Min Peng, Alejandro
+     Lopez-Lira, and Jimin Huang. 2023. Pixiu: A large language model, instruction
+     data and evaluation benchmark for finance. arXiv:2306.05443
+[22] Huicheng Yang, Xiao-Yang Liu, and Chenguang Wang. 2023. FinGPT: Open-
+     Source Financial Large Language Models. arXiv:2306.06031
+[23] Yuan Yu, Hao Li, Zhixin Chen, Yuxuan Jiang, Yingjie Li, and Dong Zhang. 2024.
+     FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory
+     and Character Design. AAAI Spring Symposium on AI in FinTech.
+[24] Wei Zhang, Lei Zhao, Hao Xia, Shiyu Sun, Meng Qin, and Xiang Li. 2024. A
+     Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diver-
+     sified, and Generalist. Proceedings of the 30th ACM SIGKDD Conference on
+     Knowledge Discovery and Data Mining.
+[25] Siru Zhong, Weilin Ruan, Ming Jin, Huan Li, Qingsong Wen, and Yuxuan Liang.
+     2025. Time-VLM: Exploring Multimodal Vision-Language Models for Augmented
+     Time Series Forecasting. arXiv:2502.04395
+
+
+
+
+                                                                                        10
+MM-ARC: Adaptive Routing of Capital
+
+
+
+ Anonymous Executable Pipeline and Experiment Results                          with training-only statistics. The structured-text branch determin-
+                                                                               istically summarizes returns, volatility, moving-average ordering,
+                Open repository ↗
+                                                                               indicator positions, support/resistance, and volume from the same
+                    anonymous.4open.science/r/MM-ARC-32F7
+                                                                               window. The three branches are generated separately and then
+                                                                               joined by instrument and decision time; none adds independent
+A Temporal Evaluation and Data Provenance                                      news, filings, or macroeconomic records.
+                                                                                  SFT targets use the designated 90-session forward regime hori-
+A.1 Calendar and Frozen Evaluation                                             zon only within the labeling phase. Samples whose target horizon
+The benchmark is constructed from point-in-time market records.                crosses a split boundary are purged, and target timestamps are in-
+Core-market histories span January 2017 through June 30, 2026, and             accessible to feature construction, strategy search, and checkpoint
+cryptocurrency histories span January 2021 through the same cutoff.            selection. These labels supervise and evaluate the regime prior 𝑝𝑡,𝑢
+Core-market training uses January 2017 through December 2023,                  but are never supplied as contemporaneous inference inputs.
+cryptocurrency training begins in January 2021, and validation
+spans January 2024 through June 2025. The frozen trading holdout               B    Qwen3-VL Roles and Training Isolation
+runs from July 1, 2025 through June 30, 2026. A-shares, U.S. equities,         The implementation uses three task-separated Qwen3-VL roles.
+ETFs, and futures follow their native exchange calendars, while                They share the Qwen3-VL-8B-Instruct base checkpoint but not
+cryptocurrency uses a continuous daily calendar; returns are not               adapters, output heads, prompts, or task-specific training state. The
+forward-filled across closed markets.                                          execution evaluator is deterministic and does not use a language-
+   Training, validation, BO, RABO, schema formation, and check-                model judgment.
+point selection are completed before the trading holdout is opened.               The encoder is first adapted with regime supervision and then
+Throughout the full year, the encoder adapters, router, expert heads,          used by the after-cost actor–critic stage. The generator is trained to
+shared pools, asset-specific parameter adjustments, and execution              emit a typed schema that passes expert-specific grammar, indicator,
+configuration remain fixed. Regime-classification metrics are re-              parameter-range, and risk-control checks. The fidelity evaluator is
+ported through January 31, 2026 (January 30 for exchange-traded                calibrated only on past paired evaluations. No evaluator score can
+sessions) because their labels require 90 future sessions; after-cost          substitute for 𝐽𝑅 when a candidate enters the Top-5 active pool.
+trading metrics extend through June 30 because they require only
+next-period settlement. The supplementary Online-WF protocol be-               C Shared Pools and Search-Space Accounting
+gins from the same initial state, is reported separately, and restricts
+every update at 𝜏 to inputs, labels, validation blocks, and candidate          C.1 Pool Hierarchy
+evaluations available no later than 𝜏.                                         The shared pool P𝑚,𝑘,𝑟 reuses strategy structure and base parame-
+                                                                               ters for one market, expert type, and regime. Equation (6) limits each
+A.2     Artifact Integrity and Leakage Controls                                asset to bounded, schema-valid continuous or integer offsets (resid-
+                                                                               uals). Categorical operators, entry/exit logic, and risk constraints
+The executable pipeline applies provenance and leakage checks to
+                                                                               remain shared. Residual clipping uses the tighter of the schema
+its inputs and processed samples. For each available input artifact,
+                                                                               range and a predeclared relative radius; zero-centered initialization
+the validator records its source, retrieval timestamp, adjustment
+                                                                               and an ℓ2 penalty discourage unnecessary personalization.
+convention, first and last observation, row count, missingness, du-
+                                                                                   Here 𝐺 is the number of valid schemas considered per pool and
+plicate count, and SHA-256 digest. Processed multimodal samples
+                                                                               𝑁 trial = 64 is the BO trial budget. The reduction in shared strat-
+additionally carry the instrument, decision timestamp, maximum
+                                                                               egy pools and active members is exact. End-to-end measurements
+source timestamp, feature version, chart-rendering version, and
+                                                                               in Table 6 additionally include schema validation, data loading,
+split identifier. A sample fails validation if any source timestamp is
+                                                                               orchestration, residual fitting, and evaluation overhead.
+later than its decision time or if its target timestamp is visible to
+                                                                                   Candidate influence is checked through
+training, schema formation, BO, RABO, or checkpoint selection.
+                                                                                                                              (−𝑢 )
+    Portfolio ledgers produced by the pipeline carry method, training                  Δ𝑢,𝑏 (𝑥) = 𝐽pool (𝑥; B𝑏 , 𝑚, 𝑘, 𝑟 ) − 𝐽pool  (𝑥; B𝑏 , 𝑚, 𝑘, 𝑟 ),   (12)
+seed, market, date, protocol phase, previous holding, requested tar-
+get, executed holding, order, rejected notional, gross return, compo-          where the second term removes asset 𝑢 from the same block and
+nent costs, and net return. Instrument records retain stable market            renormalizes the remaining assets in that market portfolio. We
+identifiers and point-in-time universe membership. These schemas               record the complete influence distribution and the largest absolute
+support record-level reconciliation of predictions, orders, holdings,          asset share before admitting a market-shared candidate.
+costs, and reported metrics during pipeline execution.                            To compare residual magnitudes across heterogeneous parame-
+                                                                               ter scales, let A𝑠 𝑗 be the active numeric parameters of schema 𝑠 𝑗
+                                                                               and define
+A.3     Multimodal View and Label Construction                                                                                           ! 2  1/2
+                                                                                                                       (𝐷𝑠 𝑗 𝛿𝑢,𝑗 )𝑑 
+                                                                                                     
+At each decision time, the sample builder extracts the 100 obser-                                     1         ∑︁
+                                                                                             𝜌𝑢,𝑗 = 
+                                                                                                                        max
+                                                                                                                                              .   (13)
+vations ending at the recorded cutoff. The visual branch renders                                                                   min 
+                                                                                                      |A𝑠 𝑗 | 𝑑 ∈ A𝑠 𝜃 𝑠 𝑗 ,𝑑 − 𝜃 𝑠 𝑗 ,𝑑 
+a standard candlestick chart and a CYC-MRKAB chart containing                                                       𝑗                       
+moving averages, Bollinger Bands, MACD, RSI, and KDJ. The tem-                 A component is counted as boundary-saturated when either the
+poral branch contains OHLCV and technical indicators normalized                residual bound or the projected schema bound is active within the
+                                                                          11
+                                                                                                                                                                                 Chen et al.
+
+
+Table 7: Benchmark composition and operational handling. Every row is evaluated on observed market records under its native
+calendar.
+
+  Market                     Instruments        Evaluation sessions/seed                 Position and settlement                            Data handling
+  A-shares                               10                                    242       long-only, T+1, sell-side stamp duty               adjusted prices, suspensions, exchange cal-
+                                                                                                                                            endar
+  U.S. equities                          15                                    251       bounded long/short, margin limits                  corporate actions, borrow and exchange-
+                                                                                                                                            calendar checks
+  ETFs                                   15                                    251       venue-dependent shorting and cash limits           distributions and underlying-asset classifica-
+                                                                                                                                            tion
+  Futures                                20                                    251       contract leverage, margin, next-open rolls         lagged dominant contract and explicit roll
+                                                                                                                                            ledger
+  Cryptocurrency                           2                                   365       continuous trading and bounded leverage            exchange-source, funding, and outage
+                                                                                                                                            checks
+  Total                                  62                                      —       five separately settled market portfolios          equal-market reporting after portfolio-level
+                                                                                                                                            metrics
+
+       Table 8: Task separation in the implemented model. Only full walk-forward evaluation can authorize pool admission.
+
+  Role                           Input/output                                                    Isolation                                    Authority
+  Multimodal encoder             charts, series, summary → 𝑧𝑡,𝑢 , 𝑝𝑡,𝑢                           encoder adapter and regime head              representation and routing only
+  Schema generator               grammar and past context → typed                                generator adapter, prompt, and decoding      candidate proposal only
+                                 schema                                                          seed
+  Fidelity evaluator             schema and past context → 𝐽𝐿                                    evaluator adapter and calibrated regres-     acquisition priority only
+                                                                                                 sion head
+  Execution evaluator            executable schema → 𝐽𝑅                                          fixed walk-forward engine and validation     mandatory evidence for admission
+                                                                                                 protocol
+
+Table 9: Structural search-space accounting. The reduction is                                                 blocks, sparse-cell shrinkage is
+not an end-to-end speedup.
+               Quantity                 Asset-specific   Market-shared       Reduction
+                                                                                                                       e𝑚,𝑘,𝑟 (𝑥) = 𝜔𝑚,𝑟 𝐷𝑚,𝑘,𝑟 (𝑥) + (1 − 𝜔𝑚,𝑟 )𝐷𝑚,𝑘 (𝑥),
+                                                                                                                       𝐷
+               Shared strategy pools               744               60          91.9%
+                                                                                                                                                                                         (14)
+               Active members                    3,720              300          91.9%
+                                                                                                                                                 
+                                                                                                                                           𝐵𝑚,𝑟
+               Candidate budget            744𝐺𝑁 trial       60𝐺𝑁 trial          91.9%                                     𝜔𝑚,𝑟 = min 1,            .
+                                                                                                                                           𝐵 min
+
+
+audit tolerance. Low, middle, and high residual-magnitude groups                                              The effective-block count, shrinkage weight, and pre/post-shrinkage
+are validation-defined tertiles of 𝜌𝑢,𝑗 and are frozen before holdout                                         quantiles are retained for every update. This avoids ranking a sparse
+scoring.                                                                                                      regime cell by an unstable empirical 5% quantile.
+
+
+Table 10: Prespecified residual and influence diagnostics.                                                    C.2 Schema Fields
+Magnitude groups are validation-defined residual-norm ter-
+tiles frozen before holdout scoring.
+                                                                                                              D RABO and DF-RABO Details
+Item                               Reported statistic                           Value
+                                                                                                              D.1 Robustness Score and Controls
+A. Residual and influence distribution
+                                                                                                              For candidate set Ω𝑚,𝑘,𝑟,𝜏 , every component in Eq. (8) is ranked
+Residual norm 𝜌                      median / P90 / maximum                     0.05 / 0.14 / 0.21            within the same pool update. 𝑅𝑃 ranks 𝑃 (𝐽pool > 𝐽bench ); 𝑅𝑄 cand,val
+Boundary saturation                  fraction of active components clipped      10%                                                                                                  5
+                                                                                   schema 6–14%;              ranks the 5% quantile of the shrunk validation distribution; 𝑅med
+Boundary saturation breakdown clipped fraction by schema and market             market 11/9/8/10/12%
+Leave-one-asset influence     P95 / maximum |Δ𝑢,𝑏 |                             0.08 / 0.21                   ranks its median; 𝑅stab measures performance retention under local
+B. Holdout performance by residual magnitude
+                                                                                                              parameter perturbations; and 𝑅turn ranks realized turnover. Rank
+Low tertile                        assets / TR / SR / MDD                20 / 11% / 1.2 / −14%                normalization removes incompatible scales without converting all
+Middle tertile                     assets / TR / SR / MDD                21 / 14% / 0.9 / −11%
+High tertile                       assets / TR / SR / MDD                21 / 13% / 1.1 / −13%                negative lower-tail outcomes to the same clipped value.
+                                                                         14% / SR 1.03;                                seed denote the predeclared fixed-seed strategy-pool ref-
+                                                                                                                 Let 𝑥𝑚,𝑘,𝑟
+High-tertile concentration         top-asset share / volatility-adjusted MDD −13.2%
+                                   check                                                                      erence for market 𝑚, expert 𝑘, and regime 𝑟 . Its matched-block
+                                                                                                              benchmark is
+
+  Let 𝐷𝑚,𝑘,𝑟 (𝑥) denote the regime-specific candidate distribution                                                                                                    
+                                                                                                                                 (𝑚,𝑘,𝑟 )          seed
+and 𝐷𝑚,𝑘 (𝑥) its market–expert parent. With 𝐵 min = 20 effective                                                                𝐽bench,𝑏  = 𝐽pool 𝑥𝑚,𝑘,𝑟 ; B𝑏 , 𝑚, 𝑘, 𝑟 .                (15)
+                                                                                                         12
+MM-ARC: Adaptive Routing of Capital
+
+
+                                      Table 11: Machine-readable strategy schema and validation constraints.
+
+ Field             Constraint                                                                        Example role
+ expert            trend/reversal/breakout/exposure                                                  fixes the admissible grammar
+ indicators        declared list with bounded causal windows                                         MA, RSI, ATR, volume
+ entry/exit        typed Boolean expression tree                                                     crossover or threshold rule
+ position          bounded target-exposure rule                                                      long/flat/short or target volatility
+ risk              stop, leverage, cash, and turnover bounds                                         execution-safe constraints
+ parameters        typed range, integer flag, and default                                            search domain Θ𝑠
+ provenance        adapter, prompt, seed, source cutoff                                              reproducibility and leakage audit
+
+
+For candidate 𝑥, benchmark exceedance is the fraction of the same                             D.2       Mixed Representation and Fidelity Gate
+validation blocks on which its after-cost objective is larger:                                The evaluator encoder produces a frozen schema embedding 𝑒𝑠 ∈
+                              1
+                                   𝐵∑︁
+                                    𝑚,𝑟    h                                     i            R𝑑𝑠 . For the union of expert-specific parameter domains, 𝜃˜ ∈ [0, 1]𝑑𝜃
+                                                                        (𝑚,𝑘,𝑟 )
+  𝑃 (𝐽pool > 𝐽bench ) =                   I 𝐽pool (𝑥; B𝑏 , 𝑚, 𝑘, 𝑟 ) > 𝐽bench,𝑏    .          stores normalized values and 𝑎𝑠 ∈ {0, 1}𝑑𝜃 marks active dimen-
+                            𝐵𝑚,𝑟
+                                   𝑏=1                                                        sions. Inactive values are ignored by the numerical distance, integer
+                                                                   (16)                       dimensions are rounded only before execution, and categorical
+The reference is fixed before BO and RABO, uses the same synchro-                             choices use separate embeddings.
+nized portfolio construction and cost ledger as the candidate, and                               The semantic and masked numerical kernels are combined with
+is never reselected candidate by candidate.                                                   a paired Kennedy–O’Hagan fidelity model [11]:
+   For candidate 𝑥 = (𝑠, 𝜃 ), define its scalar local-validation objec-
+tive as the median after-cost outcome over the matched blocks:                                    𝑘 (𝑥, 𝑥 ′ ) = 𝑘 sem (𝑒𝑠 , 𝑒𝑠 ′ ) 𝑘 num ([𝜃˜; 𝑎𝑠 ], [𝜃˜′ ; 𝑎𝑠 ′ ]),
+              𝐽val (𝑠, 𝜃 ) = median 𝐽pool ((𝑠, 𝜃 ); B𝑏 , 𝑚, 𝑘, 𝑟 ) .              (17)                                                                          𝜎𝛿2 (𝑥)           (20)
+                             1≤𝑏 ≤𝐵𝑚,𝑟                                                               𝐽𝑅 (𝑥) = 𝜌 𝐽𝐿 (𝑥) + 𝛿 (𝑥),               𝑝𝛿 (𝑥) =                        .
+                                                                                                                                                            2 2
+                                                                                                                                                           𝜌 𝜎𝐿 (𝑥) + 𝜎𝛿2 (𝑥)
+Let A𝑠 index the active numeric parameters of schema 𝑠, 𝑒𝑑 be the
+unit vector for dimension 𝑑, and [𝜃𝑑min, 𝜃𝑑max ] its declared search                          Candidates with high discrepancy dominance receive priority for
+range. The one-at-a-time 5% neighborhood is                                                   full evaluation; every admission candidate still receives the same
+                                                      !                                       complete after-cost walk-forward audit. Table 13 reports a separate
+               Ø n                                o                                         budget-matched six-method search diagnostic comparing vanilla
+    N (𝜃 ) =        Π Θ𝑠 𝜃 ± .05(𝜃𝑑 − 𝜃𝑑 )𝑒𝑑
+                                  max      min
+                                                        \ {𝜃 }.  (18)
+                                                                                              BO, full-fidelity RABO search, LLM-initialized BO, evaluator-score-
+                  𝑑 ∈ A𝑠
+                                                                                              only search, random-fidelity RABO, and DF-RABO. Its metrics be-
+Projection enforces the declared bounds; integer parameters are                               long to that diagnostic benchmark and are not directly comparable
+rounded to the nearest legal integer, projected duplicates are re-                            to the end-to-end equal-market holdout ablation in Table 4.
+placed by the nearest distinct legal neighbor when one exists, and
+categorical operators remain fixed. After duplicate neighbors are                             E     Training and Executed-Credit Accounting
+removed, local stability is
+                                                                                              The first training stage minimizes regime cross-entropy on training
+                                              |𝐽val (𝑠, 𝜃 ′ ) − 𝐽val (𝑠, 𝜃 )|
+                                                                             
+                                                                                              records. The second stage freezes the backbone and optimizes the
+  Stability(𝜃 ) = clip [0,1] 1 − median                                         . (19)
+                                 𝜃 ′ ∈ N (𝜃 )      |𝐽val (𝑠, 𝜃 )| + 𝜀 𝐽                       router, expert heads, and execution adapters with clipped actor–
+                                                                                              critic updates. The reward includes after-cost return and penalties
+Algorithm 1 Market-shared RABO pool update                                                    for drawdown, turnover, constraint projection, and abrupt router
+                                                                                              changes. The validation objective and all penalty weights are fixed
+Require: market 𝑚, expert 𝑘, regime 𝑟 , causal cutoff 𝜏                                       before the frozen trading holdout.
+ 1: Form grammar-valid schemas using records visible by 𝜏
+                                                                                                 For synchronized raw expert vector 𝑣𝑡 +1|𝑡,𝑚,𝑘 , define smoothed
+ 2: Run BO over each declared parameter space
+                                                                                              sign-specific shares for each asset component 𝑢:
+ 3: for candidate 𝑥𝑖 do
+ 4:   Evaluate synchronized 𝐽pool (𝑥𝑖 ) on purged validation blocks                                                                [±𝑣𝑡 +1|𝑡,𝑚,𝑘,𝑢 ] + + 𝜖/𝐾
+                                                                                                                     𝑎𝑡±+1|𝑡,𝑢,𝑘 = Í                            .                 (21)
+                                                                                                                                     𝑗 [±𝑣 𝑡 +1|𝑡,𝑚,𝑗,𝑢 ] + + 𝜖
+  5:  Apply Eq. (14) when the regime cell is sparse                                           The executed allocation is
+  6:  Compute exceedance, 𝑄 5cand,val , median, stability, and                                                         (
+      turnover ranks                                                                                                    𝑎+          ℎ∗          , ℎ𝑡∗+1|𝑡,𝑚,𝑢 ≥ 0,
+                                                                                                       ℎ˜𝑡 +1|𝑡,𝑚,𝑘,𝑢 = 𝑡−+1|𝑡,𝑢,𝑘 𝑡∗+1|𝑡,𝑚,𝑢                      (22)
+ 7:   Compute 𝑆 RABO (𝑥𝑖 ) using Eq. (8)                                                                                𝑎𝑡 +1|𝑡,𝑢,𝑘 ℎ𝑡 +1|𝑡,𝑚,𝑢 , ℎ𝑡∗+1|𝑡,𝑚,𝑢 < 0.
+ 8: end for
+                                                                                              Because 𝑘 𝑎𝑡±+1|𝑡,𝑢,𝑘 = 1, expert allocations reconcile exactly with
+                                                                                                       Í
+ 9: Fully evaluate every candidate eligible for admission
+                                                                                              the executed portfolio. Cost is allocated by each expert’s post-
+10: Admit the five highest audited candidates and fit bounded asset-
+                                                                                              projection turnover, not its unexecuted raw target. The leave-one-
+    specific parameter adjustments
+                                                         rob                                  expert-out diagnostic independently recomputes projection and set-
+11: return P𝑚,𝑘,𝑟 and pool-level robustness evidence 𝑐𝑚,𝑟,𝑘
+                                                                                              tlement without expert 𝑘 and compares the counterfactual change
+                                                                                              with the allocated contribution.
+                                                                                         13
+                                                                                                                                                                                          Chen et al.
+
+
+           Table 12: Five-seed mean RABO-control results on the frozen holdout under the matched execution protocol.
+                                                                                                                                                                                       port
+Control                Admission rule                                                                                                                          TR%     SR    MDD%     𝑄 5,20𝑑 % Turn.
+
+BO-best                highest validation peak only                                                                                                            15.0   1.02    -17.3     -11.85    9.8
+Median-only            median of 𝐷e𝑚,𝑘,𝑟 (𝑥 )                                                                                                                  13.5   1.18    -14.8      -9.10    8.0
+Lower-tail-only        𝑄 5cand,val ; CVaR sensitivity retained                                                                                                 13.2   1.14    -14.2      -8.20    7.5
+Stability-only         local parameter-neighborhood stability                                                                                                  12.9   1.10    -14.6      -9.35    7.0
+Turnover-matched BO    BO-best after matching realized turnover to RABO                                                                                        14.3    .99    -16.2      -9.87    7.3
+Equal-weight audit     equal signed weights for the five RABO components                                                                                       13.6   1.20    -14.5      -9.59    7.6
+Full RABO              Eq. (8) with validation-frozen weights                                                                                                  14.1   1.33    -13.7      -8.22    7.2
+Weight sensitivity A   (.35, .25, .15, .15, −.10)                                                                                                              14.0   1.31    -14.0      -8.35    7.3
+Weight sensitivity B   (.25, .35, .15, .15, −.10)                                                                                                              13.9   1.32    -13.9      -8.15    7.1
+Weight sensitivity C   (.30, .30, .20, .10, −.10)                                                                                                              14.2   1.29    -14.1      -8.44    7.4
+
+
+Table 13: Independent dual-fidelity search diagnostic under matched full-evaluation budgets. Its metrics are not directly
+comparable to the end-to-end equal-market holdout ablation in Table 4. Elapsed time is measured in the same environment
+and normalized to vanilla BO.
+                                                                                               port
+                                                Method                      SR     MDD%      𝑄 5,20𝑑 %   Full backtests   Evaluator calls   Relative time
+
+                                                Vanilla BO                   .69     -17.2       -4.31              64                 0           1.00 ×
+                                                Full-fidelity RABO search   .81      -13.8       -2.74              64                 0           1.07 ×
+                                                LLM-initialized BO           .74     -16.0       -3.65              64                20           1.05 ×
+                                                Evaluator-score-only        .40      -21.5       -5.92               0               200            .18 ×
+                                                Random-fidelity RABO         .57     -17.0       -4.10              28               200            .55 ×
+                                                DF-RABO                     .82     -13.6       -2.69               28               200            .56 ×
+
+
+
+F Execution Rules and Additional Evaluation                                                              252 for exchange-traded business-day markets and 𝐴𝑚 = 365 for
+                                                                                                         cryptocurrency. With
+F.1 Projection and Priority Clipping
+                                                                                                                                                    𝑇
+Equation (3b) is a convex projection with an ℓ1 turnover term; an                                                                     net      1 ∑︁𝑚
+                                                                                                                                    𝑟¯𝑚   =          𝑟 net ,
+exact epigraph-form QP solution is retained as an audit reference.                                                                            𝑇𝑚 𝑡 =1 𝑡,𝑚
+The implemented fast path applies the same predeclared priority                                                                                      𝑇𝑚
+order to every compatible method. Each stage can only reduce the                                                                  net 2         1 ∑︁                   2
+                                                                                                                                (𝑠𝑚  ) =                  𝑟 net − 𝑟¯net ,
+requested exposure, and the final ledger rejects any holding that                                                                             𝑇𝑚 − 1 𝑡 =1 𝑡,𝑚 𝑚
+fails the complete feasible-set check.                                                                                                  √︁ 𝑟¯net
+                                                                                                                                   SR𝑚 = 𝐴𝑚 𝑚net ,                                               (23)
+Algorithm 2 Market-level priority clipping                                                                                                  𝑠𝑚
+
+Require: raw target ℎ𝑡raw                        ∗ , rules C
+                                , prior holding ℎ𝑡,𝑚                                                     the reported Sharpe ratio is therefore computed from the market
+                         +1|𝑡,𝑚                             𝑚
+                                                                                                         portfolio, not by averaging asset-level Sharpe ratios. Let 𝑉0,𝑚 = 1
+ 1: Remove unavailable orders and enforce long/short eligibility                                                     Î𝑡          net ). Maximum drawdown is
+                                                                                                         and 𝑉𝑡,𝑚 = 𝜏=1   (1 + 𝑟𝜏,𝑚
+ 2: Clip each asset to its position bound
+                                                                                                                                                         
+ 3: Enforce gross/net exposure and leverage caps                                                                                              𝑉𝑡,𝑚
+                                                                                                                     MDD𝑚 = min                        − 1 ≤ 0,          (24)
+ 4: Enforce the required cash buffer                                                                                            1≤𝑡 ≤𝑇𝑚 max0≤𝑠 ≤𝑡 𝑉𝑠,𝑚
+                  ∗ to the turnover limit
+ 5: Clip 𝑞 = ℎ − ℎ𝑡,𝑚
+                                                                                                         and is reported as a negative percentage. Annualized one-way
+ 6: Recheck C𝑚 ; reduce exposure if needed
+                                                                                                         turnover uses the same executed orders as the cost ledger:
+ 7: return feasible ℎ𝑡∗+1|𝑡,𝑚 and order 𝑞𝑡 +1,𝑚
+                                                                                                                                                        𝑇𝑚
+                                                                                                                                                     𝐴𝑚 ∑︁
+                                                                                                                                       Turn𝑚 =               ∥𝑞𝑡,𝑚 ∥ 1 .                         (25)
+   At date 𝑡, the model uses records available through the market                                                                                    𝑇𝑚 𝑡 =1
+close and submits 𝑞𝑡 +1,𝑚 = ℎ𝑡∗+1|𝑡,𝑚 − ℎ𝑡,𝑚 ∗    at the next tradable                                   Finally, after computing any reported metric 𝑔𝑚 on each market’s
+open. Suspended or unavailable assets retain their prior feasible                                        native calendar, the equal-market summary is
+holding until an order can be executed. The primary normalized
+                                                                                                                                 1 ∑︁          1 ∑︁
+ledger applies Equation (11) as one all-in charge. Its component                                                          𝑔eq =          𝑔𝑚 =          𝑔𝑚 .          (26)
+fields allocate that total for attribution only. In the market-specific                                                         |M|            5
+                                                                                                                                                 𝑚∈ M             𝑚∈ M
+evaluation, commission, slippage, stamp duty, roll cost, and funding                                     This is a reporting operator over five separately settled market
+rules replace—and never supplement—the normalized charge; A-                                             portfolios, not a globally synchronized fund.
+share stamp duty is nonzero only for executed sells.
+                                                                                                         G      Complete Numeric Diagnostics
+F.2       Metric Definitions and Equal-Market                                                            Table 16 reports all five matched equal-market runs used for the
+          Aggregation                                                                                    main mean and SD. Learned methods use training seeds, stochastic
+                                  net be the daily after-cost return
+For one fixed training seed, let 𝑟𝑡,𝑚                                                                    technical search uses TPE/BO seeds, and Buy-and-Hold is invari-
+of market portfolio 𝑚 over its 𝑇𝑚 native sessions; the seed index is                                     ant. Table 17 retains auxiliary seed dispersion, marginal intervals,
+suppressed. The daily risk-free rate is fixed at zero. Define 𝐴𝑚 =                                       turnover, and Holm tests separately from Table 3. Table 18 reports
+                                                                                                   14
+MM-ARC: Adaptive Routing of Capital
+
+
+                               Table 14: Market-specific feasibility, cost components, and operational handling.
+ Market            Position feasibility                    Rebalance/calendar                    Applicable cost components           Additional handling
+ A-shares          long-only, asset/gross caps             exchange days, T+1                    commission, sell stamp duty, slip-   adjusted prices and suspensions
+                                                                                                 page
+ U.S. equities     bounded long/short, margin              exchange calendar                     commission, spread/impact proxy      corporate actions and borrow limits
+ ETFs              venue-dependent long/short              venue calendar                        commission and slippage              distributions and underlying class
+ Futures           contract leverage and margin            lagged dominant contract; next-open   fees, slippage, roll cost            multipliers and roll ledger
+                                                           roll
+ Cryptocurrency    bounded leverage                        continuous 24/7                       fees, slippage, funding              exchange source and outage checks
+
+
+
+
+Figure 4: Transaction-cost sensitivity over 0, 5, 10, 20, and 50
+bps. Predictions, gross returns, and orders remain fixed; only
+the charged friction changes.
+
+Table 15: Market-specific friction sensitivity. This setting re-
+places the normalized charge; predictions, gross returns, and
+orders are fixed. Rates are predeclared execution assump-
+tions, and entries are five-seed means.
+
+  Setting          Cost bps             MM-ARC     LLMoE-style
+                                TR%      SR MDD% TR% SR MDD%
+  A-shares                18     15.0     1.40    -12.6   12.2   0.64    -16.7
+  U.S. Equities            8     24.7     1.55    -16.6   19.8   0.68    -22.2
+  ETFs                     6     15.1     1.50     -9.8   10.6   0.58    -15.2
+  Futures                  5      9.6     1.37     -9.6    6.4   0.49    -13.4
+  Crypto                  25      5.0     0.74    -20.3    0.4   0.10    -22.7
+  Equal-market        mixed      13.9 1.31        -13.8    9.9 0.50      -18.0
+
+
+the 10/20/40-session path-level sensitivity analysis, and Table 19 ex-
+poses the per-market results. Tables 20 and 21 report unresampled
+regime support and record-level checks.
+
+
+
+
+                                                                                     15
+                                                                                                                                                                                               Chen et al.
+
+
+Table 16: Equal-market results for five matched runs under the normalized 10-bps (0.10%) one-way all-in cost. Each cell is TR% /
+SR / MDD%. Seeds index training runs for learned methods and TPE/BO runs for stochastic technical search; B&H is identical
+because neither changes its observed market path.
+                                     Method                          Seed 42              Seed 43               Seed 44                 Seed 45              Seed 46
+                                     B&H                          14.0/0.58/-24.7      14.0/0.58/-24.7       14.0/0.58/-24.7      14.0/0.58/-24.7         14.0/0.58/-24.7
+                                     Stoch. technical search      7.6/0.49/-20.2        9.9/0.44/-19.8        8.9/0.41/-20.3      9.5/0.47/-19.9           8.8/0.44/-21.2
+                                     PPO                          7.9/0.39/-18.6        9.2/0.54/-18.2        7.8/0.39/-17.9      8.7/0.47/-18.3           8.2/0.44/-18.3
+                                     Time-VLM-style               8.6/0.45/-18.5       10.8/0.59/-18.4        9.2/0.50/-19.3      10.2/0.49/-17.8          9.7/0.44/-18.7
+                                     FinAgent (adapted)           7.5/0.41/-20.7        9.3/0.49/-20.4        8.4/0.42/-20.8      9.5/0.46/-20.2           8.8/0.43/-20.8
+                                     LLMoE-style                  9.2/0.46/-18.3       11.4/0.59/-17.8        9.8/0.50/-18.9      10.7/0.55/-18.2         10.8/0.56/-18.2
+                                     MM-ARC                      13.0/1.28/-13.9      15.1/1.33/-13.8       13.4/1.28/-13.9      14.8/1.36/-13.7         14.2/1.41/-13.3
+
+
+Table 17: Optimization-stability and marginal method summaries for the frozen trading holdout. Mean and Seed SD summarize
+five independently trained equal-market seed aggregates. Marginal time-block CIs describe each method separately and are not
+substitutes for the paired difference CI in Table 3. Holm 𝑝 values are auxiliary optimization-stability evidence from two-sided
+tests pairing the five seed aggregates against MM-ARC.
+                                                                             SR        Marginal block        Mean          MDD          One-way turnover
+                                      Method                  Mean SR      Seed SD      95% CI (SR)          MDD%         Seed SD            ( × /yr)            Holm 𝑝
+
+                                      PPO                         0.45         0.06       [-0.03, 1.31]         -18.3          0.3                       11.1    < .001
+                                      FinAgent (adapted)          0.44         0.03       [-0.01, 0.94]         -20.6          0.3                       17.5    < .001
+                                      Time-VLM-style              0.49         0.06        [0.02, 1.17]         -18.5          0.5                       13.6    < .001
+                                      LLMoE-style                 0.53         0.05        [0.08, 1.19]         -18.3          0.4                       12.5    < .001
+                                      MM-ARC                      1.33         0.06       [0.87, 2.69]         -13.7           0.2                        7.2          —
+
+
+Table 18: Block-length sensitivity for paired path-level inference. Each metric cell reports the point difference followed by its
+paired 95% CI from the 1,200-draw market-stratified circular-block bootstrap.
+                                                                                                                                                  port
+                                                                                                                         ΔMDD (pp)         Δ𝑄 5,20𝑑 (pp)
+                                                                                                           ΔSR
+                                                   Comparison                              Block         [95% CI]          [95% CI]          [95% CI]
+                                                                                                        +0.80               +4.6              +2.15
+                                                                                           10        [0.26, 1.46]        [2.03, 6.94]       [.78, 3.56]
+                                                   MM-ARC − LLMoE-style                                 +0.80               +4.6              +2.15
+                                                                                           20         [.13, 1.52]        [1.88, 7.15]       [.47, 3.85]
+                                                                                                        +0.80               +4.6              +2.15
+                                                                                           40         [.14, 1.59]        [1.24, 7.79]       [.33, 4.07]
+                                                                                                           +0.12             +0.8             +0.63
+                                                                                           10            [.06, .21]       [.05, 1.32]       [.15, 1.14]
+                                                   MM-ARC − market-specific static                         +0.12             +0.8             +0.63
+                                                                                           20            [.02, .26]       [.11, 1.42]       [.03, 1.33]
+                                                                                                           +0.12             +0.8             +0.63
+                                                                                           40            [.07, .33]       [.15, 1.52]       [.04, 1.44]
+                                                                                                           +0.31             +3.6              +3.63
+                                                                                           10            [.13, .55]      [1.36, 5.68]       [1.64, 5.65]
+                                                   Full RABO − BO-best                                     +0.31             +3.6              +3.63
+                                                                                           20            [.03, .62]      [1.16, 5.88]       [1.21, 6.07]
+                                                                                                           +0.31             +3.6              +3.63
+                                                                                           40            [.06, .73]       [.62, 6.37]        [.84, 6.53]
+
+
+Table 19: Per-market five-seed mean results under the normalized 10-bps protocol. Each cell is TR% / SR / MDD%, computed
+from the retained method–seed–market daily-return records. Market cells are rounded separately; equal-market summaries
+are computed from the unrounded seed–market records and can therefore differ by one displayed rounding unit from an
+average of the displayed cells.
+                             Method                                 A-shares             U.S. equities                  ETFs                 Futures                Crypto
+                             Buy-and-Hold                        19.8/.72/−22.0         32.3/.92/−29.1          16.1/.75/−16.7           4.6/.35/−18.2          −2.9/.18/−37.6
+                             LLMoE-style                         13.3/.69/−16.9         19.7/.68/−22.5          10.4/.56/−15.6           5.7/.44/−13.7          2.9/.28/−22.8
+                             Market-specific learned static     15.2/1.32/−13.3        23.5/1.42/−17.4         14.2/1.30/−10.8           8.8/1.12/−10.7         7.3/.89/−20.3
+                             MM-ARC                             15.8/1.46/−12.5         24.2/1.55/-16.5        14.9/1.45/−9.8            9.1/1.30/−9.6           6.5/.94/-20.6
+
+
+Table 20: Predicted router-regime coverage. Entries are aver-                                              Table 21: Numerical integrity checks on daily records from
+age observed sessions per seed (share of market timestamps).                                               the frozen trading holdout.
+            Setting             Uptrend     Downtrend          Sideways                                       Identity                                                           Maximum absolute error
+            A-shares        157.8 (65.2%)   38.2 (15.8%)    46.0 (19.0%)
+            U.S. Equities   151.8 (60.5%)   45.4 (18.1%)    53.8 (21.4%)                                      Gross return − costs − net return                                             < 7 × 10 −18
+            ETFs            106.4 (42.4%)   68.6 (27.3%)    76.0 (30.3%)                                      Sum of component costs − total cost                                           < 7 × 10 −18
+            Futures         118.0 (47.0%)   45.4 (18.1%)    87.6 (34.9%)                                      Previous holding + order − executed holding                                   < 7 × 10 −18
+            Crypto          133.0 (36.4%)    29.2 (8.0%)   202.8 (55.6%)
+                                                                                                              Instrument aggregation − market portfolio                                     < 6 × 10 −17
+
+                                                                                                    16
+MM-ARC: Adaptive Routing of Capital
+
+
+H     Result Provenance and Consistency                                      Metrics are computed on each seed–market portfolio before
+The anonymous repository contains an executable pipeline and              equal-market averaging. No asset-average Sharpe ratio is substi-
+related experiment results for MM-ARC. It covers data processing,         tuted for portfolio Sharpe. Turnover is the absolute change in exe-
+training, strategy search, evaluation, and report generation. Full        cuted holdings, and costs use the same order ledger that reconciles
+MM-ARC values reconcile across the main results, ablations, RABO          consecutive holdings. Candidate-level 𝑄 5cand,val remains confined
+                                                                                                                              port
+comparison, per-seed report, and the normalized all-in 10-bps cost        to past validation blocks, whereas the reported 𝑄 5,20𝑑 is computed
+point whenever their aggregation levels match.                            from rolling 20-session after-cost returns in the corresponding eval-
+                                                                          uation record.
+                                                                             The release scope is the executable pipeline and its accompany-
+                                                                          ing experiment results. It does not claim to redistribute the com-
+                                                                          plete upstream market-data corpus or every intermediate record
+                                                                          produced during the research process. The favorable paired results
+                                                                          and family-level rejections are both reported in this paper.
+
+
+
+
+                                                                     17
+
