@@ -141,6 +141,10 @@ The `scripts/*.py` entry points remain available for research-specific and
 submission workflows; reusable portfolio and performance logic lives under
 `src/alpha_evolve/`.
 
+## Project Governance
+
+Contribution, security, citation, and release rules are recorded in [`CONTRIBUTING.md`](CONTRIBUTING.md), [`SECURITY.md`](SECURITY.md), [`CITATION.cff`](CITATION.cff), and [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md). [`CHANGELOG.md`](CHANGELOG.md) distinguishes unreleased work from immutable releases.
+
 ## Open-Source Licensing
 
 Alpha Agent Replication is open-source software intended to help researchers
