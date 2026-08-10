@@ -179,7 +179,7 @@ Any 100/100 sleeve with a realized total portfolio return at or below -100% is a
 ## Exact reproduction commands
 
 ```bash
-cd /nfs/roberts/project/pi_btk22/zc362/ideas/alpha_evolve
+cd /nfs/roberts/project/pi_btk22/zc362/alpha_evolve
 PYTHONPATH=src /home/zc362/project_pi_btk22/zc362/environments/bin/kt-python -m pytest tests/test_submission_analysis.py tests/test_submission_runner.py -q
 PYTHONPATH=src .venv/bin/python scripts/run_submission_evidence.py --tag g7_ex_us_corrected --bootstrap 2000 --missing-return-policy zero
 PYTHONPATH=src .venv/bin/python scripts/run_submission_evidence.py --tag g7_missing_adverse --bootstrap 2000 --missing-return-policy adverse_100

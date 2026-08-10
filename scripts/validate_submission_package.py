@@ -83,6 +83,19 @@ def validate_publication_boundary(root: Path) -> dict[str, int]:
 
     tracked = git_paths(root)
     tracked_names = {path.as_posix() for path in tracked}
+    text_suffixes = {".csv", ".json", ".md", ".py", ".tex", ".toml", ".txt", ".yaml", ".yml"}
+    retired_checkout = b"ideas/" + b"alpha_evolve"
+    retired_path_hits = sorted(
+        relative.as_posix()
+        for relative in tracked
+        if relative.suffix.lower() in text_suffixes
+        and retired_checkout in (root / relative).read_bytes()
+    )
+    if retired_path_hits:
+        raise AssertionError(
+            f"retired checkout paths remain tracked: {retired_path_hits}"
+        )
+
     excluded = sorted(
         name
         for name in tracked_names

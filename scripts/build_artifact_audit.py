@@ -70,6 +70,15 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def portable_manifest_path(path: Path) -> str:
+    """Record repository paths without leaking a machine-specific checkout root."""
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return f"external_input:{resolved.name}"
+
+
 def compact_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
@@ -910,13 +919,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     metadata = {
         "schema_version": 1,
         "audit_timestamp_utc": audit_timestamp,
-        "registry_path": str(args.registry.resolve()),
+        "registry_path": portable_manifest_path(args.registry),
         "registry_sha256": sha256_file(args.registry),
         "registry_rows": len(registry_rows),
         "expected_stratum_counts": EXPECTED_STRATA,
         "expected_main_F_plus_T": EXPECTED_MAIN_FT,
         "offline": bool(args.offline),
-        "cache_path": str(cache_path.resolve()),
+        "cache_path": portable_manifest_path(cache_path),
         "network_timeout_seconds": args.timeout,
         "max_archive_bytes": args.max_archive_bytes,
         "native_execution_attempted": False,

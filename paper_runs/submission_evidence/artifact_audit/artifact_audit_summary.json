@@ -582,7 +582,7 @@
     "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
     "authentication_tokens_used": false,
     "author_contact_attempted": false,
-    "cache_path": "/nfs/roberts/project/pi_btk22/zc362/ideas/alpha_evolve/paper_runs/submission_evidence/artifact_audit/artifact_audit_cache.json",
+    "cache_path": "paper_runs/submission_evidence/artifact_audit/artifact_audit_cache.json",
     "expected_main_F_plus_T": 67,
     "expected_stratum_counts": {
       "B": 23,
@@ -596,7 +596,7 @@
     "native_execution_attempted": false,
     "network_timeout_seconds": 20.0,
     "offline": false,
-    "registry_path": "/nfs/roberts/project/pi_btk22/zc362/ideas/alpha_evolve/literature_review/census_v1/system_registry.csv",
+    "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
     "registry_sha256": "a7da46a0ba2f0548da14db34e5600396133ac2dc4a24315eda52ae6a68d6f3a0",
     "schema_version": 1,
