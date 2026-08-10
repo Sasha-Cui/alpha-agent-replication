@@ -1,0 +1,73 @@
+{
+  "run_id": "guruagents_full_20260809T010651Z",
+  "completed_utc_date": "2026-08-09",
+  "source_commit": "74ad2e6ce2e604c73a6fc2829d48ab58fe6be050",
+  "model": "openai/gpt-4o",
+  "temperature": 0,
+  "workers": 32,
+  "published_agent_quarter_cells": 95,
+  "replay_experiments": 190,
+  "successful_experiments": 190,
+  "failed_experiments": 0,
+  "api_calls_including_two_retried_parser_failures": 307,
+  "prompt_tokens": 3628981,
+  "completion_tokens": 185193,
+  "cumulative_openrouter_cost_usd": 9.910302,
+  "hard_process_budget_usd": 450.0,
+  "conservative_dry_run_ceiling_usd": 53.4607025,
+  "results": {
+    "archived-final": {
+      "experiments": 95,
+      "parse_successes": 95,
+      "mean_ticker_jaccard": 0.5688,
+      "median_ticker_jaccard": 0.5667,
+      "exact_ticker_order": 10,
+      "mean_weight_mae_percentage_points": 2.5790
+    },
+    "tool-routing": {
+      "experiments": 95,
+      "parse_successes": 95,
+      "all_required_archived_tools_used": 95,
+      "mean_api_calls": 2.2,
+      "maximum_api_calls": 3,
+      "mean_ticker_jaccard": 0.6074,
+      "median_ticker_jaccard": 0.5909,
+      "exact_ticker_order": 9,
+      "mean_weight_mae_percentage_points": 2.3099
+    }
+  },
+  "agent_results_across_both_modes": {
+    "altman": {
+      "experiments": 38,
+      "mean_ticker_jaccard": 0.5659,
+      "exact_ticker_order": 0,
+      "mean_weight_mae_percentage_points": 1.3999
+    },
+    "buffett": {
+      "experiments": 38,
+      "mean_ticker_jaccard": 0.4941,
+      "exact_ticker_order": 0,
+      "mean_weight_mae_percentage_points": 3.7156
+    },
+    "graham": {
+      "experiments": 38,
+      "mean_ticker_jaccard": 0.4326,
+      "exact_ticker_order": 0,
+      "mean_weight_mae_percentage_points": 3.0289
+    },
+    "greenblatt": {
+      "experiments": 38,
+      "mean_ticker_jaccard": 0.6039,
+      "exact_ticker_order": 0,
+      "mean_weight_mae_percentage_points": 1.8960
+    },
+    "piotroski": {
+      "experiments": 38,
+      "mean_ticker_jaccard": 0.8442,
+      "exact_ticker_order": 19,
+      "mean_weight_mae_percentage_points": 2.1820
+    }
+  },
+  "interpretation": "Exact public prompts and identical archived finance-tool observations do not generally reproduce the authors' archived holdings exactly. The LLM decision layer is therefore material and should be evaluated directly rather than replaced solely by a JKP motif formula. This run measures portfolio-output fidelity; it does not yet establish return alpha or JKP132-adjusted alpha.",
+  "credential_metadata_included": false
+}

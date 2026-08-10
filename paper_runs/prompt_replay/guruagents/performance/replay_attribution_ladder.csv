@@ -1,0 +1,6 @@
+benchmark,identified_replay_paths,sample_start,sample_end,n_months_min,n_months_max,median_alpha_annualized,positive_alpha_count,nominal_positive_count,holm_positive_count,nominal_negative_count,holm_negative_count
+official_ff_capm_matched_jkp_window,12,2022-04-30,2024-12-31,33,33,0.06967646850496663,12,3,0,0,0
+official_ff3_matched_jkp_window,12,2022-04-30,2024-12-31,33,33,0.05915805532993744,12,2,0,0,0
+official_ff5_momentum_matched_jkp_window,12,2022-04-30,2024-12-31,33,33,0.0579708253607832,12,2,1,0,0
+official_ff5_momentum_plus_jkp_bab,12,2022-04-30,2024-12-31,33,33,0.02586425506958024,10,1,1,0,0
+official_ff5_momentum_plus_jkp_lowrisk,12,2022-04-30,2024-12-31,33,33,0.031044040405963265,10,3,1,0,0
