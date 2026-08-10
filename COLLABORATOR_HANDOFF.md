@@ -26,6 +26,9 @@ Its scope and hashes are in [`paper_runs/handoff/manifest.json`](paper_runs/hand
 Use [`docs/SCIENTIFIC_AUDIT.md`](docs/SCIENTIFIC_AUDIT.md) for the claim audit
 and `paper_runs/submission_evidence/replication_scope/mapping_scope_ledger.csv`
 for the row-level 62-to-50 selection.
+The mutually exclusive paper-level route and its native-first precedence are in
+[`docs/EVIDENCE_ROUTE_POLICY.md`](docs/EVIDENCE_ROUTE_POLICY.md) and
+`paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv`.
 
 ## Current empirical status
 

@@ -40,6 +40,16 @@ rows all come from lineages frozen as `main_FT=N`: four comparator/formula
 methods, six benchmarks or audits, and two community repositories. All 12 are
 M0 narrative translations; none is silently treated as a failed paper.
 
+The paper-level route is now explicit in
+`paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv`.
+Of 69 retained works, 18 have reachable public code/artifact snapshots and
+must receive native execution or a precise blocker before any proxy is treated
+as a secondary diagnostic. The other 51 are paper-only or have inaccessible
+artifacts. None is currently claimed as a full paper-only prompt/search/training
+reproduction: three support only partial source-grounded components, 24 support
+clearly labeled motif proxies, and 24 remain availability-only. See
+`docs/EVIDENCE_ROUTE_POLICY.md` for the precedence rule and exact crosswalk.
+
 ## Estimand and benchmark ladder
 
 For strategy \(i\), month \(t\), and one-way cost \(c=10\) basis points, the
@@ -129,6 +139,7 @@ closest-factor map.
 | 0 Holm-positive broad-JKP results | `benchmark_summary.csv` | `run_retained_benchmark_ladder.py` | `test_retained_benchmark_ladder.py` |
 | 6,600 strategy-factor correlations | `strategy_jkp_factor_correlations.csv` | `run_retained_benchmark_ladder.py` | `test_retained_benchmark_ladder.py` |
 | Top-factor counts and signs | `top_jkp_factor_frequency.csv` | `run_retained_benchmark_ladder.py` | `test_retained_benchmark_ladder.py` |
+| 69 retained works have one of three paper evidence routes | `paper_evidence_route_ledger.csv` | `build_paper_evidence_routes.py` | `test_paper_evidence_routes.py` |
 | 14 code attempts are secondary and produce 0 native replications | `direct_code_attempt_inventory.csv` | `build_replication_scope_assets.py` | `test_replication_scope_assets.py` |
 | Tracked handoff is deterministic | `paper_runs/handoff/` | `build_collaborator_handoff.py` | `validate_submission_package.py` |
 

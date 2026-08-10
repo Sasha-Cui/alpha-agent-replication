@@ -7,6 +7,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +42,11 @@ def run(*command: str, environment: dict[str, str]) -> None:
 
 
 def main() -> int:
+    subprocess.run(
+        [sys.executable, str(ROOT / "scripts/build_paper_evidence_routes.py")],
+        cwd=ROOT,
+        check=True,
+    )
     class_file = TEMPLATE / "acmart.cls"
     bst_file = TEMPLATE / "ACM-Reference-Format.bst"
     if sha256(class_file) != EXPECTED_CLASS_SHA256:

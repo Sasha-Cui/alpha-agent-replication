@@ -144,6 +144,7 @@ ARTIFACT_NOTES = {
 TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": "legacy_targeted:completed_no_direct_strategy_returns",
     "SYS-CONTEST-TRADE": "legacy_targeted:blocked_on_replay_adapter",
+    "SYS-FIN-CON": "legacy_targeted:blocked_jkp_scope_incompatible",
     "SYS-GURU-AGENTS": "legacy_targeted:legacy_non_jkp_diagnostic_only",
     "SYS-QUANT-AGENT-HFT": "legacy_targeted:blocked_jkp_scope_incompatible",
     "SYS-QUANT-EVOLVER": "legacy_targeted:seed_idea_proxy_only_not_native_execution",
@@ -276,7 +277,9 @@ def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     temporary = OUTPUT.with_suffix(".csv.tmp")
     with temporary.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=FIELDS)
+        writer = csv.DictWriter(
+            stream, fieldnames=FIELDS, lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(output_rows)
     temporary.replace(OUTPUT)

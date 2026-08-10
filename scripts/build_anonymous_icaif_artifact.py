@@ -22,11 +22,13 @@ REQUIRED = [
     "docs/confirmatory_analysis_protocol.md",
     "docs/good_faith_reconstruction_protocol.md",
     "docs/SCIENTIFIC_AUDIT.md",
+    "docs/EVIDENCE_ROUTE_POLICY.md",
     "docs/source_anchor_review_packet.md",
     "docs/full_corpus_bibliography.md",
     "docs/system_census_bibliography.md",
     "docs/paper/census_primary_records.bib",
     "docs/paper/generated_corpus_citations.tex",
+    "docs/paper/generated_evidence_routes.tex",
     "literature_review/census_v1/primary_record_metadata.csv",
     "paper_runs/submission_evidence/analysis_lock.json",
     "paper_runs/submission_evidence/artifact_audit/artifact_audit.csv",
@@ -48,6 +50,7 @@ REQUIRED = [
     "paper_runs/submission_evidence/replication_scope/pretrim_primary_record_inventory.csv",
     "paper_runs/submission_evidence/replication_scope/work_level_evidence_waterfall.csv",
     "paper_runs/submission_evidence/replication_scope/mapping_scope_ledger.csv",
+    "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv",
     "paper_runs/repository_ff5mom_metrics_summary.csv",
     "paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv",
     "paper_runs/submission_evidence/usa_retrospective_corrected/factor_monthly_USA.csv",
@@ -77,6 +80,7 @@ REQUIRED = [
     "scripts/build_source_anchor_review_packet.py",
     "scripts/build_census_citation_assets.py",
     "scripts/build_replication_scope_assets.py",
+    "scripts/build_paper_evidence_routes.py",
     "scripts/refresh_census_primary_record_metadata.py",
     "scripts/diagnose_international_failures.py",
     "scripts/build_icaif2026_submission_assets.py",
@@ -86,6 +90,7 @@ REQUIRED = [
     "tests/test_source_anchor_review_packet.py",
     "tests/test_census_citation_assets.py",
     "tests/test_replication_scope_assets.py",
+    "tests/test_paper_evidence_routes.py",
     "tests/test_international_failure_forensics.py",
     "tests/test_retained_benchmark_ladder.py",
 ]
@@ -138,9 +143,11 @@ and a SHA-256 inventory. It does not contain restricted security-level market da
 - `docs/system_census_bibliography.md`: all 67 system lineages and primary records.
 - `docs/full_corpus_bibliography.md`: all 98 pre-trim canonical works, including the
   69 works supporting retained F/T lineages.
-- `paper_runs/submission_evidence/replication_scope/`: the exact 14 code attempts and
-  13 source-anchored partial component mappings from five source papers, plus the 98-work
-  evidence waterfall reconciling screening, code attempts, and reconstruction coverage.
+- `paper_runs/submission_evidence/replication_scope/`: the exact 14 code attempts,
+  13 source-anchored partial component mappings from five source papers, the 98-work
+  evidence waterfall, and the mutually exclusive 69-work evidence-route ledger.
+  Public-code proxies are secondary to native execution or a precise blocker;
+  paper-only mappings remain component/motif diagnostics or availability-only.
 - `paper_runs/submission_evidence/usa_retrospective_corrected/candidate_monthly_USA.csv`:
   aggregate monthly U.S. candidate returns.
 - `paper_runs/submission_evidence/international_failure_forensics/`: event-level audit.
