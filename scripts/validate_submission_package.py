@@ -81,6 +81,32 @@ def validate_publication_boundary(root: Path) -> dict[str, int]:
     if missing:
         raise FileNotFoundError(f"missing canonical repository files: {missing}")
 
+    lock_text = (root / "requirements-lock.txt").read_text()
+    required_locked = (
+        "matplotlib==",
+        "numpy==",
+        "pandas==",
+        "pyarrow==",
+        "pypdf==",
+        "pytest==",
+        "ruff==0.12.12",
+        "scipy==",
+        "statsmodels==",
+    )
+    absent_locks = [entry for entry in required_locked if entry not in lock_text]
+    if absent_locks or "--hash=sha256:" not in lock_text:
+        raise AssertionError(f"dependency lock is incomplete: {absent_locks}")
+
+    workflow_text = (root / ".github/workflows/quality.yml").read_text()
+    required_install_steps = (
+        "--require-hashes -r requirements-lock.txt",
+        "--no-deps -e .",
+        "python -m pip check",
+    )
+    absent_steps = [entry for entry in required_install_steps if entry not in workflow_text]
+    if absent_steps:
+        raise AssertionError(f"CI does not enforce the dependency lock: {absent_steps}")
+
     tracked = git_paths(root)
     tracked_names = {path.as_posix() for path in tracked}
     text_suffixes = {".csv", ".json", ".md", ".py", ".tex", ".toml", ".txt", ".yaml", ".yml"}

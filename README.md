@@ -84,13 +84,20 @@ placing licensed derived data in the public repository.
 
 ## Install
 
+For the tested dependency set, install the hash-pinned lock and then the
+editable project without re-resolving dependencies:
+
 ```bash
 python -m venv .venv
 . .venv/bin/activate
-python -m pip install -e ".[dev]"
+python -m pip install --upgrade pip
+python -m pip install --require-hashes -r requirements-lock.txt
+python -m pip install --no-deps -e .
 ```
 
-The Bouchet environment manifest is kept in `environment.toml`. Installed packages and virtualenvs are intentionally not tracked.
+Use `python -m pip install -e ".[dev]"` only when intentionally updating the
+lock. The Bouchet environment manifest is kept in `environment.toml`;
+installed packages and virtualenvs are intentionally not tracked.
 
 ## External Inputs
 

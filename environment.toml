@@ -1,6 +1,6 @@
 # Environment manifest. Keep this file tracked; do not track installed packages or virtualenv directories.
 schema_version = 1
-project = "alpha_evolve"
+project = "alpha-agent-replication"
 central_registry = "/home/zc362/project_pi_btk22/zc362/environments"
 policy = "Installed packages live in the central registry; this project tracks only source code and environment specifications."
 
@@ -9,15 +9,24 @@ name = "main"
 central_alias = "alpha-evolve"
 interpreter = "/home/zc362/project_pi_btk22/zc362/environments/current/alpha-evolve/bin/python"
 python = "3.9"
-usage = "Alpha-evolve meta-analysis scripts; external repos keep their own native specs."
+usage = "Public package, audit builders, tests, and manuscript validation."
+lock = "requirements-lock.txt"
+install = "python -m pip install --require-hashes -r requirements-lock.txt && python -m pip install --no-deps -e ."
 
 [specs]
+project = "pyproject.toml"
+lock = "requirements-lock.txt"
 package = ["external_repos/*/pyproject.toml"]
 requirements = ["external_repos/*/requirements.txt"]
 native_locks = ["external_repos/*/uv.lock", "external_repos/*/poetry.lock"]
 
 [dependencies]
-direct = ["pandas", "numpy", "matplotlib", "pyarrow"]
+direct = ["matplotlib", "numpy", "pandas", "pyarrow", "pypdf", "scipy", "statsmodels"]
+development = ["pytest", "ruff"]
 
 [notes]
-items = ["Do not vendor external repo packages into this project tree."]
+items = [
+  "Do not install through the project-local .venv compatibility symlink.",
+  "Build and validate a versioned environment under environments/venvs before repointing the central alias.",
+  "Do not vendor external repository packages into this project tree.",
+]
