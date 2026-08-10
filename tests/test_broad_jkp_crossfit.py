@@ -36,6 +36,32 @@ def test_crossfit_retains_alpha_in_test_residual() -> None:
     np.testing.assert_allclose(chosen[:, 0], 1.0)
 
 
+
+def test_crossfit_reconstruction_exposes_predictions_penalties_and_loadings() -> None:
+    rng = np.random.default_rng(17)
+    x = rng.normal(size=(90, 2))
+    y = (0.01 + x @ np.asarray([1.5, -0.4]))[:, None]
+    result = MODULE.rolling_crossfit_reconstruction(
+        x,
+        y,
+        train_months=48,
+        validation_months=12,
+        lambdas=np.asarray([0.0]),
+        n_unpenalized=2,
+    )
+    assert result.residuals.shape == (42, 1)
+    assert result.fitted_values.shape == (42, 1)
+    assert result.selected_lambdas.shape == (42, 1)
+    assert result.loadings.shape == (42, 2, 1)
+    np.testing.assert_allclose(
+        result.fitted_values + result.residuals, y[48:], atol=1e-12
+    )
+    np.testing.assert_allclose(
+        result.loadings[:, :, 0], np.tile([1.5, -0.4], (42, 1)), atol=1e-12
+    )
+    np.testing.assert_allclose(result.selected_lambdas, 0.0)
+
+
 def test_crossfit_uses_no_future_candidate_returns() -> None:
     rng = np.random.default_rng(11)
     x = rng.normal(size=(100, 2))

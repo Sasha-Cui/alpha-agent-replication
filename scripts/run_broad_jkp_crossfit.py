@@ -13,6 +13,7 @@ estimand.
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 import hashlib
 import json
 import math
@@ -42,6 +43,13 @@ BASE_FACTOR_COLUMNS = [
 ]
 
 
+@dataclass(frozen=True)
+class RollingCrossfitResult:
+    residuals: np.ndarray
+    fitted_values: np.ndarray
+    selected_lambdas: np.ndarray
+    loadings: np.ndarray
+
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -49,10 +57,8 @@ def sha256(path: Path) -> str:
             digest.update(chunk)
     return digest.hexdigest()
 
-
 def parse_bool(series: pd.Series) -> pd.Series:
     return series.astype(str).str.strip().str.lower().isin({"true", "1", "yes"})
-
 
 def hac_mean_se(values: np.ndarray, lags: int) -> float:
     values = np.asarray(values, dtype=float)
@@ -65,7 +71,6 @@ def hac_mean_se(values: np.ndarray, lags: int) -> float:
         long_run += 2.0 * weight * gamma
     return math.sqrt(max(long_run, 0.0) / n)
 
-
 def holm_adjust(pvalues: np.ndarray) -> np.ndarray:
     pvalues = np.asarray(pvalues, dtype=float)
     order = np.argsort(pvalues)
@@ -76,7 +81,6 @@ def holm_adjust(pvalues: np.ndarray) -> np.ndarray:
         running = max(running, (m - rank) * pvalues[idx])
         adjusted[idx] = min(running, 1.0)
     return adjusted
-
 
 def standardized_ridge_all(
     x_train: np.ndarray,
@@ -97,20 +101,23 @@ def standardized_ridge_all(
     coefficients = [np.linalg.solve(gram + lam * penalty, rhs) for lam in lambdas]
     return x_mean, x_std, y_mean, coefficients
 
-
-def rolling_crossfit_residuals(
+def rolling_crossfit_reconstruction(
     x: np.ndarray,
     y: np.ndarray,
     train_months: int,
     validation_months: int,
     lambdas: np.ndarray,
     n_unpenalized: int,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> RollingCrossfitResult:
     n, n_candidates = y.shape
     if train_months <= validation_months + 24:
         raise ValueError("Training window must leave at least 24 pre-validation months")
-    residuals = np.full((n - train_months, n_candidates), np.nan, dtype=float)
-    chosen = np.full((n - train_months, n_candidates), np.nan, dtype=float)
+    n_eval = n - train_months
+    n_factors = x.shape[1]
+    residuals = np.full((n_eval, n_candidates), np.nan, dtype=float)
+    fitted_values = np.full((n_eval, n_candidates), np.nan, dtype=float)
+    selected_lambdas = np.full((n_eval, n_candidates), np.nan, dtype=float)
+    loadings = np.full((n_eval, n_factors, n_candidates), np.nan, dtype=float)
 
     for out_row, test_idx in enumerate(range(train_months, n)):
         start = test_idx - train_months
@@ -138,11 +145,36 @@ def rolling_crossfit_residuals(
         beta = np.column_stack(
             [raw_slopes[best_idx[j]][:, j] for j in range(n_candidates)]
         )
-        residuals[out_row] = y[test_idx] - x[test_idx] @ beta
-        chosen[out_row] = lambdas[best_idx]
+        fitted_values[out_row] = x[test_idx] @ beta
+        residuals[out_row] = y[test_idx] - fitted_values[out_row]
+        selected_lambdas[out_row] = lambdas[best_idx]
+        loadings[out_row] = beta
 
-    return residuals, chosen
+    return RollingCrossfitResult(
+        residuals=residuals,
+        fitted_values=fitted_values,
+        selected_lambdas=selected_lambdas,
+        loadings=loadings,
+    )
 
+
+def rolling_crossfit_residuals(
+    x: np.ndarray,
+    y: np.ndarray,
+    train_months: int,
+    validation_months: int,
+    lambdas: np.ndarray,
+    n_unpenalized: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    result = rolling_crossfit_reconstruction(
+        x,
+        y,
+        train_months,
+        validation_months,
+        lambdas,
+        n_unpenalized,
+    )
+    return result.residuals, result.selected_lambdas
 
 def circular_block_indices(
     rng: np.random.Generator, n: int, block_length: int
@@ -151,7 +183,6 @@ def circular_block_indices(
     starts = rng.integers(0, n, size=n_blocks)
     offsets = np.arange(block_length)
     return ((starts[:, None] + offsets[None, :]) % n).ravel()[:n]
-
 
 def main() -> None:
     parser = argparse.ArgumentParser()

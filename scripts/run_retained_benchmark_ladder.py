@@ -17,11 +17,14 @@ import argparse
 import hashlib
 import json
 import math
+import platform
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import scipy
 from scipy.stats import norm
 
 from alpha_evolve.paths import DEFAULT_FACTOR_PANEL
@@ -32,7 +35,7 @@ from run_broad_jkp_crossfit import (
     circular_block_indices,
     hac_mean_se,
     holm_adjust,
-    rolling_crossfit_residuals,
+    rolling_crossfit_reconstruction,
 )
 
 
@@ -79,6 +82,15 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def portable_manifest_path(path: Path, root: Path) -> str:
+    """Use repository-relative paths and opaque labels for authorized inputs."""
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return f"external_authorized_input:{resolved.name}"
 
 
 def parse_bool(series: pd.Series) -> pd.Series:
@@ -335,13 +347,16 @@ def main() -> int:
 
     result_rows: list[dict[str, object]] = []
     residual_frames: list[pd.DataFrame] = []
+    fitted_value_frames: list[pd.DataFrame] = []
+    selected_lambda_frames: list[pd.DataFrame] = []
+    loading_frames: list[pd.DataFrame] = []
     model_manifest: dict[str, dict[str, object]] = {}
     for rank, spec in enumerate(model_specs, start=1):
         benchmark_id = str(spec["benchmark_id"])
         factor_columns = list(spec["factor_columns"])
         lambdas = np.asarray(spec["ridge_lambdas"], dtype=float)
         x = merged[factor_columns].to_numpy(dtype=float)
-        residuals, chosen = rolling_crossfit_residuals(
+        reconstruction = rolling_crossfit_reconstruction(
             x,
             y,
             args.train_months,
@@ -349,6 +364,8 @@ def main() -> int:
             lambdas,
             int(spec["n_unpenalized"]),
         )
+        residuals = reconstruction.residuals
+        chosen = reconstruction.selected_lambdas
         stats = family_statistics(
             residuals,
             y_eval,
@@ -365,6 +382,51 @@ def main() -> int:
         residual_frame.insert(0, "month", eval_months.strftime("%Y-%m-%d"))
         residual_frame.insert(0, "benchmark_id", benchmark_id)
         residual_frames.append(residual_frame)
+
+        fitted_frame = pd.DataFrame(
+            reconstruction.fitted_values, columns=candidate_ids
+        )
+        fitted_frame.insert(
+            0, "realization_month", eval_months.strftime("%Y-%m-%d")
+        )
+        fitted_frame.insert(0, "benchmark_id", benchmark_id)
+        fitted_value_frames.append(fitted_frame)
+
+        lambda_frame = pd.DataFrame(
+            reconstruction.selected_lambdas, columns=candidate_ids
+        )
+        lambda_frame.insert(
+            0, "realization_month", eval_months.strftime("%Y-%m-%d")
+        )
+        lambda_frame.insert(0, "benchmark_id", benchmark_id)
+        selected_lambda_frames.append(lambda_frame)
+
+        loading_wide = pd.DataFrame(
+            reconstruction.loadings.reshape(
+                n_eval * len(factor_columns), len(candidate_ids)
+            ),
+            columns=candidate_ids,
+        )
+        loading_wide.insert(
+            0, "factor_column", np.tile(factor_columns, n_eval)
+        )
+        loading_wide.insert(
+            0,
+            "realization_month",
+            np.repeat(eval_months.strftime("%Y-%m-%d"), len(factor_columns)),
+        )
+        loading_wide.insert(0, "benchmark_id", benchmark_id)
+        loading_frames.append(
+            loading_wide.melt(
+                id_vars=[
+                    "benchmark_id",
+                    "realization_month",
+                    "factor_column",
+                ],
+                var_name="candidate_id",
+                value_name="loading",
+            )
+        )
 
         for j, candidate_id in enumerate(candidate_ids):
             meta = crosswalk_by_id.loc[candidate_id]
@@ -424,6 +486,7 @@ def main() -> int:
             "factor_returns": len(factor_columns),
             "unpenalized_returns": int(spec["n_unpenalized"]),
             "ridge_lambdas": lambdas.tolist(),
+            "factor_order": factor_columns,
             "max_t_critical_95": float(stats["critical"]),
             "positive_alpha": int((means > 0).sum()),
             "nominal_positive": int(((means > 0) & (pvalues < 0.05)).sum()),
@@ -618,12 +681,23 @@ def main() -> int:
         "paper_benchmark_summary.csv": paper_summary,
         "benchmark_summary.csv": benchmark_summary,
         "benchmark_residuals.csv": pd.concat(residual_frames, ignore_index=True),
+        "benchmark_fitted_values.csv": pd.concat(
+            fitted_value_frames, ignore_index=True
+        ),
+        "benchmark_selected_lambdas.csv": pd.concat(
+            selected_lambda_frames, ignore_index=True
+        ),
         "strategy_jkp_factor_correlations.csv": factor_correlations,
         "strategy_top_jkp_factors.csv": top_factors,
         "top_jkp_factor_frequency.csv": top_factor_frequency,
     }
     for filename, frame in outputs.items():
         frame.to_csv(output_dir / filename, index=False)
+
+    loading_path = output_dir / "benchmark_factor_loadings.parquet"
+    pd.concat(loading_frames, ignore_index=True).to_parquet(
+        loading_path, index=False, compression="zstd"
+    )
 
     manifest = {
         "analysis_label": "post_hoc_matched_retained_benchmark_ladder",
@@ -632,11 +706,20 @@ def main() -> int:
             "descriptive spanning analysis conditional on 50 retained mappings; "
             "not native-agent replication and not confirmatory inference"
         ),
-        "factor_panel": str(factor_path),
+        "factor_panel": portable_manifest_path(factor_path, root),
         "factor_panel_sha256": sha256(factor_path),
-        "candidate_monthly": str(candidate_path),
+        "date_labels": {
+            "candidate_formation_month": "formation_month in candidate_monthly_USA.csv",
+            "candidate_realization_month": "month in candidate_monthly_USA.csv",
+            "broad_factor_formation_month": "month in the input factor panel",
+            "broad_factor_realization_month": (
+                "input factor-panel month shifted forward by one month-end"
+            ),
+            "reconstruction_month": "realization_month",
+        },
+        "candidate_monthly": portable_manifest_path(candidate_path, root),
         "candidate_monthly_sha256": sha256(candidate_path),
-        "mapping_audit": str(mapping_path),
+        "mapping_audit": portable_manifest_path(mapping_path, root),
         "mapping_audit_sha256": sha256(mapping_path),
         "market_alignment_correlation": market_alignment_correlation,
         "strategy_count": 50,
@@ -658,6 +741,22 @@ def main() -> int:
         "block_length": args.block_length,
         "bootstrap_seed": args.seed,
         "model_results": model_manifest,
+        "reconstruction_outputs": {
+            "benchmark_residuals.csv": "realized net return minus fitted value",
+            "benchmark_fitted_values.csv": "factor-only fitted value; no intercept",
+            "benchmark_selected_lambdas.csv": "candidate-month validation choice",
+            "benchmark_factor_loadings.parquet": (
+                "rolling raw-scale slope by benchmark, realization month, "
+                "factor, and candidate; no intercept"
+            ),
+        },
+        "software_versions": {
+            "python": sys.version.split()[0],
+            "platform": platform.platform(),
+            "numpy": np.__version__,
+            "pandas": pd.__version__,
+            "scipy": scipy.__version__,
+        },
         "factor_correlation_summary": {
             "factor_count": len(characteristic_columns),
             "strategy_factor_pairs": len(factor_correlations),
@@ -670,7 +769,11 @@ def main() -> int:
             "unique_top_factors": int(top_one["jkp_factor_id"].nunique()),
         },
         "output_sha256": {
-            filename: sha256(output_dir / filename) for filename in outputs
+            **{
+                filename: sha256(output_dir / filename)
+                for filename in outputs
+            },
+            loading_path.name: sha256(loading_path),
         },
     }
     (output_dir / "run_manifest.json").write_text(

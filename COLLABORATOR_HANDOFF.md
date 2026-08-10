@@ -137,3 +137,10 @@ This requires authorized JKP security-level data and the factor panel. Configure
 the `ALPHA_EVOLVE_*` paths in `README.md`. Full runners write ignored monthly
 matrices; compact results and manifests are the publication artifacts. The
 repository intentionally does not export the licensed inputs.
+
+For collaborators independently authorized to use those inputs,
+[`docs/AUTHORIZED_COLLABORATOR_BUNDLE.md`](docs/AUTHORIZED_COLLABORATOR_BUNDLE.md)
+documents the license-gated builder for the 50 monthly candidate paths, both
+factor panels, fitted values, residuals, monthly ridge choices, rolling
+loadings, and a hash-pinned manifest. The generated directory and archive must
+remain outside Git and travel only through an approved transfer channel.

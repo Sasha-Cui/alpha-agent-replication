@@ -15,3 +15,8 @@ Copyright 2026 Sasha Cui.
 Generated security-level returns derived from licensed research data are not
 granted for redistribution by this repository. Aggregate facts and original
 analysis code remain covered as stated above.
+
+The authorization-gated collaborator-bundle builder does not change this
+boundary. A generated bundle may be provided only to recipients independently
+authorized for every supplied input, through an approved channel, and it does
+not grant downstream redistribution rights.

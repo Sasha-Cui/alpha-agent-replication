@@ -63,6 +63,10 @@ exact commands are recorded in
 Large licensed security-level inputs and regenerated monthly reconstruction
 matrices remain outside Git; their paths and SHA-256 hashes are recorded in the
 run manifests.
+Authorized collaborators can use the documented external packager in
+[`docs/AUTHORIZED_COLLABORATOR_BUNDLE.md`](docs/AUTHORIZED_COLLABORATOR_BUNDLE.md)
+to receive the complete 50-strategy and factor-reconstruction matrices without
+placing licensed derived data in the public repository.
 
 ## Repository Layout
 
