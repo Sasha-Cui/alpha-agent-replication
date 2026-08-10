@@ -24,6 +24,14 @@ and what must be acquired or regenerated separately.
 | `retained_benchmark_ladder/strategy_jkp_factor_correlations.csv` | 6,600 | 13 | Derived strategy-factor correlation ledger |
 | `retained_benchmark_ladder/strategy_top_jkp_factors.csv` | 250 | 13 | Five closest derived factors per strategy |
 | `international_failure_forensics/failure_event_forensics.csv` | 40 | 36 | Forensic decomposition of international plausibility failures |
+| `prompt_replay/guruagents/live_run_summary.csv` | 190 | 18 | OpenRouter GPT-4o replay outcomes and prompt-fidelity diagnostics |
+| `prompt_replay/guruagents/performance/monthly_return_paths.csv` | 2,838 | 21 | Formation-to-realization replay, author, and proxy return paths with costs and failure flags |
+| `prompt_replay/guruagents/performance/factor_panel_extended_realization.csv` | 305 | 135 | Explicitly shifted market-plus-132-JKP realization panel |
+| `prompt_replay/guruagents/performance/alpha_regressions.csv` | 498 | 24 | CAPM, Fama--French, BAB/low-risk, compressed-JKP, and ridge alpha tests |
+| `prompt_replay/guruagents/performance/factor_fitted_and_residuals.csv` | 17,952 | 11 | Monthly fitted values, residuals, and selected penalties |
+| `prompt_replay/guruagents/performance/monthly_ridge_loadings.csv` | 107,730 | 6 | Inspectable rolling factor coefficients |
+| `prompt_replay/guruagents/performance/replay_attribution_ladder.csv` | 5 | 12 | Matched-window Fama--French-to-BAB attribution summary |
+| `prompt_replay/guruagents/performance/guruagents_prompt_replay_performance_audit.xlsx` | 9 sheets | -- | Formatted collaborator audit workbook built from the same CSV evidence |
 
 Paths in the table are relative to `paper_runs/` when the prefix is omitted.
 The repository also contains compact cost curves, HAC/block sensitivities,
@@ -79,8 +87,8 @@ git diff --exit-code -- literature_review/source_pdfs \
 | Excluded material | Reason | How a collaborator proceeds |
 | --- | --- | --- |
 | JKP security-level characteristic/return panels | Licensed research data; not granted for redistribution | Obtain authorized access and set `ALPHA_EVOLVE_JKP_ROOT` / `ALPHA_EVOLVE_JKP_USA` |
-| JKP factor-panel time series | User explicitly does not need this exported; derived results are sufficient for initial handoff | Rebuild locally from authorized inputs or set `ALPHA_EVOLVE_FACTOR_PANEL` |
-| Monthly candidate and factor reconstruction matrices | High-volume, reproducible intermediates derived from restricted inputs | Run the tracked portfolio builders; verify input/output hashes in manifests |
+| Raw external JKP broad-factor source and security-level observations | Source licensing and institutional terms remain controlling | The authorized GuruAgents bundle includes only the aligned derived factor-return panel and its hashes; acquire raw inputs separately for regeneration |
+| Fifty-strategy monthly candidate and reconstruction matrices | Derived from access-dependent security-level inputs and therefore not placed in the public compact handoff | Build the authorized collaborator bundle outside Git with `scripts/build_authorized_collaborator_bundle.py` |
 | `external_repos/` and `external_repos_code_links/` | Large third-party clones with independent licenses and mutable upstream histories | Use the artifact audit's URLs, revisions, license fields, and blockers to acquire allowed versions |
 | Virtual environments, package caches, logs, and scratch | Machine-specific or regenerable | Install from `pyproject.toml`; use `environment.toml` on Bouchet |
 | Alternate compiled manuscript versions | Avoid ambiguity during handoff | Use the one canonical PDF and its matching TeX source |

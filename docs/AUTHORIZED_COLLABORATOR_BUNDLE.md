@@ -39,6 +39,39 @@ window for penalty validation, and evaluate the next month. Loadings and fitted
 values deliberately exclude the training-period intercept, matching the
 published residual estimand.
 
+## Prompt-replay performance bundle
+
+The separate GuruAgents replay experiment writes a second, self-auditing
+collaborator package under
+`paper_runs/prompt_replay/guruagents/performance/`. It is distinct from the
+50-strategy motif-proxy bundle above: the holdings come from 190 actual GPT-4o
+prompt replays through OpenRouter, in archived-final and tool-routing modes,
+rather than from a deterministic JKP formula. The package contains:
+
+- 24 replay, 12 archived-author, and six JKP-proxy monthly return paths, with
+  explicit formation and realization months, gross and 10-bp net returns,
+  traded notional, cost, completeness, eligibility, and failure fields;
+- formation holdings, parsing/correction audit fields, execution dates,
+  rebalance-level traded notional, and turnover summaries;
+- the same-universe Nasdaq market return, the official Fama--French and
+  momentum panel, and the aligned market-plus-132-JKP formation and
+  realization panels;
+- 498 alpha-regression records covering same-universe CAPM, official CAPM,
+  FF3, FF5 plus momentum, FF5 plus momentum plus JKP BAB, a seven-factor JKP
+  low-risk block, the primary six JKP factors, compressed pre-2022 JKP, and an
+  exploratory leave-one-month-out JKP132 ridge diagnostic;
+- monthly factor fitted values and residuals, selected ridge penalties, static
+  loadings, 107,730 monthly rolling loading records, and both aggregate and
+  candidate-level attribution ladders; and
+- a nine-sheet audit workbook plus a manifest with portable input locators,
+  SHA-256 hashes, factor order, date clocks, sample restrictions, costs,
+  software versions, and licensing cautions.
+
+Run `scripts/evaluate_guruagents_prompt_replay_performance.py` to rebuild this
+package from the authorized replay archive and factor inputs. The evaluator
+does not publish host-specific absolute paths. Its manifest identifies external
+inputs by basename and hash, and repository inputs by relative path.
+
 ## Build sequence
 
 First regenerate the frozen candidate and same-universe factor matrices with
@@ -76,3 +109,5 @@ security-level observations. Even so, underlying JKP, market-data,
 institutional, and third-party terms continue to apply. Neither the repository
 license nor possession of the bundle authorizes redistribution. Each recipient
 must confirm independent authorization with the data owner or institution.
+The GuruAgents package likewise contains derived audit outputs only; raw source
+data and third-party prompts remain subject to their original terms.
