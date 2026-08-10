@@ -321,7 +321,7 @@ def main() -> int:
         "median nearest-factor correlation is 0.81",
         "none reports factor-adjusted alpha or uses JKP132",
         "proprietary pretraining corpora",
-        "cannot identify this mechanism causally",
+        "does not attribute any strategy to memorization, retrieval, or rediscovery",
         "The secondary repository audit targets 14 implementations",
         "It reproduces zero native agents",
         "All 98 works are cited",
@@ -386,7 +386,7 @@ def main() -> int:
                     ("descriptive", "not confirmatory", "post-hoc")),
                 "conditional-inference boundary absent")
         require("proprietary pretraining" in folded_text and
-                "cannot identify this mechanism causally" in folded_text,
+                "does not attribute any strategy" in folded_text,
                 "mechanism caveat absent")
         require("reproducibility and secondary code audit" in folded_text,
                 "self-contained audit section absent")

@@ -890,7 +890,7 @@ def main() -> int:
         patch.set_alpha(0.82)
     ax.axhline(0, color=INK, linewidth=0.9, zorder=0)
     ax.set_ylabel("Annualized one-month-ahead residual mean (%)")
-    ax.set_title("Known factors absorb the apparent strategy alpha", pad=12)
+    ax.set_title("Broad controls attenuate reconstructed-strategy alpha", pad=12)
     ax.grid(axis="y", alpha=0.35)
     ax.set_axisbelow(True)
     for position, benchmark_id in enumerate(benchmark_order, start=1):

@@ -20,7 +20,9 @@ map in [`docs/EXPERIMENT_INDEX.md`](docs/EXPERIMENT_INDEX.md), and the compact
 [`paper_runs/handoff/strategy_result_index.csv`](paper_runs/handoff/strategy_result_index.csv).
 For an adversarial claim-by-claim review, use
 [`docs/SCIENTIFIC_AUDIT.md`](docs/SCIENTIFIC_AUDIT.md), including the explicit
-98/69/40/50/62/14 denominator reconciliation.
+98/69/40/50/62/14 denominator reconciliation. The confirmatory repair for
+retrospective mapping discretion is the outcome-blind, double-coded protocol in
+[`docs/INDEPENDENT_MAPPING_REVIEW_PLAN.md`](docs/INDEPENDENT_MAPPING_REVIEW_PLAN.md).
 
 The 50 rows are genuinely implemented and backtested common-task strategies,
 but they are not 50 native-agent replications. They comprise one released-code

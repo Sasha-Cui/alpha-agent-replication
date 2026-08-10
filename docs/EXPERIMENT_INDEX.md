@@ -53,3 +53,5 @@ python scripts/build_icaif2026_submission_assets.py
 Before rerunning a frozen empirical stage, inspect its `run_manifest.json` and
 the analysis lock. Do not silently overwrite frozen outputs with a different
 input panel, calendar, cost assumption, mapping set, or factor definition.
+The outcome-blind confirmatory repair for mapping discretion is specified in
+[`INDEPENDENT_MAPPING_REVIEW_PLAN.md`](INDEPENDENT_MAPPING_REVIEW_PLAN.md).
