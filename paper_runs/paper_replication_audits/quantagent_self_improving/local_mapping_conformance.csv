@@ -1,0 +1,4 @@
+candidate_id,local_tier,source_anchor,preserved,changed_or_added,paper_result_credit
+quantagent_three_soldiers_trend,M0_narrative_translation,appendix Three Soldiers idea and invalid listings,broad upward-price and volume motif,"monthly JKP returns, turnover and volatility ranks; long-short deciles; U.S. universe",no
+quantagent_volatility_breakout,M0_narrative_translation,appendix VolatilityBreakoutSignal,broad breakout/volatility motif,monthly JKP rmax/return/volatility ranks; long-short deciles; U.S. universe,no
+quantagent_atr14_breakout_literal,C-conditional,appendix VolatilityBreakoutSignal formula,"literal two-bar-lag true range, ATR14, prior-high-plus-1.5-ATR barrier and nonnegative normalization",daily A-shares become monthly U.S. top-1000; researcher positive top-10 long-only rule; self-improving agent omitted,no

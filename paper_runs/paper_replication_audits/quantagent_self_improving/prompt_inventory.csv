@@ -1,0 +1,10 @@
+prompt_id,role,recovery_status,text_or_evidence,immutable_request_metadata_released,native_runtime_message_recovered,exact_replay_credit
+QA-PROMPT-01,example trading-idea request,recovered,I observed that three consecutive candlesticks each closing higher than the preceding one. This pattern suggests strong buying pressure in the market. Please implement a trading signal based on this observation,no,no,no
+QA-PROMPT-02,writer/agent system prompt,missing,described as specifically designed but not printed,no,no,no
+QA-PROMPT-03,judge/mentor system prompt,missing,described as specifically designed but not printed,no,no,no
+QA-PROMPT-04,knowledge-base retrieval prompt/query template,missing,retrieve() is pseudocode only,no,no,no
+QA-PROMPT-05,outer-loop trading-idea generator prompt,missing,another LLM is named but prompt and distribution are absent,no,no,no
+QA-PROMPT-06,GPT-4 pairwise relevance judge prompt,missing,comparison task is described but the request is absent,no,no,no
+QA-PROMPT-07,knowledge-base update/sanity-check rule,missing,prose says rules exist but does not state them,no,no,no
+QA-PROMPT-08,XGBoost feature/target construction request,missing,no executable training specification,no,no,no
+QA-PROMPT-09,runtime messages and tool transcripts,missing,only selected appendix outputs/reviews are printed,no,no,no

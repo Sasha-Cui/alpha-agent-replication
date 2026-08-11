@@ -1,0 +1,13 @@
+issue_id,severity,issue,replication_effect,native_result_credit
+QA-INT-001,blocking,Algorithm 1 computes score but terminates on undefined r,prevents exact control-flow reconstruction,no
+QA-INT-002,major,Algorithm 2 repeats one fixed problem p while the experiment samples a new trading idea at each outer iteration,outer-loop task sequence is ambiguous,no
+QA-INT-003,blocking,ThreeSoldierSignal v1 combines a rolling open window with the full close series,published v1 raises an index-alignment error on ordinary aligned data,no
+QA-INT-004,blocking,ImprovedThreeSoldierSignal v2 combines rolling and full-history series and uses vector booleans in if,published v2 raises before producing a signal,no
+QA-INT-005,blocking,mentor-passed ThreeSoldierSignalV3 is syntactically invalid,the source-approved final listing cannot be parsed,no
+QA-INT-006,major,V3 assigns volume_ratio=8 when volume is not increasing,the stated volume confirmation can increase and saturate the signal when the condition fails,no
+QA-INT-007,major,VolatilityBreakoutSignal shifts pre_close even though pre_close is defined as the previous day's close,literal code uses a two-bar close lag rather than standard true range,no
+QA-INT-008,major,base-data prose spells pre-close while code requests pre_close,the unreleased framework's key normalization is required,no
+QA-INT-009,blocking,results say significant differences are not apparent but claim the blue trend proves effectiveness in all metrics,no statistical test or uncertainty measure resolves the inference,no
+QA-INT-010,blocking,Theorem 4.6 combines separately sublinear K and T statements into sublinear KT without rates or a complete transfer proof,the claimed end-to-end regret guarantee is not independently reconstructible,no
+QA-INT-011,major,the source contains unused captions naming AlphaAgent while the paper system is QuantAgent,source lineage/naming is ambiguous but inactive in the PDF,no
+QA-INT-012,major,the same 2023 market feedback appears to build the knowledge base and support performance plots without a disclosed holdout split,out-of-sample status and adaptive reuse cannot be determined,no

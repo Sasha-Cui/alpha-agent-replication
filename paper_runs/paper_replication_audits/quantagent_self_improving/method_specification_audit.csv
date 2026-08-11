@@ -1,0 +1,87 @@
+category,dimension,assessment,severity,paper_or_source_evidence,exact_native_reconstruction
+paper,arXiv version,specified,none,"v1 only, submitted 2024-02-06",yes
+paper,authoritative TeX source,specified,none,44-file official source archive,yes
+paper,document rebuild,specified,none,15-page rebuild,yes
+artifact,author-linked repository,missing,blocking,no repository listed or found,no
+artifact,native QuantAgent implementation,missing,blocking,not released,no
+artifact,idea_factor framework,missing,blocking,named as internally developed; no package snapshot,no
+artifact,license for experiment code/data,missing,major,not released,no
+data,market,specified,none,Chinese A-share market,yes
+data,universe size,specified,none,500 stocks,yes
+data,universe constituents,missing,blocking,identities and selection date absent,no
+data,calendar period,partial,major,year 2023 only,no
+data,data vendor and snapshot,missing,blocking,absent,no
+data,daily base fields,specified,none,12 OHLC/volume/share/trading fields listed,yes
+data,price adjustment convention,missing,blocking,absent,no
+data,suspension and limit-up/down handling,missing,blocking,absent,no
+data,delisting and survivorship handling,missing,blocking,absent,no
+data,missing-value treatment,missing,blocking,"outside selected snippets, absent",no
+data,future-return horizon,missing,blocking,IC says future returns but horizon is absent,no
+data,train/validation/test split,missing,blocking,absent,no
+data,adaptive reuse boundary,missing,blocking,same-period KB construction and evaluation not separated,no
+model,foundation model name,specified,none,gpt-4-0125-preview,yes
+model,API provider endpoint/snapshot,partial,major,model alias stated; immutable request metadata absent,no
+model,temperature,missing,blocking,absent,no
+model,sampling seed,missing,blocking,absent,no
+model,token limits,missing,major,absent,no
+model,writer and judge model assignment,partial,blocking,both are LLMs; exact assignments absent,no
+model,outer trading-idea generator model,missing,blocking,only 'another LLM' is stated,no
+prompt,writer prompt,missing,blocking,absent,no
+prompt,judge prompt,missing,blocking,absent,no
+prompt,trading-idea generator prompt,missing,blocking,absent,no
+prompt,pairwise relevance prompt,missing,blocking,absent,no
+prompt,example Three Soldiers request,specified,none,printed verbatim,yes
+inner_loop,algorithm skeleton,specified,none,Algorithm 1,yes
+inner_loop,termination variable,conflict,blocking,score computed; undefined r tested,no
+inner_loop,reward threshold beta,missing,blocking,symbol only,no
+inner_loop,iteration limit T,missing,blocking,symbol only,no
+inner_loop,context serialization,missing,blocking,set-union pseudocode only,no
+inner_loop,retrieval algorithm,missing,blocking,retrieve() pseudocode only,no
+inner_loop,embedding model,missing,blocking,embeddings mentioned but not identified,no
+inner_loop,retrieval index and top-k,missing,blocking,absent,no
+inner_loop,judge score scale,missing,blocking,absent,no
+outer_loop,algorithm skeleton,specified,none,Algorithm 2,yes
+outer_loop,number of iterations K,missing,blocking,symbol only,no
+outer_loop,problem sequence,conflict,blocking,fixed p in algorithm versus sampled ideas in experiment,no
+outer_loop,environment feedback metrics,partial,major,"scores/reviews described, exact vector absent",no
+outer_loop,knowledge-base update rule,missing,blocking,sanity checks claimed but rules absent,no
+outer_loop,knowledge-base initial contents,partial,major,Algorithm 2 initializes empty; experimental initialization unclear,no
+outer_loop,knowledge-base records,partial,major,"outputs, scores, feedback described; snapshot absent",no
+signal,Factor interface,partial,major,interface prose and one example; base class absent,no
+signal,VolatilityBreakout code,specified,major,literal listing executes with stub but uses two-bar close lag,no
+signal,Three Soldiers v1 code,specified,blocking,listing raises index-alignment error,no
+signal,Three Soldiers v2 code,specified,blocking,listing raises index-alignment error,no
+signal,Three Soldiers v3 code,conflict,blocking,mentor-pass prose accompanies invalid Python,no
+signal,generated signal library,missing,blocking,no generated programs or values,no
+signal,signal count,partial,major,figures imply many signals but exact census is absent,no
+signal,duplicate filtering,partial,major,valid/unique entities mentioned; algorithm absent,no
+metric,IC definition,specified,none,daily cross-sectional Pearson correlation averaged over time,yes
+metric,IC uncertainty/significance,missing,major,absent,no
+metric,return definition,missing,blocking,Figure 3 ret units and portfolio construction absent,no
+metric,Sharpe definition,missing,blocking,"frequency, risk-free rate, annualization absent",no
+metric,transaction costs,missing,blocking,absent,no
+metric,portfolio weights and rebalance,missing,blocking,absent,no
+metric,entry valid ratio definition,partial,major,valid/unique prose but exact formula absent,no
+metric,relevance win-rate construction,partial,major,pairwise GPT-4 comparison described; requests/order absent,no
+xgboost,model family,specified,none,XGBoost regression trees,yes
+xgboost,version and hyperparameters,missing,blocking,absent,no
+xgboost,feature matrix,partial,blocking,KB used as features; exact matrix absent,no
+xgboost,target and forecast horizon,missing,blocking,absent,no
+xgboost,fit/evaluation split,missing,blocking,absent,no
+results,Figure 3 raw arrays,missing,blocking,16 line series are figure geometry only,no
+results,Figure 4 raw matrices,missing,blocking,400 heatmap cells are figure geometry only,no
+results,Figure 5 raw arrays,missing,blocking,raster line only,no
+results,numeric result tables,missing,major,none in paper,no
+results,uncertainty intervals,missing,major,absent,no
+results,statistical tests,missing,major,absent,no
+results,random seeds and repetitions,missing,blocking,absent,no
+theory,inner-loop proof,partial,major,lemma delegates details to other papers,no
+theory,outer-loop proof,partial,major,assumes PEVI and delegates details,no
+theory,end-to-end sublinear-KT proof,conflict,blocking,rates/transfer conditions are insufficiently stated,no
+runtime,Python version,missing,major,absent,no
+runtime,package lock,missing,blocking,absent,no
+runtime,hardware,missing,major,absent,no
+runtime,API logs and cost,missing,major,absent,no
+local,two legacy JKP mappings,partial,major,"M0 narrative translations, not paper signals",no
+local,literal ATR14 component,partial,major,C-conditional monthly U.S. adaptation with researcher portfolio,no
+local,native result relation,specified,none,all local paths explicitly receive zero paper-result credit,yes

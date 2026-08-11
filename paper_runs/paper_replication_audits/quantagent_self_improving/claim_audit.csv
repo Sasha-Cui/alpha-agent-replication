@@ -1,0 +1,10 @@
+claim_id,paper_claim,released_support,exactly_reproduced,paper_result_credit
+QA-CLAIM-01,agent progressively approximates optimal behavior with provable efficiency,theory sketch and transferred assumptions only,no,no
+QA-CLAIM-02,QuantAgent uncovers viable financial signals,"no released signal census, code, or return path",no,no
+QA-CLAIM-03,QuantAgent enhances financial-forecast accuracy,Figure 5 geometry only; split and arrays absent,no,no
+QA-CLAIM-04,self-improvement strengthens single-alpha metrics,Figure 3 geometry only; prose says significance is not apparent,no,no
+QA-CLAIM-05,inner and outer loops improve idea relevance,"four Figure 4 heatmaps without arrays, prompt, or judge requests",no,no
+QA-CLAIM-06,knowledge base is a reliable XGBoost feature source,"model configuration, target, split, and predictions absent",no,no
+QA-CLAIM-07,final Three Soldiers implementation is sound,the printed mentor-passed code has a SyntaxError,no,no
+QA-CLAIM-08,signals generate satisfactory investment returns,Sharpe construction and portfolios are unspecified,no,no
+QA-CLAIM-09,the framework requires minimal human intervention,"selection, prompt construction, sanity checks, and manual curation are not logged",no,no

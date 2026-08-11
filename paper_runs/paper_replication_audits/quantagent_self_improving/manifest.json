@@ -1,0 +1,42 @@
+{
+  "audit_route": "paper_only_underspecified_with_official_source_and_conditional_formula_component",
+  "author_linked_code_found": false,
+  "blocking_internal_consistency_issues": 6,
+  "canonical_work_id": "CensusArxiv240203755",
+  "claims_audited": 9,
+  "github_repository_hits": 0,
+  "github_repository_searches": 8,
+  "heatmap_cells": 400,
+  "heatmap_cells_reproduced": 0,
+  "internal_consistency_issues": 12,
+  "mentor_passed_listing_compiles": false,
+  "method_assessment_counts": {
+    "conflict": 4,
+    "missing": 50,
+    "partial": 16,
+    "specified": 16
+  },
+  "method_dimensions": 86,
+  "method_severity_counts": {
+    "blocking": 49,
+    "major": 24,
+    "none": 13
+  },
+  "native_execution": "native_execution.json",
+  "official_pdf_pages": 15,
+  "official_source_files": 44,
+  "overall_fidelity": "source_document_rebuilt_but_zero_of_17_line_series_and_zero_of_400_heatmap_cells_reproduced_no_native_agent_pipeline",
+  "paper": "QuantAgent: Seeking Holy Grail in Trading by Self-Improving Large Language Model",
+  "paper_result_credit": false,
+  "plotted_line_series": 17,
+  "plotted_line_series_reproduced": 0,
+  "prompt_fragments_recovered": 1,
+  "published_python_listings": 4,
+  "published_python_listings_compiled": 3,
+  "published_python_listings_executed_with_stub": 1,
+  "source_build_audit": "source_build_audit.json",
+  "source_document_rebuild_succeeded": true,
+  "source_document_token_jaccard": 0.9993037019844494,
+  "source_provenance": "source_provenance.json",
+  "system_id": "SYS-QUANT-AGENT-SELF-IMPROVING"
+}

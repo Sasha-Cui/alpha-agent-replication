@@ -1,0 +1,15 @@
+{
+  "attempted": false,
+  "heatmap_cells": 400,
+  "heatmap_cells_reproduced": 0,
+  "local_proxy_boundary": "all local portfolio rules, U.S. universe choices, monthly cadence, weights, and return streams are non-native and receive zero paper-result credit",
+  "local_proxy_status": "two_M0_narrative_translations_plus_one_C_conditional_literal_component",
+  "paper_result_credit": false,
+  "plotted_line_series": 17,
+  "plotted_line_series_reproduced": 0,
+  "published_python_listings": 4,
+  "published_python_listings_compiled": 3,
+  "published_python_listings_executed_with_stub": 1,
+  "reason": "no_author_linked_pipeline_data_prompts_knowledge_base_generated_signals_model_predictions_or_result_arrays",
+  "source_document_rebuild_succeeded": true
+}

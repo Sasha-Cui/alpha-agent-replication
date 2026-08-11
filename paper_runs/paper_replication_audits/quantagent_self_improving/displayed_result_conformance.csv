@@ -1,0 +1,22 @@
+result_id,figure,source_asset,panel,metric,display_object,display_elements,raw_values_released,exact_values_recovered,native_reproduction_status,paper_result_credit
+FIG3-entry_valid_ratio-inner_and_outer,Figure 3,figs/single_alpha_perf.pdf,entry_valid_ratio,entry valid ratio,line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-entry_valid_ratio-inner_only,Figure 3,figs/single_alpha_perf.pdf,entry_valid_ratio,entry valid ratio,line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-entry_valid_ratio-outer_only,Figure 3,figs/single_alpha_perf.pdf,entry_valid_ratio,entry valid ratio,line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-entry_valid_ratio-direct_neither,Figure 3,figs/single_alpha_perf.pdf,entry_valid_ratio,entry valid ratio,line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-information_coefficient-inner_and_outer,Figure 3,figs/single_alpha_perf.pdf,information_coefficient,IC,line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-information_coefficient-inner_only,Figure 3,figs/single_alpha_perf.pdf,information_coefficient,IC,line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-information_coefficient-outer_only,Figure 3,figs/single_alpha_perf.pdf,information_coefficient,IC,line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-information_coefficient-direct_neither,Figure 3,figs/single_alpha_perf.pdf,information_coefficient,IC,line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-return-inner_and_outer,Figure 3,figs/single_alpha_perf.pdf,return,ret (units not stated),line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-return-inner_only,Figure 3,figs/single_alpha_perf.pdf,return,ret (units not stated),line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-return-outer_only,Figure 3,figs/single_alpha_perf.pdf,return,ret (units not stated),line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-return-direct_neither,Figure 3,figs/single_alpha_perf.pdf,return,ret (units not stated),line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-sharpe-inner_and_outer,Figure 3,figs/single_alpha_perf.pdf,sharpe,shp (formula and units not stated),line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-sharpe-inner_only,Figure 3,figs/single_alpha_perf.pdf,sharpe,shp (formula and units not stated),line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-sharpe-outer_only,Figure 3,figs/single_alpha_perf.pdf,sharpe,shp (formula and units not stated),line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG3-sharpe-direct_neither,Figure 3,figs/single_alpha_perf.pdf,sharpe,shp (formula and units not stated),line_series,unknown_exact_point_count,no,no,not_reproduced_figure_geometry_only,no
+FIG4-inner_and_outer,Figure 4,figs/relevance.pdf,inner_and_outer,GPT-4 pairwise relevance win-rate matrix: with inner and outer loop,10x10_heatmap,100,no,no,not_reproduced_figure_geometry_only,no
+FIG4-outer_only,Figure 4,figs/relevance.pdf,outer_only,"GPT-4 pairwise relevance win-rate matrix: without inner loop, only outer loop",10x10_heatmap,100,no,no,not_reproduced_figure_geometry_only,no
+FIG4-inner_only,Figure 4,figs/relevance.pdf,inner_only,"GPT-4 pairwise relevance win-rate matrix: without outer loop, only inner loop",10x10_heatmap,100,no,no,not_reproduced_figure_geometry_only,no
+FIG4-neither,Figure 4,figs/relevance.pdf,neither,GPT-4 pairwise relevance win-rate matrix: no inner or outer loop,10x10_heatmap,100,no,no,not_reproduced_figure_geometry_only,no
+FIG5-XGBOOST-MSE,Figure 5,figs/model.png,single_panel,XGBoost MSE as accumulated alpha count increases,line_series,unknown_exact_point_count,no,no,not_reproduced_raster_geometry_only,no

@@ -1,0 +1,9 @@
+query,snapshot_file,snapshot_sha256,total_count,incomplete_results,repositories,author_linked_repository_found
+"""QuantAgent Seeking Holy Grail""",01.json,4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f,0,false,,no
+2402.03755,02.json,4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f,0,false,,no
+QuantAgent self-improving LLM trading,03.json,4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f,0,false,,no
+"""Saizhuo Wang"" QuantAgent",04.json,4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f,0,false,,no
+"""Hang Yuan"" QuantAgent",05.json,4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f,0,false,,no
+ThreeSoldierSignal,06.json,4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f,0,false,,no
+VolatilityBreakoutSignal idea_factor,07.json,4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f,0,false,,no
+idea-factor financial signal,08.json,4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f,0,false,,no

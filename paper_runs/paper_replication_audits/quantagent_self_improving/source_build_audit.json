@@ -1,0 +1,15 @@
+{
+  "boundary": "the rebuild reuses released figure assets and does not recover their raw arrays or the native experiment",
+  "document_rebuild_credit": true,
+  "experimental_reproduction_credit": false,
+  "official_extracted_tokens": 8617,
+  "official_pages": 15,
+  "official_pdf_sha256": "2162e659c9739d145c8cb93fdff31a0e27d9ab483b7a42bc2e52dd92cc39ac81",
+  "rebuilt_extracted_tokens": 8611,
+  "rebuilt_pages": 15,
+  "rebuilt_pdf_sha256": "1de561e95fedd2eeb687ebdf3e033fb127468a6b677d60a8c6df1bce119c16c1",
+  "source_document_rebuild_succeeded": true,
+  "token_multiset_intersection": 8611,
+  "token_multiset_jaccard": 0.9993037019844494,
+  "token_multiset_union": 8617
+}

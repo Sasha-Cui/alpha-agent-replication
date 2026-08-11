@@ -1,0 +1,99 @@
+{
+  "author_linked_code_or_data_found": false,
+  "doi": "10.48550/arXiv.2402.03755",
+  "github_repository_searches": [
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "\"QuantAgent Seeking Holy Grail\"",
+      "repositories": "",
+      "snapshot_file": "01.json",
+      "snapshot_sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "2402.03755",
+      "repositories": "",
+      "snapshot_file": "02.json",
+      "snapshot_sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "QuantAgent self-improving LLM trading",
+      "repositories": "",
+      "snapshot_file": "03.json",
+      "snapshot_sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "\"Saizhuo Wang\" QuantAgent",
+      "repositories": "",
+      "snapshot_file": "04.json",
+      "snapshot_sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "\"Hang Yuan\" QuantAgent",
+      "repositories": "",
+      "snapshot_file": "05.json",
+      "snapshot_sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "ThreeSoldierSignal",
+      "repositories": "",
+      "snapshot_file": "06.json",
+      "snapshot_sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "VolatilityBreakoutSignal idea_factor",
+      "repositories": "",
+      "snapshot_file": "07.json",
+      "snapshot_sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "idea-factor financial signal",
+      "repositories": "",
+      "snapshot_file": "08.json",
+      "snapshot_sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+      "total_count": "0"
+    }
+  ],
+  "official_appendix_tex_sha256": "45f859d4a4f11ece4532a888cfae2ed7f4134d7b1577c417f62caaead22165d1",
+  "official_main_tex_sha256": "a0e3083805524bd13bcb5e51e7f9d14dd80b0d1061f293a0f28b55c77a287ee2",
+  "official_pdf": "https://arxiv.org/pdf/2402.03755v1",
+  "official_pdf_sha256": "2162e659c9739d145c8cb93fdff31a0e27d9ab483b7a42bc2e52dd92cc39ac81",
+  "official_record": "https://arxiv.org/abs/2402.03755v1",
+  "official_record_sha256": "2336d3dc18d26b42aa219518bf3749b229983ab299b47481f82b623ed92159fa",
+  "official_source": "https://export.arxiv.org/e-print/2402.03755v1",
+  "official_source_sha256": "d54ccd4f53f2efbb2b3809a9a8b87f0f2bcdc421c6181a1bfde6666602cda8f4",
+  "pages": 15,
+  "same_name_nonmatch": [
+    {
+      "author_overlap": "none",
+      "native_credit_for_2402_03755": "no",
+      "paper": "QuantAgent: Price-Driven Multi-Agent LLMs for High-Frequency Trading (arXiv:2509.09995)",
+      "relationship": "distinct later same-name system",
+      "repository": "Y-Research-SBU/QuantAgent",
+      "task_difference": "2025 price-driven multi-agent HFT rather than 2024 self-improving A-share alpha mining"
+    }
+  ],
+  "source_files": 44,
+  "version": "v1 only"
+}
