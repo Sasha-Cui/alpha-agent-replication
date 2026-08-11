@@ -41,8 +41,8 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
     routes = pd.read_csv(OUTPUT)
     assert len(routes) == routes["canonical_work_id"].nunique() == 69
     assert routes["paper_evidence_route"].value_counts().to_dict() == {
-        "paper_only_underspecified": 48,
-        "public_code_available": 21,
+        "paper_only_underspecified": 47,
+        "public_code_available": 22,
     }
     assert not routes["paper_evidence_route"].eq(
         "paper_only_sufficiently_specified"
@@ -55,11 +55,11 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
 def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     routes = pd.read_csv(OUTPUT)
     public = routes[routes["paper_evidence_route"].eq("public_code_available")]
-    assert len(public) == 21
+    assert len(public) == 22
     assert public["precise_native_or_access_blocker"].notna().all()
     assert public["precise_native_or_access_blocker"].str.contains(":A[123]_", regex=True).all()
     assert public["native_pipeline_disposition"].value_counts().to_dict() == {
-        "targeted_execution_recorded": 21,
+        "targeted_execution_recorded": 22,
     }
     reconstructed = public[public["good_faith_reconstruction"].eq("yes")]
     assert len(reconstructed) == 14
@@ -91,6 +91,26 @@ def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() ->
     assert "0/42 result units" in blocker
     assert "missing testing/stock_prices.csv" in blocker
     assert "paper/source cadence" in blocker
+    assert "six-country security-level common-task panel" in blocker
+
+
+def test_gpt_signal_route_separates_result_replay_from_full_method_fidelity() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv241018448")].iloc[0]
+    assert row["paper_evidence_route"] == "public_code_available"
+    assert row["reachable_public_code_system_ids"] == "SYS-GPT-SIGNAL"
+    assert row["static_fidelity_tiers"] == "R1"
+    assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_disposition"] == "availability_only_no_performance_inference"
+    assert row["proxy_role"] == "no_proxy"
+    blocker = row["precise_native_or_access_blocker"]
+    assert "1,549/1,554" in blocker
+    assert "not an end-to-end GPT regeneration" in blocker
+    assert "future-quarter fundamentals" in blocker
     assert "six-country security-level common-task panel" in blocker
 
 
@@ -136,6 +156,7 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         "CensusACL2026findingsacl456": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
         "CensusArxiv231113743": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
         "CensusArxiv240218485": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
+        "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
         "CensusArxiv250510278": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
         "CensusArxiv250909995": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
@@ -420,6 +441,6 @@ def test_generated_paper_macros_match_route_counts(tmp_path: Path) -> None:
     MODULE.write_tex_macros(routes, generated)
     assert generated.read_bytes() == TEX_OUTPUT.read_bytes()
     text = generated.read_text()
-    assert r"\newcommand{\PublicCodeRouteWorkCount}{21\xspace}" in text
+    assert r"\newcommand{\PublicCodeRouteWorkCount}{22\xspace}" in text
     assert r"\newcommand{\PaperOnlySpecifiedWorkCount}{0\xspace}" in text
-    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{48\xspace}" in text
+    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{47\xspace}" in text

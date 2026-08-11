@@ -4,50 +4,50 @@
       "failure_category_counts": {
         "artifact_unreachable": 3,
         "explicitly_nonrunnable_or_pseudocode": 3,
-        "no_public_artifact": 55,
+        "no_public_artifact": 54,
         "none": 34,
         "reachable_non_code_artifact": 3,
-        "static_package_insufficient": 5
+        "static_package_insufficient": 6
       },
       "metrics": {
         "artifact_reachable_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.4368932038834951,
-          "successes": 45,
-          "wilson_95_lower": 0.34508430443595695,
-          "wilson_95_upper": 0.5332400825249405,
+          "proportion": 0.44660194174757284,
+          "successes": 46,
+          "wilson_95_lower": 0.35423582347349813,
+          "wilson_95_upper": 0.5428078885703382,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 48,
+          "denominator": 49,
           "group": "ALL",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9375,
-          "successes": 45,
-          "wilson_95_lower": 0.8316456194505365,
-          "wilson_95_upper": 0.9785167670916107,
+          "proportion": 0.9387755102040817,
+          "successes": 46,
+          "wilson_95_lower": 0.834795121642736,
+          "wilson_95_upper": 0.9789598533270324,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.4077669902912621,
-          "successes": 42,
-          "wilson_95_lower": 0.3178425371515976,
-          "wilson_95_upper": 0.5043238745604832,
+          "proportion": 0.4174757281553398,
+          "successes": 43,
+          "wilson_95_lower": 0.3268873640675524,
+          "wilson_95_upper": 0.5139983727274672,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 103,
           "group": "ALL",
           "metric": "public_artifact_listed",
-          "proportion": 0.46601941747572817,
-          "successes": 48,
-          "wilson_95_lower": 0.3726437920092655,
-          "wilson_95_upper": 0.5618385702004485,
+          "proportion": 0.47572815533980584,
+          "successes": 49,
+          "wilson_95_lower": 0.381899896517854,
+          "wilson_95_upper": 0.571301790774799,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
@@ -73,13 +73,13 @@
       },
       "n_systems": 103,
       "reachability_counts": {
-        "not_listed": 55,
-        "reachable_all": 45,
+        "not_listed": 54,
+        "reachable_all": 46,
         "unreachable_all": 3
       },
       "static_fidelity_counts": {
-        "R0": 58,
-        "R1": 11,
+        "R0": 57,
+        "R1": 12,
         "R2": 12,
         "R3": 22
       }
@@ -249,27 +249,28 @@
     "F": {
       "failure_category_counts": {
         "explicitly_nonrunnable_or_pseudocode": 2,
-        "no_public_artifact": 21,
-        "none": 6
+        "no_public_artifact": 20,
+        "none": 6,
+        "static_package_insufficient": 1
       },
       "metrics": {
         "artifact_reachable_among_all": {
           "denominator": 29,
           "group": "F",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.27586206896551724,
-          "successes": 8,
-          "wilson_95_lower": 0.14698755102087954,
-          "wilson_95_upper": 0.45717132416865935,
+          "proportion": 0.3103448275862069,
+          "successes": 9,
+          "wilson_95_lower": 0.17275616744483216,
+          "wilson_95_upper": 0.4923013423309317,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 8,
+          "denominator": 9,
           "group": "F",
           "metric": "artifact_reachable_given_listed",
           "proportion": 1.0,
-          "successes": 8,
-          "wilson_95_lower": 0.6755924351161198,
+          "successes": 9,
+          "wilson_95_lower": 0.7008549515804559,
           "wilson_95_upper": 1.0,
           "z": 1.959963984540054
         },
@@ -277,20 +278,20 @@
           "denominator": 29,
           "group": "F",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.27586206896551724,
-          "successes": 8,
-          "wilson_95_lower": 0.14698755102087954,
-          "wilson_95_upper": 0.45717132416865935,
+          "proportion": 0.3103448275862069,
+          "successes": 9,
+          "wilson_95_lower": 0.17275616744483216,
+          "wilson_95_upper": 0.4923013423309317,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 29,
           "group": "F",
           "metric": "public_artifact_listed",
-          "proportion": 0.27586206896551724,
-          "successes": 8,
-          "wilson_95_lower": 0.14698755102087954,
-          "wilson_95_upper": 0.45717132416865935,
+          "proportion": 0.3103448275862069,
+          "successes": 9,
+          "wilson_95_lower": 0.17275616744483216,
+          "wilson_95_upper": 0.4923013423309317,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
@@ -316,12 +317,12 @@
       },
       "n_systems": 29,
       "reachability_counts": {
-        "not_listed": 21,
-        "reachable_all": 8
+        "not_listed": 20,
+        "reachable_all": 9
       },
       "static_fidelity_counts": {
-        "R0": 21,
-        "R1": 2,
+        "R0": 20,
+        "R1": 3,
         "R2": 1,
         "R3": 5
       }
@@ -330,49 +331,49 @@
       "failure_category_counts": {
         "artifact_unreachable": 1,
         "explicitly_nonrunnable_or_pseudocode": 2,
-        "no_public_artifact": 45,
+        "no_public_artifact": 44,
         "none": 15,
-        "static_package_insufficient": 4
+        "static_package_insufficient": 5
       },
       "metrics": {
         "artifact_reachable_among_all": {
           "denominator": 67,
           "group": "F+T",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.31343283582089554,
-          "successes": 21,
-          "wilson_95_lower": 0.21505348258237716,
-          "wilson_95_upper": 0.4320458231606458,
+          "proportion": 0.3283582089552239,
+          "successes": 22,
+          "wilson_95_lower": 0.22791317376089593,
+          "wilson_95_upper": 0.44741818752268525,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 22,
+          "denominator": 23,
           "group": "F+T",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9545454545454546,
-          "successes": 21,
-          "wilson_95_lower": 0.7820195416134267,
-          "wilson_95_upper": 0.991930572378736,
+          "proportion": 0.9565217391304348,
+          "successes": 22,
+          "wilson_95_lower": 0.7900884492974114,
+          "wilson_95_upper": 0.9922833338565469,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
           "denominator": 67,
           "group": "F+T",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.31343283582089554,
-          "successes": 21,
-          "wilson_95_lower": 0.21505348258237716,
-          "wilson_95_upper": 0.4320458231606458,
+          "proportion": 0.3283582089552239,
+          "successes": 22,
+          "wilson_95_lower": 0.22791317376089593,
+          "wilson_95_upper": 0.44741818752268525,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 67,
           "group": "F+T",
           "metric": "public_artifact_listed",
-          "proportion": 0.3283582089552239,
-          "successes": 22,
-          "wilson_95_lower": 0.22791317376089593,
-          "wilson_95_upper": 0.44741818752268525,
+          "proportion": 0.34328358208955223,
+          "successes": 23,
+          "wilson_95_lower": 0.24089006272762914,
+          "wilson_95_upper": 0.4626733540965101,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
@@ -398,13 +399,13 @@
       },
       "n_systems": 67,
       "reachability_counts": {
-        "not_listed": 45,
-        "reachable_all": 21,
+        "not_listed": 44,
+        "reachable_all": 22,
         "unreachable_all": 1
       },
       "static_fidelity_counts": {
-        "R0": 46,
-        "R1": 6,
+        "R0": 45,
+        "R1": 7,
         "R2": 5,
         "R3": 10
       }
@@ -607,6 +608,13 @@
       },
       {
         "corrected_at_utc": "2026-08-11T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/gpt_signal/source_provenance.json",
+        "reason": "author-owned pre-publication thesis repository recovers the exact GPT-Signal source, data, and outputs; the paper-listed repository is deleted and its surviving capture is only a placeholder",
+        "source_head": "434230ca9123048a4d79e2cc1390b23b050ef68e",
+        "system_id": "SYS-GPT-SIGNAL"
+      },
+      {
+        "corrected_at_utc": "2026-08-11T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/raptor/source_provenance.json",
         "reason": "published final PDF directly links the lead author's repository after the anonymous snapshot expired",
         "source_head": "1793abf29ecde15597cb2bb4cb345accf655531f",
@@ -615,7 +623,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "fc0203f3b8cfa2ed8f2c7ef7551625971ed9ae352e58ff1f34064c1a59b70e4e",
+    "registry_sha256": "a57aa50776b3a30add74c586fa96d1d8af812b129b4ac8088433c595fbbb015d",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,

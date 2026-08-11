@@ -19,7 +19,7 @@ SYS-FAMA,FAMA — Factor Mining Agent,F,https://aclanthology.org/2024.findings-a
 SYS-FACTOR-ENGINE,FactorEngine,F,https://arxiv.org/abs/2603.16365,,availability_census_only,system lineage; primary_record may contain multiple publications,IN: knowledge-infused executable factor discovery.
 SYS-FACTOR-MAD,FactorMAD,F,https://doi.org/10.1145/3768292.3770377,,availability_census_only,system lineage; primary_record may contain multiple publications,IN: interpretable alpha-factor mining.
 SYS-FACTOR-MINER,FactorMiner,F,https://arxiv.org/abs/2602.14670,,availability_census_only,system lineage; primary_record may contain multiple publications,IN: self-evolving factor discovery.
-SYS-GPT-SIGNAL,GPT-Signal,F,https://arxiv.org/abs/2410.18448,,availability_census_only,system lineage; primary_record may contain multiple publications,IN: LLM-generated investment signals.
+SYS-GPT-SIGNAL,GPT-Signal,F,https://arxiv.org/abs/2410.18448,https://github.com/Yiningww/Thesis,availability_census_only,system lineage; primary_record may contain multiple publications,IN: LLM-generated investment signals.
 SYS-HUBBLE,Hubble,F,https://arxiv.org/abs/2604.09601,,availability_census_only,system lineage; primary_record may contain multiple publications,IN: agentic alpha/factor discovery.
 SYS-LLM-FACTOR,LLMFactor,F,https://arxiv.org/abs/2406.10811,,availability_census_only,system lineage; primary_record may contain multiple publications,IN: profitable/explainable factor extraction.
 SYS-MAD-EVOLVE,MadEvolve,F,https://arxiv.org/abs/2605.23007,,availability_census_only,system lineage; primary_record may contain multiple publications,IN: multi-agent evolutionary alpha discovery.

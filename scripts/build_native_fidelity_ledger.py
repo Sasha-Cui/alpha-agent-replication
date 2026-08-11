@@ -115,6 +115,27 @@ ARTIFACT_NOTES = {
         "so 0/75 table cells count as native reproductions. The separate 3/3 grade-B "
         "component gate remains adapted and provides no paper-result credit.",
     ),
+    "SYS-GPT-SIGNAL": (
+        "Y",
+        "A pinned arXiv-v1/ACL-final audit recovers an author-owned pre-publication "
+        "thesis repository containing 13,884 tracked files: the exact 93-company "
+        "FactSet workbooks, cached Yahoo price inputs, 16 GPT-4 output CSVs, figures, "
+        "and analysis code. A deterministic source-semantics replay regenerates all "
+        "1,309 published heatmap cells and 240/245 boxplot statistics, or "
+        "1,549/1,554 published quantitative units. This is strong author-data result "
+        "lineage, not an end-to-end GPT regeneration: the recovered "
+        "gpt-4-1106-preview snapshot is retired, no seed or temperature is recorded, "
+        "and one of six signals lacks raw GPT output. The printed RAPS equation "
+        "conflicts with the GPT output, code, and results; all five all-sector EVC "
+        "box statistics contain an unexplained +0.02 shift. More importantly, the "
+        "one-month panels use future-quarter fundamentals because descending "
+        "workbooks are forward-filled without sorting, and full-period mean "
+        "imputation adds another lookahead path. The current runner exits before "
+        "step 2, has a stale monthly loop length, and ships no dependency lock, "
+        "license, portfolio, costs, or significance evaluation. Its dated outputs "
+        "cover a fixed U.S. universe and cannot supply the prespecified six-country "
+        "security-level common-task panel.",
+    ),
     "SYS-RAPTOR": (
         "Y",
         "A pinned CEUR/OpenReview audit inventories all 42 empirical scalar "
@@ -444,6 +465,7 @@ TARGETED_EXECUTION = {
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
+    "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
     "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
@@ -461,6 +483,7 @@ OUTPUT_BLOCKS = {
     "SYS-AUTOMATE-STRATEGY": "A3_output_lacks_six_country_security_mapping",
     "SYS-CRYPTO-TRADE": "A3_wrong_asset_class_crypto",
     "SYS-GURU-AGENTS": "A3_US_only_not_six_country",
+    "SYS-GPT-SIGNAL": "A3_US_only_not_six_country",
     "SYS-RAPTOR": "A3_US_only_not_six_country",
 }
 

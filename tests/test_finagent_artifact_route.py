@@ -39,15 +39,16 @@ def test_committed_artifact_audit_and_summary_include_correction() -> None:
     assert row == {key: str(value) for key, value in route.finagent_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {(row["metric"]): row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "22"
-    assert ft["artifact_reachable_among_all"]["successes"] == "21"
-    assert ft["github_head_resolved_among_all"]["successes"] == "21"
+    assert ft["public_artifact_listed"]["successes"] == "23"
+    assert ft["artifact_reachable_among_all"]["successes"] == "22"
+    assert ft["github_head_resolved_among_all"]["successes"] == "22"
     assert ft["static_R3_among_all"]["successes"] == "10"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text(encoding="utf-8"))
     correction = payload["metadata"]["post_freeze_evidence_corrections"]
     assert {item["system_id"] for item in correction} == {
         "SYS-FIN-AGENT",
         "SYS-EMPIRICAL-ASSET-PRICING-LLM",
+        "SYS-GPT-SIGNAL",
         "SYS-RAPTOR",
     }
     assert payload["metadata"]["registry_sha256"] == route.sha256(route.REGISTRY)
@@ -69,23 +70,23 @@ def test_native_ledger_does_not_promote_static_source_to_result_reproduction() -
 
 def test_static_paper_assets_and_claim_hashes_reflect_the_correction() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
-    assert r"\newcommand{\ArtifactCountFT}{22}" in generated
-    assert r"\newcommand{\ArtifactRateFT}{32.8\%}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{21}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{23}" in generated
+    assert r"\newcommand{\ArtifactRateFT}{34.3\%}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{22}" in generated
     assert r"\newcommand{\LicensedArtifactCountFT}{12}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{21}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{29}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{22}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{30}" in generated
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert "DVampire/FinAgent" in system_table
     assert "FinAgent & reachable" in failure_table
     assert "zero native results reproduced" in failure_table
     claims = {row["macro"]: row for row in csv_rows(ROOT / "paper_runs/submission_evidence/claims.csv")}
-    assert claims["ArtifactCountFT"]["rendered_value"] == "22"
+    assert claims["ArtifactCountFT"]["rendered_value"] == "23"
     assert claims["ArtifactCountFT"]["source_sha256"] == route.sha256(
         ROOT / "paper_runs/submission_evidence/artifact_audit/artifact_audit.csv"
     )
-    assert claims["TargetedAuditCount"]["rendered_value"] == "29"
+    assert claims["TargetedAuditCount"]["rendered_value"] == "30"
     assert claims["TargetedAuditCount"]["source_sha256"] == route.sha256(
         ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv"
     )

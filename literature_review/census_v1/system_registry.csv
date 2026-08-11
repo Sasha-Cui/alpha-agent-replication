@@ -19,7 +19,7 @@ SYS-FACTOR-ENGINE|FactorEngine|F|Y|https://arxiv.org/abs/2603.16365||20|One prog
 SYS-FACTOR-MAD|FactorMAD|F|Y|https://doi.org/10.1145/3768292.3770377||14|One multi-agent debate lineage.|IN: interpretable alpha-factor mining.
 SYS-FACTOR-MINER|FactorMiner|F|Y|https://arxiv.org/abs/2602.14670||8|One skills-and-memory factor-mining lineage.|IN: self-evolving factor discovery.
 SYS-FAMA|FAMA — Factor Mining Agent|F|Y|https://aclanthology.org/2024.findings-acl.233/||10|One neural-symbolic factor-mining lineage.|IN: LLM-based interpretable factor mining.
-SYS-GPT-SIGNAL|GPT-Signal|F|Y|https://arxiv.org/abs/2410.18448||—|New verified omission.|IN: LLM-generated investment signals.
+SYS-GPT-SIGNAL|GPT-Signal|F|Y|https://arxiv.org/abs/2410.18448|https://github.com/Yiningww/Thesis|—|Author-owned pre-publication source/data/output repository recovered; the paper-listed GPT-signal repository is deleted and its surviving 2024 capture is a one-file placeholder.|IN: LLM-generated investment signals.
 SYS-HUBBLE|Hubble|F|Y|https://arxiv.org/abs/2604.09601||—|New verified omission.|IN: agentic alpha/factor discovery.
 SYS-LLM-FACTOR|LLMFactor|F|Y|https://arxiv.org/abs/2406.10811||19|One prompt-based factor-extraction lineage.|IN: profitable/explainable factor extraction.
 SYS-MAD-EVOLVE|MadEvolve|F|Y|https://arxiv.org/abs/2605.23007||—|New verified omission.|IN: multi-agent evolutionary alpha discovery.
