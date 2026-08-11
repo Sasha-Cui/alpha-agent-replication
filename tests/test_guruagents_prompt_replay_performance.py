@@ -38,6 +38,15 @@ def formation(end: str, weights: dict[str, float], candidate_id: str = "replay__
     )
 
 
+def test_default_transaction_cost_matches_paper_and_source() -> None:
+    assert guru.DEFAULT_COST_BPS == 1.0
+
+
+def test_cli_default_uses_paper_transaction_cost(monkeypatch) -> None:
+    monkeypatch.setattr(sys, "argv", [str(SCRIPT)])
+    assert guru.parse_args().cost_bps == guru.DEFAULT_COST_BPS
+
+
 def test_select_portfolio_table_prefers_allocation_closest_to_100() -> None:
     text = """
 | Ticker | Score | Weight (%) | Reason |
@@ -86,7 +95,7 @@ def test_backtest_uses_first_postformation_close_and_charges_traded_notional() -
     )
     april = monthly.loc[monthly["realization_month"].eq(pd.Timestamp("2022-04-30"))].iloc[0]
     assert np.isclose(april["gross_return"], 0.10)
-    assert np.isclose(april["net_10bp_return"], 0.10 - 0.0011)
+    assert np.isclose(april["net_costed_return"], 0.10 - 0.0011)
     assert np.isclose(april["traded_notional"], 1.0)
     assert bool(april["analysis_eligible"])
     assert np.isclose(turnover.iloc[0]["traded_notional"], 1.0)
@@ -146,11 +155,11 @@ def test_nested_lomo_ridge_publishes_monthly_penalties_and_loadings() -> None:
 
 def test_common_sample_metrics_handles_same_return_column_name() -> None:
     months = pd.date_range("2022-04-30", periods=3, freq="ME")
-    left = pd.DataFrame({"realization_month": months, "net_10bp_return": [0.01, 0.02, -0.01]})
-    right = pd.DataFrame({"realization_month": months, "net_10bp_return": [0.00, 0.01, 0.01]})
+    left = pd.DataFrame({"realization_month": months, "net_costed_return": [0.01, 0.02, -0.01]})
+    right = pd.DataFrame({"realization_month": months, "net_costed_return": [0.00, 0.01, 0.01]})
     risk_free = pd.DataFrame({"month": months, "RF": 0.001})
     result = guru.common_sample_metrics(
-        left, right, "net_10bp_return", "net_10bp_return", risk_free, False
+        left, right, "net_costed_return", "net_costed_return", risk_free, False
     )
     assert result["common_months"] == 3
     assert np.isfinite(result["delta_annualized_return"])
@@ -168,7 +177,7 @@ def test_official_ff_columns_are_restricted_to_jkp_overlap() -> None:
             "realization_month": months,
             "analysis_eligible": True,
             "gross_return": [0.02, 0.03],
-            "net_10bp_return": [0.019, 0.029],
+            "net_costed_return": [0.019, 0.029],
         }
     )
     factor_realization = pd.DataFrame(

@@ -117,9 +117,9 @@ repeated across the two windows. The audit also records that the paper and
 notebook declare a one-basis-point transaction cost while the source notebook's
 main return routine does not apply its declared cost variable.
 
-Run scripts/audit_guruagents_paper_table.py to regenerate the audit. The 10-bp
-corrected-clock analysis below is a separate conservative performance exercise
-and must not be cited as reproduction of Table 1.
+Run scripts/audit_guruagents_paper_table.py to regenerate the audit. The 1-bp
+corrected-clock analysis below uses the paper-declared cost but remains a separate
+performance exercise and must not be cited as reproduction of Table 1.
 
 ## Completed performance stage
 
@@ -134,20 +134,20 @@ It builds 24 replay paths (two archives × two replay modes × five agents plus
 an equal-weight ensemble), 12 corrected author paths, and six existing JKP
 motif-proxy paths. Formation portfolios execute at the first trading close
 strictly after quarter end, use dividend-adjusted closes, drift between
-quarterly rebalances, and incur 10 bps per unit of one-way traded notional.
+quarterly rebalances, and incur 1 bp per unit of one-way traded notional.
 
 The long archive provides 36 realized return months and 33 months with the
 extended JKP factor panel. Its best replay path by net Sharpe is the
-`archived-final` Buffett sleeve: 33.30% annualized geometric return, 21.70%
-annualized volatility, and 1.26 Sharpe over this short sample. Across all
-replay-versus-author common samples, replay paths average +1.87 percentage
-points in annualized return and +0.095 in Sharpe, with mean return correlation
+`archived-final` Buffett sleeve: 33.69% annualized geometric return, 21.72%
+annualized volatility, and 1.27 Sharpe over this short sample. Across all
+replay-versus-author common samples, replay paths average +1.90 percentage
+points in annualized return and +0.096 in Sharpe, with mean return correlation
 0.952. This is not independent evidence because both use the same archived
 signals and source universe.
 
 The matched official-factor ladder uses the 12 long-archive replay paths and
 the same 33 realization months throughout. Median annualized alpha declines
-from 5.80% under official FF5 plus momentum to 2.59% after adding only JKP
+from 6.12% under official FF5 plus momentum to 2.87% after adding only JKP
 `betabab_1260d`; 11 of 12 alphas attenuate and 11 of 12 BAB loadings are
 positive. One archived-final Buffett replay remains Holm-positive after BAB,
 after the larger predeclared low-risk block, and in the outcome-blind pre-2022
@@ -165,7 +165,7 @@ to form a 2024-12 factor observation.
 
 Primary performance artifacts include:
 
-- `monthly_return_paths.csv`: gross return, traded notional, 10-bp net return,
+- `monthly_return_paths.csv`: gross return, traded notional, 1-bp net return,
   formation/realization clocks, NAVs, and eligibility/failure flags.
 - `formation_holdings.csv`, `formation_audit.csv`, and
   `formation_execution_clock.csv`: target matrices and every parsing,

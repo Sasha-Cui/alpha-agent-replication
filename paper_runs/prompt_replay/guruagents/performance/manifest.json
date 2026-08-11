@@ -3,10 +3,10 @@
   "costs": {
     "cost_base": "one-way traded notional divided by pretrade NAV",
     "first_rebalance_traded_notional": "cash-to-target investment, normally 1.0",
-    "primary_cost_bps": 10.0,
+    "primary_cost_bps": 1.0,
     "proxy_cost_status": "unavailable because proxy holdings/turnover were not retained"
   },
-  "created_utc": "2026-08-10T02:29:28.920234+00:00",
+  "created_utc": "2026-08-11T05:46:27.123575+00:00",
   "factors": {
     "extended_end": "2024-11-30",
     "extension_months": 35,
@@ -389,20 +389,20 @@
   },
   "outputs": {
     "REPORT.md": {
-      "sha256": "9cee5b7ee5bf143b7fc373365761484798a16bac9bb338fc7b3014008cc545d2",
-      "size_bytes": 7241
+      "sha256": "d24083884fa9c34f39d58af3cce0d36c675de5394f2253f5d425b095678ad2c4",
+      "size_bytes": 7236
     },
     "alpha_regressions.csv": {
-      "sha256": "5e8e48713d847e5a9c925957f41e07cac64902a1d765b3f28a0f1195dae49412",
-      "size_bytes": 139593
+      "sha256": "f1de273cd18473aac593d133321ab28dd4b967aa063d7354235032f57effe576",
+      "size_bytes": 139577
     },
     "economic_comparison.csv": {
-      "sha256": "17b2610904913ba9e6d19ee8cd7675c354001e8c3b69584e49c49ebb90c137ac",
-      "size_bytes": 23268
+      "sha256": "6accda8b3ccdabe1db3a167dc7ecea5aaebfbd727204ec324d83f64797684d60",
+      "size_bytes": 23221
     },
     "economic_performance.csv": {
-      "sha256": "585b8c4a5407659cc1e2a363bb725d8210fa2a4b33f3b389fa2234b80cbec22c",
-      "size_bytes": 25436
+      "sha256": "2a03a5f49da0b2c300cff710aa05e34aa2a8303db96da33df5a75e2eb703e5f9",
+      "size_bytes": 25547
     },
     "factor_extension_scaling.csv": {
       "sha256": "a50bd08e29ce280d532bf785d2c413ceae40d0c7b2f79f6aef435b6a402850fb",
@@ -413,8 +413,8 @@
       "size_bytes": 3974
     },
     "factor_fitted_and_residuals.csv": {
-      "sha256": "9b8e89b38d98cff3d1f27fa1105baf07ba57856e9efe61195ec31f2ded8bab49",
-      "size_bytes": 3279421
+      "sha256": "c82017723d96abe88a1b0e0a8735e0ac03ff963968f462637c317a8851c70380",
+      "size_bytes": 3278420
     },
     "factor_panel_extended_formation.csv": {
       "sha256": "38bf4eba451d558794aad2d263d24b9f148fab11584976cc98f8759435e28632",
@@ -445,12 +445,12 @@
       "size_bytes": 35501
     },
     "monthly_return_paths.csv": {
-      "sha256": "87c0b980c6a6e861fa68881c6d7b41c8a69ff8b594b89065d86bf62f56d013d5",
-      "size_bytes": 765717
+      "sha256": "0db0ac2d049f4d38e2d98cca240b9276abb8782227aba80a3886704b8c1dff3b",
+      "size_bytes": 764825
     },
     "monthly_ridge_loadings.csv": {
-      "sha256": "735a36e923a33faed8ed0672445f79c4a2839be1f62ccb611ab9affb8d16eaa1",
-      "size_bytes": 13746497
+      "sha256": "39b49fa5bed716f4cacf8709cb345b32c52bd78a624d0524d28eb590b3871da3",
+      "size_bytes": 13746660
     },
     "nasdaq100_source_universe_market.csv": {
       "sha256": "ce13c9e267c2d3826b6b62e20fccafb4023f5cf0d6edc24e2346436254c0b45e",
@@ -461,24 +461,24 @@
       "size_bytes": 2703
     },
     "rebalance_traded_notional.csv": {
-      "sha256": "fcb61b044cd457fd9c46177c5cf83818a2687002cb0e22d4dd2a0e747b100c78",
-      "size_bytes": 60299
+      "sha256": "783b009b884227860b2bc4f1d00150a5b6698ce6ef1f1b5dacf877a967c716a5",
+      "size_bytes": 60070
     },
     "replay_attribution_by_candidate.csv": {
-      "sha256": "906630970cabb6d6f3c0a59a29e8efa1b1199e425b473cf222b56a8da0b3138b",
-      "size_bytes": 23477
+      "sha256": "e1a495e7daeadf75094b0c29b31d6d82f102760b030fe8772f91df80bfa2b5b3",
+      "size_bytes": 23461
     },
     "replay_attribution_ladder.csv": {
-      "sha256": "d32bccdd5ccf0b2916470769a0c63aa344f6bc0f7a8e2d28b83a3879cfef0aae",
+      "sha256": "23136fcd9f6834a5aa5d207ae8e377697fe9fe2b5fa5e3c3b05cf56598b978b2",
       "size_bytes": 708
     },
     "static_factor_loadings.csv": {
-      "sha256": "ec893fc92280e7215bea27fa3a5c8a83048153c8c83bd3e5d38359502eb821ea",
-      "size_bytes": 234065
+      "sha256": "202f26a2f3a833d5e290698b94ed4805a76143c2dcef795dbdc4a2a80e6f4f4d",
+      "size_bytes": 234047
     },
     "turnover_summary.csv": {
-      "sha256": "e23cda2880ca8b3fbe349b1de4c0a0b3df4a2f5fa093bcfb3c1b42dbba317025",
-      "size_bytes": 7420
+      "sha256": "8b23a607477c25b6fdb19f09806f73e509934c4528d7ba6f6fc5b9e89e488c41",
+      "size_bytes": 7452
     }
   },
   "regression": {

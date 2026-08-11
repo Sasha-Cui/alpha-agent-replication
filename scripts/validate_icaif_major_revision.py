@@ -646,8 +646,8 @@ def main() -> int:
             "current-endpoint replay limitation absent",
         )
         require(
-            "5.80%" in normalized_text
-            and "2.59%" in normalized_text
+            "6.12%" in normalized_text
+            and "2.87%" in normalized_text
             and "11 of 12" in normalized_text,
             "prompt-replay BAB attribution absent",
         )

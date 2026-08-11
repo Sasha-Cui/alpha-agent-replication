@@ -49,7 +49,7 @@ prompt replays through OpenRouter, in archived-final and tool-routing modes,
 rather than from a deterministic JKP formula. The package contains:
 
 - 24 replay, 12 archived-author, and six JKP-proxy monthly return paths, with
-  explicit formation and realization months, gross and 10-bp net returns,
+  explicit formation and realization months, gross and paper-declared 1-bp net returns,
   traded notional, cost, completeness, eligibility, and failure fields;
 - formation holdings, parsing/correction audit fields, execution dates,
   rebalance-level traded notional, and turnover summaries;

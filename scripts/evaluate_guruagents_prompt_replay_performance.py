@@ -8,10 +8,10 @@ The script deliberately separates three objects:
 * the existing long-short JKP motif proxies, retained as a separate diagnostic.
 
 Formation portfolios are executed at the first trading close strictly after the
-formation quarter end.  Holdings then drift until the next quarterly rebalance.
-The primary net series charges 10 basis points per unit of one-way traded
-notional.  Full JKP132 OLS is reported only where it is identified; short replay
-histories additionally receive a clearly labelled leave-one-month-out ridge
+formation quarter end. Holdings then drift until the next quarterly rebalance.
+The primary net series defaults to the paper-declared one basis point per unit
+of one-way traded notional. Full JKP132 OLS is reported only where it is
+identified; short replay histories additionally receive a clearly labelled leave-one-month-out ridge
 diagnostic and a pre-2022 factor-only PCA compression test.
 """
 from __future__ import annotations
@@ -36,6 +36,7 @@ from scipy import stats
 
 
 AGENTS = ("graham", "buffett", "greenblatt", "piotroski", "altman")
+DEFAULT_COST_BPS = 1.0
 PRIMARY_FACTOR_COLUMNS = (
     "capm_top1000_mkt",
     "char__be_me",
@@ -572,7 +573,7 @@ def backtest_candidate(
             {
                 "date": date,
                 "gross_nav": gross_cash + gross_security_value,
-                "net_10bp_nav": net_cash + net_security_value,
+                "net_costed_nav": net_cash + net_security_value,
                 "candidate_id": formations[0].candidate_id,
                 "series_type": formations[0].series_type,
                 "archive": formations[0].archive,
@@ -592,9 +593,9 @@ def backtest_candidate(
     monthly = daily.sort_values("date").groupby("realization_month", as_index=False).tail(1).copy()
     monthly = monthly.sort_values("realization_month").reset_index(drop=True)
     prior_gross = monthly["gross_nav"].shift(1).fillna(1.0)
-    prior_net = monthly["net_10bp_nav"].shift(1).fillna(1.0)
+    prior_net = monthly["net_costed_nav"].shift(1).fillna(1.0)
     monthly["gross_return"] = monthly["gross_nav"] / prior_gross - 1.0
-    monthly["net_10bp_return"] = monthly["net_10bp_nav"] / prior_net - 1.0
+    monthly["net_costed_return"] = monthly["net_costed_nav"] / prior_net - 1.0
     turnover_by_month = (
         pd.DataFrame(turnover_rows)
         .assign(realization_month=lambda x: pd.to_datetime(x["execution_date"]) + pd.offsets.MonthEnd(0))
@@ -620,15 +621,15 @@ def backtest_candidate(
         & monthly["scheduled_complete"]
         & monthly["failure_flag"].eq("")
         & monthly["gross_return"].notna()
-        & monthly["net_10bp_return"].notna()
+        & monthly["net_costed_return"].notna()
     )
     monthly["formation_month"] = pd.to_datetime(monthly["active_formation_end"]) + pd.offsets.MonthEnd(0)
     monthly["candidate_return_kind"] = "long_only_total_return"
-    monthly["cost_status"] = "10bp_times_one_way_traded_notional"
+    monthly["cost_status"] = f"{cost_bps:g}bp_times_one_way_traded_notional"
     keep = [
         "candidate_id", "series_type", "archive", "agent", "mode", "formation_month",
-        "realization_month", "date", "gross_return", "traded_notional", "net_10bp_return",
-        "gross_nav", "net_10bp_nav", "transaction_cost_nav", "missing_execution_weight",
+        "realization_month", "date", "gross_return", "traded_notional", "net_costed_return",
+        "gross_nav", "net_costed_nav", "transaction_cost_nav", "missing_execution_weight",
         "month_complete", "scheduled_complete", "analysis_eligible", "failure_flag",
         "candidate_return_kind", "cost_status",
     ]
@@ -864,9 +865,9 @@ def load_proxy_paths(proxy_root: Path) -> pd.DataFrame:
         frame["mode"] = "motif-proxy"
         frame["gross_return"] = pd.to_numeric(frame["candidate_return"], errors="coerce")
         frame["traded_notional"] = np.nan
-        frame["net_10bp_return"] = np.nan
+        frame["net_costed_return"] = np.nan
         frame["gross_nav"] = (1.0 + frame["gross_return"].fillna(0.0)).cumprod()
-        frame["net_10bp_nav"] = np.nan
+        frame["net_costed_nav"] = np.nan
         frame["transaction_cost_nav"] = np.nan
         frame["missing_execution_weight"] = np.nan
         frame["month_complete"] = True
@@ -879,8 +880,8 @@ def load_proxy_paths(proxy_root: Path) -> pd.DataFrame:
         parts.append(frame)
     columns = [
         "candidate_id", "series_type", "archive", "agent", "mode", "formation_month",
-        "realization_month", "date", "gross_return", "traded_notional", "net_10bp_return",
-        "gross_nav", "net_10bp_nav", "transaction_cost_nav", "missing_execution_weight",
+        "realization_month", "date", "gross_return", "traded_notional", "net_costed_return",
+        "gross_nav", "net_costed_nav", "transaction_cost_nav", "missing_execution_weight",
         "month_complete", "scheduled_complete", "analysis_eligible", "failure_flag",
         "candidate_return_kind", "cost_status",
     ]
@@ -1181,7 +1182,7 @@ def candidate_regression_frame(
     if series_type == "jkp_proxy":
         rows["y"] = pd.to_numeric(rows["gross_return"], errors="coerce")
     else:
-        rows["y"] = pd.to_numeric(rows["net_10bp_return"], errors="coerce") - rows["RF"]
+        rows["y"] = pd.to_numeric(rows["net_costed_return"], errors="coerce") - rows["RF"]
     rows = rows.merge(factor_realization, on="month", how="left", validate="m:1")
     rows = rows.merge(nasdaq_market, on="month", how="left", validate="m:1")
     rows["nasdaq100_market_excess"] = rows["nasdaq100_source_universe_market"] - rows["RF"]
@@ -1384,7 +1385,7 @@ def summarize_economics(monthly_paths: pd.DataFrame, risk_free: pd.DataFrame) ->
         series_type = str(group["series_type"].iloc[0])
         bases = [("gross", "gross_return")]
         if series_type != "jkp_proxy":
-            bases.append(("net_10bp", "net_10bp_return"))
+            bases.append(("net_costed", "net_costed_return"))
         for basis, column in bases:
             values = pd.Series(
                 pd.to_numeric(eligible[column], errors="coerce").to_numpy(),
@@ -1451,7 +1452,11 @@ def common_sample_metrics(
     }
 
 
-def build_economic_comparisons(monthly_paths: pd.DataFrame, risk_free: pd.DataFrame) -> pd.DataFrame:
+def build_economic_comparisons(
+    monthly_paths: pd.DataFrame,
+    risk_free: pd.DataFrame,
+    cost_bps: float,
+) -> pd.DataFrame:
     eligible = monthly_paths[monthly_paths["analysis_eligible"].astype(bool)].copy()
     by_id = {candidate_id: group for candidate_id, group in eligible.groupby("candidate_id")}
     rows: List[Dict[str, Any]] = []
@@ -1467,9 +1472,12 @@ def build_economic_comparisons(monthly_paths: pd.DataFrame, risk_free: pd.DataFr
                     "comparison_type": "replay_vs_authors_same_holdout_clock",
                     "left_candidate_id": left_id,
                     "right_candidate_id": author_id,
-                    "comparison_limit": "Same Nasdaq source universe and corrected clock; both net of 10bp traded-notional costs.",
+                    "comparison_limit": (
+                        f"Same Nasdaq source universe and corrected clock; both net of "
+                        f"{cost_bps:g}bp traded-notional costs."
+                    ),
                     **common_sample_metrics(
-                        by_id[left_id], by_id[author_id], "net_10bp_return", "net_10bp_return", risk_free, False
+                        by_id[left_id], by_id[author_id], "net_costed_return", "net_costed_return", risk_free, False
                     ),
                 }
             )
@@ -1480,9 +1488,12 @@ def build_economic_comparisons(monthly_paths: pd.DataFrame, risk_free: pd.DataFr
                     "comparison_type": "replay_vs_jkp_motif_proxy",
                     "left_candidate_id": left_id,
                     "right_candidate_id": proxy_id,
-                    "comparison_limit": "Replay is long-only Nasdaq portfolio net of 10bp; proxy is a top-1000 long-short excess-return motif with unavailable turnover/costs.",
+                    "comparison_limit": (
+                        f"Replay is long-only Nasdaq portfolio net of {cost_bps:g}bp; proxy is a "
+                        "top-1000 long-short excess-return motif with unavailable turnover/costs."
+                    ),
                     **common_sample_metrics(
-                        by_id[left_id], by_id[proxy_id], "net_10bp_return", "gross_return", risk_free, True
+                        by_id[left_id], by_id[proxy_id], "net_costed_return", "gross_return", risk_free, True
                     ),
                 }
             )
@@ -1496,9 +1507,12 @@ def build_economic_comparisons(monthly_paths: pd.DataFrame, risk_free: pd.DataFr
                     "comparison_type": "authors_vs_jkp_motif_proxy",
                     "left_candidate_id": author_id,
                     "right_candidate_id": proxy_id,
-                    "comparison_limit": "Authors path is corrected long-only Nasdaq portfolio net of 10bp; proxy is long-short and has unavailable costs.",
+                    "comparison_limit": (
+                        f"Authors path is corrected long-only Nasdaq portfolio net of {cost_bps:g}bp; "
+                        "proxy is long-short and has unavailable costs."
+                    ),
                     **common_sample_metrics(
-                        by_id[author_id], by_id[proxy_id], "net_10bp_return", "gross_return", risk_free, True
+                        by_id[author_id], by_id[proxy_id], "net_costed_return", "gross_return", risk_free, True
                     ),
                 }
             )
@@ -1513,10 +1527,11 @@ def write_report(
     factor_meta: Mapping[str, Any],
     cost_bps: float,
 ) -> None:
+    cost_label = f"{cost_bps:g} bp" if cost_bps == 1.0 else f"{cost_bps:g} bps"
     replay_paths = monthly_paths[monthly_paths["series_type"].eq("replay")]
     eligible_replay = replay_paths[replay_paths["analysis_eligible"].astype(bool)]
     replay_net = economics[
-        economics["series_type"].eq("replay") & economics["return_basis"].eq("net_10bp")
+        economics["series_type"].eq("replay") & economics["return_basis"].eq("net_costed")
     ].sort_values("annualized_sharpe", ascending=False)
     top_lines = []
     for _, row in replay_net.head(8).iterrows():
@@ -1577,7 +1592,7 @@ portfolios, charges transaction costs, measures traded notional, and runs factor
 - Execution: first trading close strictly after formation quarter end.
 - Price: `DIV_ADJ_CLOSE`, with `CLOSE_` only as a missing-value fallback.
 - Holding rule: buy-and-hold between quarterly rebalances; weights drift with prices.
-- Transaction cost: {cost_bps:g} bps times one-way traded notional, deducted at each rebalance.
+- Transaction cost: {cost_label} times one-way traded notional, deducted at each rebalance.
 - Realization label: calendar month end. The final partial source month is retained with
   `analysis_eligible=false` and is excluded from performance and alpha tests.
 - Ticker corrections and dropped rows are explicit in `formation_audit.csv`.
@@ -1586,7 +1601,7 @@ There are {replay_paths['candidate_id'].nunique()} replay strategy paths and
 {len(eligible_replay)} eligible replay strategy-month observations. Equal-weight multi-agent
 ensembles are formed from the five sleeve target portfolios at each formation date.
 
-## Economic results (replay, net 10 bps)
+## Economic results (replay, net {cost_label})
 
 | Candidate | Months | Ann. return | Ann. vol | Sharpe | Mean monthly traded notional |
 |---|---:|---:|---:|---:|---:|
@@ -1652,7 +1667,7 @@ it must not be read as a horse race between identical implementations.
 ## Main artifacts
 
 - `monthly_return_paths.csv`: formation and realization labels, gross return, traded notional,
-  10-bp net return, NAVs, eligibility, and failure flags.
+  {cost_label} net return, NAVs, eligibility, and failure flags.
 - `formation_holdings.csv` and `formation_audit.csv`: the actual replay/author target matrices and
   all parsing/correction decisions.
 - `factor_panel_extended_formation.csv` and `factor_panel_extended_realization.csv`: exact factor
@@ -1713,7 +1728,7 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=repo_root / "paper_runs/prompt_replay/guruagents/performance",
     )
-    parser.add_argument("--cost-bps", type=float, default=10.0)
+    parser.add_argument("--cost-bps", type=float, default=DEFAULT_COST_BPS)
     return parser.parse_args()
 
 
@@ -1754,7 +1769,7 @@ def main() -> int:
     attribution_summary, attribution_by_candidate = build_replay_attribution_outputs(regressions)
     pca_loadings = regression_meta.pop("pca_loadings")
     economics = summarize_economics(monthly_paths, risk_free)
-    comparisons = build_economic_comparisons(monthly_paths, risk_free)
+    comparisons = build_economic_comparisons(monthly_paths, risk_free, args.cost_bps)
     turnover_summary = (
         turnover.groupby(["candidate_id", "series_type", "archive", "agent", "mode"], as_index=False)
         .agg(
