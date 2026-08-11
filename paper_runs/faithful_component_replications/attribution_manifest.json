@@ -1,0 +1,18 @@
+{
+  "benchmarks": [
+    "capm",
+    "ff3",
+    "ff5_mom",
+    "ff5_mom_jkp132"
+  ],
+  "factor_panel": "/nfs/roberts/project/pi_btk22/zc362/KnowledgeTemplate/performance_analysis/results/current/multifactor_value_add_20260624/benchmark_factor_panel.csv",
+  "multiplicity": "Holm across 3 formula components within each benchmark; not across benchmark specifications",
+  "n_candidates": 3,
+  "n_common_months": 270,
+  "n_evaluation_months": 150,
+  "output_sha256": {
+    "attribution_results.csv": "e44689211c85da02c854cb951cfae22ac8552e039ba769718d4e8c12adab2e5c",
+    "attribution_summary.csv": "82feed55adaf87e0d27f90168a767682cc0f5df980de54b090745fbc84a610b6",
+    "closest_jkp_factors.csv": "d5635505aa35f1d8844f12bff8a82b02bde106e3705415a31c9b6a9e570c72af"
+  }
+}

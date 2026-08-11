@@ -1,0 +1,18 @@
+\begin{table*}[t]
+  \caption{Primary counted sample: exhaustive evaluator-valid seeds in the pinned QuantEvolver release. Every row is strict grade B.}
+  \label{tab:faithful-components}
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabularx}{\textwidth}{@{}l l X l@{}}
+    \toprule
+    Seed & Source expression & Preserved source evaluator & Grade \\
+    \midrule
+    Q1 & $\mathrm{div}(\mathrm{ts\_mean}(\mathrm{returns}(60)),\mathrm{ts\_std}(\mathrm{returns}(60)))$ & Released DSL numerics; pairwise score/forward-return deletion; equal-mean top/bottom quintiles & B \\
+    Q2 & $-\mathrm{zscore}(\mathrm{last}(\mathrm{close}(120)),\mathrm{close}(120))$ & Released DSL numerics; pairwise score/forward-return deletion; equal-mean top/bottom quintiles & B \\
+    Q3 & $\mathrm{corr}(\mathrm{returns}(60),\log(|\mathrm{volume}(60)|+10^{-8}))$ & Released DSL numerics; pairwise score/forward-return deletion; equal-mean top/bottom quintiles & B \\
+    \bottomrule
+  \end{tabularx}
+  \vspace{2pt}
+  \parbox{0.98\textwidth}{\footnotesize Source: \url{https://github.com/QuantLLM/QuantEvolver} at commit \texttt{4eb0e78842138ada5334349585b114ad923564e8}. The release also contains \texttt{seed\_0004}, explicitly named \texttt{bad\_unknown\_op}; the source evaluator rejects it, so it is not an empirical candidate. Cadence, universe, and horizon change; no native agent or training pipeline is replicated.}
+\end{table*}

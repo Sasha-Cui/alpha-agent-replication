@@ -1,0 +1,29 @@
+{
+  "end": "2024-12-31",
+  "faithfulness_pass_rate": 1.0,
+  "input_path": "/nfs/roberts/project/pi_btk22/zc362/jkp-data/data/processed/characteristics/USA.parquet",
+  "input_sha256": "89de9e4cb90e2eda3bfacd8f139119876bf1cf1c0653886226994d5b6e71eeec",
+  "min_symbols": 8,
+  "n_counted_components": 3,
+  "n_grade_a_or_b": 3,
+  "n_holding_rows": 184596,
+  "n_nonconsecutive_forward_holding_rows": 6,
+  "n_return_rows": 915,
+  "output_sha256": {
+    "faithfulness_ledger.csv": "b6920e61e4cb4fb9b6995299609bedc66df95640294e499dfb669d181f2ebc0f",
+    "formation_holdings.csv": "b28e170a1df9e6e7c48d99e176b3e2a5b82d10a57e81ec793106f2af27ed222e",
+    "monthly_return_paths.csv": "4e8e78b30707298989d92382f046a7cd0d2fc9f55d185d4348f8f7c53a185587"
+  },
+  "scope_warning": "100% refers only to the three counted disclosed components. No native agent, search process, reinforcement training, or paper-level result is replicated.",
+  "source_census_rule": "all evaluator-valid seeds in examples/seed_candidates.yaml; the source's explicit bad_unknown_op seed_0004 is excluded",
+  "source_commit": "4eb0e78842138ada5334349585b114ad923564e8",
+  "source_file_sha256": {
+    "examples/seed_candidates.yaml": "c8a20de0850156b8c831547a58239bb88b5d6486da50d6f9ecbaa2df0d13d718",
+    "quant_evolver/dsl/evaluator.py": "8c6e8201b8794bb2166a118cb753231bca1379c8aff115c6d29799ce8400516c",
+    "quant_evolver/evaluation/cross_sectional_rankic.py": "b38066082453d58295e45467fad662b33c1a1ef97232d3575348e2cfade56295"
+  },
+  "source_repository": "https://github.com/QuantLLM/QuantEvolver",
+  "start": "1999-07-31",
+  "study_role": "primary_counted_faithful_disclosed_components",
+  "top_n": 1000
+}

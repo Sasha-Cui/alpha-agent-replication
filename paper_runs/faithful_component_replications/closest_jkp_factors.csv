@@ -1,0 +1,4 @@
+candidate_id,closest_jkp_factor,correlation,absolute_correlation
+quantevolver_price_zscore_reversal_120,char__prc,-0.697820620229991,0.697820620229991
+quantevolver_return_log_volume_corr_60,char__seas_1_1na,0.6200972571907937,0.6200972571907937
+quantevolver_return_sharpe_60,char__ival_me,-0.6020076631976173,0.6020076631976173
