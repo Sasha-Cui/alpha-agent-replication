@@ -201,8 +201,15 @@ def main() -> int:
 
     formula_dir = root / "paper_runs/fidelity_formula_components"
     formula_manifest = json.loads((formula_dir / "manifest.json").read_text())
+    formula_access_gated = {"formation_holdings.csv", "monthly_return_paths.csv"}
     for name, expected in formula_manifest["output_sha256"].items():
-        require(sha256(formula_dir / name) == expected, f"formula hash: {name}")
+        path = formula_dir / name
+        if name in formula_access_gated and not path.is_file():
+            continue
+        require(
+            path.is_file() and sha256(path) == expected,
+            f"formula hash: {name}",
+        )
     require(
         formula_manifest["n_candidates"] == 12
         and formula_manifest["n_return_rows"] == 3660,
