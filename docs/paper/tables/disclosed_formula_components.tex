@@ -1,0 +1,26 @@
+\begin{table*}[t]
+\centering
+\caption{Twelve source-disclosed formula components under declared conventions. The middle column gives compact normalized source renderings linked to the exact anchors at left, not verbatim code: EFS is written in normalized infix form, and QuantAgent abbreviates its barrier and average-true-range intermediates as $B$ and $ATR$. The artifact ledger records each implemented expression, input mapping, and operator convention. Status applies only to the named component. Cadence, universe, and costs are study-level changes; portfolio rules are source-specific and declared in the text and artifact manifest.}
+\label{tab:disclosed-formulas}
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}p{0.035\textwidth}p{0.15\textwidth}p{0.49\textwidth}p{0.24\textwidth}@{}}
+\toprule
+\textbf{ID} & \textbf{Exact source anchor} & \textbf{Compact normalized rendering} & \textbf{Status / inputs} \\
+\midrule
+E1 & EFS v2, Table VI, CSI300--1 & cross-sectional $z$-score of $(\mathrm{mean}_{30}(r)+\mathrm{decay}_{10}(r))/(\mathrm{sd}_{7}(r)\,\mathrm{sd}_{30}(\mathrm{delay}_{5/30}(r)))$, with the delay selected by 14-bar price momentum & conditional: missing specialized numerics; \texttt{ret, prc} \\
+E2 & EFS v2, Table VI, CSI300--2 & cross-sectional $z$-score of $(\mathrm{mean}_{10}(r)+\mathrm{mean}_{30}(r))/(\mathrm{sd}_{7}(r)+\mathrm{sd}_{30}(\mathrm{delay}_{14}(r)))$ & conditional: missing specialized numerics; \texttt{ret} \\
+E3 & EFS v2, Table VI, US50 & cross-sectional $z$-score of $(\max_{30}p-\mathrm{decay}_{21}p)/[(\mathrm{sd}_{3}r+\mathrm{sd}_{30}r)V]$, where $V=\mathrm{sd}_{7}r$ if $\mathrm{skew}_{14}r<0$ and $V=\mathrm{sd}_{21}r$ otherwise & conditional: missing specialized numerics; \texttt{ret, prc} \\
+E4 & EFS v2, Table VI, HSI45--1 & cross-sectional $z$-score of $\mathrm{decay}_{30}(r)/\mathrm{sd}_{30}(\Delta_{10}r-\Delta_{30}r)$ & conditional: missing specialized numerics; \texttt{ret} \\
+E5 & EFS v2, Table VI, HSI45--2 & cross-sectional rank of $\mathrm{mean}_{14}(r)/[\mathrm{sd}_{30}(M)+\mathrm{sd}_{21}(\mathrm{delay}_{7}r)]$, where $M=\Delta_{21}p$ if $\Delta_{7}p<0$ and $M=\Delta_{3}p$ otherwise & conditional: missing specialized numerics; \texttt{ret, prc} \\
+Q1 & QuantEvolver, \texttt{seed\_candidates.yaml} & \texttt{div(ts\_mean(returns(60)),ts\_std(returns(60)))} & exact released DSL; \texttt{prc} \\
+Q2 & QuantEvolver, \texttt{seed\_candidates.yaml} & \texttt{neg(zscore(last(close(120)),close(120)))} & exact released DSL; \texttt{prc} \\
+Q3 & QuantEvolver, \texttt{seed\_candidates.yaml} & \texttt{corr(returns(60),log\_arr(volume(60)))} & exact released DSL; \texttt{prc, tvol} \\
+J4 & Alpha-Jungle, Table 7--4 & $\mathrm{Diff}(\mathrm{Ma}(volume,20),3)/\mathrm{Ma}(volume,60)$ & conditional: edge numerics unstated; \texttt{tvol} \\
+J5 & Alpha-Jungle, Table 7--5 & product of 10-bar and 30-bar price--volume return correlations and 20-bar volume skewness & conditional: edge numerics unstated; \texttt{prc, tvol} \\
+J6 & Alpha-Jungle, Table 7--6 & $\mathrm{Ma}(\mathrm{Corr}(volume,close,20)\,\mathrm{Skew}(high-low,20),10)$ & conditional: edge numerics unstated; \texttt{prc, prc\_high, prc\_low, tvol} \\
+A1 & QuantAgent, Appendix A.1 & $TR=\max\{H-L,|H-\mathrm{shift}(preclose)|,|L-\mathrm{shift}(preclose)|\}$; $ATR=\mathrm{Ma}_{14}(TR)$; $B=H_{t-1}+1.5ATR$; signal $=\mathbf{1}\{H>B\}\max\{(H-B)/ATR,0\}$ & conditional: literal double lag; \texttt{prc, prc\_high, prc\_low} \\
+\bottomrule
+\end{tabular}
+\par\vspace{0.2em}\footnotesize EFS v2 does not fully define specialized operator numerics. The runner executes the rendered root operators after top-1,000 eligibility: E1--E4 use within-month population-standard-deviation \texttt{cs\_zscore}, and E5 uses centered average-tie percentile \texttt{cs\_rank}. The remaining EFS conventions are stated in the text. The QuantAgent row is a compact rendering that introduces $B$ and $ATR$ labels for the printed intermediates; it is not a verbatim code excerpt. Alpha-Jungle formulas 1--3 are excluded because the supplied monthly panel has no VWAP. QuantAgent's Three Soldiers example is excluded because it requires open prices and its printed final code is not executable literally.
+\end{table*}

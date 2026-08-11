@@ -1,0 +1,155 @@
+{
+  "cost_bps_one_way": 10.0,
+  "end": "2024-12-31",
+  "input_path": "/nfs/roberts/project/pi_btk22/zc362/jkp-data/data/processed/characteristics/USA.parquet",
+  "input_sha256": "89de9e4cb90e2eda3bfacd8f139119876bf1cf1c0653886226994d5b6e71eeec",
+  "n_candidates": 12,
+  "n_complete_case_candidate_months": 2620,
+  "n_imputed_candidate_months": 1040,
+  "n_imputed_holdings": 1782,
+  "n_return_rows": 3660,
+  "output_sha256": {
+    "formation_holdings.csv": "6541aa041ce7c9d9b581c4a5c9d579fde388aac20350d2bd800fd0063cdefd02",
+    "formula_fidelity_ledger.csv": "66de37d6b5c374fbd1b88e77ba7436f3f910b7bec7edd7037d77ea87b50b5a3a",
+    "monthly_return_paths.csv": "fe3d1f75b826e54417a674763fb90d10bc5794530ad489a5893c1fd9ddebeef4"
+  },
+  "realization_diagnostics_by_candidate": {
+    "alpha_jungle_multiscale_price_volume": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 276,
+      "n_imputed_holdings": 31,
+      "n_imputed_months": 29,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 3.1000000000000014
+    },
+    "alpha_jungle_range_volume_interaction": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 228,
+      "n_imputed_holdings": 83,
+      "n_imputed_months": 77,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 8.29999999999999
+    },
+    "alpha_jungle_volume_ma_diff": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 265,
+      "n_imputed_holdings": 42,
+      "n_imputed_months": 40,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 4.200000000000001
+    },
+    "efs_decay_return_dispersion": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 263,
+      "n_imputed_holdings": 48,
+      "n_imputed_months": 42,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 4.8
+    },
+    "efs_multi_horizon_mean_volatility": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 250,
+      "n_imputed_holdings": 62,
+      "n_imputed_months": 55,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 6.199999999999995
+    },
+    "efs_regime_momentum_normalized_mean": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 264,
+      "n_imputed_holdings": 46,
+      "n_imputed_months": 41,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 4.6000000000000005
+    },
+    "efs_regime_switched_return_volatility": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 245,
+      "n_imputed_holdings": 65,
+      "n_imputed_months": 60,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 6.499999999999994
+    },
+    "efs_skew_gated_breakout": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 300,
+      "n_imputed_holdings": 5,
+      "n_imputed_months": 5,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 0.5
+    },
+    "quantagent_atr14_breakout_literal": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 303,
+      "n_imputed_holdings": 2,
+      "n_imputed_months": 2,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 0.225
+    },
+    "quantevolver_price_zscore_reversal_120": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 98,
+      "n_imputed_holdings": 357,
+      "n_imputed_months": 207,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 2.4496952924279767
+    },
+    "quantevolver_return_log_volume_corr_60": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 36,
+      "n_imputed_holdings": 651,
+      "n_imputed_months": 269,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 3.285488301584915
+    },
+    "quantevolver_return_sharpe_60": {
+      "candidate_months_considered": 306,
+      "n_complete_case_months": 92,
+      "n_imputed_holdings": 390,
+      "n_imputed_months": 213,
+      "n_omitted_no_calendar_horizon": 1,
+      "n_omitted_no_observed_required_leg": 0,
+      "n_omitted_no_target": 0,
+      "n_path_months": 305,
+      "total_imputed_target_weight": 2.2963842107562438
+    }
+  },
+  "scope_warning": "No native agent is reproduced; source-disclosed formula components or strings are tested under declared conventions.",
+  "start": "1999-07-31",
+  "top_m": 10,
+  "top_n": 1000,
+  "total_imputed_target_weight": 46.45656780476914
+}

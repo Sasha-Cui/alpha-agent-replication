@@ -21,18 +21,21 @@ LITERATURE_DIR = REPO_ROOT / "literature_review"
 PAPER_RUNS_DIR = REPO_ROOT / "paper_runs"
 REPORT_PATH = REPO_ROOT / "report.md"
 
-DEFAULT_JKP_ROOT = _env_path("ALPHA_EVOLVE_JKP_ROOT", "/home/zc362/project_pi_btk22/zc362/jkp-data")
+DEFAULT_JKP_ROOT = _env_path(
+    "ALPHA_EVOLVE_JKP_ROOT",
+    "/nfs/roberts/project/pi_btk22/zc362/jkp-data",
+)
 DEFAULT_JKP_USA = _env_path(
     "ALPHA_EVOLVE_JKP_USA",
     DEFAULT_JKP_ROOT / "data/processed/characteristics/USA.parquet",
 )
 DEFAULT_FACTOR_DATA_ROOT = _env_path(
     "ALPHA_EVOLVE_FACTOR_DATA_ROOT",
-    "/home/zc362/project_pi_btk22/zc362/factor-data",
+    "/nfs/roberts/project/pi_btk22/zc362/KnowledgeTemplate",
 )
 DEFAULT_RETURN_DATA_ROOT = _env_path(
     "ALPHA_EVOLVE_RETURN_DATA_ROOT",
-    DEFAULT_FACTOR_DATA_ROOT / "return_pipeline/return_data_assembly",
+    DEFAULT_FACTOR_DATA_ROOT / "return_pipeline" / "return_data_assembly",
 )
 DEFAULT_FACTOR_PANEL = _env_path(
     "ALPHA_EVOLVE_FACTOR_PANEL",

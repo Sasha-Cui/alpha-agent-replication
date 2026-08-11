@@ -1,0 +1,5 @@
+benchmark_id,benchmark_label,n_components,median_alpha_annualized,positive_alpha_count,holm_positive_count
+capm,CAPM,12,0.00878256811808894,7,1
+ff3,FF3,12,-0.011258696287808682,4,0
+ff5_mom,FF5+Momentum,12,-0.005931704336225034,5,0
+ff5_mom_jkp132,FF5+Momentum+JKP132,12,0.009776930797485038,9,0

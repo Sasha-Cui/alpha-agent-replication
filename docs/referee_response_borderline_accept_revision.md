@@ -1,5 +1,9 @@
 # Response to anonymous referee: borderline-accept revision
 
+> [!CAUTION]
+> **SUPERSEDED / INVALIDATED — DO NOT USE FOR CURRENT CLAIMS OR RESULTS.**
+> This legacy response predates the current artifact-audit and fidelity framing and is retained only for provenance. Use the current claim-boundary document (`docs/FIDELITY_AUDIT.md`), the current manuscript (`docs/paper/icaif2026_submission.tex`; built PDF `output/pdf/icaif2026_submission.pdf`), and current fidelity evidence (`paper_runs/submission_evidence/native_fidelity_ledger.csv` and `paper_runs/submission_evidence/artifact_audit/`) instead. Claims, counts, and interpretations below are not authoritative for the current submission.
+
 We thank the referee for recognizing the value of the evidence hierarchy and for identifying where the earlier manuscript still overreached. The revision does not claim to repair the one limitation that cannot be repaired retrospectively: the mappings were not outcome-blind and were not independently coded. We instead narrow the title and estimand, treat all mapping-based statistics as descriptive conditional diagnostics, make corpus discovery reconstructible to the extent supported by the frozen record, and add the requested cost and missing-return analyses.
 
 ## 1. Systematic construction of the 98-work screen

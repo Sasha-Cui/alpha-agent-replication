@@ -1,0 +1,19 @@
+{
+  "benchmarks": [
+    "capm",
+    "ff3",
+    "ff5_mom",
+    "ff5_mom_jkp132"
+  ],
+  "factor_panel": "/nfs/roberts/project/pi_btk22/zc362/KnowledgeTemplate/performance_analysis/results/current/multifactor_value_add_20260624/benchmark_factor_panel.csv",
+  "multiplicity": "Holm across 12 formula components within each benchmark; not across benchmark specifications",
+  "n_candidates": 12,
+  "n_common_months": 270,
+  "n_evaluation_months": 150,
+  "output_sha256": {
+    "attribution_results.csv": "7ca22ce7f1131f646fa2dfb9d0e32f901dc0465b5873e49e42d207dcbc068cf5",
+    "attribution_summary.csv": "c6c8fb1b93b5e00cf6e8f8ef11bacd8cfaf3f5e50ec7433211938294593dd0af",
+    "closest_jkp_factors.csv": "32de94edf1b06ef91259db0227763a003f357a1e92841ebebaf75e27a8ea2f11",
+    "docs/paper/figures/guruagents_paired_attribution.pdf": "6721d2e85d282bb7a9906da256c9e6506fe08c742869d6b883b71ca5f274fdf5"
+  }
+}

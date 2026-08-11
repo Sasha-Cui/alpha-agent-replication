@@ -1,5 +1,9 @@
 # Response to referee: major revision
 
+> [!CAUTION]
+> **SUPERSEDED / INVALIDATED — DO NOT USE FOR CURRENT CLAIMS OR RESULTS.**
+> This legacy response predates the current artifact-audit and fidelity framing and is retained only for provenance. Use the current claim-boundary document (`docs/FIDELITY_AUDIT.md`), the current manuscript (`docs/paper/icaif2026_submission.tex`; built PDF `output/pdf/icaif2026_submission.pdf`), and current fidelity evidence (`paper_runs/submission_evidence/native_fidelity_ledger.csv` and `paper_runs/submission_evidence/artifact_audit/`) instead. Claims, counts, and interpretations below are not authoritative for the current submission.
+
 We thank the referee for identifying a genuine mismatch between the earlier title and the estimand. The revision changes the paper's intellectual claim, adds two empirical audits, and makes the aggregate evidence inspectable. We do not treat unresolved concerns as if they had been solved: mapping was not outcome-blind, no independent second coder was used, and the broad bootstrap is conditional on an already-estimated fitting path. These facts are now prominent.
 
 ## 1. Title and headline conclusion

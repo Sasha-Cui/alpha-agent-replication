@@ -1,5 +1,9 @@
 # Scientific claim audit
 
+> [!CAUTION]
+> **SUPERSEDED / INVALIDATED — DO NOT USE FOR CURRENT CLAIMS OR RESULTS.**
+> This legacy document predates the current artifact-audit and fidelity framing and is retained only for provenance. Use the current claim-boundary document (`docs/FIDELITY_AUDIT.md`), the current manuscript (`docs/paper/icaif2026_submission.tex`; built PDF `output/pdf/icaif2026_submission.pdf`), and current fidelity evidence (`paper_runs/submission_evidence/native_fidelity_ledger.csv` and `paper_runs/submission_evidence/artifact_audit/`) instead. Claims, counts, and interpretations below are not authoritative for the current submission.
+
 This page is the shortest path from the paper's claims to the exact code,
 tracked evidence, denominators, and interpretation limits. It is written for a
 skeptical reader trying to falsify the result.

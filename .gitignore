@@ -246,6 +246,10 @@ scripts/__pycache__/
 paper_runs/submission_evidence/**/candidate_monthly*.csv
 paper_runs/submission_evidence/**/factor_monthly*.csv
 paper_runs/submission_evidence/artifact_audit/artifact_audit_cache.json
+paper_runs/fidelity_formula_components/monthly_return_paths.csv
+paper_runs/fidelity_formula_components/formation_holdings.csv
+paper_runs/faithful_component_replications/monthly_return_paths.csv
+paper_runs/faithful_component_replications/formation_holdings.csv
 
 # Generated manuscript products and local visual-QA material. Paper source,
 # bibliography, deterministic figures, and generated TeX tables remain tracked.
