@@ -724,7 +724,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError("CEUR volume record hash changed")
     _, pdf_links = validate_paper(paper)
     anonymous_paths = validate_repo(anonymous, EXPECTED_ANONYMOUS_HEAD, EXPECTED_ANONYMOUS_TREE_SHA256, EXPECTED_ANONYMOUS_ARCHIVE_SHA256)
-    author_paths = validate_repo(author, EXPECTED_AUTHOR_HEAD, EXPECTED_AUTHOR_TREE_SHA256, EXPECTED_AUTHOR_ARCHIVE_SHA256)
+    validate_repo(author, EXPECTED_AUTHOR_HEAD, EXPECTED_AUTHOR_TREE_SHA256, EXPECTED_AUTHOR_ARCHIVE_SHA256)
     if str(git(anonymous, "rev-list", "--max-parents=0", "HEAD")).strip() != EXPECTED_ANONYMOUS_INITIAL:
         raise ValueError("anonymous initial commit changed")
 

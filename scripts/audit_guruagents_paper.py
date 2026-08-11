@@ -825,7 +825,7 @@ def internal_check_rows(
     portfolio_rows: Sequence[Mapping[str, Any]],
     source_root: Path,
 ) -> list[dict[str, Any]]:
-    first_buffett = next(
+    next(
         row for row in portfolio_rows
         if row["agent"] == "Warren Buffett" and row["analysis_start"] == "2023-10-01"
     )

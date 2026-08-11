@@ -13,7 +13,6 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
-import importlib.util
 import json
 import os
 import py_compile
@@ -21,7 +20,6 @@ import subprocess
 import sys
 import tarfile
 import tempfile
-import types
 from collections import Counter
 from pathlib import Path
 from typing import Any, Mapping, Sequence

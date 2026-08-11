@@ -22,7 +22,7 @@ import tempfile
 from collections import Counter
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Mapping, Sequence
 
 import numpy as np
 from scipy.io import loadmat

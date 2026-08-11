@@ -18,7 +18,6 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
-import io
 import json
 import os
 import re
@@ -587,7 +586,8 @@ def author_box_stats(path: Path) -> list[dict[str, float | str]]:
     ]
     if len(black) != 35 or len(medians) != 7:
         raise ValueError(f"cannot recover boxplot geometry: {path}")
-    convert = lambda y: slope * y + intercept
+    def convert(y: float) -> float:
+        return slope * y + intercept
     rows: list[dict[str, float | str]] = []
     for index in range(7):
         paths = black[index * 5:(index + 1) * 5]
@@ -925,7 +925,7 @@ broad alpha, speed, scale, or continual-refinement claims.
 
 
 def build(args: argparse.Namespace) -> dict[str, Any]:
-    arxiv_text = validate_pdf(args.arxiv_pdf.resolve(), EXPECTED_ARXIV_PDF_SHA256, EXPECTED_ARXIV_PAGES, "arXiv v1")
+    validate_pdf(args.arxiv_pdf.resolve(), EXPECTED_ARXIV_PDF_SHA256, EXPECTED_ARXIV_PAGES, "arXiv v1")
     acl_text = validate_pdf(args.acl_pdf.resolve(), EXPECTED_ACL_PDF_SHA256, EXPECTED_ACL_PAGES, "ACL")
     if "Empirical Asset Pricing with Large Language Model Agents" in acl_text:
         raise ValueError("unexpected later-paper title in GPT-Signal ACL PDF")
