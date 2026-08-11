@@ -79,9 +79,13 @@ ARTIFACT_NOTES = {
     ),
     "SYS-ALPHA-QUANTER": (
         "N",
-        "The bundled Parquet files are dated training/test prompts and reward "
-        "labels (for example, a TSLA prompt), not generated AlphaQuanter trade "
-        "decisions or return series.",
+        "A pinned paper audit checks all 790 numeric cells in Tables 5--8 and "
+        "10--14. The release ships 2,615 training/validation prompt-label rows: "
+        "a current Yahoo retrieval reproduces 523 labels exactly and 2,612 reward "
+        "regimes. A released-semantics market-baseline reconstruction matches 1/34 "
+        "repeated Buy-and-Hold cells at display precision. These are components, "
+        "not agent outputs; all 756 non-market cells lack checkpoints, actions, "
+        "three-seed paths, logs, or human ratings, and the paper test split is absent.",
     ),
     "SYS-CONTEST-TRADE": (
         "N",

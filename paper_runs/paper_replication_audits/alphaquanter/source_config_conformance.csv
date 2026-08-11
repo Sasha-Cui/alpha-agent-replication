@@ -1,0 +1,27 @@
+dimension,paper,released,status
+stock_universe,"GOOGL,META,MSFT,NVDA,TSLA",same five tickers in both Parquets,match
+train_split,2022-09-01 to 2024-03-30; 395 days,2022-09-01 to last trading day 2024-03-28; 395 dates,trading_calendar_match
+validation_split,2024-05-15 to 2024-11-14; 128 days,"same dates and 128 dates, but file/split named test",values_match_role_mislabeled
+test_split,2025-01-01 to 2025-06-30; 122 days,absent; current exchange calendar retrieval has 121 observations,missing
+forward_horizon_H,7,k=2..8 relative to t+1 (seven future returns),match
+forward_weight_decay,"exponential eta, numeric eta not disclosed",lambda=0.8,paper_underspecified
+decision_threshold_theta,1.5%,THRESHOLD=1.5,match
+result_reward_weight_alpha,5,5 * result_reward,match
+transaction_cost_lambda,0.001,Backtrader commission=0.001,match
+investment_fraction_kappa,0.9,cash buffer_ratio=0.9 for each BUY,match
+market_price_rounding,not disclosed,all OHLC price columns rounded to cents before CSV write,paper_underspecified
+main_models,Qwen2.5-3B-Instruct and Qwen2.5-7B-Instruct,run.sh defaults Qwen2.5-7B-Instruct only; manually overridable,incomplete
+training_algorithm,"GRPO, five epochs and Table 9 settings",GRPO and matching principal Table 9 settings,match
+inference_temperature,0 (deterministic),validation temperature=1.0 and top_p=0.6,mismatch
+three_random_seed_runs,mean across three independent random seeds,no seed values or three-run driver,missing
+paper_metric_sharpe,mean daily return divided by sample standard deviation; no horizon multiplier,population std times sqrt(number of rows),mismatch
+full_period_evaluator,2025-01-01 to 2025-06-30,hardcoded 2024-05-15 to 2024-11-14 validation only,missing
+rolling_evaluator,"3 months, 7-day step","60 observations, 5-row step, hardcoded 128-row validation loop",semantic_approximation
+collected_multimodal_data,"market, technical, news, Reddit, macro, and fundamentals",collection scripts only; DATA_PATH placeholder and no collected_data,missing_original_inputs
+complete_VERL_runtime,trainable end-to-end system,31-file patch snapshot; invoked verl.trainer.main_ppo is absent,not_operational_without_upstream_merge
+documented_recipe_path,runnable release,README uses recipes/stock_trading; tree is recipe/langgraph_agent/stock_trading,mismatch
+checkpoints,trained 3B and 7B policies,none,missing
+native_action_series,three-seed decisions for main/rolling/ablation tables,none,missing
+token_and_cost_logs,Table 6,none,missing
+human_rating_records,"50 random inputs, three PhD raters","no sampled inputs, individual ratings, or rater assignment",missing
+published_numeric_result_paths,Tables 5--8 and 10--14 plus training figures,static PNG figures only; no numeric result tables or underlying paths,missing

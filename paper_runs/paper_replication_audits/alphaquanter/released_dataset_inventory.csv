@@ -1,0 +1,4 @@
+paper_role,released_path,exists,rows,distinct_trading_dates,minimum_date,maximum_date,paper_start,paper_end,paper_stated_trading_days,tickers,rows_per_ticker,prompt_date_matches_extra_info,prompt_roles_system_human,expected_tool_calls_is_8,released_extra_info_split,status
+paper_train,verl/data/train.parquet,True,1975,395,2022-09-01,2024-03-28,2022-09-01,2024-03-30,395,GOOGL;META;MSFT;NVDA;TSLA,GOOGL:395;META:395;MSFT:395;NVDA:395;TSLA:395,True,True,True,train,released_prompt_label_component
+paper_validation_released_as_test,verl/data/test.parquet,True,640,128,2024-05-15,2024-11-14,2024-05-15,2024-11-14,128,GOOGL;META;MSFT;NVDA;TSLA,GOOGL:128;META:128;MSFT:128;NVDA:128;TSLA:128,True,True,True,test,released_prompt_label_component
+paper_test,absent,False,0,0,,,2025-01-01,2025-06-30,122,GOOGL;META;MSFT;NVDA;TSLA,,,,,,missing_paper_test_prompts_labels_and_actions

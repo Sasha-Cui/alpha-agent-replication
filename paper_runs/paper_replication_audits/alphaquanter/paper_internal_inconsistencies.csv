@@ -1,0 +1,4 @@
+family_or_setting,method,metric,table_5_value,table_10_or_11_value,absolute_difference,status
+RL,FinRLA2C,MSFT_arr_pct,43.15,43.14,0.00999999999999801,paper_internal_display_mismatch
+RL,FinRLA2C,NVDA_arr_pct,37.43,37.42,0.00999999999999801,paper_internal_display_mismatch
+RL,FinRLPPO,MSFT_arr_pct,43.91,43.9,0.00999999999999801,paper_internal_display_mismatch
