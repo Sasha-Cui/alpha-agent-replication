@@ -1,0 +1,42 @@
+{
+  "alpha_gpt2_document_jaccard": 0.9975825946817083,
+  "alpha_gpt2_empirical_result_units": 0,
+  "alpha_gpt_final_line_series": 2,
+  "alpha_gpt_final_line_series_reproduced": 0,
+  "alpha_gpt_final_numeric_result_cells": 47,
+  "alpha_gpt_final_numeric_result_cells_reproduced": 0,
+  "alpha_gpt_v1_line_series": 3,
+  "alpha_gpt_v1_line_series_reproduced": 0,
+  "alpha_gpt_v1_numeric_result_cells": 20,
+  "alpha_gpt_v1_numeric_result_cells_reproduced": 0,
+  "audit": "Alpha-GPT v1/v2/ACL final and Alpha-GPT 2.0 lineage",
+  "author_linked_code_found": false,
+  "blocking_internal_consistency_issues": 9,
+  "community_repository_head": "2388b35d6085c0a1f752bca37fa20eb9d39f16b2",
+  "community_repository_native_credit": false,
+  "github_searches": 10,
+  "internal_consistency_issues": 18,
+  "local_mappings": "two_M0_narrative_translations",
+  "method_assessments": {
+    "conflict": 12,
+    "missing": 77,
+    "partial": 20,
+    "specified": 14
+  },
+  "method_dimensions": 123,
+  "method_severities": {
+    "blocking": 80,
+    "major": 29,
+    "none": 14
+  },
+  "official_pdf_pages_audited": 35,
+  "official_pdf_pages_visually_inspected": 35,
+  "official_source_members": 108,
+  "overall_fidelity": "three_official_documents_rebuilt_and_lineage_audited_zero_native_alpha_gpt_results_alpha_gpt2_is_unevaluated_draft",
+  "paper_result_credit": false,
+  "published_formula_examples": 4,
+  "published_formula_examples_arity_valid": 3,
+  "v1_document_jaccard": 0.999000499750125,
+  "v2_acl_document_jaccard": 0.9144306282722513,
+  "v2_arxiv_document_jaccard": 0.9636488340192044
+}

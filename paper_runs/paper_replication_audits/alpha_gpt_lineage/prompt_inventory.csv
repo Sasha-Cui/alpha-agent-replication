@@ -1,0 +1,15 @@
+prompt_id,version_scope,role,recovery_status,text_or_evidence,immutable_model_request_metadata,exact_replay_credit
+AGPT-PROMPT-01,v1,knowledge-compiler role fragment,partial,you are a quant researcher developing formulaic alphas,no,no
+AGPT-PROMPT-02,v1,field specification example,partial,high_1D: highest intraday price of stocks,no,no
+AGPT-PROMPT-03,v1/v2 figure,system prompt template,partial,role and Instructions/Specifications placeholders are visible; full text is not,no,no
+AGPT-PROMPT-04,v1/v2 figure,user interaction example,partial,exploit momentum in volume and price; smooth; add confirmation signals,no,no
+AGPT-PROMPT-05,v1,invalid-alpha correction request,missing,described but not printed,no,no
+AGPT-PROMPT-06,v1/v2,retrieval query and memory rendering,missing,database and RAG operations are described but requests are absent,no,no
+AGPT-PROMPT-07,v2,Trading Idea Polisher system prompt,missing,agent role only,no,no
+AGPT-PROMPT-08,v2,Quant Developer system prompt,missing,agent role only,no,no
+AGPT-PROMPT-09,v2,Analyst system prompt,missing,agent role only,no,no
+AGPT-PROMPT-10,v2,autonomous hierarchical-RAG prompts,missing,RAG0--RAG3 flow only,no,no
+AGPT-PROMPT-11,v2,GPT-4 translation judge prompt,missing,scoring task is described but request/order controls are absent,no,no
+AGPT-PROMPT-12,v2,GPT-4 simulated-human prompt,missing,specifically designed prompts are asserted but not printed,no,no
+AGPT-PROMPT-13,v2,competition automation prompt,missing,automation is described but no immutable request is released,no,no
+AGPT-PROMPT-14,Alpha-GPT 2.0,three layer SOPs and agent system prompts,missing,SOPs are asserted but not disclosed,no,no

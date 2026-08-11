@@ -1,0 +1,13 @@
+dimension,assessment,evidence,native_credit
+author linkage,nonmatch,all five commits are by Parth Modi; no paper-author overlap,no
+repository self-description,unaffiliated inspiration,README thanks the two papers as foundational research and labels the project work in progress,no
+model,different,GPT-4o at temperatures 0.1/0.3/0.4 versus paper GPT-3.5 or Llama3 70B,no
+workflow,partial community implementation,"graph ends after user input, hypothesis, alpha generation, and LLM coding",no
+genetic programming,missing,no PyGAD dependency or GP source path,no
+backtesting,missing,database can store supplied backtest fields but graph contains no evaluator,no
+Zipline/Alphalens/PyGAD,README-only,none appears in pyproject or source,no
+paper DSL,different,prompts request LaTeX formulas and generated Qlib-style pandas code rather than the paper operator compiler,no
+data,missing,no market dataset or dated result stream,no
+README entrypoints,broken,"README instructs requirements.txt and main.py, neither tracked",no
+tests,not reproducible from declared package,langsmith/pytest dev requirements absent; supplied test input does not match State fields,no
+published results,missing,"no v1, v2, competition, or 2.0 result artifacts",no

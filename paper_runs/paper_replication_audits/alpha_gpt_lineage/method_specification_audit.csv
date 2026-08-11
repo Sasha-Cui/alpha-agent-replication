@@ -1,0 +1,124 @@
+version_scope,category,dimension,assessment,severity,evidence,native_fidelity_effect
+as stated,lineage,official version dates,specified,none,arXiv records identify v1 and v2 dates,document/context evidence only
+as stated,documents,authoritative PDFs,specified,none,arXiv and ACL PDFs pinned by SHA-256,document/context evidence only
+as stated,documents,authoritative TeX archives,specified,none,three arXiv source archives pinned,document/context evidence only
+as stated,v1 model,v1 chat model alias,specified,none,gpt-3.5-turbo-16k-0613,document/context evidence only
+as stated,v1 model,v1 embedding model alias,specified,none,"text-ada-embedding-002, dimension 1536",document/context evidence only
+as stated,v2 model,v2 chat model family,specified,none,Llama3 70B,document/context evidence only
+as stated,v2 model,v2 embedding model family,specified,none,BGE-M3,document/context evidence only
+as stated,v1 data,v1 broad fields,specified,none,"OHLCV, VWAP, sector",document/context evidence only
+as stated,v2 data,v2 broad fields,specified,none,"intraday OHLCV, VWAP, sector, Chinese and US stocks",document/context evidence only
+as stated,v1 evaluation,v1 displayed IC cells,specified,none,12 exact table values,document/context evidence only
+as stated,v2 evaluation,v2 displayed table cells,specified,none,39 exact primary table values,document/context evidence only
+as stated,formulas,published qualitative formula count,specified,none,four exact Figure 7/8 expressions,document/context evidence only
+as stated,competition,WorldQuant displayed snapshot date,specified,none,"caption states June 25, 2024",document/context evidence only
+as stated,2.0,Alpha-GPT 2.0 empirical result count,specified,none,zero; paper is marked Draft. Work in progress,document/context evidence only
+v1/v2,partial specification,prompts,partial,major,"role fragments and placeholders, not full requests",blocks or conditions native fidelity
+v1,partial specification,LLM retry algorithm,partial,major,pseudocode without bounded failure exit or runtime messages,blocks or conditions native fidelity
+v1/v2,partial specification,operator names,partial,major,names listed but executable semantics absent,blocks or conditions native fidelity
+v1,partial specification,data market,partial,major,stock markets named without exchange/universe membership,blocks or conditions native fidelity
+v2,partial specification,data markets,partial,major,Chinese and US stocks without membership snapshot,blocks or conditions native fidelity
+v1,partial specification,search fitness,partial,major,IC named without exact estimator or missing-data rules,blocks or conditions native fidelity
+v1/v2,partial specification,knowledge corpus,partial,major,101 Formulaic Alphas named; decomposition corpus absent,blocks or conditions native fidelity
+v1/v2,partial specification,Faiss use,partial,major,library named without index configuration or contents,blocks or conditions native fidelity
+v2,partial specification,human comparison,partial,major,five experience ranges and GPT-4 scale disclosed,blocks or conditions native fidelity
+v2,partial specification,interaction rounds,partial,major,one interaction and ten search rounds stated,blocks or conditions native fidelity
+v2,partial specification,search iterations,partial,major,20 iterations visible,blocks or conditions native fidelity
+v2,partial specification,JoinQuant competition,partial,major,public event link and three metrics stated,blocks or conditions native fidelity
+v2,partial specification,WorldQuant competition,partial,major,"stage, snapshot date, and four metrics stated",blocks or conditions native fidelity
+v2,partial specification,autonomous RAG,partial,major,four conceptual RAG levels shown,blocks or conditions native fidelity
+2.0,partial specification,agent roles,partial,major,alpha mining/modeling/analysis roles described,blocks or conditions native fidelity
+2.0,partial specification,tool categories,partial,major,tool categories described without implementations,blocks or conditions native fidelity
+2.0,partial specification,memory categories,partial,major,memory categories described without contents,blocks or conditions native fidelity
+v1/v2,partial specification,qualitative formula semantics,partial,major,natural-language explanations but no operator implementation,blocks or conditions native fidelity
+v1,partial specification,backtest period,partial,major,US stocks 2012--2021; no exact endpoints,blocks or conditions native fidelity
+v1/v2,partial specification,S&P 500 qualitative chart,partial,major,weekly 2020--2023; no vendor or exact endpoint,blocks or conditions native fidelity
+v1,internal conflict,Table 1 idea count,conflict,blocking,caption says seven; six displayed,blocks or conditions native fidelity
+v1/v2,internal conflict,published Flow of Funds formula arity,conflict,blocking,div has one argument; cwise_mul has three,blocks or conditions native fidelity
+v2,internal conflict,operator census,conflict,major,19 claimed versus 55 listed entries,blocks or conditions native fidelity
+v2,internal conflict,operator tokenization,conflict,major,ts_delta.ts_delta_ratio joined and ts_decayed_linear duplicated,blocks or conditions native fidelity
+v1/v2,internal conflict,data cadence,conflict,major,inter-day in v1 versus intraday in v2,blocks or conditions native fidelity
+v2,internal conflict,human comparator count,conflict,major,caption singular versus five in prose,blocks or conditions native fidelity
+2.0,internal conflict,developed-system contribution,conflict,major,multi-agent-development contribution is commented out,blocks or conditions native fidelity
+2.0,internal conflict,source-to-paper experimental scope,conflict,blocking,unused v1 experiment files are bundled but absent from main,blocks or conditions native fidelity
+v2,internal conflict,overfitting conclusion,conflict,major,stabilization interpreted as mitigation without uncertainty,blocks or conditions native fidelity
+v1,internal conflict,validated formula premise,conflict,major,showcased Flow of Funds formula violates normal arities,blocks or conditions native fidelity
+community,internal conflict,README runtime entrypoints,conflict,major,requirements.txt and main.py instructions name absent files,blocks or conditions native fidelity
+community,internal conflict,README implemented modules,conflict,major,"Zipline, Alphalens, PyGAD, GP, and backtest claims have no source/dependency implementation",blocks or conditions native fidelity
+v1/v2,release,Alpha-GPT v1/final author-linked repository,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,release,native AlphaBot implementation,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,release,native genetic-programming implementation,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,release,native backtest engine,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,release,native deployment layer,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,release,immutable Python/package runtime,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,release,model checkpoint or hosted snapshot,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,release,runtime traces and tool transcripts,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,data,market-data vendor,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,data,security universe membership,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,data,survivorship handling,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,data,corporate-action handling,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,data,calendar and timezone,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,data,exact train validation test dates,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,data,label horizon,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,data,point-in-time sector classification,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,data,raw input snapshot,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,operators,operator implementation,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,operators,time-series warm-up rules,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,operators,cross-sectional standardization convention,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,operators,missing and infinite value handling,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,operators,unit checking rules,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,operators,expression AST grammar,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,prompts,complete system prompts,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,prompts,complete user prompts,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,prompts,few-shot demonstrations,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,prompts,retrieved memory records,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,prompts,output parser implementation,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,prompts,retry requests and responses,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,model,decoding seed,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,model,top-p and token limit,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,model,temperature,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,model,provider/model revision,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,search,GP population size,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,search,initialization distribution,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,search,crossover probability,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,search,mutation probability,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,search,selection method,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,search,complexity regularization,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,search,early stopping implementation,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,search,candidate deduplication rule,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,search,candidate expression library,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,IC formula,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,top-20 selection rule,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,portfolio weighting rule,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,return horizon,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,transaction costs,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,turnover convention,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,Sharpe annualization,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,maximum-drawdown convention,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,random seeds and repeated runs,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,raw result arrays,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,per-factor outputs,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,uncertainty intervals,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v1/v2,evaluation,multiplicity correction,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,human study,trading-idea dataset,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,human study,item count,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,human study,human alpha outputs,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,human study,Alpha-GPT alpha outputs,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,human study,GPT-4 judge prompt,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,human study,judge order blinding,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,human study,tie and disagreement handling,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,competition,WorldQuant raw leaderboard record,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,competition,WorldQuant team identity,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,competition,WorldQuant generated alpha list,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,competition,WorldQuant rules snapshot,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,competition,JoinQuant raw leaderboard record,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,competition,JoinQuant data and evaluator,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,novelty,novelty comparison corpus,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+v2,novelty,novelty matching criterion,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+2.0,evaluation,Alpha-GPT 2.0 empirical evaluation,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+2.0,implementation,Alpha-GPT 2.0 agent code,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+2.0,implementation,Alpha-GPT 2.0 SOP prompts,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+2.0,implementation,Alpha-GPT 2.0 tool APIs,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+2.0,implementation,Alpha-GPT 2.0 memory contents,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+2.0,implementation,Alpha-GPT 2.0 model zoo,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity
+2.0,implementation,Alpha-GPT 2.0 financial knowledge graph,missing,blocking,not released in the authoritative paper/source record,blocks or conditions native fidelity

@@ -1,0 +1,14 @@
+claim_id,version_scope,claim,available_evidence,exactly_reproduced,native_paper_result_reproduced,allow_positive_or_negative_native_inference
+AGPT-CLAIM-01,v1,generated expressions are consistent with the three trading ideas,qualitative images only; source arrays and exact three formulas absent,no,no,no
+AGPT-CLAIM-02,v1,search enhancement significantly improves top-20 out-of-sample IC,12 cells shown; one of seven claimed ideas is missing and no raw runs are released,no,no,no
+AGPT-CLAIM-03,v1,human interaction significantly improves backtest performance,"three curves shown without raw paths, portfolio rules, costs, or tests",no,no,no
+AGPT-CLAIM-04,v1,Alpha-GPT appropriately explains generated alphas,four selected examples; one expression has invalid arity and no evaluation is disclosed,no,no,no
+AGPT-CLAIM-05,v2,Alpha-GPT improves translation efficiency over humans,"GPT-4 judged aggregate lacks prompt, sample identities, denominator, and uncertainty",no,no,no
+AGPT-CLAIM-06,v2,interaction and search consistently improve IC,three averages and a two-line curve lack raw arrays and repeat statistics,no,no,no
+AGPT-CLAIM-07,v2,Alpha-GPT reaches top 5--10% human HFT performance,comparison table is not backed by released competition records or generated factors,no,no,no
+AGPT-CLAIM-08,v2,Alpha-GPT ranks top-10 worldwide and top-3 regionally in WorldQuant IQC 2024,no immutable leaderboard/team evidence or alpha submission record,no,no,no
+AGPT-CLAIM-09,v2,out-of-sample scores show generalization and strong logic,"competition inputs, rules snapshot, and generated alpha set are absent",no,no,no
+AGPT-CLAIM-10,v2,Alpha-GPT may achieve superhuman alpha-mining performance,interpretive extrapolation from unreleased competition evidence,no,no,no
+AGPT-CLAIM-11,v2,many generated alphas are novel relative to literature and proprietary base,"no novelty corpus, comparison, or result list",no,no,no
+AGPT-CLAIM-12,Alpha-GPT 2.0,full-pipeline human-in-the-loop workflow enhances efficiency and precision,architecture proposal only; no experiment,no,no,no
+AGPT-CLAIM-13,Alpha-GPT 2.0,three specialized agents form a collaborative multi-agent research cycle,"no code, prompts, tools, traces, or execution outputs",no,no,no

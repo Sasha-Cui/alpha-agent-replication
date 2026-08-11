@@ -1,0 +1,79 @@
+version,result_id,location,metric,display_object,displayed_value,raw_values_released,native_reproduced,paper_result_credit,note
+Alpha-GPT arXiv v1,V1-T1-trend_discrepancy-before,Table 1,trend_discrepancy average top-20 out-of-sample IC before search,numeric_table_cell,0.01151,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-trend_discrepancy-after,Table 1,trend_discrepancy average top-20 out-of-sample IC after search,numeric_table_cell,0.02256,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-shape-before,Table 1,shape average top-20 out-of-sample IC before search,numeric_table_cell,0.00995,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-shape-after,Table 1,shape average top-20 out-of-sample IC after search,numeric_table_cell,0.02190,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-rsi-before,Table 1,rsi average top-20 out-of-sample IC before search,numeric_table_cell,0.01109,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-rsi-after,Table 1,rsi average top-20 out-of-sample IC after search,numeric_table_cell,0.02527,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-momentum-before,Table 1,momentum average top-20 out-of-sample IC before search,numeric_table_cell,0.00951,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-momentum-after,Table 1,momentum average top-20 out-of-sample IC after search,numeric_table_cell,0.02763,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-mean_reversion-before,Table 1,mean_reversion average top-20 out-of-sample IC before search,numeric_table_cell,0.01130,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-mean_reversion-after,Table 1,mean_reversion average top-20 out-of-sample IC after search,numeric_table_cell,0.02187,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-flow_of_funds-before,Table 1,flow_of_funds average top-20 out-of-sample IC before search,numeric_table_cell,0.00952,no,no,no,
+Alpha-GPT arXiv v1,V1-T1-flow_of_funds-after,Table 1,flow_of_funds average top-20 out-of-sample IC after search,numeric_table_cell,0.02160,no,no,no,
+Alpha-GPT arXiv v1,V1-PIPE-1-train,Figure 2 workflow,"ts_ema(x,5,0.5) train IC",numeric_figure_cell,0.02303,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v1,V1-PIPE-1-test,Figure 2 workflow,"ts_ema(x,5,0.5) test IC",numeric_figure_cell,0.01945,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v2 / ACL final,V2-PIPE-1-train,Figure 5 workflow,"ts_ema(x,5,0.5) train IC",numeric_figure_cell,0.02303,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v2 / ACL final,V2-PIPE-1-test,Figure 5 workflow,"ts_ema(x,5,0.5) test IC",numeric_figure_cell,0.01945,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v1,V1-PIPE-2-train,Figure 2 workflow,amount train IC,numeric_figure_cell,0.02105,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v1,V1-PIPE-2-test,Figure 2 workflow,amount test IC,numeric_figure_cell,0.01904,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v2 / ACL final,V2-PIPE-2-train,Figure 5 workflow,amount train IC,numeric_figure_cell,0.02105,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v2 / ACL final,V2-PIPE-2-test,Figure 5 workflow,amount test IC,numeric_figure_cell,0.01904,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v1,V1-PIPE-3-train,Figure 2 workflow,"ts_corr(volume,close,5) train IC",numeric_figure_cell,0.01984,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v1,V1-PIPE-3-test,Figure 2 workflow,"ts_corr(volume,close,5) test IC",numeric_figure_cell,0.01882,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v2 / ACL final,V2-PIPE-3-train,Figure 5 workflow,"ts_corr(volume,close,5) train IC",numeric_figure_cell,0.01984,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v2 / ACL final,V2-PIPE-3-test,Figure 5 workflow,"ts_corr(volume,close,5) test IC",numeric_figure_cell,0.01882,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v1,V1-PIPE-4-train,Figure 2 workflow,"grouped_demean(ts_delta(close,3),sw1_mask) train IC",numeric_figure_cell,0.01723,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v1,V1-PIPE-4-test,Figure 2 workflow,"grouped_demean(ts_delta(close,3),sw1_mask) test IC",numeric_figure_cell,0.01655,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v2 / ACL final,V2-PIPE-4-train,Figure 5 workflow,"grouped_demean(ts_delta(close,3),sw1_mask) train IC",numeric_figure_cell,0.01723,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v2 / ACL final,V2-PIPE-4-test,Figure 5 workflow,"grouped_demean(ts_delta(close,3),sw1_mask) test IC",numeric_figure_cell,0.01655,no,no,no,illustrative workflow figure; no underlying run is released
+Alpha-GPT arXiv v1,V1-F6-seed_alpha_round_1,Figure 6,cumulative return,line_series,,no,no,no,exact plotted array and portfolio construction absent
+Alpha-GPT arXiv v1,V1-F6-best_after_gp_round_1,Figure 6,cumulative return,line_series,,no,no,no,exact plotted array and portfolio construction absent
+Alpha-GPT arXiv v1,V1-F6-best_after_gp_round_2,Figure 6,cumulative return,line_series,,no,no,no,exact plotted array and portfolio construction absent
+Alpha-GPT arXiv v1,V1-F5-golden_cross,Figure 5,idea-formula visual correspondence,qualitative_plot_panel,,no,no,no,weekly S&P 500 chart shown without source series snapshot or exact plotted formula array
+Alpha-GPT arXiv v1,V1-F5-bollinger_upper_breakout,Figure 5,idea-formula visual correspondence,qualitative_plot_panel,,no,no,no,weekly S&P 500 chart shown without source series snapshot or exact plotted formula array
+Alpha-GPT arXiv v1,V1-F5-three_white_soldiers,Figure 5,idea-formula visual correspondence,qualitative_plot_panel,,no,no,no,weekly S&P 500 chart shown without source series snapshot or exact plotted formula array
+Alpha-GPT arXiv v2 / ACL final,V2-T2-worldwide_top_1-qualified_alphas,Table 2,worldwide_top_1 qualified_alphas,numeric_table_cell,103,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-worldwide_top_1-total_score,Table 2,worldwide_top_1 total_score,numeric_table_cell,52058,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-worldwide_top_1-in_sample_score,Table 2,worldwide_top_1 in_sample_score,numeric_table_cell,57899,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-worldwide_top_1-out_of_sample_score,Table 2,worldwide_top_1 out_of_sample_score,numeric_table_cell,50111,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-worldwide_top_10-qualified_alphas,Table 2,worldwide_top_10 qualified_alphas,numeric_table_cell,47,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-worldwide_top_10-total_score,Table 2,worldwide_top_10 total_score,numeric_table_cell,47112,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-worldwide_top_10-in_sample_score,Table 2,worldwide_top_10 in_sample_score,numeric_table_cell,42303,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-worldwide_top_10-out_of_sample_score,Table 2,worldwide_top_10 out_of_sample_score,numeric_table_cell,48715,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-regional_top_1-qualified_alphas,Table 2,regional_top_1 qualified_alphas,numeric_table_cell,91,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-regional_top_1-total_score,Table 2,regional_top_1 total_score,numeric_table_cell,50920,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-regional_top_1-in_sample_score,Table 2,regional_top_1 in_sample_score,numeric_table_cell,55890,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-regional_top_1-out_of_sample_score,Table 2,regional_top_1 out_of_sample_score,numeric_table_cell,49264,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-regional_top_10-qualified_alphas,Table 2,regional_top_10 qualified_alphas,numeric_table_cell,74,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-regional_top_10-total_score,Table 2,regional_top_10 total_score,numeric_table_cell,35999,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-regional_top_10-in_sample_score,Table 2,regional_top_10 in_sample_score,numeric_table_cell,26292,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-regional_top_10-out_of_sample_score,Table 2,regional_top_10 out_of_sample_score,numeric_table_cell,39325,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-alpha_gpt-qualified_alphas,Table 2,alpha_gpt qualified_alphas,numeric_table_cell,81,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-alpha_gpt-total_score,Table 2,alpha_gpt total_score,numeric_table_cell,48866,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-alpha_gpt-in_sample_score,Table 2,alpha_gpt in_sample_score,numeric_table_cell,65505,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T2-alpha_gpt-out_of_sample_score,Table 2,alpha_gpt out_of_sample_score,numeric_table_cell,43319,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T3-human-score,Table 3,human score,numeric_table_cell,6.81,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T3-human-win_rate,Table 3,human win_rate,numeric_table_cell,13.40%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T3-alpha_gpt-score,Table 3,alpha_gpt score,numeric_table_cell,8.16,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T3-alpha_gpt-win_rate,Table 3,alpha_gpt win_rate,numeric_table_cell,86.60%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T4-seed,Table 4,average IC seed,numeric_table_cell,0.58%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T4-search_enhancement,Table 4,average IC search_enhancement,numeric_table_cell,1.23%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T4-interaction_plus_search,Table 4,average IC interaction_plus_search,numeric_table_cell,2.23%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-top_1_human-return,Table 5,top_1_human return,numeric_table_cell,21%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-top_1_human-sharpe,Table 5,top_1_human sharpe,numeric_table_cell,6.88,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-top_1_human-maximum_drawdown,Table 5,top_1_human maximum_drawdown,numeric_table_cell,1.61%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-top_5_percent-return,Table 5,top_5_percent return,numeric_table_cell,16%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-top_5_percent-sharpe,Table 5,top_5_percent sharpe,numeric_table_cell,5.42,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-top_5_percent-maximum_drawdown,Table 5,top_5_percent maximum_drawdown,numeric_table_cell,1.59%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-top_10_percent-return,Table 5,top_10_percent return,numeric_table_cell,13%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-top_10_percent-sharpe,Table 5,top_10_percent sharpe,numeric_table_cell,4.16,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-top_10_percent-maximum_drawdown,Table 5,top_10_percent maximum_drawdown,numeric_table_cell,3.58%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-alpha_gpt-return,Table 5,alpha_gpt return,numeric_table_cell,14%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-alpha_gpt-sharpe,Table 5,alpha_gpt sharpe,numeric_table_cell,5.47,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-T5-alpha_gpt-maximum_drawdown,Table 5,alpha_gpt maximum_drawdown,numeric_table_cell,2.36%,no,no,no,
+Alpha-GPT arXiv v2 / ACL final,V2-F4-in_sample_ic,Figure 4,in_sample_ic,line_series,,no,no,no,20-iteration plotted array absent
+Alpha-GPT arXiv v2 / ACL final,V2-F4-out_of_sample_ic,Figure 4,out_of_sample_ic,line_series,,no,no,no,20-iteration plotted array absent
+Alpha-GPT arXiv v2 / ACL final,V2-F7-moving_average_divergence,Figure 7,idea-formula visual correspondence,qualitative_plot_panel,,no,no,no,weekly S&P 500 chart shown without source series snapshot or exact plotted formula array
+Alpha-GPT arXiv v2 / ACL final,V2-F7-bollinger_upper_breakout,Figure 7,idea-formula visual correspondence,qualitative_plot_panel,,no,no,no,weekly S&P 500 chart shown without source series snapshot or exact plotted formula array
+Alpha-GPT arXiv v2 / ACL final,V2-F7-three_bullish_movements,Figure 7,idea-formula visual correspondence,qualitative_plot_panel,,no,no,no,weekly S&P 500 chart shown without source series snapshot or exact plotted formula array

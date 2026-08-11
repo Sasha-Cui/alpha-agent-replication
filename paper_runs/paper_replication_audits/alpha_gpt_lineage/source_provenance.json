@@ -1,0 +1,146 @@
+{
+  "acl_final_pdf": "https://aclanthology.org/2025.emnlp-demos.14.pdf",
+  "acl_final_pdf_sha256": "50fd3393114f1efd38158b6668f534e82d4f9b45b2eb3b59e676b71d52ff57d0",
+  "acl_record": "https://aclanthology.org/2025.emnlp-demos.14/",
+  "acl_record_sha256": "0ebf3cb301c58f58f5ab4ae990b7e156cf1761feb0d895cee36b47fd882eae83",
+  "alpha_gpt2_pdf": "https://arxiv.org/pdf/2402.09746v1",
+  "alpha_gpt2_pdf_sha256": "d4e540118939d4fe18e4ba2a4d76c34971059603690f37d8a450c01673912ded",
+  "alpha_gpt2_record": "https://arxiv.org/abs/2402.09746v1",
+  "alpha_gpt2_record_sha256": "7a889c52cce41d5693a6ae1466c568fabdd9a65e52ae9b8f9529e358bdfa7bd3",
+  "alpha_gpt2_source": "https://arxiv.org/e-print/2402.09746v1",
+  "alpha_gpt2_source_sha256": "024a8b75847160906aa81c936b8ee3d92d2879699ca65c97dc9476c9dc244c8a",
+  "alpha_gpt_record": "https://arxiv.org/abs/2308.00016",
+  "alpha_gpt_record_sha256": "eb7cde412af721137132979fd7aefa7f2ea15a11fe09c4c6aaa324282345e55f",
+  "alpha_gpt_v1_pdf": "https://arxiv.org/pdf/2308.00016v1",
+  "alpha_gpt_v1_pdf_sha256": "0533cacfe231715fdea09aa045e485380cfb5de0906ebc1520f150257a645968",
+  "alpha_gpt_v1_source": "https://arxiv.org/e-print/2308.00016v1",
+  "alpha_gpt_v1_source_sha256": "eae0dc5de12c4c1cbbe765950f5d09a7873cf5de02653c7f8a4d36936fe8ad01",
+  "alpha_gpt_v2_pdf": "https://arxiv.org/pdf/2308.00016v2",
+  "alpha_gpt_v2_pdf_sha256": "d966e6497cb71cb3d32b1266c9799d6512f5f9d8ede5f0d29f5ff57476f8f0ce",
+  "alpha_gpt_v2_source": "https://arxiv.org/e-print/2308.00016v2",
+  "alpha_gpt_v2_source_sha256": "32aa99faa6df0d67f80f21b85f960f7e87c90ccca983c55655a4b566a04286a7",
+  "author_linked_code_or_data_found": false,
+  "community_repository": {
+    "compiled_python_files": 29,
+    "created_after_papers": true,
+    "declared_dependencies_include_zipline_alphalens_pygad": false,
+    "graph_contains_backtest_or_gp_node": false,
+    "head": "2388b35d6085c0a1f752bca37fa20eb9d39f16b2",
+    "native_credit": false,
+    "paper_author_overlap": false,
+    "readme_mentions_zipline_alphalens_pygad": true,
+    "repository": "https://github.com/parthmodi152/alpha-gpt",
+    "source_contains_zipline_alphalens_pygad": false,
+    "supplied_test_attempt": "collection_failed",
+    "supplied_test_failure_mentions": [
+      "No module named 'agent'",
+      "No module named 'langsmith'"
+    ],
+    "supplied_test_log_sha256": "3416d63b39d27bd09648856834a0b8742ece6284b10649b17ca4326a1b3fdc68",
+    "tracked_files": 41,
+    "tracked_python_files": 29
+  },
+  "github_repository_searches": [
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "Alpha-GPT in:name,description,readme",
+      "repositories": "imbue-bit/AlphaGPT|parthmodi152/alpha-gpt|TauricResearch/TradingAgents|acheong08/ChatGPT|Kav-K/GPTDiscord|HammerGPT/Hyper-Alpha-Arena|dragen1860/TensorFlow-2.x-Tutorials|Codium-ai/AlphaCodium|eugeneyan/open-llms|anomalyco/models.dev|kingoflolz/mesh-transformer-jax|LilianaMajamay/AlphaGPT_Tushare|Stability-AI/StableLM|ngruver/llmtime|murtaza-nasir/maestro|JadeFluteSwordsmanship/AlphaGPT|0xemmkty/QuantMuse|caozhiyuan/copilot-api|novicezk/midjourney-proxy|joshpxyne/gpt-migrate|hyunwoongko/openchat|GargantuaX/gemini-watermark-remover|openai/GPTs-are-GPTs|microsoft/SoM|kyrolabs/awesome-langchain|n3d1117/chatgpt-telegram-bot|HKUDS/Vibe-Trading|Hannibal046/Awesome-LLM|e2b-dev/awesome-ai-agents|ChatGPTNextWeb/NextChat-Awesome-Plugins|microsoft/prompty|nichtdax/awesome-totally-open-chatgpt|rohitgandikota/sliders|Aleph-Alpha-Research/magma|EleutherAI/gpt-neox|no-magic-ai/no-magic|potsawee/selfcheckgpt|fastclaw-ai/fastclaw|BerriAI/liteLLM-proxy|BerriAI/litellm|fantasy-peak/cpp-freegpt-webui|danielgross/LlamaAcademy|shibing624/parrots|nusquama/n8nworkflows.xyz|fighting41love/funNLP|tachikomared/character-animation-creator-skill|FDU-INC/SplitFM|maitrix-org/llm-reasoners|Poly186-AI-DAO/PolyGPT-alpha|QuantaAlpha/QuantaAlpha|Kanaries/Rath|Pythagora-io/pythagora|benno094/pdf-anki|inbrainfun/inbrain|jina-ai/rungpt|LAION-AI/Open-Instruction-Generalist|e2b-dev/awesome-ai-sdks|sahibzada-allahyar/YC-Killer|gravelBridge/AutoGPT-WolframAlpha|OpenThaiGPT/openthaigpt|HamedMP/CursorLens|B3o/GPTS-Prompt-Collection|MontrealAI/AGI-Alpha-Agent-v0|MacPaw/OpenAI|Lightning-AI/litgpt|waylaidwanderer/node-chatgpt-api|murtaza-nasir/speakr|humanlayer/agentcontrolplane|likenneth/honest_llama|OpenGradient/OpenGradient-SDK|taishi-i/awesome-ChatGPT-repositories|Leochens/StickerCraft|swyxio/ai-notes|dulaiduwang003/wehcatapp-chatgpt|tysam-code/hlb-gpt|kafroc/AlphaGPT-Routine|lidge-jun/ima2-gen|sentient-agi/OpenDeepSearch|mzxrai/mcp-openai|netzpirat/openclaw-trading-agent|safety-research/persona_vectors|ex3ndr/supervoice-voicebox|slavakurilyak/awesome-ai-agents|facebookresearch/Meta_SecAlign|yokingma/SearChat|satellitecomponent/Neurite|mlcommons/training|nxshell/nxshell|vishwasg217/fin-sight|LudwigStumpp/llm-leaderboard|yxuansu/SimCTG|THUDM/SwissArmyTransformer|MengTo/kage|ModelCloud/GPTQModel|not-poma/lazyshell|xISSAx/Alpha-Co-Vision|Devinterview-io/llms-interview-questions|Magnum-Math/Magnum|DeLLMa/DeLLMa|AgentOps-AI/BestGPTs",
+      "search_interpretation": "broad name/readme collision search",
+      "snapshot_file": "01_alpha_gpt.json",
+      "snapshot_sha256": "132465c0f4affd68f7939bff60875be8bc1eb26185d8d4a5704e92a11ecace99",
+      "total_count": "28871"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "\"Alpha-GPT: Human-AI Interactive Alpha Mining\"",
+      "repositories": "",
+      "search_interpretation": "targeted paper/author/source search",
+      "snapshot_file": "02_exact_title.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "2308.00016",
+      "repositories": "",
+      "search_interpretation": "targeted paper/author/source search",
+      "snapshot_file": "03_arxiv_2308.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "2402.09746",
+      "repositories": "",
+      "search_interpretation": "targeted paper/author/source search",
+      "snapshot_file": "04_arxiv_2402.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "\"Alpha-GPT 2.0\" quantitative",
+      "repositories": "",
+      "search_interpretation": "targeted paper/author/source search",
+      "snapshot_file": "05_alpha_gpt2.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "\"Saizhuo Wang\" Alpha-GPT",
+      "repositories": "",
+      "search_interpretation": "targeted paper/author/source search",
+      "snapshot_file": "06_author.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "AlphaGPT \"alpha mining\"",
+      "repositories": "",
+      "search_interpretation": "targeted paper/author/source search",
+      "snapshot_file": "07_alphagpt_alpha_mining.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "\"AlphaBot\" \"alpha mining\"",
+      "repositories": "",
+      "search_interpretation": "targeted paper/author/source search",
+      "snapshot_file": "08_alphabot.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "\"WorldQuant International Quant Championship 2024\" Alpha-GPT",
+      "repositories": "",
+      "search_interpretation": "targeted paper/author/source search",
+      "snapshot_file": "09_worldquant.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "query": "\"Alpha-GPT\" \"Quantitative Investment\"",
+      "repositories": "",
+      "search_interpretation": "targeted paper/author/source search",
+      "snapshot_file": "10_quant_invest.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    }
+  ],
+  "source_members": 108
+}

@@ -1,0 +1,5 @@
+version,date,pages,model,empirical_scope,displayed_numeric_result_cells,plotted_result_series,native_results_reproduced,lineage_note
+Alpha-GPT arXiv v1,2023-07-31,9,gpt-3.5-turbo-16k-0613; text-embedding-ada-002,"six displayed search-enhancement ideas, interaction backtest, qualitative formulas",20,3,0,original experimental paper
+Alpha-GPT 2.0 arXiv v1,2024-02-15,4,not specified,none; explicitly Draft. Work in progress,0,0,0,conceptual successor; unused Alpha-GPT 1 experiment files in source are not paper evidence
+Alpha-GPT arXiv v2,2025-09-20,11,Llama3 70B; BGE-M3; GPT-4 judge/simulated user,"translation study, iterative IC, search curve, JoinQuant and WorldQuant comparisons",47,2,0,"material rewrite, not a formatting-only revision"
+Alpha-GPT EMNLP 2025 final,2025-11,11,same disclosed method as arXiv v2,same displayed result objects as arXiv v2,47,2,0,ACL authoritative PDF; arXiv v2 TeX is close but is not an ACL-released source package

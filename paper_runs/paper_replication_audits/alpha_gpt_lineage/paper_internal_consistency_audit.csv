@@ -1,0 +1,19 @@
+issue_id,severity,issue,replication_effect,paper_result_credit
+AGPT-INT-001,blocking,v1 Table 1 says seven trading ideas but displays only six,the complete result denominator and missing idea cannot be reconstructed,no
+AGPT-INT-002,blocking,the published Flow of Funds expression gives div one argument and cwise_mul three,one of four showcased formulas fails the paper's own arity/validation premise,no
+AGPT-INT-003,major,"v2 says 19 basic operators while Table 1 lists 55 comma-separated entries, duplicates ts_decayed_linear, and joins ts_delta.ts_delta_ratio",the executable DSL/operator census is internally inconsistent,no
+AGPT-INT-004,major,v1 says inter-day data while v2 changes the experiment to intraday Chinese and US data,carried-over figures cannot be assigned one stable data schema,no
+AGPT-INT-005,major,v2 Table 3 caption says one junior researcher while the text says five researchers with 0.5--2 years experience,the comparison unit and aggregation are ambiguous,no
+AGPT-INT-006,blocking,"Table 3 omits sample count, item identities, judge prompt, order randomization, ties, and uncertainty",the 86.60% GPT-4-judged win rate cannot be recomputed,no
+AGPT-INT-007,blocking,"Table 4 reports three average IC values without the trading-idea count, factor count, data split, raw ICs, or seeds",the interaction improvement cannot be recomputed,no
+AGPT-INT-008,blocking,"Figure 4 interprets out-of-sample stabilization as mitigation of overfitting without raw arrays, repeated trials, or uncertainty",the generalization claim exceeds the displayed evidence,no
+AGPT-INT-009,blocking,"WorldQuant Table 2 releases threshold rows and one Alpha-GPT row but no immutable leaderboard record, team identity, alpha list, or score export",top-10 worldwide and top-3 regional attribution cannot be independently verified,no
+AGPT-INT-010,blocking,"JoinQuant Table 5 lacks the exact competition snapshot, universe, dates, generated factors, costs, and evaluator",the claimed same-protocol comparison cannot be rerun,no
+AGPT-INT-011,major,the proprietary alpha base and much of the knowledge library are unavailable,"retrieval, novelty, and generation behavior cannot be reconstructed",no
+AGPT-INT-012,blocking,the claim that many generated alphas are absent from literature and the proprietary base has no released novelty assay,the novelty claim is unverifiable,no
+AGPT-INT-013,blocking,Alpha-GPT 2.0 claims improved efficiency and precision but contains no experiment or result,the successor paper has no empirical object to reproduce,no
+AGPT-INT-014,major,"Alpha-GPT 2.0's source archive carries unused Alpha-GPT 1 experiment, table, UI, and architecture files",inactive source files must not be credited as 2.0 evidence,no
+AGPT-INT-015,major,Alpha-GPT 2.0 comments out the contribution claiming a developed multi-agent system,the paper supports a proposed workflow more strongly than an operational system,no
+AGPT-INT-016,major,v1 Algorithm 1 has no bounded exit when too few expressions repeatedly parse,exact retry/termination behavior is underspecified,no
+AGPT-INT-017,major,the v2 model stack changes from GPT-3.5/text-ada to Llama3/BGE-M3 while key qualitative assets are carried over,version-specific result provenance is required,no
+AGPT-INT-018,major,all papers omit an immutable code/runtime/data snapshot,document reconstruction does not establish native execution,no

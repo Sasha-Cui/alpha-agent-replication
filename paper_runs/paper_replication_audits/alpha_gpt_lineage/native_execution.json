@@ -1,0 +1,20 @@
+{
+  "alpha_gpt2_empirical_result_units_total": 0,
+  "alpha_gpt_final_line_series_reproduced": 0,
+  "alpha_gpt_final_line_series_total": 2,
+  "alpha_gpt_final_numeric_cells_reproduced": 0,
+  "alpha_gpt_final_numeric_cells_total": 47,
+  "alpha_gpt_v1_line_series_reproduced": 0,
+  "alpha_gpt_v1_line_series_total": 3,
+  "alpha_gpt_v1_numeric_cells_reproduced": 0,
+  "alpha_gpt_v1_numeric_cells_total": 20,
+  "attempted": false,
+  "author_linked_code_found": false,
+  "community_repository_native_credit": false,
+  "local_mapping_status": "two_M0_narrative_translations_zero_paper_result_credit",
+  "paper_result_credit": false,
+  "published_formula_examples": 4,
+  "published_formula_examples_arity_valid": 3,
+  "published_formula_examples_conditionally_executed": 3,
+  "reason": "no_author_linked_pipeline_data_prompts_memory_search_state_generated_alphas_evaluator_or_raw_results"
+}
