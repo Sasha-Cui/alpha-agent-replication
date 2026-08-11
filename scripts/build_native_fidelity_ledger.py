@@ -323,6 +323,20 @@ PAPER_ONLY_AUDIT_NOTES = {
         "momentum/trend motif; its other characteristics and portfolio rule are "
         "researcher supplied and receive no FAMA-result credit."
     ),
+    "SYS-QUANT-AGENT-SELF-IMPROVING": (
+        "A pinned arXiv-v1 QuantAgent audit rebuilds the official 15-page TeX "
+        "source at 99.93% extracted-token multiset Jaccard and audits all four "
+        "published Python listings. Only the VolatilityBreakout formula executes, "
+        "and only after stubbing the unreleased idea_factor.Factor base; both "
+        "mentor-rejected Three Soldiers versions raise on ordinary aligned data, "
+        "while the printed mentor-passed V3 has a SyntaxError. These are document "
+        "and conditional component findings, not native agent outputs: 0/17 plotted "
+        "line series and 0/400 heatmap cells reproduce. No author-linked pipeline, "
+        "idea-factor framework, 500-stock membership, 2023 market snapshot, prompts, "
+        "knowledge base, generated signal library, model fit, raw result arrays, "
+        "seeds, or runtime lock is released. The two local M0 mappings and separate "
+        "C-conditional monthly ATR14 adaptation receive no QuantAgent-result credit."
+    ),
     "SYS-FLAG-TRADER": (
         "A pinned ACL-final/arXiv-v3 audit inventories all 360 displayed numeric "
         "result cells. Six of 20 checked Buy-and-Hold baseline cells reproduce "
@@ -357,6 +371,7 @@ TARGETED_EXECUTION = {
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
+    "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
     "SYS-QUANTA-ALPHA": "paper_audit:completed_zero_of_344_native_table_results_components_only",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",

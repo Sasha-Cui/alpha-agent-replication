@@ -210,6 +210,32 @@ def test_alphaagents_audit_preserves_source_recovery_and_zero_result_boundaries(
     assert "receive no AlphaAgents-result credit" in blocker
 
 
+def test_quantagent_self_improving_audit_preserves_code_and_result_boundaries() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[
+        routes["canonical_work_id"].eq("CensusArxiv240203755")
+    ].iloc[0]
+    assert row["paper_evidence_route"] == "paper_only_underspecified"
+    assert row["reachable_public_code_system_ids"] == ""
+    assert row["native_pipeline_disposition"] == (
+        "paper_only_audit_recorded_no_native_code_pipeline"
+    )
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_"
+        "zero_of_400_heatmap_cells_no_native_agent_pipeline"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
+    assert row["mapping_disposition"] == "clearly_labeled_motif_proxy"
+    assert row["proxy_role"] == "clearly_labeled_favorable_motif_proxy"
+    blocker = row["precise_native_or_access_blocker"]
+    assert "audits all four published Python listings" in blocker
+    assert "mentor-passed V3 has a SyntaxError" in blocker
+    assert "0/17 plotted line series and 0/400 heatmap cells reproduce" in blocker
+    assert "two local M0 mappings" in blocker
+    assert "receive no QuantAgent-result credit" in blocker
+
+
 def test_fama_audit_preserves_zero_result_and_motif_only_boundaries() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
     row = routes[

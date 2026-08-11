@@ -8,7 +8,7 @@ tracked aggregate evidence on Bouchet.
 | Artifact | SHA-256 |
 | --- | --- |
 | `docs/paper/icaif2026_submission.tex` | `70ad767203d3e118fc5ff2b764e4d9e02fd4bccfc03b9736d7a640d02fe88bda` |
-| `output/pdf/icaif2026_submission.pdf` | `e59d6c32f636eab92cd14a14f4a77b024db9e5117a79df8d5fc77676cec56b60` |
+| `output/pdf/icaif2026_submission.pdf` | `d914ec330cc7320f46a987310456253af9500d500a7096f6666896cb32c7b7ec` |
 
 The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
@@ -17,7 +17,7 @@ labels.
 
 ## Passing checks
 
-- Repository test suite: 244 passed (one third-party deprecation warning).
+- Repository test suite: 254 passed (one third-party deprecation warning).
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
@@ -56,6 +56,14 @@ labels.
   plot array is released. Five unaffiliated implementations materially diverge,
   and both existing local factor scores remain M0 narrative translations with
   no AlphaAgents-result credit.
+- QuantAgent self-improving paper/source audit: the official TeX rebuilds to 15
+  pages at 99.93% extracted-token multiset Jaccard. Of four published Python
+  listings, three compile and only the standalone VolatilityBreakout formula
+  executes after stubbing the unreleased Factor base; the printed mentor-passed
+  Three Soldiers V3 has a SyntaxError. Zero of 17 plotted line series and zero
+  of 400 heatmap cells reproduce. The two local mappings remain M0, the literal
+  monthly ATR14 component remains C-conditional, and none receives native
+  QuantAgent-result credit.
 - FAMA full-paper audit: all 65 numeric table results and 38 visible result
   markers are enumerated, with zero native paper-result paths. The paper claims
   38 initial factors but Appendix B lists 71; its printed correlation equation,
