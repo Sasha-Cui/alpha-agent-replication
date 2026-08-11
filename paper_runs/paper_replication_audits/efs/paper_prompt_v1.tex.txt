@@ -74,7 +74,7 @@ Output example:\\
 ]
 
 \begin{verbatim}
-You are a professional quantitative researcher. 
+You are a professional quantitative researcher.
 Design and optimize alpha factors using ONLY price data.
 
 Existing Library Factors:
@@ -140,8 +140,8 @@ sharpe\_ratio\_14\_v5                         & 0.047463 & 0.191842 & 0.405833 &
 
 \subsection{Experiment Settings}
 
-\noindent\textbf{Hyperparameters and Settings.} For our experinment, for all methods, we don't include transaction cost; we use default hyper parameters for mSSRM-PGA \cite{lin2024a} and ASMCVaR \cite{pmlr-v235-lin24w} from their open-source code. 
+\noindent\textbf{Hyperparameters and Settings.} For our experinment, for all methods, we don't include transaction cost; we use default hyper parameters for mSSRM-PGA \cite{lin2024a} and ASMCVaR \cite{pmlr-v235-lin24w} from their open-source code.
 
-For machine learning-based sparse portfolio strategies using XGBoost and LightGBM, at each decision step, we train a model on sliding windows of historical price and return features, with periodic retraining every fixed number of steps to simulate realistic model updating. The model outputs asset-level scores, which are normalized and used to select the top-$m$ assets with equal weighting. 
+For machine learning-based sparse portfolio strategies using XGBoost and LightGBM, at each decision step, we train a model on sliding windows of historical price and return features, with periodic retraining every fixed number of steps to simulate realistic model updating. The model outputs asset-level scores, which are normalized and used to select the top-$m$ assets with equal weighting.
 
 Due to the nature of our algorithm, for all experiments conducted using EFS, we compute the daily portfolio return using a 1/N baseline strategy during the warm-up phase—i.e., from the start point until the first evolution step begins. In contrast, for optimization-based baselines, since these methods can generate results based on a small historical window, we evaluate them from the very first step, assuming historical data are already available.

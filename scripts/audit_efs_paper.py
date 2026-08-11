@@ -503,7 +503,7 @@ def extract_v1_prompt(paper_root: Path) -> str:
     end = text.find(end_marker, start)
     if start < 0 or end < 0:
         raise ValueError("v1 prompt appendix could not be recovered")
-    prompt = text[start:end].strip() + "\n"
+    prompt = "\n".join(line.rstrip() for line in text[start:end].strip().splitlines()) + "\n"
     required = ("ACTION SPACE", "STRICT REQUIREMENTS", "world-class quantitative researcher")
     if not all(value in prompt for value in required):
         raise ValueError("v1 prompt extraction is incomplete")
