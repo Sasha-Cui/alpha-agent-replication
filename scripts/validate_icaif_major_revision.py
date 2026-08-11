@@ -10,7 +10,10 @@ import math
 import re
 import shutil
 import subprocess
+from collections import Counter
 from pathlib import Path
+
+from validate_faithful_component_replications import validation_failures
 
 
 def rows(path: Path):
@@ -83,6 +86,227 @@ def main() -> int:
     root = args.root.resolve()
     evidence = root / "paper_runs/submission_evidence"
 
+    strict_dir = evidence / "strict_proxy_fidelity_audit"
+    strict_manifest = json.loads((strict_dir / "manifest.json").read_text())
+    for name, expected in strict_manifest["output_sha256"].items():
+        require(sha256(strict_dir / name) == expected, f"strict-audit hash: {name}")
+    strict_rows = rows(strict_dir / "legacy_50_proxy_fidelity_audit.csv")
+    require(len(strict_rows) == 50, "strict proxy-fidelity audit is not 50 rows")
+    strict_counts = Counter(row["grade"] for row in strict_rows)
+    require(
+        {grade: strict_counts.get(grade, 0) for grade in ("A", "B", "C", "D", "U")}
+        == {"A": 0, "B": 0, "C": 15, "D": 33, "U": 2},
+        f"strict proxy-fidelity grades changed: {strict_counts}",
+    )
+    require(
+        all(row["native_agent_output_reproduced"] == "no" for row in strict_rows),
+        "legacy proxy audit improperly claims a native-agent output",
+    )
+    require(
+        strict_manifest["jkp_characteristic_composites"] == 46
+        and strict_manifest["common_monthly_portfolio_rule"] == 47,
+        "legacy proxy construction counts changed",
+    )
+    require(
+        strict_manifest["native_agent_outputs_reproduced"] == 0
+        and "construction diagnostics" in strict_manifest["allowed_empirical_use"],
+        "strict audit does not enforce the construction-only evidence boundary",
+    )
+
+    faithful_dir = root / "paper_runs/faithful_component_replications"
+    failures = validation_failures(faithful_dir)
+    require(
+        not failures,
+        "primary faithful-component gate failed: " + "; ".join(failures),
+    )
+    faithful_manifest = json.loads((faithful_dir / "manifest.json").read_text())
+    require(
+        faithful_manifest["n_counted_components"] == 3
+        and faithful_manifest["n_grade_a_or_b"] == 3
+        and faithful_manifest["faithfulness_pass_rate"] == 1.0
+        and faithful_manifest["n_return_rows"] == 915
+        and faithful_manifest["n_holding_rows"] == 184596
+        and faithful_manifest["n_nonconsecutive_forward_holding_rows"] == 6,
+        "primary faithful-component census or 100% gate changed",
+    )
+    faithful_ledger = rows(faithful_dir / "faithfulness_ledger.csv")
+    require(
+        len(faithful_ledger) == 3
+        and Counter(row["grade"] for row in faithful_ledger) == {"B": 3}
+        and all(row["counted_primary"].casefold() == "true" for row in faithful_ledger),
+        "primary ledger is not exactly three counted strict-B rows",
+    )
+    faithful_attribution_manifest = json.loads(
+        (faithful_dir / "attribution_manifest.json").read_text()
+    )
+    for name, expected in faithful_attribution_manifest["output_sha256"].items():
+        require(
+            sha256(faithful_dir / name) == expected,
+            f"primary formula attribution hash: {name}",
+        )
+    require(
+        faithful_attribution_manifest["n_candidates"] == 3
+        and faithful_attribution_manifest["n_common_months"] == 270
+        and faithful_attribution_manifest["n_evaluation_months"] == 150,
+        "primary formula attribution sample changed",
+    )
+    require(
+        faithful_attribution_manifest["multiplicity"]
+        == "Holm across 3 formula components within each benchmark; not across benchmark specifications",
+        "primary formula multiplicity family changed",
+    )
+    faithful_results = rows(faithful_dir / "attribution_results.csv")
+    require(
+        len(faithful_results) == 12
+        and {int(row["n_months"]) for row in faithful_results} == {150}
+        and {int(row["hac_lags"]) for row in faithful_results} == {4},
+        "primary formula attribution result dimensions changed",
+    )
+    faithful_summary = {
+        row["benchmark_id"]: row
+        for row in rows(faithful_dir / "attribution_summary.csv")
+    }
+    expected_faithful_summary = {
+        "capm": (0.012249689311478715, 3, 0),
+        "ff3": (0.002548814243069449, 2, 1),
+        "ff5_mom": (-0.004008847614354719, 1, 0),
+        "ff5_mom_jkp132": (0.006713086230964472, 2, 0),
+    }
+    require(
+        set(faithful_summary) == set(expected_faithful_summary),
+        "primary formula benchmarks changed",
+    )
+    for benchmark, (median, positive, holm) in expected_faithful_summary.items():
+        row = faithful_summary[benchmark]
+        require(
+            math.isclose(float(row["median_alpha_annualized"]), median, abs_tol=1e-12)
+            and int(row["positive_alpha_count"]) == positive
+            and int(row["holm_positive_count"]) == holm,
+            f"primary formula summary changed: {benchmark}",
+        )
+    faithful_holm = [
+        row
+        for row in faithful_results
+        if row["holm_positive_5pct"].casefold() == "true"
+    ]
+    require(
+        len(faithful_holm) == 1
+        and faithful_holm[0]["candidate_id"] == "quantevolver_price_zscore_reversal_120"
+        and faithful_holm[0]["benchmark_id"] == "ff3"
+        and math.isclose(float(faithful_holm[0]["alpha_annualized"]), 0.06950820555606094, abs_tol=1e-12)
+        and math.isclose(float(faithful_holm[0]["alpha_t_hac"]), 2.600934010610762, abs_tol=1e-12)
+        and math.isclose(float(faithful_holm[0]["holm_p_within_benchmark"]), 0.027891100679990045, abs_tol=1e-12),
+        "primary formula Holm-positive row changed",
+    )
+
+    formula_dir = root / "paper_runs/fidelity_formula_components"
+    formula_manifest = json.loads((formula_dir / "manifest.json").read_text())
+    for name, expected in formula_manifest["output_sha256"].items():
+        require(sha256(formula_dir / name) == expected, f"formula hash: {name}")
+    require(
+        formula_manifest["n_candidates"] == 12
+        and formula_manifest["n_return_rows"] == 3660,
+        "formula component row counts changed",
+    )
+    require(
+        formula_manifest["n_complete_case_candidate_months"] == 2620
+        and formula_manifest["n_imputed_candidate_months"] == 1040
+        and formula_manifest["n_imputed_holdings"] == 1782,
+        "formula complete-case and imputed-month counts changed",
+    )
+    require(
+        math.isclose(
+            formula_manifest["total_imputed_target_weight"],
+            46.45656780476914,
+            abs_tol=1e-12,
+        ),
+        "formula missing-target-weight diagnostic changed",
+    )
+    realization = formula_manifest["realization_diagnostics_by_candidate"]
+    require(
+        len(realization) == 12
+        and all(item["n_path_months"] == 305 for item in realization.values())
+        and all(item["n_omitted_no_calendar_horizon"] == 1 for item in realization.values())
+        and all(
+            item["n_omitted_no_observed_required_leg"] == 0
+            for item in realization.values()
+        ),
+        "formula path or terminal-horizon diagnostics changed",
+    )
+    formula_ledger = rows(formula_dir / "formula_fidelity_ledger.csv")
+    formula_grades = Counter(row["grade"] for row in formula_ledger)
+    require(
+        len(formula_ledger) == 12
+        and formula_grades == {"B": 3, "B-conditional": 5, "C-conditional": 4},
+        f"formula fidelity grades changed: {formula_grades}",
+    )
+    require(
+        all(row["native_agent_replication"].casefold() == "false" for row in formula_ledger)
+        and all(
+            "without reranking, substitution, or weight changes"
+            in row["realized_return_handling"]
+            for row in formula_ledger
+        ),
+        "formula ledger overclaims replication or obscures missing-return handling",
+    )
+
+    attribution_manifest = json.loads(
+        (formula_dir / "attribution_manifest.json").read_text()
+    )
+    for name, expected in attribution_manifest["output_sha256"].items():
+        artifact_path = root / name if name.startswith("docs/") else formula_dir / name
+        require(sha256(artifact_path) == expected, f"formula attribution hash: {name}")
+    require(
+        attribution_manifest["n_candidates"] == 12
+        and attribution_manifest["n_common_months"] == 270
+        and attribution_manifest["n_evaluation_months"] == 150,
+        "formula attribution sample changed",
+    )
+    require(
+        attribution_manifest["multiplicity"]
+        == "Holm across 12 formula components within each benchmark; not across benchmark specifications",
+        "formula multiplicity family changed",
+    )
+    formula_results = rows(formula_dir / "attribution_results.csv")
+    require(
+        len(formula_results) == 48
+        and {int(row["n_months"]) for row in formula_results} == {150}
+        and {int(row["hac_lags"]) for row in formula_results} == {4},
+        "formula attribution result dimensions changed",
+    )
+    formula_summary = {
+        row["benchmark_id"]: row
+        for row in rows(formula_dir / "attribution_summary.csv")
+    }
+    expected_formula_summary = {
+        "capm": (0.00878256811808894, 7, 1),
+        "ff3": (-0.011258696287808682, 4, 0),
+        "ff5_mom": (-0.005931704336225034, 5, 0),
+        "ff5_mom_jkp132": (0.009776930797485038, 9, 0),
+    }
+    require(set(formula_summary) == set(expected_formula_summary), "formula benchmarks changed")
+    for benchmark, (median, positive, holm) in expected_formula_summary.items():
+        row = formula_summary[benchmark]
+        require(
+            math.isclose(float(row["median_alpha_annualized"]), median, abs_tol=1e-12)
+            and int(row["positive_alpha_count"]) == positive
+            and int(row["holm_positive_count"]) == holm,
+            f"formula summary changed: {benchmark}",
+        )
+    formula_holm = [
+        row for row in formula_results if row["holm_positive_5pct"].casefold() == "true"
+    ]
+    require(
+        len(formula_holm) == 1
+        and formula_holm[0]["candidate_id"] == "efs_regime_switched_return_volatility"
+        and formula_holm[0]["benchmark_id"] == "capm"
+        and math.isclose(float(formula_holm[0]["alpha_annualized"]), 0.074401710985317, abs_tol=1e-12)
+        and math.isclose(float(formula_holm[0]["alpha_t_hac"]), 2.902815021543435, abs_tol=1e-12)
+        and math.isclose(
+            float(formula_holm[0]["holm_p_within_benchmark"]), 0.0443790006248571, abs_tol=1e-12
+        ),
+        "formula Holm-positive row changed",
+    )
     mapping_manifest = json.loads((evidence / "mapping_audit/manifest.json").read_text())
     for name, expected in mapping_manifest["output_sha256"].items():
         require(sha256(evidence / "mapping_audit" / name) == expected, f"mapping hash: {name}")
@@ -309,34 +533,40 @@ def main() -> int:
 
     tex = (root / "docs/paper/icaif2026_submission.tex").read_text(encoding="utf-8")
     for required in [
-        "Do Financial LLM Agents Discover New Alpha?",
-        "all 50 retained reconstructions",
-        "market plus 132 JKP",
-        "\\LadderMedianFFFiveMomToJKPAttenuationPct",
-        "\\input{tables/top_jkp_factor_matches.tex}",
-        "descriptive spanning diagnostics, not confirmatory tests",
-        "The other 29 retained works remain availability-only",
-        "not the unavailable native agent",
-        "47 of 50",
-        "median nearest-factor correlation is 0.81",
-        "none reports factor-adjusted alpha or uses JKP132",
-        "proprietary pretraining corpora",
-        "does not attribute any strategy to memorization, retrieval, or rediscovery",
-        "The secondary repository audit targets 14 implementations",
-        "It reproduces zero native agents",
-        "All 98 works are cited",
-        "\\ReconstructedWorkCount retained works",
-        "\\RetainedMappingCount mappings",
-        "cutoff-bounded systematic screen rather than a complete universe",
-        "Reproducibility and Secondary Code Audit",
-        "generated_corpus_citations.tex",
-        "census_primary_records",
-        "Public-prompt replay",
-        "What changes when the LLM is actually prompted?",
+        "A Fidelity Audit, Disclosed-Formula Study, and Prompt-Decision Replay",
+        "A0/B0/C15/D33/U2",
+        "46 of the 50 strategies",
+        "47 use essentially the same monthly",
+        "cannot adjudicate native-agent performance",
+        "primary formula sample instead exhaustively includes the three evaluator-valid seeds",
+        "3/3 strict grade B components (100\\%)",
+        "Only grade-B mechanical adaptations are made",
+        "There is no missing-return imputation",
+        "184,596 formation holdings",
+        "Six holdings use a nonconsecutive next available bar",
+        "median annualized out-of-window residual is $+1.2250\\%$ under CAPM",
+        "$+0.2549\\%$ under FF3",
+        "$-0.4009\\%$ under FF5 plus momentum",
+        "$+0.6713\\%$ under FF5 plus momentum plus JKP132",
+        "$6.9508\\%$",
+        "Holm $p=0.0279$",
+        "five B-conditional and four C-conditional rows are excluded",
+        "independent second coding has not yet been completed",
+        "\\input{tables/faithful_component_census.tex}",
+        "Holm adjustment is across the three faithful components",
         "\\input{tables/guruagents_prompt_replay_attribution.tex}",
-        "\\PromptReplayBABMedianAlphaPct",
-        "does not fully absorb the strongest replay result",
+        "current 2026 OpenRouter-served",
+        "original provider or model snapshot",
+        "Holm adjustment is across the 12 replay paths",
+        "not across benchmark specifications",
         "unrestricted JKP132 OLS",
+        "figures/guruagents_paired_attribution.pdf",
+        "This is attenuation, not universal absorption",
+        "Construction Diagnostic: Legacy JKP-Built Proxies",
+        "not a replication result for the cited papers",
+        "do not use the 50-strategy ladder to estimate an agent-alpha prevalence rate",
+        "This does not prove either universal novelty or universal absorption",
+        "census_primary_records",
     ]:
         require(required in tex, f"required disclosure absent: {required}")
     for forbidden in [
@@ -345,6 +575,14 @@ def main() -> int:
         "AlphaAgent survivor",
         "Robust result",
         "Anonymous Empirical Artifact",
+        "FORMULA_RESULTS_PLACEHOLDER",
+        "paper's main result",
+        "\\input{tables/top_jkp_factor_matches.tex}",
+        "all 12 are faithful",
+        "\\input{tables/disclosed_formula_components.tex}",
+        "306 net-return months per component",
+        "3,672 candidate-month",
+        "-0.7199\\% under CAPM",
     ]:
         require(forbidden not in tex, f"forbidden overclaim present: {forbidden}")
     require("supplement" not in tex.casefold(), "paper improperly depends on a supplement")
@@ -365,46 +603,64 @@ def main() -> int:
         folded_text = normalized_text.casefold()
         require("Do Financial LLM Agents Discover New Alpha?" in normalized_text,
                 "wrong PDF title")
-        require("50 retained strategy reconstructions" in normalized_text and
-                "40 papers" in normalized_text,
-                "headline strategy and paper denominators absent")
-        require("47 of 50" in normalized_text and "0.81" in normalized_text,
-                "nearest-factor evidence absent")
-        require("median becomes -1.69%" in normalized_text and
-                "none survives Holm" in normalized_text,
-                "JKP absorption result absent")
-        require("Most frequent JKP132 analogues" in normalized_text,
-                "top-factor table absent")
-        require("The five papers underlying the 13 source-grounded component tests" in normalized_text,
-                "source-grounded paper inventory absent")
-        require("All 98 works are cited" in normalized_text,
-                "complete screened-corpus citation disclosure absent")
-        require("40 retained works" in normalized_text and "50 mappings" in normalized_text,
-                "retained reconstruction waterfall absent")
-        require("29 retained works remain availability-only" in normalized_text,
-                "availability-only retained-work disclosure absent")
-        require("cutoff" in folded_text and "systematic screen" in folded_text,
-                "systematic-search limitation absent")
-        require("secondary repository audit targets 14 implementations" in folded_text and
-                "zero native agents" in folded_text,
-                "secondary code-audit boundary absent")
-        require(all(token in folded_text for token in
-                    ("descriptive", "not confirmatory", "post-hoc")),
-                "conditional-inference boundary absent")
-        require("proprietary pretraining" in folded_text and
-                "does not attribute any strategy" in folded_text,
-                "mechanism caveat absent")
-        require("reproducibility and secondary code audit" in folded_text,
-                "self-contained audit section absent")
-        require("public-prompt replay" in folded_text and
-                "what changes when the llm is actually prompted?" in folded_text,
-                "prompt-replay methods or results section absent")
-        require("5.80%" in normalized_text and "2.59%" in normalized_text and
-                "11 of 12" in normalized_text,
-                "prompt-replay BAB attribution absent")
-        require("one archived-final buffett replay remains holm-positive" in folded_text and
-                "unrestricted jkp132 ols" in folded_text,
-                "prompt-replay identification boundary absent")
+        require("A Fidelity Audit" in normalized_text, "revised PDF subtitle absent")
+        require(
+            all(token in normalized_text for token in
+                ("A0/B0/C15/D33/U2", "46 of the 50 strategies",
+                 "47 use essentially the same monthly")),
+            "strict proxy-fidelity audit facts absent",
+        )
+        require(
+            all(
+                token in normalized_text
+                for token in (
+                    "3/3 strict grade B",
+                    "100%",
+                    "305 return observations",
+                    "184,596 formation holdings",
+                    "Six holdings use a nonconsecutive",
+                    "1.2250%",
+                    "0.2549%",
+                    "0.4009%",
+                    "0.6713%",
+                    "6.9508%",
+                    "0.0279",
+                )
+            )
+            and "exhaustive set of evaluator-valid example seeds" in folded_text
+            and "no missing-return imputation" in folded_text
+            and "five b-conditional and four c-conditional rows are excluded" in folded_text
+            and "independent second coding has not yet been completed" in folded_text,
+            "primary faithful-component scope, results, or limitations absent",
+        )
+        require(
+            "current 2026 openrouter-served" in folded_text
+            and "original provider or model snapshot" in folded_text,
+            "current-endpoint replay limitation absent",
+        )
+        require(
+            "5.80%" in normalized_text
+            and "2.59%" in normalized_text
+            and "11 of 12" in normalized_text,
+            "prompt-replay BAB attribution absent",
+        )
+        require(
+            "one archived-final buffett path remains holm-positive" in folded_text
+            and "unrestricted jkp132 ols" in folded_text,
+            "prompt-replay identification boundary absent",
+        )
+        require(
+            "construction diagnostic: legacy jkp-built proxies" in folded_text
+            and "not a replication result for the cited papers" in folded_text,
+            "legacy proxy layer is not visibly quarantined",
+        )
+        require(
+            "this does not prove either universal novelty or universal absorption"
+            in folded_text,
+            "bounded conclusion absent",
+        )
+        require("most frequent jkp132 analogues" not in folded_text,
+                "legacy nearest-factor table remains in the PDF")
         require("supplement" not in folded_text, "PDF improperly depends on a supplement")
         from pypdf import PdfReader
         require(len(PdfReader(args.pdf).pages) <= 8, "PDF exceeds ICAIF's eight-page total limit")
@@ -420,8 +676,8 @@ def main() -> int:
         if bbl_path.is_file():
             bbl = bbl_path.read_text(encoding="utf-8")
             require(
-                len(re.findall(r"^\\bibitem", bbl, flags=re.MULTILINE)) >= 100,
-                "compiled bibliography does not contain all 98 corpus works plus methods",
+                len(re.findall(r"^\\bibitem", bbl, flags=re.MULTILINE)) >= 10,
+                "compiled bibliography is missing cited methods or source anchors",
             )
     print("major-revision validation passed")
     return 0

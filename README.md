@@ -1,46 +1,80 @@
 # Alpha Agent Replication
 
-This repository is the central record for the Alpha Agent Replication project and its ICAIF 2026 submission. It contains the screened literature corpus, artifact and implementation audits, good-faith source-to-implementation mappings, frozen empirical summaries, paper source, validation code, and reviewable submission PDF.
+This repository is the research artifact for an ICAIF 2026 submission asking
+whether public evidence substantiates claims that financial LLM agents discover
+alpha beyond familiar asset-pricing factors. The current study puts source
+fidelity before attribution. A strict audit of the prior 50 common-task mappings
+assigns A0/B0/C15/D33/U2: none is a faithful system replication or faithful
+disclosed component. Their broad benchmark ladder is retained only as a legacy
+construction diagnostic, not as evidence that factors span the papers' agents.
 
-The paper asks whether financial LLM agents discover alpha beyond familiar
-asset-pricing factors. The evidence screen covers 98 works, retains 69 for the
-operational census, reconstructs 50 strategies from 40 papers, and evaluates
-every reconstruction against the same CAPM, FF3, FF5-plus-momentum, and JKP132
-benchmark ladder. Profitable-looking returns largely disappear under the broad
-factor benchmark: median annualized alpha falls from 9.97% under CAPM to
--1.69% under JKP132, with zero Holm-adjusted survivors. These retrospective
-mapping results are not native-agent replications and do not identify model
-pretraining as the causal mechanism.
+The primary formula evidence is now an exhaustive three-seed census from the
+pinned QuantEvolver release. All three counted rows preserve the released
+expressions, executable DSL semantics, pairwise missing-data rule, forward-close
+return definition, and equal-mean top/bottom-quintile evaluator; only cadence,
+universe, and holding horizon change. The fail-closed PR-style gate reports 3/3 strict grade
+B components (100%). Nine additional formulas with unpinned or reconstructed
+semantics remain visible as non-primary diagnostics. A separate GuruAgents replay
+executes all 190 disclosed prompt cells, constructs 24 costed paths, and reports
+matched factor attribution for 12 long-archive paths over a shared 33-month
+window. These are component-level studies, not native-system replications.
+
+The cutoff-bounded 98-work screen, artifact audit, and 67-lineage native-fidelity
+ledger provide broader evidence about public availability and task compatibility;
+they are supporting parts of the current claim record rather than its sole center.
 
 ## Collaborator Handoff
 
-Start with [`COLLABORATOR_HANDOFF.md`](COLLABORATOR_HANDOFF.md), the experiment
-map in [`docs/EXPERIMENT_INDEX.md`](docs/EXPERIMENT_INDEX.md), and the compact
-50-row result dataframe in
-[`paper_runs/handoff/strategy_result_index.csv`](paper_runs/handoff/strategy_result_index.csv).
-For an adversarial claim-by-claim review, use
-[`docs/SCIENTIFIC_AUDIT.md`](docs/SCIENTIFIC_AUDIT.md), including the explicit
-98/69/40/50/62/14 denominator reconciliation. The confirmatory repair for
-retrospective mapping discretion is the outcome-blind, double-coded protocol in
+Start with the current claim boundary
+([`docs/FIDELITY_AUDIT.md`](docs/FIDELITY_AUDIT.md)), current manuscript
+([`docs/paper/icaif2026_submission.tex`](docs/paper/icaif2026_submission.tex)), and
+tracked PDF ([`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf)),
+then inspect the three principal evidence packages:
+
+- [`paper_runs/submission_evidence/strict_proxy_fidelity_audit/`](paper_runs/submission_evidence/strict_proxy_fidelity_audit/) - strict A/B/C/D/U grades for the legacy 50 mappings.
+- [`paper_runs/faithful_component_replications/`](paper_runs/faithful_component_replications/) - primary three-component census, strict grade-B ledger, source pins, and attribution outputs.
+- [`paper_runs/prompt_replay/guruagents/performance/`](paper_runs/prompt_replay/guruagents/performance/) - the 190-cell GuruAgents replay, 24 costed paths, and 12-path-by-33-month matched attribution.
+
+The older 12-formula package in [`paper_runs/fidelity_formula_components/`](paper_runs/fidelity_formula_components/) is retained as a mixed-fidelity diagnostic and is not part of the 100% denominator.
+
+The cutoff-bounded artifact audit
+([`paper_runs/submission_evidence/artifact_audit/`](paper_runs/submission_evidence/artifact_audit/))
+and native-fidelity ledger
+([`paper_runs/submission_evidence/native_fidelity_ledger.csv`](paper_runs/submission_evidence/native_fidelity_ledger.csv))
+provide broader corpus and repository context. The experiment map is in
+[`docs/EXPERIMENT_INDEX.md`](docs/EXPERIMENT_INDEX.md). The older 50-row dataframe
+([`paper_runs/handoff/strategy_result_index.csv`](paper_runs/handoff/strategy_result_index.csv))
+is retained only as a legacy ladder-construction diagnostic.
+[`COLLABORATOR_HANDOFF.md`](COLLABORATOR_HANDOFF.md) provides a broader navigation
+guide. Documents now marked SUPERSEDED / INVALIDATED, including
+[`docs/SCIENTIFIC_AUDIT.md`](docs/SCIENTIFIC_AUDIT.md), are retained only for
+provenance and must not be used as the current claim record. The outcome-blind,
+double-coded protocol for historical mappings remains documented in
 [`docs/INDEPENDENT_MAPPING_REVIEW_PLAN.md`](docs/INDEPENDENT_MAPPING_REVIEW_PLAN.md).
 
-The 50 rows are genuinely implemented and backtested common-task strategies,
-but they are not 50 native-agent replications. They comprise one released-code
-component adaptation, 12 source-grounded paper components, and 37 in-spirit
-reconstructions. The direct-code audit reproduces zero native agents. This
-provenance boundary is enforced by the handoff manifest and tests.
+The 50 historical rows remain available as a reproducible common-construction
+diagnostic, but their strict fidelity grades preclude paper- or agent-level
+attribution. The formula and prompt packages are separately anchored to disclosed
+source components. Neither recovers a native agent, search trajectory, training
+process, or published performance table.
 
 ## Current ICAIF Submission
 
-- [`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf) - current seven-page anonymous submission PDF.
+- [`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf) - current tracked six-page anonymous submission PDF (verified August 10, 2026). A later final build can change the page count, so rerun validation before submission.
 - [`docs/paper/icaif2026_submission.tex`](docs/paper/icaif2026_submission.tex) - submission source using the vendored ACM 2.19 template.
-- [`docs/source_anchor_review_packet.md`](docs/source_anchor_review_packet.md) - page-anchored audit of the 13 closest source mappings.
+- [`docs/FIDELITY_AUDIT.md`](docs/FIDELITY_AUDIT.md) - current claim and fidelity boundary.
+- [`paper_runs/submission_evidence/strict_proxy_fidelity_audit/`](paper_runs/submission_evidence/strict_proxy_fidelity_audit/) - strict audit of the legacy 50 mappings.
+- [`paper_runs/faithful_component_replications/`](paper_runs/faithful_component_replications/) - current primary 3/3 strict-B disclosed-component study.
+- [`paper_runs/fidelity_formula_components/`](paper_runs/fidelity_formula_components/) - non-primary mixed-fidelity 12-formula diagnostic.
+- [`paper_runs/prompt_replay/guruagents/performance/`](paper_runs/prompt_replay/guruagents/performance/) - current GuruAgents replay and factor-attribution package.
+- [`docs/source_anchor_review_packet.md`](docs/source_anchor_review_packet.md) - legacy page-anchored audit for the prior mapping layer.
 - [`docs/full_corpus_bibliography.md`](docs/full_corpus_bibliography.md) - all 98 screened canonical works.
-- [`paper_runs/submission_evidence/`](paper_runs/submission_evidence/) - frozen aggregate evidence, manifests, mapping ledgers, and robustness outputs.
+- [`paper_runs/submission_evidence/`](paper_runs/submission_evidence/) - supporting artifact, native-fidelity, scope, and robustness evidence.
 
 Build and validate the submission from the repository root:
 
 ```bash
+python scripts/validate_faithful_component_replications.py
 python scripts/validate_submission_package.py
 ```
 
@@ -58,8 +92,8 @@ python scripts/validate_icaif_submission.py \
   --require-build-log
 ```
 
-The current release evidence passes all 71 checks and the locked-evidence
-wording gate. The two validation scopes, software prerequisites, hashes, and
+The release build must pass both fail-closed validators and the locked-evidence
+wording gate. The validation scopes, software prerequisites, hashes, and
 exact commands are recorded in
 [`docs/VALIDATION_STATUS.md`](docs/VALIDATION_STATUS.md).
 Large licensed security-level inputs and regenerated monthly reconstruction
@@ -67,7 +101,7 @@ matrices remain outside Git; their paths and SHA-256 hashes are recorded in the
 run manifests.
 Authorized collaborators can use the documented external packager in
 [`docs/AUTHORIZED_COLLABORATOR_BUNDLE.md`](docs/AUTHORIZED_COLLABORATOR_BUNDLE.md)
-to receive the complete 50-strategy and factor-reconstruction matrices without
+to receive the complete legacy 50-strategy and factor-reconstruction matrices without
 placing licensed derived data in the public repository.
 
 ## Repository Layout
@@ -76,10 +110,17 @@ placing licensed derived data in the public repository.
 - `scripts/` - research runners, deterministic artifact builders, and validation entry points.
 - `literature_review/` - source inventory used to build the paper/repository universe.
 - `paper_runs/` - compact tracked replication ledgers, summaries, verdicts, small CSV outputs, and final report figures.
-- `paper_runs/handoff/` - compact 50-strategy collaborator index and hash-pinned scope manifest.
+- `paper_runs/handoff/` - legacy 50-strategy construction-diagnostic index and scope manifest.
+- `paper_runs/submission_evidence/strict_proxy_fidelity_audit/` - strict fidelity grades for the legacy 50 mappings.
+- `paper_runs/faithful_component_replications/` - primary 100%-passing disclosed-component evidence.
+- `paper_runs/fidelity_formula_components/` - mixed-fidelity formula diagnostics retained outside the primary denominator.
+- `paper_runs/prompt_replay/guruagents/performance/` - current GuruAgents prompt-replay performance evidence.
+- `paper_runs/submission_evidence/native_fidelity_ledger.csv` - supporting 67-lineage native-fidelity ledger.
+- `paper_runs/submission_evidence/artifact_audit/` - supporting cutoff-bounded artifact-audit evidence.
+- `docs/FIDELITY_AUDIT.md` - current claim and fidelity boundary.
 - `output/pdf/icaif2026_submission.pdf` - tracked current submission artifact.
-- `report.md` - final replication report.
-- `docs/alpha_agent_replication_report.tex` - compact TeX version of the replication report for paper citation and circulation.
+- `report.md` - superseded legacy replication report retained for provenance.
+- `docs/alpha_agent_replication_report.tex` - superseded legacy TeX report retained for provenance.
 - `docs/PUBLICATION_BOUNDARY.md` - tracked-vs-generated publication boundary.
 
 ## Install
@@ -107,7 +148,8 @@ Counted experiments use read-only local research inputs. The official [JKP data 
 export ALPHA_EVOLVE_REPO=/path/to/alpha-agent-replication
 export ALPHA_EVOLVE_JKP_ROOT=/path/to/jkp-data
 export ALPHA_EVOLVE_JKP_USA=/path/to/USA.parquet
-export ALPHA_EVOLVE_FACTOR_DATA_ROOT=/path/to/factor-data
+export ALPHA_EVOLVE_FACTOR_DATA_ROOT=/path/to/KnowledgeTemplate
+export ALPHA_EVOLVE_RETURN_DATA_ROOT=/path/to/KnowledgeTemplate/return_pipeline/return_data_assembly
 export ALPHA_EVOLVE_FACTOR_PANEL=/path/to/benchmark_factor_panel.csv
 ```
 

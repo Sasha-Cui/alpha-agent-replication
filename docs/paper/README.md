@@ -10,7 +10,7 @@ generated assets.
 Build and validate from the repository root:
 
 ```bash
-python scripts/validate_submission_package.py
+/nfs/roberts/project/pi_btk22/zc362/environments/bin/alpha-evolve-python scripts/validate_submission_package.py
 ```
 
 That fresh-clone mode runs 62 source/PDF checks and never looks for ignored
@@ -18,9 +18,9 @@ build residue. For a release build, regenerate the assets and PDF and request
 the nine additional log checks explicitly:
 
 ```bash
-python scripts/build_icaif2026_submission_assets.py
-python scripts/build_icaif2026_submission.py
-python scripts/validate_icaif_submission.py \
+/nfs/roberts/project/pi_btk22/zc362/environments/bin/alpha-evolve-python scripts/build_icaif2026_submission_assets.py
+/nfs/roberts/project/pi_btk22/zc362/environments/bin/alpha-evolve-python scripts/build_icaif2026_submission.py
+/nfs/roberts/project/pi_btk22/zc362/environments/bin/alpha-evolve-python scripts/validate_icaif_submission.py \
   --pdf output/pdf/icaif2026_submission.pdf \
   --log docs/paper/icaif2026_submission.log \
   --bbl docs/paper/icaif2026_submission.bbl \
@@ -28,22 +28,26 @@ python scripts/validate_icaif_submission.py \
 ```
 
 The build writes the single submission artifact to
-`output/pdf/icaif2026_submission.pdf`. The current PDF is eight pages and
+`output/pdf/icaif2026_submission.pdf`. The current PDF is six pages and
 its recorded release build passes all 71 checks plus the locked-evidence
 wording gate.
 
-The empirical results are retrospective factor-spanning diagnostics for 50
-good-faith strategy mappings from 40 papers. They are not 50 native-agent
-replications. Unavailable artifacts are never encoded as zero returns, and the
-paper does not claim that model pretraining causally produced factor
-rediscovery.
+The primary formula study exhaustively evaluates the three evaluator-valid seeds
+in a pinned QuantEvolver release and passes 3/3 strict grade B (100%). It
+preserves the released expressions, DSL semantics, pairwise missing-data rule,
+forward return, and equal-mean top/bottom-quintile evaluator; only cadence,
+universe, and horizon change. It does not reproduce the source discovery system
+or published portfolio. The older 12-formula bundle is a mixed-fidelity
+diagnostic outside this denominator. A strict audit separately grades the 50
+legacy mappings A0/B0/C15/D33/U2; those mappings are construction diagnostics,
+never performance evidence about the cited papers or their native agents.
 
-The manuscript also reports a separate, fully executed GuruAgents prompt
-replay: 190/190 GPT-4o agent-quarter-mode cells, 24 costed return paths, and a
-matched official Fama--French-to-JKP-BAB attribution ladder. That experiment is
-not counted among the 50 formula/component mappings or the 14-target code
-audit, and its 33-month factor window does not identify unrestricted JKP132
-OLS.
+The manuscript also reports a separate GuruAgents prompt-decision replay:
+190/190 cells through a current 2026 OpenRouter-served `openai/gpt-4o` alias, 24
+costed return paths, and matched Fama--French-to-JKP-BAB attribution. It does
+not reconstruct the original model snapshot, provider, data engineering, or
+native system, and its 33-month factor window does not identify unrestricted
+JKP132 OLS.
 
 Restricted security-level inputs and raw upstream market data remain outside
 Git. The authorized GuruAgents collaborator bundle publishes the derived

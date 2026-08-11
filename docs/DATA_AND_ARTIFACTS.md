@@ -16,6 +16,15 @@ and what must be acquired or regenerated separately.
 | `replication_scope/direct_code_attempt_inventory.csv` | 14 | 12 | Native/code-attempt blockers and outcomes |
 | `replication_scope/work_level_evidence_waterfall.csv` | 98 | 12 | Distinct-work screening and empirical role |
 | `replication_scope/mapping_scope_ledger.csv` | 62 | 14 | Row-level reconciliation of the 50 headline mappings and 12 excluded diagnostics |
+| `submission_evidence/strict_proxy_fidelity_audit/legacy_50_proxy_fidelity_audit.csv` | 50 | 13 | Strict A/B/C/D/U audit of the legacy mappings and their admissible use |
+| `faithful_component_replications/faithfulness_ledger.csv` | 3 | 28 | Primary exhaustive valid-seed census; all rows strict B with pinned source and rule checks |
+| `faithful_component_replications/attribution_results.csv` | 12 | 13 | Four matched attribution specifications for each primary faithful component |
+| `faithful_component_replications/attribution_summary.csv` | 4 | 6 | Primary benchmark summaries with Holm correction across three components |
+| `faithful_component_replications/closest_jkp_factors.csv` | 3 | 4 | Construction diagnostic for the primary component paths |
+| `fidelity_formula_components/formula_fidelity_ledger.csv` | 12 | 20 | Source anchors, declared conventions, grades, and evidence boundaries for disclosed formula components |
+| `fidelity_formula_components/attribution_results.csv` | 48 | 20 | Four rolling out-of-window attribution specifications for each component |
+| `fidelity_formula_components/attribution_summary.csv` | 4 | 6 | Benchmark-level component summary with within-benchmark Holm counts |
+| `fidelity_formula_components/closest_jkp_factors.csv` | 12 | 4 | Construction diagnostic for the disclosed-component paths |
 | `source_benchmark_audit/source_benchmark_audit.csv` | 40 | 8 | Full-text access status and original-paper benchmark coding |
 | `source_benchmark_audit/strategy_source_benchmark_results.csv` | 50 | 50 | Source benchmark coding joined to the matched strategy ladder |
 | `usa_retrospective_corrected/candidate_primary_results.csv` | 62 | 38 | Compact U.S. primary regression and inference results |
@@ -89,6 +98,8 @@ git diff --exit-code -- literature_review/source_pdfs \
 | JKP security-level characteristic/return panels | Licensed research data; not granted for redistribution | Obtain authorized access and set `ALPHA_EVOLVE_JKP_ROOT` / `ALPHA_EVOLVE_JKP_USA` |
 | Raw external JKP broad-factor source and security-level observations | Source licensing and institutional terms remain controlling | The authorized GuruAgents bundle includes only the aligned derived factor-return panel and its hashes; acquire raw inputs separately for regeneration |
 | Fifty-strategy monthly candidate and reconstruction matrices | Derived from access-dependent security-level inputs and therefore not placed in the public compact handoff | Build the authorized collaborator bundle outside Git with `scripts/build_authorized_collaborator_bundle.py` |
+| Disclosed-formula formation holdings and monthly return paths | Security-level identifiers and access-dependent returns derived from the licensed JKP panel | Regenerate with `scripts/run_fidelity_formula_components.py`; verify their hashes in `paper_runs/fidelity_formula_components/manifest.json` |
+| Primary faithful-component formation holdings and monthly return paths | Security-level identifiers and access-dependent returns derived from the licensed JKP panel | Regenerate with `scripts/run_faithful_component_replications.py`; run the validator with `--require-full-evidence` and verify hashes in `paper_runs/faithful_component_replications/manifest.json` |
 | `external_repos/` and `external_repos_code_links/` | Large third-party clones with independent licenses and mutable upstream histories | Use the artifact audit's URLs, revisions, license fields, and blockers to acquire allowed versions |
 | Virtual environments, package caches, logs, and scratch | Machine-specific or regenerable | Install from `pyproject.toml`; use `environment.toml` on Bouchet |
 | Alternate compiled manuscript versions | Avoid ambiguity during handoff | Use the one canonical PDF and its matching TeX source |
@@ -155,12 +166,8 @@ sha256sum docs/paper/icaif2026_submission.tex
 sha256sum output/pdf/icaif2026_submission.pdf
 ```
 
-Expected canonical hashes for the current prompt-replay manuscript:
-
-```text
-20d7743406ce14be1e3a20fbce839b6575cd590f27fcfdbb055b36a410c733d1  docs/paper/icaif2026_submission.tex
-90e6471868c795dc4fe30a95f04a761e3627400aeb33d927a7f653d464df0d82  output/pdf/icaif2026_submission.pdf
-```
+Consult `docs/VALIDATION_STATUS.md` for the hashes produced by the latest
+release build; do not copy older fixed hashes into downstream handoffs.
 
 The handoff manifest records SHA-256 hashes for the mapping audit, matched
 benchmark comparison, closest-factor diagnostics, and generated 50-row index.

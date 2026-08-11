@@ -622,7 +622,7 @@ def main() -> int:
         [
             r"\bottomrule",
             r"\end{tabular}",
-            r"\par\vspace{0.2em}\footnotesize The BAB row adds only JKP \texttt{betabab\_1260d}. The low-risk block adds BAB, conventional and Dimson beta, downside beta, idiosyncratic and realized volatility, and quality-safety returns. Holm adjustment is within the 12 replay paths. Full JKP132 OLS is unidentified in 33 months.",
+            r"\par\vspace{0.2em}\footnotesize The BAB row adds only JKP \texttt{betabab\_1260d}. The low-risk block adds BAB, conventional and Dimson beta, downside beta, idiosyncratic and realized volatility, and quality-safety returns. Holm adjustment is across the 12 replay paths separately within each benchmark; there is no adjustment across benchmark specifications. Full JKP132 OLS is unidentified in 33 months.",
             r"\end{table}",
         ]
     )
@@ -1044,7 +1044,12 @@ def main() -> int:
         patch.set_alpha(0.82)
     ax.axhline(0, color=INK, linewidth=0.9, zorder=0)
     ax.set_ylabel("Annualized one-month-ahead residual mean (%)")
-    ax.set_title("Broad controls attenuate reconstructed-strategy alpha", pad=12)
+    ax.set_title(
+        "Construction diagnostic: 50 JKP-built proxies (not agent returns)\n"
+        "46/50 use ranked JKP characteristics; 47/50 share the monthly "
+        "long-short rule",
+        pad=12,
+    )
     ax.grid(axis="y", alpha=0.35)
     ax.set_axisbelow(True)
     for position, benchmark_id in enumerate(benchmark_order, start=1):

@@ -10,6 +10,10 @@ from other tracked aggregate artifacts.
 | Literature census | Frozen: 103 lineages, 98 distinct works, 69 retained operational works | `scripts/build_paper_registry.py`, `scripts/build_census_citation_assets.py`, `scripts/refresh_census_primary_record_metadata.py` | `literature_review/census_v1/`, `docs/full_corpus_bibliography.md`, `paper_runs/submission_evidence/replication_scope/work_level_evidence_waterfall.csv` | Public metadata/network access for refresh | Cutoff-bounded systematic screen, not a complete universe |
 | Static artifact audit | Frozen: 103 lineage rows | `scripts/build_artifact_audit.py` | `paper_runs/submission_evidence/artifact_audit/` | Network access; optional third-party repositories | Static packaging/reachability evidence, not native execution |
 | Direct-code scope | Frozen: 14 targeted attempts | `scripts/build_native_fidelity_ledger.py`, `scripts/build_replication_scope_assets.py` | `paper_runs/submission_evidence/native_fidelity_ledger.csv`, `paper_runs/submission_evidence/replication_scope/direct_code_attempt_inventory.csv` | Separately acquired third-party artifacts | 0 native replications; 1 released-code component adaptation |
+| Strict legacy proxy audit | Current: 50 mappings; A0/B0/C15/D33/U2 | `scripts/build_strict_proxy_fidelity_audit.py` | `paper_runs/submission_evidence/strict_proxy_fidelity_audit/` | Frozen tracked candidate registry | Legacy mappings are construction diagnostics only; no paper- or agent-level performance inference |
+| Primary faithful component census | Current: 3/3 strict grade B (100%) from one pinned source release | `scripts/run_faithful_component_replications.py`, `scripts/validate_faithful_component_replications.py`, `scripts/analyze_fidelity_formula_components.py` | `paper_runs/faithful_component_replications/` | Authorized JKP U.S. panel and factor panel; optional network source-hash check | Exhaustive valid-seed census with exact released expressions, DSL semantics, missing-pair rule, returns, and quintile evaluator; cadence/universe/horizon adapt; no native system |
+| Mixed-fidelity formula diagnostic | Non-primary: 12 formula components from 4 sources | `scripts/run_fidelity_formula_components.py`, `scripts/analyze_fidelity_formula_components.py` | `paper_runs/fidelity_formula_components/` | Authorized JKP U.S. panel and factor panel | QuantEvolver rows are exact B; EFS, Alpha-Jungle, and QuantAgent are conditional and excluded from the 100% denominator |
+| GuruAgents prompt-decision replay | Current: 190 cells, 24 costed paths; 12 paths with 33 matched factor months | `scripts/run_guruagents_full_replay.py`, `scripts/analyze_guruagents_prompt_replay_performance.py` | `paper_runs/prompt_replay/guruagents/`, `runs/prompt_replay/guruagents/` | Archived observations, compiled Nasdaq universe, current OpenRouter endpoint | Current-endpoint decision-component replay, not end-to-end source-system replication |
 | Mapping and attribution audit | Frozen: 62 mappings, including 50 from 40 retained papers and 12 screened-out diagnostics | `scripts/build_mapping_audit.py`, `scripts/build_census_citation_assets.py`, `scripts/build_source_anchor_review_packet.py` | `paper_runs/submission_evidence/mapping_audit/`, `replication_scope/mapping_scope_ledger.csv` | Source papers for independent re-review | Row-level scope reasons are public; mappings were not outcome-blind and lacked an independent second coder |
 | Source-paper benchmark audit | Current: 40 papers; 38 verified full texts and 2 unresolved | `scripts/analyze_source_benchmarks.py` | `paper_runs/submission_evidence/source_benchmark_audit/` | Source papers for independent citation-level review | Descriptive coding; partial records cannot support negative evidence |
 | U.S. common-task portfolios | Frozen: 62 candidate paths | `scripts/run_submission_evidence.py`, `src/alpha_evolve/submission_analysis.py` | `paper_runs/submission_evidence/usa_retrospective_corrected/` compact summaries | Authorized JKP security-level panel | Retrospective common-task diagnostic; monthly matrices are not published |
@@ -20,30 +24,32 @@ from other tracked aggregate artifacts.
 | International extension | Excluded from performance inference after plausibility failure | `scripts/run_submission_evidence.py`, `scripts/diagnose_international_failures.py`, `scripts/run_fixed_calendar_diagnostics.py` | `g7_ex_us_corrected/` summaries, `international_failure_forensics/`, `fixed_calendar_diagnostics/` | Authorized G7 security-level panels | 40 limited-liability events require independent data/implementation validation |
 | Collaborator index | Current: 50 rows, 58 columns | `scripts/build_collaborator_handoff.py` | `paper_runs/handoff/` | None; joins tracked aggregates | Navigation artifact, not a new empirical run |
 | Authorized monthly collaborator bundle | On-demand: 50 retained strategies, same-universe six-factor panel, external market-plus-JKP132 panel, and four-rung monthly reconstructions | `scripts/build_authorized_collaborator_bundle.py` | Generated outside Git; see `docs/AUTHORIZED_COLLABORATOR_BUNDLE.md` | Authorized aggregate candidate/factor matrices and benchmark reconstruction run | Access-gated inspection artifact; no security-level rows and no redistribution grant |
-| Paper assets and PDF | Current: seven-page anonymous ICAIF submission; 62/62 fresh-clone artifact checks and 71/71 explicit release-build checks pass | `scripts/build_icaif2026_submission_assets.py`, `scripts/build_icaif2026_submission.py`, `scripts/validate_submission_package.py` | `docs/paper/`, `output/pdf/icaif2026_submission.pdf`, `docs/VALIDATION_STATUS.md` | Poppler for tracked-PDF validation; TeX Live plus Poppler for release build | Default validation has no dependency on ignored LaTeX residue; release mode requires an explicit build log |
+| Paper assets and PDF | Current anonymous ICAIF submission; page count and checks are determined by the release validators | `scripts/build_icaif2026_submission_assets.py`, `scripts/build_icaif2026_submission.py`, `scripts/validate_submission_package.py` | `docs/paper/`, `output/pdf/icaif2026_submission.pdf`, `docs/VALIDATION_STATUS.md` | Poppler for tracked-PDF validation; TeX Live plus Poppler for release build | Maximum eight total pages; release mode requires an explicit build log |
 
 ## Compact review sequence
 
-1. Read `paper_runs/handoff/strategy_result_index.csv` and its manifest.
-2. Verify the 50 formulas and attribution boundaries in
-   `paper_runs/submission_evidence/mapping_audit/mapping_audit.csv`.
-3. Inspect the 13 closest source mappings in
-   `docs/source_anchor_review_packet.md` and its CSV.
-4. Inspect the 14 direct attempts in
-   `paper_runs/submission_evidence/replication_scope/direct_code_attempt_inventory.csv`.
-5. Review the 40-paper benchmark coding and the two unresolved records in
-   `paper_runs/submission_evidence/source_benchmark_audit/`.
-6. Check the four-rung result table in
-   `retained_benchmark_ladder/strategy_benchmark_results.csv` and the complete
-   6,600-row factor-correlation ledger.
-7. Run the test suite and rebuild the handoff index.
-8. Read the canonical paper only after the audit tables, because the tables
-   encode the provenance qualifications that prevent overclaiming.
+1. Read `docs/FIDELITY_AUDIT.md` for the current claim boundary.
+2. Verify the 50-row A/B/C/D/U ledger and manifest in
+   `paper_runs/submission_evidence/strict_proxy_fidelity_audit/`.
+3. Run the 100% gate and inspect the three-row primary ledger, source pins, and
+   attribution under `paper_runs/faithful_component_replications/`.
+4. Treat the 12-row `paper_runs/fidelity_formula_components/` package only as a
+   mixed-fidelity diagnostic outside the primary denominator.
+5. Inspect the GuruAgents replay manifest, holdings, paths, and attribution in
+   `paper_runs/prompt_replay/guruagents/performance/`.
+6. Review the native-fidelity, artifact, and direct-attempt ledgers for the
+   broader public-evidence boundary.
+7. Use the 50-strategy ladder and 6,600 correlations only as a legacy
+   construction diagnostic.
+8. Run the test suite and release validators.
+9. Read the canonical paper and confirm its claims match these ledgers.
 
 ## Commands that do not require restricted data
 
 ```bash
 python -m pytest -q
+python scripts/validate_faithful_component_replications.py
+python scripts/build_strict_proxy_fidelity_audit.py
 python scripts/build_collaborator_handoff.py
 python scripts/build_source_anchor_review_packet.py
 python scripts/build_replication_scope_assets.py

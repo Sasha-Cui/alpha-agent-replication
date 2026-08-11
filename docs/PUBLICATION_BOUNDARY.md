@@ -11,6 +11,14 @@
 - `paper_runs/submission_evidence/`: frozen locks, manifests, aggregate estimates,
   multiplicity results, diagnostic summaries, and hashes of excluded reconstruction
   artifacts.
+- `paper_runs/submission_evidence/strict_proxy_fidelity_audit/`: compact strict
+  row-level grades and hash-pinned manifest for the 50 legacy mappings.
+- `paper_runs/faithful_component_replications/`: primary strict-B ledger, pinned
+  upstream hashes, aggregate attribution results, and manifests; licensed
+  security-level holdings and monthly return paths remain excluded.
+- `paper_runs/fidelity_formula_components/`: compact fidelity ledger, attribution
+  estimates, summary, nearest-factor diagnostics, and manifests; licensed
+  security-level holdings and monthly return paths remain excluded.
 - `report.md`, `README.md`, `pyproject.toml`, `environment.toml`, and this `docs/` directory, including manuscript source, bibliography, generated tables, and deterministic figure PDFs.
 - `COLLABORATOR_HANDOFF.md` and `paper_runs/handoff/`: collaborator navigation,
   a compact 50-strategy aggregate result index, its deterministic builder, and
@@ -28,6 +36,12 @@ The following are intentionally ignored because they are generated, local, priva
 - high-volume monthly candidate and factor reconstruction matrices under
   `paper_runs/submission_evidence/`; their checksums remain in tracked run
   manifests and the licensed inputs plus tracked runners regenerate them.
+- `paper_runs/fidelity_formula_components/formation_holdings.csv` and
+  `monthly_return_paths.csv`; their checksums remain in the tracked manifest and
+  authorized inputs plus the tracked runner regenerate them.
+- `paper_runs/faithful_component_replications/formation_holdings.csv` and
+  `monthly_return_paths.csv`; their checksums remain in the tracked manifest and
+  support the full-evidence mode of the fail-closed validator on authorized data.
 - network-discovery caches, which may contain transient third-party payloads.
 - alternate compiled manuscript PDFs, TeX auxiliary files, source archives, and
   local page renderings under `output/`, `docs/paper/`, and `tmp/`; the canonical

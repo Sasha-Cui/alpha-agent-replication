@@ -1,28 +1,31 @@
 # Validation Status
 
-Validated on 2026-08-09 against the canonical ICAIF source, compiled PDF, and
+Validated on 2026-08-10 against the canonical ICAIF source, compiled PDF, and
 tracked aggregate evidence on Bouchet.
 
 ## Canonical artifacts
 
 | Artifact | SHA-256 |
 | --- | --- |
-| `docs/paper/icaif2026_submission.tex` | `20d7743406ce14be1e3a20fbce839b6575cd590f27fcfdbb055b36a410c733d1` |
-| `output/pdf/icaif2026_submission.pdf` | `90e6471868c795dc4fe30a95f04a761e3627400aeb33d927a7f653d464df0d82` |
+| `docs/paper/icaif2026_submission.tex` | `81b3703c9f4d13c410809c3bb86cb8e52261ffdaeeb3588cd9dfb310c7b9aef6` |
+| `output/pdf/icaif2026_submission.pdf` | `65a175e930f0109f275dd7c8041fb0ad9ac24d549e9e5ea3478d288008b2fefe` |
 
-The PDF is eight US-Letter pages, unencrypted, anonymous, and built with the
+The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
 rendered pages were visually checked for clipping, overlaps, and unreadable
 labels.
 
 ## Passing checks
 
-- Repository test suite: 85 passed.
+- Repository test suite: 101 passed.
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
   LaTeX log.
 - Major-revision semantic and locked-evidence validator: passed.
+- Primary faithful-component gate: 3/3 strict grade B (100%), with source hashes,
+  exact evaluator mechanics, full holdings reconstruction, benchmark summaries,
+  and within-benchmark Holm families verified.
 - Stable ICAIF validation entry point: passed.
 - Collaborator index: deterministic 50-row rebuild with no tracked diff.
 - Publication boundary: no tracked Parquet files, third-party repository
@@ -38,7 +41,7 @@ Bouchet:
 
 ```bash
 module load poppler/25.07.0-GCC-13.3.0
-python scripts/validate_submission_package.py
+/nfs/roberts/project/pi_btk22/zc362/environments/bin/alpha-evolve-python scripts/validate_submission_package.py
 ```
 
 The format portion reports `ICAIF ARTIFACT AUDIT PASSED: 62 checks`. Passing
@@ -54,9 +57,9 @@ the ignored log explicitly:
 ```bash
 module load texlive/20240312-GCC-13.3.0
 module load poppler/25.07.0-GCC-13.3.0
-python scripts/build_icaif2026_submission_assets.py
-python scripts/build_icaif2026_submission.py
-python scripts/validate_icaif_submission.py \
+/nfs/roberts/project/pi_btk22/zc362/environments/bin/alpha-evolve-python scripts/build_icaif2026_submission_assets.py
+/nfs/roberts/project/pi_btk22/zc362/environments/bin/alpha-evolve-python scripts/build_icaif2026_submission.py
+/nfs/roberts/project/pi_btk22/zc362/environments/bin/alpha-evolve-python scripts/validate_icaif_submission.py \
   --pdf output/pdf/icaif2026_submission.pdf \
   --log docs/paper/icaif2026_submission.log \
   --bbl docs/paper/icaif2026_submission.bbl \
@@ -66,7 +69,7 @@ python scripts/validate_icaif_submission.py \
 This mode reports `ICAIF RELEASE-BUILD AUDIT PASSED: 71 checks`. An explicit
 missing log, a log from the wrong layout/anonymity mode, an overfull box,
 undefined citations or references, or a fatal TeX marker fails validation.
-An explicitly supplied compiled bibliography must contain at least 100 entries.
+An explicitly supplied compiled bibliography must contain at least 10 entries.
 Logs and compiled bibliography files remain ignored because they are generated
 build residue rather than canonical publication artifacts.
 
@@ -76,9 +79,15 @@ Passing validation means that the source, PDF, aggregate evidence, generated
 handoff, and stated claims are internally consistent. It does not convert the
 50 mappings into native-agent replications, make the retrospective mapping
 exercise confirmatory, or establish a causal pretraining mechanism.
-The separate GuruAgents experiment is a public-prompt replay with archived
-deterministic tool observations, not an independent reconstruction of the
-source data or a 33-month unrestricted JKP132 test.
+The primary formula census covers all three evaluator-valid seeds in the pinned
+QuantEvolver release and passes 3/3 strict grade B (100%). The percentage applies
+to disclosed evaluator components under cadence, universe, and horizon
+adaptations, not the source discovery system or published portfolio. The older
+12-formula bundle is a mixed-fidelity diagnostic outside that denominator. The
+separate GuruAgents experiment is a current-endpoint public-prompt replay with
+archived deterministic tool observations, not an independent reconstruction of
+the source data, original model snapshot, or native system. The 50 legacy
+mappings remain construction diagnostics only.
 
 The legacy `docs/paper/alpha_agent_replication.tex`, owner-review packet, and
 their historical build script document an earlier evidence-audit manuscript.

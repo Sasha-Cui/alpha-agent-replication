@@ -33,6 +33,8 @@ def run(*command: str, environment: dict[str, str]) -> None:
         env=environment,
         check=False,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         capture_output=True,
     )
     if completed.returncode:
@@ -42,11 +44,13 @@ def run(*command: str, environment: dict[str, str]) -> None:
 
 
 def main() -> int:
-    subprocess.run(
-        [sys.executable, str(ROOT / "scripts/build_paper_evidence_routes.py")],
-        cwd=ROOT,
-        check=True,
-    )
+    for script in (
+        "build_paper_evidence_routes.py",
+        "build_strict_proxy_fidelity_audit.py",
+    ):
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / script)], cwd=ROOT, check=True
+        )
     class_file = TEMPLATE / "acmart.cls"
     bst_file = TEMPLATE / "ACM-Reference-Format.bst"
     if sha256(class_file) != EXPECTED_CLASS_SHA256:
@@ -55,6 +59,7 @@ def main() -> int:
         raise RuntimeError("vendored ACM bibliography style checksum mismatch")
 
     environment = os.environ.copy()
+    environment.pop("TEXMFHOME", None)
     environment["TEXINPUTS"] = f"{TEMPLATE}//:{environment.get('TEXINPUTS', '')}"
     environment["BSTINPUTS"] = f"{TEMPLATE}//:{environment.get('BSTINPUTS', '')}"
 
