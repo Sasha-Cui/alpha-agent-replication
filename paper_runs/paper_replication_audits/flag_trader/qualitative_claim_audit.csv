@@ -1,0 +1,6 @@
+claim,audit_measure,observed,assessment,paper_result_credit
+FLAG-Trader consistently surpasses LLM-agentic baselines across metrics,best cells among all 15 rows,7/24 overall; 7/12 CR-or-SR; 0/12 AV-or-MDD,overstated_not_best_on_17_of_24_metric_asset_cells,False
+FLAG-Trader consistently outperforms Buy & Hold,strict cell comparisons,"17 wins, 2 ties, 5 losses",mostly_true_not_consistent_across_all_metrics,False
+FLAG-Trader prioritizes CR and SR,primary metric comparisons with Buy & Hold,11/12 strict wins,one_primary_loss_uvv_sharpe,False
+FLAG-Trader converges to a stable optimal policy,released convergence traces or uncertainty,none,unsupported_no_trace_checkpoint_seed_or_statistical_test,False
+best numbers are highlighted in red,ACL final Tables 1 and 2 plus v3 TeX,zero red-highlight commands and no visible red values,paper_footnote_not_implemented,False

@@ -1,0 +1,10 @@
+check,observed,assessment,paper_author_linked,native_flag_trader_source_credit,paper_result_credit
+provenance,JunseongPark commit identity; no paper-author link,unaffiliated_no_native_credit,False,False,False
+tracked_files,18,small_third_party_pilot,False,False,False
+python_files,7/7 compile,static_syntax_only,False,False,False
+license,no license file,reuse_rights_unresolved,False,False,False
+ppo,"no PPO ratio, clipping, GAE, critic, or value head",paper_core_mechanism_absent,False,False,False
+training,one episode; mean reward times mean token log probability,not_paper_training_algorithm,False,False,False
+metrics,AV and MDD hard-coded to zero,not_paper_evaluator,False,False,False
+data,MSFT only; snapshot extends to 2025,not_paper_six_asset_snapshot,False,False,False
+native_results,none shipped,zero_paper_result_credit,False,False,False

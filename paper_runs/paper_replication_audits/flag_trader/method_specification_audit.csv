@@ -1,0 +1,49 @@
+dimension,paper_statement,available_evidence,assessment,severity,native_flag_trader_verified,paper_result_credit
+asset_universe,"MSFT, JNJ, UVV, HON, TSLA, BTC",six assets in final tables,specified,none,False,False
+stock_window,warm-up 2020-07-01..09-30; test 2020-10-01..2021-05-06,dates stated,specified,none,False,False
+btc_window,warm-up 2023-02-11..04-04; test 2023-04-05..11-05,dates stated,specified,none,False,False
+actions,"all-in Buy, all-out Sell, Hold",three actions stated,specified,none,False,False
+backbone,SmolLM2-135M-Instruct,model family named,partial,major,False,False
+temperature,0.6,inference temperature stated,specified,none,False,False
+ppo_settings,22 Table 3 settings,paper values inventoried,paper_only,major,False,False
+hardware,A6000/A100 tiers by model size,GPU counts stated,partial,minor,False,False
+prompt_template,Figure 3 vector prompt,template text recovered,partial,major,False,False
+source_code,none linked or released,no author FLAG-Trader repository,missing,blocking,False,False
+trained_checkpoint,none,no model/adapter weights,missing,blocking,False,False
+optimizer_state,none,no checkpoint lineage,missing,blocking,False,False
+action_trajectories,none,no test decisions,missing,blocking,False,False
+equity_or_pnl_paths,none,only aggregate table cells,missing,blocking,False,False
+result_outputs,none,no raw results or plot arrays,missing,blocking,False,False
+random_seeds,not stated,no seed or seed count,missing,blocking,False,False
+replications,median test trajectory across unspecified epochs,number of epochs/runs absent,missing,blocking,False,False
+model_revision,SmolLM2 family only,no immutable model hash/revision,missing,blocking,False,False
+frozen_trainable_layers,top layers trainable,N and M omitted,missing,blocking,False,False
+head_architecture,MLP policy/value heads,"dimensions, activations, initialization omitted",missing,blocking,False,False
+optimizer,text says SGD; table says learning rate of optimizer,optimizer type absent,missing,blocking,False,False
+data_vendor,not stated,no exact upstream source,missing,blocking,False,False
+data_snapshot,not stated,no retrieval time or raw FLAG snapshot,missing,blocking,False,False
+price_adjustment,not stated,released baseline adjusted prices conflict with four equity CR cells,conflict,blocking,False,False
+tsla_data,evaluated in paper,absent from author-linked InvestorBench release,missing,blocking,False,False
+news_macro_data,state includes news sentiment or macro indicators,"sources, fields, timing and preprocessing absent",missing,blocking,False,False
+state_representation,text says price/news; equation says Price/Vol/RSI; prompt shows history/account/memory,three incompatible descriptions,conflict,blocking,False,False
+transaction_costs,prompt instructs minimizing costs,no cost parameter or transition deduction,conflict,blocking,False,False
+slippage_execution,not stated,no market-impact or execution convention,missing,blocking,False,False
+initial_cash,not stated,account initialization absent,missing,blocking,False,False
+risk_free_rate,symbol r_f only,value and frequency absent,missing,blocking,False,False
+reward_initialization,SR_t minus SR_{t-1},sample SD undefined at first observation; SR_0 unspecified,conflict,blocking,False,False
+reward_units,mean dollar PnL minus risk-free rate,dimension/scale convention absent,conflict,major,False,False
+action_mask,formula masks a not in global A,does not encode state-dependent invalid Sell example,conflict,major,False,False
+test_model_selection,median trajectory selected from test epochs,test outcomes used for checkpoint/result selection,conflict,blocking,False,False
+btc_sharpe_annualization,paper AV states 252,"paper SR matches 252 return over 365 volatility, not released evaluator",conflict,blocking,False,False
+kl_penalty,kl_coef=0.05,KL term absent from displayed total loss,conflict,major,False,False
+value_loss_clipping,clip_vloss=True,displayed value loss is unclipped,conflict,major,False,False
+replay_buffer_lifecycle,Algorithm 2 appends B,buffer clearing/rollout replacement not specified,missing,major,False,False
+batch_geometry,"num_steps=40, minibatch_size=32, num_envs=1",remainder handling unspecified,missing,major,False,False
+update_geometry,total_timesteps=13860 and rollout size=40,346.5 rollouts; truncation convention absent,missing,major,False,False
+baseline_model_snapshots,13 named models,immutable revisions and API dates absent,missing,blocking,False,False
+software_environment,vLLM named,no FLAG dependency lock/container/source,missing,blocking,False,False
+uncertainty,single displayed value per cell,"no seeds, intervals or dispersion",missing,blocking,False,False
+statistical_tests,none,no paired or multiple-comparison tests,missing,major,False,False
+red_best_highlights,footnote says red,no red commands/visible red values,conflict,minor,False,False
+arxiv_acl_caption,v3 says seven stocks; ACL final says six assets,final fixes caption but source revision differs,conflict,minor,False,False
+investorbench_release,baseline framework explicitly cited,post-preprint/pre-proceedings source has five of six data files,partial,major,False,False

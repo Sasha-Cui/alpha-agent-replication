@@ -1,0 +1,86 @@
+{
+  "acl_url": "https://aclanthology.org/2025.findings-acl.716/",
+  "arxiv_url": "https://arxiv.org/abs/2502.11433v3",
+  "audit_date": "2026-08-11",
+  "buy_hold_cells_checked_against_released_baseline": 20,
+  "buy_hold_cells_literal_matches": 6,
+  "buy_hold_cells_paper_compatible_matches": 7,
+  "flag_trader_best_metric_asset_cells": 7,
+  "flag_trader_best_primary_cells": 7,
+  "flag_trader_best_risk_cells": 0,
+  "flag_trader_native_result_cells_reproduced": 0,
+  "flag_trader_vs_buy_hold": {
+    "losses": 5,
+    "ties": 2,
+    "wins": 17
+  },
+  "full_paper_reproduced": false,
+  "input_sha256": {
+    "acl_final_pdf": "38d188a03105f07911d05c6fc14ba7cb2333939f3871f45a48f9cc541401d099",
+    "arxiv_v3_source": "b57ac81b8c705817e055ece553e5cbc1d0ef1f37b615e6cdbfa3eb896823eb23",
+    "investorbench_archive": "1675cf2cbe6039598d33c68a82b1a8cbe3abc8d59cda9eeca31ea2a1748e374b",
+    "unaffiliated_archive": "868fc11a9dad5ca9a3c97837187b666d02d22573f6c7bd872d3d601a13c9685d"
+  },
+  "investorbench_release_native_result_artifacts": 0,
+  "investorbench_release_python_files": 23,
+  "investorbench_release_tracked_files": 48,
+  "method_assessment_counts": {
+    "conflict": 12,
+    "missing": 26,
+    "paper_only": 1,
+    "partial": 4,
+    "specified": 5
+  },
+  "method_severity_counts": {
+    "blocking": 28,
+    "major": 12,
+    "minor": 3,
+    "none": 5
+  },
+  "method_specification_dimensions": 48,
+  "native_execution": {
+    "acl_final_result_tables_crosschecked_against_v3_source": true,
+    "flag_trader_native_execution_attempted": false,
+    "investorbench_baseline_cells_with_paper_result_credit": 6,
+    "investorbench_baseline_formula_executed": true,
+    "investorbench_python_files_compiled": 23,
+    "paper_latex_compilation": {
+      "exit_codes": [
+        0,
+        0
+      ],
+      "pages": 14,
+      "paper_result_credit": false,
+      "source_files": 20
+    },
+    "reason": "no author-linked FLAG-Trader implementation, checkpoint, config, or trajectory released",
+    "unaffiliated_candidate_credit": false,
+    "unaffiliated_candidate_executed_as_flag_trader": false,
+    "unaffiliated_candidate_python_files_compiled": 7
+  },
+  "official_flag_trader_checkpoint_released": false,
+  "official_flag_trader_source_released": false,
+  "official_flag_trader_trajectory_released": false,
+  "output_sha256": {
+    "README.md": "79933b06a4676c9ae7fa716b84d66dbdb286698f1c9c0c878d50dc6102e9133d",
+    "buy_hold_baseline_reproduction.csv": "afc6afa50cc792e25bd39e36bd4ad9fd1f47d4bbfd44c4715ed8844925435a60",
+    "investorbench_source_inventory.csv": "a16897de06642e49de775d1e3d70fedfd8e6bad5a4afe06e94d7f38ec97d9e99",
+    "method_specification_audit.csv": "15491333f3996bd58fd8b4fc01ef2665c151dbbb4d927a834f94db9ee18ed49e",
+    "native_execution.json": "80dcc289ba2c363cf9657a8be3dce910b32bc22f6905470648268587e7a4671b",
+    "paper_hyperparameters.csv": "158a95aa7c6c742713704f3eeeadb31d7f30d315d4fddae0ac67d0b72ffa47a3",
+    "paper_prompt_template.txt": "ae4880992690401385cf2cf60ca10cb5ee055c62e40c66e0598fa28ab5a0c701",
+    "paper_table_result_conformance.csv": "76bbbb85ec2a8cabfb93aea223df14a52e41948c4c32f3fb1da00a63fd53504e",
+    "qualitative_claim_audit.csv": "a7956f902aa5e1732278020578f0602b6c158caff46f52e243f1db8dcb1711e6",
+    "source_provenance.json": "c6a7c059a303dcc55c648e670d57ef13b47d4764e0ec38462a5e2d1817a9642c",
+    "unaffiliated_candidate_audit.csv": "c37395819918c5a63be22bc24c08880a30c224239bc8de59c516496a9f9e80cc"
+  },
+  "overall_status": "partial_6_of_360_author_linked_buy_hold_baseline_cells_reproduced_zero_flag_trader_native_results",
+  "paper": "FLAG-TRADER: Fusion LLM-Agent with Gradient-based Reinforcement Learning for Financial Trading",
+  "paper_compile_pages": 14,
+  "paper_evidence_route": "paper_only_underspecified",
+  "paper_hyperparameter_settings": 22,
+  "paper_prompt_template_recovered": true,
+  "paper_table_cells_reproduced": 6,
+  "paper_table_cells_total": 360,
+  "unaffiliated_candidate_paper_credit": false
+}

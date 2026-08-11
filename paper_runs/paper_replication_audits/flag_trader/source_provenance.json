@@ -1,0 +1,34 @@
+{
+  "author_linked_baseline_release": {
+    "archive_sha256": "1675cf2cbe6039598d33c68a82b1a8cbe3abc8d59cda9eeca31ea2a1748e374b",
+    "commit": "3509aeca668824cf2970e3950781d4d09f6c2adb",
+    "commit_date": "2025-06-22T15:08:30-04:00",
+    "relationship": "paper_explicitly_adopts_InvestorBench_baselines_not_FLAG_Trader_source",
+    "tree": "d7ba083da72c2023e9f0135c7db9e9d15841c231",
+    "url": "https://github.com/felis33/INVESTOR-BENCH"
+  },
+  "result_authority": {
+    "pages": 14,
+    "sha256": "38d188a03105f07911d05c6fc14ba7cb2333939f3871f45a48f9cc541401d099",
+    "url": "https://aclanthology.org/2025.findings-acl.716.pdf"
+  },
+  "source_discovery": {
+    "github_exact_name_or_readme_search_results": 47,
+    "the_finai_flag_trader_repositories": 0,
+    "the_finai_public_repositories": 25
+  },
+  "supporting_arxiv_source": {
+    "sha256": "b57ac81b8c705817e055ece553e5cbc1d0ef1f37b615e6cdbfa3eb896823eb23",
+    "submitted": "2025-02-19T03:40:56Z",
+    "url": "https://export.arxiv.org/e-print/2502.11433v3",
+    "version": 3
+  },
+  "unaffiliated_candidate": {
+    "archive_sha256": "868fc11a9dad5ca9a3c97837187b666d02d22573f6c7bd872d3d601a13c9685d",
+    "commit": "f43eebb6576e3ef8904ad838f7dcabc85f128713",
+    "commit_date": "2025-04-18T13:32:00-05:00",
+    "paper_credit": false,
+    "tree": "fc214320582c2ac9d7e51dc9828993e5f18617d7",
+    "url": "https://github.com/parkxlab/flag-trader"
+  }
+}

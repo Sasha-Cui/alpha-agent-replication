@@ -1,0 +1,24 @@
+Financial Stock Trading
+Task: Assist traders in making optimal buy, hold, or sell decisions for a stock
+portfolio. The goal is to maximize long-term returns while managing risk. The agent
+should execute buy if the stock is undervalued based on historical trends, sell if it is
+overvalued or risk is high, and hold if market conditions are uncertain. Trades should
+minimize transaction costs and align with market momentum indicators.
+Legible Actions: Choose from “{Buy, Sell, Hold}” based on market conditions and risk
+assessment.
+Current State: Given the following market data:
+{{
+ "historical_prices": [{', '.join([str(val)[:6] for val in obs.cpu().tolist()[0]])}],
+ "account_status": {{
+   "cash_balance": {info['cash']},
+   "asset_position": {info['asset']},
+   "total_account_value": {info['total']}
+ }},
+ "previous_decision_metrics": {{
+   "recent_rewards": {[str(val)[:6] for val in info['rewards_memory'][-10:]]},
+   "net_values": {[str(val)[:10] for val in info['asset_memory'][-10:]]},
+   "actions": {info.get('action_memory', [])[-10:]},
+ }}
+}}
+Output Action. Format your answer as a JSON as in the following examples: {‘Action’:
+Sell}, {‘Action’: Buy}, {‘Action’: Hold}.

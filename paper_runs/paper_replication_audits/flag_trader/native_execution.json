@@ -1,0 +1,20 @@
+{
+  "acl_final_result_tables_crosschecked_against_v3_source": true,
+  "flag_trader_native_execution_attempted": false,
+  "investorbench_baseline_cells_with_paper_result_credit": 6,
+  "investorbench_baseline_formula_executed": true,
+  "investorbench_python_files_compiled": 23,
+  "paper_latex_compilation": {
+    "exit_codes": [
+      0,
+      0
+    ],
+    "pages": 14,
+    "paper_result_credit": false,
+    "source_files": 20
+  },
+  "reason": "no author-linked FLAG-Trader implementation, checkpoint, config, or trajectory released",
+  "unaffiliated_candidate_credit": false,
+  "unaffiliated_candidate_executed_as_flag_trader": false,
+  "unaffiliated_candidate_python_files_compiled": 7
+}

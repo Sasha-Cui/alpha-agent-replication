@@ -1,0 +1,23 @@
+parameter,paper_value_tex,description,released_flag_trader_config_value,status,paper_result_credit
+total_timesteps,13860,Total number of timesteps,,paper_setting_only_no_flag_trader_config_released,False
+learning_rate,\(5 \times 10^{-4}\),Learning rate of optimizer,,paper_setting_only_no_flag_trader_config_released,False
+num_envs,1,Number of parallel environments,,paper_setting_only_no_flag_trader_config_released,False
+num_steps,40,Steps per policy rollout,,paper_setting_only_no_flag_trader_config_released,False
+anneal_lr,True,Enable learning rate annealing,,paper_setting_only_no_flag_trader_config_released,False
+gamma,0.95,Discount factor \gamma,,paper_setting_only_no_flag_trader_config_released,False
+gae_lambda,0.98,Lambda for Generalized Advantage Estimation,,paper_setting_only_no_flag_trader_config_released,False
+update_epochs,1,Number of update epochs per cycle,,paper_setting_only_no_flag_trader_config_released,False
+norm_adv,True,Advantages whitening,,paper_setting_only_no_flag_trader_config_released,False
+clip_coef,0.2,Surrogate clipping coefficient,,paper_setting_only_no_flag_trader_config_released,False
+clip_vloss,True,Clipped loss for value function,,paper_setting_only_no_flag_trader_config_released,False
+ent_coef,0.05,Coefficient of entropy term,,paper_setting_only_no_flag_trader_config_released,False
+vf_coef,0.5,Coefficient of value function,,paper_setting_only_no_flag_trader_config_released,False
+kl_coef,0.05,KL divergence with reference model,,paper_setting_only_no_flag_trader_config_released,False
+max_grad_norm,0.5,Maximum gradient clipping norm,,paper_setting_only_no_flag_trader_config_released,False
+target_kl,None,Target KL divergence threshold,,paper_setting_only_no_flag_trader_config_released,False
+dropout,0.0,Dropout rate,,paper_setting_only_no_flag_trader_config_released,False
+llm,"""SmolLM2-135M-Instruct""",Model to fine-tune,,paper_setting_only_no_flag_trader_config_released,False
+train_dtype,"""float16""",Training data type,,paper_setting_only_no_flag_trader_config_released,False
+gradient_accumulation_steps,8,Number of gradient accumulation steps,,paper_setting_only_no_flag_trader_config_released,False
+minibatch_size,32,Mini-batch size for fine-tuning,,paper_setting_only_no_flag_trader_config_released,False
+max_episode_steps,65,Maximum number of steps per episode,,paper_setting_only_no_flag_trader_config_released,False
