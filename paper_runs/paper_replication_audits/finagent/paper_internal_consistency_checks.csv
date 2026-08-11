@@ -1,0 +1,9 @@
+check,status,detail
+baseline_count,internal_conflict,prose says 9 baselines; Table 4 contains 12 comparators and the abstract says 12
+figure4_vs_table4_methods,internal_conflict,Figure 4 omits LGBM/LSTM/Transformer and adds SO&BB relative to Table 4
+tsla_sr_improvement,internal_conflict,prose/main figure claim 118%; Table 4 says 93.27% and Appendix Table 7 says 92.3217%
+tsla_arr_improvement,rounding_consistent,prose 84%; Table 4 84.39%; Appendix Table 7 84.4052%
+table4_caption,caption_scope_conflict,"caption says six metrics while the active main table displays ARR, SR, and MDD only"
+paper_source_compile,reproduced_document,arXiv v3 source compiles to 43 pages after two pdflatex passes
+strategy_record_scope,not_paper_results,"90 JSON files are rule-strategy training/default parameter records, not agent validation outputs"
+paper_vs_source_metrics,implementation_conflict,"released SR, CR, and SOR scale differently from the equations in the paper"

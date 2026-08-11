@@ -1,0 +1,103 @@
+paper_figure,display_unit,source_asset,native_reproduced,status,paper_result_credit
+Figure 4 cumulative return,AAPL/B&H,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/MACD,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/KDJ&RSI,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/SO&BB,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/ZMR,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/DQN,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/SAC,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/PPO,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/FinGPT,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/FinMem,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AAPL/FinAgent,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/B&H,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/MACD,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/KDJ&RSI,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/SO&BB,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/ZMR,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/DQN,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/SAC,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/PPO,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/FinGPT,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/FinMem,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,AMZN/FinAgent,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/B&H,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/MACD,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/KDJ&RSI,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/SO&BB,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/ZMR,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/DQN,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/SAC,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/PPO,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/FinGPT,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/FinMem,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,GOOGL/FinAgent,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/B&H,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/MACD,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/KDJ&RSI,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/SO&BB,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/ZMR,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/DQN,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/SAC,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/PPO,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/FinGPT,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/FinMem,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,MSFT/FinAgent,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/B&H,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/MACD,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/KDJ&RSI,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/SO&BB,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/ZMR,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/DQN,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/SAC,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/PPO,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/FinGPT,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/FinMem,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,TSLA/FinAgent,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/B&H,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/MACD,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/KDJ&RSI,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/SO&BB,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/ZMR,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/DQN,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/SAC,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/PPO,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/FinGPT,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/FinMem,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 4 cumulative return,ETHUSD/FinAgent,assets/baselines.pdf,False,raster_or_vector_plot_only_no_underlying_trajectory,False
+Figure 5 component ablation,ML,assets/dr.pdf,False,plot_only_no_underlying_trial_records,False
+Figure 5 component ablation,MLH,assets/dr.pdf,False,plot_only_no_underlying_trial_records,False
+Figure 5 component ablation,MLHT,assets/dr.pdf,False,plot_only_no_underlying_trial_records,False
+Figure 5 component ablation,T,assets/dr.pdf,False,plot_only_no_underlying_trial_records,False
+Figure 5 retrieval/diversification,without_diversification,assets/dr.pdf,False,plot_only_no_underlying_trial_records,False
+Figure 5 retrieval/diversification,rag,assets/dr.pdf,False,plot_only_no_underlying_trial_records,False
+Figure 5 retrieval/diversification,rag_plus_diversification,assets/dr.pdf,False,plot_only_no_underlying_trial_records,False
+Appendix qualitative/performance cases,AAPL_PPO,assets/finagent_and_baselines/ppo/AAPL_PPO.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,GOOGL_PPO,assets/finagent_and_baselines/ppo/GOOGL_PPO.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,GOOGL_DQN,assets/finagent_and_baselines/dqn/GOOGL_DQN.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,AMZN_DQN,assets/finagent_and_baselines/dqn/AMZN_DQN.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,ETH_DQN,assets/finagent_and_baselines/dqn/ETH_DQN.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,ETH_SAC,assets/finagent_and_baselines/sac/ETH_SAC.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,MSFT_SAC,assets/finagent_and_baselines/sac/MSFT_SAC.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,AMZN_SAC,assets/finagent_and_baselines/sac/AMZN_SAC.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,AAPL_FinGPT,assets/finagent_and_baselines/fingpt/AAPL_FinGPT.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,GOOGL_FinGPT,assets/finagent_and_baselines/fingpt/GOOGL_FinGPT.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,MSFT_FinGPT,assets/finagent_and_baselines/fingpt/MSFT_FinGPT.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,TSLA_FinGPT,assets/finagent_and_baselines/fingpt/TSLA_FinGPT.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,AAPL_FinMem,assets/finagent_and_baselines/finmem/AAPL_FinMem.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,MSFT_FinMem,assets/finagent_and_baselines/finmem/MSFT_FinMem.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,TSLA_FinMem,assets/finagent_and_baselines/finmem/TSLA_FinMem.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,ETHUSD_FinMem,assets/finagent_and_baselines/finmem/ETHUSD_FinMem.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,MACD_AAPL,assets/finagent_and_baselines/MACD/MACD_AAPL.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,MACD_GOOGL,assets/finagent_and_baselines/MACD/MACD_GOOGL.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,MACD_ETHUSD,assets/finagent_and_baselines/MACD/MACD_ETHUSD.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,MACD_MSFT,assets/finagent_and_baselines/MACD/MACD_MSFT.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,KDJ_RSI_AAPL,assets/finagent_and_baselines/KDJ_RSI/KDJ_RSI_AAPL.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,KDJ_RSI_TSLA,assets/finagent_and_baselines/KDJ_RSI/KDJ_RSI_TSLA.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,ZMR_AAPL,assets/finagent_and_baselines/ZMR/ZMR_AAPL.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,ZMR_TSLA,assets/finagent_and_baselines/ZMR/ZMR_TSLA.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,ETHUSD,assets/finagent_and_baselines/tool_router/ETHUSD.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,AAPL,assets/finagent_and_baselines/tool_router/AAPL.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,AAPL_FinAgent,assets/finagent_and_baselines/finagent/AAPL_FinAgent.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,GOOGL_FinAgent,assets/finagent_and_baselines/finagent/GOOGL_FinAgent.pdf,False,graphic_only_no_underlying_action_or_equity_path,False
+Appendix qualitative/performance cases,ETHUSD_FinAgent,assets/finagent_and_baselines/finagent/ETHUSD_FinAgent.pdf,False,graphic_only_no_underlying_action_or_equity_path,False

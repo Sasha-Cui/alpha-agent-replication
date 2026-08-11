@@ -1,0 +1,35 @@
+{
+  "entrypoint_help_probe": {
+    "attempted": true,
+    "exit_code": 1,
+    "interpretation": "audit environment dependency probe only; the exact paper commit shipped no dependency specification",
+    "stderr_tail": "Traceback (most recent call last):\n  File \"/nfs/roberts/scratch/pi_btk22/zc362/finagent_source/tools/main.py\", line 10, in <module>\n    from mmengine.config import Config, DictAction\nModuleNotFoundError: No module named 'mmengine'\n"
+  },
+  "full_native_system_execution_attempted": false,
+  "full_native_system_execution_reason": "exact input snapshot, API credentials, memories, trajectories, output records, and operational preview models are unavailable",
+  "paper_commit_has_requirements_file": false,
+  "paper_result_credit": false,
+  "paper_source_compilation": {
+    "attempted": true,
+    "compiled_pages": 43,
+    "compiled_pdf_sha256": "c17863e16d5575d62f748086102c25c6f9e627d3f740793797cf7b1bf4f94980",
+    "exit_code": 0,
+    "matches_arxiv_page_count": true,
+    "paper_result_credit": false,
+    "passes": [
+      {
+        "exit_code": 0,
+        "log_tail": "12-GCC-13.3.0/texm\nf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></apps/software/2024\na/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/newtx/Libe\nrtineMathBMI5.pfb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/te\nxmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></apps/software/2024a/sof\ntware/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/newtx/Libertine\nMathMI5.pfb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-di\nst/fonts/type1/public/newtx/LibertineMathMI7.pfb></apps/software/2024a/software\n/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/libertine/LinBiolinu\nmT.pfb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fo\nnts/type1/public/libertine/LinBiolinumTB.pfb></apps/software/2024a/software/tex\nlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/libertine/LinBiolinumTI.\npfb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts\n/type1/public/libertine/LinLibertineT.pfb></apps/software/2024a/software/texliv\ne/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pf\nb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/t\nype1/public/libertine/LinLibertineTBI.pfb></apps/software/2024a/software/texliv\ne/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pf\nb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/t\nype1/public/newtx/txexs.pfb></apps/software/2024a/software/texlive/20240312-GCC\n-13.3.0/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></apps/software/2024a/so\nftware/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/newtx/txsym.pf\nb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/t\nype1/public/newtx/txsys.pfb></apps/software/2024a/software/texlive/20240312-GCC\n-13.3.0/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>\nOutput written on main.pdf (44 pages, 15119044 bytes).\nTranscript written on main.log.\n"
+      },
+      {
+        "exit_code": 0,
+        "log_tail": "12-GCC-13.3.0/texm\nf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></apps/software/2024\na/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/newtx/Libe\nrtineMathBMI5.pfb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/te\nxmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb></apps/software/2024a/sof\ntware/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/newtx/Libertine\nMathMI5.pfb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-di\nst/fonts/type1/public/newtx/LibertineMathMI7.pfb></apps/software/2024a/software\n/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/libertine/LinBiolinu\nmT.pfb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fo\nnts/type1/public/libertine/LinBiolinumTB.pfb></apps/software/2024a/software/tex\nlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/libertine/LinBiolinumTI.\npfb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts\n/type1/public/libertine/LinLibertineT.pfb></apps/software/2024a/software/texliv\ne/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pf\nb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/t\nype1/public/libertine/LinLibertineTBI.pfb></apps/software/2024a/software/texliv\ne/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pf\nb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/t\nype1/public/newtx/txexs.pfb></apps/software/2024a/software/texlive/20240312-GCC\n-13.3.0/texmf-dist/fonts/type1/public/newtx/txmiaX.pfb></apps/software/2024a/so\nftware/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/type1/public/newtx/txsym.pf\nb></apps/software/2024a/software/texlive/20240312-GCC-13.3.0/texmf-dist/fonts/t\nype1/public/newtx/txsys.pfb></apps/software/2024a/software/texlive/20240312-GCC\n-13.3.0/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>\nOutput written on main.pdf (43 pages, 15127960 bytes).\nTranscript written on main.log.\n"
+      }
+    ]
+  },
+  "published_result_units_reproduced": 0,
+  "released_python_static_compilation": {
+    "files": 142,
+    "syntax_errors": 0
+  }
+}

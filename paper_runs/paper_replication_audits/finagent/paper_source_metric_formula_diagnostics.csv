@@ -1,0 +1,4 @@
+metric,paper_formula_value_on_probe,released_source_value_on_probe,matches_paper_formula,diagnosis,paper_result_credit
+SR,0.17437145811572888,0.3899064336825272,False,source multiplies by sqrt(number_of_observations),False
+CR,0.15,37.8,False,source multiplies daily mean by 252,False
+SOR,0.5999999999999999,151.19999999999996,False,source multiplies daily mean by 252,False

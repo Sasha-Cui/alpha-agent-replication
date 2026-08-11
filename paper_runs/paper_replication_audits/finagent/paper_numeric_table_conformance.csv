@@ -1,0 +1,960 @@
+paper_table,display_cell_id,item,metric,paper_value,native_reproduced_value,status,paper_result_credit
+Table 4 main comparison,Table 4 main comparison/AAPL/B&H/ARR_pct,AAPL/B&H,ARR_pct,13.0,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/B&H/SR,AAPL/B&H,SR,0.6,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/B&H/MDD_pct,AAPL/B&H,MDD_pct,14.78,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/B&H/ARR_pct,AMZN/B&H,ARR_pct,42.33,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/B&H/SR,AMZN/B&H,SR,1.08,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/B&H/MDD_pct,AMZN/B&H,MDD_pct,17.38,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/B&H/ARR_pct,GOOGL/B&H,ARR_pct,22.47,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/B&H/SR,GOOGL/B&H,SR,0.71,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/B&H/MDD_pct,GOOGL/B&H,MDD_pct,12.97,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/B&H/ARR_pct,MSFT/B&H,ARR_pct,22.49,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/B&H/SR,MSFT/B&H,SR,0.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/B&H/MDD_pct,MSFT/B&H,MDD_pct,12.92,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/B&H/ARR_pct,TSLA/B&H,ARR_pct,37.4,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/B&H/SR,TSLA/B&H,SR,0.72,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/B&H/MDD_pct,TSLA/B&H,MDD_pct,32.65,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/B&H/ARR_pct,ETHUSD/B&H,ARR_pct,29.26,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/B&H/SR,ETHUSD/B&H,SR,0.87,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/B&H/MDD_pct,ETHUSD/B&H,MDD_pct,23.21,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/MACD/ARR_pct,AAPL/MACD,ARR_pct,11.86,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/MACD/SR,AAPL/MACD,SR,0.72,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/MACD/MDD_pct,AAPL/MACD,MDD_pct,10.38,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/MACD/ARR_pct,AMZN/MACD,ARR_pct,14.27,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/MACD/SR,AMZN/MACD,SR,0.71,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/MACD/MDD_pct,AMZN/MACD,MDD_pct,7.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/MACD/ARR_pct,GOOGL/MACD,ARR_pct,-18.0,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/MACD/SR,GOOGL/MACD,SR,-0.89,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/MACD/MDD_pct,GOOGL/MACD,MDD_pct,20.07,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/MACD/ARR_pct,MSFT/MACD,ARR_pct,15.23,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/MACD/SR,MSFT/MACD,SR,0.77,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/MACD/MDD_pct,MSFT/MACD,MDD_pct,8.34,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/MACD/ARR_pct,TSLA/MACD,ARR_pct,-4.9,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/MACD/SR,TSLA/MACD,SR,-0.02,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/MACD/MDD_pct,TSLA/MACD,MDD_pct,14.15,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/MACD/ARR_pct,ETHUSD/MACD,ARR_pct,10.24,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/MACD/SR,ETHUSD/MACD,SR,0.47,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/MACD/MDD_pct,ETHUSD/MACD,MDD_pct,24.32,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/KDJ&RSI/ARR_pct,AAPL/KDJ&RSI,ARR_pct,2.17,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/KDJ&RSI/SR,AAPL/KDJ&RSI,SR,0.17,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/KDJ&RSI/MDD_pct,AAPL/KDJ&RSI,MDD_pct,11.88,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/KDJ&RSI/ARR_pct,AMZN/KDJ&RSI,ARR_pct,19.38,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/KDJ&RSI/SR,AMZN/KDJ&RSI,SR,0.65,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/KDJ&RSI/MDD_pct,AMZN/KDJ&RSI,MDD_pct,17.27,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/KDJ&RSI/ARR_pct,GOOGL/KDJ&RSI,ARR_pct,24.39,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/KDJ&RSI/SR,GOOGL/KDJ&RSI,SR,2.13,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/KDJ&RSI/MDD_pct,GOOGL/KDJ&RSI,MDD_pct,2.03,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/KDJ&RSI/ARR_pct,MSFT/KDJ&RSI,ARR_pct,18.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/KDJ&RSI/SR,MSFT/KDJ&RSI,SR,1.06,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/KDJ&RSI/MDD_pct,MSFT/KDJ&RSI,MDD_pct,7.78,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/KDJ&RSI/ARR_pct,TSLA/KDJ&RSI,ARR_pct,2.14,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/KDJ&RSI/SR,TSLA/KDJ&RSI,SR,0.17,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/KDJ&RSI/MDD_pct,TSLA/KDJ&RSI,MDD_pct,24.73,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/KDJ&RSI/ARR_pct,ETHUSD/KDJ&RSI,ARR_pct,8.87,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/KDJ&RSI/SR,ETHUSD/KDJ&RSI,SR,0.51,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/KDJ&RSI/MDD_pct,ETHUSD/KDJ&RSI,MDD_pct,16.95,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/ZMR/ARR_pct,AAPL/ZMR,ARR_pct,-3.91,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/ZMR/SR,AAPL/ZMR,SR,-0.22,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/ZMR/MDD_pct,AAPL/ZMR,MDD_pct,8.88,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/ZMR/ARR_pct,AMZN/ZMR,ARR_pct,18.73,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/ZMR/SR,AMZN/ZMR,SR,0.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/ZMR/MDD_pct,AMZN/ZMR,MDD_pct,7.89,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/ZMR/ARR_pct,GOOGL/ZMR,ARR_pct,32.51,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/ZMR/SR,GOOGL/ZMR,SR,1.45,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/ZMR/MDD_pct,GOOGL/ZMR,MDD_pct,5.38,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/ZMR/ARR_pct,MSFT/ZMR,ARR_pct,9.86,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/ZMR/SR,MSFT/ZMR,SR,0.71,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/ZMR/MDD_pct,MSFT/ZMR,MDD_pct,6.22,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/ZMR/ARR_pct,TSLA/ZMR,ARR_pct,-7.28,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/ZMR/SR,TSLA/ZMR,SR,-0.09,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/ZMR/MDD_pct,TSLA/ZMR,MDD_pct,19.9,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/ZMR/ARR_pct,ETHUSD/ZMR,ARR_pct,29.35,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/ZMR/SR,ETHUSD/ZMR,SR,1.23,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/ZMR/MDD_pct,ETHUSD/ZMR,MDD_pct,13.11,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/LGBM/ARR_pct,AAPL/LGBM,ARR_pct,16.93,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/LGBM/SR,AAPL/LGBM,SR,1.47,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/LGBM/MDD_pct,AAPL/LGBM,MDD_pct,2.52,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/LGBM/ARR_pct,AMZN/LGBM,ARR_pct,29.34,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/LGBM/SR,AMZN/LGBM,SR,0.72,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/LGBM/MDD_pct,AMZN/LGBM,MDD_pct,17.41,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/LGBM/ARR_pct,GOOGL/LGBM,ARR_pct,24.77,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/LGBM/SR,GOOGL/LGBM,SR,0.7,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/LGBM/MDD_pct,GOOGL/LGBM,MDD_pct,12.98,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/LGBM/ARR_pct,MSFT/LGBM,ARR_pct,19.28,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/LGBM/SR,MSFT/LGBM,SR,0.67,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/LGBM/MDD_pct,MSFT/LGBM,MDD_pct,12.96,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/LGBM/ARR_pct,TSLA/LGBM,ARR_pct,15.57,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/LGBM/SR,TSLA/LGBM,SR,0.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/LGBM/MDD_pct,TSLA/LGBM,MDD_pct,3.88,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/LGBM/ARR_pct,ETHUSD/LGBM,ARR_pct,24.91,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/LGBM/SR,ETHUSD/LGBM,SR,0.72,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/LGBM/MDD_pct,ETHUSD/LGBM,MDD_pct,22.96,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/LSTM/ARR_pct,AAPL/LSTM,ARR_pct,10.97,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/LSTM/SR,AAPL/LSTM,SR,0.54,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/LSTM/MDD_pct,AAPL/LSTM,MDD_pct,11.95,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/LSTM/ARR_pct,AMZN/LSTM,ARR_pct,15.91,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/LSTM/SR,AMZN/LSTM,SR,0.46,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/LSTM/MDD_pct,AMZN/LSTM,MDD_pct,17.41,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/LSTM/ARR_pct,GOOGL/LSTM,ARR_pct,24.86,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/LSTM/SR,GOOGL/LSTM,SR,0.7,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/LSTM/MDD_pct,GOOGL/LSTM,MDD_pct,12.98,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/LSTM/ARR_pct,MSFT/LSTM,ARR_pct,18.86,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/LSTM/SR,MSFT/LSTM,SR,0.68,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/LSTM/MDD_pct,MSFT/LSTM,MDD_pct,11.75,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/LSTM/ARR_pct,TSLA/LSTM,ARR_pct,17.36,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/LSTM/SR,TSLA/LSTM,SR,0.78,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/LSTM/MDD_pct,TSLA/LSTM,MDD_pct,4.44,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/LSTM/ARR_pct,ETHUSD/LSTM,ARR_pct,36.09,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/LSTM/SR,ETHUSD/LSTM,SR,1.03,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/LSTM/MDD_pct,ETHUSD/LSTM,MDD_pct,21.5,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/Transformer/ARR_pct,AAPL/Transformer,ARR_pct,17.11,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/Transformer/SR,AAPL/Transformer,SR,0.96,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/Transformer/MDD_pct,AAPL/Transformer,MDD_pct,7.53,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/Transformer/ARR_pct,AMZN/Transformer,ARR_pct,32.66,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/Transformer/SR,AMZN/Transformer,SR,1.11,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/Transformer/MDD_pct,AMZN/Transformer,MDD_pct,4.96,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/Transformer/ARR_pct,GOOGL/Transformer,ARR_pct,13.69,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/Transformer/SR,GOOGL/Transformer,SR,0.46,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/Transformer/MDD_pct,GOOGL/Transformer,MDD_pct,12.93,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/Transformer/ARR_pct,MSFT/Transformer,ARR_pct,17.44,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/Transformer/SR,MSFT/Transformer,SR,1.46,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/Transformer/MDD_pct,MSFT/Transformer,MDD_pct,2.59,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/Transformer/ARR_pct,TSLA/Transformer,ARR_pct,39.7,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/Transformer/SR,TSLA/Transformer,SR,1.04,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/Transformer/MDD_pct,TSLA/Transformer,MDD_pct,8.17,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/Transformer/ARR_pct,ETHUSD/Transformer,ARR_pct,31.0,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/Transformer/SR,ETHUSD/Transformer,SR,1.02,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/Transformer/MDD_pct,ETHUSD/Transformer,MDD_pct,12.93,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/DQN/ARR_pct,AAPL/DQN,ARR_pct,7.92,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/DQN/SR,AAPL/DQN,SR,0.4,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/DQN/MDD_pct,AAPL/DQN,MDD_pct,14.88,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/DQN/ARR_pct,AMZN/DQN,ARR_pct,27.43,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/DQN/SR,AMZN/DQN,SR,1.17,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/DQN/MDD_pct,AMZN/DQN,MDD_pct,5.27,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/DQN/ARR_pct,GOOGL/DQN,ARR_pct,34.4,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/DQN/SR,GOOGL/DQN,SR,1.39,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/DQN/MDD_pct,GOOGL/DQN,MDD_pct,7.15,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/DQN/ARR_pct,MSFT/DQN,ARR_pct,30.44,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/DQN/SR,MSFT/DQN,SR,1.18,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/DQN/MDD_pct,MSFT/DQN,MDD_pct,10.56,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/DQN/ARR_pct,TSLA/DQN,ARR_pct,15.07,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/DQN/SR,TSLA/DQN,SR,0.44,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/DQN/MDD_pct,TSLA/DQN,MDD_pct,28.12,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/DQN/ARR_pct,ETHUSD/DQN,ARR_pct,29.81,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/DQN/SR,ETHUSD/DQN,SR,1.18,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/DQN/MDD_pct,ETHUSD/DQN,MDD_pct,9.53,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/SAC/ARR_pct,AAPL/SAC,ARR_pct,24.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/SAC/SR,AAPL/SAC,SR,1.12,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/SAC/MDD_pct,AAPL/SAC,MDD_pct,11.98,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/SAC/ARR_pct,AMZN/SAC,ARR_pct,38.33,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/SAC/SR,AMZN/SAC,SR,1.07,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/SAC/MDD_pct,AMZN/SAC,MDD_pct,13.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/SAC/ARR_pct,GOOGL/SAC,ARR_pct,23.8,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/SAC/SR,GOOGL/SAC,SR,0.75,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/SAC/MDD_pct,GOOGL/SAC,MDD_pct,13.07,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/SAC/ARR_pct,MSFT/SAC,ARR_pct,22.02,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/SAC/SR,MSFT/SAC,SR,0.82,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/SAC/MDD_pct,MSFT/SAC,MDD_pct,12.92,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/SAC/ARR_pct,TSLA/SAC,ARR_pct,42.22,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/SAC/SR,TSLA/SAC,SR,0.87,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/SAC/MDD_pct,TSLA/SAC,MDD_pct,26.19,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/SAC/ARR_pct,ETHUSD/SAC,ARR_pct,17.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/SAC/SR,ETHUSD/SAC,SR,0.76,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/SAC/MDD_pct,ETHUSD/SAC,MDD_pct,10.06,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/PPO/ARR_pct,AAPL/PPO,ARR_pct,13.26,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/PPO/SR,AAPL/PPO,SR,0.61,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/PPO/MDD_pct,AAPL/PPO,MDD_pct,14.78,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/PPO/ARR_pct,AMZN/PPO,ARR_pct,21.17,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/PPO/SR,AMZN/PPO,SR,0.7,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/PPO/MDD_pct,AMZN/PPO,MDD_pct,13.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/PPO/ARR_pct,GOOGL/PPO,ARR_pct,38.29,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/PPO/SR,GOOGL/PPO,SR,1.3,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/PPO/MDD_pct,GOOGL/PPO,MDD_pct,8.45,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/PPO/ARR_pct,MSFT/PPO,ARR_pct,11.32,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/PPO/SR,MSFT/PPO,SR,0.48,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/PPO/MDD_pct,MSFT/PPO,MDD_pct,17.51,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/PPO/ARR_pct,TSLA/PPO,ARR_pct,33.64,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/PPO/SR,TSLA/PPO,SR,0.78,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/PPO/MDD_pct,TSLA/PPO,MDD_pct,28.35,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/PPO/ARR_pct,ETHUSD/PPO,ARR_pct,34.75,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/PPO/SR,ETHUSD/PPO,SR,1.31,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/PPO/MDD_pct,ETHUSD/PPO,MDD_pct,11.12,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/FinGPT/ARR_pct,AAPL/FinGPT,ARR_pct,-5.46,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/FinGPT/SR,AAPL/FinGPT,SR,-0.17,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/FinGPT/MDD_pct,AAPL/FinGPT,MDD_pct,16.23,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/FinGPT/ARR_pct,AMZN/FinGPT,ARR_pct,42.93,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/FinGPT/SR,AMZN/FinGPT,SR,1.1,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/FinGPT/MDD_pct,AMZN/FinGPT,MDD_pct,18.94,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/FinGPT/ARR_pct,GOOGL/FinGPT,ARR_pct,12.28,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/FinGPT/SR,GOOGL/FinGPT,SR,0.44,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/FinGPT/MDD_pct,GOOGL/FinGPT,MDD_pct,13.0,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/FinGPT/ARR_pct,MSFT/FinGPT,ARR_pct,25.1,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/FinGPT/SR,MSFT/FinGPT,SR,0.97,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/FinGPT/MDD_pct,MSFT/FinGPT,MDD_pct,9.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/FinGPT/ARR_pct,TSLA/FinGPT,ARR_pct,38.43,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/FinGPT/SR,TSLA/FinGPT,SR,0.75,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/FinGPT/MDD_pct,TSLA/FinGPT,MDD_pct,31.47,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/FinGPT/ARR_pct,ETHUSD/FinGPT,ARR_pct,21.57,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/FinGPT/SR,ETHUSD/FinGPT,SR,0.68,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/FinGPT/MDD_pct,ETHUSD/FinGPT,MDD_pct,25.56,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/FinMem/ARR_pct,AAPL/FinMem,ARR_pct,23.78,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/FinMem/SR,AAPL/FinMem,SR,1.11,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/FinMem/MDD_pct,AAPL/FinMem,MDD_pct,10.39,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/FinMem/ARR_pct,AMZN/FinMem,ARR_pct,40.07,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/FinMem/SR,AMZN/FinMem,SR,1.03,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/FinMem/MDD_pct,AMZN/FinMem,MDD_pct,18.53,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/FinMem/ARR_pct,GOOGL/FinMem,ARR_pct,31.27,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/FinMem/SR,GOOGL/FinMem,SR,1.11,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/FinMem/MDD_pct,GOOGL/FinMem,MDD_pct,8.97,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/FinMem/ARR_pct,MSFT/FinMem,ARR_pct,40.58,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/FinMem/SR,MSFT/FinMem,SR,1.5,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/FinMem/MDD_pct,MSFT/FinMem,MDD_pct,7.48,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/FinMem/ARR_pct,TSLA/FinMem,ARR_pct,50.04,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/FinMem/SR,TSLA/FinMem,SR,0.92,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/FinMem/MDD_pct,TSLA/FinMem,MDD_pct,25.77,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/FinMem/ARR_pct,ETHUSD/FinMem,ARR_pct,44.72,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/FinMem/SR,ETHUSD/FinMem,SR,1.27,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/FinMem/MDD_pct,ETHUSD/FinMem,MDD_pct,13.59,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/FinAgent/ARR_pct,AAPL/FinAgent,ARR_pct,31.9,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/FinAgent/SR,AAPL/FinAgent,SR,1.43,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/FinAgent/MDD_pct,AAPL/FinAgent,MDD_pct,10.4,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/FinAgent/ARR_pct,AMZN/FinAgent,ARR_pct,65.1,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/FinAgent/SR,AMZN/FinAgent,SR,1.61,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/FinAgent/MDD_pct,AMZN/FinAgent,MDD_pct,13.2,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/FinAgent/ARR_pct,GOOGL/FinAgent,ARR_pct,56.15,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/FinAgent/SR,GOOGL/FinAgent,SR,1.78,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/FinAgent/MDD_pct,GOOGL/FinAgent,MDD_pct,8.45,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/FinAgent/ARR_pct,MSFT/FinAgent,ARR_pct,44.74,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/FinAgent/SR,MSFT/FinAgent,SR,1.79,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/FinAgent/MDD_pct,MSFT/FinAgent,MDD_pct,5.57,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/FinAgent/ARR_pct,TSLA/FinAgent,ARR_pct,92.27,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/FinAgent/SR,TSLA/FinAgent,SR,2.01,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/FinAgent/MDD_pct,TSLA/FinAgent,MDD_pct,12.14,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/FinAgent/ARR_pct,ETHUSD/FinAgent,ARR_pct,43.08,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/FinAgent/SR,ETHUSD/FinAgent,SR,1.18,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/ETHUSD/FinAgent/MDD_pct,ETHUSD/FinAgent,MDD_pct,12.72,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AAPL/Improvement/ARR_pct,AAPL/Improvement,ARR_pct,28.39,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/Improvement/ARR_pct,AMZN/Improvement,ARR_pct,51.64,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/AMZN/Improvement/SR,AMZN/Improvement,SR,37.61,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/GOOGL/Improvement/ARR_pct,GOOGL/Improvement,ARR_pct,46.64,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/Improvement/ARR_pct,MSFT/Improvement,ARR_pct,10.25,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/MSFT/Improvement/SR,MSFT/Improvement,SR,19.33,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/Improvement/ARR_pct,TSLA/Improvement,ARR_pct,84.39,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 4 main comparison,Table 4 main comparison/TSLA/Improvement/SR,TSLA/Improvement,SR,93.27,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/B&H/ARR_pct,AAPL/B&H,ARR_pct,13.0024,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/B&H/SR,AAPL/B&H,SR,0.5998,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/B&H/MDD_pct,AAPL/B&H,MDD_pct,14.7809,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/B&H/ARR_pct,AMZN/B&H,ARR_pct,42.3337,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/B&H/SR,AMZN/B&H,SR,1.0834,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/B&H/MDD_pct,AMZN/B&H,MDD_pct,17.3848,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/B&H/ARR_pct,GOOGL/B&H,ARR_pct,22.4726,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/B&H/SR,GOOGL/B&H,SR,0.7108,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/B&H/MDD_pct,GOOGL/B&H,MDD_pct,12.9705,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/B&H/ARR_pct,MSFT/B&H,ARR_pct,22.4942,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/B&H/SR,MSFT/B&H,SR,0.8373,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/B&H/MDD_pct,MSFT/B&H,MDD_pct,12.9214,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/B&H/ARR_pct,TSLA/B&H,ARR_pct,37.4009,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/B&H/SR,TSLA/B&H,SR,0.7239,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/B&H/MDD_pct,TSLA/B&H,MDD_pct,32.6523,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/B&H/ARR_pct,ETHUSD/B&H,ARR_pct,29.2588,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/B&H/SR,ETHUSD/B&H,SR,0.8655,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/B&H/MDD_pct,ETHUSD/B&H,MDD_pct,23.2077,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/MACD/ARR_pct,AAPL/MACD,ARR_pct,11.8642,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/MACD/SR,AAPL/MACD,SR,0.7221,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/MACD/MDD_pct,AAPL/MACD,MDD_pct,10.3799,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/MACD/ARR_pct,AMZN/MACD,ARR_pct,14.2748,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/MACD/SR,AMZN/MACD,SR,0.7056,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/MACD/MDD_pct,AMZN/MACD,MDD_pct,7.841,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/MACD/ARR_pct,GOOGL/MACD,ARR_pct,-18.0034,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/MACD/SR,GOOGL/MACD,SR,-0.8867,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/MACD/MDD_pct,GOOGL/MACD,MDD_pct,20.0718,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/MACD/ARR_pct,MSFT/MACD,ARR_pct,15.2322,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/MACD/SR,MSFT/MACD,SR,0.7704,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/MACD/MDD_pct,MSFT/MACD,MDD_pct,8.3445,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/MACD/ARR_pct,TSLA/MACD,ARR_pct,-4.8974,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/MACD/SR,TSLA/MACD,SR,-0.0203,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/MACD/MDD_pct,TSLA/MACD,MDD_pct,14.1546,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/MACD/ARR_pct,ETHUSD/MACD,ARR_pct,10.236,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/MACD/SR,ETHUSD/MACD,SR,0.4689,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/MACD/MDD_pct,ETHUSD/MACD,MDD_pct,24.3238,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/KDJ&RSI/ARR_pct,AAPL/KDJ&RSI,ARR_pct,2.1737,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/KDJ&RSI/SR,AAPL/KDJ&RSI,SR,0.1746,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/KDJ&RSI/MDD_pct,AAPL/KDJ&RSI,MDD_pct,11.8789,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/KDJ&RSI/ARR_pct,AMZN/KDJ&RSI,ARR_pct,19.3757,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/KDJ&RSI/SR,AMZN/KDJ&RSI,SR,0.6495,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/KDJ&RSI/MDD_pct,AMZN/KDJ&RSI,MDD_pct,17.2746,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/KDJ&RSI/ARR_pct,GOOGL/KDJ&RSI,ARR_pct,24.391,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/KDJ&RSI/SR,GOOGL/KDJ&RSI,SR,2.1282,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/KDJ&RSI/MDD_pct,GOOGL/KDJ&RSI,MDD_pct,2.03,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/KDJ&RSI/ARR_pct,MSFT/KDJ&RSI,ARR_pct,18.8415,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/KDJ&RSI/SR,MSFT/KDJ&RSI,SR,1.0587,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/KDJ&RSI/MDD_pct,MSFT/KDJ&RSI,MDD_pct,7.7806,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/KDJ&RSI/ARR_pct,TSLA/KDJ&RSI,ARR_pct,2.137,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/KDJ&RSI/SR,TSLA/KDJ&RSI,SR,0.1695,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/KDJ&RSI/MDD_pct,TSLA/KDJ&RSI,MDD_pct,24.727,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/KDJ&RSI/ARR_pct,ETHUSD/KDJ&RSI,ARR_pct,8.8745,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/KDJ&RSI/SR,ETHUSD/KDJ&RSI,SR,0.5098,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/KDJ&RSI/MDD_pct,ETHUSD/KDJ&RSI,MDD_pct,16.9536,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/ZMR/ARR_pct,AAPL/ZMR,ARR_pct,-3.9084,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/ZMR/SR,AAPL/ZMR,SR,-0.2186,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/ZMR/MDD_pct,AAPL/ZMR,MDD_pct,8.8819,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/ZMR/ARR_pct,AMZN/ZMR,ARR_pct,18.7289,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/ZMR/SR,AMZN/ZMR,SR,0.8412,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/ZMR/MDD_pct,AMZN/ZMR,MDD_pct,7.8938,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/ZMR/ARR_pct,GOOGL/ZMR,ARR_pct,32.5112,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/ZMR/SR,GOOGL/ZMR,SR,1.4533,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/ZMR/MDD_pct,GOOGL/ZMR,MDD_pct,5.3845,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/ZMR/ARR_pct,MSFT/ZMR,ARR_pct,9.8637,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/ZMR/SR,MSFT/ZMR,SR,0.7106,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/ZMR/MDD_pct,MSFT/ZMR,MDD_pct,6.221,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/ZMR/ARR_pct,TSLA/ZMR,ARR_pct,-7.2806,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/ZMR/SR,TSLA/ZMR,SR,-0.0863,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/ZMR/MDD_pct,TSLA/ZMR,MDD_pct,19.9048,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/ZMR/ARR_pct,ETHUSD/ZMR,ARR_pct,29.3519,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/ZMR/SR,ETHUSD/ZMR,SR,1.2294,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/ZMR/MDD_pct,ETHUSD/ZMR,MDD_pct,13.1098,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/LGBM/ARR_pct,AAPL/LGBM,ARR_pct,16.9268,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/LGBM/SR,AAPL/LGBM,SR,1.4708,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/LGBM/MDD_pct,AAPL/LGBM,MDD_pct,2.5204,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/LGBM/ARR_pct,AMZN/LGBM,ARR_pct,29.3395,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/LGBM/SR,AMZN/LGBM,SR,0.7187,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/LGBM/MDD_pct,AMZN/LGBM,MDD_pct,17.414,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/LGBM/ARR_pct,GOOGL/LGBM,ARR_pct,24.7746,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/LGBM/SR,GOOGL/LGBM,SR,0.6958,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/LGBM/MDD_pct,GOOGL/LGBM,MDD_pct,12.9814,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/LGBM/ARR_pct,MSFT/LGBM,ARR_pct,19.2771,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/LGBM/SR,MSFT/LGBM,SR,0.6668,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/LGBM/MDD_pct,MSFT/LGBM,MDD_pct,12.9616,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/LGBM/ARR_pct,TSLA/LGBM,ARR_pct,15.575,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/LGBM/SR,TSLA/LGBM,SR,0.843,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/LGBM/MDD_pct,TSLA/LGBM,MDD_pct,3.8844,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/LGBM/ARR_pct,ETHUSD/LGBM,ARR_pct,24.9111,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/LGBM/SR,ETHUSD/LGBM,SR,0.7154,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/LGBM/MDD_pct,ETHUSD/LGBM,MDD_pct,22.9568,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/LSTM/ARR_pct,AAPL/LSTM,ARR_pct,10.9742,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/LSTM/SR,AAPL/LSTM,SR,0.5363,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/LSTM/MDD_pct,AAPL/LSTM,MDD_pct,11.9535,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/LSTM/ARR_pct,AMZN/LSTM,ARR_pct,15.9051,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/LSTM/SR,AMZN/LSTM,SR,0.4588,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/LSTM/MDD_pct,AMZN/LSTM,MDD_pct,17.414,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/LSTM/ARR_pct,GOOGL/LSTM,ARR_pct,24.8583,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/LSTM/SR,GOOGL/LSTM,SR,0.6989,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/LSTM/MDD_pct,GOOGL/LSTM,MDD_pct,12.9814,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/LSTM/ARR_pct,MSFT/LSTM,ARR_pct,18.8603,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/LSTM/SR,MSFT/LSTM,SR,0.6779,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/LSTM/MDD_pct,MSFT/LSTM,MDD_pct,11.7544,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/LSTM/ARR_pct,TSLA/LSTM,ARR_pct,17.3617,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/LSTM/SR,TSLA/LSTM,SR,0.7796,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/LSTM/MDD_pct,TSLA/LSTM,MDD_pct,4.4384,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/LSTM/ARR_pct,ETHUSD/LSTM,ARR_pct,36.0865,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/LSTM/SR,ETHUSD/LSTM,SR,1.0254,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/LSTM/MDD_pct,ETHUSD/LSTM,MDD_pct,21.5043,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/Transformer/ARR_pct,AAPL/Transformer,ARR_pct,17.115,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/Transformer/SR,AAPL/Transformer,SR,0.957,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/Transformer/MDD_pct,AAPL/Transformer,MDD_pct,7.5295,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/Transformer/ARR_pct,AMZN/Transformer,ARR_pct,32.6621,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/Transformer/SR,AMZN/Transformer,SR,1.1134,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/Transformer/MDD_pct,AMZN/Transformer,MDD_pct,4.9593,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/Transformer/ARR_pct,GOOGL/Transformer,ARR_pct,13.692,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/Transformer/SR,GOOGL/Transformer,SR,0.4571,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/Transformer/MDD_pct,GOOGL/Transformer,MDD_pct,12.9253,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/Transformer/ARR_pct,MSFT/Transformer,ARR_pct,17.4417,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/Transformer/SR,MSFT/Transformer,SR,1.4553,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/Transformer/MDD_pct,MSFT/Transformer,MDD_pct,2.5895,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/Transformer/ARR_pct,TSLA/Transformer,ARR_pct,39.701,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/Transformer/SR,TSLA/Transformer,SR,1.0445,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/Transformer/MDD_pct,TSLA/Transformer,MDD_pct,8.1721,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/Transformer/ARR_pct,ETHUSD/Transformer,ARR_pct,31.0038,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/Transformer/SR,ETHUSD/Transformer,SR,1.0205,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/Transformer/MDD_pct,ETHUSD/Transformer,MDD_pct,12.9309,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/DQN/ARR_pct,AAPL/DQN,ARR_pct,7.9236,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/DQN/SR,AAPL/DQN,SR,0.401,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/DQN/MDD_pct,AAPL/DQN,MDD_pct,14.8785,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/DQN/ARR_pct,AMZN/DQN,ARR_pct,27.4305,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/DQN/SR,AMZN/DQN,SR,1.1701,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/DQN/MDD_pct,AMZN/DQN,MDD_pct,5.2736,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/DQN/ARR_pct,GOOGL/DQN,ARR_pct,34.4026,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/DQN/SR,GOOGL/DQN,SR,1.3859,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/DQN/MDD_pct,GOOGL/DQN,MDD_pct,7.1473,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/DQN/ARR_pct,MSFT/DQN,ARR_pct,30.4406,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/DQN/SR,MSFT/DQN,SR,1.1782,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/DQN/MDD_pct,MSFT/DQN,MDD_pct,10.5612,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/DQN/ARR_pct,TSLA/DQN,ARR_pct,15.0693,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/DQN/SR,TSLA/DQN,SR,0.443,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/DQN/MDD_pct,TSLA/DQN,MDD_pct,28.1204,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/DQN/ARR_pct,ETHUSD/DQN,ARR_pct,29.8052,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/DQN/SR,ETHUSD/DQN,SR,1.1826,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/DQN/MDD_pct,ETHUSD/DQN,MDD_pct,9.5297,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/SAC/ARR_pct,AAPL/SAC,ARR_pct,24.8449,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/SAC/SR,AAPL/SAC,SR,1.1234,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/SAC/MDD_pct,AAPL/SAC,MDD_pct,11.9776,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/SAC/ARR_pct,AMZN/SAC,ARR_pct,38.3318,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/SAC/SR,AMZN/SAC,SR,1.0733,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/SAC/MDD_pct,AMZN/SAC,MDD_pct,13.8432,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/SAC/ARR_pct,GOOGL/SAC,ARR_pct,23.8034,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/SAC/SR,GOOGL/SAC,SR,0.7506,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/SAC/MDD_pct,GOOGL/SAC,MDD_pct,13.0667,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/SAC/ARR_pct,MSFT/SAC,ARR_pct,22.0218,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/SAC/SR,MSFT/SAC,SR,0.8177,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/SAC/MDD_pct,MSFT/SAC,MDD_pct,12.9214,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/SAC/ARR_pct,TSLA/SAC,ARR_pct,42.2209,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/SAC/SR,TSLA/SAC,SR,0.8727,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/SAC/MDD_pct,TSLA/SAC,MDD_pct,26.1947,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/SAC/ARR_pct,ETHUSD/SAC,ARR_pct,17.8439,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/SAC/SR,ETHUSD/SAC,SR,0.7635,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/SAC/MDD_pct,ETHUSD/SAC,MDD_pct,10.0587,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/PPO/ARR_pct,AAPL/PPO,ARR_pct,13.2619,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/PPO/SR,AAPL/PPO,SR,0.6096,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/PPO/MDD_pct,AAPL/PPO,MDD_pct,14.7809,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/PPO/ARR_pct,AMZN/PPO,ARR_pct,21.1745,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/PPO/SR,AMZN/PPO,SR,0.6965,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/PPO/MDD_pct,AMZN/PPO,MDD_pct,13.8432,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/PPO/ARR_pct,GOOGL/PPO,ARR_pct,38.2907,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/PPO/SR,GOOGL/PPO,SR,1.2982,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/PPO/MDD_pct,GOOGL/PPO,MDD_pct,8.4536,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/PPO/ARR_pct,MSFT/PPO,ARR_pct,11.3219,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/PPO/SR,MSFT/PPO,SR,0.4831,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/PPO/MDD_pct,MSFT/PPO,MDD_pct,17.5054,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/PPO/ARR_pct,TSLA/PPO,ARR_pct,33.6444,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/PPO/SR,TSLA/PPO,SR,0.7767,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/PPO/MDD_pct,TSLA/PPO,MDD_pct,28.3527,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/PPO/ARR_pct,ETHUSD/PPO,ARR_pct,34.7469,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/PPO/SR,ETHUSD/PPO,SR,1.3096,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/PPO/MDD_pct,ETHUSD/PPO,MDD_pct,11.1171,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/FinGPT/ARR_pct,AAPL/FinGPT,ARR_pct,-5.4632,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/FinGPT/SR,AAPL/FinGPT,SR,-0.1731,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/FinGPT/MDD_pct,AAPL/FinGPT,MDD_pct,16.2268,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/FinGPT/ARR_pct,AMZN/FinGPT,ARR_pct,42.9331,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/FinGPT/SR,AMZN/FinGPT,SR,1.1026,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/FinGPT/MDD_pct,AMZN/FinGPT,MDD_pct,18.9359,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/FinGPT/ARR_pct,GOOGL/FinGPT,ARR_pct,12.277,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/FinGPT/SR,GOOGL/FinGPT,SR,0.4444,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/FinGPT/MDD_pct,GOOGL/FinGPT,MDD_pct,13.0013,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/FinGPT/ARR_pct,MSFT/FinGPT,ARR_pct,25.1012,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/FinGPT/SR,MSFT/FinGPT,SR,0.9667,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/FinGPT/MDD_pct,MSFT/FinGPT,MDD_pct,9.8426,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/FinGPT/ARR_pct,TSLA/FinGPT,ARR_pct,38.4338,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/FinGPT/SR,TSLA/FinGPT,SR,0.7504,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/FinGPT/MDD_pct,TSLA/FinGPT,MDD_pct,31.474,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/FinGPT/ARR_pct,ETHUSD/FinGPT,ARR_pct,21.5746,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/FinGPT/SR,ETHUSD/FinGPT,SR,0.6801,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/FinGPT/MDD_pct,ETHUSD/FinGPT,MDD_pct,25.562,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/FinMem/ARR_pct,AAPL/FinMem,ARR_pct,23.7809,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/FinMem/SR,AAPL/FinMem,SR,1.1073,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/FinMem/MDD_pct,AAPL/FinMem,MDD_pct,10.3872,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/FinMem/ARR_pct,AMZN/FinMem,ARR_pct,40.07,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/FinMem/SR,AMZN/FinMem,SR,1.034,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/FinMem/MDD_pct,AMZN/FinMem,MDD_pct,18.5279,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/FinMem/ARR_pct,GOOGL/FinMem,ARR_pct,31.2716,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/FinMem/SR,GOOGL/FinMem,SR,1.1073,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/FinMem/MDD_pct,GOOGL/FinMem,MDD_pct,8.9706,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/FinMem/ARR_pct,MSFT/FinMem,ARR_pct,40.5757,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/FinMem/SR,MSFT/FinMem,SR,1.4989,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/FinMem/MDD_pct,MSFT/FinMem,MDD_pct,7.4838,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/FinMem/ARR_pct,TSLA/FinMem,ARR_pct,50.0353,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/FinMem/SR,TSLA/FinMem,SR,0.9233,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/FinMem/MDD_pct,TSLA/FinMem,MDD_pct,25.7714,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/FinMem/ARR_pct,ETHUSD/FinMem,ARR_pct,44.717,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/FinMem/SR,ETHUSD/FinMem,SR,1.2738,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/FinMem/MDD_pct,ETHUSD/FinMem,MDD_pct,13.587,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/No-finetuned/ARR_pct,AAPL/No-finetuned,ARR_pct,-2.0047,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/No-finetuned/SR,AAPL/No-finetuned,SR,-0.0216,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/No-finetuned/MDD_pct,AAPL/No-finetuned,MDD_pct,16.7567,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/No-finetuned/ARR_pct,AMZN/No-finetuned,ARR_pct,41.6548,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/No-finetuned/SR,AMZN/No-finetuned,SR,1.3959,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/No-finetuned/MDD_pct,AMZN/No-finetuned,MDD_pct,5.2678,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/No-finetuned/ARR_pct,GOOGL/No-finetuned,ARR_pct,21.108,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/No-finetuned/SR,GOOGL/No-finetuned,SR,0.682,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/No-finetuned/MDD_pct,GOOGL/No-finetuned,MDD_pct,13.0719,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/No-finetuned/ARR_pct,MSFT/No-finetuned,ARR_pct,22.6483,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/No-finetuned/SR,MSFT/No-finetuned,SR,0.8373,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/No-finetuned/MDD_pct,MSFT/No-finetuned,MDD_pct,12.9214,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/No-finetuned/ARR_pct,TSLA/No-finetuned,ARR_pct,38.0164,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/No-finetuned/SR,TSLA/No-finetuned,SR,1.2951,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/No-finetuned/MDD_pct,TSLA/No-finetuned,MDD_pct,12.0609,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/No-finetuned/ARR_pct,ETHUSD/No-finetuned,ARR_pct,23.4038,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/No-finetuned/SR,ETHUSD/No-finetuned,SR,0.7924,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/No-finetuned/MDD_pct,ETHUSD/No-finetuned,MDD_pct,23.231,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-MLH/ARR_pct,AAPL/w/o-MLH,ARR_pct,18.5186,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-MLH/SR,AAPL/w/o-MLH,SR,0.9882,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-MLH/MDD_pct,AAPL/w/o-MLH,MDD_pct,11.8842,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-MLH/ARR_pct,AMZN/w/o-MLH,ARR_pct,62.3106,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-MLH/SR,AMZN/w/o-MLH,SR,1.6379,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-MLH/MDD_pct,AMZN/w/o-MLH,MDD_pct,11.3999,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-MLH/ARR_pct,GOOGL/w/o-MLH,ARR_pct,37.3308,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-MLH/SR,GOOGL/w/o-MLH,SR,1.2657,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-MLH/MDD_pct,GOOGL/w/o-MLH,MDD_pct,4.0,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-MLH/ARR_pct,MSFT/w/o-MLH,ARR_pct,18.297,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-MLH/SR,MSFT/w/o-MLH,SR,0.8945,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-MLH/MDD_pct,MSFT/w/o-MLH,MDD_pct,9.6792,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-MLH/ARR_pct,TSLA/w/o-MLH,ARR_pct,39.0087,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-MLH/SR,TSLA/w/o-MLH,SR,0.8971,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-MLH/MDD_pct,TSLA/w/o-MLH,MDD_pct,22.5376,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-MLH/ARR_pct,ETHUSD/w/o-MLH,ARR_pct,16.2106,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-MLH/SR,ETHUSD/w/o-MLH,SR,0.6329,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-MLH/MDD_pct,ETHUSD/w/o-MLH,MDD_pct,15.9325,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-LHT/ARR_pct,AAPL/w/o-LHT,ARR_pct,12.6872,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-LHT/SR,AAPL/w/o-LHT,SR,0.5849,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-LHT/MDD_pct,AAPL/w/o-LHT,MDD_pct,14.7806,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-LHT/ARR_pct,AMZN/w/o-LHT,ARR_pct,43.2195,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-LHT/SR,AMZN/w/o-LHT,SR,1.1057,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-LHT/MDD_pct,AMZN/w/o-LHT,MDD_pct,14.6786,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-LHT/ARR_pct,GOOGL/w/o-LHT,ARR_pct,17.414,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-LHT/SR,GOOGL/w/o-LHT,SR,0.5763,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-LHT/MDD_pct,GOOGL/w/o-LHT,MDD_pct,13.006,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-LHT/ARR_pct,MSFT/w/o-LHT,ARR_pct,18.4571,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-LHT/SR,MSFT/w/o-LHT,SR,0.7108,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-LHT/MDD_pct,MSFT/w/o-LHT,MDD_pct,14.2551,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-LHT/ARR_pct,TSLA/w/o-LHT,ARR_pct,39.2704,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-LHT/SR,TSLA/w/o-LHT,SR,0.7662,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-LHT/MDD_pct,TSLA/w/o-LHT,MDD_pct,30.1507,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-LHT/ARR_pct,ETHUSD/w/o-LHT,ARR_pct,25.9708,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-LHT/SR,ETHUSD/w/o-LHT,SR,0.7718,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-LHT/MDD_pct,ETHUSD/w/o-LHT,MDD_pct,24.4314,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-HT/ARR_pct,AAPL/w/o-HT,ARR_pct,21.3044,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-HT/SR,AAPL/w/o-HT,SR,0.9777,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-HT/MDD_pct,AAPL/w/o-HT,MDD_pct,13.6424,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-HT/ARR_pct,AMZN/w/o-HT,ARR_pct,47.3916,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-HT/SR,AMZN/w/o-HT,SR,1.2032,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-HT/MDD_pct,AMZN/w/o-HT,MDD_pct,15.5038,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-HT/ARR_pct,GOOGL/w/o-HT,ARR_pct,29.3235,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-HT/SR,GOOGL/w/o-HT,SR,1.0177,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-HT/MDD_pct,GOOGL/w/o-HT,MDD_pct,8.9706,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-HT/ARR_pct,MSFT/w/o-HT,ARR_pct,39.9073,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-HT/SR,MSFT/w/o-HT,SR,1.4777,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-HT/MDD_pct,MSFT/w/o-HT,MDD_pct,7.4838,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-HT/ARR_pct,TSLA/w/o-HT,ARR_pct,57.1638,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-HT/SR,TSLA/w/o-HT,SR,1.0201,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-HT/MDD_pct,TSLA/w/o-HT,MDD_pct,25.7714,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-HT/ARR_pct,ETHUSD/w/o-HT,ARR_pct,52.3265,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-HT/SR,ETHUSD/w/o-HT,SR,1.3351,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-HT/MDD_pct,ETHUSD/w/o-HT,MDD_pct,13.587,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-T/ARR_pct,AAPL/w/o-T,ARR_pct,33.7509,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-T/SR,AAPL/w/o-T,SR,1.5205,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/w/o-T/MDD_pct,AAPL/w/o-T,MDD_pct,8.1783,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-T/ARR_pct,AMZN/w/o-T,ARR_pct,63.8116,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-T/SR,AMZN/w/o-T,SR,1.7009,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/w/o-T/MDD_pct,AMZN/w/o-T,MDD_pct,9.7325,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-T/ARR_pct,GOOGL/w/o-T,ARR_pct,52.1066,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-T/SR,GOOGL/w/o-T,SR,1.8228,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/w/o-T/MDD_pct,GOOGL/w/o-T,MDD_pct,8.3106,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-T/ARR_pct,MSFT/w/o-T,ARR_pct,42.5213,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-T/SR,MSFT/w/o-T,SR,1.4909,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/w/o-T/MDD_pct,MSFT/w/o-T,MDD_pct,7.6998,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-T/ARR_pct,TSLA/w/o-T,ARR_pct,89.2532,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-T/SR,TSLA/w/o-T,SR,1.4573,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/w/o-T/MDD_pct,TSLA/w/o-T,MDD_pct,27.6213,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-T/ARR_pct,ETHUSD/w/o-T,ARR_pct,54.804,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-T/SR,ETHUSD/w/o-T,SR,1.403,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/w/o-T/MDD_pct,ETHUSD/w/o-T,MDD_pct,11.7427,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/FinAgent/ARR_pct,AAPL/FinAgent,ARR_pct,31.8972,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/FinAgent/SR,AAPL/FinAgent,SR,1.4326,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/FinAgent/MDD_pct,AAPL/FinAgent,MDD_pct,10.4032,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/FinAgent/ARR_pct,AMZN/FinAgent,ARR_pct,65.0998,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/FinAgent/SR,AMZN/FinAgent,SR,1.6096,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/FinAgent/MDD_pct,AMZN/FinAgent,MDD_pct,13.198,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/FinAgent/ARR_pct,GOOGL/FinAgent,ARR_pct,56.1542,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/FinAgent/SR,GOOGL/FinAgent,SR,1.7786,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/FinAgent/MDD_pct,GOOGL/FinAgent,MDD_pct,8.4532,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/FinAgent/ARR_pct,MSFT/FinAgent,ARR_pct,44.7359,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/FinAgent/SR,MSFT/FinAgent,SR,1.7884,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/FinAgent/MDD_pct,MSFT/FinAgent,MDD_pct,5.5732,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/FinAgent/ARR_pct,TSLA/FinAgent,ARR_pct,92.2677,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/FinAgent/SR,TSLA/FinAgent,SR,2.0088,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/FinAgent/MDD_pct,TSLA/FinAgent,MDD_pct,12.143,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/FinAgent/ARR_pct,ETHUSD/FinAgent,ARR_pct,43.0822,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/FinAgent/SR,ETHUSD/FinAgent,SR,1.1773,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/FinAgent/MDD_pct,ETHUSD/FinAgent,MDD_pct,12.7171,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/Improvement/ARR_pct,AAPL/Improvement,ARR_pct,35.8464,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AAPL/Improvement/SR,AAPL/Improvement,SR,3.3791,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/Improvement/ARR_pct,AMZN/Improvement,ARR_pct,51.6308,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/AMZN/Improvement/SR,AMZN/Improvement,SR,45.3636,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/GOOGL/Improvement/ARR_pct,GOOGL/Improvement,ARR_pct,46.6523,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/Improvement/ARR_pct,MSFT/Improvement,ARR_pct,10.2529,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/MSFT/Improvement/SR,MSFT/Improvement,SR,19.3142,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/Improvement/ARR_pct,TSLA/Improvement,ARR_pct,84.4052,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/TSLA/Improvement/SR,TSLA/Improvement,SR,92.3217,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/Improvement/ARR_pct,ETHUSD/Improvement,ARR_pct,22.5574,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 1,Appendix Table 7 panel 1/ETHUSD/Improvement/SR,ETHUSD/Improvement,SR,7.1319,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/B&H/SOR,AAPL/B&H,SOR,16.5846,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/B&H/CR,AAPL/B&H,CR,0.9589,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/B&H/VOL,AAPL/B&H,VOL,0.0114,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/B&H/SOR,AMZN/B&H,SOR,35.1804,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/B&H/CR,AMZN/B&H,CR,2.4319,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/B&H/VOL,AMZN/B&H,VOL,0.0188,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/B&H/SOR,GOOGL/B&H,SOR,18.5186,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/B&H/CR,GOOGL/B&H,CR,1.9025,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/B&H/VOL,GOOGL/B&H,VOL,0.0167,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/B&H/SOR,MSFT/B&H,SOR,26.5133,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/B&H/CR,MSFT/B&H,CR,1.8135,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/B&H/VOL,MSFT/B&H,VOL,0.0135,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/B&H/SOR,TSLA/B&H,SOR,23.3319,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/B&H/CR,TSLA/B&H,CR,1.3856,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/B&H/VOL,TSLA/B&H,VOL,0.0301,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/B&H/SOR,ETHUSD/B&H,SOR,23.2235,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/B&H/CR,ETHUSD/B&H,CR,1.3831,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/B&H/VOL,ETHUSD/B&H,VOL,0.0222,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/MACD/SOR,AAPL/MACD,SOR,13.7755,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/MACD/CR,AAPL/MACD,CR,1.1877,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/MACD/VOL,AAPL/MACD,VOL,0.0082,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/MACD/SOR,AMZN/MACD,SOR,19.2452,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/MACD/CR,AMZN/MACD,CR,1.9176,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/MACD/VOL,AMZN/MACD,VOL,0.0103,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/MACD/SOR,GOOGL/MACD,SOR,-20.917,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/MACD/CR,GOOGL/MACD,CR,-0.8883,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/MACD/VOL,GOOGL/MACD,VOL,0.0097,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/MACD/SOR,MSFT/MACD,SOR,18.7485,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/MACD/CR,MSFT/MACD,CR,1.8966,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/MACD/VOL,MSFT/MACD,VOL,0.0099,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/MACD/SOR,TSLA/MACD,SOR,-0.4067,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/MACD/CR,TSLA/MACD,CR,-0.0544,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/MACD/VOL,TSLA/MACD,VOL,0.0182,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/MACD/SOR,ETHUSD/MACD,SOR,10.8951,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/MACD/CR,ETHUSD/MACD,CR,0.5433,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/MACD/VOL,ETHUSD/MACD,VOL,0.0166,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/KDJ&RSI/SOR,AAPL/KDJ&RSI,SOR,3.3994,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/KDJ&RSI/CR,AAPL/KDJ&RSI,CR,0.2578,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/KDJ&RSI/VOL,AAPL/KDJ&RSI,VOL,0.0084,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/KDJ&RSI/SOR,AMZN/KDJ&RSI,SOR,16.6915,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/KDJ&RSI/CR,AMZN/KDJ&RSI,CR,1.2471,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/KDJ&RSI/VOL,AMZN/KDJ&RSI,VOL,0.016,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/KDJ&RSI/SOR,GOOGL/KDJ&RSI,SOR,36.6655,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/KDJ&RSI/CR,GOOGL/KDJ&RSI,CR,11.4076,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/KDJ&RSI/VOL,GOOGL/KDJ&RSI,VOL,0.0052,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/KDJ&RSI/SOR,MSFT/KDJ&RSI,SOR,19.5346,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/KDJ&RSI/CR,MSFT/KDJ&RSI,CR,2.4169,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/KDJ&RSI/VOL,MSFT/KDJ&RSI,VOL,0.0085,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/KDJ&RSI/SOR,TSLA/KDJ&RSI,SOR,3.3617,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/KDJ&RSI/CR,TSLA/KDJ&RSI,CR,0.2737,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/KDJ&RSI/VOL,TSLA/KDJ&RSI,VOL,0.0192,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/KDJ&RSI/SOR,ETHUSD/KDJ&RSI,SOR,7.7786,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/KDJ&RSI/CR,ETHUSD/KDJ&RSI,CR,0.6106,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/KDJ&RSI/VOL,ETHUSD/KDJ&RSI,VOL,0.012,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/ZMR/SOR,AAPL/ZMR,SOR,-2.9977,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/ZMR/CR,AAPL/ZMR,CR,-0.37,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/ZMR/VOL,AAPL/ZMR,VOL,0.0072,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/ZMR/SOR,AMZN/ZMR,SOR,9.5853,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/ZMR/CR,AMZN/ZMR,CR,2.4473,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/ZMR/VOL,AMZN/ZMR,VOL,0.011,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/ZMR/SOR,GOOGL/ZMR,SOR,35.1125,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/ZMR/CR,GOOGL/ZMR,CR,5.7782,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/ZMR/VOL,GOOGL/ZMR,VOL,0.0103,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/ZMR/SOR,MSFT/ZMR,SOR,12.9275,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/ZMR/CR,MSFT/ZMR,CR,1.6385,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/ZMR/VOL,MSFT/ZMR,VOL,0.0069,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/ZMR/SOR,TSLA/ZMR,SOR,-1.8214,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/ZMR/CR,TSLA/ZMR,CR,-0.1642,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/ZMR/VOL,TSLA/ZMR,VOL,0.0182,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/ZMR/SOR,ETHUSD/ZMR,SOR,21.4433,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/ZMR/CR,ETHUSD/ZMR,CR,2.1715,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/ZMR/VOL,ETHUSD/ZMR,VOL,0.0137,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/LGBM/SOR,AAPL/LGBM,SOR,45.2444,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/LGBM/CR,AAPL/LGBM,CR,6.5825,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/LGBM/VOL,AAPL/LGBM,VOL,0.0049,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/LGBM/SOR,AMZN/LGBM,SOR,26.2943,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/LGBM/CR,AMZN/LGBM,CR,1.8469,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/LGBM/VOL,AMZN/LGBM,VOL,0.0193,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/LGBM/SOR,GOOGL/LGBM,SOR,19.7497,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/LGBM/CR,GOOGL/LGBM,CR,2.082,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/LGBM/VOL,GOOGL/LGBM,VOL,0.0167,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/LGBM/SOR,MSFT/LGBM,SOR,22.6593,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/LGBM/CR,MSFT/LGBM,CR,1.5993,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/LGBM/VOL,MSFT/LGBM,VOL,0.0134,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/LGBM/SOR,TSLA/LGBM,SOR,12.1981,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/LGBM/CR,TSLA/LGBM,CR,4.0837,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/LGBM/VOL,TSLA/LGBM,VOL,0.0081,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/LGBM/SOR,ETHUSD/LGBM,SOR,21.8037,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/LGBM/CR,ETHUSD/LGBM,CR,1.2503,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/LGBM/VOL,ETHUSD/LGBM,VOL,0.0217,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/LSTM/SOR,AAPL/LSTM,SOR,14.5498,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/LSTM/CR,AAPL/LSTM,CR,0.9915,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/LSTM/VOL,AAPL/LSTM,VOL,0.0095,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/LSTM/SOR,AMZN/LSTM,SOR,14.7442,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/LSTM/CR,AMZN/LSTM,CR,1.1241,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/LSTM/VOL,AMZN/LSTM,VOL,0.0184,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/LSTM/SOR,GOOGL/LSTM,SOR,19.5489,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/LSTM/CR,GOOGL/LSTM,CR,2.0865,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/LSTM/VOL,GOOGL/LSTM,VOL,0.0167,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/LSTM/SOR,MSFT/LSTM,SOR,21.5244,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/LSTM/CR,MSFT/LSTM,CR,1.7144,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/LSTM/VOL,MSFT/LSTM,VOL,0.0128,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/LSTM/SOR,TSLA/LSTM,SOR,16.1653,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/LSTM/CR,TSLA/LSTM,CR,4.0391,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/LSTM/VOL,TSLA/LSTM,VOL,0.0099,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/LSTM/SOR,ETHUSD/LSTM,SOR,27.1716,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/LSTM/CR,ETHUSD/LSTM,CR,1.7031,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/LSTM/VOL,ETHUSD/LSTM,VOL,0.0193,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/Transformer/SOR,AAPL/Transformer,SOR,28.3604,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/Transformer/CR,AAPL/Transformer,CR,2.288,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/Transformer/VOL,AAPL/Transformer,VOL,0.0078,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/Transformer/SOR,AMZN/Transformer,SOR,27.8371,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/Transformer/CR,AMZN/Transformer,CR,6.5258,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/Transformer/VOL,AMZN/Transformer,VOL,0.0125,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/Transformer/SOR,GOOGL/Transformer,SOR,11.5053,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/Transformer/CR,GOOGL/Transformer,CR,1.2619,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/Transformer/VOL,GOOGL/Transformer,VOL,0.0154,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/Transformer/SOR,MSFT/Transformer,SOR,19.7493,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/Transformer/CR,MSFT/Transformer,CR,6.6012,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/Transformer/VOL,MSFT/Transformer,VOL,0.0051,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/Transformer/SOR,TSLA/Transformer,SOR,34.1884,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/Transformer/CR,TSLA/Transformer,CR,4.8624,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/Transformer/VOL,TSLA/Transformer,VOL,0.0164,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/Transformer/SOR,ETHUSD/Transformer,SOR,27.864,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/Transformer/CR,ETHUSD/Transformer,CR,2.4209,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/Transformer/VOL,ETHUSD/Transformer,VOL,0.0166,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/DQN/SOR,AAPL/DQN,SOR,10.3705,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/DQN/CR,AAPL/DQN,CR,0.6266,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/DQN/VOL,AAPL/DQN,VOL,0.0111,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/DQN/SOR,AMZN/DQN,SOR,29.7698,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/DQN/CR,AMZN/DQN,CR,5.1156,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/DQN/VOL,AMZN/DQN,VOL,0.0111,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/DQN/SOR,GOOGL/DQN,SOR,37.7389,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/DQN/CR,GOOGL/DQN,CR,4.619,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/DQN/VOL,GOOGL/DQN,VOL,0.0114,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/DQN/SOR,MSFT/DQN,SOR,32.8642,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/DQN/CR,MSFT/DQN,CR,2.8493,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/DQN/VOL,MSFT/DQN,VOL,0.0122,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/DQN/SOR,TSLA/DQN,SOR,11.0394,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/DQN/CR,TSLA/DQN,CR,0.7399,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/DQN/VOL,TSLA/DQN,VOL,0.0225,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/DQN/SOR,ETHUSD/DQN,SOR,24.6279,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/DQN/CR,ETHUSD/DQN,CR,3.0545,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/DQN/VOL,ETHUSD/DQN,VOL,0.0143,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/SAC/SOR,AAPL/SAC,SOR,33.5676,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/SAC/CR,AAPL/SAC,CR,2.0552,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/SAC/VOL,AAPL/SAC,VOL,0.0105,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/SAC/SOR,AMZN/SAC,SOR,32.432,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/SAC/CR,AMZN/SAC,CR,2.766,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/SAC/VOL,AMZN/SAC,VOL,0.0112,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/SAC/SOR,GOOGL/SAC,SOR,19.3937,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/SAC/CR,GOOGL/SAC,CR,1.9708,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/SAC/VOL,GOOGL/SAC,VOL,0.0165,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/SAC/SOR,MSFT/SAC,SOR,26.0662,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/SAC/CR,MSFT/SAC,CR,1.7829,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/SAC/VOL,MSFT/SAC,VOL,0.0135,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/SAC/SOR,TSLA/SAC,SOR,26.2869,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/SAC/CR,TSLA/SAC,CR,1.441,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/SAC/VOL,TSLA/SAC,VOL,0.0251,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/SAC/SOR,ETHUSD/SAC,SOR,13.3918,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/SAC/CR,ETHUSD/SAC,CR,1.9199,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/SAC/VOL,ETHUSD/SAC,VOL,0.0146,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/PPO/SOR,AAPL/PPO,SOR,16.766,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/PPO/CR,AAPL/PPO,CR,0.9747,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/PPO/VOL,AAPL/PPO,VOL,0.0113,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/PPO/SOR,AMZN/PPO,SOR,20.3167,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/PPO/CR,AMZN/PPO,CR,1.6735,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/PPO/VOL,AMZN/PPO,VOL,0.0159,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/PPO/SOR,GOOGL/PPO,SOR,42.7201,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/PPO/CR,GOOGL/PPO,CR,4.3691,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/PPO/VOL,GOOGL/PPO,VOL,0.0136,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/PPO/SOR,MSFT/PPO,SOR,14.7808,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/PPO/CR,MSFT/PPO,CR,0.7484,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/PPO/VOL,MSFT/PPO,VOL,0.013,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/PPO/SOR,TSLA/PPO,SOR,19.1547,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/PPO/CR,TSLA/PPO,CR,1.3203,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/PPO/VOL,TSLA/PPO,VOL,0.0231,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/PPO/SOR,ETHUSD/PPO,SOR,27.2416,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/PPO/CR,ETHUSD/PPO,CR,2.9836,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/PPO/VOL,ETHUSD/PPO,VOL,0.0147,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/FinGPT/SOR,AAPL/FinGPT,SOR,-4.6731,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/FinGPT/CR,AAPL/FinGPT,CR,-0.246,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/FinGPT/VOL,AAPL/FinGPT,VOL,0.0111,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/FinGPT/SOR,AMZN/FinGPT,SOR,34.8082,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/FinGPT/CR,AMZN/FinGPT,CR,2.2545,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/FinGPT/VOL,AMZN/FinGPT,VOL,0.0186,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/FinGPT/SOR,GOOGL/FinGPT,SOR,11.6596,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/FinGPT/CR,GOOGL/FinGPT,CR,1.1842,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/FinGPT/VOL,GOOGL/FinGPT,VOL,0.0167,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/FinGPT/SOR,MSFT/FinGPT,SOR,30.1935,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/FinGPT/CR,MSFT/FinGPT,CR,2.5867,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/FinGPT/VOL,MSFT/FinGPT,VOL,0.0127,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/FinGPT/SOR,TSLA/FinGPT,SOR,23.1813,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/FinGPT/CR,TSLA/FinGPT,CR,1.4402,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/FinGPT/VOL,TSLA/FinGPT,VOL,0.0291,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/FinGPT/SOR,ETHUSD/FinGPT,SOR,18.5817,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/FinGPT/CR,ETHUSD/FinGPT,CR,1.0131,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/FinGPT/VOL,ETHUSD/FinGPT,VOL,0.0221,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/FinMem/SOR,AAPL/FinMem,SOR,29.8819,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/FinMem/CR,AAPL/FinMem,CR,2.2731,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/FinMem/VOL,AAPL/FinMem,VOL,0.0102,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/FinMem/SOR,AMZN/FinMem,SOR,33.0779,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/FinMem/CR,AMZN/FinMem,CR,2.1843,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/FinMem/VOL,AMZN/FinMem,VOL,0.0188,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/FinMem/SOR,GOOGL/FinMem,SOR,34.7826,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/FinMem/CR,GOOGL/FinMem,CR,3.4572,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/FinMem/VOL,GOOGL/FinMem,VOL,0.0134,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/FinMem/SOR,MSFT/FinMem,SOR,47.1061,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/FinMem/CR,MSFT/FinMem,CR,5.1266,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/FinMem/VOL,MSFT/FinMem,VOL,0.0123,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/FinMem/SOR,TSLA/FinMem,SOR,25.8819,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/FinMem/CR,TSLA/FinMem,CR,2.0887,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/FinMem/VOL,TSLA/FinMem,VOL,0.028,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/FinMem/SOR,ETHUSD/FinMem,SOR,34.1492,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/FinMem/CR,ETHUSD/FinMem,CR,3.1349,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/FinMem/VOL,ETHUSD/FinMem,VOL,0.0194,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/No-finetuned/SOR,AAPL/No-finetuned,SOR,-0.5635,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/No-finetuned/CR,AAPL/No-finetuned,CR,-0.0295,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/No-finetuned/VOL,AAPL/No-finetuned,VOL,0.011,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/No-finetuned/SOR,AMZN/No-finetuned,SOR,46.9773,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/No-finetuned/CR,AMZN/No-finetuned,CR,7.5705,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/No-finetuned/VOL,AMZN/No-finetuned,VOL,0.0127,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/No-finetuned/SOR,GOOGL/No-finetuned,SOR,17.5637,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/No-finetuned/CR,GOOGL/No-finetuned,CR,1.7864,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/No-finetuned/VOL,GOOGL/No-finetuned,VOL,0.0164,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/No-finetuned/SOR,MSFT/No-finetuned,SOR,26.6949,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/No-finetuned/CR,MSFT/No-finetuned,CR,1.8259,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/No-finetuned/VOL,MSFT/No-finetuned,VOL,0.0135,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/No-finetuned/SOR,TSLA/No-finetuned,SOR,17.2111,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/No-finetuned/CR,TSLA/No-finetuned,CR,3.0426,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/No-finetuned/VOL,TSLA/No-finetuned,VOL,0.0136,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/No-finetuned/SOR,ETHUSD/No-finetuned,SOR,19.6504,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/No-finetuned/CR,ETHUSD/No-finetuned,CR,1.1081,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/No-finetuned/VOL,ETHUSD/No-finetuned,VOL,0.0188,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-MLH/SOR,AAPL/w/o-MLH,SOR,20.8183,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-MLH/CR,AAPL/w/o-MLH,CR,1.5678,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-MLH/VOL,AAPL/w/o-MLH,VOL,0.009,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-MLH/SOR,AMZN/w/o-MLH,SOR,53.4328,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-MLH/CR,AMZN/w/o-MLH,CR,4.9724,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-MLH/VOL,AMZN/w/o-MLH,VOL,0.0166,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-MLH/SOR,GOOGL/w/o-MLH,SOR,24.9489,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-MLH/CR,GOOGL/w/o-MLH,CR,2.9016,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-MLH/VOL,GOOGL/w/o-MLH,VOL,0.0137,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-MLH/SOR,MSFT/w/o-MLH,SOR,22.0401,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-MLH/CR,MSFT/w/o-MLH,CR,1.9273,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-MLH/VOL,MSFT/w/o-MLH,VOL,0.01,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-MLH/SOR,TSLA/w/o-MLH,SOR,20.3649,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-MLH/CR,TSLA/w/o-MLH,CR,1.8355,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-MLH/VOL,TSLA/w/o-MLH,VOL,0.0221,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-MLH/SOR,ETHUSD/w/o-MLH,SOR,14.0758,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-MLH/CR,ETHUSD/w/o-MLH,CR,1.1917,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-MLH/VOL,ETHUSD/w/o-MLH,VOL,0.0174,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-LHT/SOR,AAPL/w/o-LHT,SOR,16.15,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-LHT/CR,AAPL/w/o-LHT,CR,0.9396,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-LHT/VOL,AAPL/w/o-LHT,VOL,0.0114,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-LHT/SOR,AMZN/w/o-LHT,SOR,35.1674,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-LHT/CR,AMZN/w/o-LHT,CR,2.9256,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-LHT/VOL,AMZN/w/o-LHT,VOL,0.0186,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-LHT/SOR,GOOGL/w/o-LHT,SOR,15.1339,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-LHT/CR,GOOGL/w/o-LHT,CR,1.552,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-LHT/VOL,GOOGL/w/o-LHT,VOL,0.0168,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-LHT/SOR,MSFT/w/o-LHT,SOR,22.4806,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-LHT/CR,MSFT/w/o-LHT,CR,1.3883,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-LHT/VOL,MSFT/w/o-LHT,VOL,0.0133,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-LHT/SOR,TSLA/w/o-LHT,SOR,22.2082,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-LHT/CR,TSLA/w/o-LHT,CR,1.5162,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-LHT/VOL,TSLA/w/o-LHT,VOL,0.0286,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-LHT/SOR,ETHUSD/w/o-LHT,SOR,21.0778,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-LHT/CR,ETHUSD/w/o-LHT,CR,1.2131,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-LHT/VOL,ETHUSD/w/o-LHT,VOL,0.0222,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-HT/SOR,AAPL/w/o-HT,SOR,29.5194,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-HT/CR,AAPL/w/o-HT,CR,1.576,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-HT/VOL,AAPL/w/o-HT,VOL,0.0105,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-HT/SOR,AMZN/w/o-HT,SOR,40.4896,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-HT/CR,AMZN/w/o-HT,CR,2.9758,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-HT/VOL,AMZN/w/o-HT,VOL,0.0184,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-HT/SOR,GOOGL/w/o-HT,SOR,33.6191,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-HT/CR,GOOGL/w/o-HT,CR,3.2906,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-HT/VOL,GOOGL/w/o-HT,VOL,0.0139,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-HT/SOR,MSFT/w/o-HT,SOR,46.4396,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-HT/CR,MSFT/w/o-HT,CR,5.054,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-HT/VOL,MSFT/w/o-HT,VOL,0.0123,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-HT/SOR,TSLA/w/o-HT,SOR,28.3015,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-HT/CR,TSLA/w/o-HT,CR,2.2956,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-HT/VOL,TSLA/w/o-HT,VOL,0.0278,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-HT/SOR,ETHUSD/w/o-HT,SOR,37.172,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-HT/CR,ETHUSD/w/o-HT,CR,3.6027,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-HT/VOL,ETHUSD/w/o-HT,VOL,0.0212,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-T/SOR,AAPL/w/o-T,SOR,46.6145,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-T/CR,AAPL/w/o-T,CR,3.9301,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/w/o-T/VOL,AAPL/w/o-T,VOL,0.0101,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-T/SOR,AMZN/w/o-T,SOR,50.1096,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-T/CR,AMZN/w/o-T,CR,5.9255,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/w/o-T/VOL,AMZN/w/o-T,VOL,0.0162,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-T/SOR,GOOGL/w/o-T,SOR,62.2508,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-T/CR,GOOGL/w/o-T,CR,5.7201,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/w/o-T/VOL,GOOGL/w/o-T,VOL,0.0125,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-T/SOR,MSFT/w/o-T,SOR,40.3937,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-T/CR,MSFT/w/o-T,CR,5.2137,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/w/o-T/VOL,MSFT/w/o-T,VOL,0.0129,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-T/SOR,TSLA/w/o-T,SOR,41.5642,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-T/CR,TSLA/w/o-T,CR,2.9306,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/w/o-T/VOL,TSLA/w/o-T,VOL,0.0266,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-T/SOR,ETHUSD/w/o-T,SOR,37.4619,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-T/CR,ETHUSD/w/o-T,CR,4.2958,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/w/o-T/VOL,ETHUSD/w/o-T,VOL,0.0208,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/FinAgent/SOR,AAPL/FinAgent,SOR,44.2812,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/FinAgent/CR,AAPL/FinAgent,CR,2.9424,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/FinAgent/VOL,AAPL/FinAgent,VOL,0.0102,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/FinAgent/SOR,AMZN/FinAgent,SOR,52.5602,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/FinAgent/CR,AMZN/FinAgent,CR,4.4841,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/FinAgent/VOL,AMZN/FinAgent,VOL,0.0176,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/FinAgent/SOR,GOOGL/FinAgent,SOR,62.2992,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/FinAgent/CR,GOOGL/FinAgent,CR,6.0365,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/FinAgent/VOL,GOOGL/FinAgent,VOL,0.0138,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/FinAgent/SOR,MSFT/FinAgent,SOR,49.6249,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/FinAgent/CR,MSFT/FinAgent,CR,7.4209,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/FinAgent/VOL,MSFT/FinAgent,VOL,0.0111,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/FinAgent/SOR,TSLA/FinAgent,SOR,45.4139,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/FinAgent/CR,TSLA/FinAgent,CR,6.4543,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/FinAgent/VOL,TSLA/FinAgent,VOL,0.0187,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/FinAgent/SOR,ETHUSD/FinAgent,SOR,31.0159,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/FinAgent/CR,ETHUSD/FinAgent,CR,3.3078,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/FinAgent/VOL,ETHUSD/FinAgent,VOL,0.0207,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AAPL/Improvement/SOR,AAPL/Improvement,SOR,3.0282,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/Improvement/SOR,AMZN/Improvement,SOR,51.8823,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/AMZN/Improvement/CR,AMZN/Improvement,CR,16.0088,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/GOOGL/Improvement/SOR,GOOGL/Improvement,SOR,45.8311,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/Improvement/SOR,MSFT/Improvement,SOR,5.3471,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/MSFT/Improvement/CR,MSFT/Improvement,CR,12.4174,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/Improvement/SOR,TSLA/Improvement,SOR,32.8342,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/TSLA/Improvement/CR,TSLA/Improvement,CR,32.7390,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/Improvement/SOR,ETHUSD/Improvement,SOR,9.7007,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Appendix Table 7 panel 2,Appendix Table 7 panel 2/ETHUSD/Improvement/CR,ETHUSD/Improvement,CR,37.0315,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/T_only/ARR_pct,TSLA/T_only,ARR_pct,39.01,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/T_only/SR,TSLA/T_only,SR,0.90,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/T_only/MDD_pct,TSLA/T_only,MDD_pct,22.54,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/T_only/ARR_pct,ETHUSD/T_only,ARR_pct,16.21,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/T_only/SR,ETHUSD/T_only,SR,0.63,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/T_only/MDD_pct,ETHUSD/T_only,MDD_pct,15.93,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/M_only/ARR_pct,TSLA/M_only,ARR_pct,39.27,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/M_only/SR,TSLA/M_only,SR,0.77,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/M_only/MDD_pct,TSLA/M_only,MDD_pct,30.15,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/M_only/ARR_pct,ETHUSD/M_only,ARR_pct,25.97,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/M_only/SR,ETHUSD/M_only,SR,0.77,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/M_only/MDD_pct,ETHUSD/M_only,MDD_pct,24.43,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/ML/ARR_pct,TSLA/ML,ARR_pct,57.16,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/ML/ARR_pct_parenthetical_delta_pct,TSLA/ML,ARR_pct_parenthetical_delta_pct,+45.56,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/ML/SR,TSLA/ML,SR,1.02,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/ML/SR_parenthetical_delta_pct,TSLA/ML,SR_parenthetical_delta_pct,+33.14,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/ML/MDD_pct,TSLA/ML,MDD_pct,25.77,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/ML/MDD_pct_parenthetical_delta_pct,TSLA/ML,MDD_pct_parenthetical_delta_pct,-14.52,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/ML/ARR_pct,ETHUSD/ML,ARR_pct,52.33,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/ML/ARR_pct_parenthetical_delta_pct,ETHUSD/ML,ARR_pct_parenthetical_delta_pct,+101.48,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/ML/SR,ETHUSD/ML,SR,1.34,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/ML/SR_parenthetical_delta_pct,ETHUSD/ML,SR_parenthetical_delta_pct,+72.99,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/ML/MDD_pct,ETHUSD/ML,MDD_pct,13.59,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/ML/MDD_pct_parenthetical_delta_pct,ETHUSD/ML,MDD_pct_parenthetical_delta_pct,-44.39,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLH/ARR_pct,TSLA/MLH,ARR_pct,89.25,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLH/ARR_pct_parenthetical_delta_pct,TSLA/MLH,ARR_pct_parenthetical_delta_pct,+56.14,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLH/SR,TSLA/MLH,SR,1.46,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLH/SR_parenthetical_delta_pct,TSLA/MLH,SR_parenthetical_delta_pct,+42.86,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLH/MDD_pct,TSLA/MLH,MDD_pct,27.62,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLH/MDD_pct_parenthetical_delta_pct,TSLA/MLH,MDD_pct_parenthetical_delta_pct,+7.18,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLH/ARR_pct,ETHUSD/MLH,ARR_pct,54.80,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLH/ARR_pct_parenthetical_delta_pct,ETHUSD/MLH,ARR_pct_parenthetical_delta_pct,+4.73,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLH/SR,ETHUSD/MLH,SR,1.40,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLH/SR_parenthetical_delta_pct,ETHUSD/MLH,SR_parenthetical_delta_pct,+5.09,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLH/MDD_pct,ETHUSD/MLH,MDD_pct,11.74,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLH/MDD_pct_parenthetical_delta_pct,ETHUSD/MLH,MDD_pct_parenthetical_delta_pct,-13.57,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLHT/ARR_pct,TSLA/MLHT,ARR_pct,92.27,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLHT/ARR_pct_parenthetical_delta_pct,TSLA/MLHT,ARR_pct_parenthetical_delta_pct,+3.38,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLHT/SR,TSLA/MLHT,SR,2.01,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLHT/SR_parenthetical_delta_pct,TSLA/MLHT,SR_parenthetical_delta_pct,+37.84,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLHT/MDD_pct,TSLA/MLHT,MDD_pct,12.14,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/TSLA/MLHT/MDD_pct_parenthetical_delta_pct,TSLA/MLHT,MDD_pct_parenthetical_delta_pct,-56.04,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLHT/ARR_pct,ETHUSD/MLHT,ARR_pct,43.08,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLHT/ARR_pct_parenthetical_delta_pct,ETHUSD/MLHT,ARR_pct_parenthetical_delta_pct,-21.39,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLHT/SR,ETHUSD/MLHT,SR,1.18,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLHT/SR_parenthetical_delta_pct,ETHUSD/MLHT,SR_parenthetical_delta_pct,-16.09,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLHT/MDD_pct,ETHUSD/MLHT,MDD_pct,12.72,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False
+Table 5 ablation,Table 5 ablation/ETHUSD/MLHT/MDD_pct_parenthetical_delta_pct,ETHUSD/MLHT,MDD_pct_parenthetical_delta_pct,+8.30,,not_reproduced_no_released_agent_result_artifacts_or_exact_inputs,False

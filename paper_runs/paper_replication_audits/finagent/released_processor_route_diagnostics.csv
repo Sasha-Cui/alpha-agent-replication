@@ -1,0 +1,14 @@
+processor_config,input_tag,matching_downloader_tag
+configs/processor/processor_day_dj30.py,fmp_day_prices_dj30,True
+configs/processor/processor_day_dj30.py,fmp_news_dj30,True
+configs/processor/processor_day_dj30.py,rapidapi_day_seekingalpha_analysis_dj30,False
+configs/processor/processor_day_exp_cryptos.py,fmp_day_prices_exp_cryptos,True
+configs/processor/processor_day_exp_cryptos.py,fmp_news_exp_cryptos,True
+configs/processor/processor_day_exp_forexs.py,fmp_day_prices_exp_forexs,True
+configs/processor/processor_day_exp_forexs.py,fmp_news_exp_forexs,True
+configs/processor/processor_day_exp_stocks.py,fmp_day_prices_exp,False
+configs/processor/processor_day_exp_stocks.py,fmp_news_exp,False
+configs/processor/processor_day_exp_stocks.py,yahoofinance_news_exp,True
+configs/processor/processor_day_exp_stocks.py,rapidapi_seekingalpha_analysis_exp,True
+configs/processor/processor_day_exp_stocks.py,fmp_sentiment_exp,True
+configs/processor/processor_day_exp_stocks.py,fmp_economic_exp,True
