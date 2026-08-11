@@ -1,0 +1,26 @@
+{
+  "source_commit": "61feaa359bd57761f5ac58f75af46ddfed2d2d7b",
+  "source_history_commits": 3,
+  "tracked_files": 1,
+  "tracked_python_files": 0,
+  "tracked_test_files": 0,
+  "dependency_manifests": 0,
+  "runners": 0,
+  "configuration_files": 0,
+  "model_weight_files": 0,
+  "data_files": 0,
+  "result_files": 0,
+  "paper_era_commit": "09b2f921fe2344fc370beafc26aa0d44a6913a5b",
+  "paper_era_tracked_files": [
+    "README.md"
+  ],
+  "paper_era_readme_sha256": "97dd2fb2bbcf2081ec20c86fd5a9111cb4c0e1d39100bc3906dc0a6f5ca1c247",
+  "current_readme_sha256": "508c110b9c67243c7f5c3af80c0c2c24c8b929e9e3f3fa3d7e02cd2c763f40ae",
+  "current_readme_says_organizing_code_and_models": true,
+  "current_readme_marks_inference_code_coming_soon": true,
+  "current_readme_marks_model_weights_coming_soon": true,
+  "native_code_execution_possible": false,
+  "native_tests_executed": 0,
+  "native_paper_results_reproduced": 0,
+  "motif_proxy_counted_as_native": false
+}

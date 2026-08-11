@@ -1,0 +1,125 @@
+paper_table,method,asset_pool,metric,paper_value,native_reproduced_value,absolute_difference,status,paper_result_credit
+Table 1 Main Experiment Results,Buy & Hold,CSI 300,CR_pct,3.03,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Buy & Hold,CSI 300,AR_pct,6.7,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Buy & Hold,CSI 300,Sharpe,0.33,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Buy & Hold,CSI 300,MDD_pct,10.49,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Buy & Hold,CSI 1000,CR_pct,9.64,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Buy & Hold,CSI 1000,AR_pct,22.14,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Buy & Hold,CSI 1000,Sharpe,0.8,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Buy & Hold,CSI 1000,MDD_pct,16.87,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PCA,CSI 300,CR_pct,-0.48,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PCA,CSI 300,AR_pct,0.4,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PCA,CSI 300,Sharpe,-0.06,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PCA,CSI 300,MDD_pct,14.69,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PCA,CSI 1000,CR_pct,6.24,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PCA,CSI 1000,AR_pct,16.09,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PCA,CSI 1000,Sharpe,0.59,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PCA,CSI 1000,MDD_pct,16.13,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,XGBoost,CSI 300,CR_pct,-10.03,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,XGBoost,CSI 300,AR_pct,-21.65,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,XGBoost,CSI 300,Sharpe,-1.54,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,XGBoost,CSI 300,MDD_pct,15.33,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,XGBoost,CSI 1000,CR_pct,4.34,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,XGBoost,CSI 1000,AR_pct,11.77,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,XGBoost,CSI 1000,Sharpe,0.45,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,XGBoost,CSI 1000,MDD_pct,19.12,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,LightGBM,CSI 300,CR_pct,-5.1,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,LightGBM,CSI 300,AR_pct,-10.26,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,LightGBM,CSI 300,Sharpe,-0.83,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,LightGBM,CSI 300,MDD_pct,13.43,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,LightGBM,CSI 1000,CR_pct,-5.37,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,LightGBM,CSI 1000,AR_pct,-6.92,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,LightGBM,CSI 1000,Sharpe,-0.26,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,LightGBM,CSI 1000,MDD_pct,23.88,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,A2C,CSI 300,CR_pct,-5.52,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,A2C,CSI 300,AR_pct,-11.12,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,A2C,CSI 300,Sharpe,-0.85,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,A2C,CSI 300,MDD_pct,11.22,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,A2C,CSI 1000,CR_pct,11.8,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,A2C,CSI 1000,AR_pct,26.3,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,A2C,CSI 1000,Sharpe,1.15,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,A2C,CSI 1000,MDD_pct,14.0,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PPO,CSI 300,CR_pct,0.89,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PPO,CSI 300,AR_pct,3.28,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PPO,CSI 300,Sharpe,0.11,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PPO,CSI 300,MDD_pct,11.67,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PPO,CSI 1000,CR_pct,-6.44,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PPO,CSI 1000,AR_pct,-7.62,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PPO,CSI 1000,Sharpe,-0.25,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,PPO,CSI 1000,MDD_pct,29.31,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Gemini 2.5 Pro Thinking,CSI 300,CR_pct,-7.04,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Gemini 2.5 Pro Thinking,CSI 300,AR_pct,-14.45,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Gemini 2.5 Pro Thinking,CSI 300,Sharpe,-1.01,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Gemini 2.5 Pro Thinking,CSI 300,MDD_pct,15.08,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Gemini 2.5 Pro Thinking,CSI 1000,CR_pct,-8.73,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Gemini 2.5 Pro Thinking,CSI 1000,AR_pct,-15.38,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Gemini 2.5 Pro Thinking,CSI 1000,Sharpe,-0.58,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Gemini 2.5 Pro Thinking,CSI 1000,MDD_pct,28.37,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Claude 3.7 Sonnet Thinking,CSI 300,CR_pct,-5.41,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Claude 3.7 Sonnet Thinking,CSI 300,AR_pct,-10.23,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Claude 3.7 Sonnet Thinking,CSI 300,Sharpe,-0.63,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Claude 3.7 Sonnet Thinking,CSI 300,MDD_pct,13.58,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Claude 3.7 Sonnet Thinking,CSI 1000,CR_pct,3.8,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Claude 3.7 Sonnet Thinking,CSI 1000,AR_pct,13.26,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Claude 3.7 Sonnet Thinking,CSI 1000,Sharpe,0.43,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Claude 3.7 Sonnet Thinking,CSI 1000,MDD_pct,16.98,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,DeepSeek-R1,CSI 300,CR_pct,-5.98,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,DeepSeek-R1,CSI 300,AR_pct,-11.93,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,DeepSeek-R1,CSI 300,Sharpe,-0.82,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,DeepSeek-R1,CSI 300,MDD_pct,14.88,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,DeepSeek-R1,CSI 1000,CR_pct,-7.58,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,DeepSeek-R1,CSI 1000,AR_pct,-12.87,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,DeepSeek-R1,CSI 1000,Sharpe,-0.5,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,DeepSeek-R1,CSI 1000,MDD_pct,27.89,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Qwen3-8B,CSI 300,CR_pct,-6.32,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Qwen3-8B,CSI 300,AR_pct,-12.41,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Qwen3-8B,CSI 300,Sharpe,-0.77,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Qwen3-8B,CSI 300,MDD_pct,16.35,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Qwen3-8B,CSI 1000,CR_pct,2.73,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Qwen3-8B,CSI 1000,AR_pct,10.23,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Qwen3-8B,CSI 1000,Sharpe,0.29,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Qwen3-8B,CSI 1000,MDD_pct,21.78,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Alpha-R1,CSI 300,CR_pct,12.99,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Alpha-R1,CSI 300,AR_pct,27.59,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Alpha-R1,CSI 300,Sharpe,1.62,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Alpha-R1,CSI 300,MDD_pct,6.76,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Alpha-R1,CSI 1000,CR_pct,42.49,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Alpha-R1,CSI 1000,AR_pct,78.18,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Alpha-R1,CSI 1000,Sharpe,4.03,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 1 Main Experiment Results,Alpha-R1,CSI 1000,MDD_pct,9.25,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,Alpha-R1 (Full),CSI 300,CR_pct,12.99,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,Alpha-R1 (Full),CSI 300,AR_pct,27.59,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,Alpha-R1 (Full),CSI 300,Sharpe,1.62,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,Alpha-R1 (Full),CSI 300,MDD_pct,6.76,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,Buy & Hold (CSI 300 Index),CSI 300,CR_pct,3.03,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,Buy & Hold (CSI 300 Index),CSI 300,AR_pct,6.7,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,Buy & Hold (CSI 300 Index),CSI 300,Sharpe,0.33,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,Buy & Hold (CSI 300 Index),CSI 300,MDD_pct,10.49,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o Market Price,CSI 300,CR_pct,10.24,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o Market Price,CSI 300,AR_pct,22.42,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o Market Price,CSI 300,Sharpe,1.24,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o Market Price,CSI 300,MDD_pct,12.87,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o News,CSI 300,CR_pct,8.75,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o News,CSI 300,AR_pct,19.61,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o News,CSI 300,Sharpe,1.03,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o News,CSI 300,MDD_pct,12.01,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o Semantic Description,CSI 300,CR_pct,7.26,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o Semantic Description,CSI 300,AR_pct,16.76,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o Semantic Description,CSI 300,Sharpe,0.83,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o Semantic Description,CSI 300,MDD_pct,13.32,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o RL Optimization,CSI 300,CR_pct,-6.32,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o RL Optimization,CSI 300,AR_pct,-12.41,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o RL Optimization,CSI 300,Sharpe,-0.77,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 2 Ablation Study Results,w/o RL Optimization,CSI 300,MDD_pct,16.35,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,Alpha-R1 (Semantic Gating),CSI 300,CR_pct,12.99,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,Alpha-R1 (Semantic Gating),CSI 300,AR_pct,27.59,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,Alpha-R1 (Semantic Gating),CSI 300,Sharpe,1.62,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,Alpha-R1 (Semantic Gating),CSI 300,MDD_pct,6.76,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,Lasso,CSI 300,CR_pct,1.58,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,Lasso,CSI 300,AR_pct,4.63,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,Lasso,CSI 300,Sharpe,0.2,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,Lasso,CSI 300,MDD_pct,11.12,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,IC Momentum,CSI 300,CR_pct,-6.33,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,IC Momentum,CSI 300,AR_pct,-12.55,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,IC Momentum,CSI 300,Sharpe,-0.8,,,unavailable_official_repository_has_no_experiment_code_or_output,False
+Table 3 Gating Strategy Comparison,IC Momentum,CSI 300,MDD_pct,13.29,,,unavailable_official_repository_has_no_experiment_code_or_output,False

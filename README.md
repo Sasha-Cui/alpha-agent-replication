@@ -30,6 +30,17 @@ framework (38/67 mechanism matches or analogues; all released tests pass) but
 claims because the paper data, checkpoint, logs, exact configuration, mined
 factors, baselines, fusion arrays, seeds, and costs are not released.
 
+The Alpha-R1 audit is more severe: the paper says its full implementation and
+resources are available, but the only pre-submission revision is a two-line
+title README and the current official repository still contains one README
+marking inference code and model weights Coming Soon. The audit enumerates 124
+table cells and all 528 visible heatmap cells, for 652 displayed numeric
+results, plus 27 numeric result claims in prose. It reproduces 0/652 results
+and 0/70 implementation dimensions because no executable source, model, data,
+prompt, environment, baseline, seed, path, or output has been released. The
+local Alpha-R1 motif proxy remains an M0 narrative translation with no native
+mechanism or paper-result credit.
+
 The cutoff-bounded 98-work screen, artifact audit, and 67-lineage native-fidelity
 ledger provide broader evidence about public availability and task compatibility;
 they are supporting parts of the current claim record rather than its sole center.
@@ -45,6 +56,7 @@ then inspect the three principal evidence packages:
 - [`paper_runs/submission_evidence/strict_proxy_fidelity_audit/`](paper_runs/submission_evidence/strict_proxy_fidelity_audit/) - strict A/B/C/D/U grades for the legacy 50 mappings.
 - [`paper_runs/faithful_component_replications/`](paper_runs/faithful_component_replications/) - primary three-component census, strict grade-B ledger, source pins, and attribution outputs.
 - [`paper_runs/paper_replication_audits/quantevolver/`](paper_runs/paper_replication_audits/quantevolver/) - fail-closed full-paper audit that keeps the 3/3 component gate separate from 0/75 paper results.
+- [`paper_runs/paper_replication_audits/alpha_r1/`](paper_runs/paper_replication_audits/alpha_r1/) - fail-closed audit of 652 displayed results and the paper/source availability conflict in the official one-file placeholder.
 - [`paper_runs/prompt_replay/guruagents/performance/`](paper_runs/prompt_replay/guruagents/performance/) - the 190-cell GuruAgents replay, 24 costed paths, and 12-path-by-33-month matched attribution.
 
 The older 12-formula package in [`paper_runs/fidelity_formula_components/`](paper_runs/fidelity_formula_components/) is retained as a mixed-fidelity diagnostic and is not part of the 100% denominator.

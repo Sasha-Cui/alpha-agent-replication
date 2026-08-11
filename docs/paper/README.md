@@ -50,6 +50,16 @@ result claims. The 3/3 grade-B result is therefore component-only and carries no
 credit for the private RFT experiment, benchmarks, mined factor library, or
 published portfolio.
 
+The fail-closed Alpha-R1 audit in
+`paper_runs/paper_replication_audits/alpha_r1/` reaches a stricter boundary.
+The paper says the full implementation and resources are available, but the
+pre-submission repository revision is a two-line title README and the current
+tree remains one README marking inference code and model weights Coming Soon.
+All 124 table cells and 528 visible heatmap cells are enumerated; 0/652 results
+and 0/70 implementation dimensions are reproduced. The local Alpha-R1 row is
+only an M0 favorable narrative translation and receives no native mechanism or
+paper-result credit.
+
 The manuscript also reports a separate GuruAgents prompt-decision replay:
 190/190 cells through a current 2026 OpenRouter-served `openai/gpt-4o` alias, 24
 costed return paths, and matched Fama--French-to-JKP-BAB attribution. It does

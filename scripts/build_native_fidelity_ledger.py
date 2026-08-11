@@ -65,8 +65,18 @@ ARTIFACT_NOTES = {
     ),
     "SYS-ALPHA-R1": (
         "N",
-        "The reachable repository contains one non-runnable/pseudocode file "
-        "and no dated native output.",
+        "A pinned arXiv-v1 audit enumerates all 652 displayed numeric result "
+        "cells: 124 cells in Tables 1--3 and 528 cells in six heatmaps, plus "
+        "27 quantitative result claims in prose. The paper says the full "
+        "implementation and resources are available, but the only paper-era "
+        "revision is a two-line title README and the current three-commit "
+        "history still contains only one README marking inference code and "
+        "model weights Coming Soon. No code, environment, prompts, checkpoint, "
+        "market/news data, factor lists, betas, baselines, seeds, paths, or "
+        "outputs are shipped, so 0/652 table/heatmap cells and 0/70 audited "
+        "implementation dimensions count as native reproductions. The local "
+        "M0 narrative motif proxy remains secondary and receives no paper-result "
+        "or mechanism credit.",
     ),
     "SYS-AUTOMATE-STRATEGY": (
         "Y",
@@ -199,6 +209,7 @@ ARTIFACT_NOTES = {
 TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
     "SYS-ALPHA-MEMO": "paper_audit:completed_zero_of_474_native_results",
+    "SYS-ALPHA-R1": "paper_audit:completed_zero_of_652_native_results_official_placeholder",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-FIN-CON": "legacy_targeted:blocked_jkp_scope_incompatible",
     "SYS-GURU-AGENTS": "legacy_targeted:legacy_non_jkp_diagnostic_only",

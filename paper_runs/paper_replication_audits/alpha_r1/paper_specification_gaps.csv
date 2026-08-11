@@ -1,0 +1,51 @@
+area,missing_specification_or_artifact,replication_impact,resolved
+data,daily/minute price vendor and snapshot,"required for factors, VWAP, returns, and limits",no
+data,"news vendor, article corpus, timestamps, and deduplication",required for state descriptions,no
+data,macroeconomic announcement source and availability timestamps,required to avoid look-ahead,no
+data,point-in-time CSI300/CSI1000 memberships,required to avoid survivorship bias,no
+data,corporate-action and price-adjustment policy,required for returns and factor values,no
+data,sector taxonomy and point-in-time sector membership,required for sector-rotation descriptions,no
+data,capital-flow inputs and definitions,required by the state description,no
+data,trading calendar and suspended-stock handling,required for slot rotation,no
+data,limit-up/down and IPO metadata source,required for execution constraints,no
+factors,identities of the 82 retained Alpha101 factors,computational-feasibility filter is not enumerated,no
+factors,exact formulas and implementation conventions,Alpha101 implementations differ on windows and ranks,no
+factors,identities of the 40 test factors,RankIC selection output is absent,no
+factors,RankIC definition and tie/missing-value handling,required to reconstruct selection,no
+factors,"factor normalization, winsorization, neutralization, and lagging",required for betas and rankings,no
+descriptions,technical-indicator definitions,price atomic units cannot be reconstructed,no
+descriptions,price-description generation prompt and model,raw-to-text stage is unspecified,no
+descriptions,news-description generation prompt and model,raw-to-text stage is unspecified,no
+memory,"weekly summary prompt, model, decoding, and initial memory",recursive memory cannot be replayed,no
+profiles,"factor-profile prompt, model, decoding, and schema",semantic profiles cannot be reconstructed,no
+state,"daily state prompt, model, decoding, and schema",market states cannot be reconstructed,no
+reasoning,Alpha-R1 input prompt and output schema,factor-gating decisions cannot be replayed,no
+reasoning,exact Qwen3-8B base/revision/tokenizer,model identity is not a reproducible snapshot,no
+reasoning,trained Alpha-R1 checkpoint,paper policy is unavailable,no
+reward,"beta regression target, cadence, universe, and estimator",fixed linear scorer cannot be reconstructed,no
+reward,all beta coefficients and intercept,paper reward and portfolio ranking cannot be replayed,no
+reward,reward benchmark identity,excess return is undefined operationally,no
+reward,exact judge model/version,paper gives Claude 3.5 Haiku only as an example,no
+reward,"judge prompt, rubric, scale direction, and retries",quality adjustment cannot be replayed,no
+reward,"structural penalty formula, weights, and thresholds",final reward is incomplete,no
+training,GRPO group size G,advantage groups cannot be reconstructed,no
+training,"GRPO epsilon, KL beta, optimizer, LR, batches, and epochs",training procedure is incomplete,no
+training,zero-standard-deviation advantage handling,edge-case behavior is undefined,no
+training,training hardware and software environment,dependency/runtime fidelity is unavailable,no
+training,300-sample construction procedure,sampling with/without replacement and candidate ordering are missing,no
+training,all random seeds and five-run seed mapping,run-level replication is impossible,no
+baselines,"PCA/XGBoost/LightGBM feature, target, and hyperparameters",non-LLM baselines cannot be reconstructed,no
+baselines,A2C/PPO state/action/reward and hyperparameters,RL baselines cannot be reconstructed,no
+baselines,"LLM versions, prompts, APIs, and parsing",LLM baselines cannot be replayed,no
+baselines,Lasso regularization selection,heuristic gating baseline is incomplete,no
+baselines,IC Momentum tie/missing rules,heuristic gating baseline is incomplete,no
+portfolio,stock score normalization and tie handling,top-N construction can diverge,no
+portfolio,"slot cash, dividends, delistings, suspensions, and deferred sells",path accounting is incomplete,no
+portfolio,VWAP fallback and fill/volume assumptions,execution cannot be replayed,no
+portfolio,whether 0.1% cost includes or adds slippage,cost model is ambiguous,no
+metrics,"CR, AR, Sharpe, and MDD formulas",table values cannot be independently checked,no
+metrics,risk-free rate and annualization frequency,Sharpe and AR cannot be reconstructed,no
+metrics,averaging order across five runs,mean metrics differ from metrics of a mean path,no
+outputs,"per-run selections, actions, fills, returns, and NAVs",published results cannot be traced,no
+outputs,heatmap arrays and run aggregation,528 displayed cells are raster-only,no
+outputs,"baseline, ablation, and gating output tables",no native result artifacts are shipped,no

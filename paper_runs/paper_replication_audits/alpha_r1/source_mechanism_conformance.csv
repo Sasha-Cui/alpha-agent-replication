@@ -1,0 +1,71 @@
+dimension,area,paper_requirement,official_source_evidence,status,paper_mechanism_credit
+1,model,8B reasoning model implementation,README markets Alpha-R1 as an RL alpha-screening framework but supplies no implementation,narrative_only_unverifiable,False
+2,model,Qwen3-8B backbone revision,official repository tree contains only README.md,absent,False
+3,model,trained Alpha-R1 checkpoint,official repository tree contains only README.md,absent,False
+4,data,price atomic-unit builder,official repository tree contains only README.md,absent,False
+5,data,news atomic-unit builder,official repository tree contains only README.md,absent,False
+6,memory,weekly iterative memory recursion,official repository tree contains only README.md,absent,False
+7,memory,global historical memory artifact,official repository tree contains only README.md,absent,False
+8,factor,Alpha101 factor backtester,official repository tree contains only README.md,absent,False
+9,factor,82-factor retained zoo,official repository tree contains only README.md,absent,False
+10,factor,factor performance vectors,official repository tree contains only README.md,absent,False
+11,semantic,factor semantic-profile generator,official repository tree contains only README.md,absent,False
+12,semantic,factor mechanism descriptions,official repository tree contains only README.md,absent,False
+13,semantic,factor regime descriptions,official repository tree contains only README.md,absent,False
+14,semantic,factor failure-condition descriptions,official repository tree contains only README.md,absent,False
+15,state,daily asset-pool state generator,official repository tree contains only README.md,absent,False
+16,state,price/news state fusion,official repository tree contains only README.md,absent,False
+17,state,index-dynamics representation,official repository tree contains only README.md,absent,False
+18,state,sector-theme representation,official repository tree contains only README.md,absent,False
+19,state,capital-flow representation,official repository tree contains only README.md,absent,False
+20,reasoning,semantic decision-context construction,official repository tree contains only README.md,absent,False
+21,reasoning,context-conditioned factor gating,README markets Alpha-R1 as an RL alpha-screening framework but supplies no implementation,narrative_only_unverifiable,False
+22,reasoning,selected-factor-list parser,official repository tree contains only README.md,absent,False
+23,scorer,fixed linear factor scorer,official repository tree contains only README.md,absent,False
+24,scorer,four-year beta estimator,official repository tree contains only README.md,absent,False
+25,scorer,previous-day factor lag,official repository tree contains only README.md,absent,False
+26,portfolio,equal-weight top-N constructor,official repository tree contains only README.md,absent,False
+27,reward,benchmark-excess base reward,official repository tree contains only README.md,absent,False
+28,reward,100x reward scaling,official repository tree contains only README.md,absent,False
+29,reward,external LLM judge,official repository tree contains only README.md,absent,False
+30,reward,judge normalization,official repository tree contains only README.md,absent,False
+31,reward,asymmetric reward adjustment,official repository tree contains only README.md,absent,False
+32,reward,structural sparsity penalty,official repository tree contains only README.md,absent,False
+33,reward,invalid/nonexistent-factor penalty,official repository tree contains only README.md,absent,False
+34,training,GRPO group advantage,README markets Alpha-R1 as an RL alpha-screening framework but supplies no implementation,narrative_only_unverifiable,False
+35,training,clipped GRPO objective,official repository tree contains only README.md,absent,False
+36,training,KL reference regularization,official repository tree contains only README.md,absent,False
+37,training,randomized 40-of-82 factor augmentation,official repository tree contains only README.md,absent,False
+38,execution,H-slot rotation,official repository tree contains only README.md,absent,False
+39,execution,five-day holding implementation,official repository tree contains only README.md,absent,False
+40,execution,30-minute VWAP execution,official repository tree contains only README.md,absent,False
+41,execution,limit-up/limit-down constraints,official repository tree contains only README.md,absent,False
+42,execution,IPO-day exclusion,official repository tree contains only README.md,absent,False
+43,execution,bilateral 10-bps costs,official repository tree contains only README.md,absent,False
+44,experiment,2020--2023 beta/pretraining data,official repository tree contains only README.md,absent,False
+45,experiment,2024H2 CSI300 training data,official repository tree contains only README.md,absent,False
+46,experiment,2025H1 CSI300 test data,official repository tree contains only README.md,absent,False
+47,experiment,2025H1 CSI1000 zero-shot data,official repository tree contains only README.md,absent,False
+48,experiment,five independent runs,official repository tree contains only README.md,absent,False
+49,experiment,temperature/top-p inference config,official repository tree contains only README.md,absent,False
+50,baseline,Buy-and-Hold baseline,official repository tree contains only README.md,absent,False
+51,baseline,PCA baseline,official repository tree contains only README.md,absent,False
+52,baseline,XGBoost baseline,official repository tree contains only README.md,absent,False
+53,baseline,LightGBM baseline,official repository tree contains only README.md,absent,False
+54,baseline,A2C baseline,official repository tree contains only README.md,absent,False
+55,baseline,PPO baseline,official repository tree contains only README.md,absent,False
+56,baseline,four reasoning-LLM baselines,official repository tree contains only README.md,absent,False
+57,ablation,four component ablations,official repository tree contains only README.md,absent,False
+58,gating,Lasso gating baseline,official repository tree contains only README.md,absent,False
+59,gating,IC Momentum gating baseline,official repository tree contains only README.md,absent,False
+60,sensitivity,TopN/HoldingDays sweep,official repository tree contains only README.md,absent,False
+61,artifact,paper prompts,official repository tree contains only README.md,absent,False
+62,artifact,dependency/environment manifest,official repository tree contains only README.md,absent,False
+63,artifact,training/search runner,official repository tree contains only README.md,absent,False
+64,artifact,inference runner,official repository tree contains only README.md,absent,False
+65,artifact,backtest/evaluation runner,official repository tree contains only README.md,absent,False
+66,artifact,paper configuration files,official repository tree contains only README.md,absent,False
+67,artifact,random-seed ledger,official repository tree contains only README.md,absent,False
+68,artifact,training logs,official repository tree contains only README.md,absent,False
+69,artifact,factor selections/actions/fills,official repository tree contains only README.md,absent,False
+70,artifact,per-run NAV/return arrays,official repository tree contains only README.md,absent,False

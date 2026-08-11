@@ -1,0 +1,19 @@
+check,paper_statement,observed_or_recomputed,status,paper_result_credit
+paper availability statement versus paper-era repository,full implementation and resources are available,paper-era tree is a two-line title README,paper_source_release_claim_conflict,False
+paper availability statement versus current repository,full implementation and resources are available,current README says inference code and model weights are Coming Soon,paper_source_release_claim_conflict,False
+paper-era source timing,repository existed at submission,only title README committed 76.72 hours before submission,paper_era_placeholder_confirmed,False
+current source history,implementation availability,three commits and one tracked README; no code-bearing revision,current_placeholder_confirmed,False
+default CSI300 CR heatmap versus Table 1,12.99,13.0,compatible_at_heatmap_precision,False
+default CSI300 Sharpe heatmap versus Table 1,1.62,1.618,compatible_at_heatmap_precision,False
+default CSI300 MDD heatmap versus Table 1,6.76,6.8,compatible_at_heatmap_precision,False
+default CSI1000 CR heatmap versus Table 1,42.49,42.5,compatible_at_heatmap_precision,False
+default CSI1000 Sharpe heatmap versus Table 1,4.03,4.031,compatible_at_heatmap_precision,False
+default CSI1000 MDD heatmap versus Table 1,9.25,9.3,compatible_at_heatmap_precision,False
+semantic-description Sharpe decline,approximately 49%,48.765432%,compatible_at_claim_precision,False
+generic-LLM drawdown range,Claude and DeepSeek lead to approximately 15--16% drawdowns,Claude=13.58%; DeepSeek=14.88%,paper_prose_overstates_displayed_range,False
+CR/AR metric identity,all metrics averaged over five runs,no metric formulas or per-run paths; mean CR cannot recover mean AR,paper_metric_definition_and_inputs_missing,False
+five independent runs with deterministic inference,temperature=0 and five runs,"randomized factor samples/training remain possible, but seeds and run outputs are absent",unverifiable_missing_seeds_and_paths,False
+benchmark LLM cutoff,all benchmark pre-training cutoffs no later than 2024-12-31,no model snapshot/version metadata substantiates cutoffs,unverifiable_missing_model_versions,False
+CSI1000 zero-shot claim,transfer without retraining,"no checkpoint, training log, or evaluation invocation exists",unverifiable_missing_training_and_test_artifacts,False
+LLM judge direction,consistency penalty is normalized score/10 and applied asymmetrically,score scale/direction and exact judge rubric are unspecified,paper_reward_definition_incomplete,False
+structural penalty,qualitatively combines parsimony and validity,"no formula, weights, or thresholds supplied",paper_reward_definition_incomplete,False

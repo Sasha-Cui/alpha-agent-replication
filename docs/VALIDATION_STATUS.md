@@ -17,7 +17,7 @@ labels.
 
 ## Passing checks
 
-- Repository test suite: 151 passed.
+- Repository test suite: 157 passed.
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
@@ -35,6 +35,13 @@ labels.
   38/67 source mechanism dimensions match or have meaningful analogues. The
   full-paper strict gate fails as intended and does not alter the separate 3/3
   grade-B component result.
+- Alpha-R1 full-paper audit: 124/124 table cells and all 528 visible heatmap
+  cells are enumerated, with zero native result paths; 0/70 implementation
+  dimensions match because both the paper-era and current official repository
+  trees contain only a README. The paper's full-implementation availability
+  statement conflicts with the repository's Coming Soon roadmap. Its local M0
+  motif proxy remains secondary and receives no replication credit; the
+  full-paper strict gate fails as intended.
 - Stable ICAIF validation entry point: passed.
 - Collaborator index: deterministic 50-row rebuild with no tracked diff.
 - Publication boundary: no tracked Parquet files, third-party repository
