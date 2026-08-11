@@ -1,0 +1,16 @@
+dimension,missing_or_conflicting_evidence,severity,resolved_by_public_sources
+paper-result return paths,Exact Figure 1 paths and Table 1 input series are absent,blocking,False
+paper Figure 2 data,The plotted holdings/weights differ from all released result histories,blocking,False
+Table 1 generator,Released notebook omits CAGR/moments/VaR/CVaR table-generation code,blocking,False
+transaction costs,Paper says 1 bp of gross turnover; source never applies the parameter,blocking,False
+point-in-time fundamentals,No filing date or availability lag is stored,blocking,False
+historical constituency,The 100-name membership file has no effective dates,material,False
+data provenance,No vendor/query/license/retrieval manifest is supplied,material,False
+benchmark identity,Paper names indices while source uses QQQ and SPY ETFs,blocking,False
+observation frequency,Agent paths include forward-filled weekends; benchmarks use trading days,blocking,False
+risk-free rate,Sharpe convention is not specified in the paper,material,False
+model determinism,No seed/repeated-run proof; archived fingerprints vary,blocking,False
+runtime prompt authority,Appendix prompts are edited versions of source templates,material,False
+software environment,"No pinned dependency lock, image, or Python version",material,False
+portable execution,Agent constructors contain absolute Windows data/result paths,material,False
+API cost and retry policy,"No reported cost, retry, timeout, or rate-limit configuration",material,False

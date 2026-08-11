@@ -1,0 +1,71 @@
+strategy,sheet,window,metric,paper_label,paper_value,native_reproduced_value,absolute_error,rounding_tolerance,status,paper_result_credit
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,cagr_pct,CAGR,28.7401,19.297879257638193,9.442220742361808,5.0000001000000005e-05,mismatch,False
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,mean_daily,mean (daily),0.0008,0.0005580672286192189,0.00024193277138078112,5.0000001000000005e-05,mismatch,False
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,std_daily,std (daily),0.0119,0.011832284178384441,6.771582161555975e-05,5.0000001000000005e-05,mismatch,False
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,mean_annualized,mean (ann.),0.1921,0.14063294161204318,0.051467058387956816,5.0000001000000005e-05,mismatch,False
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,std_annualized,std (ann.),0.1896,0.1878316882670967,0.0017683117329032882,5.0000001000000005e-05,mismatch,False
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,sharpe_daily,Sharpe,0.0638,0.047164792546033694,0.0166352074539663,5.0000001000000005e-05,mismatch,False
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,sharpe_annualized,Sharpe (ann.),1.0132,0.7487178702885485,0.2644821297114516,5.0000001000000005e-05,mismatch,False
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-23.8873,-25.178372273905758,1.2910722739057583,5.0000001000000005e-05,mismatch,False
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-1.0563,-1.1907230670140119,0.13442306701401185,5.0000001000000005e-05,mismatch,False
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-2.1079,-2.212261326342854,0.104361326342854,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,cagr_pct,CAGR,42.2341,30.722922032073853,11.511177967926145,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,mean_daily,mean (daily),0.001,0.0008200065559477648,0.00017999344405223523,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,std_daily,std (daily),0.0117,0.012615914147446604,0.0009159141474466038,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,mean_annualized,mean (ann.),0.2603,0.20664165209883673,0.05365834790116325,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,std_annualized,std (ann.),0.186,0.20027142837531103,0.014271428375311035,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,sharpe_daily,Sharpe,0.0881,0.06499779138983201,0.023102208610167985,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,sharpe_annualized,Sharpe (ann.),1.3991,1.031807950715705,0.36729204928429504,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-22.344,-23.021700833463754,0.6777008334637529,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-0.8934,-1.0037718256230257,0.11037182562302572,5.0000001000000005e-05,mismatch,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-1.995,-2.0432373434357034,0.048237343435703295,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,cagr_pct,CAGR,19.3799,12.082737028557155,7.2971629714428445,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,mean_daily,mean (daily),0.0005,0.0003724416817763278,0.00012755831822367219,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,std_daily,std (daily),0.0098,0.010704531769806675,0.0009045317698066751,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,mean_annualized,mean (ann.),0.1342,0.09385530380763461,0.0403446961923654,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,std_annualized,std (ann.),0.1551,0.16992917378579145,0.01482917378579146,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,sharpe_daily,Sharpe,0.0545,0.034792897978671154,0.019707102021328846,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,sharpe_annualized,Sharpe (ann.),0.8652,0.5523201326568346,0.3128798673431654,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-20.7409,-20.532323658771357,0.20857634122864255,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-0.9877,-0.9006920405208739,0.0870079594791261,5.0000001000000005e-05,mismatch,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-1.7126,-1.7987677762884748,0.08616777628847494,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,cagr_pct,CAGR,30.93,24.327256157992228,6.602743842007772,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,mean_daily,mean (daily),0.0008,0.0006717654787250895,0.00012823452127491057,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,std_daily,std (daily),0.0111,0.011791153159327626,0.0006911531593276257,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,mean_annualized,mean (ann.),0.2014,0.16928490063872254,0.03211509936127746,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,std_annualized,std (ann.),0.1762,0.18717875358152675,0.010978753581526751,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,sharpe_daily,Sharpe,0.072,0.05697199159809709,0.015028008401902902,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,sharpe_annualized,Sharpe (ann.),1.1432,0.9044023287877574,0.2387976712122426,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-23.0692,-22.715071076143357,0.3541289238566421,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-1.025,-1.09345063471552,0.06845063471552004,5.0000001000000005e-05,mismatch,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-1.9732,-2.0713061441019343,0.09810614410193419,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,cagr_pct,CAGR,25.7406,13.134163769755158,12.606436230244842,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,mean_daily,mean (daily),0.0007,0.00041478472709450425,0.00028521527290549574,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,std_daily,std (daily),0.0114,0.012157195006904037,0.0007571950069040368,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,mean_annualized,mean (ann.),0.1744,0.10452575122781507,0.06987424877218493,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,std_annualized,std (ann.),0.1817,0.1929894877703055,0.0112894877703055,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,sharpe_daily,Sharpe,0.0605,0.03411845634284464,0.026381543657155358,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,sharpe_annualized,Sharpe (ann.),0.9598,0.5416137036034873,0.4181862963965127,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-21.7132,-22.961223422058485,1.248023422058484,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-1.1024,-1.203123852360308,0.10072385236030801,5.0000001000000005e-05,mismatch,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-2.0331,-2.1621298702515355,0.12902987025153534,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,cagr_pct,CAGR,29.3611,24.211329389379888,5.149770610620113,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,mean_daily,mean (daily),0.0011,0.0009687499041649049,0.00013125009583509514,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,std_daily,std (daily),0.0135,0.014291324171569829,0.000791324171569829,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,mean_annualized,mean (ann.),0.2827,0.24412497584955603,0.038575024150443976,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,std_annualized,std (ann.),0.215,0.2268677379826797,0.011867737982679705,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,sharpe_daily,Sharpe,0.0828,0.06778587432031448,0.01501412567968552,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,sharpe_annualized,Sharpe (ann.),1.3151,1.0760673951277897,0.23903260487221023,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-22.7683,-22.768303549553814,3.549553813542161e-06,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-1.3911,-1.531725518763585,0.14062551876358498,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-2.429,-2.5621976610514383,0.1331976610514385,5.0000001000000005e-05,mismatch,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,cagr_pct,CAGR,26.3131,21.175423784545533,5.137676215454466,5.0000001000000005e-05,mismatch,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,mean_daily,mean (daily),0.001,0.0008315461703500329,0.00016845382964996716,5.0000001000000005e-05,mismatch,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,std_daily,std (daily),0.0107,0.011279290699083405,0.0005792906990834054,5.0000001000000005e-05,mismatch,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,mean_annualized,mean (ann.),0.25,0.20954963492820827,0.04045036507179173,5.0000001000000005e-05,mismatch,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,std_annualized,std (ann.),0.1698,0.17905318892987138,0.00925318892987137,5.0000001000000005e-05,mismatch,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,sharpe_daily,Sharpe,0.0928,0.0737232679371946,0.0190767320628054,5.0000001000000005e-05,mismatch,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,sharpe_annualized,Sharpe (ann.),1.4728,1.1703205968047923,0.30247940319520783,5.0000001000000005e-05,mismatch,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-18.7552,-18.755235977747365,3.5977747366189305e-05,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-0.9144,-1.0752101273907866,0.1608101273907866,5.0000001000000005e-05,mismatch,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-1.8389,-1.9452648757115405,0.10636487571154052,5.0000001000000005e-05,mismatch,False

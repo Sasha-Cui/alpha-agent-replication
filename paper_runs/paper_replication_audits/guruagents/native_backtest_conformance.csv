@@ -1,0 +1,8 @@
+series,workbook_sheet,rows,shape_match,dates_match,maximum_numeric_absolute_error,shipped_workbook_series_reproduced,paper_series_reproduced,paper_result_credit
+graham,Benjamin_Graham_Returns,583,True,True,7.105427357601002e-15,True,False,False
+buffett,Warren_Buffett_Returns,583,True,True,7.105427357601002e-15,True,False,False
+greenblatt,Joel_Greenblatt_Returns,583,True,True,5.329070518200751e-15,True,False,False
+piotroski,Joseph_Piotroski_Returns,583,True,True,7.105427357601002e-15,True,False,False
+altman,Edward_Altman_Returns,583,True,True,5.329070518200751e-15,True,False,False
+QQQ,Benchmark_QQQ,407,True,True,5.684341886080802e-14,True,False,False
+SPY,Benchmark_SPY,407,True,True,5.684341886080802e-14,True,False,False

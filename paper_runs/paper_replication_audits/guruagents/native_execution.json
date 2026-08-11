@@ -1,0 +1,103 @@
+{
+  "paper_source_compilation": {
+    "exit_codes": [
+      0,
+      0
+    ],
+    "produced_pdf_pages": 7,
+    "expected_pdf_pages": 7,
+    "page_count_match": true,
+    "warning_lines_second_pass": 48,
+    "paper_result_credit": false
+  },
+  "released_source_native_backtest": {
+    "execution_mode": "source notebook code cells 1-4; pinned released benchmark cache injected; network disabled",
+    "captured_output_sha256": "00f63a98c0c2ab8ae38761afab0aaa7eba74ac0b463eb4963b5edd8a39e7f32c",
+    "captured_output_lines": 63,
+    "source_workbook_series_reproduced": 7,
+    "source_workbook_series_total": 7,
+    "paper_result_credit": false
+  },
+  "native_backtest_series": [
+    {
+      "series": "graham",
+      "workbook_sheet": "Benjamin_Graham_Returns",
+      "rows": 583,
+      "shape_match": true,
+      "dates_match": true,
+      "maximum_numeric_absolute_error": 7.105427357601002e-15,
+      "shipped_workbook_series_reproduced": true,
+      "paper_series_reproduced": false,
+      "paper_result_credit": false
+    },
+    {
+      "series": "buffett",
+      "workbook_sheet": "Warren_Buffett_Returns",
+      "rows": 583,
+      "shape_match": true,
+      "dates_match": true,
+      "maximum_numeric_absolute_error": 7.105427357601002e-15,
+      "shipped_workbook_series_reproduced": true,
+      "paper_series_reproduced": false,
+      "paper_result_credit": false
+    },
+    {
+      "series": "greenblatt",
+      "workbook_sheet": "Joel_Greenblatt_Returns",
+      "rows": 583,
+      "shape_match": true,
+      "dates_match": true,
+      "maximum_numeric_absolute_error": 5.329070518200751e-15,
+      "shipped_workbook_series_reproduced": true,
+      "paper_series_reproduced": false,
+      "paper_result_credit": false
+    },
+    {
+      "series": "piotroski",
+      "workbook_sheet": "Joseph_Piotroski_Returns",
+      "rows": 583,
+      "shape_match": true,
+      "dates_match": true,
+      "maximum_numeric_absolute_error": 7.105427357601002e-15,
+      "shipped_workbook_series_reproduced": true,
+      "paper_series_reproduced": false,
+      "paper_result_credit": false
+    },
+    {
+      "series": "altman",
+      "workbook_sheet": "Edward_Altman_Returns",
+      "rows": 583,
+      "shape_match": true,
+      "dates_match": true,
+      "maximum_numeric_absolute_error": 5.329070518200751e-15,
+      "shipped_workbook_series_reproduced": true,
+      "paper_series_reproduced": false,
+      "paper_result_credit": false
+    },
+    {
+      "series": "QQQ",
+      "workbook_sheet": "Benchmark_QQQ",
+      "rows": 407,
+      "shape_match": true,
+      "dates_match": true,
+      "maximum_numeric_absolute_error": 5.684341886080802e-14,
+      "shipped_workbook_series_reproduced": true,
+      "paper_series_reproduced": false,
+      "paper_result_credit": false
+    },
+    {
+      "series": "SPY",
+      "workbook_sheet": "Benchmark_SPY",
+      "rows": 407,
+      "shape_match": true,
+      "dates_match": true,
+      "maximum_numeric_absolute_error": 5.684341886080802e-14,
+      "shipped_workbook_series_reproduced": true,
+      "paper_series_reproduced": false,
+      "paper_result_credit": false
+    }
+  ],
+  "full_native_paper_execution_attempted": false,
+  "full_native_paper_execution_blocker": "Exact paper return paths, Figure 2 portfolio data, Table 1 generator, point-in-time inputs, and applied transaction-cost path are not released.",
+  "paper_result_credit": false
+}

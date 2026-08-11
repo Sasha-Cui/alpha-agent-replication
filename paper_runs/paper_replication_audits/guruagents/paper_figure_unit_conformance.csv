@@ -1,0 +1,43 @@
+figure,result_unit,paper_units_total,released_underlying_paper_series,native_reproduction,paper_result_credit,status
+Figure 1 cumulative returns,Benjamin Graham,7,False,released notebook curve visibly and numerically differs,False,not_reproduced_no_matching_curve_or_paper_run_path
+Figure 1 cumulative returns,Warren Buffett,7,False,released notebook curve visibly and numerically differs,False,not_reproduced_no_matching_curve_or_paper_run_path
+Figure 1 cumulative returns,Joel Greenblatt,7,False,released notebook curve visibly and numerically differs,False,not_reproduced_no_matching_curve_or_paper_run_path
+Figure 1 cumulative returns,Joseph Piotroski,7,False,released notebook curve visibly and numerically differs,False,not_reproduced_no_matching_curve_or_paper_run_path
+Figure 1 cumulative returns,Edward Altman,7,False,released notebook curve visibly and numerically differs,False,not_reproduced_no_matching_curve_or_paper_run_path
+Figure 1 cumulative returns,NASDAQ 100,7,False,released notebook curve visibly and numerically differs,False,not_reproduced_no_matching_curve_or_paper_run_path
+Figure 1 cumulative returns,S&P 500,7,False,released notebook curve visibly and numerically differs,False,not_reproduced_no_matching_curve_or_paper_run_path
+Figure 2 portfolio weights,Benjamin Graham / bar 1,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Benjamin Graham / bar 2,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Benjamin Graham / bar 3,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Benjamin Graham / bar 4,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Benjamin Graham / bar 5,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Benjamin Graham / bar 6,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Benjamin Graham / bar 7,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Edward Altman / bar 1,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Edward Altman / bar 2,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Edward Altman / bar 3,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Edward Altman / bar 4,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Edward Altman / bar 5,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Edward Altman / bar 6,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Edward Altman / bar 7,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joel Greenblatt / bar 1,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joel Greenblatt / bar 2,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joel Greenblatt / bar 3,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joel Greenblatt / bar 4,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joel Greenblatt / bar 5,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joel Greenblatt / bar 6,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joel Greenblatt / bar 7,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joseph Piotroski / bar 1,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joseph Piotroski / bar 2,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joseph Piotroski / bar 3,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joseph Piotroski / bar 4,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joseph Piotroski / bar 5,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joseph Piotroski / bar 6,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Joseph Piotroski / bar 7,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Warren Buffett / bar 1,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Warren Buffett / bar 2,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Warren Buffett / bar 3,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Warren Buffett / bar 4,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Warren Buffett / bar 5,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Warren Buffett / bar 6,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released
+Figure 2 portfolio weights,Warren Buffett / bar 7,35,False,released portfolio histories produce a different dated distribution,False,not_reproduced_paper_plot_data_not_released

@@ -1,0 +1,36 @@
+agent,analysis_start,analysis_end,raw_rows,raw_unique_tickers,raw_duplicate_tickers,raw_weight_sum,raw_weights_all_integer,raw_scores_complete,unknown_or_blank_tickers,source_loader_rows_after_drop_and_deduplicate,source_loader_normalizes_to_weight_sum,response_begins_with_only_required_table,strict_prompt_output_contract_satisfied,paper_figure_2_distribution_reproduced,paper_result_credit
+Benjamin Graham,2023-10-01,2023-12-31,92,63,29,342.0,True,True,CHRT; CPTR,63,100.0,False,False,False,False
+Benjamin Graham,2024-01-01,2024-03-31,95,26,69,285.0,True,True,,26,100.0,False,False,False,False
+Benjamin Graham,2024-04-01,2024-06-30,93,73,20,279.0,True,True,INTL,73,100.0,False,False,False,False
+Benjamin Graham,2024-07-01,2024-09-30,92,48,44,276.0,True,True,,48,100.0,False,False,False,False
+Benjamin Graham,2024-10-01,2024-12-31,15,15,0,112.0,True,True,,15,100.0,False,False,False,False
+Benjamin Graham,2025-01-01,2025-03-31,86,78,8,258.0,True,True,,78,100.0,False,False,False,False
+Benjamin Graham,2025-04-01,2025-06-30,20,20,0,100.0,True,True,,20,100.0,False,False,False,False
+Edward Altman,2023-10-01,2023-12-31,30,30,0,90.0,True,True,,30,100.0,False,False,False,False
+Edward Altman,2024-01-01,2024-03-31,31,31,0,100.0,True,False,,30,100.0,False,False,False,False
+Edward Altman,2024-04-01,2024-06-30,30,16,14,90.0,True,True,,16,100.0,False,False,False,False
+Edward Altman,2024-07-01,2024-09-30,30,29,1,90.0,True,True,,29,100.0,False,False,False,False
+Edward Altman,2024-10-01,2024-12-31,30,28,2,90.0,True,True,,28,100.0,False,False,False,False
+Edward Altman,2025-01-01,2025-03-31,30,30,0,90.0,True,True,,30,100.0,False,False,False,False
+Edward Altman,2025-04-01,2025-06-30,22,22,0,88.0,True,True,,22,100.0,False,False,False,False
+Joel Greenblatt,2023-10-01,2023-12-31,30,30,0,120.0,True,True,,30,100.0,False,False,False,False
+Joel Greenblatt,2024-01-01,2024-03-31,30,29,1,120.0,True,True,,29,100.0,False,False,False,False
+Joel Greenblatt,2024-04-01,2024-06-30,30,30,0,120.0,True,True,,30,100.0,False,False,False,False
+Joel Greenblatt,2024-07-01,2024-09-30,30,30,0,120.0,True,True,,30,100.0,False,False,False,False
+Joel Greenblatt,2024-10-01,2024-12-31,30,30,0,120.0,True,True,,30,100.0,False,False,False,False
+Joel Greenblatt,2025-01-01,2025-03-31,30,30,0,120.0,True,True,,30,100.0,False,False,False,False
+Joel Greenblatt,2025-04-01,2025-06-30,30,30,0,120.0,True,True,,30,100.0,False,False,False,False
+Joseph Piotroski,2023-10-01,2023-12-31,12,12,0,111.0,True,True,,12,100.0,False,False,False,False
+Joseph Piotroski,2024-01-01,2024-03-31,23,23,0,149.0,True,True,,23,100.0,False,False,False,False
+Joseph Piotroski,2024-04-01,2024-06-30,24,24,0,103.0,True,True,,24,100.0,False,False,False,False
+Joseph Piotroski,2024-07-01,2024-09-30,15,15,0,128.0,True,True,,15,100.0,False,False,False,False
+Joseph Piotroski,2024-10-01,2024-12-31,23,23,0,144.0,True,True,,23,100.0,False,False,False,False
+Joseph Piotroski,2025-01-01,2025-03-31,18,18,0,148.0,True,True,,18,100.0,True,False,False,False
+Joseph Piotroski,2025-04-01,2025-06-30,29,29,0,195.0,True,True,,29,100.0,False,False,False,False
+Warren Buffett,2023-10-01,2023-12-31,20,20,0,131.0,True,True,,20,100.0,False,False,False,False
+Warren Buffett,2024-01-01,2024-03-31,15,15,0,126.0,True,True,,15,100.0,False,False,False,False
+Warren Buffett,2024-04-01,2024-06-30,20,20,0,126.0,True,True,,20,100.0,False,False,False,False
+Warren Buffett,2024-07-01,2024-09-30,15,15,0,120.0,True,True,,15,100.0,False,False,False,False
+Warren Buffett,2024-10-01,2024-12-31,15,15,0,118.0,True,True,,15,100.0,False,False,False,False
+Warren Buffett,2025-01-01,2025-03-31,15,15,0,105.0,True,True,,15,100.0,False,False,False,False
+Warren Buffett,2025-04-01,2025-06-30,15,15,0,110.0,True,True,,15,100.0,False,False,False,False
