@@ -59,8 +59,8 @@ def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     assert public["precise_native_or_access_blocker"].notna().all()
     assert public["precise_native_or_access_blocker"].str.contains(":A[123]_", regex=True).all()
     assert public["native_pipeline_disposition"].value_counts().to_dict() == {
-        "static_common_task_blocker_recorded_not_execution_targeted": 6,
-        "targeted_execution_recorded": 12,
+        "static_common_task_blocker_recorded_not_execution_targeted": 1,
+        "targeted_execution_recorded": 17,
     }
     reconstructed = public[public["good_faith_reconstruction"].eq("yes")]
     assert len(reconstructed) == 13
@@ -104,6 +104,24 @@ def test_quantaalpha_audit_credits_components_but_zero_paper_results() -> None:
     assert "Large v1/v2-to-v3 result revisions" in row[
         "precise_native_or_access_blocker"
     ]
+
+
+def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False).set_index(
+        "canonical_work_id"
+    )
+    expected = {
+        "CensusACL2024emnlpmain63": "paper_audit:partial_174_of_468_traditional_baseline_cells",
+        "CensusACL2026findingsacl456": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
+        "CensusArxiv231113743": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
+        "CensusArxiv250510278": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
+        "CensusArxiv250909995": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
+        "WorkAutomateStrategy": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
+    }
+    for work_id, status in expected.items():
+        row = routes.loc[work_id]
+        assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
+        assert row["native_execution_audit_status"] == status
 
 
 def test_alpha_r1_placeholder_audit_never_promotes_the_motif_proxy() -> None:
