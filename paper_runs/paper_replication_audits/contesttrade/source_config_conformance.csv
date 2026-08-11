@@ -1,0 +1,30 @@
+dimension,paper_requirement,released_evidence,status
+paper_test_period,2025-01-01 through 2025-06-30,no experiment date driver/config,missing
+paper_training_validation_period,2024-07 through 2024-12 or earlier,no training dataset/split driver,missing
+daily_a_share_universe,China A-share daily,market utilities exist; experiment universe snapshot absent,partial
+transaction_cost,0.001,CN utility uses multiple commission/stamp/transfer/slippage fields,mismatch
+t_plus_one_and_price_limits,enforced,market utility code exists; no released backtester,partial_unverified
+data_history_window_m,m=5,Data predictor constructs 1d/3d/5d reward summaries,component_match
+research_prediction_window_n,n=5,ResearchPredictor default prediction_window_days=3,mismatch
+factor_model_features,"mean, volatility, trend, drawdown",shipped models expose mean/std only,mismatch
+rolling_daily_training,retrain only on labels realized before decision t,two fixed joblibs; no data-contest trainer or training provenance,missing
+data_allocation,token-budgeted facility-location lazy greedy; L0=32k L*=16k,sort predicted scores and select top_k=3,mismatch
+data_similarity,embedding cosine similarity,no facility-location/cosine path in DataContest,missing
+research_allocation,"max(0, Sharpe) normalized",optimizer clips negative Sharpe and normalizes positive total,component_match
+zi_rating_scale,"integer -2,-1,0,1,2",LLM rating prompt requests -2 through 2,component_match
+zi_reward_aggregation,signed rating*price-change sum,positive ratings only; +/-20 clip; average over valid observations,mismatch
+paper_agent_tool_count,8 tools,research config lists 7 tool names,mismatch
+factor_context_budget,about 4k tokens per factor,default final_target_tokens=4000; at least one check uses string length,partial
+data_contest_switch,Data Contest active,isolated code exists but active public workflow never calls it,not_implemented_in_active_path
+research_contest_switch,Research Contest active,config contest_mode false and active workflow never calls it,not_implemented_in_active_path
+deepseek_models,DeepSeek-V3 and DeepSeek-R1,aliases deepseek-chat and deepseek-reasoner; exact snapshots absent,partial_unpinned
+llm_temperature,paper provides no complete numeric run configuration,mutable source values such as 0.7 and 0.1,paper_underspecified
+temporal_search_filter,records no later than formation date,search request bounds prior 30 days; original returned record snapshot absent,component_partial
+paper_input_snapshot,exact news/financial/price data,only market metadata caches shipped,missing
+paper_output_snapshot,"contest scores, actions, holdings, returns",no tracked native experiment outputs,missing
+backtest_evaluator,"CR, Sharpe, MDD and constraints",no released experiment backtester/metric evaluator,missing
+baseline_implementations,8 paper baselines,no released native paper baseline runner,missing
+ablation_runner,five ablations plus full,no released ablation experiment driver,missing
+random_seeds,exact stochastic controls,no paper-run seeds,missing
+cost_or_api_snapshot,exact external services and responses,keys/services required; no immutable response snapshot,missing
+csi_component_cache_time,point-in-time universe at each decision,CSI utility paths load cache snapshot trade_date 20250630,current_release_path_risk

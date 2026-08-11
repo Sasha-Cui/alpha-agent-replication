@@ -1,0 +1,5 @@
+case,rating_price_change_pct_pairs,paper_signed_sum,released_positive_only_clipped_average,absolute_difference,status
+symmetric_bullish_and_correct_bearish,"[[2.0, 5.0], [-2.0, -5.0]]",20.0,5.0,15.0,semantic_mismatch
+bearish_but_price_rises,"[[-2.0, 5.0]]",-10.0,0.0,10.0,semantic_mismatch
+single_bullish,"[[2.0, 5.0]]",10.0,10.0,0.0,match
+clipping_changes_large_move,"[[1.0, 25.0]]",25.0,20.0,5.0,semantic_mismatch

@@ -1,0 +1,8 @@
+check,paper_requirement,released_evidence,observed,status
+public_cli_import,runnable system entrypoint,cli/main.py imports and constructs SimpleTradeCompany,True,component_present
+active_workflow_nodes,data agents -> Data Contest -> researchers -> Research Contest -> portfolio,"run_data_agents,run_research_agents,finalize","['run_data_agents', 'run_research_agents', 'finalize']",mismatch_contests_and_portfolio_absent
+data_contest_reachable,Data Contest scores and allocates factor context,no DataContest reference/import/call in contest_trade/main.py,False,not_reachable_from_public_entrypoint
+research_contest_reachable,Research Contest predicts and weights signals,no ResearchContest reference/import/call in contest_trade/main.py,False,not_reachable_from_public_entrypoint
+portfolio_construction,positive-Sharpe weighted portfolio,finalize assigns best_signals = research_signals without allocation,True,mismatch_no_active_allocation
+research_model_files,runnable Research Contest predictor,ResearchPredictor raises FileNotFoundError when two joblibs are absent,False,missing_both_required_models
+research_predict_signal_scores_method,Research Contest callable prediction method,research_contest.py calls predict_signal_scores,False,missing_called_method

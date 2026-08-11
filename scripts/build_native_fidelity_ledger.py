@@ -89,9 +89,15 @@ ARTIFACT_NOTES = {
     ),
     "SYS-CONTEST-TRADE": (
         "N",
-        "The snapshot ships code and market-reference caches; the README says "
-        "reports are created at run time, and no generated dated signal or return "
-        "series is bundled.",
+        "A pinned arXiv-v4 audit enumerates all 49 numeric cells in Tables 1--3. "
+        "The released CLI runs a three-node agent graph that never calls either "
+        "paper contest and does not construct the Sharpe-weighted portfolio. The "
+        "isolated Research Contest lacks both required models and a method it calls; "
+        "the isolated Data Contest ships two fixed models without rolling-training "
+        "provenance, uses top-3 sorting rather than facility-location allocation, and "
+        "changes the paper's signed ZI sum into a clipped positive-only average. No "
+        "native inputs, outputs, evaluator, baselines, ablations, or seeds are shipped, "
+        "so zero paper result cells count as native reproductions.",
     ),
     "SYS-CRYPTO-TRADE": (
         "Y",
@@ -161,7 +167,7 @@ ARTIFACT_NOTES = {
 
 TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": "legacy_targeted:completed_no_direct_strategy_returns",
-    "SYS-CONTEST-TRADE": "legacy_targeted:blocked_on_replay_adapter",
+    "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-FIN-CON": "legacy_targeted:blocked_jkp_scope_incompatible",
     "SYS-GURU-AGENTS": "legacy_targeted:legacy_non_jkp_diagnostic_only",
     "SYS-QUANT-AGENT-HFT": "legacy_targeted:blocked_jkp_scope_incompatible",

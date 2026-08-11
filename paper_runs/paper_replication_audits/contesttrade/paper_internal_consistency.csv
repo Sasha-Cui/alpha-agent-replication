@@ -1,0 +1,4 @@
+metric,table_1_contesttrade,table_3_full,absolute_difference,status
+cumulative_return_pct,52.8,52.8,0.0,paper_internal_identity_match_not_independent_reproduction
+sharpe_ratio,3.12,3.12,0.0,paper_internal_identity_match_not_independent_reproduction
+max_drawdown_pct,12.41,12.41,0.0,paper_internal_identity_match_not_independent_reproduction
