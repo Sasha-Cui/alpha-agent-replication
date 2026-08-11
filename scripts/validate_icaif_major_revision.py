@@ -558,7 +558,7 @@ def main() -> int:
         "$6.9508\\%$",
         "Holm $p=0.0279$",
         "five B-conditional and four C-conditional rows are excluded",
-        "independent second coding has not yet been completed",
+        "completed the D07 three-row owner attestation",
         "\\input{tables/faithful_component_census.tex}",
         "Holm adjustment is across the three faithful components",
         "\\input{tables/guruagents_prompt_replay_attribution.tex}",
@@ -637,7 +637,7 @@ def main() -> int:
             and "exhaustive set of evaluator-valid example seeds" in folded_text
             and "no missing-return imputation" in folded_text
             and "five b-conditional and four c-conditional rows are excluded" in folded_text
-            and "independent second coding has not yet been completed" in folded_text,
+            and "completed the d07 three-row owner attestation" in folded_text,
             "primary faithful-component scope, results, or limitations absent",
         )
         require(

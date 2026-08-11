@@ -18,8 +18,8 @@ and publish it.
   separately from confirmatory evidence.
 - [x] Prepare the compact, outcome-free D07 owner-review packet and
   fail-closed three-row attestation form for the primary census.
-- [ ] Have Sasha independently adjudicate and sign all three primary rows;
-  do not treat automated upstream conformance as that human review.
+- [x] Sasha Cui reviewed and approved all three primary rows on 2026-08-11;
+  automated upstream conformance remains separately recorded.
 
 ## Environment and validation
 

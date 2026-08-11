@@ -200,15 +200,16 @@ def test_source_evaluator_skips_nonfinite_rank_ic_times() -> None:
         released_cross_sectional_path(repeated, candidate_id)
 
 
-def test_owner_review_attestation_is_valid_but_explicitly_pending() -> None:
+def test_owner_review_attestation_is_complete_and_valid() -> None:
     attestation = (
         Path(__file__).resolve().parents[1]
         / "paper_runs/faithful_component_replications/owner_review_attestation.csv"
     )
     summary, failures = review_summary(attestation, PRIMARY_COMPONENTS)
     assert failures == []
-    assert summary["status"] == "pending"
-    assert summary["completed_rows"] == 0
+    assert summary["status"] == "complete"
+    assert summary["completed_rows"] == 3
+    assert summary["required_rows"] == 3
 
 
 def test_owner_review_validator_rejects_fabricated_completion(
@@ -220,7 +221,9 @@ def test_owner_review_validator_rejects_fabricated_completion(
         / "paper_runs/faithful_component_replications/owner_review_attestation.csv"
     )
     frame = pd.read_csv(source, dtype=str, keep_default_na=False)
-    frame["review_status"] = "complete"
+    frame.loc[0, "reviewer"] = ""
+    frame.loc[0, "source_expression_match"] = ""
+    frame.loc[0, "dsl_semantics_match"] = ""
     frame.to_csv(attestation, index=False)
     summary, failures = review_summary(attestation, PRIMARY_COMPONENTS)
     assert summary["status"] == "invalid"

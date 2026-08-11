@@ -57,9 +57,9 @@ returns, with zero portfolio-return discrepancy. No empirical outcome enters
 this conformance fixture.
 
 D07 assigns the independent human review to Sasha. The compact, outcome-free
-packet is `docs/faithful_component_owner_review_packet.md`; its fail-closed
-attestation is tracked beside the primary ledger. It remains 0/3 pending and
-is not represented as complete by the technical 100% gate.
+packet is `docs/faithful_component_owner_review_packet.md`; Sasha Cui approved
+all 3/3 rows on 2026-08-11. The completed, fail-closed attestation is tracked
+beside, and remains separately represented from, the technical 100% gate.
 
 Across the 150 matched evaluation months, median annualized alpha for these three
 components is +1.2250% under CAPM, +0.2549% under FF3, -0.4009% under FF5 plus

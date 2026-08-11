@@ -15,9 +15,9 @@ return definition, and equal-mean top/bottom-quintile evaluator; only cadence,
 universe, and holding horizon change. The fail-closed PR-style gate reports 3/3 strict grade
 B components (100%). The offline gate also executes the exact pinned upstream
 evaluator on outcome-blind synthetic OHLCV data; all 1,296 score comparisons
-and 105 portfolio timestamps conform. The separate D07 owner-review
-attestation remains explicitly pending. Nine additional formulas with unpinned
-or reconstructed
+and 105 portfolio timestamps conform. The separate D07 owner attestation is
+also complete: Sasha Cui approved all three rows on 2026-08-11. Nine additional
+formulas with unpinned or reconstructed
 semantics remain visible as non-primary diagnostics. A separate GuruAgents replay
 executes all 190 disclosed prompt cells, constructs 24 costed paths, and reports
 matched factor attribution for 12 long-archive paths over a shared 33-month

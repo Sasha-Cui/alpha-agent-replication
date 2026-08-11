@@ -11,9 +11,10 @@ outcome-blind synthetic panel (1,296 scores and 105 portfolio timestamps). See
 `docs/FIDELITY_AUDIT.md` and `paper_runs/faithful_component_replications/`.
 
 The audit's independent-human-review recommendation is tracked separately and
-honestly remains pending: D07 assigns Sasha the three-row owner attestation in
-`docs/faithful_component_owner_review_packet.md`. Technical 100% is not labeled
-as completed human second coding.
+is complete for the primary census: under D07, Sasha Cui approved all three
+owner-attestation rows on 2026-08-11. The record is in
+`docs/faithful_component_owner_review_packet.md`; the technical 100% gate and
+the completed human review remain separately reported.
 
 ## Bottom Line
 

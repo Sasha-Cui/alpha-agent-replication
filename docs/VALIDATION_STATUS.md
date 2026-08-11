@@ -7,8 +7,8 @@ tracked aggregate evidence on Bouchet.
 
 | Artifact | SHA-256 |
 | --- | --- |
-| `docs/paper/icaif2026_submission.tex` | `7abddc75c259045912f9c0eb8595baf907b17768d99ac98c79e558e65ac0f2f9` |
-| `output/pdf/icaif2026_submission.pdf` | `1890b17ac316240eeb63a60a895a18f74dd443ac07d19902be69ebe992631932` |
+| `docs/paper/icaif2026_submission.tex` | `c6becdc61b62a865d47f254de8fd09ff620b58f17f10658930c6f380aa07d7f4` |
+| `output/pdf/icaif2026_submission.pdf` | `168331d42d7a4306ecfb9167dff7f7b5ef19b5123f1282a8eedc63417c223306` |
 
 The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
@@ -28,8 +28,8 @@ labels.
   and within-benchmark Holm families verified.
 - Exact-source offline conformance: 1,296 synthetic score comparisons and 105
   eligible portfolio timestamps match; portfolio-return discrepancy is zero.
-- Independent D07 owner review: valid pending record, 0/3 rows complete; the
-  technical 100% result is not represented as a completed human review.
+- D07 owner review: complete, with all 3/3 rows approved by Sasha Cui on
+  2026-08-11; it remains separately represented from the technical 100% result.
 - Stable ICAIF validation entry point: passed.
 - Collaborator index: deterministic 50-row rebuild with no tracked diff.
 - Publication boundary: no tracked Parquet files, third-party repository
@@ -88,7 +88,7 @@ QuantEvolver release and passes 3/3 strict grade B (100%). The percentage applie
 to disclosed evaluator components under cadence, universe, and horizon
 adaptations, not the source discovery system or published portfolio.
 The exact-source synthetic conformance gate passes without empirical outcomes;
-Sasha's independent three-row attestation remains pending.
+Sasha Cui's separate three-row D07 owner attestation is complete.
 The older 12-formula bundle is a mixed-fidelity diagnostic outside that
 denominator. The
 separate GuruAgents experiment is a current-endpoint public-prompt replay with
