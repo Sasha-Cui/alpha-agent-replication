@@ -188,8 +188,14 @@ ARTIFACT_NOTES = {
     ),
     "SYS-GURU-AGENTS": (
         "Y",
-        "The snapshot bundles dated quarterly Nasdaq-100 portfolio CSVs, analysis "
-        "logs, and backtest workbooks.  Coverage is U.S.-only and not the six-country "
+        "A pinned v1 paper audit executes the paper-era notebook and reproduces all "
+        "7 shipped workbook paths, but only 2/70 Table 1 cells (the two benchmark "
+        "MDDs), 0/7 complete rows, 0/42 figure units, and 0/5 verbatim prompts receive "
+        "paper-result credit. The 35 archived GPT runs retain their tool logs, but "
+        "the stated transaction cost is not applied, agent and benchmark frequencies "
+        "differ, QQQ/SPY stand in for indices, point-in-time filings are absent, the "
+        "claimed deterministic scorer is LLM-mediated, and no raw run satisfies the "
+        "strict output contract. Coverage is U.S.-only and not the six-country "
         "common-task panel.",
     ),
     "SYS-MASS": (
@@ -245,7 +251,7 @@ TARGETED_EXECUTION = {
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
-    "SYS-GURU-AGENTS": "legacy_targeted:legacy_non_jkp_diagnostic_only",
+    "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
