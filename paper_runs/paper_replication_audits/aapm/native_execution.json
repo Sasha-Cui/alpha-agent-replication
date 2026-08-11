@@ -1,0 +1,33 @@
+{
+  "analysis.py entrypoint": {
+    "command": [
+      "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+      "analysis.py",
+      "0"
+    ],
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/analysis.py\", line 6, in <module>\n    from memdb import MemDB\n  File \"/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/memdb.py\", line 1, in <module>\n    import chromadb\nModuleNotFoundError: No module named 'chromadb'\n",
+    "stdout": ""
+  },
+  "model.py entrypoint": {
+    "command": [
+      "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+      "model.py"
+    ],
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/model.py\", line 8, in <module>\n    import wandb\nModuleNotFoundError: No module named 'wandb'\n",
+    "stdout": ""
+  },
+  "source syntax compile": {
+    "command": [
+      "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+      "-m",
+      "compileall",
+      "-q",
+      "."
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  }
+}

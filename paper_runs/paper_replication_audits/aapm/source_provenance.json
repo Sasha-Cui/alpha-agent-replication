@@ -1,0 +1,129 @@
+{
+  "arxiv_record": "https://arxiv.org/abs/2409.17266",
+  "current_head": "cc54e4337fcd4089dc69e4a1173e82a675648475",
+  "current_tree_sha256": "fe28d88828b080f86f7493c182d5d7f29d4e4cd92a2d9f4e526cc08dfb7794e3",
+  "github_snapshot": {
+    "captured_commits": 9,
+    "captured_forks": 14,
+    "current_head": "cc54e4337fcd4089dc69e4a1173e82a675648475",
+    "default_branch": "main",
+    "license": "MIT",
+    "official_repository": "https://github.com/chengjunyan1/AAPM"
+  },
+  "official_repository": "https://github.com/chengjunyan1/AAPM",
+  "paper_era_commit": "f7096b19c9387377b7f3c9ca9795345321968a7c",
+  "paper_era_tree_sha256": "4617508f0c4fc984a97ca258d575963adeb589aef4db7b9bee86d48d9315856c",
+  "repository_change_since_paper_era": [
+    "README.md"
+  ],
+  "v1_pdf_links": [
+    {
+      "page": "1",
+      "uri": "jc.th@dartmouth.edu"
+    },
+    {
+      "page": "1",
+      "uri": "pc@dartmouth.edu"
+    },
+    {
+      "page": "2",
+      "uri": "https://github.com/chengjunyan1/AAPM"
+    },
+    {
+      "page": "2",
+      "uri": "https://github.com/chengjunyan1/AAPM"
+    },
+    {
+      "page": "9",
+      "uri": "https://www.wandb.com/"
+    },
+    {
+      "page": "9",
+      "uri": "https://www.wandb.com/"
+    },
+    {
+      "page": "9",
+      "uri": "https://openreview.net/forum?id=s9z0HzWJJp"
+    },
+    {
+      "page": "9",
+      "uri": "https://openreview.net/forum?id=s9z0HzWJJp"
+    },
+    {
+      "page": "9",
+      "uri": "https://openreview.net/forum?id=s9z0HzWJJp"
+    },
+    {
+      "page": "9",
+      "uri": "https://doi.org/10.5281/zenodo.3828935"
+    },
+    {
+      "page": "10",
+      "uri": "https://doi.org/10.1016/0022-0531(76)90046-6"
+    },
+    {
+      "page": "10",
+      "uri": "https://doi.org/10.1016/0022-0531(76)90046-6"
+    },
+    {
+      "page": "10",
+      "uri": "https://arxiv.org/abs/2309.07597"
+    },
+    {
+      "page": "10",
+      "uri": "https://arxiv.org/abs/2309.07597"
+    }
+  ],
+  "v1_pdf_sha256": "ef2642acb9ac61b2fd87849a97b81c0aad281ab247f27d7f3deb8fea935ee61f",
+  "v1_pdf_url": "https://arxiv.org/pdf/2409.17266v1",
+  "v1_source_sha256": "c2fe1b9cf4efc069873b83fe32d74f14fa77f167394007dd0746ac2944b84a01",
+  "v2_pdf_links": [
+    {
+      "page": "2",
+      "uri": "https://github.com/chengjunyan1/AAPM"
+    },
+    {
+      "page": "10",
+      "uri": "https://www.together.ai/"
+    },
+    {
+      "page": "11",
+      "uri": "https://www.wandb.com/"
+    },
+    {
+      "page": "11",
+      "uri": "https://www.wandb.com/"
+    },
+    {
+      "page": "11",
+      "uri": "https://openreview.net/forum?id=s9z0HzWJJp"
+    },
+    {
+      "page": "11",
+      "uri": "https://github.com/Lightning-AI/lightning"
+    },
+    {
+      "page": "11",
+      "uri": "https://github.com/Lightning-AI/lightning"
+    },
+    {
+      "page": "12",
+      "uri": "http://www.nber.org/papers/w33351"
+    },
+    {
+      "page": "12",
+      "uri": "https://openreview.net/forum?id=XeI4Ou8Ncp"
+    },
+    {
+      "page": "12",
+      "uri": "https://www.sciencedirect.com/science/article/pii/0022053176900466"
+    },
+    {
+      "page": "12",
+      "uri": "https://www.sciencedirect.com/science/article/pii/0022053176900466"
+    }
+  ],
+  "v2_pdf_sha256": "7e485996d52da6e48b1ac253947b2e9e01904a744c79f5af5dc1b91d1c3f4ded",
+  "v2_pdf_url": "https://arxiv.org/pdf/2409.17266v2",
+  "v2_source_sha256": "4c81eea6f0d9184258620ede7774350e94916f4e1cebc05fde8067942a81a782"
+}

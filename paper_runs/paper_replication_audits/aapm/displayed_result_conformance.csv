@@ -1,0 +1,277 @@
+version,table,row_number,method,metric,displayed_value,author_output_available,independent_end_to_end_reproduction,credit_boundary
+v1,table:sr,1,NN,SR_TP,3.82,no,no,paper_display_only_no_result_credit
+v1,table:sr,1,NN,SR_EW,2.83,no,no,paper_display_only_no_result_credit
+v1,table:sr,1,NN,SR_VW,2.36,no,no,paper_display_only_no_result_credit
+v1,table:sr,1,NN,MDD_TP,4.82,no,no,paper_display_only_no_result_credit
+v1,table:sr,1,NN,MDD_EW,8.12,no,no,paper_display_only_no_result_credit
+v1,table:sr,1,NN,MDD_VW,9.12,no,no,paper_display_only_no_result_credit
+v1,table:sr,2,IPCA,SR_TP,4.07,no,no,paper_display_only_no_result_credit
+v1,table:sr,2,IPCA,SR_EW,2.96,no,no,paper_display_only_no_result_credit
+v1,table:sr,2,IPCA,SR_VW,2.66,no,no,paper_display_only_no_result_credit
+v1,table:sr,2,IPCA,MDD_TP,3.77,no,no,paper_display_only_no_result_credit
+v1,table:sr,2,IPCA,MDD_EW,5.77,no,no,paper_display_only_no_result_credit
+v1,table:sr,2,IPCA,MDD_VW,8.63,no,no,paper_display_only_no_result_credit
+v1,table:sr,3,CA,SR_TP,4.03,no,no,paper_display_only_no_result_credit
+v1,table:sr,3,CA,SR_EW,2.85,no,no,paper_display_only_no_result_credit
+v1,table:sr,3,CA,SR_VW,2.55,no,no,paper_display_only_no_result_credit
+v1,table:sr,3,CA,MDD_TP,3.79,no,no,paper_display_only_no_result_credit
+v1,table:sr,3,CA,MDD_EW,6.31,no,no,paper_display_only_no_result_credit
+v1,table:sr,3,CA,MDD_VW,4.66,no,no,paper_display_only_no_result_credit
+v1,table:sr,4,NF,SR_TP,3.73,no,no,paper_display_only_no_result_credit
+v1,table:sr,4,NF,SR_EW,2.76,no,no,paper_display_only_no_result_credit
+v1,table:sr,4,NF,SR_VW,2.34,no,no,paper_display_only_no_result_credit
+v1,table:sr,4,NF,MDD_TP,5.12,no,no,paper_display_only_no_result_credit
+v1,table:sr,4,NF,MDD_EW,7.91,no,no,paper_display_only_no_result_credit
+v1,table:sr,4,NF,MDD_VW,6.31,no,no,paper_display_only_no_result_credit
+v1,table:sr,5,CPZ,SR_TP,4.10,no,no,paper_display_only_no_result_credit
+v1,table:sr,5,CPZ,SR_EW,3.02,no,no,paper_display_only_no_result_credit
+v1,table:sr,5,CPZ,SR_VW,2.61,no,no,paper_display_only_no_result_credit
+v1,table:sr,5,CPZ,MDD_TP,4.32,no,no,paper_display_only_no_result_credit
+v1,table:sr,5,CPZ,MDD_EW,6.27,no,no,paper_display_only_no_result_credit
+v1,table:sr,5,CPZ,MDD_VW,5.71,no,no,paper_display_only_no_result_credit
+v1,table:sr,6,Ours,SR_TP,4.38,no,no,paper_display_only_no_result_credit
+v1,table:sr,6,Ours,SR_EW,3.29,no,no,paper_display_only_no_result_credit
+v1,table:sr,6,Ours,SR_VW,3.01,no,no,paper_display_only_no_result_credit
+v1,table:sr,6,Ours,MDD_TP,3.66,no,no,paper_display_only_no_result_credit
+v1,table:sr,6,Ours,MDD_EW,5.64,no,no,paper_display_only_no_result_credit
+v1,table:sr,6,Ours,MDD_VW,5.17,no,no,paper_display_only_no_result_credit
+v1,table:sr,7,w/ G.4,SR_TP,4.45,no,no,paper_display_only_no_result_credit
+v1,table:sr,7,w/ G.4,SR_EW,3.43,no,no,paper_display_only_no_result_credit
+v1,table:sr,7,w/ G.4,SR_VW,3.09,no,no,paper_display_only_no_result_credit
+v1,table:sr,7,w/ G.4,MDD_TP,3.82,no,no,paper_display_only_no_result_credit
+v1,table:sr,7,w/ G.4,MDD_EW,5.57,no,no,paper_display_only_no_result_credit
+v1,table:sr,7,w/ G.4,MDD_VW,4.77,no,no,paper_display_only_no_result_credit
+v1,table:ape,1,NN,avg_abs_alpha,0.83,no,no,paper_display_only_no_result_credit
+v1,table:ape,1,NN,avg_abs_t_alpha,2.89,no,no,paper_display_only_no_result_credit
+v1,table:ape,1,NN,significant_share,0.64,no,no,paper_display_only_no_result_credit
+v1,table:ape,1,NN,GRS,6.89,no,no,paper_display_only_no_result_credit
+v1,table:ape,2,IPCA,avg_abs_alpha,0.76,no,no,paper_display_only_no_result_credit
+v1,table:ape,2,IPCA,avg_abs_t_alpha,2.45,no,no,paper_display_only_no_result_credit
+v1,table:ape,2,IPCA,significant_share,0.55,no,no,paper_display_only_no_result_credit
+v1,table:ape,2,IPCA,GRS,6.38,no,no,paper_display_only_no_result_credit
+v1,table:ape,3,CA,avg_abs_alpha,0.77,no,no,paper_display_only_no_result_credit
+v1,table:ape,3,CA,avg_abs_t_alpha,2.63,no,no,paper_display_only_no_result_credit
+v1,table:ape,3,CA,significant_share,0.52,no,no,paper_display_only_no_result_credit
+v1,table:ape,3,CA,GRS,6.42,no,no,paper_display_only_no_result_credit
+v1,table:ape,4,NF,avg_abs_alpha,0.89,no,no,paper_display_only_no_result_credit
+v1,table:ape,4,NF,avg_abs_t_alpha,2.77,no,no,paper_display_only_no_result_credit
+v1,table:ape,4,NF,significant_share,0.62,no,no,paper_display_only_no_result_credit
+v1,table:ape,4,NF,GRS,7.32,no,no,paper_display_only_no_result_credit
+v1,table:ape,5,CPZ,avg_abs_alpha,0.74,no,no,paper_display_only_no_result_credit
+v1,table:ape,5,CPZ,avg_abs_t_alpha,2.44,no,no,paper_display_only_no_result_credit
+v1,table:ape,5,CPZ,significant_share,0.49,no,no,paper_display_only_no_result_credit
+v1,table:ape,5,CPZ,GRS,6.77,no,no,paper_display_only_no_result_credit
+v1,table:ape,6,Ours,avg_abs_alpha,0.66,no,no,paper_display_only_no_result_credit
+v1,table:ape,6,Ours,avg_abs_t_alpha,2.40,no,no,paper_display_only_no_result_credit
+v1,table:ape,6,Ours,significant_share,0.46,no,no,paper_display_only_no_result_credit
+v1,table:ape,6,Ours,GRS,6.34,no,no,paper_display_only_no_result_credit
+v1,table:ape,7,w/ G.4,avg_abs_alpha,0.64,no,no,paper_display_only_no_result_credit
+v1,table:ape,7,w/ G.4,avg_abs_t_alpha,2.36,no,no,paper_display_only_no_result_credit
+v1,table:ape,7,w/ G.4,significant_share,0.46,no,no,paper_display_only_no_result_credit
+v1,table:ape,7,w/ G.4,GRS,6.28,no,no,paper_display_only_no_result_credit
+v1,table:abl,1,NF,SR_EW,2.76,no,no,paper_display_only_no_result_credit
+v1,table:abl,1,NF,MDD_EW,7.91,no,no,paper_display_only_no_result_credit
+v1,table:abl,1,NF,avg_abs_alpha,0.89,no,no,paper_display_only_no_result_credit
+v1,table:abl,1,NF,avg_abs_t_alpha,2.77,no,no,paper_display_only_no_result_credit
+v1,table:abl,2,+ Factors,SR_EW,2.66,no,no,paper_display_only_no_result_credit
+v1,table:abl,2,+ Factors,MDD_EW,8.82,no,no,paper_display_only_no_result_credit
+v1,table:abl,2,+ Factors,avg_abs_alpha,0.97,no,no,paper_display_only_no_result_credit
+v1,table:abl,2,+ Factors,avg_abs_t_alpha,2.86,no,no,paper_display_only_no_result_credit
+v1,table:abl,3,Naive,SR_EW,2.82,no,no,paper_display_only_no_result_credit
+v1,table:abl,3,Naive,MDD_EW,6.03,no,no,paper_display_only_no_result_credit
+v1,table:abl,3,Naive,avg_abs_alpha,0.88,no,no,paper_display_only_no_result_credit
+v1,table:abl,3,Naive,avg_abs_t_alpha,2.72,no,no,paper_display_only_no_result_credit
+v1,table:abl,4,+ RAG,SR_EW,2.94,no,no,paper_display_only_no_result_credit
+v1,table:abl,4,+ RAG,MDD_EW,5.89,no,no,paper_display_only_no_result_credit
+v1,table:abl,4,+ RAG,avg_abs_alpha,0.83,no,no,paper_display_only_no_result_credit
+v1,table:abl,4,+ RAG,avg_abs_t_alpha,2.66,no,no,paper_display_only_no_result_credit
+v1,table:abl,5,+ Emb.,SR_EW,2.88,no,no,paper_display_only_no_result_credit
+v1,table:abl,5,+ Emb.,MDD_EW,6.42,no,no,paper_display_only_no_result_credit
+v1,table:abl,5,+ Emb.,avg_abs_alpha,0.86,no,no,paper_display_only_no_result_credit
+v1,table:abl,5,+ Emb.,avg_abs_t_alpha,2.71,no,no,paper_display_only_no_result_credit
+v1,table:abl,6,Memory,SR_EW,2.99,no,no,paper_display_only_no_result_credit
+v1,table:abl,6,Memory,MDD_EW,6.99,no,no,paper_display_only_no_result_credit
+v1,table:abl,6,Memory,avg_abs_alpha,0.81,no,no,paper_display_only_no_result_credit
+v1,table:abl,6,Memory,avg_abs_t_alpha,2.64,no,no,paper_display_only_no_result_credit
+v1,table:abl,7,+ Factors,SR_EW,3.03,no,no,paper_display_only_no_result_credit
+v1,table:abl,7,+ Factors,MDD_EW,7.12,no,no,paper_display_only_no_result_credit
+v1,table:abl,7,+ Factors,avg_abs_alpha,0.79,no,no,paper_display_only_no_result_credit
+v1,table:abl,7,+ Factors,avg_abs_t_alpha,2.62,no,no,paper_display_only_no_result_credit
+v1,table:abl,8,Hybrid,SR_EW,3.14,no,no,paper_display_only_no_result_credit
+v1,table:abl,8,Hybrid,MDD_EW,5.59,no,no,paper_display_only_no_result_credit
+v1,table:abl,8,Hybrid,avg_abs_alpha,0.73,no,no,paper_display_only_no_result_credit
+v1,table:abl,8,Hybrid,avg_abs_t_alpha,2.49,no,no,paper_display_only_no_result_credit
+v1,table:abl,9,+ Refine,SR_EW,3.26,no,no,paper_display_only_no_result_credit
+v1,table:abl,9,+ Refine,MDD_EW,6.31,no,no,paper_display_only_no_result_credit
+v1,table:abl,9,+ Refine,avg_abs_alpha,0.70,no,no,paper_display_only_no_result_credit
+v1,table:abl,9,+ Refine,avg_abs_t_alpha,2.46,no,no,paper_display_only_no_result_credit
+v1,table:abl,10,+ Notes,SR_EW,3.18,no,no,paper_display_only_no_result_credit
+v1,table:abl,10,+ Notes,MDD_EW,6.91,no,no,paper_display_only_no_result_credit
+v1,table:abl,10,+ Notes,avg_abs_alpha,0.74,no,no,paper_display_only_no_result_credit
+v1,table:abl,10,+ Notes,avg_abs_t_alpha,2.55,no,no,paper_display_only_no_result_credit
+v1,table:abl,11,Ours,SR_EW,3.29,no,no,paper_display_only_no_result_credit
+v1,table:abl,11,Ours,MDD_EW,5.64,no,no,paper_display_only_no_result_credit
+v1,table:abl,11,Ours,avg_abs_alpha,0.66,no,no,paper_display_only_no_result_credit
+v1,table:abl,11,Ours,avg_abs_t_alpha,2.40,no,no,paper_display_only_no_result_credit
+v2,table:sr,1,NNAP,SR_TP,3.59,no,no,paper_display_only_no_result_credit
+v2,table:sr,1,NNAP,SR_EW,2.55,no,no,paper_display_only_no_result_credit
+v2,table:sr,1,NNAP,SR_VW,2.29,no,no,paper_display_only_no_result_credit
+v2,table:sr,1,NNAP,MDD_TP,4.89,no,no,paper_display_only_no_result_credit
+v2,table:sr,1,NNAP,MDD_EW,7.72,no,no,paper_display_only_no_result_credit
+v2,table:sr,1,NNAP,MDD_VW,8.99,no,no,paper_display_only_no_result_credit
+v2,table:sr,2,IPCA,SR_TP,3.85,no,no,paper_display_only_no_result_credit
+v2,table:sr,2,IPCA,SR_EW,2.76,no,no,paper_display_only_no_result_credit
+v2,table:sr,2,IPCA,SR_VW,2.48,no,no,paper_display_only_no_result_credit
+v2,table:sr,2,IPCA,MDD_TP,4.42,no,no,paper_display_only_no_result_credit
+v2,table:sr,2,IPCA,MDD_EW,6.32,no,no,paper_display_only_no_result_credit
+v2,table:sr,2,IPCA,MDD_VW,8.24,no,no,paper_display_only_no_result_credit
+v2,table:sr,3,CA,SR_TP,3.77,no,no,paper_display_only_no_result_credit
+v2,table:sr,3,CA,SR_EW,2.69,no,no,paper_display_only_no_result_credit
+v2,table:sr,3,CA,SR_VW,2.35,no,no,paper_display_only_no_result_credit
+v2,table:sr,3,CA,MDD_TP,4.18,no,no,paper_display_only_no_result_credit
+v2,table:sr,3,CA,MDD_EW,7.01,no,no,paper_display_only_no_result_credit
+v2,table:sr,3,CA,MDD_VW,5.67,no,no,paper_display_only_no_result_credit
+v2,table:sr,4,NF,SR_TP,3.32,no,no,paper_display_only_no_result_credit
+v2,table:sr,4,NF,SR_EW,2.39,no,no,paper_display_only_no_result_credit
+v2,table:sr,4,NF,SR_VW,2.12,no,no,paper_display_only_no_result_credit
+v2,table:sr,4,NF,MDD_TP,5.14,no,no,paper_display_only_no_result_credit
+v2,table:sr,4,NF,MDD_EW,7.88,no,no,paper_display_only_no_result_credit
+v2,table:sr,4,NF,MDD_VW,6.31,no,no,paper_display_only_no_result_credit
+v2,table:sr,5,SDF-GAN,SR_TP,3.86,no,no,paper_display_only_no_result_credit
+v2,table:sr,5,SDF-GAN,SR_EW,2.73,no,no,paper_display_only_no_result_credit
+v2,table:sr,5,SDF-GAN,SR_VW,2.44,no,no,paper_display_only_no_result_credit
+v2,table:sr,5,SDF-GAN,MDD_TP,4.77,no,no,paper_display_only_no_result_credit
+v2,table:sr,5,SDF-GAN,MDD_EW,6.87,no,no,paper_display_only_no_result_credit
+v2,table:sr,5,SDF-GAN,MDD_VW,5.24,no,no,paper_display_only_no_result_credit
+v2,table:sr,6,Ours,SR_TP,4.21,no,no,paper_display_only_no_result_credit
+v2,table:sr,6,Ours,SR_EW,3.07,no,no,paper_display_only_no_result_credit
+v2,table:sr,6,Ours,SR_VW,2.77,no,no,paper_display_only_no_result_credit
+v2,table:sr,6,Ours,MDD_TP,4.00,no,no,paper_display_only_no_result_credit
+v2,table:sr,6,Ours,MDD_EW,5.71,no,no,paper_display_only_no_result_credit
+v2,table:sr,6,Ours,MDD_VW,5.36,no,no,paper_display_only_no_result_credit
+v2,table:sr,7,w/ O1,SR_TP,4.31,no,no,paper_display_only_no_result_credit
+v2,table:sr,7,w/ O1,SR_EW,3.15,no,no,paper_display_only_no_result_credit
+v2,table:sr,7,w/ O1,SR_VW,2.90,no,no,paper_display_only_no_result_credit
+v2,table:sr,7,w/ O1,MDD_TP,3.72,no,no,paper_display_only_no_result_credit
+v2,table:sr,7,w/ O1,MDD_EW,5.33,no,no,paper_display_only_no_result_credit
+v2,table:sr,7,w/ O1,MDD_VW,5.27,no,no,paper_display_only_no_result_credit
+v2,table:ape,1,NNAP,avg_abs_alpha,0.97,no,no,paper_display_only_no_result_credit
+v2,table:ape,1,NNAP,avg_abs_t_alpha,3.02,no,no,paper_display_only_no_result_credit
+v2,table:ape,1,NNAP,significant_share,0.67,no,no,paper_display_only_no_result_credit
+v2,table:ape,1,NNAP,GRS,6.97,no,no,paper_display_only_no_result_credit
+v2,table:ape,2,IPCA,avg_abs_alpha,0.84,no,no,paper_display_only_no_result_credit
+v2,table:ape,2,IPCA,avg_abs_t_alpha,2.65,no,no,paper_display_only_no_result_credit
+v2,table:ape,2,IPCA,significant_share,0.60,no,no,paper_display_only_no_result_credit
+v2,table:ape,2,IPCA,GRS,6.68,no,no,paper_display_only_no_result_credit
+v2,table:ape,3,CA,avg_abs_alpha,0.89,no,no,paper_display_only_no_result_credit
+v2,table:ape,3,CA,avg_abs_t_alpha,2.62,no,no,paper_display_only_no_result_credit
+v2,table:ape,3,CA,significant_share,0.58,no,no,paper_display_only_no_result_credit
+v2,table:ape,3,CA,GRS,6.72,no,no,paper_display_only_no_result_credit
+v2,table:ape,4,NF,avg_abs_alpha,0.93,no,no,paper_display_only_no_result_credit
+v2,table:ape,4,NF,avg_abs_t_alpha,2.88,no,no,paper_display_only_no_result_credit
+v2,table:ape,4,NF,significant_share,0.63,no,no,paper_display_only_no_result_credit
+v2,table:ape,4,NF,GRS,7.56,no,no,paper_display_only_no_result_credit
+v2,table:ape,5,SDF-GAN,avg_abs_alpha,0.80,no,no,paper_display_only_no_result_credit
+v2,table:ape,5,SDF-GAN,avg_abs_t_alpha,2.55,no,no,paper_display_only_no_result_credit
+v2,table:ape,5,SDF-GAN,significant_share,0.59,no,no,paper_display_only_no_result_credit
+v2,table:ape,5,SDF-GAN,GRS,6.67,no,no,paper_display_only_no_result_credit
+v2,table:ape,6,Ours,avg_abs_alpha,0.72,no,no,paper_display_only_no_result_credit
+v2,table:ape,6,Ours,avg_abs_t_alpha,2.47,no,no,paper_display_only_no_result_credit
+v2,table:ape,6,Ours,significant_share,0.55,no,no,paper_display_only_no_result_credit
+v2,table:ape,6,Ours,GRS,6.48,no,no,paper_display_only_no_result_credit
+v2,table:ape,7,w/ O1,avg_abs_alpha,0.69,no,no,paper_display_only_no_result_credit
+v2,table:ape,7,w/ O1,avg_abs_t_alpha,2.41,no,no,paper_display_only_no_result_credit
+v2,table:ape,7,w/ O1,significant_share,0.55,no,no,paper_display_only_no_result_credit
+v2,table:ape,7,w/ O1,GRS,6.32,no,no,paper_display_only_no_result_credit
+v2,table:abl,1,NF,SR_EW,2.39,no,no,paper_display_only_no_result_credit
+v2,table:abl,1,NF,MDD_EW,7.88,no,no,paper_display_only_no_result_credit
+v2,table:abl,1,NF,avg_abs_alpha,0.97,no,no,paper_display_only_no_result_credit
+v2,table:abl,1,NF,avg_abs_t_alpha,3.02,no,no,paper_display_only_no_result_credit
+v2,table:abl,2,+ Factors,SR_EW,2.33,no,no,paper_display_only_no_result_credit
+v2,table:abl,2,+ Factors,MDD_EW,9.12,no,no,paper_display_only_no_result_credit
+v2,table:abl,2,+ Factors,avg_abs_alpha,1.03,no,no,paper_display_only_no_result_credit
+v2,table:abl,2,+ Factors,avg_abs_t_alpha,3.16,no,no,paper_display_only_no_result_credit
+v2,table:abl,3,Naive,SR_EW,2.44,no,no,paper_display_only_no_result_credit
+v2,table:abl,3,Naive,MDD_EW,6.13,no,no,paper_display_only_no_result_credit
+v2,table:abl,3,Naive,avg_abs_alpha,0.95,no,no,paper_display_only_no_result_credit
+v2,table:abl,3,Naive,avg_abs_t_alpha,2.77,no,no,paper_display_only_no_result_credit
+v2,table:abl,4,+ RAG,SR_EW,2.59,no,no,paper_display_only_no_result_credit
+v2,table:abl,4,+ RAG,MDD_EW,5.99,no,no,paper_display_only_no_result_credit
+v2,table:abl,4,+ RAG,avg_abs_alpha,0.93,no,no,paper_display_only_no_result_credit
+v2,table:abl,4,+ RAG,avg_abs_t_alpha,2.71,no,no,paper_display_only_no_result_credit
+v2,table:abl,5,+ Emb.,SR_EW,2.56,no,no,paper_display_only_no_result_credit
+v2,table:abl,5,+ Emb.,MDD_EW,5.82,no,no,paper_display_only_no_result_credit
+v2,table:abl,5,+ Emb.,avg_abs_alpha,0.92,no,no,paper_display_only_no_result_credit
+v2,table:abl,5,+ Emb.,avg_abs_t_alpha,2.72,no,no,paper_display_only_no_result_credit
+v2,table:abl,6,Memory,SR_EW,2.75,no,no,paper_display_only_no_result_credit
+v2,table:abl,6,Memory,MDD_EW,7.17,no,no,paper_display_only_no_result_credit
+v2,table:abl,6,Memory,avg_abs_alpha,0.87,no,no,paper_display_only_no_result_credit
+v2,table:abl,6,Memory,avg_abs_t_alpha,2.69,no,no,paper_display_only_no_result_credit
+v2,table:abl,7,+ Factors,SR_EW,2.82,no,no,paper_display_only_no_result_credit
+v2,table:abl,7,+ Factors,MDD_EW,6.77,no,no,paper_display_only_no_result_credit
+v2,table:abl,7,+ Factors,avg_abs_alpha,0.84,no,no,paper_display_only_no_result_credit
+v2,table:abl,7,+ Factors,avg_abs_t_alpha,2.65,no,no,paper_display_only_no_result_credit
+v2,table:abl,8,Hybrid,SR_EW,2.88,no,no,paper_display_only_no_result_credit
+v2,table:abl,8,Hybrid,MDD_EW,6.32,no,no,paper_display_only_no_result_credit
+v2,table:abl,8,Hybrid,avg_abs_alpha,0.82,no,no,paper_display_only_no_result_credit
+v2,table:abl,8,Hybrid,avg_abs_t_alpha,2.49,no,no,paper_display_only_no_result_credit
+v2,table:abl,9,+ Refine,SR_EW,3.01,no,no,paper_display_only_no_result_credit
+v2,table:abl,9,+ Refine,MDD_EW,5.89,no,no,paper_display_only_no_result_credit
+v2,table:abl,9,+ Refine,avg_abs_alpha,0.77,no,no,paper_display_only_no_result_credit
+v2,table:abl,9,+ Refine,avg_abs_t_alpha,2.32,no,no,paper_display_only_no_result_credit
+v2,table:abl,10,+ Notes,SR_EW,2.99,no,no,paper_display_only_no_result_credit
+v2,table:abl,10,+ Notes,MDD_EW,6.68,no,no,paper_display_only_no_result_credit
+v2,table:abl,10,+ Notes,avg_abs_alpha,0.76,no,no,paper_display_only_no_result_credit
+v2,table:abl,10,+ Notes,avg_abs_t_alpha,2.53,no,no,paper_display_only_no_result_credit
+v2,table:abl,11,Ours,SR_EW,3.07,no,no,paper_display_only_no_result_credit
+v2,table:abl,11,Ours,MDD_EW,5.71,no,no,paper_display_only_no_result_credit
+v2,table:abl,11,Ours,avg_abs_alpha,0.72,no,no,paper_display_only_no_result_credit
+v2,table:abl,11,Ours,avg_abs_t_alpha,2.47,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,1,GPT-4,SR_EW,3.03,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,1,GPT-4,MDD_EW,5.57,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,1,GPT-4,avg_abs_alpha,0.73,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,1,GPT-4,avg_abs_t_alpha,2.56,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,1,GPT-4,input_cost,30,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,1,GPT-4,output_cost,60,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,2,GPT-3.5,SR_EW,2.89,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,2,GPT-3.5,MDD_EW,5.64,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,2,GPT-3.5,avg_abs_alpha,0.75,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,2,GPT-3.5,avg_abs_t_alpha,2.60,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,2,GPT-3.5,input_cost,1.0,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,2,GPT-3.5,output_cost,2.0,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,3,GPT-4o (Ours),SR_EW,3.07,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,3,GPT-4o (Ours),MDD_EW,5.71,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,3,GPT-4o (Ours),avg_abs_alpha,0.72,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,3,GPT-4o (Ours),avg_abs_t_alpha,2.47,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,3,GPT-4o (Ours),input_cost,2.5,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,3,GPT-4o (Ours),output_cost,10,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,4,O1-preview,SR_EW,3.15,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,4,O1-preview,MDD_EW,5.33,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,4,O1-preview,avg_abs_alpha,0.69,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,4,O1-preview,avg_abs_t_alpha,2.41,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,4,O1-preview,input_cost,15,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,4,O1-preview,output_cost,60,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,5,O1-mini,SR_EW,3.12,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,5,O1-mini,MDD_EW,5.12,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,5,O1-mini,avg_abs_alpha,0.72,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,5,O1-mini,avg_abs_t_alpha,2.56,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,5,O1-mini,input_cost,1.1,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,5,O1-mini,output_cost,4.4,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,6,Llama 3.1 405B,SR_EW,3.01,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,6,Llama 3.1 405B,MDD_EW,5.29,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,6,Llama 3.1 405B,avg_abs_alpha,0.73,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,6,Llama 3.1 405B,avg_abs_t_alpha,2.59,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,6,Llama 3.1 405B,input_cost,3.5,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,6,Llama 3.1 405B,output_cost,3.5,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,7,Llama 3.1 70B,SR_EW,2.94,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,7,Llama 3.1 70B,MDD_EW,5.91,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,7,Llama 3.1 70B,avg_abs_alpha,0.75,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,7,Llama 3.1 70B,avg_abs_t_alpha,2.69,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,7,Llama 3.1 70B,input_cost,0.9,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,7,Llama 3.1 70B,output_cost,0.9,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,8,Qwen 2 72B,SR_EW,2.91,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,8,Qwen 2 72B,MDD_EW,6.89,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,8,Qwen 2 72B,avg_abs_alpha,0.77,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,8,Qwen 2 72B,avg_abs_t_alpha,2.67,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,8,Qwen 2 72B,input_cost,0.9,no,no,paper_display_only_no_result_credit
+v2,table:abl_fm,8,Qwen 2 72B,output_cost,0.9,no,no,paper_display_only_no_result_credit

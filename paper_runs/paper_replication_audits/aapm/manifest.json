@@ -1,0 +1,23 @@
+{
+  "author_output_result_cells_available": 0,
+  "common_table_cells": 114,
+  "common_table_cells_changed": 112,
+  "compiled_python_files": 5,
+  "end_to_end_result_cells_reproduced": 0,
+  "llm_calls_made": 0,
+  "official_pdf_pages_audited": 33,
+  "official_pdf_pages_visually_inspected": 33,
+  "overall_fidelity": "official_papers_sources_code_and_metadata_audited_zero_of_162_v2_result_cells_reproduced",
+  "paid_or_credentialed_data_calls_made": 0,
+  "paper": "AAPM / Empirical Asset Pricing with Large Language Model Agents",
+  "paper_result_credit": "no_result_credit_component_source_audit_only",
+  "quantitative_figure_units": 54,
+  "released_metadata_max_date": "2023-11-30",
+  "released_metadata_min_date": "2021-10-01",
+  "released_metadata_records": 65733,
+  "source_rebuild_pages_visually_inspected": 33,
+  "tracked_source_files": 10,
+  "v1_table_result_cells": 114,
+  "v2_foundation_model_cells": 48,
+  "v2_table_result_cells": 162
+}

@@ -1,0 +1,29 @@
+dimension,paper_requirement,released_evidence,assessment,end_to_end_credit
+official code lineage,paper/source,paper-era commit contains code and metadata; current code differs only in README,pinned,no
+LLM iterative refinement,paper,dialog loop and retrieved documents are implemented,present_component,no
+vector retrieval memory,paper,ChromaDB/FlagEmbedding wrapper is implemented,present_component,no
+analysis prompts,paper,"analysis, refinement, note, and summary prompts are released",present_component,no
+v1 default LLM,GPT-3.5-Turbo-1106,config uses gpt-3.5-turbo-1106,match,no
+v2 default LLM,GPT-4o-0806 plus O1-Preview,config still uses gpt-3.5-turbo-1106,different,no
+temperature,0.2 for all experiments,OpenAI calls do not pass temperature,missing,no
+manual financial factors,concatenated with LLM features,Model.forward concatenates only report and PERMNO embeddings,missing,no
+historical factor pretraining,Hybrid pricing network pretraining,no pretraining implementation or checkpoint is released,missing,no
+macro note update,continuously LLM-updated note,analysis.py assigns the formatted macro_update prompt without an LLM call,implementation_bug,no
+SKIP path,same four-value process contract,SKIP branch returns three values while caller unpacks four,implementation_bug,no
+training entrypoint,README says run model.py,model.py defines Model but never instantiates it or calls trainloop,missing,no
+evaluation mode,deterministic held-out evaluation,Model.eval overrides nn.Module.eval and never disables dropout/BatchNorm training mode,implementation_bug,no
+best checkpoint,load best validation model,"model.pt is periodic/latest, not the best epoch selected by validation",implementation_bug,no
+seed,config seed 42,"seed is never applied to Python, NumPy, Torch, CUDA, or DataLoader",missing,no
+v1 temporal split,"9 months train, 3 months validation, 1 year test",hard-coded cutoffs match the v1 two-year interval,match_static,no
+v2 temporal split,three-year input but 9+3+12 months described,source has no end bound and paper-described durations total two years,different,no
+news input,filtered WSJ article bodies,only headline/category/time/url metadata is released,missing,no
+daily returns,CRSP and Kenneth French inputs,daily_ret_dapm.csv and all returns are absent,missing_external,no
+factor input,Jensen et al. characteristics with imputation,factor files and construction code are absent,missing_external,no
+analysis feature input,generated report embeddings,daily_emb_dapm.csv is absent,missing,no
+baseline replications,five paper baselines with searched hyperparameters,no baseline code/configs/results are released,missing,no
+hyperparameter sweep,W&B sweep over disclosed distributions,"no sweep configuration, run IDs, or histories are released",missing,no
+portfolio construction,TP/EW/VW long-short portfolios,no portfolio construction implementation is released,missing,no
+pricing tests,alpha/t-value/significant share/GRS,no anomaly-portfolio evaluation implementation is released,missing,no
+published outputs,tables and figures,"no checkpoints, prediction arrays, portfolio returns, or result tables are released",missing,no
+universe,market-wide assets,dsize is hard-coded to 12000 without released mapping validation,under_specified,no
+dependency lock,reconstructable environment,requirements are unpinned and request package 'yaml' rather than PyYAML,missing,no

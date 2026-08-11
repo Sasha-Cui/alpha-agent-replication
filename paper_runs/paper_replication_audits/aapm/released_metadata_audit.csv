@@ -1,0 +1,8 @@
+check,value,assessment,paper_result_credit
+records,65733,present,no
+fields,category;cover_image;headline;time;url,metadata_only,no
+minimum_date,2021-10-01,outside_claim_by_two_days,no
+maximum_date,2023-11-30,short_of_v2_claim_by_ten_months,no
+year_counts,"{""2021"": 7889, ""2022"": 32965, ""2023"": 24879}",metadata_only,no
+article_bodies,0,missing,no
+returns_or_factors,0,missing,no

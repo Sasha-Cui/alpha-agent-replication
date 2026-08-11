@@ -1,0 +1,115 @@
+table,row_number,metric,v1_method,v1_value,v2_method,v2_value,exact_value_match,same_experiment_provenance_demonstrated
+table:abl,1,MDD_EW,NF,7.91,NF,7.88,no,no
+table:abl,1,SR_EW,NF,2.76,NF,2.39,no,no
+table:abl,1,avg_abs_alpha,NF,0.89,NF,0.97,no,no
+table:abl,1,avg_abs_t_alpha,NF,2.77,NF,3.02,no,no
+table:abl,10,MDD_EW,+ Notes,6.91,+ Notes,6.68,no,no
+table:abl,10,SR_EW,+ Notes,3.18,+ Notes,2.99,no,no
+table:abl,10,avg_abs_alpha,+ Notes,0.74,+ Notes,0.76,no,no
+table:abl,10,avg_abs_t_alpha,+ Notes,2.55,+ Notes,2.53,no,no
+table:abl,11,MDD_EW,Ours,5.64,Ours,5.71,no,no
+table:abl,11,SR_EW,Ours,3.29,Ours,3.07,no,no
+table:abl,11,avg_abs_alpha,Ours,0.66,Ours,0.72,no,no
+table:abl,11,avg_abs_t_alpha,Ours,2.40,Ours,2.47,no,no
+table:abl,2,MDD_EW,+ Factors,8.82,+ Factors,9.12,no,no
+table:abl,2,SR_EW,+ Factors,2.66,+ Factors,2.33,no,no
+table:abl,2,avg_abs_alpha,+ Factors,0.97,+ Factors,1.03,no,no
+table:abl,2,avg_abs_t_alpha,+ Factors,2.86,+ Factors,3.16,no,no
+table:abl,3,MDD_EW,Naive,6.03,Naive,6.13,no,no
+table:abl,3,SR_EW,Naive,2.82,Naive,2.44,no,no
+table:abl,3,avg_abs_alpha,Naive,0.88,Naive,0.95,no,no
+table:abl,3,avg_abs_t_alpha,Naive,2.72,Naive,2.77,no,no
+table:abl,4,MDD_EW,+ RAG,5.89,+ RAG,5.99,no,no
+table:abl,4,SR_EW,+ RAG,2.94,+ RAG,2.59,no,no
+table:abl,4,avg_abs_alpha,+ RAG,0.83,+ RAG,0.93,no,no
+table:abl,4,avg_abs_t_alpha,+ RAG,2.66,+ RAG,2.71,no,no
+table:abl,5,MDD_EW,+ Emb.,6.42,+ Emb.,5.82,no,no
+table:abl,5,SR_EW,+ Emb.,2.88,+ Emb.,2.56,no,no
+table:abl,5,avg_abs_alpha,+ Emb.,0.86,+ Emb.,0.92,no,no
+table:abl,5,avg_abs_t_alpha,+ Emb.,2.71,+ Emb.,2.72,no,no
+table:abl,6,MDD_EW,Memory,6.99,Memory,7.17,no,no
+table:abl,6,SR_EW,Memory,2.99,Memory,2.75,no,no
+table:abl,6,avg_abs_alpha,Memory,0.81,Memory,0.87,no,no
+table:abl,6,avg_abs_t_alpha,Memory,2.64,Memory,2.69,no,no
+table:abl,7,MDD_EW,+ Factors,7.12,+ Factors,6.77,no,no
+table:abl,7,SR_EW,+ Factors,3.03,+ Factors,2.82,no,no
+table:abl,7,avg_abs_alpha,+ Factors,0.79,+ Factors,0.84,no,no
+table:abl,7,avg_abs_t_alpha,+ Factors,2.62,+ Factors,2.65,no,no
+table:abl,8,MDD_EW,Hybrid,5.59,Hybrid,6.32,no,no
+table:abl,8,SR_EW,Hybrid,3.14,Hybrid,2.88,no,no
+table:abl,8,avg_abs_alpha,Hybrid,0.73,Hybrid,0.82,no,no
+table:abl,8,avg_abs_t_alpha,Hybrid,2.49,Hybrid,2.49,yes,no
+table:abl,9,MDD_EW,+ Refine,6.31,+ Refine,5.89,no,no
+table:abl,9,SR_EW,+ Refine,3.26,+ Refine,3.01,no,no
+table:abl,9,avg_abs_alpha,+ Refine,0.70,+ Refine,0.77,no,no
+table:abl,9,avg_abs_t_alpha,+ Refine,2.46,+ Refine,2.32,no,no
+table:ape,1,GRS,NN,6.89,NNAP,6.97,no,no
+table:ape,1,avg_abs_alpha,NN,0.83,NNAP,0.97,no,no
+table:ape,1,avg_abs_t_alpha,NN,2.89,NNAP,3.02,no,no
+table:ape,1,significant_share,NN,0.64,NNAP,0.67,no,no
+table:ape,2,GRS,IPCA,6.38,IPCA,6.68,no,no
+table:ape,2,avg_abs_alpha,IPCA,0.76,IPCA,0.84,no,no
+table:ape,2,avg_abs_t_alpha,IPCA,2.45,IPCA,2.65,no,no
+table:ape,2,significant_share,IPCA,0.55,IPCA,0.60,no,no
+table:ape,3,GRS,CA,6.42,CA,6.72,no,no
+table:ape,3,avg_abs_alpha,CA,0.77,CA,0.89,no,no
+table:ape,3,avg_abs_t_alpha,CA,2.63,CA,2.62,no,no
+table:ape,3,significant_share,CA,0.52,CA,0.58,no,no
+table:ape,4,GRS,NF,7.32,NF,7.56,no,no
+table:ape,4,avg_abs_alpha,NF,0.89,NF,0.93,no,no
+table:ape,4,avg_abs_t_alpha,NF,2.77,NF,2.88,no,no
+table:ape,4,significant_share,NF,0.62,NF,0.63,no,no
+table:ape,5,GRS,CPZ,6.77,SDF-GAN,6.67,no,no
+table:ape,5,avg_abs_alpha,CPZ,0.74,SDF-GAN,0.80,no,no
+table:ape,5,avg_abs_t_alpha,CPZ,2.44,SDF-GAN,2.55,no,no
+table:ape,5,significant_share,CPZ,0.49,SDF-GAN,0.59,no,no
+table:ape,6,GRS,Ours,6.34,Ours,6.48,no,no
+table:ape,6,avg_abs_alpha,Ours,0.66,Ours,0.72,no,no
+table:ape,6,avg_abs_t_alpha,Ours,2.40,Ours,2.47,no,no
+table:ape,6,significant_share,Ours,0.46,Ours,0.55,no,no
+table:ape,7,GRS,w/ G.4,6.28,w/ O1,6.32,no,no
+table:ape,7,avg_abs_alpha,w/ G.4,0.64,w/ O1,0.69,no,no
+table:ape,7,avg_abs_t_alpha,w/ G.4,2.36,w/ O1,2.41,no,no
+table:ape,7,significant_share,w/ G.4,0.46,w/ O1,0.55,no,no
+table:sr,1,MDD_EW,NN,8.12,NNAP,7.72,no,no
+table:sr,1,MDD_TP,NN,4.82,NNAP,4.89,no,no
+table:sr,1,MDD_VW,NN,9.12,NNAP,8.99,no,no
+table:sr,1,SR_EW,NN,2.83,NNAP,2.55,no,no
+table:sr,1,SR_TP,NN,3.82,NNAP,3.59,no,no
+table:sr,1,SR_VW,NN,2.36,NNAP,2.29,no,no
+table:sr,2,MDD_EW,IPCA,5.77,IPCA,6.32,no,no
+table:sr,2,MDD_TP,IPCA,3.77,IPCA,4.42,no,no
+table:sr,2,MDD_VW,IPCA,8.63,IPCA,8.24,no,no
+table:sr,2,SR_EW,IPCA,2.96,IPCA,2.76,no,no
+table:sr,2,SR_TP,IPCA,4.07,IPCA,3.85,no,no
+table:sr,2,SR_VW,IPCA,2.66,IPCA,2.48,no,no
+table:sr,3,MDD_EW,CA,6.31,CA,7.01,no,no
+table:sr,3,MDD_TP,CA,3.79,CA,4.18,no,no
+table:sr,3,MDD_VW,CA,4.66,CA,5.67,no,no
+table:sr,3,SR_EW,CA,2.85,CA,2.69,no,no
+table:sr,3,SR_TP,CA,4.03,CA,3.77,no,no
+table:sr,3,SR_VW,CA,2.55,CA,2.35,no,no
+table:sr,4,MDD_EW,NF,7.91,NF,7.88,no,no
+table:sr,4,MDD_TP,NF,5.12,NF,5.14,no,no
+table:sr,4,MDD_VW,NF,6.31,NF,6.31,yes,no
+table:sr,4,SR_EW,NF,2.76,NF,2.39,no,no
+table:sr,4,SR_TP,NF,3.73,NF,3.32,no,no
+table:sr,4,SR_VW,NF,2.34,NF,2.12,no,no
+table:sr,5,MDD_EW,CPZ,6.27,SDF-GAN,6.87,no,no
+table:sr,5,MDD_TP,CPZ,4.32,SDF-GAN,4.77,no,no
+table:sr,5,MDD_VW,CPZ,5.71,SDF-GAN,5.24,no,no
+table:sr,5,SR_EW,CPZ,3.02,SDF-GAN,2.73,no,no
+table:sr,5,SR_TP,CPZ,4.10,SDF-GAN,3.86,no,no
+table:sr,5,SR_VW,CPZ,2.61,SDF-GAN,2.44,no,no
+table:sr,6,MDD_EW,Ours,5.64,Ours,5.71,no,no
+table:sr,6,MDD_TP,Ours,3.66,Ours,4.00,no,no
+table:sr,6,MDD_VW,Ours,5.17,Ours,5.36,no,no
+table:sr,6,SR_EW,Ours,3.29,Ours,3.07,no,no
+table:sr,6,SR_TP,Ours,4.38,Ours,4.21,no,no
+table:sr,6,SR_VW,Ours,3.01,Ours,2.77,no,no
+table:sr,7,MDD_EW,w/ G.4,5.57,w/ O1,5.33,no,no
+table:sr,7,MDD_TP,w/ G.4,3.82,w/ O1,3.72,no,no
+table:sr,7,MDD_VW,w/ G.4,4.77,w/ O1,5.27,no,no
+table:sr,7,SR_EW,w/ G.4,3.43,w/ O1,3.15,no,no
+table:sr,7,SR_TP,w/ G.4,4.45,w/ O1,4.31,no,no
+table:sr,7,SR_VW,w/ G.4,3.09,w/ O1,2.90,no,no
