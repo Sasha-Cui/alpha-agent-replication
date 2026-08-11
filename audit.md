@@ -1,5 +1,20 @@
 # Proxy-Fidelity Audit
 
+## Resolution Status (2026-08-11)
+
+This audit is accepted as the permanent record for the frozen legacy 50. Its
+findings are implemented: that layer is now secondary construction evidence,
+while the primary denominator is an exhaustive three-seed disclosed-component
+census from a pinned QuantEvolver release. The current fail-closed gate reports
+3/3 strict grade B (100%) and executes exact upstream source snapshots on an
+outcome-blind synthetic panel (1,296 scores and 105 portfolio timestamps). See
+`docs/FIDELITY_AUDIT.md` and `paper_runs/faithful_component_replications/`.
+
+The audit's independent-human-review recommendation is tracked separately and
+honestly remains pending: D07 assigns Sasha the three-row owner attestation in
+`docs/faithful_component_owner_review_packet.md`. Technical 100% is not labeled
+as completed human second coding.
+
 ## Bottom Line
 
 The 50 backtested strategies are **not faithful replications of the 40 source

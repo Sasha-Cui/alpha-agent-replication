@@ -27,6 +27,7 @@ HANDOFF_FILES = (
 )
 REQUIRED_PATHS = (
     Path("README.md"),
+    Path("audit.md"),
     Path("COLLABORATOR_HANDOFF.md"),
     Path("docs/VALIDATION_STATUS.md"),
     Path("docs/SCIENTIFIC_AUDIT.md"),
