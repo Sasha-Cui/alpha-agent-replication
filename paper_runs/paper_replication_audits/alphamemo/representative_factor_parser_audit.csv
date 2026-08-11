@@ -1,0 +1,6 @@
+factor,shape,finite_fraction,native_parser_executable,paper_metric_reproduced,status
+SSPM_000,"[180, 40]",1.0,True,False,formula_executes_on_synthetic_data_not_paper_metric_reproduction
+SSPM_017,"[180, 40]",1.0,True,False,formula_executes_on_synthetic_data_not_paper_metric_reproduction
+SSPM_033,"[180, 40]",1.0,True,False,formula_executes_on_synthetic_data_not_paper_metric_reproduction
+SSPM_038,"[180, 40]",1.0,True,False,formula_executes_on_synthetic_data_not_paper_metric_reproduction
+SSPM_036,"[180, 40]",1.0,True,False,formula_executes_on_synthetic_data_not_paper_metric_reproduction

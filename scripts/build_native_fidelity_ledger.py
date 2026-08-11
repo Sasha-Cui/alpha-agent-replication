@@ -46,8 +46,14 @@ ARTIFACT_NOTES = {
     ),
     "SYS-ALPHA-MEMO": (
         "N",
-        "The snapshot ships source, example configuration, and a smoke test "
-        "for CSI500/S&P500 Qlib workflows, but no generated dated signals or returns.",
+        "A pinned arXiv-v1 audit enumerates all 484 numeric experimental cells in "
+        "Tables 2--9: 474 results and 10 configuration cells. The official test and "
+        "a deterministic native synthetic smoke run pass, and the native parser can "
+        "execute all five published formulas on synthetic arrays. These are components, "
+        "not paper outputs. No Qlib data snapshot, search trajectory, factor pool, "
+        "prediction, return, or table output is shipped, so 0/474 result cells count as "
+        "native reproductions. The active runner's ICIR threshold is 0.02 versus the "
+        "paper's 0.10, and source motif/context/gating behavior differs from the paper.",
     ),
     "SYS-ALPHA-R1": (
         "N",
@@ -167,6 +173,7 @@ ARTIFACT_NOTES = {
 
 TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": "legacy_targeted:completed_no_direct_strategy_returns",
+    "SYS-ALPHA-MEMO": "paper_audit:completed_zero_of_474_native_results",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-FIN-CON": "legacy_targeted:blocked_jkp_scope_incompatible",
     "SYS-GURU-AGENTS": "legacy_targeted:legacy_non_jkp_diagnostic_only",

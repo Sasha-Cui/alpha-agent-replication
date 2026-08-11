@@ -1,0 +1,22 @@
+{
+  "upstream_test_status": "passed",
+  "upstream_test_summary": "1 passed",
+  "upstream_tests_passed": 1,
+  "source_python": "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+  "source_python_version": "Python 3.12.8",
+  "synthetic_smoke_runs": 2,
+  "synthetic_smoke_sha256": "82b09f8e2dbc77be1553295fad848b17354027b40fcd2e70c964be767f3955c1",
+  "synthetic_smoke_deterministic": true,
+  "synthetic_smoke_summary": {
+    "strategy": "alphamemo",
+    "n_effective": 5,
+    "n_ok": 12,
+    "budget": 12,
+    "mean_abs_ic_ok": 0.04637932219853949,
+    "mean_abs_ic_discovered": 0.05564901407744506,
+    "mean_abs_icir_discovered": 0.3618666753391596,
+    "mean_abs_ric_discovered": 0.05496439758610393,
+    "mean_abs_ricir_discovered": 0.35448448825152046
+  },
+  "paper_result_reproduction": false
+}

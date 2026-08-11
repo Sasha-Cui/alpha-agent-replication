@@ -1,0 +1,33 @@
+dimension,paper_requirement,released_evidence,status
+official_entrypoint,paper AlphaMemo runner,scripts/run_main.sh invokes sspm main-table,component_present
+paper_markets,CSI500 and S&P500,official runner defaults to csi500 sp500,configuration_match
+paper_split,train 2016-2020; validation 2021; test 2022-2025-12-26,paper2025 preset matches exact dates,configuration_match
+label_horizon,20 trading days,official runner LABEL_DAYS=20 and Qlib label is h-day close-to-close,configuration_match
+balanced_operating_point,warmup=200 wm=.05 motif sample=4 prand=.35,all four values match official runner,configuration_match
+residual_operating_point,residual SSPM warmup=300 wm=.05,CLI supports sspm parameters; no official residual experiment command,capable_but_no_released_run_path
+admission_quality_threshold,tau_q=0.10 absolute ICIR,official run_main.sh passes SUCCESS_ICIR=0.02,mismatch_active_runner
+children_per_parent,five children per selected parent,batch=10 selects up to 10 parents and proposes one child per parent,mismatch_active_runner
+parent_context,"category, quality bucket, depth bucket, retrieval-frequency bucket","ResidualMemory key is only (category,motif)",mismatch
+ast_diff_motif,typed canonical AST differencing and normalized edit script,motifs.py compares regex-derived operator/window/feature sets,mismatch
+motifs_observed_not_commands,"labels extracted after generation, not hand-written mutation commands",selected motif is explicitly sent to LLM as Requested edit motif,mismatch
+residual_baseline,weighted historical children from same full parent context,source averages child quality only within low/medium/high parent-quality bucket,mismatch
+confidence_gate,"n/(n+kappa) times min(1, abs(mu)/(sigma+epsilon))","source combines count gate, beta-posterior entropy certainty, and variance penalty",mismatch
+warmup_schedule,zero through t0 then gradual ramp over Tw,balanced graph strategy switches from random/warmup to full memory after one threshold,mismatch
+apv_exclusion,vetoed action excluded; choose next-best non-vetoed action,balanced scorer retains vetoed motifs with negative severity and may select one,mismatch
+ledger_all_evaluated_children,add all evaluated children and edges,runner adds to FactorDAG only when success and result.ok,mismatch
+invalid_failure_memory,invalid attempts update failure memory,"strategy update records failures, including invalid evaluations",component_match
+lineage_prompt_context,prompt includes parent lineage trace,generator supports optional context but graph strategy never supplies it,missing_active_path
+factor_length_threshold,40,generation request caps formula strings at 280 characters; no 40-unit admission check,mismatch_or_unit_undisclosed
+factor_pool_capacity,50 during common protocol,export truncates to 50 only after search; search DAG is uncapped,partial_mismatch
+fixed_budget_size,same disclosed generation budget,paper never gives numeric B; official main defaults to 500,paper_underspecified
+fixed_budget_seeds,5/2/5/5 by method,"benchmark defaults to seeds 0,1,2 and no paper diagnostic command is released",mismatch_missing_runner
+mechanism_ablation_runner,"NoGate, AbsOLM, ManualMut, NoAPV",none of these named variants/removed-component paths exist,missing
+main_baseline_runner,eight baselines in Table 2,official runner strategies only alphamemo; collectors do not execute paper baselines,missing
+native_input_snapshot,exact CSI500/S&P500 Qlib panels,current-download builder scripts only; no data snapshot,missing
+native_output_snapshot,"paper trajectories, pools, predictions, returns, and metrics",no tracked runs/data/result files,missing
+representative_factor_snapshot,five Table 9 formulas and metrics,none of the factor names/formulas is tracked in source,missing
+llm_model,deepseek/deepseek-v4-flash through OpenRouter,official runner default matches mutable model alias,configuration_match_unpinned_endpoint
+llm_temperature_and_length,temperature=.7 max generation=180 tokens,OpenAI-compatible generator defaults match,configuration_match
+llm_lineage_and_retry_provenance,exact calls/responses and retry outcomes,no prompts/responses/costs are shipped; terminal failures silently use a fixed fallback formula,missing_and_behavioral_risk
+dependency_snapshot,exact environment,"some packages pinned, core numpy/pandas/scipy and API endpoint are not",partial_unpinned
+paper_result_collector,all Tables 2--9,collect_results reads main/variant metrics but no frozen inputs or outputs,component_only

@@ -59,8 +59,8 @@ def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     assert public["precise_native_or_access_blocker"].notna().all()
     assert public["precise_native_or_access_blocker"].str.contains(":A[123]_", regex=True).all()
     assert public["native_pipeline_disposition"].value_counts().to_dict() == {
-        "static_common_task_blocker_recorded_not_execution_targeted": 10,
-        "targeted_execution_recorded": 8,
+        "static_common_task_blocker_recorded_not_execution_targeted": 9,
+        "targeted_execution_recorded": 9,
     }
     reconstructed = public[public["good_faith_reconstruction"].eq("yes")]
     assert len(reconstructed) == 13
