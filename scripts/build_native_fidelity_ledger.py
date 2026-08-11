@@ -117,8 +117,14 @@ ARTIFACT_NOTES = {
     ),
     "SYS-RD-AGENT-QUANT": (
         "N",
-        "The snapshot provides the broad R&D-Agent framework and quant runners, "
-        "but no bundled dated output from the R&D-Agent-Quant lineage.",
+        "The mapped primary record is the general R&D-Agent MLE-Bench report, not "
+        "the separate quant paper. A pinned audit inventories 534 displayed numeric "
+        "cells (526 unique measurements) and 24 result-figure series/bars, with zero "
+        "native results reproduced. All 21 audited mechanisms have identifiable "
+        "paper-era source components, but no run configs, traces, frozen Kaggle/MLE-"
+        "Bench data, model snapshots, seeds, submissions, or checkpoints prove which "
+        "non-default alternatives generated the paper results; advertised trace links "
+        "are broken. Component compilation/execution receives no result credit.",
     ),
     "SYS-ALPHA-QUANTER": (
         "N",
@@ -244,7 +250,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
     "SYS-QUANTA-ALPHA": "paper_audit:completed_zero_of_344_native_table_results_components_only",
-    "SYS-RD-AGENT-QUANT": "legacy_targeted:blocked_on_jkp_adapter",
+    "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",
     "SYS-TRADING-R1": "legacy_targeted:blocked_no_public_codebase",
 }
