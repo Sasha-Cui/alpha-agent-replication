@@ -1,0 +1,21 @@
+configuration,paper_value,source_value,status
+training dates,2013-01-01--2018-12-31,same in preprocessing scripts,match
+trading dates,2019-01-01--2023-12-31,released CSV 2019-01-02--2023-12-28; main figures visibly start 2020,paper_figure_conflict
+training steps,"2,000,000","100 epochs x 20,000 parser/default",match
+epochs,100,100 for named main scripts,match
+hidden layers,not stated,512 x 512,source_only
+PPO gamma,not stated,0.995,source_only
+PPO clip ratio,epsilon unspecified,0.7,paper_underspecified
+CPPO alpha,example 0.05 worst tail,0.85,conflict
+CPPO beta,symbol only,3000.0,source_only
+PPO seed,not stated,42,paper_underspecified
+CPPO seed,not stated,0,paper_underspecified
+evaluation seed,not stated,none,missing
+hmax,not stated,100,source_only
+initial cash,not stated,"1,000,000",source_only
+buy/sell costs,not stated,0.001 each,source_only
+turbulence control,not stated,vix >= 70 liquidates all positions,undisclosed_material_config
+stock universe,Nasdaq-100,84 survivors from July 17 2023 list across all years,lookahead_universe
+benchmark symbol,Nasdaq-100,live Yahoo input 'ndx',temporally_unpinned
+missing sentiment,not stated,filled with 0 outside paper score range,paper_underspecified
+missing risk,not stated,filled with neutral score 3,source_only

@@ -1,0 +1,5 @@
+figure,series,metric,paper_value,status,paper_result_credit
+Figure 1,PPO 25 epochs,Information Ratio,-0.0148,raster_label_not_reproduced,False
+Figure 1,CPPO 25 epochs,Information Ratio,-0.0382,raster_label_not_reproduced,False
+Figure 1,PPO-Qwen 25 epochs,Information Ratio,-0.0178,raster_label_not_reproduced,False
+Figure 1,CPPO-Qwen 25 epochs,Information Ratio,-0.0726,raster_label_not_reproduced,False

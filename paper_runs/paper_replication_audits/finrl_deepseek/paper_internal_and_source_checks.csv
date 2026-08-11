@@ -1,0 +1,15 @@
+check,evidence,status
+Table 1 values repeated in Tables 2/3,12 repeated cells are internally identical,pass
+notebook cell80 versus paper Table 1,0/12 displayed values match,paper_source_result_conflict
+notebook cell81 versus paper Table 2,0/9 available values match; 3 are absent,paper_source_result_conflict
+notebook Table 3 cell,cell82 has no output and plots result instead of result_cppo,broken_evaluation_cell
+notebook repeated PPO metrics,cell80 and cell81 disagree on all three metrics for the same series,stale_output_conflict
+notebook repeated PPO-DeepSeek 10% metrics,cell80 and cell81 disagree on all three metrics for the same series,stale_output_conflict
+PPO 0.1% notebook path,normalization/filtering is commented out but later referenced,broken_evaluation_cell
+figure 2 duration,"caption says 3 years, prose says 2019--2023, raster shows 2020--2023",paper_internal_conflict
+main figure trading span,Figures 2--6 visibly begin 2020 despite declared 2019 start,paper_internal_conflict
+figure 1 training duration,caption says 3 years while 2019--2022 is four calendar years,paper_internal_conflict
+installation entrypoint,installation_script.sh invokes nonexistent train_ppo_deepseek.py,broken_installation_path
+current Python syntax,risk_deepseek_deepinfra.py has an empty api_key assignment,post_paper_syntax_error
+paper-era prompt implementation,pre-submission source contains no LLM API scoring script,missing_paper_era_source
+official checkpoint source lineage,several released names have no exact producing script/log filename,provenance_gap

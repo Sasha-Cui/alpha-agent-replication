@@ -1,0 +1,27 @@
+paper_dimension,source_evidence,status,paper_mechanism_credit
+PPO clipped objective,train_ppo.py compute_loss_pi,implemented_match,True
+Gaussian actor and critic,MLPActorCritic in training and notebook,implemented_match,True
+recommendation score in state,llm_sentiment appended to LLM environments,implemented_match,True
+10% recommendation action multipliers,env_stocktrading_llm.py uses 0.9/0.95/1.05/1.1,implemented_match,True
+1% recommendation action multipliers,env_stocktrading_llm_1.py uses 0.99/0.995/1.005/1.01,implemented_match,True
+0.1% recommendation action multipliers,env_stocktrading_llm_01.py uses 0.999/0.9995/1.0005/1.001,implemented_match,True
+neutral recommendation factor,paper says unchanged; 10% source multiplies neutral actions by 0.98,mechanism_conflict,False
+CPPO CVaR objective,source subtracts a clipped value update from GAE; it does not implement the displayed Lagrangian objective,not_implemented_as_claimed,False
+CPPO trajectory-buffer isolation,"CPPOBuffer.finish_path subtracts the full valupdate buffer from the full advantage buffer on every trajectory, repeatedly modifying earlier slices",implementation_bug,False
+CVaR alpha 0.05 worst tail,source training default alpha is 0.85 and uses 1-alpha,config_conflict,False
+trajectory return D(pi),source updates adjusted_D_pi at every environment step from ep_ret + v - r,mechanism_conflict,False
+aggregate portfolio risk,source weights risk scores by invested stock value and omits cash,partial_match,False
+paper 10% CPPO risk weights,only train_cppo_llm_old.py uses 0.9--1.1; it is a 25-epoch local Qwen path,missing_exact_training_lineage,False
+100-epoch DeepSeek CPPO 1% risk weights,train_cppo_llm_risk.py uses 0.99--1.01 and saves an unmatched _99_101 name,source_checkpoint_name_conflict,False
+100-epoch DeepSeek CPPO 0.1% risk weights,train_cppo_llm_risk_01.py saves a name absent from the official release,source_checkpoint_name_conflict,False
+DeepSeek recommendation prompt,paper gives zero-shot core prompt; post-paper source adds few-shot examples and batching,post_paper_prompt_expansion,False
+DeepSeek risk prompt,paper gives zero-shot core prompt; post-paper source adds few-shot examples and batching,post_paper_prompt_expansion,False
+temperature zero,post-paper DeepInfra scripts set temperature=0,post_paper_implementation_only,False
+one random article per stock/day,"selection code, seed, and selected article IDs are absent",missing_artifact,False
+FNSPID 15.7M to 2M reduction,neither raw subset nor reduction manifest is released,missing_artifact,False
+DeepSeek V3 signal values,frozen derived sentiment/risk columns are released,released_derived_artifact,False
+PPO/CPPO released checkpoint evaluation,eight paper-relevant checkpoints load and execute on released CSVs,native_component_executed,False
+stochastic evaluation,notebook samples Gaussian actions but sets no evaluation seed,unreproducible_random_protocol,False
+Nasdaq benchmark,notebook downloads live Yahoo ticker ndx with no frozen series,temporally_unpinned_input,False
+transaction costs,all training/backtest environments set 0.1% buy and sell costs,implemented_match,True
+turbulence liquidation,backtest sets vix threshold 70; paper does not report it,undisclosed_material_config,False

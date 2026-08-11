@@ -1,0 +1,19 @@
+{
+  "current": {
+    "compiled": 26,
+    "failures": [
+      {
+        "error": "  File \"/tmp/tmpwde3l1tb/risk_deepseek_deepinfra.py\", line 10\n    base_url=\"https://api.deepinfra.com/v1/openai\",\n            ^\nSyntaxError: invalid syntax\n",
+        "path": "risk_deepseek_deepinfra.py"
+      }
+    ],
+    "python_files": 27,
+    "revision": "5c21a923214bca6370800efd45f8c6c1ef776ae7"
+  },
+  "pre_submission": {
+    "compiled": 25,
+    "failures": [],
+    "python_files": 25,
+    "revision": "43e58573274c480e4d5f5b3c946073e2cb2e49a6"
+  }
+}

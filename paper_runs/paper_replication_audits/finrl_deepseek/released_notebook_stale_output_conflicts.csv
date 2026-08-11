@@ -1,0 +1,7 @@
+method,metric,cell80_value,cell81_value,status
+PPO,Information Ratio,0.0013,0.0010,same_series_different_stored_output
+PPO,CVaR,-0.0415,-0.0403,same_series_different_stored_output
+PPO,Rachev Ratio,1.0430,1.0425,same_series_different_stored_output
+PPO-DeepSeek 10%,Information Ratio,-0.0132,-0.0085,same_series_different_stored_output
+PPO-DeepSeek 10%,CVaR,-0.0396,-0.0370,same_series_different_stored_output
+PPO-DeepSeek 10%,Rachev Ratio,0.9609,1.0025,same_series_different_stored_output

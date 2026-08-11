@@ -1,0 +1,33 @@
+figure,visible_date_span,series,released_numeric_series,native_exact_curve_reproduced,status,paper_result_credit
+Figure 1 / download4.png,2023-01--2023-12,PPO 25 epochs,False,False,paper_raster_only,False
+Figure 1 / download4.png,2023-01--2023-12,CPPO 25 epochs,False,False,paper_raster_only,False
+Figure 1 / download4.png,2023-01--2023-12,PPO-Qwen 25 epochs,False,False,paper_raster_only,False
+Figure 1 / download4.png,2023-01--2023-12,CPPO-Qwen 25 epochs,False,False,paper_raster_only,False
+Figure 1 / download4.png,2023-01--2023-12,Nasdaq-100 index,False,False,paper_raster_only,False
+Figure 2 / download10.png,2020-01--2023-12,PPO 20 epochs,False,False,paper_raster_only,False
+Figure 2 / download10.png,2020-01--2023-12,CPPO 20 epochs,False,False,paper_raster_only,False
+Figure 2 / download10.png,2020-01--2023-12,PPO-DeepSeek 20 epochs,False,False,paper_raster_only,False
+Figure 2 / download10.png,2020-01--2023-12,PPO-Llama 20 epochs,False,False,paper_raster_only,False
+Figure 2 / download10.png,2020-01--2023-12,CPPO-DeepSeek 20 epochs,False,False,paper_raster_only,False
+Figure 2 / download10.png,2020-01--2023-12,CPPO-Llama 20 epochs,False,False,paper_raster_only,False
+Figure 2 / download10.png,2020-01--2023-12,Nasdaq-100 index,False,False,paper_raster_only,False
+Figure 3 / download15.png,2020-01--2023-12,PPO 100 epochs,False,False,paper_raster_only,False
+Figure 3 / download15.png,2020-01--2023-12,CPPO 100 epochs,False,False,paper_raster_only,False
+Figure 3 / download15.png,2020-01--2023-12,PPO-DeepSeek 100 epochs,False,False,paper_raster_only,False
+Figure 3 / download15.png,2020-01--2023-12,CPPO-DeepSeek 100 epochs,False,False,paper_raster_only,False
+Figure 3 / download15.png,2020-01--2023-12,Nasdaq-100 index,False,False,paper_raster_only,False
+Figure 4 / download13.png,2020-01--2023-12,PPO 100 epochs,False,False,paper_raster_only,False
+Figure 4 / download13.png,2020-01--2023-12,CPPO 100 epochs,False,False,paper_raster_only,False
+Figure 4 / download13.png,2020-01--2023-12,PPO-DeepSeek 100 epochs,False,False,paper_raster_only,False
+Figure 4 / download13.png,2020-01--2023-12,CPPO-DeepSeek 100 epochs,False,False,paper_raster_only,False
+Figure 4 / download13.png,2020-01--2023-12,Nasdaq-100 index,False,False,paper_raster_only,False
+Figure 5 / download17.png,2020-01--2023-12,PPO,False,False,paper_raster_only,False
+Figure 5 / download17.png,2020-01--2023-12,PPO-DeepSeek 10%,False,False,paper_raster_only,False
+Figure 5 / download17.png,2020-01--2023-12,PPO-DeepSeek 1%,False,False,paper_raster_only,False
+Figure 5 / download17.png,2020-01--2023-12,PPO-DeepSeek 0.1%,False,False,paper_raster_only,False
+Figure 5 / download17.png,2020-01--2023-12,Nasdaq-100 index,False,False,paper_raster_only,False
+Figure 6 / download18.png,2020-01--2023-12,CPPO,False,False,paper_raster_only,False
+Figure 6 / download18.png,2020-01--2023-12,CPPO-DeepSeek 10%,False,False,paper_raster_only,False
+Figure 6 / download18.png,2020-01--2023-12,CPPO-DeepSeek 1%,False,False,paper_raster_only,False
+Figure 6 / download18.png,2020-01--2023-12,CPPO-DeepSeek 0.1%,False,False,paper_raster_only,False
+Figure 6 / download18.png,2020-01--2023-12,Nasdaq-100 index,False,False,paper_raster_only,False

@@ -1,0 +1,37 @@
+paper_table,notebook_cell,method,metric,paper_value,stored_notebook_value,status,paper_result_credit
+Table 1 main 100-epoch comparison,cell80,PPO,Information Ratio,0.0100,0.0013,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,PPO,CVaR,-0.0394,-0.0415,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,PPO,Rachev Ratio,1.0637,1.0430,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,CPPO,Information Ratio,-0.0148,-0.0035,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,CPPO,CVaR,-0.0439,-0.0434,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,CPPO,Rachev Ratio,1.0404,1.1000,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,PPO-DeepSeek 10%,Information Ratio,-0.0093,-0.0132,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,PPO-DeepSeek 10%,CVaR,-0.0338,-0.0396,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,PPO-DeepSeek 10%,Rachev Ratio,0.9890,0.9609,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,CPPO-DeepSeek 10%,Information Ratio,0.0078,0.0035,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,CPPO-DeepSeek 10%,CVaR,-0.0437,-0.0447,stored_output_mismatch,False
+Table 1 main 100-epoch comparison,cell80,CPPO-DeepSeek 10%,Rachev Ratio,0.9818,0.9446,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO,Information Ratio,0.0100,0.0010,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO,CVaR,-0.0394,-0.0403,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO,Rachev Ratio,1.0637,1.0425,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO-DeepSeek 10%,Information Ratio,-0.0093,-0.0085,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO-DeepSeek 10%,CVaR,-0.0338,-0.0370,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO-DeepSeek 10%,Rachev Ratio,0.9890,1.0025,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO-DeepSeek 1%,Information Ratio,-0.0252,-0.0277,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO-DeepSeek 1%,CVaR,-0.0459,-0.0483,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO-DeepSeek 1%,Rachev Ratio,1.0394,1.0690,stored_output_mismatch,False
+Table 2 PPO infusion,cell81,PPO-DeepSeek 0.1%,Information Ratio,-0.0011,,missing_stored_output,False
+Table 2 PPO infusion,cell81,PPO-DeepSeek 0.1%,CVaR,-0.0375,,missing_stored_output,False
+Table 2 PPO infusion,cell81,PPO-DeepSeek 0.1%,Rachev Ratio,0.9536,,missing_stored_output,False
+Table 3 CPPO infusion,cell80,CPPO,Information Ratio,-0.0148,-0.0035,stored_output_mismatch,False
+Table 3 CPPO infusion,cell80,CPPO,CVaR,-0.0439,-0.0434,stored_output_mismatch,False
+Table 3 CPPO infusion,cell80,CPPO,Rachev Ratio,1.0404,1.1000,stored_output_mismatch,False
+Table 3 CPPO infusion,cell80,CPPO-DeepSeek 10%,Information Ratio,0.0078,0.0035,stored_output_mismatch,False
+Table 3 CPPO infusion,cell80,CPPO-DeepSeek 10%,CVaR,-0.0437,-0.0447,stored_output_mismatch,False
+Table 3 CPPO infusion,cell80,CPPO-DeepSeek 10%,Rachev Ratio,0.9818,0.9446,stored_output_mismatch,False
+Table 3 CPPO infusion,cell80,CPPO-DeepSeek 1%,Information Ratio,-0.0032,,missing_stored_output,False
+Table 3 CPPO infusion,cell80,CPPO-DeepSeek 1%,CVaR,-0.0365,,missing_stored_output,False
+Table 3 CPPO infusion,cell80,CPPO-DeepSeek 1%,Rachev Ratio,0.9573,,missing_stored_output,False
+Table 3 CPPO infusion,cell80,CPPO-DeepSeek 0.1%,Information Ratio,-0.0060,,missing_stored_output,False
+Table 3 CPPO infusion,cell80,CPPO-DeepSeek 0.1%,CVaR,-0.0441,,missing_stored_output,False
+Table 3 CPPO infusion,cell80,CPPO-DeepSeek 0.1%,Rachev Ratio,0.9789,,missing_stored_output,False

@@ -1,0 +1,336 @@
+{
+  "credit_reason": "Released components execute, but the paper/notebook fix no evaluation seed or benchmark snapshot, and no run reproduces the paper table at displayed precision.",
+  "execution_driver": "scripts/run_finrl_deepseek_native.py",
+  "execution_environment": {
+    "device": "cpu",
+    "mkl_num_threads": 8,
+    "numpy": "2.3.5",
+    "omp_num_threads": 8,
+    "pandas": "2.2.3",
+    "python": "3.12.8",
+    "scipy": "1.17.1",
+    "torch": "2.10.0+cu128"
+  },
+  "input_artifacts": [
+    {
+      "path": "data/trade_data_2019_2023.csv",
+      "sha256": "01587b66236b5563df8f871f0110bbf752f1c593427a346192c20e271efffd3b",
+      "size_bytes": 30518762
+    },
+    {
+      "path": "data/trade_data_deepseek_risk_2019_2023.csv",
+      "sha256": "e5f510b815f7e6d05dba9307b71f2ca738f7370c77a4206b17b5fbd5dd23898d",
+      "size_bytes": 31198826
+    },
+    {
+      "path": "data/trade_data_deepseek_sentiment_2019_2023.csv",
+      "sha256": "1d827b3685e914bdbb4ee6270e556ba1a4490976a717bc85dc729f26ff980fef",
+      "size_bytes": 30953286
+    },
+    {
+      "path": "agents/agent_ppo_100_epochs_20k_steps.pth",
+      "sha256": "f138a91c36e0b88b27d58bf41549de24717aec48e7107641f3dfa1838b51177b",
+      "size_bytes": 5730102
+    },
+    {
+      "path": "agents/agent_cppo_100_epochs_20k_steps.pth",
+      "sha256": "c7017d10df45958f1a09ee8e009d8c99346be867ff312b03876ed1b8cfb289b1",
+      "size_bytes": 5730119
+    },
+    {
+      "path": "agents/agent_ppo_deepseek_100_epochs_20k_steps.pth",
+      "sha256": "ae05dd713d1c0e8a880daad0a3be49db0314c50211805272f8a61dd84794ef84",
+      "size_bytes": 6074319
+    },
+    {
+      "path": "agents/agent_ppo_deepseek_100_epochs_20k_steps_01.pth",
+      "sha256": "0969fc0b9d4c49aa816b2ec88dd321ffa619d765df27d79ef8975797747b8d5b",
+      "size_bytes": 6074370
+    },
+    {
+      "path": "agents/agent_ppo_deepseek_100_epochs_20k_steps_1.pth",
+      "sha256": "3f54f756654dc9a23c9c6fe6836a0be5ac03cc1fecf8952f020e58f63291fb8c",
+      "size_bytes": 6074540
+    },
+    {
+      "path": "agents/agent_cppo_deepseek_100_epochs_20k_steps.pth",
+      "sha256": "b8dc3e1cc247a16c258d6940644008f3a491f0dd962145d37659a66c55b99d44",
+      "size_bytes": 6418400
+    },
+    {
+      "path": "agents/agent_cppo_deepseek_100_epochs_20k_steps_01.pth",
+      "sha256": "672fa6bfc0e656f724833fac2046f04f5598fd9a87a1ea457bcaf9b1a2edcda0",
+      "size_bytes": 6418349
+    },
+    {
+      "path": "agents/agent_cppo_deepseek_100_epochs_20k_steps_1.pth",
+      "sha256": "0995acb84653b5ffbfaab13fed295ff1efa8443df66f6dfe80e0ac82280fe53d",
+      "size_bytes": 6418519
+    }
+  ],
+  "paper_result_credit": false,
+  "runs": {
+    "native_mean.json": {
+      "action_mode": "mean",
+      "results": {
+        "CPPO": {
+          "checkpoint": "agent_cppo_100_epochs_20k_steps.pth",
+          "cvar": -0.04489947371211882,
+          "environment_module": "env_stocktrading",
+          "final_asset": 2393750.4560027076,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9727203923237927
+        },
+        "CPPO-DeepSeek 0.1%": {
+          "checkpoint": "agent_cppo_deepseek_100_epochs_20k_steps_01.pth",
+          "cvar": -0.05091859281410444,
+          "environment_module": "env_stocktrading_llm_risk_01",
+          "final_asset": 803451.9554445341,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9670155579346462
+        },
+        "CPPO-DeepSeek 1%": {
+          "checkpoint": "agent_cppo_deepseek_100_epochs_20k_steps_1.pth",
+          "cvar": -0.03438403834204619,
+          "environment_module": "env_stocktrading_llm_risk_1",
+          "final_asset": 2592566.0510951895,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9397881184305716
+        },
+        "CPPO-DeepSeek 10%": {
+          "checkpoint": "agent_cppo_deepseek_100_epochs_20k_steps.pth",
+          "cvar": -0.04217206048333026,
+          "environment_module": "env_stocktrading_llm_risk",
+          "final_asset": 1693272.7696497282,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.8594990633627781
+        },
+        "PPO": {
+          "checkpoint": "agent_ppo_100_epochs_20k_steps.pth",
+          "cvar": -0.04703391824880356,
+          "environment_module": "env_stocktrading",
+          "final_asset": 3812631.7990432195,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.988455245532903
+        },
+        "PPO-DeepSeek 0.1%": {
+          "checkpoint": "agent_ppo_deepseek_100_epochs_20k_steps_01.pth",
+          "cvar": -0.03388272075026103,
+          "environment_module": "env_stocktrading_llm_01",
+          "final_asset": 2100842.898501263,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.921549416374154
+        },
+        "PPO-DeepSeek 1%": {
+          "checkpoint": "agent_ppo_deepseek_100_epochs_20k_steps_1.pth",
+          "cvar": -0.04339447822048959,
+          "environment_module": "env_stocktrading_llm_1",
+          "final_asset": 1426406.1689634982,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 1.0468446886110874
+        },
+        "PPO-DeepSeek 10%": {
+          "checkpoint": "agent_ppo_deepseek_100_epochs_20k_steps.pth",
+          "cvar": -0.03507401520542347,
+          "environment_module": "env_stocktrading_llm",
+          "final_asset": 1756832.9736280695,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 1.0364680982207295
+        }
+      },
+      "seed": 0,
+      "source_revision": "5c21a923214bca6370800efd45f8c6c1ef776ae7"
+    },
+    "native_seed0.json": {
+      "action_mode": "sample",
+      "results": {
+        "CPPO": {
+          "checkpoint": "agent_cppo_100_epochs_20k_steps.pth",
+          "cvar": -0.04062067102343483,
+          "environment_module": "env_stocktrading",
+          "final_asset": 2104011.195838093,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 1.099113577132853
+        },
+        "CPPO-DeepSeek 0.1%": {
+          "checkpoint": "agent_cppo_deepseek_100_epochs_20k_steps_01.pth",
+          "cvar": -0.048123436769352934,
+          "environment_module": "env_stocktrading_llm_risk_01",
+          "final_asset": 1049017.8628593916,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9322891764017808
+        },
+        "CPPO-DeepSeek 1%": {
+          "checkpoint": "agent_cppo_deepseek_100_epochs_20k_steps_1.pth",
+          "cvar": -0.030931779797987582,
+          "environment_module": "env_stocktrading_llm_risk_1",
+          "final_asset": 2791432.451286758,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9934852585564843
+        },
+        "CPPO-DeepSeek 10%": {
+          "checkpoint": "agent_cppo_deepseek_100_epochs_20k_steps.pth",
+          "cvar": -0.04343791561078373,
+          "environment_module": "env_stocktrading_llm_risk",
+          "final_asset": 2013326.7697610033,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.867346440408459
+        },
+        "PPO": {
+          "checkpoint": "agent_ppo_100_epochs_20k_steps.pth",
+          "cvar": -0.03550651948161756,
+          "environment_module": "env_stocktrading",
+          "final_asset": 3900008.202535575,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 1.0638255358976725
+        },
+        "PPO-DeepSeek 0.1%": {
+          "checkpoint": "agent_ppo_deepseek_100_epochs_20k_steps_01.pth",
+          "cvar": -0.03591728008824669,
+          "environment_module": "env_stocktrading_llm_01",
+          "final_asset": 2003612.016320925,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9141726419324735
+        },
+        "PPO-DeepSeek 1%": {
+          "checkpoint": "agent_ppo_deepseek_100_epochs_20k_steps_1.pth",
+          "cvar": -0.04099007935221693,
+          "environment_module": "env_stocktrading_llm_1",
+          "final_asset": 2982358.7368977414,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9286055199600978
+        },
+        "PPO-DeepSeek 10%": {
+          "checkpoint": "agent_ppo_deepseek_100_epochs_20k_steps.pth",
+          "cvar": -0.03667695769259524,
+          "environment_module": "env_stocktrading_llm",
+          "final_asset": 3200914.846517026,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9314898513114745
+        }
+      },
+      "seed": 0,
+      "source_revision": "5c21a923214bca6370800efd45f8c6c1ef776ae7"
+    },
+    "native_seed42.json": {
+      "action_mode": "sample",
+      "results": {
+        "CPPO": {
+          "checkpoint": "agent_cppo_100_epochs_20k_steps.pth",
+          "cvar": -0.044059711003164186,
+          "environment_module": "env_stocktrading",
+          "final_asset": 1229739.2349163266,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 1.0561209081766303
+        },
+        "CPPO-DeepSeek 0.1%": {
+          "checkpoint": "agent_cppo_deepseek_100_epochs_20k_steps_01.pth",
+          "cvar": -0.047821836140686406,
+          "environment_module": "env_stocktrading_llm_risk_01",
+          "final_asset": 954821.2137816718,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.973574160380427
+        },
+        "CPPO-DeepSeek 1%": {
+          "checkpoint": "agent_cppo_deepseek_100_epochs_20k_steps_1.pth",
+          "cvar": -0.03167937096826603,
+          "environment_module": "env_stocktrading_llm_risk_1",
+          "final_asset": 3016040.5690863533,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 1.0000582514983758
+        },
+        "CPPO-DeepSeek 10%": {
+          "checkpoint": "agent_cppo_deepseek_100_epochs_20k_steps.pth",
+          "cvar": -0.04283449879506794,
+          "environment_module": "env_stocktrading_llm_risk",
+          "final_asset": 2419497.6061424236,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.8942582253662793
+        },
+        "PPO": {
+          "checkpoint": "agent_ppo_100_epochs_20k_steps.pth",
+          "cvar": -0.03145274598712096,
+          "environment_module": "env_stocktrading",
+          "final_asset": 3997474.008465939,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 1.0095204794559076
+        },
+        "PPO-DeepSeek 0.1%": {
+          "checkpoint": "agent_ppo_deepseek_100_epochs_20k_steps_01.pth",
+          "cvar": -0.03614887939263534,
+          "environment_module": "env_stocktrading_llm_01",
+          "final_asset": 2603139.251400516,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9346243097748863
+        },
+        "PPO-DeepSeek 1%": {
+          "checkpoint": "agent_ppo_deepseek_100_epochs_20k_steps_1.pth",
+          "cvar": -0.03925965419575962,
+          "environment_module": "env_stocktrading_llm_1",
+          "final_asset": 1535437.3881439948,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9072972607271649
+        },
+        "PPO-DeepSeek 10%": {
+          "checkpoint": "agent_ppo_deepseek_100_epochs_20k_steps.pth",
+          "cvar": -0.03348414359279861,
+          "environment_module": "env_stocktrading_llm",
+          "final_asset": 2011147.2840391756,
+          "initial_asset": 1000000.0,
+          "n_assets": 1257,
+          "n_returns": 1255,
+          "rachev_ratio": 0.9132389329270907
+        }
+      },
+      "seed": 42,
+      "source_revision": "5c21a923214bca6370800efd45f8c6c1ef776ae7"
+    }
+  },
+  "source_revision": "5c21a923214bca6370800efd45f8c6c1ef776ae7"
+}
