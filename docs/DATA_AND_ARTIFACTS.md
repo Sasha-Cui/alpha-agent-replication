@@ -18,6 +18,8 @@ and what must be acquired or regenerated separately.
 | `replication_scope/mapping_scope_ledger.csv` | 62 | 14 | Row-level reconciliation of the 50 headline mappings and 12 excluded diagnostics |
 | `submission_evidence/strict_proxy_fidelity_audit/legacy_50_proxy_fidelity_audit.csv` | 50 | 13 | Strict A/B/C/D/U audit of the legacy mappings and their admissible use |
 | `faithful_component_replications/faithfulness_ledger.csv` | 3 | 28 | Primary exhaustive valid-seed census; all rows strict B with pinned source and rule checks |
+| `faithful_component_replications/upstream_conformance.json` | 3 candidates | -- | Outcome-blind execution of exact pinned source on 1,296 score values and 105 portfolio timestamps |
+| `faithful_component_replications/owner_review_attestation.csv` | 3 | 12 | Fail-closed D07 owner review record; currently pending and not claimed complete |
 | `faithful_component_replications/attribution_results.csv` | 12 | 13 | Four matched attribution specifications for each primary faithful component |
 | `faithful_component_replications/attribution_summary.csv` | 4 | 6 | Primary benchmark summaries with Holm correction across three components |
 | `faithful_component_replications/closest_jkp_factors.csv` | 3 | 4 | Construction diagnostic for the primary component paths |

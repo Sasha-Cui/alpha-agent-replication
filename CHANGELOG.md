@@ -7,6 +7,13 @@ Changelog, and releases use semantic version tags.
 
 ### Changed
 
+- Replaced the 50-row proxy layer as primary evidence with an exhaustive
+  three-seed strict-B disclosed-component census and a 100% fail-closed gate.
+- Added an outcome-blind executable conformance harness against exact pinned
+  QuantEvolver source snapshots, including the source finite-rank-IC rule.
+- Added the D07 owner-review packet and attestation validator without claiming
+  that the pending human review has been completed.
+
 - Bounded the manuscript's interpretation to retrospective common-task
   reconstructions and removed unsupported adversarial characterizations.
 - Documented authorized JKP input acquisition and the end-to-end replication

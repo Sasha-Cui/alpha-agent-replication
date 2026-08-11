@@ -49,6 +49,18 @@ native agent, search trajectory, reinforcement training run, or paper performanc
 table has been replicated. Evidence is in
 `paper_runs/faithful_component_replications/`.
 
+The offline conformance gate executes the exact MIT-licensed pinned seed, DSL,
+and cross-sectional evaluator snapshots on a deterministic synthetic OHLCV
+panel. It matches 1,296 source score values within a declared floating-point
+tolerance and matches all 105 eligible portfolio timestamps and long-short
+returns, with zero portfolio-return discrepancy. No empirical outcome enters
+this conformance fixture.
+
+D07 assigns the independent human review to Sasha. The compact, outcome-free
+packet is `docs/faithful_component_owner_review_packet.md`; its fail-closed
+attestation is tracked beside the primary ledger. It remains 0/3 pending and
+is not represented as complete by the technical 100% gate.
+
 Across the 150 matched evaluation months, median annualized alpha for these three
 components is +1.2250% under CAPM, +0.2549% under FF3, -0.4009% under FF5 plus
 momentum, and +0.6713% under FF5-plus-momentum-plus-JKP132. Holm-positive counts

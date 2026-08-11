@@ -1,14 +1,14 @@
 # Validation Status
 
-Validated on 2026-08-10 against the canonical ICAIF source, compiled PDF, and
+Validated on 2026-08-11 against the canonical ICAIF source, compiled PDF, and
 tracked aggregate evidence on Bouchet.
 
 ## Canonical artifacts
 
 | Artifact | SHA-256 |
 | --- | --- |
-| `docs/paper/icaif2026_submission.tex` | `81b3703c9f4d13c410809c3bb86cb8e52261ffdaeeb3588cd9dfb310c7b9aef6` |
-| `output/pdf/icaif2026_submission.pdf` | `65a175e930f0109f275dd7c8041fb0ad9ac24d549e9e5ea3478d288008b2fefe` |
+| `docs/paper/icaif2026_submission.tex` | `7abddc75c259045912f9c0eb8595baf907b17768d99ac98c79e558e65ac0f2f9` |
+| `output/pdf/icaif2026_submission.pdf` | `1890b17ac316240eeb63a60a895a18f74dd443ac07d19902be69ebe992631932` |
 
 The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
@@ -17,7 +17,7 @@ labels.
 
 ## Passing checks
 
-- Repository test suite: 101 passed.
+- Repository test suite: 105 passed.
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
@@ -26,6 +26,10 @@ labels.
 - Primary faithful-component gate: 3/3 strict grade B (100%), with source hashes,
   exact evaluator mechanics, full holdings reconstruction, benchmark summaries,
   and within-benchmark Holm families verified.
+- Exact-source offline conformance: 1,296 synthetic score comparisons and 105
+  eligible portfolio timestamps match; portfolio-return discrepancy is zero.
+- Independent D07 owner review: valid pending record, 0/3 rows complete; the
+  technical 100% result is not represented as a completed human review.
 - Stable ICAIF validation entry point: passed.
 - Collaborator index: deterministic 50-row rebuild with no tracked diff.
 - Publication boundary: no tracked Parquet files, third-party repository
@@ -82,15 +86,18 @@ exercise confirmatory, or establish a causal pretraining mechanism.
 The primary formula census covers all three evaluator-valid seeds in the pinned
 QuantEvolver release and passes 3/3 strict grade B (100%). The percentage applies
 to disclosed evaluator components under cadence, universe, and horizon
-adaptations, not the source discovery system or published portfolio. The older
-12-formula bundle is a mixed-fidelity diagnostic outside that denominator. The
+adaptations, not the source discovery system or published portfolio.
+The exact-source synthetic conformance gate passes without empirical outcomes;
+Sasha's independent three-row attestation remains pending.
+The older 12-formula bundle is a mixed-fidelity diagnostic outside that
+denominator. The
 separate GuruAgents experiment is a current-endpoint public-prompt replay with
 archived deterministic tool observations, not an independent reconstruction of
 the source data, original model snapshot, or native system. The 50 legacy
 mappings remain construction diagnostics only.
 
-The legacy `docs/paper/alpha_agent_replication.tex`, owner-review packet, and
-their historical build script document an earlier evidence-audit manuscript.
+The legacy `docs/paper/alpha_agent_replication.tex` and
+its historical build script document an earlier evidence-audit manuscript.
 They are not current submission artifacts. The canonical submission is the
 single PDF and matching TeX source listed above.
 
