@@ -1,0 +1,2 @@
+claim,paper_value_a,paper_value_b,status,evidence
+Table 5 ablation market/asset label,ETH bullish (caption/prose),"Full=28.47% return, 0.23 Sharpe",paper_internal_mismatch,"The Full values equal BTC-bull GPT-4o in Table 2, while ETH-bull GPT-4o in Table 3 is 25.47% and 0.18."

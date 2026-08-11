@@ -1,0 +1,10 @@
+path,role,rows_or_files,date_start,date_end,sha256
+data/eth_daily.csv,price,3121,2015-08-07,2024-02-22,d227fde2a131bea1508f5049da80611982dbae73256570eeb6bb3a1d28729339
+data/bitcoin_daily_price.csv,price,397,2023-01-01,2024-02-01,cca9adb4187d15fec466e6d1bcb92c711eaf75d3e169aeae3b2e1d0378ad5b12
+data/solana_daily_price.csv,price,397,2023-01-01,2024-02-01,6c306363d6ab4b8500c981af84f39ce6dae63e8712690252e455acd95b0db574
+data/eth_more_transaction_statistics.csv,on_chain,396,2023-01-01,2024-01-31,bb7b5c096150e2faa9a7f2bcadd81a9d5511968e095500e93d20841beafa9bbe
+data/bitcoin_transaction_statistics.csv,on_chain,396,2023-01-01,2024-01-31,7648c490f3f0cbdb644c2f7376a7b8d8cd442c673081181c786eae82b0139b01
+data/solana_transaction_statistics.csv,on_chain,396,2023-01-01,2024-01-31,0c3ac2caff57f590dcca183650cd08cb9f5e8ffbccb86afaee50f56bd196ebf8
+data/gnews,off_chain_news,396,2023-01-01,2024-01-31,directory_inventory_not_single_file
+data/selected_bitcoin_202301_202401,off_chain_news,397,2023-01-01,2024-02-01,directory_inventory_not_single_file
+data/selected_solana_202301_202401,off_chain_news,390,2023-01-01,2024-02-01,directory_inventory_not_single_file

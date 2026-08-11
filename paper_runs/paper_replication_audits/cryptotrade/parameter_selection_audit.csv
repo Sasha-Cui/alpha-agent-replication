@@ -1,0 +1,7 @@
+asset,strategy,paper_rule,released_runner_fixed_parameter,released_data_validation_argmax,released_data_validation_argmax_return_pct,fixed_parameter_equals_validation_argmax,paper_test_metric_cells_matching_with_fixed_parameter,paper_test_metric_cells_total,status
+btc,sma,select best validation performance,15,10,3.2589667705520853,False,12,12,selection_rule_mismatch
+btc,slma,select best validation performance,"(15, 30)","(5, 10)",3.402217911009564,False,12,12,selection_rule_mismatch
+eth,sma,select best validation performance,15,20,-4.168247666323999,False,10,12,selection_rule_mismatch
+eth,slma,select best validation performance,"(15, 30)","(15, 30)",8.8216262822431,True,12,12,selection_rule_match
+sol,sma,select best validation performance,15,10,8.056271978970763,False,8,12,selection_rule_mismatch
+sol,slma,select best validation performance,"(15, 30)","(5, 10)",18.50022790314567,False,12,12,selection_rule_mismatch

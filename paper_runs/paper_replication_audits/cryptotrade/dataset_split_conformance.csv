@@ -1,0 +1,13 @@
+asset,split,start,end,paper_open,source_open,open_status,paper_close,source_end_open,close_status,paper_trend_pct,source_costed_buy_hold_return_pct,trend_status,source_observations_including_end_price
+btc,validation,2023-01-19,2023-03-13,20977.48,20686.7459060612,mismatch,20628.03,22156.4066753221,mismatch,-1.67,6.90131840933903,mismatch,54
+btc,bear,2023-04-12,2023-06-16,30462.48,30231.5816232396,mismatch,25575.28,25575.2825953687,exact_displayed_precision_match,-15.61,-15.60654600957373,exact_displayed_precision_match,66
+btc,sideways,2023-06-17,2023-08-25,26328.68,26328.6794390096,exact_displayed_precision_match,26163.68,26163.6800536736,exact_displayed_precision_match,-0.83,-0.8305610153416798,exact_displayed_precision_match,70
+btc,bull,2023-10-01,2023-12-01,26967.4,26967.3974331494,exact_displayed_precision_match,37718.01,37718.0096264496,exact_displayed_precision_match,39.66,39.66125534129479,exact_displayed_precision_match,62
+eth,validation,2023-01-13,2023-03-12,1417.13,1417.134909,exact_displayed_precision_match,1429.6,1474.403244,mismatch,0.88,3.840926694941449,mismatch,59
+eth,bear,2023-04-12,2023-06-16,1892.94,1892.938911,exact_displayed_precision_match,1664.98,1664.977462,exact_displayed_precision_match,-12.24,-12.243004399419288,exact_displayed_precision_match,66
+eth,sideways,2023-06-20,2023-08-31,1734.79,1734.793103,exact_displayed_precision_match,1705.11,1705.108103,exact_displayed_precision_match,-1.91,-1.911410076746889,exact_displayed_precision_match,73
+eth,bull,2023-10-01,2023-12-01,1671.0,1670.998956,exact_displayed_precision_match,2051.76,2051.756718,exact_displayed_precision_match,22.59,22.585990143422883,exact_displayed_precision_match,62
+sol,validation,2023-01-14,2023-03-12,18.29,18.2875055383,exact_displayed_precision_match,18.24,18.2247989492,mismatch,-0.27,-0.5428957578985982,mismatch,58
+sol,bear,2023-04-12,2023-06-16,23.02,23.0187995891,exact_displayed_precision_match,14.76,14.7604162804,exact_displayed_precision_match,-36.08,-36.07669311614453,exact_displayed_precision_match,66
+sol,sideways,2023-07-08,2023-08-31,21.49,21.4852525792,exact_displayed_precision_match,20.83,20.8338370887,exact_displayed_precision_match,-3.23,-3.2319223228786997,exact_displayed_precision_match,55
+sol,bull,2023-10-01,2023-12-01,21.39,21.3920592299,exact_displayed_precision_match,59.25,59.2381770658,mismatch,176.72,176.71666218977293,exact_displayed_precision_match,62
