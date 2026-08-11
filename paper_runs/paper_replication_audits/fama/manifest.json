@@ -1,0 +1,39 @@
+{
+  "audit_route": "paper_only_underspecified_with_motif_level_local_proxy",
+  "author_linked_code_found": false,
+  "blocking_internal_consistency_issues": 8,
+  "canonical_work_id": "CensusACL2024findingsacl233",
+  "final_mined_factor_expressions_released": 0,
+  "github_repository_search_hits": 0,
+  "github_repository_searches": 3,
+  "initial_factor_count_claimed": 38,
+  "initial_factor_identifiers_listed": 71,
+  "internal_consistency_issues": 12,
+  "method_assessment_counts": {
+    "conflict": 7,
+    "missing": 29,
+    "partial": 9,
+    "specified": 24
+  },
+  "method_dimensions": 69,
+  "method_severity_counts": {
+    "blocking": 41,
+    "major": 16,
+    "none": 12
+  },
+  "native_execution": "native_execution.json",
+  "numeric_configuration_cells": 8,
+  "official_pdf_pages": 12,
+  "overall_fidelity": "zero_of_65_table_results_and_zero_of_38_figure_markers_reproduced_no_native_pipeline",
+  "paper": "Can Large Language Models Mine Interpretable Financial Factors More Effectively? A Neural-Symbolic Factor Mining Agent Model",
+  "paper_result_credit": false,
+  "published_table_result_cells": 65,
+  "published_table_result_cells_reproduced": 0,
+  "quantitative_and_qualitative_claims_audited": 10,
+  "runtime_prompt_function_definitions_recovered": 0,
+  "runtime_prompt_templates_recovered": 1,
+  "source_provenance": "source_provenance.json",
+  "system_id": "SYS-FAMA",
+  "visible_figure_result_markers": 38,
+  "visible_figure_result_markers_reproduced": 0
+}

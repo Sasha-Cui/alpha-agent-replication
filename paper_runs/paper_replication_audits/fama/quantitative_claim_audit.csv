@@ -1,0 +1,11 @@
+claim_id,location,claim,published_value,audit_recomputation_or_evidence,assessment,severity,paper_result_credit
+Q001,Abstract,RankIC improvement over SOTA,0.006,0.054 - 0.048 = 0.006,internally_recomputes,major,no
+Q002,Abstract,RankICIR improvement over SOTA,0.105,0.485 - 0.379 = 0.106,conflicts_with_table_and_section_4_4,major,no
+Q003,Abstract,FAMA annualized return,38.4%,Table 2 repeats 38.4%,table_repetition_not_reproduction,blocking,no
+Q004,Abstract,FAMA Sharpe ratio,667.2%,Table 2 repeats 667.2%; Equation 20 defines a dimensionless ratio,unit_ambiguous_not_reproduced,blocking,no
+Q005,Section 4.4,RankIC improvement over FactorVAE,0.006,0.054 - 0.048 = 0.006,internally_recomputes,major,no
+Q006,Section 4.4,RankICIR improvement over FactorVAE,0.106,0.485 - 0.379 = 0.106,internally_recomputes,major,no
+Q007,Section 4.6,AR increase over best prior table row,6.6%,38.4 - 31.8 = 6.6 percentage points; relative increase is 20.75%,percentage_point_language_ambiguous,major,no
+Q008,Section 4.6,SR improvement over best prior Sharpe,261.1%,667.2 - 406.1 = 261.1 percentage points; relative increase is 64.29%,percentage_point_language_ambiguous,major,no
+Q009,Section 4.6,consistent performance without significant fluctuations,qualitative,"No native return path, uncertainty interval, drawdown, or stability test is released",not_verifiable,blocking,no
+Q010,Section 4.6,robustness and stability,qualitative,"One test year is stated; no costs, turnover, seeds, or raw paths are released",not_verifiable,blocking,no

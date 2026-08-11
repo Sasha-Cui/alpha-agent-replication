@@ -1,0 +1,9 @@
+figure,pdf_page,series,visible_result_markers,audit_status
+Figure 1,1,method taxonomy,0,conceptual_diagram
+Figure 2,4,FAMA architecture,0,conceptual_diagram_with_formula_examples
+Figure 3a,7,RankIC by CoE iteration 0--7,8,raster_only_no_raw_plot_values
+Figure 3a,7,RankICIR by CoE iteration 0--7,8,raster_only_no_raw_plot_values
+Figure 3b,7,RankIC by CSS factor count 1--7,7,raster_only_no_raw_plot_values
+Figure 3b,7,RankICIR by CSS factor count 1--7,7,raster_only_no_raw_plot_values
+Figure 4,7,RankIC for Initial/Head/Middle/Tail,4,raster_only_no_raw_plot_values
+Figure 4,7,RankICIR for Initial/Head/Middle/Tail,4,raster_only_no_raw_plot_values

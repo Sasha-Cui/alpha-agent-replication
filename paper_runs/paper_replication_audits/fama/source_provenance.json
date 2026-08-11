@@ -1,0 +1,42 @@
+{
+  "author_linked_code_or_supplement_found": false,
+  "doi": "10.18653/v1/2024.findings-acl.233",
+  "github_repository_searches": [
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "negative_search_evidence_only",
+      "incomplete_results": "false",
+      "query": "2024.findings-acl.233",
+      "response_file": "github_c6b67aa9c9e2.json",
+      "response_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "negative_search_evidence_only",
+      "incomplete_results": "false",
+      "query": "\"Can Large Language Models Mine Interpretable Financial Factors More Effectively\"",
+      "response_file": "github_c86b6a70c174.json",
+      "response_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "negative_search_evidence_only",
+      "incomplete_results": "false",
+      "query": "\"Factor Mining Agent\" FAMA finance",
+      "response_file": "github_dfce0823aa3e.json",
+      "response_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    }
+  ],
+  "license": "CC BY 4.0 per ACL Anthology record",
+  "official_artifact_links": [
+    "https://aclanthology.org/2024.findings-acl.233.pdf"
+  ],
+  "official_pdf": "https://aclanthology.org/2024.findings-acl.233.pdf",
+  "official_pdf_sha256": "327bbaf4011b739107b4c891220fc845c48f974f64abfccdeb8229d789648296",
+  "official_record": "https://aclanthology.org/2024.findings-acl.233/",
+  "official_record_sha256": "5790d804ccb4174d562083e332cdd03cc02c0fa73dabf8ebe0d4e0ccac95bf7f",
+  "pages": 12
+}

@@ -1,0 +1,9 @@
+source_unit,pdf_page,model,configuration_field,published_display_value,audit_status,paper_result_credit
+Table 1,6,GP,Training data usage,100%,enumerated_not_execution_verified,no
+Table 1,6,DTransformer,Training data usage,100%,enumerated_not_execution_verified,no
+Table 1,6,ALSTM,Training data usage,100%,enumerated_not_execution_verified,no
+Table 1,6,FactorVAE,Training data usage,100%,enumerated_not_execution_verified,no
+Table 1,6,FAMA(C),Training data usage,10%,enumerated_not_execution_verified,no
+Table 1,6,FAMA(I-1),Training data usage,10%,enumerated_not_execution_verified,no
+Table 1,6,FAMA(CI-3),Training data usage,10%,enumerated_not_execution_verified,no
+Table 1,6,FAMA(CI-7),Training data usage,10%,enumerated_not_execution_verified,no

@@ -1,0 +1,70 @@
+dimension,paper_or_source_specification,assessment,severity,replication_implication
+authoritative publication,"ACL Anthology final, DOI and 12-page PDF",specified,none,directly_specified
+author-linked implementation,No repository or code link in paper or official record,missing,blocking,cannot_exactly_reproduce
+author-linked supplementary files,Official record links only the PDF,missing,blocking,cannot_exactly_reproduce
+market data provider,OHLCV fields are named but provider is not,missing,blocking,cannot_exactly_reproduce
+data snapshot,No downloadable input snapshot or hashes,missing,blocking,cannot_exactly_reproduce
+universe,S&P 500 stocks,specified,major,requires_interpretation_or_external_source
+constituent vintage,No constituent list or as-of policy,missing,blocking,cannot_exactly_reproduce
+survivorship handling,Not stated,missing,blocking,cannot_exactly_reproduce
+corporate-action adjustment,Not stated for OHLCV,missing,blocking,cannot_exactly_reproduce
+calendar/time zone,Not stated,missing,major,requires_interpretation_or_external_source
+full data window,2015-01-01--2022-01-01,specified,none,directly_specified
+declared training split,2015-01-01--2020-01-01,specified,none,directly_specified
+declared validation split,2020-01-01--2021-01-01,specified,none,directly_specified
+declared test split,2021-01-01--2022-01-01,specified,none,directly_specified
+FAMA fitting window,2020-06-01--2021-01-01 called training and validation and 10% of training,conflict,blocking,cannot_exactly_reproduce
+initial factor count,38 in Section 4.1 versus 71 identifiers in Appendix B,conflict,blocking,cannot_exactly_reproduce
+initial factor identifiers,71 distinct Alpha101 IDs listed,specified,major,requires_interpretation_or_external_source
+initial factor expressions,Not reproduced; external Alpha101 source cited,partial,major,requires_interpretation_or_external_source
+operator/function definitions,Runtime prompt contains an unresolved function_definition placeholder,missing,blocking,cannot_exactly_reproduce
+factor formula grammar,Only examples and a placeholder are supplied,partial,blocking,cannot_exactly_reproduce
+cluster count,Seven,specified,none,directly_specified
+cluster algorithm,KMeans equations supplied,specified,major,requires_interpretation_or_external_source
+cluster initialization,Random centers; no seed,partial,blocking,cannot_exactly_reproduce
+cluster convergence/ties,Not stated,missing,blocking,cannot_exactly_reproduce
+CSS random factor per cluster,Specified conceptually; no seed,partial,blocking,cannot_exactly_reproduce
+CSS context count,l=2,specified,none,directly_specified
+minimum new factor count,u=15,specified,none,directly_specified
+mining iteration count,m overloaded with cluster count; CI-7 reported,conflict,blocking,cannot_exactly_reproduce
+LLM model,text-davinci-002,specified,major,requires_interpretation_or_external_source
+LLM immutable snapshot,No model/API revision or request date,missing,blocking,cannot_exactly_reproduce
+temperature,0,specified,none,directly_specified
+max_tokens,1500,specified,none,directly_specified
+remaining decoding parameters,Defaults delegated to mutable OpenAI documentation,missing,blocking,cannot_exactly_reproduce
+prompt template,One example supplied,partial,major,requires_interpretation_or_external_source
+runtime prompts,No filled prompts or requests,missing,blocking,cannot_exactly_reproduce
+output parser,JSON array requested; validation/retry behavior absent,missing,blocking,cannot_exactly_reproduce
+invalid formula handling,Hallucination acknowledged only as a limitation,missing,blocking,cannot_exactly_reproduce
+factor evaluation horizon,factor rank t-1 versus return rank t,specified,major,requires_interpretation_or_external_source
+RankIC equation,Equation 1 has unresolved cross-stock notation,conflict,blocking,cannot_exactly_reproduce
+factor correlation equation,Equation 7 is not the stated Pearson correlation,conflict,blocking,cannot_exactly_reproduce
+RankICIR equation,Equation 16 supplied but nested averaging dimensions are not operationally pinned,partial,blocking,cannot_exactly_reproduce
+factor acceptance threshold,RankIC > 0.01 on 2020-06-01--2021-01-01,specified,major,requires_interpretation_or_external_source
+Algorithm 1 acceptance,Narrative and line placement disagree on adding unsuccessful factors,conflict,blocking,cannot_exactly_reproduce
+CoE initialization,Factors ordered by gamma within each cluster,specified,major,requires_interpretation_or_external_source
+CoE matching,Highest printed correlation to the generated factor,specified,major,requires_interpretation_or_external_source
+CoE tie behavior,Not stated,missing,major,requires_interpretation_or_external_source
+number of experiments,Table 1 reports mean/std over 10 experiments,specified,major,requires_interpretation_or_external_source
+random seeds,"No seeds for KMeans, CSS, CoE deletion, baselines, or trials",missing,blocking,cannot_exactly_reproduce
+baseline code/versions,Names and citations only,missing,blocking,cannot_exactly_reproduce
+baseline hyperparameters,Not supplied,missing,blocking,cannot_exactly_reproduce
+other-LLM model versions,gpt-3.5-turbo and text-davinci-003 without snapshots,partial,blocking,cannot_exactly_reproduce
+final mined factor expressions,None released,missing,blocking,cannot_exactly_reproduce
+factor pools/experience chains,None released,missing,blocking,cannot_exactly_reproduce
+API responses/search traces,None released,missing,blocking,cannot_exactly_reproduce
+table raw results,Only rounded PDF values,missing,blocking,cannot_exactly_reproduce
+figure raw arrays,Figures 3--4 are raster-only,missing,blocking,cannot_exactly_reproduce
+portfolio factor weights,Equation 17 weights selected factors by past RankIC,specified,major,requires_interpretation_or_external_source
+portfolio asset selection,Top 20% factor values,specified,major,requires_interpretation_or_external_source
+within-factor asset weights,Not stated,missing,blocking,cannot_exactly_reproduce
+long/short convention,Buy and sell next day is ambiguous,missing,blocking,cannot_exactly_reproduce
+execution timing/price,Next day stated; price field and order convention absent,partial,blocking,cannot_exactly_reproduce
+transaction costs/slippage,Not stated,missing,blocking,cannot_exactly_reproduce
+risk-free rate,Zero,specified,none,directly_specified
+annualization,252 trading days,specified,none,directly_specified
+AR/Vol/SR equations,Equations 18--20 supplied,specified,major,requires_interpretation_or_external_source
+Sharpe output units,Equation is a ratio; table prints percentages,conflict,blocking,cannot_exactly_reproduce
+portfolio trials/aggregation,Not stated for Table 2,missing,blocking,cannot_exactly_reproduce
+native result artifacts,"No predictions, weights, returns, or metrics",missing,blocking,cannot_exactly_reproduce
+local proxy relation,"Only the momentum motif is source-adjacent; value, profitability, size, weights, cadence, and portfolio rule are researcher supplied",partial,blocking,cannot_exactly_reproduce

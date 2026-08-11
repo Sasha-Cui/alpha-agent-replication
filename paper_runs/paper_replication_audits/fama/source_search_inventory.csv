@@ -1,0 +1,4 @@
+query,response_file,response_sha256,total_count,incomplete_results,author_linked_repository_found,evidence_use
+2024.findings-acl.233,github_c6b67aa9c9e2.json,08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2,0,false,no,negative_search_evidence_only
+"""Can Large Language Models Mine Interpretable Financial Factors More Effectively""",github_c86b6a70c174.json,08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2,0,false,no,negative_search_evidence_only
+"""Factor Mining Agent"" FAMA finance",github_dfce0823aa3e.json,08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2,0,false,no,negative_search_evidence_only
