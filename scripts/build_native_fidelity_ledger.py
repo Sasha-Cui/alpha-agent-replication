@@ -368,6 +368,23 @@ PAPER_ONLY_AUDIT_NOTES = {
         "BTC annualization, KL-loss, value-clipping, and test-selection details "
         "are missing or internally conflicting."
     ),
+    "SYS-LLM-FACTOR": (
+        "A pinned arXiv-v1/ACL-final LLMFactor audit inventories all 206 displayed "
+        "experimental cells: 82 native LLMFactor and 124 baseline cells. The official "
+        "nine-file TeX archive rebuilds unpatched to 12 pages but contains no system "
+        "code or raw result. Three English prompt skeletons and the ACC/MCC formulas "
+        "execute only as declared deterministic component fixtures; no LLM request or "
+        "paper response is replayed. Thus 0/82 native and 0/206 total cells reproduce. "
+        "No author-linked implementation, exact data snapshot, split, preprocessing, "
+        "universe, stock matcher, API request log, response parser, seed, prediction, "
+        "confusion matrix, or raw array is released. Six complete GitHub searches find "
+        "only two 2025 unaffiliated implementations that change models, prompts, data, "
+        "or windows and reproduce no paper cell. Four Table-3 averages cannot be "
+        "recovered by rounding the displayed Table-2 inputs; the EDT-accuracy "
+        "superiority prose and appendix template-winner prose are also overbroad. The "
+        "local M0 monthly characteristic portfolio has no text, SKGP, daily labels, "
+        "or paper metrics and receives no LLMFactor-result credit."
+    ),
 }
 
 
@@ -390,6 +407,7 @@ TARGETED_EXECUTION = {
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
+    "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
