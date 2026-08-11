@@ -4,8 +4,8 @@
       "failure_category_counts": {
         "artifact_unreachable": 3,
         "explicitly_nonrunnable_or_pseudocode": 3,
-        "no_public_artifact": 56,
-        "none": 33,
+        "no_public_artifact": 55,
+        "none": 34,
         "reachable_non_code_artifact": 3,
         "static_package_insufficient": 5
       },
@@ -14,74 +14,74 @@
           "denominator": 103,
           "group": "ALL",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.42718446601941745,
-          "successes": 44,
-          "wilson_95_lower": 0.3359680595227062,
-          "wilson_95_upper": 0.5236370023552522,
+          "proportion": 0.4368932038834951,
+          "successes": 45,
+          "wilson_95_lower": 0.34508430443595695,
+          "wilson_95_upper": 0.5332400825249405,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 47,
+          "denominator": 48,
           "group": "ALL",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9361702127659575,
-          "successes": 44,
-          "wilson_95_lower": 0.8283738581687556,
-          "wilson_95_upper": 0.9780546147945668,
+          "proportion": 0.9375,
+          "successes": 45,
+          "wilson_95_lower": 0.8316456194505365,
+          "wilson_95_upper": 0.9785167670916107,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.39805825242718446,
-          "successes": 41,
-          "wilson_95_lower": 0.3088339434875273,
-          "wilson_95_upper": 0.4946131431416146,
+          "proportion": 0.4077669902912621,
+          "successes": 42,
+          "wilson_95_lower": 0.3178425371515976,
+          "wilson_95_upper": 0.5043238745604832,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 103,
           "group": "ALL",
           "metric": "public_artifact_listed",
-          "proportion": 0.4563106796116505,
-          "successes": 47,
-          "wilson_95_lower": 0.36342238345230693,
-          "wilson_95_upper": 0.5523406536744683,
+          "proportion": 0.46601941747572817,
+          "successes": 48,
+          "wilson_95_lower": 0.3726437920092655,
+          "wilson_95_upper": 0.5618385702004485,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "static_R2_or_R3_among_all",
-          "proportion": 0.32038834951456313,
-          "successes": 33,
-          "wilson_95_lower": 0.2381305113411421,
-          "wilson_95_upper": 0.4155619746244889,
+          "proportion": 0.3300970873786408,
+          "successes": 34,
+          "wilson_95_lower": 0.2468297273744029,
+          "wilson_95_upper": 0.42558208367416694,
           "z": 1.959963984540054
         },
         "static_R3_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "static_R3_among_all",
-          "proportion": 0.20388349514563106,
-          "successes": 21,
-          "wilson_95_lower": 0.13739825352165663,
-          "wilson_95_upper": 0.2916623314487078,
+          "proportion": 0.21359223300970873,
+          "successes": 22,
+          "wilson_95_lower": 0.14549744857392438,
+          "wilson_95_upper": 0.3022824614793789,
           "z": 1.959963984540054
         }
       },
       "n_systems": 103,
       "reachability_counts": {
-        "not_listed": 56,
-        "reachable_all": 44,
+        "not_listed": 55,
+        "reachable_all": 45,
         "unreachable_all": 3
       },
       "static_fidelity_counts": {
-        "R0": 59,
+        "R0": 58,
         "R1": 11,
         "R2": 12,
-        "R3": 21
+        "R3": 22
       }
     },
     "B": {
@@ -249,27 +249,27 @@
     "F": {
       "failure_category_counts": {
         "explicitly_nonrunnable_or_pseudocode": 2,
-        "no_public_artifact": 22,
-        "none": 5
+        "no_public_artifact": 21,
+        "none": 6
       },
       "metrics": {
         "artifact_reachable_among_all": {
           "denominator": 29,
           "group": "F",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.2413793103448276,
-          "successes": 7,
-          "wilson_95_lower": 0.12218422442520088,
-          "wilson_95_upper": 0.42107601617811335,
+          "proportion": 0.27586206896551724,
+          "successes": 8,
+          "wilson_95_lower": 0.14698755102087954,
+          "wilson_95_upper": 0.45717132416865935,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 7,
+          "denominator": 8,
           "group": "F",
           "metric": "artifact_reachable_given_listed",
           "proportion": 1.0,
-          "successes": 7,
-          "wilson_95_lower": 0.6456695649333126,
+          "successes": 8,
+          "wilson_95_lower": 0.6755924351161198,
           "wilson_95_upper": 1.0,
           "z": 1.959963984540054
         },
@@ -277,61 +277,61 @@
           "denominator": 29,
           "group": "F",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.2413793103448276,
-          "successes": 7,
-          "wilson_95_lower": 0.12218422442520088,
-          "wilson_95_upper": 0.42107601617811335,
+          "proportion": 0.27586206896551724,
+          "successes": 8,
+          "wilson_95_lower": 0.14698755102087954,
+          "wilson_95_upper": 0.45717132416865935,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 29,
           "group": "F",
           "metric": "public_artifact_listed",
-          "proportion": 0.2413793103448276,
-          "successes": 7,
-          "wilson_95_lower": 0.12218422442520088,
-          "wilson_95_upper": 0.42107601617811335,
+          "proportion": 0.27586206896551724,
+          "successes": 8,
+          "wilson_95_lower": 0.14698755102087954,
+          "wilson_95_upper": 0.45717132416865935,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
           "denominator": 29,
           "group": "F",
           "metric": "static_R2_or_R3_among_all",
-          "proportion": 0.1724137931034483,
-          "successes": 5,
-          "wilson_95_lower": 0.07597857252891227,
-          "wilson_95_upper": 0.34548439890195237,
+          "proportion": 0.20689655172413793,
+          "successes": 6,
+          "wilson_95_lower": 0.09846070197841039,
+          "wilson_95_upper": 0.38390090403867905,
           "z": 1.959963984540054
         },
         "static_R3_among_all": {
           "denominator": 29,
           "group": "F",
           "metric": "static_R3_among_all",
-          "proportion": 0.13793103448275862,
-          "successes": 4,
-          "wilson_95_lower": 0.05497439964111964,
-          "wilson_95_upper": 0.30558993720352023,
+          "proportion": 0.1724137931034483,
+          "successes": 5,
+          "wilson_95_lower": 0.07597857252891227,
+          "wilson_95_upper": 0.34548439890195237,
           "z": 1.959963984540054
         }
       },
       "n_systems": 29,
       "reachability_counts": {
-        "not_listed": 22,
-        "reachable_all": 7
+        "not_listed": 21,
+        "reachable_all": 8
       },
       "static_fidelity_counts": {
-        "R0": 22,
+        "R0": 21,
         "R1": 2,
         "R2": 1,
-        "R3": 4
+        "R3": 5
       }
     },
     "F+T": {
       "failure_category_counts": {
         "artifact_unreachable": 1,
         "explicitly_nonrunnable_or_pseudocode": 2,
-        "no_public_artifact": 46,
-        "none": 14,
+        "no_public_artifact": 45,
+        "none": 15,
         "static_package_insufficient": 4
       },
       "metrics": {
@@ -339,74 +339,74 @@
           "denominator": 67,
           "group": "F+T",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.29850746268656714,
-          "successes": 20,
-          "wilson_95_lower": 0.20231511276602715,
-          "wilson_95_upper": 0.41655213743643765,
-          "z": 1.959963984540054
-        },
-        "artifact_reachable_given_listed": {
-          "denominator": 21,
-          "group": "F+T",
-          "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9523809523809523,
-          "successes": 20,
-          "wilson_95_lower": 0.7733063992587743,
-          "wilson_95_upper": 0.9915440121901737,
-          "z": 1.959963984540054
-        },
-        "github_head_resolved_among_all": {
-          "denominator": 67,
-          "group": "F+T",
-          "metric": "github_head_resolved_among_all",
-          "proportion": 0.29850746268656714,
-          "successes": 20,
-          "wilson_95_lower": 0.20231511276602715,
-          "wilson_95_upper": 0.41655213743643765,
-          "z": 1.959963984540054
-        },
-        "public_artifact_listed": {
-          "denominator": 67,
-          "group": "F+T",
-          "metric": "public_artifact_listed",
           "proportion": 0.31343283582089554,
           "successes": 21,
           "wilson_95_lower": 0.21505348258237716,
           "wilson_95_upper": 0.4320458231606458,
           "z": 1.959963984540054
         },
+        "artifact_reachable_given_listed": {
+          "denominator": 22,
+          "group": "F+T",
+          "metric": "artifact_reachable_given_listed",
+          "proportion": 0.9545454545454546,
+          "successes": 21,
+          "wilson_95_lower": 0.7820195416134267,
+          "wilson_95_upper": 0.991930572378736,
+          "z": 1.959963984540054
+        },
+        "github_head_resolved_among_all": {
+          "denominator": 67,
+          "group": "F+T",
+          "metric": "github_head_resolved_among_all",
+          "proportion": 0.31343283582089554,
+          "successes": 21,
+          "wilson_95_lower": 0.21505348258237716,
+          "wilson_95_upper": 0.4320458231606458,
+          "z": 1.959963984540054
+        },
+        "public_artifact_listed": {
+          "denominator": 67,
+          "group": "F+T",
+          "metric": "public_artifact_listed",
+          "proportion": 0.3283582089552239,
+          "successes": 22,
+          "wilson_95_lower": 0.22791317376089593,
+          "wilson_95_upper": 0.44741818752268525,
+          "z": 1.959963984540054
+        },
         "static_R2_or_R3_among_all": {
           "denominator": 67,
           "group": "F+T",
           "metric": "static_R2_or_R3_among_all",
-          "proportion": 0.208955223880597,
-          "successes": 14,
-          "wilson_95_lower": 0.12875685189029118,
-          "wilson_95_upper": 0.3207180650688247,
+          "proportion": 0.22388059701492538,
+          "successes": 15,
+          "wilson_95_lower": 0.14063731129193663,
+          "wilson_95_upper": 0.3370696612077375,
           "z": 1.959963984540054
         },
         "static_R3_among_all": {
           "denominator": 67,
           "group": "F+T",
           "metric": "static_R3_among_all",
-          "proportion": 0.13432835820895522,
-          "successes": 9,
-          "wilson_95_lower": 0.07231091664295486,
-          "wilson_95_upper": 0.23600372261337027,
+          "proportion": 0.14925373134328357,
+          "successes": 10,
+          "wilson_95_lower": 0.08314273433779819,
+          "wilson_95_upper": 0.2534039604590851,
           "z": 1.959963984540054
         }
       },
       "n_systems": 67,
       "reachability_counts": {
-        "not_listed": 46,
-        "reachable_all": 20,
+        "not_listed": 45,
+        "reachable_all": 21,
         "unreachable_all": 1
       },
       "static_fidelity_counts": {
-        "R0": 47,
+        "R0": 46,
         "R1": 6,
         "R2": 5,
-        "R3": 9
+        "R3": 10
       }
     },
     "M": {
@@ -593,6 +593,13 @@
     "post_freeze_evidence_corrections": [
       {
         "corrected_at_utc": "2026-08-11T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/aapm/source_provenance.json",
+        "reason": "both official arXiv source versions directly link the public author repository omitted from the frozen registry",
+        "source_head": "cc54e4337fcd4089dc69e4a1173e82a675648475",
+        "system_id": "SYS-EMPIRICAL-ASSET-PRICING-LLM"
+      },
+      {
+        "corrected_at_utc": "2026-08-11T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/finagent/manifest.json",
         "reason": "author-linked pre-cutoff repository omitted from original registry",
         "source_head": "17248a0b8b729ee3e093e30bb7bea7f52181f363",
@@ -608,7 +615,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "4a805d9c0c1296122960a0ca3498762a1ec16fc1b68774dcd0914e5ffce8117b",
+    "registry_sha256": "fc0203f3b8cfa2ed8f2c7ef7551625971ed9ae352e58ff1f34064c1a59b70e4e",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,

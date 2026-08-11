@@ -20,6 +20,13 @@
     "post_freeze_evidence_corrections": [
       {
         "corrected_at_utc": "2026-08-11T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/aapm/source_provenance.json",
+        "reason": "both official arXiv source versions directly link the public author repository omitted from the frozen registry",
+        "source_head": "cc54e4337fcd4089dc69e4a1173e82a675648475",
+        "system_id": "SYS-EMPIRICAL-ASSET-PRICING-LLM"
+      },
+      {
+        "corrected_at_utc": "2026-08-11T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/finagent/manifest.json",
         "reason": "author-linked pre-cutoff repository omitted from original registry",
         "source_head": "17248a0b8b729ee3e093e30bb7bea7f52181f363",
@@ -35,7 +42,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "4a805d9c0c1296122960a0ca3498762a1ec16fc1b68774dcd0914e5ffce8117b",
+    "registry_sha256": "fc0203f3b8cfa2ed8f2c7ef7551625971ed9ae352e58ff1f34064c1a59b70e4e",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -360,22 +367,22 @@
       "system_name": "EFS"
     },
     {
-      "artifact_url_count": "0",
-      "artifact_url_results_json": "[]",
-      "artifact_url_types": "",
-      "artifact_urls": "",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
+      "artifact_url_count": 1,
+      "artifact_url_results_json": "[{\"check_method\":\"paper/source link plus pinned Git history, tree, archive, and full paper-level source audit\",\"checked_at_utc\":\"2026-08-11T19:30:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"chengjunyan1/AAPM\",\"head_sha\":\"cc54e4337fcd4089dc69e4a1173e82a675648475\",\"license_source\":\"pinned_archive_50a30166b77a2835852585b1a164e96e11e03d42e4b1b1e6038485480f5e829b\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":21760000,\"archive_sha256\":\"50a30166b77a2835852585b1a164e96e11e03d42e4b1b1e6038485480f5e829b\",\"checked_at_utc\":\"2026-08-11T19:30:00+00:00\",\"code_markers\":[\"analysis.py\",\"memdb.py\",\"model.py\",\"prompt.py\",\"utils.py\"],\"environment_markers\":[\"requirements.txt\"],\"explicit_nonrunnable\":false,\"file_count\":10,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"runner_markers\":[\"analysis.py\"],\"support_markers\":[\"config.yaml\",\"data/wsj_metadata.json\"]},\"url\":\"https://github.com/chengjunyan1/AAPM\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "github_repository",
+      "artifact_urls": "https://github.com/chengjunyan1/AAPM",
+      "audit_timestamp_utc": "2026-08-11T00:00:00+00:00",
+      "default_branch_head_shas": "chengjunyan1/AAPM@main=cc54e4337fcd4089dc69e4a1173e82a675648475",
       "errors_json": "[]",
-      "failure_category": "no_public_artifact",
-      "github_owner_repos": "",
+      "failure_category": "none",
+      "github_owner_repos": "chengjunyan1/AAPM",
       "main_FT": "Y",
       "native_execution_attempted": "N",
-      "observed_licenses": "",
-      "public_artifact_listed": "N",
-      "reachability_outcome": "not_listed",
-      "static_fidelity_basis_json": "{\"basis\":\"not_listed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "observed_licenses": "chengjunyan1/AAPM=MIT",
+      "public_artifact_listed": "Y",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"code+environment+analysis runner+configuration support\",\"markers\":{\"archive_bytes\":21760000,\"archive_sha256\":\"50a30166b77a2835852585b1a164e96e11e03d42e4b1b1e6038485480f5e829b\",\"checked_at_utc\":\"2026-08-11T19:30:00+00:00\",\"code_markers\":[\"analysis.py\",\"memdb.py\",\"model.py\",\"prompt.py\",\"utils.py\"],\"environment_markers\":[\"requirements.txt\"],\"explicit_nonrunnable\":false,\"file_count\":10,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"runner_markers\":[\"analysis.py\"],\"support_markers\":[\"config.yaml\",\"data/wsj_metadata.json\"]},\"tier\":\"R3\",\"url\":\"https://github.com/chengjunyan1/AAPM\"}]}",
+      "static_fidelity_tier": "R3",
       "stratum": "F",
       "system_id": "SYS-EMPIRICAL-ASSET-PRICING-LLM",
       "system_name": "Empirical Asset Pricing with Large Language Model Agents"
@@ -1284,7 +1291,7 @@
       "system_name": "QuantAgents"
     },
     {
-      "artifact_url_count": 1,
+      "artifact_url_count": "1",
       "artifact_url_results_json": "[{\"check_method\":\"git ls-remote plus pinned GitHub archive and paper-level source/output audit\",\"checked_at_utc\":\"2026-08-11T18:47:37.230004+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture\",\"head_sha\":\"1793abf29ecde15597cb2bb4cb345accf655531f\",\"license_source\":\"pinned_archive_badb4c27ba34232d6539975f3191dcc7a066a0ee1456c448ec9bb21f5e33d697\",\"observed_license\":\"Apache-2.0\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":6033284,\"archive_sha256\":\"badb4c27ba34232d6539975f3191dcc7a066a0ee1456c448ec9bb21f5e33d697\",\"checked_at_utc\":\"2026-08-11T18:47:37.230004+00:00\",\"code_markers\":[\"cli/main.py\",\"comparisonAlgorithms/run_rules.py\",\"evaluation/eval_range.py\",\"main.py\"],\"environment_markers\":[\"pyproject.toml\",\"requirements.txt\",\"uv.lock\"],\"explicit_nonrunnable\":false,\"file_count\":825,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"runner_markers\":[\"mvo_blm_runner.py\",\"testing/mvo_blm_runner.py\",\"testingLoopMultithreaded.py\"],\"support_markers\":[\"config/portfolio.example.json\",\"testing/scripts/visualize.py\",\"testing/2025-01-01/portfolio_snapshot_2025-01-01.json\"]},\"url\":\"https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture\",\"url_type\":\"github_repository\"}]",
       "artifact_url_types": "github_repository",
       "artifact_urls": "https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture",

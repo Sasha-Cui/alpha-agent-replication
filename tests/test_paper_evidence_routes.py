@@ -41,8 +41,8 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
     routes = pd.read_csv(OUTPUT)
     assert len(routes) == routes["canonical_work_id"].nunique() == 69
     assert routes["paper_evidence_route"].value_counts().to_dict() == {
-        "paper_only_underspecified": 49,
-        "public_code_available": 20,
+        "paper_only_underspecified": 48,
+        "public_code_available": 21,
     }
     assert not routes["paper_evidence_route"].eq(
         "paper_only_sufficiently_specified"
@@ -55,11 +55,11 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
 def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     routes = pd.read_csv(OUTPUT)
     public = routes[routes["paper_evidence_route"].eq("public_code_available")]
-    assert len(public) == 20
+    assert len(public) == 21
     assert public["precise_native_or_access_blocker"].notna().all()
     assert public["precise_native_or_access_blocker"].str.contains(":A[123]_", regex=True).all()
     assert public["native_pipeline_disposition"].value_counts().to_dict() == {
-        "targeted_execution_recorded": 20,
+        "targeted_execution_recorded": 21,
     }
     reconstructed = public[public["good_faith_reconstruction"].eq("yes")]
     assert len(reconstructed) == 14
@@ -420,6 +420,6 @@ def test_generated_paper_macros_match_route_counts(tmp_path: Path) -> None:
     MODULE.write_tex_macros(routes, generated)
     assert generated.read_bytes() == TEX_OUTPUT.read_bytes()
     text = generated.read_text()
-    assert r"\newcommand{\PublicCodeRouteWorkCount}{20\xspace}" in text
+    assert r"\newcommand{\PublicCodeRouteWorkCount}{21\xspace}" in text
     assert r"\newcommand{\PaperOnlySpecifiedWorkCount}{0\xspace}" in text
-    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{49\xspace}" in text
+    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{48\xspace}" in text

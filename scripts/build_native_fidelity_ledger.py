@@ -198,6 +198,24 @@ ARTIFACT_NOTES = {
         "ML/RL baselines and OPTUNA are absent, and SR/CR/SOR code conflicts with "
         "the paper equations.",
     ),
+    "SYS-EMPIRICAL-ASSET-PRICING-LLM": (
+        "N",
+        "A pinned two-version AAPM audit inventories 114 v1 and 162 v2 table "
+        "cells plus 54 quantitative figure units, with zero native paper results "
+        "reproduced. Both official arXiv source versions directly link the MIT "
+        "repository. Its ten tracked files include five Python components, a config, "
+        "requirements, and 65,733 WSJ metadata records; all Python files compile. "
+        "This is static component evidence, not experiment output. Article bodies, "
+        "CRSP returns, manual factors, report embeddings, checkpoints, baselines, "
+        "portfolio/pricing evaluators, sweep histories, and result arrays are absent. "
+        "The model never ingests the paper's central manual-factor input or performs "
+        "historical-factor pretraining, model.py has no training entrypoint, the macro "
+        "note stores an unexecuted update prompt, and evaluation/checkpoint/seed paths "
+        "are defective. The v2 code lineage is not demonstrated: current code differs "
+        "from the 2024 paper-era tree only in README, still uses GPT-3.5, and released "
+        "metadata ends 2023-11-30 rather than the claimed 2024-09-29 endpoint. In the "
+        "paper sources, 112/114 common table cells change while 15/16 rasters are reused.",
+    ),
     "SYS-FIN-MEM": (
         "N",
         "A pinned paper audit recomputes 16/40 repeated Buy-and-Hold metric cells "
@@ -421,6 +439,7 @@ TARGETED_EXECUTION = {
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
     "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
+    "SYS-EMPIRICAL-ASSET-PRICING-LLM": "paper_audit:completed_zero_of_162_v2_table_results_missing_hybrid_pipeline_and_v2_lineage",
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",

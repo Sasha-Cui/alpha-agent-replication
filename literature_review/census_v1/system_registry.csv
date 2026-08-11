@@ -14,7 +14,7 @@ SYS-AUTOMATE-STRATEGY|Automate Strategy Finding with LLM in Quant Investment|F|Y
 SYS-CHAIN-OF-ALPHA|Chain-of-Alpha|F|Y|https://arxiv.org/abs/2508.06312||13|One chained formula-generation lineage.|IN: formulaic alpha generation and optimization.
 SYS-COG-ALPHA|CogAlpha|F|Y|https://arxiv.org/abs/2511.18850||9|One code-evolution lineage.|IN: executable alpha evolution.
 SYS-EFS|EFS|F|Y|https://arxiv.org/abs/2507.17211||2|One evolutionary factor-search lineage.|IN: LLM factor search with sparse portfolio construction.
-SYS-EMPIRICAL-ASSET-PRICING-LLM|Empirical Asset Pricing with Large Language Model Agents|F|Y|https://arxiv.org/abs/2409.17266||—|New verified omission.|IN: LLM-agent asset-pricing/factor construction.
+SYS-EMPIRICAL-ASSET-PRICING-LLM|Empirical Asset Pricing with Large Language Model Agents|F|Y|https://arxiv.org/abs/2409.17266|https://github.com/chengjunyan1/AAPM|—|New verified omission; both official arXiv source versions directly link the author repository.|IN: LLM-agent asset-pricing/factor construction.
 SYS-FACTOR-ENGINE|FactorEngine|F|Y|https://arxiv.org/abs/2603.16365||20|One program-level factor-discovery lineage.|IN: knowledge-infused executable factor discovery.
 SYS-FACTOR-MAD|FactorMAD|F|Y|https://doi.org/10.1145/3768292.3770377||14|One multi-agent debate lineage.|IN: interpretable alpha-factor mining.
 SYS-FACTOR-MINER|FactorMiner|F|Y|https://arxiv.org/abs/2602.14670||8|One skills-and-memory factor-mining lineage.|IN: self-evolving factor discovery.

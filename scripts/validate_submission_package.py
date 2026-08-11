@@ -19,7 +19,7 @@ from pathlib import Path
 
 CANONICAL_PDF = Path("output/pdf/icaif2026_submission.pdf")
 PAPER_PDF_DIR = Path("literature_review/papers")
-EXPECTED_PAPER_PDF_COUNT = 46
+EXPECTED_PAPER_PDF_COUNT = 48
 CANONICAL_SOURCE = Path("docs/paper/icaif2026_submission.tex")
 HANDOFF_FILES = (
     Path("paper_runs/handoff/strategy_result_index.csv"),
