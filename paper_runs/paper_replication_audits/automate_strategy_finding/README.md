@@ -1,0 +1,38 @@
+# Automate Strategy Finding paper-level conformance audit
+
+Overall verdict: **not reproduced**. The pinned public repository supports a partial
+factor-analysis and prompt-selection component, not the integrated portfolio result.
+
+## Primary sources
+
+- Official paper: https://aclanthology.org/2025.findings-emnlp.1005.pdf (SHA-256 `6585377002a3b049a6bfadef3152a74adfe12d68ff5c48cccb8c76de4fd1b540`).
+- Public source: https://github.com/kouzhizhuo/Automate-Strategy-Finding-with-LLM-in-Quant-investment, commit `8b50203faf50d0b561cf5ffee4d63dcdc4551884`.
+
+## What the public artifacts establish
+
+- The 37-row seed workbook exposes factor names, formulas, signed ICs, and IRs.
+- Seven individual-factor analysis workbooks contain IC summaries, five quantile
+  cumulative-return paths, and turnover over 2022-09-30 through 2022-12-30.
+- The public prompt files and logs show a GPT-4o Assistant-based factor-comparison
+  workflow. This is component evidence, not the paper's final strategy.
+- Recomputing Table 2 with the inferable mean-absolute-IC rule matches
+  3/10 displayed cells at four-decimal precision.
+
+## What is missing or inconsistent
+
+- No shipped workbook contains the integrated Jan 2023--Jan 2024 portfolio path,
+  Table 4 schema, or the reported 53.173% final return; all 40 Table 4
+  metric cells are therefore unverifiable, not zero-filled or counted as failures.
+- Table 3 reports 12 selected alphas, while the public AutoGPT candidate directory
+  contains seven individual-factor workbooks and no weighted 12-alpha portfolio.
+- The paper describes a 10-node DNN; `train_dnn.m` sets one hidden node and its
+  required `result/profit.csv` and `result/alpha/` inputs are absent.
+- The paper's top-k/drop-n portfolio rule (k=13, n=5) is not implemented in the
+  released Python or MATLAB files.
+- The paper itself reports SSE50 return as -13.22% in Table 4 but -11.73% in prose,
+  and full-model ablation Sharpe as 1.94 in Table 7 but 1.73 in prose.
+- The factor runner requires unbundled RQData access. The public agent file also
+  embeds a credential literal; this audit never prints, validates, or uses it.
+
+Run `scripts/audit_automate_strategy_paper.py` to regenerate this package. Use
+`--strict` when a CI failure is desired until a native integrated return path exists.

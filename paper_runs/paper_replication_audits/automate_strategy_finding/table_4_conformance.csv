@@ -1,0 +1,41 @@
+strategy,metric,paper_value,source_value,status
+Ours,final_return_pct,53.173,,unverifiable_missing_integrated_native_output
+Ours,sharpe,0.287,,unverifiable_missing_integrated_native_output
+Ours,volatility_pct,0.762,,unverifiable_missing_integrated_native_output
+Ours,sortino,0.208,,unverifiable_missing_integrated_native_output
+Ours,calmar,1.052,,unverifiable_missing_integrated_native_output
+XGBoost,final_return_pct,9.532,,unverifiable_missing_integrated_native_output
+XGBoost,sharpe,0.038,,unverifiable_missing_integrated_native_output
+XGBoost,volatility_pct,1.019,,unverifiable_missing_integrated_native_output
+XGBoost,sortino,0.067,,unverifiable_missing_integrated_native_output
+XGBoost,calmar,0.103,,unverifiable_missing_integrated_native_output
+LightGBM,final_return_pct,7.125,,unverifiable_missing_integrated_native_output
+LightGBM,sharpe,0.03,,unverifiable_missing_integrated_native_output
+LightGBM,volatility_pct,0.993,,unverifiable_missing_integrated_native_output
+LightGBM,sortino,0.053,,unverifiable_missing_integrated_native_output
+LightGBM,calmar,0.066,,unverifiable_missing_integrated_native_output
+MLP,final_return_pct,3.11,,unverifiable_missing_integrated_native_output
+MLP,sharpe,0.013,,unverifiable_missing_integrated_native_output
+MLP,volatility_pct,0.96,,unverifiable_missing_integrated_native_output
+MLP,sortino,0.023,,unverifiable_missing_integrated_native_output
+MLP,calmar,0.043,,unverifiable_missing_integrated_native_output
+PPO_filter,final_return_pct,2.865,,unverifiable_missing_integrated_native_output
+PPO_filter,sharpe,0.013,,unverifiable_missing_integrated_native_output
+PPO_filter,volatility_pct,0.886,,unverifiable_missing_integrated_native_output
+PPO_filter,sortino,0.024,,unverifiable_missing_integrated_native_output
+PPO_filter,calmar,0.017,,unverifiable_missing_integrated_native_output
+FinCon,final_return_pct,22.474,,unverifiable_missing_integrated_native_output
+FinCon,sharpe,0.077,,unverifiable_missing_integrated_native_output
+FinCon,volatility_pct,1.196,,unverifiable_missing_integrated_native_output
+FinCon,sortino,0.126,,unverifiable_missing_integrated_native_output
+FinCon,calmar,0.232,,unverifiable_missing_integrated_native_output
+SEP,final_return_pct,17.891,,unverifiable_missing_integrated_native_output
+SEP,sharpe,0.06,,unverifiable_missing_integrated_native_output
+SEP,volatility_pct,1.217,,unverifiable_missing_integrated_native_output
+SEP,sortino,0.103,,unverifiable_missing_integrated_native_output
+SEP,calmar,0.157,,unverifiable_missing_integrated_native_output
+SSE 50,final_return_pct,-13.22,,unverifiable_missing_integrated_native_output
+SSE 50,sharpe,-0.063,,unverifiable_missing_integrated_native_output
+SSE 50,volatility_pct,0.859,,unverifiable_missing_integrated_native_output
+SSE 50,sortino,-0.111,,unverifiable_missing_integrated_native_output
+SSE 50,calmar,-0.043,,unverifiable_missing_integrated_native_output

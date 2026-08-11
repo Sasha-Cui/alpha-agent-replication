@@ -56,9 +56,10 @@ ARTIFACT_NOTES = {
     ),
     "SYS-AUTOMATE-STRATEGY": (
         "Y",
-        "The snapshot bundles alpha-result workbooks whose sheets contain dated "
-        "cumulative portfolio-return and turnover series; these are not a "
-        "six-country security-level signal panel.",
+        "The snapshot bundles seven 2022Q4 individual-factor analysis workbooks "
+        "with IC summaries and quantile-return/turnover series, plus prompt logs. "
+        "It does not ship the integrated 2023 portfolio path behind paper Table 4, "
+        "and the factor outputs are not a six-country security-level signal panel.",
     ),
     "SYS-QUANTA-ALPHA": (
         "N",

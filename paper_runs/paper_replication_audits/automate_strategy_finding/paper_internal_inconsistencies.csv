@@ -1,0 +1,3 @@
+claim,paper_table_value,paper_prose_value,status,location
+SSE50 benchmark final return,-13.22,-11.73,paper_internal_mismatch,Table 4 versus Section 4.4 prose
+Full-model ablation Sharpe ratio,1.94,1.73,paper_internal_mismatch,Table 7 versus Section 4.6 prose

@@ -13,7 +13,8 @@ from other tracked aggregate artifacts.
 | Strict legacy proxy audit | Current: 50 mappings; A0/B0/C15/D33/U2 | `scripts/build_strict_proxy_fidelity_audit.py` | `paper_runs/submission_evidence/strict_proxy_fidelity_audit/` | Frozen tracked candidate registry | Legacy mappings are construction diagnostics only; no paper- or agent-level performance inference |
 | Primary faithful component census | Current: 3/3 strict grade B (100%) from one pinned source release | `scripts/run_faithful_component_replications.py`, `scripts/check_upstream_conformance.py`, `scripts/validate_faithful_component_replications.py`, `scripts/analyze_fidelity_formula_components.py` | `paper_runs/faithful_component_replications/` | Authorized JKP U.S. panel and factor panel; optional network source-hash check | Exhaustive valid-seed census with exact released expressions, DSL semantics, missing-pair rule, returns, and quintile evaluator; cadence/universe/horizon adapt; exact-source synthetic conformance passes and D07 owner attestation is complete (3/3); no native system |
 | Mixed-fidelity formula diagnostic | Non-primary: 12 formula components from 4 sources | `scripts/run_fidelity_formula_components.py`, `scripts/analyze_fidelity_formula_components.py` | `paper_runs/fidelity_formula_components/` | Authorized JKP U.S. panel and factor panel | QuantEvolver rows are exact B; EFS, Alpha-Jungle, and QuantAgent are conditional and excluded from the 100% denominator |
-| GuruAgents prompt-decision replay | Current: 190 cells, 24 costed paths; 12 paths with 33 matched factor months | `scripts/run_guruagents_full_replay.py`, `scripts/analyze_guruagents_prompt_replay_performance.py` | `paper_runs/prompt_replay/guruagents/`, `runs/prompt_replay/guruagents/` | Archived observations, compiled Nasdaq universe, current OpenRouter endpoint | Current-endpoint decision-component replay, not end-to-end source-system replication |
+| GuruAgents prompt-decision replay | Current: 190 cells, 24 costed paths; 12 paths with 33 matched factor months | `scripts/run_guruagents_full_replay.py`, `scripts/evaluate_guruagents_prompt_replay_performance.py` | `paper_runs/prompt_replay/guruagents/`, `runs/prompt_replay/guruagents/` | Archived observations, compiled Nasdaq universe, current OpenRouter endpoint | Current-endpoint decision-component replay, not end-to-end source-system replication |
+| Published-result conformance audits | Current: GuruAgents Table 1 and Automate Strategy Finding Tables 2/4 | `scripts/audit_guruagents_paper_table.py`, `scripts/audit_automate_strategy_paper.py` | `paper_runs/prompt_replay/guruagents/paper_table_conformance/`, `paper_runs/paper_replication_audits/` | Pinned official papers and public source workbooks | Fail-closed paper-level checks; missing native outputs remain unverifiable and component evidence is not promoted to full-paper replication |
 | Mapping and attribution audit | Frozen: 62 mappings, including 50 from 40 retained papers and 12 screened-out diagnostics | `scripts/build_mapping_audit.py`, `scripts/build_census_citation_assets.py`, `scripts/build_source_anchor_review_packet.py` | `paper_runs/submission_evidence/mapping_audit/`, `replication_scope/mapping_scope_ledger.csv` | Source papers for independent re-review | Row-level scope reasons are public; mappings were not outcome-blind and lacked an independent second coder |
 | Source-paper benchmark audit | Current: 40 papers; 38 verified full texts and 2 unresolved | `scripts/analyze_source_benchmarks.py` | `paper_runs/submission_evidence/source_benchmark_audit/` | Source papers for independent citation-level review | Descriptive coding; partial records cannot support negative evidence |
 | U.S. common-task portfolios | Frozen: 62 candidate paths | `scripts/run_submission_evidence.py`, `src/alpha_evolve/submission_analysis.py` | `paper_runs/submission_evidence/usa_retrospective_corrected/` compact summaries | Authorized JKP security-level panel | Retrospective common-task diagnostic; monthly matrices are not published |
@@ -37,12 +38,14 @@ from other tracked aggregate artifacts.
    mixed-fidelity diagnostic outside the primary denominator.
 5. Inspect the GuruAgents replay manifest, holdings, paths, and attribution in
    `paper_runs/prompt_replay/guruagents/performance/`.
-6. Review the native-fidelity, artifact, and direct-attempt ledgers for the
+6. Inspect the fail-closed published-result audits under
+   `paper_runs/paper_replication_audits/` and the GuruAgents Table 1 audit.
+7. Review the native-fidelity, artifact, and direct-attempt ledgers for the
    broader public-evidence boundary.
-7. Use the 50-strategy ladder and 6,600 correlations only as a legacy
+8. Use the 50-strategy ladder and 6,600 correlations only as a legacy
    construction diagnostic.
-8. Run the test suite and release validators.
-9. Read the canonical paper and confirm its claims match these ledgers.
+9. Run the test suite and release validators.
+10. Read the canonical paper and confirm its claims match these ledgers.
 
 ## Commands that do not require restricted data
 
@@ -54,6 +57,8 @@ python scripts/build_collaborator_handoff.py
 python scripts/build_source_anchor_review_packet.py
 python scripts/build_replication_scope_assets.py
 python scripts/build_icaif2026_submission_assets.py
+python scripts/audit_guruagents_paper_table.py
+python scripts/audit_automate_strategy_paper.py
 ```
 
 Before rerunning a frozen empirical stage, inspect its `run_manifest.json` and
