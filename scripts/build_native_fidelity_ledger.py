@@ -281,6 +281,26 @@ PAPER_ONLY_AUDIT_NOTES = {
         "researcher-supplied narrative translations and receive no AlphaAgents-result "
         "credit."
     ),
+    "SYS-ALPHA-GPT": (
+        "A pinned Alpha-GPT lineage audit rebuilds the official arXiv-v1, "
+        "arXiv-v2, and Alpha-GPT 2.0 TeX sources and separately checks the "
+        "authoritative EMNLP 2025 final. These are document and specification "
+        "findings, not native system outputs: Alpha-GPT v1 reproduces 0/20 "
+        "displayed numeric cells and 0/3 backtest line series; the v2/ACL-final "
+        "study reproduces 0/47 displayed numeric cells and 0/2 search-enhancement "
+        "line series. Alpha-GPT 2.0 is explicitly a work-in-progress architecture "
+        "draft with no experiment or empirical result denominator. Three of four "
+        "published formula examples execute only under a declared conventional "
+        "operator stub; the showcased Flow of Funds expression gives div one "
+        "argument and cwise_mul three despite the paper's validation premise. No "
+        "author-linked code, data snapshot, universe membership, full prompts, "
+        "model requests, memory, generated alpha set, GP state, portfolio evaluator, "
+        "seeds, raw arrays, or result export is released. Ten complete repository "
+        "searches find only unaffiliated paper-inspired code that omits the native "
+        "search, evaluator, data, and results. Both local M0 factor scores remain "
+        "researcher-supplied narrative translations and receive no Alpha-GPT-result "
+        "credit."
+    ),
     "SYS-ALPHA-JUNGLE": (
         "A pinned three-edition Alpha-Jungle audit inventories 64 official AAAI "
         "table cells, 956 original-v1 cells, and 1,312 current-v3 extended-table "
@@ -354,6 +374,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
+    "SYS-ALPHA-GPT": "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_empirical_results",
     "SYS-ALPHA-JUNGLE": "paper_audit:completed_zero_of_64_published_cells_zero_native_results_three_of_six_formula_trees_conditionally_adapted",
     "SYS-ALPHA-MEMO": "paper_audit:completed_zero_of_474_native_results",
     "SYS-ALPHA-R1": "paper_audit:completed_zero_of_652_native_results_official_placeholder",

@@ -8,7 +8,7 @@ tracked aggregate evidence on Bouchet.
 | Artifact | SHA-256 |
 | --- | --- |
 | `docs/paper/icaif2026_submission.tex` | `70ad767203d3e118fc5ff2b764e4d9e02fd4bccfc03b9736d7a640d02fe88bda` |
-| `output/pdf/icaif2026_submission.pdf` | `d914ec330cc7320f46a987310456253af9500d500a7096f6666896cb32c7b7ec` |
+| `output/pdf/icaif2026_submission.pdf` | `2f99179f26d08b3391e67e54855c28548f4b59c39b8b4ff720114e81dde4d8c4` |
 
 The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
@@ -17,7 +17,7 @@ labels.
 
 ## Passing checks
 
-- Repository test suite: 254 passed (one third-party deprecation warning).
+- Repository test suite: 266 passed (one third-party deprecation warning).
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
@@ -56,6 +56,16 @@ labels.
   plot array is released. Five unaffiliated implementations materially diverge,
   and both existing local factor scores remain M0 narrative translations with
   no AlphaAgents-result credit.
+- Alpha-GPT lineage paper/source audit: the official Alpha-GPT v1, v2, and
+  Alpha-GPT 2.0 source packages rebuild to their original page counts; all 35
+  official pages were rendered and inspected. Zero of 20 v1 numeric cells and
+  three backtest series reproduce, and zero of 47 final-version numeric cells
+  and two search curves reproduce. Alpha-GPT 2.0 is explicitly an unevaluated
+  work-in-progress draft. Three of four printed formula examples execute only
+  under conventional operator stubs; the fourth has impossible printed
+  arities. No author-linked native code or result evidence was found, and both
+  local factor scores remain M0 narrative translations with no Alpha-GPT-result
+  credit.
 - QuantAgent self-improving paper/source audit: the official TeX rebuilds to 15
   pages at 99.93% extracted-token multiset Jaccard. Of four published Python
   listings, three compile and only the standalone VolatilityBreakout formula

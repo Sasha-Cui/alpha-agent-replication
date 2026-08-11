@@ -210,6 +210,57 @@ def test_alphaagents_audit_preserves_source_recovery_and_zero_result_boundaries(
     assert "receive no AlphaAgents-result credit" in blocker
 
 
+def test_alpha_gpt_audit_preserves_versioned_result_and_formula_boundaries() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[routes["canonical_work_id"].eq("WorkAlphaGPT")].iloc[0]
+    assert row["paper_evidence_route"] == "paper_only_underspecified"
+    assert row["reachable_public_code_system_ids"] == ""
+    assert row["native_pipeline_disposition"] == (
+        "paper_only_audit_recorded_no_native_code_pipeline"
+    )
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_"
+        "final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_"
+        "empirical_results"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
+    assert row["mapping_disposition"] == "clearly_labeled_motif_proxy"
+    assert row["proxy_role"] == "clearly_labeled_favorable_motif_proxy"
+    blocker = row["precise_native_or_access_blocker"]
+    assert "Alpha-GPT v1 reproduces 0/20 displayed numeric cells" in blocker
+    assert "v2/ACL-final study reproduces 0/47 displayed numeric cells" in blocker
+    assert "Flow of Funds expression gives div one argument" in blocker
+    assert "Ten complete repository searches" in blocker
+    assert "receive no Alpha-GPT-result credit" in blocker
+
+
+def test_alpha_gpt2_route_does_not_invent_an_empirical_result_denominator() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[
+        routes["canonical_work_id"].eq("CensusArxiv240209746")
+    ].iloc[0]
+    assert row["paper_evidence_route"] == "paper_only_underspecified"
+    assert row["reachable_public_code_system_ids"] == ""
+    assert row["native_pipeline_disposition"] == (
+        "paper_only_audit_recorded_no_native_code_pipeline"
+    )
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_"
+        "final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_"
+        "empirical_results"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
+    assert row["mapping_disposition"] == "clearly_labeled_motif_proxy"
+    assert row["proxy_role"] == "clearly_labeled_favorable_motif_proxy"
+    blocker = row["precise_native_or_access_blocker"]
+    assert "explicitly a work-in-progress architecture draft" in blocker
+    assert "no experiment or empirical result denominator" in blocker
+    assert "Both local M0 factor scores" in blocker
+    assert "receive no Alpha-GPT-result credit" in blocker
+
+
 def test_quantagent_self_improving_audit_preserves_code_and_result_boundaries() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
     row = routes[
