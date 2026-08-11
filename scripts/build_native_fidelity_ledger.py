@@ -234,8 +234,14 @@ ARTIFACT_NOTES = {
     ),
     "SYS-TRADING-R1": (
         "N",
-        "The reachable repository is a one-file placeholder and contains no dated "
-        "native output.",
+        "A pinned arXiv-v1 audit confirms the official repository still contains "
+        "only one 49-byte release-soon README and no code, model, dataset, config, "
+        "prediction, trade, or return artifact. Literal reconstructions of Algorithm "
+        "S1 and the decision matrix receive paper-specification credit only: 0/312 "
+        "table cells and 0/36 Figure 5 annotations are natively reproduced. The paper "
+        "also conflicts on the NVDA Trading-R1 Sharpe (2.72 table versus 1.881 figure "
+        "and 1.88 prose), forward versus trailing labels, decision-matrix asymmetry, "
+        "and the official project page's released claim versus the placeholder repo.",
     ),
 }
 
@@ -258,7 +264,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANTA-ALPHA": "paper_audit:completed_zero_of_344_native_table_results_components_only",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",
-    "SYS-TRADING-R1": "legacy_targeted:blocked_no_public_codebase",
+    "SYS-TRADING-R1": "paper_audit:completed_zero_of_348_published_numeric_units_official_placeholder",
 }
 
 
