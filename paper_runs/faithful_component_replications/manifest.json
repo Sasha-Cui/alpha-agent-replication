@@ -1,6 +1,7 @@
 {
   "end": "2024-12-31",
   "faithfulness_pass_rate": 1.0,
+  "independent_human_review_record": "owner_review_attestation.csv",
   "input_path": "/nfs/roberts/project/pi_btk22/zc362/jkp-data/data/processed/characteristics/USA.parquet",
   "input_sha256": "89de9e4cb90e2eda3bfacd8f139119876bf1cf1c0653886226994d5b6e71eeec",
   "min_symbols": 8,
@@ -10,9 +11,10 @@
   "n_nonconsecutive_forward_holding_rows": 6,
   "n_return_rows": 915,
   "output_sha256": {
-    "faithfulness_ledger.csv": "b6920e61e4cb4fb9b6995299609bedc66df95640294e499dfb669d181f2ebc0f",
+    "faithfulness_ledger.csv": "4fed50f22fc64646c6d962ec1e1b494bb1db24d6187e7a7a0e13956a6642a450",
     "formation_holdings.csv": "b28e170a1df9e6e7c48d99e176b3e2a5b82d10a57e81ec793106f2af27ed222e",
-    "monthly_return_paths.csv": "4e8e78b30707298989d92382f046a7cd0d2fc9f55d185d4348f8f7c53a185587"
+    "monthly_return_paths.csv": "2dcd3f9929159b88bb85733e13a0413ebbcbba36a283b8f4b2fb05dcd1dc02b7",
+    "upstream_conformance.json": "fe83757055b8f6901b69784bd14d9232d17563a4f16d398b938a8309b47715f7"
   },
   "scope_warning": "100% refers only to the three counted disclosed components. No native agent, search process, reinforcement training, or paper-level result is replicated.",
   "source_census_rule": "all evaluator-valid seeds in examples/seed_candidates.yaml; the source's explicit bad_unknown_op seed_0004 is excluded",
@@ -25,5 +27,6 @@
   "source_repository": "https://github.com/QuantLLM/QuantEvolver",
   "start": "1999-07-31",
   "study_role": "primary_counted_faithful_disclosed_components",
+  "technical_reference_conformance_passed": true,
   "top_n": 1000
 }

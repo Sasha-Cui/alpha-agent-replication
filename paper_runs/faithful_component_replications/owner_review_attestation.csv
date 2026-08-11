@@ -1,0 +1,4 @@
+candidate_id,source_seed_id,reviewer,review_date,source_expression_match,dsl_semantics_match,input_mapping_acceptable,evaluator_rule_match,mechanical_changes_only,grade,review_status,notes
+quantevolver_return_sharpe_60,seed_0001,,,,,,,,,pending,
+quantevolver_price_zscore_reversal_120,seed_0002,,,,,,,,,pending,
+quantevolver_return_log_volume_corr_60,seed_0003,,,,,,,,,pending,

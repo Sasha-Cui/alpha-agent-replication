@@ -16,6 +16,11 @@
 - `paper_runs/faithful_component_replications/`: primary strict-B ledger, pinned
   upstream hashes, aggregate attribution results, and manifests; licensed
   security-level holdings and monthly return paths remain excluded.
+- `tests/upstream_snapshots/quantevolver/`: four bounded, hash-verified source
+  files retained under the upstream MIT License for offline conformance; this
+  is not a mutable or complete third-party repository clone.
+- `docs/faithful_component_owner_review_packet.md` and the adjacent primary
+  owner-review attestation: compact D07 human-review materials.
 - `paper_runs/fidelity_formula_components/`: compact fidelity ledger, attribution
   estimates, summary, nearest-factor diagnostics, and manifests; licensed
   security-level holdings and monthly return paths remain excluded.

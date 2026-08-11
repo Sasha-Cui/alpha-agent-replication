@@ -25,6 +25,8 @@ from run_faithful_component_replications import (  # noqa: E402
     SOURCE_REPOSITORY,
     verify_upstream_source,
 )
+from check_upstream_conformance import conformance_report  # noqa: E402
+from validate_owner_review_attestation import review_summary  # noqa: E402
 
 
 def sha256(path: Path) -> str:
@@ -47,7 +49,12 @@ def validation_failures(
     component_dir: Path, *, require_full_evidence: bool = False
 ) -> list[str]:
     failures: list[str] = []
-    required_files = {"manifest.json", "faithfulness_ledger.csv"}
+    required_files = {
+        "manifest.json",
+        "faithfulness_ledger.csv",
+        "upstream_conformance.json",
+        "owner_review_attestation.csv",
+    }
     access_gated_files = {"monthly_return_paths.csv", "formation_holdings.csv"}
     if require_full_evidence:
         required_files |= access_gated_files
@@ -66,6 +73,23 @@ def validation_failures(
     holdings = pd.read_csv(component_dir / "formation_holdings.csv") if full_evidence_available else None
     expected_candidates = set(PRIMARY_COMPONENTS)
 
+    stored_conformance = json.loads(
+        (component_dir / "upstream_conformance.json").read_text(encoding="utf-8")
+    )
+    _, reference_failures = conformance_report()
+    failures.extend(
+        f"upstream reference conformance: {failure}"
+        for failure in reference_failures
+    )
+    if stored_conformance.get("passed") is not True:
+        failures.append("tracked upstream conformance report is not passing")
+    if set(stored_conformance.get("candidate_results", {})) != expected_candidates:
+        failures.append("upstream conformance report does not cover the candidate census")
+    _owner_review, owner_review_failures = review_summary(
+        component_dir / "owner_review_attestation.csv", PRIMARY_COMPONENTS
+    )
+    failures.extend(owner_review_failures)
+
     if manifest.get("study_role") != "primary_counted_faithful_disclosed_components":
         failures.append("manifest study_role does not identify the primary counted sample")
     if manifest.get("source_repository") != SOURCE_REPOSITORY:
@@ -74,6 +98,8 @@ def validation_failures(
         failures.append("source commit differs from the audited pin")
     if manifest.get("source_file_sha256") != SOURCE_FILES:
         failures.append("source file hashes differ from audited pins")
+    if manifest.get("technical_reference_conformance_passed") is not True:
+        failures.append("manifest does not record passing technical conformance")
 
     if set(ledger.get("candidate_id", [])) != expected_candidates:
         failures.append("ledger is not the exhaustive three-valid-seed census")
@@ -107,6 +133,10 @@ def validation_failures(
             failures.append(f"component scope is misstated in {column}")
     if "source_commit" not in ledger or set(ledger["source_commit"]) != {SOURCE_COMMIT}:
         failures.append("ledger source commits are not pinned consistently")
+    if "independent_second_coder_status" not in ledger or set(
+        ledger["independent_second_coder_status"]
+    ) != {"tracked_in_owner_review_attestation"}:
+        failures.append("ledger misstates the separate owner-review record")
     for candidate_id, metadata in PRIMARY_COMPONENTS.items():
         rows = ledger[ledger.get("candidate_id") == candidate_id]
         if len(rows) != 1:
@@ -150,6 +180,10 @@ def validation_failures(
         paths["cost_bps_one_way"], 0.0
     ):
         failures.append("counted returns must not add researcher-specified costs")
+    if "source_spearman_rank_ic" not in paths or not np.isfinite(
+        paths["source_spearman_rank_ic"]
+    ).all():
+        failures.append("paths do not preserve the source finite-rank-IC eligibility rule")
     if "gross_excess_return" not in paths or "net_excess_return" not in paths or not np.allclose(
         paths["gross_excess_return"], paths["net_excess_return"], equal_nan=False
     ):
@@ -221,7 +255,14 @@ def main() -> int:
         for failure in failures:
             print(f"FAIL: {failure}", file=sys.stderr)
         return 1
-    print("faithfulness validation passed: 3/3 counted components (100%) are strict grade B")
+    owner_review, _ = review_summary(
+        args.component_dir / "owner_review_attestation.csv", PRIMARY_COMPONENTS
+    )
+    print("technical faithfulness passed: 3/3 counted components (100%) are strict grade B")
+    print(
+        f"independent owner review {owner_review['status']}: "
+        f"{owner_review['completed_rows']}/{owner_review['required_rows']} rows complete"
+    )
     return 0
 
 

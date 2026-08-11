@@ -43,6 +43,7 @@ where = ["src"]
 [tool.ruff]
 line-length = 120
 target-version = "py39"
+extend-exclude = ["tests/upstream_snapshots"]
 
 [tool.ruff.lint.per-file-ignores]
 # These standalone entry points bootstrap the local package path before imports.

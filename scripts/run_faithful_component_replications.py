@@ -150,10 +150,19 @@ def evaluate_released_seeds(frame: pd.DataFrame) -> pd.DataFrame:
     return valid
 
 
+def source_spearman_corr(x: pd.Series, y: pd.Series) -> float:
+    """Reproduce the pinned evaluator's finite-rank-IC eligibility check."""
+    x_rank = x.rank(method="average")
+    y_rank = y.rank(method="average")
+    if float(x_rank.std(ddof=0)) <= 1e-12 or float(y_rank.std(ddof=0)) <= 1e-12:
+        return float("nan")
+    return float(x_rank.corr(y_rank))
+
+
 def released_cross_sectional_path(
     frame: pd.DataFrame, candidate_id: str, *, min_symbols: int = 8
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Reproduce the source pair/dropna and equal-mean quintile rule."""
+    """Reproduce source pair/dropna, finite-rank-IC, and equal-mean quintiles."""
     path_rows: list[dict[str, object]] = []
     holding_rows: list[dict[str, object]] = []
     for formation_month, month_frame in frame.groupby("month", sort=True):
@@ -166,6 +175,9 @@ def released_cross_sectional_path(
             ]
         ].dropna(subset=[candidate_id, "source_forward_return"])
         if len(pair) < min_symbols:
+            continue
+        rank_ic = source_spearman_corr(pair[candidate_id], pair["source_forward_return"])
+        if not np.isfinite(rank_ic):
             continue
         side_size = max(1, int(len(pair) * 0.2))
         ordered = pair.sort_values(candidate_id)
@@ -184,6 +196,7 @@ def released_cross_sectional_path(
                 "net_excess_return": source_return,
                 "traded_notional": np.nan,
                 "cost_bps_one_way": 0.0,
+                "source_spearman_rank_ic": rank_ic,
                 "n_eligible_source_pairs": len(pair),
                 "n_long": side_size,
                 "n_short": side_size,
@@ -257,7 +270,7 @@ def faithfulness_ledger(top_n: int) -> pd.DataFrame:
                 "forbidden_claim": (
                     "native-agent, evolved-factor, reinforcement-training, or paper-level performance"
                 ),
-                "independent_second_coder_status": "requested_via_external_pr_1",
+                "independent_second_coder_status": "tracked_in_owner_review_attestation",
             }
         )
     return pd.DataFrame(rows)
@@ -299,12 +312,21 @@ def build(args: argparse.Namespace) -> dict[str, object]:
     path_frame.to_csv(args.out_dir / "monthly_return_paths.csv", index=False)
     holding_frame.to_csv(args.out_dir / "formation_holdings.csv", index=False)
     ledger.to_csv(args.out_dir / "faithfulness_ledger.csv", index=False)
+    from check_upstream_conformance import conformance_report
+
+    reference_report, reference_failures = conformance_report()
+    if reference_failures:
+        raise ValueError(f"upstream conformance failed: {reference_failures}")
+    (args.out_dir / "upstream_conformance.json").write_text(
+        json.dumps(reference_report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     output_hashes = {
         name: sha256(args.out_dir / name)
         for name in (
             "monthly_return_paths.csv",
             "formation_holdings.csv",
             "faithfulness_ledger.csv",
+            "upstream_conformance.json",
         )
     }
     manifest = {
@@ -312,6 +334,8 @@ def build(args: argparse.Namespace) -> dict[str, object]:
         "source_repository": SOURCE_REPOSITORY,
         "source_commit": SOURCE_COMMIT,
         "source_file_sha256": SOURCE_FILES,
+        "technical_reference_conformance_passed": True,
+        "independent_human_review_record": "owner_review_attestation.csv",
         "source_census_rule": (
             "all evaluator-valid seeds in examples/seed_candidates.yaml; the source's "
             "explicit bad_unknown_op seed_0004 is excluded"

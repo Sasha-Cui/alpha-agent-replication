@@ -1,0 +1,38 @@
+{
+  "candidate_results": {
+    "quantevolver_price_zscore_reversal_120": {
+      "expression": "neg(zscore(last(close(120)), close(120)))",
+      "max_abs_portfolio_return_difference": 0.0,
+      "max_abs_score_difference": 3.157474282033945e-13,
+      "portfolio_times_compared": 35,
+      "score_values_compared": 432
+    },
+    "quantevolver_return_log_volume_corr_60": {
+      "expression": "corr(returns(60), log_arr(volume(60)))",
+      "max_abs_portfolio_return_difference": 0.0,
+      "max_abs_score_difference": 3.2064351174199146e-12,
+      "portfolio_times_compared": 35,
+      "score_values_compared": 432
+    },
+    "quantevolver_return_sharpe_60": {
+      "expression": "div(ts_mean(returns(60)), ts_std(returns(60)))",
+      "max_abs_portfolio_return_difference": 0.0,
+      "max_abs_score_difference": 7.216449660063518e-16,
+      "portfolio_times_compared": 35,
+      "score_values_compared": 432
+    }
+  },
+  "failures": [],
+  "fixture_id": "deterministic_12_symbol_275_bar_ohlcv_v1",
+  "passed": true,
+  "path_absolute_tolerance": 5e-13,
+  "score_absolute_tolerance": 5e-12,
+  "snapshot_sha256": {
+    "LICENSE": "f8e25686c7e519aa7edac74d4f826d0f52ea711c0a8a3aafd0773b81ff7e6561",
+    "examples/seed_candidates.yaml": "c8a20de0850156b8c831547a58239bb88b5d6486da50d6f9ecbaa2df0d13d718",
+    "quant_evolver/dsl/evaluator.py": "8c6e8201b8794bb2166a118cb753231bca1379c8aff115c6d29799ce8400516c",
+    "quant_evolver/evaluation/cross_sectional_rankic.py": "b38066082453d58295e45467fad662b33c1a1ef97232d3575348e2cfade56295"
+  },
+  "source_commit": "4eb0e78842138ada5334349585b114ad923564e8",
+  "uses_empirical_outcomes": false
+}

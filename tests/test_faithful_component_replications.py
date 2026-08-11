@@ -19,6 +19,8 @@ from run_faithful_component_replications import (  # noqa: E402
     released_cross_sectional_path,
 )
 from validate_faithful_component_replications import validation_failures  # noqa: E402
+from check_upstream_conformance import conformance_report  # noqa: E402
+from validate_owner_review_attestation import review_summary  # noqa: E402
 
 
 def source_reference(close: np.ndarray, volume: np.ndarray) -> dict[str, float]:
@@ -141,7 +143,12 @@ def test_fail_closed_validator_rejects_a_conditional_counted_grade(
     tmp_path: Path,
 ) -> None:
     source = Path(__file__).resolve().parents[1] / "paper_runs/faithful_component_replications"
-    for name in ("manifest.json", "faithfulness_ledger.csv"):
+    for name in (
+        "manifest.json",
+        "faithfulness_ledger.csv",
+        "upstream_conformance.json",
+        "owner_review_attestation.csv",
+    ):
         shutil.copy2(source / name, tmp_path / name)
     ledger_path = tmp_path / "faithfulness_ledger.csv"
     ledger = pd.read_csv(ledger_path)
@@ -151,3 +158,71 @@ def test_fail_closed_validator_rejects_a_conditional_counted_grade(
     assert "every counted row must have strict grade A or B" in failures
     assert "conditional grades are forbidden in the counted sample" in failures
     assert any(failure.startswith("tracked output hash mismatch") for failure in failures)
+
+
+def test_actual_pinned_source_conformance_passes_without_empirical_outcomes() -> None:
+    report, failures = conformance_report()
+    assert failures == []
+    assert report["passed"] is True
+    assert report["uses_empirical_outcomes"] is False
+    assert set(report["candidate_results"]) == set(PRIMARY_COMPONENTS)
+    assert sum(
+        result["score_values_compared"]
+        for result in report["candidate_results"].values()
+    ) == 1296
+    assert sum(
+        result["portfolio_times_compared"]
+        for result in report["candidate_results"].values()
+    ) == 105
+
+
+def test_source_evaluator_skips_nonfinite_rank_ic_times() -> None:
+    candidate_id = "quantevolver_return_sharpe_60"
+    frame = pd.DataFrame(
+        {
+            "month": pd.Timestamp("2024-01-31"),
+            "permno": range(10),
+            candidate_id: 1.0,
+            "source_forward_return": np.arange(10) / 100.0,
+            "source_forward_observation_month": pd.Timestamp("2024-02-29"),
+        }
+    )
+    repeated = pd.concat(
+        [
+            frame.assign(
+                month=pd.Timestamp("2024-01-31") + pd.offsets.MonthEnd(index)
+            )
+            for index in range(20)
+        ],
+        ignore_index=True,
+    )
+    with pytest.raises(ValueError, match="0 valid source-evaluator times"):
+        released_cross_sectional_path(repeated, candidate_id)
+
+
+def test_owner_review_attestation_is_valid_but_explicitly_pending() -> None:
+    attestation = (
+        Path(__file__).resolve().parents[1]
+        / "paper_runs/faithful_component_replications/owner_review_attestation.csv"
+    )
+    summary, failures = review_summary(attestation, PRIMARY_COMPONENTS)
+    assert failures == []
+    assert summary["status"] == "pending"
+    assert summary["completed_rows"] == 0
+
+
+def test_owner_review_validator_rejects_fabricated_completion(
+    tmp_path: Path,
+) -> None:
+    attestation = tmp_path / "owner_review_attestation.csv"
+    source = (
+        Path(__file__).resolve().parents[1]
+        / "paper_runs/faithful_component_replications/owner_review_attestation.csv"
+    )
+    frame = pd.read_csv(source, dtype=str, keep_default_na=False)
+    frame["review_status"] = "complete"
+    frame.to_csv(attestation, index=False)
+    summary, failures = review_summary(attestation, PRIMARY_COMPONENTS)
+    assert summary["status"] == "invalid"
+    assert any("wrong reviewer" in failure for failure in failures)
+    assert any("does not affirm every check" in failure for failure in failures)
