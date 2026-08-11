@@ -1,0 +1,527 @@
+unique_measurement_id,paper_value,display_occurrences,native_reproduced_value,status,paper_result_credit
+Table 2 main MLE-Bench/MLAB/GPT-4o/valid_submission/mean,44.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/valid_submission/sem,2.6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/above_median/mean,1.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/above_median/sem,0.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/bronze/mean,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/bronze/sem,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/silver/mean,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/silver/sem,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/gold/mean,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/gold/sem,0.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/any_medal/mean,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/MLAB/GPT-4o/any_medal/sem,0.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/valid_submission/mean,52,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/valid_submission/sem,3.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/above_median/mean,7.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/above_median/sem,1.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/bronze/mean,0.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/bronze/sem,0.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/silver/mean,1.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/silver/sem,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/gold/mean,2.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/gold/sem,1.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/any_medal/mean,4.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/OpenHands/GPT-4o/any_medal/sem,1.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/valid_submission/mean,54.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/valid_submission/sem,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/above_median/mean,14.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/above_median/sem,0.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/bronze/mean,1.6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/bronze/sem,0.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/silver/mean,2.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/silver/sem,0.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/gold/mean,5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/gold/sem,0.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/any_medal/mean,8.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/GPT-4o/any_medal/sem,0.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/valid_submission/mean,82.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/valid_submission/sem,1.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/above_median/mean,29.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/above_median/sem,1.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/bronze/mean,3.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/bronze/sem,0.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/silver/mean,4.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/silver/sem,0.6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/gold/mean,9.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/gold/sem,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/any_medal/mean,16.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/AIDE/o1-preview/any_medal/sem,1.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/valid_submission/mean,93.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/valid_submission/sem,1.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/above_median/mean,44.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/above_median/sem,1.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/bronze/mean,4.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/bronze/sem,0.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/silver/mean,7.6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/silver/sem,0.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/gold/mean,17.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/gold/sem,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/any_medal/mean,29.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/Deepseek-R1/any_medal/sem,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/valid_submission/mean,98.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/valid_submission/sem,0.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/above_median/mean,25.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/above_median/sem,1.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/bronze/mean,5.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/bronze/sem,1.6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/silver/mean,3.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/silver/sem,1.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/gold/mean,9.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/gold/sem,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/any_medal/mean,18.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/o3+GPT-4.1/any_medal/sem,1.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/valid_submission/mean,85.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/valid_submission/sem,3.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/above_median/mean,26.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/above_median/sem,1.6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/bronze/mean,4.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/bronze/sem,1.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/silver/mean,3.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/silver/sem,0.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/gold/mean,9.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/gold/sem,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/any_medal/mean,16.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/ML-Master/GPT-5/any_medal/sem,1.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/valid_submission/mean,94.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/valid_submission/sem,0.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/above_median/mean,44.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/above_median/sem,0.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/bronze/mean,6.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/bronze/sem,0.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/silver/mean,7.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/silver/sem,1.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/gold/mean,16,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/gold/sem,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/any_medal/mean,29.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/o3+GPT-4.1/any_medal/sem,0.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/valid_submission/mean,96,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/valid_submission/sem,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/above_median/mean,45.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/above_median/sem,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/bronze/mean,6.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/bronze/sem,1.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/silver/mean,12,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/silver/sem,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/gold/mean,16.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 2 main MLE-Bench/R&D-Agent/GPT-5/gold/sem,0.9,1,,not_reproduced_no_released_paper_run_artifact,False
+summary/rd_gpt5/all/mean,35.1,4,,not_reproduced_no_released_paper_run_artifact,False
+summary/rd_gpt5/all/sem,0.4,3,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/full/avg_loops/mean,45.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/full/avg_loops/sem,2.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_planning/avg_loops/reported,48.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_exploration_path/avg_loops/reported,19.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_reasoning/avg_loops/reported,55.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_memory/avg_loops/reported,44,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/full/improve_rate/mean,41.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/full/improve_rate/sem,0.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_planning/improve_rate/reported,39.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_exploration_path/improve_rate/reported,40,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_reasoning/improve_rate/reported,23,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_memory/improve_rate/reported,40.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/full/first_medal_hours/mean,2.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/full/first_medal_hours/sem,0.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_planning/first_medal_hours/reported,1.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_exploration_path/first_medal_hours/reported,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_reasoning/first_medal_hours/reported,1.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_memory/first_medal_hours/reported,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/full/medal_rate/mean,65.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/full/medal_rate/sem,0.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_planning/medal_rate/reported,50,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_exploration_path/medal_rate/reported,47.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_reasoning/medal_rate/reported,50,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_memory/medal_rate/reported,60,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_planning/any_medal/reported,26.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_exploration_path/any_medal/reported,25.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_reasoning/any_medal/reported,26.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 3 research ablation/without_memory/any_medal/reported,32,1,,not_reproduced_no_released_paper_run_artifact,False
+summary/rd_gpt5/low_lite/mean,68.2,2,,not_reproduced_no_released_paper_run_artifact,False
+summary/rd_gpt5/medium/mean,21.1,2,,not_reproduced_no_released_paper_run_artifact,False
+summary/rd_gpt5/high/mean,22.2,2,,not_reproduced_no_released_paper_run_artifact,False
+Table 4 RAG/with_RAG/low_lite/mean,54.6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 4 RAG/with_RAG/medium/mean,21.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 4 RAG/with_RAG/high/mean,26.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 4 RAG/with_RAG/all/mean,32,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/MLAB/GPT-4o/runtime_hours/reported,24,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/OpenHands/GPT-4o/runtime_hours/reported,24,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/AIDE/GPT-4o/runtime_hours/reported,24,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/AIDE/o1-preview/runtime_hours/reported,24,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/ML-Master/Deepseek-R1/runtime_hours/reported,12,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/KompeteAI/Gemini-2.5-flash/runtime_hours/reported,6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/MLE-STAR/Gemini-2.5-pro/runtime_hours/reported,24,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/MLE-STAR/Gemini-2.5-pro/gpu_count/reported,8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/MLE-STAR/Gemini-2.0-flash/runtime_hours/reported,24,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/MLE-STAR/Gemini-2.0-flash/gpu_count/reported,8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/AIRA/Greedy/runtime_hours/reported,24,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/AIRA/MCTS/runtime_hours/reported,24,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 5 runtime and GPU/R&D-Agent/GPT-5/runtime_hours/reported,12,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/InternAgent/runtime_hours/reported,12,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/InternAgent/low_lite/mean,62.1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/InternAgent/low_lite/sem,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/InternAgent/medium/mean,26.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/InternAgent/medium/sem,2.6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/InternAgent/high/mean,24.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/InternAgent/high/sem,2.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/InternAgent/all/mean,36.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/InternAgent/all/sem,1.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/Neo/runtime_hours/reported,36,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/Neo/low_lite/mean,48.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/Neo/low_lite/sem,1.5,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/Neo/medium/mean,29.8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/Neo/medium/sem,2.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/Neo/high/mean,24.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/Neo/high/sem,2.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/Neo/all/mean,34.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/Neo/all/sem,0.9,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 6 closed-source comparison/R&D-Agent/GPT-5/runtime_hours/reported,12,1,,not_reproduced_no_released_paper_run_artifact,False
+summary/rd_gpt5/low_lite/sem,2.6,1,,not_reproduced_no_released_paper_run_artifact,False
+summary/rd_gpt5/medium/sem,1.5,1,,not_reproduced_no_released_paper_run_artifact,False
+summary/rd_gpt5/high/sem,2.2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_1/valid_submission/raw_run,96,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_1/above_median/raw_run,45.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_1/bronze/raw_run,6.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_1/silver/raw_run,12,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_1/gold/raw_run,17.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_1/any_medal/raw_run,36,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_2/valid_submission/raw_run,96,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_2/above_median/raw_run,45.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_2/bronze/raw_run,4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_2/silver/raw_run,13.4,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_2/gold/raw_run,17.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_2/any_medal/raw_run,34.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_3/valid_submission/raw_run,96,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_3/above_median/raw_run,45.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_3/bronze/raw_run,9.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_3/silver/raw_run,10.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_3/gold/raw_run,14.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/GPT-5/run_3/any_medal/raw_run,34.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_1/valid_submission/raw_run,94.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_1/above_median/raw_run,45.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_1/bronze/raw_run,8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_1/silver/raw_run,5.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_1/gold/raw_run,17.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_1/any_medal/raw_run,30.6,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_2/valid_submission/raw_run,93.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_2/above_median/raw_run,44,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_2/bronze/raw_run,5.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_2/silver/raw_run,8,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_2/gold/raw_run,16,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_2/any_medal/raw_run,29.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_3/valid_submission/raw_run,94.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_3/above_median/raw_run,45.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_3/bronze/raw_run,5.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_3/silver/raw_run,9.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_3/gold/raw_run,14.7,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 7 raw main runs/R&D-Agent/o3+GPT-4.1/run_3/any_medal/raw_run,29.3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/run_1/research_cost_usd/reported,4.68,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/run_1/development_cost_usd/reported,11.14,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/run_1/total_cost_usd/reported,15.82,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/run_2/research_cost_usd/reported,7.85,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/run_2/development_cost_usd/reported,14.37,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/run_2/total_cost_usd/reported,22.22,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/run_3/research_cost_usd/reported,8.43,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/run_3/development_cost_usd/reported,15.75,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/run_3/total_cost_usd/reported,24.18,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/average/research_cost_usd/reported,6.99,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/average/development_cost_usd/reported,13.75,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 8 GPT-5 costs/average/total_cost_usd/reported,20.74,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/inaturalist-2019-fgvc6/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/inaturalist-2019-fgvc6/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/inaturalist-2019-fgvc6/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/inaturalist-2019-fgvc6/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/plant-pathology-2020-fgvc7/ML-Master/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/plant-pathology-2020-fgvc7/ML-Master/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/plant-pathology-2020-fgvc7/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/plant-pathology-2020-fgvc7/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/h-and-m-personalized-fashion-recommendations/ML-Master/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/h-and-m-personalized-fashion-recommendations/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/h-and-m-personalized-fashion-recommendations/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/h-and-m-personalized-fashion-recommendations/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/the-icml-2013-whale-challenge-right-whale-redux/ML-Master/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/the-icml-2013-whale-challenge-right-whale-redux/ML-Master/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/the-icml-2013-whale-challenge-right-whale-redux/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/the-icml-2013-whale-challenge-right-whale-redux/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/jigsaw-toxic-comment-classification-challenge/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/jigsaw-toxic-comment-classification-challenge/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/jigsaw-toxic-comment-classification-challenge/R&D-Agent/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/jigsaw-toxic-comment-classification-challenge/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/detecting-insults-in-social-commentary/ML-Master/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/detecting-insults-in-social-commentary/ML-Master/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/detecting-insults-in-social-commentary/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/detecting-insults-in-social-commentary/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/aptos2019-blindness-detection/ML-Master/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/aptos2019-blindness-detection/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/aptos2019-blindness-detection/R&D-Agent/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/aptos2019-blindness-detection/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/iwildcam-2020-fgvc7/ML-Master/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/iwildcam-2020-fgvc7/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/iwildcam-2020-fgvc7/R&D-Agent/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/iwildcam-2020-fgvc7/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/us-patent-phrase-to-phrase-matching/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/us-patent-phrase-to-phrase-matching/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/us-patent-phrase-to-phrase-matching/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/us-patent-phrase-to-phrase-matching/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hotel-id-2021-fgvc8/ML-Master/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hotel-id-2021-fgvc8/ML-Master/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hotel-id-2021-fgvc8/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hotel-id-2021-fgvc8/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/freesound-audio-tagging-2019/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/freesound-audio-tagging-2019/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/freesound-audio-tagging-2019/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/freesound-audio-tagging-2019/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-miccai-brain-tumor-radiogenomic-classification/ML-Master/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-miccai-brain-tumor-radiogenomic-classification/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-miccai-brain-tumor-radiogenomic-classification/R&D-Agent/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-miccai-brain-tumor-radiogenomic-classification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/text-normalization-challenge-russian-language/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/text-normalization-challenge-russian-language/ML-Master/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/text-normalization-challenge-russian-language/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/text-normalization-challenge-russian-language/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/spooky-author-identification/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/spooky-author-identification/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/spooky-author-identification/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/spooky-author-identification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tabular-playground-series-dec-2021/ML-Master/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tabular-playground-series-dec-2021/ML-Master/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tabular-playground-series-dec-2021/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tabular-playground-series-dec-2021/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2022-fgvc9/ML-Master/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2022-fgvc9/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2022-fgvc9/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2022-fgvc9/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2020-fgvc7/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2020-fgvc7/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2020-fgvc7/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2020-fgvc7/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/plant-pathology-2021-fgvc8/ML-Master/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/plant-pathology-2021-fgvc8/ML-Master/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/plant-pathology-2021-fgvc8/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/plant-pathology-2021-fgvc8/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/google-quest-challenge/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/google-quest-challenge/ML-Master/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/google-quest-challenge/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/google-quest-challenge/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/stanford-covid-vaccine/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/stanford-covid-vaccine/ML-Master/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/stanford-covid-vaccine/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/stanford-covid-vaccine/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/random-acts-of-pizza/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/random-acts-of-pizza/ML-Master/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/random-acts-of-pizza/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/random-acts-of-pizza/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2021-fgvc8/ML-Master/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2021-fgvc8/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2021-fgvc8/R&D-Agent/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/herbarium-2021-fgvc8/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/leaf-classification/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/leaf-classification/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/leaf-classification/R&D-Agent/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/leaf-classification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/nomad2018-predict-transparent-conductors/ML-Master/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/nomad2018-predict-transparent-conductors/ML-Master/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/nomad2018-predict-transparent-conductors/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/nomad2018-predict-transparent-conductors/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/aerial-cactus-identification/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/aerial-cactus-identification/ML-Master/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/aerial-cactus-identification/R&D-Agent/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/aerial-cactus-identification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/seti-breakthrough-listen/ML-Master/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/seti-breakthrough-listen/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/seti-breakthrough-listen/R&D-Agent/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/seti-breakthrough-listen/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/kuzushiji-recognition/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/kuzushiji-recognition/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/kuzushiji-recognition/R&D-Agent/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/kuzushiji-recognition/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/cassava-leaf-disease-classification/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/cassava-leaf-disease-classification/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/cassava-leaf-disease-classification/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/cassava-leaf-disease-classification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/predict-volcanic-eruptions-ingv-oe/ML-Master/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/predict-volcanic-eruptions-ingv-oe/ML-Master/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/predict-volcanic-eruptions-ingv-oe/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/predict-volcanic-eruptions-ingv-oe/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/whale-categorization-playground/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/whale-categorization-playground/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/whale-categorization-playground/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/whale-categorization-playground/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/learning-agency-lab-automated-essay-scoring-2/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/learning-agency-lab-automated-essay-scoring-2/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/learning-agency-lab-automated-essay-scoring-2/R&D-Agent/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/learning-agency-lab-automated-essay-scoring-2/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/3d-object-detection-for-autonomous-vehicles/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/3d-object-detection-for-autonomous-vehicles/ML-Master/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/3d-object-detection-for-autonomous-vehicles/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/3d-object-detection-for-autonomous-vehicles/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/histopathologic-cancer-detection/ML-Master/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/histopathologic-cancer-detection/ML-Master/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/histopathologic-cancer-detection/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/histopathologic-cancer-detection/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/dogs-vs-cats-redux-kernels-edition/ML-Master/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/dogs-vs-cats-redux-kernels-edition/ML-Master/GPT-5/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/dogs-vs-cats-redux-kernels-edition/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/dogs-vs-cats-redux-kernels-edition/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tweet-sentiment-extraction/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tweet-sentiment-extraction/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tweet-sentiment-extraction/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tweet-sentiment-extraction/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/mlsp-2013-birds/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/mlsp-2013-birds/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/mlsp-2013-birds/R&D-Agent/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/mlsp-2013-birds/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/iwildcam-2019-fgvc6/ML-Master/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/iwildcam-2019-fgvc6/ML-Master/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/iwildcam-2019-fgvc6/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/iwildcam-2019-fgvc6/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/text-normalization-challenge-english-language/ML-Master/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/text-normalization-challenge-english-language/ML-Master/GPT-5/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/text-normalization-challenge-english-language/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/text-normalization-challenge-english-language/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/denoising-dirty-documents/ML-Master/o3+GPT-4.1/medals_across_three_runs,1,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/denoising-dirty-documents/ML-Master/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/denoising-dirty-documents/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/denoising-dirty-documents/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/google-research-identify-contrails-reduce-global-warming/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/google-research-identify-contrails-reduce-global-warming/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/google-research-identify-contrails-reduce-global-warming/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/google-research-identify-contrails-reduce-global-warming/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/imet-2020-fgvc7/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/imet-2020-fgvc7/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/imet-2020-fgvc7/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/imet-2020-fgvc7/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-2022-cervical-spine-fracture-detection/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-2022-cervical-spine-fracture-detection/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-2022-cervical-spine-fracture-detection/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-2022-cervical-spine-fracture-detection/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/vesuvius-challenge-ink-detection/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/vesuvius-challenge-ink-detection/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/vesuvius-challenge-ink-detection/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/vesuvius-challenge-ink-detection/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tabular-playground-series-may-2022/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tabular-playground-series-may-2022/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tabular-playground-series-may-2022/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tabular-playground-series-may-2022/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/alaska2-image-steganalysis/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/alaska2-image-steganalysis/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/alaska2-image-steganalysis/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/alaska2-image-steganalysis/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tensorflow2-question-answering/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tensorflow2-question-answering/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tensorflow2-question-answering/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tensorflow2-question-answering/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/dog-breed-identification/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/dog-breed-identification/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/dog-breed-identification/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/dog-breed-identification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/siim-isic-melanoma-classification/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/siim-isic-melanoma-classification/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/siim-isic-melanoma-classification/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/siim-isic-melanoma-classification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/osic-pulmonary-fibrosis-progression/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/osic-pulmonary-fibrosis-progression/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/osic-pulmonary-fibrosis-progression/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/osic-pulmonary-fibrosis-progression/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/vinbigdata-chest-xray-abnormalities-detection/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/vinbigdata-chest-xray-abnormalities-detection/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/vinbigdata-chest-xray-abnormalities-detection/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/vinbigdata-chest-xray-abnormalities-detection/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/ranzcr-clip-catheter-line-classification/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/ranzcr-clip-catheter-line-classification/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/ranzcr-clip-catheter-line-classification/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/ranzcr-clip-catheter-line-classification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/lmsys-chatbot-arena/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/lmsys-chatbot-arena/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/lmsys-chatbot-arena/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/lmsys-chatbot-arena/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tensorflow-speech-recognition-challenge/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tensorflow-speech-recognition-challenge/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tensorflow-speech-recognition-challenge/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tensorflow-speech-recognition-challenge/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/champs-scalar-coupling/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/champs-scalar-coupling/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/champs-scalar-coupling/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/champs-scalar-coupling/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/statoil-iceberg-classifier-challenge/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/statoil-iceberg-classifier-challenge/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/statoil-iceberg-classifier-challenge/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/statoil-iceberg-classifier-challenge/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/jigsaw-unintended-bias-in-toxicity-classification/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/jigsaw-unintended-bias-in-toxicity-classification/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/jigsaw-unintended-bias-in-toxicity-classification/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/jigsaw-unintended-bias-in-toxicity-classification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tgs-salt-identification-challenge/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tgs-salt-identification-challenge/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tgs-salt-identification-challenge/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/tgs-salt-identification-challenge/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/bms-molecular-translation/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/bms-molecular-translation/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/bms-molecular-translation/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/bms-molecular-translation/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/billion-word-imputation/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/billion-word-imputation/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/billion-word-imputation/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/billion-word-imputation/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/smartphone-decimeter-2022/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/smartphone-decimeter-2022/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/smartphone-decimeter-2022/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/smartphone-decimeter-2022/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/facebook-recruiting-iii-keyword-extraction/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/facebook-recruiting-iii-keyword-extraction/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/facebook-recruiting-iii-keyword-extraction/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/facebook-recruiting-iii-keyword-extraction/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-breast-cancer-detection/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-breast-cancer-detection/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-breast-cancer-detection/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/rsna-breast-cancer-detection/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/icecube-neutrinos-in-deep-ice/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/icecube-neutrinos-in-deep-ice/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/icecube-neutrinos-in-deep-ice/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/icecube-neutrinos-in-deep-ice/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/ventilator-pressure-prediction/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/ventilator-pressure-prediction/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/ventilator-pressure-prediction/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/ventilator-pressure-prediction/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/nfl-player-contact-detection/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/nfl-player-contact-detection/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/nfl-player-contact-detection/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/nfl-player-contact-detection/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/siim-covid19-detection/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/siim-covid19-detection/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/siim-covid19-detection/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/siim-covid19-detection/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hubmap-kidney-segmentation/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hubmap-kidney-segmentation/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hubmap-kidney-segmentation/R&D-Agent/GPT-5/medals_across_three_runs,3,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hubmap-kidney-segmentation/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,2,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hms-harmful-brain-activity-classification/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hms-harmful-brain-activity-classification/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hms-harmful-brain-activity-classification/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/hms-harmful-brain-activity-classification/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/AI4Code/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/AI4Code/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/AI4Code/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/AI4Code/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/chaii-hindi-and-tamil-question-answering/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/chaii-hindi-and-tamil-question-answering/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/chaii-hindi-and-tamil-question-answering/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/chaii-hindi-and-tamil-question-answering/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/petfinder-pawpularity-score/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/petfinder-pawpularity-score/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/petfinder-pawpularity-score/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/petfinder-pawpularity-score/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/multi-modal-gesture-recognition/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/multi-modal-gesture-recognition/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/multi-modal-gesture-recognition/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/multi-modal-gesture-recognition/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/new-york-city-taxi-fare-prediction/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/new-york-city-taxi-fare-prediction/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/new-york-city-taxi-fare-prediction/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/new-york-city-taxi-fare-prediction/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/cdiscount-image-classification-challenge/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/cdiscount-image-classification-challenge/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/cdiscount-image-classification-challenge/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/cdiscount-image-classification-challenge/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/uw-madison-gi-tract-image-segmentation/ML-Master/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/uw-madison-gi-tract-image-segmentation/ML-Master/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/uw-madison-gi-tract-image-segmentation/R&D-Agent/GPT-5/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False
+Table 9 per-competition medals/uw-madison-gi-tract-image-segmentation/R&D-Agent/o3+GPT-4.1/medals_across_three_runs,0,1,,not_reproduced_no_released_paper_run_artifact,False

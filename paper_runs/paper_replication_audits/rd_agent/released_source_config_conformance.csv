@@ -1,0 +1,31 @@
+configuration,paper_value,released_source_evidence,status,verified_for_reported_run,paper_configuration_credit
+runtime per competition,12 hours,runner CLI accepts a timeout but no paper command/config is released,unverified,False,False
+CPU,12 vCPU,not pinned in repository,missing,False,False
+RAM,220 GB,not pinned in repository,missing,False,False
+GPU,one NVIDIA V100,"Docker base pins CUDA/PyTorch, not physical GPU",unverified,False,False
+main seeds,3,no paper seed list or run manifest,missing,False,False
+main backend,GPT-5,no exact provider deployment/model snapshot,missing,False,False
+hybrid research backend,o3,no exact provider deployment/model snapshot,missing,False,False
+hybrid development backend,GPT-4.1,no exact provider deployment/model snapshot,missing,False,False
+API provider,Azure OpenAI,general API configuration exists; paper deployment/version absent,unverified,False,False
+benchmark,75 MLE-Bench competitions,Dockerfile clones MLE-Bench live without a commit,mismatch_unpinned,False,False
+difficulty counts,"22 Lite, 38 Medium, 15 High",paper only; frozen task manifest absent,missing,False,False
+planner enabled,dynamic planning,enable_planner defaults false,mismatch_default,False,False
+trace scheduler,adaptive exploration,default is RoundRobinScheduler,mismatch_default,False,False
+trace count,parallel/multi-trace design,max_trace_num defaults 1,mismatch_default,False,False
+LLM hypothesis selector,enabled in described algorithm,llm_select_hypothesis defaults false,mismatch_default,False,False
+hypothesis critique/rewrite,scientific multi-step reasoning,enable_hypo_critique_rewrite defaults false,mismatch_default,False,False
+sampled debugging,enabled,sample_data_by_LLM defaults true,source_default_matches,False,False
+debug timeout,not separately specified in paper,600 seconds,source_only,False,False
+full-run timeout,bounded by 12-hour overall budget,3600 seconds per execution,source_only,False,False
+holdout split,stratified 90/10,ValidationSelector defaults sample_rate=0.8,mismatch_default,False,False
+interaction alpha,1.0 in source implementation,alpha=1.0,source_matches,False,False
+interaction beta,"1.0, or 0 before a SOTA exists",beta=1.0/0,source_matches,False,False
+interaction gamma,decay factor; appendix omits numeric value,ln(2)/30,source_resolves_paper_omission,False,False
+interaction clamp,"[-2,2]",torch.clamp min=-2 max=2,source_matches,False,False
+history samples,n unspecified,at most 2 plus global best,source_resolves_paper_omission,False,False
+fixed seed/data split,three independent runs,fix_seed_and_data_split defaults false,unverified,False,False
+RAG knowledge base,85 non-MLE-Bench competitions,disabled by default; corpus snapshot absent,unverified,False,False
+raw run outputs,three runs for two main configurations,not included in repository,missing,False,False
+cost accounting,research/development API cost per competition,request logs and pricing snapshot absent,missing,False,False
+baseline revisions,official results plus ML-Master re-evaluations,commits/configs/hardware images not pinned,missing,False,False

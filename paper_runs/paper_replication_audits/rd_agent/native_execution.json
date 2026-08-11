@@ -1,0 +1,53 @@
+{
+  "credential_presence": {
+    "AZURE_OPENAI_API_KEY": false,
+    "KAGGLE_KEY": false,
+    "KAGGLE_USERNAME": false,
+    "OPENAI_API_KEY": false
+  },
+  "docker_command_available": false,
+  "full_native_paper_execution_attempted": false,
+  "full_native_paper_execution_status": "not_runnable_faithfully_missing_frozen_inputs_run_configs_models_credentials_compute_and_traces",
+  "official_source_url": "https://github.com/microsoft/RD-Agent",
+  "paper_result_credit": false,
+  "paper_source_compilation": {
+    "attempted": true,
+    "command": "/apps/software/2024a/software/texlive/20240312-GCC-13.3.0/bin/x86_64-linux/pdflatex",
+    "exit_codes": [
+      0,
+      0
+    ],
+    "paper_result_credit": false,
+    "passes": 2,
+    "produced_pdf": true,
+    "produced_pdf_pages": 33,
+    "status": "paper_latex_compiled_no_system_or_result_credit"
+  },
+  "released_source_component_execution": {
+    "compileall_passed": true,
+    "data_science_and_kaggle_python_files_compiled": 233,
+    "native_interaction_kernel_execution": {
+      "attempted": true,
+      "best_history": "history_high",
+      "exit_code": 0,
+      "paper_result_credit": false,
+      "passed": true,
+      "python": "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+      "scope": "AST-extracted native _cosine_similarity_matrix_torch and _prob_dis_torch methods with deterministic synthetic embeddings",
+      "selected_count": 2,
+      "status": "exact_paper_era_source_methods_executed",
+      "stderr_tail": ""
+    },
+    "native_scheduler_softmax_executed": true,
+    "native_scheduler_softmax_output": [
+      0.09003057317038046,
+      0.24472847105479764,
+      0.6652409557748218
+    ],
+    "native_scheduler_softmax_passed": true,
+    "paper_era_commit": "f360d0a212793eb044c218b5e13b095e684a632d",
+    "paper_result_credit": false,
+    "scope": "paper-era data-science/Kaggle compilation plus dependency-isolated scheduler and interaction-kernel components"
+  },
+  "singularity_or_apptainer_available": true
+}

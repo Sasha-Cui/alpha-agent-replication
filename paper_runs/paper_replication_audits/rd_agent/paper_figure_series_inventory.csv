@@ -1,0 +1,25 @@
+figure,series_or_bar,paper_source_asset_present,underlying_numeric_data_or_plot_code_released,native_exact_series_reproduced,status,paper_result_credit
+Figure 1 / agent_performance_compact_new.pdf,MLAB/GPT-4o,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 1 / agent_performance_compact_new.pdf,OpenHands/GPT-4o,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 1 / agent_performance_compact_new.pdf,AIDE/GPT-4o,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 1 / agent_performance_compact_new.pdf,AIDE/o1-preview,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 1 / agent_performance_compact_new.pdf,ML-Master/GPT-5,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 1 / agent_performance_compact_new.pdf,ML-Master/Deepseek-R1,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 1 / agent_performance_compact_new.pdf,R&D-Agent/GPT-5,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 4 / backend_comparison.pdf,GPT-4.1 only,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 4 / backend_comparison.pdf,o3 only,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 4 / backend_comparison.pdf,o3(R)+GPT-4.1(D),True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 3 / development_ablation_narrow.png,perfect selection,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 3 / development_ablation_narrow.png,full system,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 3 / development_ablation_narrow.png,without coding workflow,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 3 / development_ablation_narrow.png,without evaluation strategy,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,R&D-Agent/GPT-5,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,MLE-STAR/Gemini-2.5-pro,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,InternAgent/Deepseek-R1,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,KompeteAI/Gemini-2.5-flash,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,ML-Master/Deepseek-R1,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,Neo,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,AIRA/Greedy,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,AIDE/o1-preview,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,OpenHands/GPT-4o,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False
+Figure 5 / lite_performance_comparison.pdf,MLAB/GPT-4o,True,False,False,paper_asset_only_no_underlying_plot_inputs_or_generation_code,False

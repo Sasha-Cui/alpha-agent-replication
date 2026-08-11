@@ -1,0 +1,20 @@
+check,evidence,status,supports_replication
+result authority,arXiv v2 is a 33-page rewrite and the final available revision,pass,True
+v1 to v2 protocol,"runtime changes 24h to 12h; configurations, metrics, seeds, and error statistic change",material_noncomparable_revision,False
+raw GPT-5 summary,rounded raw runs reconstruct all six means/SEMs to displayed precision,pass_with_rounded_inputs,True
+raw hybrid summary,"rounded raw runs imply Valid Submission SEM 0.5, while Table 2 prints 0.4; hidden precision may explain it",not_reconstructable_from_displayed_raw_values,False
+ML-Master GPT-5 uncertainty,"main prose says Any Medal 16.9±2.0, Table 2 and Figure 1 say 16.9±1.2",contradiction,False
+hybrid backend result,"Appendix backend figure says 29.3%, while Table 2 reports hybrid 29.7±0.4%",contradiction_or_different_unidentified_run,False
+Table 9 hybrid aggregation,"hybrid medal counts sum to 66/225=29.3%, but Table 7 raw Any-Medal rows imply 67/225=29.8% and Table 2 prints 29.7±0.4%; the paper does not identify separate run sets",contradiction_or_mixed_run_sets,False
+Figure 1 MLAB,figure says 1.3±0.5; Table 2 says 0.8±0.5,contradiction,False
+Figure 1 OpenHands,figure says 5.1±1.3; Table 2 says 4.4±1.4,contradiction,False
+Figure 1 AIDE GPT-4o,figure says 8.6±0.5; Table 2 says 8.7±0.5,contradiction,False
+Lite figure AIRA caption,figure plots AIRA Greedy at 47.7 while caption says AIRA reported value is 0,contradiction,False
+Table 9 caption,caption calls two baseline configurations but table has two ML-Master and two R&D-Agent columns,scope_label_error,False
+paper 90/10 selector,paper-era source defaults ValidationSelector to 80/20,source_default_mismatch,False
+paper algorithm defaults,"planner, LLM selection, multi-trace, and critique settings are off/one by default",paper_run_configuration_absent,False
+official trace links,two README aka.ms result links redirect to generic Bing pages at audit date,released_trace_links_broken,False
+current README drift,"README retains v1-era table and reports hybrid 30.22±1.5, not final-paper 29.7±0.4",release_documentation_drift,False
+source compilation,38 paper-era data-science Python files compile; compilation is not execution,component_packaging_pass,True
+paper source compilation,v2 LaTeX compiles to 33 pages,paper_packaging_pass,True
+quant mapping boundary,primary paper evaluates MLE-Bench; later quant scenario code is not evidence for these results,correct_scope_boundary,True

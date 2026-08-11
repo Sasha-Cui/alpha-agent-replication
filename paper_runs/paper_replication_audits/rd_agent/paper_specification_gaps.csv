@@ -1,0 +1,26 @@
+gap,detail,impact
+paper run commands,No exact commands or environment variables for the six v2 paper runs/ablations are released.,prevents exact paper-level replication
+run configuration,"No frozen config dump proves which non-default planner, scheduler, trace, selector, critique, or merge settings were used.",prevents exact paper-level replication
+raw traces,"Prompts, responses, hypotheses, DAGs, generated code, validation scores, errors, and selections are absent.",prevents exact paper-level replication
+result artifacts,"No native logs, submissions, Kaggle scores, checkpoints, or per-competition run directories are included.",prevents exact paper-level replication
+broken result links,Both advertised aka.ms result links currently resolve to generic Bing pages.,prevents exact paper-level replication
+MLE-Bench snapshot,Dockerfile clones openai/mle-bench without a commit and performs live Git LFS pulls.,prevents exact paper-level replication
+Kaggle data,"The 75 competition datasets, exact versions, hashes, and access records are not archived.",prevents exact paper-level replication
+competition manifest,"Exact task order, exclusions, retry policy, and Lite/Medium/High mapping artifact are absent.",prevents exact paper-level replication
+model snapshots,"GPT-5, o3, GPT-4.1, o1-preview, GPT-4o, and DeepSeek deployments/revisions are not pinned.",prevents exact paper-level replication
+API settings,"Temperature, top-p, max tokens, seed support, retry/backoff, timeout, and structured-output behavior are not fully pinned per role.",prevents exact paper-level replication
+three seeds,The v2 paper reports three seeds but does not list them or bind them to runs.,prevents exact paper-level replication
+hardware image,"V100, 12-vCPU, and 220-GB allocations are stated but no scheduler/container digest proves the runtime image.",prevents exact paper-level replication
+12-hour enforcement,"No logs establish wall-clock accounting, API wait treatment, restarts, or timeout boundaries.",prevents exact paper-level replication
+90/10 holdout,Source default is 80/20; no run override or generated split indices establish the paper's 90/10 split.,prevents exact paper-level replication
+selection leakage,The appendix selector implementation logs validation and test scores; exact held-out construction and separation from Kaggle test grading need released evidence.,prevents exact paper-level replication
+baseline provenance,"Official baseline values and ML-Master re-evaluations lack pinned commits, commands, configs, seeds, and raw outputs.",prevents exact paper-level replication
+cost derivation,"Token/request logs, Azure prices, currency/date, caching, retries, and failed-call accounting are absent.",prevents exact paper-level replication
+RAG corpus,"The 85-competition knowledge corpus, documents, embeddings, retrieval model, and hashes are absent.",prevents exact paper-level replication
+ablation configs,Only labels are published; exact config diffs for all research/development ablations are not released.,prevents exact paper-level replication
+figure inputs,Four result figures have no plotting data or generation scripts.,prevents exact paper-level replication
+v1/v2 provenance,The report was rewritten around a new 12-hour GPT-5 experiment without a migration/result lineage document.,prevents exact paper-level replication
+README/final mismatch,The official README does not expose the final-paper GPT-5 experiment and reports different hybrid values.,prevents exact paper-level replication
+statistical precision,Only rounded raw percentages are published; at least one SEM cannot be reconstructed at displayed precision.,prevents exact paper-level replication
+closed systems,InternAgent and Neo methods/results cannot be independently audited from this repository.,prevents exact paper-level replication
+quant lineage,The retained corpus maps a quant application lineage to a general MLE-Bench primary paper; quant proxy results cannot validate this paper.,prevents exact paper-level replication
