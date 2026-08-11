@@ -78,7 +78,7 @@ def computed_macros(
         "LicensedArtifactCountFT": "10",
         "PinnedRepoCountFT": "19",
         "ArtifactTierSummaryFT": r"\artifacttier{R0}: 48, \artifacttier{R1}: 6, \artifacttier{R2}: 5, \artifacttier{R3}: 8",
-        "TargetedAuditCount": "19",
+        "TargetedAuditCount": "20",
         "TranslatableSeedCount": "1",
     }
     for key, value in expected.items():
@@ -129,7 +129,7 @@ def update_claims(values: dict[str, str]) -> list[paper.Claim]:
             )
     fields = list(paper.Claim.__dataclass_fields__)
     with CLAIMS.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\r\n")
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     return [paper.Claim(**row) for row in rows]

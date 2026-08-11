@@ -261,6 +261,25 @@ ARTIFACT_NOTES = {
 }
 
 
+# Paper-level audits can establish a precise evidence boundary even when the
+# authors released no system artifact. Keep that evidence distinct from the
+# static artifact notes above so baseline/source-adjacent material is not
+# mistaken for native implementation evidence.
+PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-FLAG-TRADER": (
+        "A pinned ACL-final/arXiv-v3 audit inventories all 360 displayed numeric "
+        "result cells. Six of 20 checked Buy-and-Hold baseline cells reproduce "
+        "literally from the first author-linked InvestorBench release, but zero "
+        "FLAG-Trader cells reproduce. The 22 paper settings, prompt template, and "
+        "TeX are static document evidence. No author-linked FLAG-Trader source, "
+        "checkpoint, exact configuration, seeds, actions, equity paths, or result "
+        "records are released. State, transaction-cost, reward initialization, "
+        "BTC annualization, KL-loss, value-clipping, and test-selection details "
+        "are missing or internally conflicting."
+    ),
+}
+
+
 TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
     "SYS-ALPHA-MEMO": "paper_audit:completed_zero_of_474_native_results",
@@ -271,6 +290,7 @@ TARGETED_EXECUTION = {
     "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
     "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
+    "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
@@ -352,10 +372,13 @@ def main() -> None:
             block = "A0_no_public_artifact"
             fidelity = "F0_no_public_artifact"
             evidence = first_url(source["primary_record"])
-            note = (
-                f"The frozen primary record identifies {native_task(source)}; "
-                "the registry lists no public artifact, so no native dated output "
-                "was available for static inspection."
+            note = PAPER_ONLY_AUDIT_NOTES.get(
+                sid,
+                (
+                    f"The frozen primary record identifies {native_task(source)}; "
+                    "the registry lists no public artifact, so no native dated output "
+                    "was available for static inspection."
+                ),
             )
         elif reachability == "check_failed":
             artifact_status = "listed_check_failed"

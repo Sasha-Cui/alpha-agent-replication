@@ -1702,7 +1702,7 @@ def write_claims(book: MacroBook, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fields = list(Claim.__dataclass_fields__)
     with path.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for claim in book.claims:
             writer.writerow({field: getattr(claim, field) for field in fields})

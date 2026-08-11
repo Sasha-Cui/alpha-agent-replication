@@ -139,15 +139,19 @@ def build_routes(
         )
         route = classify_route(not public_rows.empty, mapping_tiers)
         disposition = mapping_disposition(work)
-        targeted_statuses = (
-            public_rows["targeted_execution_audit_status"].astype(str).tolist()
-            if not public_rows.empty
-            else []
-        )
-        targeted = any(
-            status != "not_targeted_in_legacy_execution_audit"
-            for status in targeted_statuses
-        )
+        targeted_statuses = [
+            status
+            for status in native_rows["targeted_execution_audit_status"]
+            .astype(str)
+            .tolist()
+            if status != "not_targeted_in_legacy_execution_audit"
+        ]
+        targeted = bool(targeted_statuses)
+        audited_rows = native_rows[
+            native_rows["targeted_execution_audit_status"].ne(
+                "not_targeted_in_legacy_execution_audit"
+            )
+        ]
 
         if route == PUBLIC_CODE_ROUTE:
             route_basis = (
@@ -173,7 +177,11 @@ def build_routes(
                 "the supported scope"
             )
             blocker = "no_reachable_public_code"
-            native_disposition = "paper_only_no_native_code_pipeline"
+            native_disposition = (
+                "paper_only_audit_recorded_no_native_code_pipeline"
+                if targeted
+                else "paper_only_no_native_code_pipeline"
+            )
         else:
             route_basis = (
                 "paper-only procedure is partial or underspecified; use a labeled "
@@ -188,12 +196,22 @@ def build_routes(
                 joined(
                     [
                         f"{row.system_id}:{row.blocking_stage}:{row.concise_evidence_note}"
+                        for row in audited_rows.itertuples()
+                    ]
+                )
+                or joined(
+                    [
+                        f"{row.system_id}:{row.blocking_stage}:{row.concise_evidence_note}"
                         for row in unresolved.itertuples()
                     ]
                 )
                 or "no_reachable_public_code"
             )
-            native_disposition = "paper_only_no_native_code_pipeline"
+            native_disposition = (
+                "paper_only_audit_recorded_no_native_code_pipeline"
+                if targeted
+                else "paper_only_no_native_code_pipeline"
+            )
 
         rows.append(
             {

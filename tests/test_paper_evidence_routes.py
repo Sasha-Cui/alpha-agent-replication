@@ -125,6 +125,22 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         assert row["native_execution_audit_status"] == status
 
 
+def test_flag_trader_paper_only_audit_preserves_its_evidence_boundary() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[routes["canonical_work_id"].eq("CensusACL2025findingsacl716")].iloc[0]
+    assert row["paper_evidence_route"] == "paper_only_underspecified"
+    assert row["reachable_public_code_system_ids"] == ""
+    assert row["native_pipeline_disposition"] == (
+        "paper_only_audit_recorded_no_native_code_pipeline"
+    )
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert "zero FLAG-Trader cells reproduce" in row["precise_native_or_access_blocker"]
+    assert "No author-linked FLAG-Trader source" in row["precise_native_or_access_blocker"]
+
+
 def test_alpha_r1_placeholder_audit_never_promotes_the_motif_proxy() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
     row = routes[routes["canonical_work_id"].eq("CensusArxiv251223515")].iloc[0]
