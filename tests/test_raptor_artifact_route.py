@@ -82,7 +82,7 @@ def test_static_paper_assets_reflect_raptor_correction() -> None:
     assert r"\newcommand{\PinnedRepoCountFT}{22}" in generated
     assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 45, \artifacttier{R1}: 7, \artifacttier{R2}: 5, \artifacttier{R3}: 10}" in generated
     assert r"\newcommand{\NativeDatedOutputCount}{5}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{30}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{31}" in generated
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert route.OWNER_REPO.replace("_", r"\_") in system_table

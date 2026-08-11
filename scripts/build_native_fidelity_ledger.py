@@ -400,6 +400,24 @@ PAPER_ONLY_AUDIT_NOTES = {
         "momentum/trend motif; its other characteristics and portfolio rule are "
         "researcher supplied and receive no FAMA-result credit."
     ),
+    "SYS-FIN-VISION": (
+        "A pinned FinVision audit validates the official nine-page paper, the "
+        "complete 22-file arXiv manuscript bundle, five printed prompt templates, "
+        "and the author's 133-page thesis. The thesis repeats all 72 displayed "
+        "performance cells, and the nine FinAgent cells trace to FinAgent Appendix "
+        "Table 7, but these are corroboration and transcription rather than native "
+        "execution: 0/72 cells reproduce. The arXiv archive contains no FinVision "
+        "system code, environment, configuration, or data pipeline, and no original "
+        "news/price snapshot, runtime LLM request/response, action, fill, reward, "
+        "cash, or equity path is released. A pinned current-Yahoo diagnostic matches "
+        "3/9 Market cells at display precision but receives zero result credit because "
+        "the original price field/snapshot and metric conventions are unspecified. "
+        "The paper's 42/145 trading-day counts also differ from the 41/147 literal "
+        "sessions over its printed dates without a stated transformation. Public "
+        "author/index/archive searches recovered no attributable implementation; "
+        "this bounded negative result is not proof that private or deleted artifacts "
+        "never existed."
+    ),
     "SYS-QUANT-AGENT-SELF-IMPROVING": (
         "A pinned arXiv-v1 QuantAgent audit rebuilds the official 15-page TeX "
         "source at 99.93% extracted-token multiset Jaccard and audits all four "
@@ -463,6 +481,7 @@ TARGETED_EXECUTION = {
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": "paper_audit:completed_zero_of_162_v2_table_results_missing_hybrid_pipeline_and_v2_lineage",
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
+    "SYS-FIN-VISION": "paper_audit:completed_zero_of_72_performance_cells_no_public_system_source",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
