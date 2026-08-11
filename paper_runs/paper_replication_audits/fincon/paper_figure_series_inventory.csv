@@ -1,0 +1,107 @@
+figure,series,underlying_numeric_series_released,native_exact_series_reproduced,status,paper_result_credit
+Appendix regular single / TSLA.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / TSLA.png,FinCon,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / TSLA.png,GA,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / TSLA.png,FinGPT,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / TSLA.png,FinMem,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / TSLA.png,FinAgent,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / TSLA.png,A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / TSLA.png,PPO,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / TSLA.png,DQN,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AMZN.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AMZN.png,FinCon,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AMZN.png,GA,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AMZN.png,FinGPT,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AMZN.png,FinMem,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AMZN.png,FinAgent,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AMZN.png,A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AMZN.png,PPO,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AMZN.png,DQN,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NIO.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NIO.png,FinCon,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NIO.png,GA,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NIO.png,FinGPT,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NIO.png,FinMem,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NIO.png,FinAgent,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NIO.png,A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NIO.png,PPO,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NIO.png,DQN,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / MSFT.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / MSFT.png,FinCon,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / MSFT.png,GA,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / MSFT.png,FinGPT,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / MSFT.png,FinMem,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / MSFT.png,FinAgent,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / MSFT.png,A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / MSFT.png,PPO,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / MSFT.png,DQN,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AAPL.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AAPL.png,FinCon,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AAPL.png,GA,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AAPL.png,FinGPT,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AAPL.png,FinMem,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AAPL.png,FinAgent,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AAPL.png,A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AAPL.png,PPO,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / AAPL.png,DQN,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / GOOG_v2.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / GOOG_v2.png,FinCon,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / GOOG_v2.png,GA,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / GOOG_v2.png,FinGPT,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / GOOG_v2.png,FinMem,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / GOOG_v2.png,FinAgent,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / GOOG_v2.png,A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / GOOG_v2.png,PPO,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / GOOG_v2.png,DQN,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NFLX.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NFLX.png,FinCon,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NFLX.png,GA,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NFLX.png,FinGPT,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NFLX.png,FinMem,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NFLX.png,FinAgent,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NFLX.png,A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NFLX.png,PPO,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / NFLX.png,DQN,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / COIN.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / COIN.png,FinCon,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / COIN.png,GA,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / COIN.png,FinGPT,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / COIN.png,FinMem,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix regular single / COIN.png,FinAgent,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 3 / portfolio_tsla_msft_pfe.png,FinCon-normal,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 3 / portfolio_tsla_msft_pfe.png,Markowitz,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 3 / portfolio_tsla_msft_pfe.png,Equal-Weighted ETF,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 3 / portfolio_tsla_msft_pfe.png,FinRL-A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 3 / portfolio_amzn_gm_lly.png,FinCon-normal,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 3 / portfolio_amzn_gm_lly.png,Markowitz,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 3 / portfolio_amzn_gm_lly.png,Equal-Weighted ETF,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 3 / portfolio_amzn_gm_lly.png,FinRL-A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 4 CVaR / GOOG-nocvar.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 4 CVaR / GOOG-nocvar.png,FinCon w/ CVaR,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 4 CVaR / GOOG-nocvar.png,FinCon w/o CVaR,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 4 CVaR / NIO-abl_cvar.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 4 CVaR / NIO-abl_cvar.png,FinCon w/ CVaR,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 4 CVaR / NIO-abl_cvar.png,FinCon w/o CVaR,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 4 CVaR / regular_plot_withoutnocvar.png,FinCon w/ CVaR,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 4 CVaR / regular_plot_withoutnocvar.png,FinCon w/o CVaR,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 7 belief / GOOG-nobelief.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 7 belief / GOOG-nobelief.png,FinCon w/ Belief,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 7 belief / GOOG-nobelief.png,FinCon w/o Belief,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 7 belief / NIO-abl_belief.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 7 belief / NIO-abl_belief.png,FinCon w/ Belief,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 7 belief / NIO-abl_belief.png,FinCon w/o Belief,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 7 belief / regular_plot_withoutbelief.png,FinCon w/ Belief,False,False,raster_only_no_underlying_series_or_generation_code,False
+Figure 7 belief / regular_plot_withoutbelief.png,FinCon w/o Belief,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / TSLA_extreme_markets.png,B&H,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / TSLA_extreme_markets.png,FinCon,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / TSLA_extreme_markets.png,GA,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / TSLA_extreme_markets.png,FinGPT,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / TSLA_extreme_markets.png,FinMem,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / TSLA_extreme_markets.png,FinAgent,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / TSLA_extreme_markets.png,A2C,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / TSLA_extreme_markets.png,PPO,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / TSLA_extreme_markets.png,DQN,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / portfolio_extreme_market_condition.png,FinCon-normal,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / portfolio_extreme_market_condition.png,Markowitz,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / portfolio_extreme_market_condition.png,Equal-Weighted ETF,False,False,raster_only_no_underlying_series_or_generation_code,False
+Appendix extreme / portfolio_extreme_market_condition.png,FinRL-A2C,False,False,raster_only_no_underlying_series_or_generation_code,False

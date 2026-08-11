@@ -1,0 +1,34 @@
+mechanism,paper_specification,released_source_evidence,status,paper_mechanism_credit
+manager_analyst_hierarchy,synchronous manager plus seven specialized analyst types,none; official repository contains only README.md,missing_no_implementation_released,False
+news_analyst,daily textual news distillation,none; official repository contains only README.md,missing_no_implementation_released,False
+filing_analysts,10-K and 10-Q textual report distillation,none; official repository contains only README.md,missing_no_implementation_released,False
+ecc_audio_analyst,earnings-call audio interpreted with Whisper API,none; official repository contains only README.md,missing_no_implementation_released,False
+data_analysis_agent,tabular indicators including momentum and CVaR,none; official repository contains only README.md,missing_no_implementation_released,False
+stock_selection_agent,portfolio selection from 42-stock pool,none; official repository contains only README.md,missing_no_implementation_released,False
+manager_action_generation,sole long/short/neutral decision maker,none; official repository contains only README.md,missing_no_implementation_released,False
+portfolio_weight_optimizer,direction-constrained convex mean-variance optimization,none; official repository contains only README.md,missing_no_implementation_released,False
+working_memory,"role-specific observation, retrieval, distillation, consolidation",none; official repository contains only README.md,missing_no_implementation_released,False
+procedural_memory,"per-step actions, reflections, and analyst insights",none; official repository contains only README.md,missing_no_implementation_released,False
+episodic_memory,"manager-only trajectories, PnL and beliefs",none; official repository contains only README.md,missing_no_implementation_released,False
+memory_relevance,embedding cosine-similarity retrieval,none; official repository contains only README.md,missing_no_implementation_released,False
+memory_importance_decay,agent-specific exponential decay,none; official repository contains only README.md,missing_no_implementation_released,False
+memory_access_counter,Guardrails AI validation and +5 importance updates,none; official repository contains only README.md,missing_no_implementation_released,False
+top_k_retrieval,top five memory events,none; official repository contains only README.md,missing_no_implementation_released,False
+within_episode_cvar,bottom-one-percent PnL CVaR monitoring,none; official repository contains only README.md,missing_no_implementation_released,False
+within_episode_alert,risk alert on CVaR drop or negative PnL,none; official repository contains only README.md,missing_no_implementation_released,False
+manager_self_reflection,reflection on risk trigger,none; official repository contains only README.md,missing_no_implementation_released,False
+cvrf_episode_comparison,compare consecutive training trajectories,none; official repository contains only README.md,missing_no_implementation_released,False
+cvrf_concept_attribution,attribute wins and losses to analyst perspectives,none; official repository contains only README.md,missing_no_implementation_released,False
+cvrf_overlap_learning_rate,action overlap supplies textual learning rate,none; official repository contains only README.md,missing_no_implementation_released,False
+cvrf_prompt_update,textual gradient-descent belief update,none; official repository contains only README.md,missing_no_implementation_released,False
+selective_belief_propagation,manager sends updates to relevant analysts,none; official repository contains only README.md,missing_no_implementation_released,False
+single_asset_environment,daily sequential single-stock trading,none; official repository contains only README.md,missing_no_implementation_released,False
+portfolio_environment,daily multi-asset weights and one-million-dollar value,none; official repository contains only README.md,missing_no_implementation_released,False
+five_epoch_selection,median CR/SR test trajectory across five repetitions,none; official repository contains only README.md,missing_no_implementation_released,False
+extreme_market_protocol,separate high-volatility train/test split,none; official repository contains only README.md,missing_no_implementation_released,False
+baseline_ga_adaptation,finance-adapted Generative Agent prompts,none; official repository contains only README.md,missing_no_implementation_released,False
+baseline_fingpt,FinGPT execution,none; official repository contains only README.md,missing_no_implementation_released,False
+baseline_finmem,FinMem execution,none; official repository contains only README.md,missing_no_implementation_released,False
+baseline_finagent,FinAgent execution with multimodal inputs,none; official repository contains only README.md,missing_no_implementation_released,False
+baseline_finrl,A2C/PPO/DQN and portfolio A2C,none; official repository contains only README.md,missing_no_implementation_released,False
+wilcoxon_significance,paired non-parametric significance testing,none; official repository contains only README.md,missing_no_implementation_released,False

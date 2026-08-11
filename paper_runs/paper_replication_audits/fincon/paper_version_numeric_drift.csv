@@ -1,0 +1,65 @@
+display_cell_id,v1_value,v2_value,v3_and_proceedings_value,status
+regular_single/AMZN/B&H/CR_pct,1.914,1.914,2.030,changed_in_v3
+regular_single/AMZN/B&H/SR,0.067,0.067,0.072,changed_in_v3
+regular_single/AMZN/B&H/MDD_pct,34.317,34.317,34.241,changed_in_v3
+regular_single/AMZN/FinCon/CR_pct,24.964,24.964,24.848,changed_in_v3
+regular_single/AMZN/FinCon/SR,0.906,0.906,0.904,changed_in_v3
+regular_single/AMZN/GA/CR_pct,-5.515,-5.515,-5.631,changed_in_v3
+regular_single/AMZN/GA/SR,-0.195,-0.195,-0.199,changed_in_v3
+regular_single/AMZN/FinGPT/SR,-1.805,-1.805,-1.810,changed_in_v3
+regular_single/AMZN/FinGPT/MDD_pct,-29.671,-29.671,29.671,changed_in_v3
+regular_single/AMZN/FinMem/CR_pct,-18.126,-18.126,-18.011,changed_in_v3
+regular_single/AMZN/FinMem/SR,-0.776,-0.776,-0.773,changed_in_v3
+regular_single/AMZN/FinAgent/CR_pct,-24.704,-24.704,-24.588,changed_in_v3
+regular_single/AMZN/FinAgent/SR,-1.496,-1.496,-1.493,changed_in_v3
+regular_single/AMZN/FinAgent/MDD_pct,33.151,33.151,33.074,changed_in_v3
+regular_single/AMZN/A2C/CR_pct,-12.676,-12.676,-12.560,changed_in_v3
+regular_single/AMZN/A2C/SR,-0.447,-0.447,-0.444,changed_in_v3
+regular_single/AMZN/A2C/MDD_pct,37.179,37.179,37.106,changed_in_v3
+regular_single/AMZN/PPO/SR,0.137,0.137,0.138,changed_in_v3
+regular_single/AAPL/FinMem/CR_pct,12.396,12.396,12.397,changed_in_v3
+regular_single/GOOG/FinCon/SR,1.0521,1.0521,1.052,changed_in_v3
+regular_single/GOOG/FinCon/MDD_pct,17.5299,17.5299,17.530,changed_in_v3
+regular_single/GOOG/GA/CR_pct,-0.0151,-0.0151,-1.515,changed_in_v3
+regular_single/GOOG/FinGPT/CR_pct,0.207,0.207,0.242,changed_in_v3
+regular_single/GOOG/FinGPT/SR,0.822,0.822,0.011,changed_in_v3
+regular_single/GOOG/FinGPT/MDD_pct,21.191,21.191,26.984,changed_in_v3
+regular_single/GOOG/PPO/SR,-0.097,-0.097,0.097,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinCon/CR_pct",121.018,121.018,113.836,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinCon/SR",3.435,3.435,3.269,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinCon/MDD_pct",16.288,16.288,16.163,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Markowitz MV/CR_pct",32.521,32.521,12.636,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Markowitz MV/SR",1.423,1.423,0.614,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Markowitz MV/MDD_pct",20.658,20.658,17.842,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinRL-A2C/CR_pct",33.479,33.479,19.461,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinRL-A2C/SR",1.352,1.352,0.831,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinRL-A2C/MDD_pct",27.124,27.124,26.917,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Equal-Weighted ETF/CR_pct",19.983,19.983,9.344,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Equal-Weighted ETF/SR",1.003,1.003,0.492,changed_in_v3
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Equal-Weighted ETF/MDD_pct",22.807,22.807,21.223,changed_in_v3
+ablation_cvar/GOOG/with/CR_pct,28.972,28.972,25.077,changed_in_v3
+ablation_cvar/GOOG/with/SR,1.233,1.233,1.052,changed_in_v3
+ablation_cvar/GOOG/with/MDD_pct,16.99,16.99,17.530,changed_in_v3
+ablation_cvar/NIO/with/CR_pct,7.981,7.981,17.461,changed_in_v3
+ablation_cvar/NIO/with/SR,0.157,0.157,0.335,changed_in_v3
+ablation_cvar/NIO/without/CR_pct,-70.791,-70.791,-52.887,changed_in_v3
+ablation_cvar/NIO/without/SR,-1.383,-1.383,-1.002,changed_in_v3
+"ablation_cvar/P1 (TSLA, MSFT, PFE)/with/CR_pct",121.018,121.018,113.836,changed_in_v3
+"ablation_cvar/P1 (TSLA, MSFT, PFE)/with/SR",3.435,3.435,3.269,changed_in_v3
+"ablation_cvar/P1 (TSLA, MSFT, PFE)/with/MDD_pct",16.288,16.288,16.163,changed_in_v3
+"ablation_cvar/P1 (TSLA, MSFT, PFE)/without/CR_pct",16.994,16.994,14.699,changed_in_v3
+"ablation_cvar/P1 (TSLA, MSFT, PFE)/without/SR",1.303,1.303,1.142,changed_in_v3
+"ablation_cvar/P1 (TSLA, MSFT, PFE)/without/MDD_pct",17.646,17.646,17.511,changed_in_v3
+ablation_belief/GOOG/with/CR_pct,28.972,28.972,25.077,changed_in_v3
+ablation_belief/GOOG/with/SR,1.233,1.233,1.052,changed_in_v3
+ablation_belief/GOOG/with/MDD_pct,16.99,16.99,17.530,changed_in_v3
+ablation_belief/NIO/with/CR_pct,7.981,7.981,17.461,changed_in_v3
+ablation_belief/NIO/with/SR,0.157,0.157,0.335,changed_in_v3
+ablation_belief/NIO/without/CR_pct,-17.956,-17.956,8.197,changed_in_v3
+ablation_belief/NIO/without/SR,-0.356,-0.356,0.156,changed_in_v3
+"ablation_belief/P1 (TSLA, MSFT, PFE)/with/CR_pct",121.018,121.018,113.836,changed_in_v3
+"ablation_belief/P1 (TSLA, MSFT, PFE)/with/SR",3.435,3.435,3.269,changed_in_v3
+"ablation_belief/P1 (TSLA, MSFT, PFE)/with/MDD_pct",16.288,16.288,16.163,changed_in_v3
+"ablation_belief/P1 (TSLA, MSFT, PFE)/without/CR_pct",20.677,20.677,28.432,changed_in_v3
+"ablation_belief/P1 (TSLA, MSFT, PFE)/without/SR",0.987,0.987,1.181,changed_in_v3
+"ablation_belief/P1 (TSLA, MSFT, PFE)/without/MDD_pct",23.975,23.975,27.535,changed_in_v3

@@ -1,0 +1,34 @@
+gap,detail,impact
+source implementation,"No FinCon code, prompts, environment, configs, or tests are released.",prevents exact paper-level replication
+dataset snapshot,"No exact multimodal dataset, file manifest, hashes, schemas, or timestamps are released.",prevents exact paper-level replication
+commercial inputs,"Refinitiv, Zacks, Capital IQ, Alpaca, and ECC inputs are not archived with the paper.",prevents exact paper-level replication
+data-source contradiction,Raw-data prose names Yahoo/Alpaca/Capital IQ while the adjacent table names Refinitiv/Zacks/SEC/Yahoo/ECC.,prevents exact paper-level replication
+data-end contradiction,Experimental setup ends 2023-06-10; raw-data section says 2022-06-10.,prevents exact paper-level replication
+LLM snapshot,GPT-4-Turbo API model/version/date is not pinned.,prevents exact paper-level replication
+Whisper snapshot,Whisper API model/version and transcription settings are not pinned.,prevents exact paper-level replication
+prompts,"System, role, analysis, action, reflection, CVRF, and baseline-adaptation prompts are absent.",prevents exact paper-level replication
+LLM sampling,"Seed, top-p, max tokens, retries, timeout, and response parsing are absent.",prevents exact paper-level replication
+agent roster,Seven analyst types are claimed but their exact instantiated roster and per-task activation are not fully enumerated.,prevents exact paper-level replication
+memory decay,Agent-specific initial importance and decay ratios are omitted.,prevents exact paper-level replication
+embedding model,"Embedding model, normalization, and retrieval tie handling are omitted.",prevents exact paper-level replication
+memory persistence,"Database schema, event construction, pruning, and episode reset semantics are omitted.",prevents exact paper-level replication
+CVaR estimator,"Window, minimum observations, quantile interpolation, and exact trigger comparison are omitted.",prevents exact paper-level replication
+CVRF meta-prompt,"Concept extraction, comparison, update prompt, and update parsing are omitted.",prevents exact paper-level replication
+textual learning rate,Mapping from action overlap to prompt edits is not operationally specified.,prevents exact paper-level replication
+action semantics,"Decision time, execution price, next-day mapping, position persistence, cash, leverage, and short constraints are omitted.",prevents exact paper-level replication
+portfolio optimizer,"Solver, objective coefficients, constraints, covariance estimator, and direction-to-bound mapping are not fully specified.",prevents exact paper-level replication
+trading frictions,"Transaction costs, slippage, borrowing costs, and liquidity constraints are omitted.",prevents exact paper-level replication
+risk-free rate,"Sharpe risk-free rate, periodicity, and annualization are omitted.",prevents exact paper-level replication
+metric implementation,"Exact CR, SR, and MDD code and aggregation conventions are absent.",prevents exact paper-level replication
+five repetitions,Seeds and whether baseline repetitions share data/model randomness are omitted.,prevents exact paper-level replication
+test selection,Appendix says the reported setting maximizes test cumulative return; the candidate settings and selection procedure are absent.,prevents exact paper-level replication
+statistical test,"Wilcoxon pairing samples, comparator, statistic, p-values, corrections, and effect sizes are absent.",prevents exact paper-level replication
+DRL features,"Observation features, preprocessing, action space, reward, hyperparameters, seeds, and checkpoints are absent.",prevents exact paper-level replication
+baseline revisions,"Exact commits and dependencies for GA, FinGPT, FinMem, FinAgent, FinRL, and FinRL-Meta are not pinned.",prevents exact paper-level replication
+baseline adaptations,Finance prompt modifications and multimodal alignment are not released.,prevents exact paper-level replication
+stock pool,The exact 42-symbol eligible universe and point-in-time filtering record are not released as data.,prevents exact paper-level replication
+stock selection,Deterministic selection inputs and outputs for P1/P2 are not released.,prevents exact paper-level replication
+raw trajectories,"Actions, prompts, responses, memory states, prices, PnL, and per-run metrics are absent.",prevents exact paper-level replication
+figure data,All 106 published result series are raster-only; no plotting inputs or scripts are released.,prevents exact paper-level replication
+revision provenance,The paper does not explain why 64 shared numeric cells changed between v2 and v3.,prevents exact paper-level replication
+extreme protocol,"VIX computation/source, threshold selection procedure, and separate model/config details are not pinned.",prevents exact paper-level replication

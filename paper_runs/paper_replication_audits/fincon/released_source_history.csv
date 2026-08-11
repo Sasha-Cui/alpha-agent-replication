@@ -1,0 +1,12 @@
+commit,date,subject,tracked_files,only_readme,implementation_released
+831e3c2255f72304e104bdec64a62a1489109934,2024-10-28T20:04:28-04:00,Initial commit,1,True,False
+87bf72f5b40a0603751f335dcd578ad8577ea0d6,2025-07-12T21:19:15-04:00,Update README.md,1,True,False
+58d90b2d8e62405fe3663501a18a1e6b742c60f3,2025-08-09T21:21:46-05:00,Update README.md,1,True,False
+8fca5b6fea7cb5b09512ba77181a945ac02e53e7,2025-08-09T21:22:11-05:00,Update README.md,1,True,False
+e797d830faa0e9fae0eaac76a3aa06a81ebcdd4e,2026-02-26T23:02:37-05:00,Update README with open-sourcing information,1,True,False
+ca962b890e46d5767842ceca92ea6efc5fec80cd,2026-02-26T23:04:32-05:00,Expand README with open-source project details,1,True,False
+bca1cbc80922ae27e53bb04c6a202a273ced7b64,2026-02-26T23:06:27-05:00,Update README.md,1,True,False
+fc43e9904f60dd10ec7ef8811d3858d1a88bb806,2026-02-26T23:06:59-05:00,Fix markdown links for InvestorBench in README,1,True,False
+76d685f5c719ff6f2723e0b766ad39d67b54b261,2026-02-26T23:10:11-05:00,Revise InvestorBench section in README,1,True,False
+6de8a4426471fe959245cdcd67dcbf3eedcdc226,2026-02-26T23:18:35-05:00,Add AMA section with acceptance details and links,1,True,False
+ca3256d037c497871c064bc2f5abab106993e189,2026-02-26T23:20:53-05:00,Fix typo in README regarding component anonymization,1,True,False

@@ -1,0 +1,19 @@
+check,evidence,status,supports_replication
+result authority,NeurIPS proceedings is final authority; arXiv v3 has same displayed numeric results,pass,True
+single-stock table reference,"narrative calls results Table 1, proceedings caption numbers it Table 2",contradiction,False
+single-stock figure asset count,caption says six stocks but eight panels/assets are displayed,contradiction,False
+regular single MDD claim,"FinCon is best or tied-best MDD on only 3 of 8 assets, not most",claim_not_supported_by_table,False
+portfolio all-metrics claim,P2 FinCon MDD 21.502 is worse than FinRL-A2C 15.787 and ETF 14.662,claim_not_supported_by_table,False
+extreme single all-metrics claim,"FinCon MDD 45.215 is worse than FinGPT 32.199, FinAgent 33.224, and DQN 8.463",claim_not_supported_by_table,False
+extreme portfolio all-metrics claim,FinCon MDD 26.176 is worse than FinRL-A2C 21.569,claim_not_supported_by_table,False
+raw-data date,raw-data section ends 2022-06-10 while setup/tests end 2023-06-10,contradiction,False
+raw-data vendors,raw-data prose and table name different commercial sources,contradiction,False
+v1-v2 result stability,all 201 displayed result cells are identical,pass,True
+v2-v3 result drift,64 of 201 shared cells changed and 105 cells were added without released derivation,unexplained_material_revision,False
+Wilcoxon substantiation,"no paired observations, statistic, p-values, correction, or effect size",insufficient_evidence,False
+test-set model selection,appendix reports the setting with highest test cumulative return,methodological_leakage_risk,False
+CR formula index,cumulative simple-return product uses Daily Simple Return_t rather than index k,formula_typo,False
+official repository at paper time,initial commit after submission contains only '# FinCon',implementation_absent,False
+official repository current,all 11 commits contain only README.md; current README says code/data are not released,implementation_absent,False
+announced release window,February 2026 README promised 3-4 months; no implementation exists at 2026-08-11 audit,missed_release_window,False
+adjacent projects,InvestorBench and Agent Market Arena are different systems and receive no FinCon credit,correct_scope_boundary,True

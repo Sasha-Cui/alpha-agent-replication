@@ -1,0 +1,21 @@
+{
+  "data_model_or_checkpoint_files": 0,
+  "native_system_execution_attempted": false,
+  "native_system_execution_status": "impossible_no_fincon_implementation_released",
+  "official_source_revision": "ca3256d037c497871c064bc2f5abab106993e189",
+  "paper_latex_compilation": {
+    "attempted": true,
+    "command": "/apps/software/2024a/software/texlive/20240312-GCC-13.3.0/bin/x86_64-linux/pdflatex",
+    "exit_code": 0,
+    "fincon_implementation_files": 0,
+    "paper_result_credit": false,
+    "paper_source_files": 48,
+    "produced_pdf": true,
+    "produced_pdf_pages": 30,
+    "status": "paper_latex_compiled_with_warnings_no_system_code",
+    "undefined_reference_warnings": 196
+  },
+  "paper_result_credit": false,
+  "source_code_files": 0,
+  "tracked_files": 1
+}

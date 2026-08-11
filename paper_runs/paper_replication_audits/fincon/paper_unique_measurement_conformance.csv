@@ -1,0 +1,289 @@
+unique_measurement_id,paper_value,display_occurrences,native_reproduced_value,status,paper_result_credit
+regular_single/TSLA/B&H/CR_pct,6.425,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/B&H/SR,0.145,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/B&H/MDD_pct,58.150,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinCon/CR_pct,82.871,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinCon/SR,1.972,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinCon/MDD_pct,29.727,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/GA/CR_pct,16.535,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/GA/SR,0.391,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/GA/MDD_pct,54.131,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinGPT/CR_pct,1.549,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinGPT/SR,0.044,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinGPT/MDD_pct,42.400,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinMem/CR_pct,34.624,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinMem/SR,1.552,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinMem/MDD_pct,15.674,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinAgent/CR_pct,11.960,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinAgent/SR,0.271,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/FinAgent/MDD_pct,55.734,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/A2C/CR_pct,-35.644,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/A2C/SR,-0.805,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/A2C/MDD_pct,61.502,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/PPO/CR_pct,1.409,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/PPO/SR,0.032,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/PPO/MDD_pct,49.740,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/DQN/CR_pct,-1.296,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/DQN/SR,-0.029,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/TSLA/DQN/MDD_pct,58.150,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/B&H/CR_pct,2.030,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/B&H/SR,0.072,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/B&H/MDD_pct,34.241,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinCon/CR_pct,24.848,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinCon/SR,0.904,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinCon/MDD_pct,25.889,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/GA/CR_pct,-5.631,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/GA/SR,-0.199,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/GA/MDD_pct,37.213,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinGPT/CR_pct,-29.811,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinGPT/SR,-1.810,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinGPT/MDD_pct,29.671,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinMem/CR_pct,-18.011,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinMem/SR,-0.773,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinMem/MDD_pct,36.825,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinAgent/CR_pct,-24.588,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinAgent/SR,-1.493,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/FinAgent/MDD_pct,33.074,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/A2C/CR_pct,-12.560,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/A2C/SR,-0.444,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/A2C/MDD_pct,37.106,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/PPO/CR_pct,3.863,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/PPO/SR,0.138,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/PPO/MDD_pct,28.085,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/DQN/CR_pct,11.171,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/DQN/SR,0.398,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AMZN/DQN/MDD_pct,31.174,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/B&H/CR_pct,-77.210,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/B&H/SR,-1.449,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/B&H/MDD_pct,63.975,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinCon/CR_pct,17.461,3,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinCon/SR,0.335,3,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinCon/MDD_pct,40.647,3,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/GA/CR_pct,-3.176,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/GA/SR,-1.574,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/GA/MDD_pct,3.155,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinGPT/CR_pct,-4.959,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinGPT/SR,-0.121,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinGPT/MDD_pct,37.344,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinMem/CR_pct,-48.437,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinMem/SR,-1.180,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinMem/MDD_pct,64.144,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinAgent/CR_pct,0.933,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinAgent/SR,0.051,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/FinAgent/MDD_pct,19.181,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/A2C/CR_pct,-91.910,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/A2C/SR,-1.728,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/A2C/MDD_pct,68.911,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/PPO/CR_pct,-72.119,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/PPO/SR,-1.352,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/PPO/MDD_pct,62.093,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/DQN/CR_pct,-35.419,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/DQN/SR,-0.662,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NIO/DQN/MDD_pct,56.905,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/B&H/CR_pct,27.856,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/B&H/SR,1.230,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/B&H/MDD_pct,15.010,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinCon/CR_pct,31.625,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinCon/SR,1.538,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinCon/MDD_pct,15.010,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/GA/CR_pct,-31.821,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/GA/SR,-1.414,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/GA/MDD_pct,39.808,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinGPT/CR_pct,21.535,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinGPT/SR,1.315,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinGPT/MDD_pct,16.503,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinMem/CR_pct,-22.036,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinMem/SR,-1.247,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinMem/MDD_pct,29.435,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinAgent/CR_pct,-27.534,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinAgent/SR,-1.247,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/FinAgent/MDD_pct,39.544,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/A2C/CR_pct,21.397,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/A2C/SR,0.962,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/A2C/MDD_pct,21.458,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/PPO/CR_pct,-4.761,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/PPO/SR,-0.214,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/PPO/MDD_pct,30.950,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/DQN/CR_pct,27.021,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/DQN/SR,1.216,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/MSFT/DQN/MDD_pct,21.458,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/B&H/CR_pct,22.315,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/B&H/SR,1.107,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/B&H/MDD_pct,20.659,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinCon/CR_pct,27.352,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinCon/SR,1.597,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinCon/MDD_pct,15.266,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/GA/CR_pct,5.694,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/GA/SR,0.372,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/GA/MDD_pct,14.161,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinGPT/CR_pct,20.321,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinGPT/SR,1.161,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinGPT/MDD_pct,16.759,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinMem/CR_pct,12.397,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinMem/SR,0.994,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinMem/MDD_pct,11.268,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinAgent/CR_pct,20.757,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinAgent/SR,1.041,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/FinAgent/MDD_pct,19.896,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/A2C/CR_pct,13.781,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/A2C/SR,0.683,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/A2C/MDD_pct,14.226,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/PPO/CR_pct,14.041,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/PPO/SR,0.704,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/PPO/MDD_pct,22.785,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/DQN/CR_pct,21.125,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/DQN/SR,1.048,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/AAPL/DQN/MDD_pct,16.131,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/B&H/CR_pct,22.420,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/B&H/SR,0.891,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/B&H/MDD_pct,21.191,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinCon/CR_pct,25.077,3,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinCon/SR,1.052,3,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinCon/MDD_pct,17.530,3,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/GA/CR_pct,-1.515,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/GA/SR,-0.192,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/GA/MDD_pct,8.210,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinGPT/CR_pct,0.242,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinGPT/SR,0.011,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinGPT/MDD_pct,26.984,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinMem/CR_pct,0.311,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinMem/SR,0.018,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinMem/MDD_pct,21.503,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinAgent/CR_pct,-7.440,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinAgent/SR,-1.024,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/FinAgent/MDD_pct,10.360,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/A2C/CR_pct,8.562,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/A2C/SR,0.340,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/A2C/MDD_pct,21.191,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/PPO/CR_pct,2.434,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/PPO/SR,0.097,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/PPO/MDD_pct,25.202,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/DQN/CR_pct,20.690,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/DQN/SR,0.822,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/GOOG/DQN/MDD_pct,21.191,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/B&H/CR_pct,57.338,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/B&H/SR,1.794,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/B&H/MDD_pct,20.926,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinCon/CR_pct,69.239,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinCon/SR,2.370,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinCon/MDD_pct,20.792,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/GA/CR_pct,41.770,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/GA/SR,1.485,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/GA/MDD_pct,20.926,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinGPT/CR_pct,11.925,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinGPT/SR,0.472,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinGPT/MDD_pct,20.201,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinMem/CR_pct,-10.306,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinMem/SR,-0.478,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinMem/MDD_pct,27.692,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinAgent/CR_pct,61.303,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinAgent/SR,1.960,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/FinAgent/MDD_pct,20.926,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/A2C/CR_pct,-8.176,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/A2C/SR,-0.258,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/A2C/MDD_pct,49.579,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/PPO/CR_pct,-33.144,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/PPO/SR,-1.049,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/PPO/MDD_pct,33.377,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/DQN/CR_pct,21.753,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/DQN/SR,0.687,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/NFLX/DQN/MDD_pct,39.733,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/B&H/CR_pct,-21.756,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/B&H/SR,-0.311,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/B&H/MDD_pct,60.187,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinCon/CR_pct,57.045,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinCon/SR,0.825,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinCon/MDD_pct,42.679,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/GA/CR_pct,19.271,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/GA/SR,0.277,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/GA/MDD_pct,67.532,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinGPT/CR_pct,-99.553,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinGPT/SR,-1.807,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinGPT/MDD_pct,74.967,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinMem/CR_pct,0.811,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinMem/SR,0.017,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinMem/MDD_pct,50.390,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinAgent/CR_pct,-5.971,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinAgent/SR,-0.106,1,,not_reproduced_official_code_and_data_not_released,False
+regular_single/COIN/FinAgent/MDD_pct,56.882,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinCon/CR_pct",113.836,3,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinCon/SR",3.269,3,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinCon/MDD_pct",16.163,3,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Markowitz MV/CR_pct",12.636,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Markowitz MV/SR",0.614,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Markowitz MV/MDD_pct",17.842,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinRL-A2C/CR_pct",19.461,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinRL-A2C/SR",0.831,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/FinRL-A2C/MDD_pct",26.917,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Equal-Weighted ETF/CR_pct",9.344,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Equal-Weighted ETF/SR",0.492,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P1 (TSLA, MSFT, PFE)/Equal-Weighted ETF/MDD_pct",21.223,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/FinCon/CR_pct",32.922,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/FinCon/SR",1.371,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/FinCon/MDD_pct",21.502,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/Markowitz MV/CR_pct",10.289,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/Markowitz MV/SR",0.540,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/Markowitz MV/MDD_pct",25.099,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/FinRL-A2C/CR_pct",11.589,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/FinRL-A2C/SR",0.649,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/FinRL-A2C/MDD_pct",15.787,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/Equal-Weighted ETF/CR_pct",15.061,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/Equal-Weighted ETF/SR",0.867,1,,not_reproduced_official_code_and_data_not_released,False
+"regular_portfolio/P2 (AMZN, GM, LLY)/Equal-Weighted ETF/MDD_pct",14.662,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_cvar/GOOG/without/CR_pct,-1.461,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_cvar/GOOG/without/SR,-0.006,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_cvar/GOOG/without/MDD_pct,27.079,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_cvar/NIO/without/CR_pct,-52.887,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_cvar/NIO/without/SR,-1.002,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_cvar/NIO/without/MDD_pct,70.243,1,,not_reproduced_official_code_and_data_not_released,False
+"ablation_cvar/P1 (TSLA, MSFT, PFE)/without/CR_pct",14.699,1,,not_reproduced_official_code_and_data_not_released,False
+"ablation_cvar/P1 (TSLA, MSFT, PFE)/without/SR",1.142,1,,not_reproduced_official_code_and_data_not_released,False
+"ablation_cvar/P1 (TSLA, MSFT, PFE)/without/MDD_pct",17.511,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_belief/GOOG/without/CR_pct,-11.944,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_belief/GOOG/without/SR,-0.496,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_belief/GOOG/without/MDD_pct,29.309,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_belief/NIO/without/CR_pct,8.197,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_belief/NIO/without/SR,0.156,1,,not_reproduced_official_code_and_data_not_released,False
+ablation_belief/NIO/without/MDD_pct,55.688,1,,not_reproduced_official_code_and_data_not_released,False
+"ablation_belief/P1 (TSLA, MSFT, PFE)/without/CR_pct",28.432,1,,not_reproduced_official_code_and_data_not_released,False
+"ablation_belief/P1 (TSLA, MSFT, PFE)/without/SR",1.181,1,,not_reproduced_official_code_and_data_not_released,False
+"ablation_belief/P1 (TSLA, MSFT, PFE)/without/MDD_pct",27.535,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/B&H/CR_pct,-56.738,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/B&H/SR,-1.625,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/B&H/MDD_pct,52.077,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinCon/CR_pct,22.460,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinCon/SR,0.695,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinCon/MDD_pct,45.215,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/GA/CR_pct,-51.251,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/GA/SR,-1.547,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/GA/MDD_pct,48.763,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinGPT/CR_pct,-20.035,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinGPT/SR,-0.805,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinGPT/MDD_pct,32.199,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinMem/CR_pct,-47.809,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinMem/SR,-1.549,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinMem/MDD_pct,49.560,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinAgent/CR_pct,-31.119,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinAgent/SR,-1.933,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/FinAgent/MDD_pct,33.224,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/A2C/CR_pct,-73.251,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/A2C/SR,-2.142,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/A2C/MDD_pct,56.998,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/PPO/CR_pct,-78.007,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/PPO/SR,-2.284,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/PPO/MDD_pct,59.003,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/DQN/CR_pct,-8.452,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/DQN/SR,-1.328,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_single/TSLA/DQN/MDD_pct,8.463,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/FinCon/CR_pct,-8.429,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/FinCon/SR,-0.294,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/FinCon/MDD_pct,26.176,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/Markowitz MV/CR_pct,-28.996,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/Markowitz MV/SR,-1.805,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/Markowitz MV/MDD_pct,31.831,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/FinRL-A2C/CR_pct,-15.932,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/FinRL-A2C/SR,-1.195,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/FinRL-A2C/MDD_pct,21.569,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/Equal-Weighted ETF/CR_pct,-28.008,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/Equal-Weighted ETF/SR,-1.731,1,,not_reproduced_official_code_and_data_not_released,False
+extreme_portfolio/P1/Equal-Weighted ETF/MDD_pct,30.070,1,,not_reproduced_official_code_and_data_not_released,False

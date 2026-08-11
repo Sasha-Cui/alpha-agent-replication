@@ -1,0 +1,27 @@
+configuration,paper_value,released_source_value,status,paper_configuration_credit
+LLM backbone,GPT-4-Turbo,,paper_only_unverifiable_no_code_config_or_data,False
+LLM temperature,0.3,,paper_only_unverifiable_no_code_config_or_data,False
+belief generation temperature,0 in v1/v2 prose; omitted from active final text,,paper_only_unverifiable_no_code_config_or_data,False
+FinCon train interval,2022-01-03 through 2022-10-04,,paper_only_unverifiable_no_code_config_or_data,False
+regular test interval,2022-10-05 through 2023-06-10,,paper_only_unverifiable_no_code_config_or_data,False
+DRL train interval,2018-01-01 through 2022-10-04,,paper_only_unverifiable_no_code_config_or_data,False
+extreme train interval,2022-01-17 through 2022-03-31,,paper_only_unverifiable_no_code_config_or_data,False
+extreme test interval,2022-04-01 through 2022-10-15,,paper_only_unverifiable_no_code_config_or_data,False
+repetitions,five epochs,,paper_only_unverifiable_no_code_config_or_data,False
+reported trajectory,median CR; appendix resolves different CR/SR medians to median-CR trajectory,,paper_only_unverifiable_no_code_config_or_data,False
+memory retrieval K,5,,paper_only_unverifiable_no_code_config_or_data,False
+CVaR tail,worst 1% daily PnL,,paper_only_unverifiable_no_code_config_or_data,False
+regular single assets,"TSLA, AMZN, NIO, MSFT, AAPL, GOOG, NFLX, COIN",,paper_only_unverifiable_no_code_config_or_data,False
+portfolio 1,"TSLA, MSFT, PFE",,paper_only_unverifiable_no_code_config_or_data,False
+portfolio 2,"AMZN, GM, LLY",,paper_only_unverifiable_no_code_config_or_data,False
+candidate pool,42 stocks with more than 800 news articles,,paper_only_unverifiable_no_code_config_or_data,False
+initial portfolio value,"$1,000,000",,paper_only_unverifiable_no_code_config_or_data,False
+market prices,Yahoo Finance daily OHLC adjusted close and volume,,paper_only_unverifiable_no_code_config_or_data,False
+news,Refinitiv Real-Time News / Reuters; contradictory prose also names Alpaca,,paper_only_unverifiable_no_code_config_or_data,False
+filings,SEC EDGAR 10-K section 7 and 10-Q part 1 item 2,,paper_only_unverifiable_no_code_config_or_data,False
+analyst research,Zacks Equity Research; contradictory prose also names Capital IQ,,paper_only_unverifiable_no_code_config_or_data,False
+audio,earnings conference calls and Whisper API,,paper_only_unverifiable_no_code_config_or_data,False
+single baselines,"B&H, GA, FinGPT, FinMem, FinAgent, A2C, PPO, DQN",,paper_only_unverifiable_no_code_config_or_data,False
+portfolio baselines,"Markowitz MV, FinRL-A2C, Equal-Weighted ETF",,paper_only_unverifiable_no_code_config_or_data,False
+metrics,"CR, Sharpe ratio, maximum drawdown",,paper_only_unverifiable_no_code_config_or_data,False
+training episodes,four claimed in results; algorithm Max unspecified,,paper_only_unverifiable_no_code_config_or_data,False
