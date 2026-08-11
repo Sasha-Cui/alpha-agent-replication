@@ -1,0 +1,16 @@
+{
+  "author_site_static_assets_validated": true,
+  "hedgeagents_pipeline_executed": false,
+  "llm_calls_made": 0,
+  "manuscript_rebuild_is_system_execution": false,
+  "manuscript_source_rebuilt": true,
+  "native_agent_actions_loaded": 0,
+  "native_memory_rows_loaded": 0,
+  "native_orders_or_fills_loaded": 0,
+  "native_portfolio_trajectories_loaded": 0,
+  "original_news_rows_loaded": 0,
+  "original_price_rows_loaded": 0,
+  "public_hedgeagents_system_source_found": false,
+  "published_table_cells_faithfully_regenerated": 0,
+  "strict_boundary": "document builds, author duplicates, screenshots, and plot digitization receive zero paper-result credit"
+}

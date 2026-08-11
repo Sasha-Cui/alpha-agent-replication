@@ -1,0 +1,11 @@
+source,query_or_url,result,system_implementation_recovered,negative_search_limit
+GitHub API owner,users/hedgeagents,type=User; public_repos=1,False,current public inventory only; not proof of nonexistence
+GitHub API owner repos,users/hedgeagents/repos,hedgeagents/hedgeagents.github.io,False,one static site; not proof of private/deleted artifacts
+GitHub API forks,repos/hedgeagents/hedgeagents.github.io/forks,noname72/hedgeagents.github.io,False,fork inventory only
+GitHub repository search,"HedgeAgents in name,description,readme",16 current matches; only hedgeagents/hedgeagents.github.io is author-controlled,False,"repository metadata search, not authenticated code search"
+Software Heritage,origin/search/hedgeagents,2 origins: project site and fork,False,indexed public origins only
+Wayback project site,hedgeagents.github.io/*,Feb 2025 capture contains the same static page/assets,False,captured URLs only
+First-author homepage,xiangyuli616.github.io,"HedgeAgents links only to arXiv, DOI, and static project site; GitHub link points to OrangeCat0616",False,homepage links only
+Archived linked GitHub profile,github.com/OrangeCat0616,Dec 2025 capture: no public repositories,False,single archived capture; current account URL is 404
+ArXiv source,https://arxiv.org/e-print/2502.13165v1,20 manuscript/typesetting files,False,submission bundle only
+Author-site commented links,https://hedgeagents.github.io/,Paper/Code/Dataset buttons are commented placeholders and self-link to the page,False,static page state at pinned commit

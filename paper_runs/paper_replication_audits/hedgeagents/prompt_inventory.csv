@@ -1,0 +1,10 @@
+prompt,location,publication_form,recovered_text,runtime_values_released,actual_request_released,actual_response_released,status
+simplified_single_agent_decision,paper Section 3.3,verbatim simplified template,"You are {Dave Profile}. The market environment today includes {Prices}, {News}. Through financial analysis tools, {Tool Results} can be obtained. The output format should be JSON, such as {Examples}.",False,False,False,partial_template_only
+decision_phi_D,paper Equation 2,symbol only,,False,False,False,missing_exact_prompt
+budget_allocation_phi_rho,paper Section 3.4.1,symbol only,,False,False,False,missing_exact_prompt
+experience_sharing_phi_c,paper Section 3.4.2,symbol only,,False,False,False,missing_exact_prompt
+extreme_market_phi_B,paper Section 3.4.3,symbol only,,False,False,False,missing_exact_prompt
+profile_dave,author site agent1.png,XML-like profile screenshot,named actions/tools/scopes transcribed separately; full description remains image evidence,False,False,False,author_profile_image_not_runtime_prompt
+profile_bob,author site agent2.png,XML-like profile screenshot,named actions/tools/scopes transcribed separately; full description remains image evidence,False,False,False,author_profile_image_not_runtime_prompt
+profile_emily,author site agent3.png,XML-like profile screenshot,named actions/tools/scopes transcribed separately; full description remains image evidence,False,False,False,author_profile_image_not_runtime_prompt
+profile_otto,author site agent4.png,XML-like profile screenshot,named actions/tools/scopes transcribed separately; full description remains image evidence,False,False,False,author_profile_image_not_runtime_prompt

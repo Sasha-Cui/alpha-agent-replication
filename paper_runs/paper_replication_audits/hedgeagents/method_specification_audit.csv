@@ -1,0 +1,31 @@
+dimension,paper_or_author_statement,status,replication_impact
+asset_classes,"Bitcoin, foreign exchange, DJ30 component stocks",specified_high_level_only,"Exact tickers, currency pairs, and constituent vintage are absent."
+asset_universe,not enumerated,missing_exact_universe,Cannot reconstruct the traded panel or survivorship treatment.
+price_source,Yahoo Finance daily OHLCV and adjusted close,specified_provider_schema_only,"Original query, response, time zone, corporate-action snapshot, and field used for fills are absent."
+news_source,Alpaca News API; processed daily headlines,specified_provider_only,"Queries, subscriptions, article IDs, timestamps, filters, and frozen rows are absent."
+technical_indicators,60 standard technical indicators,missing_indicator_list_and_parameters,"Names, windows, warm-up, library, and versions are absent."
+train_test_split,2015-01-01..2020-12-31 train; 2021-01-01..2023-12-31 test,specified_dates,Dates alone do not identify rows or exchange calendars.
+llm_model,gpt-4-1106-preview,specified_historical_snapshot_now_deprecated,Exact snapshot is no longer in the current standard model catalog.
+llm_temperature,0.7,specified,"Seed, max tokens, top-p, stop sequences, retries, and system messages are absent."
+embedding_model,text-embedding-3-large,specified_alias,"No embedding snapshot, batching, normalization, or vector-store implementation."
+memory_retrieval,top-k=5 across three memory types,specified_high_level_only,"Similarity metric, chunking, insertion, deduplication, tie handling, and exact memory rows are absent."
+agent_profiles,four author-site profile screenshots,partial_author_image_evidence,"Descriptions and permissions are visible, but no executable profile or serialization is released."
+tools,23 unique names recoverable from profile screenshots,names_recovered_implementations_missing,"No tool function, signature, parameters, data contract, or output is released."
+actions,paper says 8; screenshots expose 10 unique names,conflicting_action_contract,No mapping reconciles the counts or defines order semantics.
+budget_allocation_conference,30-day cycle,specified_cadence_partial_logic,"Risk coefficients, alpha, covariance window, solver, and failure handling are absent."
+experience_sharing_conference,end of each investment cycle; multi-round,missing_numeric_cadence_and_rounds,"Cycle definition, round count, selection rule, and update prompt are absent."
+extreme_market_conference,daily amplitude >5% or cumulative three-day amplitude >10%,specified_trigger_partial_logic,"Amplitude definition, price field, boundary rule, and simultaneous-event behavior are absent."
+risk_objective,expected return - lambda1*risk - lambda2*CVaR,missing_numeric_parameters_and_solver,"lambda1, lambda2, alpha, covariance estimator, and optimization implementation are absent."
+initial_capital,not stated,missing_initial_capital,"Cannot recreate quantities, cash, or reported portfolio path."
+trade_fill_timing_and_price,not stated,missing_fill_model,Signal-to-fill timing and executable price are unknown.
+position_sizing_and_rounding,actions mention quantity/price adjustment,missing_position_sizing,"Allocation-to-order conversion, fractional shares, minimum lots, and cash rules are absent."
+transaction_costs,not stated,missing_transaction_costs,"Fees, commissions, taxes, spread, and funding are absent."
+slippage,not stated,missing_slippage,No execution-impact convention.
+long_short_leverage_constraints,not stated,missing_trading_constraints,"Shorting, leverage, borrowing, options, and exposure limits are unresolved."
+metric_formulas,nine metrics named; citations only,missing_metric_conventions,"Risk-free rate, annualization, return frequency, ddof, and ENT/ENB definitions are absent."
+baseline_implementations,names/citations; Optuna optimization,missing_baseline_commits_and_configs,"Forks, adapters, search spaces, trials, objectives, seeds, and selected values are absent."
+randomness,not stated,missing_seeds_and_repetitions,One curve per method is shown without run count or uncertainty.
+runtime_environment,not released,missing_environment_and_lock,"No dependency lock, Python version, hardware manifest, or runner."
+actual_llm_requests,not released,missing_runtime_requests,Templates and screenshots cannot establish historical inputs or model responses.
+native_actions_orders_fills,not released,missing_native_trade_ledger,Cannot replay daily decisions or validate execution.
+native_equity_curves,figures only,missing_exact_portfolio_trajectory,Plots cannot substitute for dated machine-readable values.

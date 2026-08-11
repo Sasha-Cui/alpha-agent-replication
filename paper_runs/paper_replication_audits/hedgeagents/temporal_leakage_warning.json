@@ -1,0 +1,18 @@
+{
+  "gpt_4_1106_preview_official_knowledge_cutoff": "April 2023",
+  "hedgeagents_in_pre_post_temporal_decay_experiment": false,
+  "hedgeagents_named_as_representative_historical_backtest": true,
+  "interpretation": "Material contamination risk for most of the historical test window, not direct proof that HedgeAgents' reported cells are false.",
+  "original_hedgeagents_test_period": "2021-01-01 through 2023-12-31",
+  "replication_requirement": "A defensible rerun needs a frozen model whose training cutoff predates the entire test or a later genuinely unseen forward period plus exact inputs/traces.",
+  "same_five_authors": true,
+  "source": "https://arxiv.org/abs/2510.07920v1",
+  "source_sha256": "1024f16ced8e9b12c6a4f0c7bf56551a92da0d621507da621ee82ae68355aba5",
+  "temporal_decay_experiment_methods": [
+    "FinMem",
+    "FinAgent",
+    "QuantAgent",
+    "FinCON",
+    "TradingAgents"
+  ]
+}

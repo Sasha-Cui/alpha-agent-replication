@@ -1,0 +1,12 @@
+artifact,availability,tier,system_source_credit,note
+arxiv_v1_source,20 manuscript/typesetting files including 14 figure PDFs,paper source only,False,No trading implementation or data.
+author_project_repository,reachable at 329c5cc8613d91e517de4fbdb0dbc8476a356db5; 46 files,R1 static documentation,False,"HTML, images, JavaScript/CSS; no runner, package manifest, or trading code."
+author_site_leaderboard,90 exact numeric duplicates of main Table 1 method rows,author corroboration,False,Duplicated results are not regenerated results.
+author_site_profiles,four XML-like screenshots,partial specification,False,Names tools/actions/scopes but releases no implementation.
+author_site_workflow_images,four workflow images and three general-experience snapshots,qualitative output evidence,False,"No structured timestamps, LLM request IDs, or complete traces."
+author_site_mathvista_residue,"6,141-record VQA explorer plus MathVista assets",unrelated template residue,False,Explicitly excluded from HedgeAgents data and code evidence.
+linked_first_author_github,homepage linked OrangeCat0616; current URL is 404; archived Dec 2025 profile said no public repos,bounded negative search,False,Not proof that private/deleted artifacts never existed.
+project_owner_github,one public repository: the static project site,bounded negative search,False,GitHub API snapshot.
+software_heritage_search,project site and its one fork only,archival discovery,False,No separate system origin recovered.
+later_author_profit_mirage_paper,paper/source pinned; no HedgeAgents runtime artifact,validity warning,False,Does not directly measure HedgeAgents in its pre/post temporal-decay experiment.
+exact_llm_snapshot,gpt-4-1106-preview historical preview; current catalog marks GPT-4 Turbo Preview deprecated,unavailable exact dependency,False,A substitute model cannot receive exact-replication credit.

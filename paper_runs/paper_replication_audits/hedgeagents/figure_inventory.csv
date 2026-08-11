@@ -1,0 +1,13 @@
+figure,source_files,panels,output_type,labeled_series_or_marks,author_site_correspondence,exact_dated_underlying_values_released,figure_digitization_is_replication,status
+1,fig1.pdf,1,PRUDEX radar,10 methods,F2PRUDEX.png,False,False,published_visual_only_zero_result_credit
+2,fig2.pdf,6,three score panels and three cumulative-return panels,9 baselines / 10 curve methods,extremelymarket.png,False,False,published_visual_only_zero_result_credit
+3,fig3.pdf,1,system architecture,not applicable,frameworkhtml.png,False,False,published_visual_only_zero_result_credit
+4,fig4.pdf,1,overall cumulative returns,13 series,ALLCR.png,False,False,published_visual_only_zero_result_credit
+5,fig5.pdf,6,LLM-backbone metric radars,6 backbones x 9 metrics,,False,False,published_visual_only_zero_result_credit
+6,fig6_1.pdf;fig6_2.pdf;fig6_3.pdf,3,single-asset cumulative returns,11 series per panel,,False,False,published_visual_only_zero_result_credit
+7,fig7.pdf,1,single-agent workflow example,not applicable,vis1.png (richer layout),False,False,published_visual_only_zero_result_credit
+8,fig8.pdf,1,extreme-market workflow example,not applicable,vis4.png (richer layout),False,False,published_visual_only_zero_result_credit
+9,fig9.pdf,1,conference-ablation cumulative returns,7 series,,False,False,published_visual_only_zero_result_credit
+10,fig10.pdf,1,LLM-backbone cumulative returns,6 series,,False,False,published_visual_only_zero_result_credit
+11,fig11.pdf,2,memory ablation bars and t-SNE,4 bars; 3 scatter classes,,False,False,published_visual_only_zero_result_credit
+12,fig12.pdf,1,Q1-Q3 2024 cumulative return and EMC events,1 curve; 36 claimed markers,,False,False,published_visual_only_zero_result_credit

@@ -1,0 +1,46 @@
+{
+  "arxiv_pdf_url": "https://arxiv.org/pdf/2502.13165v1",
+  "arxiv_record": "https://arxiv.org/abs/2502.13165v1",
+  "arxiv_source_file_bytes": 1924454,
+  "arxiv_source_files": 20,
+  "arxiv_source_sha256": "74609167076592c8d8d7344a09f470736c62992ae9b7540bf81f01510fab713b",
+  "arxiv_source_url": "https://arxiv.org/e-print/2502.13165v1",
+  "arxiv_version": "v1 only; submitted 2025-02-17 04:13:19 UTC",
+  "author_repository": "https://github.com/hedgeagents/hedgeagents.github.io",
+  "author_repository_archive_sha256": "f86c9d0562a31864ec4bc3d449af803b6048c2393a1130a351a2c657d3943ad2",
+  "author_repository_head": "329c5cc8613d91e517de4fbdb0dbc8476a356db5",
+  "author_repository_tree_bytes": 21503635,
+  "author_repository_tree_files": 46,
+  "author_site": "https://hedgeagents.github.io/",
+  "authors": [
+    "Xiangyu Li",
+    "Yawen Zeng",
+    "Xiaofen Xing",
+    "Jin Xu",
+    "Xiangmin Xu"
+  ],
+  "doi": "10.1145/3701716.3715232",
+  "doi_url": "https://doi.org/10.1145/3701716.3715232",
+  "first_deterministic_rebuild_sha256": "9df80446dbea80719f9d20fc647fc04bae79774d3a209b902e01e69de6e2cc67",
+  "license": "CC BY 4.0",
+  "official_pdf_pages": 10,
+  "official_pdf_sha256": "d51a97df37c27936ea69c3c951c7ac514c4dddd76bf509f866f2c647cd50505e",
+  "pdftotext_sha256_both_rebuilds": "e22be9216e706031198bcddeac18449edf36860a659ec5734f2a326eebfe70fb",
+  "rebuild_comparison": "raw PDFs differ only in the generated PDF trailer ID; extracted text is identical",
+  "rebuild_parameters": {
+    "FORCE_SOURCE_DATE": 1,
+    "SOURCE_DATE_EPOCH": 1716273646,
+    "TZ": "UTC",
+    "latex_passes": 3
+  },
+  "second_deterministic_rebuild_sha256": "05182919f8852b6017e587f54c3818918e7171eda9f81ab3ccae344392072743",
+  "source_archive_contains_system_code": false,
+  "source_archive_interpretation": "manuscript, bibliography/typesetting support, and published figures only",
+  "title": "HedgeAgents: A Balanced-aware Multi-agent Financial Trading System",
+  "visual_qa": {
+    "all_14_source_figure_pdfs": "pass; legible and complete",
+    "author_site_15_hedgeagents_images": "pass; four unrelated MathVista/template assets explicitly excluded",
+    "official_paper_all_10_pages": "pass; source-native arXiv margin stamp on page 1; no clipped or overlapping content",
+    "rebuilt_paper_all_10_pages": "pass; same ACM manuscript layout without arXiv margin stamp"
+  }
+}
