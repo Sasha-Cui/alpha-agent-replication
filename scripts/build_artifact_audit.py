@@ -49,13 +49,26 @@ ENVIRONMENT_NAMES = {
 RUNNER_NAMES = {
     "app.py", "cli.py", "main.py", "makefile", "run.py", "start.sh", "train.py",
 }
-NONRUNNABLE_PHRASES = (
+STRONG_NONRUNNABLE_PHRASES = (
     "does not contain a runnable version",
     "pseudocode and algorithms",
     "pseudo-code and algorithms",
     "code will be released",
+)
+WEAK_NONRUNNABLE_PHRASES = (
     "coming soon",
 )
+
+
+def explicitly_nonrunnable(readme_lower: str, has_code: bool, has_runner: bool) -> bool:
+    """Avoid treating a roadmap heading as a verdict on an otherwise runnable repo."""
+    if any(phrase in readme_lower for phrase in STRONG_NONRUNNABLE_PHRASES):
+        return True
+    return (
+        any(phrase in readme_lower for phrase in WEAK_NONRUNNABLE_PHRASES)
+        and not has_code
+        and not has_runner
+    )
 
 
 def utc_now() -> str:
@@ -403,7 +416,9 @@ def archive_static_observation(
                     "environment_markers": sorted(environment_markers)[:20],
                     "runner_markers": sorted(runner_markers)[:20],
                     "support_markers": sorted(support_markers)[:20],
-                    "explicit_nonrunnable": any(phrase in readme_lower for phrase in NONRUNNABLE_PHRASES),
+                    "explicit_nonrunnable": explicitly_nonrunnable(
+                        readme_lower, bool(code_markers), bool(runner_markers)
+                    ),
                     "readme_excerpt": readme_text[:20000],
                     "license_excerpt": license_text[:50000],
                 }
