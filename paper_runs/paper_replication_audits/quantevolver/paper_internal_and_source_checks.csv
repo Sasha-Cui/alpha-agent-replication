@@ -1,0 +1,10 @@
+check,paper_claim,recomputed_value,status,evidence
+Benchmark A improvement claim versus Table Overall,7.8,1.1979463776383255,not_derivable_from_displayed_table_values,Table values 53.22% and 52.59% imply about 1.20% relative improvement
+Benchmark B best-RankIC improvement claim versus Table Overall,109.5,73.88724035608308,not_derivable_from_displayed_table_values,Table values 0.0586 and 0.0337 imply about 73.89% relative improvement
+top-10 RankIC-mean improvement,186.9,,not_auditable_underlying_values_absent,No top-10 method means or numeric plot array is supplied
+Miner/backbone model identity,Qwen3-14B and all methods use Qwen-3.6-Plus,,paper_internal_configuration_conflict,"Experimental Setup names Qwen3-14B, then Compared Approaches says all methods use Qwen-3.6-Plus"
+Benchmark A IC/RankIC definitions,single asset evaluated with cross-sectional IC and RankIC equations,undefined when N_t=1,paper_metric_definition_incomplete,"Published equations correlate across assets i=1..N_t, but Benchmark A has one asset"
+published ICIR versus released cross-sectional evaluator,mean(IC_t)/(std(IC_t)+epsilon),released source multiplies by sqrt(number of valid times),paper_source_metric_conflict,cross_sectional_rankic.py computes mean_ric/std_ric*sqrt(len(arr))
+published predictive reward versus released cross-sectional reward,g(e) extracts the primary metric,"clip(5*mean_RankIC + 0.02*tanh(ICIR), -1, 1)",paper_source_reward_transform_not_disclosed,released evaluator transforms RankIC and source-defined ICIR before DiCo shaping
+profitability return and rounded ending NAV,2.26,2.2560000000000002,compatible_at_display_precision,"125.6% from NAV 1 implies 2.256, which rounds to 2.26"
+equity benchmark identity,daily market data of CSI 300 ETF constituents,,paper_universe_ambiguous,The manuscript does not identify whether this means CSI 300 index constituents or multiple ETF products

@@ -1,0 +1,43 @@
+paper_location,claim,paper_value,unit,claim_role,precision,native_reproduced_value,status,paper_result_credit
+Introduction,relative directional-accuracy improvement,7.8,pct,result,independent_claim,,unavailable_missing_native_paper_result_path,False
+Introduction,best out-of-sample RankIC improvement,109.5,pct,result,independent_claim,,unavailable_missing_native_paper_result_path,False
+Introduction,top-10 out-of-sample RankIC mean improvement,186.9,pct,result,independent_claim,,unavailable_missing_native_paper_result_path,False
+Experimental Setup,fusion correlation threshold,0.7,correlation,configuration,exact,,configuration_not_recreated,False
+Experimental Setup,compute CPU cores,160,cores,configuration,exact,,configuration_not_recreated,False
+Experimental Setup,compute RAM,1.8,TiB,configuration,exact,,configuration_not_recreated,False
+Experimental Setup,compute H20 GPUs,8,GPUs,configuration,exact,,configuration_not_recreated,False
+Benchmark A,bar and target interval,5,minutes,configuration,exact,,configuration_not_recreated,False
+Benchmark B,rebalance interval,1,hour,configuration,exact,,configuration_not_recreated,False
+Overall prose A,QuantEvolver DirAcc,53.22,pct,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Overall prose A,strongest baseline DirAcc,52.59,pct,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Overall prose B,QuantEvolver RankIC,0.0586,RankIC,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Overall prose B,strongest baseline RankIC,0.0337,RankIC,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Overall prose B,QuantEvolver IC,0.05,IC,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Overall prose B,QuantEvolver ICIR,50.2644,ICIR,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Overall prose Gamma,QuantEvolver RankIC,0.1923,RankIC,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Overall prose Gamma,QuantEvolver ICIR,5.4289,ICIR,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Overall prose Gamma,QuantEvolver IC,0.1502,IC,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Ablation prose,without diversity RankIC,0.0505,RankIC,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Ablation prose,without seed RankIC,0.0519,RankIC,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Ablation prose,without seed and diversity RankIC,0.054,RankIC,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Ablation prose,without DSL RankIC,0.0002,RankIC,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Ablation prose,without DSL ICIR,0.2506,ICIR,result,duplicate_table,,unavailable_missing_native_paper_result_path,False
+Top-k sensitivity,lower stated small-k setting,3,factors,configuration,exact,,configuration_not_recreated,False
+Top-k sensitivity,small-k upper setting,5,factors,configuration,exact,,configuration_not_recreated,False
+Top-k sensitivity,RankIC around k=3--5,0.05,RankIC,result,approximate,,unavailable_missing_native_paper_result_path,False
+Top-k sensitivity,RankIC at k=5,0.0498,RankIC,result,exact,,unavailable_missing_native_paper_result_path,False
+Top-k sensitivity,RankIC at k=10,0.053,RankIC,result,exact,,unavailable_missing_native_paper_result_path,False
+Top-k sensitivity,RankIC at k=20,0.0562,RankIC,result,exact,,unavailable_missing_native_paper_result_path,False
+Top-k sensitivity,RankIC at k=25,0.0587,RankIC,result,exact,,unavailable_missing_native_paper_result_path,False
+Top-k sensitivity,RankIC at k=30,0.0586,RankIC,result,exact,,unavailable_missing_native_paper_result_path,False
+Correlation sensitivity,strict correlation threshold,0.5,correlation,configuration,exact,,configuration_not_recreated,False
+Correlation sensitivity,RankIC at threshold 0.50,0.062,RankIC,result,exact,,unavailable_missing_native_paper_result_path,False
+Correlation sensitivity,next correlation threshold,0.6,correlation,configuration,exact,,configuration_not_recreated,False
+Correlation sensitivity,RankIC at threshold 0.60,0.0601,RankIC,result,exact,,unavailable_missing_native_paper_result_path,False
+Correlation sensitivity,looser-threshold RankIC range low,0.052,RankIC,result,approximate,,unavailable_missing_native_paper_result_path,False
+Correlation sensitivity,looser-threshold RankIC range high,0.054,RankIC,result,approximate,,unavailable_missing_native_paper_result_path,False
+Profitability case,starting NAV normalization,1.0,NAV,configuration,exact,,configuration_not_recreated,False
+Profitability case,QuantEvolver ending NAV,2.26,NAV,result,approximate,,unavailable_missing_native_paper_result_path,False
+Profitability case,QuantEvolver cumulative return,125.6,pct,result,approximate,,unavailable_missing_native_paper_result_path,False
+Profitability case,Alpha158 ending NAV,1.85,NAV,result,approximate,,unavailable_missing_native_paper_result_path,False
+Profitability case,Alpha101 ending NAV,1.37,NAV,result,approximate,,unavailable_missing_native_paper_result_path,False

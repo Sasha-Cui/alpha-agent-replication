@@ -1,0 +1,36 @@
+category,missing_specification_or_artifact,paper_result_impact
+data,Benchmark A asset identity,blocks_exact_native_reproduction
+data,Benchmark A venue/vendor and immutable snapshot,blocks_exact_native_reproduction
+data,Benchmark A train/validation/test dates and sample counts,blocks_exact_native_reproduction
+data,"Benchmark A timezone, session, and 5-minute bar alignment",blocks_exact_native_reproduction
+data,Benchmark B exchange identity and immutable data snapshot,blocks_exact_native_reproduction
+data,Benchmark B asset universe and eligibility/liquidity rule,blocks_exact_native_reproduction
+data,Benchmark B full train/validation/test dates,blocks_exact_native_reproduction
+data,"Benchmark B delisting, missing-bar, and survivorship treatment",blocks_exact_native_reproduction
+data,"Benchmark B bar construction, target horizon, and timestamp convention",blocks_exact_native_reproduction
+data,Benchmark Gamma exact security universe and ETF/index interpretation,blocks_exact_native_reproduction
+data,"Benchmark Gamma vendor, snapshot, corporate-action treatment, and dates",blocks_exact_native_reproduction
+model,unambiguous Miner model/checkpoint identity,blocks_exact_native_reproduction
+model,"oracle LLM identity, version, decoding parameters, and prompt",blocks_exact_native_reproduction
+model,baseline model endpoints/snapshots and decoding parameters,blocks_exact_native_reproduction
+search,"paper seed candidates, scores, thresholds, and selected pool",blocks_exact_native_reproduction
+search,"paper task bank, time windows, families, and mutation hints",blocks_exact_native_reproduction
+training,"GRPO group size, epochs/steps, batch sizes, optimizer, and learning rate",blocks_exact_native_reproduction
+training,"reward coefficients, clipping bounds, quality/coverage thresholds",blocks_exact_native_reproduction
+training,"random seeds, number of runs, checkpoint-selection rule",blocks_exact_native_reproduction
+training,trained checkpoint and training/validation trajectories,blocks_exact_native_reproduction
+factor,"mined factor expressions, scores, profiles, and archive history",blocks_exact_native_reproduction
+fusion,"candidate count, validation ranking, top-k default, and tie handling",blocks_exact_native_reproduction
+fusion,"decorrelation statistic/sample, greedy order, and exact threshold application",blocks_exact_native_reproduction
+fusion,equal-weight fusion normalization and missing-value handling,blocks_exact_native_reproduction
+baseline,AlphaBench exact implementation/configuration and mining budget,blocks_exact_native_reproduction
+baseline,QuantaAlpha exact implementation/configuration and mining budget,blocks_exact_native_reproduction
+baseline,R&D-Agent adaptation implementation/configuration and mining budget,blocks_exact_native_reproduction
+baseline,Alpha-Jungle implementation/configuration and mining budget,blocks_exact_native_reproduction
+metrics,single-asset IC/RankIC/ICIR definitions,blocks_exact_native_reproduction
+metrics,ICIR annualization/scaling convention,blocks_exact_native_reproduction
+portfolio,"long/short selection fraction, weights, leverage, and rebalance timing",blocks_exact_native_reproduction
+portfolio,"transaction costs, slippage, fees, funding, and borrow assumptions",blocks_exact_native_reproduction
+portfolio,"daily/hourly holdings, returns, NAVs, and figure source arrays",blocks_exact_native_reproduction
+statistics,"uncertainty estimates, trial dispersion, and significance tests",blocks_exact_native_reproduction
+cost,"LLM token, API, compute-time, and monetary cost ledger",blocks_exact_native_reproduction

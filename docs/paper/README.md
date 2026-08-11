@@ -42,6 +42,14 @@ diagnostic outside this denominator. A strict audit separately grades the 50
 legacy mappings A0/B0/C15/D33/U2; those mappings are construction diagnostics,
 never performance evidence about the cited papers or their native agents.
 
+The separate full-paper audit in
+`paper_runs/paper_replication_audits/quantevolver/` confirms why this boundary
+matters: the public release implements 38/67 audited mechanisms or meaningful
+analogues, but reproduces 0/75 paper table results and 0/31 additional numeric
+result claims. The 3/3 grade-B result is therefore component-only and carries no
+credit for the private RFT experiment, benchmarks, mined factor library, or
+published portfolio.
+
 The manuscript also reports a separate GuruAgents prompt-decision replay:
 190/190 cells through a current 2026 OpenRouter-served `openai/gpt-4o` alias, 24
 costed return paths, and matched Fama--French-to-JKP-BAB attribution. It does

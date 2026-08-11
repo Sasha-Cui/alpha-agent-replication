@@ -1,0 +1,162 @@
+from __future__ import annotations
+
+import csv
+import importlib.util
+import json
+import sys
+from collections import Counter
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / "scripts/audit_quantevolver_paper.py"
+SPEC = importlib.util.spec_from_file_location("quantevolver_paper_audit", SCRIPT)
+assert SPEC and SPEC.loader
+audit = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = audit
+SPEC.loader.exec_module(audit)
+
+
+def read_csv(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="", encoding="utf-8") as handle:
+        return list(csv.DictReader(handle))
+
+
+def test_numeric_table_denominator_is_complete_and_fail_closed() -> None:
+    rows = audit.paper_table_rows()
+    assert len(rows) == 75
+    assert Counter(row["paper_table"] for row in rows) == {
+        "Overall Evaluation": 60,
+        "Ablation Results on Dataset B": 15,
+    }
+    assert Counter(row["method"] for row in rows if row["paper_table"] == "Overall Evaluation") == {
+        "AlphaBench": 12,
+        "QuantaAlpha": 12,
+        "R&D-Agent": 12,
+        "Alpha-Jungle": 12,
+        "QuantEvolver": 12,
+    }
+    assert len(
+        {
+            (row["paper_table"], row["method"], row["benchmark"], row["metric"])
+            for row in rows
+        }
+    ) == 75
+    assert {row["paper_result_credit"] for row in rows} == {False}
+
+
+def test_ablation_and_non_table_claim_censuses_are_explicit() -> None:
+    design = audit.ablation_design_rows()
+    claims = audit.published_non_table_claims()
+    assert len(design) == 15
+    assert Counter(row["component"] for row in design) == {"Seed": 5, "Div": 5, "DSL": 5}
+    assert {row["native_paper_run_reproduced"] for row in design} == {False}
+    assert len(claims) == 42
+    assert Counter(row["claim_role"] for row in claims) == {
+        "result": 31,
+        "configuration": 11,
+    }
+    assert {row["paper_result_credit"] for row in claims} == {False}
+
+
+def test_internal_checks_expose_arithmetic_and_metric_conflicts() -> None:
+    checks = {row["check"]: row for row in audit.internal_consistency_checks()}
+    assert len(checks) == 9
+    assert round(checks["Benchmark A improvement claim versus Table Overall"]["recomputed_value"], 2) == 1.20
+    assert round(checks["Benchmark B best-RankIC improvement claim versus Table Overall"]["recomputed_value"], 2) == 73.89
+    assert checks["Miner/backbone model identity"]["status"] == "paper_internal_configuration_conflict"
+    assert checks["published ICIR versus released cross-sectional evaluator"]["status"] == "paper_source_metric_conflict"
+    assert checks["Benchmark A IC/RankIC definitions"]["status"] == "paper_metric_definition_incomplete"
+    assert checks["profitability return and rounded ending NAV"]["status"] == "compatible_at_display_precision"
+
+
+def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> None:
+    output = ROOT / "paper_runs/paper_replication_audits/quantevolver"
+    manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
+    table = read_csv(output / "paper_numeric_table_conformance.csv")
+    design = read_csv(output / "ablation_design_cells.csv")
+    claims = read_csv(output / "published_non_table_claims.csv")
+    checks = read_csv(output / "paper_internal_and_source_checks.csv")
+    gaps = read_csv(output / "paper_specification_gaps.csv")
+    mechanisms = read_csv(output / "source_mechanism_conformance.csv")
+    inventory = read_csv(output / "released_source_inventory.csv")
+    paper_assets = read_csv(output / "paper_source_asset_inventory.csv")
+    native = json.loads((output / "native_component_execution.json").read_text(encoding="utf-8"))
+    component = json.loads((output / "separate_component_gate.json").read_text(encoding="utf-8"))
+
+    assert manifest["overall_status"] == "not_reproduced_substantial_public_framework_zero_paper_results"
+    assert manifest["full_paper_reproduced"] is False
+    assert manifest["paper_era_source_revision_available"] is True
+    assert manifest["source_commit"] == audit.SOURCE_COMMIT
+    assert manifest["source_history_commits"] == 2
+    assert manifest["paper_numeric_table_cells_total"] == 75
+    assert manifest["native_paper_table_result_cells_reproduced"] == 0
+    assert manifest["published_non_table_result_claims_total"] == 31
+    assert manifest["native_non_table_result_claims_reproduced"] == 0
+    assert manifest["paper_specification_gaps_total"] == 35
+    assert manifest["numeric_result_figure_panels_total"] == 5
+    assert manifest["numeric_result_figure_arrays_shipped"] == 0
+    assert manifest["source_mechanism_dimensions_total"] == 67
+    assert manifest["source_mechanism_matches_or_analogues"] == 38
+    assert manifest["source_mechanism_status_counts"] == {
+        "exact_or_direct_match": 33,
+        "substantial_analogue": 5,
+        "absent": 25,
+        "conflict": 2,
+        "unverifiable": 2,
+    }
+    assert manifest["tracked_source_files_total"] == 67
+    assert manifest["tracked_source_python_files_total"] == 55
+    assert manifest["tracked_source_upstream_test_files_total"] == 3
+    assert manifest["separate_component_gate_counted"] == 3
+    assert manifest["separate_component_gate_passed"] is True
+    assert manifest["separate_component_gate_grade"] == "B"
+    assert manifest["separate_component_gate_paper_result_credit"] is False
+
+    assert len(table) == 75
+    assert {row["paper_result_credit"] for row in table} == {"False"}
+    assert len(design) == 15
+    assert len(claims) == 42
+    assert len(checks) == 9
+    assert len(gaps) == 35
+    assert len(mechanisms) == 67
+    assert Counter(row["paper_mechanism_credit"] for row in mechanisms) == {
+        "True": 38,
+        "False": 29,
+    }
+    assert len(inventory) == 67
+    assert sum(row["python_source"] == "True" for row in inventory) == 55
+    assert len(paper_assets) == 10
+    assert sum(row["asset_role"] == "numeric_result_figure" for row in paper_assets) == 5
+    assert {row["underlying_numeric_array_shipped"] for row in paper_assets} == {"False"}
+
+    assert native["tracked_python_files_compiled"] == 55
+    assert native["upstream_tests_status"] == "passed"
+    assert native["public_quickstart_component"]["valid_seeds"] == 3
+    assert native["public_quickstart_component"]["invalid_seeds"] == 1
+    assert native["public_quickstart_component"]["example_task_bank_tasks"] == 9
+    assert native["deterministic_released_seed_dsl_components"] is True
+    assert native["paper_result_reproduction"] is False
+
+    assert component["counted_components"] == 3
+    assert component["grade_a_or_b"] == 3
+    assert component["pass_rate"] == 1.0
+    assert component["native_agent_replication"] is False
+    assert component["search_or_RFT_replication"] is False
+    assert component["paper_result_reproduction"] is False
+
+    for filename, expected in manifest["output_sha256"].items():
+        assert audit.sha256(output / filename) == expected
+
+
+def test_pinned_primary_sources_when_available() -> None:
+    source_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantevolver_source")
+    paper_source = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantevolver_paper/source")
+    if not source_root.exists() or not paper_source.exists():
+        return
+    assert str(audit.run_git(source_root, "rev-parse", "HEAD")).strip() == audit.SOURCE_COMMIT
+    assert str(audit.run_git(source_root, "ls-tree", "-r", "--name-only", audit.README_ONLY_COMMIT)).splitlines() == [
+        "README.md"
+    ]
+    assert len(audit.source_inventory(source_root)) == 67
+    assert len(audit.paper_source_inventory(paper_source)) == 10

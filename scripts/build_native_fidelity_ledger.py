@@ -82,9 +82,17 @@ ARTIFACT_NOTES = {
     ),
     "SYS-QUANT-EVOLVER": (
         "N",
-        "The README states that the public repository is reusable framework code "
-        "only and excludes private market data, experiment logs, and paper-specific "
-        "reproduction scripts; example seeds are formulas, not dated outputs.",
+        "A pinned arXiv-v1 audit enumerates all 75 numeric result cells in the two "
+        "paper tables plus 31 quantitative result assertions in prose/figures. The "
+        "paper-era release is a substantial framework: all 55 Python files compile, "
+        "all three upstream tests pass, three released example seeds and a nine-task "
+        "example bank execute deterministically, and 38/67 mechanism dimensions "
+        "match or have meaningful analogues. These are components, not the paper "
+        "experiment. The README explicitly excludes private market data, trained "
+        "checkpoints, experiment logs, and paper-specific reproduction scripts; no "
+        "paper factors, baselines, fusion arrays, trials, seeds, or costs are shipped, "
+        "so 0/75 table cells count as native reproductions. The separate 3/3 grade-B "
+        "component gate remains adapted and provides no paper-result credit.",
     ),
     "SYS-RD-AGENT-QUANT": (
         "N",
@@ -195,7 +203,7 @@ TARGETED_EXECUTION = {
     "SYS-FIN-CON": "legacy_targeted:blocked_jkp_scope_incompatible",
     "SYS-GURU-AGENTS": "legacy_targeted:legacy_non_jkp_diagnostic_only",
     "SYS-QUANT-AGENT-HFT": "legacy_targeted:blocked_jkp_scope_incompatible",
-    "SYS-QUANT-EVOLVER": "legacy_targeted:seed_idea_proxy_only_not_native_execution",
+    "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
     "SYS-RD-AGENT-QUANT": "legacy_targeted:blocked_on_jkp_adapter",
     "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",
     "SYS-TRADING-R1": "legacy_targeted:blocked_no_public_codebase",

@@ -1,0 +1,68 @@
+dimension,status,source_evidence,paper_mechanism_credit,paper_result_credit
+scenario_refinement,exact_or_direct_match,scenarios/refiner.py and schema.py implement structured LLM refinement,True,False
+oracle_seed_generation,exact_or_direct_match,seeds/generator.py calls a configurable strong model,True,False
+seed_dsl_validation,exact_or_direct_match,SeedValidator compiles and constrains expressions,True,False
+seed_empirical_scoring,exact_or_direct_match,SeedEvaluator and SeedScorer expose executable scoring,True,False
+canonical_expression_deduplication,exact_or_direct_match,AST canonical hashes are used for deduplication,True,False
+topk_seed_curation,exact_or_direct_match,SeedLibraryBuilder selects score-ranked seed subsets,True,False
+seed_time_window_cartesian_task_bank,exact_or_direct_match,TaskBankBuilder expands each selected seed across time splits,True,False
+task_seed_expression,exact_or_direct_match,TaskSpec stores seed_id and seed_expr,True,False
+task_structured_scenario,exact_or_direct_match,TaskSpec stores scenario text,True,False
+task_evaluation_window,exact_or_direct_match,TaskSpec stores split start/end,True,False
+task_factor_family,exact_or_direct_match,TaskSpec stores family,True,False
+task_mutation_hints,exact_or_direct_match,TaskSpec stores mutation_hints,True,False
+factor_dsl_parser_and_type_checks,exact_or_direct_match,DSL compiler/evaluator implement a constrained expression language,True,False
+factor_realizer,exact_or_direct_match,compile_expr emits executable Backtrader code,True,False
+single_asset_executable_evaluator,exact_or_direct_match,backtrader_signal and reward profiles implement single-asset evaluation,True,False
+cross_sectional_executable_evaluator,exact_or_direct_match,cross_sectional_rankic evaluates symbols at common timestamps,True,False
+invalid_expression_low_reward,exact_or_direct_match,format/runtime failures receive -1,True,False
+verl_training_integration,exact_or_direct_match,verl_main constructs and runs RayPPOTrainer,True,False
+grpo_advantage_estimator,exact_or_direct_match,build_verl_config sets adv_estimator=grpo,True,False
+grouped_rollouts,exact_or_direct_match,rollout n is configurable and passed to Verl,True,False
+policy_parameter_updates,substantial_analogue,"trainer.fit is wired, but paper checkpoint/config/training execution is absent",True,False
+exact_repeat_penalty,exact_or_direct_match,NoveltyArchive applies an exact-expression repeat penalty,True,False
+structural_family_signature,exact_or_direct_match,FamilyArchive canonicalizes structural templates,True,False
+new_family_bonus,exact_or_direct_match,good unseen families receive a configurable bonus,True,False
+overused_low_quality_family_penalty,exact_or_direct_match,low-quality families beyond a quota are penalized,True,False
+single_asset_behavior_complementarity,substantial_analogue,ResidualResponseArchive implements a residual/correlation analogue,True,False
+cross_sectional_behavior_profiles,exact_or_direct_match,CrossSectionalBehaviorArchive stores rank-vector profiles,True,False
+low_behavior_correlation_bonus,exact_or_direct_match,low-correlation cross-sectional candidates can receive a bonus,True,False
+high_behavior_correlation_penalty,exact_or_direct_match,high-correlation candidates receive a linear penalty,True,False
+final_reward_clipping,exact_or_direct_match,"training score is clipped to [-1,1]",True,False
+quality_and_coverage_archive_gate,exact_or_direct_match,positive factor files require metric and coverage thresholds,True,False
+expression_level_output_deduplication,exact_or_direct_match,.seen markers prevent duplicate saved expressions,True,False
+mined_factor_database,substantial_analogue,separate output and JSONL archives approximate but do not reproduce the paper database,True,False
+final_factor_library,substantial_analogue,generated factor files form an output library without paper metadata or contents,True,False
+dsl_free_ablation_path,exact_or_direct_match,free_code mode evaluates generated Backtrader factor code,True,False
+DirAcc_definition,exact_or_direct_match,direction reward compares factor and future-return signs,True,False
+RankIC_definition,exact_or_direct_match,cross-sectional evaluator uses per-time Spearman correlation,True,False
+IC_definition_cross_sectional,absent,released cross-sectional evaluator does not report paper-defined Pearson IC,False,False
+ICIR_definition,conflict,"source multiplies mean/std by sqrt(T), unlike the paper equation",False,False
+predictive_reward_primary_metric,conflict,source transforms RankIC with factor 5 and a tanh(ICIR) term,False,False
+paper_Qwen3_14B_checkpoint,absent,public config contains path/to/base-model,False,False
+paper_Qwen_3_6_Plus_backbone,absent,no paper baseline endpoint or model snapshot is configured,False,False
+paper_oracle_model,absent,no paper oracle identity or snapshot is released,False,False
+paper_prompt_pack,absent,"generic prompts are released, not the paper prompts or prompt hashes",False,False
+paper_seed_pool,absent,three illustrative valid seeds are not the paper's selected seed pool,False,False
+paper_task_bank,absent,example January 2024 windows are not any disclosed paper task bank,False,False
+paper_RFT_hyperparameters,absent,generic one-GPU example is not the eight-H20 experiment config,False,False
+paper_random_seeds_and_trials,absent,no experiment seed/trial ledger is released,False,False
+paper_trained_checkpoint,absent,README explicitly excludes trained checkpoints,False,False
+paper_training_logs,absent,README explicitly excludes experiment logs,False,False
+paper_mined_factor_library,absent,no factors underlying reported results are shipped,False,False
+Benchmark_A_data_and_config,absent,"asset, data, dates, split, and native config are missing",False,False
+Benchmark_B_data_and_config,absent,"exchange, symbols, data, dates, split, and native config are missing",False,False
+Benchmark_Gamma_data_and_config,absent,"equity universe, data, dates, split, and native config are missing",False,False
+paper_post_selection_ranking,absent,no paper candidate-result array or selection runner is shipped,False,False
+paper_decorrelation_filter,absent,no paper 0.7 correlation-selection implementation is shipped,False,False
+paper_equal_weight_fusion,absent,no paper fused-signal implementation/output is shipped,False,False
+AlphaBench_baseline,absent,baseline implementation/config/output is missing,False,False
+QuantaAlpha_baseline,absent,baseline implementation/config/output is missing,False,False
+RD_Agent_adaptation,absent,adapted baseline implementation/config/output is missing,False,False
+Alpha_Jungle_baseline,absent,baseline implementation/config/output is missing,False,False
+profitability_portfolio_protocol,substantial_analogue,"source computes an equal-mean top/bottom quintile diagnostic, not the paper portfolio",True,False
+paper_transaction_costs_and_execution,absent,"fees, slippage, funding, borrow, orders, and fills are absent",False,False
+paper_result_tables,absent,no table-generating outputs or reproduction scripts are released,False,False
+paper_result_figure_arrays,absent,vector plots are in arXiv source but numeric arrays are absent,False,False
+paper_compute_environment,unverifiable,hardware is stated in paper but no environment/container/lockfile records it,False,False
+dependency_lock_and_training_stack,unverifiable,minimum dependency ranges and external Verl setup are not frozen,False,False

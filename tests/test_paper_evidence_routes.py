@@ -73,6 +73,21 @@ def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     ).all()
 
 
+def test_quantevolver_paper_audit_stays_separate_from_component_gate() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv260515412")].iloc[0]
+    assert row["paper_evidence_route"] == "public_code_available"
+    assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_zero_of_75_native_results_component_gate_separate"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_disposition"] == "source_grounded_component_only"
+    assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
+    assert "0/75 table cells" in row["precise_native_or_access_blocker"]
+    assert "3/3 grade-B component gate" in row["precise_native_or_access_blocker"]
+
+
 def test_paper_only_partial_components_are_not_native_procedure_replications() -> None:
     routes = pd.read_csv(OUTPUT)
     partial = routes[

@@ -1,0 +1,76 @@
+paper_table,method,benchmark,metric,paper_value,cell_kind,native_reproduced_value,absolute_difference,status,paper_result_credit
+Overall Evaluation,AlphaBench,A,DirAcc_pct,51.82,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,A,IC,0.0147,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,A,RankIC,0.0362,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,A,ICIR,0.6139,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,B,DirAcc_pct,49.57,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,B,IC,0.0288,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,B,RankIC,0.0337,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,B,ICIR,24.404,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,Gamma,DirAcc_pct,55.56,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,Gamma,IC,0.148,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,Gamma,RankIC,0.1688,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,AlphaBench,Gamma,ICIR,2.6021,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,A,DirAcc_pct,52.15,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,A,IC,0.0095,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,A,RankIC,0.0313,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,A,ICIR,3.6004,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,B,DirAcc_pct,49.41,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,B,IC,0.0216,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,B,RankIC,0.0235,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,B,ICIR,24.4209,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,Gamma,DirAcc_pct,54.03,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,Gamma,IC,0.1144,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,Gamma,RankIC,0.1003,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantaAlpha,Gamma,ICIR,2.0239,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,A,DirAcc_pct,52.59,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,A,IC,0.0002,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,A,RankIC,0.0527,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,A,ICIR,0.9779,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,B,DirAcc_pct,49.4,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,B,IC,0.0188,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,B,RankIC,0.0205,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,B,ICIR,19.0101,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,Gamma,DirAcc_pct,53.31,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,Gamma,IC,0.1001,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,Gamma,RankIC,0.0589,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,R&D-Agent,Gamma,ICIR,-0.8667,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,A,DirAcc_pct,52.25,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,A,IC,0.0023,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,A,RankIC,0.0357,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,A,ICIR,1.5664,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,B,DirAcc_pct,49.39,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,B,IC,0.0185,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,B,RankIC,0.02,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,B,ICIR,19.2806,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,Gamma,DirAcc_pct,48.92,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,Gamma,IC,0.0369,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,Gamma,RankIC,-0.0008,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,Alpha-Jungle,Gamma,ICIR,-0.7166,direct_result,,,unavailable_missing_native_baseline_result_path,False
+Overall Evaluation,QuantEvolver,A,DirAcc_pct,53.22,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,A,IC,-0.0058,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,A,RankIC,0.0481,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,A,ICIR,1.1191,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,B,DirAcc_pct,49.96,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,B,IC,0.05,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,B,RankIC,0.0586,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,B,ICIR,50.2644,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,Gamma,DirAcc_pct,53.49,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,Gamma,IC,0.1502,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,Gamma,RankIC,0.1923,direct_result,,,unavailable_missing_native_paper_result_path,False
+Overall Evaluation,QuantEvolver,Gamma,ICIR,5.4289,direct_result,,,unavailable_missing_native_paper_result_path,False
+Ablation Results on Dataset B,Seed=1;Div=1;DSL=1,B,IC,0.05,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=1;Div=1;DSL=1,B,RankIC,0.0586,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=1;Div=1;DSL=1,B,ICIR,50.2644,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=1;Div=0;DSL=1,B,IC,0.0421,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=1;Div=0;DSL=1,B,RankIC,0.0505,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=1;Div=0;DSL=1,B,ICIR,45.8038,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=0;Div=1;DSL=1,B,IC,0.0434,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=0;Div=1;DSL=1,B,RankIC,0.0519,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=0;Div=1;DSL=1,B,ICIR,44.2189,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=0;Div=0;DSL=1,B,IC,0.0461,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=0;Div=0;DSL=1,B,RankIC,0.054,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=0;Div=0;DSL=1,B,ICIR,44.3755,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=0;Div=0;DSL=0,B,IC,0.0001,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=0;Div=0;DSL=0,B,RankIC,0.0002,direct_result,,,unavailable_missing_native_ablation_result_path,False
+Ablation Results on Dataset B,Seed=0;Div=0;DSL=0,B,ICIR,0.2506,direct_result,,,unavailable_missing_native_ablation_result_path,False

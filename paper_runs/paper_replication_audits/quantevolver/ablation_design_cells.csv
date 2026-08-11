@@ -1,0 +1,16 @@
+paper_table,row,component,paper_enabled,native_paper_run_reproduced,status
+Ablation Results on Dataset B,1,Seed,True,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,1,Div,True,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,1,DSL,True,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,2,Seed,True,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,2,Div,False,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,2,DSL,True,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,3,Seed,False,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,3,Div,True,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,3,DSL,True,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,4,Seed,False,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,4,Div,False,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,4,DSL,True,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,5,Seed,False,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,5,Div,False,False,design_cell_enumerated_but_ablation_run_unavailable
+Ablation Results on Dataset B,5,DSL,False,False,design_cell_enumerated_but_ablation_run_unavailable

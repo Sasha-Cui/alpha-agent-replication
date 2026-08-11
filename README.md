@@ -23,6 +23,13 @@ executes all 190 disclosed prompt cells, constructs 24 costed paths, and reports
 matched factor attribution for 12 long-archive paths over a shared 33-month
 window. These are component-level studies, not native-system replications.
 
+A separate paper-level QuantEvolver audit prevents that 3/3 component result
+from being mistaken for the published study. It finds a substantial paper-era
+framework (38/67 mechanism matches or analogues; all released tests pass) but
+0/75 reproduced table results and 0/31 reproduced non-table numeric result
+claims because the paper data, checkpoint, logs, exact configuration, mined
+factors, baselines, fusion arrays, seeds, and costs are not released.
+
 The cutoff-bounded 98-work screen, artifact audit, and 67-lineage native-fidelity
 ledger provide broader evidence about public availability and task compatibility;
 they are supporting parts of the current claim record rather than its sole center.
@@ -37,6 +44,7 @@ then inspect the three principal evidence packages:
 
 - [`paper_runs/submission_evidence/strict_proxy_fidelity_audit/`](paper_runs/submission_evidence/strict_proxy_fidelity_audit/) - strict A/B/C/D/U grades for the legacy 50 mappings.
 - [`paper_runs/faithful_component_replications/`](paper_runs/faithful_component_replications/) - primary three-component census, strict grade-B ledger, source pins, and attribution outputs.
+- [`paper_runs/paper_replication_audits/quantevolver/`](paper_runs/paper_replication_audits/quantevolver/) - fail-closed full-paper audit that keeps the 3/3 component gate separate from 0/75 paper results.
 - [`paper_runs/prompt_replay/guruagents/performance/`](paper_runs/prompt_replay/guruagents/performance/) - the 190-cell GuruAgents replay, 24 costed paths, and 12-path-by-33-month matched attribution.
 
 The older 12-formula package in [`paper_runs/fidelity_formula_components/`](paper_runs/fidelity_formula_components/) is retained as a mixed-fidelity diagnostic and is not part of the 100% denominator.

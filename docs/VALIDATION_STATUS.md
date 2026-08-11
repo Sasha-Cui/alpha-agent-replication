@@ -8,7 +8,7 @@ tracked aggregate evidence on Bouchet.
 | Artifact | SHA-256 |
 | --- | --- |
 | `docs/paper/icaif2026_submission.tex` | `70ad767203d3e118fc5ff2b764e4d9e02fd4bccfc03b9736d7a640d02fe88bda` |
-| `output/pdf/icaif2026_submission.pdf` | `cb8b2d4b0c9ac036d470011960ddaad68632884562bf17104d52712497335030` |
+| `output/pdf/icaif2026_submission.pdf` | `17d26699b8a62b3f2f06da6a4497661de37071d5d75a8322355ac78ffc01c908` |
 
 The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
@@ -17,7 +17,7 @@ labels.
 
 ## Passing checks
 
-- Repository test suite: 122 passed.
+- Repository test suite: 151 passed.
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
@@ -30,6 +30,11 @@ labels.
   eligible portfolio timestamps match; portfolio-return discrepancy is zero.
 - D07 owner review: complete, with all 3/3 rows approved by Sasha Cui on
   2026-08-11; it remains separately represented from the technical 100% result.
+- QuantEvolver full-paper audit: 75/75 numeric table cells and 31/31 additional
+  numeric result claims are enumerated, with zero native paper-result paths;
+  38/67 source mechanism dimensions match or have meaningful analogues. The
+  full-paper strict gate fails as intended and does not alter the separate 3/3
+  grade-B component result.
 - Stable ICAIF validation entry point: passed.
 - Collaborator index: deterministic 50-row rebuild with no tracked diff.
 - Publication boundary: no tracked Parquet files, third-party repository
@@ -87,6 +92,11 @@ The primary formula census covers all three evaluator-valid seeds in the pinned
 QuantEvolver release and passes 3/3 strict grade B (100%). The percentage applies
 to disclosed evaluator components under cadence, universe, and horizon
 adaptations, not the source discovery system or published portfolio.
+The paper-level audit confirms the distinction: it reproduces 0/75 paper table
+results and 0/31 non-table numeric result claims because the private data,
+checkpoint, exact experiment configuration, logs, factors, baselines, fusion
+arrays, seeds, and costs are not released. Passing public-framework tests and
+38/67 architecture matches or analogues are component evidence only.
 The exact-source synthetic conformance gate passes without empirical outcomes;
 Sasha Cui's separate three-row D07 owner attestation is complete.
 The older 12-formula bundle is a mixed-fidelity diagnostic outside that

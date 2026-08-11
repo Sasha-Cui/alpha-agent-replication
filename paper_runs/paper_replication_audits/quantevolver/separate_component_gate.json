@@ -1,0 +1,18 @@
+{
+  "status": "passed_separate_grade_B_disclosed_component_gate",
+  "counted_components": 3,
+  "grade_a_or_b": 3,
+  "pass_rate": 1.0,
+  "technical_reference_conformance_passed": true,
+  "cadence_adapted": "released bars to monthly JKP bars",
+  "universe_adapted": "released configured symbols to top-1000 U.S. equities",
+  "native_agent_replication": false,
+  "search_or_RFT_replication": false,
+  "paper_result_reproduction": false,
+  "scope_warning": "100% refers only to the three counted disclosed components. No native agent, search process, reinforcement training, or paper-level result is replicated.",
+  "pinned_sha256": {
+    "manifest.json": "a0f137a0284a4ac798d5782d6db29e102a6b732ede6c7d749b848ff53de14cdc",
+    "faithfulness_ledger.csv": "4fed50f22fc64646c6d962ec1e1b494bb1db24d6187e7a7a0e13956a6642a450",
+    "upstream_conformance.json": "fe83757055b8f6901b69784bd14d9232d17563a4f16d398b938a8309b47715f7"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "source_python": "Python 3.12.8",
+  "tracked_python_files_compiled": 55,
+  "compile_status": "passed_via_source_python_without_importing_modules",
+  "upstream_tests_shipped": 3,
+  "upstream_tests_status": "passed",
+  "upstream_test_summary": "3 passed",
+  "public_quickstart_component": {
+    "seed_candidates": 4,
+    "valid_seeds": 3,
+    "invalid_seeds": 1,
+    "example_task_bank_tasks": 9,
+    "dsl_values": {
+      "seed_0001": {
+        "observations": 81,
+        "last_value": 0.02361756584461492,
+        "deterministic": true
+      },
+      "seed_0002": {
+        "observations": 81,
+        "last_value": -0.9609280595622098,
+        "deterministic": true
+      },
+      "seed_0003": {
+        "observations": 81,
+        "last_value": 0.990300037889192,
+        "deterministic": true
+      }
+    }
+  },
+  "deterministic_released_seed_dsl_components": true,
+  "paper_data_used": false,
+  "llm_or_market_api_called": false,
+  "verl_training_executed": false,
+  "dependency_environment_reproduced": false,
+  "paper_result_reproduction": false
+}
