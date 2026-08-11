@@ -1,0 +1,21 @@
+claim_role,claim,paper_value,release_status,paper_result_credit
+result,v3 GPT-5.2 IC,0.0472,not_reproduced,False
+result,v3 GPT-5.2 ARR,4.68%,not_reproduced,False
+result,v3 GPT-5.2 MDD,11.80%,not_reproduced,False
+result,v3 zero-shot CSI500 cumulative excess return,40.28%,not_reproduced_no_return_array,False
+result,v3 zero-shot S&P500 cumulative excess return,19.1%,not_reproduced_no_data_or_return_array,False
+result,approximately 150 validated factors enter final LightGBM,approximately 150,not_reproduced_factor_pool_absent,False
+configuration,CSI300/500/S&P500 train split,2016-01-01--2020-12-31,standalone_backtest_config_matches,False
+configuration,validation split,2021-01-01--2021-12-31,standalone_backtest_config_matches,False
+configuration,test split,2022-01-01--2025-12-26,standalone_backtest_config_matches_but_mining_config_conflicts,False
+configuration,next-day return label,"Ref(close,-2)/Ref(close,-1)-1",matches_configs,False
+configuration,basic features,open/high/low/close/volume/vwap,mining_config_uses_four_engineered_features_and_no_vwap,False
+configuration,planning directions,10,checked_in_experiment_uses_2,False
+configuration,factors per hypothesis,3,checked_in_experiment_uses_1,False
+configuration,evolution iterations,5 mutation+crossover cycles,checked_in_experiment_max_rounds_3_and_docs_max_rounds_11,False
+configuration,TopkDropout,topk=50 n_drop=5,matches_configs,False
+configuration,buy and sell cost,0.05% / 0.15%,matches_configs,False
+configuration,deal price,open,matches_configs,False
+configuration,limit threshold,0.095,matches_configs,False
+configuration,daily observations in robustness table,966,no_daily_arrays_released,False
+configuration,LLM backbones,five named model families,names_only_no_pinned_provider_revisions,False

@@ -1,0 +1,32 @@
+{
+  "current_compile": {
+    "python_files": 135,
+    "compiled": 135,
+    "failures": []
+  },
+  "initial_compile": {
+    "python_files": 135,
+    "compiled": 135,
+    "failures": []
+  },
+  "component_driver_returncode": 0,
+  "component_checks": {
+    "ast_parse": true,
+    "base_features": 3,
+    "common_subtree_size": 12,
+    "crossover_groups": 2,
+    "free_args": 4,
+    "lineage_roundtrip": true,
+    "llm_or_market_api_called": false,
+    "trajectory_roundtrip": true
+  },
+  "upstream_tests_discovered": 1,
+  "upstream_tests_passed": 0,
+  "upstream_tests_failed": 1,
+  "upstream_test_failure": "missing template_debug.jinjia2",
+  "full_native_environment_reproduced": false,
+  "paper_experiment_executed": false,
+  "paper_result_cells_reproduced": 0,
+  "component_execution_is_paper_result_credit": false,
+  "llm_or_market_api_called": false
+}

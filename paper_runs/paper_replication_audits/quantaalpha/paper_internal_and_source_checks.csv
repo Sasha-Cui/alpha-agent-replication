@@ -1,0 +1,19 @@
+check,status,evidence
+v3 abstract headline versus Table 1,compatible,"0.0472 IC, 4.68% ARR, 11.80% MDD"
+Table 1 QuantaAlpha/DeepSeek versus Table 2 full row,compatible,"0.0461, 0.0450, 4.53, 15.10"
+Figure 3 full row versus Table 2 full row,compatible_at_figure_precision,0.046/0.045/4.53/15.10
+v3 GPT-5.2 QuantaAlpha minus RD-Agent prose,arithmetically_compatible,"IC +0.0186, ARR +1.10pp, MDD -4.96pp"
+v3 GPT-5.2 QuantaAlpha minus AlphaAgent prose,arithmetically_compatible,"IC +0.0125, ARR +3.57pp, MDD -2.09pp"
+cross-seed mean/std/range table,arithmetically_compatible_at_display_precision,summary recomputes from three displayed combinations
+daily t statistics,approximately_compatible_with_n_966,mean/(std/sqrt(966)) agrees after rounding
+Figure 1 curve endpoints versus prose transfer returns,paper_graphic_prose_conflict,"raster visually terminates near 69% CSI500 and 82% S&P500, not 40.28% and 19.1%"
+Figure 1 caption/prose metric versus y-axis,ambiguous_metric_label,caption/prose say cumulative excess return; axes say cumulative return
+Figure 4 year coverage versus prose,paper_graphic_prose_conflict,prose says 2021--2025; figure shows 2022--2025
+Appendix C factor identity versus evolution diagram,paper_internal_round_conflict,identity says Round 10 while offspring diagram says Round 8 Crossover
+v1/v2 versus v3 headline results,large_unexplained_revision,IC 0.1501->0.0472; ARR 27.75->4.68; transfer 160/137->40.28/19.1
+official repo README versus current paper,matches_v3_headline,README reports current lower headline values
+paper source Figure 1 versus repository docs Figure 1,byte_identical,SHA-256 35d013008dd023c096f53ede8fa5b149944ed30b657b514e946bf2f6252061c3
+current source default experiment versus paper profile,conflict,"2 directions, 3 rounds, 2 crossovers, 1 factor/hypothesis, consistency disabled"
+native mining-loop Qlib config versus paper split,conflict,"train 2016-2019, valid 2020, test/backtest 2021 only"
+standalone backtest config versus paper split and costs,substantially_compatible,"2016-2025 split, label, TopkDropout, open price, costs match"
+paper reported result arrays in source release,absent,"no factor pool, trajectories, predictions, returns, metrics, or plot arrays"

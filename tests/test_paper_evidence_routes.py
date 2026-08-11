@@ -59,8 +59,8 @@ def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     assert public["precise_native_or_access_blocker"].notna().all()
     assert public["precise_native_or_access_blocker"].str.contains(":A[123]_", regex=True).all()
     assert public["native_pipeline_disposition"].value_counts().to_dict() == {
-        "static_common_task_blocker_recorded_not_execution_targeted": 7,
-        "targeted_execution_recorded": 11,
+        "static_common_task_blocker_recorded_not_execution_targeted": 6,
+        "targeted_execution_recorded": 12,
     }
     reconstructed = public[public["good_faith_reconstruction"].eq("yes")]
     assert len(reconstructed) == 13
@@ -86,6 +86,24 @@ def test_quantevolver_paper_audit_stays_separate_from_component_gate() -> None:
     assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
     assert "0/75 table cells" in row["precise_native_or_access_blocker"]
     assert "3/3 grade-B component gate" in row["precise_native_or_access_blocker"]
+
+
+def test_quantaalpha_audit_credits_components_but_zero_paper_results() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv260207085")].iloc[0]
+    assert row["paper_evidence_route"] == "public_code_available"
+    assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_zero_of_344_native_table_results_components_only"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
+    assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
+    assert "all 135 Python files" in row["precise_native_or_access_blocker"]
+    assert "0/344 table cells" in row["precise_native_or_access_blocker"]
+    assert "Large v1/v2-to-v3 result revisions" in row[
+        "precise_native_or_access_blocker"
+    ]
 
 
 def test_alpha_r1_placeholder_audit_never_promotes_the_motif_proxy() -> None:

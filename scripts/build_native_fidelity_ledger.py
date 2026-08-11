@@ -87,8 +87,19 @@ ARTIFACT_NOTES = {
     ),
     "SYS-QUANTA-ALPHA": (
         "N",
-        "The repository is explicitly described as non-runnable/pseudocode in "
-        "the static audit; no dated native output is bundled.",
+        "A pinned three-revision paper audit enumerates 344 numeric result table "
+        "cells, 40 labeled figure/diagram values, 47 discrete unlabeled marker "
+        "points, and 10 raster return curves. The official release is substantial: "
+        "all 135 Python files in both the initial and current revisions compile, "
+        "and dependency-isolated native AST, trajectory persistence, lineage, and "
+        "crossover-selection components execute. These are architecture components, "
+        "not paper results. The checked-in experiment and mining-loop configs conflict "
+        "with the paper, claimed trajectory-segment repair/splicing is not structurally "
+        "implemented, and the sole upstream test fails because its template is absent. "
+        "No approximately-150-factor pool, trajectories, exact model/API runs, baselines, "
+        "seeds, predictions, portfolios, returns, or plot arrays are shipped, so 0/344 "
+        "table cells count as native reproductions. Large v1/v2-to-v3 result revisions "
+        "lack released lineage, and v3 contains direct figure/prose inconsistencies.",
     ),
     "SYS-QUANT-EVOLVER": (
         "N",
@@ -215,6 +226,7 @@ TARGETED_EXECUTION = {
     "SYS-GURU-AGENTS": "legacy_targeted:legacy_non_jkp_diagnostic_only",
     "SYS-QUANT-AGENT-HFT": "legacy_targeted:blocked_jkp_scope_incompatible",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
+    "SYS-QUANTA-ALPHA": "paper_audit:completed_zero_of_344_native_table_results_components_only",
     "SYS-RD-AGENT-QUANT": "legacy_targeted:blocked_on_jkp_adapter",
     "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",
     "SYS-TRADING-R1": "legacy_targeted:blocked_no_public_codebase",
@@ -225,6 +237,15 @@ OUTPUT_BLOCKS = {
     "SYS-AUTOMATE-STRATEGY": "A3_output_lacks_six_country_security_mapping",
     "SYS-CRYPTO-TRADE": "A3_wrong_asset_class_crypto",
     "SYS-GURU-AGENTS": "A3_US_only_not_six_country",
+}
+
+
+# The frozen static artifact audit used an over-broad "coming soon" heuristic:
+# QuantaAlpha's roadmap for a separate future project demoted an otherwise
+# complete code+environment+runner+config package to R1. The paper-level audit
+# executes native components and justifies the corrected static package tier.
+STATIC_TIER_OVERRIDES = {
+    "SYS-QUANTA-ALPHA": "R3",
 }
 
 
@@ -324,7 +345,9 @@ def main() -> None:
                 "system_id": sid,
                 "native_task": native_task(source),
                 "public_artifact_status": artifact_status,
-                "static_tier": observed["static_fidelity_tier"],
+                "static_tier": STATIC_TIER_OVERRIDES.get(
+                    sid, observed["static_fidelity_tier"]
+                ),
                 "native_dated_signal_or_return_shipped": shipped,
                 "prespecified_G7_monthly_common_task_compatible": "N",
                 "blocking_stage": block,

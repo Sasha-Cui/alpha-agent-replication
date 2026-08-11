@@ -1,0 +1,29 @@
+parameter,paper_value,released_value,status
+planning.num_directions,10,2,conflict
+evolution.max_rounds,"""five mutation+crossover cycles (mapping ambiguous)""",3,conflict
+evolution.crossover_size,2,2,match
+evolution.crossover_n,"""not stated in paper; source docs say 10""",2,not_paper_specified_and_docs_conflict
+quality_gate.consistency_enabled,true,false,conflict
+quality_gate.complexity_enabled,true,true,match
+quality_gate.redundancy_enabled,true,true,match_but_no_paper_factor_zoo
+factor.factors_per_hypothesis,3,1,conflict
+factor.symbol_length_threshold,250,200,conflict
+factor.base_features_threshold,6,5,conflict
+factor.free_args_ratio_threshold,0.5,0.5,match
+factor.duplication.threshold,5,5,match
+standalone.data.market,"""csi300""","""csi300""",match
+standalone.dataset.label,"""Ref($close, -2) / Ref($close, -1) - 1""","""Ref($close, -2) / Ref($close, -1) - 1""",match
+standalone.dataset.train,"[""2016-01-01"", ""2020-12-31""]","[""2016-01-01"", ""2020-12-31""]",match
+standalone.dataset.valid,"[""2021-01-01"", ""2021-12-31""]","[""2021-01-01"", ""2021-12-31""]",match
+standalone.dataset.test,"[""2022-01-01"", ""2025-12-26""]","[""2022-01-01"", ""2025-12-26""]",match
+standalone.strategy.topk,50,50,match
+standalone.strategy.n_drop,5,5,match
+standalone.exchange.deal_price,"""open""","""open""",match
+standalone.exchange.open_cost,0.0005,0.0005,match
+standalone.exchange.close_cost,0.0015,0.0015,match
+standalone.exchange.limit_threshold,0.095,0.095,match
+mining.dataset.train,"[""2016-01-01"", ""2020-12-31""]","[""2016-01-01"", ""2019-12-31""]",conflict
+mining.dataset.valid,"[""2021-01-01"", ""2021-12-31""]","[""2020-01-01"", ""2020-12-31""]",conflict
+mining.dataset.test,"[""2022-01-01"", ""2025-12-26""]","[""2021-01-01"", ""2021-12-31""]",conflict
+mining.backtest.period,"[""2022-01-01"", ""2025-12-26""]","[""2021-01-01"", ""2021-12-31""]",conflict
+mining.feature_count,6,4,conflict

@@ -1,0 +1,35 @@
+category,paper_dimension,status,evidence,paper_mechanism_credit
+planning,parallel initial direction generation,implemented_analogue,native code and prompts exist; default count is 2 rather than paper 10,False
+trajectory,complete hypothesis/factors/code/results/feedback record,implemented_match,StrategyTrajectory persists the declared lifecycle fields,True
+trajectory,lineage parent IDs,implemented_match,parent_ids are persisted,True
+trajectory,persistent trajectory pool,implemented_match,JSON save/load executes in isolated component test,True
+mutation,mechanism-level variation,partial_analogue,prompt generates an orthogonal/independent new strategy,False
+mutation,failed-step localization,not_implemented_as_claimed,no code localizes the failed trajectory step,False
+mutation,rewrite only failed trajectory segment,not_implemented_as_claimed,generation returns a new hypothesis rather than patching a stored segment,False
+mutation,preserve other trajectory segments,not_implemented_as_claimed,no splice/preservation representation exists,False
+crossover,performance-aware parent selection,implemented_match,RankIC-based strategies exist,True
+crossover,diverse direction/phase preference,implemented_match,combination score rewards both,True
+crossover,validated trajectory-segment reuse,not_implemented_as_claimed,only truncated textual summaries are sent to the LLM,False
+crossover,actual segment splicing,not_implemented_as_claimed,no structured segment splice exists,False
+consistency,hypothesis-description-expression checker,implemented_match,LLM consistency checker and correction loop exist,True
+consistency,enabled in shipped experiment,config_conflict,consistency_enabled is false,False
+consistency,fail-closed checker errors,not_implemented_as_claimed,exception path returns consistent=true,False
+complexity,symbol-length constraint,implemented_match,native AST-backed regulator exists,True
+complexity,base-feature constraint,implemented_match,native AST-backed regulator exists,True
+complexity,free-argument ratio constraint,implemented_match,native AST-backed regulator exists,True
+complexity,paper thresholds,config_conflict,checked-in 200/5/0.5 versus documented paper 250/6/0.5,False
+redundancy,AST common-subtree matching,implemented_match,native parser and matcher execute,True
+redundancy,paper factor-zoo snapshot,missing_artifact,factor_zoo_path is null and no paper pool is shipped,False
+redundancy,fail-closed regulator errors,not_implemented_as_claimed,regulator catches errors and permits progress,False
+factor_generation,three factors per hypothesis,config_conflict,checked-in default is one,False
+factor_generation,public prompts,implemented_match,prompt YAML files are tracked,True
+backtest,Qlib factor evaluation,implemented_match,native runner/config path exists,True
+backtest,paper data split in mining loop,config_conflict,selected conf_baseline test/backtest ends in 2021,False
+backtest,paper standalone split/cost profile,implemented_match,configs/backtest.yaml matches most declared settings,True
+portfolio,TopkDropout top50/drop5,implemented_match,both configs specify it,True
+portfolio,open execution and costs,implemented_match,0.05%/0.15% and open are configured,True
+release,paper factor pool,missing_artifact,no generated factor library is tracked,False
+release,paper trajectories,missing_artifact,no trajectory pool is tracked,False
+release,published predictions/returns/results,missing_artifact,no result arrays or metrics are tracked,False
+release,baseline reproduction assets,missing_artifact,no per-baseline configs/runs are shipped,False
+release,fully resolved environment,partial_analogue,dependency metadata exists but audit environment cannot resolve full stack,False

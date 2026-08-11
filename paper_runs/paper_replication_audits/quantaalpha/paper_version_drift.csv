@@ -1,0 +1,6 @@
+claim,v1_value,v2_value,v3_value,v3_minus_v2,paper_explains_revision,released_run_artifacts_explain_revision,status
+GPT-5.2 IC,0.1501,0.1501,0.0472,-0.1029,False,False,large_unexplained_revision
+GPT-5.2 ARR_pct,27.75,27.75,4.68,-23.07,False,False,large_unexplained_revision
+GPT-5.2 MDD_pct,7.98,7.98,11.8,3.82,False,False,large_unexplained_revision
+CSI500 transfer cumulative_excess_pct,160.0,160.0,40.28,-119.72,False,False,large_unexplained_revision
+S&P500 transfer cumulative_excess_pct,137.0,137.0,19.1,-117.9,False,False,large_unexplained_revision
