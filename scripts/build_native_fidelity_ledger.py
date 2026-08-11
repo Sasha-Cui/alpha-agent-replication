@@ -419,6 +419,27 @@ PAPER_ONLY_AUDIT_NOTES = {
         "momentum/trend motif; its other characteristics and portfolio rule are "
         "researcher supplied and receive no FAMA-result credit."
     ),
+    "SYS-FACTFIN": (
+        "A pinned Profit Mirage/FactFin audit validates the official 12-page arXiv-v1 "
+        "paper and complete 14-file TeX bundle, then inventories all 525 displayed "
+        "empirical or derived numeric table cells, including 120 direct FactFin cells "
+        "and 108 unique FactFin measurements after duplicated AAPL/TSLA full-system "
+        "rows. The manuscript rebuilds at identical normalized extracted-content level, "
+        "but this is document evidence: 0/525 cells reproduce. The source contains seven "
+        "published figures and no system or benchmark program/data. The arXiv record, "
+        "author homepage/account, exact GitHub metadata searches, Hugging Face, Software "
+        "Heritage, and guessed Wayback routes recover no attributable FactFin or "
+        "FinLake/FinLeak release; this bounded negative result is not proof that private, "
+        "deleted, or unindexed artifacts never existed. A pinned current-Yahoo diagnostic "
+        "matches all six paper day counts but 0/6 Buy-and-Hold cells at display precision "
+        "and receives no result credit. Only one simplified prompt is verbatim, despite "
+        "the paper promising full templates and baseline details in the appendix. Missing "
+        "code, benchmark rows/scorer, frozen prices/news, RAG/MCTS/counterfactual runtime, "
+        "training split, model requests, strategies, actions, orders, fills, and dated NAV "
+        "block native execution. The paper also conflicts on FinLake versus FinLeak naming, "
+        "TSLA MDD signs/ranking, exact versus partial-credit scoring, overlapping fine-tune "
+        "and test dates, and several causal or aggregate performance claims."
+    ),
     "SYS-FIN-VISION": (
         "A pinned FinVision audit validates the official nine-page paper, the "
         "complete 22-file arXiv manuscript bundle, five printed prompt templates, "
@@ -500,6 +521,7 @@ TARGETED_EXECUTION = {
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": "paper_audit:completed_zero_of_162_v2_table_results_missing_hybrid_pipeline_and_v2_lineage",
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
+    "SYS-FACTFIN": "paper_audit:completed_zero_of_525_numeric_cells_no_public_system_or_benchmark_release",
     "SYS-FIN-VISION": "paper_audit:completed_zero_of_72_performance_cells_no_public_system_source",
     "SYS-HEDGE-AGENTS": "paper_audit:completed_zero_of_236_numeric_cells_static_site_not_system_source",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
