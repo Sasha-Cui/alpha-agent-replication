@@ -1,0 +1,12 @@
+check,paper_claim,observed,status,paper_result_credit
+result_table_census,13 models x 6 assets x 4 metrics,312,confirmed,False
+heatmap_annotation_census,6 categories x 6 assets,36,confirmed,False
+heatmap_table_internal_agreement,Figure 5 summarizes Tables 3--4 Sharpe ratios,35/36,one_conflict,False
+trading_r1_nvda_sharpe,one paper-level Sharpe value,Table 3=2.72; Figure 5=1.881; prose=1.88,paper_internal_conflict,False
+label_return_direction,forward returns over 3/7/15 days,(EMA-EMA.shift(tau))/EMA.shift(tau) is a trailing return,paper_internal_conflict,False
+label_threshold_causality,strictly causal evaluation,72/126 earlier synthetic labels change after future extension,literal_formula_is_not_prefix_stable,False
+decision_penalty_orientation,false bullish receives the heavier extreme penalty,prediction SB/truth SS=-2.00; prediction SS/truth SB=-2.25,paper_internal_conflict,False
+training_evaluation_calendar,2024-06-01--2024-08-31 is held out,evaluation interval lies inside 2024-01-01--2025-05-31 collection interval; no split manifest,claim_not_verifiable,False
+evaluation_asset_narrative,"examples include AAPL, GOOGL, AMZN, SPY","tables report NVDA, AAPL, MSFT, AMZN, META, SPY and no GOOGL",paper_narrative_table_mismatch,False
+reward_lambda_application,lambda_dec scales the decision component,lambda_dec appears inside R_decision and again in R_investment,ambiguous_possible_double_scaling,False
+official_release_claim,official project page says Terminal is released,linked one-file repository says Releasing soon,official_sources_conflict,False

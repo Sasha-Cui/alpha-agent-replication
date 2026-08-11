@@ -1,0 +1,40 @@
+mechanism,paper_specification,audit_status,verified_in_released_native_source,paper_spec_reconstruction_credit,paper_result_credit
+Tauric-TR1-DB raw corpus,100k samples; 14 tickers; 2024-01-01--2025-05-31,not_released,False,False,False
+daily multimodal input assembly,"news, technicals, fundamentals, sentiment, macro",not_released,False,False,False
+point-in-time source snapshots,source data as available on each day,not_released,False,False,False
+20 shuffled modality variations,about 20 variants per ticker-day,not_released,False,False,False
+token filtering and compression,regex plus LLM relevance filtering,not_released,False,False,False
+literal volatility label formula,Algorithm S1 reconstructed in this audit,paper_spec_reconstructed_only,False,True,False
+forward-return label claim,prose says forward; formula uses lagged EMA,paper_internal_conflict,False,False,False
+label quantile fitting boundary,training-only threshold fit not specified,underspecified,False,False,False
+Qwen3-4B backbone,model family named,checkpoint_not_released,False,False,False
+Stage I SFT,"examples, memories, LoRA",training_data_and_config_not_released,False,False,False
+Stage I RFT,structure reward,training_code_and_config_not_released,False,False,False
+Stage I self-distill augmentation,reject-sampled cases,pipeline_not_released,False,False,False
+Stage II SFT,evidence-based reasoning,training_data_and_config_not_released,False,False,False
+Stage II RFT,opinion/quote/source reward,training_code_and_parser_not_released,False,False,False
+Stage II self-distill augmentation,professional faithful claims,pipeline_not_released,False,False,False
+Stage III SFT,recommendation patterns,training_data_and_config_not_released,False,False,False
+Stage III RFT,decision reward,training_code_and_config_not_released,False,False,False
+Stage III self-distill augmentation,directionally correct cases,pipeline_not_released,False,False,False
+structure reward,formula disclosed; exact XML/markdown parser absent,underspecified,False,False,False
+evidence reward,formula disclosed; exact extraction parser absent,underspecified,False,False,False
+decision reward matrix,matrix reconstructed in this audit,paper_spec_reconstructed_only,False,True,False
+reward aggregation,lambda values absent and decision lambda appears twice,underspecified,False,False,False
+GRPO optimization,generic objective disclosed,hyperparameters_and_code_not_released,False,False,False
+SFT LoRA,hardware disclosed,rank_alpha_dropout_optimizer_steps_absent,False,False,False
+trained model checkpoints,Trading-R1/SFT/RFT variants,not_released,False,False,False
+baseline model snapshots,names only,exact_versions_and_access_dates_absent,False,False,False
+inference prompts,standardized snapshot described,not_released,False,False,False
+decoding and retries,no temperature/top-p/seeds/malformed-output policy,not_specified,False,False,False
+evaluation panel,six result assets named by Tables 3--4,inputs_not_released,False,False,False
+held-out split,June--August 2024 claimed excluded,split_manifest_not_released,False,False,False
+five actions to weights,mapping claimed,weights_not_specified,False,False,False
+holding rule,on the order of one week,exact_horizon_not_specified,False,False,False
+entry exit and rebalance,strictly causal backtest claimed,not_specified,False,False,False
+short leverage cash constraints,long-short strategy claimed,not_specified,False,False,False
+transaction costs and slippage,no evaluation cost model,not_specified,False,False,False
+Sharpe risk-free conversion,4% annual stated but per-period conversion absent,ambiguous,False,False,False
+raw model outputs and decisions,needed for HR and return paths,not_released,False,False,False
+equity curves and trade ledger,needed for CR/SR/MDD,not_released,False,False,False
+metric and table generator,formulas only,not_released,False,False,False

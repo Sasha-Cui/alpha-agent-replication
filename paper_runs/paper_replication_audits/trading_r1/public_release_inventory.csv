@@ -1,0 +1,9 @@
+source,url,observed_count,status,native_result_credit
+official_git_repository,https://github.com/TauricResearch/Trading-R1,1,one_readme_only,False
+official_git_commits,https://github.com/TauricResearch/Trading-R1,1,one_initial_commit,False
+official_git_tags,https://github.com/TauricResearch/Trading-R1,0,none,False
+official_github_issue,https://github.com/TauricResearch/Trading-R1/issues/1,1,open; release request has 1 non-author update request,False
+official_huggingface_models,https://huggingface.co/api/models?author=TauricResearch,0,none,False
+official_huggingface_datasets,https://huggingface.co/api/datasets?author=TauricResearch,0,none,False
+official_project_page_release_statement,https://tauric.ai/research/trading-r1,1,says_released_but_links_placeholder_repository,False
+github_metadata,https://api.github.com/repos/TauricResearch/Trading-R1,0,pushed_at=2025-09-15T04:22:20Z; default_branch=main,False

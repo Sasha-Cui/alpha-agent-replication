@@ -1,0 +1,29 @@
+{
+  "audit_date": "2026-08-11",
+  "native_system_execution_attempted": false,
+  "native_system_execution_blocker": "official_repository_has_no_executable_code_model_dataset_predictions_or_backtest_artifacts",
+  "paper_latex_compilation": {
+    "attempted": true,
+    "boundary": "typesetting_reproduction_only_not_native_system_execution",
+    "compiler": "/apps/software/2024a/software/texlive/20240312-GCC-13.3.0/bin/x86_64-linux/pdflatex",
+    "exit_code": 0,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "pages": 58,
+    "paper_result_credit": false,
+    "passes": 2,
+    "second_pass_warning_or_box_lines": 67
+  },
+  "paper_result_credit": false,
+  "paper_specification_reconstruction": {
+    "attempted": true,
+    "components": [
+      "literal Algorithm S1",
+      "decision reward matrix"
+    ],
+    "native_source_execution": false,
+    "paper_result_credit": false
+  }
+}

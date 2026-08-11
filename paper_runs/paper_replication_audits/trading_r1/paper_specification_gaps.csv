@@ -1,0 +1,16 @@
+gap_id,area,gap,severity
+G01,model,"Trading-R1, SFT, and RFT checkpoints are not public",blocking
+G02,data,Tauric-TR1-DB and exact evaluation prompts are not public,blocking
+G03,code,official repository contains no executable source,blocking
+G04,predictions,per-date baseline and Trading-R1 actions are absent,blocking
+G05,backtest,"action weights, entry/exit, rebalance, cash, leverage, and costs are absent",blocking
+G06,training,"LoRA/GRPO hyperparameters, sample counts, weights, seeds, and checkpoints are absent",blocking
+G07,models,"baseline model identifiers, API snapshots, prompts, and decoding are absent",blocking
+G08,split,the held-out split manifest is absent although evaluation dates lie inside collection dates,blocking
+G09,labels,prose says forward return but Algorithm S1 computes a lagged return,blocking
+G10,labels,full-sample quantiles can change past labels when future observations are appended,blocking
+G11,reward,reward lambdas are absent and lambda_dec is applied in both component and aggregate formulas,blocking
+G12,reward,decision-matrix orientation contradicts the stated false-bullish asymmetry,blocking
+G13,metrics,4% annual risk-free rate is not converted to an explicit daily rate,blocking
+G14,results,NVDA Trading-R1 Sharpe is 2.72 in Table 3 but 1.881 in Figure 5 and 1.88 in prose,blocking
+G15,release,official project page says released while linked repository still says releasing soon,blocking
