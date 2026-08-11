@@ -1,0 +1,18 @@
+dimension,assessment,evidence,author_source_credit,paper_result_credit
+author affiliation,conflict,Repository owner/committer is not a paper author and the paper does not link this repository.,False,False
+pinned revision,specified,Community commit cab5d91f3cb834c3810811142407047bd2fef7ff is pinned for audit only.,False,False
+Python static compilation,passes,All 40 Python files compile.,False,False
+package import,fails,Top-level import references a nonexistent mcts_llm_alpha.data package.,False,False
+nominal tests,fails_collection,All three nominal test modules fail collection; 3 collection errors.,False,False
+paper data package,missing,"README/source imports describe data support, but no internal data package is tracked.",False,False
+paper result artifacts,missing,"No factor pool, checkpoint, trace, prediction, return path, or paper table output is tracked.",False,False
+exact six paper formulas,missing,None of the six disclosed Ours formulas appears verbatim in the community tree.,False,False
+LLM model,conflict,Default is gpt-4o-mini; the paper's main comparison uses GPT-4.1.,False,False
+search budget,conflict,"Default max_iterations is 20; paper comparisons use 1,000/2,000/3,000 generated formulas.",False,False
+data interval,conflict,Default 2020-01-01 through 2023-12-31 differs from the paper's 2011-2020 training and 2021-2024 testing.,False,False
+universe,partial_conflict,"Default exposes CSI300 only; paper reports CSI300 and CSI1000, and v3 adds S&P500.",False,False
+split date,conflict,Default 2022-01-01 split differs from the paper's 2021-01-01 test boundary.,False,False
+MCTS structure,partial,A community MCTS implementation exists but cannot be imported or tied to a paper run.,False,False
+FSA structure,partial,"A frequent-subtree module exists, but no released paper tree or factor zoo validates equivalence.",False,False
+exact prompts,not_verified,Community prompts are not byte-identical released prompt artifacts or tied to the paper's runtime calls.,False,False
+native end-to-end run,blocked,"Broken package import, absent internal data module, absent exact inputs, and absent model outputs prevent a run.",False,False

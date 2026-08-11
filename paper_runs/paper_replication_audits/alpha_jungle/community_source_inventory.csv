@@ -1,0 +1,97 @@
+relative_path,bytes,sha256,is_python,is_nominal_test,is_author_linked_source,is_paper_result_artifact
+.github/ISSUE_TEMPLATE/bug_report.md,927,d5eb7688afc0cf7486ba95531dceb669c473c776a2d7f482bea07317bb9550bf,False,False,False,False
+.github/ISSUE_TEMPLATE/config.yml,470,bf195e170f350f4f4bbbed50573326b24428288b2cdab809af6ad37d78bedaac,False,False,False,False
+.github/ISSUE_TEMPLATE/feature_request.md,1066,9c18e630fa044fc18f0f88578a5ae2e20802c07201d50aef74db06a8acee9925,False,False,False,False
+.github/ISSUE_TEMPLATE/question.md,769,d12524e1c9c43aa7a7817d20a6af01884569febb5918f174aea95eb0873399be,False,False,False,False
+.github/pull_request_template.md,1381,47ea9524b936d362e5e30736aba01dff39aabd6e7ae7b9520ac20dc71c4b0909,False,False,False,False
+.github/workflows/lint.yml,879,fb207c400b64f2a15b659227a060de75db45cd43ce33347a021a98b1641a6fb3,False,False,False,False
+.github/workflows/tests.yml,2607,7362439ffefb0f22c5abd1e5ee30af64dae20d08d9ba3f7f23cd95e638e1c16a,False,False,False,False
+.gitignore,558,3fde959062580e29619fa41c43848584fb01a25ca47359850129577e3c811cde,False,False,False,False
+Artical/Appendix.md,47861,18c4113340d6a009c5dd755d2cd2ac05b0e0a22119cb228832856fadb8395c89,False,False,False,False
+Artical/MTCS_LLM_Alpha.md,106995,c95522b73e66ba21aafe3d814752428706117c0577b64ac29910d8984a915b5f,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining.md,113198,98936034546d1bfd3ff40da01afdf5feb7a65deeb8d6f1d1fadc09ee37562ca7,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining_meta.json,56696,370b882005ea0ef0094e49597b9e443fdce59dca537248f20c2bfc14cc1e3325,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_12_Figure_20.jpeg,42366,886b00ceb9fe3a2d4545166cbec842471199a8d2590dd70873af8773b36f2d3f,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_13_Figure_0.jpeg,92031,f658cff40cdb3f15313ea08082c7c21f38207d691083c370bb9db13579bc8449,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_13_Figure_3.jpeg,108935,8fefa675382cea6e8e6aacbf78f502818207f3606595c62fc6f6063d609220cc,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_14_Figure_3.jpeg,107418,5ba1785cf26307eb706760436bb440b48f123515513876970f6d24ad107fe5a7,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_15_Figure_0.jpeg,113641,0d72b7da99a3da05c7bb024f050e5b6b2fdf96ed3b12526c8c5bde55dfb88ad9,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_21_Figure_6.jpeg,44586,475f286df16e91e5c7465beaf4230bf78ce82ab9aaa738c09851de28c4320ad7,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_22_Figure_0.jpeg,110472,db0a30c3c1b31c98aa66fe91b26590c51b28d14e83479d2cd3c366a937d6c197,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_23_Figure_2.jpeg,37568,43f13f53baedfdf0fa81c7a1ab79f2c9f5e29c1dbf52cd4df06c97a45c7f3cfa,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_3_Figure_0.jpeg,107170,5b7871aecac7b7ce427b552b5fb3163c355fe077b9fe3a729810b8f74854a287,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_5_Figure_10.jpeg,52128,8d28ccd61143bf2c9f2802d47e2cb4609ecef6a3e2e0bc3e35d36e26b5534325,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_7_Figure_4.jpeg,53367,adb87647fc1ed1f1aa34f6f50d62cf9906b880fc11f16b2a72ffbc698644a09d,False,False,False,False
+Artical/Navigating the Alpha Jungle An LLM-Powered MCTS Framework for Formulaic Factor Mining/_page_8_Figure_3.jpeg,64905,41758b96c4f83de6c370153fc2c359e88b18ebdc886b4748c2ef9380cbe8e359,False,False,False,False
+Artical/alpha_mtcs_cn.md,35941,532c8cc0bc08a06590d095b885d42b5f8e4bb698a82f262ba8b711241dfc015f,False,False,False,False
+Artical/img/fig1.png,187669,8bb5219e223205ecabebd6afdbac4f56e5792689e73613f7ce49fb7b555c6c7d,False,False,False,False
+Artical/img/fig10.png,58120,2c66ebc5c3757c09ae97b0fa8d19c390c7188cd1bd22d5e42c97350eaf246e25,False,False,False,False
+Artical/img/fig11.png,222394,f68656b2501fb7950c1cefabe1d9b0ffa67f7a2ae68f561dd84a604177921497,False,False,False,False
+Artical/img/fig12.png,68702,030a17399bd28e4c636432cd9ffef165322ab0419fd5affc79550d7a242bc970,False,False,False,False
+Artical/img/fig2.png,105564,27b82fe93d5d16d4fc500c0d00cb734b31e50cb7f92baa1c2e86664dafdd466e,False,False,False,False
+Artical/img/fig3.png,75798,662de3f3120dc292062437533d1970f1b8c9f75308eef0f416414f5380035bf6,False,False,False,False
+Artical/img/fig4.png,101749,cd104a005a4fa0acd2e429076b9e60db12c97c3041ce474a0a50e15c0e09f8b0,False,False,False,False
+Artical/img/fig5.png,53696,bd052c6e10ae8e7e1fae5d474e0642cb5f440f3a594016c2e5f654cbc0903bc2,False,False,False,False
+Artical/img/fig6.png,137252,e2e0aaea26574bd144973125c046caaf3847927e0e0c51fbe0657f3518adf329,False,False,False,False
+Artical/img/fig7.png,165947,ec22014bb8d27e31c591136831dd6c3a436c7522ea0579f654960812ea744a6c,False,False,False,False
+Artical/img/fig8.png,155192,a7aacf5a4876c39f8136507587c22856707502bed3292c417752c5462c89e4fb,False,False,False,False
+Artical/img/fig9.png,171717,3af22cc3b9c445a68c6e748efcce78235a053428c3096defbc70aac3f1e50720,False,False,False,False
+LICENSE,1061,8b32050b27886a5752e668f222ea07c114b1918f896832a5cf5dea33e357d3f5,False,False,False,False
+README.md,6112,1a2cc4ebbe2acb573e745456199e7e69fa44df5c384416ae444c45ceb176a557,False,False,False,False
+mcts-llm-alpha/.env.example,505,4c69e7024af74a340d86684c182b527b924c5d11de6feffa2829346aedfca444,False,False,False,False
+mcts-llm-alpha/.gitignore,1570,1dcc6f317e3d1b21ee09715495f36319f679e4b814dc61c127ea20a0cad00882,False,False,False,False
+mcts-llm-alpha/README.md,3588,bf376444cb6f82f1bc8bbacd67ea88d23397dd50f4a4c671719b45fabba9376b,False,False,False,False
+mcts-llm-alpha/docs/MCTS_LLMALPHA_FIX_PLAN.md,22855,7854cfd47baf2775fb13b39d359176dacec778595373d1ecb5c37ee6847aa159,False,False,False,False
+mcts-llm-alpha/docs/architecture.md,699,8604ebae41a06f33f944a1ca9c3e4b9b65b97c52fe3605b68a66ee9ef3676733,False,False,False,False
+mcts-llm-alpha/docs/architecture_cn.md,7277,9159393a0da75ddab208c0c7abc56d1647e0871d54ac7a9313c6afd2607476b1,False,False,False,False
+mcts-llm-alpha/docs/architecture_en.md,8426,ab913d58049b9d2c465fe4b02d1ed6937fad95bbb2d1881488a5288128cef875,False,False,False,False
+mcts-llm-alpha/docs/configuration.md,7618,d5d9f4f8d990c028dc6e5a4efc84301562abc78ed4072482a28a242d656317dc,False,False,False,False
+mcts-llm-alpha/docs/evaluation_system.md,8949,864122d9ce89057055f320a76f45267cf69c76aa7758ff1ac42d0bfad8f8e420,False,False,False,False
+mcts-llm-alpha/docs/quick_start.md,5926,8921a2fb2213bfc988521acdbd5af929eebdeb196a583c2dbc89c8c6d699db84,False,False,False,False
+mcts-llm-alpha/docs/raw_metrics_display.md,5626,75fea7e7571843300580dbc47652853d846cb7f953ae0ee7713d70eb92de5838,False,False,False,False
+mcts-llm-alpha/pyproject.toml,1588,797ebce0ab0fcd7e3b3490fba18a17ccaa53d999981df39c79c0ad5e010053de,False,False,False,False
+mcts-llm-alpha/run_search.py,14482,1ed233fd083e904568d0c8fa769b2a3cf8079137e136952cd95e2e638c513683,True,False,False,False
+mcts-llm-alpha/src/__init__.py,38,f4b255c5f75ef949d1aada5afd974159f0bb2569a10db15d3feabe9becf7ba6c,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/__init__.py,858,a6f51e1f1bc021156d45bd6e2f2bd86ea47c2132fe7393e41dbf130e0827ff61,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/cli.py,16251,9fc05e661ae621cb64ad3b36af39877e0c67f75fd0b7db954fe9ca6209cbad09,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/config/__init__.py,476,e3e6129f6a9e47a76ff83a9738d27e6662c485185113bb0937aeb6274d9f3582,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/config/config.py,6875,ea6df4b4a0ce5c17cb05b1ca26d673dbabf8ec308fbbb5334e918a08df208cb9,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/config/default.yaml,2564,66ea652091220fd78eecb6e9cd5cba488f5ef9921b3dc8a499918f45f2880da0,False,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/config/scoring_config.py,1590,492414577a84300d392f50e191ae1a61c29c61d8abca4cccab2c75fab63adb75,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation.zip,42839,98fa3cb0429b62f502bbfaa212e880f0488207b3b7cc218ba154819b36ca3afa,False,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/__init__.py,768,ee94520056b5802d522da6322c1a58a4d1587b9cb4ee6d0f022c0c3e29944735,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/cache.py,7404,3db2bc638718fd1a8fa1d800a746153f751d6d948f18fcea7a8181f28a382d32,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/comprehensive.py,8237,6314f9ba35bce22c4430cc78b7f5a56998b210a758b72a6b15ed9a557ab559f1,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/metrics/__init__.py,477,175a351b6f95c02871093440411dafc23d28023cc55bc50fac65365e5bd10ba5,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/metrics/diversity.py,5131,01454182d1a5a82cebc825e0238ae2f9a0d43f9147fcc68fed551ae6b155721f,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/metrics/effectiveness.py,2700,d0e706e58ec728bd39cca3b165f1d7e31c67c0e7d0a04c9e21d405fa5e982d13,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/metrics/overfitting.py,3687,e3bb916eb9c7eb681e0f6ad2d9df1aeaf14a6a1b2dc2e71b00e8254ed44da382,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/metrics/stability.py,2737,e27d09c5b323f2090673b8b560be6b15089d895e93538f57a88f79111ffbc205,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/metrics/turnover.py,3439,de5767a94b751b6a7f2e0cef3e7078c4f051022bccc2786c591408ddfe9bcc03,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/qlib_evaluator.py,10819,cc4d9410f420d495acb2941bf51dc84ad27d2b0b1b1bb34730e06559e9bd5683,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/evaluation/relative_ranking.py,9625,5b7cbabed0ef4b39d74e0acc2261ba05e617d72c02d3a44a0824d26c62350eb1,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/formula/__init__.py,464,b1f86bbfc6d1262b2ecb4515f91e41c6b63b025e19512422f3f605466bb622a0,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/formula/cleaner.py,9577,8b50e69f1384f15b93b483a9eed2a5ec7f15612bf9e810f36d417634413f4eac,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/formula/fixer.py,30458,2c512666a058dee7f0090be7174ee3fb61d94550d93553de2a158ce26d6e80ba,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/formula/validator.py,5214,ed58bf538cfb56510c6d9b4e6f409ce969b0c3ee961ebe7bc6bcb56c3dd0baed,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/llm/__init__.py,211,ac8bc87527693579bada8c4d0dda5ac69c6907a0c17c90d90b2d2c90cc0339e2,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/llm/client.py,29225,8295afd95fc82089faae5e9b7c94b65ac9744c9a09c6f5b8e1939abda23542cf,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/llm/example_selector.py,7240,20dbfcfc4d21f74de9bbdfe9fe1049bb6f0c1a8b3849cbd96d2ede41c7d266e4,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/llm/overfitting_evaluator.py,5963,986f792555695f499d21db391a46180c0192dcd6fd568e73a2b40b6eabf037ad,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/llm/performance_aware.py,6777,cbae0ab64b8625112553eee89ec0b0616f61986437b4b118f43d1292e97152f9,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/llm/prompts.py,14631,1001b461c246bf1f2cb5cf7b0ee4c4b0315c2da555f9e3778ec52cf3e1ac089d,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/llm/wrapper.py,3325,617c2212eabf5dc87c86dd17f79664776c6d7978f0b7c5d7922c167809d61148,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/mcts/__init__.py,374,143ffc5250129f9bc561416a45ea2d96b1c2d105018ade3b9fdaa28b05cc799d,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/mcts/fsa.py,11566,17e2bcc52216c2cd1e7a8b3a92a7a754d239fd52f34c315b90589e2a0f3b1e6f,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/mcts/node.py,7089,74195eb09ba4bcdf37a9d9648474033d1c0cdfc8d39e2e159450bb5ede7a391a,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/mcts/search.py,31394,756c3386bdcc198ef017d1f90153c2baf8e6fb858468fa933a43504a42cc3f79,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/utils.py,6425,043d0e50c161fcf94bab8ceb97d91d8fda0e4f20907ef867ae4a93263765ab72,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/utils/__init__.py,420,290df67c4a985ddc39987a7bd8ae995dbe1a6e33413f24af329f86c090717a3b,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/utils/colored_diff.py,7232,345b168f7444e64fe05c58cb304099a2f7d1adb004164d97c4b4c8015914ab49,True,False,False,False
+mcts-llm-alpha/src/mcts_llm_alpha/utils/formula_diff.py,9719,8447b6f15a58bd9f032843636681e5211423e54a5917b7830cf093f69d608f00,True,False,False,False
+mcts-llm-alpha/test_fixes.py,3656,5d6db11386278be7aaf82c23e301da924345a9474f5f2d8469dc48b65ce7300c,True,True,False,False
+mcts-llm-alpha/test_ranking_fixes.py,4903,984a1dc3597fd3a4153d31e81ab9bf8b40f464cd78befa0870f6e462034b11b7,True,True,False,False
+mcts-llm-alpha/test_rolling_fix.py,2425,66fd33903e81ea0bf3b4133b71bcd1c100d17a6933141b59dc76d7bbe0d8d32b,True,True,False,False
+wiki/Home.md,2043,451af2f1467f2f2f5e45a9c4536bc3e5f6652964fef533e614fd09a91b4ac006,False,False,False,False
+wiki/Installation-Guide.md,3727,65579bcd1f446385874ac105a07e91e855c11987cd5b9c8a19af11d7bf2db274,False,False,False,False
+wiki/MCTS-Algorithm.md,4601,9c35f3036fd119fe10d8ed7bd3be54bd098118056d397c1fe83c796ea629ccad,False,False,False,False

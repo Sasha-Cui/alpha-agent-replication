@@ -1,0 +1,17 @@
+{
+  "author_linked": false,
+  "compile_exit_code": 0,
+  "compile_success": true,
+  "native_paper_experiment_executed": false,
+  "native_paper_result_credit": false,
+  "package_import_exit_code": 1,
+  "package_import_missing_internal_data_module": true,
+  "package_import_success": false,
+  "pytest_collection_errors": 3,
+  "pytest_exit_code": 2,
+  "pytest_missing_internal_data_module": true,
+  "pytest_tests_passed": 0,
+  "python": "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+  "python_files_compiled": 40,
+  "repository_role": "unaffiliated_community_candidate_negative_evidence_only"
+}

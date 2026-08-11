@@ -1,0 +1,332 @@
+\section{LLM Agent Prompts}
+\label{sec:appendix_prompts}
+
+In our proposed framework, LLMs function as autonomous agents, instrumental in the multifaceted process of alpha formula mining. This includes the generation, iterative refinement, and overfitting risk evaluation of alpha formulas. This section details the core prompts designed to guide the LLM in these pivotal tasks. Each prompt is carefully designed to elicit specific behaviors and outputs from the LLM, ensuring a structured and effective approach to mining alpha formulas.
+
+\subsection{Alpha Portrait Generation Prompt}
+
+As shown in Figure~\ref{fig:portrait_generation_prompt}, the Alpha Portrait Generation Prompt is used to generate an alpha portrait based on information such as available data fields and operators. The alpha portrait is subsequently used to generate the corresponding alpha formula.
+
+\subsection{Alpha Formula Generation Prompt}
+
+As shown in Figure~\ref{fig:formula_generation_prompt}, the Alpha Formula Generation Prompt is used to generate the corresponding alpha formula based on the provided alpha portrait and other relevant information. A formatted alpha formula facilitates correctness verification and the computation of alpha values.
+
+\subsection{Alpha Overfitting Risk Assessment Prompt}
+\label{sec:alpha_overfitting_risk_prompt}
+
+As shown in Figure~\ref{fig:overfitting_assessment_prompt}, the Alpha Overfitting Risk Assessment Prompt is used to assess the overfitting risk of an alpha based on its formula and refinement history information. We provide evaluation criteria within the prompt to assist the LLM in conducting a critical assessment.
+
+\subsection{Alpha Refinement Prompt}
+
+As shown in Figure~\ref{fig:refinement_prompt}, the Alpha Refinement Prompt is used to refine the original alpha formula based on refinement suggestions, thereby generating an improved formula.
+
+\begin{figure}[htbp]
+    \centering
+    \small
+    \begin{minipage}{0.95\textwidth}
+        \hrulefill
+        \vspace{1ex}
+
+        \noindent\textbf{Task Description:}
+
+        \noindent You are a quantitative finance expert specializing in factor-based investing. Please design an alpha factor used in investment strategies according to the following requirements, and then provide the content of the alpha in the required format.
+
+        \vspace{1ex}
+        \noindent\textbf{Available Data Fields:}
+
+        \noindent The following data fields are available for use:
+\begin{verbatim}
+{available_fields}
+\end{verbatim}
+
+        \vspace{1ex}
+        \noindent\textbf{Available Operators:}
+
+        \noindent The following operators are available for use:
+\begin{verbatim}
+{available_operators}
+\end{verbatim}
+
+        \vspace{1ex}
+        \noindent\textbf{Alpha Requirements:}
+        \begin{enumerate}
+            \item The alpha value should be dimensionless (unitless).
+            \item The alpha should incorporate at least two distinct operations from the "Available Operators" list to ensure it has sufficient complexity. Avoid creating overly simplistic alphas.
+            \item All look-back windows and other numerical parameters used in the alpha calculation MUST be represented as named parameters in the pseudo-code. These parameter names MUST follow Python naming conventions (e.g., \texttt{lookback\_period}, \texttt{volatility\_window}, \texttt{smoothing\_factor}).
+            \item The alpha should have NO MORE than 3 parameters in total.
+            \item The pseudo-code should represent the alpha calculation step-by-step, using only the "Available Operators" and clearly defined parameters. Each line in the pseudo-code should represent a single operation.
+            \item Use descriptive variable names in the pseudo-code that clearly indicate the data they represent.
+            \item When designing alpha expressions, try to avoid including the following sub-expressions:
+\begin{verbatim}
+{freq_subtrees}
+\end{verbatim}
+        \end{enumerate}
+
+        \vspace{1ex}
+        \noindent\textbf{Formatting Requirements:}
+
+        \noindent The output must be in JSON format with three key-value pairs:
+        \begin{enumerate}
+            \item \textbf{"name":} A short, descriptive name for the alpha (following Python variable naming style, e.g., \texttt{price\_volatility\_ratio}).
+            \item \textbf{"description":} A concise explanation of the alpha's purpose or what it measures. Avoid overly technical language. Focus on the intuition behind the alpha.
+            \item \textbf{"pseudo\_code":} A list of strings, where each string is a line of simplified pseudo-code representing a single operation in the alpha calculation. Each line should follow the format: \texttt{variable\_name = op\_name(input=[input1, input2, ...], param=[param1, param2, ...])}, where:
+                \begin{itemize}
+                    \item \texttt{variable\_name} is the output variable of the operation.
+                    \item \texttt{op\_name} is the name of one of the "Available Operators".
+                    \item \texttt{input1}, \texttt{input2}, \dots are input variables (either from "Available Data Fields" or previously calculated variables, cannot be of a numeric type).
+                    \item \texttt{param1}, \texttt{param2}, \dots are parameter names defined in the alpha requirements.
+                \end{itemize}
+        \end{enumerate}
+
+        \vspace{1ex}
+        \noindent The format example is as follows:
+
+\begin{lstlisting}
+{
+    "name": "volatility_adjusted_momentum",
+    "description": "......",
+    "pseudo_code": [......]
+}
+\end{lstlisting}
+        \vspace{1ex}
+        \hrulefill
+    \end{minipage}
+\caption{Alpha Portrait Generation Prompt}
+\label{fig:portrait_generation_prompt}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \small
+    \begin{minipage}{0.95\textwidth}
+        \hrulefill
+        \vspace{1ex}
+
+        \noindent\textbf{Task Description:}
+        \vspace{1ex} % Added for spacing
+
+        Please design a quantitative investment alpha expression according to the following requirements.
+
+        \vspace{1ex}
+        \noindent\textbf{Available Data Fields:}
+        \begin{itemize}
+            \item The following data fields are available for use: \texttt{\{available\_fields\}}
+        \end{itemize}
+
+        \vspace{1ex}
+        \noindent\textbf{Available Operators:}
+         \begin{itemize}
+            \item The following operators are available for use: \texttt{\{available\_operators\}}
+        \end{itemize}
+
+        \vspace{1ex}
+        \noindent\textbf{Alpha Requirements:}
+        \begin{itemize}
+            \item \texttt{\{alpha\_portrait\_prompt\}}
+        \end{itemize}
+
+        \vspace{1ex}
+        \noindent\textbf{Formatting Requirements:}
+        \begin{enumerate}[label=\arabic*.] % Ensure consistent numbering style
+            \item Provide the output in JSON format.
+            \item The JSON object should contain two fields: \texttt{"formula"}, and \texttt{"arguments"}.
+                \begin{itemize}
+                    \item \texttt{"formula"}: Represents the mathematical expression for calculating the alpha.
+                    \item \texttt{"arguments"}: Represents the configurable parameters of the alpha.
+                \end{itemize}
+            \item \texttt{"formula"} is a list of dictionaries. Each dictionary represents a single operation and must contain four keys: \texttt{"name"}, \texttt{"param"}, \texttt{"input"}, and \texttt{"output"}.
+                \begin{itemize}
+                    \item \texttt{"name"}: The operator's name (a string), which MUST be one of the operators provided in the "Available Operators" section.
+                    \item \texttt{"param"}: A list of strings, representing the parameter names for the operator. These parameter names MUST be used as keys in the \texttt{"arguments"} section.
+                    \item \texttt{"input"}: A list of strings, representing the input variable names for the operator. These MUST be data fields from the "Available Data Fields" or output variables from previous operations in the \texttt{"formula"}, cannot be of a numeric type.
+                    \item \texttt{"output"}: A string, representing the output variable name for the operator. This output can be used as an input for subsequent operations.
+                \end{itemize}
+            \item \texttt{"arguments"} is a list of dictionaries. Each dictionary represents a set of parameter values for the alpha.
+                \begin{itemize}
+                    \item The keys of each dictionary in \texttt{"arguments"} MUST correspond exactly to the parameter names defined in the \texttt{"param"} lists of the \texttt{"formula"}.
+                    \item The values in each dictionary in \texttt{"arguments"} are the specific numerical values for the parameters.
+                \end{itemize}
+            \item You may include a maximum of 3 sets of parameters within the \texttt{"arguments"} field.
+            \item The parameter value that indicates the length of the lookback window (if applicable) must be within the \texttt{\{window\_range\}} range.
+            \item Ensure that the alpha expression is both reasonable and computationally feasible.
+            \item Parameter names should be descriptive and follow Python naming conventions (e.g., \texttt{window\_size}, \texttt{lag\_period}, \texttt{smoothing\_factor}). Avoid using single characters or numbers as parameter names.
+            \item Refer to the following example:
+        \end{enumerate}
+
+        \vspace{1ex}
+        \begin{lstlisting}
+{
+    "formula": [......],
+    "arguments": [......]
+}
+        \end{lstlisting}
+        \vspace{1ex}
+        \hrulefill
+    \end{minipage}
+\caption{Alpha Formula Generation Prompt}
+\label{fig:formula_generation_prompt}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \small
+    \begin{minipage}{0.95\textwidth}
+        \hrulefill
+        \vspace{1ex}
+
+        \noindent\textbf{Task: Critical Alpha Overfitting Risk Assessment}
+
+        \noindent Critically evaluate the overfitting risk and generalization potential of the provided quantitative investment alpha, based on its expression and refinement history.
+        Your assessment must focus on whether complexity and optimization appear justified or are likely signs of overfitting.
+
+        \vspace{1ex}
+        \noindent\textbf{Input:}
+        \begin{itemize}
+            \item \textbf{Alpha Expression:}
+\begin{verbatim}
+{alpha_formula}
+\end{verbatim}
+            \item \textbf{Refinement History:}
+\begin{verbatim}
+{refinement_history}
+\end{verbatim}
+        \end{itemize}
+
+        \vspace{1ex}
+        \noindent\textbf{Evaluation Criteria:}
+        \begin{enumerate}
+            \item \textbf{Justified Rationale vs. Complexity:}
+                \begin{itemize}
+                    \item[] \textbf{Critique:} Is the complexity of the alpha expression plausibly justified by an inferred economic rationale, or does it seem arbitrary/excessive, suggesting fitting to noise?
+                \end{itemize}
+            \item \textbf{Principled Development vs. Data Dredging:}
+                \begin{itemize}
+                    \item[] \textbf{Critique:} Does the refinement history indicate hypothesis-driven improvements, or does it suggest excessive optimization and curve-fitting (e.g., frequent, unjustified parameter tweaks)?
+                \end{itemize}
+            \item \textbf{Transparency vs. Opacity:}
+                \begin{itemize}
+                    \item[] \textbf{Critique:} Is the alpha's logic reasonably interpretable despite its complexity, or is it opaque, potentially masking overfitting?
+                \end{itemize}
+        \end{enumerate}
+
+        \vspace{1ex}
+        \noindent\textbf{Scoring \& Output:}
+        \begin{itemize}
+            \item Assign a single \textbf{Overfitting Risk Score} from 0 to 10.
+                \begin{itemize}
+                    \item \textbf{10 = Very Low Risk} (High confidence in generalization)
+                    \item \textbf{0 = Very High Risk} (Low confidence in generalization)
+                \end{itemize}
+            \item Use the full 0-10 range to differentiate risk levels effectively.
+            \item Provide a concise, one-sentence \textbf{Justification} explaining the score, citing the key factors from the criteria.
+            \item Format the output as JSON, like the examples below:
+        \end{itemize}
+
+        \vspace{1ex}
+        \noindent\textbf{Example JSON Outputs:}
+
+\begin{lstlisting}
+{
+    "reason": "Complexity is justified by a strong rationale; principled refinement history suggests low risk.",
+    "score": 9
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+{
+    "reason": "Plausible rationale, but some expression opacity and parameter tuning in history indicate moderate risk.",
+    "score": 5
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+{
+    "reason": "High risk inferred from opaque expression lacking clear rationale, supported by history showing excessive tuning.",
+    "score": 1
+}
+\end{lstlisting}
+        \vspace{1ex}
+        \hrulefill
+    \end{minipage}
+\caption{Alpha Overfitting Risk Assessment Prompt}
+\label{fig:overfitting_assessment_prompt}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \small
+    \begin{minipage}{0.95\textwidth}
+        \hrulefill
+        \vspace{1ex}
+
+        \noindent\textbf{Task Description:}
+
+        \noindent There is an alpha factor used in quantitative investment to predict asset price trends.
+        Please improve it according to the following suggestions and provide the improved alpha expression.
+
+        \vspace{1ex}
+        \noindent\textbf{Available Data Fields:}
+
+        \noindent The following data fields are available for use: \texttt{\{available\_fields\}}
+
+        \vspace{1ex}
+        \noindent\textbf{Available Operators:}
+
+        \noindent The following operators are available for use:\texttt{\{available\_operators\}}
+
+        \vspace{1ex}
+        \noindent\textbf{Alpha Suggestions:}
+        \begin{enumerate}
+            \item The alpha value should be dimensionless (unitless).
+            \item All look-back windows and other numerical parameters used in the alpha calculation MUST be represented as named parameters in the pseudo-code. These parameter names MUST follow Python naming conventions (e.g., \texttt{lookback\_period}, \texttt{volatility\_window}, \texttt{smoothing\_factor}).
+            \item The alpha should have NO MORE than 3 parameters in total.
+            \item The pseudo-code should represent the alpha calculation step-by-step, using only the "Available Operators" and clearly defined parameters. Each line in the pseudo-code should represent a single operation.
+            \item Use descriptive variable names in the pseudo-code that clearly indicate the data they represent.
+            \item When designing alpha expressions, try to avoid including the following sub-expressions: \texttt{\{freq\_subtrees\}}
+        \end{enumerate}
+
+        \vspace{1ex}
+        \noindent\textbf{Original alpha expression:}
+\begin{lstlisting}
+{origin_alpha_formula}
+\end{lstlisting}
+
+        \vspace{1ex}
+        \noindent\textbf{Refinement suggestions:}
+
+        \noindent NOTE: The following improvement suggestions do not need to be all adopted; they just need to be considered and reasonable ones selected for adoption.
+\begin{lstlisting}
+{refinement_suggestions}
+\end{lstlisting}
+
+        \vspace{1ex}
+        \noindent\textbf{Formatting Requirements:}
+
+        \noindent The output must be in JSON format with three key-value pairs:
+        \begin{enumerate}
+            \item \textbf{"name"}: A short, descriptive name for the alpha (following Python variable naming style, e.g., \texttt{price\_volatility\_ratio}).
+            \item \textbf{"description"}: A concise explanation of the alpha's purpose or what it measures. Avoid overly technical language. Focus on the intuition behind the alpha.
+            \item \textbf{"pseudo\_code"}: A list of strings, where each string is a line of simplified pseudo-code representing a single operation in the alpha calculation. Each line should follow the format: \texttt{variable\_name = op\_name(input=[input1, input2, ...], param=[param1, param2, ...])}, where:
+                \begin{itemize}
+                    \item \texttt{variable\_name} is the output variable of the operation.
+                    \item \texttt{op\_name} is the name of one of the "Available Operators".
+                    \item \texttt{input1}, \texttt{input2}, ... are input variables (either from "Available Data Fields" or previously calculated variables, cannot be of a numeric type).
+                    \item \texttt{param1}, \texttt{param2}, ... are parameter names defined in the alpha requirements.
+                \end{itemize}
+        \end{enumerate}
+
+        \vspace{1ex}
+        \noindent The format example is as follows:
+\begin{lstlisting}
+{
+    "name": "volatility_adjusted_momentum",
+    "description": "......",
+    "pseudo_code": [......]
+}
+\end{lstlisting}
+        \vspace{1ex}
+        \hrulefill
+    \end{minipage}
+\caption{Alpha Refinement Prompt}
+\label{fig:refinement_prompt}
+\end{figure}

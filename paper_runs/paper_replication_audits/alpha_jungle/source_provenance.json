@@ -1,0 +1,68 @@
+{
+  "arxiv_record": {
+    "html_sha256": "6f91650fbf2bb2203ca208e86abe2d5c9237b6851a64b266b9e592b0718679da",
+    "url": "https://arxiv.org/abs/2505.11122"
+  },
+  "audit_date": "2026-08-11",
+  "community_candidate": {
+    "archive_sha256": "d46ec3b63a8e23743ffecf0c712521cb08dab43bd0ba56d54cfc166f2de6cda5",
+    "author_linked": false,
+    "commit": "cab5d91f3cb834c3810811142407047bd2fef7ff",
+    "commit_date": "2025-07-23T21:39:25+08:00",
+    "committer": "VeighNa Developer <developer@vnpy.com>",
+    "paper_credit": "none_negative_evidence_only",
+    "tree": "4cc43b217684bc3d502afeb27ab109ff577dbd3a",
+    "url": "https://github.com/dtbtc/mcts-llm-alpha"
+  },
+  "current_arxiv": {
+    "pages": 31,
+    "pdf_sha256": "1707743f661de3c3957ef02f7b7e6ee8f926377569185162d40b71115aa18a2b",
+    "source_sha256": "8667c5c9a50bdaf23066af442e4b8fc5b8b98ba250af19110f997590616cd140",
+    "submitted": "2025-11-12",
+    "url": "https://arxiv.org/abs/2505.11122v3"
+  },
+  "github_repository_search": {
+    "assessment": "no_author_linked_implementation; results are indexes, unrelated repositories, or community work",
+    "counts": {
+      "github_search_arxiv.json": 53,
+      "github_search_method.json": 7,
+      "github_search_title.json": 4
+    },
+    "snapshot_sha256": {
+      "github_search_arxiv.json": "41164c6e8978b1a555819d2a0d11876461ecaff814b53551c9a3e64e9fa5c760",
+      "github_search_method.json": "d76e5287b988802435517e3308f19ec45705797f69ad301dddaae8c55c41db63",
+      "github_search_title.json": "48fbd3f2123d07614408bf775e2e68db5c68f13afab9d0c06df7e9598b808a2c"
+    }
+  },
+  "official_author_repository_found": false,
+  "original_arxiv": {
+    "pages": 30,
+    "pdf_sha256": "3cec26455b7f37c04b4dddeee3f947cdde7a49ea904bfd4862221642a0686c5f",
+    "source_sha256": "3301816a94ef153b474c15a748c1b7ba3d23259154454da4497fd387c97f6170",
+    "submitted": "2025-05-16",
+    "url": "https://arxiv.org/abs/2505.11122v1"
+  },
+  "publication_authority": {
+    "authors": [
+      "Yu Shi",
+      "Yitong Duan",
+      "Jian Li"
+    ],
+    "doi": "10.1609/aaai.v40i2.37069",
+    "page_range": "997-1005",
+    "pages": 9,
+    "pdf_sha256": "439e6749988619d49e9e156ab040ebc5c6b48371ae8dce8e6db831bbbd3ca12a",
+    "pdf_url": "https://ojs.aaai.org/index.php/AAAI/article/download/37069/41031",
+    "url": "https://ojs.aaai.org/index.php/AAAI/article/view/37069"
+  },
+  "validation": {
+    "author_linked_repository_found": false,
+    "community_archive_validated": true,
+    "github_search_counts": {
+      "github_search_arxiv.json": 53,
+      "github_search_method.json": 7,
+      "github_search_title.json": 4
+    },
+    "validated_file_count": 9
+  }
+}

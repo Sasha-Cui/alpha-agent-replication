@@ -1,0 +1,49 @@
+{
+  "adapted_exact_formula_trees_executed": 3,
+  "adapted_formula_execution_is_native_paper_credit": false,
+  "author_linked_source_found": false,
+  "community_candidate_execution": {
+    "author_linked": false,
+    "compile_exit_code": 0,
+    "compile_success": true,
+    "native_paper_experiment_executed": false,
+    "native_paper_result_credit": false,
+    "package_import_exit_code": 1,
+    "package_import_missing_internal_data_module": true,
+    "package_import_success": false,
+    "pytest_collection_errors": 3,
+    "pytest_exit_code": 2,
+    "pytest_missing_internal_data_module": true,
+    "pytest_tests_passed": 0,
+    "python": "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+    "python_files_compiled": 40,
+    "repository_role": "unaffiliated_community_candidate_negative_evidence_only"
+  },
+  "native_alpha_jungle_execution_attempted": false,
+  "native_blocker": "no author-linked source, exact inputs/config, factor pool, trace, or result artifacts",
+  "official_pdf_table_text_verified": true,
+  "paper_source_compilation": {
+    "v1": {
+      "exit_codes": [
+        0,
+        0
+      ],
+      "pages": 30,
+      "paper_result_credit": false,
+      "source_files": 27
+    },
+    "v3": {
+      "exit_codes": [
+        0,
+        0
+      ],
+      "pages": 31,
+      "paper_result_credit": false,
+      "source_files": 28
+    }
+  },
+  "published_final_cells_reproduced": 0,
+  "released_prompt_templates_recovered": 4,
+  "v1_extended_cells_reproduced": 0,
+  "v3_extended_cells_reproduced": 0
+}

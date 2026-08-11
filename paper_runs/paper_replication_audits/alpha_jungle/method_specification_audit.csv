@@ -1,0 +1,64 @@
+dimension,assessment,severity,evidence,native_alpha_jungle_verified
+AAAI publication authority,specified,none,"Official AAAI-26 article, DOI, pages 997-1005, and PDF are pinned.",False
+arXiv original authority,specified,none,v1 PDF and 27-file source archive are pinned.,False
+arXiv current authority,specified,none,v3 PDF and 28-file source archive are pinned.,False
+author-linked implementation,missing,blocking,"No code link appears in the AAAI paper, arXiv record/source, or author-matched search evidence.",False
+official source revision,missing,blocking,No executable author source revision exists.,False
+official software license,missing,blocking,No author software release exists to license.,False
+machine-readable experiment config,missing,blocking,Paper settings are prose/LaTeX only.,False
+factor pools,missing,blocking,Generated alpha sets of size 10/50/100 are not released.,False
+MCTS trees and search traces,missing,blocking,"No node, score, action, refinement, or budget trace is released.",False
+LLM request/response logs,missing,blocking,"No runtime prompt instances, responses, tool errors, or token traces are released.",False
+model snapshot,partial,blocking,GPT-4.1 family name is given without an immutable provider snapshot/revision.,False
+decoding temperatures,specified,none,"Portrait/formula 1.0, correction 0.8, and overfitting score 0.1 are stated.",False
+prompt templates,specified,none,Four detailed templates are released in both arXiv appendices.,False
+runtime prompt assembly,partial,major,Templates contain dynamic fields; exact filled prompts and ordering are absent.,False
+random seeds for alpha search,missing,blocking,"No seeds for stochastic LLM generation, MCTS sampling, or model training are reported.",False
+operator set,specified,none,Appendix enumerates supported operators.,False
+formula parser implementation,missing,blocking,Syntax rules are described but executable parser/semantics are absent.,False
+six example formulas,specified,none,Six Ours formulas are printed in the appendix.,False
+exact formula component execution,partial,major,Three of six trees are locally reconstructed only under monthly U.S. adaptations.,False
+China market-data snapshot,missing,blocking,No immutable Qlib bundle or vendor snapshot is identified.,False
+Qlib revision,missing,blocking,Qlib is cited without a commit/package version.,False
+CSI300 point-in-time constituents,missing,blocking,No membership history or snapshot is released.,False
+CSI1000 point-in-time constituents,missing,blocking,No membership history or snapshot is released.,False
+S&P500 point-in-time constituents,missing,blocking,v3 adds S&P500 without membership history or snapshot.,False
+price adjustment/corporate actions,missing,blocking,"Adjustment, split, dividend, suspension, and delisting rules are not pinned.",False
+China train interval,specified,none,2011-01-01 through 2020-12-31.,False
+China test interval,specified,none,2021-01-01 through 2024-11-30.,False
+S&P500 train/test intervals,specified_v3,none,2007-2015 train and 2016-01-01 through 2020-10-10 test.,False
+bar frequency,specified,none,Daily stock data are used.,False
+input fields,specified,none,"Open, high, low, close, volume and vwap-dependent examples are documented.",False
+prediction horizons,specified,none,China experiments use 10- and 30-day forward returns; S&P500 uses 10-day.,False
+label implementation,partial,major,"Horizon/close execution are stated, but executable alignment and suspension rules are absent.",False
+initial MCTS budget,specified,none,B=3 is reported for the studied configuration.,False
+dynamic budget increment,specified,none,b=1 is stated.,False
+UCT exploration constant,partial,major,"Sensitivity is shown, but no immutable run config ties c to every reported table.",False
+dimension sampling temperature,specified,none,T=1 is stated.,False
+few-shot example count,specified,none,One example is stated for refinement suggestions.,False
+correlation filtering ratio,specified,none,eta=50% is stated.,False
+FSA avoided patterns,specified,none,Three frequent subtrees are avoided.,False
+FSA executable semantics,missing,blocking,Closed-root-gene equations lack an author implementation and exact repositories.,False
+symbolic parameter candidates,specified,none,Three candidate parameter sets per formula are reported.,False
+parameter selection leakage control,partial,major,"Best backtest configuration is selected, but validation boundary and multiplicity controls are incomplete.",False
+LightGBM configuration,specified,none,Appendix supplies key hyperparameters.,False
+MLP architecture,specified,none,"Three 256/128/64 layers, dropout, optimizer, learning rate, batch size, and patience are supplied.",False
+validation split for early stopping,missing,blocking,Validation dates/construction and training seeds are absent.,False
+alpha set sizes,specified,none,"10, 50, and 100.",False
+LLM search counts,specified,none,"1,000, 2,000, and 3,000 candidates.",False
+non-LLM search cap,specified,none,"Up to 600,000 candidates.",False
+wall-clock cap,specified,none,A maximum of 24 hours is described.,False
+baseline source revisions/configs,missing,blocking,"No exact baseline wrappers, commits, seeds, or run outputs are released.",False
+portfolio top-k,specified,none,"Top 10% of each universe, equally weighted.",False
+drop-n rule,specified,none,n=k/w is stated.,False
+transaction cost,specified,none,0.15% per trade is stated.,False
+trade simulator implementation,missing,blocking,"No fills, turnover state, corporate-action handling, or return path is released.",False
+AER benchmark return,missing,blocking,v3 defines excess return against a market benchmark without pinning its exact series/construction.,False
+v1 AR to v3/final AER lineage,conflict,blocking,Sixteen final ablation AER cells equal v1 AR cells despite changed return semantics and no run lineage.,False
+v3 appendix metric headers,conflict,major,228 v3 cells remain labelled AR while the current metric definition and main text use AER.,False
+raw predictions/returns,missing,blocking,"No predictions, holdings, costs, benchmark returns, or equity paths are released.",False
+main-table uncertainty,missing,blocking,No repeated-run uncertainty or statistical tests accompany predictive/trading tables.,False
+interpretability samples/judgments,missing,blocking,"Selected formulas, judge prompts/responses, per-seed rankings, and model revisions are absent.",False
+cost input lineage,paper_only,major,Runtime and token counts are printed without logs; arithmetic is internally consistent only.,False
+hardware/software environment,partial,major,"Broad server assumptions are described, but native package/driver/hardware revisions are absent.",False
+full native rerun,missing,blocking,"Paper sources compile, but the experiment cannot be reconstructed from public artifacts.",False
