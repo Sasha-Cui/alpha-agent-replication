@@ -1,0 +1,878 @@
+paper_version,paper_table,row_index,row_label,result_position,dataset,metric,paper_value,cited_baseline_recomputed_value,cited_baseline_match_at_paper_precision,native_efs_result_credit,paper_result_credit,version_lineage_status
+v2,benchmark,0,Baseline | 1/N,0,FF25,CW,374,373.765729685,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,1,FF25,SR,0.23,0.227617734477,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,2,FF25,MDD,0.55,0.547644971276,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,3,FF32,CW,453,446.630829807,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,4,FF32,SR,0.23,0.223376243881,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,5,FF32,MDD,0.54,0.54050470877,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,6,FF49,CW,255,250.200686962,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,7,FF49,SR,0.21,0.205714641498,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,8,FF49,MDD,0.53,0.526895538992,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,9,FF100,CW,389,385.763824236,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,10,FF100,SR,0.21,0.208693719333,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,0,Baseline | 1/N,11,FF100,MDD,0.55,0.54876606898,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,0,FF25,CW,77,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,1,FF25,SR,0.14,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,2,FF25,MDD,0.78,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,3,FF32,CW,15,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,4,FF32,SR,0.10,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,5,FF32,MDD,0.73,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,6,FF49,CW,62,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,7,FF49,SR,0.11,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,8,FF49,MDD,0.88,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,9,FF100,CW,1,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,10,FF100,SR,0.05,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,11,FF100,MDD,0.82,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,0,FF25,CW,387,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,1,FF25,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,2,FF25,MDD,0.54,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,3,FF32,CW,290,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,4,FF32,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,5,FF32,MDD,0.51,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,6,FF49,CW,208,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,7,FF49,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,8,FF49,MDD,0.41,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,9,FF100,CW,156,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,10,FF100,SR,0.20,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,2,Min-CVaR,11,FF100,MDD,0.54,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,0,FF25,CW,553,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,1,FF25,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,2,FF25,MDD,0.58,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,3,FF32,CW,719,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,4,FF32,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,5,FF32,MDD,0.55,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,6,FF49,CW,211,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,7,FF49,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,8,FF49,MDD,0.42,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,9,FF100,CW,387,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,10,FF100,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,3,Max-Sharpe,11,FF100,MDD,0.57,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,0,FF25,CW,281,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,1,FF25,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,2,FF25,MDD,0.56,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,3,FF32,CW,530,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,4,FF32,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,5,FF32,MDD,0.55,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,6,FF49,CW,169,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,7,FF49,SR,0.19,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,8,FF49,MDD,0.59,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,9,FF100,CW,217,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,10,FF100,SR,0.19,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,4,m=10 | LGBM,11,FF100,MDD,0.48,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,0,FF25,CW,292,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,1,FF25,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,2,FF25,MDD,0.52,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,3,FF32,CW,552,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,4,FF32,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,5,FF32,MDD,0.54,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,6,FF49,CW,354,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,7,FF49,SR,0.21,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,8,FF49,MDD,0.53,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,9,FF100,CW,392,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,10,FF100,SR,0.20,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,5,XGB,11,FF100,MDD,0.50,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,0,FF25,CW,607,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,1,FF25,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,2,FF25,MDD,0.58,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,3,FF32,CW,749,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,4,FF32,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,5,FF32,MDD,0.55,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,6,FF49,CW,169,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,7,FF49,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,8,FF49,MDD,0.45,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,9,FF100,CW,379,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,10,FF100,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,6,mSSRM-PGA,11,FF100,MDD,0.58,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,0,FF25,CW,638,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,1,FF25,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,2,FF25,MDD,0.48,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,3,FF32,CW,670,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,4,FF32,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,5,FF32,MDD,0.45,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,6,FF49,CW,409,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,7,FF49,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,8,FF49,MDD,0.47,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,9,FF100,CW,491,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,10,FF100,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,7,ASMCVaR,11,FF100,MDD,0.52,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,0,FF25,CW,640,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,1,FF25,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,2,FF25,MDD,0.51,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,3,FF32,CW,924,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,4,FF32,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,5,FF32,MDD,0.53,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,6,FF49,CW,693,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,7,FF49,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,8,FF49,MDD,0.53,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,9,FF100,CW,1233,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,10,FF100,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,8,EFS-DeepSeek-V3,11,FF100,MDD,0.55,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,9,~~+ RW,0,FF25,CW,1065,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,1,FF25,SR,0.25,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,2,FF25,MDD,0.50,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,3,FF32,CW,798,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,4,FF32,SR,0.23,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,5,FF32,MDD,0.54,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,6,FF49,CW,441,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,7,FF49,SR,0.19,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,8,FF49,MDD,0.59,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,9,FF100,CW,1465,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,10,FF100,SR,0.24,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,9,~~+ RW,11,FF100,MDD,0.45,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,10,EFS-GPT-4.1,0,FF25,CW,708,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,1,FF25,SR,0.26,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,2,FF25,MDD,0.50,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,3,FF32,CW,614,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,4,FF32,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,5,FF32,MDD,0.54,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,6,FF49,CW,565,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,7,FF49,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,8,FF49,MDD,0.54,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,9,FF100,CW,1836,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,10,FF100,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,10,EFS-GPT-4.1,11,FF100,MDD,0.49,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,11,~~+ RW,0,FF25,CW,1408,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,1,FF25,SR,0.27,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,2,FF25,MDD,0.50,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,3,FF32,CW,847,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,4,FF32,SR,0.23,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,5,FF32,MDD,0.50,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,6,FF49,CW,593,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,7,FF49,SR,0.20,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,8,FF49,MDD,0.61,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,9,FF100,CW,2435,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,10,FF100,SR,0.26,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,11,~~+ RW,11,FF100,MDD,0.51,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,12,m=15 | LGBM,0,FF25,CW,313,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,1,FF25,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,2,FF25,MDD,0.55,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,3,FF32,CW,541,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,4,FF32,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,5,FF32,MDD,0.55,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,6,FF49,CW,195,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,7,FF49,SR,0.20,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,8,FF49,MDD,0.59,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,9,FF100,CW,224,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,10,FF100,SR,0.19,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,12,m=15 | LGBM,11,FF100,MDD,0.49,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,0,FF25,CW,308,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,1,FF25,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,2,FF25,MDD,0.53,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,3,FF32,CW,491,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,4,FF32,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,5,FF32,MDD,0.55,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,6,FF49,CW,377,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,7,FF49,SR,0.21,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,8,FF49,MDD,0.52,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,9,FF100,CW,364,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,10,FF100,SR,0.20,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,13,XGB,11,FF100,MDD,0.52,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,0,FF25,CW,601,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,1,FF25,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,2,FF25,MDD,0.58,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,3,FF32,CW,745,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,4,FF32,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,5,FF32,MDD,0.55,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,6,FF49,CW,172,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,7,FF49,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,8,FF49,MDD,0.45,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,9,FF100,CW,416,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,10,FF100,SR,0.22,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,14,mSSRM-PGA,11,FF100,MDD,0.57,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,0,FF25,CW,676,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,1,FF25,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,2,FF25,MDD,0.50,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,3,FF32,CW,691,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,4,FF32,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,5,FF32,MDD,0.47,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,6,FF49,CW,527,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,7,FF49,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,8,FF49,MDD,0.45,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,9,FF100,CW,523,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,10,FF100,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,15,ASMCVaR,11,FF100,MDD,0.53,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,0,FF25,CW,546,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,1,FF25,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,2,FF25,MDD,0.51,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,3,FF32,CW,716,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,4,FF32,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,5,FF32,MDD,0.54,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,6,FF49,CW,586,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,7,FF49,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,8,FF49,MDD,0.51,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,9,FF100,CW,984,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,10,FF100,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,16,EFS-DeepSeek-V3,11,FF100,MDD,0.55,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,17,~~+ RW,0,FF25,CW,1050,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,1,FF25,SR,0.25,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,2,FF25,MDD,0.50,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,3,FF32,CW,736,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,4,FF32,SR,0.23,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,5,FF32,MDD,0.54,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,6,FF49,CW,427,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,7,FF49,SR,0.19,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,8,FF49,MDD,0.58,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,9,FF100,CW,1353,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,10,FF100,SR,0.24,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,17,~~+ RW,11,FF100,MDD,0.45,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,18,EFS-GPT-4.1,0,FF25,CW,530,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,1,FF25,SR,0.25,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,2,FF25,MDD,0.52,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,3,FF32,CW,609,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,4,FF32,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,5,FF32,MDD,0.53,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,6,FF49,CW,534,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,7,FF49,SR,0.23,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,8,FF49,MDD,0.50,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,9,FF100,CW,1290,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,10,FF100,SR,0.24,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,18,EFS-GPT-4.1,11,FF100,MDD,0.50,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,19,~~+ RW,0,FF25,CW,1365,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,1,FF25,SR,0.27,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,2,FF25,MDD,0.50,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,3,FF32,CW,840,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,4,FF32,SR,0.23,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,5,FF32,MDD,0.50,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,6,FF49,CW,639,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,7,FF49,SR,0.20,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,8,FF49,MDD,0.60,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,9,FF100,CW,2061,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,10,FF100,SR,0.25,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,benchmark,19,~~+ RW,11,FF100,MDD,0.51,,False,False,False,v1_scores_to_asset_weights_relabelled_as_v2_RMT_QP_factor_weights_same_rounded_value
+v2,real_market,0,Baseline | 1/N,0,US50,CW,6.127,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,1,US50,CAGR,29.7%,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,2,US50,SR,1.179,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,3,US50,MDD,0.339,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,4,HSI45,CW,1.332,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,5,HSI45,CAGR,9.5%,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,6,HSI45,SR,0.436,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,7,HSI45,MDD,0.409,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,8,CSI300,CW,1.083,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,9,CSI300,CAGR,2.5%,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,10,CSI300,SR,0.223,,False,False,False,version_specific_result
+v2,real_market,0,Baseline | 1/N,11,CSI300,MDD,0.214,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,0,US50,CW,2.887,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,1,US50,CAGR,16.4%,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,2,US50,SR,1.004,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,3,US50,MDD,0.204,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,4,HSI45,CW,1.506,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,5,HSI45,CAGR,13.9%,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,6,HSI45,SR,0.633,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,7,HSI45,MDD,0.362,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,8,CSI300,CW,1.389,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,9,CSI300,CAGR,10.6%,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,10,CSI300,SR,0.757,,False,False,False,version_specific_result
+v2,real_market,1,Min-CVaR,11,CSI300,MDD,0.168,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,0,US50,CW,10.901,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,1,US50,CAGR,40.8%,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,2,US50,SR,1.439,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,3,US50,MDD,0.300,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,4,HSI45,CW,1.111,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,5,HSI45,CAGR,3.4%,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,6,HSI45,SR,0.262,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,7,HSI45,MDD,0.377,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,8,CSI300,CW,1.088,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,9,CSI300,CAGR,2.6%,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,10,CSI300,SR,0.235,,False,False,False,version_specific_result
+v2,real_market,2,Max-Sharpe,11,CSI300,MDD,0.301,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,0,US50,CW,4.063,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,1,US50,CAGR,22.3%,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,2,US50,SR,0.853,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,3,US50,MDD,0.373,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,4,HSI45,CW,1.313,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,5,HSI45,CAGR,9.0%,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,6,HSI45,SR,0.417,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,7,HSI45,MDD,0.409,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,8,CSI300,CW,0.932,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,9,CSI300,CAGR,-2.1%,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,10,CSI300,SR,0.088,,False,False,False,version_specific_result
+v2,real_market,3,ML / Sparse | LGBM,11,CSI300,MDD,0.450,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,0,US50,CW,4.070,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,1,US50,CAGR,22.3%,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,2,US50,SR,0.862,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,3,US50,MDD,0.351,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,4,HSI45,CW,1.227,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,5,HSI45,CAGR,6.7%,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,6,HSI45,SR,0.360,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,7,HSI45,MDD,0.409,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,8,CSI300,CW,1.114,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,9,CSI300,CAGR,3.4%,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,10,CSI300,SR,0.262,,False,False,False,version_specific_result
+v2,real_market,4,XGBoost,11,CSI300,MDD,0.374,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,0,US50,CW,11.985,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,1,US50,CAGR,42.8%,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,2,US50,SR,1.447,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,3,US50,MDD,0.303,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,4,HSI45,CW,1.276,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,5,HSI45,CAGR,8.1%,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,6,HSI45,SR,0.397,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,7,HSI45,MDD,0.388,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,8,CSI300,CW,1.000,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,9,CSI300,CAGR,0.0%,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,10,CSI300,SR,0.175,,False,False,False,version_specific_result
+v2,real_market,5,mSSRM-PGA,11,CSI300,MDD,0.447,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,0,US50,CW,3.575,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,1,US50,CAGR,20.0%,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,2,US50,SR,1.170,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,3,US50,MDD,0.205,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,4,HSI45,CW,1.511,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,5,HSI45,CAGR,14.0%,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,6,HSI45,SR,0.636,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,7,HSI45,MDD,0.361,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,8,CSI300,CW,1.464,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,9,CSI300,CAGR,12.4%,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,10,CSI300,SR,0.826,,False,False,False,version_specific_result
+v2,real_market,6,ASMCVaR,11,CSI300,MDD,0.165,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,0,US50,CW,10.651,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,1,US50,CAGR,40.2%,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,2,US50,SR,1.437,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,3,US50,MDD,0.321,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,4,HSI45,CW,1.794,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,5,HSI45,CAGR,20.4%,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,6,HSI45,SR,0.983,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,7,HSI45,MDD,0.283,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,8,CSI300,CW,1.385,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,9,CSI300,CAGR,10.5%,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,10,CSI300,SR,0.827,,False,False,False,version_specific_result
+v2,real_market,7,EFS gross | DeepSeek-V3,11,CSI300,MDD,0.196,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,0,US50,CW,15.997,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,1,US50,CAGR,48.6%,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,2,US50,SR,1.638,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,3,US50,MDD,0.313,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,4,HSI45,CW,1.794,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,5,HSI45,CAGR,20.4%,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,6,HSI45,SR,0.983,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,7,HSI45,MDD,0.283,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,8,CSI300,CW,1.376,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,9,CSI300,CAGR,10.3%,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,10,CSI300,SR,0.795,,False,False,False,version_specific_result
+v2,real_market,8,DeepSeek-V3+RW,11,CSI300,MDD,0.187,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,0,US50,CW,12.178,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,1,US50,CAGR,42.9%,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,2,US50,SR,1.406,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,3,US50,MDD,0.343,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,4,HSI45,CW,1.941,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,5,HSI45,CAGR,23.5%,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,6,HSI45,SR,1.130,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,7,HSI45,MDD,0.231,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,8,CSI300,CW,1.468,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,9,CSI300,CAGR,12.5%,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,10,CSI300,SR,0.958,,False,False,False,version_specific_result
+v2,real_market,9,GPT-4.1,11,CSI300,MDD,0.159,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,0,US50,CW,12.116,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,1,US50,CAGR,42.8%,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,2,US50,SR,1.410,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,3,US50,MDD,0.345,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,4,HSI45,CW,1.865,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,5,HSI45,CAGR,21.9%,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,6,HSI45,SR,1.055,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,7,HSI45,MDD,0.266,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,8,CSI300,CW,1.511,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,9,CSI300,CAGR,13.5%,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,10,CSI300,SR,1.014,,False,False,False,version_specific_result
+v2,real_market,10,GPT-4.1+RW,11,CSI300,MDD,0.152,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,0,US50,CW,2.663,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,1,US50,CAGR,15.0%,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,2,US50,SR,0.671,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,3,US50,MDD,0.387,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,4,HSI45,CW,1.700,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,5,HSI45,CAGR,18.4%,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,6,HSI45,SR,0.902,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,7,HSI45,MDD,0.293,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,8,CSI300,CW,1.132,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,9,CSI300,CAGR,3.9%,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,10,CSI300,SR,0.357,,False,False,False,version_specific_result
+v2,real_market,11,EFS @ 10bp | DeepSeek-V3,11,CSI300,MDD,0.222,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,0,US50,CW,2.188,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,1,US50,CAGR,11.8%,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,2,US50,SR,0.558,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,3,US50,MDD,0.413,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,4,HSI45,CW,1.700,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,5,HSI45,CAGR,18.4%,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,6,HSI45,SR,0.902,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,7,HSI45,MDD,0.293,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,8,CSI300,CW,1.064,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,9,CSI300,CAGR,1.9%,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,10,CSI300,SR,0.209,,False,False,False,version_specific_result
+v2,real_market,12,DeepSeek-V3+RW,11,CSI300,MDD,0.214,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,0,US50,CW,3.969,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,1,US50,CAGR,21.8%,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,2,US50,SR,0.839,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,3,US50,MDD,0.431,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,4,HSI45,CW,1.874,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,5,HSI45,CAGR,22.1%,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,6,HSI45,SR,1.074,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,7,HSI45,MDD,0.234,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,8,CSI300,CW,1.187,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,9,CSI300,CAGR,5.4%,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,10,CSI300,SR,0.465,,False,False,False,version_specific_result
+v2,real_market,13,GPT-4.1,11,CSI300,MDD,0.190,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,0,US50,CW,3.103,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,1,US50,CAGR,17.6%,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,2,US50,SR,0.717,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,3,US50,MDD,0.390,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,4,HSI45,CW,1.760,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,5,HSI45,CAGR,19.7%,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,6,HSI45,SR,0.967,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,7,HSI45,MDD,0.275,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,8,CSI300,CW,1.140,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,9,CSI300,CAGR,4.1%,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,10,CSI300,SR,0.367,,False,False,False,version_specific_result
+v2,real_market,14,GPT-4.1+RW,11,CSI300,MDD,0.197,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,0,US50,CW,12.18,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,1,US50,CAGR,42.9%,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,2,US50,SR,1.41,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,3,US50,MDD,0.343,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,4,HSI45,CW,1.94,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,5,HSI45,CAGR,23.4%,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,6,HSI45,SR,1.13,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,7,HSI45,MDD,0.231,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,8,CSI300,CW,1.47,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,9,CSI300,CAGR,12.5%,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,10,CSI300,SR,0.96,,False,False,False,version_specific_result
+v2,weight_ablation,0,Allocation | Equal Weight,11,CSI300,MDD,0.159,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,0,US50,CW,12.12,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,1,US50,CAGR,42.8%,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,2,US50,SR,1.41,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,3,US50,MDD,0.345,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,4,HSI45,CW,1.87,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,5,HSI45,CAGR,22.0%,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,6,HSI45,SR,1.06,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,7,HSI45,MDD,0.266,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,8,CSI300,CW,1.51,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,9,CSI300,CAGR,13.5%,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,10,CSI300,SR,1.01,,False,False,False,version_specific_result
+v2,weight_ablation,1,RW,11,CSI300,MDD,0.152,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,0,US50,CW,11.05,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,1,US50,CAGR,40.9%,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,2,US50,SR,1.37,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,3,US50,MDD,0.350,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,4,HSI45,CW,1.91,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,5,HSI45,CAGR,22.8%,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,6,HSI45,SR,1.11,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,7,HSI45,MDD,0.270,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,8,CSI300,CW,1.49,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,9,CSI300,CAGR,13.0%,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,10,CSI300,SR,0.99,,False,False,False,version_specific_result
+v2,weight_ablation,2,~w/o RMT,11,CSI300,MDD,0.149,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,0,US50,CW,10.49,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,1,US50,CAGR,39.9%,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,2,US50,SR,1.36,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,3,US50,MDD,0.349,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,4,HSI45,CW,1.82,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,5,HSI45,CAGR,21.0%,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,6,HSI45,SR,1.01,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,7,HSI45,MDD,0.288,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,8,CSI300,CW,1.42,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,9,CSI300,CAGR,11.3%,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,10,CSI300,SR,0.88,,False,False,False,version_specific_result
+v2,weight_ablation,3,Regularizer | = 0.001,11,CSI300,MDD,0.184,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,0,US50,CW,11.38,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,1,US50,CAGR,41.5%,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,2,US50,SR,1.39,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,3,US50,MDD,0.358,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,4,HSI45,CW,1.82,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,5,HSI45,CAGR,21.0%,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,6,HSI45,SR,1.02,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,7,HSI45,MDD,0.287,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,8,CSI300,CW,1.49,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,9,CSI300,CAGR,13.0%,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,10,CSI300,SR,0.99,,False,False,False,version_specific_result
+v2,weight_ablation,4,= 0.01,11,CSI300,MDD,0.154,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,0,US50,CW,12.12,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,1,US50,CAGR,42.8%,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,2,US50,SR,1.41,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,3,US50,MDD,0.345,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,4,HSI45,CW,1.87,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,5,HSI45,CAGR,22.0%,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,6,HSI45,SR,1.06,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,7,HSI45,MDD,0.266,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,8,CSI300,CW,1.51,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,9,CSI300,CAGR,13.5%,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,10,CSI300,SR,1.01,,False,False,False,version_specific_result
+v2,weight_ablation,5,= 0.05,11,CSI300,MDD,0.152,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,0,US50,CW,11.23,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,1,US50,CAGR,41.3%,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,2,US50,SR,1.38,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,3,US50,MDD,0.359,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,4,HSI45,CW,1.82,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,5,HSI45,CAGR,21.0%,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,6,HSI45,SR,1.02,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,7,HSI45,MDD,0.278,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,8,CSI300,CW,1.53,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,9,CSI300,CAGR,13.9%,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,10,CSI300,SR,1.04,,False,False,False,version_specific_result
+v2,weight_ablation,6,= 0.1,11,CSI300,MDD,0.149,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,0,US50,CW,10.79,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,1,US50,CAGR,40.5%,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,2,US50,SR,1.35,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,3,US50,MDD,0.361,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,4,HSI45,CW,1.99,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,5,HSI45,CAGR,24.4%,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,6,HSI45,SR,1.18,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,7,HSI45,MDD,0.254,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,8,CSI300,CW,1.53,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,9,CSI300,CAGR,13.9%,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,10,CSI300,SR,1.04,,False,False,False,version_specific_result
+v2,weight_ablation,7,= 0.5,11,CSI300,MDD,0.155,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,0,US50,CW,11.06,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,1,US50,CAGR,41.0%,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,2,US50,SR,1.37,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,3,US50,MDD,0.345,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,4,HSI45,CW,1.99,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,5,HSI45,CAGR,24.4%,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,6,HSI45,SR,1.17,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,7,HSI45,MDD,0.256,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,8,CSI300,CW,1.53,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,9,CSI300,CAGR,13.9%,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,10,CSI300,SR,1.04,,False,False,False,version_specific_result
+v2,weight_ablation,8,= 1,11,CSI300,MDD,0.154,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,0,US50,CW,11.70,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,1,US50,CAGR,42.1%,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,2,US50,SR,1.40,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,3,US50,MDD,0.338,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,4,HSI45,CW,1.80,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,5,HSI45,CAGR,20.5%,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,6,HSI45,SR,1.00,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,7,HSI45,MDD,0.255,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,8,CSI300,CW,1.46,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,9,CSI300,CAGR,12.3%,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,10,CSI300,SR,0.94,,False,False,False,version_specific_result
+v2,weight_ablation,9,Pool Size | k = 5,11,CSI300,MDD,0.197,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,0,US50,CW,11.19,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,1,US50,CAGR,41.2%,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,2,US50,SR,1.36,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,3,US50,MDD,0.352,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,4,HSI45,CW,1.88,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,5,HSI45,CAGR,22.2%,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,6,HSI45,SR,1.07,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,7,HSI45,MDD,0.264,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,8,CSI300,CW,1.45,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,9,CSI300,CAGR,12.1%,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,10,CSI300,SR,0.90,,False,False,False,version_specific_result
+v2,weight_ablation,10,k = 10,11,CSI300,MDD,0.196,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,0,US50,CW,11.75,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,1,US50,CAGR,42.2%,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,2,US50,SR,1.39,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,3,US50,MDD,0.345,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,4,HSI45,CW,1.85,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,5,HSI45,CAGR,21.6%,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,6,HSI45,SR,1.05,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,7,HSI45,MDD,0.245,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,8,CSI300,CW,1.53,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,9,CSI300,CAGR,13.9%,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,10,CSI300,SR,1.04,,False,False,False,version_specific_result
+v2,weight_ablation,11,k = 20,11,CSI300,MDD,0.147,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,0,US50,CW,12.04,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,1,US50,CAGR,42.7%,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,2,US50,SR,1.40,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,3,US50,MDD,0.342,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,4,HSI45,CW,1.99,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,5,HSI45,CAGR,24.4%,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,6,HSI45,SR,1.17,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,7,HSI45,MDD,0.231,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,8,CSI300,CW,1.49,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,9,CSI300,CAGR,13.0%,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,10,CSI300,SR,0.99,,False,False,False,version_specific_result
+v2,weight_ablation,12,k = 40,11,CSI300,MDD,0.155,,False,False,False,version_specific_result
+v2,weight_ablation,13,k = 80,0,US50,CW,12.19,,False,False,False,version_specific_result
+v2,weight_ablation,13,k = 80,1,US50,CAGR,42.9%,,False,False,False,version_specific_result
+v2,weight_ablation,13,k = 80,2,US50,SR,1.41,,False,False,False,version_specific_result
+v2,weight_ablation,13,k = 80,3,US50,MDD,0.343,,False,False,False,version_specific_result
+v2,weight_ablation,13,k = 80,8,CSI300,CW,1.47,,False,False,False,version_specific_result
+v2,weight_ablation,13,k = 80,9,CSI300,CAGR,12.5%,,False,False,False,version_specific_result
+v2,weight_ablation,13,k = 80,10,CSI300,SR,0.96,,False,False,False,version_specific_result
+v2,weight_ablation,13,k = 80,11,CSI300,MDD,0.159,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,0,US50,CW,1.593,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,1,US50,CAGR,12.4%,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,2,US50,SR,0.87,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,3,US50,MDD,0.369,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,4,HSI45,CW,1.354,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,5,HSI45,CAGR,19.5%,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,6,HSI45,SR,0.88,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,7,HSI45,MDD,0.299,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,8,CSI300,CW,1.051,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,9,CSI300,CAGR,2.8%,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,10,CSI300,SR,0.61,,False,False,False,version_specific_result
+v2,input_ablation,0,Full,11,CSI300,MDD,0.205,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,0,US50,CW,1.862,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,1,US50,CAGR,16.9%,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,2,US50,SR,1.08,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,3,US50,MDD,0.264,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,4,HSI45,CW,1.154,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,5,HSI45,CAGR,8.8%,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,6,HSI45,SR,0.69,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,7,HSI45,MDD,0.215,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,8,CSI300,CW,1.148,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,9,CSI300,CAGR,7.8%,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,10,CSI300,SR,0.87,,False,False,False,version_specific_result
+v2,input_ablation,1,w/o Quality,11,CSI300,MDD,0.165,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,0,US50,CW,1.190,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,1,US50,CAGR,4.5%,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,2,US50,SR,0.61,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,3,US50,MDD,0.313,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,4,HSI45,CW,1.231,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,5,HSI45,CAGR,13.0%,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,6,HSI45,SR,0.71,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,7,HSI45,MDD,0.326,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,8,CSI300,CW,0.972,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,9,CSI300,CAGR,-1.6%,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,10,CSI300,SR,0.42,,False,False,False,version_specific_result
+v2,input_ablation,2,w/o Performance,11,CSI300,MDD,0.296,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,0,US50,CW,1.637,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,1,US50,CAGR,13.2%,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,2,US50,SR,0.95,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,3,US50,MDD,0.331,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,4,HSI45,CW,1.151,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,5,HSI45,CAGR,8.7%,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,6,HSI45,SR,0.58,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,7,HSI45,MDD,0.310,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,8,CSI300,CW,0.843,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,9,CSI300,CAGR,-8.9%,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,10,CSI300,SR,-0.01,,False,False,False,version_specific_result
+v2,input_ablation,3,w/o TA,11,CSI300,MDD,0.386,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,0,US50,CW,1.328,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,1,US50,CAGR,7.4%,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,2,US50,SR,0.72,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,3,US50,MDD,0.272,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,4,HSI45,CW,1.518,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,5,HSI45,CAGR,27.9%,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,6,HSI45,SR,1.05,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,7,HSI45,MDD,0.320,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,8,CSI300,CW,0.956,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,9,CSI300,CAGR,-2.4%,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,10,CSI300,SR,0.39,,False,False,False,version_specific_result
+v2,input_ablation,4,Initial Factor,11,CSI300,MDD,0.314,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,0,US50,m=5,13.27,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,1,US50,m=10,10.65,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,2,US50,m=15,10.48,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,3,US50,m=20,10.11,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,4,HSI45,m=5,2.03,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,5,HSI45,m=10,1.79,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,6,HSI45,m=15,1.65,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,7,HSI45,m=20,1.69,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,8,CSI300,m=5,1.54,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,9,CSI300,m=10,1.39,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,10,CSI300,m=15,1.40,,False,False,False,version_specific_result
+v2,weighting_schemes,0,Equal,11,CSI300,m=20,1.41,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,0,US50,m=5,10.05,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,1,US50,m=10,10.10,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,2,US50,m=15,11.75,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,3,US50,m=20,9.80,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,4,HSI45,m=5,2.01,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,5,HSI45,m=10,1.76,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,6,HSI45,m=15,1.63,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,7,HSI45,m=20,1.68,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,8,CSI300,m=5,1.54,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,9,CSI300,m=10,1.39,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,10,CSI300,m=15,1.39,,False,False,False,version_specific_result
+v2,weighting_schemes,1,IC-Prop,11,CSI300,m=20,1.41,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,0,US50,m=5,19.14,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,1,US50,m=10,15.73,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,2,US50,m=15,13.91,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,3,US50,m=20,12.74,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,4,HSI45,m=5,1.73,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,5,HSI45,m=10,1.69,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,6,HSI45,m=15,1.71,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,7,HSI45,m=20,1.63,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,8,CSI300,m=5,1.46,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,9,CSI300,m=10,1.37,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,10,CSI300,m=15,1.43,,False,False,False,version_specific_result
+v2,weighting_schemes,2,Min-Var,11,CSI300,m=20,1.43,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,0,US50,m=5,24.87,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,1,US50,m=10,17.31,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,2,US50,m=15,15.35,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,3,US50,m=20,15.23,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,4,HSI45,m=5,1.74,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,5,HSI45,m=10,1.69,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,6,HSI45,m=15,1.78,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,7,HSI45,m=20,1.58,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,8,CSI300,m=5,1.53,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,9,CSI300,m=10,1.40,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,10,CSI300,m=15,1.46,,False,False,False,version_specific_result
+v2,weighting_schemes,3,Max-Sharpe,11,CSI300,m=20,1.50,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,0,US50,m=5,25.32,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,1,US50,m=10,16.00,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,2,US50,m=15,12.94,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,3,US50,m=20,13.88,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,4,HSI45,m=5,2.03,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,5,HSI45,m=10,1.79,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,6,HSI45,m=15,1.65,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,7,HSI45,m=20,1.69,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,8,CSI300,m=5,1.49,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,9,CSI300,m=10,1.38,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,10,CSI300,m=15,1.41,,False,False,False,version_specific_result
+v2,weighting_schemes,4,RW,11,CSI300,m=20,1.50,,False,False,False,version_specific_result
+v2,factor_examples,0,"cs\_zscore(div(add(ts\_mean(returns, 30), ts\_decay\_linear(returns, 10)), mul(ts\_std(returns, 7), ts\_std(if\_else(gt(ts\_momentum(prices, 14), Constant(0)), ts\_delay(returns, 5), ts\_delay(returns, 30)), 30)))) | CSI300",0,reported_in_row,RankIC,.056,,False,False,False,version_specific_result
+v2,factor_examples,1,"cs\_zscore(div(add(ts\_mean(returns, 10), ts\_mean(returns, 30)), add(ts\_std(returns, 7), ts\_std(ts\_delay(returns, 14), 30)))) | CSI300",0,reported_in_row,RankIC,.055,,False,False,False,version_specific_result
+v2,factor_examples,2,"cs\_zscore(div(sub(ts\_max(prices, 30), ts\_decay\_linear(prices, 21)), mul(add(ts\_std(returns, 3), ts\_std(returns, 30)), if\_else(lt(ts\_skew(returns, 14), Constant(0)), ts\_std(returns, 7), ts\_std(returns, 21))))) | US50",0,reported_in_row,RankIC,.018,,False,False,False,version_specific_result
+v2,factor_examples,3,"cs\_zscore(div(ts\_decay\_linear(returns, 30), ts\_std(sub(ts\_delta(returns, 10), ts\_delta(returns, 30)), 30))) | HSI45",0,reported_in_row,RankIC,.051,,False,False,False,version_specific_result
+v2,factor_examples,4,"cs\_rank(div(ts\_mean(returns, 14), add(ts\_std(if\_else(lt(ts\_momentum(prices, 7), Constant(0)), ts\_momentum(prices, 21), ts\_momentum(prices, 3)), 30), ts\_std(ts\_delay(returns, 7), 21)))) | HSI45",0,reported_in_row,RankIC,.050,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,0,US50,CW,1.290,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,1,US50,CAGR,29.4%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,2,US50,SR,1.22,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,3,US50,MDD,0.214,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,4,HSI45,CW,1.216,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,5,HSI45,CAGR,130.6%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,6,HSI45,SR,2.98,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,7,HSI45,MDD,0.070,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,8,CSI300,CW,1.004,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,9,CSI300,CAGR,1.0%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,10,CSI300,SR,0.15,,False,False,False,version_specific_result
+v2,post_cutoff_oos,0,Baseline | 1/N,11,CSI300,MDD,0.109,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,0,US50,CW,0.999,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,1,US50,CAGR,-0.1%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,2,US50,SR,0.07,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,3,US50,MDD,0.127,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,4,HSI45,CW,1.032,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,5,HSI45,CAGR,14.4%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,6,HSI45,SR,1.10,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,7,HSI45,MDD,0.036,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,8,CSI300,CW,1.031,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,9,CSI300,CAGR,8.3%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,10,CSI300,SR,0.69,,False,False,False,version_specific_result
+v2,post_cutoff_oos,1,Min-CVaR,11,CSI300,MDD,0.041,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,0,US50,CW,1.236,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,1,US50,CAGR,23.9%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,2,US50,SR,0.92,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,3,US50,MDD,0.239,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,4,HSI45,CW,1.236,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,5,HSI45,CAGR,147.2%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,6,HSI45,SR,3.19,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,7,HSI45,MDD,0.072,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,8,CSI300,CW,0.954,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,9,CSI300,CAGR,-11.5%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,10,CSI300,SR,-0.30,,False,False,False,version_specific_result
+v2,post_cutoff_oos,2,Max-Sharpe,11,CSI300,MDD,0.174,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,0,US50,CW,1.024,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,1,US50,CAGR,2.4%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,2,US50,SR,0.22,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,3,US50,MDD,0.244,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,4,HSI45,CW,1.151,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,5,HSI45,CAGR,82.3%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,6,HSI45,SR,1.79,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,7,HSI45,MDD,0.127,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,8,CSI300,CW,0.883,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,9,CSI300,CAGR,-27.6%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,10,CSI300,SR,-0.63,,False,False,False,version_specific_result
+v2,post_cutoff_oos,3,ML / Sparse | LGBM,11,CSI300,MDD,0.279,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,0,US50,CW,1.205,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,1,US50,CAGR,20.8%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,2,US50,SR,0.86,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,3,US50,MDD,0.234,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,4,HSI45,CW,1.132,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,5,HSI45,CAGR,69.8%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,6,HSI45,SR,1.67,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,7,HSI45,MDD,0.097,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,8,CSI300,CW,0.895,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,9,CSI300,CAGR,-25.0%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,10,CSI300,SR,-0.53,,False,False,False,version_specific_result
+v2,post_cutoff_oos,4,XGBoost,11,CSI300,MDD,0.276,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,0,US50,CW,1.301,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,1,US50,CAGR,30.5%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,2,US50,SR,1.11,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,3,US50,MDD,0.207,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,4,HSI45,CW,1.182,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,5,HSI45,CAGR,104.3%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,6,HSI45,SR,2.31,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,7,HSI45,MDD,0.102,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,8,CSI300,CW,0.888,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,9,CSI300,CAGR,-26.6%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,10,CSI300,SR,-0.70,,False,False,False,version_specific_result
+v2,post_cutoff_oos,5,mSSRM-PGA,11,CSI300,MDD,0.267,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,0,US50,CW,1.014,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,1,US50,CAGR,1.4%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,2,US50,SR,0.17,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,3,US50,MDD,0.133,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,4,HSI45,CW,1.077,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,5,HSI45,CAGR,37.3%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,6,HSI45,SR,2.37,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,7,HSI45,MDD,0.047,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,8,CSI300,CW,1.058,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,9,CSI300,CAGR,15.8%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,10,CSI300,SR,1.22,,False,False,False,version_specific_result
+v2,post_cutoff_oos,6,ASMCVaR,11,CSI300,MDD,0.040,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,0,US50,CW,1.478,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,1,US50,CAGR,48.5%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,2,US50,SR,1.69,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,3,US50,MDD,0.198,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,4,HSI45,CW,1.133,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,5,HSI45,CAGR,70.5%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,6,HSI45,SR,3.88,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,7,HSI45,MDD,0.036,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,8,CSI300,CW,1.046,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,9,CSI300,CAGR,12.4%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,10,CSI300,SR,1.06,,False,False,False,version_specific_result
+v2,post_cutoff_oos,7,EFS | Equal,11,CSI300,MDD,0.046,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,0,US50,CW,1.697,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,1,US50,CAGR,70.8%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,2,US50,SR,2.13,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,3,US50,MDD,0.175,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,4,HSI45,CW,1.133,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,5,HSI45,CAGR,70.5%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,6,HSI45,SR,3.88,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,7,HSI45,MDD,0.036,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,8,CSI300,CW,1.004,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,9,CSI300,CAGR,1.0%,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,10,CSI300,SR,0.15,,False,False,False,version_specific_result
+v2,post_cutoff_oos,8,+ RW,11,CSI300,MDD,0.067,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,0,US50,0bp,10.720,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,1,US50,5bp,5.051,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,2,US50,10bp,2.379,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,3,US50,20bp,0.527,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,4,US50,turnover,0.428,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,5,HSI45,0bp,1.977,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,6,HSI45,5bp,1.932,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,7,HSI45,10bp,1.887,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,8,HSI45,20bp,1.801,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,9,HSI45,turnover,0.028,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,10,CSI300,0bp,1.312,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,11,CSI300,5bp,1.150,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,12,CSI300,10bp,1.007,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,13,CSI300,20bp,0.773,,False,False,False,version_specific_result
+v2,turnover_cost,0,5,14,CSI300,turnover,0.160,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,0,US50,0bp,12.182,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,1,US50,5bp,6.952,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,2,US50,10bp,3.967,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,3,US50,20bp,1.291,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,4,US50,turnover,0.319,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,5,HSI45,0bp,1.941,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,6,HSI45,5bp,1.906,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,7,HSI45,10bp,1.872,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,8,HSI45,20bp,1.804,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,9,HSI45,turnover,0.022,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,10,CSI300,0bp,1.468,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,11,CSI300,5bp,1.320,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,12,CSI300,10bp,1.186,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,13,CSI300,20bp,0.959,,False,False,False,version_specific_result
+v2,turnover_cost,1,10,14,CSI300,turnover,0.129,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,0,US50,0bp,9.499,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,1,US50,5bp,6.091,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,2,US50,10bp,3.905,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,3,US50,20bp,1.605,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,4,US50,turnover,0.253,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,5,HSI45,0bp,1.735,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,6,HSI45,5bp,1.701,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,7,HSI45,10bp,1.668,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,8,HSI45,20bp,1.603,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,9,HSI45,turnover,0.024,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,10,CSI300,0bp,1.422,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,11,CSI300,5bp,1.300,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,12,CSI300,10bp,1.189,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,13,CSI300,20bp,0.995,,False,False,False,version_specific_result
+v2,turnover_cost,2,15,14,CSI300,turnover,0.108,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,0,US50,0bp,8.880,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,1,US50,5bp,6.146,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,2,US50,10bp,4.253,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,3,US50,20bp,2.037,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,4,US50,turnover,0.209,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,5,HSI45,0bp,1.676,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,6,HSI45,5bp,1.648,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,7,HSI45,10bp,1.620,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,8,HSI45,20bp,1.565,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,9,HSI45,turnover,0.020,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,10,CSI300,0bp,1.397,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,11,CSI300,5bp,1.284,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,12,CSI300,10bp,1.179,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,13,CSI300,20bp,0.995,,False,False,False,version_specific_result
+v2,turnover_cost,3,20,14,CSI300,turnover,0.102,,False,False,False,version_specific_result

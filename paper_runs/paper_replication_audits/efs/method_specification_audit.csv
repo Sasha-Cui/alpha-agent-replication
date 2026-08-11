@@ -1,0 +1,61 @@
+dimension,assessment,severity,evidence,native_efs_verified
+official EFS source,missing,blocking,"No author-linked implementation was found in the paper, author pages, or pinned GitHub searches.",False
+official code license,missing,blocking,No EFS code package exists to license.,False
+exact EFS revision,missing,blocking,No executable revision or source tree is identified.,False
+checkpoint or factor pool,missing,blocking,"No generated factor pool, checkpoint, or search state is released.",False
+raw actions and portfolio weights,missing,blocking,No selected-asset or weight path is released.,False
+raw returns and equity paths,missing,blocking,Only rendered tables and figures are released.,False
+exact experiment configuration,missing,blocking,No machine-readable run configuration is released.,False
+random seeds,missing,blocking,Three searches are mentioned but their seeds are absent.,False
+per-run outputs,missing,blocking,Main results pool factors across three runs; individual paths are absent.,False
+LLM model revisions,missing,blocking,"GPT-4.1 and DeepSeek-V3 are names, not immutable model snapshots.",False
+LLM API date and provider,partial,major,v2 names a production endpoint but not the exact invocation dates or immutable backend.,False
+LLM decoding parameters,missing,blocking,"Temperature, top-p, token budget, and retry limit are not fixed.",False
+prompt template v1,specified,none,v1 embeds system/user prompt templates in the appendix.,False
+prompt template v2,conflict,blocking,"v2 says prompts are in supplementary material, but they are absent from the v2 arXiv PDF/source.",False
+factor DSL implementation,missing,blocking,"Operator names/examples are given, but executable semantics and edge cases are not.",False
+factor validation tests,missing,blocking,The paper mentions execution validation but releases no validator or tests.,False
+initial factor library v1,partial,major,v1 lists factor families/definitions but not the exact executable seed library.,False
+initial factor library v2,conflict,major,v2 alternates between Alpha101/Alpha158 examples and an unreleased concrete seed set.,False
+data vendor,missing,blocking,"No vendor/download endpoint for US50, HSI45, or CSI300 is stated.",False
+immutable market data snapshot,missing,blocking,No raw market dataset or content hash is released.,False
+price adjustment and corporate actions,missing,blocking,Adjusted/unadjusted close and delisting treatment are unspecified.,False
+US50 constituents,partial,major,"v1 lists 50 tickers, but v2 does not pin the revised 2019-2025 panel or selection date.",False
+HSI45 constituents,partial,major,v1 lists tickers but also randomly adds 15 names without a seed; v2 omits the revised panel.,False
+CSI300 constituents,missing,blocking,No point-in-time membership path or exact 300-name snapshot is released.,False
+survivorship handling,missing,blocking,Top-cap/current-index universe construction is not point-in-time specified.,False
+Fama-French benchmark matrices,partial,major,"Cited ASMCVaR releases 623xN matrices, but EFS does not hash the exact copies used.",False
+benchmark start/end dates v1,conflict,major,Main text says 623 records while the appendix says 622; dates are absent in v1.,False
+benchmark start/end dates v2,specified,none,v2 states July 1971-May 2023 and 623 observations.,False
+return-to-price conversion,conflict,major,Both versions write P_t as a product of r_t while elsewhere r_t denotes a simple return.,False
+cumulative wealth v1,conflict,major,v1 defines CW=P_T-P_0 while tables report terminal wealth multiples.,False
+cumulative wealth v2,specified,none,v2 corrects CW to P_T/P_0.,False
+Sharpe annualization v1,partial,major,v1 mentions sqrt(252/12) but does not state which tables apply it.,False
+Sharpe annualization v2,conflict,major,v2 omits annualization from the equation while daily table values appear annualized.,False
+risk-free rate,partial,major,v2 fixes zero for daily results; v1 does not fix it globally.,False
+maximum drawdown,specified,none,Both versions provide the standard peak-to-trough definition.,False
+lookback length,partial,major,v1 fixes T=30 for factors; other optimization lookbacks and v2 revisions are incomplete.,False
+search frequency,partial,major,"Both say typically weekly, not an exact schedule.",False
+warmup duration,missing,blocking,Algorithm input N_t is not fixed for the reported runs.,False
+generation count per search,partial,major,v1 ablates M but does not identify the main-run M unambiguously.,False
+drop and retry thresholds,missing,blocking,Algorithm inputs and retry acceptance thresholds lack reported values.,False
+v2 filter thresholds,specified,none,v2 supplies IC/ICIR/correlation/floor/cap defaults.,False
+v2 per-dataset IC screen,conflict,major,v2 claims no per-dataset calibration but uses 0.05 in Asia and 0.005 in the US.,False
+v2 regularization lambda,conflict,major,Main runs claim fixed lambda=0.05; discussion recommends market-dependent validation tuning.,False
+factor weighting v1,specified,none,v1 averages factors and separately tests positive score-to-asset weights.,False
+factor weighting v2,paper_only,major,RMT/QP equations are given but no executable implementation or matrices are released.,False
+asset weighting,partial,major,Equal weighting is used in main v1 runs; exact v2 asset-weight path after factor RW is incomplete.,False
+transaction cost model v1,partial,major,"Rates are reported, but turnover timing and executable deduction are absent.",False
+transaction cost model v2,partial,major,"Rates and turnover are tabulated, but fills/rebalances and raw paths are absent.",False
+baseline implementations,missing,blocking,EFS releases no exact baseline wrappers/configs; cited repositories are separate projects.,False
+uncertainty for main tables,missing,blocking,Pooled-factor main tables have no seed-level uncertainty or tests.,False
+ablation uncertainty v2,partial,major,v2 discloses that reduced-budget ablations are single runs and qualitative.,False
+statistical significance,missing,blocking,The only Wilcoxon table is commented out; no active uncertainty test is reported.,False
+OOS checkpoint protocol,conflict,blocking,"v2 says LLM search is disabled, then says pre-2025 factors initialize a run of EFS after the cutoff.",False
+test-set model selection,conflict,blocking,"Rolling performance feedback, IC screens, lambda discussion, and checkpoint comparisons use evaluation-period outcomes without a frozen validation protocol.",False
+v1 main/no-cost table identity,conflict,blocking,The same EFS m=10 configurations have 18 different values in the main and no-cost tables.,False
+v1-to-v2 benchmark lineage,conflict,blocking,All 240 common benchmark cells are rounded v1 carryovers despite a materially revised paper.,False
+Scores-to-Weights to RW relabel,conflict,blocking,Forty-eight v1 asset-score-weighting values are relabelled as v2 RMT/QP factor-weighting results.,False
+RW overhead claim,conflict,major,The 93.5 ms claim excludes the commented 582.5 s correlation-matrix construction.,False
+software environment,missing,blocking,No Python/MATLAB/dependency versions or hardware are supplied for EFS.,False
+full native rerun,missing,blocking,"The released paper source is compilable, but the EFS experiment is not executable.",False

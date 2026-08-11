@@ -1,0 +1,70 @@
+{
+  "audit_date": "2026-08-11",
+  "author_hosted_pdf": {
+    "byte_identical_to_v1": true,
+    "sha256": "7bde1f690bab7c9f694e6f8810502884394e48de6c118a895b68fcaad1a20b26",
+    "url": "https://www.cs.cityu.edu.hk/~cliu644/HomePage/doc/EFS/EFS_PDF.pdf"
+  },
+  "cited_asmcvar_release": {
+    "archive_sha256": "6c553f0d799a8379dc01a78a02fc86b02612fea6eeb21f5b0641c327b8801f9a",
+    "commit": "0ed6a63ca02118cc305ae5d34f2cf24489c024a5",
+    "data_sha256": {
+      "FF100MEINVnew": "71059496600edd65b88e4b558423256cfbb05d1b4c10369e7674469d836553e9",
+      "FF100MEOPnew": "c62941fc24e338096faa24b782a21b8ada8c0e7f029fcf415271e2eaa086a039",
+      "FF100new": "9ceca78a8351bb785ad8943aeee4c089c280d760dcac6d4a94f5a42552e8a5ba",
+      "FF25EUnew": "d3897865a555c8b9c8624b0ba7e0dab920c3cf0a783dec4b7a362fdd03732915",
+      "FF25new": "0f4c1e91708ce9098d12e81525468dcaa5946d5bff508db7eb953d3cd43744f4",
+      "FF32new": "3eb4af4e3b3080fb226364d3b84e2d392366b9be4ba95ecf863346f2d3d143ec",
+      "FF49new": "4e86d65e11ba828d4b33147d18a95ebd31ccce313fa10f4b4693aed4a2b79796"
+    },
+    "paper_credit": "baseline_source_only",
+    "tree": "3a0bd2408d16d3702321e009701adcf81629e83b",
+    "url": "https://github.com/linyizun2024/ASMCVaR"
+  },
+  "cited_mssrm_release": {
+    "archive_sha256": "20e6f756109f725ba56074463f5ba2a3694695dd15267d0455cd3f070386c3ac",
+    "commit": "4e1be268746c3c046455e2a264279f622fceaef6",
+    "paper_credit": "baseline_source_only",
+    "tree": "4a8a92e08c8038194b42703541374278a456db9f",
+    "url": "https://github.com/linyizun2024/mSSRM"
+  },
+  "current_revision": {
+    "authors": [
+      "Jiandong Chen",
+      "Haochen Luo",
+      "Yuan Zhang",
+      "Chen Liu",
+      "Qingfu Zhang"
+    ],
+    "pages": 13,
+    "pdf_sha256": "1f6a60bbd254265542cc37d32b71c91516ef02dcd7b5f48414120aabdb8492a0",
+    "source_sha256": "0aef98b39a4f73b7389bbc1325613ced13a070480bb5d96850b1459b9c53a820",
+    "updated": "2026-08-07T03:58:06Z",
+    "url": "https://arxiv.org/abs/2507.17211v2"
+  },
+  "github_repository_search": {
+    "queries": [
+      "2507.17211",
+      "Evolutionary Factor Search",
+      "EFS sparse portfolio LLM"
+    ],
+    "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+    "total_repositories": 0
+  },
+  "official_efs_repository_found": false,
+  "original_paper": {
+    "authors": [
+      "Haochen Luo",
+      "Yuan Zhang",
+      "Chen Liu"
+    ],
+    "pages": 27,
+    "pdf_sha256": "7bde1f690bab7c9f694e6f8810502884394e48de6c118a895b68fcaad1a20b26",
+    "source_sha256": "5c493ff9337af2dbeaee65ee3aed3e42a46a7efd873565c1c2a61d6d698af218",
+    "url": "https://arxiv.org/abs/2507.17211v1"
+  },
+  "validation": {
+    "github_search_total": 0,
+    "validated_file_count": 16
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cited_baseline_formula_executed": true,
+  "efs_native_execution_attempted": false,
+  "matlab_baseline_source_executed": false,
+  "matlab_reason": "MATLAB/Octave unavailable; only the deterministic 1/N formula and released matrices were needed for credited cells",
+  "native_efs_cells_with_credit": 0,
+  "paper_source_compilation": {
+    "v1": {
+      "exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "pages": 27,
+      "paper_result_credit": false,
+      "source_files": 38
+    },
+    "v2": {
+      "exit_codes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "pages": 13,
+      "paper_result_credit": false,
+      "source_files": 12
+    }
+  },
+  "reason": "no author-linked EFS implementation, config, factor pool, checkpoint, or result path released",
+  "v1_cited_baseline_cells_with_credit": 5,
+  "v2_cited_baseline_cells_with_credit": 8
+}

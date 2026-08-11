@@ -1,0 +1,774 @@
+paper_version,paper_table,row_index,row_label,result_position,dataset,metric,paper_value,cited_baseline_recomputed_value,cited_baseline_match_at_paper_precision,native_efs_result_credit,paper_result_credit,version_lineage_status
+v1,benchmark,0,Baseline | 1/N,0,FF25,CW,374.13,373.765729685,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,1,FF25,SR,0.229,0.227617734477,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,2,FF25,MDD,0.548,0.547644971276,True,False,True,version_specific_result
+v1,benchmark,0,Baseline | 1/N,3,FF32,CW,452.84,446.630829807,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,4,FF32,SR,0.225,0.223376243881,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,5,FF32,MDD,0.541,0.54050470877,True,False,True,version_specific_result
+v1,benchmark,0,Baseline | 1/N,6,FF49,CW,254.67,250.200686962,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,7,FF49,SR,0.207,0.205714641498,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,8,FF49,MDD,0.527,0.526895538992,True,False,True,version_specific_result
+v1,benchmark,0,Baseline | 1/N,9,FF100,CW,389.44,385.763824236,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,10,FF100,SR,0.210,0.208693719333,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,11,FF100,MDD,0.549,0.54876606898,True,False,True,version_specific_result
+v1,benchmark,0,Baseline | 1/N,12,FF100MEOP,CW,371.33,367.764858628,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,13,FF100MEOP,SR,0.209,0.207488076412,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,14,FF100MEOP,MDD,0.532,0.531532764619,True,False,True,version_specific_result
+v1,benchmark,1,SSPO,0,FF25,CW,76.70,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,1,FF25,SR,0.140,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,2,FF25,MDD,0.784,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,3,FF32,CW,15.37,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,4,FF32,SR,0.100,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,5,FF32,MDD,0.733,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,6,FF49,CW,62.27,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,7,FF49,SR,0.114,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,8,FF49,MDD,0.878,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,9,FF100,CW,1.21,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,10,FF100,SR,0.046,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,11,FF100,MDD,0.823,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,12,FF100MEOP,CW,9.97,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,13,FF100MEOP,SR,0.086,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,14,FF100MEOP,MDD,0.814,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,0,FF25,CW,386.71,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,1,FF25,SR,0.239,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,2,FF25,MDD,0.538,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,3,FF32,CW,289.93,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,4,FF32,SR,0.231,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,5,FF32,MDD,0.507,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,6,FF49,CW,207.53,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,7,FF49,SR,0.248,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,8,FF49,MDD,0.411,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,9,FF100,CW,155.70,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,10,FF100,SR,0.203,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,11,FF100,MDD,0.540,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,12,FF100MEOP,CW,258.01,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,13,FF100MEOP,SR,0.220,,False,False,False,version_specific_result
+v1,benchmark,2,Min-cVaR,14,FF100MEOP,MDD,0.513,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,0,FF25,CW,553.10,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,1,FF25,SR,0.243,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,2,FF25,MDD,0.582,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,3,FF32,CW,718.62,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,4,FF32,SR,0.251,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,5,FF32,MDD,0.552,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,6,FF49,CW,210.94,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,7,FF49,SR,0.234,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,8,FF49,MDD,0.419,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,9,FF100,CW,386.86,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,10,FF100,SR,0.223,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,11,FF100,MDD,0.570,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,12,FF100MEOP,CW,379.62,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,13,FF100MEOP,SR,0.229,,False,False,False,version_specific_result
+v1,benchmark,3,Max-Sharpe,14,FF100MEOP,MDD,0.509,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,0,FF25,CW,281.49,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,1,FF25,SR,0.217,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,2,FF25,MDD,0.559,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,3,FF32,CW,530.49,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,4,FF32,SR,0.226,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,5,FF32,MDD,0.552,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,6,FF49,CW,169.18,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,7,FF49,SR,0.189,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,8,FF49,MDD,0.588,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,9,FF100,CW,216.81,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,10,FF100,SR,0.189,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,11,FF100,MDD,0.484,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,12,FF100MEOP,CW,284.60,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,13,FF100MEOP,SR,0.198,,False,False,False,version_specific_result
+v1,benchmark,4,m=10 | LGBM,14,FF100MEOP,MDD,0.522,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,0,FF25,CW,292.22,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,1,FF25,SR,0.220,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,2,FF25,MDD,0.523,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,3,FF32,CW,551.77,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,4,FF32,SR,0.225,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,5,FF32,MDD,0.537,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,6,FF49,CW,354.46,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,7,FF49,SR,0.206,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,8,FF49,MDD,0.525,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,9,FF100,CW,392.18,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,10,FF100,SR,0.200,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,11,FF100,MDD,0.496,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,12,FF100MEOP,CW,269.10,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,13,FF100MEOP,SR,0.193,,False,False,False,version_specific_result
+v1,benchmark,5,XGB,14,FF100MEOP,MDD,0.520,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,0,FF25,CW,606.840,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,1,FF25,SR,0.241,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,2,FF25,MDD,0.583,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,3,FF32,CW,748.590,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,4,FF32,SR,0.249,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,5,FF32,MDD,0.550,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,6,FF49,CW,168.990,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,7,FF49,SR,0.222,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,8,FF49,MDD,0.445,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,9,FF100,CW,379.390,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,10,FF100,SR,0.216,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,11,FF100,MDD,0.582,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,12,FF100MEOP,CW,305.860,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,13,FF100MEOP,SR,0.222,,False,False,False,version_specific_result
+v1,benchmark,6,mSSRM-PGA,14,FF100MEOP,MDD,0.498,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,0,FF25,CW,638.190,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,1,FF25,SR,0.252,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,2,FF25,MDD,0.481,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,3,FF32,CW,670.400,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,4,FF32,SR,0.244,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,5,FF32,MDD,0.452,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,6,FF49,CW,409.180,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,7,FF49,SR,0.224,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,8,FF49,MDD,0.471,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,9,FF100,CW,491.120,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,10,FF100,SR,0.228,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,11,FF100,MDD,0.524,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,12,FF100MEOP,CW,405.380,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,13,FF100MEOP,SR,0.220,,False,False,False,version_specific_result
+v1,benchmark,7,ASMCVaR,14,FF100MEOP,MDD,0.502,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,0,FF25,CW,639.660,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,1,FF25,SR,0.251,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,2,FF25,MDD,0.509,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,3,FF32,CW,923.520,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,4,FF32,SR,0.244,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,5,FF32,MDD,0.532,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,6,FF49,CW,692.910,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,7,FF49,SR,0.228,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,8,FF49,MDD,0.532,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,9,FF100,CW,1232.860,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,10,FF100,SR,0.238,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,11,FF100,MDD,0.547,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,12,FF100MEOP,CW,342.660,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,13,FF100MEOP,SR,0.201,,False,False,False,version_specific_result
+v1,benchmark,8,EFS-DeepSeek,14,FF100MEOP,MDD,0.517,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,0,FF25,CW,1064.560,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,1,FF25,SR,0.254,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,2,FF25,MDD,0.495,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,3,FF32,CW,797.710,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,4,FF32,SR,0.233,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,5,FF32,MDD,0.538,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,6,FF49,CW,441.480,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,7,FF49,SR,0.187,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,8,FF49,MDD,0.589,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,9,FF100,CW,1464.970,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,10,FF100,SR,0.240,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,11,FF100,MDD,0.454,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,12,FF100MEOP,CW,359.860,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,13,FF100MEOP,SR,0.201,,False,False,False,version_specific_result
+v1,benchmark,9,+ Scores to Weights,14,FF100MEOP,MDD,0.524,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,0,FF25,CW,708.340,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,1,FF25,SR,0.255,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,2,FF25,MDD,0.498,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,3,FF32,CW,613.920,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,4,FF32,SR,0.232,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,5,FF32,MDD,0.535,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,6,FF49,CW,565.070,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,7,FF49,SR,0.222,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,8,FF49,MDD,0.537,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,9,FF100,CW,1836.340,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,10,FF100,SR,0.253,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,11,FF100,MDD,0.486,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,12,FF100MEOP,CW,555.490,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,13,FF100MEOP,SR,0.215,,False,False,False,version_specific_result
+v1,benchmark,10,EFS-GPT 4.1,14,FF100MEOP,MDD,0.542,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,0,FF25,CW,1408.440,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,1,FF25,SR,0.273,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,2,FF25,MDD,0.498,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,3,FF32,CW,847.350,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,4,FF32,SR,0.234,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,5,FF32,MDD,0.498,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,6,FF49,CW,593.180,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,7,FF49,SR,0.200,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,8,FF49,MDD,0.609,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,9,FF100,CW,2434.510,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,10,FF100,SR,0.257,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,11,FF100,MDD,0.511,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,12,FF100MEOP,CW,461.870,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,13,FF100MEOP,SR,0.203,,False,False,False,version_specific_result
+v1,benchmark,11,+ Scores to Weights,14,FF100MEOP,MDD,0.617,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,0,FF25,CW,312.50,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,1,FF25,SR,0.221,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,2,FF25,MDD,0.550,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,3,FF32,CW,541.42,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,4,FF32,SR,0.229,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,5,FF32,MDD,0.552,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,6,FF49,CW,194.64,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,7,FF49,SR,0.196,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,8,FF49,MDD,0.593,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,9,FF100,CW,223.94,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,10,FF100,SR,0.191,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,11,FF100,MDD,0.492,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,12,FF100MEOP,CW,301.82,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,13,FF100MEOP,SR,0.202,,False,False,False,version_specific_result
+v1,benchmark,12,m=15 | LGBM,14,FF100MEOP,MDD,0.526,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,0,FF25,CW,308.41,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,1,FF25,SR,0.223,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,2,FF25,MDD,0.527,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,3,FF32,CW,491.32,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,4,FF32,SR,0.223,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,5,FF32,MDD,0.554,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,6,FF49,CW,377.05,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,7,FF49,SR,0.214,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,8,FF49,MDD,0.518,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,9,FF100,CW,364.16,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,10,FF100,SR,0.201,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,11,FF100,MDD,0.516,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,12,FF100MEOP,CW,355.87,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,13,FF100MEOP,SR,0.204,,False,False,False,version_specific_result
+v1,benchmark,13,XGB,14,FF100MEOP,MDD,0.505,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,0,FF25,CW,601.250,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,1,FF25,SR,0.240,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,2,FF25,MDD,0.583,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,3,FF32,CW,744.910,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,4,FF32,SR,0.249,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,5,FF32,MDD,0.550,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,6,FF49,CW,171.950,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,7,FF49,SR,0.223,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,8,FF49,MDD,0.445,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,9,FF100,CW,415.540,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,10,FF100,SR,0.222,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,11,FF100,MDD,0.573,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,12,FF100MEOP,CW,306.340,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,13,FF100MEOP,SR,0.223,,False,False,False,version_specific_result
+v1,benchmark,14,mSSRM-PGA,14,FF100MEOP,MDD,0.502,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,0,FF25,CW,676.350,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,1,FF25,SR,0.252,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,2,FF25,MDD,0.500,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,3,FF32,CW,690.990,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,4,FF32,SR,0.243,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,5,FF32,MDD,0.466,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,6,FF49,CW,526.840,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,7,FF49,SR,0.235,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,8,FF49,MDD,0.453,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,9,FF100,CW,523.490,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,10,FF100,SR,0.230,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,11,FF100,MDD,0.526,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,12,FF100MEOP,CW,518.800,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,13,FF100MEOP,SR,0.227,,False,False,False,version_specific_result
+v1,benchmark,15,ASMCVaR,14,FF100MEOP,MDD,0.505,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,0,FF25,CW,546.030,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,1,FF25,SR,0.246,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,2,FF25,MDD,0.507,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,3,FF32,CW,715.550,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,4,FF32,SR,0.239,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,5,FF32,MDD,0.535,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,6,FF49,CW,586.140,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,7,FF49,SR,0.231,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,8,FF49,MDD,0.505,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,9,FF100,CW,983.840,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,10,FF100,SR,0.233,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,11,FF100,MDD,0.549,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,12,FF100MEOP,CW,371.130,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,13,FF100MEOP,SR,0.206,,False,False,False,version_specific_result
+v1,benchmark,16,EFS-DeepSeek,14,FF100MEOP,MDD,0.530,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,0,FF25,CW,1049.530,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,1,FF25,SR,0.254,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,2,FF25,MDD,0.496,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,3,FF32,CW,735.640,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,4,FF32,SR,0.231,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,5,FF32,MDD,0.537,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,6,FF49,CW,427.200,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,7,FF49,SR,0.187,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,8,FF49,MDD,0.580,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,9,FF100,CW,1353.380,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,10,FF100,SR,0.239,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,11,FF100,MDD,0.453,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,12,FF100MEOP,CW,343.860,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,13,FF100MEOP,SR,0.200,,False,False,False,version_specific_result
+v1,benchmark,17,+ Scores to Weights,14,FF100MEOP,MDD,0.532,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,0,FF25,CW,530.260,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,1,FF25,SR,0.246,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,2,FF25,MDD,0.520,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,3,FF32,CW,608.880,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,4,FF32,SR,0.234,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,5,FF32,MDD,0.529,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,6,FF49,CW,533.610,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,7,FF49,SR,0.228,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,8,FF49,MDD,0.500,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,9,FF100,CW,1289.850,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,10,FF100,SR,0.244,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,11,FF100,MDD,0.504,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,12,FF100MEOP,CW,565.410,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,13,FF100MEOP,SR,0.217,,False,False,False,version_specific_result
+v1,benchmark,18,EFS-GPT 4.1,14,FF100MEOP,MDD,0.533,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,0,FF25,CW,1364.540,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,1,FF25,SR,0.272,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,2,FF25,MDD,0.497,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,3,FF32,CW,840.140,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,4,FF32,SR,0.234,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,5,FF32,MDD,0.498,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,6,FF49,CW,638.790,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,7,FF49,SR,0.203,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,8,FF49,MDD,0.602,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,9,FF100,CW,2060.590,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,10,FF100,SR,0.254,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,11,FF100,MDD,0.513,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,12,FF100MEOP,CW,455.940,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,13,FF100MEOP,SR,0.204,,False,False,False,version_specific_result
+v1,benchmark,19,+ Scores to Weights,14,FF100MEOP,MDD,0.610,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,0,FF25,CW,336.90,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,1,FF25,SR,0.225,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,2,FF25,MDD,0.540,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,3,FF32,CW,468.51,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,4,FF32,SR,0.225,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,5,FF32,MDD,0.552,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,6,FF49,CW,207.05,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,7,FF49,SR,0.200,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,8,FF49,MDD,0.566,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,9,FF100,CW,249.65,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,10,FF100,SR,0.194,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,11,FF100,MDD,0.509,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,12,FF100MEOP,CW,332.51,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,13,FF100MEOP,SR,0.205,,False,False,False,version_specific_result
+v1,benchmark,20,m=20 | LGBM,14,FF100MEOP,MDD,0.532,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,0,FF25,CW,346.15,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,1,FF25,SR,0.227,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,2,FF25,MDD,0.543,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,3,FF32,CW,482.98,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,4,FF32,SR,0.225,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,5,FF32,MDD,0.545,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,6,FF49,CW,307.56,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,7,FF49,SR,0.211,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,8,FF49,MDD,0.516,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,9,FF100,CW,349.19,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,10,FF100,SR,0.201,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,11,FF100,MDD,0.503,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,12,FF100MEOP,CW,357.33,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,13,FF100MEOP,SR,0.205,,False,False,False,version_specific_result
+v1,benchmark,21,XGB,14,FF100MEOP,MDD,0.525,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,0,FF25,CW,601.260,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,1,FF25,SR,0.240,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,2,FF25,MDD,0.583,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,3,FF32,CW,744.910,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,4,FF32,SR,0.249,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,5,FF32,MDD,0.550,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,6,FF49,CW,171.970,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,7,FF49,SR,0.223,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,8,FF49,MDD,0.445,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,9,FF100,CW,422.390,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,10,FF100,SR,0.223,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,11,FF100,MDD,0.573,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,12,FF100MEOP,CW,304.770,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,13,FF100MEOP,SR,0.223,,False,False,False,version_specific_result
+v1,benchmark,22,mSSRM-PGA,14,FF100MEOP,MDD,0.502,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,0,FF25,CW,653.380,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,1,FF25,SR,0.249,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,2,FF25,MDD,0.504,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,3,FF32,CW,731.320,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,4,FF32,SR,0.244,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,5,FF32,MDD,0.479,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,6,FF49,CW,530.760,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,7,FF49,SR,0.234,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,8,FF49,MDD,0.463,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,9,FF100,CW,583.510,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,10,FF100,SR,0.232,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,11,FF100,MDD,0.533,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,12,FF100MEOP,CW,508.860,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,13,FF100MEOP,SR,0.225,,False,False,False,version_specific_result
+v1,benchmark,23,ASMCVaR,14,FF100MEOP,MDD,0.516,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,0,FF25,CW,460.940,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,1,FF25,SR,0.239,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,2,FF25,MDD,0.518,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,3,FF32,CW,634.170,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,4,FF32,SR,0.236,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,5,FF32,MDD,0.548,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,6,FF49,CW,592.020,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,7,FF49,SR,0.236,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,8,FF49,MDD,0.498,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,9,FF100,CW,882.040,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,10,FF100,SR,0.230,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,11,FF100,MDD,0.545,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,12,FF100MEOP,CW,406.980,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,13,FF100MEOP,SR,0.210,,False,False,False,version_specific_result
+v1,benchmark,24,EFS-DeepSeek,14,FF100MEOP,MDD,0.521,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,0,FF25,CW,1029.550,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,1,FF25,SR,0.253,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,2,FF25,MDD,0.498,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,3,FF32,CW,721.730,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,4,FF32,SR,0.231,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,5,FF32,MDD,0.537,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,6,FF49,CW,412.480,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,7,FF49,SR,0.187,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,8,FF49,MDD,0.578,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,9,FF100,CW,1320.880,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,10,FF100,SR,0.240,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,11,FF100,MDD,0.453,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,12,FF100MEOP,CW,338.070,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,13,FF100MEOP,SR,0.200,,False,False,False,version_specific_result
+v1,benchmark,25,+ Scores to Weights,14,FF100MEOP,MDD,0.530,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,0,FF25,CW,458.540,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,1,FF25,SR,0.239,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,2,FF25,MDD,0.526,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,3,FF32,CW,580.230,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,4,FF32,SR,0.234,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,5,FF32,MDD,0.533,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,6,FF49,CW,509.440,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,7,FF49,SR,0.231,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,8,FF49,MDD,0.494,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,9,FF100,CW,1082.460,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,10,FF100,SR,0.239,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,11,FF100,MDD,0.508,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,12,FF100MEOP,CW,544.270,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,13,FF100MEOP,SR,0.218,,False,False,False,version_specific_result
+v1,benchmark,26,EFS-GPT 4.1,14,FF100MEOP,MDD,0.538,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,0,FF25,CW,1334.500,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,1,FF25,SR,0.271,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,2,FF25,MDD,0.498,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,3,FF32,CW,847.870,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,4,FF32,SR,0.234,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,5,FF32,MDD,0.498,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,6,FF49,CW,642.530,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,7,FF49,SR,0.204,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,8,FF49,MDD,0.607,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,9,FF100,CW,1980.990,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,10,FF100,SR,0.253,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,11,FF100,MDD,0.519,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,12,FF100MEOP,CW,446.040,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,13,FF100MEOP,SR,0.204,,False,False,False,version_specific_result
+v1,benchmark,27,+ Scores to Weights,14,FF100MEOP,MDD,0.606,,False,False,False,version_specific_result
+v1,real_market,0,Baseline | 1/N,0,US50,CW,4.562,,False,False,False,version_specific_result
+v1,real_market,0,Baseline | 1/N,1,US50,SR,0.072,,False,False,False,version_specific_result
+v1,real_market,0,Baseline | 1/N,2,US50,MDD,0.344,,False,False,False,version_specific_result
+v1,real_market,0,Baseline | 1/N,3,HSI45,CW,1.333,,False,False,False,version_specific_result
+v1,real_market,0,Baseline | 1/N,4,HSI45,SR,0.029,,False,False,False,version_specific_result
+v1,real_market,0,Baseline | 1/N,5,HSI45,MDD,0.409,,False,False,False,version_specific_result
+v1,real_market,0,Baseline | 1/N,6,CSI300,CW,1.087,,False,False,False,version_specific_result
+v1,real_market,0,Baseline | 1/N,7,CSI300,SR,0.014,,False,False,False,version_specific_result
+v1,real_market,0,Baseline | 1/N,8,CSI300,MDD,0.214,,False,False,False,version_specific_result
+v1,real_market,1,Min-cVaR,0,US50,CW,1.779,,False,False,False,version_specific_result
+v1,real_market,1,Min-cVaR,1,US50,SR,0.038,,False,False,False,version_specific_result
+v1,real_market,1,Min-cVaR,2,US50,MDD,0.314,,False,False,False,version_specific_result
+v1,real_market,1,Min-cVaR,3,HSI45,CW,1.628,,False,False,False,version_specific_result
+v1,real_market,1,Min-cVaR,4,HSI45,SR,0.063,,False,False,False,version_specific_result
+v1,real_market,1,Min-cVaR,5,HSI45,MDD,0.244,,False,False,False,version_specific_result
+v1,real_market,1,Min-cVaR,6,CSI300,CW,0.992,,False,False,False,version_specific_result
+v1,real_market,1,Min-cVaR,7,CSI300,SR,0.003,,False,False,False,version_specific_result
+v1,real_market,1,Min-cVaR,8,CSI300,MDD,0.286,,False,False,False,version_specific_result
+v1,real_market,2,Max-Sharpe,0,US50,CW,4.495,,False,False,False,version_specific_result
+v1,real_market,2,Max-Sharpe,1,US50,SR,0.061,,False,False,False,version_specific_result
+v1,real_market,2,Max-Sharpe,2,US50,MDD,0.461,,False,False,False,version_specific_result
+v1,real_market,2,Max-Sharpe,3,HSI45,CW,1.428,,False,False,False,version_specific_result
+v1,real_market,2,Max-Sharpe,4,HSI45,SR,0.043,,False,False,False,version_specific_result
+v1,real_market,2,Max-Sharpe,5,HSI45,MDD,0.300,,False,False,False,version_specific_result
+v1,real_market,2,Max-Sharpe,6,CSI300,CW,1.008,,False,False,False,version_specific_result
+v1,real_market,2,Max-Sharpe,7,CSI300,SR,0.007,,False,False,False,version_specific_result
+v1,real_market,2,Max-Sharpe,8,CSI300,MDD,0.333,,False,False,False,version_specific_result
+v1,real_market,3,m=10 | LGBM,0,US50,CW,4.182,,False,False,False,version_specific_result
+v1,real_market,3,m=10 | LGBM,1,US50,SR,0.063,,False,False,False,version_specific_result
+v1,real_market,3,m=10 | LGBM,2,US50,MDD,0.332,,False,False,False,version_specific_result
+v1,real_market,3,m=10 | LGBM,3,HSI45,CW,1.611,,False,False,False,version_specific_result
+v1,real_market,3,m=10 | LGBM,4,HSI45,SR,0.038,,False,False,False,version_specific_result
+v1,real_market,3,m=10 | LGBM,5,HSI45,MDD,0.367,,False,False,False,version_specific_result
+v1,real_market,3,m=10 | LGBM,6,CSI300,CW,2.334,,False,False,False,version_specific_result
+v1,real_market,3,m=10 | LGBM,7,CSI300,SR,0.072,,False,False,False,version_specific_result
+v1,real_market,3,m=10 | LGBM,8,CSI300,MDD,0.225,,False,False,False,version_specific_result
+v1,real_market,4,XGBoost,0,US50,CW,6.313,,False,False,False,version_specific_result
+v1,real_market,4,XGBoost,1,US50,SR,0.077,,False,False,False,version_specific_result
+v1,real_market,4,XGBoost,2,US50,MDD,0.328,,False,False,False,version_specific_result
+v1,real_market,4,XGBoost,3,HSI45,CW,1.581,,False,False,False,version_specific_result
+v1,real_market,4,XGBoost,4,HSI45,SR,0.035,,False,False,False,version_specific_result
+v1,real_market,4,XGBoost,5,HSI45,MDD,0.440,,False,False,False,version_specific_result
+v1,real_market,4,XGBoost,6,CSI300,CW,1.420,,False,False,False,version_specific_result
+v1,real_market,4,XGBoost,7,CSI300,SR,0.032,,False,False,False,version_specific_result
+v1,real_market,4,XGBoost,8,CSI300,MDD,0.345,,False,False,False,version_specific_result
+v1,real_market,5,mSSRM-PGA,0,US50,CW,5.121,,False,False,False,version_specific_result
+v1,real_market,5,mSSRM-PGA,1,US50,SR,0.059,,False,False,False,version_specific_result
+v1,real_market,5,mSSRM-PGA,2,US50,MDD,0.569,,False,False,False,version_specific_result
+v1,real_market,5,mSSRM-PGA,3,HSI45,CW,0.766,,False,False,False,version_specific_result
+v1,real_market,5,mSSRM-PGA,4,HSI45,SR,-0.003,,False,False,False,version_specific_result
+v1,real_market,5,mSSRM-PGA,5,HSI45,MDD,0.547,,False,False,False,version_specific_result
+v1,real_market,5,mSSRM-PGA,6,CSI300,CW,0.881,,False,False,False,version_specific_result
+v1,real_market,5,mSSRM-PGA,7,CSI300,SR,0.002,,False,False,False,version_specific_result
+v1,real_market,5,mSSRM-PGA,8,CSI300,MDD,0.399,,False,False,False,version_specific_result
+v1,real_market,6,ASMCVaR,0,US50,CW,10.259,,False,False,False,version_specific_result
+v1,real_market,6,ASMCVaR,1,US50,SR,0.073,,False,False,False,version_specific_result
+v1,real_market,6,ASMCVaR,2,US50,MDD,0.582,,False,False,False,version_specific_result
+v1,real_market,6,ASMCVaR,3,HSI45,CW,2.481,,False,False,False,version_specific_result
+v1,real_market,6,ASMCVaR,4,HSI45,SR,0.052,,False,False,False,version_specific_result
+v1,real_market,6,ASMCVaR,5,HSI45,MDD,0.453,,False,False,False,version_specific_result
+v1,real_market,6,ASMCVaR,6,CSI300,CW,1.453,,False,False,False,version_specific_result
+v1,real_market,6,ASMCVaR,7,CSI300,SR,0.030,,False,False,False,version_specific_result
+v1,real_market,6,ASMCVaR,8,CSI300,MDD,0.462,,False,False,False,version_specific_result
+v1,real_market,7,EFS-DeepSeek,0,US50,CW,25.101,,False,False,False,version_specific_result
+v1,real_market,7,EFS-DeepSeek,1,US50,SR,0.132,,False,False,False,version_specific_result
+v1,real_market,7,EFS-DeepSeek,2,US50,MDD,0.288,,False,False,False,version_specific_result
+v1,real_market,7,EFS-DeepSeek,3,HSI45,CW,3.463,,False,False,False,version_specific_result
+v1,real_market,7,EFS-DeepSeek,4,HSI45,SR,0.080,,False,False,False,version_specific_result
+v1,real_market,7,EFS-DeepSeek,5,HSI45,MDD,0.385,,False,False,False,version_specific_result
+v1,real_market,7,EFS-DeepSeek,6,CSI300,CW,3.437,,False,False,False,version_specific_result
+v1,real_market,7,EFS-DeepSeek,7,CSI300,SR,0.079,,False,False,False,version_specific_result
+v1,real_market,7,EFS-DeepSeek,8,CSI300,MDD,0.327,,False,False,False,version_specific_result
+v1,real_market,8,EFS-GPT,0,US50,CW,22.905,,False,False,False,version_specific_result
+v1,real_market,8,EFS-GPT,1,US50,SR,0.130,,False,False,False,version_specific_result
+v1,real_market,8,EFS-GPT,2,US50,MDD,0.260,,False,False,False,version_specific_result
+v1,real_market,8,EFS-GPT,3,HSI45,CW,2.789,,False,False,False,version_specific_result
+v1,real_market,8,EFS-GPT,4,HSI45,SR,0.067,,False,False,False,version_specific_result
+v1,real_market,8,EFS-GPT,5,HSI45,MDD,0.292,,False,False,False,version_specific_result
+v1,real_market,8,EFS-GPT,6,CSI300,CW,4.962,,False,False,False,version_specific_result
+v1,real_market,8,EFS-GPT,7,CSI300,SR,0.098,,False,False,False,version_specific_result
+v1,real_market,8,EFS-GPT,8,CSI300,MDD,0.301,,False,False,False,version_specific_result
+v1,real_market,9,m=15 | LGBM,0,US50,CW,3.899,,False,False,False,version_specific_result
+v1,real_market,9,m=15 | LGBM,1,US50,SR,0.062,,False,False,False,version_specific_result
+v1,real_market,9,m=15 | LGBM,2,US50,MDD,0.328,,False,False,False,version_specific_result
+v1,real_market,9,m=15 | LGBM,3,HSI45,CW,1.588,,False,False,False,version_specific_result
+v1,real_market,9,m=15 | LGBM,4,HSI45,SR,0.037,,False,False,False,version_specific_result
+v1,real_market,9,m=15 | LGBM,5,HSI45,MDD,0.387,,False,False,False,version_specific_result
+v1,real_market,9,m=15 | LGBM,6,CSI300,CW,1.812,,False,False,False,version_specific_result
+v1,real_market,9,m=15 | LGBM,7,CSI300,SR,0.055,,False,False,False,version_specific_result
+v1,real_market,9,m=15 | LGBM,8,CSI300,MDD,0.250,,False,False,False,version_specific_result
+v1,real_market,10,XGBoost,0,US50,CW,5.607,,False,False,False,version_specific_result
+v1,real_market,10,XGBoost,1,US50,SR,0.076,,False,False,False,version_specific_result
+v1,real_market,10,XGBoost,2,US50,MDD,0.319,,False,False,False,version_specific_result
+v1,real_market,10,XGBoost,3,HSI45,CW,1.586,,False,False,False,version_specific_result
+v1,real_market,10,XGBoost,4,HSI45,SR,0.036,,False,False,False,version_specific_result
+v1,real_market,10,XGBoost,5,HSI45,MDD,0.420,,False,False,False,version_specific_result
+v1,real_market,10,XGBoost,6,CSI300,CW,1.348,,False,False,False,version_specific_result
+v1,real_market,10,XGBoost,7,CSI300,SR,0.029,,False,False,False,version_specific_result
+v1,real_market,10,XGBoost,8,CSI300,MDD,0.344,,False,False,False,version_specific_result
+v1,real_market,11,mSSRM-PGA,0,US50,CW,4.976,,False,False,False,version_specific_result
+v1,real_market,11,mSSRM-PGA,1,US50,SR,0.062,,False,False,False,version_specific_result
+v1,real_market,11,mSSRM-PGA,2,US50,MDD,0.477,,False,False,False,version_specific_result
+v1,real_market,11,mSSRM-PGA,3,HSI45,CW,0.766,,False,False,False,version_specific_result
+v1,real_market,11,mSSRM-PGA,4,HSI45,SR,-0.003,,False,False,False,version_specific_result
+v1,real_market,11,mSSRM-PGA,5,HSI45,MDD,0.547,,False,False,False,version_specific_result
+v1,real_market,11,mSSRM-PGA,6,CSI300,CW,0.787,,False,False,False,version_specific_result
+v1,real_market,11,mSSRM-PGA,7,CSI300,SR,-0.010,,False,False,False,version_specific_result
+v1,real_market,11,mSSRM-PGA,8,CSI300,MDD,0.384,,False,False,False,version_specific_result
+v1,real_market,12,ASMCVaR,0,US50,CW,11.124,,False,False,False,version_specific_result
+v1,real_market,12,ASMCVaR,1,US50,SR,0.074,,False,False,False,version_specific_result
+v1,real_market,12,ASMCVaR,2,US50,MDD,0.566,,False,False,False,version_specific_result
+v1,real_market,12,ASMCVaR,3,HSI45,CW,2.647,,False,False,False,version_specific_result
+v1,real_market,12,ASMCVaR,4,HSI45,SR,0.054,,False,False,False,version_specific_result
+v1,real_market,12,ASMCVaR,5,HSI45,MDD,0.434,,False,False,False,version_specific_result
+v1,real_market,12,ASMCVaR,6,CSI300,CW,1.658,,False,False,False,version_specific_result
+v1,real_market,12,ASMCVaR,7,CSI300,SR,0.035,,False,False,False,version_specific_result
+v1,real_market,12,ASMCVaR,8,CSI300,MDD,0.424,,False,False,False,version_specific_result
+v1,real_market,13,EFS-DeepSeek,0,US50,CW,13.978,,False,False,False,version_specific_result
+v1,real_market,13,EFS-DeepSeek,1,US50,SR,0.114,,False,False,False,version_specific_result
+v1,real_market,13,EFS-DeepSeek,2,US50,MDD,0.298,,False,False,False,version_specific_result
+v1,real_market,13,EFS-DeepSeek,3,HSI45,CW,2.364,,False,False,False,version_specific_result
+v1,real_market,13,EFS-DeepSeek,4,HSI45,SR,0.061,,False,False,False,version_specific_result
+v1,real_market,13,EFS-DeepSeek,5,HSI45,MDD,0.406,,False,False,False,version_specific_result
+v1,real_market,13,EFS-DeepSeek,6,CSI300,CW,2.510,,False,False,False,version_specific_result
+v1,real_market,13,EFS-DeepSeek,7,CSI300,SR,0.067,,False,False,False,version_specific_result
+v1,real_market,13,EFS-DeepSeek,8,CSI300,MDD,0.298,,False,False,False,version_specific_result
+v1,real_market,14,EFS-GPT,0,US50,CW,14.707,,False,False,False,version_specific_result
+v1,real_market,14,EFS-GPT,1,US50,SR,0.117,,False,False,False,version_specific_result
+v1,real_market,14,EFS-GPT,2,US50,MDD,0.278,,False,False,False,version_specific_result
+v1,real_market,14,EFS-GPT,3,HSI45,CW,2.277,,False,False,False,version_specific_result
+v1,real_market,14,EFS-GPT,4,HSI45,SR,0.058,,False,False,False,version_specific_result
+v1,real_market,14,EFS-GPT,5,HSI45,MDD,0.307,,False,False,False,version_specific_result
+v1,real_market,14,EFS-GPT,6,CSI300,CW,3.218,,False,False,False,version_specific_result
+v1,real_market,14,EFS-GPT,7,CSI300,SR,0.082,,False,False,False,version_specific_result
+v1,real_market,14,EFS-GPT,8,CSI300,MDD,0.246,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,0,US50,CW,6.254,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,1,US50,SR,0.081,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,2,US50,MDD,0.449,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,3,US50,RankIC,0.005,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,4,US50,RankICIR,0.352,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,5,HSI45,CW,1.364,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,6,HSI45,SR,0.031,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,7,HSI45,MDD,0.386,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,8,HSI45,RankIC,0.018,,False,False,False,version_specific_result
+v1,ablation,0,Initial Factor,9,HSI45,RankICIR,0.950,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,0,US50,CW,32.993±6.044,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,1,US50,SR,0.149±0.003,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,2,US50,MDD,0.260±0.013,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,3,US50,RankIC,0.027±0.001,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,4,US50,RankICIR,1.582±0.050,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,5,HSI45,CW,3.193±0.923,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,6,HSI45,SR,0.076±0.015,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,7,HSI45,MDD,0.387±0.026,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,8,HSI45,RankIC,0.022±0.001,,False,False,False,version_specific_result
+v1,ablation,1,EFS-Deepseek,9,HSI45,RankICIR,1.412±0.103,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,0,US50,CW,19.248±3.642,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,1,US50,SR,0.125±0.003,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,2,US50,MDD,0.346±0.048,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,3,US50,RankIC,0.020±0.004,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,4,US50,RankICIR,1.262±0.265,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,5,HSI45,CW,2.198±1.094,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,6,HSI45,SR,0.051±0.030,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,7,HSI45,MDD,0.391±0.051,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,8,HSI45,RankIC,0.027±0.015,,False,False,False,version_specific_result
+v1,ablation,2,w/o Sparse Heuristic,9,HSI45,RankICIR,1.508±0.828,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,0,US50,CW,23.414±3.814,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,1,US50,SR,0.133±0.007,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,2,US50,MDD,0.324±0.042,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,3,US50,RankIC,0.023±0.004,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,4,US50,RankICIR,1.334±0.201,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,5,HSI45,CW,2.943±0.516,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,6,HSI45,SR,0.072±0.007,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,7,HSI45,MDD,0.372±0.024,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,8,HSI45,RankIC,0.024±0.002,,False,False,False,version_specific_result
+v1,ablation,3,w/o Numeric,9,HSI45,RankICIR,1.435±0.118,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,0,US50,CW,24.152±7.988,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,1,US50,SR,0.133±0.016,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,2,US50,MDD,0.297±0.052,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,3,US50,RankIC,0.021±0.003,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,4,US50,RankICIR,1.178±0.202,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,5,HSI45,CW,2.402±0.404,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,6,HSI45,SR,0.060±0.010,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,7,HSI45,MDD,0.429±0.023,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,8,HSI45,RankIC,0.016±0.003,,False,False,False,version_specific_result
+v1,ablation,4,w/o Quality,9,HSI45,RankICIR,1.011±0.200,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,0,US50,CW,9.549±5.869,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,1,US50,SR,0.094±0.019,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,2,US50,MDD,0.327±0.053,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,3,US50,RankIC,0.009±0.009,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,4,US50,RankICIR,0.487±0.467,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,5,HSI45,CW,1.168±0.036,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,6,HSI45,SR,0.020±0.002,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,7,HSI45,MDD,0.369±0.025,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,8,HSI45,RankIC,0.009±0.002,,False,False,False,version_specific_result
+v1,ablation,5,w/o Performance,9,HSI45,RankICIR,0.522±0.106,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,0,US50,CW,5.367±1.652,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,1,US50,SR,0.074±0.011,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,2,US50,MDD,0.394±0.043,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,3,US50,RankIC,0.002±0.004,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,4,US50,RankICIR,0.117±0.241,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,5,HSI45,CW,1.875±1.354,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,6,HSI45,SR,0.037±0.037,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,7,HSI45,MDD,0.359±0.062,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,8,HSI45,RankIC,0.008±0.016,,False,False,False,version_specific_result
+v1,ablation,6,w/o TA Factors,9,HSI45,RankICIR,0.494±0.940,,False,False,False,version_specific_result
+v1,ablation,7,M=5,0,US50,CW,39.126±17.516,,False,False,False,version_specific_result
+v1,ablation,7,M=5,1,US50,SR,0.101±0.010,,False,False,False,version_specific_result
+v1,ablation,7,M=5,2,US50,MDD,0.460±0.042,,False,False,False,version_specific_result
+v1,ablation,7,M=5,3,US50,RankIC,0.017±0.002,,False,False,False,version_specific_result
+v1,ablation,7,M=5,4,US50,RankICIR,1.036±0.079,,False,False,False,version_specific_result
+v1,ablation,7,M=5,5,HSI45,CW,2.448±0.155,,False,False,False,version_specific_result
+v1,ablation,7,M=5,6,HSI45,SR,0.058±0.006,,False,False,False,version_specific_result
+v1,ablation,7,M=5,7,HSI45,MDD,0.441±0.010,,False,False,False,version_specific_result
+v1,ablation,7,M=5,8,HSI45,RankIC,0.024±0.002,,False,False,False,version_specific_result
+v1,ablation,7,M=5,9,HSI45,RankICIR,1.384±0.092,,False,False,False,version_specific_result
+v1,ablation,8,M=15,0,US50,CW,13.246±8.741,,False,False,False,version_specific_result
+v1,ablation,8,M=15,1,US50,SR,0.084±0.022,,False,False,False,version_specific_result
+v1,ablation,8,M=15,2,US50,MDD,0.454±0.057,,False,False,False,version_specific_result
+v1,ablation,8,M=15,3,US50,RankIC,0.012±0.005,,False,False,False,version_specific_result
+v1,ablation,8,M=15,4,US50,RankICIR,0.701±0.228,,False,False,False,version_specific_result
+v1,ablation,8,M=15,5,HSI45,CW,2.004±0.767,,False,False,False,version_specific_result
+v1,ablation,8,M=15,6,HSI45,SR,0.044±0.022,,False,False,False,version_specific_result
+v1,ablation,8,M=15,7,HSI45,MDD,0.452±0.037,,False,False,False,version_specific_result
+v1,ablation,8,M=15,8,HSI45,RankIC,0.026±0.008,,False,False,False,version_specific_result
+v1,ablation,8,M=15,9,HSI45,RankICIR,1.417±0.450,,False,False,False,version_specific_result
+v1,ablation,9,M=20,0,US50,CW,11.952±5.272,,False,False,False,version_specific_result
+v1,ablation,9,M=20,1,US50,SR,0.071±0.003,,False,False,False,version_specific_result
+v1,ablation,9,M=20,2,US50,MDD,0.428±0.109,,False,False,False,version_specific_result
+v1,ablation,9,M=20,3,US50,RankIC,0.003±0.000,,False,False,False,version_specific_result
+v1,ablation,9,M=20,4,US50,RankICIR,0.187±0.004,,False,False,False,version_specific_result
+v1,ablation,9,M=20,5,HSI45,CW,2.029±0.088,,False,False,False,version_specific_result
+v1,ablation,9,M=20,6,HSI45,SR,0.044±0.002,,False,False,False,version_specific_result
+v1,ablation,9,M=20,7,HSI45,MDD,0.469±0.024,,False,False,False,version_specific_result
+v1,ablation,9,M=20,8,HSI45,RankIC,0.021±0.005,,False,False,False,version_specific_result
+v1,ablation,9,M=20,9,HSI45,RankICIR,1.257±0.214,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,0,US50,temp=0.1:CW,179.554,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,1,US50,temp=0.1:SR,0.142,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,2,US50,temp=0.5:CW,247.376,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,3,US50,temp=0.5:SR,0.147,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,4,US50,temp=1.0:CW,318.868,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,5,US50,temp=1.0:SR,0.149,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,6,US50,temp=2.0:CW,389.010,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,7,US50,temp=2.0:SR,0.148,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,8,HSI45,temp=0.1:CW,6.104,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,9,HSI45,temp=0.1:SR,0.096,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,10,HSI45,temp=0.5:CW,6.246,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,11,HSI45,temp=0.5:SR,0.095,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,12,HSI45,temp=1.0:CW,5.876,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,13,HSI45,temp=1.0:SR,0.089,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,14,HSI45,temp=2.0:CW,4.901,,False,False,False,version_specific_result
+v1,score_temperature,0,10 | DeepSeek,15,HSI45,temp=2.0:SR,0.078,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,0,US50,temp=0.1:CW,132.178,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,1,US50,temp=0.1:SR,0.151,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,2,US50,temp=0.5:CW,180.417,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,3,US50,temp=0.5:SR,0.155,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,4,US50,temp=1.0:CW,245.845,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,5,US50,temp=1.0:SR,0.157,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,6,US50,temp=2.0:CW,332.340,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,7,US50,temp=2.0:SR,0.154,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,8,HSI45,temp=0.1:CW,5.758,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,9,HSI45,temp=0.1:SR,0.087,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,10,HSI45,temp=0.5:CW,6.084,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,11,HSI45,temp=0.5:SR,0.087,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,12,HSI45,temp=1.0:CW,6.545,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,13,HSI45,temp=1.0:SR,0.087,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,14,HSI45,temp=2.0:CW,7.486,,False,False,False,version_specific_result
+v1,score_temperature,1,GPT-4.1,15,HSI45,temp=2.0:SR,0.088,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,0,US50,temp=0.1:CW,153.509,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,1,US50,temp=0.1:SR,0.137,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,2,US50,temp=0.5:CW,220.427,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,3,US50,temp=0.5:SR,0.144,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,4,US50,temp=1.0:CW,293.589,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,5,US50,temp=1.0:SR,0.147,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,6,US50,temp=2.0:CW,371.420,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,7,US50,temp=2.0:SR,0.147,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,8,HSI45,temp=0.1:CW,5.494,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,9,HSI45,temp=0.1:SR,0.092,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,10,HSI45,temp=0.5:CW,5.884,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,11,HSI45,temp=0.5:SR,0.093,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,12,HSI45,temp=1.0:CW,5.682,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,13,HSI45,temp=1.0:SR,0.088,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,14,HSI45,temp=2.0:CW,4.837,,False,False,False,version_specific_result
+v1,score_temperature,2,15 | DeepSeek,15,HSI45,temp=2.0:SR,0.078,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,0,US50,temp=0.1:CW,108.623,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,1,US50,temp=0.1:SR,0.146,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,2,US50,temp=0.5:CW,150.682,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,3,US50,temp=0.5:SR,0.150,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,4,US50,temp=1.0:CW,211.567,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,5,US50,temp=1.0:SR,0.153,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,6,US50,temp=2.0:CW,303.639,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,7,US50,temp=2.0:SR,0.152,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,8,HSI45,temp=0.1:CW,4.458,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,9,HSI45,temp=0.1:SR,0.077,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,10,HSI45,temp=0.5:CW,4.984,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,11,HSI45,temp=0.5:SR,0.080,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,12,HSI45,temp=1.0:CW,5.613,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,13,HSI45,temp=1.0:SR,0.082,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,14,HSI45,temp=2.0:CW,6.792,,False,False,False,version_specific_result
+v1,score_temperature,3,GPT-4.1,15,HSI45,temp=2.0:SR,0.085,,False,False,False,version_specific_result
+v1,transaction_cost,0,- | EFS-GPT 4.1,0,US50,CW,39.746±15.484,,False,False,False,version_specific_result
+v1,transaction_cost,0,- | EFS-GPT 4.1,1,US50,SR,0.154±0.013,,False,False,False,version_specific_result
+v1,transaction_cost,0,- | EFS-GPT 4.1,2,US50,MDD,0.252±0.021,,False,False,False,version_specific_result
+v1,transaction_cost,0,- | EFS-GPT 4.1,3,HSI45,CW,3.338±0.770,,False,False,False,version_specific_result
+v1,transaction_cost,0,- | EFS-GPT 4.1,4,HSI45,SR,0.076±0.012,,False,False,False,version_specific_result
+v1,transaction_cost,0,- | EFS-GPT 4.1,5,HSI45,MDD,0.324±0.041,,False,False,False,version_specific_result
+v1,transaction_cost,0,- | EFS-GPT 4.1,6,CSI300,CW,3.862±0.802,,False,False,False,version_specific_result
+v1,transaction_cost,0,- | EFS-GPT 4.1,7,CSI300,SR,0.086±0.011,,False,False,False,version_specific_result
+v1,transaction_cost,0,- | EFS-GPT 4.1,8,CSI300,MDD,0.290±0.079,,False,False,False,version_specific_result
+v1,transaction_cost,1,EFS-DeepSeek,0,US50,CW,32.709±6.244,,False,False,False,version_specific_result
+v1,transaction_cost,1,EFS-DeepSeek,1,US50,SR,0.149±0.003,,False,False,False,version_specific_result
+v1,transaction_cost,1,EFS-DeepSeek,2,US50,MDD,0.261±0.014,,False,False,False,version_specific_result
+v1,transaction_cost,1,EFS-DeepSeek,3,HSI45,CW,3.203±0.906,,False,False,False,version_specific_result
+v1,transaction_cost,1,EFS-DeepSeek,4,HSI45,SR,0.076±0.015,,False,False,False,version_specific_result
+v1,transaction_cost,1,EFS-DeepSeek,5,HSI45,MDD,0.385±0.024,,False,False,False,version_specific_result
+v1,transaction_cost,1,EFS-DeepSeek,6,CSI300,CW,2.451±0.412,,False,False,False,version_specific_result
+v1,transaction_cost,1,EFS-DeepSeek,7,CSI300,SR,0.060±0.010,,False,False,False,version_specific_result
+v1,transaction_cost,1,EFS-DeepSeek,8,CSI300,MDD,0.356±0.022,,False,False,False,version_specific_result
+v1,transaction_cost,2,0.1\% | EFS-GPT 4.1,0,US50,CW,25.293±10.802,,False,False,False,version_specific_result
+v1,transaction_cost,2,0.1\% | EFS-GPT 4.1,1,US50,SR,0.135±0.016,,False,False,False,version_specific_result
+v1,transaction_cost,2,0.1\% | EFS-GPT 4.1,2,US50,MDD,0.256±0.021,,False,False,False,version_specific_result
+v1,transaction_cost,2,0.1\% | EFS-GPT 4.1,3,HSI45,CW,2.710±0.571,,False,False,False,version_specific_result
+v1,transaction_cost,2,0.1\% | EFS-GPT 4.1,4,HSI45,SR,0.065±0.011,,False,False,False,version_specific_result
+v1,transaction_cost,2,0.1\% | EFS-GPT 4.1,5,HSI45,MDD,0.340±0.049,,False,False,False,version_specific_result
+v1,transaction_cost,2,0.1\% | EFS-GPT 4.1,6,CSI300,CW,2.624±0.425,,False,False,False,version_specific_result
+v1,transaction_cost,2,0.1\% | EFS-GPT 4.1,7,CSI300,SR,0.064±0.008,,False,False,False,version_specific_result
+v1,transaction_cost,2,0.1\% | EFS-GPT 4.1,8,CSI300,MDD,0.354±0.093,,False,False,False,version_specific_result
+v1,transaction_cost,3,EFS-DeepSeek,0,US50,CW,22.058±4.053,,False,False,False,version_specific_result
+v1,transaction_cost,3,EFS-DeepSeek,1,US50,SR,0.133±0.003,,False,False,False,version_specific_result
+v1,transaction_cost,3,EFS-DeepSeek,2,US50,MDD,0.265±0.015,,False,False,False,version_specific_result
+v1,transaction_cost,3,EFS-DeepSeek,3,HSI45,CW,2.643±0.775,,False,False,False,version_specific_result
+v1,transaction_cost,3,EFS-DeepSeek,4,HSI45,SR,0.065±0.015,,False,False,False,version_specific_result
+v1,transaction_cost,3,EFS-DeepSeek,5,HSI45,MDD,0.410±0.023,,False,False,False,version_specific_result
+v1,transaction_cost,3,EFS-DeepSeek,6,CSI300,CW,1.668±0.227,,False,False,False,version_specific_result
+v1,transaction_cost,3,EFS-DeepSeek,7,CSI300,SR,0.039±0.008,,False,False,False,version_specific_result
+v1,transaction_cost,3,EFS-DeepSeek,8,CSI300,MDD,0.434±0.012,,False,False,False,version_specific_result
+v1,transaction_cost,4,0.2\% | EFS-GPT 4.1,0,US50,CW,16.114±7.464,,False,False,False,version_specific_result
+v1,transaction_cost,4,0.2\% | EFS-GPT 4.1,1,US50,SR,0.117±0.018,,False,False,False,version_specific_result
+v1,transaction_cost,4,0.2\% | EFS-GPT 4.1,2,US50,MDD,0.260±0.022,,False,False,False,version_specific_result
+v1,transaction_cost,4,0.2\% | EFS-GPT 4.1,3,HSI45,CW,2.201±0.422,,False,False,False,version_specific_result
+v1,transaction_cost,4,0.2\% | EFS-GPT 4.1,4,HSI45,SR,0.054±0.011,,False,False,False,version_specific_result
+v1,transaction_cost,4,0.2\% | EFS-GPT 4.1,5,HSI45,MDD,0.358±0.056,,False,False,False,version_specific_result
+v1,transaction_cost,4,0.2\% | EFS-GPT 4.1,6,CSI300,CW,1.785±0.208,,False,False,False,version_specific_result
+v1,transaction_cost,4,0.2\% | EFS-GPT 4.1,7,CSI300,SR,0.043±0.006,,False,False,False,version_specific_result
+v1,transaction_cost,4,0.2\% | EFS-GPT 4.1,8,CSI300,MDD,0.412±0.103,,False,False,False,version_specific_result
+v1,transaction_cost,5,EFS-DeepSeek,0,US50,CW,14.876±2.646,,False,False,False,version_specific_result
+v1,transaction_cost,5,EFS-DeepSeek,1,US50,SR,0.117±0.003,,False,False,False,version_specific_result
+v1,transaction_cost,5,EFS-DeepSeek,2,US50,MDD,0.270±0.016,,False,False,False,version_specific_result
+v1,transaction_cost,5,EFS-DeepSeek,3,HSI45,CW,2.182±0.665,,False,False,False,version_specific_result
+v1,transaction_cost,5,EFS-DeepSeek,4,HSI45,SR,0.054±0.016,,False,False,False,version_specific_result
+v1,transaction_cost,5,EFS-DeepSeek,5,HSI45,MDD,0.433±0.022,,False,False,False,version_specific_result
+v1,transaction_cost,5,EFS-DeepSeek,6,CSI300,CW,1.136±0.130,,False,False,False,version_specific_result
+v1,transaction_cost,5,EFS-DeepSeek,7,CSI300,SR,0.018±0.007,,False,False,False,version_specific_result
+v1,transaction_cost,5,EFS-DeepSeek,8,CSI300,MDD,0.502±0.009,,False,False,False,version_specific_result

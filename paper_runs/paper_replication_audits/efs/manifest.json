@@ -1,0 +1,70 @@
+{
+  "audit_date": "2026-08-11",
+  "current_v2_table_cells_reproduced": 8,
+  "current_v2_table_result_cells": 877,
+  "full_paper_reproduced": false,
+  "method_assessment_counts": {
+    "conflict": 14,
+    "missing": 25,
+    "paper_only": 1,
+    "partial": 14,
+    "specified": 6
+  },
+  "method_severity_counts": {
+    "blocking": 31,
+    "major": 23,
+    "none": 6
+  },
+  "method_specification_dimensions": 60,
+  "native_efs_result_cells_reproduced": 0,
+  "official_efs_source_released": false,
+  "original_v1_table_cells_reproduced": 5,
+  "original_v1_table_result_cells": 773,
+  "output_sha256": {
+    "README.md": "8d1544e7cc3b9447d9bff93e7253fdbf9649d931d1a1b947a8258900eebab91c",
+    "cited_baseline_reproduction.csv": "bc0cff91e861f03a42f0b4b92a60aad5ef1a1dd2dbd62039b96f25807f50e1e7",
+    "cited_baseline_source_inventory.csv": "42712fbb774c3e8e46f9eb0cb633c5cec1e7f583d399db6b4511d955693a190a",
+    "figure_inventory.csv": "aa00a81ace566702d73551bf8aa25b1d4a1d708178ed0510efcf441cd13d6bb8",
+    "method_specification_audit.csv": "86212ce747a73b8c986d064956feb640b1706fb957eb58687f4d7bea4bf7b038",
+    "native_execution.json": "ab1cada2fbdf3171734a2946c5b363003285d07f526f02fdf8a64fbc06fa6d3d",
+    "paper_prompt_v1.tex.txt": "0db7542b6a92a40d22dbceb80bf3910b67aa6a8cd4f71bdd2dbf578e7a8ca163",
+    "qualitative_claim_audit.csv": "732a2aba126476096637382a8610547dd20771e39c4c1849b2d1c5a5439d46ed",
+    "source_provenance.json": "113f7fa2a8f8542bfb99b9dae9fc8e23ba966cce8b9e0dcc6e475e25b9bd35f6",
+    "v1_table_result_conformance.csv": "7d8f51188ff0deb390930a7433c0b37adc20df5d7311f3af1736cafb39dc5d1b",
+    "v2_table_result_conformance.csv": "a0e3f6e1a281412bcf09d4109a1ec18cd066af9cf2c65fb1a2e9a3bab3f740dc",
+    "version_lineage_audit.csv": "a95647f6039ece0b4c3de8c1a9416f0bed9f58f3017c0f5a5653382284348549"
+  },
+  "overall_status": "partial_5_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
+  "paper": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
+  "paper_evidence_route": "paper_only_underspecified",
+  "paper_source_compilation": {
+    "v1": {
+      "exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "pages": 27,
+      "paper_result_credit": false,
+      "source_files": 38
+    },
+    "v2": {
+      "exit_codes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "pages": 13,
+      "paper_result_credit": false,
+      "source_files": 12
+    }
+  },
+  "result_bearing_source_figure_files": 18,
+  "scores_to_weights_cells_relabelled_as_rw": 48,
+  "source_figure_files": 22,
+  "v1_prompt_recovered": true,
+  "v1_v2_common_benchmark_cells": 240,
+  "v1_v2_common_benchmark_cells_same_at_v2_precision": 240,
+  "v2_prompts_released": false
+}

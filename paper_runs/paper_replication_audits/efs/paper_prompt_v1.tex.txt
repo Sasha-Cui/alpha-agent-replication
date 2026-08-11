@@ -1,0 +1,147 @@
+title=\textcolor{prompttitle}{EFS\_SYSTEM\_PROMPT},
+]
+
+You are a \textcolor{promptkey}{world-class quantitative researcher} and Python programmer specializing in \textcolor{promptkey}{alpha factor design for asset ranking}.\\
+Your task is to generate high-quality Python factor functions that are evolved versions of provided factors.
+
+\textcolor{promptsection}{STRICT REQUIREMENTS:}\\
+1. Output ONLY a Python list of function strings - no comments or explanations\\
+2. Each function MUST:\\
+\hspace*{1em}- Be bug-free and executable\\
+\hspace*{1em}- Maintain identical input signature: prices, window
+\hspace*{1em}- Use only numpy (as np), don't depend on any external function or variable, you need to do computation all inside function\\
+\hspace*{1em}- Handle edge cases (short series, NaNs)\\
+\hspace*{1em}- Clearly indicate if combining or modifying existing factors\\
+3. Absolute prohibitions:\\
+\hspace*{1em}- No external functions\\
+\hspace*{1em}- No hardcoded values that should be parameters\\
+\hspace*{1em}- No pandas or other libraries\\
+\hspace*{1em}- No comments in output code\\
+4. Factor name rules: [factor\_name\_part]\_[window\_size]\_v[version number], the window\_size can only be the following value: 3, 7, 14, 21\\
+5. Value of output factor: For factors, higher value means better asset, please make sure the output value is positive related to performance of assets.
+
+\textcolor{promptsection}{ACTION SPACE:}\\
+1. Improve existing factors by mutation:\\
+\hspace*{1em}- Modifying parameters (e.g., inner parameters)\\
+\hspace*{1em}- Adjusting logic\\
+\hspace*{1em}- Updating inside operators for factors\\
+2. Improve existing factors by crossover:\\
+\hspace*{1em}- Combining two existing factors to create a new one if you think they can work together\\
+\hspace*{1em}- Restart version number from v1 for new factors
+
+\textcolor{promptsection}{IMPROVEMENT CRITERIA:}\\
+1. Version increments must show clear:\\
+\hspace*{1em}- if you improve from a given version, increase 1 to version number, the version number can only be integer like v1, v2, v3, don't include any other character.\\
+\hspace*{1em}- Performance enhancement\\
+\hspace*{1em}- Robustness improvement\\
+\hspace*{1em}- Computational efficiency\\
+\hspace*{1em}- if you create a new factor by crossover from other two, restart version number from v1, and use the name like: factor1\_comb\_factor2, where factor1 and factor2 are the names of the two factors you combined.\\
+2. Combined factors should demonstrate:\\
+\hspace*{1em}- Logical interaction\\
+\hspace*{1em}- Complementary strengths\\
+\hspace*{1em}- Better risk-adjusted returns\\
+\hspace*{1em}- Don't make combined factors too complex, try to keep it simple and easy to understand.
+
+For string version of function, you should be very careful about format of python, for example:\\
+"def test\_run\_avg(*args, **kwargs):\textbackslash n    a=np.array(prices)\textbackslash n    if a:\textbackslash n        print(a)\textbackslash n    return np.mean(kwargs['prices'])\textbackslash n"\\
+Be careful of symbol split the line, the different space of tab for if statement.
+
+Output example:\\
+\texttt{["def momentum\_7\_v3(prices, window=10): return ...",}\\
+\texttt{"def breakout\_comb\_meanrevert\_21\_v1(prices, window=20): return ..."]}
+\end{tcolorbox}
+
+
+\subsection{Searching Step Prompt}
+
+
+
+\begin{tcolorbox}[
+    title=Prompt: LLM-Generated Factor Optimization,
+    colback=white,
+    colframe=black!80,
+    width=\textwidth,
+    fonttitle=\bfseries,
+    breakable,
+    enhanced jigsaw,
+    listing only,
+    listing options={
+        basicstyle=\ttfamily\small,
+        breaklines=true,
+        breakindent=0pt,
+        postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}
+    }
+]
+
+\begin{verbatim}
+You are a professional quantitative researcher. 
+Design and optimize alpha factors using ONLY price data.
+
+Existing Library Factors:
+<str_lib_factor>
+
+Previous LLM-Generated Factors:
+<str_gen_factor>
+
+Recent Performance Metrics:
+<recent_performance>
+\end{verbatim}
+
+\end{tcolorbox}
+
+
+
+\begin{tcolorbox}[
+    title=Sample of Performance and Factor Quality Information,
+    colback=white,
+    colframe=black!80,
+    width=\textwidth,
+    fonttitle=\bfseries,
+    breakable
+]
+
+\textbf{Performance Information:}
+
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lccccc}
+\toprule
+Factor & mean\_return & std\_return & sharpe\_ratio & max\_drawdown & final\_value \\
+\midrule
+max\_min\_ratio\_comb\_momentum\_3\_v2 & 0.00375 & 0.01335 & 0.28047 & -0.05990 & 124.48487 \\
+drawdown\_comb\_sharpe\_14\_v5        & 0.00360 & 0.01242 & 0.28959 & -0.03885 & 123.48065 \\
+drawdown\_comb\_sharpe\_14\_v2        & 0.00360 & 0.01242 & 0.28959 & -0.03885 & 123.48065 \\
+drawdown\_comb\_sharpe\_14\_v1        & 0.00360 & 0.01242 & 0.28959 & -0.03885 & 123.48065 \\
+drawdown\_comb\_sharpe\_14\_v3        & 0.00360 & 0.01242 & 0.28959 & -0.03885 & 123.48065 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+
+\vspace{1em}
+\textbf{Factor Quality Information:}
+
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lcccc}
+\toprule
+Factor & mean\_rankic & std\_rankic & mean\_recall@20 & std\_recall@20 \\
+\midrule
+drawdown\_comb\_momentum\_14\_v6              & 0.055634 & 0.215905 & 0.417500 & 0.107170 \\
+sharpe\_ratio\_14                             & 0.047617 & 0.192138 & 0.405833 & 0.123522 \\
+drawdown\_comb\_momentum\_comb\_rsi\_14\_v1   & 0.047588 & 0.214157 & 0.421667 & 0.103427 \\
+drawdown\_comb\_momentum\_comb\_rsi\_14\_v2   & 0.047588 & 0.214157 & 0.421667 & 0.103427 \\
+sharpe\_ratio\_14\_v5                         & 0.047463 & 0.191842 & 0.405833 & 0.123522 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+
+\end{tcolorbox}
+
+
+\section{Additional Details in Experiments}
+
+\subsection{Experiment Settings}
+
+\noindent\textbf{Hyperparameters and Settings.} For our experinment, for all methods, we don't include transaction cost; we use default hyper parameters for mSSRM-PGA \cite{lin2024a} and ASMCVaR \cite{pmlr-v235-lin24w} from their open-source code. 
+
+For machine learning-based sparse portfolio strategies using XGBoost and LightGBM, at each decision step, we train a model on sliding windows of historical price and return features, with periodic retraining every fixed number of steps to simulate realistic model updating. The model outputs asset-level scores, which are normalized and used to select the top-$m$ assets with equal weighting. 
+
+Due to the nature of our algorithm, for all experiments conducted using EFS, we compute the daily portfolio return using a 1/N baseline strategy during the warm-up phase—i.e., from the start point until the first evolution step begins. In contrast, for optimization-based baselines, since these methods can generate results based on a small historical window, we evaluate them from the very first step, assuming historical data are already available.

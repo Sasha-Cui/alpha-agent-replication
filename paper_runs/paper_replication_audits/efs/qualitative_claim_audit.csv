@@ -1,0 +1,7 @@
+paper_version,claim,observed,assessment
+v1,EFS achieves state-of-the-art performance across all real-market metrics,EFS is best in 7/9 dataset-metric cells at m=10; baseline Min-CVaR wins HSI45 MDD and 1/N wins CSI300 MDD,overstated
+v1,US50 EFS-GPT CW=39.67 and EFS-DeepSeek CW=32.99,main table reports 22.905 and 25.101; no-cost table reports 39.746±15.484 and 32.709±6.244,internally_conflicting_result_identity
+v2,RW uses fixed defaults without per-dataset calibration,paper applies IC>=0.05 to HSI45/CSI300 and IC>=0.005 to US50 and later recommends validation tuning of lambda,internally_conflicting
+v2,new RMT/QP redundancy-aware weighting benchmark results,48/48 +RW benchmark values are rounded copies of v1 rows labelled + Scores to Weights for a different weighting mechanism,unsupported_result_relabel_without_released_lineage
+v2,RW adds negligible overhead,"93.5 ms excludes a commented 582.5 s correlation-matrix construction, while LLM inference is described only as several minutes",boundary_omits_material_preprocessing
+both,faithful public end-to-end reproduction,"zero EFS native table cells, figure paths, factor pools, actions, weights, or returns reproduced",not_supported_by_public_evidence
