@@ -141,6 +141,26 @@ def test_flag_trader_paper_only_audit_preserves_its_evidence_boundary() -> None:
     assert "No author-linked FLAG-Trader source" in row["precise_native_or_access_blocker"]
 
 
+def test_efs_paper_only_audit_preserves_versions_and_zero_native_credit() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv250717211")].iloc[0]
+    assert row["paper_evidence_route"] == "paper_only_underspecified"
+    assert row["reachable_public_code_system_ids"] == ""
+    assert row["native_pipeline_disposition"] == (
+        "paper_only_audit_recorded_no_native_code_pipeline"
+    )
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_"
+        "v2_revision_audited"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_fidelity_tiers"] == "M1_example_or_motif_partial_support"
+    assert row["proxy_role"] == "partial_source_component_not_full_procedure"
+    assert "zero are native EFS results" in row["precise_native_or_access_blocker"]
+    assert "All 240 v2 benchmark cells" in row["precise_native_or_access_blocker"]
+    assert "48 values relabelled" in row["precise_native_or_access_blocker"]
+
+
 def test_alpha_r1_placeholder_audit_never_promotes_the_motif_proxy() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
     row = routes[routes["canonical_work_id"].eq("CensusArxiv251223515")].iloc[0]

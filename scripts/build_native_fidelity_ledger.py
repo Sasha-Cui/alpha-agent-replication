@@ -266,6 +266,18 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-EFS": (
+        "A pinned two-version EFS audit inventories 773 original-v1 and 877 "
+        "current-v2 numeric table-result cells. Executing the cited 1/N formula "
+        "on the exact 623-row matrices in the official ASMCVaR release reproduces "
+        "5/773 v1 cells and 8/877 v2 cells at each paper's display precision; all "
+        "are cited-baseline evidence and zero are native EFS results. No author-linked "
+        "EFS source, exact configuration, model snapshot, data snapshot, factor pool, "
+        "search trace, actions, weights, returns, seeds, or result records are released. "
+        "All 240 v2 benchmark cells common to v1 are rounded carryovers, including "
+        "48 values relabelled from v1 asset Scores-to-Weights to the materially "
+        "different v2 RMT/QP factor-weighting mechanism without released run lineage."
+    ),
     "SYS-FLAG-TRADER": (
         "A pinned ACL-final/arXiv-v3 audit inventories all 360 displayed numeric "
         "result cells. Six of 20 checked Buy-and-Hold baseline cells reproduce "
@@ -288,6 +300,7 @@ TARGETED_EXECUTION = {
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",
+    "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
     "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",

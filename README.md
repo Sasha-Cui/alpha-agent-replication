@@ -57,6 +57,7 @@ then inspect the three principal evidence packages:
 - [`paper_runs/faithful_component_replications/`](paper_runs/faithful_component_replications/) - primary three-component census, strict grade-B ledger, source pins, and attribution outputs.
 - [`paper_runs/paper_replication_audits/quantevolver/`](paper_runs/paper_replication_audits/quantevolver/) - fail-closed full-paper audit that keeps the 3/3 component gate separate from 0/75 paper results.
 - [`paper_runs/paper_replication_audits/alpha_r1/`](paper_runs/paper_replication_audits/alpha_r1/) - fail-closed audit of 652 displayed results and the paper/source availability conflict in the official one-file placeholder.
+- [`paper_runs/paper_replication_audits/efs/`](paper_runs/paper_replication_audits/efs/) - fail-closed two-version audit of 773 original and 877 revised table cells, with cited-baseline credit kept separate from zero native EFS results and 48 semantically relabelled carryovers identified.
 - [`paper_runs/prompt_replay/guruagents/performance/`](paper_runs/prompt_replay/guruagents/performance/) - the 190-cell GuruAgents replay, 24 costed paths, and 12-path-by-33-month matched attribution.
 
 The older 12-formula package in [`paper_runs/fidelity_formula_components/`](paper_runs/fidelity_formula_components/) is retained as a mixed-fidelity diagnostic and is not part of the 100% denominator.
