@@ -152,8 +152,12 @@ ARTIFACT_NOTES = {
     ),
     "SYS-FIN-CON": (
         "N",
-        "The reachable repository contains a single statically insufficient file "
-        "and no dated native output.",
+        "A pinned NeurIPS-final paper audit inventories 306 displayed numeric cells "
+        "(288 unique measurements) and 106 raster result series, with zero native "
+        "results reproduced. Every one of the official repository's 11 commits "
+        "contains only README.md: no FinCon code, prompts, configs, data, models, "
+        "tests, raw trajectories, or plot inputs are released. The arXiv LaTeX "
+        "compiles, but paper packaging receives no system or result credit.",
     ),
     "SYS-FIN-MEM": (
         "N",
@@ -232,7 +236,7 @@ TARGETED_EXECUTION = {
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",
-    "SYS-FIN-CON": "legacy_targeted:blocked_jkp_scope_incompatible",
+    "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
     "SYS-GURU-AGENTS": "legacy_targeted:legacy_non_jkp_diagnostic_only",
