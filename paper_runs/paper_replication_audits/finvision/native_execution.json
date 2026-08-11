@@ -1,0 +1,16 @@
+{
+  "current_yahoo_diagnostic_is_faithful_replication": false,
+  "current_yahoo_diagnostic_run": true,
+  "finvision_pipeline_executed": false,
+  "llm_calls_made": 0,
+  "manuscript_rebuild_byte_difference": "PDF trailer ID only",
+  "manuscript_rebuild_is_system_execution": false,
+  "manuscript_rebuild_repeated_byte_identical": false,
+  "manuscript_rebuild_text_identical": true,
+  "manuscript_source_rebuilt": true,
+  "native_agent_actions_loaded": 0,
+  "native_portfolio_trajectories_loaded": 0,
+  "original_news_rows_loaded": 0,
+  "public_finvision_system_source_found": false,
+  "strict_boundary": "typesetting reconstruction, thesis corroboration, value lineage, and current-input diagnostics receive zero paper-result credit"
+}

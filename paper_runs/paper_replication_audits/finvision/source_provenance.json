@@ -1,0 +1,40 @@
+{
+  "arxiv_pdf_url": "https://arxiv.org/pdf/2411.08899v1",
+  "arxiv_record": "https://arxiv.org/abs/2411.08899v1",
+  "arxiv_source_files": 22,
+  "arxiv_source_sha256": "bc7a421b954b6a90c0a38374e6eb643333a127904916c4faa01d50ec2309a5fe",
+  "arxiv_source_uncompressed_bytes": 3521908,
+  "arxiv_source_url": "https://arxiv.org/e-print/2411.08899v1",
+  "author_thesis_finvision_pdf_pages": "87-106",
+  "author_thesis_pages": 133,
+  "author_thesis_sha256": "868da394c7fcf3a84de5351aef3b9a8b781c132db0803335bef2103d3b79ab8a",
+  "author_thesis_url": "https://doi.org/10.6084/m9.figshare.27939588",
+  "authors": [
+    "Sorouralsadat Fatemi",
+    "Yuheng Hu"
+  ],
+  "clean_rebuild_comparison": "all bytes identical except the PDF trailer ID; extracted text identical",
+  "doi": "10.1145/3677052.3698688",
+  "doi_url": "https://doi.org/10.1145/3677052.3698688",
+  "first_clean_rebuild_sha256": "2540a250d752c7b322c835a46b8dfa526e932a35ab9c5c73a19f2ca4f5260e6f",
+  "official_pdf_pages": 9,
+  "official_pdf_sha256": "8483714696f009ffecd5e818ce2b8937e88be03343476bb23344b4f38b080921",
+  "pdftotext_sha256_both_rebuilds": "34b3811c8ea3ccff7b2b3be468720b6f78de07e24df8830f37b4b738cc0f80cc",
+  "rebuild_pages": 9,
+  "rebuild_parameters": {
+    "FORCE_SOURCE_DATE": 1,
+    "SOURCE_DATE_EPOCH": 1730155920,
+    "TZ": "UTC",
+    "latex_passes": 3
+  },
+  "second_clean_rebuild_sha256": "5b6f793d209dd625a6b119f6b0c7179b8eb33c9d5076fe1abec5838dae64e777",
+  "source_archive_contains_system_code": false,
+  "source_archive_interpretation": "manuscript/typesetting support/figures only",
+  "title": "FinVision: A Multi-Agent Framework for Stock Market Prediction",
+  "visual_qa": {
+    "deterministic_rebuild_all_pages": "pass_matches_manuscript_layout_without_arxiv_margin_stamp",
+    "official_paper_all_pages": "pass_no_clipping_overlap_or_invisible_text",
+    "thesis_all_133_pages_contact_sheet": "pass_no_corrupt_or_clipped_pages",
+    "thesis_finvision_chapter_20_pages": "pass_legible; landscape performance table rotation is source-native"
+  }
+}

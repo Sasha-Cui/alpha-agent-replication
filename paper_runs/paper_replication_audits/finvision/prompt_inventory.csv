@@ -1,0 +1,6 @@
+prompt,modality,paper_model_alias,runtime_fields,template_printed_in_appendix,runtime_values_released,actual_request_released,actual_response_released,status,paper_result_credit
+news_summarizer,text,GPT-4o-mini,news data and ticker,True,False,False,False,template_recovered_runtime_trace_missing,False
+chart_analyst,image+text,GPT-4o-mini,rendered chart and ticker,True,False,False,False,template_recovered_runtime_trace_missing,False
+reflection_short_medium,text,GPT-4o-mini,runtime JSON and unspecified window lengths,True,False,False,False,template_recovered_runtime_trace_missing,False
+trading_signal_chart_reflection,image+text,GPT-4o-mini,30-day signal image and ticker,True,False,False,False,template_recovered_runtime_trace_missing,False
+prediction,text,o1-mini,"portfolio, agent outputs, history, and market intelligence",True,False,False,False,template_recovered_runtime_trace_missing,False

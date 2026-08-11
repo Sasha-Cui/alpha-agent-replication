@@ -1,0 +1,11 @@
+artifact,availability,content,system_source_credit
+official_arxiv_pdf,public_pinned,nine-page paper,False
+arxiv_v1_source,public_pinned,"manuscript, publisher support files, and figures only",False
+author_thesis,public_pinned,FinVision chapter repeats method/prompts/table; no implementation or traces,False
+paper_listed_code_url,none_printed,paper makes no code-release claim and prints no repository URL,False
+author_github_current,27 public repos inspected,no attributable FinVision implementation; author site entry is descriptive only,False
+github_exact_repo_searches,zero exact-title/arXiv/title-author repos,"code-search hits are citations or paper text, not an implementation",False
+author_huggingface,21 datasets and 74 models inspected,no attributable FinVision release,False
+software_heritage_and_wayback,searched,no attributable archived implementation recovered,False
+original_market_news_snapshot,not_publicly_recovered,"counts printed; rows, query, and timestamps absent",False
+original_llm_and_trading_traces,not_publicly_recovered,"no requests, responses, actions, fills, rewards, cash, or equity paths",False

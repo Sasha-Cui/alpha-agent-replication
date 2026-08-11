@@ -1,0 +1,49 @@
+dimension,paper_or_evidence,status,paper_result_credit
+universe,"AAPL, AMZN, MSFT",specified,False
+overall_period,2023-04-01 through 2023-12-29,specified,False
+warmup_period,2023-04-01 through 2023-05-31,specified,False
+testing_period,2023-06-01 through 2023-12-29,specified,False
+trading_day_counts,42 warm-up and 145 test versus 41/147 literal sessions,unresolved_count_convention,False
+news_content_source,Yahoo Finance,specified_at_brand_level,False
+news_api_provider,EODHD API footnote,provider_provenance_ambiguity,False
+news_query_parameters,not printed,missing,False
+news_timestamp_cutoff_timezone,not printed,missing_lookahead_control,False
+news_deduplication,not printed,missing,False
+chart_lookback,past 60 days,specified,False
+technical_indicators,"SMA10/50, RSI14, Bollinger20/2sd, volume, MACD",mostly_specified,False
+macd_parameters,not printed,missing,False
+kdj_parameters,not printed,missing,False
+orchestration_framework,LangGraph StateGraph,specified_without_version,False
+dependency_versions,not printed,missing,False
+nondecision_model,GPT-4o-mini alias,alias_without_immutable_snapshot,False
+nondecision_temperature,0.3,specified,False
+decision_model,o1-mini alias,deprecated_alias_without_immutable_snapshot,False
+decision_temperature,1,specified,False
+model_snapshot_ids,not printed,missing,False
+prompt_templates,five templates printed,specified_template_only,False
+actual_llm_requests,not released,missing,False
+actual_llm_responses,not released; example response is ellipsized,missing,False
+llm_request_ids,not released,missing,False
+random_seeds,not printed,missing,False
+reflection_signal_window,past 30 days,specified,False
+reflection_short_medium_windows,runtime placeholders only,missing,False
+initial_capital,not printed,missing,False
+price_provider,not printed,missing,False
+price_field_and_adjustment,not printed,missing,False
+trade_fill_timing_and_price,not printed,missing,False
+position_size_execution,prediction emits 1-10 percent-like size,partial_no_share_rounding_or_cash_equation,False
+long_short_constraints,not printed,missing,False
+transaction_costs,not printed,missing,False
+slippage,not printed,missing,False
+reward_equation,reward agent named but equation not printed,missing,False
+portfolio_cash_accounting,prompt fields shown but update equation absent,missing,False
+arr_annualization_constant,symbol C only,missing_numeric_value,False
+sharpe_convention,Rf/frequency/annualization/ddof not printed,missing,False
+mdd_input_path,formula printed; portfolio path absent,partial,False
+macd_rsi_baseline_parameters,not printed; prose says KDJ+RSI while table says RSI,ambiguous,False
+ppo_dqn_hyperparameters,not printed,missing,False
+baseline_seeds_and_trials,not printed,missing,False
+finagent_value_lineage,values trace to FinAgent Appendix Table 7,transcription_not_reproduction,False
+finagent_caption_citation,caption cites FinGPT key 2yang2023fingpt,citation_lineage_error,False
+native_actions_equity_curves,not released,missing,False
+public_system_implementation,not found in pinned author/search/archive evidence,not_publicly_recovered_not_proof_of_nonexistence,False

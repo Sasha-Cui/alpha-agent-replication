@@ -1,0 +1,13 @@
+ticker,period,dimension,paper_value,pinned_current_value,first_current_session,last_current_session,status,faithful_replication_credit,interpretation
+AAPL,training,trading_days,42,41,2023-04-03,2023-05-31,paper_count_differs_from_literal_exchange_sessions,False,paper transformation or endpoint convention is unspecified
+AAPL,training,news_articles,1081,,,,not_reproduced_original_query_and_snapshot_unreleased,False,"paper says Yahoo Finance content via EODHD but omits query, cutoff, timezone, and deduplication"
+AAPL,testing,trading_days,145,147,2023-06-01,2023-12-29,paper_count_differs_from_literal_exchange_sessions,False,paper transformation or endpoint convention is unspecified
+AAPL,testing,news_articles,4886,,,,not_reproduced_original_query_and_snapshot_unreleased,False,"paper says Yahoo Finance content via EODHD but omits query, cutoff, timezone, and deduplication"
+MSFT,training,trading_days,42,41,2023-04-03,2023-05-31,paper_count_differs_from_literal_exchange_sessions,False,paper transformation or endpoint convention is unspecified
+MSFT,training,news_articles,1897,,,,not_reproduced_original_query_and_snapshot_unreleased,False,"paper says Yahoo Finance content via EODHD but omits query, cutoff, timezone, and deduplication"
+MSFT,testing,trading_days,145,147,2023-06-01,2023-12-29,paper_count_differs_from_literal_exchange_sessions,False,paper transformation or endpoint convention is unspecified
+MSFT,testing,news_articles,1249,,,,not_reproduced_original_query_and_snapshot_unreleased,False,"paper says Yahoo Finance content via EODHD but omits query, cutoff, timezone, and deduplication"
+AMZN,training,trading_days,42,41,2023-04-03,2023-05-31,paper_count_differs_from_literal_exchange_sessions,False,paper transformation or endpoint convention is unspecified
+AMZN,training,news_articles,1113,,,,not_reproduced_original_query_and_snapshot_unreleased,False,"paper says Yahoo Finance content via EODHD but omits query, cutoff, timezone, and deduplication"
+AMZN,testing,trading_days,145,147,2023-06-01,2023-12-29,paper_count_differs_from_literal_exchange_sessions,False,paper transformation or endpoint convention is unspecified
+AMZN,testing,news_articles,5556,,,,not_reproduced_original_query_and_snapshot_unreleased,False,"paper says Yahoo Finance content via EODHD but omits query, cutoff, timezone, and deduplication"

@@ -1,0 +1,10 @@
+ticker,metric,paper_value,current_yahoo_diagnostic_value,current_value_rounded_2dp,display_match,formula_assumptions,status,faithful_replication_credit
+AAPL,ARR_pct,13.56,12.501048077341187,12.5,False,adjusted close; Jun 1-Dec 29 inclusive; C=252; paper T=145; arithmetic daily returns; Rf=0; sample std; sqrt(252) Sharpe,current_input_diagnostic_mismatch,False
+AAPL,SR,0.67,0.7437584695905528,0.74,False,adjusted close; Jun 1-Dec 29 inclusive; C=252; paper T=145; arithmetic daily returns; Rf=0; sample std; sqrt(252) Sharpe,current_input_diagnostic_mismatch,False
+AAPL,MDD_pct,14.93,14.932360367376893,14.93,True,adjusted close; Jun 1-Dec 29 inclusive; C=252; paper T=145; arithmetic daily returns; Rf=0; sample std; sqrt(252) Sharpe,current_input_diagnostic_match_only,False
+MSFT,ARR_pct,22.27,23.526176763851005,23.53,False,adjusted close; Jun 1-Dec 29 inclusive; C=252; paper T=145; arithmetic daily returns; Rf=0; sample std; sqrt(252) Sharpe,current_input_diagnostic_mismatch,False
+MSFT,SR,1.01,1.1209323218257228,1.12,False,adjusted close; Jun 1-Dec 29 inclusive; C=252; paper T=145; arithmetic daily returns; Rf=0; sample std; sqrt(252) Sharpe,current_input_diagnostic_mismatch,False
+MSFT,MDD_pct,12.95,12.987576256908332,12.99,False,adjusted close; Jun 1-Dec 29 inclusive; C=252; paper T=145; arithmetic daily returns; Rf=0; sample std; sqrt(252) Sharpe,current_input_diagnostic_mismatch,False
+AMZN,ARR_pct,43.57,41.29303554545623,41.29,False,adjusted close; Jun 1-Dec 29 inclusive; C=252; paper T=145; arithmetic daily returns; Rf=0; sample std; sqrt(252) Sharpe,current_input_diagnostic_mismatch,False
+AMZN,SR,1.37,1.3692968849017022,1.37,True,adjusted close; Jun 1-Dec 29 inclusive; C=252; paper T=145; arithmetic daily returns; Rf=0; sample std; sqrt(252) Sharpe,current_input_diagnostic_match_only,False
+AMZN,MDD_pct,17.45,17.4525407963223,17.45,True,adjusted close; Jun 1-Dec 29 inclusive; C=252; paper T=145; arithmetic daily returns; Rf=0; sample std; sqrt(252) Sharpe,current_input_diagnostic_match_only,False
