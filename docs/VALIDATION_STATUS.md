@@ -8,7 +8,7 @@ tracked aggregate evidence on Bouchet.
 | Artifact | SHA-256 |
 | --- | --- |
 | `docs/paper/icaif2026_submission.tex` | `70ad767203d3e118fc5ff2b764e4d9e02fd4bccfc03b9736d7a640d02fe88bda` |
-| `output/pdf/icaif2026_submission.pdf` | `235d672d82736a6ddca1c259fe09790c202901473c0904c5d8543e721973a853` |
+| `output/pdf/icaif2026_submission.pdf` | `e59d6c32f636eab92cd14a14f4a77b024db9e5117a79df8d5fc77676cec56b60` |
 
 The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
@@ -17,7 +17,7 @@ labels.
 
 ## Passing checks
 
-- Repository test suite: 234 passed (one third-party deprecation warning).
+- Repository test suite: 244 passed (one third-party deprecation warning).
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
@@ -48,6 +48,14 @@ labels.
   adaptations and receive component rather than paper-result credit. The
   unaffiliated community implementation fails import and test collection and
   receives no native credit; version-lineage and AR/AER conflicts are recorded.
+- AlphaAgents paper/source audit: the official TeX rebuilds to nine pages at
+  99.77% extracted-token multiset Jaccard and recovers seven source-only
+  portfolio definitions with 77 ticker memberships. Zero of 20 plotted
+  performance series reproduce; no author-linked implementation, data or model
+  snapshot, filled risk prompt, agent output, debate trace, raw return path, or
+  plot array is released. Five unaffiliated implementations materially diverge,
+  and both existing local factor scores remain M0 narrative translations with
+  no AlphaAgents-result credit.
 - FAMA full-paper audit: all 65 numeric table results and 38 visible result
   markers are enumerated, with zero native paper-result paths. The paper claims
   38 initial factors but Appendix B lists 71; its printed correlation equation,

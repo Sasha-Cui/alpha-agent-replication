@@ -266,6 +266,21 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-ALPHA-AGENTS": (
+        "A pinned arXiv-v1 AlphaAgents audit rebuilds the official nine-page TeX "
+        "source at 99.77% extracted-token multiset Jaccard and recovers seven "
+        "commented-out portfolio definitions containing 77 ticker memberships. "
+        "These are document and source-specification evidence, not native agent "
+        "outputs: 0/20 plotted performance series reproduce. No author-linked "
+        "implementation, Bloomberg/filing/price snapshot, immutable GPT-4o request, "
+        "filled risk-profile prompt, agent decision, debate trace, Phoenix score, "
+        "raw return path, or plot array is released. Five unaffiliated GitHub "
+        "reimplementations materially change the model, framework, data, universe, "
+        "dates, or benchmark and receive no native credit. The two local M0 factor "
+        "scores, monthly deciles, long-short weights, and return streams are "
+        "researcher-supplied narrative translations and receive no AlphaAgents-result "
+        "credit."
+    ),
     "SYS-ALPHA-JUNGLE": (
         "A pinned three-edition Alpha-Jungle audit inventories 64 official AAAI "
         "table cells, 956 original-v1 cells, and 1,312 current-v3 extended-table "
@@ -324,6 +339,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
+    "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
     "SYS-ALPHA-JUNGLE": "paper_audit:completed_zero_of_64_published_cells_zero_native_results_three_of_six_formula_trees_conditionally_adapted",
     "SYS-ALPHA-MEMO": "paper_audit:completed_zero_of_474_native_results",
     "SYS-ALPHA-R1": "paper_audit:completed_zero_of_652_native_results_official_placeholder",
