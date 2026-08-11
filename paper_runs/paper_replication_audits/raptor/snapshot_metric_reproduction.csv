@@ -1,0 +1,11 @@
+metric,paper_value,computed_value,reported_decimals,match,formula_or_convention,evidence,end_to_end_pipeline_reproduced
+trading_days,166,166.0,0,yes,exact,166 author-shipped daily net_liquidation snapshots,no
+initial_value_usd,1000000.00,1000000.0,2,yes,exact,166 author-shipped daily net_liquidation snapshots,no
+final_value_usd,1134348.19,1134348.194404907,2,yes,rounded,166 author-shipped daily net_liquidation snapshots,no
+total_return_percent,13.43,13.434819440490697,2,yes,rounded,166 author-shipped daily net_liquidation snapshots,no
+annualized_return_percent,21.09,21.090192227941817,2,yes,rounded,166 author-shipped daily net_liquidation snapshots,no
+annualized_volatility_percent,19.30,19.30426162364428,2,yes,rounded,166 author-shipped daily net_liquidation snapshots,no
+sharpe_rf_2_percent,1.0,0.9897422727517595,1,yes,rounded,166 author-shipped daily net_liquidation snapshots,no
+sortino_rf_2_percent_negative_only_sample_sd,1.28,1.2787050163631515,2,yes,rounded,166 author-shipped daily net_liquidation snapshots,no
+maximum_drawdown_percent,-15.33,-15.33365025620428,2,yes,rounded,166 author-shipped daily net_liquidation snapshots,no
+coverage_ratio,1.0,1.0,1,yes,exact,166 author-shipped daily net_liquidation snapshots,no

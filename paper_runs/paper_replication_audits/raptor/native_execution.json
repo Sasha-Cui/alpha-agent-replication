@@ -1,0 +1,14 @@
+{
+  "author_output_verified_scalar_results": 16,
+  "candidate_backtest_runner_attempted": true,
+  "candidate_backtest_runner_status": "blocked_missing_testing_stock_prices_csv",
+  "displayed_scalar_results": 42,
+  "end_to_end_multi_agent_backtest_attempted": false,
+  "end_to_end_reason": "unreleased_inputs_and_request_logs_plus_conflicting_paper_and_runner_protocols",
+  "end_to_end_result_cells_reproduced": 0,
+  "llm_calls_made": 0,
+  "native_postprocessor_executed": true,
+  "native_postprocessor_status": "pass",
+  "native_source_available": true,
+  "paper_result_credit": "author_output_verification_only_no_end_to_end_result_credit"
+}

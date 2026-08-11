@@ -1,0 +1,6 @@
+artifact,url,status,relationship,credit
+OpenReview record,https://openreview.net/forum?id=ziuTkKhgT0,public_record_no_revisions_displayed,original workshop record,paper provenance
+CEUR final PDF,https://ceur-ws.org/Vol-4162/paper8.pdf,public_pinned_11_pages,published final paper,paper provenance
+listed 4open snapshot,https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing,expired_410_files_options_root_401,paper-listed anonymous artifact,none
+anonymous GitHub mirror,https://github.com/anonymouspenguin3/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing,public_pinned_Apache_2_0,"high-confidence double-blind mirror inferred from exact slug, preparation script, dates and source identity",source/output audit
+author GitHub repository,https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture,public_pinned_Apache_2_0,linked by hidden page-9 URI in the published PDF,author attribution and source/output audit

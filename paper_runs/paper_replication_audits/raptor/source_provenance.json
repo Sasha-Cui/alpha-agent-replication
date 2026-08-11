@@ -1,0 +1,74 @@
+{
+  "all_166_snapshots_identical": true,
+  "anonymous_github_repository": "https://github.com/anonymouspenguin3/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing",
+  "anonymous_repository_archive_sha256": "d9e41191002d68eb16802bb833df67c148b51e1bdaf5aa2c15d9fd8888119aec",
+  "anonymous_repository_head": "677ac773809bdadeeee7821d6ed1b589ce920f80",
+  "anonymous_repository_initial_commit": "7925285416ce6c95584c7e5b2c2491518e78c8ce",
+  "anonymous_repository_tree_sha256": "ec72018cc0f840492c6586f4a856a560fa4bd0ef0df572c803cc421f686284e2",
+  "anonymous_to_author_relationship": "high-confidence double-blind derivative/mirror inference; exact 4open-to-GitHub redirect is unavailable after expiry",
+  "author_github_repository": "https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture",
+  "author_repository_archive_sha256": "badb4c27ba34232d6539975f3191dcc7a066a0ee1456c448ec9bb21f5e33d697",
+  "author_repository_head": "1793abf29ecde15597cb2bb4cb345accf655531f",
+  "author_repository_tree_sha256": "19753dc33b2e2f68438e36ed1e32c849878fc60b22f1bfa8ed660167c8acc6f9",
+  "authors": [
+    "Blake Almon",
+    "Matthew Caliboso",
+    "Alex Kim",
+    "Rohan Dutta",
+    "Rohan Raman",
+    "Mithil Srungarapu",
+    "Vasu Sharma",
+    "Kevin Zhu",
+    "Sunishchal Dev"
+  ],
+  "byte_identical_common_files": 815,
+  "ceur_pdf": "https://ceur-ws.org/Vol-4162/paper8.pdf",
+  "ceur_pdf_pages": 11,
+  "ceur_pdf_pages_visually_inspected": 11,
+  "ceur_pdf_sha256": "917b30a7ab49693c863720b4677de2f00329fd31f001f9a058c94298d81d6796",
+  "ceur_record": "https://ceur-ws.org/Vol-4162/",
+  "ceur_record_sha256": "23629695a80fbe193afa7710cadfc3014f6a52be5f9e9c43790dea60be9be8a8",
+  "license": "Apache-2.0",
+  "listed_anonymous_artifact": "https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing",
+  "openreview_record": "https://openreview.net/forum?id=ziuTkKhgT0",
+  "openreview_record_note": "record inspected in signed-in browser; revision history displayed no revisions; command-line PDF access was Cloudflare-blocked",
+  "paper": "RAPTOR: Reasoned Agentic Portfolio Trading with Orchestrated Rebalancing",
+  "paper_relevant_candidate_runners_identical": true,
+  "pdf_links": [
+    {
+      "page": "1",
+      "uri": "https://creativecommons.org/licenses/by/4.0/deed.en"
+    },
+    {
+      "page": "8",
+      "uri": "https://github.com/borisveytsman/acmart"
+    },
+    {
+      "page": "8",
+      "uri": "https://www.ctan.org/tex-archive/macros/latex/contrib/els-cas-templates"
+    },
+    {
+      "page": "8",
+      "uri": "https://www.ctan.org/tex-archive/macros/latex/contrib/els-cas-templates"
+    },
+    {
+      "page": "9",
+      "uri": "https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture"
+    }
+  ],
+  "source_role_counts": {
+    "asset_or_notebook": 12,
+    "author_day0_decision_output": 503,
+    "author_executed_notebook": 1,
+    "author_result_snapshot": 166,
+    "author_trade_or_optimizer_report": 23,
+    "candidate_backtest_runner": 3,
+    "configuration_or_fixture": 4,
+    "dependency_or_build_manifest": 4,
+    "documentation": 10,
+    "implementation_source": 89,
+    "native_result_postprocessor": 1,
+    "other": 9
+  },
+  "tracked_source_files": 825
+}

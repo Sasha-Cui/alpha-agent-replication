@@ -1,0 +1,15 @@
+issue_id,issue,evidence,paper_result_credit
+RAP-I01,horizon label,Abstract calls the study a one-year reconstruction; all reported dates span eight months.,no
+RAP-I02,cadence,"Abstract/Introduction say biweekly, Section 4.2 says daily with no fixed cadence, and Appendix B.3 says every 10 trading days.",no
+RAP-I03,agent frequency,Section 4.1 says comprehensive agents run primarily on Day 0 and later dates reuse decisions; Section 4.2 says the complete pipeline reruns every trading date.,no
+RAP-I04,price coverage,Price snapshots are said to end 2025-07-27 while the principal evaluation continues to 2025-08-29.,no
+RAP-I05,Reddit coverage,Reddit snapshots are said to end 2025-08-19 while daily agent execution is claimed through 2025-08-29.,no
+RAP-I06,case-study timing,"The WAB case is dated 2025-09-01, after the stated evaluation end date 2025-08-29.",no
+RAP-I07,rolling range,Section 4.3 reports -2.42 to 5.27; Figure 3 reports -5.26 to 10.34.,no
+RAP-I08,rolling moments,Section 4.3 reports mean 1.41 and SD 2.63; extended validation reports 1.60 +/- 3.28.,no
+RAP-I09,rolling convention,Released sample-SD code gives extrema near -5.27/10.34 and final 3.79; population SD gives final 3.89 but incompatible extrema.,no
+RAP-I10,trace inclusion,"Appendix says one complete redacted trace is included, but only three WAB narrative snippets and a small perturbation table appear.",no
+RAP-I11,Deflated Sharpe,"Appendix says it is reported alongside naive Sharpe, but no Deflated Sharpe value appears.",no
+RAP-I12,diagnostic reporting,"Appendix promises Calmar, turnover, beta, tracking error and VaR/CVaR, but none is reported for the experiment.",no
+RAP-I13,reproducibility rating,The paper assigns High under an all-five rubric while necessary inputs and a working one-command paper regeneration are absent.,no
+RAP-I14,alpha wording,A return difference versus SPY is described as nontrivial alpha without a factor regression or beta estimate.,no

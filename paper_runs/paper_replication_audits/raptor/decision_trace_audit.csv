@@ -1,0 +1,7 @@
+check,value,assessment,evidence,paper_result_credit
+decision_file_coverage,503,only_2025-01-01,no later per-ticker decision files,no
+header_distribution,"{""BUY"": 417, ""HOLD"": 86}",no_SELL_headers,long-only guardrails rewrite SELL to HOLD/BUY,no
+final_proposal_distribution,"{""BUY"": 417, ""HOLD"": 85}",one_file_has_no_final_marker,502/503 explicit finals,no
+automated_sell_language_flags_among_BUY,236,screen_only_not_236_manual_adjudications,regex flags recommendation/reduction language,no
+AAPL_manual_trace,BUY header and final,contradiction,rationale explicitly supports recommendation to sell,no
+WAB_manual_trace,BUY header and final,contradiction_and_wrong_case_date,Jan 1 rationale recommends strategic reduction; paper case is Sep 1 and claims aggressive positive stance,no

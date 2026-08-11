@@ -1,0 +1,6 @@
+component,attempted,status,detail,paper_result_credit
+testing/mvo_blm_runner.py,yes,blocked_before_backtest,FileNotFoundError: tracked testing/stock_prices.csv is absent,no
+testing/scripts/visualize.py,yes,pass,six snapshot-derived CSV/PNG artifacts emitted,author_output_postprocessing_only
+Python source compile,yes,pass,94/94 anonymous-release Python files compiled in memory,no
+pytest collection,collect_only,one_function,test_execution.py asserts=0 and catches ImportError/Exception,no
+end-to-end multi-agent backtest,no,not_operationally_defined,unreleased inputs/API request logs plus conflicting runners would make a fresh run non-comparable,no

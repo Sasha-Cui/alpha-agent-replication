@@ -1,0 +1,49 @@
+dimension,paper_specification,released_source_or_output,assessment,severity_or_note,end_to_end_credit
+investment universe,S&P 500 constituents,503-ticker universe file,close,universe membership vintage not documented,no
+evaluation horizon,2025-01-01 to 2025-08-29,166 matching dated snapshots,exact_output,,no
+initial capital,"$1,000,000","first snapshot $1,000,000",exact_output,,no
+price inputs,offline OHLCV snapshots through 2025-07-27,no tracked price CSV,missing,blocking,no
+benchmark inputs,S&P 500 / SPY same horizon,testing/sp500_closing_prices.csv absent,missing,blocking,no
+Finnhub snapshots,date-bounded news/insider/fundamental JSON,none tracked,missing,blocking,no
+Reddit snapshots,2025-01-01 to 2025-08-19,none tracked,missing,blocking,no
+SimFin snapshots,quarterly statements,none tracked,missing,blocking,no
+Perplexity snapshots,per-date macro JSON,none tracked,missing,blocking,no
+point-in-time controls,network disabled; only local snapshots,runners contain live yfinance/API fallbacks,conflict,blocking,no
+agent roles,"analysts, bull/bear researchers, risk managers, execution",implementations are present,substantial,no run trace,no
+blackboard schema,typed append-only JSONL,schema/storage code present but zero tracked JSONL logs,partial,no run evidence,no
+debate rounds,typically 2-3 per side,conditional logic present; exact reported-run settings not pinned,partial,,no
+LLM model,not named,default code names gpt-4o-mini but request logs absent,underspecified,blocking,no
+LLM temperature and sampling,not specified,multiple source defaults; no request logs,underspecified,blocking,no
+prompts,proprietary prompts withheld,many source prompts present; exact reported requests absent,partial,blocking,no
+random seeds,fixed seeds claimed by rubric,no experiment seed or deterministic replay bundle,missing,blocking,no
+paper cadence abstract,biweekly,testing runner uses >=14 calendar days,close,not identical to ten trading days,no
+paper cadence setup,"daily, no fixed cadence",contradicts paper Data/Appendix and both runners,conflict,blocking,no
+paper cadence appendix,every 10 trading days,multithreaded runner has a 10-market-day path,partial,reported outputs align to another runner,no
+output cadence,unspecified lineage,author log records 17 rebalances at >=14 calendar-day intervals from Jan 6,different,blocking,no
+agent rerun frequency,Data says Day 0 reuse; Setup says every day,only Jan 1 has 503 decision files,conflict,blocking,no
+multithreaded range runner,Day 0 pipeline then scheduled allocation,Day 0 enters revaluation-only early return when rebalance_mode is false,implementation_bug,blocking,no
+decision persistence,reuse prior decisions,testing runner instead derives views from recent returns by default,different,blocking,no
+categorical view mapping,BUY/HOLD/SELL -> +2%/0/-2% annualized,core BL code supports mapping,exact_component,not the output runner default,no
+output-runner views,categorical agent views,recent-return mean by default; optional GPT-4o-mini daily-return prediction,different,blocking,no
+root-runner views,categorical agent views,constant +2% for every ticker,different,blocking,no
+selection matrix,identity,core BL implementation uses identity,exact_component,,no
+confidence matrix,0.5 * tau * diag(P Sigma P^T),core BL implementation matches; output runner uses empirical variance + 1e-4,mixed,blocking,no
+covariance lookback,252 trading days annualized,output runner uses at most 60 prior observations,different,blocking,no
+risk aversion,3.0,core BL default 3.0; output runner sets 5.0,mixed,blocking,no
+tau,0.025,core BL default .025; output runner sets .05,mixed,blocking,no
+optimization universe,eligible S&P 500 constituents,output runner limits optimization to top 50 holdings and views to top 10,different,blocking,no
+long-only,optional,reported source paths force long-only,partial,,no
+transaction fees,5 bps per unit turnover,no matching deduction in candidate execution paths or snapshots,missing,blocking,no
+slippage,5 bps per unit turnover,no matching deduction in candidate execution paths or snapshots,missing,blocking,no
+daily net values,166 complete snapshots,166 snapshots with all three named fields,exact_output,,no
+benchmark result,10.08%,benchmark input and result series absent,missing,blocking,no
+WAB case study,2025-09-01 trace and BL perturbation,no Sep 1 outputs; Jan 1 WAB output is a different contradictory trace,missing,blocking,no
+complete trace,"messages, tool calls, decision, weights included",no such complete trace in paper or release,missing,blocking,no
+Deflated Sharpe,reported alongside naive Sharpe,no value or implementation output,missing,blocking,no
+additional diagnostics,"Calmar, turnover, beta, tracking error, VaR/CVaR",not reported for the published experiment,missing,blocking,no
+environment pinning,lockfile/container/OS notes,uv.lock present; no container or OS notes,partial,,no
+one-command regeneration,tables and figures,README documents CLI only; missing inputs stop backtest runner,missing,blocking,no
+automated tests,not stated,one collected function has no asserts and catches exceptions,weak,,no
+source syntax,operational source,all 93 Python files compile,pass,syntax only,no
+native visualization,regenerate figures,testing/scripts/visualize.py executes and emits six artifacts,pass_component,not end-to-end,no
+result lineage,reported system result,headline scalars derive exactly from released snapshots,verified_output,pipeline lineage remains unrerunnable,no
