@@ -1,0 +1,17 @@
+{
+  "author_linked_code_found": false,
+  "baseline_result_cells_reproduced": 0,
+  "baseline_result_cells_total": 124,
+  "community_repository_native_credit": false,
+  "displayed_result_cells_reproduced": 0,
+  "displayed_result_cells_total": 206,
+  "english_prompt_components_conditionally_rendered": 3,
+  "llm_calls_made": 0,
+  "local_mapping_status": "M0_narrative_translation_zero_paper_result_credit",
+  "metric_components_conditionally_executed": 2,
+  "native_execution_attempted": false,
+  "native_llmfactor_result_cells_reproduced": 0,
+  "native_llmfactor_result_cells_total": 82,
+  "paper_result_credit": false,
+  "reason": "no_author_pipeline_data_snapshot_request_logs_response_parser_predictions_or_raw_results"
+}

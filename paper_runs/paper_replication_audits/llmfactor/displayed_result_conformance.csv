@@ -1,0 +1,207 @@
+result_id,table,section,model_or_template,dataset,metric,displayed_value,scope,raw_values_released,native_reproduced,paper_result_credit
+LLMF-001,Table 2,Keyphrase-based,PromptRank,StockNet,ACC,51.24,baseline,no,no,no
+LLMF-002,Table 2,Keyphrase-based,PromptRank,StockNet,MCC,0.010,baseline,no,no,no
+LLMF-003,Table 2,Keyphrase-based,PromptRank,CMIN-US,ACC,53.28,baseline,no,no,no
+LLMF-004,Table 2,Keyphrase-based,PromptRank,CMIN-US,MCC,0.001,baseline,no,no,no
+LLMF-005,Table 2,Keyphrase-based,PromptRank,CMIN-CN,ACC,50.21,baseline,no,no,no
+LLMF-006,Table 2,Keyphrase-based,PromptRank,CMIN-CN,MCC,-0.003,baseline,no,no,no
+LLMF-007,Table 2,Keyphrase-based,PromptRank,EDT,ACC,51.78,baseline,no,no,no
+LLMF-008,Table 2,Keyphrase-based,PromptRank,EDT,MCC,0.014,baseline,no,no,no
+LLMF-009,Table 2,Keyphrase-based,KeyBERT,StockNet,ACC,51.95,baseline,no,no,no
+LLMF-010,Table 2,Keyphrase-based,KeyBERT,StockNet,MCC,0.012,baseline,no,no,no
+LLMF-011,Table 2,Keyphrase-based,KeyBERT,CMIN-US,ACC,53.40,baseline,no,no,no
+LLMF-012,Table 2,Keyphrase-based,KeyBERT,CMIN-US,MCC,0.009,baseline,no,no,no
+LLMF-013,Table 2,Keyphrase-based,KeyBERT,CMIN-CN,ACC,50.23,baseline,no,no,no
+LLMF-014,Table 2,Keyphrase-based,KeyBERT,CMIN-CN,MCC,-0.004,baseline,no,no,no
+LLMF-015,Table 2,Keyphrase-based,KeyBERT,EDT,ACC,51.84,baseline,no,no,no
+LLMF-016,Table 2,Keyphrase-based,KeyBERT,EDT,MCC,0.002,baseline,no,no,no
+LLMF-017,Table 2,Keyphrase-based,YAKE,StockNet,ACC,51.91,baseline,no,no,no
+LLMF-018,Table 2,Keyphrase-based,YAKE,StockNet,MCC,0.005,baseline,no,no,no
+LLMF-019,Table 2,Keyphrase-based,YAKE,CMIN-US,ACC,53.13,baseline,no,no,no
+LLMF-020,Table 2,Keyphrase-based,YAKE,CMIN-US,MCC,0.001,baseline,no,no,no
+LLMF-021,Table 2,Keyphrase-based,YAKE,CMIN-CN,ACC,50.20,baseline,no,no,no
+LLMF-022,Table 2,Keyphrase-based,YAKE,CMIN-CN,MCC,0.001,baseline,no,no,no
+LLMF-023,Table 2,Keyphrase-based,YAKE,EDT,ACC,51.88,baseline,no,no,no
+LLMF-024,Table 2,Keyphrase-based,YAKE,EDT,MCC,0.004,baseline,no,no,no
+LLMF-025,Table 2,Keyphrase-based,TextRank,StockNet,ACC,51.00,baseline,no,no,no
+LLMF-026,Table 2,Keyphrase-based,TextRank,StockNet,MCC,0.003,baseline,no,no,no
+LLMF-027,Table 2,Keyphrase-based,TextRank,CMIN-US,ACC,53.99,baseline,no,no,no
+LLMF-028,Table 2,Keyphrase-based,TextRank,CMIN-US,MCC,0.060,baseline,no,no,no
+LLMF-029,Table 2,Keyphrase-based,TextRank,CMIN-CN,ACC,50.38,baseline,no,no,no
+LLMF-030,Table 2,Keyphrase-based,TextRank,CMIN-CN,MCC,0.006,baseline,no,no,no
+LLMF-031,Table 2,Keyphrase-based,TextRank,EDT,ACC,51.76,baseline,no,no,no
+LLMF-032,Table 2,Keyphrase-based,TextRank,EDT,MCC,0.003,baseline,no,no,no
+LLMF-033,Table 2,Keyphrase-based,TopicRank,StockNet,ACC,51.92,baseline,no,no,no
+LLMF-034,Table 2,Keyphrase-based,TopicRank,StockNet,MCC,0.008,baseline,no,no,no
+LLMF-035,Table 2,Keyphrase-based,TopicRank,CMIN-US,ACC,53.75,baseline,no,no,no
+LLMF-036,Table 2,Keyphrase-based,TopicRank,CMIN-US,MCC,0.034,baseline,no,no,no
+LLMF-037,Table 2,Keyphrase-based,TopicRank,CMIN-CN,ACC,50.26,baseline,no,no,no
+LLMF-038,Table 2,Keyphrase-based,TopicRank,CMIN-CN,MCC,-0.002,baseline,no,no,no
+LLMF-039,Table 2,Keyphrase-based,TopicRank,EDT,ACC,51.80,baseline,no,no,no
+LLMF-040,Table 2,Keyphrase-based,TopicRank,EDT,MCC,0.000,baseline,no,no,no
+LLMF-041,Table 2,Keyphrase-based,SingleRank,StockNet,ACC,50.32,baseline,no,no,no
+LLMF-042,Table 2,Keyphrase-based,SingleRank,StockNet,MCC,0.005,baseline,no,no,no
+LLMF-043,Table 2,Keyphrase-based,SingleRank,CMIN-US,ACC,53.33,baseline,no,no,no
+LLMF-044,Table 2,Keyphrase-based,SingleRank,CMIN-US,MCC,0.004,baseline,no,no,no
+LLMF-045,Table 2,Keyphrase-based,SingleRank,CMIN-CN,ACC,50.29,baseline,no,no,no
+LLMF-046,Table 2,Keyphrase-based,SingleRank,CMIN-CN,MCC,0.002,baseline,no,no,no
+LLMF-047,Table 2,Keyphrase-based,SingleRank,EDT,ACC,51.85,baseline,no,no,no
+LLMF-048,Table 2,Keyphrase-based,SingleRank,EDT,MCC,0.004,baseline,no,no,no
+LLMF-049,Table 2,Keyphrase-based,TFIDF,StockNet,ACC,51.86,baseline,no,no,no
+LLMF-050,Table 2,Keyphrase-based,TFIDF,StockNet,MCC,0.001,baseline,no,no,no
+LLMF-051,Table 2,Keyphrase-based,TFIDF,CMIN-US,ACC,53.71,baseline,no,no,no
+LLMF-052,Table 2,Keyphrase-based,TFIDF,CMIN-US,MCC,0.018,baseline,no,no,no
+LLMF-053,Table 2,Keyphrase-based,TFIDF,CMIN-CN,ACC,50.27,baseline,no,no,no
+LLMF-054,Table 2,Keyphrase-based,TFIDF,CMIN-CN,MCC,-0.002,baseline,no,no,no
+LLMF-055,Table 2,Keyphrase-based,TFIDF,EDT,ACC,51.86,baseline,no,no,no
+LLMF-056,Table 2,Keyphrase-based,TFIDF,EDT,MCC,0.017,baseline,no,no,no
+LLMF-057,Table 2,Sentiment-based,EDT,StockNet,ACC,40.31,baseline,no,no,no
+LLMF-058,Table 2,Sentiment-based,EDT,StockNet,MCC,-0.066,baseline,no,no,no
+LLMF-059,Table 2,Sentiment-based,EDT,CMIN-US,ACC,49.86,baseline,no,no,no
+LLMF-060,Table 2,Sentiment-based,EDT,CMIN-US,MCC,-0.004,baseline,no,no,no
+LLMF-061,Table 2,Sentiment-based,EDT,CMIN-CN,ACC,40.00,baseline,no,no,no
+LLMF-062,Table 2,Sentiment-based,EDT,CMIN-CN,MCC,0.021,baseline,no,no,no
+LLMF-063,Table 2,Sentiment-based,EDT,EDT,ACC,75.67,baseline,no,no,no
+LLMF-064,Table 2,Sentiment-based,EDT,EDT,MCC,0.026,baseline,no,no,no
+LLMF-065,Table 2,Sentiment-based,FinGPT,StockNet,ACC,54.91,baseline,no,no,no
+LLMF-066,Table 2,Sentiment-based,FinGPT,StockNet,MCC,0.083,baseline,no,no,no
+LLMF-067,Table 2,Sentiment-based,FinGPT,CMIN-US,ACC,59.98,baseline,no,no,no
+LLMF-068,Table 2,Sentiment-based,FinGPT,CMIN-US,MCC,0.182,baseline,no,no,no
+LLMF-069,Table 2,Sentiment-based,FinGPT,CMIN-CN,ACC,55.78,baseline,no,no,no
+LLMF-070,Table 2,Sentiment-based,FinGPT,CMIN-CN,MCC,0.120,baseline,no,no,no
+LLMF-071,Table 2,Sentiment-based,FinGPT,EDT,ACC,53.86,baseline,no,no,no
+LLMF-072,Table 2,Sentiment-based,FinGPT,EDT,MCC,0.035,baseline,no,no,no
+LLMF-073,Table 2,Sentiment-based,GPT-4-turbo,StockNet,ACC,53.56,baseline,no,no,no
+LLMF-074,Table 2,Sentiment-based,GPT-4-turbo,StockNet,MCC,0.060,baseline,no,no,no
+LLMF-075,Table 2,Sentiment-based,GPT-4-turbo,CMIN-US,ACC,64.61,baseline,no,no,no
+LLMF-076,Table 2,Sentiment-based,GPT-4-turbo,CMIN-US,MCC,0.284,baseline,no,no,no
+LLMF-077,Table 2,Sentiment-based,GPT-4-turbo,CMIN-CN,ACC,56.94,baseline,no,no,no
+LLMF-078,Table 2,Sentiment-based,GPT-4-turbo,CMIN-CN,MCC,0.135,baseline,no,no,no
+LLMF-079,Table 2,Sentiment-based,GPT-4-turbo,EDT,ACC,55.37,baseline,no,no,no
+LLMF-080,Table 2,Sentiment-based,GPT-4-turbo,EDT,MCC,0.057,baseline,no,no,no
+LLMF-081,Table 2,Sentiment-based,GPT-4,StockNet,ACC,53.88,baseline,no,no,no
+LLMF-082,Table 2,Sentiment-based,GPT-4,StockNet,MCC,0.062,baseline,no,no,no
+LLMF-083,Table 2,Sentiment-based,GPT-4,CMIN-US,ACC,62.18,baseline,no,no,no
+LLMF-084,Table 2,Sentiment-based,GPT-4,CMIN-US,MCC,0.260,baseline,no,no,no
+LLMF-085,Table 2,Sentiment-based,GPT-4,CMIN-CN,ACC,56.96,baseline,no,no,no
+LLMF-086,Table 2,Sentiment-based,GPT-4,CMIN-CN,MCC,0.136,baseline,no,no,no
+LLMF-087,Table 2,Sentiment-based,GPT-4,EDT,ACC,50.94,baseline,no,no,no
+LLMF-088,Table 2,Sentiment-based,GPT-4,EDT,MCC,0.031,baseline,no,no,no
+LLMF-089,Table 2,Sentiment-based,GPT-3.5-turbo,StockNet,ACC,52.31,baseline,no,no,no
+LLMF-090,Table 2,Sentiment-based,GPT-3.5-turbo,StockNet,MCC,0.044,baseline,no,no,no
+LLMF-091,Table 2,Sentiment-based,GPT-3.5-turbo,CMIN-US,ACC,56.10,baseline,no,no,no
+LLMF-092,Table 2,Sentiment-based,GPT-3.5-turbo,CMIN-US,MCC,0.156,baseline,no,no,no
+LLMF-093,Table 2,Sentiment-based,GPT-3.5-turbo,CMIN-CN,ACC,56.68,baseline,no,no,no
+LLMF-094,Table 2,Sentiment-based,GPT-3.5-turbo,CMIN-CN,MCC,0.124,baseline,no,no,no
+LLMF-095,Table 2,Sentiment-based,GPT-3.5-turbo,EDT,ACC,54.34,baseline,no,no,no
+LLMF-096,Table 2,Sentiment-based,GPT-3.5-turbo,EDT,MCC,0.040,baseline,no,no,no
+LLMF-097,Table 2,Sentiment-based,RoBERTa,StockNet,ACC,54.46,baseline,no,no,no
+LLMF-098,Table 2,Sentiment-based,RoBERTa,StockNet,MCC,0.088,baseline,no,no,no
+LLMF-099,Table 2,Sentiment-based,RoBERTa,CMIN-US,ACC,57.75,baseline,no,no,no
+LLMF-100,Table 2,Sentiment-based,RoBERTa,CMIN-US,MCC,0.138,baseline,no,no,no
+LLMF-101,Table 2,Sentiment-based,RoBERTa,CMIN-CN,ACC,52.24,baseline,no,no,no
+LLMF-102,Table 2,Sentiment-based,RoBERTa,CMIN-CN,MCC,0.064,baseline,no,no,no
+LLMF-103,Table 2,Sentiment-based,RoBERTa,EDT,ACC,53.66,baseline,no,no,no
+LLMF-104,Table 2,Sentiment-based,RoBERTa,EDT,MCC,0.029,baseline,no,no,no
+LLMF-105,Table 2,Sentiment-based,FinBERT,StockNet,ACC,55.42,baseline,no,no,no
+LLMF-106,Table 2,Sentiment-based,FinBERT,StockNet,MCC,0.111,baseline,no,no,no
+LLMF-107,Table 2,Sentiment-based,FinBERT,CMIN-US,ACC,58.26,baseline,no,no,no
+LLMF-108,Table 2,Sentiment-based,FinBERT,CMIN-US,MCC,0.158,baseline,no,no,no
+LLMF-109,Table 2,Sentiment-based,FinBERT,CMIN-CN,ACC,55.98,baseline,no,no,no
+LLMF-110,Table 2,Sentiment-based,FinBERT,CMIN-CN,MCC,0.121,baseline,no,no,no
+LLMF-111,Table 2,Sentiment-based,FinBERT,EDT,ACC,54.98,baseline,no,no,no
+LLMF-112,Table 2,Sentiment-based,FinBERT,EDT,MCC,0.043,baseline,no,no,no
+LLMF-113,Table 2,Time-based,CMIN,StockNet,ACC,62.69,baseline,no,no,no
+LLMF-114,Table 2,Time-based,CMIN,StockNet,MCC,0.209,baseline,no,no,no
+LLMF-115,Table 2,Time-based,CMIN,CMIN-US,ACC,53.43,baseline,no,no,no
+LLMF-116,Table 2,Time-based,CMIN,CMIN-US,MCC,0.046,baseline,no,no,no
+LLMF-117,Table 2,Time-based,CMIN,CMIN-CN,ACC,55.28,baseline,no,no,no
+LLMF-118,Table 2,Time-based,CMIN,CMIN-CN,MCC,0.111,baseline,no,no,no
+LLMF-119,Table 2,Time-based,StockNet,StockNet,ACC,58.23,baseline,no,no,no
+LLMF-120,Table 2,Time-based,StockNet,StockNet,MCC,0.081,baseline,no,no,no
+LLMF-121,Table 2,Time-based,StockNet,CMIN-US,ACC,52.46,baseline,no,no,no
+LLMF-122,Table 2,Time-based,StockNet,CMIN-US,MCC,0.022,baseline,no,no,no
+LLMF-123,Table 2,Time-based,StockNet,CMIN-CN,ACC,54.53,baseline,no,no,no
+LLMF-124,Table 2,Time-based,StockNet,CMIN-CN,MCC,0.045,baseline,no,no,no
+LLMF-125,Table 2,Factor-based(ours),LLMFactor_GPT-4-turbo,StockNet,ACC,65.81,native_llmfactor,no,no,no
+LLMF-126,Table 2,Factor-based(ours),LLMFactor_GPT-4-turbo,StockNet,MCC,0.228,native_llmfactor,no,no,no
+LLMF-127,Table 2,Factor-based(ours),LLMFactor_GPT-4-turbo,CMIN-US,ACC,61.71,native_llmfactor,no,no,no
+LLMF-128,Table 2,Factor-based(ours),LLMFactor_GPT-4-turbo,CMIN-US,MCC,0.228,native_llmfactor,no,no,no
+LLMF-129,Table 2,Factor-based(ours),LLMFactor_GPT-4-turbo,CMIN-CN,ACC,60.59,native_llmfactor,no,no,no
+LLMF-130,Table 2,Factor-based(ours),LLMFactor_GPT-4-turbo,CMIN-CN,MCC,0.245,native_llmfactor,no,no,no
+LLMF-131,Table 2,Factor-based(ours),LLMFactor_GPT-4-turbo,EDT,ACC,59.09,native_llmfactor,no,no,no
+LLMF-132,Table 2,Factor-based(ours),LLMFactor_GPT-4-turbo,EDT,MCC,0.082,native_llmfactor,no,no,no
+LLMF-133,Table 2,Factor-based(ours),LLMFactor_GPT-4,StockNet,ACC,66.32,native_llmfactor,no,no,no
+LLMF-134,Table 2,Factor-based(ours),LLMFactor_GPT-4,StockNet,MCC,0.238,native_llmfactor,no,no,no
+LLMF-135,Table 2,Factor-based(ours),LLMFactor_GPT-4,CMIN-US,ACC,65.26,native_llmfactor,no,no,no
+LLMF-136,Table 2,Factor-based(ours),LLMFactor_GPT-4,CMIN-US,MCC,0.284,native_llmfactor,no,no,no
+LLMF-137,Table 2,Factor-based(ours),LLMFactor_GPT-4,CMIN-CN,ACC,57.16,native_llmfactor,no,no,no
+LLMF-138,Table 2,Factor-based(ours),LLMFactor_GPT-4,CMIN-CN,MCC,0.196,native_llmfactor,no,no,no
+LLMF-139,Table 2,Factor-based(ours),LLMFactor_GPT-4,EDT,ACC,60.83,native_llmfactor,no,no,no
+LLMF-140,Table 2,Factor-based(ours),LLMFactor_GPT-4,EDT,MCC,0.105,native_llmfactor,no,no,no
+LLMF-141,Table 2,Factor-based(ours),LLMFactor_GPT-3.5-turbo,StockNet,ACC,57.59,native_llmfactor,no,no,no
+LLMF-142,Table 2,Factor-based(ours),LLMFactor_GPT-3.5-turbo,StockNet,MCC,0.145,native_llmfactor,no,no,no
+LLMF-143,Table 2,Factor-based(ours),LLMFactor_GPT-3.5-turbo,CMIN-US,ACC,66.42,native_llmfactor,no,no,no
+LLMF-144,Table 2,Factor-based(ours),LLMFactor_GPT-3.5-turbo,CMIN-US,MCC,0.288,native_llmfactor,no,no,no
+LLMF-145,Table 2,Factor-based(ours),LLMFactor_GPT-3.5-turbo,CMIN-CN,ACC,56.11,native_llmfactor,no,no,no
+LLMF-146,Table 2,Factor-based(ours),LLMFactor_GPT-3.5-turbo,CMIN-CN,MCC,0.139,native_llmfactor,no,no,no
+LLMF-147,Table 2,Factor-based(ours),LLMFactor_GPT-3.5-turbo,EDT,ACC,58.11,native_llmfactor,no,no,no
+LLMF-148,Table 2,Factor-based(ours),LLMFactor_GPT-3.5-turbo,EDT,MCC,0.097,native_llmfactor,no,no,no
+LLMF-149,Table 3,ablation,Price,StockNet,ACC,52.16,native_llmfactor,no,no,no
+LLMF-150,Table 3,ablation,Price,StockNet,MCC,0.041,native_llmfactor,no,no,no
+LLMF-151,Table 3,ablation,Price,CMIN-US,ACC,55.59,native_llmfactor,no,no,no
+LLMF-152,Table 3,ablation,Price,CMIN-US,MCC,0.135,native_llmfactor,no,no,no
+LLMF-153,Table 3,ablation,Price,CMIN-CN,ACC,51.76,native_llmfactor,no,no,no
+LLMF-154,Table 3,ablation,Price,CMIN-CN,MCC,0.048,native_llmfactor,no,no,no
+LLMF-155,Table 3,ablation,+Factor,StockNet,ACC,58.04,native_llmfactor,no,no,no
+LLMF-156,Table 3,ablation,+Factor,StockNet,MCC,0.166,native_llmfactor,no,no,no
+LLMF-157,Table 3,ablation,+Factor,CMIN-US,ACC,61.68,native_llmfactor,no,no,no
+LLMF-158,Table 3,ablation,+Factor,CMIN-US,MCC,0.241,native_llmfactor,no,no,no
+LLMF-159,Table 3,ablation,+Factor,CMIN-CN,ACC,55.71,native_llmfactor,no,no,no
+LLMF-160,Table 3,ablation,+Factor,CMIN-CN,MCC,0.119,native_llmfactor,no,no,no
+LLMF-161,Table 3,ablation,+Factor,EDT,ACC,55.93,native_llmfactor,no,no,no
+LLMF-162,Table 3,ablation,+Factor,EDT,MCC,0.077,native_llmfactor,no,no,no
+LLMF-163,Table 3,ablation,+Factor+Relation,StockNet,ACC,63.24,native_llmfactor,no,no,no
+LLMF-164,Table 3,ablation,+Factor+Relation,StockNet,MCC,0.203,native_llmfactor,no,no,no
+LLMF-165,Table 3,ablation,+Factor+Relation,CMIN-US,ACC,64.46,native_llmfactor,no,no,no
+LLMF-166,Table 3,ablation,+Factor+Relation,CMIN-US,MCC,0.267,native_llmfactor,no,no,no
+LLMF-167,Table 3,ablation,+Factor+Relation,CMIN-CN,ACC,57.96,native_llmfactor,no,no,no
+LLMF-168,Table 3,ablation,+Factor+Relation,CMIN-CN,MCC,0.194,native_llmfactor,no,no,no
+LLMF-169,Table 3,ablation,+Factor+Relation,EDT,ACC,59.35,native_llmfactor,no,no,no
+LLMF-170,Table 3,ablation,+Factor+Relation,EDT,MCC,0.095,native_llmfactor,no,no,no
+LLMF-171,Table 7,English factor template,EN-1:LLMFactor_GPT-4-turbo:Please extract the top k factors that may affect the stock price of stock_target from the following news,CMIN-US,ACC,61.71,native_llmfactor,no,no,no
+LLMF-172,Table 7,English factor template,EN-1:LLMFactor_GPT-4-turbo:Please extract the top k factors that may affect the stock price of stock_target from the following news,CMIN-US,MCC,0.228,native_llmfactor,no,no,no
+LLMF-173,Table 7,English factor template,EN-1:LLMFactor_GPT-4:Please extract the top k factors that may affect the stock price of stock_target from the following news,CMIN-US,ACC,65.26,native_llmfactor,no,no,no
+LLMF-174,Table 7,English factor template,EN-1:LLMFactor_GPT-4:Please extract the top k factors that may affect the stock price of stock_target from the following news,CMIN-US,MCC,0.284,native_llmfactor,no,no,no
+LLMF-175,Table 7,English factor template,EN-1:LLMFactor_GPT-3.5-turbo:Please extract the top k factors that may affect the stock price of stock_target from the following news,CMIN-US,ACC,66.42,native_llmfactor,no,no,no
+LLMF-176,Table 7,English factor template,EN-1:LLMFactor_GPT-3.5-turbo:Please extract the top k factors that may affect the stock price of stock_target from the following news,CMIN-US,MCC,0.288,native_llmfactor,no,no,no
+LLMF-177,Table 7,English factor template,EN-2:LLMFactor_GPT-4-turbo:Please identify the primary top k factors influencing stock_target's stock price based on the news provided,CMIN-US,ACC,66.98,native_llmfactor,no,no,no
+LLMF-178,Table 7,English factor template,EN-2:LLMFactor_GPT-4-turbo:Please identify the primary top k factors influencing stock_target's stock price based on the news provided,CMIN-US,MCC,0.292,native_llmfactor,no,no,no
+LLMF-179,Table 7,English factor template,EN-2:LLMFactor_GPT-4:Please identify the primary top k factors influencing stock_target's stock price based on the news provided,CMIN-US,ACC,64.83,native_llmfactor,no,no,no
+LLMF-180,Table 7,English factor template,EN-2:LLMFactor_GPT-4:Please identify the primary top k factors influencing stock_target's stock price based on the news provided,CMIN-US,MCC,0.246,native_llmfactor,no,no,no
+LLMF-181,Table 7,English factor template,EN-2:LLMFactor_GPT-3.5-turbo:Please identify the primary top k factors influencing stock_target's stock price based on the news provided,CMIN-US,ACC,65.26,native_llmfactor,no,no,no
+LLMF-182,Table 7,English factor template,EN-2:LLMFactor_GPT-3.5-turbo:Please identify the primary top k factors influencing stock_target's stock price based on the news provided,CMIN-US,MCC,0.298,native_llmfactor,no,no,no
+LLMF-183,Table 7,English factor template,EN-3:LLMFactor_GPT-4-turbo:Please analyze the provided news and pinpoint the top k major factors impacting the stock price of stock_target,CMIN-US,ACC,65.29,native_llmfactor,no,no,no
+LLMF-184,Table 7,English factor template,EN-3:LLMFactor_GPT-4-turbo:Please analyze the provided news and pinpoint the top k major factors impacting the stock price of stock_target,CMIN-US,MCC,0.295,native_llmfactor,no,no,no
+LLMF-185,Table 7,English factor template,EN-3:LLMFactor_GPT-4:Please analyze the provided news and pinpoint the top k major factors impacting the stock price of stock_target,CMIN-US,ACC,69.21,native_llmfactor,no,no,no
+LLMF-186,Table 7,English factor template,EN-3:LLMFactor_GPT-4:Please analyze the provided news and pinpoint the top k major factors impacting the stock price of stock_target,CMIN-US,MCC,0.312,native_llmfactor,no,no,no
+LLMF-187,Table 7,English factor template,EN-3:LLMFactor_GPT-3.5-turbo:Please analyze the provided news and pinpoint the top k major factors impacting the stock price of stock_target,CMIN-US,ACC,66.56,native_llmfactor,no,no,no
+LLMF-188,Table 7,English factor template,EN-3:LLMFactor_GPT-3.5-turbo:Please analyze the provided news and pinpoint the top k major factors impacting the stock price of stock_target,CMIN-US,MCC,0.293,native_llmfactor,no,no,no
+LLMF-189,Table 8,Chinese factor template,CN-1:LLMFactor_GPT-4-turbo:请从以下新闻中提取可能影响stock_target股价的前k个因素,CMIN-CN,ACC,60.59,native_llmfactor,no,no,no
+LLMF-190,Table 8,Chinese factor template,CN-1:LLMFactor_GPT-4-turbo:请从以下新闻中提取可能影响stock_target股价的前k个因素,CMIN-CN,MCC,0.245,native_llmfactor,no,no,no
+LLMF-191,Table 8,Chinese factor template,CN-1:LLMFactor_GPT-4:请从以下新闻中提取可能影响stock_target股价的前k个因素,CMIN-CN,ACC,57.16,native_llmfactor,no,no,no
+LLMF-192,Table 8,Chinese factor template,CN-1:LLMFactor_GPT-4:请从以下新闻中提取可能影响stock_target股价的前k个因素,CMIN-CN,MCC,0.196,native_llmfactor,no,no,no
+LLMF-193,Table 8,Chinese factor template,CN-1:LLMFactor_GPT-3.5-turbo:请从以下新闻中提取可能影响stock_target股价的前k个因素,CMIN-CN,ACC,56.11,native_llmfactor,no,no,no
+LLMF-194,Table 8,Chinese factor template,CN-1:LLMFactor_GPT-3.5-turbo:请从以下新闻中提取可能影响stock_target股价的前k个因素,CMIN-CN,MCC,0.139,native_llmfactor,no,no,no
+LLMF-195,Table 8,Chinese factor template,CN-2:LLMFactor_GPT-4-turbo:根据提供的新闻，请识别出影响stock_target股价的主要k个因素,CMIN-CN,ACC,57.92,native_llmfactor,no,no,no
+LLMF-196,Table 8,Chinese factor template,CN-2:LLMFactor_GPT-4-turbo:根据提供的新闻，请识别出影响stock_target股价的主要k个因素,CMIN-CN,MCC,0.147,native_llmfactor,no,no,no
+LLMF-197,Table 8,Chinese factor template,CN-2:LLMFactor_GPT-4:根据提供的新闻，请识别出影响stock_target股价的主要k个因素,CMIN-CN,ACC,64.79,native_llmfactor,no,no,no
+LLMF-198,Table 8,Chinese factor template,CN-2:LLMFactor_GPT-4:根据提供的新闻，请识别出影响stock_target股价的主要k个因素,CMIN-CN,MCC,0.109,native_llmfactor,no,no,no
+LLMF-199,Table 8,Chinese factor template,CN-2:LLMFactor_GPT-3.5-turbo:根据提供的新闻，请识别出影响stock_target股价的主要k个因素,CMIN-CN,ACC,65.13,native_llmfactor,no,no,no
+LLMF-200,Table 8,Chinese factor template,CN-2:LLMFactor_GPT-3.5-turbo:根据提供的新闻，请识别出影响stock_target股价的主要k个因素,CMIN-CN,MCC,0.139,native_llmfactor,no,no,no
+LLMF-201,Table 8,Chinese factor template,CN-3:LLMFactor_GPT-4-turbo:请分析所提供的新闻并找出影响stock_target股价的前k个主要因素,CMIN-CN,ACC,64.29,native_llmfactor,no,no,no
+LLMF-202,Table 8,Chinese factor template,CN-3:LLMFactor_GPT-4-turbo:请分析所提供的新闻并找出影响stock_target股价的前k个主要因素,CMIN-CN,MCC,0.160,native_llmfactor,no,no,no
+LLMF-203,Table 8,Chinese factor template,CN-3:LLMFactor_GPT-4:请分析所提供的新闻并找出影响stock_target股价的前k个主要因素,CMIN-CN,ACC,59.33,native_llmfactor,no,no,no
+LLMF-204,Table 8,Chinese factor template,CN-3:LLMFactor_GPT-4:请分析所提供的新闻并找出影响stock_target股价的前k个主要因素,CMIN-CN,MCC,0.053,native_llmfactor,no,no,no
+LLMF-205,Table 8,Chinese factor template,CN-3:LLMFactor_GPT-3.5-turbo:请分析所提供的新闻并找出影响stock_target股价的前k个主要因素,CMIN-CN,ACC,59.49,native_llmfactor,no,no,no
+LLMF-206,Table 8,Chinese factor template,CN-3:LLMFactor_GPT-3.5-turbo:请分析所提供的新闻并找出影响stock_target股价的前k个主要因素,CMIN-CN,MCC,0.033,native_llmfactor,no,no,no

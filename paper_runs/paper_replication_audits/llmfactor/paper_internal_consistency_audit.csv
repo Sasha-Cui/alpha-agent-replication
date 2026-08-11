@@ -1,0 +1,17 @@
+issue_id,issue,evidence,classification,required_resolution,paper_result_credit
+LLMF-INT-001,Table 3 StockNet MCC is not the rounded mean of displayed Table 2 inputs,computed=0.203666667;rounded=0.204;displayed=0.203,lineage_ambiguity,hidden precision or raw values needed,no
+LLMF-INT-002,Table 3 CMIN-CN ACC is not the rounded mean of displayed Table 2 inputs,computed=57.953333333;rounded=57.95;displayed=57.96,lineage_ambiguity,hidden precision or raw values needed,no
+LLMF-INT-003,Table 3 CMIN-CN MCC is not the rounded mean of displayed Table 2 inputs,computed=0.193333333;rounded=0.193;displayed=0.194,lineage_ambiguity,hidden precision or raw values needed,no
+LLMF-INT-004,Table 3 EDT ACC is not the rounded mean of displayed Table 2 inputs,computed=59.343333333;rounded=59.34;displayed=59.35,lineage_ambiguity,hidden precision or raw values needed,no
+LLMF-INT-005,Table 2 does not support unqualified superiority in EDT accuracy,EDT baseline ACC=75.67 while best LLMFactor ACC=60.83,claim_conflict,qualify superiority by metric,no
+LLMF-INT-006,Ablation MCC contribution shares are not recoverable at displayed precision,"displayed rows imply approximately 33.7%,45.5%,20.8%, not 32%,46%,22%",lineage_ambiguity,release hidden-precision aggregates,no
+LLMF-INT-007,English final-template superiority is not uniform,EN-3 loses GPT-4-turbo ACC to EN-2 and GPT-3.5 MCC to EN-2,claim_conflict,state metric/model-specific winners,no
+LLMF-INT-008,Chinese initial-template superiority is not uniform,CN-1 loses ACC for all three models; it wins/ties MCC only,claim_conflict,state metric/model-specific winners,no
+LLMF-INT-009,stock_match set expression is not operational,"S is a tuple set while news_target is prose; alias matching, multiplicity and ordering are undefined",method_ambiguity,release matching code and stock snapshot,no
+LLMF-INT-010,flat prices have no class definition,only strict rise and fall labels are defined,method_ambiguity,define equality behavior,no
+LLMF-INT-011,target-date notation is underlinked,objective predicts P_t+1 while appendix fills date_i after i-5 through i-1,method_ambiguity,publish exact sample-to-prompt alignment,no
+LLMF-INT-012,LLM output parsing is absent,paper requests rise/fall plus reasons but gives no binary parser,method_ambiguity,release parser and invalid-response policy,no
+LLMF-INT-013,CMIN resource terminology changes,dataset table says tweets while method prose repeatedly says news,terminology_ambiguity,identify exact text field and source,no
+LLMF-INT-014,No statistical uncertainty accompanies 206 point estimates,"no repeats, intervals, standard errors, or significance tests",evidence_gap,release repeated runs and uncertainty,no
+LLMF-INT-015,Exact reproducibility caveat is not an operational protocol,paper acknowledges variable LLM responses but releases no request logs or determinism settings,evidence_gap,release immutable requests and responses,no
+LLMF-INT-016,Case-study selection and provenance are absent,four illustrated cases have no declared selection rule or underlying run objects,evidence_gap,release candidate pool and selected outputs,no

@@ -1,0 +1,54 @@
+dimension,paper_disclosure,assessment,severity,native_result_credit
+task,binary next stock movement,exact,nonblocking,no
+movement mapping,rise=1 and fall=0,exact,nonblocking,no
+flat/equal-price label,not defined,missing,blocking,no
+target alignment,P_t+1 objective versus appendix date_i skeleton not explicitly mapped,ambiguous,blocking,no
+window size,t=5,exact,nonblocking,no
+factor count,k=5,exact,nonblocking,no
+relation prompt,literal skeleton released,partial,blocking,no
+factor prompt,literal skeleton released; news separator unspecified,partial,blocking,no
+prediction prompt,literal skeleton released,partial,blocking,no
+Chinese prompts,literal skeleton released,partial,blocking,no
+message roles,not disclosed,missing,blocking,no
+system prompt,not disclosed,missing,blocking,no
+temperature,not disclosed,missing,blocking,no
+top_p,not disclosed,missing,blocking,no
+seed/API determinism,not disclosed,missing,blocking,no
+max tokens,not disclosed,missing,blocking,no
+stop sequences,not disclosed,missing,blocking,no
+retry/backoff/timeout,not disclosed,missing,blocking,no
+request timestamps,not disclosed,missing,blocking,no
+request/response logs,not released,missing,blocking,no
+response parser,rise/fall to binary procedure not disclosed,missing,blocking,no
+multiple-company matching,"deduplication, aliases, ordering and tie handling unspecified",missing,blocking,no
+stock list snapshot,NYSE/NASDAQ tuple set not released,missing,blocking,no
+stock_match expression,set intersection between tuples and prose is not operationally typed,conflict,blocking,no
+StockNet dataset,citation plus counts/dates only,partial,blocking,no
+CMIN-US dataset,citation plus counts/dates only,partial,blocking,no
+CMIN-CN dataset,citation plus counts/dates only,partial,blocking,no
+EDT dataset,citation plus counts/dates only,partial,blocking,no
+data snapshots/checksums,not released,missing,blocking,no
+train/validation/test split,not disclosed,missing,blocking,no
+preprocessing,not disclosed,missing,blocking,no
+news aggregation,not disclosed,missing,blocking,no
+universe membership,counts but no membership snapshot,partial,blocking,no
+baseline code versions,not disclosed,missing,blocking,no
+baseline original settings,asserted without operational configuration,partial,blocking,no
+model aliases,three API aliases disclosed,exact,nonblocking,no
+baseline checkpoints,six sentiment model keys disclosed,partial,blocking,no
+batch sizes,64 BERT and 5 GPT,exact,nonblocking,no
+hardware,RTX A6000,partial,nonblocking,no
+software environment,not released,missing,blocking,no
+random seeds,not released,missing,blocking,no
+repeat count,not disclosed,missing,blocking,no
+ACC formula,fully specified,exact,nonblocking,no
+MCC formula,fully specified,exact,nonblocking,no
+confusion matrices,not released,missing,blocking,no
+raw predictions,not released,missing,blocking,no
+raw result arrays,not released,missing,blocking,no
+uncertainty/significance,not reported,missing,blocking,no
+ablation aggregation,displayed averages but hidden precision absent,partial,blocking,no
+case-study selection,selection rule not disclosed,missing,blocking,no
+author code,not found in primary records or complete repository searches,missing,blocking,no
+official source archive,nine document files only,exact,nonblocking,no
+paper reproducibility caveat,variable LLM outputs explicitly acknowledged,exact,nonblocking,no

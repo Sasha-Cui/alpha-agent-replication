@@ -1,0 +1,3 @@
+metric,fixture,computed_value,expected_value,status,conditional_component_credit,paper_result_credit
+ACC,tp=12;fp=3;fn=2;tn=8,0.8,0.8,pass,yes,no
+MCC,tp=12;fp=3;fn=2;tn=8,0.592156525463792,0.592156525463792,pass,yes,no

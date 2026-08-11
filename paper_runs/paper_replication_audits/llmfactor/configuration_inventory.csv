@@ -1,0 +1,21 @@
+group,item,value,disclosure,operationally_complete
+dataset,StockNet,samples=19318;stocks=87;start=2014-01-01;end=2016-01-01;market=US;type=time series and text;resource=price sequence and tweets,paper_table_and_prose,no
+dataset,CMIN-US,samples=83553;stocks=110;start=2018-01-01;end=2021-12-31;market=US;type=time series and text;resource=price sequence and tweets,paper_table_and_prose,no
+dataset,CMIN-CN,samples=198781;stocks=300;start=2018-01-01;end=2021-12-31;market=CN;type=time series and text;resource=price sequence and tweets,paper_table_and_prose,no
+dataset,EDT,samples=54080;stocks=4228;start=2020-03-01;end=2021-05-06;market=US;type=text;resource=prices and news articles,paper_table_and_prose,no
+model,LLMFactor_GPT-3.5-turbo,gpt-3.5-turbo-1106,paper_implementation_details,no
+model,LLMFactor_GPT-4,gpt-4,paper_implementation_details,no
+model,LLMFactor_GPT-4-turbo,gpt-4-1106-preview,paper_implementation_details,no
+implementation,window_size_t,5,paper,yes
+implementation,factor_count_k,5,paper,yes
+implementation,BERT_batch_size,64,paper,yes
+implementation,GPT_batch_size,5,paper,yes
+implementation,hardware,NVIDIA RTX A6000,paper,no
+implementation,keyphrase_toolkit,pke and pke_zh,paper,no
+implementation,task,binary next movement; rise=1 fall=0,paper,no
+baseline_model,FinBERT_EN,ProsusAI/finbert;438MB,appendix,no
+baseline_model,FinBERT_CN,bardsai/finance-sentiment-zh-base;409MB,appendix,no
+baseline_model,RoBERTa_EN,soleimanian/financial-roberta-large-sentiment;1.42GB,appendix,no
+baseline_model,RoBERTa_CN,IDEA-CCNL/Erlangshen-Roberta-110M-Sentiment;409MB,appendix,no
+baseline_model,FinGPT_EN,FinGPT/fingpt-sentiment_llama2-13b_lora;14.36GB,appendix,no
+baseline_model,FinGPT_CN,oliverwang15/FinGPT_ChatGLM2_Sentiment_Instruction_LoRA_FT;7.88GB,appendix,no

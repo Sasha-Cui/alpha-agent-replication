@@ -1,0 +1,16 @@
+claim_id,claim,audit_assessment,exactly_reproduced,native_paper_result_reproduced
+LLMF-CLAIM-001,LLMFactor is superior across four benchmarks,not reproduced; overbroad for EDT ACC,no,no
+LLMF-CLAIM-002,"MCC improvements are 2.9%, 0.4%, 11%, and 4.8%",displayed absolute MCC differences are recoverable; native runs are not,no,no
+LLMF-CLAIM-003,StockNet average ACC exceeds 63% and MCC exceeds 0.2,recoverable from displayed cells only,no,no
+LLMF-CLAIM-004,CMIN-US average ACC exceeds 63% and MCC exceeds 0.2,recoverable from displayed cells only,no,no
+LLMF-CLAIM-005,CMIN-CN average ACC is 58% and MCC 0.19,recoverable approximately from displayed cells only,no,no
+LLMF-CLAIM-006,EDT average ACC is 59% and MCC 0.1,recoverable approximately from displayed cells only,no,no
+LLMF-CLAIM-007,price/factor/relation ACC shares are 86%/9%/5%,approximately recoverable from displayed ablation values,no,no
+LLMF-CLAIM-008,price/factor/relation MCC shares are 32%/46%/22%,not exactly recoverable from displayed ablation values,no,no
+LLMF-CLAIM-009,factor layer contributes most significantly,descriptive point-estimate claim without uncertainty,no,no
+LLMF-CLAIM-010,English final factor template performs best,false for two of six displayed model-metric pairs,no,no
+LLMF-CLAIM-011,Chinese initial factor template performs best,false for ACC; only MCC supports it/ties,no,no
+LLMF-CLAIM-012,LLMFactor robustly predicts across templates,no repeats or uncertainty; not reproduced,no,no
+LLMF-CLAIM-013,case studies demonstrate effective integration,qualitative selected examples only; no provenance,no,no
+LLMF-CLAIM-014,factors provide profitable market-trend predictions,"no trading portfolio, return, cost, or profit experiment",no,no
+LLMF-CLAIM-015,exact reproducibility cannot be guaranteed,supported by the paper's explicit limitation,no,no

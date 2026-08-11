@@ -1,0 +1,115 @@
+{
+  "acl_pdf": "https://aclanthology.org/2024.findings-acl.185.pdf",
+  "acl_pdf_sha256": "a9b0480bfb2387459cae2dcefef8e0d9a499331d0d2cf0efeedec7b0392ef635",
+  "acl_record": "https://aclanthology.org/2024.findings-acl.185/",
+  "acl_record_sha256": "88874a8ef692a8e873c353da9c9ee1e1d9e588e5c78d16b9c26dbe6829a66220",
+  "arxiv_pdf": "https://arxiv.org/pdf/2406.10811v1",
+  "arxiv_pdf_sha256": "c8100b3c2f4b5bf2e3f033407f2bbb82b262d2fa4c1a0a83faff94c28e371ed8",
+  "arxiv_record": "https://arxiv.org/abs/2406.10811",
+  "arxiv_record_sha256": "cfd330893117bf93eb3986159701f627b14e59e56605c9b5d5b457e6ec791cb6",
+  "arxiv_source": "https://arxiv.org/e-print/2406.10811v1",
+  "arxiv_source_sha256": "38570581fa3727d9fd57b23159bf206472fabede7e6eca595a113aed7838a814",
+  "arxiv_versions": [
+    {
+      "submitted": "2024-06-16",
+      "version": "v1"
+    }
+  ],
+  "author_linked_code_or_data_found": false,
+  "authors": [
+    "Meiyun Wang",
+    "Kiyoshi Izumi",
+    "Hiroki Sakaji"
+  ],
+  "community_repositories": [
+    {
+      "compiled_python_files": 39,
+      "created": "2025-01-09",
+      "head": "7b9e3f985b1fe10a234dab8c4a4d806537579b71",
+      "native_credit": false,
+      "paper_author_overlap": false,
+      "python_files": 39,
+      "repository": "https://github.com/tasoo-oos/LLMFactor",
+      "tracked_files": 269
+    },
+    {
+      "compiled_python_files": 14,
+      "created": "2025-04-03",
+      "failed_python_files": 1,
+      "head": "9b4749e843bc2246026f1302e82a8c66c0d050e7",
+      "native_credit": false,
+      "paper_author_overlap": false,
+      "python_files": 15,
+      "repository": "https://github.com/Kuon12138/SKGP",
+      "tracked_bytes": 1479010769,
+      "tracked_files": 1690
+    }
+  ],
+  "github_repository_searches": [
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "interpretation": "broad name/readme search with collisions",
+      "query": "LLMFactor in:name,description,readme",
+      "repositories": "FreedomIntelligence/LLMFactory|Tom-roujiang/Awesome-LLM-Quantitative-Trading-Papers|tasoo-oos/LLMFactor|Maximilian-zero/llmfactor|EFundAI/Awesome-FinFMs|Kuon12138/SKGP|dmickelson/LLMFactoryProject|Persdre/Awesome-LLM-Trading-Papers|SlayerK15/LLMfactory|M-Chimiste/LLMFactory|RepnikovPavel/LLMFactory|heyodai/cs-5588-team-gamestop|xutianhan/LLMFactory|sadikhanecioglu/llmfactory.py|KasLoot/LLMFactory|Kentucky-Open-Science/llmfactory|wwwbq/LLMfactory|vaelephant/2-LLMFactory|Dien2112/LLMFactor-SKGP|JuhaoLiang1997/LLMFactory_v2|TongjiFinLab/awesome-time-series-forecasting|DSXiangLi/DecryptPrompt|colinpriest/qantas-reputation-damage-dashboard|AlanJiang98/Awesome-LLM-Trading|DaoSword/Time-Series-Forecasting-and-Deep-Learning|FrederickPi1969/awesome-llm-for-finance|songqiang321/Awesome-AI-Papers|YiQi0318/LLMs_daily_arxiv|shengyp/LLM_Advance|M13c/nlp-arxiv-daily",
+      "snapshot_file": "01_broad.json",
+      "snapshot_sha256": "01989cb53830b829ff626e409778c0b1b1d1d00e8a076d6cd3321624e1deda4c",
+      "total_count": "30"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "interpretation": "targeted paper/identifier/author search",
+      "query": "\"LLMFactor: Extracting Profitable Factors through Prompts for Explainable Stock Movement Prediction\"",
+      "repositories": "",
+      "snapshot_file": "02_title.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "interpretation": "targeted paper/identifier/author search",
+      "query": "2406.10811",
+      "repositories": "",
+      "snapshot_file": "03_arxiv.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "interpretation": "targeted paper/identifier/author search",
+      "query": "\"Sequential Knowledge-Guided Prompting\"",
+      "repositories": "",
+      "snapshot_file": "04_skgp.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "interpretation": "targeted paper/identifier/author search",
+      "query": "\"Meiyun Wang\" LLMFactor",
+      "repositories": "",
+      "snapshot_file": "05_author.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "incomplete_results": "false",
+      "interpretation": "targeted paper/identifier/author search",
+      "query": "\"2024.findings-acl.185\"",
+      "repositories": "",
+      "snapshot_file": "06_acl.json",
+      "snapshot_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    }
+  ],
+  "kuon_tree_snapshot_sha256": "d07f88a72c385f24efdf25536f1d78bf15515d37200e1766fac9e2870aec21da",
+  "official_source_contains_native_code": false,
+  "official_source_contains_raw_results": false,
+  "official_source_members": 9,
+  "paper": "LLMFactor: Extracting Profitable Factors through Prompts for Explainable Stock Movement Prediction"
+}

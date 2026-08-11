@@ -1,0 +1,4 @@
+component,status,sha256,characters,conditional_component_credit,llm_invoked,native_pipeline_credit,paper_result_credit,boundary
+relation_prompt,rendered_from_disclosed_english_skeleton,8934d0e44b7fbc66ff32dffdc21daa87f6b11dfa7db359cc54b0fdc41e05185e,108,yes,no,no,no,template formatting only; no request envelope or response
+factor_prompt,rendered_from_disclosed_english_skeleton,cb1945675562c2ee50b1400247f8e4aeeb069f200a4e0df98a55bd40406b5e0c,127,yes,no,no,no,newline chosen between factor instruction and news; message roles and API parameters unreleased
+price_prompt,rendered_from_disclosed_english_skeleton,5869dc2bcd26ae81ec3a9389abd904544c20262d7105e2c53f718ae7f8d9acc6,610,yes,no,no,no,template formatting only; no request envelope or response

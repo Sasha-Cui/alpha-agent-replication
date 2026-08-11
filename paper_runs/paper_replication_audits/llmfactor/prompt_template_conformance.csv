@@ -1,0 +1,13 @@
+template_id,language,stage,published_template,complete_literal_template,request_envelope_disclosed,exact_replay_credit
+EN-Step1,English,relation,Please fill in the blank and return a complete sentence: {stock_target} and {stock_match} are most likely in a ___ relationship.,yes,no,no
+EN-Step2,English,factor,Please extract the top {k} factors that may affect the stock price of {stock_target} from the following news.,partial_news_boundary_unspecified,no,no
+EN-Step3,English,prediction,"Based on the following information, please judge the direction of the stock price from rise/fall, fill in the blank and give reasons. [factor; relation; five movements; target blank]",yes_as_skeleton,no,no
+CN-Step1,Chinese,relation,请填空并返回完整的句子: stock_target 和 stock_match 最可能是___关系。,yes,no,no
+CN-Step2,Chinese,factor,请从以下新闻中提取可能影响stock_target股价的前k个因素。,partial_news_boundary_unspecified,no,no
+CN-Step3,Chinese,prediction,根据以下信息，请判断股票价格是上涨还是下跌，填写在空白处并给出理由。[factor; relation; five movements; target blank],yes_as_skeleton,no,no
+EN-1,English,factor_ablation,Please extract the top k factors that may affect the stock price of stock_target from the following news,template_only,no,no
+EN-2,English,factor_ablation,Please identify the primary top k factors influencing stock_target's stock price based on the news provided,template_only,no,no
+EN-3,English,factor_ablation,Please analyze the provided news and pinpoint the top k major factors impacting the stock price of stock_target,template_only,no,no
+CN-1,Chinese,factor_ablation,请从以下新闻中提取可能影响stock_target股价的前k个因素,template_only,no,no
+CN-2,Chinese,factor_ablation,根据提供的新闻，请识别出影响stock_target股价的主要k个因素,template_only,no,no
+CN-3,Chinese,factor_ablation,请分析所提供的新闻并找出影响stock_target股价的前k个主要因素,template_only,no,no

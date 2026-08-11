@@ -1,0 +1,2 @@
+record_id,candidate_id,local_tier,local_formula,paper_task,local_task,paper_inputs_present,paper_prompt_pipeline_present,paper_result_credit
+CensusArxiv240610811,paper_llmfactor_explainable_price_news,M0_narrative_translation,rank(ret_12_1)+rank(sale_gr1)+rank(gp_me)+rank(dolvol_126d)-rank(rvol_252d),daily binary stock movement from same-day text plus five historical movements through SKGP,monthly U.S. characteristic long-short portfolio without text or LLMs,no,no,no

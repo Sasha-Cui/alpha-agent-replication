@@ -1,0 +1,29 @@
+repository,dimension,assessment,evidence,native_credit,paper_result_credit
+tasoo-oos/LLMFactor,author linkage,nonmatch,single commit by Tasoo Park; no paper-author overlap,no,no
+tasoo-oos/LLMFactor,chronology,post-paper,"created 2025-01-09, seven months after arXiv v1",no,no
+tasoo-oos/LLMFactor,model,different,"default llama-3.1-8B-instruct-Q8_0, not the three paper GPT aliases",no,no
+tasoo-oos/LLMFactor,datasets,partial,"CMIN-US only; no StockNet, CMIN-CN, or EDT",no,no
+tasoo-oos/LLMFactor,CMIN-US universe,defective,110 files each side but only 105 exact ticker intersections because five names differ,no,no
+tasoo-oos/LLMFactor,CMIN-US scheduled rows,nonmatch,"80,655 exact-name ticker/date entries versus paper Data Size 83,553",no,no
+tasoo-oos/LLMFactor,relation stage,missing,default pipeline has no paper Step1 relation extraction,no,no
+tasoo-oos/LLMFactor,factor prompt,different,system plus two user messages and formatting instruction,no,no
+tasoo-oos/LLMFactor,price prompt,different,system-message decomposition and different text,no,no
+tasoo-oos/LLMFactor,generation parameters,community_choice,temperature=0 and max-token/stop settings absent from paper,no,no
+tasoo-oos/LLMFactor,window/factor count,match,price_k=5 and factor_k=5,no,no
+tasoo-oos/LLMFactor,metrics,partial,ACC/MCC plus F1 implemented,no,no
+tasoo-oos/LLMFactor,tests,missing,no tracked test paths,no,no
+tasoo-oos/LLMFactor,published results,missing,no tracked output reproduces any paper table cell,no,no
+Kuon12138/SKGP,author linkage,nonmatch,commits by Kuon12138; no paper-author overlap,no,no
+Kuon12138/SKGP,chronology,post-paper,created 2025-04-03,no,no
+Kuon12138/SKGP,model,different,"Llama 3.3 70B/OpenRouter or Ollama, not the paper aliases",no,no
+Kuon12138/SKGP,configuration security,defective,tracked config contains an apparent API credential; value intentionally omitted,no,no
+Kuon12138/SKGP,datasets,partial,large CMIN-US/CN trees but no StockNet or EDT,no,no
+Kuon12138/SKGP,window,different,"runnable YAML sets window_size=30, not paper t=5",no,no
+Kuon12138/SKGP,relation stage,changed,Chinese financial-analyst prompt differs from appendix literal,no,no
+Kuon12138/SKGP,factor prompt,changed,Chinese categorized explanation prompt differs from appendix literal,no,no
+Kuon12138/SKGP,prediction prompt,changed,"adds prices, percentages, news truncation, BERT-derived features",no,no
+Kuon12138/SKGP,generation parameters,community_choice,"temperature=.7, top_p=.9 and Llama settings absent from paper",no,no
+Kuon12138/SKGP,source validity,defective,14/15 .py paths compile; xinghuo.py is a raw curl command,no,no
+Kuon12138/SKGP,saved AAPL result,target_leakage,result date 2021-12-22 reasons from 2021-12-31 prices,no,no
+Kuon12138/SKGP,saved AAPL prediction,failed,tracked output reports str has no attribute strftime,no,no
+Kuon12138/SKGP,published results,missing,no tracked output reproduces any paper table cell,no,no
