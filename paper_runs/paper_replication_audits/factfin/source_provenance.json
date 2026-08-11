@@ -1,0 +1,42 @@
+{
+  "arxiv_pdf_url": "https://arxiv.org/pdf/2510.07920v1",
+  "arxiv_record": "https://arxiv.org/abs/2510.07920v1",
+  "arxiv_source_file_bytes": 4934317,
+  "arxiv_source_files": 14,
+  "arxiv_source_sha256": "f8888b5d281ada1b16a6ac32a43da031cc54d4afd1775e8909e5cf4ab65bd0c6",
+  "arxiv_source_url": "https://arxiv.org/e-print/2510.07920v1",
+  "arxiv_version": "v1 only; submitted 2025-10-09 08:13:35 UTC",
+  "author_github": "https://github.com/XiangyuLi616",
+  "author_homepage": "https://xiangyuli616.github.io/",
+  "author_homepage_archive_sha256": "2c217c9dfcf9130d5b3a9b356a1de3dbeb25025da5b470cfe1293f563a08a1c4",
+  "author_homepage_repository_head": "a42532c72b3837ab88763a5d22538c8d3742a02b",
+  "authors": [
+    "Xiangyu Li",
+    "Yawen Zeng",
+    "Xiaofen Xing",
+    "Jin Xu",
+    "Xiangmin Xu"
+  ],
+  "first_converged_rebuild_sha256": "a16fb96f1b9f5d59fcd1a2376a36da5446ece99cdc14b3837c2059e8cdbfce05",
+  "license": "CC BY 4.0",
+  "official_and_rebuild_normalized_content_sha256": "29538331baccad835fa8b0b54007d184d5dc6252c4fbe9aec03a0c4fb9aa853e",
+  "official_comparison": "after removing only arXiv's injected page-1 margin stamp and whitespace, official v1 and both rebuilds have identical extracted content",
+  "official_pdf_pages": 12,
+  "official_pdf_sha256": "1024f16ced8e9b12c6a4f0c7bf56551a92da0d621507da621ee82ae68355aba5",
+  "rebuild_comparison": "two rebuild PDFs have equal page count, size, and extracted text; raw hashes differ, so they are not called byte-identical",
+  "rebuild_layout_text_sha256_both": "dcb245d9bec508e7d6aacdf1e1b0e50a6addaab5b298654304f7ef49d771347d",
+  "rebuild_parameters": {
+    "SOURCE_DATE_EPOCH": 1759968000,
+    "TeX_Live": "2024",
+    "latex_passes": 3
+  },
+  "second_converged_rebuild_sha256": "aa97b69f0d9d9f837c6330968614cab7e6ab545db87f7ac01d57262b7f1ff077",
+  "source_archive_contains_system_code": false,
+  "source_archive_interpretation": "manuscript, appendix, bibliography/typesetting support, and seven published figures only",
+  "title": "Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents",
+  "visual_qa": {
+    "all_7_embedded_figures": "pass; visible and legible on inspected pages",
+    "official_paper_all_12_pages": "pass; arXiv margin stamp on page 1; no clipped, overlapping, invisible, or illegible content",
+    "rebuilt_paper_all_12_pages": "pass; same manuscript layout without arXiv margin stamp"
+  }
+}

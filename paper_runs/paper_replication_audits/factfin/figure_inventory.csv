@@ -1,0 +1,8 @@
+figure,source_file,panels,output_type,exact_numeric_result_labels,plotted_result_series_or_bars,audit_note,machine_readable_underlying_results_released,figure_digitization_is_replication,status
+1,1.png,2,pre/post SR and TR bars,30,20,All ten decay annotations recompute from printed bar values.,False,False,published_visual_only_zero_result_credit
+2,2.png,1,FinLeak-Bench accuracy bars,4,12,Only four cross-model averages are numerically labeled; per-model bar values are absent.,False,False,published_visual_only_zero_result_credit
+3,3.png,2,fine-tuning accuracy and bias/memory/generalization bars,12,10,Accuracy gains are percentage-point differences labeled with percent signs.,False,False,published_visual_only_zero_result_credit
+4,4.pdf,1,FactFin architecture,0,0,"Method diagram, not an empirical result.",False,False,published_visual_only_zero_result_credit
+5,5.png,6,six-asset cumulative returns,0,54,Nine plotted series per asset; exact dated arrays are absent.,False,False,published_visual_only_zero_result_credit
+6,6.png,2,AAPL/TSLA ablation cumulative returns,0,10,Five plotted series per asset; exact dated arrays are absent.,False,False,published_visual_only_zero_result_credit
+7,7.png,6,LLM-backbone radar charts,36,6,Labels transform Table-6 TR/MDD percentages to fractions; no new run lineage.,False,False,published_visual_only_zero_result_credit

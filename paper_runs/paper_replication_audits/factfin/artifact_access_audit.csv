@@ -1,0 +1,10 @@
+artifact,availability,tier,system_source_credit,note
+arxiv_v1_source,14 manuscript/typesetting files including seven figures,paper source only,False,"No FactFin/benchmark program, environment, or data."
+author_homepage,one-page static site at a42532c72b3837ab88763a5d22538c8d3742a02b; Profit Mirage links only to arXiv,R1 author documentation,False,"No code, data, weights, or project link on the paper entry."
+author_github_account,stable account id 139937996 renamed OrangeCat0616 to XiangyuLi616; one public homepage repository,bounded author inventory,False,Current public inventory is not proof that private/deleted artifacts never existed.
+github_metadata_search,"title, arXiv id, FactFin, FinLake-Bench, and FinLeak-Bench searches pinned",bounded discovery,False,"Matches are surveys/citations/unaffiliated projects, not an author implementation."
+huggingface_search,zero matching FinLake/FinLeak datasets; FactFin substring hits are unrelated fact-finding projects,bounded discovery,False,Current hub metadata only.
+software_heritage_search,zero FinLeak matches; FactFin substring results are unrelated FactFinder projects,bounded archival discovery,False,Indexed origins only.
+wayback_guessed_author_repos,no captures for OrangeCat0616/FactFin or XiangyuLi616/FactFin,bounded archival discovery,False,Two guessed URLs only.
+researchtrend_github_target,paper index GitHub button resolves to Bavest/fin-llama,false-positive boundary,False,"Fin-LLaMA is a cited 2023 baseline, not FactFin or FinLeak-Bench."
+release_promise_in_source,open-source resources/model/framework bullet exists only as a commented TeX line,non-public promise,False,Commented manuscript text is not a release.

@@ -1,0 +1,22 @@
+{
+  "actual_llm_requests_loaded": 0,
+  "current_provider_price_rows_loaded": 8827,
+  "current_yahoo_day_counts_matching_paper": 6,
+  "current_yahoo_diagnostic_is_original_snapshot": false,
+  "current_yahoo_provider_responses_pinned": true,
+  "factfin_pipeline_executed": false,
+  "generated_strategy_code_loaded": 0,
+  "llm_calls_made": 0,
+  "manuscript_rebuild_is_system_execution": false,
+  "manuscript_source_rebuilt": true,
+  "native_actions_orders_fills_loaded": 0,
+  "native_portfolio_trajectories_loaded": 0,
+  "original_benchmark_questions_loaded": 0,
+  "original_counterfactual_scenarios_loaded": 0,
+  "original_news_rows_loaded": 0,
+  "original_price_rows_loaded": 0,
+  "public_factfin_system_source_found": false,
+  "public_finlake_or_finleak_dataset_found": false,
+  "published_table_cells_faithfully_regenerated": 0,
+  "strict_boundary": "document builds, current-provider diagnostics, arithmetic checks, printed responses, and raster figures receive zero empirical paper-result credit"
+}

@@ -1,0 +1,7 @@
+paper_asset,inferred_yahoo_ticker,paper_trading_days,current_pinned_yahoo_days_through_2025_06_30,day_count_exact_match,paper_news_count,original_news_rows_recovered,paper_counterfactual_scenario_count,original_counterfactual_scenarios_recovered,paper_result_credit
+AAPL,AAPL,1380,1380,True,26551,0,253,0,False
+NVDA,NVDA,1380,1380,True,28432,0,267,0,False
+TSLA,TSLA,1380,1380,True,31677,0,271,0,False
+BYD,002594.SZ,1329,1329,True,17423,0,229,0,False
+Tencent,0700.HK,1350,1350,True,18816,0,243,0,False
+Bitcoin,BTC-USD,2008,2008,True,20213,0,279,0,False

@@ -1,0 +1,36 @@
+dimension,paper_or_source_statement,status,replication_impact
+system_identity,FactFin: SCG + RAG + MCTS + CS,specified_high_level,Component names and order are visible; executable interfaces are not.
+asset_universe,"AAPL, NVDA, TSLA, 002594.SZ, 0700.HK, BTC-USD inferred from labels/day counts",partially_recovered,"Ticker mappings are inferable and current Yahoo counts match, but the paper prints company and ticker as comma-separated pairs."
+price_provider,Yahoo Finance,specified_provider_current_snapshot_pinned,"Original responses, query parameters, retrieval time, time zone, adjustment state, and exact fill field are absent."
+news_provider,Alpaca News API,specified_provider_only,"No subscription, query, article IDs, timestamps, filters, frozen rows, or release."
+data_period,2020-01-01 through 2025-06-30,specified_dates,The train/validation allocation is not visible; a training period exists only in a commented source line.
+evaluation_period,2024-07-01 through 2025-06-30,specified_dates,No exact exchange calendars or signal/fill boundary convention.
+training_period,commented source says 2020-01-01 through 2024-06-30,missing_from_published_paper,A source comment cannot establish the executed split.
+state_price_features,"price with volume and turnover; table lists OHLC, adj_close, vol, turn",specified_schema_only,"Lookbacks, transformations, missing values, normalization, corporate actions, and field names are absent."
+state_factors,"technical/fundamental factors including RSI, MACD, KDJ, PE, PB, ROE",examples_only,"Complete factor list, formula library, parameters, timing, and point-in-time rules are absent."
+state_news,factorized news sentiment/topic features,concept_only,"Model, label ontology, prompt, window, aggregation, timestamps, and outputs are absent."
+action_space,"buy, sell, hold",specified_labels_only,"No target quantity/weight, cash, inventory, shorting, leverage, or mapping from code return to orders."
+llm_backbone,"GPT-4o alias, temperature 0.7",mutable_alias_partial_config,"No dated snapshot, seed, top-p, max tokens, tools, stop rules, retry policy, or immutable requests."
+strategy_language,executable strategy code,missing_runtime_contract,"Language, package surface, function signature, sandbox, parser, validation, timeout, and examples are absent."
+rag_embedding,"text-embedding-3-large, top-k=5",specified_alias_and_k_only,"Corpus, chunking, query, index, distance, dimensions, tie handling, and inserted records are absent."
+mcts,"depth 10, UCB c=0.5",specified_two_hyperparameters_only,"State/action nodes, branching, expansion prompt, rollouts, reward, budget, stopping rule, and seeds are absent."
+counterfactual_simulator,perturb prices/factors/news; 50 evaluation scenarios per asset,specified_high_level_only,"delta, sigma, alpha/beta/gamma, generators, constraints, dates, seeds, and exact scenarios are absent."
+counterfactual_inventory,Table 7 reports 253/267/271/229/243/279 scenarios,counts_only,Relationship between inventory counts and the 50-per-asset evaluation sample is unspecified.
+initial_capital,not stated,missing_initial_capital,"Cannot recreate cash, quantities, position limits, or portfolio path."
+position_sizing,not stated,missing_position_sizing,Discrete action labels do not identify traded quantities or portfolio weights.
+signal_to_fill_timing,not stated,missing_fill_timing,"No same-day/next-day rule, price, market hours, or news cutoff."
+transaction_costs,standard transaction costs,missing_numeric_cost_model,"No commission, tax, fee, spread, borrow, or market-specific schedule."
+slippage,realistic slippage models,missing_numeric_slippage_model,"No formula, volume dependence, units, or parameters."
+risk_free_rate,appears in Sharpe equation,missing_risk_free_rate,"No value, series, frequency, or currency rule."
+metric_conventions,"TR, SR, MDD; PC, CI, IDS equations",missing_operational_conventions,"Annualization, return frequency, MDD sign, confidence/probability extraction, edge cases, and aggregation are absent."
+baseline_implementations,nine baselines said to follow original specifications,missing_baseline_code_and_configs,"No forks, commits, adapters, prompts, model requests, hyperparameters, or outputs; HedgeAgents itself has no public system code."
+benchmark_dataset,"2,000 FinLeak/FinLake QA pairs, Jan 2022-Jun 2023",missing_dataset,Only 12 example questions/case-study scores are printed; category counts and full records are absent.
+benchmark_scoring,range/partial/qualitative scoring,missing_executable_scorer,The printed exact-equality equation conflicts with partial-credit and qualitative rules.
+fine_tuning_data,FNSPID; DJIA; Jan 2020-Dec 2022; test Jan-Jun 2022,specified_source_and_overlapping_dates_only,"Exact dataset revision, rows, split, label task, and leakage controls are absent."
+fine_tuning_config,LoRA rank64 alpha16 dropout0.1 batch16 gradacc4 lr2e-4 warmup0.03,partial_hyperparameters,"Epochs/steps, optimizer, scheduler, target modules, precision, sequence length, seed, packing, and checkpoint are absent."
+randomness_and_repetitions,"temperature 0.7; no run count, seed, or uncertainty",missing_seeds_repetitions_uncertainty,Single point estimates cannot be regenerated or statistically assessed.
+runtime_environment,not released,missing_environment,"No dependency lock, language version, hardware manifest, API dates, or runner."
+actual_llm_requests,not released,missing_actual_requests,"No immutable inputs, request IDs, responses, token probabilities, or retries."
+generated_strategies,not released,missing_generated_strategy_code,"No initial/evolved code, tree, reward, or execution logs."
+actions_orders_fills,not released,missing_actions_orders_fills,"No dated action, quantity, order, fill, cost, slippage, or cash record."
+portfolio_trajectories,figures only,missing_machine_readable_portfolio_paths,"Raster curves cannot establish exact dates, returns, drawdowns, or metric generation."

@@ -1,0 +1,14 @@
+source,query_or_url,result,system_or_dataset_recovered,negative_search_limit
+GitHub repository metadata search,exact title,9 matches; none author-attributable system/data release,False,metadata/readme search only; not private/deleted repositories or authenticated code search
+GitHub repository metadata search,arXiv id,6 matches; none author-attributable system/data release,False,metadata/readme search only; not private/deleted repositories or authenticated code search
+GitHub repository metadata search,FactFin,153 matches; none author-attributable system/data release,False,metadata/readme search only; not private/deleted repositories or authenticated code search
+GitHub repository metadata search,FinLake-Bench,2 matches; none author-attributable system/data release,False,metadata/readme search only; not private/deleted repositories or authenticated code search
+GitHub repository metadata search,FinLeak-Bench,0 matches; none author-attributable system/data release,False,metadata/readme search only; not private/deleted repositories or authenticated code search
+GitHub stable author id,api.github.com/user/139937996,current login XiangyuLi616; one public repository,False,current public account inventory only
+Pinned author homepage,https://xiangyuli616.github.io/,Profit Mirage entry links only to arXiv,False,pinned public homepage head only
+Hugging Face datasets,FinLake-Bench / FinLeak-Bench,zero matches,False,current hub metadata search only
+Hugging Face models/spaces,FactFin,substring matches unrelated fact-finding projects,False,current hub metadata search only
+Software Heritage,FactFin / FinLeak-Bench,no relevant origin,False,indexed public origins only
+Wayback guessed repositories,OrangeCat0616/FactFin and XiangyuLi616/FactFin,no successful capture,False,two guessed repository URLs only
+arXiv v1 record/source,https://arxiv.org/abs/2510.07920v1,one version; paper/source only; no direct code or dataset URL,False,submission bundle and visible record only
+Third-party paper-index link,ResearchTrend GitHub button,resolves to unrelated Bavest/fin-llama baseline repository,False,"false-positive resolution, not an exhaustive discovery source"

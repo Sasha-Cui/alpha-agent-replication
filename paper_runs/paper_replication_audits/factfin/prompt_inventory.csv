@@ -1,0 +1,6 @@
+prompt_or_request,paper_location,publication_form,recovered_text,runtime_values_released,actual_request_released,actual_response_released,status,note
+strategy_code_generator,Section 3.3,verbatim simplified template,"Given market state with {Prices}, {Factors}, and {News}, generate executable trading strategy code, e.g., {Examples}, using only provided inputs.",False,False,False,simplified_template_only,Footnote says changing templates are fully disclosed in the appendix; they are absent.
+rag_factor_extraction,Section 3.4,equations/symbols only,,False,False,False,missing_exact_prompt,"No retrieval query, corpus, chunks, result payload, or factorization prompt."
+mcts_strategy_modification,Equation 16,P_modify symbol only,,False,False,False,missing_exact_prompt,"No modification prompt, examples, expansion response, or code contract."
+finleak_benchmark_evaluation,Sections 2.3 and Appendix B,questions/scoring examples only,,False,False,False,missing_exact_prompt,"No system message, benchmark wrapper, decoding settings, or full 2,000-question dataset."
+fine_tuning_examples,Section 2.4,none,,False,False,False,missing_training_format,"No input/output template, label construction, split records, or training instances."

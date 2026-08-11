@@ -1,0 +1,7 @@
+paper_asset,inferred_yahoo_ticker,first_observation_utc_date,last_observation_utc_date,observations,paper_buy_hold_tr_pct,current_yahoo_close_endpoint_tr_pct,current_yahoo_adjusted_close_endpoint_tr_pct,close_display_precision_match,adjusted_close_display_precision_match,native_original_snapshot_recovered,paper_result_credit,note
+AAPL,AAPL,2024-07-01,2025-06-30,250,-3.36,-5.342561,-4.899878,False,False,False,False,"Current provider diagnostic only; no paper query, snapshot, or execution/cost convention."
+NVDA,NVDA,2024-07-01,2025-06-30,250,27.81,27.103782,27.143929,False,False,False,False,"Current provider diagnostic only; no paper query, snapshot, or execution/cost convention."
+TSLA,TSLA,2024-07-01,2025-06-30,250,57.88,51.367580,51.367580,False,False,False,False,"Current provider diagnostic only; no paper query, snapshot, or execution/cost convention."
+BYD,002594.SZ,2024-07-01,2025-06-30,242,32.43,34.485418,36.139586,False,False,False,False,"Current provider diagnostic only; no paper query, snapshot, or execution/cost convention."
+Tencent,0700.HK,2024-07-02,2025-06-30,245,36.82,36.240516,37.429808,False,False,False,False,"Current provider diagnostic only; no paper query, snapshot, or execution/cost convention."
+Bitcoin,BTC-USD,2024-07-01,2025-06-30,365,70.4,70.456579,70.456579,False,False,False,False,"Current provider diagnostic only; no paper query, snapshot, or execution/cost convention."
