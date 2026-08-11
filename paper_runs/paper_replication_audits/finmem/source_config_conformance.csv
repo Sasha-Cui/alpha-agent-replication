@@ -1,0 +1,12 @@
+dimension,paper,released,status
+main_backbone,GPT-4-Turbo,gpt-3.5-turbo-0125,mismatch
+main_top_k_per_layer,5,3,mismatch
+gpt_temperature,0.7,omitted from GPT request payload,mismatch
+main_ticker_configs,"TSLA,NFLX,AMZN,MSFT,COIN",TSLA only,incomplete
+main_training_period,2021-08-17 through 2022-10-05,commented example 2022-07-14 through 2022-07-20,mismatch
+main_testing_period,2022-10-06 through 2023-04-10,active example 2022-07-20 through 2022-08-01,mismatch
+five_repeated_trials,average of five trials,"no trial driver, trial seeds, or trial outputs",missing
+paper_input_snapshot,"Yahoo OHLCV, Alpaca/Benzinga news, SEC filings",fake Kaggle news sample and sample pipeline artifacts,missing_original_inputs
+native_result_paths,Tables 2--5 action paths and metrics,only .gitkeep placeholders in result/checkpoint directories,missing
+metrics_entrypoint,paper metric computation,"undefined lowercase ticker, author-local paths, missing declared yfinance/pandas dependencies",not_operational_without_repair
+risk_profile_selection,report profile with highest test-period cumulative return,no three-profile evaluation driver or outputs,missing_and_test_selected

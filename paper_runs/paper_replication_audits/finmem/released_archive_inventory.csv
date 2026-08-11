@@ -1,0 +1,11 @@
+archive,entry,uncompressed_bytes,role,safe_inspection
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_input/filing_data.parquet,5741,sample_filing_input_not_paper_data,ZIP directory only; pickle payloads not executed
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_output/env_data.pkl,53889,sample_pipeline_output_not_agent_action_or_paper_result,ZIP directory only; pickle payloads not executed
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_output/filing_q.pkl,634,sample_pipeline_output_not_agent_action_or_paper_result,ZIP directory only; pickle payloads not executed
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_output/news_fake.pkl,5,sample_pipeline_output_not_agent_action_or_paper_result,ZIP directory only; pickle payloads not executed
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_output/price.pkl,32796,sample_pipeline_output_not_agent_action_or_paper_result,ZIP directory only; pickle payloads not executed
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_output/filing_k.pkl,274,sample_pipeline_output_not_agent_action_or_paper_result,ZIP directory only; pickle payloads not executed
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_input/Fake-News-Data-for-Each-Stock /NFLX_fake.csv,5989316,synthetic_news_input_not_paper_data,ZIP directory only; pickle payloads not executed
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_input/Fake-News-Data-for-Each-Stock /AMZN_fake.csv,5876632,synthetic_news_input_not_paper_data,ZIP directory only; pickle payloads not executed
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_input/Fake-News-Data-for-Each-Stock /TSLA_fake.csv,6365059,synthetic_news_input_not_paper_data,ZIP directory only; pickle payloads not executed
+data-pipeline/Fake-Sample-Data.zip,Fake-Sample-Data/example_input/Fake-News-Data-for-Each-Stock /MSFT_fake.csv,6635037,synthetic_news_input_not_paper_data,ZIP directory only; pickle payloads not executed

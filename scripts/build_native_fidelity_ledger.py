@@ -104,9 +104,11 @@ ARTIFACT_NOTES = {
     ),
     "SYS-FIN-MEM": (
         "N",
-        "The bundled Fake-Sample-Data archive contains fake news, filings, prices, "
-        "and processed environment inputs; safe pickle disassembly shows data "
-        "fields rather than shipped agent decisions or returns.",
+        "A pinned paper audit recomputes 16/40 repeated Buy-and-Hold metric cells "
+        "from the released formula and a current Yahoo snapshot, including both full "
+        "TSLA ablation rows. All 195 non-Buy-and-Hold cells remain unverifiable: the "
+        "release ships fake/sample inputs but no native action paths, checkpoints, or "
+        "five-trial outputs, and its sole config differs from the paper.",
     ),
     "SYS-FIN-RL-DEEPSEEK": (
         "N",
