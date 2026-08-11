@@ -41,6 +41,13 @@
       },
       {
         "corrected_at_utc": "2026-08-11T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/hedgeagents/source_provenance.json",
+        "reason": "author project repository linked by the paper was omitted from the frozen registry; repository is R1 documentation, not system code",
+        "source_head": "329c5cc8613d91e517de4fbdb0dbc8476a356db5",
+        "system_id": "SYS-HEDGE-AGENTS"
+      },
+      {
+        "corrected_at_utc": "2026-08-11T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/raptor/source_provenance.json",
         "reason": "published final PDF directly links the lead author's repository after the anonymous snapshot expired",
         "source_head": "1793abf29ecde15597cb2bb4cb345accf655531f",
@@ -49,7 +56,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "a57aa50776b3a30add74c586fa96d1d8af812b129b4ac8088433c595fbbb015d",
+    "registry_sha256": "2b8eb25d43f1dc85738a1604a6e521243dd3a4436404fb8305341713f32961b2",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -479,7 +486,7 @@
       "system_name": "FAMA — Factor Mining Agent"
     },
     {
-      "artifact_url_count": 1,
+      "artifact_url_count": "1",
       "artifact_url_results_json": "[{\"check_method\":\"git ls-remote plus pinned GitHub archive and paper-level source/data/output audit\",\"checked_at_utc\":\"2026-08-11T20:17:58+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"Yiningww/Thesis\",\"head_sha\":\"434230ca9123048a4d79e2cc1390b23b050ef68e\",\"license_source\":\"no_license_file_or_GitHub_license_detected_in_pinned_archive\",\"observed_license\":\"NOASSERTION\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":181698560,\"archive_sha256\":\"451d7334bf4a6de94dcbc6cf2e29d9f5c30f228a58457fdd278d5ba9772992fd\",\"checked_at_utc\":\"2026-08-11T20:17:58+00:00\",\"code_markers\":[\"Code/Data/data.py\",\"Code/Data/plot.py\",\"Code/langchain/prompt.py\"],\"environment_markers\":[],\"explicit_nonrunnable\":false,\"file_count\":13884,\"has_code\":true,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"runner_markers\":[],\"support_markers\":[\"Code/Data/Information Technology/DEC start/AAPL.xlsx\",\"Code/Data/historical_return/AAPL2015-12-31-2020-12-31.csv\",\"Code/langchain/output/gpt-4-1106-preview/zero_shot_cot/out_gpt-4-1106-preview_zero_shot_cot_20240207-154023.csv\"]},\"url\":\"https://github.com/Yiningww/Thesis\",\"url_type\":\"github_repository\"}]",
       "artifact_url_types": "github_repository",
       "artifact_urls": "https://github.com/Yiningww/Thesis",
@@ -1025,22 +1032,22 @@
       "system_name": "GuruAgents"
     },
     {
-      "artifact_url_count": "0",
-      "artifact_url_results_json": "[]",
-      "artifact_url_types": "",
-      "artifact_urls": "",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
+      "artifact_url_count": 1,
+      "artifact_url_results_json": "[{\"check_method\":\"paper project link plus pinned Git history, tree, archive, and full primary-source audit\",\"checked_at_utc\":\"2026-08-11T21:30:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"hedgeagents/hedgeagents.github.io\",\"head_sha\":\"329c5cc8613d91e517de4fbdb0dbc8476a356db5\",\"license_source\":\"no license file or repository license declaration in pinned tree\",\"observed_license\":\"NOASSERTION\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":15079735,\"archive_sha256\":\"f86c9d0562a31864ec4bc3d449af803b6048c2393a1130a351a2c657d3943ad2\",\"checked_at_utc\":\"2026-08-11T21:30:00+00:00\",\"code_markers\":[],\"environment_markers\":[],\"excluded_template_residue\":{\"data_file\":\"visualizer/data/data_public.js\",\"reason\":\"MathVista/VQA website template, unrelated to HedgeAgents\",\"records\":6141},\"explicit_nonrunnable\":false,\"file_count\":46,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"runner_markers\":[],\"support_markers\":[\"index.html\",\"static/images/frameworkhtml.png\",\"static/images/agent1.png\",\"static/images/ALLCR.png\"],\"tree_bytes\":21503635},\"url\":\"https://github.com/hedgeagents/hedgeagents.github.io\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "github_repository",
+      "artifact_urls": "https://github.com/hedgeagents/hedgeagents.github.io",
+      "audit_timestamp_utc": "2026-08-11T00:00:00+00:00",
+      "default_branch_head_shas": "hedgeagents/hedgeagents.github.io@main=329c5cc8613d91e517de4fbdb0dbc8476a356db5",
       "errors_json": "[]",
-      "failure_category": "no_public_artifact",
-      "github_owner_repos": "",
+      "failure_category": "none",
+      "github_owner_repos": "hedgeagents/hedgeagents.github.io",
       "main_FT": "Y",
       "native_execution_attempted": "N",
-      "observed_licenses": "",
-      "public_artifact_listed": "N",
-      "reachability_outcome": "not_listed",
-      "static_fidelity_basis_json": "{\"basis\":\"not_listed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "observed_licenses": "hedgeagents/hedgeagents.github.io=NOASSERTION",
+      "public_artifact_listed": "Y",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"static author documentation and result images; no system code, environment, or runner\",\"markers\":{\"archive_bytes\":15079735,\"archive_sha256\":\"f86c9d0562a31864ec4bc3d449af803b6048c2393a1130a351a2c657d3943ad2\",\"checked_at_utc\":\"2026-08-11T21:30:00+00:00\",\"code_markers\":[],\"environment_markers\":[],\"excluded_template_residue\":{\"data_file\":\"visualizer/data/data_public.js\",\"reason\":\"MathVista/VQA website template, unrelated to HedgeAgents\",\"records\":6141},\"explicit_nonrunnable\":false,\"file_count\":46,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"runner_markers\":[],\"support_markers\":[\"index.html\",\"static/images/frameworkhtml.png\",\"static/images/agent1.png\",\"static/images/ALLCR.png\"],\"tree_bytes\":21503635},\"tier\":\"R1\",\"url\":\"https://github.com/hedgeagents/hedgeagents.github.io\"}]}",
+      "static_fidelity_tier": "R1",
       "stratum": "T",
       "system_id": "SYS-HEDGE-AGENTS",
       "system_name": "HedgeAgents"

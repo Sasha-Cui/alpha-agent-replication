@@ -45,7 +45,7 @@ SYS-FIN-RS|FinRS|T|Y|https://arxiv.org/abs/2511.12599||—|New verified omission
 SYS-FIN-VISION|FinVision|T|Y|https://arxiv.org/abs/2411.08899||40|One multi-agent stock-prediction/trading lineage.|IN: downstream sequential portfolio/trading decisions.
 SYS-FLAG-TRADER|FLAG-Trader|T|Y|https://aclanthology.org/2025.findings-acl.716/||31|One LLM-policy/RL lineage.|IN: sequential trading policy.
 SYS-GURU-AGENTS|GuruAgents|T|Y|https://arxiv.org/abs/2510.01664|https://github.com/yejining99/GuruAgents|42|Paper and repository are one lineage.|IN: prompt-guided portfolio decisions.
-SYS-HEDGE-AGENTS|HedgeAgents|T|Y|https://arxiv.org/abs/2502.13165||44|One balanced-aware trading lineage.|IN: multi-agent trading/hedging system.
+SYS-HEDGE-AGENTS|HedgeAgents|T|Y|https://arxiv.org/abs/2502.13165|https://github.com/hedgeagents/hedgeagents.github.io|44|One balanced-aware trading lineage; author project repository is a static documentation site, not released system code.|IN: multi-agent trading/hedging system.
 SYS-JANUS-Q|Janus-Q|T|Y|https://arxiv.org/abs/2602.19919||34|One event-driven trading lineage.|IN: produces sequential event-conditioned trades.
 SYS-MACI|MACI — LLM-Powered Multi-Agent System for Automated Crypto Portfolio Management|T|Y|https://arxiv.org/abs/2501.00826||—|MACI and the descriptive paper title denote one system.|IN: automated sequential crypto portfolio manager.
 SYS-MACRO-ECONOMISTS-MACHINE|Macro Economists in the Machine|T|Y|https://arxiv.org/abs/2606.08283||—|New verified omission.|IN: agent-generated investment/portfolio decisions.

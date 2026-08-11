@@ -245,6 +245,25 @@ ARTIFACT_NOTES = {
         "release ships fake/sample inputs but no native action paths, checkpoints, or "
         "five-trial outputs, and its sole config differs from the paper.",
     ),
+    "SYS-HEDGE-AGENTS": (
+        "N",
+        "A pinned HedgeAgents audit inventories all 236 displayed numeric table "
+        "cells: 119 in the main table, 63 in the conference ablation, and 54 in "
+        "the LLM-backbone table. The author repository is a 46-file R1 static site, "
+        "not a trading implementation. Its leaderboard duplicates 90 main-table "
+        "cells exactly, and four profile screenshots expose 23 unique tool names "
+        "and ten unique action names, but these are author documentation rather "
+        "than native execution: 0/236 cells reproduce. The site also contains an "
+        "unrelated 6,141-record MathVista/VQA template that receives no HedgeAgents "
+        "data or code credit. No exact universe, frozen Yahoo/Alpaca inputs, full "
+        "prompts, tool implementations, LLM traces, memories, actions, orders, "
+        "fills, or dated portfolio path is released. The paper conflicts on the "
+        "full-system MDD, per-agent tool/action counts, Sharpe improvements, and "
+        "all-metrics superiority. Its 2021--2023 test also mostly lies inside the "
+        "official April 2023 knowledge horizon of gpt-4-1106-preview; a later paper "
+        "by the same authors makes this a material contamination risk, not direct "
+        "proof that any reported cell is false.",
+    ),
     "SYS-FIN-RL-DEEPSEEK": (
         "N",
         "A pinned arXiv-v1 audit checks all 36 displayed table cells (24 unique "
@@ -482,6 +501,7 @@ TARGETED_EXECUTION = {
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
     "SYS-FIN-VISION": "paper_audit:completed_zero_of_72_performance_cells_no_public_system_source",
+    "SYS-HEDGE-AGENTS": "paper_audit:completed_zero_of_236_numeric_cells_static_site_not_system_source",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",

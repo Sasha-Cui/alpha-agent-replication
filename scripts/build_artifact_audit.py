@@ -107,7 +107,12 @@ def atomic_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequen
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
     with temporary.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fieldnames, extrasaction="ignore")
+        writer = csv.DictWriter(
+            stream,
+            fieldnames=fieldnames,
+            extrasaction="ignore",
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(rows)
     temporary.replace(path)
