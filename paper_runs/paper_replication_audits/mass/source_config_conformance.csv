@@ -1,0 +1,22 @@
+dimension,paper,released,status
+foundation_model,Qwen2.5-72B-Instruct,Qwen2.5-72B-Instruct,match
+main_agent_scale,16 types x 32 agents = 512,CLI defaults 16 x 32,match
+sse50_candidate_pool_size,20,CLI default stock_num=20,match
+csi300_candidate_pool_size,30,supported only by manual --stock_num override; no experiment command/config,not_pinned
+score_alpha_sse50_csi300,0.5,0.5 default,match
+score_alpha_chinext100,0.2,0.5 hard default; trainer never forwards a pool-specific alpha,mismatch
+sa_initial_temperature,40,0.5 active default,mismatch
+sa_max_iterations,100,20 active default,mismatch
+sa_cooling_rate,0.95,0.95,match
+optimizer_lookback,5,CLI default 5,match
+main_candidate_pool_update,static per agent; daily update is separate MASS(DU) ablation,resampled daily with random.choices (with replacement),mismatch
+daily_type_strategy,one daily strategy per investor type,each agent generates its own strategy on every trading day,mismatch
+randomness_control,no seed protocol disclosed,Python and NumPy RNG used without a run-level seed,missing
+paper_stock_pool_inputs,"SSE50, CSI 300, ChiNext 100; plus CSI A500 in 2025",SSE50-like base/label/feature panel only,incomplete
+paper_news_inputs,financial news for the released multimodal panel,two 2-byte invalid Parquet placeholders under different filenames,missing
+native_entrypoint_paths,runnable experiment,"three empty ROOT_PATH constants, two literal non-f-string paths, and required filenames absent",not_operational
+direct_runtime_dependencies,runnable environment,"pandas, numpy, and scipy imported but not direct project dependencies",incomplete
+metric_horizon,one Table 1 result set; return horizon not identified,"prints separate 1-, 5-, and 10-day label metrics",paper_underspecified
+portfolio_backtest,"weekly top-20%, 0.1% round-trip cost, Tables 4/Figure 2","no backtest, annualized-return, Sharpe, drawdown, or transaction-cost implementation",missing
+cost_measurement,Table 3 time and API fees,no request/token/cost logs or measurement script,missing
+published_result_paths,Tables 1--4,"no signals, portfolios, baseline outputs, result tables, or cached LLM decisions",missing

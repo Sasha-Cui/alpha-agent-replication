@@ -124,9 +124,11 @@ ARTIFACT_NOTES = {
     ),
     "SYS-MASS": (
         "N",
-        "The snapshot ships source and an SSE-50 example input dataset; the README "
-        "says the full dataset is unreleased, and no generated dated returns or "
-        "portfolio decisions are bundled.",
+        "A pinned paper audit verifies a 242-day 2023 SSE50-like base/label panel and "
+        "safely decodes a 263-date, 16-type learned distribution trajectory. This is "
+        "native optimizer state, not a signal or return: all 277 numeric cells in "
+        "Tables 1--4 remain unverifiable because decisions, other stock pools, "
+        "baselines, backtests, and cost logs are not shipped.",
     ),
     "SYS-QUANT-AGENT-HFT": (
         "N",

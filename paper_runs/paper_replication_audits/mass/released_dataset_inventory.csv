@@ -1,0 +1,13 @@
+path,bytes,sha256,format_status,rows,columns,minimum_date,maximum_date,distinct_dates,distinct_stocks
+stock_disagreement/dataset/base_data.parq,5037514,32c03ee3f2c007efb6ec73e550bd53e29ff849131ab33bbaf3fe1d9e5e9704fd,readable,72638,Stock;Date;Open;High;Low;Close;Volume;Value;Mean;TMean;ADJ;alpha;Close_Avg;MV;PE_TTM;SHARE;PB;FREE_MV;SHARE_FREE,20180102,20231229,1457,100
+stock_disagreement/dataset/ih_label.parq,1428004,9f564af8c5df8d1a3c51075ca59b6939b74881de7c53ef2f01b6adcd979672ac,readable,72638,Stock;Date;Time;1_15_labelB;5_15_labelB;10_15_labelB,20180102,20231229,1457,100
+stock_disagreement/dataset/sub_fudamental_data.parq,2737239,15f67b8c34e2e934aff625bd83c972b481dab7d4f897f030b45bb9a58dd64b5d,readable,72638,Stock;Date;Time;price_value_feature_0;price_value_feature_1;price_value_feature_2;price_value_feature_3;price_value_feature_4;price_value_feature_5,20180102,20231229,1457,100
+stock_disagreement/dataset/industry_ret.parq,1590523,7c40db815f89ddd3f023173f477fcbe961fc7bafad98567760c72539431b35f1,readable,125216,Date;Industry;Daily_Return,2018-01-03 00:00:00,2023-12-29 00:00:00,1456,
+stock_disagreement/dataset/stock_basic_data.parq,96533,9fb03bb3688181f82b87341225378b9d5927a58a5e1294a06a2ffee5a2e97e7d,readable,5235,Stock;Name;Industry,,,,5235
+stock_disagreement/dataset/financial-news-info.parq,2,7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6,unreadable_ArrowInvalid,,,,,,
+stock_disagreement/dataset/financial-news-relationship.parq,2,7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6,unreadable_ArrowInvalid,,,,,,
+stock_disagreement/dataset/macro_data/China_1-Year_Loan_Prime_Rate_LPR.csv,27046,ec35b6d4127bfdc371cb90e114bded711fadcc2fddbb5e2e20b1dee8654edf76,readable,1519,Unnamed: 0;Date;Value,20131025,20250220,1519,
+stock_disagreement/dataset/macro_data/China_CPI_YoY_Current_Month.csv,7981,5b112ac2cfcb5747dfdbfa791481ba1311ffd815ad14ac18936221164252a80e,readable,458,Unnamed: 0;Date;Value,19870131,20250228,458,
+stock_disagreement/dataset/macro_data/Market_Sentiment_Index.csv,290836,53dee219731d047648dc84388480772ab15376edb1c48244c16bca632c6ec9df,readable,2717,Unnamed: 0;Code;Name;Date;Open;High;Low;Close;PriceChange;Value;Volume,20140102,20250307,2717,
+stock_disagreement/dataset/macro_data/csi_300_pe_ttm.csv,157463,7a916cefdcef7652b9a627ca2bff374f6dad37704f3a4ec20161d7eda3714bae,readable,7274,Unnamed: 0;Date;Value,20050408,20250308,7274,
+stock_disagreement/dataset/macro_data/yield_on_China_10_year_government_bonds.csv,47783,20a53a925919e1d9f17ad770bec079dcabea551c317d9ef9f2a1a71acf4e7953,readable,2539,Date;Value,2015-01-04,2025-03-07,2539,

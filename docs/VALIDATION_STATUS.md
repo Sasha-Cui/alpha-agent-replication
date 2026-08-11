@@ -8,7 +8,7 @@ tracked aggregate evidence on Bouchet.
 | Artifact | SHA-256 |
 | --- | --- |
 | `docs/paper/icaif2026_submission.tex` | `70ad767203d3e118fc5ff2b764e4d9e02fd4bccfc03b9736d7a640d02fe88bda` |
-| `output/pdf/icaif2026_submission.pdf` | `5a58f2f02b8ee4c958f3b3897cf58f439b7663894688c5354741079bd282612c` |
+| `output/pdf/icaif2026_submission.pdf` | `cb8b2d4b0c9ac036d470011960ddaad68632884562bf17104d52712497335030` |
 
 The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
@@ -17,7 +17,7 @@ labels.
 
 ## Passing checks
 
-- Repository test suite: 119 passed.
+- Repository test suite: 122 passed.
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
