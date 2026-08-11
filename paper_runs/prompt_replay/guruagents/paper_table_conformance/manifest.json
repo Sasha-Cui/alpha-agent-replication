@@ -1,0 +1,19 @@
+{
+  "audit": "GuruAgents paper Table 1 versus pinned public source workbook",
+  "overall_status": "not_reproduced",
+  "paper_table": "Table 1, Summary performance metrics of agents and benchmarks",
+  "paper_end_interpretation": "2025-06-30",
+  "paper_transaction_cost_bps": 1.0,
+  "source_commit": "74ad2e6ce2e604c73a6fc2829d48ab58fe6be050",
+  "source_workbook": "results/multi_agent_backtest_results.xlsx",
+  "source_workbook_sha256": "45d4a4d7abb5ab89b83966c2474fc8de231fa544f5b3e436f6b06e79ae18e91d",
+  "source_notebook": "04_multi_agent_backtesting.ipynb",
+  "source_notebook_sha256": "e3c53f38ac37741f5989faa852b52f0a78776ccc5770c7a3cf9cf4f62acabca6",
+  "source_declares_one_bp_cost": true,
+  "source_main_return_routine_applies_declared_cost": false,
+  "strategy_windows_fully_matched": 0,
+  "strategy_windows_total": 14,
+  "metric_cells_matched": 4,
+  "metric_cells_total": 140,
+  "interpretation": "The source workbook does not reproduce every published Table 1 value under either the paper-labeled end date or its full shipped window."
+}

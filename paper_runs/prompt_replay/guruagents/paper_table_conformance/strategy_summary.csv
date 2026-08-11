@@ -1,0 +1,15 @@
+strategy,sheet,window,sample_start,sample_end,observations,return_observations,source_notebook_annualized_return_pct,matched_metrics,total_metrics,all_metrics_match
+Benjamin Graham,Benjamin_Graham_Returns,paper_labeled_through_2025Q2,2024-01-01,2025-06-29,540,539,11.614370149088792,0,10,False
+Benjamin Graham,Benjamin_Graham_Returns,full_shipped_workbook,2024-01-01,2025-08-12,583,582,13.29935010215535,0,10,False
+Warren Buffett,Warren_Buffett_Returns,paper_labeled_through_2025Q2,2024-01-01,2025-06-29,540,539,20.50881890803553,0,10,False
+Warren Buffett,Warren_Buffett_Returns,full_shipped_workbook,2024-01-01,2025-08-12,583,582,19.382442514073396,0,10,False
+Joel Greenblatt,Joel_Greenblatt_Returns,paper_labeled_through_2025Q2,2024-01-01,2025-06-29,540,539,8.266759853896644,0,10,False
+Joel Greenblatt,Joel_Greenblatt_Returns,full_shipped_workbook,2024-01-01,2025-08-12,583,582,8.120550840151775,0,10,False
+Joseph Piotroski,Joseph_Piotroski_Returns,paper_labeled_through_2025Q2,2024-01-01,2025-06-29,540,539,16.3721546381953,0,10,False
+Joseph Piotroski,Joseph_Piotroski_Returns,full_shipped_workbook,2024-01-01,2025-08-12,583,582,15.472196650044513,0,10,False
+Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,2024-01-01,2025-06-29,540,539,8.972966779128111,0,10,False
+Edward Altman,Edward_Altman_Returns,full_shipped_workbook,2024-01-01,2025-08-12,583,582,10.53142889350105,0,10,False
+NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,2024-01-02,2025-06-30,374,373,24.35661202629733,1,10,False
+NASDAQ 100,Benchmark_QQQ,full_shipped_workbook,2024-01-02,2025-08-15,407,406,25.67172261616255,1,10,False
+S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,2024-01-02,2025-06-30,374,373,21.300971218908305,1,10,False
+S&P 500,Benchmark_SPY,full_shipped_workbook,2024-01-02,2025-08-15,407,406,22.455208686730277,1,10,False

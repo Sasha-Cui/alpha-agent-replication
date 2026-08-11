@@ -103,6 +103,24 @@ authors' portfolio from identical finance signals. Agreement in `tool-routing`
 also tests adherence to the public tool-use procedure. Neither validates the
 underlying data engineering or the out-of-sample alpha claim.
 
+## Published Table 1 conformance
+
+The paper-level audit in paper_table_conformance/ compares all ten Table 1
+metrics for five agents and two benchmarks with the pinned public source
+workbook. It checks both the paper-labeled window through 2025Q2 and the
+workbook's full shipped window.
+
+Neither window reproduces a complete strategy row: zero of 14 strategy-window
+rows pass, and only four of 140 individual cells match at the paper's displayed
+precision. All four matches are the same benchmark maximum-drawdown values
+repeated across the two windows. The audit also records that the paper and
+notebook declare a one-basis-point transaction cost while the source notebook's
+main return routine does not apply its declared cost variable.
+
+Run scripts/audit_guruagents_paper_table.py to regenerate the audit. The 10-bp
+corrected-clock analysis below is a separate conservative performance exercise
+and must not be cited as reproduction of Table 1.
+
 ## Completed performance stage
 
 The second stage is now in `performance/` and is reproducible with:
