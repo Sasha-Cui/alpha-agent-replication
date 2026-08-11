@@ -1,0 +1,31 @@
+dimension,paper,recovered_source_or_evidence,assessment,fidelity_impact,full_paper_replication_credit
+paper-listed code,promised at Yiningww/GPT-signal,current 404; archived Aug 16 2024 snapshot contains only README,missing,paper-linked system code was not released in the captured snapshot,no
+recovered author source,not disclosed,Yiningww/Thesis at pre-paper commit 434230c,recovered_unlinked,supports source/data/result audit but weakens discoverability,no
+license,not specified,none observed in author repository,missing,no explicit reuse grant,no
+dependency environment,not specified,no requirements or environment lock,missing,native runtime cannot be recreated exactly,no
+LLM model,GPT-4,gpt-4-1106-preview,source_only_detail,exact retired snapshot absent from paper,no
+LLM randomness,not specified,no seed or temperature,missing,fresh generation is not deterministic,no
+LLM output lineage,six signals,raw GPT output located for five; VEC absent,partial,one signal lacks raw generation evidence,no
+iterative refinement,series of refinements / continual improvement,each recovered call is independent,unsupported,experiment does not implement claimed iterative learning,no
+prompt scope,method image uses ellipses,"machine-readable prompt, 7 IT stocks, Jan 2016-Jan 2017",recovered,source resolves most prompt ambiguity,no
+universe,43 IT + 31 Health Care + 19 Energy,93 matching workbooks and price series,matched,historical constituent as-of date still absent,component_only
+constituent selection,S&P 500 companies,fixed list; no as-of date or delisting rule,underspecified,survivorship/selection bias cannot be assessed,no
+FactSet access,called open-source; malformed https://https URL,credentialed proprietary source exported to xlsx,paper_error,raw upstream retrieval cannot be independently repeated,no
+factor frequency,historical signal data,quarterly FactSet columns,source_only_detail,paper does not disclose quarterly granularity,no
+price field,Yahoo Finance historical returns,unadjusted Close,source_only_detail,dividends are omitted,no
+monthly factor alignment,future one-month returns,descending-index ffill selects next-quarter values,lookahead_bias,all 1M empirical panels are temporally contaminated,no
+quarterly availability guard,not specified,+1 day then unsorted ffill,implementation_bug,intended guard is defeated by descending index,no
+missing-value imputation,not specified,full-period column mean,lookahead_bias,future values enter historical imputations,no
+RAPS equation,ROE / (P/E * beta),ROE / (P/E ** beta),contradiction,code/GPT formula alone recovers displayed results,no
+monthly cross-sections,2016-2020 monthly,current data.py hardcodes ii=19,stale_runner,"published 1M plots require 59, implying uncommitted manual edit",no
+native control flow,two-step analysis,data.py exits after correlation before step 2,stale_runner,single command cannot regenerate full analysis,no
+plot runner,six new-signal models plus baseline,plot.py contains 12 candidate models and exits before save,stale_runner,published selection/manual state is not encoded,no
+correlation result lineage,13 heatmaps,1309/1309 cells recover with source formula,reproduced_from_author_data,strong result-level lineage,component_only
+Fama-MacBeth result lineage,7 boxplots,240/245 vector statistics recover,partial_reproduction,five unexplained all-sector EVC statistics differ,no
+all-sector EVC plot,median shown above baseline,all five box statistics shifted +0.02 from replay,unexplained_difference,shift changes qualitative above/below-baseline conclusion,no
+IT 3M prose,5 out of 6 improve,published vector medians show 6 out of 6,paper_internal_contradiction,prose does not match its figure,no
+Energy 1M generalization,similar patterns,only 1 of 6 medians exceeds baseline,weak_support,broad conclusion is not uniform across sectors/horizons,no
+significance,signals meaningfully predict returns,"no reported test, interval, or multiple-testing control",unsupported,correlation and adjusted R2 alone do not establish significance,no
+p-value asset,not cited,unused pvalue.svg/png with undefined test/lineage,unusable,cannot be credited as statistical evidence,no
+economic evaluation,alpha research process,"no portfolio, costs, turnover, or excess-return backtest",missing,economic usefulness is not demonstrated,no
+speed/scale claims,faster and processes large amounts of data,"no runtime, baseline, ablation, or human study",unsupported,claims are not measured,no

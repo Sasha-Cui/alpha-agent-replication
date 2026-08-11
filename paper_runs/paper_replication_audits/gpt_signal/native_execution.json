@@ -1,0 +1,16 @@
+{
+  "author_source_available": true,
+  "deterministic_boxplot_statistics_reproduced": 240,
+  "deterministic_boxplot_statistics_total": 245,
+  "deterministic_correlation_cells_reproduced": 1309,
+  "deterministic_correlation_cells_total": 1309,
+  "full_end_to_end_pipeline_reproduced": false,
+  "full_end_to_end_reason": "retired_nondeterministic_LLM_snapshot_plus_stale_runner_and_monthly_lookahead",
+  "llm_calls_made": 0,
+  "llm_generation_reproduced": false,
+  "paper_listed_source_archived_placeholder_only": true,
+  "paper_listed_source_available": false,
+  "paper_result_credit": "partial_author_data_and_source_semantics_replay_not_full_paper_replication",
+  "paper_tex_rebuilt": true,
+  "tracked_python_files_compiled": 6
+}

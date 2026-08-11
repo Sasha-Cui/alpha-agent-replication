@@ -1,0 +1,14 @@
+matrix,source_svg,cells,source_code_power_matches,paper_equation_multiply_matches,horizon,cross_sections
+it_3m_existing,it_3m_16-20_old2.svg,121,121,121,3m,19
+it_3m_new,it_3m_16-20_new2.svg,49,49,37,3m,19
+it_1m_existing,it_1m_16-20_old.svg,121,121,121,1m,59
+it_1m_new,it_1m_16-20_new.svg,49,49,37,1m,59
+hc_1m_existing,hc_1m_16-20_old.svg,121,121,121,1m,59
+hc_1m_new,hc_1m_16-20_new.svg,49,49,37,1m,59
+hc_3m_existing,hc_3m_16-20_old.svg,121,121,121,3m,19
+hc_3m_new,hc_3m_16-20_new.svg,49,49,37,3m,19
+en_1m_existing,en_1m_16-20_old.svg,121,121,121,1m,59
+en_1m_new,en_1m_16-20_new.svg,49,49,37,1m,59
+en_3m_existing,en_3m_16-20_old.svg,121,121,121,3m,19
+en_3m_new,en_3m_16-20_new.svg,49,49,37,3m,19
+all_3m_all,corr_avg_allsector.svg,289,289,257,3m,19

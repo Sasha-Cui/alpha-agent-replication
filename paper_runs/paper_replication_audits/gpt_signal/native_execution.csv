@@ -1,0 +1,8 @@
+component,attempted,status,detail,result_credit
+arXiv TeX source,yes,pass,"pdflatex shell-escape, three passes, 13-page PDF; vector/source visual match",paper_build_only
+author Python source compile,yes,pass,6/6 tracked Python files compile in memory,no
+released data.py end-to-end,source_inspection,not_runnable_as_published,exit after heatmap makes step 2 unreachable; monthly ii=19 is stale; yfinance dependency absent,no
+deterministic correlation replay,yes,pass_1309_of_1309,author xlsx/CSV inputs plus released formula semantics,author_data_replay
+deterministic boxplot replay,yes,partial_240_of_245,five all-sector EVC statistics differ by a uniform +0.02 paper shift,author_data_replay_except_five
+GPT-4 signal generation,no,not_reproducible,"retired gpt-4-1106-preview, no seed/temperature, no request IDs; raw output recovered for 5/6",historical_output_lineage_only
+full paper pipeline,no,not_faithfully_defined,LLM snapshot unavailable and monthly source path contains lookahead; a fresh run would not be comparable,no_end_to_end_credit

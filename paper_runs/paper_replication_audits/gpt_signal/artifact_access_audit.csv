@@ -1,0 +1,7 @@
+artifact,url,status,relationship,credit
+arXiv v1 paper,https://arxiv.org/pdf/2410.18448v1,pinned_13_pages,official preprint,paper provenance
+ACL FinNLP paper,https://aclanthology.org/anthology-files/pdf/finnlp/2024.finnlp-2.4.pdf,pinned_12_pages,published workshop version,paper provenance
+arXiv v1 source,https://arxiv.org/e-print/2410.18448v1,pinned_71_files_rebuilt,paper source and exact vector figures,paper/result extraction
+paper-listed GPT-signal repository,https://github.com/Yiningww/GPT-signal,current_404_one_archived_placeholder_capture,paper-promised code,no system code recovered
+Software Heritage paper-repo origin,https://archive.softwareheritage.org/api/1/origin/https://github.com/Yiningww/GPT-signal/get/,not_found,archive search,absence evidence only
+author Thesis repository,https://github.com/Yiningww/Thesis,public_pinned_pre_paper_commit_no_license,author-owned unlinked source/data/output recovery,deterministic result replay and source audit

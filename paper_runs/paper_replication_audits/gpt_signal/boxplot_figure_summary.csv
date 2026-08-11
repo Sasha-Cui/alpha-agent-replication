@@ -1,0 +1,8 @@
+figure,source_svg,statistics,matches_tolerance_1e-4,maximum_absolute_difference,new_signal_medians_above_baseline,new_signal_medians_total
+all_3m,2016_2020_3M_step2_allsector.svg,35,30,0.02000000350640274,6,6
+it_1m,IT_2016_2020_1M_step2.svg,35,35,5.0327804036021107e-05,6,6
+it_3m,IT_2016_2020_3M_step2.svg,35,35,2.108970087455475e-08,6,6
+hc_1m,HC_2016_2020_1M_step2.svg,35,35,8.553207697659104e-09,6,6
+hc_3m,HC_2016_2020_3M_step2.svg,35,35,7.873834029226146e-09,5,6
+en_1m,EN_2016_2020_1M_step2.svg,35,35,1.5188417967770818e-08,1,6
+en_3m,EN_2016_2020_3M_step2.svg,35,35,8.151878172490967e-09,5,6

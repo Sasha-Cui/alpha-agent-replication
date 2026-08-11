@@ -1,0 +1,7 @@
+ticker,target_month_end,released_descending_ffill_pe,chronological_availability_ffill_pe,difference,future_quarter_value_used,paper_result_affected
+AAPL,2016-01-31,11.754171,11.468153,0.2860180000000003,yes,monthly_heatmaps_and_monthly_Fama_MacBeth_boxplots
+AAPL,2016-02-29,11.754171,11.468153,0.2860180000000003,yes,monthly_heatmaps_and_monthly_Fama_MacBeth_boxplots
+AAPL,2016-03-31,11.754171,11.468153,0.2860180000000003,yes,monthly_heatmaps_and_monthly_Fama_MacBeth_boxplots
+AAPL,2016-04-30,10.911215,11.754171,-0.8429559999999992,yes,monthly_heatmaps_and_monthly_Fama_MacBeth_boxplots
+AAPL,2016-05-31,10.911215,11.754171,-0.8429559999999992,yes,monthly_heatmaps_and_monthly_Fama_MacBeth_boxplots
+AAPL,2016-06-30,10.911215,11.754171,-0.8429559999999992,yes,monthly_heatmaps_and_monthly_Fama_MacBeth_boxplots
