@@ -74,11 +74,11 @@ def computed_macros(
         "SystemCount": "103",
         "MethodSystemCount": "67",
         "ArtifactCountFT": "21",
-        "ReachableArtifactCountFT": "19",
-        "LicensedArtifactCountFT": "10",
-        "PinnedRepoCountFT": "19",
-        "ArtifactTierSummaryFT": r"\artifacttier{R0}: 48, \artifacttier{R1}: 6, \artifacttier{R2}: 5, \artifacttier{R3}: 8",
-        "TargetedAuditCount": "27",
+        "ReachableArtifactCountFT": "20",
+        "LicensedArtifactCountFT": "11",
+        "PinnedRepoCountFT": "20",
+        "ArtifactTierSummaryFT": r"\artifacttier{R0}: 47, \artifacttier{R1}: 6, \artifacttier{R2}: 5, \artifacttier{R3}: 9",
+        "TargetedAuditCount": "28",
         "TranslatableSeedCount": "1",
     }
     for key, value in expected.items():

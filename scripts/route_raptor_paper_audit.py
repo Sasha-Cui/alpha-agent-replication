@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Route the pinned FinAgent paper audit into the frozen artifact evidence.
+"""Route the pinned RAPTOR paper/source audit into frozen artifact evidence.
 
-The original census missed an author-linked repository that predates the
-cutoff.  This deterministic correction replaces only the FinAgent row, keeps
-the original 103-system audit untouched otherwise, and recomputes the public
-artifact summary from the corrected rows.
+The submission-era anonymous 4open snapshot expired after the original census.
+The published CEUR PDF directly embeds the lead author's repository URL. This
+deterministic correction replaces only the RAPTOR row, preserves other evidence
+corrections, and recomputes the public-artifact summary.
 """
 from __future__ import annotations
 
@@ -21,12 +21,15 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import build_artifact_audit as artifact  # noqa: E402
 
 
-SYSTEM_ID = "SYS-FIN-AGENT"
-URL = "https://github.com/DVampire/FinAgent"
-HEAD = "17248a0b8b729ee3e093e30bb7bea7f52181f363"
-OBSERVED_AT = "2026-08-11T13:22:39.083413+00:00"
+SYSTEM_ID = "SYS-RAPTOR"
+URL = "https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture"
+OWNER_REPO = "blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture"
+HEAD = "1793abf29ecde15597cb2bb4cb345accf655531f"
+ARCHIVE_SHA256 = "badb4c27ba34232d6539975f3191dcc7a066a0ee1456c448ec9bb21f5e33d697"
+OBSERVED_AT = "2026-08-11T18:47:37.230004+00:00"
 ROW_AUDIT_AT = "2026-08-11T00:00:00+00:00"
-PAPER_MANIFEST = ROOT / "paper_runs/paper_replication_audits/finagent/manifest.json"
+PAPER_MANIFEST = ROOT / "paper_runs/paper_replication_audits/raptor/manifest.json"
+SOURCE_PROVENANCE = ROOT / "paper_runs/paper_replication_audits/raptor/source_provenance.json"
 REGISTRY = ROOT / "literature_review/census_v1/system_registry.csv"
 AUDIT_DIR = ROOT / "paper_runs/submission_evidence/artifact_audit"
 
@@ -54,31 +57,36 @@ def compact(value: Any) -> str:
 
 def static_observation() -> dict[str, Any]:
     return {
-        "archive_bytes": 189389,
+        "archive_bytes": 6033284,
+        "archive_sha256": ARCHIVE_SHA256,
         "checked_at_utc": OBSERVED_AT,
-        "file_count": 342,
+        "file_count": 825,
         "has_code": True,
         "has_environment": True,
         "has_runner": True,
         "has_support": True,
         "explicit_nonrunnable": False,
         "code_markers": [
-            "finagent/environment/trading.py",
-            "finagent/memory/basic_memory.py",
-            "finagent/prompt/helper.py",
-            "finagent/provider/openai.py",
+            "cli/main.py",
+            "comparisonAlgorithms/run_rules.py",
+            "evaluation/eval_range.py",
+            "main.py",
         ],
-        "environment_markers": ["requirements.txt"],
-        "runner_markers": ["tools/main.py"],
+        "environment_markers": ["pyproject.toml", "requirements.txt", "uv.lock"],
+        "runner_markers": [
+            "mvo_blm_runner.py",
+            "testing/mvo_blm_runner.py",
+            "testingLoopMultithreaded.py",
+        ],
         "support_markers": [
-            "configs/exp/trading/AAPL.py",
-            "configs/exp/trading/ETHUSD.py",
-            "res/prompts/template/valid/trading/decision.html",
+            "config/portfolio.example.json",
+            "testing/scripts/visualize.py",
+            "testing/2025-01-01/portfolio_snapshot_2025-01-01.json",
         ],
     }
 
 
-def finagent_row() -> dict[str, Any]:
+def raptor_row() -> dict[str, Any]:
     observation = static_observation()
     definitions = {
         "R0": "no listed public artifact or no reachable artifact",
@@ -89,14 +97,14 @@ def finagent_row() -> dict[str, Any]:
     result = {
         "url": URL,
         "url_type": "github_repository",
-        "check_method": "git ls-remote --symref plus bounded GitHub archive inspection",
+        "check_method": "git ls-remote plus pinned GitHub archive and paper-level source/output audit",
         "checked_at_utc": OBSERVED_AT,
         "reachable": True,
-        "github_owner_repo": "DVampire/FinAgent",
+        "github_owner_repo": OWNER_REPO,
         "default_branch": "main",
         "head_sha": HEAD,
-        "observed_license": "MIT",
-        "license_source": "github_api_and_RELEASE_LICENSE_sha256_62cbdb19bdc50f23545e787f8c244400907163bc4f16e0149ce4e876abc4ca07",
+        "observed_license": "Apache-2.0",
+        "license_source": f"pinned_archive_{ARCHIVE_SHA256}",
         "static_observation": observation,
         "errors": [],
     }
@@ -111,7 +119,7 @@ def finagent_row() -> dict[str, Any]:
     }
     return {
         "system_id": SYSTEM_ID,
-        "system_name": "FinAgent",
+        "system_name": "RAPTOR",
         "stratum": "T",
         "main_FT": "Y",
         "artifact_urls": URL,
@@ -119,9 +127,9 @@ def finagent_row() -> dict[str, Any]:
         "artifact_url_types": "github_repository",
         "public_artifact_listed": "Y",
         "reachability_outcome": "reachable_all",
-        "github_owner_repos": "DVampire/FinAgent",
-        "default_branch_head_shas": f"DVampire/FinAgent@main={HEAD}",
-        "observed_licenses": "DVampire/FinAgent=MIT",
+        "github_owner_repos": OWNER_REPO,
+        "default_branch_head_shas": f"{OWNER_REPO}@main={HEAD}",
+        "observed_licenses": f"{OWNER_REPO}=Apache-2.0",
         "static_fidelity_tier": "R3",
         "static_fidelity_basis_json": compact(basis),
         "failure_category": "none",
@@ -135,20 +143,27 @@ def finagent_row() -> dict[str, Any]:
 def validate_inputs() -> None:
     manifest = json.loads(PAPER_MANIFEST.read_text(encoding="utf-8"))
     expected = {
-        "source_current_commit": HEAD,
-        "source_provenance": "repository_linked_from_lead_author_homepage",
-        "published_result_display_units_total": 1061,
-        "published_result_display_units_reproduced": 0,
-        "paper_result_credit": False,
+        "tracked_source_files": 825,
+        "author_result_snapshots": 166,
+        "displayed_scalar_results": 42,
+        "author_output_verified_scalar_results": 16,
+        "end_to_end_result_cells_reproduced": 0,
     }
     for key, value in expected.items():
         if manifest.get(key) != value:
-            raise ValueError(f"FinAgent paper manifest mismatch for {key}")
+            raise ValueError(f"RAPTOR paper manifest mismatch for {key}")
+    provenance = json.loads(SOURCE_PROVENANCE.read_text(encoding="utf-8"))
+    if provenance["author_github_repository"] != URL:
+        raise ValueError("RAPTOR paper audit does not identify the routed author repository")
+    if provenance["author_repository_head"] != HEAD:
+        raise ValueError("RAPTOR author repository head changed from the pinned audit")
+    if provenance["author_repository_archive_sha256"] != ARCHIVE_SHA256:
+        raise ValueError("RAPTOR author archive hash changed from the pinned audit")
     with REGISTRY.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle, delimiter="|"))
     row = next(item for item in rows if item["system_id"] == SYSTEM_ID)
     if row["official_artifact"] != URL:
-        raise ValueError("FinAgent registry route is not the author-linked repository")
+        raise ValueError("RAPTOR registry route is not the repository linked by the published PDF")
 
 
 def route() -> None:
@@ -163,16 +178,16 @@ def route() -> None:
     matches = [index for index, row in enumerate(rows) if row["system_id"] == SYSTEM_ID]
     if len(rows) != 103 or len(matches) != 1:
         raise ValueError("artifact audit is not the expected 103-row census")
-    rows[matches[0]] = finagent_row()
+    rows[matches[0]] = raptor_row()
     long_summary, grouped_summary = artifact.summary_rows(rows)
 
     audit_payload = json.loads(json_path.read_text(encoding="utf-8"))
     summary_payload = json.loads(summary_json_path.read_text(encoding="utf-8"))
     correction = {
         "system_id": SYSTEM_ID,
-        "reason": "author-linked pre-cutoff repository omitted from original registry",
+        "reason": "published final PDF directly links the lead author's repository after the anonymous snapshot expired",
         "corrected_at_utc": ROW_AUDIT_AT,
-        "evidence": "paper_runs/paper_replication_audits/finagent/manifest.json",
+        "evidence": "paper_runs/paper_replication_audits/raptor/source_provenance.json",
         "source_head": HEAD,
     }
     corrections = [

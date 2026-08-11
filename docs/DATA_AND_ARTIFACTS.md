@@ -51,7 +51,7 @@ summaries, figures, generated TeX macros, and JSON manifests.
 
 ## Included source papers
 
-The repository includes the 45 downloaded source-paper PDFs under
+The repository includes the 46 downloaded source-paper PDFs under
 `literature_review/papers/`. Their filenames, download statuses, and byte counts
 are recorded in `literature_review/download_log.csv`. Canonical primary records
 are in `literature_review/census_v1/primary_record_metadata.csv`. These

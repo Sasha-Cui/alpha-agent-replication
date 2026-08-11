@@ -41,8 +41,8 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
     routes = pd.read_csv(OUTPUT)
     assert len(routes) == routes["canonical_work_id"].nunique() == 69
     assert routes["paper_evidence_route"].value_counts().to_dict() == {
-        "paper_only_underspecified": 50,
-        "public_code_available": 19,
+        "paper_only_underspecified": 49,
+        "public_code_available": 20,
     }
     assert not routes["paper_evidence_route"].eq(
         "paper_only_sufficiently_specified"
@@ -55,11 +55,11 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
 def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     routes = pd.read_csv(OUTPUT)
     public = routes[routes["paper_evidence_route"].eq("public_code_available")]
-    assert len(public) == 19
+    assert len(public) == 20
     assert public["precise_native_or_access_blocker"].notna().all()
     assert public["precise_native_or_access_blocker"].str.contains(":A[123]_", regex=True).all()
     assert public["native_pipeline_disposition"].value_counts().to_dict() == {
-        "targeted_execution_recorded": 19,
+        "targeted_execution_recorded": 20,
     }
     reconstructed = public[public["good_faith_reconstruction"].eq("yes")]
     assert len(reconstructed) == 14
@@ -70,6 +70,28 @@ def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     assert reconstructed["proxy_role"].eq(
         "secondary_diagnostic_after_native_review"
     ).all()
+
+
+def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[routes["canonical_work_id"].eq("CensusORziuTkKhgT0")].iloc[0]
+    assert row["paper_evidence_route"] == "public_code_available"
+    assert row["reachable_public_code_system_ids"] == "SYS-RAPTOR"
+    assert row["static_fidelity_tiers"] == "R3"
+    assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_16_of_42_author_output_scalar_units_zero_"
+        "end_to_end_result_cells"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_disposition"] == "availability_only_no_performance_inference"
+    assert row["proxy_role"] == "no_proxy"
+    blocker = row["precise_native_or_access_blocker"]
+    assert "recover 16/42 scalar units" in blocker
+    assert "0/42 result units" in blocker
+    assert "missing testing/stock_prices.csv" in blocker
+    assert "paper/source cadence" in blocker
+    assert "six-country security-level common-task panel" in blocker
 
 
 def test_quantevolver_paper_audit_stays_separate_from_component_gate() -> None:
@@ -398,6 +420,6 @@ def test_generated_paper_macros_match_route_counts(tmp_path: Path) -> None:
     MODULE.write_tex_macros(routes, generated)
     assert generated.read_bytes() == TEX_OUTPUT.read_bytes()
     text = generated.read_text()
-    assert r"\newcommand{\PublicCodeRouteWorkCount}{19\xspace}" in text
+    assert r"\newcommand{\PublicCodeRouteWorkCount}{20\xspace}" in text
     assert r"\newcommand{\PaperOnlySpecifiedWorkCount}{0\xspace}" in text
-    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{50\xspace}" in text
+    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{49\xspace}" in text

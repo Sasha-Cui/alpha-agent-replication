@@ -24,11 +24,18 @@
         "reason": "author-linked pre-cutoff repository omitted from original registry",
         "source_head": "17248a0b8b729ee3e093e30bb7bea7f52181f363",
         "system_id": "SYS-FIN-AGENT"
+      },
+      {
+        "corrected_at_utc": "2026-08-11T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/raptor/source_provenance.json",
+        "reason": "published final PDF directly links the lead author's repository after the anonymous snapshot expired",
+        "source_head": "1793abf29ecde15597cb2bb4cb345accf655531f",
+        "system_id": "SYS-RAPTOR"
       }
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "a69942a1b25f8f79f5bc1fe802783733f2cb2511f2d96c8b096b852d6dda546d",
+    "registry_sha256": "4a805d9c0c1296122960a0ca3498762a1ec16fc1b68774dcd0914e5ffce8117b",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -794,7 +801,7 @@
       "system_name": "FactFin"
     },
     {
-      "artifact_url_count": 1,
+      "artifact_url_count": "1",
       "artifact_url_results_json": "[{\"check_method\":\"git ls-remote --symref plus bounded GitHub archive inspection\",\"checked_at_utc\":\"2026-08-11T13:22:39.083413+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"DVampire/FinAgent\",\"head_sha\":\"17248a0b8b729ee3e093e30bb7bea7f52181f363\",\"license_source\":\"github_api_and_RELEASE_LICENSE_sha256_62cbdb19bdc50f23545e787f8c244400907163bc4f16e0149ce4e876abc4ca07\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":189389,\"checked_at_utc\":\"2026-08-11T13:22:39.083413+00:00\",\"code_markers\":[\"finagent/environment/trading.py\",\"finagent/memory/basic_memory.py\",\"finagent/prompt/helper.py\",\"finagent/provider/openai.py\"],\"environment_markers\":[\"requirements.txt\"],\"explicit_nonrunnable\":false,\"file_count\":342,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"runner_markers\":[\"tools/main.py\"],\"support_markers\":[\"configs/exp/trading/AAPL.py\",\"configs/exp/trading/ETHUSD.py\",\"res/prompts/template/valid/trading/decision.html\"]},\"url\":\"https://github.com/DVampire/FinAgent\",\"url_type\":\"github_repository\"}]",
       "artifact_url_types": "github_repository",
       "artifact_urls": "https://github.com/DVampire/FinAgent",
@@ -1277,22 +1284,22 @@
       "system_name": "QuantAgents"
     },
     {
-      "artifact_url_count": "1",
-      "artifact_url_results_json": "[{\"check_method\":\"HTTP GET (bounded body)\",\"checked_at_utc\":\"2026-08-03T01:06:01.236562+00:00\",\"errors\":[\"HTTPError: HTTP Error 401: Unauthorized\"],\"final_url\":\"https://anonymous.4open.science/api/repo/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing/file/\",\"http_status\":401,\"reachable\":false,\"url\":\"https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing\",\"url_type\":\"anonymous_code_snapshot\"}]",
-      "artifact_url_types": "anonymous_code_snapshot",
-      "artifact_urls": "https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
-      "errors_json": "[{\"errors\":[\"HTTPError: HTTP Error 401: Unauthorized\"],\"url\":\"https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing\"}]",
-      "failure_category": "reachability_check_failed",
-      "github_owner_repos": "",
+      "artifact_url_count": 1,
+      "artifact_url_results_json": "[{\"check_method\":\"git ls-remote plus pinned GitHub archive and paper-level source/output audit\",\"checked_at_utc\":\"2026-08-11T18:47:37.230004+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture\",\"head_sha\":\"1793abf29ecde15597cb2bb4cb345accf655531f\",\"license_source\":\"pinned_archive_badb4c27ba34232d6539975f3191dcc7a066a0ee1456c448ec9bb21f5e33d697\",\"observed_license\":\"Apache-2.0\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":6033284,\"archive_sha256\":\"badb4c27ba34232d6539975f3191dcc7a066a0ee1456c448ec9bb21f5e33d697\",\"checked_at_utc\":\"2026-08-11T18:47:37.230004+00:00\",\"code_markers\":[\"cli/main.py\",\"comparisonAlgorithms/run_rules.py\",\"evaluation/eval_range.py\",\"main.py\"],\"environment_markers\":[\"pyproject.toml\",\"requirements.txt\",\"uv.lock\"],\"explicit_nonrunnable\":false,\"file_count\":825,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"runner_markers\":[\"mvo_blm_runner.py\",\"testing/mvo_blm_runner.py\",\"testingLoopMultithreaded.py\"],\"support_markers\":[\"config/portfolio.example.json\",\"testing/scripts/visualize.py\",\"testing/2025-01-01/portfolio_snapshot_2025-01-01.json\"]},\"url\":\"https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "github_repository",
+      "artifact_urls": "https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture",
+      "audit_timestamp_utc": "2026-08-11T00:00:00+00:00",
+      "default_branch_head_shas": "blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture@main=1793abf29ecde15597cb2bb4cb345accf655531f",
+      "errors_json": "[]",
+      "failure_category": "none",
+      "github_owner_repos": "blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture",
       "main_FT": "Y",
       "native_execution_attempted": "N",
-      "observed_licenses": "",
+      "observed_licenses": "blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture=Apache-2.0",
       "public_artifact_listed": "Y",
-      "reachability_outcome": "check_failed",
-      "static_fidelity_basis_json": "{\"basis\":\"check_failed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"code+environment+runner+tests/examples/config\",\"markers\":{\"archive_bytes\":6033284,\"archive_sha256\":\"badb4c27ba34232d6539975f3191dcc7a066a0ee1456c448ec9bb21f5e33d697\",\"checked_at_utc\":\"2026-08-11T18:47:37.230004+00:00\",\"code_markers\":[\"cli/main.py\",\"comparisonAlgorithms/run_rules.py\",\"evaluation/eval_range.py\",\"main.py\"],\"environment_markers\":[\"pyproject.toml\",\"requirements.txt\",\"uv.lock\"],\"explicit_nonrunnable\":false,\"file_count\":825,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"runner_markers\":[\"mvo_blm_runner.py\",\"testing/mvo_blm_runner.py\",\"testingLoopMultithreaded.py\"],\"support_markers\":[\"config/portfolio.example.json\",\"testing/scripts/visualize.py\",\"testing/2025-01-01/portfolio_snapshot_2025-01-01.json\"]},\"tier\":\"R3\",\"url\":\"https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture\"}]}",
+      "static_fidelity_tier": "R3",
       "stratum": "T",
       "system_id": "SYS-RAPTOR",
       "system_name": "RAPTOR"

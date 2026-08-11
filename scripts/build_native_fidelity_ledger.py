@@ -115,6 +115,24 @@ ARTIFACT_NOTES = {
         "so 0/75 table cells count as native reproductions. The separate 3/3 grade-B "
         "component gate remains adapted and provides no paper-result credit.",
     ),
+    "SYS-RAPTOR": (
+        "Y",
+        "A pinned CEUR/OpenReview audit inventories all 42 empirical scalar "
+        "assertion/table units and three figure series. The published PDF directly "
+        "links the lead author's Apache-2.0 repository; a separately pinned GitHub "
+        "copy is a high-confidence double-blind derivative with 815 byte-identical "
+        "files. The release ships 166 dated portfolio snapshots. Its native "
+        "postprocessor runs, and those snapshots independently recover 16/42 scalar "
+        "units, including the initial/final NAV, total and annualized return, "
+        "volatility, Sharpe, Sortino, and maximum drawdown. This is author-output "
+        "verification, not experiment reproduction: 0/42 result units and 0/3 exact "
+        "figure series reproduce end to end. The candidate backtest stops on the "
+        "missing testing/stock_prices.csv; SPY inputs, point-in-time research inputs, "
+        "immutable model requests, seeds, and execution-cost lineage are absent, "
+        "while paper/source cadence, view construction, and rolling-Sharpe conventions "
+        "conflict. The shipped path is U.S.-only and cannot supply the six-country "
+        "security-level common-task panel.",
+    ),
     "SYS-RD-AGENT-QUANT": (
         "N",
         "The mapped primary record is the general R&D-Agent MLE-Bench report, not "
@@ -413,6 +431,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
     "SYS-QUANTA-ALPHA": "paper_audit:completed_zero_of_344_native_table_results_components_only",
+    "SYS-RAPTOR": "paper_audit:completed_16_of_42_author_output_scalar_units_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",
     "SYS-TRADING-R1": "paper_audit:completed_zero_of_348_published_numeric_units_official_placeholder",
@@ -423,6 +442,7 @@ OUTPUT_BLOCKS = {
     "SYS-AUTOMATE-STRATEGY": "A3_output_lacks_six_country_security_mapping",
     "SYS-CRYPTO-TRADE": "A3_wrong_asset_class_crypto",
     "SYS-GURU-AGENTS": "A3_US_only_not_six_country",
+    "SYS-RAPTOR": "A3_US_only_not_six_country",
 }
 
 
