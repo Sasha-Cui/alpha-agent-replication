@@ -165,6 +165,21 @@ ARTIFACT_NOTES = {
         "tests, raw trajectories, or plot inputs are released. The arXiv LaTeX "
         "compiles, but paper packaging receives no system or result credit.",
     ),
+    "SYS-FIN-AGENT": (
+        "N",
+        "A pinned KDD/arXiv-v3 audit inventories all 959 displayed numeric table "
+        "cells and 102 figure result units, with zero native results reproduced. "
+        "The author-linked MIT release is substantial: the paper-era tree has 341 "
+        "files, all 142 Python files compile, 42 experiment configs retain the core "
+        "dates/horizons/assets, and the LaTeX source reproduces the 43-page paper. "
+        "These are static implementation and document evidence, not experiment "
+        "outputs. No exact data snapshot, FinAgent memories, trajectories, actions, "
+        "equity paths, or result records are shipped. The full validation chart path "
+        "renders 14 future days, the environment is long-only despite the paper's "
+        "short-position explanation, optimized rule signals are overwritten, six "
+        "ML/RL baselines and OPTUNA are absent, and SR/CR/SOR code conflicts with "
+        "the paper equations.",
+    ),
     "SYS-FIN-MEM": (
         "N",
         "A pinned paper audit recomputes 16/40 repeated Buy-and-Hold metric cells "
@@ -255,6 +270,7 @@ TARGETED_EXECUTION = {
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
+    "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",

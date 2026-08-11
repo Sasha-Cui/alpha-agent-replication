@@ -1000,7 +1000,10 @@ def compute_metrics(
         .sum()
     )
     translatable_count = int(
-        native["targeted_execution_audit_status"].astype(str).str.contains("seed_idea_proxy").sum()
+        native["targeted_execution_audit_status"]
+        .astype(str)
+        .str.contains("seed_idea_proxy|component_gate_separate", regex=True)
+        .sum()
     )
     native_specs = [
         (
@@ -1024,14 +1027,14 @@ def compute_metrics(
         (
             "TargetedAuditCount",
             targeted_count,
-            "Systems examined in the earlier targeted execution audit.",
+            "Systems examined in a targeted paper-level or execution audit.",
             "targeted_execution_audit_status != not_targeted_in_legacy_execution_audit",
         ),
         (
             "TranslatableSeedCount",
             translatable_count,
             "Targeted artifacts explicitly classified as proxy seed ideas rather than native execution.",
-            "targeted_execution_audit_status contains seed_idea_proxy",
+            "targeted_execution_audit_status contains seed_idea_proxy or component_gate_separate",
         ),
     ]
     for name, value, claim, source_filter in native_specs:

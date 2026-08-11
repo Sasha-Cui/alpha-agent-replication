@@ -35,7 +35,7 @@ SYS-BLIND-TRADE|BlindTrade|T|Y|https://arxiv.org/abs/2603.17692||—|New verifie
 SYS-CONTEST-TRADE|ContestTrade|T|Y|https://arxiv.org/abs/2508.00554|https://github.com/FinStep-AI/ContestTrade|24|Paper and official repository are one lineage.|IN: multi-agent sequential trading system.
 SYS-CRYPTO-TRADE|CryptoTrade|T|Y|https://aclanthology.org/2024.emnlp-main.63/|https://github.com/Xtra-Computing/CryptoTrade|41|Paper and repository are one lineage; task incompatibility does not remove it from the broad denominator.|IN: reflective sequential cryptocurrency agent.
 SYS-FACTFIN|FactFin|T|Y|https://arxiv.org/abs/2510.07920||—|Profit Mirage defines FactFin and FinLake-Bench as distinct systems.|IN: named sequential trading system.
-SYS-FIN-AGENT|FinAgent|T|Y|https://arxiv.org/abs/2402.18485||30|One multimodal trading-agent lineage.|IN: produces sequential trading actions.
+SYS-FIN-AGENT|FinAgent|T|Y|https://arxiv.org/abs/2402.18485|https://github.com/DVampire/FinAgent|30|One multimodal trading-agent lineage; repository linked from the lead author's homepage.|IN: produces sequential trading actions.
 SYS-FIN-ANALYST|Fin-Analyst at FinMMEval Task 3|T|Y|https://arxiv.org/abs/2607.12233||—|Participant is distinct from the benchmark and CLaC participant.|IN: eight-specialist LLM trading system.
 SYS-FIN-CON|FinCon|T|Y|https://arxiv.org/abs/2407.06567|https://github.com/The-FinAI/FinCon|29|Paper and listed repository are one lineage; MXGao-A/FAgent is not separate.|IN: multi-agent portfolio/trading method.
 SYS-FIN-MEM|FinMem|T|Y|https://arxiv.org/abs/2311.13743|https://github.com/pipiku915/finmem-llm-stocktrading|28|Paper and official implementation are one lineage.|IN: memory-augmented sequential trading agent.

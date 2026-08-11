@@ -46,11 +46,11 @@ M0 narrative translations; none is silently treated as a failed paper.
 
 The paper-level route is now explicit in
 `paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv`.
-Of 69 retained works, 18 have reachable public code/artifact snapshots and
+Of 69 retained works, 19 have reachable public code/artifact snapshots and
 must receive native execution or a precise blocker before any proxy is treated
-as a secondary diagnostic. The other 51 are paper-only or have inaccessible
+as a secondary diagnostic. The other 50 are paper-only or have inaccessible
 artifacts. None is currently claimed as a full paper-only prompt/search/training
-reproduction: three support only partial source-grounded components, 24 support
+reproduction: three support only partial source-grounded components, 23 support
 clearly labeled motif proxies, and 24 remain availability-only. See
 `docs/EVIDENCE_ROUTE_POLICY.md` for the precedence rule and exact crosswalk.
 

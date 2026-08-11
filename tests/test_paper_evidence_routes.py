@@ -41,8 +41,8 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
     routes = pd.read_csv(OUTPUT)
     assert len(routes) == routes["canonical_work_id"].nunique() == 69
     assert routes["paper_evidence_route"].value_counts().to_dict() == {
-        "paper_only_underspecified": 51,
-        "public_code_available": 18,
+        "paper_only_underspecified": 50,
+        "public_code_available": 19,
     }
     assert not routes["paper_evidence_route"].eq(
         "paper_only_sufficiently_specified"
@@ -55,14 +55,14 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
 def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     routes = pd.read_csv(OUTPUT)
     public = routes[routes["paper_evidence_route"].eq("public_code_available")]
-    assert len(public) == 18
+    assert len(public) == 19
     assert public["precise_native_or_access_blocker"].notna().all()
     assert public["precise_native_or_access_blocker"].str.contains(":A[123]_", regex=True).all()
     assert public["native_pipeline_disposition"].value_counts().to_dict() == {
-        "targeted_execution_recorded": 18,
+        "targeted_execution_recorded": 19,
     }
     reconstructed = public[public["good_faith_reconstruction"].eq("yes")]
-    assert len(reconstructed) == 13
+    assert len(reconstructed) == 14
     fincon = public[public["canonical_work_id"].eq("CensusArxiv240706567")]
     assert fincon["native_pipeline_disposition"].eq(
         "targeted_execution_recorded"
@@ -113,6 +113,7 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         "CensusACL2024emnlpmain63": "paper_audit:partial_174_of_468_traditional_baseline_cells",
         "CensusACL2026findingsacl456": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
         "CensusArxiv231113743": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
+        "CensusArxiv240218485": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
         "CensusArxiv250510278": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
         "CensusArxiv250909995": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
@@ -182,6 +183,6 @@ def test_generated_paper_macros_match_route_counts(tmp_path: Path) -> None:
     MODULE.write_tex_macros(routes, generated)
     assert generated.read_bytes() == TEX_OUTPUT.read_bytes()
     text = generated.read_text()
-    assert r"\newcommand{\PublicCodeRouteWorkCount}{18\xspace}" in text
+    assert r"\newcommand{\PublicCodeRouteWorkCount}{19\xspace}" in text
     assert r"\newcommand{\PaperOnlySpecifiedWorkCount}{0\xspace}" in text
-    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{51\xspace}" in text
+    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{50\xspace}" in text
