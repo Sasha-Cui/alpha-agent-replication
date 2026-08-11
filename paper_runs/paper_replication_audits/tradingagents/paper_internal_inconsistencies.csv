@@ -1,0 +1,8 @@
+dimension,paper_evidence,finding,severity
+experiment_universe,"setup names Apple, Nvidia, Microsoft, Meta, Google; Table 1 reports AAPL, GOOGL, AMZN",AMZN is not in the named five and NVDA/MSFT/META have no table results,blocks_exact_scope
+annualized_return_formula,Appendix defines AR=(Vend/Vstart)^(1/N)-1 with N years; experiment spans 2024-01-01 to 2024-03-29,all 17 displayed CR/AR pairs fail the literal equation at display precision,paper_internal_numeric_inconsistency
+GOOGL_ZMR_return_sign,CR=-0.58% and AR=+0.58%,the two signs cannot both follow the published formulas for positive N,paper_internal_numeric_inconsistency
+GOOGL_SR_improvement,TradingAgents SR=6.39; best displayed baseline SR=2.31; improvement=4.26,"displayed subtraction is 4.08, not 4.26",paper_internal_arithmetic_error
+improvement_units,row is labeled Improvement(%),"seven cells are exact absolute metric-point differences, not relative percentage improvements",metric_label_ambiguity
+maximum_drawdown_claim,text says maximum drawdown does not exceed 2; AMZN TradingAgents MDD is 2.11%,the prose upper bound is contradicted by Table 1,paper_internal_numeric_inconsistency
+figure_value_metric_alignment,"broker values are 130501.44, 124872.71, 127586.29; initial capital is undisclosed","under an inferred 100000 initial balance, implied returns align within 0.03 points of AR, not CR; this is suggestive only",unresolved_metric_provenance

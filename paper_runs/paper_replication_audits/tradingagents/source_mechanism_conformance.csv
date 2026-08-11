@@ -1,0 +1,46 @@
+dimension,paper_requirement,v0_1_0_evidence,status,paper_mechanism_credit
+public_revision_timing,paper-era implementation by 2025-06-03,first code release 2025-06-05; predecessor has only three site files,nearest_post_paper_release,False
+four_analyst_roles,"fundamental, sentiment/social, news, technical/market",four corresponding analyst nodes,component_match,True
+analyst_concurrency,four analysts concurrently gather information,analysts execute sequentially in selected_analysts order,mismatch,False
+structured_global_state,structured reports in shared state,typed AgentState report fields and message clearing,component_match,True
+bull_bear_debate,bull and bear researchers,Bull Researcher and Bear Researcher routing,component_match,True
+research_facilitator,facilitator selects prevailing view,Research Manager node,component_match,True
+trader,trader synthesizes reports/debate,Trader node and investment plan,component_match,True
+risk_perspectives,"risk-seeking, neutral, conservative debate","Risky, Neutral, Safe nodes",component_match,True
+fund_manager,separate fund manager approves and executes,Risk Judge ends graph; no order execution node,mismatch_conflated,False
+action_vocabulary,"buy, sell, hold",signal processor extracts BUY/SELL/HOLD,component_match,True
+react_tool_use,ReAct-style reasoning and acting,tool-calling analyst loops,component_analogue,True
+reflection_memory,reflective agent improves decisions,five Chroma memories plus manual reflect_and_remember,component_analogue,True
+automatic_reflection,reflection integrated in sequential backtest,caller must inject realized return; example call is commented,missing,False
+experiment_model_families,gpt-4o/o1-preview family split,README states o1-preview and gpt-4o experiments,documentation_match_no_frozen_config,True
+executable_experiment_model_config,paper experiment configuration,defaults are o4-mini/gpt-4o-mini; example uses gpt-4.1-nano,mismatch,False
+node_model_assignment,"analysts, researchers, traders use deep models",all those nodes use quick model; only two managers use deep model,mismatch,False
+sampling_configuration,exact paper sampling,"quick temperature=0.1, auxiliary temperature=1, deep unspecified",incomplete,False
+debate_round_control,n rounds determined by facilitator,hardcoded ConditionalLogic default 1; config value not passed,mismatch,False
+risk_round_control,n rounds guided by facilitator,hardcoded ConditionalLogic default 1; config value not passed,mismatch,False
+recursion_control,experiment recursion configuration,Propagator default 100; config max_recur_limit not passed,mismatch,False
+multimodal_categories,"prices, news, social, insiders, statements, indicators",broad corresponding tool categories,component_analogue,True
+data_providers,"Bloomberg, Yahoo, EODHD, FinnHub, Reddit, X/Twitter, SEDI","Yahoo, Google, FinnHub, Reddit, SimFin, OpenAI web search",mismatch,False
+technical_indicator_count,60 indicators per asset,13 selectable indicator keys,mismatch,False
+paper_case_tools,11 unique named tools in appendix transcript,6 exact names present; 5 absent,partial_component_analogue,True
+paper_case_output,AAPL 2024-11-19 published transcript and BUY,"no frozen prompt inputs, trace, or deterministic replay",missing,False
+offline_data_snapshot,paper multimodal panel,author-local /Users/yluo/.../FR1-data path; files absent,missing,False
+point_in_time_guarantee,only data available by each trade day,mutable online search and no released timestamped snapshot,unverifiable,False
+single_ticker_interface,multi-asset simulation,"propagate(company_name, trade_date) has no portfolio input",mismatch,False
+portfolio_state,portfolio/fund state across days,"no holdings, cash, orders, or portfolio state",missing,False
+position_sizing,timing and size of trades,final output is categorical action only,missing,False
+execution_engine,approved order executed in simulated exchange,no exchange/broker execution path,missing,False
+long_short_semantics,figure captions show long/short positions,BUY/SELL/HOLD extraction without borrow or position semantics,missing,False
+transaction_costs,realistic net trading,no commission/slippage/borrow implementation,missing,False
+baseline_implementations,"B&H, MACD, KDJ+RSI, ZMR, SMA",no baseline strategy source files,missing,False
+metric_implementations,"CR, AR, SR, MDD",no metric calculator,missing,False
+paper_backtest_runner,2024-01-01 through 2024-03-29,one-day propagate example only,missing,False
+paper_experiment_config,exact assets/models/data/rounds,no paper config or reproduction script,missing,False
+trials_and_seeds,published estimator provenance,"no trial count, seeds, or aggregation path",missing,False
+paper_outputs,"actions, fills, NAVs, returns, metrics, plots",no tracked eval_results or dated output,missing,False
+runtime_state_logging,explainable structured decision trace,writes full_states_log.json when run,component_match,True
+source_prompts,role-specific prompts,role prompt functions are shipped,component_match_unverified_experiment_version,True
+upstream_tests,validated source release,v0.1.0 ships no tests or CI,missing,False
+dependency_lock,reconstructible environment,unversioned requirements and no lockfile,missing,False
+auxiliary_web_prompt,ticker-specific social retrieval,"prompt says '{ticker} on TSLA', contaminating non-TSLA requests",source_bug,False
+published_numeric_results,77 Table 1 numeric cells plus quantitative figure/text claims,no native result path,missing,False

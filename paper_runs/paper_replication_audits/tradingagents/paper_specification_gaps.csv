@@ -1,0 +1,28 @@
+dimension,missing_or_ambiguous_specification,consequence
+asset_scope,prose and Table 1 disagree on the tested assets,blocks exact experiment set
+frozen_data,no paper-era price/news/social/fundamental snapshot is released,blocks input identity
+point_in_time_data,publication and revision timestamps for every text/fundamental item are absent,blocks look-ahead audit
+data_provider_mapping,provider-to-field and fallback precedence are not disclosed,blocks multimodal reconstruction
+sentiment_model,"auxiliary sentiment model, prompt, version, and outputs are absent",blocks sentiment feature
+technical_indicators,"the complete 60-indicator names, parameters, and warmups are absent",blocks technical input
+llm_snapshots,model families are named without immutable API snapshots,blocks LLM replay
+prompts,exact experiment prompts and tool schemas are not pinned in the paper,blocks agent replay
+sampling,"temperatures, seeds, token limits, retries, and concurrency are incomplete",blocks stochastic replay
+agent_model_assignment,paper prose and nearest source disagree on quick/deep assignment,blocks node equivalence
+debate_rounds,n and facilitator stopping behavior are not reported,blocks debate trajectory
+trials,number of trials and aggregation/selection rule are absent,blocks table estimator
+initial_capital,starting cash is not stated,blocks portfolio values
+position_sizing,"size, limits, leverage, and cash constraints are absent",blocks holdings
+execution_timing,"signal time, order time, execution price, and latency are absent",blocks returns
+shorting,short/borrow/margin semantics behind figure captions are absent,blocks short positions
+costs,"commissions, bid-ask spread, slippage, and borrow costs are absent",blocks net returns
+corporate_actions,dividend and split treatment is not specified,blocks value path
+multi_asset_portfolio,cross-asset capital allocation and rebalance semantics are absent,blocks portfolio interpretation
+baseline_parameters,"lookbacks, thresholds, sizing, and execution rules for five baselines are absent",blocks baselines
+ZMR_definition,zero reference line and signal rule are not mathematically specified,blocks ZMR
+risk_free_rate,Sharpe risk-free series/value is not reported,blocks SR
+return_frequency,Sharpe return frequency and annualization convention are absent,blocks SR
+annualization_N,N convention conflicts with the displayed AR values,blocks AR target
+metric_arrays,"daily NAVs, returns, holdings, and exact plot arrays are absent",blocks figures and metrics
+backtest_outputs,"actions, orders, fills, reflections, and baseline outputs are absent",blocks result verification
+cost_accounting,paper reports calls per prediction but no token/API cost ledger,blocks cost reproduction

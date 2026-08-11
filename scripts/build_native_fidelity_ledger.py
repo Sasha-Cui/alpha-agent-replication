@@ -167,9 +167,18 @@ ARTIFACT_NOTES = {
     ),
     "SYS-TRADING-AGENTS": (
         "N",
-        "The framework writes decisions and realized-return reflections to local "
-        "runtime state, but the pinned snapshot bundles no dated native decision "
-        "or return history.",
+        "A pinned arXiv-v7 audit enumerates all 77 numeric cells in Table 1: 68 "
+        "direct results and 9 derived improvements, plus 12 quantitative result "
+        "claims in prose/figures. The nearest official source is v0.1.0, released "
+        "about 52 hours after the paper; its parent contains only three site files. "
+        "All 39 Python files compile and dependency-isolated native graph routing "
+        "executes deterministically, while 14/45 paper mechanism dimensions match "
+        "or have meaningful analogues. These are architecture components, not the "
+        "paper experiment. No frozen multimodal data, exact config, backtest, "
+        "portfolio/execution path, baselines, metrics, actions, fills, NAVs, returns, "
+        "traces, seeds, or costs are shipped, so 0/77 table cells count as native "
+        "reproductions. The paper itself has unresolved CR/AR formula, improvement, "
+        "MDD-bound, and asset-universe inconsistencies.",
     ),
     "SYS-TRADING-R1": (
         "N",
@@ -188,6 +197,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANT-AGENT-HFT": "legacy_targeted:blocked_jkp_scope_incompatible",
     "SYS-QUANT-EVOLVER": "legacy_targeted:seed_idea_proxy_only_not_native_execution",
     "SYS-RD-AGENT-QUANT": "legacy_targeted:blocked_on_jkp_adapter",
+    "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",
     "SYS-TRADING-R1": "legacy_targeted:blocked_no_public_codebase",
 }
 

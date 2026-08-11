@@ -1,0 +1,10 @@
+asset,metric,best_displayed_baseline,TradingAgents_displayed,paper_improvement_pct_label,absolute_difference_from_displayed_cells,relative_improvement_pct,paper_minus_absolute_difference,status
+AAPL,CR_pct,2.05,26.62,24.57,24.57,1198.5365853658539,0.0,exact_absolute_difference_from_displayed_cells
+AAPL,AR_pct,2.07,30.5,28.43,28.43,1373.4299516908213,0.0,exact_absolute_difference_from_displayed_cells
+AAPL,SR,1.64,8.21,6.57,6.570000000000001,400.60975609756105,-8.881784197001252e-16,exact_absolute_difference_from_displayed_cells
+GOOGL,CR_pct,7.78,24.36,16.58,16.58,213.11053984575832,0.0,exact_absolute_difference_from_displayed_cells
+GOOGL,AR_pct,8.09,27.58,19.49,19.49,240.91470951792334,0.0,exact_absolute_difference_from_displayed_cells
+GOOGL,SR,2.31,6.39,4.26,4.08,176.62337662337663,0.17999999999999972,inconsistent_with_displayed_cells
+AMZN,CR_pct,17.1,23.21,6.1,6.109999999999999,35.73099415204678,-0.009999999999999787,not_exact_from_displayed_cells_hidden_precision_could_explain
+AMZN,AR_pct,17.6,24.9,7.3,7.299999999999997,41.477272727272705,2.6645352591003757e-15,exact_absolute_difference_from_displayed_cells
+AMZN,SR,3.53,5.6,2.07,2.07,58.640226628895185,0.0,exact_absolute_difference_from_displayed_cells

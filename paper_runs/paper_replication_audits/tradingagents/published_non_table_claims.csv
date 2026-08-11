@@ -1,0 +1,15 @@
+paper_location,claim,paper_value,unit,claim_role,exactness,native_reproduced_value,status,paper_result_credit
+Section 6.1.1,minimum TradingAgents cumulative return,23.21,pct,result,exact,,unavailable_missing_native_paper_result_path,False
+Section 6.1.1,minimum TradingAgents annual return,24.9,pct,result,exact,,unavailable_missing_native_paper_result_path,False
+Section 6.1.1,margin over best baseline,6.1,pct,result,exact,,unavailable_missing_native_paper_result_path,False
+Section 6.1.1,AAPL return lower bound,26.0,pct,result,lower_bound,,unavailable_missing_native_paper_result_path,False
+Section 6.1.3,claimed maximum drawdown upper bound,2.0,pct,result,upper_bound,,unavailable_missing_native_paper_result_path,False
+Section 6.1.2 footnote,LLM calls per prediction,11.0,calls,configuration,exact,,configuration_documented_not_reproduced,False
+Section 6.1.2 footnote,tool calls per prediction,20.0,calls,configuration,lower_bound,,configuration_documented_not_reproduced,False
+Figure 6,AAPL ending broker cash annotation,246516.57,currency_units,result,exact,,unavailable_missing_native_paper_result_path,False
+Figure 6,AAPL ending broker value annotation,130501.44,currency_units,result,exact,,unavailable_missing_native_paper_result_path,False
+Figure S1,AMZN ending broker cash annotation,12315.59,currency_units,result,exact,,unavailable_missing_native_paper_result_path,False
+Figure S1,AMZN ending broker value annotation,124872.71,currency_units,result,exact,,unavailable_missing_native_paper_result_path,False
+Figure S3,GOOGL ending broker cash annotation,116445.06,currency_units,result,exact,,unavailable_missing_native_paper_result_path,False
+Figure S3,GOOGL ending broker value annotation,127586.29,currency_units,result,exact,,unavailable_missing_native_paper_result_path,False
+Figure S3,GOOGL displayed negative trade PnL,-254.11,currency_units,result,exact,,unavailable_missing_native_paper_result_path,False
