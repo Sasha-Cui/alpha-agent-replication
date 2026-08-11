@@ -184,6 +184,32 @@ def test_alpha_jungle_audit_preserves_zero_result_and_component_boundaries() -> 
     assert "AR-to-AER metric-definition change" in blocker
 
 
+def test_fama_audit_preserves_zero_result_and_motif_only_boundaries() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[
+        routes["canonical_work_id"].eq("CensusACL2024findingsacl233")
+    ].iloc[0]
+    assert row["paper_evidence_route"] == "paper_only_underspecified"
+    assert row["reachable_public_code_system_ids"] == ""
+    assert row["native_pipeline_disposition"] == (
+        "paper_only_audit_recorded_no_native_code_pipeline"
+    )
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_"
+        "no_native_pipeline_equation_conflicts"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_fidelity_tiers"] == "M1_example_or_motif_partial_support"
+    assert row["mapping_disposition"] == "source_grounded_component_only"
+    assert row["proxy_role"] == "partial_source_component_not_full_procedure"
+    blocker = row["precise_native_or_access_blocker"]
+    assert "zero are reproduced" in blocker
+    assert "71 Appendix-B identifiers" in blocker
+    assert "without the Pearson square root" in blocker
+    assert "preserves only a momentum/trend motif" in blocker
+    assert "receive no FAMA-result credit" in blocker
+
+
 def test_alpha_r1_placeholder_audit_never_promotes_the_motif_proxy() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
     row = routes[routes["canonical_work_id"].eq("CensusArxiv251223515")].iloc[0]

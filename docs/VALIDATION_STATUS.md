@@ -8,7 +8,7 @@ tracked aggregate evidence on Bouchet.
 | Artifact | SHA-256 |
 | --- | --- |
 | `docs/paper/icaif2026_submission.tex` | `70ad767203d3e118fc5ff2b764e4d9e02fd4bccfc03b9736d7a640d02fe88bda` |
-| `output/pdf/icaif2026_submission.pdf` | `3c7089643b57c4580a5f8a5c32e22e383f51f267cce4ebbf5d6d1b1f4fc0cdee` |
+| `output/pdf/icaif2026_submission.pdf` | `235d672d82736a6ddca1c259fe09790c202901473c0904c5d8543e721973a853` |
 
 The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
@@ -17,7 +17,7 @@ labels.
 
 ## Passing checks
 
-- Repository test suite: 225 passed (one third-party deprecation warning).
+- Repository test suite: 234 passed (one third-party deprecation warning).
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
@@ -48,6 +48,12 @@ labels.
   adaptations and receive component rather than paper-result credit. The
   unaffiliated community implementation fails import and test collection and
   receives no native credit; version-lineage and AR/AER conflicts are recorded.
+- FAMA full-paper audit: all 65 numeric table results and 38 visible result
+  markers are enumerated, with zero native paper-result paths. The paper claims
+  38 initial factors but Appendix B lists 71; its printed correlation equation,
+  factor-acceptance algorithm, data split, prompt, and portfolio specification
+  do not determine one exact implementation. The existing local mapping remains
+  a momentum/trend motif only and receives no native FAMA-result credit.
 - Stable ICAIF validation entry point: passed.
 - Collaborator index: deterministic 50-row rebuild with no tracked diff.
 - Publication boundary: no tracked Parquet files, third-party repository

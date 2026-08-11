@@ -292,6 +292,22 @@ PAPER_ONLY_AUDIT_NOTES = {
         "48 values relabelled from v1 asset Scores-to-Weights to the materially "
         "different v2 RMT/QP factor-weighting mechanism without released run lineage."
     ),
+    "SYS-FAMA": (
+        "A pinned ACL-final FAMA audit inventories all 65 numeric performance cells "
+        "in Tables 1, 2, and 4 and all 38 visible result markers in Figures 3--4; "
+        "zero are reproduced. The official record links only the PDF, and no "
+        "author-linked code, data snapshot, immutable model/API request, filled "
+        "prompt, final mined factors, search/experience traces, predictions, "
+        "portfolio paths, seeds, or raw results are released. Appendix D supplies "
+        "one prompt template but leaves function_definition unresolved. Exact "
+        "reconstruction is also blocked by paper conflicts: 38 claimed initial "
+        "factors versus 71 Appendix-B identifiers, a printed correlation equation "
+        "without the Pearson square root, Algorithm 1 adding every generated factor "
+        "outside its improvement conditional, and a fitting window that crosses the "
+        "declared training/validation split. The local M1 mapping preserves only a "
+        "momentum/trend motif; its other characteristics and portfolio rule are "
+        "researcher supplied and receive no FAMA-result credit."
+    ),
     "SYS-FLAG-TRADER": (
         "A pinned ACL-final/arXiv-v3 audit inventories all 360 displayed numeric "
         "result cells. Six of 20 checked Buy-and-Hold baseline cells reproduce "
@@ -316,6 +332,7 @@ TARGETED_EXECUTION = {
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",
     "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
+    "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
     "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
