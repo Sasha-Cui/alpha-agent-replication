@@ -161,6 +161,29 @@ def test_efs_paper_only_audit_preserves_versions_and_zero_native_credit() -> Non
     assert "48 values relabelled" in row["precise_native_or_access_blocker"]
 
 
+def test_alpha_jungle_audit_preserves_zero_result_and_component_boundaries() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv250511122")].iloc[0]
+    assert row["paper_evidence_route"] == "paper_only_underspecified"
+    assert row["reachable_public_code_system_ids"] == ""
+    assert row["native_pipeline_disposition"] == (
+        "paper_only_audit_recorded_no_native_code_pipeline"
+    )
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_zero_of_64_published_cells_zero_native_results_"
+        "three_of_six_formula_trees_conditionally_adapted"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["mapping_fidelity_tiers"] == "M1_example_or_motif_partial_support"
+    assert row["mapping_disposition"] == "source_grounded_component_only"
+    assert row["proxy_role"] == "partial_source_component_not_full_procedure"
+    blocker = row["precise_native_or_access_blocker"]
+    assert "Zero official result cells reproduce" in blocker
+    assert "Three of six disclosed factor formulas" in blocker
+    assert "unaffiliated community repository" in blocker
+    assert "AR-to-AER metric-definition change" in blocker
+
+
 def test_alpha_r1_placeholder_audit_never_promotes_the_motif_proxy() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
     row = routes[routes["canonical_work_id"].eq("CensusArxiv251223515")].iloc[0]

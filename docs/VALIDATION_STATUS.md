@@ -8,7 +8,7 @@ tracked aggregate evidence on Bouchet.
 | Artifact | SHA-256 |
 | --- | --- |
 | `docs/paper/icaif2026_submission.tex` | `70ad767203d3e118fc5ff2b764e4d9e02fd4bccfc03b9736d7a640d02fe88bda` |
-| `output/pdf/icaif2026_submission.pdf` | `17d26699b8a62b3f2f06da6a4497661de37071d5d75a8322355ac78ffc01c908` |
+| `output/pdf/icaif2026_submission.pdf` | `3c7089643b57c4580a5f8a5c32e22e383f51f267cce4ebbf5d6d1b1f4fc0cdee` |
 
 The PDF is six US-Letter pages, unencrypted, anonymous, and built with the
 vendored ACM `acmart` 2.19 production template. All fonts are embedded and the
@@ -17,7 +17,7 @@ labels.
 
 ## Passing checks
 
-- Repository test suite: 157 passed.
+- Repository test suite: 225 passed (one third-party deprecation warning).
 - Fresh-clone source/PDF artifact audit: 62 of 62 checks passed without a
   LaTeX build log.
 - Explicit release-build audit: 71 of 71 checks passed, including the supplied
@@ -42,6 +42,12 @@ labels.
   statement conflicts with the repository's Coming Soon roadmap. Its local M0
   motif proxy remains secondary and receives no replication credit; the
   full-paper strict gate fails as intended.
+- Alpha-Jungle full-paper audit: all 64 official AAAI result cells, 956 arXiv-v1
+  cells, and 1,312 arXiv-v3 cells are enumerated, with zero native paper-result
+  paths. Three of six disclosed formulas execute only as monthly JKP U.S.
+  adaptations and receive component rather than paper-result credit. The
+  unaffiliated community implementation fails import and test collection and
+  receives no native credit; version-lineage and AR/AER conflicts are recorded.
 - Stable ICAIF validation entry point: passed.
 - Collaborator index: deterministic 50-row rebuild with no tracked diff.
 - Publication boundary: no tracked Parquet files, third-party repository

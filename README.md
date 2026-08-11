@@ -57,6 +57,7 @@ then inspect the three principal evidence packages:
 - [`paper_runs/faithful_component_replications/`](paper_runs/faithful_component_replications/) - primary three-component census, strict grade-B ledger, source pins, and attribution outputs.
 - [`paper_runs/paper_replication_audits/quantevolver/`](paper_runs/paper_replication_audits/quantevolver/) - fail-closed full-paper audit that keeps the 3/3 component gate separate from 0/75 paper results.
 - [`paper_runs/paper_replication_audits/alpha_r1/`](paper_runs/paper_replication_audits/alpha_r1/) - fail-closed audit of 652 displayed results and the paper/source availability conflict in the official one-file placeholder.
+- [`paper_runs/paper_replication_audits/alpha_jungle/`](paper_runs/paper_replication_audits/alpha_jungle/) - fail-closed three-edition audit of 64 official published cells, 2,268 extended-version cells, six disclosed formulas, prompt and figure evidence, version-lineage conflicts, and an unaffiliated community implementation; zero native paper results are claimed.
 - [`paper_runs/paper_replication_audits/efs/`](paper_runs/paper_replication_audits/efs/) - fail-closed two-version audit of 773 original and 877 revised table cells, with cited-baseline credit kept separate from zero native EFS results and 48 semantically relabelled carryovers identified.
 - [`paper_runs/prompt_replay/guruagents/performance/`](paper_runs/prompt_replay/guruagents/performance/) - the 190-cell GuruAgents replay, 24 costed paths, and 12-path-by-33-month matched attribution.
 
@@ -85,7 +86,7 @@ process, or published performance table.
 
 ## Current ICAIF Submission
 
-- [`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf) - current tracked six-page anonymous submission PDF (verified August 10, 2026). A later final build can change the page count, so rerun validation before submission.
+- [`output/pdf/icaif2026_submission.pdf`](output/pdf/icaif2026_submission.pdf) - current tracked six-page anonymous submission PDF (verified August 11, 2026). A later final build can change the page count, so rerun validation before submission.
 - [`docs/paper/icaif2026_submission.tex`](docs/paper/icaif2026_submission.tex) - submission source using the vendored ACM 2.19 template.
 - [`docs/FIDELITY_AUDIT.md`](docs/FIDELITY_AUDIT.md) - current claim and fidelity boundary.
 - [`paper_runs/submission_evidence/strict_proxy_fidelity_audit/`](paper_runs/submission_evidence/strict_proxy_fidelity_audit/) - strict audit of the legacy 50 mappings.

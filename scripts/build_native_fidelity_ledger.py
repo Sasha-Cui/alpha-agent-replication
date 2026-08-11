@@ -266,6 +266,20 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-ALPHA-JUNGLE": (
+        "A pinned three-edition Alpha-Jungle audit inventories 64 official AAAI "
+        "table cells, 956 original-v1 cells, and 1,312 current-v3 extended-table "
+        "cells. Zero official result cells reproduce, and no author-linked source, "
+        "factor pools, search traces, exact inputs, seeds, or result records are "
+        "released. Three of six disclosed factor formulas execute only as monthly "
+        "JKP U.S. adaptations; these are formula components, not the paper experiment, "
+        "and receive no paper-result credit. An unaffiliated community repository "
+        "fails package import and all three test collections and conflicts with core "
+        "paper settings, so it receives no native credit. Of 932 v1/v3 common result "
+        "cells, 925 are identical at display precision; 16 ablation values persist "
+        "through an AR-to-AER metric-definition change without released lineage, and "
+        "the v3 appendix still labels 228 result cells AR."
+    ),
     "SYS-EFS": (
         "A pinned two-version EFS audit inventories 773 original-v1 and 877 "
         "current-v2 numeric table-result cells. Executing the cited 1/N formula "
@@ -294,6 +308,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
+    "SYS-ALPHA-JUNGLE": "paper_audit:completed_zero_of_64_published_cells_zero_native_results_three_of_six_formula_trees_conditionally_adapted",
     "SYS-ALPHA-MEMO": "paper_audit:completed_zero_of_474_native_results",
     "SYS-ALPHA-R1": "paper_audit:completed_zero_of_652_native_results_official_placeholder",
     "SYS-ALPHA-QUANTER": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
