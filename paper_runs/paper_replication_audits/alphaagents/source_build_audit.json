@@ -1,0 +1,19 @@
+{
+  "active_duplicate_labels": {
+    "fig:enter-label": 3,
+    "fig:risk-neutral-sharpe": 2
+  },
+  "boundary": "rebuilding the manuscript does not reconstruct the agent pipeline or plotted data",
+  "compiler_declared_by_arxiv": "pdflatex",
+  "document_rebuild_credit": true,
+  "experimental_reproduction_credit": false,
+  "local_compiler_environment": "Bouchet texlive/20240312-GCC-13.3.0",
+  "official_pages": 9,
+  "rebuilt_pages": 9,
+  "rebuilt_pdf_sha256": "6bdae17571919346fd7f62fe7e2b5fceeed87df7bf5beea71f145c37a48034ac",
+  "source_document_rebuild_succeeded": true,
+  "texlive_declared_by_arxiv": "2023",
+  "token_multiset_intersection": 6004,
+  "token_multiset_jaccard": 0.9976736457294783,
+  "token_multiset_union": 6018
+}

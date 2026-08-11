@@ -1,0 +1,10 @@
+location,configuration_field,published_value,audit_status,paper_result_credit
+Section 2.1,specialist agents,3,enumerated_not_execution_verified,no
+Section 2.2.3,trading days per year,252,enumerated_not_execution_verified,no
+Section 2.2.4,minimum speaking opportunities per agent,2,enumerated_not_execution_verified,no
+Section 3.2,technology stocks,15,enumerated_not_execution_verified,no
+Section 3.2,agent input month,January 2024,enumerated_not_execution_verified,no
+Section 3.2,portfolio initialization,2024-02-01,enumerated_not_execution_verified,no
+Section 3.2,monitoring horizon,4 months,enumerated_not_execution_verified,no
+Section 3.2,risk-free tenor,1 month Treasury,enumerated_not_execution_verified,no
+Section 4.3,sentiment/valuation historical horizon,1--3 months,enumerated_not_execution_verified,no

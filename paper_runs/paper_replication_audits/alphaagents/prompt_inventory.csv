@@ -1,0 +1,11 @@
+prompt_id,purpose,source_location,recovery_status,salient_fragment,replication_boundary,native_runtime_message_recovered
+P001,valuation role,paper_text,recovered,As a valuation equity analyst,role only; no risk profile,no
+P002,sentiment role,paper_text,recovered,As a sentiment equity analyst,role only; no data-window/tool schema,no
+P003,fundamental role,paper_text,recovered,As a fundamental financial equity analyst,role only; runtime RAG settings absent,no
+P004,news summarization,paper_text,recovered,provide a concise summary,"guiding fragment, not full runtime message",no
+P005,multi-agent collaboration,paper_text,recovered,You are a helpful assistant skilled at coordinating,group prompt supplied,no
+P006,multi-agent debate,paper_text,recovered,Each agent can not decide for the whole group,group prompt supplied,no
+P007,Zscaler risk-neutral task,Figure 3 screenshot,recovered,only two option either BUY or SELL,screenshot-only example,no
+P008,risk-neutral persona/instructions,paper claim,missing,,exact profile prompt not released,no
+P009,risk-averse persona/instructions,paper claim,missing,,exact profile prompt not released,no
+P010,risk-seeking persona/instructions,paper claim,missing,,tested then excluded; exact prompt not released,no

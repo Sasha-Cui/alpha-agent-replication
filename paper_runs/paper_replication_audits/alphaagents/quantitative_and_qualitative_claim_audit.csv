@@ -1,0 +1,11 @@
+claim_id,location,claim,published_value,audit_evidence,assessment,severity,paper_result_credit
+Q001,Section 4.1,Company Z January return,13.56%,single example; input price snapshot absent,not_reproduced,major,no
+Q002,Section 4.1,S&P 500 January return,3.85%,single comparison; provider/adjustment convention absent,not_reproduced,major,no
+Q003,Section 4.1,Company Z operating margin,-14.5%,filing accession and RAG trace absent,not_reproduced,major,no
+Q004,Figure 6/Section 4.3,risk-neutral multi-agent beats benchmark and single agents,qualitative,three raster curves; no raw values or inference,not_reproduced,blocking,no
+Q005,Section 4.3,risk-averse portfolios underperform benchmark,qualitative,four raster curves; no raw values or inference,not_reproduced,blocking,no
+Q006,Section 4.3,risk-averse multi-agent has lower volatility and reduced drawdowns,qualitative,no volatility or drawdown table/series is released,not_verifiable,blocking,no
+Q007,Figure 8/Section 4.3,risk-neutral portfolios consistently beat risk-averse counterparts,qualitative,six raster curves; no raw values,not_reproduced,blocking,no
+Q008,Section 3.1,Phoenix faithfulness and relevance scores were provided,unreported,"zero score values, evaluator prompts, labels, or traces are reported",not_verifiable,blocking,no
+Q009,Conclusion,multi-agent debate improves analytical rigor,qualitative,"no controlled ablation, repeated trials, or human-review statistics",not_verifiable,blocking,no
+Q010,Method/Conclusion,collaboration reduces hallucinations and cognitive bias,qualitative,no hallucination/bias measure or comparison is reported,not_verifiable,blocking,no

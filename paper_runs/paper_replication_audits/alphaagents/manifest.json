@@ -1,0 +1,42 @@
+{
+  "audit_route": "paper_only_underspecified_with_official_source_portfolios_and_m0_local_proxies",
+  "author_linked_code_found": false,
+  "blocking_internal_consistency_issues": 5,
+  "canonical_work_id": "CensusArxiv250811152",
+  "claims_audited": 10,
+  "community_repositories_audited": 5,
+  "github_repository_searches": 7,
+  "internal_consistency_issues": 9,
+  "method_assessment_counts": {
+    "conflict": 2,
+    "missing": 40,
+    "partial": 17,
+    "specified": 30
+  },
+  "method_dimensions": 89,
+  "method_severity_counts": {
+    "blocking": 56,
+    "major": 27,
+    "none": 6
+  },
+  "native_execution": "native_execution.json",
+  "numeric_configuration_cells": 9,
+  "official_pdf_pages": 9,
+  "official_source_files": 17,
+  "overall_fidelity": "source_document_rebuilt_and_7_portfolios_recovered_but_zero_of_20_plotted_performance_series_reproduced_no_native_agent_pipeline",
+  "paper": "AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions",
+  "paper_result_credit": false,
+  "plotted_performance_series": 20,
+  "plotted_performance_series_reproduced": 0,
+  "prompt_fragments_recovered": 7,
+  "published_table_result_cells": 0,
+  "published_table_result_cells_reproduced": 0,
+  "risk_profile_prompts_recovered": 0,
+  "source_build_audit": "source_build_audit.json",
+  "source_document_rebuild_succeeded": true,
+  "source_document_token_jaccard": 0.9976736457294783,
+  "source_only_portfolios_recovered": 7,
+  "source_only_ticker_memberships_recovered": 77,
+  "source_provenance": "source_provenance.json",
+  "system_id": "SYS-ALPHA-AGENTS"
+}

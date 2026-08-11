@@ -1,0 +1,21 @@
+figure,pdf_page,official_source_asset,metric,risk_profile,portfolio,raw_values_released,native_reproduction_status,paper_result_credit
+Figure 6,6,return-neutral.png,cumulative return,risk-neutral,valuation/benchmark,no,not_reproduced_raster_line_only,no
+Figure 6,6,return-neutral.png,cumulative return,risk-neutral,fundamental,no,not_reproduced_raster_line_only,no
+Figure 6,6,return-neutral.png,cumulative return,risk-neutral,multi-agent,no,not_reproduced_raster_line_only,no
+Figure 6,6,sharpe-neutral.png,rolling Sharpe,risk-neutral,valuation/benchmark,no,not_reproduced_raster_line_only,no
+Figure 6,6,sharpe-neutral.png,rolling Sharpe,risk-neutral,fundamental,no,not_reproduced_raster_line_only,no
+Figure 6,6,sharpe-neutral.png,rolling Sharpe,risk-neutral,multi-agent,no,not_reproduced_raster_line_only,no
+Figure 7,7,return-averse.png,cumulative return,risk-averse,valuation,no,not_reproduced_raster_line_only,no
+Figure 7,7,return-averse.png,cumulative return,risk-averse,fundamental,no,not_reproduced_raster_line_only,no
+Figure 7,7,return-averse.png,cumulative return,risk-averse,multi-agent,no,not_reproduced_raster_line_only,no
+Figure 7,7,return-averse.png,cumulative return,risk-averse,benchmark,no,not_reproduced_raster_line_only,no
+Figure 7,7,sharpe-averse.png,rolling Sharpe,risk-averse,valuation,no,not_reproduced_raster_line_only,no
+Figure 7,7,sharpe-averse.png,rolling Sharpe,risk-averse,fundamental,no,not_reproduced_raster_line_only,no
+Figure 7,7,sharpe-averse.png,rolling Sharpe,risk-averse,multi-agent,no,not_reproduced_raster_line_only,no
+Figure 7,7,sharpe-averse.png,rolling Sharpe,risk-averse,benchmark,no,not_reproduced_raster_line_only,no
+Figure 8,7,valuation.png,cumulative return,risk-neutral,valuation,no,not_reproduced_raster_line_only,no
+Figure 8,7,valuation.png,cumulative return,risk-averse,valuation,no,not_reproduced_raster_line_only,no
+Figure 8,7,fundamental.png,cumulative return,risk-neutral,fundamental,no,not_reproduced_raster_line_only,no
+Figure 8,7,fundamental.png,cumulative return,risk-averse,fundamental,no,not_reproduced_raster_line_only,no
+Figure 8,7,multi.png,cumulative return,risk-neutral,multi-agent,no,not_reproduced_raster_line_only,no
+Figure 8,7,multi.png,cumulative return,risk-averse,multi-agent,no,not_reproduced_raster_line_only,no

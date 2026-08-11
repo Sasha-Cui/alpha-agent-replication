@@ -1,0 +1,90 @@
+dimension,paper_or_source_specification,assessment,severity,replication_implication
+authoritative record,arXiv:2508.11152v1 submitted 2025-08-15,specified,none,directly_specified
+authoritative PDF,nine-page v1 PDF is pinned,specified,none,directly_specified
+authoritative TeX source,v1 source archive is pinned and complete enough to compile,specified,none,directly_specified
+author-linked implementation,paper and arXiv record link no implementation,missing,blocking,cannot_exactly_reproduce
+author-linked data/results,"no data snapshot, agent outputs, or result arrays",missing,blocking,cannot_exactly_reproduce
+document rebuild,official TeX compiles to nine pages with near-identical extracted text,specified,none,directly_specified
+agent framework,Microsoft AutoGen with AutoGen Studio,specified,major,requires_interpretation_or_external_source
+agent framework version,not stated,missing,blocking,cannot_exactly_reproduce
+group-chat topology,three specialist agents plus group-chat assistant,specified,major,requires_interpretation_or_external_source
+speaker scheduling,Round Robin and each agent speaks at least twice,specified,major,requires_interpretation_or_external_source
+termination semantics,TERMINATE requested after consensus,partial,blocking,cannot_exactly_reproduce
+maximum messages/rounds,not stated,missing,blocking,cannot_exactly_reproduce
+fundamental role prompt,role text supplied,specified,major,requires_interpretation_or_external_source
+sentiment role prompt,role text supplied,specified,major,requires_interpretation_or_external_source
+valuation role prompt,role text supplied,specified,major,requires_interpretation_or_external_source
+collaboration coordinator prompt,prompt text supplied,specified,major,requires_interpretation_or_external_source
+debate coordinator prompt,prompt text supplied,specified,major,requires_interpretation_or_external_source
+risk-neutral prompt,profile said to be embedded by prompt engineering; text absent,missing,blocking,cannot_exactly_reproduce
+risk-averse prompt,profile said to be embedded by prompt engineering; text absent,missing,blocking,cannot_exactly_reproduce
+risk-seeking prompt,tested and excluded; text absent,missing,blocking,cannot_exactly_reproduce
+user task prompt,one Zscaler screenshot example only,partial,blocking,cannot_exactly_reproduce
+LLM model,GPT-4o,specified,major,requires_interpretation_or_external_source
+LLM immutable snapshot,no model revision or request date,missing,blocking,cannot_exactly_reproduce
+LLM temperature,not stated,missing,blocking,cannot_exactly_reproduce
+LLM top_p,not stated,missing,blocking,cannot_exactly_reproduce
+LLM seed,not stated,missing,blocking,cannot_exactly_reproduce
+LLM token limits,not stated,missing,blocking,cannot_exactly_reproduce
+LLM retry/error policy,not stated,missing,blocking,cannot_exactly_reproduce
+tool schemas and executable implementations,described narratively only,missing,blocking,cannot_exactly_reproduce
+annualized return formula,252-day formula supplied,specified,major,requires_interpretation_or_external_source
+annualized volatility formula,daily standard deviation times sqrt(252),specified,major,requires_interpretation_or_external_source
+valuation lookback,later described as 1--3 months,partial,blocking,cannot_exactly_reproduce
+valuation price/volume provider,Yahoo Finance,specified,major,requires_interpretation_or_external_source
+Yahoo/yfinance version,not stated,missing,blocking,cannot_exactly_reproduce
+adjusted versus unadjusted prices,not stated,missing,blocking,cannot_exactly_reproduce
+corporate actions/missing prices,not stated,missing,blocking,cannot_exactly_reproduce
+calendar/time zone,not stated,missing,major,requires_interpretation_or_external_source
+sentiment provider,Bloomberg financial news,specified,major,requires_interpretation_or_external_source
+Bloomberg news snapshot,"no article IDs, timestamps, or bodies",missing,blocking,cannot_exactly_reproduce
+sentiment lookback,January 2024 implied for experiment,partial,blocking,cannot_exactly_reproduce
+summarization prompt,one guiding fragment supplied,partial,major,requires_interpretation_or_external_source
+reflection procedure,reason/critique/refine described without iteration count,partial,blocking,cannot_exactly_reproduce
+fundamental filings,10-K/10-Q described,specified,major,requires_interpretation_or_external_source
+filing snapshots/accessions,not released for 15 stocks,missing,blocking,cannot_exactly_reproduce
+fundamental report pull,yfinance API generation/checks described; code absent,partial,blocking,cannot_exactly_reproduce
+RAG chunking,section-based context chunking described,partial,blocking,cannot_exactly_reproduce
+RAG retrieval settings,"index, chunk size, top-k, reranking absent",missing,blocking,cannot_exactly_reproduce
+RAG embedding model,GPT 4-o is named as embedding model without endpoint,conflict,blocking,cannot_exactly_reproduce
+RAG domain guide,claimed but not released,missing,blocking,cannot_exactly_reproduce
+RAG evaluation framework,Arize Phoenix,specified,major,requires_interpretation_or_external_source
+Phoenix version/evaluator configuration,not stated,missing,blocking,cannot_exactly_reproduce
+Phoenix faithfulness/relevance outputs,no score values or traces,missing,blocking,cannot_exactly_reproduce
+stock count,15 technology stocks,specified,none,directly_specified
+stock identities,77 memberships across seven portfolios recovered from commented TeX tables,specified,major,requires_interpretation_or_external_source
+sampling frame,"technology sector, but eligible universe not stated",partial,blocking,cannot_exactly_reproduce
+stock sampling seed,random selection claimed; seed absent,missing,major,requires_interpretation_or_external_source
+benchmark portfolio,same 15-stock pool with equal weights,specified,major,requires_interpretation_or_external_source
+portfolio decision date,2024-02-01,specified,none,directly_specified
+evaluation end,four months and figures ending before 2024-06-01,partial,blocking,cannot_exactly_reproduce
+portfolio asset weights,equal among selected stocks,specified,major,requires_interpretation_or_external_source
+decision labels,BUY or SELL; no HOLD in screenshot,specified,major,requires_interpretation_or_external_source
+sentiment portfolio inclusion,paper both excludes and says it was constructed,conflict,blocking,cannot_exactly_reproduce
+risk-neutral memberships,three portfolios recovered from commented source,specified,major,requires_interpretation_or_external_source
+risk-averse memberships,three portfolios recovered from commented source,specified,major,requires_interpretation_or_external_source
+rebalancing,single initialization implied; drift/rebalance treatment unstated,partial,blocking,cannot_exactly_reproduce
+execution timing/price,not stated,missing,blocking,cannot_exactly_reproduce
+transaction costs/slippage,not stated,missing,blocking,cannot_exactly_reproduce
+dividends/corporate-action adjustment,not stated,missing,blocking,cannot_exactly_reproduce
+daily portfolio return aggregation,equal weights stated; implementation absent,partial,blocking,cannot_exactly_reproduce
+cumulative return formula,not stated for Figures 6--8,missing,blocking,cannot_exactly_reproduce
+overall Sharpe formula,mean return minus risk-free rate over standard deviation,specified,major,requires_interpretation_or_external_source
+rolling Sharpe formula,sample standard deviation equation supplied,specified,major,requires_interpretation_or_external_source
+rolling window length,symbol w only; value absent,missing,blocking,cannot_exactly_reproduce
+return frequency,plots appear daily; not stated in metric definition,partial,blocking,cannot_exactly_reproduce
+risk-free source series,one-month Treasury named; exact series/provider absent,partial,blocking,cannot_exactly_reproduce
+risk-free rate conversion,periodicity conversion not stated,missing,blocking,cannot_exactly_reproduce
+Sharpe annualization,no sqrt(252) factor in printed Sharpe equations,specified,major,requires_interpretation_or_external_source
+raw equity prices,not released,missing,blocking,cannot_exactly_reproduce
+raw portfolio return paths,not released,missing,blocking,cannot_exactly_reproduce
+raw rolling Sharpe paths,not released,missing,blocking,cannot_exactly_reproduce
+performance plot values,20 line series released only as seven raster panels,missing,blocking,cannot_exactly_reproduce
+agent recommendations,source exposes final membership lists but not per-agent messages/decisions,partial,blocking,cannot_exactly_reproduce
+debate histories,claimed as supplementary output but not attached to record,missing,blocking,cannot_exactly_reproduce
+human review protocol,human review claimed; raters/instructions/outcomes absent,missing,blocking,cannot_exactly_reproduce
+RAG evaluation raw results,not released,missing,blocking,cannot_exactly_reproduce
+repeated trials/random seeds,none stated,missing,blocking,cannot_exactly_reproduce
+uncertainty/statistical testing,none reported,missing,blocking,cannot_exactly_reproduce
+community implementations,five unaffiliated repositories found; all materially diverge,partial,blocking,cannot_exactly_reproduce
+local proxy relation,"two M0 narrative translations invent factor formulas, monthly deciles, weights, and a long-short return stream",partial,blocking,cannot_exactly_reproduce

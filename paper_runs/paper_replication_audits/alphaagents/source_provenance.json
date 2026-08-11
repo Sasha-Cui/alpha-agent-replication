@@ -1,0 +1,94 @@
+{
+  "author_linked_code_or_data_found": false,
+  "community_repositories_found": [
+    "DanielTobi0/BlackRock-Finance-Agent",
+    "Rynhalt/AlphaAgents",
+    "hitmannoob/AlphaAgent",
+    "sarthakpadhi/AlphaAgent",
+    "vedurmaliya/alpha-agents"
+  ],
+  "doi": "10.48550/arXiv.2508.11152",
+  "github_repository_searches": [
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "search_snapshot_requires_manual_author_link_review",
+      "incomplete_results": "false",
+      "query": "2508.11152",
+      "repository_names": "",
+      "response_file": "github_5aa11209bb2b.json",
+      "response_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "search_snapshot_requires_manual_author_link_review",
+      "incomplete_results": "false",
+      "query": "\"AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions\"",
+      "repository_names": "DanielTobi0/BlackRock-Finance-Agent",
+      "response_file": "github_a6521b3d502d.json",
+      "response_sha256": "aac4f2a75885d285f2293ca20c4f406f0ad7bbd35549e2f7092052c4a42cfd72",
+      "total_count": "1"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "search_snapshot_requires_manual_author_link_review",
+      "incomplete_results": "false",
+      "query": "AlphaAgents equity portfolio",
+      "repository_names": "DanielTobi0/BlackRock-Finance-Agent|vedurmaliya/alpha-agents",
+      "response_file": "github_d638941443d8.json",
+      "response_sha256": "ac5a957d19832d21424c0bfed31a5bb0d5eea02055188df67aa47f594b148a3b",
+      "total_count": "2"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "search_snapshot_requires_manual_author_link_review",
+      "incomplete_results": "false",
+      "query": "AlphaAgents BlackRock",
+      "repository_names": "DanielTobi0/BlackRock-Finance-Agent|Rynhalt/AlphaAgents|hitmannoob/AlphaAgent|sarthakpadhi/AlphaAgent",
+      "response_file": "github_77de9ef56394.json",
+      "response_sha256": "e049781a0aed1dd0ae5b119a512af0fb59c6e9ce327b9e312397f50552a2b2d8",
+      "total_count": "4"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "search_snapshot_requires_manual_author_link_review",
+      "incomplete_results": "false",
+      "query": "\"Tianjiao Zhao\" AlphaAgents",
+      "repository_names": "",
+      "response_file": "github_ff4704302f89.json",
+      "response_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "search_snapshot_requires_manual_author_link_review",
+      "incomplete_results": "false",
+      "query": "\"Jingrao Lyu\" AlphaAgents",
+      "repository_names": "",
+      "response_file": "github_7e8f1f5090d7.json",
+      "response_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    },
+    {
+      "author_linked_repository_found": "no",
+      "evidence_use": "search_snapshot_requires_manual_author_link_review",
+      "incomplete_results": "false",
+      "query": "\"Dhagash Mehta\" AlphaAgents",
+      "repository_names": "",
+      "response_file": "github_3611fc1dfc8f.json",
+      "response_sha256": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+      "total_count": "0"
+    }
+  ],
+  "official_html": "https://arxiv.org/html/2508.11152v1",
+  "official_pdf": "https://arxiv.org/pdf/2508.11152v1",
+  "official_pdf_sha256": "ce48953985eaac0faf04dbf7c1b8c4e94396cd7924d56dee37d767112a3fed65",
+  "official_record": "https://arxiv.org/abs/2508.11152v1",
+  "official_record_sha256": "3c5d5e56869ddadf77e88c68f0b5ff27952b08a9131543cef73cc3e32121c6b8",
+  "official_source": "https://export.arxiv.org/e-print/2508.11152v1",
+  "official_source_sha256": "ce5a31c38b75ad89496dc6176a081f83c0afe084067a01f92e42782f5478b5f5",
+  "official_tex_sha256": "22f01c9d54fd28e86a461f294e2477585f19979f9c38f08f8b4661101b4d07c0",
+  "pages": 9,
+  "source_files": 17,
+  "version": "v1 only"
+}

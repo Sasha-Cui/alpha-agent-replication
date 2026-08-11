@@ -1,0 +1,6 @@
+repository,snapshot_commit,relationship,material_divergence,author_linked,native_paper_pipeline,paper_result_series_reproduced,paper_result_credit
+sarthakpadhi/AlphaAgent,4c61ce28e49c07797b7153653f5bf7f3a742708c,unaffiliated community reimplementation,CrewAI replaces AutoGen; gpt-4o-mini replaces GPT-4o; India .NS/live-data workflow; no paper portfolio-result reproduction,no,no,0,no
+DanielTobi0/BlackRock-Finance-Agent,82cde8fd1b8dbcb6ebf94bfcb911957e3f1e5aac,unaffiliated community reimplementation,"2025-10-31--2026-02-27 defaults, different 15-stock universe, gpt-5-mini structured outputs, FMP/Firecrawl data; charts are not the paper experiment",no,no,0,no
+Rynhalt/AlphaAgents,2eca2318a3eebdb60ab1d30a1084d2e1ede2d7c2,unaffiliated community prototype,"placeholder universe, simulated filings and deterministic mock 63-day returns; no paper data or performance paths",no,no,0,no
+hitmannoob/AlphaAgent,,unaffiliated empty repository,default branch contains no commits or implementation,no,no,0,no
+vedurmaliya/alpha-agents,8c66c28bdfe9a18814f9acdaa02b54fa3670f06c,unaffiliated community reimplementation,LangGraph/Groq GPT-OSS-120B replaces AutoGen/GPT-4o; SPY replaces the custom 15-stock benchmark; analysis uses current rather than historical snapshots,no,no,0,no

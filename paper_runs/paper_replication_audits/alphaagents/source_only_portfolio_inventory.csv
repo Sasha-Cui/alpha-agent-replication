@@ -1,0 +1,8 @@
+risk_profile,portfolio,ticker_count,tickers_in_source_order,source_status,pdf_visibility,specification_credit,native_agent_output_credit,performance_result_credit
+all,benchmark,15,MSFT|CDNS|INTU|CRM|ORCL|NOW|CRWD|MDB|ADBE|ADSK|NTNX|DDOG|PANW|SNOW|ZS,explicit_commented_source_table,commented_out_not_visible_in_official_pdf,source_only,no,no
+risk-neutral,valuation,15,MSFT|CDNS|INTU|CRM|ORCL|NOW|CRWD|MDB|ADBE|ADSK|NTNX|DDOG|PANW|SNOW|ZS,source_says_same_as_benchmark,commented_out_not_visible_in_official_pdf,source_only,no,no
+risk-neutral,fundamental,14,MSFT|CDNS|INTU|CRM|ORCL|NOW|CRWD|MDB|ADBE|ADSK|NTNX|DDOG|PANW|ZS,explicit_commented_source_table,commented_out_not_visible_in_official_pdf,source_only,no,no
+risk-neutral,multi-agent,13,MSFT|CDNS|INTU|CRM|ORCL|NOW|CRWD|MDB|ADBE|ADSK|NTNX|DDOG|PANW,explicit_commented_source_table,commented_out_not_visible_in_official_pdf,source_only,no,no
+risk-averse,valuation,10,MSFT|CDNS|INTU|CRM|NOW|ADBE|ADSK|NTNX|PANW|ZS,explicit_commented_source_table,commented_out_not_visible_in_official_pdf,source_only,no,no
+risk-averse,fundamental,4,CDNS|NOW|ADBE|ADSK,explicit_commented_source_table,commented_out_not_visible_in_official_pdf,source_only,no,no
+risk-averse,multi-agent,6,MSFT|INTU|NOW|MDB|ADBE|ADSK,explicit_commented_source_table,commented_out_not_visible_in_official_pdf,source_only,no,no
