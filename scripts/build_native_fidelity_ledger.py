@@ -40,9 +40,17 @@ URL_RE = re.compile(r"https?://[^;\s]+")
 ARTIFACT_NOTES = {
     "SYS-ALPHA-AGENT": (
         "N",
-        "The snapshot ships China-A-share research code and DSL expressions; "
-        "its README says the panel and large binaries are not in Git, and no "
-        "dated native signal or return series is bundled.",
+        "A pinned arXiv-v2 audit enumerates all 106 numeric cells in Tables 1--2: "
+        "100 results and 6 trading-day configurations, plus 18 quantitative result "
+        "claims in figures/text. The official Git history begins in July 2026, more "
+        "than a year after the paper, and implements a different CSI1000/Tushare "
+        "framework. Its 80 tests pass with import-only dependency stubs and four "
+        "named base factors execute deterministically on synthetic data, but these "
+        "are post-paper components. The source lacks the paper's three agents, AST "
+        "subtree originality, regularizers, LightGBM/Qlib portfolio, baselines, "
+        "prompts, trials, factors, and outputs. The linked 2026 data package has the "
+        "wrong markets, source, and vintage, so 0/100 table result cells count as "
+        "native reproductions.",
     ),
     "SYS-ALPHA-MEMO": (
         "N",
@@ -172,7 +180,7 @@ ARTIFACT_NOTES = {
 
 
 TARGETED_EXECUTION = {
-    "SYS-ALPHA-AGENT": "legacy_targeted:completed_no_direct_strategy_returns",
+    "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
     "SYS-ALPHA-MEMO": "paper_audit:completed_zero_of_474_native_results",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-FIN-CON": "legacy_targeted:blocked_jkp_scope_incompatible",

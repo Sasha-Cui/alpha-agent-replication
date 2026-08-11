@@ -1,0 +1,33 @@
+dimension,paper_requirement,released_implementation,status,paper_mechanism_credit
+paper_era_source,paper implementation released by June 2025,first commit 2026-07-01,mismatch_post_paper_rewrite,False
+paper_markets,CSI500 and S&P500,CSI1000/A-shares reference dataset,mismatch,False
+paper_data_sources,Baostock and Yahoo Finance,Tushare/open parquet package,mismatch,False
+paper_input_fields,OHLCV only,"price, fundamentals, industry, and market-cap fields",mismatch,False
+paper_test_period,2021-01 to 2025-01,default validation 2022-01 to 2024-12,mismatch,False
+paper_llm,GPT-3.5-turbo,gpt-4o-mini dataclass default; CLI requires MODEL,mismatch,False
+three_specialized_agents,"idea agent, factor agent, eval agent",one tool-calling trajectory/AgentScope agent,mismatch,False
+structured_idea_agent,observation/knowledge/justification/specification,not implemented as a distinct typed stage,missing,False
+factor_agent_memory,successful and failed implementations with failure modes,delivered-factor registry only,mismatch,False
+eval_agent,backtest plus similarity and performance feedback,train/validation expression evaluation tools,component_analogue,True
+operator_library,symbolic operator library,native DSL operator registry,component_match,True
+ast_representation,tree-valued AST T(f),pyparsing compiles to Python code strings,mismatch,False
+largest_common_subtree,recursive subtree isomorphism size,not implemented,missing,False
+alpha101_novelty_zoo,compare against Alpha101,no Alpha101 expressions or loader,missing,False
+similarity_kind,AST structural similarity,mean daily cross-sectional Pearson correlation,mismatch,False
+symbolic_length,algorithmic SL(f),no computation or threshold,missing,False
+parameter_count,algorithmic PC(f),no computation or threshold,missing,False
+alignment_c1,LLM hypothesis-description consistency,not implemented,missing,False
+alignment_c2,LLM description-expression consistency,not implemented,missing,False
+alignment_alpha,alpha=0.5,no scoring function,missing,False
+er_score,beta-weighted novelty/alignment/feature penalty,no scoring function,missing,False
+feedback_loop,metrics guide later iterations,tool results appended to LLM context,component_match,True
+multiple_candidates,multiple expressions per hypothesis,prompt requests 3--5 parallel train evaluations,component_analogue,True
+paper_lightgbm,"LightGBM next-day return model, depth 4",model directory remains TODO,missing,False
+paper_qlib_backtest,Qlib top-k dropout strategy,no portfolio/backtest package,missing,False
+paper_transaction_fees,market-specific buy/sell fees,no paper backtest implementation,missing,False
+paper_baselines,nine baselines in Table 2,no exact baseline runners,missing,False
+paper_trials,20 trials x 5 rounds,"no exact runner, seeds, or trajectories",missing,False
+paper_outputs,"15 factors, curves, predictions, holdings, returns, metrics",post-paper registry metrics only,missing,False
+current_registry,paper final factors,8 post-paper delivered factors,provenance_mismatch,False
+current_expressions,paper factor pool,13 post-paper DSL expressions,provenance_mismatch,False
+current_data_release,paper CSI500/S&P500 frozen panels,2026 CSI1000 Tushare package,provenance_mismatch,False

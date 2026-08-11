@@ -1,0 +1,5 @@
+expression,factor,finite_values,native_parser_executable,paper_metric_reproduced,rows,status
+"SUBTRACT(DIVIDE($close, DELAY($close, 1)), 1)",daily_return,468,True,False,480,post_paper_dsl_executes_on_synthetic_data_only
+"DIVIDE(SUBTRACT($close, $open), $open)",intraday_return,480,True,False,480,post_paper_dsl_executes_on_synthetic_data_only
+"DIVIDE(SUBTRACT($high, $low), DELAY($close, 1))",normalized_daily_range,468,True,False,480,post_paper_dsl_executes_on_synthetic_data_only
+"DIVIDE($volume, TS_MEAN($volume, 20))",relative_volume_20d,480,True,False,480,post_paper_dsl_executes_on_synthetic_data_only

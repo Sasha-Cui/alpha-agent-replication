@@ -1,0 +1,22 @@
+{
+  "source_python": "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+  "source_python_version": "Python 3.12.8",
+  "upstream_tests": {
+    "status": "passed_with_import_only_dependency_stubs",
+    "tests_passed": 80,
+    "dependency_stubs": [
+      "tushare",
+      "agentscope"
+    ],
+    "network_or_llm_calls": false,
+    "paper_result_reproduction": false,
+    "summary_tail": "80 passed in 1.53s"
+  },
+  "synthetic_base_factor_component": {
+    "synthetic_runs": 2,
+    "deterministic": true,
+    "sha256": "e0bd090308b893c6bcf97cc1589538e4fcedc4a896bb90d21a0848e92d7a5dc9",
+    "paper_result_reproduction": false
+  },
+  "paper_result_reproduction": false
+}

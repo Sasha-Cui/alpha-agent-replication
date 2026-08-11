@@ -1,0 +1,2 @@
+artifact,official_share_url,share_file_id,bytes,observed_available,observed_on,dataset_claim,paper_requirement,paper_data_credit,status
+alphaagent-data-20260703.zip,https://pan.baidu.com/s/1GsCl6McyoHyws5bl571HqQ?pwd=5qp5,640389739420941,524248466,True,2026-08-11,"CSI1000 union, Tushare, 2015-01 through 2026-06",CSI500 Baostock and S&P500 Yahoo Finance through 2025-01,False,available_post_paper_data_with_wrong_markets_source_and_vintage
