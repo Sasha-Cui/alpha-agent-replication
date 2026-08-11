@@ -141,12 +141,7 @@ def test_fail_closed_validator_rejects_a_conditional_counted_grade(
     tmp_path: Path,
 ) -> None:
     source = Path(__file__).resolve().parents[1] / "paper_runs/faithful_component_replications"
-    for name in (
-        "manifest.json",
-        "faithfulness_ledger.csv",
-        "monthly_return_paths.csv",
-        "formation_holdings.csv",
-    ):
+    for name in ("manifest.json", "faithfulness_ledger.csv"):
         shutil.copy2(source / name, tmp_path / name)
     ledger_path = tmp_path / "faithfulness_ledger.csv"
     ledger = pd.read_csv(ledger_path)
