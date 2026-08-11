@@ -1,0 +1,9 @@
+asset,published_accuracy_pct,paper_described_feature_rows_zero_based,paper_described_reference_close_index,paper_described_correct_hits_of_300,paper_described_accuracy_pct,paper_described_absolute_error,paper_described_status,inferred_feature_rows_zero_based,inferred_reference_close_index,undocumented_feature_gap_rows,inferred_correct_hits_of_300,inferred_accuracy_pct,inferred_absolute_error,inferred_status
+BTC,46.0,57:97,96,135,45.0,1.0,mismatch,54:94,96,94:97,138,46.0,0.0,display_match_only_with_undocumented_three_bar_gap
+CL,54.3,57:97,96,169,56.333333333333336,2.0333333333333385,mismatch,54:94,96,94:97,163,54.333333333333336,0.033333333333338544,display_match_only_with_undocumented_three_bar_gap
+DJI,52.0,57:97,96,159,53.0,1.0,mismatch,54:94,96,94:97,156,52.0,0.0,display_match_only_with_undocumented_three_bar_gap
+ES,43.0,57:97,96,146,48.666666666666664,5.666666666666664,mismatch,54:94,96,94:97,129,43.0,0.0,display_match_only_with_undocumented_three_bar_gap
+VIX,48.7,57:97,96,149,49.666666666666664,0.9666666666666615,mismatch,54:94,96,94:97,146,48.666666666666664,0.033333333333338544,display_match_only_with_undocumented_three_bar_gap
+NQ,48.7,57:97,96,143,47.666666666666664,1.0333333333333385,mismatch,54:94,96,94:97,146,48.666666666666664,0.033333333333338544,display_match_only_with_undocumented_three_bar_gap
+QQQ,56.0,57:97,96,182,60.666666666666664,4.666666666666664,mismatch,54:94,96,94:97,168,56.0,0.0,display_match_only_with_undocumented_three_bar_gap
+SPX,59.7,57:97,96,177,59.0,0.7000000000000028,mismatch,54:94,96,94:97,179,59.666666666666664,0.033333333333338544,display_match_only_with_undocumented_three_bar_gap

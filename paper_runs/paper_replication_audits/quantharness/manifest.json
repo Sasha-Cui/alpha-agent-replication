@@ -1,0 +1,90 @@
+{
+  "audit": "QuantHarness paper v4 Tables 1--2 versus pinned public release",
+  "overall_status": "not_reproduced_released_benchmark_and_lr_diagnostic_only",
+  "full_paper_reproduced": false,
+  "paper_url": "https://arxiv.org/pdf/2509.09995v4",
+  "paper_version": "arXiv:2509.09995v4",
+  "paper_sha256": "751e6e7274bbf1fd5179153a28d2d29817c704b5d9b714b04ba57bd739cafda2",
+  "source_url": "https://github.com/Y-Research-SBU/QuantAgent",
+  "source_commit": "00a88cbbc3b946cbdf506038545d6b5c2df6a344",
+  "source_commit_date": "2026-07-23",
+  "paper_numeric_tables_audited": [
+    1,
+    2
+  ],
+  "paper_numeric_result_cells_total": 272,
+  "paper_table_cell_counts": {
+    "1": 120,
+    "2": 152
+  },
+  "native_paper_result_cells_reproduced": 0,
+  "paper_internal_delta_identity_cells_consistent": 23,
+  "paper_internal_delta_identity_cells_inconsistent": 1,
+  "paper_described_lr_accuracy_cells_recomputed": 8,
+  "paper_described_lr_accuracy_cells_matched": 0,
+  "paper_described_lr_accuracy_cells_mismatched": 8,
+  "published_lr_accuracy_cells_exact_only_with_undocumented_three_bar_feature_gap": 8,
+  "lr_alignment_search_exact_pairs": [
+    {
+      "feature_window_end_exclusive": 94,
+      "reference_close_index": 96
+    }
+  ],
+  "inferred_gap_lr_extrema_cells_recomputed": 16,
+  "inferred_gap_lr_extrema_cells_display_matched": 7,
+  "inferred_gap_lr_extrema_cells_mismatched": 9,
+  "numeric_result_cells_unverifiable": 224,
+  "table_1_numeric_cells_unverifiable": 120,
+  "table_2_numeric_cells_unverifiable": 104,
+  "released_benchmark_csv_files": 1600,
+  "released_benchmark_rows_with_overlap": 160000,
+  "released_benchmark_asset_horizon_sets": 16,
+  "released_sets_with_100_segments_of_100_rows": 16,
+  "released_sets_whose_union_matches_paper_date_endpoints": 16,
+  "released_distinct_timestamps_by_set": {
+    "4082": 15,
+    "4440": 1
+  },
+  "original_5000_bar_panels_shipped": false,
+  "benchmark_tree_sha256": "dfee104e3df70179e87037c2ba8620a2d952e0be337eb01741593f8918d306cc",
+  "tracked_source_files_total": 1644,
+  "tracked_non_benchmark_files_total": 44,
+  "native_agent_predictions_or_return_series_shipped": false,
+  "native_table_1_portfolio_paths_shipped": false,
+  "native_experiment_evaluator_shipped": false,
+  "native_lr_baseline_implementation_shipped": false,
+  "native_xgboost_baseline_implementation_shipped": false,
+  "native_random_baseline_implementation_shipped": false,
+  "one_hour_numeric_result_paths_shipped": false,
+  "paper_llm_models_disclosed": false,
+  "paper_llm_temperatures_disclosed": false,
+  "source_dependency_versions_pinned": false,
+  "active_public_web_path_enforces_three_bar_holdout": false,
+  "audit_called_llm_or_paid_external_api": false,
+  "paper_table_1_positive_tradingagent_drawdown_anomalies": 8,
+  "paper_internal_anomalies_total": 9,
+  "interpretation": "The release preserves a substantial benchmark component: 1,600 sampled CSVs, all expected segment sizes, and exact paper date endpoints. The paper-described 40-close LR reconstruction matches 0/8 published accuracies. All 8 values match only when the feature window ends three rows before the current/reference close, an undocumented gap that is unique in a bounded exhaustive alignment search. This is forensic component evidence, not QuantHarness replication: no native predictions, risk ratios, evaluator, baselines, seeds, portfolio paths, or numeric one-hour outputs are shipped, leaving 224/272 numeric result cells unavailable.",
+  "source_file_sha256": {
+    "README.md": "c1d9fe4d1f46302dddf0c9b7db76678a8cab73d1c186b8a1b3e74608b3fc4417",
+    "default_config.py": "5de87cf7a1e5bf7dbab70a2cb72dfec2162dd70ef790a475b72f525f10e8bb0c",
+    "web_interface.py": "ca5f88b8abe8d133a8d8b0bfb4183c4934dabd8d3f89b55030671bb43a113641",
+    "decision_agent.py": "e55446b9edf2c273992987ca6b3fc5d55e366a7afbff23a564b0c5b6abeb3212",
+    "indicator_agent.py": "318a5b5e3aa2611852d3a7ddd088ed986102d96462b3e96b927247af6be1b0cd",
+    "pattern_agent.py": "0c581d97249b4c60a004f37f18204dd618fe16b0637c5bb0c1ee677375261dd7",
+    "trend_agent.py": "951edc675531ceec9579c5c82d26141c93fb5908ee18b90a34ba6b5ffa778bad",
+    "trading_graph.py": "280f1dfad1b9d6d73e3d57d7dc4497c2353e6fb19169c1a28d7d9332ab91f1da",
+    "static_util.py": "6f6e2f30a587bd306274f1a532e8a389d16805bcf1a5b43de8d974288d096e05",
+    "graph_util.py": "5d0b64dea20f9ece985b2cb3d395dd45a80b119d947db5bd5870f7e171120bf1",
+    "requirements.txt": "e7ae5c5ba744bdb13317d3bf093d2f69bca4da2403c7abc860db32cd868d06bc"
+  },
+  "output_sha256": {
+    "README.md": "15a1f99be117cbc4f7c14e7b9eefbb00fedfeaf729128cfb28dfc36bde68b0bf",
+    "linear_regression_alignment_audit.csv": "930bf8cf34971f4ca28cbcc34f19721ddd39dc83ab0e2c14c67d4c341d11f1fb",
+    "paper_internal_anomalies.csv": "13931518dd05dd19326783966f6ebeba499ed77f8b88e645d0b65b4e2f96e00c",
+    "released_benchmark_inventory.csv": "98872fcc0d09176a1ef1735a54a1e6d21cfd0362b995bdf6b6bb086daddd732b",
+    "released_source_inventory.csv": "918d786ffe58828e244adb8a7d275d0cbb5bad8ace0eb4daa30db32fa65c5783",
+    "source_config_conformance.csv": "0e0c672d2bfbd450086687ba162d677caa3748f448945e53827e56f092235905",
+    "table_2_delta_accuracy_identity.csv": "6bbee74b119370c4e87291a565bce4b70c64be82b51874ba3506d1b4ac0a22da",
+    "tables_1_2_conformance.csv": "a4df0fff5be4dea20135fb1ef25faeeac001574238a0c9028a1a2c6eda2cbce9"
+  }
+}

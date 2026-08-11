@@ -1,0 +1,23 @@
+dimension,paper,released,status,implication
+agent_architecture,"IndicatorAgent, PatternAgent, TrendAgent, RiskAgent","indicator_agent.py, pattern_agent.py, trend_agent.py, decision_agent.py; no risk_agent.py",mismatch,paper/source fourth-agent role and name are not the same
+direction_and_risk_ratio_output,"LONG/SHORT plus risk-reward ratio in [1.2,1.8]",DecisionAgent prompt requires LONG/SHORT and ratio 1.2--1.8,match,prompt-level component only
+agent_llm_model,not disclosed for the trading experiment,gpt-4o-mini,paper_underspecified,paper result cannot be recreated from paper alone
+decision_graph_llm_model,not disclosed for the trading experiment,gpt-4o,paper_underspecified,source default may not identify the paper run
+llm_temperatures,not disclosed,agent=0.1; graph=0.1,paper_underspecified,stochastic protocol and reproducibility are not specified
+benchmark_segment_release,100 segments x 100 rows for every asset/horizon,"all 1,600 CSVs with 100 rows each",match,released sampled input component is substantial
+original_5000_bar_panels,"5,000 source bars per asset/horizon","overlapping sampled segments only; 4,082 or 4,440 distinct timestamps",missing,sampling cannot be independently rerun
+held_out_last_three_bars,last 3 of each 100-row segment withheld from inference,active run_analysis uses df.tail(45); a holdout slice is commented out,not_implemented_in_active_public_path,passing a released 100-row segment to the active path would expose the outcomes
+paper_experiment_entrypoint,run 100 segments x assets x methods and score Tables 1--2/Figure 5,interactive web analysis only; no experiment/evaluation runner,missing,native benchmark cannot be replayed
+linear_regression_baseline,OLS slope over recent 40 closes,no LR baseline/evaluator source,missing,"audit reconstructs from prose, not released evaluator code"
+xgboost_baseline,TA-Lib features; random 50/50 CSV split; majority vote; HOLD discarded,"no training/evaluation source, split, model, actions, or seed",missing,XGBoost result is not reproducible
+random_baseline,"random LONG/SHORT and ratio uniform in [1.2,1.8]","no baseline source, draws, or seed",missing,random result is not reproducible
+accuracy_evaluator,three close comparisons per segment,no scoring implementation or prediction files,missing,only prose-based baseline reconstruction is possible
+rcc_rmax_rmin_evaluator,risk-aware returns over three held-out candles,"no evaluator, risk-ratio paths, exit-order convention, or result series",missing,Rcc is not reconstructible and extrema are diagnostic only
+agent_predictions_and_outputs,"segment-level directions, ratios, rationales, and aggregate results","no generated action, ratio, rationale, or return series",missing,QuantHarness result cells are unverifiable
+table_1_portfolio_paths,"Sharpe, Sortino, cumulative return, max drawdown",no portfolio/equity/return series or metric implementation,missing,all 120 Table 1 numeric cells are unverifiable
+table_1_aapl_amzn_inputs,AAPL and AMZN rows,no AAPL or AMZN benchmark directory,missing,two Table 1 asset inputs are absent
+one_hour_result_paths,Figure 5 comparisons across eight assets,"1-hour inputs and a static figure image, but no numeric paths/predictions",missing,Figure 5 cannot be numerically checked
+case_study_paths,SPX 8/10 case and agent-reasoning cases,static images; no selected segment IDs or ten prediction records,missing,case-study claims cannot be replayed
+dependency_lock,operational implementation,requirements.txt has names only and no versions,missing,environment is not reproducibly pinned
+benchmark_tests,paper experiment conformance,tests cover MiniMax provider integration only,missing,no test asserts paper benchmark behavior
+latency_and_cost_evidence,HFT/real-time framing,"no latency, token, API-cost, or throughput logs",missing,operational HFT feasibility is not demonstrated by release artifacts

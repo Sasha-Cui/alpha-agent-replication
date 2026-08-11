@@ -136,8 +136,14 @@ ARTIFACT_NOTES = {
     ),
     "SYS-QUANT-AGENT-HFT": (
         "N",
-        "The snapshot bundles intraday OHLC benchmark inputs and analysis code, "
-        "but no generated agent action or return series.",
+        "A pinned arXiv-v4 audit checks all 272 numeric cells in Tables 1--2 and "
+        "all 1,600 released benchmark CSVs. Every asset/horizon set has 100x100 "
+        "rows and exact paper date endpoints, but the original 5,000-bar panels "
+        "are absent. The paper-described recent-40-close LR reconstruction matches "
+        "0/8 accuracies; all eight match only with an undocumented three-bar feature "
+        "gap. No experiment evaluator, native predictions/risk ratios, baseline "
+        "implementations, seeds/splits, portfolio paths, or numeric 1-hour paths "
+        "are shipped, so zero paper result cells count as native reproductions.",
     ),
     "SYS-TRADING-AGENTS": (
         "N",
