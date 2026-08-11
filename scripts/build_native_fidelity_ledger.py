@@ -165,9 +165,16 @@ ARTIFACT_NOTES = {
     ),
     "SYS-FIN-RL-DEEPSEEK": (
         "N",
-        "The snapshot ships training/backtest code and points to external Nasdaq "
-        "datasets; its README gives aggregate result descriptions but no dated "
-        "native signal or return series.",
+        "A pinned arXiv-v1 audit checks all 36 displayed table cells (24 unique "
+        "measurements), 32 raster return series, and 4 raster IR labels. The public "
+        "paper-era release is substantial: frozen train/trade CSVs, 15 checkpoints, "
+        "training logs, and backtest code are available, and all eight table-relevant "
+        "checkpoints execute on the released CSVs under three audited evaluation "
+        "protocols. But 0/36 paper table cells and 0/32 figure series receive result "
+        "credit. The stored notebook has 27/36 values, none matching the paper, and "
+        "reports six conflicting values for repeated identical series. Evaluation "
+        "seeds and the live Yahoo benchmark are unpinned, and the exact 100-epoch "
+        "DeepSeek 10% CPPO training lineage is absent.",
     ),
     "SYS-GURU-AGENTS": (
         "Y",
@@ -227,6 +234,7 @@ TARGETED_EXECUTION = {
     "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",
     "SYS-FIN-CON": "legacy_targeted:blocked_jkp_scope_incompatible",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
+    "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
     "SYS-GURU-AGENTS": "legacy_targeted:legacy_non_jkp_diagnostic_only",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
