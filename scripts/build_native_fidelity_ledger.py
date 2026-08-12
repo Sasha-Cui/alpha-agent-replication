@@ -423,6 +423,35 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-FACTOR-MINER": (
+        "A pinned arXiv-v1 FactorMiner audit rebuilds the official 20-page "
+        "source at 99.98% extracted-token multiset overlap and visually verifies "
+        "all pages. It inventories 488 numeric table-result cells, the complete "
+        "110x110 printed correlation heatmap (12,100 annotations), 34 other exact "
+        "figure annotations, and 27 empirical vector-PDF panels. Zero regenerate "
+        "from an author-native experiment. The paper prints 110 unique formula "
+        "strings, and a pinned post-paper independent implementation parses and "
+        "evaluates all 110 exact strings on deterministic synthetic arrays. That "
+        "is syntax/component evidence only: no author attribution is established, "
+        "its normalized catalog exactly matches just 2/110 printed formulas, and "
+        "no native result credit is assigned. No attributable runtime, A-share or "
+        "Binance snapshot, point-in-time constituent lists, exact date arrays, "
+        "prompts, memory states, Gemini calls, candidate/rejection logs, baseline "
+        "implementations, frozen Top-40 IDs, fitted weights/models, seeds, lockfile, "
+        "signals, positions, returns, or raw arrays are released. The public paper "
+        "also has material lineage and consistency gaps: 10/110 heatmap labels "
+        "conflict with same-ID appendix formula names; the visible matrix yields "
+        "0.1932 mean absolute off-diagonal correlation rather than captioned 0.203 "
+        "and has 15 pairs above the stated 0.5 constraint; the main best-across-all "
+        "claim holds on only 29/44 columns including ties; CSI500 ensemble prose "
+        "conflicts with its cited table; Factor 046's formula, prose, and turnover "
+        "units conflict; and top-20 XGBoost importances sum to 43.13%, not 43.8%. "
+        "Gemini 3 Flash first became public on 2025-12-17 inside the unspecified "
+        "2025 test window, making a prospective interpretation impossible while a "
+        "retrospective holdout remains possible but unverified. Negative searches "
+        "are bounded, not proof that private, deleted, moved, or unindexed material "
+        "never existed."
+    ),
     "SYS-HUBBLE": (
         "A pinned two-version Hubble audit rebuilds the official 11-page v1 and "
         "17-page v2 source bundles at 99.74% and 99.90% extracted-token multiset "
@@ -733,6 +762,7 @@ TARGETED_EXECUTION = {
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
     "SYS-FACTFIN": "paper_audit:completed_zero_of_525_numeric_cells_no_public_system_or_benchmark_release",
+    "SYS-FACTOR-MINER": "paper_audit:completed_110_formula_syntax_components_zero_of_488_table_cells_zero_of_12100_heatmap_cells_no_author_native_pipeline",
     "SYS-FIN-VISION": "paper_audit:completed_zero_of_72_performance_cells_no_public_system_source",
     "SYS-HEDGE-AGENTS": "paper_audit:completed_zero_of_236_numeric_cells_static_site_not_system_source",
     "SYS-HUBBLE": "paper_audit:completed_v1_zero_of_47_unique_cells_v2_zero_of_102_unique_cells_zero_of_50_figure_series_formulas_intentionally_withheld",

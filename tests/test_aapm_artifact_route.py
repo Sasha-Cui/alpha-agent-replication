@@ -95,7 +95,7 @@ def test_paper_route_and_static_assets_reflect_aapm_without_overclaiming() -> No
     assert r"\newcommand{\PinnedRepoCountFT}{27}" in generated
     assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 40, \artifacttier{R1}: 9, \artifacttier{R2}: 6, \artifacttier{R3}: 12}" in generated
     assert r"\newcommand{\NativeDatedOutputCount}{6}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{43}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{44}" in generated
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert "chengjunyan1/AAPM" in system_table
