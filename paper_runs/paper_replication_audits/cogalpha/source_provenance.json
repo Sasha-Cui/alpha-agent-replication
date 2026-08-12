@@ -1,0 +1,56 @@
+{
+  "arxiv": {
+    "acl_final_pages": 35,
+    "id": "2511.18850",
+    "v1_build_blocker": "numeric main.bbl incompatible with author-year natbib",
+    "v1_pages": 27,
+    "v1_submitted_utc": "2025-11-24T07:45:59Z",
+    "v1_unmodified_rebuild": false,
+    "v4_pages": 35,
+    "v4_rebuild_extracted_token_multiset_jaccard": 0.9996825396825397,
+    "v4_rebuild_pages": 35,
+    "v4_submitted_utc": "2026-07-11T07:17:04Z",
+    "v4_to_acl_final_extracted_token_multiset_jaccard": 0.9949420442571127,
+    "v4_unmodified_rebuild": true,
+    "versions": 4,
+    "visual_qa": {
+      "editions_inspected": 3,
+      "pages_inspected": 97,
+      "unreadable_blank_clipped_or_overlapping_pages": 0
+    }
+  },
+  "prompt_release": {
+    "commit": "6294d9ffa9dfc286fb14e82343f8f22a5f928c1c",
+    "commit_count": 1,
+    "commit_utc": "2026-07-14T03:09:02Z",
+    "created_utc": "2026-07-14T02:46:37Z",
+    "datasets_included": false,
+    "experiment_outputs_included": false,
+    "license": null,
+    "repository": "https://github.com/uwFengyuan/CogAlpha_Prompt",
+    "runtime_code_included": false,
+    "templates": 39
+  },
+  "system_id": "SYS-COG-ALPHA",
+  "validated_inputs": {
+    "prompt_commit": "6294d9ffa9dfc286fb14e82343f8f22a5f928c1c",
+    "v1_source_members": [
+      "00README.json",
+      "CogAlpha.pdf",
+      "cum_returns_comparison_50_5_10.png",
+      "main.bbl",
+      "main.tex",
+      "neurips_2025.sty"
+    ],
+    "v4_source_members": [
+      "00README.json",
+      "CogAlpha.pdf",
+      "acl.bib",
+      "acl.sty",
+      "acl.tex",
+      "acl_natbib.bst",
+      "cum_returns_comparison_50_5_10.png"
+    ]
+  },
+  "work_id": "CensusArxiv251118850"
+}

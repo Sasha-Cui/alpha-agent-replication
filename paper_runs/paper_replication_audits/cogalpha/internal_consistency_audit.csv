@@ -1,0 +1,15 @@
+check,status,evidence
+v1_source_rebuild,fails_unmodified,The declared v1 pdflatex build aborts because numeric main.bbl conflicts with author-year natbib.
+v4_source_rebuild,passes,Unmodified v4 source builds to 35 pages with 99.968% extracted-token multiset overlap.
+v4_acl_lineage,passes_near_identity,ACL final and arXiv v4 have 99.49% token overlap; differences are principally proceedings layout/pagination.
+v1_baseline_count,passes,The v1 table contains 19 baselines plus CogAlpha.
+v4_baseline_count,passes,The v4 table contains 21 baselines plus CogAlpha.
+v1_all_metric_superiority,contradicted,RandomForest RankICIR 0.4385 exceeds CogAlpha 0.4350 despite v1 claiming all-metric superiority.
+v4_all_metric_superiority,qualified_in_prose,V4 explicitly identifies RandomForest RankICIR as the sole exception.
+ablation_repeat_lineage,passes_exact_display,Base and full ablation rows exactly repeat main-table gpt-oss-120B and CogAlpha values.
+cross_dataset_repeat_lineage,passes_exact_display,Sixteen CSI300-10 cells exactly repeat the main table.
+significantly_improved_factor,no_statistical_test,The 0.0141/0.0087 factor is called significantly improved without an uncertainty estimate or test.
+threshold_curve_claim,author_output_only,The shipped raster visually supports 65-80 endpoint dominance but no dates or curve arrays permit regeneration.
+all_datasets_public,source_named_not_snapshot_released,"Qlib/Yahoo are named, but exact point-in-time panels and memberships are not released."
+source_code_release_claim,prompt_only_release,V1 promises all source code; the sole author release explicitly contains prompts only.
+single_round_randomness,not_reproducible,"The paper reports one stochastic mining round without seeds, requests, responses, or selection traces."

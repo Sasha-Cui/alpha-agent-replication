@@ -1,0 +1,43 @@
+{
+  "arxiv_id": "2511.18850",
+  "author_output_curve_series_correspondence": 4,
+  "author_output_curve_series_regenerated": 0,
+  "author_prompt_model_calls_replayed": 0,
+  "author_prompt_repository_recovered": true,
+  "author_prompt_template_count": 39,
+  "editions": {
+    "arxiv_v1": {
+      "additional_unique_prose_numeric_units": 8,
+      "figure_line_series": 4,
+      "native_empirical_units_regenerated": 0,
+      "table_cells": 150,
+      "total_unique_empirical_units": 150,
+      "unique_table_cells_after_declared_repeats": 138
+    },
+    "arxiv_v4_acl_final": {
+      "additional_unique_prose_numeric_units": 32,
+      "figure_line_series": 4,
+      "native_empirical_units_regenerated": 0,
+      "table_cells": 298,
+      "total_unique_empirical_units": 306,
+      "unique_table_cells_after_declared_repeats": 270
+    }
+  },
+  "full_end_to_end_pipeline_reproduced": false,
+  "native_empirical_units_regenerated": 0,
+  "output_sha256": {
+    "README.md": "29059b07a7a54937703658604d9f9a5099dad52b0d92f60086c0424081a54072",
+    "component_execution.json": "1f46ae5e76da0514ad1d74f88ac344e25c094fa9bc138b288bee15143ea9bca9",
+    "discovery_evidence.csv": "caa21b282bff40dddf00ab42f502f3d660c2acee7bc4d941e9272a95e5dc7f3e",
+    "internal_consistency_audit.csv": "4d2558b6acc5cb61ec9428c9add38aa55861b64fd6576b31aee610766b6f1854",
+    "method_specification_audit.csv": "e612b9d7aa871587d6a880aa4f6c03bfc0d898d847ff9e4cd972ff5534904ef8",
+    "prompt_release_inventory.csv": "2824f1c2d275696b2c2fa4f177b72d58ab7d38e4da2edcb3ee5ecd7363f9baec",
+    "published_prose_figure_ledger.csv": "6b2772d313330291a3c7056f1b110d07be6a6d06993f6ae2fd0b27a65f1dd384",
+    "published_table_result_ledger.csv": "aebeef4a314b5093c2631b8b5e3e3109220cb2d49509b0756221ae589a63cee3",
+    "source_provenance.json": "8ab93578d208c93e9074c1d6e977fd59e179587fab0b4a3f0f40c65fd35ff4d1"
+  },
+  "paper_evidence_route": "public_prompt_specification_only",
+  "published_factor_listings_executed_on_synthetic_fixture": 3,
+  "system_id": "SYS-COG-ALPHA",
+  "work_id": "CensusArxiv251118850"
+}

@@ -1,0 +1,8 @@
+route,pinned_source,result_count,attributable_native_artifact_recovered,finding,negative_search_limit
+author_prompt_repository,repo_api/repository.json,1,True,prompt_templates_only,"Bounded current search; not proof that private, deleted, moved, or unindexed artifacts never existed."
+github_exact_title_repository_search,discovery/github-repositories-title.json,0,False,no_exact_title_repository,"Bounded current search; not proof that private, deleted, moved, or unindexed artifacts never existed."
+github_arxiv_code_search,discovery/github-code-arxiv.json,68,False,indexes_and_citations_no_additional_native_system,"Bounded current search; not proof that private, deleted, moved, or unindexed artifacts never existed."
+github_title_code_search,discovery/github-code-title.json,46,False,prompt_repo_plus_indexes_or_citations,"Bounded current search; not proof that private, deleted, moved, or unindexed artifacts never existed."
+author_account_repository_inventory,discovery/github-author-repos.json,27,False,only_prompt_repo_attributable_to_cogalpha,"Bounded current search; not proof that private, deleted, moved, or unindexed artifacts never existed."
+huggingface_model_search,discovery/hf-models.json,0,False,no_cogalpha_model,"Bounded current search; not proof that private, deleted, moved, or unindexed artifacts never existed."
+huggingface_dataset_search,discovery/hf-datasets.json,0,False,no_cogalpha_dataset,"Bounded current search; not proof that private, deleted, moved, or unindexed artifacts never existed."

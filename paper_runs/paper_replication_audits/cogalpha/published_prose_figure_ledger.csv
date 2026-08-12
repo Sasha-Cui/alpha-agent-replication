@@ -1,0 +1,49 @@
+edition,location,result,metric,display_value,numeric_value,duplicate_kind,author_output_correspondence,native_result_regenerated,paper_result_credit
+arxiv_v1,prose_or_listing,initial_factor,IC,0.0090,0.009,none,False,False,False
+arxiv_v1,prose_or_listing,initial_factor,RankIC,0.0061,0.0061,none,False,False,False
+arxiv_v1,prose_or_listing,mutated_factor,IC,0.0073,0.0073,none,False,False,False
+arxiv_v1,prose_or_listing,mutated_factor,RankIC,0.0021,0.0021,none,False,False,False
+arxiv_v1,prose_or_listing,evolved_factor,IC,0.0141,0.0141,none,False,False,False
+arxiv_v1,prose_or_listing,evolved_factor,RankIC,0.0087,0.0087,none,False,False,False
+arxiv_v1,prose_or_listing,many_factor_threshold,absolute_IC_above,0.05,0.05,none,False,False,False
+arxiv_v1,prose_or_listing,many_factor_threshold,absolute_RankIC_above,0.07,0.07,none,False,False,False
+arxiv_v1,cumulative_return_figure,65-80 Strategy,line_series,author_shipped_raster_only,,none,True,False,False
+arxiv_v1,cumulative_return_figure,80-90 Strategy,line_series,author_shipped_raster_only,,none,True,False,False
+arxiv_v1,cumulative_return_figure,85-95 Strategy,line_series,author_shipped_raster_only,,none,True,False,False
+arxiv_v1,cumulative_return_figure,Benchmark,line_series,author_shipped_raster_only,,none,True,False,False
+arxiv_v4_acl_final,prose_or_listing,initial_factor,IC,0.0090,0.009,none,False,False,False
+arxiv_v4_acl_final,prose_or_listing,initial_factor,RankIC,0.0061,0.0061,none,False,False,False
+arxiv_v4_acl_final,prose_or_listing,mutated_factor,IC,0.0073,0.0073,none,False,False,False
+arxiv_v4_acl_final,prose_or_listing,mutated_factor,RankIC,0.0021,0.0021,none,False,False,False
+arxiv_v4_acl_final,prose_or_listing,evolved_factor,IC,0.0141,0.0141,none,False,False,False
+arxiv_v4_acl_final,prose_or_listing,evolved_factor,RankIC,0.0087,0.0087,none,False,False,False
+arxiv_v4_acl_final,prose_or_listing,many_factor_threshold,absolute_IC_above,0.05,0.05,none,False,False,False
+arxiv_v4_acl_final,prose_or_listing,many_factor_threshold,absolute_RankIC_above,0.07,0.07,none,False,False,False
+arxiv_v4_acl_final,cumulative_return_figure,65-80 Strategy,line_series,author_shipped_raster_only,,none,True,False,False
+arxiv_v4_acl_final,cumulative_return_figure,80-90 Strategy,line_series,author_shipped_raster_only,,none,True,False,False
+arxiv_v4_acl_final,cumulative_return_figure,85-95 Strategy,line_series,author_shipped_raster_only,,none,True,False,False
+arxiv_v4_acl_final,cumulative_return_figure,Benchmark,line_series,author_shipped_raster_only,,none,True,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_1_train,IC,-0.0498,-0.0498,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_1_train,RankIC,-0.0791,-0.0791,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_1_train,ICIR,-0.3416,-0.3416,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_1_train,RankICIR,-0.5016,-0.5016,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_1_test,IC,0.0507,0.0507,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_1_test,RankIC,0.0704,0.0704,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_1_test,ICIR,0.3116,0.3116,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_1_test,RankICIR,0.4262,0.4262,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_2_train,IC,-0.0473,-0.0473,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_2_train,RankIC,-0.0668,-0.0668,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_2_train,ICIR,-0.3749,-0.3749,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_2_train,RankICIR,-0.4473,-0.4473,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_2_test,IC,0.0491,0.0491,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_2_test,RankIC,0.069,0.069,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_2_test,ICIR,0.2717,0.2717,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_2_test,RankICIR,0.3604,0.3604,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_3_train,IC,-0.0552,-0.0552,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_3_train,RankIC,-0.0742,-0.0742,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_3_train,ICIR,-0.475,-0.475,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_3_train,RankICIR,-0.5141,-0.5141,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_3_test,IC,0.0503,0.0503,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_3_test,RankIC,0.0663,0.0663,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_3_test,ICIR,0.3017,0.3017,none,False,False,False
+arxiv_v4_acl_final,appendix_elite_factor,elite_factor_3_test,RankICIR,0.392,0.392,none,False,False,False

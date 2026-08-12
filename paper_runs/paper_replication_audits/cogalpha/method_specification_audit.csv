@@ -1,0 +1,36 @@
+dimension,status,evidence
+framework_architecture,described,"Seven-level hierarchy, quality checker, adaptive generation, and thinking evolution are described."
+prompt_templates,released_post_v4,39 author-owned templates are pinned at the sole 2026-07-14 commit.
+prompt_assembly,documented,"The release documents prompt blocks, ordering, and placeholders."
+runtime_source,missing,The prompt repository explicitly excludes runtime code.
+exact_dependency_lock,missing,No executable environment or dependency lock is released.
+dataset_sources,named,Qlib and Yahoo Finance are named for five datasets.
+point_in_time_data_snapshot,missing,"No frozen OHLCV files, download timestamps, or hashes are released."
+universe_membership,missing,No date-specific CSI300/CSI500/SP500/HSI/HSCI constituent membership is released.
+calendar_and_adjustment,missing,Trading calendars and price adjustment conventions are not operationally locked.
+train_validation_test_dates,described,Chronological dates are printed for each dataset.
+forecast_horizons,described,10-day and selected 30-day horizons are printed.
+label_construction,partial,Open-to-open target prose lacks full alignment and missing-day implementation.
+base_fields,described,Daily OHLCV fields are named.
+portfolio_rule,partial,"Top-50/drop-5, open execution, and costs are described without a complete runner."
+model_family,described,gpt-oss-120b is the default local model.
+immutable_model_checkpoint,missing,"No checkpoint hash, serving stack, or tokenizer lock is released."
+runtime_requests_responses,missing,"No actual prompt instances, model outputs, or request logs are released."
+sampling_parameters,missing,"Temperature, decoding parameters, batching, and retry behavior are absent."
+random_seeds,missing,The paper acknowledges randomness but supplies no seeds.
+single_run_selection,under_specified,"Results are from one mining round, with no selection trace or rerun distribution."
+initial_factor_pool,missing,The realized initial pool is not released.
+evolved_factor_pool,missing,"The realized candidates, parents, children, elites, and failures are not released."
+quality_checker_outputs,missing,"No judgments, repairs, unit-test reports, or leakage-test traces are released."
+adaptive_generation_memory,missing,No effective/ineffective summaries or feedback trajectory is released.
+baseline_implementations,missing,"Exact baseline code, versions, tuning, and seeds are not released."
+lightgbm_ridge_configuration,missing,Learner hyperparameters and training seeds are not operationally locked.
+metric_equations,described,"IC, RankIC, ICIR, RankICIR, AER, and IR equations appear in the appendix."
+metric_edge_cases,missing,"Cross-section filters, NaNs, ties, annualization N, and aggregation details are incomplete."
+transaction_costs,described,"Open 0.05%, close 0.15%, and 5 CNY minimum fee are printed."
+actions_orders_fills,missing,"No orders, fills, turnover, or holdings are released."
+predictions,missing,No per-date/per-security predictions are released.
+portfolio_returns,missing,No dated native return array is released.
+raw_result_arrays,missing,No table-cell or statistical-result arrays are released.
+author_curve_raster,released,The exact four-series cumulative-return raster is present in both source archives.
+full_end_to_end_pipeline,missing,No public artifact can regenerate prompts-to-factors-to-results end to end.
