@@ -1,0 +1,22 @@
+{
+  "repository": "https://github.com/P1GPT/web_demo",
+  "commit": "a88a3a7c731063d0d1ca7ac15946eb600753f358",
+  "commit_author": "Ray-neurowatt <ray@neurowatt.ai>",
+  "commit_time": "2024-12-05T13:42:22Z",
+  "archive_sha256": "81f201afa31f8a7f277e17d51622ece94bf907a8cc7e0f4a73248a28c5d50e0f",
+  "repeated_archive_byte_identical": true,
+  "tracked_files": 38,
+  "python_files_compiled": 22,
+  "python_compile_exit": 0,
+  "static_fidelity_tier": "R3",
+  "component_correspondence": "attributable pre-paper P1GPT/Neurowatt multimodal chat web client",
+  "client_prompt_cards": 5,
+  "paper_daily_prompt_present": false,
+  "private_model_endpoint": "http://main-llm:8090/invoke/",
+  "model_service_source_shipped": false,
+  "database_state_shipped": false,
+  "public_test_functions": 0,
+  "full_service_started": false,
+  "runtime_boundary": "the checked-in client requires an unreleased main-llm service and private database; committed plaintext credentials were not used or exposed",
+  "paper_result_credit": false
+}

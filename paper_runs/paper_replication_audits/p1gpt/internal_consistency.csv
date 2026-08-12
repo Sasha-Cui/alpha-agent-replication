@@ -1,0 +1,18 @@
+check_id,paper_statement,audit_observation,status,paper_result_credit
+march_report_future_iphone_air,March 24 report cites iPhone Air preorders/eSIM approval,"Apple introduced iPhone Air September 9 and opened preorders September 12, 2025",direct_lookahead_counterexample,False
+march_report_market_cap,March 24 report prints $3.68T market cap at $220.73,$220.73 times the then-reported 15.022073B shares is about $3.316T,internally_inconsistent_or_future_snapshot,False
+lookahead_claim,paper says simulation strictly avoids lookahead,at least one dated case report contains future information,claim_contradicted_by_embedded_output,False
+same_close_timing,agents receive current context and execute at same-day close,decision timestamp and publication cutoff are absent,lookahead_boundary_undefined,False
+risk_free_rate,Sharpe equation subtracts 3-month Treasury yield,"zero RF, sqrt(252), population SD recovers 11 P1GPT cells exactly; AAPL SR is 3.3877 and normally rounds to 3.39 rather than 3.38",equation_execution_conflict,False
+buy_hold_googl_mdd,Table 2 prints 6.41% MDD for GOOGL buy-and-hold,"the same close series that exactly recovers CR, AR, and SR gives 6.14% conventional MDD",displayed_cell_not_recovered,False
+no_leverage,paper assumes no leverage,"plotted positions reach 3 AAPL, 7 GOOGL, 2 TSLA units against $1000 NAV",meaning_of_leverage_or_position_undefined,False
+buy_semantics,Buy means enter a position,plots repeatedly accumulate integer units,execution_policy_underspecified,False
+start_date,paper states February 1,"figures and 166-row calculation start February 3, first trading day",calendar_boundary_underspecified,False
+annualized_return,AR uses N years,printed values exactly use 252/166 trading-day annualization,unreported_metric_convention,False
+sma_initialization,SMA is 10-day vs 20-day,AAPL printed values require expanding means before 20 observations,unreported_baseline_convention,False
+model_reproducibility,paper claims reproducible and auditable decisions,"no model, prompts, logs, seeds, source snapshots, or code are released",claim_not_operationally_supported,False
+generalization,paper claims cross-asset/market-regime generalization,three hand-selected stocks over one 166-trading-day window,claim_exceeds_evaluation_design,False
+best_baseline_gap,annual returns exceed best rules by over 20 pp on average,"displayed gaps are 21.07, 39.02 and 23.14 pp; mean 27.74 pp",passes_displayed_table_arithmetic,False
+drawdown_prose,P1GPT drawdowns around 2% and below 7% for other assets,"GOOGL is 7.08%, not below 7%",rounded_prose_overstatement,False
+paper_source_code,arXiv source is complete manuscript bundle,zero operational agent/backtest Python or raw result arrays,document_only_source,False
+web_demo_boundary,attributable P1GPT web client is public,paper daily prompt absent; private /invoke service and database are not released,component_not_experiment,False

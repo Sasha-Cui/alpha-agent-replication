@@ -1,0 +1,2 @@
+prompt_id,verbatim_paper_template,template_shipped_in_tex,complete_system_or_agent_prompts_shipped,substituted_runtime_requests_shipped,runtime_responses_shipped,model_name_version_shipped,temperature_seed_shipped,prompt_execution_reproduced,paper_result_credit
+daily_trading_query,"Given today's market conditions, should I buy, sell, or hold [TICKER]?",True,False,False,False,False,False,False,False

@@ -1,0 +1,13 @@
+missing_item,required_detail,blocking_effect,recoverable_by_installing_public_packages
+agent source,all agent implementations and orchestration,blocks_exact_end_to_end_p1gpt_reproduction,False
+model configuration,"LLM names, versions, checkpoints, temperature, seeds",blocks_exact_end_to_end_p1gpt_reproduction,False
+agent prompts,system/developer/tool prompts for every role,blocks_exact_end_to_end_p1gpt_reproduction,False
+fusion procedure,"weights, confidence scores, conflict and retry logic",blocks_exact_end_to_end_p1gpt_reproduction,False
+data lineage,"exact endpoints, queries, timestamps, and frozen responses",blocks_exact_end_to_end_p1gpt_reproduction,False
+decision timing,time of query relative to market close and source publication,blocks_exact_end_to_end_p1gpt_reproduction,False
+portfolio policy,"initial capital, buy size, repeated-buy and cash constraints",blocks_exact_end_to_end_p1gpt_reproduction,False
+baseline parameters,KDJ/RSI and ZMR definitions; MACD initialization,blocks_exact_end_to_end_p1gpt_reproduction,False
+metric details,"return convention, RF conversion, annualization, ddof",blocks_exact_end_to_end_p1gpt_reproduction,False
+raw outputs,"daily prompts, responses, decisions, positions and equity arrays",blocks_exact_end_to_end_p1gpt_reproduction,False
+result runner,code that produces Table 2 and Figures 2--5,blocks_exact_end_to_end_p1gpt_reproduction,False
+statistical protocol,"replicates, uncertainty, significance, selection policy",blocks_exact_end_to_end_p1gpt_reproduction,False

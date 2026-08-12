@@ -1,0 +1,37 @@
+dimension,status,evidence,exact_native_paper_mechanism_reproduced,paper_result_credit
+five-layer architecture,paper_specification_only,diagram and prose only,False,False
+controller ISA,missing_runtime,no implementation or prompt,False,False
+fundamental ISA,missing_runtime,no implementation or prompt,False,False
+technical ISA,missing_runtime,no implementation or prompt,False,False
+semiconductor ISA,missing_runtime,no implementation or prompt,False,False
+news ISA,missing_runtime,no implementation or prompt,False,False
+external search agent,missing_runtime,Perplexity is named but no call log/config,False,False
+revenue forecasting agent,missing_runtime,no model or output,False,False
+investment recommender,missing_runtime,no decision code or prompt,False,False
+market trend agent,missing_runtime,no implementation or output,False,False
+overall integration ISA,missing_runtime,weights/confidence/fusion are unspecified,False,False
+structured inter-agent protocol,missing_runtime,no schema/template/message trace,False,False
+dynamic task allocation,missing_runtime,no routing policy or trace,False,False
+rule-priority conflict resolution,missing_runtime,no rules or configuration,False,False
+data ingestion,missing_runtime,providers named only as examples,False,False
+timestamp alignment,contradicted_by_case_output,March report contains future product news,False,False
+same-day close execution,result_computation_recovered,plot bars and closes recover metrics,False,False
+no transaction costs,declared_component,explicit paper assumption,False,False
+no leverage,contradicted_by_author_plot,author plots show integer exposure up to 7,False,False
+single-stock constraint,declared_component,three separate single-ticker runs,False,False
+buy/sell/hold,underspecified,buy sizing and repeated-buy behavior omitted,False,False
+initial capital,recovered_not_declared,$1000 is uniquely consistent with table/plots,False,False
+market price field,recovered_not_declared,unadjusted close matches displayed cells,False,False
+annualization,recovered_not_declared,252/166 exactly matches AR cells,False,False
+Sharpe annualization,recovered_not_declared,"sqrt(252), zero RF, population SD",False,False
+risk-free rate,paper_equation_conflict,printed cells use zero despite Treasury statement,False,False
+MACD baseline,independently_recomputed,12/26/9 EMA with expanding initialization,False,False
+SMA baseline,independently_recomputed,10/20 expanding-window initialization,False,False
+KDJ+RSI baseline,missing_parameters,thresholds/windows/action rules absent,False,False
+ZMR baseline,missing_parameters,equilibrium/window/threshold/action rules absent,False,False
+model identity,missing,no LLM or checkpoint name/version,False,False
+randomness control,missing,"no seed, temperature, or replicate policy",False,False
+native agent result runner,missing,not in TeX or attributable web client,False,False
+native requests/responses,missing,no machine-readable logs,False,False
+ablation,missing,no ablation experiment,False,False
+cross-window robustness,missing,one hand-selected 2025 interval,False,False

@@ -1,0 +1,19 @@
+[
+  {
+    "paper_version": "2510.23032v1",
+    "build_method": "unmodified_primary_TeX_three_pdflatex_passes_TeX_Live_2024",
+    "build_sha256": "52d407e76b15bf40d1fa507553263feaa797a5a7a9a7702303169201a3b9e31c",
+    "repeat_build_sha256": "52d407e76b15bf40d1fa507553263feaa797a5a7a9a7702303169201a3b9e31c",
+    "same_hash_across_independent_build_directories": true,
+    "page_count": 17,
+    "published_page_count": 17,
+    "normalized_extracted_text_equal": true,
+    "normalized_extracted_text_sequence_ratio": 1.0,
+    "max_100dpi_raster_mean_absolute_difference": 0.279841,
+    "max_100dpi_raster_changed_fraction": 0.003759,
+    "full_contact_sheet_visual_qa": "passed_all_17_author_and_17_rebuilt_pages_readable_no_clipping_overlap_or_missing_content",
+    "embedded_asset_visual_qa": "passed_all_7_assets_including_2_report_pdfs_and_3_position_plots",
+    "document_reconstruction_credit": true,
+    "paper_result_reproduction": false
+  }
+]
