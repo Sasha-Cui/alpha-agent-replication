@@ -78,7 +78,7 @@ def computed_macros(
         "LicensedArtifactCountFT": "15",
         "PinnedRepoCountFT": "27",
         "ArtifactTierSummaryFT": r"\artifacttier{R0}: 40, \artifacttier{R1}: 9, \artifacttier{R2}: 6, \artifacttier{R3}: 12",
-        "TargetedAuditCount": "42",
+        "TargetedAuditCount": "43",
         "TranslatableSeedCount": "1",
     }
     for key, value in expected.items():

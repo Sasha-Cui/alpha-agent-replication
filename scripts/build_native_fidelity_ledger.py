@@ -423,6 +423,29 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-HUBBLE": (
+        "A pinned two-version Hubble audit rebuilds the official 11-page v1 and "
+        "17-page v2 source bundles at 99.74% and 99.90% extracted-token multiset "
+        "overlap and visually verifies all 28 pages. It inventories 50 v1 numeric "
+        "table cells (47 unique), 108 v2 cells (102 unique), and 50 displayed "
+        "empirical figure series. Zero regenerate from the native system. The "
+        "source archives contain manuscript assets only; the author-lab GitHub "
+        "organization exposes zero public repositories, and bounded exact-title, "
+        "arXiv-ID, and attributable-author searches recover no native implementation. "
+        "V1 anonymizes the five winning factors and v2 explicitly withholds exact "
+        "formulas and hyperparameters. No universe snapshot, point-in-time membership "
+        "policy, price vendor/snapshot, prompts, RAG corpus/index, complete operator "
+        "registry, immutable model calls, v2 scoring constants, seeds, candidate/error "
+        "records, environment, or raw arrays are released. Public chronology "
+        "contradicts the literal claim that v2 formulas were fixed before its OOS "
+        "window began: both named backends first became public on 2026-03-11, after "
+        "the 2025-06-01 start and two days before the end. A retrospective data-layer "
+        "holdout remains possible but unverified. V1's Evaluated/OK/Error accounting "
+        "and Round-1 duplicate prose conflict; v2's 840/195 day counts omit 15/2 broad "
+        "U.S. sessions without an included-date array. No unaffiliated implementation "
+        "or local AST fixture is credited as Hubble. Negative searches are bounded, "
+        "not proof that private, deleted, moved, or unindexed material never existed."
+    ),
     "SYS-STRAT-LLM": (
         "A pinned arXiv-v1 Strat-LLM audit rebuilds the official six-page source "
         "at 99.85% extracted-token multiset overlap and inventories 195 numeric "
@@ -712,6 +735,7 @@ TARGETED_EXECUTION = {
     "SYS-FACTFIN": "paper_audit:completed_zero_of_525_numeric_cells_no_public_system_or_benchmark_release",
     "SYS-FIN-VISION": "paper_audit:completed_zero_of_72_performance_cells_no_public_system_source",
     "SYS-HEDGE-AGENTS": "paper_audit:completed_zero_of_236_numeric_cells_static_site_not_system_source",
+    "SYS-HUBBLE": "paper_audit:completed_v1_zero_of_47_unique_cells_v2_zero_of_102_unique_cells_zero_of_50_figure_series_formulas_intentionally_withheld",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
