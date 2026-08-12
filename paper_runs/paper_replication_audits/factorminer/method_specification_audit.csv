@@ -1,0 +1,26 @@
+dimension,status,evidence
+native_source,missing,"official source contains manuscript TeX and rendered vector figures, not the FactorMiner runtime"
+printed_factor_formulas,complete_syntax_only,"110 unique formula strings are printed, but no author runtime or complete semantic operator contract links them to results"
+operator_registry,partial,"39 operator names occur in formulas; the paper says 60+ and lists representative categories, not exact implementations"
+formula_semantics,ambiguous,Factor 001 uses Max/Min with a window-like constant although the operator table lists Max/Min as elementwise arithmetic; independent code normalizes these to TsMax/TsMin
+a_share_universes,missing,"CSI500/CSI1000/HS300 named without constituent vintages, membership history, security identifiers, or inclusion date arrays"
+crypto_universe,missing,"64 major Binance assets named without asset list, market type, symbol snapshot, or eligibility rule"
+market_data,missing,"10-minute OHLCV/amount-like fields named; vendor for A shares, Binance endpoint, retrieval snapshot, adjustments, timezone, halts, and missing-data rules absent"
+train_window,partial,2024 Q1-Q4 supplied without exact endpoints or timestamp array
+test_window,partial,2025 supplied without exact endpoints or timestamp array
+target,partial,"next 10-minute open-to-close ratio named; bar alignment, session boundary, tradability, and execution timing absent"
+prompts,missing,"no exact system/user prompts, retrieved memory payloads, candidate responses, or parsing logs"
+model,partial,"Gemini 3.0 Flash named without immutable endpoint/version, requests, or provider snapshots"
+model_parameters,missing,"temperature, top-p, token budget, seed, retry, safety, and concurrency settings absent"
+random_seeds,missing,"no generation, baseline, selection, or repeated-run seeds"
+memory_state,partial,recommended/forbidden summaries and one batch narrative are printed; exact evolving memory snapshots and trajectory ledger absent
+admission_rules,partial,"thresholds and replacement inequalities printed; missing exact preprocessing, sign handling, ties, NaNs, and complete replacement implementation"
+top40_freeze,partial,ranking/filter/fill prose supplied; exact selected IDs per method and frozen weight/sign artifacts absent
+baseline_implementations,missing,"no candidate sets, code locks, seeds, search budgets, or full implementations for six displayed baselines"
+alpha101_tuning,partial,"up to ten parameter variants stated, but grids, tuning metric, candidate formulas, and selection records absent"
+combination,partial,"EW, historical-IC weighting, and Gram-Schmidt named; fit interval details, signs, normalization, and serialized weights absent"
+selection,partial,"Lasso, forward stepwise, and XGBoost named; hyperparameters, features, preprocessing, seeds, and model artifacts absent"
+transaction_costs,partial,five bps settings and rendered curves supplied; turnover/execution convention and raw arrays absent
+runtime_environment,missing,"no author lockfile, package versions, hardware/software details beyond A100/40 workers and broad libraries"
+raw_results,missing,"no signals, IC arrays, correlations, candidate logs, predictions, positions, returns, weights, or benchmark traces"
+prospective_freeze,missing,"Gemini 3 Flash became public 2025-12-17, so no literal pre-2025 model freeze is possible; no timestamped retrospective freeze is released"

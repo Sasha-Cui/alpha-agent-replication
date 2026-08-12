@@ -1,0 +1,111 @@
+factor_id,name,formula,printed_syntax_recovered,independent_exact_syntax_parsed,independent_synthetic_evaluation_completed,finite_synthetic_values,semantic_operator_contract_author_released,author_native_runtime_used,paper_market_data_used,reported_result_lineage_verified,paper_result_credit
+001,Intraday Range Position,"Neg(CsRank(Div(Sub($close, Min($close, 48)), Add(Sub(Max($close, 48), Min($close, 48)), 1e-8))))",True,True,True,2304,False,False,False,False,False
+002,EMA Deviation,"Neg(Div(Sub($close, EMA($close, 10)), EMA($close, 10)))",True,True,True,2304,False,False,False,False,False
+003,Vol-VWAP Divergence,"Sub(CsRank(Delta($volume, 1)), CsRank(Div(Sub($close, $vwap), $vwap)))",True,True,True,2292,False,False,False,False,False
+004,High-Volume Relative Weakness,"Mul(CsRank(Div($volume, Mean($volume, 24))), CsRank(Neg($returns)))",True,True,True,2304,False,False,False,False,False
+005,Range-Position Vol-Volume Cov Reversal,"Neg(Mul(TsRank(Div(Sub($close, TsMin($close, 12)), Add(Sub(TsMax($close, 12), TsMin($close, 12)), 1e-6)), 12), CsRank(Abs(Cov($returns, $volume, 12)))))",True,True,True,2172,False,False,False,False,False
+006,VWAP Deviation,"Neg(Div(Sub($close, $vwap), $vwap))",True,True,True,2304,False,False,False,False,False
+007,Price-Volume Mean Reversal,"Neg(Sub(CsRank(Div(Sub($close, $low), Add(Sub($high, $low), 0.0001))), CsRank(Delta(EMA($volume, 5), 5))))",True,True,True,2244,False,False,False,False,False
+008,Normalized Money Strength Reversal,"Neg(Mul(CsRank(Div($returns, Add(Std($returns, 12), 0.0001))), CsRank(Div($volume, Mean($volume, 12)))))",True,True,True,2304,False,False,False,False,False
+009,Volatility-Filtered Return Reversal,"Neg(Mul(CsRank($returns), CsRank(Std($returns, 12))))",True,True,True,2172,False,False,False,False,False
+010,Price-Volume Divergence Reversal,"Neg(CsRank(Sub(CsRank(Div($close, Delay($close, 5))), CsRank(Div($volume, Delay($volume, 5))))))",True,True,True,2304,False,False,False,False,False
+011,Price-VWAP Momentum Overextension,"Neg(Sub(CsRank(Delta($close, 6)), CsRank(Delta($vwap, 6))))",True,True,True,2232,False,False,False,False,False
+012,Volume-Augmented VWAP Reversal,"Mul(CsRank(Neg(Div(Sub($close, $vwap), $vwap))), CsRank(Div($volume, EMA($volume, 12))))",True,True,True,2304,False,False,False,False,False
+013,Illiquidity-Augmented VWAP Reversal,"Mul(CsRank(Neg(Div(Sub($close, $vwap), $vwap))), Sub(1, CsRank($volume)))",True,True,True,2304,False,False,False,False,False
+014,Resilience-Momentum Blend Reversal,"Mul(Add(Mul(CsRank(Neg(Div(Sub($close, $vwap), $vwap))), 0.6), Mul(CsRank(Delta(Neg(Div(Sub($close, $vwap), $vwap)), 3)), 0.4)), CsRank(Delta(Div(Mean(Div(Abs($returns), Add($volume, 1)), 24), Add(Div(Abs($returns), Add($volume, 1)), 1e-6)), 3)))",True,True,True,1992,False,False,False,False,False
+015,Volatility-Balanced Momentum Reversal,"Mul(CsRank(Neg(Delta($returns, 3))), Mul(Sub(1, CsRank(Std($returns, 12))), CsRank(Std($returns, 12))))",True,True,True,2172,False,False,False,False,False
+016,VWAP-Deviation Acceleration Reversal,"Neg(Mul(CsRank(Delta(Div(Sub($close, $vwap), $vwap), 3)), CsRank(Div($volume, EMA($volume, 12)))))",True,True,True,2268,False,False,False,False,False
+017,VWAP-Acceleration Volatility Reversal,"Neg(Mul(TsRank(Delta(Div(Sub($close, $vwap), $vwap), 3), 12), TsRank(Std($returns, 12), 12)))",True,True,True,2172,False,False,False,False,False
+018,Range-Position Volume Regime Reversal,"Neg(Mul(TsRank(Div(Sub($close, TsMin($close, 12)), Add(Sub(TsMax($close, 12), TsMin($close, 12)), 1e-6)), 12), TsRank(Div($volume, EMA($volume, 12)), 12)))",True,True,True,2172,False,False,False,False,False
+019,VWAP-Gap Regime Range Reversal,"IfElse(Greater(Abs(Div(Sub($close, $vwap), $vwap)), 0.01), Neg(CsRank(Sub($close, TsMax($close, 12)))), Neg(CsRank(Sub($close, TsMin($close, 12)))))",True,True,True,2172,False,False,False,False,False
+020,Volume-Price Delta Divergence TsRank,"TsRank(Sub(CsRank(Delta($volume, 3)), CsRank(Delta($close, 3))), 18)",True,True,True,2100,False,False,False,False,False
+021,Volume-Shock VWAP-Momentum Reversal,"Neg(Mul(TsRank(Delta(Div($volume, EMA($volume, 12)), 3), 12), TsRank(Delta(Div(Sub($close, $vwap), $vwap), 3), 12)))",True,True,True,2172,False,False,False,False,False
+022,Lower-Shadow Ratio Reversal,"Neg(CsRank(Div(Sub(Min2($open, $close), $low), Add(Sub($high, $low), 0.0001))))",True,True,True,2304,False,False,False,False,False
+023,Normalized-Momentum TsRank Reversal,"Neg(TsRank(Div(Delta($close, 3), Mean(Abs(Delta($close, 3)), 12)), 12))",True,True,True,2172,False,False,False,False,False
+024,Open-Close Momentum Divergence,"Sub(TsRank(Delta($open, 6), 12), TsRank(Delta($close, 6), 12))",True,True,True,2172,False,False,False,False,False
+025,Open-Close Momentum Divergence V2,"Sub(TsRank(Delta($open, 9), 18), TsRank(Delta($close, 9), 18))",True,True,True,2100,False,False,False,False,False
+026,Price-Volume Covariance Position Long,"Neg(Mul(TsRank(Cov(TsRank($close, 18), TsRank($volume, 18), 10), 18), TsRank(Div(Sub($close, $low), Sub($high, $low)), 18)))",True,True,True,2100,False,False,False,False,False
+027,Open-Volume Covariance Position,"Neg(Mul(TsRank(Cov(TsRank($open, 12), TsRank($volume, 12), 5), 12), TsRank(Div(Sub($close, $low), Sub($high, $low)), 12)))",True,True,True,2172,False,False,False,False,False
+028,Close-Low × Volume Ratio,"Neg(Mul(Sub($close, $low), Div($volume, Mean($volume, 12))))",True,True,True,2304,False,False,False,False,False
+029,High-Close × Volume Ratio,"Mul(Sub($high, $close), Div($volume, Mean($volume, 12)))",True,True,True,2304,False,False,False,False,False
+030,Delta(High-Close)3 × Volume Ratio,"Mul(Delta(Sub($high, $close), 3), Div($volume, Mean($volume, 12)))",True,True,True,2268,False,False,False,False,False
+031,Price Trend Conditional Strategy,"IfElse(Greater(Delta($close, 1), 0), Neg(TsRank(Delta($close, 3), 12)), TsRank(Delta($close, 3), 12))",True,True,True,2172,False,False,False,False,False
+032,Returns-Volume Delta Divergence,"Neg(TsRank(Sub(CsRank(Delta($returns, 2)), CsRank(Delta($volume, 2))), 12))",True,True,True,2172,False,False,False,False,False
+033,Volume-Range Correlation Shock,"Neg(Mul(TsRank(Corr(TsRank(Div($volume, Mean($volume, 24)), 12), TsRank(Sub($high, $low), 12), 12), 24), CsRank(Delta($close, 2))))",True,True,True,2028,False,False,False,False,False
+034,Price Trend Conditional Momentum V2,"IfElse(Greater(Delta($close, 2), 0), Neg(TsRank(Delta($close, 5), 15)), TsRank(Delta($close, 5), 15))",True,True,True,2136,False,False,False,False,False
+035,High-Low Expansion vs Close Accel,"Neg(Mul(TsRank(Delta(Sub($high, $low), 2), 12), CsRank(Delta($close, 2))))",True,True,True,2172,False,False,False,False,False
+036,Volatility Switch Candle Reversal,"IfElse(Greater(Std($returns, 12), Mean(Std($returns, 12), 48)), Neg(CsRank(Div(Sub(Min2($open, $close), $low), Add(Sub($high, $low), 0.0001)))), Neg(CsRank($returns)))",True,True,True,2304,False,False,False,False,False
+037,Price-Volume Momentum Synchrony,"Neg(TsRank(Mul(CsRank(Delta($close, 3)), CsRank(Delta($volume, 3))), 18))",True,True,True,2100,False,False,False,False,False
+038,Vol-Regime Conditional Divergence V2,"IfElse(Greater(Std($returns, 12), Mean(Std($returns, 12), 48)), Neg(TsRank(Sub(CsRank(Delta($volume, 3)), CsRank(Delta($close, 3))), 18)), Neg(TsRank(Div(Sub($close, $vwap), Add(Std($returns, 24), 0.0001)), 12)))",True,True,True,2172,False,False,False,False,False
+039,Kurtosis-Filtered Momentum,"Neg(Mul(CsRank(Delta($close, 5)), CsRank(Kurt($returns, 24))))",True,True,True,2028,False,False,False,False,False
+040,Price Intensity Skewness Blend,"Neg(Mul(CsRank(Div(Sub($close, $low), Add(Sub($high, $low), 0.0001))), CsRank(Skew($returns, 24))))",True,True,True,2028,False,False,False,False,False
+041,Price Range Skewness Interaction,"Mul(CsRank(Div(Sub($high, $close), Add(Sub($high, $low), 1e-8))), CsRank(Neg(Skew($returns, 24))))",True,True,True,2028,False,False,False,False,False
+042,Regime-Switching Skew Factor,"IfElse(Greater(Abs(Skew($returns, 24)), 1.0), Neg(CsRank($returns)), Neg(CsRank(Skew($returns, 24))))",True,True,True,2028,False,False,False,False,False
+043,Skewed Volume Momentum,"Neg(TsRank(Mul(CsRank(Skew($volume, 24)), CsRank(Delta($close, 3))), 12))",True,True,True,2172,False,False,False,False,False
+044,Kurtotic Volume Intensity,"Neg(Mul(CsRank(Kurt($volume, 24)), CsRank(Div(Sub($close, $low), Add(Sub($high, $low), 0.0001)))))",True,True,True,2028,False,False,False,False,False
+045,Kurtosis-Regime Range Reversal,"IfElse(Greater(Kurt($returns, 24), 3.0), Neg(CsRank(Div(Sub($high, $close), Add(Sub($high, $low), 0.0001)))), Neg(CsRank(Div(Sub($close, $low), Add(Sub($high, $low), 0.0001)))))",True,True,True,2304,False,False,False,False,False
+046,Volatility-Regime Reversal Divergence,"IfElse(Greater(Std($returns, 12), Mean(Std($returns, 12), 48)), Neg(CsRank(Delta($close, 3))), Neg(CsRank(Div(Sub($close, $low), Add(Sub($high, $low), 0.0001)))))",True,True,True,2304,False,False,False,False,False
+047,Volume-weighted Alpha101-1 variant V2,"Neg(Mul(CsRank(TsRank(Delta(Log(Add($volume, 1)), 3), 6)), CsRank(Div(Delta($close, 6), $close))))",True,True,True,2232,False,False,False,False,False
+048,Volatility-Price Rank Divergence TsRank V2,"TsRank(Sub(CsRank(Std($returns, 12)), CsRank(Delta($close, 6))), 18)",True,True,True,2100,False,False,False,False,False
+049,Regime_C0_F10_F21,"IfElse(Greater(Skew($returns, 24), 0.5), CsRank(Delta($volume, 3)), Neg(CsRank(Std($returns, 12))))",True,True,True,2172,False,False,False,False,False
+050,Regime_C0_F11_F20,"IfElse(Greater(Skew($returns, 24), 0.5), Neg(CsRank(Div(Sub($close, $low), Add(Sub($high, $low), 1e-6)))), Neg(CsRank(Delta($close, 6))))",True,True,True,2232,False,False,False,False,False
+051,Regime_C1_F11_F21,"IfElse(Less(Skew($returns, 24), -0.5), CsRank(Delta($close, 5)), Neg(CsRank(Std($returns, 12))))",True,True,True,2172,False,False,False,False,False
+052,Regime_C1_F12_F20,"IfElse(Less(Skew($returns, 24), -0.5), Neg(TsRank($returns, 12)), Neg(CsRank(Delta($close, 6))))",True,True,True,2232,False,False,False,False,False
+053,Alpha101_1_V,"Neg(CsRank(TsArgMax(SignedPower(IfElse(Less($returns, 0), Std($returns, 20), $close), 2), 5)))",True,True,True,2253,False,False,False,False,False
+054,Amount_Regime_Reversal,"IfElse(Greater($amt, Mean($amt, 24)), CsRank(Delta($close, 3)), Neg(CsRank(Div(Sub($close, $vwap), $vwap))))",True,True,True,2304,False,False,False,False,False
+055,Return_Correlation_Regime,"IfElse(Greater(Corr($close, $volume, 12), 0.5), Neg(CsRank($returns)), CsRank(Delta($volume, 3)))",True,True,True,2268,False,False,False,False,False
+056,Kurtosis_Regime_Amount_Efficiency,"IfElse(Greater(Kurt($returns, 24), 3.0), Neg(CsRank(Div($amt, Add($volume, 1e-6)))), Neg(CsRank(Delta($close, 3))))",True,True,True,2268,False,False,False,False,False
+057,TsRank_Price_Volume_Momentum_Divergence,"Neg(Sub(TsRank(Delta($close, 6), 24), TsRank(Delta($volume, 6), 24)))",True,True,True,2028,False,False,False,False,False
+058,Regime_Amt_Efficiency_Switch_V2,"IfElse(Greater($amt, Mean($amt, 48)), Neg(CsRank(Div($amt, Add($volume, 1e-6)))), Neg(TsRank($returns, 12)))",True,True,True,2172,False,False,False,False,False
+059,Regime_Triple_Vol_Amt_Skew,"IfElse(Greater(Std($returns, 12), Mean(Std($returns, 12), 24)), Neg(CsRank(Skew($amt, 12))), Neg(CsRank(Delta($close, 3))))",True,True,True,2268,False,False,False,False,False
+060,Regime_Amt_Vol_Divergence_Switch,"IfElse(Greater(Div($amt, Mean($amt, 24)), 1.2), Sub(CsRank($close), CsRank($volume)), Neg(CsRank(Delta($close, 3))))",True,True,True,2268,False,False,False,False,False
+061,Alpha101_12_Modern,"Neg(Mul(TsRank(Delta($volume, 1), 12), TsRank(Delta($close, 1), 12)))",True,True,True,2172,False,False,False,False,False
+062,Amount_Stability_Adjusted_Returns,"Neg(Div(CsRank($returns), Add(Std($amt, 12), 1e-6)))",True,True,True,2304,False,False,False,False,False
+063,Triple_Rank_Synchrony_V8,"Neg(TsRank(Add(Add(CsRank(Delta($returns, 3)), CsRank(Delta($amt, 3))), CsRank(Kurt($volume, 12))), 12))",True,True,True,2172,False,False,False,False,False
+064,Regime_Price_Volume_Corr_Switch_V3,"IfElse(Less(Corr($close, $volume, 12), -0.5), CsRank($returns), Neg(CsRank(Delta($close, 3))))",True,True,True,2268,False,False,False,False,False
+065,Regime_Volatility_Regime_Switch_V2,"IfElse(Greater(Std($returns, 12), Mean(Std($returns, 12), 48)), Neg(CsRank(Delta($amt, 6))), Neg(CsRank(Delta($close, 1))))",True,True,True,2292,False,False,False,False,False
+066,Regime_Kurt_Amt_Flow_Switch,"IfElse(Greater(Kurt($volume, 24), 3), Neg(CsRank(Delta($amt, 3))), Neg(CsRank($returns)))",True,True,True,2304,False,False,False,False,False
+067,Alpha101_54_Amt_Divergence,"Neg(Mul(CsRank(Div(Sub($low, $close), Add(Sub($low, $high), 1e-6))), CsRank(Delta($amt, 6))))",True,True,True,2232,False,False,False,False,False
+068,Skewness_Regime_PV_Divergence_Fixed,"Neg(IfElse(Less(Skew($returns, 24), -0.5), Neg(Sub(TsRank($close, 12), TsRank($volume, 12))), CsRank(Delta($returns, 3))))",True,True,True,2268,False,False,False,False,False
+069,Regime_Kurt_Volatility_Switch_Fixed,"Neg(IfElse(Greater(Kurt($returns, 12), 3.0), Neg(CsRank(Std($returns, 6))), CsRank(Delta($returns, 3))))",True,True,True,2268,False,False,False,False,False
+070,Price_Pos_Vol_Interaction,"Neg(Mul(CsRank(Div(Sub($close, $low), Add(Sub($high, $low), 0.0001))), TsRank(Std($returns, 24), 24)))",True,True,True,2028,False,False,False,False,False
+071,Range_Position_Vol_Stability_Interaction_Fixed,"Mul(CsRank(Div(Sub($high, $close), Add(Sub($high, $low), 1e-6))), TsRank(Std($volume, 12), 12))",True,True,True,2172,False,False,False,False,False
+072,Kurt_Regime_PV_Corr_Switch,"IfElse(Greater(Kurt($volume, 24), 3.0), Neg(Corr($close, $volume, 12)), Neg(TsRank($returns, 24)))",True,True,True,2028,False,False,False,False,False
+073,Amt_Velocity_Regime_Switch_V2,"IfElse(Greater($amt, EMA($amt, 12)), Neg(TsRank(Delta($volume, 3), 12)), Neg(CsRank($returns)))",True,True,True,2252,False,False,False,False,False
+074,Range_Pos_Vol_Skew_Interaction_Fixed,"Neg(Mul(CsRank(Div(Sub($close, $low), Add(Sub($high, $low), 1e-6))), TsRank(Skew($volume, 24), 12)))",True,True,True,2172,False,False,False,False,False
+075,Amt_Efficiency_Rank_Interaction,"Neg(Mul(CsRank(Div($returns, $amt)), TsRank(Std($volume, 20), 20)))",True,True,True,2076,False,False,False,False,False
+076,Amt_Velocity_Volatility_Reversal,"Neg(IfElse(Greater(Div($amt, Mean($amt, 24)), 2.0), Neg(Delta($close, 1)), SMA($returns, 6)))",True,True,True,2244,False,False,False,False,False
+077,Vol_of_Volume_Price_Reversal,"Neg(Mul(TsRank(Std(Div($volume, Mean($volume, 24)), 24), 24), TsRank($returns, 12)))",True,True,True,2028,False,False,False,False,False
+078,Amt_Efficiency_Kurtosis_Interaction,"Neg(Mul(CsRank(Div($returns, $amt)), TsRank(Kurt($volume, 20), 20)))",True,True,True,2076,False,False,False,False,False
+079,Regime_Vol_Range_Pos_Switch_Fixed,"IfElse(Greater(Std($returns, 12), EMA(Std($returns, 12), 48)), Neg(Div(Sub($close, $low), Add(Sub($high, $low), 1e-6))), Div(Sub($high, $close), Add(Sub($high, $low), 1e-6)))",True,True,True,2304,False,False,False,False,False
+080,Rsquare_Resi_Adaptive,"IfElse(Greater(Rsquare($close, 24), 0.7), Neg(CsRank(Slope($close, 24))), Neg(CsRank(Resi($close, 12))))",True,True,True,2172,False,False,False,False,False
+081,Regime_Trend_Vol_Corrected,"IfElse(And(Greater(Rsquare($close, 24), 0.6), Greater(Std($returns, 12), Mean(Std($returns, 12), 48))), Slope($close, 12), Neg(SMA($returns, 6)))",True,True,True,2244,False,False,False,False,False
+082,Regime_Logical_Shadow_Slope_Follow,"IfElse(Or(Greater(Div(Sub($high, Max2($open, $close)), Add(Sub($high, $low), 1e-6)), 0.6), Greater(Div(Sub(Min2($open, $close), $low), Add(Sub($high, $low), 1e-6)), 0.6)), Slope($close, 12), Neg(SMA($returns, 6)))",True,True,True,2235,False,False,False,False,False
+083,Rsquare_Stability_Filtered_Momentum,"IfElse(And(Greater(Rsquare($close, 24), 0.5), Less(Std($returns, 12), Mean(Std($returns, 12), 48))), Slope($close, 12), Neg($returns))",True,True,True,2304,False,False,False,False,False
+084,Volatility_Sign_Agreement_Resi_Switch,"IfElse(Eq(Sign(Delta(Std($returns, 12), 1)), Sign(Delta($returns, 1))), Neg(Resi($close, 12)), Neg(Slope($close, 24)))",True,True,True,2103,False,False,False,False,False
+085,Rsquare_Stability_Resi_Interaction,"Neg(Mul(CsRank(Rsquare($close, 24)), CsRank(Resi($close, 12))))",True,True,True,2028,False,False,False,False,False
+086,Resi_Acceleration_Sign_Logic_Fixed,"IfElse(Eq(Sign(Delta(Resi($close, 12), 1)), Sign(Resi($close, 12))), Neg(Resi($close, 6)), Neg(Slope($close, 12)))",True,True,True,2172,False,False,False,False,False
+087,Kurt_Regime_Resi_Momentum,"IfElse(Greater(Kurt($returns, 24), 3.0), Neg(Resi($close, 6)), Neg(Resi($close, 24)))",True,True,True,2028,False,False,False,False,False
+088,Amt_Efficiency_Skew_Interaction,"Neg(Mul(CsRank(Div($returns, Add($amt, 1e-6))), TsRank(Skew($returns, 24), 24)))",True,True,True,2028,False,False,False,False,False
+089,Extreme_Divergence_Or_Logic,"IfElse(Or(Greater($volume, Mean($volume, 24)), Greater(Abs($returns), Std($returns, 24))), Neg(Resi($close, 6)), Neg(Slope($close, 12)))",True,True,True,2172,False,False,False,False,False
+090,Trend_Reliability_Switch_Logic_V2,"IfElse(Greater(Rsquare($close, 24), 0.75), Neg(Slope($close, 12)), Neg(TsRank($returns, 12)))",True,True,True,2172,False,False,False,False,False
+091,Amt_Efficiency_TsRank_Kurt_Interaction,"Neg(Mul(TsRank(Div($returns, Add($amt, 1e-6)), 24), TsRank(Kurt($returns, 24), 24)))",True,True,True,2028,False,False,False,False,False
+092,Amt_Efficiency_EMA_Smooth_Rank,"Neg(CsRank(EMA(Div($returns, Add($amt, 1e-6)), 6)))",True,True,True,2304,False,False,False,False,False
+093,Amt_Efficiency_Delta_TsRank,"Neg(TsRank(Delta(Div($returns, Add($amt, 1e-6)), 3), 24))",True,True,True,2028,False,False,False,False,False
+094,And_HighVol_LowKurt_Switch,"IfElse(And(Greater(Std($returns, 12), Mean(Std($returns, 12), 60)), Less(Kurt($returns, 24), 2)), Neg(Delta($close, 3)), Neg(TsRank($returns, 24)))",True,True,True,2028,False,False,False,False,False
+095,Higher_Moment_Regime_Switch,"IfElse(Or(Greater(Abs(Skew($returns, 24)), 1.5), Greater(Kurt($returns, 24), 4.0)), Neg(Resi($close, 6)), Neg(TsRank($returns, 24)))",True,True,True,2028,False,False,False,False,False
+096,Amt_Efficiency_PV_Corr_Interaction,"Neg(Mul(TsRank(WMA(Div($returns, Add($amt, 1e-6)), 6), 24), TsRank(Corr($close, $volume, 24), 24)))",True,True,True,2028,False,False,False,False,False
+097,Amt_Efficiency_Med_Smooth_Rank,"Neg(CsRank(Med(Div($returns, Add($amt, 1e-6)), 6)))",True,True,True,2244,False,False,False,False,False
+098,Smoothed_Efficiency_Acceleration,"Neg(CsRank(Delta(WMA(Div($returns, Add($amt, 1e-6)), 6), 3)))",True,True,True,2208,False,False,False,False,False
+099,Amt_Efficiency_Double_EMA_Cross,"Neg(Sub(EMA(Div($returns, Add($amt, 1e-6)), 6), EMA(Div($returns, Add($amt, 1e-6)), 24)))",True,True,True,2304,False,False,False,False,False
+100,Residual_of_Residual_Acceleration,"Neg(Resi(Delta(Resi($close, 24), 3), 12))",True,True,True,1992,False,False,False,False,False
+101,Median_Returns_Switch,"Neg(IfElse(Greater(Abs(Skew($returns, 24)), 1.0), TsRank(Div(Sub($returns, Med($returns, 24)), Add(Std($returns, 24), 1e-6)), 24), CsRank(Resi($close, 12))))",True,True,True,2172,False,False,False,False,False
+102,High_Log_Resi_Divergence,"IfElse(Greater(Skew($high, 24), 0), TsRank(Log(Div($high, Add($close, 1e-6))), 24), CsRank(Resi($low, 24)))",True,True,True,2028,False,False,False,False,False
+103,Open_Resi_Skew_Hybrid,"Neg(IfElse(Greater(Skew($open, 24), 0), TsRank(Resi($open, 24), 24), CsRank(SignedPower($returns, 0.5))))",True,True,True,2304,False,False,False,False,False
+104,Median_LogSwap,"Neg(IfElse(Greater(Med($returns, 24), 0), TsRank(Log(Div($close, Add($open, 1e-6))), 24), CsRank(Sign(Resi($close, 24)))))",True,True,True,2028,False,False,False,False,False
+105,Median_Skew_Open,"Neg(IfElse(Greater(Skew($returns,24),0.4), CsRank(Sign(Resi($open,24))), TsRank(SignedPower($returns,0.6),24)))",True,True,True,2028,False,False,False,False,False
+106,Median_Volatility_Extreme,"Neg(IfElse(Greater(Std($volume,24),Mean(Std($volume,24),48)), CsRank(Div($amt, Add($volume,1e-6))), TsRank(Div($returns, Add(Std($returns,24),1e-6)),24)))",True,True,True,2028,False,False,False,False,False
+107,VWAP_Vol_HighVol_Switch,"IfElse(Greater(Std($returns, 12), Med(Std($returns, 12), 48)), Mul(CsRank(Neg(Div(Sub($close, $vwap), $vwap))), CsRank(Div($volume, EMA($volume, 12)))), Neg(TsRank(Div(Sub($close, $vwap), $vwap), 24)))",True,True,True,2028,False,False,False,False,False
+108,VWAP_Vol_Skew_Switch,"Neg(IfElse(Less(Skew($returns, 24), -0.3), Mul(CsRank(Neg(Div(Sub($close, $vwap), $vwap))), CsRank(Div($volume, EMA($volume, 12)))), TsRank(Div(Sub($close, $vwap), $vwap), 12)))",True,True,True,2172,False,False,False,False,False
+109,VWAP_Vol_Rsquare_Switch,"IfElse(Greater(Rsquare($close, 24), 0.6), Neg(CsRank(Slope($close, 24))), Mul(CsRank(Neg(Div(Sub($close, $vwap), $vwap))), CsRank(Div($volume, EMA($volume, 12)))))",True,True,True,2304,False,False,False,False,False
+110,PricePos_Skew_Slope,"Neg(Mul(CsRank(Div(Sub($close, $low), Add(Sub($high, $low), 1e-6))), CsRank(Mul(Skew($returns, 24), Slope($close, 12)))))",True,True,True,2028,False,False,False,False,False

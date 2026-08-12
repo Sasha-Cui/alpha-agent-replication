@@ -1,0 +1,10 @@
+figure,empirical_vector_pdf_panels,visible_numeric_annotations,description,underlying_numeric_array_released,author_native_figure_regenerated,paper_result_credit
+library_correlation_heatmap,1,12100,"110x110 printed matrix; 6,105 upper-triangle-plus-diagonal positions",False,False,False
+memory_ablation,2,10,counts and rates for have/no-memory variants,False,False,False
+backend_efficiency,2,24,four operators and four factors across three backends,False,False,False
+combination_ic,3,0,three IC time-series/distribution panels,False,False,False
+combination_quantiles,3,0,three quintile-return/cumulative panels,False,False,False
+selection_ic,3,0,three IC time-series/distribution panels,False,False,False
+selection_quantiles,3,0,three quintile-return/cumulative panels,False,False,False
+cost_pressure,6,0,"six methods, each with five cost curves on linear and log axes",False,False,False
+factor046_tearsheet,4,0,"IC, quantile, distribution, and turnover panels",False,False,False

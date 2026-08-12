@@ -1,0 +1,35 @@
+{
+  "arxiv": {
+    "id": "2602.14670",
+    "pages": 20,
+    "rebuild_pages": 20,
+    "rebuild_token_multiset_jaccard": 0.9997785405824383,
+    "source_files": 33,
+    "submitted": "2026-02-16",
+    "version": "v1",
+    "visual_qa": {
+      "pages_inspected": 20,
+      "unreadable_clipped_or_overlapping_pages": 0
+    }
+  },
+  "independent_implementation": {
+    "author_attribution_evidence_recovered": false,
+    "classification": "unaffiliated_post_paper_interpretation",
+    "commit": "201309cfe3df51f84af8eeb509354d3853ae512a",
+    "owner_public_email_domain": "proton.me",
+    "owner_public_name": "aaron",
+    "paper_submitted": "2026-02-16",
+    "repository": "https://github.com/minihellboy/factorminer",
+    "repository_created": "2026-02-26"
+  },
+  "release_boundary": {
+    "attributable_native_implementation_recovered": false,
+    "bounded_negative_search_is_proof_of_nonexistence": false,
+    "complete_author_operator_semantics_recovered": false,
+    "exact_printed_formula_syntax_recovered": true,
+    "paper_data_recovered": false,
+    "prompts_or_model_calls_recovered": false,
+    "raw_result_arrays_recovered": false,
+    "reported_results_linked_to_appendix_formula_catalog": false
+  }
+}

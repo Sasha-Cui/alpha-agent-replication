@@ -1,0 +1,7 @@
+route,result_count,finding,attributable_native_artifact_recovered,negative_search_limit
+arxiv_source,33,"manuscript TeX and 26 vector PDFs; no runtime, data, prompt, call, or raw-result archive",False,describes pinned v1 source bundle only
+github_repository_title,51,many generic/name matches; visible exact-description repositories are post-paper independent implementations,False,"bounded current indexed search; not proof about private, deleted, moved, or unindexed material"
+github_code_arxiv_id,50,"visible matches are citations, indexes, or independent implementations",False,GitHub code search caps visible results and is not proof of nonexistence
+github_code_exact_title,27,visible matches do not establish an author-attributable release,False,bounded current indexed search only
+github_academic_author_emails,0,zero public commit matches for the first three Tsinghua academic emails,False,"email search cannot rule out aliases, private repositories, or different accounts"
+minihellboy_factorminer,1,post-paper implementation by aaron/proton account; documentation says it follows/extends the paper and lacks paper datasets/baselines/A100 results,False,absence of a public author link is not proof of identity; no affirmative attribution evidence was found

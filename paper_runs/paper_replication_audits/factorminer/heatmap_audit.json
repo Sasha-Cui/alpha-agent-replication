@@ -1,0 +1,30 @@
+{
+  "appendix_heatmap_name_mismatches": 10,
+  "appendix_heatmap_name_prefix_matches": 100,
+  "caption_claimed_average_absolute_correlation": 0.203,
+  "maximum_printed_absolute_offdiagonal": 0.55,
+  "mismatching_factor_ids": [
+    "012",
+    "016",
+    "040",
+    "049",
+    "051",
+    "055",
+    "107",
+    "108",
+    "109",
+    "110"
+  ],
+  "pairs_at_or_above_admission_threshold_0_5": 27,
+  "pairs_strictly_above_admission_threshold_0_5": 15,
+  "printed_mean_absolute_including_diagonal": 0.2005041322314071,
+  "printed_mean_absolute_offdiagonal": 0.19316930775646504,
+  "printed_numeric_annotations": 12100,
+  "raw_matrix_released": false,
+  "result_lineage_verified": false,
+  "shape": [
+    110,
+    110
+  ],
+  "unique_offdiagonal_pairs": 5995
+}

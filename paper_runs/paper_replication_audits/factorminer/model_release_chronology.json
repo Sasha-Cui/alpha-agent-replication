@@ -1,0 +1,10 @@
+{
+  "closest_public_primary_record": "Google Gemini 3 Flash",
+  "first_public_date": "2025-12-17",
+  "literal_model_available_before_2025_test_window": false,
+  "paper_model_identifier": "Gemini 3.0 Flash",
+  "paper_test_window": "2025 (exact endpoints absent)",
+  "paper_train_window": "2024-Q1 through 2024-Q4",
+  "retrospective_data_layer_holdout_possible": true,
+  "retrospective_data_layer_holdout_verified": false
+}

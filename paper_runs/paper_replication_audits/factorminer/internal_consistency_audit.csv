@@ -1,0 +1,13 @@
+check,status,detail
+main_table_global_best_claim,overbroad,"FactorMiner is best or tied on 29/44 dataset-metric columns and strictly best on 28/44, not all columns"
+main_vs_ensemble_prose,protocol_or_version_mismatch,CSI500 prose says FactorMiner EW/ICW ICIR 1.52/1.54 and Lasso/XGB 1.42/1.52 while the cited main Top-40 table says 1.29/1.31 and 1.21/1.29
+heatmap_caption_average,does_not_match_printed_matrix,caption claims off-diagonal Avg abs rho 0.203; visible rounded matrix yields 0.193169 off-diagonal and 0.200504 including diagonal
+heatmap_admission_constraint,visible_threshold_violations,printed matrix has 15 unique pairs above 0.5 and 27 at or above 0.5 despite the stated global abs-correlation constraint
+heatmap_formula_catalog_lineage,catalog_mismatch,"10/110 heatmap factor labels do not prefix-match the same-ID appendix formula names: 012,016,040,049,051,055,107,108,109,110"
+factor046_financial_logic,formula_description_conflict,printed formula branches between 3-bar close reversal and close-in-range reversal; prose instead says volume-price divergence and volatility-normalized VWAP deviation
+factor046_turnover_units,hundredfold_display_conflict,table reports 15.69% Avg Turnover while the source vector plot prints Avg Daily Turnover 1569.1%
+xgboost_top20_total,arithmetic_conflict,"20 printed importances sum to 43.13%, not the claimed 43.8%"
+baseline_inventory,setup_omission,"main table includes AlphaForge, but the experimental-setup baseline enumeration names only Alpha101 Classic/Adapted, RF, GPLearn, and AlphaAgent"
+memory_ablation_denominators,arithmetic_recoverable,"32/20%=160 and 96/60%=160 candidates; 14/32=43.75% and 53/96=55.21% rejection, implying 18 and 43 admitted as plotted"
+gpu_appendix_vs_main_benchmark,different_unreconciled_protocols,appendix A100 table reports Python/GPU only with values unlike the main three-backend chart; shapes and benchmark protocol needed to reconcile them are absent
+model_test_chronology,prospective_interpretation_impossible,"Gemini 3 Flash first became public 2025-12-17, inside the paper's unspecified full-year 2025 test window; retrospective holdout remains possible but unverified"
