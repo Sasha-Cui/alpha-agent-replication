@@ -1,0 +1,40 @@
+{
+  "arxiv": {
+    "authors": [
+      "Wenliang Huang",
+      "Zengyi Yu"
+    ],
+    "id": "2605.06024",
+    "pdf_pages": 6,
+    "rebuild_extracted_token_multiset_jaccard": 0.9984609465178915,
+    "rebuild_pages": 6,
+    "repeated_downloads_byte_identical": true,
+    "source_file_count": 6,
+    "source_files": [
+      "00README.json",
+      "IEEEtran.cls",
+      "conference_101719.tex",
+      "framework.pdf",
+      "references.bib",
+      "scaling_curve.pdf"
+    ],
+    "source_rebuild_completed": true,
+    "submitted_utc": "2026-05-07T11:17:23Z",
+    "venue_comment": "Accepted by IJCNN 2026",
+    "version": "v1",
+    "visual_qa": {
+      "pages_inspected": 6,
+      "unreadable_or_clipped_pages": 0
+    }
+  },
+  "release_boundary": {
+    "actions_orders_fills_recovered": false,
+    "advertised_project_page_status": 404,
+    "attributable_implementation_recovered": false,
+    "bounded_negative_search_is_proof_of_nonexistence": false,
+    "data_snapshot_recovered": false,
+    "exact_prompts_recovered": false,
+    "nav_returns_arrays_recovered": false,
+    "runtime_calls_recovered": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "boundary": "conditional synthetic procedure component only; buy sizing, costs, and broker implementation are unreleased",
+  "component": "T+1 action-index and cash-truncation semantics",
+  "computed": {
+    "action_mapping": {
+      "-1": "sell",
+      "0": "hold",
+      "1": "buy"
+    },
+    "maximum_affordable_integer_shares": 9,
+    "remaining_cash": 91.0
+  },
+  "declared_fixture": {
+    "actions": [
+      -1,
+      0,
+      1
+    ],
+    "cash": 1000.0,
+    "decision_days": [
+      0,
+      1,
+      2
+    ],
+    "execution_days": [
+      1,
+      2,
+      3
+    ],
+    "open_price": 101.0,
+    "transaction_cost_rate": 0.0
+  },
+  "native_broker_used": false,
+  "paper_cost_rate_used": false,
+  "paper_input_used": false,
+  "paper_result_credit": false
+}

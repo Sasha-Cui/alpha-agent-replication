@@ -1,0 +1,36 @@
+dimension,status,evidence
+markets,partial,A-share and U.S. equity markets named
+asset_universe,missing,no ticker or membership list
+market_windows_outer,partial,US 2025-01-01..06-30; A-share 2025-06-01..09-30
+short_window_dates,missing,"three approximately 15-day windows per market, dates absent"
+long_window_dates,missing,"approximately 90-day windows, exact dates absent"
+price_data,missing,"minute-level prices named; vendor, fields, timezone, adjustments, and snapshot absent"
+news_data,missing,"real-time news named; vendor, corpus, timestamps, NLP model, and snapshot absent"
+annual_reports,missing,"annual reports named; filings, retrieval, and hierarchical summarizer absent"
+point_in_time_controls,paper_only,chronology asserted without released input timestamps
+initial_capital,recovered,"1,000,000 local currency per market"
+action_space,recovered,"-1 sell, 0 hold, 1 buy"
+execution_timing,recovered,decision T; execution at T+1 open
+buy_sizing,missing,cash truncation stated but desired buy volume rule absent
+sell_sizing,partial,"model-designated volume, output schema absent"
+transaction_costs,missing,costs deducted but rate/schedule absent
+slippage,missing,not specified
+shorting_leverage,missing,not specified
+corporate_actions,missing,not specified
+portfolio_aggregation,missing,asset metrics averaged; account construction/weighting absent
+exact_prompts,missing,three prose mode descriptions only
+strategy_library,partial,four motifs; only S2 has one numeric entry lookback
+structured_output_schema,missing,"action/rationale named, exact schema and volume representation absent"
+model_identifiers,partial,display names only; immutable API snapshots/checkpoints absent
+model_call_parameters,missing,"temperature, top-p, token limits, reasoning settings, and retries absent"
+sampling_configuration,missing,called standardized efficient sampling without values
+random_seeds,missing,no seeds or repeated-run protocol
+runtime_requests_responses,missing,no immutable calls or responses
+broker_implementation,missing,"described as identical, implementation/config absent"
+metric_formulas,missing,metric names only; TR/AR mismatch
+alpha_benchmark,missing,not specified
+actions_orders_fills,missing,not released
+cash_holdings_nav_returns,missing,not released
+raw_result_arrays,missing,not released
+native_source,missing,advertised project page is 404; no attributable source recovered
+environment_dependencies,missing,not released

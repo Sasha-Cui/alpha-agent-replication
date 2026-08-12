@@ -1,0 +1,4 @@
+mode,paper_description,exact_system_prompt_recovered,exact_user_prompt_recovered,structured_output_schema_recovered,runtime_fill_recovered,model_request_recovered,native_prompt_call_credit
+Free,zero-shot native financial intuition; no external strategy constraints,False,False,False,False,False,False
+Guided,S1-S4 supplied as references; model may adjust using real-time news,False,False,False,False,False,False
+Strict,must adhere to S1-S4; rationale must cite specific strategy clauses,False,False,False,False,False,False

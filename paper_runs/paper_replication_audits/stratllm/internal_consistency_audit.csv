@@ -1,0 +1,12 @@
+check,status,detail
+literal_live_forward_2025,contradicted_by_public_model_chronology,all ten model identities/families represented in the result tables have public dates after at least part of the stated 2025 windows; eight are first public in 2026
+defensible_temporal_interpretation,post_hoc_chronological_replay_possible_but_unverified,"sequential feeding of frozen 2025 inputs could avoid look-ahead, but inputs, timestamps, calls, and actions are absent"
+gpt_mdd_reduction,passes_displayed_arithmetic,20.83 to 11.66 is a 44.02% relative reduction
+best_us_total_return,passes_table_check,GPT-5.4 Strict TR -0.40% is the highest displayed US TR
+best_us_alpha,prose_overstates_joint_best_performance,"GPT-5.4 Strict has alpha 6.72%, below Kimi-K2.5_nothink 12.02% and GLM-5_nothink 8.83%"
+highlight_caption,incomplete_highlighting,"caption promises best and second results within each metric, but highlighting appears only for TR and MDD, not SR, Vol, WR, or alpha"
+universal_strict_insurance,under_supported_by_unpaired_rows,most Table 1 models expose only one mode; a universal within-model claim cannot be tested
+standard_models_require_strict,overbroad_relative_to_ablation,Kimi-K2.5_nothink peaks at 12.05% TR in Guided rather than Strict mode
+disposition_effect,not_identified_by_released_statistics,"win rate, return, and MDD do not identify realized-gain versus realized-loss holding behavior without trades"
+temporal_horizon_significance,unsupported_without_results_or_test,"paper says 90-day windows significantly outperform 15-day windows but publishes no horizon table, uncertainty, or statistical test"
+metric_naming,tr_ar_definition_gap,methodology names Annualized Return while tables and figure report Total Return; no conversion or formula is supplied

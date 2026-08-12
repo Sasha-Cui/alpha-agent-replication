@@ -1,0 +1,8 @@
+route,result_count,finding,attributable_native_artifact_recovered,negative_search_limit
+advertised_project_page,1,GitHub Pages 404,False,"bounded current observation; not proof that private, deleted, moved, or unindexed material never existed"
+github_code_arxiv_id,13,"returned paper indexes/citations, not attributable implementation",False,"bounded indexed GitHub search; not proof that private, deleted, moved, or unindexed material never existed"
+github_code_exact_title_phrase,39,"returned paper indexes/citations, not attributable implementation",False,"bounded indexed GitHub search; not proof that private, deleted, moved, or unindexed material never existed"
+github_repository_author_title,0,zero repositories,False,"bounded indexed GitHub search; not proof that private, deleted, moved, or unindexed material never existed"
+github_pages_owner_and_repo,0,advertised owner and repository API routes not found,False,bounded current API observation; not proof that prior or private artifacts never existed
+huggingface_model_search,3,"three lexical collisions, none attributable to paper/authors",False,"bounded indexed Hugging Face search; not proof that private, deleted, moved, or unindexed material never existed"
+huggingface_dataset_search,0,zero datasets,False,"bounded indexed Hugging Face search; not proof that private, deleted, moved, or unindexed material never existed"

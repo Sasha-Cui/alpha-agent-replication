@@ -1,0 +1,7 @@
+figure,model,strategy,metric,rendered_value,numeric_value,duplicate_kind,duplicate_of,underlying_array_released,native_result_regenerated,paper_result_credit
+Figure 2,Qwen3.5-9B,Strict,TR_pct,9.48%,9.48,none,,False,False,False
+Figure 2,Qwen3.5-9B,Guided,TR_pct,8.15%,8.15,none,,False,False,False
+Figure 2,Qwen3.5-35B-A3B,Strict,TR_pct,12.33%,12.33,exact_repeat_of_table1,Table 1,False,False,False
+Figure 2,Qwen3.5-35B-A3B,Guided,TR_pct,10.55%,10.55,none,,False,False,False
+Figure 2,Qwen3.5-122B-A10B,Strict,TR_pct,8.48%,8.48,none,,False,False,False
+Figure 2,Qwen3.5-122B-A10B,Guided,TR_pct,13.68%,13.68,exact_repeat_of_table1,Table 1,False,False,False

@@ -1,0 +1,5 @@
+strategy_id,name,paper_description,missing_operational_details,has_one_exact_entry_threshold,fully_executable_definition_recovered,native_strategy_credit
+S1,Short-Term Reversal,mean reversion after short-term plunges,"no plunge threshold, lookback, exit, sizing, or tie rule",False,False,False
+S2,Breakout Momentum,buy when price breaks the 3-day high,"entry threshold only; price field, exit, sizing, and tie rule absent",True,False,False
+S3,Volatility Compression,identify accumulation in low-volatility zones,"volatility estimator, thresholds, entry, exit, and sizing absent",False,False,False
+S4,Price-Volume Confirmation,validate upward price trends with price-volume theory,"trend and volume definitions, thresholds, entry, exit, and sizing absent",False,False,False

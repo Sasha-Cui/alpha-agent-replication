@@ -1,0 +1,10 @@
+symbol,name,paper_status,exact_formula_recovered,paper_input_array_recovered,native_metric_credit
+TR,Total Return,reported in tables but methodology names Annualized Return,False,False,False
+AR,Annualized Return,named in methodology but absent from result tables,False,False,False
+alpha,Alpha,benchmark and formula absent,False,False,False
+SR,Sharpe Ratio,"frequency, annualization, risk-free rate, and dispersion convention absent",False,False,False
+Sortino,Sortino Ratio,formula and downside target absent; not reported in tables,False,False,False
+MDD,Maximum Drawdown,formula/sign convention absent,False,False,False
+Calmar,Calmar Ratio,formula absent; not reported in tables,False,False,False
+Vol,Volatility,frequency and annualization absent,False,False,False
+WR,Win Rate,trade definition and denominator absent,False,False,False

@@ -1,0 +1,196 @@
+table,panel,model,strategy,market,metric,rendered_value,numeric_value,duplicate_kind,duplicate_of,native_pipeline_executed,native_result_regenerated,paper_result_credit
+Table 1,Panel A,GPT-5.4,Strict,A-shares,TR_pct,12.31,12.31,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,A-shares,SR,2.19,2.19,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,A-shares,MDD_pct,3.17,3.17,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,A-shares,Vol_pct,15.95,15.95,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,A-shares,WR_pct,54.55,54.55,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,A-shares,alpha_pct,17.88,17.88,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,US Stocks,TR_pct,-0.40,-0.4,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,US Stocks,SR,-0.04,-0.04,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,US Stocks,MDD_pct,11.66,11.66,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,US Stocks,Vol_pct,20.88,20.88,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,US Stocks,WR_pct,25.81,25.81,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Strict,US Stocks,alpha_pct,6.72,6.72,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,A-shares,TR_pct,6.36,6.36,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,A-shares,SR,1.15,1.15,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,A-shares,MDD_pct,4.76,4.76,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,A-shares,Vol_pct,15.87,15.87,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,A-shares,WR_pct,57.58,57.58,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,A-shares,alpha_pct,-1.87,-1.87,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,US Stocks,TR_pct,-10.50,-10.5,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,US Stocks,SR,-1.31,-1.31,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,US Stocks,MDD_pct,20.83,20.83,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,US Stocks,Vol_pct,23.22,23.22,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,US Stocks,WR_pct,21.62,21.62,none,,False,False,False
+Table 1,Panel A,GPT-5.4,Guided,US Stocks,alpha_pct,-21.97,-21.97,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,A-shares,TR_pct,11.52,11.52,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,A-shares,SR,1.81,1.81,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,A-shares,MDD_pct,4.76,4.76,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,A-shares,Vol_pct,18.36,18.36,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,A-shares,WR_pct,52.38,52.38,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,A-shares,alpha_pct,6.68,6.68,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,US Stocks,TR_pct,-4.33,-4.33,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,US Stocks,SR,-0.44,-0.44,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,US Stocks,MDD_pct,18.13,18.13,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,US Stocks,Vol_pct,25.16,25.16,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,US Stocks,WR_pct,44.83,44.83,none,,False,False,False
+Table 1,Panel A,Claude-Sonnet-4.5,Guided,US Stocks,alpha_pct,-1.64,-1.64,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,A-shares,TR_pct,0.60,0.6,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,A-shares,SR,0.12,0.12,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,A-shares,MDD_pct,7.86,7.86,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,A-shares,Vol_pct,25.10,25.1,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,A-shares,WR_pct,46.15,46.15,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,A-shares,alpha_pct,-32.53,-32.53,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,US Stocks,TR_pct,-8.60,-8.6,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,US Stocks,SR,-0.51,-0.51,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,US Stocks,MDD_pct,29.03,29.03,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,US Stocks,Vol_pct,38.68,38.68,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,US Stocks,WR_pct,33.33,33.33,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Strict,US Stocks,alpha_pct,-6.66,-6.66,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,A-shares,TR_pct,6.38,6.38,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,A-shares,SR,0.80,0.8,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,A-shares,MDD_pct,5.88,5.88,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,A-shares,Vol_pct,25.43,25.43,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,A-shares,WR_pct,41.18,41.18,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,A-shares,alpha_pct,-17.64,-17.64,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,US Stocks,TR_pct,-14.73,-14.73,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,US Stocks,SR,-0.56,-0.56,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,US Stocks,MDD_pct,29.22,29.22,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,US Stocks,Vol_pct,37.38,37.38,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,US Stocks,WR_pct,36.84,36.84,none,,False,False,False
+Table 1,Panel A,Gemini-3.1-Pro,Free,US Stocks,alpha_pct,-8.14,-8.14,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,A-shares,TR_pct,13.68,13.68,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,A-shares,SR,1.62,1.62,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,A-shares,MDD_pct,6.93,6.93,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,A-shares,Vol_pct,25.06,25.06,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,A-shares,WR_pct,70.00,70.0,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,A-shares,alpha_pct,1.84,1.84,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,US Stocks,TR_pct,-9.19,-9.19,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,US Stocks,SR,-0.82,-0.82,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,US Stocks,MDD_pct,25.01,25.01,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,US Stocks,Vol_pct,29.95,29.95,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,US Stocks,WR_pct,35.48,35.48,none,,False,False,False
+Table 1,Panel B,Qwen3.5-122B-A10B,Guided,US Stocks,alpha_pct,-13.63,-13.63,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,A-shares,TR_pct,12.33,12.33,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,A-shares,SR,1.36,1.36,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,A-shares,MDD_pct,5.84,5.84,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,A-shares,Vol_pct,27.61,27.61,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,A-shares,WR_pct,56.25,56.25,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,A-shares,alpha_pct,-5.74,-5.74,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,US Stocks,TR_pct,-13.67,-13.67,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,US Stocks,SR,-0.48,-0.48,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,US Stocks,MDD_pct,29.24,29.24,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,US Stocks,Vol_pct,38.17,38.17,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,US Stocks,WR_pct,20.00,20.0,none,,False,False,False
+Table 1,Panel B,Qwen3.5-35B-A3B,Strict,US Stocks,alpha_pct,-4.86,-4.86,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,A-shares,TR_pct,7.62,7.62,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,A-shares,SR,1.57,1.57,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,A-shares,MDD_pct,1.98,1.98,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,A-shares,Vol_pct,21.14,21.14,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,A-shares,WR_pct,33.33,33.33,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,A-shares,alpha_pct,1.77,1.77,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,US Stocks,TR_pct,-5.35,-5.35,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,US Stocks,SR,-0.35,-0.35,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,US Stocks,MDD_pct,22.65,22.65,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,US Stocks,Vol_pct,33.63,33.63,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,US Stocks,WR_pct,34.29,34.29,none,,False,False,False
+Table 1,Panel B,DeepSeek-Reasoner,Free,US Stocks,alpha_pct,0.28,0.28,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,A-shares,TR_pct,7.04,7.04,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,A-shares,SR,1.09,1.09,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,A-shares,MDD_pct,5.40,5.4,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,A-shares,Vol_pct,19.13,19.13,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,A-shares,WR_pct,40.00,40.0,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,A-shares,alpha_pct,-5.79,-5.79,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,US Stocks,TR_pct,-3.62,-3.62,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,US Stocks,SR,-0.23,-0.23,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,US Stocks,MDD_pct,19.48,19.48,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,US Stocks,Vol_pct,31.61,31.61,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,US Stocks,WR_pct,31.43,31.43,none,,False,False,False
+Table 1,Panel B,DeepSeek-Chat,Strict,US Stocks,alpha_pct,4.05,4.05,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,A-shares,TR_pct,7.82,7.82,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,A-shares,SR,1.23,1.23,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,A-shares,MDD_pct,5.33,5.33,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,A-shares,Vol_pct,18.64,18.64,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,A-shares,WR_pct,61.76,61.76,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,A-shares,alpha_pct,-3.27,-3.27,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,US Stocks,TR_pct,-12.01,-12.01,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,US Stocks,SR,-0.35,-0.35,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,US Stocks,MDD_pct,20.76,20.76,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,US Stocks,Vol_pct,31.77,31.77,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,US Stocks,WR_pct,20.83,20.83,none,,False,False,False
+Table 1,Panel B,GLM-5_think,Free,US Stocks,alpha_pct,0.52,0.52,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,A-shares,TR_pct,6.32,6.32,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,A-shares,SR,1.24,1.24,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,A-shares,MDD_pct,4.73,4.73,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,A-shares,Vol_pct,14.42,14.42,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,A-shares,WR_pct,44.12,44.12,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,A-shares,alpha_pct,-2.89,-2.89,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,US Stocks,TR_pct,-0.51,-0.51,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,US Stocks,SR,-0.01,-0.01,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,US Stocks,MDD_pct,16.81,16.81,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,US Stocks,Vol_pct,24.41,24.41,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,US Stocks,WR_pct,50.00,50.0,none,,False,False,False
+Table 1,Panel B,GLM-5_nothink,Strict,US Stocks,alpha_pct,8.83,8.83,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,A-shares,TR_pct,11.68,11.68,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,A-shares,SR,1.40,1.4,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,A-shares,MDD_pct,6.79,6.79,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,A-shares,Vol_pct,25.13,25.13,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,A-shares,WR_pct,75.00,75.0,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,A-shares,alpha_pct,-3.86,-3.86,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,US Stocks,TR_pct,-0.51,-0.51,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,US Stocks,SR,-0.34,-0.34,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,US Stocks,MDD_pct,1.61,1.61,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,US Stocks,Vol_pct,42.18,42.18,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,US Stocks,WR_pct,33.33,33.33,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_think,Free,US Stocks,alpha_pct,0.53,0.53,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,A-shares,TR_pct,12.05,12.05,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,A-shares,SR,1.45,1.45,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,A-shares,MDD_pct,7.19,7.19,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,A-shares,Vol_pct,24.92,24.92,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,A-shares,WR_pct,65.22,65.22,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,A-shares,alpha_pct,-2.50,-2.5,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,US Stocks,TR_pct,-1.03,-1.03,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,US Stocks,SR,0.02,0.02,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,US Stocks,MDD_pct,19.55,19.55,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,US Stocks,Vol_pct,32.65,32.65,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,US Stocks,WR_pct,42.86,42.86,none,,False,False,False
+Table 1,Panel B,Kimi-K2.5_nothink,Guided,US Stocks,alpha_pct,12.02,12.02,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,A-shares,TR_pct,10.55,10.55,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,A-shares,SR,1.70,1.7,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,A-shares,MDD_pct,4.67,4.67,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,A-shares,Vol_pct,17.54,17.54,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,A-shares,WR_pct,66.67,66.67,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,A-shares,alpha_pct,5.23,5.23,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,US Stocks,TR_pct,-4.61,-4.61,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,US Stocks,SR,-0.22,-0.22,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,US Stocks,MDD_pct,10.28,10.28,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,US Stocks,Vol_pct,28.74,28.74,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,US Stocks,WR_pct,30.77,30.77,none,,False,False,False
+Table 1,Panel B,Minimax-M2.5,Guided,US Stocks,alpha_pct,4.36,4.36,none,,False,False,False
+Table 2,,Kimi-K2.5_think,Free,A-shares,TR_pct,11.68,11.68,exact_repeat_of_table1,Table 1,False,False,False
+Table 2,,Kimi-K2.5_think,Free,A-shares,SR,1.40,1.4,exact_repeat_of_table1,Table 1,False,False,False
+Table 2,,Kimi-K2.5_think,Free,A-shares,MDD_pct,6.79,6.79,exact_repeat_of_table1,Table 1,False,False,False
+Table 2,,Kimi-K2.5_think,Guided,A-shares,TR_pct,7.71,7.71,none,,False,False,False
+Table 2,,Kimi-K2.5_think,Guided,A-shares,SR,1.00,1.0,none,,False,False,False
+Table 2,,Kimi-K2.5_think,Guided,A-shares,MDD_pct,9.53,9.53,none,,False,False,False
+Table 2,,Kimi-K2.5_think,Strict,A-shares,TR_pct,9.10,9.1,none,,False,False,False
+Table 2,,Kimi-K2.5_think,Strict,A-shares,SR,1.10,1.1,none,,False,False,False
+Table 2,,Kimi-K2.5_think,Strict,A-shares,MDD_pct,8.09,8.09,none,,False,False,False
+Table 2,,Kimi-K2.5_nothink,Strict,A-shares,TR_pct,10.93,10.93,none,,False,False,False
+Table 2,,Kimi-K2.5_nothink,Strict,A-shares,SR,1.41,1.41,none,,False,False,False
+Table 2,,Kimi-K2.5_nothink,Strict,A-shares,MDD_pct,7.36,7.36,none,,False,False,False
+Table 2,,Kimi-K2.5_nothink,Guided,A-shares,TR_pct,12.05,12.05,exact_repeat_of_table1,Table 1,False,False,False
+Table 2,,Kimi-K2.5_nothink,Guided,A-shares,SR,1.45,1.45,exact_repeat_of_table1,Table 1,False,False,False
+Table 2,,Kimi-K2.5_nothink,Guided,A-shares,MDD_pct,7.19,7.19,exact_repeat_of_table1,Table 1,False,False,False
+Table 2,,Kimi-K2.5_nothink,Free,A-shares,TR_pct,9.15,9.15,none,,False,False,False
+Table 2,,Kimi-K2.5_nothink,Free,A-shares,SR,1.29,1.29,none,,False,False,False
+Table 2,,Kimi-K2.5_nothink,Free,A-shares,MDD_pct,5.75,5.75,none,,False,False,False
+Table 2,,DeepSeek-Reasoner,Free,A-shares,TR_pct,7.62,7.62,exact_repeat_of_table1,Table 1,False,False,False
+Table 2,,DeepSeek-Reasoner,Free,A-shares,SR,1.57,1.57,exact_repeat_of_table1,Table 1,False,False,False
+Table 2,,DeepSeek-Reasoner,Free,A-shares,MDD_pct,1.98,1.98,exact_repeat_of_table1,Table 1,False,False,False
+Table 2,,DeepSeek-Reasoner,Guided,A-shares,TR_pct,5.13,5.13,none,,False,False,False
+Table 2,,DeepSeek-Reasoner,Guided,A-shares,SR,1.57,1.57,none,,False,False,False
+Table 2,,DeepSeek-Reasoner,Guided,A-shares,MDD_pct,2.26,2.26,none,,False,False,False
+Table 2,,DeepSeek-Reasoner,Strict,A-shares,TR_pct,3.52,3.52,none,,False,False,False
+Table 2,,DeepSeek-Reasoner,Strict,A-shares,SR,0.55,0.55,none,,False,False,False
+Table 2,,DeepSeek-Reasoner,Strict,A-shares,MDD_pct,6.06,6.06,none,,False,False,False
