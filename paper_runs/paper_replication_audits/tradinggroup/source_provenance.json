@@ -1,0 +1,71 @@
+{
+  "arxiv": {
+    "id": "2508.17565",
+    "pdf_pages": 9,
+    "rebuild_extracted_token_multiset_jaccard": 0.9974937343358395,
+    "rebuild_pages": 9,
+    "repeated_downloads_byte_identical": true,
+    "source_file_count": 6,
+    "source_members": [
+      "00README.json",
+      "ComparisonOfLLMs.pdf",
+      "DataPipelinedrawio.pdf",
+      "arxiv.bbl",
+      "arxiv.tex",
+      "overalldrawio.pdf"
+    ],
+    "source_rebuild_completed": true,
+    "submitted": "2025-08-25",
+    "version": "v1",
+    "visual_qa": {
+      "pages_inspected": 9,
+      "unreadable_or_clipped_pages": 0
+    }
+  },
+  "finsaber": {
+    "adapter_boundary": "removes eager imports of unused external/RL modules only; strategy, data transform, commission, dates, and metrics unchanged",
+    "commit": "0e794285e48fd71a4d9579ef022ee726b1e36f8a",
+    "commit_authored": "2025-08-09T13:43:15+01:00",
+    "execution_config": {
+      "date_from": "2022-10-06",
+      "date_to": "2023-04-10",
+      "save_results": false,
+      "setup_name": "cherry_pick_both_finmem",
+      "silence": true,
+      "tickers": [
+        "TSLA",
+        "NFLX",
+        "AMZN",
+        "MSFT",
+        "COIN"
+      ]
+    },
+    "execution_packages": {
+      "backtrader": "1.9.78.123",
+      "matplotlib": "3.10.3",
+      "numpy": "2.3.0",
+      "pandas": "2.3.0",
+      "python-dotenv": "1.1.0",
+      "statsmodels": "0.14.2",
+      "xgboost": "3.0.2"
+    },
+    "import_adapter_sha256": "d35df9a3a948c76dcf272dd68c396679e613ba4e4d57323e5bbfe1c13961abd9",
+    "origin": "https://github.com/waylonli/FINSABER.git",
+    "price_csv_sha256": "f67e3972dceefbbdf6c17b84b30957a7b83518401955fff8ae0bc4ae206fa83f",
+    "safe_pickle_forbidden_construction_opcodes": {},
+    "safe_pickle_global_references": {
+      "datetime.date": 1
+    },
+    "selective_data_sha256": "f8bfd5b3b68796b82d1857c06e1bb39991b8a973dc6d41a7ec63ff29a4e2df6f",
+    "tag_containing_commit": "v2.0.1",
+    "tree": "ad47d1a27e39f359218d05e971d0599e09a489a1"
+  },
+  "release_boundary": {
+    "attributable_tradinggroup_implementation_recovered": false,
+    "complete_runtime_prompts_recovered": false,
+    "finsaber_is_source_adjacent_baseline_framework_not_tradinggroup_source": true,
+    "native_actions_fills_navs_or_curves_recovered": false,
+    "qwen3_trader_checkpoint_recovered": false,
+    "training_trajectories_recovered": false
+  }
+}

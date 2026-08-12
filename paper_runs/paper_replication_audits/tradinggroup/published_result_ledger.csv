@@ -1,0 +1,361 @@
+table,ticker,result_group,metric,rendered_value,numeric_value,decimal_places,native_tradinggroup_result,duplicate_kind,duplicate_of,baseline_framework_executed,baseline_execution_matches_paper,native_pipeline_executed,native_result_regenerated,paper_result_credit,credit_class
+Table 1,TSLA,Buy and Hold,SPR,-0.342,-0.342,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Buy and Hold,CR,-20.481,-20.481,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Buy and Hold,MDD,-52.727,-52.727,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Buy and Hold,AV,55.908,55.908,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,SMA Cross,SPR,1.237,1.237,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,SMA Cross,CR,30.683,30.683,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,SMA Cross,MDD,-22.399,-22.399,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,SMA Cross,AV,33.389,33.389,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,WMA Cross,SPR,1.337,1.337,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,WMA Cross,CR,32.924,32.924,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,WMA Cross,MDD,-13.476,-13.476,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,WMA Cross,AV,32.559,32.559,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,ATR Band,SPR,-0.595,-0.595,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,ATR Band,CR,-19.142,-19.142,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,ATR Band,MDD,-39.599,-39.599,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,ATR Band,AV,42.161,42.161,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Bollinger Bands,SPR,-0.769,-0.769,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Bollinger Bands,CR,-24.749,-24.749,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Bollinger Bands,MDD,-44.655,-44.655,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Bollinger Bands,AV,45.366,45.366,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Turn of The Month,SPR,0.219,0.219,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Turn of The Month,CR,3.636,3.636,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Turn of The Month,MDD,-11.643,-11.643,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,Turn of The Month,AV,31.043,31.043,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,ARIMA,SPR,0.464,0.464,3,False,none,,True,False,False,False,False,none
+Table 1,TSLA,ARIMA,CR,10.301,10.301,3,False,none,,True,False,False,False,False,none
+Table 1,TSLA,ARIMA,MDD,-23.524,-23.524,3,False,none,,True,False,False,False,False,none
+Table 1,TSLA,ARIMA,AV,41.496,41.496,3,False,none,,True,False,False,False,False,none
+Table 1,TSLA,XGBoost,SPR,-0.262,-0.262,3,False,none,,True,False,False,False,False,none
+Table 1,TSLA,XGBoost,CR,-14.133,-14.133,3,False,none,,True,False,False,False,False,none
+Table 1,TSLA,XGBoost,MDD,-43.457,-43.457,3,False,none,,True,False,False,False,False,none
+Table 1,TSLA,XGBoost,AV,47.944,47.944,3,False,none,,True,False,False,False,False,none
+Table 1,TSLA,A2C,SPR,-0.343,-0.343,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,A2C,CR,-20.423,-20.423,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,A2C,MDD,-52.592,-52.592,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,A2C,AV,55.859,55.859,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,SAC,SPR,-0.343,-0.343,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,SAC,CR,-20.423,-20.423,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,SAC,MDD,-52.592,-52.592,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,SAC,AV,55.859,55.859,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,FinMem,SPR,0.312,0.312,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,FinMem,CR,3.472,3.472,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,FinMem,MDD,-30.142,-30.142,3,False,none,,False,False,False,False,False,none
+Table 1,TSLA,FinMem,AV,46.32,46.32,2,False,none,,False,False,False,False,False,none
+Table 1,TSLA,TradingGroup,SPR,1.398,1.398,3,True,none,,False,False,False,False,False,none
+Table 1,TSLA,TradingGroup,CR,25.662,25.662,3,True,none,,False,False,False,False,False,none
+Table 1,TSLA,TradingGroup,MDD,-15.305,-15.305,3,True,none,,False,False,False,False,False,none
+Table 1,TSLA,TradingGroup,AV,34.78,34.78,2,True,none,,False,False,False,False,False,none
+Table 1,NFLX,Buy and Hold,SPR,1.326,1.326,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Buy and Hold,CR,43.079,43.079,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Buy and Hold,MDD,-20.184,-20.184,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Buy and Hold,AV,41.523,41.523,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,SMA Cross,SPR,-1.124,-1.124,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,SMA Cross,CR,-17.576,-17.576,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,SMA Cross,MDD,-27.29,-27.29,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,SMA Cross,AV,25.309,25.309,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,WMA Cross,SPR,-0.189,-0.189,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,WMA Cross,CR,-2.289,-2.289,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,WMA Cross,MDD,-20.939,-20.939,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,WMA Cross,AV,22.169,22.169,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,ATR Band,SPR,0.15,0.15,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,ATR Band,CR,2.992,2.992,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,ATR Band,MDD,-12.231,-12.231,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,ATR Band,AV,19.315,19.315,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Bollinger Bands,SPR,-0.558,-0.558,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Bollinger Bands,CR,-4.996,-4.996,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Bollinger Bands,MDD,-13.244,-13.244,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Bollinger Bands,AV,16.754,16.754,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Turn of The Month,SPR,0.559,0.559,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Turn of The Month,CR,8.383,8.383,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Turn of The Month,MDD,-10.641,-10.641,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,Turn of The Month,AV,17.194,17.194,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,ARIMA,SPR,1.946,1.946,3,False,none,,True,False,False,False,False,none
+Table 1,NFLX,ARIMA,CR,53.64,53.64,2,False,none,,True,False,False,False,False,none
+Table 1,NFLX,ARIMA,MDD,-13.247,-13.247,3,False,none,,True,False,False,False,False,none
+Table 1,NFLX,ARIMA,AV,31.591,31.591,3,False,none,,True,False,False,False,False,none
+Table 1,NFLX,XGBoost,SPR,0.734,0.734,3,False,none,,True,False,False,False,False,none
+Table 1,NFLX,XGBoost,CR,9.452,9.452,3,False,none,,True,False,False,False,False,none
+Table 1,NFLX,XGBoost,MDD,-7.197,-7.197,3,False,none,,True,False,False,False,False,none
+Table 1,NFLX,XGBoost,AV,14.386,14.386,3,False,none,,True,False,False,False,False,none
+Table 1,NFLX,SAC,SPR,1.325,1.325,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,SAC,CR,42.872,42.872,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,SAC,MDD,-20.121,-20.121,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,SAC,AV,41.448,41.448,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,FinMem,SPR,1.704,1.704,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,FinMem,CR,32.549,32.549,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,FinMem,MDD,-13.018,-13.018,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,FinMem,AV,34.766,34.766,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,FinAgent,SPR,1.543,1.543,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,FinAgent,CR,41.167,41.167,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,FinAgent,MDD,-20.417,-20.417,3,False,none,,False,False,False,False,False,none
+Table 1,NFLX,FinAgent,AV,51.03,51.03,2,False,none,,False,False,False,False,False,none
+Table 1,NFLX,TradingGroup,SPR,1.282,1.282,3,True,none,,False,False,False,False,False,none
+Table 1,NFLX,TradingGroup,CR,20.458,20.458,3,True,none,,False,False,False,False,False,none
+Table 1,NFLX,TradingGroup,MDD,-14.958,-14.958,3,True,none,,False,False,False,False,False,none
+Table 1,NFLX,TradingGroup,AV,30.131,30.131,3,True,none,,False,False,False,False,False,none
+Table 1,AMZN,Buy and Hold,SPR,-0.46,-0.46,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Buy and Hold,CR,-13.25,-13.25,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Buy and Hold,MDD,-31.546,-31.546,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Buy and Hold,AV,35.624,35.624,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,SMA Cross,SPR,0.77,0.77,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,SMA Cross,CR,13.265,13.265,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,SMA Cross,MDD,-11.653,-11.653,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,SMA Cross,AV,22.874,22.874,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,WMA Cross,SPR,0.235,0.235,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,WMA Cross,CR,4.194,4.194,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,WMA Cross,MDD,-14.613,-14.613,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,WMA Cross,AV,22.888,22.888,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,ATR Band,SPR,0.623,0.623,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,ATR Band,CR,11.012,11.012,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,ATR Band,MDD,-15.841,-15.841,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,ATR Band,AV,23.273,23.273,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Bollinger Bands,SPR,-0.402,-0.402,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Bollinger Bands,CR,-7.1,-7.1,1,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Bollinger Bands,MDD,-20.614,-20.614,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Bollinger Bands,AV,26.559,26.559,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Turn of The Month,SPR,-0.037,-0.037,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Turn of The Month,CR,0.044,0.044,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Turn of The Month,MDD,-14.892,-14.892,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,Turn of The Month,AV,20.723,20.723,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,ARIMA,SPR,0.029,0.029,3,False,none,,True,False,False,False,False,none
+Table 1,AMZN,ARIMA,CR,0.553,0.553,3,False,none,,True,False,False,False,False,none
+Table 1,AMZN,ARIMA,MDD,-10.854,-10.854,3,False,none,,True,False,False,False,False,none
+Table 1,AMZN,ARIMA,AV,24.267,24.267,3,False,none,,True,False,False,False,False,none
+Table 1,AMZN,XGBoost,SPR,-0.361,-0.361,3,False,none,,True,False,False,False,False,none
+Table 1,AMZN,XGBoost,CR,-5.295,-5.295,3,False,none,,True,False,False,False,False,none
+Table 1,AMZN,XGBoost,MDD,-19.91,-19.91,2,False,none,,True,False,False,False,False,none
+Table 1,AMZN,XGBoost,AV,22.413,22.413,3,False,none,,True,False,False,False,False,none
+Table 1,AMZN,FinMem,SPR,-0.888,-0.888,3,False,none,,False,False,False,False,False,none
+Table 1,AMZN,FinMem,CR,-4.83,-4.83,2,False,none,,False,False,False,False,False,none
+Table 1,AMZN,FinMem,MDD,-10.281,-10.281,3,False,none,,False,False,False,False,False,none
+Table 1,AMZN,FinMem,AV,13.505,13.505,3,False,none,,False,False,False,False,False,none
+Table 1,AMZN,FinAgent,SPR,0.52,0.52,2,False,none,,False,False,False,False,False,none
+Table 1,AMZN,FinAgent,CR,4.454,4.454,3,False,none,,False,False,False,False,False,none
+Table 1,AMZN,FinAgent,MDD,-5.708,-5.708,3,False,none,,False,False,False,False,False,none
+Table 1,AMZN,FinAgent,AV,12.432,12.432,3,False,none,,False,False,False,False,False,none
+Table 1,AMZN,TradingGroup,SPR,3.859,3.859,3,True,none,,False,False,False,False,False,none
+Table 1,AMZN,TradingGroup,CR,40.458,40.458,3,True,none,,False,False,False,False,False,none
+Table 1,AMZN,TradingGroup,MDD,-2.118,-2.118,3,True,none,,False,False,False,False,False,none
+Table 1,AMZN,TradingGroup,AV,17.228,17.228,3,True,none,,False,False,False,False,False,none
+Table 1,MSFT,Buy and Hold,SPR,0.974,0.974,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Buy and Hold,CR,21.128,21.128,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Buy and Hold,MDD,-14.165,-14.165,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Buy and Hold,AV,28.271,28.271,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,SMA Cross,SPR,-0.145,-0.145,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,SMA Cross,CR,-0.291,-0.291,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,SMA Cross,MDD,-13.809,-13.809,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,SMA Cross,AV,16.124,16.124,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,WMA Cross,SPR,-0.427,-0.427,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,WMA Cross,CR,-3.421,-3.421,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,WMA Cross,MDD,-14.748,-14.748,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,WMA Cross,AV,16.376,16.376,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,ATR Band,SPR,1.036,1.036,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,ATR Band,CR,12.981,12.981,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,ATR Band,MDD,-7.71,-7.71,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,ATR Band,AV,15.007,15.007,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Bollinger Bands,SPR,2.115,2.115,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Bollinger Bands,CR,31.62,31.62,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Bollinger Bands,MDD,-3.475,-3.475,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Bollinger Bands,AV,18.245,18.245,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Turn of The Month,SPR,-0.036,-0.036,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Turn of The Month,CR,0.951,0.951,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Turn of The Month,MDD,-11.95,-11.95,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,Turn of The Month,AV,15.09,15.09,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,ARIMA,SPR,1.095,1.095,3,False,none,,True,False,False,False,False,none
+Table 1,MSFT,ARIMA,CR,20.228,20.228,3,False,none,,True,False,False,False,False,none
+Table 1,MSFT,ARIMA,MDD,-12.073,-12.073,3,False,none,,True,False,False,False,False,none
+Table 1,MSFT,ARIMA,AV,22.993,22.993,3,False,none,,True,False,False,False,False,none
+Table 1,MSFT,XGBoost,SPR,0.989,0.989,3,False,none,,True,False,False,False,False,none
+Table 1,MSFT,XGBoost,CR,15.874,15.874,3,False,none,,True,False,False,False,False,none
+Table 1,MSFT,XGBoost,MDD,-11.028,-11.028,3,False,none,,True,False,False,False,False,none
+Table 1,MSFT,XGBoost,AV,19.503,19.503,3,False,none,,True,False,False,False,False,none
+Table 1,MSFT,A2C,SPR,0.973,0.973,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,A2C,CR,21.026,21.026,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,A2C,MDD,-14.099,-14.099,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,A2C,AV,28.073,28.073,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,DDPG,SPR,0.973,0.973,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,DDPG,CR,21.026,21.026,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,DDPG,MDD,-14.099,-14.099,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,DDPG,AV,28.073,28.073,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,FinMem,SPR,-0.09,-0.09,2,False,none,,False,False,False,False,False,none
+Table 1,MSFT,FinMem,CR,-1.733,-1.733,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,FinMem,MDD,-14.967,-14.967,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,FinMem,AV,28.26,28.26,2,False,none,,False,False,False,False,False,none
+Table 1,MSFT,FinAgent,SPR,1.02,1.02,2,False,none,,False,False,False,False,False,none
+Table 1,MSFT,FinAgent,CR,17.874,17.874,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,FinAgent,MDD,-14.519,-14.519,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,FinAgent,AV,35.432,35.432,3,False,none,,False,False,False,False,False,none
+Table 1,MSFT,TradingGroup,SPR,1.655,1.655,3,True,none,,False,False,False,False,False,none
+Table 1,MSFT,TradingGroup,CR,20.273,20.273,3,True,none,,False,False,False,False,False,none
+Table 1,MSFT,TradingGroup,MDD,-9.887,-9.887,3,True,none,,False,False,False,False,False,none
+Table 1,MSFT,TradingGroup,AV,21.952,21.952,3,True,none,,False,False,False,False,False,none
+Table 1,COIN,Buy and Hold,SPR,0.17,0.17,2,False,none,,False,False,False,False,False,none
+Table 1,COIN,Buy and Hold,CR,-12.729,-12.729,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Buy and Hold,MDD,-54.402,-54.402,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Buy and Hold,AV,86.718,86.718,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,SMA Cross,SPR,-0.365,-0.365,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,SMA Cross,CR,-21.327,-21.327,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,SMA Cross,MDD,-48.57,-48.57,2,False,none,,False,False,False,False,False,none
+Table 1,COIN,SMA Cross,AV,59.914,59.914,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,WMA Cross,SPR,0.245,0.245,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,WMA Cross,CR,1.338,1.338,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,WMA Cross,MDD,-38.834,-38.834,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,WMA Cross,AV,55.764,55.764,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,ATR Band,SPR,0.933,0.933,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,ATR Band,CR,25.169,25.169,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,ATR Band,MDD,-22.906,-22.906,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,ATR Band,AV,38.716,38.716,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Bollinger Bands,SPR,-0.795,-0.795,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Bollinger Bands,CR,-24.371,-24.371,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Bollinger Bands,MDD,-40.733,-40.733,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Bollinger Bands,AV,43.904,43.904,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Turn of The Month,SPR,0.713,0.713,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Turn of The Month,CR,21.243,21.243,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Turn of The Month,MDD,-21.522,-21.522,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Turn of The Month,AV,49.36,49.36,2,False,none,,False,False,False,False,False,none
+Table 1,COIN,XGBoost,SPR,1.52,1.52,2,False,none,,False,False,False,False,False,none
+Table 1,COIN,XGBoost,CR,84.256,84.256,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,XGBoost,MDD,-31.901,-31.901,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,XGBoost,AV,68.724,68.724,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,SAC,SPR,0.184,0.184,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,SAC,CR,-13.011,-13.011,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,SAC,MDD,-55.542,-55.542,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,SAC,AV,89.395,89.395,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,TD3,SPR,0.184,0.184,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,TD3,CR,-13.011,-13.011,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,TD3,MDD,-55.542,-55.542,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,TD3,AV,89.395,89.395,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,FinMem,SPR,-0.58,-0.58,2,False,none,,False,False,False,False,False,none
+Table 1,COIN,FinMem,CR,-31.665,-31.665,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,FinMem,MDD,-47.987,-47.987,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,FinMem,AV,81.186,81.186,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,FinAgent,SPR,0.561,0.561,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,FinAgent,CR,3.239,3.239,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,FinAgent,MDD,-54.625,-54.625,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,FinAgent,AV,109.416,109.416,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,TradingGroup,SPR,2.051,2.051,3,True,none,,False,False,False,False,False,none
+Table 1,COIN,TradingGroup,CR,70.601,70.601,3,True,none,,False,False,False,False,False,none
+Table 1,COIN,TradingGroup,MDD,-21.525,-21.525,3,True,none,,False,False,False,False,False,none
+Table 1,COIN,TradingGroup,AV,58.427,58.427,3,True,none,,False,False,False,False,False,none
+Table 2,TSLA,TradingGroup (Qwen3-8B),SPR,-0.012,-0.012,3,True,none,,False,False,False,False,False,none
+Table 2,TSLA,TradingGroup (Qwen3-8B),CR,0.073,0.073,3,True,none,,False,False,False,False,False,none
+Table 2,TSLA,TradingGroup (Qwen3-8B),MDD,-8.532,-8.532,3,True,none,,False,False,False,False,False,none
+Table 2,TSLA,TradingGroup (Qwen3-8B),AV,22.963,22.963,3,True,none,,False,False,False,False,False,none
+Table 2,TSLA,TradingGroup (Qwen3-Trader-8B-PEFT),SPR,1.356,1.356,3,True,none,,False,False,False,False,False,none
+Table 2,TSLA,TradingGroup (Qwen3-Trader-8B-PEFT),CR,28.666,28.666,3,True,none,,False,False,False,False,False,none
+Table 2,TSLA,TradingGroup (Qwen3-Trader-8B-PEFT),MDD,-22.17,-22.17,2,True,none,,False,False,False,False,False,none
+Table 2,TSLA,TradingGroup (Qwen3-Trader-8B-PEFT),AV,41.212,41.212,3,True,none,,False,False,False,False,False,none
+Table 2,NFLX,TradingGroup (Qwen3-8B),SPR,-2.254,-2.254,3,True,none,,False,False,False,False,False,none
+Table 2,NFLX,TradingGroup (Qwen3-8B),CR,-14.49,-14.49,2,True,none,,False,False,False,False,False,none
+Table 2,NFLX,TradingGroup (Qwen3-8B),MDD,-16.661,-16.661,3,True,none,,False,False,False,False,False,none
+Table 2,NFLX,TradingGroup (Qwen3-8B),AV,14.732,14.732,3,True,none,,False,False,False,False,False,none
+Table 2,NFLX,TradingGroup (Qwen3-Trader-8B-PEFT),SPR,1.806,1.806,3,True,none,,False,False,False,False,False,none
+Table 2,NFLX,TradingGroup (Qwen3-Trader-8B-PEFT),CR,29.11,29.11,2,True,none,,False,False,False,False,False,none
+Table 2,NFLX,TradingGroup (Qwen3-Trader-8B-PEFT),MDD,-9.341,-9.341,3,True,none,,False,False,False,False,False,none
+Table 2,NFLX,TradingGroup (Qwen3-Trader-8B-PEFT),AV,28.905,28.905,3,True,none,,False,False,False,False,False,none
+Table 2,AMZN,TradingGroup (Qwen3-8B),SPR,0.281,0.281,3,True,none,,False,False,False,False,False,none
+Table 2,AMZN,TradingGroup (Qwen3-8B),CR,3.214,3.214,3,True,none,,False,False,False,False,False,none
+Table 2,AMZN,TradingGroup (Qwen3-8B),MDD,-7.88,-7.88,2,True,none,,False,False,False,False,False,none
+Table 2,AMZN,TradingGroup (Qwen3-8B),AV,16.841,16.841,3,True,none,,False,False,False,False,False,none
+Table 2,AMZN,TradingGroup (Qwen3-Trader-8B-PEFT),SPR,0.849,0.849,3,True,none,,False,False,False,False,False,none
+Table 2,AMZN,TradingGroup (Qwen3-Trader-8B-PEFT),CR,10.427,10.427,3,True,none,,False,False,False,False,False,none
+Table 2,AMZN,TradingGroup (Qwen3-Trader-8B-PEFT),MDD,-10.593,-10.593,3,True,none,,False,False,False,False,False,none
+Table 2,AMZN,TradingGroup (Qwen3-Trader-8B-PEFT),AV,22.848,22.848,3,True,none,,False,False,False,False,False,none
+Table 2,MSFT,TradingGroup (Qwen3-8B),SPR,0.035,0.035,3,True,none,,False,False,False,False,False,none
+Table 2,MSFT,TradingGroup (Qwen3-8B),CR,0.353,0.353,3,True,none,,False,False,False,False,False,none
+Table 2,MSFT,TradingGroup (Qwen3-8B),MDD,-12.951,-12.951,3,True,none,,False,False,False,False,False,none
+Table 2,MSFT,TradingGroup (Qwen3-8B),AV,25.295,25.295,3,True,none,,False,False,False,False,False,none
+Table 2,MSFT,TradingGroup (Qwen3-Trader-8B-PEFT),SPR,1.311,1.311,3,True,none,,False,False,False,False,False,none
+Table 2,MSFT,TradingGroup (Qwen3-Trader-8B-PEFT),CR,13.818,13.818,3,True,none,,False,False,False,False,False,none
+Table 2,MSFT,TradingGroup (Qwen3-Trader-8B-PEFT),MDD,-9.858,-9.858,3,True,none,,False,False,False,False,False,none
+Table 2,MSFT,TradingGroup (Qwen3-Trader-8B-PEFT),AV,18.786,18.786,3,True,none,,False,False,False,False,False,none
+Table 2,COIN,TradingGroup (Qwen3-8B),SPR,-1.183,-1.183,3,True,none,,False,False,False,False,False,none
+Table 2,COIN,TradingGroup (Qwen3-8B),CR,-17.931,-17.931,3,True,none,,False,False,False,False,False,none
+Table 2,COIN,TradingGroup (Qwen3-8B),MDD,-27.39,-27.39,2,True,none,,False,False,False,False,False,none
+Table 2,COIN,TradingGroup (Qwen3-8B),AV,31.608,31.608,3,True,none,,False,False,False,False,False,none
+Table 2,COIN,TradingGroup (Qwen3-Trader-8B-PEFT),SPR,0.89,0.89,2,True,none,,False,False,False,False,False,none
+Table 2,COIN,TradingGroup (Qwen3-Trader-8B-PEFT),CR,20.078,20.078,3,True,none,,False,False,False,False,False,none
+Table 2,COIN,TradingGroup (Qwen3-Trader-8B-PEFT),MDD,-31.102,-31.102,3,True,none,,False,False,False,False,False,none
+Table 2,COIN,TradingGroup (Qwen3-Trader-8B-PEFT),AV,53.146,53.146,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,all_removed,SPR,1.07,1.07,2,True,none,,False,False,False,False,False,none
+Table 3,TSLA,all_removed,CR,21.904,21.904,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,all_removed,MDD,-15.363,-15.363,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,all_removed,AV,42.479,42.479,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,RM+PC,SPR,0.409,0.409,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,RM+PC,CR,5.276,5.276,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,RM+PC,MDD,-14.144,-14.144,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,RM+PC,AV,25.968,25.968,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,SR+RE+PC_no_RM,SPR,-0.827,-0.827,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,SR+RE+PC_no_RM,CR,-14.38,-14.38,2,True,none,,False,False,False,False,False,none
+Table 3,TSLA,SR+RE+PC_no_RM,MDD,-20.379,-20.379,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,SR+RE+PC_no_RM,AV,34.123,34.123,3,True,none,,False,False,False,False,False,none
+Table 3,TSLA,all_enabled,SPR,1.398,1.398,3,True,same_value_as_table1_tradinggroup,Table 1|TSLA|TradingGroup|SPR,False,False,False,False,False,none
+Table 3,TSLA,all_enabled,CR,25.662,25.662,3,True,same_value_as_table1_tradinggroup,Table 1|TSLA|TradingGroup|CR,False,False,False,False,False,none
+Table 3,TSLA,all_enabled,MDD,-15.305,-15.305,3,True,same_value_as_table1_tradinggroup,Table 1|TSLA|TradingGroup|MDD,False,False,False,False,False,none
+Table 3,TSLA,all_enabled,AV,34.78,34.78,2,True,same_value_as_table1_tradinggroup,Table 1|TSLA|TradingGroup|AV,False,False,False,False,False,none
+Table 3,NFLX,all_removed,SPR,1.849,1.849,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,all_removed,CR,33.139,33.139,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,all_removed,MDD,-10.014,-10.014,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,all_removed,AV,32.051,32.051,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,RM+PC,SPR,0.372,0.372,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,RM+PC,CR,4.792,4.792,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,RM+PC,MDD,-9.903,-9.903,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,RM+PC,AV,26.383,26.383,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,SR+RE+PC_no_RM,SPR,2.726,2.726,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,SR+RE+PC_no_RM,CR,53.244,53.244,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,SR+RE+PC_no_RM,MDD,-11.122,-11.122,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,SR+RE+PC_no_RM,AV,32.102,32.102,3,True,none,,False,False,False,False,False,none
+Table 3,NFLX,all_enabled,SPR,1.282,1.282,3,True,same_value_as_table1_tradinggroup,Table 1|NFLX|TradingGroup|SPR,False,False,False,False,False,none
+Table 3,NFLX,all_enabled,CR,20.458,20.458,3,True,same_value_as_table1_tradinggroup,Table 1|NFLX|TradingGroup|CR,False,False,False,False,False,none
+Table 3,NFLX,all_enabled,MDD,-14.958,-14.958,3,True,same_value_as_table1_tradinggroup,Table 1|NFLX|TradingGroup|MDD,False,False,False,False,False,none
+Table 3,NFLX,all_enabled,AV,30.131,30.131,3,True,same_value_as_table1_tradinggroup,Table 1|NFLX|TradingGroup|AV,False,False,False,False,False,none
+Table 3,AMZN,all_removed,SPR,0.601,0.601,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,all_removed,CR,7.261,7.261,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,all_removed,MDD,-11.036,-11.036,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,all_removed,AV,22.615,22.615,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,RM+PC,SPR,0.998,0.998,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,RM+PC,CR,11.391,11.391,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,RM+PC,MDD,-14.329,-14.329,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,RM+PC,AV,20.789,20.789,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,SR+RE+PC_no_RM,SPR,0.765,0.765,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,SR+RE+PC_no_RM,CR,9.411,9.411,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,SR+RE+PC_no_RM,MDD,-17.873,-17.873,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,SR+RE+PC_no_RM,AV,23.072,23.072,3,True,none,,False,False,False,False,False,none
+Table 3,AMZN,all_enabled,SPR,3.859,3.859,3,True,same_value_as_table1_tradinggroup,Table 1|AMZN|TradingGroup|SPR,False,False,False,False,False,none
+Table 3,AMZN,all_enabled,CR,40.458,40.458,3,True,same_value_as_table1_tradinggroup,Table 1|AMZN|TradingGroup|CR,False,False,False,False,False,none
+Table 3,AMZN,all_enabled,MDD,-2.118,-2.118,3,True,same_value_as_table1_tradinggroup,Table 1|AMZN|TradingGroup|MDD,False,False,False,False,False,none
+Table 3,AMZN,all_enabled,AV,17.228,17.228,3,True,same_value_as_table1_tradinggroup,Table 1|AMZN|TradingGroup|AV,False,False,False,False,False,none
+Table 3,MSFT,all_removed,SPR,0.466,0.466,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,all_removed,CR,6.362,6.362,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,all_removed,MDD,-12.182,-12.182,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,all_removed,AV,29.107,29.107,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,RM+PC,SPR,0.733,0.733,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,RM+PC,CR,9.561,9.561,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,RM+PC,MDD,-10.105,-10.105,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,RM+PC,AV,25.14,25.14,2,True,none,,False,False,False,False,False,none
+Table 3,MSFT,SR+RE+PC_no_RM,SPR,1.423,1.423,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,SR+RE+PC_no_RM,CR,17.535,17.535,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,SR+RE+PC_no_RM,MDD,-12.646,-12.646,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,SR+RE+PC_no_RM,AV,22.368,22.368,3,True,none,,False,False,False,False,False,none
+Table 3,MSFT,all_enabled,SPR,1.655,1.655,3,True,same_value_as_table1_tradinggroup,Table 1|MSFT|TradingGroup|SPR,False,False,False,False,False,none
+Table 3,MSFT,all_enabled,CR,20.273,20.273,3,True,same_value_as_table1_tradinggroup,Table 1|MSFT|TradingGroup|CR,False,False,False,False,False,none
+Table 3,MSFT,all_enabled,MDD,-9.887,-9.887,3,True,same_value_as_table1_tradinggroup,Table 1|MSFT|TradingGroup|MDD,False,False,False,False,False,none
+Table 3,MSFT,all_enabled,AV,21.952,21.952,3,True,same_value_as_table1_tradinggroup,Table 1|MSFT|TradingGroup|AV,False,False,False,False,False,none
+Table 3,COIN,all_removed,SPR,-1.321,-1.321,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,all_removed,CR,-22.138,-22.138,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,all_removed,MDD,-22.138,-22.138,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,all_removed,AV,35.321,35.321,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,RM+PC,SPR,0.897,0.897,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,RM+PC,CR,21.267,21.267,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,RM+PC,MDD,-32.02,-32.02,2,True,none,,False,False,False,False,False,none
+Table 3,COIN,RM+PC,AV,57.471,57.471,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,SR+RE+PC_no_RM,SPR,1.457,1.457,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,SR+RE+PC_no_RM,CR,50.71,50.71,2,True,none,,False,False,False,False,False,none
+Table 3,COIN,SR+RE+PC_no_RM,MDD,-21.065,-21.065,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,SR+RE+PC_no_RM,AV,70.327,70.327,3,True,none,,False,False,False,False,False,none
+Table 3,COIN,all_enabled,SPR,2.051,2.051,3,True,same_value_as_table1_tradinggroup,Table 1|COIN|TradingGroup|SPR,False,False,False,False,False,none
+Table 3,COIN,all_enabled,CR,70.601,70.601,3,True,same_value_as_table1_tradinggroup,Table 1|COIN|TradingGroup|CR,False,False,False,False,False,none
+Table 3,COIN,all_enabled,MDD,-21.525,-21.525,3,True,same_value_as_table1_tradinggroup,Table 1|COIN|TradingGroup|MDD,False,False,False,False,False,none
+Table 3,COIN,all_enabled,AV,58.427,58.427,3,True,same_value_as_table1_tradinggroup,Table 1|COIN|TradingGroup|AV,False,False,False,False,False,none

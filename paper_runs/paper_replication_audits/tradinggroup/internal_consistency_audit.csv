@@ -1,0 +1,15 @@
+claim_id,status,audit_finding
+dataset_claims,passes_recovered_data_check,All five ticker-specific price/news/filing claims match the hash-pinned aggregate data exactly.
+table2_spr_cr,passes_displayed_arithmetic,PEFT exceeds base Qwen3 in SPR and CR for all 5/5 tickers.
+table2_msft_risk,passes_displayed_arithmetic,MSFT PEFT also improves MDD and AV as claimed.
+amzn_return_claim,passes_displayed_arithmetic,"TradingGroup CR is 40.458%; the strongest baseline is SMA at 13.265%, which rounds to 13.27%."
+table3_duplicate_all_enabled,exact_duplicate,All 20 all-enabled Table 3 measurements exactly repeat Table 1 TradingGroup cells.
+table3_annotations,two_rounding_mismatches,58/60 annotations round from displayed values; 2/60 do not.
+tsla_rm_pc_spr_annotation,annotation_rounding_mismatch,"Displayed 1.070 to 0.409 is -61.776%, which rounds to -62%, not printed -61%."
+tsla_rm_pc_cr_annotation,annotation_and_prose_rounding_mismatch,"Displayed 21.904 to 5.276 is -75.913%, which rounds to -76%, not printed/prose -77%."
+global_optimum,overbroad_ambiguous_claim,The claim of globally optimal overall performance is not a defined aggregate metric; TradingGroup is not best on every individual metric for TSLA or COIN.
+finsaber_coin_execution,advertised_runner_conflict,"The historical runner omits COIN for all eight executed strategies because its three-year prior-history guard fails, yet Table 1 prints COIN rows."
+deterministic_baselines,substantial_fresh_reproduction,Fresh pinned execution matches 96/96 paper cells for six deterministic strategies on four eligible tickers.
+model_baselines,unresolved_result_lineage_mismatch,Exact listed dependency versions reproduce 0/16 ARIMA and 0/16 XGBoost paper cells.
+source_csv_lineage,historical_output_conflict,Historical committed FINSABER CSVs match only 59/168 comparable numeric paper cells; fresh deterministic execution matches more of the TradingGroup paper than those CSVs.
+native_results,unverifiable_without_release,"No native agent code, checkpoint, trajectories, actions, fills, NAVs, or figure arrays were released."

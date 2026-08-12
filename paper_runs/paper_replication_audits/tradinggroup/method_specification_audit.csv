@@ -1,0 +1,31 @@
+dimension,status,evidence
+agents,specified,five named roles and information flow
+test_window,specified,2022-10-06 through 2023-04-10
+test_tickers,specified,TSLA NFLX AMZN MSFT COIN
+test_data,recovered,hash-pinned FINSABER aggregate data and price CSV
+training_windows,specified,two nonoverlapping windows from 2020-06-16 to 2022-10-05
+training_trajectories,count_only,"1,080 selected trajectories; rows not released"
+base_training_teacher,specified,DeepSeek-R1
+comparison_core_model,specified,GPT-4o-mini
+peft_base_model,specified,Qwen3-8B
+peft_method,partial,"LoRA plus int8, AdamW8bit, one epoch, 0.5301% trainable"
+peft_hyperparameters,missing,"rank, alpha, dropout, targets, LR, batch, seed absent"
+checkpoint,missing,Qwen3-Trader-8B-PEFT not released
+full_prompts,missing,only truncated Figure 2 fragments
+runtime_model_requests,missing,no immutable requests/responses
+chain_of_thought,missing,"only truncated examples; 1,080 trajectories absent"
+news_rules,partial,score weights stated; base rule/top-k/dedup threshold absent
+report_rag,partial,models/weights/top-10/top-6 stated; chunking and deployment absent
+stock_gate,partial,several thresholds stated; uptrend probability threshold absent
+style_multipliers,missing,risk multipliers/configuration absent
+self_reflection,partial,20-day examples described; exact selector/summarizer absent
+risk_execution,partial,threshold equations stated; multipliers/fill semantics absent
+commission_and_cash,missing,paper omits exact backtest configuration
+random_seeds,missing,LLM and training seeds absent
+native_source,missing,no attributable TradingGroup implementation
+daily_actions_fills_nav,missing,no native path artifacts
+raw_table_arrays,missing,no raw results
+figure_curve_arrays,missing,no cumulative-return arrays
+baseline_framework,recovered,historical FINSABER commit and author-linked inputs
+baseline_environment,reconstructed,exact listed versions for relevant packages
+inference_engine,partial,vLLM named; version/config absent

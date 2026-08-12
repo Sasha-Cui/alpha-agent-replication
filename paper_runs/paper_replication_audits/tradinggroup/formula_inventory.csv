@@ -1,0 +1,14 @@
+formula_id,paper_expression,specification_status,unresolved_boundary,synthetic_component_executed,paper_input_used,paper_result_credit
+news_influence,N_t=0.55*base+0.25*prob+0.20,partial,base keyword/length rule and top-k unspecified,True,False,False
+hybrid_retrieval,H_i=1.0*dense+0.8*sparse,specified,embedding model revisions and chunking parameters incomplete,True,False,False
+simplified_atr20,100*sqrt(mean((log_return-mean)^2)),specified,called ATR despite being close-return volatility,True,False,False
+breakout_threshold,"max(1%,0.5*SimplifiedATR20)",specified,hybrid gate uptrend threshold itself unspecified,True,False,False
+stop_loss,m_s_sl*sigma_d_10,partial,style multipliers not published,True,False,False
+take_profit,m_s_tp*sigma_d_10,partial,style multipliers not published,True,False,False
+forecast_epsilon,"max(alpha*mean(abs(log_return_20)),epsilon_min)",partial,alpha and epsilon_min not published,True,False,False
+realized_return,P_d1/P_d0-1,specified,next-trading-day alignment described,True,False,False
+weighted_hit,sign_ok*tanh(abs(pct)/epsilon)*p_true,specified,selection cutoff for high w_hit not published,True,False,False
+decision_reward,r_eq-beta*r_bm-gamma*c_a,specified,beta=0.2 and gamma=1.0 published,True,False,False
+equity_return,(E_a-E_prev)/E_prev,specified,counterfactual action simulator not released,True,False,False
+benchmark_return,(P_curr-P_prev)/P_prev,specified,price convention not fully locked,True,False,False
+cost_ratio,commission_a/E_prev,specified,commission schedule not stated in TradingGroup paper,True,False,False

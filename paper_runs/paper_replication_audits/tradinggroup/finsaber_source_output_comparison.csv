@@ -1,0 +1,173 @@
+ticker,strategy,metric,paper_rendered_value,paper_numeric_value,historical_source_csv_value,status,native_tradinggroup_credit
+AMZN,ARIMA,AV,24.267,24.267,26.899,differs_from_paper,False
+AMZN,ARIMA,CR,0.553,0.553,-4.752,differs_from_paper,False
+AMZN,ARIMA,MDD,-10.854,-10.854,-20.046,differs_from_paper,False
+AMZN,ARIMA,SPR,0.029,0.029,-0.225,differs_from_paper,False
+AMZN,ATR Band,AV,23.273,23.273,23.272,differs_from_paper,False
+AMZN,ATR Band,CR,11.012,11.012,11.007,differs_from_paper,False
+AMZN,ATR Band,MDD,-15.841,-15.841,-15.842,differs_from_paper,False
+AMZN,ATR Band,SPR,0.623,0.623,0.622,differs_from_paper,False
+AMZN,Bollinger Bands,AV,26.559,26.559,26.559,matches_paper_at_display_precision,False
+AMZN,Bollinger Bands,CR,-7.1,-7.1,-7.105,matches_paper_at_display_precision,False
+AMZN,Bollinger Bands,MDD,-20.614,-20.614,-20.615,differs_from_paper,False
+AMZN,Bollinger Bands,SPR,-0.402,-0.402,-0.402,matches_paper_at_display_precision,False
+AMZN,Buy and Hold,AV,35.624,35.624,35.624,matches_paper_at_display_precision,False
+AMZN,Buy and Hold,CR,-13.25,-13.25,-13.25,matches_paper_at_display_precision,False
+AMZN,Buy and Hold,MDD,-31.546,-31.546,-31.546,matches_paper_at_display_precision,False
+AMZN,Buy and Hold,SPR,-0.46,-0.46,-0.46,matches_paper_at_display_precision,False
+AMZN,FinAgent,AV,12.432,12.432,4.374,differs_from_paper,False
+AMZN,FinAgent,CR,4.454,4.454,-3.819,differs_from_paper,False
+AMZN,FinAgent,MDD,-5.708,-5.708,-3.819,differs_from_paper,False
+AMZN,FinAgent,SPR,0.52,0.52,-2.444,differs_from_paper,False
+AMZN,SMA Cross,AV,22.874,22.874,27.084,differs_from_paper,False
+AMZN,SMA Cross,CR,13.265,13.265,-4.433,differs_from_paper,False
+AMZN,SMA Cross,MDD,-11.653,-11.653,-18.91,differs_from_paper,False
+AMZN,SMA Cross,SPR,0.77,0.77,-0.42,differs_from_paper,False
+AMZN,Turn of The Month,AV,20.723,20.723,20.722,differs_from_paper,False
+AMZN,Turn of The Month,CR,0.044,0.044,0.039,differs_from_paper,False
+AMZN,Turn of The Month,MDD,-14.892,-14.892,-14.892,matches_paper_at_display_precision,False
+AMZN,Turn of The Month,SPR,-0.037,-0.037,-0.037,matches_paper_at_display_precision,False
+AMZN,WMA Cross,AV,22.888,22.888,26.831,differs_from_paper,False
+AMZN,WMA Cross,CR,4.194,4.194,-6.121,differs_from_paper,False
+AMZN,WMA Cross,MDD,-14.613,-14.613,-21.03,differs_from_paper,False
+AMZN,WMA Cross,SPR,0.235,0.235,-0.563,differs_from_paper,False
+AMZN,XGBoost,AV,22.413,22.413,25.135,differs_from_paper,False
+AMZN,XGBoost,CR,-5.295,-5.295,42.468,differs_from_paper,False
+AMZN,XGBoost,MDD,-19.91,-19.91,-8.816,differs_from_paper,False
+AMZN,XGBoost,SPR,-0.361,-0.361,1.955,differs_from_paper,False
+COIN,ATR Band,AV,38.716,38.716,38.716,matches_paper_at_display_precision,False
+COIN,ATR Band,CR,25.169,25.169,25.169,matches_paper_at_display_precision,False
+COIN,ATR Band,MDD,-22.906,-22.906,-22.906,matches_paper_at_display_precision,False
+COIN,ATR Band,SPR,0.933,0.933,0.933,matches_paper_at_display_precision,False
+COIN,Bollinger Bands,AV,43.904,43.904,43.904,matches_paper_at_display_precision,False
+COIN,Bollinger Bands,CR,-24.371,-24.371,-24.371,matches_paper_at_display_precision,False
+COIN,Bollinger Bands,MDD,-40.733,-40.733,-40.733,matches_paper_at_display_precision,False
+COIN,Bollinger Bands,SPR,-0.795,-0.795,-0.795,matches_paper_at_display_precision,False
+COIN,Buy and Hold,AV,86.718,86.718,86.718,matches_paper_at_display_precision,False
+COIN,Buy and Hold,CR,-12.729,-12.729,-12.729,matches_paper_at_display_precision,False
+COIN,Buy and Hold,MDD,-54.402,-54.402,-54.402,matches_paper_at_display_precision,False
+COIN,Buy and Hold,SPR,0.17,0.17,0.17,matches_paper_at_display_precision,False
+COIN,FinAgent,AV,109.416,109.416,104.742,differs_from_paper,False
+COIN,FinAgent,CR,3.239,3.239,-8.605,differs_from_paper,False
+COIN,FinAgent,MDD,-54.625,-54.625,-55.827,differs_from_paper,False
+COIN,FinAgent,SPR,0.561,0.561,0.306,differs_from_paper,False
+COIN,SMA Cross,AV,59.914,59.914,90.853,differs_from_paper,False
+COIN,SMA Cross,CR,-21.327,-21.327,15.215,differs_from_paper,False
+COIN,SMA Cross,MDD,-48.57,-48.57,-33.219,differs_from_paper,False
+COIN,SMA Cross,SPR,-0.365,-0.365,0.566,differs_from_paper,False
+COIN,Turn of The Month,AV,49.36,49.36,49.357,matches_paper_at_display_precision,False
+COIN,Turn of The Month,CR,21.243,21.243,21.242,differs_from_paper,False
+COIN,Turn of The Month,MDD,-21.522,-21.522,-21.522,matches_paper_at_display_precision,False
+COIN,Turn of The Month,SPR,0.713,0.713,0.713,matches_paper_at_display_precision,False
+COIN,WMA Cross,AV,55.764,55.764,94.18,differs_from_paper,False
+COIN,WMA Cross,CR,1.338,1.338,12.655,differs_from_paper,False
+COIN,WMA Cross,MDD,-38.834,-38.834,-33.259,differs_from_paper,False
+COIN,WMA Cross,SPR,0.245,0.245,0.517,differs_from_paper,False
+MSFT,ARIMA,AV,22.993,22.993,22.636,differs_from_paper,False
+MSFT,ARIMA,CR,20.228,20.228,44.777,differs_from_paper,False
+MSFT,ARIMA,MDD,-12.073,-12.073,-7.121,differs_from_paper,False
+MSFT,ARIMA,SPR,1.095,1.095,2.245,differs_from_paper,False
+MSFT,ATR Band,AV,15.007,15.007,15.005,differs_from_paper,False
+MSFT,ATR Band,CR,12.981,12.981,12.979,differs_from_paper,False
+MSFT,ATR Band,MDD,-7.71,-7.71,-7.709,matches_paper_at_display_precision,False
+MSFT,ATR Band,SPR,1.036,1.036,1.036,matches_paper_at_display_precision,False
+MSFT,Bollinger Bands,AV,18.245,18.245,18.243,differs_from_paper,False
+MSFT,Bollinger Bands,CR,31.62,31.62,31.619,matches_paper_at_display_precision,False
+MSFT,Bollinger Bands,MDD,-3.475,-3.475,-3.475,matches_paper_at_display_precision,False
+MSFT,Bollinger Bands,SPR,2.115,2.115,2.115,matches_paper_at_display_precision,False
+MSFT,Buy and Hold,AV,28.271,28.271,28.327,differs_from_paper,False
+MSFT,Buy and Hold,CR,21.128,21.128,21.171,differs_from_paper,False
+MSFT,Buy and Hold,MDD,-14.165,-14.165,-14.192,differs_from_paper,False
+MSFT,Buy and Hold,SPR,0.974,0.974,0.974,matches_paper_at_display_precision,False
+MSFT,FinAgent,AV,35.432,35.432,34.672,differs_from_paper,False
+MSFT,FinAgent,CR,17.874,17.874,11.972,differs_from_paper,False
+MSFT,FinAgent,MDD,-14.519,-14.519,-17.499,differs_from_paper,False
+MSFT,FinAgent,SPR,1.02,1.02,0.738,differs_from_paper,False
+MSFT,SMA Cross,AV,16.124,16.124,20.821,differs_from_paper,False
+MSFT,SMA Cross,CR,-0.291,-0.291,18.289,differs_from_paper,False
+MSFT,SMA Cross,MDD,-13.809,-13.809,-8.746,differs_from_paper,False
+MSFT,SMA Cross,SPR,-0.145,-0.145,1.515,differs_from_paper,False
+MSFT,Turn of The Month,AV,15.09,15.09,15.097,differs_from_paper,False
+MSFT,Turn of The Month,CR,0.951,0.951,0.97,differs_from_paper,False
+MSFT,Turn of The Month,MDD,-11.95,-11.95,-11.955,matches_paper_at_display_precision,False
+MSFT,Turn of The Month,SPR,-0.036,-0.036,-0.034,differs_from_paper,False
+MSFT,WMA Cross,AV,16.376,16.376,21.503,differs_from_paper,False
+MSFT,WMA Cross,CR,-3.421,-3.421,16.576,differs_from_paper,False
+MSFT,WMA Cross,MDD,-14.748,-14.748,-8.883,differs_from_paper,False
+MSFT,WMA Cross,SPR,-0.427,-0.427,1.334,differs_from_paper,False
+MSFT,XGBoost,AV,19.503,19.503,16.721,differs_from_paper,False
+MSFT,XGBoost,CR,15.874,15.874,12.678,differs_from_paper,False
+MSFT,XGBoost,MDD,-11.028,-11.028,-10.734,differs_from_paper,False
+MSFT,XGBoost,SPR,0.989,0.989,0.895,differs_from_paper,False
+NFLX,ARIMA,AV,31.591,31.591,25.749,differs_from_paper,False
+NFLX,ARIMA,CR,53.64,53.64,23.783,differs_from_paper,False
+NFLX,ARIMA,MDD,-13.247,-13.247,-15.043,differs_from_paper,False
+NFLX,ARIMA,SPR,1.946,1.946,1.159,differs_from_paper,False
+NFLX,ATR Band,AV,19.315,19.315,19.314,differs_from_paper,False
+NFLX,ATR Band,CR,2.992,2.992,2.992,matches_paper_at_display_precision,False
+NFLX,ATR Band,MDD,-12.231,-12.231,-12.231,matches_paper_at_display_precision,False
+NFLX,ATR Band,SPR,0.15,0.15,0.15,matches_paper_at_display_precision,False
+NFLX,Bollinger Bands,AV,16.754,16.754,16.754,matches_paper_at_display_precision,False
+NFLX,Bollinger Bands,CR,-4.996,-4.996,-4.996,matches_paper_at_display_precision,False
+NFLX,Bollinger Bands,MDD,-13.244,-13.244,-13.244,matches_paper_at_display_precision,False
+NFLX,Bollinger Bands,SPR,-0.558,-0.558,-0.558,matches_paper_at_display_precision,False
+NFLX,Buy and Hold,AV,41.523,41.523,41.523,matches_paper_at_display_precision,False
+NFLX,Buy and Hold,CR,43.079,43.079,43.079,matches_paper_at_display_precision,False
+NFLX,Buy and Hold,MDD,-20.184,-20.184,-20.184,matches_paper_at_display_precision,False
+NFLX,Buy and Hold,SPR,1.326,1.326,1.326,matches_paper_at_display_precision,False
+NFLX,FinAgent,AV,51.03,51.03,51.03,matches_paper_at_display_precision,False
+NFLX,FinAgent,CR,41.167,41.167,41.167,matches_paper_at_display_precision,False
+NFLX,FinAgent,MDD,-20.417,-20.417,-20.417,matches_paper_at_display_precision,False
+NFLX,FinAgent,SPR,1.543,1.543,1.543,matches_paper_at_display_precision,False
+NFLX,SMA Cross,AV,25.309,25.309,20.477,differs_from_paper,False
+NFLX,SMA Cross,CR,-17.576,-17.576,-8.285,differs_from_paper,False
+NFLX,SMA Cross,MDD,-27.29,-27.29,-15.942,differs_from_paper,False
+NFLX,SMA Cross,SPR,-1.124,-1.124,-1.02,differs_from_paper,False
+NFLX,Turn of The Month,AV,17.194,17.194,17.194,matches_paper_at_display_precision,False
+NFLX,Turn of The Month,CR,8.383,8.383,8.383,matches_paper_at_display_precision,False
+NFLX,Turn of The Month,MDD,-10.641,-10.641,-10.641,matches_paper_at_display_precision,False
+NFLX,Turn of The Month,SPR,0.559,0.559,0.559,matches_paper_at_display_precision,False
+NFLX,WMA Cross,AV,22.169,22.169,19.826,differs_from_paper,False
+NFLX,WMA Cross,CR,-2.289,-2.289,-6.004,differs_from_paper,False
+NFLX,WMA Cross,MDD,-20.939,-20.939,-14.29,differs_from_paper,False
+NFLX,WMA Cross,SPR,-0.189,-0.189,-0.803,differs_from_paper,False
+NFLX,XGBoost,AV,14.386,14.386,14.928,differs_from_paper,False
+NFLX,XGBoost,CR,9.452,9.452,10.134,differs_from_paper,False
+NFLX,XGBoost,MDD,-7.197,-7.197,-11.246,differs_from_paper,False
+NFLX,XGBoost,SPR,0.734,0.734,0.77,differs_from_paper,False
+TSLA,ARIMA,AV,41.496,41.496,41.402,differs_from_paper,False
+TSLA,ARIMA,CR,10.301,10.301,15.007,differs_from_paper,False
+TSLA,ARIMA,MDD,-23.524,-23.524,-24.446,differs_from_paper,False
+TSLA,ARIMA,SPR,0.464,0.464,0.601,differs_from_paper,False
+TSLA,ATR Band,AV,42.161,42.161,42.161,matches_paper_at_display_precision,False
+TSLA,ATR Band,CR,-19.142,-19.142,-19.142,matches_paper_at_display_precision,False
+TSLA,ATR Band,MDD,-39.599,-39.599,-39.599,matches_paper_at_display_precision,False
+TSLA,ATR Band,SPR,-0.595,-0.595,-0.595,matches_paper_at_display_precision,False
+TSLA,Bollinger Bands,AV,45.366,45.366,45.366,matches_paper_at_display_precision,False
+TSLA,Bollinger Bands,CR,-24.749,-24.749,-24.747,differs_from_paper,False
+TSLA,Bollinger Bands,MDD,-44.655,-44.655,-44.655,matches_paper_at_display_precision,False
+TSLA,Bollinger Bands,SPR,-0.769,-0.769,-0.769,matches_paper_at_display_precision,False
+TSLA,Buy and Hold,AV,55.908,55.908,55.91,differs_from_paper,False
+TSLA,Buy and Hold,CR,-20.481,-20.481,-20.483,differs_from_paper,False
+TSLA,Buy and Hold,MDD,-52.727,-52.727,-52.729,differs_from_paper,False
+TSLA,Buy and Hold,SPR,-0.342,-0.342,-0.342,matches_paper_at_display_precision,False
+TSLA,FinAgent,AV,—,,0.0,paper_dash_or_no_numeric_cell,False
+TSLA,FinAgent,CR,—,,0.0,paper_dash_or_no_numeric_cell,False
+TSLA,FinAgent,MDD,—,,-0.0,paper_dash_or_no_numeric_cell,False
+TSLA,FinAgent,SPR,—,,0.0,paper_dash_or_no_numeric_cell,False
+TSLA,SMA Cross,AV,33.389,33.389,38.602,differs_from_paper,False
+TSLA,SMA Cross,CR,30.683,30.683,-5.54,differs_from_paper,False
+TSLA,SMA Cross,MDD,-22.399,-22.399,-18.517,differs_from_paper,False
+TSLA,SMA Cross,SPR,1.237,1.237,-0.293,differs_from_paper,False
+TSLA,Turn of The Month,AV,31.043,31.043,31.042,differs_from_paper,False
+TSLA,Turn of The Month,CR,3.636,3.636,3.639,differs_from_paper,False
+TSLA,Turn of The Month,MDD,-11.643,-11.643,-11.642,differs_from_paper,False
+TSLA,Turn of The Month,SPR,0.219,0.219,0.219,matches_paper_at_display_precision,False
+TSLA,WMA Cross,AV,32.559,32.559,42.062,differs_from_paper,False
+TSLA,WMA Cross,CR,32.924,32.924,3.741,differs_from_paper,False
+TSLA,WMA Cross,MDD,-13.476,-13.476,-18.492,differs_from_paper,False
+TSLA,WMA Cross,SPR,1.337,1.337,0.215,differs_from_paper,False
+TSLA,XGBoost,AV,47.944,47.944,37.729,differs_from_paper,False
+TSLA,XGBoost,CR,-14.133,-14.133,6.213,differs_from_paper,False
+TSLA,XGBoost,MDD,-43.457,-43.457,-35.374,differs_from_paper,False
+TSLA,XGBoost,SPR,-0.262,-0.262,0.331,differs_from_paper,False

@@ -1,0 +1,6 @@
+ticker,price_date_count,news_date_count,annual_filing_date_count,quarterly_filing_date_count,paper_claimed_pattern,matches_paper_claims,restricted_unpickler_only_allows_datetime_date,data_layer_credit,native_agent_result_credit
+TSLA,127,127,1,1,"(127, 127, 1, 1)",True,True,True,False
+NFLX,127,0,1,1,"(127, 0, 1, 1)",True,True,True,False
+AMZN,127,22,1,1,"(127, 22, 1, 1)",True,True,True,False
+MSFT,127,127,0,1,"(127, 127, 0, 1)",True,True,True,False
+COIN,127,0,1,1,"(127, 0, 1, 1)",True,True,True,False

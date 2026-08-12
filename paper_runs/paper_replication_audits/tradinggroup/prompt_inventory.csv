@@ -1,0 +1,6 @@
+agent,figure2_runtime_shaped_example,published_fragment,exact_full_template_recovered,actual_complete_request_recovered,actual_complete_response_recovered,chain_of_thought_only_truncated_example,native_prompt_call_credit
+News-Sentiment Agent,True,singlePrompt and overall_news_prompt fragments,False,False,False,True,False
+Financial-Report Agent,True,prompt_q and prompt_k fragments,False,False,False,True,False
+Stock-Forecasting Agent,True,prompt_SA section-name fragment,False,False,False,True,False
+Style-Preference Agent,True,prompt_PA section-name fragment,False,False,False,True,False
+Trading-Decision Agent,True,prompt_DA section-name fragment,False,False,False,True,False

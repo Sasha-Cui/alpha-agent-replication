@@ -1,0 +1,8 @@
+source_file,query,result_count,interpretation,attributable_tradinggroup_system_recovered,negative_search_limit
+github_code_title_arxiv.json,GitHub code: exact title/arXiv,53,paper mentions/indexes only,False,"bounded negative search is not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+github_code_checkpoint.json,GitHub code: checkpoint name,2,paper-text copies only,False,"bounded negative search is not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+github_repo_title.json,GitHub repositories: exact title phrase,0,no repository,False,"bounded negative search is not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+repo_tradinggroup.json,GitHub repositories: TradingGroup,1,unattributed post-paper collision,False,"bounded negative search is not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+repo_checkpoint.json,GitHub repositories: checkpoint name,0,no repository,False,"bounded negative search is not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+hf_checkpoint.json,Hugging Face models: checkpoint name,0,no model,False,"bounded negative search is not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+hf_dataset.json,Hugging Face datasets: TradingGroup,0,no dataset,False,"bounded negative search is not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
