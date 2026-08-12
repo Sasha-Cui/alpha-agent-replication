@@ -289,6 +289,22 @@ ARTIFACT_NOTES = {
         "strict output contract. Coverage is U.S.-only and not the six-country "
         "common-task panel.",
     ),
+    "SYS-MACI": (
+        "Y",
+        "A pinned three-revision audit separates the v1/v2 four-expert GPT-4o "
+        "experiment from the rewritten v3 multi-architecture experiment. The first "
+        "author's pre-submission repository is substantial v1-style source and all "
+        "16 compiled v1 figure assets have author-output correspondence, covering 21 "
+        "plotted quantitative units. This is output verification, not regeneration: "
+        "0/321 v1/v2 table units and 0/21 plotted units regenerate because constants, "
+        "raw/processed data, exact weekly universes, checkpoints, requests/responses, "
+        "prediction records, and portfolio arrays are absent. A labelled reconstruction "
+        "passes deterministic source-component checks but the runner stops at missing "
+        "blockchain data. The current repository contains no v3 hierarchical, "
+        "collaborative, debate, memory, RAG, or skill implementation; 0/442 v3 table "
+        "units and 0/142 plotted units regenerate. Both lineages are crypto-only and "
+        "cannot populate the six-country security-level common task.",
+    ),
     "SYS-MASS": (
         "N",
         "A pinned paper audit verifies a 242-day 2023 SSE50-like base/label panel and "
@@ -528,6 +544,7 @@ TARGETED_EXECUTION = {
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
     "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
+    "SYS-MACI": "paper_audit:completed_v1_v2_zero_of_321_table_units_21_author_output_plot_units_zero_regenerated_v3_zero_of_442_no_v3_code",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
@@ -545,6 +562,7 @@ OUTPUT_BLOCKS = {
     "SYS-CRYPTO-TRADE": "A3_wrong_asset_class_crypto",
     "SYS-GURU-AGENTS": "A3_US_only_not_six_country",
     "SYS-GPT-SIGNAL": "A3_US_only_not_six_country",
+    "SYS-MACI": "A3_wrong_asset_class_crypto",
     "SYS-RAPTOR": "A3_US_only_not_six_country",
 }
 

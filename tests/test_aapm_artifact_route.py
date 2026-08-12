@@ -40,15 +40,15 @@ def test_committed_artifact_audit_and_summary_include_aapm() -> None:
     assert row == {key: str(value) for key, value in route.aapm_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "24"
-    assert ft["artifact_reachable_among_all"]["successes"] == "23"
-    assert ft["github_head_resolved_among_all"]["successes"] == "23"
+    assert ft["public_artifact_listed"]["successes"] == "25"
+    assert ft["artifact_reachable_among_all"]["successes"] == "24"
+    assert ft["github_head_resolved_among_all"]["successes"] == "24"
     assert ft["static_R3_among_all"]["successes"] == "10"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text(encoding="utf-8"))
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
     assert {item["system_id"] for item in corrections} == {
         "SYS-EMPIRICAL-ASSET-PRICING-LLM", "SYS-FIN-AGENT", "SYS-GPT-SIGNAL",
-        "SYS-HEDGE-AGENTS", "SYS-RAPTOR",
+        "SYS-HEDGE-AGENTS", "SYS-MACI", "SYS-RAPTOR",
     }
     assert payload["metadata"]["registry_sha256"] == route.sha256(route.REGISTRY)
 
@@ -87,13 +87,13 @@ def test_paper_route_and_static_assets_reflect_aapm_without_overclaiming() -> No
     assert "zero native paper results reproduced" in row["precise_native_or_access_blocker"]
 
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
-    assert r"\newcommand{\ArtifactCountFT}{24}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{23}" in generated
-    assert r"\newcommand{\LicensedArtifactCountFT}{12}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{23}" in generated
-    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 44, \artifacttier{R1}: 8, \artifacttier{R2}: 5, \artifacttier{R3}: 10}" in generated
-    assert r"\newcommand{\NativeDatedOutputCount}{5}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{33}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{25}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{24}" in generated
+    assert r"\newcommand{\LicensedArtifactCountFT}{13}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{24}" in generated
+    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 43, \artifacttier{R1}: 8, \artifacttier{R2}: 6, \artifacttier{R3}: 10}" in generated
+    assert r"\newcommand{\NativeDatedOutputCount}{6}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{34}" in generated
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert "chengjunyan1/AAPM" in system_table
