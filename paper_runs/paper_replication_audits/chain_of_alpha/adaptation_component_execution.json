@@ -1,0 +1,18 @@
+{
+  "classification": "unaffiliated post-paper deterministic inspired component",
+  "commit": "8ffda431d08703b7f6ae13c8287806fd76eb63e0",
+  "executed_component": "backend.optimization_chain.generate_local_rewrites",
+  "first_variants": [
+    "ts_mean(close, 44)",
+    "ts_mean(close, 66)",
+    "ts_mean(close, 126)",
+    "ts_mean(close, 252)",
+    "winsorize(ts_mean(close, 22), std=2)"
+  ],
+  "paper_data_or_native_evaluator_used": false,
+  "paper_result_credit": false,
+  "repository": "lavender1203/worldquant-alpha-aiac",
+  "stdout_sha256": "54644df36e50a39cdfadabcae4bcff8b719529969ebbc388f464d634fd19fe6d",
+  "synthetic_input_expression": "ts_mean(close, 22)",
+  "synthetic_variants_returned": 5
+}

@@ -1,0 +1,31 @@
+dimension,status,evidence,native_execution_credit
+paper_record,withdrawn_no_pdf_or_source,current arXiv record says submitter lacked rights to agree to license,False
+historical_document,recoverable_transformation_only,ar5iv HTML and five assets are byte-pinned; no official version/source identity is exposed,False
+authors,historically_corrobated_current_record_differs,historic paper/author page list five authors; current withdrawn API lists Lang Cao only,False
+market,specified,China A-share CSI 500 and CSI 1000,False
+data_dates,specified,"2010-01-01 through 2025-06-30; train 2010-2019, validation 2020-2021, test 2022-2025-06-30",False
+data_vendor_snapshot,missing,no frozen OHLCV/amount/index data or vendor is released,False
+point_in_time_membership,missing,index constituent history and delisting/suspension/ST rules are absent,False
+price_adjustments,missing,corporate-action adjustment and $change/$vwap construction rules are absent,False
+prediction_horizon,specified,10 trading days,False
+search_budget,specified,"up to 1,000 candidates per method; top 100 by RankIC",False
+actual_factor_pool,missing,"candidate/deprecated pools, 1,000 attempts, and 100 selected factors are absent",False
+default_llm,specified_partial,"Azure OpenAI gpt-4o-2024-11-20, temperature 1.0; other parameters default",False
+robustness_llms,underspecified,DeepSeek-V3 and Qwen3-32B named without immutable checkpoint/API request details,False
+prompts,demo_only,two unfilled demo templates; actual carefully crafted runtime prompts and values absent,False
+llm_requests_responses,missing,"no immutable calls, outputs, seeds, retries, or parsing failures",False
+expression_parser,missing,no native parser/validator or exception policy,False
+operator_semantics,underspecified,"NaNs, min periods, ties, ddof, safe division, regression x-axis, and conditional behavior omitted",False
+factor_thresholds,specified_with_conflict,"RankIC 0.015, RankICIR 0.2, turnover 1.5, diversity 0.2; prompt/metric definitions conflict",False
+optimization_depth,example_not_run_setting,"m <= 5 is given as an example, not a frozen per-run trace",False
+parallel_execution,architecture_only,independent optimization chains claimed; scheduler/concurrency/logs absent,False
+integration_model,specified_partial,"LightGBM MSE, 24 leaves, depth 8, 2,000 estimators, lr .005, L1/L2 .1, early stop 200",False
+integration_randomness,missing,"LightGBM version, seed, feature ordering, missing-value and deterministic settings absent",False
+portfolio,specified_partial,"daily equal-weight top 10%, drop n=k/10, close execution",False
+costs,specified,"open 0.03%, close 0.1%",False
+portfolio_edge_cases,missing,"integer rounding, limits, suspensions, cash, fills, ties, and same-close signal timing absent",False
+metrics,equations_partial,"IC/RankIC/ratios/AR/IR/turnover/diversity equations given, but implementation conventions conflict or are absent",False
+baselines,names_only,"baseline forks, versions, configs, seeds, and candidate outputs absent",False
+environment,missing,"no dependency lock, Qlib version, executable code, or hardware/runtime record",False
+result_arrays,missing,"no predictions, factors, portfolios, returns, metric arrays, or table exports",False
+uncertainty,missing,"no repeated runs, intervals, significance, multiple-testing correction, or seed sensitivity",False

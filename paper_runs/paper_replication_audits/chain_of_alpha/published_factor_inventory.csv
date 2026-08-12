@@ -1,0 +1,4 @@
+name,expression,description,rankic,rankir,fields,dimensionally_unitless,exact_expression_released,native_data_or_evaluator_released,conditional_synthetic_execution,paper_result_credit
+VWAP_Stability_Enhance,"Div(Sub($close, Mean($vwap, 2)), Std($amount, 5))","close minus 2-day mean VWAP, divided by 5-day amount standard deviation",0.0688,0.7051,3,False,True,False,True,False
+Volume_Adjusted_Mean_Corr,"Corr(Rank($close, 5), Rank($amount, 5), 5)",rolling correlation of rolling close and amount ranks,0.0375,0.5084,2,True,True,False,True,False
+VWAP_Flow_Variance_Optimization,"Div(Abs(Sub($close, $vwap)), Add(Sum(Var($amount, 2), 4), 1))",absolute close-VWAP deviation divided by rolling amount-variance sum plus one,0.0838,0.759,3,False,True,False,True,False

@@ -1,0 +1,41 @@
+category,operator,native_implementation_released,paper_result_credit
+Mathematical,Add,False,False
+Mathematical,Sub,False,False
+Mathematical,Mul,False,False
+Mathematical,Div,False,False
+Mathematical,Log,False,False
+Mathematical,Abs,False,False
+Mathematical,Power,False,False
+Mathematical,Sign,False,False
+Time Series (rolling),Mean,False,False
+Time Series (rolling),Std,False,False
+Time Series (rolling),Var,False,False
+Time Series (rolling),Sum,False,False
+Time Series (rolling),Max,False,False
+Time Series (rolling),Min,False,False
+Time Series (rolling),Med,False,False
+Time Series (rolling),Mad,False,False
+Time Series (rolling),Rank,False,False
+Time Series (rolling),Quantile,False,False
+Time Series (rolling),Count,False,False
+Time Series (rolling),Ref,False,False
+Time Series (rolling),Delta,False,False
+Time Series (rolling),IdxMax,False,False
+Time Series (rolling),IdxMin,False,False
+Regression (rolling),Resi,False,False
+Regression (rolling),Slope,False,False
+Regression (rolling),Rsquare,False,False
+Statistical (rolling),Skew,False,False
+Statistical (rolling),Kurt,False,False
+Statistical (rolling),Corr,False,False
+Statistical (rolling),Cov,False,False
+Conditional,If,False,False
+Conditional,Gt,False,False
+Conditional,Lt,False,False
+Conditional,Ge,False,False
+Conditional,Le,False,False
+Conditional,Eq,False,False
+Conditional,Ne,False,False
+Logical,And,False,False
+Logical,Or,False,False
+Logical,Not,False,False

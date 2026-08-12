@@ -1,0 +1,5 @@
+figure,assets,panels,empirical_curve_series,kind,vector_or_exact_image_text_recovered,underlying_dated_result_array_released,native_pipeline_regenerated,paper_result_credit,visual_qa
+Figure 1,framework.png,1,0,architecture diagram,False,False,False,False,"pass: legible, no clipped/overlapping/invisible content in full-resolution render"
+Figure 2,return.svg; excess.svg,2,9,cumulative absolute/excess return curves,True,False,False,False,"pass: legible, no clipped/overlapping/invisible content in full-resolution render"
+Figure 3,prompt_gen.svg,1,0,seed-factor demo prompt,True,False,False,False,"pass: legible, no clipped/overlapping/invisible content in full-resolution render"
+Figure 4,prompt_opt.svg,1,0,optimization demo prompt,True,False,False,False,"pass: legible, no clipped/overlapping/invisible content in full-resolution render"

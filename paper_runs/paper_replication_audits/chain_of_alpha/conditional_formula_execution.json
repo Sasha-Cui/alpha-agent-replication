@@ -1,0 +1,50 @@
+[
+  {
+    "expression": "Div(Sub($close, Mean($vwap, 2)), Std($amount, 5))",
+    "factor": "VWAP_Stability_Enhance",
+    "finite_max": 0.0006403487717608851,
+    "finite_min": -0.0003070936400701537,
+    "finite_values": 140,
+    "native_evaluator_used": false,
+    "paper_result_credit": false,
+    "parser_status": "parsed",
+    "semantics": "audit-declared conventional rolling semantics; population variance/std; average-tie percentile rank; NaN warm-up",
+    "synthetic_output_sha256": "bf039d24fe038321d6f529b20917080ebbe839c25306822e9e7b683daab41af4",
+    "synthetic_output_shape": [
+      32,
+      5
+    ]
+  },
+  {
+    "expression": "Corr(Rank($close, 5), Rank($amount, 5), 5)",
+    "factor": "Volume_Adjusted_Mean_Corr",
+    "finite_max": 1.0,
+    "finite_min": -0.25,
+    "finite_values": 52,
+    "native_evaluator_used": false,
+    "paper_result_credit": false,
+    "parser_status": "parsed",
+    "semantics": "audit-declared conventional rolling semantics; population variance/std; average-tie percentile rank; NaN warm-up",
+    "synthetic_output_sha256": "9c60fc4afc424b7774e5ffa5cbcffcdcf80f65015910040fb1ac6b2d23191b7e",
+    "synthetic_output_shape": [
+      32,
+      5
+    ]
+  },
+  {
+    "expression": "Div(Abs(Sub($close, $vwap)), Add(Sum(Var($amount, 2), 4), 1))",
+    "factor": "VWAP_Flow_Variance_Optimization",
+    "finite_max": 7.958163357845856e-08,
+    "finite_min": 9.635358809272479e-11,
+    "finite_values": 140,
+    "native_evaluator_used": false,
+    "paper_result_credit": false,
+    "parser_status": "parsed",
+    "semantics": "audit-declared conventional rolling semantics; population variance/std; average-tie percentile rank; NaN warm-up",
+    "synthetic_output_sha256": "863b610f80efa9e17397c1dcb30308e1d486fc9d60aa941520b431f7dc3d3515",
+    "synthetic_output_shape": [
+      32,
+      5
+    ]
+  }
+]

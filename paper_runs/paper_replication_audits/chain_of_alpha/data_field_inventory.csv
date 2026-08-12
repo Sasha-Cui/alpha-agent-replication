@@ -1,0 +1,9 @@
+field,name,exact_paper_data_released,paper_result_credit
+$open,Open,False,False
+$high,High,False,False
+$low,Low,False,False
+$close,Close,False,False
+$volume,Volume,False,False
+$amount,Amount,False,False
+$change,Change,False,False
+$vwap,VWAP,False,False

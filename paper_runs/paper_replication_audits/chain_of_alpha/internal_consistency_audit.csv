@@ -1,0 +1,16 @@
+claim_id,paper_statement,audit_finding,status,paper_result_credit
+table1_best_10_of_12,best in 10 of 12 metrics,10/12 strict column maxima,passes_displayed_arithmetic,False
+ablation_optimization_ar,optimization-only AR is 0.1211 in prose,Table 2 prints 0.1181,hard_prose_table_conflict,False
+ablation_generation_ir,generation-only IR is 1.4492 in prose,Table 2 prints 1.3492,hard_prose_table_conflict,False
+all_backbones_all_metrics,all three backbones outperform the best baseline across all metrics,"wins out of six: {'GPT-4o': 6, 'DeepSeek-V3': 4, 'Qwen3-32B': 4}",claim_contradicted_by_displayed_table,False
+appendix_figure_numbers,Appendix E says Figures 4 and 5 show the two prompts,the assets are numbered Figures 3 and 4,hard_numbering_conflict,False
+production_prompt_boundary,demo prompts guide generation,paper says more carefully crafted prompts are needed; filled production prompts are absent,demo_not_runtime_prompt,False
+diversity_definition,method defines diversity as minimum 1-Corr to effective factors,Appendix B defines 1 minus the average top-k absolute Spearman correlations,hard_metric_definition_conflict,False
+prompt_diversity_threshold,Appendix requires Diversity >= 0.2 and higher is preferred,optimization demo prompt says Diversity < 0.8,direction_or_variable_semantics_conflict,False
+rankir_naming,Table 4 and demo prompt report RankIR,method and evaluation sections define RankICIR,metric_alias_undefined,False
+volume_corr_description,Table 4 description says ranked returns of closing price,formula applies Rank directly to $close,description_expression_conflict,False
+operator_appendix_intro,Appendix D introduces a complete list of data fields,Table 6 is the operator list,copy_editing_conflict,False
+formula_1_units,seed prompt requires a unitless factor,price deviation is divided by amount standard deviation,published_formula_not_unitless,False
+formula_3_units,seed prompt requires a unitless factor,price is divided by amount variance and adds dimensionless 1 to a dimensioned quantity,published_formula_not_unitless,False
+excess_return_equations,all results are benchmarked relative to the market index,AR/IR equations use portfolio returns without defining index subtraction,metric_execution_underspecified,False
+drop_n_rounding,daily drop n is k/w with k equal to 10% of the universe,integer rounding and constituent-count changes are not defined,portfolio_execution_underspecified,False

@@ -1,0 +1,3 @@
+prompt,asset,runtime_slots,slots,response_fields,publication_status,actual_filled_prompt_released,actual_request_response_released,native_prompt_credit
+seed factor generation,prompt_gen.svg,4,available_data_fields; available_operators; effective_factors; non_effective_factors,factor_name; factor_expression; description,paper explicitly calls it a demo version,False,False,False
+factor optimization,prompt_opt.svg,10,available_data_fields; available_operators; factor_name; factor_expression; description; rankic; rankicir; turnover; diversity; optimization_history,factor_name; factor_expression; description; reason,paper explicitly calls it a demo version,False,False,False

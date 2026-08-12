@@ -1,0 +1,42 @@
+{
+  "admin_comment": "version removed because submitter did not have rights to agree to the license at submission",
+  "author_site_history": {
+    "added_commit": "db2f9e02c7cc85af058fea03c2adf4e7b8458928",
+    "added_time": "2025-08-23T23:28:51Z",
+    "links_when_present": "paper and bibtex only; no code",
+    "removed_commit": "cbcde61e6ef9b9b33aa0bd781b6a176a22775383",
+    "removed_time": "2025-12-21T17:21:46Z"
+  },
+  "current_arxiv_record": "https://arxiv.org/abs/2508.06312",
+  "current_status": "withdrawn; no PDF; no license",
+  "data_fields": 8,
+  "document_reconstruction_credit": false,
+  "historical_authors": [
+    "Lang Cao",
+    "Zekun Xi",
+    "Long Liao",
+    "Ziwei Yang",
+    "Zheng Cao"
+  ],
+  "historical_html_math_elements": 210,
+  "historical_transformation_sha256": "aa7d79e1ab37a614ffd75d67b81cb514cf951ed0699004859cb1f160ef55776b",
+  "historical_transformation_url": "https://ar5iv.labs.arxiv.org/html/2508.06312",
+  "independent_frontend_same_bytes": true,
+  "numbered_equations": 21,
+  "numbered_figures": 4,
+  "numbered_tables": 6,
+  "official_pdf_endpoint_status": {
+    "v1": 404,
+    "v2": 404
+  },
+  "official_source_endpoint_status": {
+    "v1": 404,
+    "v2": 404
+  },
+  "operators": 40,
+  "reason": "a transformed historical copy is not an official licensed PDF/source bundle and cannot establish experiment lineage",
+  "submissions": [
+    "v1 2025-08-08 353 KB withdrawn",
+    "v2 2025-08-28 353 KB withdrawn"
+  ]
+}

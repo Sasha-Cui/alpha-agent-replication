@@ -1,0 +1,11 @@
+search,coverage,finding,attributable_system_recovered,negative_search_limit
+lead_author_public_repositories,18 repositories inventoried,no Chain-of-Alpha implementation,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+author_site_historical_entry,"five authors, Under Review, paper+bibtex links",no code link; entry later commented out,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+github_repository_name_description_readme,24 results,all candidate names inspected; no attributable release,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+github_exact_arxiv_id_repository,0 results,no repository match,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+github_exact_title_repository,0 results,no repository match,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+github_author_title_repository,0 results,no repository match,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+github_arxiv_id_code,69 results,citations/notes/secondary projects; no attributable experiment,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+github_title_code,105 results first 100 returned,notes/adaptations/citations; no author-linked release,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+github_exact_published_factor_name,0 results,no implementation match,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
+official_pdf_source_endpoints,v1/v2 PDF and source all HTTP 404,withdrawal prevents primary bundle recovery,False,"bounded public search; not proof that private, deleted, inaccessible, or unindexed artifacts never existed"
