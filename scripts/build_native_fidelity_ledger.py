@@ -401,6 +401,26 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-TREEVO": (
+        "A pinned two-version TreEvo audit deterministically rebuilds the official "
+        "9-page v1 and 17-page v2 manuscripts at 99.88% and 99.91% extracted-token "
+        "multiset overlap. It inventories all 96 v1 and 206 v2 table-result entries "
+        "plus 18 v1 and 87 v2 exact figure numeric units, 22 traditional operators, "
+        "eight v2 figures with 23 panels, and all seven v2 tree/operator prompt "
+        "templates. The printed IC/RankIC equations "
+        "execute only as a declared synthetic metric component. No attributable "
+        "implementation, frozen market panel or point-in-time memberships, actual "
+        "seed trees, thought-to-code prompt, model calls, generated factor code, "
+        "parser, search trace, baseline lock, seeds, predictions, holdings, returns, "
+        "or raw arrays are released, so 0/114 v1 and 0/293 v2 displayed numeric "
+        "result units reproduce. V1 Figure 5's run averages do not match Table 2. "
+        "The revision replaces DJI with NDX and materially changes results, budgets, "
+        "and return claims without raw lineage. V2's claim that EoH beats ReEvo in "
+        "all cases is 6/8 in its own table; duplicated TreEvo means carry conflicting "
+        "standard deviations; and v1 names Qwen3-Max before its publicly documented "
+        "preview date, an unresolved provenance issue for which an undisclosed "
+        "private prerelease remains possible. No local proxy is credited."
+    ),
     "SYS-CHAIN-OF-ALPHA": (
         "A pinned Chain-of-Alpha audit records the current arXiv withdrawal: no "
         "PDF or source is available, and the administrator says the submitter did "
@@ -615,6 +635,7 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-R1": "paper_audit:completed_zero_of_652_native_results_official_placeholder",
     "SYS-ALPHA-QUANTER": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
     "SYS-CHAIN-OF-ALPHA": "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system",
+    "SYS-TREEVO": "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_seven_prompt_templates_no_attributable_pipeline",
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",
