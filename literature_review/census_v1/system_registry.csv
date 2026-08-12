@@ -53,7 +53,7 @@ SYS-MARKET-SENSE-AI|MarketSenseAI lineage|T|Y|https://arxiv.org/abs/2502.00415 ;
 SYS-MASS|MASS|T|Y|https://arxiv.org/abs/2505.10278|https://github.com/gta0804/MASS|—|Paper and official repository are one lineage.|IN: multi-agent sequential trading system.
 SYS-METAPS|MetaPS|T|Y|https://arxiv.org/abs/2606.22385||—|New verified omission.|IN: sequential portfolio-strategy system.
 SYS-MM-DREX|MM-DREX|T|Y|https://arxiv.org/abs/2509.05080||32|One routed-expert trading lineage.|IN: sequential financial trading decisions.
-SYS-MOUNTAIN-LION|MountainLion|T|Y|https://arxiv.org/abs/2507.20474||38|One multimodal agent lineage.|IN: sequential trading/portfolio decisions.
+SYS-MOUNTAIN-LION|MountainLion|T|Y|https://arxiv.org/abs/2507.20474|https://github.com/MountainLionAi/GenAI-Platform ; https://github.com/MountainLionAi/MountainLion|38|One multimodal agent lineage.|IN: sequential trading/portfolio decisions.
 SYS-P1GPT|P1GPT|T|Y|https://arxiv.org/abs/2510.23032||39|One multi-agent workflow lineage.|IN: produces investment decisions.
 SYS-QUANT-AGENT-HFT|QuantAgent — Price-Driven Multi-Agent LLMs for High-Frequency Trading|T|Y|https://arxiv.org/abs/2509.09995|https://github.com/Y-Research-SBU/QuantAgent|25|Distinct authors, task, and architecture from the 2024 QuantAgent.|IN: sequential high-frequency trading agent.
 SYS-QUANT-AGENT-SELF-IMPROVING|QuantAgent — Seeking Holy Grail in Trading by Self-Improving LLM|T|Y|https://arxiv.org/abs/2402.03755||26|Distinct 2024 lineage despite the shared generic name.|IN: sequential self-improving trading agent.

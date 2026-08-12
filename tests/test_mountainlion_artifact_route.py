@@ -7,8 +7,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts/route_gpt_signal_paper_audit.py"
-SPEC = importlib.util.spec_from_file_location("route_gpt_signal_paper_audit", SCRIPT)
+SCRIPT = ROOT / "scripts/route_mountainlion_paper_audit.py"
+SPEC = importlib.util.spec_from_file_location("route_mountainlion_paper_audit", SCRIPT)
 assert SPEC and SPEC.loader
 route = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(route)
@@ -19,35 +19,38 @@ def csv_rows(path: Path, delimiter: str = ",") -> list[dict[str, str]]:
         return list(csv.DictReader(handle, delimiter=delimiter))
 
 
-def test_pinned_correction_row_is_recovered_author_source_at_r1() -> None:
-    row = route.gpt_signal_row()
-    assert row["artifact_urls"] == route.URL
-    assert row["default_branch_head_shas"].endswith(route.HEAD)
-    assert row["observed_licenses"].endswith("=NOASSERTION")
+def test_correction_row_routes_two_attributable_repositories_at_r3() -> None:
+    row = route.mountainlion_row()
+    assert row["artifact_urls"] == route.ARTIFACT_URLS
+    assert row["artifact_url_count"] == 2
     assert row["public_artifact_listed"] == "Y"
     assert row["reachability_outcome"] == "reachable_all"
-    assert row["static_fidelity_tier"] == "R1"
-    assert row["failure_category"] == "static_package_insufficient"
-    result = json.loads(row["artifact_url_results_json"])[0]
-    observation = result["static_observation"]
-    assert observation["file_count"] == 13_884
-    assert observation["has_code"] is True
-    assert observation["has_environment"] is False
-    assert observation["has_runner"] is False
-    assert observation["archive_sha256"] == route.ARCHIVE_SHA256
+    assert row["static_fidelity_tier"] == "R3"
+    assert row["native_execution_attempted"] == "Y"
+    results = json.loads(row["artifact_url_results_json"])
+    assert {result["github_owner_repo"] for result in results} == {
+        route.BACKEND_OWNER_REPO,
+        route.FRONTEND_OWNER_REPO,
+    }
+    assert {result["head_sha"] for result in results} == {
+        route.BACKEND_HEAD,
+        route.FRONTEND_HEAD,
+    }
+    assert all(result["static_observation"]["has_runner"] is True for result in results)
+    assert all(result["static_observation"]["has_support"] is True for result in results)
 
 
-def test_committed_artifact_audit_and_summary_include_gpt_signal() -> None:
+def test_committed_artifact_audit_and_summary_include_mountainlion() -> None:
     audit_dir = ROOT / "paper_runs/submission_evidence/artifact_audit"
     rows = csv_rows(audit_dir / "artifact_audit.csv")
     row = next(item for item in rows if item["system_id"] == route.SYSTEM_ID)
-    assert row == {key: str(value) for key, value in route.gpt_signal_row().items()}
+    assert row == {key: str(value) for key, value in route.mountainlion_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
     assert ft["public_artifact_listed"]["successes"] == "26"
     assert ft["artifact_reachable_among_all"]["successes"] == "25"
     assert ft["github_head_resolved_among_all"]["successes"] == "25"
-    assert ft["static_R2_or_R3_among_all"]["successes"] == "17"
+    assert ft["static_R3_among_all"]["successes"] == "11"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text(encoding="utf-8"))
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
     assert {item["system_id"] for item in corrections} == {
@@ -62,44 +65,54 @@ def test_committed_artifact_audit_and_summary_include_gpt_signal() -> None:
     assert payload["metadata"]["registry_sha256"] == route.sha256(route.REGISTRY)
 
 
-def test_native_ledger_credits_dated_outputs_but_not_full_reproduction() -> None:
+def test_native_ledger_credits_components_but_no_native_result_output() -> None:
     rows = csv_rows(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
     row = next(item for item in rows if item["system_id"] == route.SYSTEM_ID)
     assert row["public_artifact_status"] == "reachable_static_snapshot"
-    assert row["static_tier"] == "R1"
-    assert row["native_dated_signal_or_return_shipped"] == "Y"
+    assert row["static_tier"] == "R3"
+    assert row["native_dated_signal_or_return_shipped"] == "N"
     assert row["prespecified_G7_monthly_common_task_compatible"] == "N"
-    assert row["blocking_stage"] == "A3_US_only_not_six_country"
+    assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery"
+        "paper_audit:completed_zero_of_20_performance_cells_public_components_only"
     )
-    assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
+    assert row["fidelity_class"] == "F1_static_no_native_output"
     note = row["concise_evidence_note"]
-    assert "1,549/1,554" in note
-    assert "not an end-to-end GPT regeneration" in note
-    assert "one-month panels use future-quarter fundamentals" in note
-    assert "six-country" in note
+    assert "same 67-file manifest twice" in note
+    assert "0/20" in note
+    assert "genuine product/platform components, not the paper experiment" in note
 
 
-def test_paper_route_and_static_assets_reflect_gpt_signal_correction() -> None:
-    routes = csv_rows(
-        ROOT / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
+def test_paper_route_prioritizes_native_blocker_over_proxy() -> None:
+    rows = csv_rows(
+        ROOT
+        / "paper_runs/submission_evidence/replication_scope/"
+        "paper_evidence_route_ledger.csv"
     )
-    row = next(item for item in routes if item["canonical_work_id"] == "CensusArxiv241018448")
+    row = next(item for item in rows if item["canonical_work_id"] == "CensusArxiv250720474")
     assert row["paper_evidence_route"] == "public_code_available"
     assert row["reachable_public_code_system_ids"] == route.SYSTEM_ID
-    assert row["static_fidelity_tiers"] == "R1"
+    assert row["static_fidelity_tiers"] == "R3"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert "0/20" in row["precise_native_or_access_blocker"]
+    assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
+
+
+def test_static_paper_assets_reflect_mountainlion_correction() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
     assert r"\newcommand{\ArtifactCountFT}{26}" in generated
     assert r"\newcommand{\ReachableArtifactCountFT}{25}" in generated
     assert r"\newcommand{\LicensedArtifactCountFT}{14}" in generated
     assert r"\newcommand{\PinnedRepoCountFT}{25}" in generated
-    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 42, \artifacttier{R1}: 8, \artifacttier{R2}: 6, \artifacttier{R3}: 11}" in generated
-    assert r"\newcommand{\NativeDatedOutputCount}{6}" in generated
+    assert (
+        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 42, "
+        r"\artifacttier{R1}: 8, \artifacttier{R2}: 6, \artifacttier{R3}: 11}"
+        in generated
+    )
     assert r"\newcommand{\TargetedAuditCount}{36}" in generated
+    system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
-    assert "GPT-Signal & reachable" in failure_table
-    assert "1,549/1,554" in failure_table
-    assert "future-quarter fundamentals" in failure_table
+    assert "MountainLionAi/GenAI-Platform" in system_table
+    assert "MountainLion & reachable" in failure_table
+    assert "0/20" in failure_table

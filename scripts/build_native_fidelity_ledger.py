@@ -305,6 +305,29 @@ ARTIFACT_NOTES = {
         "units and 0/142 plotted units regenerate. Both lineages are crypto-only and "
         "cannot populate the six-country security-level common task.",
     ),
+    "SYS-MOUNTAIN-LION": (
+        "N",
+        "A pinned arXiv-v1/v2 and attributable-source audit rebuilds both 17-page "
+        "manuscripts deterministically, inventories all 30 Table 1 numeric units "
+        "(10 ambiguous Alpha configurations and 20 CV/MSE results), seven verbatim "
+        "prompt templates, six unique author figure assets, and ten material claims. "
+        "The recovered 153-file MountainLion frontend is strongly attributable: its "
+        "author email matches paper-v2 author Jinhao Wang, its API routes match the "
+        "paper appendix, and its locked Node-20 build produces the same 67-file "
+        "manifest twice. The 199-file paper-time GenAI-Platform snapshot compiles at "
+        "its core, names mlion.ai as a platform application, exposes the exact ten "
+        "paper tokens, and reads three precomputed kline_predictd rows. These are "
+        "genuine product/platform components, not the paper experiment: 0/20 "
+        "forecasting-performance cells, 0/7 runtime prompt calls, and zero material "
+        "outcome claims reproduce. No exchange/date/frequency panel, preprocessing, "
+        "split, estimator, fitted model, cross-validation protocol, request/response, "
+        "prediction/target array, portfolio path, result runner, or costs are public. "
+        "The platform also imports unreleased ml4gp product modules, requires private "
+        "MySQL/Redis/plugin state, and has zero public test functions. Raw MSE values "
+        "are compared across incompatible token price scales; improved-return and "
+        "extensive-ablation claims lack a return path or ablation protocol. The crypto "
+        "components cannot populate the six-country security-level common task.",
+    ),
     "SYS-MASS": (
         "N",
         "A pinned paper audit verifies a 242-day 2023 SSE50-like base/label panel and "
@@ -569,6 +592,7 @@ TARGETED_EXECUTION = {
     "SYS-MACI": "paper_audit:completed_v1_v2_zero_of_321_table_units_21_author_output_plot_units_zero_regenerated_v3_zero_of_442_no_v3_code",
     "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
+    "SYS-MOUNTAIN-LION": "paper_audit:completed_zero_of_20_performance_cells_public_components_only",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
