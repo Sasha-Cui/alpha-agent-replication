@@ -207,6 +207,28 @@ ARTIFACT_NOTES = {
         "native inputs, outputs, evaluator, baselines, ablations, or seeds are shipped, "
         "so zero paper result cells count as native reproductions.",
     ),
+    "SYS-COG-ALPHA": (
+        "N",
+        "A pinned two-edition CogAlpha audit inventories 150 unique empirical "
+        "units in arXiv-v1 and 306 in arXiv-v4/ACL-final; zero reproduce from "
+        "the native system. The author prompt repository was published three "
+        "days after arXiv-v4 and supplies 39 prompt templates. One market-cycle "
+        "prompt can be assembled with all declared placeholders resolved, and "
+        "three printed factor listings execute on a declared synthetic OHLCV "
+        "fixture. These are native specification and paper-component checks, "
+        "not model calls, alpha mining, backtesting, or result regeneration. The "
+        "same four-series cumulative-return raster appears in both arXiv source "
+        "archives, providing author-output correspondence but no raw dated array "
+        "or regeneration credit. The repository README explicitly excludes runtime "
+        "code, datasets, experiment outputs, model endpoints, keys, and paths. No "
+        "frozen panels or time-varying memberships, checkpoint hash, immutable "
+        "requests/responses, decoding settings, seeds, realized factor pools, "
+        "quality-checker traces, baseline implementations, predictions, orders, "
+        "holdings, returns, or result arrays are released. Thus the artifact is an "
+        "R1 prompt specification, 0/306 current empirical units reproduce, and the "
+        "local M0 narrative translation remains secondary with no CogAlpha-result "
+        "credit.",
+    ),
     "SYS-CRYPTO-TRADE": (
         "Y",
         "The README ships a dated one-step ETH action/ROI example. A pinned paper-level "
@@ -678,6 +700,7 @@ TARGETED_EXECUTION = {
     "SYS-TREEVO": "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_seven_prompt_templates_no_attributable_pipeline",
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
+    "SYS-COG-ALPHA": "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_templates_four_author_curve_series_zero_regenerated",
     "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",
     "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",

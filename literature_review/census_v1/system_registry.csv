@@ -12,7 +12,7 @@ SYS-ALPHA-R1|Alpha-R1|F|Y|https://arxiv.org/abs/2512.23515|https://github.com/Fi
 SYS-ALPHA-SCHEMA|AlphaSchema|F|Y|https://arxiv.org/abs/2607.26642||—|New verified omission.|IN: schema-based alpha discovery.
 SYS-AUTOMATE-STRATEGY|Automate Strategy Finding with LLM in Quant Investment|F|Y|https://aclanthology.org/2025.findings-emnlp.1005/ ; https://arxiv.org/abs/2409.06289|https://github.com/kouzhizhuo/Automate-Strategy-Finding-with-LLM-in-Quant-investment|—|ACL and arXiv are publication manifestations of one system.|IN: automated LLM strategy/factor discovery.
 SYS-CHAIN-OF-ALPHA|Chain-of-Alpha|F|Y|https://arxiv.org/abs/2508.06312||13|One chained formula-generation lineage.|IN: formulaic alpha generation and optimization.
-SYS-COG-ALPHA|CogAlpha|F|Y|https://arxiv.org/abs/2511.18850||9|One code-evolution lineage.|IN: executable alpha evolution.
+SYS-COG-ALPHA|CogAlpha|F|Y|https://arxiv.org/abs/2511.18850|https://github.com/uwFengyuan/CogAlpha_Prompt|9|One code-evolution lineage; author prompt-only repository published after arXiv v4, with no runtime, data, model calls, or outputs.|IN: executable alpha evolution.
 SYS-EFS|EFS|F|Y|https://arxiv.org/abs/2507.17211||2|One evolutionary factor-search lineage.|IN: LLM factor search with sparse portfolio construction.
 SYS-EMPIRICAL-ASSET-PRICING-LLM|Empirical Asset Pricing with Large Language Model Agents|F|Y|https://arxiv.org/abs/2409.17266|https://github.com/chengjunyan1/AAPM|—|New verified omission; both official arXiv source versions directly link the author repository.|IN: LLM-agent asset-pricing/factor construction.
 SYS-FACTOR-ENGINE|FactorEngine|F|Y|https://arxiv.org/abs/2603.16365||20|One program-level factor-discovery lineage.|IN: knowledge-infused executable factor discovery.

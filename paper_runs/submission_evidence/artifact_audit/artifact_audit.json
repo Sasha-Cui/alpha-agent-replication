@@ -19,6 +19,13 @@
     "offline": false,
     "post_freeze_evidence_corrections": [
       {
+        "corrected_at_utc": "2026-08-12T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/cogalpha/source_provenance.json",
+        "reason": "author prompt repository published after the frozen census; repository is R1 specification evidence, not CogAlpha runtime code",
+        "source_head": "6294d9ffa9dfc286fb14e82343f8f22a5f928c1c",
+        "system_id": "SYS-COG-ALPHA"
+      },
+      {
         "corrected_at_utc": "2026-08-11T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/aapm/source_provenance.json",
         "reason": "both official arXiv source versions directly link the public author repository omitted from the frozen registry",
@@ -82,7 +89,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "9650e54c8dcb6eb45d9447e92d2460ce3604b3f733aca577f10534c903e3bb7f",
+    "registry_sha256": "6defb5c3006b6ac5e0d3eb1408e9f3cfc4e8d1c8986263f682e86139ed02fbbe",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -365,22 +372,22 @@
       "system_name": "Chain-of-Alpha"
     },
     {
-      "artifact_url_count": "0",
-      "artifact_url_results_json": "[]",
-      "artifact_url_types": "",
-      "artifact_urls": "",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
+      "artifact_url_count": 1,
+      "artifact_url_results_json": "[{\"check_method\":\"author repository plus pinned Git history, tree, archive, and full primary-source audit\",\"checked_at_utc\":\"2026-08-12T15:00:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"uwFengyuan/CogAlpha_Prompt\",\"head_sha\":\"6294d9ffa9dfc286fb14e82343f8f22a5f928c1c\",\"license_source\":\"no license file or repository license declaration in pinned tree\",\"observed_license\":\"NOASSERTION\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":447452,\"archive_sha256\":\"fd51d57bb161a6efa2130ea2630f6dc9742c65dd423ca8ab349d54ab45266f0e\",\"checked_at_utc\":\"2026-08-12T15:00:00+00:00\",\"code_markers\":[],\"environment_markers\":[],\"excluded_runtime_materials\":[\"runtime code\",\"datasets\",\"experiment outputs\",\"model endpoints\",\"API keys\",\"local paths\"],\"explicit_nonrunnable\":true,\"file_count\":47,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"prompt_template_count\":39,\"runner_markers\":[],\"support_markers\":[\"README.md\",\"prompts/seven_level_agent_hierarchy/base_agent.md\",\"prompts/multi_agent_quality_checker/judge_agent.md\",\"prompts/thinking_evolution/mutation_agent.md\"],\"tree_bytes\":563111},\"url\":\"https://github.com/uwFengyuan/CogAlpha_Prompt\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "github_repository",
+      "artifact_urls": "https://github.com/uwFengyuan/CogAlpha_Prompt",
+      "audit_timestamp_utc": "2026-08-12T00:00:00+00:00",
+      "default_branch_head_shas": "uwFengyuan/CogAlpha_Prompt@main=6294d9ffa9dfc286fb14e82343f8f22a5f928c1c",
       "errors_json": "[]",
-      "failure_category": "no_public_artifact",
-      "github_owner_repos": "",
+      "failure_category": "none",
+      "github_owner_repos": "uwFengyuan/CogAlpha_Prompt",
       "main_FT": "Y",
       "native_execution_attempted": "N",
-      "observed_licenses": "",
-      "public_artifact_listed": "N",
-      "reachability_outcome": "not_listed",
-      "static_fidelity_basis_json": "{\"basis\":\"not_listed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "observed_licenses": "uwFengyuan/CogAlpha_Prompt=NOASSERTION",
+      "public_artifact_listed": "Y",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"39 author prompt templates; README explicitly excludes runtime code, data, model endpoints, and outputs\",\"markers\":{\"archive_bytes\":447452,\"archive_sha256\":\"fd51d57bb161a6efa2130ea2630f6dc9742c65dd423ca8ab349d54ab45266f0e\",\"checked_at_utc\":\"2026-08-12T15:00:00+00:00\",\"code_markers\":[],\"environment_markers\":[],\"excluded_runtime_materials\":[\"runtime code\",\"datasets\",\"experiment outputs\",\"model endpoints\",\"API keys\",\"local paths\"],\"explicit_nonrunnable\":true,\"file_count\":47,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"prompt_template_count\":39,\"runner_markers\":[],\"support_markers\":[\"README.md\",\"prompts/seven_level_agent_hierarchy/base_agent.md\",\"prompts/multi_agent_quality_checker/judge_agent.md\",\"prompts/thinking_evolution/mutation_agent.md\"],\"tree_bytes\":563111},\"tier\":\"R1\",\"url\":\"https://github.com/uwFengyuan/CogAlpha_Prompt\"}]}",
+      "static_fidelity_tier": "R1",
       "stratum": "F",
       "system_id": "SYS-COG-ALPHA",
       "system_name": "CogAlpha"
@@ -1247,7 +1254,7 @@
       "system_name": "MountainLion"
     },
     {
-      "artifact_url_count": 1,
+      "artifact_url_count": "1",
       "artifact_url_results_json": "[{\"check_method\":\"GitHub API plus pinned repeated archive, paper-level source audit, and compileall of every Python file\",\"checked_at_utc\":\"2026-08-12T18:00:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"P1GPT/web_demo\",\"head_sha\":\"a88a3a7c731063d0d1ca7ac15946eb600753f358\",\"license_source\":\"pinned_archive_81f201afa31f8a7f277e17d51622ece94bf907a8cc7e0f4a73248a28c5d50e0f\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":22970,\"archive_sha256\":\"81f201afa31f8a7f277e17d51622ece94bf907a8cc7e0f4a73248a28c5d50e0f\",\"checked_at_utc\":\"2026-08-12T18:00:00+00:00\",\"code_markers\":[\"p1gpt/state/gpt.py\",\"p1gpt/components/chat.py\",\"p1gpt/db_model.py\"],\"environment_markers\":[\"requirements.txt\"],\"explicit_nonrunnable\":false,\"file_count\":38,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"model_service_source_shipped\":false,\"paper_result_generator_shipped\":false,\"private_model_endpoint\":\"http://main-llm:8090/invoke/\",\"python_compile_exit\":0,\"python_file_count\":22,\"runner_markers\":[\"Dockerfile\",\"compose.yaml\",\"deployment.yaml\"],\"support_markers\":[\"rxconfig.py\",\"service.yaml\",\"nginx.conf\"]},\"url\":\"https://github.com/P1GPT/web_demo\",\"url_type\":\"github_repository\"}]",
       "artifact_url_types": "github_repository",
       "artifact_urls": "https://github.com/P1GPT/web_demo",

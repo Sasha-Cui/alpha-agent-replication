@@ -47,14 +47,15 @@ def test_committed_artifact_audit_and_summary_include_mountainlion() -> None:
     assert row == {key: str(value) for key, value in route.mountainlion_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "27"
-    assert ft["artifact_reachable_among_all"]["successes"] == "26"
-    assert ft["github_head_resolved_among_all"]["successes"] == "26"
+    assert ft["public_artifact_listed"]["successes"] == "28"
+    assert ft["artifact_reachable_among_all"]["successes"] == "27"
+    assert ft["github_head_resolved_among_all"]["successes"] == "27"
     assert ft["static_R3_among_all"]["successes"] == "12"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text(encoding="utf-8"))
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
     assert {item["system_id"] for item in corrections} == {
         "SYS-FIN-AGENT",
+        "SYS-COG-ALPHA",
         "SYS-EMPIRICAL-ASSET-PRICING-LLM",
         "SYS-GPT-SIGNAL",
         "SYS-HEDGE-AGENTS",
@@ -102,16 +103,16 @@ def test_paper_route_prioritizes_native_blocker_over_proxy() -> None:
 
 def test_static_paper_assets_reflect_mountainlion_correction() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
-    assert r"\newcommand{\ArtifactCountFT}{27}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{26}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{28}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{27}" in generated
     assert r"\newcommand{\LicensedArtifactCountFT}{15}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{26}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{27}" in generated
     assert (
-        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 41, "
-        r"\artifacttier{R1}: 8, \artifacttier{R2}: 6, \artifacttier{R3}: 12}"
+        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 40, "
+        r"\artifacttier{R1}: 9, \artifacttier{R2}: 6, \artifacttier{R3}: 12}"
         in generated
     )
-    assert r"\newcommand{\TargetedAuditCount}{41}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{42}" in generated
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert "MountainLionAi/GenAI-Platform" in system_table
