@@ -401,6 +401,24 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-TRADING-GROUP": (
+        "A pinned TradingGroup audit rebuilds the official nine-page arXiv-v1 "
+        "manuscript at 99.75% extracted-token multiset overlap and inventories "
+        "all 360 displayed numeric table cells: 140 native TradingGroup cells, "
+        "120 unique after 20 duplicated all-enabled ablation cells. The exact "
+        "author-linked FINSABER data confirms all five ticker-specific test-data "
+        "claims. Its pre-submission framework commit and exact listed dependency "
+        "versions execute eight source-adjacent baselines: 96/128 eligible cells "
+        "match the paper, all from six deterministic strategies; ARIMA and XGBoost "
+        "match 0/32, and the advertised runner omits COIN under a three-year-history "
+        "guard despite the paper printing COIN rows. These are baseline/data "
+        "components, not the TradingGroup system. No attributable implementation, "
+        "Qwen3-Trader-8B-PEFT checkpoint, 1,080 trajectories, complete prompts or "
+        "model calls, actions, fills, NAVs, returns, or raw arrays are released, so "
+        "0/120 unique native table cells and 0/15 native cumulative-return curves "
+        "reproduce. Two of 60 ablation annotations do not round from displayed "
+        "values. No local proxy is credited."
+    ),
     "SYS-TREEVO": (
         "A pinned two-version TreEvo audit deterministically rebuilds the official "
         "9-page v1 and 17-page v2 manuscripts at 99.88% and 99.91% extracted-token "
@@ -665,6 +683,7 @@ TARGETED_EXECUTION = {
     "SYS-RAPTOR": "paper_audit:completed_16_of_42_author_output_scalar_units_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",
+    "SYS-TRADING-GROUP": "paper_audit:completed_96_of_128_source_adjacent_baseline_cells_zero_of_120_unique_native_table_cells_zero_of_15_native_curves",
     "SYS-TRADING-R1": "paper_audit:completed_zero_of_348_published_numeric_units_official_placeholder",
 }
 
