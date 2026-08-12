@@ -1,0 +1,32 @@
+{
+  "arxiv": {
+    "id": "2603.23300",
+    "official_pdf_sha256": "4bc3147d386ab882c4c5589e43c79abe4af8ebf1f11ffcdf6fc5f496ef57ff1d",
+    "pages": 67,
+    "rebuild_extracted_token_multiset_jaccard": 0.9936239193083574,
+    "rebuilt_pdf_sha256": "03e14b0fa15a048a7b02381a3e56098d2c4b44ba8404676c71ea51d3630c05a4",
+    "source_archive_sha256": "7798b193b252c64332250ade11f17321f7ac1a47c7dcbf69dd34a57cb93758b5",
+    "source_files": 5,
+    "submitted": "2026-03-24",
+    "version": "v1",
+    "visual_qa": {
+      "official_pages_inspected": 67,
+      "rebuilt_pages_inspected": 67,
+      "unreadable_clipped_or_overlapping_pages": 0
+    }
+  },
+  "linked_news_dataset": {
+    "jsonl_sha256": "c1585588777ef9be792aa4aac23f54b6ada7e469086e7887c95a31bb0cbbcae2",
+    "repository": "KrossKinetic/SP500-Financial-News-Articles-Time-Series",
+    "revision": "d3e37035640bc90830ee8741dfa52815b719a26a"
+  },
+  "release_boundary": {
+    "attributable_native_implementation_recovered": false,
+    "bounded_negative_search_is_proof_of_nonexistence": false,
+    "complete_author_prompt_history_recovered": false,
+    "complete_paper_data_recovered": false,
+    "exact_linked_news_input_recovered": true,
+    "one_printed_prompt_and_output_example_recovered": true,
+    "paper_result_output_recovered": false
+  }
+}

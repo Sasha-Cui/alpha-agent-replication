@@ -1,0 +1,39 @@
+{
+  "arxiv_id": "2603.23300",
+  "attributable_native_implementation_recovered": false,
+  "complete_annual_prompt_and_output_sets_recovered": 0,
+  "full_end_to_end_pipeline_reproduced": false,
+  "independent_component_tests_passed": 114,
+  "linked_news_rows_recovered": 4589,
+  "linked_news_symbols_recovered": 469,
+  "native_numeric_table_cells_regenerated": 0,
+  "official_document_rebuild_completed": true,
+  "official_pages_visually_checked": 67,
+  "official_pdf_and_source_recovered": true,
+  "official_versions_audited": [
+    "v1"
+  ],
+  "output_sha256": {
+    "README.md": "3f336b280620e3b393a5894e2da06f4113ca0252c4efcb8c79a877efa7bd4caf",
+    "discovery_evidence.csv": "bcdd5b1390296124a076c6971252504393b5ba604799f2c30d409493c8d1af25",
+    "independent_implementation_audit.json": "93ae9b413ed528f159637a436e2a67fb1896402dd0b8910963729c6cb154aea2",
+    "internal_consistency_audit.csv": "a1142313e55c110339d3f21345a01f5622f1f1785be98714888a47273d0701a7",
+    "linked_news_dataset_audit.json": "01ae9b78c9b5c980fc6211eb4505e326efe025521a71ef9d1dcfc7f61287e123",
+    "method_specification_audit.csv": "b70878ae284159d0e106bef760f5f089dc8cd9169ae230f6bf86f594490bea4f",
+    "model_release_chronology.json": "c72e926c8aca30b9b3fe96fe3d641fc5ca44176d95cb2fbaf6ac53be2c0d802f",
+    "prompt_component_inventory.csv": "b87004994341e5ff4ea7ee0230616da6188b4b53941b90d1781b4aa12d8dd13a",
+    "published_result_ledger.csv": "a46f3e3ea8c3ec8187d97ddb58e7749bc7a8b39d9902303ed0e62a85d0c40e76",
+    "sharpe_arithmetic_audit.csv": "a01825522fb1b765460f80a7aff3011ea58e48c6dfc7a2e10704efb3c780684a",
+    "source_provenance.json": "4882eae0e1c4d905221f2f640549209bc3d2e711eeb1c501b0b107523e97318d",
+    "table_inventory.csv": "8387e170f446313f234face9a6ebe40f422793b9a7bd7d8173824ca405735d23"
+  },
+  "paper_evidence_route": "paper_only_one_linked_input_and_one_date_prompt_no_native_results",
+  "printed_llm_prompt_or_output_components_recovered": 3,
+  "published_numeric_table_cells": 953,
+  "published_result_tables": 22,
+  "rebuilt_pages_visually_checked": 67,
+  "sharpe_arithmetic_checks": 315,
+  "sharpe_arithmetic_mismatches": 2,
+  "system_id": "SYS-AGENTIC-AI-SCREENING",
+  "work_id": "CensusArxiv260323300"
+}

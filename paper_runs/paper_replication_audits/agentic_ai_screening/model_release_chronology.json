@@ -1,0 +1,13 @@
+{
+  "assessment": "A retrospective run after April 2024 is possible, but prompt wording alone cannot exclude model-pretraining knowledge through August 2024 or establish the missing request/model lineage.",
+  "documented_knowledge_cutoff": "2024-08",
+  "gemini_2_0_flash_first_public_date": "2024-12-11",
+  "knowledge_cutoff_after_test_window_end": true,
+  "literal_model_available_during_test_windows": false,
+  "months_after_test_window_end_at_first_public_release": 7,
+  "paper_test_windows_end": "2024-04-30",
+  "retrospective_data_layer_holdout_possible": true,
+  "retrospective_model_knowledge_holdout_established": false,
+  "service_shutdown_date": "2026-06-01",
+  "timestamped_requests_and_exact_model_revision_recovered": false
+}

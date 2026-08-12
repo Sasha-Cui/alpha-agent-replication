@@ -1,0 +1,30 @@
+dimension,status,evidence
+official_document_source,complete_document_only,"v1 TeX, bibliography, workflow PNG, and generated bibliography are released; no experiment source is present"
+author_native_runtime,missing,"no attributable data, LLM, FinBERT, estimator, optimizer, or backtest runtime was recovered"
+equity_universe,partial,"full S&P 500 including delisted firms is stated, but point-in-time memberships, identifiers, eligibility rules, and vintages are absent"
+crsp_compustat_data,missing_proprietary,monthly January 2005--April 2024 CRSP/Compustat panel is not released
+characteristics,mostly_specified,"log market equity, book-to-market, and 12-month momentum; 1/99 winsorization, cross-sectional z-scores, and missing-to-zero are stated"
+accounting_lag,specified,annual accounting data are assumed available six months after fiscal-year end
+linked_news_dataset,exact_link_recovered,"pinned Hugging Face revision has 4,589 rows, 469 symbols, and dates 2006-12-04 through 2024-04-20"
+ibes_recommendations,missing_proprietary,"IBES/WRDS recommendation snapshot, analyst mappings, and derived monthly signals are absent"
+fama_french_factors,missing_snapshot,three-factor model is named for residual nodewise estimation but exact factor file and vintage are absent
+llm_s_prompt,partial_one_date,"agent/task prompt is printed only for December 2023; earlier annual prompts, injected data, tool traces, and outputs are absent"
+llm_s_model,family_only_retired,Gemini 2.0 Flash is named without immutable model ID/revision; service shut down 2026-06-01
+llm_s_generation_parameters,missing,"temperature, top-p, token limit, seed, retries, safety settings, and response metadata are absent"
+crewai_runtime_and_tools,names_only,"four tool names and snippets are printed; implementations, CrewAI version, database schema, and tool-call records are absent"
+annual_llm_rules,one_of_required_years,one 2024 rule from December 2023 is printed; the full annual rule ledger for both evaluation windows is absent
+finbert_model,missing_identifier,"FinBERT is named generically; checkpoint/revision, tokenizer, batching, truncation, inference code, and probabilities are absent"
+finbert_aggregation,partial,"positive-minus-negative probability, seven-day exponential weighting, and +/-0.1 thresholds are stated; exact timestamp and aggregation edge cases are absent"
+ensemble_rule,specified_prose,two-agent intersection with union fallback at cardinality <=1 and three-agent majority vote are described
+ensemble_signal_ledger,missing,"no dated buy/sell/hold sets, intersection/union flags, or selected-stock counts are released"
+logistic_benchmark,partial,"annual 15-year rolling cross-sectional logistic and top/bottom deciles are stated; target definition, features, solver, regularization, ties, and outputs are absent"
+novy_marx_benchmark,partial,"top/bottom 150 profitability-plus-value ranks are stated; exact construction, data fields, ties, and outputs are absent"
+precision_estimators,partial,"nodewise, residual nodewise, POET, deep learning, and NLS are described mathematically but implementation choices and fitted artifacts are absent"
+deep_learning_estimator,underspecified,"architecture, loss, optimizer, hyperparameters, validation, seeds, checkpoints, and training traces are absent"
+portfolio_objectives,mostly_specified,"GMV, 1% monthly target MV, and MSR formulas are printed; solver details, constraints, risk-free convention, and edge cases are absent"
+formation_and_test_windows,specified_dates_only,180-month rolling formation and 2020-01--2024-04 plus 2015-01--2024-04 tests are stated; exact return matrix is absent
+transaction_cost,formula_specified,10 bp net-return formula is printed; corporate-action/execution conventions and generated turnover are absent
+random_seeds,missing,"no seeds for LLM calls, deep learning, baselines, or repeated runs are released"
+runtime_environment,missing,"no author lockfile, versions, hardware description, or executable configuration is released"
+raw_results,missing,"no model requests/responses, signals, scores, weights, returns, fitted matrices, tables, or decomposition arrays are released"
+published_result_lineage,missing,0/953 printed numeric table cells can be linked to an author-native executable output

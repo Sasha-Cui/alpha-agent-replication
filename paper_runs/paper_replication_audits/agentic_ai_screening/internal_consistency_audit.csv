@@ -1,0 +1,17 @@
+check,status,detail
+printed_sharpe_identity,two_mismatches,313/315 printed triples satisfy Sharpe = annual return / sqrt(annual variance) within 0.002; LLM-S 10y NLS/MSR differs by 0.0084 and Agentic 10y POET/MV contains malformed return 01092
+agentic_10y_poet_mv_return,missing_decimal_typographical_error,source prints 01092; 0.1092 would imply Sharpe 0.2357 and reconcile with printed 0.2358 at displayed precision
+llm_10y_nls_msr,printed_triple_conflict,"0.0740 / sqrt(0.0258) = 0.4607, not the printed Sharpe 0.4691"
+llm_vs_baseline_5y,claim_matches_printed_tables,LLM-S is higher in 13/15 cells; exceptions are POET/MSR and NLS/MSR
+logistic_vs_baseline_5y,claim_matches_printed_tables,logistic is higher in 13/15 cells
+llm_vs_analyst_and_novy_marx_5y,claim_matches_printed_tables,LLM-S is higher in all 15/15 cells against each comparator
+finbert_5y_comparisons,claim_matches_printed_tables,"FinBERT is higher in 14/15 cells versus baseline and logistic, 15/15 versus analysts, and 11/15 exceed market Sharpe 0.6324"
+agentic_5y_comparisons,claim_matches_printed_tables,"Agentic is higher in 14/15 versus baseline, 14/15 versus FinBERT, 15/15 versus LLM-S, and 14/15 exceed market Sharpe 0.6324"
+three_agent_5y,claim_matches_printed_tables,all 15 three-agent Sharpe ratios are lower than two-agent Agentic and 0/15 exceed market
+finbert_10y_comparisons,claim_matches_printed_tables,FinBERT is higher in all 15/15 cells versus logistic and baseline
+subsequent_return_leakage_check,asserted_without_released_statistic,"paper says signals do not systematically align with subsequent returns but releases no test statistic, sample, code, or signal ledger"
+intersection_attribution,asserted_without_released_lineage,"claims 1.037 of 1.187 Sharpe is attributable to intersection and union fallback has 0.545, but releases no dated decomposition or output arrays"
+selected_stock_count,asserted_without_released_lineage,average 22 selected stocks and 50% trivial-intersection dates cannot be checked without annual rules and monthly signal sets
+screen_label_direction,methodological_interpretation_boundary,"Stage 2 pools all non-hold buy and sell names and explicitly may assign either weight sign, so Stage-1 buy/sell labels do not constrain final position direction"
+causal_masking,prompt_instruction_not_model_control,"the released text asks Gemini to use causal masking; it is not evidence of an enforced attention mask, timestamped request, or training-data cutoff"
+theory_to_empirics,conditional_not_empirically_verified,the sensible-screening theory assumes an oracle-like subset relation; public artifacts do not establish that LLM-S or FinBERT satisfies it

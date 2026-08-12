@@ -1,0 +1,22 @@
+{
+  "author_attribution_evidence_recovered": false,
+  "author_native_execution_credit": false,
+  "classification": "unaffiliated_post_paper_interpretation",
+  "internal_component_execution_credit": true,
+  "isolated_test_suite": "114 passed",
+  "material_divergences": [
+    "Claude Sonnet 4.5 replaces Gemini 2.0 Flash",
+    "custom LLM-F replaces FinBERT",
+    "PyPortfolioOpt replaces the five paper precision estimators",
+    "60-month history with 24-month fallback replaces the paper's 180-month window",
+    "12% annual MV target is not the literal 1% monthly target",
+    "a configurable 2% risk-free default is added without paper lineage",
+    "current SEC EDGAR and Yahoo reconstruction replaces exact CRSP/Compustat/IBES/WRDS snapshots"
+  ],
+  "paper_result_credit": false,
+  "paper_submitted": "2026-03-24",
+  "pinned_commit": "f6d056fae10e1ff2e77bf092e125ba09e93560d0",
+  "published_result_cells_regenerated": 0,
+  "repository": "alanhsieh2000/agentic_portfolio",
+  "repository_created": "2026-08-05"
+}

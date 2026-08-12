@@ -1,0 +1,7 @@
+route,result_count,finding,attributable_native_implementation_recovered,negative_search_limit
+arxiv_v1_source,5,"manuscript TeX, bibliography, workflow image, and generated bibliography only; no experiment runtime/data/results",False,describes pinned v1 archive only
+github_code_arxiv_id,30,"visible matches are citations, indexes, review material, or later interpretations",False,"bounded current indexed search; not proof about private, deleted, moved, or unindexed material"
+github_code_exact_title,4,no affirmative author-attributable runtime recovered,False,bounded current indexed search only
+github_author_names,0,no matching author-attributable code result,False,"name search cannot rule out aliases, organizations, private repositories, or different accounts"
+alanhsieh2000_agentic_portfolio,1,"created 2026-08-05, uses Claude Sonnet 4.5, custom LLM-F, PyPortfolioOpt, 60/24-month returns, and current SEC/Yahoo data; materially divergent unaffiliated implementation",False,no affirmative author relationship was recovered; absence of a link is not proof of identity
+lewisbakkero_sparsis,1,"academic-review repository containing paper material, not an implementation of the experiment",False,classification is limited to the pinned public repository snapshot

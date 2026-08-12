@@ -1,0 +1,4 @@
+component,date_scope,exact_text_printed,all_evaluation_dates_recovered,input_cross_section_recovered,tool_implementations_recovered,author_model_request_replayable,paper_result_credit
+LLM-S agent backstory/system-like prompt,December 2023 for 2024 rules,True,False,False,False,False,False
+LLM-S CrewAI task prompt,December 2023 for 2024 rules,True,False,False,False,False,False
+LLM-S example model output/rule,December 2023 for 2024 rules,True,False,False,False,False,False
