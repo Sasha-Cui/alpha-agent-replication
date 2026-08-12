@@ -474,6 +474,28 @@ PAPER_ONLY_AUDIT_NOTES = {
         "this bounded negative result is not proof that private or deleted artifacts "
         "never existed."
     ),
+    "SYS-MARKET-SENSE-AI": (
+        "A pinned two-paper MarketSenseAI audit validates arXiv:2502.00415v1/v2 "
+        "and arXiv:2604.17327v1 and deterministically rebuilds all three primary "
+        "TeX bundles to their published 25-, 10-, and 22-page layouts. These are "
+        "document results, not system execution. The latest 2025 ledger inventories "
+        "all 157 result-table measurements and six empirical raster assets; the 2026 "
+        "ledger inventories 250 result-table measurements, six cohort configuration "
+        "units, and ten empirical figure assets. Zero table-result units or empirical "
+        "figures reproduce from the native system. The source bundles contain only "
+        "manuscript/build assets and no operational code or raw arrays. Bounded checks "
+        "of the first author's public GitHub account, the company organization, exact "
+        "title/arXiv-ID searches, the official product/company sites, and research "
+        "indexes recover no attributable implementation or data release; this is not "
+        "proof that private, deleted, or unindexed artifacts never existed. No exact "
+        "input snapshot, prompts, immutable live request/output logs, cohort tickers, "
+        "signal panel, agent text, embeddings, portfolio path, Monte Carlo seed, or "
+        "raw result arrays are released. The 2025 prose misassigns a 1.24 beta from "
+        "the S&P100 row to the S&P500 comparison, and the 2026 date-level p-values "
+        "match one-sided absolute tails despite test-against-zero/absolute-threshold "
+        "language. The 2026 risk table defines delta UpDn against Hold, but its "
+        "displayed ratios imply 0.28 and 0.20 rather than the printed 0.17 and 0.09."
+    ),
     "SYS-QUANT-AGENT-SELF-IMPROVING": (
         "A pinned arXiv-v1 QuantAgent audit rebuilds the official 15-page TeX "
         "source at 99.93% extracted-token multiset Jaccard and audits all four "
@@ -545,6 +567,7 @@ TARGETED_EXECUTION = {
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
     "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
     "SYS-MACI": "paper_audit:completed_v1_v2_zero_of_321_table_units_21_author_output_plot_units_zero_regenerated_v3_zero_of_442_no_v3_code",
+    "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
