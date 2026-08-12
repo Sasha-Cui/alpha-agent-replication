@@ -52,6 +52,30 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
     ].eq("no").all()
 
 
+def test_chain_of_alpha_withdrawn_paper_audit_stays_paper_only() -> None:
+    routes = pd.read_csv(OUTPUT, keep_default_na=False)
+    row = routes[
+        routes["canonical_work_id"].eq("CensusArxiv250806312")
+    ].iloc[0]
+    assert row["paper_evidence_route"] == "paper_only_underspecified"
+    assert row["reachable_public_code_system_ids"] == ""
+    assert row["native_pipeline_disposition"] == (
+        "paper_only_audit_recorded_no_native_code_pipeline"
+    )
+    assert row["native_execution_audit_status"] == (
+        "paper_audit:completed_zero_of_180_result_cells_withdrawn_"
+        "no_attributable_system"
+    )
+    assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert row["proxy_role"] == "clearly_labeled_favorable_motif_proxy"
+    blocker = row["precise_native_or_access_blocker"]
+    assert "0/180 result cells" in blocker
+    assert "current arXiv withdrawal" in blocker
+    assert "two demo prompts" in blocker
+    assert "post-paper unaffiliated candidates" in blocker
+    assert "M0 monthly characteristic portfolio" in blocker
+
+
 def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     routes = pd.read_csv(OUTPUT)
     public = routes[routes["paper_evidence_route"].eq("public_code_available")]

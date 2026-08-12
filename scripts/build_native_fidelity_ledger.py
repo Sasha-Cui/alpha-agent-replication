@@ -401,6 +401,28 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-CHAIN-OF-ALPHA": (
+        "A pinned Chain-of-Alpha audit records the current arXiv withdrawal: no "
+        "PDF or source is available, and the administrator says the submitter did "
+        "not have rights to agree to the license. A surviving byte-pinned historical "
+        "transformation exposes all 180 displayed numeric result cells in Tables "
+        "1--4, including 54 Chain-of-Alpha/full-ablation/backbone/factor cells (42 "
+        "unique after repeated full rows), plus 40 operators, eight data fields, "
+        "three factor expressions, two demo prompts, and four figures. All three "
+        "formulas parse and execute only under declared conventional synthetic "
+        "semantics; this receives component credit and zero result credit. No "
+        "attributable implementation, frozen A-share data, exact runtime prompts "
+        "or calls, candidate pools, native evaluator, selected factor set, baseline "
+        "configs, predictions, portfolios, returns, or result arrays are released, "
+        "so 0/180 result cells reproduce. Three post-paper unaffiliated candidates "
+        "were pinned; one inspired deterministic optimization-rewrite component "
+        "executes, but it changes the task and receives no native credit. The paper "
+        "also contains two direct ablation table/prose value conflicts, overstates "
+        "DeepSeek/Qwen robustness (4/6 rather than 6/6 metric wins), and conflicts "
+        "on diversity semantics and the status of its demo prompts. The local M0 "
+        "monthly characteristic portfolio remains a favorable narrative translation "
+        "and receives no Chain-of-Alpha result or mechanism credit."
+    ),
     "SYS-ALPHA-AGENTS": (
         "A pinned arXiv-v1 AlphaAgents audit rebuilds the official nine-page TeX "
         "source at 99.77% extracted-token multiset Jaccard and recovers seven "
@@ -592,6 +614,7 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-MEMO": "paper_audit:completed_zero_of_474_native_results",
     "SYS-ALPHA-R1": "paper_audit:completed_zero_of_652_native_results_official_placeholder",
     "SYS-ALPHA-QUANTER": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
+    "SYS-CHAIN-OF-ALPHA": "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system",
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",

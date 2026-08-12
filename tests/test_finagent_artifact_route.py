@@ -79,7 +79,7 @@ def test_static_paper_assets_and_claim_hashes_reflect_the_correction() -> None:
     assert r"\newcommand{\ReachableArtifactCountFT}{26}" in generated
     assert r"\newcommand{\LicensedArtifactCountFT}{15}" in generated
     assert r"\newcommand{\PinnedRepoCountFT}{26}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{37}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{38}" in generated
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert "DVampire/FinAgent" in system_table
@@ -90,7 +90,7 @@ def test_static_paper_assets_and_claim_hashes_reflect_the_correction() -> None:
     assert claims["ArtifactCountFT"]["source_sha256"] == route.sha256(
         ROOT / "paper_runs/submission_evidence/artifact_audit/artifact_audit.csv"
     )
-    assert claims["TargetedAuditCount"]["rendered_value"] == "37"
+    assert claims["TargetedAuditCount"]["rendered_value"] == "38"
     assert claims["TargetedAuditCount"]["source_sha256"] == route.sha256(
         ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv"
     )

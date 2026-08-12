@@ -99,7 +99,7 @@ def test_paper_route_and_static_assets_reflect_gpt_signal_correction() -> None:
     assert r"\newcommand{\PinnedRepoCountFT}{26}" in generated
     assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 41, \artifacttier{R1}: 8, \artifacttier{R2}: 6, \artifacttier{R3}: 12}" in generated
     assert r"\newcommand{\NativeDatedOutputCount}{6}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{37}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{38}" in generated
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert "GPT-Signal & reachable" in failure_table
     assert "1,549/1,554" in failure_table
