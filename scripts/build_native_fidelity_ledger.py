@@ -423,6 +423,33 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-AGENTIC-AI-SCREENING": (
+        "A pinned arXiv-v1 Agentic AI Screening audit rebuilds the official "
+        "67-page source at 99.36% extracted-token multiset overlap and visually "
+        "checks all 67 official and 67 rebuilt pages. It inventories all 22 "
+        "result tables and 953 printed numeric result cells; 0/953 regenerate "
+        "through an author-native experiment. The linked Hugging Face news "
+        "revision is recovered exactly (4,589 rows, 469 symbols, 2006-12-04 "
+        "through 2024-04-20), and the source prints the CrewAI agent/task prompt "
+        "and LLM-S output for December 2023. Those are input/specification "
+        "components only: all earlier annual prompts, injected cross-sections, "
+        "tool implementations and calls, Gemini requests, FinBERT checkpoint and "
+        "scores, monthly signals, ensemble sets, CRSP/Compustat and IBES/WRDS "
+        "snapshots, S&P membership history, estimator code/hyperparameters, seeds, "
+        "environment, fitted weights, returns, and raw outputs are absent. The "
+        "printed tables contain a probable missing decimal (`01092`, consistent "
+        "with 0.1092) and one additional Sharpe/return/variance mismatch, while "
+        "unreleased claims about subsequent-return leakage, intersection "
+        "attribution, fallback dates, and average selected stocks cannot be "
+        "checked. Gemini 2.0 Flash first became public on 2024-12-11 after the "
+        "April 2024 test end and has an August 2024 knowledge cutoff; retrospective "
+        "data-layer testing is possible, but prompt-level 'causal masking' does "
+        "not establish a model-knowledge holdout. A pinned unaffiliated repository "
+        "created 2026-08-05 passes 114 tests but replaces Gemini, FinBERT, the five "
+        "estimators, 180-month window, and paper data, so it receives no native or "
+        "paper-result credit. Negative searches are bounded, not proof that "
+        "private, deleted, moved, or unindexed material never existed."
+    ),
     "SYS-FACTOR-MINER": (
         "A pinned arXiv-v1 FactorMiner audit rebuilds the official 20-page "
         "source at 99.98% extracted-token multiset overlap and visually verifies "
@@ -742,6 +769,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
+    "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_one_linked_input_one_date_prompt_zero_of_953_table_cells_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
     "SYS-ALPHA-GPT": "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_empirical_results",
     "SYS-ALPHA-JUNGLE": "paper_audit:completed_zero_of_64_published_cells_zero_native_results_three_of_six_formula_trees_conditionally_adapted",
