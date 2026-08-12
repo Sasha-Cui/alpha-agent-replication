@@ -1,0 +1,158 @@
+canonical_work_id,paper_version,paper_table,cohort,method_or_row,metric,paper_value,unit,cell_kind,primary_source_value_verified,native_reproduced_value,absolute_difference,status,paper_result_credit
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Mean,sentiment_full,0.31,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Mean,sentiment_basic,0.36,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Mean,reported_difference,0.24,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Std. Dev.,sentiment_full,0.28,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Std. Dev.,sentiment_basic,0.4,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Std. Dev.,reported_difference,0.17,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Minimum,sentiment_full,-0.61,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Minimum,sentiment_basic,-0.85,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Minimum,reported_difference,0.0,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,25th Percentile,sentiment_full,0.12,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,25th Percentile,sentiment_basic,0.08,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,25th Percentile,reported_difference,0.1,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Median,sentiment_full,0.37,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Median,sentiment_basic,0.44,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Median,reported_difference,0.21,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,75th Percentile,sentiment_full,0.53,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,75th Percentile,sentiment_basic,0.72,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,75th Percentile,reported_difference,0.33,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Maximum,sentiment_full,0.88,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Maximum,sentiment_basic,1.0,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Sentiment statistics,stocks_and_dates_unspecified,Maximum,reported_difference,0.96,sentiment_score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,HyDE,recall,0.77,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,HyDE,precision,1.0,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,HyDE,relevancy,0.76,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,HyDE,faithfulness,0.94,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,HyDE,overall,0.87,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Optimized,recall,0.67,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Optimized,precision,1.0,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Optimized,relevancy,0.75,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Optimized,faithfulness,0.89,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Optimized,overall,0.83,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Simple,recall,0.75,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Simple,precision,1.0,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Simple,relevancy,0.48,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Simple,faithfulness,0.86,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=3,Simple,overall,0.77,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,HyDE,recall,0.79,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,HyDE,precision,0.99,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,HyDE,relevancy,0.66,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,HyDE,faithfulness,0.94,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,HyDE,overall,0.85,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Optimized,recall,0.79,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Optimized,precision,0.99,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Optimized,relevancy,0.56,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Optimized,faithfulness,0.96,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Optimized,overall,0.82,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Simple,recall,0.85,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Simple,precision,0.99,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Simple,relevancy,0.48,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Simple,faithfulness,0.93,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=5,Simple,overall,0.82,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,HyDE,recall,0.91,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,HyDE,precision,1.0,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,HyDE,relevancy,0.66,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,HyDE,faithfulness,0.98,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,HyDE,overall,0.89,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Optimized,recall,0.85,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Optimized,precision,1.0,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Optimized,relevancy,0.66,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Optimized,faithfulness,0.97,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Optimized,overall,0.87,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Simple,recall,0.86,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Simple,precision,0.99,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Simple,relevancy,0.57,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Simple,faithfulness,0.95,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Retrieval performance,top_n=7,Simple,overall,0.84,score,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Eq,total_return_gross,55.7,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Eq,total_return_after_reported_cost,53.2,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Eq,sharpe,2.13,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Eq,sortino,3.25,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Eq,volatility,15.6,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Eq,maximum_drawdown,9.2,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Eq,maximum_drawdown_duration,65,days,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100 Eq,total_return_gross,42.3,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100 Eq,total_return_after_reported_cost,42.3,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100 Eq,sharpe,1.89,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100 Eq,sortino,2.85,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100 Eq,volatility,14.1,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100 Eq,maximum_drawdown,10.7,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100 Eq,maximum_drawdown_duration,92,days,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Cap,total_return_gross,125.9,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Cap,total_return_after_reported_cost,123.0,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Cap,sharpe,2.76,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Cap,sortino,4.43,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Cap,volatility,22.3,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Cap,maximum_drawdown,13.8,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,MS-Cap,maximum_drawdown_duration,82,days,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100,total_return_gross,73.5,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100,total_return_after_reported_cost,73.5,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100,sharpe,2.52,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100,sortino,3.82,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100,volatility,16.4,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100,maximum_drawdown,9.7,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P100_2023_2024,S&P 100,maximum_drawdown_duration,77,days,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Eq,total_return_gross,25.8,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Eq,total_return_after_reported_cost,24.5,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Eq,sharpe,2.4,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Eq,sortino,3.68,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Eq,volatility,14.3,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Eq,maximum_drawdown,6.7,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Eq,maximum_drawdown_duration,52,days,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500 Eq,total_return_gross,12.8,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500 Eq,total_return_after_reported_cost,12.8,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500 Eq,sharpe,1.33,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500 Eq,sortino,1.91,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500 Eq,volatility,13.8,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500 Eq,maximum_drawdown,7.1,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500 Eq,maximum_drawdown_duration,73,days,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Cap,total_return_gross,48.7,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Cap,total_return_after_reported_cost,47.8,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Cap,sharpe,2.87,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Cap,sortino,4.39,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Cap,volatility,20.8,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Cap,maximum_drawdown,12.5,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,MS-Cap,maximum_drawdown_duration,53,days,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500,total_return_gross,25.6,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500,total_return_after_reported_cost,25.6,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500,sharpe,2.26,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500,sortino,3.28,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500,volatility,15.1,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500,maximum_drawdown,8.4,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance metrics,S&P500_2024,S&P 500,maximum_drawdown_duration,46,days,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Eq,beta,0.96,coefficient,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Eq,alpha,8.0,percent_unspecified_horizon,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Eq,total_trades,584,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Eq,win_rate,77.1,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Eq,mean_buy_signals_per_month,35.1,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Eq,std_buy_signals_per_month,7.95,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Cap,beta,1.24,coefficient,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Cap,alpha,10.6,percent_unspecified_horizon,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Cap,total_trades,548,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Cap,win_rate,77.0,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Cap,mean_buy_signals_per_month,35.1,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P100_2023_2024,MS-Cap,std_buy_signals_per_month,7.95,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Eq,beta,0.92,coefficient,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Eq,alpha,18.9,percent_unspecified_horizon,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Eq,total_trades,1200,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Eq,win_rate,78.0,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Eq,mean_buy_signals_per_month,144.8,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Eq,std_buy_signals_per_month,30.8,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Cap,beta,1.27,coefficient,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Cap,alpha,17.6,percent_unspecified_horizon,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Cap,total_trades,1229,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Cap,win_rate,77.0,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Cap,mean_buy_signals_per_month,144.8,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Performance attribution,S&P500_2024,MS-Cap,std_buy_signals_per_month,30.8,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Carhart_4_factor,Mkt-RF,0.936,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Carhart_4_factor,SMB,-0.131,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Carhart_4_factor,HML,0.11,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Carhart_4_factor,Mom,0.178,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Carhart_4_factor,R_squared,0.884,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Fama_French_5_factor,Mkt-RF,0.958,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Fama_French_5_factor,SMB,-0.221,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Fama_French_5_factor,HML,0.081,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Fama_French_5_factor,RMW,-0.015,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Fama_French_5_factor,CMA,0.044,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv250200415,arXiv:2502.00415v2,Factor model results,portfolio_or_difference_series_ambiguous,Fama_French_5_factor,R_squared,0.854,coefficient_or_ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False

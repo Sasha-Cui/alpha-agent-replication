@@ -1,0 +1,25 @@
+canonical_work_id,missing_requirement,blocking_effect,publicly_resolved
+CensusArxiv250200415,verbatim prompts and parsing contracts,blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,exact GPT-4o/GPT-4o-mini snapshots and inference parameters,blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,point-in-time S&P constituent lists,blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,frozen price/news/filing/transcript/macro inputs,blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,release-time and decision-time timestamps with execution lag,blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,buy/hold/sell generation records,blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,"portfolio holdings, trades, fills, cash, dividends, and NAV paths",blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,transaction-cost implementation and turnover definition,blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,metric and annualization formulas,blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,"factor dataset, regression frequency, and alpha horizon",blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,Ragas query/reference set and evaluator configuration,blocks_native_paper_result_reproduction,False
+CensusArxiv250200415,"software versions, seeds, and repeated-run protocol",blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,specialist/synthesis model identities and verbatim prompts,blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,immutable live request/response timestamps,blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,467- and 94-stock cohort ticker lists and formation vintage,blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,"agent summaries, synthesis theses, and ordinal labels",blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,embedding requests and 1536-dimensional response arrays,blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,"one-month return prices, fields, dividends, and exact horizons",blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,Monte Carlo random seed and simulation outputs,blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,"NNLS solver implementation, version, and tolerances",blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,date-level IC arrays and test-sidedness declaration,blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,"portfolio holdings, turnover, transaction costs, and NAV paths",blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,author-generated raw figure arrays,blocks_native_paper_result_reproduction,False
+CensusArxiv260417327,"operational source, environment lock, and runnable evaluator",blocks_native_paper_result_reproduction,False

@@ -1,0 +1,38 @@
+[
+  {
+    "paper_version": "2502.00415v1",
+    "source_date_epoch": 1738676036,
+    "compiler": "pdflatex_TeX_Live_2024",
+    "rebuilt_pdf_sha256": "6815514789bf3376d5c3d4c7d9731a550799195e2eea72ee41d182b2d3380d3c",
+    "pages": 25,
+    "same_hash_after_repeated_final_compile": true,
+    "normalized_extracted_text_sequence_similarity": 0.9996488854253196,
+    "normalized_100dpi_raster_mean_absolute_difference": 4.460080624814958e-05,
+    "full_contact_sheet_visual_qa": "passed_no_clipping_overlap_or_unreadable_panels",
+    "paper_result_reproduction": false
+  },
+  {
+    "paper_version": "2502.00415v2",
+    "source_date_epoch": 1759739015,
+    "compiler": "pdflatex_TeX_Live_2024",
+    "rebuilt_pdf_sha256": "3ddd65992934ba2e755c05a1228e06841d4f5ed99b040cd7fbbc60fb88c07e46",
+    "pages": 10,
+    "same_hash_after_repeated_final_compile": true,
+    "normalized_extracted_text_sequence_similarity": 0.9975975551590737,
+    "normalized_100dpi_raster_mean_absolute_difference": 0.0001421772045716682,
+    "full_contact_sheet_visual_qa": "passed_no_clipping_overlap_or_unreadable_panels",
+    "paper_result_reproduction": false
+  },
+  {
+    "paper_version": "2604.17327v1",
+    "source_date_epoch": 1776733504,
+    "compiler": "pdflatex_TeX_Live_2024",
+    "rebuilt_pdf_sha256": "78d34396edfee92781e18ab4e72d427c974ddf033cf978ae0c4076361c004efd",
+    "pages": 22,
+    "same_hash_after_repeated_final_compile": true,
+    "normalized_extracted_text_sequence_similarity": 0.994016746605967,
+    "normalized_100dpi_raster_mean_absolute_difference": 0.00012987600748702772,
+    "full_contact_sheet_visual_qa": "passed_no_clipping_overlap_or_unreadable_panels",
+    "paper_result_reproduction": false
+  }
+]

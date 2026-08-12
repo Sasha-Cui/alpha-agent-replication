@@ -1,0 +1,41 @@
+canonical_work_id,check,paper_value,reconstructed_from_displayed_values,reconstructed_minus_paper,status,implication,paper_result_credit
+CensusArxiv250200415,S&P100 MS-Cap Sortino improvement over cap-weight benchmark,16.0,15.968586387434547,-0.031413612565453164,passes_display_precision,The prose 16% improvement is recoverable from Table values.,False
+CensusArxiv250200415,S&P500 MS-Cap Sortino improvement in abstract,33.8,33.84146341463414,0.04146341463414416,passes_display_precision,The abstract claim is recoverable from Table values.,False
+CensusArxiv250200415,S&P500 equal-weight relative return outperformance,102.0,101.5625,-0.4375,passes_display_precision,The reported 102% relative outperformance is a rounded ratio.,False
+CensusArxiv250200415,Prose says S&P500 portfolios have beta 1.24--1.27,1.24_to_1.27,0.92_and_1.27,,fails_against_displayed_attribution_table,1.24 belongs to S&P100 MS-Cap; S&P500 MS-Eq is 0.92.,False
+CensusArxiv250200415,Retrieval overall is mean of four metrics: top_n=3 HyDE,0.87,0.8674999999999999,-0.0025000000000000577,passes_display_precision,The Overall score is the rounded arithmetic mean of the four components.,False
+CensusArxiv250200415,Retrieval overall is mean of four metrics: top_n=3 Optimized,0.83,0.8275,-0.0024999999999999467,passes_display_precision,The Overall score is the rounded arithmetic mean of the four components.,False
+CensusArxiv250200415,Retrieval overall is mean of four metrics: top_n=3 Simple,0.77,0.7725,0.0024999999999999467,passes_display_precision,The Overall score is the rounded arithmetic mean of the four components.,False
+CensusArxiv250200415,Retrieval overall is mean of four metrics: top_n=5 HyDE,0.85,0.845,-0.0050000000000000044,passes_display_precision,The Overall score is the rounded arithmetic mean of the four components.,False
+CensusArxiv250200415,Retrieval overall is mean of four metrics: top_n=5 Optimized,0.82,0.825,0.0050000000000000044,passes_display_precision,The Overall score is the rounded arithmetic mean of the four components.,False
+CensusArxiv250200415,Retrieval overall is mean of four metrics: top_n=5 Simple,0.82,0.8125,-0.007499999999999951,passes_display_precision,The Overall score is the rounded arithmetic mean of the four components.,False
+CensusArxiv250200415,Retrieval overall is mean of four metrics: top_n=7 HyDE,0.89,0.8875,-0.0025000000000000577,passes_display_precision,The Overall score is the rounded arithmetic mean of the four components.,False
+CensusArxiv250200415,Retrieval overall is mean of four metrics: top_n=7 Optimized,0.87,0.87,0.0,passes_display_precision,The Overall score is the rounded arithmetic mean of the four components.,False
+CensusArxiv250200415,Retrieval overall is mean of four metrics: top_n=7 Simple,0.84,0.8425,0.0025000000000000577,passes_display_precision,The Overall score is the rounded arithmetic mean of the four components.,False
+CensusArxiv260417327,S&P500 fixed-cohort Cartesian row count,8873,8873,0,exact,The cohort count identity holds.,False
+CensusArxiv260417327,S&P100 fixed-cohort Cartesian row count,3290,3290,0,exact,The cohort count identity holds.,False
+CensusArxiv260417327,S&P500 signal counts sum to cohort rows,8873,8873,0,exact,All signal observations are accounted for.,False
+CensusArxiv260417327,S&P100 signal counts sum to cohort rows,3290,3290,0,exact,All signal observations are accounted for.,False
+CensusArxiv260417327,S&P500 average strong-buy count,35.1,35.05263157894737,-0.047368421052631504,passes_display_precision,The descriptive mean is recoverable.,False
+CensusArxiv260417327,S&P100 average strong-buy count,9.9,9.914285714285715,0.014285714285714235,passes_display_precision,The descriptive mean is recoverable.,False
+CensusArxiv260417327,S&P500 win rate,57.9,57.89473684210527,-0.005263157894731307,passes_display_precision,The win-rate identity holds.,False
+CensusArxiv260417327,S&P100 win rate,57.1,57.14285714285714,0.042857142857137376,passes_display_precision,The win-rate identity holds.,False
+CensusArxiv260417327,Strong-buy UpDn ratio from displayed upside/downside,1.07,1.0739495798319327,0.00394957983193267,passes_display_precision,The displayed strong-buy UpDn ratio is internally recoverable.,False
+CensusArxiv260417327,Buy UpDn ratio from displayed upside/downside,0.99,0.9883333333333333,-0.0016666666666667052,passes_display_precision,The displayed buy UpDn ratio is internally recoverable.,False
+CensusArxiv260417327,Hold UpDn ratio from displayed upside/downside,0.79,0.7853949329359164,-0.00460506706408359,passes_display_precision,The displayed hold UpDn ratio is internally recoverable.,False
+CensusArxiv260417327,Strong-buy delta UpDn as defined versus displayed hold ratio,0.17,0.28,0.11000000000000001,fails_published_delta_definition,"The caption defines strong-buy minus hold, but displayed ratios imply 0.28, not 0.17.",False
+CensusArxiv260417327,Buy delta UpDn as defined versus displayed hold ratio,0.09,0.19999999999999996,0.10999999999999996,fails_published_delta_definition,"The caption defines buy minus hold, but displayed ratios imply 0.20, not 0.09.",False
+CensusArxiv260417327,Appendix S&P500 mean actual return,2.18,2.1773684210526314,-0.0026315789473687623,passes_display_precision,The main-table mean is recoverable from rounded appendix rows.,False
+CensusArxiv260417327,Appendix S&P500 mean null return,1.15,1.1521052631578947,0.002105263157894832,passes_display_precision,The main-table mean is recoverable from rounded appendix rows.,False
+CensusArxiv260417327,Appendix S&P500 mean reported excess,1.02,1.0242105263157895,0.004210526315789442,passes_display_precision,The mean of displayed per-date excess values rounds to 1.02.,False
+CensusArxiv260417327,S&P500 compound actual from rounded appendix returns,46.8,46.870320879754225,0.0703208797542274,not_exact_at_display_precision_hidden_precision_could_explain,"Displayed rows compound to 46.87% (normally 46.9%), so raw values are required.",False
+CensusArxiv260417327,S&P500 compound EW/null from rounded appendix returns,21.6,21.74269010055816,0.14269010055815912,not_exact_at_display_precision_hidden_precision_could_explain,Displayed null means compound to 21.74%; raw EW returns are absent.,False
+CensusArxiv260417327,S&P500 compound excess from rounded appendix returns,25.2,25.127630779196064,-0.07236922080393526,passes_display_precision,The rounded appendix paths imply about 25.13 percentage points.,False
+CensusArxiv260417327,S&P500 score t = ICIR * sqrt(T),2.13,2.1315015833913895,0.001501583391389616,passes_display_precision,The t-statistic identity holds.,False
+CensusArxiv260417327,S&P500 reported p_t sidedness,0.024,0.02354224649992201,-0.00045775350007799115,matches_one_sided_absolute_tail,"The conventional two-sided p is 0.047084, not 0.024.",False
+CensusArxiv260417327,S&P100 score t = ICIR * sqrt(T),0.48,0.4732863826479693,-0.0067136173520306874,passes_display_precision,The t-statistic identity holds.,False
+CensusArxiv260417327,S&P100 reported p_t sidedness,0.319,0.31951679149003487,0.0005167914900348625,matches_one_sided_absolute_tail,"The conventional two-sided p is 0.639034, not 0.319.",False
+CensusArxiv260417327,Paper's |ICIR| threshold versus reported p_t convention,absolute_two_sided_threshold_language,one_sided_absolute_tail_p_values,,internally_inconsistent_test_sidedness,The method uses |ICIR|/test-against-zero language but table p_t values are half two-sided p-values.,False
+CensusArxiv260417327,Beta-regression monthly alpha simple annualization,14.2,14.16,-0.03999999999999915,passes_display_precision,The reported annualized alpha is simple 12x annualization.,False
+CensusArxiv260417327,Up-market conditional excess,0.82,0.8300000000000001,0.01000000000000012,hidden_precision_needed_for_last_basis_point,"Displayed values imply 0.83, not 0.82; raw returns could explain the difference.",False
+CensusArxiv260417327,Down-market conditional excess,1.31,1.3199999999999998,0.009999999999999787,hidden_precision_needed_for_last_basis_point,"Displayed values imply 1.32, not 1.31; raw returns could explain the difference.",False

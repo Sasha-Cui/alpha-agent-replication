@@ -1,0 +1,257 @@
+canonical_work_id,paper_version,paper_table,cohort,method_or_row,metric,paper_value,unit,cell_kind,primary_source_value_verified,native_reproduced_value,absolute_difference,status,paper_result_credit
+CensusArxiv260417327,arXiv:2604.17327v1,Fixed-cohort design,S&P500,cohort_configuration,stocks,467,count,configuration,True,,,paper_configuration_only_no_native_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Fixed-cohort design,S&P500,cohort_configuration,dates,19,count,configuration,True,,,paper_configuration_only_no_native_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Fixed-cohort design,S&P500,cohort_configuration,observation_rows,8873,count,configuration,True,,,paper_configuration_only_no_native_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Fixed-cohort design,S&P100,cohort_configuration,stocks,94,count,configuration,True,,,paper_configuration_only_no_native_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Fixed-cohort design,S&P100,cohort_configuration,dates,35,count,configuration,True,,,paper_configuration_only_no_native_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Fixed-cohort design,S&P100,cohort_configuration,observation_rows,3290,count,configuration,True,,,paper_configuration_only_no_native_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Strong sell,count,180,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Strong sell,share,2.0,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Strong sell,count,48,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Strong sell,share,1.5,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Sell,count,286,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Sell,share,3.2,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Sell,count,77,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Sell,share,2.3,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Hold,count,6992,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Hold,share,78.8,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Hold,count,2508,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Hold,share,76.2,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Buy,count,749,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Buy,share,8.4,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Buy,count,310,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Buy,share,9.4,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Strong buy,count,666,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Strong buy,share,7.5,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Strong buy,count,347,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Strong buy,share,10.5,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Total,count,8873,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P500,Total,share,100,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Total,count,3290,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal class distribution,S&P100,Total,share,100,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,avg_strong_buy_picks_per_month,35.1,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,avg_strong_buy_picks_per_month,9.9,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,mean_monthly_strong_buy_return,2.18,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,mean_monthly_strong_buy_return,2.02,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,mean_monthly_ew_benchmark,1.15,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,mean_monthly_ew_benchmark,1.47,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,mean_monthly_mc_null_median,1.15,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,mean_monthly_mc_null_median,1.47,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,mean_monthly_excess_vs_ew,1.02,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,mean_monthly_excess_vs_ew,0.55,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,mean_monthly_percentile_rank,99.7,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,mean_monthly_percentile_rank,83.4,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,mean_monthly_p_value,0.003,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,mean_monthly_p_value,0.166,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,compound_strong_buy_return,46.8,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,compound_strong_buy_return,93.2,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,compound_ew_benchmark,21.6,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,compound_ew_benchmark,62.7,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,compound_mc_null_median,21.4,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,compound_mc_null_median,60.7,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,compound_excess_vs_ew,25.2,percentage_points,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,compound_excess_vs_ew,30.5,percentage_points,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,strong_buy_vs_null,compound_p_value,0.003,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,strong_buy_vs_null,compound_p_value,0.163,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,win_rate,months_strong_buy_beats_ew,11,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,win_rate,months_observed,19,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P500,win_rate,win_rate,57.9,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,win_rate,months_strong_buy_beats_ew,20,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,win_rate,months_observed,35,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Monte Carlo results,S&P100,win_rate,win_rate,57.1,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P500,News,spearman_rho,0.571,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P500,News,observations,8873,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P100,News,spearman_rho,0.534,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P100,News,observations,3290,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P500,Fundamentals,spearman_rho,0.826,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P500,Fundamentals,observations,8873,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P100,Fundamentals,spearman_rho,0.795,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P100,Fundamentals,observations,3290,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P500,Dynamics,spearman_rho,0.724,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P500,Dynamics,observations,8873,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P100,Dynamics,spearman_rho,0.701,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P100,Dynamics,observations,3290,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P500,Macro,spearman_rho,0.648,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P500,Macro,observations,8873,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P100,Macro,spearman_rho,0.631,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P100,Macro,observations,3290,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P500,thesis_reconstruction,mean_cosine,0.944,cosine,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Cosine-weight agreement,S&P100,thesis_reconstruction,mean_cosine,0.936,cosine,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Strong buy,upside_mean,6.39,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Strong buy,downside_mean,-5.95,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Strong buy,hit_rate,58.4,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Strong buy,upside_downside_ratio,1.07,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Strong buy,delta_upside_downside_vs_hold,0.17,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Strong buy,ci95_lower,-0.03,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Strong buy,ci95_upper,0.37,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Buy,upside_mean,5.93,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Buy,downside_mean,-6.0,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Buy,hit_rate,52.1,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Buy,upside_downside_ratio,0.99,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Buy,delta_upside_downside_vs_hold,0.09,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Buy,ci95_lower,-0.11,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Buy,ci95_upper,0.28,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Hold,upside_mean,5.27,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Hold,downside_mean,-6.71,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Hold,hit_rate,53.4,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Signal risk profile,S&P500,Hold,upside_downside_ratio,0.79,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,News,pooled_ic,0.004,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,News,pooled_p,0.887,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,News,date_level_mean_ic,-0.035,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,News,icir,-0.327,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,News,t_statistic,-1.42,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,News,reported_p_t,0.086,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Fundamentals,pooled_ic,0.052,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Fundamentals,pooled_p,0.049,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Fundamentals,date_level_mean_ic,0.012,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Fundamentals,icir,0.092,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Fundamentals,t_statistic,0.4,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Fundamentals,reported_p_t,0.346,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Dynamics,pooled_ic,-0.069,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Dynamics,pooled_p,0.009,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Dynamics,date_level_mean_ic,0.019,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Dynamics,icir,0.135,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Dynamics,t_statistic,0.59,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Dynamics,reported_p_t,0.282,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Macro,pooled_ic,0.03,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Macro,pooled_p,0.257,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Macro,date_level_mean_ic,0.016,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Macro,icir,0.113,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Macro,t_statistic,0.49,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Macro,reported_p_t,0.314,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Score,pooled_ic,0.006,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Score,pooled_p,0.822,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Score,date_level_mean_ic,0.051,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Score,icir,0.489,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Score,t_statistic,2.13,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P500,Score,reported_p_t,0.024,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,News,pooled_ic,0.016,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,News,pooled_p,0.688,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,News,date_level_mean_ic,0.047,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,News,icir,0.189,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,News,t_statistic,1.12,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,News,reported_p_t,0.135,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Fundamentals,pooled_ic,-0.025,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Fundamentals,pooled_p,0.529,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Fundamentals,date_level_mean_ic,-0.062,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Fundamentals,icir,-0.218,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Fundamentals,t_statistic,-1.29,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Fundamentals,reported_p_t,0.103,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Dynamics,pooled_ic,-0.04,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Dynamics,pooled_p,0.311,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Dynamics,date_level_mean_ic,-0.035,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Dynamics,icir,-0.15,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Dynamics,t_statistic,-0.89,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Dynamics,reported_p_t,0.191,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Macro,pooled_ic,0.079,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Macro,pooled_p,0.042,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Macro,date_level_mean_ic,0.033,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Macro,icir,0.138,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Macro,t_statistic,0.82,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Macro,reported_p_t,0.21,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Score,pooled_ic,0.013,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Score,pooled_p,0.749,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Score,date_level_mean_ic,0.018,correlation,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Score,icir,0.08,ratio,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Score,t_statistic,0.48,statistic,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Agent and score information coefficients,S&P100,Score,reported_p_t,0.319,probability,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-09,strong_buy_count,48,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-09,actual_return,5.93,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-09,null_mean_return,6.07,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-09,excess_return,-0.14,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-09,percentile_rank,48,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-10,strong_buy_count,57,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-10,actual_return,0.16,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-10,null_mean_return,-1.09,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-10,excess_return,1.25,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-10,percentile_rank,91,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-11,strong_buy_count,55,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-11,actual_return,8.4,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-11,null_mean_return,6.11,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-11,excess_return,2.28,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-11,percentile_rank,91,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-12,strong_buy_count,74,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-12,actual_return,-3.99,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-12,null_mean_return,-4.64,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-12,excess_return,0.65,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2024-12,percentile_rank,88,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-01,strong_buy_count,41,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-01,actual_return,6.23,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-01,null_mean_return,2.55,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-01,excess_return,3.68,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-01,percentile_rank,>99,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-02,strong_buy_count,55,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-02,actual_return,-5.85,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-02,null_mean_return,-2.16,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-02,excess_return,-3.69,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-02,percentile_rank,<1,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-03,strong_buy_count,30,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-03,actual_return,-8.3,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-03,null_mean_return,-11.0,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-03,excess_return,2.7,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-03,percentile_rank,97,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-04,strong_buy_count,18,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-04,actual_return,7.3,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-04,null_mean_return,10.55,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-04,excess_return,-3.25,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-04,percentile_rank,9,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-05,strong_buy_count,25,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-05,actual_return,2.99,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-05,null_mean_return,4.55,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-05,excess_return,-1.55,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-05,percentile_rank,18,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-06,strong_buy_count,19,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-06,actual_return,1.98,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-06,null_mean_return,4.29,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-06,excess_return,-2.31,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-06,percentile_rank,7,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-07,strong_buy_count,21,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-07,actual_return,1.87,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-07,null_mean_return,-1.66,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-07,excess_return,3.53,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-07,percentile_rank,98,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-08,strong_buy_count,28,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-08,actual_return,1.13,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-08,null_mean_return,3.89,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-08,excess_return,-2.76,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-08,percentile_rank,4,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-09,strong_buy_count,34,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-09,actual_return,5.53,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-09,null_mean_return,2.07,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-09,excess_return,3.45,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-09,percentile_rank,98,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-10,strong_buy_count,26,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-10,actual_return,2.71,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-10,null_mean_return,-1.68,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-10,excess_return,4.4,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-10,percentile_rank,>99,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-11,strong_buy_count,32,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-11,actual_return,0.81,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-11,null_mean_return,2.55,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-11,excess_return,-1.75,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-11,percentile_rank,6,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-12,strong_buy_count,25,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-12,actual_return,2.99,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-12,null_mean_return,0.92,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-12,excess_return,2.07,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2025-12,percentile_rank,97,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-01,strong_buy_count,20,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-01,actual_return,14.11,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-01,null_mean_return,4.89,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-01,excess_return,9.22,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-01,percentile_rank,>99,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-02,strong_buy_count,36,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-02,actual_return,-4.7,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-02,null_mean_return,-1.87,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-02,excess_return,-2.83,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-02,percentile_rank,3,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-03,strong_buy_count,22,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-03,actual_return,2.07,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-03,null_mean_return,-2.45,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-03,excess_return,4.51,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,2026-03,percentile_rank,>99,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,Mean,strong_buy_count,35.1,count,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,Mean,actual_return,2.18,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,Mean,null_mean_return,1.15,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,Mean,excess_return,1.02,percent,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False
+CensusArxiv260417327,arXiv:2604.17327v1,Appendix Monte Carlo results by date,S&P500,Mean,percentile_rank,60.7,percentile,direct_result,True,,,unavailable_no_native_result_inputs_or_pipeline,False

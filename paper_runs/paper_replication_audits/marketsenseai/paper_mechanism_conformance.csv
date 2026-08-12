@@ -1,0 +1,39 @@
+canonical_work_id,dimension,primary_source_evidence,status,paper_specification_reconstructable,native_mechanism_credit,paper_result_credit
+CensusArxiv250200415,agent topology,five named agents,paper_specified,True,False,False
+CensusArxiv250200415,primary LLM,GPT-4o named; snapshot and parameters absent,partial,False,False,False
+CensusArxiv250200415,RAG evaluator LLM,GPT-4o-mini named; snapshot absent,partial,False,False,False
+CensusArxiv250200415,prompts,described only; no verbatim templates,missing,False,False,False
+CensusArxiv250200415,price input,historical price data; vendor/field/snapshot absent,missing,False,False,False
+CensusArxiv250200415,news input,news described; source list and snapshot absent,missing,False,False,False
+CensusArxiv250200415,SEC input,EDGAR API named; exact filing set and timestamps absent,partial,False,False,False
+CensusArxiv250200415,earnings transcripts,RapidAPI aggregation named; frozen corpus absent,partial,False,False,False
+CensusArxiv250200415,macro reports,institutions named; complete corpus and hashes absent,partial,False,False,False
+CensusArxiv250200415,universe,S&P100/S&P500 named; constituents and membership vintage absent,partial,False,False,False
+CensusArxiv250200415,signal timing,monthly stated; decision/execution timestamps and lag absent,partial,False,False,False
+CensusArxiv250200415,portfolio rule,equal/cap weighting stated; cap timing and cash handling absent,partial,False,False,False
+CensusArxiv250200415,transaction costs,10 bps/trade stated; trade/turnover application absent,partial,False,False,False
+CensusArxiv250200415,backtester,VectorBTPro named; version/config proprietary and absent,partial,False,False,False
+CensusArxiv250200415,metrics,names supplied; formulas/frequency/risk-free conventions absent,partial,False,False,False
+CensusArxiv250200415,factor regressions,models named; factor source/frequency/regression details absent,partial,False,False,False
+CensusArxiv250200415,seeds/repeated LLM trials,not reported,missing,False,False,False
+CensusArxiv250200415,native result outputs,"no signal, return, trade, or NAV files",missing,False,False,False
+CensusArxiv260417327,agent topology,four specialists plus synthesis stated,paper_specified,True,False,False
+CensusArxiv260417327,generation LLM,"underlying model names, snapshots, parameters absent",missing,False,False,False
+CensusArxiv260417327,prompts,no specialist or synthesis prompt templates,missing,False,False,False
+CensusArxiv260417327,live-generation proof,asserted; no immutable timestamped outputs/requests,missing,False,False,False
+CensusArxiv260417327,cohort design,467x19 and 94x35 stated; tickers and formation vintage absent,partial,False,False,False
+CensusArxiv260417327,observation cadence,first Friday monthly stated; exact timestamps absent,partial,True,False,False
+CensusArxiv260417327,forward return,one-month buy-and-hold stated; price field/dividends/lag absent,partial,False,False,False
+CensusArxiv260417327,embedding model,"text-embedding-3-small, D=1536 named",partial,True,False,False
+CensusArxiv260417327,embedding requests,"texts, request dates, responses and hashes absent",missing,False,False,False
+CensusArxiv260417327,NNLS objective,"objective, normalization, and fallback specified",paper_specified,True,False,False
+CensusArxiv260417327,NNLS implementation,solver/library/tolerance/version absent,missing,False,False,False
+CensusArxiv260417327,Monte Carlo sampling,"K=10000, same-size, without replacement specified",paper_specified,True,False,False
+CensusArxiv260417327,Monte Carlo seed,fixed seed asserted but value not disclosed,missing,False,False,False
+CensusArxiv260417327,Monte Carlo p-value,one-tailed empirical formula specified,paper_specified,True,False,False
+CensusArxiv260417327,IC scope,buy+strong-buy scope and formulas specified,paper_specified,True,False,False
+CensusArxiv260417327,IC p-value sidedness,reported values conflict with test-against-zero language,conflicting,False,False,False
+CensusArxiv260417327,transaction costs,no turnover/cost/slippage treatment,missing,False,False,False
+CensusArxiv260417327,raw result panel,"agent text, labels, embeddings, returns all absent",missing,False,False,False
+CensusArxiv260417327,benchmark construction,EW universe specified; ticker files and prices absent,partial,False,False,False
+CensusArxiv260417327,native execution path,no attributable operational code or environment,missing,False,False,False
