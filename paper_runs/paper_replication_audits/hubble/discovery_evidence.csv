@@ -1,0 +1,7 @@
+route,result_count,finding,attributable_native_artifact_recovered,negative_search_limit
+github_exact_repository_title,0,zero exact-title repositories,False,"bounded current indexed search; not proof that private, deleted, moved, or unindexed material never existed"
+github_code_arxiv_id,31,visible matches are citations/indexes or unaffiliated paper-inspired work,False,"bounded current indexed search; not proof that private, deleted, moved, or unindexed material never existed"
+github_code_exact_title,19,"visible matches are citations/indexes, not an attributable implementation",False,"bounded current indexed search; not proof that private, deleted, moved, or unindexed material never existed"
+github_author_lab_organization,0,Celestial-Quant-Lab account exists but exposes zero public repositories,False,bounded current public API observation; private or future releases are outside the observation
+github_named_author_account,3,attributable UBC author account has unrelated structural-ML repositories only,False,identity attribution is bounded; other accounts or private material may exist
+arxiv_source_bundles,2,"manuscript, bibliography, style, and rendered figure assets only; no code/data/output archives",False,describes the pinned v1/v2 source bundles only

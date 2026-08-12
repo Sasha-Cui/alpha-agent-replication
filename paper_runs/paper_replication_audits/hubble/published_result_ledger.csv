@@ -1,0 +1,159 @@
+edition,table,identity,metric,rendered_value,numeric_value,duplicate_kind,duplicate_of,native_pipeline_executed,native_result_regenerated,paper_result_credit
+arxiv_v1,round_summary,R1,Candidates,41,41.0,none,,False,False,False
+arxiv_v1,round_summary,R1,Evaluated,76,76.0,none,,False,False,False
+arxiv_v1,round_summary,R1,OK,71,71.0,none,,False,False,False
+arxiv_v1,round_summary,R1,Errors,10,10.0,none,,False,False,False
+arxiv_v1,round_summary,R1,Best Score,0.827,0.827,none,,False,False,False
+arxiv_v1,round_summary,R2,Candidates,41,41.0,none,,False,False,False
+arxiv_v1,round_summary,R2,Evaluated,60,60.0,none,,False,False,False
+arxiv_v1,round_summary,R2,OK,60,60.0,none,,False,False,False
+arxiv_v1,round_summary,R2,Errors,21,21.0,none,,False,False,False
+arxiv_v1,round_summary,R2,Best Score,$-0.279$,-0.279,none,,False,False,False
+arxiv_v1,round_summary,R3,Candidates,40,40.0,none,,False,False,False
+arxiv_v1,round_summary,R3,Evaluated,50,50.0,none,,False,False,False
+arxiv_v1,round_summary,R3,OK,50,50.0,none,,False,False,False
+arxiv_v1,round_summary,R3,Errors,31,31.0,none,,False,False,False
+arxiv_v1,round_summary,R3,Best Score,0.717,0.717,none,,False,False,False
+arxiv_v1,round_summary,Total,Candidates,122,122.0,none,,False,False,False
+arxiv_v1,round_summary,Total,Evaluated,186,186.0,none,,False,False,False
+arxiv_v1,round_summary,Total,OK,181,181.0,none,,False,False,False
+arxiv_v1,round_summary,Total,Errors,62,62.0,none,,False,False,False
+arxiv_v1,round_summary,Total,Best Score,0.827,0.827,exact_semantic_repeat,v1/R1/Best Score,False,False,False
+arxiv_v1,top_factors,f1,Score,0.827,0.827,exact_semantic_repeat,v1/R1/Best Score,False,False,False
+arxiv_v1,top_factors,f1,RankIC,0.0185,0.0185,none,,False,False,False
+arxiv_v1,top_factors,f1,RankICIR_ann,1.310,1.31,none,,False,False,False
+arxiv_v1,top_factors,f1,IC_hit_pct,52.7\%,52.7,none,,False,False,False
+arxiv_v1,top_factors,f1,Turnover,0.902,0.902,none,,False,False,False
+arxiv_v1,top_factors,f1,Coverage_pct,100\%,100.0,none,,False,False,False
+arxiv_v1,top_factors,f2,Score,0.717,0.717,exact_semantic_repeat,v1/R3/Best Score,False,False,False
+arxiv_v1,top_factors,f2,RankIC,0.0185,0.0185,none,,False,False,False
+arxiv_v1,top_factors,f2,RankICIR_ann,1.298,1.298,none,,False,False,False
+arxiv_v1,top_factors,f2,IC_hit_pct,51.7\%,51.7,none,,False,False,False
+arxiv_v1,top_factors,f2,Turnover,0.945,0.945,none,,False,False,False
+arxiv_v1,top_factors,f2,Coverage_pct,100\%,100.0,none,,False,False,False
+arxiv_v1,top_factors,f3,Score,0.506,0.506,none,,False,False,False
+arxiv_v1,top_factors,f3,RankIC,0.0044,0.0044,none,,False,False,False
+arxiv_v1,top_factors,f3,RankICIR_ann,0.319,0.319,none,,False,False,False
+arxiv_v1,top_factors,f3,IC_hit_pct,53.1\%,53.1,none,,False,False,False
+arxiv_v1,top_factors,f3,Turnover,0.028,0.028,none,,False,False,False
+arxiv_v1,top_factors,f3,Coverage_pct,100\%,100.0,none,,False,False,False
+arxiv_v1,top_factors,f4,Score,0.218,0.218,none,,False,False,False
+arxiv_v1,top_factors,f4,RankIC,0.0026,0.0026,none,,False,False,False
+arxiv_v1,top_factors,f4,RankICIR_ann,0.187,0.187,none,,False,False,False
+arxiv_v1,top_factors,f4,IC_hit_pct,53.7\%,53.7,none,,False,False,False
+arxiv_v1,top_factors,f4,Turnover,0.039,0.039,none,,False,False,False
+arxiv_v1,top_factors,f4,Coverage_pct,100\%,100.0,none,,False,False,False
+arxiv_v1,top_factors,f5,Score,0.161,0.161,none,,False,False,False
+arxiv_v1,top_factors,f5,RankIC,0.0021,0.0021,none,,False,False,False
+arxiv_v1,top_factors,f5,RankICIR_ann,0.151,0.151,none,,False,False,False
+arxiv_v1,top_factors,f5,IC_hit_pct,53.8\%,53.8,none,,False,False,False
+arxiv_v1,top_factors,f5,Turnover,0.052,0.052,none,,False,False,False
+arxiv_v1,top_factors,f5,Coverage_pct,100\%,100.0,none,,False,False,False
+arxiv_v2,round_summary,R1,Candidates,20,20.0,none,,False,False,False
+arxiv_v2,round_summary,R1,Evaluated,40,40.0,none,,False,False,False
+arxiv_v2,round_summary,R1,OK,40,40.0,none,,False,False,False
+arxiv_v2,round_summary,R1,Errors,0,0.0,none,,False,False,False
+arxiv_v2,round_summary,R1,Best Score,5.195,5.195,none,,False,False,False
+arxiv_v2,round_summary,R2,Candidates,20,20.0,none,,False,False,False
+arxiv_v2,round_summary,R2,Evaluated,34,34.0,none,,False,False,False
+arxiv_v2,round_summary,R2,OK,34,34.0,none,,False,False,False
+arxiv_v2,round_summary,R2,Errors,6,6.0,none,,False,False,False
+arxiv_v2,round_summary,R2,Best Score,5.622,5.622,none,,False,False,False
+arxiv_v2,round_summary,R3,Candidates,20,20.0,none,,False,False,False
+arxiv_v2,round_summary,R3,Evaluated,30,30.0,none,,False,False,False
+arxiv_v2,round_summary,R3,OK,30,30.0,none,,False,False,False
+arxiv_v2,round_summary,R3,Errors,10,10.0,none,,False,False,False
+arxiv_v2,round_summary,R3,Best Score,5.436,5.436,none,,False,False,False
+arxiv_v2,round_summary,Total,Candidates,60,60.0,none,,False,False,False
+arxiv_v2,round_summary,Total,Evaluated,104,104.0,none,,False,False,False
+arxiv_v2,round_summary,Total,OK,104,104.0,none,,False,False,False
+arxiv_v2,round_summary,Total,Errors,16,16.0,none,,False,False,False
+arxiv_v2,round_summary,Total,Best Score,5.622,5.622,exact_semantic_repeat,v2/R2/Best Score,False,False,False
+arxiv_v2,top5_in_sample,Range-1,Score,5.622,5.622,exact_semantic_repeat,v2/R2/Best Score,False,False,False
+arxiv_v2,top5_in_sample,Range-1,RankIC,0.0059,0.0059,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-1,RankICIR_ann,0.350,0.35,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-1,IC,0.0127,0.0127,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-1,ICIR_ann,0.687,0.687,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-1,LS_Return,0.000810,0.00081,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-1,Turnover,0.113,0.113,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-2,Score,5.486,5.486,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-2,RankIC,0.0057,0.0057,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-2,RankICIR_ann,0.342,0.342,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-2,IC,0.0130,0.013,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-2,ICIR_ann,0.716,0.716,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-2,LS_Return,0.000724,0.000724,none,,False,False,False
+arxiv_v2,top5_in_sample,Range-2,Turnover,0.161,0.161,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-1,Score,5.475,5.475,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-1,RankIC,0.0057,0.0057,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-1,RankICIR_ann,0.368,0.368,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-1,IC,0.0133,0.0133,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-1,ICIR_ann,1.028,1.028,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-1,LS_Return,0.000546,0.000546,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-1,Turnover,0.174,0.174,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-2,Score,5.272,5.272,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-2,RankIC,0.0047,0.0047,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-2,RankICIR_ann,0.297,0.297,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-2,IC,0.0124,0.0124,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-2,ICIR_ann,0.851,0.851,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-2,LS_Return,0.000587,0.000587,none,,False,False,False
+arxiv_v2,top5_in_sample,Volatility-2,Turnover,0.137,0.137,none,,False,False,False
+arxiv_v2,top5_in_sample,Trend-1,Score,4.609,4.609,none,,False,False,False
+arxiv_v2,top5_in_sample,Trend-1,RankIC,0.0115,0.0115,none,,False,False,False
+arxiv_v2,top5_in_sample,Trend-1,RankICIR_ann,0.900,0.9,none,,False,False,False
+arxiv_v2,top5_in_sample,Trend-1,IC,0.0110,0.011,none,,False,False,False
+arxiv_v2,top5_in_sample,Trend-1,ICIR_ann,0.968,0.968,none,,False,False,False
+arxiv_v2,top5_in_sample,Trend-1,LS_Return,0.000350,0.00035,none,,False,False,False
+arxiv_v2,top5_in_sample,Trend-1,Turnover,0.368,0.368,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-1,RankIC,0.0242,0.0242,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-1,RankICIR_ann,1.804,1.804,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-1,RankIC_HAC_t,1.75,1.75,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-1,IC,0.0391,0.0391,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-1,ICIR_ann,2.788,2.788,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-1,IC_HAC_t,2.98**,2.98,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-1,LS_Return,0.00205,0.00205,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-1,LS_HAC_t,2.17*,2.17,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-1,Turnover,0.133,0.133,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-2,RankIC,0.0245,0.0245,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-2,RankICIR_ann,1.860,1.86,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-2,RankIC_HAC_t,1.81,1.81,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-2,IC,0.0385,0.0385,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-2,ICIR_ann,2.797,2.797,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-2,IC_HAC_t,3.01**,3.01,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-2,LS_Return,0.00209,0.00209,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-2,LS_HAC_t,2.31*,2.31,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Range-2,Turnover,0.182,0.182,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-1,RankIC,0.0275,0.0275,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-1,RankICIR_ann,2.305,2.305,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-1,RankIC_HAC_t,2.25*,2.25,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-1,IC,0.0131,0.0131,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-1,ICIR_ann,1.656,1.656,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-1,IC_HAC_t,1.68,1.68,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-1,LS_Return,0.00200,0.002,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-1,LS_HAC_t,2.60**,2.6,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-1,Turnover,0.173,0.173,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-2,RankIC,0.0232,0.0232,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-2,RankICIR_ann,1.900,1.9,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-2,RankIC_HAC_t,1.81,1.81,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-2,IC,0.0204,0.0204,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-2,ICIR_ann,2.251,2.251,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-2,IC_HAC_t,2.47*,2.47,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-2,LS_Return,0.00189,0.00189,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-2,LS_HAC_t,2.27*,2.27,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Volatility-2,Turnover,0.133,0.133,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Trend-1,RankIC,0.0083,0.0083,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Trend-1,RankICIR_ann,0.794,0.794,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Trend-1,RankIC_HAC_t,0.81,0.81,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Trend-1,IC,$-$0.0034,-0.0034,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Trend-1,ICIR_ann,$-$0.380,-0.38,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Trend-1,IC_HAC_t,$-$0.39,-0.39,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Trend-1,LS_Return,$-$0.00064,-0.00064,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Trend-1,LS_HAC_t,$-$0.87,-0.87,none,,False,False,False
+arxiv_v2,top5_out_of_sample,Trend-1,Turnover,0.374,0.374,none,,False,False,False
+arxiv_v2,backend_robustness,Nemotron-120B-free,Total evaluated,104,104.0,exact_semantic_repeat,v2/Total/Evaluated,False,False,False
+arxiv_v2,backend_robustness,Nemotron-120B-free,Total OK,104,104.0,exact_semantic_repeat,v2/Total/OK,False,False,False
+arxiv_v2,backend_robustness,Nemotron-120B-free,Total errors,16,16.0,exact_semantic_repeat,v2/Total/Errors,False,False,False
+arxiv_v2,backend_robustness,Nemotron-120B-free,Best score,5.622,5.622,exact_semantic_repeat,v2/R2/Best Score,False,False,False
+arxiv_v2,backend_robustness,Hunter-Alpha,Total evaluated,107,107.0,none,,False,False,False
+arxiv_v2,backend_robustness,Hunter-Alpha,Total OK,105,105.0,none,,False,False,False
+arxiv_v2,backend_robustness,Hunter-Alpha,Total errors,15,15.0,none,,False,False,False
+arxiv_v2,backend_robustness,Hunter-Alpha,Best score,5.460,5.46,none,,False,False,False

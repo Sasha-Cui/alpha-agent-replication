@@ -1,0 +1,41 @@
+{
+  "arxiv": {
+    "id": "2604.09601",
+    "versions": [
+      {
+        "pages": 11,
+        "rebuild_pages": 11,
+        "rebuild_token_multiset_jaccard": 0.9973730297723292,
+        "source_files": 11,
+        "submitted": "2026-03-09",
+        "version": "v1",
+        "visual_qa": {
+          "pages_inspected": 11,
+          "unreadable_clipped_or_overlapping_pages": 0
+        }
+      },
+      {
+        "pages": 17,
+        "rebuild_pages": 17,
+        "rebuild_token_multiset_jaccard": 0.9990454371897671,
+        "source_files": 19,
+        "submitted": "2026-04-14",
+        "version": "v2",
+        "visual_qa": {
+          "pages_inspected": 17,
+          "unreadable_clipped_or_overlapping_pages": 0
+        }
+      }
+    ]
+  },
+  "release_boundary": {
+    "attributable_native_implementation_recovered": false,
+    "bounded_negative_search_is_proof_of_nonexistence": false,
+    "candidate_and_error_records_recovered": false,
+    "data_snapshot_recovered": false,
+    "exact_factor_formulas_recovered": false,
+    "exact_prompts_recovered": false,
+    "raw_result_arrays_recovered": false,
+    "runtime_requests_responses_recovered": false
+  }
+}

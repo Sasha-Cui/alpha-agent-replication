@@ -1,0 +1,31 @@
+dimension,status,evidence
+native_source,missing,both arXiv bundles contain manuscript assets only; author-lab organization exposes zero public repositories
+exact_factor_formulas,intentionally_withheld,v1 anonymizes f1-f5; v2 explicitly avoids exact formulas and hyperparameters
+operator_registry,partial,"operator families and examples only; complete names, arities, and implementations absent"
+ast_whitelist,partial,v1 names five allowed AST node classes; implementation and full rejection semantics absent
+data_universe_v1,missing,30 U.S. equities named but ticker list absent
+data_universe_v2,missing,"sp500.txt and 501 valid stocks named but list, vintage, filtering, and membership policy absent"
+market_data,missing,"daily OHLCV named; vendor, snapshot, adjustments, timezone, missing-data policy, and delistings absent"
+discovery_window,partial,date endpoints and claimed day counts supplied; included-date array absent
+oos_window,partial,v2 endpoints and claimed 195 days supplied; included-date array absent
+survivorship_controls,missing,no point-in-time S&P 500 membership protocol
+prompts,missing,prompt construction described but exact system/user templates and runtime fills absent
+rag_corpus,missing,"positive/negative RAG described; corpus, index, embedding model, retrieval parameters, and snapshot absent"
+model_v1,missing,no LLM identity or immutable endpoint/checkpoint
+models_v2,partial,two mutable OpenRouter display identifiers; no immutable request or provider snapshot
+model_call_parameters,missing,"temperature, top-p, token limits, seed, reasoning controls, retries, and concurrency absent"
+random_seeds,missing,no generation/evaluation seeds or repeated-run protocol
+scoring_v1,partial,"linear weights supplied, but input preprocessing and drop-ratio implementation absent"
+scoring_v2,missing,"centers, scales, weights, direct penalty magnitudes, bonuses, and similarity thresholds absent"
+family_assignment,missing,family taxonomy and classifier/assignment implementation absent
+duplicate_detection,missing,normalization and similarity/exact-duplicate rule absent
+forward_label,partial,formula given; horizon h and price/return conventions absent
+portfolio_construction,partial,buckets and top-minus-bottom named; quantile/tie/weight/rebalance conventions absent
+transaction_costs,missing,paper explicitly omits transaction-cost evaluation
+neutralization,missing,"paper explicitly reports no market, sector, or style neutralization"
+hac_configuration,partial,Bartlett kernel and automatic lag named; exact lag rule/implementation absent
+runtime_artifacts,missing,"claimed prompts, responses, checkpoints, JSON summaries, and diagnostics are not released"
+candidate_formulas,missing,generated and rejected formula sets absent
+raw_result_arrays,missing,"IC, bucket, long-short, turnover, coverage, and complexity arrays absent"
+environment_dependencies,missing,"no runtime environment, package versions, or lockfile"
+oos_protocol,partial,one retrospective split; no walk-forward and no prospectively timestamped freeze artifact

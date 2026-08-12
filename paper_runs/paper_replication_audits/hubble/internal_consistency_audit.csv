@@ -1,0 +1,15 @@
+check,status,detail
+v1_round_accounting,caption_and_counts_conflict,"Evaluated + Errors equals 81 in every round, not Evaluated; totals 181 + 62 = 243 versus 186 evaluated"
+v1_round1_duplicates,prose_conflicts_with_table_and_figure,"error-distribution prose says zero R1 duplicates, while the figure caption says five and Table 1 implies five duplicates plus five parse errors"
+v1_pass_rate,passes_displayed_arithmetic,"181 / 186 = 97.31%, consistent with the reported 97.3%"
+v1_computational_stability,not_independently_verifiable,zero crashes and 100% stability are asserted without runtime logs or outputs
+v2_round_accounting,internally_reconcilable_but_terminology_ambiguous,"120 attempted slots can reconcile as 104 evaluated + 16 duplicates, but Candidates denotes only 60 primary generations"
+v2_discovery_day_count,underspecified_against_public_calendar,"paper reports 840 dates; broad U.S. session data have 855 dates in the stated interval, and the 15 exclusions are not identified"
+v2_oos_day_count,underspecified_against_public_calendar,"paper reports 195 dates; broad U.S. session data have 197 dates in the stated interval, and the two exclusions are not identified"
+v2_literal_pre_oos_freeze,contradicted_by_model_release_chronology,"both named backends first became public on 2026-03-11, after the 2025-06-01 OOS start and two days before its end"
+v2_defensible_temporal_interpretation,retrospective_holdout_possible_but_unverified,"a later run using only the discovery slice could preserve data-layer holdout, but no timestamped freeze, inputs, requests, formulas, or outputs are released"
+v2_formula_disclosure,intentional_reproduction_blocker,"the paper explicitly withholds exact formulas and hyperparameters, preventing independent factor/result regeneration"
+v2_backend_identity,hunter_alpha_later_disclosed,OpenRouter now identifies Hunter Alpha as an early testing version of MiMo-V2-Pro
+v2_robustness,lightweight_by_author_admission,"one alternate backend is reported without seeds, repeated runs, uncertainty, or the proposed RAG/scoring ablations"
+v2_oos_scope,preliminary_not_definitive,"single 195-day claimed split, no neutralization, costs, or walk-forward; this matches the paper's own limitations"
+author_name_rendering,metadata_source_inconsistency,arXiv metadata says Chengxi Lv while the v2 TeX author line says Chenxi Lv

@@ -1,0 +1,39 @@
+{
+  "boundary": "independent conditional conformance fixture; incomplete registry and no native implementation",
+  "cases": [
+    {
+      "accepted": true,
+      "expression": "TS_SMA(CLOSE, 5)",
+      "reason": "accepted"
+    },
+    {
+      "accepted": true,
+      "expression": "IF(GT(CLOSE, OPEN), CLOSE, OPEN)",
+      "reason": "accepted"
+    },
+    {
+      "accepted": false,
+      "expression": "__import__('os').system('id')",
+      "reason": "unregistered_operator"
+    },
+    {
+      "accepted": false,
+      "expression": "CLOSE > OPEN",
+      "reason": "forbidden_ast:Compare"
+    },
+    {
+      "accepted": false,
+      "expression": "TS_SMA(CLOSE)",
+      "reason": "arity"
+    },
+    {
+      "accepted": false,
+      "expression": "UNKNOWN(CLOSE)",
+      "reason": "unregistered_operator"
+    }
+  ],
+  "component": "paper-described AST whitelist/registry/arity subset",
+  "native_hubble_code_used": false,
+  "paper_candidate_or_output_used": false,
+  "paper_result_credit": false
+}

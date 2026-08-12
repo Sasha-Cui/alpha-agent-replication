@@ -1,0 +1,21 @@
+{
+  "literal_fixed_before_oos_window_begins_supported": false,
+  "models": [
+    {
+      "after_oos_start": true,
+      "first_public_date": "2026-03-11",
+      "paper_identifier": "nvidia/nemotron-3-super-120b-a12b:free",
+      "primary_record": "NVIDIA Hugging Face model card pinned at commit 7d7e5797b8a3c7abbab54033b6004e93e8b6bc91"
+    },
+    {
+      "after_oos_start": true,
+      "first_public_date": "2026-03-11",
+      "paper_identifier": "openrouter/hunter-alpha",
+      "primary_record": "OpenRouter model page; later disclosed as early MiMo-V2-Pro testing version"
+    }
+  ],
+  "oos_end": "2026-03-13",
+  "oos_start": "2025-06-01",
+  "retrospective_data_layer_holdout_possible": true,
+  "retrospective_data_layer_holdout_verified": false
+}

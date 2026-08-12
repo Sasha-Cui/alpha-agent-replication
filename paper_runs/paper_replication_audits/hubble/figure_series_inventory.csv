@@ -1,0 +1,17 @@
+edition,figure,displayed_series,description,underlying_numeric_array_released,native_figure_regenerated,paper_result_credit
+arxiv_v1,score_distribution,3,three round score distributions,False,False,False
+arxiv_v1,error_breakdown,2,parse-error and duplicate series,False,False,False
+arxiv_v1,topk_comparison,3,"RankICIR, score, and turnover series",False,False,False
+arxiv_v1,pipeline_efficiency,3,"unique, evaluated, and OK-rate series",False,False,False
+arxiv_v2,round_overview,5,four throughput series and best-score line,False,False,False
+arxiv_v2,is_top_factor_metrics,6,six metric panels,False,False,False
+arxiv_v2,oos_top_factor_metrics,6,six metric panels,False,False,False
+arxiv_v2,is_bucket_profile,1,best-factor bucket profile,False,False,False
+arxiv_v2,oos_bucket_profile,1,best-factor bucket profile,False,False,False
+arxiv_v2,is_significance_topk,3,three significance panels,False,False,False
+arxiv_v2,oos_significance_topk,3,three significance panels,False,False,False
+arxiv_v2,is_ic_stability,3,three cumulative-IC curves,False,False,False
+arxiv_v2,oos_ic_stability,3,three cumulative-IC curves,False,False,False
+arxiv_v2,is_long_short_cumulative,3,three cumulative spread curves,False,False,False
+arxiv_v2,oos_long_short_cumulative,3,three cumulative spread curves,False,False,False
+arxiv_v2,family_diversity,2,candidate-pool and selected-set series,False,False,False
