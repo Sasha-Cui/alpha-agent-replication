@@ -1,0 +1,48 @@
+{
+  "frontend": {
+    "source_commit": "f7819f3537808d398f6c3da37e43b51ecebdbd42",
+    "environment": "Bouchet nodejs/20.13.1-GCCcore-13.3.0; Node v20.13.1; npm 10.5.2",
+    "install_command": "npm ci --no-audit --no-fund",
+    "install_outcome": "pass_added_561_packages_from_locked_package_lock_v2",
+    "build_command": "npm run build",
+    "build_outcome": "pass_twice_vite_4.3.9_2929_modules",
+    "repeated_output_manifest_sha256": "9726a9b6a16c28b471ea8fb8e63b82814351290a1ba54a1397587da36efe0a83",
+    "repeated_outputs_byte_identical": true,
+    "dist_file_count": 67,
+    "dist_bytes": 4836274,
+    "warnings": [
+      "eval in src/App.vue is strongly discouraged",
+      "one or more minified chunks exceed 500 kB"
+    ],
+    "paper_result_credit": false
+  },
+  "backend_paper_time": {
+    "source_commit": "98b98d31dec6d29a5c518943d980300612030a40",
+    "environment": "Bouchet Python 3.9.21",
+    "core_compile_command": "python3 -m compileall -q genaipf app.py setup.py",
+    "core_compile_exit": 0,
+    "repository_compile_command": "python3 -m compileall -q .",
+    "repository_compile_exit": 1,
+    "repository_compile_failure": "examples/utils/redis_t001.py:13 uses await outside an async function",
+    "public_test_function_count": 0,
+    "tests_directory_files": [
+      "tests/__init__.py (empty)"
+    ],
+    "full_service_started": false,
+    "startup_blockers": [
+      "unreleased ml4gp modules imported by product controllers/services",
+      "private MySQL schema and data including kline_predictd",
+      "Redis and external API credentials",
+      "product plugin/service implementation"
+    ],
+    "paper_result_credit": false
+  },
+  "runtime_evidence_file_sha256": {
+    "frontend_build_repeat1.log": "0bfa5cf5c57a1e8161c98c8d907bc57968a7c93fca2cda7427943686ce45b977",
+    "frontend_build_repeat2.log": "72085104fccf7cb584d05d424be42c3531649895a543f22be482ae96c061bb6a",
+    "frontend_build_repeat1.manifest": "9726a9b6a16c28b471ea8fb8e63b82814351290a1ba54a1397587da36efe0a83",
+    "frontend_build_repeat2.manifest": "9726a9b6a16c28b471ea8fb8e63b82814351290a1ba54a1397587da36efe0a83",
+    "backend_compile_core.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend_compile_full.log": "276d92a5232286dba2dc2403e4e2aa420781ae937783d9cdff40fe15e8a42dd5"
+  }
+}

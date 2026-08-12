@@ -1,0 +1,6 @@
+check_id,paper_equation,synthetic_input,synthetic_output,status,paper_specification_component_credit,native_source_implementation_executed,paper_result_credit
+convex_fusion,alpha*Y_LLM + (1-alpha)*Y_ML,"{""alpha"":0.25,""llm"":[100,110],""ml"":[96,102]}","[97.0, 104.0]",passes_declared_equation,True,False,False
+point_accuracy,1-|predicted-actual|/actual,"{""predicted"":110,""actual"":100}",0.9,passes_declared_equation,True,False,False
+negative_accuracy_boundary,1-|predicted-actual|/actual,"{""predicted"":300,""actual"":100}",-1,demonstrates_unstated_negative_range,True,False,False
+directional_win_rate_defined_lags_only,mean(sign(predicted change)==sign(actual change)),"{""predicted"":[100,102,101],""actual"":[100,101,99]}",1,passes_after_supplying_unreported_lag_boundary,True,False,False
+cache_freshness,reuse if now-cached < tau_i,"{""age_minutes"":20,""agent"":1,""tau_minutes"":30}",reuse=True,passes_declared_equation,True,False,False

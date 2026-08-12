@@ -1,0 +1,39 @@
+canonical_work_id,dimension,status,primary_source_evidence,paper_specification_reconstructable,exact_native_paper_mechanism_reproduced,paper_result_credit
+CensusArxiv250720474,four specialized agents,specified,roles described; exact orchestration absent,False,False,False
+CensusArxiv250720474,central reflection module,partial,named but no executable reflection contract,False,False,False
+CensusArxiv250720474,visual reflection,missing,claimed experimentally; no operational definition or ablation,False,False,False
+CensusArxiv250720474,GraphRAG,partial,paper equations and generic platform dependency only,False,False,False
+CensusArxiv250720474,Perplexity retrieval,partial,templates and generic client exist; paper requests absent,False,False,False
+CensusArxiv250720474,general prompts,specified,seven verbatim templates are recoverable,True,False,False
+CensusArxiv250720474,runtime prompts,missing,no substituted prompts or request records,False,False,False
+CensusArxiv250720474,LLM identities,partial,LLaMA2-13B and case-study model families named,False,False,False
+CensusArxiv250720474,LLM snapshots/parameters,missing,"exact IDs, temperature, seed, and decoding absent",False,False,False
+CensusArxiv250720474,Web3 fine-tuning,missing,"dataset, method, checkpoint, and evaluation absent",False,False,False
+CensusArxiv250720474,OHLCV schema,specified,fields o/h/l/c/v stated,True,False,False
+CensusArxiv250720474,14D and 48H input windows,specified,windows stated without exchange/date/sample,True,False,False
+CensusArxiv250720474,historical news,missing,source corpus and timestamps absent,False,False,False
+CensusArxiv250720474,real-time news,missing,source/query/response snapshot absent,False,False,False
+CensusArxiv250720474,sentiment embeddings,missing,"model, vectors, and preprocessing absent",False,False,False
+CensusArxiv250720474,LLM forecast track,partial,conceptual multi-step output only,False,False,False
+CensusArxiv250720474,ML forecast track,partial,one-step vector stated; estimator and fit absent,False,False,False
+CensusArxiv250720474,fusion equation,specified,convex equation stated,True,False,False
+CensusArxiv250720474,adaptive alpha,partial,directional update stated; optimizer/window absent,False,False,False
+CensusArxiv250720474,accuracy equation,specified,point formula stated without aggregation safeguards,True,False,False
+CensusArxiv250720474,win-rate equation,partial,formula stated with undefined first lag,False,False,False
+CensusArxiv250720474,forecast horizon,conflicting,"14D/48H inputs, two/24-step examples, BNB seven-day prose",False,False,False
+CensusArxiv250720474,token universe,specified,same ten tokens appear in paper and platform menu,True,False,False
+CensusArxiv250720474,forecast training panel,missing,"no values, dates, frequency, exchange, or split",False,False,False
+CensusArxiv250720474,cross-validation,missing,"score printed; folds, scorer, search, and preprocessing absent",False,False,False
+CensusArxiv250720474,test MSE,partial,values printed; test rows and scaling absent,False,False,False
+CensusArxiv250720474,news recency filtering,partial,paper equations only,False,False,False
+CensusArxiv250720474,sentiment threshold,partial,symbolic threshold only,False,False,False
+CensusArxiv250720474,entity extraction,underspecified,printed set does not depend operationally on article,False,False,False
+CensusArxiv250720474,recommendation graph,partial,conceptual graph construction only,False,False,False
+CensusArxiv250720474,feedback adaptation,conflicting,called policy gradient; equation is generic loss descent,False,False,False
+CensusArxiv250720474,agent caching,partial,A1-A3 TTLs specified; A4 omitted,False,False,False
+CensusArxiv250720474,signal scoring weights,partial,three weights named without normalization or cutoff,False,False,False
+CensusArxiv250720474,portfolio/trading rule,missing,"no executable positions, fills, cash, or rebalancing",False,False,False
+CensusArxiv250720474,transaction costs,missing,"no cost, spread, slippage, or fee treatment",False,False,False
+CensusArxiv250720474,return evaluation,missing,"no return table, path, benchmark, or risk statistic",False,False,False
+CensusArxiv250720474,random seeds,missing,not reported,False,False,False
+CensusArxiv250720474,native result outputs,missing,no prediction/result array or fitted artifact,False,False,False

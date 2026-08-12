@@ -1,0 +1,24 @@
+canonical_work_id,missing_requirement,blocking_effect,publicly_resolved
+CensusArxiv250720474,"exchange, time range, candle frequency, and point-in-time OHLCV snapshot",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,news/social/on-chain sources with release and retrieval timestamps,blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"sample sizes, exclusions, missing-value policy, scaling, and transformations",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,train/validation/test split and leakage controls,blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"ML estimator family, feature pipeline, hyperparameter search, and fitted models",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,meaning of Table 1 Alpha and relation to the fusion coefficient,blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"cross-validation folds, scorer, sign convention, and raw fold scores",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"exact LLM model snapshots, system prompts, parameters, tools, and seeds",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,substituted prompt requests and immutable model/retriever responses,blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,LLM/ML horizon-alignment and fusion implementation,blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"rolling-alpha optimization window, objective, bounds, and update schedule",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,forecast predictions and aligned realized outcomes,blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,accuracy/win-rate aggregation and first-lag boundary handling,blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"four-agent orchestration, validation, conflict-resolution, and reflection code",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"GraphRAG schema, graph snapshot, retrieval policy, and evidence provenance",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"news recommendation input corpus, labels, ranking model, and feedback records",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"policy-gradient objective, action policy, reward, and logging",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"ablation configurations, baselines, repeated trials, and uncertainty",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"portfolio construction, trade timing, execution, and cost model",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"holdings, actions, fills, cash, fees, NAV, returns, and benchmark path",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,raw arrays behind the case-study comparison figure,blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,"private ml4gp modules, product plugin, database schema, and database contents",blocks_exact_native_paper_or_result_reproduction,False
+CensusArxiv250720474,service API keys and frozen external-service versions,blocks_exact_native_paper_or_result_reproduction,False
