@@ -401,6 +401,28 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-STRAT-LLM": (
+        "A pinned arXiv-v1 Strat-LLM audit rebuilds the official six-page source "
+        "at 99.85% extracted-token multiset overlap and inventories 195 numeric "
+        "table cells, 186 unique after nine repeated values, plus six exact "
+        "Figure 2 points with four additional unique values: 190 unique empirical "
+        "units in total. Zero reproduce from the native system. The advertised "
+        "project URL returns HTTP 404, and bounded author, exact-title, arXiv-ID, "
+        "GitHub, and Hugging Face searches recover no attributable implementation "
+        "or data release; this is not proof that private, deleted, or unindexed "
+        "artifacts never existed. No exact asset universe, point-in-time price/news "
+        "snapshot, report corpus, complete strategy rules, prompt templates, immutable "
+        "model requests, actions, orders, fills, holdings, NAVs, returns, seeds, or "
+        "raw result arrays are released. Public chronology also contradicts a literal "
+        "live-forward interpretation: all ten model identities or families represented "
+        "in the result tables first became public after at least part of the stated "
+        "2025 windows, eight in 2026. A later chronological replay of frozen 2025 data "
+        "could explain the results, but no snapshots, timestamps, calls, or traces "
+        "verify it. Aggregate metrics cannot identify the claimed disposition effect; "
+        "the 90-day significance claim has no reported test; Annualized Return and "
+        "Total Return are used without a conversion; and several strict-mode claims "
+        "are broader than the displayed tables support. No local proxy is credited."
+    ),
     "SYS-TRADING-GROUP": (
         "A pinned TradingGroup audit rebuilds the official nine-page arXiv-v1 "
         "manuscript at 99.75% extracted-token multiset overlap and inventories "
@@ -682,6 +704,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANTA-ALPHA": "paper_audit:completed_zero_of_344_native_table_results_components_only",
     "SYS-RAPTOR": "paper_audit:completed_16_of_42_author_output_scalar_units_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
+    "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
     "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",
     "SYS-TRADING-GROUP": "paper_audit:completed_96_of_128_source_adjacent_baseline_cells_zero_of_120_unique_native_table_cells_zero_of_15_native_curves",
     "SYS-TRADING-R1": "paper_audit:completed_zero_of_348_published_numeric_units_official_placeholder",
@@ -800,6 +823,10 @@ def main() -> None:
             else:
                 block = "A2_no_shipped_native_dated_output"
                 fidelity = "F1_static_no_native_output"
+
+        # A completed paper-only audit can supersede the terse static-access
+        # note even when the originally listed project is unreachable.
+        note = PAPER_ONLY_AUDIT_NOTES.get(sid, note)
 
         output_rows.append(
             {

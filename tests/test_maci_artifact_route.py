@@ -91,4 +91,4 @@ def test_static_assets_reflect_maci_once() -> None:
     assert r"\newcommand{\PinnedRepoCountFT}{26}" in generated
     assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 41, \artifacttier{R1}: 8, \artifacttier{R2}: 6, \artifacttier{R3}: 12}" in generated
     assert r"\newcommand{\NativeDatedOutputCount}{6}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{40}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{41}" in generated
