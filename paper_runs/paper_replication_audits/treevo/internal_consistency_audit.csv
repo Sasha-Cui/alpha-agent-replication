@@ -1,0 +1,16 @@
+claim_id,status,audit_finding,paper_result_credit
+v2_table2_14_31_percent,passes_displayed_arithmetic,Mean per-market IC improvement over strongest EoH/ReEvo is 14.3148%.,False
+v2_eoh_beats_reevo_all_cases,claim_contradicted_by_displayed_table,"EoH beats ReEvo in 6/8 Table 2 mean cells, not all 8.",False
+v2_ablation_tree_over_flat,passes_displayed_arithmetic,Mean per-market TReEvo/ReEvo IC lift is 23.9776% (paper: 23.98%).,False
+v2_ablation_operators,passes_displayed_arithmetic,Mean per-market TreEvo/TReEvo IC lift is 10.1828% (paper: 10.19%).,False
+v2_table1_csi300_gain,passes_displayed_arithmetic,TreEvo/QFR CSI300 IC lift is 1.9868% (paper: over 1.99%).,False
+v2_table1_csi500_exception,claim_matches_table,"TreEvo IC 0.0362 is below QFR 0.0374 on CSI500, as v2 prose acknowledges.",False
+v1_spx_rankic_std,high_magnitude_probable_typo,v1 prints TreEvo SPX RankIC standard deviation 0.2410 around mean 0.0543; v2 prints 0.0037 around mean 0.0355.,False
+v1_figure5_table2_mismatch,unresolved_same_version_result_mismatch,Figure 5 prints three IC runs whose averages are CSI300 ReEvo/TReEvo/TreEvo 0.0405/0.0546/0.0601 and CSI500 0.0468/0.0631/0.0726 after four-decimal rounding; Table 2 instead prints ReEvo/TreEvo means 0.0411/0.0615 and 0.0426/0.0742. The paper does not expose run lineage that reconciles them.,False
+v2_duplicate_treevo_std,hard_same_version_table_conflict,"Table 1 vs Table 2 TreEvo standard deviations differ for CSI300 IC (0.0048 vs 0.0033) and CSI500 IC (0.0051 vs 0.0041), while their means match.",False
+v1_framework_population,hard_method_description_conflict,"v1 first describes N offspring and selection from N parents + N offspring, then three N-sized operator batches and selection of N from 3N; v2 changes to one operator type per iteration and a 2N pool.",False
+model_release_timing,unresolved_public_provenance_conflict,v1 submitted 2025-08-22 names Qwen3-Max; Alibaba history dates qwen3-max-preview to 2025-09-05. A private prerelease is possible but undisclosed.,False
+code_generation_prompt,missing_native_prompt,"Seven tree/operator templates are published, but the prompt that converts a thought tree into executable factor code is not.",False
+seed_tree,unfilled_runtime_slot,Initialization template contains {seed_tree}; the actual seed tree(s) are not released.,False
+v2_cumulative_return,author_rendered_claim_only,"21.17% cumulative return and >58.42% excess return appear in prose/plot without dated returns, holdings, or cost lineage.",False
+table4_reference,minor_document_reference_error,Wall-clock prose calls Table 4 a Figure via \ref{tab:cost_comparison}.,False

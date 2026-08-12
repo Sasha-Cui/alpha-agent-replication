@@ -1,0 +1,92 @@
+{
+  "alibaba_model_history_sha256": "bab1a033d58eb1421063538b3be107784e14dc62cae75a99a719d4a23bd3c714",
+  "arxiv_id": "2508.16334",
+  "author_page_boundary": {
+    "peng_yang_page_code_link_for_treevo": false,
+    "peng_yang_page_lists_v1": true,
+    "shengcai_liu_page_lists_code_links_for_other_papers": true,
+    "shengcai_liu_page_treevo_entry_found": false
+  },
+  "authors": [
+    "Junji Ren",
+    "Junjie Zhao",
+    "Shengcai Liu",
+    "Peng Yang"
+  ],
+  "current_abs_repeated_byte_identical": true,
+  "document_reconstruction_credit": true,
+  "license": "arXiv nonexclusive distribution license",
+  "native_system_source_credit": false,
+  "paper_result_credit": false,
+  "repeated_downloads_byte_identical": true,
+  "source_asset_files": {
+    "v1": [
+      "LLM_C.png",
+      "LLM_T.png",
+      "LLM_TC.png",
+      "ablation_csi300.png",
+      "ablation_csi500.png",
+      "csi300_conv.png",
+      "csi500_conv.png",
+      "cumulative_reward.png",
+      "dji_conv.png",
+      "spx_conv.png"
+    ],
+    "v2": [
+      "LLM_C.png",
+      "LLM_T.png",
+      "LLM_TC.png",
+      "ablation.png",
+      "cosine_ic_flat.png",
+      "cosine_ic_tree.png",
+      "cumulative_reward.png",
+      "eoh_corr.png",
+      "eval_ic.png",
+      "f2t0.png",
+      "f2t1.png",
+      "f2t2.png",
+      "f2t3.png",
+      "f2t4.png",
+      "flat_text.pdf",
+      "reevo_corr.png",
+      "t2f0.png",
+      "t2f1.png",
+      "t2f2.png",
+      "t2f3.png",
+      "t2f4.png",
+      "tree_text.pdf",
+      "treevo_corr.png"
+    ]
+  },
+  "versions": {
+    "v1": {
+      "figure_panels": 11,
+      "figures": 5,
+      "main": "formatting-instructions-latex.tex",
+      "main_sha256": "199801cb69d8ec3444c002f37d4e726dbee05751951c8019a21719adc6781b34",
+      "numeric_table_result_cells": 96,
+      "pdf_pages": 9,
+      "rebuild_token_multiset_jaccard": 0.9988286969253294,
+      "source_files": 16,
+      "submitted": "2025-08-22",
+      "title": "From Linear to Hierarchical: Evolving Tree-structured Thoughts for Efficient Alpha Mining"
+    },
+    "v2": {
+      "figure_panels": 23,
+      "figures": 8,
+      "main": "acl_latex.tex",
+      "main_sha256": "dbc3c2da309d15f95a32162ed7c5a00f8c4f9c3446f25a618939f7e081684d3d",
+      "numeric_table_result_cells": 206,
+      "pdf_pages": 17,
+      "rebuild_token_multiset_jaccard": 0.9991171926726992,
+      "source_files": 28,
+      "submitted": "2026-05-31",
+      "title": "From Flat to Hierarchical: Evolving Tree-structured Thoughts for Fine-grained Alpha Mining"
+    }
+  },
+  "visual_qa": {
+    "unreadable_or_clipped_pages": 0,
+    "v1_pages_inspected": 9,
+    "v2_pages_inspected": 17
+  }
+}

@@ -1,0 +1,19 @@
+version,figure,panel,series,coordinate,metric,rendered_value,duplicate_kind,duplicate_of,independent_numeric_information,native_pipeline_regenerated,paper_result_credit
+v1,Figure 5,CSI300,ReEvo,Run 1,IC,0.0406,none,,True,False,False
+v1,Figure 5,CSI300,ReEvo,Run 2,IC,0.0436,none,,True,False,False
+v1,Figure 5,CSI300,ReEvo,Run 3,IC,0.0374,none,,True,False,False
+v1,Figure 5,CSI300,TReEvo,Run 1,IC,0.0570,none,,True,False,False
+v1,Figure 5,CSI300,TReEvo,Run 2,IC,0.0487,none,,True,False,False
+v1,Figure 5,CSI300,TReEvo,Run 3,IC,0.0581,none,,True,False,False
+v1,Figure 5,CSI300,TreEvo,Run 1,IC,0.0573,none,,True,False,False
+v1,Figure 5,CSI300,TreEvo,Run 2,IC,0.0543,none,,True,False,False
+v1,Figure 5,CSI300,TreEvo,Run 3,IC,0.0688,none,,True,False,False
+v1,Figure 5,CSI500,ReEvo,Run 1,IC,0.0367,none,,True,False,False
+v1,Figure 5,CSI500,ReEvo,Run 2,IC,0.0503,none,,True,False,False
+v1,Figure 5,CSI500,ReEvo,Run 3,IC,0.0534,none,,True,False,False
+v1,Figure 5,CSI500,TReEvo,Run 1,IC,0.0652,none,,True,False,False
+v1,Figure 5,CSI500,TReEvo,Run 2,IC,0.0564,none,,True,False,False
+v1,Figure 5,CSI500,TReEvo,Run 3,IC,0.0676,none,,True,False,False
+v1,Figure 5,CSI500,TreEvo,Run 1,IC,0.0693,none,,True,False,False
+v1,Figure 5,CSI500,TreEvo,Run 2,IC,0.0704,none,,True,False,False
+v1,Figure 5,CSI500,TreEvo,Run 3,IC,0.0782,none,,True,False,False

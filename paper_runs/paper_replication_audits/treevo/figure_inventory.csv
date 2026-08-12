@@ -1,0 +1,14 @@
+version,figure,panels,kind,full_resolution_visually_inspected,legible_and_unclipped,underlying_numeric_array_released,native_pipeline_regenerated,paper_result_credit
+v1,1,3,conceptual,True,True,False,False,False
+v1,2,1,conceptual,True,True,False,False,False
+v1,3,1,result_curves,True,True,False,False,False
+v1,4,4,result_curves,True,True,False,False,False
+v1,5,2,result_bars,True,True,False,False,False
+v2,1,3,conceptual,True,True,False,False,False
+v2,2,2,conceptual,True,True,False,False,False
+v2,3,2,result_distributions,True,True,False,False,False
+v2,4,1,result_curves,True,True,False,False,False
+v2,5,1,result_curves,True,True,False,False,False
+v2,6,1,result_bars,True,True,False,False,False
+v2,7,10,result_histograms,True,True,False,False,False
+v2,8,3,result_heatmaps,True,True,False,False,False

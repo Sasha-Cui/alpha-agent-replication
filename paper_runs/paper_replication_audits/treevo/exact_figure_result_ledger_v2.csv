@@ -1,0 +1,88 @@
+version,figure,panel,series,coordinate,metric,rendered_value,duplicate_kind,duplicate_of,independent_numeric_information,native_pipeline_regenerated,paper_result_credit
+v2,Figure 6,ablation,ReEvo,CSI300,IC,0.0211,same_value_as_table_cell,Table 2:ReEvo:CSI300:IC:mean,False,False,False
+v2,Figure 6,ablation,ReEvo,CSI500,IC,0.0247,same_value_as_table_cell,Table 2:ReEvo:CSI500:IC:mean,False,False,False
+v2,Figure 6,ablation,ReEvo,SPX,IC,0.0224,same_value_as_table_cell,Table 2:ReEvo:SPX:IC:mean,False,False,False
+v2,Figure 6,ablation,ReEvo,NDX,IC,0.0252,same_value_as_table_cell,Table 2:ReEvo:NDX:IC:mean,False,False,False
+v2,Figure 6,ablation,TReEvo,CSI300,IC,0.0283,none,,True,False,False
+v2,Figure 6,ablation,TReEvo,CSI500,IC,0.0325,none,,True,False,False
+v2,Figure 6,ablation,TReEvo,SPX,IC,0.0273,none,,True,False,False
+v2,Figure 6,ablation,TReEvo,NDX,IC,0.0273,none,,True,False,False
+v2,Figure 6,ablation,TreEvo,CSI300,IC,0.0308,same_value_as_table_cell,Table 2:TreEvo:CSI300:IC:mean,False,False,False
+v2,Figure 6,ablation,TreEvo,CSI500,IC,0.0362,same_value_as_table_cell,Table 2:TreEvo:CSI500:IC:mean,False,False,False
+v2,Figure 6,ablation,TreEvo,SPX,IC,0.0317,same_value_as_table_cell,Table 2:TreEvo:SPX:IC:mean,False,False,False
+v2,Figure 6,ablation,TreEvo,NDX,IC,0.0285,same_value_as_table_cell,Table 2:TreEvo:NDX:IC:mean,False,False,False
+v2,Figure 8,ReEvo,Factor 1,Factor 1,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,ReEvo,Factor 1,Factor 2,correlation,0.43,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 1,Factor 3,correlation,0.72,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 1,Factor 4,correlation,0.94,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 1,Factor 5,correlation,0.64,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 2,Factor 1,correlation,0.43,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 1:Factor 2,False,False,False
+v2,Figure 8,ReEvo,Factor 2,Factor 2,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,ReEvo,Factor 2,Factor 3,correlation,0.30,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 2,Factor 4,correlation,0.45,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 2,Factor 5,correlation,0.26,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 3,Factor 1,correlation,0.72,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 1:Factor 3,False,False,False
+v2,Figure 8,ReEvo,Factor 3,Factor 2,correlation,0.30,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 2:Factor 3,False,False,False
+v2,Figure 8,ReEvo,Factor 3,Factor 3,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,ReEvo,Factor 3,Factor 4,correlation,0.72,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 3,Factor 5,correlation,0.96,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 4,Factor 1,correlation,0.94,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 1:Factor 4,False,False,False
+v2,Figure 8,ReEvo,Factor 4,Factor 2,correlation,0.45,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 2:Factor 4,False,False,False
+v2,Figure 8,ReEvo,Factor 4,Factor 3,correlation,0.72,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 3:Factor 4,False,False,False
+v2,Figure 8,ReEvo,Factor 4,Factor 4,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,ReEvo,Factor 4,Factor 5,correlation,0.65,none,,True,False,False
+v2,Figure 8,ReEvo,Factor 5,Factor 1,correlation,0.64,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 1:Factor 5,False,False,False
+v2,Figure 8,ReEvo,Factor 5,Factor 2,correlation,0.26,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 2:Factor 5,False,False,False
+v2,Figure 8,ReEvo,Factor 5,Factor 3,correlation,0.96,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 3:Factor 5,False,False,False
+v2,Figure 8,ReEvo,Factor 5,Factor 4,correlation,0.65,symmetric_matrix_duplicate,Figure 8:ReEvo:Factor 4:Factor 5,False,False,False
+v2,Figure 8,ReEvo,Factor 5,Factor 5,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,EoH,Factor 1,Factor 1,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,EoH,Factor 1,Factor 2,correlation,0.17,none,,True,False,False
+v2,Figure 8,EoH,Factor 1,Factor 3,correlation,-0.91,none,,True,False,False
+v2,Figure 8,EoH,Factor 1,Factor 4,correlation,0.80,none,,True,False,False
+v2,Figure 8,EoH,Factor 1,Factor 5,correlation,0.31,none,,True,False,False
+v2,Figure 8,EoH,Factor 2,Factor 1,correlation,0.17,symmetric_matrix_duplicate,Figure 8:EoH:Factor 1:Factor 2,False,False,False
+v2,Figure 8,EoH,Factor 2,Factor 2,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,EoH,Factor 2,Factor 3,correlation,-0.10,none,,True,False,False
+v2,Figure 8,EoH,Factor 2,Factor 4,correlation,0.27,none,,True,False,False
+v2,Figure 8,EoH,Factor 2,Factor 5,correlation,0.04,none,,True,False,False
+v2,Figure 8,EoH,Factor 3,Factor 1,correlation,-0.91,symmetric_matrix_duplicate,Figure 8:EoH:Factor 1:Factor 3,False,False,False
+v2,Figure 8,EoH,Factor 3,Factor 2,correlation,-0.10,symmetric_matrix_duplicate,Figure 8:EoH:Factor 2:Factor 3,False,False,False
+v2,Figure 8,EoH,Factor 3,Factor 3,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,EoH,Factor 3,Factor 4,correlation,-0.74,none,,True,False,False
+v2,Figure 8,EoH,Factor 3,Factor 5,correlation,-0.30,none,,True,False,False
+v2,Figure 8,EoH,Factor 4,Factor 1,correlation,0.80,symmetric_matrix_duplicate,Figure 8:EoH:Factor 1:Factor 4,False,False,False
+v2,Figure 8,EoH,Factor 4,Factor 2,correlation,0.27,symmetric_matrix_duplicate,Figure 8:EoH:Factor 2:Factor 4,False,False,False
+v2,Figure 8,EoH,Factor 4,Factor 3,correlation,-0.74,symmetric_matrix_duplicate,Figure 8:EoH:Factor 3:Factor 4,False,False,False
+v2,Figure 8,EoH,Factor 4,Factor 4,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,EoH,Factor 4,Factor 5,correlation,0.24,none,,True,False,False
+v2,Figure 8,EoH,Factor 5,Factor 1,correlation,0.31,symmetric_matrix_duplicate,Figure 8:EoH:Factor 1:Factor 5,False,False,False
+v2,Figure 8,EoH,Factor 5,Factor 2,correlation,0.04,symmetric_matrix_duplicate,Figure 8:EoH:Factor 2:Factor 5,False,False,False
+v2,Figure 8,EoH,Factor 5,Factor 3,correlation,-0.30,symmetric_matrix_duplicate,Figure 8:EoH:Factor 3:Factor 5,False,False,False
+v2,Figure 8,EoH,Factor 5,Factor 4,correlation,0.24,symmetric_matrix_duplicate,Figure 8:EoH:Factor 4:Factor 5,False,False,False
+v2,Figure 8,EoH,Factor 5,Factor 5,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,TreEvo,Factor 1,Factor 1,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,TreEvo,Factor 1,Factor 2,correlation,0.26,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 1,Factor 3,correlation,0.13,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 1,Factor 4,correlation,-0.18,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 1,Factor 5,correlation,0.25,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 2,Factor 1,correlation,0.26,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 1:Factor 2,False,False,False
+v2,Figure 8,TreEvo,Factor 2,Factor 2,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,TreEvo,Factor 2,Factor 3,correlation,0.10,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 2,Factor 4,correlation,-0.46,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 2,Factor 5,correlation,0.35,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 3,Factor 1,correlation,0.13,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 1:Factor 3,False,False,False
+v2,Figure 8,TreEvo,Factor 3,Factor 2,correlation,0.10,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 2:Factor 3,False,False,False
+v2,Figure 8,TreEvo,Factor 3,Factor 3,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,TreEvo,Factor 3,Factor 4,correlation,-0.28,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 3,Factor 5,correlation,0.24,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 4,Factor 1,correlation,-0.18,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 1:Factor 4,False,False,False
+v2,Figure 8,TreEvo,Factor 4,Factor 2,correlation,-0.46,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 2:Factor 4,False,False,False
+v2,Figure 8,TreEvo,Factor 4,Factor 3,correlation,-0.28,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 3:Factor 4,False,False,False
+v2,Figure 8,TreEvo,Factor 4,Factor 4,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False
+v2,Figure 8,TreEvo,Factor 4,Factor 5,correlation,-0.64,none,,True,False,False
+v2,Figure 8,TreEvo,Factor 5,Factor 1,correlation,0.25,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 1:Factor 5,False,False,False
+v2,Figure 8,TreEvo,Factor 5,Factor 2,correlation,0.35,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 2:Factor 5,False,False,False
+v2,Figure 8,TreEvo,Factor 5,Factor 3,correlation,0.24,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 3:Factor 5,False,False,False
+v2,Figure 8,TreEvo,Factor 5,Factor 4,correlation,-0.64,symmetric_matrix_duplicate,Figure 8:TreEvo:Factor 4:Factor 5,False,False,False
+v2,Figure 8,TreEvo,Factor 5,Factor 5,correlation,1.00,structural_correlation_diagonal,correlation_self_identity,False,False,False

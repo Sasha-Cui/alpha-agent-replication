@@ -1,0 +1,32 @@
+dimension,status,audit_finding
+market_universes,named_partial,"CSI300, CSI500, SPX, and v2 NDX are named; point-in-time constituent snapshots are absent."
+data_vendor_snapshot,missing,"No vendor, immutable files, row counts, identifiers, or checksums."
+features,specified_partial,Open/high/low/close/volume/VWAP and forward adjustment are named; exact construction and units are absent.
+calendar_timezone,missing,"Trading calendars, time zones, holidays, and cross-market alignment are unspecified."
+membership_delistings,missing,"Constituent timing, survivorship, IPOs, delistings, and missing values are unspecified."
+split,specified,"Train 2016-01-01--2020-01-01, validation 2020-01-01--2021-01-01, test 2021-01-01--2024-01-01."
+target,specified_partial,"Future 5-day return is named; overlap, close convention, adjustment, and missing-target rules are absent."
+metric_equations,specified,Daily cross-sectional Pearson IC and ranked IC averaged over time are given.
+metric_edge_cases,missing,"Ties, NaNs, constant vectors, winsorization, and minimum cross-section size are unspecified."
+llm_primary,ambiguous,Qwen3-Max is unversioned; v1 predates its documented public preview.
+llm_comparison_models,ambiguous,"DeepSeek V3, Gemini3 pro, and GPT5.1 lack exact dated endpoint/snapshot identifiers."
+sampling_parameters,missing,"Temperature, top-p, max tokens, seed, retries, and concurrency are absent."
+prompt_templates,partial,Seven v2 tree/operator templates are present; runtime fills and code-generation prompt are absent.
+seed_trees,missing,The published initialization prompt contains only a placeholder.
+population,specified,Population size N=10.
+evaluation_budget,specified_partial,TreEvo/LLM EA budget is 200; baseline budgets are described but configs are not pinned.
+operator_schedule,specified_partial,v2 rotates crossover/mutation/pruning but exact starting order and termination mapping are absent.
+mutation_probabilities,specified,"p_R=0.4, p_I=0.4, p_F=0.2."
+parent_selection,missing,"Parent sampling, replacement, tie handling, and randomness are absent."
+code_generation,missing,"No converter prompt, code schema, generated factor, or parser is released."
+sandbox_validation,missing,"Execution sandbox, allowed packages, invalid-output correction, and timeouts are absent."
+selection,specified_partial,v2 selects best N from a 2N pool; ties and validation-vs-training objective are unclear.
+random_seeds,missing,Five independent runs are reported without seeds or trajectories.
+baseline_versions,missing,"Providers are cited but commits, packages, environments, and exact hyperparameters are not pinned."
+portfolio,specified_partial,"Daily Top-50/Drop-5 is named; weighting, ties, cash, limits, and initial portfolio are absent."
+costs,missing,"Fees, spread, slippage, taxes, and market impact are absent."
+walk_forward,specified_partial,2023 quarterly tests with preceding one-year training are stated; validation and retraining details are absent.
+factor_outputs,missing,"No discovered expression/code, scores, or selected-factor set is released."
+raw_results,missing,"No per-run metrics, predictions, holdings, returns, or figure arrays are released."
+uncertainty,specified_partial,"Means and +/- values are printed, but the statistic definition and raw five runs are absent."
+environment,missing,"No TreEvo dependency lock, hardware, source tree, or executable runner."

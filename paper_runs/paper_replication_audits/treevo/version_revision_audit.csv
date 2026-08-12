@@ -1,0 +1,14 @@
+dimension,v1,v2,finding
+title,From Linear to Hierarchical: Evolving Tree-structured Thoughts for Efficient Alpha Mining,From Flat to Hierarchical: Evolving Tree-structured Thoughts for Fine-grained Alpha Mining,Linear/Efficient changed to Flat/Fine-grained.
+pages,9,17,v2 adds substantial appendix and prompts.
+us_universe,"SPX, DJI","SPX, NDX",DJI is replaced by NDX.
+table_result_cells,96,206,Latest-version denominator grows by 110 cells.
+exact_figure_numeric_units,18,87,Counts every explicitly printed bar label and heatmap cell; v2 includes structural and table duplicates.
+all_displayed_numeric_result_units,114,293,Table and exact figure units are both included; plotted curves without exact labels are not reverse-engineered.
+traditional_table_treevo_csi300_ic,0.0615,0.0308,Mean changes by -49.92%.
+traditional_table_treevo_csi500_ic,0.0742,0.0362,Mean changes by -51.21%.
+cumulative_return_claim,16.91% over strongest baseline; >100% excess vs index,21.17% cumulative; >58.42% excess vs index,Claim and rendered curve are materially revised without raw lineage.
+gp_budget,"20,000 evaluations","40,000 evaluations",Traditional evaluation denominator doubles.
+operators,22,22,Displayed traditional operator count is stable.
+prompts,sketches only,"7 templates, 7 unresolved slots","Procedure evidence improves, but runtime calls remain absent."
+native_result_reproduction,0/114,0/293,Neither version ships executable result lineage.

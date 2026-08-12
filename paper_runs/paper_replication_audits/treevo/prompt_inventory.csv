@@ -1,0 +1,8 @@
+prompt,published_in,runtime_slots,exact_template_recovered,actual_filled_request_recovered,response_recovered,native_prompt_call_credit
+System Prompt,v2 TeX,0,True,False,False,False
+Initialization Prompt,v2 TeX,1,True,False,False,False
+Crossover Prompt,v2 TeX,2,True,False,False,False
+Mutation-R Prompt,v2 TeX,1,True,False,False,False
+Mutation-I Prompt,v2 TeX,1,True,False,False,False
+Mutation-F Prompt,v2 TeX,1,True,False,False,False
+Pruning Prompt,v2 TeX,1,True,False,False,False

@@ -1,0 +1,207 @@
+version,table,method,dataset,metric,statistic,rendered_value,treevo_output,native_pipeline_executed,paper_result_credit
+v2,Table 1,XGBoost,CSI300,IC,mean,0.0197,False,False,False
+v2,Table 1,XGBoost,CSI300,RankIC,mean,0.0221,False,False,False
+v2,Table 1,XGBoost,CSI500,IC,mean,0.0169,False,False,False
+v2,Table 1,XGBoost,CSI500,RankIC,mean,0.0209,False,False,False
+v2,Table 1,XGBoost,CSI300,IC,std,0.0025,False,False,False
+v2,Table 1,XGBoost,CSI300,RankIC,std,0.0013,False,False,False
+v2,Table 1,XGBoost,CSI500,IC,std,0.0016,False,False,False
+v2,Table 1,XGBoost,CSI500,RankIC,std,0.0021,False,False,False
+v2,Table 1,LightGBM,CSI300,IC,mean,0.0165,False,False,False
+v2,Table 1,LightGBM,CSI300,RankIC,mean,0.0244,False,False,False
+v2,Table 1,LightGBM,CSI500,IC,mean,0.0172,False,False,False
+v2,Table 1,LightGBM,CSI500,RankIC,mean,0.0241,False,False,False
+v2,Table 1,LightGBM,CSI300,IC,std,0.0012,False,False,False
+v2,Table 1,LightGBM,CSI300,RankIC,std,0.0025,False,False,False
+v2,Table 1,LightGBM,CSI500,IC,std,0.0022,False,False,False
+v2,Table 1,LightGBM,CSI500,RankIC,std,0.0017,False,False,False
+v2,Table 1,GP,CSI300,IC,mean,0.0224,False,False,False
+v2,Table 1,GP,CSI300,RankIC,mean,0.0278,False,False,False
+v2,Table 1,GP,CSI500,IC,mean,0.0254,False,False,False
+v2,Table 1,GP,CSI500,RankIC,mean,0.0297,False,False,False
+v2,Table 1,GP,CSI300,IC,std,0.0017,False,False,False
+v2,Table 1,GP,CSI300,RankIC,std,0.0038,False,False,False
+v2,Table 1,GP,CSI500,IC,std,0.0028,False,False,False
+v2,Table 1,GP,CSI500,RankIC,std,0.0014,False,False,False
+v2,Table 1,AlphaGen,CSI300,IC,mean,0.0259,False,False,False
+v2,Table 1,AlphaGen,CSI300,RankIC,mean,0.0301,False,False,False
+v2,Table 1,AlphaGen,CSI500,IC,mean,0.0337,False,False,False
+v2,Table 1,AlphaGen,CSI500,RankIC,mean,0.0405,False,False,False
+v2,Table 1,AlphaGen,CSI300,IC,std,0.0010,False,False,False
+v2,Table 1,AlphaGen,CSI300,RankIC,std,0.0046,False,False,False
+v2,Table 1,AlphaGen,CSI500,IC,std,0.0023,False,False,False
+v2,Table 1,AlphaGen,CSI500,RankIC,std,0.0047,False,False,False
+v2,Table 1,AlphaForge,CSI300,IC,mean,0.0287,False,False,False
+v2,Table 1,AlphaForge,CSI300,RankIC,mean,0.0351,False,False,False
+v2,Table 1,AlphaForge,CSI500,IC,mean,0.0319,False,False,False
+v2,Table 1,AlphaForge,CSI500,RankIC,mean,0.0346,False,False,False
+v2,Table 1,AlphaForge,CSI300,IC,std,0.0014,False,False,False
+v2,Table 1,AlphaForge,CSI300,RankIC,std,0.0029,False,False,False
+v2,Table 1,AlphaForge,CSI500,IC,std,0.0022,False,False,False
+v2,Table 1,AlphaForge,CSI500,RankIC,std,0.0026,False,False,False
+v2,Table 1,QFR,CSI300,IC,mean,0.0302,False,False,False
+v2,Table 1,QFR,CSI300,RankIC,mean,0.0346,False,False,False
+v2,Table 1,QFR,CSI500,IC,mean,0.0374,False,False,False
+v2,Table 1,QFR,CSI500,RankIC,mean,0.0403,False,False,False
+v2,Table 1,QFR,CSI300,IC,std,0.0032,False,False,False
+v2,Table 1,QFR,CSI300,RankIC,std,0.0044,False,False,False
+v2,Table 1,QFR,CSI500,IC,std,0.0039,False,False,False
+v2,Table 1,QFR,CSI500,RankIC,std,0.0031,False,False,False
+v2,Table 1,TreEvo,CSI300,IC,mean,0.0308,True,False,False
+v2,Table 1,TreEvo,CSI300,RankIC,mean,0.0349,True,False,False
+v2,Table 1,TreEvo,CSI500,IC,mean,0.0362,True,False,False
+v2,Table 1,TreEvo,CSI500,RankIC,mean,0.0393,True,False,False
+v2,Table 1,TreEvo,CSI300,IC,std,0.0048,True,False,False
+v2,Table 1,TreEvo,CSI300,RankIC,std,0.0057,True,False,False
+v2,Table 1,TreEvo,CSI500,IC,std,0.0051,True,False,False
+v2,Table 1,TreEvo,CSI500,RankIC,std,0.0049,True,False,False
+v2,Table 2,EoH,CSI300,IC,mean,0.0238,False,False,False
+v2,Table 2,EoH,CSI300,RankIC,mean,0.0262,False,False,False
+v2,Table 2,EoH,CSI500,IC,mean,0.0348,False,False,False
+v2,Table 2,EoH,CSI500,RankIC,mean,0.0363,False,False,False
+v2,Table 2,EoH,SPX,IC,mean,0.0284,False,False,False
+v2,Table 2,EoH,SPX,RankIC,mean,0.0326,False,False,False
+v2,Table 2,EoH,NDX,IC,mean,0.0254,False,False,False
+v2,Table 2,EoH,NDX,RankIC,mean,0.0297,False,False,False
+v2,Table 2,EoH,CSI300,IC,std,0.0028,False,False,False
+v2,Table 2,EoH,CSI300,RankIC,std,0.0037,False,False,False
+v2,Table 2,EoH,CSI500,IC,std,0.0036,False,False,False
+v2,Table 2,EoH,CSI500,RankIC,std,0.0046,False,False,False
+v2,Table 2,EoH,SPX,IC,std,0.0026,False,False,False
+v2,Table 2,EoH,SPX,RankIC,std,0.0030,False,False,False
+v2,Table 2,EoH,NDX,IC,std,0.0029,False,False,False
+v2,Table 2,EoH,NDX,RankIC,std,0.0034,False,False,False
+v2,Table 2,ReEvo,CSI300,IC,mean,0.0211,False,False,False
+v2,Table 2,ReEvo,CSI300,RankIC,mean,0.0269,False,False,False
+v2,Table 2,ReEvo,CSI500,IC,mean,0.0247,False,False,False
+v2,Table 2,ReEvo,CSI500,RankIC,mean,0.0283,False,False,False
+v2,Table 2,ReEvo,SPX,IC,mean,0.0224,False,False,False
+v2,Table 2,ReEvo,SPX,RankIC,mean,0.0268,False,False,False
+v2,Table 2,ReEvo,NDX,IC,mean,0.0252,False,False,False
+v2,Table 2,ReEvo,NDX,RankIC,mean,0.0302,False,False,False
+v2,Table 2,ReEvo,CSI300,IC,std,0.0017,False,False,False
+v2,Table 2,ReEvo,CSI300,RankIC,std,0.0028,False,False,False
+v2,Table 2,ReEvo,CSI500,IC,std,0.0031,False,False,False
+v2,Table 2,ReEvo,CSI500,RankIC,std,0.0042,False,False,False
+v2,Table 2,ReEvo,SPX,IC,std,0.0033,False,False,False
+v2,Table 2,ReEvo,SPX,RankIC,std,0.0036,False,False,False
+v2,Table 2,ReEvo,NDX,IC,std,0.0024,False,False,False
+v2,Table 2,ReEvo,NDX,RankIC,std,0.0027,False,False,False
+v2,Table 2,TreEvo,CSI300,IC,mean,0.0308,True,False,False
+v2,Table 2,TreEvo,CSI300,RankIC,mean,0.0349,True,False,False
+v2,Table 2,TreEvo,CSI500,IC,mean,0.0362,True,False,False
+v2,Table 2,TreEvo,CSI500,RankIC,mean,0.0393,True,False,False
+v2,Table 2,TreEvo,SPX,IC,mean,0.0317,True,False,False
+v2,Table 2,TreEvo,SPX,RankIC,mean,0.0355,True,False,False
+v2,Table 2,TreEvo,NDX,IC,mean,0.0285,True,False,False
+v2,Table 2,TreEvo,NDX,RankIC,mean,0.0316,True,False,False
+v2,Table 2,TreEvo,CSI300,IC,std,0.0033,True,False,False
+v2,Table 2,TreEvo,CSI300,RankIC,std,0.0057,True,False,False
+v2,Table 2,TreEvo,CSI500,IC,std,0.0041,True,False,False
+v2,Table 2,TreEvo,CSI500,RankIC,std,0.0049,True,False,False
+v2,Table 2,TreEvo,SPX,IC,std,0.0035,True,False,False
+v2,Table 2,TreEvo,SPX,RankIC,std,0.0037,True,False,False
+v2,Table 2,TreEvo,NDX,IC,std,0.0031,True,False,False
+v2,Table 2,TreEvo,NDX,RankIC,std,0.0043,True,False,False
+v2,Table 4,GP,all/unspecified,wall_clock_time,displayed_value,10 min,False,False,False
+v2,Table 4,AlphaGen,all/unspecified,wall_clock_time,displayed_value,4 hour,False,False,False
+v2,Table 4,AlphaForge,all/unspecified,wall_clock_time,displayed_value,6 hour,False,False,False
+v2,Table 4,QFR,all/unspecified,wall_clock_time,displayed_value,4.5 hour,False,False,False
+v2,Table 4,TreEvo,all/unspecified,wall_clock_time,displayed_value,20 min,True,False,False
+v2,Table 4,TreEvo,all/unspecified,token_cost,displayed_value,654K,True,False,False
+v2,Table 4,ReEvo,all/unspecified,wall_clock_time,displayed_value,18 min,False,False,False
+v2,Table 4,ReEvo,all/unspecified,token_cost,displayed_value,414K,False,False,False
+v2,Table 4,EoH,all/unspecified,wall_clock_time,displayed_value,40 min,False,False,False
+v2,Table 4,EoH,all/unspecified,token_cost,displayed_value,632K,False,False,False
+v2,Table 5,RD-Agent,CSI300,IC,mean,0.0267,False,False,False
+v2,Table 5,RD-Agent,CSI300,RankIC,mean,0.0315,False,False,False
+v2,Table 5,RD-Agent,CSI500,IC,mean,0.0283,False,False,False
+v2,Table 5,RD-Agent,CSI500,RankIC,mean,0.0344,False,False,False
+v2,Table 5,RD-Agent,SPX,IC,mean,0.0249,False,False,False
+v2,Table 5,RD-Agent,SPX,RankIC,mean,0.0286,False,False,False
+v2,Table 5,RD-Agent,NDX,IC,mean,0.0214,False,False,False
+v2,Table 5,RD-Agent,NDX,RankIC,mean,0.0263,False,False,False
+v2,Table 5,AlphaAgent,CSI300,IC,mean,0.0278,False,False,False
+v2,Table 5,AlphaAgent,CSI300,RankIC,mean,0.0329,False,False,False
+v2,Table 5,AlphaAgent,CSI500,IC,mean,0.0341,False,False,False
+v2,Table 5,AlphaAgent,CSI500,RankIC,mean,0.0387,False,False,False
+v2,Table 5,AlphaAgent,SPX,IC,mean,0.0323,False,False,False
+v2,Table 5,AlphaAgent,SPX,RankIC,mean,0.0364,False,False,False
+v2,Table 5,AlphaAgent,NDX,IC,mean,0.0258,False,False,False
+v2,Table 5,AlphaAgent,NDX,RankIC,mean,0.0302,False,False,False
+v2,Table 5,TreEvo,CSI300,IC,mean,0.0308,True,False,False
+v2,Table 5,TreEvo,CSI300,RankIC,mean,0.0349,True,False,False
+v2,Table 5,TreEvo,CSI500,IC,mean,0.0362,True,False,False
+v2,Table 5,TreEvo,CSI500,RankIC,mean,0.0393,True,False,False
+v2,Table 5,TreEvo,SPX,IC,mean,0.0317,True,False,False
+v2,Table 5,TreEvo,SPX,RankIC,mean,0.0355,True,False,False
+v2,Table 5,TreEvo,NDX,IC,mean,0.0285,True,False,False
+v2,Table 5,TreEvo,NDX,RankIC,mean,0.0316,True,False,False
+v2,Table 6,Qwen3-Max,CSI300,IC,mean,0.0308,True,False,False
+v2,Table 6,Qwen3-Max,CSI300,RankIC,mean,0.0349,True,False,False
+v2,Table 6,Qwen3-Max,CSI500,IC,mean,0.0362,True,False,False
+v2,Table 6,Qwen3-Max,CSI500,RankIC,mean,0.0393,True,False,False
+v2,Table 6,Qwen3-Max,SPX,IC,mean,0.0317,True,False,False
+v2,Table 6,Qwen3-Max,SPX,RankIC,mean,0.0355,True,False,False
+v2,Table 6,Qwen3-Max,NDX,IC,mean,0.0285,True,False,False
+v2,Table 6,Qwen3-Max,NDX,RankIC,mean,0.0316,True,False,False
+v2,Table 6,DeepSeek V3,CSI300,IC,mean,0.0287,True,False,False
+v2,Table 6,DeepSeek V3,CSI300,RankIC,mean,0.0337,True,False,False
+v2,Table 6,DeepSeek V3,CSI500,IC,mean,0.0346,True,False,False
+v2,Table 6,DeepSeek V3,CSI500,RankIC,mean,0.0375,True,False,False
+v2,Table 6,DeepSeek V3,SPX,IC,mean,0.0302,True,False,False
+v2,Table 6,DeepSeek V3,SPX,RankIC,mean,0.0347,True,False,False
+v2,Table 6,DeepSeek V3,NDX,IC,mean,0.0289,True,False,False
+v2,Table 6,DeepSeek V3,NDX,RankIC,mean,0.0331,True,False,False
+v2,Table 6,Gemini3 pro,CSI300,IC,mean,0.0315,True,False,False
+v2,Table 6,Gemini3 pro,CSI300,RankIC,mean,0.0368,True,False,False
+v2,Table 6,Gemini3 pro,CSI500,IC,mean,0.0378,True,False,False
+v2,Table 6,Gemini3 pro,CSI500,RankIC,mean,0.0416,True,False,False
+v2,Table 6,Gemini3 pro,SPX,IC,mean,0.0334,True,False,False
+v2,Table 6,Gemini3 pro,SPX,RankIC,mean,0.0371,True,False,False
+v2,Table 6,Gemini3 pro,NDX,IC,mean,0.0327,True,False,False
+v2,Table 6,Gemini3 pro,NDX,RankIC,mean,0.0363,True,False,False
+v2,Table 6,GPT5.1,CSI300,IC,mean,0.0318,True,False,False
+v2,Table 6,GPT5.1,CSI300,RankIC,mean,0.0342,True,False,False
+v2,Table 6,GPT5.1,CSI500,IC,mean,0.0358,True,False,False
+v2,Table 6,GPT5.1,CSI500,RankIC,mean,0.0405,True,False,False
+v2,Table 6,GPT5.1,SPX,IC,mean,0.0323,True,False,False
+v2,Table 6,GPT5.1,SPX,RankIC,mean,0.0355,True,False,False
+v2,Table 6,GPT5.1,NDX,IC,mean,0.0309,True,False,False
+v2,Table 6,GPT5.1,NDX,RankIC,mean,0.0340,True,False,False
+v2,Table 7,EoH,CSI300-Q1,IC,mean,0.0253,False,False,False
+v2,Table 7,EoH,CSI300-Q1,RankIC,mean,0.0319,False,False,False
+v2,Table 7,EoH,CSI300-Q1,ER,mean,0.0306,False,False,False
+v2,Table 7,EoH,CSI300-Q2,IC,mean,0.0232,False,False,False
+v2,Table 7,EoH,CSI300-Q2,RankIC,mean,0.0259,False,False,False
+v2,Table 7,EoH,CSI300-Q2,ER,mean,0.0137,False,False,False
+v2,Table 7,EoH,CSI300-Q3,IC,mean,0.0273,False,False,False
+v2,Table 7,EoH,CSI300-Q3,RankIC,mean,0.0324,False,False,False
+v2,Table 7,EoH,CSI300-Q3,ER,mean,0.0301,False,False,False
+v2,Table 7,EoH,CSI300-Q4,IC,mean,0.0249,False,False,False
+v2,Table 7,EoH,CSI300-Q4,RankIC,mean,0.0284,False,False,False
+v2,Table 7,EoH,CSI300-Q4,ER,mean,0.0223,False,False,False
+v2,Table 7,ReEvo,CSI300-Q1,IC,mean,0.0228,False,False,False
+v2,Table 7,ReEvo,CSI300-Q1,RankIC,mean,0.0256,False,False,False
+v2,Table 7,ReEvo,CSI300-Q1,ER,mean,0.0144,False,False,False
+v2,Table 7,ReEvo,CSI300-Q2,IC,mean,0.0227,False,False,False
+v2,Table 7,ReEvo,CSI300-Q2,RankIC,mean,0.0269,False,False,False
+v2,Table 7,ReEvo,CSI300-Q2,ER,mean,0.0189,False,False,False
+v2,Table 7,ReEvo,CSI300-Q3,IC,mean,0.0218,False,False,False
+v2,Table 7,ReEvo,CSI300-Q3,RankIC,mean,0.0261,False,False,False
+v2,Table 7,ReEvo,CSI300-Q3,ER,mean,0.0105,False,False,False
+v2,Table 7,ReEvo,CSI300-Q4,IC,mean,0.0205,False,False,False
+v2,Table 7,ReEvo,CSI300-Q4,RankIC,mean,0.0245,False,False,False
+v2,Table 7,ReEvo,CSI300-Q4,ER,mean,0.0067,False,False,False
+v2,Table 7,TreEvo,CSI300-Q1,IC,mean,0.0354,True,False,False
+v2,Table 7,TreEvo,CSI300-Q1,RankIC,mean,0.0392,True,False,False
+v2,Table 7,TreEvo,CSI300-Q1,ER,mean,0.0427,True,False,False
+v2,Table 7,TreEvo,CSI300-Q2,IC,mean,0.0278,True,False,False
+v2,Table 7,TreEvo,CSI300-Q2,RankIC,mean,0.0325,True,False,False
+v2,Table 7,TreEvo,CSI300-Q2,ER,mean,0.0158,True,False,False
+v2,Table 7,TreEvo,CSI300-Q3,IC,mean,0.0343,True,False,False
+v2,Table 7,TreEvo,CSI300-Q3,RankIC,mean,0.0384,True,False,False
+v2,Table 7,TreEvo,CSI300-Q3,ER,mean,0.0431,True,False,False
+v2,Table 7,TreEvo,CSI300-Q4,IC,mean,0.0326,True,False,False
+v2,Table 7,TreEvo,CSI300-Q4,RankIC,mean,0.0359,True,False,False
+v2,Table 7,TreEvo,CSI300-Q4,ER,mean,0.0356,True,False,False

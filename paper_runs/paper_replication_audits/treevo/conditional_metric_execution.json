@@ -1,0 +1,12 @@
+{
+  "classification": "audit-declared synthetic metric-equation component",
+  "daily_metrics_sha256": "7c80c6df5c093400b660ff589042ed2e439413aeb811b0c146fbef6b4bd19506",
+  "days": 12,
+  "mean_ic": 0.03253950839191269,
+  "mean_rankic": 0.008333333333333312,
+  "native_evaluator_used": false,
+  "paper_market_data_used": false,
+  "paper_result_credit": false,
+  "seed": 250816334,
+  "stocks": 5
+}
