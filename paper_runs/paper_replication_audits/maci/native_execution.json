@@ -1,0 +1,87 @@
+{
+  "raw_author_source_commit": "962b83d7ca8908e675fc22c6d16ce24a0ec3e52f",
+  "raw_author_source_python_files": 40,
+  "raw_author_source_unit_tests": 0,
+  "raw_author_source_test_helper_scripts": 1,
+  "declared_python_requirement": ">=3.9.15",
+  "python39_version": "3.9.21",
+  "python39_compile_passed": false,
+  "python39_syntax_errors": [
+    {
+      "file": "environ/env_portfolio.py",
+      "line": 113,
+      "exception": "SyntaxError: invalid syntax at match port_method"
+    },
+    {
+      "file": "environ/prompt_generator.py",
+      "line": 115,
+      "exception": "SyntaxError: invalid syntax at match strength"
+    }
+  ],
+  "python311_version": "3.11.8",
+  "direct_dependency_versions": {
+    "numpy": "1.24.2",
+    "pandas": "1.5.3",
+    "matplotlib": "3.6.3",
+    "requests": "2.31.0",
+    "openai": "1.25.0",
+    "tenacity": "8.3.0",
+    "langchain_community": "0.3.11",
+    "scikit-learn": "1.6.0"
+  },
+  "python311_compile_passed": true,
+  "python311_compiled_files": 40,
+  "python311_compile_warning": "environ/exhibits.py:553 SyntaxWarning: invalid escape sequence \\d",
+  "raw_python311_import_passed": false,
+  "raw_python311_import_exception": "ModuleNotFoundError: No module named 'environ.constants'",
+  "missing_constants_was_gitignored": true,
+  "raw_data_directory_files_recovered": 0,
+  "processed_data_directory_files_recovered": 0,
+  "checkpoint_or_record_files_recovered": 0,
+  "reconstruction_overlay": {
+    "is_native_unmodified_source": false,
+    "later_author_constants_commit": "2326185cc2d1eff02724cfeb88116ebb13f904e7",
+    "later_constants_still_missing_symbols": [
+      "AP_LABEL",
+      "LABEL"
+    ],
+    "researcher_inferred_symbols": {
+      "AP_LABEL": [
+        "Very Low",
+        "Low",
+        "Medium",
+        "High",
+        "Very High"
+      ],
+      "LABEL": [
+        "Rise",
+        "Fall"
+      ]
+    },
+    "synthetic_file_added": "processed_data/signal/gecko_mkt.csv with one zero-valued schema row",
+    "agent_import_passed": true,
+    "agent_default_model": "gpt-4o-2024-08-06"
+  },
+  "paper_runner_executed": false,
+  "paper_runner_first_blocker_after_overlay": "FileNotFoundError: data/blockchain/n-unique-addresses.json",
+  "paper_runner_requires_unreleased_checkpoints": true,
+  "paper_runner_requires_unreleased_prediction_records": true,
+  "one_commented_fine_tuned_model_id_present": true,
+  "complete_actual_fine_tuning_job_and_model_lineage_released": false,
+  "deterministic_component_harness_passed": true,
+  "component_checks": {
+    "predict_explain_split_passed": true,
+    "port_eval_passed": true,
+    "port_eval_expected_mean": 0.015,
+    "port_eval_expected_std": 0.026457513110645908,
+    "port_eval_expected_annualized_sharpe": 4.08831086321548,
+    "boom_bust_15_percent_passed": true,
+    "merge_cs_passed": true,
+    "merge_mkt_passed": true,
+    "classification_score_passed": true
+  },
+  "component_execution_is_paper_result_replication": false,
+  "v1_v2_table_units_regenerated": 0,
+  "v3_table_units_regenerated": 0,
+  "llm_calls_made": 0
+}

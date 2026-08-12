@@ -1,0 +1,128 @@
+[
+  {
+    "version": "v1",
+    "official_pdf_sha256": "e6ac85d8805726811860b07281b7f4f9792918c0f5d664f31feb6d2238b30907",
+    "official_pages": 14,
+    "source_tar_sha256": "3118bd36447fef00b39c80866e965bd6f436be53207cf457e72581c20e6b12c6",
+    "rebuild_run1_sha256": "554e93a00877026967f9925bc18c0de0e20d73f0c73096984329af3ab741840b",
+    "rebuild_run2_sha256": "554e93a00877026967f9925bc18c0de0e20d73f0c73096984329af3ab741840b",
+    "rebuild_runs_byte_identical": true,
+    "rebuild_pages": 14,
+    "official_rebuild_text": {
+      "official_tokens": 10155,
+      "rebuilt_tokens": 10152,
+      "token_delta": -3,
+      "sequence_ratio": 0.9768060274782094,
+      "multiset_jaccard": 0.9981304732854472
+    },
+    "final_latex_log": {
+      "undefined_citations": 0,
+      "undefined_references": 0,
+      "latex_errors": 0,
+      "overfull_hbox": 1,
+      "overfull_vbox": 1,
+      "underfull_hbox": 3,
+      "underfull_vbox": 9,
+      "output_pages": 14
+    },
+    "visual_qa": {
+      "status": "passed_full_document_contact_sheet_review",
+      "review_date": "2026-08-11",
+      "pages_reviewed_official": 14,
+      "pages_reviewed_rebuild": 14,
+      "checks": [
+        "readable_text",
+        "no_clipping",
+        "no_overlap",
+        "no_invisible_content",
+        "overall_layout_correspondence"
+      ],
+      "qualification": "Manual visual reconstruction QA only; it provides no experimental-result credit."
+    },
+    "paper_result_credit": false
+  },
+  {
+    "version": "v2",
+    "official_pdf_sha256": "14013a9d2af7585e00c8f3fcada0a745df15d3abf5fbd9adba03e64c408e7909",
+    "official_pages": 14,
+    "source_tar_sha256": "f4fae077906e28f97a0037235e4f9cf191c6c7994c5a92581b3dd9ff95b2fd74",
+    "rebuild_run1_sha256": "9dda60dcf280d58a05cfd339d7e84ad10d9845af46a9283b1afc3b7bf8cabb3d",
+    "rebuild_run2_sha256": "9dda60dcf280d58a05cfd339d7e84ad10d9845af46a9283b1afc3b7bf8cabb3d",
+    "rebuild_runs_byte_identical": true,
+    "rebuild_pages": 14,
+    "official_rebuild_text": {
+      "official_tokens": 10214,
+      "rebuilt_tokens": 10210,
+      "token_delta": -4,
+      "sequence_ratio": 0.9574030552291422,
+      "multiset_jaccard": 0.997847989826861
+    },
+    "final_latex_log": {
+      "undefined_citations": 0,
+      "undefined_references": 0,
+      "latex_errors": 0,
+      "overfull_hbox": 3,
+      "overfull_vbox": 1,
+      "underfull_hbox": 3,
+      "underfull_vbox": 6,
+      "output_pages": 14
+    },
+    "visual_qa": {
+      "status": "passed_full_document_contact_sheet_review",
+      "review_date": "2026-08-11",
+      "pages_reviewed_official": 14,
+      "pages_reviewed_rebuild": 14,
+      "checks": [
+        "readable_text",
+        "no_clipping",
+        "no_overlap",
+        "no_invisible_content",
+        "overall_layout_correspondence"
+      ],
+      "qualification": "Manual visual reconstruction QA only; it provides no experimental-result credit."
+    },
+    "paper_result_credit": false
+  },
+  {
+    "version": "v3",
+    "official_pdf_sha256": "cc2652f2f0a38e7b15e99734514381c759c803f90b2768696a568959675e0b27",
+    "official_pages": 10,
+    "source_tar_sha256": "3e7e9e020707bec1de3d7888715020a28d6a48377c874e5897f09016ca295a49",
+    "rebuild_run1_sha256": "540b9fba5ba9d7e4be035bd2c1ddf0dbda094bdf362312c210ba43b132039a5d",
+    "rebuild_run2_sha256": "540b9fba5ba9d7e4be035bd2c1ddf0dbda094bdf362312c210ba43b132039a5d",
+    "rebuild_runs_byte_identical": true,
+    "rebuild_pages": 10,
+    "official_rebuild_text": {
+      "official_tokens": 8746,
+      "rebuilt_tokens": 8740,
+      "token_delta": -6,
+      "sequence_ratio": 0.9996568683518243,
+      "multiset_jaccard": 0.9993139721015322
+    },
+    "final_latex_log": {
+      "undefined_citations": 0,
+      "undefined_references": 0,
+      "latex_errors": 0,
+      "overfull_hbox": 1,
+      "overfull_vbox": 0,
+      "underfull_hbox": 11,
+      "underfull_vbox": 3,
+      "output_pages": 10
+    },
+    "visual_qa": {
+      "status": "passed_full_document_contact_sheet_review",
+      "review_date": "2026-08-11",
+      "pages_reviewed_official": 10,
+      "pages_reviewed_rebuild": 10,
+      "checks": [
+        "readable_text",
+        "no_clipping",
+        "no_overlap",
+        "no_invisible_content",
+        "overall_layout_correspondence"
+      ],
+      "qualification": "Manual visual reconstruction QA only; it provides no experimental-result credit."
+    },
+    "paper_result_credit": false
+  }
+]

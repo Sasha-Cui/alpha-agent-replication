@@ -1,0 +1,28 @@
+paper_version,source_file,compiled_into_appendix,exact_runtime_values_released,actual_request_released,actual_response_released,note
+v1/v2,crypto_explain.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v1/v2,exp_instruc.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v1/v2,ft.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v1/v2,ft_instruc.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v1/v2,mkt_explain.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v1/v2,news_explain.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v1/v2,pred.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v1/v2,pred_instruc.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v1/v2,vision_explain.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v3,cot_instruc.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v3,crypto_explain.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,crypto_instruc.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v3,crypto_prompt.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,exp_instruc.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,ft.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,ft_instruc.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,mkt_explain.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,news_explain.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,news_instruc.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,news_prompt.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,pred.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,pred_instruc.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,rag_instruc.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,skill_instruc.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,trading_instruc.tex,True,False,False,False,Appendix prompt source; placeholders remain uninstantiated.
+v3,trading_prompt.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.
+v3,vision_explain.tex,False,False,False,False,Legacy source residue not compiled into the v3 manuscript.

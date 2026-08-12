@@ -1,0 +1,20 @@
+{
+  "pre_submission_commit": "962b83d7ca8908e675fc22c6d16ce24a0ec3e52f",
+  "current_commit": "2326185cc2d1eff02724cfeb88116ebb13f904e7",
+  "pre_submission_python_files": 41,
+  "current_python_files": 39,
+  "pre_submission_constants_present": false,
+  "current_constants_present": true,
+  "pre_submission_data_files": 0,
+  "pre_submission_processed_data_files": 0,
+  "v3_architecture_capability_term_file_hits": {
+    "hierarchical": 0,
+    "collaborative": 0,
+    "debate": 0,
+    "retrieval-augmented": 0,
+    "skill": 0,
+    "memory": 0
+  },
+  "v3_implementation_recovered": false,
+  "qualification": "A zero lexical hit supports, but cannot alone prove, absence; manual source inspection also found only the v1-style system."
+}

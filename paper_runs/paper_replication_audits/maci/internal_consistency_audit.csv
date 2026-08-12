@@ -1,0 +1,15 @@
+paper_version,claim_id,status,evidence
+v1/v2,artifact_placeholder,hard_release_claim_conflict,v1 literally prints URL_TO_YOUR_ARTIFACTS; v2 comments the statement out.
+v1/v2,python_requirement,hard_environment_conflict,"pyproject claims >=3.9.15, while two released match statements fail to parse on Python 3.9."
+v1/v2,test_dates,unresolved_date_conflict,"Paper says through September 2024, plots through August, and source handlers through 2024-12-31."
+v1/v2,forty_three_week_lineage,strong_internal_correspondence,"Market accuracies are 43-week fractions and annualizing 0.8347 over 43 weeks gives 1.083195, matching 108.32%. Values: [0.5814, 0.5581, 0.5814, 0.4651, 0.5814, 0.5581, 0.5116, 0.5581, 0.5814]."
+v1/v2,fine_tuning_coverage,source_execution_gap,Only the crypto-factor fine-tuning block is active; other expert blocks are commented and require manual edits.
+v1/v2,explanation_dimensions,paper_source_mismatch,Judge source scores eight criteria; paper reports five and releases no evaluation records.
+v1/v2,figure_revision,author_output_verified_not_regenerated,All compiled assets correspond; portfolio legends/width and one scatter label changed after the pinned pre-submission commit.
+v3,code_lineage,no_v3_implementation_recovered,Current author source retains the v1-style system and contains none of the v3 architectures/capabilities.
+v3,strictly_out_of_pretraining_claim,claim_not_supported,Official provider dates/cutoffs do not support treating all calendar-2025 observations as strictly outside every model's training distribution.
+v3,retrospective_model_availability,temporal_validity_risk,"GPT-5 and Claude Sonnet 4.5 were released during 2025, so their full-year evaluations were necessarily retrospective."
+v3,risk_free_rate,hard_method_result_conflict,"Across 23 full-period rows, implied weekly RF ranges -0.005332% to 0.004666% (mean -0.000252%), effectively zero rather than the cited 2025 Fama-French T-bill rate."
+v3,bear_regime_mdd,unreported_convention_or_hard_value_conflict,20/23 bear rows have negative terminal cumulative return whose magnitude exceeds printed MDD; they cannot arise from the same regime-conditioned path under the printed definition.
+v3,action_timing,ambiguous,"Inputs at t-1 produce A_t, while the wealth equation applies A_{t-1}; close/execution timing is not resolved."
+v3,traceability,claim_unverifiable,The paper says every decision is traceable but releases no trace.

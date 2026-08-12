@@ -1,0 +1,34 @@
+paper_version,dimension,status,evidence_boundary
+v1/v2,system_architecture,specified_and_source_present,"Four experts, team collaboration, and source classes are recoverable."
+v1/v2,base_model,exact_snapshot_in_source,"gpt-4o-2024-08-06, temperature 0."
+v1/v2,fine_tuned_model_ids,incomplete_unverified,"One commented fine-tuned model ID appears in source; the actual job, selected model, and complete lineage are not released."
+v1/v2,training_period,specified,June--October 2023 in paper; source fine-tuning bounds end November 1.
+v1/v2,test_period,conflicting,Paper says November 2023--September 2024; figures end August; source handlers end January 2025; metrics imply 43 weeks.
+v1/v2,universe,high_level_only,Weekly top-30 CoinGecko universe stated; exact memberships are absent.
+v1/v2,raw_inputs,missing,data/ and processed_data/ are gitignored and absent.
+v1/v2,processed_inputs,missing,"Factors, news, charts, prices, and labels are absent."
+v1/v2,prompt_templates,substantial_source_present,Templates and prompt generator are released; exact instantiated prompts are absent.
+v1/v2,model_requests_responses,missing,"No immutable requests, responses, token/logprob records, or retry logs."
+v1/v2,checkpoints,missing,"Runner names pickle checkpoints, but none are released."
+v1/v2,prediction_records,missing,"Runner names JSON records, but none are released."
+v1/v2,portfolio_rules,source_present,"Top-quintile, linear-probability ensemble, and market weights are inspectable."
+v1/v2,costs_and_slippage,missing,No execution-cost or slippage contract.
+v1/v2,risk_free_rate,source_uses_zero,Portfolio evaluator uses zero; paper does not identify a source.
+v1/v2,seeds_repetitions_uncertainty,missing,"No seeds, repetitions, or uncertainty lineage."
+v1/v2,table_outputs,missing,Zero of 321 printed table units are shipped as source-derived records.
+v1/v2,figure_outputs,author_output_verified,All 16 compiled figure assets have author-repository content lineage; this is not regeneration.
+v3,system_architecture,paper_only,"Hierarchical, collaborative, and debate architectures are described but absent from code."
+v3,model_snapshots,missing,"GPT-4o, GPT-5, and Claude Sonnet 4.5 snapshot IDs are not pinned."
+v3,experiment_period,specified,"Calendar 2025, 52 weeks."
+v3,universe,high_level_only,Fixed top-15 layer-1 cryptocurrencies; exact membership/corporate actions are absent.
+v3,raw_and_processed_inputs,missing,"No frozen price/news rows, timestamps, or retrieval corpus."
+v3,memory_rag_skill_state,missing,"No memory, retrieval index, skill library, or updates."
+v3,prompts,partial_appendix,Three prompts compile; unfilled runtime inputs and exact requests/responses are absent.
+v3,decision_traces,missing,No traces are released despite the traceability claim.
+v3,actions_orders_fills,missing,"No action, order, fill, or timing record."
+v3,baseline_code_checkpoints,missing,Five deep-learning and all agent baseline runtimes are absent.
+v3,transaction_costs_slippage,missing,No executable market-friction contract.
+v3,risk_free_rate,hard_result_method_conflict,"Printed full-period Sharpe values imply approximately zero, not the cited Fama-French T-bill series."
+v3,seeds_repetitions_uncertainty,missing,"No seeds, repetitions, confidence intervals, or run dispersion."
+v3,table_outputs,missing,Zero of 442 printed table units have input-to-output run lineage.
+v3,figure_outputs,paper_vector_only,142 plotted bars/lines/points are published without underlying result arrays.
