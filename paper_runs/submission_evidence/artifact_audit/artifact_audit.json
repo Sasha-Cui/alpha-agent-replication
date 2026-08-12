@@ -64,6 +64,15 @@
         "system_id": "SYS-MOUNTAIN-LION"
       },
       {
+        "corrected_at_utc": "2026-08-12T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/p1gpt/manifest.json",
+        "reason": "paper-level search recovered an attributable P1GPT/Neurowatt web client; the private model service and paper experiment remain absent",
+        "source_heads": [
+          "a88a3a7c731063d0d1ca7ac15946eb600753f358"
+        ],
+        "system_id": "SYS-P1GPT"
+      },
+      {
         "corrected_at_utc": "2026-08-11T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/raptor/source_provenance.json",
         "reason": "published final PDF directly links the lead author's repository after the anonymous snapshot expired",
@@ -73,7 +82,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "7b48255631cc03195868290f00cfd5df41621d40d49ed685589da0b6b33abc9b",
+    "registry_sha256": "9650e54c8dcb6eb45d9447e92d2460ce3604b3f733aca577f10534c903e3bb7f",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -1217,7 +1226,7 @@
       "system_name": "MM-DREX"
     },
     {
-      "artifact_url_count": 2,
+      "artifact_url_count": "2",
       "artifact_url_results_json": "[{\"check_method\":\"git ls-remote plus pinned archive, paper-level source audit, and component execution (paper-time core compile)\",\"checked_at_utc\":\"2026-08-12T16:38:40+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"MountainLionAi/GenAI-Platform\",\"head_sha\":\"3f76de1fe4d8d423f7d4e46e45f19f5bd43992ec\",\"license_source\":\"pinned_archive_1524ffc672b40b0f8185b328caf63609ff09e234bb98eab6ed492ab771c31af9\",\"observed_license\":\"Apache-2.0\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":14161920,\"archive_sha256\":\"1524ffc672b40b0f8185b328caf63609ff09e234bb98eab6ed492ab771c31af9\",\"checked_at_utc\":\"2026-08-12T16:38:40+00:00\",\"code_markers\":[\"genaipf/agent/autogen/auto_agent.py\",\"genaipf/dispatcher/api.py\",\"genaipf/services/gpt_service.py\",\"genaipf/tools/search/perplexity/perplexity_search_agent.py\"],\"environment_markers\":[\"requirements.txt\",\"setup.py\",\".env.example\"],\"explicit_nonrunnable\":false,\"file_count\":220,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"paper_time_archive_sha256\":\"66aa61c5ae03a6d587e94a1252421cae1f66579eeb3cec29875d09061e6efb88\",\"paper_time_file_count\":199,\"paper_time_head\":\"98b98d31dec6d29a5c518943d980300612030a40\",\"runner_markers\":[\"app.py\"],\"support_markers\":[\"examples/multi_agent_t001.py\",\"examples/test_agent.py\"]},\"url\":\"https://github.com/MountainLionAi/GenAI-Platform\",\"url_type\":\"github_repository\"},{\"check_method\":\"git ls-remote plus pinned archive, paper-level source audit, and component execution (locked install and repeated deterministic build)\",\"checked_at_utc\":\"2026-08-12T16:38:40+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"MountainLionAi/MountainLion\",\"head_sha\":\"f7819f3537808d398f6c3da37e43b51ecebdbd42\",\"license_source\":\"pinned_archive_e336674987252aa8e1df3ccbc1f7a8609f242ef57b4ee9c21c06006608774478\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":2426880,\"archive_sha256\":\"e336674987252aa8e1df3ccbc1f7a8609f242ef57b4ee9c21c06006608774478\",\"checked_at_utc\":\"2026-08-12T16:38:40+00:00\",\"code_markers\":[\"src/api/api.js\",\"src/App.vue\",\"src/page/Crypto.vue\"],\"environment_markers\":[\"package.json\",\"package-lock.json\"],\"explicit_nonrunnable\":false,\"file_count\":153,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"runner_markers\":[\"package.json#scripts.build\",\"package.json#scripts.dev\"],\"support_markers\":[\"vite.config.js\"]},\"url\":\"https://github.com/MountainLionAi/MountainLion\",\"url_type\":\"github_repository\"}]",
       "artifact_url_types": "github_repository;github_repository",
       "artifact_urls": "https://github.com/MountainLionAi/GenAI-Platform ; https://github.com/MountainLionAi/MountainLion",
@@ -1238,22 +1247,22 @@
       "system_name": "MountainLion"
     },
     {
-      "artifact_url_count": "0",
-      "artifact_url_results_json": "[]",
-      "artifact_url_types": "",
-      "artifact_urls": "",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
+      "artifact_url_count": 1,
+      "artifact_url_results_json": "[{\"check_method\":\"GitHub API plus pinned repeated archive, paper-level source audit, and compileall of every Python file\",\"checked_at_utc\":\"2026-08-12T18:00:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"P1GPT/web_demo\",\"head_sha\":\"a88a3a7c731063d0d1ca7ac15946eb600753f358\",\"license_source\":\"pinned_archive_81f201afa31f8a7f277e17d51622ece94bf907a8cc7e0f4a73248a28c5d50e0f\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":22970,\"archive_sha256\":\"81f201afa31f8a7f277e17d51622ece94bf907a8cc7e0f4a73248a28c5d50e0f\",\"checked_at_utc\":\"2026-08-12T18:00:00+00:00\",\"code_markers\":[\"p1gpt/state/gpt.py\",\"p1gpt/components/chat.py\",\"p1gpt/db_model.py\"],\"environment_markers\":[\"requirements.txt\"],\"explicit_nonrunnable\":false,\"file_count\":38,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"model_service_source_shipped\":false,\"paper_result_generator_shipped\":false,\"private_model_endpoint\":\"http://main-llm:8090/invoke/\",\"python_compile_exit\":0,\"python_file_count\":22,\"runner_markers\":[\"Dockerfile\",\"compose.yaml\",\"deployment.yaml\"],\"support_markers\":[\"rxconfig.py\",\"service.yaml\",\"nginx.conf\"]},\"url\":\"https://github.com/P1GPT/web_demo\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "github_repository",
+      "artifact_urls": "https://github.com/P1GPT/web_demo",
+      "audit_timestamp_utc": "2026-08-12T00:00:00+00:00",
+      "default_branch_head_shas": "P1GPT/web_demo@main=a88a3a7c731063d0d1ca7ac15946eb600753f358",
       "errors_json": "[]",
-      "failure_category": "no_public_artifact",
-      "github_owner_repos": "",
+      "failure_category": "none",
+      "github_owner_repos": "P1GPT/web_demo",
       "main_FT": "Y",
-      "native_execution_attempted": "N",
-      "observed_licenses": "",
-      "public_artifact_listed": "N",
-      "reachability_outcome": "not_listed",
-      "static_fidelity_basis_json": "{\"basis\":\"not_listed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "native_execution_attempted": "Y",
+      "observed_licenses": "P1GPT/web_demo=MIT",
+      "public_artifact_listed": "Y",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"code+environment+Docker/Compose/Kubernetes runners+configuration\",\"markers\":{\"archive_bytes\":22970,\"archive_sha256\":\"81f201afa31f8a7f277e17d51622ece94bf907a8cc7e0f4a73248a28c5d50e0f\",\"checked_at_utc\":\"2026-08-12T18:00:00+00:00\",\"code_markers\":[\"p1gpt/state/gpt.py\",\"p1gpt/components/chat.py\",\"p1gpt/db_model.py\"],\"environment_markers\":[\"requirements.txt\"],\"explicit_nonrunnable\":false,\"file_count\":38,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"model_service_source_shipped\":false,\"paper_result_generator_shipped\":false,\"private_model_endpoint\":\"http://main-llm:8090/invoke/\",\"python_compile_exit\":0,\"python_file_count\":22,\"runner_markers\":[\"Dockerfile\",\"compose.yaml\",\"deployment.yaml\"],\"support_markers\":[\"rxconfig.py\",\"service.yaml\",\"nginx.conf\"]},\"tier\":\"R3\",\"url\":\"https://github.com/P1GPT/web_demo\"}],\"paper_fidelity_boundary\":\"R3 is static client-package completeness, not paper-result reproduction; 0/12 native P1GPT cells regenerate end to end\"}",
+      "static_fidelity_tier": "R3",
       "stratum": "T",
       "system_id": "SYS-P1GPT",
       "system_name": "P1GPT"

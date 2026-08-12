@@ -154,6 +154,26 @@ ARTIFACT_NOTES = {
         "conflict. The shipped path is U.S.-only and cannot supply the six-country "
         "security-level common-task panel.",
     ),
+    "SYS-P1GPT": (
+        "N",
+        "A pinned arXiv-v1 audit rebuilds the 17-page manuscript twice to "
+        "byte-identical PDFs and inventories all 72 Table-2 result cells. The "
+        "three author-rendered position plots plus a pinned present-day Yahoo "
+        "response exactly verify 11/12 P1GPT cells (AAPL Sharpe is 3.3877, which "
+        "normally rounds to 3.39 rather than 3.38), and declared/conventional "
+        "B&H, MACD, and SMA rules independently recover 35 of another 36 cells; "
+        "GOOGL B&H MDD computes to 6.14%, not the printed 6.41%. These 46 exact "
+        "checks verify author outputs and baselines; they do not regenerate "
+        "agent decisions or establish paper-time data lineage. The attributable "
+        "P1GPT/Neurowatt web client has 38 tracked files and all 22 Python files "
+        "compile, but it calls an unreleased main-llm service and ships no agents, "
+        "paper daily prompt, requests/responses, market/news snapshots, KDJ+RSI or "
+        "ZMR parameters, backtest runner, or native result arrays. The embedded "
+        "March 24 report contains iPhone Air news from September 2025, directly "
+        "contradicting the paper's strict no-lookahead claim. Thus 0/12 native "
+        "P1GPT cells count as end-to-end reproductions, and no native dated output "
+        "is shipped by the public component package.",
+    ),
     "SYS-RD-AGENT-QUANT": (
         "N",
         "The mapped primary record is the general R&D-Agent MLE-Bench report, not "
@@ -593,6 +613,7 @@ TARGETED_EXECUTION = {
     "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
     "SYS-MOUNTAIN-LION": "paper_audit:completed_zero_of_20_performance_cells_public_components_only",
+    "SYS-P1GPT": "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_cells_end_to_end_lookahead_counterexample",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",

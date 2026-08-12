@@ -43,11 +43,11 @@ def test_committed_audit_preserves_prior_corrections_and_adds_only_maci() -> Non
     assert row == {key: str(value) for key, value in route.maci_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "26"
-    assert ft["artifact_reachable_among_all"]["successes"] == "25"
-    assert ft["github_head_resolved_among_all"]["successes"] == "25"
-    assert ft["static_R2_or_R3_among_all"]["successes"] == "17"
-    assert ft["static_R3_among_all"]["successes"] == "11"
+    assert ft["public_artifact_listed"]["successes"] == "27"
+    assert ft["artifact_reachable_among_all"]["successes"] == "26"
+    assert ft["github_head_resolved_among_all"]["successes"] == "26"
+    assert ft["static_R2_or_R3_among_all"]["successes"] == "18"
+    assert ft["static_R3_among_all"]["successes"] == "12"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text(encoding="utf-8"))
     assert {item["system_id"] for item in payload["metadata"]["post_freeze_evidence_corrections"]} == {
         "SYS-EMPIRICAL-ASSET-PRICING-LLM",
@@ -56,6 +56,7 @@ def test_committed_audit_preserves_prior_corrections_and_adds_only_maci() -> Non
         "SYS-HEDGE-AGENTS",
         "SYS-MACI",
         "SYS-MOUNTAIN-LION",
+        "SYS-P1GPT",
         "SYS-RAPTOR",
     }
     assert payload["metadata"]["registry_sha256"] == route.sha256(route.REGISTRY)
@@ -84,10 +85,10 @@ def test_native_and_paper_routes_keep_output_verification_below_reproduction() -
 
 def test_static_assets_reflect_maci_once() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
-    assert r"\newcommand{\ArtifactCountFT}{26}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{25}" in generated
-    assert r"\newcommand{\LicensedArtifactCountFT}{14}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{25}" in generated
-    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 42, \artifacttier{R1}: 8, \artifacttier{R2}: 6, \artifacttier{R3}: 11}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{27}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{26}" in generated
+    assert r"\newcommand{\LicensedArtifactCountFT}{15}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{26}" in generated
+    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 41, \artifacttier{R1}: 8, \artifacttier{R2}: 6, \artifacttier{R3}: 12}" in generated
     assert r"\newcommand{\NativeDatedOutputCount}{6}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{36}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{37}" in generated
