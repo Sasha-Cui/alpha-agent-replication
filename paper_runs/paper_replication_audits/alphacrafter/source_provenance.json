@@ -86,7 +86,11 @@
     "complete_research_data_recovered": false,
     "component_execution_completed": true,
     "default_end_to_end_launcher_operational": false,
+    "full_public_history_audited": true,
+    "historical_agent_result_or_run_artifacts": 0,
+    "historical_paper_result_literal_hits_outside_index_inputs": 0,
     "multibackbone_runtime_recovered": false,
+    "public_history_commits": 13,
     "published_result_lineage_recovered": false,
     "runtime_source_recovered": true
   },

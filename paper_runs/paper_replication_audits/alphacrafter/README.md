@@ -33,6 +33,14 @@ fills, brokerage integration, NAV/return arrays, and table/figure generators are
 absent. There are no tracked tests; compilation and CLI help pass, while Ruff's
 520 findings are recorded only as a modern static diagnostic.
 
+The complete non-shallow repository history has 13 commits, one branch, no tags,
+and no releases. Every revision is inventoried. The only structured payloads are
+configuration/schema templates and, after the second commit, two index series;
+no revision contains an agent result/run artifact, checkpoint, mined factor pool,
+decision, prediction, signal, holding, order/fill record, or result array.
+Seven distinctive v2 result literals also have zero occurrences outside the two
+index input series.
+
 Accordingly, the honest paper-level score is **0/176 v1 and 0/304 v2 published
 numeric result units, and 0/16 v1 and 0/14 v2 empirical panels regenerated**.
 The native component checks materially improve implementation faithfulness, but

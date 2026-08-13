@@ -82,6 +82,29 @@ def test_release_attribution_is_strong_without_claiming_direct_paper_link() -> N
     assert provenance["release_boundary"]["attribution_strength"].endswith(
         "not_direct_paper_link"
     )
+    assert provenance["release_boundary"]["full_public_history_audited"] is True
+    assert provenance["release_boundary"]["public_history_commits"] == 13
+    assert provenance["release_boundary"]["historical_agent_result_or_run_artifacts"] == 0
+    assert provenance["release_boundary"]["historical_paper_result_literal_hits_outside_index_inputs"] == 0
+
+
+def test_complete_public_history_has_no_latent_agent_result_artifact() -> None:
+    history = rows("released_source_history_inventory.csv")
+    assert len(history) == 13
+    assert history[0]["commit"] == audit.REPOSITORY_ROOT
+    assert history[-1]["commit"] == audit.REPOSITORY_HEAD
+    assert [int(row["tracked_paths"]) for row in history] == [69] + [77] * 7 + [79] * 5
+    assert [int(row["python_paths"]) for row in history] == [49] * 8 + [48] * 5
+    assert {row["unclassified_structured_paths"] for row in history} == {"0"}
+    assert {row["agent_result_or_run_artifact_paths"] for row in history} == {"0"}
+    assert {row["paper_result_literal_hits_outside_index_inputs"] for row in history} == {"0"}
+    assert {row["paper_result_artifact_found"] for row in history} == {"False"}
+    data = manifest()
+    assert data["repository_history_commits_audited"] == 13
+    assert data["repository_history_unclassified_structured_paths"] == 0
+    assert data["repository_history_agent_result_or_run_artifact_paths"] == 0
+    assert data["repository_history_paper_result_artifacts_found"] == 0
+    assert data["repository_history_paper_result_literal_hits_outside_index_inputs"] == 0
 
 
 def test_native_components_pass_without_paper_result_credit() -> None:
@@ -184,6 +207,7 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
         "strongly attributable",
         "does not directly link",
         "fails before any API call",
+        "complete non-shallow repository history has 13 commits",
         "0/176 v1 and 0/304 v2",
         "0/16 v1 and 0/14 v2",
         "not an AlphaCrafter replication",

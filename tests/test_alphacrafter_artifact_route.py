@@ -67,12 +67,12 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["fidelity_class"] == "F1_static_no_native_output"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_attributable_"
-        "release_six_component_checks_broken_default_launcher_missing_research_lineage"
+        "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_"
+        "history_six_component_checks_broken_default_launcher_missing_research_lineage"
     )
     note = row["concise_evidence_note"]
     for marker in (
-        "176 v1", "304 v2", "controlled fixtures", "fails before any API call",
+        "176 v1", "304 v2", "controlled fixtures", "fails before any API call", "All 13 commits",
         "0/176 v1", "0/304 v2", "0/16 v1", "0/14 v2",
     ):
         assert marker in note

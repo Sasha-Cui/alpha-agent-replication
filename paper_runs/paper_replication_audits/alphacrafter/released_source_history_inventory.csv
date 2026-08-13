@@ -1,0 +1,14 @@
+commit,authored_at,subject,tracked_paths,python_paths,schema_or_config_structured_paths,index_series_paths,unclassified_structured_paths,agent_result_or_run_artifact_paths,paper_result_literal_hits_outside_index_inputs,paper_result_artifact_found
+15d46d501731eaef117c6a0de440cbebcf316de0,2026-05-15T16:30:44+08:00,init: Initial commit,69,49,6,0,0,0,0,False
+20b6797ca1c22d25c8c76a749eaea14501b4ae98,2026-05-15T16:53:14+08:00,feat: upload dataset templates,77,49,12,2,0,0,0,False
+c0c5678daca32ddbdecfc4b973170dfbc77455c6,2026-05-15T17:06:00+08:00,feat: Update main.py,77,49,12,2,0,0,0,False
+02ab96522d890f49d5806f073a9af82d596248aa,2026-05-19T17:36:34+08:00,Fix: Update the hyperparameters,77,49,12,2,0,0,0,False
+8c59c062edcda2f914abfddc330feae5cd50b31c,2026-05-19T18:09:07+08:00,fix: Update data schema in toolkit,77,49,12,2,0,0,0,False
+451eb228f554659471768cb7da22f124002d72bc,2026-05-19T18:10:11+08:00,fix: Update hyperparameters for evaluation,77,49,12,2,0,0,0,False
+829b64df837187973ca0b97437c47d10f0a712f5,2026-05-19T19:25:52+08:00,feat: add citation in README.md,77,49,12,2,0,0,0,False
+ebe23cdca6fd23912cf673697a30acacfa991fe6,2026-05-25T16:52:06+08:00,fix: update annotations and small typos,77,49,12,2,0,0,0,False
+b4ae2b6236519d50d2983a10c17c178d087f4d4c,2026-07-17T15:33:15+08:00,feat: add concurrent miner agents support,79,48,12,2,0,0,0,False
+f7b6411d17bfbabbb57f334be428c3af9867f0c9,2026-07-27T15:06:06+08:00,feat: Harness agent workflows,79,48,12,2,0,0,0,False
+a69534a53caf5f52570f3dbf14d9f1ffb2a89aa9,2026-07-27T15:13:15+08:00,update: trivial update,79,48,12,2,0,0,0,False
+0abfe33f77126c4debd42d3abc9a55272f53c500,2026-07-28T15:20:16+08:00,update: Update README.md,79,48,12,2,0,0,0,False
+c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d,2026-07-29T12:08:53+08:00,update: update citation format,79,48,12,2,0,0,0,False

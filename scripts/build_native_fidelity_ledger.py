@@ -181,7 +181,10 @@ ARTIFACT_NOTES = {
         "fees. These are component checks, not paper outputs. The full launcher "
         "fails before any API call because config.yaml requests gpt-5.3-codex while "
         "the model registries contain only gpt-5 and gpt-5.2; it is OpenAI-only and "
-        "always injects A-share instructions/default trading tools. The release ships "
+        "always injects A-share instructions/default trading tools. All 13 commits in "
+        "the complete non-shallow public history were checked: structured payloads are "
+        "only templates/configs and two index input series, with zero agent result/run "
+        "artifacts. The release ships "
         "schemas and index series but no research stock/fundamental/news corpus, "
         "baselines, model calls, seeds, factor pools, brokerage path, orders, fills, "
         "returns, or result generator. Thus 0/176 v1 and 0/304 v2 table units and "
@@ -1339,7 +1342,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage",
-    "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_attributable_release_six_component_checks_broken_default_launcher_missing_research_lineage",
+    "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_six_component_checks_broken_default_launcher_missing_research_lineage",
     "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions",
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_one_linked_input_one_date_prompt_zero_of_953_table_cells_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",

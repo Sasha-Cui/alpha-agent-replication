@@ -6,6 +6,7 @@ import argparse
 import csv
 import hashlib
 import json
+import subprocess
 import tarfile
 import zipfile
 from pathlib import Path, PurePosixPath
@@ -20,6 +21,20 @@ SYSTEM_ID = "SYS-ALPHA-CRAFTER"
 ARXIV_ID = "2605.05580"
 REPOSITORY_URL = "https://github.com/NJU-LINK/AlphaCrafter"
 REPOSITORY_HEAD = "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d"
+REPOSITORY_ROOT = "15d46d501731eaef117c6a0de440cbebcf316de0"
+REPOSITORY_COMMIT_COUNT = 13
+
+STRUCTURED_SUFFIXES = (
+    ".ckpt", ".csv", ".feather", ".json", ".jsonl", ".npy", ".npz",
+    ".parquet", ".pickle", ".pkl", ".pt", ".pth", ".safetensors", ".xls", ".xlsx",
+)
+RESULT_PATH_PARTS = {
+    "action", "actions", "checkpoint", "checkpoints", "experiment", "experiments",
+    "fill", "fills", "holding", "holdings", "log", "logs", "output", "outputs",
+    "prediction", "predictions", "result", "results", "run", "runs", "signal",
+    "signals", "trial", "trials",
+}
+PAPER_RESULT_LITERALS = ("18.88", "1.6732", "15.66", "1.3425", "10.70", "1.1902", "16.26")
 
 PINS = {
     "primary/arxiv-abs.html": "676a1af03dc2df13bbb7becb15394299af5137816e7a80a48f5636a39ac99506",
@@ -75,6 +90,91 @@ def write_json(path: Path, value: Any) -> None:
         json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+
+
+def git(history_root: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(history_root), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def git_bytes(history_root: Path, *args: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(history_root), *args],
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
+def source_history_rows(history_root: Path) -> list[dict[str, Any]]:
+    """Audit all public revisions without mistaking shipped templates for results."""
+    if git(history_root, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise ValueError("AlphaCrafter history checkout is shallow")
+    commits = git(history_root, "rev-list", "--reverse", "--all").splitlines()
+    if len(commits) != REPOSITORY_COMMIT_COUNT:
+        raise ValueError(f"AlphaCrafter public commit count changed: {len(commits)}")
+    if commits[0] != REPOSITORY_ROOT or commits[-1] != REPOSITORY_HEAD:
+        raise ValueError("AlphaCrafter public-history endpoints changed")
+
+    rows: list[dict[str, Any]] = []
+    for commit in commits:
+        authored_at, subject = git(
+            history_root, "show", "-s", "--format=%aI%x09%s", commit
+        ).rstrip("\n").split("\t", 1)
+        paths = git(history_root, "ls-tree", "-r", "--name-only", commit).splitlines()
+        structured = [path for path in paths if path.lower().endswith(STRUCTURED_SUFFIXES)]
+        schema_or_config = [
+            path
+            for path in structured
+            if "/config/" in path
+            or path.endswith("/persistent/account.json")
+            or path.endswith("/persistent/date.json")
+            or path.endswith("/template.csv")
+            or path.endswith("/template.json")
+        ]
+        index_series = [path for path in structured if "/persistent/index_data/" in path]
+        result_paths = [
+            path
+            for path in paths
+            if any(part in RESULT_PATH_PARTS for part in path.lower().split("/"))
+            or path.lower().endswith((".ckpt", ".npy", ".npz", ".parquet", ".pickle", ".pkl", ".pt", ".pth", ".safetensors"))
+        ]
+        unclassified_structured = sorted(set(structured) - set(schema_or_config) - set(index_series))
+        literal_hits: list[str] = []
+        for path in paths:
+            if path in index_series or path.lower().endswith((".pdf", ".png")):
+                continue
+            text = git_bytes(history_root, "show", f"{commit}:{path}").decode(
+                "utf-8", errors="ignore"
+            )
+            literal_hits.extend(
+                f"{path}:{literal}" for literal in PAPER_RESULT_LITERALS if literal in text
+            )
+        if result_paths or unclassified_structured or literal_hits:
+            raise ValueError(
+                f"AlphaCrafter history contains an unreviewed artifact at {commit}: "
+                f"result={result_paths}, structured={unclassified_structured}, "
+                f"paper_literals={literal_hits}"
+            )
+        rows.append(
+            {
+                "commit": commit,
+                "authored_at": authored_at,
+                "subject": subject,
+                "tracked_paths": len(paths),
+                "python_paths": sum(path.endswith(".py") for path in paths),
+                "schema_or_config_structured_paths": len(schema_or_config),
+                "index_series_paths": len(index_series),
+                "unclassified_structured_paths": 0,
+                "agent_result_or_run_artifact_paths": 0,
+                "paper_result_literal_hits_outside_index_inputs": 0,
+                "paper_result_artifact_found": False,
+            }
+        )
+    return rows
 
 
 def safe_archives(scratch: Path) -> None:
@@ -361,6 +461,14 @@ fills, brokerage integration, NAV/return arrays, and table/figure generators are
 absent. There are no tracked tests; compilation and CLI help pass, while Ruff's
 520 findings are recorded only as a modern static diagnostic.
 
+The complete non-shallow repository history has 13 commits, one branch, no tags,
+and no releases. Every revision is inventoried. The only structured payloads are
+configuration/schema templates and, after the second commit, two index series;
+no revision contains an agent result/run artifact, checkpoint, mined factor pool,
+decision, prediction, signal, holding, order/fill record, or result array.
+Seven distinctive v2 result literals also have zero occurrences outside the two
+index input series.
+
 Accordingly, the honest paper-level score is **0/176 v1 and 0/304 v2 published
 numeric result units, and 0/16 v1 and 0/14 v2 empirical panels regenerated**.
 The native component checks materially improve implementation faithfulness, but
@@ -382,6 +490,8 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "method_specification_audit.csv", method_rows())
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
+    history = source_history_rows(scratch / "discovery/alphacrafter-history")
+    write_csv(output / "released_source_history_inventory.csv", history)
     release = release_audit(scratch)
     write_json(output / "release_execution_audit.json", release)
     provenance = {
@@ -413,6 +523,14 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             "complete_research_data_recovered": False,
             "multibackbone_runtime_recovered": False,
             "published_result_lineage_recovered": False,
+            "full_public_history_audited": True,
+            "public_history_commits": len(history),
+            "historical_agent_result_or_run_artifacts": sum(
+                row["agent_result_or_run_artifact_paths"] for row in history
+            ),
+            "historical_paper_result_literal_hits_outside_index_inputs": sum(
+                row["paper_result_literal_hits_outside_index_inputs"] for row in history
+            ),
         },
     }
     write_json(output / "source_provenance.json", provenance)
@@ -440,6 +558,19 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "native_empirical_panels_regenerated": 0,
         "attributable_repository_recovered": True,
         "repository_files": inventory["release_files"],
+        "repository_history_commits_audited": len(history),
+        "repository_history_unclassified_structured_paths": sum(
+            row["unclassified_structured_paths"] for row in history
+        ),
+        "repository_history_agent_result_or_run_artifact_paths": sum(
+            row["agent_result_or_run_artifact_paths"] for row in history
+        ),
+        "repository_history_paper_result_artifacts_found": sum(
+            bool(row["paper_result_artifact_found"]) for row in history
+        ),
+        "repository_history_paper_result_literal_hits_outside_index_inputs": sum(
+            row["paper_result_literal_hits_outside_index_inputs"] for row in history
+        ),
         "native_component_checks_passed": 6,
         "full_launcher_operational_as_released": False,
         "full_end_to_end_pipeline_reproduced": False,
