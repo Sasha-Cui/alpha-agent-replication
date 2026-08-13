@@ -1,0 +1,118 @@
+{
+  "arxiv": {
+    "id": "2607.26642",
+    "pdf_sha256": {
+      "v1": "85f0d13a673969c6b1b49c63c394fded2b7380583b6096028eb56d96ae8fb651"
+    },
+    "source_sha256": {
+      "v1": "d00111b4fdf76197ca9b057df092f0a5316f5c7421c065acb337490c0dcd9722"
+    },
+    "versions": [
+      "v1"
+    ],
+    "visual_qa": {
+      "contact_sheet_sha256": {
+        "official_10_18": "916b16de68b65127470f4a21568adc5f51c4eba22a12e73dffbad16eebf7723d",
+        "official_1_9": "559959459d18a341e55ee1f46238a7b57d8821fcff10f2b98782c56ebeb23a7b",
+        "rebuilt_10_18": "da7e51964051553c255ec7eb89086395552e51ace78f1a29c9251e000796f4df",
+        "rebuilt_1_9": "e2761c4813dacb114227d789847a4bfc1b488ae662534b00684ee1ec8e6b451d"
+      },
+      "official_pages_inspected": 18,
+      "rebuilt_pages_inspected": 18,
+      "unreadable_clipped_or_overlapping_pages": 0
+    }
+  },
+  "official_repository": {
+    "archive_bytes": 1573612,
+    "archive_files": 32,
+    "archive_sha256": "fa4a31a9b664f70e4d83a7474492603d03b9e801f15140bbcb4294d175550e49",
+    "archive_uncompressed_bytes": 1945533,
+    "attribution": "directly linked from the manuscript and owned by first author Jingyang Yi",
+    "author_tests": "9 passed",
+    "bytecode_compilation_passed": true,
+    "central_environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/alphaschema-py310-audit-20260812",
+    "cli_help_passed": true,
+    "default_launcher_operational_as_released": false,
+    "editable_install_passed": true,
+    "head_sha": "1206a094abfaad7cc53e6dff39f8fae43e851acb",
+    "license": "not_declared",
+    "native_demo_plans": 48,
+    "native_demo_rounds": 3,
+    "native_demo_uses_mock_evaluator": true,
+    "paper_appendix_factor_component": {
+      "controlled_synthetic_fixture": true,
+      "dates": 180,
+      "factor_outputs": 2,
+      "finite_reward": true,
+      "leakage_issues": [],
+      "metrics": [
+        {
+          "forward_horizon": 5,
+          "ic": 0.11904766985246161,
+          "icir": 0.8487576781322107,
+          "lag1_gap": 0.1659942655046103,
+          "lag1_rank_ic": -0.04822723253757735,
+          "lag1_rank_icir": -0.3332402917764872,
+          "mean_rank_turnover": 0.05073519553072626,
+          "observation_days": 175,
+          "period": 20,
+          "rank_ic": 0.11776703296703295,
+          "rank_icir": 0.8482376458205636
+        },
+        {
+          "forward_horizon": 5,
+          "ic": -0.23571385131862851,
+          "icir": -0.9653968360015956,
+          "lag1_gap": 0.13592696728558798,
+          "lag1_rank_ic": -0.3764500442086649,
+          "lag1_rank_icir": -1.5957170599139305,
+          "mean_rank_turnover": 0.04472849162011173,
+          "observation_days": 175,
+          "period": 100,
+          "rank_ic": -0.24052307692307692,
+          "rank_icir": -0.9925083417339662
+        }
+      ],
+      "paper_appendix_example_executed": true,
+      "periods": [
+        20,
+        100
+      ],
+      "published_result_credit": false,
+      "reward": {
+        "best_period": 20,
+        "formula": "alpha*rank_ic + beta*rank_icir - lambda*max(0, rank_ic-lag1_rank_ic)",
+        "lag1_penalty": -0.3319885310092206,
+        "rank_ic_term": 1.1776703296703295,
+        "rank_icir_term": 0.8482376458205636,
+        "reward": 1.6939194444816725
+      },
+      "symbols": 25
+    },
+    "paper_baseline_implementations_released": false,
+    "paper_downstream_combiner_released": false,
+    "paper_factor_pools_released": false,
+    "paper_fundamental_schema_and_data_released": false,
+    "paper_label_matches_release_backend": false,
+    "paper_market_data_released": false,
+    "paper_portfolio_engine_released": false,
+    "paper_result_credit": false,
+    "paper_trial_outputs_released": false,
+    "published_table_or_figure_regenerated": false,
+    "python_files": 16,
+    "python_version": "3.10.8",
+    "tracked_test_files": 1,
+    "url": "https://github.com/JingyangYi/AlphaSchema"
+  },
+  "release_boundary": {
+    "attribution_strength": "direct_manuscript_link_and_first_author_owner",
+    "author_tests_passed": true,
+    "complete_research_data_recovered": false,
+    "component_execution_completed": true,
+    "default_end_to_end_launcher_operational": false,
+    "published_result_lineage_recovered": false,
+    "runtime_source_recovered": true
+  },
+  "system_id": "SYS-ALPHA-SCHEMA",
+  "work_id": "CensusArxiv260726642"
+}

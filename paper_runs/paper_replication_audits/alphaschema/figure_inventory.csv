@@ -1,0 +1,9 @@
+version,figure,empirical_series_or_panels,description,underlying_numeric_array_released,author_native_figure_regenerated,paper_result_credit
+v1,fig:nav,1,CSI300 NAV trajectories,False,False,False
+v1,fig:schema_leave_one_out,1,schema-component ablation,False,False,False
+v1,fig:semantic_trajectory,1,semantic-space trajectory,False,False,False
+v1,fig:realization_efficiency,2,reward estimation and budget-efficiency panels,False,False,False
+v1,fig:code_agent_model_invariance,1,backend robustness,False,False,False
+v1,fig:appendix_csi500_cumulative_return,1,CSI500 return trajectories,False,False,False
+v1,fig:appendix_factor_decay,1,factor-decay trajectories,False,False,False
+v1,fig:schema_predictability,1,reward-predictability comparison,False,False,False

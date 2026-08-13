@@ -1,0 +1,24 @@
+version,dimension,status,detail
+v1,official_document_source,complete,23-file source package recovered; 18-page manuscript rebuilt
+v1,official_repository,directly_linked_author_release,manuscript directly links the first-author repository at the pinned head
+v1,market_universe,specified_not_released,CSI300/SH000300 primary and CSI500 extension; dated constituent histories absent
+v1,temporal_split,specified,"train 2016--2020, validation 2021--2022, held-out test 2023--2025"
+v1,price_volume_schema,released_but_revision_diverges,paper states 40/40/50/3/7=140 components; release contains 54/43/59/3/8=167
+v1,fundamental_schema,missing,paper's +Fundamental variant and 30 fundamental factors have no released schema/data implementation
+v1,code_agent_prompts,substantially_released,generation and repair prompts plus OpenAI-compatible client are present
+v1,search_core,substantially_released,"sampling, novelty, LightGBM reward ensemble, exploitation, mutation, buffer, and reporting are present"
+v1,search_budget,configured,"16 plans, 10,000 candidates, staged quotas, seed, and one repair are released"
+v1,paper_search_horizon,manual_only,CLI can be asked for 80 rounds but defaults to one; no five-independent-run orchestrator
+v1,mutation_ranking,paper_release_mismatch,paper ranks mutation candidates by predicted reward; release accepts round-robin top-parent mutations before prediction
+v1,exploration_schedule,paper_release_mismatch,paper specifies exponential exploration share; release implements fixed observation-threshold quotas
+v1,schema_set_identity,paper_release_mismatch,paper defines qualities as a set; release preserves tuple order in keys and can treat permutations as distinct
+v1,factor_realization,component_executed,literal manuscript appendix factor executes for periods 20/100 on a controlled 25-stock panel
+v1,leakage_checks,component_executed,static and prefix-invariance checks pass on the controlled appendix-factor fixture
+v1,main_forward_label,paper_release_mismatch,"paper Ref(close,-6)/Ref(close,-1)-1 differs from release close.shift(-5)/close-1"
+v1,final_factor_pool_selection,missing,reward-ranked absolute-correlation <0.7 export logic and 120/150 factor pools are absent
+v1,downstream_combiner,missing,"paper's CSRankNorm/LightGBM combiner, tuning, 500 rounds, and early stopping are absent"
+v1,portfolio_backtest,missing,"paper's Qlib Top50/Drop5 engine, open-price execution, fees, limits, benchmark, and NAV path are absent"
+v1,baselines,missing,"MLP, XGBoost, Transformer, GRU, LSTM, Alpha158/360, RD-Agent, and QuantaAlpha runs are absent"
+v1,analysis_archives,missing,"ablation, 12,126-pair predictability archive, repeated realizations, model robustness, CSI500, and decay arrays are absent"
+v1,default_launcher,data_blocked,default validate/run fail immediately because data/stock_bars is not released
+v1,published_results,not_regenerated,zero published numeric units and zero empirical panels were regenerated

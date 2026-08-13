@@ -1,0 +1,35 @@
+{
+  "arxiv_id": "2607.26642",
+  "author_tests_passed": 9,
+  "document_rebuild_completed": true,
+  "empirical_panels": 9,
+  "full_end_to_end_pipeline_reproduced": false,
+  "full_launcher_operational_as_released": false,
+  "native_component_checks_passed": 3,
+  "native_demo_plans": 48,
+  "native_empirical_panels_regenerated": 0,
+  "native_numeric_units_regenerated": 0,
+  "official_pages_visually_checked": 18,
+  "official_pdf_and_source_recovered": true,
+  "official_repository_recovered": true,
+  "official_versions_audited": [
+    "v1"
+  ],
+  "output_sha256": {
+    "README.md": "06311877a20b9649573131dea94c250f78bb973b1a318e7d73ee671febbb5070",
+    "figure_inventory.csv": "b0a8646b8c9c5349033b61d233bc1d4fcf9a930f51fd67824309ca2f0989229b",
+    "internal_consistency_audit.csv": "dfc68f7b5a4e7590e71ec6eff7a668a56a1b757bc53b9ea0a4c9d1791dddc1e0",
+    "method_specification_audit.csv": "17b47275e1aafc2d27326b52fc43dfe17d79a891726c8fb61ccdbb5a9f556516",
+    "published_result_ledger.csv": "98d07f097e8d817ba362bcacc16d8dc6ad7bc2eb30319f6f6e80db581b5f9168",
+    "release_execution_audit.json": "7ec494c07a88a2ebfaf0320141e7e00f87e9985cf5992ec9b4f03e34320e7a71",
+    "source_provenance.json": "823386fa3b0c88d985bd14337f15d85374a2c991cefc172a1af4c07527073626",
+    "version_audit.csv": "d8ae1cf5d5073c77103c62ffdc03cc036694703b101be0b9220a5abf1777c6ca"
+  },
+  "published_numeric_result_units": 212,
+  "rebuilt_pages_visually_checked": 18,
+  "repository_files": 32,
+  "source_files": 23,
+  "strict_success": false,
+  "system_id": "SYS-ALPHA-SCHEMA",
+  "work_id": "CensusArxiv260726642"
+}

@@ -1,0 +1,11 @@
+check,status,detail
+main_forward_label,paper_release_mismatch,one-period timing-anchor difference between manuscript equation and backend
+schema_inventory,paper_release_mismatch,manuscript 140 price-volume components versus release 167 components
+quality_canonicalization,paper_release_mismatch,quality permutations denote the same set in the paper but different release keys
+mutation_scoring,paper_release_mismatch,release records predictions only after mutation candidates have already been chosen
+exploration_share,paper_release_mismatch,exponential equation is not implemented by the released staged quota schedule
+paper_example_periods,release_configuration_difference,"appendix example metadata uses [20,100], default release config uses [20,80]"
+five_run_protocol,unreleased,"five independent runs are stated without a multi-run driver, seed set, calls, or outputs"
+research_data,unreleased,"market, fundamental, membership, benchmark, and experiment data are absent"
+result_lineage,unreleased,"factor pools, predictions, holdings, returns, tables, figures, and generators are absent"
+repository_license,not_declared,pinned public repository has no license file or GitHub-detected license
