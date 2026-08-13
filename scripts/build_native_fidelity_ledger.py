@@ -38,6 +38,31 @@ URL_RE = re.compile(r"https?://[^;\s]+")
 # system, not raw inputs, prompts, labels, factor expressions, or example
 # configuration.
 ARTIFACT_NOTES = {
+    "SYS-JANUS-Q": (
+        "Y",
+        "A pinned Janus-Q audit rebuilds the official 16-page arXiv-v1 source at "
+        "99.81% extracted-token overlap and visually checks every official and "
+        "rebuilt page. The source comments out the live author project page, which "
+        "links a six-file Drive release and an expired anonymous code archive. A "
+        "first-author-owned exact-name GitHub repository preserves a 20-file static "
+        "site at commit 4455e102; every repository commit was inspected and none "
+        "contains model-training, reward, CAR-construction, inference, portfolio, or "
+        "backtest system code. The release is nevertheless substantial author-output "
+        "evidence: 61/130 printed table cells exactly agree, one CSI-1000 Sharpe cell "
+        "is directly contradicted, and 68 cells lack numeric backing. Five of ten "
+        "empirical panels have released numeric backing, and 85/85 total-return, MDD, "
+        "Sharpe, annual-return, and Calmar values independently recompute from 17 "
+        "dated 55-point NAV series. The six data files contain 64,326 event-stock "
+        "rows, 62,265 unique news IDs, and 31,999 JSONL examples; all 62,462 finite "
+        "post-CAR labels and all JSONL raw-row/direction/strength links verify. These "
+        "are static data and output checks, not native regeneration: 0/130 table "
+        "cells and 0/10 empirical panels were produced through an author pipeline. "
+        "The base model/checkpoint, selected GRPO configuration, reward constants, "
+        "seeds, raw prices/CNE5 factors, predictions, trade ledger, backtest costs, "
+        "environment, and runner are absent, and no license was observed. The shipped "
+        "dated outputs are China-only portfolio NAV paths with no security mapping "
+        "for the prespecified six-country common task.",
+    ),
     "SYS-ATLAS": (
         "N",
         "A pinned ATLAS audit covers all five official arXiv revisions, all 209 "
@@ -1071,6 +1096,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_released_nav_metrics_31999_of_31999_data_links_static_outputs_no_native_training_or_backtest",
     "SYS-SHARP": "paper_audit:completed_seven_paper_derived_mechanics_zero_of_210_table_cells_zero_of_1_empirical_panel_cited_dataset_404_no_attributable_pipeline",
     "SYS-AGORA": "paper_audit:completed_two_paper_metric_programs_zero_of_293_table_cells_zero_of_4_empirical_panels_claimed_release_unrecovered_no_attributable_pipeline",
     "SYS-XALPHA": "paper_audit:completed_three_paper_factor_programs_one_contract_pass_zero_of_138_numeric_units_zero_of_3_empirical_panels_no_attributable_pipeline",
@@ -1135,6 +1161,7 @@ TARGETED_EXECUTION = {
 
 
 OUTPUT_BLOCKS = {
+    "SYS-JANUS-Q": "A3_CN_only_portfolio_NAV_no_six_country_security_mapping",
     "SYS-AUTOMATE-STRATEGY": "A3_output_lacks_six_country_security_mapping",
     "SYS-CRYPTO-TRADE": "A3_wrong_asset_class_crypto",
     "SYS-GURU-AGENTS": "A3_US_only_not_six_country",

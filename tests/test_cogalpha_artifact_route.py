@@ -51,17 +51,18 @@ def test_registry_artifact_audit_and_post_freeze_correction_agree() -> None:
     assert row == {key: str(value) for key, value in route.cogalpha_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "34"
-    assert ft["artifact_reachable_among_all"]["successes"] == "33"
-    assert ft["github_head_resolved_among_all"]["successes"] == "32"
+    assert ft["public_artifact_listed"]["successes"] == "35"
+    assert ft["artifact_reachable_among_all"]["successes"] == "34"
+    assert ft["github_head_resolved_among_all"]["successes"] == "33"
     assert sum(
         item["main_FT"] == "Y" and item["static_fidelity_tier"] == "R1"
         for item in rows
-    ) == 10
+    ) == 11
 
     payload = json.loads((audit_dir / "artifact_audit.json").read_text())
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
     assert {item["system_id"] for item in corrections} == {
+        "SYS-JANUS-Q",
         "SYS-ALPHA-SCHEMA",
         "SYS-ALPHA-CRAFTER",
         "SYS-COG-ALPHA",
@@ -130,23 +131,23 @@ def test_paper_route_prioritizes_prompt_artifact_without_calling_it_code() -> No
 
 def test_static_report_counts_and_tables_include_cogalpha_once() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text()
-    assert r"\newcommand{\ArtifactCountFT}{34}" in generated
-    assert r"\newcommand{\ArtifactRateFT}{50.7\%}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{33}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{35}" in generated
+    assert r"\newcommand{\ArtifactRateFT}{52.2\%}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{34}" in generated
     assert r"\newcommand{\LicensedArtifactCountFT}{20}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{32}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{33}" in generated
     assert (
-        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 34, "
-        r"\artifacttier{R1}: 10, \artifacttier{R2}: 6, \artifacttier{R3}: 17}"
+        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 33, "
+        r"\artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 17}"
         in generated
     )
-    assert r"\newcommand{\TargetedAuditCount}{60}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{61}" in generated
     claims = {
         row["macro"]: row
         for row in csv_rows(ROOT / "paper_runs/submission_evidence/claims.csv")
     }
-    assert claims["ArtifactCountFT"]["rendered_value"] == "34"
-    assert claims["TargetedAuditCount"]["rendered_value"] == "60"
+    assert claims["ArtifactCountFT"]["rendered_value"] == "35"
+    assert claims["TargetedAuditCount"]["rendered_value"] == "61"
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text()
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
     assert r"uwFengyuan/CogAlpha\_Prompt" in system_table

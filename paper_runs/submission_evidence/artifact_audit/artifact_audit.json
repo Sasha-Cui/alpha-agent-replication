@@ -75,6 +75,13 @@
         "system_id": "SYS-HEDGE-AGENTS"
       },
       {
+        "corrected_at_utc": "2026-08-13T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/janus_q/source_provenance.json",
+        "reason": "source-commented author project, linked Drive data, and first-author static-output history were omitted from the frozen registry; all are R1 evidence, not system code",
+        "source_head": "4455e10202865d9fe0c167ed0bdea57af266fdc1",
+        "system_id": "SYS-JANUS-Q"
+      },
+      {
         "corrected_at_utc": "2026-08-12T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/maci/manifest.json",
         "reason": "the first-author v1/v2 source repository was recovered after the frozen registry; the rewritten v3 implementation remains unreleased",
@@ -131,7 +138,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "a3efa8b7c9c0a31f1225a8eefa93e64617e7f0d4545eff933e2f2a6c5a6b59aa",
+    "registry_sha256": "1081d4676b1a3c238b5edcafac35648be0642b2de144104b752ba25450ebd835",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -792,7 +799,7 @@
       "system_name": "AlphaQuanter"
     },
     {
-      "artifact_url_count": 1,
+      "artifact_url_count": "1",
       "artifact_url_results_json": "[{\"check_method\":\"paper citation plus pinned same-author precursor repository and native component audit\",\"checked_at_utc\":\"2026-08-13T00:15:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"harrypapadakis/StockSim\",\"head_sha\":\"c1a25c195df4c93b2db4a748f80ceae0f1c9fe50\",\"license_source\":\"README declaration only; repository has no license-text file and GitHub detects no license\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"adaptive_opro_implementation_released\":false,\"archive_bytes\":2234151,\"archive_sha256\":\"824b8b041ff5bf8733d2f755015432eefdc94fdb65fd53b1d1f22a2d99696db7\",\"archive_uncompressed_bytes\":31949454,\"as_declared_asyncio_import_passed\":false,\"asyncio_import_after_audit_adjustment_passed\":true,\"atlas_sample_config_released\":false,\"atlas_specific_code_released\":false,\"bytecode_compilation_after_adjustment_passed\":true,\"checked_at_utc\":\"2026-08-13T00:15:00+00:00\",\"code_markers\":[\"agents/llm_agent.py\",\"exchanges/exchange_agent.py\",\"utils/metrics.py\",\"utils/orders.py\"],\"environment_markers\":[\"requirements.txt\",\"Dockerfile\",\"docker-compose.yml\"],\"explicit_nonrunnable\":false,\"file_count\":81,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"modules_failed_import_after_adjustment\":0,\"modules_imported_after_adjustment\":43,\"paper_data_snapshot_released\":false,\"paper_result_arrays_released\":false,\"paper_result_credit\":false,\"paper_runtime_prompts_and_trajectories_released\":false,\"python_file_count\":43,\"runner_markers\":[\"main_launcher.py\"],\"stock_sim_component_checks_passed\":4,\"support_markers\":[\"README.md\",\"configs/demo_config.yaml\",\"configs/demo_multi_provider_config.yaml\",\"configs/orderbook_historical_test.yaml\"],\"tracked_test_files\":0},\"url\":\"https://github.com/harrypapadakis/StockSim\",\"url_type\":\"github_repository\"}]",
       "artifact_url_types": "github_repository",
       "artifact_urls": "https://github.com/harrypapadakis/StockSim",
@@ -1128,22 +1135,22 @@
       "system_name": "HedgeAgents"
     },
     {
-      "artifact_url_count": "0",
-      "artifact_url_results_json": "[]",
-      "artifact_url_types": "",
-      "artifact_urls": "",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
+      "artifact_url_count": 2,
+      "artifact_url_results_json": "[{\"check_method\":\"paper-source link plus pinned page assets, output JSON, Drive data, and full paper audit\",\"checked_at_utc\":\"2026-08-13T15:00:00+00:00\",\"default_branch\":\"\",\"errors\":[],\"github_owner_repo\":\"\",\"head_sha\":\"\",\"license_source\":\"no license observed on project page or linked Drive release\",\"observed_license\":\"NOASSERTION\",\"reachable\":true,\"static_observation\":{\"checked_at_utc\":\"2026-08-13T15:00:00+00:00\",\"code_markers\":[],\"environment_markers\":[],\"explicit_nonrunnable\":false,\"file_count\":14,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"runner_markers\":[],\"support_markers\":[\"index.html\",\"app.js\",\"eight JSON output endpoints\",\"six-file linked Drive dataset (277,304,208 bytes)\",\"paper-linked anonymous code archive currently expired\"],\"tree_bytes\":2340384},\"url\":\"https://cute-twilight-5f2400.netlify.app\",\"url_type\":\"project_page\"},{\"check_method\":\"first-author identity plus pinned full Git history, gh-page commit, tree, and archive\",\"checked_at_utc\":\"2026-08-13T15:00:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"Jackson906E/Janus-Q-demo\",\"head_sha\":\"526ac4e32d1e6904f5f3e2af25ea18886b61d325\",\"license_source\":\"no repository license declaration or license text in pinned tree\",\"observed_license\":\"NOASSERTION\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":3789979,\"archive_sha256\":\"2d167729ced890f32f4151037c9e33a0638eb9b66fe6e74701bb622adcccdb48\",\"checked_at_utc\":\"2026-08-13T15:00:00+00:00\",\"code_markers\":[],\"current_main_state\":\"one-byte README only\",\"environment_markers\":[],\"explicit_nonrunnable\":false,\"file_count\":20,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"historical_branch\":\"gh-page\",\"historical_release_head\":\"4455e10202865d9fe0c167ed0bdea57af266fdc1\",\"runner_markers\":[],\"support_markers\":[\"index.html\",\"static/app.js\",\"data/nav_timeseries.json\",\"data/unified_backtest.json\",\"static/backtest_multi_csv_all_results.png\"],\"tree_bytes\":4263244},\"url\":\"https://github.com/Jackson906E/Janus-Q-demo\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "project_page;github_repository",
+      "artifact_urls": "https://cute-twilight-5f2400.netlify.app ; https://github.com/Jackson906E/Janus-Q-demo",
+      "audit_timestamp_utc": "2026-08-13T00:00:00+00:00",
+      "default_branch_head_shas": "Jackson906E/Janus-Q-demo@main=526ac4e32d1e6904f5f3e2af25ea18886b61d325",
       "errors_json": "[]",
-      "failure_category": "no_public_artifact",
-      "github_owner_repos": "",
+      "failure_category": "static_package_insufficient",
+      "github_owner_repos": "Jackson906E/Janus-Q-demo",
       "main_FT": "Y",
       "native_execution_attempted": "N",
-      "observed_licenses": "",
-      "public_artifact_listed": "N",
-      "reachability_outcome": "not_listed",
-      "static_fidelity_basis_json": "{\"basis\":\"not_listed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "observed_licenses": "project_page=NOASSERTION;Jackson906E/Janus-Q-demo=NOASSERTION",
+      "public_artifact_listed": "Y",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"static author project page, outputs, figures, and dataset links; no training or backtest implementation\",\"markers\":{\"checked_at_utc\":\"2026-08-13T15:00:00+00:00\",\"code_markers\":[],\"environment_markers\":[],\"explicit_nonrunnable\":false,\"file_count\":14,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"runner_markers\":[],\"support_markers\":[\"index.html\",\"app.js\",\"eight JSON output endpoints\",\"six-file linked Drive dataset (277,304,208 bytes)\",\"paper-linked anonymous code archive currently expired\"],\"tree_bytes\":2340384},\"tier\":\"R1\",\"url\":\"https://cute-twilight-5f2400.netlify.app\"},{\"basis\":\"first-author historical static site/output tree; no system code, environment, or runner in any commit\",\"markers\":{\"archive_bytes\":3789979,\"archive_sha256\":\"2d167729ced890f32f4151037c9e33a0638eb9b66fe6e74701bb622adcccdb48\",\"checked_at_utc\":\"2026-08-13T15:00:00+00:00\",\"code_markers\":[],\"current_main_state\":\"one-byte README only\",\"environment_markers\":[],\"explicit_nonrunnable\":false,\"file_count\":20,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"historical_branch\":\"gh-page\",\"historical_release_head\":\"4455e10202865d9fe0c167ed0bdea57af266fdc1\",\"runner_markers\":[],\"support_markers\":[\"index.html\",\"static/app.js\",\"data/nav_timeseries.json\",\"data/unified_backtest.json\",\"static/backtest_multi_csv_all_results.png\"],\"tree_bytes\":4263244},\"tier\":\"R1\",\"url\":\"https://github.com/Jackson906E/Janus-Q-demo\"}]}",
+      "static_fidelity_tier": "R1",
       "stratum": "T",
       "system_id": "SYS-JANUS-Q",
       "system_name": "Janus-Q"
