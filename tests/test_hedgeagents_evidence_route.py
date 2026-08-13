@@ -49,8 +49,8 @@ def test_registry_and_committed_artifact_audit_share_the_author_route() -> None:
     assert row == {key: str(value) for key, value in route.hedgeagents_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "28"
-    assert ft["artifact_reachable_among_all"]["successes"] == "27"
+    assert ft["public_artifact_listed"]["successes"] == "29"
+    assert ft["artifact_reachable_among_all"]["successes"] == "28"
     assert ft["github_head_resolved_among_all"]["successes"] == "27"
     assert sum(
         item["main_FT"] == "Y" and item["static_fidelity_tier"] == "R1"
@@ -69,6 +69,7 @@ def test_registry_and_committed_artifact_audit_share_the_author_route() -> None:
         "SYS-MOUNTAIN-LION",
         "SYS-P1GPT",
         "SYS-RAPTOR",
+        "SYS-MM-DREX",
     }
     assert payload["metadata"]["registry_sha256"] == route.sha256(route.REGISTRY)
 
@@ -115,22 +116,22 @@ def test_paper_route_uses_public_artifact_precedence_without_overclaiming() -> N
 
 def test_static_report_counts_and_tables_include_hedgeagents_once() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
-    assert r"\newcommand{\ArtifactCountFT}{28}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{27}" in generated
-    assert r"\newcommand{\LicensedArtifactCountFT}{15}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{29}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{28}" in generated
+    assert r"\newcommand{\LicensedArtifactCountFT}{16}" in generated
     assert r"\newcommand{\PinnedRepoCountFT}{27}" in generated
     assert (
-        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 40, "
-        r"\artifacttier{R1}: 9, \artifacttier{R2}: 6, \artifacttier{R3}: 12}"
+        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 39, "
+        r"\artifacttier{R1}: 9, \artifacttier{R2}: 6, \artifacttier{R3}: 13}"
         in generated
     )
-    assert r"\newcommand{\TargetedAuditCount}{45}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{46}" in generated
     claims = {
         row["macro"]: row
         for row in csv_rows(ROOT / "paper_runs/submission_evidence/claims.csv")
     }
-    assert claims["ArtifactCountFT"]["rendered_value"] == "28"
-    assert claims["TargetedAuditCount"]["rendered_value"] == "45"
+    assert claims["ArtifactCountFT"]["rendered_value"] == "29"
+    assert claims["TargetedAuditCount"]["rendered_value"] == "46"
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert "hedgeagents/hedgeagents.github.io" in system_table

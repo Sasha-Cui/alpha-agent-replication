@@ -52,7 +52,7 @@ SYS-MACRO-ECONOMISTS-MACHINE|Macro Economists in the Machine|T|Y|https://arxiv.o
 SYS-MARKET-SENSE-AI|MarketSenseAI lineage|T|Y|https://arxiv.org/abs/2502.00415 ; https://arxiv.org/abs/2604.17327||37|Later validation paper merges into the existing lineage.|IN: sequential stock-analysis/trading system.
 SYS-MASS|MASS|T|Y|https://arxiv.org/abs/2505.10278|https://github.com/gta0804/MASS|—|Paper and official repository are one lineage.|IN: multi-agent sequential trading system.
 SYS-METAPS|MetaPS|T|Y|https://arxiv.org/abs/2606.22385||—|New verified omission.|IN: sequential portfolio-strategy system.
-SYS-MM-DREX|MM-DREX|T|Y|https://arxiv.org/abs/2509.05080||32|One routed-expert trading lineage.|IN: sequential financial trading decisions.
+SYS-MM-DREX|MM-DREX|T|Y|https://arxiv.org/abs/2509.05080|https://anonymous.4open.science/r/MM-ARC-32F7/|32|One routed-expert trading lineage; current v3 is the wholesale MM-ARC replacement and links the anonymous release.|IN: sequential financial trading decisions.
 SYS-MOUNTAIN-LION|MountainLion|T|Y|https://arxiv.org/abs/2507.20474|https://github.com/MountainLionAi/GenAI-Platform ; https://github.com/MountainLionAi/MountainLion|38|One multimodal agent lineage.|IN: sequential trading/portfolio decisions.
 SYS-P1GPT|P1GPT|T|Y|https://arxiv.org/abs/2510.23032|https://github.com/P1GPT/web_demo|39|One multi-agent workflow lineage.|IN: produces investment decisions.
 SYS-QUANT-AGENT-HFT|QuantAgent — Price-Driven Multi-Agent LLMs for High-Frequency Trading|T|Y|https://arxiv.org/abs/2509.09995|https://github.com/Y-Research-SBU/QuantAgent|25|Distinct authors, task, and architecture from the 2024 QuantAgent.|IN: sequential high-frequency trading agent.

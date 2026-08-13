@@ -154,6 +154,24 @@ ARTIFACT_NOTES = {
         "conflict. The shipped path is U.S.-only and cannot supply the six-country "
         "security-level common-task panel.",
     ),
+    "SYS-MM-DREX": (
+        "N",
+        "A pinned three-version audit distinguishes the source-identical legacy "
+        "MM-DREX v1/v2 manuscript from the wholesale v3 MM-ARC replacement and "
+        "inventories 671 legacy and 651 current unique numeric table-result units. "
+        "The v3 paper directly links a substantial 107-file Apache-2.0 release: "
+        "its CI-style Python 3.12 run passes 111 tests, and the package contains "
+        "the 62-asset universe, a 7,440-row acceptance replay, 60 strategy pools, "
+        "and 300 active members. These are code-contract and deployment components, "
+        "not paper results. The retrieved release has 9 Git LFS pointers in place "
+        "of 340,563,208 registered payload bytes, so artifact verification fails "
+        "closed. Its data/model cards explicitly exclude the full benchmark, "
+        "training and experiment-controller history, and four of the five reported "
+        "trained seeds. No result arrays or paper table generator are released, so "
+        "0/671 legacy and 0/651 current table units and 0/18 empirical figure series "
+        "reproduce. The short acceptance replay ships no dated performance stream "
+        "compatible with the six-country monthly common task.",
+    ),
     "SYS-P1GPT": (
         "N",
         "A pinned arXiv-v1 audit rebuilds the 17-page manuscript twice to "
@@ -799,6 +817,7 @@ TARGETED_EXECUTION = {
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
     "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
     "SYS-MACI": "paper_audit:completed_v1_v2_zero_of_321_table_units_21_author_output_plot_units_zero_regenerated_v3_zero_of_442_no_v3_code",
+    "SYS-MM-DREX": "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_v3_release_111_tests_missing_lfs_and_research_lineage",
     "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",
     "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
     "SYS-MOUNTAIN-LION": "paper_audit:completed_zero_of_20_performance_cells_public_components_only",

@@ -4,8 +4,8 @@
       "failure_category_counts": {
         "artifact_unreachable": 3,
         "explicitly_nonrunnable_or_pseudocode": 3,
-        "no_public_artifact": 49,
-        "none": 39,
+        "no_public_artifact": 48,
+        "none": 40,
         "reachable_non_code_artifact": 3,
         "static_package_insufficient": 6
       },
@@ -14,20 +14,20 @@
           "denominator": 103,
           "group": "ALL",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.49514563106796117,
-          "successes": 51,
-          "wilson_95_lower": 0.4005157766877741,
-          "wilson_95_upper": 0.5901245607707564,
+          "proportion": 0.5048543689320388,
+          "successes": 52,
+          "wilson_95_lower": 0.4098754392292435,
+          "wilson_95_upper": 0.5994842233122258,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 54,
+          "denominator": 55,
           "group": "ALL",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9444444444444444,
-          "successes": 51,
-          "wilson_95_lower": 0.8489278568183386,
-          "wilson_95_upper": 0.9809267315453091,
+          "proportion": 0.9454545454545454,
+          "successes": 52,
+          "wilson_95_lower": 0.8514693945594621,
+          "wilson_95_upper": 0.9812767844453155,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
@@ -44,44 +44,44 @@
           "denominator": 103,
           "group": "ALL",
           "metric": "public_artifact_listed",
-          "proportion": 0.5242718446601942,
-          "successes": 54,
-          "wilson_95_lower": 0.42869820922520113,
-          "wilson_95_upper": 0.6181001034821461,
+          "proportion": 0.5339805825242718,
+          "successes": 55,
+          "wilson_95_lower": 0.43816142979955147,
+          "wilson_95_upper": 0.6273562079907344,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "static_R2_or_R3_among_all",
-          "proportion": 0.3592233009708738,
-          "successes": 37,
-          "wilson_95_lower": 0.2731709258664398,
-          "wilson_95_upper": 0.45539886043094663,
+          "proportion": 0.36893203883495146,
+          "successes": 38,
+          "wilson_95_lower": 0.2820299422482874,
+          "wilson_95_upper": 0.46525916913203796,
           "z": 1.959963984540054
         },
         "static_R3_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "static_R3_among_all",
-          "proportion": 0.23300970873786409,
-          "successes": 24,
-          "wilson_95_lower": 0.16187608389419228,
-          "wilson_95_upper": 0.32334247632498886,
+          "proportion": 0.24271844660194175,
+          "successes": 25,
+          "wilson_95_lower": 0.17015036749176593,
+          "wilson_95_upper": 0.3337875178103541,
           "z": 1.959963984540054
         }
       },
       "n_systems": 103,
       "reachability_counts": {
-        "not_listed": 49,
-        "reachable_all": 51,
+        "not_listed": 48,
+        "reachable_all": 52,
         "unreachable_all": 3
       },
       "static_fidelity_counts": {
-        "R0": 52,
+        "R0": 51,
         "R1": 14,
         "R2": 13,
-        "R3": 24
+        "R3": 25
       }
     },
     "B": {
@@ -331,8 +331,8 @@
       "failure_category_counts": {
         "artifact_unreachable": 1,
         "explicitly_nonrunnable_or_pseudocode": 2,
-        "no_public_artifact": 39,
-        "none": 20,
+        "no_public_artifact": 38,
+        "none": 21,
         "static_package_insufficient": 5
       },
       "metrics": {
@@ -340,20 +340,20 @@
           "denominator": 67,
           "group": "F+T",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.40298507462686567,
-          "successes": 27,
-          "wilson_95_lower": 0.2939049277975166,
-          "wilson_95_upper": 0.5225867111888554,
+          "proportion": 0.417910447761194,
+          "successes": 28,
+          "wilson_95_lower": 0.30742300955672297,
+          "wilson_95_upper": 0.5373006849702071,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 28,
+          "denominator": 29,
           "group": "F+T",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9642857142857143,
-          "successes": 27,
-          "wilson_95_lower": 0.8228780225664668,
-          "wilson_95_upper": 0.9936674801509623,
+          "proportion": 0.9655172413793104,
+          "successes": 28,
+          "wilson_95_lower": 0.8282447812067973,
+          "wilson_95_upper": 0.9938867857072374,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
@@ -370,44 +370,44 @@
           "denominator": 67,
           "group": "F+T",
           "metric": "public_artifact_listed",
-          "proportion": 0.417910447761194,
-          "successes": 28,
-          "wilson_95_lower": 0.30742300955672297,
-          "wilson_95_upper": 0.5373006849702071,
+          "proportion": 0.43283582089552236,
+          "successes": 29,
+          "wilson_95_lower": 0.3210431149754174,
+          "wilson_95_upper": 0.5519126350920708,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
           "denominator": 67,
           "group": "F+T",
           "metric": "static_R2_or_R3_among_all",
-          "proportion": 0.26865671641791045,
-          "successes": 18,
-          "wilson_95_lower": 0.17722204912469192,
-          "wilson_95_upper": 0.3851810899966566,
+          "proportion": 0.2835820895522388,
+          "successes": 19,
+          "wilson_95_lower": 0.18970281181710177,
+          "wilson_95_upper": 0.4009323828448048,
           "z": 1.959963984540054
         },
         "static_R3_among_all": {
           "denominator": 67,
           "group": "F+T",
           "metric": "static_R3_among_all",
-          "proportion": 0.1791044776119403,
-          "successes": 12,
-          "wilson_95_lower": 0.10553591339881956,
-          "wilson_95_upper": 0.28747489247918,
+          "proportion": 0.19402985074626866,
+          "successes": 13,
+          "wilson_95_lower": 0.1170517391641159,
+          "wilson_95_upper": 0.3041911222544419,
           "z": 1.959963984540054
         }
       },
       "n_systems": 67,
       "reachability_counts": {
-        "not_listed": 39,
-        "reachable_all": 27,
+        "not_listed": 38,
+        "reachable_all": 28,
         "unreachable_all": 1
       },
       "static_fidelity_counts": {
-        "R0": 40,
+        "R0": 39,
         "R1": 9,
         "R2": 6,
-        "R3": 12
+        "R3": 13
       }
     },
     "M": {
@@ -493,8 +493,8 @@
     "T": {
       "failure_category_counts": {
         "artifact_unreachable": 1,
-        "no_public_artifact": 20,
-        "none": 13,
+        "no_public_artifact": 19,
+        "none": 14,
         "static_package_insufficient": 4
       },
       "metrics": {
@@ -502,20 +502,20 @@
           "denominator": 38,
           "group": "T",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.4473684210526316,
-          "successes": 17,
-          "wilson_95_lower": 0.3014640099805125,
-          "wilson_95_upper": 0.6029370287800753,
+          "proportion": 0.47368421052631576,
+          "successes": 18,
+          "wilson_95_lower": 0.32479023322526057,
+          "wilson_95_upper": 0.6274102861550331,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 18,
+          "denominator": 19,
           "group": "T",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9444444444444444,
-          "successes": 17,
-          "wilson_95_lower": 0.7424269921812741,
-          "wilson_95_upper": 0.990124809021697,
+          "proportion": 0.9473684210526315,
+          "successes": 18,
+          "wilson_95_lower": 0.753612688331012,
+          "wilson_95_upper": 0.9906480059376995,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
@@ -532,44 +532,44 @@
           "denominator": 38,
           "group": "T",
           "metric": "public_artifact_listed",
-          "proportion": 0.47368421052631576,
-          "successes": 18,
-          "wilson_95_lower": 0.32479023322526057,
-          "wilson_95_upper": 0.6274102861550331,
+          "proportion": 0.5,
+          "successes": 19,
+          "wilson_95_lower": 0.34849928364395105,
+          "wilson_95_upper": 0.6515007163560489,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
           "denominator": 38,
           "group": "T",
           "metric": "static_R2_or_R3_among_all",
-          "proportion": 0.3157894736842105,
-          "successes": 12,
-          "wilson_95_lower": 0.1908460367559618,
-          "wilson_95_upper": 0.4745575989060954,
+          "proportion": 0.34210526315789475,
+          "successes": 13,
+          "wilson_95_lower": 0.21212415179959412,
+          "wilson_95_upper": 0.5010789644821693,
           "z": 1.959963984540054
         },
         "static_R3_among_all": {
           "denominator": 38,
           "group": "T",
           "metric": "static_R3_among_all",
-          "proportion": 0.18421052631578946,
-          "successes": 7,
-          "wilson_95_lower": 0.09221765185221271,
-          "wilson_95_upper": 0.334188580711314,
+          "proportion": 0.21052631578947367,
+          "successes": 8,
+          "wilson_95_lower": 0.11074791842995879,
+          "wilson_95_upper": 0.363457794753274,
           "z": 1.959963984540054
         }
       },
       "n_systems": 38,
       "reachability_counts": {
-        "not_listed": 20,
-        "reachable_all": 17,
+        "not_listed": 19,
+        "reachable_all": 18,
         "unreachable_all": 1
       },
       "static_fidelity_counts": {
-        "R0": 21,
+        "R0": 20,
         "R1": 5,
         "R2": 5,
-        "R3": 7
+        "R3": 8
       }
     }
   },
@@ -636,6 +636,13 @@
       },
       {
         "corrected_at_utc": "2026-08-12T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/mm_arc/source_provenance.json",
+        "reason": "current v3 PDF directly links a substantial anonymous 4open release",
+        "source_archive_sha256": "b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d",
+        "system_id": "SYS-MM-DREX"
+      },
+      {
+        "corrected_at_utc": "2026-08-12T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/mountainlion/manifest.json",
         "reason": "paper/source audit recovered an attributable product frontend and GenAI platform; both are runnable components but neither ships the paper experiment or result lineage",
         "source_heads": [
@@ -663,7 +670,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "6defb5c3006b6ac5e0d3eb1408e9f3cfc4e8d1c8986263f682e86139ed02fbbe",
+    "registry_sha256": "6f163ca00da07ffa2c319307c52ac47e6a2d8379fc87c23e38a5358e761eb9d8",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
