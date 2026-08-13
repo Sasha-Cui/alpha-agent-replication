@@ -225,7 +225,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     expected = {
         "CensusACL2024emnlpmain63": "paper_audit:partial_174_of_468_traditional_baseline_cells",
         "CensusACL2026findingsacl456": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
-        "CensusArxiv231113743": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
+        "CensusArxiv231113743": (
+            "paper_audit:partial_227_of_235_author_output_cells_corroborated_"
+            "67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells"
+        ),
         "CensusArxiv240218485": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
         "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",

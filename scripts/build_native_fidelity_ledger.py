@@ -467,12 +467,16 @@ ARTIFACT_NOTES = {
         "paper sources, 112/114 common table cells change while 15/16 rasters are reused.",
     ),
     "SYS-FIN-MEM": (
-        "N",
-        "A pinned paper audit recomputes 16/40 repeated Buy-and-Hold metric cells "
-        "from the released formula and a current Yahoo snapshot, including both full "
-        "TSLA ablation rows. All 195 non-Buy-and-Hold cells remain unverifiable: the "
-        "release ships fake/sample inputs but no native action paths, checkpoints, or "
-        "five-trial outputs, and its sole config differs from the paper.",
+        "Y",
+        "A pinned full-history audit finds an executed author metrics notebook and 18 "
+        "dated action CSVs in a 2023-11-30 public commit; all 33 files were deleted from "
+        "the current tree on 2024-02-09. The notebook corroborates 227/235 displayed "
+        "paper cells (223 exact and four one-last-decimal differences), while eight "
+        "Table 4 volatility cells conflict with both the notebook and the paper's own "
+        "annualization identity. Replaying the historical ablation actions independently "
+        "matches 67/75 displayed Table 3--5 cells. This is author-output and metric-replay "
+        "evidence, not end-to-end FinMem reproduction: the original inputs, memories, "
+        "complete five-trial lineage, and exact paper configuration remain absent.",
     ),
     "SYS-HEDGE-AGENTS": (
         "N",
@@ -1305,7 +1309,7 @@ TARGETED_EXECUTION = {
     "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": "paper_audit:completed_zero_of_162_v2_table_results_missing_hybrid_pipeline_and_v2_lineage",
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
-    "SYS-FIN-MEM": "paper_audit:completed_16_of_235_current_snapshot_buy_hold_matches",
+    "SYS-FIN-MEM": "paper_audit:partial_227_of_235_author_output_cells_corroborated_67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells",
     "SYS-FACTFIN": "paper_audit:completed_zero_of_525_numeric_cells_no_public_system_or_benchmark_release",
     "SYS-FACTOR-MINER": "paper_audit:completed_110_formula_syntax_components_zero_of_488_table_cells_zero_of_12100_heatmap_cells_no_author_native_pipeline",
     "SYS-FIN-VISION": "paper_audit:completed_zero_of_72_performance_cells_no_public_system_source",
@@ -1341,6 +1345,7 @@ OUTPUT_BLOCKS = {
     "SYS-CRYPTO-TRADE": "A3_wrong_asset_class_crypto",
     "SYS-GURU-AGENTS": "A3_US_only_not_six_country",
     "SYS-GPT-SIGNAL": "A3_US_only_not_six_country",
+    "SYS-FIN-MEM": "A3_US_only_not_six_country",
     "SYS-MACI": "A3_wrong_asset_class_crypto",
     "SYS-RAPTOR": "A3_US_only_not_six_country",
 }

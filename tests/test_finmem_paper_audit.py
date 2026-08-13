@@ -55,25 +55,58 @@ def test_table_4_encodes_the_papers_volatility_values_without_repairing_them() -
     }
 
 
-def test_committed_audit_is_non_reproduction_and_fail_closed() -> None:
+def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() -> None:
     output = ROOT / "paper_runs/paper_replication_audits/finmem"
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     conformance = read_csv(output / "tables_2_5_conformance.csv")
     volatility = read_csv(output / "paper_volatility_identity_audit.csv")
     archive = read_csv(output / "released_archive_inventory.csv")
+    author_outputs = read_csv(output / "historical_author_output_conformance.csv")
+    action_inventory = read_csv(output / "historical_action_inventory.csv")
+    action_reproduction = read_csv(output / "historical_action_metric_reproduction.csv")
 
-    assert manifest["overall_status"] == "not_reproduced_missing_native_actions_and_original_inputs"
+    assert (
+        manifest["overall_status"]
+        == "author_outputs_partially_verified_not_end_to_end_reproduced"
+    )
     assert manifest["full_paper_reproduced"] is False
+    assert manifest["end_to_end_agent_result_cells_reproduced"] == 0
     assert manifest["paper_result_rows_total"] == 47
     assert manifest["paper_result_cells_total"] == 235
+    assert manifest["historical_author_output_cells_exact"] == 223
+    assert manifest["historical_author_output_cells_one_last_decimal_unit_difference"] == 4
+    assert manifest["historical_author_output_cells_corroborated"] == 227
+    assert manifest["historical_author_output_cells_conflicted_with_paper"] == 8
+    assert manifest["historical_author_output_rows_all_cells_exact"] == 40
+    assert manifest["historical_author_output_rows_corroborated"] == 43
+    assert manifest["historical_author_output_rows_conflicted_with_paper"] == 4
+    assert manifest["historical_action_metric_cells_recomputed"] == 75
+    assert manifest["historical_action_metric_cells_matched"] == 67
+    assert manifest["historical_action_metric_cells_conflicted_with_paper"] == 8
+    assert manifest["historical_action_metric_rows_fully_matched"] == 11
+    assert manifest["historical_action_metric_rows_conflicted_with_paper"] == 4
     assert manifest["buy_hold_cells_recomputed"] == 40
     assert manifest["buy_hold_cells_matched"] == 16
     assert manifest["buy_hold_cells_mismatched_against_current_yahoo"] == 24
-    assert manifest["non_buy_hold_cells_unverifiable"] == 195
+    assert manifest["current_head_non_buy_hold_cells_without_native_outputs"] == 195
+    assert manifest["non_buy_hold_cells_exact_in_historical_author_output"] == 185
+    assert manifest["non_buy_hold_cells_corroborated_by_historical_author_output"] == 189
     assert manifest["paper_result_rows_fully_matched"] == 2
     assert manifest["paper_result_rows_mismatched_against_current_yahoo"] == 6
     assert manifest["paper_result_rows_unverifiable"] == 39
-    assert manifest["native_action_or_return_files_shipped"] == 0
+    assert manifest["current_head_native_action_or_return_files_shipped"] == 0
+    assert manifest["historical_action_csvs_in_public_git_history"] == 18
+    history = manifest["historical_repository_audit"]
+    assert history["is_shallow_repository"] is False
+    assert history["reachable_commits"] == 55
+    assert history["root_commit"] == audit.SOURCE_ROOT_COMMIT
+    assert history["historical_artifact_commit"] == audit.HISTORICAL_ARTIFACT_COMMIT
+    assert history["historical_tree_files"] == 33
+    assert history["historical_action_csvs"] == 18
+    assert history["historical_notebook_sha256"] == audit.HISTORICAL_NOTEBOOK_SHA256
+    assert history["historical_metrics_sha256"] == audit.HISTORICAL_METRICS_SHA256
+    assert history["deletion_commit"] == audit.HISTORICAL_DELETION_COMMIT
+    assert history["deleted_tree_files"] == 33
     assert manifest["original_paper_news_filings_snapshot_shipped"] is False
     assert manifest["paper_selects_best_risk_profile_on_test_outcome"] is True
     assert manifest["paper_metric_is_self_financing_portfolio_return"] is False
@@ -102,5 +135,66 @@ def test_committed_audit_is_non_reproduction_and_fail_closed() -> None:
     assert all("agent_action" in row["role"] or "paper_data" in row["role"] for row in archive)
     assert not any(row["role"] in {"native_action", "paper_result"} for row in archive)
 
+    assert len(author_outputs) == 235
+    assert Counter(row["status"] for row in author_outputs) == {
+        "author_output_exact_displayed_precision_match": 223,
+        "author_output_one_last_decimal_unit_difference": 4,
+        "paper_conflicts_with_preserved_author_output": 8,
+    }
+    substantive_conflicts = [
+        row
+        for row in author_outputs
+        if row["status"] == "paper_conflicts_with_preserved_author_output"
+    ]
+    assert {row["paper_table"] for row in substantive_conflicts} == {"4"}
+    assert {row["metric"] for row in substantive_conflicts} == {
+        "daily_volatility_pct",
+        "annualized_volatility_pct",
+    }
+    assert {row["strategy_or_configuration"] for row in substantive_conflicts} == {
+        "buy_and_hold",
+        "self_adaptive",
+        "risk_seeking",
+        "risk_averse",
+    }
+
+    assert len(action_inventory) == 18
+    assert len({row["path"] for row in action_inventory}) == 18
+    assert all(row["commit"] == audit.HISTORICAL_ARTIFACT_COMMIT for row in action_inventory)
+    assert all(row["parsed_action_rows"] and row["sha256"] for row in action_inventory)
+
+    assert len(action_reproduction) == 75
+    assert Counter(row["status"] for row in action_reproduction) == {
+        "historical_action_exact_displayed_precision_match": 67,
+        "paper_conflicts_with_historical_action_replay": 8,
+    }
+    assert Counter(
+        (row["paper_table"], row["status"]) for row in action_reproduction
+    ) == {
+        ("3", "historical_action_exact_displayed_precision_match"): 30,
+        ("4", "historical_action_exact_displayed_precision_match"): 12,
+        ("4", "paper_conflicts_with_historical_action_replay"): 8,
+        ("5", "historical_action_exact_displayed_precision_match"): 25,
+    }
+
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
+
+
+def test_native_ledger_credits_historical_actions_without_claiming_common_task_fidelity() -> None:
+    rows = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
+    row = next(item for item in rows if item["system_id"] == "SYS-FIN-MEM")
+    assert row["public_artifact_status"] == "reachable_static_snapshot"
+    assert row["static_tier"] == "R3"
+    assert row["native_dated_signal_or_return_shipped"] == "Y"
+    assert row["prespecified_G7_monthly_common_task_compatible"] == "N"
+    assert row["blocking_stage"] == "A3_US_only_not_six_country"
+    assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
+    assert row["targeted_execution_audit_status"] == (
+        "paper_audit:partial_227_of_235_author_output_cells_corroborated_"
+        "67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells"
+    )
+    note = row["concise_evidence_note"]
+    assert "223 exact" in note
+    assert "18 dated action CSVs" in note
+    assert "not end-to-end FinMem reproduction" in note

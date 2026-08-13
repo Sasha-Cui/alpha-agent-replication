@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 """Audit FinMem's paper tables against pinned public source and price inputs.
 
-Only the paper-defined Buy-and-Hold metric path is recomputed. The audit does
-not load untrusted pickle files, call an LLM/embedding endpoint, or treat the
-released fake sample data as the paper's real experimental panel.
+The current source tree omits the paper outputs, but the repository's public
+history preserves an executed metrics notebook and dated action CSVs. This
+audit distinguishes author-output verification, independent metric replay from
+those actions, and an end-to-end agent rerun. It never loads untrusted pickle
+files, calls an LLM/embedding endpoint, or treats fake sample data as paper data.
 """
 
 from __future__ import annotations
 
 import argparse
+import ast
 import csv
+from datetime import datetime, timezone
 import hashlib
+import io
 import json
 import math
 import os
@@ -25,6 +30,16 @@ import numpy as np
 
 
 SOURCE_COMMIT = "be814aa47970de9bf2fdd6a1d5a60ae5cf361b46"
+SOURCE_ROOT_COMMIT = "85028214b043b38508d07587d01820324503d69a"
+HISTORICAL_ARTIFACT_COMMIT = "0b7f499e556668bf49885fd8836efe85ef51558f"
+HISTORICAL_DELETION_COMMIT = "45169ea8509c29113c7e7945dc52a6b3e43521eb"
+HISTORICAL_NOTEBOOK_PATH = "Visualize-metrics-test/metrics.ipynb"
+HISTORICAL_NOTEBOOK_SHA256 = "3096d6a67336270b5b820bd92408733b641abe73edaf04fa9215ec36d3fcf6dc"
+HISTORICAL_METRICS_PATH = "Visualize-metrics-test/metrics.py"
+HISTORICAL_METRICS_SHA256 = "ffec58d7bdc4b9e94e9bdcf2205c98ab9bef27ce8ddb95e377e154efeae15f21"
+EXPECTED_REACHABLE_COMMITS = 55
+EXPECTED_HISTORICAL_TREE_FILES = 33
+EXPECTED_HISTORICAL_ACTION_CSVS = 18
 PAPER_SHA256 = "acb7527d02871cfad7d2754314b9a803f917b326847a456579df9cf7b0a648b9"
 PAPER_URL = "https://arxiv.org/pdf/2311.13743"
 SOURCE_URL = "https://github.com/pipiku915/finmem-llm-stocktrading"
@@ -43,6 +58,70 @@ PRICE_SHA256 = {
     "NFLX.json": "4bb40883ba169119eac1093d4826099e7124dfeb2432d1429c6e7da8b365ab8c",
     "TSLA.json": "9671c00a781703776f339316c03207f7503429bdd636bca800ccfcfa956c34b0",
     "TSLA_ablation.json": "f360ce8c19140b159daaf50c4561a228eb46a05d6b3f26e0e0182f79ca75ec87",
+}
+
+NOTEBOOK_TABLE_CELLS = {2: 15, 3: 17, 4: 18, 5: 16}
+NOTEBOOK_MODEL_NAMES = {
+    2: {
+        "BuyHold": "buy_and_hold",
+        "FinMe": "finmem",
+        "Park": "generative_agents",
+        "FinGPT": "fingpt",
+        "A2C": "a2c",
+        "PPO": "ppo",
+        "DQN": "dqn",
+    },
+    3: {
+        "BuyHold": "buy_and_hold",
+        "ChatGPT3.5-Turbo": "gpt_3_5_turbo",
+        "ChatGPT4": "gpt_4",
+        "ChatGPT4-Turbo": "gpt_4_turbo",
+        "davinci-003": "davinci_003",
+        "Llama-70b-chat": "llama2_70b_chat",
+    },
+    4: {
+        "BuyHold": "buy_and_hold",
+        "Self Adaptive": "self_adaptive",
+        "Risk Seeking": "risk_seeking",
+        "Risk Averse": "risk_averse",
+    },
+    5: {
+        "BuyHold": "buy_and_hold",
+        "Top 1": "top_1",
+        "Top 3": "top_3",
+        "Top 5": "top_5",
+        "Top 10": "top_10",
+    },
+}
+NOTEBOOK_METRIC_NAMES = {
+    "Cumulative Return": "cumulative_return_pct",
+    "Sharpe Ratio": "sharpe_ratio",
+    "Standard Deviation": "daily_volatility_pct",
+    "Annualized Volatility": "annualized_volatility_pct",
+    "Max Drawdown": "max_drawdown_pct",
+}
+PERCENT_METRICS = {
+    "cumulative_return_pct",
+    "daily_volatility_pct",
+    "annualized_volatility_pct",
+    "max_drawdown_pct",
+}
+
+# Each ablation action path survives in the public Git history at the pinned
+# artifact commit. Buy-and-Hold is generated as an all-ones direction path.
+HISTORICAL_ABLATION_ACTION_PATHS = {
+    (3, "gpt_3_5_turbo"): "Visualize-metrics-test/LLM/dat_df_GPT3.5_turbo.csv",
+    (3, "gpt_4"): "Visualize-metrics-test/LLM/TSLA_GPT4.csv",
+    (3, "gpt_4_turbo"): "Visualize-metrics-test/LLM/Tsla_GPT4_turbo.csv",
+    (3, "davinci_003"): "Visualize-metrics-test/LLM/dat_df_davicin003.csv",
+    (3, "llama2_70b_chat"): "Visualize-metrics-test/LLM/dat_df_llama.csv",
+    (4, "self_adaptive"): "Visualize-metrics-test/character/TSLA_Bi.csv",
+    (4, "risk_seeking"): "Visualize-metrics-test/character/TSLA_seeking_V8.csv",
+    (4, "risk_averse"): "Visualize-metrics-test/character/TSLA_averse_V6.csv",
+    (5, "top_1"): "Visualize-metrics-test/Topk/TSLA_top1.csv",
+    (5, "top_3"): "Visualize-metrics-test/Topk/TSLA_top3.csv",
+    (5, "top_5"): "Visualize-metrics-test/Topk/TSLA_top5.csv",
+    (5, "top_10"): "Visualize-metrics-test/Topk/TSLA_top10.csv",
 }
 
 
@@ -117,6 +196,23 @@ def git_head(root: Path) -> str:
     ).stdout.strip()
 
 
+def git_text(root: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def git_blob(root: Path, commit: str, path: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(root), "show", f"{commit}:{path}"],
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequence[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
@@ -158,7 +254,16 @@ def load_adjusted_prices(path: Path) -> Tuple[np.ndarray, List[int]]:
 
 def source_buy_hold_metrics(prices: np.ndarray) -> Dict[str, float]:
     """Reproduce data-pipeline/07-metrics.py with all actions fixed to +1."""
-    daily = np.diff(np.log(prices))
+    return source_action_metrics(prices, np.ones(len(prices), dtype=float))
+
+
+def source_action_metrics(prices: np.ndarray, actions: np.ndarray) -> Dict[str, float]:
+    """Reproduce the released signed-log-return metric path."""
+    if len(actions) < len(prices) - 1:
+        raise RuntimeError(
+            f"Action path has {len(actions)} entries for {len(prices)} prices"
+        )
+    daily = np.diff(np.log(prices)) * actions[: len(prices) - 1]
     daily_std = float(np.std(daily, ddof=1))
     cumulative = float(np.sum(daily))
     annualized = daily_std * math.sqrt(252)
@@ -176,6 +281,279 @@ def source_buy_hold_metrics(prices: np.ndarray) -> Dict[str, float]:
         "annualized_volatility_pct": annualized * 100,
         "max_drawdown_pct": max_drawdown * 100,
     }
+
+
+def historical_repository_audit(source_root: Path) -> Dict[str, Any]:
+    shallow = git_text(source_root, "rev-parse", "--is-shallow-repository").strip()
+    commit_count = int(git_text(source_root, "rev-list", "--all", "--count").strip())
+    roots = git_text(source_root, "rev-list", "--max-parents=0", "--all").splitlines()
+    paths = git_text(
+        source_root,
+        "ls-tree",
+        "-r",
+        "--name-only",
+        HISTORICAL_ARTIFACT_COMMIT,
+        "Visualize-metrics-test",
+    ).splitlines()
+    csv_paths = [path for path in paths if path.endswith(".csv")]
+    deleted = [
+        line.split("\t", 1)[1]
+        for line in git_text(
+            source_root,
+            "diff-tree",
+            "--no-commit-id",
+            "--name-status",
+            "-r",
+            HISTORICAL_DELETION_COMMIT,
+            "--",
+            "Visualize-metrics-test",
+        ).splitlines()
+        if line.startswith("D\t")
+    ]
+    notebook = git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, HISTORICAL_NOTEBOOK_PATH)
+    metrics = git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, HISTORICAL_METRICS_PATH)
+    checks = {
+        "full_non_shallow_clone": shallow == "false",
+        "reachable_commit_count": commit_count == EXPECTED_REACHABLE_COMMITS,
+        "root_commit": roots == [SOURCE_ROOT_COMMIT],
+        "historical_tree_file_count": len(paths) == EXPECTED_HISTORICAL_TREE_FILES,
+        "historical_action_csv_count": len(csv_paths) == EXPECTED_HISTORICAL_ACTION_CSVS,
+        "deletion_removed_entire_historical_tree": sorted(deleted) == sorted(paths),
+        "notebook_sha256": hashlib.sha256(notebook).hexdigest()
+        == HISTORICAL_NOTEBOOK_SHA256,
+        "metrics_sha256": hashlib.sha256(metrics).hexdigest() == HISTORICAL_METRICS_SHA256,
+    }
+    if not all(checks.values()):
+        raise RuntimeError(f"Pinned FinMem Git history changed: {checks}")
+    return {
+        "is_shallow_repository": shallow == "true",
+        "reachable_commits": commit_count,
+        "root_commit": roots[0],
+        "historical_artifact_commit": HISTORICAL_ARTIFACT_COMMIT,
+        "historical_artifact_authored_at": git_text(
+            source_root, "show", "-s", "--format=%aI", HISTORICAL_ARTIFACT_COMMIT
+        ).strip(),
+        "historical_tree_files": len(paths),
+        "historical_action_csvs": len(csv_paths),
+        "historical_notebook_path": HISTORICAL_NOTEBOOK_PATH,
+        "historical_notebook_sha256": HISTORICAL_NOTEBOOK_SHA256,
+        "historical_metrics_path": HISTORICAL_METRICS_PATH,
+        "historical_metrics_sha256": HISTORICAL_METRICS_SHA256,
+        "deletion_commit": HISTORICAL_DELETION_COMMIT,
+        "deletion_authored_at": git_text(
+            source_root, "show", "-s", "--format=%aI", HISTORICAL_DELETION_COMMIT
+        ).strip(),
+        "deleted_tree_files": len(deleted),
+    }
+
+
+def notebook_text_output(notebook: Mapping[str, Any], cell_index: int) -> str:
+    outputs = notebook["cells"][cell_index].get("outputs", [])
+    values = []
+    for output in outputs:
+        text = output.get("data", {}).get("text/plain", output.get("text", ""))
+        if isinstance(text, list):
+            text = "".join(text)
+        if text:
+            values.append(str(text))
+    if len(values) != 1:
+        raise RuntimeError(f"Expected one text output in notebook cell {cell_index}")
+    value = values[0]
+    if value.startswith(("'", '"')):
+        value = ast.literal_eval(value)
+    return value
+
+
+def parse_notebook_author_outputs(source_root: Path) -> List[Dict[str, Any]]:
+    notebook = json.loads(
+        git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, HISTORICAL_NOTEBOOK_PATH)
+    )
+    values: Dict[Tuple[int, str, str, str], float] = {}
+    for table, cell_index in NOTEBOOK_TABLE_CELLS.items():
+        text = notebook_text_output(notebook, cell_index).replace("Buy & Hold", "BuyHold")
+        lines = [line.strip() for line in text.splitlines()]
+        if table == 2:
+            for line in lines:
+                parts = [part.strip().rstrip("\\") for part in line.split(" & ")]
+                if len(parts) != 7 or parts[0] not in {"TSLA", "NFLX", "AMZN", "MSFT", "COIN"}:
+                    continue
+                scope, model = parts[:2]
+                strategy = NOTEBOOK_MODEL_NAMES[table][model]
+                for metric, raw in zip(METRICS, parts[2:]):
+                    value = float(raw)
+                    values[(table, scope, strategy, metric)] = (
+                        value * 100 if metric in PERCENT_METRICS else value
+                    )
+        else:
+            header = next(line for line in lines if line.startswith("Unnamed: 0 & "))
+            models = [part.strip().rstrip("\\").strip() for part in header.split(" & ")[1:]]
+            for line in lines:
+                parts = [part.strip().rstrip("\\") for part in line.split(" & ")]
+                if not parts or parts[0] not in NOTEBOOK_METRIC_NAMES:
+                    continue
+                metric = NOTEBOOK_METRIC_NAMES[parts[0]]
+                for model, raw in zip(models, parts[1:]):
+                    strategy = NOTEBOOK_MODEL_NAMES[table][model]
+                    value = float(raw)
+                    values[(table, "TSLA_ablation", strategy, metric)] = (
+                        value * 100 if metric in PERCENT_METRICS else value
+                    )
+
+    targets = paper_table_rows()
+    if len(values) != len(targets) or set(values) != {
+        (
+            row["paper_table"],
+            row["scope"],
+            row["strategy_or_configuration"],
+            row["metric"],
+        )
+        for row in targets
+    }:
+        raise RuntimeError("Historical notebook does not cover every paper table cell")
+    rows = []
+    for target in targets:
+        key = (
+            target["paper_table"],
+            target["scope"],
+            target["strategy_or_configuration"],
+            target["metric"],
+        )
+        notebook_value = values[key]
+        error = abs(target["paper_value"] - notebook_value)
+        if error <= DISPLAY_TOLERANCE:
+            status = "author_output_exact_displayed_precision_match"
+        elif error <= 0.0001001:
+            status = "author_output_one_last_decimal_unit_difference"
+        else:
+            status = "paper_conflicts_with_preserved_author_output"
+        rows.append(
+            {
+                **target,
+                "historical_notebook_value": notebook_value,
+                "absolute_error": error,
+                "display_tolerance": DISPLAY_TOLERANCE,
+                "status": status,
+                "evidence_commit": HISTORICAL_ARTIFACT_COMMIT,
+                "evidence_path": HISTORICAL_NOTEBOOK_PATH,
+            }
+        )
+    return rows
+
+
+def parse_action_csv(blob: bytes) -> Tuple[List[Tuple[datetime, int]], str]:
+    rows = list(csv.DictReader(io.StringIO(blob.decode("utf-8-sig"))))
+    if not rows:
+        raise RuntimeError("Historical action CSV is empty")
+    fields = set(rows[0])
+    date_field = next((name for name in ("date", "dates") if name in fields), None)
+    action_field = next(
+        (name for name in ("direction", "action", "actions") if name in fields), None
+    )
+    if not date_field or not action_field:
+        raise RuntimeError(f"Unknown historical action schema: {sorted(fields)}")
+    parsed = []
+    for row in rows:
+        raw_date = row.get(date_field, "").strip()
+        raw_action = row.get(action_field, "").strip()
+        if not raw_date or not raw_action:
+            continue
+        parsed.append((datetime.strptime(raw_date, "%m/%d/%y"), int(float(raw_action))))
+    return parsed, f"{date_field}+{action_field}"
+
+
+def historical_action_inventory(source_root: Path) -> List[Dict[str, Any]]:
+    paths = sorted(
+        path
+        for path in git_text(
+            source_root,
+            "ls-tree",
+            "-r",
+            "--name-only",
+            HISTORICAL_ARTIFACT_COMMIT,
+            "Visualize-metrics-test",
+        ).splitlines()
+        if path.endswith(".csv")
+    )
+    rows = []
+    for path in paths:
+        blob = git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, path)
+        actions, schema = parse_action_csv(blob)
+        rows.append(
+            {
+                "commit": HISTORICAL_ARTIFACT_COMMIT,
+                "path": path,
+                "sha256": hashlib.sha256(blob).hexdigest(),
+                "parsed_action_rows": len(actions),
+                "first_action_date": min(date for date, _ in actions).date().isoformat(),
+                "last_action_date": max(date for date, _ in actions).date().isoformat(),
+                "schema": schema,
+                "direction_values": ",".join(
+                    str(value) for value in sorted({value for _, value in actions})
+                ),
+            }
+        )
+    if len(rows) != EXPECTED_HISTORICAL_ACTION_CSVS:
+        raise RuntimeError(f"Expected 18 historical action CSVs, found {len(rows)}")
+    return rows
+
+
+def historical_action_reproduction(
+    source_root: Path, price_root: Path
+) -> List[Dict[str, Any]]:
+    prices, timestamps = load_adjusted_prices(price_root / "TSLA_ablation.json")
+    trading_dates = [
+        datetime.fromtimestamp(timestamp, timezone.utc).replace(tzinfo=None).date()
+        for timestamp in timestamps
+    ]
+    first_date, last_date = min(trading_dates), max(trading_dates)
+    action_cache: Dict[str, np.ndarray] = {}
+    targets = [row for row in paper_table_rows() if row["paper_table"] in {3, 4, 5}]
+    rows = []
+    for target in targets:
+        strategy = target["strategy_or_configuration"]
+        path = HISTORICAL_ABLATION_ACTION_PATHS.get((target["paper_table"], strategy), "")
+        if strategy == "buy_and_hold":
+            actions = np.ones(len(prices), dtype=float)
+            evidence = "synthetic_all_ones_buy_and_hold_path"
+        else:
+            if path not in action_cache:
+                parsed, _ = parse_action_csv(
+                    git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, path)
+                )
+                filtered = [
+                    (date.date(), value)
+                    for date, value in parsed
+                    if first_date <= date.date() <= last_date
+                ]
+                action_dates = [date for date, _ in filtered]
+                if action_dates != trading_dates:
+                    raise RuntimeError(
+                        f"Historical action dates do not align to Yahoo trading dates: {path}"
+                    )
+                action_cache[path] = np.asarray(
+                    [value for _, value in filtered], dtype=float
+                )
+            actions = action_cache[path]
+            evidence = f"{HISTORICAL_ARTIFACT_COMMIT}:{path}"
+        computed = source_action_metrics(prices, actions)[target["metric"]]
+        error = abs(target["paper_value"] - computed)
+        rows.append(
+            {
+                **target,
+                "recomputed_value": computed,
+                "absolute_error": error,
+                "display_tolerance": DISPLAY_TOLERANCE,
+                "status": (
+                    "historical_action_exact_displayed_precision_match"
+                    if error <= DISPLAY_TOLERANCE
+                    else "paper_conflicts_with_historical_action_replay"
+                ),
+                "evidence": evidence,
+                "price_input": "TSLA_ablation.json",
+                "price_input_sha256": PRICE_SHA256["TSLA_ablation.json"],
+            }
+        )
+    return rows
 
 
 def price_input_inventory(price_root: Path) -> Tuple[List[Dict[str, Any]], Dict[str, Dict[str, float]]]:
@@ -403,6 +781,10 @@ def build_audit(
     volatility = volatility_identity_audit()
     archive = archive_inventory(source_root)
     config = source_config_audit(source_root)
+    history = historical_repository_audit(source_root)
+    author_outputs = parse_notebook_author_outputs(source_root)
+    action_inventory = historical_action_inventory(source_root)
+    action_reproduction = historical_action_reproduction(source_root, price_root)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "tables_2_5_conformance.csv", conformance, list(conformance[0]))
@@ -410,6 +792,21 @@ def build_audit(
     write_csv(output_dir / "paper_volatility_identity_audit.csv", volatility, list(volatility[0]))
     write_csv(output_dir / "released_archive_inventory.csv", archive, list(archive[0]))
     write_csv(output_dir / "source_config_conformance.csv", config, list(config[0]))
+    write_csv(
+        output_dir / "historical_author_output_conformance.csv",
+        author_outputs,
+        list(author_outputs[0]),
+    )
+    write_csv(
+        output_dir / "historical_action_inventory.csv",
+        action_inventory,
+        list(action_inventory[0]),
+    )
+    write_csv(
+        output_dir / "historical_action_metric_reproduction.csv",
+        action_reproduction,
+        list(action_reproduction[0]),
+    )
 
     matched = sum(row["status"] == "exact_displayed_precision_match" for row in conformance)
     mismatched = sum(row["status"].startswith("mismatch") for row in conformance)
@@ -440,6 +837,46 @@ def build_audit(
     if volatility_mismatches != 4:
         raise RuntimeError(f"Expected four Table 4 annualization mismatches, got {volatility_mismatches}")
 
+    author_matched = sum(
+        row["status"] == "author_output_exact_displayed_precision_match"
+        for row in author_outputs
+    )
+    author_last_decimal = sum(
+        row["status"] == "author_output_one_last_decimal_unit_difference"
+        for row in author_outputs
+    )
+    author_conflicted = sum(
+        row["status"] == "paper_conflicts_with_preserved_author_output"
+        for row in author_outputs
+    )
+    action_matched = sum(
+        row["status"] == "historical_action_exact_displayed_precision_match"
+        for row in action_reproduction
+    )
+    action_conflicted = len(action_reproduction) - action_matched
+    if (author_matched, author_last_decimal, author_conflicted) != (223, 4, 8):
+        raise RuntimeError(
+            "Pinned FinMem historical author-output counts changed: "
+            f"matched={author_matched}, last_decimal={author_last_decimal}, "
+            f"conflicted={author_conflicted}"
+        )
+    if (action_matched, action_conflicted) != (67, 8):
+        raise RuntimeError(
+            "Pinned FinMem historical action-replay counts changed: "
+            f"matched={action_matched}, conflicted={action_conflicted}"
+        )
+    conflict_keys = {
+        (row["paper_table"], row["strategy_or_configuration"], row["metric"])
+        for row in author_outputs
+        if row["status"] == "paper_conflicts_with_preserved_author_output"
+    }
+    if conflict_keys != {
+        (4, strategy, metric)
+        for strategy in ("buy_and_hold", "self_adaptive", "risk_seeking", "risk_averse")
+        for metric in ("daily_volatility_pct", "annualized_volatility_pct")
+    }:
+        raise RuntimeError(f"Unexpected FinMem author-output conflicts: {conflict_keys}")
+
     result_dirs = [
         source_root / f"data/{index:02d}_{name}"
         for index, name in (
@@ -458,9 +895,10 @@ def build_audit(
         if path.is_file() and path.name != ".gitkeep"
     ]
     manifest: Dict[str, Any] = {
-        "audit": "FinMem paper claims versus pinned public source and price inputs",
-        "overall_status": "not_reproduced_missing_native_actions_and_original_inputs",
+        "audit": "FinMem paper claims versus pinned public source history and price inputs",
+        "overall_status": "author_outputs_partially_verified_not_end_to_end_reproduced",
         "full_paper_reproduced": False,
+        "end_to_end_agent_result_cells_reproduced": 0,
         "paper_url": PAPER_URL,
         "paper_sha256": PAPER_SHA256,
         "source_url": SOURCE_URL,
@@ -468,10 +906,24 @@ def build_audit(
         "paper_numeric_tables_audited": [2, 3, 4, 5],
         "paper_result_rows_total": len(row_groups),
         "paper_result_cells_total": len(conformance),
+        "historical_author_output_cells_exact": author_matched,
+        "historical_author_output_cells_one_last_decimal_unit_difference": author_last_decimal,
+        "historical_author_output_cells_corroborated": author_matched + author_last_decimal,
+        "historical_author_output_cells_conflicted_with_paper": author_conflicted,
+        "historical_author_output_rows_all_cells_exact": 40,
+        "historical_author_output_rows_corroborated": 43,
+        "historical_author_output_rows_conflicted_with_paper": 4,
+        "historical_action_metric_cells_recomputed": len(action_reproduction),
+        "historical_action_metric_cells_matched": action_matched,
+        "historical_action_metric_cells_conflicted_with_paper": action_conflicted,
+        "historical_action_metric_rows_fully_matched": 11,
+        "historical_action_metric_rows_conflicted_with_paper": 4,
         "buy_hold_cells_recomputed": matched + mismatched,
         "buy_hold_cells_matched": matched,
         "buy_hold_cells_mismatched_against_current_yahoo": mismatched,
-        "non_buy_hold_cells_unverifiable": unverifiable,
+        "current_head_non_buy_hold_cells_without_native_outputs": unverifiable,
+        "non_buy_hold_cells_exact_in_historical_author_output": 185,
+        "non_buy_hold_cells_corroborated_by_historical_author_output": 189,
         "paper_result_rows_fully_matched": fully_matched_rows,
         "paper_result_rows_mismatched_against_current_yahoo": mismatched_rows,
         "paper_result_rows_unverifiable": unverifiable_rows,
@@ -479,7 +931,9 @@ def build_audit(
         "main_table_buy_hold_rows_fully_matched": 0,
         "paper_table_4_annualization_identity_mismatches": volatility_mismatches,
         "paper_other_table_annualization_identity_mismatches": 0,
-        "native_action_or_return_files_shipped": len(shipped_result_files),
+        "current_head_native_action_or_return_files_shipped": len(shipped_result_files),
+        "historical_action_csvs_in_public_git_history": len(action_inventory),
+        "historical_repository_audit": history,
         "native_training_checkpoints_shipped": False,
         "native_testing_checkpoints_shipped": False,
         "original_paper_news_filings_snapshot_shipped": False,
@@ -500,12 +954,16 @@ def build_audit(
             "no transaction costs and no cash/NAV accounting"
         ),
         "interpretation": (
-            "The released formulas plus a pinned 2026 Yahoo retrieval exactly reproduce the "
-            "five-cell TSLA ablation Buy-and-Hold row in Tables 3 and 5, establishing metric-"
-            "component fidelity. They do not reproduce FinMem: all 195 non-Buy-and-Hold cells "
-            "lack native action/trial outputs, the original input snapshot is absent, the only "
-            "config differs from the paper's model/top-K/temperature, and the main Table 2 "
-            "Buy-and-Hold rows do not fully match the current historical retrieval."
+            "The full public Git history preserves an executed notebook that corroborates "
+            "227/235 displayed paper cells (223 exact and four differing by one last-decimal "
+            "unit) and 18 dated action CSVs. "
+            "Replaying the ablation actions "
+            "against a hash-pinned Yahoo response independently reproduces 67/75 displayed "
+            "Table 3--5 cells. The remaining eight are both Table 4 volatility columns: they "
+            "conflict with the preserved author output, the replayed metrics, and the paper's "
+            "annualization identity. This is strong paper-output lineage but not an end-to-end "
+            "FinMem rerun: the original inputs, memories, complete five-trial outputs, and exact "
+            "paper configuration remain absent from the current public tree."
         ),
         "source_file_sha256": {
             name: sha256(source_root / name)
@@ -527,16 +985,33 @@ def build_audit(
 
     report = f"""# FinMem paper-level conformance audit
 
-Overall verdict: **not reproduced**. The public release contains the agent framework
-and fake pipeline examples, but not the original five-stock inputs, trained memories,
-five-trial action paths, comparator outputs, or paper-period results.
+Overall verdict: **strong author-output verification, not an end-to-end reproduction**.
+The current tree omits the paper outputs, but its full public Git history preserves an
+executed metrics notebook and 18 dated action CSVs. The original five-stock inputs,
+trained memories, complete five-trial paths, and exact paper configuration remain absent.
 
 ## Primary sources
 
 - Official paper: {PAPER_URL} (SHA-256 `{PAPER_SHA256}`).
 - Public source: {SOURCE_URL}, commit `{commit}`.
+- Historical author-output snapshot: commit `{HISTORICAL_ARTIFACT_COMMIT}`
+  (2023-11-30), deleted from the current tree by commit
+  `{HISTORICAL_DELETION_COMMIT}` (2024-02-09).
 
-## What is genuinely reproduced
+## What is genuinely verified or reproduced
+
+- The hash-pinned executed notebook provides machine-readable author outputs for all
+  235 displayed metric cells. It matches {author_matched}/235 cells exactly and four
+  more within one unit of the paper's last printed decimal, corroborating 227/235.
+  The eight substantive disagreements are exactly the daily- and annualized-volatility
+  entries for all four Table 4 rows.
+- Independently applying the released metric code to the historical dated action CSVs
+  and a hash-pinned Yahoo response reproduces {action_matched}/75 displayed cells in
+  Tables 3--5. Tables 3 and 5 match completely (55/55); Table 4 matches cumulative
+  return, Sharpe, and drawdown (12/20) but conflicts on the same eight volatility cells.
+- This is stronger than paper-value transcription: it connects the paper values to
+  author-shipped outputs and independently replays the ablation metric path. It is
+  still not an end-to-end rerun of FinMem's LLM decisions or five repeated trials.
 
 - The released metric formulas and a hash-pinned Yahoo adjusted-close retrieval
   reproduce the full five-metric TSLA Buy-and-Hold row exactly at four decimals for
@@ -549,10 +1024,11 @@ five-trial action paths, comparator outputs, or paper-period results.
   signed-log-return, volatility, Sharpe, and drawdown implementation. It does not
   establish an LLM-agent result.
 
-## Why the FinMem result is not reproduced
+## Why this is not a complete FinMem rerun
 
-- All {unverifiable} non-Buy-and-Hold cells are unverifiable. The result/checkpoint
-  directories contain only placeholders, and no five-trial action series is shipped.
+- The current result/checkpoint directories contain only placeholders. Public history
+  supplies action paths and outputs, but does not identify five complete trial paths,
+  their seeds, or the averaging lineage claimed by the paper.
 - The paper's main configuration is GPT-4-Turbo, temperature 0.7, top-K=5, and five
   tickers. The only released GPT config is TSLA with GPT-3.5-Turbo-0125, omitted GPT
   temperature, and top-K=3. No configs exist for NFLX, AMZN, MSFT, or COIN.
@@ -577,8 +1053,10 @@ five-trial action paths, comparator outputs, or paper-period results.
   self-financing NAV, so it should be interpreted as a signed-return score rather
   than conventional cumulative portfolio return.
 - Table 4's four annualized-volatility cells fail the paper's own identity,
-  annualized volatility = daily volatility times sqrt(252). All {len(volatility) - volatility_mismatches}
-  corresponding rows in Tables 2, 3, and 5 are rounding-consistent.
+  annualized volatility = daily volatility times sqrt(252). More decisively, all eight
+  Table 4 volatility entries disagree with both the preserved author notebook and the
+  independent action replay. All {len(volatility) - volatility_mismatches} corresponding
+  rows in Tables 2, 3, and 5 are rounding-consistent.
 
 Run `scripts/audit_finmem_paper.py` to regenerate this package. Use `--strict` when
 a CI failure is desired until native paper action paths and original inputs exist.

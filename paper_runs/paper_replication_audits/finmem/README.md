@@ -1,15 +1,32 @@
 # FinMem paper-level conformance audit
 
-Overall verdict: **not reproduced**. The public release contains the agent framework
-and fake pipeline examples, but not the original five-stock inputs, trained memories,
-five-trial action paths, comparator outputs, or paper-period results.
+Overall verdict: **strong author-output verification, not an end-to-end reproduction**.
+The current tree omits the paper outputs, but its full public Git history preserves an
+executed metrics notebook and 18 dated action CSVs. The original five-stock inputs,
+trained memories, complete five-trial paths, and exact paper configuration remain absent.
 
 ## Primary sources
 
 - Official paper: https://arxiv.org/pdf/2311.13743 (SHA-256 `acb7527d02871cfad7d2754314b9a803f917b326847a456579df9cf7b0a648b9`).
 - Public source: https://github.com/pipiku915/finmem-llm-stocktrading, commit `be814aa47970de9bf2fdd6a1d5a60ae5cf361b46`.
+- Historical author-output snapshot: commit `0b7f499e556668bf49885fd8836efe85ef51558f`
+  (2023-11-30), deleted from the current tree by commit
+  `45169ea8509c29113c7e7945dc52a6b3e43521eb` (2024-02-09).
 
-## What is genuinely reproduced
+## What is genuinely verified or reproduced
+
+- The hash-pinned executed notebook provides machine-readable author outputs for all
+  235 displayed metric cells. It matches 223/235 cells exactly and four
+  more within one unit of the paper's last printed decimal, corroborating 227/235.
+  The eight substantive disagreements are exactly the daily- and annualized-volatility
+  entries for all four Table 4 rows.
+- Independently applying the released metric code to the historical dated action CSVs
+  and a hash-pinned Yahoo response reproduces 67/75 displayed cells in
+  Tables 3--5. Tables 3 and 5 match completely (55/55); Table 4 matches cumulative
+  return, Sharpe, and drawdown (12/20) but conflicts on the same eight volatility cells.
+- This is stronger than paper-value transcription: it connects the paper values to
+  author-shipped outputs and independently replays the ablation metric path. It is
+  still not an end-to-end rerun of FinMem's LLM decisions or five repeated trials.
 
 - The released metric formulas and a hash-pinned Yahoo adjusted-close retrieval
   reproduce the full five-metric TSLA Buy-and-Hold row exactly at four decimals for
@@ -22,10 +39,11 @@ five-trial action paths, comparator outputs, or paper-period results.
   signed-log-return, volatility, Sharpe, and drawdown implementation. It does not
   establish an LLM-agent result.
 
-## Why the FinMem result is not reproduced
+## Why this is not a complete FinMem rerun
 
-- All 195 non-Buy-and-Hold cells are unverifiable. The result/checkpoint
-  directories contain only placeholders, and no five-trial action series is shipped.
+- The current result/checkpoint directories contain only placeholders. Public history
+  supplies action paths and outputs, but does not identify five complete trial paths,
+  their seeds, or the averaging lineage claimed by the paper.
 - The paper's main configuration is GPT-4-Turbo, temperature 0.7, top-K=5, and five
   tickers. The only released GPT config is TSLA with GPT-3.5-Turbo-0125, omitted GPT
   temperature, and top-K=3. No configs exist for NFLX, AMZN, MSFT, or COIN.
@@ -50,8 +68,10 @@ five-trial action paths, comparator outputs, or paper-period results.
   self-financing NAV, so it should be interpreted as a signed-return score rather
   than conventional cumulative portfolio return.
 - Table 4's four annualized-volatility cells fail the paper's own identity,
-  annualized volatility = daily volatility times sqrt(252). All 43
-  corresponding rows in Tables 2, 3, and 5 are rounding-consistent.
+  annualized volatility = daily volatility times sqrt(252). More decisively, all eight
+  Table 4 volatility entries disagree with both the preserved author notebook and the
+  independent action replay. All 43 corresponding
+  rows in Tables 2, 3, and 5 are rounding-consistent.
 
 Run `scripts/audit_finmem_paper.py` to regenerate this package. Use `--strict` when
 a CI failure is desired until native paper action paths and original inputs exist.
