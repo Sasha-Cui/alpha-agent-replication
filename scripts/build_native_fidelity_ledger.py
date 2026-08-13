@@ -539,6 +539,30 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-AGORA": (
+        "A pinned Agora/SJS audit rebuilds the official 42-page arXiv-v1 source "
+        "at 99.96% extracted-token overlap and visually checks all 42 official "
+        "and rebuilt pages. It inventories 293 displayed quantitative result cells "
+        "across ten tables and four empirical vector-PDF panels containing 26 plotted "
+        "series, distributions, or bar groups. Appendix C prints two complete metric "
+        "programs; both AST-parse and execute verbatim, deterministically, with finite "
+        "bounded values and expected direction/guard behavior on controlled panels. "
+        "These are paper-derived component checks, not author-pipeline results. The "
+        "paper says it releases the implementation, seven baselines, leakage audit, "
+        "and per-round registries, but Appendix A.8 switches to 'will include' and "
+        "neither the PDF nor TeX contains a repository URL. Nine bounded exact GitHub "
+        "repository/code searches, author-email/domain searches, the current affiliation "
+        "domain, and Hugging Face expose no attributable Agora implementation. One "
+        "later PandaAI-domain GitHub hit is an explicitly unofficial competition skill "
+        "with no Agora/SJS system. Thus 0/293 table cells and 0/4 empirical panels "
+        "reproduce author-natively. No immutable CSI1000/RiceQuant snapshot, 94 alpha "
+        "programs, top-30 pool, exact prompts/model calls, Wiki/registry/run state, PPO "
+        "checkpoints, baseline outputs, daily returns, orders/fills, raw arrays, or "
+        "result generator is public. Internal conflicts include eight versus nine skill "
+        "libraries, Agora median Sharpe 1.06 versus 2.461, B6 median +0.227 versus "
+        "-0.000, 91 versus 60 holdout observations, unexplained alternate Sharpe/IC "
+        "values, and long-short return increasing as stated costs rise."
+    ),
     "SYS-XALPHA": (
         "A pinned XALPHA audit rebuilds the 61-page arXiv-v2 source at 99.95% "
         "extracted-token overlap and visually checks all 61 official and rebuilt "
@@ -1023,6 +1047,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-AGORA": "paper_audit:completed_two_paper_metric_programs_zero_of_293_table_cells_zero_of_4_empirical_panels_claimed_release_unrecovered_no_attributable_pipeline",
     "SYS-XALPHA": "paper_audit:completed_three_paper_factor_programs_one_contract_pass_zero_of_138_numeric_units_zero_of_3_empirical_panels_no_attributable_pipeline",
     "SYS-TRUST-TRADE": "paper_audit:completed_three_paper_linked_interfaces_183_stock_days_one_of_12_strict_inactive_baseline_cells_zero_of_26_native_panels_no_attributable_trusttrade_pipeline",
     "SYS-BLIND-TRADE": "paper_audit:completed_six_of_98_current_passive_benchmark_cells_zero_author_native_zero_of_9_empirical_panels_four_prompts_zero_valid_json_no_attributable_pipeline",
