@@ -1,0 +1,9 @@
+version,figure,empirical_series_or_panels,description,underlying_numeric_array_released,author_native_figure_regenerated,paper_result_credit
+v1_v2,fig:4-1,1,dataset-comparison radar,False,False,False
+v1_v2,fig:performance_comparison,3,three NAV/stress-event curves,False,False,False
+v1_v2,verified_vendor_asset_heatmap.png,1,model/asset accuracy heatmap,False,False,False
+v1_v2,copper_window_curves,3,30/100/250-day forecasting plots,False,False,False
+v1_v2,fig:performance_comparison2,3,three additional NAV/stress-event curves,False,False,False
+v3,fig:mechanism_a,2,BO-best and full-RABO empirical CDFs,False,False,False
+v3,fig:mechanism_b,1,3x4 average-capital-weight heatmap,False,False,False
+v3,fig:cost_sensitivity_appendix,4,two methods across return and Sharpe panels,False,False,False

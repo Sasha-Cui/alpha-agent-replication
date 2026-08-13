@@ -1,0 +1,21 @@
+version,dimension,status,detail
+v1_v2,official_document_source,complete_document_only,16-file source packages recovered; v1/v2 TeX is byte-identical
+v1_v2,author_native_runtime,missing,the v3 release is a different method and does not implement the legacy experiment
+v1_v2,market_data,missing,sources are named but the research corpus is not released
+v1_v2,qwen_backbone,specified_not_released,Qwen2.5-VL-72B and LoRA settings are printed; weights and training records are absent
+v1_v2,sft_rl_training,underspecified_unreleased,"a 60/20/20 temporal split and seed 42 are printed; examples, labels, code, and checkpoints are absent"
+v1_v2,baseline_implementations,missing,15 named baselines have no released implementations or lineage
+v1_v2,trading_costs,absent,the paper's future-work section says transaction costs and liquidity remain future work
+v1_v2,raw_results,missing,"no return arrays, prediction files, or experiment ledger is released"
+v3,official_document_source,complete_document_only,30-file source package recovered and rebuilt
+v3,official_repository,substantial_release,107-file Apache-2.0 anonymous release linked directly from the paper
+v3,universe_and_execution_contract,released,"62-asset universe, per-market rules, and a 7,440-row acceptance replay are released"
+v3,strategy_pools,mostly_released,60 pools and 300 members are present; two large signal/robustness tables are LFS pointers
+v3,qwen_and_router_artifacts,registered_but_payloads_unavailable,three adapters and seed-42 router are 133-byte LFS pointers in the retrieved archive
+v3,full_benchmark_market_data,missing,the data card explicitly limits the release to a 120-observation acceptance fixture
+v3,training_and_experiment_controller,missing,the model card explicitly places the full private history outside the release
+v3,five_seed_training,partial_one_seed_only,the paper reports seeds 42--46; the release registers only seed 42
+v3,result_arrays_and_report_generator,missing,the paper claims report generation but no published-table lineage arrays or table generator are present
+v3,unit_integration_acceptance_tests,executed,111/111 pass with python -m pytest; tests use doubles and do not reproduce paper metrics
+v3,artifact_integrity,blocked_missing_lfs_payloads,26/35 registered files verify locally; 9 pointers fail closed before model execution
+v3,published_results,not_regenerated,zero published numeric table units and zero empirical figures were regenerated

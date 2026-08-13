@@ -1,0 +1,4 @@
+version,submitted,title,authors,official_pages,source_files,rebuilt_pages,method_family,result_units,version_relationship
+v1,2025-09-05,MM-DREX: Multimodal-Driven Dynamic Routing of LLM Experts for Financial Trading,9,32,16,30,Qwen2.5-VL-72B SFT-RL dynamic routing,671,legacy_original
+v2,2025-09-10,MM-DREX: Multimodal-Driven Dynamic Routing of LLM Experts for Financial Trading,9,32,16,32,Qwen2.5-VL-72B SFT-RL dynamic routing,671,source-identical_to_v1_except_arxiv_metadata_and_packaged_bibliography
+v3,2026-07-27,MM-ARC: Multimodal Adaptive Routing of Capital with Robustness-Audited Strategy Pools,10,17,30,16,"Qwen3-VL-8B adapters, actor-critic router, RABO pools",651,wholesale_replacement_not_a_minor_revision

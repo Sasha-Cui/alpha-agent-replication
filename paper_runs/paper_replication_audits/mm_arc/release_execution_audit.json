@@ -1,0 +1,97 @@
+{
+  "archive_files": 107,
+  "archive_sha256": "b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d",
+  "archive_uncompressed_bytes": 2596204,
+  "artifact_registry_version": "seed42-e08-2026-07-24",
+  "artifact_verification_failure": "first trained adapter is a 133-byte LFS pointer, not its registered 87,368,144-byte payload",
+  "artifact_verification_passed": false,
+  "base_model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "base_model_registered_bytes": 17545907231,
+  "base_model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+  "bytecode_compilation_passed": true,
+  "direct_pytest_boundary": "console-script entry point cannot import repository scripts package; python -m pytest matches released CI",
+  "direct_pytest_console_script_errors": 2,
+  "full_model_forward_executed_in_audit": false,
+  "lfs_payload_bytes_unavailable": 340563208,
+  "lfs_pointer_files": 9,
+  "lfs_pointer_inventory": [
+    {
+      "expected_bytes": 87368144,
+      "expected_sha256": "3b15057d0e35dd46b53ee4908a666d22cb895970d78b1a81ab6fc42a03013ee7",
+      "observed_bytes": 133,
+      "observed_sha256": "995b11b1c3399dc4da7e40308d5807fe28b0fad8f47e96b8a913479209253413",
+      "path": "models/labo_evaluator_adapter/adapter_model.safetensors"
+    },
+    {
+      "expected_bytes": 11422650,
+      "expected_sha256": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506",
+      "observed_bytes": 133,
+      "observed_sha256": "0d6296fffe548e0e38b2c335e02d4144c8368cd4813c511a622914ac732e3412",
+      "path": "models/labo_evaluator_adapter/tokenizer.json"
+    },
+    {
+      "expected_bytes": 87368144,
+      "expected_sha256": "125629f100aec4277a89251e081fca7e78191f6f818566bfc1b9f5e393f15697",
+      "observed_bytes": 133,
+      "observed_sha256": "06bd140e058ae80dec9024cb346f7ca9916ddff54e32475686c27552d26b91cb",
+      "path": "models/labo_generator_adapter/adapter_model.safetensors"
+    },
+    {
+      "expected_bytes": 11422650,
+      "expected_sha256": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506",
+      "observed_bytes": 133,
+      "observed_sha256": "0d6296fffe548e0e38b2c335e02d4144c8368cd4813c511a622914ac732e3412",
+      "path": "models/labo_generator_adapter/tokenizer.json"
+    },
+    {
+      "expected_bytes": 87368144,
+      "expected_sha256": "44fc4462b52592b23378e97e2fd48d451c61fcbcd7d0c0db36be14093a8f7f1c",
+      "observed_bytes": 133,
+      "observed_sha256": "b1c322c9d50c133548a93456e8ecae2f7988b51ee2e95ae51ee98d6f5781626a",
+      "path": "models/qwen_regime_adapter/adapter_model.safetensors"
+    },
+    {
+      "expected_bytes": 11422650,
+      "expected_sha256": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506",
+      "observed_bytes": 133,
+      "observed_sha256": "0d6296fffe548e0e38b2c335e02d4144c8368cd4813c511a622914ac732e3412",
+      "path": "models/qwen_regime_adapter/tokenizer.json"
+    },
+    {
+      "expected_bytes": 23020834,
+      "expected_sha256": "4a34b844a21c6122444ff6b9d9fb980182e28eb6a7efd5d90b41ae9168154b92",
+      "observed_bytes": 133,
+      "observed_sha256": "6bdb57a50bf573e66eb159273a93b14211ffe881b8f0db5fcf73a87574aaf7fd",
+      "path": "models/rl_router_seed42/best_model.pt"
+    },
+    {
+      "expected_bytes": 10615619,
+      "expected_sha256": "e363735b6ac8833ef45a69564a270746ca660e78cdab17acd00f20f7220669f8",
+      "observed_bytes": 133,
+      "observed_sha256": "41a9f641a997c798d0b1a0ca93a765999f51a3ae6fe2040a762623dedba611ba",
+      "path": "strategy_pool/strict_rabo_sealed_rabo_robustness.csv"
+    },
+    {
+      "expected_bytes": 10554373,
+      "expected_sha256": "71873cdffe2e04404cc5e91c731ced28c741e2fab7e06c36510c0820184d3da7",
+      "observed_bytes": 133,
+      "observed_sha256": "32bd771f5df7e2d34a16ac2b637f7cbbd58960376fb3f0b1f5863e41a927c28e",
+      "path": "strategy_pool/strict_rabo_sealed_strategy_signals.csv"
+    }
+  ],
+  "license": "Apache-2.0",
+  "paper_decision_cycle_executed_in_audit": false,
+  "paper_result_credit": false,
+  "published_table_or_figure_regenerated": false,
+  "registered_artifact_bytes": 341958665,
+  "registered_artifacts": 35,
+  "release_version": "v0.1.0",
+  "ruff_clean": true,
+  "test_command": "python -m pytest -q",
+  "tests_download_lfs": false,
+  "tests_passed": 111,
+  "tests_use_model_runtime_doubles": true,
+  "url": "https://anonymous.4open.science/r/MM-ARC-32F7/",
+  "verified_payload_bytes": 1395457,
+  "verified_payload_files": 26
+}
