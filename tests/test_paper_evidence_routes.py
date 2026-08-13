@@ -184,13 +184,18 @@ def test_quantaalpha_audit_credits_components_but_zero_paper_results() -> None:
     assert row["paper_evidence_route"] == "public_code_available"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_zero_of_344_native_table_results_components_only"
+        "paper_audit:partial_270_rendered_author_output_units_corroborated_"
+        "zero_of_344_table_cells_regenerated_components_only"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
     assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
     assert "all 135 Python files" in row["precise_native_or_access_blocker"]
-    assert "0/344 table cells" in row["precise_native_or_access_blocker"]
+    assert (
+        "196/344 table cells have author-output correspondence while 0/344 count as "
+        "native regenerations"
+        in row["precise_native_or_access_blocker"]
+    )
     assert "Large v1/v2-to-v3 result revisions" in row[
         "precise_native_or_access_blocker"
     ]

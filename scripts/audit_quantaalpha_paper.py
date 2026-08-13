@@ -4,8 +4,10 @@
 The audit pins all three arXiv revisions, the official Git revision, and the
 official Hugging Face data release.  It enumerates every numeric result cell
 in the current paper, inventories numeric figures separately, executes safe
-dependency-isolated components of the native source, and explicitly withholds
-paper-result credit unless a released artifact derives a published value.
+dependency-isolated components of the native source, and distinguishes exact
+author-output correspondence from independent result regeneration.  Rendered
+tables and plots can corroborate published output, but never substitute for
+the missing factor pool, inputs, predictions, returns, or raw arrays.
 """
 
 from __future__ import annotations
@@ -48,6 +50,13 @@ SOURCE_COMMIT_DATE = "2026-06-29T12:55:11-04:00"
 INITIAL_COMMIT = "2f06d9fafaf21c07abd1a224551dbb437d341087"
 INITIAL_COMMIT_DATE = "2026-02-09T01:02:43+08:00"
 CURRENT_README_SHA256 = "737dbb80c047cd1f2ad90b31e10ccc45b38ea2f490b42a57584c5b30a830e222"
+RELEASED_PAPER_OUTPUT_SHA256 = {
+    "docs/images/case_study.png": "c67841b6e471b73d1c32ca3dfd44abd844915572918c7fc908de49f5dab90e85",
+    "docs/images/figure3.png": "35d013008dd023c096f53ede8fa5b149944ed30b657b514e946bf2f6252061c3",
+    "docs/images/figure4.png": "9a49d456072935fab8c20a5968834288738536a4eb7432830a34114c928afe4f",
+    "docs/images/figure5.png": "5012fcdba8f561a0de5f7fba44f636af9f846c8c13925ca0e63e4d635606cf07",
+    "docs/images/主实验.png": "217919e010e36e2cffec1a90e10a3d1ce05afedc29fe5b1074214d8388b06d75",
+}
 HF_DATASET_URL = "https://huggingface.co/datasets/QuantaAlpha/qlib_csi300"
 HF_DATASET_COMMIT = "d63bf5ba30d1d169023110377cbbe93a90a74e07"
 HF_DEBUG_SHA256 = "03816baa04a9ccefeaca8ccd6968c30f6a9a879330ae496d6fa19d6cd3208ebc"
@@ -179,6 +188,7 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
 
 
 def _result_row(table: str, item: str, metric: str, value: Any, role: str = "direct") -> dict[str, Any]:
+    author_output = table == "Table 1 Main CSI300 results"
     return {
         "paper_table": table,
         "item": item,
@@ -187,7 +197,13 @@ def _result_row(table: str, item: str, metric: str, value: Any, role: str = "dir
         "paper_value": value,
         "native_reproduced_value": "",
         "absolute_difference": "",
-        "status": "not_reproduced_no_released_result_derivation",
+        "author_output_value": value if author_output else "",
+        "author_output_correspondence": author_output,
+        "status": (
+            "corroborated_by_exact_author_readme_table_raster_not_regenerated"
+            if author_output
+            else "not_reproduced_no_released_result_derivation"
+        ),
         "paper_result_credit": False,
     }
 
@@ -244,7 +260,7 @@ def figure_label_rows() -> list[dict[str, Any]]:
     for variant, values in gate.items():
         role = "baseline" if variant == "QuantaAlpha" else "delta"
         for metric, value in zip(EVOLUTION_METRICS, values):
-            rows.append({"figure": "Figure 3 quality-gate ablation", "item": variant, "metric": metric, "value_role": role, "paper_value": value, "native_reproduced_value": "", "status": "not_reproduced_raster_only", "paper_result_credit": False})
+            rows.append({"figure": "Figure 3 quality-gate ablation", "item": variant, "metric": metric, "value_role": role, "paper_value": value, "native_reproduced_value": "", "author_output_correspondence": False, "status": "not_reproduced_raster_only", "paper_result_credit": False})
     case = {
         "pool iteration 1": ("unspecified_factor_pool_performance", 13.27),
         "pool iteration 2": ("unspecified_factor_pool_performance", 19.14),
@@ -265,9 +281,9 @@ def figure_label_rows() -> list[dict[str, Any]]:
         "iteration 5 crossover / MDD": ("MDD_pct", 11.4),
     }
     for item, (metric, value) in case.items():
-        rows.append({"figure": "Appendix E iterative case-study raster", "item": item, "metric": metric, "value_role": "label", "paper_value": value, "native_reproduced_value": "", "status": "not_reproduced_raster_only", "paper_result_credit": False})
+        rows.append({"figure": "Appendix E iterative case-study raster", "item": item, "metric": metric, "value_role": "label", "paper_value": value, "native_reproduced_value": "", "author_output_correspondence": True, "status": "corroborated_by_author_readme_case_study_raster_not_regenerated", "paper_result_credit": False})
     for item, value in (("Parent 1", 0.0216), ("Parent 2", 0.0246), ("Offspring", 0.0311)):
-        rows.append({"figure": "Appendix C evolution-path diagram", "item": item, "metric": "Rank_IC", "value_role": "label", "paper_value": value, "native_reproduced_value": "", "status": "not_reproduced_tex_label_only", "paper_result_credit": False})
+        rows.append({"figure": "Appendix C evolution-path diagram", "item": item, "metric": "Rank_IC", "value_role": "label", "paper_value": value, "native_reproduced_value": "", "author_output_correspondence": False, "status": "not_reproduced_tex_label_only", "paper_result_credit": False})
     if len(rows) != 40:
         raise RuntimeError(f"QuantaAlpha figure-label census changed: {len(rows)}")
     return rows
@@ -278,10 +294,10 @@ def plot_point_rows() -> list[dict[str, Any]]:
     for panel, metric in (("Figure 4 IC", "IC"), ("Figure 4 Rank IC", "Rank_IC")):
         for method in ("QuantaAlpha", "AlphaAgent", "RD-Agent", "Alpha158"):
             for year in (2022, 2023, 2024, 2025):
-                rows.append({"figure_panel": panel, "series": method, "x_position": year, "metric": metric, "paper_value": "unlabeled_marker", "native_reproduced_value": "", "status": "not_reproduced_raster_marker_no_array", "paper_result_credit": False})
+                rows.append({"figure_panel": panel, "series": method, "x_position": year, "metric": metric, "paper_value": "unlabeled_marker", "native_reproduced_value": "", "author_output_correspondence": True, "status": "exact_author_and_paper_raster_correspondence_no_array", "paper_result_credit": False})
     for method in ("QuantaAlpha", "AlphaAgent", "RD-Agent"):
         for iteration in range(1, 6):
-            rows.append({"figure_panel": "Figure 5 evolutionary alpha-mining efficiency", "series": method, "x_position": iteration, "metric": "IC_distribution_central_marker", "paper_value": "unlabeled_marker", "native_reproduced_value": "", "status": "not_reproduced_raster_marker_no_array_or_band_definition", "paper_result_credit": False})
+            rows.append({"figure_panel": "Figure 5 evolutionary alpha-mining efficiency", "series": method, "x_position": iteration, "metric": "IC_distribution_central_marker", "paper_value": "unlabeled_marker", "native_reproduced_value": "", "author_output_correspondence": True, "status": "exact_author_and_paper_raster_correspondence_no_array_or_band_definition", "paper_result_credit": False})
     if len(rows) != 47:
         raise RuntimeError(f"QuantaAlpha discrete plot-point census changed: {len(rows)}")
     return rows
@@ -310,7 +326,28 @@ def published_non_table_claims() -> list[dict[str, Any]]:
         ("configuration", "daily observations in robustness table", "966", "no_daily_arrays_released"),
         ("configuration", "LLM backbones", "five named model families", "names_only_no_pinned_provider_revisions"),
     ]
-    return [{"claim_role": role, "claim": claim, "paper_value": value, "release_status": status, "paper_result_credit": False} for role, claim, value, status in claims]
+    author_output_claims = {
+        "v3 GPT-5.2 IC",
+        "v3 GPT-5.2 ARR",
+        "v3 GPT-5.2 MDD",
+        "v3 zero-shot CSI500 cumulative excess return",
+        "v3 zero-shot S&P500 cumulative excess return",
+    }
+    return [
+        {
+            "claim_role": role,
+            "claim": claim,
+            "paper_value": value,
+            "release_status": (
+                "corroborated_by_author_readme_text_and_or_exact_paper_raster"
+                if claim in author_output_claims
+                else status
+            ),
+            "author_output_correspondence": claim in author_output_claims,
+            "paper_result_credit": False,
+        }
+        for role, claim, value, status in claims
+    ]
 
 
 def paper_version_drift() -> list[dict[str, Any]]:
@@ -500,11 +537,112 @@ def source_inventory(source_root: Path) -> list[dict[str, Any]]:
         blob = run_git(source_root, "show", f"{SOURCE_COMMIT}:{rel}", binary=True)
         lower = rel.lower()
         role = "source_or_config"
-        if lower.endswith((".png", ".jpg", ".jpeg", ".pdf", ".gif")):
+        paper_result_artifact = False
+        if rel in RELEASED_PAPER_OUTPUT_SHA256:
+            observed = hashlib.sha256(blob).hexdigest()
+            if observed != RELEASED_PAPER_OUTPUT_SHA256[rel]:
+                raise RuntimeError(f"Pinned QuantaAlpha author-output raster changed: {rel}")
+            role = "author_rendered_paper_result_output"
+            paper_result_artifact = True
+        elif lower.endswith((".png", ".jpg", ".jpeg", ".pdf", ".gif")):
             role = "documentation_image"
         elif any(token in lower for token in result_patterns):
             role = "code_or_schema_named_like_output_not_paper_result"
-        rows.append({"relative_path": rel, "bytes": len(blob), "sha256": hashlib.sha256(blob).hexdigest(), "role": role, "paper_result_artifact": False})
+        rows.append({"relative_path": rel, "bytes": len(blob), "sha256": hashlib.sha256(blob).hexdigest(), "role": role, "paper_result_artifact": paper_result_artifact})
+    return rows
+
+
+def author_output_correspondence(
+    source_root: Path, paper_source_root: Path
+) -> list[dict[str, Any]]:
+    """Pin exact and visually verified rendered author outputs.
+
+    Figure 3--5 repository blobs are byte-identical to the v3 paper-source
+    assets.  The main-table raster is visually/OCR checked against the complete
+    196-cell TeX table, and the case-study PNG exposes the same 17 labels as the
+    published vector PDF.  Raster correspondence corroborates author outputs;
+    none of these files contains the underlying arrays or regenerates a result.
+    """
+    paper_sha = {
+        "images/figure3.png": "35d013008dd023c096f53ede8fa5b149944ed30b657b514e946bf2f6252061c3",
+        "images/figure4.png": "9a49d456072935fab8c20a5968834288738536a4eb7432830a34114c928afe4f",
+        "images/figure5.png": "5012fcdba8f561a0de5f7fba44f636af9f846c8c13925ca0e63e4d635606cf07",
+        "images/case_study.pdf": "50dbd326936652d74df5b60713d5cab8aeac10af61942606f0749553f3439b05",
+        "tables/main_table.tex": "f57a6586bbbeeef5f6972bd61bc7fdd50518915b4001bff90659dffbe8dd3a17",
+    }
+    for relative, expected in paper_sha.items():
+        observed = sha256(paper_source_root / relative)
+        if observed != expected:
+            raise RuntimeError(f"Pinned QuantaAlpha paper source asset changed: {relative}")
+    definitions = (
+        (
+            "main_table",
+            "docs/images/主实验.png",
+            "tables/main_table.tex",
+            "complete_visual_and_ocr_correspondence",
+            196,
+            0,
+        ),
+        (
+            "zero_shot_return_curves",
+            "docs/images/figure3.png",
+            "images/figure3.png",
+            "byte_identical",
+            10,
+            0,
+        ),
+        (
+            "annual_ic_rankic_markers",
+            "docs/images/figure4.png",
+            "images/figure4.png",
+            "byte_identical",
+            32,
+            0,
+        ),
+        (
+            "five_round_ic_markers_and_bands",
+            "docs/images/figure5.png",
+            "images/figure5.png",
+            "byte_identical",
+            15,
+            0,
+        ),
+        (
+            "iterative_case_study_labels",
+            "docs/images/case_study.png",
+            "images/case_study.pdf",
+            "complete_visual_and_ocr_correspondence",
+            17,
+            0,
+        ),
+    )
+    rows = []
+    for output, repository_path, paper_path, kind, units, arrays in definitions:
+        repository_blob = run_git(
+            source_root, "show", f"{SOURCE_COMMIT}:{repository_path}", binary=True
+        )
+        repository_sha = hashlib.sha256(repository_blob).hexdigest()
+        if repository_sha != RELEASED_PAPER_OUTPUT_SHA256[repository_path]:
+            raise RuntimeError(f"Pinned author output changed: {repository_path}")
+        paper_asset_sha = sha256(paper_source_root / paper_path)
+        if kind == "byte_identical" and repository_sha != paper_asset_sha:
+            raise RuntimeError(f"Expected exact paper/repository image identity: {output}")
+        rows.append(
+            {
+                "output": output,
+                "repository_path": repository_path,
+                "repository_sha256": repository_sha,
+                "paper_source_path": paper_path,
+                "paper_source_sha256": paper_asset_sha,
+                "correspondence_kind": kind,
+                "published_result_units_corroborated": units,
+                "underlying_numeric_arrays_shipped": arrays,
+                "independently_regenerated": False,
+                "paper_result_credit": False,
+            }
+        )
+    if sum(row["published_result_units_corroborated"] for row in rows) != 270:
+        raise RuntimeError("QuantaAlpha author-output result-unit census changed")
     return rows
 
 
@@ -649,6 +787,7 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
     labels = figure_label_rows()
     points = plot_point_rows()
     claims = published_non_table_claims()
+    author_outputs = author_output_correspondence(source_root, paper_source_root)
     checks = internal_and_source_checks()
     gaps = specification_gaps()
     mechanisms = mechanism_conformance()
@@ -671,6 +810,7 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
         "released_source_inventory.csv": inventory,
         "released_dataset_inventory.csv": datasets,
         "paper_source_asset_inventory.csv": paper_assets,
+        "author_output_correspondence.csv": author_outputs,
     }
     for name, rows in outputs.items():
         write_csv(output_dir / name, rows)
@@ -678,7 +818,7 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
     status_counts = Counter(row["status"] for row in mechanisms)
     manifest: dict[str, Any] = {
         "paper": "QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining",
-        "overall_status": "native_architecture_substantial_but_full_paper_not_reproduced_zero_published_results",
+        "overall_status": "author_rendered_outputs_corroborated_no_end_to_end_regeneration",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_versions": PAPER_VERSIONS,
@@ -693,12 +833,32 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
         "hf_dataset_commit": HF_DATASET_COMMIT,
         "paper_numeric_table_cells_total": len(tables),
         "native_numeric_table_cells_reproduced": 0,
+        "author_output_numeric_table_cells_corroborated": 196,
         "paper_numeric_figure_labels_total": len(labels),
         "native_numeric_figure_labels_reproduced": 0,
+        "author_output_numeric_figure_labels_corroborated": 17,
         "paper_discrete_unlabeled_marker_points_total": len(points),
         "native_discrete_marker_points_reproduced": 0,
+        "author_output_discrete_marker_points_corroborated": 47,
         "paper_raster_return_curves_total": 10,
         "native_raster_return_curve_arrays_reproduced": 0,
+        "author_output_raster_return_curves_corroborated": 10,
+        "author_output_result_units_corroborated": sum(
+            int(row["published_result_units_corroborated"]) for row in author_outputs
+        ),
+        "author_output_assets_byte_identical_to_paper_source": sum(
+            row["correspondence_kind"] == "byte_identical" for row in author_outputs
+        ),
+        "author_output_assets_visually_and_ocr_verified": sum(
+            row["correspondence_kind"] == "complete_visual_and_ocr_correspondence"
+            for row in author_outputs
+        ),
+        "author_output_result_claims_corroborated": sum(
+            row["claim_role"] == "result" and row["author_output_correspondence"]
+            for row in claims
+        ),
+        "author_output_dated_return_raster_shipped": True,
+        "author_output_underlying_arrays_shipped": False,
         "paper_result_arrays_shipped": 0,
         "paper_factor_pool_shipped": False,
         "paper_trajectory_pool_shipped": False,
@@ -739,9 +899,11 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
             "The checked-in experiment profile materially conflicts with the paper; the mining-loop Qlib "
             "config tests only 2021; the claimed targeted segment repair/splicing is not represented as such; "
             "the only upstream test fails because its template is absent; and no approximately-150-factor "
-            "pool, run trajectories, prompts/responses, seeds, baselines, predictions, holdings, returns, plot "
-            "arrays, or result files are released. Therefore 0/344 numeric table cells, 0/40 labeled figure "
-            "values, 0/47 discrete figure markers, and 0/10 return-curve arrays are reproduced. Moreover, "
+            "pool, run trajectories, prompts/responses, seeds, baselines, predictions, holdings, return arrays, "
+            "or plot arrays are released. The official README does ship the complete 196-cell v3 main-table "
+            "raster, exact paper-source copies of Figures 3--5, and the 17-label case-study raster: 270 rendered "
+            "output units are author-output corroborations, while 0/344 table cells, 0/40 labeled figure values, "
+            "0/47 discrete figure markers, and 0/10 return-curve arrays are independently regenerated. Moreover, "
             "v1/v2 headline results were sharply reduced in v3 without released run lineage, and v3 contains "
             "direct figure/prose and round-label inconsistencies. The public HF dataset helps infrastructure "
             "reproducibility but is not a result artifact and lacks sufficient provenance for exact replication."
@@ -749,7 +911,8 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
     }
     report = f"""# QuantaAlpha paper-level conformance audit
 
-Overall verdict: **substantial native implementation; zero published paper results reproduced**.
+Overall verdict: **substantial native implementation and 270 rendered author-output
+units corroborated; zero published results independently regenerated**.
 
 ## Primary-source boundary
 
@@ -759,8 +922,8 @@ Overall verdict: **substantial native implementation; zero published paper resul
 
 ## Complete numeric-result boundary
 
-- The v3 paper contains **344 numeric result table cells**: 196 main-table cells, 28 evolution-ablation values/deltas, 56 seed/daily-statistic cells, and 64 case-study/factor-analysis cells. **0/344** has a released native derivation.
-- Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are reproduced.
+- The v3 paper contains **344 numeric result table cells**: 196 main-table cells, 28 evolution-ablation values/deltas, 56 seed/daily-statistic cells, and 64 case-study/factor-analysis cells. The official README ships a complete raster of all **196/196 main-table cells**; these are author-output correspondences, while **0/344** cells are independently regenerated.
+- Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. The README ships the 17-label case-study raster and byte-identical copies of the paper-source Figure 3--5 assets, corroborating **17 labels, 47 markers, and 10 curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are regenerated.
 - The paper says approximately 150 validated factors feed a common LightGBM model. No such factor pool, run trajectory, prediction, portfolio, return, or metric artifact is shipped.
 
 ## What really works
@@ -779,7 +942,7 @@ Overall verdict: **substantial native implementation; zero published paper resul
 
 ## Honest interpretation
 
-This repository is close to a credible clean-room *implementation framework*, but far from a verifiable replication of the reported study. Running it with newly chosen APIs/data would produce a new experiment, not establish any published value. Public data and runnable components improve tractability; they do not justify paper-result credit. `--strict` intentionally remains nonzero until an end-to-end pinned paper profile reproduces every claimed artifact and result within declared tolerances.
+This repository is close to a credible clean-room *implementation framework*, but far from a verifiable replication of the reported study. Its rendered result outputs materially improve author-output availability, but screenshots cannot establish the inputs, execution, or raw result path. Running it with newly chosen APIs/data would produce a new experiment, not regenerate the published one. `--strict` intentionally remains nonzero until an end-to-end pinned paper profile reproduces every claimed artifact and result within declared tolerances.
 """
     (output_dir / "README.md").write_text(report, encoding="utf-8")
     manifest["output_sha256"] = {path.name: sha256(path) for path in sorted(output_dir.iterdir()) if path.is_file() and path.name != "manifest.json"}

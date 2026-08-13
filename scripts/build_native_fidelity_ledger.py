@@ -254,19 +254,23 @@ ARTIFACT_NOTES = {
         "and the factor outputs are not a six-country security-level signal panel.",
     ),
     "SYS-QUANTA-ALPHA": (
-        "N",
+        "Y",
         "A pinned three-revision paper audit enumerates 344 numeric result table "
         "cells, 40 labeled figure/diagram values, 47 discrete unlabeled marker "
         "points, and 10 raster return curves. The official release is substantial: "
         "all 135 Python files in both the initial and current revisions compile, "
         "and dependency-isolated native AST, trajectory persistence, lineage, and "
-        "crossover-selection components execute. These are architecture components, "
-        "not paper results. The checked-in experiment and mining-loop configs conflict "
+        "crossover-selection components execute. The official README also ships a "
+        "complete 196-cell raster of the v3 main table, byte-identical copies of the "
+        "paper-source return, annual IC/RankIC, and iteration plots, plus the 17-label "
+        "case-study raster. This corroborates 270 rendered author-output units but "
+        "regenerates none of them. The checked-in experiment and mining-loop configs conflict "
         "with the paper, claimed trajectory-segment repair/splicing is not structurally "
         "implemented, and the sole upstream test fails because its template is absent. "
         "No approximately-150-factor pool, trajectories, exact model/API runs, baselines, "
-        "seeds, predictions, portfolios, returns, or plot arrays are shipped, so 0/344 "
-        "table cells count as native reproductions. Large v1/v2-to-v3 result revisions "
+        "seeds, predictions, portfolios, return arrays, or plot arrays are shipped, so "
+        "196/344 table cells have author-output correspondence while 0/344 count as "
+        "native regenerations. Large v1/v2-to-v3 result revisions "
         "lack released lineage, and v3 contains direct figure/prose inconsistencies.",
     ),
     "SYS-QUANT-EVOLVER": (
@@ -1365,7 +1369,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
-    "SYS-QUANTA-ALPHA": "paper_audit:completed_zero_of_344_native_table_results_components_only",
+    "SYS-QUANTA-ALPHA": "paper_audit:partial_270_rendered_author_output_units_corroborated_zero_of_344_table_cells_regenerated_components_only",
     "SYS-RAPTOR": "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
@@ -1377,6 +1381,7 @@ TARGETED_EXECUTION = {
 
 OUTPUT_BLOCKS = {
     "SYS-ALPHA-AGENT": "A3_CN_US_aggregate_metrics_no_six_country_security_mapping",
+    "SYS-QUANTA-ALPHA": "A3_CN_US_rendered_outputs_no_six_country_security_mapping",
     "SYS-FIN-ANALYST": "A3_wrong_asset_scope_TSLA_BTC_not_six_country_security_panel",
     "SYS-JANUS-Q": "A3_CN_only_portfolio_NAV_no_six_country_security_mapping",
     "SYS-AUTOMATE-STRATEGY": "A3_output_lacks_six_country_security_mapping",

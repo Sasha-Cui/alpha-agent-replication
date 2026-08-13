@@ -1,41 +1,41 @@
-figure,item,metric,value_role,paper_value,native_reproduced_value,status,paper_result_credit
-Figure 3 quality-gate ablation,QuantaAlpha,IC,baseline,0.046,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,QuantaAlpha,Rank_IC,baseline,0.045,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,QuantaAlpha,ARR_pct,baseline,4.53,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,QuantaAlpha,MDD_pct,baseline,15.1,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Consistency,IC,delta,-0.005,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Consistency,Rank_IC,delta,-0.005,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Consistency,ARR_pct,delta,-0.59,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Consistency,MDD_pct,delta,0.58,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Complexity,IC,delta,-0.006,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Complexity,Rank_IC,delta,-0.006,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Complexity,ARR_pct,delta,-0.95,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Complexity,MDD_pct,delta,2.31,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Redundancy,IC,delta,-0.007,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Redundancy,Rank_IC,delta,-0.007,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Redundancy,ARR_pct,delta,-0.78,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o Redundancy,MDD_pct,delta,0.17,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o All,IC,delta,-0.007,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o All,Rank_IC,delta,-0.007,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o All,ARR_pct,delta,-1.34,,not_reproduced_raster_only,False
-Figure 3 quality-gate ablation,w/o All,MDD_pct,delta,1.94,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,pool iteration 1,unspecified_factor_pool_performance,label,13.27,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,pool iteration 2,unspecified_factor_pool_performance,label,19.14,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,pool iteration 3,unspecified_factor_pool_performance,label,22.38,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,pool iteration 4,unspecified_factor_pool_performance,label,27.85,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,pool iteration 5,unspecified_factor_pool_performance,label,29.63,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 1 initial / ARR,ARR_pct,label,5.22,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 1 initial / RankICIR,Rank_ICIR,label,0.158,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 1 initial / MDD,MDD_pct,label,7.67,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 2 mutation / ARR,ARR_pct,label,7.06,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 2 mutation / RankICIR,Rank_ICIR,label,0.166,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 2 mutation / MDD,MDD_pct,label,10.7,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 2 crossover / ARR,ARR_pct,label,7.35,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 2 crossover / RankICIR,Rank_ICIR,label,0.17,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 2 crossover / MDD,MDD_pct,label,9.67,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 5 crossover / ARR,ARR_pct,label,7.8,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 5 crossover / RankICIR,Rank_ICIR,label,0.193,,not_reproduced_raster_only,False
-Appendix E iterative case-study raster,iteration 5 crossover / MDD,MDD_pct,label,11.4,,not_reproduced_raster_only,False
-Appendix C evolution-path diagram,Parent 1,Rank_IC,label,0.0216,,not_reproduced_tex_label_only,False
-Appendix C evolution-path diagram,Parent 2,Rank_IC,label,0.0246,,not_reproduced_tex_label_only,False
-Appendix C evolution-path diagram,Offspring,Rank_IC,label,0.0311,,not_reproduced_tex_label_only,False
+figure,item,metric,value_role,paper_value,native_reproduced_value,author_output_correspondence,status,paper_result_credit
+Figure 3 quality-gate ablation,QuantaAlpha,IC,baseline,0.046,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,QuantaAlpha,Rank_IC,baseline,0.045,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,QuantaAlpha,ARR_pct,baseline,4.53,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,QuantaAlpha,MDD_pct,baseline,15.1,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Consistency,IC,delta,-0.005,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Consistency,Rank_IC,delta,-0.005,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Consistency,ARR_pct,delta,-0.59,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Consistency,MDD_pct,delta,0.58,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Complexity,IC,delta,-0.006,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Complexity,Rank_IC,delta,-0.006,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Complexity,ARR_pct,delta,-0.95,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Complexity,MDD_pct,delta,2.31,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Redundancy,IC,delta,-0.007,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Redundancy,Rank_IC,delta,-0.007,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Redundancy,ARR_pct,delta,-0.78,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o Redundancy,MDD_pct,delta,0.17,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o All,IC,delta,-0.007,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o All,Rank_IC,delta,-0.007,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o All,ARR_pct,delta,-1.34,,False,not_reproduced_raster_only,False
+Figure 3 quality-gate ablation,w/o All,MDD_pct,delta,1.94,,False,not_reproduced_raster_only,False
+Appendix E iterative case-study raster,pool iteration 1,unspecified_factor_pool_performance,label,13.27,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,pool iteration 2,unspecified_factor_pool_performance,label,19.14,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,pool iteration 3,unspecified_factor_pool_performance,label,22.38,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,pool iteration 4,unspecified_factor_pool_performance,label,27.85,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,pool iteration 5,unspecified_factor_pool_performance,label,29.63,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 1 initial / ARR,ARR_pct,label,5.22,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 1 initial / RankICIR,Rank_ICIR,label,0.158,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 1 initial / MDD,MDD_pct,label,7.67,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 2 mutation / ARR,ARR_pct,label,7.06,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 2 mutation / RankICIR,Rank_ICIR,label,0.166,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 2 mutation / MDD,MDD_pct,label,10.7,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 2 crossover / ARR,ARR_pct,label,7.35,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 2 crossover / RankICIR,Rank_ICIR,label,0.17,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 2 crossover / MDD,MDD_pct,label,9.67,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 5 crossover / ARR,ARR_pct,label,7.8,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 5 crossover / RankICIR,Rank_ICIR,label,0.193,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix E iterative case-study raster,iteration 5 crossover / MDD,MDD_pct,label,11.4,,True,corroborated_by_author_readme_case_study_raster_not_regenerated,False
+Appendix C evolution-path diagram,Parent 1,Rank_IC,label,0.0216,,False,not_reproduced_tex_label_only,False
+Appendix C evolution-path diagram,Parent 2,Rank_IC,label,0.0246,,False,not_reproduced_tex_label_only,False
+Appendix C evolution-path diagram,Offspring,Rank_IC,label,0.0311,,False,not_reproduced_tex_label_only,False

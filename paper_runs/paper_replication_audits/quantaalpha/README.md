@@ -1,6 +1,7 @@
 # QuantaAlpha paper-level conformance audit
 
-Overall verdict: **substantial native implementation; zero published paper results reproduced**.
+Overall verdict: **substantial native implementation and 270 rendered author-output
+units corroborated; zero published results independently regenerated**.
 
 ## Primary-source boundary
 
@@ -10,8 +11,8 @@ Overall verdict: **substantial native implementation; zero published paper resul
 
 ## Complete numeric-result boundary
 
-- The v3 paper contains **344 numeric result table cells**: 196 main-table cells, 28 evolution-ablation values/deltas, 56 seed/daily-statistic cells, and 64 case-study/factor-analysis cells. **0/344** has a released native derivation.
-- Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are reproduced.
+- The v3 paper contains **344 numeric result table cells**: 196 main-table cells, 28 evolution-ablation values/deltas, 56 seed/daily-statistic cells, and 64 case-study/factor-analysis cells. The official README ships a complete raster of all **196/196 main-table cells**; these are author-output correspondences, while **0/344** cells are independently regenerated.
+- Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. The README ships the 17-label case-study raster and byte-identical copies of the paper-source Figure 3--5 assets, corroborating **17 labels, 47 markers, and 10 curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are regenerated.
 - The paper says approximately 150 validated factors feed a common LightGBM model. No such factor pool, run trajectory, prediction, portfolio, return, or metric artifact is shipped.
 
 ## What really works
@@ -30,4 +31,4 @@ Overall verdict: **substantial native implementation; zero published paper resul
 
 ## Honest interpretation
 
-This repository is close to a credible clean-room *implementation framework*, but far from a verifiable replication of the reported study. Running it with newly chosen APIs/data would produce a new experiment, not establish any published value. Public data and runnable components improve tractability; they do not justify paper-result credit. `--strict` intentionally remains nonzero until an end-to-end pinned paper profile reproduces every claimed artifact and result within declared tolerances.
+This repository is close to a credible clean-room *implementation framework*, but far from a verifiable replication of the reported study. Its rendered result outputs materially improve author-output availability, but screenshots cannot establish the inputs, execution, or raw result path. Running it with newly chosen APIs/data would produce a new experiment, not regenerate the published one. `--strict` intentionally remains nonzero until an end-to-end pinned paper profile reproduces every claimed artifact and result within declared tolerances.

@@ -40,6 +40,10 @@ def test_complete_numeric_table_census_is_fail_closed() -> None:
     assert sum(row["value_role"] == "displayed_delta" for row in rows) == 12
     assert {row["paper_result_credit"] for row in rows} == {False}
     assert {row["native_reproduced_value"] for row in rows} == {""}
+    assert Counter(row["author_output_correspondence"] for row in rows) == {
+        False: 148,
+        True: 196,
+    }
 
 
 def test_numeric_figure_boundary_is_separate_and_complete() -> None:
@@ -58,6 +62,11 @@ def test_numeric_figure_boundary_is_separate_and_complete() -> None:
         "Figure 5 evolutionary alpha-mining efficiency": 15,
     }
     assert {row["paper_result_credit"] for row in labels + points} == {False}
+    assert Counter(row["author_output_correspondence"] for row in labels) == {
+        False: 23,
+        True: 17,
+    }
+    assert {row["author_output_correspondence"] for row in points} == {True}
 
 
 def test_revision_conflicts_and_missing_artifacts_are_explicit() -> None:
@@ -84,7 +93,7 @@ def test_revision_conflicts_and_missing_artifacts_are_explicit() -> None:
     assert sum(row["paper_mechanism_credit"] for row in mechanisms) == 15
 
 
-def test_committed_audit_is_self_hashing_and_never_promotes_components() -> None:
+def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration() -> None:
     output = ROOT / "paper_runs/paper_replication_audits/quantaalpha"
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     native = json.loads((output / "native_component_execution.json").read_text(encoding="utf-8"))
@@ -94,13 +103,26 @@ def test_committed_audit_is_self_hashing_and_never_promotes_components() -> None
     configs = read_csv(output / "source_config_conformance.csv")
     inventory = read_csv(output / "released_source_inventory.csv")
     datasets = read_csv(output / "released_dataset_inventory.csv")
-    assert manifest["overall_status"] == "native_architecture_substantial_but_full_paper_not_reproduced_zero_published_results"
+    author_outputs = read_csv(output / "author_output_correspondence.csv")
+    assert manifest["overall_status"] == (
+        "author_rendered_outputs_corroborated_no_end_to_end_regeneration"
+    )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_numeric_table_cells_total"] == 344
     assert manifest["native_numeric_table_cells_reproduced"] == 0
+    assert manifest["author_output_numeric_table_cells_corroborated"] == 196
     assert manifest["paper_numeric_figure_labels_total"] == 40
     assert manifest["paper_discrete_unlabeled_marker_points_total"] == 47
+    assert manifest["author_output_discrete_marker_points_corroborated"] == 47
     assert manifest["paper_raster_return_curves_total"] == 10
+    assert manifest["author_output_raster_return_curves_corroborated"] == 10
+    assert manifest["author_output_numeric_figure_labels_corroborated"] == 17
+    assert manifest["author_output_result_units_corroborated"] == 270
+    assert manifest["author_output_assets_byte_identical_to_paper_source"] == 3
+    assert manifest["author_output_assets_visually_and_ocr_verified"] == 2
+    assert manifest["author_output_result_claims_corroborated"] == 5
+    assert manifest["author_output_dated_return_raster_shipped"] is True
+    assert manifest["author_output_underlying_arrays_shipped"] is False
     assert manifest["paper_result_arrays_shipped"] == 0
     assert manifest["paper_factor_pool_shipped"] is False
     assert manifest["tracked_source_files_total"] == 237
@@ -113,7 +135,15 @@ def test_committed_audit_is_self_hashing_and_never_promotes_components() -> None
     assert manifest["local_motif_proxy_paper_result_credit"] is False
     assert len(tables) == 344 and len(labels) == 40 and len(points) == 47
     assert len(configs) == 28 and Counter(row["status"] for row in configs)["conflict"] == 11
-    assert len(inventory) == 237 and {row["paper_result_artifact"] for row in inventory} == {"False"}
+    assert len(inventory) == 237
+    assert Counter(row["paper_result_artifact"] for row in inventory) == {
+        "False": 232,
+        "True": 5,
+    }
+    assert len(author_outputs) == 5
+    assert sum(int(row["published_result_units_corroborated"]) for row in author_outputs) == 270
+    assert {row["underlying_numeric_arrays_shipped"] for row in author_outputs} == {"0"}
+    assert {row["independently_regenerated"] for row in author_outputs} == {"False"}
     assert len(datasets) == 5 and {row["paper_result_artifact"] for row in datasets} == {"False"}
     assert native["component_driver_returncode"] == 0
     assert native["component_checks"]["trajectory_roundtrip"] is True
@@ -134,3 +164,6 @@ def test_pinned_primary_sources_when_available() -> None:
     assert audit.sha256(paper / "daily_pv_debug.h5") == audit.HF_DEBUG_SHA256
     assert len(audit.source_inventory(source)) == 237
     assert len(audit.paper_source_inventory(paper / "source")) == 36
+    outputs = audit.author_output_correspondence(source, paper / "source")
+    assert len(outputs) == 5
+    assert sum(row["published_result_units_corroborated"] for row in outputs) == 270

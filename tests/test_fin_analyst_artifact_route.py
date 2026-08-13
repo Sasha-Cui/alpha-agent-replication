@@ -101,7 +101,7 @@ def test_static_assets_reflect_evidence_derived_counts() -> None:
         r"\newcommand{\ReachableArtifactCountFT}{35}",
         r"\newcommand{\PinnedRepoCountFT}{34}",
         r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 32, \artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 18}",
-        r"\newcommand{\NativeDatedOutputCount}{10}",
+        r"\newcommand{\NativeDatedOutputCount}{11}",
         r"\newcommand{\TargetedAuditCount}{67}",
     ):
         assert macro in generated
