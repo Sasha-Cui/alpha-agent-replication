@@ -564,6 +564,29 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-FIN-RS": (
+        "A pinned FinRS audit rebuilds the official six-page arXiv-v1 source at "
+        "99.79% extracted-token overlap and visually checks all six official and "
+        "rebuilt pages. It inventories 225 displayed empirical cells across two "
+        "tables and one conceptual zero-empirical-panel figure. Three independently "
+        "implemented paper-derived mechanics pass deterministic checks, but the "
+        "multi-timescale score, position update, and reward equations are identical "
+        "to FinPos v1 and receive no author-code or result credit. Cross-paper lineage "
+        "is material: 216/225 FinRS cells exactly match FinPos v1, including all 180 "
+        "main-table cells and four of five ablation rows; this is displayed-value "
+        "reuse, not independent empirical corroboration. No attributable implementation, "
+        "prompts, immutable Yahoo/Finnhub/EDGAR snapshot, GPT-4o revision, model calls, "
+        "seeds, orders, positions, fills, account paths, raw arrays, or result generator "
+        "is released. Thus 0/225 cells reproduce author-natively. The named core risk "
+        "mechanics—scaled Kelly, CVaR, and volatility adjustment—lack equations, "
+        "parameters, units, and implementations. The printed reward contains no risk "
+        "term, conflicts with the claimed account-PnL benchmark and horizon scaling, "
+        "uses asset-scale-dependent raw dollars, and rewards total position rather "
+        "than action/change. The decision text also introduces future 1/7/30-day price "
+        "differences without an explicit test-time exclusion. Negative searches are "
+        "bounded, not proof that private, deleted, moved, renamed, unindexed, or later "
+        "material does not exist."
+    ),
     "SYS-FIN-POS": (
         "A pinned revision-aware FinPos audit rebuilds both official arXiv source "
         "archives at greater than 99.93% extracted-token overlap and visually checks "
@@ -1147,6 +1170,7 @@ TARGETED_EXECUTION = {
     "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_released_nav_metrics_31999_of_31999_data_links_static_outputs_no_native_training_or_backtest",
     "SYS-METAPS": "paper_audit:completed_12_paper_derived_mechanics_zero_of_492_table_cells_zero_of_20_empirical_panels_no_attributable_pipeline",
     "SYS-FIN-POS": "paper_audit:completed_11_paper_derived_mechanics_zero_of_294_current_and_225_v1_table_cells_zero_of_11_current_and_15_v1_empirical_panels_no_attributable_pipeline",
+    "SYS-FIN-RS": "paper_audit:completed_three_shared_finpos_mechanics_zero_of_225_table_cells_216_exact_finpos_v1_cells_zero_empirical_panels_no_attributable_pipeline",
     "SYS-SHARP": "paper_audit:completed_seven_paper_derived_mechanics_zero_of_210_table_cells_zero_of_1_empirical_panel_cited_dataset_404_no_attributable_pipeline",
     "SYS-AGORA": "paper_audit:completed_two_paper_metric_programs_zero_of_293_table_cells_zero_of_4_empirical_panels_claimed_release_unrecovered_no_attributable_pipeline",
     "SYS-XALPHA": "paper_audit:completed_three_paper_factor_programs_one_contract_pass_zero_of_138_numeric_units_zero_of_3_empirical_panels_no_attributable_pipeline",

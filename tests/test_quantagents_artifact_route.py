@@ -116,7 +116,7 @@ def test_static_report_counts_and_tables_include_quantagents_once() -> None:
         r"\artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 17}"
         in generated
     )
-    assert r"\newcommand{\TargetedAuditCount}{63}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{64}" in generated
     routes = (ROOT / "docs/paper/generated_evidence_routes.tex").read_text(encoding="utf-8")
     assert r"\newcommand{\PublicCodeRouteWorkCount}{34\xspace}" in routes
     assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{35\xspace}" in routes
