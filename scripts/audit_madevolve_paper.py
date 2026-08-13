@@ -6,6 +6,7 @@ import argparse
 import csv
 import hashlib
 import json
+import subprocess
 import tarfile
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable, Mapping
@@ -20,12 +21,32 @@ ARXIV_ID = "2605.23007"
 FRAMEWORK_SITE = "https://madevolve.org"
 REPOSITORY_URL = "https://github.com/tianyi-stack/MadEvolve"
 REPOSITORY_HEAD = "8b881d3a45d8f68050c28c8d64c2bb653001103a"
+REPOSITORY_COMMITS = (
+    "679b50b462ede99b91920e48fcca4c18d777ae61",
+    "78bf474816e84151ba50d1d57bf7d71bed0e1f68",
+    "ed2a79b350015dfbb3f79dd1c51bef178716e8d4",
+    "9f9567807f567b0ed9cd02b03b9bca26fcaaf552",
+    "4f8f629cc98229845960441c0020b4ebf0626ef1",
+    REPOSITORY_HEAD,
+)
+RESULT_ARTIFACT_SUFFIXES = (
+    ".ckpt", ".csv", ".db", ".json", ".jsonl", ".npy", ".npz", ".parquet",
+    ".pickle", ".pkl", ".pt", ".pth", ".safetensors", ".sqlite", ".tsv",
+    ".xls", ".xlsx",
+)
+PAPER_DOMAIN_MARKERS = (
+    "annualized return", "backtest", "bitcoin", "btcusd", "maximum drawdown",
+    "polygon.io", "portfolio", "sharpe", "sortino", "trading strategy",
+)
 
 PINS = {
     "primary/arxiv-abs.html": "72c67fd4c5b22a7ea6bf27fc7303ad86ccfaa23d50663067fb80b30d95f76ef8",
     "primary/arxiv.pdf": "9a8c776fddbeab3ca753dcaed8f04e74884b18d40e818e5d23ab9c0051751c16",
     "source/arxiv-v1.tar": "e05e19e79fcf119e462c72bf7cd484b2c1cd9694fdca31d6f10ffbdafd4671ab",
     "discovery/madevolve.org.html": "d09d523b35c633a6d9714fc5e746aa53c8629aeab4f9438cde8c54904f930016",
+    "discovery/github-branches.json": "6fdf8c9fe38ad3bfd139a06eb5884c41aa12aef3231d8724d3818cb63ce39335",
+    "discovery/github-tags.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "discovery/github-releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "release/github-repository.json": "7c13c3bbe7f519210ed99b416878deb4f4d5df9fdb54d5496897269929b3efcf",
     "release/github-commit.json": "c8a975c13385521e0d5cf06099b6dd2a541059136e9b7644bb4f49473c1d61a4",
     "release/madevolve-8b881d3.tar.gz": "79a2bad2ac108a66d1c5c6737778ebe05c3021f165f63527b552c4eb52e39f11",
@@ -92,6 +113,70 @@ def write_csv(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
 
 def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
+
+
+def git(history_root: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", "-C", str(history_root), *args],
+        check=check,
+        capture_output=True,
+        text=True,
+    )
+
+
+def source_history_rows(scratch: Path) -> list[dict[str, Any]]:
+    """Audit every public revision and fail closed on latent paper artifacts."""
+    history_root = scratch / "discovery/madevolve-history"
+    if git(history_root, "rev-parse", "--is-shallow-repository").stdout.strip() != "false":
+        raise ValueError("MadEvolve history checkout is shallow")
+    commits = git(history_root, "rev-list", "--reverse", "--all").stdout.splitlines()
+    if commits != list(REPOSITORY_COMMITS):
+        raise ValueError(f"MadEvolve public history changed: {commits}")
+    unreachable = git(
+        history_root, "fsck", "--full", "--no-reflogs", "--unreachable", "--no-progress"
+    ).stdout.strip()
+    if unreachable:
+        raise ValueError(f"MadEvolve checkout has unreviewed unreachable objects: {unreachable}")
+
+    branches = json.loads((scratch / "discovery/github-branches.json").read_text())
+    tags = json.loads((scratch / "discovery/github-tags.json").read_text())
+    releases = json.loads((scratch / "discovery/github-releases.json").read_text())
+    if [(row["name"], row["commit"]["sha"]) for row in branches] != [
+        ("main", REPOSITORY_HEAD)
+    ]:
+        raise ValueError("MadEvolve public branch topology changed")
+    if tags or releases:
+        raise ValueError("MadEvolve now exposes an unreviewed tag or release")
+
+    rows: list[dict[str, Any]] = []
+    for commit in commits:
+        authored_at, subject = git(
+            history_root, "show", "-s", "--format=%aI%x09%s", commit
+        ).stdout.rstrip("\n").split("\t", 1)
+        paths = git(history_root, "ls-tree", "-r", "--name-only", commit).stdout.splitlines()
+        payload_paths = [path for path in paths if path.lower().endswith(RESULT_ARTIFACT_SUFFIXES)]
+        domain_hits: list[str] = []
+        for path in paths:
+            if path == "README.md" or not path.endswith((".py", ".toml")):
+                continue
+            text = git(history_root, "show", f"{commit}:{path}").stdout.lower()
+            domain_hits.extend(marker for marker in PAPER_DOMAIN_MARKERS if marker in text)
+        if payload_paths or domain_hits:
+            raise ValueError(
+                "MadEvolve history contains an unreviewed paper artifact or domain literal: "
+                f"paths={payload_paths}, literals={sorted(set(domain_hits))}"
+            )
+        rows.append({
+            "commit": commit,
+            "authored_at": authored_at,
+            "subject": subject,
+            "tracked_paths": len(paths),
+            "python_paths": sum(path.endswith(".py") for path in paths),
+            "structured_result_or_data_payload_paths": len(payload_paths),
+            "paper_domain_literal_hits_outside_readme": len(domain_hits),
+            "paper_result_artifact_found": False,
+        })
+    return rows
 
 
 def validate_tar(path: Path) -> list[tarfile.TarInfo]:
@@ -171,6 +256,7 @@ def method_rows() -> list[dict[str, str]]:
         ("framework_provenance", "direct", "paper links madevolve.org; site links coauthor Tianyi Li's tianyi-stack/MadEvolve repository"),
         ("framework_release", "substantial_general_framework", "orchestrator, provider gateway, patch/rewrite modes, MAP-Elites, islands, elites, executors, storage, and reports"),
         ("framework_release_date", "precedes_paper", "pinned head committed 2026-03-03; paper submitted 2026-05-21"),
+        ("framework_public_history", "complete_no_paper_payload", "all six commits on the only public branch audited; no tags, releases, unreachable objects, structured payloads, or paper-domain literals outside README"),
         ("market_data", "specified_not_released", "Polygon BTCUSD one-minute OHLCV; exact downloaded snapshot and exchange-aggregation state absent"),
         ("temporal_split", "specified", "fit 2022--2023, optimize on 2024, held-out test through 2025-10-10"),
         ("trading_adapter", "missing", "no BTC, OHLCV, order, fill, inventory, PnL, market-impact, or backtest implementation in the release"),
@@ -211,6 +297,7 @@ def internal_rows() -> list[dict[str, str]]:
         ("cli_dependency_closure", "broken", "documented install omits imported python-dotenv"),
         ("source_compilation", "broken", "insight template contains unmatched parenthesis"),
         ("research_payload", "unreleased", "release contains no trading-specific code, data, configuration, candidate, or result artifact"),
+        ("research_payload_history", "unreleased_all_revisions", "all six public revisions preserve the same 69-path framework tree with zero structured data/result payloads and zero paper-domain literals outside README"),
         ("live_trading_claim", "paper_disclaims_transfer", "paper says exchange-aggregated data is not directly tradable and live performance is unassessed"),
     )
     return [{"check": check, "status": status, "detail": detail} for check, status, detail in specs]
@@ -330,6 +417,13 @@ native and Slurm execution, SQLite artifact lineage, and report analysis. In a
 controlled fixture, the patcher, grid, islands, elite vault, and artifact store
 all work. These checks establish framework-component conformance only.
 
+The full public Git history was also audited, rather than only the pinned head.
+It contains six commits on one branch and no tags, releases, or unreachable Git
+objects. Every revision has the same 69 tracked paths and 66 Python files, zero
+structured data/result payloads, and zero Bitcoin, backtest, portfolio, or
+paper-metric literals outside the README. No earlier or alternate public
+revision supplies the missing trading research lineage.
+
 The package does not run cleanly exactly as declared. Its editable install
 resolves 39 packages, but the documented CLI immediately fails because
 `python-dotenv` is imported and omitted from `pyproject.toml`. Adding that one
@@ -376,6 +470,8 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "method_specification_audit.csv", method_rows())
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
+    history = source_history_rows(scratch)
+    write_csv(output / "released_source_history_inventory.csv", history)
     release = release_audit(scratch)
     write_json(output / "release_execution_audit.json", release)
     write_json(output / "source_provenance.json", {
@@ -407,6 +503,18 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             "trading_research_code_recovered": False,
             "complete_research_data_recovered": False,
             "published_result_lineage_recovered": False,
+            "full_public_history_audited": True,
+            "public_history_commits": len(history),
+            "public_branches": 1,
+            "public_tags": 0,
+            "public_releases": 0,
+            "unreachable_git_objects": 0,
+            "historical_structured_result_or_data_payload_paths": sum(
+                row["structured_result_or_data_payload_paths"] for row in history
+            ),
+            "historical_paper_domain_literal_hits_outside_readme": sum(
+                row["paper_domain_literal_hits_outside_readme"] for row in history
+            ),
         },
     })
     (output / "README.md").write_text(readme(), encoding="utf-8")
@@ -419,6 +527,13 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "empirical_panels": sum(row["empirical_series_or_panels"] for row in figures),
         "native_empirical_panels_regenerated": 0, "official_framework_repository_recovered": True,
         "repository_files": inventory["release_files"], "author_tests_passed": 0,
+        "repository_history_commits_audited": len(history),
+        "repository_history_structured_result_or_data_payload_paths": sum(
+            row["structured_result_or_data_payload_paths"] for row in history
+        ),
+        "repository_history_paper_result_artifacts_found": sum(
+            bool(row["paper_result_artifact_found"]) for row in history
+        ),
         "native_component_checks_passed": 5, "modules_imported_after_audit_dependency": 64,
         "modules_failed_import_after_audit_dependency": 2,
         "full_launcher_operational_as_released": False,

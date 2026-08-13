@@ -126,9 +126,17 @@
     "attribution_strength": "direct_manuscript_site_to_coauthor_repository",
     "complete_research_data_recovered": false,
     "framework_component_execution_completed": true,
+    "full_public_history_audited": true,
     "general_framework_source_recovered": true,
+    "historical_paper_domain_literal_hits_outside_readme": 0,
+    "historical_structured_result_or_data_payload_paths": 0,
+    "public_branches": 1,
+    "public_history_commits": 6,
+    "public_releases": 0,
+    "public_tags": 0,
     "published_result_lineage_recovered": false,
-    "trading_research_code_recovered": false
+    "trading_research_code_recovered": false,
+    "unreachable_git_objects": 0
   },
   "system_id": "SYS-MAD-EVOLVE",
   "work_id": "CensusArxiv260523007"

@@ -82,12 +82,12 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["fidelity_class"] == "F1_static_no_native_output"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_"
-        "empirical_panels_direct_coauthor_framework_five_component_checks_broken_"
+        "empirical_panels_full_six_commit_history_direct_coauthor_framework_five_component_checks_broken_"
         "cli_and_compile_missing_trading_lineage"
     )
     note = row["concise_evidence_note"]
     for marker in (
-        "214", "21 empirical panels", "component", "python-dotenv", "insight.py",
+        "214", "21 empirical panels", "six public revisions", "component", "python-dotenv", "insight.py",
         "no trading adapter", "0/214", "0/21",
     ):
         assert marker in note

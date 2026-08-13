@@ -11,4 +11,5 @@ paper_island_count,configuration_missing,paper says five; released defaults use 
 cli_dependency_closure,broken,documented install omits imported python-dotenv
 source_compilation,broken,insight template contains unmatched parenthesis
 research_payload,unreleased,"release contains no trading-specific code, data, configuration, candidate, or result artifact"
+research_payload_history,unreleased_all_revisions,all six public revisions preserve the same 69-path framework tree with zero structured data/result payloads and zero paper-domain literals outside README
 live_trading_claim,paper_disclaims_transfer,paper says exchange-aggregated data is not directly tradable and live performance is unassessed

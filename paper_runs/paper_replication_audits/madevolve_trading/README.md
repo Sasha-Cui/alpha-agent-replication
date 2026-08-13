@@ -16,6 +16,13 @@ native and Slurm execution, SQLite artifact lineage, and report analysis. In a
 controlled fixture, the patcher, grid, islands, elite vault, and artifact store
 all work. These checks establish framework-component conformance only.
 
+The full public Git history was also audited, rather than only the pinned head.
+It contains six commits on one branch and no tags, releases, or unreachable Git
+objects. Every revision has the same 69 tracked paths and 66 Python files, zero
+structured data/result payloads, and zero Bitcoin, backtest, portfolio, or
+paper-metric literals outside the README. No earlier or alternate public
+revision supplies the missing trading research lineage.
+
 The package does not run cleanly exactly as declared. Its editable install
 resolves 39 packages, but the documented CLI immediately fails because
 `python-dotenv` is imported and omitted from `pyproject.toml`. Adding that one

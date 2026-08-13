@@ -1,0 +1,7 @@
+commit,authored_at,subject,tracked_paths,python_paths,structured_result_or_data_payload_paths,paper_domain_literal_hits_outside_readme,paper_result_artifact_found
+679b50b462ede99b91920e48fcca4c18d777ae61,2026-02-19T17:36:45-06:00,initial commit,69,66,0,0,False
+78bf474816e84151ba50d1d57bf7d71bed0e1f68,2026-02-25T15:23:29-06:00,Add timestamped run directories and enhanced best program export,69,66,0,0,False
+ed2a79b350015dfbb3f79dd1c51bef178716e8d4,2026-02-25T15:52:53-06:00,Expose evolution config path to evaluator via MADEVOLVE_CONFIG_PATH env var,69,66,0,0,False
+9f9567807f567b0ed9cd02b03b9bca26fcaaf552,2026-02-25T16:08:28-06:00,Enable extended thinking by default for all supported Claude models,69,66,0,0,False
+4f8f629cc98229845960441c0020b4ebf0626ef1,2026-02-26T00:54:06-06:00,Add multi-threaded LLM producer and thread-safety fixes,69,66,0,0,False
+8b881d3a45d8f68050c28c8d64c2bb653001103a,2026-03-03T16:38:41-06:00,fix analyzer,69,66,0,0,False

@@ -75,6 +75,29 @@ def test_repository_route_is_direct_and_coauthor_owned() -> None:
     )
 
 
+def test_full_public_history_contains_no_latent_paper_payload() -> None:
+    history = rows("released_source_history_inventory.csv")
+    assert [row["commit"] for row in history] == list(audit.REPOSITORY_COMMITS)
+    assert len(history) == 6
+    assert {row["tracked_paths"] for row in history} == {"69"}
+    assert {row["python_paths"] for row in history} == {"66"}
+    assert {row["structured_result_or_data_payload_paths"] for row in history} == {"0"}
+    assert {row["paper_domain_literal_hits_outside_readme"] for row in history} == {"0"}
+    assert {row["paper_result_artifact_found"] for row in history} == {"False"}
+    data = manifest()
+    assert data["repository_history_commits_audited"] == 6
+    assert data["repository_history_structured_result_or_data_payload_paths"] == 0
+    assert data["repository_history_paper_result_artifacts_found"] == 0
+    boundary = json.loads((AUDIT_DIR / "source_provenance.json").read_text())[
+        "release_boundary"
+    ]
+    assert boundary["full_public_history_audited"] is True
+    assert (boundary["public_branches"], boundary["public_tags"], boundary["public_releases"]) == (
+        1, 0, 0
+    )
+    assert boundary["unreachable_git_objects"] == 0
+
+
 def test_license_boundary_distinguishes_declaration_from_license_text() -> None:
     release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
     assert release["license_declaration"] == "MIT"
@@ -203,6 +226,8 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
     for marker in (
         "direct paper-to-framework-site-to-coauthor-repository route",
         "64/66 modules import",
+        "full public Git history",
+        "six commits on one branch",
         "no trading-specific implementation",
         "0/214 empirical numeric table units",
         "0/21 empirical panels regenerated",

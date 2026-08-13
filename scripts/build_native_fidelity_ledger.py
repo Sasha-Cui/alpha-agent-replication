@@ -142,6 +142,10 @@ ARTIFACT_NOTES = {
         "still fails on an unmatched parenthesis in templates/insight.py and no tests "
         "are shipped. Site and package metadata declare MIT, but the repository has no "
         "license text and GitHub detects no license. Most importantly, the release "
+        "has only six public revisions on one branch, with no tags, releases, or "
+        "unreachable objects; every revision retains the same 69-path framework tree "
+        "and contains zero structured result/data payloads or paper-domain literals "
+        "outside the README. The release "
         "contains no trading adapter, Polygon BTCUSD snapshot, forecaster, order/fill "
         "simulator, fees or impact engine, paper configs/seeds/model calls, candidate or "
         "best programs, run histories, Optuna studies, Claude Code search artifacts, "
@@ -1345,7 +1349,7 @@ TARGETED_EXECUTION = {
     "SYS-TRADE-IN-MINUTES": "paper_audit:completed_zero_of_349_active_empirical_units_zero_of_8_empirical_panels_listed_broken_supplement_no_attributable_pipeline",
     "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_cited_same_author_stocksim_four_component_checks_missing_atlas_lineage",
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
-    "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
+    "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_full_six_commit_history_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_full_two_commit_history_nine_tests_appendix_component_missing_research_lineage",
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_six_component_checks_broken_default_launcher_missing_research_lineage",
     "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions",
