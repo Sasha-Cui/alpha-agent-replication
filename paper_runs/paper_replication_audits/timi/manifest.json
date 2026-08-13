@@ -1,0 +1,38 @@
+{
+  "arxiv_id": "2510.04787",
+  "attributable_timi_code_recovered": false,
+  "document_rebuild_completed": true,
+  "empirical_panels": 8,
+  "figure_panels": 10,
+  "figures": 6,
+  "full_end_to_end_pipeline_reproduced": false,
+  "native_empirical_panels_regenerated": 0,
+  "native_numeric_units_regenerated": 0,
+  "official_pages_visually_checked": 33,
+  "official_pdf_and_source_recovered": true,
+  "official_supplement_listed": true,
+  "official_supplement_recovered": false,
+  "official_versions_audited": [
+    "v1",
+    "v2"
+  ],
+  "openreview_id": "ROEwZAxqyS",
+  "output_sha256": {
+    "README.md": "127e5bda2977313dc77b96d7b7cb082319ed93b460b0b41c8fa7025afa032eb1",
+    "figure_inventory.csv": "e5adab426da53bc4a06e8deb7f191456ab1ec99788e18c2e578e83618655d34e",
+    "internal_consistency_audit.csv": "09a20cbabc2237b752ef708c78e185ca9b8c144842b08327d35db9d949a9cf73",
+    "method_specification_audit.csv": "b5e15be7d0fba37a87d73197aac266dd53a759047bc55c59e288c46a6bcd31f2",
+    "published_result_ledger.csv": "c04a6be5ce572d68ae8af44c998edefb61c6cc64b87c615859f3ff536ab4b759",
+    "release_search_audit.json": "0975554f90852615b1a4a50bdf799e5ac287bc9bd3e173734f77140d80bb2694",
+    "source_inventory.csv": "7f5e4273e572da2b6a79b9190ae16808043131b06397b5f654c2b36ba4bea027",
+    "source_provenance.json": "918f4ddb8729517ff6d3794a8e5ba6d4954bedeb518885a58f1a1929f94a9d27",
+    "version_audit.csv": "0c9d2ab4456d1a539186e2ac8eee23de0a800aa4043cbe21d0a1ed0d9a9b8086"
+  },
+  "published_numeric_result_units": 349,
+  "rebuilt_pages_visually_checked": 33,
+  "source_files_across_versions": 43,
+  "strict_success": false,
+  "system_id": "SYS-TRADE-IN-MINUTES",
+  "third_party_candidates": 2,
+  "work_id": "CensusArxiv251004787"
+}

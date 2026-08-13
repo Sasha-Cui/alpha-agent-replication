@@ -1,0 +1,11 @@
+check,status,detail
+document_rebuild,all_pages_match_visually,"33 official and 33 rebuilt pages checked; zero unreadable, clipped, overlapping, blank, or missing research pages"
+transaction_figure_order_counts,paper_prose_conflict,Figure 6 reports OM=61 and SIGN=45 valid orders; v2 prose says 28 and 39
+supplement_release,listed_but_not_retrievable,accepted record identifies a public supplement but its logical and immutable paths currently return 403/404
+code_release_language,not_fulfilled_in_pinned_evidence,v1 commits to open-source code/records; v2 says code and corner cases will be released; no attributable release was found
+version_result_lineage,material_revision_without_raw_lineage,v2 adds 2024 backtests and component ablations after v1 without raw runs or immutable lineage
+posterior_information,paper_acknowledges_risk,v2 says LLM agents exploit news and potential posterior information; no timestamped provenance is released to audit leakage
+annual_return_formula,not_annualized_as_printed,ARR is described as annual rate but printed formula is a simple total return with no time annualization exponent
+baseline_comparability,partial_and_estimated,live table marks several supported-pair results as estimates from partial experiments and mixes minute/second/hourly/daily frequencies
+llm_disclosure,scope_conflict,paper uses LLM agents as core methodology while Appendix D says LLMs were used solely for grammar/polish; likely disclosure-form wording but literally inconsistent
+third_party_candidates,unattributable,qOeOp/vibe-trading begins 2026-01-11 under Vincent Xu; cajias/nautilus-trading TiMi material appears 2026-04-21 under Raul; neither author identity matches the paper

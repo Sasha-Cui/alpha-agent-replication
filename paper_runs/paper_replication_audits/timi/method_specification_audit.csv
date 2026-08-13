@@ -1,0 +1,19 @@
+version,dimension,status,detail
+v2,official_document_source,complete,arXiv v1/v2 PDFs and complete TeX source packages recovered and rebuilt
+v2,accepted_record,verified,OpenReview ICLR 2026 Poster record is CC BY 4.0 and lists a supplementary ZIP
+v2,supplement,listed_but_currently_unrecoverable,logical endpoint returns 403 and immutable /attachment/a7f4111f00a10d307b4ee29926741553acafbb99.zip returns 404
+v2,paper_specific_release,missing,no attributable TiMi implementation or experiment package found
+v2,markets_and_period,partially_specified,"CME index futures and Binance cryptocurrencies; live January-April 2025, backtest 2024; exact instruments/dates are incomplete"
+v2,universe,partially_specified,"213 supported pairs reported, but the full point-in-time pair list is not released"
+v2,frequency,specified,minute-level deployment; transaction figure uses 15-minute visualization candles
+v2,market_data,specified_not_frozen,"K-lines, volatility, liquidity, funding-rate changes, market capitalization, news, and indicators described without frozen records"
+v2,agent_architecture,paper_specification_only,"macro analysis, strategy adaptation, bot evolution, and feedback reflection agents described but not released"
+v2,model_backbones,named_not_replayable,"DeepSeek-V3, Qwen2.5-Coder-32B-Instruct, and DeepSeek-R1 named without immutable model/API requests or decoding configuration"
+v2,prompts,not_released,"no exact runtime prompt templates, filled calls, responses, traces, or generated bots are included"
+v2,optimization,paper_specification_only,parameter/function/strategy escalation and three worked constraint examples are described without optimizer code or histories
+v2,execution,partially_specified,"LIMIT entries, TP/STOP monitoring, MARKET risk exits, CME/Binance, stateless recovery, and API checks are described"
+v2,costs_and_slippage,underspecified,"fees and funding are modeled and LIMIT entry is said to eliminate entry slippage, but schedules, realized records, and simulator code are absent"
+v2,baselines,underspecified,16 baselines are named; several live results are estimated partial experiments and exact implementations/configurations are absent
+v2,replications_and_uncertainty,not_released,"no random seeds, repeat count, confidence intervals, significance tests, or raw per-run outputs"
+v2,published_results,not_regenerated,zero of 349 active current-table empirical units and zero of eight empirical figure panels regenerated
+v2,search_for_release,no_attributable_public_implementation_found,exact GitHub title/arXiv searches found only references and later unaffiliated adaptations

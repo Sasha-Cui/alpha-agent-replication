@@ -1,0 +1,85 @@
+{
+  "arxiv": {
+    "id": "2510.04787",
+    "license": "CC BY 4.0",
+    "pdf_sha256": {
+      "v1": "52c59e6eb4cc2c6eaede38b120fccc05ecaa4e7cfa89e72192ba6126b3e9ae92",
+      "v2": "2fb945c939b595a2a86af040b667079d2528e00996fef3c9fd6e7b3268f52adb"
+    },
+    "source_sha256": {
+      "v1": "894d95dcb8864781558d391934aa7ba1b80a2a42f1867beb5b1398da7119b196",
+      "v2": "25b7014a6340b1cea08a5a9740c26ea0c3b2dbeb6c1e95c2a32f2252ca5d4c50"
+    },
+    "versions": [
+      "v1",
+      "v2"
+    ],
+    "visual_qa": {
+      "contact_sheet_sha256": {
+        "contact-v1/sheet-1.jpg": "4b4686def86fc163f335b9241b1df276645f9026a6d11b4d9dc161f6c3e52668",
+        "contact-v1/sheet-2.jpg": "dfc58fe944a636d317a75c6370b533594b1aa080adf553c4694cb8721493ac23",
+        "contact-v2/sheet-1.jpg": "716e73a347918a2e02e1568f3e604e38c3c2a79dd1ceb79ef8cc8e3854632047",
+        "contact-v2/sheet-2.jpg": "4b6ae1e458e6ea8ce694ee941156b50d4a09f3f6f0fcda2f3cebde22deac0691",
+        "contact-v2/sheet-3.jpg": "4698f7f7f2b109bb642034bf4296fb933431000668f74d3e8712729e9dbb111b"
+      },
+      "official_pages_inspected": 33,
+      "rebuilt_pages_inspected": 33,
+      "unreadable_clipped_overlapping_blank_or_missing_pages": 0
+    }
+  },
+  "openreview": {
+    "forum_id": "ROEwZAxqyS",
+    "immutable_endpoint_status": 404,
+    "license": "CC BY 4.0",
+    "logical_endpoint_status": 403,
+    "supplement_immutable_path": "/attachment/a7f4111f00a10d307b4ee29926741553acafbb99.zip",
+    "supplement_listed": true,
+    "supplement_recovered": false,
+    "venue": "ICLR 2026 Poster"
+  },
+  "release_boundary": {
+    "attributable_timi_source_recovered": false,
+    "complete_research_inputs_recovered": false,
+    "published_result_lineage_recovered": false,
+    "third_party_adaptations_counted_as_native": false
+  },
+  "release_search": {
+    "bounded_negative_inference": "No attributable public implementation was found in the pinned primary pages, Microsoft Research listing, or exact GitHub searches; this does not prove private, deleted, or unindexed artifacts never existed.",
+    "github_exact_arxiv_repository_matches": 0,
+    "github_exact_title_code_candidates": [
+      "cajias/nautilus-trading"
+    ],
+    "microsoft_research_page_lists_project_or_github": false,
+    "official_corner_case_list_recovered": false,
+    "official_frozen_data_or_result_arrays_recovered": false,
+    "official_paper_implementation_recovered": false,
+    "official_prompts_or_runtime_trajectories_recovered": false,
+    "official_transaction_records_recovered": false,
+    "unaffiliated_candidates": [
+      {
+        "attribution": "Vincent Xu; no paper-author identity match",
+        "created_at": "2025-12-27T04:59:06Z",
+        "earliest_sampled_commit": {
+          "date": "2026-01-11T14:56:41Z",
+          "email": "guangwei.xu@innodealing.com",
+          "name": "Vincent Xu"
+        },
+        "native_paper_credit": false,
+        "repository": "qOeOp/vibe-trading"
+      },
+      {
+        "attribution": "Raul; no paper-author identity match",
+        "created_at": "2026-04-04T11:23:47Z",
+        "native_paper_credit": false,
+        "repository": "cajias/nautilus-trading",
+        "timi_path_commit": {
+          "date": "2026-04-21T09:31:06Z",
+          "email": "rau.cajiasl@gmail.com",
+          "name": "Raul"
+        }
+      }
+    ]
+  },
+  "system_id": "SYS-TRADE-IN-MINUTES",
+  "work_id": "CensusArxiv251004787"
+}

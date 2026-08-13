@@ -1,0 +1,7 @@
+version,figure,panels,empirical_panels,description,rendered_author_asset_recovered,underlying_numeric_arrays_recovered,author_native_figure_regenerated,paper_result_credit
+v2,fig_system,1,0,system architecture,True,False,False,False
+v2,fig_evolution_map,1,0,illustrated optimization evolution map,True,False,False,False
+v2,fig_AL_CUR,2,2,action latency and capital utilization,True,False,False,False
+v2,fig_violin,1,1,ARR distributions across trading pairs,True,False,False,False
+v2,fig_ablation,1,1,bot-variant cumulative returns,True,False,False,False
+v2,fig_timi_transactions,4,4,four live transaction case charts,True,False,False,False
