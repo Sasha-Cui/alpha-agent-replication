@@ -14,6 +14,10 @@
   "pre_release_commit": "635e91ac75f68e5a48eaf0c07760252f73326118",
   "pre_release_tree_files": 3,
   "paper_era_source_revision_available": false,
+  "paper_era_author_project_site_available": true,
+  "paper_era_author_project_site_commit": "635e91ac75f68e5a48eaf0c07760252f73326118",
+  "paper_era_author_project_site_commit_date": "2025-02-02T12:53:37-08:00",
+  "paper_era_author_project_site_table_sha256": "7f38e893195179f58364ea760ca61440a791acd6205cb1c12ba5c62909c6e9bf",
   "nearest_source_release_after_paper_hours": 52.3894,
   "paper_numeric_tables_audited": [
     1
@@ -22,6 +26,8 @@
   "paper_direct_result_cells_total": 68,
   "paper_derived_improvement_cells_total": 9,
   "native_paper_table_result_cells_reproduced": 0,
+  "author_output_table_cells_corroborated": 77,
+  "author_output_table_cells_independently_regenerated": 0,
   "published_non_table_quantitative_claims_total": 14,
   "published_non_table_result_claims_total": 12,
   "native_non_table_result_claims_reproduced": 0,
@@ -68,10 +74,12 @@
   "native_paper_metric_implementation_shipped": false,
   "native_paper_actions_orders_fills_shipped": false,
   "native_paper_nav_returns_holdings_shipped": false,
+  "paper_era_author_rendered_table_shipped": true,
+  "paper_era_author_raw_result_arrays_shipped": false,
   "native_paper_llm_trajectories_shipped": false,
   "native_paper_cost_or_seed_ledger_shipped": false,
   "audit_runtime_called_llm_or_market_data_api": false,
-  "interpretation": "The nearest official code is a substantial multi-agent architecture release, but it arrived about 52 hours after arXiv v7 and the immediately preceding Git tree contains only site files. It implements several paper roles, structured state, debates, memories, tool loops, prompts, and runtime logging. It does not ship the paper data, experiment configuration, portfolio/execution engine, baseline or metric code, backtest runner, actions, fills, NAVs, returns, plots, seeds, or costs. Its analysts are sequential, its model assignment conflicts with the paper, only 6/11 appendix tool names remain, and several advertised config values are not wired into the graph. Therefore 0/77 Table 1 numeric cells and 0/12 additional quantitative result claims are reproduced. The paper also contains internal numeric inconsistencies: all 17 CR/AR pairs fail its literal annualization equation, GOOGL Sharpe improvement is arithmetically wrong, and the prose MDD bound contradicts AMZN.",
+  "interpretation": "The nearest official code is a substantial multi-agent architecture release, but it arrived about 52 hours after arXiv v7 and the immediately preceding Git tree contains only site files. It implements several paper roles, structured state, debates, memories, tool loops, prompts, and runtime logging. Its pre-release official project site also contains all 77 Table 1 values in the same order as the paper. This corroborates the published author output but is not an independent regeneration. It does not ship the paper data, experiment configuration, portfolio/execution engine, baseline or metric code, backtest runner, actions, fills, NAVs, returns, plots, seeds, or costs. Its analysts are sequential, its model assignment conflicts with the paper, only 6/11 appendix tool names remain, and several advertised config values are not wired into the graph. Therefore 77/77 Table 1 cells have exact author-output correspondence, while 0/77 Table 1 numeric cells and 0/12 additional quantitative result claims are independently reproduced. The paper also contains internal numeric inconsistencies: all 17 CR/AR pairs fail its literal annualization equation, GOOGL Sharpe improvement is arithmetically wrong, and the prose MDD bound contradicts AMZN.",
   "source_file_sha256": {
     "README.md": "aed2e950144639d239d9cb20b0c8ccd58ac6cb9aba611b5142de802289b7c236",
     "requirements.txt": "cdae55137676f17d91918e8d3a492b9e2d1c0d716829955e7764245096bfa577",
@@ -102,9 +110,10 @@
     "figures/GOOGL/details.pdf": "6fabc415d0eaf6c0bcd29ba89534fdb1c6a2acaad047db320dd373941c54025f"
   },
   "output_sha256": {
-    "README.md": "84c019dfec7c5dcb95a3ea712476cbe508d5b93ee93176af64d0bb129a3f8ac6",
+    "README.md": "87551ded2c30f45f58f551db9d0912e71bd5cd5267b9acc91b8563dd9e53fbc6",
     "annualized_return_identity_audit.csv": "2bf3dc94f82b9ae88a37df3def871106c5af79c04df228a50647d0594ba58037",
     "appendix_case_tool_conformance.csv": "6de25b0771ec99394646771e095ebd07a148eb97576ed2fcd1543203572f808f",
+    "author_output_correspondence.csv": "4ed3701ce548dcc7b688550d29e9497c1fa88eb7d0388e1cc40a4bf73b30c7ce",
     "improvement_identity_audit.csv": "cb2fcb09c23a1acaacef01eb225dc03db0323b26c0c8833f7312926e5b95bb16",
     "native_component.json": "4e2a95550ceb10be1b9aa9ab706486a047e5a888ce2d5eb751ac8bc8e35101b3",
     "paper_internal_inconsistencies.csv": "ea7e28927e414ed4f00bd1a6b2f2cf02362afd7d3387aea81a5ec47e0f25988c",
@@ -112,7 +121,7 @@
     "paper_specification_gaps.csv": "049a20184fb5c583c1f0db74d4aad054408ff2711129a72b1c891f97d976d578",
     "published_non_table_claims.csv": "8906b7a8c3b1e8ebc3d008afe3371c0725e1f187603e86d2e0abf7bd8675d524",
     "released_source_inventory.csv": "8b4d817e3515837d8bbf8e5986ddce7b562ee61b43791d93216a0bf6121d78f1",
-    "source_mechanism_conformance.csv": "829c3fa60397489cce4fecc2796dce476298c8711224eed8fc3f8ad0ad7dff89",
-    "table_1_conformance.csv": "3eba7b0eca9dbe068fd3a1d4b3303689b0f35883591e855d57b6db3077b5c522"
+    "source_mechanism_conformance.csv": "b3f4145fa9a8ad0c32e152663396684940ef36205f086c9b62c19ff55d4975dc",
+    "table_1_conformance.csv": "299bab722caf079d840a5fe611fe68a8dcacb0b248c5f655e863b019184d8d58"
   }
 }

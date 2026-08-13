@@ -40,6 +40,7 @@ def test_table_denominator_covers_every_numeric_cell() -> None:
     }
     assert len({(row["paper_table"], row["method"], row["asset"], row["metric"]) for row in rows}) == 77
     assert {row["paper_result_credit"] for row in rows} == {False}
+    assert {row["author_output_correspondence"] for row in rows} == {False}
 
 
 def test_paper_internal_metric_checks_fail_closed() -> None:
@@ -76,16 +77,20 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     inventory = read_csv(output / "released_source_inventory.csv")
     paper_assets = read_csv(output / "paper_source_asset_inventory.csv")
     component = json.loads((output / "native_component.json").read_text(encoding="utf-8"))
+    author_outputs = read_csv(output / "author_output_correspondence.csv")
 
     assert manifest["overall_status"] == ("not_reproduced_nearest_release_architecture_components_only")
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_era_source_revision_available"] is False
+    assert manifest["paper_era_author_project_site_available"] is True
     assert manifest["source_commit"] == audit.SOURCE_COMMIT
     assert manifest["pre_release_tree_files"] == 3
     assert manifest["paper_numeric_table_cells_total"] == 77
     assert manifest["paper_direct_result_cells_total"] == 68
     assert manifest["paper_derived_improvement_cells_total"] == 9
     assert manifest["native_paper_table_result_cells_reproduced"] == 0
+    assert manifest["author_output_table_cells_corroborated"] == 77
+    assert manifest["author_output_table_cells_independently_regenerated"] == 0
     assert manifest["published_non_table_result_claims_total"] == 12
     assert manifest["native_non_table_result_claims_reproduced"] == 0
     assert manifest["annualized_return_pairs_checked"] == 17
@@ -105,9 +110,20 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["native_source_upstream_tests_shipped"] == 0
     assert manifest["native_source_dependency_environment_reproduced"] is False
     assert manifest["audit_runtime_called_llm_or_market_data_api"] is False
+    assert manifest["paper_era_author_rendered_table_shipped"] is True
+    assert manifest["paper_era_author_raw_result_arrays_shipped"] is False
 
     assert len(table) == 77
     assert {row["paper_result_credit"] for row in table} == {"False"}
+    assert {row["author_output_correspondence"] for row in table} == {"True"}
+    assert {row["author_output_value"] for row in table} == {row["paper_value"] for row in table}
+    assert {row["status"] for row in table} == {
+        "corroborated_by_exact_author_project_site_table_not_regenerated"
+    }
+    assert len(author_outputs) == 1
+    assert author_outputs[0]["published_result_units_corroborated"] == "77"
+    assert author_outputs[0]["independently_regenerated"] == "False"
+    assert author_outputs[0]["paper_result_credit"] == "False"
     assert len(annualization) == 17
     assert {row["display_precision_match"] for row in annualization} == {"False"}
     assert len(improvements) == 9
@@ -159,6 +175,9 @@ def test_pinned_primary_sources_when_available() -> None:
         "index.html",
         "index_complete.html",
     ]
+    author_outputs = audit.author_output_correspondence(source_root)
+    assert author_outputs[0]["published_result_units_corroborated"] == 77
+    assert audit.paper_table_rows(author_output_verified=True)[0]["author_output_correspondence"] is True
     assert len(audit.source_inventory(source_root)) == 56
     assert len(audit.paper_source_inventory(paper_source)) == 26
     assert Counter(row["status"] for row in audit.case_tool_conformance(source_root)) == {

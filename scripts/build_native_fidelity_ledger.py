@@ -627,13 +627,17 @@ ARTIFACT_NOTES = {
         "direct results and 9 derived improvements, plus 12 quantitative result "
         "claims in prose/figures. The nearest official source is v0.1.0, released "
         "about 52 hours after the paper; its parent contains only three site files. "
+        "The paper-era official project-site HTML contains all 77 Table 1 values in "
+        "the same order as the paper. This is exact author-output correspondence, "
+        "not an independent regeneration or a raw result array. "
         "All 39 Python files compile and dependency-isolated native graph routing "
         "executes deterministically, while 14/45 paper mechanism dimensions match "
         "or have meaningful analogues. These are architecture components, not the "
         "paper experiment. No frozen multimodal data, exact config, backtest, "
         "portfolio/execution path, baselines, metrics, actions, fills, NAVs, returns, "
-        "traces, seeds, or costs are shipped, so 0/77 table cells count as native "
-        "reproductions. The paper itself has unresolved CR/AR formula, improvement, "
+        "traces, seeds, or costs are shipped, so 77/77 cells are corroborated but "
+        "0/77 table cells count as native reproductions. The paper itself has "
+        "unresolved CR/AR formula, improvement, "
         "MDD-bound, and asset-universe inconsistencies.",
     ),
     "SYS-TRADING-R1": (
@@ -1373,7 +1377,7 @@ TARGETED_EXECUTION = {
     "SYS-RAPTOR": "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
-    "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",
+    "SYS-TRADING-AGENTS": "paper_audit:completed_77_of_77_author_table_cells_corroborated_zero_native_regenerated",
     "SYS-TRADING-GROUP": "paper_audit:completed_96_of_128_source_adjacent_baseline_cells_zero_of_120_unique_native_table_cells_zero_of_15_native_curves",
     "SYS-TRADING-R1": "paper_audit:completed_zero_of_348_published_numeric_units_official_placeholder",
 }

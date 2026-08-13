@@ -37,10 +37,10 @@ metric_implementations,"CR, AR, SR, MDD",no metric calculator,missing,False
 paper_backtest_runner,2024-01-01 through 2024-03-29,one-day propagate example only,missing,False
 paper_experiment_config,exact assets/models/data/rounds,no paper config or reproduction script,missing,False
 trials_and_seeds,published estimator provenance,"no trial count, seeds, or aggregation path",missing,False
-paper_outputs,"actions, fills, NAVs, returns, metrics, plots",no tracked eval_results or dated output,missing,False
+paper_outputs,"actions, fills, NAVs, returns, metrics, plots","paper-era site preserves rendered Table 1, but no dated actions, fills, NAVs, returns, or arrays",missing,False
 runtime_state_logging,explainable structured decision trace,writes full_states_log.json when run,component_match,True
 source_prompts,role-specific prompts,role prompt functions are shipped,component_match_unverified_experiment_version,True
 upstream_tests,validated source release,v0.1.0 ships no tests or CI,missing,False
 dependency_lock,reconstructible environment,unversioned requirements and no lockfile,missing,False
 auxiliary_web_prompt,ticker-specific social retrieval,"prompt says '{ticker} on TSLA', contaminating non-TSLA requests",source_bug,False
-published_numeric_results,77 Table 1 numeric cells plus quantitative figure/text claims,no native result path,missing,False
+published_numeric_results,77 Table 1 numeric cells plus quantitative figure/text claims,77 Table 1 cells exactly corroborated by author site; no independent native result path,missing,False

@@ -2,12 +2,14 @@
 """Audit TradingAgents arXiv v7 against the nearest official source release.
 
 The latest paper revision predates the first public code release by about two
-days.  This audit therefore pins arXiv v7 and the official v0.1.0 tag, enumerates
-every numeric cell in Table 1, checks the paper's own metric identities, audits
-the published appendix transcript and source mechanisms, and executes only
-dependency-isolated deterministic components from the tagged source.  It never
-promotes compilation, graph topology, paper figures, current web data, or a
-fresh one-day LLM decision to reproduction of the paper backtest.
+days.  This audit therefore pins arXiv v7, the official pre-release project-site
+snapshot, and the official v0.1.0 tag; enumerates every numeric cell in Table 1;
+checks the paper's own metric identities; audits the published appendix
+transcript and source mechanisms; and executes only dependency-isolated
+deterministic components from the tagged source.  It records exact author-output
+correspondence separately from independent regeneration and never promotes
+compilation, graph topology, paper figures, current web data, or a fresh one-day
+LLM decision to reproduction of the paper backtest.
 """
 
 from __future__ import annotations
@@ -18,6 +20,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import subprocess
 import tarfile
 import tempfile
@@ -37,6 +40,9 @@ SOURCE_COMMIT = "cc97cb6d5deb10eac370db0c6678e2796a62eba8"
 SOURCE_TAG = "v0.1.0"
 SOURCE_COMMIT_DATE = "2025-06-05T03:08:28-07:00"
 PRE_RELEASE_COMMIT = "635e91ac75f68e5a48eaf0c07760252f73326118"
+PRE_RELEASE_COMMIT_DATE = "2025-02-02T12:53:37-08:00"
+PRE_RELEASE_TABLE_PATH = "index_complete.html"
+PRE_RELEASE_TABLE_SHA256 = "7f38e893195179f58364ea760ca61440a791acd6205cb1c12ba5c62909c6e9bf"
 DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
 
 PINNED_SOURCE_SHA256 = {
@@ -135,8 +141,12 @@ def run_git(source_root: Path, *args: str, binary: bool = False) -> str | bytes:
     return result.stdout
 
 
+def git_blob_at(source_root: Path, commit: str, relative: str) -> bytes:
+    return run_git(source_root, "show", f"{commit}:{relative}", binary=True)  # type: ignore[return-value]
+
+
 def git_blob(source_root: Path, relative: str) -> bytes:
-    return run_git(source_root, "show", f"{SOURCE_COMMIT}:{relative}", binary=True)  # type: ignore[return-value]
+    return git_blob_at(source_root, SOURCE_COMMIT, relative)
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
@@ -148,7 +158,7 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
         writer.writerows(rows)
 
 
-def paper_table_rows() -> list[dict[str, Any]]:
+def paper_table_rows(author_output_verified: bool = False) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for method, by_asset in PERFORMANCE.items():
         for asset in ASSETS:
@@ -169,9 +179,15 @@ def paper_table_rows() -> list[dict[str, Any]]:
                         "period": "2024-01-01 to 2024-03-29",
                         "metric": metric,
                         "paper_value": value,
+                        "author_output_value": value if author_output_verified else "",
+                        "author_output_correspondence": author_output_verified,
                         "native_reproduced_value": "",
                         "absolute_difference": "",
-                        "status": status,
+                        "status": (
+                            "corroborated_by_exact_author_project_site_table_not_regenerated"
+                            if author_output_verified
+                            else status
+                        ),
                         "paper_result_credit": False,
                     }
                 )
@@ -188,9 +204,15 @@ def paper_table_rows() -> list[dict[str, Any]]:
                     "period": "2024-01-01 to 2024-03-29",
                     "metric": metric,
                     "paper_value": value,
+                    "author_output_value": value if author_output_verified else "",
+                    "author_output_correspondence": author_output_verified,
                     "native_reproduced_value": "",
                     "absolute_difference": "",
-                    "status": "unavailable_missing_native_inputs",
+                    "status": (
+                        "corroborated_by_exact_author_project_site_table_not_regenerated"
+                        if author_output_verified
+                        else "unavailable_missing_native_inputs"
+                    ),
                     "paper_result_credit": False,
                 }
             )
@@ -200,6 +222,50 @@ def paper_table_rows() -> list[dict[str, Any]]:
     }:
         raise RuntimeError("TradingAgents Table 1 numeric-cell denominator changed")
     return rows
+
+
+def author_output_correspondence(source_root: Path) -> list[dict[str, Any]]:
+    payload = git_blob_at(source_root, PRE_RELEASE_COMMIT, PRE_RELEASE_TABLE_PATH)
+    observed_hash = sha256_bytes(payload)
+    if observed_hash != PRE_RELEASE_TABLE_SHA256:
+        raise RuntimeError(f"Pre-release project-site hash changed: {observed_hash}")
+
+    html = payload.decode("utf-8")
+    expected = [
+        value
+        for method in PERFORMANCE.values()
+        for asset in ASSETS
+        for value in method[asset]
+        if value is not None
+    ] + [value for asset in ASSETS for value in IMPROVEMENT[asset] if value is not None]
+    table_start = html.index('<table class="table is-striped is-fullwidth is-centered">')
+    table_end = html.index("</table>", table_start)
+    table_html = html[table_start:table_end]
+    cells = [re.sub(r"<[^>]+>", "", cell).strip() for cell in re.findall(r"<td[^>]*>(.*?)</td>", table_html, re.S)]
+    observed = []
+    for cell in cells:
+        normalized = cell.replace("&amp;", "&").replace("%", "")
+        try:
+            observed.append(float(normalized))
+        except ValueError:
+            continue
+    if len(observed) != 77 or observed != expected:
+        raise RuntimeError("Official project-site Table 1 no longer matches all 77 paper values in order")
+
+    return [
+        {
+            "output": "table_1",
+            "source_commit": PRE_RELEASE_COMMIT,
+            "source_commit_date": PRE_RELEASE_COMMIT_DATE,
+            "repository_path": PRE_RELEASE_TABLE_PATH,
+            "repository_sha256": observed_hash,
+            "correspondence_kind": "exact_ordered_numeric_html_table_correspondence",
+            "published_result_units_corroborated": len(observed),
+            "underlying_numeric_arrays_shipped": 0,
+            "independently_regenerated": False,
+            "paper_result_credit": False,
+        }
+    ]
 
 
 def annualization_identity() -> list[dict[str, Any]]:
@@ -723,7 +789,7 @@ def source_conformance(source_root: Path) -> list[dict[str, Any]]:
         (
             "paper_outputs",
             "actions, fills, NAVs, returns, metrics, plots",
-            "no tracked eval_results or dated output",
+            "paper-era site preserves rendered Table 1, but no dated actions, fills, NAVs, returns, or arrays",
             "missing",
             False,
         ),
@@ -759,7 +825,7 @@ def source_conformance(source_root: Path) -> list[dict[str, Any]]:
         (
             "published_numeric_results",
             "77 Table 1 numeric cells plus quantitative figure/text claims",
-            "no native result path",
+            "77 Table 1 cells exactly corroborated by author site; no independent native result path",
             "missing",
             False,
         ),
@@ -1040,6 +1106,9 @@ def verify_pins(
     prior_files = git_files_at(source_root, PRE_RELEASE_COMMIT)
     if prior_files != ["README.md", "index.html", "index_complete.html"]:
         raise RuntimeError(f"Pre-release tree changed: {prior_files}")
+    pre_release_table_hash = sha256_bytes(git_blob_at(source_root, PRE_RELEASE_COMMIT, PRE_RELEASE_TABLE_PATH))
+    if pre_release_table_hash != PRE_RELEASE_TABLE_SHA256:
+        raise RuntimeError(f"Pre-release project-site hash changed: {pre_release_table_hash}")
     for relative, expected in PINNED_SOURCE_SHA256.items():
         observed = sha256_bytes(git_blob(source_root, relative))
         if observed != expected:
@@ -1065,7 +1134,8 @@ def build_audit(
     output_dir: Path,
 ) -> dict[str, Any]:
     verify_pins(source_root, paper_pdf, paper_source_archive, paper_source_root)
-    table = paper_table_rows()
+    author_outputs = author_output_correspondence(source_root)
+    table = paper_table_rows(author_output_verified=True)
     annualization = annualization_identity()
     improvement = improvement_identity()
     claims = published_non_table_claims()
@@ -1079,6 +1149,7 @@ def build_audit(
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "table_1_conformance.csv", table)
+    write_csv(output_dir / "author_output_correspondence.csv", author_outputs)
     write_csv(output_dir / "annualized_return_identity_audit.csv", annualization)
     write_csv(output_dir / "improvement_identity_audit.csv", improvement)
     write_csv(output_dir / "published_non_table_claims.csv", claims)
@@ -1108,12 +1179,18 @@ def build_audit(
         "pre_release_commit": PRE_RELEASE_COMMIT,
         "pre_release_tree_files": 3,
         "paper_era_source_revision_available": False,
+        "paper_era_author_project_site_available": True,
+        "paper_era_author_project_site_commit": PRE_RELEASE_COMMIT,
+        "paper_era_author_project_site_commit_date": PRE_RELEASE_COMMIT_DATE,
+        "paper_era_author_project_site_table_sha256": PRE_RELEASE_TABLE_SHA256,
         "nearest_source_release_after_paper_hours": 52.3894,
         "paper_numeric_tables_audited": [1],
         "paper_numeric_table_cells_total": len(table),
         "paper_direct_result_cells_total": 68,
         "paper_derived_improvement_cells_total": 9,
         "native_paper_table_result_cells_reproduced": 0,
+        "author_output_table_cells_corroborated": 77,
+        "author_output_table_cells_independently_regenerated": 0,
         "published_non_table_quantitative_claims_total": len(claims),
         "published_non_table_result_claims_total": 12,
         "native_non_table_result_claims_reproduced": 0,
@@ -1147,6 +1224,8 @@ def build_audit(
         "native_paper_metric_implementation_shipped": False,
         "native_paper_actions_orders_fills_shipped": False,
         "native_paper_nav_returns_holdings_shipped": False,
+        "paper_era_author_rendered_table_shipped": True,
+        "paper_era_author_raw_result_arrays_shipped": False,
         "native_paper_llm_trajectories_shipped": False,
         "native_paper_cost_or_seed_ledger_shipped": False,
         "audit_runtime_called_llm_or_market_data_api": False,
@@ -1154,12 +1233,15 @@ def build_audit(
             "The nearest official code is a substantial multi-agent architecture release, but it "
             "arrived about 52 hours after arXiv v7 and the immediately preceding Git tree contains "
             "only site files. It implements several paper roles, structured state, debates, memories, "
-            "tool loops, prompts, and runtime logging. It does not ship the paper data, experiment "
+            "tool loops, prompts, and runtime logging. Its pre-release official project site also "
+            "contains all 77 Table 1 values in the same order as the paper. This corroborates the "
+            "published author output but is not an independent regeneration. It does not ship the paper data, experiment "
             "configuration, portfolio/execution engine, baseline or metric code, backtest runner, "
             "actions, fills, NAVs, returns, plots, seeds, or costs. Its analysts are sequential, its "
             "model assignment conflicts with the paper, only 6/11 appendix tool names remain, and "
-            "several advertised config values are not wired into the graph. Therefore 0/77 Table 1 "
-            "numeric cells and 0/12 additional quantitative result claims are reproduced. The paper "
+            "several advertised config values are not wired into the graph. Therefore 77/77 Table 1 "
+            "cells have exact author-output correspondence, while 0/77 Table 1 numeric cells and "
+            "0/12 additional quantitative result claims are independently reproduced. The paper "
             "also contains internal numeric inconsistencies: all 17 CR/AR pairs fail its literal "
             "annualization equation, GOOGL Sharpe improvement is arithmetically wrong, and the prose "
             "MDD bound contradicts AMZN."
@@ -1181,7 +1263,9 @@ meaningful architecture subset, but not the experiment that produced the paper.
 - Official source: {SOURCE_URL}, tag `{SOURCE_TAG}`, commit `{SOURCE_COMMIT}`
   ({SOURCE_COMMIT_DATE}). It is the first public code release, about 52.4 hours
   after v7. Its parent `{PRE_RELEASE_COMMIT}` contains only the README and two
-  project-site HTML files, so no paper-date implementation is present in history.
+  project-site HTML files. The pinned `{PRE_RELEASE_TABLE_PATH}` (SHA-256
+  `{PRE_RELEASE_TABLE_SHA256}`) contains all 77 Table 1 values in paper order,
+  but no paper-date implementation is present in history.
 
 ## What genuinely passes
 
@@ -1197,11 +1281,15 @@ meaningful architecture subset, but not the experiment that produced the paper.
 - Six of the eleven unique tool names in the published AAPL appendix transcript
   exist exactly in v0.1.0. The arXiv source also ships six vector performance
   figures, whose hashes and visible annotations are inventoried.
+- All 77 Table 1 values are present in the official pre-release project-site HTML
+  in exactly the paper's order. This corroborates an author-rendered output; it
+  does not independently regenerate any cell or expose the underlying arrays.
 
 ## Why the paper is not replicated
 
 - Table 1 has **77 numeric cells**: 68 direct method results and nine derived
-  improvements. **0/77** has a native released result path. Twelve additional
+  improvements. **77/77** have exact author-output correspondence, but **0/77**
+  independently regenerate through the released pipeline. Twelve additional
   quantitative result claims in prose/figures also have zero reproductions.
 - No frozen multimodal dataset, 60-indicator definition, experiment config,
   backtest runner, baseline implementation, metric code, portfolio state,
@@ -1233,9 +1321,10 @@ meaningful architecture subset, but not the experiment that produced the paper.
 
 ## Honest boundary
 
-The architecture is real and useful, but a current one-day run would use mutable
-data and changed model endpoints and would not reproduce the 2024 paper. The
-vector figures expose annotations, not their daily numeric arrays. Run
+The architecture and the historical rendered table are real and useful, but a
+current one-day run would use mutable data and changed model endpoints and would
+not reproduce the 2024 paper. The vector figures expose annotations, not their
+daily numeric arrays. Run
 `scripts/audit_tradingagents_paper.py` to regenerate this package; `--strict`
 fails until the native paper data, exact experiment source/configuration, models,
 traces, portfolio/execution rules, baselines, daily outputs, and published values
