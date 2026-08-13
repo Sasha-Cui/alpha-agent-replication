@@ -539,6 +539,27 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-ALPHA-LOGICS": (
+        "A pinned AlphaLogics audit recovers the official 19-page arXiv-v1 PDF, "
+        "complete 10-file TeX source archive, and all five source raster figures; "
+        "the unmodified source rebuilds to 19 pages, and all 19 official plus all "
+        "19 rebuilt pages were visually checked. The source exposes two algorithms, "
+        "eight active valid-JSON agent templates, and 59 DSL operation signatures. "
+        "Paper-derived control checks pass for both algorithms, but they receive no "
+        "author-native execution or result credit. No attributable AlphaLogics code, "
+        "frozen CSI500/S&P500 panel, point-in-time universe, filled model calls, model "
+        "snapshots, inference settings, seeds, exact budgets, Qlib/LightGBM config, "
+        "predictions, holdings, returns, trial arrays, or plot arrays was found. Three "
+        "later unaffiliated candidates receive no native credit: a running Gaussian "
+        "synthetic demo, a crypto adaptation with two syntax errors, and QuantNodes, "
+        "whose 52 focused tests pass but whose defaults and metrics differ from the "
+        "paper. Thus 0/158 exact table units, 0/204 displayed figure markers, and "
+        "0/18 empirical panels reproduce. The prose conflicts with its 94.9% Alpha191 "
+        "value, MDD sign conflicts with the appendix definition, the top-outside rule "
+        "misstates Qlib n_drop semantics, and Algorithm 2 generates one final logic "
+        "that it never evaluates. The local M0 monthly portfolio remains a favorable "
+        "narrative motif proxy and receives no AlphaLogics mechanism or result credit."
+    ),
     "SYS-ALPHA-AGENT-EVO": (
         "A pinned AlphaAgentEvo audit visually checks all 18 pages of the accepted "
         "ICLR 2026 OpenReview manuscript and inventories 147 exact table units, 21 "
@@ -922,6 +943,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-ALPHA-LOGICS": "paper_audit:completed_zero_of_158_table_units_zero_of_204_figure_markers_zero_of_18_empirical_panels_two_paper_derived_algorithm_checks_three_unattributable_candidates",
     "SYS-ALPHA-AGENT-EVO": "paper_audit:completed_zero_of_147_table_units_zero_of_21_empirical_panels_zero_of_40_figure_annotations_listed_unrecovered_supplement_no_attributable_pipeline",
     "SYS-TRADE-IN-MINUTES": "paper_audit:completed_zero_of_349_active_empirical_units_zero_of_8_empirical_panels_listed_broken_supplement_no_attributable_pipeline",
     "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_cited_same_author_stocksim_four_component_checks_missing_atlas_lineage",

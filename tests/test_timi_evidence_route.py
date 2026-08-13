@@ -68,9 +68,9 @@ def test_timi_paper_route_exposes_the_precise_blocker() -> None:
 
 def test_static_report_and_claim_ledger_count_timi_once() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
-    assert r"\newcommand{\TargetedAuditCount}{53}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{54}" in generated
     claims = {row["macro"]: row for row in rows(ROOT / "paper_runs/submission_evidence/claims.csv")}
-    assert claims["TargetedAuditCount"]["rendered_value"] == "53"
+    assert claims["TargetedAuditCount"]["rendered_value"] == "54"
     assert claims["TargetedAuditCount"]["source_sha256"] == sha256(
         ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv"
     )
