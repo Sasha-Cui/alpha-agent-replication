@@ -1,0 +1,13 @@
+revision,prompt_template,printed_template_recovered,strict_json_contract_status,observation,runtime_prompt_executed,author_model_response_recovered,paper_result_credit
+v1_and_v2_identical_content,10-K filtering,True,invalid_missing_comma,printed key_points/reason object omits a comma,False,False,False
+v1_and_v2_identical_content,10-K analysis,True,valid_json_example,two-string object is syntactically valid after placeholder substitution,False,False,False
+v1_and_v2_identical_content,10-Q filtering,True,invalid_missing_comma,printed key_points/reason object omits a comma,False,False,False
+v1_and_v2_identical_content,10-Q analysis,True,valid_json_example,three-string object is syntactically valid after placeholder substitution,False,False,False
+v1_and_v2_identical_content,macroeconomic relation filtering,True,invalid_union_syntax,pipe-separated alternatives are not JSON,False,False,False
+v1_and_v2_identical_content,macroeconomic impact analysis,True,invalid_union_syntax,pipe-separated alternatives are not JSON,False,False,False
+v1_and_v2_identical_content,company-news filtering,True,valid_json_example,two-string object is syntactically valid after placeholder substitution,False,False,False
+v1_and_v2_identical_content,company-news analysis,True,valid_json_example,two-string object is syntactically valid after placeholder substitution,False,False,False
+v1_and_v2_identical_content,direction training,True,invalid_union_syntax,pipe-separated action alternatives are not JSON,False,False,False
+v1_and_v2_identical_content,direction testing,True,external_unreleased_suffix,"depends on gr.complete_json_suffix_v2, which is not printed",False,False,False
+v1_and_v2_identical_content,quantity/risk training,True,invalid_bare_type_expression,bare integer range expression is not JSON,False,False,False
+v1_and_v2_identical_content,quantity/risk testing,True,external_unreleased_suffix,"depends on gr.complete_json_suffix_v2, which is not printed",False,False,False

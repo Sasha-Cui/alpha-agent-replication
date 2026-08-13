@@ -1,0 +1,10 @@
+surface,query,observed_matches,observation,attributable_finpos_release_found,negative_search_boundary
+GitHub repositories,exact title,0,no repository match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub repositories,arXiv 2510.27251,0,no repository match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub code,exact title,22,index/citation/secondary material; no attributable implementation,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub code,arXiv 2510.27251,34,index/citation/secondary material; no attributable implementation,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub code,maximum order quantity plus maxcvar,0,no exact code match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub users,Bijia Liu,0,no exact user result,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub coauthor profile,Rh-Dang 22 owner repositories,22,no FinPos repository among the inspected names/descriptions,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+Hugging Face datasets,FinPos,0,no dataset match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+Hugging Face models,FinPos,1,one post-paper unaffiliated FinPost-named model with no card or author link,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"

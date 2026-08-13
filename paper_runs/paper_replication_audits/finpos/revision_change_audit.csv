@@ -1,0 +1,8 @@
+dimension,v1,v2,effect
+venue template,"AAMAS 2026, 17 pages","ACL template, 22 pages",presentation changed
+test window,Mar--Apr 2025,Mar--Sep 2025,results are not directly comparable
+main table,180 cells including Buy-and-Hold,165 cells without Buy-and-Hold,all reported values materially revised
+component ablation,"PA/FIP/MSP/MTR, 45 cells","MTR/QRA/MSP, 36 cells",treatments and results changed
+new v2 tables,none,"sampling, signal, and extreme-market: 93 cells",current evidence denominator expanded
+prompt appendix,12 templates,same 12 template contents,known contract defects persist
+empirical panels,15 displayed panels,11 displayed panels,v1 AAPL asset duplicates TSLA composite; v2 separates it

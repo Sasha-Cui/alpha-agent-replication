@@ -1,0 +1,13 @@
+revision,figure,source_asset,source_asset_sha256,empirical_panels,description,author_rendered_asset_recovered,underlying_numeric_array_or_run_log_recovered,author_native_figure_regenerated,paper_result_credit
+v1,fig:intro,image/intro.pdf,1d6ac66330fe74c58131380789556b52d17e6650e90e6b96a6bdc3893aef5e90,1,task diagram plus TSLA cumulative-return panel,True,False,False,False
+v1,fig:archi,image/archi.pdf,ea1436daeca805f1e2abf36eec3dadf3f820faee0febaa915d502423329a9241,0,conceptual architecture,True,False,False,False
+v1,fig:prompt_abla,image/prompt_ablation.pdf,d3c7191f5b211940eed2cb4f90034f22bb9dbf6678068e8eb432867814cca322,1,prompt-trait ablation,True,False,False,False
+v1,fig:timescale_abla,image/timescale_ablation.pdf,aa0157384e3ec0d217b88c4d51da3ff7cb26db99f6e0567d34b67d769ed8c679,1,reward-horizon sensitivity,True,False,False,False
+v1,fig:PA,image/tsla-e.pdf,94b94a856035fb875b14fd0d602e3cc9a70283724e05f385b61f9c3b5f4d3f72,4,"TSLA Calmar, return-risk, exposure, and return panels",True,False,False,False
+v1,fig:PA2,image/aapl-f.pdf,3ec57f3a5e9c6fdd2d5733447fa8a5e21838321107ef7e76ed9d21547bec9fa3,8,duplicated TSLA plus AAPL four-panel composites,True,False,False,False
+v2,fig:intro,image/intro.pdf,a2723314d86f0743c233d9530c50099cbc6d7068557fa0a762b33e2266da843b,1,task diagram plus TSLA cumulative-return panel,True,False,False,False
+v2,fig:archi,image/archi.pdf,604bc9302951fd609f40b47f8d63aa7b0dbbc5c5f7880c503096123d6671a7eb,0,conceptual architecture,True,False,False,False
+v2,fig:timescale_abla,image/timescale_ablation.pdf,aa0157384e3ec0d217b88c4d51da3ff7cb26db99f6e0567d34b67d769ed8c679,1,reward-horizon sensitivity,True,False,False,False
+v2,fig:PA,image/tsla-e.pdf,b61faea0814419ecc94b07b3f37715a7be5617984cac2beca2d7a0c2176fe7a6,4,"TSLA Calmar, return-risk, exposure, and return panels",True,False,False,False
+v2,fig:prompt_abla,image/prompt_ablation.pdf,d3c7191f5b211940eed2cb4f90034f22bb9dbf6678068e8eb432867814cca322,1,prompt-trait ablation,True,False,False,False
+v2,fig:PA2,image/aapl-f.pdf,10713deb43df5ae4e499bb931343594e7542b9e7e7c72f30d7b87483b8758a0c,4,"AAPL Calmar, return-risk, exposure, and return panels",True,False,False,False

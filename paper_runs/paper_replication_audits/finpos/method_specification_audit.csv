@@ -1,0 +1,23 @@
+dimension,status,evidence
+official revisions and source,complete,v1 and v2 PDFs and 19-file source archives pinned; 39 official and 39 rebuilt pages visually checked
+native implementation,unreleased,paper contains no code URL and bounded release searches find no attributable implementation
+agent prompts,partial_static,"12 templates printed, but two depend on an unreleased suffix and six printed JSON contracts are invalid"
+model,family_only,"GPT-4o, temperature 0.7, and v2 default top_p 0.9; no immutable model snapshot or API version"
+stock universe,specified,"TSLA, AAPL, AMZN, NFLX, and COIN"
+market data,provider_schema_only,"Yahoo daily OHLCV without immutable rows, adjustment policy, timestamps, or missing-data rules"
+company and macro news,provider_schema_only,"Finnhub fields named without query parameters, item IDs, retrieval timestamps, or content snapshot"
+filings,provider_schema_only,"SEC EDGAR 10-K/10-Q named without accession IDs, filing cutoffs, parsing, or daily standardization code"
+train/test split,date_ranges_only,Jan 2024--Feb 2025 train and Mar--Sep 2025 v2 test; exact trading calendars and boundary handling missing
+initial account state,missing,"cash, position, leverage, and whether account value includes cash are unspecified"
+orders and fills,missing,"decision-at-close timing is stated, but share semantics, fill price, costs, slippage, borrowing, and liquidation are missing"
+position sizing,equation_underspecified,integer quantity is capped by maxcvar without converting CVaR return/PnL units to shares
+CVaR,equation_conflicted,"20-day lower-tail equation is printed, but 95% convention, sign, units, interpolation, and sizing conversion conflict or remain missing"
+multi-timescale reward,equation_partial,raw-price 1/7/30-day score and reward printed; endpoint policy and claimed action-alignment semantics are not determined
+hierarchical memory,narrative_only,"layers and migration narrative without allocation, retrieval, scoring, persistence, or reflection implementation"
+baselines,names_and_partial_hyperparameters,"baseline names and selected DRL settings printed without adaptations, seeds, complete configs, or runs"
+cumulative return,equation_underspecified,"sum of position-weighted log returns is printed, but conversion to CR% or account value is absent"
+Sharpe,equation_partial,"formula printed without frequency, annualization, risk-free value, or return series definition"
+maximum drawdown,equation_partial,"future-trough formula printed, but account-value construction is absent"
+Calmar,equation_partial,formula printed without annualization convention or underlying account path
+LLM stochasticity,single_cells_only,"sampling sensitivity reports one cell per setting without repetitions, seeds, dispersion, or response logs"
+raw empirical outputs,missing,"no predictions, trades, positions, PnL, account paths, arrays, or baseline outputs"

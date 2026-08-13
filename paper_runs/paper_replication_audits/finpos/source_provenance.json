@@ -1,0 +1,63 @@
+{
+  "arxiv_id": "2510.27251",
+  "attributable_finpos_implementation_found": false,
+  "authors": [
+    "Bijia Liu",
+    "Ronghao Dang"
+  ],
+  "current_version": "v2",
+  "observed_license": "NOASSERTION",
+  "official_pages": {
+    "v1": 17,
+    "v2": 22
+  },
+  "official_pages_visually_checked": {
+    "v1": 17,
+    "v2": 22
+  },
+  "official_rebuilt_token_jaccard": {
+    "v1": 0.9993612264452252,
+    "v2": 0.9993885661877102
+  },
+  "paper_contains_dataset_or_checkpoint_url": false,
+  "paper_contains_native_implementation_url": false,
+  "pinned_input_sha256": {
+    "discovery/github-code-arxiv.json": "b6d77d947bbc69cca217cd26fc626ae424519f9ea2f0bb958226d9ddcb5ab059",
+    "discovery/github-code-maxcvar.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/github-code-title.json": "99279953a0f0fda1934d80a6c6aa1c76e4c643665770e92bade12e9ff15b4ac6",
+    "discovery/github-profile-rh-dang.json": "828d05603783535c12081b5b79137004fcc7a3fff0c80cdb36a6e09f0cb28992",
+    "discovery/github-repos-rh-dang.json": "b509715fca41adb85f6795d7b8ab96e56ba5649654c51e827c0197e2f7149dc9",
+    "discovery/github-repositories-arxiv.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/github-repositories-title.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/github-users-bijia-liu.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/github-users-ronghao-dang.json": "277384818ff76d0667b12bf8bbb4e6e5c142aeb9657fd9192aa3a4ba73889f75",
+    "discovery/huggingface-datasets-finpos.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "discovery/huggingface-models-finpos.json": "1d2e69c70ab583616dd3af0086c56771f06b786ac1c954df241250292020cd0e",
+    "primary/arxiv-api.xml": "1fbeb239ead06971aff5338fb9ce4ed29b72cea796b51ebb2054b6b75f4f7d24",
+    "primary/official-v1.pdf": "78c86889c23e8e8545213191b9da423e4cf88b9b29576f27e14f0d0f1ae8f8e9",
+    "primary/official-v1.txt": "c1e95d9fc0a62b6c1c48658bd48858dc1a5bffb78f12bd3349e9abf5269fc04b",
+    "primary/official-v2.pdf": "7bdcd7539e6b828bffe3a540b39d16c79a6c16e261240cec82729cdaf56b874b",
+    "primary/official-v2.txt": "1625f9b01a11398daa10d190a6101c215e2995869763c66f859b8c4a6965f979",
+    "primary/rebuilt-v1.pdf": "3007392b9e9f2118fd1cff1f9b758ad0d6ae3916999524f1f77ec978b96f1052",
+    "primary/rebuilt-v1.txt": "80706d3024e1f2725639e1129ccea2a0702aa8c0d06f8f899ab3551cd8dadda0",
+    "primary/rebuilt-v2.pdf": "c74de4584b4e5ad043f181851461fdf86e9d39d3459617f75ebdc3ac38e14fa5",
+    "primary/rebuilt-v2.txt": "4883b9eac0ae76ab8b88cdb10560c50343090e92cd2b2b24e03fabea35080137",
+    "primary/source-v1.tar": "588f37064330a40ab3d3904b084f1c9ef186addbdf2985f10c33846ac66d4e3f",
+    "primary/source-v2.tar": "26adbb25c6a28dd484a4ab3a48f58c98ac7a7e8b4ce72aff0a5397f7c3d5b4d9"
+  },
+  "published": "2025-10-31T07:39:26Z",
+  "rebuilt_pages": {
+    "v1": 17,
+    "v2": 22
+  },
+  "rebuilt_pages_visually_checked": {
+    "v1": 17,
+    "v2": 22
+  },
+  "source_files_per_revision": {
+    "v1": 19,
+    "v2": 19
+  },
+  "updated": "2026-01-07T04:44:08Z",
+  "visual_defects_observed": 0
+}

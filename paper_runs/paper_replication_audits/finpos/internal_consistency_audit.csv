@@ -1,0 +1,18 @@
+check,status,evidence
+reward_action_alignment,semantic_conflict,"reward uses total pos_t times trend, not d_t or the position change; a sell can receive a positive rising-market reward while remaining long"
+reward_scale,asset_scale_dependent,raw dollar differences are summed and the inactivity branch squares dollars without normalization
+reward_endpoint,missing,t+30 is required but the policy for the final 30 training days is not stated
+cvar_tail_convention,conflict,"95% confidence is paired with a lower-tail PnL quantile/CVaR equation; alpha=.95 averages 95% of a 20-day sample, not a conventional 5% downside tail"
+cvar_sign_claim,conflict,"for lower-tail PnL, a more negative/smaller CVaR is worse, while the paper says smaller indicates stronger protection"
+cvar_to_integer_quantity,dimensionally_underspecified,a return/PnL statistic is named as an integer maximum order quantity without capital/price conversion
+continuous_position_claim,terminology_conflict,printed direction and quantity prompts produce discrete integer position increments rather than a continuous-valued action
+cr_log_to_percent,missing_mapping,the log-return sum has no stated mapping to the displayed CR percentages
+v2_extreme_period,conflict,section says Mar--Apr 2025 while the table caption says Mar--Sep 2025
+election_timing,conflict,Mar--Sep 2025 testing is described as covering the Nov 2024 U.S. election
+v2_fip_numbers,orphaned_results,"prose cites TSLA 52.56->62.15 and AAPL 59.38->67.31, which do not appear in the v2 ablation table"
+v2_tsla_figure_lineage,stale_v1_result,"plotted FinPos Calmar 1.30 equals v1 54.99/42.34 after rounding, while v2 62.15/42.34 implies 1.47"
+v2_aapl_figure_lineage,stale_v1_result,"plotted FinPos Calmar 3.27 equals v1 60.28/18.44 after rounding, while v2 36.31/27.53 implies 1.32"
+v2_extreme_table_lineage,mixed_revision_conflict,the v2 extreme table is captioned Mar--Sep but reproduces v1 Mar--Apr main-table values for TSLA and COIN and nearly all AAPL values rather than the v2 main table
+prompt_json_contracts,partial_invalid,4/12 printed output examples are valid JSON after placeholder substitution; six are invalid and two depend on an unreleased suffix
+revision_results,material_revision,v1 tests Mar--Apr while v2 tests Mar--Sep; main and ablation values and module definitions change substantially
+static_asset_lineage,static_only,"vector figure assets are recovered, but no numeric arrays or run logs back them"
