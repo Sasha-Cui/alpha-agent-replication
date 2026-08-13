@@ -1,0 +1,6 @@
+figure,source_asset,source_asset_sha256,empirical_panels,empirical_series_or_groups,description,author_rendered_asset_recovered,underlying_numeric_array_recovered,author_native_figure_regenerated,paper_result_credit
+fig:sjs-arch,figures/fig0_sjs_architecture.pdf,bda87ec2de4554adcb67bd11c42ac00a7e365cbdc12aac7796c0240fcac97937,0,0,SJS architecture schematic,True,False,False,False
+fig:nav,figures/fig1_holdout_nav.pdf,d5059806a684ee0c7f04b63fcb2662c36e0536f6160de44c484bd11fbcc976cb,1,8,eight holdout NAV trajectories,True,False,False,False
+fig:per-alpha-box,figures/fig2_per_alpha_sharpe.pdf,0f58486a71019fc576d17f23f02f43beebd29ef740d9f031efb83287fa08eeea,1,8,eight per-alpha distributions,True,False,False,False
+fig:evol,figures/fig3_evolution_timeline.pdf,02b268fb4d9e2b29a45a22599adab915b2d7c321438667790f98682f967b9a9c,1,2,cumulative-pass and pass-rate series,True,False,False,False
+fig:abl-bar,figures/fig4_ablation_bar.pdf,4fbad10f0a5b51cbbe3c31a378ab7b53934693edd22b65363b3b8a400f4233f3,1,8,eight portfolio-Sharpe bars,True,False,False,False

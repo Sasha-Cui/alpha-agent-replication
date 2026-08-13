@@ -1,0 +1,16 @@
+surface,query_or_endpoint,observed_matches,attributable_agora_release_found,observation,negative_search_boundary
+GitHub repository arXiv ID,github-repos-arxiv.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub repository exact title,github-repos-title.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub repository Sealed Joint Search,github-repos-sjs.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub repository Agora AlphaGen,github-repos-agora-alphagen.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub code top_alphas_audit.json,github-code-top-alphas-audit.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub code enable_incremental_ppo,github-code-incremental-ppo.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub code avg_pred_corr,github-code-avg-pred-corr.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub code author email,github-code-author-email.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub code promoted metric name,github-code-metric-name.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub commits author email,github-commits-author-email.json,0,False,bounded public identity search,public indexed identities only
+GitHub users affiliation domain,github-users-domain.json,0,False,bounded public identity search,public indexed identities only
+Hugging Face models,Agora AlphaGen,0,False,bounded name-token search,name search only
+Hugging Face datasets,Agora AlphaGen,0,False,bounded name-token search,name search only
+paper-author affiliation domain,https://pandaai.online,1,False,reachable page metadata describes a generic CRMEB/Java e-commerce storefront and contains no Agora/SJS/code link,current landing-page observation only
+GitHub repository affiliation-domain token,https://github.com/quantskills/skill-pandaai-factor-online,1,False,47-file competition/onboarding skill created 2026-08-04; README explicitly says unofficial/not affiliated and contains no Agora/SJS/AlphaGen system,"candidate inspected and rejected for attribution/task mismatch, not treated as absence proof"

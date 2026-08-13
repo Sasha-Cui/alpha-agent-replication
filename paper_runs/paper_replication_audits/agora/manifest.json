@@ -1,0 +1,25 @@
+{
+  "active_empirical_figure_panels": 4,
+  "active_quantitative_table_cells": 293,
+  "attributable_agora_implementation_found": false,
+  "author_native_empirical_panels_regenerated": 0,
+  "author_native_table_cells_regenerated": 0,
+  "complete_paper_metric_programs_executed": 2,
+  "empirical_figure_series_or_groups": 26,
+  "generated_file_sha256": {
+    "README.md": "a60bae9ab5bc9ce0e5219033a1bf9051699a96d89608ff328dea3ec2a956a4ba",
+    "figure_inventory.csv": "2daf8a8af08754b299656845b06ed3770969d327ae2930c3db7cbf2c2c8da9a4",
+    "internal_consistency_audit.csv": "870b8099ff55ce07270d47fa68a0f9f56c12bd15d3547e0baadee88950a1bb0f",
+    "method_specification_audit.csv": "c5112043d4e3bce1b664eece96b16e8578ed6f0d93f8cb9930ca946c0c95ee38",
+    "metric_execution_audit.csv": "4f631c7f56f56a539187fb6dd5d8acda7a49c939b4294ae6ea4750ef000b04d9",
+    "published_result_ledger.csv": "f8ca2d783a3f3ee1e81fd2b903cef34f3835a033c34f68693838c53ff7cc0bfe",
+    "release_search_audit.csv": "7f760997edb760cbde3ed357983745e75982372e5d6d4d8f5f4cb1ac9dd62b98",
+    "source_provenance.json": "3a6e5b236e68fa4599172dfb32122a2d5158483494e8f428ad097a2410072f93"
+  },
+  "paper_metric_programs_passing_controlled_checks": 2,
+  "raw_result_arrays_recovered": 0,
+  "result_tables": 10,
+  "strict_success": false,
+  "system_id": "SYS-AGORA",
+  "work_id": "CensusArxiv260629194"
+}

@@ -1,0 +1,18 @@
+dimension,status,detail
+official paper and source,complete,arXiv v1 PDF and complete 25-file TeX bundle are pinned; all 42 official and rebuilt pages inspected
+claimed public release,claimed_but_unrecovered,contribution says implementation/baselines/audit/registries are released; Appendix A.8 says the release will include them and provides no URL
+market universe,specified_not_released,"daily dynamic CSI1000 membership and 2,782-instrument RiceQuant post-adjusted panel are stated without the files or immutable export"
+market schema,substantially_specified,"OHLCV, reconstructed VWAP, membership, limit-up and suspension masks, next-open execution and daily frequency are stated"
+temporal split,specified,"train 2014-10--2019-12, test 2020-01--2025-12, holdout 2026-01--2026-05 with stated day counts"
+prediction target,specified,"five-day open-to-open target Ref(open,-6)/Ref(open,-1)-1 is stated"
+agent topology,substantially_specified,"five roles, nine LLM clients, three channels, role-scoped records, commit sequence and promotion rules are described"
+exact prompts and model calls,missing,"roles and one baseline prompt are described; system prompts, filled calls, responses, request IDs and immutable model snapshot are absent"
+skill stores and state,partial_with_count_conflict,"builtins and final counts are printed, but registries/stats, 78 rejected trial programs and all per-round transitions are absent; paper alternates eight and nine stores"
+promoted metric programs,complete_component,two full Python listings are printed and both execute verbatim on controlled panels
+alpha programs and pools,missing,"94 unique alphas, top-30 selection and AlphaGen vocabulary are stated; expressions, scores, pools and panels are absent"
+PPO relay,partially_specified,"MaskablePPO, 15,000 steps/round and key network settings are stated; weights, environments, checkpoints and trajectories are absent"
+portfolio and execution,partially_specified,"z-score top-30, ten deciles, five-day rebalance, next-open and nominal costs are stated; executable backtester, weights, fills and daily returns are absent"
+baselines,detailed_configs_no_runs,"seven baseline configurations are unusually detailed, but claimed implementations, inputs, factors, outputs and complete seeds are unrecovered"
+randomness and run lineage,insufficient,"seed 42 is stated for B1/B2 and a few extra B2/B6 seeds are summarized; full Agora seed, LLM nondeterminism and run IDs are absent"
+compute,partially_specified,"Python/PyTorch/CUDA/SDK/package versions, RTX5090/AMD Ryzen and approximate runtime/calls are stated without lockfile or logs"
+raw empirical outputs,missing,293 table cells and four vector-rendered empirical panels are present without underlying arrays or result generator

@@ -1,0 +1,14 @@
+check,status,detail
+release_claim_tense,conflict,Introduction says 'we release'; Appendix A.8 says the accompanying release 'will include' the artifacts; no URL appears in PDF or source
+skill_library_count,conflict,"paper repeatedly says eight libraries, but Table libstate lists nine non-total libraries including macro_regime_library"
+agora_per_alpha_median,conflict,headline table/figure say Agora median Sharpe 1.06; the significance table repeatedly uses 2.461 for the same top-30 holdout distribution
+b6_per_alpha_median,conflict,headline table says B6 median Sharpe +0.227; the significance table uses -0.000 for the same named distribution
+positive_baseline_count,conflict,prose says four of seven baselines are negative and only B2 has median above zero; headline table has four positive baselines and three negative
+holdout_observation_count,conflict,data/NAV/NW sections state 91 holdout days; rolling table attaches n=60 to the same 2026H1 Sharpe/return/monotonicity result
+same_holdout_ic,unexplained_difference,headline reports portfolio IC 0.0894 while rolling table reports 0.0865 for the same named 2026 holdout
+same_holdout_sharpe,unexplained_difference,headline reports Agora/B2/B6 Sharpes 1.872/1.334/-0.379; NW table reports 1.989/1.202/-0.310 without a stated estimator bridge
+cost_sensitivity,directional_anomaly,"as cost rises 9 to 45 bps, printed long-short annualized return rises 0.4843 to 0.4984; standard self-financing long-short costs debit both legs, so raw returns/turnover and code are needed to resolve the sign"
+cost_wording,ambiguous,paper calls the same charge 'round-trip cost ... one-way' and combines double-sided commission with sell-side stamp tax into 9 bps one-way
+test_segment_feedback,explicit_limitation,paper correctly discloses categorical 2020--2025 feedback and limits the fully clean claim to the 2026 holdout
+full_system_seed,explicit_limitation,the 100-round Agora result is one seed and its seed variance is uncharacterized
+metric_novelty,appropriately_bounded,paper explicitly says both promoted metrics are standard quant practice rather than novel inventions
