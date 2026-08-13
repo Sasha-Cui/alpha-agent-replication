@@ -1,0 +1,36 @@
+{
+  "arxiv_id": "2511.12599",
+  "arxiv_version": "v1",
+  "attributable_finrs_implementation_found": false,
+  "authors": [
+    "Bijia Liu",
+    "Ronghao Dang"
+  ],
+  "observed_license": "NOASSERTION",
+  "official_pages": 6,
+  "official_pages_visually_checked": 6,
+  "official_rebuilt_token_jaccard": 0.997872340425532,
+  "paper_contains_dataset_or_checkpoint_url": false,
+  "paper_contains_native_implementation_url": false,
+  "pinned_input_sha256": {
+    "discovery/github-code-arxiv.json": "05b5e0d57f469b14b21605837c95edffc773394668cb3deb9c82d6adb240102c",
+    "discovery/github-code-kelly.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/github-code-title.json": "f1e0a34b1600d490f84bb69b7ca99a509bdc34cfab035abd40e4cacd21bc7153",
+    "discovery/github-repositories-arxiv.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/github-repositories-title.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/huggingface-datasets-finrs.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "discovery/huggingface-models-finrs.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "primary/arxiv-abs.html": "4df4e8b0b809c4b79ed44f1fed9f22b40449f6222daa788d4611fb75998464b1",
+    "primary/arxiv-api.xml": "13c23e885d6674035d6768a93906d3128f31d990ce99c7c5da778838fafb3589",
+    "primary/official-v1.pdf": "1f7ae10ed56436a1b48392ffbda98dfd02c4822c1b08eb9c60cbf8a5a0fdc112",
+    "primary/official-v1.txt": "751fce8dfab00285ed7a3b9a4a3ad8874dfe64a6947ec092d1d9550f7c7aa9ee",
+    "primary/rebuilt-v1.pdf": "385fe641fee18755a2efc84909f5b5834cd1a00b9bf6565463b0cfc0470a5efc",
+    "primary/rebuilt-v1.txt": "8814953df94dae8190f1ac4e11bbd9bd52bb1f4e72b679ea27fc51cb103876c7",
+    "primary/source-v1.tar": "8c6711fcee25842ef9593eda5a10824f8026abe962cc9f5e98d4e9a32d66d01a"
+  },
+  "published": "2025-11-16T13:56:04Z",
+  "rebuilt_pages": 6,
+  "rebuilt_pages_visually_checked": 6,
+  "source_files": 13,
+  "visual_defects_observed": 0
+}

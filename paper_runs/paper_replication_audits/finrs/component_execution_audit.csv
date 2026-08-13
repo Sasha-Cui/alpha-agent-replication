@@ -1,0 +1,4 @@
+component,controlled_output,deterministic_control_passed,equation_identical_to_finpos_v1,paper_derived_not_author_code,author_native_pipeline_executed,published_result_regenerated,paper_result_credit,boundary
+multi_timescale_score,38.0,True,True,True,False,False,False,"paper-derived controlled mechanic, not author code, native execution, or regeneration of a published FinPos result"
+position_update,2.0,True,True,True,False,False,False,"paper-derived controlled mechanic, not author code, native execution, or regeneration of a published FinPos result"
+literal_reward,6.0,True,True,True,False,False,False,"paper-derived controlled mechanic, not author code, native execution, or regeneration of a published FinPos result"

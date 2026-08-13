@@ -1,0 +1,21 @@
+dimension,status,evidence
+official paper and source,complete,single arXiv-v1 PDF and 13-file source archive pinned; all six official and rebuilt pages visually checked
+native implementation,unreleased,paper contains no system URL and bounded searches find no attributable release
+FinPos lineage,material_display_reuse,216/225 cells exactly match FinPos v1 published 16 days earlier
+agent prompts,missing,domain-specific risk prompts are claimed but none are printed or released
+scaled Kelly criterion,named_only,"named as a position-sizing reference without equation, scale, inputs, or implementation"
+CVaR,named_only,"named as a position-sizing reference without alpha, horizon, estimator, units, or conversion to quantity"
+volatility adjustment,named_only,ablation prose claims volatility adjustment without a definition
+model,family_and_temperature_only,"GPT-4o and temperature 0.7 without immutable snapshot, API version, top_p, seeds, or logs"
+stock universe,specified,"TSLA, AAPL, AMZN, NFLX, and COIN"
+market data,provider_schema_only,"Yahoo daily OHLCV without immutable rows, adjustment policy, timestamps, or missing-data rules"
+news,provider_only,"Finnhub company/macro news without query parameters, item IDs, retrieval timestamps, or snapshot"
+filings,provider_only,"SEC EDGAR 10-K/10-Q without accession IDs, cutoffs, parser, or daily standardization code"
+train/test split,date_ranges_only,Jan 2024--Feb 2025 train and Mar--Apr 2025 test without exact calendars or boundary handling
+initial account state,missing,"cash, initial position, leverage, exposure definition, and account-value construction are absent"
+orders and fills,missing,"trade units, fill timing, costs, slippage, borrowing, constraints, and liquidation are absent"
+hierarchical memory,narrative_only,"layers and promotion/discard narrative without allocation, retrieval, scoring, or persistence implementation"
+multi-scale reward,equation_partial,"raw future 1/7/30-day price score and position reward printed; endpoints, training/test scope, and risk adjustment missing"
+metrics,names_and_citations_only,"CR, Sharpe, and MDD named without formulas, frequency, annualization, or account path"
+baselines,names_only,"11 baselines named without complete configurations, task adaptations, seeds, or outputs"
+raw empirical outputs,missing,"no predictions, positions, trades, PnL, account paths, arrays, or result generator"

@@ -1,0 +1,8 @@
+surface,query,observed_matches,observation,attributable_finrs_release_found,negative_search_boundary
+GitHub repositories,exact title,0,no repository match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub repositories,arXiv 2511.12599,0,no repository match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub code,exact title,6,citation/index material; no attributable implementation,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub code,arXiv 2511.12599,13,citation/index/secondary implementations; no attributable release,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub code,scaled Kelly Criterion plus FinRS,0,no exact implementation match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+Hugging Face models,FinRS,0,no model match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+Hugging Face datasets,FinRS,0,no dataset match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"

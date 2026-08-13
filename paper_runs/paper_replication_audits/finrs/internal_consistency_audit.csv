@@ -1,0 +1,13 @@
+check,status,evidence
+reward_action_alignment,semantic_conflict,"reward uses total position times trend, not direction or position change; a sell that remains long can be rewarded in a rising market"
+reward_risk_adjustment,claim_formula_conflict,"prose calls the return risk-adjusted, but the equation contains no volatility, drawdown, CVaR, Kelly, or downside term"
+reward_pnl_benchmark,claim_formula_conflict,prose says sliding-window account P&L benchmark; equation uses unnormalized future raw-price differences
+reward_horizon_scaling,claim_formula_conflict,prose says scaled across horizons; equation is an unweighted sum
+reward_asset_scale,asset_scale_dependent,raw dollar differences and their square are not normalized across stocks
+future_momentum_at_decision,lookahead_scope_ambiguous,"decision section says the direction agent integrates 1/7/30-day differences, while equations define them using future prices and no test-time exclusion is stated"
+scaled_kelly_cvar,missing_core_mechanics,the two risk-sizing mechanisms highlighted as novel are not mathematically or operationally defined
+risk_sensitive_ablation,treatment_underspecified,"RS bundles position information and undefined volatility adjustment, preventing treatment replication"
+election_timing,conflict,Mar--Apr 2025 testing is said to include the U.S. election held in Nov 2024
+finpos_main_table_reuse,exact_180_of_180,every main-table cell exactly matches FinPos v1 despite the renamed framework
+finpos_ablation_reuse,exact_36_of_45,four of five nine-metric ablation rows exactly match FinPos v1; only the renamed MN removal row differs
+empirical_asset_lineage,static_only,only a conceptual architecture PDF is shipped; no raw numeric or execution artifact accompanies results

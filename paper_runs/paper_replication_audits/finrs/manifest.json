@@ -1,0 +1,28 @@
+{
+  "active_empirical_table_cells": 225,
+  "arxiv_id": "2511.12599",
+  "attributable_finrs_implementation_found": false,
+  "author_native_empirical_panels_regenerated": 0,
+  "author_native_table_cells_regenerated": 0,
+  "empirical_figure_panels": 0,
+  "finpos_v1_exact_display_cell_matches": 216,
+  "full_end_to_end_pipeline_reproduced": false,
+  "generated_file_sha256": {
+    "README.md": "bd148832b40872fe1769e7276cfef2ce6cdd04ca48d7432cdc6a0c9148d20215",
+    "component_execution_audit.csv": "47dae09ab444cf6b04d30bb70f72f9f6ca2f7604317ad5536768c0ce5d145fc4",
+    "cross_paper_result_lineage.csv": "bba8c5d347c79385d3ff8e7d11c80c7c7825a0a7311e9552ab16427c7cac47d6",
+    "figure_inventory.csv": "675d44abd58e2f47ee808eff7a3d8acb19e367e5455762254d2226b1f3667c4b",
+    "internal_consistency_audit.csv": "190c4c03c4b9b1aa6284612b9b529866148032dc6a364ebb362ff6346faa4b12",
+    "method_specification_audit.csv": "20a728b2079c921075c1b5ef08ccf0d2ca6bc3c3b80250470f11d0f2db5e85de",
+    "published_result_ledger.csv": "fe680bd22ccec4d904a40ae8f84f92d3b62ced3c34526943fbe9b4de3986971e",
+    "release_search_audit.csv": "3ecdcda8ea0cf886e6dbd37fedda1c6c9a6a432c2764eb4ec1a2a479445d4d0a",
+    "source_provenance.json": "014ed7c6dfe07bdc04aba1ba76f324a2653f38d690685a4b6032aab2622e67e1"
+  },
+  "paper_derived_components_executed": 3,
+  "paper_derived_components_passing_controlled_checks": 3,
+  "raw_result_arrays_recovered": 0,
+  "result_tables": 2,
+  "strict_success": false,
+  "system_id": "SYS-FIN-RS",
+  "work_id": "CensusArxiv251112599"
+}
