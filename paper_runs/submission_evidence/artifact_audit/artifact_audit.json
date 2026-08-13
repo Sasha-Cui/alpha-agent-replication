@@ -20,6 +20,13 @@
     "post_freeze_evidence_corrections": [
       {
         "corrected_at_utc": "2026-08-12T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/alphacrafter/source_provenance.json",
+        "reason": "author-organization repository cites exact paper/authors and matches the released architecture; paper does not directly link it",
+        "source_archive_sha256": "41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1",
+        "system_id": "SYS-ALPHA-CRAFTER"
+      },
+      {
+        "corrected_at_utc": "2026-08-12T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/cogalpha/source_provenance.json",
         "reason": "author prompt repository published after the frozen census; repository is R1 specification evidence, not CogAlpha runtime code",
         "source_head": "6294d9ffa9dfc286fb14e82343f8f22a5f928c1c",
@@ -96,7 +103,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "6f163ca00da07ffa2c319307c52ac47e6a2d8379fc87c23e38a5358e761eb9d8",
+    "registry_sha256": "0e62a2b49f2f91e1fdd29d431bb1b9df62fd055f0b07e8090dd26572d442c313",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -190,22 +197,22 @@
       "system_name": "AlphaAgentEvo"
     },
     {
-      "artifact_url_count": "0",
-      "artifact_url_results_json": "[]",
-      "artifact_url_types": "",
-      "artifact_urls": "",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
+      "artifact_url_count": 1,
+      "artifact_url_results_json": "[{\"check_method\":\"pinned GitHub archive plus paper/source/release attribution audit\",\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"NJU-LINK/AlphaCrafter\",\"head_sha\":\"c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d\",\"license_source\":\"pinned_archive_41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":297049,\"archive_sha256\":\"41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1\",\"archive_uncompressed_bytes\":889614,\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"code_markers\":[\"alphacrafter/main.py\",\"alphacrafter/sim/exchange_a.py\",\"alphacrafter/sim/exchange_us.py\",\"alphacrafter/agent/openai/agent.py\"],\"default_model_registry_mismatch\":true,\"environment_markers\":[\"Dockerfile\",\"docker-compose.yml\",\"setup.py\"],\"explicit_nonrunnable\":false,\"file_count\":79,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"python_file_count\":48,\"research_data_payload_released\":false,\"runner_markers\":[\"alphacrafter/main.py\"],\"support_markers\":[\"README.md\",\"alphacrafter/config.yaml\",\"alphacrafter/sandbox/template_a\",\"alphacrafter/sandbox/template_us\"],\"tracked_tests\":0},\"url\":\"https://github.com/NJU-LINK/AlphaCrafter\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "github_repository",
+      "artifact_urls": "https://github.com/NJU-LINK/AlphaCrafter",
+      "audit_timestamp_utc": "2026-08-12T00:00:00+00:00",
+      "default_branch_head_shas": "NJU-LINK/AlphaCrafter@c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d",
       "errors_json": "[]",
-      "failure_category": "no_public_artifact",
-      "github_owner_repos": "",
+      "failure_category": "none",
+      "github_owner_repos": "NJU-LINK/AlphaCrafter",
       "main_FT": "Y",
-      "native_execution_attempted": "N",
-      "observed_licenses": "",
-      "public_artifact_listed": "N",
-      "reachability_outcome": "not_listed",
-      "static_fidelity_basis_json": "{\"basis\":\"not_listed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "native_execution_attempted": "Y",
+      "observed_licenses": "NJU-LINK/AlphaCrafter=MIT",
+      "public_artifact_listed": "Y",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"code+environment+runner+examples/config; runtime and research-data boundaries are tracked separately\",\"markers\":{\"archive_bytes\":297049,\"archive_sha256\":\"41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1\",\"archive_uncompressed_bytes\":889614,\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"code_markers\":[\"alphacrafter/main.py\",\"alphacrafter/sim/exchange_a.py\",\"alphacrafter/sim/exchange_us.py\",\"alphacrafter/agent/openai/agent.py\"],\"default_model_registry_mismatch\":true,\"environment_markers\":[\"Dockerfile\",\"docker-compose.yml\",\"setup.py\"],\"explicit_nonrunnable\":false,\"file_count\":79,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"python_file_count\":48,\"research_data_payload_released\":false,\"runner_markers\":[\"alphacrafter/main.py\"],\"support_markers\":[\"README.md\",\"alphacrafter/config.yaml\",\"alphacrafter/sandbox/template_a\",\"alphacrafter/sandbox/template_us\"],\"tracked_tests\":0},\"tier\":\"R3\",\"url\":\"https://github.com/NJU-LINK/AlphaCrafter\"}]}",
+      "static_fidelity_tier": "R3",
       "stratum": "F",
       "system_id": "SYS-ALPHA-CRAFTER",
       "system_name": "AlphaCrafter"
@@ -1219,7 +1226,7 @@
       "system_name": "MetaPS"
     },
     {
-      "artifact_url_count": 1,
+      "artifact_url_count": "1",
       "artifact_url_results_json": "[{\"check_method\":\"paper-linked anonymous 4open archive plus pinned paper/source/release audit\",\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"default_branch\":\"\",\"errors\":[\"retrieved bulk archive contains 9 Git LFS pointers rather than registered payloads\"],\"github_owner_repo\":\"\",\"head_sha\":\"\",\"license_source\":\"pinned_archive_b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d\",\"observed_license\":\"Apache-2.0\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":1122274,\"archive_sha256\":\"b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d\",\"archive_uncompressed_bytes\":2596204,\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"code_markers\":[\"mmarc_pipeline/runtime.py\",\"mmarc_pipeline/pools.py\",\"mmarc_pipeline/multimodal.py\",\"mmarc_pipeline/portfolio.py\"],\"environment_markers\":[\"pyproject.toml\",\"Dockerfile\",\"constraints.production.txt\"],\"explicit_nonrunnable\":false,\"file_count\":107,\"git_lfs_pointer_files\":9,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"registered_payload_bytes_unavailable\":340563208,\"runner_markers\":[\"mmarc_pipeline/cli.py\",\"mmarc_pipeline/service.py\"],\"support_markers\":[\"tests/test_runtime_acceptance.py\",\"config/production.example.yaml\",\"artifacts/registry.json\",\"DATA_CARD.md\",\"MODEL_CARD.md\"]},\"url\":\"https://anonymous.4open.science/r/MM-ARC-32F7/\",\"url_type\":\"anonymous_4open_repository\"}]",
       "artifact_url_types": "anonymous_4open_repository",
       "artifact_urls": "https://anonymous.4open.science/r/MM-ARC-32F7/",

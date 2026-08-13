@@ -38,6 +38,25 @@ URL_RE = re.compile(r"https?://[^;\s]+")
 # system, not raw inputs, prompts, labels, factor expressions, or example
 # configuration.
 ARTIFACT_NOTES = {
+    "SYS-ALPHA-CRAFTER": (
+        "N",
+        "A pinned two-version AlphaCrafter audit inventories 176 v1 and 304 v2 "
+        "published numeric result units plus 16 v1 and 14 v2 empirical panels. The "
+        "strongly attributable 79-file MIT repository belongs to the authors' "
+        "NJU-LINK organization, cites the exact paper and authors, and matches the "
+        "three-role architecture, although the paper does not directly link it. "
+        "Native controlled fixtures execute A-share buy/T+1/sell, U.S. short/cover, "
+        "and return/drawdown metric components with the paper-stated 2-bp and 1-bp "
+        "fees. These are component checks, not paper outputs. The full launcher "
+        "fails before any API call because config.yaml requests gpt-5.3-codex while "
+        "the model registries contain only gpt-5 and gpt-5.2; it is OpenAI-only and "
+        "always injects A-share instructions/default trading tools. The release ships "
+        "schemas and index series but no research stock/fundamental/news corpus, "
+        "baselines, model calls, seeds, factor pools, brokerage path, orders, fills, "
+        "returns, or result generator. Thus 0/176 v1 and 0/304 v2 table units and "
+        "0/16 v1 and 0/14 v2 empirical panels reproduce. The local M0 motif portfolio "
+        "remains secondary and receives no AlphaCrafter result or mechanism credit.",
+    ),
     "SYS-ALPHA-AGENT": (
         "N",
         "A pinned arXiv-v2 audit enumerates all 106 numeric cells in Tables 1--2: "
@@ -786,6 +805,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_attributable_release_six_component_checks_broken_default_launcher_missing_research_lineage",
     "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_one_linked_input_one_date_prompt_zero_of_953_table_cells_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",

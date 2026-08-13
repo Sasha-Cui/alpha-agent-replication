@@ -40,14 +40,15 @@ def test_committed_artifact_audit_and_summary_include_raptor() -> None:
     assert row == {key: str(value) for key, value in route.raptor_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "29"
-    assert ft["artifact_reachable_among_all"]["successes"] == "28"
-    assert ft["github_head_resolved_among_all"]["successes"] == "27"
-    assert ft["static_R3_among_all"]["successes"] == "13"
+    assert ft["public_artifact_listed"]["successes"] == "30"
+    assert ft["artifact_reachable_among_all"]["successes"] == "29"
+    assert ft["github_head_resolved_among_all"]["successes"] == "28"
+    assert ft["static_R3_among_all"]["successes"] == "14"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text(encoding="utf-8"))
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
     assert {item["system_id"] for item in corrections} == {
         "SYS-FIN-AGENT",
+        "SYS-ALPHA-CRAFTER",
         "SYS-COG-ALPHA",
         "SYS-EMPIRICAL-ASSET-PRICING-LLM",
         "SYS-GPT-SIGNAL",
@@ -82,13 +83,13 @@ def test_native_ledger_credits_outputs_but_not_end_to_end_reproduction() -> None
 
 def test_static_paper_assets_reflect_raptor_correction() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
-    assert r"\newcommand{\ArtifactCountFT}{29}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{28}" in generated
-    assert r"\newcommand{\LicensedArtifactCountFT}{16}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{27}" in generated
-    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 39, \artifacttier{R1}: 9, \artifacttier{R2}: 6, \artifacttier{R3}: 13}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{30}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{29}" in generated
+    assert r"\newcommand{\LicensedArtifactCountFT}{17}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{28}" in generated
+    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 38, \artifacttier{R1}: 9, \artifacttier{R2}: 6, \artifacttier{R3}: 14}" in generated
     assert r"\newcommand{\NativeDatedOutputCount}{6}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{46}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{47}" in generated
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert route.OWNER_REPO.replace("_", r"\_") in system_table

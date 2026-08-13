@@ -4,8 +4,8 @@
       "failure_category_counts": {
         "artifact_unreachable": 3,
         "explicitly_nonrunnable_or_pseudocode": 3,
-        "no_public_artifact": 48,
-        "none": 40,
+        "no_public_artifact": 47,
+        "none": 41,
         "reachable_non_code_artifact": 3,
         "static_package_insufficient": 6
       },
@@ -14,74 +14,74 @@
           "denominator": 103,
           "group": "ALL",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.5048543689320388,
-          "successes": 52,
-          "wilson_95_lower": 0.4098754392292435,
-          "wilson_95_upper": 0.5994842233122258,
+          "proportion": 0.5145631067961165,
+          "successes": 53,
+          "wilson_95_lower": 0.4192695708623863,
+          "wilson_95_upper": 0.608809416762022,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 55,
+          "denominator": 56,
           "group": "ALL",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9454545454545454,
-          "successes": 52,
-          "wilson_95_lower": 0.8514693945594621,
-          "wilson_95_upper": 0.9812767844453155,
+          "proportion": 0.9464285714285714,
+          "successes": 53,
+          "wilson_95_lower": 0.8539269093117847,
+          "wilson_95_upper": 0.9816142186178909,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.46601941747572817,
-          "successes": 48,
-          "wilson_95_lower": 0.3726437920092655,
-          "wilson_95_upper": 0.5618385702004485,
+          "proportion": 0.47572815533980584,
+          "successes": 49,
+          "wilson_95_lower": 0.381899896517854,
+          "wilson_95_upper": 0.571301790774799,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 103,
           "group": "ALL",
           "metric": "public_artifact_listed",
-          "proportion": 0.5339805825242718,
-          "successes": 55,
-          "wilson_95_lower": 0.43816142979955147,
-          "wilson_95_upper": 0.6273562079907344,
+          "proportion": 0.5436893203883495,
+          "successes": 56,
+          "wilson_95_lower": 0.4476593463255318,
+          "wilson_95_upper": 0.6365776165476932,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "static_R2_or_R3_among_all",
-          "proportion": 0.36893203883495146,
-          "successes": 38,
-          "wilson_95_lower": 0.2820299422482874,
-          "wilson_95_upper": 0.46525916913203796,
+          "proportion": 0.3786407766990291,
+          "successes": 39,
+          "wilson_95_lower": 0.29092715646348816,
+          "wilson_95_upper": 0.47508127999977606,
           "z": 1.959963984540054
         },
         "static_R3_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "static_R3_among_all",
-          "proportion": 0.24271844660194175,
-          "successes": 25,
-          "wilson_95_lower": 0.17015036749176593,
-          "wilson_95_upper": 0.3337875178103541,
+          "proportion": 0.2524271844660194,
+          "successes": 26,
+          "wilson_95_lower": 0.1784782880139104,
+          "wilson_95_upper": 0.34417892237114844,
           "z": 1.959963984540054
         }
       },
       "n_systems": 103,
       "reachability_counts": {
-        "not_listed": 48,
-        "reachable_all": 52,
+        "not_listed": 47,
+        "reachable_all": 53,
         "unreachable_all": 3
       },
       "static_fidelity_counts": {
-        "R0": 51,
+        "R0": 50,
         "R1": 14,
         "R2": 13,
-        "R3": 25
+        "R3": 26
       }
     },
     "B": {
@@ -249,8 +249,8 @@
     "F": {
       "failure_category_counts": {
         "explicitly_nonrunnable_or_pseudocode": 2,
-        "no_public_artifact": 19,
-        "none": 7,
+        "no_public_artifact": 18,
+        "none": 8,
         "static_package_insufficient": 1
       },
       "metrics": {
@@ -258,81 +258,81 @@
           "denominator": 29,
           "group": "F",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.3448275862068966,
-          "successes": 10,
-          "wilson_95_lower": 0.19940718526674994,
-          "wilson_95_upper": 0.5265489590952386,
+          "proportion": 0.3793103448275862,
+          "successes": 11,
+          "wilson_95_lower": 0.2268802210080984,
+          "wilson_95_upper": 0.5599745579401147,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 10,
+          "denominator": 11,
           "group": "F",
           "metric": "artifact_reachable_given_listed",
           "proportion": 1.0,
-          "successes": 10,
-          "wilson_95_lower": 0.7224672001371107,
-          "wilson_95_upper": 0.9999999999999999,
+          "successes": 11,
+          "wilson_95_lower": 0.7411670330319684,
+          "wilson_95_upper": 1.0,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
           "denominator": 29,
           "group": "F",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.3448275862068966,
-          "successes": 10,
-          "wilson_95_lower": 0.19940718526674994,
-          "wilson_95_upper": 0.5265489590952386,
+          "proportion": 0.3793103448275862,
+          "successes": 11,
+          "wilson_95_lower": 0.2268802210080984,
+          "wilson_95_upper": 0.5599745579401147,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 29,
           "group": "F",
           "metric": "public_artifact_listed",
-          "proportion": 0.3448275862068966,
-          "successes": 10,
-          "wilson_95_lower": 0.19940718526674994,
-          "wilson_95_upper": 0.5265489590952386,
+          "proportion": 0.3793103448275862,
+          "successes": 11,
+          "wilson_95_lower": 0.2268802210080984,
+          "wilson_95_upper": 0.5599745579401147,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
           "denominator": 29,
           "group": "F",
           "metric": "static_R2_or_R3_among_all",
-          "proportion": 0.20689655172413793,
-          "successes": 6,
-          "wilson_95_lower": 0.09846070197841039,
-          "wilson_95_upper": 0.38390090403867905,
+          "proportion": 0.2413793103448276,
+          "successes": 7,
+          "wilson_95_lower": 0.12218422442520088,
+          "wilson_95_upper": 0.42107601617811335,
           "z": 1.959963984540054
         },
         "static_R3_among_all": {
           "denominator": 29,
           "group": "F",
           "metric": "static_R3_among_all",
-          "proportion": 0.1724137931034483,
-          "successes": 5,
-          "wilson_95_lower": 0.07597857252891227,
-          "wilson_95_upper": 0.34548439890195237,
+          "proportion": 0.20689655172413793,
+          "successes": 6,
+          "wilson_95_lower": 0.09846070197841039,
+          "wilson_95_upper": 0.38390090403867905,
           "z": 1.959963984540054
         }
       },
       "n_systems": 29,
       "reachability_counts": {
-        "not_listed": 19,
-        "reachable_all": 10
+        "not_listed": 18,
+        "reachable_all": 11
       },
       "static_fidelity_counts": {
-        "R0": 19,
+        "R0": 18,
         "R1": 4,
         "R2": 1,
-        "R3": 5
+        "R3": 6
       }
     },
     "F+T": {
       "failure_category_counts": {
         "artifact_unreachable": 1,
         "explicitly_nonrunnable_or_pseudocode": 2,
-        "no_public_artifact": 38,
-        "none": 21,
+        "no_public_artifact": 37,
+        "none": 22,
         "static_package_insufficient": 5
       },
       "metrics": {
@@ -340,74 +340,74 @@
           "denominator": 67,
           "group": "F+T",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.417910447761194,
-          "successes": 28,
-          "wilson_95_lower": 0.30742300955672297,
-          "wilson_95_upper": 0.5373006849702071,
-          "z": 1.959963984540054
-        },
-        "artifact_reachable_given_listed": {
-          "denominator": 29,
-          "group": "F+T",
-          "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9655172413793104,
-          "successes": 28,
-          "wilson_95_lower": 0.8282447812067973,
-          "wilson_95_upper": 0.9938867857072374,
-          "z": 1.959963984540054
-        },
-        "github_head_resolved_among_all": {
-          "denominator": 67,
-          "group": "F+T",
-          "metric": "github_head_resolved_among_all",
-          "proportion": 0.40298507462686567,
-          "successes": 27,
-          "wilson_95_lower": 0.2939049277975166,
-          "wilson_95_upper": 0.5225867111888554,
-          "z": 1.959963984540054
-        },
-        "public_artifact_listed": {
-          "denominator": 67,
-          "group": "F+T",
-          "metric": "public_artifact_listed",
           "proportion": 0.43283582089552236,
           "successes": 29,
           "wilson_95_lower": 0.3210431149754174,
           "wilson_95_upper": 0.5519126350920708,
           "z": 1.959963984540054
         },
+        "artifact_reachable_given_listed": {
+          "denominator": 30,
+          "group": "F+T",
+          "metric": "artifact_reachable_given_listed",
+          "proportion": 0.9666666666666667,
+          "successes": 29,
+          "wilson_95_lower": 0.8332960900859082,
+          "wilson_95_upper": 0.9940914096183874,
+          "z": 1.959963984540054
+        },
+        "github_head_resolved_among_all": {
+          "denominator": 67,
+          "group": "F+T",
+          "metric": "github_head_resolved_among_all",
+          "proportion": 0.417910447761194,
+          "successes": 28,
+          "wilson_95_lower": 0.30742300955672297,
+          "wilson_95_upper": 0.5373006849702071,
+          "z": 1.959963984540054
+        },
+        "public_artifact_listed": {
+          "denominator": 67,
+          "group": "F+T",
+          "metric": "public_artifact_listed",
+          "proportion": 0.44776119402985076,
+          "successes": 30,
+          "wilson_95_lower": 0.334763933612968,
+          "wilson_95_upper": 0.5664238719950783,
+          "z": 1.959963984540054
+        },
         "static_R2_or_R3_among_all": {
           "denominator": 67,
           "group": "F+T",
           "metric": "static_R2_or_R3_among_all",
-          "proportion": 0.2835820895522388,
-          "successes": 19,
-          "wilson_95_lower": 0.18970281181710177,
-          "wilson_95_upper": 0.4009323828448048,
+          "proportion": 0.29850746268656714,
+          "successes": 20,
+          "wilson_95_lower": 0.20231511276602715,
+          "wilson_95_upper": 0.41655213743643765,
           "z": 1.959963984540054
         },
         "static_R3_among_all": {
           "denominator": 67,
           "group": "F+T",
           "metric": "static_R3_among_all",
-          "proportion": 0.19402985074626866,
-          "successes": 13,
-          "wilson_95_lower": 0.1170517391641159,
-          "wilson_95_upper": 0.3041911222544419,
+          "proportion": 0.208955223880597,
+          "successes": 14,
+          "wilson_95_lower": 0.12875685189029118,
+          "wilson_95_upper": 0.3207180650688247,
           "z": 1.959963984540054
         }
       },
       "n_systems": 67,
       "reachability_counts": {
-        "not_listed": 38,
-        "reachable_all": 28,
+        "not_listed": 37,
+        "reachable_all": 29,
         "unreachable_all": 1
       },
       "static_fidelity_counts": {
-        "R0": 39,
+        "R0": 38,
         "R1": 9,
         "R2": 6,
-        "R3": 13
+        "R3": 14
       }
     },
     "M": {
@@ -594,6 +594,13 @@
     "post_freeze_evidence_corrections": [
       {
         "corrected_at_utc": "2026-08-12T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/alphacrafter/source_provenance.json",
+        "reason": "author-organization repository cites exact paper/authors and matches the released architecture; paper does not directly link it",
+        "source_archive_sha256": "41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1",
+        "system_id": "SYS-ALPHA-CRAFTER"
+      },
+      {
+        "corrected_at_utc": "2026-08-12T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/cogalpha/source_provenance.json",
         "reason": "author prompt repository published after the frozen census; repository is R1 specification evidence, not CogAlpha runtime code",
         "source_head": "6294d9ffa9dfc286fb14e82343f8f22a5f928c1c",
@@ -670,7 +677,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "6f163ca00da07ffa2c319307c52ac47e6a2d8379fc87c23e38a5358e761eb9d8",
+    "registry_sha256": "0e62a2b49f2f91e1fdd29d431bb1b9df62fd055f0b07e8090dd26572d442c313",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,

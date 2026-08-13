@@ -41,8 +41,8 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
     routes = pd.read_csv(OUTPUT)
     assert len(routes) == routes["canonical_work_id"].nunique() == 69
     assert routes["paper_evidence_route"].value_counts().to_dict() == {
-        "paper_only_underspecified": 41,
-        "public_code_available": 28,
+        "paper_only_underspecified": 40,
+        "public_code_available": 29,
     }
     assert not routes["paper_evidence_route"].eq(
         "paper_only_sufficiently_specified"
@@ -102,14 +102,14 @@ def test_treevo_two_version_paper_audit_stays_paper_only() -> None:
 def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     routes = pd.read_csv(OUTPUT)
     public = routes[routes["paper_evidence_route"].eq("public_code_available")]
-    assert len(public) == 28
+    assert len(public) == 29
     assert public["precise_native_or_access_blocker"].notna().all()
     assert public["precise_native_or_access_blocker"].str.contains(":A[123]_", regex=True).all()
     assert public["native_pipeline_disposition"].value_counts().to_dict() == {
-        "targeted_execution_recorded": 28,
+        "targeted_execution_recorded": 29,
     }
     reconstructed = public[public["good_faith_reconstruction"].eq("yes")]
-    assert len(reconstructed) == 19
+    assert len(reconstructed) == 20
     fincon = public[public["canonical_work_id"].eq("CensusArxiv240706567")]
     assert fincon["native_pipeline_disposition"].eq(
         "targeted_execution_recorded"
@@ -510,6 +510,6 @@ def test_generated_paper_macros_match_route_counts(tmp_path: Path) -> None:
     MODULE.write_tex_macros(routes, generated)
     assert generated.read_bytes() == TEX_OUTPUT.read_bytes()
     text = generated.read_text()
-    assert r"\newcommand{\PublicCodeRouteWorkCount}{28\xspace}" in text
+    assert r"\newcommand{\PublicCodeRouteWorkCount}{29\xspace}" in text
     assert r"\newcommand{\PaperOnlySpecifiedWorkCount}{0\xspace}" in text
-    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{41\xspace}" in text
+    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{40\xspace}" in text
