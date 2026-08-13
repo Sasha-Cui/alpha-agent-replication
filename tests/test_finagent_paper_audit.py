@@ -74,6 +74,8 @@ def test_committed_source_diagnostics_capture_material_conflicts() -> None:
     routes = read_csv(output / "released_processor_route_diagnostics.csv")
     metrics = read_csv(output / "paper_source_metric_formula_diagnostics.csv")
     strategies = read_csv(output / "released_strategy_record_inventory.csv")
+    strategy_conformance = read_csv(output / "released_strategy_record_paper_conformance.csv")
+    history = read_csv(output / "released_source_history_inventory.csv")
     configs = read_csv(output / "released_config_conformance.csv")
     static = read_csv(output / "released_python_static_compilation.csv")
     artifacts = read_csv(output / "released_data_artifact_inventory.csv")
@@ -92,6 +94,17 @@ def test_committed_source_diagnostics_capture_material_conflicts() -> None:
     assert {row["matches_paper_formula"] for row in metrics} == {"False"}
     assert len(strategies) == 90
     assert sum(row["record_kind"] == "best_params" and row["nonempty"] == "True" for row in strategies) == 24
+    assert len(strategy_conformance) == 288
+    assert {row["display_precision_match"] for row in strategy_conformance} == {"False"}
+    assert {row["paper_result_credit"] for row in strategy_conformance} == {"False"}
+    assert Counter(row["variant"] for row in strategy_conformance) == {"default": 144, "trained": 144}
+    assert len(history) == 7
+    assert {row["agent_output_paths"] for row in history} == {"0"}
+    assert {row["paper_result_credit"] for row in history} == {"False"}
+    assert manifest["released_strategy_record_appendix_comparisons"] == 288
+    assert manifest["released_strategy_record_appendix_display_matches"] == 0
+    assert manifest["reachable_source_history_commits"] == 7
+    assert manifest["reachable_source_history_commits_with_agent_output_paths"] == 0
     assert len(configs) == 42
     assert all(row["all_reported_core_fields_match"] == "True" for row in configs)
     assert Counter(row["reflection_model"] for row in configs) == {"True": 36, "False": 6}
@@ -113,6 +126,8 @@ def test_pinned_primary_sources_and_dynamic_parsers_when_available() -> None:
     assert len(figures) == 102
     assert len(audit.source_inventory(source)) == 341
     assert len(audit.strategy_record_rows(source)) == 90
+    assert len(audit.strategy_record_paper_conformance_rows(source, tables)) == 288
+    assert len(audit.source_history_rows(source)) == 7
     assert len(audit.config_conformance_rows(source)) == 42
     assert len(audit.source_reference_diagnostics(source)) == 81
     assert len(audit.static_python_rows(source)) == 142

@@ -473,7 +473,11 @@ ARTIFACT_NOTES = {
         "files, all 142 Python files compile, 42 experiment configs retain the core "
         "dates/horizons/assets, and the LaTeX source reproduces the 43-page paper. "
         "These are static implementation and document evidence, not experiment "
-        "outputs. No exact data snapshot, FinAgent memories, trajectories, actions, "
+        "outputs. All seven reachable commits were checked; none contains a FinAgent "
+        "agent-output path. The 90 opaque rule-strategy records yield zero exact "
+        "display-precision matches across 288 comparable high-precision Appendix "
+        "Table 7 cells, and no released code path writes those best-result records. "
+        "No exact data snapshot, FinAgent memories, trajectories, actions, "
         "equity paths, or result records are shipped. The full validation chart path "
         "renders 14 future days, the environment is long-only despite the paper's "
         "short-position explanation, optimized rule signals are overwritten, six "
@@ -1351,7 +1355,7 @@ TARGETED_EXECUTION = {
     "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
-    "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
+    "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_results_seven_commit_history_zero_of_288_rule_record_matches",
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": "paper_audit:completed_zero_of_162_v2_table_results_missing_hybrid_pipeline_and_v2_lineage",
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:partial_227_of_235_author_output_cells_corroborated_67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells",

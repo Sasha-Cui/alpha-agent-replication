@@ -1,0 +1,8 @@
+commit,commit_date,subject,tracked_files,first_party_files_excluding_vendored_echarts,vendored_echarts_files,strategy_record_files,agent_output_paths,agent_output_path_list,paper_result_credit
+408327fb60bc7c0f5ce415d4eb92cd0604c03b4d,2024-04-06T04:19:28+08:00,Initial commit,1954,341,1613,90,0,,False
+a1dd8ab4084aa3a7a729052e1127885f66868ce7,2024-04-11T13:23:39+08:00,init commit,1954,341,1613,90,0,,False
+bc58ee6ebd816ce86b15596ccea4d1432ac5493a,2024-04-11T13:45:04+08:00,init commit,1954,341,1613,90,0,,False
+6fb503beb213cdccac16e27ea6cdc22eefe3f2f1,2024-04-11T13:47:25+08:00,init commit,1954,341,1613,90,0,,False
+8a330054d2389d110b0e24fe9c142467b0d3b16f,2024-04-11T13:52:48+08:00,init commit,1954,341,1613,90,0,,False
+08fb217d374b6c923b0ab3e6dbd8213e1d0fcf1c,2024-04-11T14:03:24+08:00,init commit,341,341,0,90,0,,False
+17248a0b8b729ee3e093e30bb7bea7f52181f363,2024-08-31T20:13:54+02:00,add requirements,342,342,0,90,0,,False

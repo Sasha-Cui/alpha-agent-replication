@@ -94,6 +94,20 @@ APPENDIX_RESULT_GRAPHICS = (
     "assets/finagent_and_baselines/finagent/GOOGL_FinAgent.pdf",
     "assets/finagent_and_baselines/finagent/ETHUSD_FinAgent.pdf",
 )
+RULE_STRATEGY_METHODS = {
+    "0": "B&H",
+    "1": "MACD",
+    "2": "KDJ&RSI",
+    "4": "ZMR",
+}
+RECORD_METRICS = {
+    "ARR_pct": ("ARR", 100.0),
+    "SR": ("SR", 1.0),
+    "MDD_pct": ("MDD", 100.0),
+    "SOR": ("SOR", 1.0),
+    "CR": ("CR", 1.0),
+    "VOL": ("VOL", 1.0),
+}
 
 
 def sha256(path: Path) -> str:
@@ -360,6 +374,89 @@ def strategy_record_rows(source_root: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def strategy_record_paper_conformance_rows(
+    source_root: Path,
+    paper_rows: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    appendix = {
+        (str(row["item"]), str(row["metric"])): str(row["paper_value"])
+        for row in paper_rows
+        if str(row["paper_table"]).startswith("Appendix Table 7 panel")
+    }
+    rows: list[dict[str, Any]] = []
+    record_root = source_root / "res/strategy_record/trading"
+    for path in sorted(record_root.glob("*/*/exp001/*/best_result.json")):
+        rel = path.relative_to(source_root).as_posix()
+        parts = rel.split("/")
+        asset, strategy_index, variant = parts[3], parts[4], parts[6]
+        method = RULE_STRATEGY_METHODS.get(strategy_index)
+        if method is None:
+            continue
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        for paper_metric, (record_metric, scale) in RECORD_METRICS.items():
+            paper_value = appendix[(f"{asset}/{method}", paper_metric)]
+            record_value = float(payload[record_metric]) * scale
+            decimals = len(paper_value.partition(".")[2])
+            display_value = f"{record_value:.{decimals}f}"
+            display_match = display_value == paper_value
+            rows.append({
+                "asset": asset,
+                "method": method,
+                "strategy_index": strategy_index,
+                "variant": variant,
+                "record_path": rel,
+                "record_sha256": sha256(path),
+                "paper_metric": paper_metric,
+                "paper_value": paper_value,
+                "released_record_value_at_paper_unit": record_value,
+                "released_record_display_value": display_value,
+                "display_precision_match": display_match,
+                "absolute_difference": abs(float(paper_value) - record_value),
+                "status": (
+                    "display_precision_match_not_independent_regeneration"
+                    if display_match
+                    else "released_rule_record_does_not_match_appendix_table"
+                ),
+                "paper_result_credit": False,
+            })
+    if len(rows) != 288:
+        raise RuntimeError(f"expected 288 rule-record/paper comparisons, got {len(rows)}")
+    return rows
+
+
+def source_history_rows(source_root: Path) -> list[dict[str, Any]]:
+    commits = git(source_root, "rev-list", "--reverse", "--all").splitlines()
+    rows: list[dict[str, Any]] = []
+    output_suffixes = {".csv", ".tsv", ".json", ".jsonl", ".parquet", ".pkl", ".pickle", ".npy", ".npz", ".xlsx"}
+    output_tokens = ("trajectory", "memory_record", "trading_record", "valid_record", "train_record", "action", "equity", "portfolio", "workdir")
+    for commit in commits:
+        paths = git(source_root, "ls-tree", "-r", "--name-only", commit).splitlines()
+        first_party = [path for path in paths if not path.startswith("tools/echarts-5.4.3/")]
+        strategy_records = [path for path in first_party if path.startswith("res/strategy_record/")]
+        agent_outputs = [
+            path for path in first_party
+            if Path(path).suffix.lower() in output_suffixes
+            and not path.startswith("res/strategy_record/")
+            and any(token in path.lower() for token in output_tokens)
+        ]
+        metadata = git(source_root, "show", "-s", "--format=%aI%x00%s", commit).strip().split("\x00", 1)
+        rows.append({
+            "commit": commit,
+            "commit_date": metadata[0],
+            "subject": metadata[1],
+            "tracked_files": len(paths),
+            "first_party_files_excluding_vendored_echarts": len(first_party),
+            "vendored_echarts_files": len(paths) - len(first_party),
+            "strategy_record_files": len(strategy_records),
+            "agent_output_paths": len(agent_outputs),
+            "agent_output_path_list": ";".join(agent_outputs),
+            "paper_result_credit": False,
+        })
+    if len(rows) != 7 or any(row["agent_output_paths"] for row in rows):
+        raise RuntimeError("FinAgent reachable-history output boundary changed")
+    return rows
+
+
 def config_conformance_rows(source_root: Path) -> list[dict[str, Any]]:
     rows = []
     config_paths = sorted((source_root / "configs/exp").rglob("*.py"))
@@ -532,7 +629,7 @@ def internal_check_rows() -> list[dict[str, Any]]:
         {"check": "tsla_arr_improvement", "status": "rounding_consistent", "detail": "prose 84%; Table 4 84.39%; Appendix Table 7 84.4052%"},
         {"check": "table4_caption", "status": "caption_scope_conflict", "detail": "caption says six metrics while the active main table displays ARR, SR, and MDD only"},
         {"check": "paper_source_compile", "status": "reproduced_document", "detail": "arXiv v3 source compiles to 43 pages after two pdflatex passes"},
-        {"check": "strategy_record_scope", "status": "not_paper_results", "detail": "90 JSON files are rule-strategy training/default parameter records, not agent validation outputs"},
+        {"check": "strategy_record_scope", "status": "not_paper_results", "detail": "90 JSON files are opaque rule-strategy training/default parameter records; all 288 comparable high-precision Appendix Table 7 cells mismatch"},
         {"check": "paper_vs_source_metrics", "status": "implementation_conflict", "detail": "released SR, CR, and SOR scale differently from the equations in the paper"},
     ]
 
@@ -674,7 +771,13 @@ No paper-result credit is assigned to values transcribed from LaTeX, plot-only
 graphics, rule-strategy parameter records, static compilation, or document
 compilation.  The repository contains no exact dataset snapshot, FinAgent
 memories, trajectories, action/equity paths, checkpoints, or native result
-tables.
+tables.  All {manifest['reachable_source_history_commits']} reachable commits
+were checked and none contains an agent-output path.  The 90 shipped rule
+records yield {manifest['released_strategy_record_appendix_comparisons']}
+default/trained comparisons against the corresponding high-precision Appendix
+Table 7 cells, with {manifest['released_strategy_record_appendix_display_matches']}
+display-precision matches; no released code path writes those opaque `best_*`
+records.
 
 ## Material protocol conflicts
 
@@ -704,6 +807,8 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
     figures = paper_figure_rows(paper_source_root)
     inventory = source_inventory(source_root)
     strategies = strategy_record_rows(source_root)
+    strategy_conformance = strategy_record_paper_conformance_rows(source_root, tables)
+    history = source_history_rows(source_root)
     configs = config_conformance_rows(source_root)
     references = source_reference_diagnostics(source_root)
     routes = processor_route_rows(source_root)
@@ -719,6 +824,8 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "paper_figure_display_inventory.csv": figures,
         "released_source_inventory.csv": inventory,
         "released_strategy_record_inventory.csv": strategies,
+        "released_strategy_record_paper_conformance.csv": strategy_conformance,
+        "released_source_history_inventory.csv": history,
         "released_config_conformance.csv": configs,
         "released_missing_reference_diagnostics.csv": references,
         "released_processor_route_diagnostics.csv": routes,
@@ -763,6 +870,11 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "released_python_files": sum(row["kind"] == "python_source" for row in inventory),
         "released_strategy_record_files": len(strategies),
         "released_strategy_best_params_nonempty": sum(row["record_kind"] == "best_params" and row["nonempty"] for row in strategies),
+        "released_strategy_record_appendix_comparisons": len(strategy_conformance),
+        "released_strategy_record_appendix_display_matches": sum(row["display_precision_match"] for row in strategy_conformance),
+        "reachable_source_history_commits": len(history),
+        "reachable_source_history_commits_with_agent_output_paths": sum(bool(row["agent_output_paths"]) for row in history),
+        "reachable_source_history_first_party_path_sets_identical_before_requirements_only_commit": len({row["first_party_files_excluding_vendored_echarts"] for row in history[:-1]}) == 1,
         "released_experiment_configs": len(configs),
         "released_missing_references": len(references),
         "metric_formula_conflicts": sum(not row["matches_paper_formula"] for row in metrics),

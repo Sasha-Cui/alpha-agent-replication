@@ -17,7 +17,13 @@ No paper-result credit is assigned to values transcribed from LaTeX, plot-only
 graphics, rule-strategy parameter records, static compilation, or document
 compilation.  The repository contains no exact dataset snapshot, FinAgent
 memories, trajectories, action/equity paths, checkpoints, or native result
-tables.
+tables.  All 7 reachable commits
+were checked and none contains an agent-output path.  The 90 shipped rule
+records yield 288
+default/trained comparisons against the corresponding high-precision Appendix
+Table 7 cells, with 0
+display-precision matches; no released code path writes those opaque `best_*`
+records.
 
 ## Material protocol conflicts
 

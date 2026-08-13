@@ -237,7 +237,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "paper_audit:partial_227_of_235_author_output_cells_corroborated_"
             "67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells"
         ),
-        "CensusArxiv240218485": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
+        "CensusArxiv240218485": (
+            "paper_audit:completed_zero_of_1061_results_seven_commit_history_"
+            "zero_of_288_rule_record_matches"
+        ),
         "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
         "CensusArxiv250510278": "paper_audit:completed_zero_of_766_final_native_results_full_release_history_signal_nonidentifiability",
