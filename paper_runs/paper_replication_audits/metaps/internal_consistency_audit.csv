@@ -1,0 +1,12 @@
+check,status,detail
+volatility_breakout_listing,mathematically_unreachable,"current is included in the max/min window, so current>high*1.002 and current<low*0.998 cannot hold"
+risk_reset_action_space,conflict,"stock action space is BUY/SELL/HOLD and wrapper validates actions, but risk_reset emits REDUCE with no printed conversion"
+raw_size_modes_to_runtime_buckets,missing_mapping,listings emit probe_to_medium/scalable/small_probe/counterbalance/reduce/balanced/liquidity/breakout while runtime maps only none/small/medium/large
+compact_listing_helpers,unreleased_dependencies,eight snippets call undefined domain helpers; compact listings are not a self-contained codebase
+small_cap_breakout_window,ambiguous,recent_high includes current while current>recent_high*0.998 accepts a price up to 0.2% below the high; intent is not uniquely recoverable
+stock_return_final_value,rounding_consistent,printed returns and rounded million-dollar final values agree with $1M initial cash at displayed precision
+sandbox_return_final_equity,internally_consistent_undisclosed_initial,"all 12 rows imply initial equity about 8654.47, range 0.45; initial state is not disclosed"
+main_and_appendix_subsets,consistent,main stock/sandbox values agree with corresponding detailed scale/objective tables for displayed rows
+decision_count,consistent,best-router behavior counts and table hold/buy/sell totals sum to 250 decisions
+SFT_action_totals,consistent,each V1/V2/V3 HOLD+BUY+SELL total equals the printed 528 samples
+empirical_asset_lineage,static_only,"source ships rendered PNGs but no underlying dated arrays, daily actions, or generation scripts"

@@ -1,0 +1,25 @@
+{
+  "active_empirical_figure_panels": 20,
+  "active_quantitative_table_cells": 492,
+  "attributable_metaps_implementation_found": false,
+  "author_native_empirical_panels_regenerated": 0,
+  "author_native_table_cells_regenerated": 0,
+  "full_end_to_end_pipeline_reproduced": false,
+  "generated_file_sha256": {
+    "README.md": "5fed6c30b47609177d365eb520457d24a1620d7f552be5007255e66940df73a1",
+    "component_execution_audit.csv": "0c893ec8200be8aefaf5eecf92a94c60d5cdf58ee112cc1cce74298f2e479787",
+    "figure_inventory.csv": "d2f880fd2046f316b68693d2526855e94b8f1d1d6c8471850c4feca96e7ea53c",
+    "internal_consistency_audit.csv": "b1b119704d894e2d356325239ca190ac0acd1f8938d2e32119a4f9c2bca28876",
+    "method_specification_audit.csv": "13b079ba12e884cdf5917b1b8338a5a57635f4553aa2f8badc983bda602db689",
+    "published_result_ledger.csv": "b9c513c26c4aa29d16680266af8bd3b4fe3ed6155baf9d1482651f4b064bf55a",
+    "release_search_audit.csv": "4443c7e32c3ce34ecec5c1facf7c87bdf32bce054b94c325d7abab39a049f372",
+    "source_provenance.json": "91d7b0248c16996c196744d01378fcece753aa350508ca459d602657c2ada4ae"
+  },
+  "paper_derived_components_executed": 12,
+  "paper_derived_components_passing_controlled_checks": 12,
+  "raw_result_arrays_recovered": 0,
+  "result_tables": 9,
+  "strict_success": false,
+  "system_id": "SYS-METAPS",
+  "work_id": "CensusArxiv260622385"
+}

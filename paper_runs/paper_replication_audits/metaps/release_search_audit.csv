@@ -1,0 +1,13 @@
+surface,query_record,observed_matches,attributable_metaps_release_found,observation,negative_search_boundary
+GitHub repository exact title,github-repositories-title.json,0,False,complete bounded exact public search returned zero,"not proof that private, deleted, moved, renamed, unindexed, or later artifacts do not exist"
+GitHub repository arXiv ID,github-repositories-arxiv.json,0,False,complete bounded exact public search returned zero,"not proof that private, deleted, moved, renamed, unindexed, or later artifacts do not exist"
+GitHub code StockStrategySpec,github-code-class.json,0,False,complete bounded exact public search returned zero,"not proof that private, deleted, moved, renamed, unindexed, or later artifacts do not exist"
+GitHub code sandbox roles,github-code-sandbox-roles.json,0,False,complete bounded exact public search returned zero,"not proof that private, deleted, moved, renamed, unindexed, or later artifacts do not exist"
+GitHub users exact first-author plus Fudan,github-users-first-author.json,0,False,complete bounded exact public search returned zero,"not proof that private, deleted, moved, renamed, unindexed, or later artifacts do not exist"
+GitHub users exact second-author plus Fudan,github-users-second-author.json,0,False,complete bounded exact public search returned zero,"not proof that private, deleted, moved, renamed, unindexed, or later artifacts do not exist"
+GitHub code exact arXiv ID,github-code-arxiv.json;github-code-arxiv-page2.json,14,False,"matches are third-party indexes, feeds, reviews, unrelated numeric text, or unrelated generic strategy implementations",bounded indexed public code search only
+GitHub code exact paper title,github-code-title.json,8,False,"matches are third-party indexes, feeds, reviews, unrelated numeric text, or unrelated generic strategy implementations",bounded indexed public code search only
+GitHub code generic strategy key,github-code-strategy-key.json,14,False,"matches are third-party indexes, feeds, reviews, unrelated numeric text, or unrelated generic strategy implementations",bounded indexed public code search only
+Hugging Face models,huggingface-models.json,0,False,bounded exact-name search returned zero,name search only
+Hugging Face datasets,huggingface-datasets.json,0,False,bounded exact-name search returned zero,name search only
+OpenReview forum surface,openreview-page.html,1,False,public forum surface is behind browser verification; no code/data URL appears in the pinned arXiv source,forum/review attachments not authenticated or treated as an author release

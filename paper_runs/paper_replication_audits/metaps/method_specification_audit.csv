@@ -1,0 +1,27 @@
+dimension,status,detail
+official paper and source,complete,arXiv v1 PDF and complete 31-file source archive pinned; all 25 official and rebuilt pages visually inspected
+native implementation,unreleased,"no implementation URL, environment, or source files; bounded release searches recover no attributable package"
+stock universe,specified,"AAPL, NVDA, SPY, QQQ, GLD, and USO"
+stock frequency and split,substantially_specified,daily decisions; 2022--2024 train and 2025 test; expanding-window blocks printed
+stock market data,schema_only,"price bars and return windows named without provider, immutable rows, adjustment policy, timestamps, or missing-data rules"
+news and events,schema_only,"summaries shown without provider, article/event IDs, collection queries, immutable content, or release"
+order flow,named_only,recent order flow is named but not defined or released
+initial stock cash,specified,"$1,000,000"
+stock strategy roster,names_and_compact_listings,ten names and compact snippets are printed; helpers and registry metadata are not released
+candidate ranking,equation_underspecified,"rho equation printed; alpha, beta, priors, trigger phrases, textmatch, penalties, and extraction are missing"
+V1 labels,formula_partial,one-step argmax printed without simulator rewards or tie handling
+V2 labels,formula_underspecified,"horizons printed; strategy weights, eta, kappa, trade margin, utility priors, edges, and penalty implementations missing"
+V3 labels,formula_underspecified,"quality formula printed; active bonus, target distributions, delta functions, and selection/tie rules missing"
+sample weights,qualitative_only,"clipping and relative hold weight described without formulas, bounds, or values"
+teacher rewriting,prompt_schema_only,"fixed sections shown without teacher model/checkpoint, prompt, temperature, requests, responses, or validation implementation"
+SFT data,aggregate_only,"528 examples per view and action totals printed; no records, labels, weights, rationales, or split lineage released"
+model backbones,family_and_scale_only,Qwen3.5 0.8B/2B/4B/9B names shown without immutable revisions
+fine tuning,missing,"no optimizer, learning rate, batch size, epochs, scheduler, precision, adapter configuration, seeds, or checkpoints"
+inference,prompt_schema_only,"one formatted example shown without decoding configuration, seeds, model outputs, parser, or request logs"
+stock execution,partial,"four bucket fractions/caps printed; position limits, transaction cost, slippage values, raw-mode mapping, invalid-action handling, and fills missing"
+stock backtest,missing,"no executable runtime, price/news panel, predictions, orders, fills, portfolio path, daily returns, or result generator"
+sandbox environment,narrative_only,"six regimes/roles and state categories named without transitions, rewards, action implementations, initial state, episode seeds, or simulator"
+sandbox horizon,specified,100-day test split
+metrics,partial,"return/Sharpe/MDD descriptions given without Sharpe annualization/std convention, win semantics, regret scale, or sandbox initial equity"
+randomness and run lineage,missing,"no seeds, repeated-run distributions, run IDs, checkpoints, logs, or environment lock"
+raw empirical outputs,missing,492 quantitative table cells and 20 empirical panels are rendered without native arrays or run records
