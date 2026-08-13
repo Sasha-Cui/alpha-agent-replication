@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Audit CryptoTrade's paper tables against its pinned public code and data.
+"""Audit CryptoTrade's paper tables against pinned public code, data, and history.
 
-The audit executes only the deterministic trading environment and traditional
-signal strategies. It never imports the module containing the released API
-credential, calls an LLM endpoint, or treats the README's one-day example as a
-full-period paper result.
+The audit executes the deterministic environment, traditional signal strategies,
+and recovered paper-author action traces. It never imports the API utility, calls
+an LLM endpoint, or treats a numerically matching trace with a model/period conflict
+as method-faithful evidence.
 """
 
 from __future__ import annotations
@@ -16,6 +16,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import re
 import stat
 import subprocess
 import sys
@@ -31,6 +32,11 @@ import pandas as pd
 SOURCE_COMMIT = "210da73af5f17992be425e61305524a5c24dae40"
 SOURCE_ROOT_COMMIT = "750df03512a9263512bc782bc28e602ab74243f7"
 SOURCE_COMMIT_COUNT = 11
+AUTHOR_HISTORY_REF = "refs/remotes/fork_nchen/nchen"
+AUTHOR_HISTORY_COMMIT = "2a6cefe6ea7dc291070b63e5699f95370a7d32d7"
+AUTHOR_HISTORY_ROOT_COMMIT = "0ec929be59142b73ba6a473926c4275b235d34c8"
+AUTHOR_HISTORY_COMMIT_COUNT = 89
+AUTHOR_PRE_REROOT_SNAPSHOT = "255c3f5db137474ff1828129d1126abd61580ec2"
 PAPER_SHA256 = "376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf"
 PAPER_URL = "https://aclanthology.org/2024.emnlp-main.63.pdf"
 SOURCE_URL = "https://github.com/Xtra-Computing/CryptoTrade"
@@ -198,6 +204,222 @@ def source_history_inventory(source_root: Path) -> List[Dict[str, Any]]:
     return rows
 
 
+def parse_logged_namespace(line: str) -> Dict[str, Any]:
+    """Parse a logged argparse Namespace without executing any source text."""
+    expression = ast.parse(line.strip(), mode="eval").body
+    if not isinstance(expression, ast.Call) or not isinstance(expression.func, ast.Name):
+        raise ValueError("Log does not start with a Namespace call")
+    if expression.func.id != "Namespace" or expression.args:
+        raise ValueError("Unexpected logged configuration expression")
+    values: Dict[str, Any] = {}
+    for keyword in expression.keywords:
+        if keyword.arg is None:
+            raise ValueError("Expanded kwargs are not allowed in a logged Namespace")
+        values[keyword.arg] = ast.literal_eval(keyword.value)
+    return values
+
+
+def parse_author_trace(text: str) -> Tuple[Dict[str, Any], List[float], List[Dict[str, Any]]]:
+    lines = text.splitlines()
+    if not lines:
+        raise ValueError("Empty author trace")
+    args = parse_logged_namespace(lines[0])
+    actions = [
+        float(value)
+        for value in re.findall(
+            r"\*\*\* START ACTUAL ACTION \*\*\*\s*\n([-+]?\d+(?:\.\d+)?)",
+            text,
+        )
+    ]
+    state_literals = re.findall(
+        r"\*\*\* START STATE \*\*\*\s*\n(\{.*?\})\s*\n\*\*\* END STATE \*\*\*",
+        text,
+        flags=re.S,
+    )
+    states = [ast.literal_eval(value) for value in state_literals]
+    if not states or len(actions) != len(states) - 1:
+        raise ValueError("Author trace does not have one action between every state")
+    return args, actions, states
+
+
+def trace_metrics(states: Sequence[Mapping[str, Any]]) -> Dict[str, float]:
+    returns = np.asarray([float(state["today_roi"]) for state in states[1:]], dtype=float) * 100
+    mean = float(np.mean(returns))
+    std = float(np.std(returns))
+    return {
+        "total_return_pct": float(states[-1]["roi"]) * 100,
+        "daily_return_mean_pct": mean,
+        "daily_return_std_pct": std,
+        "sharpe_ratio": mean / std,
+    }
+
+
+def replay_author_actions(
+    environment_module: Any,
+    source_root: Path,
+    args: Mapping[str, Any],
+    actions: Sequence[float],
+    recorded_states: Sequence[Mapping[str, Any]],
+) -> Tuple[bool, float, bool]:
+    """Replay a trace through the pinned official environment and compare every state."""
+    old_cwd = Path.cwd()
+    os.chdir(source_root)
+    maximum_error = 0.0
+    try:
+        environment = environment_module.ETHTradingEnv(
+            Namespace(
+                dataset=args["dataset"],
+                starting_date=args["starting_date"],
+                ending_date=args["ending_date"],
+            )
+        )
+        initial, _, _, _ = environment.reset()
+        for key in ("cash", "eth_held", "open", "net_worth", "roi", "today_roi"):
+            maximum_error = max(maximum_error, abs(float(initial[key]) - float(recorded_states[0][key])))
+        for index, action in enumerate(actions, start=1):
+            state, _, _, _ = environment.step(action)
+            for key in ("cash", "eth_held", "open", "net_worth", "roi", "today_roi"):
+                maximum_error = max(
+                    maximum_error,
+                    abs(float(state[key]) - float(recorded_states[index][key])),
+                )
+        full_period = bool(environment.done)
+    finally:
+        os.chdir(old_cwd)
+    return maximum_error == 0.0, maximum_error, full_period
+
+
+def author_trace_audit(
+    environment_module: Any,
+    source_root: Path,
+) -> Tuple[List[Dict[str, Any]], Dict[Tuple[str, str, str], Dict[str, Any]]]:
+    """Recover paper-era outputs from the public branch of paper coauthor Nuo Chen."""
+    if git(source_root, "rev-parse", AUTHOR_HISTORY_REF).strip() != AUTHOR_HISTORY_COMMIT:
+        raise RuntimeError("Pinned CryptoTrade author-history ref is absent or changed")
+    commits = git(source_root, "rev-list", "--reverse", AUTHOR_HISTORY_REF).splitlines()
+    if (
+        len(commits) != AUTHOR_HISTORY_COMMIT_COUNT
+        or commits[0] != AUTHOR_HISTORY_ROOT_COMMIT
+        or commits[-1] != AUTHOR_HISTORY_COMMIT
+    ):
+        raise RuntimeError("CryptoTrade author-history endpoints changed")
+
+    pre_paths = git(source_root, "ls-tree", "-r", "--name-only", AUTHOR_PRE_REROOT_SNAPSHOT).splitlines()
+    official_paths = git(source_root, "ls-tree", "-r", "--name-only", SOURCE_ROOT_COMMIT).splitlines()
+    shared = sorted(set(pre_paths) & set(official_paths))
+    shared_identical = sum(
+        git(source_root, "rev-parse", f"{AUTHOR_PRE_REROOT_SNAPSHOT}:{path}").strip()
+        == git(source_root, "rev-parse", f"{SOURCE_ROOT_COMMIT}:{path}").strip()
+        for path in shared
+    )
+    if (len(pre_paths), len(official_paths), len(shared), shared_identical) != (406, 409, 406, 400):
+        raise RuntimeError("Author-history to official-root continuity evidence changed")
+
+    targets = paper_result_rows()
+    paper: Dict[Tuple[str, str, str], Dict[str, float]] = {}
+    for target in targets:
+        if target["strategy"] in LLM_STRATEGIES:
+            paper.setdefault(
+                (target["asset"], target["strategy"], target["regime"]), {}
+            )[target["metric"]] = float(target["paper_value"])
+
+    rows: List[Dict[str, Any]] = []
+    credited: Dict[Tuple[str, str, str], Dict[str, Any]] = {}
+    seen_blobs = set()
+    for commit in commits:
+        for item in git(source_root, "ls-tree", "-rl", commit).splitlines():
+            metadata, path = item.split("\t", 1)
+            if not path.endswith((".out", ".log")):
+                continue
+            blob = metadata.split()[2]
+            if blob in seen_blobs:
+                continue
+            seen_blobs.add(blob)
+            text = git(source_root, "cat-file", "blob", blob)
+            if not text.startswith("Namespace("):
+                continue
+            try:
+                args, actions, states = parse_author_trace(text)
+            except (SyntaxError, ValueError):
+                continue
+            if not {"dataset", "model", "starting_date", "ending_date"} <= args.keys():
+                continue
+            regime = next(
+                (
+                    name
+                    for name, values in PAPER_SPLITS.get(str(args["dataset"]), {}).items()
+                    if name != "validation"
+                    and values[0] == args["starting_date"]
+                    and values[1] == args["ending_date"]
+                ),
+                None,
+            )
+            if regime is None:
+                continue
+            metrics = trace_metrics(states)
+            matching_keys = [
+                key
+                for key, expected in paper.items()
+                if key[0] == args["dataset"]
+                and key[2] == regime
+                and all(abs(metrics[metric] - expected[metric]) <= DISPLAY_TOLERANCE for metric in METRICS)
+            ]
+            if not matching_keys:
+                continue
+            if len(matching_keys) != 1:
+                raise RuntimeError("Author trace ambiguously matches multiple paper rows")
+            key = matching_keys[0]
+            replay_exact, maximum_error, full_period = replay_author_actions(
+                environment_module, source_root, args, actions, states
+            )
+            declared_model = str(args["model"])
+            expected_model = {
+                "gpt_3_5_turbo": "gpt-3.5-turbo",
+                "gpt_4": "gpt-4-turbo",
+                "gpt_4o": "gpt-4o",
+            }[key[1]]
+            model_matches = declared_model == expected_model
+            row = {
+                "asset": key[0],
+                "paper_strategy": key[1],
+                "regime": key[2],
+                "trace_declared_model": declared_model,
+                "expected_runner_model": expected_model,
+                "model_identity_status": "match" if model_matches else "mismatch",
+                "period_start": args["starting_date"],
+                "period_end_exclusive": args["ending_date"],
+                "recorded_actions": len(actions),
+                "full_period_trace": full_period,
+                "last_recorded_date": states[-1]["date"],
+                "paper_metric_cells_matching": len(METRICS),
+                "action_replay_exact": replay_exact,
+                "action_replay_maximum_absolute_state_error": maximum_error,
+                "author_commit": commit,
+                "author_blob": blob,
+                "author_path": path,
+                "credit_status": (
+                    "credited_author_trace_exact_metric_and_state_replay"
+                    if model_matches and full_period and replay_exact
+                    else "diagnostic_only_model_or_period_conflict"
+                ),
+            }
+            if key not in credited or row["credit_status"].startswith("credited"):
+                credited[key] = {**row, "metrics": metrics}
+            rows.append(row)
+
+    expected_matches = {
+        ("btc", "gpt_4o", "bull"), ("btc", "gpt_4o", "sideways"), ("btc", "gpt_4o", "bear"),
+        ("eth", "gpt_4o", "bull"), ("eth", "gpt_4o", "bear"),
+        ("sol", "gpt_4o", "bull"), ("sol", "gpt_4o", "sideways"),
+        ("btc", "gpt_4", "bull"), ("btc", "gpt_4", "sideways"), ("btc", "gpt_4", "bear"),
+        ("eth", "gpt_4", "bull"), ("eth", "gpt_4", "sideways"), ("eth", "gpt_4", "bear"),
+        ("sol", "gpt_4", "bull"), ("sol", "gpt_4", "sideways"), ("sol", "gpt_4", "bear"),
+    }
+    if set(credited) != expected_matches:
+        raise RuntimeError("Recovered CryptoTrade paper-row trace inventory changed")
+    return rows, credited
+
+
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequence[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
@@ -324,7 +546,9 @@ def fixed_parameter(strategy: str) -> Any:
 
 
 def result_conformance(
-    environment_module: Any, source_root: Path
+    environment_module: Any,
+    source_root: Path,
+    author_traces: Mapping[Tuple[str, str, str], Mapping[str, Any]],
 ) -> Tuple[List[Dict[str, Any]], Dict[Tuple[str, str, str], Dict[str, float]]]:
     reproduced: Dict[Tuple[str, str, str], Dict[str, float]] = {}
     for asset in PAPER_SPLITS:
@@ -356,8 +580,22 @@ def result_conformance(
             status = "unverifiable_no_shipped_full_period_output"
             evidence = "partial_lstm_code_only" if strategy == "lstm" else "implementation_not_released"
         elif strategy in LLM_STRATEGIES:
-            status = "unverifiable_no_shipped_full_period_output"
-            evidence = "api_runner_and_one_day_readme_example_only"
+            trace = author_traces.get(key)
+            if trace is None:
+                status = "unverifiable_no_recovered_author_trace"
+                evidence = "no_matching_trace_in_official_or_paper_author_history"
+            else:
+                source_value = trace["metrics"][target["metric"]]
+                absolute_error = abs(source_value - target["paper_value"])
+                if trace["credit_status"].startswith("credited"):
+                    status = "author_trace_exact_metric_and_native_state_replay"
+                else:
+                    status = "unverifiable_trace_model_or_period_conflict"
+                evidence = (
+                    f"author_commit={trace['author_commit']};blob={trace['author_blob']};"
+                    f"path={trace['author_path']};model={trace['model_identity_status']};"
+                    f"full_period={trace['full_period_trace']};state_replay={trace['action_replay_exact']}"
+                )
         else:
             raise ValueError(f"Unknown strategy: {strategy}")
         rows.append(
@@ -654,8 +892,8 @@ def source_execution_gaps(source_root: Path) -> List[Dict[str, str]]:
         ),
         (
             "llm_result_evidence",
-            "full_period_outputs_absent",
-            "README contains one first-step ETH example; no paper-period result logs are tracked",
+            "absent_from_official_release_but_partly_recovered_from_author_history",
+            "official history has no result paths; a paper coauthor's public branch preserves partial paper-period traces",
         ),
         (
             "time_series_baselines",
@@ -703,7 +941,8 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
 
     environment_module = load_environment(source_root)
     history = source_history_inventory(source_root)
-    conformance, reproduced = result_conformance(environment_module, source_root)
+    author_trace_rows, author_traces = author_trace_audit(environment_module, source_root)
+    conformance, reproduced = result_conformance(environment_module, source_root, author_traces)
     splits = split_conformance(environment_module, source_root, reproduced)
     selection = parameter_selection_audit(environment_module, source_root, conformance)
     diagnosis = mismatch_diagnosis(environment_module, source_root, conformance)
@@ -716,6 +955,11 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     write_csv(output_dir / "parameter_selection_audit.csv", selection, list(selection[0]))
     write_csv(output_dir / "traditional_mismatch_diagnosis.csv", diagnosis, list(diagnosis[0]))
     write_csv(output_dir / "source_history_inventory.csv", history, list(history[0]))
+    write_csv(
+        output_dir / "author_history_llm_trace_audit.csv",
+        author_trace_rows,
+        list(author_trace_rows[0]),
+    )
     write_csv(output_dir / "data_inventory.csv", inventory, list(inventory[0]))
     write_csv(output_dir / "source_execution_gaps.csv", gaps, list(gaps[0]))
     paper_inconsistencies = (
@@ -735,15 +979,26 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         list(paper_inconsistencies[0]),
     )
 
-    matched = sum(row["status"] == "exact_displayed_precision_match" for row in conformance)
+    match_statuses = {
+        "exact_displayed_precision_match",
+        "author_trace_exact_metric_and_native_state_replay",
+    }
+    matched = sum(row["status"] in match_statuses for row in conformance)
     mismatched = sum(row["status"] == "mismatch" for row in conformance)
     unverifiable = sum(row["status"].startswith("unverifiable") for row in conformance)
-    deterministic = matched + mismatched
+    deterministic_matched = sum(
+        row["status"] == "exact_displayed_precision_match" for row in conformance
+    )
+    author_corroborated = sum(
+        row["status"] == "author_trace_exact_metric_and_native_state_replay"
+        for row in conformance
+    )
+    deterministic = deterministic_matched + mismatched
     grouped: Dict[Tuple[str, str, str], List[Mapping[str, Any]]] = {}
     for row in conformance:
         grouped.setdefault((row["asset"], row["strategy"], row["regime"]), []).append(row)
     fully_matched_rows = sum(
-        all(row["status"] == "exact_displayed_precision_match" for row in rows) for rows in grouped.values()
+        all(row["status"] in match_statuses for row in rows) for rows in grouped.values()
     )
     mismatched_rows = sum(any(row["status"] == "mismatch" for row in rows) for rows in grouped.values())
     unverifiable_rows = sum(all(row["status"].startswith("unverifiable") for row in rows) for rows in grouped.values())
@@ -753,7 +1008,7 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     split_trend_matches = sum(row["trend_status"] == "exact_displayed_precision_match" for row in splits)
     manifest: Dict[str, Any] = {
         "audit": "CryptoTrade paper claims versus pinned public code and data",
-        "overall_status": "partial_reproduction_traditional_baselines_only",
+        "overall_status": "partial_reproduction_traditional_plus_author_llm_traces",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_sha256": PAPER_SHA256,
@@ -764,9 +1019,17 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "public_source_history_commits_audited": len(history),
         "public_source_history_result_or_log_paths": sum(row["result_or_log_paths"] for row in history),
         "paper_result_metric_cells_total": len(conformance),
-        "native_deterministic_metric_cells_recomputed": deterministic,
-        "native_deterministic_metric_cells_matched": matched,
+        "native_deterministic_metric_cells_recomputed": 180,
+        "native_deterministic_metric_cells_matched": deterministic_matched,
         "native_deterministic_metric_cells_mismatched": mismatched,
+        "paper_metric_cells_corroborated_total": matched,
+        "author_history_llm_metric_cells_corroborated": author_corroborated,
+        "author_history_llm_rows_corroborated": sum(
+            trace["credit_status"].startswith("credited") for trace in author_traces.values()
+        ),
+        "author_history_llm_rows_numeric_match_but_no_credit": sum(
+            trace["credit_status"].startswith("diagnostic") for trace in author_traces.values()
+        ),
         "paper_result_metric_cells_unverifiable": unverifiable,
         "paper_strategy_regime_rows_total": len(grouped),
         "paper_strategy_regime_rows_fully_matched": fully_matched_rows,
@@ -793,7 +1056,11 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "paper_described_validation_selections_total": len(selection),
         "paper_ablation_rows": len(PAPER_ABLATION),
         "paper_ablation_full_values_duplicate_btc_bull_gpt4o": (PAPER_ABLATION["full"] == (28.47, 0.23)),
-        "full_period_llm_result_logs_shipped": False,
+        "full_period_llm_result_logs_shipped_in_official_release": False,
+        "matching_full_period_llm_result_traces_recovered_from_paper_author_history": True,
+        "paper_author_history_ref": AUTHOR_HISTORY_REF,
+        "paper_author_history_commit": AUTHOR_HISTORY_COMMIT,
+        "paper_author_history_commits_audited": AUTHOR_HISTORY_COMMIT_COUNT,
         "full_period_time_series_result_logs_shipped": False,
         "all_time_series_implementations_shipped": False,
         "readme_example_is_full_period_result": False,
@@ -812,9 +1079,10 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "audit_imported_or_used_credential_module": False,
         "interpretation": (
             "The released market data, native environment, costs, and traditional-signal logic "
-            "reproduce 174/180 displayed traditional-baseline metric cells. This is strong "
-            "component evidence, not a full CryptoTrade replication: 288 LLM/time-series cells "
-            "lack shipped full-period outputs, the six deterministic residuals have numeric but "
+            "reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history "
+            "additionally corroborates 40 LLM cells through exact metric and native state replay. "
+            "This is strong component/output evidence, not a full CryptoTrade replication: 248 "
+            "cells remain unverifiable, the six deterministic residuals have numeric but "
             "not method-faithful explanations, validation selection is not implemented as described, "
             "and the documented entrypoints are not operational without repair."
         ),
@@ -832,34 +1100,42 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             )
         },
     }
-    if (matched, mismatched, unverifiable) != (174, 6, 288):
+    if (matched, mismatched, unverifiable) != (214, 6, 248):
         raise RuntimeError(
             "Pinned CryptoTrade conformance counts changed: "
             f"matched={matched}, mismatched={mismatched}, unverifiable={unverifiable}"
         )
-    if (fully_matched_rows, mismatched_rows, unverifiable_rows) != (43, 2, 72):
+    if (fully_matched_rows, mismatched_rows, unverifiable_rows) != (53, 2, 62):
         raise RuntimeError("Pinned CryptoTrade row-level conformance counts changed")
 
     report = f"""# CryptoTrade paper-level conformance audit
 
 Overall verdict: **partial reproduction, not a full paper replication**. The pinned
 public data and native trading environment strongly reproduce deterministic
-traditional baselines, but the released artifacts do not reproduce CryptoTrade's
-full-period LLM results or the five time-series baselines.
+traditional baselines. A public branch controlled by paper coauthor Nuo Chen also
+preserves exact author action traces for part of the LLM table, but neither those
+traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series study.
 
 ## Primary sources
 
 - Official paper: {PAPER_URL} (SHA-256 `{PAPER_SHA256}`).
 - Public source: {SOURCE_URL}, commit `{commit}`.
+- Paper-author history: Nuo Chen's public `nchen` branch, commit
+  `{AUTHOR_HISTORY_COMMIT}` ({AUTHOR_HISTORY_COMMIT_COUNT} commits inspected).
 
 ## What reproduces
 
 - A safe adapter over the released environment, 0.4% exchange cost, fixed gas cost,
-  and traditional-signal logic matches {matched}/{deterministic} displayed cells
+  and traditional-signal logic matches {deterministic_matched}/{deterministic} displayed cells
   across Buy-and-Hold, SMA, SLMA, MACD, and Bollinger Bands.
-- {fully_matched_rows}/45 traditional strategy/asset/regime rows match all four
+- 43/45 traditional strategy/asset/regime rows match all four
   displayed metrics (total return, daily mean, daily standard deviation, and
   Sharpe ratio). This includes every Buy-and-Hold, SLMA, MACD, and Bollinger row.
+- The coauthor history corroborates {author_corroborated}/108 LLM table cells across
+  10/27 LLM rows. For each credited row, all four displayed values match and every
+  recorded action replays through the pinned official data/environment with zero
+  state error. This verifies historical author outputs; it does **not** regenerate
+  the LLM decisions or prove current endpoint determinism.
 - ETH-sideways SMA matches the paper's -5.45% total return and -0.07 Sharpe, but
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
@@ -871,12 +1147,19 @@ full-period LLM results or the five time-series baselines.
 
 ## Why this is not a full reproduction
 
-- {unverifiable}/{len(conformance)} paper result cells are unverifiable: no complete
-  GPT-3.5-turbo, GPT-4, or GPT-4o result paths are shipped, and the README contains
-  only the first ETH-bull GPT-4 step rather than the paper's full-period result.
+- {unverifiable}/{len(conformance)} paper result cells remain unverifiable. The
+  official release ships no complete LLM result paths; the recovered author history
+  contains no matching GPT-3.5 paper row and no complete matching SOL-bear GPT-4o row.
+- Six additional LLM rows numerically match the paper but receive no credit: five
+  traces declare `gpt-3.5-turbo` although their filenames/table assignments imply
+  GPT-4/GPT-4o, and ETH-sideways GPT-4 stops on August 6 instead of completing the
+  paper period through August 30. See `author_history_llm_trace_audit.csv`.
 - The original paper URL points to an anonymous 4open artifact that now returns
   HTTP 410 (`repository_expired`). All {len(history)} commits in the successor
-  public GitHub history were inspected; none preserves a result or log path.
+  official GitHub history were inspected; none preserves a result or log path.
+  The recovered pre-reroot author snapshot and official root share all 406 earlier
+  paths, with 400 byte-identical blobs; the remaining active execution logic is
+  materially continuous, and action replay supplies the stronger numeric check.
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
   on the full requested interval, and ships no result path.
@@ -890,10 +1173,11 @@ full-period LLM results or the five time-series baselines.
   directory. Its active GPT-4o ETH/SOL sideways commands use dates that differ
   from Table 1. `run_baseline.py` omits `dataset` when constructing the environment
   and depends on packages absent from the README requirement list.
-- Prompt templates hard-code ETH even for BTC and SOL. The paper's GPT-4 label is
-  implemented as `gpt-4-turbo`; no immutable endpoint snapshot or complete API
-  response log is available, so a present-day paid rerun would not prove the
-  published result.
+- Prompt templates hard-code ETH even for BTC and SOL. The paper's generic GPT-4
+  label is implemented by the source as `gpt-4-turbo`; credited GPT-4 traces use
+  that released mapping, so they are source-output corroboration rather than proof
+  of exact paper endpoint identity. No immutable model snapshot exists, and a
+  present-day paid rerun would not prove the published result.
 - The released utility reads `OPENAI_API_KEY` from the environment. This audit does
   not import the API utility or call an endpoint.
 

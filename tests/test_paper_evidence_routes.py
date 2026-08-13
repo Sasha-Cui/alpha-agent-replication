@@ -223,7 +223,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         "canonical_work_id"
     )
     expected = {
-        "CensusACL2024emnlpmain63": "paper_audit:partial_174_of_468_traditional_baseline_cells",
+        "CensusACL2024emnlpmain63": (
+            "paper_audit:partial_214_of_468_cells_corroborated_40_from_author_"
+            "llm_traces_zero_fresh_llm_regeneration"
+        ),
         "CensusACL2026findingsacl456": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
         "CensusArxiv231113743": (
             "paper_audit:partial_227_of_235_author_output_cells_corroborated_"

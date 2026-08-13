@@ -3,7 +3,7 @@ readme_run_command,fails_before_agent_execution,run_agent.sh executable=False; r
 active_gpt4o_periods,two_of_nine_commands_mismatch_paper_splits,active_commands=9; mismatched_eth_sol_sideways=2
 baseline_entrypoint,fails_without_source_edits_and_dependencies,README omits required packages; run_baseline constructs Namespace without dataset
 asset_specific_prompts,mismatch_for_btc_and_sol,released prompt templates hard-code ETH instead of interpolating the dataset
-llm_result_evidence,full_period_outputs_absent,README contains one first-step ETH example; no paper-period result logs are tracked
+llm_result_evidence,absent_from_official_release_but_partly_recovered_from_author_history,official history has no result paths; a paper coauthor's public branch preserves partial paper-period traces
 time_series_baselines,incomplete_release,LSTM is embedded in a monolithic ETH runner; Informer/AutoFormer/TimesNet/PatchTST implementations and outputs are absent
 model_identity,paper_to_runner_mismatch,paper reports GPT-4 while released shell commands use gpt-4-turbo
 transaction_cost_specification,paper_underspecified,paper states a proportional fee but not its rate; source fixes EX_RATE=0.004 plus a fixed gas charge

@@ -431,12 +431,19 @@ ARTIFACT_NOTES = {
         "Y",
         "The README ships a dated one-step ETH action/ROI example. A pinned paper-level "
         "audit additionally recomputes 174/180 displayed deterministic traditional-baseline "
-        "cells (43/45 complete rows) from the native crypto data and environment. The six "
+        "cells (43/45 complete rows) from the native crypto data and environment. A public "
+        "branch controlled by paper coauthor Nuo Chen preserves 89 commits and 16 distinct "
+        "paper-row-matching action traces. Ten rows (40 LLM table cells) receive author-output "
+        "credit because the logged model matches the released paper mapping, the full paper "
+        "period is present, all four displayed metrics match, and every recorded action replays "
+        "through the pinned official environment/data with zero state error. Six other numeric "
+        "matches receive no credit because five declare the wrong model and one is truncated. "
+        "This verifies historical author outputs, not fresh LLM decision regeneration. The six "
         "residual cells are numerically diagnosed but receive no method-faithful credit: two "
         "ETH-sideways daily statistics duplicate ETH-bear, while four SOL-bear cells require "
         "a 1-day SMA outside the disclosed and released [5,10,15,20,30] grid. The originally "
-        "cited anonymous repository has expired, and all 11 successor GitHub commits contain "
-        "no result/log path; 288 full-period LLM or time-series cells remain unverifiable. "
+        "cited anonymous repository has expired, the 11-commit official history contains no "
+        "result/log path, and 248 LLM/time-series cells remain unverifiable. "
         "The evidence remains crypto rather than six-country equity output.",
     ),
     "SYS-FIN-CON": (
@@ -1326,7 +1333,7 @@ TARGETED_EXECUTION = {
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-COG-ALPHA": "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_templates_four_author_curve_series_zero_regenerated",
-    "SYS-CRYPTO-TRADE": "paper_audit:partial_174_of_468_traditional_baseline_cells",
+    "SYS-CRYPTO-TRADE": "paper_audit:partial_214_of_468_cells_corroborated_40_from_author_llm_traces_zero_fresh_llm_regeneration",
     "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",

@@ -2,13 +2,16 @@
 
 Overall verdict: **partial reproduction, not a full paper replication**. The pinned
 public data and native trading environment strongly reproduce deterministic
-traditional baselines, but the released artifacts do not reproduce CryptoTrade's
-full-period LLM results or the five time-series baselines.
+traditional baselines. A public branch controlled by paper coauthor Nuo Chen also
+preserves exact author action traces for part of the LLM table, but neither those
+traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series study.
 
 ## Primary sources
 
 - Official paper: https://aclanthology.org/2024.emnlp-main.63.pdf (SHA-256 `376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf`).
 - Public source: https://github.com/Xtra-Computing/CryptoTrade, commit `210da73af5f17992be425e61305524a5c24dae40`.
+- Paper-author history: Nuo Chen's public `nchen` branch, commit
+  `2a6cefe6ea7dc291070b63e5699f95370a7d32d7` (89 commits inspected).
 
 ## What reproduces
 
@@ -18,6 +21,11 @@ full-period LLM results or the five time-series baselines.
 - 43/45 traditional strategy/asset/regime rows match all four
   displayed metrics (total return, daily mean, daily standard deviation, and
   Sharpe ratio). This includes every Buy-and-Hold, SLMA, MACD, and Bollinger row.
+- The coauthor history corroborates 40/108 LLM table cells across
+  10/27 LLM rows. For each credited row, all four displayed values match and every
+  recorded action replays through the pinned official data/environment with zero
+  state error. This verifies historical author outputs; it does **not** regenerate
+  the LLM decisions or prove current endpoint determinism.
 - ETH-sideways SMA matches the paper's -5.45% total return and -0.07 Sharpe, but
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
@@ -29,12 +37,19 @@ full-period LLM results or the five time-series baselines.
 
 ## Why this is not a full reproduction
 
-- 288/468 paper result cells are unverifiable: no complete
-  GPT-3.5-turbo, GPT-4, or GPT-4o result paths are shipped, and the README contains
-  only the first ETH-bull GPT-4 step rather than the paper's full-period result.
+- 248/468 paper result cells remain unverifiable. The
+  official release ships no complete LLM result paths; the recovered author history
+  contains no matching GPT-3.5 paper row and no complete matching SOL-bear GPT-4o row.
+- Six additional LLM rows numerically match the paper but receive no credit: five
+  traces declare `gpt-3.5-turbo` although their filenames/table assignments imply
+  GPT-4/GPT-4o, and ETH-sideways GPT-4 stops on August 6 instead of completing the
+  paper period through August 30. See `author_history_llm_trace_audit.csv`.
 - The original paper URL points to an anonymous 4open artifact that now returns
   HTTP 410 (`repository_expired`). All 11 commits in the successor
-  public GitHub history were inspected; none preserves a result or log path.
+  official GitHub history were inspected; none preserves a result or log path.
+  The recovered pre-reroot author snapshot and official root share all 406 earlier
+  paths, with 400 byte-identical blobs; the remaining active execution logic is
+  materially continuous, and action replay supplies the stronger numeric check.
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
   on the full requested interval, and ships no result path.
@@ -48,10 +63,11 @@ full-period LLM results or the five time-series baselines.
   directory. Its active GPT-4o ETH/SOL sideways commands use dates that differ
   from Table 1. `run_baseline.py` omits `dataset` when constructing the environment
   and depends on packages absent from the README requirement list.
-- Prompt templates hard-code ETH even for BTC and SOL. The paper's GPT-4 label is
-  implemented as `gpt-4-turbo`; no immutable endpoint snapshot or complete API
-  response log is available, so a present-day paid rerun would not prove the
-  published result.
+- Prompt templates hard-code ETH even for BTC and SOL. The paper's generic GPT-4
+  label is implemented by the source as `gpt-4-turbo`; credited GPT-4 traces use
+  that released mapping, so they are source-output corroboration rather than proof
+  of exact paper endpoint identity. No immutable model snapshot exists, and a
+  present-day paid rerun would not prove the published result.
 - The released utility reads `OPENAI_API_KEY` from the environment. This audit does
   not import the API utility or call an endpoint.
 

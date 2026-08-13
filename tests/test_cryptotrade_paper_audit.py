@@ -63,18 +63,26 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     selection = read_csv(output / "parameter_selection_audit.csv")
     diagnosis = read_csv(output / "traditional_mismatch_diagnosis.csv")
     history = read_csv(output / "source_history_inventory.csv")
+    traces = read_csv(output / "author_history_llm_trace_audit.csv")
 
-    assert manifest["overall_status"] == "partial_reproduction_traditional_baselines_only"
+    assert manifest["overall_status"] == "partial_reproduction_traditional_plus_author_llm_traces"
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_result_metric_cells_total"] == 468
     assert manifest["native_deterministic_metric_cells_recomputed"] == 180
     assert manifest["native_deterministic_metric_cells_matched"] == 174
     assert manifest["native_deterministic_metric_cells_mismatched"] == 6
-    assert manifest["paper_result_metric_cells_unverifiable"] == 288
-    assert manifest["paper_strategy_regime_rows_fully_matched"] == 43
+    assert manifest["author_history_llm_metric_cells_corroborated"] == 40
+    assert manifest["author_history_llm_rows_corroborated"] == 10
+    assert manifest["author_history_llm_rows_numeric_match_but_no_credit"] == 6
+    assert manifest["paper_metric_cells_corroborated_total"] == 214
+    assert manifest["paper_result_metric_cells_unverifiable"] == 248
+    assert manifest["paper_strategy_regime_rows_fully_matched"] == 53
     assert manifest["paper_strategy_regime_rows_mismatched"] == 2
-    assert manifest["paper_strategy_regime_rows_unverifiable"] == 72
-    assert manifest["full_period_llm_result_logs_shipped"] is False
+    assert manifest["paper_strategy_regime_rows_unverifiable"] == 62
+    assert manifest["full_period_llm_result_logs_shipped_in_official_release"] is False
+    assert manifest["matching_full_period_llm_result_traces_recovered_from_paper_author_history"] is True
+    assert manifest["paper_author_history_commit"] == audit.AUTHOR_HISTORY_COMMIT
+    assert manifest["paper_author_history_commits_audited"] == 89
     assert manifest["full_period_time_series_result_logs_shipped"] is False
     assert manifest["source_contains_hardcoded_credential_literal"] is False
     assert manifest["audit_imported_or_used_credential_module"] is False
@@ -86,8 +94,11 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     statuses = Counter(row["status"] for row in conformance)
     assert statuses == {
         "exact_displayed_precision_match": 174,
+        "author_trace_exact_metric_and_native_state_replay": 40,
         "mismatch": 6,
-        "unverifiable_no_shipped_full_period_output": 288,
+        "unverifiable_no_recovered_author_trace": 44,
+        "unverifiable_no_shipped_full_period_output": 180,
+        "unverifiable_trace_model_or_period_conflict": 24,
     }
     mismatches = [row for row in conformance if row["status"] == "mismatch"]
     assert {(row["asset"], row["strategy"], row["regime"]) for row in mismatches} == {
@@ -118,6 +129,21 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert history[-1]["commit"] == audit.SOURCE_COMMIT
     assert all(row["result_or_log_paths"] == "0" for row in history)
     assert sum(row["run_baseline_present"] == "True" for row in history) == 8
+
+    credited = [row for row in traces if row["credit_status"].startswith("credited")]
+    diagnostic = [row for row in traces if row["credit_status"].startswith("diagnostic")]
+    assert len(traces) == 16
+    assert len(credited) == 10
+    assert len(diagnostic) == 6
+    assert all(row["action_replay_exact"] == "True" for row in traces)
+    assert all(float(row["action_replay_maximum_absolute_state_error"]) == 0 for row in traces)
+    assert Counter(row["model_identity_status"] for row in diagnostic) == {
+        "mismatch": 5,
+        "match": 1,
+    }
+    assert sum(row["full_period_trace"] == "False" for row in diagnostic) == 1
+    assert all(row["model_identity_status"] == "match" for row in credited)
+    assert all(row["full_period_trace"] == "True" for row in credited)
 
     assert len(selection) == 6
     assert Counter(row["status"] for row in selection) == {
