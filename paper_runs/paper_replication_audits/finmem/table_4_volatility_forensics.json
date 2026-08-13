@@ -1,0 +1,21 @@
+{
+  "scope": "all eight disputed daily/annualized volatility cells in FinMem Table 4",
+  "official_arxiv_versions_audited": 2,
+  "table_4_numeric_values_changed_between_v1_and_v2": false,
+  "table_4_pdf_pages_visually_inspected": {
+    "v1": 17,
+    "v2": 18
+  },
+  "reachable_commits_scanned": 55,
+  "reachable_objects_scanned": 336,
+  "reachable_blobs_byte_scanned": 171,
+  "unreachable_objects_in_source_clone": 0,
+  "historical_notebook_path_revisions": 5,
+  "unique_historical_notebook_blobs": 1,
+  "historical_notebook_blob": "3bd4a5557828c56fb8467617cb56a0c87915ce9f",
+  "annualized_cells_matching_native_daily_values": 4,
+  "daily_cells_matching_separate_tsla_full_output": 2,
+  "daily_cells_absent_from_all_reachable_source_blobs": 2,
+  "cells_receiving_defensible_paper_result_credit": 0,
+  "bounded_conclusion": "The public record supports a cross-experiment/mislabeled-table construction defect, not a faithful native reproduction of the eight displayed cells."
+}

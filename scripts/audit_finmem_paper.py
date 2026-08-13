@@ -22,11 +22,13 @@ import os
 import re
 import subprocess
 import sys
+import tarfile
 import zipfile
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Sequence, Tuple
 
 import numpy as np
+from pypdf import PdfReader
 
 
 SOURCE_COMMIT = "be814aa47970de9bf2fdd6a1d5a60ae5cf361b46"
@@ -38,11 +40,41 @@ HISTORICAL_NOTEBOOK_SHA256 = "3096d6a67336270b5b820bd92408733b641abe73edaf04fa92
 HISTORICAL_METRICS_PATH = "Visualize-metrics-test/metrics.py"
 HISTORICAL_METRICS_SHA256 = "ffec58d7bdc4b9e94e9bdcf2205c98ab9bef27ce8ddb95e377e154efeae15f21"
 EXPECTED_REACHABLE_COMMITS = 55
+EXPECTED_REACHABLE_OBJECTS = 336
+EXPECTED_REACHABLE_BLOBS = 171
+EXPECTED_REACHABLE_TREES = 110
 EXPECTED_HISTORICAL_TREE_FILES = 33
 EXPECTED_HISTORICAL_ACTION_CSVS = 18
+HISTORICAL_NOTEBOOK_BLOB = "3bd4a5557828c56fb8467617cb56a0c87915ce9f"
 PAPER_SHA256 = "acb7527d02871cfad7d2754314b9a803f917b326847a456579df9cf7b0a648b9"
 PAPER_URL = "https://arxiv.org/pdf/2311.13743"
 SOURCE_URL = "https://github.com/pipiku915/finmem-llm-stocktrading"
+PAPER_VERSIONS: Mapping[str, Mapping[str, Any]] = {
+    "v1": {
+        "submitted_at": "2023-11-23T00:24:40Z",
+        "pdf_sha256": "a7b67bc4a2c2ffe9d7428ce12c230fb9e8760269488016b560700a474aa4f293",
+        "pdf_bytes": 7_573_802,
+        "pdf_pages": 22,
+        "table_4_pdf_page": 17,
+        "source_sha256": "b767e14d10dcccf6881ecfd71346f2f8baff77debce97713ebd3c70421e926f9",
+        "source_archive_bytes": 17_012_431,
+        "source_entries": 33,
+        "source_files": 32,
+        "source_uncompressed_bytes": 18_976_429,
+    },
+    "v2": {
+        "submitted_at": "2023-12-03T16:18:55Z",
+        "pdf_sha256": PAPER_SHA256,
+        "pdf_bytes": 7_799_225,
+        "pdf_pages": 22,
+        "table_4_pdf_page": 18,
+        "source_sha256": "62888b9c2ca94b531bdfff66fb44fe7c361bd46f2154b1d2a7d82f603ffb3ff2",
+        "source_archive_bytes": 20_438_499,
+        "source_entries": 40,
+        "source_files": 39,
+        "source_uncompressed_bytes": 22_789_668,
+    },
+}
 DISPLAY_TOLERANCE = 0.00005 + 1e-12
 METRICS = (
     "cumulative_return_pct",
@@ -105,6 +137,25 @@ PERCENT_METRICS = {
     "daily_volatility_pct",
     "annualized_volatility_pct",
     "max_drawdown_pct",
+}
+
+TABLE_4_STRATEGIES = (
+    "buy_and_hold",
+    "self_adaptive",
+    "risk_seeking",
+    "risk_averse",
+)
+TABLE_4_V1_RAW = {
+    "daily_volatility_pct": (0.039527, 0.027419, 0.032722, 0.017744),
+    "annualized_volatility_pct": (0.038050, 0.025960, 0.029236, 0.009358),
+}
+TABLE_4_V2_PERCENT = {
+    metric: tuple(value * 100 for value in values)
+    for metric, values in TABLE_4_V1_RAW.items()
+}
+SEPARATE_TSLA_FULL_DAILY_PERCENT = {
+    "buy_and_hold": 3.9527,
+    "self_adaptive": 2.7419,
 }
 
 # Each ablation action path survives in the public Git history at the pinned
@@ -286,6 +337,24 @@ def source_action_metrics(prices: np.ndarray, actions: np.ndarray) -> Dict[str, 
 def historical_repository_audit(source_root: Path) -> Dict[str, Any]:
     shallow = git_text(source_root, "rev-parse", "--is-shallow-repository").strip()
     commit_count = int(git_text(source_root, "rev-list", "--all", "--count").strip())
+    object_ids = [
+        line.split(" ", 1)[0]
+        for line in git_text(source_root, "rev-list", "--objects", "--all").splitlines()
+    ]
+    object_types = subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+        input="\n".join(object_ids) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    object_counts = {kind: object_types.count(kind) for kind in ("blob", "tree", "commit")}
+    unreachable = subprocess.run(
+        ["git", "-C", str(source_root), "fsck", "--full", "--no-reflogs", "--unreachable"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
     roots = git_text(source_root, "rev-list", "--max-parents=0", "--all").splitlines()
     paths = git_text(
         source_root,
@@ -315,6 +384,12 @@ def historical_repository_audit(source_root: Path) -> Dict[str, Any]:
     checks = {
         "full_non_shallow_clone": shallow == "false",
         "reachable_commit_count": commit_count == EXPECTED_REACHABLE_COMMITS,
+        "reachable_object_count": len(object_ids) == EXPECTED_REACHABLE_OBJECTS,
+        "reachable_blob_count": object_counts["blob"] == EXPECTED_REACHABLE_BLOBS,
+        "reachable_tree_count": object_counts["tree"] == EXPECTED_REACHABLE_TREES,
+        "reachable_object_commit_count": object_counts["commit"]
+        == EXPECTED_REACHABLE_COMMITS,
+        "no_unreachable_objects": not unreachable,
         "root_commit": roots == [SOURCE_ROOT_COMMIT],
         "historical_tree_file_count": len(paths) == EXPECTED_HISTORICAL_TREE_FILES,
         "historical_action_csv_count": len(csv_paths) == EXPECTED_HISTORICAL_ACTION_CSVS,
@@ -328,6 +403,10 @@ def historical_repository_audit(source_root: Path) -> Dict[str, Any]:
     return {
         "is_shallow_repository": shallow == "true",
         "reachable_commits": commit_count,
+        "reachable_objects": len(object_ids),
+        "reachable_blobs": object_counts["blob"],
+        "reachable_trees": object_counts["tree"],
+        "unreachable_objects": len(unreachable),
         "root_commit": roots[0],
         "historical_artifact_commit": HISTORICAL_ARTIFACT_COMMIT,
         "historical_artifact_authored_at": git_text(
@@ -438,6 +517,303 @@ def parse_notebook_author_outputs(source_root: Path) -> List[Dict[str, Any]]:
             }
         )
     return rows
+
+
+def paper_version_audit(
+    version_root: Path,
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """Pin both official arXiv PDFs and their matching TeX source archives."""
+    version_rows: List[Dict[str, Any]] = []
+    source_rows: List[Dict[str, Any]] = []
+    equation = (
+        r"\textbf{Annum-Volatility} &= \textbf{Daily Volatility} "
+        r"\times \sqrt{252}"
+    )
+    tex_table_rows = {
+        "v1": (
+            r"\textbf{Daily Volatility} & 0.039527 & 0.027419 & 0.032722 & \textbf{0.017744} \\ ".rstrip(),
+            r"\textbf{Annualized Volatility} & 0.038050 & 0.025960 & 0.029236 & \textbf{0.009358} \\ ".rstrip(),
+        ),
+        "v2": (
+            r"\textbf{Daily Volatility (\%)} & 3.9527 & 2.7419 & 3.2722 & \textbf{1.7744} \\ ".rstrip(),
+            r"\textbf{Annualized Volatility (\%)} & 3.8050 & 2.5960 & 2.9236 & \textbf{0.9358} \\ ".rstrip(),
+        ),
+    }
+    pdf_markers = {
+        "v1": ("0.039527 0.027419 0.032722 0.017744", "0.038050 0.025960 0.029236 0.009358"),
+        "v2": ("3.9527 2.7419 3.2722 1.7744", "3.8050 2.5960 2.9236 0.9358"),
+    }
+    for version, expected in PAPER_VERSIONS.items():
+        pdf_path = version_root / f"paper_{version}.pdf"
+        archive_path = version_root / f"source_{version}.tar"
+        extracted_root = version_root / f"source_{version}"
+        reader = PdfReader(pdf_path)
+        table_page = int(expected["table_4_pdf_page"])
+        table_text = reader.pages[table_page - 1].extract_text() or ""
+        checks = {
+            "pdf_sha256": sha256(pdf_path) == expected["pdf_sha256"],
+            "pdf_bytes": pdf_path.stat().st_size == expected["pdf_bytes"],
+            "pdf_pages": len(reader.pages) == expected["pdf_pages"],
+            "table_4_pdf_text": all(marker in table_text for marker in pdf_markers[version]),
+            "source_sha256": sha256(archive_path) == expected["source_sha256"],
+            "source_archive_bytes": archive_path.stat().st_size
+            == expected["source_archive_bytes"],
+        }
+        with tarfile.open(archive_path, "r:*") as archive:
+            members = archive.getmembers()
+            files = [member for member in members if member.isfile()]
+            checks.update(
+                {
+                    "source_entries": len(members) == expected["source_entries"],
+                    "source_files": len(files) == expected["source_files"],
+                    "source_uncompressed_bytes": sum(member.size for member in files)
+                    == expected["source_uncompressed_bytes"],
+                }
+            )
+            for member in sorted(files, key=lambda item: item.name):
+                stream = archive.extractfile(member)
+                if stream is None:
+                    raise RuntimeError(f"Cannot read {version} source member {member.name}")
+                payload = stream.read()
+                extracted = extracted_root / member.name
+                if not extracted.is_file() or extracted.read_bytes() != payload:
+                    raise RuntimeError(
+                        f"Extracted {version} source differs from archive: {member.name}"
+                    )
+                if member.name == "templateArxiv.tex":
+                    role = "paper_primary_tex"
+                elif member.name.lower().endswith((".bib", ".bbl")):
+                    role = "paper_bibliography"
+                elif member.name.lower().endswith((".png", ".jpg", ".jpeg", ".pdf")):
+                    role = "paper_figure_asset"
+                elif member.name.lower().endswith((".sty", ".cls")):
+                    role = "paper_style_asset"
+                else:
+                    role = "paper_source_support_file"
+                source_rows.append(
+                    {
+                        "version": version,
+                        "path": member.name,
+                        "sha256": hashlib.sha256(payload).hexdigest(),
+                        "uncompressed_bytes": member.size,
+                        "role": role,
+                    }
+                )
+        tex = (extracted_root / "templateArxiv.tex").read_text(encoding="utf-8")
+        checks["annualization_equation_in_tex"] = equation in tex
+        checks["table_4_values_in_tex"] = all(row in tex for row in tex_table_rows[version])
+        if not all(checks.values()):
+            raise RuntimeError(f"Pinned FinMem arXiv {version} sources changed: {checks}")
+        version_rows.append(
+            {
+                "version": version,
+                "submitted_at": expected["submitted_at"],
+                "pdf_sha256": expected["pdf_sha256"],
+                "pdf_bytes": expected["pdf_bytes"],
+                "pdf_pages": expected["pdf_pages"],
+                "source_archive_sha256": expected["source_sha256"],
+                "source_archive_bytes": expected["source_archive_bytes"],
+                "source_entries": expected["source_entries"],
+                "source_files": expected["source_files"],
+                "source_uncompressed_bytes": expected["source_uncompressed_bytes"],
+                "table_4_pdf_page": table_page,
+                "table_4_page_visually_inspected": "yes",
+                "table_4_values_verified_in_pdf_text": "yes",
+                "table_4_values_verified_in_primary_tex": "yes",
+                "annualization_equation_verified_in_primary_tex": "yes",
+                "table_4_revision_status": "same_numeric_values_retained_across_v1_and_v2",
+            }
+        )
+    return version_rows, source_rows
+
+
+def table_4_volatility_forensics(
+    source_root: Path,
+    author_outputs: Sequence[Mapping[str, Any]],
+    action_reproduction: Sequence[Mapping[str, Any]],
+) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """Trace each disputed Table 4 cell through every reachable source blob."""
+    notebook = json.loads(
+        git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, HISTORICAL_NOTEBOOK_PATH)
+    )
+    character_text = notebook_text_output(notebook, 18)
+    separate_text = notebook_text_output(notebook, 19)
+    required_character = (
+        "Standard Deviation & 0.038050 & 0.025960 & 0.029236 & 0.009358",
+        "Annualized Volatility & 0.604020 & 0.412100 & 0.464112 & 0.148557",
+    )
+    required_separate = (
+        "Standard Deviation & 0.039527 & 0.027419 & 0.031453 & 0.039521 & 0.039521 & 0.039382",
+        "Annualized Volatility & 0.627470 & 0.435264 & 0.499305 & 0.627370 & 0.627374 & 0.625173",
+        "Cumulative Return & 0.181865 & 0.989811 & 0.103947 & 0.230767 & 0.228670 & 0.701477",
+        "Sharpe Ratio & 4.601053 & 36.099395 & 3.304806 & 5.839171 & 5.786047 & 17.812020",
+    )
+    if not all(fragment in character_text for fragment in required_character):
+        raise RuntimeError("Historical character output changed")
+    if not all(fragment in separate_text for fragment in required_separate):
+        raise RuntimeError("Historical separate TSLA-full output changed")
+
+    notebook_blob = git_text(
+        source_root,
+        "rev-parse",
+        f"{HISTORICAL_ARTIFACT_COMMIT}:{HISTORICAL_NOTEBOOK_PATH}",
+    ).strip()
+    if notebook_blob != HISTORICAL_NOTEBOOK_BLOB:
+        raise RuntimeError(f"Historical notebook blob changed: {notebook_blob}")
+    notebook_history = git_text(
+        source_root,
+        "log",
+        "--all",
+        "--follow",
+        "--format=%H",
+        "--",
+        HISTORICAL_NOTEBOOK_PATH,
+    ).splitlines()
+    historical_notebook_blobs = set()
+    for commit in notebook_history:
+        result = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(source_root),
+                "ls-tree",
+                commit,
+                "--",
+                HISTORICAL_NOTEBOOK_PATH,
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        if result:
+            historical_notebook_blobs.add(result.split()[2])
+    if historical_notebook_blobs != {HISTORICAL_NOTEBOOK_BLOB}:
+        raise RuntimeError(
+            f"Expected one historical notebook blob, found {historical_notebook_blobs}"
+        )
+
+    object_lines = git_text(source_root, "rev-list", "--objects", "--all").splitlines()
+    object_ids = [line.split(" ", 1)[0] for line in object_lines]
+    types = subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+        input="\n".join(object_ids) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    blob_ids = [oid for oid, kind in zip(object_ids, types) if kind == "blob"]
+    if len(blob_ids) != EXPECTED_REACHABLE_BLOBS:
+        raise RuntimeError(f"Expected 171 reachable blobs, found {len(blob_ids)}")
+    literals = {
+        f"{value:.6f}"
+        for values in TABLE_4_V1_RAW.values()
+        for value in values
+    }
+    hits: Dict[str, List[str]] = {literal: [] for literal in literals}
+    for blob_id in blob_ids:
+        payload = subprocess.run(
+            ["git", "-C", str(source_root), "cat-file", "blob", blob_id],
+            check=True,
+            capture_output=True,
+        ).stdout
+        for literal in literals:
+            if literal.encode() in payload:
+                hits[literal].append(blob_id)
+    expected_hits = {
+        "0.039527": [HISTORICAL_NOTEBOOK_BLOB],
+        "0.027419": [HISTORICAL_NOTEBOOK_BLOB],
+        "0.032722": [],
+        "0.017744": [],
+        "0.038050": [HISTORICAL_NOTEBOOK_BLOB],
+        "0.025960": [HISTORICAL_NOTEBOOK_BLOB],
+        "0.029236": [HISTORICAL_NOTEBOOK_BLOB],
+        "0.009358": [HISTORICAL_NOTEBOOK_BLOB],
+    }
+    if hits != expected_hits:
+        raise RuntimeError(f"FinMem Table 4 reachable-blob findings changed: {hits}")
+
+    author_index = {
+        (row["strategy_or_configuration"], row["metric"]): row
+        for row in author_outputs
+        if row["paper_table"] == 4
+    }
+    action_index = {
+        (row["strategy_or_configuration"], row["metric"]): row
+        for row in action_reproduction
+        if row["paper_table"] == 4
+    }
+    rows: List[Dict[str, Any]] = []
+    for metric in ("daily_volatility_pct", "annualized_volatility_pct"):
+        for index, strategy in enumerate(TABLE_4_STRATEGIES):
+            paper_raw = TABLE_4_V1_RAW[metric][index]
+            paper_percent = TABLE_4_V2_PERCENT[metric][index]
+            native = float(author_index[(strategy, metric)]["historical_notebook_value"])
+            native_daily = float(
+                author_index[(strategy, "daily_volatility_pct")][
+                    "historical_notebook_value"
+                ]
+            )
+            replay = float(action_index[(strategy, metric)]["recomputed_value"])
+            literal = f"{paper_raw:.6f}"
+            if metric == "annualized_volatility_pct":
+                relation = "paper_annualized_cell_equals_preserved_character_daily_value"
+                reason = (
+                    "Published annualized value exactly equals the native character-output "
+                    "daily volatility; it is not daily volatility multiplied by sqrt(252)."
+                )
+            elif strategy in SEPARATE_TSLA_FULL_DAILY_PERCENT:
+                relation = "paper_daily_cell_matches_separate_tsla_full_output_value"
+                reason = (
+                    "Published daily value appears in a separate TSLA-full notebook output "
+                    "whose return and Sharpe values show it is a different experiment."
+                )
+            else:
+                relation = "paper_only_value_absent_from_all_reachable_source_blobs"
+                reason = (
+                    "Published daily value is absent from all 171 reachable public source "
+                    "blobs; this bounded finding does not exclude unavailable private artifacts."
+                )
+            rows.append(
+                {
+                    "strategy_or_configuration": strategy,
+                    "metric": metric,
+                    "paper_v1_raw_value": paper_raw,
+                    "paper_v2_percent_value": paper_percent,
+                    "preserved_character_same_metric_value_pct": native,
+                    "preserved_character_daily_volatility_pct": native_daily,
+                    "historical_action_replay_value_pct": replay,
+                    "paper_minus_character_notebook_pct": paper_percent - native,
+                    "paper_minus_action_replay_pct": paper_percent - replay,
+                    "reachable_blob_literal": literal,
+                    "reachable_blob_hit_count": len(hits[literal]),
+                    "reachable_blob_hit_ids": ",".join(hits[literal]),
+                    "source_relation": relation,
+                    "defensible_paper_result_credit": "no",
+                    "credit_reason": reason,
+                }
+            )
+    summary = {
+        "scope": "all eight disputed daily/annualized volatility cells in FinMem Table 4",
+        "official_arxiv_versions_audited": 2,
+        "table_4_numeric_values_changed_between_v1_and_v2": False,
+        "table_4_pdf_pages_visually_inspected": {"v1": 17, "v2": 18},
+        "reachable_commits_scanned": EXPECTED_REACHABLE_COMMITS,
+        "reachable_objects_scanned": EXPECTED_REACHABLE_OBJECTS,
+        "reachable_blobs_byte_scanned": len(blob_ids),
+        "unreachable_objects_in_source_clone": 0,
+        "historical_notebook_path_revisions": len(notebook_history),
+        "unique_historical_notebook_blobs": len(historical_notebook_blobs),
+        "historical_notebook_blob": HISTORICAL_NOTEBOOK_BLOB,
+        "annualized_cells_matching_native_daily_values": 4,
+        "daily_cells_matching_separate_tsla_full_output": 2,
+        "daily_cells_absent_from_all_reachable_source_blobs": 2,
+        "cells_receiving_defensible_paper_result_credit": 0,
+        "bounded_conclusion": (
+            "The public record supports a cross-experiment/mislabeled-table construction "
+            "defect, not a faithful native reproduction of the eight displayed cells."
+        ),
+    }
+    return rows, summary
 
 
 def parse_action_csv(blob: bytes) -> Tuple[List[Tuple[datetime, int]], str]:
@@ -767,6 +1143,7 @@ def source_config_audit(source_root: Path) -> List[Dict[str, Any]]:
 def build_audit(
     source_root: Path,
     paper_path: Path,
+    paper_version_root: Path,
     price_root: Path,
     output_dir: Path,
 ) -> Dict[str, Any]:
@@ -785,6 +1162,10 @@ def build_audit(
     author_outputs = parse_notebook_author_outputs(source_root)
     action_inventory = historical_action_inventory(source_root)
     action_reproduction = historical_action_reproduction(source_root, price_root)
+    paper_versions, paper_source_files = paper_version_audit(paper_version_root)
+    table_4_forensics, table_4_forensic_summary = table_4_volatility_forensics(
+        source_root, author_outputs, action_reproduction
+    )
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "tables_2_5_conformance.csv", conformance, list(conformance[0]))
@@ -806,6 +1187,24 @@ def build_audit(
         output_dir / "historical_action_metric_reproduction.csv",
         action_reproduction,
         list(action_reproduction[0]),
+    )
+    write_csv(
+        output_dir / "official_paper_version_inventory.csv",
+        paper_versions,
+        list(paper_versions[0]),
+    )
+    write_csv(
+        output_dir / "official_paper_source_inventory.csv",
+        paper_source_files,
+        list(paper_source_files[0]),
+    )
+    write_csv(
+        output_dir / "table_4_volatility_provenance.csv",
+        table_4_forensics,
+        list(table_4_forensics[0]),
+    )
+    (output_dir / "table_4_volatility_forensics.json").write_text(
+        json.dumps(table_4_forensic_summary, indent=2) + "\n", encoding="utf-8"
     )
 
     matched = sum(row["status"] == "exact_displayed_precision_match" for row in conformance)
@@ -901,6 +1300,13 @@ def build_audit(
         "end_to_end_agent_result_cells_reproduced": 0,
         "paper_url": PAPER_URL,
         "paper_sha256": PAPER_SHA256,
+        "official_arxiv_versions_audited": len(paper_versions),
+        "official_arxiv_pdf_pages_pinned": sum(
+            int(row["pdf_pages"]) for row in paper_versions
+        ),
+        "official_table_4_pdf_pages_visually_inspected": len(paper_versions),
+        "official_arxiv_source_files_inventoried": len(paper_source_files),
+        "official_arxiv_version_inventory": paper_versions,
         "source_url": SOURCE_URL,
         "source_commit": commit,
         "paper_numeric_tables_audited": [2, 3, 4, 5],
@@ -931,6 +1337,13 @@ def build_audit(
         "main_table_buy_hold_rows_fully_matched": 0,
         "paper_table_4_annualization_identity_mismatches": volatility_mismatches,
         "paper_other_table_annualization_identity_mismatches": 0,
+        "table_4_disputed_volatility_cells_forensically_traced": len(
+            table_4_forensics
+        ),
+        "table_4_annualized_cells_matching_native_daily_values": 4,
+        "table_4_daily_cells_matching_separate_tsla_full_output": 2,
+        "table_4_daily_cells_absent_from_all_reachable_source_blobs": 2,
+        "table_4_disputed_volatility_cells_receiving_result_credit": 0,
         "current_head_native_action_or_return_files_shipped": len(shipped_result_files),
         "historical_action_csvs_in_public_git_history": len(action_inventory),
         "historical_repository_audit": history,
@@ -959,9 +1372,11 @@ def build_audit(
             "unit) and 18 dated action CSVs. "
             "Replaying the ablation actions "
             "against a hash-pinned Yahoo response independently reproduces 67/75 displayed "
-            "Table 3--5 cells. The remaining eight are both Table 4 volatility columns: they "
-            "conflict with the preserved author output, the replayed metrics, and the paper's "
-            "annualization identity. This is strong paper-output lineage but not an end-to-end "
+            "Table 3--5 cells. The remaining eight are both Table 4 volatility columns. Both "
+            "official arXiv versions and their TeX sources retain them: four annualized cells "
+            "exactly equal native daily values, two daily cells match a separate TSLA "
+            "experiment, and two daily cells are absent from all 171 reachable source blobs. "
+            "None earns result credit. This is strong paper-output lineage but not an end-to-end "
             "FinMem rerun: the original inputs, memories, complete five-trial outputs, and exact "
             "paper configuration remain absent from the current public tree."
         ),
@@ -992,7 +1407,9 @@ trained memories, complete five-trial paths, and exact paper configuration remai
 
 ## Primary sources
 
-- Official paper: {PAPER_URL} (SHA-256 `{PAPER_SHA256}`).
+- Official paper record: https://arxiv.org/abs/2311.13743. Both v1 and v2 PDFs
+  and matching TeX source archives are hash-pinned and audited; the current v2 PDF
+  is {PAPER_URL} (SHA-256 `{PAPER_SHA256}`).
 - Public source: {SOURCE_URL}, commit `{commit}`.
 - Historical author-output snapshot: commit `{HISTORICAL_ARTIFACT_COMMIT}`
   (2023-11-30), deleted from the current tree by commit
@@ -1005,6 +1422,18 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   more within one unit of the paper's last printed decimal, corroborating 227/235.
   The eight substantive disagreements are exactly the daily- and annualized-volatility
   entries for all four Table 4 rows.
+- The official v1 and v2 PDFs each contain 22 pages. Their matching source archives
+  contain {len(paper_source_files)} files in total. Table 4 was visually inspected on
+  v1 page 17 and v2 page 18, and the printed cells were cross-checked against extracted
+  PDF text and primary TeX. The same eight disputed numbers survive the revision.
+- Exhaustive byte scanning covers all {history['reachable_blobs']} blobs in the complete
+  {history['reachable_commits']}-commit source history. The four paper annualized cells
+  exactly equal the preserved character output's daily-volatility cells. Buy-and-Hold
+  and Self-Adaptive daily values occur in a separate `TSLA-full.csv` notebook output
+  whose returns and Sharpe ratios establish that it is a different experiment. The
+  Risk-Seeking and Risk-Averse daily values occur in no reachable public source blob.
+  This bounded evidence supports a cross-experiment/mislabeled-table construction
+  defect; it does not prove what may have existed in unavailable private artifacts.
 - Independently applying the released metric code to the historical dated action CSVs
   and a hash-pinned Yahoo response reproduces {action_matched}/75 displayed cells in
   Tables 3--5. Tables 3 and 5 match completely (55/55); Table 4 matches cumulative
@@ -1054,8 +1483,9 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   than conventional cumulative portfolio return.
 - Table 4's four annualized-volatility cells fail the paper's own identity,
   annualized volatility = daily volatility times sqrt(252). More decisively, all eight
-  Table 4 volatility entries disagree with both the preserved author notebook and the
-  independent action replay. All {len(volatility) - volatility_mismatches} corresponding
+  Table 4 volatility entries disagree with both the preserved character output and the
+  independent action replay. Version and blob forensics explain six literal lineages
+  and bound the other two to the papers. All {len(volatility) - volatility_mismatches} corresponding
   rows in Tables 2, 3, and 5 are rounding-consistent.
 
 Run `scripts/audit_finmem_paper.py` to regenerate this package. Use `--strict` when
@@ -1097,6 +1527,16 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--paper-version-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "FINMEM_PAPER_VERSION_ROOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/finmem_paper_versions",
+            )
+        ),
+    )
+    parser.add_argument(
         "--price-root",
         type=Path,
         default=Path(
@@ -1120,6 +1560,7 @@ def main() -> int:
     manifest = build_audit(
         args.source_root.resolve(),
         args.paper_pdf.resolve(),
+        args.paper_version_root.resolve(),
         args.price_root.resolve(),
         args.output_dir.resolve(),
     )

@@ -7,7 +7,9 @@ trained memories, complete five-trial paths, and exact paper configuration remai
 
 ## Primary sources
 
-- Official paper: https://arxiv.org/pdf/2311.13743 (SHA-256 `acb7527d02871cfad7d2754314b9a803f917b326847a456579df9cf7b0a648b9`).
+- Official paper record: https://arxiv.org/abs/2311.13743. Both v1 and v2 PDFs
+  and matching TeX source archives are hash-pinned and audited; the current v2 PDF
+  is https://arxiv.org/pdf/2311.13743 (SHA-256 `acb7527d02871cfad7d2754314b9a803f917b326847a456579df9cf7b0a648b9`).
 - Public source: https://github.com/pipiku915/finmem-llm-stocktrading, commit `be814aa47970de9bf2fdd6a1d5a60ae5cf361b46`.
 - Historical author-output snapshot: commit `0b7f499e556668bf49885fd8836efe85ef51558f`
   (2023-11-30), deleted from the current tree by commit
@@ -20,6 +22,18 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   more within one unit of the paper's last printed decimal, corroborating 227/235.
   The eight substantive disagreements are exactly the daily- and annualized-volatility
   entries for all four Table 4 rows.
+- The official v1 and v2 PDFs each contain 22 pages. Their matching source archives
+  contain 71 files in total. Table 4 was visually inspected on
+  v1 page 17 and v2 page 18, and the printed cells were cross-checked against extracted
+  PDF text and primary TeX. The same eight disputed numbers survive the revision.
+- Exhaustive byte scanning covers all 171 blobs in the complete
+  55-commit source history. The four paper annualized cells
+  exactly equal the preserved character output's daily-volatility cells. Buy-and-Hold
+  and Self-Adaptive daily values occur in a separate `TSLA-full.csv` notebook output
+  whose returns and Sharpe ratios establish that it is a different experiment. The
+  Risk-Seeking and Risk-Averse daily values occur in no reachable public source blob.
+  This bounded evidence supports a cross-experiment/mislabeled-table construction
+  defect; it does not prove what may have existed in unavailable private artifacts.
 - Independently applying the released metric code to the historical dated action CSVs
   and a hash-pinned Yahoo response reproduces 67/75 displayed cells in
   Tables 3--5. Tables 3 and 5 match completely (55/55); Table 4 matches cumulative
@@ -69,8 +83,9 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   than conventional cumulative portfolio return.
 - Table 4's four annualized-volatility cells fail the paper's own identity,
   annualized volatility = daily volatility times sqrt(252). More decisively, all eight
-  Table 4 volatility entries disagree with both the preserved author notebook and the
-  independent action replay. All 43 corresponding
+  Table 4 volatility entries disagree with both the preserved character output and the
+  independent action replay. Version and blob forensics explain six literal lineages
+  and bound the other two to the papers. All 43 corresponding
   rows in Tables 2, 3, and 5 are rounding-consistent.
 
 Run `scripts/audit_finmem_paper.py` to regenerate this package. Use `--strict` when

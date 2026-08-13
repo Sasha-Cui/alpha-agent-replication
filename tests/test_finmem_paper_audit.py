@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import importlib.util
 import json
+import math
 import sys
 from collections import Counter
 from pathlib import Path
@@ -64,6 +65,12 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     author_outputs = read_csv(output / "historical_author_output_conformance.csv")
     action_inventory = read_csv(output / "historical_action_inventory.csv")
     action_reproduction = read_csv(output / "historical_action_metric_reproduction.csv")
+    paper_versions = read_csv(output / "official_paper_version_inventory.csv")
+    paper_sources = read_csv(output / "official_paper_source_inventory.csv")
+    table_4_provenance = read_csv(output / "table_4_volatility_provenance.csv")
+    table_4_forensics = json.loads(
+        (output / "table_4_volatility_forensics.json").read_text(encoding="utf-8")
+    )
 
     assert (
         manifest["overall_status"]
@@ -73,6 +80,10 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     assert manifest["end_to_end_agent_result_cells_reproduced"] == 0
     assert manifest["paper_result_rows_total"] == 47
     assert manifest["paper_result_cells_total"] == 235
+    assert manifest["official_arxiv_versions_audited"] == 2
+    assert manifest["official_arxiv_pdf_pages_pinned"] == 44
+    assert manifest["official_table_4_pdf_pages_visually_inspected"] == 2
+    assert manifest["official_arxiv_source_files_inventoried"] == 71
     assert manifest["historical_author_output_cells_exact"] == 223
     assert manifest["historical_author_output_cells_one_last_decimal_unit_difference"] == 4
     assert manifest["historical_author_output_cells_corroborated"] == 227
@@ -99,6 +110,10 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     history = manifest["historical_repository_audit"]
     assert history["is_shallow_repository"] is False
     assert history["reachable_commits"] == 55
+    assert history["reachable_objects"] == 336
+    assert history["reachable_blobs"] == 171
+    assert history["reachable_trees"] == 110
+    assert history["unreachable_objects"] == 0
     assert history["root_commit"] == audit.SOURCE_ROOT_COMMIT
     assert history["historical_artifact_commit"] == audit.HISTORICAL_ARTIFACT_COMMIT
     assert history["historical_tree_files"] == 33
@@ -110,6 +125,61 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     assert manifest["original_paper_news_filings_snapshot_shipped"] is False
     assert manifest["paper_selects_best_risk_profile_on_test_outcome"] is True
     assert manifest["paper_metric_is_self_financing_portfolio_return"] is False
+    assert manifest["table_4_disputed_volatility_cells_forensically_traced"] == 8
+    assert manifest["table_4_annualized_cells_matching_native_daily_values"] == 4
+    assert manifest["table_4_daily_cells_matching_separate_tsla_full_output"] == 2
+    assert manifest["table_4_daily_cells_absent_from_all_reachable_source_blobs"] == 2
+    assert manifest["table_4_disputed_volatility_cells_receiving_result_credit"] == 0
+
+    assert len(paper_versions) == 2
+    assert {row["version"] for row in paper_versions} == {"v1", "v2"}
+    assert {row["pdf_pages"] for row in paper_versions} == {"22"}
+    assert {row["table_4_pdf_page"] for row in paper_versions} == {"17", "18"}
+    assert all(row["table_4_page_visually_inspected"] == "yes" for row in paper_versions)
+    assert all(row["table_4_values_verified_in_pdf_text"] == "yes" for row in paper_versions)
+    assert all(row["table_4_values_verified_in_primary_tex"] == "yes" for row in paper_versions)
+    assert all(row["annualization_equation_verified_in_primary_tex"] == "yes" for row in paper_versions)
+    assert all(
+        row["table_4_revision_status"]
+        == "same_numeric_values_retained_across_v1_and_v2"
+        for row in paper_versions
+    )
+    assert len(paper_sources) == 71
+    assert Counter(row["version"] for row in paper_sources) == {"v1": 32, "v2": 39}
+    assert Counter(row["role"] for row in paper_sources)["paper_primary_tex"] == 2
+
+    assert len(table_4_provenance) == 8
+    assert Counter(row["source_relation"] for row in table_4_provenance) == {
+        "paper_annualized_cell_equals_preserved_character_daily_value": 4,
+        "paper_daily_cell_matches_separate_tsla_full_output_value": 2,
+        "paper_only_value_absent_from_all_reachable_source_blobs": 2,
+    }
+    assert all(row["defensible_paper_result_credit"] == "no" for row in table_4_provenance)
+    annual = [
+        row for row in table_4_provenance if row["metric"] == "annualized_volatility_pct"
+    ]
+    assert all(
+        math.isclose(
+            float(row["paper_v2_percent_value"]),
+            float(row["preserved_character_daily_volatility_pct"]),
+            abs_tol=1e-12,
+        )
+        for row in annual
+    )
+    absent = {
+        row["strategy_or_configuration"]
+        for row in table_4_provenance
+        if row["source_relation"]
+        == "paper_only_value_absent_from_all_reachable_source_blobs"
+    }
+    assert absent == {"risk_seeking", "risk_averse"}
+    assert table_4_forensics["official_arxiv_versions_audited"] == 2
+    assert table_4_forensics["table_4_numeric_values_changed_between_v1_and_v2"] is False
+    assert table_4_forensics["reachable_commits_scanned"] == 55
+    assert table_4_forensics["reachable_objects_scanned"] == 336
+    assert table_4_forensics["reachable_blobs_byte_scanned"] == 171
+    assert table_4_forensics["unique_historical_notebook_blobs"] == 1
+    assert table_4_forensics["cells_receiving_defensible_paper_result_credit"] == 0
 
     assert len(conformance) == 235
     assert Counter(row["status"] for row in conformance) == {

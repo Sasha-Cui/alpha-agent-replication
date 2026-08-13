@@ -488,7 +488,10 @@ ARTIFACT_NOTES = {
         "the current tree on 2024-02-09. The notebook corroborates 227/235 displayed "
         "paper cells (223 exact and four one-last-decimal differences), while eight "
         "Table 4 volatility cells conflict with both the notebook and the paper's own "
-        "annualization identity. Replaying the historical ablation actions independently "
+        "annualization identity. Both official arXiv versions retain the defect: four "
+        "annualized cells equal native daily values, two daily cells match a separate "
+        "TSLA experiment, and two occur in none of 171 reachable source blobs, so none "
+        "receives result credit. Replaying the historical ablation actions independently "
         "matches 67/75 displayed Table 3--5 cells. This is author-output and metric-replay "
         "evidence, not end-to-end FinMem reproduction: the original inputs, memories, "
         "complete five-trial lineage, and exact paper configuration remain absent.",
