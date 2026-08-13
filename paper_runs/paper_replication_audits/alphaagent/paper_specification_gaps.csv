@@ -8,10 +8,10 @@ operator_library,"a large paper-era operator library is recovered, but the paper
 prompts,"paper-era idea/factor/eval prompts are recovered, but prompt/API versions used for every reported trial are not identified",blocks exact agent replay
 llm_sampling,"temperature, seeds, API snapshots, and token limits are absent",blocks stochastic replay
 seed_hypotheses,initial research directions and all 20 trial inputs are absent,blocks search replay
-factor_outputs,"multiple paper-era factor pools survive, including a 15-row CN candidate file, but no lineage proves which exact pools generated each paper panel",blocks final model-input identity
-lightgbm,"the paper-era configs recover the full LightGBM kwargs, but the trained model state and random seeds are absent",blocks fitted-model identity
+factor_outputs,"multiple paper-era factor pools survive, including a 15-row CN candidate file, while MLflow model states expose only feature counts and no lineage proves which exact pool generated a paper panel",blocks final model-input identity
+lightgbm,"seven fitted LightGBM states survive, but factor-name mappings, random seeds, and the selected final China lineage are absent",blocks exact fitted-model/input identity beyond the recovered records
 universe,"constituent histories, delisting rules, adjustment rules, and filters are absent",blocks panel identity
-portfolio,"paper-era Qlib configs recover top-k/drop, benchmark, price, limits, account and recorders, but not the exact executed recorder/config lineage",blocks result provenance
+portfolio,"paper-era Qlib configs plus seven executed metric/config records recover top-k/drop, benchmark, price, limits, account and fees, but predictions, positions, daily returns and complete recorder objects are absent",blocks end-to-end result regeneration
 transaction_costs,"paper-era configs recover fees, min costs, deal price and price-limit threshold, but frozen market-state/suspension inputs are absent",blocks exact net returns
 trial_aggregation,the aggregation/selection from 20 trials to Table 2 is not fully specified,blocks metric target
 figure_arrays,"underlying daily curves, yearly values, and round distributions are absent",blocks figure reproduction

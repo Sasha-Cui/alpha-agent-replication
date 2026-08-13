@@ -4,12 +4,13 @@
 The repository's default ``main`` branch is a July 2026 rewrite, but the same
 public repository also retains a disjoint 485-commit ``legacy-main`` history
 beginning in April 2024.  That history contains the preprint-era AlphaAgent
-workflow, prompts, AST matcher, Qlib configurations, and factor-expression
-artifacts.  This audit pins and executes an intact February 2025 mechanism
-snapshot, records later preprint-cutoff breakage, and separately inventories the
-2026 rewrite.  Source and component evidence never receives paper-result credit:
-the paper's predictions, portfolios, returns, trials, and metric arrays remain
-unreleased.
+workflow, prompts, AST matcher, Qlib configurations, factor-expression artifacts,
+and seven extensionless Qlib/MLflow run records.  This audit pins and executes an
+intact February 2025 mechanism snapshot, records later preprint-cutoff breakage,
+and separately inventories the 2026 rewrite.  One native author run record
+corroborates five displayed paper cells, but it is not an independent regeneration:
+the paper's predictions, portfolios, daily returns, trials, and figure arrays
+remain unreleased.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ import csv
 import hashlib
 import json
 import os
+import pickletools
 import subprocess
 import sys
 import tarfile
@@ -36,6 +38,7 @@ LEGACY_ROOT_COMMIT = "c740262752b585bc59e41e26807d826ec7bebe75"
 PAPER_MECHANISM_COMMIT = "95e47882cbed3ba0cafd42e812fe0032a8ae0681"
 LATEST_FULL_TREE_PREPRINT_COMMIT = "3cbb7b7e9abe9bc3f3beaa7fcb2102293fbbea4a"
 PREPRINT_CUTOFF_COMMIT = "0bc7a34ed9701a0149ae990b6484e7c73b347ea0"
+PAPER_RUN_RECORD_TREE = "09339a924f84bd42915e8643fcd39a60ac81e911"
 ALPHAAGENT_INTRO_COMMIT = "7f041be0793600188be180e3df2acf5421c1c644"
 PAPER_URL = "https://arxiv.org/pdf/2502.16789v2"
 PAPER_SHA256 = "cf620c3b33a98edd4124230458b65741e1767fa37a3a180828de1035ded52ab1"
@@ -187,7 +190,10 @@ def extract_git_commit(source_root: Path, commit: str, destination: Path) -> Non
 
 
 def history_audit(source_root: Path) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    roots = sorted(git_output(source_root, "rev-list", "--all", "--max-parents=0").splitlines())
+    official_heads = (SOURCE_COMMIT, LEGACY_HEAD_COMMIT)
+    roots = sorted(
+        git_output(source_root, "rev-list", *official_heads, "--max-parents=0").splitlines()
+    )
     merge_base = subprocess.run(
         ["git", "-C", str(source_root), "merge-base", SOURCE_COMMIT, LEGACY_HEAD_COMMIT],
         check=False,
@@ -196,7 +202,9 @@ def history_audit(source_root: Path) -> tuple[dict[str, Any], list[dict[str, Any
     )
     facts: dict[str, Any] = {
         "is_shallow": git_output(source_root, "rev-parse", "--is-shallow-repository") == "true",
-        "reachable_commits": int(git_output(source_root, "rev-list", "--all", "--count")),
+        "reachable_commits": int(
+            git_output(source_root, "rev-list", *official_heads, "--count")
+        ),
         "current_main_commits": int(git_output(source_root, "rev-list", SOURCE_COMMIT, "--count")),
         "legacy_main_commits": int(git_output(source_root, "rev-list", LEGACY_HEAD_COMMIT, "--count")),
         "root_commits": roots,
@@ -325,8 +333,9 @@ def table_conformance() -> list[dict[str, Any]]:
         if row["cell_role"] == "result":
             status = "unavailable_missing_native_paper_result_path"
             reason = (
-                "paper-era source and factor expressions survive in Git history, but no "
-                "prediction, holding, return, recorder, baseline output, or metric file survives"
+                "paper-era source, factor expressions, and seven partial Qlib/MLflow records "
+                "survive in Git history, but this cell has no full-period exact author-record "
+                "match and no prediction, holding, return, or baseline output survives"
             )
         else:
             status = "paper_configuration_recovered_without_frozen_dataset"
@@ -344,6 +353,207 @@ def table_conformance() -> list[dict[str, Any]]:
             }
         )
     return rows
+
+
+def _git_blob(source_root: Path, commit: str, relative: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(source_root), "show", f"{commit}:{relative}"],
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
+def _mlflow_value(source_root: Path, run_id: str, relative: str) -> str:
+    text = _git_blob(
+        source_root,
+        PAPER_MECHANISM_COMMIT,
+        f"saved_mlruns/{run_id}/{relative}",
+    ).decode()
+    parts = text.split()
+    if relative.startswith("metrics/"):
+        if len(parts) != 3:
+            raise RuntimeError(f"Malformed MLflow metric {run_id}/{relative}: {text!r}")
+        return parts[1]
+    return text
+
+
+def _pickle_string_values(blob: bytes) -> list[str]:
+    return [
+        argument
+        for _opcode, argument, _position in pickletools.genops(blob)
+        if isinstance(argument, str)
+    ]
+
+
+def paper_era_run_records(source_root: Path) -> list[dict[str, Any]]:
+    """Recover and classify the seven extensionless Qlib/MLflow records.
+
+    The author committed the record directories on 2025-02-12 and removed them
+    at the preprint-cutoff commit.  They ship metrics, full task/config pickles,
+    and fitted LightGBM state, but not prediction, return, position, or input
+    data objects.  Consequently they corroborate displayed cells but are not an
+    independently regenerated experiment.
+    """
+    observed_tree = git_output(
+        source_root, "rev-parse", f"{PAPER_MECHANISM_COMMIT}:saved_mlruns"
+    )
+    if observed_tree != PAPER_RUN_RECORD_TREE:
+        raise RuntimeError(f"Pinned MLflow record tree changed: {observed_tree}")
+    run_ids = git_output(
+        source_root, "ls-tree", "--name-only", f"{PAPER_MECHANISM_COMMIT}:saved_mlruns"
+    ).splitlines()
+    if len(run_ids) != 7:
+        raise RuntimeError(f"Expected seven paper-era MLflow runs, found {len(run_ids)}")
+
+    paper = {
+        (row["market"], row["metric"]): float(row["paper_value"])
+        for row in paper_numeric_rows()
+        if row["cell_role"] == "result" and row["entity"] == "AlphaAgent"
+    }
+    metric_paths = {
+        "IC": "metrics/IC",
+        "ICIR": "metrics/ICIR",
+        "AR_pct": "metrics/1day.excess_return_with_cost.annualized_return",
+        "IR": "metrics/1day.excess_return_with_cost.information_ratio",
+        "MDD_pct": "metrics/1day.excess_return_with_cost.max_drawdown",
+    }
+    rows: list[dict[str, Any]] = []
+    for run_id in run_ids:
+        market_raw = _mlflow_value(
+            source_root, run_id, "params/dataset.kwargs.handler.kwargs.instruments"
+        )
+        market_map = {"SP500": "S&P500", "csi500": "CSI500"}
+        if market_raw not in market_map:
+            raise RuntimeError(
+                f"Unexpected instrument universe in run {run_id}: {market_raw!r}"
+            )
+        market = market_map[market_raw]
+        test_segment = _mlflow_value(
+            source_root, run_id, "params/dataset.kwargs.segments.test"
+        )
+        command = _mlflow_value(source_root, run_id, "params/cmd-sys.argv")
+        start_ms = int(
+            next(
+                line.split(":", 1)[1].strip()
+                for line in _mlflow_value(source_root, run_id, "meta.yaml").splitlines()
+                if line.startswith("start_time:")
+            )
+        )
+        config_blob = _git_blob(
+            source_root, PAPER_MECHANISM_COMMIT, f"saved_mlruns/{run_id}/artifacts/config"
+        )
+        dataset_blob = _git_blob(
+            source_root, PAPER_MECHANISM_COMMIT, f"saved_mlruns/{run_id}/artifacts/dataset"
+        )
+        task_blob = _git_blob(
+            source_root, PAPER_MECHANISM_COMMIT, f"saved_mlruns/{run_id}/artifacts/task"
+        )
+        strings = _pickle_string_values(config_blob)
+        model_states = [value for value in strings if value.startswith("tree\nversion=")]
+        if len(model_states) != 1:
+            raise RuntimeError(f"Expected one fitted LightGBM state in run {run_id}")
+        feature_line = next(
+            line for line in model_states[0].splitlines() if line.startswith("feature_names=")
+        )
+        feature_count = len(feature_line.removeprefix("feature_names=").split())
+        expected_full_segments = {
+            "S&P500": "[datetime.date(2021, 1, 1), datetime.date(2024, 12, 31)]",
+            "CSI500": "[datetime.date(2021, 1, 1), datetime.date(2024, 12, 30)]",
+        }
+        full_period = test_segment == expected_full_segments[market]
+        run_file_count = len(
+            git_output(
+                source_root,
+                "ls-tree",
+                "-r",
+                "--name-only",
+                f"{PAPER_MECHANISM_COMMIT}:saved_mlruns/{run_id}",
+            ).splitlines()
+        )
+        values: dict[str, float] = {}
+        matches: dict[str, bool] = {}
+        for metric, path in metric_paths.items():
+            value = float(_mlflow_value(source_root, run_id, path))
+            if metric in {"AR_pct", "MDD_pct"}:
+                value *= 100.0
+            values[metric] = value
+            decimals = {
+                "IC": 4,
+                "ICIR": 4,
+                "AR_pct": 2,
+                "IR": 4,
+                "MDD_pct": 2,
+            }[metric]
+            matches[metric] = round(value, decimals) == round(paper[(market, metric)], decimals)
+        matched = sum(matches.values()) if full_period else 0
+        rows.append(
+            {
+                "run_id": run_id,
+                "run_started_utc_ms": start_ms,
+                "market": market,
+                "test_segment": test_segment,
+                "command": command,
+                "tracked_files": run_file_count,
+                "input_features": feature_count,
+                "generated_factor_features": feature_count - 4,
+                "config_sha256": hashlib.sha256(config_blob).hexdigest(),
+                "dataset_sha256": hashlib.sha256(dataset_blob).hexdigest(),
+                "task_sha256": hashlib.sha256(task_blob).hexdigest(),
+                "fitted_lightgbm_state_sha256": hashlib.sha256(
+                    model_states[0].encode("utf-8")
+                ).hexdigest(),
+                "ic": values["IC"],
+                "icir": values["ICIR"],
+                "annualized_return_pct": values["AR_pct"],
+                "information_ratio": values["IR"],
+                "max_drawdown_pct": values["MDD_pct"],
+                "full_paper_period": full_period,
+                "display_cells_matching_alphaagent_row": matched,
+                "all_five_display_cells_match": matched == 5,
+                "paper_result_cells_corroborated": 5 if matched == 5 else 0,
+                "fitted_lightgbm_state_shipped": True,
+                "predictions_returns_holdings_shipped": False,
+                "paper_result_credit_kind": (
+                    "author_history_native_run_artifact_exact_display_match"
+                    if matched == 5
+                    else "author_history_run_artifact_no_complete_display_match"
+                ),
+            }
+        )
+    if Counter(row["market"] for row in rows) != {"S&P500": 4, "CSI500": 3}:
+        raise RuntimeError("Pinned MLflow market census changed")
+    if sum(int(row["tracked_files"]) for row in rows) != 385:
+        raise RuntimeError("Pinned MLflow file census changed")
+    if [row["run_id"] for row in rows if row["all_five_display_cells_match"]] != [
+        "77b227f86e5a47bab48178cac409a98b"
+    ]:
+        raise RuntimeError("Pinned AlphaAgent Table 2 MLflow correspondence changed")
+    return rows
+
+
+def apply_run_record_conformance(
+    table_rows: list[dict[str, Any]], run_rows: Sequence[Mapping[str, Any]]
+) -> None:
+    matching = next(row for row in run_rows if row["all_five_display_cells_match"])
+    values = {
+        "IC": matching["ic"],
+        "ICIR": matching["icir"],
+        "AR_pct": matching["annualized_return_pct"],
+        "IR": matching["information_ratio"],
+        "MDD_pct": matching["max_drawdown_pct"],
+    }
+    for row in table_rows:
+        if row["entity"] == "AlphaAgent" and row["market"] == "S&P500":
+            row["native_reproduced_value"] = values[row["metric"]]
+            row["absolute_difference"] = abs(
+                float(row["paper_value"]) - float(values[row["metric"]])
+            )
+            row["status"] = "corroborated_by_author_history_native_run_artifact"
+            row["reason"] = (
+                "the official author's preprint-era Git history ships the exact Qlib/MLflow "
+                "metric and executed-config record; all five S&P500 AlphaAgent cells match at "
+                "display precision, but missing inputs/predictions/returns prevent regeneration"
+            )
 
 
 def published_non_table_claims() -> list[dict[str, Any]]:
@@ -411,10 +621,10 @@ def specification_gaps() -> list[dict[str, Any]]:
         ("prompts", "paper-era idea/factor/eval prompts are recovered, but prompt/API versions used for every reported trial are not identified", "blocks exact agent replay"),
         ("llm_sampling", "temperature, seeds, API snapshots, and token limits are absent", "blocks stochastic replay"),
         ("seed_hypotheses", "initial research directions and all 20 trial inputs are absent", "blocks search replay"),
-        ("factor_outputs", "multiple paper-era factor pools survive, including a 15-row CN candidate file, but no lineage proves which exact pools generated each paper panel", "blocks final model-input identity"),
-        ("lightgbm", "the paper-era configs recover the full LightGBM kwargs, but the trained model state and random seeds are absent", "blocks fitted-model identity"),
+        ("factor_outputs", "multiple paper-era factor pools survive, including a 15-row CN candidate file, while MLflow model states expose only feature counts and no lineage proves which exact pool generated a paper panel", "blocks final model-input identity"),
+        ("lightgbm", "seven fitted LightGBM states survive, but factor-name mappings, random seeds, and the selected final China lineage are absent", "blocks exact fitted-model/input identity beyond the recovered records"),
         ("universe", "constituent histories, delisting rules, adjustment rules, and filters are absent", "blocks panel identity"),
-        ("portfolio", "paper-era Qlib configs recover top-k/drop, benchmark, price, limits, account and recorders, but not the exact executed recorder/config lineage", "blocks result provenance"),
+        ("portfolio", "paper-era Qlib configs plus seven executed metric/config records recover top-k/drop, benchmark, price, limits, account and fees, but predictions, positions, daily returns and complete recorder objects are absent", "blocks end-to-end result regeneration"),
         ("transaction_costs", "paper-era configs recover fees, min costs, deal price and price-limit threshold, but frozen market-state/suspension inputs are absent", "blocks exact net returns"),
         ("trial_aggregation", "the aggregation/selection from 20 trials to Table 2 is not fully specified", "blocks metric target"),
         ("figure_arrays", "underlying daily curves, yearly values, and round distributions are absent", "blocks figure reproduction"),
@@ -560,7 +770,7 @@ def paper_era_source_conformance(snapshot_root: Path) -> list[dict[str, Any]]:
         ("paper_transaction_fees", "CN 5/15 bp and US 0/5 bp buy/sell fees", "matching open/close costs plus deal price, limit threshold and min costs", "configuration_match", True),
         ("paper_baselines", "nine Table 2 baselines", "named GP, o1 and DeepSeek factor-expression CSVs exist, but no exact baseline runners or outputs", "partial_unlinked_artifacts", False),
         ("paper_trials", "20 trials x 5 rounds", "evolving_n=5 is recovered; no 20-trial launcher, seeds or trajectories", "partial_configuration", False),
-        ("paper_outputs", "factors, curves, predictions, holdings, returns and metrics", "factor-expression pools exist; result-bearing artifacts do not", "partial_factor_expressions_only", False),
+        ("paper_outputs", "factors, curves, predictions, holdings, returns and metrics", "factor pools plus seven Qlib/MLflow metric/config/model records exist; predictions, curves, positions and returns do not", "partial_native_run_records", False),
         ("current_registry", "paper final factors", "8 entries from the disjoint 2026 rewrite", "provenance_mismatch", False),
         ("current_expressions", "paper factor pool", "13 expressions from the disjoint 2026 DSL", "provenance_mismatch", False),
         ("current_data_release", "paper CSI500/S&P500 frozen panels", "2026 CSI1000 Tushare package", "provenance_mismatch", False),
@@ -676,6 +886,13 @@ def score(left, right):
 factor_df = pd.read_csv(root / 'factor_zoo/alpha101.csv')
 probe = str(factor_df.iloc[0, 1])
 self_score, subtree, matched = module.match_alphazoo(probe, factor_df)
+candidate_df = pd.read_csv(root / 'factor_zoo/cn_factors_test.csv')
+candidate_errors = []
+for _, row in candidate_df.iterrows():
+    try:
+        module.parse_expression(str(row['factor_expression']))
+    except ValueError:
+        candidate_errors.append(str(row['factor_name']))
 print(json.dumps({
     'identical_expression_lcs_size': score('RANK(DELTA($open, 1))', 'RANK(DELTA($open, 1))'),
     'commutative_expression_lcs_size': score('$open + $close', '$close + $open'),
@@ -685,6 +902,9 @@ print(json.dumps({
     'alpha101_self_match_lcs_size': self_score,
     'alpha101_self_match_exact': matched == probe,
     'alpha101_self_match_subtree_present': subtree is not None,
+    'figure4_candidate_factor_rows': len(candidate_df),
+    'figure4_candidate_parseable_rows': len(candidate_df) - len(candidate_errors),
+    'figure4_candidate_parse_failures': candidate_errors,
 }, sort_keys=True))
 """
     outputs = []
@@ -708,6 +928,9 @@ print(json.dumps({
         "alpha101_self_match_lcs_size": 23,
         "alpha101_self_match_exact": True,
         "alpha101_self_match_subtree_present": True,
+        "figure4_candidate_factor_rows": 15,
+        "figure4_candidate_parseable_rows": 14,
+        "figure4_candidate_parse_failures": ["Lagged_Volume_Change_Factor_3D"],
     }
     if outputs[0] != expected:
         raise RuntimeError(f"Pinned paper-era AST behavior changed: {outputs[0]!r}")
@@ -939,6 +1162,8 @@ def build_audit(
     commit, first_date = verify_pins(source_root, paper_pdf, paper_v1_pdf)
     history, history_rows = history_audit(source_root)
     table_rows = table_conformance()
+    run_records = paper_era_run_records(source_root)
+    apply_run_record_conformance(table_rows, run_records)
     claims = published_non_table_claims()
     gaps = specification_gaps()
     inventory = source_inventory(source_root)
@@ -975,7 +1200,8 @@ def build_audit(
     ):
         raise RuntimeError("Pinned audit dimension counts changed")
     if Counter(row["status"] for row in table_rows) != {
-        "unavailable_missing_native_paper_result_path": 100,
+        "corroborated_by_author_history_native_run_artifact": 5,
+        "unavailable_missing_native_paper_result_path": 95,
         "paper_configuration_recovered_without_frozen_dataset": 6,
     }:
         raise RuntimeError("Pinned numeric conformance boundary changed")
@@ -990,6 +1216,7 @@ def build_audit(
     write_csv(output_dir / "released_source_inventory.csv", inventory)
     write_csv(output_dir / "paper_era_source_inventory.csv", paper_era_inventory)
     write_csv(output_dir / "paper_era_factor_artifacts.csv", paper_era_factors)
+    write_csv(output_dir / "paper_era_mlflow_run_records.csv", run_records)
     write_csv(output_dir / "post_paper_registry_metrics.csv", registry)
     write_csv(output_dir / "data_release_provenance.csv", release)
     write_csv(output_dir / "synthetic_base_factor_component.csv", base_factors)
@@ -1003,7 +1230,7 @@ def build_audit(
     mechanism_counts = Counter(row["status"] for row in mechanisms)
     manifest: dict[str, Any] = {
         "audit": "AlphaAgent paper v2 versus both roots of the official repository",
-        "overall_status": "not_reproduced_paper_era_source_and_factor_artifacts_recovered",
+        "overall_status": "partially_corroborated_paper_era_native_run_records_recovered",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_version": "arXiv:2502.16789v2",
@@ -1030,7 +1257,8 @@ def build_audit(
         "paper_numeric_configuration_cells_total": 6,
         "paper_table_cell_counts": {"1": 6, "2": 100},
         "native_paper_table_result_cells_reproduced": 0,
-        "paper_table_result_cells_unavailable": 100,
+        "native_paper_table_result_cells_corroborated": 5,
+        "paper_table_result_cells_unavailable": 95,
         "published_non_table_claims_total": 26,
         "published_non_table_result_claims_total": 18,
         "native_non_table_result_claims_reproduced": 0,
@@ -1047,11 +1275,27 @@ def build_audit(
         "paper_era_factor_expression_rows": sum(
             int(row["expression_rows"]) for row in paper_era_factors
         ),
+        "paper_era_qlib_mlflow_run_records": len(run_records),
+        "paper_era_qlib_mlflow_records_with_fitted_models": sum(
+            bool(row["fitted_lightgbm_state_shipped"]) for row in run_records
+        ),
+        "paper_era_qlib_mlflow_full_table_row_matches": sum(
+            bool(row["all_five_display_cells_match"]) for row in run_records
+        ),
+        "paper_era_qlib_mlflow_display_cells_corroborated": sum(
+            int(row["paper_result_cells_corroborated"]) for row in run_records
+        ),
         "paper_era_named_alpha101_reference_rows": paper_era_component[
             "named_alpha101_reference_rows"
         ],
         "paper_era_loaded_alpha101_csv_rows": paper_era_component[
             "loaded_alpha101_csv_rows"
+        ],
+        "paper_era_figure4_candidate_factor_rows": paper_era_component[
+            "figure4_candidate_factor_rows"
+        ],
+        "paper_era_figure4_candidate_parseable_rows": paper_era_component[
+            "figure4_candidate_parseable_rows"
         ],
         "paper_era_ast_component_executable": True,
         "tracked_source_files_total": len(inventory),
@@ -1067,8 +1311,12 @@ def build_audit(
         "native_paper_llm_trajectories_shipped": False,
         "native_paper_prompts_shipped": True,
         "native_paper_predictions_or_returns_shipped": False,
-        "native_paper_holdings_or_qlib_recorders_shipped": False,
+        "native_paper_prediction_or_return_series_shipped": False,
+        "native_partial_qlib_mlflow_records_shipped": True,
+        "native_paper_metric_scalars_shipped": True,
+        "native_paper_holdings_or_complete_qlib_recorders_shipped": False,
         "native_paper_baseline_outputs_shipped": False,
+        "native_paper_figure_arrays_shipped": False,
         "native_paper_metric_or_figure_arrays_shipped": False,
         "native_source_tests_passed_with_dependency_stubs": 80,
         "native_source_tests_dependency_faithful": False,
@@ -1084,10 +1332,14 @@ def build_audit(
             "Alpha101 reference expressions, Qlib/LightGBM configs, feedback loop, and 15 factor CSVs. "
             "The released implementation is still not the paper's exact objective: SL, PC, numeric "
             "c1/c2, alpha=0.5, beta-weighted ER, GPT-3.5 execution provenance, 20 trial seeds, and exact "
-            "factor-to-result lineage are missing or divergent. Most importantly, no predictions, "
-            "holdings, returns, Qlib recorders, baseline outputs, figure arrays, or metric arrays survive. "
-            "Thus mechanism faithfulness is substantial, while 0/100 Table 2 result cells and 0/18 "
-            "additional quantitative result claims are independently reproduced."
+            "factor-to-result lineage are missing or divergent. Seven extensionless Qlib/MLflow run "
+            "records were recovered from the same author commit; one S&P500 record matches all five "
+            "AlphaAgent Table 2 cells at display precision and ships its executed config plus fitted "
+            "LightGBM state. Those 5/100 cells are author-artifact corroborations, not regenerations: "
+            "no predictions, holdings, returns, complete recorder artifacts, baseline outputs, or figure "
+            "arrays survive. Thus mechanism faithfulness is substantial, 5/100 Table 2 cells are "
+            "corroborated, 0/100 are independently regenerated, and 0/18 additional quantitative result "
+            "claims are reproduced."
         ),
         "source_file_sha256": PINNED_SOURCE_SHA256,
         "paper_mechanism_file_sha256": PAPER_MECHANISM_SHA256,
@@ -1095,10 +1347,11 @@ def build_audit(
 
     report = f"""# AlphaAgent paper-level conformance audit
 
-Overall verdict: **the paper results are not reproduced, but the paper-era
+Overall verdict: **the paper is not reproduced end to end, but 5/100 Table 2
+cells are corroborated by a native author run record and the paper-era
 implementation is substantially recovered**. The previous audit looked only at
-the rewritten default branch and was materially too pessimistic about mechanism
-availability.
+the rewritten default branch, then missed extensionless MLflow records in the
+legacy tree; both omissions made it materially too pessimistic.
 
 ## Primary-source pins
 
@@ -1109,6 +1362,9 @@ availability.
   `legacy-main`, 493 reachable commits in total.
 - Mechanism snapshot: `{PAPER_MECHANISM_COMMIT}` (2025-02-12), before arXiv v1.
   It contains 856 tracked files, including 331 Python modules and 15 factor CSVs.
+- The same author commit contains seven Qlib/MLflow run directories (385 files),
+  executed on 2025-01-28: four S&P500 and three CSI500 runs. Every directory has
+  metrics, parameters, a serialized task/config, and a fitted LightGBM state.
 - The 2025-02-17 preprint-cutoff commit `{PREPRINT_CUTOFF_COMMIT}` removed the
   factor zoo. The audit intentionally pins the earlier mechanism-complete tree
   and records that deletion instead of pretending the cutoff head is runnable.
@@ -1122,6 +1378,10 @@ availability.
 - The paper-era AST parser executes twice deterministically. Identical,
   commutative, and partially shared expressions return largest-common-subtree
   sizes 4, 3, and 3. An exact Alpha101 probe matches itself with size 23.
+- A historical China candidate file has exactly 15 factors, matching Figure 4's
+  caption count, but only 14 parse under the shipped AST grammar and no source
+  lineage identifies it as the exact plotted pool. Count agreement is therefore
+  candidate evidence, not Figure 4 reproduction.
 - The loaded `alpha101.csv` has 116 rows: 101 named Alpha101 references plus 15
   appended generated expressions. That supports the paper's originality path but
   also exposes reference-zoo contamination that must be reported, not hidden.
@@ -1135,16 +1395,27 @@ availability.
 - Fifteen historical factor CSVs contain 268 expression rows. Names identify CN,
   US, GP, o1, and DeepSeek candidate pools, but no released lineage proves which
   file or row produced any published metric.
+- One full-period S&P500 record, `77b227f86e5a47bab48178cac409a98b`, carries the
+  exact paper market/splits, four base factors plus five generated features,
+  LightGBM depth 4, top-50/drop-5 strategy, SPX benchmark, open execution and
+  5-bp sell cost. Its IC 0.0056356, ICIR 0.0552135, AR 8.7439%, IR 1.0544927,
+  and MDD -9.0982% round exactly to all five AlphaAgent S&P500 cells in Table 2.
+- Two full-period CSI500 records carry the paper configuration and 8/9 generated
+  features, but neither matches the complete five-cell China row. Three other US
+  and one China record use a 2020 test start or altered train split and receive
+  no paper-cell credit.
 - Separately, all 80 tests in the 2026 rewrite pass with import-only Tushare and
   AgentScope stubs, and its four synthetic base factors are deterministic. Those
   checks receive no paper-result credit.
 
 ## Why the paper is still not replicated
 
-- Table 2 has **100 numeric result cells**. **0/100** has a released native result
-  path. Eighteen more quantitative result claims in figures/text are also 0/18.
-  No prediction, holding, daily return, Qlib recorder, baseline output, figure
-  array, token log, trial sample, or p-value sample survives.
+- Table 2 has **100 numeric result cells**. **5/100** are corroborated by one
+  released native author run artifact; **0/100** have been independently
+  regenerated. Eighteen more quantitative result claims in figures/text remain
+  0/18. The run export omits predictions, daily returns, holdings/positions and
+  complete portfolio-analysis artifacts, so its printed metrics cannot be
+  recomputed from primitive outputs.
 - The exact Baostock CSI500 and Yahoo S&P500 panels, constituent histories, and
   data transformations are absent. The US config points only to unversioned local
   `us_data`; it does not establish Yahoo provenance or frozen panel identity.
@@ -1159,20 +1430,22 @@ availability.
 - The paper says lower ER is better while adding an alignment term described as
   higher-is-better. That sign ambiguity, plus undisclosed alpha/beta weights and
   thresholds, prevents an exact objective even with recovered source.
-- Historical configs substantially recover model/backtest settings, but no
-  executed-config hash, trained LightGBM state, seed, recorder, or mapping from a
-  factor CSV to Table 2 exists. Configuration presence is not result reproduction.
+- Historical run records substantially recover executed model/backtest settings
+  and fitted LightGBM states. They expose only anonymous feature columns, however,
+  so factor-pool identity, random seeds, predictions, returns, and portfolio paths
+  remain missing. Exact metric correspondence is corroboration, not regeneration.
 
 ## Honest boundary
 
 The official historical source is much closer to the paper than the rewritten
-default branch: this is a **substantial mechanism implementation**, not merely an
-analogue. It is still not an end-to-end replication of the published experiments.
+default branch: this is a **substantial mechanism implementation with one exact
+five-cell native output correspondence**, not merely an analogue. It is still not
+an end-to-end replication of the published experiments.
 The 2026 CSI1000/Tushare data package, DSL expressions, and registry metrics belong
 to a disjoint rewrite and receive zero paper credit. Run
 `scripts/audit_alphaagent_paper.py` to regenerate the package; `--strict` remains
-fail-closed until paper-era inputs, executed trials, models, portfolios, and every
-published result are reproduced.
+fail-closed until paper-era inputs, predictions, portfolios, stochastic trial
+lineage, and every published result are reproduced.
 """
     (output_dir / "README.md").write_text(report, encoding="utf-8")
     manifest["output_sha256"] = {

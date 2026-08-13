@@ -27,7 +27,7 @@ paper_qlib_backtest,Qlib top-50/drop-5 strategy,"combined CN/US configs use Topk
 paper_transaction_fees,CN 5/15 bp and US 0/5 bp buy/sell fees,"matching open/close costs plus deal price, limit threshold and min costs",configuration_match,True
 paper_baselines,nine Table 2 baselines,"named GP, o1 and DeepSeek factor-expression CSVs exist, but no exact baseline runners or outputs",partial_unlinked_artifacts,False
 paper_trials,20 trials x 5 rounds,"evolving_n=5 is recovered; no 20-trial launcher, seeds or trajectories",partial_configuration,False
-paper_outputs,"factors, curves, predictions, holdings, returns and metrics",factor-expression pools exist; result-bearing artifacts do not,partial_factor_expressions_only,False
+paper_outputs,"factors, curves, predictions, holdings, returns and metrics","factor pools plus seven Qlib/MLflow metric/config/model records exist; predictions, curves, positions and returns do not",partial_native_run_records,False
 current_registry,paper final factors,8 entries from the disjoint 2026 rewrite,provenance_mismatch,False
 current_expressions,paper factor pool,13 expressions from the disjoint 2026 DSL,provenance_mismatch,False
 current_data_release,paper CSI500/S&P500 frozen panels,2026 CSI1000 Tushare package,provenance_mismatch,False

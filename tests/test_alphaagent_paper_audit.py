@@ -67,6 +67,7 @@ def test_committed_audit_is_fail_closed() -> None:
     inventory = read_csv(output / "released_source_inventory.csv")
     paper_era_inventory = read_csv(output / "paper_era_source_inventory.csv")
     paper_era_factors = read_csv(output / "paper_era_factor_artifacts.csv")
+    paper_era_runs = read_csv(output / "paper_era_mlflow_run_records.csv")
     registry = read_csv(output / "post_paper_registry_metrics.csv")
     data_release = read_csv(output / "data_release_provenance.csv")
     factors = read_csv(output / "synthetic_base_factor_component.csv")
@@ -76,7 +77,7 @@ def test_committed_audit_is_fail_closed() -> None:
     )
 
     assert manifest["overall_status"] == (
-        "not_reproduced_paper_era_source_and_factor_artifacts_recovered"
+        "partially_corroborated_paper_era_native_run_records_recovered"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_era_source_revision_available"] is True
@@ -99,6 +100,8 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["paper_numeric_table_cells_total"] == 106
     assert manifest["paper_numeric_result_cells_total"] == 100
     assert manifest["native_paper_table_result_cells_reproduced"] == 0
+    assert manifest["native_paper_table_result_cells_corroborated"] == 5
+    assert manifest["paper_table_result_cells_unavailable"] == 95
     assert manifest["published_non_table_result_claims_total"] == 18
     assert manifest["native_non_table_result_claims_reproduced"] == 0
     assert manifest["paper_specification_gaps_total"] == 17
@@ -109,8 +112,14 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["paper_era_python_files_compiled"] == 331
     assert manifest["paper_era_factor_csv_files"] == 15
     assert manifest["paper_era_factor_expression_rows"] == 268
+    assert manifest["paper_era_qlib_mlflow_run_records"] == 7
+    assert manifest["paper_era_qlib_mlflow_records_with_fitted_models"] == 7
+    assert manifest["paper_era_qlib_mlflow_full_table_row_matches"] == 1
+    assert manifest["paper_era_qlib_mlflow_display_cells_corroborated"] == 5
     assert manifest["paper_era_named_alpha101_reference_rows"] == 101
     assert manifest["paper_era_loaded_alpha101_csv_rows"] == 116
+    assert manifest["paper_era_figure4_candidate_factor_rows"] == 15
+    assert manifest["paper_era_figure4_candidate_parseable_rows"] == 14
     assert manifest["paper_era_ast_component_executable"] is True
     assert manifest["post_paper_dsl_expressions_shipped"] == 13
     assert manifest["post_paper_registry_metric_entries"] == 8
@@ -121,13 +130,19 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["native_paper_factor_pool_shipped"] is True
     assert manifest["native_paper_factor_pool_result_lineage_proven"] is False
     assert manifest["native_paper_prompts_shipped"] is True
+    assert manifest["native_partial_qlib_mlflow_records_shipped"] is True
+    assert manifest["native_paper_metric_scalars_shipped"] is True
+    assert manifest["native_paper_prediction_or_return_series_shipped"] is False
+    assert manifest["native_paper_holdings_or_complete_qlib_recorders_shipped"] is False
+    assert manifest["native_paper_figure_arrays_shipped"] is False
     assert manifest["native_source_tests_passed_with_dependency_stubs"] == 80
     assert manifest["native_source_tests_dependency_faithful"] is False
     assert manifest["native_synthetic_base_factors_executable"] == 4
     assert manifest["native_synthetic_component_paper_result_reproduction"] is False
 
     assert Counter(row["status"] for row in table) == {
-        "unavailable_missing_native_paper_result_path": 100,
+        "corroborated_by_author_history_native_run_artifact": 5,
+        "unavailable_missing_native_paper_result_path": 95,
         "paper_configuration_recovered_without_frozen_dataset": 6,
     }
     assert Counter(row["claim_role"] for row in claims) == {
@@ -158,6 +173,24 @@ def test_committed_audit_is_fail_closed() -> None:
     assert int(alpha101["expression_rows"]) == 116
     assert int(alpha101["alpha101_reference_rows"]) == 101
     assert int(alpha101["other_expression_rows"]) == 15
+    assert len(paper_era_runs) == 7
+    assert sum(int(row["tracked_files"]) for row in paper_era_runs) == 385
+    for hash_field in (
+        "config_sha256",
+        "dataset_sha256",
+        "task_sha256",
+        "fitted_lightgbm_state_sha256",
+    ):
+        assert all(len(row[hash_field]) == 64 for row in paper_era_runs)
+    exact_runs = [row for row in paper_era_runs if row["all_five_display_cells_match"] == "True"]
+    assert [row["run_id"] for row in exact_runs] == [
+        "77b227f86e5a47bab48178cac409a98b"
+    ]
+    assert exact_runs[0]["market"] == "S&P500"
+    assert int(exact_runs[0]["display_cells_matching_alphaagent_row"]) == 5
+    assert int(exact_runs[0]["paper_result_cells_corroborated"]) == 5
+    assert int(exact_runs[0]["generated_factor_features"]) == 5
+    assert {row["predictions_returns_holdings_shipped"] for row in paper_era_runs} == {"False"}
     assert len(registry) == 8
     assert {row["paper_result_credit"] for row in registry} == {"False"}
     assert len(data_release) == 1
@@ -184,6 +217,11 @@ def test_committed_audit_is_fail_closed() -> None:
     assert paper_era_component["named_alpha101_reference_rows"] == 101
     assert paper_era_component["loaded_alpha101_csv_rows"] == 116
     assert paper_era_component["alpha101_self_match_exact"] is True
+    assert paper_era_component["figure4_candidate_factor_rows"] == 15
+    assert paper_era_component["figure4_candidate_parseable_rows"] == 14
+    assert paper_era_component["figure4_candidate_parse_failures"] == [
+        "Lagged_Volume_Change_Factor_3D"
+    ]
     assert paper_era_component["paper_result_reproduction"] is False
 
     for filename, expected in manifest["output_sha256"].items():

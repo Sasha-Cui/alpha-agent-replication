@@ -1,9 +1,10 @@
 # AlphaAgent paper-level conformance audit
 
-Overall verdict: **the paper results are not reproduced, but the paper-era
+Overall verdict: **the paper is not reproduced end to end, but 5/100 Table 2
+cells are corroborated by a native author run record and the paper-era
 implementation is substantially recovered**. The previous audit looked only at
-the rewritten default branch and was materially too pessimistic about mechanism
-availability.
+the rewritten default branch, then missed extensionless MLflow records in the
+legacy tree; both omissions made it materially too pessimistic.
 
 ## Primary-source pins
 
@@ -14,6 +15,9 @@ availability.
   `legacy-main`, 493 reachable commits in total.
 - Mechanism snapshot: `95e47882cbed3ba0cafd42e812fe0032a8ae0681` (2025-02-12), before arXiv v1.
   It contains 856 tracked files, including 331 Python modules and 15 factor CSVs.
+- The same author commit contains seven Qlib/MLflow run directories (385 files),
+  executed on 2025-01-28: four S&P500 and three CSI500 runs. Every directory has
+  metrics, parameters, a serialized task/config, and a fitted LightGBM state.
 - The 2025-02-17 preprint-cutoff commit `0bc7a34ed9701a0149ae990b6484e7c73b347ea0` removed the
   factor zoo. The audit intentionally pins the earlier mechanism-complete tree
   and records that deletion instead of pretending the cutoff head is runnable.
@@ -27,6 +31,10 @@ availability.
 - The paper-era AST parser executes twice deterministically. Identical,
   commutative, and partially shared expressions return largest-common-subtree
   sizes 4, 3, and 3. An exact Alpha101 probe matches itself with size 23.
+- A historical China candidate file has exactly 15 factors, matching Figure 4's
+  caption count, but only 14 parse under the shipped AST grammar and no source
+  lineage identifies it as the exact plotted pool. Count agreement is therefore
+  candidate evidence, not Figure 4 reproduction.
 - The loaded `alpha101.csv` has 116 rows: 101 named Alpha101 references plus 15
   appended generated expressions. That supports the paper's originality path but
   also exposes reference-zoo contamination that must be reported, not hidden.
@@ -40,16 +48,27 @@ availability.
 - Fifteen historical factor CSVs contain 268 expression rows. Names identify CN,
   US, GP, o1, and DeepSeek candidate pools, but no released lineage proves which
   file or row produced any published metric.
+- One full-period S&P500 record, `77b227f86e5a47bab48178cac409a98b`, carries the
+  exact paper market/splits, four base factors plus five generated features,
+  LightGBM depth 4, top-50/drop-5 strategy, SPX benchmark, open execution and
+  5-bp sell cost. Its IC 0.0056356, ICIR 0.0552135, AR 8.7439%, IR 1.0544927,
+  and MDD -9.0982% round exactly to all five AlphaAgent S&P500 cells in Table 2.
+- Two full-period CSI500 records carry the paper configuration and 8/9 generated
+  features, but neither matches the complete five-cell China row. Three other US
+  and one China record use a 2020 test start or altered train split and receive
+  no paper-cell credit.
 - Separately, all 80 tests in the 2026 rewrite pass with import-only Tushare and
   AgentScope stubs, and its four synthetic base factors are deterministic. Those
   checks receive no paper-result credit.
 
 ## Why the paper is still not replicated
 
-- Table 2 has **100 numeric result cells**. **0/100** has a released native result
-  path. Eighteen more quantitative result claims in figures/text are also 0/18.
-  No prediction, holding, daily return, Qlib recorder, baseline output, figure
-  array, token log, trial sample, or p-value sample survives.
+- Table 2 has **100 numeric result cells**. **5/100** are corroborated by one
+  released native author run artifact; **0/100** have been independently
+  regenerated. Eighteen more quantitative result claims in figures/text remain
+  0/18. The run export omits predictions, daily returns, holdings/positions and
+  complete portfolio-analysis artifacts, so its printed metrics cannot be
+  recomputed from primitive outputs.
 - The exact Baostock CSI500 and Yahoo S&P500 panels, constituent histories, and
   data transformations are absent. The US config points only to unversioned local
   `us_data`; it does not establish Yahoo provenance or frozen panel identity.
@@ -64,17 +83,19 @@ availability.
 - The paper says lower ER is better while adding an alignment term described as
   higher-is-better. That sign ambiguity, plus undisclosed alpha/beta weights and
   thresholds, prevents an exact objective even with recovered source.
-- Historical configs substantially recover model/backtest settings, but no
-  executed-config hash, trained LightGBM state, seed, recorder, or mapping from a
-  factor CSV to Table 2 exists. Configuration presence is not result reproduction.
+- Historical run records substantially recover executed model/backtest settings
+  and fitted LightGBM states. They expose only anonymous feature columns, however,
+  so factor-pool identity, random seeds, predictions, returns, and portfolio paths
+  remain missing. Exact metric correspondence is corroboration, not regeneration.
 
 ## Honest boundary
 
 The official historical source is much closer to the paper than the rewritten
-default branch: this is a **substantial mechanism implementation**, not merely an
-analogue. It is still not an end-to-end replication of the published experiments.
+default branch: this is a **substantial mechanism implementation with one exact
+five-cell native output correspondence**, not merely an analogue. It is still not
+an end-to-end replication of the published experiments.
 The 2026 CSI1000/Tushare data package, DSL expressions, and registry metrics belong
 to a disjoint rewrite and receive zero paper credit. Run
 `scripts/audit_alphaagent_paper.py` to regenerate the package; `--strict` remains
-fail-closed until paper-era inputs, executed trials, models, portfolios, and every
-published result are reproduced.
+fail-closed until paper-era inputs, predictions, portfolios, stochastic trial
+lineage, and every published result are reproduced.

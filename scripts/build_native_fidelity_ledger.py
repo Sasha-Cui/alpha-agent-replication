@@ -189,7 +189,7 @@ ARTIFACT_NOTES = {
         "remains secondary and receives no AlphaCrafter result or mechanism credit.",
     ),
     "SYS-ALPHA-AGENT": (
-        "N",
+        "Y",
         "A pinned arXiv-v2 audit enumerates all 106 numeric cells in Tables 1--2: "
         "100 results and 6 trading-day configurations, plus 18 quantitative result "
         "claims in figures/text. The official repository has two unrelated roots: "
@@ -199,12 +199,18 @@ ARTIFACT_NOTES = {
         "structured hypothesis and prompts, AST largest-common-subtree matcher, 101 "
         "Alpha101 references, full LightGBM/Qlib configs, metric feedback, and 15 CSVs "
         "with 268 factor-expression rows. The AST/Alpha101 path executes deterministically. "
+        "The same author commit also preserves seven extensionless Qlib/MLflow run records. "
+        "One full-period S&P500 record carries the paper configuration and fitted LightGBM "
+        "state; its IC, ICIR, AR, IR, and MDD round exactly to all five AlphaAgent S&P500 "
+        "Table 2 cells. This is native author-artifact corroboration, not regeneration, "
+        "because inputs, predictions, returns, and holdings are absent. "
         "This is substantial attributable mechanism evidence, but not the exact paper "
         "objective: SL/PC, numeric c1/c2, alpha/beta weighting, ER scoring, GPT-3.5 run "
         "provenance, 20 trial seeds and exact factor/result lineage are absent or divergent. "
-        "No frozen paper dataset, prediction, holding, return, recorder, baseline output, "
-        "figure array, or metric array survives, so 0/100 Table 2 result cells and 0/18 "
-        "additional quantitative claims count as native reproductions. The disjoint 2026 "
+        "No frozen paper dataset, prediction, holding, return, complete recorder, baseline "
+        "output, or figure array survives. Thus 5/100 Table 2 cells are corroborated, "
+        "0/100 are independently regenerated, and 0/18 additional quantitative claims "
+        "are reproduced. The disjoint 2026 "
         "data and registry remain zero-credit post-paper evidence.",
     ),
     "SYS-ALPHA-MEMO": (
@@ -1320,7 +1326,7 @@ TARGETED_EXECUTION = {
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage",
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_attributable_release_six_component_checks_broken_default_launcher_missing_research_lineage",
-    "SYS-ALPHA-AGENT": "paper_audit:completed_preprint_legacy_source_20_of_32_mechanism_dimensions_15_factor_csvs_zero_of_100_table_results_zero_of_18_additional_results",
+    "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions",
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_one_linked_input_one_date_prompt_zero_of_953_table_cells_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
     "SYS-ALPHA-GPT": "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_empirical_results",
@@ -1370,6 +1376,7 @@ TARGETED_EXECUTION = {
 
 
 OUTPUT_BLOCKS = {
+    "SYS-ALPHA-AGENT": "A3_CN_US_aggregate_metrics_no_six_country_security_mapping",
     "SYS-FIN-ANALYST": "A3_wrong_asset_scope_TSLA_BTC_not_six_country_security_panel",
     "SYS-JANUS-Q": "A3_CN_only_portfolio_NAV_no_six_country_security_mapping",
     "SYS-AUTOMATE-STRATEGY": "A3_output_lacks_six_country_security_mapping",
