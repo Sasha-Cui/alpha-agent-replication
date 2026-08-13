@@ -1,0 +1,23 @@
+dimension,status,evidence
+official paper and source,complete,single arXiv-v1 PDF and seven-file source archive pinned; all 46 official and rebuilt pages visually checked
+native implementation,unreleased,paper provides no system URL; bounded GitHub and Hugging Face searches find no attributable release
+replication artifacts,request_only,"processed weekly panel, cached contracts, and replication materials are available only from the corresponding author upon reasonable request"
+ETF universe,complete,"15 tickers, names, subclasses, exchanges, and Oct-2022 initialization start printed"
+macro feature identities,substantial,"seven FRED IDs, nominal lags, rolling 156-week z-score, and release-aware limitation printed"
+market data,provider_only,"Yahoo Finance without immutable rows, query date, adjusted-price field, calendar/alignment, missing-value, or corporate-action policy"
+macro data,provider_schema_only,"FRED IDs but no immutable observations, vintages, retrieval dates, exact weekly calendar, or detailed release alignment"
+rule loading matrix,complete,all 15-by-7 directional loadings and thresholds printed
+rule conflict handling,equation_complete_but_type_conflict,gamma=0.5 is printed but converts the defined five integer levels into half levels
+rule regime probabilities,underspecified,proportional constants and residual-versus-normalization ordering omitted
+LLM model,mutable_alias_only,"gpt-4o-mini and temperature zero without dated snapshot, API version, remaining request parameters, seed, or response headers"
+LLM prompts,partial,"common and three role blocks printed; required JSON schema, dynamic input block, narrative generator, and retry behavior omitted"
+LLM outputs,unreleased,"cached date-agent contracts, token logs, rationales, probabilities, tilts, confidence, and validation records absent"
+debate,equations_partial,"disagreement threshold, two-round maximum, and averaging printed; actual review messages and revision/termination details absent"
+portfolio base and tilt,equation_complete,"26-week inverse volatility, 50/50 blend, and kappa=.25 multiplicative tilt printed"
+cyclical set,missing,the pre-specified cyclical ETF set C is never enumerated
+risk controls,underspecified,renormalization/cyclical/single-name/turnover cap ordering and projection procedure are not uniquely defined
+risk-profile robustness,underspecified,cap ranges and alternative triggers are reported without a mapping from states to a cap value
+return metrics,substantial,weekly arithmetic mean/sample volatility annualization and zero-risk-free return-to-volatility ratio printed; exact week endpoints still absent
+stationary bootstrap,underspecified,"B=5000 and joint resampling printed; selector, seed, CI, p-value/tail, statistic recentering, and ties omitted"
+transaction costs,equation_complete_limited,"half-L1 one-way cost formula printed; spread variation, impact, taxes, and operations excluded"
+raw empirical outputs,missing,"no prices, macro panel, contracts, weights, turnovers, returns, NAVs, bootstrap draws, or result generator"

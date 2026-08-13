@@ -1,0 +1,38 @@
+{
+  "arxiv_id": "2606.08283",
+  "arxiv_version": "v1",
+  "attributable_implementation_found": false,
+  "authors": [
+    "Yiqing Wang",
+    "Dehao Dai",
+    "Ding Ma",
+    "Kerui Geng"
+  ],
+  "document_layout_defects_observed": 0,
+  "observed_license": "NOASSERTION",
+  "official_pages": 46,
+  "official_pages_visually_checked": 46,
+  "official_rebuilt_token_jaccard": 0.9989164860810135,
+  "paper_contains_native_implementation_url": false,
+  "paper_contains_public_dataset_or_checkpoint_url": false,
+  "paper_says_replication_materials_available_on_request": true,
+  "pinned_input_sha256": {
+    "discovery/github-code-arxiv.json": "c2b6d8d70a11ef2ffd69aa9ccbd7814961f9f0ffa0f96f18044fd5b986ebd081",
+    "discovery/github-code-title.json": "75cf492846accb189696d1c39275832968a972151cb3769e4f2b66f5b02669e7",
+    "discovery/github-repositories-arxiv.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/github-repositories-title.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/huggingface-datasets-arxiv.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "discovery/huggingface-models-arxiv.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "primary/arxiv-abs.html": "d2a48e252d40a0d77ba6ae34c78078307490ff0486875c53a2ae29e28b64c003",
+    "primary/arxiv-api.xml": "f9811fd8b243bd26fbe6f0a0e4ff38504cfeb8029ad0c8900f8bf8d708e01a97",
+    "primary/official-v1.pdf": "e166ba0c9baed18a4e38fd072a813847395fa3e8df53b913a624c6954add72cf",
+    "primary/official-v1.txt": "1719bb6ef87ecb45debc1a6ce7f6d84094d920112071b4ae3a90a3bdeab1a6d1",
+    "primary/rebuilt-v1.pdf": "1a22d64249edc4e196b6ef44e3fa2be35dc34beb02eac5e4e21c5d7bd7fea5e3",
+    "primary/rebuilt-v1.txt": "95844d9bad6b50b6a1218457e1d7600d19a6a18bb16c0d657dbb60dd4be2fc92",
+    "primary/source-v1.tar": "2eff2ba685242f4734d267807a0d4027f718c8a8a53aae331cc54bb33ce51171"
+  },
+  "published": "2026-06-06T18:07:28Z",
+  "rebuilt_pages": 46,
+  "rebuilt_pages_visually_checked": 46,
+  "source_files": 7
+}

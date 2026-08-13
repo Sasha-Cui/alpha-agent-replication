@@ -1,0 +1,27 @@
+{
+  "active_empirical_table_cells": 132,
+  "arxiv_id": "2606.08283",
+  "attributable_implementation_found": false,
+  "author_native_empirical_panels_regenerated": 0,
+  "author_native_table_cells_regenerated": 0,
+  "empirical_figure_panels": 12,
+  "fail_closed_underspecified_core_operations": 4,
+  "full_end_to_end_pipeline_reproduced": false,
+  "generated_file_sha256": {
+    "README.md": "f74aab531bdd60f91906c785eb43c5355621185b5c1483a09dccb28cef4c0d92",
+    "component_execution_audit.csv": "a1af15e1a11d93d2c5d6ef4a199f6edc3e40689f2f89e39cbdef3e744ec45d1a",
+    "figure_inventory.csv": "770b741c14f892e651ff0ef25c800ff28f930915487a44e0057127a343194e20",
+    "internal_consistency_audit.csv": "65af1a2a3cda12794a22f4e3a6290b9cabd74d484e7dd459675b5053ecf6f3d9",
+    "method_specification_audit.csv": "107b32bc9d735c7eec392a0faf1772bcf6b5efbf1a6e4231de8c1a579f06fb9c",
+    "published_result_ledger.csv": "6bc4bf6d90422c875ab46d8d90a0f084e7c59aee0cbe7ff2ffde30fc6a2b7b5a",
+    "release_search_audit.csv": "9edfc34d6a127311a61f35185390edf202a422f85a9bb90102e2ce268283e2f1",
+    "source_provenance.json": "c4089e566f5684c0a6501cbea3cad2ee003cf18bad3fbd83b0364b1f41fee4d7"
+  },
+  "paper_derived_components_executed": 22,
+  "paper_derived_components_passing_controlled_checks": 22,
+  "raw_result_arrays_recovered": 0,
+  "result_tables": 6,
+  "strict_success": false,
+  "system_id": "SYS-MACRO-ECONOMISTS-MACHINE",
+  "work_id": "CensusArxiv260608283"
+}

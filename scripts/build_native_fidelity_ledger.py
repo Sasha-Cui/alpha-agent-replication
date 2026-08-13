@@ -564,6 +564,33 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-MACRO-ECONOMISTS-MACHINE": (
+        "A pinned Macro Economists in the Machine audit rebuilds the official "
+        "46-page arXiv-v1 source at 99.89% extracted-token overlap and visually "
+        "checks all 46 official and rebuilt pages plus all four embedded raster "
+        "figures. It inventories 132 displayed quantitative result cells across "
+        "six tables and 12 empirical figure panels. Eighteen independently "
+        "implemented paper-derived mechanics pass controlled checks, and four "
+        "core operations fail closed because the paper does not determine a unique "
+        "implementation. These are equation checks, not author code or result "
+        "credit: 0/132 cells and 0/12 panels reproduce author-natively. The paper "
+        "contains no implementation URL and says only that the processed weekly "
+        "panel, cached LLM contracts, and replication materials are available from "
+        "the corresponding author upon reasonable request. No attributable public "
+        "code, model, or dataset release was found in bounded GitHub/Hugging Face "
+        "searches. Exact Yahoo/FRED rows, weekly dates, gpt-4o-mini snapshot and "
+        "request settings, required JSON schema, dynamic inputs/narratives, cached "
+        "contracts, portfolio arrays, bootstrap implementation/seed/draws, and "
+        "result generator are absent. The source has major internal conflicts: its "
+        "transaction-cost figure reports Sharpe ratios about 0.84--0.92 while Table "
+        "7 reports 0.481--0.571 with conflicting benchmark rankings; the debate "
+        "weight-divergence panel begins in 2017 although declared price history "
+        "begins in October 2022. Rule regime probabilities, cyclical membership and "
+        "cap projection/order, risk-profile ranges, prompt validation, and bootstrap "
+        "conventions are underspecified. Negative searches are bounded, not proof "
+        "that private, deleted, moved, renamed, unindexed, or later material does "
+        "not exist."
+    ),
     "SYS-FIN-RS": (
         "A pinned FinRS audit rebuilds the official six-page arXiv-v1 source at "
         "99.79% extracted-token overlap and visually checks all six official and "
@@ -1167,6 +1194,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-MACRO-ECONOMISTS-MACHINE": "paper_audit:completed_18_paper_derived_mechanics_four_fail_closed_zero_of_132_table_cells_zero_of_12_empirical_panels_no_attributable_pipeline_major_figure_table_conflicts",
     "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_released_nav_metrics_31999_of_31999_data_links_static_outputs_no_native_training_or_backtest",
     "SYS-METAPS": "paper_audit:completed_12_paper_derived_mechanics_zero_of_492_table_cells_zero_of_20_empirical_panels_no_attributable_pipeline",
     "SYS-FIN-POS": "paper_audit:completed_11_paper_derived_mechanics_zero_of_294_current_and_225_v1_table_cells_zero_of_11_current_and_15_v1_empirical_panels_no_attributable_pipeline",

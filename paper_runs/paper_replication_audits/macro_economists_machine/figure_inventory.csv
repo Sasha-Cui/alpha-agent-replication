@@ -1,0 +1,5 @@
+figure,source_asset,source_asset_sha256,empirical_panels,description,underlying_numeric_array_or_run_log_recovered,paper_result_credit
+fig:performance,figure1_performance_dashboard.png,62bcf798283912c8d0c4a263bdfa9bf1347f9da66390921e19cb74486844d310,4,"cumulative return, drawdown, rolling Sharpe, rolling return",False,False
+fig:attribution,figure2_active_attribution.png,7d01744c7251e5e5d6163b9f7c160496a5458c5b351d408908dc66ab499a15b3,2,ticker attribution and cumulative active return,False,False
+fig:cost,figure4_cost_sensitivity.png,e0ab30b58a87b303739203379f9d95bda43807c6b61052251ed15ccecfda1d1b,2,cost curves and heatmap; numerically conflicts with Table 7,False,False
+fig:debate,figure3_debate_mechanism.png,f0ede77871e74d0e3476ff5dd7670c89be7ce47580cae84e867b27db147ddcbb,4,"agent paths, active return, weight and probability divergence",False,False

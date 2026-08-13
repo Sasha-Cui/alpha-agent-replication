@@ -1,0 +1,11 @@
+# Macro Economists in the Machine paper-faithfulness audit
+
+This is an original-source, paper-derived component audit, not an end-to-end replication. The official 46-page arXiv-v1 source rebuilds without modification at 99.89% extracted-token overlap. All 46 official and 46 rebuilt pages and all four embedded raster figures were visually checked.
+
+The paper contains **132 displayed empirical table cells across six result tables** and **12 empirical panels across four figures**. Zero of 132 cells and zero of 12 panels were regenerated through an author-native pipeline. Eighteen uniquely printed mechanics pass controlled checks and four ambiguous core operations fail closed. These checks are independently implemented paper equations, not author code or empirical result credit.
+
+Public reproducibility is currently weak. The paper contains no implementation or artifact URL. It says the processed weekly panel, cached LLM contracts, and replication materials are available from the corresponding author upon reasonable request. Bounded GitHub and Hugging Face searches found no attributable public release. The exact Yahoo/FRED rows, weekly dates, gpt-4o-mini snapshot and full request settings, JSON schema, generated narratives/contracts, weights, turnovers, returns, bootstrap code/seed/draws, and plotting/result generator are absent.
+
+The source is also not internally self-consistent. Its embedded transaction-cost figure reports Sharpe ratios around 0.84--0.92, while the corresponding table reports roughly 0.48--0.57 and gives conflicting benchmark rankings. The debate weight-divergence figure begins in 2017 although the declared price history begins in October 2022. The Rule regime probabilities, cyclical membership and cap, cap ordering/projection, risk-profile ranges, required JSON schema, and automatic bootstrap choices do not determine one executable algorithm.
+
+Therefore `strict_success` remains false. The reproducible portion is a useful equation-level skeleton, but the paper's headline LLM-performance result cannot be independently regenerated from public evidence. Negative searches are bounded and do not prove that private, deleted, moved, renamed, unindexed, or later material does not exist.

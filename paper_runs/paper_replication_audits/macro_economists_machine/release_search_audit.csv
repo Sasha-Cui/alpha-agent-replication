@@ -1,0 +1,7 @@
+surface,query,observed_matches,observation,attributable_release_found,negative_search_boundary
+GitHub repositories,exact title,0,no repository match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub repositories,arXiv 2606.08283,0,no repository match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub code,exact title,13,citation/index/secondary mentions; no attributable implementation,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+GitHub code,arXiv 2606.08283,20,citation/index/secondary mentions; no attributable implementation,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+Hugging Face models,arXiv 2606.08283,0,no model match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
+Hugging Face datasets,arXiv 2606.08283,0,no dataset match,False,"bounded search cannot exclude private, deleted, moved, renamed, unindexed, or later releases"
