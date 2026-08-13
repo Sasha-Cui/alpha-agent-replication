@@ -539,6 +539,24 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-TRADE-IN-MINUTES": (
+        "A pinned TiMi audit covers both official arXiv revisions, all 33 official "
+        "and 33 rebuilt pages, 349 active empirical table units, and eight empirical "
+        "figure panels. The ICLR 2026 OpenReview record lists a CC BY 4.0 supplement "
+        "at an immutable ZIP path, but its logical endpoint currently returns HTTP "
+        "403 and the immutable path returns HTTP 404; it is therefore listed but not "
+        "inspected or presumed absent. No attributable TiMi implementation, frozen "
+        "market/news inputs, exact prompts/model calls, generated bots, full 213-pair "
+        "universe, baseline configs, fee/funding snapshots, simulation/live trade "
+        "logs, seeds, portfolios, returns, or raw result arrays are released. Two "
+        "later public adaptations are unaffiliated and receive no native credit. "
+        "Thus 0/349 active table units and 0/8 empirical panels reproduce. Figure 6 "
+        "reports OM=61 and SIGN=45 orders while v2 prose says 28 and 39; the printed "
+        "ARR equation is not annualized; v2 acknowledges potential posterior "
+        "information in LLM baselines; and several live coverage values are estimates "
+        "from partial experiments. The local M0 characteristic portfolio is only a "
+        "favorable narrative motif and receives no TiMi method or result credit."
+    ),
     "SYS-AGENTIC-AI-SCREENING": (
         "A pinned arXiv-v1 Agentic AI Screening audit rebuilds the official "
         "67-page source at 99.36% extracted-token multiset overlap and visually "
@@ -884,6 +902,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-TRADE-IN-MINUTES": "paper_audit:completed_zero_of_349_active_empirical_units_zero_of_8_empirical_panels_listed_broken_supplement_no_attributable_pipeline",
     "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_cited_same_author_stocksim_four_component_checks_missing_atlas_lineage",
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
