@@ -564,6 +564,31 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-FIN-POS": (
+        "A pinned revision-aware FinPos audit rebuilds both official arXiv source "
+        "archives at greater than 99.93% extracted-token overlap and visually checks "
+        "all 39 official and all 39 rebuilt pages. It inventories 294 current-v2 "
+        "empirical table cells plus 225 v1 cells and 11 current plus 15 v1 empirical "
+        "figure panels. Eleven independently implemented paper-derived mechanics "
+        "pass deterministic controlled checks, including the printed return, position, "
+        "reward, VaR/CVaR, drawdown, Sharpe, and Calmar equations and two fail-closed "
+        "guards against unstated CR-percent and CVaR-to-share conversions. These are "
+        "specification checks, not author code or empirical results. The source prints "
+        "12 prompt templates in both revisions, but only four output examples are valid "
+        "JSON after placeholder substitution; six use invalid JSON-like syntax and two "
+        "depend on an unreleased suffix. No attributable implementation, immutable "
+        "Yahoo/Finnhub/EDGAR snapshot, GPT-4o revision, runtime prompts/responses, seeds, "
+        "orders, fills, account paths, raw arrays, or result generator is released. Thus "
+        "0/294 current and 0/225 v1 table cells and 0/11 current and 0/15 v1 empirical "
+        "panels reproduce author-natively. Material paper conflicts remain explicit: "
+        "the reward uses total position rather than trade direction/change, raw-dollar "
+        "reward units are asset-scale dependent, 95% lower-tail CVaR has conflicting "
+        "tail/sign semantics and no conversion to integer shares, the displayed CR% has "
+        "no mapping from the printed log-return sum, v2 plots retain v1 Calmar values, "
+        "and v2 conflicts on its extreme-test and election timing. Negative searches "
+        "are bounded, not proof that private, "
+        "deleted, moved, renamed, unindexed, or later material does not exist."
+    ),
     "SYS-METAPS": (
         "A pinned MetaPS audit rebuilds the official 25-page arXiv-v1 source at "
         "99.94% extracted-token multiset overlap and visually checks all 25 official "
@@ -1121,6 +1146,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 TARGETED_EXECUTION = {
     "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_released_nav_metrics_31999_of_31999_data_links_static_outputs_no_native_training_or_backtest",
     "SYS-METAPS": "paper_audit:completed_12_paper_derived_mechanics_zero_of_492_table_cells_zero_of_20_empirical_panels_no_attributable_pipeline",
+    "SYS-FIN-POS": "paper_audit:completed_11_paper_derived_mechanics_zero_of_294_current_and_225_v1_table_cells_zero_of_11_current_and_15_v1_empirical_panels_no_attributable_pipeline",
     "SYS-SHARP": "paper_audit:completed_seven_paper_derived_mechanics_zero_of_210_table_cells_zero_of_1_empirical_panel_cited_dataset_404_no_attributable_pipeline",
     "SYS-AGORA": "paper_audit:completed_two_paper_metric_programs_zero_of_293_table_cells_zero_of_4_empirical_panels_claimed_release_unrecovered_no_attributable_pipeline",
     "SYS-XALPHA": "paper_audit:completed_three_paper_factor_programs_one_contract_pass_zero_of_138_numeric_units_zero_of_3_empirical_panels_no_attributable_pipeline",
