@@ -1,0 +1,24 @@
+{
+  "assessment": "Substantial unaffiliated post-paper reimplementation. Its deterministic UCT/Bayesian/island machinery executes on synthetic data, but it repairs the broken printed evolved listing, substitutes the LLM, omits FE-report lineage, and does not ship the real panels behind its claimed real-data outputs.",
+  "author_attribution": false,
+  "compileall": "pass",
+  "created_at": "2026-06-07T08:45:41Z",
+  "declared_requirements_install_and_pip_check": "pass",
+  "native_credit": false,
+  "only_repository_test": "fails because unshipped Qlib bundle is absent",
+  "paper_iteration_budget_used_in_audited_smoke": false,
+  "paper_model_used": false,
+  "paper_result_cells_regenerated": 0,
+  "paper_v2_date": "2026-04-09",
+  "pinned_commit": "2b16ed52ea7da7d5fea10ba505ba16c9501880d7",
+  "repository": "asher21600-svg/factor_engine_reproduction",
+  "synthetic_smoke": {
+    "best_reward": 0.12135,
+    "evaluations": 26,
+    "islands": 2,
+    "iterations": 8,
+    "seed_reward": 0.10164
+  },
+  "tracked_real_data_panels": false,
+  "tracked_report_corpus": false
+}

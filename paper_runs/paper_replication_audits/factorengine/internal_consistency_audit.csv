@@ -1,0 +1,7 @@
+issue,evidence,impact
+mdd_200_run,prose says FE-report MDD falls from 15.57%; active Table 1 prints 15.89%,direct numeric conflict
+evolved_listing,Listing 1.4 uses daily_range_expr without defining it,verbatim execution fails
+initial_factor_count,main setup and appendix say 5-factor set; configuration table labels the comparable arm 6alpha,configuration ambiguity
+expected_improvement_sign,"the method maximizes f but prints max(y* - y, 0), the usual minimization-direction improvement",objective/sign ambiguity
+yearly_ric_caption,caption calls the middle panel CSI500; its source asset is csi300_ric_without_title.pdf and prose calls both first panels CSI300,figure-label conflict
+coverage_symbol,"Eq. 2 defines S_cov, while Eq. 4 subtracts S_Cvg",notation mismatch

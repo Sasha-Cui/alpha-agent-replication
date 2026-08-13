@@ -1,0 +1,28 @@
+dimension,paper_value_or_state,sufficiently_specified
+raw factor inputs,OHLCV only,True
+evaluation universes,CSI300 and CSI500 from full-market Qlib data,True
+train/validation/test dates,2008-2014 / 2015-2016 / 2017-2024,True
+iteration budgets,200 and 400; one factor per iteration,True
+islands and migration,2 islands; every 7 iterations; top 3 programs,True
+seed sets,5 and 10 listed Alpha158-derived factors,True
+fitness,(10 IC + ICIR + 10 RIC + RICIR) / 4,True
+tree exploration,UCT with c=sqrt(2),True
+experience paths,three high-performance/low-overlap paths,True
+lag objectives,"1, 3, 5, and 10 trading days",True
+elite selection,top 5 nodes above 0.4; top 10 parameter configs,True
+portfolio,top 50 equal-weight; five overlapping 5-day tranches,True
+trading frictions,0.00015 bilateral commission; 0.0005 sell stamp; 0.0008 slippage,True
+execution constraints,100-share lot; 10% daily-volume cap; price limits,True
+initial capital,"CNY 100,000,000",True
+agent backbone,Gemini-2.5-Pro for main agent baselines,False
+agent inference revision/settings,not reported,False
+random seeds and repeated-run protocol,not reported,False
+Bayesian optimizer/trial budget,multiple methods supported; exact choice/budget absent,False
+Qlib revision and market-data snapshot,not reported,False
+point-in-time constituent snapshot,not released,False
+pre-2017 research-report corpus,not released,False
+LightGBM configuration,not reported,False
+Python/dependency environment,not reported,False
+generated factor pools and trajectories,not released,False
+predictions/holdings/returns/raw arrays,not released,False
+bootstrapping-agent prompts,not printed,False

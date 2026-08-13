@@ -1,0 +1,79 @@
+{
+  "arxiv_id": "2603.16365",
+  "attributable_factorengine_release_found": false,
+  "authors": [
+    "Qinhong Lin",
+    "Ruitao Feng",
+    "Yinglun Feng",
+    "Zhenxin Huang",
+    "Yukun Chen",
+    "Zhongliang Yang",
+    "Linna Zhou",
+    "Binjie Fei",
+    "Jiaqi Liu",
+    "Yu Li"
+  ],
+  "first_party_namespaces_checked": {
+    "fengruitao": [
+      "WebSite",
+      "Java",
+      "All",
+      "CPP"
+    ],
+    "qinhonglin": [
+      "QwenPaw",
+      "agentscope-runtime",
+      "claude-code",
+      "deer-flow",
+      "agentscope-samples-demo",
+      "tinyid",
+      "java-design-patterns",
+      "tensorflow-captcha-practice",
+      "login",
+      "rentahouse",
+      "ecommerce-server",
+      "springcloudPractice"
+    ],
+    "valuesimplex": [
+      "FinBERT",
+      "FinLongEval",
+      "FinBERT2",
+      "FLiText"
+    ]
+  },
+  "github_code_search_count": 27,
+  "github_repository_search_count": 2,
+  "huggingface_dataset_matches": 0,
+  "huggingface_model_matches": 0,
+  "negative_search_scope": "bounded; does not prove that private, deleted, moved, or unindexed material never existed",
+  "official_pages_visually_checked": {
+    "v1": 26,
+    "v2": 26
+  },
+  "rebuilt_pages_visually_checked": {
+    "v1": 26,
+    "v2": 26
+  },
+  "revision_changed_assets": [
+    "paper.tex"
+  ],
+  "revision_scientific_content_change": false,
+  "source_files_each_revision": 15,
+  "system_id": "SYS-FACTOR-ENGINE",
+  "title": "FactorEngine: A Program-level Knowledge-Infused Factor Mining Framework for Quantitative Investment",
+  "v1_v2_official_token_jaccard": 0.9990199921599373,
+  "versions": {
+    "v1": {
+      "official_rebuilt_token_jaccard": 0.9992154555261351,
+      "pages": 26,
+      "submitted": "2026-03-17"
+    },
+    "v2": {
+      "official_rebuilt_token_jaccard": 0.9992157631604744,
+      "pages": 26,
+      "submitted": "2026-04-09"
+    }
+  },
+  "visual_defects_observed": 0,
+  "work_id": "CensusArxiv260316365"
+}

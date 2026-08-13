@@ -1,0 +1,31 @@
+{
+  "attributable_code_release_found": false,
+  "empirical_figure_assets": 8,
+  "empirical_panels": 8,
+  "evolution_prompt_templates": 2,
+  "generated_file_sha256": {
+    "README.md": "ba4736f6880f26c4d5e08ff8fab31399ba8d4263a95c901ce45c58ea5dc3b23f",
+    "candidate_release_audit.json": "7b31950c0f0a4216af46c710e854e52e6a9616c6ea4d7d7c789dd45142cf1fdf",
+    "factor_program_execution.csv": "207cdd786d684959f6f9e9f9b4f0fd5bcb238be6a29264c1b95c3f4bfa8c18e3",
+    "figure_inventory.csv": "93f10012148fbb8fcd2583065a8d82fd55326f53896444ca144d4a4c75da460c",
+    "internal_consistency_audit.csv": "3320ec91501457af3c7517ae070014d1c769febc4ad59c0339aa5e34c3558919",
+    "method_specification_audit.csv": "d8fd5ba27e7315bab2fd1688080b617bdaeb0265a78919959892fa924fea235a",
+    "prompt_template_ledger.csv": "8d97e6bd7b8b73c6de1c696dd60dd3c7c9ad42462ae7ce4211789d915b9219c7",
+    "published_result_ledger.csv": "b62ea5f72a7dee7cdcda5a1cd8812b472ac19fe61ecf2e71f730180526fec30a",
+    "source_provenance.json": "80f1bc5b829b44c0eef8076801211fbef7a797906cb6ad51ad8b81d97615c5bd"
+  },
+  "native_empirical_panels_regenerated": 0,
+  "native_table_units_regenerated": 0,
+  "official_pages_visually_checked": 52,
+  "paper_versions_audited": 2,
+  "printed_factor_programs": 2,
+  "published_numeric_table_units": 276,
+  "rebuilt_pages_visually_checked": 52,
+  "source_figure_assets": 10,
+  "strict_failure_reason": "no attributable FactorEngine experiment package or paper-result lineage",
+  "strict_success": false,
+  "system_id": "SYS-FACTOR-ENGINE",
+  "unattributable_candidates_audited": 1,
+  "verbatim_factor_programs_executing": 1,
+  "work_id": "CensusArxiv260316365"
+}
