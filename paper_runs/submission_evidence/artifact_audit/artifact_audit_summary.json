@@ -4,8 +4,8 @@
       "failure_category_counts": {
         "artifact_unreachable": 3,
         "explicitly_nonrunnable_or_pseudocode": 3,
-        "no_public_artifact": 45,
-        "none": 43,
+        "no_public_artifact": 44,
+        "none": 44,
         "reachable_non_code_artifact": 3,
         "static_package_insufficient": 6
       },
@@ -14,40 +14,40 @@
           "denominator": 103,
           "group": "ALL",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.5339805825242718,
-          "successes": 55,
-          "wilson_95_lower": 0.43816142979955147,
-          "wilson_95_upper": 0.6273562079907344,
+          "proportion": 0.5436893203883495,
+          "successes": 56,
+          "wilson_95_lower": 0.4476593463255318,
+          "wilson_95_upper": 0.6365776165476932,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 58,
+          "denominator": 59,
           "group": "ALL",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9482758620689655,
-          "successes": 55,
-          "wilson_95_lower": 0.8586059880915734,
-          "wilson_95_upper": 0.9822538653405896,
+          "proportion": 0.9491525423728814,
+          "successes": 56,
+          "wilson_95_lower": 0.8608349778472311,
+          "wilson_95_upper": 0.9825572825270099,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
           "denominator": 103,
           "group": "ALL",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.49514563106796117,
-          "successes": 51,
-          "wilson_95_lower": 0.4005157766877741,
-          "wilson_95_upper": 0.5901245607707564,
+          "proportion": 0.5048543689320388,
+          "successes": 52,
+          "wilson_95_lower": 0.4098754392292435,
+          "wilson_95_upper": 0.5994842233122258,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 103,
           "group": "ALL",
           "metric": "public_artifact_listed",
-          "proportion": 0.5631067961165048,
-          "successes": 58,
-          "wilson_95_lower": 0.4667599174750595,
-          "wilson_95_upper": 0.654915695564043,
+          "proportion": 0.5728155339805825,
+          "successes": 59,
+          "wilson_95_lower": 0.4763629976447477,
+          "wilson_95_upper": 0.6640319404772937,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
@@ -73,13 +73,13 @@
       },
       "n_systems": 103,
       "reachability_counts": {
-        "not_listed": 45,
-        "reachable_all": 55,
+        "not_listed": 44,
+        "reachable_all": 56,
         "unreachable_all": 3
       },
       "static_fidelity_counts": {
-        "R0": 48,
-        "R1": 14,
+        "R0": 47,
+        "R1": 15,
         "R2": 13,
         "R3": 28
       }
@@ -331,8 +331,8 @@
       "failure_category_counts": {
         "artifact_unreachable": 1,
         "explicitly_nonrunnable_or_pseudocode": 2,
-        "no_public_artifact": 35,
-        "none": 24,
+        "no_public_artifact": 34,
+        "none": 25,
         "static_package_insufficient": 5
       },
       "metrics": {
@@ -340,40 +340,40 @@
           "denominator": 67,
           "group": "F+T",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.4626865671641791,
-          "successes": 31,
-          "wilson_95_lower": 0.3485844371949035,
-          "wilson_95_upper": 0.580835423953701,
+          "proportion": 0.47761194029850745,
+          "successes": 32,
+          "wilson_95_lower": 0.3625038659495962,
+          "wilson_95_upper": 0.5951480507395663,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 32,
+          "denominator": 33,
           "group": "F+T",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.96875,
-          "successes": 31,
-          "wilson_95_lower": 0.8425573617998744,
-          "wilson_95_upper": 0.9944621398359969,
+          "proportion": 0.9696969696969697,
+          "successes": 32,
+          "wilson_95_lower": 0.846812746178811,
+          "wilson_95_upper": 0.9946305894631283,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
           "denominator": 67,
           "group": "F+T",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.44776119402985076,
-          "successes": 30,
-          "wilson_95_lower": 0.334763933612968,
-          "wilson_95_upper": 0.5664238719950783,
+          "proportion": 0.4626865671641791,
+          "successes": 31,
+          "wilson_95_lower": 0.3485844371949035,
+          "wilson_95_upper": 0.580835423953701,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 67,
           "group": "F+T",
           "metric": "public_artifact_listed",
-          "proportion": 0.47761194029850745,
-          "successes": 32,
-          "wilson_95_lower": 0.3625038659495962,
-          "wilson_95_upper": 0.5951480507395663,
+          "proportion": 0.4925373134328358,
+          "successes": 33,
+          "wilson_95_lower": 0.3765217187108694,
+          "wilson_95_upper": 0.6093622535188514,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
@@ -399,13 +399,13 @@
       },
       "n_systems": 67,
       "reachability_counts": {
-        "not_listed": 35,
-        "reachable_all": 31,
+        "not_listed": 34,
+        "reachable_all": 32,
         "unreachable_all": 1
       },
       "static_fidelity_counts": {
-        "R0": 36,
-        "R1": 9,
+        "R0": 35,
+        "R1": 10,
         "R2": 6,
         "R3": 16
       }
@@ -493,8 +493,8 @@
     "T": {
       "failure_category_counts": {
         "artifact_unreachable": 1,
-        "no_public_artifact": 19,
-        "none": 14,
+        "no_public_artifact": 18,
+        "none": 15,
         "static_package_insufficient": 4
       },
       "metrics": {
@@ -502,40 +502,40 @@
           "denominator": 38,
           "group": "T",
           "metric": "artifact_reachable_among_all",
-          "proportion": 0.47368421052631576,
-          "successes": 18,
-          "wilson_95_lower": 0.32479023322526057,
-          "wilson_95_upper": 0.6274102861550331,
+          "proportion": 0.5,
+          "successes": 19,
+          "wilson_95_lower": 0.34849928364395105,
+          "wilson_95_upper": 0.6515007163560489,
           "z": 1.959963984540054
         },
         "artifact_reachable_given_listed": {
-          "denominator": 19,
+          "denominator": 20,
           "group": "T",
           "metric": "artifact_reachable_given_listed",
-          "proportion": 0.9473684210526315,
-          "successes": 18,
-          "wilson_95_lower": 0.753612688331012,
-          "wilson_95_upper": 0.9906480059376995,
+          "proportion": 0.95,
+          "successes": 19,
+          "wilson_95_lower": 0.763868806553258,
+          "wilson_95_upper": 0.9911185511992047,
           "z": 1.959963984540054
         },
         "github_head_resolved_among_all": {
           "denominator": 38,
           "group": "T",
           "metric": "github_head_resolved_among_all",
-          "proportion": 0.4473684210526316,
-          "successes": 17,
-          "wilson_95_lower": 0.3014640099805125,
-          "wilson_95_upper": 0.6029370287800753,
+          "proportion": 0.47368421052631576,
+          "successes": 18,
+          "wilson_95_lower": 0.32479023322526057,
+          "wilson_95_upper": 0.6274102861550331,
           "z": 1.959963984540054
         },
         "public_artifact_listed": {
           "denominator": 38,
           "group": "T",
           "metric": "public_artifact_listed",
-          "proportion": 0.5,
-          "successes": 19,
-          "wilson_95_lower": 0.34849928364395105,
-          "wilson_95_upper": 0.6515007163560489,
+          "proportion": 0.5263157894736842,
+          "successes": 20,
+          "wilson_95_lower": 0.3725897138449667,
+          "wilson_95_upper": 0.6752097667747392,
           "z": 1.959963984540054
         },
         "static_R2_or_R3_among_all": {
@@ -561,13 +561,13 @@
       },
       "n_systems": 38,
       "reachability_counts": {
-        "not_listed": 19,
-        "reachable_all": 18,
+        "not_listed": 18,
+        "reachable_all": 19,
         "unreachable_all": 1
       },
       "static_fidelity_counts": {
-        "R0": 20,
-        "R1": 5,
+        "R0": 19,
+        "R1": 6,
         "R2": 5,
         "R3": 8
       }
@@ -682,6 +682,13 @@
         "system_id": "SYS-P1GPT"
       },
       {
+        "corrected_at_utc": "2026-08-13T02:40:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/quantagents/source_provenance.json",
+        "reason": "paper directly links the first-party project repository; it is R1 documentation and media, not released QuantAgents system code or data",
+        "source_archive_sha256": "33b11602cc4e1a326b7677f8155d580f0caf38a4a80189bcca45db1b0ded17c3",
+        "system_id": "SYS-QUANT-AGENTS"
+      },
+      {
         "corrected_at_utc": "2026-08-11T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/raptor/source_provenance.json",
         "reason": "published final PDF directly links the lead author's repository after the anonymous snapshot expired",
@@ -691,7 +698,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "f456f642164533d5caba9ea2bc807cadc087101744398f31aff0cceee96cf8a2",
+    "registry_sha256": "69a26c1ef47d3b46c8ee52dafd9c7eb2fa6fe310aef23a55baeb19bad3c38dd9",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,

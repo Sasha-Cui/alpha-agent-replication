@@ -108,6 +108,13 @@
         "system_id": "SYS-P1GPT"
       },
       {
+        "corrected_at_utc": "2026-08-13T02:40:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/quantagents/source_provenance.json",
+        "reason": "paper directly links the first-party project repository; it is R1 documentation and media, not released QuantAgents system code or data",
+        "source_archive_sha256": "33b11602cc4e1a326b7677f8155d580f0caf38a4a80189bcca45db1b0ded17c3",
+        "system_id": "SYS-QUANT-AGENTS"
+      },
+      {
         "corrected_at_utc": "2026-08-11T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/raptor/source_provenance.json",
         "reason": "published final PDF directly links the lead author's repository after the anonymous snapshot expired",
@@ -117,7 +124,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "f456f642164533d5caba9ea2bc807cadc087101744398f31aff0cceee96cf8a2",
+    "registry_sha256": "69a26c1ef47d3b46c8ee52dafd9c7eb2fa6fe310aef23a55baeb19bad3c38dd9",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -610,7 +617,7 @@
       "system_name": "LLMFactor"
     },
     {
-      "artifact_url_count": 1,
+      "artifact_url_count": "1",
       "artifact_url_results_json": "[{\"check_method\":\"paper-linked first-party site plus pinned coauthor repository and native execution audit\",\"checked_at_utc\":\"2026-08-12T22:00:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"tianyi-stack/MadEvolve\",\"head_sha\":\"8b881d3a45d8f68050c28c8d64c2bb653001103a\",\"license_source\":\"pyproject license declaration and classifier; repository has no license-text file and GitHub detects no license\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":97517,\"archive_sha256\":\"79a2bad2ac108a66d1c5c6737778ebe05c3021f165f63527b552c4eb52e39f11\",\"archive_uncompressed_bytes\":413976,\"bytecode_compilation_passed\":false,\"checked_at_utc\":\"2026-08-12T22:00:00+00:00\",\"cli_after_audit_dependency_passed\":true,\"cli_as_declared_passed\":false,\"code_markers\":[\"madevolve/engine/orchestrator.py\",\"madevolve/provider/gateway.py\",\"madevolve/repository/topology/partitions.py\",\"madevolve/repository/storage/artifact_store.py\"],\"environment_markers\":[\"pyproject.toml\"],\"explicit_nonrunnable\":false,\"file_count\":69,\"general_framework_component_checks_passed\":5,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"paper_market_data_released\":false,\"paper_result_arrays_released\":false,\"paper_result_credit\":false,\"paper_trading_code_released\":false,\"python_file_count\":66,\"runner_markers\":[\"madevolve/__main__.py\",\"madevolve/engine/orchestrator.py\"],\"support_markers\":[\"README.md\"],\"tracked_test_files\":0},\"url\":\"https://github.com/tianyi-stack/MadEvolve\",\"url_type\":\"github_repository\"}]",
       "artifact_url_types": "github_repository",
       "artifact_urls": "https://github.com/tianyi-stack/MadEvolve",
@@ -1345,22 +1352,22 @@
       "system_name": "QuantAgent — Seeking Holy Grail in Trading by Self-Improving LLM"
     },
     {
-      "artifact_url_count": "0",
-      "artifact_url_results_json": "[]",
-      "artifact_url_types": "",
-      "artifact_urls": "",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
+      "artifact_url_count": 1,
+      "artifact_url_results_json": "[{\"check_method\":\"paper-linked first-party project site plus pinned Git history, tree, archive, media, and full primary-source audit\",\"checked_at_utc\":\"2026-08-13T02:40:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"QuantAgents/quantagents.github.io\",\"head_sha\":\"a1d0d56d04d2b73a5fbc472ec9af865a29be6ef7\",\"license_source\":\"LICENSE file and GitHub repository metadata at pinned head\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":81460192,\"archive_sha256\":\"33b11602cc4e1a326b7677f8155d580f0caf38a4a80189bcca45db1b0ded17c3\",\"archive_uncompressed_bytes\":88003221,\"checked_at_utc\":\"2026-08-13T02:40:00+00:00\",\"code_markers\":[],\"environment_markers\":[],\"excluded_template_residue\":{\"data_file\":\"visualizer/data/data_public.js\",\"reason\":\"MathVista/VQA website template, unrelated to QuantAgents\",\"records\":6141},\"explicit_nonrunnable\":false,\"file_count\":41,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"meeting_videos\":3,\"paper_code_released\":false,\"paper_dataset_released\":false,\"paper_leaderboard_cells\":90,\"paper_result_arrays_released\":false,\"paper_result_credit\":false,\"python_file_count\":0,\"rendered_agent_profiles\":4,\"rendered_algorithms\":4,\"runner_markers\":[],\"support_markers\":[\"index.html\",\"static/images/frameworkhtml.png\",\"static/images/agent1.png\",\"static/images/vis1.mp4\",\"static/images/vis5.png\"],\"tracked_test_files\":0},\"url\":\"https://github.com/QuantAgents/quantagents.github.io\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "github_repository",
+      "artifact_urls": "https://github.com/QuantAgents/quantagents.github.io",
+      "audit_timestamp_utc": "2026-08-13T02:40:00+00:00",
+      "default_branch_head_shas": "QuantAgents/quantagents.github.io@main=a1d0d56d04d2b73a5fbc472ec9af865a29be6ef7",
       "errors_json": "[]",
-      "failure_category": "no_public_artifact",
-      "github_owner_repos": "",
+      "failure_category": "none",
+      "github_owner_repos": "QuantAgents/quantagents.github.io",
       "main_FT": "Y",
       "native_execution_attempted": "N",
-      "observed_licenses": "",
-      "public_artifact_listed": "N",
-      "reachability_outcome": "not_listed",
-      "static_fidelity_basis_json": "{\"basis\":\"not_listed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "observed_licenses": "QuantAgents/quantagents.github.io=MIT",
+      "public_artifact_listed": "Y",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"static author documentation, rendered algorithms/profiles, result table, and meeting videos; no system code, environment, runner, dataset, or result arrays\",\"markers\":{\"archive_bytes\":81460192,\"archive_sha256\":\"33b11602cc4e1a326b7677f8155d580f0caf38a4a80189bcca45db1b0ded17c3\",\"archive_uncompressed_bytes\":88003221,\"checked_at_utc\":\"2026-08-13T02:40:00+00:00\",\"code_markers\":[],\"environment_markers\":[],\"excluded_template_residue\":{\"data_file\":\"visualizer/data/data_public.js\",\"reason\":\"MathVista/VQA website template, unrelated to QuantAgents\",\"records\":6141},\"explicit_nonrunnable\":false,\"file_count\":41,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"meeting_videos\":3,\"paper_code_released\":false,\"paper_dataset_released\":false,\"paper_leaderboard_cells\":90,\"paper_result_arrays_released\":false,\"paper_result_credit\":false,\"python_file_count\":0,\"rendered_agent_profiles\":4,\"rendered_algorithms\":4,\"runner_markers\":[],\"support_markers\":[\"index.html\",\"static/images/frameworkhtml.png\",\"static/images/agent1.png\",\"static/images/vis1.mp4\",\"static/images/vis5.png\"],\"tracked_test_files\":0},\"tier\":\"R1\",\"url\":\"https://github.com/QuantAgents/quantagents.github.io\"}]}",
+      "static_fidelity_tier": "R1",
       "stratum": "T",
       "system_id": "SYS-QUANT-AGENTS",
       "system_name": "QuantAgents"

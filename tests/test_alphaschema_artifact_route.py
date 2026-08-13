@@ -51,9 +51,9 @@ def test_committed_artifact_audit_and_summary_include_alphaschema() -> None:
     assert row == {key: str(value) for key, value in route.alphaschema_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "32"
-    assert ft["artifact_reachable_among_all"]["successes"] == "31"
-    assert ft["github_head_resolved_among_all"]["successes"] == "30"
+    assert ft["public_artifact_listed"]["successes"] == "33"
+    assert ft["artifact_reachable_among_all"]["successes"] == "32"
+    assert ft["github_head_resolved_among_all"]["successes"] == "31"
     assert ft["static_R3_among_all"]["successes"] == "16"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text())
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
@@ -101,18 +101,18 @@ def test_paper_evidence_route_moves_alphaschema_to_public_code_with_blocker() ->
 
 def test_static_paper_assets_reflect_alphaschema_correction() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text()
-    assert r"\newcommand{\ArtifactCountFT}{32}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{31}" in generated
-    assert r"\newcommand{\LicensedArtifactCountFT}{18}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{30}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{33}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{32}" in generated
+    assert r"\newcommand{\LicensedArtifactCountFT}{19}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{31}" in generated
     assert (
-        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 36, "
-        r"\artifacttier{R1}: 9, \artifacttier{R2}: 6, \artifacttier{R3}: 16}"
+        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 35, "
+        r"\artifacttier{R1}: 10, \artifacttier{R2}: 6, \artifacttier{R3}: 16}"
     ) in generated
-    assert r"\newcommand{\TargetedAuditCount}{49}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{50}" in generated
     routes = (ROOT / "docs/paper/generated_evidence_routes.tex").read_text()
-    assert r"\newcommand{\PublicCodeRouteWorkCount}{31\xspace}" in routes
-    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{38\xspace}" in routes
+    assert r"\newcommand{\PublicCodeRouteWorkCount}{32\xspace}" in routes
+    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{37\xspace}" in routes
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
     assert "AlphaSchema & reachable" in failure_table
     assert "0/212" in failure_table

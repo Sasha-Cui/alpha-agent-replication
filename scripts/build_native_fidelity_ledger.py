@@ -38,6 +38,24 @@ URL_RE = re.compile(r"https?://[^;\s]+")
 # system, not raw inputs, prompts, labels, factor expressions, or example
 # configuration.
 ARTIFACT_NOTES = {
+    "SYS-QUANT-AGENTS": (
+        "N",
+        "A pinned QuantAgents audit inventories all 238 numeric table cells and "
+        "14 empirical figure panels. The paper directly links the author-owned "
+        "41-file repository, but it is an R1 static site, not a trading "
+        "implementation. Its leaderboard duplicates 90 main-table cells exactly; "
+        "four rendered algorithms, four agent profiles, and three meeting videos "
+        "document intended behavior but are not executable source or raw traces. "
+        "Thus 0/238 cells and 0/14 empirical panels reproduce. The site also contains "
+        "an unrelated 6,141-record MathVista/VQA template that receives no "
+        "QuantAgents data or code credit. No exact frozen NASDAQ-100 inputs, full "
+        "prompt/tool implementations, strategy pool, risk-weight function, model "
+        "calls, memories, actions, orders, fills, or dated portfolio path is released. "
+        "The paper conflicts on full-system volatility, action counts, and live-test "
+        "dates, and its ARR equation is malformed. Most of the 2021--2023 backtest "
+        "also lies inside GPT-4o's official October 2023 pretraining horizon; this is "
+        "a material contamination risk, not proof that any reported cell is false.",
+    ),
     "SYS-MAD-EVOLVE": (
         "N",
         "A pinned MadEvolve trading audit inventories all 214 empirical numeric "
@@ -847,6 +865,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage",
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_attributable_release_six_component_checks_broken_default_launcher_missing_research_lineage",
