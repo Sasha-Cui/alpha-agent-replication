@@ -1,0 +1,19 @@
+dimension,status,detail
+official paper and source,complete,arXiv v1 PDF and complete 14-file source archive are pinned; all 18 official and rebuilt pages visually inspected
+native implementation,claimed_but_unrecovered,"Appendix says sector rules are in released code, but no code URL is supplied and exact public searches find none"
+cited LongShort-data,dead_or_inaccessible,bibliography cites github.com/xiwenc_msid/LLMforTrading-data; both user and repository API endpoints return 404
+stock universes,specified,three fixed 16-stock sector lists are printed; AMZN and TSLA overlap across sectors
+price data,provider_and_span_only,"Yahoo daily OHLCV Apr 2024--Mar 2026 is stated without immutable snapshot, download timestamp, adjustment flags, or rows"
+news data,provider_and_cutoff_only,"Finnhub cached news and 23:59 UTC cutoff are stated; cache, article IDs/content, query parameters and API responses are absent"
+features,substantially_specified,"1/5/20-day returns, trailing 252-day range, SPY/VIX/10Y context and news window are stated"
+walk-forward splits,partial,"4/1/2-month windows, 2-month step and about 122 test days are stated; exact boundaries for all three windows are absent"
+portfolio and returns,substantially_specified,"daily score ranking, equal-weight dollar-neutral 5L/5S, next-open O2O and 5 bps entry charge are printed"
+transaction-cost implementation,ambiguous,"new entries are charged, and random flips count as two trades, but ordinary exits and live-side flips are not fully reconciled in executable terms"
+rubric representation,partial,tuple schema and six shared rules are printed; paper says 1--4 sector rules are only in unrecovered code
+agent prompts and outputs,missing,"complete analyst/attribution/evolution prompts, JSON schema, filled calls, responses, request IDs and temperatures are absent"
+evolution algorithm,pseudocode_complete_dependencies_missing,"five-round loop, top-20 tail diagnosis, mutation bounds, size cap and validation tolerance are printed; Attribute/Evolve/Apply are LLM-defined and unavailable"
+models,names_and_serving_partial,"four backbones and vLLM settings are named without immutable weight revisions, API snapshots, decoding parameters or environment lock"
+baselines,described_no_code_or_runs,"Random/Momentum/Mean-Reversion/Static and LLM baselines are described, but exact split calendar, Random seed, signals and outputs are absent"
+randomness and run lineage,missing,"no seeds, run IDs, API request logs, repeated-run distribution or deterministic decoding configuration are supplied"
+compute,partially_specified,"GPU counts, vLLM tensor parallelism/dtype/context and measured runtimes are stated without dependency lock or logs"
+raw empirical outputs,missing,"210 table cells and one six-series empirical panel are present without arrays, daily returns, weights, trades or result generator"

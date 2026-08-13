@@ -1,0 +1,10 @@
+check,status,detail
+shared_initial_rule_count,conflict,Appendix says six shared rules; the free-reflection example says the same initial rubric has seven rules and includes a major-corporate-event rule
+sector_rule_release,unverifiable_release_claim,"Appendix says 1--4 sector rules are listed in released code, but no code URL is given and the only cited GitHub repository is a 404 data URL"
+test_calendar,underspecified,"paper says test periods span approximately Sep 2025--Mar 2026 and about 122 days, but does not print exact boundaries for all three windows"
+transaction_cost_semantics,ambiguous,"general portfolio text charges each new entry; Random text explicitly counts a side flip as two trades, leaving ordinary exits and comparable live-strategy turnover treatment incompletely specified"
+arithmetic_proprietary_averages,consistent,printed three-sector averages for SHARP/Static GPT-4o-mini and GPT-4.1-mini agree with the displayed sector returns and Sharpes to rounding
+arithmetic_open_source_lifts,consistent,Qwen and Llama Static-to-Evo return lifts equal +9.8 and +12.9 percentage points as stated
+random_null_interpretation,appropriately_bounded,paper explicitly explains the negative random null as cost drag and treats three windows as directional rather than formal significance evidence
+news_safety_gap,internally_consistent,23:59 UTC cutoff to next 13:30 UTC market open is the stated 13.5-hour gap
+production_limits,explicit_limitation,"paper discloses no market-impact model, one public news source and simplified daily execution"

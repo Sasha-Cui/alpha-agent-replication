@@ -1,0 +1,15 @@
+surface,query_or_endpoint,observed_matches,attributable_sharp_release_found,observation,negative_search_boundary
+GitHub repository arXiv ID,github-repos-arxiv.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub repository exact title,github-repos-title.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub repository SHARP rubric trading,github-repos-sharp-rubric.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub repository cited dataset name,github-repos-dataset-name.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub repository LongShort-data,github-repos-longshort.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub code temporal_priced_in,github-code-temporal-rule.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub code cited dataset URL,github-code-dataset-url.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub code printed trace phrase,github-code-trace.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub code hyperparameter combination,github-code-hyperparameters.json,0,False,complete bounded exact public search returned zero,"zero results do not prove private, deleted, moved, renamed, unindexed or later artifacts do not exist"
+GitHub commits cited dataset URL,LLMforTrading-data,0,False,bounded public commit search returned zero,indexed public commits only
+cited GitHub user,https://github.com/xiwenc_msid/LLMforTrading-data,0,False,GitHub API returned 404 for the paper-cited endpoint,"current public endpoint only; repository may be private, deleted, moved or renamed"
+cited GitHub repository,https://github.com/xiwenc_msid/LLMforTrading-data,0,False,GitHub API returned 404 for the paper-cited endpoint,"current public endpoint only; repository may be private, deleted, moved or renamed"
+Hugging Face models,SHARP financial trading rubric,0,False,bounded name-token search,name search only
+Hugging Face datasets,SHARP financial trading rubric,0,False,bounded name-token search,name search only

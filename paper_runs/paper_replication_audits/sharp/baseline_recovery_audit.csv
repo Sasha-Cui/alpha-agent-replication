@@ -1,0 +1,7 @@
+target,action,observed_state,published_result_regenerated,boundary
+Yahoo chart endpoint,attempted,HTTP 429,False,no immutable price payload was recovered
+all three exact walk-forward calendars,inspected_paper_and_source,missing,False,only approximate Sep 2025--Mar 2026 test span and one illustrative training interval are printed
+Yahoo download/adjustment configuration,inspected_paper_and_source,missing,False,provider and broad span are named without download timestamp or adjustment flags
+Random L/S seed and draws,inspected_paper_and_source,missing,False,"1,000 trials are stated but seed and trial selections are absent"
+turnover/cost convention,inspected_paper_and_source,partial,False,new entries are charged and Random flips count twice; exits and comparable live-strategy side flips are not fully specified
+price-only published baseline cells,combined_recovery_assessment,not_defensibly_regenerated,False,no prespecified complete convention can be run against immutable inputs; no tuning to printed cells is permitted

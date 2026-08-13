@@ -1,0 +1,26 @@
+{
+  "active_empirical_figure_panels": 1,
+  "active_quantitative_table_cells": 210,
+  "attributable_sharp_implementation_found": false,
+  "author_native_empirical_panels_regenerated": 0,
+  "author_native_table_cells_regenerated": 0,
+  "empirical_figure_series_or_groups": 6,
+  "generated_file_sha256": {
+    "README.md": "daf0e268c543a5f3f2cc5624b0546e81ff5f085fcf6f5053b655600e58b2b8d5",
+    "baseline_recovery_audit.csv": "1f12e3443710a2a1056d70b4ab81bd17b7f72b8b8b6d90f18955ce8143172c6e",
+    "component_execution_audit.csv": "139ab0a7fbacc93d1cb792ecc9293ff9a05b71cbe63d5d4b2f716fd8f4eaf4e1",
+    "figure_inventory.csv": "d647f3e8c8e55c5b635dece3088c16080800fccd321e487ff1df188df058de74",
+    "internal_consistency_audit.csv": "d5d08e6be2097f06e3ab0d2bade4a520f6d3e087cd89adbc8a6c0146eedc43c8",
+    "method_specification_audit.csv": "daff478a504cc62e924fe17434c43d04d870e590270070c192f560603b283c54",
+    "published_result_ledger.csv": "9d3201b60107dfb7f3f05a0442b98325e42c12e022b6092f3afe21c08dd7f7f1",
+    "release_search_audit.csv": "da9dd2df2ce1d0ce3e3d1a1e2782521ea382d75bedb7399cac574c2cc5cf08c9",
+    "source_provenance.json": "1a427974b03a014c9c6ef870edea6ad01895332c81b906b37a827e9138c49c56"
+  },
+  "paper_derived_components_executed": 7,
+  "paper_derived_components_passing_controlled_checks": 7,
+  "raw_result_arrays_recovered": 0,
+  "result_tables": 4,
+  "strict_success": false,
+  "system_id": "SYS-SHARP",
+  "work_id": "CensusArxiv260506822"
+}

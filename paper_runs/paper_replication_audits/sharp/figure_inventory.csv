@@ -1,0 +1,8 @@
+figure,source_asset,source_asset_sha256,empirical_panels,empirical_series_or_groups,description,author_rendered_asset_or_tex_recovered,underlying_numeric_array_or_run_log_recovered,author_native_figure_regenerated,paper_result_credit
+fig:teaser,figures/teaser1_cropped.pdf,447941166dbdfb40f11465dbc7c54b204df41f302d3b2c3d85201610361a46ac,0,0,conceptual comparison schematic,True,False,False,False
+fig:cumret,figures/cumret_aitech.pdf,b2f0c555575dfd3e34507cfd66e3468360c064aa200b30ecb6dfc43624112402,1,6,six AI Tech cumulative-return trajectories,True,False,False,False
+fig:pipeline,sections/method.tex,f80d6a29bc4f939ae1b5446027f95804a6a3c577fc6c215f999c00a14939fcd0,0,0,TikZ training/inference schematic,True,False,False,False
+fig:diffs,sections/experiments.tex,e6e4c39f96c7ff756ab26534d002cd92f71750a8629f394db04131f907329250,0,0,paper-printed AI Tech rubric diff,True,False,False,False
+fig:diffs_app,sections/appendix.tex,5e25c6de579ea2b622bc19d80d08060055c43b830b8ebcf0e91acd660ecb03cc,0,0,paper-printed Biotech/Consumer rubric diffs,True,False,False,False
+fig:reflect_example,sections/appendix.tex,5e25c6de579ea2b622bc19d80d08060055c43b830b8ebcf0e91acd660ecb03cc,0,0,paper-printed free-reflection prompt diff,True,False,False,False
+fig:attribution_example_app,sections/appendix.tex,5e25c6de579ea2b622bc19d80d08060055c43b830b8ebcf0e91acd660ecb03cc,0,0,paper-printed illustrative attribution trace,True,False,False,False
