@@ -1,7 +1,7 @@
 # AAPM paper/source replication audit
 
 This package audits both official arXiv versions, both source bundles, the
-paper-era and current official GitHub states, every released file, all
+complete nine-commit official GitHub history, every released file, all
 65,733 metadata records, 114 v1 table cells,
 162 v2 table cells, and 54 quantitative figure units.
 
@@ -19,7 +19,8 @@ paper-era and current official GitHub states, every released file, all
   `Model.forward` combines report and asset embeddings but never ingests manual
   financial factors or performs the stated historical-factor pretraining.
 - The v2 experiment has no demonstrated code lineage. The current code differs
-  from the September 2024 paper-era tree only in `README.md`, still defaults to
+  from the September 2024 paper-era tree only in `README.md`; all six later
+  commits are README-only. It still defaults to
   GPT-3.5-Turbo-1106, and the released metadata ends 2023-11-30 rather than the
   claimed 2024-09-29 endpoint.
 

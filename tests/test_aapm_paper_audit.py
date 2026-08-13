@@ -154,6 +154,8 @@ def test_official_repository_and_search_snapshot_are_pinned() -> None:
     assert provenance["paper_era_commit"] == audit.PAPER_ERA_COMMIT
     assert provenance["current_head"] == audit.CURRENT_HEAD
     assert provenance["repository_change_since_paper_era"] == ["README.md"]
+    assert provenance["full_public_history_commits_audited"] == 9
+    assert provenance["historical_paper_result_or_training_artifact_paths"] == 0
     assert provenance["github_snapshot"]["license"] == "MIT"
     assert provenance["github_snapshot"]["captured_commits"] == 9
     assert provenance["github_snapshot"]["captured_forks"] == 14
@@ -162,6 +164,22 @@ def test_official_repository_and_search_snapshot_are_pinned() -> None:
     assert all(row["total_count"] == "0" for row in searches)
     assert all(row["incomplete_results"] == "false" for row in searches)
     assert all(row["native_result_found"] == "no" for row in searches)
+
+
+def test_complete_repository_history_has_no_latent_result_or_training_artifact() -> None:
+    history = csv_rows("released_source_history_inventory.csv")
+    assert len(history) == 9
+    assert history[0]["commit"] == audit.REPOSITORY_ROOT
+    assert history[-1]["commit"] == audit.CURRENT_HEAD
+    assert [int(row["tracked_paths"]) for row in history] == [2, 9] + [10] * 7
+    assert [int(row["python_paths"]) for row in history] == [0] + [5] * 8
+    assert [row["metadata_payload_present"] for row in history] == ["False", "False"] + ["True"] * 7
+    assert {row["paper_result_or_training_artifact_paths"] for row in history} == {"0"}
+    assert {row["paper_result_artifact_found"] for row in history} == {"False"}
+    manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["repository_history_commits_audited"] == 9
+    assert manifest["repository_history_paper_result_or_training_artifact_paths"] == 0
+    assert manifest["repository_history_paper_result_artifacts_found"] == 0
 
 
 def test_native_execution_and_manifest_state_the_honest_boundary() -> None:

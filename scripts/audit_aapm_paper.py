@@ -47,6 +47,8 @@ EXPECTED_PYTHON_FILES = 5
 EXPECTED_METADATA_ROWS = 65_733
 EXPECTED_V1_RESULT_CELLS = 114
 EXPECTED_V2_RESULT_CELLS = 162
+REPOSITORY_ROOT = "498688d8dccb0bbbb667589eca1a0f94091dbc88"
+REPOSITORY_COMMIT_COUNT = 9
 
 TABLE_METRICS = {
     "table:sr": ["SR_TP", "SR_EW", "SR_VW", "MDD_TP", "MDD_EW", "MDD_VW"],
@@ -199,6 +201,53 @@ def source_inventory(repo: Path, paths: list[str]) -> list[dict[str, str]]:
         })
     if compiled != EXPECTED_PYTHON_FILES:
         raise ValueError(f"compiled Python count changed: {compiled}")
+    return rows
+
+
+def source_history_inventory(repo: Path) -> list[dict[str, Any]]:
+    """Inventory every public revision and verify that later changes are documentation-only."""
+    if str(git(repo, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise ValueError("AAPM history checkout is shallow")
+    commits = str(git(repo, "rev-list", "--reverse", "--all")).splitlines()
+    if len(commits) != REPOSITORY_COMMIT_COUNT:
+        raise ValueError(f"AAPM public commit count changed: {len(commits)}")
+    if commits[0] != REPOSITORY_ROOT or commits[-1] != CURRENT_HEAD:
+        raise ValueError(f"AAPM public-history endpoints changed: {commits}")
+
+    rows: list[dict[str, Any]] = []
+    for commit in commits:
+        authored_at, subject = str(
+            git(repo, "show", "-s", "--format=%aI%x09%s", commit)
+        ).rstrip("\n").split("\t", 1)
+        paths = str(git(repo, "ls-tree", "-r", "--name-only", commit)).splitlines()
+        result_paths = [
+            path
+            for path in paths
+            if any(
+                part in {
+                    "checkpoint", "checkpoints", "embedding", "embeddings", "factor", "factors",
+                    "log", "logs", "output", "outputs", "portfolio", "portfolios", "prediction",
+                    "predictions", "result", "results", "return", "returns", "run", "runs",
+                }
+                for part in path.lower().split("/")
+            )
+            or path.lower().endswith((
+                ".ckpt", ".csv", ".jsonl", ".npy", ".npz", ".parquet", ".pickle", ".pkl",
+                ".pt", ".pth", ".safetensors", ".xls", ".xlsx",
+            ))
+        ]
+        if result_paths:
+            raise ValueError(f"AAPM history contains an unreviewed paper-result path: {result_paths}")
+        rows.append({
+            "commit": commit,
+            "authored_at": authored_at,
+            "subject": subject,
+            "tracked_paths": len(paths),
+            "python_paths": sum(path.endswith(".py") for path in paths),
+            "metadata_payload_present": "data/wsj_metadata.json" in paths,
+            "paper_result_or_training_artifact_paths": 0,
+            "paper_result_artifact_found": False,
+        })
     return rows
 
 
@@ -555,7 +604,7 @@ def readme(manifest: dict[str, Any]) -> str:
     return f"""# AAPM paper/source replication audit
 
 This package audits both official arXiv versions, both source bundles, the
-paper-era and current official GitHub states, every released file, all
+complete nine-commit official GitHub history, every released file, all
 {manifest['released_metadata_records']:,} metadata records, {manifest['v1_table_result_cells']} v1 table cells,
 {manifest['v2_table_result_cells']} v2 table cells, and 54 quantitative figure units.
 
@@ -573,7 +622,8 @@ paper-era and current official GitHub states, every released file, all
   `Model.forward` combines report and asset embeddings but never ingests manual
   financial factors or performs the stated historical-factor pretraining.
 - The v2 experiment has no demonstrated code lineage. The current code differs
-  from the September 2024 paper-era tree only in `README.md`, still defaults to
+  from the September 2024 paper-era tree only in `README.md`; all six later
+  commits are README-only. It still defaults to
   GPT-3.5-Turbo-1106, and the released metadata ends 2023-11-30 rather than the
   claimed 2024-09-29 endpoint.
 
@@ -618,6 +668,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     v1_tex, v2_tex = validate_sources(args.v1_source_archive, args.v2_source_archive, args.v1_source, args.v2_source)
     paths = validate_repo(args.repo)
     inventory = source_inventory(args.repo, paths)
+    history = source_history_inventory(args.repo)
     metadata_rows, metadata_facts = metadata_audit(args.repo)
     v1_results, v2_results = displayed_results(v1_tex, v2_tex)
     comparison = version_comparison(v1_results, v2_results)
@@ -630,6 +681,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     execution, execution_raw = run_native(args.repo, args.python)
 
     write_csv(output / "source_file_inventory.csv", inventory, list(inventory[0]))
+    write_csv(output / "released_source_history_inventory.csv", history, list(history[0]))
     write_csv(output / "released_metadata_audit.csv", metadata_rows, list(metadata_rows[0]))
     write_csv(output / "displayed_result_conformance.csv", v1_results + v2_results, list(v1_results[0]))
     write_csv(output / "version_result_comparison.csv", comparison, list(comparison[0]))
@@ -648,6 +700,10 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "official_repository": OFFICIAL_REPOSITORY, "paper_era_commit": PAPER_ERA_COMMIT,
         "current_head": CURRENT_HEAD, "paper_era_tree_sha256": PAPER_ERA_TREE_SHA256,
         "current_tree_sha256": CURRENT_TREE_SHA256, "repository_change_since_paper_era": ["README.md"],
+        "full_public_history_commits_audited": len(history),
+        "historical_paper_result_or_training_artifact_paths": sum(
+            row["paper_result_or_training_artifact_paths"] for row in history
+        ),
         "v1_pdf_links": v1_links, "v2_pdf_links": v2_links, "github_snapshot": github_facts,
     }
     write_json(output / "source_provenance.json", provenance)
@@ -658,6 +714,13 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "official_pdf_pages_visually_inspected": V1_PAGES + V2_PAGES,
         "source_rebuild_pages_visually_inspected": V1_PAGES + V2_PAGES,
         "tracked_source_files": len(inventory), "compiled_python_files": EXPECTED_PYTHON_FILES,
+        "repository_history_commits_audited": len(history),
+        "repository_history_paper_result_or_training_artifact_paths": sum(
+            row["paper_result_or_training_artifact_paths"] for row in history
+        ),
+        "repository_history_paper_result_artifacts_found": sum(
+            bool(row["paper_result_artifact_found"]) for row in history
+        ),
         "released_metadata_records": metadata_facts["records"],
         "released_metadata_min_date": metadata_facts["min_date"], "released_metadata_max_date": metadata_facts["max_date"],
         "v1_table_result_cells": len(v1_results), "v2_table_result_cells": len(v2_results),
