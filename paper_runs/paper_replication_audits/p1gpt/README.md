@@ -58,6 +58,21 @@ prompt is absent, the source sends requests to an unreleased `main-llm` service,
 and the database, agents, backtest, and outputs are not shipped. Committed
 plaintext credentials were neither used nor reproduced here.
 
+The checked archive is not the only revision inspected. A complete non-shallow
+clone contains 36 reachable commits across `main`, `develop`, and `gke/test`.
+Every revision was searched for paper-specific content and backtest, result,
+metric, position, portfolio, and trade paths; none contains the P1GPT experiment.
+
+## Cited baseline-protocol boundary
+
+The paper says its baselines follow TradingAgents. The cited TradingAgents v7
+appendix also describes KDJ+RSI and ZMR only qualitatively, and the nearest
+official v0.1.0 source ships no baseline implementation, metric code, or paper
+backtest. A later unaffiliated repository guesses 14/9-day KDJ+RSI and 50-day,
+1.5-z-score ZMR rules, but it postdates P1GPT, leaves KDJ J as a placeholder,
+and contradicts P1GPT's stated SMA windows. It is recorded and explicitly
+excluded from native-method or result credit.
+
 ## Evidence files
 
 - `paper_version_summary.csv`: pinned primary PDF/source and local identity.
@@ -72,6 +87,8 @@ plaintext credentials were neither used nor reproduced here.
 - `specification_gaps.csv`: inputs required for exact replay.
 - `internal_consistency.csv`: lookahead, metric, execution, and claim conflicts.
 - `public_source_file_inventory.csv`: all 38 web-client files.
+- `source_history_inventory.csv`: all 36 reachable web-client revisions.
+- `cited_protocol_lineage.csv`: cited official sources and rejected later guess.
 - `public_component_execution.json`: attribution, compile, and private-service boundary.
 - `manuscript_rebuilds.json`: deterministic reconstruction and visual-QA record.
 - `public_source_discovery.csv`: bounded primary-source and GitHub search record.

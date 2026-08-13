@@ -146,6 +146,44 @@ def test_public_web_client_is_attributable_r3_component_not_result_pipeline() ->
     assert execution["paper_result_credit"] is False
 
 
+def test_complete_public_history_contains_no_paper_result_pipeline() -> None:
+    history = rows("source_history_inventory.csv")
+    assert len(history) == 36
+    assert history[0]["commit_sha"] == "1140ce0afd741becd43d4e0a91acad4f8d7e35b7"
+    assert {head for row in history for head in row["reachable_branch_heads"].split(";")} >= {
+        "origin/main",
+        "origin/develop",
+        "origin/gke/test",
+    }
+    assert all(row["candidate_paper_pipeline_paths"] == "" for row in history)
+    assert all(row["paper_specific_content_paths"] == "" for row in history)
+    assert all(row["native_p1gpt_result_pipeline_found"] == "False" for row in history)
+    assert all(row["paper_result_credit"] == "False" for row in history)
+
+
+def test_cited_protocol_does_not_supply_missing_baseline_parameters() -> None:
+    lineage = rows("cited_protocol_lineage.csv")
+    assert len(lineage) == 4
+    official = [row for row in lineage if row["available_by_p1gpt_v1"] == "True"]
+    assert len(official) == 3
+    assert all(
+        row["kdj_rsi_parameters_or_code"] in {"not_provided", "not_shipped"}
+        for row in official
+    )
+    assert all(
+        row["zmr_parameters_or_code"] in {"not_provided", "not_shipped"}
+        for row in official
+    )
+    rejected = next(
+        row for row in lineage
+        if row["relationship"] == "rejected_post_paper_third_party_guess"
+    )
+    assert rejected["available_by_p1gpt_v1"] == "False"
+    assert rejected["attributable_to_p1gpt_authors"] == "False"
+    assert "placeholder" in rejected["kdj_rsi_parameters_or_code"]
+    assert all(row["native_p1gpt_method_or_result_credit"] == "False" for row in lineage)
+
+
 def test_consistency_audit_records_lookahead_and_metric_conflicts() -> None:
     checks = {row["check_id"]: row for row in rows("internal_consistency.csv")}
     assert len(checks) == 17
@@ -187,6 +225,8 @@ def test_manifest_hashes_every_nonmanifest_output_and_readme_is_honest() -> None
     assert "0/12 P1GPT cells" in text
     assert "strictly avoids lookahead bias" in text
     assert "does not prove every daily signal" in text
+    assert "36 reachable commits" in text
+    assert "excluded from native-method or result credit" in text
     assert "Installing additional packages cannot recover" in text
 
 

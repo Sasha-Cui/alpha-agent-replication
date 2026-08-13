@@ -25,6 +25,7 @@ import json
 import math
 import re
 import statistics
+import subprocess
 import tarfile
 from collections import Counter
 from datetime import datetime, timezone
@@ -37,6 +38,9 @@ from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_AUDIT_ROOT = Path("/nfs/roberts/scratch/pi_btk22/zc362/p1gpt_audit")
+DEFAULT_WEB_DEMO_HISTORY = Path(
+    "/nfs/roberts/scratch/pi_btk22/zc362/p1gpt_web_demo_history"
+)
 DEFAULT_OUTPUT = ROOT / "paper_runs/paper_replication_audits/p1gpt"
 
 WORK_ID = "CensusArxiv251023032"
@@ -86,6 +90,16 @@ WEB_DEMO = {
     "file_count": 38,
     "python_file_count": 22,
     "license": "MIT",
+}
+WEB_DEMO_HISTORY = {
+    "root_commit": "1140ce0afd741becd43d4e0a91acad4f8d7e35b7",
+    "commit_count": 36,
+    "unique_path_count": 47,
+    "branch_heads": {
+        "origin/main": "a88a3a7c731063d0d1ca7ac15946eb600753f358",
+        "origin/develop": "8269b5e2c08481a0b93f202f6f8df64d619680a0",
+        "origin/gke/test": "82a2437e8a025390bc1dd59abe7bcc2bfd91ca9a",
+    },
 }
 
 YAHOO_PINS = {
@@ -192,6 +206,171 @@ def pinned_path(root: Path, relative: str, expected_sha256: str) -> Path:
     if observed != expected_sha256:
         raise ValueError(f"hash mismatch for {path}: {observed}")
     return path
+
+
+def git(history_root: Path, *args: str, allow_no_match: bool = False) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(history_root), *args],
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if result.returncode and not (allow_no_match and result.returncode == 1):
+        raise RuntimeError(
+            f"git {' '.join(args)} failed in {history_root}: {result.stderr.strip()}"
+        )
+    return result.stdout.strip()
+
+
+def source_history_inventory(history_root: Path) -> list[dict[str, Any]]:
+    """Audit every reachable revision of the attributable P1GPT web client."""
+
+    if not (history_root / ".git").is_dir():
+        raise FileNotFoundError(history_root / ".git")
+    if git(history_root, "rev-parse", "--is-shallow-repository") != "false":
+        raise ValueError("P1GPT web-demo history must be a complete non-shallow clone")
+    commits = git(history_root, "rev-list", "--all", "--reverse").splitlines()
+    if len(commits) != WEB_DEMO_HISTORY["commit_count"]:
+        raise ValueError(f"web-demo reachable commit count changed: {len(commits)}")
+    if commits[0] != WEB_DEMO_HISTORY["root_commit"]:
+        raise ValueError("web-demo root commit changed")
+    for branch, expected in WEB_DEMO_HISTORY["branch_heads"].items():
+        observed = git(history_root, "rev-parse", branch)
+        if observed != expected:
+            raise ValueError(f"web-demo branch head changed for {branch}: {observed}")
+    all_paths = {
+        line
+        for line in git(history_root, "log", "--all", "--format=", "--name-only").splitlines()
+        if line
+    }
+    if len(all_paths) != WEB_DEMO_HISTORY["unique_path_count"]:
+        raise ValueError(f"web-demo unique path count changed: {len(all_paths)}")
+
+    pipeline_pattern = re.compile(
+        r"backtest|experiment|result|metric|position|portfolio|trade|2510\.23032|table",
+        re.IGNORECASE,
+    )
+    paper_content_pattern = (
+        r"KDJ|ZMR|2510\.23032|Table 2|"
+        r"Given today.?s market conditions|should I buy, sell, or hold"
+    )
+    rows = []
+    for index, commit in enumerate(commits, start=1):
+        metadata = git(
+            history_root,
+            "show",
+            "-s",
+            "--format=%aI%x1f%an <%ae>%x1f%s",
+            commit,
+        ).split("\x1f")
+        if len(metadata) != 3:
+            raise ValueError(f"cannot parse web-demo commit metadata: {commit}")
+        paths = git(history_root, "ls-tree", "-r", "--name-only", commit).splitlines()
+        candidate_paths = sorted(path for path in paths if pipeline_pattern.search(path))
+        content_paths = sorted(
+            filter(
+                None,
+                git(
+                    history_root,
+                    "grep",
+                    "-Il",
+                    "-E",
+                    paper_content_pattern,
+                    commit,
+                    "--",
+                    allow_no_match=True,
+                ).splitlines(),
+            )
+        )
+        reachable_heads = []
+        for branch, head in WEB_DEMO_HISTORY["branch_heads"].items():
+            ancestor = subprocess.run(
+                ["git", "-C", str(history_root), "merge-base", "--is-ancestor", commit, head],
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+            )
+            if ancestor.returncode == 0:
+                reachable_heads.append(branch)
+            elif ancestor.returncode != 1:
+                raise RuntimeError(ancestor.stderr.decode(errors="replace").strip())
+        rows.append(
+            {
+                "repository": WEB_DEMO["repository"],
+                "commit_index": index,
+                "commit_sha": commit,
+                "author_time": metadata[0],
+                "author_identity": metadata[1],
+                "subject": metadata[2],
+                "reachable_branch_heads": ";".join(reachable_heads),
+                "tracked_files": len(paths),
+                "candidate_paper_pipeline_paths": ";".join(candidate_paths),
+                "paper_specific_content_paths": ";".join(content_paths),
+                "native_p1gpt_result_pipeline_found": False,
+                "paper_result_credit": False,
+            }
+        )
+    if any(row["candidate_paper_pipeline_paths"] for row in rows):
+        raise ValueError("candidate paper pipeline path appeared in web-demo history")
+    if any(row["paper_specific_content_paths"] for row in rows):
+        raise ValueError("paper-specific implementation content appeared in web-demo history")
+    return rows
+
+
+def cited_protocol_lineage() -> list[dict[str, Any]]:
+    """Separate the cited protocol from later unaffiliated implementation guesses."""
+
+    return [
+        {
+            "source": "P1GPT arXiv v1 manuscript",
+            "url": "https://arxiv.org/abs/2510.23032v1",
+            "source_date": "2025-10-27",
+            "relationship": "claiming_paper",
+            "kdj_rsi_parameters_or_code": "not_provided",
+            "zmr_parameters_or_code": "not_provided",
+            "attributable_to_p1gpt_authors": True,
+            "available_by_p1gpt_v1": True,
+            "native_p1gpt_method_or_result_credit": False,
+            "finding": "Names TradingAgents evaluation protocol but supplies only qualitative baseline descriptions.",
+        },
+        {
+            "source": "TradingAgents arXiv v7 manuscript",
+            "url": "https://arxiv.org/abs/2412.20138v7",
+            "source_date": "2025-06-03",
+            "relationship": "explicitly_cited_protocol_paper",
+            "kdj_rsi_parameters_or_code": "not_provided",
+            "zmr_parameters_or_code": "not_provided",
+            "attributable_to_p1gpt_authors": False,
+            "available_by_p1gpt_v1": True,
+            "native_p1gpt_method_or_result_credit": False,
+            "finding": "Appendix defines indicator families qualitatively without windows, thresholds, equilibrium, or action rules.",
+        },
+        {
+            "source": "TradingAgents official v0.1.0 source",
+            "url": "https://github.com/TauricResearch/TradingAgents/tree/cc97cb6d5deb10eac370db0c6678e2796a62eba8",
+            "source_date": "2025-06-05",
+            "relationship": "nearest_official_source_for_cited_protocol",
+            "kdj_rsi_parameters_or_code": "not_shipped",
+            "zmr_parameters_or_code": "not_shipped",
+            "attributable_to_p1gpt_authors": False,
+            "available_by_p1gpt_v1": True,
+            "native_p1gpt_method_or_result_credit": False,
+            "finding": "Official release contains no baseline implementation, metric code, or paper backtest runner.",
+        },
+        {
+            "source": "later unaffiliated TradingAgents replication",
+            "url": "https://github.com/lucas020695/tradingagents_replicated/tree/e85988694bbd3cbbcf250bd045b1ac16cd870b2f",
+            "source_date": "2025-11-17",
+            "relationship": "rejected_post_paper_third_party_guess",
+            "kdj_rsi_parameters_or_code": "guessed_14_day_RSI_30_70_and_9_day_KDJ_with_placeholder_J",
+            "zmr_parameters_or_code": "guessed_50_day_mean_and_1.5_z_score",
+            "attributable_to_p1gpt_authors": False,
+            "available_by_p1gpt_v1": False,
+            "native_p1gpt_method_or_result_credit": False,
+            "finding": "Postdates P1GPT, is unaffiliated, leaves KDJ J as a placeholder, and contradicts P1GPT's stated SMA windows; excluded from native credit.",
+        },
+    ]
 
 
 def safe_tar_files(path: Path) -> dict[str, bytes]:
@@ -779,12 +958,16 @@ def internal_consistency_checks() -> list[dict[str, Any]]:
 
 
 def discovery_evidence() -> list[dict[str, Any]]:
-    checked = "2026-08-12T18:00:00Z"
+    checked = "2026-08-13T16:30:00Z"
     entries = [
         ("arxiv_v1_pdf_and_source", "https://arxiv.org/abs/2510.23032", "primary_paper_source", "17-page PDF and 12-file manuscript bundle; no operational agent/backtest code", True),
         ("p1gpt_web_demo", "https://github.com/P1GPT/web_demo/tree/a88a3a7c731063d0d1ca7ac15946eb600753f358", "attributable_product_component", "38-file MIT Reflex web client; 22 Python files compile; private /invoke service absent", True),
+        ("p1gpt_web_demo_full_history", "https://github.com/P1GPT/web_demo", "attributable_product_history", "complete non-shallow history has 36 reachable commits across main, develop, and gke/test; no paper-specific or result-pipeline path/content at any revision", True),
         ("organization_attribution", "https://github.com/P1GPT", "attribution_evidence", "organization owns one P1GPT web-demo repository", True),
         ("neurowatt_commit_attribution", "https://github.com/P1GPT/web_demo/commit/a88a3a7c731063d0d1ca7ac15946eb600753f358", "attribution_evidence", "Ray-neurowatt committed with @neurowatt.ai email; paper authors have same affiliation/domain", True),
+        ("cited_tradingagents_paper", "https://arxiv.org/abs/2412.20138v7", "explicitly_cited_protocol_source", "qualitative KDJ+RSI and ZMR descriptions omit windows, thresholds, equilibrium, and action rules", True),
+        ("cited_tradingagents_source", "https://github.com/TauricResearch/TradingAgents/tree/cc97cb6d5deb10eac370db0c6678e2796a62eba8", "official_cited_protocol_source", "nearest official release contains no baseline implementation, metric code, or paper backtest runner", True),
+        ("rejected_later_third_party_guess", "https://github.com/lucas020695/tradingagents_replicated/tree/e85988694bbd3cbbcf250bd045b1ac16cd870b2f", "post_paper_unaffiliated_source", "postdates P1GPT, uses a placeholder KDJ J value and guessed ZMR parameters, and is excluded from native credit", False),
         ("exact_title_repository_search", "https://github.com/search?q=%22multi-agent+LLM+workflow+module%22&type=repositories", "bounded_negative_search", "two bibliography/awesome-list results; no implementation", False),
         ("arxiv_id_code_search", "https://github.com/search?q=%222510.23032%22&type=code", "bounded_negative_search", "18 indexed mentions, none an author implementation", False),
         ("author_email_code_search", "https://github.com/search?q=%22peter%40neurowatt.ai%22&type=code", "bounded_negative_search", "only a paper-text mirror; same for oro/luka addresses", False),
@@ -898,6 +1081,21 @@ prompt is absent, the source sends requests to an unreleased `main-llm` service,
 and the database, agents, backtest, and outputs are not shipped. Committed
 plaintext credentials were neither used nor reproduced here.
 
+The checked archive is not the only revision inspected. A complete non-shallow
+clone contains 36 reachable commits across `main`, `develop`, and `gke/test`.
+Every revision was searched for paper-specific content and backtest, result,
+metric, position, portfolio, and trade paths; none contains the P1GPT experiment.
+
+## Cited baseline-protocol boundary
+
+The paper says its baselines follow TradingAgents. The cited TradingAgents v7
+appendix also describes KDJ+RSI and ZMR only qualitatively, and the nearest
+official v0.1.0 source ships no baseline implementation, metric code, or paper
+backtest. A later unaffiliated repository guesses 14/9-day KDJ+RSI and 50-day,
+1.5-z-score ZMR rules, but it postdates P1GPT, leaves KDJ J as a placeholder,
+and contradicts P1GPT's stated SMA windows. It is recorded and explicitly
+excluded from native-method or result credit.
+
 ## Evidence files
 
 - `paper_version_summary.csv`: pinned primary PDF/source and local identity.
@@ -912,6 +1110,8 @@ plaintext credentials were neither used nor reproduced here.
 - `specification_gaps.csv`: inputs required for exact replay.
 - `internal_consistency.csv`: lookahead, metric, execution, and claim conflicts.
 - `public_source_file_inventory.csv`: all 38 web-client files.
+- `source_history_inventory.csv`: all 36 reachable web-client revisions.
+- `cited_protocol_lineage.csv`: cited official sources and rejected later guess.
 - `public_component_execution.json`: attribution, compile, and private-service boundary.
 - `manuscript_rebuilds.json`: deterministic reconstruction and visual-QA record.
 - `public_source_discovery.csv`: bounded primary-source and GitHub search record.
@@ -923,7 +1123,11 @@ never existed.
 """
 
 
-def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
+def build_audit(
+    audit_root: Path,
+    output_dir: Path,
+    web_demo_history: Path = DEFAULT_WEB_DEMO_HISTORY,
+) -> dict[str, Any]:
     files = paper_sources(audit_root)
     versions = paper_version_summary(audit_root)
     source_inventory = paper_source_inventory(files)
@@ -936,6 +1140,8 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
     gaps = specification_gaps()
     consistency = internal_consistency_checks()
     public_files, public_execution = web_demo_inventory(audit_root)
+    history = source_history_inventory(web_demo_history)
+    protocol = cited_protocol_lineage()
     discovery = discovery_evidence()
     rebuilds = manuscript_rebuild(audit_root)
 
@@ -952,6 +1158,8 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
     write_csv(output_dir / "specification_gaps.csv", gaps)
     write_csv(output_dir / "internal_consistency.csv", consistency)
     write_csv(output_dir / "public_source_file_inventory.csv", public_files)
+    write_csv(output_dir / "source_history_inventory.csv", history)
+    write_csv(output_dir / "cited_protocol_lineage.csv", protocol)
     write_csv(output_dir / "public_source_discovery.csv", discovery)
     write_json(output_dir / "public_component_execution.json", public_execution)
     write_json(output_dir / "manuscript_rebuilds.json", rebuilds)
@@ -997,10 +1205,18 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
         "author_figure_assets": len(figures),
         "author_figure_assets_faithfully_regenerated_from_native_pipeline": 0,
         "attributable_public_repositories": 1,
+        "attributable_public_commits_exhaustively_audited": len(history),
+        "attributable_public_branch_heads_audited": len(WEB_DEMO_HISTORY["branch_heads"]),
+        "historical_revisions_with_native_result_pipeline": sum(
+            row["native_p1gpt_result_pipeline_found"] for row in history
+        ),
         "paper_relevant_public_source_files": len(public_files),
         "public_python_files_compiled": public_execution["python_files_compiled"],
         "public_static_fidelity_tier": public_execution["static_fidelity_tier"],
         "native_result_generation_pipeline_found": False,
+        "cited_protocol_sources_audited": 3,
+        "post_paper_third_party_guesses_rejected": 1,
+        "cited_protocol_kdj_rsi_zmr_parameterizations_recovered": 0,
         "paper_mechanism_dimensions_audited": len(mechanisms),
         "exact_native_paper_mechanism_dimensions_reproduced": 0,
         "material_internal_or_specification_issues": len(consistency),
@@ -1034,6 +1250,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--audit-root", type=Path, default=DEFAULT_AUDIT_ROOT)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument(
+        "--web-demo-history", type=Path, default=DEFAULT_WEB_DEMO_HISTORY
+    )
+    parser.add_argument(
         "--strict",
         action="store_true",
         help="Return nonzero while the full paper remains unreproduced.",
@@ -1043,7 +1262,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    manifest = build_audit(args.audit_root, args.output_dir)
+    manifest = build_audit(args.audit_root, args.output_dir, args.web_demo_history)
     print(json.dumps(manifest, indent=2))
     return 1 if args.strict and not manifest["full_paper_reproduced"] else 0
 

@@ -1,0 +1,37 @@
+repository,commit_index,commit_sha,author_time,author_identity,subject,reachable_branch_heads,tracked_files,candidate_paper_pipeline_paths,paper_specific_content_paths,native_p1gpt_result_pipeline_found,paper_result_credit
+https://github.com/P1GPT/web_demo,1,1140ce0afd741becd43d4e0a91acad4f8d7e35b7,2024-10-14T16:01:18+08:00,jimmyCheng18 <jimmy@neurowatt.ai>,Integrate p1gpt v0.0.3 version,origin/main;origin/develop;origin/gke/test,31,,,False,False
+https://github.com/P1GPT/web_demo,2,40dd73c29218401dd99a90c30d8d9a8a7e098d46,2024-10-24T14:15:12+08:00,wilson <wilson@neurowatt.ai>,fix: improve chat processing and UI responsiveness,origin/main;origin/develop;origin/gke/test,31,,,False,False
+https://github.com/P1GPT/web_demo,3,8269b5e2c08481a0b93f202f6f8df64d619680a0,2024-11-05T14:06:42+08:00,wilson <wilso@neurowatt.ai>,refactor: implement cyclic related questions display,origin/main;origin/develop;origin/gke/test,31,,,False,False
+https://github.com/P1GPT/web_demo,4,8d4ea1208158f36372ecf83d79dfb3bf130ee7fd,2024-11-05T17:48:24+08:00,wilsonNeuroWatt <wilson@neurowatt.ai>,Merge pull request #2 from P1GPT/develop,origin/main;origin/gke/test,31,,,False,False
+https://github.com/P1GPT/web_demo,5,38a9fd4bd224879b8d4db24031437cdfe4a5ce67,2024-11-28T15:11:11+08:00,wilson <wilso@neurowatt.ai>,add : add dockerfile,origin/main;origin/gke/test,35,,,False,False
+https://github.com/P1GPT/web_demo,6,b47617e17008e6c11d72a5b0b29e697016d1bf73,2024-11-28T17:51:50+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : fix dockerfile,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,7,200b3ed613e12611f39e8175411713ef26e4383d,2024-11-29T01:05:26+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : fix Dockerfile,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,8,bc3ef0544e757f74933b9a2c02aa4eebeeb63e57,2024-11-29T01:47:23+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : fix navbar.py,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,9,2d68d92cda0261f85384683d9a1a248f8ffb7729,2024-11-29T02:16:39+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : service.yaml,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,10,512d05ac9f86789424f8912c6ec4986e7b8b6d93,2024-11-29T11:01:52+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : fix rxconfig.py,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,11,767375b1ef3434ad5fcab51b5e07ba18536383b4,2024-11-29T16:09:42+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : service.yaml,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,12,7d27f533cb3be80abd9393970fda5ef21b14418c,2024-11-29T16:56:35+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : buld ID,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,13,b66dbc3e0fb6aae6a7f15ba610a918f63d2a4544,2024-11-29T17:32:25+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : remove backend port,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,14,0b38f801f7e02df7f789569f3542b9996fc3e01b,2024-11-29T17:32:25+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix: fix service.yaml,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,15,8a3cabe3d9524387f5ca973577fec45ff00b01b8,2024-11-30T00:39:17+08:00,Ray-neurowatt <ray@neurowatt.ai>,Merge remote-tracking branch 'origin/main',origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,16,92b7d6889a1e51908132772dbe8127d6bcc96f3e,2024-11-30T01:01:42+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : make tag to latest,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,17,90913e43e84c2ba57df5accf854d04f6b6456eca,2024-11-30T01:09:55+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : change api_url,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,18,3f6d2cf10021b9f2482822e4ef911f8061879efd,2024-12-03T18:48:28+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : update exconfig.py,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,19,9cf8022f964319ed8beb6fbd4b8b9c672778725f,2024-12-04T12:03:04+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : use local sql DB,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,20,bc8e59113d47aa198e5e76e91e6923e050cca29e,2024-12-04T12:25:20+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : remove DB init in Dockerfile,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,21,a4b4840f3eef8a83d265c410e5e7732d543afb64,2024-12-05T12:00:09+08:00,Ray-neurowatt <ray@neurowatt.ai>,test : use default db,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,22,0abaf7d33e85ddc71072422759711d347a33d7ee,2024-12-05T15:10:47+08:00,Ray-neurowatt <ray@neurowatt.ai>,test : use cloudsql connection,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,23,1426ee8a1d2ddfb159e52b464ce426a6e90e651d,2024-12-05T16:41:08+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : update to use cloudsql,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,24,8bcf3d40d461e3cc8b60ab8d9b0f7bbd5b9d965d,2024-12-05T19:11:15+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : fix table schema,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,25,3b1bd5ca8f78d1d82609d94389d9d59fd822651c,2024-12-05T19:52:19+08:00,Ray-neurowatt <ray@neurowatt.ai>,fix : change field to TEXT,origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,26,a88a3a7c731063d0d1ca7ac15946eb600753f358,2024-12-05T21:42:22+08:00,Ray-neurowatt <ray@neurowatt.ai>,"fix : remove ""json"" in gpt.py",origin/main,38,,,False,False
+https://github.com/P1GPT/web_demo,27,aae4af9eabcb504e19cd46fc06536accc73b18a5,2025-01-07T17:27:32+08:00,wilson <wilso@neurowatt.ai>,chore : update thumb up down and icon,origin/gke/test,38,,,False,False
+https://github.com/P1GPT/web_demo,28,154b5260a40114737d24c03d226fa8af890aa1d1,2025-01-07T17:57:17+08:00,Ray-neurowatt <ray@neurowatt.ai>,add : add gke relevant files,origin/gke/test,43,,,False,False
+https://github.com/P1GPT/web_demo,29,8134f8d25120e9aaf71a3573728f8cb150f5e831,2025-01-07T17:58:40+08:00,Ray-neurowatt <ray@neurowatt.ai>,add : add service.yaml,origin/gke/test,44,,,False,False
+https://github.com/P1GPT/web_demo,30,967f675df05dfb83068a5f77a4b052ee2d036a7e,2025-01-10T16:15:15+08:00,Ray-neurowatt <ray@neurowatt.ai>,add : add gke relevant files,origin/gke/test,44,,,False,False
+https://github.com/P1GPT/web_demo,31,f166f03a40e3b7e1818ed4fc81d2756f3096153c,2025-01-16T10:56:47+08:00,Ray-neurowatt <ray@neurowatt.ai>,chore : change main llm route to get_gateway_response,origin/gke/test,44,,,False,False
+https://github.com/P1GPT/web_demo,32,f4bca24791159f5dd04582f3798aeaaca8314737,2025-01-20T12:04:44+08:00,Ray-neurowatt <ray@neurowatt.ai>,chore : update request form,origin/gke/test,45,,,False,False
+https://github.com/P1GPT/web_demo,33,e09f44af9bcd2c6f5aa67c2ac141022e9670ba3f,2025-01-20T17:22:19+08:00,Ray-neurowatt <ray@neurowatt.ai>,chore : update backend host,origin/gke/test,45,,,False,False
+https://github.com/P1GPT/web_demo,34,dc5c24628e59bc52a699eb2d1f464fa82e7c7508,2025-01-22T00:03:07+08:00,Ray-neurowatt <ray@neurowatt.ai>,chore : update gpt.py to delete in milvus,origin/gke/test,45,,,False,False
+https://github.com/P1GPT/web_demo,35,1dcd7ebfdc104f1237b1984628c9f64a8bd8a820,2025-01-22T18:48:15+08:00,Ray-neurowatt <ray@neurowatt.ai>,test : test  api url,origin/gke/test,45,,,False,False
+https://github.com/P1GPT/web_demo,36,82a2437e8a025390bc1dd59abe7bcc2bfd91ca9a,2025-01-23T13:22:35+08:00,Ray-neurowatt <ray@neurowatt.ai>,chore : remove api url and deploy_url,origin/gke/test,45,,,False,False
