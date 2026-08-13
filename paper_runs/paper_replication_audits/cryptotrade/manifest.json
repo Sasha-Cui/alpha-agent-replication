@@ -6,6 +6,10 @@
   "paper_sha256": "376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf",
   "source_url": "https://github.com/Xtra-Computing/CryptoTrade",
   "source_commit": "210da73af5f17992be425e61305524a5c24dae40",
+  "original_anonymous_source_url": "https://anonymous.4open.science/r/CryptoTrade-Public-92FC/",
+  "original_anonymous_source_status_checked_2026_08_13": "http_410_repository_expired",
+  "public_source_history_commits_audited": 11,
+  "public_source_history_result_or_log_paths": 0,
   "paper_result_metric_cells_total": 468,
   "native_deterministic_metric_cells_recomputed": 180,
   "native_deterministic_metric_cells_matched": 174,
@@ -20,6 +24,10 @@
   "traditional_strategy_cells_matched": 174,
   "traditional_strategy_cells_total": 180,
   "traditional_mismatches": "ETH sideways SMA: daily mean and standard deviation; SOL bear SMA: all four displayed metrics",
+  "traditional_mismatches_numerically_diagnosed": 6,
+  "traditional_mismatches_method_faithfully_reproduced": 0,
+  "eth_sideways_sma_cells_duplicating_eth_bear": 2,
+  "sol_bear_sma_cells_matching_undisclosed_period_1": 4,
   "dataset_split_price_cells_matched": 18,
   "dataset_split_price_cells_total": 24,
   "dataset_split_costed_trend_cells_matched": 9,
@@ -42,7 +50,7 @@
   "source_fixed_gas_fee_asset_units": 0.0014700000000000002,
   "source_contains_hardcoded_credential_literal": false,
   "audit_imported_or_used_credential_module": false,
-  "interpretation": "The released market data, native environment, costs, and traditional-signal logic reproduce 174/180 displayed traditional-baseline metric cells. This is strong component evidence, not a full CryptoTrade replication: 288 LLM/time-series cells lack shipped full-period outputs, two traditional rows contain mismatches, validation selection is not implemented as described, and the documented entrypoints are not operational without repair.",
+  "interpretation": "The released market data, native environment, costs, and traditional-signal logic reproduce 174/180 displayed traditional-baseline metric cells. This is strong component evidence, not a full CryptoTrade replication: 288 LLM/time-series cells lack shipped full-period outputs, the six deterministic residuals have numeric but not method-faithful explanations, validation selection is not implemented as described, and the documented entrypoints are not operational without repair.",
   "source_file_sha256": {
     "README.md": "af3e98ec66435814f195919abc1b0c6523b7aec02b93e10878c53de3159ade80",
     "env_history.py": "78cbc77b5c11ce024638a41f76f48a513a12b38c9d657431b3f76a3efcd8a7ab",
@@ -54,12 +62,14 @@
     "utils.py": "5c178dce5994e0914a94166e2e74e5f0cbae10fab945fd2eb3f5eb5ebe689abe"
   },
   "output_sha256": {
-    "README.md": "ac68f6185670e59b20205fb25bc427d589983ec1fe84cde09d9b56709945d4f9",
+    "README.md": "6a085784e3ee2cb8935ee61d56a912f253bdd87f28cc6e65c583c77da74f54de",
     "data_inventory.csv": "501a90ede31d0ac67d9a482c7ad7bf9d6685497ccbd14b57d014512e39bb56fe",
     "dataset_split_conformance.csv": "81dba3dd5937ba27f9490d704b18f7809fed894a8d1b4720c5ca87241924beb3",
     "paper_internal_inconsistencies.csv": "4ad53b6da5931870caf19bdbedaa7fa0fee0d442285d7520367c5fa5a628357c",
     "parameter_selection_audit.csv": "2b92244cb0ce9c371d8b6b7e989d02e359993e2c5b935abfc1584da8ced75202",
     "source_execution_gaps.csv": "36493c80d515c9be969b214b8f13ac688a421244b0e6c419fab1cc73cec6102c",
-    "tables_2_4_conformance.csv": "33099c9be39d175b9c05f2d612a741b1ed64b74ad629407802cdb7c41629535e"
+    "source_history_inventory.csv": "d7c8bc62e33b8eefa57806fc860525c253ac8ce3ad724148164d2b139220b238",
+    "tables_2_4_conformance.csv": "33099c9be39d175b9c05f2d612a741b1ed64b74ad629407802cdb7c41629535e",
+    "traditional_mismatch_diagnosis.csv": "4f52b77a6193876313ff580a97e77ad37ca2328858dedc680f495e794eb6375f"
   }
 }

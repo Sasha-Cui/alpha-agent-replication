@@ -405,9 +405,13 @@ ARTIFACT_NOTES = {
         "Y",
         "The README ships a dated one-step ETH action/ROI example. A pinned paper-level "
         "audit additionally recomputes 174/180 displayed deterministic traditional-baseline "
-        "cells (43/45 complete rows) from the native crypto data and environment, but no "
-        "full-period LLM or time-series result paths are shipped. The evidence remains "
-        "crypto rather than six-country equity output.",
+        "cells (43/45 complete rows) from the native crypto data and environment. The six "
+        "residual cells are numerically diagnosed but receive no method-faithful credit: two "
+        "ETH-sideways daily statistics duplicate ETH-bear, while four SOL-bear cells require "
+        "a 1-day SMA outside the disclosed and released [5,10,15,20,30] grid. The originally "
+        "cited anonymous repository has expired, and all 11 successor GitHub commits contain "
+        "no result/log path; 288 full-period LLM or time-series cells remain unverifiable. "
+        "The evidence remains crypto rather than six-country equity output.",
     ),
     "SYS-FIN-CON": (
         "N",

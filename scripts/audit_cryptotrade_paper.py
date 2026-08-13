@@ -29,9 +29,12 @@ import pandas as pd
 
 
 SOURCE_COMMIT = "210da73af5f17992be425e61305524a5c24dae40"
+SOURCE_ROOT_COMMIT = "750df03512a9263512bc782bc28e602ab74243f7"
+SOURCE_COMMIT_COUNT = 11
 PAPER_SHA256 = "376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf"
 PAPER_URL = "https://aclanthology.org/2024.emnlp-main.63.pdf"
 SOURCE_URL = "https://github.com/Xtra-Computing/CryptoTrade"
+ORIGINAL_ANONYMOUS_SOURCE_URL = "https://anonymous.4open.science/r/CryptoTrade-Public-92FC/"
 DISPLAY_TOLERANCE = 0.005 + 1e-12
 METRICS = (
     "total_return_pct",
@@ -145,6 +148,54 @@ def git_head(root: Path) -> str:
         capture_output=True,
         text=True,
     ).stdout.strip()
+
+
+def git(root: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def source_history_inventory(source_root: Path) -> List[Dict[str, Any]]:
+    """Inventory the complete public history and any preserved result-like files."""
+    if git(source_root, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise RuntimeError("CryptoTrade source history is shallow; fetch it before auditing")
+    commits = git(source_root, "rev-list", "--reverse", "HEAD").splitlines()
+    if len(commits) != SOURCE_COMMIT_COUNT:
+        raise RuntimeError(f"Expected {SOURCE_COMMIT_COUNT} public commits, found {len(commits)}")
+    if commits[0] != SOURCE_ROOT_COMMIT or commits[-1] != SOURCE_COMMIT:
+        raise RuntimeError("CryptoTrade public-history endpoints changed")
+
+    rows: List[Dict[str, Any]] = []
+    for commit in commits:
+        authored_at, subject = git(
+            source_root, "show", "-s", "--format=%aI%x09%s", commit
+        ).rstrip("\n").split("\t", 1)
+        paths = git(source_root, "ls-tree", "-r", "--name-only", commit).splitlines()
+        result_paths = [
+            path
+            for path in paths
+            if path.lower().endswith((".out", ".log"))
+            or any(part in {"log", "logs", "output", "outputs", "result", "results"}
+                   for part in path.lower().split("/"))
+        ]
+        rows.append(
+            {
+                "commit": commit,
+                "authored_at": authored_at,
+                "subject": subject,
+                "tracked_paths": len(paths),
+                "result_or_log_paths": len(result_paths),
+                "result_or_log_inventory": ";".join(result_paths),
+                "run_baseline_present": "run_baseline.py" in paths,
+            }
+        )
+    if any(row["result_or_log_paths"] for row in rows):
+        raise RuntimeError("CryptoTrade public history unexpectedly contains result/log paths")
+    return rows
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequence[str]) -> None:
@@ -432,6 +483,77 @@ def parameter_selection_audit(
     return rows
 
 
+def mismatch_diagnosis(
+    environment_module: Any,
+    source_root: Path,
+    conformance: Sequence[Mapping[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Trace all six residual deterministic cells without granting invalid credit."""
+    paper_rows = paper_result_rows()
+    paper = {
+        (row["asset"], row["strategy"], row["regime"], row["metric"]): row["paper_value"]
+        for row in paper_rows
+    }
+    diagnosed: List[Dict[str, Any]] = []
+    released_periods = list(environment_module.SMA_PERIODS)
+    environment_module.SMA_PERIODS = [1, *released_periods]
+    try:
+        for row in conformance:
+            if row["status"] != "mismatch":
+                continue
+            asset = str(row["asset"])
+            regime = str(row["regime"])
+            metric = str(row["metric"])
+            start, end, *_ = PAPER_SPLITS[asset][regime]
+            outside_grid = source_simulation(
+                environment_module, source_root, asset, start, end, "sma", 1
+            )[metric]
+            outside_match = abs(float(row["paper_value"]) - outside_grid) <= DISPLAY_TOLERANCE
+            duplicated_from = ""
+            classification = "unexplained_after_released_grid_and_history_search"
+            numeric_lineage = "none"
+            if asset == "eth" and regime == "sideways" and metric in {
+                "daily_return_mean_pct", "daily_return_std_pct"
+            }:
+                bear_value = paper[("eth", "sma", "bear", metric)]
+                if bear_value != float(row["paper_value"]):
+                    raise RuntimeError("ETH-sideways copy-pattern diagnosis changed")
+                duplicated_from = f"eth|sma|bear|{metric}"
+                classification = "exact_duplicate_of_eth_bear_paper_cell"
+                numeric_lineage = "paper_internal_copy_pattern"
+            elif asset == "sol" and regime == "bear" and outside_match:
+                classification = "exact_period_1_sma_match_outside_disclosed_and_released_grid"
+                numeric_lineage = "released_data_counterfactual_not_method_faithful"
+            diagnosed.append(
+                {
+                    "asset": asset,
+                    "strategy": row["strategy"],
+                    "regime": regime,
+                    "metric": metric,
+                    "paper_value": row["paper_value"],
+                    "released_fixed_15_value": row["source_recomputed_value"],
+                    "period_1_counterfactual_value": outside_grid,
+                    "period_1_display_match": "yes" if outside_match else "no",
+                    "duplicated_paper_cell": duplicated_from,
+                    "classification": classification,
+                    "numeric_lineage": numeric_lineage,
+                    "method_faithful_replication_credit": "no",
+                }
+            )
+    finally:
+        environment_module.SMA_PERIODS = released_periods
+    counts = {
+        "paper_copy": sum(row["numeric_lineage"] == "paper_internal_copy_pattern" for row in diagnosed),
+        "outside_grid": sum(
+            row["numeric_lineage"] == "released_data_counterfactual_not_method_faithful"
+            for row in diagnosed
+        ),
+    }
+    if len(diagnosed) != 6 or counts != {"paper_copy": 2, "outside_grid": 4}:
+        raise RuntimeError(f"CryptoTrade residual diagnosis changed: {counts}")
+    return diagnosed
+
+
 def _date_bounds(path: Path, column: str, date_format: str) -> Tuple[str, str, int]:
     frame = pd.read_csv(path)
     dates = pd.to_datetime(frame[column], format=date_format, errors="raise")
@@ -580,9 +702,11 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         raise RuntimeError("Official paper PDF hash does not match the pinned primary source")
 
     environment_module = load_environment(source_root)
+    history = source_history_inventory(source_root)
     conformance, reproduced = result_conformance(environment_module, source_root)
     splits = split_conformance(environment_module, source_root, reproduced)
     selection = parameter_selection_audit(environment_module, source_root, conformance)
+    diagnosis = mismatch_diagnosis(environment_module, source_root, conformance)
     inventory = data_inventory(source_root)
     gaps = source_execution_gaps(source_root)
 
@@ -590,6 +714,8 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     write_csv(output_dir / "tables_2_4_conformance.csv", conformance, list(conformance[0]))
     write_csv(output_dir / "dataset_split_conformance.csv", splits, list(splits[0]))
     write_csv(output_dir / "parameter_selection_audit.csv", selection, list(selection[0]))
+    write_csv(output_dir / "traditional_mismatch_diagnosis.csv", diagnosis, list(diagnosis[0]))
+    write_csv(output_dir / "source_history_inventory.csv", history, list(history[0]))
     write_csv(output_dir / "data_inventory.csv", inventory, list(inventory[0]))
     write_csv(output_dir / "source_execution_gaps.csv", gaps, list(gaps[0]))
     paper_inconsistencies = (
@@ -633,6 +759,10 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "paper_sha256": PAPER_SHA256,
         "source_url": SOURCE_URL,
         "source_commit": commit,
+        "original_anonymous_source_url": ORIGINAL_ANONYMOUS_SOURCE_URL,
+        "original_anonymous_source_status_checked_2026_08_13": "http_410_repository_expired",
+        "public_source_history_commits_audited": len(history),
+        "public_source_history_result_or_log_paths": sum(row["result_or_log_paths"] for row in history),
         "paper_result_metric_cells_total": len(conformance),
         "native_deterministic_metric_cells_recomputed": deterministic,
         "native_deterministic_metric_cells_matched": matched,
@@ -649,6 +779,10 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "traditional_mismatches": (
             "ETH sideways SMA: daily mean and standard deviation; SOL bear SMA: all four displayed metrics"
         ),
+        "traditional_mismatches_numerically_diagnosed": len(diagnosis),
+        "traditional_mismatches_method_faithfully_reproduced": 0,
+        "eth_sideways_sma_cells_duplicating_eth_bear": 2,
+        "sol_bear_sma_cells_matching_undisclosed_period_1": 4,
         "dataset_split_price_cells_matched": split_price_matches,
         "dataset_split_price_cells_total": len(splits) * 2,
         "dataset_split_costed_trend_cells_matched": split_trend_matches,
@@ -680,9 +814,9 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             "The released market data, native environment, costs, and traditional-signal logic "
             "reproduce 174/180 displayed traditional-baseline metric cells. This is strong "
             "component evidence, not a full CryptoTrade replication: 288 LLM/time-series cells "
-            "lack shipped full-period outputs, two traditional rows contain mismatches, validation "
-            "selection is not implemented as described, and the documented entrypoints are not "
-            "operational without repair."
+            "lack shipped full-period outputs, the six deterministic residuals have numeric but "
+            "not method-faithful explanations, validation selection is not implemented as described, "
+            "and the documented entrypoints are not operational without repair."
         ),
         "source_file_sha256": {
             name: sha256(source_root / name)
@@ -730,15 +864,19 @@ full-period LLM results or the five time-series baselines.
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
 - SOL-bear SMA is the larger mismatch: the paper reports +1.04% return,
-  0.02+/-0.10 daily return, and 0.16 Sharpe, while every released SMA window loses
-  between 17.77% and 22.19%; the runner's fixed 15-day window produces -17.77%,
-  -0.28+/-2.00, and -0.14.
+  0.02+/-0.10 daily return, and 0.16 Sharpe. Those four cells exactly reproduce
+  with a 1-day moving average, but the paper and source both define the candidate
+  grid as [5, 10, 15, 20, 30]; every disclosed candidate loses 17.77%--22.19%.
+  The numeric lineage is therefore diagnosed without claiming faithful replication.
 
 ## Why this is not a full reproduction
 
 - {unverifiable}/{len(conformance)} paper result cells are unverifiable: no complete
   GPT-3.5-turbo, GPT-4, or GPT-4o result paths are shipped, and the README contains
   only the first ETH-bull GPT-4 step rather than the paper's full-period result.
+- The original paper URL points to an anonymous 4open artifact that now returns
+  HTTP 410 (`repository_expired`). All {len(history)} commits in the successor
+  public GitHub history were inspected; none preserves a result or log path.
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
   on the full requested interval, and ships no result path.

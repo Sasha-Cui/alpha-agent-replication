@@ -61,6 +61,8 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     conformance = read_csv(output / "tables_2_4_conformance.csv")
     selection = read_csv(output / "parameter_selection_audit.csv")
+    diagnosis = read_csv(output / "traditional_mismatch_diagnosis.csv")
+    history = read_csv(output / "source_history_inventory.csv")
 
     assert manifest["overall_status"] == "partial_reproduction_traditional_baselines_only"
     assert manifest["full_paper_reproduced"] is False
@@ -76,6 +78,9 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert manifest["full_period_time_series_result_logs_shipped"] is False
     assert manifest["source_contains_hardcoded_credential_literal"] is False
     assert manifest["audit_imported_or_used_credential_module"] is False
+    assert manifest["original_anonymous_source_status_checked_2026_08_13"] == "http_410_repository_expired"
+    assert manifest["public_source_history_commits_audited"] == 11
+    assert manifest["public_source_history_result_or_log_paths"] == 0
 
     assert len(conformance) == 468
     statuses = Counter(row["status"] for row in conformance)
@@ -96,6 +101,23 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
         "daily_return_mean_pct",
         "daily_return_std_pct",
     }
+
+    assert len(diagnosis) == 6
+    assert Counter(row["numeric_lineage"] for row in diagnosis) == {
+        "released_data_counterfactual_not_method_faithful": 4,
+        "paper_internal_copy_pattern": 2,
+    }
+    assert all(row["method_faithful_replication_credit"] == "no" for row in diagnosis)
+    sol_diagnosis = [row for row in diagnosis if row["asset"] == "sol"]
+    assert all(row["period_1_display_match"] == "yes" for row in sol_diagnosis)
+    eth_diagnosis = [row for row in diagnosis if row["asset"] == "eth"]
+    assert all(row["duplicated_paper_cell"].startswith("eth|sma|bear|") for row in eth_diagnosis)
+
+    assert len(history) == 11
+    assert history[0]["commit"] == audit.SOURCE_ROOT_COMMIT
+    assert history[-1]["commit"] == audit.SOURCE_COMMIT
+    assert all(row["result_or_log_paths"] == "0" for row in history)
+    assert sum(row["run_baseline_present"] == "True" for row in history) == 8
 
     assert len(selection) == 6
     assert Counter(row["status"] for row in selection) == {

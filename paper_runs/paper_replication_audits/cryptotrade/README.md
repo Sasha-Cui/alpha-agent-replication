@@ -22,15 +22,19 @@ full-period LLM results or the five time-series baselines.
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
 - SOL-bear SMA is the larger mismatch: the paper reports +1.04% return,
-  0.02+/-0.10 daily return, and 0.16 Sharpe, while every released SMA window loses
-  between 17.77% and 22.19%; the runner's fixed 15-day window produces -17.77%,
-  -0.28+/-2.00, and -0.14.
+  0.02+/-0.10 daily return, and 0.16 Sharpe. Those four cells exactly reproduce
+  with a 1-day moving average, but the paper and source both define the candidate
+  grid as [5, 10, 15, 20, 30]; every disclosed candidate loses 17.77%--22.19%.
+  The numeric lineage is therefore diagnosed without claiming faithful replication.
 
 ## Why this is not a full reproduction
 
 - 288/468 paper result cells are unverifiable: no complete
   GPT-3.5-turbo, GPT-4, or GPT-4o result paths are shipped, and the README contains
   only the first ETH-bull GPT-4 step rather than the paper's full-period result.
+- The original paper URL points to an anonymous 4open artifact that now returns
+  HTTP 410 (`repository_expired`). All 11 commits in the successor
+  public GitHub history were inspected; none preserves a result or log path.
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
   on the full requested interval, and ships no result path.
