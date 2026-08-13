@@ -1,0 +1,12 @@
+check,denominator,successes,passed,evidence,boundary
+news_car_row_alignment,64326,64326,True,timestamp and company match row by row,"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+post_car_definition,62462,62462,True,post_car equals CAR(20)-CAR(0) within 1e-14,"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+jsonl_raw_record_linkage,31999,31999,True,timestamp/company and exact CAR recover a released raw pair,"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+jsonl_event_type_labels,31999,31999,True,ground_truth event type equals released expert label,"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+jsonl_direction_labels,31999,31999,True,ground_truth direction equals sign(post_car),"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+jsonl_strength_labels,31999,31999,True,ground_truth strength equals abs(post_car)>0.0015,"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+train_assistant_outputs_present,20000,20000,True,filled SFT response,"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+validation_assistant_outputs_present,6000,6000,True,filled SFT response,"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+test_assistant_outputs_empty,5999,5999,True,test response field is blank,"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+event_type_cardinality,10,10,True,"{""个人言行"": 207, ""分红送转"": 2436, ""股权变动"": 14801, ""融资"": 5809, ""行业"": 2336, ""评级调整"": 574, ""财务状况"": 22711, ""资产变动"": 10244, ""违法违规"": 4295, ""风险警示与消除"": 913}","released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"
+unique_stock_codes_in_news,5282,5282,True,matches paper's stated universe count,"released-data integrity check; not proof of annotation quality, CAR factor construction, model training, or trading execution"

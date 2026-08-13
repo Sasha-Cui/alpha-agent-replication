@@ -1,0 +1,23 @@
+dimension,status,detail
+official paper/source,complete,arXiv v1 PDF and complete 23-file source archive pinned; 16 official and rebuilt pages visually inspected
+attributable release,static_outputs_and_data,"first-author repository commit, live project page, eight JSON outputs, figures, prompts and six dataset files pinned"
+native implementation,not_released,"paper-linked 4open archive is expired; first-author repository history contains only a static website and outputs, no training or backtest code"
+license,missing,"no license was observed for the project repository, project page, or Drive dataset"
+base model,missing,Janus-Q backbone/checkpoint and immutable revision are not named
+SFT setup,partial,"LoRA and optimizer grid/settings are printed, but selected epoch, GPU count, target modules, seed, code and checkpoint are absent"
+GRPO setup,grid_only,"ranges are printed without selected configuration, seed, environment, trainer implementation or checkpoint"
+reward model,equations_partial_parameters_missing,"reward hierarchy is described, but tau/kappa/rho/alpha/sigma/lambda/weights and process-reward implementation are absent; released labels reveal tau=0.0015 only"
+reward pseudocode consistency,conflicting,active algorithm does not gate PnL on strength and omits the separately described strength regularization/gate penalty
+raw news/labels,substantially_released,"64,326 event-stock rows, 62,265 unique NEWS_IDs, 10 event labels and news bodies/links are available"
+annotation protocol,partial,"six professionals are mentioned, but per-item annotator IDs, agreement, adjudication and quality records are absent"
+CAR arrays,derived_arrays_released,"41-day CAR series and post_car are released, but Tushare rows, benchmark mapping, CNE5 exposures/factor returns and construction code are absent"
+company profiles,partial,code/name/industry are released; paper-mentioned market share is absent
+JSONL examples/prompts,substantially_released,"31,999 system/user/assistant records and ground truth are released; test assistants are blank"
+split boundaries,contradictory,"JSONL intraday endpoints cross the calendar-day ranges printed in the paper; released total is 31,999 rather than nominal 32,000"
+baseline models,names_only,"model names are printed without exact prompts, API/model revisions, decoding, raw responses or serving logs"
+backtest timing,partial,"collection window, next-open entry and subsequent-two-day close exit are described"
+portfolio construction,partial,"event-type weighting and within-type equal weighting are described without budget, leverage, overlap/conflict handling, eligibility, missing-price rules or trade ledger"
+costs/execution,missing_for_backtest,"reward transaction cost kappa is symbolic; actual backtest fees, slippage, shorting, corporate actions and fills are absent"
+published output arrays,substantial_but_incomplete,"17 NAV series, accuracies, unified metrics, event weights and holding-period arrays released; MAE/RMSE, ablations, predictions, orders and returns generator absent"
+seeds/run lineage,missing,"no seeds, run IDs, experiment logs, model outputs, checkpoint hashes or repeated-run distribution"
+compute/environment,missing,"no dependency lock, container, hardware allocation, runtime log or executable runner"

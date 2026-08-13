@@ -1,0 +1,11 @@
+event_type,prompt_mean_car,raw_cutoff_mean_car,prompt_mean_abs_car,raw_cutoff_mean_abs_car,both_values_match,simple_cutoff
+个人言行,-0.0034,-0.0034,0.0197,0.0197,True,released rows strictly before 2023-10-25 with finite post_car
+分红送转,+0.0010,+0.0010,0.0253,0.0253,True,released rows strictly before 2023-10-25 with finite post_car
+股权变动,+0.0003,+0.0003,0.0287,0.0287,True,released rows strictly before 2023-10-25 with finite post_car
+融资,-0.0005,-0.0005,0.0243,0.0243,True,released rows strictly before 2023-10-25 with finite post_car
+行业,+0.0007,+0.0009,0.0243,0.0242,False,released rows strictly before 2023-10-25 with finite post_car
+评级调整,+0.0025,+0.0025,0.0194,0.0194,True,released rows strictly before 2023-10-25 with finite post_car
+财务状况,+0.0005,+0.0005,0.0255,0.0255,True,released rows strictly before 2023-10-25 with finite post_car
+资产变动,+0.0001,+0.0001,0.0257,0.0257,True,released rows strictly before 2023-10-25 with finite post_car
+违法违规,-0.0018,-0.0020,0.0308,0.0306,False,released rows strictly before 2023-10-25 with finite post_car
+风险警示与消除,-0.0265,-0.0271,0.0511,0.0517,False,released rows strictly before 2023-10-25 with finite post_car

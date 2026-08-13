@@ -1,0 +1,15 @@
+check,status,detail
+dataset_headline,conflict,"paper says 62,400 articles; release has 62,265 unique NEWS_IDs and 64,326 event-stock rows"
+jsonl_total,off_by_one,"released train/validation/test sizes are 20,000/6,000/5,999 = 31,999"
+split_dates,conflict,"released train extends into Aug 28 and validation into Nov 12, while paper ends those splits Aug 27 and Nov 11"
+project_model_count,conflict,"project page prose says 20 models; summary JSON, NAV, and main table contain 17 series/rows including indices"
+csi1000_sharpe,direct_contradiction,paper prints -0.1036; author output and released NAV independently yield -1.0360
+historical_event_statistics,partially_unreconciled,3/10 event types (6/20 displayed mean/absolute-mean values) differ from a simple released-row historical cutoff
+nav_start,one_day_difference,"paper caption begins Nov 12, 2024; released NAV starts Nov 13, plausibly the first tradable observation but unreconciled"
+test_and_backtest_end,unreconciled_extension,test news ends Jan 25 while backtest/NAV ends Feb 6; a holding/price extension is plausible but not formally joined
+sharpe_formula,incomplete,paper prints E[r]/sigma_r without annualization; released output uses population standard deviation times sqrt(252)
+holding_csi300,conflict,holding-period JSON calls CSI 300 unchanged but its TR/SR differ from the main released backtest
+reward_strength_gate,method_conflict,prose activates PnL only for strong signals; active algorithm applies it after direction gating without a strength condition
+reward_regularization,method_conflict,strength regularization/gate penalties are described or present in commented pseudocode but omitted from the active aggregate algorithm
+sharpe_improvement_claim,rounding_overstatement,"1.3088 versus 0.6481 is a 101.94% relative increase, not strictly above 102.0%"
+source_project_link,commented_but_attributable,the exact live project URL is commented out in TeX; first-author repository history and matching assets corroborate attribution

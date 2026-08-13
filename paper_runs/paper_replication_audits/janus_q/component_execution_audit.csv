@@ -1,0 +1,5 @@
+component,controlled_output,deterministic_control_passed,parameters_are_control_values_not_paper_settings,paper_derived_not_author_code,author_native_pipeline_executed,published_result_regenerated,paper_result_credit,boundary
+direction_and_strength_labels,"{""direction"": ""negative"", ""strength"": ""strong""}",True,True,True,False,False,False,controlled equation check only; missing paper parameters prevent native reward reproduction
+single_event_pnl,"{""negative_direction_payoff"": 0.0105}",True,True,True,False,False,False,controlled equation check only; missing paper parameters prevent native reward reproduction
+event_discount_and_clip,"{""discounted_clipped_pnl"": 0.00525}",True,True,True,False,False,False,controlled equation check only; missing paper parameters prevent native reward reproduction
+magnitude_reward,"{""reward"": 0.8187307530779818}",True,True,True,False,False,False,controlled equation check only; missing paper parameters prevent native reward reproduction

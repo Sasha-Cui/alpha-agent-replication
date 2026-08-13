@@ -1,0 +1,7 @@
+file,sha256,bytes,records,secondary_count,minimum_timestamp,maximum_timestamp,schema_or_scope
+news_with_label.csv,6bf5983de36df3fe1712e738cd5317904c0acec504c3f4a124b989f6a0be2871,42367572,64326,62265,2023-01-01 11:46:11,2025-01-25 00:17:12,"64,326 event-stock rows; 62,265 unique NEWS_IDs"
+stock_CAR_series.csv,e58dbdc1ac84b9c935fc8e9cbb75eae894cb6d253fb73a712a5f7ca63e9e9393,58048590,64326,62462,2023-01-01 11:46:11,2025-01-25 00:17:12,"44 columns; 62,462 finite post_car labels"
+stock_industry_profile.csv,4c04904dcce406bc1b85f90bea056ee53f2e1e293debbc2eac9e21b489047e9f,193901,5500,5500,,,"5,500 code rows; 380 industries"
+train.jsonl,fa5e8c188629228ac256142509446f391675e50dea305da5347290ad918d3883,116571316,20000,20000,2023-10-25 14:48:23,2024-08-28 18:12:17,three messages plus structured ground_truth
+val.jsonl,a32c2e183b9d0cc01f8e611e5dae5214a9ab3971c4ffe6b1aa8e333a8779aeb1,35566094,6000,6000,2024-08-28 18:14:13,2024-11-12 17:42:25,three messages plus structured ground_truth
+test.jsonl,f35692c4adf6d77f4977324fc82b0e6b18ef8f42c7e8ac08613deeae6a5b1b6f,24556735,5999,5999,2024-11-12 17:46:24,2025-01-25 00:17:12,assistant content intentionally empty
