@@ -539,6 +539,27 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-TRUST-TRADE": (
+        "A pinned TrustTrade audit rebuilds the 24-page arXiv-v1 source above "
+        "99.90% extracted-token overlap and visually checks all 24 official and "
+        "rebuilt pages. The active paper has no numeric result table and 0/26 "
+        "empirical figure panels reproduce author-natively. The paper's code link "
+        "points only to a 31-repository lab organization; five bounded exact "
+        "repository/code searches find no identifiable TrustTrade implementation. "
+        "The three paper-linked Netlify deployments are substantial but narrower "
+        "author-attributable evidence: their source maps expose all 847 source "
+        "contents, the exact six-stage human protocol, and 183 GPT-4o-mini stock-day "
+        "records. An executable interface/baseline replay matches 1/12 cells in an "
+        "inactive source table under the production loader plus literal paper return "
+        "notation; explicit convention sensitivities match 3/12 or 7/12. None is a "
+        "TrustTrade result. The inputs also expose material validity defects: 68/183 "
+        "stock-days mention post-2024 years, including realized Q3-2025 revenue and "
+        "January-2026 valuation facts, while four open-by-default reports retain a "
+        "FINAL TRANSACTION PROPOSAL despite the paper's removal claim. No participant "
+        "outputs, selective-consensus/temporal/memory implementation, exact model "
+        "calls, 2026 traces, decisions, fills, NAV paths, baseline outputs, or raw "
+        "plot arrays are public."
+    ),
     "SYS-BLIND-TRADE": (
         "A pinned BlindTrade audit rebuilds the 18-page arXiv-v1 source at 99.90% "
         "extracted-token overlap and visually checks all 18 official and rebuilt "
@@ -983,6 +1004,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-TRUST-TRADE": "paper_audit:completed_three_paper_linked_interfaces_183_stock_days_one_of_12_strict_inactive_baseline_cells_zero_of_26_native_panels_no_attributable_trusttrade_pipeline",
     "SYS-BLIND-TRADE": "paper_audit:completed_six_of_98_current_passive_benchmark_cells_zero_author_native_zero_of_9_empirical_panels_four_prompts_zero_valid_json_no_attributable_pipeline",
     "SYS-FACTOR-ENGINE": "paper_audit:completed_zero_of_276_table_units_zero_of_8_empirical_panels_one_of_two_printed_factor_programs_executes_one_unattributable_candidate",
     "SYS-ALPHA-LOGICS": "paper_audit:completed_zero_of_158_table_units_zero_of_204_figure_markers_zero_of_18_empirical_panels_two_paper_derived_algorithm_checks_three_unattributable_candidates",
