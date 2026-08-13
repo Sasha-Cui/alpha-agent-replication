@@ -156,7 +156,9 @@ ARTIFACT_NOTES = {
         "control, LLM prompting and repair, leakage checks, factor evaluation, reward "
         "ensembling, mutation, and reports; it declares no license. In a dedicated "
         "Python 3.10 environment, all 9 author tests, installation, bytecode compilation, "
-        "and CLI help pass. The deterministic demo completes three rounds and 48 plans "
+        "and CLI help pass. The complete two-commit public history was checked; the "
+        "second revision only changes documentation and adds a method diagram, and "
+        "neither revision contains a paper-result artifact. The deterministic demo completes three rounds and 48 plans "
         "but uses a SHA-derived mock evaluator. The literal Appendix factor executes at "
         "periods 20 and 100 on a controlled synthetic panel with no reported leakage "
         "violations and a finite reward. These are component checks, not paper outputs. "
@@ -1341,7 +1343,7 @@ TARGETED_EXECUTION = {
     "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_cited_same_author_stocksim_four_component_checks_missing_atlas_lineage",
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
-    "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage",
+    "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_full_two_commit_history_nine_tests_appendix_component_missing_research_lineage",
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_six_component_checks_broken_default_launcher_missing_research_lineage",
     "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions",
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_one_linked_input_one_date_prompt_zero_of_953_table_cells_no_author_native_pipeline",

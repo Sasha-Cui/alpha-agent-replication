@@ -70,6 +70,25 @@ def test_repository_is_directly_attributable_without_inventing_license() -> None
     assert provenance["release_boundary"]["attribution_strength"] == (
         "direct_manuscript_link_and_first_author_owner"
     )
+    assert provenance["release_boundary"]["full_public_history_audited"] is True
+    assert provenance["release_boundary"]["public_history_commits"] == 2
+    assert provenance["release_boundary"]["historical_unclassified_result_artifact_paths"] == 0
+
+
+def test_complete_public_history_has_no_latent_result_artifact() -> None:
+    history = rows("released_source_history_inventory.csv")
+    assert len(history) == 2
+    assert history[0]["commit"] == audit.REPOSITORY_ROOT
+    assert history[-1]["commit"] == audit.REPOSITORY_HEAD
+    assert [int(row["tracked_paths"]) for row in history] == [29, 32]
+    assert [int(row["python_paths"]) for row in history] == [16, 16]
+    assert {row["schema_or_config_json_paths"] for row in history} == {"6"}
+    assert {row["unclassified_result_artifact_paths"] for row in history} == {"0"}
+    assert {row["paper_result_artifact_found"] for row in history} == {"False"}
+    data = manifest()
+    assert data["repository_history_commits_audited"] == 2
+    assert data["repository_history_unclassified_result_artifact_paths"] == 0
+    assert data["repository_history_paper_result_artifacts_found"] == 0
 
 
 def test_author_tests_demo_and_appendix_component_have_no_result_credit() -> None:
@@ -175,6 +194,7 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
     for marker in (
         "direct rather than inferred",
         "passes all 9 author tests",
+        "complete non-shallow public history has only two commits",
         "0/212 published numeric table units",
         "0/9 empirical panels regenerated",
         "not a true reproduction",

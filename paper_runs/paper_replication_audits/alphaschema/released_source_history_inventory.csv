@@ -1,0 +1,3 @@
+commit,authored_at,subject,tracked_paths,python_paths,schema_or_config_json_paths,unclassified_result_artifact_paths,paper_result_artifact_found
+db11e667b08a0d0d6ce0609cdc6c2c9c804ca4cb,2026-07-29T14:38:59+08:00,Initial open-source AlphaSchema implementation,29,16,6,0,False
+1206a094abfaad7cc53e6dff39f8fae43e851acb,2026-07-29T16:06:41+08:00,docs: refresh bilingual README and add method figure,32,16,6,0,False

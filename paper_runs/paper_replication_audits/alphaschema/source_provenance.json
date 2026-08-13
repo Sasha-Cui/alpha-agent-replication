@@ -110,6 +110,9 @@
     "complete_research_data_recovered": false,
     "component_execution_completed": true,
     "default_end_to_end_launcher_operational": false,
+    "full_public_history_audited": true,
+    "historical_unclassified_result_artifact_paths": 0,
+    "public_history_commits": 2,
     "published_result_lineage_recovered": false,
     "runtime_source_recovered": true
   },

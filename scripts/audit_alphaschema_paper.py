@@ -6,6 +6,7 @@ import argparse
 import csv
 import hashlib
 import json
+import subprocess
 import tarfile
 import zipfile
 from pathlib import Path, PurePosixPath
@@ -20,6 +21,18 @@ SYSTEM_ID = "SYS-ALPHA-SCHEMA"
 ARXIV_ID = "2607.26642"
 REPOSITORY_URL = "https://github.com/JingyangYi/AlphaSchema"
 REPOSITORY_HEAD = "1206a094abfaad7cc53e6dff39f8fae43e851acb"
+REPOSITORY_ROOT = "db11e667b08a0d0d6ce0609cdc6c2c9c804ca4cb"
+REPOSITORY_COMMIT_COUNT = 2
+RESULT_PATH_PARTS = {
+    "action", "actions", "checkpoint", "checkpoints", "experiment", "experiments",
+    "fill", "fills", "holding", "holdings", "log", "logs", "output", "outputs",
+    "prediction", "predictions", "result", "results", "run", "runs", "signal",
+    "signals", "trial", "trials",
+}
+RESULT_ARTIFACT_SUFFIXES = (
+    ".ckpt", ".csv", ".jsonl", ".npy", ".npz", ".parquet", ".pickle", ".pkl",
+    ".pt", ".pth", ".safetensors", ".xls", ".xlsx",
+)
 
 PINS = {
     "primary/arxiv-abs.html": "bc27065df0aec01efb0be0280d7bdce4a5eb692a6da907eba15fbe5ed04483f9",
@@ -79,6 +92,57 @@ def write_csv(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
 
 def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def git(history_root: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(history_root), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def source_history_rows(history_root: Path) -> list[dict[str, Any]]:
+    if git(history_root, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise ValueError("AlphaSchema history checkout is shallow")
+    commits = git(history_root, "rev-list", "--reverse", "--all").splitlines()
+    if len(commits) != REPOSITORY_COMMIT_COUNT:
+        raise ValueError(f"AlphaSchema public commit count changed: {len(commits)}")
+    if commits != [REPOSITORY_ROOT, REPOSITORY_HEAD]:
+        raise ValueError(f"AlphaSchema public-history endpoints changed: {commits}")
+
+    rows: list[dict[str, Any]] = []
+    for commit in commits:
+        authored_at, subject = git(
+            history_root, "show", "-s", "--format=%aI%x09%s", commit
+        ).rstrip("\n").split("\t", 1)
+        paths = git(history_root, "ls-tree", "-r", "--name-only", commit).splitlines()
+        schema_or_config_paths = [
+            path for path in paths if path.startswith(("configs/", "schemas/")) and path.endswith(".json")
+        ]
+        result_paths = [
+            path
+            for path in paths
+            if any(part in RESULT_PATH_PARTS for part in path.lower().split("/"))
+            or path.lower().endswith(RESULT_ARTIFACT_SUFFIXES)
+        ]
+        unclassified = sorted(set(result_paths) - set(schema_or_config_paths))
+        if unclassified:
+            raise ValueError(f"AlphaSchema history contains an unreviewed result artifact: {unclassified}")
+        rows.append(
+            {
+                "commit": commit,
+                "authored_at": authored_at,
+                "subject": subject,
+                "tracked_paths": len(paths),
+                "python_paths": sum(path.endswith(".py") for path in paths),
+                "schema_or_config_json_paths": len(schema_or_config_paths),
+                "unclassified_result_artifact_paths": 0,
+                "paper_result_artifact_found": False,
+            }
+        )
+    return rows
 
 
 def safe_archives(scratch: Path) -> None:
@@ -280,6 +344,12 @@ memberships, fundamental schema/data, five-run histories, model calls, exported
 Qlib Top50/Drop5 portfolio engine, holdings/returns, or empirical result arrays and
 generators are released. The repository also declares no license.
 
+The complete non-shallow public history has only two commits. The second changes
+README documentation and adds a method diagram; all implementation and schema
+blobs are unchanged. Across both revisions, the only JSON payloads are the search
+configuration and five schema definitions. No result/log/checkpoint/data path,
+factor pool, prediction, holding, return, or paper-result array is present.
+
 Several release details diverge from the manuscript. The paper's main target is
 `Ref(close,-6)/Ref(close,-1)-1`, whereas the backend uses
 `close.shift(-5)/close-1`. The paper states 140 price-volume components
@@ -314,6 +384,8 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "method_specification_audit.csv", method_rows())
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
+    history = source_history_rows(scratch / "discovery/alphaschema-history")
+    write_csv(output / "released_source_history_inventory.csv", history)
     release = release_audit(scratch)
     write_json(output / "release_execution_audit.json", release)
     write_json(output / "source_provenance.json", {
@@ -343,6 +415,11 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             "default_end_to_end_launcher_operational": False,
             "complete_research_data_recovered": False,
             "published_result_lineage_recovered": False,
+            "full_public_history_audited": True,
+            "public_history_commits": len(history),
+            "historical_unclassified_result_artifact_paths": sum(
+                row["unclassified_result_artifact_paths"] for row in history
+            ),
         },
     })
     (output / "README.md").write_text(readme(), encoding="utf-8")
@@ -355,6 +432,13 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "empirical_panels": sum(row["empirical_series_or_panels"] for row in figures),
         "native_empirical_panels_regenerated": 0, "official_repository_recovered": True,
         "repository_files": inventory["release_files"], "author_tests_passed": 9,
+        "repository_history_commits_audited": len(history),
+        "repository_history_unclassified_result_artifact_paths": sum(
+            row["unclassified_result_artifact_paths"] for row in history
+        ),
+        "repository_history_paper_result_artifacts_found": sum(
+            bool(row["paper_result_artifact_found"]) for row in history
+        ),
         "native_demo_plans": 48, "native_component_checks_passed": 3,
         "full_launcher_operational_as_released": False,
         "full_end_to_end_pipeline_reproduced": False, "strict_success": False,

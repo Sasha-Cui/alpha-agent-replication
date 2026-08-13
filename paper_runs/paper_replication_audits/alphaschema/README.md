@@ -24,6 +24,12 @@ memberships, fundamental schema/data, five-run histories, model calls, exported
 Qlib Top50/Drop5 portfolio engine, holdings/returns, or empirical result arrays and
 generators are released. The repository also declares no license.
 
+The complete non-shallow public history has only two commits. The second changes
+README documentation and adds a method diagram; all implementation and schema
+blobs are unchanged. Across both revisions, the only JSON payloads are the search
+configuration and five schema definitions. No result/log/checkpoint/data path,
+factor pool, prediction, holding, return, or paper-result array is present.
+
 Several release details diverge from the manuscript. The paper's main target is
 `Ref(close,-6)/Ref(close,-1)-1`, whereas the backend uses
 `close.shift(-5)/close-1`. The paper states 140 price-volume components
