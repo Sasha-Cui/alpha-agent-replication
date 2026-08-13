@@ -1,5 +1,6 @@
 dimension,paper,released,status
-foundation_model,Qwen2.5-72B-Instruct,Qwen2.5-72B-Instruct,match
+foundation_model,Qwen2.5-72B-Instruct primary backbone,Qwen2.5-72B-Instruct,match
+final_revision_second_foundation_model,GPT-OSS-120B sensitivity experiment in final OpenReview Tables 1 and 7,"no GPT-OSS model config, prompt/response cache, signal, or output",missing
 main_agent_scale,16 types x 32 agents = 512,CLI defaults 16 x 32,match
 sse50_candidate_pool_size,20,CLI default stock_num=20,match
 csi300_candidate_pool_size,30,supported only by manual --stock_num override; no experiment command/config,not_pinned
@@ -12,11 +13,14 @@ optimizer_lookback,5,CLI default 5,match
 main_candidate_pool_update,static per agent; daily update is separate MASS(DU) ablation,resampled daily with random.choices (with replacement),mismatch
 daily_type_strategy,one daily strategy per investor type,each agent generates its own strategy on every trading day,mismatch
 randomness_control,no seed protocol disclosed,Python and NumPy RNG used without a run-level seed,missing
-paper_stock_pool_inputs,"SSE50, CSI 300, ChiNext 100; plus CSI A500 in 2025",SSE50-like base/label/feature panel only,incomplete
+paper_stock_pool_inputs,"SSE50, CSI 300, ChiNext 100, CSI A500, Nasdaq 100, S&P 500",SSE50-like base/label/feature panel only,incomplete
+final_revision_us_market_inputs,"Microsoft Qlib and Yahoo Finance panels for Nasdaq 100 and S&P 500, 2023 and Q1 2025","no US-market data builder, pinned response, universe, panel, or labels",missing
 paper_news_inputs,financial news for the released multimodal panel,two 2-byte invalid Parquet placeholders under different filenames,missing
 native_entrypoint_paths,runnable experiment,"three empty ROOT_PATH constants, two literal non-f-string paths, and required filenames absent",not_operational
 direct_runtime_dependencies,runnable environment,"pandas, numpy, and scipy imported but not direct project dependencies",incomplete
 metric_horizon,one Table 1 result set; return horizon not identified,"prints separate 1-, 5-, and 10-day label metrics",paper_underspecified
-portfolio_backtest,"weekly top-20%, 0.1% round-trip cost, Tables 4/Figure 2","no backtest, annualized-return, Sharpe, drawdown, or transaction-cost implementation",missing
-cost_measurement,Table 3 time and API fees,no request/token/cost logs or measurement script,missing
-published_result_paths,Tables 1--4,"no signals, portfolios, baseline outputs, result tables, or cached LLM decisions",missing
+portfolio_backtest,"weekly top-20%, 0.1% round-trip cost, Table 7/Figure 2","no backtest, annualized-return, Sharpe, drawdown, or transaction-cost implementation",missing
+cost_measurement,final Table 6 time and API fees,no request/token/cost logs or measurement script,missing
+published_result_paths,final OpenReview Tables 1--8 and Figures 2--6,"no signals, portfolios, baseline outputs, result tables, or cached LLM decisions",missing
+paper_claimed_cached_individual_decisions,Appendix A.3.7 says individual decisions are cached for backward optimization,no cache is tracked in either official release or any reachable official commit,missing
+final_revision_scaling_1024_1536,"Table 5 reports 512, 1024, and 1536 agents","CLI scale is adjustable, but no commands, seeds, decisions, distributions, or results are pinned",not_pinned

@@ -1,30 +1,61 @@
 {
-  "audit": "MASS paper Tables 1--4 versus pinned public source release",
+  "audit": "MASS arXiv v1/v2, final rejected OpenReview revision, Tables 1--8, and all official source history",
   "overall_status": "not_reproduced_partial_internal_state_only",
   "full_paper_reproduced": false,
   "paper_url": "https://arxiv.org/pdf/2505.10278",
+  "paper_v1_sha256": "19a1845c9f199a532143957ef205c68843078a5290bb647ecb47db35d2ee20bd",
   "paper_sha256": "c31e68b722b6c4d33dd69833b48a34de8fc29ec4171498f320307ede554e6135",
   "source_url": "https://github.com/gta0804/MASS",
   "source_commit": "68edcaae9e6ac099d28eed90513219495b0852b7",
+  "anonymous_source_url": "https://github.com/anonymous3728/MASS_anonoymous",
+  "anonymous_source_commit": "67f80e88c6af3124d6821d8a1682c5a787cf45bb",
+  "openreview_url": "https://openreview.net/forum?id=NNpE9iiPNR",
+  "openreview_final_pdf_sha256": "92697642e0f68afb3679a47ed32be46e705fbe3e670a78b2930a691d1425d385",
+  "openreview_final_pdf_pages": 26,
+  "openreview_final_decision": "reject",
+  "openreview_archive_url": "https://anonymous.4open.science/r/MASS-AC96",
+  "openreview_archive_status_as_checked_2026_08_13": "expired",
+  "official_release_lineage_audited": true,
+  "anonymous_backup_all_non_readme_shared_blobs_identical": true,
+  "anonymous_backup_additional_native_result_artifacts_found": false,
+  "source_history_reachable_commits": 13,
+  "source_history_root_commits": 1,
+  "source_history_tags": 0,
+  "source_history_unique_paths": 58,
+  "source_history_native_result_artifacts_found": false,
   "paper_numeric_tables_audited": [
     1,
     2,
-    3,
-    4
+    4,
+    5,
+    6,
+    7,
+    8
   ],
-  "paper_result_rows_total": 81,
-  "paper_result_cells_total_including_emcl": 285,
-  "paper_numeric_result_cells_total": 277,
+  "paper_descriptive_tables_audited": [
+    3
+  ],
+  "paper_descriptive_table_3_rows": 9,
+  "paper_empirical_figures_audited": 5,
+  "paper_empirical_figures_reproduced": 0,
+  "paper_empirical_figures_partial_internal_state_only": 1,
+  "paper_result_rows_total": 213,
+  "paper_result_cells_total_including_emcl": 774,
+  "paper_numeric_result_cells_total": 766,
   "paper_non_numeric_emcl_cells": 8,
   "paper_numeric_result_cells_reproduced": 0,
-  "paper_numeric_result_cells_unverifiable": 277,
+  "paper_numeric_result_cells_unverifiable": 766,
   "native_agent_decision_cache_shipped": false,
-  "native_signal_path_shipped": false,
+  "native_signal_aggregation_source_shipped": true,
+  "native_dated_signal_output_shipped": false,
   "native_portfolio_or_return_path_shipped": false,
   "native_baseline_outputs_shipped": false,
   "native_cost_or_timing_logs_shipped": false,
   "native_dated_distribution_snapshot_shipped": true,
   "distribution_snapshot_is_published_result": false,
+  "native_signal_nonidentifiability_proved": true,
+  "same_released_distribution_produces_distinct_native_signals": true,
+  "native_counterexample_changed_signal_stock_count": 10,
   "distribution_snapshot": {
     "pickle_opcodes_total": 9543,
     "pickle_opcode_names": [
@@ -71,7 +102,9 @@
       "SSE50",
       "CSI_300",
       "ChiNext_100",
-      "CSI_A500"
+      "CSI_A500",
+      "Nasdaq_100",
+      "SP_500"
     ],
     "released_stock_pool_panels": [
       "SSE50_like_only"
@@ -79,7 +112,8 @@
     "invalid_news_placeholders": 2,
     "invalid_news_placeholder_bytes_each": 2
   },
-  "released_full_four_pool_dataset": false,
+  "released_full_four_chinese_pool_dataset": false,
+  "released_full_six_pool_dataset": false,
   "released_sse50_like_2023_base_and_labels": true,
   "released_entrypoint_operational_without_source_and_data_repairs": false,
   "paper_main_hyperparameters_match_active_source_defaults": false,
@@ -87,7 +121,7 @@
   "paper_risk_free_rate_identified": false,
   "paper_random_seed_protocol_identified": false,
   "audit_called_llm_or_external_api": false,
-  "interpretation": "The release provides meaningful component evidence: a complete 242-day 2023 SSE50-like base/label panel and a safely decoded 263-date, 16-type optimizer-state trajectory. It does not reproduce any published result. All 277 numeric cells in Tables 1--4 lack native decisions/signals/baseline outputs/backtests/cost logs, the other paper pools are absent, and active source defaults differ from paper settings.",
+  "interpretation": "The named release and author-provided anonymous backup provide meaningful component evidence: a complete 242-day 2023 SSE50-like base/label panel and a safely decoded 263-date, 16-type optimizer-state trajectory. All non-README files common to both releases are blob-identical, and all 13 official commits, 58 historical paths, ignored result paths, and unreachable objects were audited. A native two-scenario counterexample proves the released distribution does not determine signals. It does not reproduce any published result or empirical figure. All 766 numeric cells in the final Tables 1--2 and 4--8 lack native decisions/signals/baseline outputs/backtests/cost logs, the other paper pools are absent, and active source defaults differ from paper settings.",
   "source_file_sha256": {
     "README.md": "1b036a4dd5cfd87b24335609f11ba0a9a61ac49f53eb5578f57fe49d57f2bc5e",
     "ih_dist": "be7d40a8f0191bb6ee246b3a8537851b088be685afb52b51d823dde587f1a895",
@@ -102,10 +136,15 @@
     "stock_disagreement/utils/llm.py": "1f284173e84a99321ea70088a0deb93da98cdbf9b201959ea12f622d778a6069"
   },
   "output_sha256": {
-    "README.md": "b9943766933d28cb673141142ce22013d409404794658d1bf011e6e51f376cee",
+    "README.md": "4c5841ec7c760e9349667e3a3a0032d923c9cdadbf04766401585949bca65040",
     "distribution_snapshot_audit.csv": "89a713bd57ce3aaf568c9b7fedc6261433362620db8931801c5056379754b1dc",
+    "final_empirical_figure_inventory.csv": "49a1c1731bbc12da3fd119242809b5a0a7e320410a518215baa36b5e5416c148",
+    "final_table_3_stock_inventory.csv": "5ceb609f2a3680c5ca0dbc0982aab27a79595b0e1bc64c4eba63c20ffee41a96",
+    "final_table_result_conformance.csv": "9d10429c86decb9d415e3b3c7f76cc649140141101cc8d26b877c0884a752c11",
+    "native_signal_nonidentifiability.json": "e795a9d68fe8890cd3ee20aa012aa9b7dd225323608f440f9b4b5f9c88a3cf9b",
+    "official_release_lineage.json": "753a2c2facb5468d9e24f75f1d49023cef529020974e08b5349da9670ad93da5",
+    "official_source_history.json": "92c9d1b7234f98da3a44ca779f9fbe8d5c3487b2fb6aa47800e06812c1a01095",
     "released_dataset_inventory.csv": "36cdcd9d64cfc99d19cd2352db0eb8dc485d690bac74a0b37a3b83fb2fcd2f46",
-    "source_config_conformance.csv": "e567ca6ded7d7d4f40e5433c8f0530926b0108c0747b9b688266e5b0988a8df6",
-    "tables_1_4_conformance.csv": "0c18fa785cef5fb6f6e0d44dc7e34ae08c5dbb08d38e635fc024dd92f36cc119"
+    "source_config_conformance.csv": "258cac4ebc87ca1cdc9685b27eb71319807ecd034d776ca39f513852ffc35eaa"
   }
 }

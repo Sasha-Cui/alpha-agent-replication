@@ -1,0 +1,32 @@
+{
+  "arxiv_primary_record": {
+    "v1_pdf_sha256": "19a1845c9f199a532143957ef205c68843078a5290bb647ecb47db35d2ee20bd",
+    "v2_pdf_sha256": "c31e68b722b6c4d33dd69833b48a34de8fc29ec4171498f320307ede554e6135",
+    "v2_is_audited_result_record": true
+  },
+  "openreview_primary_record": {
+    "url": "https://openreview.net/forum?id=NNpE9iiPNR",
+    "submission_number": 3728,
+    "final_pdf_sha256": "92697642e0f68afb3679a47ed32be46e705fbe3e670a78b2930a691d1425d385",
+    "final_pdf_pages": 26,
+    "decision": "reject",
+    "archive_url": "https://anonymous.4open.science/r/MASS-AC96",
+    "archive_status_as_checked_2026_08_13": "expired",
+    "backup_url_named_in_paper": "https://github.com/anonymous3728/MASS_anonoymous"
+  },
+  "anonymous_backup_commit": "67f80e88c6af3124d6821d8a1682c5a787cf45bb",
+  "anonymous_backup_root_commit_count": 1,
+  "anonymous_backup_file_count": 39,
+  "official_release_file_count": 38,
+  "shared_file_count": 38,
+  "anonymous_only_paths": [
+    ".README"
+  ],
+  "different_shared_blobs": [
+    "README.md"
+  ],
+  "all_non_readme_shared_blobs_identical": true,
+  "same_optimizer_snapshot_sha256": "be7d40a8f0191bb6ee246b3a8537851b088be685afb52b51d823dde587f1a895",
+  "additional_decisions_signals_portfolios_results_or_stock_pools_in_backup": false,
+  "paper_and_release_claim_boundary": "arXiv v2 says one dataset was open-sourced; both the later anonymous backup and named release contain the same SSE50 example panel and ih_dist optimizer state"
+}

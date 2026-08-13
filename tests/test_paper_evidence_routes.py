@@ -232,7 +232,7 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         "CensusArxiv240218485": "paper_audit:completed_zero_of_1061_published_result_units_substantial_source_conflicts",
         "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
-        "CensusArxiv250510278": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
+        "CensusArxiv250510278": "paper_audit:completed_zero_of_766_final_native_results_full_release_history_signal_nonidentifiability",
         "CensusArxiv250909995": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
         "WorkAutomateStrategy": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
     }

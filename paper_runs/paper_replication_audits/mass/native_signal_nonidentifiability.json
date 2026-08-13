@@ -1,0 +1,96 @@
+{
+  "purpose": "constructive native-code proof that released ih_dist does not determine signals",
+  "native_module": "stock_disagreement/agent/investment_analyzer.py",
+  "native_module_sha256": "394daf70b5ac6bd965555ed66d0fd4fdd65502645c63408c300f8e666ee547d4",
+  "snapshot_sha256": "be7d40a8f0191bb6ee246b3a8537851b088be685afb52b51d823dde587f1a895",
+  "date": 20221202,
+  "investor_types": 16,
+  "agents_per_type": 32,
+  "candidate_pool_size": 20,
+  "selected_stocks_per_agent": 5,
+  "same_released_distribution_in_both_scenarios": true,
+  "distribution_fingerprint_sha256": "36695ac0504cb2101ba34c17ff26d957b1322b93d60d836b9a3b80c729262cdc",
+  "scenario_a_selected_stocks": [
+    "600010",
+    "600028",
+    "600030",
+    "600031",
+    "600036"
+  ],
+  "scenario_b_selected_stocks": [
+    "600048",
+    "600104",
+    "600111",
+    "600196",
+    "600276"
+  ],
+  "scenario_a_selected_signal": {
+    "600010": [
+      0.5,
+      1.0,
+      -0.0
+    ],
+    "600028": [
+      0.5,
+      1.0,
+      -0.0
+    ],
+    "600030": [
+      0.5,
+      1.0,
+      -0.0
+    ],
+    "600031": [
+      0.5,
+      1.0,
+      -0.0
+    ],
+    "600036": [
+      0.5,
+      1.0,
+      -0.0
+    ]
+  },
+  "scenario_b_selected_signal": {
+    "600048": [
+      0.5,
+      1.0,
+      -0.0
+    ],
+    "600104": [
+      0.5,
+      1.0,
+      -0.0
+    ],
+    "600111": [
+      0.5,
+      1.0,
+      -0.0
+    ],
+    "600196": [
+      0.5,
+      1.0,
+      -0.0
+    ],
+    "600276": [
+      0.5,
+      1.0,
+      -0.0
+    ]
+  },
+  "changed_signal_stock_count": 10,
+  "changed_signal_stocks": [
+    "600010",
+    "600028",
+    "600030",
+    "600031",
+    "600036",
+    "600048",
+    "600104",
+    "600111",
+    "600196",
+    "600276"
+  ],
+  "released_state_identifies_unique_signal": false,
+  "interpretation": "Both valid 16-type x 32-agent decision assignments use the identical released dated distribution, 20-stock candidate size, five selections per agent, and native alpha=0.5 aggregation. They produce different signals and rankings, so ih_dist cannot reconstruct the absent decisions or any Table 1--4 output."
+}

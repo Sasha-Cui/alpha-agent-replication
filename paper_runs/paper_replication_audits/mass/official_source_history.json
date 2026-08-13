@@ -1,0 +1,170 @@
+{
+  "scope": "all locally reachable official-clone refs and objects",
+  "remote_url": "https://github.com/gta0804/MASS.git",
+  "is_shallow_repository": false,
+  "reachable_commit_count": 13,
+  "root_commit_count": 1,
+  "branch_and_remote_refs": [
+    "refs/heads/main|68edcaae9e6ac099d28eed90513219495b0852b7",
+    "refs/remotes/origin/HEAD|68edcaae9e6ac099d28eed90513219495b0852b7",
+    "refs/remotes/origin/main|68edcaae9e6ac099d28eed90513219495b0852b7",
+    "refs/remotes/origin/master|68edcaae9e6ac099d28eed90513219495b0852b7"
+  ],
+  "tag_count": 0,
+  "unreachable_object_output_empty": true,
+  "commits": [
+    {
+      "commit": "b358fe9241abc213d1c7560afbda74dd51ce2c39",
+      "author_date": "2025-05-07T08:38:03Z",
+      "author": "EachSheep",
+      "subject": "initial commit"
+    },
+    {
+      "commit": "b12c11246d514ec937e6208714f3795880425b2a",
+      "author_date": "2025-05-16T05:26:08Z",
+      "author": "gta0804",
+      "subject": "initial commit"
+    },
+    {
+      "commit": "a42db433a69704170d6b3105e63f8fe02f36121c",
+      "author_date": "2025-05-16T05:27:12Z",
+      "author": "gta0804",
+      "subject": "initial commit"
+    },
+    {
+      "commit": "9c68b4bb0328be3199b1b84376dffa0f7215aab6",
+      "author_date": "2025-05-21T09:33:55Z",
+      "author": "gta0804",
+      "subject": "Update README and upload exmaple dataset."
+    },
+    {
+      "commit": "b1272d2803528751ce0d80510eabed2b4e48c659",
+      "author_date": "2025-05-21T18:22:05+08:00",
+      "author": "EachSheep",
+      "subject": "Update README.md"
+    },
+    {
+      "commit": "7e35bb9678379fcfdd5559201280d863fa42e64a",
+      "author_date": "2025-05-22T14:45:01+08:00",
+      "author": "taian guo(\u90ed\u6cf0\u5b89)",
+      "subject": "Update pyproject.toml"
+    },
+    {
+      "commit": "f6d9caf5628fa55924def65d0adf83cb81b12975",
+      "author_date": "2025-05-22T06:48:50Z",
+      "author": "gta0804",
+      "subject": "remove unnecessary files"
+    },
+    {
+      "commit": "98f07a816e574cc2c2ca9a2db0f74c5a57f034dd",
+      "author_date": "2025-09-25T23:18:04+08:00",
+      "author": "EachSheep",
+      "subject": "add SSE 50 INDEX training snapshots."
+    },
+    {
+      "commit": "b0c69982d7ebfd4e87c56c06669a42d8f3e8ebd0",
+      "author_date": "2025-09-30T20:51:35+08:00",
+      "author": "taian guo(\u90ed\u6cf0\u5b89)",
+      "subject": "Update LICENSE"
+    },
+    {
+      "commit": "b4dc29535a5761e217e38ca8cd1846e83814b295",
+      "author_date": "2025-09-30T20:55:26+08:00",
+      "author": "taian guo(\u90ed\u6cf0\u5b89)",
+      "subject": "Rename wind-financial-news-info.parq to financial-news-info.parq"
+    },
+    {
+      "commit": "c6af13ae0e61b2a0a5dd1539ab0206ada788c093",
+      "author_date": "2025-09-30T20:55:40+08:00",
+      "author": "taian guo(\u90ed\u6cf0\u5b89)",
+      "subject": "Rename wind-financial-news-relationship.parq to financial-news-relationship.parq"
+    },
+    {
+      "commit": "10ee192bee84ce4791496c44132f4a5b7702f189",
+      "author_date": "2025-09-30T20:56:21+08:00",
+      "author": "taian guo(\u90ed\u6cf0\u5b89)",
+      "subject": "Update trainer.py"
+    },
+    {
+      "commit": "68edcaae9e6ac099d28eed90513219495b0852b7",
+      "author_date": "2025-11-18T01:03:48+08:00",
+      "author": "EachSheep",
+      "subject": "add readme"
+    }
+  ],
+  "head_tree_file_count": 38,
+  "unique_historical_path_count": 58,
+  "deleted_code_recovered": [
+    {
+      "path": "README.en.md",
+      "oldest_reachable_commit": "b358fe9241abc213d1c7560afbda74dd51ce2c39",
+      "blob": "24052ce91b515292e2640cd3d666ae4370974f53",
+      "bytes": 868,
+      "paper_result_artifact": false,
+      "interpretation": "abandoned DTML/private-data precursor or input-cleaning utility; not a MASS decision, signal, portfolio, or published result"
+    },
+    {
+      "path": "stock_disagreement/main_dtml.py",
+      "oldest_reachable_commit": "b358fe9241abc213d1c7560afbda74dd51ce2c39",
+      "blob": "e33b5c6388dc761917345c28bb5f5eeb508961a3",
+      "bytes": 7914,
+      "paper_result_artifact": false,
+      "interpretation": "abandoned DTML/private-data precursor or input-cleaning utility; not a MASS decision, signal, portfolio, or published result"
+    },
+    {
+      "path": "stock_disagreement/model/DTML.py",
+      "oldest_reachable_commit": "b358fe9241abc213d1c7560afbda74dd51ce2c39",
+      "blob": "0274fc2b52c5cc07f9be83efe64786d60cfcd250",
+      "bytes": 6127,
+      "paper_result_artifact": false,
+      "interpretation": "abandoned DTML/private-data precursor or input-cleaning utility; not a MASS decision, signal, portfolio, or published result"
+    },
+    {
+      "path": "stock_disagreement/model/__init__.py",
+      "oldest_reachable_commit": "b358fe9241abc213d1c7560afbda74dd51ce2c39",
+      "blob": "1f3487226010f047c513df5d4ebb32b1f6ce474d",
+      "bytes": 22,
+      "paper_result_artifact": false,
+      "interpretation": "abandoned DTML/private-data precursor or input-cleaning utility; not a MASS decision, signal, portfolio, or published result"
+    },
+    {
+      "path": "stock_disagreement/utils/clean_news.py",
+      "oldest_reachable_commit": "b358fe9241abc213d1c7560afbda74dd51ce2c39",
+      "blob": "e2349710fec47d32858db594c447a4c0e56a38cc",
+      "bytes": 1989,
+      "paper_result_artifact": false,
+      "interpretation": "abandoned DTML/private-data precursor or input-cleaning utility; not a MASS decision, signal, portfolio, or published result"
+    },
+    {
+      "path": "stock_disagreement/utils/industry_index.py",
+      "oldest_reachable_commit": "b358fe9241abc213d1c7560afbda74dd51ce2c39",
+      "blob": "ff71fd62f292e406bb518afb05dbeb1f7cc4acf4",
+      "bytes": 1678,
+      "paper_result_artifact": false,
+      "interpretation": "abandoned DTML/private-data precursor or input-cleaning utility; not a MASS decision, signal, portfolio, or published result"
+    }
+  ],
+  "ignored_result_paths": [
+    {
+      "path": "stock_disagreement/all_dataset",
+      "reachable_objects": 0
+    },
+    {
+      "path": "stock_disagreement/lightgbm_disagreement_res",
+      "reachable_objects": 0
+    },
+    {
+      "path": "stock_disagreement/backtest_res",
+      "reachable_objects": 0
+    },
+    {
+      "path": "stock_disagreement/res",
+      "reachable_objects": 0
+    },
+    {
+      "path": "stock_disagreement/notebooks",
+      "reachable_objects": 0
+    }
+  ],
+  "historical_native_decision_signal_portfolio_or_result_artifacts_found": false
+}

@@ -575,11 +575,17 @@ ARTIFACT_NOTES = {
     ),
     "SYS-MASS": (
         "N",
-        "A pinned paper audit verifies a 242-day 2023 SSE50-like base/label panel and "
-        "safely decodes a 263-date, 16-type learned distribution trajectory. This is "
-        "native optimizer state, not a signal or return: all 277 numeric cells in "
-        "Tables 1--4 remain unverifiable because decisions, other stock pools, "
-        "baselines, backtests, and cost logs are not shipped.",
+        "A pinned arXiv-v1/v2, final rejected OpenReview, and full official-history audit "
+        "verifies a 242-day 2023 SSE50-like base/label panel and safely decodes a "
+        "263-date, 16-type learned distribution trajectory. The surviving anonymous "
+        "backup adds no data or outputs: every shared non-README blob matches the "
+        "named release. All 13 official commits and 58 historical paths contain no "
+        "cached decisions, signals, portfolios, or paper results. A native two-scenario "
+        "counterexample reuses the identical released distribution and valid 16x32-agent "
+        "scale but changes ten signals, proving the optimizer state cannot identify the "
+        "missing result path. All 766 numeric cells in final Tables 1--2 and 4--8 "
+        "remain unverifiable because decisions, other Chinese and US stock pools, "
+        "baselines, GPT-OSS outputs, backtests, and cost logs are not shipped.",
     ),
     "SYS-QUANT-AGENT-HFT": (
         "N",
@@ -1334,7 +1340,7 @@ TARGETED_EXECUTION = {
     "SYS-MACI": "paper_audit:completed_v1_v2_zero_of_321_table_units_21_author_output_plot_units_zero_regenerated_v3_zero_of_442_no_v3_code",
     "SYS-MM-DREX": "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_v3_release_111_tests_missing_lfs_and_research_lineage",
     "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",
-    "SYS-MASS": "paper_audit:completed_zero_of_277_native_results_internal_state_only",
+    "SYS-MASS": "paper_audit:completed_zero_of_766_final_native_results_full_release_history_signal_nonidentifiability",
     "SYS-MOUNTAIN-LION": "paper_audit:completed_zero_of_20_performance_cells_public_components_only",
     "SYS-P1GPT": "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_cells_end_to_end_lookahead_counterexample",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",

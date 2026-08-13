@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit MASS paper Tables 1--4 against its pinned public release.
+"""Audit every numeric/EMCL table result in the final MASS primary record.
 
 The audit inventories the released market panel and safely decodes the pinned
 agent-distribution snapshot after enforcing a narrow pickle-opcode allowlist.
@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import importlib.util
 import io
 import json
 import math
@@ -29,10 +30,50 @@ import pandas as pd
 
 
 SOURCE_COMMIT = "68edcaae9e6ac099d28eed90513219495b0852b7"
+SOURCE_ROOT_COMMIT = "b358fe9241abc213d1c7560afbda74dd51ce2c39"
+ANONYMOUS_SOURCE_COMMIT = "67f80e88c6af3124d6821d8a1682c5a787cf45bb"
+PAPER_V1_SHA256 = "19a1845c9f199a532143957ef205c68843078a5290bb647ecb47db35d2ee20bd"
 PAPER_SHA256 = "c31e68b722b6c4d33dd69833b48a34de8fc29ec4171498f320307ede554e6135"
 PAPER_URL = "https://arxiv.org/pdf/2505.10278"
 SOURCE_URL = "https://github.com/gta0804/MASS"
+ANONYMOUS_SOURCE_URL = "https://github.com/anonymous3728/MASS_anonoymous"
+OPENREVIEW_URL = "https://openreview.net/forum?id=NNpE9iiPNR"
+OPENREVIEW_ARCHIVE_URL = "https://anonymous.4open.science/r/MASS-AC96"
+OPENREVIEW_FINAL_PDF_SHA256 = "92697642e0f68afb3679a47ed32be46e705fbe3e670a78b2930a691d1425d385"
 SNAPSHOT_SHA256 = "be7d40a8f0191bb6ee246b3a8537851b088be685afb52b51d823dde587f1a895"
+
+SOURCE_HISTORY_COMMITS = (
+    "b358fe9241abc213d1c7560afbda74dd51ce2c39",
+    "b12c11246d514ec937e6208714f3795880425b2a",
+    "a42db433a69704170d6b3105e63f8fe02f36121c",
+    "9c68b4bb0328be3199b1b84376dffa0f7215aab6",
+    "b1272d2803528751ce0d80510eabed2b4e48c659",
+    "7e35bb9678379fcfdd5559201280d863fa42e64a",
+    "f6d9caf5628fa55924def65d0adf83cb81b12975",
+    "98f07a816e574cc2c2ca9a2db0f74c5a57f034dd",
+    "b0c69982d7ebfd4e87c56c06669a42d8f3e8ebd0",
+    "b4dc29535a5761e217e38ca8cd1846e83814b295",
+    "c6af13ae0e61b2a0a5dd1539ab0206ada788c093",
+    "10ee192bee84ce4791496c44132f4a5b7702f189",
+    SOURCE_COMMIT,
+)
+
+HISTORICAL_DELETED_CODE_PATHS = (
+    "README.en.md",
+    "stock_disagreement/main_dtml.py",
+    "stock_disagreement/model/DTML.py",
+    "stock_disagreement/model/__init__.py",
+    "stock_disagreement/utils/clean_news.py",
+    "stock_disagreement/utils/industry_index.py",
+)
+
+IGNORED_OUTPUT_PATHS = (
+    "stock_disagreement/all_dataset",
+    "stock_disagreement/lightgbm_disagreement_res",
+    "stock_disagreement/backtest_res",
+    "stock_disagreement/res",
+    "stock_disagreement/notebooks",
+)
 
 TABLE_1_METRICS = ("rank_ic_pct", "rank_icir_pct", "ic_pct", "icir_pct")
 TABLE_2_METRICS = TABLE_1_METRICS
@@ -40,7 +81,7 @@ TABLE_3_METRICS = ("average_daily_time_seconds", "average_daily_api_cost_usd")
 TABLE_4_METRICS = ("annualized_return_pct", "sharpe_ratio", "max_drawdown_pct")
 
 
-# Transcribed from Tables 1--4 of the pinned official PDF. Each line is
+# Transcribed from Tables 1--4 of pinned arXiv v2. Each line is
 # section|pool|method|the metrics for that table in the order declared above.
 TABLE_1_TEXT = """
 main_2023|SSE50|proxy_indicator|3.82|19.73|2.89|16.63
@@ -136,6 +177,169 @@ leakage_2025_q1|CSI_A500|stock_pool_index|-1.28|-3.26|6.04
 """
 
 
+# Final ICLR-2026 revision deltas versus arXiv v2. The unchanged arXiv-v2
+# values stay in TABLE_1/2/3/4_TEXT; these lines contain only added or changed
+# numeric result rows in final Tables 1, 4--8. Table 3 is descriptive metadata.
+FINAL_TABLE_1_ADDITIONS = """
+main_2023|SSE50|factorvae|5.05|38.27|4.89|26.56
+main_2023|CSI_300|factorvae|4.95|34.89|4.16|31.13
+main_2023|ChiNext_100|factorvae|3.98|28.69|4.03|29.35
+main_2023|SSE50|hirevae|5.17|29.06|5.02|29.93
+main_2023|CSI_300|hirevae|5.23|36.21|4.22|31.08
+main_2023|ChiNext_100|hirevae|4.03|32.25|4.14|30.08
+main_2023|SSE50|mass_gpt_oss_120b|8.24|41.96|5.91|33.28
+main_2023|CSI_300|mass_gpt_oss_120b|6.62|41.96|4.63|30.19
+main_2023|ChiNext_100|mass_gpt_oss_120b|7.66|61.56|6.43|54.29
+leakage_2025_q1|SSE50|proxy_indicator|1.46|10.60|1.51|9.89
+leakage_2025_q1|CSI_300|proxy_indicator|1.52|10.37|2.01|14.28
+leakage_2025_q1|CSI_A500|proxy_indicator|1.04|9.75|0.98|9.97
+leakage_2025_q1|SSE50|lightgbm|1.66|12.35|1.58|11.73
+leakage_2025_q1|CSI_300|lightgbm|1.59|8.79|1.85|11.97
+leakage_2025_q1|CSI_A500|lightgbm|1.77|12.84|1.58|12.60
+leakage_2025_q1|SSE50|factorvae|3.59|21.61|5.41|31.14
+leakage_2025_q1|CSI_300|factorvae|3.37|29.67|2.65|26.96
+leakage_2025_q1|CSI_A500|factorvae|4.32|40.87|4.01|36.70
+leakage_2025_q1|SSE50|hirevae|3.68|21.52|5.44|30.15
+leakage_2025_q1|CSI_300|hirevae|3.47|31.58|2.61|27.93
+leakage_2025_q1|CSI_A500|hirevae|4.24|42.69|3.91|36.94
+leakage_2025_q1|SSE50|dtml|3.53|20.94|5.28|28.77
+leakage_2025_q1|CSI_300|dtml|3.39|28.86|2.54|27.78
+leakage_2025_q1|CSI_A500|dtml|4.06|41.80|3.75|35.22
+leakage_2025_q1|SSE50|master|3.70|21.38|5.49|30.26
+leakage_2025_q1|CSI_300|master|3.46|29.74|2.58|28.47
+leakage_2025_q1|CSI_A500|master|4.13|45.52|3.89|36.67
+leakage_2025_q1|SSE50|sep|3.65|20.92|5.47|29.99
+leakage_2025_q1|CSI_300|sep|1.45|10.06|0.84|9.76
+leakage_2025_q1|CSI_A500|sep|4.25|46.31|3.96|38.75
+leakage_2025_q1|SSE50|fincon|3.97|22.03|5.68|31.42
+leakage_2025_q1|CSI_300|fincon|1.54|13.98|0.80|10.72
+leakage_2025_q1|CSI_A500|fincon|4.81|48.25|4.34|43.96
+leakage_2025_q1|SSE50|tradingagents|4.02|21.94|5.71|31.99
+leakage_2025_q1|CSI_300|tradingagents|3.63|29.80|2.97|30.63
+leakage_2025_q1|CSI_A500|tradingagents|4.86|48.95|4.20|43.94
+leakage_2025_q1|SSE50|mass_gpt_oss_120b|4.56|24.56|6.31|37.98
+leakage_2025_q1|CSI_300|mass_gpt_oss_120b|3.75|35.86|3.31|33.80
+leakage_2025_q1|CSI_A500|mass_gpt_oss_120b|5.27|54.72|4.68|46.05
+"""
+
+FINAL_TABLE_4_TEXT = """
+cooling_rate|CSI_300|1.00|-0.16|-3.58|-0.27|-4.99
+cooling_rate|CSI_300|0.98|5.79|39.68|4.21|30.81
+cooling_rate|CSI_300|0.95|6.50|43.49|4.65|33.32
+cooling_rate|CSI_300|0.90|6.53|44.82|4.77|34.06
+cooling_rate|CSI_300|0.85|5.81|40.12|4.16|31.13
+cooling_rate|CSI_300|0.80|4.12|31.90|3.89|24.58
+iteration_times|CSI_300|0|0.36|5.36|0.41|6.69
+iteration_times|CSI_300|25|3.04|23.55|2.94|21.89
+iteration_times|CSI_300|50|4.69|31.80|3.73|26.66
+iteration_times|CSI_300|100|6.50|43.49|4.65|33.32
+iteration_times|CSI_300|200|6.53|42.76|4.66|32.91
+"""
+
+FINAL_TABLE_5_TEXT = """
+scaling|SSE50|512|8.16|41.74|5.90|33.43
+scaling|SSE50|1024|9.25|43.02|6.27|34.19
+scaling|SSE50|1536|9.22|43.11|6.29|34.05
+"""
+
+FINAL_TABLE_7_ADDITIONS = """
+main_2023|SSE50|factorvae|-1.60|-0.87|13.02
+main_2023|CSI_300|factorvae|-0.27|-0.09|21.85
+main_2023|ChiNext_100|factorvae|-7.24|-2.74|23.92
+main_2023|SSE50|hirevae|-1.42|-0.95|12.48
+main_2023|CSI_300|hirevae|0.96|0.35|21.70
+main_2023|ChiNext_100|hirevae|-7.15|-2.69|23.30
+main_2023|SSE50|mass_gpt_oss_120b|2.14|1.99|11.36
+main_2023|CSI_300|mass_gpt_oss_120b|4.87|2.06|14.87
+main_2023|ChiNext_100|mass_gpt_oss_120b|1.26|0.97|22.67
+leakage_2025_q1|SSE50|proxy_indicator|0.65|0.16|5.47
+leakage_2025_q1|CSI_300|proxy_indicator|1.98|0.23|5.94
+leakage_2025_q1|CSI_A500|proxy_indicator|1.44|0.20|6.05
+leakage_2025_q1|SSE50|lightgbm|0.84|0.17|5.48
+leakage_2025_q1|CSI_300|lightgbm|1.97|0.19|6.02
+leakage_2025_q1|CSI_A500|lightgbm|1.74|0.25|5.89
+leakage_2025_q1|SSE50|factorvae|4.60|1.87|4.04
+leakage_2025_q1|CSI_300|factorvae|4.53|1.85|5.60
+leakage_2025_q1|CSI_A500|factorvae|6.83|2.04|5.32
+leakage_2025_q1|SSE50|hirevae|4.78|1.92|4.06
+leakage_2025_q1|CSI_300|hirevae|4.81|2.05|5.01
+leakage_2025_q1|CSI_A500|hirevae|7.08|2.20|5.28
+leakage_2025_q1|SSE50|dtml|4.49|1.70|4.35
+leakage_2025_q1|CSI_300|dtml|4.55|1.79|6.06
+leakage_2025_q1|CSI_A500|dtml|6.85|1.93|6.27
+leakage_2025_q1|SSE50|master|5.01|1.98|3.97
+leakage_2025_q1|CSI_300|master|4.78|1.87|5.45
+leakage_2025_q1|CSI_A500|master|6.76|1.97|4.96
+leakage_2025_q1|SSE50|sep|4.99|1.84|4.70
+leakage_2025_q1|CSI_300|sep|1.12|0.19|5.90
+leakage_2025_q1|CSI_A500|sep|1.21|0.21|6.02
+leakage_2025_q1|SSE50|fincon|5.12|2.09|3.38
+leakage_2025_q1|CSI_300|fincon|1.22|0.18|6.08
+leakage_2025_q1|CSI_A500|fincon|0.98|0.26|5.86
+leakage_2025_q1|SSE50|tradingagents|5.27|2.14|3.27
+leakage_2025_q1|CSI_300|tradingagents|5.58|2.26|2.97
+leakage_2025_q1|CSI_A500|tradingagents|8.87|2.68|4.12
+leakage_2025_q1|SSE50|mass_gpt_oss_120b|9.81|2.38|3.04
+leakage_2025_q1|CSI_300|mass_gpt_oss_120b|8.42|2.49|3.04
+leakage_2025_q1|CSI_A500|mass_gpt_oss_120b|11.51|2.88|4.17
+"""
+
+FINAL_TABLE_8_TEXT = """
+main_2023|Nasdaq_100|proxy_indicator|1.94|15.37|1.82|13.91
+main_2023|SP_500|proxy_indicator|1.85|16.02|1.93|14.31
+main_2023|Nasdaq_100|lightgbm|2.71|19.90|2.56|19.34
+main_2023|SP_500|lightgbm|2.06|19.84|2.19|17.83
+main_2023|Nasdaq_100|factorvae|3.49|26.05|3.62|28.95
+main_2023|SP_500|factorvae|3.96|28.34|3.77|29.64
+main_2023|Nasdaq_100|hirevae|3.52|25.30|3.79|27.98
+main_2023|SP_500|hirevae|4.12|27.86|3.83|28.39
+main_2023|Nasdaq_100|dtml|3.15|22.90|2.83|21.56
+main_2023|SP_500|dtml|3.52|24.65|2.96|20.10
+main_2023|Nasdaq_100|master|3.38|23.62|2.98|21.49
+main_2023|SP_500|master|3.27|25.93|3.09|22.53
+main_2023|Nasdaq_100|sep|3.40|22.99|3.26|23.85
+main_2023|SP_500|sep|1.38|11.82|0.82|7.81
+main_2023|Nasdaq_100|fincon|3.46|23.81|3.24|24.77
+main_2023|SP_500|fincon|1.24|10.27|0.68|8.64
+main_2023|Nasdaq_100|tradingagents|3.63|27.36|3.85|28.29
+main_2023|SP_500|tradingagents|4.07|31.28|3.89|27.94
+main_2023|Nasdaq_100|mass|4.27|31.05|3.94|28.90
+main_2023|SP_500|mass|4.31|31.45|3.95|28.68
+leakage_2025_q1|Nasdaq_100|proxy_indicator|1.98|17.26|1.47|14.83
+leakage_2025_q1|SP_500|proxy_indicator|2.06|16.39|2.34|15.81
+leakage_2025_q1|Nasdaq_100|lightgbm|2.40|18.75|2.38|19.36
+leakage_2025_q1|SP_500|lightgbm|2.64|19.42|2.47|17.38
+leakage_2025_q1|Nasdaq_100|factorvae|3.42|27.86|3.29|27.05
+leakage_2025_q1|SP_500|factorvae|3.55|24.60|3.49|27.85
+leakage_2025_q1|Nasdaq_100|hirevae|3.58|24.97|3.63|26.37
+leakage_2025_q1|SP_500|hirevae|3.67|24.54|3.72|27.63
+leakage_2025_q1|Nasdaq_100|dtml|3.21|23.59|2.93|21.40
+leakage_2025_q1|SP_500|dtml|3.37|22.35|3.26|21.84
+leakage_2025_q1|Nasdaq_100|master|3.52|25.98|3.20|25.84
+leakage_2025_q1|SP_500|master|3.61|26.54|3.48|25.70
+leakage_2025_q1|Nasdaq_100|sep|3.43|26.35|3.19|25.76
+leakage_2025_q1|SP_500|sep|0.62|6.35|0.74|5.89
+leakage_2025_q1|Nasdaq_100|fincon|3.48|25.82|3.63|25.97
+leakage_2025_q1|SP_500|fincon|1.13|8.56|0.97|6.75
+leakage_2025_q1|Nasdaq_100|tradingagents|3.50|26.76|3.71|26.99
+leakage_2025_q1|SP_500|tradingagents|3.78|28.04|3.92|29.31
+leakage_2025_q1|Nasdaq_100|mass|3.96|29.84|4.01|27.53
+leakage_2025_q1|SP_500|mass|4.05|29.73|3.99|29.67
+"""
+
+FINAL_TABLE_3_TEXT = """
+Value|600036|China Merchants Bank Co., Ltd.
+Value|601857|PetroChina Company Limited
+Value|601088|China Shenhua Energy Company Limited
+Growth|600519|Kweichow Moutai Co., Ltd.
+Growth|600276|Jiangsu Hengrui Pharmaceuticals Co., Ltd.
+Growth|600309|Wanhua Chemical Group Co., Ltd.
+Beta|601888|China Tourism Group Duty Free Corporation Limited
+Beta|603288|Foshan Haitian Flavouring & Food Co., Ltd.
+Beta|603259|WuXi AppTec Co., Ltd.
+"""
+
+
 PINNED_SOURCE_SHA256 = {
     "README.md": "1b036a4dd5cfd87b24335609f11ba0a9a61ac49f53eb5578f57fe49d57f2bc5e",
     "ih_dist": SNAPSHOT_SHA256,
@@ -159,13 +363,179 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def git_head(root: Path) -> str:
+def git_text(root: Path, *args: str) -> str:
     return subprocess.run(
-        ["git", "-C", str(root), "rev-parse", "HEAD"],
+        ["git", "-C", str(root), *args],
         check=True,
         capture_output=True,
         text=True,
     ).stdout.strip()
+
+
+def git_head(root: Path) -> str:
+    return git_text(root, "rev-parse", "HEAD")
+
+
+def source_history_audit(source_root: Path) -> Dict[str, Any]:
+    commits = []
+    for line in git_text(
+        source_root,
+        "log",
+        "--reverse",
+        "--all",
+        "--format=%H|%aI|%an|%s",
+    ).splitlines():
+        commit, date, author, subject = line.split("|", 3)
+        commits.append({"commit": commit, "author_date": date, "author": author, "subject": subject})
+
+    roots = git_text(source_root, "rev-list", "--max-parents=0", "--all").splitlines()
+    refs = git_text(
+        source_root,
+        "for-each-ref",
+        "--format=%(refname)|%(objectname)",
+        "refs/heads",
+        "refs/remotes",
+        "refs/tags",
+    ).splitlines()
+    tags = [line for line in refs if line.startswith("refs/tags/")]
+    tracked_head = git_text(source_root, "ls-tree", "-r", "--name-only", SOURCE_COMMIT).splitlines()
+    unique_historical_paths = {
+        path
+        for path in git_text(source_root, "log", "--all", "--pretty=format:", "--name-only").splitlines()
+        if path
+    }
+    deleted_paths = {
+        line.split("\t", 1)[1]
+        for line in git_text(source_root, "log", "--all", "--diff-filter=D", "--name-status", "--format=").splitlines()
+        if line.startswith("D\t")
+    }
+    ignored_objects = {
+        path: git_text(source_root, "rev-list", "--objects", "--all", "--", path).splitlines()
+        for path in IGNORED_OUTPUT_PATHS
+    }
+    fsck = subprocess.run(
+        ["git", "-C", str(source_root), "fsck", "--full", "--no-reflogs", "--unreachable"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    if [item["commit"] for item in commits] != list(SOURCE_HISTORY_COMMITS):
+        raise RuntimeError("Pinned MASS official history changed")
+    if roots != [SOURCE_ROOT_COMMIT] or tags:
+        raise RuntimeError("Pinned MASS official source topology changed")
+    expected_ref_suffixes = {
+        f"refs/heads/main|{SOURCE_COMMIT}",
+        f"refs/remotes/origin/HEAD|{SOURCE_COMMIT}",
+        f"refs/remotes/origin/main|{SOURCE_COMMIT}",
+        f"refs/remotes/origin/master|{SOURCE_COMMIT}",
+    }
+    if set(refs) != expected_ref_suffixes:
+        raise RuntimeError(f"Pinned MASS official refs changed: {refs}")
+    if len(tracked_head) != 38 or len(unique_historical_paths) != 58:
+        raise RuntimeError("Pinned MASS source tree/history size changed")
+    if not set(HISTORICAL_DELETED_CODE_PATHS).issubset(deleted_paths):
+        raise RuntimeError("Pinned MASS deleted-source set changed")
+    if any(ignored_objects.values()):
+        raise RuntimeError("A formerly ignored MASS result path is now present in reachable history")
+    if fsck.stdout.strip() or fsck.stderr.strip():
+        raise RuntimeError("Unexpected unreachable or corrupt objects in pinned MASS clone")
+
+    deleted_code = []
+    for path in HISTORICAL_DELETED_CODE_PATHS:
+        commit = git_text(source_root, "log", "--all", "--format=%H", "--", path).splitlines()[-1]
+        blob = git_text(source_root, "rev-parse", f"{commit}:{path}")
+        deleted_code.append(
+            {
+                "path": path,
+                "oldest_reachable_commit": commit,
+                "blob": blob,
+                "bytes": int(git_text(source_root, "cat-file", "-s", blob)),
+                "paper_result_artifact": False,
+                "interpretation": (
+                    "abandoned DTML/private-data precursor or input-cleaning utility; "
+                    "not a MASS decision, signal, portfolio, or published result"
+                ),
+            }
+        )
+
+    return {
+        "scope": "all locally reachable official-clone refs and objects",
+        "remote_url": git_text(source_root, "remote", "get-url", "origin"),
+        "is_shallow_repository": git_text(source_root, "rev-parse", "--is-shallow-repository") == "true",
+        "reachable_commit_count": len(commits),
+        "root_commit_count": len(roots),
+        "branch_and_remote_refs": refs,
+        "tag_count": len(tags),
+        "unreachable_object_output_empty": True,
+        "commits": commits,
+        "head_tree_file_count": len(tracked_head),
+        "unique_historical_path_count": len(unique_historical_paths),
+        "deleted_code_recovered": deleted_code,
+        "ignored_result_paths": [
+            {"path": path, "reachable_objects": len(objects)} for path, objects in ignored_objects.items()
+        ],
+        "historical_native_decision_signal_portfolio_or_result_artifacts_found": False,
+    }
+
+
+def release_lineage_audit(source_root: Path, anonymous_source_root: Path) -> Dict[str, Any]:
+    if git_head(anonymous_source_root) != ANONYMOUS_SOURCE_COMMIT:
+        raise RuntimeError("Pinned anonymous MASS backup commit changed")
+    if git_text(anonymous_source_root, "rev-parse", "--is-shallow-repository") == "true":
+        raise RuntimeError("Anonymous MASS backup must be a full clone")
+
+    official_paths = set(git_text(source_root, "ls-tree", "-r", "--name-only", SOURCE_COMMIT).splitlines())
+    anonymous_paths = set(
+        git_text(anonymous_source_root, "ls-tree", "-r", "--name-only", ANONYMOUS_SOURCE_COMMIT).splitlines()
+    )
+    shared_paths = official_paths & anonymous_paths
+    different_shared_blobs = []
+    for path in sorted(shared_paths):
+        official_blob = git_text(source_root, "rev-parse", f"{SOURCE_COMMIT}:{path}")
+        anonymous_blob = git_text(anonymous_source_root, "rev-parse", f"{ANONYMOUS_SOURCE_COMMIT}:{path}")
+        if official_blob != anonymous_blob:
+            different_shared_blobs.append(path)
+    if anonymous_paths - official_paths != {".README"} or official_paths - anonymous_paths:
+        raise RuntimeError("Pinned MASS anonymous backup path set changed")
+    if different_shared_blobs != ["README.md"]:
+        raise RuntimeError(f"Pinned MASS anonymous backup blob equivalence changed: {different_shared_blobs}")
+    if sha256(anonymous_source_root / "ih_dist") != SNAPSHOT_SHA256:
+        raise RuntimeError("Anonymous MASS backup optimizer snapshot changed")
+
+    return {
+        "arxiv_primary_record": {
+            "v1_pdf_sha256": PAPER_V1_SHA256,
+            "v2_pdf_sha256": PAPER_SHA256,
+            "v2_is_audited_result_record": True,
+        },
+        "openreview_primary_record": {
+            "url": OPENREVIEW_URL,
+            "submission_number": 3728,
+            "final_pdf_sha256": OPENREVIEW_FINAL_PDF_SHA256,
+            "final_pdf_pages": 26,
+            "decision": "reject",
+            "archive_url": OPENREVIEW_ARCHIVE_URL,
+            "archive_status_as_checked_2026_08_13": "expired",
+            "backup_url_named_in_paper": ANONYMOUS_SOURCE_URL,
+        },
+        "anonymous_backup_commit": ANONYMOUS_SOURCE_COMMIT,
+        "anonymous_backup_root_commit_count": len(
+            git_text(anonymous_source_root, "rev-list", "--max-parents=0", "--all").splitlines()
+        ),
+        "anonymous_backup_file_count": len(anonymous_paths),
+        "official_release_file_count": len(official_paths),
+        "shared_file_count": len(shared_paths),
+        "anonymous_only_paths": sorted(anonymous_paths - official_paths),
+        "different_shared_blobs": different_shared_blobs,
+        "all_non_readme_shared_blobs_identical": True,
+        "same_optimizer_snapshot_sha256": SNAPSHOT_SHA256,
+        "additional_decisions_signals_portfolios_results_or_stock_pools_in_backup": False,
+        "paper_and_release_claim_boundary": (
+            "arXiv v2 says one dataset was open-sourced; both the later anonymous backup and "
+            "named release contain the same SSE50 example panel and ih_dist optimizer state"
+        ),
+    }
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequence[str]) -> None:
@@ -182,6 +552,8 @@ def parse_table(
 ) -> List[Dict[str, Any]]:
     rows: List[Dict[str, Any]] = []
     for line in text.strip().splitlines():
+        if not line:
+            continue
         values = line.split("|")
         if len(values) != 3 + len(metrics):
             raise ValueError(f"Malformed Table {table} row: {line}")
@@ -202,7 +574,7 @@ def parse_table(
     return rows
 
 
-def paper_result_rows() -> List[Dict[str, Any]]:
+def arxiv_v2_result_rows() -> List[Dict[str, Any]]:
     return [
         *parse_table(1, TABLE_1_TEXT, TABLE_1_METRICS),
         *parse_table(2, TABLE_2_TEXT, TABLE_2_METRICS),
@@ -211,14 +583,29 @@ def paper_result_rows() -> List[Dict[str, Any]]:
     ]
 
 
+def paper_result_rows() -> List[Dict[str, Any]]:
+    """Enumerate every numeric/EMCL result cell in the final OpenReview PDF."""
+
+    return [
+        *parse_table(1, TABLE_1_TEXT + FINAL_TABLE_1_ADDITIONS, TABLE_1_METRICS),
+        *parse_table(2, TABLE_2_TEXT, TABLE_2_METRICS),
+        *parse_table(4, FINAL_TABLE_4_TEXT, TABLE_1_METRICS),
+        *parse_table(5, FINAL_TABLE_5_TEXT, TABLE_1_METRICS),
+        *parse_table(6, TABLE_3_TEXT, TABLE_3_METRICS),
+        *parse_table(7, TABLE_4_TEXT + FINAL_TABLE_7_ADDITIONS, TABLE_4_METRICS),
+        *parse_table(8, FINAL_TABLE_8_TEXT, TABLE_1_METRICS),
+    ]
+
+
 def result_conformance() -> List[Dict[str, Any]]:
     rows = []
     for target in paper_result_rows():
         if target["paper_value_is_numeric"]:
-            status = "unverifiable_no_shipped_native_signal_or_result_path"
+            status = "unverifiable_no_shipped_native_signal_output_or_result_path"
             evidence = (
-                "paper_value_only; release has no agent-decision cache, signal path, "
-                "baseline output, backtest path, cost log, or result table"
+                "paper_value_only; release has native aggregation source but no dated "
+                "agent-decision cache, signal output, baseline output, backtest output, "
+                "cost log, or result table"
             )
         else:
             status = "paper_non_numeric_emcl"
@@ -232,6 +619,74 @@ def result_conformance() -> List[Dict[str, Any]]:
             }
         )
     return rows
+
+
+def final_table_3_stock_inventory() -> List[Dict[str, Any]]:
+    """Inventory the final paper's descriptive examples without result credit."""
+
+    rows = []
+    for line in FINAL_TABLE_3_TEXT.strip().splitlines():
+        style, ticker, company = line.split("|", 2)
+        rows.append(
+            {
+                "paper_table": 3,
+                "style": style,
+                "ticker": ticker,
+                "company": company,
+                "empirical_result_cell": False,
+                "replication_credit": False,
+                "evidence": "descriptive paper metadata only",
+            }
+        )
+    if len(rows) != 9 or Counter(row["style"] for row in rows) != {
+        "Value": 3,
+        "Growth": 3,
+        "Beta": 3,
+    }:
+        raise RuntimeError("Pinned MASS final Table 3 inventory changed")
+    return rows
+
+
+def final_empirical_figure_inventory() -> List[Dict[str, Any]]:
+    """Inventory empirical figures and the missing native evidence for each."""
+
+    return [
+        {
+            "paper_figure": 2,
+            "paper_content": "CSI 300 cumulative-return backtest curves",
+            "required_native_evidence": "dated signals, weekly portfolios, costs, and return series",
+            "released_evidence": "aggregation source only; no dated decisions, signals, portfolios, or returns",
+            "status": "unverifiable_no_shipped_native_output",
+        },
+        {
+            "paper_figure": 3,
+            "paper_content": "score-alpha and optimizer-lookback sensitivity curves",
+            "required_native_evidence": "pinned sweep configs, seeds, decisions, and evaluated outputs",
+            "released_evidence": "adjustable source parameters only; no sweep configs, seeds, decisions, or outputs",
+            "status": "unverifiable_no_shipped_native_output",
+        },
+        {
+            "paper_figure": 4,
+            "paper_content": "performance and cost across agent-ensemble scales",
+            "required_native_evidence": "pinned scale runs, decisions, timing logs, and evaluated outputs",
+            "released_evidence": "adjustable agent counts only; no run configs, decisions, timing logs, or outputs",
+            "status": "unverifiable_no_shipped_native_output",
+        },
+        {
+            "paper_figure": 5,
+            "paper_content": "investor-type distributions and MASS/index/excess return trajectories",
+            "required_native_evidence": "exact plotted distributions plus dated signals, portfolios, and returns",
+            "released_evidence": "a dated 16-type ih_dist internal state exists, but its plotted provenance and all return inputs are absent",
+            "status": "partial_internal_state_only_figure_not_reproduced",
+        },
+        {
+            "paper_figure": 6,
+            "paper_content": "two independent SSE 50 stock-popularity inference trajectories",
+            "required_native_evidence": "both run configs, seeds, cached decisions, and popularity series",
+            "released_evidence": "no run config, seed, decision cache, or popularity-series output",
+            "status": "unverifiable_no_shipped_native_output",
+        },
+    ]
 
 
 SAFE_PICKLE_OPCODES = {
@@ -330,6 +785,85 @@ def safe_distribution_snapshot(path: Path) -> Tuple[List[Dict[str, Any]], Dict[s
     return rows, summary
 
 
+def native_signal_nonidentifiability(source_root: Path, snapshot_path: Path) -> Dict[str, Any]:
+    """Prove that the released distribution state cannot identify a MASS signal."""
+
+    _, snapshot_summary = safe_distribution_snapshot(snapshot_path)
+    distributions = DistributionSnapshotUnpickler(io.BytesIO(snapshot_path.read_bytes())).load()
+    date = snapshot_summary["first_date"]
+    weights = distributions[date]
+
+    module_path = source_root / "stock_disagreement/agent/investment_analyzer.py"
+    spec = importlib.util.spec_from_file_location("mass_native_investment_analyzer", module_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Could not load pinned native MASS InvestmentAnalyzer")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    analyzer_class = module.InvestmentAnalyzer
+
+    base = pd.read_parquet(source_root / "stock_disagreement/dataset/base_data.parq")
+    stock_pool = sorted(map(str, base.loc[base["Date"] == date, "Stock"].unique()))
+    if len(stock_pool) != 50:
+        raise RuntimeError(f"Expected 50 released stocks for counterexample date {date}, got {len(stock_pool)}")
+    candidate_pool = stock_pool[:20]
+    selected_a = candidate_pool[:5]
+    selected_b = candidate_pool[5:10]
+
+    def execute(selected: Sequence[str]) -> Dict[str, List[float]]:
+        analyzer = analyzer_class()
+        analyzer.data = {}
+        decisions = {stock: int(stock in selected) for stock in candidate_pool}
+        for investor_type in weights:
+            for investor_id in range(32):
+                analyzer.record_score(date, investor_type, investor_id, decisions)
+        return analyzer.calculate_stock_disagreement_score(
+            date=date,
+            stock_pool=stock_pool,
+            agent_distributions=weights,
+            alpha=0.5,
+        )
+
+    signal_a = execute(selected_a)
+    signal_b = execute(selected_b)
+    changed = sorted(stock for stock in stock_pool if signal_a[stock] != signal_b[stock])
+    if changed != sorted(selected_a + selected_b):
+        raise RuntimeError(f"Pinned native MASS non-identifiability result changed: {changed}")
+    for stock in selected_a:
+        if not math.isclose(signal_a[stock][0], 0.5) or not math.isclose(signal_b[stock][0], 0.0):
+            raise RuntimeError("Pinned native MASS scenario-A signal changed")
+    for stock in selected_b:
+        if not math.isclose(signal_a[stock][0], 0.0) or not math.isclose(signal_b[stock][0], 0.5):
+            raise RuntimeError("Pinned native MASS scenario-B signal changed")
+
+    canonical_weights = json.dumps(sorted(weights.items()), separators=(",", ":"))
+    return {
+        "purpose": "constructive native-code proof that released ih_dist does not determine signals",
+        "native_module": "stock_disagreement/agent/investment_analyzer.py",
+        "native_module_sha256": sha256(module_path),
+        "snapshot_sha256": sha256(snapshot_path),
+        "date": date,
+        "investor_types": len(weights),
+        "agents_per_type": 32,
+        "candidate_pool_size": len(candidate_pool),
+        "selected_stocks_per_agent": 5,
+        "same_released_distribution_in_both_scenarios": True,
+        "distribution_fingerprint_sha256": hashlib.sha256(canonical_weights.encode()).hexdigest(),
+        "scenario_a_selected_stocks": selected_a,
+        "scenario_b_selected_stocks": selected_b,
+        "scenario_a_selected_signal": {stock: signal_a[stock] for stock in selected_a},
+        "scenario_b_selected_signal": {stock: signal_b[stock] for stock in selected_b},
+        "changed_signal_stock_count": len(changed),
+        "changed_signal_stocks": changed,
+        "released_state_identifies_unique_signal": False,
+        "interpretation": (
+            "Both valid 16-type x 32-agent decision assignments use the identical released dated "
+            "distribution, 20-stock candidate size, five selections per agent, and native alpha=0.5 "
+            "aggregation. They produce different signals and rankings, so ih_dist cannot reconstruct "
+            "the absent decisions or any Table 1--4 output."
+        ),
+    }
+
+
 DATASET_FILES = (
     "stock_disagreement/dataset/base_data.parq",
     "stock_disagreement/dataset/ih_label.parq",
@@ -391,7 +925,14 @@ def dataset_inventory(source_root: Path) -> Tuple[List[Dict[str, Any]], Dict[str
         "released_2023_cross_section_size_max": int(daily_counts.max()),
         "base_label_key_rows_equal": len(base_2023) == len(label_2023),
         "base_feature_key_rows_equal": len(base_2023) == len(feature_2023),
-        "paper_stock_pools": ["SSE50", "CSI_300", "ChiNext_100", "CSI_A500"],
+        "paper_stock_pools": [
+            "SSE50",
+            "CSI_300",
+            "ChiNext_100",
+            "CSI_A500",
+            "Nasdaq_100",
+            "SP_500",
+        ],
         "released_stock_pool_panels": ["SSE50_like_only"],
         "invalid_news_placeholders": 2,
         "invalid_news_placeholder_bytes_each": 2,
@@ -403,7 +944,14 @@ def dataset_inventory(source_root: Path) -> Tuple[List[Dict[str, Any]], Dict[str
         "released_2023_cross_section_size_max": 50,
         "base_label_key_rows_equal": True,
         "base_feature_key_rows_equal": True,
-        "paper_stock_pools": ["SSE50", "CSI_300", "ChiNext_100", "CSI_A500"],
+        "paper_stock_pools": [
+            "SSE50",
+            "CSI_300",
+            "ChiNext_100",
+            "CSI_A500",
+            "Nasdaq_100",
+            "SP_500",
+        ],
         "released_stock_pool_panels": ["SSE50_like_only"],
         "invalid_news_placeholders": 2,
         "invalid_news_placeholder_bytes_each": 2,
@@ -445,9 +993,15 @@ def source_config_audit(source_root: Path) -> List[Dict[str, str]]:
     return [
         {
             "dimension": "foundation_model",
-            "paper": "Qwen2.5-72B-Instruct",
+            "paper": "Qwen2.5-72B-Instruct primary backbone",
             "released": "Qwen2.5-72B-Instruct",
             "status": "match",
+        },
+        {
+            "dimension": "final_revision_second_foundation_model",
+            "paper": "GPT-OSS-120B sensitivity experiment in final OpenReview Tables 1 and 7",
+            "released": "no GPT-OSS model config, prompt/response cache, signal, or output",
+            "status": "missing",
         },
         {
             "dimension": "main_agent_scale",
@@ -498,9 +1052,15 @@ def source_config_audit(source_root: Path) -> List[Dict[str, str]]:
         },
         {
             "dimension": "paper_stock_pool_inputs",
-            "paper": "SSE50, CSI 300, ChiNext 100; plus CSI A500 in 2025",
+            "paper": "SSE50, CSI 300, ChiNext 100, CSI A500, Nasdaq 100, S&P 500",
             "released": "SSE50-like base/label/feature panel only",
             "status": "incomplete",
+        },
+        {
+            "dimension": "final_revision_us_market_inputs",
+            "paper": "Microsoft Qlib and Yahoo Finance panels for Nasdaq 100 and S&P 500, 2023 and Q1 2025",
+            "released": "no US-market data builder, pinned response, universe, panel, or labels",
+            "status": "missing",
         },
         {
             "dimension": "paper_news_inputs",
@@ -528,90 +1088,166 @@ def source_config_audit(source_root: Path) -> List[Dict[str, str]]:
         },
         {
             "dimension": "portfolio_backtest",
-            "paper": "weekly top-20%, 0.1% round-trip cost, Tables 4/Figure 2",
+            "paper": "weekly top-20%, 0.1% round-trip cost, Table 7/Figure 2",
             "released": "no backtest, annualized-return, Sharpe, drawdown, or transaction-cost implementation",
             "status": "missing",
         },
         {
             "dimension": "cost_measurement",
-            "paper": "Table 3 time and API fees",
+            "paper": "final Table 6 time and API fees",
             "released": "no request/token/cost logs or measurement script",
             "status": "missing",
         },
         {
             "dimension": "published_result_paths",
-            "paper": "Tables 1--4",
+            "paper": "final OpenReview Tables 1--8 and Figures 2--6",
             "released": "no signals, portfolios, baseline outputs, result tables, or cached LLM decisions",
             "status": "missing",
+        },
+        {
+            "dimension": "paper_claimed_cached_individual_decisions",
+            "paper": "Appendix A.3.7 says individual decisions are cached for backward optimization",
+            "released": "no cache is tracked in either official release or any reachable official commit",
+            "status": "missing",
+        },
+        {
+            "dimension": "final_revision_scaling_1024_1536",
+            "paper": "Table 5 reports 512, 1024, and 1536 agents",
+            "released": "CLI scale is adjustable, but no commands, seeds, decisions, distributions, or results are pinned",
+            "status": "not_pinned",
         },
     ]
 
 
-def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[str, Any]:
+def build_audit(
+    source_root: Path,
+    anonymous_source_root: Path,
+    paper_v1_path: Path,
+    paper_path: Path,
+    openreview_final_paper_path: Path,
+    output_dir: Path,
+) -> Dict[str, Any]:
     commit = git_head(source_root)
     if commit != SOURCE_COMMIT:
         raise RuntimeError(f"Expected MASS source commit {SOURCE_COMMIT}, found {commit}")
     if sha256(paper_path) != PAPER_SHA256:
         raise RuntimeError("Official MASS paper PDF hash does not match the pinned primary source")
+    if sha256(paper_v1_path) != PAPER_V1_SHA256:
+        raise RuntimeError("Official MASS arXiv-v1 PDF hash does not match the pinned primary source")
+    if sha256(openreview_final_paper_path) != OPENREVIEW_FINAL_PDF_SHA256:
+        raise RuntimeError("Final MASS OpenReview PDF hash does not match the pinned primary source")
     for relative, expected in PINNED_SOURCE_SHA256.items():
         actual = sha256(source_root / relative)
         if actual != expected:
             raise RuntimeError(f"Pinned MASS source hash changed for {relative}: {actual}")
 
     conformance = result_conformance()
+    history = source_history_audit(source_root)
+    release_lineage = release_lineage_audit(source_root, anonymous_source_root)
     snapshot_rows, snapshot_summary = safe_distribution_snapshot(source_root / "ih_dist")
+    signal_counterexample = native_signal_nonidentifiability(source_root, source_root / "ih_dist")
     datasets, dataset_summary = dataset_inventory(source_root)
     config = source_config_audit(source_root)
+    descriptive_table_3 = final_table_3_stock_inventory()
+    empirical_figures = final_empirical_figure_inventory()
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    write_csv(output_dir / "tables_1_4_conformance.csv", conformance, list(conformance[0]))
+    write_csv(output_dir / "final_table_result_conformance.csv", conformance, list(conformance[0]))
+    write_csv(
+        output_dir / "final_table_3_stock_inventory.csv",
+        descriptive_table_3,
+        list(descriptive_table_3[0]),
+    )
+    write_csv(
+        output_dir / "final_empirical_figure_inventory.csv",
+        empirical_figures,
+        list(empirical_figures[0]),
+    )
     write_csv(output_dir / "distribution_snapshot_audit.csv", snapshot_rows, list(snapshot_rows[0]))
     write_csv(output_dir / "released_dataset_inventory.csv", datasets, list(datasets[0]))
     write_csv(output_dir / "source_config_conformance.csv", config, list(config[0]))
+    (output_dir / "official_source_history.json").write_text(
+        json.dumps(history, indent=2) + "\n", encoding="utf-8"
+    )
+    (output_dir / "official_release_lineage.json").write_text(
+        json.dumps(release_lineage, indent=2) + "\n", encoding="utf-8"
+    )
+    (output_dir / "native_signal_nonidentifiability.json").write_text(
+        json.dumps(signal_counterexample, indent=2) + "\n", encoding="utf-8"
+    )
 
     status_counts = Counter(row["status"] for row in conformance)
     table_counts = Counter(row["paper_table"] for row in conformance)
     numeric_table_counts = Counter(row["paper_table"] for row in conformance if row["paper_value_is_numeric"])
     row_groups = {(row["paper_table"], row["section"], row["stock_pool"], row["method"]) for row in conformance}
     if status_counts != {
-        "unverifiable_no_shipped_native_signal_or_result_path": 277,
+        "unverifiable_no_shipped_native_signal_output_or_result_path": 766,
         "paper_non_numeric_emcl": 8,
     }:
         raise RuntimeError(f"Pinned MASS status counts changed: {status_counts}")
-    if table_counts != {1: 108, 2: 72, 3: 6, 4: 99}:
+    if table_counts != {1: 264, 2: 72, 4: 44, 5: 12, 6: 6, 7: 216, 8: 160}:
         raise RuntimeError(f"Pinned MASS table-cell counts changed: {table_counts}")
-    if numeric_table_counts != {1: 108, 2: 64, 3: 6, 4: 99}:
+    if numeric_table_counts != {1: 264, 2: 64, 4: 44, 5: 12, 6: 6, 7: 216, 8: 160}:
         raise RuntimeError(f"Pinned MASS numeric table-cell counts changed: {numeric_table_counts}")
-    if len(row_groups) != 81:
-        raise RuntimeError(f"Expected 81 MASS paper result rows, got {len(row_groups)}")
+    if len(row_groups) != 213:
+        raise RuntimeError(f"Expected 213 MASS final-paper result rows, got {len(row_groups)}")
 
     manifest: Dict[str, Any] = {
-        "audit": "MASS paper Tables 1--4 versus pinned public source release",
+        "audit": "MASS arXiv v1/v2, final rejected OpenReview revision, Tables 1--8, and all official source history",
         "overall_status": "not_reproduced_partial_internal_state_only",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
+        "paper_v1_sha256": PAPER_V1_SHA256,
         "paper_sha256": PAPER_SHA256,
         "source_url": SOURCE_URL,
         "source_commit": commit,
-        "paper_numeric_tables_audited": [1, 2, 3, 4],
+        "anonymous_source_url": ANONYMOUS_SOURCE_URL,
+        "anonymous_source_commit": ANONYMOUS_SOURCE_COMMIT,
+        "openreview_url": OPENREVIEW_URL,
+        "openreview_final_pdf_sha256": OPENREVIEW_FINAL_PDF_SHA256,
+        "openreview_final_pdf_pages": 26,
+        "openreview_final_decision": "reject",
+        "openreview_archive_url": OPENREVIEW_ARCHIVE_URL,
+        "openreview_archive_status_as_checked_2026_08_13": "expired",
+        "official_release_lineage_audited": True,
+        "anonymous_backup_all_non_readme_shared_blobs_identical": True,
+        "anonymous_backup_additional_native_result_artifacts_found": False,
+        "source_history_reachable_commits": history["reachable_commit_count"],
+        "source_history_root_commits": history["root_commit_count"],
+        "source_history_tags": history["tag_count"],
+        "source_history_unique_paths": history["unique_historical_path_count"],
+        "source_history_native_result_artifacts_found": False,
+        "paper_numeric_tables_audited": [1, 2, 4, 5, 6, 7, 8],
+        "paper_descriptive_tables_audited": [3],
+        "paper_descriptive_table_3_rows": len(descriptive_table_3),
+        "paper_empirical_figures_audited": len(empirical_figures),
+        "paper_empirical_figures_reproduced": 0,
+        "paper_empirical_figures_partial_internal_state_only": 1,
         "paper_result_rows_total": len(row_groups),
         "paper_result_cells_total_including_emcl": len(conformance),
-        "paper_numeric_result_cells_total": status_counts["unverifiable_no_shipped_native_signal_or_result_path"],
+        "paper_numeric_result_cells_total": status_counts[
+            "unverifiable_no_shipped_native_signal_output_or_result_path"
+        ],
         "paper_non_numeric_emcl_cells": status_counts["paper_non_numeric_emcl"],
         "paper_numeric_result_cells_reproduced": 0,
         "paper_numeric_result_cells_unverifiable": status_counts[
-            "unverifiable_no_shipped_native_signal_or_result_path"
+            "unverifiable_no_shipped_native_signal_output_or_result_path"
         ],
         "native_agent_decision_cache_shipped": False,
-        "native_signal_path_shipped": False,
+        "native_signal_aggregation_source_shipped": True,
+        "native_dated_signal_output_shipped": False,
         "native_portfolio_or_return_path_shipped": False,
         "native_baseline_outputs_shipped": False,
         "native_cost_or_timing_logs_shipped": False,
         "native_dated_distribution_snapshot_shipped": True,
         "distribution_snapshot_is_published_result": False,
+        "native_signal_nonidentifiability_proved": True,
+        "same_released_distribution_produces_distinct_native_signals": True,
+        "native_counterexample_changed_signal_stock_count": signal_counterexample["changed_signal_stock_count"],
         "distribution_snapshot": snapshot_summary,
         "released_dataset": dataset_summary,
-        "released_full_four_pool_dataset": False,
+        "released_full_four_chinese_pool_dataset": False,
+        "released_full_six_pool_dataset": False,
         "released_sse50_like_2023_base_and_labels": True,
         "released_entrypoint_operational_without_source_and_data_repairs": False,
         "paper_main_hyperparameters_match_active_source_defaults": False,
@@ -620,10 +1256,15 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "paper_random_seed_protocol_identified": False,
         "audit_called_llm_or_external_api": False,
         "interpretation": (
-            "The release provides meaningful component evidence: a complete 242-day 2023 "
+            "The named release and author-provided anonymous backup provide meaningful component "
+            "evidence: a complete 242-day 2023 "
             "SSE50-like base/label panel and a safely decoded 263-date, 16-type optimizer-state "
-            "trajectory. It does not reproduce any published result. All 277 numeric cells in "
-            "Tables 1--4 lack native decisions/signals/baseline outputs/backtests/cost logs, the "
+            "trajectory. All non-README files common to both releases are blob-identical, and all "
+            "13 official commits, 58 historical paths, ignored result paths, and unreachable objects "
+            "were audited. A native two-scenario counterexample proves the released distribution "
+            "does not determine signals. It does not reproduce any published result or empirical figure. "
+            "All 766 numeric cells in "
+            "the final Tables 1--2 and 4--8 lack native decisions/signals/baseline outputs/backtests/cost logs, the "
             "other paper pools are absent, and active source defaults differ from paper settings."
         ),
         "source_file_sha256": {relative: sha256(source_root / relative) for relative in PINNED_SOURCE_SHA256},
@@ -634,12 +1275,20 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
 Overall verdict: **not reproduced**. The public release contains real SSE50-like
 input/label data and a dated learned agent-distribution snapshot, but it contains
 none of the agent decisions, signals, baseline outputs, portfolios, backtests,
-timing logs, or API accounting needed to reproduce Tables 1--4.
+timing logs, or API accounting needed to reproduce final Tables 1--2 and 4--8.
 
 ## Primary sources
 
 - Official paper: {PAPER_URL} (SHA-256 `{PAPER_SHA256}`).
 - Public source: {SOURCE_URL}, commit `{commit}`.
+- Earlier arXiv v1: SHA-256 `{PAPER_V1_SHA256}`.
+- ICLR 2026 submission: {OPENREVIEW_URL}. Its 4open.science archive at
+  {OPENREVIEW_ARCHIVE_URL} was expired when checked on 2026-08-13; the paper's
+  author-provided backup survives at {ANONYMOUS_SOURCE_URL}, commit
+  `{ANONYMOUS_SOURCE_COMMIT}`.
+- Final OpenReview PDF: SHA-256 `{OPENREVIEW_FINAL_PDF_SHA256}`, 26 pages,
+  rejected by ICLR 2026. It adds GPT-OSS-120B, FactorVAE/HireVAE, 1024/1536-agent
+  scaling, full Q1-2025 baselines, and Nasdaq-100/S&P-500 results beyond arXiv v2.
 
 ## What the release genuinely establishes
 
@@ -651,18 +1300,37 @@ timing logs, or API accounting needed to reproduce Tables 1--4.
   {snapshot_summary["last_date"]}, 16 investor-type masks per date, positive weights
   with invariant raw sum 16, and {snapshot_summary["changed_transitions"]} changed
   transitions. This is optimizer state, not an action, signal, or return path.
+- The entire named-release history has 13 reachable commits, one root, no tags,
+  38 files at HEAD, and 58 unique historical paths. Recovered deleted files are
+  an abandoned DTML/private-data precursor and cleaning utilities, not MASS
+  decisions or results. The five ignored output directories have no reachable
+  objects, and `git fsck --no-reflogs --unreachable` is empty.
+- The anonymous backup has 39 files. Its only extra path is an empty `.README`;
+  every shared non-README blob is identical to the named release. Its README says
+  the full dataset will be released after review, so it does not add the missing
+  pools, decisions, signals, portfolios, or results.
 - The released model name, 16-by-32 agent scale, SSE50 candidate count, score
   weight for SSE50/CSI 300, cooling rate, and optimizer lookback agree with the
   corresponding paper declarations.
 
 ## Why no published result is reproduced
 
-- The audit enumerates {len(conformance)} Table 1--4 cells: 277 numeric claims and
-  eight Table 2 EMCL markers. All 277 numeric claims are unverifiable from the
-  release. No cached individual decisions are present, so the distribution state
-  cannot be converted into the paper's signals.
+- The audit enumerates {len(conformance)} final-paper table cells: 766 numeric
+  claims and eight Table 2 EMCL markers across Tables 1--2 and 4--8 (Table 3 is
+  descriptive stock metadata, separately inventoried without replication credit).
+  It also inventories empirical Figures 2--6; none is reproduced. Figure 5 has only
+  a partial upstream `ih_dist` state. All 766 numeric claims are unverifiable from
+  the release. No cached individual decisions are present, so the distribution
+  state cannot be converted into the paper's signals.
+- This is now demonstrated constructively through the released native
+  `InvestmentAnalyzer`: two valid 16-type x 32-agent decision assignments reuse
+  the identical first dated distribution, candidate-pool size 20, five selections,
+  and alpha=0.5, yet change {signal_counterexample["changed_signal_stock_count"]}
+  stock signals (selected signals swap between 0.5 and 0.0). Therefore the missing
+  decision tensor is not inferable from `ih_dist`.
 - Only an SSE50-like panel is released. CSI 300, ChiNext 100, CSI A500, and the
-  paper's full multimodal inputs are absent. The two news files are two-byte CRLF
+  paper's full multimodal inputs are absent. The final revision's Nasdaq-100 and
+  S&P-500 Qlib/Yahoo panels are also absent. The two news files are two-byte CRLF
   placeholders and invalid Parquet.
 - The entry point cannot run as released: it has three empty `ROOT_PATH` constants,
   two literal paths missing f-string interpolation, and references absent pool,
@@ -675,10 +1343,13 @@ timing logs, or API accounting needed to reproduce Tables 1--4.
   day. It also generates one strategy per agent/day rather than one per type/day.
 - Random modality, candidate-pool, and optimizer draws have no run-level seed. The
   paper does not identify which released 1/5/10-day label horizon produced Table 1,
-  nor the risk-free rate behind Table 4 Sharpe ratios.
-- Table 4/Figure 2 specify weekly top-20% portfolios and 0.1% round-trip costs, but
-  the release has no portfolio/backtest/cost implementation. Table 3 has no timing,
+  nor the risk-free rate behind Table 7 Sharpe ratios.
+- Table 7/Figure 2 specify weekly top-20% portfolios and 0.1% round-trip costs, but
+  the release has no portfolio/backtest/cost implementation. Table 6 has no timing,
   request, token, or fee logs.
+- `InvestmentAnalyzer` is genuine native signal-aggregation source, and the audit
+  executes it for the non-identifiability proof. This is source-path evidence only:
+  neither official release contains a dated signal output or a published-result path.
 
 Run `scripts/audit_mass_paper.py` to regenerate this package. Use `--strict` when
 a CI failure is desired until the native decisions, complete inputs, experiment
@@ -708,12 +1379,42 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--anonymous-source-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "MASS_ANONYMOUS_SOURCE_ROOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/mass_anonymous_source",
+            )
+        ),
+    )
+    parser.add_argument(
+        "--paper-v1-pdf",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "MASS_PAPER_V1_PDF",
+                "/nfs/roberts/scratch/pi_btk22/zc362/mass_paper_v1.pdf",
+            )
+        ),
+    )
+    parser.add_argument(
         "--paper-pdf",
         type=Path,
         default=Path(
             os.environ.get(
                 "MASS_PAPER_PDF",
                 "/nfs/roberts/scratch/pi_btk22/zc362/mass_paper.pdf",
+            )
+        ),
+    )
+    parser.add_argument(
+        "--openreview-final-paper-pdf",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "MASS_OPENREVIEW_FINAL_PAPER_PDF",
+                "/nfs/roberts/scratch/pi_btk22/zc362/mass_openreview_final.pdf",
             )
         ),
     )
@@ -730,7 +1431,10 @@ def main() -> int:
     args = parse_args()
     manifest = build_audit(
         args.source_root.resolve(),
+        args.anonymous_source_root.resolve(),
+        args.paper_v1_pdf.resolve(),
         args.paper_pdf.resolve(),
+        args.openreview_final_paper_pdf.resolve(),
         args.output_dir.resolve(),
     )
     print(json.dumps(manifest, indent=2))

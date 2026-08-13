@@ -1,0 +1,6 @@
+paper_figure,paper_content,required_native_evidence,released_evidence,status
+2,CSI 300 cumulative-return backtest curves,"dated signals, weekly portfolios, costs, and return series","aggregation source only; no dated decisions, signals, portfolios, or returns",unverifiable_no_shipped_native_output
+3,score-alpha and optimizer-lookback sensitivity curves,"pinned sweep configs, seeds, decisions, and evaluated outputs","adjustable source parameters only; no sweep configs, seeds, decisions, or outputs",unverifiable_no_shipped_native_output
+4,performance and cost across agent-ensemble scales,"pinned scale runs, decisions, timing logs, and evaluated outputs","adjustable agent counts only; no run configs, decisions, timing logs, or outputs",unverifiable_no_shipped_native_output
+5,investor-type distributions and MASS/index/excess return trajectories,"exact plotted distributions plus dated signals, portfolios, and returns","a dated 16-type ih_dist internal state exists, but its plotted provenance and all return inputs are absent",partial_internal_state_only_figure_not_reproduced
+6,two independent SSE 50 stock-popularity inference trajectories,"both run configs, seeds, cached decisions, and popularity series","no run config, seed, decision cache, or popularity-series output",unverifiable_no_shipped_native_output
