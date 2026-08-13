@@ -1,0 +1,26 @@
+dimension,sufficiently_specified,evidence
+human stage order,True,six named stages and the recovered production UI agree
+human response schema,True,"action, reliability, rationale, visibility flag, source judgments, and trade percentage are specified"
+human execution rule,True,"paper gives percentages; production source fixes whole-share cash/share rules and $10,000 initial cash"
+human participant outputs,False,"no deidentified decisions, rationales, timing logs, demographics, or portfolio paths are public"
+human recruitment and ethics protocol,False,"n=19, Harvard affiliation, and consent are stated; recruitment, compensation, exclusions, and approval identifier are absent"
+consensus agent count,False,N is symbolic; no experiment value is stated
+consensus model identities/settings,False,"families/examples are named without exact revisions, prompts, temperatures, seeds, or request traces"
+claim extraction schema,False,field names are described but no runnable extractor or output contract is printed
+claim embedding model,False,"no embedding model, revision, preprocessing, or dimension is stated"
+consensus hyperparameters,False,"sigma, lambda, tau, alpha, and the high-consensus cutoff are not given"
+consensus graph semantics,True,cross-report threshold edges and connected components are stated
+temporal horizons,True,"1, 7, 14, 28, 90, 180, and 360 days are stated"
+temporal polynomial,False,"degree, fit details, trend-score formula, and label thresholds are absent"
+temporal forecast,False,"some indicator increments are examples; full scoring functions, magnitude interval, and tie rules are absent"
+temporal action sizing,False,four signals are named but combination weights and action/position thresholds are absent
+memory horizon sets,True,short and long horizon partitions are stated
+memory rolling window,False,w is symbolic and slope edge cases are unspecified
+reflection prompts,False,"prompt contents, schemas, and filled calls are not released"
+reflection model identities/settings,False,no exact reflection models or inference settings are stated
+memory retrieval,False,the active prose asserts role retrieval while detailed Chroma/time-decay retrieval is commented out
+baseline parameters,False,"named rules lack lookbacks, thresholds, execution timing, and tuning protocol"
+risk-free rate,False,Rf is symbolic with no value or frequency convention
+transaction costs and liquidity,False,"costs, slippage, spread, and liquidity are omitted and acknowledged as future work"
+human ellipse,False,definition is printed but c and the underlying human observations are absent
+2026 forward run,False,"date range and 1 PM cadence are stated; timezone, raw inputs, calls, timestamps, decisions, fills, and NAV paths are absent"

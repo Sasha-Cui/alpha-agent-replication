@@ -1,0 +1,12 @@
+issue,evidence,impact
+code_availability,The paper points only to a 31-repository lab organization; five bounded exact repository/code searches found no TrustTrade implementation.,claimed public model/processing/analysis code is not operationally identifiable
+historical_information_time,68/183 stock-days contain a post-2024 year; strong examples state realized Q3 2025 revenue and January 2026 valuation in nominal January 2024 reports.,historical human/LLM comparison inputs are not clean point-in-time evidence
+decision_content_removal,Four raw deployed reports rendered open by default retain a 'FINAL TRANSACTION PROPOSAL' marker despite the removal claim.,participant priming remains possible on four stock-days
+interface_sizing,The published UI screenshot says one-share prototype sizing; the production source and Methods use percentage-of-cash/shares sizing.,source asset and deployed protocol conflict
+memory_slope_symbol,"The stored-record prose calls Sharpe slope v^(RR), while the record and slope equation use v^(SR).",notation is internally inconsistent
+memory_backfill_index,"Backfill prose says prior trade i<t, but the equation remains indexed R_(t,h), P_t, q_t.",the target record/date semantics are ambiguous
+memory_sharpe_time_direction,"The text says future horizon metrics are backfilled at t+h, while Sharpe uses trailing R_(t-tau,1).",forward versus trailing horizon semantics conflict
+inactive_baseline_table,The strict paper-notation/production-loader replay matches 1/12 cells; plausible sensitivities match 3/12 or 7/12.,source-retained baseline numbers lack a unique executable convention
+baseline_percentage_domain,"The human widget permits only 25/50/75/100%, but embedded GPT-4o-mini decisions include arbitrary values such as 1.93%, 20%, 53.37%, 65%, and 99.58%.",the baseline decision stream does not obey the stated human allocation-choice domain
+human_data_availability,The data statement links interfaces but releases no participant records or aggregate arrays behind nine human panels.,the human-study result claims cannot be independently regenerated
+real_time_auditability,The paper reports a 2026 1 PM daily run but exposes no timezone or timestamped request/input/decision/fill records.,the forward-time no-future-access claim is not independently auditable

@@ -1,0 +1,28 @@
+figure,panel_ids,active_panels,empirical_panels,description,source_asset,source_asset_sha256,source_asset_recovered,related_deployed_price_input_recovered,raw_result_array_recovered,author_native_regeneration,paper_result_credit
+study1,a,1,0,pipeline schematic,figs/figs/v2/tradingagents.pdf,983ac9fe7a934f2b88c89111b0117da55d772b2b8649344cf46267a2ee6c8e09,True,False,False,False,False
+study1,b-c,2,2,2024 reasoning-depth ablations,figs/figs/v2/ablation_study_plots_research_trader_risk_mean.pdf,0e0972ee97d5152c1e3b1392c08648811e19fc2c6df0fd0e805e3304d81f28e8,True,False,False,False,False
+study1,d,1,1,2024 return heterogeneity,figs/figs/v2/performance_with_price_clean2_.png,df8dd27cbd34fe068cc696627dd01c095a666c6273fdbfeb378484df2c32ac6d,True,False,False,False,False
+study1,e,1,1,2024 drawdown heterogeneity,figs/figs/v2/performance_with_price_clean_mdd2_.png,55ae48bfb3ddefe2809d3ca59adb8a9ca57f5a024c102fcc00983b162bb3d3fb,True,False,False,False,False
+study1,f,1,1,AAPL 2024 price path,figs/figs/stock_price/stock_AAPL_price_2.png,25a35f5c6dc1450848d271df63610cff114305839bf59967b1b46332379201cc,True,True,False,False,False
+study1,g,1,1,GOOG 2024 price path,figs/figs/stock_price/stock_GOOG_price_2.png,6bbf6d0a3f1d4d302dec61fa738acbee0e55d2f82b7f9b779de2aa96fc0cb5c1,True,True,False,False,False
+study1,h,1,1,NVDA 2024 price path,figs/figs/stock_price/stock_NVDA_price_2.png,ce0729737fbd19761d1d8e9f0a96414a42f2d2a8268963cd848a517ce3993c7d,True,True,False,False,False
+human_analysis,a,1,1,participant demographics,figs/figs/v2/user_demographics_overview_nature.png,dfcd81ff193782ba6a4fbbea392f8efb08aad8c64e96fc61158e638ae1b504fc,True,False,False,False,False
+human_analysis,b-f,5,5,human performance,figs/figs/v2/stock_performance_summary_nature.png,ff885b0cdcd556b8728e969baf3ee0702d04ff22e5fec9a9a222ac066ed80616,True,False,False,False,False
+human_analysis,g,1,1,human information weighting,figs/figs/v2/rank_consistent_selective_weighting.png,f7d5f7e05c08d2ecd6f57e07f8405b87f3144bb7ba9f6738c4b3a078d6c78b05,True,False,False,False,False
+human_analysis,h,1,1,human factor scores,figs/figs/v2/human_factor_combined_score_ranked.png,645bba9b9e387354ef2ed0eab7d575c79c31a68aae16bb45977717fb7acb8280,True,False,False,False,False
+human_analysis,i,1,1,human/LLM convergence,figs/figs/v2/consistency_comparison_subplots_v3.png,07cb856b5a78b87920d6dd2eb25ba6d7a8c0c3818234863fd1e0109c723b3e22,True,False,False,False,False
+study3,a,1,0,TrustTrade schematic,figs/figs/v2/trusttrade.pdf,08114b2da8ede4b0a87aae301f81e86928a236a5dab55044d7edd810efda897d,True,False,False,False,False
+study3,b,1,1,consensus convergence,figs/figs/v2/consistency_comparison_high_consensus_ci.pdf,6f94687bf0a8cc20981fc8e7d1222dc7944f9ecd23a7144ddb293fb84d6806e7,True,False,False,False,False
+study3,c,1,1,TrustTrade ablation trade-off,figs/figs/v2/risk_return_tradeoff_abl.pdf,d4889a2d8d89ec011abfb82ab625b04808ba1c12581c9043e4a61a3d0ba8e8bc,True,False,False,False,False
+study3,d,1,1,temporal-signal example output,tabs/price_output.tex,fa9bda61cd61447a567e295e2ada05494cac11b431a4a1d3f61332c4cebfd262,True,False,False,False,False
+main,a,1,1,2024 CR/MDD,figs/figs/v2/risk_return_tradeoff.pdf,f96a0d7a8d4cd821f3f8f0cc9df8a17b68f93b2a0bea93e04b18c75fe66792b8,True,False,False,False,False
+main,b,1,1,2024 SR/MDD,figs/figs/v2/sr_return_tradeoff.pdf,ff876e1995adba66dfc759aa1e2698e69251e3a77d59bc425dc2e5807264f0b7,True,False,False,False,False
+main,c,1,1,2026 CR/MDD,figs/figs/v2/risk_return_tradeoff_2026q1.pdf,58189d1efd68906e06764597cc47c3cd95e93220ceb617981c894eff29ded064,True,False,False,False,False
+main,d,1,1,2026 SR/MDD,figs/figs/v2/sr_return_tradeoff_2026q1.pdf,654541025473b0e63ede1865b9ca554670d9e3a24cfb7cc45f1c5ba3091b42a2,True,False,False,False,False
+main_2026q1,a,1,1,AAPL real-time path,figs/figs/v2/per_stock_AAPL_2026q1.pdf,1d45e0cfe92fba313d884ebeda4fe2f7d71851aee7b108d9d2807f2263c638c8,True,False,False,False,False
+main_2026q1,b,1,1,GOOG real-time path,figs/figs/v2/per_stock_GOOG_2026q1.pdf,18e0366ab54373d671290147e172bb9956eff073c5bde3d9c332bd77d1dd7127,True,False,False,False,False
+main_2026q1,c,1,1,NVDA real-time path,figs/figs/v2/per_stock_NVDA_2026q1.pdf,582745946232f0769d8882f8215fa7ef8d690d984ee7e6d1b128967f2e0cf3b6,True,False,False,False,False
+methods_interface,a,1,0,human interface screenshot,figs/figs/v2/simulation.pdf,3981434ce682c5910105246c3c1ae8f363a6f8e70ad7912325c82c0e614f62ac,True,False,False,False,False
+methods_modules,a,1,0,consensus schematic,figs/figs/v2/trusttrade_consensus.pdf,0ee68653da5b34b7cd2678362d411adb83afbbed4fb4e4fe6cc97122528c9697,True,False,False,False,False
+methods_modules,b,1,0,temporal module schematic,figs/figs/v2/trusttrade_price.pdf,cb6e66a49d43fe58065221bf03ddbc65424acf19b22bd980a711b16b10bc334d,True,False,False,False,False
+methods_modules,c,1,0,memory schematic,figs/figs/v2/trusttrade_memory.pdf,68bb6b5e650e12ba9f08e0e341757caf89f3344e614700e6ccbd79e0f9b3cb6e,True,False,False,False,False

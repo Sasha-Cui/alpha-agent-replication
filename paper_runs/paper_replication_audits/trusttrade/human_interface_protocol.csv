@@ -1,0 +1,7 @@
+stage,information,action_required,reliability_1_to_100_required,rationale_recorded,ai_decision_visibility_flag_recorded,most_influential_and_reliable_recorded,trade_percentage_recorded,execution_rule,production_source_recovered
+d0,price and indices,True,True,True,False,False,False,none,True
+d1,fundamentals,True,True,True,True,False,False,none,True
+d2,market/technical,True,True,True,True,False,False,none,True
+d3,news,True,True,True,True,False,False,none,True
+d4,sentiment,True,True,True,True,False,False,none,True
+final,aggregate and execute,True,True,True,False,True,True,BUY=floor(cash*pct/close); SELL=floor(shares*pct); HOLD=no trade,True
