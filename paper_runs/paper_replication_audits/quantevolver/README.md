@@ -45,6 +45,11 @@ reproduced**. The implementation is genuine; the experiment is not public.
   inputs/outputs, baseline implementations, trial seeds, costs, and result
   tables. The five numeric result plot panels are vector graphics without their
   underlying arrays.
+- The complete non-shallow public history has exactly two commits. Across both
+  revisions, there are **0** result/log/checkpoint/data artifact paths and **0**
+  occurrences of seven distinctive displayed paper-result literals outside the
+  bundled paper PDF. There are no alternate branches, tags, releases, or
+  unreachable local Git objects supplying a hidden experiment path.
 - The generic examples are not paper configs: they use placeholder model and
   asset names, January 2024 example windows, one GPU, and generic thresholds.
   The paper does not identify Benchmark A's asset, Benchmark B's exchange or

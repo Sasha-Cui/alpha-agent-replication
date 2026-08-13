@@ -36,6 +36,38 @@ README_ONLY_COMMIT_DATE = "2026-05-15T04:37:50+08:00"
 REPOSITORY_PDF_SHA256 = "9e72f2c188882b8f3cc8a67ac724021521c522d8f40627485a5921613548c905"
 DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
 
+PAPER_RESULT_LITERALS = ("53.22", "0.0586", "50.2644", "125.6", "2.26", "0.1923", "0.0500")
+RESULT_PATH_PARTS = {
+    "checkpoint",
+    "checkpoints",
+    "experiment",
+    "experiments",
+    "log",
+    "logs",
+    "output",
+    "outputs",
+    "result",
+    "results",
+    "run",
+    "runs",
+}
+RESULT_ARTIFACT_SUFFIXES = (
+    ".ckpt",
+    ".csv",
+    ".json",
+    ".jsonl",
+    ".log",
+    ".npy",
+    ".npz",
+    ".out",
+    ".parquet",
+    ".pickle",
+    ".pkl",
+    ".pt",
+    ".pth",
+    ".safetensors",
+)
+
 PINNED_SOURCE_SHA256 = {
     "README.md": "ecd1a131450cff65c71de4c0360adf3908f3d61e5a8ed50e2566d103b06fab36",
     "pyproject.toml": "f898b2db437038ddad95c4622beeb5d69eff8ed52f41b7dbcffa51e1c31bf6ab",
@@ -489,6 +521,58 @@ def source_inventory(source_root: Path) -> List[Dict[str, Any]]:
     return rows
 
 
+def source_history_inventory(source_root: Path) -> List[Dict[str, Any]]:
+    """Inventory every reachable revision for latent paper-result artifacts."""
+    if str(run_git(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise RuntimeError("QuantEvolver source history is shallow; fetch it before auditing")
+    commits = str(run_git(source_root, "rev-list", "--reverse", "--all")).splitlines()
+    if commits != [README_ONLY_COMMIT, SOURCE_COMMIT]:
+        raise RuntimeError(f"QuantEvolver reachable public history changed: {commits}")
+
+    rows: List[Dict[str, Any]] = []
+    for commit in commits:
+        authored_at, subject = str(
+            run_git(source_root, "show", "-s", "--format=%aI%x09%s", commit)
+        ).rstrip("\n").split("\t", 1)
+        paths = str(run_git(source_root, "ls-tree", "-r", "--name-only", commit)).splitlines()
+        artifact_paths = [
+            path
+            for path in paths
+            if path.lower().endswith(RESULT_ARTIFACT_SUFFIXES)
+            or any(part in RESULT_PATH_PARTS for part in path.lower().split("/"))
+        ]
+        literal_hits: List[str] = []
+        for path in paths:
+            if path == "paper/QuantEvolver.pdf" or path.lower().endswith((".pdf", ".png")):
+                continue
+            payload = run_git(source_root, "show", f"{commit}:{path}", binary=True)
+            text = payload.decode("utf-8", errors="ignore")
+            for literal in PAPER_RESULT_LITERALS:
+                if literal in text:
+                    literal_hits.append(f"{path}:{literal}")
+        rows.append(
+            {
+                "commit": commit,
+                "authored_at": authored_at,
+                "subject": subject,
+                "tracked_paths": len(paths),
+                "python_paths": sum(path.endswith(".py") for path in paths),
+                "result_or_data_artifact_paths": len(artifact_paths),
+                "result_or_data_artifact_inventory": ";".join(artifact_paths),
+                "paper_result_literal_hits_outside_bundled_pdf": len(literal_hits),
+                "paper_result_literal_inventory": ";".join(literal_hits),
+                "paper_result_artifact_found": False,
+            }
+        )
+    if any(
+        row["result_or_data_artifact_paths"]
+        or row["paper_result_literal_hits_outside_bundled_pdf"]
+        for row in rows
+    ):
+        raise RuntimeError("QuantEvolver history unexpectedly contains a latent result artifact")
+    return rows
+
+
 def paper_source_inventory(paper_source_root: Path) -> List[Dict[str, Any]]:
     numeric = set(PINNED_PAPER_SOURCE_SHA256) - {"bare_jrnl_new_sample4.tex"}
     rows = []
@@ -669,6 +753,7 @@ def build_audit(
     gaps = specification_gaps()
     mechanisms = mechanism_conformance(source_root)
     inventory = source_inventory(source_root)
+    history = source_history_inventory(source_root)
     paper_assets = paper_source_inventory(paper_source_root)
     native = native_component_checks(source_root, source_python)
     component = component_gate_summary(component_root)
@@ -681,6 +766,7 @@ def build_audit(
     write_csv(output_dir / "paper_specification_gaps.csv", gaps)
     write_csv(output_dir / "source_mechanism_conformance.csv", mechanisms)
     write_csv(output_dir / "released_source_inventory.csv", inventory)
+    write_csv(output_dir / "released_source_history_inventory.csv", history)
     write_csv(output_dir / "paper_source_asset_inventory.csv", paper_assets)
     (output_dir / "native_component_execution.json").write_text(json.dumps(native, indent=2) + "\n", encoding="utf-8")
     (output_dir / "separate_component_gate.json").write_text(json.dumps(component, indent=2) + "\n", encoding="utf-8")
@@ -704,6 +790,16 @@ def build_audit(
         "readme_only_commit_date": README_ONLY_COMMIT_DATE,
         "source_release_before_submission_minutes": 16.2333,
         "source_history_commits": 2,
+        "source_history_commits_audited": len(history),
+        "source_history_result_or_data_artifact_paths": sum(
+            row["result_or_data_artifact_paths"] for row in history
+        ),
+        "source_history_paper_result_literal_hits_outside_bundled_pdf": sum(
+            row["paper_result_literal_hits_outside_bundled_pdf"] for row in history
+        ),
+        "source_history_paper_result_artifacts_found": sum(
+            bool(row["paper_result_artifact_found"]) for row in history
+        ),
         "paper_era_source_revision_available": True,
         "repository_bundled_pdf_sha256": REPOSITORY_PDF_SHA256,
         "repository_bundled_pdf_exact_arxiv_artifact": False,
@@ -754,7 +850,8 @@ def build_audit(
             f"{mechanism_credit}/{len(mechanisms)} audited paper mechanism dimensions are direct matches "
             "or meaningful analogues, all 55 released Python files compile, all three upstream tests pass, "
             "and the three valid example seeds plus a nine-task example bank execute deterministically. "
-            "However, the release explicitly excludes the paper data, checkpoint, logs, and reproduction "
+            "The complete two-commit public history contains no result/data artifact path and no paper "
+            "result literal outside the bundled PDF. The release explicitly excludes the paper data, checkpoint, logs, and reproduction "
             "scripts and ships none of the paper factors, baselines, fused outputs, result arrays, random "
             "seeds, costs, or exact experiment configuration. Therefore 0/75 table result cells and 0/31 "
             "non-table quantitative result claims are reproduced. The paper also conflicts with itself on "
@@ -816,6 +913,11 @@ reproduced**. The implementation is genuine; the experiment is not public.
   inputs/outputs, baseline implementations, trial seeds, costs, and result
   tables. The five numeric result plot panels are vector graphics without their
   underlying arrays.
+- The complete non-shallow public history has exactly two commits. Across both
+  revisions, there are **0** result/log/checkpoint/data artifact paths and **0**
+  occurrences of seven distinctive displayed paper-result literals outside the
+  bundled paper PDF. There are no alternate branches, tags, releases, or
+  unreachable local Git objects supplying a hidden experiment path.
 - The generic examples are not paper configs: they use placeholder model and
   asset names, January 2024 example windows, one GPU, and generic thresholds.
   The paper does not identify Benchmark A's asset, Benchmark B's exchange or

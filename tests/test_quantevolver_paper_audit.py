@@ -80,6 +80,7 @@ def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> Non
     gaps = read_csv(output / "paper_specification_gaps.csv")
     mechanisms = read_csv(output / "source_mechanism_conformance.csv")
     inventory = read_csv(output / "released_source_inventory.csv")
+    history = read_csv(output / "released_source_history_inventory.csv")
     paper_assets = read_csv(output / "paper_source_asset_inventory.csv")
     native = json.loads((output / "native_component_execution.json").read_text(encoding="utf-8"))
     component = json.loads((output / "separate_component_gate.json").read_text(encoding="utf-8"))
@@ -89,6 +90,10 @@ def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> Non
     assert manifest["paper_era_source_revision_available"] is True
     assert manifest["source_commit"] == audit.SOURCE_COMMIT
     assert manifest["source_history_commits"] == 2
+    assert manifest["source_history_commits_audited"] == 2
+    assert manifest["source_history_result_or_data_artifact_paths"] == 0
+    assert manifest["source_history_paper_result_literal_hits_outside_bundled_pdf"] == 0
+    assert manifest["source_history_paper_result_artifacts_found"] == 0
     assert manifest["paper_numeric_table_cells_total"] == 75
     assert manifest["native_paper_table_result_cells_reproduced"] == 0
     assert manifest["published_non_table_result_claims_total"] == 31
@@ -126,6 +131,12 @@ def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> Non
     }
     assert len(inventory) == 67
     assert sum(row["python_source"] == "True" for row in inventory) == 55
+    assert len(history) == 2
+    assert [int(row["tracked_paths"]) for row in history] == [1, 67]
+    assert [int(row["python_paths"]) for row in history] == [0, 55]
+    assert {row["result_or_data_artifact_paths"] for row in history} == {"0"}
+    assert {row["paper_result_literal_hits_outside_bundled_pdf"] for row in history} == {"0"}
+    assert {row["paper_result_artifact_found"] for row in history} == {"False"}
     assert len(paper_assets) == 10
     assert sum(row["asset_role"] == "numeric_result_figure" for row in paper_assets) == 5
     assert {row["underlying_numeric_array_shipped"] for row in paper_assets} == {"False"}
@@ -159,4 +170,5 @@ def test_pinned_primary_sources_when_available() -> None:
         "README.md"
     ]
     assert len(audit.source_inventory(source_root)) == 67
+    assert len(audit.source_history_inventory(source_root)) == 2
     assert len(audit.paper_source_inventory(paper_source)) == 10

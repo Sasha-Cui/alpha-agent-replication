@@ -14,6 +14,10 @@
   "readme_only_commit_date": "2026-05-15T04:37:50+08:00",
   "source_release_before_submission_minutes": 16.2333,
   "source_history_commits": 2,
+  "source_history_commits_audited": 2,
+  "source_history_result_or_data_artifact_paths": 0,
+  "source_history_paper_result_literal_hits_outside_bundled_pdf": 0,
+  "source_history_paper_result_artifacts_found": 0,
   "paper_era_source_revision_available": true,
   "repository_bundled_pdf_sha256": "9e72f2c188882b8f3cc8a67ac724021521c522d8f40627485a5921613548c905",
   "repository_bundled_pdf_exact_arxiv_artifact": false,
@@ -67,7 +71,7 @@
   "separate_component_gate_grade": "B",
   "separate_component_gate_paper_result_credit": false,
   "audit_runtime_called_llm_or_market_data_api": false,
-  "interpretation": "QuantEvolver has a real, paper-era public framework: the released DSL, seed validation, task-bank builder, evaluators, DiCo-like archives, and Verl/GRPO wiring are substantive. 38/67 audited paper mechanism dimensions are direct matches or meaningful analogues, all 55 released Python files compile, all three upstream tests pass, and the three valid example seeds plus a nine-task example bank execute deterministically. However, the release explicitly excludes the paper data, checkpoint, logs, and reproduction scripts and ships none of the paper factors, baselines, fused outputs, result arrays, random seeds, costs, or exact experiment configuration. Therefore 0/75 table result cells and 0/31 non-table quantitative result claims are reproduced. The paper also conflicts with itself on the backbone model, conflicts with source on ICIR scaling, leaves single-asset IC/RankIC undefined under its published cross-sectional equations, and its headline 7.8% and 109.5% improvements are not derivable from the displayed table values. The existing 3/3 grade-B gate remains valid only for released seed/evaluator components under explicit monthly JKP cadence and universe adaptations; it provides zero full-paper result credit.",
+  "interpretation": "QuantEvolver has a real, paper-era public framework: the released DSL, seed validation, task-bank builder, evaluators, DiCo-like archives, and Verl/GRPO wiring are substantive. 38/67 audited paper mechanism dimensions are direct matches or meaningful analogues, all 55 released Python files compile, all three upstream tests pass, and the three valid example seeds plus a nine-task example bank execute deterministically. The complete two-commit public history contains no result/data artifact path and no paper result literal outside the bundled PDF. The release explicitly excludes the paper data, checkpoint, logs, and reproduction scripts and ships none of the paper factors, baselines, fused outputs, result arrays, random seeds, costs, or exact experiment configuration. Therefore 0/75 table result cells and 0/31 non-table quantitative result claims are reproduced. The paper also conflicts with itself on the backbone model, conflicts with source on ICIR scaling, leaves single-asset IC/RankIC undefined under its published cross-sectional equations, and its headline 7.8% and 109.5% improvements are not derivable from the displayed table values. The existing 3/3 grade-B gate remains valid only for released seed/evaluator components under explicit monthly JKP cadence and universe adaptations; it provides zero full-paper result credit.",
   "source_file_sha256": {
     "README.md": "ecd1a131450cff65c71de4c0360adf3908f3d61e5a8ed50e2566d103b06fab36",
     "pyproject.toml": "f898b2db437038ddad95c4622beeb5d69eff8ed52f41b7dbcffa51e1c31bf6ab",
@@ -100,7 +104,7 @@
     "upstream_conformance.json": "fe83757055b8f6901b69784bd14d9232d17563a4f16d398b938a8309b47715f7"
   },
   "output_sha256": {
-    "README.md": "dad307644552083b86bdbd70ebdc1d26368f5dcda4bb071354ca01432bdb0604",
+    "README.md": "5e0426c6a9ab19f9b4a0e8766edd3184017036dd942802ad82faa22e25e08f92",
     "ablation_design_cells.csv": "cee290abca27f031bc31bbcdcc646f6d131767b938f927d3a3393912aa5fb820",
     "native_component_execution.json": "ba773ad6dca2a7e7d78b40ff9c635b3a42fe66ce1e79389d6eb208ad32fc9062",
     "paper_internal_and_source_checks.csv": "0a1c3f2f0df9273e46432cf9102050a74016e4b8b814366411f224ce7b6a082c",
@@ -108,6 +112,7 @@
     "paper_source_asset_inventory.csv": "69f8d72256664364c02dab13d91898795a75054654e7c942af9b662d9628a5ce",
     "paper_specification_gaps.csv": "ca5483c6f218f04f26f8cd8dbd0ebb8cc56f4b0c35c372ad0c189e5de919399a",
     "published_non_table_claims.csv": "7ffbc2ab7ce2c89eb92251b1161f1267baaa308e3e4c6c98eb3487c25ff6d3f7",
+    "released_source_history_inventory.csv": "c416df694bf4f532f19ff04c5400150ce68200ab27e42f55205ff0cb46b24ce5",
     "released_source_inventory.csv": "963ab9bda21092510231056fcf9fc97424f269f8840dd4f330b2ed1d48724fe7",
     "separate_component_gate.json": "4af6da6e54f0b34901f07207797baad8dfa7e1c0fb9508da83447ea6b2cdb8c2",
     "source_mechanism_conformance.csv": "825f8efee6ce638fef744fe96d3640600e39b6e5e93016c5162ceb58f8a6bfd4"

@@ -281,7 +281,9 @@ ARTIFACT_NOTES = {
         "all three upstream tests pass, three released example seeds and a nine-task "
         "example bank execute deterministically, and 38/67 mechanism dimensions "
         "match or have meaningful analogues. These are components, not the paper "
-        "experiment. The README explicitly excludes private market data, trained "
+        "experiment. The complete non-shallow two-commit public history contains "
+        "zero result/log/checkpoint/data artifact paths and zero distinctive paper-result "
+        "literals outside the bundled PDF. The README explicitly excludes private market data, trained "
         "checkpoints, experiment logs, and paper-specific reproduction scripts; no "
         "paper factors, baselines, fusion arrays, trials, seeds, or costs are shipped, "
         "so 0/75 table cells count as native reproductions. The separate 3/3 grade-B "
@@ -1376,7 +1378,7 @@ TARGETED_EXECUTION = {
     "SYS-P1GPT": "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_cells_end_to_end_lookahead_counterexample",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
-    "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
+    "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_component_gate_separate",
     "SYS-QUANTA-ALPHA": "paper_audit:partial_270_rendered_author_output_units_corroborated_zero_of_344_table_cells_regenerated_components_only",
     "SYS-RAPTOR": "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
