@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import csv
 from dataclasses import dataclass
+from datetime import datetime, timezone
 import hashlib
 import json
 import math
@@ -395,6 +396,9 @@ def style_axis(ax: plt.Axes) -> None:
 
 
 def save_figure(fig: plt.Figure, path: Path, title: str) -> None:
+    # Matplotlib otherwise injects the wall-clock time into PDF metadata, which
+    # makes validation rebuilds dirty an otherwise unchanged checkout.
+    stable_pdf_date = datetime(2026, 1, 1, tzinfo=timezone.utc)
     fig.patch.set_facecolor(COLORS["white"])
     fig.savefig(
         path,
@@ -403,7 +407,12 @@ def save_figure(fig: plt.Figure, path: Path, title: str) -> None:
         facecolor=COLORS["white"],
         edgecolor=COLORS["white"],
         transparent=False,
-        metadata={"Title": title, "Creator": "build_paper_assets.py"},
+        metadata={
+            "Title": title,
+            "Creator": "build_paper_assets.py",
+            "CreationDate": stable_pdf_date,
+            "ModDate": stable_pdf_date,
+        },
     )
     plt.close(fig)
     if not path.is_file() or path.stat().st_size < 1000:
