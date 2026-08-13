@@ -539,6 +539,26 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-FACTOR-ENGINE": (
+        "A pinned two-version FactorEngine audit rebuilds both 26-page arXiv "
+        "revisions above 99.92% extracted-token overlap and visually checks all 52 "
+        "official plus all 52 rebuilt pages. It inventories all 276 active numeric "
+        "table measurements and eight empirical figure assets/panels. The source "
+        "prints two evolution prompt templates and two factor programs: the seed "
+        "executes verbatim on a controlled Polars panel, but the claimed "
+        "evolved-after-40-iterations program fails because daily_range_expr is "
+        "undefined. No attributable FactorEngine code, frozen Qlib/data snapshot, "
+        "point-in-time membership, pre-2017 report corpus, exact model calls, "
+        "generated pools, predictions, returns, holdings, or raw arrays is released, "
+        "so 0/276 table units and 0/8 empirical panels reproduce. A substantial later "
+        "unaffiliated candidate compiles and completes a 26-evaluation synthetic "
+        "UCT/Bayesian/island smoke run, but it repairs the broken listing, substitutes "
+        "the LLM, omits the FE-report lineage, and does not ship the real panels behind "
+        "its claimed results; it receives no native or result credit. The paper also "
+        "conflicts on 15.57% versus 15.89% MDD, five versus six initial factors, the "
+        "expected-improvement sign, and one figure's market label. The local M0 proxy "
+        "remains narrative only and receives no FactorEngine mechanism or result credit."
+    ),
     "SYS-ALPHA-LOGICS": (
         "A pinned AlphaLogics audit recovers the official 19-page arXiv-v1 PDF, "
         "complete 10-file TeX source archive, and all five source raster figures; "
@@ -943,6 +963,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-FACTOR-ENGINE": "paper_audit:completed_zero_of_276_table_units_zero_of_8_empirical_panels_one_of_two_printed_factor_programs_executes_one_unattributable_candidate",
     "SYS-ALPHA-LOGICS": "paper_audit:completed_zero_of_158_table_units_zero_of_204_figure_markers_zero_of_18_empirical_panels_two_paper_derived_algorithm_checks_three_unattributable_candidates",
     "SYS-ALPHA-AGENT-EVO": "paper_audit:completed_zero_of_147_table_units_zero_of_21_empirical_panels_zero_of_40_figure_annotations_listed_unrecovered_supplement_no_attributable_pipeline",
     "SYS-TRADE-IN-MINUTES": "paper_audit:completed_zero_of_349_active_empirical_units_zero_of_8_empirical_panels_listed_broken_supplement_no_attributable_pipeline",
