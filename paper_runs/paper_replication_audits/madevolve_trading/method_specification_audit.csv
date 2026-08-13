@@ -1,0 +1,27 @@
+version,dimension,status,detail
+v1,official_document_source,complete,19-file source and 46-page PDF recovered; source rebuilds to 46 pages
+v1,framework_provenance,direct,paper links madevolve.org; site links coauthor Tianyi Li's tianyi-stack/MadEvolve repository
+v1,framework_release,substantial_general_framework,"orchestrator, provider gateway, patch/rewrite modes, MAP-Elites, islands, elites, executors, storage, and reports"
+v1,framework_release_date,precedes_paper,pinned head committed 2026-03-03; paper submitted 2026-05-21
+v1,market_data,specified_not_released,Polygon BTCUSD one-minute OHLCV; exact downloaded snapshot and exchange-aggregation state absent
+v1,temporal_split,specified,"fit 2022--2023, optimize on 2024, held-out test through 2025-10-10"
+v1,trading_adapter,missing,"no BTC, OHLCV, order, fill, inventory, PnL, market-impact, or backtest implementation in the release"
+v1,baseline_forecaster,pseudocode_only,appendix skeleton contains omissions and depends on unreleased project classes and data
+v1,baseline_strategy,pseudocode_only,appendix skeleton is not standalone and the complete simulator/evaluator is absent
+v1,execution_model,specified_not_released,"one resting limit order, candle-range fills, replacement lifecycle, fees, and impact equations described only in paper"
+v1,evolution_topology,framework_component_executed,"MAP-Elites grid, two-island fixture, elite vault, patcher, and SQLite lineage store pass controlled checks"
+v1,paper_islands,configuration_missing,paper uses five islands; release default is four and no paper configuration is shipped
+v1,paper_migration,framework_default_matches,"release defaults match paper interval five and rate 0.1, but paper run configuration is absent"
+v1,llm_ensemble,provider_support_only,"OpenAI, Anthropic, Google, and DeepSeek adapters exist; five paper model routing configuration and calls are absent"
+v1,generation_modes,substantially_released,differential patch and holistic rewrite paths exist; exact paper query mode draws are absent
+v1,five_madevolve_runs,missing,"no initial programs, configs, seeds, calls, candidates, lineages, scores, evolved code, or reports are shipped"
+v1,claude_code_strategy_search,missing,"prompt/workflow, 200 proposals, 170 successes, ideas tree, candidate code, and outputs are absent"
+v1,claude_code_feature_search,missing,"200 proposals, feature candidates, selection traces, code, and outputs are absent"
+v1,optuna_sweeps,specified_not_released,"two 120-trial searches and bounds are described; studies, seeds, trial tables, and runner are absent"
+v1,null_analysis,specified_not_released,rendered figure and equations exist; underlying per-candidate arrays and calculation script are absent
+v1,package_install,passes_with_declared_dependencies,editable package install resolves 39 declared packages
+v1,cli_as_declared,fails_missing_dependency,python-dotenv is imported but omitted from pyproject dependencies
+v1,cli_after_audit_dependency,passes_after_adaptation,"help, version, and core imports pass only after adding python-dotenv to isolated audit env"
+v1,bytecode_compilation,fails_release_syntax_error,madevolve/templates/insight.py line 123 has an unmatched parenthesis
+v1,author_tests,absent,zero test files are shipped
+v1,published_results,not_regenerated,zero empirical table units and zero empirical panels were regenerated

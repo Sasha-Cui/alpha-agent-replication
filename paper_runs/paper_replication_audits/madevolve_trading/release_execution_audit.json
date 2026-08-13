@@ -1,0 +1,91 @@
+{
+  "archive_bytes": 97517,
+  "archive_files": 69,
+  "archive_sha256": "79a2bad2ac108a66d1c5c6737778ebe05c3021f165f63527b552c4eb52e39f11",
+  "archive_uncompressed_bytes": 413976,
+  "attribution": "paper links framework site; site links repository owned by coauthor Tianyi Li",
+  "author_tests": "absent",
+  "bytecode_compilation_passed": false,
+  "central_environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/madevolve-py310-audit-20260812",
+  "cli_failure_missing_dependency": "python-dotenv",
+  "cli_help_after_audit_dependency_passed": true,
+  "cli_help_as_declared_passed": false,
+  "compile_failure": "madevolve/templates/insight.py:123 unmatched parenthesis",
+  "declared_dependency_check_after_audit_addition_passed": true,
+  "editable_install_passed": true,
+  "full_launcher_operational_as_released": false,
+  "github_detected_license": null,
+  "head_commit_date": "2026-03-03T22:38:41Z",
+  "head_sha": "8b881d3a45d8f68050c28c8d64c2bb653001103a",
+  "license_declaration": "MIT",
+  "license_text_file_present": false,
+  "modules_failed_import_after_audit_dependency": 2,
+  "modules_imported_after_audit_dependency": 64,
+  "native_component_fixture": {
+    "artifact_store": {
+      "best": "p1",
+      "best_score": 3.0,
+      "lineage": [
+        "p0",
+        "p1"
+      ]
+    },
+    "differential_patch": {
+      "contains_mutation": true,
+      "errors": [],
+      "success": true,
+      "syntax_valid": true
+    },
+    "elite_vault": {
+      "add_results": [
+        true,
+        true,
+        true
+      ],
+      "top": [
+        "p1",
+        "p2"
+      ]
+    },
+    "islands": {
+      "island_sizes": [
+        3,
+        2
+      ],
+      "num_islands": 2,
+      "total_members": 5
+    },
+    "paper_result_credit": false,
+    "paper_trading_component": false,
+    "partition_grid": {
+      "coverage": 0.125,
+      "ids": [
+        "p1",
+        "p2"
+      ],
+      "insertions": [
+        true,
+        true,
+        true
+      ]
+    },
+    "seed": 260523007
+  },
+  "paper_backtester_released": false,
+  "paper_best_evolved_programs_released": false,
+  "paper_candidate_programs_released": false,
+  "paper_claude_code_search_artifacts_released": false,
+  "paper_configs_and_seeds_released": false,
+  "paper_market_data_released": false,
+  "paper_model_call_traces_released": false,
+  "paper_optuna_studies_released": false,
+  "paper_result_arrays_released": false,
+  "paper_result_credit": false,
+  "paper_run_reports_released": false,
+  "paper_trading_code_released": false,
+  "published_table_or_figure_regenerated": false,
+  "python_files": 66,
+  "python_version": "3.10.19",
+  "tracked_test_files": 0,
+  "url": "https://github.com/tianyi-stack/MadEvolve"
+}

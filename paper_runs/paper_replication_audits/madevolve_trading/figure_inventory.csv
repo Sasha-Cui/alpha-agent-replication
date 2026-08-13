@@ -1,0 +1,14 @@
+version,figure,empirical_series_or_panels,description,rendered_author_figure_recovered,underlying_numeric_array_released,author_native_figure_regenerated,paper_result_credit
+v1,fig:pnl_per_volume,4,"sizing counterfactual, Sharpe, and Calmar panels",True,False,False,False
+v1,fig:run1_pnl,2,validation and held-out cumulative PnL,True,False,False,False
+v1,fig:run1_progress,1,cumulative-best evolution score,True,False,False,False
+v1,fig:run2_pnl,2,validation and held-out cumulative PnL,True,False,False,False
+v1,fig:run2_progress,1,cumulative-best evolution score,True,False,False,False
+v1,fig:run3_pnl,2,validation and held-out cumulative PnL,True,False,False,False
+v1,fig:run3_progress,1,cumulative-best evolution score,True,False,False,False
+v1,fig:run5_pnl,2,validation and held-out cumulative PnL,True,False,False,False
+v1,fig:run5_progress,1,cumulative-best evolution score,True,False,False,False
+v1,fig:run5_is_oos_degradation,1,IS/OOS degradation curve,True,False,False,False
+v1,fig:hyperparam_convergence,2,two Optuna convergence panels,True,False,False,False
+v1,fig:model_improvement,1,per-model/per-run improvement rates,True,False,False,False
+v1,fig:null_comparison,1,evolution-selected result versus null,True,False,False,False

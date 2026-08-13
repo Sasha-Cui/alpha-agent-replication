@@ -1,0 +1,14 @@
+check,status,detail
+paper_program_total,consistent,"per-model program counts sum to the stated 4,559 evolved programs"
+five_run_candidate_total,consistent,"990+997+1059+775+743 equals 4,564 total candidates; subtracting five baselines gives 4,559 evolved programs"
+run5_count,consistent,main text reports 743 candidates and approximately program 733 as the best
+paper_framework_url,direct,paper directly names madevolve.org
+site_repository_route,direct,madevolve.org directly links tianyi-stack/MadEvolve
+repository_author_lineage,coauthor_owned,repository owner Tianyi Li is the second paper author
+repository_license,metadata_only,"pyproject and site declare MIT, but repository has no LICENSE/COPYING text and GitHub detects no license"
+repository_project_urls,stale_or_mismatched,pyproject points to madevolve/madevolve instead of the site-linked tianyi-stack/MadEvolve
+paper_island_count,configuration_missing,paper says five; released defaults use four
+cli_dependency_closure,broken,documented install omits imported python-dotenv
+source_compilation,broken,insight template contains unmatched parenthesis
+research_payload,unreleased,"release contains no trading-specific code, data, configuration, candidate, or result artifact"
+live_trading_claim,paper_disclaims_transfer,paper says exchange-aggregated data is not directly tradable and live performance is unassessed

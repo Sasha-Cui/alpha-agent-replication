@@ -1,0 +1,36 @@
+{
+  "arxiv_id": "2605.23007",
+  "author_tests_passed": 0,
+  "document_rebuild_completed": true,
+  "empirical_panels": 21,
+  "full_end_to_end_pipeline_reproduced": false,
+  "full_launcher_operational_as_released": false,
+  "modules_failed_import_after_audit_dependency": 2,
+  "modules_imported_after_audit_dependency": 64,
+  "native_component_checks_passed": 5,
+  "native_empirical_panels_regenerated": 0,
+  "native_numeric_units_regenerated": 0,
+  "official_framework_repository_recovered": true,
+  "official_pages_visually_checked": 46,
+  "official_pdf_and_source_recovered": true,
+  "official_versions_audited": [
+    "v1"
+  ],
+  "output_sha256": {
+    "README.md": "bbedb801d33849a4d5033828779806683ba260fb8926a91aa4800cc41dba947d",
+    "figure_inventory.csv": "7272311b1ebc6a6a590ea5d8ab12a4e2eecda3ed43636790439638acbfdedabe",
+    "internal_consistency_audit.csv": "e2a5c849602dc90335e81e4c77bd4910eaffb306c2411e2704921f2302e29df2",
+    "method_specification_audit.csv": "4e98c91b5ffc7ec8111bb6d2b01b5d3dff25f40bda71c1f405bd613ede31c8af",
+    "published_result_ledger.csv": "0c41b25817ec81442e1c98b2220ae0335340c5e44fe29b31072c6ce2b16e87b7",
+    "release_execution_audit.json": "4426ebdacb29977aee288fba42aa404fea1a36dc4c0526457e173174e60af6c4",
+    "source_provenance.json": "4546f14dee0a0f4bbae6fa98c85f0a81b24c414e01fcfeceafd473c725f86a90",
+    "version_audit.csv": "2c5ef16d779448f52388b3cfadc05d89ef38a744441fb1b07a999e58e67006bf"
+  },
+  "published_numeric_result_units": 214,
+  "rebuilt_pages_visually_checked": 46,
+  "repository_files": 69,
+  "source_files": 19,
+  "strict_success": false,
+  "system_id": "SYS-MAD-EVOLVE",
+  "work_id": "CensusArxiv260523007"
+}

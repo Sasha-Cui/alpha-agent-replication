@@ -1,0 +1,135 @@
+{
+  "arxiv": {
+    "id": "2605.23007",
+    "pdf_sha256": {
+      "v1": "9a8c776fddbeab3ca753dcaed8f04e74884b18d40e818e5d23ab9c0051751c16"
+    },
+    "source_sha256": {
+      "v1": "e05e19e79fcf119e462c72bf7cd484b2c1cd9694fdca31d6f10ffbdafd4671ab"
+    },
+    "versions": [
+      "v1"
+    ],
+    "visual_qa": {
+      "contact_sheet_sha256": {
+        "official-low-contact-1-12": "ab28ea43393232cac092265e1cbda8bc7e7fa5e524a5c075ebef3af25c83a696",
+        "official-low-contact-13-24": "e1e90bf2f96b7eab717f528d296d23c699278b31c12ee3eb13ed1e6b558b43ee",
+        "official-low-contact-25-36": "39a80da34a5a6dcbbe78f3a48a70174475966c10f870b792edfe0c0c904e3f68",
+        "official-low-contact-37-46": "de7152c62e60cda943a03071a6841b76d2671b3887ef79a10f44e68b8084da5a",
+        "rebuilt-low-contact-1-12": "c6c9b7a02c0bde3a1767eb2176a84c4ae776e1951977aa88a5a41f060916decc",
+        "rebuilt-low-contact-13-24": "7d8dd60c322fa4ce141e194de0a9d70b660595b19a3e07eeb47a8b72a6e171b1",
+        "rebuilt-low-contact-25-36": "890e2fe04e946b37d35bef0a31ef46ea92513f003681de48567a59c086feeff7",
+        "rebuilt-low-contact-37-46": "709cbe35a3be324aa9b38c713b466a9969a07ce3b1c5bb74f4841c81c5c9382f"
+      },
+      "official_pages_inspected": 46,
+      "rebuilt_pages_inspected": 46,
+      "unreadable_clipped_overlapping_blank_or_missing_pages": 0
+    }
+  },
+  "framework_site": {
+    "direct_repository_link": "https://github.com/tianyi-stack/MadEvolve",
+    "sha256": "d09d523b35c633a6d9714fc5e746aa53c8629aeab4f9438cde8c54904f930016",
+    "url": "https://madevolve.org"
+  },
+  "official_framework_repository": {
+    "archive_bytes": 97517,
+    "archive_files": 69,
+    "archive_sha256": "79a2bad2ac108a66d1c5c6737778ebe05c3021f165f63527b552c4eb52e39f11",
+    "archive_uncompressed_bytes": 413976,
+    "attribution": "paper links framework site; site links repository owned by coauthor Tianyi Li",
+    "author_tests": "absent",
+    "bytecode_compilation_passed": false,
+    "central_environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/madevolve-py310-audit-20260812",
+    "cli_failure_missing_dependency": "python-dotenv",
+    "cli_help_after_audit_dependency_passed": true,
+    "cli_help_as_declared_passed": false,
+    "compile_failure": "madevolve/templates/insight.py:123 unmatched parenthesis",
+    "declared_dependency_check_after_audit_addition_passed": true,
+    "editable_install_passed": true,
+    "full_launcher_operational_as_released": false,
+    "github_detected_license": null,
+    "head_commit_date": "2026-03-03T22:38:41Z",
+    "head_sha": "8b881d3a45d8f68050c28c8d64c2bb653001103a",
+    "license_declaration": "MIT",
+    "license_text_file_present": false,
+    "modules_failed_import_after_audit_dependency": 2,
+    "modules_imported_after_audit_dependency": 64,
+    "native_component_fixture": {
+      "artifact_store": {
+        "best": "p1",
+        "best_score": 3.0,
+        "lineage": [
+          "p0",
+          "p1"
+        ]
+      },
+      "differential_patch": {
+        "contains_mutation": true,
+        "errors": [],
+        "success": true,
+        "syntax_valid": true
+      },
+      "elite_vault": {
+        "add_results": [
+          true,
+          true,
+          true
+        ],
+        "top": [
+          "p1",
+          "p2"
+        ]
+      },
+      "islands": {
+        "island_sizes": [
+          3,
+          2
+        ],
+        "num_islands": 2,
+        "total_members": 5
+      },
+      "paper_result_credit": false,
+      "paper_trading_component": false,
+      "partition_grid": {
+        "coverage": 0.125,
+        "ids": [
+          "p1",
+          "p2"
+        ],
+        "insertions": [
+          true,
+          true,
+          true
+        ]
+      },
+      "seed": 260523007
+    },
+    "paper_backtester_released": false,
+    "paper_best_evolved_programs_released": false,
+    "paper_candidate_programs_released": false,
+    "paper_claude_code_search_artifacts_released": false,
+    "paper_configs_and_seeds_released": false,
+    "paper_market_data_released": false,
+    "paper_model_call_traces_released": false,
+    "paper_optuna_studies_released": false,
+    "paper_result_arrays_released": false,
+    "paper_result_credit": false,
+    "paper_run_reports_released": false,
+    "paper_trading_code_released": false,
+    "published_table_or_figure_regenerated": false,
+    "python_files": 66,
+    "python_version": "3.10.19",
+    "tracked_test_files": 0,
+    "url": "https://github.com/tianyi-stack/MadEvolve"
+  },
+  "release_boundary": {
+    "attribution_strength": "direct_manuscript_site_to_coauthor_repository",
+    "complete_research_data_recovered": false,
+    "framework_component_execution_completed": true,
+    "general_framework_source_recovered": true,
+    "published_result_lineage_recovered": false,
+    "trading_research_code_recovered": false
+  },
+  "system_id": "SYS-MAD-EVOLVE",
+  "work_id": "CensusArxiv260523007"
+}
