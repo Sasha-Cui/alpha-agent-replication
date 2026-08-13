@@ -539,6 +539,26 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-ALPHA-AGENT-EVO": (
+        "A pinned AlphaAgentEvo audit visually checks all 18 pages of the accepted "
+        "ICLR 2026 OpenReview manuscript and inventories 147 exact table units, 21 "
+        "empirical panels, and 40 exact figure annotations. The accepted record lists "
+        "a supplement that the reproducibility statement says contains AlphaEvo500 "
+        "splits and complete training/evaluation source; signed-in immutable access "
+        "currently returns 404 and logical/API access is blocked, so it is listed but "
+        "not inspected or presumed absent. No paper-author code, data, checkpoint, "
+        "prompts, trajectories, raw arrays, or result package was found. Two later "
+        "Hugging Face candidates are unaffiliated and receive no native credit. One "
+        "is a 0.6B step-50 checkpoint; the other uses Vietnam-market prompts and "
+        "300/30/99 splits rather than HS300/CSI500 AlphaEvo500 350/50/100. Its active "
+        "reward is a format-plus-best-IR workaround, not the paper's five-component "
+        "reward, and its four-GPU run terminated at step 90/150 after a distributed "
+        "timeout without final or paper pass-rate metrics. Thus 0/147 table units, "
+        "0/21 empirical panels, and 0/40 exact figure annotations reproduce. The "
+        "paper's printed tool-cost denominator can be zero/negative without stated "
+        "handling. The local M0 monthly portfolio remains a favorable narrative motif "
+        "proxy and receives no AlphaAgentEvo mechanism or result credit."
+    ),
     "SYS-TRADE-IN-MINUTES": (
         "A pinned TiMi audit covers both official arXiv revisions, all 33 official "
         "and 33 rebuilt pages, 349 active empirical table units, and eight empirical "
@@ -902,6 +922,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-ALPHA-AGENT-EVO": "paper_audit:completed_zero_of_147_table_units_zero_of_21_empirical_panels_zero_of_40_figure_annotations_listed_unrecovered_supplement_no_attributable_pipeline",
     "SYS-TRADE-IN-MINUTES": "paper_audit:completed_zero_of_349_active_empirical_units_zero_of_8_empirical_panels_listed_broken_supplement_no_attributable_pipeline",
     "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_cited_same_author_stocksim_four_component_checks_missing_atlas_lineage",
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",

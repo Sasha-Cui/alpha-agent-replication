@@ -109,7 +109,7 @@ def test_static_paper_assets_reflect_alphaschema_correction() -> None:
         r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 34, "
         r"\artifacttier{R1}: 10, \artifacttier{R2}: 6, \artifacttier{R3}: 17}"
     ) in generated
-    assert r"\newcommand{\TargetedAuditCount}{52}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{53}" in generated
     routes = (ROOT / "docs/paper/generated_evidence_routes.tex").read_text()
     assert r"\newcommand{\PublicCodeRouteWorkCount}{33\xspace}" in routes
     assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{36\xspace}" in routes
