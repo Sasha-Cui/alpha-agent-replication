@@ -1,0 +1,90 @@
+{
+  "adaptive_opro_implementation_released": false,
+  "archive_bytes": 2234151,
+  "archive_files": 81,
+  "archive_sha256": "824b8b041ff5bf8733d2f755015432eefdc94fdb65fd53b1d1f22a2d99696db7",
+  "archive_uncompressed_bytes": 31949454,
+  "as_declared_asyncio_import_passed": false,
+  "as_declared_dependency_install_passed": true,
+  "as_declared_failure": "obsolete PyPI asyncio backport uses tasks.async and is invalid on Python 3.12",
+  "atlas_sample_config_released": false,
+  "atlas_specific_code_released": false,
+  "attribution": "paper cites StockSim; repository owner Charidimos Papadakis is ATLAS first author",
+  "audit_adjustment": "removed obsolete asyncio backport so stdlib asyncio is used",
+  "author_tests": "absent",
+  "bytecode_compilation_after_adjustment_passed": true,
+  "central_environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/stocksim-py312-audit-20260813-v1",
+  "demo_config_validated": true,
+  "dependency_check_after_adjustment_passed": true,
+  "full_launcher_blockers": [
+    "RabbitMQ host",
+    "log directory",
+    "Polygon or Alpha Vantage API key"
+  ],
+  "full_launcher_operational_without_external_services": false,
+  "github_detected_license": null,
+  "head_commit_date": "2025-07-15T13:12:01+03:00",
+  "head_sha": "c1a25c195df4c93b2db4a748f80ceae0f1c9fe50",
+  "license_declaration": "MIT",
+  "license_text_file_present": false,
+  "modules_failed_import_after_adjustment": 0,
+  "modules_imported_after_adjustment": 43,
+  "native_component_checks_passed": 4,
+  "native_component_fixture": {
+    "atlas_result_credit": false,
+    "atlas_specific_component": false,
+    "candle_triggers": {
+      "limit_buy_cross": 98,
+      "limit_sell_cross": 102,
+      "market_up": 100,
+      "no_cross": null,
+      "stop_buy_cross": 102,
+      "stop_sell_cross": 98
+    },
+    "config": {
+      "end": "2025-06-28T13:00:00",
+      "errors": [],
+      "initial_cash": 100000,
+      "instrument": [
+        "XOM"
+      ],
+      "start": "2025-04-28T13:00:00"
+    },
+    "metrics": {
+      "Annualized Sharpe Ratio": 6.0091,
+      "Average Trade Size": 850.0,
+      "Last Portfolio Value": 105000,
+      "Max Drawdown": 0.0294,
+      "Num Closed Trades": 2,
+      "Num Trades": 3,
+      "Profit Factor": 2.0,
+      "Profit per Trade": 25.0,
+      "ROI": 0.05,
+      "ROIC": 5.0,
+      "Sharpe Ratio": 0.3785,
+      "Sortino Ratio": 0.5802,
+      "Total Traded Volume": 2550,
+      "Win Rate": 0.5
+    },
+    "order_match": {
+      "buyer_status": "FILLED",
+      "price": 100,
+      "quantity": 6,
+      "seller_remaining": 4,
+      "seller_status": "PARTIALLY_FILLED",
+      "trades": 1
+    }
+  },
+  "paper_data_snapshot_released": false,
+  "paper_model_requests_responses_released": false,
+  "paper_news_and_fundamental_inputs_released": false,
+  "paper_result_arrays_released": false,
+  "paper_result_credit": false,
+  "paper_run_artifacts_released": false,
+  "paper_runtime_prompts_and_trajectories_released": false,
+  "paper_seeds_released": false,
+  "published_table_or_figure_regenerated": false,
+  "python_files": 43,
+  "tracked_test_files": 0,
+  "url": "https://github.com/harrypapadakis/StockSim"
+}

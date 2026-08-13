@@ -1,0 +1,11 @@
+version,figure,panels,empirical_panels,description,rendered_author_figure_recovered,author_latex_plot_coordinates_recovered,author_native_figure_regenerated,paper_result_credit
+v5,fig:fig_1,1,0,ATLAS architecture,True,False,False,False
+v5,fig:protocol,1,0,online Adaptive-OPRO protocol,True,False,False,False
+v5,fig:opro_gain,1,1,ROI gain over baseline,True,True,False,False
+v5,fig:opro_performance,3,3,ROI by backbone in three regimes,True,True,False,False
+v5,unlabeled_daily_weekly_reflection,1,1,daily versus weekly reflection ROI,True,True,False,False
+v5,fig:header_evolution,1,0,prompt header diff,True,False,False,False
+v5,fig:architecture_evolution,1,0,prompt architecture diff,True,False,False,False
+v5,fig:workflow_evolution,1,0,prompt workflow diff,True,False,False,False
+v5,fig:intermediate_optimization,1,0,intermediate evolved prompt,True,False,False,False
+v5,fig:final_optimization,1,0,final evolved prompt,True,False,False,False

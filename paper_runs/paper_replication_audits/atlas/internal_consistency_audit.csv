@@ -1,0 +1,11 @@
+check,status,detail
+adaptive_absolute_correlation,matches_rounded_claim,table-derived r=0.644310; paper reports 0.64
+adaptive_gain_correlation,matches_rounded_claim,"table-derived r=0.047462, beta=0.059769; paper reports 0.05 and 0.06"
+reflection_gain_correlation,matches_rounded_claim,"table-derived r=-0.777240, beta=-0.614329; paper reports -0.78 and -0.61"
+current_result_scalar_inventory,source_parsed,"1,784 printed empirical scalars across 11 result tables"
+version_history,fully_audited,"v1-v5 source and PDFs recovered, rebuilt, and visually paired"
+stock_sim_lineage,cited_same_author_component,"real first-party precursor framework, but no ATLAS-specific payload"
+repository_license,readme_declaration_only,README says MIT; no license-text file and GitHub reports no detected license
+repository_readme_paths,stale_or_incorrect,"banner points to StockSim/StockSim and config.yaml, while repository is harrypapadakis/StockSim and ships demo_config.yaml"
+code_release_language,not_fulfilled_in_pinned_evidence,v1-v4 promise release upon publication; v5 still references implementation details in code and a sample ATLAS config that are absent
+live_execution_scope,paper_acknowledges_abstraction,"paper omits latency, slippage, impact, and intraday partial fills and does not establish live performance"

@@ -1,0 +1,165 @@
+{
+  "arxiv": {
+    "id": "2510.15949",
+    "license": "CC BY-NC-ND 4.0",
+    "pdf_sha256": {
+      "v1": "d7a9bda47c3451b5aef2cae5dd66e4e1db67e1be6a447b46c6bc3906ca98c034",
+      "v2": "a4e9f8a261c9a07e015d2389e4b9523147db3d43b4d9d52d15732db3c71dff1d",
+      "v3": "e44d5795b7d20ba6023d2ae0e335a7e9f73495702ee7eaedc625e87f5adcf337",
+      "v4": "e265989150417b7995971e1fb5e4aee660c010ee6fd923601a6e71958ffb5dc4",
+      "v5": "c648c9f58811dcad578b41d56e06760c715d3b8c6314aad01170536f62d84bf7"
+    },
+    "source_sha256": {
+      "v1": "c3a390bdc21249bdb0847786b04f715c0a86537f337facb00feaf613350fae33",
+      "v2": "2151e42511123c1cc4c6d730a47347b12a05ccda3333a78fe652da48d97807ad",
+      "v3": "2ccb077f6d8dd8e5789fef0ebc3b8be1d6e915a9abb6a28738215aa2987493d3",
+      "v4": "79513f09ac59a3b5137aae6168b9b63204302d7afe59c5217dd36d5f7dd392cf",
+      "v5": "7b6ead28d2daed5f734b3b2d3c078e6051aa0a0e64fdddda53772f8fa9caad4f"
+    },
+    "versions": [
+      "v1",
+      "v2",
+      "v3",
+      "v4",
+      "v5"
+    ],
+    "visual_qa": {
+      "contact_sheet_sha256": {
+        "v1/contact-00": "8743e549229f2c18587fb89e6185fe9dbd6bf35c0c97fc4f982315a50550f3f7",
+        "v1/contact-01": "92663aeac20c387af7755eb1d5e27ece624f8cd7c6f73a2d527025f4f1e4ae6f",
+        "v1/contact-02": "acd6e64875fdf4a942bba6c497eb4ff10ed5234bf25f8ce13cf49a043f2611cd",
+        "v1/contact-03": "ec8f58af6cdecde12436fc092de1f61086d297bd11dcd6aa40d9e627d4fbf660",
+        "v1/contact-04": "3eb111c58a9c6e45019361770a412e695cf4e17c402c4e4af6d87a26fb2538d7",
+        "v2/contact-00": "a15e0770444f27254dad38e5627b79e790127b7459f9751de1b59e88917e46eb",
+        "v2/contact-01": "bec9dcb2c15e69c2fc4c1eda298a1cfd5231e69f1d17b1c912fbb9c01ee66254",
+        "v2/contact-02": "67eefb56ad2225b5d41e8af45c63551478625ef66146acb380f8b698480b5c23",
+        "v2/contact-03": "f90a9f23520b9a9ac5cabe6c0b59c9d1486e5c7e0d2df77596d00d2c1c4e2406",
+        "v2/contact-04": "8b23c611fd973d034f02222b9d86bf3d1016c239c14c7645bd0fe21586983477",
+        "v3/contact-00": "5e37993442e2de330836bb198af9fac1e13949b3e41e538fdc2ca642e9816d74",
+        "v3/contact-01": "bec9dcb2c15e69c2fc4c1eda298a1cfd5231e69f1d17b1c912fbb9c01ee66254",
+        "v3/contact-02": "67eefb56ad2225b5d41e8af45c63551478625ef66146acb380f8b698480b5c23",
+        "v3/contact-03": "f90a9f23520b9a9ac5cabe6c0b59c9d1486e5c7e0d2df77596d00d2c1c4e2406",
+        "v3/contact-04": "8b23c611fd973d034f02222b9d86bf3d1016c239c14c7645bd0fe21586983477",
+        "v4/contact-00": "2228f9ac27adf4fabde9db510740ac78c1a6e15c53eb170aee04db9320685580",
+        "v4/contact-01": "bec9dcb2c15e69c2fc4c1eda298a1cfd5231e69f1d17b1c912fbb9c01ee66254",
+        "v4/contact-02": "67eefb56ad2225b5d41e8af45c63551478625ef66146acb380f8b698480b5c23",
+        "v4/contact-03": "f90a9f23520b9a9ac5cabe6c0b59c9d1486e5c7e0d2df77596d00d2c1c4e2406",
+        "v4/contact-04": "8b23c611fd973d034f02222b9d86bf3d1016c239c14c7645bd0fe21586983477",
+        "v5/contact-00": "d81b1b456c63d2217f0818c887f247c25f221bb0b63e707256b8b3227269d679",
+        "v5/contact-01": "9e1f02ba43f99a3194b95e332d3451061233caf7a879a239b1096ae03bc57171",
+        "v5/contact-02": "fdc6e169196a5dc811a823f4a5c5c5efb75e7f9999acb7a7b4c3f73c2b8ef85e",
+        "v5/contact-03": "a0bdc35176dc7aaa6e1e2fdc80dfe247727ee36b0283352aa80f3c112b39319a",
+        "v5/contact-04": "a2a689c6dbe91880c9444159153c6cd246f03c25510609a22af9c99b009cab94"
+      },
+      "official_pages_inspected": 209,
+      "rebuilt_pages_inspected": 209,
+      "unreadable_clipped_overlapping_blank_or_missing_pages": 0
+    }
+  },
+  "official_component_repository": {
+    "adaptive_opro_implementation_released": false,
+    "archive_bytes": 2234151,
+    "archive_files": 81,
+    "archive_sha256": "824b8b041ff5bf8733d2f755015432eefdc94fdb65fd53b1d1f22a2d99696db7",
+    "archive_uncompressed_bytes": 31949454,
+    "as_declared_asyncio_import_passed": false,
+    "as_declared_dependency_install_passed": true,
+    "as_declared_failure": "obsolete PyPI asyncio backport uses tasks.async and is invalid on Python 3.12",
+    "atlas_sample_config_released": false,
+    "atlas_specific_code_released": false,
+    "attribution": "paper cites StockSim; repository owner Charidimos Papadakis is ATLAS first author",
+    "audit_adjustment": "removed obsolete asyncio backport so stdlib asyncio is used",
+    "author_tests": "absent",
+    "bytecode_compilation_after_adjustment_passed": true,
+    "central_environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/stocksim-py312-audit-20260813-v1",
+    "demo_config_validated": true,
+    "dependency_check_after_adjustment_passed": true,
+    "full_launcher_blockers": [
+      "RabbitMQ host",
+      "log directory",
+      "Polygon or Alpha Vantage API key"
+    ],
+    "full_launcher_operational_without_external_services": false,
+    "github_detected_license": null,
+    "head_commit_date": "2025-07-15T13:12:01+03:00",
+    "head_sha": "c1a25c195df4c93b2db4a748f80ceae0f1c9fe50",
+    "license_declaration": "MIT",
+    "license_text_file_present": false,
+    "modules_failed_import_after_adjustment": 0,
+    "modules_imported_after_adjustment": 43,
+    "native_component_checks_passed": 4,
+    "native_component_fixture": {
+      "atlas_result_credit": false,
+      "atlas_specific_component": false,
+      "candle_triggers": {
+        "limit_buy_cross": 98,
+        "limit_sell_cross": 102,
+        "market_up": 100,
+        "no_cross": null,
+        "stop_buy_cross": 102,
+        "stop_sell_cross": 98
+      },
+      "config": {
+        "end": "2025-06-28T13:00:00",
+        "errors": [],
+        "initial_cash": 100000,
+        "instrument": [
+          "XOM"
+        ],
+        "start": "2025-04-28T13:00:00"
+      },
+      "metrics": {
+        "Annualized Sharpe Ratio": 6.0091,
+        "Average Trade Size": 850.0,
+        "Last Portfolio Value": 105000,
+        "Max Drawdown": 0.0294,
+        "Num Closed Trades": 2,
+        "Num Trades": 3,
+        "Profit Factor": 2.0,
+        "Profit per Trade": 25.0,
+        "ROI": 0.05,
+        "ROIC": 5.0,
+        "Sharpe Ratio": 0.3785,
+        "Sortino Ratio": 0.5802,
+        "Total Traded Volume": 2550,
+        "Win Rate": 0.5
+      },
+      "order_match": {
+        "buyer_status": "FILLED",
+        "price": 100,
+        "quantity": 6,
+        "seller_remaining": 4,
+        "seller_status": "PARTIALLY_FILLED",
+        "trades": 1
+      }
+    },
+    "paper_data_snapshot_released": false,
+    "paper_model_requests_responses_released": false,
+    "paper_news_and_fundamental_inputs_released": false,
+    "paper_result_arrays_released": false,
+    "paper_result_credit": false,
+    "paper_run_artifacts_released": false,
+    "paper_runtime_prompts_and_trajectories_released": false,
+    "paper_seeds_released": false,
+    "published_table_or_figure_regenerated": false,
+    "python_files": 43,
+    "tracked_test_files": 0,
+    "url": "https://github.com/harrypapadakis/StockSim"
+  },
+  "release_boundary": {
+    "atlas_specific_source_recovered": false,
+    "attribution_strength": "paper_cited_same_author_precursor_framework",
+    "complete_research_inputs_recovered": false,
+    "published_result_lineage_recovered": false,
+    "stock_sim_component_execution_completed": true,
+    "stock_sim_source_recovered": true
+  },
+  "release_search_evidence_sha256": {
+    "search--Adaptive-Trading-with-LLM-AgentS-": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "search-2510-15949": "4e249914105697662a90cbfcc973d3aa4b816fafebc211d2a7148ae9f935d491",
+    "search-Adaptive-OPRO": "95ad09ef6bf634ec6648c54b8d3ca9b6ba706775801651acd8afd63b22f19f8d",
+    "search-configs-o4-mini-adaptive-opro-config-yaml": "0dbc6288a9540c888f8e02900f853ef386d313c04e33d81699a5738e0b336c10"
+  },
+  "system_id": "SYS-ATLAS",
+  "work_id": "CensusArxiv251015949"
+}

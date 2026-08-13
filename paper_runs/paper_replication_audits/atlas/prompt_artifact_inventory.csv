@@ -1,0 +1,11 @@
+prompt,description,paper_template_recovered,exact_runtime_payload_recovered,model_request_response_recovered,trajectory_recovered,native_replayed,paper_result_credit
+central_trader_initial,central trading agent initial decision template,True,False,False,False,False,False
+central_trader_followup,central trading agent subsequent decision template,True,False,False,False,False,False
+market_analyst_initial,market analyst initial template,True,False,False,False,False,False
+market_analyst_followup,market analyst subsequent template,True,False,False,False,False,False
+news_analyst_initial,news analyst initial template,True,False,False,False,False,False
+news_analyst_followup,news analyst subsequent template,True,False,False,False,False,False
+fundamental_analyst_initial,fundamental analyst initial template,True,False,False,False,False,False
+fundamental_analyst_followup,fundamental analyst subsequent template,True,False,False,False,False,False
+adaptive_opro_optimizer,optimizer meta-prompt and scored prompt history format,True,False,False,False,False,False
+weekly_reflection,weekly reflection prompt,True,False,False,False,False,False

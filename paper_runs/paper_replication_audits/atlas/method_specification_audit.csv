@@ -1,0 +1,23 @@
+version,dimension,status,detail
+v5,official_document_source,complete,all five arXiv PDFs and source packages recovered and rebuilt
+v5,framework_provenance,cited_same_author_precursor,paper cites StockSim; repository owner Charidimos Papadakis is first author
+v5,framework_release_date,precedes_paper,pinned main head is dated 2025-07-15; ATLAS v1 was submitted 2025-10-10
+v5,paper_specific_release,missing,"StockSim contains no ATLAS, Adaptive-OPRO, paper identifier, or promised ATLAS config"
+v5,assets_and_period,specified_not_frozen,"LLY/XOM/NVDA, 2025-04-28 to 2025-06-28, daily; exact vendor snapshots absent"
+v5,market_regimes,specified,"LLY bearish-volatile, XOM sideways, NVDA bullish"
+v5,initial_portfolio,specified,"$100,000 cash and no positions"
+v5,market_data,specified_not_released,Massive/Polygon daily adjusted bars; frozen responses and corporate-action state absent
+v5,news_and_fundamentals,not_released,"time-aligned source records, query responses, and preprocessing outputs absent"
+v5,execution_model,specified_abstraction,"deterministic daily execution abstracts latency, slippage, impact, intraday partial fills"
+v5,agent_architecture,precursor_components_execute,"StockSim analyst, trader, exchange, metric, order, and template modules import; four controlled checks pass"
+v5,model_backbones,specified_not_replayable,"seven listed backbones; provider snapshots, decoding parameters, and responses absent"
+v5,baseline_prompting,paper_templates_only,appendix templates exist without exact filled runtime prompts or trajectories
+v5,reflection,paper_templates_only,"daily and weekly mechanisms described; logs, model calls, and complete trajectories absent"
+v5,adaptive_opro,paper_specification_only,"K=5 and clipped score are specified; optimizer implementation, states, edit history, and requests absent"
+v5,replications,specified_not_released,"three runs per configuration, but random seeds and run artifacts are absent"
+v5,published_results,not_regenerated,"zero of 1,784 empirical scalar units and zero of five empirical panels regenerated"
+v5,as_declared_environment,fails_obsolete_dependency,requirements installs obsolete asyncio backport that is a SyntaxError on Python 3.12
+v5,bounded_environment_adjustment,component_checks_pass,"after removing backport, pip check, compileall, 43/43 imports, and four deterministic component checks pass"
+v5,full_launcher,blocked_external_and_missing_paper_payload,"demo validates then stops for RabbitMQ, log path, and market-data API key; it is not ATLAS"
+v5,author_tests,absent,zero tracked test files
+v5,search_for_release,no_public_atlas_implementation_found,"pinned repository and exact GitHub searches expose paper references, not an ATLAS implementation"
