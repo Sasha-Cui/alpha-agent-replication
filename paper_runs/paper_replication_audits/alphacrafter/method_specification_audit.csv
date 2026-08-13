@@ -1,0 +1,24 @@
+version,dimension,status,detail
+v1,official_document_source,complete,25-file primary source package recovered; 26-page manuscript rebuilt
+v2,official_document_source,complete_build_blocked,22-file primary source recovered; available TeX Live repeatedly stalls in CJK encoding before PDF output
+v1_v2,attributable_repository,substantial_component_release,"79-file MIT repository under the authors' NJU-LINK organization matches title, authors, architecture, and arXiv id; the paper does not directly link it"
+v1_v2,market_universes,specified,CSI 300 and S&P 500 constituents
+v1_v2,market_data,named_not_released,"Baostock OHLCV, Yahoo Finance OHLCV, and Lixinger fundamentals/statements/news are named; research snapshots are absent"
+v1_v2,temporal_split,specified,"training 2016-01-04--2022-12-30, validation 2023, backtest 2024-01-02--2026-02-27, live 2026-03-02--2026-06-12"
+v1_v2,constituent_history,underspecified_unreleased,point-in-time memberships and complete included-date arrays are not released
+v1_v2,miner_screener_trader_prompts,substantially_released,role instructions and Markdown skill policies are present
+v1_v2,workflow_budget,released,"three miners, 25 iterations per role, and 150 cycles are configured"
+v1_v2,model_backbones,paper_specified_release_incomplete,"paper uses GPT 5.3 Codex, Claude Opus 4.6, and Gemini 3.1 Pro; runtime is OpenAI Responses-only"
+v1_v2,default_model_configuration,internally_broken,config requests gpt-5.3-codex but shipped model registries contain only gpt-5 and gpt-5.2
+v1_v2,a_share_exchange,component_executed,"native buy, T+1 unlock, sell, and 2-bp commission behavior execute on controlled two-day data"
+v1_v2,us_exchange,component_executed,"native short, cover, margin path, and 1-bp commission behavior execute on controlled two-day data"
+v1_v2,daily_metric_contract,component_executed,released evaluation contract computes total return and maximum drawdown on controlled NAVs
+v1_v2,end_to_end_market_routing,incomplete,launcher always injects A-share instructions; BacktestTool and StepTool are instantiated with default A-share mode
+v1_v2,release_data_payload,templates_only,index series and schemas are present; stock CSVs contain headers only and financial/news files are templates
+v1_v2,release_date_coverage,insufficient,template calendars end 2026-03-31 while revised live evaluation ends 2026-06-12
+v1_v2,baseline_implementations,missing,"MACD, Grid, ML/DL, and agent baseline implementations/configurations are absent"
+v1_v2,trial_protocol,partially_specified,10 independent trials and interquartile-range averaging are stated; seeds and model sampling parameters are absent
+v1_v2,transaction_costs,implemented_simplification,A-share 2 bp and U.S. 1 bp proportional fees match v2; market impact and time-varying slippage are abstracted
+v1_v2,live_brokerage,missing,"broker identity, paper-trading API integration, orders, fills, and logs are absent"
+v1_v2,raw_results,missing,"no factor pools, model calls, actions, holdings, returns, trial arrays, or figure/table generator is released"
+v1_v2,published_results,not_regenerated,zero published numeric table units and zero empirical panels were regenerated

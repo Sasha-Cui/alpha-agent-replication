@@ -1,0 +1,13 @@
+version,figure,empirical_series_or_panels,description,underlying_numeric_array_released,author_native_figure_regenerated,paper_result_credit
+v1,fig:stability_analysis,2,trial-distribution panels,False,False,False
+v1,fig:model_stability,2,backbone radar panels,False,False,False
+v1,fig:alpha_decay_analysis,2,IC-decay panels,False,False,False
+v1,fig:factor_case_study,2,factor-diversity panels,False,False,False
+v1,fig:regime_heatmaps,6,"trend, volatility, and correlation heatmaps for two markets",False,False,False
+v1,fig:exposure_volatility,2,time-series and scatter panels,False,False,False
+v2,fig:stability_trial,1,cross-trial range panel,False,False,False
+v2,fig:stability_model,1,backbone radar panel,False,False,False
+v2,fig:alpha_decay_analysis,2,IC-decay panels,False,False,False
+v2,fig:factor_case_study,2,factor-diversity panels,False,False,False
+v2,fig:regime_heatmaps,6,"trend, volatility, and correlation heatmaps for two markets",False,False,False
+v2,fig:exposure_volatility,2,time-series and scatter panels,False,False,False

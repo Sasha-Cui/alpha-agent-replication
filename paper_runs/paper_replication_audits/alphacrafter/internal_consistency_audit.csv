@@ -1,0 +1,13 @@
+check,status,detail
+v1_to_v2_revision,substantial,"title, framing, algorithm presentation, live window, result table, stability figures, and ablation change"
+v1_full_model_cross_table,conflicting_values,main and ablation tables print different CSI MDD and S&P Sharpe for the Claude full model without released run lineage
+v2_full_model_cross_table,consistent,the six shared Claude full-model main/ablation values agree
+default_model_registry,runtime_failure,gpt-5.3-codex is requested but absent from models.json; launcher fails before any API call
+provider_generality,paper_release_mismatch,"paper evaluates Claude and Gemini, but the release initializes only the OpenAI Responses client and tools describe OpenAI support"
+us_end_to_end_path,paper_release_mismatch,"U.S. components exist, but main always uses A-share instruction and default A-share trading tools"
+released_data_coverage,paper_release_mismatch,"schemas and index series are released, not the paper's stock/fundamental/news research corpus"
+released_calendar_coverage,paper_release_mismatch,templates end March 31 although the revised live period ends June 12
+trial_reproducibility,underspecified,"independent trials are stated without released seeds, requests, responses, or sampling controls"
+live_execution_claim,unverifiable_from_release,"no brokerage integration, order/fill records, or live NAV path is released"
+v2_source_build,toolchain_incompatible,three bounded attempts stop or stall in TeX Live CJK encoding before output; source archive remains complete
+repository_attribution,strong_but_not_direct,"NJU-LINK repository cites the exact paper and authors and matches the method, but the paper itself does not link it"

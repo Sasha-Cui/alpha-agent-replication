@@ -1,0 +1,50 @@
+{
+  "a_share_component_check": {
+    "a_share_buy_success": true,
+    "a_share_final_assets": 9999899.62,
+    "a_share_sell_success": true,
+    "a_share_t_plus_one_unlock_success": true
+  },
+  "archive_files": 79,
+  "archive_sha256": "41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1",
+  "archive_uncompressed_bytes": 889614,
+  "attribution": "author-organization repository with exact paper citation and matching authors/method; not directly linked from the paper",
+  "bytecode_compilation_passed": true,
+  "central_environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/alphacrafter-py310-audit-20260812",
+  "cli_help_passed": true,
+  "component_fixture_uses_synthetic_data": true,
+  "default_requested_model": "gpt-5.3-codex",
+  "editable_install_passed": true,
+  "full_launcher_failure": "default requested model is absent from the shipped model registry",
+  "full_launcher_reached_model_api": false,
+  "head_sha": "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d",
+  "license": "MIT",
+  "metric_component_check": {
+    "evaluation_max_drawdown": -0.004999999999999999,
+    "evaluation_metric_contract_success": true,
+    "evaluation_total_return": 0.00495
+  },
+  "paper_baseline_implementations_released": false,
+  "paper_brokerage_path_released": false,
+  "paper_fundamental_statement_news_data_released": false,
+  "paper_result_credit": false,
+  "paper_stock_data_released": false,
+  "paper_trial_outputs_released": false,
+  "published_table_or_figure_regenerated": false,
+  "pytest_outcome": "no tests collected (exit 5)",
+  "python_files": 48,
+  "python_version": "3.10.8",
+  "registered_models": [
+    "gpt-5",
+    "gpt-5.2"
+  ],
+  "ruff_diagnostics": 520,
+  "ruff_role": "modern static/style diagnostic only; not paper-result evidence",
+  "tracked_tests": 0,
+  "url": "https://github.com/NJU-LINK/AlphaCrafter",
+  "us_component_check": {
+    "us_cover_success": true,
+    "us_final_assets": 10000099.81,
+    "us_short_success": true
+  }
+}

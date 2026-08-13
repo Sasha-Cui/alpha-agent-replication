@@ -1,0 +1,95 @@
+{
+  "arxiv": {
+    "id": "2605.05580",
+    "pdf_sha256": {
+      "v1": "7e7da45cdc80bab1ddbd272b3b6198113aef50712357508c2b589afd00d0239d",
+      "v2": "50fac266012726355d34b64788c529adf09c8574a751395d55858640dc1a5e67"
+    },
+    "source_sha256": {
+      "v1": "511e441781702609d11024dbe31577c6396c1f68e3023f08326050417e399f53",
+      "v2": "36a34ecb7ef524d8d7efe4a67002e726a0345bc6c3f5414325dd18a080829b84"
+    },
+    "v2_build_boundary": "complete source; three bounded attempts stalled/interrupted in TeX Live CJK encoding before output",
+    "versions": [
+      "v1",
+      "v2"
+    ],
+    "visual_qa": {
+      "contact_sheet_sha256": {
+        "v1_official": "133553ba0d74032301b4275800dc93e64005bc4b4b612cedca0c575f452a5961",
+        "v1_rebuilt": "e339173a02746fb179dc0f09bf8ddcc1563cbe53373f305843d77458f733030a",
+        "v2_official": "eba5aecf8e4b75505fd0bac696929ea97adb10b4fec3373fb23bb708c21fc80c"
+      },
+      "official_pages_inspected": {
+        "v1": 26,
+        "v2": 22
+      },
+      "rebuilt_pages_inspected": {
+        "v1": 26,
+        "v2": 0
+      },
+      "unreadable_clipped_or_overlapping_pages": 0
+    }
+  },
+  "attributable_repository": {
+    "a_share_component_check": {
+      "a_share_buy_success": true,
+      "a_share_final_assets": 9999899.62,
+      "a_share_sell_success": true,
+      "a_share_t_plus_one_unlock_success": true
+    },
+    "archive_files": 79,
+    "archive_sha256": "41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1",
+    "archive_uncompressed_bytes": 889614,
+    "attribution": "author-organization repository with exact paper citation and matching authors/method; not directly linked from the paper",
+    "bytecode_compilation_passed": true,
+    "central_environment": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/alphacrafter-py310-audit-20260812",
+    "cli_help_passed": true,
+    "component_fixture_uses_synthetic_data": true,
+    "default_requested_model": "gpt-5.3-codex",
+    "editable_install_passed": true,
+    "full_launcher_failure": "default requested model is absent from the shipped model registry",
+    "full_launcher_reached_model_api": false,
+    "head_sha": "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d",
+    "license": "MIT",
+    "metric_component_check": {
+      "evaluation_max_drawdown": -0.004999999999999999,
+      "evaluation_metric_contract_success": true,
+      "evaluation_total_return": 0.00495
+    },
+    "paper_baseline_implementations_released": false,
+    "paper_brokerage_path_released": false,
+    "paper_fundamental_statement_news_data_released": false,
+    "paper_result_credit": false,
+    "paper_stock_data_released": false,
+    "paper_trial_outputs_released": false,
+    "published_table_or_figure_regenerated": false,
+    "pytest_outcome": "no tests collected (exit 5)",
+    "python_files": 48,
+    "python_version": "3.10.8",
+    "registered_models": [
+      "gpt-5",
+      "gpt-5.2"
+    ],
+    "ruff_diagnostics": 520,
+    "ruff_role": "modern static/style diagnostic only; not paper-result evidence",
+    "tracked_tests": 0,
+    "url": "https://github.com/NJU-LINK/AlphaCrafter",
+    "us_component_check": {
+      "us_cover_success": true,
+      "us_final_assets": 10000099.81,
+      "us_short_success": true
+    }
+  },
+  "release_boundary": {
+    "attribution_strength": "author_organization_exact_citation_and_architecture_match_not_direct_paper_link",
+    "complete_research_data_recovered": false,
+    "component_execution_completed": true,
+    "default_end_to_end_launcher_operational": false,
+    "multibackbone_runtime_recovered": false,
+    "published_result_lineage_recovered": false,
+    "runtime_source_recovered": true
+  },
+  "system_id": "SYS-ALPHA-CRAFTER",
+  "work_id": "CensusArxiv260505580"
+}
