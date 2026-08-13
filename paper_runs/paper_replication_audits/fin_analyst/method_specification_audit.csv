@@ -1,0 +1,20 @@
+dimension,status,evidence
+official paper and source,complete,single 13-page arXiv-v1 PDF and nine-file source archive pinned; all official/rebuilt pages visually checked
+author implementation,substantial_pre_live_R3,"first-author Hugging Face Space, 13 files, Docker runner, requirements, seven corpora, commit 85ab478 on 2026-05-04"
+license,absent,no license file or declared license observed in author Space
+dependency environment,unlocked,python:3.11-slim plus six lower-bounded requirements; no exact lock or image digest
+model,mutable_alias,"gpt-4o-mini, temperature .1, JSON mode, token caps; no dated snapshot, seed, request IDs, or responses"
+paper prompts,abridged,nine paper rows correspond to source constants but are not the full byte-identical prompts despite the full-prompts label
+TSLA runtime,native_controlled,"startup, lookups, router, and eight call seams execute under deterministic model stubs; no paid model call"
+BTC runtime,native_controlled_with_defects,native vote runs; three HOLD votes become BUY and missing Fear & Greed duplicates momentum
+persistent corpora,complete_static_snapshot,"7/7 files load, 6,030 JSONL records plus 249 TA rows"
+live freshness,partial,TA stops 2025-12-30 and WSB stops 2026-04-12 before May-June live evaluation
+official live decisions,recovered,"97 paper-window rows: 47 TSLA and 50 BTC, from organizer public database snapshot"
+organizer scoring,replayed_current,pinned May-22 organizer scorer with 6-bp fees and 10-bp execution slippage
+live result reproduction,failed,current official actions/scorer match none of ten printed live table cells
+offline dataset,recovered_pre_live,"May-11 revision has exact paper date span, price ranges, and 194/283 distinct observations"
+offline actions,missing,"no immutable gpt-4o-mini calls/responses, historical Fear & Greed series, action path, seed, or cache state"
+offline results,missing,"no raw paths, baseline actions, ablation runs, result arrays, or generator"
+cost model,paper_partial_source_current,paper says net of fees but omits full implementation; current organizer source uses 6-bp fees plus 10-bp slippage
+rank provenance,not_recoverable,current dynamic leaderboard cannot prove historical ranks as displayed on 2026-07-05
+statistical inference,absent,paper explicitly reports no significance testing

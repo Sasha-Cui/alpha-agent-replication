@@ -54,9 +54,9 @@ def test_finrs_audit_routes_paper_only_without_native_credit() -> None:
     assert route["good_faith_reconstruction"] == "no"
 
     generated = (ROOT / "docs/paper/generated_results.tex").read_text()
-    assert r"\newcommand{\TargetedAuditCount}{65}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{66}" in generated
     with (ROOT / "paper_runs/submission_evidence/claims.csv").open(
         newline="", encoding="utf-8"
     ) as stream:
         claims = {row["macro"]: row for row in csv.DictReader(stream)}
-    assert claims["TargetedAuditCount"]["rendered_value"] == "65"
+    assert claims["TargetedAuditCount"]["rendered_value"] == "66"

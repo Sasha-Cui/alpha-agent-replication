@@ -44,10 +44,10 @@ def test_committed_artifact_audit_and_summary_include_mm_arc() -> None:
     assert row == {key: str(value) for key, value in route.mm_arc_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "35"
-    assert ft["artifact_reachable_among_all"]["successes"] == "34"
-    assert ft["github_head_resolved_among_all"]["successes"] == "33"
-    assert ft["static_R3_among_all"]["successes"] == "17"
+    assert ft["public_artifact_listed"]["successes"] == "36"
+    assert ft["artifact_reachable_among_all"]["successes"] == "35"
+    assert ft["github_head_resolved_among_all"]["successes"] == "34"
+    assert ft["static_R3_among_all"]["successes"] == "18"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text())
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
     assert route.SYSTEM_ID in {item["system_id"] for item in corrections}
@@ -91,18 +91,18 @@ def test_paper_evidence_route_moves_mm_arc_to_public_code_with_blocker() -> None
 
 def test_static_paper_assets_reflect_mm_arc_correction() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text()
-    assert r"\newcommand{\ArtifactCountFT}{35}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{34}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{36}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{35}" in generated
     assert r"\newcommand{\LicensedArtifactCountFT}{20}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{33}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{34}" in generated
     assert (
-        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 33, "
-        r"\artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 17}"
+        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 32, "
+        r"\artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 18}"
     ) in generated
-    assert r"\newcommand{\TargetedAuditCount}{65}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{66}" in generated
     routes = (ROOT / "docs/paper/generated_evidence_routes.tex").read_text()
-    assert r"\newcommand{\PublicCodeRouteWorkCount}{34\xspace}" in routes
-    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{35\xspace}" in routes
+    assert r"\newcommand{\PublicCodeRouteWorkCount}{35\xspace}" in routes
+    assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{34\xspace}" in routes
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
     assert "MM-DREX & reachable" in failure_table
     assert "0/671 legacy" in failure_table

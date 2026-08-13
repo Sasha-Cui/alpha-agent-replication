@@ -1,0 +1,38 @@
+{
+  "all_official_and_rebuilt_pages_visually_checked": true,
+  "arxiv_id": "2607.12233",
+  "author_space": {
+    "commit": "85ab4781e74ed3deb9a7ef49bca3fa23b1ed9738",
+    "license": "NOASSERTION",
+    "tracked_files": 13,
+    "url": "https://huggingface.co/spaces/Mohotarema/Fin_Analyst"
+  },
+  "dataset": {
+    "pre_live_commit": "3ae0b896ed02e882c362f8edc90fd276159f5c5e",
+    "url": "https://huggingface.co/datasets/TheFinAI/CLEF_Task3_Trading"
+  },
+  "negative_search_boundary": "bounded searches do not prove private, deleted, moved, renamed, or unindexed artifacts never existed",
+  "official_pages": 13,
+  "official_rebuilt_token_jaccard": 0.9995831017231795,
+  "organizer": {
+    "decision_snapshot_sha256": "8817fd68587630ab5eff44e93dfa3135399ad135c40e913963bee2c0c81a4a06",
+    "source_commit": "70c388c317b22322145ca8c2a5fe7aa5fe89dba3",
+    "url": "https://huggingface.co/spaces/TheFinAI/Agent-Market-Arena"
+  },
+  "paper_source_sha256": {
+    "00README.json": "de88be9a9aebf045dafc1ba60b5a11dec2a975bdc0923af4ff810d8e395807b8",
+    "Fig_equity_accessed_7_5_2026.pdf": "394e57057eaee99b2002a8dea8438c8df9ce31ddc2bfdfc43362727de7e50baf",
+    "cc-by.pdf": "a2eea10321efc44ad974effc8159f69b4467397ca5df4991a7e879dd82dc62a1",
+    "ceur-ws-logo.pdf": "94eb1845181c974b197905b1859e33020b1682ead852df095eb96c09f81e9e4b",
+    "ceurart.cls": "a3d1922471a13193572c0e2645caa8371e3ccf443ce5c64a6667a4c0afbbae7a",
+    "fig_architecture.pdf": "7498eb4bb7139482bca56df56f0b5efb19b3adbb2b057f0e13199a24225f04a0",
+    "fin_mm_eval_working_notes.bbl": "8074e9b3add12bb099a7169d2d95fdd90bf692150f6642645eb5e1193c9769e7",
+    "fin_mm_eval_working_notes.tex": "fcd407f9bb6ac4392575c46415094f20e2019badce97363e464d2239530e91c5",
+    "sample-ceur.bib": "f2206ed9eb85c402eb2db838776342ede86b5118232905d6f7f151471b8d9fa5"
+  },
+  "paper_version": "v1 (2026-07-14)",
+  "rebuilt_pages": 13,
+  "source_files": 9,
+  "system_id": "SYS-FIN-ANALYST",
+  "work_id": "CensusArxiv260712233"
+}

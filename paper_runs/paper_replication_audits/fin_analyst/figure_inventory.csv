@@ -1,0 +1,4 @@
+figure,panel,empirical,source_asset_sha256,full_panel_regenerated,exact_displayed_endpoint_annotations_verified,boundary,paper_agent_endpoint,organizer_replay_agent_endpoint,paper_buy_hold_endpoint,raw_price_ratio_buy_hold_endpoint,agent_endpoint_matches,buy_hold_endpoint_matches_rounding
+Figure 1,architecture,False,7498eb4bb7139482bca56df56f0b5efb19b3adbb2b057f0e13199a24225f04a0,False,not_applicable,conceptual diagram,,,,,,
+Figure 2,TSLA,True,394e57057eaee99b2002a8dea8438c8df9ce31ddc2bfdfc43362727de7e50baf,False,1/2,raw Buy-and-Hold endpoint verifies; agent curve/end does not reproduce from current official actions/scorer,113326.0,104623.48455502151,85313.0,85313.17459058214,False,True
+Figure 2,BTC,True,394e57057eaee99b2002a8dea8438c8df9ce31ddc2bfdfc43362727de7e50baf,False,1/2,raw Buy-and-Hold endpoint verifies; agent curve/end does not reproduce from current official actions/scorer,99906.0,99742.76385138858,73708.0,73707.63369556762,False,True

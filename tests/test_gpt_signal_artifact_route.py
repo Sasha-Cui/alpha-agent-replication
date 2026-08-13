@@ -44,10 +44,10 @@ def test_committed_artifact_audit_and_summary_include_gpt_signal() -> None:
     assert row == {key: str(value) for key, value in route.gpt_signal_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "35"
-    assert ft["artifact_reachable_among_all"]["successes"] == "34"
-    assert ft["github_head_resolved_among_all"]["successes"] == "33"
-    assert ft["static_R2_or_R3_among_all"]["successes"] == "23"
+    assert ft["public_artifact_listed"]["successes"] == "36"
+    assert ft["artifact_reachable_among_all"]["successes"] == "35"
+    assert ft["github_head_resolved_among_all"]["successes"] == "34"
+    assert ft["static_R2_or_R3_among_all"]["successes"] == "24"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text(encoding="utf-8"))
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
     assert {item["system_id"] for item in corrections} == {
@@ -61,6 +61,7 @@ def test_committed_artifact_audit_and_summary_include_gpt_signal() -> None:
         "SYS-HEDGE-AGENTS",
         "SYS-MACI",
         "SYS-MOUNTAIN-LION",
+        "SYS-FIN-ANALYST",
         "SYS-P1GPT",
         "SYS-QUANT-AGENTS", "SYS-ATLAS",
         "SYS-RAPTOR",
@@ -100,13 +101,13 @@ def test_paper_route_and_static_assets_reflect_gpt_signal_correction() -> None:
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
-    assert r"\newcommand{\ArtifactCountFT}{35}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{34}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{36}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{35}" in generated
     assert r"\newcommand{\LicensedArtifactCountFT}{20}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{33}" in generated
-    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 33, \artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 17}" in generated
-    assert r"\newcommand{\NativeDatedOutputCount}{7}" in generated
-    assert r"\newcommand{\TargetedAuditCount}{65}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{34}" in generated
+    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 32, \artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 18}" in generated
+    assert r"\newcommand{\NativeDatedOutputCount}{8}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{66}" in generated
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert "GPT-Signal & reachable" in failure_table
     assert "1,549/1,554" in failure_table

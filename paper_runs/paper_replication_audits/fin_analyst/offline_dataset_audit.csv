@@ -1,0 +1,3 @@
+asset,revision,calendar_rows,distinct_price_observations_including_initial,start_date,end_date,minimum_price,maximum_price,raw_start_to_end_return_pct,paper_buy_hold_return_pct,paper_buy_hold_matches_raw_dataset,boundary
+TSLA,3ae0b896ed02e882c362f8edc90fd276159f5c5e,283,194,2025-08-01,2026-05-10,302.6300048828125,489.8800048828125,41.542477346020505,37.9,False,paper range/count matches pinned pre-live dataset; printed B&H return does not
+BTC,3ae0b896ed02e882c362f8edc90fd276159f5c5e,283,283,2025-08-01,2026-05-10,62754.09,124797.86,-27.517082642510637,-31.5,False,paper range/count matches pinned pre-live dataset; printed B&H return does not

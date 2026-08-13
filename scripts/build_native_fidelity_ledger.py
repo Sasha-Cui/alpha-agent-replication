@@ -38,6 +38,33 @@ URL_RE = re.compile(r"https?://[^;\s]+")
 # system, not raw inputs, prompts, labels, factor expressions, or example
 # configuration.
 ARTIFACT_NOTES = {
+    "SYS-FIN-ANALYST": (
+        "Y",
+        "A pinned Fin-Analyst audit rebuilds the official 13-page arXiv-v1 "
+        "source at 99.96% extracted-token overlap and visually checks all 13 "
+        "official and rebuilt pages. A first-author Hugging Face Space was created "
+        "one week before the live evaluation and pins a 13-file R3 Docker/FastAPI "
+        "deployment at commit 85ab4781. Its app, nine prompt constants, lower-bounded "
+        "requirements, and seven bundled corpora are attributable native source. In "
+        "a central dependency-isolated environment, pip check and compilation pass; "
+        "startup loads 6,030 JSONL records plus 249 TA rows, and controlled stubs "
+        "exercise the TSLA router/eight LLM call seams and BTC vote without paid or "
+        "external calls. The organizer's public database recovers 97 paper-window "
+        "decisions, and its pinned scorer replays all 97. This is strong source and "
+        "dated-output evidence but not paper-result reproduction: 0/119 printed "
+        "table cells and 0/2 full empirical panels regenerate at display precision. "
+        "Raw prices verify both plotted Buy-and-Hold endpoints only. Official actions "
+        "plus the scorer produce TSLA +4.79%, Sharpe 1.58, 45% win rate instead of "
+        "+13.51%, 4.10, 88%; BTC replays -0.10%, agreeing with the figure/prose but "
+        "contradicting the -5.30% table. The pinned pre-live dataset matches declared "
+        "windows/counts/ranges but not either offline Buy-and-Hold return. Native BTC "
+        "source converts three HOLD votes to BUY and double-counts momentum when Fear "
+        "& Greed fails. The nine printed prompts are abridged despite the full-prompts "
+        "claim; model/API calls, cache state, dependency/image pins, offline actions, "
+        "ablations and result generator are absent. The dated outputs are TSLA/BTC "
+        "actions and cannot supply the six-country security-level common task; no "
+        "license was observed.",
+    ),
     "SYS-JANUS-Q": (
         "Y",
         "A pinned Janus-Q audit rebuilds the official 16-page arXiv-v1 source at "
@@ -1194,6 +1221,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-FIN-ANALYST": "paper_audit:completed_pre_live_R3_native_controlled_paths_97_official_decisions_replayed_zero_of_119_table_cells_zero_of_2_full_empirical_panels_major_table_figure_source_conflicts",
     "SYS-MACRO-ECONOMISTS-MACHINE": "paper_audit:completed_18_paper_derived_mechanics_four_fail_closed_zero_of_132_table_cells_zero_of_12_empirical_panels_no_attributable_pipeline_major_figure_table_conflicts",
     "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_released_nav_metrics_31999_of_31999_data_links_static_outputs_no_native_training_or_backtest",
     "SYS-METAPS": "paper_audit:completed_12_paper_derived_mechanics_zero_of_492_table_cells_zero_of_20_empirical_panels_no_attributable_pipeline",
@@ -1263,6 +1291,7 @@ TARGETED_EXECUTION = {
 
 
 OUTPUT_BLOCKS = {
+    "SYS-FIN-ANALYST": "A3_wrong_asset_scope_TSLA_BTC_not_six_country_security_panel",
     "SYS-JANUS-Q": "A3_CN_only_portfolio_NAV_no_six_country_security_mapping",
     "SYS-AUTOMATE-STRATEGY": "A3_output_lacks_six_country_security_mapping",
     "SYS-CRYPTO-TRADE": "A3_wrong_asset_class_crypto",

@@ -1,0 +1,8 @@
+file,records,date_field,minimum_date,maximum_date,sha256,loaded_by_native_startup,paper_window_boundary
+TSLA_10k_signals.jsonl,2,filed_date,2025-01-30,2026-01-29,e38d8b696ac5003a9239f02186c0573982c4d171138e8873cb80e867aafc6a01,True,most-recent record is carried forward
+TSLA_10q_signals.jsonl,3,date,2025-04-23,2025-10-23,f6a4a9aee87ed273581ecf338b531765fb9b0175272656cd391d32fa719be3a1,True,most-recent record is carried forward
+TSLA_8k_signals.jsonl,12,date,2025-01-02,2025-11-07,4c66db719edf005fc84ffe197c909e12fa93180a8714b7d93d973d40fb0e75f1,True,most-recent record is carried forward
+TSLA_compustat_signals.jsonl,29,rdq,2019-04-24,2026-04-22,ea123bdf7a112234c419d30a642a5a1a9c41ac03d48c6da527ff975e1de20e3a,True,most-recent record is carried forward
+TSLA_ibes_signals.jsonl,14,date,2025-01-16,2026-02-19,93af112cfe134a066bf4c1d24595d858d520ab8b395b70640739e0cd1c5aaff1,True,most-recent record is carried forward
+TSLA_wsb_2025.jsonl,5721,date,2025-01-01,2026-04-12,9f13a838d6a8391ae7f58b2ed14f74607c1482af5ed66584ec807a38ca9b561b,True,"no 7-day WSB records exist after 2026-04-12, so Social defaults HOLD throughout live window"
+TSLA_TA_2025.csv,249,date,2025-01-02,2025-12-30,56d975f920f96343c4cddd310dc570777882907e2c0eb7fbff8485a7bea677ac,True,technical rows stop 2025-12-30 and are stale for the entire May-June 2026 live window

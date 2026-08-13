@@ -1,0 +1,59 @@
+{
+  "app_py_compiles": true,
+  "author_commit": "85ab4781e74ed3deb9a7ef49bca3fa23b1ed9738",
+  "author_native_paper_actions_regenerated": 0,
+  "author_requirements_are_lower_bounds_not_a_lock": true,
+  "controlled_execution": {
+    "btc_missing_fear_greed_case": [
+      "SELL",
+      "BTC B=0 S=2 H=1 | trend +0.0% | momentum=bearish"
+    ],
+    "btc_three_hold_case": [
+      "BUY",
+      "BTC B=0 S=0 H=3 | trend +0.0% | F&G=50(fixture) | momentum=neutral"
+    ],
+    "btc_unanimous_buy_control": [
+      "BUY",
+      "BTC B=3 S=0 H=0 | trend +1.0% | F&G=70(fixture) | momentum=bullish"
+    ],
+    "tsla_endpoint": {
+      "llm_call_seams_exercised": 8,
+      "memory_counts": {
+        "10k": 2,
+        "10q": 3,
+        "8k": 12,
+        "compustat": 29,
+        "ibes": 14,
+        "wsb": 5721
+      },
+      "response": {
+        "recommended_action": "SELL"
+      },
+      "ta_rows": 249,
+      "token_caps": [
+        180,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        250
+      ]
+    }
+  },
+  "external_fear_greed_calls": 0,
+  "native_components_executed": [
+    "startup loaders",
+    "seven corpus paths",
+    "TSLA /predict router",
+    "eight LLM call seams",
+    "BTC voting",
+    "endpoint exception boundary"
+  ],
+  "native_environment_python": "3.12 audit reconstruction; author Dockerfile specifies mutable python:3.11-slim",
+  "paid_or_external_model_calls": 0,
+  "pip_check_passed": true,
+  "published_table_cells_regenerated": 0,
+  "strict_success": false
+}

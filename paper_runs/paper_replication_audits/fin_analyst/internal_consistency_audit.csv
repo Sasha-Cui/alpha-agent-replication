@@ -1,0 +1,15 @@
+check,status,detail
+btc_live_table_vs_figure,major_numeric_conflict,"table reports -5.30%, but Figure 2 ends at $99,906 (~-0.09%) and prose says essentially flat"
+btc_live_table_vs_discussion,major_numeric_conflict,"table alpha is +17.63pp, while discussion reports +26.2pp and B&H down 26.3%, consistent with the figure/raw price ratio"
+btc_live_table_vs_official_replay,major_numeric_conflict,"97-row official-log window plus pinned organizer scorer yields -0.0976%, Sharpe 0.108, win rate 40%, not -5.30%, -1.09, 36%"
+tsla_live_table_vs_official_replay,major_numeric_conflict,"official actions plus pinned scorer yield +4.791%, Sharpe 1.578, win rate 45%, not +13.51%, 4.10, 88%"
+figure_buy_hold_lineage,verified_component,"raw first/last price ratios round exactly to $85,313 TSLA and $73,708 BTC figure endpoints"
+figure_agent_lineage,not_reproduced,"official actions/current scorer end at $104,623 TSLA and $99,743 BTC rather than $113,326 and $99,906"
+offline_buy_hold_tsla,major_numeric_conflict,"pinned pre-live dataset raw return is +41.542%, not printed +37.9%"
+offline_buy_hold_btc,major_numeric_conflict,"pinned pre-live dataset raw return is -27.517%, not printed -31.5%"
+btc_all_hold_majority,source_method_conflict,"paper says final action is majority of three votes; source converts B=0,S=0,H=3 to BUY because it tests B==S only"
+btc_missing_fear_greed,source_method_conflict,"when endpoint fails, source adds the momentum vote in the fallback and then adds it again unconditionally"
+fear_greed_interpretation,narrative_rule_tension,paper calls extreme fear a long opportunity but maps scores <=40 to SELL
+full_prompts_claim,specification_conflict,"appendix says full prompts, but all nine rows are abridged versions of the released native constants"
+live_error_attribution_denominators,accounting_conflict,paper counts TSLA 19/33 and BTC 31/50 acted days while the public rows and next-move availability require different denominator conventions
+mutable_model_replay,irrecoverable_exactness,"gpt-4o-mini alias, SDK/image dependencies, requests/responses, cache state, and API seed are not frozen"

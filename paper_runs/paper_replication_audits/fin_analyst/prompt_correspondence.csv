@@ -1,0 +1,10 @@
+agent,native_system_prompt_sha256,native_system_prompt_characters,paper_labels_prompts_full,paper_row_present,paper_row_is_byte_identical_to_native_prompt,correspondence,result_credit
+News,90010049fa3d13d3550716893a00173f8b39b01ac89512faea8c6c731e0aa7ff,1623,True,True,False,same role/rules but materially abridged prose,False
+Event,1edb851cc90a7ab47d0ffa2fdd375c49c82bea74332df2c331a62b6642882c5a,599,True,True,False,same role/rules but materially abridged prose,False
+Earnings,c5db74a636599aaacabb75b5c826b00712f7594d29ca203c478bb945f4248372,562,True,True,False,same role/rules but materially abridged prose,False
+Strategy,a84db2a701835f47d3a51f4fe7abf4cae5181eaf1c66b662ee5317e490239651,459,True,True,False,same role/rules but materially abridged prose,False
+Fundamentals,d6ce8de5a011dca55aec1f1011b11a1e0e4e652d8eb049368d70156c47d7fd94,592,True,True,False,same role/rules but materially abridged prose,False
+Analyst,7e46e474b952ce362755ca2136dfa105854970e6ddecfd7aa30ae2e7f68d87ce,482,True,True,False,same role/rules but materially abridged prose,False
+Technical,9ca6852f91c0bb90406a42ff3f6cef3dc994a8e1ce518f963f70b87ec571780b,578,True,True,False,same role/rules but materially abridged prose,False
+Social,2406d8f8f2b6430c199e316f0a1f8740902ac552c11fa828891c7d14ca542043,589,True,True,False,same role/rules but materially abridged prose,False
+Meta agent,9e6c7611bb886cb1d97e7229fe46fef3b16520617bae837e96bd9af816af57cc,1112,True,True,False,same role/rules but materially abridged prose,False
