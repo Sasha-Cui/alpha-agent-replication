@@ -38,6 +38,25 @@ URL_RE = re.compile(r"https?://[^;\s]+")
 # system, not raw inputs, prompts, labels, factor expressions, or example
 # configuration.
 ARTIFACT_NOTES = {
+    "SYS-ATLAS": (
+        "N",
+        "A pinned ATLAS audit covers all five official arXiv revisions, all 209 "
+        "official and 209 rebuilt pages, 1,784 empirical numeric table units, and "
+        "five empirical panels. The paper cites StockSim, whose 81-file repository "
+        "belongs to first author Charidimos Papadakis and predates ATLAS v1. The "
+        "release has 43 Python modules and real analyst, trader, exchange, metric, "
+        "order, and configuration components. Its requirements install an obsolete "
+        "asyncio backport that is syntactically invalid on Python 3.12; after removing "
+        "only that backport in an isolated audit environment, dependency and bytecode "
+        "checks pass, 43/43 modules import, and four controlled checks pass for config "
+        "validation, metrics, order matching, and candle triggers. These are StockSim "
+        "precursor-component checks and receive no ATLAS result credit. The repository "
+        "has no ATLAS or Adaptive-OPRO implementation, promised sample config, frozen "
+        "market/news/fundamental inputs, model requests/responses, filled runtime "
+        "prompts, optimizer trajectory, seeds, run artifacts, or result arrays. Its "
+        "README declares MIT but no license text exists and GitHub detects no license. "
+        "Thus 0/1,784 empirical numeric units and 0/5 empirical panels reproduce.",
+    ),
     "SYS-QUANT-AGENTS": (
         "N",
         "A pinned QuantAgents audit inventories all 238 numeric table cells and "
@@ -865,6 +884,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_cited_same_author_stocksim_four_component_checks_missing_atlas_lineage",
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage",

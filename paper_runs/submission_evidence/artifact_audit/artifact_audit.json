@@ -33,6 +33,13 @@
         "system_id": "SYS-ALPHA-SCHEMA"
       },
       {
+        "corrected_at_utc": "2026-08-13T00:15:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/atlas/source_provenance.json",
+        "reason": "paper cites a same-author StockSim precursor repository; it is a real framework component but contains no ATLAS/Adaptive-OPRO research payload",
+        "source_archive_sha256": "824b8b041ff5bf8733d2f755015432eefdc94fdb65fd53b1d1f22a2d99696db7",
+        "system_id": "SYS-ATLAS"
+      },
+      {
         "corrected_at_utc": "2026-08-12T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/cogalpha/source_provenance.json",
         "reason": "author prompt repository published after the frozen census; repository is R1 specification evidence, not CogAlpha runtime code",
@@ -124,7 +131,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "69a26c1ef47d3b46c8ee52dafd9c7eb2fa6fe310aef23a55baeb19bad3c38dd9",
+    "registry_sha256": "a3efa8b7c9c0a31f1225a8eefa93e64617e7f0d4545eff933e2f2a6c5a6b59aa",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -785,22 +792,22 @@
       "system_name": "AlphaQuanter"
     },
     {
-      "artifact_url_count": "0",
-      "artifact_url_results_json": "[]",
-      "artifact_url_types": "",
-      "artifact_urls": "",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
+      "artifact_url_count": 1,
+      "artifact_url_results_json": "[{\"check_method\":\"paper citation plus pinned same-author precursor repository and native component audit\",\"checked_at_utc\":\"2026-08-13T00:15:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"harrypapadakis/StockSim\",\"head_sha\":\"c1a25c195df4c93b2db4a748f80ceae0f1c9fe50\",\"license_source\":\"README declaration only; repository has no license-text file and GitHub detects no license\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"adaptive_opro_implementation_released\":false,\"archive_bytes\":2234151,\"archive_sha256\":\"824b8b041ff5bf8733d2f755015432eefdc94fdb65fd53b1d1f22a2d99696db7\",\"archive_uncompressed_bytes\":31949454,\"as_declared_asyncio_import_passed\":false,\"asyncio_import_after_audit_adjustment_passed\":true,\"atlas_sample_config_released\":false,\"atlas_specific_code_released\":false,\"bytecode_compilation_after_adjustment_passed\":true,\"checked_at_utc\":\"2026-08-13T00:15:00+00:00\",\"code_markers\":[\"agents/llm_agent.py\",\"exchanges/exchange_agent.py\",\"utils/metrics.py\",\"utils/orders.py\"],\"environment_markers\":[\"requirements.txt\",\"Dockerfile\",\"docker-compose.yml\"],\"explicit_nonrunnable\":false,\"file_count\":81,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"modules_failed_import_after_adjustment\":0,\"modules_imported_after_adjustment\":43,\"paper_data_snapshot_released\":false,\"paper_result_arrays_released\":false,\"paper_result_credit\":false,\"paper_runtime_prompts_and_trajectories_released\":false,\"python_file_count\":43,\"runner_markers\":[\"main_launcher.py\"],\"stock_sim_component_checks_passed\":4,\"support_markers\":[\"README.md\",\"configs/demo_config.yaml\",\"configs/demo_multi_provider_config.yaml\",\"configs/orderbook_historical_test.yaml\"],\"tracked_test_files\":0},\"url\":\"https://github.com/harrypapadakis/StockSim\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "github_repository",
+      "artifact_urls": "https://github.com/harrypapadakis/StockSim",
+      "audit_timestamp_utc": "2026-08-13T00:15:00+00:00",
+      "default_branch_head_shas": "harrypapadakis/StockSim@main=c1a25c195df4c93b2db4a748f80ceae0f1c9fe50",
       "errors_json": "[]",
-      "failure_category": "no_public_artifact",
-      "github_owner_repos": "",
+      "failure_category": "none",
+      "github_owner_repos": "harrypapadakis/StockSim",
       "main_FT": "Y",
-      "native_execution_attempted": "N",
-      "observed_licenses": "",
-      "public_artifact_listed": "N",
-      "reachability_outcome": "not_listed",
-      "static_fidelity_basis_json": "{\"basis\":\"not_listed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "native_execution_attempted": "Y",
+      "observed_licenses": "harrypapadakis/StockSim=MIT",
+      "public_artifact_listed": "Y",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"cited same-author precursor framework has code+environment+runner+configuration support; ATLAS and Adaptive-OPRO research payload are absent\",\"markers\":{\"adaptive_opro_implementation_released\":false,\"archive_bytes\":2234151,\"archive_sha256\":\"824b8b041ff5bf8733d2f755015432eefdc94fdb65fd53b1d1f22a2d99696db7\",\"archive_uncompressed_bytes\":31949454,\"as_declared_asyncio_import_passed\":false,\"asyncio_import_after_audit_adjustment_passed\":true,\"atlas_sample_config_released\":false,\"atlas_specific_code_released\":false,\"bytecode_compilation_after_adjustment_passed\":true,\"checked_at_utc\":\"2026-08-13T00:15:00+00:00\",\"code_markers\":[\"agents/llm_agent.py\",\"exchanges/exchange_agent.py\",\"utils/metrics.py\",\"utils/orders.py\"],\"environment_markers\":[\"requirements.txt\",\"Dockerfile\",\"docker-compose.yml\"],\"explicit_nonrunnable\":false,\"file_count\":81,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"modules_failed_import_after_adjustment\":0,\"modules_imported_after_adjustment\":43,\"paper_data_snapshot_released\":false,\"paper_result_arrays_released\":false,\"paper_result_credit\":false,\"paper_runtime_prompts_and_trajectories_released\":false,\"python_file_count\":43,\"runner_markers\":[\"main_launcher.py\"],\"stock_sim_component_checks_passed\":4,\"support_markers\":[\"README.md\",\"configs/demo_config.yaml\",\"configs/demo_multi_provider_config.yaml\",\"configs/orderbook_historical_test.yaml\"],\"tracked_test_files\":0},\"tier\":\"R3\",\"url\":\"https://github.com/harrypapadakis/StockSim\"}]}",
+      "static_fidelity_tier": "R3",
       "stratum": "T",
       "system_id": "SYS-ATLAS",
       "system_name": "ATLAS"
@@ -1352,7 +1359,7 @@
       "system_name": "QuantAgent — Seeking Holy Grail in Trading by Self-Improving LLM"
     },
     {
-      "artifact_url_count": 1,
+      "artifact_url_count": "1",
       "artifact_url_results_json": "[{\"check_method\":\"paper-linked first-party project site plus pinned Git history, tree, archive, media, and full primary-source audit\",\"checked_at_utc\":\"2026-08-13T02:40:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"QuantAgents/quantagents.github.io\",\"head_sha\":\"a1d0d56d04d2b73a5fbc472ec9af865a29be6ef7\",\"license_source\":\"LICENSE file and GitHub repository metadata at pinned head\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":81460192,\"archive_sha256\":\"33b11602cc4e1a326b7677f8155d580f0caf38a4a80189bcca45db1b0ded17c3\",\"archive_uncompressed_bytes\":88003221,\"checked_at_utc\":\"2026-08-13T02:40:00+00:00\",\"code_markers\":[],\"environment_markers\":[],\"excluded_template_residue\":{\"data_file\":\"visualizer/data/data_public.js\",\"reason\":\"MathVista/VQA website template, unrelated to QuantAgents\",\"records\":6141},\"explicit_nonrunnable\":false,\"file_count\":41,\"has_code\":false,\"has_environment\":false,\"has_runner\":false,\"has_support\":true,\"meeting_videos\":3,\"paper_code_released\":false,\"paper_dataset_released\":false,\"paper_leaderboard_cells\":90,\"paper_result_arrays_released\":false,\"paper_result_credit\":false,\"python_file_count\":0,\"rendered_agent_profiles\":4,\"rendered_algorithms\":4,\"runner_markers\":[],\"support_markers\":[\"index.html\",\"static/images/frameworkhtml.png\",\"static/images/agent1.png\",\"static/images/vis1.mp4\",\"static/images/vis5.png\"],\"tracked_test_files\":0},\"url\":\"https://github.com/QuantAgents/quantagents.github.io\",\"url_type\":\"github_repository\"}]",
       "artifact_url_types": "github_repository",
       "artifact_urls": "https://github.com/QuantAgents/quantagents.github.io",

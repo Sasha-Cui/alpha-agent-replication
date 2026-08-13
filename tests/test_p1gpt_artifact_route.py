@@ -48,11 +48,11 @@ def test_committed_artifact_audit_and_summary_include_p1gpt() -> None:
     assert row == {key: str(value) for key, value in route.p1gpt_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
-    assert ft["public_artifact_listed"]["successes"] == "33"
-    assert ft["artifact_reachable_among_all"]["successes"] == "32"
-    assert ft["github_head_resolved_among_all"]["successes"] == "31"
-    assert ft["static_R2_or_R3_among_all"]["successes"] == "22"
-    assert ft["static_R3_among_all"]["successes"] == "16"
+    assert ft["public_artifact_listed"]["successes"] == "34"
+    assert ft["artifact_reachable_among_all"]["successes"] == "33"
+    assert ft["github_head_resolved_among_all"]["successes"] == "32"
+    assert ft["static_R2_or_R3_among_all"]["successes"] == "23"
+    assert ft["static_R3_among_all"]["successes"] == "17"
     payload = json.loads((audit_dir / "artifact_audit.json").read_text(encoding="utf-8"))
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
     assert {item["system_id"] for item in corrections} == {
@@ -66,7 +66,7 @@ def test_committed_artifact_audit_and_summary_include_p1gpt() -> None:
         "SYS-MACI",
         "SYS-MOUNTAIN-LION",
         "SYS-P1GPT",
-        "SYS-QUANT-AGENTS",
+        "SYS-QUANT-AGENTS", "SYS-ATLAS",
         "SYS-RAPTOR",
         "SYS-MM-DREX",
             "SYS-MAD-EVOLVE",
@@ -111,17 +111,17 @@ def test_paper_route_prioritizes_component_blocker_over_proxy() -> None:
 
 def test_static_paper_assets_reflect_p1gpt_correction() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
-    assert r"\newcommand{\ArtifactCountFT}{33}" in generated
-    assert r"\newcommand{\ArtifactRateFT}{49.3\%}" in generated
-    assert r"\newcommand{\ReachableArtifactCountFT}{32}" in generated
-    assert r"\newcommand{\LicensedArtifactCountFT}{19}" in generated
-    assert r"\newcommand{\PinnedRepoCountFT}{31}" in generated
+    assert r"\newcommand{\ArtifactCountFT}{34}" in generated
+    assert r"\newcommand{\ArtifactRateFT}{50.7\%}" in generated
+    assert r"\newcommand{\ReachableArtifactCountFT}{33}" in generated
+    assert r"\newcommand{\LicensedArtifactCountFT}{20}" in generated
+    assert r"\newcommand{\PinnedRepoCountFT}{32}" in generated
     assert (
-        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 35, "
-        r"\artifacttier{R1}: 10, \artifacttier{R2}: 6, \artifacttier{R3}: 16}"
+        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 34, "
+        r"\artifacttier{R1}: 10, \artifacttier{R2}: 6, \artifacttier{R3}: 17}"
         in generated
     )
-    assert r"\newcommand{\TargetedAuditCount}{50}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{51}" in generated
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert r"P1GPT/web\_demo" in system_table
