@@ -1,0 +1,32 @@
+{
+  "bounded_negative_inference": "No attributable public implementation was found in the primary record, TeX source, exact arXiv/title searches, four author-name repository searches, or the seven public repositories of a likely Shenzhen University coauthor account. This does not exclude private, deleted, newly released, differently named, or unindexed artifacts.",
+  "candidates": [
+    {
+      "commit": "a2a73583f37920b84aa9b7b5b223a25feb6da4e6",
+      "created": "2026-06-21",
+      "execution": "completed deterministic synthetic demonstration; 20 accepted factors and composite Pearson IC 0.0224",
+      "native_paper_credit": false,
+      "paper_mismatch": "invented three-role Gaussian-return demo; no eight-agent pipeline, DSL compiler, Qlib/LightGBM, markets, costs, portfolio, or paper result units",
+      "repository": "sjkncs/alphalogics-reproduction"
+    },
+    {
+      "commit": "b4870e468d5e0602f536996be6b97602ecad86ef",
+      "created": "2026-06-10",
+      "execution": "compileall failed with two syntax errors",
+      "native_paper_credit": false,
+      "paper_mismatch": "crypto/live-trading adaptation; no paper data, model calls, trials, predictions, or result lineage",
+      "repository": "kaihenglin/ai-factor-mining"
+    },
+    {
+      "alpha_logics_first_commit": "2425999b56f6dc147507ed5def900e12ab157755",
+      "alpha_logics_first_commit_date": "2026-06-27T15:14:03Z",
+      "commit": "6a168093528a0a578e99b03065dd5d5f1d2dcf4f",
+      "execution": "clean isolated Python 3.12 environment; pip check clean; 52 focused tests passed",
+      "native_paper_credit": false,
+      "paper_mismatch": "IR is copied into best_ic, default outer rounds are four, initial libraries omit Alpha191/Alpha360, and no paper experiment/result lineage exists",
+      "repository": "sn0wfree/QuantNodes"
+    }
+  ],
+  "native_paper_credit": false,
+  "paper_author_identity_matches": 0
+}

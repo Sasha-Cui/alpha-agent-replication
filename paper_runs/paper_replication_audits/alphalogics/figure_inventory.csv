@@ -1,0 +1,6 @@
+figure,display_panels,empirical_panels,displayed_result_markers,description,author_raster_recovered,underlying_numeric_array_recovered,author_native_figure_regenerated,paper_result_credit
+figure_1_alpha_evolution,1,0,0,qualitative method comparison,True,False,False,False
+figure_2_framework,1,0,0,three-stage framework diagram,True,False,False,False
+figure_3_constraint_ablation,6,6,60,three models by two markets; two five-axis radar traces per panel,True,False,False,False
+figure_4_logic_evolution,8,8,120,two markets by four metrics; three models by five rounds per panel,True,False,False,False
+figure_5_library_size,4,4,24,four metrics by six library-size bars,True,False,False,False

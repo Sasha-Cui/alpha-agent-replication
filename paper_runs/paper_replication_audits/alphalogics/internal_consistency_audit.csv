@@ -1,0 +1,10 @@
+check,status,detail
+math_consistency_prose,literal_contradiction,"prose says math consistency is above 95 percent, while Alpha191 is printed as 94.9 percent"
+mdd_sign,definition_table_conflict,"appendix defines nonnegative maximum drawdown, but the main table reports negative MDD values"
+portfolio_term,qlib_semantics_conflict,"Qlib n_drop is positions replaced each trading date, not stocks excluded from the bottom of the universe"
+outer_loop_final_generation,unevaluated_candidate,"printed Algorithm 2 calls the generator after every attempt, including the last, producing T+1 logics but evaluating T"
+dsl_aliases,undefined_aliases,"family table names ts_corr/ts_cov/ts_decay/ts_wma, while the exclusive operation list instead exposes TS_COVARIANCE, DECAYLINEAR, and WMA and no TS_CORR"
+objective_selection,material_ambiguity,paper names five possible validation metrics but never identifies the scalar J used for reported selection
+result_arrays,raster_only,Figures 3--5 ship as rasters; source archive contains no numeric plotting arrays or plotting scripts
+model_reproducibility,unpinned_services,"GPT-3.5-turbo, DeepSeek variants, Gemini 2.5 Flash, GPT-5-mini, and O3-mini lack snapshots and inference settings"
+trial_reproducibility,missing_lineage,"20-trial averages are not accompanied by seeds, trial values, errors, or uncertainty"

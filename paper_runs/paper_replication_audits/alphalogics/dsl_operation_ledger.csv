@@ -1,0 +1,60 @@
+operation_index,family,printed_signature,printed_description,source_specification_recovered,author_native_implementation_recovered,native_execution_credit
+1,Cross-sectional functions,RANK(A),Ranking of each element in the cross-sectional dimension of A.,True,False,False
+2,Cross-sectional functions,ZSCORE(A),Z-score of each element in the cross-sectional dimension of A.,True,False,False
+3,Cross-sectional functions,MEAN(A),Mean value of each element in the cross-sectional dimension of A.,True,False,False
+4,Cross-sectional functions,STD(A),Standard deviation in the cross-sectional dimension of A.,True,False,False
+5,Cross-sectional functions,SKEW(A),Skewness in the cross-sectional dimension of A.,True,False,False
+6,Cross-sectional functions,KURT(A),Kurtosis in the cross-sectional dimension of A.,True,False,False
+7,Cross-sectional functions,MAX(A),Maximum value in the cross-sectional dimension of A.,True,False,False
+8,Cross-sectional functions,MIN(A),Minimum value in the cross-sectional dimension of A.,True,False,False
+9,Cross-sectional functions,MEDIAN(A),Median value in the cross-sectional dimension of A.,True,False,False
+10,Time-series functions,"DELTA(A, n)",Change in value of A over $n$ periods.,True,False,False
+11,Time-series functions,"DELAY(A, n)",Value of A delayed by $n$ periods.,True,False,False
+12,Time-series functions,"TS\_MEAN(A, n)",Mean value of sequence A over the past $n$ days.,True,False,False
+13,Time-series functions,"TS\_SUM(A, n)",Sum of sequence A over the past $n$ days.,True,False,False
+14,Time-series functions,"TS\_RANK(A, n)",Time-series rank of the last value of A in the past $n$ days.,True,False,False
+15,Time-series functions,"TS\_ZSCORE(A, n)",Z-score for each sequence in A over the past $n$ days.,True,False,False
+16,Time-series functions,"TS\_MEDIAN(A, n)",Median value of sequence A over the past $n$ days.,True,False,False
+17,Time-series functions,"TS\_PCTCHANGE(A, p)",Percentage change in the value of sequence A over $p$ periods.,True,False,False
+18,Time-series functions,"TS\_MIN(A, n)",Minimum value of A in the past $n$ days.,True,False,False
+19,Time-series functions,"TS\_MAX(A, n)",Maximum value of A in the past $n$ days.,True,False,False
+20,Time-series functions,"TS\_ARGMAX(A, n)",Index (relative to the current time) of the maximum value of A over the past $n$ days.,True,False,False
+21,Time-series functions,"TS\_ARGMIN(A, n)",Index (relative to the current time) of the minimum value of A over the past $n$ days.,True,False,False
+22,Time-series functions,"TS\_QUANTILE(A, p, q)","Rolling quantile of sequence A over the past $p$ periods, where $q \in (0, 1)$.",True,False,False
+23,Time-series functions,"TS\_STD(A, n)",Standard deviation of sequence A over the past $n$ days.,True,False,False
+24,Time-series functions,"TS\_VAR(A, p)",Rolling variance of sequence A over the past $p$ periods.,True,False,False
+25,Time-series functions,"TS\_COVARIANCE(A, B, n)",Covariance between sequences A and B over the past $n$ days.,True,False,False
+26,Time-series functions,"TS\_MAD(A, n)",Rolling median absolute deviation of sequence A over the past $n$ days.,True,False,False
+27,Time-series functions,"PERCENTILE(A, q, p)","Quantile of sequence A with $q \in (0, 1)$; if $p$ is provided, compute the rolling quantile over the past $p$ periods.",True,False,False
+28,Time-series functions,"HIGHDAY(A, n)",Number of days since the highest value of A in the past $n$ days.,True,False,False
+29,Time-series functions,"LOWDAY(A, n)",Number of days since the lowest value of A in the past $n$ days.,True,False,False
+30,Time-series functions,"SUMAC(A, n)",Cumulative sum of A over the past $n$ days.,True,False,False
+31,Moving averages and smoothing functions,"SMA(A, n, m)",Simple moving average of A over $n$ periods with modifier $m$.,True,False,False
+32,Moving averages and smoothing functions,"WMA(A, n)","Weighted moving average of A over $n$ periods, with weights decreasing from $0.9$ to $0.9^{n}$.",True,False,False
+33,Moving averages and smoothing functions,"EMA(A, n)","Exponential moving average of A over $n$ periods, with decay factor $2/(n+1)$.",True,False,False
+34,Moving averages and smoothing functions,"DECAYLINEAR(A, d)","Linearly weighted moving average of A over $d$ periods, with weights increasing from $1$ to $d$.",True,False,False
+35,Mathematical operations,"PROD(A, n)",Product of values in A over the past $n$ days; use \texttt{*} for general multiplication.,True,False,False
+36,Mathematical operations,LOG(A),Natural logarithm of each element in A.,True,False,False
+37,Mathematical operations,SQRT(A),Square root of each element in A.,True,False,False
+38,Mathematical operations,"POW(A, n)",Raise each element in A to the power of $n$.,True,False,False
+39,Mathematical operations,SIGN(A),"Sign of each element in A (one of 1, 0, or -1).",True,False,False
+40,Mathematical operations,EXP(A),Exponential of each element in A.,True,False,False
+41,Mathematical operations,ABS(A),Absolute value of A.,True,False,False
+42,Mathematical operations,"MAX(A, B)",Maximum value between A and B.,True,False,False
+43,Mathematical operations,"MIN(A, B)",Minimum value between A and B.,True,False,False
+44,Mathematical operations,INV(A),Reciprocal ($1/x$) of each element in sequence A.,True,False,False
+45,Mathematical operations,FLOOR(A),Floor of each element in sequence A.,True,False,False
+46,Conditional and logical functions,"COUNT(C, n)",Count of samples satisfying condition C in the past $n$ periods.,True,False,False
+47,Conditional and logical functions,"SUMIF(A, n, C)",Sum of A over the past $n$ periods if condition C is met.,True,False,False
+48,Conditional and logical functions,"FILTER(A, C)","Filter multi-column sequence A based on condition C, with the same size as A.",True,False,False
+49,Conditional and logical functions,(C1)\&\&(C2),"Logical \texttt{and} between conditions C1 and C2 (e.g., \texttt{close > open}).",True,False,False
+50,Conditional and logical functions,(C1)||(C2),Logical \texttt{or} between conditions C1 and C2.,True,False,False
+51,Conditional and logical functions,(C1)?(A):(B),"If condition C1 holds, return A; otherwise return B.",True,False,False
+52,Regression and residual functions,SEQUENCE(n),Single-column sequence of length $n$ ranging from 1 to $n$; it should be nested in \texttt{REGBETA} or \texttt{REGRESI} as argument B.,True,False,False
+53,Regression and residual functions,"REGBETA(A, B, n)","Regression coefficient of A on B using the past $n$ samples, where A must be multi-column and B may be single- or multi-column.",True,False,False
+54,Regression and residual functions,"REGRESI(A, B, n)","Residual of regression of A on B using the past $n$ samples, where A must be multi-column and B may be single- or multi-column.",True,False,False
+55,Technical indicators,"RSI(A, n)",Relative Strength Index of sequence A over $n$ periods.,True,False,False
+56,Technical indicators,"MACD(A, short\_window, long\_window)","Moving Average Convergence Divergence of sequence A, defined as the difference between short- and long-window EMAs.",True,False,False
+57,Technical indicators,"BB\_MIDDLE(A, n)","Middle Bollinger Band, the $n$-period SMA of sequence A.",True,False,False
+58,Technical indicators,"BB\_UPPER(A, n)","Upper Bollinger Band, middle band plus two standard deviations over $n$ periods.",True,False,False
+59,Technical indicators,"BB\_LOWER(A, n)","Lower Bollinger Band, middle band minus two standard deviations over $n$ periods.",True,False,False

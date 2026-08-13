@@ -1,0 +1,91 @@
+{
+  "control_flow_findings": [
+    "inner-loop improvement resets the no-improvement counter to zero",
+    "the stopping iteration does not call factor feedback",
+    "Algorithm 2 generates T+1 logics for T evaluated attempts",
+    "the final generated logic is never evaluated by the printed pseudocode"
+  ],
+  "inner_loop_scripted_check": {
+    "best": 1.2,
+    "iterations": 6,
+    "trace": [
+      {
+        "best": 1.0,
+        "feedback_called": true,
+        "improved": true,
+        "iteration": 1,
+        "no_improvement": 0,
+        "score": 1.0
+      },
+      {
+        "best": 1.0,
+        "feedback_called": true,
+        "improved": false,
+        "iteration": 2,
+        "no_improvement": 1,
+        "score": 0.8
+      },
+      {
+        "best": 1.2,
+        "feedback_called": true,
+        "improved": true,
+        "iteration": 3,
+        "no_improvement": 0,
+        "score": 1.2
+      },
+      {
+        "best": 1.2,
+        "feedback_called": true,
+        "improved": false,
+        "iteration": 4,
+        "no_improvement": 1,
+        "score": 1.1
+      },
+      {
+        "best": 1.2,
+        "feedback_called": true,
+        "improved": false,
+        "iteration": 5,
+        "no_improvement": 2,
+        "score": 1.0
+      },
+      {
+        "best": 1.2,
+        "feedback_called": false,
+        "improved": false,
+        "iteration": 6,
+        "no_improvement": 3,
+        "score": 0.9
+      }
+    ]
+  },
+  "outer_loop_scripted_check": {
+    "attempts": 5,
+    "best_logic": "logic_4",
+    "best_score": 0.5,
+    "evaluated": [
+      "logic_0",
+      "logic_1",
+      "logic_2",
+      "logic_3",
+      "logic_4"
+    ],
+    "generated": [
+      "logic_0",
+      "logic_1",
+      "logic_2",
+      "logic_3",
+      "logic_4",
+      "logic_5"
+    ],
+    "unevaluated_generated_logics": [
+      "logic_5"
+    ]
+  },
+  "paper_derived_not_author_native": true,
+  "published_result_credit": false,
+  "source_algorithms": [
+    "inner-loop",
+    "outer-loop"
+  ]
+}

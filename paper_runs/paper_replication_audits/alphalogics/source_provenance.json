@@ -1,0 +1,51 @@
+{
+  "arxiv": {
+    "authors": [
+      "Zhangyuhua Weng",
+      "Shengli Zhang",
+      "Taotao Wang",
+      "Yihan Xia"
+    ],
+    "identifier": "2603.20247",
+    "official_pages": 19,
+    "official_pdf_sha256": "d6ae7ed961bc6d358607497f6815dc2c8f4081afb1c04203b3693f63d2929c01",
+    "source_archive_sha256": "1439c0b14100dd1d5261cff44b348ca705d949a088051f3168b3a41573538f1a",
+    "source_files": 10,
+    "source_tex_sha256": "033535f009398e4998529b2ec37eeb14070aaae86cb193a7ed595e2abc2231f0",
+    "submitted": "2026-03-10T12:18:02Z",
+    "version": "v1"
+  },
+  "rebuild": {
+    "rebuilt_pages": 19,
+    "rebuilt_pdf_sha256": "417cf96f3e68572f9df0a8ad4d29f9107a7146e60d1cc732904ee9d9f974f04a",
+    "text_comparison": {
+      "multiset_intersection": 8880,
+      "multiset_jaccard": 0.9994372537985369,
+      "multiset_union": 8885,
+      "official_tokens": 8885,
+      "rebuilt_tokens": 8880
+    },
+    "unmodified_source_compiled": true,
+    "visual_qa": {
+      "contact_sheet_sha256": {
+        "contact-official-1.jpg": "98af34d49dca2c387bde8815c5b50db62d39c1aa56fe01743a86303da920521f",
+        "contact-official-2.jpg": "08db4b92844b518041c265611e0e48a519d23c026046db2501f05d2b6c224890",
+        "contact-official-3.jpg": "daa9a70f3b7aa7c346725dc588d56afd6f9c7766fb6b0beea4ec935ed4d7724d",
+        "contact-rebuilt-1.jpg": "90116757b6f00e943f24e81924356e40c9b0cd24f4a2e535ee8a741f68523d6e",
+        "contact-rebuilt-2.jpg": "399e89e6e319c5ccee206724acadb284abd87747f53a3920ec17b251ad8598bf",
+        "contact-rebuilt-3.jpg": "daa9a70f3b7aa7c346725dc588d56afd6f9c7766fb6b0beea4ec935ed4d7724d"
+      },
+      "official_pages_inspected": 19,
+      "rebuilt_pages_inspected": 19,
+      "unreadable_clipped_overlapping_blank_or_missing_research_pages": 0
+    }
+  },
+  "release_boundary": {
+    "attributable_alphalogics_code_recovered": false,
+    "complete_research_inputs_recovered": false,
+    "post_paper_independent_candidates_counted_as_native": false,
+    "published_result_lineage_recovered": false
+  },
+  "system_id": "SYS-ALPHA-LOGICS",
+  "work_id": "CensusArxiv260320247"
+}
