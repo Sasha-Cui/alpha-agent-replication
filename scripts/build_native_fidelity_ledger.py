@@ -38,6 +38,27 @@ URL_RE = re.compile(r"https?://[^;\s]+")
 # system, not raw inputs, prompts, labels, factor expressions, or example
 # configuration.
 ARTIFACT_NOTES = {
+    "SYS-ALPHA-SCHEMA": (
+        "N",
+        "A pinned AlphaSchema audit inventories all 212 published numeric result "
+        "units and 9 empirical panels. The 32-file first-author-owned repository is "
+        "directly linked from the manuscript and implements schema sampling, novelty "
+        "control, LLM prompting and repair, leakage checks, factor evaluation, reward "
+        "ensembling, mutation, and reports; it declares no license. In a dedicated "
+        "Python 3.10 environment, all 9 author tests, installation, bytecode compilation, "
+        "and CLI help pass. The deterministic demo completes three rounds and 48 plans "
+        "but uses a SHA-derived mock evaluator. The literal Appendix factor executes at "
+        "periods 20 and 100 on a controlled synthetic panel with no reported leakage "
+        "violations and a finite reward. These are component checks, not paper outputs. "
+        "The default launcher lacks its data/stock_bars input, and the release ships no "
+        "CSI300/CSI500 or fundamental snapshot, point-in-time membership, five-run "
+        "history, model-call lineage, paper factor pools, baselines, downstream combiner, "
+        "Qlib portfolio engine, predictions, holdings, returns, or result generator. "
+        "The paper's forward label differs from the release backend; release schema "
+        "cardinalities, quality-key semantics, mutation ranking, exploration schedule, "
+        "and default periods also differ from the manuscript. Thus 0/212 numeric units "
+        "and 0/9 empirical panels reproduce, and no component receives paper-result credit.",
+    ),
     "SYS-ALPHA-CRAFTER": (
         "N",
         "A pinned two-version AlphaCrafter audit inventories 176 v1 and 304 v2 "
@@ -805,6 +826,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage",
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_attributable_release_six_component_checks_broken_default_launcher_missing_research_lineage",
     "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_one_linked_input_one_date_prompt_zero_of_953_table_cells_no_author_native_pipeline",

@@ -8,7 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
-    "route_mm_arc_paper_audit", ROOT / "scripts/route_mm_arc_paper_audit.py"
+    "route_alphaschema_paper_audit",
+    ROOT / "scripts/route_alphaschema_paper_audit.py",
 )
 assert SPEC and SPEC.loader
 route = importlib.util.module_from_spec(SPEC)
@@ -20,28 +21,34 @@ def csv_rows(path: Path, delimiter: str = ",") -> list[dict[str, str]]:
         return list(csv.DictReader(handle, delimiter=delimiter))
 
 
-def test_pinned_artifact_row_is_paper_linked_reachable_and_r3() -> None:
-    row = route.mm_arc_row()
+def test_pinned_artifact_row_is_direct_reachable_unlicensed_and_r3() -> None:
+    row = route.alphaschema_row()
     assert row["artifact_urls"] == route.URL
     assert row["public_artifact_listed"] == "Y"
     assert row["reachability_outcome"] == "reachable_all"
     assert row["static_fidelity_tier"] == "R3"
     assert row["native_execution_attempted"] == "Y"
-    assert row["default_branch_head_shas"] == ""
+    assert row["default_branch_head_shas"].endswith(route.HEAD_SHA)
+    assert row["observed_licenses"].endswith("NOASSERTION")
     result = json.loads(row["artifact_url_results_json"])[0]
     observation = result["static_observation"]
-    assert observation["file_count"] == 107
+    assert result["observed_license"] == "NOASSERTION"
+    assert observation["file_count"] == 32
+    assert observation["python_file_count"] == 16
     assert observation["has_runner"] is True
     assert observation["archive_sha256"] == route.ARCHIVE_SHA256
-    assert observation["git_lfs_pointer_files"] == 9
-    assert observation["registered_payload_bytes_unavailable"] == 340_563_208
+    assert observation["tracked_test_files"] == 1
+    assert observation["author_tests_passed"] == 9
+    assert observation["native_demo_plans"] == 48
+    assert observation["native_demo_uses_mock_evaluator"] is True
+    assert observation["paper_result_credit"] is False
 
 
-def test_committed_artifact_audit_and_summary_include_mm_arc() -> None:
+def test_committed_artifact_audit_and_summary_include_alphaschema() -> None:
     audit_dir = ROOT / "paper_runs/submission_evidence/artifact_audit"
     rows = csv_rows(audit_dir / "artifact_audit.csv")
     row = next(item for item in rows if item["system_id"] == route.SYSTEM_ID)
-    assert row == {key: str(value) for key, value in route.mm_arc_row().items()}
+    assert row == {key: str(value) for key, value in route.alphaschema_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
     assert ft["public_artifact_listed"]["successes"] == "31"
@@ -64,32 +71,35 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["fidelity_class"] == "F1_static_no_native_output"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_"
-        "v3_release_111_tests_missing_lfs_and_research_lineage"
+        "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_"
+        "panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage"
     )
     note = row["concise_evidence_note"]
     for marker in (
-        "671 legacy", "651 current", "111 tests", "9 Git LFS pointers",
-        "0/671 legacy", "0/651 current", "0/18 empirical figure series",
+        "212", "9 empirical panels", "9 author tests", "48 plans",
+        "mock evaluator", "Appendix factor", "0/212", "0/9",
     ):
         assert marker in note
 
 
-def test_paper_evidence_route_moves_mm_arc_to_public_code_with_blocker() -> None:
+def test_paper_evidence_route_moves_alphaschema_to_public_code_with_blocker() -> None:
     rows = csv_rows(
-        ROOT / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
+        ROOT
+        / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
     )
-    row = next(item for item in rows if item["canonical_work_id"] == "CensusArxiv250905080")
+    row = next(
+        item for item in rows if item["canonical_work_id"] == "CensusArxiv260726642"
+    )
     assert row["paper_evidence_route"] == "public_code_available"
     assert row["reachable_public_code_system_ids"] == route.SYSTEM_ID
     assert row["static_fidelity_tiers"] == "R3"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
-    assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
+    assert row["proxy_role"] == "no_proxy"
     assert "A2_no_shipped_native_dated_output" in row["precise_native_or_access_blocker"]
 
 
-def test_static_paper_assets_reflect_mm_arc_correction() -> None:
+def test_static_paper_assets_reflect_alphaschema_correction() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text()
     assert r"\newcommand{\ArtifactCountFT}{31}" in generated
     assert r"\newcommand{\ReachableArtifactCountFT}{30}" in generated
@@ -104,22 +114,14 @@ def test_static_paper_assets_reflect_mm_arc_correction() -> None:
     assert r"\newcommand{\PublicCodeRouteWorkCount}{30\xspace}" in routes
     assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{39\xspace}" in routes
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
-    assert "MM-DREX & reachable" in failure_table
-    assert "0/671 legacy" in failure_table
-    assert "0/651 current" in failure_table
+    assert "AlphaSchema & reachable" in failure_table
+    assert "0/212" in failure_table
+    assert "0/9" in failure_table
 
 
-def test_registries_preserve_legacy_identity_and_current_release() -> None:
+def test_census_routes_direct_release_and_records_no_license() -> None:
     census = csv_rows(ROOT / "literature_review/census_v1/system_registry.csv", "|")
     row = next(item for item in census if item["system_id"] == route.SYSTEM_ID)
-    assert row["system_name"] == "MM-DREX"
     assert row["official_artifact"] == route.URL
-    assert "wholesale MM-ARC replacement" in row["lineage_dedup_notes"]
-    registry = csv_rows(ROOT / "paper_runs/registry.csv")
-    paper = next(item for item in registry if item["ref_index"] == "32")
-    assert paper["code_status"] == "official_v3_anonymous_release"
-    assert paper["code_url"] == route.URL
-    assert paper["execution_state"] == "audited_component_execution_only"
-    assert paper["verdict"] == (
-        "zero_of_671_legacy_and_zero_of_651_current_numeric_result_units_regenerated"
-    )
+    assert "directly links" in row["lineage_dedup_notes"]
+    assert "no license" in row["lineage_dedup_notes"]

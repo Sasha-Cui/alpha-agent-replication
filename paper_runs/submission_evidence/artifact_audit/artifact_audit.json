@@ -27,6 +27,13 @@
       },
       {
         "corrected_at_utc": "2026-08-12T00:00:00+00:00",
+        "evidence": "paper_runs/paper_replication_audits/alphaschema/source_provenance.json",
+        "reason": "manuscript directly links first-author-owned repository; pinned audit records no declared license or released research-result lineage",
+        "source_archive_sha256": "fa4a31a9b664f70e4d83a7474492603d03b9e801f15140bbcb4294d175550e49",
+        "system_id": "SYS-ALPHA-SCHEMA"
+      },
+      {
+        "corrected_at_utc": "2026-08-12T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/cogalpha/source_provenance.json",
         "reason": "author prompt repository published after the frozen census; repository is R1 specification evidence, not CogAlpha runtime code",
         "source_head": "6294d9ffa9dfc286fb14e82343f8f22a5f928c1c",
@@ -103,7 +110,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "0e62a2b49f2f91e1fdd29d431bb1b9df62fd055f0b07e8090dd26572d442c313",
+    "registry_sha256": "46acb645124b42eaea385f6d5d8d49cea7ba5b336f57a079a7facfa5faef4efd",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,
@@ -197,7 +204,7 @@
       "system_name": "AlphaAgentEvo"
     },
     {
-      "artifact_url_count": 1,
+      "artifact_url_count": "1",
       "artifact_url_results_json": "[{\"check_method\":\"pinned GitHub archive plus paper/source/release attribution audit\",\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"NJU-LINK/AlphaCrafter\",\"head_sha\":\"c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d\",\"license_source\":\"pinned_archive_41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1\",\"observed_license\":\"MIT\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":297049,\"archive_sha256\":\"41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1\",\"archive_uncompressed_bytes\":889614,\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"code_markers\":[\"alphacrafter/main.py\",\"alphacrafter/sim/exchange_a.py\",\"alphacrafter/sim/exchange_us.py\",\"alphacrafter/agent/openai/agent.py\"],\"default_model_registry_mismatch\":true,\"environment_markers\":[\"Dockerfile\",\"docker-compose.yml\",\"setup.py\"],\"explicit_nonrunnable\":false,\"file_count\":79,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"python_file_count\":48,\"research_data_payload_released\":false,\"runner_markers\":[\"alphacrafter/main.py\"],\"support_markers\":[\"README.md\",\"alphacrafter/config.yaml\",\"alphacrafter/sandbox/template_a\",\"alphacrafter/sandbox/template_us\"],\"tracked_tests\":0},\"url\":\"https://github.com/NJU-LINK/AlphaCrafter\",\"url_type\":\"github_repository\"}]",
       "artifact_url_types": "github_repository",
       "artifact_urls": "https://github.com/NJU-LINK/AlphaCrafter",
@@ -323,22 +330,22 @@
       "system_name": "Alpha-R1"
     },
     {
-      "artifact_url_count": "0",
-      "artifact_url_results_json": "[]",
-      "artifact_url_types": "",
-      "artifact_urls": "",
-      "audit_timestamp_utc": "2026-08-03T01:05:32.450511+00:00",
-      "default_branch_head_shas": "",
+      "artifact_url_count": 1,
+      "artifact_url_results_json": "[{\"check_method\":\"manuscript-linked repository plus pinned archive and native execution audit\",\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"default_branch\":\"main\",\"errors\":[],\"github_owner_repo\":\"JingyangYi/AlphaSchema\",\"head_sha\":\"1206a094abfaad7cc53e6dff39f8fae43e851acb\",\"license_source\":\"no license file or repository license declaration in pinned tree\",\"observed_license\":\"NOASSERTION\",\"reachable\":true,\"static_observation\":{\"archive_bytes\":1573612,\"archive_sha256\":\"fa4a31a9b664f70e4d83a7474492603d03b9e801f15140bbcb4294d175550e49\",\"archive_uncompressed_bytes\":1945533,\"author_tests_passed\":9,\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"code_markers\":[\"alphaschema/pipeline.py\",\"alphaschema/schema_space.py\",\"alphaschema/backend.py\",\"alphaschema/reward_model.py\"],\"environment_markers\":[\"pyproject.toml\"],\"explicit_nonrunnable\":false,\"file_count\":32,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"native_demo_plans\":48,\"native_demo_uses_mock_evaluator\":true,\"paper_market_data_released\":false,\"paper_result_credit\":false,\"paper_trial_outputs_released\":false,\"python_file_count\":16,\"runner_markers\":[\"alphaschema/cli.py\",\"examples/run_demo.py\"],\"support_markers\":[\"README.md\",\"configs/default_stock_search.json\",\"schemas/stock_alpha/event.json\",\"tests/test_core.py\"],\"tracked_test_files\":1},\"url\":\"https://github.com/JingyangYi/AlphaSchema\",\"url_type\":\"github_repository\"}]",
+      "artifact_url_types": "github_repository",
+      "artifact_urls": "https://github.com/JingyangYi/AlphaSchema",
+      "audit_timestamp_utc": "2026-08-12T00:00:00+00:00",
+      "default_branch_head_shas": "JingyangYi/AlphaSchema@main=1206a094abfaad7cc53e6dff39f8fae43e851acb",
       "errors_json": "[]",
-      "failure_category": "no_public_artifact",
-      "github_owner_repos": "",
+      "failure_category": "none",
+      "github_owner_repos": "JingyangYi/AlphaSchema",
       "main_FT": "Y",
-      "native_execution_attempted": "N",
-      "observed_licenses": "",
-      "public_artifact_listed": "N",
-      "reachability_outcome": "not_listed",
-      "static_fidelity_basis_json": "{\"basis\":\"not_listed\",\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"}}",
-      "static_fidelity_tier": "R0",
+      "native_execution_attempted": "Y",
+      "observed_licenses": "JingyangYi/AlphaSchema=NOASSERTION",
+      "public_artifact_listed": "Y",
+      "reachability_outcome": "reachable_all",
+      "static_fidelity_basis_json": "{\"definition\":{\"R0\":\"no listed public artifact or no reachable artifact\",\"R1\":\"reachable landing page, documentation, pseudocode, or statically incomplete repository\",\"R2\":\"observable source code plus dependency/setup manifest\",\"R3\":\"R2 plus a runner and tests/examples/configuration support\"},\"evidence\":[{\"basis\":\"code+environment+CLI/demo+tests/config/schema support; research data and result lineage are absent\",\"markers\":{\"archive_bytes\":1573612,\"archive_sha256\":\"fa4a31a9b664f70e4d83a7474492603d03b9e801f15140bbcb4294d175550e49\",\"archive_uncompressed_bytes\":1945533,\"author_tests_passed\":9,\"checked_at_utc\":\"2026-08-12T00:00:00+00:00\",\"code_markers\":[\"alphaschema/pipeline.py\",\"alphaschema/schema_space.py\",\"alphaschema/backend.py\",\"alphaschema/reward_model.py\"],\"environment_markers\":[\"pyproject.toml\"],\"explicit_nonrunnable\":false,\"file_count\":32,\"has_code\":true,\"has_environment\":true,\"has_runner\":true,\"has_support\":true,\"native_demo_plans\":48,\"native_demo_uses_mock_evaluator\":true,\"paper_market_data_released\":false,\"paper_result_credit\":false,\"paper_trial_outputs_released\":false,\"python_file_count\":16,\"runner_markers\":[\"alphaschema/cli.py\",\"examples/run_demo.py\"],\"support_markers\":[\"README.md\",\"configs/default_stock_search.json\",\"schemas/stock_alpha/event.json\",\"tests/test_core.py\"],\"tracked_test_files\":1},\"tier\":\"R3\",\"url\":\"https://github.com/JingyangYi/AlphaSchema\"}]}",
+      "static_fidelity_tier": "R3",
       "stratum": "F",
       "system_id": "SYS-ALPHA-SCHEMA",
       "system_name": "AlphaSchema"
