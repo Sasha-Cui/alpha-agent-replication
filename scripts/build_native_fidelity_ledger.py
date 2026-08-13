@@ -299,13 +299,20 @@ ARTIFACT_NOTES = {
         "files. The release ships 166 dated portfolio snapshots. Its native "
         "postprocessor runs, and those snapshots independently recover 16/42 scalar "
         "units, including the initial/final NAV, total and annualized return, "
-        "volatility, Sharpe, Sortino, and maximum drawdown. This is author-output "
-        "verification, not experiment reproduction: 0/42 result units and 0/3 exact "
+        "volatility, Sharpe, Sortino, and maximum drawdown. A hash-pinned current "
+        "Yahoo S&P 500 response additionally verifies the two displayed 10.08% "
+        "benchmark units and the 3.35-point comparison, for 19/42 checked displayed "
+        "units overall; those three checks are not paper-time input lineage. This is "
+        "author-output/current-response verification, not experiment reproduction: "
+        "0/42 result units and 0/3 exact "
         "figure series reproduce end to end. The candidate backtest stops on the "
         "missing testing/stock_prices.csv; SPY inputs, point-in-time research inputs, "
         "immutable model requests, seeds, and execution-cost lineage are absent, "
         "while paper/source cadence, view construction, and rolling-Sharpe conventions "
-        "conflict. The shipped path is U.S.-only and cannot supply the six-country "
+        "conflict. Full four-commit history inspection finds no missing inputs; the "
+        "later validation branch adds unsupported conflicting template claims and a "
+        "generic statistics module with a NameError and unseeded bootstrap. The "
+        "shipped path is U.S.-only and cannot supply the six-country "
         "security-level common-task panel.",
     ),
     "SYS-MM-DREX": (
@@ -1318,7 +1325,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_component_gate_separate",
     "SYS-QUANTA-ALPHA": "paper_audit:completed_zero_of_344_native_table_results_components_only",
-    "SYS-RAPTOR": "paper_audit:completed_16_of_42_author_output_scalar_units_zero_end_to_end_result_cells",
+    "SYS-RAPTOR": "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
     "SYS-TRADING-AGENTS": "paper_audit:completed_zero_of_77_native_results",

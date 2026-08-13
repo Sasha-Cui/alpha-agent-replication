@@ -1,43 +1,43 @@
-result_id,location,scope,metric,displayed_value,author_output_value,author_output_verification,independent_end_to_end_reproduction,credit_boundary
-RAP-001,Abstract,RAPTOR,total_return_percent,13.43,13.434819440490697,verified_rounded,no,author_output_verification_only
-RAP-002,Abstract,benchmark,SP500_total_return_percent,10.08,,unavailable,no,no_result_credit
-RAP-003,Section 4.3 paragraph 1,RAPTOR,total_return_percent,13.43,13.434819440490697,verified_rounded,no,author_output_verification_only
-RAP-004,Section 4.3 paragraph 1,benchmark,SP500_total_return_percent,10.08,,unavailable,no,no_result_credit
-RAP-005,Section 4.3 paragraph 1,comparison,excess_percentage_points,3.35,,unavailable,no,no_result_credit
-RAP-006,Section 4.3 paragraph 2,RAPTOR,overall_sharpe,1.0,0.9897422727517595,verified_rounded,no,author_output_verification_only
-RAP-007,Section 4.3 paragraph 2,rolling,rolling_20d_min,-2.42,,unavailable,no,no_result_credit
-RAP-008,Section 4.3 paragraph 2,rolling,rolling_20d_max,5.27,,unavailable,no,no_result_credit
-RAP-009,Section 4.3 paragraph 2,rolling,rolling_20d_mean,1.41,,unavailable,no,no_result_credit
-RAP-010,Section 4.3 paragraph 2,rolling,rolling_20d_sd,2.63,,unavailable,no,no_result_credit
-RAP-011,Extended validation,RAPTOR,trading_days,166,166.0,verified_exact,no,author_output_verification_only
-RAP-012,Extended validation,RAPTOR,initial_value_usd,1000000.00,1000000.0,verified_exact,no,author_output_verification_only
-RAP-013,Extended validation,RAPTOR,final_value_usd,1134348.19,1134348.194404907,verified_rounded,no,author_output_verification_only
-RAP-014,Extended validation,RAPTOR,total_return_percent,13.43,13.434819440490697,verified_rounded,no,author_output_verification_only
-RAP-015,Extended validation,RAPTOR,annualized_return_percent,21.09,21.090192227941817,verified_rounded,no,author_output_verification_only
-RAP-016,Extended validation,RAPTOR,annualized_volatility_percent,19.30,19.30426162364428,verified_rounded,no,author_output_verification_only
-RAP-017,Extended validation,RAPTOR,sharpe,1.0,0.9897422727517595,verified_rounded,no,author_output_verification_only
-RAP-018,Extended validation,RAPTOR,sortino,1.28,1.2787050163631515,verified_rounded,no,author_output_verification_only
-RAP-019,Extended validation,RAPTOR,maximum_drawdown_percent,-15.33,-15.33365025620428,verified_rounded,no,author_output_verification_only
-RAP-020,Extended validation,rolling,rolling_20d_mean,1.60,2.150896430904414,conflict,no,no_result_credit
-RAP-021,Extended validation,rolling,rolling_20d_sd,3.28,3.4382877364555493,conflict,no,no_result_credit
-RAP-022,Extended validation,rolling,longer_window_lower,1.1,,unavailable,no,no_result_credit
-RAP-023,Extended validation,rolling,longer_window_upper,1.4,,unavailable,no,no_result_credit
-RAP-024,Extended validation,RAPTOR,approximate_full_period_sharpe,1.0,0.9897422727517595,verified_rounded,no,author_output_verification_only
-RAP-025,Figure 3 caption,rolling,rolling_20d_min,-5.26,-5.267501884798236,verified_near_by_truncation_not_standard_rounding,no,author_output_verification_only
-RAP-026,Figure 3 caption,rolling,rolling_20d_max,10.34,10.343535369432843,verified_rounded,no,author_output_verification_only
-RAP-027,Figure 3 caption,rolling,rolling_20d_final,3.89,3.7898775588598927,conflict_population_sd_only_matches,no,no_result_credit
-RAP-028,Section 4.3 coverage,RAPTOR,coverage_ratio_166_of_166,1.0,1.0,verified_exact,no,author_output_verification_only
-RAP-029,Table 1,interpretability,WAB_base_weight,.112,,unavailable,no,no_result_credit
-RAP-030,Table 1,interpretability,WAB_perturbed_weight,.087,,unavailable,no,no_result_credit
-RAP-031,Table 1,interpretability,WAB_weight_delta,-.025,,unavailable,no,no_result_credit
-RAP-032,Table 1,interpretability,SPY_base_weight,.245,,unavailable,no,no_result_credit
-RAP-033,Table 1,interpretability,SPY_perturbed_weight,.253,,unavailable,no,no_result_credit
-RAP-034,Table 1,interpretability,SPY_weight_delta,+.008,,unavailable,no,no_result_credit
-RAP-035,Table 1,interpretability,XLI_base_weight,.083,,unavailable,no,no_result_credit
-RAP-036,Table 1,interpretability,XLI_perturbed_weight,.089,,unavailable,no,no_result_credit
-RAP-037,Table 1,interpretability,XLI_weight_delta,+.006,,unavailable,no,no_result_credit
-RAP-038,Table 1 explanation,interpretability,WAB_base_weight,.112,,unavailable,no,no_result_credit
-RAP-039,Table 1 explanation,interpretability,WAB_perturbed_weight,.087,,unavailable,no,no_result_credit
-RAP-040,Table 1 explanation,interpretability,WAB_weight_delta,-.025,,unavailable,no,no_result_credit
-RAP-041,Table 1 explanation,interpretability,SPY_weight_delta,+.008,,unavailable,no,no_result_credit
-RAP-042,Table 1 explanation,interpretability,XLI_weight_delta,+.006,,unavailable,no,no_result_credit
+result_id,location,scope,metric,displayed_value,author_output_value,current_public_response_value,verification_status,verification_source,independent_end_to_end_reproduction,credit_boundary
+RAP-001,Abstract,RAPTOR,total_return_percent,13.43,13.434819440490697,,verified_rounded,author_output,no,author_output_verification_only
+RAP-002,Abstract,benchmark,SP500_total_return_percent,10.08,,10.08272879383032,verified_rounded_current_yahoo_response_not_paper_lineage,current_public_response,no,current_public_response_verification_only_not_paper_lineage
+RAP-003,Section 4.3 paragraph 1,RAPTOR,total_return_percent,13.43,13.434819440490697,,verified_rounded,author_output,no,author_output_verification_only
+RAP-004,Section 4.3 paragraph 1,benchmark,SP500_total_return_percent,10.08,,10.08272879383032,verified_rounded_current_yahoo_response_not_paper_lineage,current_public_response,no,current_public_response_verification_only_not_paper_lineage
+RAP-005,Section 4.3 paragraph 1,comparison,excess_percentage_points,3.35,,3.3520906466603773,verified_rounded_current_yahoo_response_not_paper_lineage,current_public_response,no,current_public_response_verification_only_not_paper_lineage
+RAP-006,Section 4.3 paragraph 2,RAPTOR,overall_sharpe,1.0,0.9897422727517595,,verified_rounded,author_output,no,author_output_verification_only
+RAP-007,Section 4.3 paragraph 2,rolling,rolling_20d_min,-2.42,,,unavailable,none,no,no_result_credit
+RAP-008,Section 4.3 paragraph 2,rolling,rolling_20d_max,5.27,,,unavailable,none,no,no_result_credit
+RAP-009,Section 4.3 paragraph 2,rolling,rolling_20d_mean,1.41,,,unavailable,none,no,no_result_credit
+RAP-010,Section 4.3 paragraph 2,rolling,rolling_20d_sd,2.63,,,unavailable,none,no,no_result_credit
+RAP-011,Extended validation,RAPTOR,trading_days,166,166.0,,verified_exact,author_output,no,author_output_verification_only
+RAP-012,Extended validation,RAPTOR,initial_value_usd,1000000.00,1000000.0,,verified_exact,author_output,no,author_output_verification_only
+RAP-013,Extended validation,RAPTOR,final_value_usd,1134348.19,1134348.194404907,,verified_rounded,author_output,no,author_output_verification_only
+RAP-014,Extended validation,RAPTOR,total_return_percent,13.43,13.434819440490697,,verified_rounded,author_output,no,author_output_verification_only
+RAP-015,Extended validation,RAPTOR,annualized_return_percent,21.09,21.090192227941817,,verified_rounded,author_output,no,author_output_verification_only
+RAP-016,Extended validation,RAPTOR,annualized_volatility_percent,19.30,19.30426162364428,,verified_rounded,author_output,no,author_output_verification_only
+RAP-017,Extended validation,RAPTOR,sharpe,1.0,0.9897422727517595,,verified_rounded,author_output,no,author_output_verification_only
+RAP-018,Extended validation,RAPTOR,sortino,1.28,1.2787050163631515,,verified_rounded,author_output,no,author_output_verification_only
+RAP-019,Extended validation,RAPTOR,maximum_drawdown_percent,-15.33,-15.33365025620428,,verified_rounded,author_output,no,author_output_verification_only
+RAP-020,Extended validation,rolling,rolling_20d_mean,1.60,2.150896430904414,,conflict,none,no,no_result_credit
+RAP-021,Extended validation,rolling,rolling_20d_sd,3.28,3.4382877364555493,,conflict,none,no,no_result_credit
+RAP-022,Extended validation,rolling,longer_window_lower,1.1,,,unavailable,none,no,no_result_credit
+RAP-023,Extended validation,rolling,longer_window_upper,1.4,,,unavailable,none,no,no_result_credit
+RAP-024,Extended validation,RAPTOR,approximate_full_period_sharpe,1.0,0.9897422727517595,,verified_rounded,author_output,no,author_output_verification_only
+RAP-025,Figure 3 caption,rolling,rolling_20d_min,-5.26,-5.267501884798236,,verified_near_by_truncation_not_standard_rounding,author_output,no,author_output_verification_only
+RAP-026,Figure 3 caption,rolling,rolling_20d_max,10.34,10.343535369432843,,verified_rounded,author_output,no,author_output_verification_only
+RAP-027,Figure 3 caption,rolling,rolling_20d_final,3.89,3.7898775588598927,,conflict_population_sd_only_matches,none,no,no_result_credit
+RAP-028,Section 4.3 coverage,RAPTOR,coverage_ratio_166_of_166,1.0,1.0,,verified_exact,author_output,no,author_output_verification_only
+RAP-029,Table 1,interpretability,WAB_base_weight,.112,,,unavailable,none,no,no_result_credit
+RAP-030,Table 1,interpretability,WAB_perturbed_weight,.087,,,unavailable,none,no,no_result_credit
+RAP-031,Table 1,interpretability,WAB_weight_delta,-.025,,,unavailable,none,no,no_result_credit
+RAP-032,Table 1,interpretability,SPY_base_weight,.245,,,unavailable,none,no,no_result_credit
+RAP-033,Table 1,interpretability,SPY_perturbed_weight,.253,,,unavailable,none,no,no_result_credit
+RAP-034,Table 1,interpretability,SPY_weight_delta,+.008,,,unavailable,none,no,no_result_credit
+RAP-035,Table 1,interpretability,XLI_base_weight,.083,,,unavailable,none,no,no_result_credit
+RAP-036,Table 1,interpretability,XLI_perturbed_weight,.089,,,unavailable,none,no,no_result_credit
+RAP-037,Table 1,interpretability,XLI_weight_delta,+.006,,,unavailable,none,no,no_result_credit
+RAP-038,Table 1 explanation,interpretability,WAB_base_weight,.112,,,unavailable,none,no,no_result_credit
+RAP-039,Table 1 explanation,interpretability,WAB_perturbed_weight,.087,,,unavailable,none,no,no_result_credit
+RAP-040,Table 1 explanation,interpretability,WAB_weight_delta,-.025,,,unavailable,none,no,no_result_credit
+RAP-041,Table 1 explanation,interpretability,SPY_weight_delta,+.008,,,unavailable,none,no,no_result_credit
+RAP-042,Table 1 explanation,interpretability,XLI_weight_delta,+.006,,,unavailable,none,no,no_result_credit

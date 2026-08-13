@@ -9,7 +9,11 @@
   "author_github_repository": "https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture",
   "author_repository_archive_sha256": "badb4c27ba34232d6539975f3191dcc7a066a0ee1456c448ec9bb21f5e33d697",
   "author_repository_head": "1793abf29ecde15597cb2bb4cb345accf655531f",
+  "author_repository_reachable_commits": 4,
   "author_repository_tree_sha256": "19753dc33b2e2f68438e36ed1e32c849878fc60b22f1bfa8ed660167c8acc6f9",
+  "author_validation_branch_files": 845,
+  "author_validation_branch_head": "9d1f10a89802bed8abd81cdda88081ef1f566a84",
+  "author_validation_branch_paper_result_credit": "none_later_generic_framework_without_missing_inputs_or_results",
   "authors": [
     "Blake Almon",
     "Matthew Caliboso",
@@ -70,5 +74,8 @@
     "native_result_postprocessor": 1,
     "other": 9
   },
-  "tracked_source_files": 825
+  "tracked_source_files": 825,
+  "yahoo_gspc_response_sha256": "95f61e16d6b4a5b81f772fcd8b2971b14ecef2a0161a7fdcdeb04a51fb44f743",
+  "yahoo_gspc_retrieved_at_note": "file modification timestamp 2026-08-13T12:30:49-04:00; pinned present-day response, not a paper-time frozen source",
+  "yahoo_gspc_url": "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?period1=1735689600&period2=1756512000&interval=1d&events=history&includeAdjustedClose=true"
 }

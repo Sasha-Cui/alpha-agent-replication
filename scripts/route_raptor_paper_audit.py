@@ -147,6 +147,8 @@ def validate_inputs() -> None:
         "author_result_snapshots": 166,
         "displayed_scalar_results": 42,
         "author_output_verified_scalar_results": 16,
+        "current_public_response_verified_scalar_results": 3,
+        "displayed_scalar_results_verified": 19,
         "end_to_end_result_cells_reproduced": 0,
     }
     for key, value in expected.items():
@@ -202,7 +204,16 @@ def route() -> None:
     for metadata in (audit_payload["metadata"], summary_payload["metadata"]):
         metadata["registry_sha256"] = sha256(REGISTRY)
         metadata["post_freeze_evidence_corrections"] = corrections
-    audit_payload["rows"] = rows
+    payload_rows = audit_payload["rows"]
+    payload_matches = [
+        index for index, row in enumerate(payload_rows) if row["system_id"] == SYSTEM_ID
+    ]
+    if len(payload_rows) != 103 or len(payload_matches) != 1:
+        raise ValueError("artifact JSON is not the expected 103-row census")
+    payload_rows[payload_matches[0]] = {
+        key: str(value) for key, value in raptor_row().items()
+    }
+    audit_payload["rows"] = payload_rows
     summary_payload["groups"] = grouped_summary
 
     artifact.atomic_csv(csv_path, rows, AUDIT_FIELDS)

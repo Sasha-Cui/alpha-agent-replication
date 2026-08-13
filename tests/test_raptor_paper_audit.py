@@ -67,6 +67,23 @@ def test_anonymous_and_author_repositories_have_auditable_lineage() -> None:
     assert provenance["all_166_snapshots_identical"] is True
     assert "inference" in provenance["anonymous_to_author_relationship"]
 
+    history = csv_rows("source_history_inventory.csv")
+    assert len(history) == 4
+    assert {row["commit"] for row in history} == audit.EXPECTED_AUTHOR_COMMITS
+    validation = next(row for row in history if row["commit"] == audit.EXPECTED_AUTHOR_VALIDATION_HEAD)
+    assert validation["tracked_files"] == "845"
+    assert validation["portfolio_snapshots"] == "166"
+    assert all(row["stock_prices_csv"] == "0" and row["benchmark_data_files"] == "0" for row in history)
+
+    branch = csv_rows("validation_branch_inventory.csv")
+    assert len(branch) == 20
+    assert all(row["paper_result_credit"] == "none" for row in branch)
+    enhancement = next(row for row in branch if row["path"] == "paper_enhancements/enhanced_paper_sections.md")
+    validator = next(row for row in branch if row["path"] == "evaluation/statistical_validation.py")
+    assert "unsupported_conflicting_claims" in enhancement["assessment"]
+    assert "12.49%" in enhancement["defects_or_conflicts"]
+    assert "aligned_benchmarkay NameError" in validator["defects_or_conflicts"]
+
 
 def test_released_snapshots_recover_every_headline_portfolio_metric() -> None:
     rows = {row["metric"]: row for row in csv_rows("snapshot_metric_reproduction.csv")}
@@ -84,7 +101,11 @@ def test_released_snapshots_recover_every_headline_portfolio_metric() -> None:
 def test_all_empirical_scalar_assertions_are_counted_without_inflating_credit() -> None:
     rows = csv_rows("displayed_result_conformance.csv")
     assert len(rows) == 42
-    assert sum(row["author_output_verification"].startswith("verified") for row in rows) == 16
+    verified = [row for row in rows if row["verification_status"].startswith("verified")]
+    assert len(verified) == 19
+    assert Counter(row["verification_source"] for row in verified) == {
+        "author_output": 16, "current_public_response": 3,
+    }
     assert all(row["independent_end_to_end_reproduction"] == "no" for row in rows)
     assert Counter(row["scope"] for row in rows) == {
         "RAPTOR": 14, "rolling": 11, "interpretability": 14, "benchmark": 2, "comparison": 1,
@@ -93,6 +114,24 @@ def test_all_empirical_scalar_assertions_are_counted_without_inflating_credit() 
     assert len(table) == 9
     assert all(row["author_output_value"] == "" for row in table)
     assert all(row["credit_boundary"] == "no_result_credit" for row in table)
+
+
+def test_current_public_benchmark_response_recovers_three_displayed_units_without_lineage_credit() -> None:
+    assert audit.sha256(OUTPUT / "yahoo_gspc_response.json") == audit.EXPECTED_YAHOO_GSPC_SHA256
+    benchmark = csv_rows("benchmark_snapshot_reproduction.csv")
+    assert len(benchmark) == 165
+    assert benchmark[0]["date"] == "2025-01-02"
+    assert benchmark[-1]["date"] == "2025-08-29"
+    assert math.isclose(float(benchmark[0]["adjusted_close"]), 5868.5498046875)
+    assert math.isclose(float(benchmark[-1]["adjusted_close"]), 6460.259765625)
+    assert math.isclose(float(benchmark[-1]["cumulative_return_percent"]), 10.08272879383032)
+    assert all(row["paper_time_frozen_input"] == "no" and row["end_to_end_result_credit"] == "no" for row in benchmark)
+
+    rows = csv_rows("displayed_result_conformance.csv")
+    current = [row for row in rows if row["verification_source"] == "current_public_response"]
+    assert [row["result_id"] for row in current] == ["RAP-002", "RAP-004", "RAP-005"]
+    assert all(row["credit_boundary"] == "current_public_response_verification_only_not_paper_lineage" for row in current)
+    assert all(row["author_output_value"] == "" for row in current)
 
 
 def test_rolling_sharpe_conflicts_are_numerically_exposed() -> None:
@@ -113,7 +152,7 @@ def test_method_audit_exposes_output_runner_divergence_and_missing_inputs() -> N
     rows = {row["dimension"]: row for row in csv_rows("method_specification_audit.csv")}
     assert len(rows) == 48
     assert rows["price inputs"]["assessment"] == "missing"
-    assert rows["benchmark inputs"]["assessment"] == "missing"
+    assert rows["benchmark inputs"]["assessment"] == "paper_snapshot_missing_current_response_verified"
     assert rows["output cadence"]["assessment"] == "different"
     assert rows["multithreaded range runner"]["assessment"] == "implementation_bug"
     assert rows["output-runner views"]["assessment"] == "different"
@@ -162,14 +201,18 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     native = json.loads((OUTPUT / "native_execution.json").read_text(encoding="utf-8"))
     manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
     assert native["author_output_verified_scalar_results"] == 16
+    assert native["current_public_response_verified_scalar_results"] == 3
+    assert native["displayed_scalar_results_verified"] == 19
     assert native["end_to_end_result_cells_reproduced"] == 0
     assert native["llm_calls_made"] == 0
-    assert manifest["overall_fidelity"] == "author_source_and_166_output_snapshots_audited_16_of_42_scalar_units_verified_from_shipped_output_zero_end_to_end_result_cells_reproduced"
+    assert manifest["overall_fidelity"] == "full_author_history_and_166_output_snapshots_audited_19_of_42_scalar_units_verified_16_from_shipped_output_3_from_current_public_benchmark_response_zero_end_to_end_result_cells_reproduced"
     assert manifest["author_result_snapshots"] == 166
     assert manifest["compiled_python_files"] == 94
-    assert manifest["paper_result_credit"] == "author_output_verification_only_no_end_to_end_result_credit"
+    assert manifest["paper_result_credit"] == "output_or_current_public_response_verification_only_no_end_to_end_result_credit"
+    assert math.isclose(manifest["benchmark_return_percent"], 10.08272879383032)
 
     readme = " ".join((OUTPUT / "README.md").read_text(encoding="utf-8").split())
     assert "End-to-end RAPTOR result cells reproduced: 0/42" in readme
-    assert "16/42" in readme
+    assert "19/42" in readme
+    assert "3/42" in readme
     assert "output verification, not a rerun" in readme

@@ -1,4 +1,4 @@
 figure,series,source_series_available,native_postprocessor_generated,published_raw_series_available,exact_published_series_reproduced,assessment
 Figure 2,RAPTOR cumulative return,yes,yes,no,no,author snapshot path reconstructed; visual-only paper curve prevents pointwise equality test
-Figure 2,S&P 500 cumulative return,no,no,no,no,testing/sp500_closing_prices.csv is absent
+Figure 2,S&P 500 cumulative return,yes_current_public_response,no,no,no,"165-date pinned current Yahoo response recovers the 10.08% endpoint, but the author did not freeze the paper-time series and the visual-only curve prevents pointwise equality testing"
 Figure 3,20-day rolling Sharpe,yes,yes,no,no,source series explains caption extrema but not the caption terminal value under one standard-deviation convention

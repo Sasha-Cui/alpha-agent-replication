@@ -3,7 +3,7 @@ investment universe,S&P 500 constituents,503-ticker universe file,close,universe
 evaluation horizon,2025-01-01 to 2025-08-29,166 matching dated snapshots,exact_output,,no
 initial capital,"$1,000,000","first snapshot $1,000,000",exact_output,,no
 price inputs,offline OHLCV snapshots through 2025-07-27,no tracked price CSV,missing,blocking,no
-benchmark inputs,S&P 500 / SPY same horizon,testing/sp500_closing_prices.csv absent,missing,blocking,no
+benchmark inputs,S&P 500 / SPY same horizon,paper-time testing/sp500_closing_prices.csv absent; pinned current Yahoo response has 165 sessions,paper_snapshot_missing_current_response_verified,"blocks exact lineage, not rounded endpoint check",no
 Finnhub snapshots,date-bounded news/insider/fundamental JSON,none tracked,missing,blocking,no
 Reddit snapshots,2025-01-01 to 2025-08-19,none tracked,missing,blocking,no
 SimFin snapshots,quarterly statements,none tracked,missing,blocking,no
@@ -36,7 +36,7 @@ long-only,optional,reported source paths force long-only,partial,,no
 transaction fees,5 bps per unit turnover,no matching deduction in candidate execution paths or snapshots,missing,blocking,no
 slippage,5 bps per unit turnover,no matching deduction in candidate execution paths or snapshots,missing,blocking,no
 daily net values,166 complete snapshots,166 snapshots with all three named fields,exact_output,,no
-benchmark result,10.08%,benchmark input and result series absent,missing,blocking,no
+benchmark result,10.08%,pinned current Yahoo ^GSPC adjusted-close response independently gives 10.0827288%,verified_current_response,not paper-time frozen input or end-to-end credit,no
 WAB case study,2025-09-01 trace and BL perturbation,no Sep 1 outputs; Jan 1 WAB output is a different contradictory trace,missing,blocking,no
 complete trace,"messages, tool calls, decision, weights included",no such complete trace in paper or release,missing,blocking,no
 Deflated Sharpe,reported alongside naive Sharpe,no value or implementation output,missing,blocking,no

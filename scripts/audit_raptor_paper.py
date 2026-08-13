@@ -22,6 +22,7 @@ import re
 import statistics
 import subprocess
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -36,6 +37,10 @@ CEUR_PDF = "https://ceur-ws.org/Vol-4162/paper8.pdf"
 FOUROPEN_URL = "https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing"
 ANONYMOUS_REPO_URL = "https://github.com/anonymouspenguin3/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing"
 AUTHOR_REPO_URL = "https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture"
+YAHOO_GSPC_URL = (
+    "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?"
+    "period1=1735689600&period2=1756512000&interval=1d&events=history&includeAdjustedClose=true"
+)
 
 EXPECTED_PDF_SHA256 = "917b30a7ab49693c863720b4677de2f00329fd31f001f9a058c94298d81d6796"
 EXPECTED_CEUR_RECORD_SHA256 = "23629695a80fbe193afa7710cadfc3014f6a52be5f9e9c43790dea60be9be8a8"
@@ -47,6 +52,16 @@ EXPECTED_ANONYMOUS_ARCHIVE_SHA256 = "d9e41191002d68eb16802bb833df67c148b51e1bdaf
 EXPECTED_AUTHOR_HEAD = "1793abf29ecde15597cb2bb4cb345accf655531f"
 EXPECTED_AUTHOR_TREE_SHA256 = "19753dc33b2e2f68438e36ed1e32c849878fc60b22f1bfa8ed660167c8acc6f9"
 EXPECTED_AUTHOR_ARCHIVE_SHA256 = "badb4c27ba34232d6539975f3191dcc7a066a0ee1456c448ec9bb21f5e33d697"
+EXPECTED_AUTHOR_VALIDATION_HEAD = "9d1f10a89802bed8abd81cdda88081ef1f566a84"
+EXPECTED_AUTHOR_COMMITS = {
+    "be0ac36e54f619c5a4ef11571e9538f76ecd8357",
+    "63977bfbb7a68912c0fb86e0c4db57f3e7cdd793",
+    EXPECTED_AUTHOR_HEAD,
+    EXPECTED_AUTHOR_VALIDATION_HEAD,
+}
+EXPECTED_AUTHOR_VALIDATION_FILES = 845
+EXPECTED_YAHOO_GSPC_SHA256 = "95f61e16d6b4a5b81f772fcd8b2971b14ecef2a0161a7fdcdeb04a51fb44f743"
+EXPECTED_YAHOO_GSPC_OBSERVATIONS = 165
 EXPECTED_TRACKED_FILES = 825
 EXPECTED_SNAPSHOTS = 166
 EXPECTED_DECISION_FILES = 503
@@ -249,6 +264,121 @@ def repository_relationship(anonymous: Path, author: Path) -> list[dict[str, str
     return rows
 
 
+def source_history_rows(author: Path) -> list[dict[str, str]]:
+    if (author / ".git/shallow").exists():
+        raise ValueError("author repository is shallow; full public history was not audited")
+    commits = str(git(author, "rev-list", "--all", "--reverse")).splitlines()
+    if set(commits) != EXPECTED_AUTHOR_COMMITS or len(commits) != len(EXPECTED_AUTHOR_COMMITS):
+        raise ValueError(f"author reachable commit set changed: {commits}")
+    rows: list[dict[str, str]] = []
+    for commit in commits:
+        paths = str(git(author, "ls-tree", "-r", "--name-only", commit)).splitlines()
+        lowered = [name.lower() for name in paths]
+        datesubject = str(git(author, "show", "-s", "--format=%aI%x09%s", commit)).rstrip("\n").split("\t", 1)
+        refs = str(git(author, "branch", "-a", "--contains", commit, "--format=%(refname:short)")).splitlines()
+        rows.append(
+            {
+                "commit": commit,
+                "author_date": datesubject[0],
+                "subject": datesubject[1],
+                "containing_refs": ";".join(sorted(ref.strip() for ref in refs if ref.strip())),
+                "tracked_files": str(len(paths)),
+                "python_files": str(sum(name.endswith(".py") for name in paths)),
+                "portfolio_snapshots": str(sum(bool(re.search(r"portfolio_snapshot_\d{4}-\d{2}-\d{2}\.json$", name)) for name in paths)),
+                "stock_prices_csv": str(sum(name.endswith("stock_prices.csv") for name in lowered)),
+                "benchmark_data_files": str(
+                    sum(bool(re.search(r"(?:sp500|s&p|gspc).*\.(?:csv|json)$", name)) for name in lowered)
+                ),
+                "paper_result_credit": "author_output_audit_only" if commit in {EXPECTED_AUTHOR_HEAD, "63977bfbb7a68912c0fb86e0c4db57f3e7cdd793"} else "none",
+            }
+        )
+    expected = {
+        "be0ac36e54f619c5a4ef11571e9538f76ecd8357": (1, 0, 0),
+        "63977bfbb7a68912c0fb86e0c4db57f3e7cdd793": (825, 93, 166),
+        EXPECTED_AUTHOR_HEAD: (825, 93, 166),
+        EXPECTED_AUTHOR_VALIDATION_HEAD: (EXPECTED_AUTHOR_VALIDATION_FILES, 103, 166),
+    }
+    for row in rows:
+        actual = (int(row["tracked_files"]), int(row["python_files"]), int(row["portfolio_snapshots"]))
+        if actual != expected[row["commit"]] or row["stock_prices_csv"] != "0" or row["benchmark_data_files"] != "0":
+            raise ValueError(f"author history inventory changed: {row}")
+    return rows
+
+
+def validation_branch_rows(author: Path) -> list[dict[str, str]]:
+    main_paths = set(str(git(author, "ls-tree", "-r", "--name-only", EXPECTED_AUTHOR_HEAD)).splitlines())
+    validation_paths = set(str(git(author, "ls-tree", "-r", "--name-only", EXPECTED_AUTHOR_VALIDATION_HEAD)).splitlines())
+    added = sorted(validation_paths - main_paths)
+    removed = sorted(main_paths - validation_paths)
+    if len(added) != 20 or removed:
+        raise ValueError(f"validation branch delta changed: {len(added)} added, {len(removed)} removed")
+    enhancement = bytes(git(author, "show", f"{EXPECTED_AUTHOR_VALIDATION_HEAD}:paper_enhancements/enhanced_paper_sections.md", binary=True))
+    validator = bytes(git(author, "show", f"{EXPECTED_AUTHOR_VALIDATION_HEAD}:evaluation/statistical_validation.py", binary=True))
+    if not all(token in enhancement for token in (b"Claims 12.49% vs 10.08%", b"p-value: 0.019", b"January 2020 - December 2024")):
+        raise ValueError("post-publication enhancement claims changed")
+    if b"aligned_benchmarkay" not in validator or b"np.random.choice" not in validator:
+        raise ValueError("post-publication statistical-validator defects changed")
+    rows: list[dict[str, str]] = []
+    for name in added:
+        payload = bytes(git(author, "show", f"{EXPECTED_AUTHOR_VALIDATION_HEAD}:{name}", binary=True))
+        assessment = "later_generic_framework_no_paper_result_evidence"
+        defects = ""
+        if name == "paper_enhancements/enhanced_paper_sections.md":
+            assessment = "later_template_with_unsupported_conflicting_claims"
+            defects = "12.49% system result conflicts with final paper 13.43%; 2020-2024 protocol conflicts with final 2025 horizon; no result inputs"
+        elif name == "evaluation/statistical_validation.py":
+            assessment = "later_generic_validator_not_executed_on_paper_data"
+            defects = "aligned_benchmarkay NameError in robustness path; unseeded bootstrap; no inputs or outputs"
+        rows.append(
+            {
+                "path": name,
+                "sha256": bytes_sha256(payload),
+                "assessment": assessment,
+                "defects_or_conflicts": defects,
+                "paper_result_credit": "none",
+            }
+        )
+    return rows
+
+
+def benchmark_reproduction(path: Path, system_return_pct: float) -> tuple[list[dict[str, str]], dict[str, float]]:
+    if sha256(path) != EXPECTED_YAHOO_GSPC_SHA256:
+        raise ValueError("pinned Yahoo GSPC response changed")
+    result = json.loads(path.read_text(encoding="utf-8"))["chart"]["result"][0]
+    timestamps = result["timestamp"]
+    closes = result["indicators"]["adjclose"][0]["adjclose"]
+    if len(timestamps) != EXPECTED_YAHOO_GSPC_OBSERVATIONS or len(closes) != len(timestamps) or any(value is None for value in closes):
+        raise ValueError("Yahoo GSPC response coverage changed")
+    dates = [datetime.fromtimestamp(value, timezone.utc).date().isoformat() for value in timestamps]
+    benchmark_return_pct = (float(closes[-1]) / float(closes[0]) - 1) * 100
+    excess_pct_points = system_return_pct - benchmark_return_pct
+    if dates[0] != "2025-01-02" or dates[-1] != "2025-08-29":
+        raise ValueError(f"Yahoo GSPC date coverage changed: {dates[0]} to {dates[-1]}")
+    if round(benchmark_return_pct, 2) != 10.08 or round(excess_pct_points, 2) != 3.35:
+        raise ValueError("current Yahoo response no longer recovers displayed benchmark assertions")
+    rows = [
+        {
+            "date": date,
+            "timestamp_utc": str(timestamp),
+            "adjusted_close": repr(float(close)),
+            "cumulative_return_percent": repr((float(close) / float(closes[0]) - 1) * 100),
+            "source": "pinned_present_day_Yahoo_chart_response",
+            "paper_time_frozen_input": "no",
+            "end_to_end_result_credit": "no",
+        }
+        for date, timestamp, close in zip(dates, timestamps, closes)
+    ]
+    summary = {
+        "observations": float(len(rows)),
+        "first_adjusted_close": float(closes[0]),
+        "last_adjusted_close": float(closes[-1]),
+        "benchmark_return_pct": benchmark_return_pct,
+        "system_return_pct": system_return_pct,
+        "excess_percentage_points": excess_pct_points,
+    }
+    return rows, summary
+
+
 def snapshot_rows(repo: Path) -> list[tuple[str, Path, dict[str, Any]]]:
     rows: list[tuple[str, Path, dict[str, Any]]] = []
     for path in repo.glob("testing/*/portfolio_snapshot_*.json"):
@@ -359,11 +489,28 @@ def metric_reproduction(repo: Path) -> tuple[list[dict[str, str]], list[dict[str
     return metric_rows, rolling_rows, computed
 
 
-def displayed_result_rows(computed: dict[str, float]) -> list[dict[str, str]]:
+def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float]) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
 
-    def add(location: str, scope: str, metric: str, displayed: str, key: str = "", status: str = "unavailable") -> None:
-        value = computed.get(key) if key else None
+    def add(
+        location: str,
+        scope: str,
+        metric: str,
+        displayed: str,
+        key: str = "",
+        status: str = "unavailable",
+        verification_source: str = "author_output",
+    ) -> None:
+        values = benchmark if verification_source == "current_public_response" else computed
+        value = values.get(key) if key else None
+        if status.startswith("verified"):
+            credit_boundary = (
+                "current_public_response_verification_only_not_paper_lineage"
+                if verification_source == "current_public_response"
+                else "author_output_verification_only"
+            )
+        else:
+            credit_boundary = "no_result_credit"
         rows.append(
             {
                 "result_id": f"RAP-{len(rows)+1:03d}",
@@ -371,18 +518,20 @@ def displayed_result_rows(computed: dict[str, float]) -> list[dict[str, str]]:
                 "scope": scope,
                 "metric": metric,
                 "displayed_value": displayed,
-                "author_output_value": "" if value is None else repr(value),
-                "author_output_verification": status,
+                "author_output_value": "" if value is None or verification_source != "author_output" else repr(value),
+                "current_public_response_value": "" if value is None or verification_source != "current_public_response" else repr(value),
+                "verification_status": status,
+                "verification_source": verification_source if status.startswith("verified") else "none",
                 "independent_end_to_end_reproduction": "no",
-                "credit_boundary": "author_output_verification_only" if status.startswith("verified") else "no_result_credit",
+                "credit_boundary": credit_boundary,
             }
         )
 
     add("Abstract", "RAPTOR", "total_return_percent", "13.43", "total_return_pct", "verified_rounded")
-    add("Abstract", "benchmark", "SP500_total_return_percent", "10.08")
+    add("Abstract", "benchmark", "SP500_total_return_percent", "10.08", "benchmark_return_pct", "verified_rounded_current_yahoo_response_not_paper_lineage", "current_public_response")
     add("Section 4.3 paragraph 1", "RAPTOR", "total_return_percent", "13.43", "total_return_pct", "verified_rounded")
-    add("Section 4.3 paragraph 1", "benchmark", "SP500_total_return_percent", "10.08")
-    add("Section 4.3 paragraph 1", "comparison", "excess_percentage_points", "3.35")
+    add("Section 4.3 paragraph 1", "benchmark", "SP500_total_return_percent", "10.08", "benchmark_return_pct", "verified_rounded_current_yahoo_response_not_paper_lineage", "current_public_response")
+    add("Section 4.3 paragraph 1", "comparison", "excess_percentage_points", "3.35", "excess_percentage_points", "verified_rounded_current_yahoo_response_not_paper_lineage", "current_public_response")
     add("Section 4.3 paragraph 2", "RAPTOR", "overall_sharpe", "1.0", "sharpe", "verified_rounded")
     add("Section 4.3 paragraph 2", "rolling", "rolling_20d_min", "-2.42")
     add("Section 4.3 paragraph 2", "rolling", "rolling_20d_max", "5.27")
@@ -421,8 +570,9 @@ def displayed_result_rows(computed: dict[str, float]) -> list[dict[str, str]]:
     add("Table 1 explanation", "interpretability", "XLI_weight_delta", "+.006")
     if len(rows) != 42:
         raise AssertionError(f"displayed-result denominator changed: {len(rows)}")
-    if sum(row["author_output_verification"].startswith("verified") for row in rows) != 16:
-        raise AssertionError("verified author-output result count changed")
+    verified = [row for row in rows if row["verification_status"].startswith("verified")]
+    if len(verified) != 19 or sum(row["verification_source"] == "author_output" for row in verified) != 16:
+        raise AssertionError("verified displayed-result count changed")
     return rows
 
 
@@ -434,9 +584,9 @@ def figure_rows() -> list[dict[str, str]]:
             "exact_published_series_reproduced": "no", "assessment": "author snapshot path reconstructed; visual-only paper curve prevents pointwise equality test",
         },
         {
-            "figure": "Figure 2", "series": "S&P 500 cumulative return", "source_series_available": "no",
+            "figure": "Figure 2", "series": "S&P 500 cumulative return", "source_series_available": "yes_current_public_response",
             "native_postprocessor_generated": "no", "published_raw_series_available": "no",
-            "exact_published_series_reproduced": "no", "assessment": "testing/sp500_closing_prices.csv is absent",
+            "exact_published_series_reproduced": "no", "assessment": "165-date pinned current Yahoo response recovers the 10.08% endpoint, but the author did not freeze the paper-time series and the visual-only curve prevents pointwise equality testing",
         },
         {
             "figure": "Figure 3", "series": "20-day rolling Sharpe", "source_series_available": "yes",
@@ -452,7 +602,7 @@ def method_rows() -> list[dict[str, str]]:
         ("evaluation horizon", "2025-01-01 to 2025-08-29", "166 matching dated snapshots", "exact_output", ""),
         ("initial capital", "$1,000,000", "first snapshot $1,000,000", "exact_output", ""),
         ("price inputs", "offline OHLCV snapshots through 2025-07-27", "no tracked price CSV", "missing", "blocking"),
-        ("benchmark inputs", "S&P 500 / SPY same horizon", "testing/sp500_closing_prices.csv absent", "missing", "blocking"),
+        ("benchmark inputs", "S&P 500 / SPY same horizon", "paper-time testing/sp500_closing_prices.csv absent; pinned current Yahoo response has 165 sessions", "paper_snapshot_missing_current_response_verified", "blocks exact lineage, not rounded endpoint check"),
         ("Finnhub snapshots", "date-bounded news/insider/fundamental JSON", "none tracked", "missing", "blocking"),
         ("Reddit snapshots", "2025-01-01 to 2025-08-19", "none tracked", "missing", "blocking"),
         ("SimFin snapshots", "quarterly statements", "none tracked", "missing", "blocking"),
@@ -485,7 +635,7 @@ def method_rows() -> list[dict[str, str]]:
         ("transaction fees", "5 bps per unit turnover", "no matching deduction in candidate execution paths or snapshots", "missing", "blocking"),
         ("slippage", "5 bps per unit turnover", "no matching deduction in candidate execution paths or snapshots", "missing", "blocking"),
         ("daily net values", "166 complete snapshots", "166 snapshots with all three named fields", "exact_output", ""),
-        ("benchmark result", "10.08%", "benchmark input and result series absent", "missing", "blocking"),
+        ("benchmark result", "10.08%", "pinned current Yahoo ^GSPC adjusted-close response independently gives 10.0827288%", "verified_current_response", "not paper-time frozen input or end-to-end credit"),
         ("WAB case study", "2025-09-01 trace and BL perturbation", "no Sep 1 outputs; Jan 1 WAB output is a different contradictory trace", "missing", "blocking"),
         ("complete trace", "messages, tool calls, decision, weights included", "no such complete trace in paper or release", "missing", "blocking"),
         ("Deflated Sharpe", "reported alongside naive Sharpe", "no value or implementation output", "missing", "blocking"),
@@ -645,6 +795,7 @@ def artifact_rows() -> list[dict[str, str]]:
         {"artifact": "listed 4open snapshot", "url": FOUROPEN_URL, "status": "expired_410_files_options_root_401", "relationship": "paper-listed anonymous artifact", "credit": "none"},
         {"artifact": "anonymous GitHub mirror", "url": ANONYMOUS_REPO_URL, "status": "public_pinned_Apache_2_0", "relationship": "high-confidence double-blind mirror inferred from exact slug, preparation script, dates and source identity", "credit": "source/output audit"},
         {"artifact": "author GitHub repository", "url": AUTHOR_REPO_URL, "status": "public_pinned_Apache_2_0", "relationship": "linked by hidden page-9 URI in the published PDF", "credit": "author attribution and source/output audit"},
+        {"artifact": "current Yahoo S&P 500 chart response", "url": YAHOO_GSPC_URL, "status": "public_response_pinned_by_sha256", "relationship": "independent present-day endpoint check; not a paper-time frozen input", "credit": "three displayed scalar checks; no end-to-end result credit"},
     ]
 
 
@@ -656,7 +807,8 @@ link, the expired 4open endpoint, a high-confidence public double-blind GitHub
 mirror, the author-attributed repository, all 825 tracked source objects, every
 released daily portfolio snapshot, and all 42 scalar empirical result assertions
 or table cells in the paper. The two repositories share 815 byte-identical files;
-the result snapshots and candidate runners are identical.
+the result snapshots and candidate runners are identical. The full four-commit
+author history is also inventoried, including the later `validation_fixes` branch.
 
 ## Honest verdict
 
@@ -667,10 +819,17 @@ the result snapshots and candidate runners are identical.
   annualized return, volatility, Sharpe, Sortino, maximum drawdown, coverage, and
   two Figure 3 extrema. This is output verification, not a rerun of the agent and
   portfolio pipeline.
+- **Additional displayed scalar units independently checked from a pinned current
+  public response: {manifest['current_public_response_verified_scalar_results']}/{manifest['displayed_scalar_results']}.**
+  Yahoo's 165-session adjusted-close path from 2025-01-02 through 2025-08-29
+  yields {manifest['benchmark_return_percent']:.8f}% for the S&P 500, which rounds
+  to 10.08%; subtracting it from the released RAPTOR endpoint yields 3.35 percentage
+  points. Thus {manifest['displayed_scalar_results_verified']}/42 displayed units
+  are checked in total, but these three are not paper-time input lineage.
 - The native snapshot visualizer executes and emits six CSV/PNG artifacts. The
   candidate backtest runner fails immediately because `testing/stock_prices.csv`
-  is not released. The S&P 500 series is also absent, so Figure 2 cannot be
-  regenerated in full.
+  is not released. The paper-time S&P 500 series is also absent; the current public
+  response verifies its endpoint but cannot establish pointwise Figure 2 equality.
 - The paper's 20-day Sharpe descriptions conflict. Released sample-SD code gives
   min {manifest['rolling_sample_min']:.4f}, max {manifest['rolling_sample_max']:.4f},
   mean {manifest['rolling_sample_mean']:.4f}, and final
@@ -680,9 +839,9 @@ the result snapshots and candidate runners are identical.
 
 ## Why the full paper is not reproduced
 
-- The offline price, SPY benchmark, Finnhub, Reddit, SimFin, and Perplexity
-  snapshots are missing, as are exact API request/response logs and experiment
-  seeds. The tracked dependency lock does not replace those inputs.
+- The offline equity prices and paper-time SPY benchmark, Finnhub, Reddit, SimFin,
+  and Perplexity snapshots are missing, as are exact API request/response logs and
+  experiment seeds. The tracked dependency lock does not replace those inputs.
 - The paper alternately specifies biweekly, daily/no-cadence, and every-ten-
   trading-day execution. The output-associated log instead records 17 rebalances
   beginning 2025-01-06 at a >=14-calendar-day cadence.
@@ -691,8 +850,12 @@ the result snapshots and candidate runners are identical.
   paper specifies 252 observations, risk aversion 3, tau .025, and categorical
   agent views mapped to annualized +/-2%/0.
 - Transaction fees and slippage claimed in the paper are not deducted by the
-  candidate execution paths. The WAB September 1 trace/table, benchmark values,
+  candidate execution paths. The WAB September 1 trace/table,
   full blackboard trace, Deflated Sharpe, and promised diagnostics are absent.
+- The later `validation_fixes` branch adds no missing prices, benchmark input, or
+  run outputs. Its generic statistics module has an `aligned_benchmarkay` NameError
+  and an unseeded bootstrap; its enhancement template asserts unsupported 12.49%
+  and 2020-2024 results that conflict with the final paper, so neither earns credit.
 - Only January 1 has per-ticker decision files. Their headers contain 417 BUY,
   86 HOLD, and zero SELL decisions after long-only rewriting. AAPL and WAB are
   manually confirmed examples where a BUY header/final conflicts with a rationale
@@ -705,6 +868,10 @@ the result snapshots and candidate runners are identical.
   repository, discovery, and access evidence.
 - `source_file_inventory.csv` and `repository_relationship.csv`: complete
   anonymous-source inventory and anonymous/author byte relationship.
+- `source_history_inventory.csv` and `validation_branch_inventory.csv`: every
+  reachable author revision and the 20-file later-branch delta.
+- `benchmark_snapshot_reproduction.csv`: the hash-pinned current Yahoo benchmark
+  response, its 165 adjusted closes, and the explicit non-lineage boundary.
 - `snapshot_metric_reproduction.csv`, `rolling_sharpe_reproduction.csv`, and
   `displayed_result_conformance.csv`: output-derived calculations and the
   fail-closed 42-unit empirical denominator.
@@ -730,12 +897,15 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
     source_files = source_inventory(anonymous, anonymous_paths)
     relationships = repository_relationship(anonymous, author)
+    history = source_history_rows(author)
+    validation_branch = validation_branch_rows(author)
     anonymous_snapshots = snapshot_rows(anonymous)
     author_snapshots = snapshot_rows(author)
     if any(sha256(left[1]) != sha256(right[1]) for left, right in zip(anonymous_snapshots, author_snapshots)):
         raise ValueError("anonymous and author snapshots differ")
     metrics, rolling, computed = metric_reproduction(anonymous)
-    results = displayed_result_rows(computed)
+    benchmark_rows, benchmark = benchmark_reproduction(args.yahoo_gspc_response.resolve(), computed["total_return_pct"])
+    results = displayed_result_rows(computed, benchmark)
     figures = figure_rows()
     methods = method_rows()
     issues = consistency_rows()
@@ -750,7 +920,10 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     csv_artifacts = (
         ("source_file_inventory.csv", source_files),
         ("repository_relationship.csv", relationships),
+        ("source_history_inventory.csv", history),
+        ("validation_branch_inventory.csv", validation_branch),
         ("snapshot_metric_reproduction.csv", metrics),
+        ("benchmark_snapshot_reproduction.csv", benchmark_rows),
         ("rolling_sharpe_reproduction.csv", rolling),
         ("displayed_result_conformance.csv", results),
         ("figure_series_conformance.csv", figures),
@@ -788,6 +961,13 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "author_repository_head": EXPECTED_AUTHOR_HEAD,
         "author_repository_tree_sha256": EXPECTED_AUTHOR_TREE_SHA256,
         "author_repository_archive_sha256": EXPECTED_AUTHOR_ARCHIVE_SHA256,
+        "author_repository_reachable_commits": len(history),
+        "author_validation_branch_head": EXPECTED_AUTHOR_VALIDATION_HEAD,
+        "author_validation_branch_files": EXPECTED_AUTHOR_VALIDATION_FILES,
+        "author_validation_branch_paper_result_credit": "none_later_generic_framework_without_missing_inputs_or_results",
+        "yahoo_gspc_url": YAHOO_GSPC_URL,
+        "yahoo_gspc_response_sha256": sha256(args.yahoo_gspc_response),
+        "yahoo_gspc_retrieved_at_note": "file modification timestamp 2026-08-13T12:30:49-04:00; pinned present-day response, not a paper-time frozen source",
         "anonymous_to_author_relationship": "high-confidence double-blind derivative/mirror inference; exact 4open-to-GitHub redirect is unavailable after expiry",
         "tracked_source_files": len(source_files),
         "source_role_counts": dict(sorted(role_counts.items())),
@@ -798,7 +978,9 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     }
     write_json(output / "source_provenance.json", source_provenance)
 
-    verified = sum(row["author_output_verification"].startswith("verified") for row in results)
+    verified = [row for row in results if row["verification_status"].startswith("verified")]
+    author_verified = sum(row["verification_source"] == "author_output" for row in verified)
+    current_public_verified = sum(row["verification_source"] == "current_public_response" for row in verified)
     native = {
         "native_source_available": True,
         "native_postprocessor_executed": True,
@@ -807,24 +989,33 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "candidate_backtest_runner_status": "blocked_missing_testing_stock_prices_csv",
         "end_to_end_multi_agent_backtest_attempted": False,
         "end_to_end_reason": "unreleased_inputs_and_request_logs_plus_conflicting_paper_and_runner_protocols",
-        "author_output_verified_scalar_results": verified,
+        "author_output_verified_scalar_results": author_verified,
+        "current_public_response_verified_scalar_results": current_public_verified,
+        "displayed_scalar_results_verified": len(verified),
         "displayed_scalar_results": len(results),
         "end_to_end_result_cells_reproduced": 0,
-        "paper_result_credit": "author_output_verification_only_no_end_to_end_result_credit",
+        "paper_result_credit": "output_or_current_public_response_verification_only_no_end_to_end_result_credit",
         "llm_calls_made": 0,
     }
     write_json(output / "native_execution.json", native)
 
     manifest = {
         "audit": "RAPTOR OpenReview / CEUR paper and public-source audit",
-        "overall_fidelity": "author_source_and_166_output_snapshots_audited_16_of_42_scalar_units_verified_from_shipped_output_zero_end_to_end_result_cells_reproduced",
+        "overall_fidelity": "full_author_history_and_166_output_snapshots_audited_19_of_42_scalar_units_verified_16_from_shipped_output_3_from_current_public_benchmark_response_zero_end_to_end_result_cells_reproduced",
         "official_pdf_pages_audited": EXPECTED_PDF_PAGES,
         "official_pdf_pages_visually_inspected": EXPECTED_PDF_PAGES,
         "tracked_source_files": len(source_files),
         "compiled_python_files": sum(row["compile_status"] == "compiled" for row in source_files),
         "author_result_snapshots": len(anonymous_snapshots),
         "displayed_scalar_results": len(results),
-        "author_output_verified_scalar_results": verified,
+        "author_output_verified_scalar_results": author_verified,
+        "current_public_response_verified_scalar_results": current_public_verified,
+        "displayed_scalar_results_verified": len(verified),
+        "benchmark_observations": int(benchmark["observations"]),
+        "benchmark_return_percent": benchmark["benchmark_return_pct"],
+        "benchmark_excess_percentage_points": benchmark["excess_percentage_points"],
+        "author_repository_reachable_commits": len(history),
+        "author_validation_branch_files": EXPECTED_AUTHOR_VALIDATION_FILES,
         "end_to_end_result_cells_reproduced": 0,
         "figure_series": len(figures),
         "exact_published_figure_series_reproduced": 0,
@@ -844,7 +1035,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "rolling_sample_sd": computed["rolling_sample_sd"],
         "rolling_sample_final": computed["rolling_sample_final"],
         "rolling_population_final": computed["rolling_population_final"],
-        "paper_result_credit": "author_output_verification_only_no_end_to_end_result_credit",
+        "paper_result_credit": "output_or_current_public_response_verification_only_no_end_to_end_result_credit",
     }
     write_json(output / "manifest.json", manifest)
     (output / "README.md").write_text(readme(manifest), encoding="utf-8")
@@ -859,6 +1050,11 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--author-repo", type=Path, required=True)
     result.add_argument("--github-search-dir", type=Path, required=True)
     result.add_argument("--fouropen-evidence-dir", type=Path, required=True)
+    result.add_argument(
+        "--yahoo-gspc-response",
+        type=Path,
+        default=ROOT / "paper_runs/paper_replication_audits/raptor/yahoo_gspc_response.json",
+    )
     result.add_argument("--python", type=Path, required=True)
     result.add_argument("--output", type=Path, default=ROOT / "paper_runs/paper_replication_audits/raptor")
     return result

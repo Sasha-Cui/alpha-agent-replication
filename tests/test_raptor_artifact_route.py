@@ -76,14 +76,15 @@ def test_native_ledger_credits_outputs_but_not_end_to_end_reproduction() -> None
     assert row["prespecified_G7_monthly_common_task_compatible"] == "N"
     assert row["blocking_stage"] == "A3_US_only_not_six_country"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_16_of_42_author_output_scalar_units_zero_"
-        "end_to_end_result_cells"
+        "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_"
+        "author_output_3_current_public_benchmark_zero_end_to_end_result_cells"
     )
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     note = row["concise_evidence_note"]
     assert "recover 16/42 scalar units" in note
+    assert "19/42 checked displayed units" in note
     assert "0/42 result units" in note
-    assert "author-output verification, not experiment reproduction" in note
+    assert "author-output/current-response verification, not experiment reproduction" in note
 
 
 def test_static_paper_assets_reflect_raptor_correction() -> None:
@@ -100,4 +101,5 @@ def test_static_paper_assets_reflect_raptor_correction() -> None:
     assert route.OWNER_REPO.replace("_", r"\_") in system_table
     assert "RAPTOR & reachable" in failure_table
     assert "recover 16/42 scalar units" in failure_table
+    assert "19/42 checked displayed units" in failure_table
     assert "0/42 result units" in failure_table
