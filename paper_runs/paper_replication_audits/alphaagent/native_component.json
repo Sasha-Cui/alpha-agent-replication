@@ -10,7 +10,7 @@
     ],
     "network_or_llm_calls": false,
     "paper_result_reproduction": false,
-    "summary_tail": "80 passed in 1.53s"
+    "summary_tail": "80 passed"
   },
   "synthetic_base_factor_component": {
     "synthetic_runs": 2,

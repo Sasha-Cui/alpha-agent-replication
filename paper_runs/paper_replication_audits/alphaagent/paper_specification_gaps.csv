@@ -4,15 +4,15 @@ er_weights,"beta_1, beta_2, beta_3 are not disclosed",blocks exact ER score
 similarity_normalization,"S(f) scaling to [0,1] is not defined",blocks originality threshold
 alignment_sign,C is added to a score said to be better when lower although C is better when higher,objective sign is ambiguous
 constraint_thresholds,"no SL, PC, ER acceptance thresholds are disclosed",blocks factor filter
-operator_library,the complete paper operator library and semantics are absent,blocks expression equivalence
-prompts,idea/factor/eval agent prompts are absent,blocks agent replay
+operator_library,"a large paper-era operator library is recovered, but the paper does not pin an exact library revision",blocks proof of expression equivalence
+prompts,"paper-era idea/factor/eval prompts are recovered, but prompt/API versions used for every reported trial are not identified",blocks exact agent replay
 llm_sampling,"temperature, seeds, API snapshots, and token limits are absent",blocks stochastic replay
 seed_hypotheses,initial research directions and all 20 trial inputs are absent,blocks search replay
-factor_outputs,the 15 decay-analysis factors and final factor pools are not published,blocks model inputs
-lightgbm,only maximum depth 4 is disclosed,remaining hyperparameters and seeds absent
+factor_outputs,"multiple paper-era factor pools survive, including a 15-row CN candidate file, but no lineage proves which exact pools generated each paper panel",blocks final model-input identity
+lightgbm,"the paper-era configs recover the full LightGBM kwargs, but the trained model state and random seeds are absent",blocks fitted-model identity
 universe,"constituent histories, delisting rules, adjustment rules, and filters are absent",blocks panel identity
-portfolio,Qlib top-k=50/drop=5 is disclosed without full strategy/rebalance/benchmark config,blocks returns
-transaction_costs,fee rates are disclosed without full slippage/limit/suspension semantics,blocks net returns
+portfolio,"paper-era Qlib configs recover top-k/drop, benchmark, price, limits, account and recorders, but not the exact executed recorder/config lineage",blocks result provenance
+transaction_costs,"paper-era configs recover fees, min costs, deal price and price-limit threshold, but frozen market-state/suspension inputs are absent",blocks exact net returns
 trial_aggregation,the aggregation/selection from 20 trials to Table 2 is not fully specified,blocks metric target
 figure_arrays,"underlying daily curves, yearly values, and round distributions are absent",blocks figure reproduction
 p_value_samples,the IC samples used in the three Student t tests are absent,blocks p-value reproduction

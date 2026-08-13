@@ -1,12 +1,12 @@
 paper_location,claim,paper_value,unit,exactness,claim_role,native_reproduced_value,status,paper_result_credit
 Figure 3/text,CSI500 cumulative excess return,45.0,pct,approximate,result,,unavailable_missing_native_paper_result_path,False
 Figure 3/text,S&P500 cumulative excess return,37.0,pct,lower_bound,result,,unavailable_missing_native_paper_result_path,False
-Figure 4,yearly evaluation periods,5.0,years,exact,configuration,,configuration_not_reproduced_by_post_paper_release,False
-Figure 4 caption,AlphaAgent factors in decay plot,15.0,factors,exact,configuration,,configuration_not_reproduced_by_post_paper_release,False
+Figure 4,yearly evaluation periods,5.0,years,exact,configuration,,paper_configuration_recovered_without_complete_trial_inputs,False
+Figure 4 caption,AlphaAgent factors in decay plot,15.0,factors,exact,configuration,,paper_configuration_recovered_without_complete_trial_inputs,False
 Figure 4/text,AlphaAgent yearly IC,0.02,IC,approximate,result,,unavailable_missing_native_paper_result_path,False
 Figure 4/text,AlphaAgent yearly RankIC,0.025,RankIC,approximate,result,,unavailable_missing_native_paper_result_path,False
-Section 4.5,evolution rounds in ablation,100.0,rounds,exact,configuration,,configuration_not_reproduced_by_post_paper_release,False
-Section 4.5,rounds per market in ablation,50.0,rounds,exact,configuration,,configuration_not_reproduced_by_post_paper_release,False
+Section 4.5,evolution rounds in ablation,100.0,rounds,exact,configuration,,paper_configuration_recovered_without_complete_trial_inputs,False
+Section 4.5,rounds per market in ablation,50.0,rounds,exact,configuration,,paper_configuration_recovered_without_complete_trial_inputs,False
 Figure 6,AlphaAgent hit ratio,0.29,ratio,exact,result,,unavailable_missing_native_paper_result_path,False
 Figure 6,hit ratio without factor constraints,0.16,ratio,exact,result,,unavailable_missing_native_paper_result_path,False
 Section 4.5,hit-ratio improvement,81.0,pct,exact,result,,unavailable_missing_native_paper_result_path,False
@@ -21,7 +21,7 @@ Figure 7/text,DeepSeek-R1 AlphaAgent maximum drawdown,-6.5,pct,exact,result,,una
 Section 4.5,GPT-3.5 AlphaAgent-vs-RD-Agent IC p-value,0.0311,p_value,exact,result,,unavailable_missing_native_paper_result_path,False
 Section 4.5,Qwen-Plus AlphaAgent-vs-RD-Agent IC p-value,0.0109,p_value,exact,result,,unavailable_missing_native_paper_result_path,False
 Section 4.5,DeepSeek-R1 AlphaAgent-vs-RD-Agent IC p-value,0.0382,p_value,exact,result,,unavailable_missing_native_paper_result_path,False
-Section 4.3,independent trials for RD-Agent and AlphaAgent,20.0,trials,exact,configuration,,configuration_not_reproduced_by_post_paper_release,False
-Section 4.3,evolution rounds per trial,5.0,rounds,exact,configuration,,configuration_not_reproduced_by_post_paper_release,False
-Table 2/method,reasoning-model best-of candidates,10.0,candidates,exact,configuration,,configuration_not_reproduced_by_post_paper_release,False
-Section 4.3,reasoning-model iterative rounds,5.0,rounds,exact,configuration,,configuration_not_reproduced_by_post_paper_release,False
+Section 4.3,independent trials for RD-Agent and AlphaAgent,20.0,trials,exact,configuration,,paper_configuration_recovered_without_complete_trial_inputs,False
+Section 4.3,evolution rounds per trial,5.0,rounds,exact,configuration,,paper_configuration_recovered_without_complete_trial_inputs,False
+Table 2/method,reasoning-model best-of candidates,10.0,candidates,exact,configuration,,paper_configuration_recovered_without_complete_trial_inputs,False
+Section 4.3,reasoning-model iterative rounds,5.0,rounds,exact,configuration,,paper_configuration_recovered_without_complete_trial_inputs,False

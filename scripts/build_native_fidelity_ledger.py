@@ -192,15 +192,20 @@ ARTIFACT_NOTES = {
         "N",
         "A pinned arXiv-v2 audit enumerates all 106 numeric cells in Tables 1--2: "
         "100 results and 6 trading-day configurations, plus 18 quantitative result "
-        "claims in figures/text. The official Git history begins in July 2026, more "
-        "than a year after the paper, and implements a different CSI1000/Tushare "
-        "framework. Its 80 tests pass with import-only dependency stubs and four "
-        "named base factors execute deterministically on synthetic data, but these "
-        "are post-paper components. The source lacks the paper's three agents, AST "
-        "subtree originality, regularizers, LightGBM/Qlib portfolio, baselines, "
-        "prompts, trials, factors, and outputs. The linked 2026 data package has the "
-        "wrong markets, source, and vintage, so 0/100 table result cells count as "
-        "native reproductions.",
+        "claims in figures/text. The official repository has two unrelated roots: "
+        "an 8-commit July 2026 CSI1000/Tushare rewrite and a 485-commit public legacy "
+        "history beginning in April 2024. A pinned February 2025 preprint-era snapshot "
+        "contains 856 files, 331 compiling Python modules, the multi-stage agent loop, "
+        "structured hypothesis and prompts, AST largest-common-subtree matcher, 101 "
+        "Alpha101 references, full LightGBM/Qlib configs, metric feedback, and 15 CSVs "
+        "with 268 factor-expression rows. The AST/Alpha101 path executes deterministically. "
+        "This is substantial attributable mechanism evidence, but not the exact paper "
+        "objective: SL/PC, numeric c1/c2, alpha/beta weighting, ER scoring, GPT-3.5 run "
+        "provenance, 20 trial seeds and exact factor/result lineage are absent or divergent. "
+        "No frozen paper dataset, prediction, holding, return, recorder, baseline output, "
+        "figure array, or metric array survives, so 0/100 Table 2 result cells and 0/18 "
+        "additional quantitative claims count as native reproductions. The disjoint 2026 "
+        "data and registry remain zero-credit post-paper evidence.",
     ),
     "SYS-ALPHA-MEMO": (
         "N",
@@ -1289,7 +1294,7 @@ TARGETED_EXECUTION = {
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage",
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_attributable_release_six_component_checks_broken_default_launcher_missing_research_lineage",
-    "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
+    "SYS-ALPHA-AGENT": "paper_audit:completed_preprint_legacy_source_20_of_32_mechanism_dimensions_15_factor_csvs_zero_of_100_table_results_zero_of_18_additional_results",
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_one_linked_input_one_date_prompt_zero_of_953_table_cells_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
     "SYS-ALPHA-GPT": "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_empirical_results",

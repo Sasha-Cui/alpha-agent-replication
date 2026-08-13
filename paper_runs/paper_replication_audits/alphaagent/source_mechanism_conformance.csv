@@ -1,33 +1,33 @@
 dimension,paper_requirement,released_implementation,status,paper_mechanism_credit
-paper_era_source,paper implementation released by June 2025,first commit 2026-07-01,mismatch_post_paper_rewrite,False
-paper_markets,CSI500 and S&P500,CSI1000/A-shares reference dataset,mismatch,False
-paper_data_sources,Baostock and Yahoo Finance,Tushare/open parquet package,mismatch,False
-paper_input_fields,OHLCV only,"price, fundamentals, industry, and market-cap fields",mismatch,False
-paper_test_period,2021-01 to 2025-01,default validation 2022-01 to 2024-12,mismatch,False
-paper_llm,GPT-3.5-turbo,gpt-4o-mini dataclass default; CLI requires MODEL,mismatch,False
-three_specialized_agents,"idea agent, factor agent, eval agent",one tool-calling trajectory/AgentScope agent,mismatch,False
-structured_idea_agent,observation/knowledge/justification/specification,not implemented as a distinct typed stage,missing,False
-factor_agent_memory,successful and failed implementations with failure modes,delivered-factor registry only,mismatch,False
-eval_agent,backtest plus similarity and performance feedback,train/validation expression evaluation tools,component_analogue,True
-operator_library,symbolic operator library,native DSL operator registry,component_match,True
-ast_representation,tree-valued AST T(f),pyparsing compiles to Python code strings,mismatch,False
-largest_common_subtree,recursive subtree isomorphism size,not implemented,missing,False
-alpha101_novelty_zoo,compare against Alpha101,no Alpha101 expressions or loader,missing,False
-similarity_kind,AST structural similarity,mean daily cross-sectional Pearson correlation,mismatch,False
-symbolic_length,algorithmic SL(f),no computation or threshold,missing,False
-parameter_count,algorithmic PC(f),no computation or threshold,missing,False
-alignment_c1,LLM hypothesis-description consistency,not implemented,missing,False
-alignment_c2,LLM description-expression consistency,not implemented,missing,False
-alignment_alpha,alpha=0.5,no scoring function,missing,False
-er_score,beta-weighted novelty/alignment/feature penalty,no scoring function,missing,False
-feedback_loop,metrics guide later iterations,tool results appended to LLM context,component_match,True
-multiple_candidates,multiple expressions per hypothesis,prompt requests 3--5 parallel train evaluations,component_analogue,True
-paper_lightgbm,"LightGBM next-day return model, depth 4",model directory remains TODO,missing,False
-paper_qlib_backtest,Qlib top-k dropout strategy,no portfolio/backtest package,missing,False
-paper_transaction_fees,market-specific buy/sell fees,no paper backtest implementation,missing,False
-paper_baselines,nine baselines in Table 2,no exact baseline runners,missing,False
-paper_trials,20 trials x 5 rounds,"no exact runner, seeds, or trajectories",missing,False
-paper_outputs,"15 factors, curves, predictions, holdings, returns, metrics",post-paper registry metrics only,missing,False
-current_registry,paper final factors,8 post-paper delivered factors,provenance_mismatch,False
-current_expressions,paper factor pool,13 post-paper DSL expressions,provenance_mismatch,False
+paper_era_source,paper implementation available before the February 2025 preprint,public legacy-main snapshot dated 2025-02-12,recovered_preprint_source,True
+paper_markets,CSI500 and S&P500,csi500 and SP500 Qlib configs,component_match,True
+paper_data_sources,Baostock and Yahoo Finance,Baostock URI is explicit; US uses an unversioned local us_data URI with no downloader provenance,partial_source_match,True
+paper_input_fields,four OHLCV-derived base features,the same four feature formulas and next-day label,component_match,True
+paper_test_period,2021-01 through 2024-12,2021-01-01 through 2024-12-30/31,component_match,True
+paper_llm,GPT-3.5-turbo,repository default is gpt-4-turbo; executed model selection is not pinned,mismatch,False
+three_specialized_agents,"idea, factor, and eval agents","hypothesis generator, factor constructor/parser, runner/summarizer stages",component_match,True
+structured_idea_agent,"observation, knowledge, justification, specification",typed AlphaAgentHypothesis has all four fields,component_match,True
+factor_agent_memory,successful and failed implementations with failure modes,Trace plus CoSTEER successful/failed knowledge stores,component_match,True
+eval_agent,"execution, stability, backtest and metric feedback","factor evaluator, Qlib runner and LLM feedback summarizer",component_match,True
+operator_library,symbolic operator library,full function library and prompt semantics,component_match,True
+ast_representation,tree-valued AST T(f),typed pyparsing Var/Number/Function/Binary/Conditional nodes,component_match,True
+largest_common_subtree,recursive subtree isomorphism size,find_largest_common_subtree executes and counts nodes,component_match,True
+alpha101_novelty_zoo,compare against Alpha101,"loader and 101 named Alpha rows exist, but 15 generated rows contaminate the loaded 116-row file",partial_contaminated_reference_zoo,True
+similarity_kind,AST structural largest-common-subtree similarity,"same structural operation, including commutative operators",component_match,True
+symbolic_length,algorithmic SL(f),no SL term or weight is implemented,missing,False
+parameter_count,algorithmic PC(f),no free-parameter count or weight is implemented,missing,False
+alignment_c1,numeric hypothesis-description consistency,"hypothesis conditions factor generation, but no separate numeric c1 evaluator exists",prompt_only_no_score,False
+alignment_c2,numeric description-expression consistency,"LLM evaluator checks the same semantic relation but returns prose, not a [0,1] score",component_analogue,True
+alignment_alpha,alpha=0.5,no combined numeric alignment function,missing,False
+er_score,beta-weighted novelty/alignment/feature penalty,no beta-weighted ER function; novelty is a hard retry at subtree size >=5,mismatch_hard_filter,False
+feedback_loop,metrics guide later iterations,runner metrics and feedback are appended to Trace and rendered into the next prompts,component_match,True
+multiple_candidates,multiple expressions per hypothesis,prompt requests 2--4 factors and constructor processes every response entry,component_match,True
+paper_lightgbm,"LightGBM next-day return model, depth 4",full LGBModel kwargs and DatasetH segments are recovered,configuration_match,True
+paper_qlib_backtest,Qlib top-50/drop-5 strategy,"combined CN/US configs use TopkDropoutStrategy topk=50, n_drop=5 and recorders",configuration_match,True
+paper_transaction_fees,CN 5/15 bp and US 0/5 bp buy/sell fees,"matching open/close costs plus deal price, limit threshold and min costs",configuration_match,True
+paper_baselines,nine Table 2 baselines,"named GP, o1 and DeepSeek factor-expression CSVs exist, but no exact baseline runners or outputs",partial_unlinked_artifacts,False
+paper_trials,20 trials x 5 rounds,"evolving_n=5 is recovered; no 20-trial launcher, seeds or trajectories",partial_configuration,False
+paper_outputs,"factors, curves, predictions, holdings, returns and metrics",factor-expression pools exist; result-bearing artifacts do not,partial_factor_expressions_only,False
+current_registry,paper final factors,8 entries from the disjoint 2026 rewrite,provenance_mismatch,False
+current_expressions,paper factor pool,13 expressions from the disjoint 2026 DSL,provenance_mismatch,False
 current_data_release,paper CSI500/S&P500 frozen panels,2026 CSI1000 Tushare package,provenance_mismatch,False

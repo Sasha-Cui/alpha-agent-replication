@@ -1,0 +1,17 @@
+{
+  "snapshot_commit": "95e47882cbed3ba0cafd42e812fe0032a8ae0681",
+  "python_files_compiled": 331,
+  "compile_passed": true,
+  "ast_component_runs": 2,
+  "ast_component_deterministic": true,
+  "alpha101_self_match_exact": true,
+  "alpha101_self_match_lcs_size": 23,
+  "alpha101_self_match_subtree_present": true,
+  "commutative_expression_lcs_size": 3,
+  "identical_expression_lcs_size": 4,
+  "loaded_alpha101_csv_rows": 116,
+  "named_alpha101_reference_rows": 101,
+  "partial_expression_lcs_size": 3,
+  "network_or_llm_calls": false,
+  "paper_result_reproduction": false
+}

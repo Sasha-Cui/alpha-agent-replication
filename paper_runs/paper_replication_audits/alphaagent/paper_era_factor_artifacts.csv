@@ -1,0 +1,16 @@
+path,expression_rows,alpha101_reference_rows,other_expression_rows,bytes,sha256,directly_referenced_by_alphaagent_code,paper_result_credit,interpretation
+factor_zoo/alpha101.csv,116,101,15,14204,d08d678a4a9003cf9427faa1f7b0d1a682a652bc51183d9f1b743bd3043524b5,True,False,Alpha101 reference plus 15 appended generated expressions
+factor_zoo/backtest.csv,7,0,7,820,e8c216e6dab343f69f9af9d7951a783a5112de2c05d7e43699fa3bd9bd7861a8,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/cn_aff.csv,19,0,19,4565,8b31dad35e923f1cdd4b2c4d5a18cc29cc54dc8c4b794f8c23acb7a703bdf87c,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/cn_deepseek.csv,5,0,5,624,5947cdf041f29154459f16e8434363ed201c4a5062d249151faa085cbc3494c1,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/cn_factors.csv,14,0,14,1749,9c2c498087046212434a1f9a506bd217ff2ed08db78f8fc0ab8b9e3dddbdf765,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/cn_factors_test.csv,15,0,15,1827,56076eb51941de702ee0347891911e9e905e70a3541821a13bcf51c685913527,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/cn_gp.csv,45,0,45,3364,c684ef9fc4ab486d872c540b09213318448517f7d1636c2e0e4723c8a1387dae,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/cn_o1.csv,3,0,3,343,26dfe4d5e05e066c2320aed653f4ae839e6275183571be09a18d161e5572925d,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/macd.csv,1,0,1,57,deaa0db0c86acee23fcb82cbfaeb98ce9dd209a6fc0af0ad25ffd96dd81500b7,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/us_aff.csv,21,0,21,3963,a84a1f56e7aad729738accce84afd08ad3e1399a6e240266b8788b03512d2826,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/us_deepseek.csv,6,0,6,501,d73bfdb04a0d2699301a9acae57247769d4531160a4ce94106e6bcd80b0fe826,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/us_factor_group2.csv,1,0,1,118,1ad982972abee5596ab157e953d6f8768e1ec7f86650c801177845f957733224,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/us_factor_group3.csv,2,0,2,350,fb2e69e56804d8ce863b3a46c305df8d39432c51e99738dfa6a2493072d69415,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/us_factors.csv,6,0,6,741,5cd90288c6d4a2f327e0142ad2528bed876e7151911096a75bc0b4adfd695f70,False,False,author-released preprint-era factor-expression artifact with no result lineage
+factor_zoo/us_o1.csv,7,0,7,829,88de8d9ae2225ef7819fb903771e2ef1b1e632d3937b36afd35e7d0c9760742c,False,False,author-released preprint-era factor-expression artifact with no result lineage

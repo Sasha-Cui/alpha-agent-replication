@@ -1,0 +1,9 @@
+commit,date,subject,role
+c740262752b585bc59e41e26807d826ec7bebe75,2024-04-03T11:39:33+08:00,Initial commit,legacy history begins
+7f041be0793600188be180e3df2acf5421c1c644,2024-12-23T17:06:14+08:00,first commit,AlphaAgent workflow first appears
+95e47882cbed3ba0cafd42e812fe0032a8ae0681,2025-02-12T21:30:56+08:00,update func lib,mechanism-complete snapshot pinned for component audit
+3cbb7b7e9abe9bc3f3beaa7fcb2102293fbbea4a,2025-02-14T23:29:42+08:00,SeekAlpha UI,latest full tree before cleanup; Alpha101 path is regressed
+0bc7a34ed9701a0149ae990b6484e7c73b347ea0,2025-02-17T15:07:43+08:00,remove irrelevant files,latest commit before arXiv v1; factor_zoo removed
+1da96e94a06a925c3997899f1848899440585efe,2025-06-16T16:54:32+08:00,update the README citation and UI,public legacy-main head
+7debd15ca98309a8df9c1d50aca3831f320687cf,2026-07-01T20:17:13+08:00,初始化项目：初始提交,disjoint rewritten main begins
+b42cb397025510da44355db9dcf278304321f589,2026-07-03T19:54:54+08:00,Rename packages,pinned rewritten main head
