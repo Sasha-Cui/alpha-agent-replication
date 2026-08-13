@@ -1,0 +1,33 @@
+{
+  "arxiv_id": "2603.17692",
+  "arxiv_version": "v1",
+  "attributable_blindtrade_release_found": false,
+  "authors": [
+    "Joohyoung Jeon",
+    "Hongchul Lee"
+  ],
+  "first_author_blindtrade_code_search_matches": 0,
+  "first_author_github": "ds-academy",
+  "first_author_public_repositories_checked": 14,
+  "generic_github_code_search_count": 99,
+  "generic_github_repository_search_count": 8,
+  "huggingface_dataset_matches": 0,
+  "huggingface_model_matches": 0,
+  "negative_search_scope": "bounded; does not prove that private, deleted, moved, or unindexed material never existed",
+  "official_pages": 18,
+  "official_pages_visually_checked": 18,
+  "official_rebuilt_token_jaccard": 0.9989517819706499,
+  "openreview_code_or_dataset_exposed": false,
+  "openreview_forum_id": "t8mBrVVAXh",
+  "openreview_license": "CC BY 4.0",
+  "openreview_revision_page": "No revisions to display.",
+  "openreview_supplement_exposed": false,
+  "rebuilt_pages": 18,
+  "rebuilt_pages_visually_checked": 18,
+  "source_files": 14,
+  "submitted": "2026-03-18",
+  "system_id": "SYS-BLIND-TRADE",
+  "title": "Can Blindfolded LLMs Still Trade? An Anonymization-First Framework for Portfolio Optimization",
+  "visual_defects_observed": 0,
+  "work_id": "CensusArxiv260317692"
+}

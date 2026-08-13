@@ -1,0 +1,5 @@
+agent,prompt_sha256,source_prompt_recovered,printed_schema_valid_json,printed_schema_error,schema_declares_cross_sectional_score,batch_instruction_requires_cross_sectional_score,filled_runtime_request_recovered,filled_runtime_response_recovered,native_execution_credit
+Momentum Agent,37fc5be3a8b65b74d87636711601e6f870fa5a336adaeaccf1a0c537d1352328,True,False,Expecting value at line 4 column 14,False,True,False,False,False
+News-Event Agent,f2682e0c0ae3128fdf77c044b964a6e006edf428e2fb3a017988ea3b9e156ca4,True,False,Expecting value at line 4 column 27,False,True,False,False,False
+Mean-Reversion Agent,1b41d792510bb40b6ccc7e6f67cc22800fc01c78b49ffce2daef06143f60ccf0,True,False,Expecting value at line 4 column 24,False,True,False,False,False
+Risk-Regime Agent,978537defb290198d865222f80bf623a4bad0e930145164746e1971bb7c82ad7,True,False,Expecting value at line 4 column 28,False,True,False,False,False

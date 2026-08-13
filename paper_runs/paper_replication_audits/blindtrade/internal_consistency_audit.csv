@@ -1,0 +1,9 @@
+issue,evidence,impact
+holdout_feature_selection,"features are retained when informative on holdout, and the Risk-Regime 2025 holdout IC is cited, contaminating the OOS used for headline performance",test-set selection leakage
+anonymization_not_ablated,the paper claims anonymization supports signal legitimacy but says a direct anonymization ablation was not performed and remains future work,headline causal claim not directly tested
+shuffle_control_overclaim,"cross-sectional score shuffling destroys all structured signals, including structured leakage, so it cannot establish the signal is legitimate rather than leaked",negative control is non-identifying
+eqwl_identity,"the paper calls EQWL an S&P 500 equal-weight ETF; EQWL tracks the S&P 100 equal-weight index, while RSP is the S&P 500 equal-weight ETF",benchmark mislabeled
+printed_json_schemas,"all four exact output schemas use comments and symbolic float/string values, so none is valid JSON as printed",claimed deterministic parseability is not literal
+batch_schema_field,"the batch instruction requires cross_sectional_score, but none of the four full output schemas declares that field",prompt/schema mismatch
+fully_reproducible_claim,"the reproducibility statement says fully reproducible while code, data, requests, checkpoints, paths, and arrays are absent and the dataset is only planned for release",claim exceeds public evidence
+model_cutoff_overlap,"Gemini 2.5 Flash has an official January 2025 knowledge cutoff, overlapping the OOS beginning January 2025; a prompt cannot erase pretrained knowledge",prospective LLM holdout not established

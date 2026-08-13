@@ -1,0 +1,27 @@
+{
+  "attributable_code_or_data_release_found": false,
+  "author_native_empirical_panels_regenerated": 0,
+  "author_native_table_cells_regenerated": 0,
+  "current_public_passive_benchmark_cells_matching": 6,
+  "current_public_passive_benchmark_cells_replayed": 28,
+  "empirical_figure_panels": 9,
+  "full_system_prompts_recovered": 4,
+  "generated_file_sha256": {
+    "README.md": "5585df8a5cbff89ed96e28b0c193e920908386af8e7fa040ce498fd6ccb0c155",
+    "figure_inventory.csv": "92d2df83b75cd6adbf47eb7cafe28a8d6b0d885881a7cd6a28a097a25fe29d67",
+    "internal_consistency_audit.csv": "097af7a2edf1ede4b08cf60966ae2b4bf3b5c677143e41e1c8b0df76788d2878",
+    "method_specification_audit.csv": "f056b5d94166525ff4c9ceaf9a1683f346c4e13c12151d6bb06846bdb499785b",
+    "passive_benchmark_replay.csv": "b04bd2ced957ca8c0c7ad6a9574173a4e62841ed5eda62a07fac61c2d3bc6b3a",
+    "prompt_schema_audit.csv": "20f3d121631344c3c26659e8fb81187be5586dffbe30b66d9b6906ed7c0f2429",
+    "published_result_ledger.csv": "9cfaacfee2ae4a89115f7c3b368a8b518a9058733187dcf6b3ed786720cc96ee",
+    "source_provenance.json": "e720ae61383a68b999449a0047184f2f661c8ba79569ee7bc726beb121f53e01"
+  },
+  "official_pages_visually_checked": 18,
+  "printed_prompt_schemas_valid_json": 0,
+  "published_numeric_table_cells": 98,
+  "rebuilt_pages_visually_checked": 18,
+  "strict_failure_reason": "no attributable BlindTrade pipeline or paper-result lineage; reported OOS is used for feature screening",
+  "strict_success": false,
+  "system_id": "SYS-BLIND-TRADE",
+  "work_id": "CensusArxiv260317692"
+}

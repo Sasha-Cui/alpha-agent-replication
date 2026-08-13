@@ -1,0 +1,24 @@
+dimension,paper_value_or_state,sufficiently_specified
+universe,daily point-in-time S&P 500 constituents via EODHD,True
+full sample,"2020-01-02 through 2025-08-01; 1,403 trading days",True
+primary split,train through 2024-09-30; validation 2024Q4; OOS 2025-01-02 to 2025-08-01,True
+extended split,train through 2023; six half-year rolling validation windows; OOS 2024-2025,True
+anonymization,ticker/company/product names replaced; Google Knowledge Graph used,False
+LLM agents,four roles; full system prompts printed,True
+LLM model,Gemini 2.5 Flash accessed September-October 2025,False
+LLM request settings,"temperature, thinking budget, safety settings, exact version, and retries absent",False
+news corpus,up to five anonymized headlines per stock from t-60 to t-1,False
+reasoning embedder,all-MiniLM-L6-v2; 384 dimensions,True
+semantic graph,same-sector plus cosine > 0.75; top 10 semantic neighbors,True
+GNN,"two GATv2 layers, four heads, 394 to 128 dimensions",False
+GNN losses,"HL-Gauss 101 bins plus ranking, risk, and JS terms",False
+RL,PPO-DSR; top-20 equity-only Dirichlet policy,False
+PPO hyperparameters,"lr 3e-4, gamma .99, GAE .95, clip .2",False
+cost,10 bps per unit turnover,True
+primary Optuna,"eta .10, reward-cost scale .358, alpha0 466.8; search space/trials absent",False
+extended Optuna,eta .08 and cost scale .40; search space/trials absent,False
+seeds,20 independent seeds; identities and seed-level outputs absent,False
+code and runtime,not released,False
+raw/LLM feature dataset,promised upon publication; not exposed,False
+checkpoints and predictions,not released,False
+"holdings, returns, and plot arrays",not released,False
