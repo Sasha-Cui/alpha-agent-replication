@@ -539,6 +539,25 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-XALPHA": (
+        "A pinned XALPHA audit rebuilds the 61-page arXiv-v2 source at 99.95% "
+        "extracted-token overlap and visually checks all 61 official and rebuilt "
+        "pages. The source exposes 20 named agent/utility prompt frameworks, two "
+        "shared prompt blocks, detailed runtime pseudocode and equations, primitive "
+        "features, and two complete factor implementations. Three printed factor "
+        "programs execute verbatim on a deterministic controlled panel; only the "
+        "main-text program satisfies the paper's Series-name contract, and none is "
+        "an author-pipeline result. The paper and first-author homepage link "
+        "uwFengyuan/XAlpha_Prompt, but the exact endpoint returns HTTP 404; the "
+        "author's 27 public repositories and six bounded exact GitHub searches expose "
+        "no attributable XALPHA implementation. The only Hugging Face dataset-name "
+        "hit has unverified authorship and only a .gitattributes file. Thus 0/138 "
+        "published numeric units and 0/3 empirical panels reproduce author-natively. "
+        "No exact Qlib snapshot or point-in-time universe, report corpus, derived "
+        "memory, model checkpoint/decoding settings, seeds, cycle routes, generated "
+        "factor library, baseline configs, predictions, orders, fills, daily returns, "
+        "raw correlation matrices, checkpoints, or result generator is public."
+    ),
     "SYS-TRUST-TRADE": (
         "A pinned TrustTrade audit rebuilds the 24-page arXiv-v1 source above "
         "99.90% extracted-token overlap and visually checks all 24 official and "
@@ -1004,6 +1023,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-XALPHA": "paper_audit:completed_three_paper_factor_programs_one_contract_pass_zero_of_138_numeric_units_zero_of_3_empirical_panels_no_attributable_pipeline",
     "SYS-TRUST-TRADE": "paper_audit:completed_three_paper_linked_interfaces_183_stock_days_one_of_12_strict_inactive_baseline_cells_zero_of_26_native_panels_no_attributable_trusttrade_pipeline",
     "SYS-BLIND-TRADE": "paper_audit:completed_six_of_98_current_passive_benchmark_cells_zero_author_native_zero_of_9_empirical_panels_four_prompts_zero_valid_json_no_attributable_pipeline",
     "SYS-FACTOR-ENGINE": "paper_audit:completed_zero_of_276_table_units_zero_of_8_empirical_panels_one_of_two_printed_factor_programs_executes_one_unattributable_candidate",
