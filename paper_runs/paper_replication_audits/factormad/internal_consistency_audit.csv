@@ -1,0 +1,13 @@
+check,status,evidence
+highest_performance_claim,direct_numeric_conflict,"prose says FactorMAD achieves the highest Table 2 performance, but DSO's CSI500 RoMaD is 1.860 versus FactorMAD's 1.341"
+rank_normalization_auc_labels,definition_conflict,"labels are said to undergo rank normalization and AUC then labels raw returns above/below zero; an uncentered percentile rank has no negatives, while a centered rank changes the classification target"
+annual_return_definition,metric_conflict,"Table 2 metrics are said to be calculated from cumulative excess returns relative to the benchmark, yet AR is described as absolute performance"
+figure3_average_population,aggregation_undefined,"four Average panels do not state whether values average factors, dates, horizons, trials, model seeds, or some combination"
+figure4_result_arrays,static_only,"two cumulative-return panels expose curves but no underlying dates, benchmark/portfolio returns, cost deductions, or arrays"
+factor_complexity_interpretability,proxy_only,"non-comment line count is treated as complexity and interpretability without syntax, semantic, dependency, or financial-rationale measures"
+daily_topk_ten_day_hold,algorithm_underspecified,daily TopK formation and a ten-day holding period leave overlapping portfolio vintages undefined
+metric_gate_thresholds,algorithm_underspecified,Algorithm 1 requires epsilon_1 and epsilon_2 but the experiment never reports their values
+correction_limit,algorithm_underspecified,Algorithm 1 requires maximum corrections K but no value or terminal failure behavior is reported
+seed_probability,algorithm_underspecified,Equation 3 requires p_seed but no experimental value is reported
+prompt_claim,claim_artifact_gap,"the method depends on several prompts and code requirements, but no complete prompt or runnable contract is printed or released"
+figure_values,display_precision_unavailable,Figures 3--6 are vector/static document evidence without printed point values or run lineage

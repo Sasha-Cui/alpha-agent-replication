@@ -1,0 +1,33 @@
+dimension,status,evidence
+official paper,complete,publisher PDF for DOI 10.1145/3768292.3770377 pinned; all nine pages visually checked
+paper source archive,unavailable,ACM exposes the PDF/HTML article but no TeX or source archive
+native implementation,unreleased,"paper contains no code URL; bounded searches find no attributable repository, model, dataset, or Space"
+paper artifact statement,absent,"no code, data, model, or reproducibility availability statement is printed"
+market universe,substantial,"5255 Shanghai/Shenzhen A-share stocks are stated, but identifiers and membership-by-date are absent"
+market period,nominal,"01/01/2014--12/31/2023, in-sample 2014--2021, out-of-sample 2022--2023"
+market fields,complete_names_only,daily high/open/low/close/VWAP/amount/volume are named without immutable rows or schema
+data provider and adjustments,missing,"provider, query date, exchange calendar, suspensions, listings/delistings, corporate actions, limits, and missing values are absent"
+label,equation_complete,future VWAP return VWAP[t+h+1]/VWAP[t+1]-1; mining horizon 10 days
+initial factor library,missing,"existing factor programs, metrics, provenance, size, and construction are absent"
+agent example sampling,underspecified,"random subsets are named without k, distribution, replacement, or seed"
+factor and seed prompts,missing,"pi_alpha, pi_seed, perspective-summary and correction prompts are symbolic placeholders only"
+LLM model,dated_name_only,"GPT-4o 2024-08-06 is stated without provider API revision, parameters, seed, request/response log, or environment"
+debate structure,substantial,"two initialized agents alternate summary, critique and factor proposals; exact serialization/context limits are absent"
+seed selection,equation_partial,"existing-versus-generated branch printed, but p_seed value and generated-seed prompt are absent"
+debate stopping,partial,ten rounds are stated for the ablation; general convergence criteria are not executable
+factor acceptance,equation_partial,"strict metric/correlation gate printed, but epsilon_1, epsilon_2, correlation convention and comparison set are absent"
+code generation contract,partial,"Python function, input/output, library and example requirements are described but no full contract or examples are released"
+code validator,prose_only,eleven error categories/suggestions are printed without executable checks or thresholds
+correction agent,underspecified,"correction loop is printed without prompt, model settings, K, retry serialization, or terminal failure policy"
+factor mining count,complete_nominal,100 factors are mined per method
+baselines,names_only,"GP, DSO, AlphaGen and CoE are named without exact forks, commits, configs, seeds, budgets, or generated factors"
+prediction models,partial,"LR, three-layer MLP and LightGBM are named without hyperparameters, training schedule, seeds, or checkpoints"
+prediction horizons,complete_nominal,"10, 20 and 30 trading-day labels are evaluated"
+rank normalization,underspecified,"cross-sectional rank normalization is named without formula, centering, tie, missing-value, or temporal policy"
+prediction metrics,partial,"IC, RankIC, MSE and AUC are described without exact aggregation, sign/rank preprocessing, tie, or averaging conventions"
+portfolio construction,partial,"daily Top-50 equal-weight selection, 10-day holding period and CSI300/CSI500 benchmarks are stated"
+overlapping holdings,missing,daily selection plus ten-day holding does not define how overlapping vintages combine
+transaction cost,partial,"0.3% is stated without one-way/round-trip interpretation, turnover formula, or application timing"
+investment metrics,partial,"AR, IR and RoMaD prose lacks annualization, return alignment, denominator and drawdown conventions"
+randomness and trials,partial,"100 ablation trials are stated; all seeds, trial reuse and confidence/reporting conventions are absent"
+raw empirical outputs,missing,"no factor code, LLM trace, predictions, model artifacts, positions, returns, plot arrays, or result generator is released"

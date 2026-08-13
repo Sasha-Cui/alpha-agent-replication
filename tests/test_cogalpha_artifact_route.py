@@ -142,13 +142,13 @@ def test_static_report_counts_and_tables_include_cogalpha_once() -> None:
         r"\artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 18}"
         in generated
     )
-    assert r"\newcommand{\TargetedAuditCount}{66}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{67}" in generated
     claims = {
         row["macro"]: row
         for row in csv_rows(ROOT / "paper_runs/submission_evidence/claims.csv")
     }
     assert claims["ArtifactCountFT"]["rendered_value"] == "36"
-    assert claims["TargetedAuditCount"]["rendered_value"] == "66"
+    assert claims["TargetedAuditCount"]["rendered_value"] == "67"
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text()
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
     assert r"uwFengyuan/CogAlpha\_Prompt" in system_table

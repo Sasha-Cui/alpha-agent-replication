@@ -591,6 +591,30 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-FACTOR-MAD": (
+        "A pinned FactorMAD audit recovers the official nine-page ACM proceedings "
+        "paper for DOI 10.1145/3768292.3770377 and visually checks all nine pages. "
+        "It inventories 30 displayed empirical result cells in Table 2 and eight "
+        "empirical panels across Figures 3--6. Six independently implemented "
+        "paper-derived mechanics pass controlled checks, and seven core operations "
+        "fail closed because the paper does not determine a unique implementation. "
+        "These are specification checks, not author code or result credit: 0/30 "
+        "cells and 0/8 panels reproduce author-natively. No attributable source, "
+        "data, model, or result release was found in bounded GitHub and Hugging "
+        "Face searches. The paper omits the exact A-share rows/provider, factor "
+        "library, example count/distribution, prompts/responses, p_seed, acceptance "
+        "thresholds, correction limit, validator, seeds, baseline configs, trained "
+        "models, predictions, portfolio arrays, raw returns, and result generator. "
+        "The paper's claim that FactorMAD has the highest Table 2 performance "
+        "conflicts with DSO's CSI500 RoMaD of 1.860 versus FactorMAD's 1.341; rank "
+        "normalization also conflicts with the stated above/below-zero AUC labels, "
+        "and daily Top-50 formation plus a ten-day hold leaves overlapping vintages "
+        "undefined. The local U.S. monthly JKP candidate contains no LLM, debate, "
+        "code-generation, China A-share, paper-model, or paper-portfolio pipeline; "
+        "it remains an M0 narrative translation and receives no method or result "
+        "credit. Negative searches are bounded, not proof that private, deleted, "
+        "moved, renamed, unindexed, or later material does not exist."
+    ),
     "SYS-MACRO-ECONOMISTS-MACHINE": (
         "A pinned Macro Economists in the Machine audit rebuilds the official "
         "46-page arXiv-v1 source at 99.89% extracted-token overlap and visually "
@@ -1221,6 +1245,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-FACTOR-MAD": "paper_audit:completed_six_paper_derived_mechanics_seven_fail_closed_zero_of_30_table_cells_zero_of_8_empirical_panels_no_attributable_pipeline_local_m0_proxy_no_paper_credit",
     "SYS-FIN-ANALYST": "paper_audit:completed_pre_live_R3_native_controlled_paths_97_official_decisions_replayed_zero_of_119_table_cells_zero_of_2_full_empirical_panels_major_table_figure_source_conflicts",
     "SYS-MACRO-ECONOMISTS-MACHINE": "paper_audit:completed_18_paper_derived_mechanics_four_fail_closed_zero_of_132_table_cells_zero_of_12_empirical_panels_no_attributable_pipeline_major_figure_table_conflicts",
     "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_released_nav_metrics_31999_of_31999_data_links_static_outputs_no_native_training_or_backtest",

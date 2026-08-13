@@ -1,0 +1,29 @@
+{
+  "active_empirical_table_cells": 30,
+  "attributable_implementation_found": false,
+  "author_native_empirical_panels_regenerated": 0,
+  "author_native_table_cells_regenerated": 0,
+  "doi": "10.1145/3768292.3770377",
+  "empirical_figure_panels": 8,
+  "fail_closed_underspecified_core_operations": 7,
+  "full_end_to_end_pipeline_reproduced": false,
+  "generated_file_sha256": {
+    "README.md": "0b2524e75e0b4a86e40ab8a4772e9c15d8b8b1722d0f980009caf086495fcb62",
+    "component_execution_audit.csv": "d225bdb4a70441ae2d6c13b945143edbb14ba0c097b8fb63680ca18c526efad1",
+    "figure_inventory.csv": "7b85f7803e4b0e91ee5dfdf76c7380f7d6dc2617d742854b5bc344e31e3a9a3d",
+    "internal_consistency_audit.csv": "e05f9158088dd483c860525edfe69993f8cc9e33b1a8da650c074e4efc443ada",
+    "local_proxy_boundary.csv": "f3d11ea918b62e57b58bfb102bd6933492767c584a830eb232e89cb1c57b7548",
+    "method_specification_audit.csv": "5c095faca183f47f9593e03f0396cc57f25b1505cbca3f967ab388a24b654ea6",
+    "published_result_ledger.csv": "89223cb0211b5d95d5dadf7053b25ac581aa3a8859d8dc85797d8a3b214e2006",
+    "release_search_audit.csv": "0e43e8c300d30b976ac01dc0958f2857bb5af0407a94464ed5e37e31797de368",
+    "source_provenance.json": "a455112873121cf8ba3e8e19c156e3799196b2f99de04036ccb747aef1d50e64"
+  },
+  "local_m0_proxy_receives_paper_credit": false,
+  "paper_derived_components_executed": 13,
+  "paper_derived_components_passing_controlled_checks": 13,
+  "raw_result_arrays_recovered": 0,
+  "result_tables": 1,
+  "strict_success": false,
+  "system_id": "SYS-FACTOR-MAD",
+  "work_id": "CensusDOI10114537682923770377"
+}

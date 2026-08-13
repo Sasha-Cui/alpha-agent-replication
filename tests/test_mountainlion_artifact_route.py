@@ -119,7 +119,7 @@ def test_static_paper_assets_reflect_mountainlion_correction() -> None:
         r"\artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 18}"
         in generated
     )
-    assert r"\newcommand{\TargetedAuditCount}{66}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{67}" in generated
     system_table = (ROOT / "docs/paper/tables/system_registry.tex").read_text(encoding="utf-8")
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text(encoding="utf-8")
     assert "MountainLionAi/GenAI-Platform" in system_table

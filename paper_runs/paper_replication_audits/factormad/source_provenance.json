@@ -1,0 +1,39 @@
+{
+  "attributable_implementation_found": false,
+  "authors": [
+    "Yitong Duan",
+    "Chuheng Zhang",
+    "Jian Li"
+  ],
+  "dissertation_full_text_access_observation": "online preview requires authentication",
+  "document_layout_defects_observed": 0,
+  "doi": "10.1145/3768292.3770377",
+  "observed_license": "NOASSERTION; PDF says publication rights licensed to ACM",
+  "official_first_author_dissertation_full_text_recovered": false,
+  "official_first_author_dissertation_summary_recovered": true,
+  "official_pages_visually_checked": 9,
+  "official_pdf_bytes": 942291,
+  "official_pdf_pages": 9,
+  "paper_contains_native_implementation_url": false,
+  "paper_contains_public_dataset_model_or_result_url": false,
+  "paper_contains_reproducibility_statement": false,
+  "paper_source_archive_found": false,
+  "pinned_input_sha256": {
+    "discovery/github-code-doi.json": "28accf126d8dbf6a6bb417cb28f9fe2b9d6788e1a7105e227557261345c87345",
+    "discovery/github-code-exact.json": "39e9ea068fb2f375179b9b5695db55d9ea3b68b0da441e446320f768ca160081",
+    "discovery/github-repositories-doi.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "discovery/github-repositories-exact.json": "32ab944f2ef2864427026cce6de1d79306f0c4b42d12e3c9c5518db03088db2e",
+    "discovery/huggingface-datasets-exact.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "discovery/huggingface-models-exact.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "discovery/huggingface-spaces-exact.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "primary/crossref.json": "70fe521ad1d30e9c4f807dfaed1b0ac313181ae94b51b20195f6ccf20e79c7af",
+    "primary/dblp.xml": "1e7fb976f38d3c0e00f5b7fa2bb774556f51f60683e770b35ff87cfcd15d2067",
+    "primary/official-acm.pdf": "5fb011bceea232aa52cd36ee0dc14a3238d3e5f5311bfc25af742127298afeab",
+    "primary/official-acm.txt": "38b12be2c815e8c50efccc76eb16b326c3780e984243ec681a718054c48c6910",
+    "primary/tsinghua-dissertation-summary.html": "8e511784d95312c8e0a7ec1cea388fc9a1f2f954dde89d97b44e94f0d648d04d"
+  },
+  "published": "2025-11-14",
+  "publisher_pages": "605-613",
+  "title": "FactorMAD: A Multi-Agent Debate Framework Based on Large Language Models for Interpretable Stock Alpha Factor Mining",
+  "venue": "ICAIF '25"
+}

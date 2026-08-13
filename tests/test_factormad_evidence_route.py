@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_macro_economists_audit_routes_paper_only_without_native_credit() -> None:
+def test_factormad_audit_routes_paper_only_and_rejects_local_proxy_credit() -> None:
     subprocess.run([sys.executable, "scripts/build_native_fidelity_ledger.py"], cwd=ROOT, check=True)
     subprocess.run([sys.executable, "scripts/build_paper_evidence_routes.py"], cwd=ROOT, check=True)
     subprocess.run([sys.executable, "scripts/refresh_static_paper_assets.py"], cwd=ROOT, check=True)
@@ -18,26 +18,26 @@ def test_macro_economists_audit_routes_paper_only_without_native_credit() -> Non
         newline="", encoding="utf-8"
     ) as stream:
         native = {row["system_id"]: row for row in csv.DictReader(stream)}
-    row = native["SYS-MACRO-ECONOMISTS-MACHINE"]
+    row = native["SYS-FACTOR-MAD"]
     assert row["public_artifact_status"] == "not_listed"
     assert row["static_tier"] == "R0"
     assert row["native_dated_signal_or_return_shipped"] == "N"
     assert row["blocking_stage"] == "A0_no_public_artifact"
     assert row["fidelity_class"] == "F0_no_public_artifact"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_18_paper_derived_mechanics_four_fail_closed_zero_of_132_"
-        "table_cells_zero_of_12_empirical_panels_no_attributable_pipeline_major_figure_"
-        "table_conflicts"
+        "paper_audit:completed_six_paper_derived_mechanics_seven_fail_closed_zero_of_"
+        "30_table_cells_zero_of_8_empirical_panels_no_attributable_pipeline_local_m0_"
+        "proxy_no_paper_credit"
     )
     note = row["concise_evidence_note"]
     for marker in (
-        "132 displayed quantitative result cells",
-        "12 empirical figure panels",
-        "0/132 cells and 0/12 panels reproduce author-natively",
-        "upon reasonable request",
-        "transaction-cost figure reports Sharpe ratios about 0.84--0.92",
-        "Table 7 reports 0.481--0.571",
-        "begins in 2017",
+        "30 displayed empirical result cells",
+        "eight empirical panels",
+        "0/30 cells and 0/8 panels reproduce author-natively",
+        "CSI500 RoMaD of 1.860 versus FactorMAD's 1.341",
+        "rank normalization also conflicts",
+        "M0 narrative translation",
+        "receives no method or result credit",
     ):
         assert marker in note
 
@@ -45,15 +45,17 @@ def test_macro_economists_audit_routes_paper_only_without_native_credit() -> Non
         ROOT / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
     ).open(newline="", encoding="utf-8") as stream:
         routes = {row["canonical_work_id"]: row for row in csv.DictReader(stream)}
-    route = routes["CensusArxiv260608283"]
+    route = routes["CensusDOI10114537682923770377"]
     assert route["paper_evidence_route"] == "paper_only_underspecified"
     assert route["reachable_public_code_system_ids"] == ""
     assert route["native_pipeline_disposition"] == "paper_only_audit_recorded_no_native_code_pipeline"
     assert route["native_execution_audit_status"] == row["targeted_execution_audit_status"]
     assert route["full_prompt_search_training_pipeline_reproduced"] == "no"
-    assert route["mapping_count"] == "0"
-    assert route["proxy_role"] == "no_proxy"
-    assert route["good_faith_reconstruction"] == "no"
+    assert route["mapping_count"] == "1"
+    assert route["mapping_fidelity_tiers"] == "M0_narrative_translation"
+    assert route["mapping_disposition"] == "clearly_labeled_motif_proxy"
+    assert route["proxy_role"] == "clearly_labeled_favorable_motif_proxy"
+    assert route["good_faith_reconstruction"] == "yes"
 
     generated = (ROOT / "docs/paper/generated_results.tex").read_text()
     assert r"\newcommand{\TargetedAuditCount}{67}" in generated

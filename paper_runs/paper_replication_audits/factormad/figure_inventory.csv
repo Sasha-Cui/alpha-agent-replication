@@ -1,0 +1,7 @@
+figure,empirical_panels,visible_primary_marks_or_series,description,official_pdf_sha256,underlying_numeric_array_or_run_log_recovered,author_native_panel_regenerated,paper_result_credit
+Figure 1,0,0,conceptual FactorMAD framework,5fb011bceea232aa52cd36ee0dc14a3238d3e5f5311bfc25af742127298afeab,False,False,False
+Figure 2,0,0,conceptual four-phase factor-development workflow,5fb011bceea232aa52cd36ee0dc14a3238d3e5f5311bfc25af742127298afeab,False,False,False
+Figure 3,4,60,"IC, RankIC, MSE and AUC bar panels; 15 bars per panel",5fb011bceea232aa52cd36ee0dc14a3238d3e5f5311bfc25af742127298afeab,False,False,False
+Figure 4,2,12,CSI300/CSI500 cumulative-return panels; six series per panel,5fb011bceea232aa52cd36ee0dc14a3238d3e5f5311bfc25af742127298afeab,False,False,False
+Figure 5,1,44,four IC series across 11 iterations,5fb011bceea232aa52cd36ee0dc14a3238d3e5f5311bfc25af742127298afeab,False,False,False
+Figure 6,1,22,two mean code-line series across 11 iterations plus uncertainty ribbons,5fb011bceea232aa52cd36ee0dc14a3238d3e5f5311bfc25af742127298afeab,False,False,False
