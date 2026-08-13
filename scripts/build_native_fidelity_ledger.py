@@ -564,6 +564,29 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-METAPS": (
+        "A pinned MetaPS audit rebuilds the official 25-page arXiv-v1 source at "
+        "99.94% extracted-token multiset overlap and visually checks all 25 official "
+        "and rebuilt pages. It inventories 492 displayed quantitative result cells "
+        "across nine empirical tables and 20 empirical figure panels. Twelve "
+        "independently implemented paper-derived mechanics pass deterministic "
+        "controlled checks, including literal strategy branches, the four size "
+        "buckets, ranking and V1/V2/V3 equations for supplied inputs, and return "
+        "identities. These are specification checks, not author code or empirical "
+        "results. No attributable implementation, simulator, immutable market/news/"
+        "order-flow snapshot, 528-record SFT views, teacher calls, adapters, "
+        "checkpoints, seeds, model traces, orders, fills, portfolio paths, raw arrays, "
+        "or result generator is released; bounded public searches find no attributable "
+        "repository, model, or dataset. Thus 0/492 table cells and 0/20 empirical "
+        "panels reproduce author-natively. Literal paper defects remain explicit: "
+        "the volatility-breakout branches are mathematically unreachable because the "
+        "current price defines the comparison extrema; risk_reset emits REDUCE outside "
+        "the stated BUY/SELL/HOLD action space; and eight raw size modes lack a mapping "
+        "to the four execution buckets. The sandbox terminal pairs consistently imply "
+        "an undisclosed initial equity near 8654.47. Negative searches are bounded, "
+        "not proof that private, deleted, moved, renamed, unindexed, or later material "
+        "does not exist."
+    ),
     "SYS-SHARP": (
         "A pinned SHARP audit rebuilds the official 18-page arXiv-v1 source at "
         "99.94% extracted-token overlap and visually checks all 18 official and "
@@ -1097,6 +1120,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 TARGETED_EXECUTION = {
     "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_released_nav_metrics_31999_of_31999_data_links_static_outputs_no_native_training_or_backtest",
+    "SYS-METAPS": "paper_audit:completed_12_paper_derived_mechanics_zero_of_492_table_cells_zero_of_20_empirical_panels_no_attributable_pipeline",
     "SYS-SHARP": "paper_audit:completed_seven_paper_derived_mechanics_zero_of_210_table_cells_zero_of_1_empirical_panel_cited_dataset_404_no_attributable_pipeline",
     "SYS-AGORA": "paper_audit:completed_two_paper_metric_programs_zero_of_293_table_cells_zero_of_4_empirical_panels_claimed_release_unrecovered_no_attributable_pipeline",
     "SYS-XALPHA": "paper_audit:completed_three_paper_factor_programs_one_contract_pass_zero_of_138_numeric_units_zero_of_3_empirical_panels_no_attributable_pipeline",

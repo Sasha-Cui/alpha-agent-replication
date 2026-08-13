@@ -105,7 +105,7 @@ def test_static_paper_assets_reflect_alphacrafter_correction() -> None:
         r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 33, "
         r"\artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 17}"
     ) in generated
-    assert r"\newcommand{\TargetedAuditCount}{61}" in generated
+    assert r"\newcommand{\TargetedAuditCount}{62}" in generated
     routes = (ROOT / "docs/paper/generated_evidence_routes.tex").read_text()
     assert r"\newcommand{\PublicCodeRouteWorkCount}{34\xspace}" in routes
     assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{35\xspace}" in routes
