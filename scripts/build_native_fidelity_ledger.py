@@ -539,6 +539,30 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-SHARP": (
+        "A pinned SHARP audit rebuilds the official 18-page arXiv-v1 source at "
+        "99.94% extracted-token overlap and visually checks all 18 official and "
+        "rebuilt pages. It inventories 210 displayed quantitative result cells "
+        "across four tables and one empirical cumulative-return panel containing "
+        "six plotted series. Seven independently implemented paper-derived mechanics "
+        "pass deterministic controlled checks: composite score, ranked dollar-neutral "
+        "tail allocation, next-open O2O return, entry-cost accounting, reported metrics, "
+        "validation gate, and rubric bounds. These are specification checks, not author "
+        "code or empirical results. The paper supplies no implementation URL and says "
+        "sector rules are in released code. Its only GitHub URL cites the LongShort-data "
+        "repository xiwenc_msid/LLMforTrading-data, but both the repository and cited "
+        "user currently return HTTP 404. Nine bounded exact GitHub repository/code "
+        "searches, a commit search, and Hugging Face searches expose no attributable "
+        "SHARP implementation or dataset. Thus 0/210 table cells and 0/1 empirical "
+        "panel reproduce author-natively. No immutable Yahoo rows, Finnhub news cache, "
+        "all three exact split calendars, complete analyst/attribution/evolution prompts, "
+        "filled model calls, rubric histories, daily signals/weights/trades/returns, "
+        "baseline seeds, raw arrays, or result generator is public. A price-only baseline "
+        "recovery attempt is not credited because Yahoo returned HTTP 429 and, more "
+        "fundamentally, adjustment settings, exact calendars, Random seed, and complete "
+        "turnover semantics are missing. Internal boundaries include six versus seven "
+        "initial shared rules and unreconciled entry/exit/side-flip cost wording."
+    ),
     "SYS-AGORA": (
         "A pinned Agora/SJS audit rebuilds the official 42-page arXiv-v1 source "
         "at 99.96% extracted-token overlap and visually checks all 42 official "
@@ -1047,6 +1071,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-SHARP": "paper_audit:completed_seven_paper_derived_mechanics_zero_of_210_table_cells_zero_of_1_empirical_panel_cited_dataset_404_no_attributable_pipeline",
     "SYS-AGORA": "paper_audit:completed_two_paper_metric_programs_zero_of_293_table_cells_zero_of_4_empirical_panels_claimed_release_unrecovered_no_attributable_pipeline",
     "SYS-XALPHA": "paper_audit:completed_three_paper_factor_programs_one_contract_pass_zero_of_138_numeric_units_zero_of_3_empirical_panels_no_attributable_pipeline",
     "SYS-TRUST-TRADE": "paper_audit:completed_three_paper_linked_interfaces_183_stock_days_one_of_12_strict_inactive_baseline_cells_zero_of_26_native_panels_no_attributable_trusttrade_pipeline",
