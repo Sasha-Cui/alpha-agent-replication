@@ -1,0 +1,11 @@
+figure,source_asset,panels,empirical_panels,description,rendered_author_asset_recovered,underlying_numeric_array_released,native_figure_regenerated,paper_result_credit
+Figure 1,1.pdf,1,1,PRUDEX radar comparison,True,False,False,False
+Figure 2,2.pdf,1,0,system workflow diagram,True,False,False,False
+Figure 3,3.pdf,1,0,simulated/real trading diagram,True,False,False,False
+Figure 4,4.pdf,1,1,main cumulative-return chart,True,False,False,False
+Figure 5,5.pdf,6,6,six LLM-backbone radar charts,True,False,False,False
+Figure 6,6.pdf,2,2,market report and strategy-meeting examples,True,False,False,False
+Figure 7,7.pdf,1,1,A/H-share live cumulative returns,True,False,False,False
+Figure 8,8.pdf,1,1,meeting-ablation cumulative returns,True,False,False,False
+Figure 9,9.pdf,1,1,LLM-backbone cumulative returns,True,False,False,False
+Figure 10,10.pdf,1,1,AAPL cumulative returns,True,False,False,False

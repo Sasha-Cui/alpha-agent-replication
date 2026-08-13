@@ -1,0 +1,25 @@
+dimension,status,detail
+official_document_source,complete,16-file arXiv source and 27-page PDF recovered; source rebuilds to 27 pages
+project_provenance,direct,arXiv abstract and manuscript directly link quantagents.github.io
+project_repository,r1_static_documentation,"41-file MIT site tree with HTML, figures, profiles, pseudocode images, and meeting videos; no system implementation"
+project_repository_date,precedes_paper,site head is 2024-08-14; arXiv v1 is 2025-10-06
+asset_universe,partially_specified,"NASDAQ-100 constituents named, but no point-in-time membership list or security identifiers"
+market_data,source_named_not_released,"Yahoo daily OHLCV plus 60 indicators; exact downloads, adjustments, calendars, and rows absent"
+text_data,source_named_not_released,"Alpaca news plus financial reports/macro policy; article IDs, snapshots, timing, and preprocessing absent"
+temporal_split,specified,train 2010-01-01 through 2020-12-31; test 2021-01-01 through 2023-12-31
+foundation_model,named_deprecated,gpt-4o-2024-05-13 at temperature 0.7 is named but is now deprecated
+embedding_model,named,text-embedding-3-large and top-10 retrieval are specified
+agents,documented_not_implemented,four named roles and XML-like profiles are published
+tools,labels_and_some_formulas_only,26 labels and 60 indicator descriptions are published; callable implementations are absent
+actions,internally_conflicting,main paper says 10 actions; appendix gives both an 8-action and a 10-action list
+memory,architecture_only,"three memories and top-10 retrieval are described; schema, update code, stores, and records are absent"
+prompts,example_templates_only,"five templates are examples/simplifications; exact runtime prompts, fills, schemas, and parser are absent"
+meetings,pseudocode_and_video_only,four pseudocode screenshots and three dated localhost UI videos document behavior but provide no runnable path
+strategy_pool,underspecified,"described as permutations of indicators and parameters without a complete grammar, parameter grid, or realized pool"
+risk_alert,formula_incomplete,"threshold 0.75 is stated, but weights, component normalizations, and risk-reward function are absent"
+dual_reward_update,nonoperational_formula,"adaptive equations are printed; n, rewards, policy parameterization, optimizer, and training code are absent"
+backtest_execution,missing,"capital, order timing, fills, costs, slippage, constraints, rebalancing, and corporate actions are not operationally specified"
+baselines,names_only,"nine baselines are named without commits, adapters, configurations, seeds, or predictions"
+repeated_runs,missing,"no random seeds, number of runs, uncertainty estimates, selection traces, or robustness protocol"
+live_trading,claims_without_lineage,"rendered curves/table exist; brokerage records, capital, positions, orders, fills, costs, and dated path are absent"
+published_results,not_regenerated,zero of 238 numeric table cells and zero of 14 empirical panels were regenerated

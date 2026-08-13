@@ -1,0 +1,12 @@
+artifact,name,format,shown_date,duration_seconds,video_frames,runnable,raw_trace,system_source_credit
+algorithm_1,market_analysis_meeting,rendered pseudocode PNG,,,,False,False,False
+algorithm_2,strategy_development_meeting,rendered pseudocode PNG,,,,False,False,False
+algorithm_3,risk_alert_meeting,rendered pseudocode PNG,,,,False,False,False
+algorithm_4,otto_decision,rendered pseudocode PNG,,,,False,False,False
+agent1.png,Bob profile,XML-like profile screenshot,,,,False,False,False
+agent2.png,Dave profile,XML-like profile screenshot,,,,False,False,False
+agent3.png,Emily profile,XML-like profile screenshot,,,,False,False,False
+agent4.png,Otto profile,XML-like profile screenshot,,,,False,False,False
+vis1.mp4,market_analysis_meeting,1728x1080 H.264 UI recording,2021-07-02,91.788481,2752,False,False,False
+vis2.mp4,strategy_development_meeting,1728x1080 H.264 UI recording,2022-09-30,92.09034,2761,False,False,False
+vis3.mp4,risk_alert_meeting,1728x1080 H.264 UI recording,2023-10-26,84.288435,2527,False,False,False

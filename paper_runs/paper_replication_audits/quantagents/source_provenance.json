@@ -1,0 +1,66 @@
+{
+  "arxiv_id": "2510.04643",
+  "arxiv_version": "v1 only; submitted 2025-10-06 09:45:57 UTC",
+  "attribution": "arXiv abstract and manuscript directly link the exact-title first-party project site",
+  "authors": [
+    "Xiangyu Li",
+    "Yawen Zeng",
+    "Xiaofen Xing",
+    "Jin Xu",
+    "Xiangmin Xu"
+  ],
+  "bounded_repository_search": {
+    "broad_quantagents_metadata_matches": 246,
+    "exact_title_matches": 0,
+    "exact_title_plus_simulated_trading_matches": 0,
+    "interpretation": "broad matches are unrelated names, aggregators, or third-party adaptations; no author system implementation recovered",
+    "negative_search_limit": "repository metadata/readme search cannot rule out private, deleted, aliased, or unindexed releases"
+  },
+  "model_dependency": {
+    "current_status": "deprecated",
+    "interpretation": "material contamination risk for most of the 2021--2023 test, not proof that a reported cell is false",
+    "official_pretraining_horizon": "October 2023",
+    "official_system_card_sha256": "e2579ecb185cbc13bac39f9dbf25e1917f78e1ea5a3a5023165c6614fb5db724",
+    "snapshot": "gpt-4o-2024-05-13"
+  },
+  "official_pdf_pages": 27,
+  "official_pdf_sha256": "a1cc7214ce25cab2b9cdfb6a771f1fb8606cb0fd7319bccf25d233e6c005fd73",
+  "paper_license": "CC BY 4.0",
+  "project_repository": "https://github.com/QuantAgents/quantagents.github.io",
+  "project_repository_archive_sha256": "33b11602cc4e1a326b7677f8155d580f0caf38a4a80189bcca45db1b0ded17c3",
+  "project_repository_head": "a1d0d56d04d2b73a5fbc472ec9af865a29be6ef7",
+  "project_site": "https://quantagents.github.io/",
+  "release_boundary": {
+    "author_documentation_recovered": true,
+    "complete_research_data_recovered": false,
+    "published_result_lineage_recovered": false,
+    "trading_system_source_recovered": false
+  },
+  "source_archive_sha256": "b978a8d7be609ded462b8ed778fe45d2f4f5ef4014994589a2a0d8fbdfdcabab",
+  "source_file_bytes": 1812381,
+  "source_files": 16,
+  "system_id": "SYS-QUANT-AGENTS",
+  "title": "QuantAgents: Towards Multi-agent Financial System via Simulated Trading",
+  "visual_qa": {
+    "contact_sheet_sha256": {
+      "official-contact-1-9": "7812bc6b9530578ba63c765ef124b4a7228ec2b52d46e8c5dc249a4645f43729",
+      "official-contact-10-18": "8364a8aa30912d09953c7e60ee281b7c4c3b0192c4f9c7503c45a1d037bde1b0",
+      "official-contact-19-27": "6ae78f6a830b80b0523e6401a8094c34f1ecd814948eca1315111007f13d4baa",
+      "rebuilt-contact-1-9": "5f6f3ee7ce5338aec3d2ed32d64b788609811457a25b38fc7862624c1d673c2a",
+      "rebuilt-contact-10-18": "a5507d7edb7ae96754bb9881f88258af26279ed8665d8daf334999d412422721",
+      "rebuilt-contact-19-27": "c4925446c0279ca0eb0e8e9e9f4e61fcf8a4d2dad52098f5e0da42dd5e5ea808",
+      "site-algorithms-profiles-contact": "8be9d21bf91fe88c2f9958d2071812ac3517970b3f857a2178be79831f93ae7f",
+      "source-assets/source-assets-contact": "516b3f7fd982804212dbbb585adb668643769664b89b0cb2ab08cc7515b1ddf8",
+      "videos/vis1-contact": "533bc2198aab07ce2f3bd5559a4d5a6d3ecc9432e3151dff4eda2b66c418619d",
+      "videos/vis2-contact": "32a5ef7371f8c1332157e1cad023453fe4f0ad5b76241df6033b06d8947632c4",
+      "videos/vis3-contact": "fdf3f32883de70fd4609e5366f1265782290a72d7e158eb652760c59b0c33d70"
+    },
+    "official_pages_inspected": 27,
+    "rebuilt_pages_inspected": 27,
+    "site_algorithm_profile_images_inspected": 8,
+    "site_video_contact_sheets_inspected": 3,
+    "source_figure_assets_inspected": 10,
+    "unreadable_clipped_overlapping_blank_or_missing_research_content": 0
+  },
+  "work_id": "CensusArxiv251004643"
+}

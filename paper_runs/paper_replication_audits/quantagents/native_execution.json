@@ -1,0 +1,18 @@
+{
+  "author_site_meeting_videos_reviewed": 3,
+  "author_site_static_assets_validated": true,
+  "llm_calls_made": 0,
+  "manuscript_rebuild_is_system_execution": false,
+  "manuscript_source_rebuilt": true,
+  "native_agent_actions_loaded": 0,
+  "native_memory_rows_loaded": 0,
+  "native_orders_or_fills_loaded": 0,
+  "native_portfolio_trajectories_loaded": 0,
+  "original_market_rows_loaded": 0,
+  "original_news_rows_loaded": 0,
+  "public_quantagents_system_source_found": false,
+  "published_empirical_panels_faithfully_regenerated": 0,
+  "published_table_cells_faithfully_regenerated": 0,
+  "quantagents_pipeline_executed": false,
+  "strict_boundary": "document builds, author-site duplicates, pseudocode, profiles, videos, and plot digitization receive zero paper-result credit"
+}

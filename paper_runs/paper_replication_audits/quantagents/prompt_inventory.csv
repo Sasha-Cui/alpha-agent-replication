@@ -1,0 +1,9 @@
+artifact,location,publication_form,paper_template_or_symbol_recovered,runtime_fill_released,actual_request_released,actual_response_released,executable_prompt_path_released
+simplified_agent_decision,Section 3.3,Dave/profile-prices-news-tools-example JSON template,True,False,False,False,False
+market_analysis,Appendix B,Emily/current-prices/recent-news/tool-results JSON template,True,False,False,False,False
+strategy_development,Appendix B,Bob/strategy-parameters/simulation-data/performance-metrics JSON template,True,False,False,False,False
+risk_management,Appendix B,Dave/risk-indicators/events JSON template,True,False,False,False,False
+investment_decision,Appendix B,Otto/opportunities/market-data JSON template,True,False,False,False,False
+phi_D_action_prompt,Equation 2,symbol only; exact production prompt absent,True,False,False,False,False
+phi_R_report_prompt,Section 3.4.1,symbol only; exact production prompt absent,True,False,False,False,False
+response_parser_D,Equation 2,symbol only; schema/parser implementation absent,True,False,False,False,False

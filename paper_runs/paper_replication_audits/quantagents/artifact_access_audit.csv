@@ -1,0 +1,8 @@
+artifact,url,status,tier,system_source_credit
+official arXiv v1 PDF/source,https://arxiv.org/abs/2510.04643v1,recovered,primary paper source,False
+paper-linked project site,https://quantagents.github.io/,recovered and revision-pinned,R1 author documentation,False
+project repository,https://github.com/QuantAgents/quantagents.github.io,41 static-site files; MIT,R1 author documentation,False
+QuantAgents code,,not released; no matching exact-title repository found,missing,False
+QuantAgents dataset,,not released; site control is commented and misroutes to HedgeAgents,missing,False
+MathVista template data,,"6,141 unrelated VQA records explicitly excluded",unrelated template residue,False
+GPT-4o system card/model page,https://cdn.openai.com/gpt-4o-system-card.pdf,recovered; October 2023 horizon and snapshot deprecation recorded,official dependency provenance,False

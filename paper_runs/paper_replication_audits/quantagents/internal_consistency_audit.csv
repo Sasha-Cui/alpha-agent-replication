@@ -1,0 +1,14 @@
+check,status,detail
+full_system_volatility,hard_internal_conflict,main and LLM tables print 1.43%; all-meetings ablation row prints 1.23%
+action_count,hard_internal_conflict,main text says ten actions; appendix prints a first eight-action list and then a second ten-action list
+author_site_dataset,author_source_scope_conflict,"site says Bitcoin/FX/DJIA, 2015--2023; paper says NASDAQ-100, 2010--2023"
+author_site_code_dataset_controls,unfulfilled_release,Paper/Code/Dataset controls are commented and point to HedgeAgents; no QuantAgents code or dataset is released
+live_period,hard_internal_conflict,table/prose/plot say Q3 2024--Q1 2025; appendix overview says Q1--Q3 2024
+annual_return_equation,mathematical_specification_error,printed ARR raises (terminal/initial minus one) to 1/h instead of subtracting one after annualizing terminal/initial
+risk_alert_weights,underspecified,"w1--w4, component scaling, and f(Rscore, eta, tau) are absent"
+strategy_pool,underspecified,paper promises permutations but omits the finite indicator/parameter domains and realized strategies
+prompt_disclosure,overbroad_claim,"paper says templates are fully disclosed; appendix gives examples while phi_D, phi_R, parser, fills, and runtime requests remain absent"
+result_improvements,consistent,nine improvement percentages follow the displayed best comparators to rounding
+paper_site_table,partial_exact_duplicate,"90 site leaderboard cells match the paper; this is corroboration, not native regeneration"
+model_temporal_boundary,material_contamination_risk,2021--2023 test mostly lies inside GPT-4o's official October 2023 pretraining horizon; not proof any cell is false
+site_template_residue,excluded_unrelated_artifact,"6,141-record MathVista/VQA data and visualizer code are unrelated to QuantAgents"
