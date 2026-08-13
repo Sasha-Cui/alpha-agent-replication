@@ -3,10 +3,10 @@
 
 The audit enumerates all numeric experimental cells in Tables 2--9, separates
 result cells from configuration cells, checks repeated-paper identities, traces
-the active official runner, and executes only the release's deterministic
-synthetic smoke component. It does not call an LLM, download market data, or
-count synthetic outputs, repeated cells, or source-code presence as paper
-result reproduction.
+the complete reachable official history and active runner, and executes bounded
+deterministic synthetic diagnostics across every released strategy. It does not
+call an LLM, download market data, or count synthetic outputs, repeated cells,
+source-code presence, or diagnostic strategy runs as paper-result reproduction.
 """
 
 from __future__ import annotations
@@ -25,10 +25,28 @@ from typing import Any, Mapping, Sequence
 
 
 SOURCE_COMMIT = "412fee13d905bf5a25f0958aa572b7c668ccb925"
+SOURCE_ROOT_COMMIT = "cf3b3d18474b77a61b97d7a72e7fe7b20d1a898f"
 SOURCE_URL = "https://github.com/jarrettyu/AlphaMemo"
 PAPER_URL = "https://arxiv.org/pdf/2606.20625v1"
 PAPER_SHA256 = "64dbd4558ec63a88bbf8fc8245b7eb43443878969531a9661e15c31f6fcedcd0"
+SOURCE_ROOT_README_SHA256 = "d87aee04c794447755eb5f861834ea0b39bbd01476b08cbb7130be163b83ec79"
 DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
+
+RELEASED_STRATEGIES = ("alphamemo", "sspm", "veto", "structured", "graph", "gp", "random")
+ACTIVE_DIAGNOSTIC_SHA256 = {
+    "alphamemo": "70b820b215c4fba55edb9381998f64b67f06d67bfb9a429c774083c9a0b92359",
+    "sspm": "174ab3ecfdbb133db4934f9a86b154e9f1f0e226cc89f61e126f040242f8df9d",
+    "veto": "75609ed4627a63422a0fb1cfee4153d11be85bdc0fc86e097981c1b817a2eeba",
+    "structured": "a50916c457ea9e6b8458fadb9384663c00f418e315760bbb22a5512778d98aef",
+    "graph": "c279a28ef0644f41f132c7bf2684a58297d57e9b13f709287522e297d93ba2fa",
+    "gp": "4595b65e90893f69d5eec424a54cd5695a2657fd74d2c29452e699b5cbf64655",
+    "random": "21dd2a7738a2e8c8f8f45d0caceadecdd83b35bb183530a53968a469d9a94be2",
+}
+ACTIVE_DIAGNOSTIC_BRANCH_COUNTS = {
+    "alphamemo": {"motif_prior": 20, "random_or_warmup": 12},
+    "sspm": {"lambda_positive": 28, "lambda_zero": 4},
+    "veto": {"apv_resample": 24, "warmup": 8},
+}
 
 PINNED_SOURCE_SHA256 = {
     "README.md": "2df79fa9f1e5112669110bb4b8df4c94f9a90bc94f0623542b0c48fb4c04d74d",
@@ -184,6 +202,159 @@ def git_files(root: Path) -> list[str]:
         text=True,
     ).stdout
     return [line for line in output.splitlines() if line]
+
+
+def git_text(root: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
+def source_history_audit(source_root: Path) -> dict[str, Any]:
+    commits = []
+    for line in git_text(
+        source_root,
+        "log",
+        "--reverse",
+        "--format=%H%x1f%aI%x1f%cI%x1f%an%x1f%s",
+        "--all",
+    ).splitlines():
+        commit, authored, committed, author, subject = line.split("\x1f")
+        commits.append(
+            {
+                "commit": commit,
+                "authored_at": authored,
+                "committed_at": committed,
+                "author": author,
+                "subject": subject,
+            }
+        )
+
+    roots = git_text(source_root, "rev-list", "--max-parents=0", "--all").splitlines()
+    tags = git_text(source_root, "tag", "--list").splitlines()
+    refs = [
+        line
+        for line in git_text(
+            source_root,
+            "for-each-ref",
+            "--format=%(refname)|%(objectname)",
+            "refs/heads",
+            "refs/remotes",
+        ).splitlines()
+        if line
+    ]
+    local_branches = [line for line in refs if line.startswith("refs/heads/")]
+    remote_branches = [
+        line
+        for line in refs
+        if line.startswith("refs/remotes/") and not line.startswith("refs/remotes/origin/HEAD|")
+    ]
+    changed_paths = [
+        line
+        for line in git_text(
+            source_root,
+            "diff",
+            "--name-status",
+            SOURCE_ROOT_COMMIT,
+            SOURCE_COMMIT,
+        ).splitlines()
+        if line
+    ]
+    root_readme = subprocess.run(
+        ["git", "-C", str(source_root), "show", f"{SOURCE_ROOT_COMMIT}:README.md"],
+        check=True,
+        capture_output=True,
+    ).stdout
+    root_readme_text = root_readme.decode("utf-8")
+    fsck = subprocess.run(
+        ["git", "-C", str(source_root), "fsck", "--no-reflogs", "--unreachable"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    root_files = git_text(source_root, "ls-tree", "-r", "--name-only", SOURCE_ROOT_COMMIT).splitlines()
+    head_files = git_text(source_root, "ls-tree", "-r", "--name-only", SOURCE_COMMIT).splitlines()
+    remote_url = git_text(source_root, "remote", "get-url", "origin").strip()
+    is_shallow = git_text(source_root, "rev-parse", "--is-shallow-repository").strip() == "true"
+
+    expected_commits = [SOURCE_ROOT_COMMIT, SOURCE_COMMIT]
+    if [item["commit"] for item in commits] != expected_commits:
+        raise RuntimeError(f"Expected two-commit official history {expected_commits}, found {commits}")
+    if roots != [SOURCE_ROOT_COMMIT] or tags or changed_paths != ["M\tREADME.md"]:
+        raise RuntimeError("Pinned official source topology changed")
+    expected_main_ref = f"refs/heads/main|{SOURCE_COMMIT}"
+    expected_origin_main_ref = f"refs/remotes/origin/main|{SOURCE_COMMIT}"
+    if local_branches != [expected_main_ref] or remote_branches != [expected_origin_main_ref]:
+        raise RuntimeError("Pinned official source branch set changed")
+    if is_shallow or remote_url not in {SOURCE_URL, f"{SOURCE_URL}.git"}:
+        raise RuntimeError("Pinned official source clone provenance changed")
+    if len(root_files) != 49 or len(head_files) != 49:
+        raise RuntimeError("Pinned official source tree size changed")
+    if sha256_bytes(root_readme) != SOURCE_ROOT_README_SHA256:
+        raise RuntimeError("Pinned root-commit README changed")
+    expected_readme_fragments = (
+        "train: 2016-01-01 to 2020-12-31",
+        "validation: 2021-01-01 to 2021-12-31",
+        "test/backtest: 2022-01-01 to 2025-12-26",
+        "budget=500",
+        "batch_size=10",
+        "warmup=200",
+        "memory_weight=0.05",
+        "motif_sample_size=4",
+        "random_motif_prob=0.35",
+        "max_factors=50",
+        "build approximate Qlib-format OHLCV data from Yahoo Finance",
+        "For final paper numbers, use a stable data snapshot",
+    )
+    if not all(fragment in root_readme_text for fragment in expected_readme_fragments):
+        raise RuntimeError("Pinned root-commit README evidence changed")
+    if fsck.stdout.strip() or fsck.stderr.strip():
+        raise RuntimeError("Unexpected unreachable or corrupt objects in pinned clone")
+
+    return {
+        "scope": "all locally reachable official-clone refs",
+        "remote_url": remote_url,
+        "is_shallow_repository": is_shallow,
+        "reachable_commit_count": len(commits),
+        "root_commit_count": len(roots),
+        "branch_and_remote_refs": refs,
+        "local_branch_count": len(local_branches),
+        "remote_tracking_branch_count": len(remote_branches),
+        "tag_count": len(tags),
+        "unreachable_object_output_empty": True,
+        "commits": commits,
+        "root_to_head_changed_paths": changed_paths,
+        "root_tree_file_count": len(root_files),
+        "head_tree_file_count": len(head_files),
+        "root_readme_sha256": SOURCE_ROOT_README_SHA256,
+        "root_readme_recovered_configuration": {
+            "train": "2016-01-01 to 2020-12-31",
+            "validation": "2021-01-01 to 2021-12-31",
+            "test_and_backtest": "2022-01-01 to 2025-12-26",
+            "strategy": "alphamemo",
+            "budget": 500,
+            "batch_size": 10,
+            "label_days": 20,
+            "warmup": 200,
+            "memory_weight": 0.05,
+            "motif_sample_size": 4,
+            "random_motif_prob": 0.35,
+            "max_factors": 50,
+        },
+        "root_readme_data_warning": (
+            "Yahoo builders are approximate; final paper numbers require a stable data snapshot "
+            "with exact provider paths and coverage."
+        ),
+        "historical_native_result_artifacts_found": False,
+        "paper_result_reproduction": False,
+    }
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
@@ -382,6 +553,8 @@ def source_conformance(source_root: Path) -> list[dict[str, Any]]:
     cli = text("sspm/cli.py")
     rows = [
         ("official_entrypoint", "paper AlphaMemo runner", "scripts/run_main.sh invokes sspm main-table", "component_present"),
+        ("official_history", "complete reachable paper-era source history", "non-shallow official clone has two commits; only README.md changes from root to HEAD", "history_audited"),
+        ("root_readme_main_configuration", "source-declared current-draft operating point", "root README pins budget=500, batch=10, warmup=200, weight=.05, motif sample=4, random=.35, max factors=50", "historical_configuration_recovered"),
         ("paper_markets", "CSI500 and S&P500", "official runner defaults to csi500 sp500", "configuration_match"),
         ("paper_split", "train 2016-2020; validation 2021; test 2022-2025-12-26", "paper2025 preset matches exact dates", "configuration_match"),
         ("label_horizon", "20 trading days", "official runner LABEL_DAYS=20 and Qlib label is h-day close-to-close", "configuration_match"),
@@ -413,6 +586,8 @@ def source_conformance(source_root: Path) -> list[dict[str, Any]]:
         ("llm_lineage_and_retry_provenance", "exact calls/responses and retry outcomes", "no prompts/responses/costs are shipped; terminal failures silently use a fixed fallback formula", "missing_and_behavioral_risk"),
         ("dependency_snapshot", "exact environment", "some packages pinned, core numpy/pandas/scipy and API endpoint are not", "partial_unpinned"),
         ("paper_result_collector", "all Tables 2--9", "collect_results reads main/variant metrics but no frozen inputs or outputs", "component_only"),
+        ("released_strategy_aliases", "distinct named comparison methods", "structured and graph instantiate the same StructuredSearchStrategy; alphamemo and graphmemo instantiate GraphMemoryStrategy", "aliases_not_distinct_methods"),
+        ("released_smoke_memory_branch", "exercise AlphaMemo memory policy", "official 12-step smoke has warmup=30 and never starts a batch beyond step 8", "pre_memory_component_only"),
     ]
     # Fail closed if the specific released paths supporting these observations drift.
     assert 'SUCCESS_ICIR="${SUCCESS_ICIR:-0.02}"' in run_main
@@ -484,21 +659,131 @@ def run_native_component_checks(source_root: Path, source_python: Path) -> tuple
             payload = json.loads(path.read_text(encoding="utf-8"))
             hashes.append(sha256(path))
             summaries.append(payload["summary"])
-    if len(set(hashes)) != 1 or summaries[0] != summaries[1]:
-        raise RuntimeError("Pinned native synthetic smoke run is not deterministic")
-    expected_summary = {
-        "strategy": "alphamemo",
-        "n_effective": 5,
-        "n_ok": 12,
-        "budget": 12,
-        "mean_abs_ic_ok": 0.04637932219853949,
-        "mean_abs_ic_discovered": 0.05564901407744506,
-        "mean_abs_icir_discovered": 0.3618666753391596,
-        "mean_abs_ric_discovered": 0.05496439758610393,
-        "mean_abs_ricir_discovered": 0.35448448825152046,
-    }
-    if summaries[0] != expected_summary or hashes[0] != "82b09f8e2dbc77be1553295fad848b17354027b40fcd2e70c964be767f3955c1":
-        raise RuntimeError("Pinned native smoke output changed")
+        if len(set(hashes)) != 1 or summaries[0] != summaries[1]:
+            raise RuntimeError("Pinned native synthetic smoke run is not deterministic")
+        expected_summary = {
+            "strategy": "alphamemo",
+            "n_effective": 5,
+            "n_ok": 12,
+            "budget": 12,
+            "mean_abs_ic_ok": 0.04637932219853949,
+            "mean_abs_ic_discovered": 0.05564901407744506,
+            "mean_abs_icir_discovered": 0.3618666753391596,
+            "mean_abs_ric_discovered": 0.05496439758610393,
+            "mean_abs_ricir_discovered": 0.35448448825152046,
+        }
+        if summaries[0] != expected_summary or hashes[0] != "82b09f8e2dbc77be1553295fad848b17354027b40fcd2e70c964be767f3955c1":
+            raise RuntimeError("Pinned native smoke output changed")
+
+        strategy_rows = []
+        strategy_payloads: dict[str, dict[str, Any]] = {}
+        for strategy in RELEASED_STRATEGIES:
+            run_hashes = []
+            run_summaries = []
+            for index in (1, 2):
+                path = Path(tmp) / f"active-{strategy}-{index}.json"
+                subprocess.run(
+                    [
+                        str(source_python), "-m", "sspm", "run", "--strategy", strategy,
+                        "--budget", "32", "--batch-size", "4", "--seed", "7", "--n-days", "180",
+                        "--n-assets", "40", "--warmup", "8", "--quiet", "--out", str(path),
+                    ],
+                    cwd=source_root,
+                    env=environment,
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
+                payload = json.loads(path.read_text(encoding="utf-8"))
+                run_hashes.append(sha256(path))
+                run_summaries.append(payload["summary"])
+                if index == 1:
+                    strategy_payloads[strategy] = payload
+            if len(set(run_hashes)) != 1 or run_summaries[0] != run_summaries[1]:
+                raise RuntimeError(f"Pinned active {strategy} diagnostic is not deterministic")
+            if run_hashes[0] != ACTIVE_DIAGNOSTIC_SHA256[strategy]:
+                raise RuntimeError(f"Pinned active {strategy} diagnostic output changed")
+            strategy_rows.append(
+                {
+                    "strategy": strategy,
+                    "runs": 2,
+                    "sha256": run_hashes[0],
+                    "deterministic": True,
+                    "budget": 32,
+                    "warmup": 8,
+                    "n_ok": run_summaries[0]["n_ok"],
+                    "n_effective": run_summaries[0]["n_effective"],
+                    "mean_abs_ic_ok": run_summaries[0]["mean_abs_ic_ok"],
+                    "diagnostic_keys": sorted(strategy_payloads[strategy]["diagnostics"]),
+                    "paper_configuration": False,
+                    "paper_result_reproduction": False,
+                }
+            )
+
+        def normalized_events(strategy: str) -> list[dict[str, Any]]:
+            rows = json.loads(json.dumps(strategy_payloads[strategy]["events"]))
+            for row in rows:
+                row.pop("strategy")
+            return rows
+
+        if normalized_events("structured") != normalized_events("graph"):
+            raise RuntimeError("Released structured/graph alias trajectory changed")
+
+        instrumentation = r'''
+import json, sys
+from collections import Counter
+from sspm.runner import RunConfig, run_search
+from sspm.strategies.graph_memory import GraphMemoryStrategy
+from sspm.strategies.sspm import SSPMStrategy
+from sspm.strategies.veto_memory import VetoMemoryStrategy
+
+strategy = sys.argv[1]
+counts = Counter()
+if strategy == "alphamemo":
+    original = GraphMemoryStrategy._choose_motif
+    def wrapped(self, category, step):
+        motif, meta = original(self, category, step)
+        counts[meta["memory_mode"]] += 1
+        return motif, meta
+    GraphMemoryStrategy._choose_motif = wrapped
+elif strategy == "veto":
+    original = VetoMemoryStrategy._choose_motif
+    def wrapped(self, category, step):
+        motif, meta = original(self, category, step)
+        counts[meta["memory_mode"]] += 1
+        return motif, meta
+    VetoMemoryStrategy._choose_motif = wrapped
+else:
+    original = SSPMStrategy.propose
+    def wrapped(self, n, step):
+        candidates = original(self, n, step)
+        for candidate in candidates:
+            lam = candidate.meta.get("lambda")
+            counts["lambda_positive" if lam and lam > 0 else "lambda_zero"] += 1
+        return candidates
+    SSPMStrategy.propose = wrapped
+run_search(
+    RunConfig(
+        strategy=strategy, budget=32, batch_size=4, seed=7,
+        n_days=180, n_assets=40, warmup=8,
+    ),
+    verbose=False,
+)
+print(json.dumps(counts, sort_keys=True))
+'''
+        branch_counts = {}
+        for strategy in ACTIVE_DIAGNOSTIC_BRANCH_COUNTS:
+            result = subprocess.run(
+                [str(source_python), "-c", instrumentation, strategy],
+                cwd=source_root,
+                env=environment,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            branch_counts[strategy] = json.loads(result.stdout)
+        if branch_counts != ACTIVE_DIAGNOSTIC_BRANCH_COUNTS:
+            raise RuntimeError(f"Pinned active memory branch counts changed: {branch_counts}")
 
     factor_program = """
 import json, numpy as np, sys
@@ -538,6 +823,30 @@ print(json.dumps(out))
         "synthetic_smoke_sha256": hashes[0],
         "synthetic_smoke_deterministic": True,
         "synthetic_smoke_summary": summaries[0],
+        "synthetic_smoke_configured_warmup": 30,
+        "synthetic_smoke_max_batch_start_step": 8,
+        "synthetic_smoke_memory_policy_branch_exercised": False,
+        "synthetic_smoke_scope": "pre-memory parser/evaluator/search-loop diagnostic only",
+        "active_strategy_diagnostic": {
+            "strategies": list(RELEASED_STRATEGIES),
+            "runs_per_strategy": 2,
+            "config": {
+                "budget": 32,
+                "batch_size": 4,
+                "seed": 7,
+                "n_days": 180,
+                "n_assets": 40,
+                "warmup": 8,
+                "generator": "heuristic",
+                "evaluator": "synthetic",
+            },
+            "all_deterministic": True,
+            "memory_branch_counts": branch_counts,
+            "structured_and_graph_alias_trajectory_equal": True,
+            "rows": strategy_rows,
+            "paper_configuration": False,
+            "paper_result_reproduction": False,
+        },
         "paper_result_reproduction": False,
     }
     return component, factor_rows
@@ -559,6 +868,7 @@ def verify_pins(source_root: Path, paper_pdf: Path) -> str:
 
 def build_audit(source_root: Path, paper_pdf: Path, source_python: Path, output_dir: Path) -> dict[str, Any]:
     commit = verify_pins(source_root, paper_pdf)
+    history = source_history_audit(source_root)
     conformance = result_conformance()
     identities = paper_internal_identities()
     config = source_conformance(source_root)
@@ -585,6 +895,9 @@ def build_audit(source_root: Path, paper_pdf: Path, source_python: Path, output_
     (output_dir / "native_synthetic_component.json").write_text(
         json.dumps(component, indent=2) + "\n", encoding="utf-8"
     )
+    (output_dir / "official_source_history.json").write_text(
+        json.dumps(history, indent=2) + "\n", encoding="utf-8"
+    )
 
     manifest: dict[str, Any] = {
         "audit": "AlphaMemo paper v1 Tables 2--9 versus pinned official source",
@@ -596,6 +909,15 @@ def build_audit(source_root: Path, paper_pdf: Path, source_python: Path, output_
         "source_url": SOURCE_URL,
         "source_commit": commit,
         "source_commit_date": "2026-05-26",
+        "source_history_reachable_commits": history["reachable_commit_count"],
+        "source_history_root_commits": history["root_commit_count"],
+        "source_history_local_branches": history["local_branch_count"],
+        "source_history_remote_tracking_branches": history["remote_tracking_branch_count"],
+        "source_history_tags": history["tag_count"],
+        "source_history_root_to_head_only_readme_changed": history["root_to_head_changed_paths"] == ["M\tREADME.md"],
+        "source_history_native_result_artifacts_found": False,
+        "root_readme_configuration_recovered": True,
+        "root_readme_stable_data_snapshot_warning_recovered": True,
         "paper_numeric_tables_audited": [2, 3, 4, 5, 6, 7, 8, 9],
         "paper_numeric_table_cells_total": 484,
         "paper_numeric_result_cells_total": 474,
@@ -611,7 +933,15 @@ def build_audit(source_root: Path, paper_pdf: Path, source_python: Path, output_
         "tracked_source_files_total": len(source),
         "native_source_tests_passed": 1,
         "native_synthetic_smoke_deterministic": True,
+        "native_synthetic_smoke_memory_policy_branch_exercised": False,
         "native_synthetic_smoke_paper_result_reproduction": False,
+        "native_released_strategies_diagnosed": len(RELEASED_STRATEGIES),
+        "native_active_strategy_diagnostic_runs": 2 * len(RELEASED_STRATEGIES),
+        "native_active_strategy_diagnostics_deterministic": True,
+        "native_active_memory_branches_exercised": True,
+        "native_active_strategy_diagnostics_paper_configuration": False,
+        "native_active_strategy_diagnostics_paper_result_reproduction": False,
+        "released_structured_and_graph_are_aliases": True,
         "published_representative_formulas_native_parser_executable": 5,
         "published_representative_formula_metrics_reproduced": 0,
         "native_paper_data_snapshot_shipped": False,
@@ -627,9 +957,13 @@ def build_audit(source_root: Path, paper_pdf: Path, source_python: Path, output_
         "paper_fixed_budget_and_ablation_runners_shipped": False,
         "audit_called_llm_or_external_data_api": False,
         "interpretation": (
-            "The 49-file official release is executable at the synthetic-component level: its sole test passes, "
-            "a pinned heuristic smoke run is deterministic, and all five paper formulas execute in the native "
-            "parser on synthetic data. None of that reproduces the paper. No Qlib input snapshot, reported LLM "
+            "The complete reachable official history has only two commits and 49-file trees; only README.md "
+            "changes, and no historical result artifact exists. Its deleted root README recovers the intended "
+            "500-step operating point and explicitly says the Yahoo data builders are approximate. The release "
+            "is executable at the synthetic-component level: its sole test passes, all seven CLI strategies run "
+            "deterministically in bounded diagnostics that activate the available memory branches, and all five "
+            "paper formulas execute in the native parser on synthetic data. None of that reproduces the paper. "
+            "The official 12-step smoke itself never reaches its 30-step memory warmup. No Qlib input snapshot, reported LLM "
             "trajectory, factor pool, prediction, return, or table output is shipped, leaving 0/474 result cells "
             "natively reproduced. The active official runner also uses ICIR threshold 0.02 instead of the paper's "
             "0.10 and does not release the residual/fixed-budget/ablation runs. Source inspection shows deeper "
@@ -651,11 +985,33 @@ trajectories, factor pools, predictions, returns, or table outputs.
 - Official paper: {PAPER_URL} (arXiv v1; SHA-256 `{PAPER_SHA256}`).
 - Official source: {SOURCE_URL}, commit `{commit}` (2026-05-26).
 
+## Complete reachable source history
+
+- The non-shallow official clone contains exactly two reachable commits, one root,
+  one `main` lineage, no tags, and no unreachable objects. Both trees contain 49
+  files; only `README.md` changed. There is no hidden paper-result tree analogous
+  to AlphaAgent's public legacy branch.
+- The root README (SHA-256 `{SOURCE_ROOT_README_SHA256}`) recovers the source's
+  declared current-draft configuration: budget 500, batch size 10, label horizon
+  20, warmup 200, memory weight 0.05, motif sample 4, random motif probability
+  0.35, and maximum factor pool 50. It also explicitly calls the Yahoo builders
+  approximate and says final numbers require a stable snapshot. Configuration
+  provenance is valuable, but it cannot substitute for the absent snapshot.
+
 ## What genuinely passes
 
 - The release's one smoke test passes under a compatible Python 3.12 environment.
 - Two identical native synthetic runs produce the same SHA-256 and the documented
-  12-step summary. This validates a deterministic heuristic component only.
+  12-step summary. That smoke has warmup 30, so its last batch starts at step 8 and
+  never exercises AlphaMemo's memory-policy branch.
+- Two runs of each of all seven released CLI strategy names are deterministic in a
+  bounded 32-step synthetic diagnostic with warmup shortened to 8. Instrumentation
+  observes AlphaMemo motif-prior, SSPM positive-lambda, and veto APV-resampling
+  branches. This validates released control flow only. The configuration is not a
+  paper setting, and every diagnostic receives zero paper-result credit.
+- `structured` and `graph` produce the same normalized trajectory because both
+  names instantiate `StructuredSearchStrategy`; they are aliases, not separate
+  replicated methods.
 - All five Table 9 formulas execute in the released formula parser on synthetic
   arrays. Their paper metrics cannot be computed without the paper CSI500 panel.
 - The active runner matches the two markets, 20-day label, date splits, model alias,

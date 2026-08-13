@@ -210,13 +210,20 @@ ARTIFACT_NOTES = {
     "SYS-ALPHA-MEMO": (
         "N",
         "A pinned arXiv-v1 audit enumerates all 484 numeric experimental cells in "
-        "Tables 2--9: 474 results and 10 configuration cells. The official test and "
-        "a deterministic native synthetic smoke run pass, and the native parser can "
-        "execute all five published formulas on synthetic arrays. These are components, "
-        "not paper outputs. No Qlib data snapshot, search trajectory, factor pool, "
-        "prediction, return, or table output is shipped, so 0/474 result cells count as "
-        "native reproductions. The active runner's ICIR threshold is 0.02 versus the "
-        "paper's 0.10, and source motif/context/gating behavior differs from the paper.",
+        "Tables 2--9: 474 results and 10 configuration cells. The complete non-shallow "
+        "official history contains only two commits and 49-file trees; only README.md "
+        "changes, and no historical result artifact exists. The root README recovers "
+        "the declared 500-step configuration but explicitly calls its Yahoo builders "
+        "approximate and requires a stable snapshot for final numbers. The official "
+        "test passes, all seven released CLI strategy names execute deterministically "
+        "in bounded synthetic diagnostics, active AlphaMemo/SSPM/veto memory branches "
+        "are observed, and all five published formulas execute in the native parser. "
+        "These are components, not paper outputs; the official 12-step smoke itself "
+        "never reaches its 30-step memory warmup. No Qlib data snapshot, search "
+        "trajectory, factor pool, prediction, return, or table output is shipped, so "
+        "0/474 result cells count as native reproductions. The active runner's ICIR "
+        "threshold is 0.02 versus the paper's 0.10, and source motif/context/gating "
+        "behavior differs from the paper.",
     ),
     "SYS-ALPHA-R1": (
         "N",
@@ -1299,7 +1306,7 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
     "SYS-ALPHA-GPT": "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_empirical_results",
     "SYS-ALPHA-JUNGLE": "paper_audit:completed_zero_of_64_published_cells_zero_native_results_three_of_six_formula_trees_conditionally_adapted",
-    "SYS-ALPHA-MEMO": "paper_audit:completed_zero_of_474_native_results",
+    "SYS-ALPHA-MEMO": "paper_audit:completed_two_commit_history_seven_strategy_diagnostics_zero_of_474_native_results",
     "SYS-ALPHA-R1": "paper_audit:completed_zero_of_652_native_results_official_placeholder",
     "SYS-ALPHA-QUANTER": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
     "SYS-CHAIN-OF-ALPHA": "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system",

@@ -9,11 +9,33 @@ trajectories, factor pools, predictions, returns, or table outputs.
 - Official paper: https://arxiv.org/pdf/2606.20625v1 (arXiv v1; SHA-256 `64dbd4558ec63a88bbf8fc8245b7eb43443878969531a9661e15c31f6fcedcd0`).
 - Official source: https://github.com/jarrettyu/AlphaMemo, commit `412fee13d905bf5a25f0958aa572b7c668ccb925` (2026-05-26).
 
+## Complete reachable source history
+
+- The non-shallow official clone contains exactly two reachable commits, one root,
+  one `main` lineage, no tags, and no unreachable objects. Both trees contain 49
+  files; only `README.md` changed. There is no hidden paper-result tree analogous
+  to AlphaAgent's public legacy branch.
+- The root README (SHA-256 `d87aee04c794447755eb5f861834ea0b39bbd01476b08cbb7130be163b83ec79`) recovers the source's
+  declared current-draft configuration: budget 500, batch size 10, label horizon
+  20, warmup 200, memory weight 0.05, motif sample 4, random motif probability
+  0.35, and maximum factor pool 50. It also explicitly calls the Yahoo builders
+  approximate and says final numbers require a stable snapshot. Configuration
+  provenance is valuable, but it cannot substitute for the absent snapshot.
+
 ## What genuinely passes
 
 - The release's one smoke test passes under a compatible Python 3.12 environment.
 - Two identical native synthetic runs produce the same SHA-256 and the documented
-  12-step summary. This validates a deterministic heuristic component only.
+  12-step summary. That smoke has warmup 30, so its last batch starts at step 8 and
+  never exercises AlphaMemo's memory-policy branch.
+- Two runs of each of all seven released CLI strategy names are deterministic in a
+  bounded 32-step synthetic diagnostic with warmup shortened to 8. Instrumentation
+  observes AlphaMemo motif-prior, SSPM positive-lambda, and veto APV-resampling
+  branches. This validates released control flow only. The configuration is not a
+  paper setting, and every diagnostic receives zero paper-result credit.
+- `structured` and `graph` produce the same normalized trajectory because both
+  names instantiate `StructuredSearchStrategy`; they are aliases, not separate
+  replicated methods.
 - All five Table 9 formulas execute in the released formula parser on synthetic
   arrays. Their paper metrics cannot be computed without the paper CSI500 panel.
 - The active runner matches the two markets, 20-day label, date splits, model alias,

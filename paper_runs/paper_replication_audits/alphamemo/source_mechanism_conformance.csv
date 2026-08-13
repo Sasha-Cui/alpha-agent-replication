@@ -1,5 +1,7 @@
 dimension,paper_requirement,released_evidence,status
 official_entrypoint,paper AlphaMemo runner,scripts/run_main.sh invokes sspm main-table,component_present
+official_history,complete reachable paper-era source history,non-shallow official clone has two commits; only README.md changes from root to HEAD,history_audited
+root_readme_main_configuration,source-declared current-draft operating point,"root README pins budget=500, batch=10, warmup=200, weight=.05, motif sample=4, random=.35, max factors=50",historical_configuration_recovered
 paper_markets,CSI500 and S&P500,official runner defaults to csi500 sp500,configuration_match
 paper_split,train 2016-2020; validation 2021; test 2022-2025-12-26,paper2025 preset matches exact dates,configuration_match
 label_horizon,20 trading days,official runner LABEL_DAYS=20 and Qlib label is h-day close-to-close,configuration_match
@@ -31,3 +33,5 @@ llm_temperature_and_length,temperature=.7 max generation=180 tokens,OpenAI-compa
 llm_lineage_and_retry_provenance,exact calls/responses and retry outcomes,no prompts/responses/costs are shipped; terminal failures silently use a fixed fallback formula,missing_and_behavioral_risk
 dependency_snapshot,exact environment,"some packages pinned, core numpy/pandas/scipy and API endpoint are not",partial_unpinned
 paper_result_collector,all Tables 2--9,collect_results reads main/variant metrics but no frozen inputs or outputs,component_only
+released_strategy_aliases,distinct named comparison methods,structured and graph instantiate the same StructuredSearchStrategy; alphamemo and graphmemo instantiate GraphMemoryStrategy,aliases_not_distinct_methods
+released_smoke_memory_branch,exercise AlphaMemo memory policy,official 12-step smoke has warmup=30 and never starts a batch beyond step 8,pre_memory_component_only

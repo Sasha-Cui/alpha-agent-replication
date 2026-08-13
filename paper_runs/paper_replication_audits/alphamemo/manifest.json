@@ -8,6 +8,15 @@
   "source_url": "https://github.com/jarrettyu/AlphaMemo",
   "source_commit": "412fee13d905bf5a25f0958aa572b7c668ccb925",
   "source_commit_date": "2026-05-26",
+  "source_history_reachable_commits": 2,
+  "source_history_root_commits": 1,
+  "source_history_local_branches": 1,
+  "source_history_remote_tracking_branches": 1,
+  "source_history_tags": 0,
+  "source_history_root_to_head_only_readme_changed": true,
+  "source_history_native_result_artifacts_found": false,
+  "root_readme_configuration_recovered": true,
+  "root_readme_stable_data_snapshot_warning_recovered": true,
   "paper_numeric_tables_audited": [
     2,
     3,
@@ -41,7 +50,15 @@
   "tracked_source_files_total": 49,
   "native_source_tests_passed": 1,
   "native_synthetic_smoke_deterministic": true,
+  "native_synthetic_smoke_memory_policy_branch_exercised": false,
   "native_synthetic_smoke_paper_result_reproduction": false,
+  "native_released_strategies_diagnosed": 7,
+  "native_active_strategy_diagnostic_runs": 14,
+  "native_active_strategy_diagnostics_deterministic": true,
+  "native_active_memory_branches_exercised": true,
+  "native_active_strategy_diagnostics_paper_configuration": false,
+  "native_active_strategy_diagnostics_paper_result_reproduction": false,
+  "released_structured_and_graph_are_aliases": true,
   "published_representative_formulas_native_parser_executable": 5,
   "published_representative_formula_metrics_reproduced": 0,
   "native_paper_data_snapshot_shipped": false,
@@ -56,7 +73,7 @@
   "paper_fixed_budget_size_disclosed": false,
   "paper_fixed_budget_and_ablation_runners_shipped": false,
   "audit_called_llm_or_external_data_api": false,
-  "interpretation": "The 49-file official release is executable at the synthetic-component level: its sole test passes, a pinned heuristic smoke run is deterministic, and all five paper formulas execute in the native parser on synthetic data. None of that reproduces the paper. No Qlib input snapshot, reported LLM trajectory, factor pool, prediction, return, or table output is shipped, leaving 0/474 result cells natively reproduced. The active official runner also uses ICIR threshold 0.02 instead of the paper's 0.10 and does not release the residual/fixed-budget/ablation runs. Source inspection shows deeper mechanism drift: regex motif extraction instead of typed canonical AST differencing, a category-only memory key instead of the four-part parent context, a different confidence gate/warmup schedule, and successful-only DAG insertion rather than adding all evaluated children.",
+  "interpretation": "The complete reachable official history has only two commits and 49-file trees; only README.md changes, and no historical result artifact exists. Its deleted root README recovers the intended 500-step operating point and explicitly says the Yahoo data builders are approximate. The release is executable at the synthetic-component level: its sole test passes, all seven CLI strategies run deterministically in bounded diagnostics that activate the available memory branches, and all five paper formulas execute in the native parser on synthetic data. None of that reproduces the paper. The official 12-step smoke itself never reaches its 30-step memory warmup. No Qlib input snapshot, reported LLM trajectory, factor pool, prediction, return, or table output is shipped, leaving 0/474 result cells natively reproduced. The active official runner also uses ICIR threshold 0.02 instead of the paper's 0.10 and does not release the residual/fixed-budget/ablation runs. Source inspection shows deeper mechanism drift: regex motif extraction instead of typed canonical AST differencing, a category-only memory key instead of the four-part parent context, a different confidence gate/warmup schedule, and successful-only DAG insertion rather than adding all evaluated children.",
   "source_file_sha256": {
     "README.md": "2df79fa9f1e5112669110bb4b8df4c94f9a90bc94f0623542b0c48fb4c04d74d",
     "pyproject.toml": "8f554cb584ff999d6504801b0c51ad8c464403676373113113e197d9451c24c1",
@@ -85,12 +102,13 @@
     "tests/test_smoke.py": "20f7d652028256ce7203789f177c800a7c9921e4e398f8523b06d6270dc1772c"
   },
   "output_sha256": {
-    "README.md": "ca0195676e4d0a10a576d7fffb99bb1dea9257633e4eb1e83bce969f99e20547",
-    "native_synthetic_component.json": "835acc1acea8deab3a4fa65260dd93f858f5519c6735457b0a06643332a0797f",
+    "README.md": "d8f72b35c7f6efefba38db50156148fef586513eedb1809025c36ef085efbb82",
+    "native_synthetic_component.json": "7b4f00080d88c4d60bcf3b27daa9cd8545b641cd69d1318f57ac1221ca486b62",
+    "official_source_history.json": "732208743e0050a8a6b40e97b5c98552640248891100b28417d984c86675bfda",
     "paper_internal_identities.csv": "bfa6e4a6a6dc1681009a61ccddb20986c550ab1be705128e3cae99db15ff3e6f",
     "released_source_inventory.csv": "8b30aca682f9db46c1d2be3329bf2c50647562e745db7abb424d85739b80e9b0",
     "representative_factor_parser_audit.csv": "c9c010ef5c3aae9eb7b36aac52db2734ab20cc260c469f94fc957fd78acec27f",
-    "source_mechanism_conformance.csv": "c809ee116c82cbc212fa443ffa335589a9a50226072428d011568ae9a90f9ce1",
+    "source_mechanism_conformance.csv": "99e41ff7324f5ec3c3e83cd78c5bf6d7f85fe01ef338b7dda15512f5b9dd99e0",
     "tables_2_9_conformance.csv": "64cac9d7d67ad725801e47325dab4860d9c1cb24913404a11816de001cf5a487"
   }
 }

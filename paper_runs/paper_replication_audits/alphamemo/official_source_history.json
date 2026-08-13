@@ -1,0 +1,55 @@
+{
+  "scope": "all locally reachable official-clone refs",
+  "remote_url": "https://github.com/jarrettyu/AlphaMemo.git",
+  "is_shallow_repository": false,
+  "reachable_commit_count": 2,
+  "root_commit_count": 1,
+  "branch_and_remote_refs": [
+    "refs/heads/main|412fee13d905bf5a25f0958aa572b7c668ccb925",
+    "refs/remotes/origin/HEAD|412fee13d905bf5a25f0958aa572b7c668ccb925",
+    "refs/remotes/origin/main|412fee13d905bf5a25f0958aa572b7c668ccb925"
+  ],
+  "local_branch_count": 1,
+  "remote_tracking_branch_count": 1,
+  "tag_count": 0,
+  "unreachable_object_output_empty": true,
+  "commits": [
+    {
+      "commit": "cf3b3d18474b77a61b97d7a72e7fe7b20d1a898f",
+      "authored_at": "2026-05-24T19:07:12+08:00",
+      "committed_at": "2026-05-24T19:07:12+08:00",
+      "author": "hangyu-96",
+      "subject": "update"
+    },
+    {
+      "commit": "412fee13d905bf5a25f0958aa572b7c668ccb925",
+      "authored_at": "2026-05-26T23:53:21+08:00",
+      "committed_at": "2026-05-26T23:53:21+08:00",
+      "author": "hangyu-96",
+      "subject": "Update README.md"
+    }
+  ],
+  "root_to_head_changed_paths": [
+    "M\tREADME.md"
+  ],
+  "root_tree_file_count": 49,
+  "head_tree_file_count": 49,
+  "root_readme_sha256": "d87aee04c794447755eb5f861834ea0b39bbd01476b08cbb7130be163b83ec79",
+  "root_readme_recovered_configuration": {
+    "train": "2016-01-01 to 2020-12-31",
+    "validation": "2021-01-01 to 2021-12-31",
+    "test_and_backtest": "2022-01-01 to 2025-12-26",
+    "strategy": "alphamemo",
+    "budget": 500,
+    "batch_size": 10,
+    "label_days": 20,
+    "warmup": 200,
+    "memory_weight": 0.05,
+    "motif_sample_size": 4,
+    "random_motif_prob": 0.35,
+    "max_factors": 50
+  },
+  "root_readme_data_warning": "Yahoo builders are approximate; final paper numbers require a stable data snapshot with exact provider paths and coverage.",
+  "historical_native_result_artifacts_found": false,
+  "paper_result_reproduction": false
+}

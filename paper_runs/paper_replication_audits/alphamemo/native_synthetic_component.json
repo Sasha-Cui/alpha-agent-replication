@@ -18,5 +18,171 @@
     "mean_abs_ric_discovered": 0.05496439758610393,
     "mean_abs_ricir_discovered": 0.35448448825152046
   },
+  "synthetic_smoke_configured_warmup": 30,
+  "synthetic_smoke_max_batch_start_step": 8,
+  "synthetic_smoke_memory_policy_branch_exercised": false,
+  "synthetic_smoke_scope": "pre-memory parser/evaluator/search-loop diagnostic only",
+  "active_strategy_diagnostic": {
+    "strategies": [
+      "alphamemo",
+      "sspm",
+      "veto",
+      "structured",
+      "graph",
+      "gp",
+      "random"
+    ],
+    "runs_per_strategy": 2,
+    "config": {
+      "budget": 32,
+      "batch_size": 4,
+      "seed": 7,
+      "n_days": 180,
+      "n_assets": 40,
+      "warmup": 8,
+      "generator": "heuristic",
+      "evaluator": "synthetic"
+    },
+    "all_deterministic": true,
+    "memory_branch_counts": {
+      "alphamemo": {
+        "motif_prior": 20,
+        "random_or_warmup": 12
+      },
+      "sspm": {
+        "lambda_positive": 28,
+        "lambda_zero": 4
+      },
+      "veto": {
+        "apv_resample": 24,
+        "warmup": 8
+      }
+    },
+    "structured_and_graph_alias_trajectory_equal": true,
+    "rows": [
+      {
+        "strategy": "alphamemo",
+        "runs": 2,
+        "sha256": "70b820b215c4fba55edb9381998f64b67f06d67bfb9a429c774083c9a0b92359",
+        "deterministic": true,
+        "budget": 32,
+        "warmup": 8,
+        "n_ok": 32,
+        "n_effective": 11,
+        "mean_abs_ic_ok": 0.041247357533480584,
+        "diagnostic_keys": [
+          "apv",
+          "dag",
+          "memory"
+        ],
+        "paper_configuration": false,
+        "paper_result_reproduction": false
+      },
+      {
+        "strategy": "sspm",
+        "runs": 2,
+        "sha256": "174ab3ecfdbb133db4934f9a86b154e9f1f0e226cc89f61e126f040242f8df9d",
+        "deterministic": true,
+        "budget": 32,
+        "warmup": 8,
+        "n_ok": 32,
+        "n_effective": 4,
+        "mean_abs_ic_ok": 0.05427822070397308,
+        "diagnostic_keys": [
+          "apv",
+          "dag",
+          "memory"
+        ],
+        "paper_configuration": false,
+        "paper_result_reproduction": false
+      },
+      {
+        "strategy": "veto",
+        "runs": 2,
+        "sha256": "75609ed4627a63422a0fb1cfee4153d11be85bdc0fc86e097981c1b817a2eeba",
+        "deterministic": true,
+        "budget": 32,
+        "warmup": 8,
+        "n_ok": 32,
+        "n_effective": 13,
+        "mean_abs_ic_ok": 0.03920927094754266,
+        "diagnostic_keys": [
+          "apv",
+          "dag",
+          "memory"
+        ],
+        "paper_configuration": false,
+        "paper_result_reproduction": false
+      },
+      {
+        "strategy": "structured",
+        "runs": 2,
+        "sha256": "a50916c457ea9e6b8458fadb9384663c00f418e315760bbb22a5512778d98aef",
+        "deterministic": true,
+        "budget": 32,
+        "warmup": 8,
+        "n_ok": 32,
+        "n_effective": 13,
+        "mean_abs_ic_ok": 0.03920927094754266,
+        "diagnostic_keys": [
+          "dag"
+        ],
+        "paper_configuration": false,
+        "paper_result_reproduction": false
+      },
+      {
+        "strategy": "graph",
+        "runs": 2,
+        "sha256": "c279a28ef0644f41f132c7bf2684a58297d57e9b13f709287522e297d93ba2fa",
+        "deterministic": true,
+        "budget": 32,
+        "warmup": 8,
+        "n_ok": 32,
+        "n_effective": 13,
+        "mean_abs_ic_ok": 0.03920927094754266,
+        "diagnostic_keys": [
+          "dag"
+        ],
+        "paper_configuration": false,
+        "paper_result_reproduction": false
+      },
+      {
+        "strategy": "gp",
+        "runs": 2,
+        "sha256": "4595b65e90893f69d5eec424a54cd5695a2657fd74d2c29452e699b5cbf64655",
+        "deterministic": true,
+        "budget": 32,
+        "warmup": 8,
+        "n_ok": 32,
+        "n_effective": 13,
+        "mean_abs_ic_ok": 0.03509606118151977,
+        "diagnostic_keys": [
+          "best_quality",
+          "n_crossover",
+          "n_mutation",
+          "n_random",
+          "population_size"
+        ],
+        "paper_configuration": false,
+        "paper_result_reproduction": false
+      },
+      {
+        "strategy": "random",
+        "runs": 2,
+        "sha256": "21dd2a7738a2e8c8f8f45d0caceadecdd83b35bb183530a53968a469d9a94be2",
+        "deterministic": true,
+        "budget": 32,
+        "warmup": 8,
+        "n_ok": 31,
+        "n_effective": 8,
+        "mean_abs_ic_ok": 0.030939497996110964,
+        "diagnostic_keys": [],
+        "paper_configuration": false,
+        "paper_result_reproduction": false
+      }
+    ],
+    "paper_configuration": false,
+    "paper_result_reproduction": false
+  },
   "paper_result_reproduction": false
 }
