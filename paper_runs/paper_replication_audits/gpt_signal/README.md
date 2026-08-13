@@ -16,11 +16,13 @@ CSVs, formulas, and analysis logic needed to trace the published figures.
   boxplot statistics. It is strong result-level recovery, not an end-to-end
   regeneration of GPT-Signal.
 - The five failures are the all-sector EVC box. Every vector statistic in that
-  box is exactly 0.02 above the deterministic replay. The unexplained shift
-  changes EVC's median from below the baseline to above it. The complete
-  20-commit public author history preserves no all-sector output trace: its
-  exact Energy 3M family matches 35/35 statistics, while an older IT family
-  matches 0/35 current-paper statistics.
+  box is exactly 0.02 above the deterministic replay, preserving the box shape
+  while moving EVC's median from below the baseline to above it. This is now
+  classified as an **untraceable uniform translation in the published vector**,
+  not a reproduced native result. The complete 20-commit history contains 230 unique reachable `.out`/
+  `.txt` blobs; an exhaustive 1,356-window scan finds no matching trace. The
+  only alternate author-coded EVC formula misses the plot by as much as 0.0959,
+  and the sole public fork and exact GitHub code searches add no missing run.
 - The paper's RAPS equation uses `ROE / (P/E * beta)`, while the raw GPT output,
   released code, and all published cells use `ROE / (P/E ** beta)`. The printed
   equation misses 104/1,309 heatmap cells at two-decimal display precision.
@@ -54,6 +56,9 @@ broad alpha, speed, scale, or continual-refinement claims.
 - `author_history_inventory.csv` and `author_history_trace_conformance.csv`:
   every public commit, all preserved 2016--2020 trace families, and their
   paper-vector conformance.
+- `all_sector_evc_formula_forensics.csv` and `all_sector_evc_forensics.json`:
+  both author-coded EVC formulas, every reachable historical output blob/window,
+  the exact shape-preserving +0.02 plot translation, and rejected alternatives.
 - `formula_lineage.csv`, `monthly_lookahead_trace.csv`, and
   `method_specification_audit.csv`: formula provenance, a concrete AAPL
   availability trace, and paper/source fidelity boundaries.

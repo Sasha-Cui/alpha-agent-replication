@@ -9,9 +9,9 @@ without making an LLM or network call.
 
 Result-cell recovery is deliberately kept separate from full-paper fidelity.
 The recovered implementation has a one-quarter lookahead in the monthly path,
-the paper prints a different RAPS equation from the code/results, one plotted
-series contains an unexplained uniform shift, and the original GPT snapshot is
-no longer operationally reproducible.
+the paper prints a different RAPS equation from the code/results, one published
+vector contains an untraceable uniform translation, and the original GPT
+snapshot is no longer operationally reproducible.
 """
 from __future__ import annotations
 
@@ -19,6 +19,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 import os
 import re
 import subprocess
@@ -76,12 +77,16 @@ EVIDENCE_HASHES = {
     "arxiv_api.xml": "03c717993d6def194eec2937712952f98c6f23db8836e0f897d2c15715452312",
     "arxiv_record.html": "e044a55ebb1f2336584e8526f6a7044097da633456626c54ba6ed1328dac62e3",
     "github_commit_search.json": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
+    "github_code_search_allsector_20260813.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
+    "github_code_search_evc_stat_20260813.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
     "github_repo.json": "a298fd3d1a255b0eb21a952212460852e05ba9721d3445fb42d7ad054d88f94a",
     "github_repos.json": "8a272b63c4fbbf11cb5e6eec10284bdf873f6e497374e459a31e033fdf0665c5",
     "github_search_exact.json": "0268da7713c8cc8413c2d0221bcad0a2e97de4ec6a2691d426e7d34a53881095",
     "github_user.json": "fe82a50e7671340ecc3c6d035870168a4feceeb97ec2a02e8caf2ff9b8d5d54e",
     "swh_origin.json": "1ff7378cf5607083e5e42658a9e0bee3b74347f0ae115225a821354a27681ca9",
     "thesis_commits.json": "f49794967ec08587239b62fd89a989234eef6fd01d2060ed8aea8bdcf66936ac",
+    "thesis_fork_main_ref_20260813.json": "c4a9222a6dd3b4e9c25169695ff65b14ee0929928e88c2cabd4233deed19a308",
+    "thesis_forks_20260813.json": "f0069fb51a0362cd05d05e182cfb05a2d41da5b7ff1276edb1804a146c6849d8",
     "thesis_repo.json": "0231c6587c0494b596618a634a381714c4d7e1789152f54f4dc27cd113f6bf91",
     "wayback_cdx.json": "7ad3d44d8ef5cedd6ddc2cca9767ee1e6ba130b2a66d4d13f26654ce08af82ba",
     "wayback_repo_20240816.html": "7f0d572de22f83eaf5b138c444a0c4f7396380d39066e0ffebb03259e87ce387",
@@ -427,6 +432,22 @@ def validate_discovery_evidence(directory: Path) -> list[dict[str, str]]:
     commit_search = json.loads((directory / "github_commit_search.json").read_text(encoding="utf-8"))
     if commit_search.get("total_count") != 0:
         raise ValueError("placeholder commit search status changed")
+    all_sector_search = json.loads(
+        (directory / "github_code_search_allsector_20260813.json").read_text(encoding="utf-8")
+    )
+    evc_stat_search = json.loads(
+        (directory / "github_code_search_evc_stat_20260813.json").read_text(encoding="utf-8")
+    )
+    if any(item.get("total_count") != 0 for item in (all_sector_search, evc_stat_search)):
+        raise ValueError("GPT-Signal exact-code search status changed")
+    forks = json.loads((directory / "thesis_forks_20260813.json").read_text(encoding="utf-8"))
+    fork_ref = json.loads(
+        (directory / "thesis_fork_main_ref_20260813.json").read_text(encoding="utf-8")
+    )
+    if len(forks) != 1 or forks[0].get("full_name") != "jingmouren/Yiningww-Thesis":
+        raise ValueError("author repository fork inventory changed")
+    if fork_ref.get("object", {}).get("sha") != EXPECTED_AUTHOR_HEAD:
+        raise ValueError("sole author-repository fork is no longer identical at its main ref")
     repo = json.loads((directory / "thesis_repo.json").read_text(encoding="utf-8"))
     commits = json.loads((directory / "thesis_commits.json").read_text(encoding="utf-8"))
     if repo.get("full_name") != "Yiningww/Thesis" or repo.get("license") is not None:
@@ -725,7 +746,7 @@ def boxplot_reproduction(data: ReplayData, source: Path) -> tuple[list[dict[str,
                     "replay_minus_paper": repr(delta),
                     "match_tolerance_1e-4": "yes" if match else "no",
                     "llm_regenerated": "no",
-                    "credit": "author_data_deterministic_replay" if match else "unexplained_published_plot_difference",
+                    "credit": "author_data_deterministic_replay" if match else "untraceable_published_vector_translation_no_credit",
                 })
         baseline = float(expected_by_model["baseline"]["med"])
         above = sum(float(expected_by_model[model]["med"]) > baseline for model in NEW_LABELS)
@@ -749,6 +770,210 @@ def boxplot_reproduction(data: ReplayData, source: Path) -> tuple[list[dict[str,
     if any(abs(float(row["replay_minus_paper"]) + 0.02) > 1e-7 for row in anomaly):
         raise ValueError("all-sector EVC uniform shift changed")
     return rows, summaries
+
+
+BOX_STAT_FIELDS = ("q1", "med", "q3", "whislo", "whishi")
+
+
+def stats_for_values(values: list[float]) -> dict[str, float]:
+    stats = cbook.boxplot_stats(values, whis=1.5)[0]
+    return {field: float(stats[field]) for field in BOX_STAT_FIELDS}
+
+
+def all_sector_evc_forensics(
+    data: ReplayData,
+    repo: Path,
+    source: Path,
+) -> tuple[list[dict[str, str]], dict[str, Any]]:
+    """Test every author-coded EVC variant and every preserved output blob."""
+
+    paper = {
+        str(row["model"]): row
+        for row in author_box_stats(source / BOX_FILES[("all", "3m")])
+    }["EVC"]
+    target = {field: float(paper[field]) for field in BOX_STAT_FIELDS}
+
+    pairs = [
+        (sector, ticker)
+        for sector, tickers in GROUPS["all"]
+        for ticker in tickers
+    ]
+    dates = interval_dates("3m")
+    period_returns = [
+        np.array([data.period_return(ticker, start, end) for _, ticker in pairs])
+        for start, end in zip(dates[:-1], dates[1:])
+    ]
+
+    formulas = {
+        "selected_raw_reciprocals": (
+            "1/ROA * 1/EV_EBITDA * 1/P_CF",
+            "raw_gpt_output_paper_and_data_py",
+            lambda frame: 1 / frame["Return on Assets"]
+            / frame["Enterprise Value/EBITDA"]
+            / frame["Price/Cash Flow"],
+        ),
+        "prototype_plus_one_denominators": (
+            "1/(ROA+1) * 1/(EV_EBITDA+1) * 1/(P_CF+1)",
+            "data3_py_prototype_commit_da72031e301c4238925118974ed314c48f70fc57_2013_2014_15_stock_defaults",
+            lambda frame: 1 / (frame["Return on Assets"] + 1)
+            / (frame["Enterprise Value/EBITDA"] + 1)
+            / (frame["Price/Cash Flow"] + 1),
+        ),
+    }
+    rows: list[dict[str, str]] = []
+    selected_delta: list[float] = []
+    formula_maxima: dict[str, float] = {}
+    for variant, (formula, lineage, transform) in formulas.items():
+        beta_rows: list[dict[str, float]] = []
+        for sector, ticker in pairs:
+            frame = data.company(sector, ticker, "3m", "power")
+            frame["EVC"] = transform(frame)
+            columns = FEATURES + ["EVC"]
+            fit = sm.OLS(
+                frame["Return"].iloc[1:],
+                sm.add_constant(source_standardize(frame[columns].iloc[:-1])),
+                missing="drop",
+            ).fit()
+            beta_rows.append(dict(zip(["Constant", *columns], fit.params)))
+        beta_frame = pd.DataFrame(beta_rows)
+        beta_x = sm.add_constant(source_standardize(beta_frame[FEATURES + ["EVC"]]))
+        values = [
+            float(sm.OLS(outcome, beta_x, missing="drop").fit().rsquared_adj)
+            for outcome in period_returns
+        ]
+        actual = stats_for_values(values)
+        formula_maxima[variant] = max(abs(actual[field] - target[field]) for field in BOX_STAT_FIELDS)
+        for field in BOX_STAT_FIELDS:
+            delta = actual[field] - target[field]
+            if variant == "selected_raw_reciprocals":
+                selected_delta.append(delta)
+            rows.append(
+                {
+                    "variant": variant,
+                    "formula": formula,
+                    "source_lineage": lineage,
+                    "statistic": field,
+                    "paper_vector_value": repr(target[field]),
+                    "replay_value": repr(actual[field]),
+                    "replay_minus_paper": repr(delta),
+                    "match_tolerance_1e-4": "yes" if abs(delta) <= 1e-4 else "no",
+                    "result_credit": "no_unshifted_paper_match",
+                }
+            )
+
+    object_paths: dict[str, str] = {}
+    for line in str(git(repo, "rev-list", "--objects", "--all")).splitlines():
+        parts = line.split(" ", 1)
+        if len(parts) == 2 and parts[1].endswith((".out", ".txt")):
+            object_paths.setdefault(parts[0], parts[1])
+
+    value_count_histogram: Counter[int] = Counter()
+    eligible_blobs = 0
+    windows_checked = 0
+    direct_matches = 0
+    translated_matches = 0
+    best_direct: tuple[float, str, str, int, int] | None = None
+    best_translated: tuple[float, float, str, str, int, int] | None = None
+    for object_id, path in object_paths.items():
+        if str(git(repo, "cat-file", "-t", object_id)).strip() != "blob":
+            continue
+        text = bytes(git(repo, "cat-file", "-p", object_id, binary=True)).decode(
+            "utf-8", errors="replace"
+        )
+        values = [
+            float(value)
+            for value in re.findall(r"^this is adj rsquare:\s*([^\s]+)", text, re.M)
+        ]
+        value_count_histogram[len(values)] += 1
+        if len(values) < 20:
+            continue
+        eligible_blobs += 1
+        for start in range(len(values) - 19):
+            windows_checked += 1
+            actual = stats_for_values(values[start:start + 20])
+            differences = [target[field] - actual[field] for field in BOX_STAT_FIELDS]
+            offset = math.fsum(differences) / len(differences)
+            direct_error = max(abs(value) for value in differences)
+            translated_error = max(abs(value - offset) for value in differences)
+            direct_matches += direct_error <= 1e-4
+            translated_matches += translated_error <= 1e-4
+            direct_candidate = (direct_error, object_id, path, start, len(values))
+            translated_candidate = (
+                translated_error,
+                offset,
+                object_id,
+                path,
+                start,
+                len(values),
+            )
+            if best_direct is None or direct_candidate < best_direct:
+                best_direct = direct_candidate
+            if best_translated is None or translated_candidate < best_translated:
+                best_translated = translated_candidate
+
+    if len(rows) != 10:
+        raise ValueError("EVC formula-forensics row count changed")
+    if any(abs(delta + 0.02) > 1e-7 for delta in selected_delta):
+        raise ValueError("selected EVC formula no longer has the pinned uniform plot shift")
+    if not math.isclose(
+        formula_maxima["prototype_plus_one_denominators"],
+        0.0959333131746205,
+        abs_tol=1e-12,
+    ):
+        raise ValueError("prototype EVC formula diagnostic changed")
+    if value_count_histogram != Counter({
+        0: 7,
+        12: 88,
+        16: 23,
+        20: 52,
+        24: 21,
+        32: 10,
+        48: 10,
+        60: 19,
+    }):
+        raise ValueError(f"historical output-blob value counts changed: {value_count_histogram}")
+    if (
+        len(object_paths) != 230
+        or eligible_blobs != 112
+        or windows_checked != 1_356
+        or direct_matches != 0
+        or translated_matches != 0
+        or best_direct is None
+        or best_translated is None
+    ):
+        raise ValueError("exhaustive historical-output scan changed")
+
+    summary: dict[str, Any] = {
+        "paper_target": "all-sector 2016--2020 three-month EVC box",
+        "paper_vector_created_at": "2024-04-27T00:42:40.890086",
+        "source_selected_formula_uniform_offset": 0.02,
+        "source_selected_formula_shape_match_tolerance_1e-7": True,
+        "prototype_plus_one_formula_maximum_absolute_difference": formula_maxima[
+            "prototype_plus_one_denominators"
+        ],
+        "reachable_unique_out_or_txt_blobs": len(object_paths),
+        "adjusted_rsquare_value_count_histogram": {
+            str(key): value for key, value in sorted(value_count_histogram.items())
+        },
+        "blobs_with_at_least_20_adjusted_rsquare_values": eligible_blobs,
+        "sliding_20_value_windows_checked": windows_checked,
+        "untranslated_matching_windows": direct_matches,
+        "best_untranslated_window_maximum_absolute_error": best_direct[0],
+        "best_untranslated_window_blob": best_direct[1],
+        "best_untranslated_window_path": best_direct[2],
+        "best_untranslated_window_start": best_direct[3],
+        "translation_shape_matching_windows": translated_matches,
+        "best_translation_shape_maximum_residual": best_translated[0],
+        "best_translation_shape_offset": best_translated[1],
+        "best_translation_shape_blob": best_translated[2],
+        "best_translation_shape_path": best_translated[3],
+        "best_translation_shape_window_start": best_translated[4],
+        "sole_public_fork_head_matches_author_head": True,
+        "exact_github_code_search_hits": 0,
+        "classification": "untraceable_published_vector_uniform_translation_not_native_result_reproduction",
+        "paper_result_credit_for_five_shifted_statistics": False,
+    }
+    return rows, summary
 
 
 def author_history_trace_conformance(repo: Path, source: Path) -> list[dict[str, str]]:
@@ -833,7 +1058,7 @@ def formula_lineage(repo: Path, paper_source: Path) -> list[dict[str, str]]:
     specs = [
         ("PVS", "ROE / P/E", "ROE / P/E", "yes", "same", "power_and_multiply_both_unaffected"),
         ("RAPS", "ROE / (P/E * beta), beta=2", "ROE / (P/E ** beta), beta=2", "yes", "contradiction", "only_source_and_GPT_power_formula_matches_all_1309_cells"),
-        ("EVC", "ROA^-1 * EV/EBITDA^-1 * P/CF^-1", "same", "yes", "same", "matches_except_unexplained_all_sector_plot_shift"),
+        ("EVC", "ROA^-1 * EV/EBITDA^-1 * P/CF^-1", "same", "yes", "same", "matches_native_results_except_untraceable_all_sector_vector_translation"),
         ("VEC", "mean(P/E, ROE, FCF/share)", "same", "no", "missing_raw_generation_output", "formula_and_results_present_but_no_raw_GPT_lineage"),
         ("PLF", "ROE * gross margin / P/E", "same", "yes_generic_NF_name", "renamed", "raw_GPT_output_formula_matches_paper_signal"),
         ("IQS", "ROE * P/E^-1 * P/B^-1 * log(SPS)", "same", "yes", "same", "raw_GPT_output_formula_matches"),
@@ -908,9 +1133,9 @@ def method_audit() -> list[dict[str, str]]:
         ("native control flow", "two-step analysis", "data.py exits after correlation before step 2", "stale_runner", "single command cannot regenerate full analysis"),
         ("plot runner", "six new-signal models plus baseline", "plot.py contains 12 candidate models and exits before save", "stale_runner", "published selection/manual state is not encoded"),
         ("correlation result lineage", "13 heatmaps", "1309/1309 cells recover with source formula", "reproduced_from_author_data", "strong result-level lineage"),
-        ("Fama-MacBeth result lineage", "7 boxplots", "240/245 vector statistics recover", "partial_reproduction", "five all-sector EVC statistics differ; all 20 public author commits were searched and no all-sector trace is preserved"),
-        ("historical output traces", "not disclosed", "20-commit history preserves exact Energy 3M outputs but an obsolete IT family and no all-sector family", "history_exhausted", "the residual all-sector EVC shift cannot be attributed to a preserved author run"),
-        ("all-sector EVC plot", "median shown above baseline", "all five box statistics shifted +0.02 from replay; no all-sector output exists in any public author commit", "unexplained_difference", "shift changes qualitative above/below-baseline conclusion"),
+        ("Fama-MacBeth result lineage", "7 boxplots", "240/245 vector statistics recover", "partial_reproduction", "five all-sector EVC statistics are a uniform +0.02 plot translation; no author-native trace produces them"),
+        ("historical output traces", "not disclosed", "230 unique reachable .out/.txt blobs and 1,356 sliding 20-value windows exhaustively scanned; no direct or translated shape match", "history_exhausted", "the residual all-sector EVC translation cannot be attributed to a preserved author run"),
+        ("all-sector EVC plot", "median shown above baseline", "selected native formula reproduces all five statistics' shape exactly at -0.02; author prototype formula misses by up to 0.0959; no recoverable trace or mirror match", "untraceable_vector_translation", "the unexplained +0.02 published-vector translation changes the qualitative above/below-baseline conclusion and receives no result credit"),
         ("IT 3M prose", "5 out of 6 improve", "published vector medians show 6 out of 6", "paper_internal_contradiction", "prose does not match its figure"),
         ("Energy 1M generalization", "similar patterns", "only 1 of 6 medians exceeds baseline", "weak_support", "broad conclusion is not uniform across sectors/horizons"),
         ("significance", "signals meaningfully predict returns", "no reported test, interval, or multiple-testing control", "unsupported", "correlation and adjusted R2 alone do not establish significance"),
@@ -948,8 +1173,9 @@ def native_execution_rows() -> list[dict[str, str]]:
         {"component": "author Python source compile", "attempted": "yes", "status": "pass", "detail": "6/6 tracked Python files compile in memory", "result_credit": "no"},
         {"component": "released data.py end-to-end", "attempted": "source_inspection", "status": "not_runnable_as_published", "detail": "exit after heatmap makes step 2 unreachable; monthly ii=19 is stale; yfinance dependency absent", "result_credit": "no"},
         {"component": "deterministic correlation replay", "attempted": "yes", "status": "pass_1309_of_1309", "detail": "author xlsx/CSV inputs plus released formula semantics", "result_credit": "author_data_replay"},
-        {"component": "author Git history", "attempted": "yes", "status": "pass_20_of_20_commits", "detail": "Energy 3M archived outputs match 35/35 vector statistics; obsolete IT outputs match 0/35; no commit preserves all-sector outputs", "result_credit": "history_level_lineage_only"},
-        {"component": "deterministic boxplot replay", "attempted": "yes", "status": "partial_240_of_245", "detail": "five all-sector EVC statistics differ by a uniform +0.02 paper shift and no historical all-sector run is preserved", "result_credit": "author_data_replay_except_five"},
+        {"component": "author Git history", "attempted": "yes", "status": "pass_all_commits_and_reachable_output_blobs", "detail": "20 commits, 230 unique reachable .out/.txt blobs, and 1,356 sliding 20-value windows checked; none produces the all-sector EVC box", "result_credit": "history_level_lineage_only"},
+        {"component": "EVC formula revision forensics", "attempted": "yes", "status": "selected_formula_shape_exact_but_uniform_published_vector_translation", "detail": "selected formula matches the five-statistic shape at -0.02; prototype plus-one formula misses by up to 0.0959; sole fork and exact code searches add no run", "result_credit": "no_credit_for_untraceable_translation"},
+        {"component": "deterministic boxplot replay", "attempted": "yes", "status": "partial_240_of_245", "detail": "five all-sector EVC statistics are a uniform +0.02 published-vector translation without recoverable native output lineage", "result_credit": "author_data_replay_except_five"},
         {"component": "GPT-4 signal generation", "attempted": "no", "status": "not_reproducible", "detail": "retired gpt-4-1106-preview, no seed/temperature, no request IDs; raw output recovered for 5/6", "result_credit": "historical_output_lineage_only"},
         {"component": "full paper pipeline", "attempted": "no", "status": "not_faithfully_defined", "detail": "LLM snapshot unavailable and monthly source path contains lookahead; a fresh run would not be comparable", "result_credit": "no_end_to_end_credit"},
     ]
@@ -975,11 +1201,13 @@ CSVs, formulas, and analysis logic needed to trace the published figures.
   boxplot statistics. It is strong result-level recovery, not an end-to-end
   regeneration of GPT-Signal.
 - The five failures are the all-sector EVC box. Every vector statistic in that
-  box is exactly 0.02 above the deterministic replay. The unexplained shift
-  changes EVC's median from below the baseline to above it. The complete
-  20-commit public author history preserves no all-sector output trace: its
-  exact Energy 3M family matches 35/35 statistics, while an older IT family
-  matches 0/35 current-paper statistics.
+  box is exactly 0.02 above the deterministic replay, preserving the box shape
+  while moving EVC's median from below the baseline to above it. This is now
+  classified as an **untraceable uniform translation in the published vector**,
+  not a reproduced native result. The complete 20-commit history contains 230 unique reachable `.out`/
+  `.txt` blobs; an exhaustive 1,356-window scan finds no matching trace. The
+  only alternate author-coded EVC formula misses the plot by as much as 0.0959,
+  and the sole public fork and exact GitHub code searches add no missing run.
 - The paper's RAPS equation uses `ROE / (P/E * beta)`, while the raw GPT output,
   released code, and all published cells use `ROE / (P/E ** beta)`. The printed
   equation misses 104/1,309 heatmap cells at two-decimal display precision.
@@ -1013,6 +1241,9 @@ broad alpha, speed, scale, or continual-refinement claims.
 - `author_history_inventory.csv` and `author_history_trace_conformance.csv`:
   every public commit, all preserved 2016--2020 trace families, and their
   paper-vector conformance.
+- `all_sector_evc_formula_forensics.csv` and `all_sector_evc_forensics.json`:
+  both author-coded EVC formulas, every reachable historical output blob/window,
+  the exact shape-preserving +0.02 plot translation, and rejected alternatives.
 - `formula_lineage.csv`, `monthly_lookahead_trace.csv`, and
   `method_specification_audit.csv`: formula provenance, a concrete AAPL
   availability trace, and paper/source fidelity boundaries.
@@ -1050,6 +1281,11 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     correlations, correlation_summaries = correlation_reproduction(data, args.source_dir.resolve())
     boxes, box_summaries = boxplot_reproduction(data, args.source_dir.resolve())
     history_traces = author_history_trace_conformance(args.author_repo.resolve(), args.source_dir.resolve())
+    evc_formula_forensics, evc_forensics = all_sector_evc_forensics(
+        data,
+        args.author_repo.resolve(),
+        args.source_dir.resolve(),
+    )
     formulas = formula_lineage(args.author_repo.resolve(), args.source_dir.resolve())
     lookahead = lookahead_trace(data)
     methods = method_audit()
@@ -1070,6 +1306,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         ("author_source_inventory.csv", author_source),
         ("author_history_inventory.csv", author_history),
         ("author_history_trace_conformance.csv", history_traces),
+        ("all_sector_evc_formula_forensics.csv", evc_formula_forensics),
         ("discovery_evidence.csv", discovery),
         ("artifact_access_audit.csv", artifacts),
         ("correlation_cell_reproduction.csv", correlations),
@@ -1120,6 +1357,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "relevant_full_period_yahoo_csvs": full_price_count,
     }
     write_json(output / "source_provenance.json", source_provenance)
+    write_json(output / "all_sector_evc_forensics.json", evc_forensics)
 
     native_json = {
         "author_source_available": True,
@@ -1130,6 +1368,16 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "historical_energy_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "energy_3m"),
         "historical_information_technology_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "information_technology_3m"),
         "historical_all_sector_output_trace_recovered": False,
+        "reachable_unique_out_or_txt_blobs_scanned": evc_forensics[
+            "reachable_unique_out_or_txt_blobs"
+        ],
+        "historical_twenty_value_windows_scanned": evc_forensics[
+            "sliding_20_value_windows_checked"
+        ],
+        "historical_matching_all_sector_evc_windows": 0,
+        "alternate_author_evc_formula_reproduces_plot": False,
+        "all_sector_evc_plot_only_uniform_translation": True,
+        "paper_result_credit_for_plot_translation": False,
         "tracked_python_files_compiled": 6,
         "deterministic_correlation_cells_reproduced": 1309,
         "deterministic_correlation_cells_total": 1309,
@@ -1157,6 +1405,19 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "historical_energy_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "energy_3m"),
         "historical_information_technology_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "information_technology_3m"),
         "historical_all_sector_output_trace_recovered": False,
+        "reachable_unique_out_or_txt_blobs_scanned": evc_forensics[
+            "reachable_unique_out_or_txt_blobs"
+        ],
+        "historical_twenty_value_windows_scanned": evc_forensics[
+            "sliding_20_value_windows_checked"
+        ],
+        "historical_matching_all_sector_evc_windows": 0,
+        "alternate_author_evc_formula_reproduces_plot": False,
+        "all_sector_evc_source_formula_uniform_offset": evc_forensics[
+            "source_selected_formula_uniform_offset"
+        ],
+        "all_sector_evc_plot_only_uniform_translation": True,
+        "paper_result_credit_for_plot_translation": False,
         "compiled_python_files": author_facts["compiled_python_files"],
         "plaintext_credential_matches_redacted": author_facts["plaintext_credential_matches_redacted"],
         "published_correlation_cells": len(correlations),
@@ -1174,7 +1435,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "llm_calls_made": 0,
         "monthly_lookahead_present": True,
         "paper_code_formula_contradictions": 1,
-        "unexplained_plot_statistics": 5,
+        "untraceable_plot_translated_statistics": 5,
         "full_end_to_end_pipeline_reproduced": False,
         "paper_result_credit": "partial_author_data_and_source_semantics_replay_not_full_paper_replication",
     }

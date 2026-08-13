@@ -144,6 +144,12 @@ def validate_inputs() -> None:
         "published_result_units_reproduced": 1_549,
         "published_correlation_cells_reproduced": 1_309,
         "published_boxplot_statistics_reproduced": 240,
+        "reachable_unique_out_or_txt_blobs_scanned": 230,
+        "historical_twenty_value_windows_scanned": 1_356,
+        "historical_matching_all_sector_evc_windows": 0,
+        "alternate_author_evc_formula_reproduces_plot": False,
+        "all_sector_evc_plot_only_uniform_translation": True,
+        "paper_result_credit_for_plot_translation": False,
         "llm_calls_made": 0,
         "full_end_to_end_pipeline_reproduced": False,
     }

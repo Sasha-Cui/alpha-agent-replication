@@ -9,11 +9,11 @@ BOX-007,all_3m,2016_2020_3M_step2_allsector.svg,RAPS,med,0.1047258888775438,0.10
 BOX-008,all_3m,2016_2020_3M_step2_allsector.svg,RAPS,q3,0.196194537352686,0.19619453573889825,-1.6137877423272329e-09,yes,no,author_data_deterministic_replay
 BOX-009,all_3m,2016_2020_3M_step2_allsector.svg,RAPS,whislo,-0.017693169067676373,-0.017693167521720232,1.545956140880378e-09,yes,no,author_data_deterministic_replay
 BOX-010,all_3m,2016_2020_3M_step2_allsector.svg,RAPS,whishi,0.30895219548959574,0.30895219030450993,-5.185085805159417e-09,yes,no,author_data_deterministic_replay
-BOX-011,all_3m,2016_2020_3M_step2_allsector.svg,EVC,q1,0.007369631011526767,-0.012630368705656647,-0.019999999717183414,no,no,unexplained_published_plot_difference
-BOX-012,all_3m,2016_2020_3M_step2_allsector.svg,EVC,med,0.06955245374598706,0.04955245441793088,-0.019999999328056184,no,no,unexplained_published_plot_difference
-BOX-013,all_3m,2016_2020_3M_step2_allsector.svg,EVC,q3,0.09666384641811704,0.0766638462934221,-0.02000000012469494,no,no,unexplained_published_plot_difference
-BOX-014,all_3m,2016_2020_3M_step2_allsector.svg,EVC,whislo,-0.03286551205337518,-0.05286551067224843,-0.01999999861887325,no,no,unexplained_published_plot_difference
-BOX-015,all_3m,2016_2020_3M_step2_allsector.svg,EVC,whishi,0.22828532536187218,0.20828532185546944,-0.02000000350640274,no,no,unexplained_published_plot_difference
+BOX-011,all_3m,2016_2020_3M_step2_allsector.svg,EVC,q1,0.007369631011526767,-0.012630368705656647,-0.019999999717183414,no,no,untraceable_published_vector_translation_no_credit
+BOX-012,all_3m,2016_2020_3M_step2_allsector.svg,EVC,med,0.06955245374598706,0.04955245441793088,-0.019999999328056184,no,no,untraceable_published_vector_translation_no_credit
+BOX-013,all_3m,2016_2020_3M_step2_allsector.svg,EVC,q3,0.09666384641811704,0.0766638462934221,-0.02000000012469494,no,no,untraceable_published_vector_translation_no_credit
+BOX-014,all_3m,2016_2020_3M_step2_allsector.svg,EVC,whislo,-0.03286551205337518,-0.05286551067224843,-0.01999999861887325,no,no,untraceable_published_vector_translation_no_credit
+BOX-015,all_3m,2016_2020_3M_step2_allsector.svg,EVC,whishi,0.22828532536187218,0.20828532185546944,-0.02000000350640274,no,no,untraceable_published_vector_translation_no_credit
 BOX-016,all_3m,2016_2020_3M_step2_allsector.svg,VEC,q1,0.001382629578085326,0.0013826300980087913,5.199234653918694e-10,yes,no,author_data_deterministic_replay
 BOX-017,all_3m,2016_2020_3M_step2_allsector.svg,VEC,med,0.06560226372050548,0.06560226374837458,2.7869095919896836e-11,yes,no,author_data_deterministic_replay
 BOX-018,all_3m,2016_2020_3M_step2_allsector.svg,VEC,q3,0.14368251274781313,0.1436825106862327,-2.06158043414284e-09,yes,no,author_data_deterministic_replay

@@ -120,6 +120,39 @@ def test_240_of_245_published_boxplot_statistics_replay() -> None:
     assert all(row["matches_tolerance_1e-4"] == "35" for key, row in summaries.items() if key != "all_3m")
 
 
+def test_all_sector_evc_translation_has_no_native_formula_or_output_trace() -> None:
+    formulas = csv_rows("all_sector_evc_formula_forensics.csv")
+    assert len(formulas) == 10
+    assert {row["variant"] for row in formulas} == {
+        "selected_raw_reciprocals",
+        "prototype_plus_one_denominators",
+    }
+    assert all(row["match_tolerance_1e-4"] == "no" for row in formulas)
+    assert all(row["result_credit"] == "no_unshifted_paper_match" for row in formulas)
+    selected = [row for row in formulas if row["variant"] == "selected_raw_reciprocals"]
+    assert len(selected) == 5
+    assert all(
+        math.isclose(float(row["replay_minus_paper"]), -0.02, abs_tol=1e-7)
+        for row in selected
+    )
+
+    forensic = json.loads((OUTPUT / "all_sector_evc_forensics.json").read_text(encoding="utf-8"))
+    assert forensic["paper_vector_created_at"] == "2024-04-27T00:42:40.890086"
+    assert forensic["reachable_unique_out_or_txt_blobs"] == 230
+    assert forensic["blobs_with_at_least_20_adjusted_rsquare_values"] == 112
+    assert forensic["sliding_20_value_windows_checked"] == 1_356
+    assert forensic["untranslated_matching_windows"] == 0
+    assert forensic["translation_shape_matching_windows"] == 0
+    assert forensic["best_untranslated_window_maximum_absolute_error"] > 0.025
+    assert forensic["best_translation_shape_maximum_residual"] > 0.014
+    assert forensic["sole_public_fork_head_matches_author_head"] is True
+    assert forensic["exact_github_code_search_hits"] == 0
+    assert forensic["classification"] == (
+        "untraceable_published_vector_uniform_translation_not_native_result_reproduction"
+    )
+    assert forensic["paper_result_credit_for_five_shifted_statistics"] is False
+
+
 def test_complete_author_history_exhausts_preserved_output_lineage() -> None:
     history = csv_rows("author_history_inventory.csv")
     assert len(history) == 20
@@ -150,7 +183,7 @@ def test_published_median_claims_are_counted_instead_of_generalized() -> None:
     methods = {row["dimension"]: row for row in csv_rows("method_specification_audit.csv")}
     assert methods["IT 3M prose"]["assessment"] == "paper_internal_contradiction"
     assert methods["Energy 1M generalization"]["assessment"] == "weak_support"
-    assert methods["all-sector EVC plot"]["assessment"] == "unexplained_difference"
+    assert methods["all-sector EVC plot"]["assessment"] == "untraceable_vector_translation"
 
 
 def test_monthly_quarterly_alignment_concretely_exposes_future_information() -> None:
@@ -177,6 +210,8 @@ def test_deleted_paper_repo_and_recovered_unlinked_source_are_not_conflated() ->
     evidence = {row["artifact"]: row for row in csv_rows("discovery_evidence.csv")}
     assert len(evidence) == len(audit.EVIDENCE_HASHES)
     assert evidence["wayback_repo_20240816.html"]["sha256"] == audit.EVIDENCE_HASHES["wayback_repo_20240816.html"]
+    assert evidence["thesis_forks_20260813.json"]["sha256"] == audit.EVIDENCE_HASHES["thesis_forks_20260813.json"]
+    assert evidence["github_code_search_allsector_20260813.json"]["sha256"] == audit.EVIDENCE_HASHES["github_code_search_allsector_20260813.json"]
 
 
 def test_method_audit_states_every_major_nonfaithfulness_boundary() -> None:
@@ -203,6 +238,14 @@ def test_manifest_reports_result_recovery_without_claiming_full_replication() ->
     assert manifest["historical_energy_3m_vector_statistics_matched"] == 35
     assert manifest["historical_information_technology_3m_vector_statistics_matched"] == 0
     assert manifest["historical_all_sector_output_trace_recovered"] is False
+    assert manifest["reachable_unique_out_or_txt_blobs_scanned"] == 230
+    assert manifest["historical_twenty_value_windows_scanned"] == 1_356
+    assert manifest["historical_matching_all_sector_evc_windows"] == 0
+    assert manifest["alternate_author_evc_formula_reproduces_plot"] is False
+    assert math.isclose(manifest["all_sector_evc_source_formula_uniform_offset"], 0.02)
+    assert manifest["all_sector_evc_plot_only_uniform_translation"] is True
+    assert manifest["paper_result_credit_for_plot_translation"] is False
+    assert manifest["untraceable_plot_translated_statistics"] == 5
     assert math.isclose(manifest["published_result_unit_recovery_rate"], 1549 / 1554)
     assert manifest["overall_fidelity"] == "partial_1549_of_1554_published_quantitative_units_replayed_from_author_data_no_end_to_end_LLM_replication_monthly_lookahead_present"
     assert manifest["full_end_to_end_pipeline_reproduced"] is False
@@ -210,6 +253,10 @@ def test_manifest_reports_result_recovery_without_claiming_full_replication() ->
     assert native["llm_generation_reproduced"] is False
     assert native["author_history_commits_audited"] == 20
     assert native["historical_energy_3m_vector_statistics_matched"] == 35
+    assert native["reachable_unique_out_or_txt_blobs_scanned"] == 230
+    assert native["historical_twenty_value_windows_scanned"] == 1_356
+    assert native["all_sector_evc_plot_only_uniform_translation"] is True
+    assert native["paper_result_credit_for_plot_translation"] is False
     assert native["full_end_to_end_pipeline_reproduced"] is False
     assert native["paper_result_credit"] == "partial_author_data_and_source_semantics_replay_not_full_paper_replication"
     readme = " ".join((OUTPUT / "README.md").read_text(encoding="utf-8").split())

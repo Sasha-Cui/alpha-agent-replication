@@ -1,4 +1,7 @@
 {
+  "all_sector_evc_plot_only_uniform_translation": true,
+  "all_sector_evc_source_formula_uniform_offset": 0.02,
+  "alternate_author_evc_formula_reproduces_plot": false,
   "audit": "GPT-Signal official-paper, paper-source, deleted-artifact, and recovered-author-source audit",
   "author_history_commits_audited": 20,
   "author_source_bytes": 170997569,
@@ -8,6 +11,8 @@
   "historical_all_sector_output_trace_recovered": false,
   "historical_energy_3m_vector_statistics_matched": 35,
   "historical_information_technology_3m_vector_statistics_matched": 0,
+  "historical_matching_all_sector_evc_windows": 0,
+  "historical_twenty_value_windows_scanned": 1356,
   "llm_calls_made": 0,
   "monthly_lookahead_present": true,
   "new_signal_median_comparisons": 42,
@@ -19,6 +24,7 @@
   "paper_code_formula_contradictions": 1,
   "paper_equation_correlation_cells_reproduced": 1205,
   "paper_result_credit": "partial_author_data_and_source_semantics_replay_not_full_paper_replication",
+  "paper_result_credit_for_plot_translation": false,
   "paper_source_files": 71,
   "plaintext_credential_matches_redacted": 4,
   "published_boxplot_statistics": 245,
@@ -30,6 +36,7 @@
   "published_result_units_reproduced": 1549,
   "published_signals": 6,
   "raw_gpt_signal_outputs_recovered": 5,
+  "reachable_unique_out_or_txt_blobs_scanned": 230,
   "rebuilt_pdf_pages_visually_inspected": 13,
-  "unexplained_plot_statistics": 5
+  "untraceable_plot_translated_statistics": 5
 }

@@ -1,0 +1,11 @@
+variant,formula,source_lineage,statistic,paper_vector_value,replay_value,replay_minus_paper,match_tolerance_1e-4,result_credit
+selected_raw_reciprocals,1/ROA * 1/EV_EBITDA * 1/P_CF,raw_gpt_output_paper_and_data_py,q1,0.007369631011526767,-0.012630368705656814,-0.01999999971718358,no,no_unshifted_paper_match
+selected_raw_reciprocals,1/ROA * 1/EV_EBITDA * 1/P_CF,raw_gpt_output_paper_and_data_py,med,0.06955245374598706,0.04955245441793116,-0.019999999328055906,no,no_unshifted_paper_match
+selected_raw_reciprocals,1/ROA * 1/EV_EBITDA * 1/P_CF,raw_gpt_output_paper_and_data_py,q3,0.09666384641811704,0.07666384629342249,-0.02000000012469455,no,no_unshifted_paper_match
+selected_raw_reciprocals,1/ROA * 1/EV_EBITDA * 1/P_CF,raw_gpt_output_paper_and_data_py,whislo,-0.03286551205337518,-0.052865510672248206,-0.019999998618873027,no,no_unshifted_paper_match
+selected_raw_reciprocals,1/ROA * 1/EV_EBITDA * 1/P_CF,raw_gpt_output_paper_and_data_py,whishi,0.22828532536187218,0.20828532185546922,-0.020000003506402964,no,no_unshifted_paper_match
+prototype_plus_one_denominators,1/(ROA+1) * 1/(EV_EBITDA+1) * 1/(P_CF+1),data3_py_prototype_commit_da72031e301c4238925118974ed314c48f70fc57_2013_2014_15_stock_defaults,q1,0.007369631011526767,0.014437774612022947,0.0070681436004961795,no,no_unshifted_paper_match
+prototype_plus_one_denominators,1/(ROA+1) * 1/(EV_EBITDA+1) * 1/(P_CF+1),data3_py_prototype_commit_da72031e301c4238925118974ed314c48f70fc57_2013_2014_15_stock_defaults,med,0.06955245374598706,0.04774841333295604,-0.021804040413031023,no,no_unshifted_paper_match
+prototype_plus_one_denominators,1/(ROA+1) * 1/(EV_EBITDA+1) * 1/(P_CF+1),data3_py_prototype_commit_da72031e301c4238925118974ed314c48f70fc57_2013_2014_15_stock_defaults,q3,0.09666384641811704,0.08626218349279197,-0.010401662925325073,no,no_unshifted_paper_match
+prototype_plus_one_denominators,1/(ROA+1) * 1/(EV_EBITDA+1) * 1/(P_CF+1),data3_py_prototype_commit_da72031e301c4238925118974ed314c48f70fc57_2013_2014_15_stock_defaults,whislo,-0.03286551205337518,-0.03895160349186444,-0.006086091438489261,no,no_unshifted_paper_match
+prototype_plus_one_denominators,1/(ROA+1) * 1/(EV_EBITDA+1) * 1/(P_CF+1),data3_py_prototype_commit_da72031e301c4238925118974ed314c48f70fc57_2013_2014_15_stock_defaults,whishi,0.22828532536187218,0.13235201218725168,-0.0959333131746205,no,no_unshifted_paper_match

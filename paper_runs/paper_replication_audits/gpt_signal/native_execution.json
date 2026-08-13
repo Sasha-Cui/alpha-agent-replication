@@ -1,4 +1,6 @@
 {
+  "all_sector_evc_plot_only_uniform_translation": true,
+  "alternate_author_evc_formula_reproduces_plot": false,
   "author_history_commits_audited": 20,
   "author_source_available": true,
   "deterministic_boxplot_statistics_reproduced": 240,
@@ -10,11 +12,15 @@
   "historical_all_sector_output_trace_recovered": false,
   "historical_energy_3m_vector_statistics_matched": 35,
   "historical_information_technology_3m_vector_statistics_matched": 0,
+  "historical_matching_all_sector_evc_windows": 0,
+  "historical_twenty_value_windows_scanned": 1356,
   "llm_calls_made": 0,
   "llm_generation_reproduced": false,
   "paper_listed_source_archived_placeholder_only": true,
   "paper_listed_source_available": false,
   "paper_result_credit": "partial_author_data_and_source_semantics_replay_not_full_paper_replication",
+  "paper_result_credit_for_plot_translation": false,
   "paper_tex_rebuilt": true,
+  "reachable_unique_out_or_txt_blobs_scanned": 230,
   "tracked_python_files_compiled": 6
 }

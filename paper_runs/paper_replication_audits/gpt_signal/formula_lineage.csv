@@ -1,7 +1,7 @@
 signal,paper_formula,released_code_formula,raw_gpt4_output_recovered,raw_output_path,assessment,result_evidence,fresh_llm_call_made
 PVS,ROE / P/E,ROE / P/E,yes,Code/langchain/output/gpt-4-1106-preview/zero_shot_cot/out_gpt-4-1106-preview_zero_shot_cot_20240207-154023.csv,same,power_and_multiply_both_unaffected,no
 RAPS,"ROE / (P/E * beta), beta=2","ROE / (P/E ** beta), beta=2",yes,Code/langchain/output/gpt-4-1106-preview/zero_shot_cot/out_gpt-4-1106-preview_zero_shot_cot_20240207-163355.csv,contradiction,only_source_and_GPT_power_formula_matches_all_1309_cells,no
-EVC,ROA^-1 * EV/EBITDA^-1 * P/CF^-1,same,yes,Code/langchain/output/gpt-4-1106-preview/zero_shot_cot/out_gpt-4-1106-preview_zero_shot_cot_20240207-164109.csv,same,matches_except_unexplained_all_sector_plot_shift,no
+EVC,ROA^-1 * EV/EBITDA^-1 * P/CF^-1,same,yes,Code/langchain/output/gpt-4-1106-preview/zero_shot_cot/out_gpt-4-1106-preview_zero_shot_cot_20240207-164109.csv,same,matches_native_results_except_untraceable_all_sector_vector_translation,no
 VEC,"mean(P/E, ROE, FCF/share)",same,no,,missing_raw_generation_output,formula_and_results_present_but_no_raw_GPT_lineage,no
 PLF,ROE * gross margin / P/E,same,yes_generic_NF_name,Code/langchain/output/gpt-4-1106-preview/zero_shot_cot/new/out_gpt-4-1106-preview_zero_shot_cot.csv,renamed,raw_GPT_output_formula_matches_paper_signal,no
 IQS,ROE * P/E^-1 * P/B^-1 * log(SPS),same,yes,Code/langchain/output/gpt-4-1106-preview/zero_shot_cot/new/out_gpt-4-1106-preview_zero_shot_cot_20240225-183705.csv,same,raw_GPT_output_formula_matches,no
