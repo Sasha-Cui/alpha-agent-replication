@@ -1,9 +1,13 @@
 {
   "audit": "GPT-Signal official-paper, paper-source, deleted-artifact, and recovered-author-source audit",
+  "author_history_commits_audited": 20,
   "author_source_bytes": 170997569,
   "author_source_files": 13884,
   "compiled_python_files": 6,
   "full_end_to_end_pipeline_reproduced": false,
+  "historical_all_sector_output_trace_recovered": false,
+  "historical_energy_3m_vector_statistics_matched": 35,
+  "historical_information_technology_3m_vector_statistics_matched": 0,
   "llm_calls_made": 0,
   "monthly_lookahead_present": true,
   "new_signal_median_comparisons": 42,

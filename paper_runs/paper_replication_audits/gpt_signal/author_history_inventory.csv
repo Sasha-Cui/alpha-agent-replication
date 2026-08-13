@@ -1,0 +1,21 @@
+commit,authored_at,subject,tracked_paths,preserved_2016_2020_output_traces,preserved_trace_group,all_sector_trace_paths,all_sector_trace_status
+4862581984690c8f7619c1895217f422f7dfaa44,2024-02-06T22:52:04-05:00,Initial commit,1,0,none,0,absent
+69747bc95ecc38e39ad7d33802a0b8603036e0c8,2024-02-06T22:54:47-05:00,added the code folder,138,0,none,0,absent
+3717a3447d534151047f88f1164b9b933b8db58a,2024-02-06T23:35:24-05:00,latest version,138,0,none,0,absent
+6028fb340651ce6f83af85e23bca1f8233056cbd,2024-02-07T01:17:33-05:00,automate prompt,139,0,none,0,absent
+01349659f1185a624407fb1937c5a20ac7b10be8,2024-02-07T01:45:16-05:00,added some definitions,141,0,none,0,absent
+6efb02fa74ff26775dc000ed458c435fffeebf7e,2024-02-07T22:41:19-05:00,10 features,152,0,none,0,absent
+8746c4876f6a496ad946de8142150644688dc614,2024-02-21T22:04:57-05:00,modified,1307,0,none,0,absent
+11fc1a6b4d2163154bb1f76c5cd617fb0e51e502,2024-02-21T23:59:48-05:00,new tickers,1681,0,none,0,absent
+f1954e1f50247ae01d8bd6daa17ff4c72c174ab4,2024-02-22T01:44:01-05:00,add heatmap,1695,0,none,0,absent
+70169e3506488f70173813caa18250cbdbfa2e89,2024-02-22T14:54:37-05:00,add 3m return,799,0,none,0,absent
+da72031e301c4238925118974ed314c48f70fc57,2024-02-24T17:01:58-05:00,added info tech sector,2756,0,none,0,absent
+15444bd420b75858d3673edea61df273de814b5c,2024-02-24T21:42:29-05:00,added info tech sector for real,2936,0,none,0,absent
+35f5af7f25ae046f29f9803df9747c8d3bbcde85,2024-02-25T13:59:43-05:00,processed data,2938,0,none,0,absent
+567353a6260118ecf19081ce2f0f2b66ce82026b,2024-02-25T17:53:08-05:00,.,3259,0,none,0,absent
+b52eca423a55b64585540ec82ff1fd5410e7f6cd,2024-02-25T18:45:56-05:00,added new signals abcde,3265,0,none,0,absent
+fe3d57fb50fb232f1bb2acb52f56ba4fd5d0d10d,2024-02-25T18:49:04-05:00,added new signals,3276,0,none,0,absent
+146968342df7590d2e69d591f90a93c52d648a96,2024-02-26T22:37:50-05:00,.,8384,12,information_technology,0,absent
+99865489ff45339e055abe737a274b2fd9385119,2024-02-28T16:35:32-05:00,added energy sector,13875,12,energy,0,absent
+d5b4d727da6954a54c7af366c2b7e635239b783c,2024-02-28T23:16:45-05:00,added figures,13884,12,energy,0,absent
+434230ca9123048a4d79e2cc1390b23b050ef68e,2024-03-24T00:31:46-04:00,add data.py after finnlp,13884,12,energy,0,absent

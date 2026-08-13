@@ -17,7 +17,10 @@ CSVs, formulas, and analysis logic needed to trace the published figures.
   regeneration of GPT-Signal.
 - The five failures are the all-sector EVC box. Every vector statistic in that
   box is exactly 0.02 above the deterministic replay. The unexplained shift
-  changes EVC's median from below the baseline to above it.
+  changes EVC's median from below the baseline to above it. The complete
+  20-commit public author history preserves no all-sector output trace: its
+  exact Energy 3M family matches 35/35 statistics, while an older IT family
+  matches 0/35 current-paper statistics.
 - The paper's RAPS equation uses `ROE / (P/E * beta)`, while the raw GPT output,
   released code, and all published cells use `ROE / (P/E ** beta)`. The printed
   equation misses 104/1,309 heatmap cells at two-decimal display precision.
@@ -48,6 +51,9 @@ broad alpha, speed, scale, or continual-refinement claims.
   formulas.
 - `boxplot_stat_reproduction.csv` and `boxplot_figure_summary.csv`: all five
   displayed box statistics for seven models across seven figures.
+- `author_history_inventory.csv` and `author_history_trace_conformance.csv`:
+  every public commit, all preserved 2016--2020 trace families, and their
+  paper-vector conformance.
 - `formula_lineage.csv`, `monthly_lookahead_trace.csv`, and
   `method_specification_audit.csv`: formula provenance, a concrete AAPL
   availability trace, and paper/source fidelity boundaries.

@@ -1,4 +1,5 @@
 {
+  "author_history_commits_audited": 20,
   "author_source_available": true,
   "deterministic_boxplot_statistics_reproduced": 240,
   "deterministic_boxplot_statistics_total": 245,
@@ -6,6 +7,9 @@
   "deterministic_correlation_cells_total": 1309,
   "full_end_to_end_pipeline_reproduced": false,
   "full_end_to_end_reason": "retired_nondeterministic_LLM_snapshot_plus_stale_runner_and_monthly_lookahead",
+  "historical_all_sector_output_trace_recovered": false,
+  "historical_energy_3m_vector_statistics_matched": 35,
+  "historical_information_technology_3m_vector_statistics_matched": 0,
   "llm_calls_made": 0,
   "llm_generation_reproduced": false,
   "paper_listed_source_archived_placeholder_only": true,

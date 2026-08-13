@@ -120,6 +120,28 @@ def test_240_of_245_published_boxplot_statistics_replay() -> None:
     assert all(row["matches_tolerance_1e-4"] == "35" for key, row in summaries.items() if key != "all_3m")
 
 
+def test_complete_author_history_exhausts_preserved_output_lineage() -> None:
+    history = csv_rows("author_history_inventory.csv")
+    assert len(history) == 20
+    assert history[0]["commit"] == audit.EXPECTED_AUTHOR_ROOT
+    assert history[-1]["commit"] == audit.EXPECTED_AUTHOR_HEAD
+    assert all(row["all_sector_trace_status"] == "absent" for row in history)
+    assert sum(int(row["preserved_2016_2020_output_traces"]) > 0 for row in history) == 4
+    assert {row["preserved_trace_group"] for row in history} == {
+        "none", "information_technology", "energy",
+    }
+
+    rows = csv_rows("author_history_trace_conformance.csv")
+    assert len(rows) == 70
+    matched = Counter(row["trace"] for row in rows if row["match_tolerance_1e-4"] == "yes")
+    assert matched == {"energy_3m": 35}
+    assert sum(row["trace"] == "information_technology_3m" for row in rows) == 35
+    assert all(
+        row["paper_result_credit"] == "historical_author_output_trace"
+        for row in rows if row["trace"] == "energy_3m"
+    )
+
+
 def test_published_median_claims_are_counted_instead_of_generalized() -> None:
     summaries = {row["figure"]: row for row in csv_rows("boxplot_figure_summary.csv")}
     assert sum(int(row["new_signal_medians_above_baseline"]) for row in summaries.values()) == 35
@@ -159,13 +181,14 @@ def test_deleted_paper_repo_and_recovered_unlinked_source_are_not_conflated() ->
 
 def test_method_audit_states_every_major_nonfaithfulness_boundary() -> None:
     rows = {row["dimension"]: row for row in csv_rows("method_specification_audit.csv")}
-    assert len(rows) == 30
+    assert len(rows) == 31
     assert rows["LLM randomness"]["assessment"] == "missing"
     assert rows["iterative refinement"]["assessment"] == "unsupported"
     assert rows["FactSet access"]["assessment"] == "paper_error"
     assert rows["price field"]["assessment"] == "source_only_detail"
     assert rows["monthly cross-sections"]["assessment"] == "stale_runner"
     assert rows["native control flow"]["assessment"] == "stale_runner"
+    assert rows["historical output traces"]["assessment"] == "history_exhausted"
     assert rows["significance"]["assessment"] == "unsupported"
     assert rows["economic evaluation"]["assessment"] == "missing"
     assert rows["speed/scale claims"]["assessment"] == "unsupported"
@@ -176,11 +199,17 @@ def test_manifest_reports_result_recovery_without_claiming_full_replication() ->
     native = json.loads((OUTPUT / "native_execution.json").read_text(encoding="utf-8"))
     assert manifest["published_result_units_reproduced"] == 1_549
     assert manifest["published_result_units"] == 1_554
+    assert manifest["author_history_commits_audited"] == 20
+    assert manifest["historical_energy_3m_vector_statistics_matched"] == 35
+    assert manifest["historical_information_technology_3m_vector_statistics_matched"] == 0
+    assert manifest["historical_all_sector_output_trace_recovered"] is False
     assert math.isclose(manifest["published_result_unit_recovery_rate"], 1549 / 1554)
     assert manifest["overall_fidelity"] == "partial_1549_of_1554_published_quantitative_units_replayed_from_author_data_no_end_to_end_LLM_replication_monthly_lookahead_present"
     assert manifest["full_end_to_end_pipeline_reproduced"] is False
     assert manifest["llm_calls_made"] == 0
     assert native["llm_generation_reproduced"] is False
+    assert native["author_history_commits_audited"] == 20
+    assert native["historical_energy_3m_vector_statistics_matched"] == 35
     assert native["full_end_to_end_pipeline_reproduced"] is False
     assert native["paper_result_credit"] == "partial_author_data_and_source_semantics_replay_not_full_paper_replication"
     readme = " ".join((OUTPUT / "README.md").read_text(encoding="utf-8").split())

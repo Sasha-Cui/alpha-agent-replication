@@ -60,6 +60,8 @@ EXPECTED_AUTHOR_TREE_SHA256 = "582139c57512435020b7edc6471b308f018afaa3c41ea4f35
 EXPECTED_AUTHOR_ARCHIVE_SHA256 = "451d7334bf4a6de94dcbc6cf2e29d9f5c30f228a58457fdd278d5ba9772992fd"
 EXPECTED_AUTHOR_FILES = 13_884
 EXPECTED_AUTHOR_BYTES = 170_997_569
+EXPECTED_AUTHOR_COMMITS = 20
+EXPECTED_AUTHOR_ROOT = "4862581984690c8f7619c1895217f422f7dfaa44"
 EXPECTED_AUTHOR_EXTENSIONS = {
     "csv": 13_264,
     "xlsx": 373,
@@ -345,6 +347,55 @@ def author_source_inventory(repo: Path) -> tuple[list[dict[str, str]], dict[str,
         "dependency_manifest": "none_observed",
     }
     return rows, facts
+
+
+def author_history_inventory(repo: Path) -> list[dict[str, str]]:
+    """Inventory every public author commit and its preserved 2016--2020 traces."""
+    shallow = str(git(repo, "rev-parse", "--is-shallow-repository")).strip()
+    if shallow != "false":
+        raise ValueError("author repository history is shallow; fetch full history before auditing")
+    commits = str(git(repo, "rev-list", "--reverse", "HEAD")).splitlines()
+    if len(commits) != EXPECTED_AUTHOR_COMMITS:
+        raise ValueError(f"author commit count changed: {len(commits)}")
+    if commits[0] != EXPECTED_AUTHOR_ROOT or commits[-1] != EXPECTED_AUTHOR_HEAD:
+        raise ValueError("author history endpoints changed")
+
+    rows: list[dict[str, str]] = []
+    for commit in commits:
+        metadata = str(git(repo, "show", "-s", "--format=%aI%x09%s", commit)).rstrip("\n").split("\t", 1)
+        paths = str(git(repo, "ls-tree", "-r", "--name-only", commit)).splitlines()
+        trace_paths = [
+            path for path in paths
+            if path.startswith("Code/Data/output/2016/2020/") and path.endswith(".out")
+        ]
+        trace_group = "none"
+        if trace_paths:
+            first = str(git(repo, "show", f"{commit}:{trace_paths[0]}")).splitlines()[0]
+            match = re.search(r"path_to_file='([^']+)'", first)
+            if match:
+                path_value = match.group(1).lower()
+                if "information technology" in path_value:
+                    trace_group = "information_technology"
+                elif "energy" in path_value:
+                    trace_group = "energy"
+                elif "health care" in path_value:
+                    trace_group = "health_care"
+                else:
+                    trace_group = "other"
+        all_sector_paths = [path for path in paths if "allsector" in path.lower()]
+        rows.append({
+            "commit": commit,
+            "authored_at": metadata[0],
+            "subject": metadata[1],
+            "tracked_paths": str(len(paths)),
+            "preserved_2016_2020_output_traces": str(len(trace_paths)),
+            "preserved_trace_group": trace_group,
+            "all_sector_trace_paths": str(len(all_sector_paths)),
+            "all_sector_trace_status": "absent" if not all_sector_paths else "present",
+        })
+    if any(row["all_sector_trace_status"] != "absent" for row in rows):
+        raise ValueError("author history unexpectedly contains an all-sector trace")
+    return rows
 
 
 def validate_discovery_evidence(directory: Path) -> list[dict[str, str]]:
@@ -700,6 +751,48 @@ def boxplot_reproduction(data: ReplayData, source: Path) -> tuple[list[dict[str,
     return rows, summaries
 
 
+def author_history_trace_conformance(repo: Path, source: Path) -> list[dict[str, str]]:
+    """Compare the two preserved historical output families with paper vectors."""
+    trace_cases = (
+        ("information_technology_3m", "146968342df7590d2e69d591f90a93c52d648a96", "it"),
+        ("energy_3m", "99865489ff45339e055abe737a274b2fd9385119", "en"),
+    )
+    source_files = dict(zip(NEW_LABELS + ["baseline"], ["1", "2", "4", "5", "6", "9", "baseline"]))
+    rows: list[dict[str, str]] = []
+    for trace, commit, group in trace_cases:
+        paper = {str(item["model"]): item for item in author_box_stats(source / BOX_FILES[(group, "3m")])}
+        for model, filename in source_files.items():
+            path = f"Code/Data/output/2016/2020/{filename}.out"
+            text = str(git(repo, "show", f"{commit}:{path}"))
+            values = [
+                float(value)
+                for value in re.findall(r"^this is adj rsquare:\s*([^\s]+)", text, re.M)
+            ]
+            if len(values) != 20:
+                raise ValueError(f"historical trace length changed: {commit}:{path}: {len(values)}")
+            actual = cbook.boxplot_stats(values, whis=1.5)[0]
+            for statistic in ("q1", "med", "q3", "whislo", "whishi"):
+                expected = float(paper[model][statistic])
+                replay = float(actual[statistic])
+                delta = replay - expected
+                rows.append({
+                    "trace": trace,
+                    "commit": commit,
+                    "source_out": path,
+                    "model": model,
+                    "statistic": statistic,
+                    "paper_vector_value": repr(expected),
+                    "historical_output_value": repr(replay),
+                    "historical_minus_paper": repr(delta),
+                    "match_tolerance_1e-4": "yes" if abs(delta) <= 1e-4 else "no",
+                    "paper_result_credit": "historical_author_output_trace" if abs(delta) <= 1e-4 else "no",
+                })
+    matched = Counter(row["trace"] for row in rows if row["match_tolerance_1e-4"] == "yes")
+    if len(rows) != 70 or matched != Counter({"energy_3m": 35}):
+        raise ValueError(f"historical trace conformance changed: {matched}")
+    return rows
+
+
 def prompt_output(path: Path) -> str:
     with path.open(newline="", encoding="utf-8", errors="replace") as stream:
         rows = list(csv.DictReader(stream))
@@ -815,8 +908,9 @@ def method_audit() -> list[dict[str, str]]:
         ("native control flow", "two-step analysis", "data.py exits after correlation before step 2", "stale_runner", "single command cannot regenerate full analysis"),
         ("plot runner", "six new-signal models plus baseline", "plot.py contains 12 candidate models and exits before save", "stale_runner", "published selection/manual state is not encoded"),
         ("correlation result lineage", "13 heatmaps", "1309/1309 cells recover with source formula", "reproduced_from_author_data", "strong result-level lineage"),
-        ("Fama-MacBeth result lineage", "7 boxplots", "240/245 vector statistics recover", "partial_reproduction", "five unexplained all-sector EVC statistics differ"),
-        ("all-sector EVC plot", "median shown above baseline", "all five box statistics shifted +0.02 from replay", "unexplained_difference", "shift changes qualitative above/below-baseline conclusion"),
+        ("Fama-MacBeth result lineage", "7 boxplots", "240/245 vector statistics recover", "partial_reproduction", "five all-sector EVC statistics differ; all 20 public author commits were searched and no all-sector trace is preserved"),
+        ("historical output traces", "not disclosed", "20-commit history preserves exact Energy 3M outputs but an obsolete IT family and no all-sector family", "history_exhausted", "the residual all-sector EVC shift cannot be attributed to a preserved author run"),
+        ("all-sector EVC plot", "median shown above baseline", "all five box statistics shifted +0.02 from replay; no all-sector output exists in any public author commit", "unexplained_difference", "shift changes qualitative above/below-baseline conclusion"),
         ("IT 3M prose", "5 out of 6 improve", "published vector medians show 6 out of 6", "paper_internal_contradiction", "prose does not match its figure"),
         ("Energy 1M generalization", "similar patterns", "only 1 of 6 medians exceeds baseline", "weak_support", "broad conclusion is not uniform across sectors/horizons"),
         ("significance", "signals meaningfully predict returns", "no reported test, interval, or multiple-testing control", "unsupported", "correlation and adjusted R2 alone do not establish significance"),
@@ -854,7 +948,8 @@ def native_execution_rows() -> list[dict[str, str]]:
         {"component": "author Python source compile", "attempted": "yes", "status": "pass", "detail": "6/6 tracked Python files compile in memory", "result_credit": "no"},
         {"component": "released data.py end-to-end", "attempted": "source_inspection", "status": "not_runnable_as_published", "detail": "exit after heatmap makes step 2 unreachable; monthly ii=19 is stale; yfinance dependency absent", "result_credit": "no"},
         {"component": "deterministic correlation replay", "attempted": "yes", "status": "pass_1309_of_1309", "detail": "author xlsx/CSV inputs plus released formula semantics", "result_credit": "author_data_replay"},
-        {"component": "deterministic boxplot replay", "attempted": "yes", "status": "partial_240_of_245", "detail": "five all-sector EVC statistics differ by a uniform +0.02 paper shift", "result_credit": "author_data_replay_except_five"},
+        {"component": "author Git history", "attempted": "yes", "status": "pass_20_of_20_commits", "detail": "Energy 3M archived outputs match 35/35 vector statistics; obsolete IT outputs match 0/35; no commit preserves all-sector outputs", "result_credit": "history_level_lineage_only"},
+        {"component": "deterministic boxplot replay", "attempted": "yes", "status": "partial_240_of_245", "detail": "five all-sector EVC statistics differ by a uniform +0.02 paper shift and no historical all-sector run is preserved", "result_credit": "author_data_replay_except_five"},
         {"component": "GPT-4 signal generation", "attempted": "no", "status": "not_reproducible", "detail": "retired gpt-4-1106-preview, no seed/temperature, no request IDs; raw output recovered for 5/6", "result_credit": "historical_output_lineage_only"},
         {"component": "full paper pipeline", "attempted": "no", "status": "not_faithfully_defined", "detail": "LLM snapshot unavailable and monthly source path contains lookahead; a fresh run would not be comparable", "result_credit": "no_end_to_end_credit"},
     ]
@@ -881,7 +976,10 @@ CSVs, formulas, and analysis logic needed to trace the published figures.
   regeneration of GPT-Signal.
 - The five failures are the all-sector EVC box. Every vector statistic in that
   box is exactly 0.02 above the deterministic replay. The unexplained shift
-  changes EVC's median from below the baseline to above it.
+  changes EVC's median from below the baseline to above it. The complete
+  20-commit public author history preserves no all-sector output trace: its
+  exact Energy 3M family matches 35/35 statistics, while an older IT family
+  matches 0/35 current-paper statistics.
 - The paper's RAPS equation uses `ROE / (P/E * beta)`, while the raw GPT output,
   released code, and all published cells use `ROE / (P/E ** beta)`. The printed
   equation misses 104/1,309 heatmap cells at two-decimal display precision.
@@ -912,6 +1010,9 @@ broad alpha, speed, scale, or continual-refinement claims.
   formulas.
 - `boxplot_stat_reproduction.csv` and `boxplot_figure_summary.csv`: all five
   displayed box statistics for seven models across seven figures.
+- `author_history_inventory.csv` and `author_history_trace_conformance.csv`:
+  every public commit, all preserved 2016--2020 trace families, and their
+  paper-vector conformance.
 - `formula_lineage.csv`, `monthly_lookahead_trace.csv`, and
   `method_specification_audit.csv`: formula provenance, a concrete AAPL
   availability trace, and paper/source fidelity boundaries.
@@ -931,6 +1032,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError("unexpected later-paper title in GPT-Signal ACL PDF")
     paper_source = paper_source_inventory(args.source_archive.resolve(), args.source_dir.resolve())
     author_source, author_facts = author_source_inventory(args.author_repo.resolve())
+    author_history = author_history_inventory(args.author_repo.resolve())
     discovery = validate_discovery_evidence(args.evidence_dir.resolve())
 
     data = ReplayData(args.author_repo.resolve())
@@ -947,6 +1049,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
     correlations, correlation_summaries = correlation_reproduction(data, args.source_dir.resolve())
     boxes, box_summaries = boxplot_reproduction(data, args.source_dir.resolve())
+    history_traces = author_history_trace_conformance(args.author_repo.resolve(), args.source_dir.resolve())
     formulas = formula_lineage(args.author_repo.resolve(), args.source_dir.resolve())
     lookahead = lookahead_trace(data)
     methods = method_audit()
@@ -965,6 +1068,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     for name, rows in (
         ("paper_source_inventory.csv", paper_source),
         ("author_source_inventory.csv", author_source),
+        ("author_history_inventory.csv", author_history),
+        ("author_history_trace_conformance.csv", history_traces),
         ("discovery_evidence.csv", discovery),
         ("artifact_access_audit.csv", artifacts),
         ("correlation_cell_reproduction.csv", correlations),
@@ -1005,6 +1110,10 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "archived_placeholder_tracked_files": 1,
         "author_repository": AUTHOR_REPO_URL,
         "author_repository_relationship": "author_owned_pre_publication_source_recovery_not_linked_by_paper",
+        "author_repository_history_fully_fetched": True,
+        "author_repository_public_commits": len(author_history),
+        "author_repository_root_commit": EXPECTED_AUTHOR_ROOT,
+        "author_repository_commits_with_all_sector_trace": 0,
         **author_facts,
         "relevant_companies": 93,
         "relevant_factset_workbooks": workbook_count,
@@ -1017,6 +1126,10 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "paper_listed_source_available": False,
         "paper_listed_source_archived_placeholder_only": True,
         "paper_tex_rebuilt": True,
+        "author_history_commits_audited": len(author_history),
+        "historical_energy_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "energy_3m"),
+        "historical_information_technology_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "information_technology_3m"),
+        "historical_all_sector_output_trace_recovered": False,
         "tracked_python_files_compiled": 6,
         "deterministic_correlation_cells_reproduced": 1309,
         "deterministic_correlation_cells_total": 1309,
@@ -1040,6 +1153,10 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "paper_source_files": len(paper_source),
         "author_source_files": len(author_source),
         "author_source_bytes": author_facts["tracked_bytes"],
+        "author_history_commits_audited": len(author_history),
+        "historical_energy_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "energy_3m"),
+        "historical_information_technology_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "information_technology_3m"),
+        "historical_all_sector_output_trace_recovered": False,
         "compiled_python_files": author_facts["compiled_python_files"],
         "plaintext_credential_matches_redacted": author_facts["plaintext_credential_matches_redacted"],
         "published_correlation_cells": len(correlations),

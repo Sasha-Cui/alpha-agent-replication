@@ -18,7 +18,11 @@
   "arxiv_source_url": "https://arxiv.org/e-print/2410.18448v1",
   "arxiv_version": "v1_only_as_of_pinned_record",
   "author_repository": "https://github.com/Yiningww/Thesis",
+  "author_repository_commits_with_all_sector_trace": 0,
+  "author_repository_history_fully_fetched": true,
+  "author_repository_public_commits": 20,
   "author_repository_relationship": "author_owned_pre_publication_source_recovery_not_linked_by_paper",
+  "author_repository_root_commit": "4862581984690c8f7619c1895217f422f7dfaa44",
   "authors": [
     "Yining Wang",
     "Jinman Zhao",
