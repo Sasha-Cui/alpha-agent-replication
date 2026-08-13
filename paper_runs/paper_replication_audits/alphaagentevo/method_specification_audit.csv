@@ -1,0 +1,16 @@
+dimension,status,detail
+official_manuscript,complete,accepted 18-page ICLR 2026 OpenReview PDF recovered and visually checked
+official_source,not_recovered,no accepted-version TeX/source archive was exposed by the primary record
+supplement,listed_but_currently_unrecoverable,primary record lists ZIP /attachment/4a42ab9dd0ce0fd252223eab6a143bbcf681ae63.zip; signed-in immutable access returned 404 and logical/API access was blocked
+paper_specific_release,missing,"no paper-author implementation, checkpoint, dataset, or result package found"
+dataset,specified_not_released,AlphaEvo500 is 350/50/100 and Alpha158 is external; supplement promises files/splits but was not recovered
+market_and_period,specified_not_frozen,"HS300/CSI500, 2023-01 through 2025-11 periods specified without point-in-time market panel"
+portfolio,partially_specified,"cross-sectional top 10 percent, five-trading-day rebalance; weighting/cost/slippage details are incomplete"
+agent_and_tools,paper_specification_only,"multi-turn policy, four offspring/tool calls, evaluator schema and operator appendix described without native implementation"
+model_training,partially_specified,"Qwen3 1.7B/4B, Verl, 10 RTX4090, 150 steps, GRPO-related settings disclosed without exact environment/checkpoints"
+reward,equation_specified_with_ambiguity,"five-part capped hierarchy printed, but the tool-cost denominator can be zero or negative and no floor/sign handling is stated"
+prompts_and_trajectories,not_released,schematic tool prompt and one rendered case study are not exact filled training/evaluation calls or complete trajectories
+baselines,named_not_replayable,"GP, AlphaAgent, Qwen3, ToolRL, GEPA, GPT-5-mini, DeepSeek-R1 and portfolio baselines lack complete pinned configs/outputs"
+replications_and_uncertainty,not_released,"no repeat count, seeds, uncertainty intervals, significance tests, or per-run output arrays"
+published_results,not_regenerated,"zero of 147 table units, zero of 21 empirical panels, and zero of 40 exact figure annotations regenerated"
+search_for_release,no_attributable_public_implementation_found,two post-publication Hugging Face candidates are unaffiliated and receive no native credit

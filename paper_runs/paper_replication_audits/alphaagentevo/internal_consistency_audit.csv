@@ -1,0 +1,9 @@
+check,status,detail
+document_render,all_pages_readable,"18/18 pages visually checked; zero unreadable, clipped, overlapping, blank, or missing research pages"
+supplement_release,listed_but_not_retrievable,"accepted record lists dataset splits and full training/evaluation source, but the archive is currently unrecovered"
+reward_denominator,specification_ambiguity,R_tool=0 or R_tool<0 makes the printed ratio undefined or directionally anomalous; no paper floor is stated
+training_checkpoint,specified,paper trains 150 steps and says the step-80 checkpoint is used for testing
+llm_disclosure,scope_conflict,method is LLM-based while the disclosure says LLMs were used only for writing polish/grammar/visualization code; likely form wording but literally inconsistent
+historical_versions,bounded_gap,"OpenReview says no revisions, while indexed historic immutable PDF hashes were not recoverable; accepted active manuscript is pinned"
+third_party_0_6b,unattributable_task_mismatch,PuLam step-50 0.6B checkpoint postdates publication and has no paper-author/model-card linkage; paper evaluates 1.7B/4B step 80
+third_party_4b,unattributable_task_mismatch,"nguyenha0501 release postdates publication, has no paper-author/model-card linkage, and trains Vietnam-market factors"

@@ -1,0 +1,33 @@
+{
+  "attributable_alphaagentevo_code_recovered": false,
+  "display_panels": 30,
+  "empirical_panels": 21,
+  "figures": 8,
+  "full_end_to_end_pipeline_reproduced": false,
+  "native_empirical_panels_regenerated": 0,
+  "native_figure_numeric_annotations_regenerated": 0,
+  "native_numeric_units_regenerated": 0,
+  "official_pages_visually_checked": 18,
+  "official_pdf_recovered": true,
+  "official_source_recovered": false,
+  "official_supplement_listed": true,
+  "official_supplement_recovered": false,
+  "openreview_id": "lNmZrawUMu",
+  "output_sha256": {
+    "README.md": "0a03377a0c05762d6de4d6075a03f383ca90938a82950cb309358433300efcee",
+    "candidate_release_audit.json": "f3e4bd52f7439733d9fd2c1bca528613eb1ffec91e74a5386da36e56f8860167",
+    "figure_inventory.csv": "378755c7a4d049eadb60756f842ac308d1a8d62a94956f6659395a2508df6ec2",
+    "figure_numeric_ledger.csv": "1995b69f4d5a2109d44154d7093d68e7162633fc750719dc49182a2a329631ea",
+    "internal_consistency_audit.csv": "104ef8e3e2da3ef346834b7dee5470e791c76f6ac50b3b2bb8683df7ff738824",
+    "method_specification_audit.csv": "c1f01ea4103be22eacafa6ee29e4da6fef679e29d1c22bef63edfb9e1243f2d5",
+    "published_result_ledger.csv": "0c9f1e992d13f5c777db3782e5e82054f61183309f67da29fad3e966576c4ba7",
+    "source_provenance.json": "467b255c8722c47911b46ed45f2500af3f165ef44a4f1cc6af69735bcb27a4e3"
+  },
+  "printed_figure_numeric_annotations": 40,
+  "published_numeric_result_units": 147,
+  "strict_success": false,
+  "system_id": "SYS-ALPHA-AGENT-EVO",
+  "third_party_candidates": 2,
+  "third_party_candidates_with_native_credit": 0,
+  "work_id": "CensusORlNmZrawUMu"
+}

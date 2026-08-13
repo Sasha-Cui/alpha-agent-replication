@@ -1,0 +1,9 @@
+figure,display_panels,empirical_panels,printed_numeric_annotations,description,rendered_author_asset_recovered,underlying_numeric_arrays_recovered,author_native_figure_regenerated,paper_result_credit
+figure_1_evolution_approaches,1,0,0,qualitative approach comparison,True,False,False,False
+figure_2_framework,2,0,0,trajectory and on-policy RL framework,True,False,False,False
+figure_3_trajectories,2,2,0,IR/evolution and exploration/consistency trajectories,True,False,False,False
+figure_4_ablation,3,3,16,validity and reward-component pass-rate ablations,True,False,False,False
+figure_5_similarity,7,7,14,seed and six model similarity matrices with avg/max annotations,True,False,False,False
+figure_6_out_of_sample,4,4,2,four out-of-sample AER/IR violin panels; two selection-control IR values in prose,True,False,False,False
+figure_7_training_statistics,3,3,0,"reward, response length, and output entropy trajectories",True,False,False,False
+figure_8_case_study,8,2,8,two model-turn trajectories with eight displayed IR tool results,True,False,False,False

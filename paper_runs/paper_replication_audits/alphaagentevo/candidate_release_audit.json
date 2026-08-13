@@ -1,0 +1,88 @@
+{
+  "bounded_negative_inference": "No attributable public AlphaAgentEvo release was found in the pinned primary record or bounded public checkpoint search; this does not prove private, deleted, or unindexed artifacts never existed.",
+  "candidates": [
+    {
+      "attribution": "PuLam; no paper-author identity, paper link, or model card",
+      "commit": "f6602ac5ad95e5abb923a70d60f00a4200e9b747",
+      "created_at": "2026-03-31T10:03:05.000Z",
+      "last_modified": "2026-03-31T10:03:29.000Z",
+      "native_paper_credit": false,
+      "paper_mismatch": "0.6B step-50 checkpoint versus paper 1.7B/4B step-80 evaluation",
+      "repository": "PuLam/alphaagentevo-v2-0.6B"
+    },
+    {
+      "attribution": "nguyenha0501; no paper-author identity, paper link, or model card",
+      "commit": "0e4f26ad6a7c4c0112047b25b75c9a87b2c22c07",
+      "created_at": "2026-04-02T15:31:52.000Z",
+      "last_modified": "2026-04-03T00:32:47.000Z",
+      "native_paper_credit": false,
+      "paper_mismatch": "Vietnam factors, 300/30/99 splits, custom reward, two turns, four-GPU partial run",
+      "repository": "nguyenha0501/alphaagentevo-qwen3-4b-v2"
+    }
+  ],
+  "native_paper_credit": false,
+  "nguyenha_source": {
+    "active_scalar_reward": "format 0-0.3 plus best-IR quality 0-0.7 workaround",
+    "adds_unstated_high_similarity_threshold": true,
+    "adds_unstated_reward_clip": true,
+    "adds_unstated_tool_denominator_floor": true,
+    "api_sibling_entries": 258,
+    "backtest_server_or_backend_shipped": false,
+    "checkpoint_steps": [
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90
+    ],
+    "completed_unique_steps": 90,
+    "config_dataframes_equal": {
+      "train": true,
+      "val": true
+    },
+    "dataset_rows": {
+      "test": 99,
+      "train": 300,
+      "val": 30
+    },
+    "final_validation_emitted": false,
+    "last_completed_step": 90,
+    "license_or_readme_shipped": false,
+    "maximum_logged_call_number": 33,
+    "paper_ast_similarity_dependency_shipped": false,
+    "paper_dataset_rows": {
+      "test": 100,
+      "train": 350,
+      "val": 50
+    },
+    "paper_five_component_reward_active": false,
+    "prompt_market": "Vietnam stock market",
+    "python_files_parsed": 11,
+    "reached_training_100_percent": false,
+    "requested_steps": 150,
+    "reward_source_declares_tool_reward_pipeline_bug": true,
+    "successful_backtests_logged": 7004,
+    "termination": "Gloo recv barrier timeout after 1,800,000 ms",
+    "tool_call_events": 14351,
+    "tool_call_numbers_above_declared_four": 545,
+    "tool_similarity_fallback_is_sequence_matcher": true,
+    "training_gpus": 4,
+    "training_model": "Qwen/Qwen3-4B-Thinking-2507",
+    "validation_reward_mean_at_3": {
+      "10": -0.126,
+      "20": 0.063,
+      "30": 0.271,
+      "40": 0.361,
+      "50": 0.333,
+      "60": 0.337,
+      "70": 0.325,
+      "80": 0.087,
+      "90": -0.35
+    }
+  },
+  "paper_author_identity_matches": 0
+}
