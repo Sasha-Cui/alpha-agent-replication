@@ -1,0 +1,9 @@
+issue,status,paper_or_public_claim,audit_evidence
+main_table_best_claim,consistent,Paper says XAlpha is best on all seven metrics,parsed table confirms=True
+cited_prompt_repository,unresolved,Paper and first-author homepage link uwFengyuan/XAlpha_Prompt,the exact repository endpoint returns HTTP 404
+appendix_overshoot_output_contract,conflict,Runtime contract requires Series.name to equal function name,the appendix full listing inherits the name close instead; main-text listing names it correctly
+appendix_dynamic_output_contract,conflict,Runtime contract requires Series.name to equal function name,the second appendix listing returns an unnamed Series
+heatmap_recoverability,insufficient,Six summary statistics and two raster heatmaps are printed,50x50 and 60x60 numeric matrices and factor series are absent
+cumulative_curve_recoverability,insufficient,A 17-method plus benchmark raster curve is printed,"raw daily returns, portfolio paths and plot data are absent"
+held_out_test_selection,specified_claim_unverifiable,Paper states test diagnostics are reporting-only,"no run lineage, checkpoints or selection records exist to audit the boundary"
+huggingface_xalpha_ablation,not_attributable_empty,One search hit is named Antony-Fu/XAlpha_ablation,account identity is unverified and repository tree contains only .gitattributes

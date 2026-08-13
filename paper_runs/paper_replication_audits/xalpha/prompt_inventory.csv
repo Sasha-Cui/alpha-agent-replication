@@ -1,0 +1,23 @@
+prompt_title,category,paper_framework_recovered,declares_json_contract,full_runtime_template_recovered,filled_runtime_prompt_recovered,author_model_response_recovered,paper_result_credit,boundary
+Shared System Prompt Assembly,shared_block,True,False,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Macro Brain -- global\_selector,macro_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Macro Brain -- global\_feedback\_summary,macro_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Macro Brain -- c\_layer\_research\_path,macro_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Macro Brain -- hypothesis\_generation\_specific,macro_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Macro Brain -- hypothesis\_generation\_broad,macro_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Macro Brain -- hypothesis\_subset\_planner,macro_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- Shared Factor-Generation Prompt Blocks,shared_block,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- Initial Factor Generation (normal\_factor,micro_agent,True,False,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- Fresh-Seed Factor Generation (novelty\_factor,micro_agent,True,False,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- alignment\_review,micro_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- alignment\_revision,micro_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- code\_repair,micro_agent,True,False,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- evolution\_planner,micro_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- mutation,micro_agent,True,False,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- crossover,micro_agent,True,False,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Micro Brain -- refinement,micro_agent,True,False,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Cross Brain -- hypothesis\_memory\_selector,cross_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Cross Brain -- factor\_classification,cross_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Cross Brain -- good\_factor\_summary,cross_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Cross Brain -- bad\_factor\_summary,cross_agent,True,True,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404
+Utility -- column\_description,utility,True,False,False,False,False,False,paper labels these selected prompt excerpts; cited detailed prompt repository is 404

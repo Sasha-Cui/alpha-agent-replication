@@ -1,0 +1,16 @@
+dimension,specification_level,paper_evidence,missing_for_exact_rerun
+data universe and snapshot,partial,CSI300 and Qlib-compatible adjusted daily OHLCV are named,"provider/version, point-in-time membership, snapshot, calendar and adjustment factors absent"
+prediction target,sufficient,next-open 10-day adjusted open-to-open formula is explicit,
+preprocessing,partial,"invalid-row filtering, buffer, liquidity filtering and volume rescaling are described","numeric thresholds, buffer length, dedupe rule, adjustment and rescaling constants absent"
+LLM backend,partial,gpt-oss-120b is named,"exact checkpoint hash, serving stack, decoding parameters and seeds absent"
+prompt programs,partial,20 agent/utility frameworks and two shared blocks are printed,paper calls them excerpts; cited detailed repository returns 404; filled prompts and responses absent
+report-grounded memory input,insufficient,RMA schema and example traces are printed,"report corpus, report snapshots, chunking run and complete derived memory absent"
+cycle routing,partial,five initial coarse-guided cycles followed by memory routing are stated,"coarse themes, total cycle count, route outputs and stochastic selections absent"
+factor evolution,partial,"64 seeds, pool 80, ten generations and novelty at generations 3 and 7 are stated","operator allocation, calls, parents, children, repairs, lineage and checkpoints absent"
+selection and scoring,partial,"many formulas, windows, percentiles, floors and correlations are stated","winsor limits, rolling hard thresholds, epsilon, warm-up length and selected pool rule absent"
+factor library,insufficient,up to 40 factors and correlation below 0.60 are stated,"the selected 40 factors, full code, scores, panels and predictions absent"
+portfolio backtest,partial,"Qlib top-50/drop-5, open execution and three costs are stated","Qlib commit/data bundle, account/exchange details, benchmark series, orders, fills and daily returns absent"
+baselines,insufficient,16 baselines are named and seven metrics printed,"hyperparameters, seeds, exact feature implementations, factor sets, predictions and returns absent"
+hardware and runtime,partial,two H100s and three average runtimes are printed,"hardware model topology, software versions, logs and measured run records absent"
+randomness and run lineage,insufficient,stochastic diversification and sampling are acknowledged,"all random seeds, model request/response IDs, immutable run IDs and checkpoints absent"
+raw empirical outputs,insufficient,"119 main cells, nine factor claims, six heatmap summaries and three panels are printed","raw matrices, tables, daily metrics, curves and result generator absent"

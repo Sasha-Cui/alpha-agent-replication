@@ -1,0 +1,12 @@
+surface,query_or_endpoint,observed_matches,attributable_xalpha_release_found,observation,negative_search_boundary
+cited GitHub repository,uwFengyuan/XAlpha_Prompt,0,False,exact endpoint status=404,bounded observation at the pinned audit time; not proof of permanent absence
+first-author GitHub inventory,uwFengyuan,27,False,27 public repositories inspected; none named XAlpha or XAlpha_Prompt,"public inventory only; private, deleted, renamed or later repositories are not excluded"
+github repository exact name,github-repos-XAlphaPrompt.json,0,False,complete bounded exact search,zero search results are not absence proof
+github repository title and domain,github-repos-XALPHAalphadiscovery.json,0,False,complete bounded exact search,zero search results are not absence proof
+github repository arxiv id,github-repos-260708332.json,0,False,complete bounded exact search,zero search results are not absence proof
+github repository exact paper title,github-repos-MemoryDrivenAIQuantResearcher.json,0,False,complete bounded exact search,zero search results are not absence proof
+github code prompt repository name,github-code-XAlphaPrompt.json,0,False,complete bounded exact search,zero search results are not absence proof
+github code exact factor function,github-code-regimeovershootpressuredecay20dma20vol20.json,0,False,complete bounded exact search,zero search results are not absence proof
+github code arxiv id,2607.08332,105,False,"105 index, bibliography and downstream-reference hits; no attributable implementation identified",classification is limited to the returned public search set
+Hugging Face models,XAlpha,4,False,four name-token matches; none attributable to the paper,name search only
+Hugging Face datasets,XAlpha,1,False,one unverified Antony-Fu/XAlpha_ablation hit; tree has 1 .gitattributes-only file,account name is not author identity proof and empty tree supplies no experiment data

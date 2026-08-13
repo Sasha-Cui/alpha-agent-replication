@@ -1,0 +1,27 @@
+{
+  "active_empirical_figure_panels": 3,
+  "active_numeric_result_units": 138,
+  "attributable_xalpha_implementation_found": false,
+  "author_native_empirical_panels_regenerated": 0,
+  "author_native_numeric_result_units_regenerated": 0,
+  "generated_file_sha256": {
+    "README.md": "f6a3e583315af3f9a1d657a9a292d8a16cdfce15575de5fe3d7003ddf62bc7ea",
+    "factor_execution_audit.csv": "a0bf8b60c5e3085670ffba98f8bc66d7dd5489ca624874228933ffca0e3c71ed",
+    "figure_inventory.csv": "1e20936d648860b1c4aed58ee63bd19a43ab5f50e77f32d627529c438a88c7e7",
+    "internal_consistency_audit.csv": "fefe64375a274d8e45f815507960e15714507a395874f3f776b55df9e17af2dc",
+    "method_specification_audit.csv": "aacd38241a7019b34207c6a519b4e93a5b7cbfbbe13e4fc8d798a2afe24c4318",
+    "prompt_inventory.csv": "4371349721f6925028552782474f7cc0978635befaccde8a213be0312020e41c",
+    "published_result_ledger.csv": "2fb1d8d01cdee0d947696b0601415d0a64dd8e5336a5c966c80ac357a9c7965d",
+    "release_search_audit.csv": "4e76bfc4907ce8b61d7eb8af023cea4f4ab452a458c5e640c809c8f103ab2531",
+    "source_provenance.json": "c1e27dd31ce7df5c66fead3a16d99ecb85540e74560934d7433a95b70717c781"
+  },
+  "main_table_result_cells": 119,
+  "named_agent_utility_prompt_frameworks_recovered": 20,
+  "paper_factor_programs_executed": 3,
+  "paper_factor_programs_passing_output_name_contract": 1,
+  "raw_result_arrays_recovered": 0,
+  "shared_prompt_blocks_recovered": 2,
+  "strict_success": false,
+  "system_id": "SYS-XALPHA",
+  "work_id": "CensusArxiv260708332"
+}
