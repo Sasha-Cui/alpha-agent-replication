@@ -539,6 +539,26 @@ ARTIFACT_NOTES = {
 # static artifact notes above so baseline/source-adjacent material is not
 # mistaken for native implementation evidence.
 PAPER_ONLY_AUDIT_NOTES = {
+    "SYS-BLIND-TRADE": (
+        "A pinned BlindTrade audit rebuilds the 18-page arXiv-v1 source at 99.90% "
+        "extracted-token overlap and visually checks all 18 official and rebuilt "
+        "pages. It inventories 98 active empirical table cells and nine empirical "
+        "figure panels. The source prints four full system prompts, but none of the "
+        "four claimed deterministic output schemas is valid JSON as printed and none "
+        "declares the cross_sectional_score required by the batch instruction. No "
+        "attributable BlindTrade code, point-in-time EODHD panel, anonymization map, "
+        "Google-KG outputs, news corpus, Gemini request/response data, GNN/RL "
+        "checkpoint, seed paths, holdings, returns, or raw arrays is exposed; the "
+        "signed OpenReview record has no code/data/supplement and says no revisions. "
+        "Thus 0/98 author-native table cells and 0/9 panels reproduce. A current "
+        "Yahoo close-price replay matches 6/98 passive benchmark cells at printed "
+        "precision, component evidence only. Material validity boundaries remain: "
+        "features are selected on the reported holdout; anonymization is not directly "
+        "ablated; shuffling cannot distinguish legitimate signal from structured "
+        "leakage; EQWL is mislabeled as S&P 500 rather than S&P 100 equal weight; and "
+        "Gemini 2.5 Flash's January 2025 cutoff overlaps the OOS. The local M0 proxy "
+        "remains narrative only."
+    ),
     "SYS-FACTOR-ENGINE": (
         "A pinned two-version FactorEngine audit rebuilds both 26-page arXiv "
         "revisions above 99.92% extracted-token overlap and visually checks all 52 "
@@ -963,6 +983,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-BLIND-TRADE": "paper_audit:completed_six_of_98_current_passive_benchmark_cells_zero_author_native_zero_of_9_empirical_panels_four_prompts_zero_valid_json_no_attributable_pipeline",
     "SYS-FACTOR-ENGINE": "paper_audit:completed_zero_of_276_table_units_zero_of_8_empirical_panels_one_of_two_printed_factor_programs_executes_one_unattributable_candidate",
     "SYS-ALPHA-LOGICS": "paper_audit:completed_zero_of_158_table_units_zero_of_204_figure_markers_zero_of_18_empirical_panels_two_paper_derived_algorithm_checks_three_unattributable_candidates",
     "SYS-ALPHA-AGENT-EVO": "paper_audit:completed_zero_of_147_table_units_zero_of_21_empirical_panels_zero_of_40_figure_annotations_listed_unrecovered_supplement_no_attributable_pipeline",
