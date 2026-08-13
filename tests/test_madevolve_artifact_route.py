@@ -8,8 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
-    "route_alphaschema_paper_audit",
-    ROOT / "scripts/route_alphaschema_paper_audit.py",
+    "route_madevolve_paper_audit",
+    ROOT / "scripts/route_madevolve_paper_audit.py",
 )
 assert SPEC and SPEC.loader
 route = importlib.util.module_from_spec(SPEC)
@@ -21,40 +21,50 @@ def csv_rows(path: Path, delimiter: str = ",") -> list[dict[str, str]]:
         return list(csv.DictReader(handle, delimiter=delimiter))
 
 
-def test_pinned_artifact_row_is_direct_reachable_unlicensed_and_r3() -> None:
-    row = route.alphaschema_row()
+def test_pinned_artifact_row_is_direct_reachable_metadata_mit_and_r3() -> None:
+    row = route.madevolve_row()
     assert row["artifact_urls"] == route.URL
     assert row["public_artifact_listed"] == "Y"
     assert row["reachability_outcome"] == "reachable_all"
     assert row["static_fidelity_tier"] == "R3"
     assert row["native_execution_attempted"] == "Y"
     assert row["default_branch_head_shas"].endswith(route.HEAD_SHA)
-    assert row["observed_licenses"].endswith("NOASSERTION")
+    assert row["observed_licenses"].endswith("MIT")
     result = json.loads(row["artifact_url_results_json"])[0]
     observation = result["static_observation"]
-    assert result["observed_license"] == "NOASSERTION"
-    assert observation["file_count"] == 32
-    assert observation["python_file_count"] == 16
+    assert result["observed_license"] == "MIT"
+    assert "no license-text file" in result["license_source"]
+    assert observation["file_count"] == 69
+    assert observation["python_file_count"] == 66
     assert observation["has_runner"] is True
     assert observation["archive_sha256"] == route.ARCHIVE_SHA256
-    assert observation["tracked_test_files"] == 1
-    assert observation["author_tests_passed"] == 9
-    assert observation["native_demo_plans"] == 48
-    assert observation["native_demo_uses_mock_evaluator"] is True
+    assert observation["tracked_test_files"] == 0
+    assert observation["cli_as_declared_passed"] is False
+    assert observation["cli_after_audit_dependency_passed"] is True
+    assert observation["bytecode_compilation_passed"] is False
+    assert observation["general_framework_component_checks_passed"] == 5
+    assert observation["paper_trading_code_released"] is False
     assert observation["paper_result_credit"] is False
 
 
-def test_committed_artifact_audit_and_summary_include_alphaschema() -> None:
+def test_committed_artifact_audit_and_summary_include_madevolve() -> None:
     audit_dir = ROOT / "paper_runs/submission_evidence/artifact_audit"
     rows = csv_rows(audit_dir / "artifact_audit.csv")
     row = next(item for item in rows if item["system_id"] == route.SYSTEM_ID)
-    assert row == {key: str(value) for key, value in route.alphaschema_row().items()}
+    assert row == {key: str(value) for key, value in route.madevolve_row().items()}
     summary = csv_rows(audit_dir / "artifact_audit_summary.csv")
     ft = {row["metric"]: row for row in summary if row["group"] == "F+T"}
     assert ft["public_artifact_listed"]["successes"] == "32"
     assert ft["artifact_reachable_among_all"]["successes"] == "31"
     assert ft["github_head_resolved_among_all"]["successes"] == "30"
     assert ft["static_R3_among_all"]["successes"] == "16"
+    artifact_rows = csv_rows(audit_dir / "artifact_audit.csv")
+    assert sum(
+        item["main_FT"] == "Y"
+        and bool(item["observed_licenses"])
+        and "NOASSERTION" not in item["observed_licenses"]
+        for item in artifact_rows
+    ) == 18
     payload = json.loads((audit_dir / "artifact_audit.json").read_text())
     corrections = payload["metadata"]["post_freeze_evidence_corrections"]
     assert route.SYSTEM_ID in {item["system_id"] for item in corrections}
@@ -71,24 +81,25 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["fidelity_class"] == "F1_static_no_native_output"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_"
-        "panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage"
+        "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_"
+        "empirical_panels_direct_coauthor_framework_five_component_checks_broken_"
+        "cli_and_compile_missing_trading_lineage"
     )
     note = row["concise_evidence_note"]
     for marker in (
-        "212", "9 empirical panels", "9 author tests", "48 plans",
-        "mock evaluator", "Appendix factor", "0/212", "0/9",
+        "214", "21 empirical panels", "component", "python-dotenv", "insight.py",
+        "no trading adapter", "0/214", "0/21",
     ):
         assert marker in note
 
 
-def test_paper_evidence_route_moves_alphaschema_to_public_code_with_blocker() -> None:
+def test_paper_evidence_route_moves_madevolve_to_public_code_with_blocker() -> None:
     rows = csv_rows(
         ROOT
         / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
     )
     row = next(
-        item for item in rows if item["canonical_work_id"] == "CensusArxiv260726642"
+        item for item in rows if item["canonical_work_id"] == "CensusArxiv260523007"
     )
     assert row["paper_evidence_route"] == "public_code_available"
     assert row["reachable_public_code_system_ids"] == route.SYSTEM_ID
@@ -99,7 +110,7 @@ def test_paper_evidence_route_moves_alphaschema_to_public_code_with_blocker() ->
     assert "A2_no_shipped_native_dated_output" in row["precise_native_or_access_blocker"]
 
 
-def test_static_paper_assets_reflect_alphaschema_correction() -> None:
+def test_static_paper_assets_reflect_madevolve_correction() -> None:
     generated = (ROOT / "docs/paper/generated_results.tex").read_text()
     assert r"\newcommand{\ArtifactCountFT}{32}" in generated
     assert r"\newcommand{\ReachableArtifactCountFT}{31}" in generated
@@ -114,14 +125,15 @@ def test_static_paper_assets_reflect_alphaschema_correction() -> None:
     assert r"\newcommand{\PublicCodeRouteWorkCount}{31\xspace}" in routes
     assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{38\xspace}" in routes
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
-    assert "AlphaSchema & reachable" in failure_table
-    assert "0/212" in failure_table
-    assert "0/9" in failure_table
+    assert "MadEvolve & reachable" in failure_table
+    assert "0/214" in failure_table
+    assert "0/21" in failure_table
 
 
-def test_census_routes_direct_release_and_records_no_license() -> None:
+def test_census_routes_direct_release_and_records_license_boundary() -> None:
     census = csv_rows(ROOT / "literature_review/census_v1/system_registry.csv", "|")
     row = next(item for item in census if item["system_id"] == route.SYSTEM_ID)
     assert row["official_artifact"] == route.URL
     assert "directly links" in row["lineage_dedup_notes"]
-    assert "no license" in row["lineage_dedup_notes"]
+    assert "no license text" in row["lineage_dedup_notes"]
+    assert "0/214" in row["lineage_dedup_notes"]

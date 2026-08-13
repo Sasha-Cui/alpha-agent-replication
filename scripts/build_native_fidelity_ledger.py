@@ -38,6 +38,27 @@ URL_RE = re.compile(r"https?://[^;\s]+")
 # system, not raw inputs, prompts, labels, factor expressions, or example
 # configuration.
 ARTIFACT_NOTES = {
+    "SYS-MAD-EVOLVE": (
+        "N",
+        "A pinned MadEvolve trading audit inventories all 214 empirical numeric "
+        "table units and 21 empirical panels. The paper directly links madevolve.org, "
+        "which links the 69-file coauthor-owned general framework repository at a "
+        "pre-paper commit. It implements orchestration, provider adapters, patch and "
+        "rewrite modes, MAP-Elites, islands, an elite vault, executors, SQLite lineage, "
+        "and report analysis. Controlled checks pass for the patcher, grid, islands, "
+        "vault, and artifact store; these are general framework components and receive "
+        "no trading-paper result credit. The documented install omits imported "
+        "python-dotenv, so the CLI fails as declared; adding that dependency only to "
+        "the audit environment restores help and core imports, but bytecode compilation "
+        "still fails on an unmatched parenthesis in templates/insight.py and no tests "
+        "are shipped. Site and package metadata declare MIT, but the repository has no "
+        "license text and GitHub detects no license. Most importantly, the release "
+        "contains no trading adapter, Polygon BTCUSD snapshot, forecaster, order/fill "
+        "simulator, fees or impact engine, paper configs/seeds/model calls, candidate or "
+        "best programs, run histories, Optuna studies, Claude Code search artifacts, "
+        "returns, tables, figures, or result arrays. Thus 0/214 empirical numeric units "
+        "and 0/21 empirical panels reproduce.",
+    ),
     "SYS-ALPHA-SCHEMA": (
         "N",
         "A pinned AlphaSchema audit inventories all 212 published numeric result "
@@ -826,6 +847,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 
 TARGETED_EXECUTION = {
+    "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_direct_author_release_nine_tests_appendix_component_missing_research_lineage",
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_attributable_release_six_component_checks_broken_default_launcher_missing_research_lineage",
     "SYS-ALPHA-AGENT": "paper_audit:completed_zero_of_100_native_results_post_paper_rewrite",
