@@ -199,7 +199,13 @@ ARTIFACT_NOTES = {
         "always injects A-share instructions/default trading tools. All 13 commits in "
         "the complete non-shallow public history were checked: structured payloads are "
         "only templates/configs and two index input series, with zero agent result/run "
-        "artifacts. The release ships "
+        "artifacts. GitHub's complete dated public-fork surface has six accessible forks, "
+        "six branch refs, no tags, and four unique heads. Three heads are official-history "
+        "snapshots. The sole divergent head is a 17-commit display/runtime adaptation by "
+        "an unlisted person whose profile claims Nanjing University; all 144 changed paths "
+        "were checked. Its six result-shaped JSON files are explicitly synthetic log-parser "
+        "test fixtures copied into a temporary Vitest session, not AlphaCrafter experiment "
+        "outputs, and receive no result credit. The release ships "
         "schemas and index series but no research stock/fundamental/news corpus, "
         "baselines, model calls, seeds, factor pools, brokerage path, orders, fills, "
         "returns, or result generator. Thus 0/176 v1 and 0/304 v2 table units and "
@@ -1424,7 +1430,11 @@ TARGETED_EXECUTION = {
         "full_two_commit_history_nine_tests_appendix_component_missing_research_lineage_"
         "4_forks_5_refs_2_unique_heads_exhausted"
     ),
-    "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_six_component_checks_broken_default_launcher_missing_research_lineage",
+    "SYS-ALPHA-CRAFTER": (
+        "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_"
+        "six_component_checks_broken_default_launcher_missing_research_lineage_"
+        "6_forks_6_refs_4_unique_heads_exhausted"
+    ),
     "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions_71_fork_heads_zero_additional_credit",
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_v1_zero_of_953_v2_zero_of_1344_one_linked_input_one_date_prompt_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",

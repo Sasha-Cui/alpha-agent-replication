@@ -228,6 +228,11 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "paper_audit:completed_two_commit_history_1_coauthor_fork_provenance_only_"
             "exhausted_seven_strategy_diagnostics_zero_of_474_native_results"
         ),
+        "CensusArxiv260505580": (
+            "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_"
+            "six_component_checks_broken_default_launcher_missing_research_lineage_"
+            "6_forks_6_refs_4_unique_heads_exhausted"
+        ),
         "CensusArxiv260726642": (
             "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_"
             "full_two_commit_history_nine_tests_appendix_component_missing_research_"

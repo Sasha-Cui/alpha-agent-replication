@@ -140,6 +140,50 @@
       "us_short_success": true
     }
   },
+  "public_fork_boundary": {
+    "accessible_branch_refs": 6,
+    "accessible_public_forks": 6,
+    "census_date": "2026-08-14",
+    "display_fixture_role": "test-only parser fixture copied into a temporary test session; values are not linked to an AlphaCrafter experiment, paper table, factor pool, market-data snapshot, action ledger, holdings, returns, or model-call lineage",
+    "divergent_display_fixture_metrics": {
+      "Annualized Return (%)": 12.3,
+      "Average Gross Position Rate (%)": 65.4,
+      "Average Net Position Rate (%)": 50.2,
+      "Calmar Ratio": 3.97,
+      "Max Drawdown (%)": -3.1,
+      "Sharpe Ratio": 1.25,
+      "Total Return (%)": 5.42
+    },
+    "divergent_head_changed_paths_across_history": 144,
+    "divergent_head_current_changed_paths": 141,
+    "divergent_head_extra_commits_audited": 17,
+    "divergent_head_transient_changed_paths": [
+      "display/src/components/ConsoleShell.tsx",
+      "display/src/components/HeroConsole.module.css",
+      "display/src/components/HeroConsole.tsx"
+    ],
+    "divergent_owner_profile_snapshot": {
+      "claimed_bio": "Nanjing University",
+      "claimed_blog": "https://nju.edu.cn",
+      "claimed_company": "Nanjing University",
+      "login": "kleamend",
+      "name": "Yongjian Zhang",
+      "paper_author_identity_match": false
+    },
+    "divergent_repository": "kleamend/AlphaCrafter",
+    "divergent_structured_changed_paths": 11,
+    "divergent_synthetic_display_test_fixtures": 6,
+    "divergent_unique_heads": 1,
+    "exact_paper_result_table_or_figure_paths_discovered": 0,
+    "github_rest_reported_forks": 6,
+    "native_result_artifacts_found": 0,
+    "official_history_reachable_unique_heads": 3,
+    "paper_headline_literal_hits_in_divergent_history": 0,
+    "paper_result_credit": false,
+    "same_institution_claim_is_not_paper_author_identity_evidence": true,
+    "tag_refs": 0,
+    "unique_heads": 4
+  },
   "release_boundary": {
     "attribution_strength": "author_organization_exact_citation_and_architecture_match_not_direct_paper_link",
     "complete_research_data_recovered": false,

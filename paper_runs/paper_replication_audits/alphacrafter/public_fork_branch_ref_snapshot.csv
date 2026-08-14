@@ -1,0 +1,7 @@
+repository,url,branch,refname,head_commit,relation_to_official_head,commits_ahead_of_official,commits_behind_official,tag_refs,native_result_artifact_found,paper_result_credit
+maimaili421/AlphaCrafter,https://github.com/maimaili421/AlphaCrafter,main,refs/remotes/forks/maimaili421/main,829b64df837187973ca0b97437c47d10f0a712f5,official_history_ancestor,0,6,0,False,False
+kleamend/AlphaCrafter,https://github.com/kleamend/AlphaCrafter,main,refs/remotes/forks/kleamend/main,fe2616744651481031fcb9d1bf090fef7aef4d6d,divergent,17,5,0,False,False
+assigmeAI/AlphaCrafter,https://github.com/assigmeAI/AlphaCrafter,main,refs/remotes/forks/assigmeAI/main,ebe23cdca6fd23912cf673697a30acacfa991fe6,official_history_ancestor,0,5,0,False,False
+balderdash518/AlphaCrafter,https://github.com/balderdash518/AlphaCrafter,main,refs/remotes/forks/balderdash518/main,ebe23cdca6fd23912cf673697a30acacfa991fe6,official_history_ancestor,0,5,0,False,False
+zzwz02/AlphaCrafter,https://github.com/zzwz02/AlphaCrafter,main,refs/remotes/forks/zzwz02/main,c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d,official_head_exact,0,0,0,False,False
+sskye123/AlphaCrafter,https://github.com/sskye123/AlphaCrafter,main,refs/remotes/forks/sskye123/main,c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d,official_head_exact,0,0,0,False,False

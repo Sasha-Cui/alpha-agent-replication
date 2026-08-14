@@ -23,6 +23,97 @@ REPOSITORY_URL = "https://github.com/NJU-LINK/AlphaCrafter"
 REPOSITORY_HEAD = "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d"
 REPOSITORY_ROOT = "15d46d501731eaef117c6a0de440cbebcf316de0"
 REPOSITORY_COMMIT_COUNT = 13
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_BRANCHES = (
+    (
+        "maimaili421/AlphaCrafter",
+        "main",
+        "829b64df837187973ca0b97437c47d10f0a712f5",
+        "official_history_ancestor",
+        0,
+        6,
+    ),
+    (
+        "kleamend/AlphaCrafter",
+        "main",
+        "fe2616744651481031fcb9d1bf090fef7aef4d6d",
+        "divergent",
+        17,
+        5,
+    ),
+    (
+        "assigmeAI/AlphaCrafter",
+        "main",
+        "ebe23cdca6fd23912cf673697a30acacfa991fe6",
+        "official_history_ancestor",
+        0,
+        5,
+    ),
+    (
+        "balderdash518/AlphaCrafter",
+        "main",
+        "ebe23cdca6fd23912cf673697a30acacfa991fe6",
+        "official_history_ancestor",
+        0,
+        5,
+    ),
+    (
+        "zzwz02/AlphaCrafter",
+        "main",
+        REPOSITORY_HEAD,
+        "official_head_exact",
+        0,
+        0,
+    ),
+    (
+        "sskye123/AlphaCrafter",
+        "main",
+        REPOSITORY_HEAD,
+        "official_head_exact",
+        0,
+        0,
+    ),
+)
+PUBLIC_FORK_REST_COUNT = 6
+PUBLIC_FORK_BRANCH_REF_COUNT = 6
+PUBLIC_FORK_UNIQUE_HEAD_COUNT = 4
+PUBLIC_FORK_TAG_REF_COUNT = 0
+KLEAMEND_REPOSITORY = "kleamend/AlphaCrafter"
+KLEAMEND_BASE = "ebe23cdca6fd23912cf673697a30acacfa991fe6"
+KLEAMEND_HEAD = "fe2616744651481031fcb9d1bf090fef7aef4d6d"
+KLEAMEND_CUMULATIVE_DIFF_SHA256 = (
+    "0cdd0090188e4363e1820063a9a962d0eba4f69ea9c35d87abf40dd0a5714d34"
+)
+KLEAMEND_PROFILE_SNAPSHOT = {
+    "login": "kleamend",
+    "name": "Yongjian Zhang",
+    "claimed_company": "Nanjing University",
+    "claimed_bio": "Nanjing University",
+    "claimed_blog": "https://nju.edu.cn",
+    "paper_author_identity_match": False,
+}
+PAPER_AUTHORS = ("Yishuo Yuan", "Jiayi Sheng", "Sirui Zeng", "Jiaqi Wang", "Jiaheng Liu")
+KLEAMEND_STRUCTURED_CHANGED_PATHS = {
+    "alphacrafter/sandbox/template_a/config/models.json",
+    "alphacrafter/sandbox/template_us/config/models.json",
+    "display/package-lock.json",
+    "display/package.json",
+    "display/src/test/fixtures/backtest_results.json",
+    "display/src/test/fixtures/miner_agent.json",
+    "display/src/test/fixtures/screener_agent.json",
+    "display/src/test/fixtures/snapshot.json",
+    "display/src/test/fixtures/trader_agent.json",
+    "display/src/test/fixtures/workflow.json",
+    "display/tsconfig.json",
+}
+KLEAMEND_SYNTHETIC_FIXTURE_SHA256 = {
+    "display/src/test/fixtures/backtest_results.json": "f4bc30d67dccbd8432b55eb56b66d770de15c88621ce9a5685be993882c79906",
+    "display/src/test/fixtures/miner_agent.json": "d95dd4279718482f3d3ba2f1aa01665e1d4da2c13af8653ffeeab41f8933966b",
+    "display/src/test/fixtures/screener_agent.json": "909b78d10c8f6ceea425a8202e5b0630eb30ab6d5d27d14da783e742158d8e15",
+    "display/src/test/fixtures/snapshot.json": "cb799a958691d196dec3f4569157dd44d6fc8a01992b5e114fc1ac75c239d695",
+    "display/src/test/fixtures/trader_agent.json": "b1459acbab00c49af7cd3b5d92606c22a2ad595461c3e5a1c9e676b13d3a4b7c",
+    "display/src/test/fixtures/workflow.json": "65c91d2fd33b8d310675074db6ef03c155d62e65f94843850ab9494bb5dd5090",
+}
 
 STRUCTURED_SUFFIXES = (
     ".ckpt", ".csv", ".feather", ".json", ".jsonl", ".npy", ".npz",
@@ -89,6 +180,10 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
 def write_csv(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
     values = list(rows)
     if not values:
@@ -127,7 +222,9 @@ def source_history_rows(history_root: Path) -> list[dict[str, Any]]:
     """Audit all public revisions without mistaking shipped templates for results."""
     if git(history_root, "rev-parse", "--is-shallow-repository").strip() != "false":
         raise ValueError("AlphaCrafter history checkout is shallow")
-    commits = git(history_root, "rev-list", "--reverse", "--all").splitlines()
+    commits = git(
+        history_root, "rev-list", "--reverse", "refs/remotes/origin/main"
+    ).splitlines()
     if len(commits) != REPOSITORY_COMMIT_COUNT:
         raise ValueError(f"AlphaCrafter public commit count changed: {len(commits)}")
     if commits[0] != REPOSITORY_ROOT or commits[-1] != REPOSITORY_HEAD:
@@ -189,6 +286,279 @@ def source_history_rows(history_root: Path) -> list[dict[str, Any]]:
             }
         )
     return rows
+
+
+def public_fork_audit(
+    history_root: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Exhaust every dated public fork ref and fail closed on result-shaped payloads."""
+    if git(history_root, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise ValueError("AlphaCrafter public-fork history checkout is shallow")
+    official = git(history_root, "rev-parse", "refs/remotes/origin/main").strip()
+    if official != REPOSITORY_HEAD:
+        raise ValueError("AlphaCrafter official history ref changed")
+
+    actual_refs = {}
+    for line in git(
+        history_root,
+        "for-each-ref",
+        "--format=%(refname)%09%(objectname)",
+        "refs/remotes/forks",
+    ).splitlines():
+        refname, commit = line.split("\t")
+        actual_refs[refname] = commit
+    expected_refs = {
+        f"refs/remotes/forks/{repository.split('/', 1)[0]}/{branch}": commit
+        for repository, branch, commit, _relation, _ahead, _behind in PUBLIC_FORK_BRANCHES
+    }
+    if actual_refs != expected_refs:
+        raise ValueError(
+            f"AlphaCrafter public-fork branch refs changed: {actual_refs} != {expected_refs}"
+        )
+    if git(history_root, "for-each-ref", "--format=%(refname)", "refs/tags").strip():
+        raise ValueError("AlphaCrafter public-fork clone unexpectedly contains tag refs")
+
+    branch_rows = []
+    repositories_by_head: dict[str, list[str]] = {}
+    relation_by_head: dict[str, tuple[str, int, int]] = {}
+    for repository, branch, commit, relation, ahead, behind in PUBLIC_FORK_BRANCHES:
+        refname = f"refs/remotes/forks/{repository.split('/', 1)[0]}/{branch}"
+        observed_behind, observed_ahead = map(
+            int,
+            git(
+                history_root,
+                "rev-list",
+                "--left-right",
+                "--count",
+                f"{official}...{commit}",
+            ).split(),
+        )
+        if (observed_ahead, observed_behind) != (ahead, behind):
+            raise ValueError(f"AlphaCrafter fork relationship changed for {repository}")
+        merge_base = git(history_root, "merge-base", official, commit).strip()
+        observed_relation = (
+            "official_head_exact"
+            if commit == official
+            else "official_history_ancestor"
+            if merge_base == commit
+            else "divergent"
+        )
+        if observed_relation != relation:
+            raise ValueError(f"AlphaCrafter fork classification changed for {repository}")
+        branch_rows.append(
+            {
+                "repository": repository,
+                "url": f"https://github.com/{repository}",
+                "branch": branch,
+                "refname": refname,
+                "head_commit": commit,
+                "relation_to_official_head": relation,
+                "commits_ahead_of_official": ahead,
+                "commits_behind_official": behind,
+                "tag_refs": 0,
+                "native_result_artifact_found": False,
+                "paper_result_credit": False,
+            }
+        )
+        repositories_by_head.setdefault(commit, []).append(repository)
+        relation_by_head[commit] = (relation, ahead, behind)
+
+    divergent_commits = git(
+        history_root, "rev-list", "--reverse", f"{KLEAMEND_BASE}..{KLEAMEND_HEAD}"
+    ).splitlines()
+    if len(divergent_commits) != 17 or divergent_commits[-1] != KLEAMEND_HEAD:
+        raise ValueError("AlphaCrafter divergent fork history changed")
+    if git(history_root, "merge-base", official, KLEAMEND_HEAD).strip() != KLEAMEND_BASE:
+        raise ValueError("AlphaCrafter divergent fork merge base changed")
+    if sha256_bytes(
+        git_bytes(history_root, "diff", "--binary", KLEAMEND_BASE, KLEAMEND_HEAD)
+    ) != KLEAMEND_CUMULATIVE_DIFF_SHA256:
+        raise ValueError("AlphaCrafter divergent fork cumulative diff changed")
+
+    commit_rows = []
+    changed_union: set[str] = set()
+    headline_literal_hits: list[str] = []
+    seen_blobs: set[str] = set()
+    for sequence, commit in enumerate(divergent_commits, start=1):
+        metadata = git(
+            history_root,
+            "show",
+            "-s",
+            "--format=%aI%x1f%an%x1f%ae%x1f%s",
+            commit,
+        ).rstrip("\n").split("\x1f")
+        if len(metadata) != 4 or metadata[1] != "kleamend":
+            raise ValueError(f"AlphaCrafter divergent commit metadata changed: {commit}")
+        changed = sorted(
+            set(
+                git(
+                    history_root,
+                    "show",
+                    "--format=",
+                    "--name-only",
+                    commit,
+                ).splitlines()
+            )
+        )
+        changed_union.update(changed)
+        fixtures_changed = sorted(set(changed) & set(KLEAMEND_SYNTHETIC_FIXTURE_SHA256))
+        for path in changed:
+            tree_line = git(history_root, "ls-tree", commit, "--", path).strip()
+            if not tree_line:
+                continue
+            blob_id = tree_line.split()[2]
+            if blob_id in seen_blobs:
+                continue
+            seen_blobs.add(blob_id)
+            text = git_bytes(history_root, "show", f"{commit}:{path}").decode(
+                "utf-8", errors="ignore"
+            )
+            headline_literal_hits.extend(
+                f"{commit}:{path}:{literal}"
+                for literal in PAPER_RESULT_LITERALS
+                if literal in text
+            )
+        commit_rows.append(
+            {
+                "sequence": sequence,
+                "commit": commit,
+                "authored_at": metadata[0],
+                "author_name": metadata[1],
+                "author_email": metadata[2],
+                "subject": metadata[3],
+                "changed_paths": len(changed),
+                "synthetic_test_fixture_paths_changed": ";".join(fixtures_changed),
+                "native_result_artifact_paths": 0,
+                "paper_result_literal_hits": 0,
+                "classification": (
+                    "adds_synthetic_display_parser_test_fixtures_no_native_output"
+                    if fixtures_changed
+                    else "implementation_or_documentation_change_no_native_output"
+                ),
+                "paper_result_credit": False,
+            }
+        )
+    if headline_literal_hits:
+        raise ValueError(
+            f"AlphaCrafter divergent fork contains paper headline literals: {headline_literal_hits}"
+        )
+    structured_changed = {
+        path for path in changed_union if path.lower().endswith(STRUCTURED_SUFFIXES)
+    }
+    if structured_changed != KLEAMEND_STRUCTURED_CHANGED_PATHS:
+        raise ValueError(
+            f"AlphaCrafter divergent structured path surface changed: {structured_changed}"
+        )
+    current_changed = set(
+        git(
+            history_root, "diff", "--name-only", KLEAMEND_BASE, KLEAMEND_HEAD
+        ).splitlines()
+    )
+    transient_paths = sorted(changed_union - current_changed)
+    if len(changed_union) != 144 or len(current_changed) != 141 or transient_paths != [
+        "display/src/components/ConsoleShell.tsx",
+        "display/src/components/HeroConsole.module.css",
+        "display/src/components/HeroConsole.tsx",
+    ]:
+        raise ValueError("AlphaCrafter divergent fork changed-path inventory changed")
+    for path, expected_hash in KLEAMEND_SYNTHETIC_FIXTURE_SHA256.items():
+        if sha256_bytes(git_bytes(history_root, "show", f"{KLEAMEND_HEAD}:{path}")) != expected_hash:
+            raise ValueError(f"AlphaCrafter synthetic fixture changed: {path}")
+    parser_test = git_bytes(
+        history_root,
+        "show",
+        f"{KLEAMEND_HEAD}:display/src/test/log-parser.test.ts",
+    ).decode("utf-8")
+    for marker in (
+        'const FIXTURES_DIR = path.join(__dirname, "fixtures")',
+        "fs.mkdtemp",
+        'copyFixture("backtest_results.json"',
+        'toBe(1.25)',
+        'toBe(5.42)',
+    ):
+        if marker not in parser_test:
+            raise ValueError("AlphaCrafter fork fixture/test relationship changed")
+    backtest_fixture = json.loads(
+        git_bytes(
+            history_root,
+            "show",
+            f"{KLEAMEND_HEAD}:display/src/test/fixtures/backtest_results.json",
+        )
+    )
+    expected_metrics = {
+        "Total Return (%)": 5.42,
+        "Annualized Return (%)": 12.3,
+        "Sharpe Ratio": 1.25,
+        "Max Drawdown (%)": -3.1,
+        "Calmar Ratio": 3.97,
+        "Average Gross Position Rate (%)": 65.4,
+        "Average Net Position Rate (%)": 50.2,
+    }
+    if len(backtest_fixture) != 1 or backtest_fixture[0]["metrics"] != expected_metrics:
+        raise ValueError("AlphaCrafter divergent display test metrics changed")
+    if KLEAMEND_PROFILE_SNAPSHOT["name"] in PAPER_AUTHORS:
+        raise ValueError("AlphaCrafter fork profile unexpectedly matches a paper author")
+
+    unique_rows = []
+    for commit in sorted(repositories_by_head):
+        relation, ahead, behind = relation_by_head[commit]
+        is_divergent = commit == KLEAMEND_HEAD
+        unique_rows.append(
+            {
+                "head_commit": commit,
+                "repositories": ";".join(sorted(repositories_by_head[commit])),
+                "branch_ref_count": len(repositories_by_head[commit]),
+                "relation_to_official_head": relation,
+                "commits_ahead_of_official": ahead,
+                "commits_behind_official": behind,
+                "merge_base": git(history_root, "merge-base", official, commit).strip(),
+                "extra_commits_audited": 17 if is_divergent else 0,
+                "changed_paths_across_extra_history": 144 if is_divergent else 0,
+                "synthetic_display_test_fixture_paths": 6 if is_divergent else 0,
+                "profile_name_matches_paper_author": False if is_divergent else "not_applicable",
+                "classification": (
+                    "same_institution_claim_unlisted_person_ui_runtime_adaptation_synthetic_test_fixtures"
+                    if is_divergent
+                    else relation
+                ),
+                "native_result_artifact_found": False,
+                "paper_result_credit": False,
+            }
+        )
+    if len(unique_rows) != PUBLIC_FORK_UNIQUE_HEAD_COUNT:
+        raise ValueError("AlphaCrafter public-fork unique head count changed")
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_REST_COUNT,
+        "accessible_public_forks": len(PUBLIC_FORK_BRANCHES),
+        "accessible_branch_refs": len(branch_rows),
+        "tag_refs": PUBLIC_FORK_TAG_REF_COUNT,
+        "unique_heads": len(unique_rows),
+        "official_history_reachable_unique_heads": 3,
+        "divergent_unique_heads": 1,
+        "divergent_repository": KLEAMEND_REPOSITORY,
+        "divergent_head_extra_commits_audited": len(divergent_commits),
+        "divergent_head_changed_paths_across_history": len(changed_union),
+        "divergent_head_current_changed_paths": len(current_changed),
+        "divergent_head_transient_changed_paths": transient_paths,
+        "divergent_owner_profile_snapshot": KLEAMEND_PROFILE_SNAPSHOT,
+        "same_institution_claim_is_not_paper_author_identity_evidence": True,
+        "divergent_structured_changed_paths": len(structured_changed),
+        "divergent_synthetic_display_test_fixtures": len(
+            KLEAMEND_SYNTHETIC_FIXTURE_SHA256
+        ),
+        "divergent_display_fixture_metrics": expected_metrics,
+        "display_fixture_role": (
+            "test-only parser fixture copied into a temporary test session; values are not "
+            "linked to an AlphaCrafter experiment, paper table, factor pool, market-data "
+            "snapshot, action ledger, holdings, returns, or model-call lineage"
+        ),
+        "paper_headline_literal_hits_in_divergent_history": 0,
+        "native_result_artifacts_found": 0,
+        "exact_paper_result_table_or_figure_paths_discovered": 0,
+        "paper_result_credit": False,
+    }
+    return branch_rows, unique_rows, commit_rows, summary
 
 
 def safe_archives(scratch: Path) -> None:
@@ -559,6 +929,20 @@ decision, prediction, signal, holding, order/fill record, or result array.
 Seven distinctive v2 result literals also have zero occurrences outside the two
 index input series.
 
+The complete public-fork surface reported by GitHub on 2026-08-14 contains six
+accessible forks, six branch refs, no tags, and four unique heads. Three heads are
+the official head or official-history ancestors. The sole divergent head is a
+17-commit `kleamend/AlphaCrafter` adaptation. Its owner profile says Nanjing
+University but names Yongjian Zhang, who is not one of the five paper authors;
+same-institution self-description is not author identity evidence. All 17 revisions
+and 144 changed paths were checked. They add a display console, documentation,
+localization, and a MiniMax chat-agent adaptation. The only result-shaped payloads
+are six JSON files under `display/src/test/fixtures`, explicitly copied into a
+temporary Vitest session to test a log parser. Their return, Sharpe, drawdown, and
+Calmar values have no experiment identifier, inputs, action/holding/return lineage,
+or paper-table correspondence. They are synthetic parser fixtures, not native
+AlphaCrafter output, and receive zero result credit.
+
 Accordingly, the honest paper-level score is **0/176 v1 and 0/304 v2 published
 numeric result units, and 0/16 v1 and 0/14 v2 empirical panels regenerated**.
 The native component checks materially improve implementation faithfulness, but
@@ -584,6 +968,13 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_json(output / "document_build_verification.json", document_build)
     history = source_history_rows(scratch / "discovery/alphacrafter-history")
     write_csv(output / "released_source_history_inventory.csv", history)
+    fork_branches, fork_heads, fork_commits, fork_summary = public_fork_audit(
+        scratch / "discovery/alphacrafter-history"
+    )
+    write_csv(output / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    write_csv(output / "public_fork_unique_head_inventory.csv", fork_heads)
+    write_csv(output / "public_fork_divergent_commit_inventory.csv", fork_commits)
+    write_json(output / "public_fork_census.json", fork_summary)
     release = release_audit(scratch)
     write_json(output / "release_execution_audit.json", release)
     provenance = {
@@ -633,6 +1024,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
                 row["paper_result_literal_hits_outside_index_inputs"] for row in history
             ),
         },
+        "public_fork_boundary": fork_summary,
     }
     write_json(output / "source_provenance.json", provenance)
     (output / "README.md").write_text(readme(), encoding="utf-8")
@@ -683,6 +1075,20 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "repository_history_paper_result_literal_hits_outside_index_inputs": sum(
             row["paper_result_literal_hits_outside_index_inputs"] for row in history
         ),
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary[
+            "github_rest_reported_forks"
+        ],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_tag_refs_audited": fork_summary["tag_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_divergent_commits_audited": fork_summary[
+            "divergent_head_extra_commits_audited"
+        ],
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "native_component_checks_passed": 6,
         "full_launcher_operational_as_released": False,
         "full_end_to_end_pipeline_reproduced": False,

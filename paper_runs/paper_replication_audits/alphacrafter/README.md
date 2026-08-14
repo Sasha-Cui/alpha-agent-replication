@@ -44,6 +44,20 @@ decision, prediction, signal, holding, order/fill record, or result array.
 Seven distinctive v2 result literals also have zero occurrences outside the two
 index input series.
 
+The complete public-fork surface reported by GitHub on 2026-08-14 contains six
+accessible forks, six branch refs, no tags, and four unique heads. Three heads are
+the official head or official-history ancestors. The sole divergent head is a
+17-commit `kleamend/AlphaCrafter` adaptation. Its owner profile says Nanjing
+University but names Yongjian Zhang, who is not one of the five paper authors;
+same-institution self-description is not author identity evidence. All 17 revisions
+and 144 changed paths were checked. They add a display console, documentation,
+localization, and a MiniMax chat-agent adaptation. The only result-shaped payloads
+are six JSON files under `display/src/test/fixtures`, explicitly copied into a
+temporary Vitest session to test a log parser. Their return, Sharpe, drawdown, and
+Calmar values have no experiment identifier, inputs, action/holding/return lineage,
+or paper-table correspondence. They are synthetic parser fixtures, not native
+AlphaCrafter output, and receive zero result credit.
+
 Accordingly, the honest paper-level score is **0/176 v1 and 0/304 v2 published
 numeric result units, and 0/16 v1 and 0/14 v2 empirical panels regenerated**.
 The native component checks materially improve implementation faithfulness, but

@@ -125,6 +125,70 @@ def test_complete_public_history_has_no_latent_agent_result_artifact() -> None:
     assert data["repository_history_paper_result_literal_hits_outside_index_inputs"] == 0
 
 
+def test_complete_public_fork_surface_has_no_native_result_artifact() -> None:
+    branches = rows("public_fork_branch_ref_snapshot.csv")
+    heads = rows("public_fork_unique_head_inventory.csv")
+    commits = rows("public_fork_divergent_commit_inventory.csv")
+    census = json.loads((AUDIT_DIR / "public_fork_census.json").read_text())
+    assert len(branches) == 6
+    assert {row["repository"] for row in branches} == {
+        "maimaili421/AlphaCrafter",
+        "kleamend/AlphaCrafter",
+        "assigmeAI/AlphaCrafter",
+        "balderdash518/AlphaCrafter",
+        "zzwz02/AlphaCrafter",
+        "sskye123/AlphaCrafter",
+    }
+    assert {row["head_commit"] for row in branches} == {
+        "829b64df837187973ca0b97437c47d10f0a712f5",
+        "ebe23cdca6fd23912cf673697a30acacfa991fe6",
+        audit.REPOSITORY_HEAD,
+        audit.KLEAMEND_HEAD,
+    }
+    assert all(row["native_result_artifact_found"] == "False" for row in branches)
+    assert all(row["paper_result_credit"] == "False" for row in branches)
+    assert len(heads) == 4
+    divergent = next(row for row in heads if row["head_commit"] == audit.KLEAMEND_HEAD)
+    assert divergent["repositories"] == "kleamend/AlphaCrafter"
+    assert divergent["extra_commits_audited"] == "17"
+    assert divergent["changed_paths_across_extra_history"] == "144"
+    assert divergent["synthetic_display_test_fixture_paths"] == "6"
+    assert divergent["profile_name_matches_paper_author"] == "False"
+    assert divergent["native_result_artifact_found"] == "False"
+    assert len(commits) == 17
+    assert commits[0]["commit"] == "e2dec826f48e8c123f0508c6fb3ea499e323e9a9"
+    assert commits[-1]["commit"] == audit.KLEAMEND_HEAD
+    assert {row["author_name"] for row in commits} == {"kleamend"}
+    assert {row["native_result_artifact_paths"] for row in commits} == {"0"}
+    assert {row["paper_result_literal_hits"] for row in commits} == {"0"}
+    assert {row["paper_result_credit"] for row in commits} == {"False"}
+    assert census["census_date"] == "2026-08-14"
+    assert census["github_rest_reported_forks"] == 6
+    assert census["accessible_public_forks"] == 6
+    assert census["accessible_branch_refs"] == 6
+    assert census["tag_refs"] == 0
+    assert census["unique_heads"] == 4
+    assert census["official_history_reachable_unique_heads"] == 3
+    assert census["divergent_unique_heads"] == 1
+    assert census["divergent_head_extra_commits_audited"] == 17
+    assert census["divergent_head_changed_paths_across_history"] == 144
+    assert census["divergent_synthetic_display_test_fixtures"] == 6
+    assert census["divergent_owner_profile_snapshot"]["name"] == "Yongjian Zhang"
+    assert census["divergent_owner_profile_snapshot"]["paper_author_identity_match"] is False
+    assert census["same_institution_claim_is_not_paper_author_identity_evidence"] is True
+    assert census["paper_headline_literal_hits_in_divergent_history"] == 0
+    assert census["native_result_artifacts_found"] == 0
+    assert census["paper_result_credit"] is False
+    data = manifest()
+    assert data["public_forks_reported_by_github_rest"] == 6
+    assert data["public_forks_accessible"] == 6
+    assert data["public_fork_branch_refs_audited"] == 6
+    assert data["public_fork_unique_heads_audited"] == 4
+    assert data["public_fork_divergent_commits_audited"] == 17
+    assert data["public_fork_native_result_artifacts_found"] is False
+    assert data["public_fork_paper_result_credit"] is False
+
+
 def test_native_components_pass_without_paper_result_credit() -> None:
     release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
     assert release["editable_install_passed"] is True
@@ -227,6 +291,10 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
         "does not directly link",
         "fails before any API call",
         "complete non-shallow repository history has 13 commits",
+        "accessible forks, six branch refs, no tags",
+        "four unique heads",
+        "17-commit `kleamend/AlphaCrafter` adaptation",
+        "synthetic parser fixtures, not native",
         "0/176 v1 and 0/304 v2",
         "0/16 v1 and 0/14 v2",
         "not an AlphaCrafter replication",

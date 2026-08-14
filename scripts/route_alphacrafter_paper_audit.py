@@ -143,6 +143,12 @@ def validate_inputs() -> None:
         "v2_empirical_panels": 14,
         "repository_files": 79,
         "native_component_checks_passed": 6,
+        "public_forks_accessible": 6,
+        "public_fork_branch_refs_audited": 6,
+        "public_fork_unique_heads_audited": 4,
+        "public_fork_divergent_commits_audited": 17,
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
     }
     for key, value in expected.items():
         if manifest.get(key) != value:
