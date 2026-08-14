@@ -98,6 +98,8 @@ def test_native_and_paper_routes_keep_output_verification_below_reproduction() -
     assert "0/321 v1/v2 table units" in row["concise_evidence_note"]
     assert "0/442 v3 table units regenerate" in row["concise_evidence_note"]
     assert "394/442 table units" in row["concise_evidence_note"]
+    assert "Both accessible v1/v2 forks" in row["concise_evidence_note"]
+    assert "zero commits, blobs, tags, or native result artifacts" in row["concise_evidence_note"]
 
     routes = csv_rows(ROOT / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv")
     paper = next(item for item in routes if item["canonical_work_id"] == "CensusArxiv250100826")

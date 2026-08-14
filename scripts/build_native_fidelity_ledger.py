@@ -667,7 +667,10 @@ ARTIFACT_NOTES = {
         "author's 20-commit cryptoMAS repository: all three architectures and 42 tracked "
         "files are recovered, 394/442 table units and 136/142 plotted units have pinned "
         "author-output correspondence, and nine non-RAG orchestration paths pass fixture "
-        "component checks. This is output/source verification, not regeneration: 0/321 "
+        "component checks. Both accessible v1/v2 forks and their two branch refs resolve "
+        "inside the complete official history (one exact head and one three commits "
+        "behind), adding zero commits, blobs, tags, or native result artifacts. This is "
+        "output/source verification, not regeneration: 0/321 "
         "v1/v2 table units and 0/442 v3 table units regenerate. The v3 runner imports three "
         "environ.data modules absent from every public commit; raw data, checkpoints, "
         "processed records, inference traces, and native result lineage remain absent. "
@@ -1499,7 +1502,10 @@ TARGETED_EXECUTION = {
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
     "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
-    "SYS-MACI": "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_zero_regenerated",
+    "SYS-MACI": (
+        "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_"
+        "zero_regenerated_2_forks_2_refs_2_official_history_heads_exhausted"
+    ),
     "SYS-MM-DREX": "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_v3_release_111_tests_missing_lfs_and_research_lineage",
     "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",
     "SYS-MASS": (

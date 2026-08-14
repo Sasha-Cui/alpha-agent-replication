@@ -48,6 +48,13 @@ EXPECTED = {
     "v3_history_path_revisions": "f5492d298fd8dda02571a575ec6646d5eb1c8f095f33de20037e8e70e7a10bef",
 }
 
+V1_V2_REPOSITORY = "https://github.com/lyc0603/multi-agent"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_HEADS = {
+    "refs/remotes/forks/gelove/main": "2326185cc2d1eff02724cfeb88116ebb13f904e7",
+    "refs/remotes/forks/jemxgw/main": "3ed387b3683d57eab04d36e1f18f3e49fdfc0bec",
+}
+
 FLOAT_RE = re.compile(r"(?<![\w])[-+]?\d+\.\d+")
 METRICS_V1 = ("Mean", "Std", "Sharpe")
 VARIANTS_V1 = ("single_gpt4o_raw", "single_gpt4o_fine_tuned", "multi_agent")
@@ -70,6 +77,108 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
         writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
+
+
+def git(root: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+
+def public_fork_audit(author_current: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Classify every public v1/v2 fork head against the audited official history."""
+    if git(author_current, "rev-parse", "--is-shallow-repository") != "false":
+        raise ValueError("v1/v2 fork-audit checkout is shallow")
+    origin = git(author_current, "remote", "get-url", "origin")
+    if origin.removesuffix(".git") != V1_V2_REPOSITORY:
+        raise ValueError(f"v1/v2 fork-audit origin changed: {origin}")
+    if git(author_current, "rev-parse", "refs/remotes/origin/main") != EXPECTED["author_current_commit"]:
+        raise ValueError("v1/v2 official main head changed")
+
+    fork_refs: dict[str, str] = {}
+    for line in git(
+        author_current,
+        "for-each-ref",
+        "--format=%(refname)%09%(objectname)",
+        "refs/remotes/forks",
+    ).splitlines():
+        refname, head = line.split("\t")
+        fork_refs[refname] = head
+    if fork_refs != PUBLIC_FORK_HEADS:
+        raise ValueError(f"MACI public-fork refs changed: {fork_refs}")
+
+    official_commits = set(git(author_current, "rev-list", EXPECTED["author_current_commit"]).splitlines())
+    if len(official_commits) != 164:
+        raise ValueError(f"v1/v2 official history count changed: {len(official_commits)}")
+    repositories = {
+        "refs/remotes/forks/gelove/main": "gelove/multi-agent",
+        "refs/remotes/forks/jemxgw/main": "jemxgw/multi-agent",
+    }
+    rows = []
+    for refname, head in sorted(fork_refs.items()):
+        ahead = int(git(author_current, "rev-list", "--count", head, "--not", EXPECTED["author_current_commit"]))
+        behind = int(git(author_current, "rev-list", "--count", f"{head}..{EXPECTED['author_current_commit']}"))
+        if head == EXPECTED["author_current_commit"]:
+            relation = "official_head_exact"
+        elif head in official_commits:
+            relation = "official_history_ancestor"
+        else:
+            relation = "divergent_from_official_history"
+        if ahead or relation == "divergent_from_official_history":
+            raise ValueError(f"MACI fork adds unreviewed history: {refname} at {head}")
+        rows.append(
+            {
+                "repository": repositories[refname],
+                "url": f"https://github.com/{repositories[refname]}",
+                "branch": "main",
+                "head_commit": head,
+                "relation_to_official_head": relation,
+                "commits_ahead_of_official": ahead,
+                "commits_behind_official": behind,
+                "tag_refs": 0,
+                "unique_commits_beyond_official_history": 0,
+                "unique_blobs_beyond_official_history": 0,
+                "native_result_artifact_found": False,
+                "paper_result_credit": False,
+            }
+        )
+    expected_relations = {
+        ("gelove/multi-agent", "official_head_exact", 0),
+        ("jemxgw/multi-agent", "official_history_ancestor", 3),
+    }
+    observed_relations = {
+        (row["repository"], row["relation_to_official_head"], row["commits_behind_official"])
+        for row in rows
+    }
+    if observed_relations != expected_relations:
+        raise ValueError(f"MACI fork relations changed: {observed_relations}")
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "official_repository": "lyc0603/multi-agent",
+        "official_history_commits": len(official_commits),
+        "github_rest_reported_forks": 2,
+        "accessible_public_forks": len(rows),
+        "accessible_branch_refs": len(rows),
+        "tag_refs": 0,
+        "unique_heads": len({row["head_commit"] for row in rows}),
+        "official_head_exact_unique_heads": 1,
+        "official_history_ancestor_unique_heads": 1,
+        "divergent_unique_heads": 0,
+        "unique_commits_beyond_official_history": 0,
+        "unique_blobs_beyond_official_history": 0,
+        "native_result_artifacts_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "both accessible public forks resolve entirely inside the complete audited "
+            "164-commit official history: one is exact at the official head and the other "
+            "is three official commits behind, so neither adds a commit, blob, tag, or "
+            "native result lineage"
+        ),
+    }
+    return rows, summary
 
 
 def numbers(line: str) -> list[float]:
@@ -1035,6 +1144,14 @@ def artifact_rows() -> list[dict[str, Any]]:
             "note": "Restores constants and extends figures; complete history also recovers 962 deleted fine-tuning-format message records.",
         },
         {
+            "artifact": "v1/v2 public-fork census",
+            "url_or_commit": "https://github.com/lyc0603/multi-agent/forks",
+            "availability": "two accessible public forks and two branch refs audited on 2026-08-14",
+            "system_credit": False,
+            "result_credit": False,
+            "note": "One fork is exact at the official head and one is a three-commit-behind official-history ancestor; neither adds a commit, blob, tag, or result lineage.",
+        },
+        {
             "artifact": "paper-listed anonymous v3 artifact",
             "url_or_commit": "https://anonymous.4open.science/r/cryptoMAS-FCB2/",
             "availability": "repository landing endpoint requires connection, but its public file API serves a hash-pinned README",
@@ -1385,6 +1502,7 @@ def main() -> None:
         raise ValueError("v3 figure comparison boundary changed")
     repository_history = json.loads(args.repository_history_json.read_text(encoding="utf-8"))
     validate_repository_history(repository_history)
+    fork_branches, fork_summary = public_fork_audit(args.author_current)
     manuscripts = manuscript_provenance(args)
     source_inventory = author_source_inventory(args.author_v1, args.author_current, args.author_v3)
     v3_inventory = v3_source_inventory(args.author_v3)
@@ -1403,6 +1521,10 @@ def main() -> None:
     write_csv(output / "internal_consistency_audit.csv", consistency_rows(v1, v3))
     write_csv(output / "artifact_access_audit.csv", artifact_rows())
     write_csv(output / "external_primary_source_audit.csv", external_primary_source_rows())
+    write_csv(output / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    (output / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
+    )
     (output / "native_execution.json").write_text(json.dumps(execution, indent=2) + "\n", encoding="utf-8")
     (output / "native_execution_v3.json").write_text(json.dumps(v3_execution, indent=2) + "\n", encoding="utf-8")
     (output / "repository_history.json").write_text(json.dumps(repository_history, indent=2) + "\n", encoding="utf-8")
@@ -1456,6 +1578,17 @@ def main() -> None:
             "total_records"
         ],
         "v1_v2_public_history_commits_audited": repository_history["v1_v2_repository_history"]["commit_count"],
+        "v1_v2_public_fork_census_date": fork_summary["census_date"],
+        "v1_v2_public_forks_accessible": fork_summary["accessible_public_forks"],
+        "v1_v2_public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "v1_v2_public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "v1_v2_public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "v1_v2_public_fork_unique_commits_beyond_official_history": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "v1_v2_public_fork_native_result_artifacts_found": fork_summary[
+            "native_result_artifacts_found"
+        ],
         "v3_published_table_units": len(v3),
         "v3_direct_table_results": len(v3_direct),
         "v3_unique_direct_measurements": len(v3_direct) - 4,
@@ -1525,6 +1658,13 @@ plotted quantitative units. Complete history also recovers three deleted
 fine-tuning-format JSONL files containing 962 system/user/assistant message
 records, including 930 unique image URLs spanning weeks 2023-W22--W52. This is
 materially better training-input provenance than the current tree exposes.
+
+The public GitHub fork surface is also exhausted as of 2026-08-14. Both
+accessible forks expose one `main` branch: one is exact at the official head
+and the other is a three-commit-behind ancestor within the already audited
+official history. Across two forks, two refs, and two unique heads, there are
+zero divergent commits, unique blobs, tags, or additional native result
+artifacts.
 
 It is still not a paper-result reproduction. The exact fine-tuning upload,
 job, selected checkpoint, test predictions, raw/processed inputs, weekly

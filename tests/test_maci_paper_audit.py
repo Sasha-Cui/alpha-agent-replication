@@ -49,6 +49,12 @@ def test_manifest_keeps_both_experiments_and_the_zero_result_boundary() -> None:
     assert manifest["v3_source_files_recovered"] == 42
     assert manifest["v3_python_source_files_recovered"] == 24
     assert manifest["v1_v2_public_history_commits_audited"] == 164
+    assert manifest["v1_v2_public_forks_accessible"] == 2
+    assert manifest["v1_v2_public_fork_branch_refs_audited"] == 2
+    assert manifest["v1_v2_public_fork_unique_heads_audited"] == 2
+    assert manifest["v1_v2_public_fork_divergent_heads_audited"] == 0
+    assert manifest["v1_v2_public_fork_unique_commits_beyond_official_history"] == 0
+    assert manifest["v1_v2_public_fork_native_result_artifacts_found"] == 0
     assert manifest["v3_public_history_commits_audited"] == 20
     assert manifest["v1_v2_deleted_fine_tuning_message_records_recovered"] == 962
     assert manifest["v3_non_rag_architecture_component_paths_passed"] == 9
@@ -263,6 +269,35 @@ def test_complete_public_histories_recover_training_records_not_results() -> Non
         "environ/data/rag_store.py": False,
     }
     assert history["result_regeneration_credit"] is False
+
+
+def test_all_public_v1_v2_forks_remain_inside_the_audited_official_history() -> None:
+    rows = csv_rows("public_fork_branch_ref_snapshot.csv")
+    assert len(rows) == 2
+    assert {
+        (row["repository"], row["relation_to_official_head"], row["commits_behind_official"])
+        for row in rows
+    } == {
+        ("gelove/multi-agent", "official_head_exact", "0"),
+        ("jemxgw/multi-agent", "official_history_ancestor", "3"),
+    }
+    assert all(row["unique_commits_beyond_official_history"] == "0" for row in rows)
+    assert all(row["unique_blobs_beyond_official_history"] == "0" for row in rows)
+    assert all(row["native_result_artifact_found"] == "False" for row in rows)
+    assert all(row["paper_result_credit"] == "False" for row in rows)
+
+    census = json.loads((OUTPUT / "public_fork_census.json").read_text(encoding="utf-8"))
+    assert census["census_date"] == audit.PUBLIC_FORK_CENSUS_DATE
+    assert census["official_history_commits"] == 164
+    assert census["github_rest_reported_forks"] == 2
+    assert census["accessible_public_forks"] == 2
+    assert census["accessible_branch_refs"] == 2
+    assert census["unique_heads"] == 2
+    assert census["official_head_exact_unique_heads"] == 1
+    assert census["official_history_ancestor_unique_heads"] == 1
+    assert census["divergent_unique_heads"] == 0
+    assert census["native_result_artifacts_found"] == 0
+    assert census["paper_result_credit"] is False
 
 
 def test_manifest_hashes_cover_every_committed_audit_output() -> None:

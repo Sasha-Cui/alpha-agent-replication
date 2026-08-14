@@ -1,0 +1,3 @@
+repository,url,branch,head_commit,relation_to_official_head,commits_ahead_of_official,commits_behind_official,tag_refs,unique_commits_beyond_official_history,unique_blobs_beyond_official_history,native_result_artifact_found,paper_result_credit
+gelove/multi-agent,https://github.com/gelove/multi-agent,main,2326185cc2d1eff02724cfeb88116ebb13f904e7,official_head_exact,0,0,0,0,0,False,False
+jemxgw/multi-agent,https://github.com/jemxgw/multi-agent,main,3ed387b3683d57eab04d36e1f18f3e49fdfc0bec,official_history_ancestor,0,3,0,0,0,False,False

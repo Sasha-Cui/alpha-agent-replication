@@ -185,7 +185,8 @@ def test_maci_route_separates_both_incomplete_author_source_lineages() -> None:
     assert row["static_fidelity_tiers"] == "R2"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_zero_regenerated"
+        "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_"
+        "zero_regenerated_2_forks_2_refs_2_official_history_heads_exhausted"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_disposition"] == "availability_only_no_performance_inference"
@@ -197,6 +198,8 @@ def test_maci_route_separates_both_incomplete_author_source_lineages() -> None:
     assert "394/442 table units" in blocker
     assert "three environ.data modules" in blocker
     assert "single-agent RAG and Skill" in blocker
+    assert "Both accessible v1/v2 forks" in blocker
+    assert "zero commits, blobs, tags, or native result artifacts" in blocker
     assert "six-country security-level common task" in blocker
 
 

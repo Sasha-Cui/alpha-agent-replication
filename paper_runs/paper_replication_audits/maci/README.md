@@ -18,6 +18,13 @@ fine-tuning-format JSONL files containing 962 system/user/assistant message
 records, including 930 unique image URLs spanning weeks 2023-W22--W52. This is
 materially better training-input provenance than the current tree exposes.
 
+The public GitHub fork surface is also exhausted as of 2026-08-14. Both
+accessible forks expose one `main` branch: one is exact at the official head
+and the other is a three-commit-behind ancestor within the already audited
+official history. Across two forks, two refs, and two unique heads, there are
+zero divergent commits, unique blobs, tags, or additional native result
+artifacts.
+
 It is still not a paper-result reproduction. The exact fine-tuning upload,
 job, selected checkpoint, test predictions, raw/processed inputs, weekly
 universe, inference request/response logs, and portfolio arrays are absent.
