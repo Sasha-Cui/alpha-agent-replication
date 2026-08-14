@@ -156,7 +156,8 @@ def test_quantaalpha_audit_credits_baseline_but_not_headline_result() -> None:
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
         "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_"
-        "regenerated_270_author_output_units_main_claim_not_reproduced"
+        "regenerated_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_"
+        "exhausted_main_claim_not_reproduced"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
@@ -166,6 +167,8 @@ def test_quantaalpha_audit_credits_baseline_but_not_headline_result() -> None:
     assert "all eight v1/v2 metrics" in row["precise_native_or_access_blocker"]
     assert "23/644 version-specific main-table cells" in row["precise_native_or_access_blocker"]
     assert "IC 0.04170 versus 0.15008" in row["precise_native_or_access_blocker"]
+    assert "267 GraphQL-accessible forks and 357 branch refs" in row["precise_native_or_access_blocker"]
+    assert "12 deleted/private/otherwise unavailable" in row["precise_native_or_access_blocker"]
     assert "not an end-to-end QuantaAlpha reproduction" in row["precise_native_or_access_blocker"]
     assert "Large v1/v2-to-v3 result revisions" in row["precise_native_or_access_blocker"]
 

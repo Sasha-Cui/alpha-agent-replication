@@ -305,9 +305,15 @@ ARTIFACT_NOTES = {
         "misses the headline result (IC 0.04170 versus 0.15008; IR 0.87738 versus 3.32512). "
         "Two released expressions fail under the released operator library. Exact model "
         "calls, prompts/responses, run ordering, seeds, predictions, holdings, raw returns, "
-        "and plot arrays remain absent. Large v1/v2-to-v3 result revisions lack released "
-        "lineage, and v3 contains direct figure/prose inconsistencies. This is one strong "
-        "baseline replication, not an end-to-end QuantaAlpha reproduction.",
+        "and plot arrays remain absent. A dated census covers all 267 GraphQL-accessible "
+        "forks and 357 branch refs (77 unique heads; 64 divergent). Nine author-attributed "
+        "post-v1 heads add 28 source/config/documentation commits but no native result "
+        "artifact; one unaffiliated post-v1 JSON summary uses different strategies and has "
+        "no raw lineage. GitHub REST reports 279 forks, so 12 deleted/private/otherwise "
+        "unavailable repositories are explicitly not claimed as inspected. Large "
+        "v1/v2-to-v3 result revisions lack released lineage, and v3 contains direct "
+        "figure/prose inconsistencies. This is one strong baseline replication, not an "
+        "end-to-end QuantaAlpha reproduction.",
     ),
     "SYS-QUANT-EVOLVER": (
         "N",
@@ -1431,7 +1437,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_component_gate_separate",
-    "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_regenerated_270_author_output_units_main_claim_not_reproduced",
+    "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_regenerated_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced",
     "SYS-RAPTOR": "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",

@@ -79,6 +79,47 @@ PUBLIC_HISTORY_COMMIT_SHA256 = "b80b2012e992519f128940ccfd9776c2d8cd9c4d4ee8f4c4
 PUBLIC_HISTORY_PATH_COUNT = 259
 PUBLIC_HISTORY_PATH_SHA256 = "83193eff0de95293fdd842b9b59518cdc9407ee34a639dbe022e177c67c559fc"
 PUBLIC_HISTORY_OBJECT_COUNTS = {"blob": 410, "tree": 242, "commit": 61}
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+# GitHub's REST metadata reported 279 forks, while GraphQL could enumerate 267
+# accessible fork repositories on the checked date.  The 12-repository gap is
+# retained rather than silently pretending that deleted/private/unavailable
+# forks were inspectable.
+PUBLIC_FORK_REST_COUNT = 279
+PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT = 267
+PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT = 357
+PUBLIC_FORK_GRAPHQL_REF_SHA256 = "f5353dac01829a8d0fdd86dad17f15759a0ae246b6d529b41a4627ca87acb145"
+PUBLIC_FORK_REPRESENTATIVE_REF_COUNT = 77
+PUBLIC_FORK_REPRESENTATIVE_REF_SHA256 = "4fc1a8f2d7ae74f490640ef3e8ca87744487b43a1bf01f9c686b82e867eb08bb"
+PUBLIC_FORK_UNIQUE_HEAD_SHA256 = "8abe066e04c1ef4ab6709a68328f2dfeb6a878ade1e0546a42a1fc6306a217d0"
+PUBLIC_FORK_BASE_REACHABLE_HEAD_COUNT = 13
+PUBLIC_FORK_DIVERGENT_HEAD_COUNT = 64
+AUTHOR_POST_V1_FORK_HEADS = (
+    "af0a9982567efddc3f102fccd315c33cc9b5647b",
+    "6201cf80f9901bfccd91ab8eade0610a7eecfe1a",
+    "225e9cca55700a851cc4da2cbfc7a0b49c623ee9",
+    "ac819184beccce6103784f0a1ff229ff9e4f3fa7",
+    "05d1b3b7174027ef8d79c5547387160037013fd8",
+    "3227d1aeccde7de10d96cd7b7b41f72a515dfd54",
+    "d012dab2d6889a7ea048c4e48c54239092ddb097",
+    "36738317f6af2352994ee5d7a4413bfaac76e23b",
+    "7f5e5a38fcb82e49e819678301ad7b56434c9797",
+)
+AUTHOR_POST_V1_EXTRA_COMMIT_COUNT = 28
+AUTHOR_POST_V1_EXTRA_COMMIT_SHA256 = "7734e0a09af7c222f7119f6a168ed93481dace82be5ed15ce1dc4e72a5c7f11c"
+AUTHOR_POST_V1_CHANGED_PATH_COUNT = 259
+AUTHOR_POST_V1_CHANGED_PATH_SHA256 = "1fb30ebf69f94c09513def0a8b98eab0fb99de1614726be345d1fe3ec8b18f62"
+AUTHOR_POST_V1_EMAILS = {
+    "hanjun1650782738@126.com",
+    "964280783@qq.com",
+    "lw0901@example.com",
+}
+AUTHOR_POST_V1_NEW_DOC_IMAGE_BLOB = "ca2483ade1ea71f6bdabe760f9aa633e0038cede"
+AUTHOR_POST_V1_NEW_DOC_IMAGE_SHA256 = "04188f1802fba0f967abacef2de7d36831446ebb77f4afcbcc92e29d82fd871c"
+AUTHOR_POST_V1_NEW_DOC_IMAGE_BYTES = 236_909
+UNAFFILIATED_SUMMARY_HEAD = "6ed6e1713f0e932b6c0a7641547e30530e425862"
+UNAFFILIATED_SUMMARY_PATH = "data/results/alpha_test_final_report.json"
+UNAFFILIATED_SUMMARY_SHA256 = "437f0722434416f1086a60f01770d2fff58506512a32d7eef55d13887c2300b8"
+UNAFFILIATED_SUMMARY_BYTES = 4_428
 DISCOVERY_SHA256 = {
     "branches.json": "be6243fec5525a694c2a72cd28f4ebe71f2bd642ad141974a54a68863ec98fd9",
     "releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
@@ -596,6 +637,247 @@ def prepublication_public_history(
         "historical_path_list_sha256": _sha256_lines(ordered_paths),
         "current_official_ref_surface_is_complete_public_history": False,
         "inherited_rdagent_ancestors_counted_as_quantaalpha_history": False,
+    }
+    return rows, summary
+
+
+def public_fork_census(
+    census_root: Path, branch_ref_snapshot: Path
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Fail closed over every unique head in the dated accessible-fork census.
+
+    GitHub exposed 267 fork repositories and 357 branch refs on the census
+    date.  Many refs shared the same object, so the local evidence store keeps
+    one representative ref for each of the 77 unique heads.  No result credit
+    is granted merely because a commit is author-attributed or a path looks
+    result-like.
+    """
+    if str(run_git(census_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise RuntimeError("QuantaAlpha public-fork census is shallow")
+    ref_lines = str(
+        run_git(
+            census_root,
+            "for-each-ref",
+            "refs/fork-census",
+            "--format=%(refname)%09%(objectname)",
+        )
+    ).splitlines()
+    if (
+        len(ref_lines) != PUBLIC_FORK_REPRESENTATIVE_REF_COUNT
+        or _sha256_lines(ref_lines) != PUBLIC_FORK_REPRESENTATIVE_REF_SHA256
+    ):
+        raise RuntimeError("QuantaAlpha representative public-fork ref census changed")
+    refs = [line.split("\t", 1) for line in ref_lines]
+    unique_heads = sorted({head for _, head in refs})
+    if (
+        len(unique_heads) != PUBLIC_FORK_REPRESENTATIVE_REF_COUNT
+        or _sha256_lines(unique_heads) != PUBLIC_FORK_UNIQUE_HEAD_SHA256
+    ):
+        raise RuntimeError("QuantaAlpha public-fork unique-head census changed")
+
+    with branch_ref_snapshot.open(newline="", encoding="utf-8") as handle:
+        branch_rows = list(csv.DictReader(handle))
+    expected_columns = {
+        "repository",
+        "branch",
+        "head_commit",
+        "repository_created_at",
+        "repository_pushed_at",
+        "head_committed_at",
+        "head_author_login",
+        "head_author_name",
+        "head_author_email",
+        "head_subject",
+    }
+    if not branch_rows or set(branch_rows[0]) != expected_columns:
+        raise RuntimeError("QuantaAlpha public-fork branch-ref snapshot schema changed")
+    branch_rows.sort(
+        key=lambda row: (row["repository"].lower(), row["branch"].lower(), row["head_commit"])
+    )
+    canonical_branch_refs = [
+        f'{row["repository"]}\t{row["branch"]}\t{row["head_commit"]}' for row in branch_rows
+    ]
+    if (
+        len(branch_rows) != PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT
+        or len({row["repository"] for row in branch_rows}) != PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT
+        or len({(row["repository"], row["branch"]) for row in branch_rows}) != len(branch_rows)
+        or _sha256_lines(canonical_branch_refs) != PUBLIC_FORK_GRAPHQL_REF_SHA256
+        or {row["head_commit"] for row in branch_rows} != set(unique_heads)
+    ):
+        raise RuntimeError("QuantaAlpha complete public-fork branch-ref snapshot changed")
+
+    base_heads = [*PUBLIC_BRANCH_HEADS.values(), PREPUBLICATION_RELEASE_COMMIT]
+    author_heads = set(AUTHOR_POST_V1_FORK_HEADS)
+    if not author_heads <= set(unique_heads) or UNAFFILIATED_SUMMARY_HEAD not in unique_heads:
+        raise RuntimeError("Pinned QuantaAlpha fork evidence heads are absent")
+    rows = []
+    extra_commits_by_head: dict[str, list[str]] = {}
+    changed_paths_by_head: dict[str, list[str]] = {}
+    for ref, head in refs:
+        extra_commits = sorted(str(run_git(census_root, "rev-list", head, "--not", *base_heads)).splitlines())
+        changed_paths: set[str] = set()
+        for commit in extra_commits:
+            changed_paths.update(
+                path
+                for path in str(
+                    run_git(
+                        census_root,
+                        "diff-tree",
+                        "--root",
+                        "--no-commit-id",
+                        "--name-only",
+                        "-r",
+                        commit,
+                    )
+                ).splitlines()
+                if path
+            )
+        ordered_paths = sorted(changed_paths)
+        extra_commits_by_head[head] = extra_commits
+        changed_paths_by_head[head] = ordered_paths
+        native_result_paths = [path for path in ordered_paths if path.lower().endswith(NATIVE_RESULT_SUFFIXES)]
+        result_like_json_paths = [
+            path
+            for path in ordered_paths
+            if path.lower().endswith(".json") and any(token in path.lower() for token in ("result", "report"))
+        ]
+        meta = str(run_git(census_root, "show", "-s", "--format=%cI%x00%an%x00%ae%x00%s", head))
+        head_date, author_name, author_email, subject = meta.rstrip("\n").split("\0", 3)
+        if not extra_commits:
+            classification = "official_or_prepublication_history_reachable"
+        elif head in author_heads:
+            classification = "author_attributed_post_v1_source_config_or_documentation_only"
+        elif head == UNAFFILIATED_SUMMARY_HEAD:
+            classification = "unaffiliated_post_v1_derived_summary_without_raw_lineage"
+        else:
+            classification = "unaffiliated_post_v1_code_config_or_data_extension"
+        rows.append(
+            {
+                "representative_ref": ref,
+                "head_commit": head,
+                "head_date": head_date,
+                "head_author_name": author_name,
+                "head_author_email": author_email,
+                "head_subject": subject,
+                "extra_commit_count_beyond_official_and_prepublication_bases": len(extra_commits),
+                "extra_changed_path_count": len(ordered_paths),
+                "native_result_suffix_path_count": len(native_result_paths),
+                "native_result_suffix_paths": ";".join(native_result_paths),
+                "result_like_json_path_count": len(result_like_json_paths),
+                "result_like_json_paths": ";".join(result_like_json_paths),
+                "author_attributed_post_v1_lineage": head in author_heads,
+                "classification": classification,
+                "paper_result_credit": False,
+            }
+        )
+
+    base_reachable = [row for row in rows if not row["extra_commit_count_beyond_official_and_prepublication_bases"]]
+    if len(base_reachable) != PUBLIC_FORK_BASE_REACHABLE_HEAD_COUNT:
+        raise RuntimeError("QuantaAlpha base-reachable fork-head count changed")
+    if len(rows) - len(base_reachable) != PUBLIC_FORK_DIVERGENT_HEAD_COUNT:
+        raise RuntimeError("QuantaAlpha divergent public-fork head count changed")
+
+    author_commits = sorted({commit for head in author_heads for commit in extra_commits_by_head[head]})
+    author_paths = sorted({path for head in author_heads for path in changed_paths_by_head[head]})
+    if (
+        len(author_commits) != AUTHOR_POST_V1_EXTRA_COMMIT_COUNT
+        or _sha256_lines(author_commits) != AUTHOR_POST_V1_EXTRA_COMMIT_SHA256
+    ):
+        raise RuntimeError("QuantaAlpha post-v1 author commit surface changed")
+    if (
+        len(author_paths) != AUTHOR_POST_V1_CHANGED_PATH_COUNT
+        or _sha256_lines(author_paths) != AUTHOR_POST_V1_CHANGED_PATH_SHA256
+    ):
+        raise RuntimeError("QuantaAlpha post-v1 author path surface changed")
+    author_emails = {
+        str(run_git(census_root, "show", "-s", "--format=%ae", commit)).strip()
+        for commit in author_commits
+    }
+    nonbot_author_emails = {email for email in author_emails if "[bot]" not in email}
+    if nonbot_author_emails != AUTHOR_POST_V1_EMAILS:
+        raise RuntimeError(f"QuantaAlpha post-v1 author identity surface changed: {nonbot_author_emails}")
+    author_native_result_paths = [path for path in author_paths if path.lower().endswith(NATIVE_RESULT_SUFFIXES)]
+    if author_native_result_paths:
+        raise RuntimeError(f"Author-attributed post-v1 native result paths require review: {author_native_result_paths}")
+
+    base_objects = {
+        line.split(" ", 1)[0]
+        for line in str(run_git(census_root, "rev-list", "--objects", *base_heads)).splitlines()
+    }
+    author_image_refs: dict[tuple[str, str], str] = {}
+    for head in author_heads:
+        for line in str(run_git(census_root, "ls-tree", "-r", head)).splitlines():
+            metadata, path = line.split("\t", 1)
+            blob = metadata.split()[2]
+            if path.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".pdf")):
+                author_image_refs[(head, path)] = blob
+    author_image_blobs = set(author_image_refs.values())
+    new_author_image_blobs = author_image_blobs - base_objects
+    if (
+        len(author_image_refs) != 81
+        or len(author_image_blobs) != 9
+        or new_author_image_blobs != {AUTHOR_POST_V1_NEW_DOC_IMAGE_BLOB}
+    ):
+        raise RuntimeError("QuantaAlpha post-v1 author image surface changed")
+    new_image = run_git(census_root, "cat-file", "blob", AUTHOR_POST_V1_NEW_DOC_IMAGE_BLOB, binary=True)
+    if (
+        len(new_image) != AUTHOR_POST_V1_NEW_DOC_IMAGE_BYTES
+        or hashlib.sha256(new_image).hexdigest() != AUTHOR_POST_V1_NEW_DOC_IMAGE_SHA256
+    ):
+        raise RuntimeError("QuantaAlpha post-v1 author documentation image changed")
+    new_image_paths = sorted(
+        {path for (_, path), blob in author_image_refs.items() if blob == AUTHOR_POST_V1_NEW_DOC_IMAGE_BLOB}
+    )
+    if new_image_paths != ["docs/images/WeChat.jpg"]:
+        raise RuntimeError(f"Unexpected QuantaAlpha post-v1 author image paths: {new_image_paths}")
+
+    unaffiliated_summary = run_git(
+        census_root,
+        "show",
+        f"{UNAFFILIATED_SUMMARY_HEAD}:{UNAFFILIATED_SUMMARY_PATH}",
+        binary=True,
+    )
+    if (
+        len(unaffiliated_summary) != UNAFFILIATED_SUMMARY_BYTES
+        or hashlib.sha256(unaffiliated_summary).hexdigest() != UNAFFILIATED_SUMMARY_SHA256
+    ):
+        raise RuntimeError("QuantaAlpha unaffiliated fork summary changed")
+    summary_payload = json.loads(unaffiliated_summary)
+    if (
+        summary_payload.get("report_date") != "2026-02-16"
+        or summary_payload.get("test_summary", {}).get("total_strategies") != 5
+        or summary_payload.get("test_summary", {}).get("data_source") != "CSI300"
+    ):
+        raise RuntimeError("QuantaAlpha unaffiliated fork summary schema changed")
+
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_REST_COUNT,
+        "graphql_accessible_forks": PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT,
+        "rest_minus_accessible_fork_gap": PUBLIC_FORK_REST_COUNT - PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT,
+        "accessibility_gap_interpretation": "deleted_private_or_otherwise_unavailable_not_inspected",
+        "graphql_accessible_branch_refs": PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT,
+        "graphql_accessible_branch_ref_census_sha256": PUBLIC_FORK_GRAPHQL_REF_SHA256,
+        "graphql_accessible_branch_ref_snapshot_file_sha256": sha256(branch_ref_snapshot),
+        "representative_unique_head_refs": len(rows),
+        "representative_ref_census_sha256": _sha256_lines(ref_lines),
+        "unique_heads": len(unique_heads),
+        "unique_head_sha256": _sha256_lines(unique_heads),
+        "heads_reachable_from_official_or_prepublication_bases": len(base_reachable),
+        "divergent_heads_reviewed": len(rows) - len(base_reachable),
+        "author_attributed_post_v1_heads": len(author_heads),
+        "author_attributed_post_v1_extra_commits": len(author_commits),
+        "author_attributed_post_v1_changed_paths": len(author_paths),
+        "author_attributed_post_v1_native_result_paths": len(author_native_result_paths),
+        "author_attributed_post_v1_image_refs": len(author_image_refs),
+        "author_attributed_post_v1_unique_image_blobs": len(author_image_blobs),
+        "author_attributed_post_v1_new_image_blobs": len(new_author_image_blobs),
+        "author_attributed_post_v1_new_image_path": new_image_paths[0],
+        "unaffiliated_post_v1_derived_summary_path": UNAFFILIATED_SUMMARY_PATH,
+        "unaffiliated_post_v1_derived_summary_sha256": UNAFFILIATED_SUMMARY_SHA256,
+        "unaffiliated_summary_matches_paper_method_or_result_lineage": False,
+        "paper_result_artifacts_discovered_in_post_v1_fork_heads": 0,
+        "paper_result_credit": False,
     }
     return rows, summary
 
@@ -2157,6 +2439,9 @@ def build_audit(
     inventory = source_inventory(source_root)
     history_commits, history_paths, history_summary = public_source_history(source_root)
     prepublication_commits, prepublication_summary = prepublication_public_history(public_census_root)
+    fork_heads, fork_summary = public_fork_census(
+        public_census_root, output_dir / "public_fork_branch_ref_snapshot.csv"
+    )
     prepublication_results = prepublication_result_conformance(public_census_root, paper_source_root)
     recovered_data = recovered_data_provenance()
     rerun_rows = native_rerun_conformance()
@@ -2180,6 +2465,7 @@ def build_audit(
         "released_source_history_inventory.csv": history_commits,
         "released_source_history_paths.csv": history_paths,
         "prepublication_source_history_inventory.csv": prepublication_commits,
+        "public_fork_unique_head_inventory.csv": fork_heads,
         "prepublication_result_conformance.csv": prepublication_results,
         "recovered_data_provenance.csv": recovered_data,
         "native_rerun_conformance.csv": rerun_rows,
@@ -2197,6 +2483,9 @@ def build_audit(
     )
     (output_dir / "prepublication_source_history.json").write_text(
         json.dumps(prepublication_summary, indent=2) + "\n", encoding="utf-8"
+    )
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
     )
     (output_dir / "native_result_regeneration.json").write_text(
         json.dumps(regeneration, indent=2) + "\n", encoding="utf-8"
@@ -2278,6 +2567,22 @@ def build_audit(
         "historical_v1_v2_main_table_cells_independently_regenerated": 8,
         "prepublication_quantaalpha_specific_commits_total": len(prepublication_commits),
         "prepublication_unique_historical_paths_total": prepublication_summary["unique_historical_paths"],
+        "github_rest_reported_public_forks": fork_summary["github_rest_reported_forks"],
+        "graphql_accessible_public_forks": fork_summary["graphql_accessible_forks"],
+        "public_fork_accessibility_gap": fork_summary["rest_minus_accessible_fork_gap"],
+        "public_fork_branch_refs_examined": fork_summary["graphql_accessible_branch_refs"],
+        "public_fork_unique_heads_examined": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_examined": fork_summary["divergent_heads_reviewed"],
+        "public_fork_author_attributed_post_v1_heads": fork_summary["author_attributed_post_v1_heads"],
+        "public_fork_author_attributed_post_v1_extra_commits": fork_summary[
+            "author_attributed_post_v1_extra_commits"
+        ],
+        "public_fork_author_attributed_post_v1_native_result_paths": fork_summary[
+            "author_attributed_post_v1_native_result_paths"
+        ],
+        "public_fork_paper_result_artifacts_discovered_post_v1": fork_summary[
+            "paper_result_artifacts_discovered_in_post_v1_fork_heads"
+        ],
         "prepublication_aggregate_result_cells_corresponding_at_paper_rounding": sum(
             row["rounded_match"] for row in prepublication_results
         ),
@@ -2334,8 +2639,11 @@ def build_audit(
             "(IC 0.04170 versus 0.15008; IR 0.87738 versus 3.32512). Two released expressions fail under the "
             "released operator library. Raw predictions, returns, holdings, prompt transcripts, complete run "
             "lineage, and plot arrays remain absent. The v1/v2-to-v3 result revision and v3 internal conflicts "
-            "also remain unexplained. Therefore this is a partial, evidence-backed replication—not a faithful "
-            "full-paper reproduction."
+            "also remain unexplained. A dated census exhausted all 267 GraphQL-accessible public forks and "
+            "357 branch refs (77 unique heads): nine author-attributed post-v1 heads add source/config/docs but "
+            "no native result arrays, while one unaffiliated post-v1 summary uses different strategies and has "
+            "no raw lineage. Therefore this is a partial, evidence-backed replication—not a faithful full-paper "
+            "reproduction."
         ),
     }
     report = f"""# QuantaAlpha paper-level conformance audit
@@ -2348,6 +2656,8 @@ headline QuantaAlpha result does not reproduce**.
 - All three arXiv revisions of [2602.07085]({PAPER_URL}) are pinned by PDF and source-archive SHA-256. The current audit targets v3, submitted {PAPER_VERSIONS["v3"]["date"]}.
 - The current official heads are pinned to `{SOURCE_COMMIT}`, but their **{history_summary["reachable_commits_total"]}-commit/{history_summary["unique_historical_paths_total"]}-path** surface is not the complete public history.
 - Public PR/fork refs preserve an author-attributed **{len(prepublication_commits)}-commit, {prepublication_summary["unique_historical_paths"]}-path** QuantaAlpha-specific lineage beginning `{PREPUBLICATION_START_COMMIT}`. Its explicit release commit `{PREPUBLICATION_RELEASE_COMMIT}` predates v1 by **{PREPUBLICATION_RELEASE_LEAD_HOURS:.2f} hours**. Inherited RD-Agent ancestors are excluded from these counts.
+- A dated GitHub census enumerated **{fork_summary["graphql_accessible_forks"]} accessible forks and {fork_summary["graphql_accessible_branch_refs"]} branch refs**, collapsing to **{fork_summary["unique_heads"]} unique heads**. GitHub REST reported {fork_summary["github_rest_reported_forks"]} forks; the {fork_summary["rest_minus_accessible_fork_gap"]} deleted/private/otherwise unavailable repositories are explicitly not claimed as inspected. All {fork_summary["divergent_heads_reviewed"]} divergent unique heads were reviewed.
+- Nine author-attributed post-v1 fork heads add {fork_summary["author_attributed_post_v1_extra_commits"]} unique commits and {fork_summary["author_attributed_post_v1_changed_paths"]} changed paths, but **zero native result artifacts**. Eight of their nine image blobs were already in the official/prepublication line; the only new blob is the documentation image `{fork_summary["author_attributed_post_v1_new_image_path"]}`. One unaffiliated post-v1 fork adds a derived five-strategy JSON summary with different factors/metrics and no raw lineage; it receives zero paper-result credit.
 - The official public [Hugging Face dataset]({HF_DATASET_URL}) is pinned to `{HF_DATASET_COMMIT}`. It provides a Qlib package and daily HDF files, but no paper result arrays.
 - The official pre-publication Git-LFS HDF object is pinned to `{AUTHOR_DAILY_PV_LFS_SHA256}`. A fork-preserved Qlib provider is separately pinned and receives no official-author credit; a 2,679x6 security slice is bit-identical between them.
 

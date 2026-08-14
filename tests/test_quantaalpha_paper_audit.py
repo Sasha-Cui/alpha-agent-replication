@@ -134,6 +134,9 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     versioned_tables = read_csv(output / "paper_version_main_table_conformance.csv")
     history_summary = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
     prepublication_history = read_csv(output / "prepublication_source_history_inventory.csv")
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
+    fork_branch_refs = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_summary = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
     prepublication_results = read_csv(output / "prepublication_result_conformance.csv")
     recovered_data = read_csv(output / "recovered_data_provenance.csv")
     reruns = read_csv(output / "native_rerun_conformance.csv")
@@ -178,6 +181,16 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert manifest["historical_v1_v2_main_table_cells_independently_regenerated"] == 8
     assert manifest["prepublication_quantaalpha_specific_commits_total"] == 28
     assert manifest["prepublication_unique_historical_paths_total"] == 851
+    assert manifest["github_rest_reported_public_forks"] == 279
+    assert manifest["graphql_accessible_public_forks"] == 267
+    assert manifest["public_fork_accessibility_gap"] == 12
+    assert manifest["public_fork_branch_refs_examined"] == 357
+    assert manifest["public_fork_unique_heads_examined"] == 77
+    assert manifest["public_fork_divergent_heads_examined"] == 64
+    assert manifest["public_fork_author_attributed_post_v1_heads"] == 9
+    assert manifest["public_fork_author_attributed_post_v1_extra_commits"] == 28
+    assert manifest["public_fork_author_attributed_post_v1_native_result_paths"] == 0
+    assert manifest["public_fork_paper_result_artifacts_discovered_post_v1"] == 0
     assert manifest["prepublication_aggregate_result_cells_corresponding_at_paper_rounding"] == 74
     assert manifest["prepublication_aggregate_result_cells_examined"] == 88
     assert manifest["native_rerun_metric_cells_examined"] == 16
@@ -255,6 +268,27 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert native["paper_result_cells_reproduced"] == 8
     assert len(prepublication_history) == 28
     assert {row["before_v1_submission"] for row in prepublication_history} == {"True"}
+    assert len(fork_heads) == 77
+    assert len(fork_branch_refs) == 357
+    assert len({row["repository"] for row in fork_branch_refs}) == 267
+    assert len({row["head_commit"] for row in fork_branch_refs}) == 77
+    assert Counter(row["classification"] for row in fork_heads) == {
+        "official_or_prepublication_history_reachable": 13,
+        "author_attributed_post_v1_source_config_or_documentation_only": 9,
+        "unaffiliated_post_v1_derived_summary_without_raw_lineage": 1,
+        "unaffiliated_post_v1_code_config_or_data_extension": 54,
+    }
+    assert {row["paper_result_credit"] for row in fork_heads} == {"False"}
+    assert sum(row["author_attributed_post_v1_lineage"] == "True" for row in fork_heads) == 9
+    assert fork_summary["graphql_accessible_forks"] == 267
+    assert fork_summary["graphql_accessible_branch_refs"] == 357
+    assert fork_summary["representative_unique_head_refs"] == 77
+    assert fork_summary["divergent_heads_reviewed"] == 64
+    assert fork_summary["author_attributed_post_v1_extra_commits"] == 28
+    assert fork_summary["author_attributed_post_v1_changed_paths"] == 259
+    assert fork_summary["author_attributed_post_v1_native_result_paths"] == 0
+    assert fork_summary["author_attributed_post_v1_new_image_path"] == "docs/images/WeChat.jpg"
+    assert fork_summary["paper_result_artifacts_discovered_in_post_v1_fork_heads"] == 0
     assert len(prepublication_results) == 88
     assert Counter(row["rounded_match"] for row in prepublication_results) == {"True": 74, "False": 14}
     assert {row["independently_regenerated"] for row in prepublication_results} == {"False"}
@@ -292,5 +326,10 @@ def test_pinned_primary_sources_when_available() -> None:
     if census.exists():
         prepublication, summary = audit.prepublication_public_history(census)
         assert len(prepublication) == 28 and summary["unique_historical_paths"] == 851
+        fork_heads, fork_summary = audit.public_fork_census(
+            census, ROOT / "paper_runs/paper_replication_audits/quantaalpha/public_fork_branch_ref_snapshot.csv"
+        )
+        assert len(fork_heads) == 77 and fork_summary["divergent_heads_reviewed"] == 64
+        assert fork_summary["paper_result_artifacts_discovered_in_post_v1_fork_heads"] == 0
         results = audit.prepublication_result_conformance(census, paper / "source")
         assert len(results) == 88 and sum(row["rounded_match"] for row in results) == 74
