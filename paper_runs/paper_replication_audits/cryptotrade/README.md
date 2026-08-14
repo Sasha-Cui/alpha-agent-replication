@@ -12,6 +12,10 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 - Public source: https://github.com/Xtra-Computing/CryptoTrade, commit `210da73af5f17992be425e61305524a5c24dae40`.
 - Paper-author history: Nuo Chen's public `nchen` branch, commit
   `2a6cefe6ea7dc291070b63e5699f95370a7d32d7` (89 commits inspected).
+- A bounded GitHub census on 2026-08-14 covers all
+  37 accessible forks and 39 fork branch refs.
+  The first-author `NuoJohnChen` fork duplicates the already-audited `master` and
+  `nchen` heads; it contributes no additional commit or result lineage.
 
 ## What reproduces
 
@@ -58,6 +62,13 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   The recovered pre-reroot author snapshot and official root share all 406 earlier
   paths, with 400 byte-identical blobs; the remaining active execution logic is
   materially continuous, and action replay supplies the stronger numeric check.
+- Of 39 fork refs, 35
+  are already reachable from the pinned official/coauthor histories. The four
+  divergent heads are all unaffiliated and post-paper: a Gemini 2.5 experiment
+  with empty/non-paper result files, a NIFTY-50/Gemini rewrite, a local-model and
+  Taiwan-market six-agent extension, and a descriptor/PDF-only fork. Their
+  7 result/log-like paths
+  receive zero paper credit. See `public_fork_divergence_inventory.csv`.
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
   on the full requested interval, and ships no result path.

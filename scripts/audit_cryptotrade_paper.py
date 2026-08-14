@@ -44,6 +44,61 @@ PAPER_SHA256 = "376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf
 PAPER_URL = "https://aclanthology.org/2024.emnlp-main.63.pdf"
 SOURCE_URL = "https://github.com/Xtra-Computing/CryptoTrade"
 ORIGINAL_ANONYMOUS_SOURCE_URL = "https://anonymous.4open.science/r/CryptoTrade-Public-92FC/"
+PUBLIC_FORK_CENSUS_CHECKED_AT = "2026-08-14"
+PUBLIC_FORKS_TOTAL = 37
+PUBLIC_FORK_BRANCH_REFS_TOTAL = 39
+PUBLIC_FORK_BRANCH_REF_SEQUENCE_SHA256 = "5c3c428ac7d6a3c2432c004ce2288f75081ae632abffb9a4128c762fcbe00bd9"
+PUBLIC_FORK_BRANCH_REFS_REACHABLE_FROM_OFFICIAL_OR_AUTHOR_HISTORY = 35
+PUBLIC_DIVERGENT_FORK_HEADS = (
+    {
+        "repository": "kidclone3/CryptoTrade",
+        "branch": "master",
+        "ref": "refs/remotes/fork_census/kidclone3-master",
+        "head_commit": "685a33ae9e332c2aff7851c3b2ecaff7137136c9",
+        "divergent_commits": 1,
+        "divergent_commit_sequence_sha256": "a828baa59ff0b23d8da0945f72996fcaa1c7401028c0b45dc6942bb3f06b6ce1",
+        "changed_paths": 8,
+        "changed_path_sequence_sha256": "1fb5d6d9a6225b98b617c5022b793f610c92cdcb928ccc08d423e1da2401f790",
+        "result_or_log_paths": 3,
+        "relationship": "unaffiliated_postpaper_gemini_2_5_experiment_with_empty_result_file_and_nonpaper_logs",
+    },
+    {
+        "repository": "ADizzyPython/CryptoTrade",
+        "branch": "master",
+        "ref": "refs/remotes/fork_census/adizzypython-master",
+        "head_commit": "53ae996cd0232b43d3aef9ec49cf3bb22b017ac4",
+        "divergent_commits": 2,
+        "divergent_commit_sequence_sha256": "573687269adf8afbb9f8ebf69ea38c582a9c2ed81612ce4f8fb163468d66a521",
+        "changed_paths": 409,
+        "changed_path_sequence_sha256": "2c6a587b76ee12e4ff92d062c1b41868f27dc0450db34408edb421e056af8f6a",
+        "result_or_log_paths": 4,
+        "relationship": "unaffiliated_postpaper_nifty50_rewrite_and_gemini_logs_not_cryptotrade_paper_runs",
+    },
+    {
+        "repository": "JunTingLin/CryptoTrade",
+        "branch": "master",
+        "ref": "refs/remotes/fork_census/juntinglin-master",
+        "head_commit": "f8a43b39d922f0f1b468855f63e224235b729d24",
+        "divergent_commits": 29,
+        "divergent_commit_sequence_sha256": "ca37f9c0dde714c205cfc7206a23d33365354c87a4520444e9cd0b46d7475c43",
+        "changed_paths": 1931,
+        "changed_path_sequence_sha256": "63aa6b62a09b53a9d00a513dd015bea92eeea0bb7cbde9984fd570a71ebc4bca",
+        "result_or_log_paths": 0,
+        "relationship": "unaffiliated_postpaper_local_model_taiwan_and_six_agent_extension_without_result_artifacts",
+    },
+    {
+        "repository": "0x0wRangler/CryptoTrade",
+        "branch": "master",
+        "ref": "refs/remotes/fork_census/0x0wrangler-master",
+        "head_commit": "3932f2d4421e1eb423a112f715fd34abaa6c65f6",
+        "divergent_commits": 2,
+        "divergent_commit_sequence_sha256": "0df459563d61a2f00de9bd77ce524e392828fbb1976fefd31a082bf495b4811b",
+        "changed_paths": 2,
+        "changed_path_sequence_sha256": "502ccfbdb07dcc25fe98f003b92e77ba3309e1c6a73f7a8984120fb602939124",
+        "result_or_log_paths": 0,
+        "relationship": "unaffiliated_postpaper_descriptor_and_reference_pdf_only",
+    },
+)
 DISPLAY_TOLERANCE = 0.005 + 1e-12
 METRICS = (
     "total_return_pct",
@@ -213,6 +268,74 @@ def git(root: Path, *args: str) -> str:
         capture_output=True,
         text=True,
     ).stdout
+
+
+def line_sequence_sha256(values: Sequence[str]) -> str:
+    payload = "".join(f"{value}\n" for value in values).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def result_or_log_path(path: str) -> bool:
+    lowered = path.lower()
+    parts = lowered.split("/")
+    name = parts[-1]
+    return (
+        lowered.endswith((".out", ".log"))
+        or any(part in {"log", "logs", "output", "outputs", "result", "results"} for part in parts)
+        or name.startswith("env_results")
+    )
+
+
+def public_fork_divergence_inventory(source_root: Path) -> List[Dict[str, Any]]:
+    """Fail closed over every divergent head in the dated public fork census."""
+    rows: List[Dict[str, Any]] = []
+    for expected in PUBLIC_DIVERGENT_FORK_HEADS:
+        ref = str(expected["ref"])
+        head_commit = git(source_root, "rev-parse", ref).strip()
+        if head_commit != expected["head_commit"]:
+            raise RuntimeError(f"CryptoTrade fork-census head changed for {ref}")
+        if git(source_root, "merge-base", SOURCE_COMMIT, ref).strip() != SOURCE_COMMIT:
+            raise RuntimeError(f"CryptoTrade fork-census head is not based on the pinned official head: {ref}")
+
+        commits = git(source_root, "rev-list", "--reverse", f"{SOURCE_COMMIT}..{ref}").splitlines()
+        changed_paths = sorted(git(source_root, "diff", "--name-only", SOURCE_COMMIT, ref).splitlines())
+        result_paths = [path for path in changed_paths if result_or_log_path(path)]
+        observed = {
+            "divergent_commits": len(commits),
+            "divergent_commit_sequence_sha256": line_sequence_sha256(commits),
+            "changed_paths": len(changed_paths),
+            "changed_path_sequence_sha256": line_sequence_sha256(changed_paths),
+            "result_or_log_paths": len(result_paths),
+        }
+        for field, value in observed.items():
+            if value != expected[field]:
+                raise RuntimeError(
+                    f"CryptoTrade fork-census {field} changed for {ref}: expected {expected[field]!r}, found {value!r}"
+                )
+
+        committed_at, author_name, subject = git(
+            source_root,
+            "show",
+            "-s",
+            "--format=%aI%x09%an%x09%s",
+            ref,
+        ).rstrip("\n").split("\t", 2)
+        rows.append(
+            {
+                "repository": expected["repository"],
+                "branch": expected["branch"],
+                "head_commit": head_commit,
+                "head_committed_at": committed_at,
+                "head_author_name": author_name,
+                **observed,
+                "result_or_log_inventory": ";".join(result_paths),
+                "attribution": "unaffiliated",
+                "relationship": expected["relationship"],
+                "paper_result_credit": False,
+                "head_subject": subject,
+            }
+        )
+    return rows
 
 
 def source_history_inventory(source_root: Path) -> List[Dict[str, Any]]:
@@ -1195,6 +1318,7 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
 
     environment_module = load_environment(source_root)
     history = source_history_inventory(source_root)
+    fork_divergence = public_fork_divergence_inventory(source_root)
     author_trace_rows, author_traces = author_trace_audit(environment_module, source_root)
     ablation_trace_rows, ablation_conformance = ablation_trace_audit(source_root)
     conformance, reproduced = result_conformance(environment_module, source_root, author_traces)
@@ -1210,6 +1334,11 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     write_csv(output_dir / "parameter_selection_audit.csv", selection, list(selection[0]))
     write_csv(output_dir / "traditional_mismatch_diagnosis.csv", diagnosis, list(diagnosis[0]))
     write_csv(output_dir / "source_history_inventory.csv", history, list(history[0]))
+    write_csv(
+        output_dir / "public_fork_divergence_inventory.csv",
+        fork_divergence,
+        list(fork_divergence[0]),
+    )
     write_csv(
         output_dir / "author_history_llm_trace_audit.csv",
         author_trace_rows,
@@ -1279,6 +1408,21 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "original_anonymous_source_status_checked_2026_08_13": "http_410_repository_expired",
         "public_source_history_commits_audited": len(history),
         "public_source_history_result_or_log_paths": sum(row["result_or_log_paths"] for row in history),
+        "public_fork_census_checked_at": PUBLIC_FORK_CENSUS_CHECKED_AT,
+        "public_forks_total": PUBLIC_FORKS_TOTAL,
+        "public_fork_branch_refs_total": PUBLIC_FORK_BRANCH_REFS_TOTAL,
+        "public_fork_branch_ref_sequence_sha256": PUBLIC_FORK_BRANCH_REF_SEQUENCE_SHA256,
+        "public_fork_branch_refs_reachable_from_official_or_author_history": (
+            PUBLIC_FORK_BRANCH_REFS_REACHABLE_FROM_OFFICIAL_OR_AUTHOR_HISTORY
+        ),
+        "public_divergent_fork_heads_total": len(fork_divergence),
+        "public_divergent_fork_heads_author_attributed": sum(
+            row["attribution"] == "paper_author" for row in fork_divergence
+        ),
+        "public_divergent_fork_result_or_log_paths_total": sum(
+            row["result_or_log_paths"] for row in fork_divergence
+        ),
+        "public_divergent_fork_paper_result_credit_paths_total": 0,
         "paper_result_metric_cells_total": len(conformance) + len(ablation_conformance),
         "paper_tables_2_4_metric_cells_total": len(conformance),
         "paper_table_5_metric_cells_total": len(ablation_conformance),
@@ -1374,7 +1518,8 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             "receive zero method-faithful credit. This is strong component/output evidence, not a full "
             "CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but "
             "not method-faithful explanations, validation selection is not implemented as described, "
-            "and the documented entrypoints are not operational without repair."
+            "and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref "
+            "census finds no additional attributable paper outputs."
         ),
         "source_file_sha256": {
             name: sha256(source_root / name)
@@ -1412,6 +1557,10 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 - Public source: {SOURCE_URL}, commit `{commit}`.
 - Paper-author history: Nuo Chen's public `nchen` branch, commit
   `{AUTHOR_HISTORY_COMMIT}` ({AUTHOR_HISTORY_COMMIT_COUNT} commits inspected).
+- A bounded GitHub census on {PUBLIC_FORK_CENSUS_CHECKED_AT} covers all
+  {PUBLIC_FORKS_TOTAL} accessible forks and {PUBLIC_FORK_BRANCH_REFS_TOTAL} fork branch refs.
+  The first-author `NuoJohnChen` fork duplicates the already-audited `master` and
+  `nchen` heads; it contributes no additional commit or result lineage.
 
 ## What reproduces
 
@@ -1458,6 +1607,13 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   The recovered pre-reroot author snapshot and official root share all 406 earlier
   paths, with 400 byte-identical blobs; the remaining active execution logic is
   materially continuous, and action replay supplies the stronger numeric check.
+- Of {PUBLIC_FORK_BRANCH_REFS_TOTAL} fork refs, {PUBLIC_FORK_BRANCH_REFS_REACHABLE_FROM_OFFICIAL_OR_AUTHOR_HISTORY}
+  are already reachable from the pinned official/coauthor histories. The four
+  divergent heads are all unaffiliated and post-paper: a Gemini 2.5 experiment
+  with empty/non-paper result files, a NIFTY-50/Gemini rewrite, a local-model and
+  Taiwan-market six-agent extension, and a descriptor/PDF-only fork. Their
+  {sum(row["result_or_log_paths"] for row in fork_divergence)} result/log-like paths
+  receive zero paper credit. See `public_fork_divergence_inventory.csv`.
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
   on the full requested interval, and ships no result path.

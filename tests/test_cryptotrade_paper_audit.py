@@ -64,6 +64,7 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     selection = read_csv(output / "parameter_selection_audit.csv")
     diagnosis = read_csv(output / "traditional_mismatch_diagnosis.csv")
     history = read_csv(output / "source_history_inventory.csv")
+    fork_divergence = read_csv(output / "public_fork_divergence_inventory.csv")
     traces = read_csv(output / "author_history_llm_trace_audit.csv")
     ablation_traces = read_csv(output / "table_5_author_trace_audit.csv")
     ablation = read_csv(output / "table_5_conformance.csv")
@@ -97,6 +98,17 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert manifest["original_anonymous_source_status_checked_2026_08_13"] == "http_410_repository_expired"
     assert manifest["public_source_history_commits_audited"] == 11
     assert manifest["public_source_history_result_or_log_paths"] == 0
+    assert manifest["public_fork_census_checked_at"] == "2026-08-14"
+    assert manifest["public_forks_total"] == 37
+    assert manifest["public_fork_branch_refs_total"] == 39
+    assert manifest["public_fork_branch_ref_sequence_sha256"] == (
+        "5c3c428ac7d6a3c2432c004ce2288f75081ae632abffb9a4128c762fcbe00bd9"
+    )
+    assert manifest["public_fork_branch_refs_reachable_from_official_or_author_history"] == 35
+    assert manifest["public_divergent_fork_heads_total"] == 4
+    assert manifest["public_divergent_fork_heads_author_attributed"] == 0
+    assert manifest["public_divergent_fork_result_or_log_paths_total"] == 7
+    assert manifest["public_divergent_fork_paper_result_credit_paths_total"] == 0
     assert manifest["paper_ablation_rows"] == 6
     assert manifest["paper_ablation_metric_cells_total"] == 12
     assert manifest["paper_ablation_author_history_numeric_correspondences"] == 12
@@ -146,6 +158,19 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert history[-1]["commit"] == audit.SOURCE_COMMIT
     assert all(row["result_or_log_paths"] == "0" for row in history)
     assert sum(row["run_baseline_present"] == "True" for row in history) == 8
+
+    assert len(fork_divergence) == 4
+    assert {row["head_commit"] for row in fork_divergence} == {
+        "685a33ae9e332c2aff7851c3b2ecaff7137136c9",
+        "53ae996cd0232b43d3aef9ec49cf3bb22b017ac4",
+        "f8a43b39d922f0f1b468855f63e224235b729d24",
+        "3932f2d4421e1eb423a112f715fd34abaa6c65f6",
+    }
+    assert [int(row["divergent_commits"]) for row in fork_divergence] == [1, 2, 29, 2]
+    assert [int(row["changed_paths"]) for row in fork_divergence] == [8, 409, 1931, 2]
+    assert [int(row["result_or_log_paths"]) for row in fork_divergence] == [3, 4, 0, 0]
+    assert {row["attribution"] for row in fork_divergence} == {"unaffiliated"}
+    assert {row["paper_result_credit"] for row in fork_divergence} == {"False"}
 
     credited = [row for row in traces if row["credit_status"].startswith("credited")]
     diagnostic = [row for row in traces if row["credit_status"].startswith("diagnostic")]

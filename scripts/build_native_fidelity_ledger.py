@@ -485,7 +485,14 @@ ARTIFACT_NOTES = {
         "ETH-sideways daily statistics duplicate ETH-bear, while four SOL-bear cells require "
         "a 1-day SMA outside the disclosed and released [5,10,15,20,30] grid. The originally "
         "cited anonymous repository has expired, the 11-commit official history contains no "
-        "result/log path, and 248 LLM/time-series cells remain unverifiable. "
+        "result/log path, and 248 main-table LLM/time-series cells remain unverifiable. All "
+        "12 Table 5 values have exact author-history numeric correspondences and replay against "
+        "their historical snapshots, but receive zero method-faithful credit because the traces "
+        "declare GPT-3.5 rather than GPT-4o and the Full match is BTC rather than ETH. A dated "
+        "census exhausts 37 accessible public forks and 39 fork refs: 35 refs are already in the "
+        "audited official/coauthor histories, including the first-author fork, while all four "
+        "divergent heads are unaffiliated post-paper extensions whose seven result/log-like paths "
+        "receive zero paper credit. In total, 260/480 cells remain method-faithfully unverifiable. "
         "The evidence remains crypto rather than six-country equity output.",
     ),
     "SYS-FIN-CON": (
@@ -1387,7 +1394,7 @@ TARGETED_EXECUTION = {
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-COG-ALPHA": "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_templates_four_author_curve_series_zero_regenerated",
-    "SYS-CRYPTO-TRADE": "paper_audit:partial_214_of_468_cells_corroborated_40_from_author_llm_traces_zero_fresh_llm_regeneration",
+    "SYS-CRYPTO-TRADE": "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_12_ablation_correspondences_zero_credit_37_forks_exhausted",
     "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",

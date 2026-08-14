@@ -197,7 +197,8 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     routes = pd.read_csv(OUTPUT, keep_default_na=False).set_index("canonical_work_id")
     expected = {
         "CensusACL2024emnlpmain63": (
-            "paper_audit:partial_214_of_468_cells_corroborated_40_from_author_llm_traces_zero_fresh_llm_regeneration"
+            "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_"
+            "12_ablation_correspondences_zero_credit_37_forks_exhausted"
         ),
         "CensusACL2026findingsacl456": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
         "CensusArxiv231113743": (
@@ -217,6 +218,11 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         row = routes.loc[work_id]
         assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
         assert row["native_execution_audit_status"] == status
+
+    cryptotrade_blocker = routes.loc["CensusACL2024emnlpmain63", "precise_native_or_access_blocker"]
+    assert "All 12 Table 5 values" in cryptotrade_blocker
+    assert "37 accessible public forks and 39 fork refs" in cryptotrade_blocker
+    assert "260/480 cells remain method-faithfully unverifiable" in cryptotrade_blocker
 
 
 def test_flag_trader_paper_only_audit_preserves_its_evidence_boundary() -> None:
