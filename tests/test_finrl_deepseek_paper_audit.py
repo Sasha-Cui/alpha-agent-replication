@@ -49,6 +49,17 @@ def test_stored_notebook_outputs_are_incomplete_mismatches_and_stale() -> None:
     }
 
 
+def test_postpaper_community_checkpoint_rerun_is_adverse_not_promoted() -> None:
+    rows = audit.community_notebook_conformance_rows()
+    assert len(rows) == 36
+    assert Counter(row["status"] for row in rows) == {
+        "postpaper_community_stored_output_mismatch": 30,
+        "missing_postpaper_community_stored_output": 6,
+    }
+    assert sum(bool(row["community_stored_value"]) for row in rows) == 30
+    assert {row["paper_result_credit"] for row in rows} == {False}
+
+
 def test_raster_results_and_mechanism_boundary_are_explicit() -> None:
     figures = audit.figure_rows()
     labels = audit.figure_metric_rows()
@@ -82,6 +93,14 @@ def test_committed_audit_records_native_execution_without_promoting_it() -> None
     notebook = read_csv(output / "released_notebook_metric_conformance.csv")
     historical_notebooks = read_csv(output / "historical_notebook_inventory.csv")
     historical_logs = read_csv(output / "historical_training_log_inventory.csv")
+    fork_repositories = read_csv(output / "public_fork_repository_access_inventory.csv")
+    fork_refs = read_csv(output / "public_fork_ref_snapshot.csv")
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
+    fork_commits = read_csv(output / "public_fork_divergent_commit_inventory.csv")
+    fork_paths = read_csv(output / "public_fork_divergent_path_inventory.csv")
+    fork_notebooks = read_csv(output / "public_fork_notebook_inventory.csv")
+    fork_table = read_csv(output / "public_fork_notebook_table_conformance.csv")
+    fork_summary = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
     assert manifest["overall_status"] == (
         "released_data_checkpoints_and_code_execute_but_paper_results_not_reproduced"
     )
@@ -119,6 +138,28 @@ def test_committed_audit_records_native_execution_without_promoting_it() -> None
     assert manifest["historical_training_logs_with_evaluation_metrics"] == 0
     assert manifest["historical_logs_with_exact_released_checkpoint_name"] == 10
     assert manifest["paper_relevant_checkpoints_with_exact_training_log_name"] == 5
+    assert manifest["public_fork_rest_repository_listings"] == 81
+    assert manifest["public_forks_accessible"] == 80
+    assert manifest["public_fork_stale_or_inaccessible_rest_listings"] == 1
+    assert manifest["public_fork_branch_refs_audited"] == 82
+    assert manifest["public_fork_tag_refs_audited"] == 0
+    assert manifest["public_fork_unique_heads_audited"] == 10
+    assert manifest["public_fork_divergent_heads_audited"] == 5
+    assert manifest["public_fork_divergent_commits_audited"] == 69
+    assert manifest["public_fork_divergent_paths_audited"] == 84
+    assert manifest["public_fork_new_blobs_audited"] == 159
+    assert manifest["public_fork_notebook_blob_versions_audited"] == 2
+    assert manifest["public_fork_community_stored_metric_entries"] == 33
+    assert manifest["public_fork_community_table_cells_corresponded"] == 30
+    assert manifest["public_fork_community_table_cells_matching_paper"] == 0
+    assert manifest["public_fork_community_table_cells_mismatching_paper"] == 30
+    assert manifest["public_fork_community_table_cells_missing"] == 6
+    assert manifest["public_fork_postpaper_adaptation_python_files_compiled"] == 82
+    assert manifest["public_fork_new_checkpoint_paths"] == 0
+    assert manifest["public_fork_new_dataset_paths"] == 0
+    assert manifest["public_fork_new_training_log_paths"] == 0
+    assert manifest["public_fork_native_paper_result_artifacts_found"] == 0
+    assert manifest["public_fork_paper_result_credit"] is False
     assert len(table) == 36 and len(notebook) == 36
     assert len(historical_notebooks) == 9
     assert {row["stored_metric_entries"] for row in historical_notebooks} == {"24"}
@@ -130,8 +171,28 @@ def test_committed_audit_records_native_execution_without_promoting_it() -> None
     assert sum(bool(row["exact_released_checkpoint_basenames"]) for row in historical_logs) == 10
     assert sum(bool(row["exact_paper_relevant_checkpoint_basenames"]) for row in historical_logs) == 5
     assert {row["contains_paper_evaluation_metric_labels"] for row in historical_logs} == {"False"}
+    assert len(fork_repositories) == 81
+    assert sum(row["accessible_via_git"] == "True" for row in fork_repositories) == 80
+    assert len(fork_refs) == 82
+    assert len(fork_heads) == 10
+    assert sum(row["relation_to_official_history"] == "divergent" for row in fork_heads) == 5
+    assert sum(row["new_metric_output_notebook_blobs"] == "1" for row in fork_heads) == 1
+    assert len(fork_commits) == 69
+    assert sum(row["introduced_community_metric_notebook_blob"] == "True" for row in fork_commits) == 1
+    assert len(fork_paths) == 84
+    assert sum(row["community_metric_output_notebook"] == "True" for row in fork_paths) == 1
+    assert len(fork_notebooks) == 2
+    assert {row["stored_metric_entries"] for row in fork_notebooks} == {"0", "33"}
+    assert len(fork_table) == 36
+    assert sum(row["status"] == "postpaper_community_stored_output_mismatch" for row in fork_table) == 30
+    assert fork_summary["postpaper_adaptation_changes_native_objective_or_protocol"] is True
+    assert fork_summary["postpaper_adaptation_requires_unreleased_local_pkg_or_runtime_services"] is True
+    assert fork_summary["postpaper_adaptation_committed_result_or_checkpoint_artifacts"] == 0
+    assert fork_summary["paper_result_credit"] is False
     assert history["reachable_commits"] == 36
     assert history["reachable_object_counts"] == {"blob": 73, "commit": 36, "tree": 36}
+    assert history["official_history_tips"] == [audit.CURRENT_COMMIT]
+    assert history["fork_refs_excluded_from_official_history"] is True
     assert history["paper_result_credit"] is False
     assert {row["paper_result_credit"] for row in table} == {"False"}
     assert native["source_revision"] == audit.CURRENT_COMMIT
@@ -150,7 +211,8 @@ def test_pinned_primary_sources_when_available() -> None:
     source = Path("/nfs/roberts/scratch/pi_btk22/zc362/finrl_deepseek_source")
     paper = Path("/nfs/roberts/scratch/pi_btk22/zc362/finrl_deepseek_paper")
     artifacts = Path("/nfs/roberts/scratch/pi_btk22/zc362/finrl_deepseek_artifacts")
-    if not source.exists() or not paper.exists() or not artifacts.exists():
+    fork_snapshot = paper / "public_fork_snapshot.json"
+    if not source.exists() or not paper.exists() or not artifacts.exists() or not fork_snapshot.exists():
         return
     assert str(audit.run_git(source, "rev-parse", "HEAD")).strip() == audit.CURRENT_COMMIT
     assert audit.sha256(paper / "paper.pdf") == audit.PAPER_PDF_SHA256
@@ -163,5 +225,14 @@ def test_pinned_primary_sources_when_available() -> None:
     assert len(logs) == 15
     assert history["independently_regenerated_paper_results"] == 0
     assert history["paper_result_credit"] is False
+    forks = audit.public_fork_audit(source, fork_snapshot)
+    assert len(forks["repositories"]) == 81
+    assert len(forks["refs"]) == 82
+    assert len(forks["heads"]) == 10
+    assert len(forks["commits"]) == 69
+    assert len(forks["paths"]) == 84
+    assert len(forks["notebooks"]) == 2
+    assert len(forks["community_table_conformance"]) == 36
+    assert forks["summary"]["native_paper_result_artifacts_found"] == 0
     native = audit.validate_native_inputs(artifacts)
     assert len(native["input_artifacts"]) == 11

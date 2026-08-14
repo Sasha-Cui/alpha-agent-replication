@@ -17,6 +17,7 @@ import py_compile
 import re
 import subprocess
 import tempfile
+import warnings
 from collections import Counter
 from pathlib import Path
 from typing import Any, Mapping, Optional, Sequence
@@ -57,6 +58,62 @@ HF_DATASET_URL = "https://huggingface.co/datasets/benstaf/nasdaq_2013_2023"
 HF_DATASET_COMMIT = "b80bc15e4320eac68f53cfdd2fff3365e55dfedd"
 HF_AGENTS_URL = "https://huggingface.co/benstaf/Trading_agents"
 HF_AGENTS_COMMIT = "2153a7266aac75f9613fdae1bde09dbd38691c59"
+OFFICIAL_HISTORY_TIPS = (CURRENT_COMMIT,)
+
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_SNAPSHOT_SHA256 = (
+    "ff23fbaafa28e68c759a3ef366f96b60bf39c20d136b547d8c727f0dab1bdb8f"
+)
+PUBLIC_FORK_REPOSITORY_LISTINGS = 81
+PUBLIC_FORK_ACCESSIBLE_REPOSITORIES = 80
+PUBLIC_FORK_INACCESSIBLE_REPOSITORIES = {"66my/FinRL_DeepSeek"}
+PUBLIC_FORK_BRANCH_REFS = 82
+PUBLIC_FORK_TAG_REFS = 0
+PUBLIC_FORK_REF_SEQUENCE_SHA256 = (
+    "112bdbb4e452049c60ddae15675ebfd7cab4229e7868d1e32c84ce41db2671a0"
+)
+PUBLIC_FORK_UNIQUE_HEADS = 10
+PUBLIC_FORK_DIVERGENT_HEADS = 5
+PUBLIC_FORK_DIVERGENT_COMMITS = 69
+PUBLIC_FORK_DIVERGENT_COMMIT_SHA256 = (
+    "983b34960d3f56bc533b50a7d68752c5ea198ff180301ae3ee0132fd23c3eaef"
+)
+PUBLIC_FORK_DIVERGENT_PATHS = 84
+PUBLIC_FORK_DIVERGENT_PATH_SHA256 = (
+    "74db6df9348ed3ad7a680379d21a38c0df974b8f2f5c030b46b1f02a30877eab"
+)
+PUBLIC_FORK_NEW_OBJECT_COUNTS = {"blob": 159, "commit": 69, "tree": 103}
+PUBLIC_FORK_NEW_OBJECT_SHA256 = (
+    "c58ecb155652168f1b12313a4fd72786469bec50223ab89e111cba592eeb2fc6"
+)
+PUBLIC_FORK_STRUCTURED_CHANGED_PATHS = {"FinRL_DeepSeek_backtest.ipynb"}
+PUBLIC_FORK_NOTEBOOK_BLOBS = {
+    "2dceec4c9bde767bc842d02d5e8695503e35c903": {
+        "sha256": "d11241c718ae39d0045f1bae28af7b5e37f3636cc540d9338f9a1e3057221b9d",
+        "cells": 97,
+        "output_objects": 13,
+        "stored_metric_entries": 0,
+        "metric_signature_sha256": (
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ),
+        "classification": "community_initialization_fix_no_metric_output",
+    },
+    "4b74deee497b74321854191f9097392cd7f50baf": {
+        "sha256": "6289b83aeb48890b2dacb4d8f8e540a2f87d8c5d622afca3d80c5bd2f73c3ae7",
+        "cells": 104,
+        "output_objects": 73,
+        "stored_metric_entries": 33,
+        "metric_signature_sha256": (
+            "8071c92d0e71f2fedee64c68ab2900c05f220df87c0edaf4ef78e4e27915da98"
+        ),
+        "classification": "community_released_checkpoint_backtest_rerun",
+    },
+}
+PUBLIC_FORK_HUANG_INTEGRATION_HEAD = "3440f29e02c259490b554e26d7bad5330fb4a0c1"
+PUBLIC_FORK_HUANG_MAIN_HEAD = "662fd9da66d0955620e42de291c5e6abf0bdecd3"
+PUBLIC_FORK_HEMANG_HEAD = "4b34d5fef93fb09cde54b9e96e330fd733459173"
+PUBLIC_FORK_FOVI_HEAD = "7bcd8b4d12ec63d08192acb1c9eb2a652a2e7a0d"
+PUBLIC_FORK_AI4FINANCE_HEAD = "c10455cae49c8a43bbfab602b4671eefce422ff4"
 
 METRICS = ("Information Ratio", "CVaR", "Rachev Ratio")
 TABLES = {
@@ -98,6 +155,40 @@ NOTEBOOK_CELL_FOR_TABLE = {
     "Table 1 main 100-epoch comparison": "cell80",
     "Table 2 PPO infusion": "cell81",
     "Table 3 CPPO infusion": "cell80",
+}
+
+COMMUNITY_NOTEBOOK_BLOB = "4b74deee497b74321854191f9097392cd7f50baf"
+COMMUNITY_NOTEBOOK_RESULTS = {
+    "cell87": {
+        "PPO 100 epochs": (0.0097, -0.0385, 1.0739),
+        "CPPO 100 epochs": (-0.0267, -0.0446, 1.0565),
+        "PPO-DeepSeek 100 epochs": (-0.0104, -0.0371, 1.0370),
+        "CPPO-DeepSeek 100 epochs": (-0.0000, -0.0424, 0.9751),
+    },
+    "cell88": {
+        "PPO": (0.0097, -0.0385, 1.0739),
+        "PPO-DeepSeek 10%": (-0.0104, -0.0371, 1.0370),
+        "PPO-DeepSeek 1%": (-0.0219, -0.0401, 1.0300),
+        "PPO-DeepSeek 0.1%": (-0.0050, -0.0379, 0.9219),
+    },
+}
+COMMUNITY_NOTEBOOK_CELL_FOR_TABLE = {
+    "Table 1 main 100-epoch comparison": "cell87",
+    "Table 2 PPO infusion": "cell88",
+    "Table 3 CPPO infusion": "cell87",
+}
+COMMUNITY_NOTEBOOK_METHOD_FOR_TABLE = {
+    "Table 1 main 100-epoch comparison": {
+        "PPO": "PPO 100 epochs",
+        "CPPO": "CPPO 100 epochs",
+        "PPO-DeepSeek 10%": "PPO-DeepSeek 100 epochs",
+        "CPPO-DeepSeek 10%": "CPPO-DeepSeek 100 epochs",
+    },
+    "Table 2 PPO infusion": {},
+    "Table 3 CPPO infusion": {
+        "CPPO": "CPPO 100 epochs",
+        "CPPO-DeepSeek 10%": "CPPO-DeepSeek 100 epochs",
+    },
 }
 
 FIGURES = {
@@ -161,6 +252,34 @@ def run_git(source_root: Path, *args: str, binary: bool = False) -> Any:
         text=not binary,
     )
     return proc.stdout
+
+
+def git_zpaths(source_root: Path, *args: str) -> list[str]:
+    raw = run_git(source_root, *args, binary=True)
+    return [item.decode("utf-8") for item in raw.split(b"\0") if item]
+
+
+def git_show_text(source_root: Path, revision: str, path: str) -> str:
+    proc = subprocess.run(
+        ["git", "-C", str(source_root), "show", f"{revision}:{path}"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return proc.stdout if proc.returncode == 0 else ""
+
+
+def notebook_output_text(notebook: Mapping[str, Any]) -> str:
+    fragments: list[str] = []
+    for cell in notebook.get("cells", []):
+        for output in cell.get("outputs", []):
+            if "text" in output:
+                value = output["text"]
+                fragments.append("".join(value) if isinstance(value, list) else str(value))
+            for mime, value in output.get("data", {}).items():
+                if mime.startswith("text/"):
+                    fragments.append("".join(value) if isinstance(value, list) else str(value))
+    return "\n".join(fragments)
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
@@ -267,6 +386,65 @@ def notebook_stale_output_rows() -> list[dict[str, Any]]:
                     "status": "same_series_different_stored_output",
                 }
             )
+    return rows
+
+
+def community_notebook_conformance_rows() -> list[dict[str, Any]]:
+    """Map the post-paper community rerun to every paper table cell.
+
+    The fork runs the authors' released checkpoints rather than retraining the
+    paper systems.  Its stored metrics are adverse correspondence evidence, not
+    an independent native reproduction and never receive paper-result credit.
+    """
+
+    rows: list[dict[str, Any]] = []
+    for table, methods in TABLES.items():
+        cell = COMMUNITY_NOTEBOOK_CELL_FOR_TABLE[table]
+        outputs = COMMUNITY_NOTEBOOK_RESULTS[cell]
+        aliases = COMMUNITY_NOTEBOOK_METHOD_FOR_TABLE[table]
+        for method, paper_values in methods.items():
+            community_method = aliases.get(method, method)
+            community_values = outputs.get(community_method)
+            for i, (metric, paper_value) in enumerate(zip(METRICS, paper_values)):
+                community_value = "" if community_values is None else community_values[i]
+                match = community_value != "" and (
+                    f"{float(community_value):.4f}" == f"{paper_value:.4f}"
+                )
+                rows.append(
+                    {
+                        "paper_table": table,
+                        "community_notebook_cell": cell,
+                        "paper_method": method,
+                        "community_method_label": (
+                            community_method if community_values is not None else ""
+                        ),
+                        "metric": metric,
+                        "paper_value": f"{paper_value:.4f}",
+                        "community_stored_value": (
+                            "" if community_value == "" else f"{float(community_value):.4f}"
+                        ),
+                        "source_blob": COMMUNITY_NOTEBOOK_BLOB,
+                        "provenance": (
+                            "postpaper_community_backtest_of_author_released_checkpoints"
+                        ),
+                        "status": (
+                            "missing_postpaper_community_stored_output"
+                            if community_value == ""
+                            else "postpaper_community_stored_output_match"
+                            if match
+                            else "postpaper_community_stored_output_mismatch"
+                        ),
+                        "paper_result_credit": False,
+                    }
+                )
+    if len(rows) != 36:
+        raise RuntimeError("FinRL-DeepSeek community table census changed")
+    counts = Counter(row["status"] for row in rows)
+    if counts != {
+        "postpaper_community_stored_output_mismatch": 30,
+        "missing_postpaper_community_stored_output": 6,
+    }:
+        raise RuntimeError("FinRL-DeepSeek community metric correspondence changed")
     return rows
 
 
@@ -433,11 +611,12 @@ def paper_source_inventory(source_root: Path) -> list[dict[str, Any]]:
 def public_source_history(
     source_root: Path, paper_root: Path
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
-    """Audit every object reachable from the repository's discovered public refs.
+    """Audit every object reachable from the pinned official source tip.
 
     Historical author outputs and training logs are evidence of provenance, not
     independent paper-result reproductions.  The function therefore validates
-    the complete public graph and remains fail-closed about result credit.
+    the complete official graph and remains fail-closed about result credit.
+    Fork refs may coexist in the object store but cannot widen this boundary.
     """
 
     discovery_root = source_root / "release-discovery"
@@ -455,14 +634,22 @@ def public_source_history(
     if str(run_git(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
         raise ValueError("public source checkout is shallow")
 
-    commits_raw = run_git(source_root, "rev-list", "--reverse", "--all")
+    commits_raw = run_git(source_root, "rev-list", "--reverse", *OFFICIAL_HISTORY_TIPS)
     commits = str(commits_raw).splitlines()
     if len(commits) != PUBLIC_HISTORY_COMMIT_COUNT:
         raise ValueError("public commit census changed")
     if hashlib.sha256(str(commits_raw).encode("utf-8")).hexdigest() != PUBLIC_HISTORY_COMMIT_SHA256:
         raise ValueError("public commit sequence changed")
 
-    path_lines = str(run_git(source_root, "log", "--all", "--pretty=format:", "--name-only")).splitlines()
+    path_lines = str(
+        run_git(
+            source_root,
+            "log",
+            "--pretty=format:",
+            "--name-only",
+            *OFFICIAL_HISTORY_TIPS,
+        )
+    ).splitlines()
     historical_paths = sorted({line for line in path_lines if line})
     path_payload = ("\n".join(historical_paths) + "\n").encode("utf-8")
     if len(historical_paths) != PUBLIC_HISTORY_PATH_COUNT:
@@ -470,7 +657,9 @@ def public_source_history(
     if hashlib.sha256(path_payload).hexdigest() != PUBLIC_HISTORY_PATH_SHA256:
         raise ValueError("public historical path inventory changed")
 
-    object_lines = str(run_git(source_root, "rev-list", "--objects", "--all")).splitlines()
+    object_lines = str(
+        run_git(source_root, "rev-list", "--objects", *OFFICIAL_HISTORY_TIPS)
+    ).splitlines()
     object_ids = [line.split(" ", 1)[0] for line in object_lines]
     object_proc = subprocess.run(
         ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
@@ -651,6 +840,8 @@ def public_source_history(
         raise ValueError("historical training log now contains result metrics")
 
     summary = {
+        "official_history_tips": list(OFFICIAL_HISTORY_TIPS),
+        "fork_refs_excluded_from_official_history": True,
         "discovered_public_branches": [{"name": "main", "head": CURRENT_COMMIT}],
         "discovered_public_tags": [],
         "discovered_public_releases": [],
@@ -678,6 +869,616 @@ def public_source_history(
         "paper_result_credit": False,
     }
     return commit_rows, notebook_rows, log_rows, summary
+
+
+def public_fork_audit(source_root: Path, snapshot_path: Path) -> dict[str, Any]:
+    """Exhaust every accessible public fork ref while preserving provenance.
+
+    A post-paper community notebook can contradict displayed values without
+    becoming an author result or a native retraining replication.  Later code
+    adaptations are audited for artifacts and protocol drift separately.
+    """
+
+    if sha256(snapshot_path) != PUBLIC_FORK_SNAPSHOT_SHA256:
+        raise RuntimeError("FinRL-DeepSeek public-fork snapshot changed")
+    snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+    if len(snapshot) != PUBLIC_FORK_REPOSITORY_LISTINGS:
+        raise RuntimeError("FinRL-DeepSeek public-fork REST listing count changed")
+
+    repository_rows: list[dict[str, Any]] = []
+    ref_rows: list[dict[str, Any]] = []
+    refs_by_head: dict[str, list[tuple[str, str, str]]] = {}
+    inaccessible: set[str] = set()
+    for item in snapshot:
+        repository = item["full_name"]
+        has_error = bool(item.get("ref_error"))
+        if has_error:
+            inaccessible.add(repository)
+            if item["branches"] or item["tags"]:
+                raise RuntimeError("inaccessible FinRL-DeepSeek fork unexpectedly has refs")
+        repository_rows.append(
+            {
+                "repository": repository,
+                "url": item["clone_url"].removesuffix(".git"),
+                "default_branch": item["default_branch"],
+                "created_at": item["created_at"],
+                "pushed_at": item["pushed_at"],
+                "accessible_via_git": not has_error,
+                "branch_refs": len(item["branches"]),
+                "tag_refs": len(item["tags"]),
+                "access_classification": (
+                    "accessible_refs_exhausted"
+                    if not has_error
+                    else "stale_rest_listing_repository_now_404_or_inaccessible"
+                ),
+            }
+        )
+        for kind, refs in (("branch", item["branches"]), ("tag", item["tags"])):
+            for name, head in refs.items():
+                refs_by_head.setdefault(head, []).append((repository, kind, name))
+                ref_rows.append(
+                    {
+                        "repository": repository,
+                        "url": item["clone_url"].removesuffix(".git"),
+                        "ref_kind": kind,
+                        "ref_name": name,
+                        "head_commit": head,
+                    }
+                )
+    repository_rows.sort(key=lambda row: str(row["repository"]).casefold())
+    ref_rows.sort(
+        key=lambda row: (
+            str(row["repository"]).casefold(),
+            str(row["ref_kind"]),
+            str(row["ref_name"]),
+        )
+    )
+    if inaccessible != PUBLIC_FORK_INACCESSIBLE_REPOSITORIES:
+        raise RuntimeError("FinRL-DeepSeek inaccessible public-fork set changed")
+    if len(repository_rows) - len(inaccessible) != PUBLIC_FORK_ACCESSIBLE_REPOSITORIES:
+        raise RuntimeError("FinRL-DeepSeek accessible public-fork count changed")
+    ref_counts = Counter(row["ref_kind"] for row in ref_rows)
+    if (
+        ref_counts["branch"],
+        ref_counts["tag"],
+    ) != (PUBLIC_FORK_BRANCH_REFS, PUBLIC_FORK_TAG_REFS):
+        raise RuntimeError("FinRL-DeepSeek public-fork ref counts changed")
+    ref_payload = (
+        "\n".join(
+            sorted(
+                "\t".join(
+                    (
+                        str(row["repository"]),
+                        str(row["ref_kind"]),
+                        str(row["ref_name"]),
+                        str(row["head_commit"]),
+                    )
+                )
+                for row in ref_rows
+            )
+        )
+        + "\n"
+    ).encode("utf-8")
+    if hashlib.sha256(ref_payload).hexdigest() != PUBLIC_FORK_REF_SEQUENCE_SHA256:
+        raise RuntimeError("FinRL-DeepSeek public-fork ref sequence changed")
+
+    official_commits = set(
+        str(run_git(source_root, "rev-list", *OFFICIAL_HISTORY_TIPS)).splitlines()
+    )
+    if len(official_commits) != PUBLIC_HISTORY_COMMIT_COUNT:
+        raise RuntimeError("FinRL-DeepSeek explicit official history changed")
+    for head in refs_by_head:
+        present = subprocess.run(
+            ["git", "-C", str(source_root), "cat-file", "-e", f"{head}^{{commit}}"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ).returncode
+        if present:
+            raise RuntimeError(f"FinRL-DeepSeek public-fork object missing: {head}")
+    if len(refs_by_head) != PUBLIC_FORK_UNIQUE_HEADS:
+        raise RuntimeError("FinRL-DeepSeek public-fork unique-head count changed")
+    divergent_heads = sorted(set(refs_by_head) - official_commits)
+    if len(divergent_heads) != PUBLIC_FORK_DIVERGENT_HEADS:
+        raise RuntimeError("FinRL-DeepSeek divergent public-fork head count changed")
+
+    divergent_commits_raw = str(
+        run_git(
+            source_root,
+            "rev-list",
+            "--reverse",
+            *divergent_heads,
+            "--not",
+            *OFFICIAL_HISTORY_TIPS,
+        )
+    )
+    divergent_commits = divergent_commits_raw.splitlines()
+    if len(divergent_commits) != PUBLIC_FORK_DIVERGENT_COMMITS:
+        raise RuntimeError("FinRL-DeepSeek divergent public-fork commit count changed")
+    if (
+        hashlib.sha256(divergent_commits_raw.encode("utf-8")).hexdigest()
+        != PUBLIC_FORK_DIVERGENT_COMMIT_SHA256
+    ):
+        raise RuntimeError("FinRL-DeepSeek divergent public-fork commit sequence changed")
+
+    commit_paths: dict[str, list[str]] = {}
+    changed_paths: set[str] = set()
+    for commit in divergent_commits:
+        paths = sorted(
+            set(
+                git_zpaths(
+                    source_root,
+                    "diff-tree",
+                    "--root",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    "-z",
+                    commit,
+                )
+            )
+        )
+        commit_paths[commit] = paths
+        changed_paths.update(paths)
+    changed_path_payload = ("\n".join(sorted(changed_paths)) + "\n").encode("utf-8")
+    if len(changed_paths) != PUBLIC_FORK_DIVERGENT_PATHS:
+        raise RuntimeError("FinRL-DeepSeek divergent public-fork path count changed")
+    if (
+        hashlib.sha256(changed_path_payload).hexdigest()
+        != PUBLIC_FORK_DIVERGENT_PATH_SHA256
+    ):
+        raise RuntimeError("FinRL-DeepSeek divergent public-fork path inventory changed")
+
+    def object_map(tips: Sequence[str]) -> dict[str, set[str]]:
+        mapping: dict[str, set[str]] = {}
+        for line in str(run_git(source_root, "rev-list", "--objects", *tips)).splitlines():
+            parts = line.split(" ", 1)
+            mapping.setdefault(parts[0], set())
+            if len(parts) == 2:
+                mapping[parts[0]].add(parts[1])
+        return mapping
+
+    official_objects = object_map(OFFICIAL_HISTORY_TIPS)
+    fork_objects = object_map(divergent_heads)
+    new_object_ids = sorted(set(fork_objects) - set(official_objects))
+    new_object_payload = ("\n".join(new_object_ids) + "\n").encode("utf-8")
+    if hashlib.sha256(new_object_payload).hexdigest() != PUBLIC_FORK_NEW_OBJECT_SHA256:
+        raise RuntimeError("FinRL-DeepSeek fork unique-object inventory changed")
+    object_proc = subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+        input="\n".join(new_object_ids) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    object_types = object_proc.stdout.splitlines()
+    new_object_counts = dict(Counter(object_types))
+    if new_object_counts != PUBLIC_FORK_NEW_OBJECT_COUNTS:
+        raise RuntimeError("FinRL-DeepSeek fork unique-object type census changed")
+    new_blob_ids = {
+        object_id
+        for object_id, object_type in zip(new_object_ids, object_types)
+        if object_type == "blob"
+    }
+    new_blob_paths = {
+        path
+        for object_id in new_blob_ids
+        for path in fork_objects.get(object_id, set())
+    }
+    structured_suffixes = {
+        ".ckpt",
+        ".csv",
+        ".h5",
+        ".hdf5",
+        ".ipynb",
+        ".json",
+        ".jsonl",
+        ".log",
+        ".npy",
+        ".npz",
+        ".parquet",
+        ".pickle",
+        ".pkl",
+        ".pt",
+        ".pth",
+        ".safetensors",
+    }
+    structured_changed_paths = {
+        path for path in new_blob_paths if Path(path).suffix.casefold() in structured_suffixes
+    }
+    if structured_changed_paths != PUBLIC_FORK_STRUCTURED_CHANGED_PATHS:
+        raise RuntimeError("FinRL-DeepSeek fork structured-path surface changed")
+
+    path_new_blobs: dict[str, set[str]] = {path: set() for path in changed_paths}
+    first_commit_for_blob: dict[str, str] = {}
+    for commit in divergent_commits:
+        raw_tree = run_git(source_root, "ls-tree", "-r", "-z", commit, binary=True)
+        for raw_line in raw_tree.split(b"\0"):
+            if not raw_line:
+                continue
+            object_meta, raw_path = raw_line.split(b"\t", 1)
+            _mode, object_type, object_id = object_meta.decode("ascii").split()
+            path = raw_path.decode("utf-8")
+            if object_type == "blob" and object_id in new_blob_ids:
+                first_commit_for_blob.setdefault(object_id, commit)
+                if path in path_new_blobs:
+                    path_new_blobs[path].add(object_id)
+
+    notebook_blob_ids = {
+        object_id
+        for object_id in new_blob_ids
+        if any(path.endswith(".ipynb") for path in fork_objects.get(object_id, set()))
+    }
+    if notebook_blob_ids != set(PUBLIC_FORK_NOTEBOOK_BLOBS):
+        raise RuntimeError("FinRL-DeepSeek public-fork notebook blob census changed")
+    metric_pattern = re.compile(
+        r"(Information Ratio|CVaR(?: \(5%\))?|Rachev Ratio):\s*(-?\d+\.\d+)"
+    )
+    paper_tokens = {
+        f"{value:.4f}"
+        for methods in TABLES.values()
+        for values in methods.values()
+        for value in values
+    }
+    notebook_rows: list[dict[str, Any]] = []
+    for object_id in sorted(notebook_blob_ids):
+        expected = PUBLIC_FORK_NOTEBOOK_BLOBS[object_id]
+        raw = run_git(source_root, "cat-file", "-p", object_id, binary=True)
+        if hashlib.sha256(raw).hexdigest() != expected["sha256"]:
+            raise RuntimeError("FinRL-DeepSeek fork notebook content changed")
+        notebook = json.loads(raw)
+        outputs = notebook_output_text(notebook)
+        pairs = metric_pattern.findall(outputs)
+        pair_payload = "\n".join("%s:%s" % pair for pair in pairs).encode("utf-8")
+        matched_tokens = sorted(token for token in paper_tokens if token in outputs)
+        output_objects = sum(len(cell.get("outputs", [])) for cell in notebook["cells"])
+        if (
+            len(notebook["cells"]) != expected["cells"]
+            or output_objects != expected["output_objects"]
+            or len(pairs) != expected["stored_metric_entries"]
+            or hashlib.sha256(pair_payload).hexdigest()
+            != expected["metric_signature_sha256"]
+            or matched_tokens
+        ):
+            raise RuntimeError("FinRL-DeepSeek fork notebook evidence changed")
+        source_text = "\n".join(
+            "".join(cell.get("source", [])) for cell in notebook["cells"]
+        )
+        if object_id == COMMUNITY_NOTEBOOK_BLOB:
+            required_markers = (
+                "benstaf/Trading_agents",
+                "/FinRL_DeepSeek/content/FinRL_LLM/trained_models/",
+                '.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))',
+                'returns_strategy.align(returns_benchmark, join="inner")',
+            )
+            if not all(marker in source_text for marker in required_markers):
+                raise RuntimeError("community checkpoint rerun protocol changed")
+        else:
+            required_markers = (
+                'load_dataset(path="benstaf/nasdaq_2013_2023"',
+                "trade.fillna({'llm_sentiment': 0}, inplace=True)",
+            )
+            if not all(marker in source_text for marker in required_markers):
+                raise RuntimeError("community initialization-only notebook changed")
+        notebook_rows.append(
+            {
+                "blob": object_id,
+                "path": "FinRL_DeepSeek_backtest.ipynb",
+                "first_divergent_commit": first_commit_for_blob[object_id],
+                "sha256": expected["sha256"],
+                "python_version": notebook.get("metadata", {})
+                .get("language_info", {})
+                .get("version", ""),
+                "notebook_cells": len(notebook["cells"]),
+                "stored_output_objects": output_objects,
+                "stored_metric_entries": len(pairs),
+                "normalized_metric_output_sha256": hashlib.sha256(pair_payload).hexdigest(),
+                "paper_numeric_tokens_matched": 0,
+                "loads_author_released_checkpoint_snapshot": (
+                    "benstaf/Trading_agents" in source_text
+                ),
+                "classification": expected["classification"],
+                "paper_result_credit": False,
+            }
+        )
+
+    head_classification = {
+        PUBLIC_FORK_HUANG_INTEGRATION_HEAD: (
+            "postpaper_protocol_adaptation_no_committed_new_result_or_checkpoint"
+        ),
+        PUBLIC_FORK_HUANG_MAIN_HEAD: (
+            "postpaper_protocol_adaptation_no_committed_new_result_or_checkpoint"
+        ),
+        PUBLIC_FORK_HEMANG_HEAD: "community_released_checkpoint_backtest_rerun",
+        PUBLIC_FORK_FOVI_HEAD: "community_initialization_fix_no_metric_output",
+        PUBLIC_FORK_AI4FINANCE_HEAD: (
+            "finrl_ecosystem_readme_only_no_new_result_artifact"
+        ),
+    }
+    head_rows: list[dict[str, Any]] = []
+    for head in sorted(refs_by_head):
+        metadata = str(
+            run_git(
+                source_root,
+                "show",
+                "-s",
+                "--format=%aI%x1f%an%x1f%ae%x1f%s",
+                head,
+            )
+        ).rstrip("\n").split("\x1f", 3)
+        if len(metadata) != 4:
+            raise RuntimeError("FinRL-DeepSeek fork head metadata parse changed")
+        unique_for_head = str(
+            run_git(source_root, "rev-list", head, "--not", *OFFICIAL_HISTORY_TIPS)
+        ).splitlines()
+        raw_tree = run_git(source_root, "ls-tree", "-r", "-z", head, binary=True)
+        tree_paths: list[str] = []
+        tree_blob_ids: set[str] = set()
+        new_paths_for_head: set[str] = set()
+        for raw_line in raw_tree.split(b"\0"):
+            if not raw_line:
+                continue
+            object_meta, raw_path = raw_line.split(b"\t", 1)
+            _mode, object_type, object_id = object_meta.decode("ascii").split()
+            path = raw_path.decode("utf-8")
+            tree_paths.append(path)
+            if object_type == "blob":
+                tree_blob_ids.add(object_id)
+                if object_id in new_blob_ids:
+                    new_paths_for_head.add(path)
+        relation = "official_history_reachable" if head in official_commits else "divergent"
+        classification = (
+            "official_history_copy" if relation == "official_history_reachable" else head_classification[head]
+        )
+        refs = sorted(refs_by_head[head])
+        head_rows.append(
+            {
+                "head_commit": head,
+                "repositories_and_refs": ";".join(
+                    f"{repository}:{kind}:{name}" for repository, kind, name in refs
+                ),
+                "ref_count": len(refs),
+                "authored_at": metadata[0],
+                "author_name": metadata[1],
+                "author_email": metadata[2],
+                "subject": metadata[3],
+                "relation_to_official_history": relation,
+                "unique_commits_beyond_official_history": len(unique_for_head),
+                "tracked_paths": len(tree_paths),
+                "new_checkpoint_paths": sum(
+                    Path(path).suffix.casefold() in {".ckpt", ".pt", ".pth", ".safetensors"}
+                    for path in new_paths_for_head
+                ),
+                "new_dataset_paths": sum(
+                    Path(path).suffix.casefold() in {".csv", ".parquet"}
+                    for path in new_paths_for_head
+                ),
+                "new_training_log_paths": sum(
+                    Path(path).suffix.casefold() == ".log" for path in new_paths_for_head
+                ),
+                "new_metric_output_notebook_blobs": sum(
+                    blob == COMMUNITY_NOTEBOOK_BLOB for blob in tree_blob_ids
+                ),
+                "classification": classification,
+                "paper_result_credit": False,
+            }
+        )
+    if {row["head_commit"] for row in head_rows if row["relation_to_official_history"] == "divergent"} != set(head_classification):
+        raise RuntimeError("FinRL-DeepSeek divergent head classification changed")
+    if any(
+        row["new_checkpoint_paths"]
+        or row["new_dataset_paths"]
+        or row["new_training_log_paths"]
+        for row in head_rows
+    ):
+        raise RuntimeError("FinRL-DeepSeek fork gained an unreviewed data/training artifact")
+    if sum(row["new_metric_output_notebook_blobs"] for row in head_rows) != 1:
+        raise RuntimeError("FinRL-DeepSeek community output head census changed")
+
+    huang_paths = sorted(
+        str(
+            run_git(
+                source_root,
+                "diff",
+                "--name-only",
+                f"{CURRENT_COMMIT}...{PUBLIC_FORK_HUANG_INTEGRATION_HEAD}",
+            )
+        ).splitlines()
+    )
+    if len(huang_paths) != 82 or any(not path.endswith(".py") for path in huang_paths):
+        raise RuntimeError("FinRL-DeepSeek post-paper adaptation path surface changed")
+    huang_compile = compile_revision_paths(
+        source_root, PUBLIC_FORK_HUANG_INTEGRATION_HEAD, huang_paths
+    )
+    if huang_compile["compiled"] != 82 or huang_compile["failures"]:
+        raise RuntimeError("FinRL-DeepSeek post-paper adaptation no longer syntax-compiles")
+    integration_tree_paths = set(
+        git_zpaths(
+            source_root,
+            "ls-tree",
+            "-r",
+            "--name-only",
+            "-z",
+            PUBLIC_FORK_HUANG_INTEGRATION_HEAD,
+        )
+    )
+    protocol_sources = {
+        "cppo_core": git_show_text(
+            source_root, PUBLIC_FORK_HUANG_INTEGRATION_HEAD, "cppo_core.py"
+        ),
+        "trainer": git_show_text(
+            source_root,
+            PUBLIC_FORK_HUANG_INTEGRATION_HEAD,
+            "train_cppo_llm_risk_standalone.py",
+        ),
+        "optimizer": git_show_text(
+            source_root, PUBLIC_FORK_HUANG_INTEGRATION_HEAD, "auto_optimize.py"
+        ),
+        "clickhouse": git_show_text(
+            source_root, PUBLIC_FORK_HUANG_INTEGRATION_HEAD, "clickhouse_data_adapter.py"
+        ),
+        "config": git_show_text(
+            source_root, PUBLIC_FORK_HUANG_INTEGRATION_HEAD, "config_loader.py"
+        ),
+    }
+    required_protocol_markers = {
+        "cppo_core": ("reward_type='pnl', dsr_eta=0.01", "ir_bear_2022"),
+        "trainer": (
+            "Differential Sharpe Ratio",
+            "from pkg.params import get_namespace",
+            "from pkg.mlops import log_run",
+        ),
+        "optimizer": ("from ray import tune", "OptunaSearch", "MLflow"),
+        "clickhouse": ("from pkg.database import repository as db",),
+        "config": ("from utils.env_manager import EnvManager",),
+    }
+    if any(
+        not all(marker in protocol_sources[name] for marker in markers)
+        for name, markers in required_protocol_markers.items()
+    ):
+        raise RuntimeError("FinRL-DeepSeek post-paper protocol markers changed")
+    missing_local_runtime_paths = {
+        "pkg",
+        "utils/env_manager.py",
+        "backtest_finrl_deepseek.py",
+    }
+    if any(
+        path == "pkg" or path.startswith("pkg/") for path in integration_tree_paths
+    ) or not missing_local_runtime_paths.isdisjoint(integration_tree_paths):
+        raise RuntimeError("FinRL-DeepSeek post-paper runtime dependency boundary changed")
+
+    commit_rows: list[dict[str, Any]] = []
+    for sequence, commit in enumerate(divergent_commits, start=1):
+        metadata = str(
+            run_git(
+                source_root,
+                "show",
+                "-s",
+                "--format=%aI%x1f%an%x1f%ae%x1f%s",
+                commit,
+            )
+        ).rstrip("\n").split("\x1f", 3)
+        paths = commit_paths[commit]
+        introduced_metric_blob = False
+        for path in paths:
+            if path != "FinRL_DeepSeek_backtest.ipynb":
+                continue
+            tree_line = str(run_git(source_root, "ls-tree", commit, "--", path)).strip()
+            if tree_line:
+                object_id = tree_line.split()[2]
+                introduced_metric_blob = object_id == COMMUNITY_NOTEBOOK_BLOB
+        commit_rows.append(
+            {
+                "sequence": sequence,
+                "commit": commit,
+                "authored_at": metadata[0],
+                "author_name": metadata[1],
+                "author_email": metadata[2],
+                "subject": metadata[3],
+                "changed_paths": len(paths),
+                "changed_path_names": ";".join(paths),
+                "introduced_community_metric_notebook_blob": introduced_metric_blob,
+                "paper_result_credit": False,
+            }
+        )
+    if sum(row["introduced_community_metric_notebook_blob"] for row in commit_rows) != 1:
+        raise RuntimeError("FinRL-DeepSeek community metric commit lineage changed")
+
+    path_rows: list[dict[str, Any]] = []
+    for path in sorted(changed_paths):
+        if path.endswith(".ipynb"):
+            classification = "community_backtest_notebook"
+        elif path == "README.md":
+            classification = "documentation"
+        elif path.startswith("spinup/"):
+            classification = "bundled_upstream_training_library"
+        else:
+            classification = "postpaper_training_or_infrastructure_source"
+        path_rows.append(
+            {
+                "path": path,
+                "extension": Path(path).suffix.casefold(),
+                "new_blob_versions": len(path_new_blobs[path]),
+                "classification": classification,
+                "new_checkpoint_or_dataset_or_training_log": (
+                    Path(path).suffix.casefold()
+                    in {".ckpt", ".csv", ".log", ".parquet", ".pt", ".pth", ".safetensors"}
+                ),
+                "community_metric_output_notebook": (
+                    COMMUNITY_NOTEBOOK_BLOB in path_new_blobs[path]
+                ),
+                "native_paper_result_artifact": False,
+                "paper_result_credit": False,
+            }
+        )
+
+    for row in ref_rows:
+        head = str(row["head_commit"])
+        row["relation_to_official_history"] = (
+            "official_history_reachable" if head in official_commits else "divergent"
+        )
+        row["paper_result_credit"] = False
+
+    community_rows = community_notebook_conformance_rows()
+    community_counts = Counter(row["status"] for row in community_rows)
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "snapshot_sha256": PUBLIC_FORK_SNAPSHOT_SHA256,
+        "github_rest_repository_listings": len(repository_rows),
+        "accessible_public_forks": len(repository_rows) - len(inaccessible),
+        "stale_or_inaccessible_rest_listings": len(inaccessible),
+        "stale_or_inaccessible_repositories": sorted(inaccessible),
+        "accessible_branch_refs": sum(row["ref_kind"] == "branch" for row in ref_rows),
+        "tag_refs": sum(row["ref_kind"] == "tag" for row in ref_rows),
+        "all_refs_audited": len(ref_rows),
+        "unique_heads": len(head_rows),
+        "official_history_reachable_unique_heads": sum(
+            row["relation_to_official_history"] == "official_history_reachable"
+            for row in head_rows
+        ),
+        "divergent_unique_heads": len(divergent_heads),
+        "divergent_unique_commits": len(divergent_commits),
+        "divergent_changed_paths": len(changed_paths),
+        "divergent_new_object_counts": new_object_counts,
+        "divergent_new_blob_paths": len(new_blob_paths),
+        "new_notebook_blob_versions": len(notebook_rows),
+        "community_checkpoint_rerun_notebooks_with_metrics": 1,
+        "community_stored_metric_entries": 33,
+        "community_table_cells_corresponded": (
+            len(community_rows)
+            - community_counts["missing_postpaper_community_stored_output"]
+        ),
+        "community_table_cells_matching_paper": community_counts[
+            "postpaper_community_stored_output_match"
+        ],
+        "community_table_cells_mismatching_paper": community_counts[
+            "postpaper_community_stored_output_mismatch"
+        ],
+        "community_table_cells_missing": community_counts[
+            "missing_postpaper_community_stored_output"
+        ],
+        "new_checkpoint_paths": 0,
+        "new_dataset_paths": 0,
+        "new_training_log_paths": 0,
+        "postpaper_adaptation_changed_python_paths": len(huang_paths),
+        "postpaper_adaptation_python_files_compiled": huang_compile["compiled"],
+        "postpaper_adaptation_changes_native_objective_or_protocol": True,
+        "postpaper_adaptation_requires_unreleased_local_pkg_or_runtime_services": True,
+        "postpaper_adaptation_committed_result_or_checkpoint_artifacts": 0,
+        "complete_paper_result_rows_found": 0,
+        "independently_regenerated_native_training_runs": 0,
+        "native_paper_result_artifacts_found": 0,
+        "paper_result_credit": False,
+    }
+    return {
+        "repositories": repository_rows,
+        "refs": ref_rows,
+        "heads": head_rows,
+        "commits": commit_rows,
+        "paths": path_rows,
+        "notebooks": notebook_rows,
+        "community_table_conformance": community_rows,
+        "summary": summary,
+    }
 
 
 def hf_inventory(api_path: Path, tree_path: Path, kind: str) -> list[dict[str, Any]]:
@@ -710,12 +1511,53 @@ def compile_revision(source_root: Path, revision: str) -> dict[str, Any]:
         failures = []
         for path in python_files:
             try:
-                py_compile.compile(str(path), doraise=True)
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", SyntaxWarning)
+                    warnings.simplefilter("ignore", DeprecationWarning)
+                    py_compile.compile(str(path), doraise=True)
             except Exception as exc:
                 failures.append(
                     {"path": path.name, "error": str(exc).replace(str(path), path.name)}
                 )
     return {"revision": revision, "python_files": len(python_files), "compiled": len(python_files) - len(failures), "failures": failures}
+
+
+def compile_revision_paths(
+    source_root: Path, revision: str, paths: Sequence[str]
+) -> dict[str, Any]:
+    python_paths = sorted(path for path in paths if path.endswith(".py"))
+    if len(python_paths) != len(paths):
+        raise ValueError("fork compilation path set contains non-Python files")
+    with tempfile.TemporaryDirectory() as tmp:
+        archive = run_git(
+            source_root,
+            "archive",
+            revision,
+            "--",
+            *python_paths,
+            binary=True,
+        )
+        tar_path = Path(tmp) / "source.tar"
+        tar_path.write_bytes(archive)
+        subprocess.run(["tar", "-xf", str(tar_path), "-C", tmp], check=True)
+        failures = []
+        for relative in python_paths:
+            path = Path(tmp) / relative
+            try:
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", SyntaxWarning)
+                    warnings.simplefilter("ignore", DeprecationWarning)
+                    py_compile.compile(str(path), doraise=True)
+            except Exception as exc:
+                failures.append(
+                    {"path": relative, "error": str(exc).replace(str(path), relative)}
+                )
+    return {
+        "revision": revision,
+        "python_files": len(python_paths),
+        "compiled": len(python_paths) - len(failures),
+        "failures": failures,
+    }
 
 
 def validate_native_inputs(artifacts_root: Path) -> dict[str, Any]:
@@ -757,6 +1599,7 @@ def build_audit(
     source_root: Path,
     paper_root: Path,
     artifacts_root: Path,
+    fork_snapshot_path: Path,
     output_dir: Path,
 ) -> dict[str, Any]:
     if str(run_git(source_root, "rev-parse", "HEAD")).strip() != CURRENT_COMMIT:
@@ -793,6 +1636,8 @@ def build_audit(
     history_commits, historical_notebooks, historical_logs, history_summary = public_source_history(
         source_root, paper_root
     )
+    forks = public_fork_audit(source_root, fork_snapshot_path)
+    fork_summary = forks["summary"]
     compile_pre = compile_revision(source_root, PRE_SUBMISSION_COMMIT)
     compile_current = compile_revision(source_root, CURRENT_COMMIT)
 
@@ -814,6 +1659,15 @@ def build_audit(
         "released_source_history_inventory.csv": history_commits,
         "historical_notebook_inventory.csv": historical_notebooks,
         "historical_training_log_inventory.csv": historical_logs,
+        "public_fork_repository_access_inventory.csv": forks["repositories"],
+        "public_fork_ref_snapshot.csv": forks["refs"],
+        "public_fork_unique_head_inventory.csv": forks["heads"],
+        "public_fork_divergent_commit_inventory.csv": forks["commits"],
+        "public_fork_divergent_path_inventory.csv": forks["paths"],
+        "public_fork_notebook_inventory.csv": forks["notebooks"],
+        "public_fork_notebook_table_conformance.csv": forks[
+            "community_table_conformance"
+        ],
     }
     for name, rows in outputs.items():
         write_csv(output_dir / name, rows)
@@ -821,6 +1675,9 @@ def build_audit(
     (output_dir / "source_compilation.json").write_text(json.dumps({"pre_submission": compile_pre, "current": compile_current}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (output_dir / "public_source_history.json").write_text(
         json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
 
     notebook_counts = Counter(row["status"] for row in notebook)
@@ -867,6 +1724,55 @@ def build_audit(
         "historical_training_logs_with_evaluation_metrics": history_summary["historical_training_logs_with_evaluation_metrics"],
         "historical_logs_with_exact_released_checkpoint_name": history_summary["historical_logs_with_exact_released_checkpoint_name"],
         "paper_relevant_checkpoints_with_exact_training_log_name": history_summary["paper_relevant_checkpoints_with_exact_training_log_name"],
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_fork_rest_repository_listings": fork_summary[
+            "github_rest_repository_listings"
+        ],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_stale_or_inaccessible_rest_listings": fork_summary[
+            "stale_or_inaccessible_rest_listings"
+        ],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_tag_refs_audited": fork_summary["tag_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_divergent_commits_audited": fork_summary[
+            "divergent_unique_commits"
+        ],
+        "public_fork_divergent_paths_audited": fork_summary[
+            "divergent_changed_paths"
+        ],
+        "public_fork_new_blobs_audited": fork_summary[
+            "divergent_new_object_counts"
+        ]["blob"],
+        "public_fork_notebook_blob_versions_audited": fork_summary[
+            "new_notebook_blob_versions"
+        ],
+        "public_fork_community_stored_metric_entries": fork_summary[
+            "community_stored_metric_entries"
+        ],
+        "public_fork_community_table_cells_corresponded": fork_summary[
+            "community_table_cells_corresponded"
+        ],
+        "public_fork_community_table_cells_matching_paper": fork_summary[
+            "community_table_cells_matching_paper"
+        ],
+        "public_fork_community_table_cells_mismatching_paper": fork_summary[
+            "community_table_cells_mismatching_paper"
+        ],
+        "public_fork_community_table_cells_missing": fork_summary[
+            "community_table_cells_missing"
+        ],
+        "public_fork_postpaper_adaptation_python_files_compiled": fork_summary[
+            "postpaper_adaptation_python_files_compiled"
+        ],
+        "public_fork_new_checkpoint_paths": fork_summary["new_checkpoint_paths"],
+        "public_fork_new_dataset_paths": fork_summary["new_dataset_paths"],
+        "public_fork_new_training_log_paths": fork_summary["new_training_log_paths"],
+        "public_fork_native_paper_result_artifacts_found": fork_summary[
+            "native_paper_result_artifacts_found"
+        ],
+        "public_fork_paper_result_credit": False,
         "pre_submission_python_files_compiled": compile_pre["compiled"],
         "pre_submission_python_files_total": compile_pre["python_files"],
         "current_python_files_compiled": compile_current["compiled"],
@@ -879,9 +1785,13 @@ def build_audit(
 
 ## Verdict
 
-The release is a substantial and unusually useful component package: the paper-era Hugging Face release contains 15 checkpoints, the dataset release contains frozen train/trade CSVs, the Git repository contains paper-era environments/training logs, and all eight checkpoints relevant to Tables 1--3 load and execute through the authors' environment code. The complete discovered public graph has also been audited: 36 commits, 48 historical paths, 145 reachable objects, no tags or releases, and no unreachable objects. That materially improves reproducibility, but it does not reproduce the paper.
+The release is a substantial and unusually useful component package: the paper-era Hugging Face release contains 15 checkpoints, the dataset release contains frozen train/trade CSVs, the Git repository contains paper-era environments/training logs, and all eight checkpoints relevant to Tables 1--3 load and execute through the authors' environment code. The complete official graph has also been audited behind an explicit provenance boundary: 36 commits, 48 historical paths, 145 reachable objects, no tags or releases, and no unreachable objects. Fork refs cannot widen those author-source claims. That materially improves reproducibility, but it does not reproduce the paper.
 
 The paper contains **36 displayed table cells representing 24 unique measurements**, **32 raster-only return series**, and **4 numeric IR labels in Figure 1**. The released notebook has stored values for {len(notebook) - notebook_counts['missing_stored_output']}/36 table cells, but **0 match the paper**; 9 cells have no stored output. Worse, its two stored evaluations of the same PPO and PPO-DeepSeek 10% series disagree on all six corresponding metrics. Every one of the nine historical notebook blobs—including two malformed revisions—contains the same 24 stored metric entries and none contains a paper table value. Three native protocols (stochastic seeds 0 and 42, plus policy means) executed all eight released checkpoints on hash-pinned released CSVs, but no table value earns paper-result credit. Information Ratio remains uncheckable from frozen inputs because the notebook downloads the benchmark live.
+
+The public-fork census exhausted all **{fork_summary['accessible_public_forks']} accessible repositories, {fork_summary['all_refs_audited']} refs, {fork_summary['unique_heads']} unique heads, {fork_summary['divergent_unique_commits']} divergent commits, {fork_summary['divergent_changed_paths']} changed paths, and {fork_summary['divergent_new_object_counts']['blob']} genuinely new blobs** returned by the pinned listing snapshot; one stale listing was inaccessible. One post-paper community notebook downloads the authors' `benstaf/Trading_agents` checkpoint snapshot, repairs paths/device placement and return alignment, and stores 33 metric entries. It supplies correspondence for {fork_summary['community_table_cells_corresponded']}/36 paper table cells, but **all {fork_summary['community_table_cells_mismatching_paper']} supplied cells disagree at displayed precision** and 6 remain absent. This is adverse community evidence against the released-checkpoint backtest correspondence, not an author result, a retraining replication, or proof that the paper is false.
+
+A later divergent adaptation contributes 82 syntax-valid Python files, including a bundled Spinning Up tree, Differential-Sharpe reward paths, Ray Tune/Optuna optimization, MLflow, Redis/ParamStore, and ClickHouse integration. It commits no new checkpoint, dataset, training log, or metric output; it also depends on `pkg` and `utils.env_manager` code absent from the fork. Because it changes the objective and evaluation protocol and requires uncommitted runtime state, it cannot receive native-paper credit.
 
 ## Decisive fidelity gaps
 
@@ -895,7 +1805,7 @@ The paper contains **36 displayed table cells representing 24 unique measurement
 
 ## Honest proximity
 
-This is close to a runnable **artifact-level reconstruction** of the authors' code path and far better than a paper-only release. It is not a faithful result replication: 0/{len(tables)} displayed table cells, 0/{len(figures)} figure series, and 0/{len(figure_metrics)} raster metric labels are reproduced with defensible paper lineage. `--strict` remains nonzero until the pinned original protocol reproduces every claimed result within declared tolerances.
+This is close to a runnable **artifact-level reconstruction** of the authors' code path and far better than a paper-only release. It is not a faithful result replication: 0/{len(tables)} displayed table cells, 0/{len(figures)} figure series, and 0/{len(figure_metrics)} raster metric labels are reproduced with defensible paper lineage. The community mismatch raises concern but does not convert an unidentifiable native training/evaluation protocol into a falsified claim. `--strict` remains nonzero until the pinned original protocol reproduces every claimed result within declared tolerances.
 """
     (output_dir / "README.md").write_text(report, encoding="utf-8")
     manifest["output_sha256"] = {
@@ -914,6 +1824,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source-root", type=Path, default=Path(os.environ.get("FINRL_DEEPSEEK_SOURCE_ROOT", "/nfs/roberts/scratch/pi_btk22/zc362/finrl_deepseek_source")))
     parser.add_argument("--paper-root", type=Path, default=paper_root)
     parser.add_argument("--artifacts-root", type=Path, default=Path(os.environ.get("FINRL_DEEPSEEK_ARTIFACTS_ROOT", "/nfs/roberts/scratch/pi_btk22/zc362/finrl_deepseek_artifacts")))
+    parser.add_argument(
+        "--fork-snapshot",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "FINRL_DEEPSEEK_FORK_SNAPSHOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/finrl_deepseek_paper/public_fork_snapshot.json",
+            )
+        ),
+    )
     parser.add_argument("--output-dir", type=Path, default=project_root / "paper_runs/paper_replication_audits/finrl_deepseek")
     parser.add_argument("--strict", action="store_true", help="Return nonzero until the full paper is reproduced")
     return parser.parse_args()
@@ -921,7 +1841,13 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    manifest = build_audit(args.source_root, args.paper_root, args.artifacts_root, args.output_dir)
+    manifest = build_audit(
+        args.source_root,
+        args.paper_root,
+        args.artifacts_root,
+        args.fork_snapshot,
+        args.output_dir,
+    )
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return 1 if args.strict and not manifest["full_paper_reproduced"] else 0
 

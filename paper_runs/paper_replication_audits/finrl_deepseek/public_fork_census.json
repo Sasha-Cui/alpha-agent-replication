@@ -1,0 +1,43 @@
+{
+  "accessible_branch_refs": 82,
+  "accessible_public_forks": 80,
+  "all_refs_audited": 82,
+  "census_date": "2026-08-14",
+  "community_checkpoint_rerun_notebooks_with_metrics": 1,
+  "community_stored_metric_entries": 33,
+  "community_table_cells_corresponded": 30,
+  "community_table_cells_matching_paper": 0,
+  "community_table_cells_mismatching_paper": 30,
+  "community_table_cells_missing": 6,
+  "complete_paper_result_rows_found": 0,
+  "divergent_changed_paths": 84,
+  "divergent_new_blob_paths": 76,
+  "divergent_new_object_counts": {
+    "blob": 159,
+    "commit": 69,
+    "tree": 103
+  },
+  "divergent_unique_commits": 69,
+  "divergent_unique_heads": 5,
+  "github_rest_repository_listings": 81,
+  "independently_regenerated_native_training_runs": 0,
+  "native_paper_result_artifacts_found": 0,
+  "new_checkpoint_paths": 0,
+  "new_dataset_paths": 0,
+  "new_notebook_blob_versions": 2,
+  "new_training_log_paths": 0,
+  "official_history_reachable_unique_heads": 5,
+  "paper_result_credit": false,
+  "postpaper_adaptation_changed_python_paths": 82,
+  "postpaper_adaptation_changes_native_objective_or_protocol": true,
+  "postpaper_adaptation_committed_result_or_checkpoint_artifacts": 0,
+  "postpaper_adaptation_python_files_compiled": 82,
+  "postpaper_adaptation_requires_unreleased_local_pkg_or_runtime_services": true,
+  "snapshot_sha256": "ff23fbaafa28e68c759a3ef366f96b60bf39c20d136b547d8c727f0dab1bdb8f",
+  "stale_or_inaccessible_repositories": [
+    "66my/FinRL_DeepSeek"
+  ],
+  "stale_or_inaccessible_rest_listings": 1,
+  "tag_refs": 0,
+  "unique_heads": 10
+}

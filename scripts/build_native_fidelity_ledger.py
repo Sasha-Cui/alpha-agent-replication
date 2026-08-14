@@ -672,7 +672,17 @@ ARTIFACT_NOTES = {
         "credit. The stored notebook has 27/36 values, none matching the paper, and "
         "reports six conflicting values for repeated identical series. Evaluation "
         "seeds and the live Yahoo benchmark are unpinned, and the exact 100-epoch "
-        "DeepSeek 10% CPPO training lineage is absent.",
+        "DeepSeek 10% CPPO training lineage is absent. A pinned census exhausts 80 "
+        "accessible public forks, 82 refs, 10 unique heads, 69 divergent commits, "
+        "84 changed paths, and 159 new blobs. One post-paper community notebook "
+        "downloads the authors' released checkpoints and repairs notebook paths, "
+        "device placement, and return alignment; its 33 stored metric entries cover "
+        "30/36 paper cells, but all 30 disagree at displayed precision. This is "
+        "adverse community correspondence, not an author result, native retraining "
+        "replication, or proof of falsity. A later 82-file syntax-valid adaptation "
+        "changes the objective/protocol with Differential-Sharpe, Ray/Optuna, "
+        "MLflow, Redis, and ClickHouse paths, requires absent local runtime modules, "
+        "and commits no new checkpoint, dataset, training log, or metric output.",
     ),
     "SYS-GURU-AGENTS": (
         "Y",
@@ -1546,7 +1556,7 @@ TARGETED_EXECUTION = {
     "SYS-FIN-VISION": "paper_audit:completed_zero_of_72_performance_cells_no_public_system_source",
     "SYS-HEDGE-AGENTS": "paper_audit:completed_zero_of_236_numeric_cells_static_site_not_system_source",
     "SYS-HUBBLE": "paper_audit:completed_v1_zero_of_47_unique_cells_v2_zero_of_102_unique_cells_zero_of_50_figure_series_formulas_intentionally_withheld",
-    "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
+    "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_80_accessible_forks_82_refs_10_heads_community_checkpoint_rerun_30_of_30_supplied_cells_mismatch",
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
     "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
