@@ -1,0 +1,15 @@
+{
+  "start_commit": "3c21b90abc88d5ece9359940b3993db25c71e2ad",
+  "start_date": "2026-01-15T16:32:16+08:00",
+  "results_commit": "8a034319ff925d9dc621077ebf97d48e1890dad2",
+  "results_date": "2026-01-23T03:18:06+08:00",
+  "public_release_commit": "04df1a96adfdb26c8bf3c3ec4bfb3aca6aa08ede",
+  "public_release_date": "2026-01-28T22:14:18+08:00",
+  "public_release_lead_hours_before_v1": 209.8961111111111,
+  "quantaalpha_specific_first_parent_commits": 28,
+  "commit_sequence_sha256": "1288000c0b9fed423f48791de5fb8c4065059a5d21486e29956e15b79b5a8edf",
+  "unique_historical_paths": 851,
+  "historical_path_list_sha256": "30f2e513750080df391dac521a209036314d24955568d543fcd2b33035ea6b03",
+  "current_official_ref_surface_is_complete_public_history": false,
+  "inherited_rdagent_ancestors_counted_as_quantaalpha_history": false
+}

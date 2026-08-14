@@ -38,8 +38,9 @@ def test_complete_numeric_table_census_is_fail_closed() -> None:
         "Appendix D Factor summary": 16,
     }
     assert sum(row["value_role"] == "displayed_delta" for row in rows) == 12
-    assert {row["paper_result_credit"] for row in rows} == {False}
-    assert {row["native_reproduced_value"] for row in rows} == {""}
+    assert sum(row["paper_result_credit"] for row in rows) == 7
+    assert sum(row["independently_regenerated"] for row in rows) == 7
+    assert sum(row["native_reproduced_value"] != "" for row in rows) == 7
     assert Counter(row["author_output_correspondence"] for row in rows) == {
         False: 148,
         True: 196,
@@ -80,7 +81,11 @@ def test_revision_conflicts_and_missing_artifacts_are_explicit() -> None:
     assert checks["Figure 1 curve endpoints versus prose transfer returns"] == "paper_graphic_prose_conflict"
     assert checks["Figure 4 year coverage versus prose"] == "paper_graphic_prose_conflict"
     assert checks["Appendix C factor identity versus evolution diagram"] == "paper_internal_round_conflict"
-    assert len(gaps) == 48 and {row["resolved"] for row in gaps} == {"no"}
+    assert len(gaps) == 48 and Counter(row["resolved"] for row in gaps) == {
+        "no": 42,
+        "yes": 3,
+        "partial": 3,
+    }
     assert len(mechanisms) == 34
     assert Counter(row["status"] for row in mechanisms) == {
         "implemented_match": 15,
@@ -128,10 +133,17 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     branch_evidence = read_csv(output / "historical_branch_evidence_inventory.csv")
     versioned_tables = read_csv(output / "paper_version_main_table_conformance.csv")
     history_summary = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
-    assert manifest["overall_status"] == ("author_rendered_outputs_corroborated_no_end_to_end_regeneration")
+    prepublication_history = read_csv(output / "prepublication_source_history_inventory.csv")
+    prepublication_results = read_csv(output / "prepublication_result_conformance.csv")
+    recovered_data = read_csv(output / "recovered_data_provenance.csv")
+    reruns = read_csv(output / "native_rerun_conformance.csv")
+    regeneration = json.loads((output / "native_result_regeneration.json").read_text(encoding="utf-8"))
+    assert manifest["overall_status"] == (
+        "one_published_baseline_row_regenerated_main_quantaalpha_claim_not_reproduced"
+    )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_numeric_table_cells_total"] == 344
-    assert manifest["native_numeric_table_cells_reproduced"] == 0
+    assert manifest["native_numeric_table_cells_reproduced"] == 7
     assert manifest["author_output_numeric_table_cells_corroborated"] == 196
     assert manifest["paper_numeric_figure_labels_total"] == 40
     assert manifest["paper_discrete_unlabeled_marker_points_total"] == 47
@@ -146,7 +158,9 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert manifest["author_output_dated_return_raster_shipped"] is True
     assert manifest["author_output_underlying_arrays_shipped"] is False
     assert manifest["paper_result_arrays_shipped"] == 0
-    assert manifest["paper_factor_pool_shipped"] is False
+    assert manifest["aggregate_metric_artifacts_shipped_in_prepublication_history"] is True
+    assert manifest["paper_factor_pool_shipped"] is True
+    assert manifest["paper_baseline_runs_shipped"] is True
     assert manifest["paper_seeds_shipped"] is False
     assert manifest["paper_seeds_field_means_random_or_run_seed_lineage"] is True
     assert manifest["historical_direction_seed_groups_disclosed"] is True
@@ -158,10 +172,19 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
         "v3": 196,
     }
     assert manifest["versioned_main_table_cells_author_output_corroborated"] == 644
-    assert manifest["versioned_main_table_cells_independently_regenerated"] == 0
+    assert manifest["versioned_main_table_cells_independently_regenerated"] == 23
     assert manifest["distinct_author_rendered_main_table_cells_across_versions"] == 420
     assert manifest["historical_v1_v2_main_table_cells_corroborated"] == 224
-    assert manifest["historical_v1_v2_main_table_cells_independently_regenerated"] == 0
+    assert manifest["historical_v1_v2_main_table_cells_independently_regenerated"] == 8
+    assert manifest["prepublication_quantaalpha_specific_commits_total"] == 28
+    assert manifest["prepublication_unique_historical_paths_total"] == 851
+    assert manifest["prepublication_aggregate_result_cells_corresponding_at_paper_rounding"] == 74
+    assert manifest["prepublication_aggregate_result_cells_examined"] == 88
+    assert manifest["native_rerun_metric_cells_examined"] == 16
+    assert manifest["native_rerun_metric_cells_independently_regenerated"] == 8
+    assert manifest["alpha158_20_published_metric_cells_independently_regenerated"] == 8
+    assert manifest["quantaalpha_gpt_v1_v2_published_metric_cells_independently_regenerated"] == 0
+    assert manifest["current_official_ref_surface_is_complete_public_history"] is False
     assert manifest["tracked_source_files_total"] == 237
     assert manifest["tracked_source_python_files_total"] == 135
     assert manifest["native_current_python_files_compiled"] == 135
@@ -181,7 +204,7 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
         "commit": 61,
     }
     assert manifest["public_source_unreachable_objects_total"] == 0
-    assert manifest["public_source_native_result_artifact_paths_total"] == 0
+    assert manifest["current_official_ref_native_result_artifact_paths_total"] == 0
     assert manifest["historical_branch_evidence_items_total"] == 8
     assert manifest["historical_direction_seed_groups_total"] == 10
     assert manifest["historical_direction_seed_factor_expressions_total"] == 30
@@ -214,7 +237,10 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
         "v3": 196,
     }
     assert {row["author_output_correspondence"] for row in versioned_tables} == {"True"}
-    assert {row["independently_regenerated"] for row in versioned_tables} == {"False"}
+    assert Counter(row["independently_regenerated"] for row in versioned_tables) == {
+        "False": 621,
+        "True": 23,
+    }
     assert history_summary["reachable_commits_total"] == 61
     assert history_summary["unique_historical_paths_total"] == 259
     assert history_summary["historical_json_paths_total"] == 8
@@ -225,6 +251,19 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert native["component_checks"]["lineage_roundtrip"] is True
     assert native["component_checks"]["llm_or_market_api_called"] is False
     assert native["component_execution_is_paper_result_credit"] is False
+    assert native["paper_experiment_executed"] is True
+    assert native["paper_result_cells_reproduced"] == 8
+    assert len(prepublication_history) == 28
+    assert {row["before_v1_submission"] for row in prepublication_history} == {"True"}
+    assert len(prepublication_results) == 88
+    assert Counter(row["rounded_match"] for row in prepublication_results) == {"True": 74, "False": 14}
+    assert {row["independently_regenerated"] for row in prepublication_results} == {"False"}
+    assert len(recovered_data) == 3
+    assert recovered_data[0]["sha256"] == audit.AUTHOR_DAILY_PV_LFS_SHA256
+    assert len(reruns) == 16
+    assert Counter(row["independently_regenerated"] for row in reruns) == {"True": 8, "False": 8}
+    assert regeneration["alpha158_20"]["paper_cells_independently_regenerated"] == 8
+    assert regeneration["quantaalpha_gpt_v1_v2"]["paper_cells_independently_regenerated"] == 0
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
 
@@ -232,6 +271,7 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
 def test_pinned_primary_sources_when_available() -> None:
     source = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_source")
     paper = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_paper")
+    census = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_fork_census")
     if not source.exists() or not paper.exists():
         return
     assert str(audit.run_git(source, "rev-parse", "HEAD")).strip() == audit.SOURCE_COMMIT
@@ -249,3 +289,8 @@ def test_pinned_primary_sources_when_available() -> None:
     assert len(evidence) == 8
     versioned = audit.paper_version_main_table_rows(source, paper / "source")
     assert len(versioned) == 644
+    if census.exists():
+        prepublication, summary = audit.prepublication_public_history(census)
+        assert len(prepublication) == 28 and summary["unique_historical_paths"] == 851
+        results = audit.prepublication_result_conformance(census, paper / "source")
+        assert len(results) == 88 and sum(row["rounded_match"] for row in results) == 74

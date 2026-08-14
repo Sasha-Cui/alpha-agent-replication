@@ -1,49 +1,49 @@
-category,missing_or_ambiguous_item,resolved,effect
-data,CSI300 point-in-time membership and survivorship handling,no,prevents_exact_paper_replication
-data,CSI500 point-in-time membership and survivorship handling,no,prevents_exact_paper_replication
-data,S&P500 point-in-time membership and survivorship handling,no,prevents_exact_paper_replication
-data,"market-data vendor, extraction timestamp, and adjustment convention",no,prevents_exact_paper_replication
-data,VWAP construction and availability,no,prevents_exact_paper_replication
-data,trade-calendar/time-zone alignment across China and US,no,prevents_exact_paper_replication
-data,released full daily_pv.h5 content hash independently downloaded by this audit,no,prevents_exact_paper_replication
-models,exact provider/model snapshot for every named LLM,no,prevents_exact_paper_replication
-models,"temperature, top-p, and provider nondeterminism controls",no,prevents_exact_paper_replication
-models,exact per-run prompt/message transcripts,no,prevents_exact_paper_replication
-models,API error/retry/fallback trace,no,prevents_exact_paper_replication
-search,paper-faithful executable experiment profile,no,prevents_exact_paper_replication
-search,mapping of five iterations to original/mutation/crossover rounds,no,prevents_exact_paper_replication
-search,"selection, ordering, and exact prompt insertion of the 10 disclosed seed groups in each reported run",no,prevents_exact_paper_replication
-search,all mutation parent selections and outputs,no,prevents_exact_paper_replication
-search,all crossover parent selections and outputs,no,prevents_exact_paper_replication
-search,claimed trajectory-segment repair/splice records,no,prevents_exact_paper_replication
-gates,gate decisions and corrections for all generated factors,no,prevents_exact_paper_replication
-gates,paper factor-zoo snapshot used for redundancy,no,prevents_exact_paper_replication
-gates,behavior on checker/API failures in reported runs,no,prevents_exact_paper_replication
-factors,approximately 150 validated factor IDs,no,prevents_exact_paper_replication
-factors,approximately 150 formulas/descriptions/code artifacts,no,prevents_exact_paper_replication
-factors,final per-backbone factor pools,no,prevents_exact_paper_replication
-factors,factor calculation outputs and missingness coverage,no,prevents_exact_paper_replication
-training,final LightGBM fitted artifacts,no,prevents_exact_paper_replication
-training,random seeds for every experiment and baseline,no,prevents_exact_paper_replication
-training,hyperparameter provenance for every baseline,no,prevents_exact_paper_replication
-training,baseline source revisions and adaptation code,no,prevents_exact_paper_replication
-portfolio,"daily predictions, selections, orders, fills, holdings, and turnover",no,prevents_exact_paper_replication
-portfolio,benchmark return and excess-return construction,no,prevents_exact_paper_replication
-portfolio,suspension/limit-up/limit-down execution semantics,no,prevents_exact_paper_replication
-metrics,IC/RankIC aggregation order and NaN handling,no,prevents_exact_paper_replication
-metrics,ICIR/RankICIR annualization definition,no,prevents_exact_paper_replication
-metrics,ARR/IR/MDD formulas and risk-free convention,no,prevents_exact_paper_replication
-metrics,confidence-band definition for Figure 5,no,prevents_exact_paper_replication
-results,all 344 table-cell derivations,no,prevents_exact_paper_replication
-results,Figure 1 underlying daily arrays,no,prevents_exact_paper_replication
-results,Figure 4 annual point arrays,no,prevents_exact_paper_replication
-results,Figure 5 iteration arrays and uncertainty samples,no,prevents_exact_paper_replication
-results,quality-gate ablation runs,no,prevents_exact_paper_replication
-results,evolution-component ablation runs,no,prevents_exact_paper_replication
-results,cross-seed run artifacts,no,prevents_exact_paper_replication
-results,daily IC observations behind robustness statistics,no,prevents_exact_paper_replication
-results,explanation or artifact lineage for v2-to-v3 result revision,no,prevents_exact_paper_replication
-cost,"per-model token counts, cached tokens, prices, and invoices",no,prevents_exact_paper_replication
-environment,container/lockfile with fully resolved native environment,no,prevents_exact_paper_replication
-environment,hardware and library versions for paper runs,no,prevents_exact_paper_replication
-audit,paper-era immutable source tag tied to each arXiv version,no,prevents_exact_paper_replication
+category,missing_or_ambiguous_item,resolved,evidence,effect
+data,CSI300 point-in-time membership and survivorship handling,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+data,CSI500 point-in-time membership and survivorship handling,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+data,S&P500 point-in-time membership and survivorship handling,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+data,"market-data vendor, extraction timestamp, and adjustment convention",no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+data,VWAP construction and availability,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+data,trade-calendar/time-zone alignment across China and US,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+data,released full daily_pv.h5 content hash independently downloaded by this audit,yes,official author Git-LFS object downloaded and SHA-256/HDF schema verified,does_not_block_recovered_baseline
+models,exact provider/model snapshot for every named LLM,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+models,"temperature, top-p, and provider nondeterminism controls",no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+models,exact per-run prompt/message transcripts,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+models,API error/retry/fallback trace,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+search,paper-faithful executable experiment profile,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+search,mapping of five iterations to original/mutation/crossover rounds,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+search,"selection, ordering, and exact prompt insertion of the 10 disclosed seed groups in each reported run",no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+search,all mutation parent selections and outputs,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+search,all crossover parent selections and outputs,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+search,claimed trajectory-segment repair/splice records,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+gates,gate decisions and corrections for all generated factors,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+gates,paper factor-zoo snapshot used for redundancy,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+gates,behavior on checker/API failures in reported runs,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+factors,approximately 150 validated factor IDs,yes,pre-publication author lineage contains the per-backbone 150-factor pools,does_not_block_recovered_baseline
+factors,approximately 150 formulas/descriptions/code artifacts,yes,"public factor-pool JSONs contain IDs, formulas, descriptions, implementation code, feedback, and cache lineage",does_not_block_recovered_baseline
+factors,final per-backbone factor pools,partial,multiple named final pools are public; exact selection lineage for every paper row remains ambiguous,prevents_exact_full_paper_replication
+factors,factor calculation outputs and missingness coverage,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+training,final LightGBM fitted artifacts,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+training,random seeds for every experiment and baseline,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+training,hyperparameter provenance for every baseline,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+training,baseline source revisions and adaptation code,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+portfolio,"daily predictions, selections, orders, fills, holdings, and turnover",no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+portfolio,benchmark return and excess-return construction,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+portfolio,suspension/limit-up/limit-down execution semantics,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+metrics,IC/RankIC aggregation order and NaN handling,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+metrics,ICIR/RankICIR annualization definition,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+metrics,ARR/IR/MDD formulas and risk-free convention,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+metrics,confidence-band definition for Figure 5,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+results,all 344 table-cell derivations,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+results,Figure 1 underlying daily arrays,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+results,Figure 4 annual point arrays,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+results,Figure 5 iteration arrays and uncertainty samples,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+results,quality-gate ablation runs,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+results,evolution-component ablation runs,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+results,cross-seed run artifacts,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+results,daily IC observations behind robustness statistics,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+results,explanation or artifact lineage for v2-to-v3 result revision,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+cost,"per-model token counts, cached tokens, prices, and invoices",no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+environment,container/lockfile with fully resolved native environment,no,not recovered from pinned primary/public source,prevents_exact_full_paper_replication
+environment,hardware and library versions for paper runs,partial,preserved logs prove Python 3.12 and Qlib 0.9.7; the remaining package pins are time-bounded inference,prevents_exact_full_paper_replication
+audit,paper-era immutable source tag tied to each arXiv version,partial,"no tag exists, but an author-attributed public-release commit predates v1 by 209.90 hours",prevents_exact_full_paper_replication

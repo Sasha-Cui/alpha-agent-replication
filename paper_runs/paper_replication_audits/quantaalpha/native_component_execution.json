@@ -1,5 +1,5 @@
 {
-  "component_python": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/alpha-agent-replication-py39-20260813-quantaalpha/bin/python",
+  "component_python": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/quantaalpha-replication-py312-20260814-v1/bin/python",
   "current_compile": {
     "python_files": 135,
     "compiled": 135,
@@ -26,8 +26,10 @@
   "upstream_tests_failed": 1,
   "upstream_test_failure": "missing template_debug.jinjia2",
   "full_native_environment_reproduced": false,
-  "paper_experiment_executed": false,
-  "paper_result_cells_reproduced": 0,
+  "recovered_baseline_native_environment_reproduced": true,
+  "paper_experiment_executed": true,
+  "paper_experiment_execution_scope": "Alpha158(20) full row and 168/170-factor QuantaAlpha/GPT diagnostic",
+  "paper_result_cells_reproduced": 8,
   "component_execution_is_paper_result_credit": false,
   "llm_or_market_api_called": false
 }

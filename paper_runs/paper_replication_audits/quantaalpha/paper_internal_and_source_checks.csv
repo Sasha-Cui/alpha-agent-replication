@@ -16,7 +16,9 @@ paper source Figure 1 versus repository docs Figure 1,byte_identical,SHA-256 35d
 current source default experiment versus paper profile,conflict,"2 directions, 3 rounds, 2 crossovers, 1 factor/hypothesis, consistency disabled"
 native mining-loop Qlib config versus paper split,conflict,"train 2016-2019, valid 2020, test/backtest 2021 only"
 standalone backtest config versus paper split and costs,substantially_compatible,"2016-2025 split, label, TopkDropout, open price, costs match"
-paper reported result arrays in source release,absent,"no factor pool, trajectories, predictions, returns, metrics, or plot arrays"
-complete public Git history result arrays,absent,"61 commits, five branch heads, 259 historical paths, zero native result-artifact file types"
+paper reported result arrays in source release,aggregate_outputs_and_factor_pools_recovered_raw_arrays_absent,"author-attributed pre-publication refs contain factor pools and 100+ aggregate metric artifacts, but no complete predictions/returns/holdings/plot arrays"
+complete public Git history result arrays,earlier_official_ref_census_was_incomplete,"the 61 commits/five current heads omit a 28-commit author-attributed pre-publication lineage with factor pools, logs, HDF pointers, CSVs, and aggregate JSON results"
 historical Windows branch versus paper search specification,specification_disclosure_not_executable_profile,"10 seed groups/30 expressions and 5 epochs/11 rounds are documented, but no matching run config or run lineage is shipped"
 v1/v2 paper main tables versus historical README raster,complete_visual_correspondence_not_regeneration,the identical 224-cell v1/v2 tables correspond to the pinned historical author raster
+Alpha158(20) native end-to-end regeneration,all_eight_metrics_match_paper_rounding,"recovered author data, Python 3.12/Qlib 0.9.7 path, LightGBM training, IC evaluation, and Top50/drop5 portfolio reproduce all eight v1/v2 values"
+QuantaAlpha GPT v1/v2 native result regeneration,material_non_reproduction,168/170 factors execute; IC 0.04170 vs 0.15008 and IR 0.87738 vs 3.32512; two public expressions fail in the released operator library

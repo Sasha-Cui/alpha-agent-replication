@@ -1,0 +1,67 @@
+{
+  "runtime": {
+    "python": "3.12.3",
+    "pyqlib": "0.9.7",
+    "numpy": "2.4.1",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3",
+    "lightgbm": "4.6.0",
+    "mlflow": "3.8.1",
+    "scipy": "1.17.0",
+    "scikit_learn": "1.8.0",
+    "tables": "3.10.2",
+    "numexpr": "2.14.1"
+  },
+  "runtime_provenance": {
+    "python_and_pyqlib": "directly evidenced by preserved 2026-01-20 author logs",
+    "remaining_versions": "latest stable releases available before the author run; inferred, not directly proven"
+  },
+  "source_commit": "8a034319ff925d9dc621077ebf97d48e1890dad2",
+  "data": {
+    "official_daily_pv_lfs_sha256": "19ed8ee62db6a1fbd1e0f58e76b65dadd9991d666e3b0b8d3faab257fd81f53f",
+    "fork_qlib_archive_sha256": "233485a9035d5d0092736d336605f38474129f5c2673b8a00d046cc6e4e88542",
+    "cross_artifact_matrix_sha256": "5b50aa45aaaf925efc9bfdc2dedb6e4211e3ee6297abaeccf3b356ee90609c4e"
+  },
+  "alpha158_20": {
+    "factor_count": 20,
+    "native_metrics": {
+      "IC": 0.005071733580974592,
+      "ICIR": 0.03287938627233083,
+      "Rank_IC": 0.01838526953812549,
+      "Rank_ICIR": 0.11770777250034052,
+      "IR": 0.5043710541234949,
+      "CR": 0.20865323814507192,
+      "ARR_pct": 4.629928329578073,
+      "MDD_pct": 22.18958292110946
+    },
+    "ic_only_result_json_sha256": "97ba667b1cbc60fd134a07cf34b214ae90d67af300a558d0531e7657cc2a2848",
+    "ic_only_log_sha256": "882002d5da9ad673adf07d6dbd81437c2eb47a7931bdce80b748c400b36f6887",
+    "full_result_json_sha256": "e9a5a389201c6a5a849cf0f41fa7206ce447dc163228cc9a4404bcfb5bee5b7b",
+    "full_log_sha256": "9b950ec89b0aede2c048ab0cbeba72c3a62696c7b335a57ec3faf46f0fe6f7bf",
+    "paper_cells_independently_regenerated": 8,
+    "status": "full_native_training_prediction_and_portfolio_path_matches_paper_rounding"
+  },
+  "quantaalpha_gpt_v1_v2": {
+    "paper_factor_count": 170,
+    "publicly_recomputed_factor_count": 168,
+    "failed_public_expressions": [
+      "ResidualMom_AbsorpGate_20D",
+      "ResidualMom_VolumeConfirm_20D"
+    ],
+    "native_metrics": {
+      "IC": 0.04169854922210531,
+      "ICIR": 0.24708259038837793,
+      "Rank_IC": 0.040913089744675654,
+      "Rank_ICIR": 0.2451467139839747,
+      "IR": 0.8773766571791948,
+      "CR": 0.5073516482894166,
+      "ARR_pct": 6.052344883424508,
+      "MDD_pct": 11.929289879771858
+    },
+    "full_result_json_sha256": "90c7204b684d7d1f059f79551321b6bbd082b34948a91916f9d138c2235a14ff",
+    "full_log_sha256": "3d6a68993d883c79548f7e945f366e13c720af76eb4600f96cb2ab42c2031559",
+    "paper_cells_independently_regenerated": 0,
+    "status": "mechanically_executed_but_not_result_reproduced"
+  },
+  "llm_or_market_api_called_during_rerun": false
+}

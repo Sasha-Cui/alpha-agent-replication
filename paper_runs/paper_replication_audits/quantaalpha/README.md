@@ -1,40 +1,39 @@
 # QuantaAlpha paper-level conformance audit
 
-Overall verdict: **substantial native implementation, 270 current rendered author-output
-units plus 224 distinct historical v1/v2 table cells corroborated; zero published results
-independently regenerated**.
+Overall verdict: **one complete published baseline row independently regenerated; the
+headline QuantaAlpha result does not reproduce**.
 
 ## Primary-source boundary
 
 - All three arXiv revisions of [2602.07085](https://arxiv.org/abs/2602.07085) are pinned by PDF and source-archive SHA-256. The current audit targets v3, submitted 2026-05-18T16:57:08Z.
-- The official source is pinned to `b7ceb27b1001261d7a95b209a963664ae1f8ab23` (2026-06-29T12:55:11-04:00). Its initial substantial revision was committed 56.91 hours after v1 submission, so the source is useful but not a pre-submission snapshot.
-- The complete public Git surface is pinned: **61 reachable commits**, **5 branch heads**, **259 unique historical paths**, no tags/releases, and no unreachable objects. This includes deleted files and non-main branches rather than treating current `main` as the release boundary.
+- The current official heads are pinned to `b7ceb27b1001261d7a95b209a963664ae1f8ab23`, but their **61-commit/259-path** surface is not the complete public history.
+- Public PR/fork refs preserve an author-attributed **28-commit, 851-path** QuantaAlpha-specific lineage beginning `3c21b90abc88d5ece9359940b3993db25c71e2ad`. Its explicit release commit `04df1a96adfdb26c8bf3c3ec4bfb3aca6aa08ede` predates v1 by **209.90 hours**. Inherited RD-Agent ancestors are excluded from these counts.
 - The official public [Hugging Face dataset](https://huggingface.co/datasets/QuantaAlpha/qlib_csi300) is pinned to `d63bf5ba30d1d169023110377cbbe93a90a74e07`. It provides a Qlib package and daily HDF files, but no paper result arrays.
+- The official pre-publication Git-LFS HDF object is pinned to `19ed8ee62db6a1fbd1e0f58e76b65dadd9991d666e3b0b8d3faab257fd81f53f`. A fork-preserved Qlib provider is separately pinned and receives no official-author credit; a 2,679x6 security slice is bit-identical between them.
 
-## Complete numeric-result boundary
+## Result evidence
 
-- The v3 paper contains **344 numeric result table cells**: 196 main-table cells, 28 evolution-ablation values/deltas, 56 seed/daily-statistic cells, and 64 case-study/factor-analysis cells. The official README ships a complete raster of all **196/196 main-table cells**; these are author-output correspondences, while **0/344** cells are independently regenerated.
-- The identical v1/v2 paper main tables contain **224 cells** each. A pinned high-resolution historical README raster completely corresponds to those 224 cells; the lower-resolution duplicate is not double-counted. Across paper versions, **644/644 version-specific main-table cells** have an author-rendered correspondence, representing **420 distinct rendered cells**, while **0/644** are independently regenerated.
+- The v3 paper contains **344 numeric table cells**. The README raster corroborates all 196 main-table cells as author output, but only the seven v3 Alpha158(20) cells are independently regenerated.
+- The identical v1/v2 main tables contain 224 cells each. Native aggregate JSONs give rounded correspondence for **74/88 examined cells** across 11 rows. These are author-output lineage, not independent regeneration; filename/model conflicts are retained in the ledger.
+- The native Alpha158(20) run reproduces all **8/8** v1/v2 metrics, including training, prediction, IC/RankIC evaluation, and the Top50/drop5 portfolio. Across version-specific tables this is **23/644** regenerated cells (8 in v1, 8 in v2, 7 in v3).
+- The paper-configured QuantaAlpha/GPT diagnostic recomputes 148/150 public custom factors plus Alpha158(20), but does not reproduce the claim: IC **0.04170 vs 0.15008**, ARR **6.05% vs 27.75%**, IR **0.87738 vs 3.32512**, and MDD **11.93% vs 7.98%**.
 - Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. The README ships the 17-label case-study raster and byte-identical copies of the paper-source Figure 3--5 assets, corroborating **17 labels, 47 markers, and 10 curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are regenerated.
-- The paper says approximately 150 validated factors feed a common LightGBM model. No such factor pool, run trajectory, prediction, portfolio, return, or metric artifact is shipped.
 
 ## What really works
 
 - The release is not pseudocode: **135/135** current Python files and **135/135** initial-release Python files compile. The audit executes native expression parsing/complexity/subtree matching, trajectory JSON round-trip, lineage round-trip, and performance/diversity-aware crossover selection without calling an LLM or market API.
 - Public prompt/config/source paths implement meaningful planning, full trajectory records, mutation/crossover generation, semantic consistency, AST complexity/redundancy checks, Qlib evaluation, and TopkDropout backtesting. **15/34** audited mechanism dimensions are implementation matches.
-- `configs/backtest.yaml` substantially matches the paper's date split, target, preprocessing, Top-50/drop-5 portfolio, open execution, limit, and 0.05%/0.15% costs.
-- A historical `windows` branch materially improves specification disclosure: it ships **10 seed groups with 30 concrete Alpha158(20)-derived expressions**, says the paper used 5 epochs/11 rounds and usually 3 new factors, distinguishes 2021 mining feedback from 2022--2025 final evaluation, and ships a 44-file frontend/backend bridge. These are configuration and implementation evidence, not run results.
+- The recovered `backtest_v2` profile matches the paper split, label, LightGBM seed, Top-50/drop-5 portfolio, open execution, and 0.05%/0.15% costs closely enough to reproduce Alpha158(20) exactly at displayed precision.
+- Pre-publication pools preserve IDs, formulas, descriptions, implementation code, backtest feedback, and cache lineage for the LLM-generated factors.
 
 ## Why it is not faithful yet
 
 - The actual checked-in `configs/experiment.yaml` is a demo profile: 2 rather than 10 directions, 3 rounds rather than the paper's five mutation/crossover cycles, 2 rather than the documented 10 crossover combinations, 1 rather than 3 factors per hypothesis, lower complexity limits, and the consistency gate disabled.
-- The historical Windows Qlib profile adds seed/random-state 42 and extends its dataset test segment through 2025, but still trains/validates on 2016--2019/2020 and leaves its portfolio-analysis backtest in 2021. It is therefore not an executable paper-faithful profile.
-- The mining runner selects `quantaalpha/factors/factor_template/conf_baseline.yaml`, whose train/validation/test split is 2016--2019/2020/2021 and whose backtest ends in 2021. The paper reports 2016--2020/2021/2022--2025. The matching standalone backtest config does not repair the mining-loop mismatch.
 - Paper prose describes mutation as targeted failed-segment repair and crossover as reuse/splicing of validated trajectory segments. The source generates new hypotheses from truncated textual summaries; it does not localize, preserve, or splice structured trajectory segments.
-- The only tracked upstream test fails because `template_debug.jinjia2` is missing. The full dependency/runtime stack is not reproduced here.
+- The current-source upstream test still fails because `template_debug.jinjia2` is missing. The released custom loader also refuses factors whose author cache paths are gone; two public expressions remain invalid under the released operator library.
+- Exact LLM snapshots, prompts/responses, retry traces, parent selections, seeds, predictions, holdings, raw daily returns, and plot arrays are absent. Package versions beyond directly evidenced Python 3.12/Qlib 0.9.7 are time-bounded inference.
 - v1/v2 reported IC 0.1501, ARR 27.75%, MDD 7.98%, and transfer returns 160%/137%; v3 reports 0.0472, 4.68%, 11.80%, and 40.28%/19.1%. No released result lineage explains the revision. In v3, Figure 1's visible endpoints do not agree with its prose, Figure 4 omits 2021 despite the text's 2021--2025 claim, and Appendix C labels the same offspring Round 10 and Round 8.
-- Across all 61 public commits and all 259 historical paths, there is **no CSV, Parquet, pickle, HDF, NumPy array, model checkpoint, log, or JSONL result path**. All eight historical JSON paths are seed/configuration, frontend descriptors, or benchmark examples. Thus deleted history contains more specification and rendered output, but no hidden factor pool or raw published run.
 
 ## Honest interpretation
 
-This repository is close to a credible clean-room *implementation framework*, but far from a verifiable replication of the reported study. Its rendered result outputs materially improve author-output availability, but screenshots cannot establish the inputs, execution, or raw result path. Running it with newly chosen APIs/data would produce a new experiment, not regenerate the published one. `--strict` intentionally remains nonzero until an end-to-end pinned paper profile reproduces every claimed artifact and result within declared tolerances.
+The public record now supports a strong native baseline replication and much better source/data lineage than the current official heads reveal. It does **not** support the headline QuantaAlpha numbers end-to-end. The exact baseline success and the headline failure are both retained. `--strict` remains nonzero until the full reported study—not merely its framework, screenshots, or aggregate JSONs—is independently reproduced within declared tolerances.

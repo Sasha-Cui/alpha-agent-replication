@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Fail-closed paper-level audit of QuantaAlpha and its official releases.
+"""Fail-closed paper-level audit of QuantaAlpha and its public source lineage.
 
 The audit pins all three arXiv revisions, the official Git revision, and the
 official Hugging Face data release.  It enumerates every numeric result cell
 in the current paper, inventories numeric figures separately, executes safe
 dependency-isolated components of the native source, and distinguishes exact
-author-output correspondence from independent result regeneration.  Rendered
-tables and plots can corroborate published output, but never substitute for
-the missing factor pool, inputs, predictions, returns, or raw arrays.
+author-output correspondence from independent result regeneration.  It also
+pins the author-attributed pre-publication lineage recovered from public pull
+request/fork refs, its factor pools and aggregate result JSONs, and a native
+rerun against recovered author data.  Aggregate artifacts corroborate lineage;
+they never substitute for predictions, returns, holdings, or raw plot arrays.
 """
 
 from __future__ import annotations
@@ -50,6 +52,21 @@ SOURCE_COMMIT = "b7ceb27b1001261d7a95b209a963664ae1f8ab23"
 SOURCE_COMMIT_DATE = "2026-06-29T12:55:11-04:00"
 INITIAL_COMMIT = "2f06d9fafaf21c07abd1a224551dbb437d341087"
 INITIAL_COMMIT_DATE = "2026-02-09T01:02:43+08:00"
+# ``INITIAL_COMMIT`` is only the first commit reachable from the five current
+# official branch heads.  It is not the beginning of the complete public
+# QuantaAlpha lineage.  Public PR/fork refs preserve this author-attributed,
+# first-parent, pre-publication sequence.
+PREPUBLICATION_START_COMMIT = "3c21b90abc88d5ece9359940b3993db25c71e2ad"
+PREPUBLICATION_START_DATE = "2026-01-15T16:32:16+08:00"
+PREPUBLICATION_RESULTS_COMMIT = "8a034319ff925d9dc621077ebf97d48e1890dad2"
+PREPUBLICATION_RESULTS_DATE = "2026-01-23T03:18:06+08:00"
+PREPUBLICATION_RELEASE_COMMIT = "04df1a96adfdb26c8bf3c3ec4bfb3aca6aa08ede"
+PREPUBLICATION_RELEASE_DATE = "2026-01-28T22:14:18+08:00"
+PREPUBLICATION_COMMIT_COUNT = 28
+PREPUBLICATION_COMMIT_SHA256 = "1288000c0b9fed423f48791de5fb8c4065059a5d21486e29956e15b79b5a8edf"
+PREPUBLICATION_PATH_COUNT = 851
+PREPUBLICATION_PATH_SHA256 = "30f2e513750080df391dac521a209036314d24955568d543fcd2b33035ea6b03"
+PREPUBLICATION_RELEASE_LEAD_HOURS = 209.8961111111111
 PUBLIC_BRANCH_HEADS = {
     "anonymous": "418758f9f7b9f324d6ed43ed807ce94872198aa9",
     "dependabot/pip/prod-1f4a4f1c40": "28f1619565001df99721f7b11e1cfb127bb31103",
@@ -99,6 +116,108 @@ RELEASED_PAPER_OUTPUT_SHA256 = {
 HF_DATASET_URL = "https://huggingface.co/datasets/QuantaAlpha/qlib_csi300"
 HF_DATASET_COMMIT = "d63bf5ba30d1d169023110377cbbe93a90a74e07"
 HF_DEBUG_SHA256 = "03816baa04a9ccefeaca8ccd6968c30f6a9a879330ae496d6fa19d6cd3208ebc"
+
+AUTHOR_DAILY_PV_LFS_SHA256 = "19ed8ee62db6a1fbd1e0f58e76b65dadd9991d666e3b0b8d3faab257fd81f53f"
+AUTHOR_DAILY_PV_LFS_BYTES = 308_774_188
+FORK_QLIB_ARCHIVE_SHA256 = "233485a9035d5d0092736d336605f38474129f5c2673b8a00d046cc6e4e88542"
+FORK_QLIB_ARCHIVE_BYTES = 492_502_328
+RECOVERED_PROVIDER_MATRIX_SHA256 = "5b50aa45aaaf925efc9bfdc2dedb6e4211e3ee6297abaeccf3b356ee90609c4e"
+
+RERUN_ENVIRONMENT = {
+    "python": "3.12.3",
+    "pyqlib": "0.9.7",
+    "numpy": "2.4.1",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3",
+    "lightgbm": "4.6.0",
+    "mlflow": "3.8.1",
+    "scipy": "1.17.0",
+    "scikit_learn": "1.8.0",
+    "tables": "3.10.2",
+    "numexpr": "2.14.1",
+}
+ALPHA158_20_NATIVE_METRICS = {
+    "IC": 0.005071733580974592,
+    "ICIR": 0.03287938627233083,
+    "Rank_IC": 0.01838526953812549,
+    "Rank_ICIR": 0.11770777250034052,
+    "IR": 0.5043710541234949,
+    "CR": 0.20865323814507192,
+    "ARR_pct": 4.629928329578073,
+    "MDD_pct": 22.18958292110946,
+}
+QA_GPT_COMBINED_168_NATIVE_METRICS = {
+    "IC": 0.04169854922210531,
+    "ICIR": 0.24708259038837793,
+    "Rank_IC": 0.040913089744675654,
+    "Rank_ICIR": 0.2451467139839747,
+    "IR": 0.8773766571791948,
+    "CR": 0.5073516482894166,
+    "ARR_pct": 6.052344883424508,
+    "MDD_pct": 11.929289879771857,
+}
+
+# Curated aggregate artifacts with the strongest rounded correspondence to the
+# v1/v2 table.  Filename/model alignment is recorded separately because a
+# numerical match alone cannot prove that a mislabeled artifact generated a
+# given paper row.
+PREPUBLICATION_RESULT_ARTIFACTS = {
+    "row_11:Alpha158(20)": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/alpha158_20_backtest_metrics.json",
+        "exact_method_filename",
+    ),
+    "row_19:Qwen3-235B": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/RANKIC_desc_80_AA_qwen_123_csi300_backtest_metrics.json",
+        "exact_method_filename",
+    ),
+    "row_20:Deepseek-V3.2": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/random_80_AA_deepseek_123_csi300_backtest_metrics.json",
+        "exact_method_filename",
+    ),
+    "row_21:Gemini-3-pro-preview": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/AA_top50_rankic_backtest_metrics.json",
+        "numeric_correspondence_filename_not_model_specific",
+    ),
+    "row_22:Claude-4.5-sonnet": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/random_80_AA_claude_123_csi300_backtest_metrics.json",
+        "exact_method_filename",
+    ),
+    "row_23:GPT-5.2": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/AA_top80_RankIC_AA_gpt_123_csi300_backtest_metrics.json",
+        "exact_method_filename",
+    ),
+    "row_24:Qwen3-235B": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/RANKIC_desc_150_QA_round11_best_deepseek_aliyun_123_csi300_backtest_metrics.json",
+        "numeric_correspondence_filename_conflicts_with_paper_model",
+    ),
+    "row_25:Deepseek-V3.2": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/RANKIC_desc_phase_mutation_150_QA_round11_best_deepseek_123_csi300_backtest_metrics.json",
+        "exact_method_filename",
+    ),
+    "row_26:Gemini-3-pro-preview": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/random_150_RANKIC_desc_phase_mutation_300_QA_round11_best_gemini_123_backtest_metrics.json",
+        "exact_method_filename",
+    ),
+    "row_27:Claude-4.5-sonnet": (
+        "6f1586343cae1bd628f239b0d6da4e327e898091",
+        "backtest_v2_results/RANKIC_desc_150_QA_round11_best_claude_123_csi300_backtest_metrics.json",
+        "exact_method_filename",
+    ),
+    "row_28:GPT-5.2": (
+        PREPUBLICATION_RESULTS_COMMIT,
+        "backtest_v2_results/RANKIC_desc_150_QA_round11_best_gpt_123_csi300_backtest_metrics.json",
+        "exact_method_filename",
+    ),
+}
 
 METRICS = ("IC", "ICIR", "Rank_IC", "Rank_ICIR", "IR", "ARR_pct", "MDD_pct")
 MAIN_RESULTS = {
@@ -412,6 +531,266 @@ def public_source_history(
     return commit_rows, path_rows, summary
 
 
+def prepublication_public_history(
+    census_root: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Audit the author-attributed QuantaAlpha lineage hidden from current heads.
+
+    The range deliberately starts at the first QuantaAlpha-specific author
+    commit, excluding 500+ inherited RD-Agent ancestor commits.  This corrects
+    the earlier mistake of treating the five current official branch heads as
+    the complete public source boundary.
+    """
+    if str(run_git(census_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise RuntimeError("QuantaAlpha public-ref census is shallow")
+    range_spec = f"{PREPUBLICATION_START_COMMIT}^..{PREPUBLICATION_RELEASE_COMMIT}"
+    commits = str(run_git(census_root, "rev-list", "--reverse", "--first-parent", range_spec)).splitlines()
+    if len(commits) != PREPUBLICATION_COMMIT_COUNT or _sha256_lines(commits) != PREPUBLICATION_COMMIT_SHA256:
+        raise RuntimeError("QuantaAlpha pre-publication commit lineage changed")
+    paths: set[str] = set()
+    rows = []
+    for commit in commits:
+        commit_paths = str(
+            run_git(census_root, "-c", "core.quotePath=false", "ls-tree", "-r", "--name-only", commit)
+        ).splitlines()
+        paths.update(commit_paths)
+        meta = str(
+            run_git(census_root, "show", "-s", "--format=%cI%x00%an%x00%ae%x00%s", commit)
+        ).rstrip("\n").split("\0", 3)
+        result_paths = [path for path in commit_paths if path.lower().endswith(NATIVE_RESULT_SUFFIXES)]
+        aggregate_json = [
+            path
+            for path in commit_paths
+            if path.lower().endswith(".json")
+            and any(token in path.lower() for token in ("backtest_v2_results/", "factor_library/", "batch_summary"))
+        ]
+        rows.append(
+            {
+                "commit": commit,
+                "commit_date": meta[0],
+                "author_name": meta[1],
+                "author_email": meta[2],
+                "subject": meta[3],
+                "tree_path_count": len(commit_paths),
+                "native_result_suffix_path_count": len(result_paths),
+                "aggregate_result_or_factor_json_path_count": len(aggregate_json),
+                "before_v1_submission": meta[0] < PAPER_VERSIONS["v1"]["date"],
+                "evidence_role": "author_attributed_public_prepublication_lineage",
+                "independent_regeneration": False,
+            }
+        )
+    ordered_paths = sorted(paths, key=lambda item: item.encode("utf-8"))
+    if len(ordered_paths) != PREPUBLICATION_PATH_COUNT or _sha256_lines(ordered_paths) != PREPUBLICATION_PATH_SHA256:
+        raise RuntimeError("QuantaAlpha pre-publication path surface changed")
+    summary = {
+        "start_commit": PREPUBLICATION_START_COMMIT,
+        "start_date": PREPUBLICATION_START_DATE,
+        "results_commit": PREPUBLICATION_RESULTS_COMMIT,
+        "results_date": PREPUBLICATION_RESULTS_DATE,
+        "public_release_commit": PREPUBLICATION_RELEASE_COMMIT,
+        "public_release_date": PREPUBLICATION_RELEASE_DATE,
+        "public_release_lead_hours_before_v1": PREPUBLICATION_RELEASE_LEAD_HOURS,
+        "quantaalpha_specific_first_parent_commits": len(commits),
+        "commit_sequence_sha256": _sha256_lines(commits),
+        "unique_historical_paths": len(ordered_paths),
+        "historical_path_list_sha256": _sha256_lines(ordered_paths),
+        "current_official_ref_surface_is_complete_public_history": False,
+        "inherited_rdagent_ancestors_counted_as_quantaalpha_history": False,
+    }
+    return rows, summary
+
+
+def _aggregate_metric_values(metrics: Mapping[str, Any]) -> dict[str, float]:
+    return {
+        "IC": float(metrics["IC"]),
+        "ICIR": float(metrics["ICIR"]),
+        "Rank_IC": float(metrics["Rank IC"]),
+        "Rank_ICIR": float(metrics["Rank ICIR"]),
+        "IR": float(metrics["information_ratio"]),
+        "CR": float(metrics["calmar_ratio"]),
+        "ARR_pct": 100.0 * float(metrics["annualized_return"]),
+        "MDD_pct": 100.0 * abs(float(metrics["max_drawdown"])),
+    }
+
+
+def prepublication_result_conformance(census_root: Path, paper_source_root: Path) -> list[dict[str, Any]]:
+    """Compare pinned native aggregate JSONs with every cell in 11 v1/v2 rows."""
+    paper_rows = _parse_v1_v2_main_table(paper_source_root.parent / "source_v1/tables/main_table.tex")
+    paper = {(method, metric): value for method, metric, value in paper_rows}
+    rows = []
+    for method, (commit, path, filename_alignment) in PREPUBLICATION_RESULT_ARTIFACTS.items():
+        blob = run_git(census_root, "show", f"{commit}:{path}", binary=True)
+        payload = json.loads(blob)
+        metrics = _aggregate_metric_values(payload["metrics"])
+        for metric in ("IC", "ICIR", "Rank_IC", "Rank_ICIR", "IR", "CR", "ARR_pct", "MDD_pct"):
+            paper_text = paper[(method, metric)]
+            decimals = 2 if metric in {"ARR_pct", "MDD_pct"} else 4
+            source_value = metrics[metric]
+            rounded_match = f"{source_value:.{decimals}f}" == f"{float(paper_text):.{decimals}f}"
+            rows.append(
+                {
+                    "paper_versions": "v1;v2",
+                    "method": method,
+                    "metric": metric,
+                    "paper_value": paper_text,
+                    "source_value": source_value,
+                    "display_decimals": decimals,
+                    "rounded_match": rounded_match,
+                    "source_commit": commit,
+                    "source_path": path,
+                    "source_blob_sha256": hashlib.sha256(blob).hexdigest(),
+                    "source_num_factors": payload.get("num_factors", ""),
+                    "filename_method_alignment": filename_alignment,
+                    "evidence_role": (
+                        "native_aggregate_author_output_correspondence"
+                        if rounded_match
+                        else "nearby_native_aggregate_author_output"
+                    ),
+                    "independently_regenerated": False,
+                    "paper_result_credit": False,
+                }
+            )
+    if len(rows) != 88 or sum(row["rounded_match"] for row in rows) != 74:
+        raise RuntimeError("QuantaAlpha pre-publication aggregate-result correspondence changed")
+    return rows
+
+
+def recovered_data_provenance() -> list[dict[str, Any]]:
+    return [
+        {
+            "artifact": "official_author_daily_pv_h5",
+            "public_ref": f"{PREPUBLICATION_RESULTS_COMMIT}:git_ignore_folder/factor_implementation_source_data/daily_pv.h5",
+            "bytes": AUTHOR_DAILY_PV_LFS_BYTES,
+            "sha256": AUTHOR_DAILY_PV_LFS_SHA256,
+            "provenance": "official_repository_git_lfs",
+            "validation": "downloaded; SHA-256 verified; HDF data shape 11024067x6; calendar ends 2026-01-09",
+            "paper_result_artifact": False,
+        },
+        {
+            "artifact": "fork_preserved_qlib_provider_archive",
+            "public_ref": "davide97l/QuantaAlpha@c3c55488:hf_data/cn_data.zip",
+            "bytes": FORK_QLIB_ARCHIVE_BYTES,
+            "sha256": FORK_QLIB_ARCHIVE_SHA256,
+            "provenance": "public_fork_git_lfs_not_official_author_credit",
+            "validation": "downloaded; SHA-256 verified; 60168 provider files; internal timestamps 2026-02-05",
+            "paper_result_artifact": False,
+        },
+        {
+            "artifact": "official_hdf_to_fork_provider_value_fingerprint",
+            "public_ref": "SH600000 2015-01-05..2026-01-09; open/close/high/low/volume/factor",
+            "bytes": "",
+            "sha256": RECOVERED_PROVIDER_MATRIX_SHA256,
+            "provenance": "cross_artifact_value_identity",
+            "validation": "2679x6 values bit-identical; identical NaN mask; max absolute difference 0",
+            "paper_result_artifact": False,
+        },
+    ]
+
+
+def native_rerun_conformance() -> list[dict[str, Any]]:
+    paper_alpha = {
+        "IC": 0.0051,
+        "ICIR": 0.0329,
+        "Rank_IC": 0.0184,
+        "Rank_ICIR": 0.1177,
+        "IR": 0.5044,
+        "CR": 0.2087,
+        "ARR_pct": 4.63,
+        "MDD_pct": 22.19,
+    }
+    paper_qa_gpt = {
+        "IC": 0.1501,
+        "ICIR": 0.9110,
+        "Rank_IC": 0.1465,
+        "Rank_ICIR": 0.8909,
+        "IR": 3.3251,
+        "CR": 3.4774,
+        "ARR_pct": 27.75,
+        "MDD_pct": 7.98,
+    }
+    definitions = (
+        (
+            "Alpha158(20)",
+            "v1;v2;v3",
+            20,
+            20,
+            paper_alpha,
+            ALPHA158_20_NATIVE_METRICS,
+            True,
+            "independently_regenerated_matches_paper_rounding",
+        ),
+        (
+            "QuantaAlpha / GPT-5.2 v1-v2 configuration",
+            "v1;v2",
+            170,
+            168,
+            paper_qa_gpt,
+            QA_GPT_COMBINED_168_NATIVE_METRICS,
+            False,
+            "not_reproduced_two_public_expressions_fail_and_remaining_result_materially_differs",
+        ),
+    )
+    rows = []
+    for method, versions, expected_factors, executed_factors, paper_values, observed, reproduced, status in definitions:
+        for metric, paper_value in paper_values.items():
+            rows.append(
+                {
+                    "paper_versions": versions,
+                    "method": method,
+                    "metric": metric,
+                    "paper_value": paper_value,
+                    "native_rerun_value": observed[metric],
+                    "absolute_difference": abs(observed[metric] - paper_value),
+                    "expected_factor_count": expected_factors,
+                    "executed_factor_count": executed_factors,
+                    "independently_regenerated": reproduced,
+                    "status": status,
+                    "source_commit": PREPUBLICATION_RESULTS_COMMIT,
+                    "data_fingerprint_sha256": RECOVERED_PROVIDER_MATRIX_SHA256,
+                }
+            )
+    if len(rows) != 16 or sum(row["independently_regenerated"] for row in rows) != 8:
+        raise RuntimeError("QuantaAlpha native-rerun evidence changed")
+    return rows
+
+
+def native_result_regeneration_payload() -> dict[str, Any]:
+    return {
+        "runtime": RERUN_ENVIRONMENT,
+        "runtime_provenance": {
+            "python_and_pyqlib": "directly evidenced by preserved 2026-01-20 author logs",
+            "remaining_versions": "latest stable releases available before the author run; inferred, not directly proven",
+        },
+        "source_commit": PREPUBLICATION_RESULTS_COMMIT,
+        "data": {
+            "official_daily_pv_lfs_sha256": AUTHOR_DAILY_PV_LFS_SHA256,
+            "fork_qlib_archive_sha256": FORK_QLIB_ARCHIVE_SHA256,
+            "cross_artifact_matrix_sha256": RECOVERED_PROVIDER_MATRIX_SHA256,
+        },
+        "alpha158_20": {
+            "factor_count": 20,
+            "native_metrics": ALPHA158_20_NATIVE_METRICS,
+            "ic_only_result_json_sha256": "97ba667b1cbc60fd134a07cf34b214ae90d67af300a558d0531e7657cc2a2848",
+            "ic_only_log_sha256": "882002d5da9ad673adf07d6dbd81437c2eb47a7931bdce80b748c400b36f6887",
+            "full_result_json_sha256": "e9a5a389201c6a5a849cf0f41fa7206ce447dc163228cc9a4404bcfb5bee5b7b",
+            "full_log_sha256": "9b950ec89b0aede2c048ab0cbeba72c3a62696c7b335a57ec3faf46f0fe6f7bf",
+            "paper_cells_independently_regenerated": 8,
+            "status": "full_native_training_prediction_and_portfolio_path_matches_paper_rounding",
+        },
+        "quantaalpha_gpt_v1_v2": {
+            "paper_factor_count": 170,
+            "publicly_recomputed_factor_count": 168,
+            "failed_public_expressions": ["ResidualMom_AbsorpGate_20D", "ResidualMom_VolumeConfirm_20D"],
+            "native_metrics": QA_GPT_COMBINED_168_NATIVE_METRICS,
+            "full_result_json_sha256": "90c7204b684d7d1f059f79551321b6bbd082b34948a91916f9d138c2235a14ff",
+            "full_log_sha256": "3d6a68993d883c79548f7e945f366e13c720af76eb4600f96cb2ab42c2031559",
+            "paper_cells_independently_regenerated": 0,
+            "status": "mechanically_executed_but_not_result_reproduced",
+        },
+        "llm_or_market_api_called_during_rerun": False,
+    }
+
+
 def historical_branch_evidence(source_root: Path) -> list[dict[str, Any]]:
     windows = PUBLIC_BRANCH_HEADS["windows"]
     original = json.loads(str(run_git(source_root, "show", f"{windows}:experiment/original_direction.json")))
@@ -618,6 +997,8 @@ def paper_version_main_table_rows(source_root: Path, paper_source_root: Path) ->
     rows: list[dict[str, Any]] = []
     for version, cells in early_tables.items():
         for method, metric, value in cells:
+            regenerated = method == "row_11:Alpha158(20)"
+            native_value = ALPHA158_20_NATIVE_METRICS[metric] if regenerated else ""
             rows.append(
                 {
                     "paper_version": version,
@@ -629,14 +1010,16 @@ def paper_version_main_table_rows(source_root: Path, paper_source_root: Path) ->
                     "author_raster_commit": INITIAL_COMMIT,
                     "author_raster_sha256": HISTORICAL_MAIN_TABLE_RASTERS["docs/images/主实验.png"],
                     "author_output_correspondence": True,
-                    "native_reproduced_value": "",
-                    "independently_regenerated": False,
-                    "paper_result_credit": False,
+                    "native_reproduced_value": native_value,
+                    "independently_regenerated": regenerated,
+                    "paper_result_credit": regenerated,
                 }
             )
     current_table_sha = sha256(paper_source_root / "tables/main_table.tex")
     for method, values in MAIN_RESULTS.items():
         for metric, value in zip(METRICS, values):
+            regenerated = method == "Alpha158(20)"
+            native_value = ALPHA158_20_NATIVE_METRICS[metric] if regenerated else ""
             rows.append(
                 {
                     "paper_version": "v3",
@@ -648,9 +1031,9 @@ def paper_version_main_table_rows(source_root: Path, paper_source_root: Path) ->
                     "author_raster_commit": SOURCE_COMMIT,
                     "author_raster_sha256": RELEASED_PAPER_OUTPUT_SHA256["docs/images/主实验.png"],
                     "author_output_correspondence": True,
-                    "native_reproduced_value": "",
-                    "independently_regenerated": False,
-                    "paper_result_credit": False,
+                    "native_reproduced_value": native_value,
+                    "independently_regenerated": regenerated,
+                    "paper_result_credit": regenerated,
                 }
             )
     if len(rows) != 644 or Counter(row["paper_version"] for row in rows) != {
@@ -664,22 +1047,27 @@ def paper_version_main_table_rows(source_root: Path, paper_source_root: Path) ->
 
 def _result_row(table: str, item: str, metric: str, value: Any, role: str = "direct") -> dict[str, Any]:
     author_output = table == "Table 1 Main CSI300 results"
+    regenerated = author_output and item == "Alpha158(20)"
+    native_value = ALPHA158_20_NATIVE_METRICS[metric] if regenerated else ""
     return {
         "paper_table": table,
         "item": item,
         "metric": metric,
         "value_role": role,
         "paper_value": value,
-        "native_reproduced_value": "",
-        "absolute_difference": "",
+        "native_reproduced_value": native_value,
+        "absolute_difference": abs(native_value - value) if regenerated else "",
         "author_output_value": value if author_output else "",
         "author_output_correspondence": author_output,
+        "independently_regenerated": regenerated,
         "status": (
-            "corroborated_by_exact_author_readme_table_raster_not_regenerated"
+            "independently_regenerated_matches_paper_rounding"
+            if regenerated
+            else "corroborated_by_exact_author_readme_table_raster_not_regenerated"
             if author_output
             else "not_reproduced_no_released_result_derivation"
         ),
-        "paper_result_credit": False,
+        "paper_result_credit": regenerated,
     }
 
 
@@ -1064,13 +1452,13 @@ def internal_and_source_checks() -> list[dict[str, Any]]:
         },
         {
             "check": "paper reported result arrays in source release",
-            "status": "absent",
-            "evidence": "no factor pool, trajectories, predictions, returns, metrics, or plot arrays",
+            "status": "aggregate_outputs_and_factor_pools_recovered_raw_arrays_absent",
+            "evidence": "author-attributed pre-publication refs contain factor pools and 100+ aggregate metric artifacts, but no complete predictions/returns/holdings/plot arrays",
         },
         {
             "check": "complete public Git history result arrays",
-            "status": "absent",
-            "evidence": "61 commits, five branch heads, 259 historical paths, zero native result-artifact file types",
+            "status": "earlier_official_ref_census_was_incomplete",
+            "evidence": "the 61 commits/five current heads omit a 28-commit author-attributed pre-publication lineage with factor pools, logs, HDF pointers, CSVs, and aggregate JSON results",
         },
         {
             "check": "historical Windows branch versus paper search specification",
@@ -1081,6 +1469,16 @@ def internal_and_source_checks() -> list[dict[str, Any]]:
             "check": "v1/v2 paper main tables versus historical README raster",
             "status": "complete_visual_correspondence_not_regeneration",
             "evidence": "the identical 224-cell v1/v2 tables correspond to the pinned historical author raster",
+        },
+        {
+            "check": "Alpha158(20) native end-to-end regeneration",
+            "status": "all_eight_metrics_match_paper_rounding",
+            "evidence": "recovered author data, Python 3.12/Qlib 0.9.7 path, LightGBM training, IC evaluation, and Top50/drop5 portfolio reproduce all eight v1/v2 values",
+        },
+        {
+            "check": "QuantaAlpha GPT v1/v2 native result regeneration",
+            "status": "material_non_reproduction",
+            "evidence": "168/170 factors execute; IC 0.04170 vs 0.15008 and IR 0.87738 vs 3.32512; two public expressions fail in the released operator library",
         },
     ]
 
@@ -1139,15 +1537,45 @@ def specification_gaps() -> list[dict[str, Any]]:
         ("environment", "hardware and library versions for paper runs"),
         ("audit", "paper-era immutable source tag tied to each arXiv version"),
     ]
-    return [
-        {
-            "category": category,
-            "missing_or_ambiguous_item": item,
-            "resolved": "no",
-            "effect": "prevents_exact_paper_replication",
-        }
-        for category, item in gaps
-    ]
+    resolutions = {
+        "released full daily_pv.h5 content hash independently downloaded by this audit": (
+            "yes",
+            "official author Git-LFS object downloaded and SHA-256/HDF schema verified",
+        ),
+        "approximately 150 validated factor IDs": (
+            "yes",
+            "pre-publication author lineage contains the per-backbone 150-factor pools",
+        ),
+        "approximately 150 formulas/descriptions/code artifacts": (
+            "yes",
+            "public factor-pool JSONs contain IDs, formulas, descriptions, implementation code, feedback, and cache lineage",
+        ),
+        "final per-backbone factor pools": (
+            "partial",
+            "multiple named final pools are public; exact selection lineage for every paper row remains ambiguous",
+        ),
+        "hardware and library versions for paper runs": (
+            "partial",
+            "preserved logs prove Python 3.12 and Qlib 0.9.7; the remaining package pins are time-bounded inference",
+        ),
+        "paper-era immutable source tag tied to each arXiv version": (
+            "partial",
+            "no tag exists, but an author-attributed public-release commit predates v1 by 209.90 hours",
+        ),
+    }
+    rows = []
+    for category, item in gaps:
+        resolved, evidence = resolutions.get(item, ("no", "not recovered from pinned primary/public source"))
+        rows.append(
+            {
+                "category": category,
+                "missing_or_ambiguous_item": item,
+                "resolved": resolved,
+                "evidence": evidence,
+                "effect": "does_not_block_recovered_baseline" if resolved == "yes" else "prevents_exact_full_paper_replication",
+            }
+        )
+    return rows
 
 
 def mechanism_conformance() -> list[dict[str, Any]]:
@@ -1673,8 +2101,10 @@ def native_execution(source_root: Path) -> dict[str, Any]:
         if "template_debug.jinjia2" in upstream.stderr
         else upstream.stderr[-1000:],
         "full_native_environment_reproduced": False,
-        "paper_experiment_executed": False,
-        "paper_result_cells_reproduced": 0,
+        "recovered_baseline_native_environment_reproduced": True,
+        "paper_experiment_executed": True,
+        "paper_experiment_execution_scope": "Alpha158(20) full row and 168/170-factor QuantaAlpha/GPT diagnostic",
+        "paper_result_cells_reproduced": 8,
         "component_execution_is_paper_result_credit": False,
         "llm_or_market_api_called": False,
     }
@@ -1704,6 +2134,7 @@ def verify_pins(
 
 def build_audit(
     source_root: Path,
+    public_census_root: Path,
     papers: Mapping[str, tuple[Path, Path]],
     paper_source_root: Path,
     dataset_api: Path,
@@ -1725,6 +2156,11 @@ def build_audit(
     versions = paper_version_drift()
     inventory = source_inventory(source_root)
     history_commits, history_paths, history_summary = public_source_history(source_root)
+    prepublication_commits, prepublication_summary = prepublication_public_history(public_census_root)
+    prepublication_results = prepublication_result_conformance(public_census_root, paper_source_root)
+    recovered_data = recovered_data_provenance()
+    rerun_rows = native_rerun_conformance()
+    regeneration = native_result_regeneration_payload()
     branch_evidence = historical_branch_evidence(source_root)
     versioned_main_table = paper_version_main_table_rows(source_root, paper_source_root)
     paper_assets = paper_source_inventory(paper_source_root)
@@ -1743,6 +2179,10 @@ def build_audit(
         "released_source_inventory.csv": inventory,
         "released_source_history_inventory.csv": history_commits,
         "released_source_history_paths.csv": history_paths,
+        "prepublication_source_history_inventory.csv": prepublication_commits,
+        "prepublication_result_conformance.csv": prepublication_results,
+        "recovered_data_provenance.csv": recovered_data,
+        "native_rerun_conformance.csv": rerun_rows,
         "historical_branch_evidence_inventory.csv": branch_evidence,
         "paper_version_main_table_conformance.csv": versioned_main_table,
         "released_dataset_inventory.csv": datasets,
@@ -1755,10 +2195,16 @@ def build_audit(
     (output_dir / "public_source_history.json").write_text(
         json.dumps(history_summary, indent=2) + "\n", encoding="utf-8"
     )
+    (output_dir / "prepublication_source_history.json").write_text(
+        json.dumps(prepublication_summary, indent=2) + "\n", encoding="utf-8"
+    )
+    (output_dir / "native_result_regeneration.json").write_text(
+        json.dumps(regeneration, indent=2) + "\n", encoding="utf-8"
+    )
     status_counts = Counter(row["status"] for row in mechanisms)
     manifest: dict[str, Any] = {
         "paper": "QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining",
-        "overall_status": "author_rendered_outputs_corroborated_no_end_to_end_regeneration",
+        "overall_status": "one_published_baseline_row_regenerated_main_quantaalpha_claim_not_reproduced",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_versions": PAPER_VERSIONS,
@@ -1768,11 +2214,15 @@ def build_audit(
         "source_commit_date": SOURCE_COMMIT_DATE,
         "initial_commit": INITIAL_COMMIT,
         "initial_commit_date": INITIAL_COMMIT_DATE,
-        "initial_release_after_v1_submission_hours": 56.911,
+        "initial_commit_scope": "first_commit_reachable_from_current_official_heads_not_complete_public_history",
+        "prepublication_start_commit": PREPUBLICATION_START_COMMIT,
+        "prepublication_results_commit": PREPUBLICATION_RESULTS_COMMIT,
+        "prepublication_release_commit": PREPUBLICATION_RELEASE_COMMIT,
+        "prepublication_release_lead_hours_before_v1": PREPUBLICATION_RELEASE_LEAD_HOURS,
         "hf_dataset_url": HF_DATASET_URL,
         "hf_dataset_commit": HF_DATASET_COMMIT,
         "paper_numeric_table_cells_total": len(tables),
-        "native_numeric_table_cells_reproduced": 0,
+        "native_numeric_table_cells_reproduced": sum(row["independently_regenerated"] for row in tables),
         "author_output_numeric_table_cells_corroborated": 196,
         "paper_numeric_figure_labels_total": len(labels),
         "native_numeric_figure_labels_reproduced": 0,
@@ -1798,9 +2248,10 @@ def build_audit(
         "author_output_dated_return_raster_shipped": True,
         "author_output_underlying_arrays_shipped": False,
         "paper_result_arrays_shipped": 0,
-        "paper_factor_pool_shipped": False,
+        "aggregate_metric_artifacts_shipped_in_prepublication_history": True,
+        "paper_factor_pool_shipped": True,
         "paper_trajectory_pool_shipped": False,
-        "paper_baseline_runs_shipped": False,
+        "paper_baseline_runs_shipped": True,
         "paper_seeds_shipped": False,
         "paper_seeds_field_means_random_or_run_seed_lineage": True,
         "historical_direction_seed_groups_disclosed": True,
@@ -1819,10 +2270,26 @@ def build_audit(
         "versioned_main_table_cells_author_output_corroborated": sum(
             row["author_output_correspondence"] for row in versioned_main_table
         ),
-        "versioned_main_table_cells_independently_regenerated": 0,
+        "versioned_main_table_cells_independently_regenerated": sum(
+            row["independently_regenerated"] for row in versioned_main_table
+        ),
         "distinct_author_rendered_main_table_cells_across_versions": 420,
         "historical_v1_v2_main_table_cells_corroborated": 224,
-        "historical_v1_v2_main_table_cells_independently_regenerated": 0,
+        "historical_v1_v2_main_table_cells_independently_regenerated": 8,
+        "prepublication_quantaalpha_specific_commits_total": len(prepublication_commits),
+        "prepublication_unique_historical_paths_total": prepublication_summary["unique_historical_paths"],
+        "prepublication_aggregate_result_cells_corresponding_at_paper_rounding": sum(
+            row["rounded_match"] for row in prepublication_results
+        ),
+        "prepublication_aggregate_result_cells_examined": len(prepublication_results),
+        "native_rerun_metric_cells_examined": len(rerun_rows),
+        "native_rerun_metric_cells_independently_regenerated": sum(
+            row["independently_regenerated"] for row in rerun_rows
+        ),
+        "alpha158_20_published_metric_cells_independently_regenerated": 8,
+        "quantaalpha_gpt_v1_v2_published_metric_cells_independently_regenerated": 0,
+        "official_author_daily_pv_lfs_sha256": AUTHOR_DAILY_PV_LFS_SHA256,
+        "recovered_provider_cross_artifact_matrix_sha256": RECOVERED_PROVIDER_MATRIX_SHA256,
         "source_mechanism_dimensions_total": len(mechanisms),
         "source_mechanism_status_counts": dict(status_counts),
         "source_mechanism_matches": status_counts["implemented_match"],
@@ -1839,7 +2306,8 @@ def build_audit(
         "public_source_unique_historical_paths_total": history_summary["unique_historical_paths_total"],
         "public_source_reachable_object_counts": history_summary["reachable_object_counts"],
         "public_source_unreachable_objects_total": history_summary["unreachable_objects_total"],
-        "public_source_native_result_artifact_paths_total": history_summary["native_result_artifact_paths_total"],
+        "current_official_ref_native_result_artifact_paths_total": history_summary["native_result_artifact_paths_total"],
+        "current_official_ref_surface_is_complete_public_history": False,
         "historical_branch_evidence_items_total": len(branch_evidence),
         "historical_direction_seed_groups_total": 10,
         "historical_direction_seed_factor_expressions_total": 30,
@@ -1857,64 +2325,58 @@ def build_audit(
         "local_motif_proxy_candidate": "code_quantaalpha_evolutionary_factor_miner",
         "local_motif_proxy_paper_result_credit": False,
         "interpretation": (
-            "QuantaAlpha has a substantial public implementation and deserves native architecture credit: "
-            "all 135 current and initial Python files compile, and dependency-isolated AST, trajectory "
-            "persistence, lineage, and crossover-selection paths execute. This is not a paper reproduction. "
-            "The checked-in experiment profile materially conflicts with the paper; the mining-loop Qlib "
-            "config tests only 2021; the claimed targeted segment repair/splicing is not represented as such; "
-            "the only upstream test fails because its template is absent; and no approximately-150-factor "
-            "pool, run trajectories, prompts/responses, seeds, baselines, predictions, holdings, return arrays, "
-            "or plot arrays are released. The official README does ship the complete 196-cell v3 main-table "
-            "raster, exact paper-source copies of Figures 3--5, and the 17-label case-study raster: 270 rendered "
-            "output units are current author-output corroborations, while 0/344 table cells, 0/40 labeled figure values, "
-            "0/47 discrete figure markers, and 0/10 return-curve arrays are independently regenerated. Moreover, "
-            "the complete 61-commit/five-branch public history adds 10 seed groups, 30 factor expressions, paper-default "
-            "experiment notes, an operational frontend, and a 224-cell v1/v2 table raster, but no native result file. "
-            "The v1/v2 headline results were sharply reduced in v3 without released run lineage, and v3 contains "
-            "direct figure/prose and round-label inconsistencies. The public HF dataset helps infrastructure "
-            "reproducibility but is not a result artifact and lacks sufficient provenance for exact replication."
+            "The public artifact is materially stronger than the current official branch heads imply. An "
+            "author-attributed 28-commit lineage predates paper v1 and contains factor pools, aggregate result "
+            "JSONs, logs, plots, and an official Git-LFS market-data object. The recovered native Python "
+            "3.12/Qlib 0.9.7 pipeline independently reproduces all eight Alpha158(20) cells at paper rounding. "
+            "That is real paper-result credit, but it is only one baseline row. The best paper-configured "
+            "QuantaAlpha/GPT rerun executes 168 of 170 factors and materially misses the claimed v1/v2 result "
+            "(IC 0.04170 versus 0.15008; IR 0.87738 versus 3.32512). Two released expressions fail under the "
+            "released operator library. Raw predictions, returns, holdings, prompt transcripts, complete run "
+            "lineage, and plot arrays remain absent. The v1/v2-to-v3 result revision and v3 internal conflicts "
+            "also remain unexplained. Therefore this is a partial, evidence-backed replication—not a faithful "
+            "full-paper reproduction."
         ),
     }
     report = f"""# QuantaAlpha paper-level conformance audit
 
-Overall verdict: **substantial native implementation, 270 current rendered author-output
-units plus 224 distinct historical v1/v2 table cells corroborated; zero published results
-independently regenerated**.
+Overall verdict: **one complete published baseline row independently regenerated; the
+headline QuantaAlpha result does not reproduce**.
 
 ## Primary-source boundary
 
 - All three arXiv revisions of [2602.07085]({PAPER_URL}) are pinned by PDF and source-archive SHA-256. The current audit targets v3, submitted {PAPER_VERSIONS["v3"]["date"]}.
-- The official source is pinned to `{SOURCE_COMMIT}` ({SOURCE_COMMIT_DATE}). Its initial substantial revision was committed 56.91 hours after v1 submission, so the source is useful but not a pre-submission snapshot.
-- The complete public Git surface is pinned: **{history_summary["reachable_commits_total"]} reachable commits**, **{history_summary["public_branches_total"]} branch heads**, **{history_summary["unique_historical_paths_total"]} unique historical paths**, no tags/releases, and no unreachable objects. This includes deleted files and non-main branches rather than treating current `main` as the release boundary.
+- The current official heads are pinned to `{SOURCE_COMMIT}`, but their **{history_summary["reachable_commits_total"]}-commit/{history_summary["unique_historical_paths_total"]}-path** surface is not the complete public history.
+- Public PR/fork refs preserve an author-attributed **{len(prepublication_commits)}-commit, {prepublication_summary["unique_historical_paths"]}-path** QuantaAlpha-specific lineage beginning `{PREPUBLICATION_START_COMMIT}`. Its explicit release commit `{PREPUBLICATION_RELEASE_COMMIT}` predates v1 by **{PREPUBLICATION_RELEASE_LEAD_HOURS:.2f} hours**. Inherited RD-Agent ancestors are excluded from these counts.
 - The official public [Hugging Face dataset]({HF_DATASET_URL}) is pinned to `{HF_DATASET_COMMIT}`. It provides a Qlib package and daily HDF files, but no paper result arrays.
+- The official pre-publication Git-LFS HDF object is pinned to `{AUTHOR_DAILY_PV_LFS_SHA256}`. A fork-preserved Qlib provider is separately pinned and receives no official-author credit; a 2,679x6 security slice is bit-identical between them.
 
-## Complete numeric-result boundary
+## Result evidence
 
-- The v3 paper contains **344 numeric result table cells**: 196 main-table cells, 28 evolution-ablation values/deltas, 56 seed/daily-statistic cells, and 64 case-study/factor-analysis cells. The official README ships a complete raster of all **196/196 main-table cells**; these are author-output correspondences, while **0/344** cells are independently regenerated.
-- The identical v1/v2 paper main tables contain **224 cells** each. A pinned high-resolution historical README raster completely corresponds to those 224 cells; the lower-resolution duplicate is not double-counted. Across paper versions, **644/644 version-specific main-table cells** have an author-rendered correspondence, representing **420 distinct rendered cells**, while **0/644** are independently regenerated.
+- The v3 paper contains **344 numeric table cells**. The README raster corroborates all 196 main-table cells as author output, but only the seven v3 Alpha158(20) cells are independently regenerated.
+- The identical v1/v2 main tables contain 224 cells each. Native aggregate JSONs give rounded correspondence for **{sum(row["rounded_match"] for row in prepublication_results)}/{len(prepublication_results)} examined cells** across 11 rows. These are author-output lineage, not independent regeneration; filename/model conflicts are retained in the ledger.
+- The native Alpha158(20) run reproduces all **8/8** v1/v2 metrics, including training, prediction, IC/RankIC evaluation, and the Top50/drop5 portfolio. Across version-specific tables this is **23/644** regenerated cells (8 in v1, 8 in v2, 7 in v3).
+- The paper-configured QuantaAlpha/GPT diagnostic recomputes 148/150 public custom factors plus Alpha158(20), but does not reproduce the claim: IC **0.04170 vs 0.15008**, ARR **6.05% vs 27.75%**, IR **0.87738 vs 3.32512**, and MDD **11.93% vs 7.98%**.
 - Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. The README ships the 17-label case-study raster and byte-identical copies of the paper-source Figure 3--5 assets, corroborating **17 labels, 47 markers, and 10 curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are regenerated.
-- The paper says approximately 150 validated factors feed a common LightGBM model. No such factor pool, run trajectory, prediction, portfolio, return, or metric artifact is shipped.
 
 ## What really works
 
 - The release is not pseudocode: **{native["current_compile"]["compiled"]}/{native["current_compile"]["python_files"]}** current Python files and **{native["initial_compile"]["compiled"]}/{native["initial_compile"]["python_files"]}** initial-release Python files compile. The audit executes native expression parsing/complexity/subtree matching, trajectory JSON round-trip, lineage round-trip, and performance/diversity-aware crossover selection without calling an LLM or market API.
 - Public prompt/config/source paths implement meaningful planning, full trajectory records, mutation/crossover generation, semantic consistency, AST complexity/redundancy checks, Qlib evaluation, and TopkDropout backtesting. **{status_counts["implemented_match"]}/{len(mechanisms)}** audited mechanism dimensions are implementation matches.
-- `configs/backtest.yaml` substantially matches the paper's date split, target, preprocessing, Top-50/drop-5 portfolio, open execution, limit, and 0.05%/0.15% costs.
-- A historical `windows` branch materially improves specification disclosure: it ships **10 seed groups with 30 concrete Alpha158(20)-derived expressions**, says the paper used 5 epochs/11 rounds and usually 3 new factors, distinguishes 2021 mining feedback from 2022--2025 final evaluation, and ships a 44-file frontend/backend bridge. These are configuration and implementation evidence, not run results.
+- The recovered `backtest_v2` profile matches the paper split, label, LightGBM seed, Top-50/drop-5 portfolio, open execution, and 0.05%/0.15% costs closely enough to reproduce Alpha158(20) exactly at displayed precision.
+- Pre-publication pools preserve IDs, formulas, descriptions, implementation code, backtest feedback, and cache lineage for the LLM-generated factors.
 
 ## Why it is not faithful yet
 
 - The actual checked-in `configs/experiment.yaml` is a demo profile: 2 rather than 10 directions, 3 rounds rather than the paper's five mutation/crossover cycles, 2 rather than the documented 10 crossover combinations, 1 rather than 3 factors per hypothesis, lower complexity limits, and the consistency gate disabled.
-- The historical Windows Qlib profile adds seed/random-state 42 and extends its dataset test segment through 2025, but still trains/validates on 2016--2019/2020 and leaves its portfolio-analysis backtest in 2021. It is therefore not an executable paper-faithful profile.
-- The mining runner selects `quantaalpha/factors/factor_template/conf_baseline.yaml`, whose train/validation/test split is 2016--2019/2020/2021 and whose backtest ends in 2021. The paper reports 2016--2020/2021/2022--2025. The matching standalone backtest config does not repair the mining-loop mismatch.
 - Paper prose describes mutation as targeted failed-segment repair and crossover as reuse/splicing of validated trajectory segments. The source generates new hypotheses from truncated textual summaries; it does not localize, preserve, or splice structured trajectory segments.
-- The only tracked upstream test fails because `template_debug.jinjia2` is missing. The full dependency/runtime stack is not reproduced here.
+- The current-source upstream test still fails because `template_debug.jinjia2` is missing. The released custom loader also refuses factors whose author cache paths are gone; two public expressions remain invalid under the released operator library.
+- Exact LLM snapshots, prompts/responses, retry traces, parent selections, seeds, predictions, holdings, raw daily returns, and plot arrays are absent. Package versions beyond directly evidenced Python 3.12/Qlib 0.9.7 are time-bounded inference.
 - v1/v2 reported IC 0.1501, ARR 27.75%, MDD 7.98%, and transfer returns 160%/137%; v3 reports 0.0472, 4.68%, 11.80%, and 40.28%/19.1%. No released result lineage explains the revision. In v3, Figure 1's visible endpoints do not agree with its prose, Figure 4 omits 2021 despite the text's 2021--2025 claim, and Appendix C labels the same offspring Round 10 and Round 8.
-- Across all 61 public commits and all 259 historical paths, there is **no CSV, Parquet, pickle, HDF, NumPy array, model checkpoint, log, or JSONL result path**. All eight historical JSON paths are seed/configuration, frontend descriptors, or benchmark examples. Thus deleted history contains more specification and rendered output, but no hidden factor pool or raw published run.
 
 ## Honest interpretation
 
-This repository is close to a credible clean-room *implementation framework*, but far from a verifiable replication of the reported study. Its rendered result outputs materially improve author-output availability, but screenshots cannot establish the inputs, execution, or raw result path. Running it with newly chosen APIs/data would produce a new experiment, not regenerate the published one. `--strict` intentionally remains nonzero until an end-to-end pinned paper profile reproduces every claimed artifact and result within declared tolerances.
+The public record now supports a strong native baseline replication and much better source/data lineage than the current official heads reveal. It does **not** support the headline QuantaAlpha numbers end-to-end. The exact baseline success and the headline failure are both retained. `--strict` remains nonzero until the full reported study—not merely its framework, screenshots, or aggregate JSONs—is independently reproduced within declared tolerances.
 """
     (output_dir / "README.md").write_text(report, encoding="utf-8")
     manifest["output_sha256"] = {
@@ -1936,6 +2398,17 @@ def parse_args() -> argparse.Namespace:
         default=Path(
             os.environ.get("QUANTAALPHA_SOURCE_ROOT", "/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_source")
         ),
+    )
+    parser.add_argument(
+        "--public-census-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "QUANTAALPHA_PUBLIC_CENSUS_ROOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_fork_census",
+            )
+        ),
+        help="bare/full clone containing pinned public PR and fork refs",
     )
     parser.add_argument("--paper-v1-pdf", type=Path, default=base / "paper_v1.pdf")
     parser.add_argument("--paper-v1-source", type=Path, default=base / "source_v1.tar")
@@ -1963,6 +2436,7 @@ def main() -> int:
     }
     manifest = build_audit(
         args.source_root,
+        args.public_census_root,
         papers,
         args.paper_source_root,
         args.dataset_api,
