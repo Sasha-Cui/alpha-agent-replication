@@ -41,6 +41,27 @@ def test_committed_result_census_is_complete_and_fail_closed() -> None:
         "Appendix qualitative/performance cases": 29,
     }
     assert {row["paper_result_credit"] for row in table + figures} == {"False"}
+    versions = read_csv(output / "official_paper_version_inventory.csv")
+    lineage = read_csv(output / "official_paper_result_lineage.csv")
+    assert len(versions) == 3
+    assert [row["numeric_table_cells"] for row in versions] == ["768", "768", "959"]
+    assert [row["pdf_pages"] for row in versions] == ["46", "46", "43"]
+    assert {row["figure_display_units"] for row in versions} == {"102"}
+    assert {row["result_figure_assets_byte_identical_to_v3"] for row in versions} == {"True"}
+    assert [row["public_source_available_at_submission"] for row in versions] == [
+        "False",
+        "False",
+        "True",
+    ]
+    assert len(lineage) == 966
+    assert Counter(row["status"] for row in lineage) == {
+        "unchanged_v1_through_v3": 679,
+        "display_precision_only_change_in_v3": 55,
+        "numeric_value_revised_in_v3": 27,
+        "added_in_v3": 198,
+        "removed_in_v3": 7,
+    }
+    assert {row["paper_result_credit"] for row in lineage} == {"False"}
 
 
 def test_committed_manifest_keeps_document_and_experiment_credit_separate() -> None:
@@ -58,6 +79,17 @@ def test_committed_manifest_keeps_document_and_experiment_credit_separate() -> N
     assert manifest["published_result_display_units_total"] == 1061
     assert manifest["published_result_display_units_reproduced"] == 0
     assert manifest["paper_result_credit"] is False
+    assert manifest["official_arxiv_versions_audited"] == 3
+    assert manifest["arxiv_v1_numeric_table_cells"] == 768
+    assert manifest["arxiv_v2_numeric_table_cells"] == 768
+    assert manifest["arxiv_v3_numeric_table_cells"] == 959
+    assert manifest["official_version_unique_table_cell_ids"] == 966
+    assert manifest["official_version_numeric_value_revisions_in_v3"] == 27
+    assert manifest["official_version_display_precision_only_changes_in_v3"] == 55
+    assert manifest["official_version_cell_ids_added_in_v3"] == 198
+    assert manifest["official_version_cell_ids_removed_in_v3"] == 7
+    assert manifest["official_versions_result_figure_assets_byte_identical"] is True
+    assert manifest["official_versions_with_public_source_at_submission"] == 1
     assert native["paper_source_compilation"]["exit_code"] == 0
     assert native["paper_source_compilation"]["compiled_pages"] == 43
     assert native["paper_source_compilation"]["paper_result_credit"] is False
@@ -76,6 +108,8 @@ def test_committed_source_diagnostics_capture_material_conflicts() -> None:
     strategies = read_csv(output / "released_strategy_record_inventory.csv")
     strategy_conformance = read_csv(output / "released_strategy_record_paper_conformance.csv")
     history = read_csv(output / "released_source_history_inventory.csv")
+    history_paths = read_csv(output / "public_source_history_path_inventory.csv")
+    history_summary = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
     configs = read_csv(output / "released_config_conformance.csv")
     static = read_csv(output / "released_python_static_compilation.csv")
     artifacts = read_csv(output / "released_data_artifact_inventory.csv")
@@ -105,6 +139,21 @@ def test_committed_source_diagnostics_capture_material_conflicts() -> None:
     assert manifest["released_strategy_record_appendix_display_matches"] == 0
     assert manifest["reachable_source_history_commits"] == 7
     assert manifest["reachable_source_history_commits_with_agent_output_paths"] == 0
+    assert manifest["public_source_unique_historical_paths"] == 1955
+    assert manifest["public_source_reachable_blobs"] == 1902
+    assert manifest["public_source_reachable_trees"] == 327
+    assert manifest["public_source_reachable_commit_objects"] == 7
+    assert manifest["public_source_unreachable_objects"] == 0
+    assert manifest["public_source_native_agent_result_paths"] == 0
+    assert manifest["public_source_historical_strategy_record_paths"] == 90
+    assert manifest["public_source_discovered_branches"] == 1
+    assert manifest["public_source_discovered_tags"] == 0
+    assert manifest["public_source_discovered_releases"] == 0
+    assert len(history_paths) == 1955
+    assert sum(row["strategy_record_path"] == "True" for row in history_paths) == 90
+    assert {row["native_agent_result_path"] for row in history_paths} == {"False"}
+    assert history_summary["reachable_object_counts"] == {"blob": 1902, "commit": 7, "tree": 327}
+    assert history_summary["unreachable_objects"] == 0
     assert len(configs) == 42
     assert all(row["all_reported_core_fields_match"] == "True" for row in configs)
     assert Counter(row["reflection_model"] for row in configs) == {"True": 36, "False": 6}
@@ -131,3 +180,14 @@ def test_pinned_primary_sources_and_dynamic_parsers_when_available() -> None:
     assert len(audit.config_conformance_rows(source)) == 42
     assert len(audit.source_reference_diagnostics(source)) == 81
     assert len(audit.static_python_rows(source)) == 142
+
+    versions_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/finagent_paper_versions")
+    if versions_root.exists():
+        versions, lineage = audit.paper_version_rows(versions_root, source)
+        assert [len(audit.paper_table_rows(versions_root / f"source_v{version}", version)) for version in (1, 2, 3)] == [
+            768,
+            768,
+            959,
+        ]
+        assert len(versions) == 3
+        assert len(lineage) == 966

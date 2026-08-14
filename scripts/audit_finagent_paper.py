@@ -2,10 +2,11 @@
 """Fail-closed paper/source audit for FinAgent (KDD 2024).
 
 The arXiv v3 paper is the detailed result authority and the KDD proceedings
-PDF is the publication authority.  The released repository is linked from the
-lead author's current homepage.  Static source conformance, paper-source
-compilation, and shipped strategy records are useful evidence, but none are
-promoted to experimental-result reproduction.
+PDF is the publication authority, but v1 and v2 are also pinned and compared
+cell by cell because v3 materially revises the result record. The released
+repository is linked from the lead author's current homepage. Static source
+conformance, paper-source compilation, and shipped strategy records are useful
+evidence, but none are promoted to experimental-result reproduction.
 """
 from __future__ import annotations
 
@@ -42,17 +43,84 @@ SOURCE_CURRENT_COMMIT = "17248a0b8b729ee3e093e30bb7bea7f52181f363"
 SOURCE_CURRENT_DATE = "2024-08-31T20:13:54+02:00"
 SOURCE_CURRENT_TREE = "71047850ceab7579e8c083dfada486bbbae17007"
 SOURCE_CURRENT_ARCHIVE_SHA256 = "e2954e7b22b4d1280ac28de2af979907ad3e7d5f1a8e203add2926414cff9c5c"
-AUDIT_DATE = "2026-08-11"
+AUDIT_DATE = "2026-08-13"
+
+PAPER_VERSIONS = {
+    1: {
+        "submitted_at": "2024-02-28T17:06:54Z",
+        "pdf_sha256": "6e64f3b3f280692d3f7f859a73ce77cab202adc1f462c860c5c9c12caaf6aea9",
+        "pdf_bytes": 15107289,
+        "pdf_pages": 46,
+        "source_sha256": "38ac98bb92a13a001e675457cbca7a60655879620bc3564519b235b190ede536",
+        "source_bytes": 14344252,
+        "source_files": 97,
+        "source_uncompressed_bytes": 20246006,
+        "main_sha256": "3cd9ae738c3867869097eb78851d9b1c457cb1c05223c4ea8e6e3bf1e7d40462",
+        "source_tree_digest": "b4c0564cca650a93473074a2d9cb8526832b8cf6335b1424760d8d0a318227f1",
+        "table_cells": 768,
+        "repository_commits_at_submission": 0,
+        "latest_public_commit_at_submission": "",
+    },
+    2: {
+        "submitted_at": "2024-02-29T12:49:03Z",
+        "pdf_sha256": "4cb339d279076a4a546f8cb213b73036a910ba1532c592fd42276a4add63d603",
+        "pdf_bytes": 15107276,
+        "pdf_pages": 46,
+        "source_sha256": "36f87c7fb7bf693556355ded569fd2123ec3cac67205976379d51a0450e7ace8",
+        "source_bytes": 14344177,
+        "source_files": 97,
+        "source_uncompressed_bytes": 20246006,
+        "main_sha256": "e7246cabfed418b5336e307f7ccc61eb4bad6aa87a1e9708fc3cede985feb2e1",
+        "source_tree_digest": "230e309810a4df56e7c100accb8c8eb00e2bcd9f4d35c94b7bdb2af11f040c43",
+        "table_cells": 768,
+        "repository_commits_at_submission": 0,
+        "latest_public_commit_at_submission": "",
+    },
+    3: {
+        "submitted_at": "2024-06-28T10:35:56Z",
+        "pdf_sha256": ARXIV_V3_PDF_SHA256,
+        "pdf_bytes": 15364998,
+        "pdf_pages": 43,
+        "source_sha256": ARXIV_V3_SOURCE_SHA256,
+        "source_bytes": 14723655,
+        "source_files": 99,
+        "source_uncompressed_bytes": 20750696,
+        "main_sha256": "32a375347d3e8bb5a41ef203815a45e99e2b49c18f6d8c9d6765110e70aec7f8",
+        "source_tree_digest": "04e1e10fa5e5e9024751ad79367749237ef20bde4a47c27bd12f74cf404a44d4",
+        "table_cells": 959,
+        "repository_commits_at_submission": 6,
+        "latest_public_commit_at_submission": SOURCE_PAPER_COMMIT,
+    },
+}
+
+PUBLIC_HISTORY_COMMIT_COUNT = 7
+PUBLIC_HISTORY_COMMIT_SHA256 = "369b01bb4c9e14dac77b7edf74d25800bddfc15c713467c4ecc22d6001e66a60"
+PUBLIC_HISTORY_PATH_COUNT = 1955
+PUBLIC_HISTORY_PATH_SHA256 = "da702298ef4ef41809512edd43e1fdd84d0f875eb41d65df85a519a0347ca764"
+PUBLIC_HISTORY_OBJECT_COUNTS = {"blob": 1902, "commit": 7, "tree": 327}
+PUBLIC_DISCOVERY_SHA256 = {
+    "branches.json": "301b4166efb6f15f3388bf264b02c517645a45dc74a4bf517d4a5cc52f6d78ca",
+    "releases.json": "2ba33ca0557f1bb5b7ba88d67f9d0093c7185a36ec51fe2b7bd9372d3e001d6d",
+    "tags.json": "2ba33ca0557f1bb5b7ba88d67f9d0093c7185a36ec51fe2b7bd9372d3e001d6d",
+}
 
 ASSETS = ("AAPL", "AMZN", "GOOGL", "MSFT", "TSLA", "ETHUSD")
 MAIN_METHODS = (
     "B&H", "MACD", "KDJ&RSI", "ZMR", "LGBM", "LSTM", "Transformer",
     "DQN", "SAC", "PPO", "FinGPT", "FinMem", "FinAgent",
 )
+EARLY_MAIN_METHODS = (
+    "B&H", "MACD", "KDJ&RSI", "ZMR", "DQN", "SAC", "PPO", "FinGPT",
+    "FinMem", "FinAgent",
+)
 APPENDIX_METHODS = (
     "B&H", "MACD", "KDJ&RSI", "ZMR", "LGBM", "LSTM", "Transformer",
     "DQN", "SAC", "PPO", "FinGPT", "FinMem", "No-finetuned", "w/o-MLH",
     "w/o-LHT", "w/o-HT", "w/o-T", "FinAgent",
+)
+EARLY_APPENDIX_METHODS = (
+    "B&H", "MACD", "KDJ&RSI", "ZMR", "DQN", "SAC", "PPO", "FinGPT",
+    "FinMem", "w/o-MLH", "w/o-LHT", "w/o-HT", "w/o-T", "FinAgent",
 )
 MAIN_METRICS = ("ARR_pct", "SR", "MDD_pct")
 APPENDIX_PANELS = (
@@ -116,6 +184,10 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
 
 
 def git(source_root: Path, *args: str, binary: bool = False) -> Any:
@@ -224,12 +296,16 @@ def _improvement_rows(block: str, table: str, metrics: Sequence[str]) -> list[di
     raise RuntimeError(f"{table}: active improvement row missing")
 
 
-def paper_table_rows(paper_source_root: Path) -> list[dict[str, Any]]:
+def paper_table_rows(paper_source_root: Path, paper_version: int = 3) -> list[dict[str, Any]]:
+    if paper_version not in PAPER_VERSIONS:
+        raise ValueError(f"unsupported FinAgent paper version: {paper_version}")
+    main_methods = EARLY_MAIN_METHODS if paper_version < 3 else MAIN_METHODS
+    appendix_methods = EARLY_APPENDIX_METHODS if paper_version < 3 else APPENDIX_METHODS
     main_block = _active_table(
         (paper_source_root / "tables/baselines.tex").read_text(encoding="utf-8"),
         "\\label{tab:baselines}",
     )
-    rows = _method_rows(main_block, MAIN_METHODS, MAIN_METRICS, "Table 4 main comparison")
+    rows = _method_rows(main_block, main_methods, MAIN_METRICS, "Table 4 main comparison")
     rows += _improvement_rows(main_block, "Table 4 main comparison", MAIN_METRICS)
 
     appendix_block = _active_table(
@@ -243,7 +319,7 @@ def paper_table_rows(paper_source_root: Path) -> list[dict[str, Any]]:
     for panel_index, metrics in enumerate(APPENDIX_PANELS):
         panel = pieces[panel_index + 1]
         table = f"Appendix Table 7 panel {panel_index + 1}"
-        rows += _method_rows(panel, APPENDIX_METHODS, metrics, table)
+        rows += _method_rows(panel, appendix_methods, metrics, table)
         rows += _improvement_rows(panel, table, metrics)
 
     ablation_block = _active_table(
@@ -274,13 +350,24 @@ def paper_table_rows(paper_source_root: Path) -> list[dict[str, Any]]:
                     ))
                     cursor += 1
 
-    expected_counts = {
-        "Table 4 main comparison": 242,
-        "Appendix Table 7 panel 1": 335,
-        "Appendix Table 7 panel 2": 334,
-        "Table 5 ablation": 48,
-    }
-    if len(rows) != 959 or Counter(row["paper_table"] for row in rows) != expected_counts:
+    expected_counts = (
+        {
+            "Table 4 main comparison": 191,
+            "Appendix Table 7 panel 1": 266,
+            "Appendix Table 7 panel 2": 263,
+            "Table 5 ablation": 48,
+        }
+        if paper_version < 3
+        else {
+            "Table 4 main comparison": 242,
+            "Appendix Table 7 panel 1": 335,
+            "Appendix Table 7 panel 2": 334,
+            "Table 5 ablation": 48,
+        }
+    )
+    if len(rows) != PAPER_VERSIONS[paper_version]["table_cells"] or Counter(
+        row["paper_table"] for row in rows
+    ) != expected_counts:
         raise RuntimeError("FinAgent paper table census changed")
     return rows
 
@@ -329,6 +416,152 @@ def paper_figure_rows(paper_source_root: Path) -> list[dict[str, Any]]:
     if len(rows) != 102:
         raise RuntimeError(f"expected 102 figure display units, got {len(rows)}")
     return rows
+
+
+def pdf_page_count(path: Path) -> int:
+    output = subprocess.run(
+        ["pdfinfo", str(path)], check=True, capture_output=True, text=True
+    ).stdout
+    match = re.search(r"^Pages:\s+(\d+)$", output, flags=re.MULTILINE)
+    if not match:
+        raise RuntimeError(f"pdfinfo did not report a page count for {path}")
+    return int(match.group(1))
+
+
+def source_tree_digest(source_root: Path) -> str:
+    rows = [
+        f"{path.relative_to(source_root).as_posix()}\0{sha256(path)}"
+        for path in sorted(path for path in source_root.rglob("*") if path.is_file())
+    ]
+    return sha256_bytes(("\n".join(rows) + "\n").encode("utf-8"))
+
+
+def paper_version_rows(
+    versions_root: Path, source_root: Path
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    parsed = {
+        version: paper_table_rows(versions_root / f"source_v{version}", version)
+        for version in PAPER_VERSIONS
+    }
+    by_version = {
+        version: {str(row["display_cell_id"]): str(row["paper_value"]) for row in rows}
+        for version, rows in parsed.items()
+    }
+    if by_version[1] != by_version[2]:
+        raise RuntimeError("FinAgent arXiv v1/v2 result tables diverged")
+    v1 = by_version[1]
+    v3 = by_version[3]
+    all_ids = sorted(set(v1) | set(v3))
+    lineage = []
+    for cell_id in all_ids:
+        early = v1.get(cell_id, "")
+        latest = v3.get(cell_id, "")
+        if not early:
+            status = "added_in_v3"
+        elif not latest:
+            status = "removed_in_v3"
+        elif float(early) != float(latest):
+            status = "numeric_value_revised_in_v3"
+        elif early != latest:
+            status = "display_precision_only_change_in_v3"
+        else:
+            status = "unchanged_v1_through_v3"
+        lineage.append(
+            {
+                "display_cell_id": cell_id,
+                "v1_value": early,
+                "v2_value": early,
+                "v3_value": latest,
+                "status": status,
+                "native_reproduced": False,
+                "paper_result_credit": False,
+            }
+        )
+    expected_lineage = {
+        "unchanged_v1_through_v3": 679,
+        "display_precision_only_change_in_v3": 55,
+        "numeric_value_revised_in_v3": 27,
+        "added_in_v3": 198,
+        "removed_in_v3": 7,
+    }
+    if Counter(row["status"] for row in lineage) != expected_lineage:
+        raise RuntimeError("FinAgent official-version result lineage changed")
+
+    result_figure_assets = ("assets/baselines.pdf", "assets/dr.pdf", *APPENDIX_RESULT_GRAPHICS)
+    v3_figure_hashes = {
+        relative: sha256(versions_root / "source_v3" / relative)
+        for relative in result_figure_assets
+    }
+    rows = []
+    for version, expected in PAPER_VERSIONS.items():
+        pdf = versions_root / f"paper_v{version}.pdf"
+        archive = versions_root / f"paper_v{version}_source.tar.gz"
+        extracted = versions_root / f"source_v{version}"
+        files = [path for path in extracted.rglob("*") if path.is_file()]
+        if sha256(pdf) != expected["pdf_sha256"] or pdf.stat().st_size != expected["pdf_bytes"]:
+            raise RuntimeError(f"FinAgent arXiv v{version} PDF drift")
+        if pdf_page_count(pdf) != expected["pdf_pages"]:
+            raise RuntimeError(f"FinAgent arXiv v{version} page census changed")
+        if sha256(archive) != expected["source_sha256"] or archive.stat().st_size != expected["source_bytes"]:
+            raise RuntimeError(f"FinAgent arXiv v{version} source archive drift")
+        if len(files) != expected["source_files"] or sum(path.stat().st_size for path in files) != expected[
+            "source_uncompressed_bytes"
+        ]:
+            raise RuntimeError(f"FinAgent arXiv v{version} source census changed")
+        if sha256(extracted / "main.tex") != expected["main_sha256"]:
+            raise RuntimeError(f"FinAgent arXiv v{version} main source drift")
+        if source_tree_digest(extracted) != expected["source_tree_digest"]:
+            raise RuntimeError(f"FinAgent arXiv v{version} extracted source tree drift")
+        if any(sha256(extracted / relative) != digest for relative, digest in v3_figure_hashes.items()):
+            raise RuntimeError(f"FinAgent arXiv v{version} result figures changed")
+        figures = paper_figure_rows(extracted)
+        cutoff = str(expected["submitted_at"])
+        commits = int(str(git(source_root, "rev-list", "--all", f"--before={cutoff}", "--count")).strip())
+        latest = str(
+            git(source_root, "log", "--all", f"--before={cutoff}", "-1", "--format=%H")
+        ).strip()
+        if commits != expected["repository_commits_at_submission"] or latest != expected[
+            "latest_public_commit_at_submission"
+        ]:
+            raise RuntimeError(f"FinAgent source cutoff changed for arXiv v{version}")
+        common = set(by_version[version]) & set(v3)
+        numeric_changes = sum(
+            float(by_version[version][cell]) != float(v3[cell]) for cell in common
+        )
+        display_only = sum(
+            float(by_version[version][cell]) == float(v3[cell])
+            and by_version[version][cell] != v3[cell]
+            for cell in common
+        )
+        rows.append(
+            {
+                "paper_version": f"v{version}",
+                "submitted_at": cutoff,
+                "pdf_sha256": expected["pdf_sha256"],
+                "pdf_bytes": expected["pdf_bytes"],
+                "pdf_pages": expected["pdf_pages"],
+                "source_archive_sha256": expected["source_sha256"],
+                "source_archive_bytes": expected["source_bytes"],
+                "source_files": expected["source_files"],
+                "source_uncompressed_bytes": expected["source_uncompressed_bytes"],
+                "source_tree_digest": expected["source_tree_digest"],
+                "numeric_table_cells": len(parsed[version]),
+                "figure_display_units": len(figures),
+                "result_figure_assets_byte_identical_to_v3": True,
+                "table_values_same_as_previous_version": "" if version == 1 else by_version[version] == by_version[version - 1],
+                "table_cell_ids_common_with_v3": len(common),
+                "numeric_values_changed_relative_to_v3": numeric_changes,
+                "display_precision_only_changes_relative_to_v3": display_only,
+                "cell_ids_added_in_v3": len(set(v3) - set(by_version[version])),
+                "cell_ids_removed_in_v3": len(set(by_version[version]) - set(v3)),
+                "public_repository_commits_at_submission": commits,
+                "latest_public_commit_at_submission": latest,
+                "public_source_available_at_submission": bool(commits),
+                "native_result_reproduced": False,
+                "paper_result_credit": False,
+            }
+        )
+    return rows, lineage
 
 
 def source_inventory(source_root: Path, commit: str = SOURCE_PAPER_COMMIT) -> list[dict[str, Any]]:
@@ -455,6 +688,139 @@ def source_history_rows(source_root: Path) -> list[dict[str, Any]]:
     if len(rows) != 7 or any(row["agent_output_paths"] for row in rows):
         raise RuntimeError("FinAgent reachable-history output boundary changed")
     return rows
+
+
+def public_source_history(
+    source_root: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    discovery_root = source_root / "release-discovery"
+    for name, expected in PUBLIC_DISCOVERY_SHA256.items():
+        if sha256(discovery_root / name) != expected:
+            raise RuntimeError(f"FinAgent public discovery drift: {name}")
+    branches = json.loads((discovery_root / "branches.json").read_text(encoding="utf-8"))
+    tags = json.loads((discovery_root / "tags.json").read_text(encoding="utf-8"))
+    releases = json.loads((discovery_root / "releases.json").read_text(encoding="utf-8"))
+    branch_pairs = [(row["name"], row["commit"]["sha"]) for row in branches]
+    if branch_pairs != [("main", SOURCE_CURRENT_COMMIT)] or tags or releases:
+        raise RuntimeError("FinAgent public ref discovery changed")
+    if str(git(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise RuntimeError("FinAgent source checkout is shallow")
+
+    commits_raw = str(git(source_root, "rev-list", "--reverse", "--all"))
+    commits = commits_raw.splitlines()
+    if len(commits) != PUBLIC_HISTORY_COMMIT_COUNT:
+        raise RuntimeError("FinAgent public commit census changed")
+    if sha256_bytes(commits_raw.encode("utf-8")) != PUBLIC_HISTORY_COMMIT_SHA256:
+        raise RuntimeError("FinAgent public commit sequence changed")
+    path_lines = str(git(source_root, "log", "--all", "--pretty=format:", "--name-only")).splitlines()
+    historical_paths = sorted({line for line in path_lines if line})
+    path_payload = ("\n".join(historical_paths) + "\n").encode("utf-8")
+    if len(historical_paths) != PUBLIC_HISTORY_PATH_COUNT:
+        raise RuntimeError("FinAgent public historical path census changed")
+    if sha256_bytes(path_payload) != PUBLIC_HISTORY_PATH_SHA256:
+        raise RuntimeError("FinAgent public historical path inventory changed")
+
+    object_lines = str(git(source_root, "rev-list", "--objects", "--all")).splitlines()
+    object_ids = [line.split(" ", 1)[0] for line in object_lines]
+    object_proc = subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+        input="\n".join(object_ids) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    object_counts = dict(Counter(object_proc.stdout.splitlines()))
+    if object_counts != PUBLIC_HISTORY_OBJECT_COUNTS:
+        raise RuntimeError("FinAgent reachable-object census changed")
+    fsck = subprocess.run(
+        ["git", "-C", str(source_root), "fsck", "--full", "--no-reflogs", "--unreachable"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if fsck.stdout.strip():
+        raise RuntimeError("FinAgent has unreachable objects requiring review")
+
+    output_suffixes = {
+        ".csv", ".json", ".jsonl", ".npy", ".npz", ".parquet", ".pickle",
+        ".pkl", ".tsv", ".xlsx",
+    }
+    output_tokens = (
+        "action", "agent_output", "equity", "memory_record", "portfolio",
+        "trading_record", "trajectory", "valid_record", "workdir",
+    )
+    path_blobs: dict[str, set[str]] = {path: set() for path in historical_paths}
+    path_first: dict[str, tuple[str, str]] = {}
+    path_last: dict[str, tuple[str, str]] = {}
+    for commit in commits:
+        committed_at = str(git(source_root, "show", "-s", "--format=%cI", commit)).strip()
+        for line in str(git(source_root, "ls-tree", "-r", commit)).splitlines():
+            object_meta, path = line.split("\t", 1)
+            _mode, object_type, object_id = object_meta.split()
+            if object_type != "blob":
+                continue
+            path_blobs[path].add(object_id)
+            path_first.setdefault(path, (commit, committed_at))
+            path_last[path] = (commit, committed_at)
+
+    rows = []
+    for path in historical_paths:
+        suffix = Path(path).suffix.lower()
+        strategy_record = path.startswith("res/strategy_record/")
+        native_agent_output = (
+            suffix in output_suffixes
+            and not strategy_record
+            and not path.startswith("tools/echarts-5.4.3/")
+            and any(token in path.lower() for token in output_tokens)
+        )
+        if path.startswith("tools/echarts-5.4.3/"):
+            classification = "vendored_echarts_dependency"
+        elif strategy_record:
+            classification = "opaque_rule_strategy_training_or_parameter_record_not_agent_output"
+        elif path.startswith("res/prompts/"):
+            classification = "prompt_or_schema"
+        elif path.startswith("configs/"):
+            classification = "experiment_configuration_without_native_results"
+        elif suffix == ".py":
+            classification = "python_source"
+        else:
+            classification = "source_documentation_or_nonresult_asset"
+        rows.append(
+            {
+                "path": path,
+                "extension": suffix,
+                "historical_blob_versions": len(path_blobs[path]),
+                "first_reachable_commit": path_first[path][0],
+                "first_reachable_committed_at": path_first[path][1],
+                "last_reachable_commit": path_last[path][0],
+                "last_reachable_committed_at": path_last[path][1],
+                "strategy_record_path": strategy_record,
+                "native_agent_result_path": native_agent_output,
+                "classification": classification,
+                "paper_result_credit": False,
+            }
+        )
+    native_outputs = [row for row in rows if row["native_agent_result_path"]]
+    strategy_paths = [row for row in rows if row["strategy_record_path"]]
+    if native_outputs or len(strategy_paths) != 90:
+        raise RuntimeError("FinAgent historical result-artifact boundary changed")
+    extension_counts = Counter(row["extension"] or "[none]" for row in rows)
+    summary = {
+        "discovered_public_branches": [{"name": name, "head": commit} for name, commit in branch_pairs],
+        "discovered_public_tags": [],
+        "discovered_public_releases": [],
+        "reachable_commits": len(commits),
+        "unique_historical_paths": len(historical_paths),
+        "historical_path_extension_counts": dict(sorted(extension_counts.items())),
+        "reachable_object_counts": object_counts,
+        "unreachable_objects": 0,
+        "historical_strategy_record_paths": len(strategy_paths),
+        "native_agent_result_paths": 0,
+        "exact_paper_result_table_or_figure_paths": 0,
+        "independently_regenerated_paper_results": 0,
+        "paper_result_credit": False,
+    }
+    return rows, summary
 
 
 def config_conformance_rows(source_root: Path) -> list[dict[str, Any]]:
@@ -754,15 +1120,23 @@ def native_execution(source_root: Path, paper_root: Path, latex_command: str) ->
 def render_readme(manifest: Mapping[str, Any]) -> str:
     return f"""# FinAgent paper replication audit
 
-This is a fail-closed audit of the original KDD 2024 paper, its arXiv v3
-source, and the repository linked by the lead author's homepage.  The release
-is substantial—{manifest['released_python_files']} Python files, prompts,
-configs, agent modules, and rule-strategy records—but it is not an executable
-experimental package for the published claims.
+This is a fail-closed audit of the original KDD 2024 paper, all three official
+arXiv versions and source archives, and the repository linked by the lead
+author's homepage.  The release is substantial—{manifest['released_python_files']} Python
+files, prompts, configs, agent modules, and rule-strategy records—but it is not
+an executable experimental package for the published claims.
 
 ## Honest outcome
 
 - Paper document: reproduced from pinned source at 43 pages.
+- Official-version lineage: v1 and v2 contain 768 identical table cells; v3
+  contains 959. Relative to v1/v2, v3 numerically revises
+  {manifest['official_version_numeric_value_revisions_in_v3']} shared cells, changes display precision for
+  {manifest['official_version_display_precision_only_changes_in_v3']}, adds {manifest['official_version_cell_ids_added_in_v3']} cell IDs, and removes
+  {manifest['official_version_cell_ids_removed_in_v3']}. The 31 result-figure source assets are byte-identical across all
+  three versions.
+- Public source timing: v1 and v2 predate the repository; v3 has the six-commit
+  paper-era tree available. Only v3 is evaluated against public implementation.
 - Static released-source mechanisms matching the paper: {manifest['released_source_mechanisms_verified']} of {manifest['paper_mechanisms_audited']} audited claims.
 - Published result units: **0 of {manifest['published_result_display_units_total']} reproduced** ({manifest['paper_numeric_display_cells_total']} table cells and {manifest['paper_figure_display_units_total']} figure units).
 - Overall tier: **R2 / substantial static implementation evidence, no paper-result reproduction**.
@@ -771,13 +1145,13 @@ No paper-result credit is assigned to values transcribed from LaTeX, plot-only
 graphics, rule-strategy parameter records, static compilation, or document
 compilation.  The repository contains no exact dataset snapshot, FinAgent
 memories, trajectories, action/equity paths, checkpoints, or native result
-tables.  All {manifest['reachable_source_history_commits']} reachable commits
-were checked and none contains an agent-output path.  The 90 shipped rule
-records yield {manifest['released_strategy_record_appendix_comparisons']}
-default/trained comparisons against the corresponding high-precision Appendix
-Table 7 cells, with {manifest['released_strategy_record_appendix_display_matches']}
-display-precision matches; no released code path writes those opaque `best_*`
-records.
+tables. All {manifest['reachable_source_history_commits']} reachable commits, {manifest['public_source_unique_historical_paths']} historical paths, and
+{manifest['public_source_reachable_blobs']} blobs were checked; no unreachable object or native agent-output path
+exists. The only discovered branch is `main`, with no tags or releases. The 90
+shipped rule records yield {manifest['released_strategy_record_appendix_comparisons']} default/trained comparisons against the
+corresponding high-precision Appendix Table 7 cells, with
+{manifest['released_strategy_record_appendix_display_matches']} display-precision matches; no released code path writes those opaque
+`best_*` records.
 
 ## Material protocol conflicts
 
@@ -789,8 +1163,8 @@ short-position explanation.  Optimized rule parameters are loaded and then
 their signals are overwritten by a default-parameter call.  OPTUNA and six
 ML/RL baselines are absent.  Released SR/CR/SOR code disagrees with the paper's
 equations.  Twenty-one asset-list references (including all eighteen downloader
-references), sixty training-prompt references,
-and three processor/downloader routes are broken.
+references), sixty training-prompt references, and three processor/downloader
+routes are broken.
 
 The detailed CSVs and `native_execution.json` are the evidence ledger.  A
 modern substitute model or reconstructed dataset would be an adaptation, not
@@ -798,17 +1172,25 @@ an exact reproduction, and must remain labeled accordingly.
 """
 
 
-def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str) -> dict[str, Any]:
+def audit(
+    source_root: Path,
+    paper_root: Path,
+    paper_versions_root: Path,
+    output: Path,
+    latex_command: str,
+) -> dict[str, Any]:
     validate_primary_inputs(source_root, paper_root)
     paper_source_root = paper_root / "source_v3"
     output.mkdir(parents=True, exist_ok=True)
 
+    paper_versions, result_lineage = paper_version_rows(paper_versions_root, source_root)
     tables = paper_table_rows(paper_source_root)
     figures = paper_figure_rows(paper_source_root)
     inventory = source_inventory(source_root)
     strategies = strategy_record_rows(source_root)
     strategy_conformance = strategy_record_paper_conformance_rows(source_root, tables)
     history = source_history_rows(source_root)
+    history_paths, history_summary = public_source_history(source_root)
     configs = config_conformance_rows(source_root)
     references = source_reference_diagnostics(source_root)
     routes = processor_route_rows(source_root)
@@ -826,6 +1208,9 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "released_strategy_record_inventory.csv": strategies,
         "released_strategy_record_paper_conformance.csv": strategy_conformance,
         "released_source_history_inventory.csv": history,
+        "official_paper_version_inventory.csv": paper_versions,
+        "official_paper_result_lineage.csv": result_lineage,
+        "public_source_history_path_inventory.csv": history_paths,
         "released_config_conformance.csv": configs,
         "released_missing_reference_diagnostics.csv": references,
         "released_processor_route_diagnostics.csv": routes,
@@ -840,12 +1225,36 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
     (output / "native_execution.json").write_text(
         json.dumps(native, indent=2, sort_keys=True) + "\n", encoding="utf-8",
     )
+    (output / "public_source_history.json").write_text(
+        json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8",
+    )
 
     manifest: dict[str, Any] = {
         "audit_date": AUDIT_DATE,
         "paper": "A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist",
         "arxiv_url": ARXIV_URL,
         "arxiv_v3_date": ARXIV_V3_DATE,
+        "official_arxiv_versions_audited": len(paper_versions),
+        "arxiv_v1_numeric_table_cells": 768,
+        "arxiv_v2_numeric_table_cells": 768,
+        "arxiv_v3_numeric_table_cells": 959,
+        "official_version_unique_table_cell_ids": len(result_lineage),
+        "official_version_numeric_value_revisions_in_v3": sum(
+            row["status"] == "numeric_value_revised_in_v3" for row in result_lineage
+        ),
+        "official_version_display_precision_only_changes_in_v3": sum(
+            row["status"] == "display_precision_only_change_in_v3" for row in result_lineage
+        ),
+        "official_version_cell_ids_added_in_v3": sum(
+            row["status"] == "added_in_v3" for row in result_lineage
+        ),
+        "official_version_cell_ids_removed_in_v3": sum(
+            row["status"] == "removed_in_v3" for row in result_lineage
+        ),
+        "official_versions_result_figure_assets_byte_identical": True,
+        "official_versions_with_public_source_at_submission": sum(
+            row["public_source_available_at_submission"] for row in paper_versions
+        ),
         "doi": DOI,
         "kdd_pdf_url": KDD_PDF_URL,
         "author_homepage": AUTHOR_HOMEPAGE,
@@ -875,6 +1284,18 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "reachable_source_history_commits": len(history),
         "reachable_source_history_commits_with_agent_output_paths": sum(bool(row["agent_output_paths"]) for row in history),
         "reachable_source_history_first_party_path_sets_identical_before_requirements_only_commit": len({row["first_party_files_excluding_vendored_echarts"] for row in history[:-1]}) == 1,
+        "public_source_unique_historical_paths": history_summary["unique_historical_paths"],
+        "public_source_reachable_blobs": history_summary["reachable_object_counts"]["blob"],
+        "public_source_reachable_trees": history_summary["reachable_object_counts"]["tree"],
+        "public_source_reachable_commit_objects": history_summary["reachable_object_counts"]["commit"],
+        "public_source_unreachable_objects": history_summary["unreachable_objects"],
+        "public_source_native_agent_result_paths": history_summary["native_agent_result_paths"],
+        "public_source_historical_strategy_record_paths": history_summary[
+            "historical_strategy_record_paths"
+        ],
+        "public_source_discovered_branches": len(history_summary["discovered_public_branches"]),
+        "public_source_discovered_tags": len(history_summary["discovered_public_tags"]),
+        "public_source_discovered_releases": len(history_summary["discovered_public_releases"]),
         "released_experiment_configs": len(configs),
         "released_missing_references": len(references),
         "metric_formula_conflicts": sum(not row["matches_paper_formula"] for row in metrics),
@@ -883,7 +1304,7 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "paper_result_credit": False,
     }
     (output / "README.md").write_text(render_readme(manifest), encoding="utf-8")
-    output_names = [*csv_outputs, "native_execution.json", "README.md"]
+    output_names = [*csv_outputs, "native_execution.json", "public_source_history.json", "README.md"]
     manifest["output_sha256"] = {name: sha256(output / name) for name in sorted(output_names)}
     (output / "manifest.json").write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8",
@@ -895,6 +1316,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--paper-root", type=Path, required=True)
+    parser.add_argument(
+        "--paper-versions-root",
+        type=Path,
+        default=Path("/nfs/roberts/scratch/pi_btk22/zc362/finagent_paper_versions"),
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--latex-command", default="pdflatex")
     return parser.parse_args()
@@ -902,7 +1328,13 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    manifest = audit(args.source_root, args.paper_root, args.output, args.latex_command)
+    manifest = audit(
+        args.source_root,
+        args.paper_root,
+        args.paper_versions_root,
+        args.output,
+        args.latex_command,
+    )
     print(json.dumps(manifest, indent=2, sort_keys=True))
 
 

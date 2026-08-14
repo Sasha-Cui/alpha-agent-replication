@@ -1,0 +1,40 @@
+{
+  "discovered_public_branches": [
+    {
+      "head": "17248a0b8b729ee3e093e30bb7bea7f52181f363",
+      "name": "main"
+    }
+  ],
+  "discovered_public_releases": [],
+  "discovered_public_tags": [],
+  "exact_paper_result_table_or_figure_paths": 0,
+  "historical_path_extension_counts": {
+    ".css": 3,
+    ".csv": 1,
+    ".gexf": 1,
+    ".html": 603,
+    ".js": 160,
+    ".json": 389,
+    ".md": 6,
+    ".png": 11,
+    ".py": 142,
+    ".svg": 8,
+    ".ts": 584,
+    ".txt": 16,
+    ".yaml": 6,
+    ".yml": 11,
+    "[none]": 14
+  },
+  "historical_strategy_record_paths": 90,
+  "independently_regenerated_paper_results": 0,
+  "native_agent_result_paths": 0,
+  "paper_result_credit": false,
+  "reachable_commits": 7,
+  "reachable_object_counts": {
+    "blob": 1902,
+    "commit": 7,
+    "tree": 327
+  },
+  "unique_historical_paths": 1955,
+  "unreachable_objects": 0
+}
