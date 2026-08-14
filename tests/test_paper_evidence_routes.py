@@ -229,6 +229,11 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "signal_nonidentifiability_25_forks_26_refs_5_unique_heads_exhausted"
         ),
         "CensusArxiv250909995": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
+        "CensusArxiv251118850": (
+            "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_"
+            "templates_four_author_curve_series_zero_regenerated_full_1_commit_history_"
+            "1_fork_1_ref_official_head_exhausted"
+        ),
         "CensusArxiv251023032": (
             "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_"
             "cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"
@@ -295,6 +300,14 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     assert "complete official histories cover 2,273 commits" in mountainlion_blocker
     assert "Both accessible public forks and both branch refs" in mountainlion_blocker
     assert "one post-paper Bandit security workflow commit" in mountainlion_blocker
+
+    cogalpha_blocker = routes.loc[
+        "CensusArxiv251118850", "precise_native_or_access_blocker"
+    ]
+    assert "0/306 current empirical units reproduce" in cogalpha_blocker
+    assert "complete one-commit public history" in cogalpha_blocker
+    assert "sole accessible public fork" in cogalpha_blocker
+    assert "zero unique commits, zero unique blobs" in cogalpha_blocker
 
 
 def test_flag_trader_paper_only_audit_preserves_its_evidence_boundary() -> None:

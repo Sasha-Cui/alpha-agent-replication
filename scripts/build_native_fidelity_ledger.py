@@ -495,7 +495,11 @@ ARTIFACT_NOTES = {
         "not model calls, alpha mining, backtesting, or result regeneration. The "
         "same four-series cumulative-return raster appears in both arXiv source "
         "archives, providing author-output correspondence but no raw dated array "
-        "or regeneration credit. The repository README explicitly excludes runtime "
+        "or regeneration credit. The complete one-commit public history contains 47 "
+        "paths that match the pinned archive byte-for-byte, with no structured result "
+        "payload or distinctive paper-result value. The sole accessible public fork "
+        "and its only branch ref resolve exactly to the official head, adding zero "
+        "unique commits, zero unique blobs, and zero result credit. The repository README explicitly excludes runtime "
         "code, datasets, experiment outputs, model endpoints, keys, and paths. No "
         "frozen panels or time-varying memberships, checkpoint hash, immutable "
         "requests/responses, decoding settings, seeds, realized factor pools, "
@@ -1469,7 +1473,11 @@ TARGETED_EXECUTION = {
     "SYS-TREEVO": "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_seven_prompt_templates_no_attributable_pipeline",
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_3_of_10_table2_component_cells_zero_of_40_integrated_portfolio_cells_24_forks_exhausted",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
-    "SYS-COG-ALPHA": "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_templates_four_author_curve_series_zero_regenerated",
+    "SYS-COG-ALPHA": (
+        "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_templates_"
+        "four_author_curve_series_zero_regenerated_full_1_commit_history_1_fork_1_ref_"
+        "official_head_exhausted"
+    ),
     "SYS-CRYPTO-TRADE": "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_12_ablation_correspondences_zero_credit_37_forks_exhausted",
     "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",

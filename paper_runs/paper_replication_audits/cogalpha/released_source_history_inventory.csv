@@ -1,0 +1,2 @@
+commit,authored_at,committed_at,author_name,author_email,subject,tracked_paths,markdown_paths,archive_snapshot_paths_exact,structured_result_or_data_payload_paths,distinctive_paper_result_literal_hits,native_result_artifact_found,paper_result_credit
+6294d9ffa9dfc286fb14e82343f8f22a5f928c1c,2026-07-14T03:09:02Z,2026-07-14T03:09:02Z,uwFengyuan,oxfengyuan@gmail.com,first commit,47,45,47,0,0,False,False

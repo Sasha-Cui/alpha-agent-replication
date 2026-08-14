@@ -113,6 +113,65 @@ def test_author_prompt_release_gets_specification_not_runtime_credit() -> None:
     assert release["runtime_code_included"] is False
     assert release["datasets_included"] is False
     assert release["experiment_outputs_included"] is False
+    assert release["complete_public_history_audited"] is True
+    assert release["public_history_commits"] == 1
+    assert release["public_history_tracked_paths"] == 47
+    assert release["public_history_archive_snapshot_paths_exact"] == 47
+    assert release["public_history_result_artifacts_found"] == 0
+    assert release["public_forks_accessible"] == 1
+    assert release["public_fork_branch_refs_audited"] == 1
+    assert release["public_fork_unique_heads_audited"] == 1
+    assert release["public_fork_divergent_heads_audited"] == 0
+    assert release["public_fork_native_result_artifacts_found"] is False
+    assert release["public_fork_paper_result_credit"] is False
+
+
+def test_complete_prompt_history_and_sole_public_fork_add_no_result_lineage() -> None:
+    history = rows("released_source_history_inventory.csv")
+    forks = rows("public_fork_branch_ref_snapshot.csv")
+    census = json.loads((AUDIT_DIR / "public_fork_census.json").read_text())
+    assert len(history) == 1
+    assert history[0]["commit"] == audit.PROMPT_COMMIT
+    assert history[0]["tracked_paths"] == "47"
+    assert history[0]["markdown_paths"] == "45"
+    assert history[0]["archive_snapshot_paths_exact"] == "47"
+    assert history[0]["structured_result_or_data_payload_paths"] == "0"
+    assert history[0]["distinctive_paper_result_literal_hits"] == "0"
+    assert history[0]["native_result_artifact_found"] == "False"
+    assert history[0]["paper_result_credit"] == "False"
+    assert len(forks) == 1
+    assert forks[0]["repository"] == audit.PUBLIC_FORK_REPOSITORY
+    assert forks[0]["head_commit"] == audit.PROMPT_COMMIT
+    assert forks[0]["relation_to_official_head"] == "official_head_exact"
+    assert forks[0]["commits_ahead_of_official"] == "0"
+    assert forks[0]["commits_behind_official"] == "0"
+    assert forks[0]["unique_commits_beyond_official_history"] == "0"
+    assert forks[0]["unique_blobs_beyond_official_history"] == "0"
+    assert forks[0]["native_result_artifact_found"] == "False"
+    assert forks[0]["paper_result_credit"] == "False"
+    assert census["census_date"] == "2026-08-14"
+    assert census["official_history_commits"] == 1
+    assert census["official_history_tracked_paths"] == 47
+    assert census["official_history_archive_snapshot_paths_exact"] == 47
+    assert census["official_history_result_artifacts_found"] == 0
+    assert census["github_rest_reported_forks"] == 1
+    assert census["accessible_public_forks"] == 1
+    assert census["accessible_branch_refs"] == 1
+    assert census["tag_refs"] == 0
+    assert census["unique_heads"] == 1
+    assert census["official_head_exact_unique_heads"] == 1
+    assert census["divergent_unique_heads"] == 0
+    assert census["unique_commits_beyond_official_history"] == 0
+    assert census["unique_blobs_beyond_official_history"] == 0
+    assert census["native_result_artifacts_found"] == 0
+    assert census["paper_result_credit"] is False
+    data = manifest()
+    assert data["repository_history_commits_audited"] == 1
+    assert data["repository_history_archive_snapshot_paths_exact"] == 47
+    assert data["repository_history_result_artifacts_found"] == 0
+    assert data["public_forks_accessible"] == 1
+    assert data["public_fork_native_result_artifacts_found"] is False
+    assert data["public_fork_paper_result_credit"] is False
 
 
 def test_components_execute_without_becoming_paper_results() -> None:
@@ -245,5 +304,9 @@ def test_manifest_hashes_outputs_and_readme_states_boundary() -> None:
     assert "native CogAlpha experiments are **not reproduced**" in text
     assert "0/150 and 0/306" in text
     assert "39 attributable prompt templates" in text
+    assert "complete public Git surface was also exhausted" in text
+    assert "all 47 Git paths are" in text
+    assert "one accessible fork with one branch" in text
+    assert "zero unique commits, zero unique blobs" in text
     assert "4/4" in text
     assert "No local proxy" in text

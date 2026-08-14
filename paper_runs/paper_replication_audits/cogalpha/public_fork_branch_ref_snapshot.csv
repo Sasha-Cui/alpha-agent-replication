@@ -1,0 +1,2 @@
+repository,url,branch,head_commit,relation_to_official_head,commits_ahead_of_official,commits_behind_official,tag_refs,unique_commits_beyond_official_history,unique_blobs_beyond_official_history,native_result_artifact_found,paper_result_credit
+qifox/CogAlpha_Prompt,https://github.com/qifox/CogAlpha_Prompt,main,6294d9ffa9dfc286fb14e82343f8f22a5f928c1c,official_head_exact,0,0,0,0,0,False,False

@@ -1,0 +1,19 @@
+{
+  "accessible_branch_refs": 1,
+  "accessible_public_forks": 1,
+  "census_date": "2026-08-14",
+  "divergent_unique_heads": 0,
+  "github_rest_reported_forks": 1,
+  "interpretation": "the complete official prompt-repository history is one commit whose 47 paths exactly match the audited archive and contain no structured result payload or distinctive paper-result value; the sole accessible fork resolves exactly to that official head and adds no commit, blob, or result lineage",
+  "native_result_artifacts_found": 0,
+  "official_head_exact_unique_heads": 1,
+  "official_history_archive_snapshot_paths_exact": 47,
+  "official_history_commits": 1,
+  "official_history_result_artifacts_found": 0,
+  "official_history_tracked_paths": 47,
+  "paper_result_credit": false,
+  "tag_refs": 0,
+  "unique_blobs_beyond_official_history": 0,
+  "unique_commits_beyond_official_history": 0,
+  "unique_heads": 1
+}

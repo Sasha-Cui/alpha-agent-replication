@@ -14,6 +14,7 @@ import csv
 import hashlib
 import json
 import re
+import subprocess
 import tarfile
 from collections import Counter
 from pathlib import Path, PurePosixPath
@@ -30,6 +31,17 @@ WORK_ID = "CensusArxiv251118850"
 SYSTEM_ID = "SYS-COG-ALPHA"
 ARXIV_ID = "2511.18850"
 PROMPT_COMMIT = "6294d9ffa9dfc286fb14e82343f8f22a5f928c1c"
+PROMPT_REPOSITORY = "https://github.com/uwFengyuan/CogAlpha_Prompt"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_REPOSITORY = "qifox/CogAlpha_Prompt"
+RESULT_ARTIFACT_SUFFIXES = (
+    ".ckpt", ".csv", ".db", ".json", ".jsonl", ".npy", ".npz", ".parquet",
+    ".pickle", ".pkl", ".pt", ".pth", ".safetensors", ".sqlite", ".tsv",
+    ".xls", ".xlsx",
+)
+PAPER_RESULT_LITERALS = (
+    "0.0591", "0.0814", "0.3410", "0.4350", "1.8999", "0.4385",
+)
 
 PINS = {
     "primary/acl-final.bib": "7cae59d5f9ecef2a0b8285fb02b346b2f3487271dc714da81669d64b3c537fac",
@@ -106,6 +118,21 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def git(
+    repository: Path, *args: str, check: bool = True
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", "-C", str(repository), *args],
+        check=check,
+        capture_output=True,
+        text=True,
+    )
 
 
 def tree_digest(path: Path) -> tuple[str, int]:
@@ -195,6 +222,142 @@ def validate_inputs(scratch: Path) -> dict[str, Any]:
         "v4_source_members": sorted(v4_members),
         "prompt_commit": PROMPT_COMMIT,
     }
+
+
+def public_history_and_fork_audit(
+    scratch: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Audit the entire one-commit prompt history and its sole public fork."""
+    repository = scratch / "repository_history"
+    if not repository.is_dir():
+        raise FileNotFoundError(repository)
+    if git(repository, "rev-parse", "--is-shallow-repository").stdout.strip() != "false":
+        raise ValueError("CogAlpha prompt history checkout is shallow")
+    origin = git(repository, "remote", "get-url", "origin").stdout.strip()
+    if origin.removesuffix(".git") != PROMPT_REPOSITORY:
+        raise ValueError(f"CogAlpha prompt origin changed: {origin}")
+    fsck = git(
+        repository,
+        "fsck",
+        "--full",
+        "--no-reflogs",
+        "--unreachable",
+        "--no-progress",
+    )
+    if fsck.stdout.strip() or fsck.stderr.strip():
+        raise ValueError(f"CogAlpha prompt checkout has unreviewed objects: {fsck.stdout}")
+    commits = git(repository, "rev-list", "--reverse", "--all").stdout.splitlines()
+    if commits != [PROMPT_COMMIT]:
+        raise ValueError(f"CogAlpha prompt history changed: {commits}")
+    if git(repository, "rev-parse", "refs/remotes/origin/main").stdout.strip() != PROMPT_COMMIT:
+        raise ValueError("CogAlpha official main head changed")
+    fork_refs = {}
+    for line in git(
+        repository,
+        "for-each-ref",
+        "--format=%(refname)%09%(objectname)",
+        "refs/remotes/forks",
+    ).stdout.splitlines():
+        refname, head = line.split("\t")
+        fork_refs[refname] = head
+    if fork_refs != {"refs/remotes/forks/qifox/main": PROMPT_COMMIT}:
+        raise ValueError(f"CogAlpha public-fork refs changed: {fork_refs}")
+    if git(repository, "for-each-ref", "--format=%(refname)", "refs/tags").stdout.strip():
+        raise ValueError("CogAlpha prompt repository now exposes an unreviewed tag")
+
+    paths = git(repository, "ls-tree", "-r", "--name-only", PROMPT_COMMIT).stdout.splitlines()
+    if len(paths) != 47 or sum(path.endswith(".md") for path in paths) != 45:
+        raise ValueError("CogAlpha prompt release tree changed")
+    snapshot_root = scratch / "prompt-repo"
+    literal_hits: list[str] = []
+    result_paths = [path for path in paths if path.lower().endswith(RESULT_ARTIFACT_SUFFIXES)]
+    for path in paths:
+        payload = subprocess.run(
+            ["git", "-C", str(repository), "show", f"{PROMPT_COMMIT}:{path}"],
+            check=True,
+            capture_output=True,
+        ).stdout
+        snapshot_path = snapshot_root / path
+        if not snapshot_path.is_file() or sha256_bytes(payload) != sha256(snapshot_path):
+            raise ValueError(f"CogAlpha Git/archive snapshot mismatch: {path}")
+        if path.endswith(".md"):
+            text = payload.decode("utf-8", errors="replace")
+            literal_hits.extend(literal for literal in PAPER_RESULT_LITERALS if literal in text)
+    if result_paths or literal_hits:
+        raise ValueError(
+            "CogAlpha prompt history contains an unreviewed result artifact: "
+            f"paths={result_paths}, literals={sorted(set(literal_hits))}"
+        )
+    authored_at, committed_at, author_name, author_email, subject = git(
+        repository,
+        "show",
+        "-s",
+        "--format=%aI%x09%cI%x09%an%x09%ae%x09%s",
+        PROMPT_COMMIT,
+    ).stdout.rstrip("\n").split("\t", 4)
+    history_rows = [{
+        "commit": PROMPT_COMMIT,
+        "authored_at": authored_at,
+        "committed_at": committed_at,
+        "author_name": author_name,
+        "author_email": author_email,
+        "subject": subject,
+        "tracked_paths": len(paths),
+        "markdown_paths": sum(path.endswith(".md") for path in paths),
+        "archive_snapshot_paths_exact": len(paths),
+        "structured_result_or_data_payload_paths": len(result_paths),
+        "distinctive_paper_result_literal_hits": len(literal_hits),
+        "native_result_artifact_found": False,
+        "paper_result_credit": False,
+    }]
+    fork_only = git(
+        repository,
+        "rev-list",
+        "refs/remotes/forks/qifox/main",
+        "--not",
+        "refs/remotes/origin/main",
+    ).stdout.splitlines()
+    if fork_only:
+        raise ValueError(f"CogAlpha public fork adds unreviewed commits: {fork_only}")
+    fork_rows = [{
+        "repository": PUBLIC_FORK_REPOSITORY,
+        "url": f"https://github.com/{PUBLIC_FORK_REPOSITORY}",
+        "branch": "main",
+        "head_commit": PROMPT_COMMIT,
+        "relation_to_official_head": "official_head_exact",
+        "commits_ahead_of_official": 0,
+        "commits_behind_official": 0,
+        "tag_refs": 0,
+        "unique_commits_beyond_official_history": 0,
+        "unique_blobs_beyond_official_history": 0,
+        "native_result_artifact_found": False,
+        "paper_result_credit": False,
+    }]
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "official_history_commits": len(history_rows),
+        "official_history_tracked_paths": len(paths),
+        "official_history_archive_snapshot_paths_exact": len(paths),
+        "official_history_result_artifacts_found": 0,
+        "github_rest_reported_forks": 1,
+        "accessible_public_forks": 1,
+        "accessible_branch_refs": 1,
+        "tag_refs": 0,
+        "unique_heads": 1,
+        "official_head_exact_unique_heads": 1,
+        "divergent_unique_heads": 0,
+        "unique_commits_beyond_official_history": 0,
+        "unique_blobs_beyond_official_history": 0,
+        "native_result_artifacts_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "the complete official prompt-repository history is one commit whose 47 paths "
+            "exactly match the audited archive and contain no structured result payload or "
+            "distinctive paper-result value; the sole accessible fork resolves exactly to "
+            "that official head and adds no commit, blob, or result lineage"
+        ),
+    }
+    return history_rows, fork_rows, summary
 
 
 def empirical_table_blocks(tex: str) -> dict[str, str]:
@@ -534,6 +697,7 @@ def discovery_ledger(scratch: Path) -> list[dict[str, Any]]:
 
 def build(scratch: Path, output: Path) -> dict[str, Any]:
     validated = validate_inputs(scratch)
+    history, fork_branches, fork_summary = public_history_and_fork_audit(scratch)
     output.mkdir(parents=True, exist_ok=True)
     tables = table_ledger(scratch)
     prose_figures = prose_and_figure_ledger()
@@ -544,6 +708,9 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "method_specification_audit.csv", method_audit())
     write_csv(output / "internal_consistency_audit.csv", consistency_audit())
     write_csv(output / "discovery_evidence.csv", discovery_ledger(scratch))
+    write_csv(output / "released_source_history_inventory.csv", history)
+    write_csv(output / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    write_json(output / "public_fork_census.json", fork_summary)
     write_json(output / "component_execution.json", component_execution(scratch))
 
     by_edition = {}
@@ -597,7 +764,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             },
         },
         "prompt_release": {
-            "repository": "https://github.com/uwFengyuan/CogAlpha_Prompt",
+            "repository": PROMPT_REPOSITORY,
             "commit": PROMPT_COMMIT,
             "created_utc": "2026-07-14T02:46:37Z",
             "commit_utc": "2026-07-14T03:09:02Z",
@@ -607,6 +774,22 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             "runtime_code_included": False,
             "datasets_included": False,
             "experiment_outputs_included": False,
+            "complete_public_history_audited": True,
+            "public_history_commits": len(history),
+            "public_history_tracked_paths": history[0]["tracked_paths"],
+            "public_history_archive_snapshot_paths_exact": history[0][
+                "archive_snapshot_paths_exact"
+            ],
+            "public_history_result_artifacts_found": 0,
+            "public_fork_census_date": fork_summary["census_date"],
+            "public_forks_accessible": fork_summary["accessible_public_forks"],
+            "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+            "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+            "public_fork_divergent_heads_audited": fork_summary[
+                "divergent_unique_heads"
+            ],
+            "public_fork_native_result_artifacts_found": False,
+            "public_fork_paper_result_credit": False,
         },
         "validated_inputs": validated,
     }
@@ -637,6 +820,15 @@ runner, frozen constituent memberships/OHLCV snapshot, immutable model
 checkpoint or request log, realized factor pools, checker/evolution traces,
 seeds, predictions, actions, holdings, dated returns, or raw result arrays are
 released.
+
+The complete public Git surface was also exhausted as of 2026-08-14.  The
+official history has exactly that one commit, and all 47 Git paths are
+byte-for-byte identical to the pinned release archive.  Across the full history
+there is no structured result/data payload and none of six distinctive
+published result values.  GitHub reports one accessible fork with one branch
+ref and no tag refs; it resolves exactly to the official head and adds zero
+result lineage.  It adds zero unique commits, zero unique blobs, and zero
+paper-result credit.
 
 ## Edition denominators
 
@@ -679,6 +871,29 @@ artifacts never existed.  No local proxy is credited as CogAlpha.
         "author_output_curve_series_regenerated": 0,
         "published_factor_listings_executed_on_synthetic_fixture": 3,
         "native_empirical_units_regenerated": 0,
+        "repository_history_commits_audited": len(history),
+        "repository_history_tracked_paths": history[0]["tracked_paths"],
+        "repository_history_archive_snapshot_paths_exact": history[0][
+            "archive_snapshot_paths_exact"
+        ],
+        "repository_history_result_artifacts_found": 0,
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary[
+            "github_rest_reported_forks"
+        ],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_tag_refs_audited": fork_summary["tag_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_unique_commits_beyond_official_history": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "public_fork_unique_blobs_beyond_official_history": fork_summary[
+            "unique_blobs_beyond_official_history"
+        ],
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "full_end_to_end_pipeline_reproduced": False,
         "paper_evidence_route": "public_prompt_specification_only",
         "output_sha256": {},

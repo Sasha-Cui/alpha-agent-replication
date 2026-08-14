@@ -95,13 +95,17 @@ def test_native_ledger_records_specification_credit_and_zero_results() -> None:
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_"
-        "templates_four_author_curve_series_zero_regenerated"
+        "templates_four_author_curve_series_zero_regenerated_full_1_commit_history_"
+        "1_fork_1_ref_official_head_exhausted"
     )
     assert row["fidelity_class"] == "F1_static_no_native_output"
     note = row["concise_evidence_note"]
     assert "0/306 current empirical units reproduce" in note
     assert "39 prompt templates" in note
     assert "author-output correspondence but no raw dated array" in note
+    assert "complete one-commit public history" in note
+    assert "sole accessible public fork" in note
+    assert "zero unique commits, zero unique blobs" in note
     assert "R1 prompt specification" in note
     assert "local M0 narrative translation remains secondary" in note
 

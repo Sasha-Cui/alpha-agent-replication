@@ -24,6 +24,15 @@ checkpoint or request log, realized factor pools, checker/evolution traces,
 seeds, predictions, actions, holdings, dated returns, or raw result arrays are
 released.
 
+The complete public Git surface was also exhausted as of 2026-08-14.  The
+official history has exactly that one commit, and all 47 Git paths are
+byte-for-byte identical to the pinned release archive.  Across the full history
+there is no structured result/data payload and none of six distinctive
+published result values.  GitHub reports one accessible fork with one branch
+ref and no tag refs; it resolves exactly to the official head and adds zero
+result lineage.  It adds zero unique commits, zero unique blobs, and zero
+paper-result credit.
+
 ## Edition denominators
 
 - ArXiv v1: 150 table cells, 138 unique after 12 repeated cells; eight
