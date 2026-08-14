@@ -609,7 +609,7 @@
       {
         "corrected_at_utc": "2026-08-13T00:15:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/atlas/source_provenance.json",
-        "reason": "paper cites a same-author StockSim precursor repository; it is a real framework component but contains no ATLAS/Adaptive-OPRO research payload",
+        "reason": "paper cites a same-author StockSim precursor repository; its full history has a native XOM precursor output but no attributable ATLAS/Adaptive-OPRO research payload",
         "source_archive_sha256": "824b8b041ff5bf8733d2f755015432eefdc94fdb65fd53b1d1f22a2d99696db7",
         "system_id": "SYS-ATLAS"
       },
@@ -719,7 +719,7 @@
     ],
     "registry_path": "literature_review/census_v1/system_registry.csv",
     "registry_rows": 103,
-    "registry_sha256": "1081d4676b1a3c238b5edcafac35648be0642b2de144104b752ba25450ebd835",
+    "registry_sha256": "512fd077f103d72db234d8166e69c8e4c52ab6cb04d6cbdeaf9736a56021c488",
     "schema_version": 1,
     "wilson_method": {
       "confidence": 0.95,

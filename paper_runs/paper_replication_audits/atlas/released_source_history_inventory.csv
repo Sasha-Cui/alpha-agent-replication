@@ -1,0 +1,21 @@
+commit,authored_at,subject,tracked_paths,python_source_paths,historical_chart_paths,historical_order_payload_paths,paper_specific_identifier_or_adaptive_opro_paths,paper_specific_system_source_found
+48284a3ffbfdbfa2babef2330d238953ad4dc729,2025-07-05T11:44:02+03:00,Initial Demo Commit,76,43,4,0,0,False
+294286ef454dd3117ce5722a7e0c33130d24c2f8,2025-07-05T11:50:20+03:00,Removed .html files,72,43,0,0,0,False
+c66bd75df824d458e70fe7775e607306194101ea,2025-07-05T12:00:04+03:00,Website,93,43,0,0,0,False
+b391cd859625908411bdef73778c6ddde5c0d682,2025-07-05T12:18:48+03:00,Update README.md,72,43,0,0,0,False
+c6c52755a711c935957100dd69f6ce32195a8862,2025-07-05T13:39:13+03:00,Update index.html,93,43,0,0,0,False
+9af70a58c032619928a52fe040eb6e1d21087b3c,2025-07-05T13:40:01+03:00,Add files via upload,93,43,0,0,0,False
+5975b94d128e05c48a0d49ae63293ecf8027e209,2025-07-05T13:46:41+03:00,Update README.md,93,43,0,0,0,False
+3b175dabd71f97858fcc89e6bb7ec3fb61f69be4,2025-07-05T13:47:26+03:00,Removed dashboard,71,43,0,0,0,False
+81edcf1993497d7af79d7503682f6e92dae9a55a,2025-07-05T13:49:23+03:00,Update README.md,71,43,0,0,0,False
+66388ebccca9b692078b5d3210751a7c624d8d61,2025-07-05T13:57:18+03:00,Add files via upload,93,43,0,0,0,False
+bb00f483516dca1880dfb2abb2d5c312842d49d0,2025-07-05T13:58:22+03:00,Update README.md,71,43,0,0,0,False
+3f4e16c068aef3e0eb7cea888e9dbe57e2f661b0,2025-07-05T14:24:16+03:00,Processed data suitable for order placement by historical_order_trader in LOB mode,81,43,0,10,0,False
+06f6e3a7607d16f73c2a15138ca8257b9cbcc571,2025-07-05T20:34:34+03:00,Fixed a bug concerning live data,81,43,0,10,0,False
+b607c5f1fcb61d963a0a8853c83253f6af074d7a,2025-07-05T20:51:10+03:00,Handled issue with Sell order placement in OrderBook Mode,81,43,0,10,0,False
+3cf30017accda061d2ac0e9f2e2f5d3319ab6b37,2025-07-05T20:54:15+03:00,Update README.md,81,43,0,10,0,False
+bd34b2ebab06390e3d6d90195e7e5d57c779942f,2025-07-06T14:14:49+03:00,Update README.md,81,43,0,10,0,False
+c1a25c195df4c93b2db4a748f80ceae0f1c9fe50,2025-07-15T13:12:01+03:00,Update README.md,81,43,0,10,0,False
+c4a9cf368d2d9a5a01a477f266db0cd1e94edc10,2025-07-15T11:20:40+01:00,Update figures,93,43,0,0,0,False
+8cc07265d25d59c6f30402e63a5e1b6b6f83b759,2025-07-15T11:22:30+01:00,update figures,93,43,0,0,0,False
+49ea2e5bc850a2c2aee0172db2d072c46de82e60,2025-07-15T12:02:59+01:00,Add files via upload,93,43,0,0,0,False

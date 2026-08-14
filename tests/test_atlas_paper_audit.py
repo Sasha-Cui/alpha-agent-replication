@@ -111,6 +111,59 @@ def test_stock_sim_route_is_cited_same_author_but_precedes_atlas() -> None:
     assert provenance["release_boundary"]["atlas_specific_source_recovered"] is False
 
 
+def test_complete_stocksim_history_recovers_precursor_output_without_paper_credit() -> None:
+    history = rows("released_source_history_inventory.csv")
+    assert len(history) == 20
+    assert [row["commit"] for row in history] == list(audit.STOCKSIM_HISTORY_COMMITS)
+    assert all(row["python_source_paths"] == "43" for row in history)
+    assert all(
+        row["paper_specific_system_source_found"] == "False" for row in history
+    )
+    artifacts = rows("historical_precursor_artifact_inventory.csv")
+    assert len(artifacts) == 4
+    xom = next(row for row in artifacts if row["path"] == "charts/XOM.html")
+    assert xom["artifact_role"] == "stocksim_precursor_agent_output"
+    assert xom["dated_agent_order_events"] == "20"
+    assert xom["dated_portfolio_points"] == "43"
+    assert xom["attributable_atlas_paper_run"] == "False"
+    assert xom["published_result_regenerated"] == "False"
+    assert xom["paper_result_credit"] == "False"
+    release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
+    full = release["full_public_history_audit"]
+    assert full["public_commits_reviewed"] == 20
+    assert full["public_branches_reviewed"] == 2
+    assert full["public_tags"] == 0
+    assert full["public_releases"] == 0
+    assert full["unreachable_objects"] == 0
+    assert full["historical_unique_paths_reviewed"] == 107
+    assert full["historical_xom_initial_cash_roi_percent"] == 5.01564
+    assert full["historical_xom_matches_published_atlas_xom_roi_mean"] is False
+    assert full["historical_lob_asset"] == "AAPL"
+    assert full["historical_lob_order_records"] == 191_015
+
+
+def test_demo_config_receives_partial_method_evidence_not_complete_atlas_credit() -> None:
+    release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
+    for field in (
+        "demo_config_matches_atlas_xom_asset",
+        "demo_config_matches_atlas_date_window",
+        "demo_config_matches_atlas_daily_cadence",
+        "demo_config_matches_atlas_initial_cash",
+        "demo_config_matches_atlas_three_analyst_roles",
+    ):
+        assert release[field] is True
+    assert release["demo_config_is_complete_atlas_experiment_config"] is False
+    methods = {row["dimension"]: row for row in rows("method_specification_audit.csv")}
+    assert methods["precursor_xom_configuration"]["status"] == "partially_recovered"
+    assert methods["assets_and_period"]["status"] == (
+        "partially_recovered_not_frozen"
+    )
+    assert methods["market_data"]["status"] == "precursor_chart_only"
+    assert methods["precursor_native_output"]["status"] == (
+        "recovered_not_paper_attributable"
+    )
+
+
 def test_license_boundary_distinguishes_readme_declaration_from_license_text() -> None:
     release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
     assert release["license_declaration"] == "MIT"
@@ -175,8 +228,8 @@ def test_atlas_payload_and_full_pipeline_are_absent() -> None:
 def test_method_inventory_preserves_paper_release_boundaries() -> None:
     methods = {row["dimension"]: row for row in rows("method_specification_audit.csv")}
     assert methods["paper_specific_release"]["status"] == "missing"
-    assert methods["assets_and_period"]["status"] == "specified_not_frozen"
-    assert methods["market_data"]["status"] == "specified_not_released"
+    assert methods["assets_and_period"]["status"] == "partially_recovered_not_frozen"
+    assert methods["market_data"]["status"] == "precursor_chart_only"
     assert methods["agent_architecture"]["status"] == "precursor_components_execute"
     assert methods["adaptive_opro"]["status"] == "paper_specification_only"
     assert methods["replications"]["status"] == "specified_not_released"
@@ -228,6 +281,8 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
         "all five official revisions", "209 official and all 209 rebuilt pages",
         "1,784 printed empirical scalar units", "43/43 modules import",
         "four controlled checks", "no ATLAS identifier",
+        "20 commits across `main` and", "20 dated, explained orders",
+        "+5.01564%", "191,015 AAPL orders",
         "0/1,784 empirical numeric table units", "0/5 empirical panels regenerated",
         "not currently a true experimental replication", "package.",
     ):

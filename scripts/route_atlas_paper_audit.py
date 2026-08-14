@@ -80,6 +80,12 @@ def static_observation() -> dict[str, Any]:
         "modules_imported_after_adjustment": 43,
         "modules_failed_import_after_adjustment": 0,
         "stock_sim_component_checks_passed": 4,
+        "full_public_history_commits_reviewed": 20,
+        "full_public_history_branches_reviewed": 2,
+        "historical_precursor_xom_dated_orders": 20,
+        "historical_precursor_xom_portfolio_points": 43,
+        "historical_precursor_xom_initial_cash_roi_percent": 5.01564,
+        "historical_precursor_output_attributable_to_atlas_paper_run": False,
         "atlas_specific_code_released": False,
         "adaptive_opro_implementation_released": False,
         "atlas_sample_config_released": False,
@@ -117,7 +123,7 @@ def atlas_row() -> dict[str, Any]:
         "evidence": [{
             "url": URL,
             "tier": "R3",
-            "basis": "cited same-author precursor framework has code+environment+runner+configuration support; ATLAS and Adaptive-OPRO research payload are absent",
+            "basis": "cited same-author precursor framework has code+environment+runner+configuration support and a recovered historical XOM output; ATLAS and Adaptive-OPRO research payload are absent",
             "markers": observation,
         }],
     }
@@ -158,6 +164,12 @@ def validate_inputs() -> None:
         "native_component_checks_passed": 4,
         "modules_imported_after_audit_adjustment": 43,
         "modules_failed_import_after_audit_adjustment": 0,
+        "repository_public_commits_audited": 20,
+        "repository_public_branches_audited": 2,
+        "repository_historical_unique_paths_audited": 107,
+        "historical_precursor_agent_output_artifacts_recovered": 1,
+        "historical_precursor_dated_orders_recovered": 20,
+        "historical_precursor_portfolio_points_recovered": 43,
     }
     for key, value in expected.items():
         if manifest.get(key) != value:
@@ -169,6 +181,9 @@ def validate_inputs() -> None:
         or release["archive_sha256"] != ARCHIVE_SHA256
         or release["license_declaration"] != "MIT"
         or release["license_text_file_present"] is not False
+        or release["full_public_history_audit"]["public_commits_reviewed"] != 20
+        or release["full_public_history_audit"]["historical_xom_order_events"] != 20
+        or release["historical_precursor_output_attributable_to_atlas_paper_run"] is not False
         or release["atlas_specific_code_released"] is not False
     ):
         raise ValueError("ATLAS/StockSim release provenance mismatch")
@@ -196,7 +211,7 @@ def route() -> None:
     summary_payload = json.loads(summary_json_path.read_text(encoding="utf-8"))
     correction = {
         "system_id": SYSTEM_ID,
-        "reason": "paper cites a same-author StockSim precursor repository; it is a real framework component but contains no ATLAS/Adaptive-OPRO research payload",
+        "reason": "paper cites a same-author StockSim precursor repository; its full history has a native XOM precursor output but no attributable ATLAS/Adaptive-OPRO research payload",
         "corrected_at_utc": OBSERVED_AT,
         "evidence": "paper_runs/paper_replication_audits/atlas/source_provenance.json",
         "source_archive_sha256": ARCHIVE_SHA256,

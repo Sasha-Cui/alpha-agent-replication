@@ -25,7 +25,26 @@ compilation pass, all 43/43 modules import, and four controlled checks cover
 config validation, metrics, order matching, and candle-trigger semantics.
 Those are StockSim component checks only and receive no ATLAS result credit.
 
-The pinned repository predates ATLAS v1 and contains no ATLAS identifier,
+The complete public StockSim history comprises 20 commits across `main` and
+`website`, with zero tags, zero releases, 107 unique historical paths, and no
+unreachable objects. The initial commit contained four later-deleted Plotly
+charts. Three are market-analysis-only LLY/NVDA charts. `charts/XOM.html`
+contains a native precursor run with 20 dated, explained orders and a 43-point
+portfolio path over the paper's exact XOM window; it ends at $105,015.64, or
++5.01564% from the stated $100,000 cash. This value matches none of the 26
+published ATLAS XOM ROI means, and the artifact has no ATLAS, prompting-strategy,
+model, seed, or paper-run identifier. It is recoverable StockSim native-output
+evidence, not an attributable ATLAS run or a regenerated paper result.
+
+The StockSim demo config is also closer to the method than a generic example:
+it exactly matches XOM, 2025-04-28 through 2025-06-28, daily decisions,
+$100,000 initial cash, and the market/news/fundamental analyst roles. It does
+not contain the ATLAS central-agent implementation, Baseline/Reflection/
+Adaptive-OPRO strategy logic, LLY/NVDA experiment configs, seven-model matrix,
+or three-run design. Ten later JSON files contain 191,015 AAPL orders from
+2025-03-01 for order-book replay and are unrelated to the ATLAS daily study.
+
+Every public revision predates ATLAS v1 and contains no ATLAS identifier,
 Adaptive-OPRO implementation, promised
 `configs/o4-mini-adaptive-opro-config.yaml`, exact three-asset experiment
 configuration, frozen Massive/Polygon data, news or fundamental inputs, model

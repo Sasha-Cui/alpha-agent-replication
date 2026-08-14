@@ -97,19 +97,29 @@ ARTIFACT_NOTES = {
         "for the prespecified six-country common task.",
     ),
     "SYS-ATLAS": (
-        "N",
+        "Y",
         "A pinned ATLAS audit covers all five official arXiv revisions, all 209 "
         "official and 209 rebuilt pages, 1,784 empirical numeric table units, and "
-        "five empirical panels. The paper cites StockSim, whose 81-file repository "
-        "belongs to first author Charidimos Papadakis and predates ATLAS v1. The "
+        "five empirical panels. The complete public StockSim history has 20 commits, "
+        "two branches, zero tags/releases, 107 unique paths, and no unreachable "
+        "objects. Its initial commit contains a later-deleted XOM native precursor "
+        "output with 20 dated explained orders and a 43-point portfolio path over "
+        "ATLAS's exact window, ending +5.01564% from $100,000; that value matches no "
+        "published ATLAS XOM ROI mean and has no paper-run identifier, so receives no "
+        "ATLAS result credit. The demo config exactly matches XOM, the paper window, "
+        "daily cadence, initial cash, and three analyst roles, while later AAPL "
+        "orderbook payloads contain 191,015 unrelated orders dated 2025-03-01. The "
+        "paper cites StockSim, whose 81-file repository belongs to first author "
+        "Charidimos Papadakis and predates ATLAS v1. The "
         "release has 43 Python modules and real analyst, trader, exchange, metric, "
         "order, and configuration components. Its requirements install an obsolete "
         "asyncio backport that is syntactically invalid on Python 3.12; after removing "
         "only that backport in an isolated audit environment, dependency and bytecode "
         "checks pass, 43/43 modules import, and four controlled checks pass for config "
         "validation, metrics, order matching, and candle triggers. These are StockSim "
-        "precursor-component checks and receive no ATLAS result credit. The repository "
-        "has no ATLAS or Adaptive-OPRO implementation, promised sample config, frozen "
+        "precursor-component checks and receive no ATLAS result credit. All 20 "
+        "revisions have no ATLAS or Adaptive-OPRO implementation, promised sample "
+        "config, frozen "
         "market/news/fundamental inputs, model requests/responses, filled runtime "
         "prompts, optimizer trajectory, seeds, run artifacts, or result arrays. Its "
         "README declares MIT but no license text exists and GitHub detects no license. "
@@ -1353,7 +1363,7 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-LOGICS": "paper_audit:completed_zero_of_158_table_units_zero_of_204_figure_markers_zero_of_18_empirical_panels_two_paper_derived_algorithm_checks_three_unattributable_candidates",
     "SYS-ALPHA-AGENT-EVO": "paper_audit:completed_zero_of_147_table_units_zero_of_21_empirical_panels_zero_of_40_figure_annotations_listed_unrecovered_supplement_no_attributable_pipeline",
     "SYS-TRADE-IN-MINUTES": "paper_audit:completed_zero_of_349_active_empirical_units_zero_of_8_empirical_panels_listed_broken_supplement_no_attributable_pipeline",
-    "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_cited_same_author_stocksim_four_component_checks_missing_atlas_lineage",
+    "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_full_stocksim_history_one_unattributed_xom_precursor_output_four_component_checks_missing_atlas_lineage",
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_full_six_commit_history_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_full_two_commit_history_nine_tests_appendix_component_missing_research_lineage",
@@ -1412,6 +1422,7 @@ OUTPUT_BLOCKS = {
     "SYS-QUANTA-ALPHA": "A3_CN_US_rendered_outputs_no_six_country_security_mapping",
     "SYS-FIN-ANALYST": "A3_wrong_asset_scope_TSLA_BTC_not_six_country_security_panel",
     "SYS-JANUS-Q": "A3_CN_only_portfolio_NAV_no_six_country_security_mapping",
+    "SYS-ATLAS": "A3_US_XOM_precursor_portfolio_path_no_paper_run_identifier_or_six_country_security_mapping",
     "SYS-AUTOMATE-STRATEGY": "A3_output_lacks_six_country_security_mapping",
     "SYS-CRYPTO-TRADE": "A3_wrong_asset_class_crypto",
     "SYS-GURU-AGENTS": "A3_US_only_not_six_country",

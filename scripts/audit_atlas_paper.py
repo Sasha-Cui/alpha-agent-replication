@@ -8,6 +8,7 @@ import hashlib
 import json
 import math
 import re
+import subprocess
 import tarfile
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable, Mapping
@@ -23,6 +24,37 @@ SYSTEM_ID = "SYS-ATLAS"
 ARXIV_ID = "2510.15949"
 REPOSITORY_URL = "https://github.com/harrypapadakis/StockSim"
 REPOSITORY_HEAD = "c1a25c195df4c93b2db4a748f80ceae0f1c9fe50"
+STOCKSIM_HISTORY_COMMITS = (
+    "48284a3ffbfdbfa2babef2330d238953ad4dc729",
+    "294286ef454dd3117ce5722a7e0c33130d24c2f8",
+    "c66bd75df824d458e70fe7775e607306194101ea",
+    "b391cd859625908411bdef73778c6ddde5c0d682",
+    "c6c52755a711c935957100dd69f6ce32195a8862",
+    "9af70a58c032619928a52fe040eb6e1d21087b3c",
+    "5975b94d128e05c48a0d49ae63293ecf8027e209",
+    "3b175dabd71f97858fcc89e6bb7ec3fb61f69be4",
+    "81edcf1993497d7af79d7503682f6e92dae9a55a",
+    "66388ebccca9b692078b5d3210751a7c624d8d61",
+    "bb00f483516dca1880dfb2abb2d5c312842d49d0",
+    "3f4e16c068aef3e0eb7cea888e9dbe57e2f661b0",
+    "06f6e3a7607d16f73c2a15138ca8257b9cbcc571",
+    "b607c5f1fcb61d963a0a8853c83253f6af074d7a",
+    "3cf30017accda061d2ac0e9f2e2f5d3319ab6b37",
+    "bd34b2ebab06390e3d6d90195e7e5d57c779942f",
+    REPOSITORY_HEAD,
+    "c4a9cf368d2d9a5a01a477f266db0cd1e94edc10",
+    "8cc07265d25d59c6f30402e63a5e1b6b6f83b759",
+    "49ea2e5bc850a2c2aee0172db2d072c46de82e60",
+)
+STOCKSIM_INITIAL_COMMIT = STOCKSIM_HISTORY_COMMITS[0]
+STOCKSIM_WEBSITE_HEAD = STOCKSIM_HISTORY_COMMITS[-1]
+STOCKSIM_HISTORY_PATHS_SHA256 = "5913570cb5553dbdba8a2c55c648fdc802270f9ead3f7655d55481c08fa950d4"
+STOCKSIM_CHARTS = {
+    "charts/LLY_stocksim_chart.html": (13, 313, False, "511f4b8658a532df3bdaf63de78b174f5b7d81aa6459c63d13961c6ee42dc2a0"),
+    "charts/NVDA.html": (10, 293, False, "ac4b8fa14f907ffa05254b4d53a23323e3a9241d7f6779df08255501efcb07fb"),
+    "charts/NVDA_stocksim_chart.html": (10, 313, False, "0b4bea58f68fdb8bd4aaacf5c11a5191a00ce120c233a1a369a4a3163017e1be"),
+    "charts/XOM.html": (8, 293, True, "7cbd9cf03e459284fcc72599ec820666caf65e9f1edb38ee4b676d947c85da37"),
+}
 
 VERSION_SPECS = {
     "v1": ("2025-10-10T13:01:51Z", 37, 9, 4_583_668, 13, 9),
@@ -71,6 +103,7 @@ PINS = {
     "release/commits.json": "08bcdd3d6e0f214c8d6acf613428a850172886d1d5496e1a983ad4a31618e9df",
     "release/branches.json": "99b98465e73b0a9e84a8f0d319709f2a34cea72ea4c24587c79d2e1143d4f59b",
     "release/tags.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "release/releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "release/search--Adaptive-Trading-with-LLM-AgentS-.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
     "release/search-2510-15949.json": "4e249914105697662a90cbfcc973d3aa4b816fafebc211d2a7148ae9f935d491",
     "release/search-Adaptive-OPRO.json": "95ad09ef6bf634ec6648c54b8d3ca9b6ba706775801651acd8afd63b22f19f8d",
@@ -108,6 +141,27 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def git(repo: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(repo), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def git_bytes(repo: Path, *args: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(repo), *args],
+        check=True,
+        capture_output=True,
+    ).stdout
 
 
 def write_csv(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
@@ -238,6 +292,188 @@ def figure_rows() -> list[dict[str, Any]]:
     } for figure, panels, empirical, description in specs]
 
 
+def plotly_data(value: bytes) -> list[dict[str, Any]]:
+    text = value.decode("utf-8")
+    marker = text.rfind("Plotly.newPlot")
+    if marker < 0:
+        raise ValueError("Plotly payload missing")
+    start = text.index("[", marker)
+    data, _ = json.JSONDecoder().raw_decode(text[start:])
+    if not isinstance(data, list):
+        raise ValueError("Plotly trace payload is not a list")
+    return data
+
+
+def xom_published_roi_means(tex: str) -> list[float]:
+    values: list[float] = []
+    for raw_row in re.split(r"\\\\(?:\[[^]]*\])?", table_block(tex, "tab:xom_results")):
+        raw_row = raw_row.replace(r"\&", "and")
+        cells = raw_row.split("&")
+        if len(cells) < 3:
+            continue
+        match = re.search(r"(?<![A-Za-z])[-+]?\d+(?:\.\d+)?", cells[2])
+        if match:
+            values.append(float(match.group()))
+    if len(values) != 26:
+        raise ValueError(f"XOM ROI mean inventory changed: {len(values)}")
+    return values
+
+
+def stocksim_history_rows(
+    scratch: Path, tex: str
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Audit every public StockSim commit and recover deleted precursor outputs."""
+    repo = scratch / "stocksim"
+    if git(repo, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise ValueError("StockSim history checkout is shallow")
+    commits = git(repo, "rev-list", "--reverse", "--all").splitlines()
+    if commits != list(STOCKSIM_HISTORY_COMMITS):
+        raise ValueError(f"StockSim public history changed: {commits}")
+    unreachable = git(
+        repo, "fsck", "--full", "--no-reflogs", "--unreachable", "--no-progress"
+    ).strip()
+    if unreachable:
+        raise ValueError(f"StockSim has unreviewed unreachable objects: {unreachable}")
+    branches = json.loads((scratch / "release/branches.json").read_text())
+    branch_heads = sorted((row["name"], row["commit"]["sha"]) for row in branches)
+    if branch_heads != sorted((("main", REPOSITORY_HEAD), ("website", STOCKSIM_WEBSITE_HEAD))):
+        raise ValueError(f"StockSim public branches changed: {branch_heads}")
+    if json.loads((scratch / "release/tags.json").read_text()) or json.loads(
+        (scratch / "release/releases.json").read_text()
+    ):
+        raise ValueError("StockSim now exposes an unreviewed tag or release")
+
+    all_paths = sorted(
+        set(
+            git(
+                repo, "-c", "core.quotePath=false", "log", "--all", "--name-only",
+                "--pretty=format:",
+            ).splitlines()
+        )
+        - {""}
+    )
+    paths_digest = sha256_bytes(("\n".join(all_paths) + "\n").encode())
+    if len(all_paths) != 107 or paths_digest != STOCKSIM_HISTORY_PATHS_SHA256:
+        raise ValueError(f"StockSim historical path surface changed: {len(all_paths)} {paths_digest}")
+
+    rows: list[dict[str, Any]] = []
+    search_pattern = r"ATLAS|Adaptive[-_ ]OPRO|2510[.]15949|o4-mini-adaptive"
+    for commit in commits:
+        authored_at, subject = git(
+            repo, "show", "-s", "--format=%aI%x09%s", commit
+        ).rstrip().split("\t", 1)
+        paths = git(repo, "ls-tree", "-r", "--name-only", commit).splitlines()
+        source_paths = [path for path in paths if path.endswith(".py")]
+        chart_paths = [path for path in paths if path.startswith("charts/")]
+        order_paths = [path for path in paths if path.startswith("orders/")]
+        search = subprocess.run(
+            [
+                "git", "-C", str(repo), "grep", "-I", "-l", "-i", "-E",
+                search_pattern, commit, "--", "*.py", "*.yaml", "*.yml", "*.json",
+                "*.md", "*.txt", "*.j2",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if search.returncode not in {0, 1}:
+            raise ValueError(f"StockSim history search failed at {commit}: {search.stderr}")
+        paper_specific_paths = search.stdout.splitlines()
+        rows.append({
+            "commit": commit,
+            "authored_at": authored_at,
+            "subject": subject,
+            "tracked_paths": len(paths),
+            "python_source_paths": len(source_paths),
+            "historical_chart_paths": len(chart_paths),
+            "historical_order_payload_paths": len(order_paths),
+            "paper_specific_identifier_or_adaptive_opro_paths": len(paper_specific_paths),
+            "paper_specific_system_source_found": bool(paper_specific_paths),
+        })
+    if any(row["python_source_paths"] != 43 for row in rows) or any(
+        row["paper_specific_system_source_found"] for row in rows
+    ):
+        raise ValueError("StockSim source-history boundary changed")
+
+    artifact_rows: list[dict[str, Any]] = []
+    xom_portfolio: list[float] | None = None
+    xom_orders = 0
+    for path, (expected_traces, expected_candles, has_output, expected_sha) in STOCKSIM_CHARTS.items():
+        value = git_bytes(repo, "show", f"{STOCKSIM_INITIAL_COMMIT}:{path}")
+        if sha256_bytes(value) != expected_sha:
+            raise ValueError(f"StockSim historical chart changed: {path}")
+        traces = plotly_data(value)
+        candles = next(trace for trace in traces if trace.get("type") == "candlestick")
+        portfolio = next((trace for trace in traces if trace.get("name") == "Portfolio Value"), None)
+        orders = next((trace for trace in traces if trace.get("name") == "LLM Trading Orders"), None)
+        if len(traces) != expected_traces or len(candles["x"]) != expected_candles:
+            raise ValueError(f"StockSim historical chart dimensions changed: {path}")
+        if (portfolio is not None) is not has_output or (orders is not None) is not has_output:
+            raise ValueError(f"StockSim historical output classification changed: {path}")
+        if portfolio:
+            xom_portfolio = [float(value) for value in portfolio["y"]]
+            xom_orders = len(orders["x"])
+        artifact_rows.append({
+            "commit": STOCKSIM_INITIAL_COMMIT,
+            "path": path,
+            "sha256": expected_sha,
+            "plotly_traces": len(traces),
+            "market_candles": len(candles["x"]),
+            "first_market_date": candles["x"][0],
+            "last_market_date": candles["x"][-1],
+            "dated_agent_order_events": 0 if orders is None else len(orders["x"]),
+            "dated_portfolio_points": 0 if portfolio is None else len(portfolio["x"]),
+            "artifact_role": "market_analysis_only" if portfolio is None else "stocksim_precursor_agent_output",
+            "attributable_atlas_paper_run": False,
+            "published_result_regenerated": False,
+            "paper_result_credit": False,
+        })
+    if xom_portfolio is None or len(xom_portfolio) != 43 or xom_orders != 20:
+        raise ValueError("StockSim historical XOM output dimensions changed")
+    initial_cash_roi = xom_portfolio[-1] / 100_000.0 - 1.0
+    published_roi_means = xom_published_roi_means(tex)
+    exact_published_match = any(round(value, 2) == round(initial_cash_roi * 100, 2) for value in published_roi_means)
+    if round(initial_cash_roi * 100, 5) != 5.01564 or exact_published_match:
+        raise ValueError("StockSim historical XOM paper-linkage boundary changed")
+
+    lob_orders = 0
+    for index in range(10):
+        payload = json.loads(
+            git(repo, "show", f"{REPOSITORY_HEAD}:orders/original_part{index}.json")
+        )
+        if set(payload) != {"AAPL"}:
+            raise ValueError("StockSim LOB payload asset changed")
+        records = payload["AAPL"]
+        if records[0]["timestamp"][:10] != "2025-03-01" or records[-1]["timestamp"][:10] != "2025-03-01":
+            raise ValueError("StockSim LOB payload date changed")
+        lob_orders += len(records)
+    if lob_orders != 191_015:
+        raise ValueError(f"StockSim LOB payload size changed: {lob_orders}")
+
+    summary = {
+        "public_commits_reviewed": len(commits),
+        "public_branches_reviewed": len(branch_heads),
+        "public_tags": 0,
+        "public_releases": 0,
+        "unreachable_objects": 0,
+        "historical_unique_paths_reviewed": len(all_paths),
+        "historical_charts_recovered": len(artifact_rows),
+        "historical_market_analysis_only_charts": 3,
+        "historical_precursor_agent_output_charts": 1,
+        "historical_xom_portfolio_points": len(xom_portfolio),
+        "historical_xom_order_events": xom_orders,
+        "historical_xom_initial_cash_roi_percent": round(initial_cash_roi * 100, 5),
+        "historical_xom_matches_published_atlas_xom_roi_mean": exact_published_match,
+        "historical_xom_attributable_to_atlas_paper_run": False,
+        "historical_xom_paper_result_credit": False,
+        "historical_lob_asset": "AAPL",
+        "historical_lob_date": "2025-03-01",
+        "historical_lob_order_records": lob_orders,
+        "history_complete_for_current_public_refs": True,
+    }
+    return rows, artifact_rows, summary
+
+
 def prompt_rows() -> list[dict[str, Any]]:
     prompts = (
         ("central_trader_initial", "central trading agent initial decision template"),
@@ -264,11 +500,12 @@ def method_rows() -> list[dict[str, str]]:
         ("official_document_source", "complete", "all five arXiv PDFs and source packages recovered and rebuilt"),
         ("framework_provenance", "cited_same_author_precursor", "paper cites StockSim; repository owner Charidimos Papadakis is first author"),
         ("framework_release_date", "precedes_paper", "pinned main head is dated 2025-07-15; ATLAS v1 was submitted 2025-10-10"),
-        ("paper_specific_release", "missing", "StockSim contains no ATLAS, Adaptive-OPRO, paper identifier, or promised ATLAS config"),
-        ("assets_and_period", "specified_not_frozen", "LLY/XOM/NVDA, 2025-04-28 to 2025-06-28, daily; exact vendor snapshots absent"),
+        ("paper_specific_release", "missing", "all 20 public StockSim revisions contain no ATLAS, Adaptive-OPRO, paper identifier, or promised ATLAS config"),
+        ("precursor_xom_configuration", "partially_recovered", "StockSim demo matches XOM, 2025-04-28 to 2025-06-28, daily cadence, $100,000 cash, and three analyst roles; it lacks the ATLAS central agent, prompting strategies, other assets, and experiment matrix"),
+        ("assets_and_period", "partially_recovered_not_frozen", "StockSim demo exactly matches XOM and the paper window; LLY/NVDA experiment configs and frozen vendor snapshots are absent"),
         ("market_regimes", "specified", "LLY bearish-volatile, XOM sideways, NVDA bullish"),
         ("initial_portfolio", "specified", "$100,000 cash and no positions"),
-        ("market_data", "specified_not_released", "Massive/Polygon daily adjusted bars; frozen responses and corporate-action state absent"),
+        ("market_data", "precursor_chart_only", "initial StockSim history has LLY/XOM/NVDA market-analysis charts through 2025-06-27, not frozen ATLAS input snapshots or vendor-response lineage"),
         ("news_and_fundamentals", "not_released", "time-aligned source records, query responses, and preprocessing outputs absent"),
         ("execution_model", "specified_abstraction", "deterministic daily execution abstracts latency, slippage, impact, intraday partial fills"),
         ("agent_architecture", "precursor_components_execute", "StockSim analyst, trader, exchange, metric, order, and template modules import; four controlled checks pass"),
@@ -277,12 +514,13 @@ def method_rows() -> list[dict[str, str]]:
         ("reflection", "paper_templates_only", "daily and weekly mechanisms described; logs, model calls, and complete trajectories absent"),
         ("adaptive_opro", "paper_specification_only", "K=5 and clipped score are specified; optimizer implementation, states, edit history, and requests absent"),
         ("replications", "specified_not_released", "three runs per configuration, but random seeds and run artifacts are absent"),
+        ("precursor_native_output", "recovered_not_paper_attributable", "deleted initial XOM chart contains 20 dated orders and 43 portfolio points, ending +5.01564% from $100,000; no published ATLAS XOM ROI mean matches"),
         ("published_results", "not_regenerated", "zero of 1,784 empirical scalar units and zero of five empirical panels regenerated"),
         ("as_declared_environment", "fails_obsolete_dependency", "requirements installs obsolete asyncio backport that is a SyntaxError on Python 3.12"),
         ("bounded_environment_adjustment", "component_checks_pass", "after removing backport, pip check, compileall, 43/43 imports, and four deterministic component checks pass"),
         ("full_launcher", "blocked_external_and_missing_paper_payload", "demo validates then stops for RabbitMQ, log path, and market-data API key; it is not ATLAS"),
         ("author_tests", "absent", "zero tracked test files"),
-        ("search_for_release", "no_public_atlas_implementation_found", "pinned repository and exact GitHub searches expose paper references, not an ATLAS implementation"),
+        ("search_for_release", "no_public_atlas_implementation_found", "all 20 commits, both branches, zero tags/releases, and exact GitHub searches expose no ATLAS implementation"),
     )
     return [{"version": "v5", "dimension": d, "status": s, "detail": detail} for d, s, detail in specs]
 
@@ -310,6 +548,9 @@ def internal_rows() -> list[dict[str, str]]:
         ("current_result_scalar_inventory", "source_parsed", "1,784 printed empirical scalars across 11 result tables"),
         ("version_history", "fully_audited", "v1-v5 source and PDFs recovered, rebuilt, and visually paired"),
         ("stock_sim_lineage", "cited_same_author_component", "real first-party precursor framework, but no ATLAS-specific payload"),
+        ("stock_sim_public_history", "fully_audited", "20 commits across main and website, zero tags/releases, 107 historical paths, and no unreachable objects"),
+        ("deleted_precursor_outputs", "recovered_no_paper_credit", "initial commit held LLY/NVDA/XOM charts; only XOM has 20 agent orders and a 43-point portfolio path, but it matches no published ATLAS XOM ROI mean"),
+        ("lob_order_payloads", "unrelated_precursor_fixture", "191,015 AAPL order records dated 2025-03-01 support StockSim orderbook replay, not ATLAS's daily three-asset study"),
         ("repository_license", "readme_declaration_only", "README says MIT; no license-text file and GitHub reports no detected license"),
         ("repository_readme_paths", "stale_or_incorrect", "banner points to StockSim/StockSim and config.yaml, while repository is harrypapadakis/StockSim and ships demo_config.yaml"),
         ("code_release_language", "not_fulfilled_in_pinned_evidence", "v1-v4 promise release upon publication; v5 still references implementation details in code and a sample ATLAS config that are absent"),
@@ -318,7 +559,7 @@ def internal_rows() -> list[dict[str, str]]:
     return [{"check": check, "status": status, "detail": detail} for check, status, detail in specs]
 
 
-def release_audit(scratch: Path) -> dict[str, Any]:
+def release_audit(scratch: Path, history: Mapping[str, Any]) -> dict[str, Any]:
     archive = scratch / f"release/{REPOSITORY_HEAD}.tar.gz"
     members = validate_tar(archive)
     texts = tar_texts(archive)
@@ -380,6 +621,12 @@ def release_audit(scratch: Path) -> dict[str, Any]:
         "native_component_fixture": checks,
         "native_component_checks_passed": 4,
         "demo_config_validated": True,
+        "demo_config_matches_atlas_xom_asset": True,
+        "demo_config_matches_atlas_date_window": True,
+        "demo_config_matches_atlas_daily_cadence": True,
+        "demo_config_matches_atlas_initial_cash": True,
+        "demo_config_matches_atlas_three_analyst_roles": True,
+        "demo_config_is_complete_atlas_experiment_config": False,
         "full_launcher_operational_without_external_services": False,
         "full_launcher_blockers": ["RabbitMQ host", "log directory", "Polygon or Alpha Vantage API key"],
         "atlas_specific_code_released": False,
@@ -392,6 +639,9 @@ def release_audit(scratch: Path) -> dict[str, Any]:
         "paper_seeds_released": False,
         "paper_run_artifacts_released": False,
         "paper_result_arrays_released": False,
+        "full_public_history_audit": dict(history),
+        "historical_precursor_native_output_recovered": True,
+        "historical_precursor_output_attributable_to_atlas_paper_run": False,
         "published_table_or_figure_regenerated": False,
         "paper_result_credit": False,
     }
@@ -425,7 +675,26 @@ compilation pass, all 43/43 modules import, and four controlled checks cover
 config validation, metrics, order matching, and candle-trigger semantics.
 Those are StockSim component checks only and receive no ATLAS result credit.
 
-The pinned repository predates ATLAS v1 and contains no ATLAS identifier,
+The complete public StockSim history comprises 20 commits across `main` and
+`website`, with zero tags, zero releases, 107 unique historical paths, and no
+unreachable objects. The initial commit contained four later-deleted Plotly
+charts. Three are market-analysis-only LLY/NVDA charts. `charts/XOM.html`
+contains a native precursor run with 20 dated, explained orders and a 43-point
+portfolio path over the paper's exact XOM window; it ends at $105,015.64, or
++5.01564% from the stated $100,000 cash. This value matches none of the 26
+published ATLAS XOM ROI means, and the artifact has no ATLAS, prompting-strategy,
+model, seed, or paper-run identifier. It is recoverable StockSim native-output
+evidence, not an attributable ATLAS run or a regenerated paper result.
+
+The StockSim demo config is also closer to the method than a generic example:
+it exactly matches XOM, 2025-04-28 through 2025-06-28, daily decisions,
+$100,000 initial cash, and the market/news/fundamental analyst roles. It does
+not contain the ATLAS central-agent implementation, Baseline/Reflection/
+Adaptive-OPRO strategy logic, LLY/NVDA experiment configs, seven-model matrix,
+or three-run design. Ten later JSON files contain 191,015 AAPL orders from
+2025-03-01 for order-book replay and are unrelated to the ATLAS daily study.
+
+Every public revision predates ATLAS v1 and contains no ATLAS identifier,
 Adaptive-OPRO implementation, promised
 `configs/o4-mini-adaptive-opro-config.yaml`, exact three-asset experiment
 configuration, frozen Massive/Polygon data, news or fundamental inputs, model
@@ -448,6 +717,9 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     inventory = validate_inputs(scratch)
     output.mkdir(parents=True, exist_ok=True)
     tex = (scratch / "source-v5/acl_latex.tex").read_text(encoding="utf-8")
+    history_rows, historical_artifacts, history_summary = stocksim_history_rows(
+        scratch, tex
+    )
     results = result_rows(tex)
     figures = figure_rows()
     versions = []
@@ -475,7 +747,9 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "prompt_artifact_inventory.csv", prompt_rows())
     write_csv(output / "method_specification_audit.csv", method_rows())
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
-    release = release_audit(scratch)
+    write_csv(output / "released_source_history_inventory.csv", history_rows)
+    write_csv(output / "historical_precursor_artifact_inventory.csv", historical_artifacts)
+    release = release_audit(scratch, history_summary)
     write_json(output / "release_execution_audit.json", release)
     write_json(output / "source_provenance.json", {
         "work_id": WORK_ID, "system_id": SYSTEM_ID,
@@ -498,6 +772,8 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             "attribution_strength": "paper_cited_same_author_precursor_framework",
             "stock_sim_source_recovered": True,
             "stock_sim_component_execution_completed": True,
+            "stock_sim_complete_public_history_reviewed": True,
+            "stock_sim_precursor_native_output_recovered": True,
             "atlas_specific_source_recovered": False,
             "complete_research_inputs_recovered": False,
             "published_result_lineage_recovered": False,
@@ -526,6 +802,21 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "runtime_prompt_trajectories_recovered": 0,
         "official_component_repository_recovered": True,
         "repository_files": len(inventory["release"]),
+        "repository_public_commits_audited": history_summary["public_commits_reviewed"],
+        "repository_public_branches_audited": history_summary["public_branches_reviewed"],
+        "repository_historical_unique_paths_audited": history_summary[
+            "historical_unique_paths_reviewed"
+        ],
+        "historical_precursor_agent_output_artifacts_recovered": history_summary[
+            "historical_precursor_agent_output_charts"
+        ],
+        "historical_precursor_dated_orders_recovered": history_summary[
+            "historical_xom_order_events"
+        ],
+        "historical_precursor_portfolio_points_recovered": history_summary[
+            "historical_xom_portfolio_points"
+        ],
+        "historical_precursor_output_attributable_to_atlas_paper_run": False,
         "author_tests_passed": 0,
         "native_component_checks_passed": 4,
         "modules_imported_after_audit_adjustment": 43,

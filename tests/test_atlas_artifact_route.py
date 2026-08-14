@@ -42,6 +42,14 @@ def test_pinned_artifact_row_is_same_author_reachable_readme_mit_and_r3() -> Non
     assert observation["asyncio_import_after_audit_adjustment_passed"] is True
     assert observation["bytecode_compilation_after_adjustment_passed"] is True
     assert observation["stock_sim_component_checks_passed"] == 4
+    assert observation["full_public_history_commits_reviewed"] == 20
+    assert observation["historical_precursor_xom_dated_orders"] == 20
+    assert observation["historical_precursor_xom_portfolio_points"] == 43
+    assert observation["historical_precursor_xom_initial_cash_roi_percent"] == 5.01564
+    assert (
+        observation["historical_precursor_output_attributable_to_atlas_paper_run"]
+        is False
+    )
     assert observation["atlas_specific_code_released"] is False
     assert observation["paper_result_credit"] is False
 
@@ -75,19 +83,22 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     row = next(item for item in rows if item["system_id"] == route.SYSTEM_ID)
     assert row["public_artifact_status"] == "reachable_static_snapshot"
     assert row["static_tier"] == "R3"
-    assert row["native_dated_signal_or_return_shipped"] == "N"
+    assert row["native_dated_signal_or_return_shipped"] == "Y"
     assert row["prespecified_G7_monthly_common_task_compatible"] == "N"
-    assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
-    assert row["fidelity_class"] == "F1_static_no_native_output"
+    assert row["blocking_stage"] == (
+        "A3_US_XOM_precursor_portfolio_path_no_paper_run_identifier_or_six_country_"
+        "security_mapping"
+    )
+    assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_"
-        "empirical_panels_cited_same_author_stocksim_four_component_checks_missing_"
-        "atlas_lineage"
+        "empirical_panels_full_stocksim_history_one_unattributed_xom_precursor_output_"
+        "four_component_checks_missing_atlas_lineage"
     )
     note = row["concise_evidence_note"]
     for marker in (
         "1,784", "five empirical panels", "43/43", "four controlled checks",
-        "asyncio", "no ATLAS", "0/1,784", "0/5",
+        "asyncio", "no ATLAS", "0/1,784", "0/5", "20 commits", "+5.01564%",
     ):
         assert marker in note
 
@@ -106,7 +117,7 @@ def test_paper_evidence_route_moves_atlas_to_public_code_with_blocker() -> None:
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["proxy_role"] == "no_proxy"
-    assert "A2_no_shipped_native_dated_output" in row["precise_native_or_access_blocker"]
+    assert "A3_US_XOM_precursor_portfolio_path" in row["precise_native_or_access_blocker"]
 
 
 def test_static_paper_assets_reflect_atlas_correction() -> None:

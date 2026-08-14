@@ -5,6 +5,9 @@ reflection_gain_correlation,matches_rounded_claim,"table-derived r=-0.777240, be
 current_result_scalar_inventory,source_parsed,"1,784 printed empirical scalars across 11 result tables"
 version_history,fully_audited,"v1-v5 source and PDFs recovered, rebuilt, and visually paired"
 stock_sim_lineage,cited_same_author_component,"real first-party precursor framework, but no ATLAS-specific payload"
+stock_sim_public_history,fully_audited,"20 commits across main and website, zero tags/releases, 107 historical paths, and no unreachable objects"
+deleted_precursor_outputs,recovered_no_paper_credit,"initial commit held LLY/NVDA/XOM charts; only XOM has 20 agent orders and a 43-point portfolio path, but it matches no published ATLAS XOM ROI mean"
+lob_order_payloads,unrelated_precursor_fixture,"191,015 AAPL order records dated 2025-03-01 support StockSim orderbook replay, not ATLAS's daily three-asset study"
 repository_license,readme_declaration_only,README says MIT; no license-text file and GitHub reports no detected license
 repository_readme_paths,stale_or_incorrect,"banner points to StockSim/StockSim and config.yaml, while repository is harrypapadakis/StockSim and ships demo_config.yaml"
 code_release_language,not_fulfilled_in_pinned_evidence,v1-v4 promise release upon publication; v5 still references implementation details in code and a sample ATLAS config that are absent

@@ -1,0 +1,5 @@
+commit,path,sha256,plotly_traces,market_candles,first_market_date,last_market_date,dated_agent_order_events,dated_portfolio_points,artifact_role,attributable_atlas_paper_run,published_result_regenerated,paper_result_credit
+48284a3ffbfdbfa2babef2330d238953ad4dc729,charts/LLY_stocksim_chart.html,511f4b8658a532df3bdaf63de78b174f5b7d81aa6459c63d13961c6ee42dc2a0,13,313,2024-03-28T04:00:00+00:00,2025-06-27T04:00:00+00:00,0,0,market_analysis_only,False,False,False
+48284a3ffbfdbfa2babef2330d238953ad4dc729,charts/NVDA.html,ac4b8fa14f907ffa05254b4d53a23323e3a9241d7f6779df08255501efcb07fb,10,293,2024-04-26T04:00:00+00:00,2025-06-27T04:00:00+00:00,0,0,market_analysis_only,False,False,False
+48284a3ffbfdbfa2babef2330d238953ad4dc729,charts/NVDA_stocksim_chart.html,0b4bea58f68fdb8bd4aaacf5c11a5191a00ce120c233a1a369a4a3163017e1be,10,313,2024-03-28T04:00:00+00:00,2025-06-27T04:00:00+00:00,0,0,market_analysis_only,False,False,False
+48284a3ffbfdbfa2babef2330d238953ad4dc729,charts/XOM.html,7cbd9cf03e459284fcc72599ec820666caf65e9f1edb38ee4b676d947c85da37,8,293,2024-04-26T04:00:00+00:00,2025-06-27T04:00:00+00:00,20,43,stocksim_precursor_agent_output,False,False,False
