@@ -101,6 +101,8 @@ def test_committed_audit_is_self_hashing_and_never_promotes_the_proxy() -> None:
     inventory = read_csv(output / "released_source_inventory.csv")
     assets = read_csv(output / "paper_source_asset_inventory.csv")
     native = json.loads((output / "native_release_inspection.json").read_text(encoding="utf-8"))
+    forks = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
 
     assert manifest["overall_status"] == "not_reproduced_official_repository_is_placeholder_zero_native_code_or_results"
     assert manifest["full_paper_reproduced"] is False
@@ -119,6 +121,12 @@ def test_committed_audit_is_self_hashing_and_never_promotes_the_proxy() -> None:
     }
     assert manifest["tracked_source_files_total"] == 1
     assert manifest["tracked_source_python_files_total"] == 0
+    assert manifest["public_forks_accessible"] == 9
+    assert manifest["public_fork_branch_refs_audited"] == 9
+    assert manifest["public_fork_unique_heads_audited"] == 2
+    assert manifest["public_fork_divergent_heads_audited"] == 0
+    assert manifest["public_fork_unique_commits_beyond_official_history"] == 0
+    assert manifest["public_fork_implementation_or_result_artifacts_found"] == 0
     assert manifest["local_motif_proxy_fidelity"] == "M0_narrative_translation"
     assert manifest["local_motif_proxy_paper_result_credit"] is False
     assert len(tables) == 124
@@ -134,6 +142,23 @@ def test_committed_audit_is_self_hashing_and_never_promotes_the_proxy() -> None:
     assert native["tracked_python_files"] == 0
     assert native["native_code_execution_possible"] is False
     assert native["motif_proxy_counted_as_native"] is False
+    assert len(forks) == 9
+    assert Counter(row["relation_to_official_head"] for row in forks) == {
+        "official_head_exact": 8,
+        "official_history_ancestor": 1,
+    }
+    assert Counter(row["commits_behind_official"] for row in forks) == {"0": 8, "1": 1}
+    assert all(row["unique_commits_beyond_official_history"] == "0" for row in forks)
+    assert all(row["unique_blobs_beyond_official_history"] == "0" for row in forks)
+    assert all(row["implementation_or_result_artifact_found"] == "False" for row in forks)
+    assert fork_census["census_date"] == audit.PUBLIC_FORK_CENSUS_DATE
+    assert fork_census["github_rest_reported_forks"] == 9
+    assert fork_census["accessible_public_forks"] == 9
+    assert fork_census["accessible_branch_refs"] == 9
+    assert fork_census["unique_heads"] == 2
+    assert fork_census["divergent_unique_heads"] == 0
+    assert fork_census["implementation_or_result_artifacts_found"] == 0
+    assert fork_census["paper_result_credit"] is False
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
 
@@ -149,3 +174,6 @@ def test_pinned_primary_sources_when_available() -> None:
     ]
     assert len(audit.source_inventory(source_root)) == 1
     assert len(audit.paper_source_inventory(paper_source)) == 22
+    fork_rows, fork_census = audit.public_fork_audit(source_root)
+    assert len(fork_rows) == 9
+    assert fork_census["unique_heads"] == 2

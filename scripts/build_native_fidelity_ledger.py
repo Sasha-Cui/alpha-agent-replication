@@ -273,7 +273,10 @@ ARTIFACT_NOTES = {
         "implementation and resources are available, but the only paper-era "
         "revision is a two-line title README and the current three-commit "
         "history still contains only one README marking inference code and "
-        "model weights Coming Soon. No code, environment, prompts, checkpoint, "
+        "model weights Coming Soon. All nine accessible forks and nine branch "
+        "refs resolve to two heads inside that same three-commit official history; "
+        "they add zero commits, blobs, tags, implementation, or result artifacts. "
+        "No code, environment, prompts, checkpoint, "
         "market/news data, factor lists, betas, baselines, seeds, paths, or "
         "outputs are shipped, so 0/652 table/heatmap cells and 0/70 audited "
         "implementation dimensions count as native reproductions. The local "
@@ -1470,7 +1473,10 @@ TARGETED_EXECUTION = {
         "paper_audit:completed_two_commit_history_1_coauthor_fork_provenance_only_exhausted_"
         "seven_strategy_diagnostics_zero_of_474_native_results"
     ),
-    "SYS-ALPHA-R1": "paper_audit:completed_zero_of_652_native_results_official_placeholder",
+    "SYS-ALPHA-R1": (
+        "paper_audit:completed_zero_of_652_native_results_official_placeholder_"
+        "9_forks_9_refs_2_official_history_heads_exhausted"
+    ),
     "SYS-ALPHA-QUANTER": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
     "SYS-CHAIN-OF-ALPHA": "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system",
     "SYS-TREEVO": "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_seven_prompt_templates_no_attributable_pipeline",

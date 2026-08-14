@@ -502,7 +502,8 @@ def test_alpha_r1_placeholder_audit_never_promotes_the_motif_proxy() -> None:
     assert row["paper_evidence_route"] == "public_code_available"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_zero_of_652_native_results_official_placeholder"
+        "paper_audit:completed_zero_of_652_native_results_official_placeholder_"
+        "9_forks_9_refs_2_official_history_heads_exhausted"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
@@ -510,6 +511,10 @@ def test_alpha_r1_placeholder_audit_never_promotes_the_motif_proxy() -> None:
     assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
     assert "0/652 table/heatmap cells" in row["precise_native_or_access_blocker"]
     assert "0/70 audited implementation dimensions" in row["precise_native_or_access_blocker"]
+    assert "All nine accessible forks" in row["precise_native_or_access_blocker"]
+    assert "zero commits, blobs, tags, implementation, or result artifacts" in row[
+        "precise_native_or_access_blocker"
+    ]
     assert "M0 narrative motif proxy" in row["precise_native_or_access_blocker"]
 
 

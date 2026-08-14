@@ -37,6 +37,18 @@ PAPER_ERA_COMMIT = "09b2f921fe2344fc370beafc26aa0d44a6913a5b"
 PAPER_ERA_COMMIT_DATE = "2025-12-26T18:06:58+08:00"
 CURRENT_README_SHA256 = "508c110b9c67243c7f5c3af80c0c2c24c8b929e9e3f3fa3d7e02cd2c763f40ae"
 PAPER_ERA_README_SHA256 = "97dd2fb2bbcf2081ec20c86fd5a9111cb4c0e1d39100bc3906dc0a6f5ca1c247"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_HEADS = {
+    "refs/remotes/forks/Avery-Xv/main": SOURCE_COMMIT,
+    "refs/remotes/forks/JSCJason/main": SOURCE_COMMIT,
+    "refs/remotes/forks/MaratGalin/main": SOURCE_COMMIT,
+    "refs/remotes/forks/SimonWang666/main": SOURCE_COMMIT,
+    "refs/remotes/forks/iamzuoyou/main": SOURCE_COMMIT,
+    "refs/remotes/forks/kevinhuacheng/main": SOURCE_COMMIT,
+    "refs/remotes/forks/lavender1203/main": SOURCE_COMMIT,
+    "refs/remotes/forks/yeyangvictor/main": SOURCE_COMMIT,
+    "refs/remotes/forks/zl007700/main": README_UPDATE_COMMIT,
+}
 
 PAPER_SOURCE_FILES = {
     "00README.json": "d1f6b1a71c9accb812ec5121d1fff7910c025ca7bb201948bacdb40941bc14e5",
@@ -647,6 +659,93 @@ def native_release_inspection(source_root: Path) -> dict[str, Any]:
     }
 
 
+def public_fork_audit(source_root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Classify all public fork heads against the complete three-commit history."""
+    if str(run_git(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise RuntimeError("Alpha-R1 fork-audit checkout is shallow")
+    origin = str(run_git(source_root, "remote", "get-url", "origin")).strip()
+    if origin.removesuffix(".git") != SOURCE_URL:
+        raise RuntimeError(f"Alpha-R1 origin changed: {origin}")
+    official_commits = set(str(run_git(source_root, "rev-list", SOURCE_COMMIT)).splitlines())
+    if official_commits != {SOURCE_COMMIT, README_UPDATE_COMMIT, PAPER_ERA_COMMIT}:
+        raise RuntimeError(f"Alpha-R1 official history changed: {official_commits}")
+
+    fork_refs: dict[str, str] = {}
+    for line in str(
+        run_git(
+            source_root,
+            "for-each-ref",
+            "--format=%(refname)%09%(objectname)",
+            "refs/remotes/forks",
+        )
+    ).splitlines():
+        refname, head = line.split("\t")
+        fork_refs[refname] = head
+    if fork_refs != PUBLIC_FORK_HEADS:
+        raise RuntimeError(f"Alpha-R1 public-fork refs changed: {fork_refs}")
+
+    rows = []
+    for refname, head in sorted(fork_refs.items()):
+        owner = refname.split("/")[3]
+        ahead = int(str(run_git(source_root, "rev-list", "--count", head, "--not", SOURCE_COMMIT)).strip())
+        behind = int(str(run_git(source_root, "rev-list", "--count", f"{head}..{SOURCE_COMMIT}")).strip())
+        if head == SOURCE_COMMIT:
+            relation = "official_head_exact"
+        elif head in official_commits:
+            relation = "official_history_ancestor"
+        else:
+            relation = "divergent_from_official_history"
+        if ahead or relation == "divergent_from_official_history":
+            raise RuntimeError(f"Alpha-R1 fork adds unreviewed history: {refname} at {head}")
+        rows.append(
+            {
+                "repository": f"{owner}/Alpha-R1",
+                "url": f"https://github.com/{owner}/Alpha-R1",
+                "branch": "main",
+                "head_commit": head,
+                "relation_to_official_head": relation,
+                "commits_ahead_of_official": ahead,
+                "commits_behind_official": behind,
+                "tag_refs": 0,
+                "unique_commits_beyond_official_history": 0,
+                "unique_blobs_beyond_official_history": 0,
+                "implementation_or_result_artifact_found": False,
+                "paper_result_credit": False,
+            }
+        )
+    if Counter(row["relation_to_official_head"] for row in rows) != {
+        "official_head_exact": 8,
+        "official_history_ancestor": 1,
+    }:
+        raise RuntimeError("Alpha-R1 fork relation census changed")
+    if Counter(row["commits_behind_official"] for row in rows) != {0: 8, 1: 1}:
+        raise RuntimeError("Alpha-R1 fork behind-count census changed")
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "official_repository": "FinStep-AI/Alpha-R1",
+        "official_history_commits": len(official_commits),
+        "github_rest_reported_forks": 9,
+        "accessible_public_forks": len(rows),
+        "accessible_branch_refs": len(rows),
+        "tag_refs": 0,
+        "unique_heads": len({row["head_commit"] for row in rows}),
+        "official_head_exact_forks": 8,
+        "official_history_ancestor_forks": 1,
+        "divergent_unique_heads": 0,
+        "unique_commits_beyond_official_history": 0,
+        "unique_blobs_beyond_official_history": 0,
+        "implementation_or_result_artifacts_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "all nine accessible forks expose one main branch inside the complete "
+            "three-commit official placeholder history: eight are exact at the official "
+            "head and one is the one-commit-behind README-update parent, so no fork adds "
+            "implementation, data, weights, outputs, or another result lineage"
+        ),
+    }
+    return rows, summary
+
+
 def verify_pins(source_root: Path, paper_pdf: Path, paper_source_archive: Path, paper_source_root: Path) -> None:
     if str(run_git(source_root, "rev-parse", "HEAD")).strip() != SOURCE_COMMIT:
         raise RuntimeError("Alpha-R1 source HEAD changed from the audited pin")
@@ -681,6 +780,7 @@ def build_audit(
     inventory = source_inventory(source_root)
     paper_assets = paper_source_inventory(paper_source_root)
     native = native_release_inspection(source_root)
+    fork_branches, fork_summary = public_fork_audit(source_root)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "paper_numeric_table_conformance.csv", tables)
@@ -691,7 +791,11 @@ def build_audit(
     write_csv(output_dir / "source_mechanism_conformance.csv", mechanisms)
     write_csv(output_dir / "released_source_inventory.csv", inventory)
     write_csv(output_dir / "paper_source_asset_inventory.csv", paper_assets)
+    write_csv(output_dir / "public_fork_branch_ref_snapshot.csv", fork_branches)
     (output_dir / "native_release_inspection.json").write_text(json.dumps(native, indent=2) + "\n", encoding="utf-8")
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
+    )
 
     result_claims = [row for row in claims if row["claim_role"] == "result"]
     status_counts = Counter(row["status"] for row in mechanisms)
@@ -714,6 +818,17 @@ def build_audit(
         "readme_update_after_submission_hours": 20.7911,
         "current_merge_after_submission_hours": 20.8403,
         "source_history_commits": 3,
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_unique_commits_beyond_official_history": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "public_fork_implementation_or_result_artifacts_found": fork_summary[
+            "implementation_or_result_artifacts_found"
+        ],
         "paper_era_source_revision_available": True,
         "paper_era_source_is_only_title_readme": True,
         "current_source_is_only_roadmap_readme": True,
@@ -765,7 +880,9 @@ def build_audit(
             "Alpha-R1 is not presently reproducible from its official repository. The only revision "
             "available before arXiv submission is a two-line title README, and the current three-commit "
             "history still resolves to one README that says inference code and model weights are coming "
-            "soon. This directly conflicts with the paper's statement that the full implementation and "
+            "soon. All nine accessible public forks resolve to two heads inside those same three commits "
+            "and add no implementation or result lineage. This directly conflicts with the paper's "
+            "statement that the full implementation and "
             "resources are available. The paper itself is unusually explicit about dates, portfolio "
             "rotation, VWAP, costs, and 652 displayed table/heatmap values; its six default heatmap cells "
             "are internally compatible with Table 1 after rounding. But none of the model, prompts, data, "
@@ -797,6 +914,11 @@ there is no public Alpha-R1 code to run.
   two-line title README and nothing else. The expanded README arrived 20.79
   hours after submission and explicitly says the code and models are being
   organized; inference code and model weights remain marked **Coming Soon**.
+- All **nine** accessible public forks are exhausted as of 2026-08-14. Each
+  exposes one `main` branch: eight are exact at the official head and one is
+  the one-commit-behind README-update parent. Across nine refs and two unique
+  official-history heads, the forks add zero commits, blobs, tags,
+  implementation files, weights, data, or result artifacts.
 
 ## Complete numeric-result boundary
 

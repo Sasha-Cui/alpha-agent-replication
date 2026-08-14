@@ -1,0 +1,10 @@
+repository,url,branch,head_commit,relation_to_official_head,commits_ahead_of_official,commits_behind_official,tag_refs,unique_commits_beyond_official_history,unique_blobs_beyond_official_history,implementation_or_result_artifact_found,paper_result_credit
+Avery-Xv/Alpha-R1,https://github.com/Avery-Xv/Alpha-R1,main,61feaa359bd57761f5ac58f75af46ddfed2d2d7b,official_head_exact,0,0,0,0,0,False,False
+JSCJason/Alpha-R1,https://github.com/JSCJason/Alpha-R1,main,61feaa359bd57761f5ac58f75af46ddfed2d2d7b,official_head_exact,0,0,0,0,0,False,False
+MaratGalin/Alpha-R1,https://github.com/MaratGalin/Alpha-R1,main,61feaa359bd57761f5ac58f75af46ddfed2d2d7b,official_head_exact,0,0,0,0,0,False,False
+SimonWang666/Alpha-R1,https://github.com/SimonWang666/Alpha-R1,main,61feaa359bd57761f5ac58f75af46ddfed2d2d7b,official_head_exact,0,0,0,0,0,False,False
+iamzuoyou/Alpha-R1,https://github.com/iamzuoyou/Alpha-R1,main,61feaa359bd57761f5ac58f75af46ddfed2d2d7b,official_head_exact,0,0,0,0,0,False,False
+kevinhuacheng/Alpha-R1,https://github.com/kevinhuacheng/Alpha-R1,main,61feaa359bd57761f5ac58f75af46ddfed2d2d7b,official_head_exact,0,0,0,0,0,False,False
+lavender1203/Alpha-R1,https://github.com/lavender1203/Alpha-R1,main,61feaa359bd57761f5ac58f75af46ddfed2d2d7b,official_head_exact,0,0,0,0,0,False,False
+yeyangvictor/Alpha-R1,https://github.com/yeyangvictor/Alpha-R1,main,61feaa359bd57761f5ac58f75af46ddfed2d2d7b,official_head_exact,0,0,0,0,0,False,False
+zl007700/Alpha-R1,https://github.com/zl007700/Alpha-R1,main,4e626b8af9411a904fc578028c5676308a79ac2b,official_history_ancestor,0,1,0,0,0,False,False

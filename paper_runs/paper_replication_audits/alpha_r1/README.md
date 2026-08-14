@@ -16,6 +16,11 @@ there is no public Alpha-R1 code to run.
   two-line title README and nothing else. The expanded README arrived 20.79
   hours after submission and explicitly says the code and models are being
   organized; inference code and model weights remain marked **Coming Soon**.
+- All **nine** accessible public forks are exhausted as of 2026-08-14. Each
+  exposes one `main` branch: eight are exact at the official head and one is
+  the one-commit-behind README-update parent. Across nine refs and two unique
+  official-history heads, the forks add zero commits, blobs, tags,
+  implementation files, weights, data, or result artifacts.
 
 ## Complete numeric-result boundary
 
