@@ -1,0 +1,33 @@
+{
+  "audit_date": "2026-08-14",
+  "repository_shallow": false,
+  "public_branch_heads": {
+    "gh-pages": "c6383f1d821b1def48d4f3f5d857fbdf5df405d4",
+    "main": "00a88cbbc3b946cbdf506038545d6b5c2df6a344"
+  },
+  "public_branches_total": 2,
+  "public_tags_total": 0,
+  "reachable_commits_total": 195,
+  "reachable_commit_list_sha256": "dd81a6771fd0881662706bf20fde7755f1fa843854de4b480fa8e10fa5b645c8",
+  "unique_historical_paths_total": 1870,
+  "historical_path_list_sha256": "6be757876c08518cc096a8114edc25d9d74728e069c95276d43b20294394a6b7",
+  "reachable_object_counts": {
+    "commit": 195,
+    "tree": 279,
+    "blob": 2228
+  },
+  "unreachable_objects_total": 0,
+  "historical_benchmark_csv_paths_total": 1800,
+  "historical_benchmark_asset_horizon_sets_total": 18,
+  "historical_native_result_artifact_candidates_total": 0,
+  "historical_author_rendered_result_paths_total": 3,
+  "historical_unique_result_image_blobs_total": 7,
+  "historical_unique_table_image_blobs_total": 4,
+  "historical_unique_one_hour_result_chart_blobs_total": 3,
+  "official_one_hour_figure_author_raster_correspondences_total": 2,
+  "intermediate_nonpaper_one_hour_result_rasters_total": 1,
+  "distinct_table_cells_author_rendered_correspondence": 240,
+  "version_specific_table_cells_author_rendered_correspondence": 480,
+  "historical_native_predictions_evaluators_returns_or_portfolio_paths": false,
+  "paper_result_credit_from_author_rendered_images": false
+}

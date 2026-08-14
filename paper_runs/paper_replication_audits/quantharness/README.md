@@ -1,14 +1,55 @@
 # QuantHarness paper-level conformance audit
 
-Overall verdict: **not reproduced**. The release provides unusually substantial
-sampled benchmark inputs and an inspectable multi-agent web framework, but not the
-paper experiment runner, predictions, risk-ratio paths, baseline implementations,
-portfolio paths, random splits/seeds, or numeric one-hour result paths.
+Overall verdict: **not reproduced after auditing every official paper revision and
+the complete public Git history**. The release provides substantial sampled inputs,
+an inspectable multi-agent web framework, and author-rendered result images, but not
+the experiment runner or native data paths needed to regenerate a published result.
 
-## Primary sources
+## Primary-source boundary
 
-- Official paper: https://arxiv.org/pdf/2509.09995v4 (arXiv v4; SHA-256 `751e6e7274bbf1fd5179153a28d2d29817c704b5d9b714b04ba57bd739cafda2`).
-- Public source: https://github.com/Y-Research-SBU/QuantAgent, commit `00a88cbbc3b946cbdf506038545d6b5c2df6a344`.
+- All four official revisions of [https://arxiv.org/abs/2509.09995](https://arxiv.org/abs/2509.09995) are pinned by PDF,
+  source-archive, and `main.tex` SHA-256. v1/v2 have 30 pages, v3 has 30, and
+  current v4 has 32. The v3/v4 `line_chart.pdf` assets are pinned separately;
+  the exact submission dates and hashes are recorded in
+  `official_paper_version_inventory.csv`.
+- The official [https://github.com/Y-Research-SBU/QuantAgent](https://github.com/Y-Research-SBU/QuantAgent) source is pinned at current `main`
+  commit `00a88cbbc3b946cbdf506038545d6b5c2df6a344`. The audited public surface contains both branch heads,
+  **195 reachable commits**,
+  **1870 unique historical paths**,
+  **2228 blobs**, no tags, and no
+  unreachable objects. Deleted paths and `gh-pages` are included.
+
+## Paper-version evolution and rendered evidence
+
+- v1 and v2 each contain the same **88-cell** random-baseline/Our 4-hour table.
+  v3 replaces it with a **152-cell** Baseline/LR/XGBoost/Our table. v4 retains that
+  table and adds a **120-cell** portfolio-performance table, for **272** v4 cells.
+  The audit therefore enumerates **600 version-specific cells**, representing
+  **360 distinct cells** after identical revision tables are deduplicated.
+- A historical 1,545x952 author raster completely corresponds to the v1/v2 table.
+  Three later author renderings contain the v3/v4 152-cell table; the current
+  966x1032 raster is the canonical correspondence. That establishes rendered
+  correspondence for **480/600 version-specific cells** and **240 distinct cells**.
+  It independently regenerates **0/600**. The v4-only 120-cell table has no source
+  raster correspondence.
+- History also contains three distinct 1-hour result-chart blobs. Visual inspection
+  establishes complete author-raster correspondence between one QuantAgent/DAX chart
+  and the official v3 `line_chart.pdf`, and between the current QuantHarness/DAX chart
+  and v4. The earlier VIX chart is an intermediate historical output, not an official
+  paper figure. None ships plotted arrays, segment predictions, or exact point-level
+  values, so all three receive zero numeric reproduction credit.
+
+## Complete source-history finding
+
+- The 1,870 historical paths include **1,800 benchmark CSVs** across 18 historical
+  asset/horizon directories. Every directory contains 100 sampled 100-row segment
+  paths. The current release retains 1,600 CSVs across 16 sets; historical GC/DXY
+  directories do not supply the original 5,000-bar panels or result outputs.
+- Across all commits there is no non-benchmark CSV, JSONL, NumPy array, Parquet/HDF,
+  pickle, checkpoint, model, log, prediction, risk-ratio, return, equity, portfolio,
+  split, or seed artifact attributable to a paper run. Four table-image blobs and
+  three one-hour chart blobs are exhaustively pinned in
+  `historical_result_image_inventory.csv`; none contains an underlying native path.
 
 ## What is genuinely established
 
@@ -30,7 +71,7 @@ portfolio paths, random splits/seeds, or numeric one-hour result paths.
   displayed 63.7% and 47.3% accuracies imply +34.7%. Hidden unrounded values could
   explain this; either way, these are identities, not independently reproduced data.
 
-## Why QuantHarness is not reproduced
+## Why current v4 is not reproduced
 
 - Every one of the 120 numeric Table 1 cells lacks a released return/equity path and
   metric evaluator. Table 1 includes AAPL and AMZN, for which no benchmark directory
@@ -58,12 +99,13 @@ portfolio paths, random splits/seeds, or numeric one-hour result paths.
 
 ## Honest denominator
 
-The audit enumerates all **272** numeric cells in Tables 1--2. **Zero** is counted as
-a native paper-result reproduction. There are 23 internally consistent derived cells
-and one displayed derived-cell mismatch, 8 LR accuracy mismatches under the stated
-window, 16 inferred-gap extrema diagnostics
-(7 display matches), and 224 unavailable cells. No proxy, inferred alignment, or static
-figure is promoted to a faithful end-to-end result.
+Across revisions, **0/600** version-specific result cells are independently regenerated.
+The 480 author-rendered correspondences are tracked separately and never promoted to
+native credit. Within current v4's **272** cells, there are 23 internally consistent
+derived identities and one displayed mismatch, 8 LR accuracy mismatches under the
+stated window, 16 inferred-gap extrema diagnostics (7 display matches), and 224
+unavailable cells. No proxy, inferred alignment, author raster, or static figure is
+promoted to a faithful end-to-end result.
 
 Run `scripts/audit_quantharness_paper.py` to regenerate this package. Use `--strict`
 when CI should fail until native predictions, evaluator paths, exact configuration,

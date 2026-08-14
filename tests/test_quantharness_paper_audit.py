@@ -27,6 +27,7 @@ def test_targets_cover_all_numeric_cells_in_tables_1_and_2() -> None:
     assert len(rows) == 272
     assert Counter(row["paper_table"] for row in rows) == {1: 120, 2: 152}
     assert len({(row["paper_table"], row["asset"], row["method"]) for row in rows}) == 62
+    assert len(audit.v1_v2_paper_result_rows()) == 88
 
 
 def test_committed_audit_preserves_the_native_result_boundary() -> None:
@@ -38,11 +39,49 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     identities = read_csv(output / "table_2_delta_accuracy_identity.csv")
     anomalies = read_csv(output / "paper_internal_anomalies.csv")
     source = read_csv(output / "source_config_conformance.csv")
+    paper_versions = read_csv(output / "official_paper_version_inventory.csv")
+    versioned_results = read_csv(output / "paper_version_result_conformance.csv")
+    history_commits = read_csv(output / "public_source_history_commit_inventory.csv")
+    history_paths = read_csv(output / "public_source_history_path_inventory.csv")
+    history_sets = read_csv(output / "public_source_history_benchmark_set_inventory.csv")
+    history_images = read_csv(output / "historical_result_image_inventory.csv")
+    history = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
 
     assert manifest["overall_status"] == (
-        "not_reproduced_released_benchmark_and_lr_diagnostic_only"
+        "not_reproduced_full_history_exhausted_author_table_rasters_only"
     )
     assert manifest["full_paper_reproduced"] is False
+    assert manifest["paper_versions_audited"] == 4
+    assert manifest["version_specific_paper_numeric_result_cells_total"] == 600
+    assert manifest["version_specific_paper_numeric_result_cells_by_version"] == {
+        "v1": 88,
+        "v2": 88,
+        "v3": 152,
+        "v4": 272,
+    }
+    assert manifest["distinct_numeric_result_table_cells_across_versions"] == 360
+    assert manifest["version_specific_author_rendered_table_cells_corresponded"] == 480
+    assert manifest["distinct_author_rendered_table_cells_corresponded"] == 240
+    assert manifest["version_specific_native_result_cells_independently_regenerated"] == 0
+    assert manifest["public_source_branches_total"] == 2
+    assert manifest["public_source_tags_total"] == 0
+    assert manifest["public_source_reachable_commits_total"] == 195
+    assert manifest["public_source_unique_historical_paths_total"] == 1870
+    assert manifest["public_source_reachable_object_counts"] == {
+        "commit": 195,
+        "tree": 279,
+        "blob": 2228,
+    }
+    assert manifest["public_source_unreachable_objects_total"] == 0
+    assert manifest["public_source_historical_benchmark_csv_paths_total"] == 1800
+    assert manifest["public_source_historical_benchmark_asset_horizon_sets_total"] == 18
+    assert manifest["public_source_historical_native_result_artifact_candidates_total"] == 0
+    assert manifest["public_source_historical_unique_result_image_blobs_total"] == 7
+    assert manifest["public_source_historical_unique_table_image_blobs_total"] == 4
+    assert manifest["public_source_historical_unique_one_hour_result_chart_blobs_total"] == 3
+    assert manifest["official_one_hour_figure_author_raster_correspondences_total"] == 2
+    assert manifest["intermediate_nonpaper_one_hour_result_rasters_total"] == 1
+    assert manifest["one_hour_figure_numeric_points_or_arrays_shipped"] is False
     assert manifest["paper_numeric_result_cells_total"] == 272
     assert manifest["native_paper_result_cells_reproduced"] == 0
     assert manifest["numeric_result_cells_unverifiable"] == 224
@@ -103,6 +142,56 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
         "not_implemented_in_active_public_path": 1,
     }
 
+    assert [row["paper_version"] for row in paper_versions] == ["v1", "v2", "v3", "v4"]
+    assert [int(row["numeric_result_cells"]) for row in paper_versions] == [88, 88, 152, 272]
+    assert [int(row["pdf_pages"]) for row in paper_versions] == [30, 30, 30, 32]
+    assert [bool(row["line_chart_pdf_sha256"]) for row in paper_versions] == [
+        False,
+        False,
+        True,
+        True,
+    ]
+    assert Counter(row["paper_version"] for row in versioned_results) == {
+        "v1": 88,
+        "v2": 88,
+        "v3": 152,
+        "v4": 272,
+    }
+    assert sum(row["author_rendered_correspondence"] == "True" for row in versioned_results) == 480
+    assert all(
+        row["independently_regenerated_from_native_result_path"] == "False"
+        for row in versioned_results
+    )
+    assert all(row["paper_result_credit"] == "False" for row in versioned_results)
+
+    assert len(history_commits) == 195
+    assert len(history_paths) == 1870
+    assert len(history_sets) == 18
+    assert {row["unique_historical_segment_paths"] for row in history_sets} == {"100"}
+    assert len(history_images) == 7
+    assert sum("table" in row["role"] for row in history_images) == 4
+    assert sum("one_hour" in row["role"] for row in history_images) == 3
+    assert sum(int(row["distinct_table_cells_corresponded"]) for row in history_images) == 240
+    assert (
+        sum(int(row["version_specific_table_cells_corresponded"]) for row in history_images)
+        == 480
+    )
+    assert all(row["underlying_numeric_result_array_shipped"] == "False" for row in history_images)
+    assert all(row["paper_result_credit"] == "False" for row in history_images)
+    assert Counter(row["history_role"] for row in history_paths)[
+        "released_sampled_benchmark_segment"
+    ] == 1800
+    assert Counter(row["history_role"] for row in history_paths)[
+        "author_rendered_result_output_no_underlying_array"
+    ] == 3
+    assert not any(row["native_result_artifact_candidate"] == "True" for row in history_paths)
+    assert history["reachable_commits_total"] == 195
+    assert history["unique_historical_paths_total"] == 1870
+    assert history["historical_native_result_artifact_candidates_total"] == 0
+    assert history["official_one_hour_figure_author_raster_correspondences_total"] == 2
+    assert history["intermediate_nonpaper_one_hour_result_rasters_total"] == 1
+    assert history["paper_result_credit_from_author_rendered_images"] is False
+
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
 
@@ -118,3 +207,41 @@ def test_lr_reconstruction_uses_only_released_four_hour_segments() -> None:
     assert exact_pairs == [(94, 96)]
     assert sum(row["paper_described_status"] == "display_match" for row in rows) == 0
     assert sum(row["inferred_status"].startswith("display_match") for row in rows) == 8
+
+
+def test_all_official_paper_versions_match_pinned_tables_and_archives() -> None:
+    paper_root = Path(
+        "/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_paper"
+    )
+    if not paper_root.exists():
+        return
+    versions = audit.paper_version_inventory(paper_root)
+    rows = audit.paper_version_result_rows(paper_root)
+    assert len(versions) == 4
+    assert Counter(row["paper_version"] for row in rows) == {
+        "v1": 88,
+        "v2": 88,
+        "v3": 152,
+        "v4": 272,
+    }
+    assert sum(row["author_rendered_correspondence"] for row in rows) == 480
+    assert not any(
+        row["independently_regenerated_from_native_result_path"] for row in rows
+    )
+
+
+def test_full_public_source_history_has_no_hidden_native_result_path() -> None:
+    source_root = Path(
+        "/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_source"
+    )
+    if not source_root.exists():
+        return
+    commits, paths, images, history = audit.public_source_history(source_root)
+    sets = audit.historical_benchmark_set_inventory(paths)
+    assert len(commits) == 195
+    assert len(paths) == 1870
+    assert len(sets) == 18
+    assert len(images) == 7
+    assert history["historical_benchmark_csv_paths_total"] == 1800
+    assert history["historical_native_result_artifact_candidates_total"] == 0
+    assert history["version_specific_table_cells_author_rendered_correspondence"] == 480
