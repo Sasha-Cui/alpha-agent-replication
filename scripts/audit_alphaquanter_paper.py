@@ -28,6 +28,14 @@ import pandas as pd
 
 
 SOURCE_COMMIT = "fac423cb1b45a3d0593e88a0f9805c338d7e0fea"
+INITIAL_COMMIT = "e909ed46fc1a371112800588b28445ccca39970b"
+PUBLIC_HISTORY_COMMITS = (INITIAL_COMMIT, SOURCE_COMMIT)
+PUBLIC_HISTORY_PATHS_SHA256 = "b580847058884b804462506ce45df7451e2c34307f0236262ccd180fbf0c1e4e"
+DISCOVERY_SHA256 = {
+    "branches.json": "57c401b0a8c454d37d446f48d8141d57a5f4de39119bae050607da9a1fa889f2",
+    "tags.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+}
 PAPER_SHA256 = "433ff948a2a90cb7eb83cdb823d56ed49026795f7e2688bbe8b67bcdbd444fd5"
 PAPER_URL = "https://aclanthology.org/2026.findings-acl.456.pdf"
 SOURCE_URL = "https://github.com/horizon-llm/AlphaQuanter"
@@ -718,6 +726,141 @@ def source_release_inventory(source_root: Path) -> List[Dict[str, Any]]:
     return rows
 
 
+def git(source_root: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(source_root), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def released_source_history_audit(
+    source_root: Path,
+) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """Bound every currently public AlphaQuanter Git revision and release surface."""
+    if git(source_root, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise RuntimeError("AlphaQuanter source checkout is shallow")
+    commits = tuple(git(source_root, "rev-list", "--reverse", "--all").splitlines())
+    if commits != PUBLIC_HISTORY_COMMITS:
+        raise RuntimeError(f"AlphaQuanter public history changed: {commits}")
+    unreachable = git(
+        source_root,
+        "fsck",
+        "--full",
+        "--no-reflogs",
+        "--unreachable",
+        "--no-progress",
+    ).strip()
+    if unreachable:
+        raise RuntimeError(f"AlphaQuanter has unreviewed unreachable objects: {unreachable}")
+
+    discovery_root = source_root / "release-discovery"
+    for filename, expected in DISCOVERY_SHA256.items():
+        path = discovery_root / filename
+        if not path.is_file() or sha256(path) != expected:
+            raise RuntimeError(f"Pinned AlphaQuanter discovery response changed: {filename}")
+    branches = json.loads((discovery_root / "branches.json").read_text(encoding="utf-8"))
+    branch_heads = sorted((row["name"], row["commit"]["sha"]) for row in branches)
+    if branch_heads != [("main", SOURCE_COMMIT)]:
+        raise RuntimeError(f"AlphaQuanter public branches changed: {branch_heads}")
+    if json.loads((discovery_root / "tags.json").read_text(encoding="utf-8")):
+        raise RuntimeError("AlphaQuanter now exposes an unreviewed tag")
+    if json.loads((discovery_root / "releases.json").read_text(encoding="utf-8")):
+        raise RuntimeError("AlphaQuanter now exposes an unreviewed release")
+
+    all_paths = sorted(
+        set(
+            git(
+                source_root,
+                "-c",
+                "core.quotePath=false",
+                "log",
+                "--all",
+                "--name-only",
+                "--pretty=format:",
+            ).splitlines()
+        )
+        - {""}
+    )
+    path_digest = hashlib.sha256(("\n".join(all_paths) + "\n").encode()).hexdigest()
+    if len(all_paths) != 31 or path_digest != PUBLIC_HISTORY_PATHS_SHA256:
+        raise RuntimeError(f"AlphaQuanter historical path surface changed: {len(all_paths)} {path_digest}")
+
+    rows = []
+    for commit in commits:
+        authored_at, subject = git(
+            source_root, "show", "-s", "--format=%aI%x09%s", commit
+        ).rstrip().split("\t", 1)
+        paths = git(source_root, "ls-tree", "-r", "--name-only", commit).splitlines()
+        result_like = [
+            path
+            for path in paths
+            if re.search(
+                r"(^|/)(checkpoints?|results?|outputs?|logs?|actions?|trajectories?|rollouts?|ratings?)(/|$)",
+                path,
+                re.I,
+            )
+        ]
+        data_paths = [path for path in paths if path.endswith((".parquet", ".csv", ".json", ".pkl"))]
+        rows.append(
+            {
+                "commit": commit,
+                "authored_at": authored_at,
+                "subject": subject,
+                "public_branch_membership": "main",
+                "tracked_paths": len(paths),
+                "structured_data_paths": len(data_paths),
+                "checkpoint_result_output_log_action_trajectory_rating_paths": len(result_like),
+                "changed_paths_relative_to_parent": (
+                    len(paths)
+                    if commit == INITIAL_COMMIT
+                    else len(
+                        [
+                            line
+                            for line in git(
+                                source_root,
+                                "diff-tree",
+                                "--no-commit-id",
+                                "--name-only",
+                                "-r",
+                                commit,
+                            ).splitlines()
+                            if line
+                        ]
+                    )
+                ),
+                "evidence_role": (
+                    "complete_released_component_tree"
+                    if commit == INITIAL_COMMIT
+                    else "readme_citation_and_paper_link_update_only"
+                ),
+                "native_paper_result_payload_present": False,
+                "paper_result_credit": False,
+            }
+        )
+    if any(row["checkpoint_result_output_log_action_trajectory_rating_paths"] for row in rows):
+        raise RuntimeError("AlphaQuanter history contains an unreviewed result-like path")
+    changed = git(source_root, "diff", "--name-only", INITIAL_COMMIT, SOURCE_COMMIT).splitlines()
+    if changed != ["README.md"]:
+        raise RuntimeError(f"AlphaQuanter second-commit boundary changed: {changed}")
+    summary = {
+        "public_commits_reviewed": len(commits),
+        "public_branches_reviewed": 1,
+        "public_branch_heads": {"main": SOURCE_COMMIT},
+        "public_tags": 0,
+        "public_releases": 0,
+        "unreachable_git_objects": 0,
+        "historical_unique_paths_reviewed": len(all_paths),
+        "initial_commit_contains_complete_released_tree": True,
+        "later_commit_changes_only_readme_citations_and_paper_link": True,
+        "historical_checkpoint_result_output_log_action_trajectory_rating_paths": 0,
+        "historical_native_paper_result_payloads": 0,
+        "history_complete_for_pinned_public_refs": True,
+    }
+    return rows, summary
+
+
 def source_config_audit(source_root: Path) -> List[Dict[str, str]]:
     stock = source_root / "verl/recipe/langgraph_agent/stock_trading"
     create = (stock / "create_dataset.py").read_text(encoding="utf-8")
@@ -801,6 +944,7 @@ def build_audit(
     inconsistencies = paper_internal_consistency()
     release_files = source_release_inventory(source_root)
     config = source_config_audit(source_root)
+    history, history_summary = released_source_history_audit(source_root)
 
     table_counts = Counter(row["paper_table"] for row in conformance)
     expected_table_counts = {5: 192, 6: 9, 7: 12, 8: 15, 10: 216, 11: 216, 12: 40, 13: 45, 14: 45}
@@ -839,6 +983,11 @@ def build_audit(
     write_csv(output_dir / "paper_internal_inconsistencies.csv", inconsistencies, list(inconsistencies[0]))
     write_csv(output_dir / "released_source_inventory.csv", release_files, list(release_files[0]))
     write_csv(output_dir / "source_config_conformance.csv", config, list(config[0]))
+    write_csv(
+        output_dir / "released_source_history_inventory.csv",
+        history,
+        list(history[0]),
+    )
 
     manifest: Dict[str, Any] = {
         "audit": "AlphaQuanter paper Tables 5--8 and 10--14 versus pinned public release",
@@ -848,6 +997,7 @@ def build_audit(
         "paper_sha256": PAPER_SHA256,
         "source_url": SOURCE_URL,
         "source_commit": commit,
+        "released_source_history": history_summary,
         "paper_numeric_tables_audited": [5, 6, 7, 8, 10, 11, 12, 13, 14],
         "paper_numeric_result_cells_total": len(conformance),
         "paper_table_cell_counts": dict(sorted(table_counts.items())),
@@ -898,7 +1048,8 @@ def build_audit(
             "semantics Buy-and-Hold reconstruction matches only 1/34 repeated paper cells at "
             "display precision. This is component evidence, not AlphaQuanter replication: all "
             "756 agent/cost/human-rating cells lack native checkpoints, actions, seed outputs, "
-            "logs, or ratings; the paper test split and original multimodal snapshot are absent."
+            "logs, or ratings; the paper test split and original multimodal snapshot are absent. "
+            "Complete public-history review finds no deleted or alternate result payload."
         ),
         "source_file_sha256": {relative: sha256(source_root / relative) for relative in PINNED_SOURCE_SHA256},
         "external_label_price_sha256": LABEL_PRICE_SHA256,
@@ -936,6 +1087,11 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   Yahoo snapshot, only {result_status['exact_displayed_precision_match_current_yahoo']}/34 repeated B&H cells matches at the paper's
   displayed precision; the match is rolling-window TSLA ARR. This is a baseline
   component check, not an agent result.
+- The complete public Git surface contains exactly 2 commits on one branch, 31 unique
+  historical paths, no tags/releases, and no unreachable objects. The initial commit
+  already contains the complete released component tree; the only later change is
+  `README.md` citation and paper-link editing. No revision contains a checkpoint,
+  result/output/log, action/trajectory, rating, or other native paper-result payload.
 
 ## Why AlphaQuanter is not reproduced
 

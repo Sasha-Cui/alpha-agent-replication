@@ -29,6 +29,11 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   Yahoo snapshot, only 1/34 repeated B&H cells matches at the paper's
   displayed precision; the match is rolling-window TSLA ARR. This is a baseline
   component check, not an agent result.
+- The complete public Git surface contains exactly 2 commits on one branch, 31 unique
+  historical paths, no tags/releases, and no unreachable objects. The initial commit
+  already contains the complete released component tree; the only later change is
+  `README.md` citation and paper-link editing. No revision contains a checkpoint,
+  result/output/log, action/trajectory, rating, or other native paper-result payload.
 
 ## Why AlphaQuanter is not reproduced
 

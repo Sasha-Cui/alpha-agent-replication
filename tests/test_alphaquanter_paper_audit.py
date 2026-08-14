@@ -64,6 +64,7 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     labels = read_csv(output / "reward_label_conformance.csv")
     label_summary = read_csv(output / "reward_label_summary.csv")
     source = read_csv(output / "source_config_conformance.csv")
+    history = read_csv(output / "released_source_history_inventory.csv")
 
     assert manifest["overall_status"] == (
         "not_reproduced_prompt_label_component_and_buy_hold_reconstruction_only"
@@ -83,6 +84,27 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     assert manifest["native_training_checkpoints_shipped"] is False
     assert manifest["released_complete_verl_runtime"] is False
     assert manifest["audit_called_llm_or_paid_external_api"] is False
+    source_history = manifest["released_source_history"]
+    assert source_history["public_commits_reviewed"] == 2
+    assert source_history["public_branches_reviewed"] == 1
+    assert source_history["public_tags"] == 0
+    assert source_history["public_releases"] == 0
+    assert source_history["unreachable_git_objects"] == 0
+    assert source_history["historical_unique_paths_reviewed"] == 31
+    assert source_history["initial_commit_contains_complete_released_tree"] is True
+    assert source_history["later_commit_changes_only_readme_citations_and_paper_link"] is True
+    assert source_history[
+        "historical_checkpoint_result_output_log_action_trajectory_rating_paths"
+    ] == 0
+    assert source_history["historical_native_paper_result_payloads"] == 0
+    assert source_history["history_complete_for_pinned_public_refs"] is True
+    assert len(history) == 2
+    assert [row["commit"] for row in history] == list(audit.PUBLIC_HISTORY_COMMITS)
+    assert history[0]["changed_paths_relative_to_parent"] == "31"
+    assert history[1]["changed_paths_relative_to_parent"] == "1"
+    assert history[1]["evidence_role"] == "readme_citation_and_paper_link_update_only"
+    assert all(row["native_paper_result_payload_present"] == "False" for row in history)
+    assert all(row["paper_result_credit"] == "False" for row in history)
 
     assert Counter(row["status"] for row in conformance) == {
         "exact_displayed_precision_match_current_yahoo": 1,

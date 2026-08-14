@@ -6,6 +6,22 @@
   "paper_sha256": "433ff948a2a90cb7eb83cdb823d56ed49026795f7e2688bbe8b67bcdbd444fd5",
   "source_url": "https://github.com/horizon-llm/AlphaQuanter",
   "source_commit": "fac423cb1b45a3d0593e88a0f9805c338d7e0fea",
+  "released_source_history": {
+    "public_commits_reviewed": 2,
+    "public_branches_reviewed": 1,
+    "public_branch_heads": {
+      "main": "fac423cb1b45a3d0593e88a0f9805c338d7e0fea"
+    },
+    "public_tags": 0,
+    "public_releases": 0,
+    "unreachable_git_objects": 0,
+    "historical_unique_paths_reviewed": 31,
+    "initial_commit_contains_complete_released_tree": true,
+    "later_commit_changes_only_readme_citations_and_paper_link": true,
+    "historical_checkpoint_result_output_log_action_trajectory_rating_paths": 0,
+    "historical_native_paper_result_payloads": 0,
+    "history_complete_for_pinned_public_refs": true
+  },
   "paper_numeric_tables_audited": [
     5,
     6,
@@ -60,7 +76,7 @@
   "paper_sharpe_formula_matches_source": false,
   "audit_called_llm_or_paid_external_api": false,
   "buy_hold_reference_engine_validation": "cent-rounded reconstruction checked against Backtrader 1.9.78.123 using the pinned current test-price inputs; maximum observed differences were below 0.00001 percentage point ARR, 0.0000002 SR, and 0.000002 percentage point MDD",
-  "interpretation": "The release genuinely preserves 2,615 dated prompts and reward labels, the reward formula, tool/reward code, and a partial VERL integration. Current Yahoo prices reproduce 523 labels exactly and 2,612/2,615 BUY/HOLD/SELL regimes; an exact released-semantics Buy-and-Hold reconstruction matches only 1/34 repeated paper cells at display precision. This is component evidence, not AlphaQuanter replication: all 756 agent/cost/human-rating cells lack native checkpoints, actions, seed outputs, logs, or ratings; the paper test split and original multimodal snapshot are absent.",
+  "interpretation": "The release genuinely preserves 2,615 dated prompts and reward labels, the reward formula, tool/reward code, and a partial VERL integration. Current Yahoo prices reproduce 523 labels exactly and 2,612/2,615 BUY/HOLD/SELL regimes; an exact released-semantics Buy-and-Hold reconstruction matches only 1/34 repeated paper cells at display precision. This is component evidence, not AlphaQuanter replication: all 756 agent/cost/human-rating cells lack native checkpoints, actions, seed outputs, logs, or ratings; the paper test split and original multimodal snapshot are absent. Complete public-history review finds no deleted or alternate result payload.",
   "source_file_sha256": {
     "README.md": "966424a93d889b8a9bfd82322d3007efe151c539e992001fac8bcaa4d61e8366",
     "verl/README.md": "3fc3ca47c8849b966e034919ab364c615c0d03b90ce66f46fe1aa62996cda3f0",
@@ -88,11 +104,12 @@
     "TSLA.json": "14bedddfb21edc67bef3d7067ce56bc96e5806957dbfd7244f1e387cfcf3bd35"
   },
   "output_sha256": {
-    "README.md": "879a04682979fb6dfc2bbdcae1e37a0832473ef1826417aac59e0e23f89056cd",
+    "README.md": "355186100c416f18c4f395e1ce398f96f3f454751de748aa59ad8898f674149a",
     "buy_hold_reconstruction.csv": "489fe2185f9b74dd33de9c19c6260527e6d65d07db9266aae51ae619c49f2d9f",
     "external_price_input_inventory.csv": "b935f3c2b71fbae0f510f4971c215cd62e693d73c5d7ec5fa15b49f2c3e22eaf",
     "paper_internal_inconsistencies.csv": "c664f0afa5c755fe5510ee04cc90774977d2430f2072b3e9a98a9f2ff7540154",
     "released_dataset_inventory.csv": "8598663431f0f51f476c860932cbbdcc1b66352715a9bd844aebf68a6e817265",
+    "released_source_history_inventory.csv": "50d1e788d273622d9d21d3f90ca8a531e0047e0e328225aa0eceb0a8bef5cabe",
     "released_source_inventory.csv": "9baeaedd687d0fdebd7cef374709dcfe1ab6087c1037c658233a15b515d2d245",
     "reward_label_conformance.csv": "c6107953fec07f152213c2422721cef36c873a5f98c6a8e266f5c412e94b8a1c",
     "reward_label_summary.csv": "1331134d94a46cfafcf1067f17fb2b1059dda81eee6e21a9f51c47090ff3260a",

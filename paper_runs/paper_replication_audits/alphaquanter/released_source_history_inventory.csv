@@ -1,0 +1,3 @@
+commit,authored_at,subject,public_branch_membership,tracked_paths,structured_data_paths,checkpoint_result_output_log_action_trajectory_rating_paths,changed_paths_relative_to_parent,evidence_role,native_paper_result_payload_present,paper_result_credit
+e909ed46fc1a371112800588b28445ccca39970b,2025-10-16T22:38:37-07:00,first commit,main,31,2,0,31,complete_released_component_tree,False,False
+fac423cb1b45a3d0593e88a0f9805c338d7e0fea,2026-07-02T21:36:58-07:00,update bib and paper link,main,31,2,0,1,readme_citation_and_paper_link_update_only,False,False
