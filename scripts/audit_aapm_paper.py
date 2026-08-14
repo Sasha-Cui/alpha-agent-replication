@@ -49,6 +49,28 @@ EXPECTED_V1_RESULT_CELLS = 114
 EXPECTED_V2_RESULT_CELLS = 162
 REPOSITORY_ROOT = "498688d8dccb0bbbb667589eca1a0f94091dbc88"
 REPOSITORY_COMMIT_COUNT = 9
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_SNAPSHOT_SHA256 = "fb406e6fcc3a4f6baed2eeadf0f48f714f540a8f22d951c086dbdda48163491f"
+PUBLIC_FORK_BRANCHES = (
+    ("jingmouren/chengjunyan1-AAPM", "6c97ee30007dcc74871bbac23aeab9af13f850bd", 5),
+    ("shu-cj/AAPM", "6c97ee30007dcc74871bbac23aeab9af13f850bd", 5),
+    ("pengmeishu/AAPM", "6c8324fddc6ba5d2f548cc4da06aa851507929a2", 4),
+    ("yinsenm/AAPM", "65e724d17a87de08789b3b97e4c920152e3220d4", 3),
+    ("potpen/AAPM", "65e724d17a87de08789b3b97e4c920152e3220d4", 3),
+    ("HS991023/AAPM", "65e724d17a87de08789b3b97e4c920152e3220d4", 3),
+    ("Lycokie/AAPM", "65e724d17a87de08789b3b97e4c920152e3220d4", 3),
+    ("d3p10y/AAPM", "65e724d17a87de08789b3b97e4c920152e3220d4", 3),
+    ("Minisoco/AAPM", "65e724d17a87de08789b3b97e4c920152e3220d4", 3),
+    ("coder-drinker/AAPM", "65e724d17a87de08789b3b97e4c920152e3220d4", 3),
+    ("tufo830/AAPM", "65e724d17a87de08789b3b97e4c920152e3220d4", 3),
+    ("tutuna/AAPM", "65e724d17a87de08789b3b97e4c920152e3220d4", 3),
+    ("ch1plus1/AAPM", CURRENT_HEAD, 0),
+    ("yangkedc1984/AAPM", CURRENT_HEAD, 0),
+)
+PUBLIC_FORK_COUNT = 14
+PUBLIC_FORK_BRANCH_REF_COUNT = 14
+PUBLIC_FORK_UNIQUE_HEAD_COUNT = 4
+PUBLIC_FORK_TAG_REF_COUNT = 0
 
 TABLE_METRICS = {
     "table:sr": ["SR_TP", "SR_EW", "SR_VW", "MDD_TP", "MDD_EW", "MDD_VW"],
@@ -208,7 +230,9 @@ def source_history_inventory(repo: Path) -> list[dict[str, Any]]:
     """Inventory every public revision and verify that later changes are documentation-only."""
     if str(git(repo, "rev-parse", "--is-shallow-repository")).strip() != "false":
         raise ValueError("AAPM history checkout is shallow")
-    commits = str(git(repo, "rev-list", "--reverse", "--all")).splitlines()
+    commits = str(
+        git(repo, "rev-list", "--reverse", "refs/remotes/origin/main")
+    ).splitlines()
     if len(commits) != REPOSITORY_COMMIT_COUNT:
         raise ValueError(f"AAPM public commit count changed: {len(commits)}")
     if commits[0] != REPOSITORY_ROOT or commits[-1] != CURRENT_HEAD:
@@ -249,6 +273,133 @@ def source_history_inventory(repo: Path) -> list[dict[str, Any]]:
             "paper_result_artifact_found": False,
         })
     return rows
+
+
+def public_fork_audit(
+    repo: Path, github_evidence_dir: Path
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Exhaust every captured public fork ref without re-crediting official history."""
+    snapshot_path = github_evidence_dir / "forks.json"
+    if sha256(snapshot_path) != PUBLIC_FORK_SNAPSHOT_SHA256:
+        raise ValueError("AAPM public-fork API snapshot changed")
+    snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+    snapshot_by_repo = {item["full_name"]: item for item in snapshot}
+    expected_repositories = {repository for repository, _head, _behind in PUBLIC_FORK_BRANCHES}
+    if set(snapshot_by_repo) != expected_repositories or len(snapshot) != PUBLIC_FORK_COUNT:
+        raise ValueError("AAPM public-fork API repository surface changed")
+    if any(item["default_branch"] != "main" for item in snapshot):
+        raise ValueError("AAPM public-fork default branch surface changed")
+
+    actual_refs = {}
+    for line in str(
+        git(
+            repo,
+            "for-each-ref",
+            "--format=%(refname)%09%(objectname)",
+            "refs/remotes/forks",
+        )
+    ).splitlines():
+        refname, head = line.split("\t")
+        actual_refs[refname] = head
+    expected_refs = {
+        f"refs/remotes/forks/{repository.split('/', 1)[0]}/main": head
+        for repository, head, _behind in PUBLIC_FORK_BRANCHES
+    }
+    if actual_refs != expected_refs:
+        raise ValueError(f"AAPM public-fork branch refs changed: {actual_refs}")
+    if str(git(repo, "for-each-ref", "--format=%(refname)", "refs/tags")).strip():
+        raise ValueError("AAPM public-fork checkout unexpectedly contains tag refs")
+
+    official = str(git(repo, "rev-parse", "refs/remotes/origin/main")).strip()
+    if official != CURRENT_HEAD:
+        raise ValueError("AAPM official remote head changed")
+    branch_rows = []
+    repositories_by_head: dict[str, list[str]] = {}
+    for repository, head, expected_behind in PUBLIC_FORK_BRANCHES:
+        behind, ahead = map(
+            int,
+            str(
+                git(
+                    repo,
+                    "rev-list",
+                    "--left-right",
+                    "--count",
+                    f"{official}...{head}",
+                )
+            ).split(),
+        )
+        if (ahead, behind) != (0, expected_behind):
+            raise ValueError(f"AAPM public-fork relationship changed: {repository}")
+        merge_base = str(git(repo, "merge-base", official, head)).strip()
+        if merge_base != head:
+            raise ValueError(f"AAPM public fork is no longer an official-history head: {repository}")
+        extra_commits = str(
+            git(repo, "rev-list", head, "--not", "refs/remotes/origin/main")
+        ).splitlines()
+        if extra_commits:
+            raise ValueError(f"AAPM public fork adds unreviewed commits: {repository}")
+        captured = snapshot_by_repo[repository]
+        branch_rows.append(
+            {
+                "repository": repository,
+                "url": captured["html_url"],
+                "branch": "main",
+                "head_commit": head,
+                "relation_to_official_head": (
+                    "official_head_exact" if head == official else "official_history_ancestor"
+                ),
+                "commits_ahead_of_official": ahead,
+                "commits_behind_official": behind,
+                "fork_created_at": captured["created_at"],
+                "fork_pushed_at": captured["pushed_at"],
+                "tag_refs": 0,
+                "unique_commits_beyond_official_history": 0,
+                "unique_blobs_beyond_official_history": 0,
+                "native_result_artifact_found": False,
+                "paper_result_credit": False,
+            }
+        )
+        repositories_by_head.setdefault(head, []).append(repository)
+
+    unique_rows = []
+    for head in sorted(repositories_by_head):
+        subject = str(git(repo, "show", "-s", "--format=%s", head)).strip()
+        unique_rows.append(
+            {
+                "head_commit": head,
+                "repositories": ";".join(sorted(repositories_by_head[head])),
+                "branch_ref_count": len(repositories_by_head[head]),
+                "official_history_reachable": True,
+                "official_history_subject": subject,
+                "unique_commits_beyond_official_history": 0,
+                "unique_blobs_beyond_official_history": 0,
+                "native_result_artifact_found": False,
+                "paper_result_credit": False,
+            }
+        )
+    if len(unique_rows) != PUBLIC_FORK_UNIQUE_HEAD_COUNT:
+        raise ValueError("AAPM public-fork unique-head count changed")
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_COUNT,
+        "accessible_public_forks": len(branch_rows),
+        "accessible_branch_refs": len(branch_rows),
+        "tag_refs": PUBLIC_FORK_TAG_REF_COUNT,
+        "unique_heads": len(unique_rows),
+        "official_history_reachable_unique_heads": len(unique_rows),
+        "divergent_unique_heads": 0,
+        "unique_commits_beyond_official_history": 0,
+        "unique_blobs_beyond_official_history": 0,
+        "native_result_artifacts_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "all accessible public fork refs resolve exactly to the current official "
+            "head or commits already covered by the complete nine-commit official-history "
+            "audit; the forks add no code, data, checkpoint, prediction, portfolio, return, "
+            "training, or result lineage"
+        ),
+    }
+    return branch_rows, unique_rows, summary
 
 
 def metadata_audit(repo: Path) -> tuple[list[dict[str, str]], dict[str, Any]]:
@@ -626,6 +777,11 @@ complete nine-commit official GitHub history, every released file, all
   commits are README-only. It still defaults to
   GPT-3.5-Turbo-1106, and the released metadata ends 2023-11-30 rather than the
   claimed 2024-09-29 endpoint.
+- GitHub's complete dated public-fork surface contains 14 accessible forks, 14
+  branch refs, no tags, and four unique heads. Every head is either the current
+  official head or an official-history ancestor already covered by the complete
+  nine-commit audit. The forks add zero unique commits and zero unique blobs, so
+  they cannot recover any missing training or empirical-result lineage.
 
 ## Version and display integrity
 
@@ -669,6 +825,9 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     paths = validate_repo(args.repo)
     inventory = source_inventory(args.repo, paths)
     history = source_history_inventory(args.repo)
+    fork_branches, fork_heads, fork_summary = public_fork_audit(
+        args.repo, args.github_evidence_dir
+    )
     metadata_rows, metadata_facts = metadata_audit(args.repo)
     v1_results, v2_results = displayed_results(v1_tex, v2_tex)
     comparison = version_comparison(v1_results, v2_results)
@@ -682,6 +841,17 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
     write_csv(output / "source_file_inventory.csv", inventory, list(inventory[0]))
     write_csv(output / "released_source_history_inventory.csv", history, list(history[0]))
+    write_csv(
+        output / "public_fork_branch_ref_snapshot.csv",
+        fork_branches,
+        list(fork_branches[0]),
+    )
+    write_csv(
+        output / "public_fork_unique_head_inventory.csv",
+        fork_heads,
+        list(fork_heads[0]),
+    )
+    write_json(output / "public_fork_census.json", fork_summary)
     write_csv(output / "released_metadata_audit.csv", metadata_rows, list(metadata_rows[0]))
     write_csv(output / "displayed_result_conformance.csv", v1_results + v2_results, list(v1_results[0]))
     write_csv(output / "version_result_comparison.csv", comparison, list(comparison[0]))
@@ -705,6 +875,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             row["paper_result_or_training_artifact_paths"] for row in history
         ),
         "v1_pdf_links": v1_links, "v2_pdf_links": v2_links, "github_snapshot": github_facts,
+        "public_fork_boundary": fork_summary,
     }
     write_json(output / "source_provenance.json", provenance)
     common_changed = sum(row["exact_value_match"] == "no" for row in comparison)
@@ -721,6 +892,23 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "repository_history_paper_result_artifacts_found": sum(
             bool(row["paper_result_artifact_found"]) for row in history
         ),
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary[
+            "github_rest_reported_forks"
+        ],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_tag_refs_audited": fork_summary["tag_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_unique_commits_beyond_official_history": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "public_fork_unique_blobs_beyond_official_history": fork_summary[
+            "unique_blobs_beyond_official_history"
+        ],
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "released_metadata_records": metadata_facts["records"],
         "released_metadata_min_date": metadata_facts["min_date"], "released_metadata_max_date": metadata_facts["max_date"],
         "v1_table_result_cells": len(v1_results), "v2_table_result_cells": len(v2_results),

@@ -23,6 +23,11 @@ complete nine-commit official GitHub history, every released file, all
   commits are README-only. It still defaults to
   GPT-3.5-Turbo-1106, and the released metadata ends 2023-11-30 rather than the
   claimed 2024-09-29 endpoint.
+- GitHub's complete dated public-fork surface contains 14 accessible forks, 14
+  branch refs, no tags, and four unique heads. Every head is either the current
+  official head or an official-history ancestor already covered by the complete
+  nine-commit audit. The forks add zero unique commits and zero unique blobs, so
+  they cannot recover any missing training or empirical-result lineage.
 
 ## Version and display integrity
 

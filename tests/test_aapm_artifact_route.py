@@ -70,13 +70,16 @@ def test_native_ledger_keeps_static_components_at_zero_result_credit() -> None:
     assert row["prespecified_G7_monthly_common_task_compatible"] == "N"
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_missing_hybrid_pipeline_"
-        "and_v2_lineage"
+        "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_"
+        "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_4_official_history_"
+        "heads_exhausted"
     )
     assert row["fidelity_class"] == "F1_static_no_native_output"
     note = row["concise_evidence_note"]
     assert "zero native paper results reproduced" in note
     assert "complete nine-commit history" in note
+    assert "14 accessible forks, 14 branch refs" in note
+    assert "zero unique commits, zero unique blobs" in note
     assert "never ingests the paper's central manual-factor input" in note
     assert "112/114 common table cells change while 15/16 rasters are reused" in note
 

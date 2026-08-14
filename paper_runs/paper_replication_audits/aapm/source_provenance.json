@@ -15,6 +15,21 @@
   "official_repository": "https://github.com/chengjunyan1/AAPM",
   "paper_era_commit": "f7096b19c9387377b7f3c9ca9795345321968a7c",
   "paper_era_tree_sha256": "4617508f0c4fc984a97ca258d575963adeb589aef4db7b9bee86d48d9315856c",
+  "public_fork_boundary": {
+    "accessible_branch_refs": 14,
+    "accessible_public_forks": 14,
+    "census_date": "2026-08-14",
+    "divergent_unique_heads": 0,
+    "github_rest_reported_forks": 14,
+    "interpretation": "all accessible public fork refs resolve exactly to the current official head or commits already covered by the complete nine-commit official-history audit; the forks add no code, data, checkpoint, prediction, portfolio, return, training, or result lineage",
+    "native_result_artifacts_found": 0,
+    "official_history_reachable_unique_heads": 4,
+    "paper_result_credit": false,
+    "tag_refs": 0,
+    "unique_blobs_beyond_official_history": 0,
+    "unique_commits_beyond_official_history": 0,
+    "unique_heads": 4
+  },
   "repository_change_since_paper_era": [
     "README.md"
   ],

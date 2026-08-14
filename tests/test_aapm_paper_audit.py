@@ -182,6 +182,50 @@ def test_complete_repository_history_has_no_latent_result_or_training_artifact()
     assert manifest["repository_history_paper_result_artifacts_found"] == 0
 
 
+def test_complete_public_fork_surface_adds_no_unique_history_or_results() -> None:
+    branches = csv_rows("public_fork_branch_ref_snapshot.csv")
+    heads = csv_rows("public_fork_unique_head_inventory.csv")
+    census = json.loads((OUTPUT / "public_fork_census.json").read_text(encoding="utf-8"))
+    assert len(branches) == 14
+    assert {row["repository"] for row in branches} == {
+        repository for repository, _head, _behind in audit.PUBLIC_FORK_BRANCHES
+    }
+    assert {row["head_commit"] for row in branches} == {
+        "6c97ee30007dcc74871bbac23aeab9af13f850bd",
+        "6c8324fddc6ba5d2f548cc4da06aa851507929a2",
+        "65e724d17a87de08789b3b97e4c920152e3220d4",
+        audit.CURRENT_HEAD,
+    }
+    assert {row["unique_commits_beyond_official_history"] for row in branches} == {"0"}
+    assert {row["unique_blobs_beyond_official_history"] for row in branches} == {"0"}
+    assert {row["native_result_artifact_found"] for row in branches} == {"False"}
+    assert {row["paper_result_credit"] for row in branches} == {"False"}
+    assert len(heads) == 4
+    assert {row["official_history_reachable"] for row in heads} == {"True"}
+    assert {row["unique_commits_beyond_official_history"] for row in heads} == {"0"}
+    assert {row["unique_blobs_beyond_official_history"] for row in heads} == {"0"}
+    assert census["census_date"] == "2026-08-14"
+    assert census["github_rest_reported_forks"] == 14
+    assert census["accessible_public_forks"] == 14
+    assert census["accessible_branch_refs"] == 14
+    assert census["tag_refs"] == 0
+    assert census["unique_heads"] == 4
+    assert census["official_history_reachable_unique_heads"] == 4
+    assert census["divergent_unique_heads"] == 0
+    assert census["unique_commits_beyond_official_history"] == 0
+    assert census["unique_blobs_beyond_official_history"] == 0
+    assert census["native_result_artifacts_found"] == 0
+    assert census["paper_result_credit"] is False
+    manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["public_forks_reported_by_github_rest"] == 14
+    assert manifest["public_forks_accessible"] == 14
+    assert manifest["public_fork_branch_refs_audited"] == 14
+    assert manifest["public_fork_unique_heads_audited"] == 4
+    assert manifest["public_fork_divergent_heads_audited"] == 0
+    assert manifest["public_fork_native_result_artifacts_found"] is False
+    assert manifest["public_fork_paper_result_credit"] is False
+
+
 def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     execution = {row["component"]: row for row in csv_rows("native_execution.csv")}
     assert execution["source syntax compile"]["status"] == "pass"
@@ -202,4 +246,6 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     readme = " ".join((OUTPUT / "README.md").read_text(encoding="utf-8").split())
     assert "End-to-end AAPM result cells reproduced: 0/162" in readme
     assert "component code, not an executable paper replication" in readme
+    assert "14 accessible forks, 14 branch refs, no tags, and four unique heads" in readme
+    assert "zero unique commits and zero unique blobs" in readme
     assert "adaptation, not a faithful replication" in readme

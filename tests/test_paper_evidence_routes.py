@@ -213,6 +213,11 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "paper_audit:completed_zero_of_1061_results_seven_commit_history_"
             "zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted"
         ),
+        "CensusArxiv240917266": (
+            "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_"
+            "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_4_official_history_"
+            "heads_exhausted"
+        ),
         "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
         "CensusArxiv250510278": (

@@ -567,6 +567,9 @@ ARTIFACT_NOTES = {
         "repository. Its complete nine-commit history was checked: after the "
         "implementation and metadata uploads, all six remaining commits change only "
         "README.md, and no revision contains a paper-result or training artifact. Its "
+        "complete dated public-fork surface has 14 accessible forks, 14 branch refs, "
+        "no tags, and four unique heads; every head is an official-history commit, so "
+        "the forks add zero unique commits, zero unique blobs, and zero result credit. Its "
         "ten tracked files include five Python components, a config, "
         "requirements, and 65,733 WSJ metadata records; all Python files compile. "
         "This is static component evidence, not experiment output. Article bodies, "
@@ -1456,7 +1459,11 @@ TARGETED_EXECUTION = {
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
     "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_results_seven_commit_history_zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted",
-    "SYS-EMPIRICAL-ASSET-PRICING-LLM": "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_missing_hybrid_pipeline_and_v2_lineage",
+    "SYS-EMPIRICAL-ASSET-PRICING-LLM": (
+        "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_"
+        "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_4_official_history_"
+        "heads_exhausted"
+    ),
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:partial_227_of_235_author_output_cells_corroborated_67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells_181_accessible_forks_187_refs_20_unique_heads_exhausted",
     "SYS-FACTFIN": "paper_audit:completed_zero_of_525_numeric_cells_no_public_system_or_benchmark_release",

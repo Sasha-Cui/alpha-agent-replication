@@ -135,6 +135,12 @@ def validate_inputs() -> None:
         "v2_table_result_cells": 162,
         "author_output_result_cells_available": 0,
         "end_to_end_result_cells_reproduced": 0,
+        "public_forks_accessible": 14,
+        "public_fork_branch_refs_audited": 14,
+        "public_fork_unique_heads_audited": 4,
+        "public_fork_divergent_heads_audited": 0,
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
     }
     for key, value in expected.items():
         if manifest.get(key) != value:
