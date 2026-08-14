@@ -1,5 +1,8 @@
 route,result_count,finding,attributable_native_implementation_recovered,negative_search_limit
 arxiv_v1_source,5,"manuscript TeX, bibliography, workflow image, and generated bibliography only; no experiment runtime/data/results",False,describes pinned v1 archive only
+arxiv_v2_source,4,"expanded manuscript TeX, bibliography, and unchanged workflow image only; no experiment runtime/data/results",False,describes pinned v2 archive only
+github_repository_arxiv_id_2026-08-14,0,no repository-level match for 2603.23300,False,"bounded current public repository search; not proof about code search, private, deleted, moved, or unindexed material"
+github_repository_exact_title_2026-08-14,0,no repository-level exact-title match,False,"bounded current public repository search; not proof about code search, private, deleted, moved, or unindexed material"
 github_code_arxiv_id,30,"visible matches are citations, indexes, review material, or later interpretations",False,"bounded current indexed search; not proof about private, deleted, moved, or unindexed material"
 github_code_exact_title,4,no affirmative author-attributable runtime recovered,False,bounded current indexed search only
 github_author_names,0,no matching author-attributable code result,False,"name search cannot rule out aliases, organizations, private repositories, or different accounts"

@@ -1,13 +1,36 @@
 {
-  "assessment": "A retrospective run after April 2024 is possible, but prompt wording alone cannot exclude model-pretraining knowledge through August 2024 or establish the missing request/model lineage.",
-  "documented_knowledge_cutoff": "2024-08",
-  "gemini_2_0_flash_first_public_date": "2024-12-11",
-  "knowledge_cutoff_after_test_window_end": true,
-  "literal_model_available_during_test_windows": false,
-  "months_after_test_window_end_at_first_public_release": 7,
-  "paper_test_windows_end": "2024-04-30",
-  "retrospective_data_layer_holdout_possible": true,
-  "retrospective_model_knowledge_holdout_established": false,
-  "service_shutdown_date": "2026-06-01",
-  "timestamped_requests_and_exact_model_revision_recovered": false
+  "assessment": "The v2 family-level cutoff statements are corroborated by OpenAI primary sources, but family cutoffs do not identify the model snapshots or establish the missing author requests, responses, tool inputs, and execution lineage.",
+  "v1": {
+    "documented_knowledge_cutoff": "2024-08",
+    "first_public_date": "2024-12-11",
+    "knowledge_cutoff_after_test_window_end": true,
+    "literal_model_available_during_test_windows": false,
+    "model_family": "Gemini 2.0 Flash",
+    "months_after_test_window_end_at_first_public_release": 7,
+    "paper_test_windows_end": "2024-04-30",
+    "retrospective_data_layer_holdout_possible": true,
+    "retrospective_model_knowledge_holdout_established": false,
+    "service_shutdown_date": "2026-06-01"
+  },
+  "v2": {
+    "author_responses_recovered": false,
+    "exact_author_model_ids_or_snapshots_recovered": false,
+    "medium": {
+      "family_cutoff_claim_corroborated": true,
+      "official_family_cutoff": "2021-09-01",
+      "official_source": "https://developers.openai.com/api/docs/models/gpt-3.5-turbo",
+      "paper_model_family": "ChatGPT-3.5",
+      "paper_test_window": "2021-10_to_2024-04"
+    },
+    "retrospective_model_knowledge_holdout_established": false,
+    "short": {
+      "family_cutoff_claim_corroborated": true,
+      "official_family_pretraining_data_through": "2023-10",
+      "official_source": "https://cdn.openai.com/gpt-4o-system-card.pdf",
+      "paper_model_family": "ChatGPT-4o",
+      "paper_test_window": "2023-11_to_2024-04"
+    },
+    "timestamped_author_requests_recovered": false,
+    "tool_payload_history_recovered": false
+  }
 }

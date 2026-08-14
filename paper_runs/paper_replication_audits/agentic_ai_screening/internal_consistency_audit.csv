@@ -1,17 +1,49 @@
-check,status,detail
-printed_sharpe_identity,two_mismatches,313/315 printed triples satisfy Sharpe = annual return / sqrt(annual variance) within 0.002; LLM-S 10y NLS/MSR differs by 0.0084 and Agentic 10y POET/MV contains malformed return 01092
-agentic_10y_poet_mv_return,missing_decimal_typographical_error,source prints 01092; 0.1092 would imply Sharpe 0.2357 and reconcile with printed 0.2358 at displayed precision
-llm_10y_nls_msr,printed_triple_conflict,"0.0740 / sqrt(0.0258) = 0.4607, not the printed Sharpe 0.4691"
-llm_vs_baseline_5y,claim_matches_printed_tables,LLM-S is higher in 13/15 cells; exceptions are POET/MSR and NLS/MSR
-logistic_vs_baseline_5y,claim_matches_printed_tables,logistic is higher in 13/15 cells
-llm_vs_analyst_and_novy_marx_5y,claim_matches_printed_tables,LLM-S is higher in all 15/15 cells against each comparator
-finbert_5y_comparisons,claim_matches_printed_tables,"FinBERT is higher in 14/15 cells versus baseline and logistic, 15/15 versus analysts, and 11/15 exceed market Sharpe 0.6324"
-agentic_5y_comparisons,claim_matches_printed_tables,"Agentic is higher in 14/15 versus baseline, 14/15 versus FinBERT, 15/15 versus LLM-S, and 14/15 exceed market Sharpe 0.6324"
-three_agent_5y,claim_matches_printed_tables,all 15 three-agent Sharpe ratios are lower than two-agent Agentic and 0/15 exceed market
-finbert_10y_comparisons,claim_matches_printed_tables,FinBERT is higher in all 15/15 cells versus logistic and baseline
-subsequent_return_leakage_check,asserted_without_released_statistic,"paper says signals do not systematically align with subsequent returns but releases no test statistic, sample, code, or signal ledger"
-intersection_attribution,asserted_without_released_lineage,"claims 1.037 of 1.187 Sharpe is attributable to intersection and union fallback has 0.545, but releases no dated decomposition or output arrays"
-selected_stock_count,asserted_without_released_lineage,average 22 selected stocks and 50% trivial-intersection dates cannot be checked without annual rules and monthly signal sets
-screen_label_direction,methodological_interpretation_boundary,"Stage 2 pools all non-hold buy and sell names and explicitly may assign either weight sign, so Stage-1 buy/sell labels do not constrain final position direction"
-causal_masking,prompt_instruction_not_model_control,"the released text asks Gemini to use causal masking; it is not evidence of an enforced attention mask, timestamped request, or training-data cutoff"
-theory_to_empirics,conditional_not_empirically_verified,the sensible-screening theory assumes an oracle-like subset relation; public artifacts do not establish that LLM-S or FinBERT satisfies it
+paper_version,check,status,detail
+v1,printed_sharpe_identity,two_mismatches,313/315 printed triples satisfy Sharpe = annual return / sqrt(annual variance) within 0.002; LLM-S 10y NLS/MSR differs by 0.0084 and Agentic 10y POET/MV contains malformed return 01092
+v1,agentic_10y_poet_mv_return,missing_decimal_typographical_error,source prints 01092; 0.1092 would imply Sharpe 0.2357 and reconcile with printed 0.2358 at displayed precision
+v1,llm_10y_nls_msr,printed_triple_conflict,"0.0740 / sqrt(0.0258) = 0.4607, not the printed Sharpe 0.4691"
+v1,llm_vs_baseline_5y,claim_matches_printed_tables,LLM-S is higher in 13/15 cells; exceptions are POET/MSR and NLS/MSR
+v1,logistic_vs_baseline_5y,claim_matches_printed_tables,logistic is higher in 13/15 cells
+v1,llm_vs_analyst_and_novy_marx_5y,claim_matches_printed_tables,LLM-S is higher in all 15/15 cells against each comparator
+v1,finbert_5y_comparisons,claim_matches_printed_tables,"FinBERT is higher in 14/15 cells versus baseline and logistic, 15/15 versus analysts, and 11/15 exceed market Sharpe 0.6324"
+v1,agentic_5y_comparisons,claim_matches_printed_tables,"Agentic is higher in 14/15 versus baseline, 14/15 versus FinBERT, 15/15 versus LLM-S, and 14/15 exceed market Sharpe 0.6324"
+v1,three_agent_5y,claim_matches_printed_tables,all 15 three-agent Sharpe ratios are lower than two-agent Agentic and 0/15 exceed market
+v1,finbert_10y_comparisons,claim_matches_printed_tables,FinBERT is higher in all 15/15 cells versus logistic and baseline
+v1,subsequent_return_leakage_check,asserted_without_released_statistic,"paper says signals do not systematically align with subsequent returns but releases no test statistic, sample, code, or signal ledger"
+v1,intersection_attribution,asserted_without_released_lineage,"claims 1.037 of 1.187 Sharpe is attributable to intersection and union fallback has 0.545, but releases no dated decomposition or output arrays"
+v1,selected_stock_count,asserted_without_released_lineage,average 22 selected stocks and 50% trivial-intersection dates cannot be checked without annual rules and monthly signal sets
+v1,screen_label_direction,methodological_interpretation_boundary,"Stage 2 pools all non-hold buy and sell names and explicitly may assign either weight sign, so Stage-1 buy/sell labels do not constrain final position direction"
+v1,causal_masking,prompt_instruction_not_model_control,"the released text asks Gemini to use causal masking; it is not evidence of an enforced attention mask, timestamped request, or training-data cutoff"
+v1,theory_to_empirics,conditional_not_empirically_verified,the sensible-screening theory assumes an oracle-like subset relation; public artifacts do not establish that LLM-S or FinBERT satisfies it
+v2,visible_table_denominator,inactive_source_tables_excluded,"26 rendered tables and 1,344 numeric cells; eight legacy tables inside \iffalse and three fully commented table shells receive no published denominator credit"
+v2,printed_sharpe_identity,two_rounding_interval_conflicts,406/408 rendered Sharpe/return/variance triples reconcile after propagating four-decimal rounding intervals
+v2,short_llm_nw_mv,printed_triple_conflict,"Table tab2 prints Sharpe 0.5941, but 0.1240/sqrt(0.0546) is about 0.5307 and cannot reconcile by four-decimal rounding"
+v2,short_llm_nw_msr,printed_triple_conflict,"Table tab2 prints Sharpe 0.5708, but 0.1388/sqrt(0.0472) is about 0.6389 and cannot reconcile by four-decimal rounding"
+v2,medium_baseline_and_market,claim_matches_printed_tables,baseline maximum is 1.0088 and 3/15 configurations exceed market 0.2685
+v2,medium_llm_table_maximum,claim_conflicts_with_printed_table,"prose names Deep learning/MSR 0.6108 as best, while the rendered Sample Cov/GMV cell is 0.6194"
+v2,medium_llm_vs_baseline,claim_count_conflict,prose says 12/15 improve; the printed common cells show 11/15
+v2,medium_logistic_market,claim_matches_printed_tables,"10 cells exceed and one equals 0.2685, matching the stated 11 beat-or-match count"
+v2,medium_llm_vs_humans,claim_matches_printed_tables,LLM-S exceeds human screening in 17/18 cells; NW/MV is the sole exception
+v2,medium_logistic_vs_baseline,claim_denominator_and_count_conflict,prose says 14/18 although baseline has no Sample Cov; among 15 common cells logistic wins 10
+v2,medium_finbert_comparisons,claims_match_printed_tables,"FinBERT wins 12/15 versus baseline, 14/18 versus LLM-S, 10/18 versus logistic, and 18/18 versus humans"
+v2,medium_hybrid_mv,claim_matches_printed_tables,LLM-S plus humans beats LLM-S in all six MV cells and only those 6/18 cells
+v2,medium_agentic_comparisons,claims_match_printed_tables,"Agentic wins 9/15 versus baseline, 10/18 versus FinBERT, and 11/18 versus LLM-S; its 1.0946 maximum is the largest medium main-table value"
+v2,medium_humans_added,claim_matches_printed_tables_with_one_cell_exception,"adding humans lowers 17/18 Agentic cells; NW/MV is slightly less negative with humans, while all three-agent cells remain below market"
+v2,short_baseline_llm_logistic_humans,claims_match_printed_tables,baseline has 2 market-beating cells; LLM-S has zero and wins 3/15 versus baseline; logistic wins 18/18 and humans 18/18 versus LLM-S
+v2,short_logistic_table_reference,claim_value_misattributed,prose calls 3.5374 the best value in Table tab3; tab3 peaks at 3.3540 and 3.5374 belongs to human-screening Table tab4
+v2,short_finbert_comparisons,counts_match_printed_tables,"FinBERT wins 10/15 versus baseline, 18/18 versus LLM-S, 15/18 versus logistic, and 10/18 versus humans"
+v2,short_finbert_percentage,printed_percentage_conflict,"the increase from 3.3540 to 7.2046 is 114.8%, not the stated 99%"
+v2,short_hybrid_vs_humans,claim_count_conflict,prose says two hybrid cells beat humans; the printed tables show 1/18
+v2,short_agentic_comparisons,claims_match_printed_tables,"Agentic wins 11/15 versus baseline, 15/18 versus FinBERT, 18/18 versus LLM-S, and 18/18 versus the three-agent human ensemble"
+v2,short_agentic_returns,claim_matches_printed_tables,all 15 common Agentic annual-return cells exceed baseline counterparts
+v2,short_baseline_minimum_variance_label,prose_label_conflict,"the printed 0.0025 minimum is Residual NW/MV, not Residual NW/GMV as one later paragraph states"
+v2,consensus_robustness,claims_match_printed_tables,short default-to-FinBERT wins 13/15 versus union and has the larger maximum; medium union wins 14/15 versus default-to-FinBERT
+v2,small_cap_robustness,claims_match_printed_tables,printed maxima fall from 8.1612 to 2.1316 short-term and from 1.0946 to 0.4722 medium-term
+v2,novy_marx_robustness,topline_matches_not_uniform_medium_dominance,Agentic maxima exceed Novy-Marx+FinBERT in both windows; it wins 15/15 common short cells but only 10/15 medium cells
+v2,equal_weight_counts,claim_matches_printed_tables_given_unreleased_benchmark,"using the prose-only 1/N values, 11/15 short and 10/15 medium Agentic cells exceed them; underlying benchmark returns are absent"
+v2,equal_weight_significance,asserted_without_released_lineage,p-values 0.067 and 0.062 cannot be recomputed without paired return series and test implementation
+v2,two_rerun_robustness,asserted_without_released_outputs,v2 says the Agentic screen was rerun twice with similar medium results but releases neither runs nor a similarity statistic
+v2,selected_stock_count,asserted_without_released_lineage,the average of 20 selected stocks cannot be checked without dated signals and ensemble sets
+v2,model_cutoff_boundary,family_cutoffs_corroborated_execution_unverified,"OpenAI sources support September 2021 for GPT-3.5 Turbo and pretraining through October 2023 for GPT-4o, but no exact author model IDs, snapshots, request dates, responses, or tool payloads are released"
+v2,additional_portfolio_metrics,printed_only,"120 turnover/leverage/concentration/drawdown cells are rendered, but no weights, returns, liquidation events, or calculation outputs are released"
+v2,theory_to_empirics,conditional_not_empirically_verified,the new screening and information-acquisition results depend on assumptions; public artifacts do not establish that the empirical agents satisfy them

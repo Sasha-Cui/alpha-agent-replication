@@ -1,0 +1,20 @@
+{
+  "all_three_bodies_verbatim_equal_across_versions": true,
+  "components": [
+    "LLM-S agent backstory/system-like prompt",
+    "LLM-S CrewAI task prompt",
+    "LLM-S example model output/rule"
+  ],
+  "formatting_options_changed": true,
+  "paper_result_credit": false,
+  "v1_normalized_sha256": [
+    "6e330990c2c98c551231b68c6662e64557673c3cc93332e76953e6d40536ca65",
+    "d3e52e4217f9464cc8cb98a63df59f4354577b3dc30b874a8f748f08ca7410a2",
+    "133cc3a8a8801e00baad0ac1921e4594ed2f967b27f2e9ad28582f715878c32b"
+  ],
+  "v2_normalized_sha256": [
+    "6e330990c2c98c551231b68c6662e64557673c3cc93332e76953e6d40536ca65",
+    "d3e52e4217f9464cc8cb98a63df59f4354577b3dc30b874a8f748f08ca7410a2",
+    "133cc3a8a8801e00baad0ac1921e4594ed2f967b27f2e9ad28582f715878c32b"
+  ]
+}

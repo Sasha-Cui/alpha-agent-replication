@@ -1,30 +1,65 @@
-dimension,status,evidence
-official_document_source,complete_document_only,"v1 TeX, bibliography, workflow PNG, and generated bibliography are released; no experiment source is present"
-author_native_runtime,missing,"no attributable data, LLM, FinBERT, estimator, optimizer, or backtest runtime was recovered"
-equity_universe,partial,"full S&P 500 including delisted firms is stated, but point-in-time memberships, identifiers, eligibility rules, and vintages are absent"
-crsp_compustat_data,missing_proprietary,monthly January 2005--April 2024 CRSP/Compustat panel is not released
-characteristics,mostly_specified,"log market equity, book-to-market, and 12-month momentum; 1/99 winsorization, cross-sectional z-scores, and missing-to-zero are stated"
-accounting_lag,specified,annual accounting data are assumed available six months after fiscal-year end
-linked_news_dataset,exact_link_recovered,"pinned Hugging Face revision has 4,589 rows, 469 symbols, and dates 2006-12-04 through 2024-04-20"
-ibes_recommendations,missing_proprietary,"IBES/WRDS recommendation snapshot, analyst mappings, and derived monthly signals are absent"
-fama_french_factors,missing_snapshot,three-factor model is named for residual nodewise estimation but exact factor file and vintage are absent
-llm_s_prompt,partial_one_date,"agent/task prompt is printed only for December 2023; earlier annual prompts, injected data, tool traces, and outputs are absent"
-llm_s_model,family_only_retired,Gemini 2.0 Flash is named without immutable model ID/revision; service shut down 2026-06-01
-llm_s_generation_parameters,missing,"temperature, top-p, token limit, seed, retries, safety settings, and response metadata are absent"
-crewai_runtime_and_tools,names_only,"four tool names and snippets are printed; implementations, CrewAI version, database schema, and tool-call records are absent"
-annual_llm_rules,one_of_required_years,one 2024 rule from December 2023 is printed; the full annual rule ledger for both evaluation windows is absent
-finbert_model,missing_identifier,"FinBERT is named generically; checkpoint/revision, tokenizer, batching, truncation, inference code, and probabilities are absent"
-finbert_aggregation,partial,"positive-minus-negative probability, seven-day exponential weighting, and +/-0.1 thresholds are stated; exact timestamp and aggregation edge cases are absent"
-ensemble_rule,specified_prose,two-agent intersection with union fallback at cardinality <=1 and three-agent majority vote are described
-ensemble_signal_ledger,missing,"no dated buy/sell/hold sets, intersection/union flags, or selected-stock counts are released"
-logistic_benchmark,partial,"annual 15-year rolling cross-sectional logistic and top/bottom deciles are stated; target definition, features, solver, regularization, ties, and outputs are absent"
-novy_marx_benchmark,partial,"top/bottom 150 profitability-plus-value ranks are stated; exact construction, data fields, ties, and outputs are absent"
-precision_estimators,partial,"nodewise, residual nodewise, POET, deep learning, and NLS are described mathematically but implementation choices and fitted artifacts are absent"
-deep_learning_estimator,underspecified,"architecture, loss, optimizer, hyperparameters, validation, seeds, checkpoints, and training traces are absent"
-portfolio_objectives,mostly_specified,"GMV, 1% monthly target MV, and MSR formulas are printed; solver details, constraints, risk-free convention, and edge cases are absent"
-formation_and_test_windows,specified_dates_only,180-month rolling formation and 2020-01--2024-04 plus 2015-01--2024-04 tests are stated; exact return matrix is absent
-transaction_cost,formula_specified,10 bp net-return formula is printed; corporate-action/execution conventions and generated turnover are absent
-random_seeds,missing,"no seeds for LLM calls, deep learning, baselines, or repeated runs are released"
-runtime_environment,missing,"no author lockfile, versions, hardware description, or executable configuration is released"
-raw_results,missing,"no model requests/responses, signals, scores, weights, returns, fitted matrices, tables, or decomposition arrays are released"
-published_result_lineage,missing,0/953 printed numeric table cells can be linked to an author-native executable output
+paper_version,dimension,status,evidence
+v1,official_document_source,complete_document_only,"v1 TeX, bibliography, workflow PNG, and generated bibliography are released; no experiment source is present"
+v1,author_native_runtime,missing,"no attributable data, LLM, FinBERT, estimator, optimizer, or backtest runtime was recovered"
+v1,equity_universe,partial,"full S&P 500 including delisted firms is stated, but point-in-time memberships, identifiers, eligibility rules, and vintages are absent"
+v1,crsp_compustat_data,missing_proprietary,monthly January 2005--April 2024 CRSP/Compustat panel is not released
+v1,characteristics,mostly_specified,"log market equity, book-to-market, and 12-month momentum; 1/99 winsorization, cross-sectional z-scores, and missing-to-zero are stated"
+v1,accounting_lag,specified,annual accounting data are assumed available six months after fiscal-year end
+v1,linked_news_dataset,exact_link_recovered,"pinned Hugging Face revision has 4,589 rows, 469 symbols, and dates 2006-12-04 through 2024-04-20"
+v1,ibes_recommendations,missing_proprietary,"IBES/WRDS recommendation snapshot, analyst mappings, and derived monthly signals are absent"
+v1,fama_french_factors,missing_snapshot,three-factor model is named for residual nodewise estimation but exact factor file and vintage are absent
+v1,llm_s_prompt,partial_one_date,"agent/task prompt is printed only for December 2023; earlier annual prompts, injected data, tool traces, and outputs are absent"
+v1,llm_s_model,family_only_retired,Gemini 2.0 Flash is named without immutable model ID/revision; service shut down 2026-06-01
+v1,llm_s_generation_parameters,missing,"temperature, top-p, token limit, seed, retries, safety settings, and response metadata are absent"
+v1,crewai_runtime_and_tools,names_only,"four tool names and snippets are printed; implementations, CrewAI version, database schema, and tool-call records are absent"
+v1,annual_llm_rules,one_of_required_years,one 2024 rule from December 2023 is printed; the full annual rule ledger for both evaluation windows is absent
+v1,finbert_model,missing_identifier,"FinBERT is named generically; checkpoint/revision, tokenizer, batching, truncation, inference code, and probabilities are absent"
+v1,finbert_aggregation,partial,"positive-minus-negative probability, seven-day exponential weighting, and +/-0.1 thresholds are stated; exact timestamp and aggregation edge cases are absent"
+v1,ensemble_rule,specified_prose,two-agent intersection with union fallback at cardinality <=1 and three-agent majority vote are described
+v1,ensemble_signal_ledger,missing,"no dated buy/sell/hold sets, intersection/union flags, or selected-stock counts are released"
+v1,logistic_benchmark,partial,"annual 15-year rolling cross-sectional logistic and top/bottom deciles are stated; target definition, features, solver, regularization, ties, and outputs are absent"
+v1,novy_marx_benchmark,partial,"top/bottom 150 profitability-plus-value ranks are stated; exact construction, data fields, ties, and outputs are absent"
+v1,precision_estimators,partial,"nodewise, residual nodewise, POET, deep learning, and NLS are described mathematically but implementation choices and fitted artifacts are absent"
+v1,deep_learning_estimator,underspecified,"architecture, loss, optimizer, hyperparameters, validation, seeds, checkpoints, and training traces are absent"
+v1,portfolio_objectives,mostly_specified,"GMV, 1% monthly target MV, and MSR formulas are printed; solver details, constraints, risk-free convention, and edge cases are absent"
+v1,formation_and_test_windows,specified_dates_only,180-month rolling formation and 2020-01--2024-04 plus 2015-01--2024-04 tests are stated; exact return matrix is absent
+v1,transaction_cost,formula_specified,10 bp net-return formula is printed; corporate-action/execution conventions and generated turnover are absent
+v1,random_seeds,missing,"no seeds for LLM calls, deep learning, baselines, or repeated runs are released"
+v1,runtime_environment,missing,"no author lockfile, versions, hardware description, or executable configuration is released"
+v1,raw_results,missing,"no model requests/responses, signals, scores, weights, returns, fitted matrices, tables, or decomposition arrays are released"
+v1,published_result_lineage,missing,0/953 printed numeric table cells can be linked to an author-native executable output
+v2,official_document_source,complete_document_only,"v2 releases TeX, bibliography, and one workflow PNG; the generated bibliography is no longer in the source archive and no experiment source is present"
+v2,author_native_runtime,missing,"no attributable data, LLM, FinBERT, estimator, optimizer, or backtest runtime was recovered"
+v2,equity_universe,partial,"full S&P 500 including delisted firms is stated, but point-in-time memberships, identifiers, eligibility rules, and vintages are absent"
+v2,crsp_compustat_data,missing_proprietary,monthly January 2005--April 2024 CRSP/Compustat panel is not released
+v2,characteristics,mostly_specified,"log market equity, book-to-market, and 12-month momentum; 1/99 winsorization, cross-sectional z-scores, and missing-to-zero are stated"
+v2,accounting_lag,specified,annual accounting data are assumed available six months after fiscal-year end
+v2,linked_news_dataset,exact_link_recovered,"the same pinned Hugging Face revision has 4,589 rows, 469 symbols, and dates 2006-12-04 through 2024-04-20"
+v2,ibes_recommendations,missing_proprietary,"IBES/WRDS recommendation snapshot, analyst mappings, and derived monthly signals are absent"
+v2,fama_french_factors,missing_snapshot,the three-factor model is named for residual nodewise estimation but exact factor file and vintage are absent
+v2,llm_s_prompt,partial_one_date,the same three December-2023 prompt/output listings survive verbatim; medium-horizon prompts and all other annual executions are absent
+v2,llm_s_models,family_cutoffs_only,"GPT-3.5 Turbo September-2021 and GPT-4o October-2023 family cutoff claims are corroborated by OpenAI sources, but author model IDs, snapshots, request dates, and responses are absent"
+v2,llm_s_generation_parameters,missing,"temperature, top-p, token limit, seed, retries, safety settings, and response metadata are absent"
+v2,crewai_runtime_and_tools,names_only,"tool names and prompt snippets are printed; implementations, CrewAI version, database schema, payloads, and tool-call records are absent"
+v2,annual_llm_rules,one_date_only,one 2024 rule from December 2023 is printed; the medium- and short-window annual rule ledgers are absent
+v2,finbert_model,missing_identifier,"FinBERT is named generically; checkpoint/revision, tokenizer, batching, truncation, inference code, and probabilities are absent"
+v2,finbert_cutoff_claim,fine_tuning_date_not_full_lineage,a pre-2020 fine-tuning dataset claim does not identify the checkpoint or establish all underlying pretraining and inference inputs
+v2,finbert_aggregation,partial,"positive-minus-negative probability, seven-day exponential weighting, and +/-0.1 thresholds are stated; exact timestamp and aggregation edge cases are absent"
+v2,ensemble_rule,specified_prose,intersection with a union fallback and a default-to-FinBERT robustness rule are described
+v2,ensemble_signal_ledger,missing,"no dated buy/sell/hold sets, intersection/union flags, fallback events, or selected-stock counts are released"
+v2,logistic_benchmark,partial,"rolling cross-sectional logistic and top/bottom deciles are stated; target definition, features, solver, regularization, ties, and outputs are absent"
+v2,novy_marx_benchmark,partial,"top/bottom 150 profitability-plus-value ranks are stated; exact construction, data fields, ties, and outputs are absent"
+v2,precision_estimators,partial,"nodewise, residual nodewise, POET, deep learning, NLS, and screened-sample covariance are described but implementations and fitted artifacts are absent"
+v2,sample_covariance,conditional_method_only,Sample Cov appears only after screening when dimension permits inversion; exact matrices and selection-dependent dimensions are absent
+v2,deep_learning_estimator,underspecified,"architecture, loss, optimizer, hyperparameters, validation, seeds, checkpoints, and training traces are absent"
+v2,portfolio_objectives,mostly_specified,"GMV, 1% monthly target MV, and MSR formulas are printed; solver details, constraints, risk-free convention, and edge cases are absent"
+v2,formation_and_test_windows,specified_dates_only,180-month formation with October 2021--April 2024 medium and November 2023--April 2024 short tests is stated; exact return matrices are absent
+v2,transaction_cost,formula_specified,10 bp net-return treatment is stated; corporate-action/execution conventions and generated turnover are absent
+v2,additional_portfolio_metrics,definitions_only,"turnover, leverage, HHI concentration, drawdown, and empty-portfolio liquidation behavior are described, but weights and calculation arrays are absent"
+v2,equal_weight_benchmarks,printed_values_only,1/N Sharpe values and comparison counts are printed without benchmark return series
+v2,paired_sharpe_tests,printed_p_values_only,"0.067 and 0.062 are printed without paired samples, implementation, or resampling details sufficient for replay"
+v2,llm_reruns,asserted_only,"two medium-horizon reruns are described as similar without prompts, outputs, seeds, tables, or a similarity statistic"
+v2,random_seeds,missing,"no seeds for LLM calls, deep learning, baselines, or repeated runs are released"
+v2,runtime_environment,missing,"no author lockfile, versions, hardware description, or executable configuration is released"
+v2,raw_results,missing,"no model requests/responses, signals, scores, weights, returns, fitted matrices, tables, or decomposition arrays are released"
+v2,published_result_lineage,missing,"0/1,344 rendered v2 numeric table cells can be linked to an author-native executable output"

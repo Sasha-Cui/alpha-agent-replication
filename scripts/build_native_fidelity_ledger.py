@@ -995,31 +995,30 @@ PAPER_ONLY_AUDIT_NOTES = {
         "favorable narrative motif and receives no TiMi method or result credit."
     ),
     "SYS-AGENTIC-AI-SCREENING": (
-        "A pinned arXiv-v1 Agentic AI Screening audit rebuilds the official "
-        "67-page source at 99.36% extracted-token multiset overlap and visually "
-        "checks all 67 official and 67 rebuilt pages. It inventories all 22 "
-        "result tables and 953 printed numeric result cells; 0/953 regenerate "
-        "through an author-native experiment. The linked Hugging Face news "
-        "revision is recovered exactly (4,589 rows, 469 symbols, 2006-12-04 "
-        "through 2024-04-20), and the source prints the CrewAI agent/task prompt "
-        "and LLM-S output for December 2023. Those are input/specification "
-        "components only: all earlier annual prompts, injected cross-sections, "
-        "tool implementations and calls, Gemini requests, FinBERT checkpoint and "
-        "scores, monthly signals, ensemble sets, CRSP/Compustat and IBES/WRDS "
-        "snapshots, S&P membership history, estimator code/hyperparameters, seeds, "
-        "environment, fitted weights, returns, and raw outputs are absent. The "
-        "printed tables contain a probable missing decimal (`01092`, consistent "
-        "with 0.1092) and one additional Sharpe/return/variance mismatch, while "
-        "unreleased claims about subsequent-return leakage, intersection "
-        "attribution, fallback dates, and average selected stocks cannot be "
-        "checked. Gemini 2.0 Flash first became public on 2024-12-11 after the "
-        "April 2024 test end and has an August 2024 knowledge cutoff; retrospective "
-        "data-layer testing is possible, but prompt-level 'causal masking' does "
-        "not establish a model-knowledge holdout. A pinned unaffiliated repository "
-        "created 2026-08-05 passes 114 tests but replaces Gemini, FinBERT, the five "
-        "estimators, 180-month window, and paper data, so it receives no native or "
-        "paper-result credit. Negative searches are bounded, not proof that "
-        "private, deleted, moved, or unindexed material never existed."
+        "A pinned two-version Agentic AI Screening audit rebuilds and visually "
+        "checks all 67 v1 and 82 v2 official/rebuilt pages. It inventories 953 v1 "
+        "and 1,344 v2 rendered numeric cells across 22 and 26 tables; 0/2,297 "
+        "regenerate through an author-native experiment. V2 is a major rewrite: "
+        "its main windows become October 2021--April 2024 with GPT-3.5 and November "
+        "2023--April 2024 with GPT-4o, while eight legacy table environments are "
+        "inactive under `\\iffalse` and three more are fully commented. The linked "
+        "Hugging Face news revision is recovered exactly (4,589 rows, 469 symbols, "
+        "2006-12-04 through 2024-04-20), and the three December 2023 prompt/output "
+        "listing bodies are unchanged across versions. OpenAI primary sources "
+        "corroborate the September 2021 GPT-3.5 cutoff and GPT-4o pretraining data "
+        "through October 2023, but exact author model snapshots, requests, responses, "
+        "and tool payloads remain missing. Full annual prompt histories, FinBERT "
+        "checkpoint/scores, monthly signals, ensemble sets, CRSP/Compustat and "
+        "IBES/WRDS snapshots, point-in-time S&P membership, estimator/optimizer "
+        "code, deep-learning hyperparameters, seeds, environment, weights, returns, "
+        "paired tests, reruns, and raw outputs are absent. V1 retains the literal "
+        "`01092` and one other arithmetic conflict; v2 adds two short LLM-S NW "
+        "conflicts plus several prose/table count, attribution, and percentage "
+        "errors. Claims about 20 selected stocks, two similar reruns, 1/N returns, "
+        "and p-values 0.067/0.062 lack released lineage. A pinned unaffiliated "
+        "repository created 2026-08-05 passes 114 tests but materially changes the "
+        "model, sentiment agent, estimators, window, conventions, and data, so it "
+        "receives no native or paper-result credit. Negative searches remain bounded."
     ),
     "SYS-FACTOR-MINER": (
         "A pinned arXiv-v1 FactorMiner audit rebuilds the official 20-page "
@@ -1361,7 +1360,7 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_full_two_commit_history_nine_tests_appendix_component_missing_research_lineage",
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_six_component_checks_broken_default_launcher_missing_research_lineage",
     "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions",
-    "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_one_linked_input_one_date_prompt_zero_of_953_table_cells_no_author_native_pipeline",
+    "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_v1_zero_of_953_v2_zero_of_1344_one_linked_input_one_date_prompt_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
     "SYS-ALPHA-GPT": "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_empirical_results",
     "SYS-ALPHA-JUNGLE": "paper_audit:completed_zero_of_64_published_cells_zero_native_results_three_of_six_formula_trees_conditionally_adapted",

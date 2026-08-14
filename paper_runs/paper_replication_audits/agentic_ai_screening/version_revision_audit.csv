@@ -1,0 +1,17 @@
+dimension,v1,v2,assessment
+submission_date,2026-03-24,2026-08-11,new official revision
+official_pages,67,82,15-page expansion
+source_archive_files,5,4,v2 omits generated main.bbl; both remain document-only
+main_tex_bytes,210461,283353,substantial manuscript rewrite
+rendered_result_tables,22,26,v2 excludes eight iffalse tables and three commented shells
+rendered_numeric_cells,953,1344,separate version denominators; no cross-version credit
+sharpe_return_variance_triples,315,408,two non-rounding conflicts in each version
+active_figures,1,6,v2 adds five theory/concept figures; no empirical result plot
+main_test_windows,2020-01_to_2024-04 and 2015-01_to_2024-04,2021-10_to_2024-04 and 2023-11_to_2024-04,main empirical windows replaced
+llm_s_family,Gemini 2.0 Flash,GPT-3.5 Turbo medium; GPT-4o short,model family and chronology argument replaced
+screened_sample_covariance,not in main result rows,added to 16 screened tables,new method cells change several prose maxima and denominators
+additional_portfolio_metrics,0,120,turnover/leverage/concentration/drawdown printed without raw lineage
+prompt_listing_bodies,3,3,all three normalized listing bodies are byte-for-byte unchanged
+workflow_png,74467cd1f6a4d4cee7f5dc2d4b2f96d4ad28fd864ae6c0859c6e01a374f98a9a,74467cd1f6a4d4cee7f5dc2d4b2f96d4ad28fd864ae6c0859c6e01a374f98a9a,byte-identical
+linked_news_revision,d3e37035640bc90830ee8741dfa52815b719a26a,d3e37035640bc90830ee8741dfa52815b719a26a,same exact linked input component
+author_native_experiment_release,not recovered,not recovered,no empirical lineage improvement

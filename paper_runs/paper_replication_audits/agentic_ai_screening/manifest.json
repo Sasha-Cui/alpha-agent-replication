@@ -1,39 +1,72 @@
 {
+  "active_figures_by_version": {
+    "v1": 1,
+    "v2": 6
+  },
   "arxiv_id": "2603.23300",
   "attributable_native_implementation_recovered": false,
   "complete_annual_prompt_and_output_sets_recovered": 0,
+  "current_official_version": "v2",
   "full_end_to_end_pipeline_reproduced": false,
   "independent_component_tests_passed": 114,
   "linked_news_rows_recovered": 4589,
   "linked_news_symbols_recovered": 469,
   "native_numeric_table_cells_regenerated": 0,
   "official_document_rebuild_completed": true,
-  "official_pages_visually_checked": 67,
+  "official_pages_visually_checked": 149,
+  "official_pages_visually_checked_by_version": {
+    "v1": 67,
+    "v2": 82
+  },
   "official_pdf_and_source_recovered": true,
   "official_versions_audited": [
-    "v1"
+    "v1",
+    "v2"
   ],
   "output_sha256": {
-    "README.md": "3f336b280620e3b393a5894e2da06f4113ca0252c4efcb8c79a877efa7bd4caf",
-    "discovery_evidence.csv": "bcdd5b1390296124a076c6971252504393b5ba604799f2c30d409493c8d1af25",
+    "README.md": "410ae7b5a68c44d54d203df754bf61c6e446286eb1bd8b490fdc5780a572b5e0",
+    "discovery_evidence.csv": "cd6151b6a1dbc75b30d1ef0cbf6473c709df213faae8da3eac656143b23a4325",
+    "figure_inventory.csv": "f08b0a6e227fdfad7beefb81242699ca1abef98763b13575a12e874b7e389bfd",
     "independent_implementation_audit.json": "93ae9b413ed528f159637a436e2a67fb1896402dd0b8910963729c6cb154aea2",
-    "internal_consistency_audit.csv": "a1142313e55c110339d3f21345a01f5622f1f1785be98714888a47273d0701a7",
+    "internal_consistency_audit.csv": "db8ee07086bb18cc0ba01f6ce300af7127bba512440757cefd947236d658a21e",
     "linked_news_dataset_audit.json": "01ae9b78c9b5c980fc6211eb4505e326efe025521a71ef9d1dcfc7f61287e123",
-    "method_specification_audit.csv": "b70878ae284159d0e106bef760f5f089dc8cd9169ae230f6bf86f594490bea4f",
-    "model_release_chronology.json": "c72e926c8aca30b9b3fe96fe3d641fc5ca44176d95cb2fbaf6ac53be2c0d802f",
-    "prompt_component_inventory.csv": "b87004994341e5ff4ea7ee0230616da6188b4b53941b90d1781b4aa12d8dd13a",
-    "published_result_ledger.csv": "a46f3e3ea8c3ec8187d97ddb58e7749bc7a8b39d9902303ed0e62a85d0c40e76",
-    "sharpe_arithmetic_audit.csv": "a01825522fb1b765460f80a7aff3011ea58e48c6dfc7a2e10704efb3c780684a",
-    "source_provenance.json": "4882eae0e1c4d905221f2f640549209bc3d2e711eeb1c501b0b107523e97318d",
-    "table_inventory.csv": "8387e170f446313f234face9a6ebe40f422793b9a7bd7d8173824ca405735d23"
+    "method_specification_audit.csv": "bb22ebc91ed55dc6785d1d0292fd853d3fd8d35a49dfcbcb0640bf84463ddf61",
+    "model_release_chronology.json": "53b046658edf75aa646a357fdf258dd359e5b653aef7a64639d0d66a9fe4e5bf",
+    "prompt_component_inventory.csv": "223b790f8367a1d457227322742e5e7ce0a9e736452e55e7818f0d3e66e064b5",
+    "prompt_version_comparison.json": "8aa4d305658d02ccfe3d4a2fa25e71d08a531c1c7aa653c647a677a9d70d3fef",
+    "published_result_ledger.csv": "ffb38910cae8c8033eae6ea7b2d9e1de8051cc89e20288e3717fe75fe3d50c92",
+    "sharpe_arithmetic_audit.csv": "312ece52965ce44fe3d1aa91702af6618bb7abb3b30e56e05f24b1bc62217fbd",
+    "source_provenance.json": "4f9d2c8383296c0c73ab6d428bd8eb685ed179429df08fb86da20abe2edc0e1b",
+    "table_inventory.csv": "9fa1f774de6673d59529ce1ed4a06cbf82d8c93ae7422ff317ec7fffa68a2238",
+    "version_revision_audit.csv": "6469052d1b6243e78c596a428afd5b9b9727cf305d7fa94f5d59f332e189011f"
   },
-  "paper_evidence_route": "paper_only_one_linked_input_and_one_date_prompt_no_native_results",
-  "printed_llm_prompt_or_output_components_recovered": 3,
-  "published_numeric_table_cells": 953,
-  "published_result_tables": 22,
-  "rebuilt_pages_visually_checked": 67,
-  "sharpe_arithmetic_checks": 315,
-  "sharpe_arithmetic_mismatches": 2,
+  "paper_evidence_route": "paper_only_two_versions_one_linked_input_one_date_prompt_no_native_results",
+  "published_numeric_table_cells": 2297,
+  "published_numeric_table_cells_by_version": {
+    "v1": 953,
+    "v2": 1344
+  },
+  "published_result_tables": 48,
+  "published_result_tables_by_version": {
+    "v1": 22,
+    "v2": 26
+  },
+  "rebuilt_pages_visually_checked": 149,
+  "rebuilt_pages_visually_checked_by_version": {
+    "v1": 67,
+    "v2": 82
+  },
+  "sharpe_arithmetic_checks": 723,
+  "sharpe_arithmetic_checks_by_version": {
+    "v1": 315,
+    "v2": 408
+  },
+  "sharpe_arithmetic_mismatches": 4,
+  "sharpe_arithmetic_mismatches_by_version": {
+    "v1": 2,
+    "v2": 2
+  },
   "system_id": "SYS-AGENTIC-AI-SCREENING",
+  "unique_printed_llm_prompt_or_output_components_recovered": 3,
   "work_id": "CensusArxiv260323300"
 }

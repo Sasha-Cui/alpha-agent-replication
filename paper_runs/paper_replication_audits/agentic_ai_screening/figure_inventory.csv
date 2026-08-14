@@ -1,0 +1,8 @@
+paper_version,figure_number,label,source_kind,source_asset,empirical_result_figure,official_and_rebuilt_visually_checked,caption
+v1,1,fig:algorithm,released_png,Figure_workflow_1.0.png,False,True,An illustration of the algorithm.
+v2,1,fig:venn1,embedded_tikz,main.tex,False,True,Venn diagram showing $A_3 \subseteq (A_1 \cap A_2)$
+v2,2,fig:venn3,embedded_tikz,main.tex,False,True,"Sets $A_1$ and $A_2$ share an intersection $A_1 \cap A_2$, and are both contained within the superseding set $A_3$."
+v2,3,fig:venn-diagram2,embedded_tikz,main.tex,False,True,Venn diagram showing $A_1 \cap A_2 = \emptyset$ where both $A_1$ and $A_2$ are subsets of $A_3$.
+v2,4,fig:cara-additive,embedded_tikz,main.tex,False,True,Indifference curve and information constraints for CARA preferences with the additive precision technology. The shaded area represents feasible information choices satisfying the capacity and no-negative learning constraints; the dot marks the optimal (interior) information choice.
+v2,5,fig:agentic-pic,embedded_tikz,main.tex,False,True,Human and Agentic AI information-capacity optima (manual source caption).
+v2,6,fig:algorithm,released_png,Figure_workflow_1.0.png,False,True,"An illustration of the algorithm. LLM-S and FinBERT first screen for candidate stocks to invest in, and the precision matrix estimation technique assigns weights to these stocks."
