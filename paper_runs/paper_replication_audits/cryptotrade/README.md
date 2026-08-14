@@ -26,6 +26,14 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   recorded action replays through the pinned official data/environment with zero
   state error. This verifies historical author outputs; it does **not** regenerate
   the LLM decisions or prove current endpoint determinism.
+- Table 5 adds 12 result cells that were previously omitted from the audit
+  denominator. All 12 have exact numeric correspondences in the paper-author
+  history, and the six selected action traces replay with zero state error against
+  their own pinned historical code/data snapshots. They receive **0/12 faithful
+  result credit**: all six declare `gpt-3.5-turbo`, not the paper's stated GPT-4o,
+  and the trace matching the Full row is BTC-bull rather than the ETH experiment
+  described around Table 5. The closer ETH/full-prompt trace reports 28.11%/0.08,
+  not 28.47%/0.23.
 - ETH-sideways SMA matches the paper's -5.45% total return and -0.07 Sharpe, but
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
@@ -37,7 +45,7 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 
 ## Why this is not a full reproduction
 
-- 248/468 paper result cells remain unverifiable. The
+- 260/480 paper result cells remain unverifiable. The
   official release ships no complete LLM result paths; the recovered author history
   contains no matching GPT-3.5 paper row and no complete matching SOL-bear GPT-4o row.
 - Six additional LLM rows numerically match the paper but receive no credit: five
@@ -73,8 +81,12 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 
 ## Paper/source inconsistencies retained as evidence
 
-- Table 5 calls the ablation ETH-bull, but its Full values (28.47%, 0.23) exactly
+- Table 5 calls the ablation ETH/GPT-4o, but its Full values (28.47%, 0.23) exactly
   duplicate BTC-bull GPT-4o in Table 2; ETH-bull GPT-4o is 25.47%, 0.18 in Table 3.
+  The recovered exact-value trace is BTC-bull and declares GPT-3.5, while the
+  recovered ETH/full-prompt trace is 28.11%/0.08. The other five Table 5 values
+  also come from traces declaring GPT-3.5. This supplies strong numeric lineage
+  while making a method-faithful Table 5 reproduction less, not more, defensible.
 - The released test-period data usually match Table 1 and exactly drive the
   traditional results, but validation prices diverge and the BTC-bear start and
   SOL-bull end prices also differ. See `dataset_split_conformance.csv`.

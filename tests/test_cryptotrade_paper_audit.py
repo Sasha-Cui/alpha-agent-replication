@@ -54,6 +54,7 @@ def test_paper_ablation_conflict_is_encoded_without_resolving_it() -> None:
         eth["total_return_pct"],
         eth["sharpe_ratio"],
     )
+    assert len(audit.PAPER_ABLATION) * 2 == 12
 
 
 def test_committed_audit_is_partial_and_fail_closed() -> None:
@@ -64,10 +65,14 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     diagnosis = read_csv(output / "traditional_mismatch_diagnosis.csv")
     history = read_csv(output / "source_history_inventory.csv")
     traces = read_csv(output / "author_history_llm_trace_audit.csv")
+    ablation_traces = read_csv(output / "table_5_author_trace_audit.csv")
+    ablation = read_csv(output / "table_5_conformance.csv")
 
     assert manifest["overall_status"] == "partial_reproduction_traditional_plus_author_llm_traces"
     assert manifest["full_paper_reproduced"] is False
-    assert manifest["paper_result_metric_cells_total"] == 468
+    assert manifest["paper_result_metric_cells_total"] == 480
+    assert manifest["paper_tables_2_4_metric_cells_total"] == 468
+    assert manifest["paper_table_5_metric_cells_total"] == 12
     assert manifest["native_deterministic_metric_cells_recomputed"] == 180
     assert manifest["native_deterministic_metric_cells_matched"] == 174
     assert manifest["native_deterministic_metric_cells_mismatched"] == 6
@@ -75,7 +80,10 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert manifest["author_history_llm_rows_corroborated"] == 10
     assert manifest["author_history_llm_rows_numeric_match_but_no_credit"] == 6
     assert manifest["paper_metric_cells_corroborated_total"] == 214
-    assert manifest["paper_result_metric_cells_unverifiable"] == 248
+    assert manifest["paper_numeric_evidence_correspondences_total"] == 226
+    assert manifest["author_history_numeric_metric_cells_corresponding"] == 52
+    assert manifest["paper_result_metric_cells_unverifiable"] == 260
+    assert manifest["paper_strategy_regime_or_ablation_rows_total"] == 123
     assert manifest["paper_strategy_regime_rows_fully_matched"] == 53
     assert manifest["paper_strategy_regime_rows_mismatched"] == 2
     assert manifest["paper_strategy_regime_rows_unverifiable"] == 62
@@ -89,6 +97,15 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert manifest["original_anonymous_source_status_checked_2026_08_13"] == "http_410_repository_expired"
     assert manifest["public_source_history_commits_audited"] == 11
     assert manifest["public_source_history_result_or_log_paths"] == 0
+    assert manifest["paper_ablation_rows"] == 6
+    assert manifest["paper_ablation_metric_cells_total"] == 12
+    assert manifest["paper_ablation_author_history_numeric_correspondences"] == 12
+    assert manifest["paper_ablation_historical_code_action_replays_exact"] == 6
+    assert manifest["paper_ablation_method_faithful_metric_cells"] == 0
+    assert manifest["paper_ablation_rows_with_model_identity_match"] == 0
+    assert manifest["paper_ablation_rows_with_asset_identity_match"] == 5
+    assert manifest["paper_ablation_full_eth_context_candidate_return_pct"] == 28.11
+    assert manifest["paper_ablation_full_eth_context_candidate_sharpe_ratio"] == 0.08
 
     assert len(conformance) == 468
     statuses = Counter(row["status"] for row in conformance)
@@ -144,6 +161,36 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert sum(row["full_period_trace"] == "False" for row in diagnostic) == 1
     assert all(row["model_identity_status"] == "match" for row in credited)
     assert all(row["full_period_trace"] == "True" for row in credited)
+
+    assert len(ablation_traces) == 7
+    selected_ablation = [row for row in ablation_traces if row["trace_role"] == "selected_numeric_correspondence"]
+    context_ablation = [row for row in ablation_traces if row["trace_role"] == "eth_full_prompt_context_candidate"]
+    assert len(selected_ablation) == 6 and len(context_ablation) == 1
+    assert sum(int(row["paper_metric_cells_matching"]) for row in selected_ablation) == 12
+    assert {row["historical_code_action_replay_exact"] for row in ablation_traces} == {"True"}
+    assert {row["action_replay_maximum_absolute_state_error"] for row in ablation_traces} == {"0.0"}
+    assert {row["model_identity_status"] for row in selected_ablation} == {"mismatch"}
+    assert Counter(row["asset_identity_status"] for row in selected_ablation) == {
+        "match": 5,
+        "mismatch": 1,
+    }
+    assert context_ablation[0]["trace_return_pct"] == "28.11"
+    assert context_ablation[0]["trace_sharpe_ratio"] == "0.08"
+    assert context_ablation[0]["paper_metric_cells_matching"] == "0"
+    assert {row["paper_method_faithful_credit"] for row in ablation_traces} == {"False"}
+
+    assert len(ablation) == 12
+    assert Counter(row["paper_variant"] for row in ablation) == {
+        "full": 2,
+        "without_reflection": 2,
+        "without_news": 2,
+        "without_transaction_statistics": 2,
+        "without_technical": 2,
+        "base": 2,
+    }
+    assert {row["author_numeric_correspondence"] for row in ablation} == {"True"}
+    assert {row["historical_code_action_replay_exact"] for row in ablation} == {"True"}
+    assert {row["paper_method_faithful_credit"] for row in ablation} == {"False"}
 
     assert len(selection) == 6
     assert Counter(row["status"] for row in selection) == {

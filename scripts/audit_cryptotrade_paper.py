@@ -14,12 +14,15 @@ import ast
 import csv
 import hashlib
 import importlib.util
+import io
 import json
 import os
 import re
 import stat
 import subprocess
 import sys
+import tarfile
+import tempfile
 from argparse import Namespace
 from itertools import combinations
 from pathlib import Path
@@ -138,6 +141,53 @@ PAPER_ABLATION = {
     "base": (8.40, 0.03),
 }
 
+ABLATION_FLAG_VARIANTS = {
+    (1, 1, 1, 1): "full",
+    (0, 1, 1, 1): "without_reflection",
+    (1, 0, 1, 1): "without_news",
+    (1, 1, 0, 1): "without_transaction_statistics",
+    (1, 1, 1, 0): "without_technical",
+    (0, 0, 0, 0): "base",
+}
+ABLATION_TRACE_PINS = {
+    "full": {
+        "commit": "a27f56c93941c1d50ee73dda9d2dff3c8117182f",
+        "blob": "b68ddce85603ba02435749e14a1d344504ef92ef",
+        "path": "logs/btc-bull.out",
+    },
+    "without_reflection": {
+        "commit": "2074e0498c2502ba934d68355d98c0eb69eb65e7",
+        "blob": "22353ec7ca5b0f58b758f0afe4a4aa5a93044103",
+        "path": "logs/run_agent-wo-reflection.out",
+    },
+    "without_news": {
+        "commit": "b1684705ff235cc216d6994e63f7166cc1f75538",
+        "replay_commit": "2074e0498c2502ba934d68355d98c0eb69eb65e7",
+        "blob": "4872503f7114fc2e9c2a765a3675c1a06eaab052",
+        "path": "logs/run_agent-wo-news.out",
+    },
+    "without_transaction_statistics": {
+        "commit": "308c661262edf26eb375e08a1cee265a4f5388dd",
+        "blob": "e7fb06974c2b5343d72a5490470830f76209e135",
+        "path": "logs/run_agent-wo-txnstat.out",
+    },
+    "without_technical": {
+        "commit": "308c661262edf26eb375e08a1cee265a4f5388dd",
+        "blob": "90d1fb0ac5825d4f9334f04ea2cad43d75df86bc",
+        "path": "logs/run_agent-wo-tech.out",
+    },
+    "base": {
+        "commit": "308c661262edf26eb375e08a1cee265a4f5388dd",
+        "blob": "aeda712caf0c7411e9506996a45008b950f8e4e8",
+        "path": "logs/run_agent-base.out",
+    },
+}
+ABLATION_FULL_CONTEXT_TRACE_PIN = {
+    "commit": "f26948fd8e7e2163d0a74eaf9cd299c8476dca01",
+    "blob": "986266c278f520a6d205f336287d366aeea06eca",
+    "path": "logs/run_agent-full-28.11.out",
+}
+
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
@@ -177,16 +227,15 @@ def source_history_inventory(source_root: Path) -> List[Dict[str, Any]]:
 
     rows: List[Dict[str, Any]] = []
     for commit in commits:
-        authored_at, subject = git(
-            source_root, "show", "-s", "--format=%aI%x09%s", commit
-        ).rstrip("\n").split("\t", 1)
+        authored_at, subject = git(source_root, "show", "-s", "--format=%aI%x09%s", commit).rstrip("\n").split("\t", 1)
         paths = git(source_root, "ls-tree", "-r", "--name-only", commit).splitlines()
         result_paths = [
             path
             for path in paths
             if path.lower().endswith((".out", ".log"))
-            or any(part in {"log", "logs", "output", "outputs", "result", "results"}
-                   for part in path.lower().split("/"))
+            or any(
+                part in {"log", "logs", "output", "outputs", "result", "results"} for part in path.lower().split("/")
+            )
         ]
         rows.append(
             {
@@ -232,7 +281,8 @@ def parse_author_trace(text: str) -> Tuple[Dict[str, Any], List[float], List[Dic
         )
     ]
     state_literals = re.findall(
-        r"\*\*\* START STATE \*\*\*\s*\n(\{.*?\})\s*\n\*\*\* END STATE \*\*\*",
+        r"\*\*\* START (?:INIT )?STATE \*\*\*\s*\n(\{.*?\})\s*\n"
+        r"\*\*\* END (?:INIT )?STATE \*\*\*",
         text,
         flags=re.S,
     )
@@ -319,9 +369,9 @@ def author_trace_audit(
     paper: Dict[Tuple[str, str, str], Dict[str, float]] = {}
     for target in targets:
         if target["strategy"] in LLM_STRATEGIES:
-            paper.setdefault(
-                (target["asset"], target["strategy"], target["regime"]), {}
-            )[target["metric"]] = float(target["paper_value"])
+            paper.setdefault((target["asset"], target["strategy"], target["regime"]), {})[target["metric"]] = float(
+                target["paper_value"]
+            )
 
     rows: List[Dict[str, Any]] = []
     credited: Dict[Tuple[str, str, str], Dict[str, Any]] = {}
@@ -348,9 +398,7 @@ def author_trace_audit(
                 (
                     name
                     for name, values in PAPER_SPLITS.get(str(args["dataset"]), {}).items()
-                    if name != "validation"
-                    and values[0] == args["starting_date"]
-                    and values[1] == args["ending_date"]
+                    if name != "validation" and values[0] == args["starting_date"] and values[1] == args["ending_date"]
                 ),
                 None,
             )
@@ -408,16 +456,230 @@ def author_trace_audit(
             rows.append(row)
 
     expected_matches = {
-        ("btc", "gpt_4o", "bull"), ("btc", "gpt_4o", "sideways"), ("btc", "gpt_4o", "bear"),
-        ("eth", "gpt_4o", "bull"), ("eth", "gpt_4o", "bear"),
-        ("sol", "gpt_4o", "bull"), ("sol", "gpt_4o", "sideways"),
-        ("btc", "gpt_4", "bull"), ("btc", "gpt_4", "sideways"), ("btc", "gpt_4", "bear"),
-        ("eth", "gpt_4", "bull"), ("eth", "gpt_4", "sideways"), ("eth", "gpt_4", "bear"),
-        ("sol", "gpt_4", "bull"), ("sol", "gpt_4", "sideways"), ("sol", "gpt_4", "bear"),
+        ("btc", "gpt_4o", "bull"),
+        ("btc", "gpt_4o", "sideways"),
+        ("btc", "gpt_4o", "bear"),
+        ("eth", "gpt_4o", "bull"),
+        ("eth", "gpt_4o", "bear"),
+        ("sol", "gpt_4o", "bull"),
+        ("sol", "gpt_4o", "sideways"),
+        ("btc", "gpt_4", "bull"),
+        ("btc", "gpt_4", "sideways"),
+        ("btc", "gpt_4", "bear"),
+        ("eth", "gpt_4", "bull"),
+        ("eth", "gpt_4", "sideways"),
+        ("eth", "gpt_4", "bear"),
+        ("sol", "gpt_4", "bull"),
+        ("sol", "gpt_4", "sideways"),
+        ("sol", "gpt_4", "bear"),
     }
     if set(credited) != expected_matches:
         raise RuntimeError("Recovered CryptoTrade paper-row trace inventory changed")
     return rows, credited
+
+
+def _final_return_and_sharpe(text: str) -> Tuple[float, float]:
+    matches = re.findall(
+        r"(?:FINAL return|Total return):\s*(-?\d+(?:\.\d+)?),\s*"
+        r"sharpe ratio:\s*(-?\d+(?:\.\d+)?)",
+        text,
+        flags=re.I,
+    )
+    if not matches:
+        raise ValueError("Trace has no final return/Sharpe summary")
+    return tuple(float(value) for value in matches[-1])  # type: ignore[return-value]
+
+
+def _historical_environment_replay(
+    source_root: Path,
+    commit: str,
+    args: Mapping[str, Any],
+    actions: Sequence[float],
+    states: Sequence[Mapping[str, Any]],
+) -> Tuple[bool, float, bool]:
+    """Replay a trace against the code/data tree that actually produced it."""
+    archive = subprocess.run(
+        ["git", "-C", str(source_root), "archive", commit, "eth_env.py", "data"],
+        check=True,
+        capture_output=True,
+    ).stdout
+    with tempfile.TemporaryDirectory() as temporary:
+        root = Path(temporary)
+        with tarfile.open(fileobj=io.BytesIO(archive)) as handle:
+            members = handle.getmembers()
+            if any(Path(member.name).is_absolute() or ".." in Path(member.name).parts for member in members):
+                raise RuntimeError("Unsafe path in pinned historical CryptoTrade archive")
+            handle.extractall(root, filter="data")
+        environment_module = load_environment(root)
+        return replay_author_actions(environment_module, root, args, actions, states)
+
+
+def _ablation_trace_record(
+    source_root: Path,
+    variant: str,
+    pin: Mapping[str, str],
+    trace_role: str,
+) -> Tuple[Dict[str, Any], Dict[str, float]]:
+    observed_blob = git(source_root, "rev-parse", f"{pin['commit']}:{pin['path']}").strip()
+    if observed_blob != pin["blob"]:
+        raise RuntimeError(f"Pinned CryptoTrade ablation trace changed: {variant}")
+    text = git(source_root, "cat-file", "blob", pin["blob"])
+    args, actions, states = parse_author_trace(text)
+    args.setdefault("dataset", "eth")
+    final_return, final_sharpe = _final_return_and_sharpe(text)
+    state_values = trace_metrics(states)
+    if (
+        abs(final_return - state_values["total_return_pct"]) > DISPLAY_TOLERANCE
+        or abs(final_sharpe - state_values["sharpe_ratio"]) > DISPLAY_TOLERANCE
+    ):
+        raise RuntimeError(f"CryptoTrade ablation trace summary/state conflict: {variant}")
+    replay_commit = pin.get("replay_commit", pin["commit"])
+    replay_exact, maximum_error, full_period = _historical_environment_replay(
+        source_root, replay_commit, args, actions, states
+    )
+    if not replay_exact or maximum_error != 0.0 or not full_period:
+        raise RuntimeError(f"Historical CryptoTrade ablation replay changed: {variant}")
+
+    expected_return, expected_sharpe = PAPER_ABLATION[variant]
+    numeric_match = (
+        abs(final_return - expected_return) <= DISPLAY_TOLERANCE
+        and abs(final_sharpe - expected_sharpe) <= DISPLAY_TOLERANCE
+    )
+    dataset = str(args["dataset"])
+    model = str(args["model"])
+    model_matches = model == "gpt-4o"
+    dataset_matches = dataset == "eth"
+    configuration = tuple(int(args.get(name, 1)) for name in ("use_reflection", "use_news", "use_txnstat", "use_tech"))
+    if ABLATION_FLAG_VARIANTS.get(configuration) != variant:
+        raise RuntimeError(f"CryptoTrade ablation flag lineage changed: {variant}")
+    if trace_role == "selected_numeric_correspondence" and not numeric_match:
+        raise RuntimeError(f"Pinned CryptoTrade ablation numeric correspondence changed: {variant}")
+    status = (
+        "numeric_match_but_btc_main_table_trace_and_model_conflict"
+        if variant == "full" and numeric_match
+        else "numeric_match_and_historical_state_replay_but_model_conflict"
+        if numeric_match
+        else "eth_full_prompt_context_trace_conflicts_with_table_value_and_model"
+    )
+    row = {
+        "trace_role": trace_role,
+        "paper_variant": variant,
+        "paper_expected_model": "gpt-4o",
+        "trace_declared_model": model,
+        "model_identity_status": "match" if model_matches else "mismatch",
+        "paper_expected_asset": "eth",
+        "trace_dataset": dataset,
+        "asset_identity_status": "match" if dataset_matches else "mismatch",
+        "period_start": args["starting_date"],
+        "period_end_exclusive": args["ending_date"],
+        "paper_period_status": "not_disclosed",
+        "paper_return_pct": expected_return,
+        "trace_return_pct": final_return,
+        "paper_sharpe_ratio": expected_sharpe,
+        "trace_sharpe_ratio": final_sharpe,
+        "paper_metric_cells_matching": 2 if numeric_match else 0,
+        "recorded_actions": len(actions),
+        "full_period_trace": full_period,
+        "historical_code_action_replay_exact": replay_exact,
+        "action_replay_maximum_absolute_state_error": maximum_error,
+        "author_commit": pin["commit"],
+        "historical_replay_source_commit": replay_commit,
+        "author_blob": pin["blob"],
+        "author_path": pin["path"],
+        "status": status,
+        "paper_method_faithful_credit": False,
+    }
+    return row, {"return_pct": final_return, "sharpe_ratio": final_sharpe}
+
+
+def ablation_trace_audit(source_root: Path) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """Audit all Table 5 cells without crediting model/asset-conflicted traces."""
+    commits = git(source_root, "rev-list", "--reverse", AUTHOR_HISTORY_REF).splitlines()
+    seen_blobs = set()
+    exact_counts: Dict[str, int] = {variant: 0 for variant in PAPER_ABLATION}
+    for commit in commits:
+        for item in git(source_root, "ls-tree", "-rl", commit).splitlines():
+            metadata, path = item.split("\t", 1)
+            blob = metadata.split()[2]
+            if blob in seen_blobs or not path.endswith((".out", ".log")):
+                continue
+            seen_blobs.add(blob)
+            text = git(source_root, "cat-file", "blob", blob)
+            if not text.startswith("Namespace("):
+                continue
+            try:
+                args = parse_logged_namespace(text.splitlines()[0])
+                observed = _final_return_and_sharpe(text)
+            except (SyntaxError, ValueError):
+                continue
+            configuration = tuple(
+                int(args.get(name, 1)) for name in ("use_reflection", "use_news", "use_txnstat", "use_tech")
+            )
+            variant = ABLATION_FLAG_VARIANTS.get(configuration)
+            if variant and all(
+                abs(actual - expected) <= DISPLAY_TOLERANCE
+                for actual, expected in zip(observed, PAPER_ABLATION[variant])
+            ):
+                exact_counts[variant] += 1
+    expected_exact_counts = {
+        "full": 1,
+        "without_reflection": 1,
+        "without_news": 1,
+        "without_transaction_statistics": 2,
+        "without_technical": 2,
+        "base": 2,
+    }
+    if exact_counts != expected_exact_counts:
+        raise RuntimeError(f"CryptoTrade ablation trace census changed: {exact_counts}")
+
+    trace_rows = []
+    selected_values: Dict[str, Dict[str, float]] = {}
+    for variant, pin in ABLATION_TRACE_PINS.items():
+        row, values = _ablation_trace_record(source_root, variant, pin, "selected_numeric_correspondence")
+        trace_rows.append(row)
+        selected_values[variant] = values
+    context_row, _ = _ablation_trace_record(
+        source_root,
+        "full",
+        ABLATION_FULL_CONTEXT_TRACE_PIN,
+        "eth_full_prompt_context_candidate",
+    )
+    trace_rows.append(context_row)
+
+    conformance = []
+    for variant, expected_values in PAPER_ABLATION.items():
+        trace = next(
+            row
+            for row in trace_rows
+            if row["paper_variant"] == variant and row["trace_role"] == "selected_numeric_correspondence"
+        )
+        for metric, expected, observed in zip(
+            ("return_pct", "sharpe_ratio"),
+            expected_values,
+            (selected_values[variant]["return_pct"], selected_values[variant]["sharpe_ratio"]),
+        ):
+            conformance.append(
+                {
+                    "paper_variant": variant,
+                    "metric": metric,
+                    "paper_value": expected,
+                    "author_trace_value": observed,
+                    "absolute_error": abs(observed - expected),
+                    "display_tolerance": DISPLAY_TOLERANCE,
+                    "author_numeric_correspondence": True,
+                    "historical_code_action_replay_exact": trace["historical_code_action_replay_exact"],
+                    "model_identity_status": trace["model_identity_status"],
+                    "asset_identity_status": trace["asset_identity_status"],
+                    "author_commit": trace["author_commit"],
+                    "author_blob": trace["author_blob"],
+                    "author_path": trace["author_path"],
+                    "status": trace["status"],
+                    "paper_method_faithful_credit": False,
+                }
+            )
+    if len(conformance) != 12 or sum(row["author_numeric_correspondence"] for row in conformance) != 12:
+        raise RuntimeError("CryptoTrade Table 5 cell census changed")
+    return trace_rows, conformance
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequence[str]) -> None:
@@ -728,10 +990,7 @@ def mismatch_diagnosis(
 ) -> List[Dict[str, Any]]:
     """Trace all six residual deterministic cells without granting invalid credit."""
     paper_rows = paper_result_rows()
-    paper = {
-        (row["asset"], row["strategy"], row["regime"], row["metric"]): row["paper_value"]
-        for row in paper_rows
-    }
+    paper = {(row["asset"], row["strategy"], row["regime"], row["metric"]): row["paper_value"] for row in paper_rows}
     diagnosed: List[Dict[str, Any]] = []
     released_periods = list(environment_module.SMA_PERIODS)
     environment_module.SMA_PERIODS = [1, *released_periods]
@@ -743,16 +1002,12 @@ def mismatch_diagnosis(
             regime = str(row["regime"])
             metric = str(row["metric"])
             start, end, *_ = PAPER_SPLITS[asset][regime]
-            outside_grid = source_simulation(
-                environment_module, source_root, asset, start, end, "sma", 1
-            )[metric]
+            outside_grid = source_simulation(environment_module, source_root, asset, start, end, "sma", 1)[metric]
             outside_match = abs(float(row["paper_value"]) - outside_grid) <= DISPLAY_TOLERANCE
             duplicated_from = ""
             classification = "unexplained_after_released_grid_and_history_search"
             numeric_lineage = "none"
-            if asset == "eth" and regime == "sideways" and metric in {
-                "daily_return_mean_pct", "daily_return_std_pct"
-            }:
+            if asset == "eth" and regime == "sideways" and metric in {"daily_return_mean_pct", "daily_return_std_pct"}:
                 bear_value = paper[("eth", "sma", "bear", metric)]
                 if bear_value != float(row["paper_value"]):
                     raise RuntimeError("ETH-sideways copy-pattern diagnosis changed")
@@ -783,8 +1038,7 @@ def mismatch_diagnosis(
     counts = {
         "paper_copy": sum(row["numeric_lineage"] == "paper_internal_copy_pattern" for row in diagnosed),
         "outside_grid": sum(
-            row["numeric_lineage"] == "released_data_counterfactual_not_method_faithful"
-            for row in diagnosed
+            row["numeric_lineage"] == "released_data_counterfactual_not_method_faithful" for row in diagnosed
         ),
     }
     if len(diagnosed) != 6 or counts != {"paper_copy": 2, "outside_grid": 4}:
@@ -942,6 +1196,7 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     environment_module = load_environment(source_root)
     history = source_history_inventory(source_root)
     author_trace_rows, author_traces = author_trace_audit(environment_module, source_root)
+    ablation_trace_rows, ablation_conformance = ablation_trace_audit(source_root)
     conformance, reproduced = result_conformance(environment_module, source_root, author_traces)
     splits = split_conformance(environment_module, source_root, reproduced)
     selection = parameter_selection_audit(environment_module, source_root, conformance)
@@ -960,6 +1215,16 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         author_trace_rows,
         list(author_trace_rows[0]),
     )
+    write_csv(
+        output_dir / "table_5_author_trace_audit.csv",
+        ablation_trace_rows,
+        list(ablation_trace_rows[0]),
+    )
+    write_csv(
+        output_dir / "table_5_conformance.csv",
+        ablation_conformance,
+        list(ablation_conformance[0]),
+    )
     write_csv(output_dir / "data_inventory.csv", inventory, list(inventory[0]))
     write_csv(output_dir / "source_execution_gaps.csv", gaps, list(gaps[0]))
     paper_inconsistencies = (
@@ -969,7 +1234,8 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             "paper_value_b": "Full=28.47% return, 0.23 Sharpe",
             "status": "paper_internal_mismatch",
             "evidence": (
-                "The Full values equal BTC-bull GPT-4o in Table 2, while ETH-bull GPT-4o in Table 3 is 25.47% and 0.18."
+                "The Full values equal BTC-bull GPT-4o in Table 2, while ETH-bull GPT-4o in Table 3 is 25.47% and 0.18. "
+                "The paper-author trace with those exact Full values is itself BTC-bull and declares gpt-3.5-turbo."
             ),
         },
     )
@@ -986,20 +1252,15 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     matched = sum(row["status"] in match_statuses for row in conformance)
     mismatched = sum(row["status"] == "mismatch" for row in conformance)
     unverifiable = sum(row["status"].startswith("unverifiable") for row in conformance)
-    deterministic_matched = sum(
-        row["status"] == "exact_displayed_precision_match" for row in conformance
-    )
+    deterministic_matched = sum(row["status"] == "exact_displayed_precision_match" for row in conformance)
     author_corroborated = sum(
-        row["status"] == "author_trace_exact_metric_and_native_state_replay"
-        for row in conformance
+        row["status"] == "author_trace_exact_metric_and_native_state_replay" for row in conformance
     )
     deterministic = deterministic_matched + mismatched
     grouped: Dict[Tuple[str, str, str], List[Mapping[str, Any]]] = {}
     for row in conformance:
         grouped.setdefault((row["asset"], row["strategy"], row["regime"]), []).append(row)
-    fully_matched_rows = sum(
-        all(row["status"] in match_statuses for row in rows) for rows in grouped.values()
-    )
+    fully_matched_rows = sum(all(row["status"] in match_statuses for row in rows) for rows in grouped.values())
     mismatched_rows = sum(any(row["status"] == "mismatch" for row in rows) for rows in grouped.values())
     unverifiable_rows = sum(all(row["status"].startswith("unverifiable") for row in rows) for rows in grouped.values())
     split_price_matches = sum(
@@ -1018,11 +1279,15 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "original_anonymous_source_status_checked_2026_08_13": "http_410_repository_expired",
         "public_source_history_commits_audited": len(history),
         "public_source_history_result_or_log_paths": sum(row["result_or_log_paths"] for row in history),
-        "paper_result_metric_cells_total": len(conformance),
+        "paper_result_metric_cells_total": len(conformance) + len(ablation_conformance),
+        "paper_tables_2_4_metric_cells_total": len(conformance),
+        "paper_table_5_metric_cells_total": len(ablation_conformance),
         "native_deterministic_metric_cells_recomputed": 180,
         "native_deterministic_metric_cells_matched": deterministic_matched,
         "native_deterministic_metric_cells_mismatched": mismatched,
         "paper_metric_cells_corroborated_total": matched,
+        "paper_numeric_evidence_correspondences_total": matched + len(ablation_conformance),
+        "author_history_numeric_metric_cells_corresponding": author_corroborated + len(ablation_conformance),
         "author_history_llm_metric_cells_corroborated": author_corroborated,
         "author_history_llm_rows_corroborated": sum(
             trace["credit_status"].startswith("credited") for trace in author_traces.values()
@@ -1030,7 +1295,8 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "author_history_llm_rows_numeric_match_but_no_credit": sum(
             trace["credit_status"].startswith("diagnostic") for trace in author_traces.values()
         ),
-        "paper_result_metric_cells_unverifiable": unverifiable,
+        "paper_result_metric_cells_unverifiable": unverifiable + len(ablation_conformance),
+        "paper_strategy_regime_or_ablation_rows_total": len(grouped) + len(PAPER_ABLATION),
         "paper_strategy_regime_rows_total": len(grouped),
         "paper_strategy_regime_rows_fully_matched": fully_matched_rows,
         "paper_strategy_regime_rows_mismatched": mismatched_rows,
@@ -1055,6 +1321,27 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         ),
         "paper_described_validation_selections_total": len(selection),
         "paper_ablation_rows": len(PAPER_ABLATION),
+        "paper_ablation_metric_cells_total": len(ablation_conformance),
+        "paper_ablation_author_history_numeric_correspondences": sum(
+            row["author_numeric_correspondence"] for row in ablation_conformance
+        ),
+        "paper_ablation_historical_code_action_replays_exact": sum(
+            row["trace_role"] == "selected_numeric_correspondence" and row["historical_code_action_replay_exact"]
+            for row in ablation_trace_rows
+        ),
+        "paper_ablation_method_faithful_metric_cells": sum(
+            row["paper_method_faithful_credit"] for row in ablation_conformance
+        ),
+        "paper_ablation_rows_with_model_identity_match": sum(
+            row["trace_role"] == "selected_numeric_correspondence" and row["model_identity_status"] == "match"
+            for row in ablation_trace_rows
+        ),
+        "paper_ablation_rows_with_asset_identity_match": sum(
+            row["trace_role"] == "selected_numeric_correspondence" and row["asset_identity_status"] == "match"
+            for row in ablation_trace_rows
+        ),
+        "paper_ablation_full_eth_context_candidate_return_pct": 28.11,
+        "paper_ablation_full_eth_context_candidate_sharpe_ratio": 0.08,
         "paper_ablation_full_values_duplicate_btc_bull_gpt4o": (PAPER_ABLATION["full"] == (28.47, 0.23)),
         "full_period_llm_result_logs_shipped_in_official_release": False,
         "matching_full_period_llm_result_traces_recovered_from_paper_author_history": True,
@@ -1081,8 +1368,11 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             "The released market data, native environment, costs, and traditional-signal logic "
             "reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history "
             "additionally corroborates 40 LLM cells through exact metric and native state replay. "
-            "This is strong component/output evidence, not a full CryptoTrade replication: 248 "
-            "cells remain unverifiable, the six deterministic residuals have numeric but "
+            "All 12 Table 5 values also have exact author-history numeric correspondences and replay "
+            "through their historical code snapshots, but every selected trace conflicts with the "
+            "paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells "
+            "receive zero method-faithful credit. This is strong component/output evidence, not a full "
+            "CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but "
             "not method-faithful explanations, validation selection is not implemented as described, "
             "and the documented entrypoints are not operational without repair."
         ),
@@ -1136,6 +1426,14 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   recorded action replays through the pinned official data/environment with zero
   state error. This verifies historical author outputs; it does **not** regenerate
   the LLM decisions or prove current endpoint determinism.
+- Table 5 adds 12 result cells that were previously omitted from the audit
+  denominator. All 12 have exact numeric correspondences in the paper-author
+  history, and the six selected action traces replay with zero state error against
+  their own pinned historical code/data snapshots. They receive **0/12 faithful
+  result credit**: all six declare `gpt-3.5-turbo`, not the paper's stated GPT-4o,
+  and the trace matching the Full row is BTC-bull rather than the ETH experiment
+  described around Table 5. The closer ETH/full-prompt trace reports 28.11%/0.08,
+  not 28.47%/0.23.
 - ETH-sideways SMA matches the paper's -5.45% total return and -0.07 Sharpe, but
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
@@ -1147,7 +1445,7 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 
 ## Why this is not a full reproduction
 
-- {unverifiable}/{len(conformance)} paper result cells remain unverifiable. The
+- {unverifiable + len(ablation_conformance)}/{len(conformance) + len(ablation_conformance)} paper result cells remain unverifiable. The
   official release ships no complete LLM result paths; the recovered author history
   contains no matching GPT-3.5 paper row and no complete matching SOL-bear GPT-4o row.
 - Six additional LLM rows numerically match the paper but receive no credit: five
@@ -1183,8 +1481,12 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 
 ## Paper/source inconsistencies retained as evidence
 
-- Table 5 calls the ablation ETH-bull, but its Full values (28.47%, 0.23) exactly
+- Table 5 calls the ablation ETH/GPT-4o, but its Full values (28.47%, 0.23) exactly
   duplicate BTC-bull GPT-4o in Table 2; ETH-bull GPT-4o is 25.47%, 0.18 in Table 3.
+  The recovered exact-value trace is BTC-bull and declares GPT-3.5, while the
+  recovered ETH/full-prompt trace is 28.11%/0.08. The other five Table 5 values
+  also come from traces declaring GPT-3.5. This supplies strong numeric lineage
+  while making a method-faithful Table 5 reproduction less, not more, defensible.
 - The released test-period data usually match Table 1 and exactly drive the
   traditional results, but validation prices diverge and the BTC-bear start and
   SOL-bull end prices also differ. See `dataset_split_conformance.csv`.
