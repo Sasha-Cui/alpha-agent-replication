@@ -36,20 +36,38 @@ def test_both_official_versions_are_pinned_and_visually_checked() -> None:
     assert data["v2_substantial_revision"] is True
     assert data["official_pdf_and_source_recovered"] is True
     assert data["v1_document_rebuild_completed"] is True
-    assert data["v2_document_rebuild_completed"] is False
+    assert data["v2_document_rebuild_completed"] is True
+    assert data["v2_rebuild_blocker"] is None
+    assert data["v2_build_source_matches_official_archive"] is True
+    assert data["v2_rebuilt_manuscript_tokens_match"] is True
     assert data["official_pages_visually_checked"] == 48
-    assert data["rebuilt_pages_visually_checked"] == 26
+    assert data["rebuilt_pages_visually_checked"] == 48
     revisions = {row["version"]: row for row in rows("version_revision_audit.csv")}
     assert revisions["v1"]["submitted"] == "2026-05-07"
     assert revisions["v1"]["official_pages"] == "26"
     assert revisions["v1"]["rebuilt_pages"] == "26"
     assert revisions["v2"]["submitted"] == "2026-07-28"
     assert revisions["v2"]["official_pages"] == "22"
+    assert revisions["v2"]["rebuilt_pages"] == "22"
     assert revisions["v2"]["version_relationship"].startswith("substantial")
     provenance = json.loads((AUDIT_DIR / "source_provenance.json").read_text())
     assert provenance["arxiv"]["id"] == "2605.05580"
     assert provenance["arxiv"]["visual_qa"]["unreadable_clipped_or_overlapping_pages"] == 0
     assert "CJK" in provenance["arxiv"]["v2_build_boundary"]
+    build = json.loads((AUDIT_DIR / "document_build_verification.json").read_text())
+    assert build["official_source_tree_modified_for_build"] is False
+    assert build["pdf_latex_passes"] == 4
+    assert build["bibtex_passes"] == 1
+    assert build["successful_pass_page_counts"] == [19, 22, 22, 22]
+    assert build["converged_on_pdf_latex_pass"] == 4
+    assert build["official_pages"] == build["rebuilt_pages"] == 22
+    assert build["manuscript_token_comparison"][
+        "all_manuscript_tokens_match_after_expected_metadata_differences"
+    ] is True
+    visual = build["visual_comparison"]
+    assert visual["pages_compared"] == 22
+    assert visual["unreadable_clipped_overlapping_or_missing_elements"] == 0
+    assert visual["layout_tables_figures_pagination_match"] is True
 
 
 def test_every_printed_result_unit_fails_closed() -> None:
@@ -152,6 +170,7 @@ def test_internal_conflicts_and_release_mismatches_are_explicit() -> None:
     assert checks["us_end_to_end_path"]["status"] == "paper_release_mismatch"
     assert checks["released_calendar_coverage"]["status"] == "paper_release_mismatch"
     assert checks["live_execution_claim"]["status"] == "unverifiable_from_release"
+    assert checks["v2_source_build"]["status"] == "complete"
 
 
 def test_empirical_panels_are_inventoried_without_native_credit() -> None:

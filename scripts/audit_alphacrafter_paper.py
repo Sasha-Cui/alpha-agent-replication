@@ -44,6 +44,7 @@ PINS = {
     "source/arxiv-v1.tar": "511e441781702609d11024dbe31577c6396c1f68e3023f08326050417e399f53",
     "source/arxiv-v2.tar": "36a34ecb7ef524d8d7efe4a67002e726a0345bc6c3f5414325dd18a080829b84",
     "build-v1/main.pdf": "906e50f764e58c5f6b9ccc98b721e3762689120bd99297f4eef70f74a671c10e",
+    "build-v2/main.pdf": "eebf4471f2ce2fd4899aab3d43f99d1c5963a45f8da226dba3f5d128719a9fb3",
     "discovery/alphacrafter-c6dbc1b.zip": "41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1",
     "native-component-checks.json": "9d1fbc4c5014b1884f76eaa6634d752aeb11a805b0b747bcf58b04d89c18928f",
     "native-main.txt": "d778467aa5554cb4de99089056f06013ed5791aa2ab93a72128486e89ea68b55",
@@ -58,9 +59,22 @@ PINS = {
     "build-v2-pass1.txt": "ef8f919b8191ebba181c6f256f3fc134f8b1e7bf37f52bb2fc822c79f72b9378",
     "build-v2-pass2.txt": "320d7fe8207045aa30c19993ff50488fae1f32ad02df3e34c8a1901e6a430fb2",
     "build-v2-pass3.txt": "881ac946cbaf0d310c4cf56ff7d21602da15f9b4d25646573958a9adb5365e9f",
+    "build-v2-pass1-complete.txt": "8a907c138a4b2f68bde9b3a11d5bdaceb41c79ab1a41c17fad4d83b07aeeed16",
+    "build-v2-bibtex-complete.txt": "945dfd4dd6ae1b9894c9e8eee5a735d4cd136106643d6272a3c151b3f6840176",
+    "build-v2-pass2-complete.txt": "d4b86d533a72b38c86cfe68d9ac38f986d1ac219d87b5d836b136178d36dd98f",
+    "build-v2-pass3-complete.txt": "be3cbfa7e52caefbd09bcafe80bad0ff9738046930e3aaf260335cb19c580bb0",
+    "build-v2-pass4-complete.txt": "16546c393500e54450b5961c09c33f00e8057bc156b72bd03693414dc9aedeff",
     "viz/v1-official-contact.jpg": "133553ba0d74032301b4275800dc93e64005bc4b4b612cedca0c575f452a5961",
     "viz/v2-official-contact.jpg": "eba5aecf8e4b75505fd0bac696929ea97adb10b4fec3373fb23bb708c21fc80c",
     "viz/v1-rebuilt-contact.jpg": "e339173a02746fb179dc0f09bf8ddcc1563cbe53373f305843d77458f733030a",
+    "viz/v2-rebuilt-contact.jpg": "b0d69e15e716cc42cf4fc7390ff507fe32c9c00197a358089e9002c8219182fb",
+    "viz/v2-side-by-side/contact-01.jpg": "fbe8fa27f19779010373c385b0c19559136fb72fc869625ff4bf9ba982df3125",
+    "viz/v2-side-by-side/contact-02.jpg": "56d366689e52d959d6e21ef39ee565920d03f238b1d3698ab96d4a4aa89567cd",
+    "viz/v2-side-by-side/contact-03.jpg": "8260d2287c2fe398744b53638f5d607cd0228fc57866f9db736c2728e2a24b21",
+    "viz/v2-side-by-side/contact-04.jpg": "08df67ab4860d9548aa041c93e315ef52356ec302540b08d7972df0e56ae7adb",
+    "viz/v2-side-by-side/contact-05.jpg": "c87c8a2c34d362ad8e8ace9416c404c90a6ff4c1053d64ad1d3d14b17ab9e266",
+    "viz/v2-side-by-side/contact-06.jpg": "d4008345c07d412363d63e8ce5e98d2c12d12745527c3b1dca5b0dd4f3898107",
+    "v2-render-diff-metrics.json": "3f718a32ae0a6a911339edf8575f3bcdad64b066387f74c1b3ad37733aad0aed",
 }
 
 V1_RESULT_TABLES = {"tab:combined": 144, "tab:ablation": 32}
@@ -205,6 +219,11 @@ def validate_inputs(scratch: Path) -> dict[str, Any]:
         v1_members = [member for member in archive.getmembers() if member.isfile()]
     with tarfile.open(scratch / "source/arxiv-v2.tar", "r:*") as archive:
         v2_members = [member for member in archive.getmembers() if member.isfile()]
+        for member in v2_members:
+            extracted = scratch / "build-v2" / member.name
+            stream = archive.extractfile(member)
+            if not extracted.is_file() or stream is None or extracted.read_bytes() != stream.read():
+                raise ValueError(f"v2 build source differs from official archive: {member.name}")
     if (len(v1_members), sum(item.size for item in v1_members)) != (25, 1_848_965):
         raise ValueError("v1 source inventory changed")
     if (len(v2_members), sum(item.size for item in v2_members)) != (22, 1_574_465):
@@ -213,7 +232,12 @@ def validate_inputs(scratch: Path) -> dict[str, Any]:
         files = [item for item in archive.infolist() if not item.is_dir()]
     if (len(files), sum(item.file_size for item in files)) != (79, 889_614):
         raise ValueError("attributable repository archive inventory changed")
-    return {"v1_source_files": 25, "v2_source_files": 22, "release_files": 79}
+    return {
+        "v1_source_files": 25,
+        "v2_source_files": 22,
+        "v2_build_source_matches_archive": True,
+        "release_files": 79,
+    }
 
 
 def result_rows(version: str, specifications: Mapping[str, int]) -> list[dict[str, Any]]:
@@ -240,7 +264,7 @@ def result_rows(version: str, specifications: Mapping[str, int]) -> list[dict[st
 def method_rows() -> list[dict[str, str]]:
     specs = (
         ("v1", "official_document_source", "complete", "25-file primary source package recovered; 26-page manuscript rebuilt"),
-        ("v2", "official_document_source", "complete_build_blocked", "22-file primary source recovered; available TeX Live repeatedly stalls in CJK encoding before PDF output"),
+        ("v2", "official_document_source", "complete", "22-file primary source recovered unchanged; four pdfLaTeX passes plus BibTeX converge to a 22-page PDF matching the official manuscript"),
         ("v1_v2", "attributable_repository", "substantial_component_release", "79-file MIT repository under the authors' NJU-LINK organization matches title, authors, architecture, and arXiv id; the paper does not directly link it"),
         ("v1_v2", "market_universes", "specified", "CSI 300 and S&P 500 constituents"),
         ("v1_v2", "market_data", "named_not_released", "Baostock OHLCV, Yahoo Finance OHLCV, and Lixinger fundamentals/statements/news are named; research snapshots are absent"),
@@ -319,7 +343,7 @@ def version_rows() -> list[dict[str, Any]]:
             "authors": 5,
             "official_pages": 22,
             "source_files": 22,
-            "rebuilt_pages": "",
+            "rebuilt_pages": 22,
             "result_units": sum(V2_RESULT_TABLES.values()),
             "empirical_panels": 14,
             "version_relationship": "substantial_harness_reframing_and_result_revision",
@@ -339,10 +363,73 @@ def internal_rows() -> list[dict[str, str]]:
         ("released_calendar_coverage", "paper_release_mismatch", "templates end March 31 although the revised live period ends June 12"),
         ("trial_reproducibility", "underspecified", "independent trials are stated without released seeds, requests, responses, or sampling controls"),
         ("live_execution_claim", "unverifiable_from_release", "no brokerage integration, order/fill records, or live NAV path is released"),
-        ("v2_source_build", "toolchain_incompatible", "three bounded attempts stop or stall in TeX Live CJK encoding before output; source archive remains complete"),
+        ("v2_source_build", "complete", "unmodified official source builds in four pdfLaTeX passes plus BibTeX; the CJK package takes about 45 seconds to initialize on the shared TeX installation, so earlier attempts were interrupted prematurely"),
         ("repository_attribution", "strong_but_not_direct", "NJU-LINK repository cites the exact paper and authors and matches the method, but the paper itself does not link it"),
     )
     return [{"check": check, "status": status, "detail": detail} for check, status, detail in specs]
+
+
+def v2_build_verification(scratch: Path) -> dict[str, Any]:
+    """Verify the converged unmodified-source build and its visual QA evidence."""
+    expected_log_markers = {
+        "build-v2-pass1-complete.txt": ("Output written on main.pdf (19 pages", "elapsed=0:59.91 exit=0"),
+        "build-v2-bibtex-complete.txt": ("Database file #1: ref.bib", "elapsed=0:00.08 exit=0"),
+        "build-v2-pass2-complete.txt": ("Output written on main.pdf (22 pages", "elapsed=0:45.75 exit=0"),
+        "build-v2-pass3-complete.txt": ("Output written on main.pdf (22 pages", "elapsed=0:50.61 exit=0"),
+        "build-v2-pass4-complete.txt": ("Output written on main.pdf (22 pages", "elapsed=0:51.85 exit=0"),
+    }
+    for relative, markers in expected_log_markers.items():
+        text = (scratch / relative).read_text(errors="replace")
+        if not all(marker in text for marker in markers):
+            raise ValueError(f"successful v2 build evidence changed: {relative}")
+
+    metrics = json.loads((scratch / "v2-render-diff-metrics.json").read_text())
+    if len(metrics) != 22 or [row["page"] for row in metrics] != list(range(1, 23)):
+        raise ValueError("v2 page-comparison inventory changed")
+    if any(row["size"] != [745, 1053] for row in metrics):
+        raise ValueError("v2 render dimensions changed")
+    max_mean_absolute_difference = max(max(row["mean_abs_rgb"]) for row in metrics)
+    max_root_mean_square_difference = max(max(row["rms_rgb"]) for row in metrics)
+    if max_mean_absolute_difference > 2.81 or max_root_mean_square_difference > 7.55:
+        raise ValueError("v2 official/rebuilt raster correspondence changed")
+
+    return {
+        "official_source_tree_files": 22,
+        "official_source_tree_modified_for_build": False,
+        "build_engine": "pdfLaTeX (TeX Live 2024) plus BibTeX",
+        "pdf_latex_passes": 4,
+        "bibtex_passes": 1,
+        "successful_pass_page_counts": [19, 22, 22, 22],
+        "converged_on_pdf_latex_pass": 4,
+        "auxiliary_state_stable_between_passes_3_and_4": True,
+        "final_pdf_sha256": PINS["build-v2/main.pdf"],
+        "official_pages": 22,
+        "rebuilt_pages": 22,
+        "manuscript_token_comparison": {
+            "official_tokens_including_arxiv_overlay_and_date": 11_513,
+            "rebuilt_tokens_including_build_date": 11_507,
+            "expected_date_replacement": {
+                "official": "2026-07-29",
+                "rebuilt": "2026-08-14",
+            },
+            "expected_official_only_arxiv_overlay_tokens": [
+                "arxiv", "2605.05580v2", "cs.ai", "28", "jul", "2026",
+            ],
+            "all_manuscript_tokens_match_after_expected_metadata_differences": True,
+        },
+        "visual_comparison": {
+            "pages_compared": 22,
+            "render_pixel_size": [745, 1053],
+            "maximum_mean_absolute_channel_difference": max_mean_absolute_difference,
+            "maximum_root_mean_square_channel_difference": max_root_mean_square_difference,
+            "unreadable_clipped_overlapping_or_missing_elements": 0,
+            "layout_tables_figures_pagination_match": True,
+            "expected_visible_differences": [
+                "arXiv side stamp on official page 1",
+                "build-date header on page 1",
+            ],
+        },
+    }
 
 
 def release_audit(scratch: Path) -> dict[str, Any]:
@@ -432,9 +519,12 @@ This audit treats arXiv `2605.05580` as a two-version lineage. Version 1 is the
 26-page **Full-Stack Multi-Agent Framework** submission; version 2 is a substantial
 22-page **Harnessing Multi-Agent Workflows** revision with changed framing,
 algorithms, live window, results, figures, and ablations. The official v1 source
-rebuilds to 26 visually sound pages. The complete v2 source is recovered, but the
-available TeX Live toolchain repeatedly stalls in CJK encoding before producing a
-PDF; that is recorded as a bounded toolchain incompatibility, not missing source.
+rebuilds to 26 visually sound pages. The unmodified official v2 source also builds:
+four pdfLaTeX passes plus BibTeX converge to 22 pages after allowing roughly 45
+seconds for the CJK package to initialize on Bouchet's shared TeX installation.
+All 22 rebuilt pages match the official layout, tables, figures, and pagination.
+Tokenized manuscript text is identical after excluding the official PDF's arXiv
+side stamp and the expected build-date header difference.
 
 The pinned 79-file MIT repository is strongly attributable: it belongs to the
 authors' NJU-LINK organization, cites the exact arXiv paper and author list, and
@@ -480,6 +570,7 @@ labeled secondary motif translation, not an AlphaCrafter replication.
 
 def build(scratch: Path, output: Path) -> dict[str, Any]:
     inventory = validate_inputs(scratch)
+    document_build = v2_build_verification(scratch)
     output.mkdir(parents=True, exist_ok=True)
     v1_results = result_rows("v1", V1_RESULT_TABLES)
     v2_results = result_rows("v2", V2_RESULT_TABLES)
@@ -490,6 +581,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "method_specification_audit.csv", method_rows())
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
+    write_json(output / "document_build_verification.json", document_build)
     history = source_history_rows(scratch / "discovery/alphacrafter-history")
     write_csv(output / "released_source_history_inventory.csv", history)
     release = release_audit(scratch)
@@ -504,15 +596,24 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             "source_sha256": {"v1": PINS["source/arxiv-v1.tar"], "v2": PINS["source/arxiv-v2.tar"]},
             "visual_qa": {
                 "official_pages_inspected": {"v1": 26, "v2": 22},
-                "rebuilt_pages_inspected": {"v1": 26, "v2": 0},
+                "rebuilt_pages_inspected": {"v1": 26, "v2": 22},
                 "unreadable_clipped_or_overlapping_pages": 0,
                 "contact_sheet_sha256": {
                     "v1_official": PINS["viz/v1-official-contact.jpg"],
                     "v2_official": PINS["viz/v2-official-contact.jpg"],
                     "v1_rebuilt": PINS["viz/v1-rebuilt-contact.jpg"],
+                    "v2_rebuilt": PINS["viz/v2-rebuilt-contact.jpg"],
                 },
+                "v2_side_by_side_contact_sheet_sha256": [
+                    PINS[f"viz/v2-side-by-side/contact-{index:02d}.jpg"]
+                    for index in range(1, 7)
+                ],
             },
-            "v2_build_boundary": "complete source; three bounded attempts stalled/interrupted in TeX Live CJK encoding before output",
+            "v2_build_boundary": (
+                "complete unmodified source; four pdfLaTeX passes plus BibTeX "
+                "converged after allowing the CJK package's roughly 45-second initialization"
+            ),
+            "v2_build_verification": document_build,
         },
         "attributable_repository": release,
         "release_boundary": {
@@ -543,10 +644,21 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "v2_substantial_revision": True,
         "official_pdf_and_source_recovered": True,
         "v1_document_rebuild_completed": True,
-        "v2_document_rebuild_completed": False,
-        "v2_rebuild_blocker": "available TeX Live CJK encoding stall",
+        "v2_document_rebuild_completed": True,
+        "v2_rebuild_blocker": None,
+        "v2_rebuild_note": (
+            "unmodified source converged after four pdfLaTeX passes plus BibTeX; "
+            "CJK initialization requires roughly 45 seconds"
+        ),
+        "v2_build_source_matches_official_archive": inventory[
+            "v2_build_source_matches_archive"
+        ],
+        "v2_rebuilt_pdf_sha256": document_build["final_pdf_sha256"],
+        "v2_rebuilt_manuscript_tokens_match": document_build[
+            "manuscript_token_comparison"
+        ]["all_manuscript_tokens_match_after_expected_metadata_differences"],
         "official_pages_visually_checked": 48,
-        "rebuilt_pages_visually_checked": 26,
+        "rebuilt_pages_visually_checked": 48,
         "v1_source_files": inventory["v1_source_files"],
         "v2_source_files": inventory["v2_source_files"],
         "v1_published_numeric_result_units": len(v1_results),

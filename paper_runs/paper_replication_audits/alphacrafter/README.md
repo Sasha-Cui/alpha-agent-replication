@@ -4,9 +4,12 @@ This audit treats arXiv `2605.05580` as a two-version lineage. Version 1 is the
 26-page **Full-Stack Multi-Agent Framework** submission; version 2 is a substantial
 22-page **Harnessing Multi-Agent Workflows** revision with changed framing,
 algorithms, live window, results, figures, and ablations. The official v1 source
-rebuilds to 26 visually sound pages. The complete v2 source is recovered, but the
-available TeX Live toolchain repeatedly stalls in CJK encoding before producing a
-PDF; that is recorded as a bounded toolchain incompatibility, not missing source.
+rebuilds to 26 visually sound pages. The unmodified official v2 source also builds:
+four pdfLaTeX passes plus BibTeX converge to 22 pages after allowing roughly 45
+seconds for the CJK package to initialize on Bouchet's shared TeX installation.
+All 22 rebuilt pages match the official layout, tables, figures, and pagination.
+Tokenized manuscript text is identical after excluding the official PDF's arXiv
+side stamp and the expected build-date header difference.
 
 The pinned 79-file MIT repository is strongly attributable: it belongs to the
 authors' NJU-LINK organization, cites the exact arXiv paper and author list, and

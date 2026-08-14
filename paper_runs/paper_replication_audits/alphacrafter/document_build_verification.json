@@ -1,0 +1,50 @@
+{
+  "auxiliary_state_stable_between_passes_3_and_4": true,
+  "bibtex_passes": 1,
+  "build_engine": "pdfLaTeX (TeX Live 2024) plus BibTeX",
+  "converged_on_pdf_latex_pass": 4,
+  "final_pdf_sha256": "eebf4471f2ce2fd4899aab3d43f99d1c5963a45f8da226dba3f5d128719a9fb3",
+  "manuscript_token_comparison": {
+    "all_manuscript_tokens_match_after_expected_metadata_differences": true,
+    "expected_date_replacement": {
+      "official": "2026-07-29",
+      "rebuilt": "2026-08-14"
+    },
+    "expected_official_only_arxiv_overlay_tokens": [
+      "arxiv",
+      "2605.05580v2",
+      "cs.ai",
+      "28",
+      "jul",
+      "2026"
+    ],
+    "official_tokens_including_arxiv_overlay_and_date": 11513,
+    "rebuilt_tokens_including_build_date": 11507
+  },
+  "official_pages": 22,
+  "official_source_tree_files": 22,
+  "official_source_tree_modified_for_build": false,
+  "pdf_latex_passes": 4,
+  "rebuilt_pages": 22,
+  "successful_pass_page_counts": [
+    19,
+    22,
+    22,
+    22
+  ],
+  "visual_comparison": {
+    "expected_visible_differences": [
+      "arXiv side stamp on official page 1",
+      "build-date header on page 1"
+    ],
+    "layout_tables_figures_pagination_match": true,
+    "maximum_mean_absolute_channel_difference": 2.8026,
+    "maximum_root_mean_square_channel_difference": 7.5458,
+    "pages_compared": 22,
+    "render_pixel_size": [
+      745,
+      1053
+    ],
+    "unreadable_clipped_overlapping_or_missing_elements": 0
+  }
+}

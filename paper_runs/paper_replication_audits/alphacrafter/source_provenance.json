@@ -9,7 +9,57 @@
       "v1": "511e441781702609d11024dbe31577c6396c1f68e3023f08326050417e399f53",
       "v2": "36a34ecb7ef524d8d7efe4a67002e726a0345bc6c3f5414325dd18a080829b84"
     },
-    "v2_build_boundary": "complete source; three bounded attempts stalled/interrupted in TeX Live CJK encoding before output",
+    "v2_build_boundary": "complete unmodified source; four pdfLaTeX passes plus BibTeX converged after allowing the CJK package's roughly 45-second initialization",
+    "v2_build_verification": {
+      "auxiliary_state_stable_between_passes_3_and_4": true,
+      "bibtex_passes": 1,
+      "build_engine": "pdfLaTeX (TeX Live 2024) plus BibTeX",
+      "converged_on_pdf_latex_pass": 4,
+      "final_pdf_sha256": "eebf4471f2ce2fd4899aab3d43f99d1c5963a45f8da226dba3f5d128719a9fb3",
+      "manuscript_token_comparison": {
+        "all_manuscript_tokens_match_after_expected_metadata_differences": true,
+        "expected_date_replacement": {
+          "official": "2026-07-29",
+          "rebuilt": "2026-08-14"
+        },
+        "expected_official_only_arxiv_overlay_tokens": [
+          "arxiv",
+          "2605.05580v2",
+          "cs.ai",
+          "28",
+          "jul",
+          "2026"
+        ],
+        "official_tokens_including_arxiv_overlay_and_date": 11513,
+        "rebuilt_tokens_including_build_date": 11507
+      },
+      "official_pages": 22,
+      "official_source_tree_files": 22,
+      "official_source_tree_modified_for_build": false,
+      "pdf_latex_passes": 4,
+      "rebuilt_pages": 22,
+      "successful_pass_page_counts": [
+        19,
+        22,
+        22,
+        22
+      ],
+      "visual_comparison": {
+        "expected_visible_differences": [
+          "arXiv side stamp on official page 1",
+          "build-date header on page 1"
+        ],
+        "layout_tables_figures_pagination_match": true,
+        "maximum_mean_absolute_channel_difference": 2.8026,
+        "maximum_root_mean_square_channel_difference": 7.5458,
+        "pages_compared": 22,
+        "render_pixel_size": [
+          745,
+          1053
+        ],
+        "unreadable_clipped_overlapping_or_missing_elements": 0
+      }
+    },
     "versions": [
       "v1",
       "v2"
@@ -18,7 +68,8 @@
       "contact_sheet_sha256": {
         "v1_official": "133553ba0d74032301b4275800dc93e64005bc4b4b612cedca0c575f452a5961",
         "v1_rebuilt": "e339173a02746fb179dc0f09bf8ddcc1563cbe53373f305843d77458f733030a",
-        "v2_official": "eba5aecf8e4b75505fd0bac696929ea97adb10b4fec3373fb23bb708c21fc80c"
+        "v2_official": "eba5aecf8e4b75505fd0bac696929ea97adb10b4fec3373fb23bb708c21fc80c",
+        "v2_rebuilt": "b0d69e15e716cc42cf4fc7390ff507fe32c9c00197a358089e9002c8219182fb"
       },
       "official_pages_inspected": {
         "v1": 26,
@@ -26,9 +77,17 @@
       },
       "rebuilt_pages_inspected": {
         "v1": 26,
-        "v2": 0
+        "v2": 22
       },
-      "unreadable_clipped_or_overlapping_pages": 0
+      "unreadable_clipped_or_overlapping_pages": 0,
+      "v2_side_by_side_contact_sheet_sha256": [
+        "fbe8fa27f19779010373c385b0c19559136fb72fc869625ff4bf9ba982df3125",
+        "56d366689e52d959d6e21ef39ee565920d03f238b1d3698ab96d4a4aa89567cd",
+        "8260d2287c2fe398744b53638f5d607cd0228fc57866f9db736c2728e2a24b21",
+        "08df67ab4860d9548aa041c93e315ef52356ec302540b08d7972df0e56ae7adb",
+        "c87c8a2c34d362ad8e8ace9416c404c90a6ff4c1053d64ad1d3d14b17ab9e266",
+        "d4008345c07d412363d63e8ce5e98d2c12d12745527c3b1dca5b0dd4f3898107"
+      ]
     }
   },
   "attributable_repository": {

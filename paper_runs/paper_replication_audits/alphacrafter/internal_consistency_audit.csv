@@ -9,5 +9,5 @@ released_data_coverage,paper_release_mismatch,"schemas and index series are rele
 released_calendar_coverage,paper_release_mismatch,templates end March 31 although the revised live period ends June 12
 trial_reproducibility,underspecified,"independent trials are stated without released seeds, requests, responses, or sampling controls"
 live_execution_claim,unverifiable_from_release,"no brokerage integration, order/fill records, or live NAV path is released"
-v2_source_build,toolchain_incompatible,three bounded attempts stop or stall in TeX Live CJK encoding before output; source archive remains complete
+v2_source_build,complete,"unmodified official source builds in four pdfLaTeX passes plus BibTeX; the CJK package takes about 45 seconds to initialize on the shared TeX installation, so earlier attempts were interrupted prematurely"
 repository_attribution,strong_but_not_direct,"NJU-LINK repository cites the exact paper and authors and matches the method, but the paper itself does not link it"

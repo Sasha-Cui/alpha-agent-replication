@@ -1,6 +1,6 @@
 version,dimension,status,detail
 v1,official_document_source,complete,25-file primary source package recovered; 26-page manuscript rebuilt
-v2,official_document_source,complete_build_blocked,22-file primary source recovered; available TeX Live repeatedly stalls in CJK encoding before PDF output
+v2,official_document_source,complete,22-file primary source recovered unchanged; four pdfLaTeX passes plus BibTeX converge to a 22-page PDF matching the official manuscript
 v1_v2,attributable_repository,substantial_component_release,"79-file MIT repository under the authors' NJU-LINK organization matches title, authors, architecture, and arXiv id; the paper does not directly link it"
 v1_v2,market_universes,specified,CSI 300 and S&P 500 constituents
 v1_v2,market_data,named_not_released,"Baostock OHLCV, Yahoo Finance OHLCV, and Lixinger fundamentals/statements/news are named; research snapshots are absent"
