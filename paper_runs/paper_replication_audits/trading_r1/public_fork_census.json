@@ -1,0 +1,22 @@
+{
+  "accessible_branch_refs": 29,
+  "accessible_public_forks": 29,
+  "census_date": "2026-08-14",
+  "current_native_result_payload_paths_across_divergent_heads": 0,
+  "current_source_code_files_across_divergent_heads": 0,
+  "divergent_unique_heads": 1,
+  "exact_paper_author_display_name_attributions": 0,
+  "github_reported_forks": 30,
+  "inaccessible_or_unlisted_reported_forks": 1,
+  "interpretation": "Twenty-eight fork refs exactly duplicate the official one-file placeholder. The only divergent fork adds four post-paper README-only edits and no code, model, dataset, configuration, prediction, trade, return, or result payload.",
+  "native_trading_r1_pipelines_found": 0,
+  "official_head_exact_refs": 28,
+  "paper_result_credit": false,
+  "post_submission_unique_commits": 4,
+  "public_tag_refs": 0,
+  "unique_blobs_beyond_official_history": 4,
+  "unique_changed_paths": 1,
+  "unique_commits_beyond_official_history": 4,
+  "unique_heads": 2,
+  "unique_trees_beyond_official_history": 4
+}

@@ -770,7 +770,11 @@ ARTIFACT_NOTES = {
         "N",
         "A pinned arXiv-v1 audit confirms the official repository still contains "
         "only one 49-byte release-soon README and no code, model, dataset, config, "
-        "prediction, trade, or return artifact. Literal reconstructions of Algorithm "
+        "prediction, trade, or return artifact. GitHub reports 30 forks; a dated "
+        "census exhausts all 29 accessible forks and 29 branch refs. Twenty-eight "
+        "refs exactly match the official head, while the only divergent head adds "
+        "four post-paper README-only commits and still has no code or native result "
+        "payload. Literal reconstructions of Algorithm "
         "S1 and the decision matrix receive paper-specification credit only: 0/312 "
         "table cells and 0/36 Figure 5 annotations are natively reproduced. The paper "
         "also conflicts on the NVDA Trading-R1 Sharpe (2.72 table versus 1.881 figure "
@@ -1549,7 +1553,10 @@ TARGETED_EXECUTION = {
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
     "SYS-TRADING-AGENTS": "paper_audit:completed_77_of_77_author_table_cells_corroborated_zero_native_regenerated",
     "SYS-TRADING-GROUP": "paper_audit:completed_96_of_128_source_adjacent_baseline_cells_zero_of_120_unique_native_table_cells_zero_of_15_native_curves",
-    "SYS-TRADING-R1": "paper_audit:completed_zero_of_348_published_numeric_units_official_placeholder",
+    "SYS-TRADING-R1": (
+        "paper_audit:completed_zero_of_348_published_numeric_units_official_placeholder_"
+        "29_accessible_forks_29_refs_2_unique_heads_4_readme_only_commits_exhausted"
+    ),
 }
 
 

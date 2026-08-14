@@ -1,0 +1,5 @@
+commit,authored_at,author_name,subject,changed_paths,changed_source_code_paths,changed_native_result_payload_paths,authored_after_paper_submission,exact_paper_author_display_name_match,native_trading_r1_pipeline_found,paper_result_credit
+70d929b0092019936e43a6b35bfef836d35662da,2026-05-03T06:16:00+09:00,takamitsu / tk-build,README.md を更新,1,0,0,True,False,False,False
+372dc7b56225ea68581c1b536657c45ae6928188,2026-05-03T06:16:46+09:00,takamitsu / tk-build,README.md を更新,1,0,0,True,False,False,False
+9e8fa067e01d6c6ba2eaa66143d86ea753a93530,2026-05-03T06:20:20+09:00,takamitsu / tk-build,README.md を更新,1,0,0,True,False,False,False
+3abfc727d540d0826c34d580f197163d6618b33c,2026-05-03T06:21:03+09:00,takamitsu / tk-build,README.md を更新,1,0,0,True,False,False,False

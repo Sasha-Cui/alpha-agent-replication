@@ -7,3 +7,4 @@ official_huggingface_models,https://huggingface.co/api/models?author=TauricResea
 official_huggingface_datasets,https://huggingface.co/api/datasets?author=TauricResearch,0,none,False
 official_project_page_release_statement,https://tauric.ai/research/trading-r1,1,says_released_but_links_placeholder_repository,False
 github_metadata,https://api.github.com/repos/TauricResearch/Trading-R1,0,pushed_at=2025-09-15T04:22:20Z; default_branch=main,False
+public_github_forks,https://github.com/TauricResearch/Trading-R1/forks,29,all_accessible_refs_exhausted_no_native_pipeline_or_result_payload,False

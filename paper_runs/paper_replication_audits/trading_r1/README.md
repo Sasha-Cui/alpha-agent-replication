@@ -6,6 +6,8 @@ Authority: arXiv v1, submitted 2025-09-14T20:13:41Z. Audit snapshot: 2026-08-11.
 
 The paper specification is partially reconstructable, but the Trading-R1 system and its published backtest are not reproducible from the official release. The official repository still contains one 49-byte release-soon README and no code, model, dataset, configuration, prediction, trade, or return artifact. The TauricResearch Hugging Face model and dataset queries are both empty in the pinned audit snapshot.
 
+The 2026-08-14 fork census also exhausts all 29 accessible public forks and all 29 branch refs; GitHub reports 30 forks, so one reported fork is inaccessible or absent from the returned public list. Twenty-eight refs exactly equal the official placeholder head. The sole divergent head adds four post-paper commits, four trees, and four blobs, but all four commits only edit `README.md`; the final tree still has one 157-byte README and no source code or native result payload. Its commit author display name does not exactly match a paper author. The public fork surface therefore supplies no Trading-R1 model, data, configuration, prediction, trade, return, or result evidence.
+
 Paper-result credit is **0/348 numeric display units**: 0/312 cells from Tables 3--4 and 0/36 annotations from Figure 5. Compiling the 58-page paper and executing literal paper equations are not native result reproduction.
 
 ## What this audit did reproduce

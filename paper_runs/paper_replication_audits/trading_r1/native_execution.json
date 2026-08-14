@@ -1,7 +1,7 @@
 {
   "audit_date": "2026-08-11",
   "native_system_execution_attempted": false,
-  "native_system_execution_blocker": "official_repository_has_no_executable_code_model_dataset_predictions_or_backtest_artifacts",
+  "native_system_execution_blocker": "official_repository_and_all_accessible_public_forks_have_no_executable_trading_r1_code_model_dataset_predictions_or_backtest_artifacts",
   "paper_latex_compilation": {
     "attempted": true,
     "boundary": "typesetting_reproduction_only_not_native_system_execution",

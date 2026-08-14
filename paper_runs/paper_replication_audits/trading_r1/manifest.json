@@ -12,8 +12,8 @@
   "official_repository_tags_total": 0,
   "official_repository_tracked_files_current": 1,
   "output_sha256": {
-    "README.md": "f62fde7292df81ea1ed56494f431f600bbf746246f46b41e8f616a6680e91635",
-    "native_execution.json": "4f9c180f77fae11c2e6dcc6c43fd6131a5bb95cca2be764f8f7c114e3eb1127c",
+    "README.md": "057c8fe8b1a4ae6f7352377d2238c239661857128fb8e461cb8333016e1a1125",
+    "native_execution.json": "cbf67856051550e6c7288db3f160fa437ad33b694a3f2a9235440e9b91477769",
     "paper_figure_numeric_conformance.csv": "3c51c7b106853105425f7830386f5cd0b2dc8ecec211a1b373765460210c39e3",
     "paper_internal_consistency_checks.csv": "59c200eaa904d69c30fc0e02fbafcc48f80c6997cf2876dd60c886c79ab868a5",
     "paper_mechanism_conformance.csv": "e35656f3a721e011d38f76508c4697c90da7227e43f37823339fb5a964b2d5e3",
@@ -21,7 +21,10 @@
     "paper_spec_reconstruction_diagnostics.csv": "99aab86caad0621eca050b00af55d5dd673a869cb2db9e7bbe483e4728b64ad6",
     "paper_specification_gaps.csv": "b9da6b83c278620c351864f83007879e830cba8164259231d0039c4d8d54c09c",
     "paper_table_result_conformance.csv": "476723a19ee0eb39e1dbcc011b74ef07042ba4233b41204cb0c04045eff0d6d0",
-    "public_release_inventory.csv": "6d04c173211737794eb81712bee7470e90215ee134f4b75927f14778a5879ff6",
+    "public_fork_branch_ref_snapshot.csv": "07cf65d5093761da3b7555dfe5d9808aaba4f1a331ab79cd37381f0e9de786ec",
+    "public_fork_census.json": "ba25a615c8f9d62ac1a4f2d6d9096e89ffed498815fa983e06f56b2444a72e4f",
+    "public_fork_unique_commit_inventory.csv": "47dd3bf5f0bbe0f16bec156b9db2e72df332134cee9dd464037c02a0d9040012",
+    "public_release_inventory.csv": "21bb38723a67b98cee1e53526bc28f8202ca3216c53534443785217add0bff0e",
     "released_source_inventory.csv": "f32836ccb6a5eb7423dd7bf60851735ad8f0f65acad58a45a6de7e8d77c4a91a"
   },
   "overall_status": "paper_spec_mechanisms_reconstructed_but_zero_of_348_published_result_units_reproduced_official_release_still_placeholder",
@@ -45,8 +48,15 @@
     "official_git_archive.tar": "7994206b25a13fd4955eaea93bd25b53a948e2d83fd79e369d1a3ea62fcdb861",
     "official_project_page.html": "df3f71029ae85a6c1b99526f862855e37b4a9b9be7a99ce098738f2050a04032",
     "paper.pdf": "1b269a78756a50b9da1c86ab7ad2e9050a8a14134b057022bfca4944d51408d0",
+    "public_fork_snapshot.json": "35459b23c7a2fcf725f51f080826eda128c53b364e3085c8afe9e94d1b5afb17",
     "source.tar": "74b1b5e095d2fe471ca8341ff904209186abb4dceacd15e535ca600638d46760"
   },
+  "public_fork_branch_refs_audited": 29,
+  "public_fork_native_trading_r1_pipelines_found": 0,
+  "public_fork_unique_commits_beyond_official_history_audited": 4,
+  "public_fork_unique_heads_audited": 2,
+  "public_forks_accessible_and_audited": 29,
+  "public_forks_github_reported": 30,
   "published_numeric_result_units_total": 348,
   "published_numeric_result_units_with_paper_result_credit": 0,
   "source_authority": "https://github.com/TauricResearch/Trading-R1"

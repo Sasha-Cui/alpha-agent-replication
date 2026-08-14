@@ -111,6 +111,12 @@ def test_committed_audit_records_zero_native_result_credit() -> None:
     assert manifest["official_repository_commits_total"] == 1
     assert manifest["official_repository_tracked_files_current"] == len(source) == 1
     assert manifest["official_repository_source_code_files_current"] == 0
+    assert manifest["public_forks_github_reported"] == 30
+    assert manifest["public_forks_accessible_and_audited"] == 29
+    assert manifest["public_fork_branch_refs_audited"] == 29
+    assert manifest["public_fork_unique_heads_audited"] == 2
+    assert manifest["public_fork_unique_commits_beyond_official_history_audited"] == 4
+    assert manifest["public_fork_native_trading_r1_pipelines_found"] == 0
     assert manifest["official_huggingface_models_total"] == 0
     assert manifest["official_huggingface_datasets_total"] == 0
     assert manifest["paper_compile_pages"] == 58
@@ -120,6 +126,46 @@ def test_committed_audit_records_zero_native_result_credit() -> None:
     assert native["paper_latex_compilation"]["paper_result_credit"] is False
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
+
+
+def test_committed_public_fork_census_finds_only_readme_edits() -> None:
+    output = ROOT / "paper_runs/paper_replication_audits/trading_r1"
+    branches = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    commits = read_csv(output / "public_fork_unique_commit_inventory.csv")
+    census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
+    assert len(branches) == 29
+    assert Counter(row["relation_to_official_head"] for row in branches) == {
+        "exact_official_head": 28,
+        "descendant_of_official_head": 1,
+    }
+    assert all(row["commits_behind_official_head"] == "0" for row in branches)
+    assert all(row["current_tracked_files"] == "1" for row in branches)
+    assert all(row["current_source_code_files"] == "0" for row in branches)
+    assert all(row["current_native_result_payload_paths"] == "0" for row in branches)
+    assert all(row["native_trading_r1_pipeline_found"] == "False" for row in branches)
+    assert all(row["paper_result_credit"] == "False" for row in branches)
+    assert len(commits) == 4
+    assert all(row["changed_paths"] == "1" for row in commits)
+    assert all(row["changed_source_code_paths"] == "0" for row in commits)
+    assert all(row["changed_native_result_payload_paths"] == "0" for row in commits)
+    assert all(row["authored_after_paper_submission"] == "True" for row in commits)
+    assert all(row["exact_paper_author_display_name_match"] == "False" for row in commits)
+    assert all(row["native_trading_r1_pipeline_found"] == "False" for row in commits)
+    assert all(row["paper_result_credit"] == "False" for row in commits)
+    assert census["github_reported_forks"] == 30
+    assert census["accessible_public_forks"] == 29
+    assert census["inaccessible_or_unlisted_reported_forks"] == 1
+    assert census["accessible_branch_refs"] == 29
+    assert census["public_tag_refs"] == 0
+    assert census["unique_heads"] == 2
+    assert census["official_head_exact_refs"] == 28
+    assert census["divergent_unique_heads"] == 1
+    assert census["unique_commits_beyond_official_history"] == 4
+    assert census["unique_trees_beyond_official_history"] == 4
+    assert census["unique_blobs_beyond_official_history"] == 4
+    assert census["unique_changed_paths"] == 1
+    assert census["native_trading_r1_pipelines_found"] == 0
+    assert census["paper_result_credit"] is False
 
 
 def test_pinned_primary_sources_when_available() -> None:
@@ -138,3 +184,7 @@ def test_pinned_primary_sources_when_available() -> None:
         }
     ]
     assert len(audit.source_archive_inventory(paper)) == 29
+    branches, commits, census = audit.public_fork_audit(source, paper)
+    assert len(branches) == 29
+    assert len(commits) == 4
+    assert census["native_trading_r1_pipelines_found"] == 0

@@ -51,6 +51,21 @@ HF_EMPTY_SNAPSHOT_SHA256 = "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f
 OFFICIAL_PROJECT_PAGE_URL = "https://tauric.ai/research/trading-r1"
 OFFICIAL_PROJECT_PAGE_SHA256 = "df3f71029ae85a6c1b99526f862855e37b4a9b9be7a99ce098738f2050a04032"
 AUDIT_DATE = "2026-08-11"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_SNAPSHOT_SHA256 = "35459b23c7a2fcf725f51f080826eda128c53b364e3085c8afe9e94d1b5afb17"
+PUBLIC_FORK_REPORTED_COUNT = 30
+PUBLIC_FORK_ACCESSIBLE_COUNT = 29
+PUBLIC_FORK_DIVERGENT_HEAD = "3abfc727d540d0826c34d580f197163d6618b33c"
+PUBLIC_FORK_DIVERGENT_README_SHA256 = "8cfcac65df4d37cdbbe05eb8881b6d312bcce2b1a2f9190bc1f89312fa4f06d9"
+PAPER_AUTHOR_NAMES = {
+    "Yijia Xiao",
+    "Edward Sun",
+    "Tong Chen",
+    "Fang Wu",
+    "Di Luo",
+    "Wei Wang",
+}
+SOURCE_CODE_SUFFIXES = {".py", ".ipynb", ".sh", ".js", ".ts", ".cpp", ".c", ".rs"}
 
 ASSETS = ("NVDA", "AAPL", "MSFT", "AMZN", "META", "SPY")
 METRICS = ("CR_pct", "SR", "HR_pct", "MDD_pct")
@@ -457,11 +472,209 @@ def released_source_inventory(source_root: Path) -> list[dict[str, Any]]:
                 "path": path,
                 "bytes": len(data),
                 "sha256": bytes_sha256(data),
-                "source_code": Path(path).suffix.lower() in {".py", ".ipynb", ".sh", ".js", ".ts", ".cpp", ".c", ".rs"},
+                "source_code": Path(path).suffix.lower() in SOURCE_CODE_SUFFIXES,
                 "native_result_artifact": False,
             }
         )
     return rows
+
+
+def public_fork_audit(
+    source_root: Path,
+    paper_root: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Audit every accessible public fork ref without granting lineage by name."""
+    snapshot = json.loads(
+        (paper_root / "public_fork_snapshot.json").read_text(encoding="utf-8")
+    )
+    if len(snapshot) != PUBLIC_FORK_ACCESSIBLE_COUNT:
+        raise ValueError(f"Trading-R1 accessible fork count changed: {len(snapshot)}")
+    expected_refs: dict[str, tuple[str, str, str]] = {}
+    tag_refs = 0
+    for repository in snapshot:
+        full_name = repository["full_name"]
+        owner = full_name.split("/", 1)[0]
+        if repository["default_branch"] not in repository["branches"]:
+            raise ValueError(f"Trading-R1 fork default branch missing: {full_name}")
+        tag_refs += len(repository["tags"])
+        for branch, head in repository["branches"].items():
+            ref = f"refs/remotes/forks/{owner}/{branch}"
+            if ref in expected_refs:
+                raise ValueError(f"duplicate Trading-R1 fork ref: {ref}")
+            expected_refs[ref] = (full_name, branch, head)
+    if len(expected_refs) != 29 or tag_refs != 0:
+        raise ValueError("Trading-R1 fork branch/tag surface changed")
+
+    observed_refs = {
+        ref: run_git(source_root, "rev-parse", ref).strip()
+        for ref in run_git(
+            source_root,
+            "for-each-ref",
+            "--format=%(refname)",
+            "refs/remotes/forks",
+        ).splitlines()
+    }
+    expected_heads = {ref: values[2] for ref, values in expected_refs.items()}
+    if observed_refs != expected_heads:
+        raise ValueError(f"Trading-R1 fetched fork refs changed: {observed_refs}")
+
+    payload_path_pattern = re.compile(
+        r"(^|/)(models?|datasets?|configs?|predictions?|trades?|orders?|returns?|"
+        r"results?|outputs?|checkpoints?|trajectories?|actions?|ratings?)(/|$)",
+        flags=re.IGNORECASE,
+    )
+    branch_rows: list[dict[str, Any]] = []
+    for ref, (repository, branch, head) in sorted(expected_refs.items()):
+        ahead = int(run_git(source_root, "rev-list", "--count", head, "--not", SOURCE_COMMIT).strip())
+        behind = int(run_git(source_root, "rev-list", "--count", f"{head}..{SOURCE_COMMIT}").strip())
+        paths = run_git(source_root, "ls-tree", "-r", "--name-only", head).splitlines()
+        source_paths = [path for path in paths if Path(path).suffix.lower() in SOURCE_CODE_SUFFIXES]
+        payload_paths = [path for path in paths if payload_path_pattern.search(path)]
+        if behind != 0 or ahead not in {0, 4}:
+            raise ValueError(f"Trading-R1 fork relationship changed for {ref}")
+        branch_rows.append({
+            "repository": repository,
+            "url": f"https://github.com/{repository}",
+            "branch": branch,
+            "head_commit": head,
+            "relation_to_official_head": (
+                "exact_official_head" if head == SOURCE_COMMIT else "descendant_of_official_head"
+            ),
+            "commits_ahead_of_official_history": ahead,
+            "commits_behind_official_head": behind,
+            "current_tracked_files": len(paths),
+            "current_source_code_files": len(source_paths),
+            "current_native_result_payload_paths": len(payload_paths),
+            "native_trading_r1_pipeline_found": False,
+            "paper_result_credit": False,
+        })
+
+    fork_heads = sorted(set(observed_refs.values()))
+    official_objects = set(
+        run_git(source_root, "rev-list", "--objects", "--no-object-names", SOURCE_COMMIT).splitlines()
+    )
+    fork_objects = set(
+        run_git(source_root, "rev-list", "--objects", "--no-object-names", *fork_heads).splitlines()
+    )
+    unique_objects = sorted(fork_objects - official_objects)
+    object_counts = {"commit": 0, "tree": 0, "blob": 0}
+    for object_id in unique_objects:
+        kind = run_git(source_root, "cat-file", "-t", object_id).strip()
+        if kind not in object_counts:
+            raise ValueError(f"unexpected Trading-R1 fork object type: {kind}")
+        object_counts[kind] += 1
+    if object_counts != {"commit": 4, "tree": 4, "blob": 4}:
+        raise ValueError(f"Trading-R1 unique fork objects changed: {object_counts}")
+
+    unique_commits = sorted(
+        set(run_git(source_root, "rev-list", *fork_heads, "--not", SOURCE_COMMIT).splitlines())
+    )
+    if len(unique_commits) != 4:
+        raise ValueError(f"Trading-R1 unique fork commits changed: {unique_commits}")
+    commit_rows: list[dict[str, Any]] = []
+    all_changed_paths: set[str] = set()
+    for commit in unique_commits:
+        metadata = run_git(
+            source_root,
+            "show",
+            "-s",
+            "--format=%aI%x00%an%x00%s",
+            commit,
+        ).rstrip("\n").split("\x00", 2)
+        if len(metadata) != 3:
+            raise ValueError(f"Trading-R1 fork metadata parse failed: {commit}")
+        authored_at, author_name, subject = metadata
+        changed_paths = sorted(
+            set(
+                run_git(
+                    source_root,
+                    "diff-tree",
+                    "--root",
+                    "-m",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    commit,
+                ).splitlines()
+            )
+            - {""}
+        )
+        source_paths = [path for path in changed_paths if Path(path).suffix.lower() in SOURCE_CODE_SUFFIXES]
+        payload_paths = [path for path in changed_paths if payload_path_pattern.search(path)]
+        all_changed_paths.update(changed_paths)
+        commit_rows.append({
+            "commit": commit,
+            "authored_at": authored_at,
+            "author_name": author_name,
+            "subject": subject,
+            "changed_paths": len(changed_paths),
+            "changed_source_code_paths": len(source_paths),
+            "changed_native_result_payload_paths": len(payload_paths),
+            "authored_after_paper_submission": authored_at[:10] > PAPER_SUBMITTED[:10],
+            "exact_paper_author_display_name_match": author_name in PAPER_AUTHOR_NAMES,
+            "native_trading_r1_pipeline_found": False,
+            "paper_result_credit": False,
+        })
+    commit_rows.sort(key=lambda row: (row["authored_at"], row["commit"]))
+    divergent_readme = run_git(
+        source_root, "show", f"{PUBLIC_FORK_DIVERGENT_HEAD}:README.md", binary=True
+    )
+    if (
+        all_changed_paths != {"README.md"}
+        or len(divergent_readme) != 157
+        or bytes_sha256(divergent_readme) != PUBLIC_FORK_DIVERGENT_README_SHA256
+        or not all(row["authored_after_paper_submission"] for row in commit_rows)
+        or any(row["exact_paper_author_display_name_match"] for row in commit_rows)
+        or any(row["changed_source_code_paths"] for row in commit_rows)
+        or any(row["changed_native_result_payload_paths"] for row in commit_rows)
+    ):
+        raise ValueError("Trading-R1 divergent fork evidence boundary changed")
+
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_reported_forks": PUBLIC_FORK_REPORTED_COUNT,
+        "accessible_public_forks": len(snapshot),
+        "inaccessible_or_unlisted_reported_forks": PUBLIC_FORK_REPORTED_COUNT - len(snapshot),
+        "accessible_branch_refs": len(branch_rows),
+        "public_tag_refs": tag_refs,
+        "unique_heads": len(fork_heads),
+        "official_head_exact_refs": sum(
+            row["relation_to_official_head"] == "exact_official_head" for row in branch_rows
+        ),
+        "divergent_unique_heads": len(set(fork_heads) - {SOURCE_COMMIT}),
+        "unique_commits_beyond_official_history": len(unique_commits),
+        "unique_trees_beyond_official_history": object_counts["tree"],
+        "unique_blobs_beyond_official_history": object_counts["blob"],
+        "unique_changed_paths": len(all_changed_paths),
+        "current_source_code_files_across_divergent_heads": 0,
+        "current_native_result_payload_paths_across_divergent_heads": 0,
+        "post_submission_unique_commits": sum(
+            row["authored_after_paper_submission"] for row in commit_rows
+        ),
+        "exact_paper_author_display_name_attributions": sum(
+            row["exact_paper_author_display_name_match"] for row in commit_rows
+        ),
+        "native_trading_r1_pipelines_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "Twenty-eight fork refs exactly duplicate the official one-file placeholder. "
+            "The only divergent fork adds four post-paper README-only edits and no code, "
+            "model, dataset, configuration, prediction, trade, return, or result payload."
+        ),
+    }
+    expected_counts = {
+        "accessible_public_forks": 29,
+        "accessible_branch_refs": 29,
+        "unique_heads": 2,
+        "official_head_exact_refs": 28,
+        "divergent_unique_heads": 1,
+        "unique_commits_beyond_official_history": 4,
+        "unique_changed_paths": 1,
+        "post_submission_unique_commits": 4,
+    }
+    if any(summary[key] != value for key, value in expected_counts.items()):
+        raise ValueError(f"Trading-R1 public fork census changed: {summary}")
+    return branch_rows, commit_rows, summary
 
 
 def public_release_rows(paper_root: Path, source_root: Path) -> list[dict[str, Any]]:
@@ -536,6 +749,7 @@ def validate_primary_inputs(source_root: Path, paper_root: Path) -> None:
         "hf_models.json": HF_EMPTY_SNAPSHOT_SHA256,
         "hf_datasets.json": HF_EMPTY_SNAPSHOT_SHA256,
         "official_project_page.html": OFFICIAL_PROJECT_PAGE_SHA256,
+        "public_fork_snapshot.json": PUBLIC_FORK_SNAPSHOT_SHA256,
     }
     for name, expected in expected_hashes.items():
         path = paper_root / name
@@ -620,6 +834,8 @@ Authority: arXiv v1, submitted {PAPER_SUBMITTED}. Audit snapshot: {AUDIT_DATE}.
 
 The paper specification is partially reconstructable, but the Trading-R1 system and its published backtest are not reproducible from the official release. The official repository still contains one 49-byte release-soon README and no code, model, dataset, configuration, prediction, trade, or return artifact. The TauricResearch Hugging Face model and dataset queries are both empty in the pinned audit snapshot.
 
+The {PUBLIC_FORK_CENSUS_DATE} fork census also exhausts all 29 accessible public forks and all 29 branch refs; GitHub reports 30 forks, so one reported fork is inaccessible or absent from the returned public list. Twenty-eight refs exactly equal the official placeholder head. The sole divergent head adds four post-paper commits, four trees, and four blobs, but all four commits only edit `README.md`; the final tree still has one 157-byte README and no source code or native result payload. Its commit author display name does not exactly match a paper author. The public fork surface therefore supplies no Trading-R1 model, data, configuration, prediction, trade, return, or result evidence.
+
 Paper-result credit is **0/{manifest['published_numeric_result_units_total']} numeric display units**: 0/{manifest['paper_table_cells_total']} cells from Tables 3--4 and 0/{manifest['paper_figure_numeric_units_total']} annotations from Figure 5. Compiling the 58-page paper and executing literal paper equations are not native result reproduction.
 
 ## What this audit did reproduce
@@ -652,13 +868,23 @@ def build_audit(source_root: Path, paper_root: Path, output: Path) -> dict[str, 
     checks = internal_checks()
     diagnostics = specification_reconstruction_diagnostics()
     source_files = released_source_inventory(source_root)
+    fork_branches, fork_commits, fork_summary = public_fork_audit(
+        source_root, paper_root
+    )
     paper_assets = source_archive_inventory(paper_root)
     releases = public_release_rows(paper_root, source_root)
+    releases.append({
+        "source": "public_github_forks",
+        "url": f"{SOURCE_URL}/forks",
+        "observed_count": fork_summary["accessible_public_forks"],
+        "status": "all_accessible_refs_exhausted_no_native_pipeline_or_result_payload",
+        "native_result_credit": False,
+    })
     compile_result = compile_paper(paper_root)
     native = {
         "audit_date": AUDIT_DATE,
         "native_system_execution_attempted": False,
-        "native_system_execution_blocker": "official_repository_has_no_executable_code_model_dataset_predictions_or_backtest_artifacts",
+        "native_system_execution_blocker": "official_repository_and_all_accessible_public_forks_have_no_executable_trading_r1_code_model_dataset_predictions_or_backtest_artifacts",
         "paper_latex_compilation": compile_result,
         "paper_specification_reconstruction": {
             "attempted": True,
@@ -691,6 +917,16 @@ def build_audit(source_root: Path, paper_root: Path, output: Path) -> dict[str, 
         "official_repository_tracked_files_current": len(source_files),
         "official_repository_source_code_files_current": sum(row["source_code"] for row in source_files),
         "official_repository_tags_total": len(run_git(source_root, "tag", "--list").splitlines()),
+        "public_forks_github_reported": fork_summary["github_reported_forks"],
+        "public_forks_accessible_and_audited": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_unique_commits_beyond_official_history_audited": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "public_fork_native_trading_r1_pipelines_found": fork_summary[
+            "native_trading_r1_pipelines_found"
+        ],
         "official_huggingface_models_total": len(json.loads((paper_root / "hf_models.json").read_text())),
         "official_huggingface_datasets_total": len(json.loads((paper_root / "hf_datasets.json").read_text())),
         "arxiv_source_files_total": len(paper_assets),
@@ -707,6 +943,7 @@ def build_audit(source_root: Path, paper_root: Path, output: Path) -> dict[str, 
             "hf_models.json": HF_EMPTY_SNAPSHOT_SHA256,
             "hf_datasets.json": HF_EMPTY_SNAPSHOT_SHA256,
             "official_project_page.html": OFFICIAL_PROJECT_PAGE_SHA256,
+            "public_fork_snapshot.json": PUBLIC_FORK_SNAPSHOT_SHA256,
         },
     }
     outputs = {
@@ -719,12 +956,18 @@ def build_audit(source_root: Path, paper_root: Path, output: Path) -> dict[str, 
         "released_source_inventory.csv": source_files,
         "paper_source_asset_inventory.csv": paper_assets,
         "public_release_inventory.csv": releases,
+        "public_fork_branch_ref_snapshot.csv": fork_branches,
+        "public_fork_unique_commit_inventory.csv": fork_commits,
     }
     for filename, rows in outputs.items():
         write_csv(output / filename, rows)
     (output / "native_execution.json").write_text(json.dumps(native, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (output / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     (output / "README.md").write_text(readme_text(manifest), encoding="utf-8")
-    hashed = [*outputs, "native_execution.json", "README.md"]
+    hashed = [*outputs, "native_execution.json", "public_fork_census.json", "README.md"]
     manifest["output_sha256"] = {filename: sha256(output / filename) for filename in hashed}
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return manifest
