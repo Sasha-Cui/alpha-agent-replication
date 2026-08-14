@@ -9,6 +9,7 @@ import hashlib
 import json
 import math
 import re
+import subprocess
 import tarfile
 from collections import Counter, defaultdict
 from pathlib import Path, PurePosixPath
@@ -29,6 +30,27 @@ AUTHOR_REPOSITORY = "https://github.com/Jackson906E/Janus-Q-demo"
 AUTHOR_DEFAULT_BRANCH = "main"
 AUTHOR_DEFAULT_HEAD = "526ac4e32d1e6904f5f3e2af25ea18886b61d325"
 AUTHOR_RELEASE_COMMIT = "4455e10202865d9fe0c167ed0bdea57af266fdc1"
+AUTHOR_HISTORY_COMMITS = (
+    "3473cef4fabe33cb1f77107c24376be13f1b89e4",
+    "36b8ead0f60ad14cb8e44cf56a33c7494d36e1f8",
+    "31bcd9bae449e6820b7c88ceb85fdc4000df879c",
+    "8a8fae7b331fad8c0f3eabbf51de4830810866f3",
+    "9eb81682c6c86b9c583697fcc9b0dff7bb92c921",
+    "8bd11441d5dea7caef2bb689d042259f6151d5b9",
+    AUTHOR_DEFAULT_HEAD,
+    "e61562451a94cfaa4ea47e82b0267670c652bb3b",
+    "1f07be86f0e237de6dae43c032ae0954485a54ab",
+    AUTHOR_RELEASE_COMMIT,
+)
+AUTHOR_HISTORY_PATHS = {
+    "README.md", "index.html", "static/Framework.png", "static/app.js",
+    "static/backtest_multi_csv_all_results.png", "static/eqW_typeW.png",
+    "static/holding_period_sr.png", "static/holding_period_tr.png", "static/intro.png",
+    "static/logo.svg", "static/logo1.png", "static/logo2.png",
+    "data/event_type_backtest.json", "data/event_type_nav_timeseries.json",
+    "data/event_weights.json", "data/holding_period_data.json", "data/model_accuracy.json",
+    "data/nav_timeseries.json", "data/summary_stats.json", "data/unified_backtest.json",
+}
 DATASET_URL = "https://drive.google.com/drive/folders/1bAuItyl0ARatopOPiyEZaq_BaaDkZiES"
 CODE_ARCHIVE_URL = "https://anonymous.4open.science/r/test-AF0E/"
 
@@ -72,6 +94,9 @@ DISCOVERY_PINS = {
     "github-code-netlify.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
     "github-code-title.json": "f80fcc630a23887eb973a0d571a46c7348f22659390d3bd8f11b810ec6a1e33a",
     "github-commits-title.json": "ece8e31a29e236d6fd961adcacb38f54923885b6f96d88d220c082d55b9016e5",
+    "github-branches.json": "a2b2e164c26f3eb257debdba196c239f2b7b73bd71d8a48306c27a9404cd65a0",
+    "github-tags.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "github-releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "github-repos-exact.json": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f",
     "github-repos-title.json": "32c237a4a22247928bc48dea19e7ea49849824ddc91968ff312caeafb3d27c63",
     "huggingface-datasets.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
@@ -109,6 +134,119 @@ def write_csv(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
 
 def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
+
+
+def git(repo: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(repo), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def history_blob(repo: Path, commit: str, path: str) -> Any:
+    return json.loads(git(repo, "show", f"{commit}:{path}"))
+
+
+def targeted_event_output_consistency(repo: Path, commit: str) -> dict[str, Any]:
+    """Check the only two JSON files edited after the duplicated site upload."""
+    nav = history_blob(repo, commit, "data/event_type_nav_timeseries.json")
+    backtest = history_blob(repo, commit, "data/event_type_backtest.json")
+    values = np.asarray(nav["Risk Warning"]["series"]["DeepSeek-v3.1-nex-n1"], dtype=float)
+    record = next(
+        row["metrics"]
+        for row in backtest["风险警示与消除"]
+        if row["modelName"] == "DeepSeek-v3.1-nex-n1"
+    )
+    returns = values[1:] / values[:-1] - 1.0
+    mdd = float(np.max(1.0 - values / np.maximum.accumulate(values)))
+    total_return = float(values[-1] / values[0] - 1.0)
+    annual_return = float((1.0 + total_return) ** (252.0 / len(returns)) - 1.0)
+    derived = {
+        "arr": annual_return,
+        "sr": float(returns.mean() / returns.std(ddof=0) * np.sqrt(252)),
+        "mdd": mdd,
+        "cr": annual_return / mdd,
+        "totalReturn": total_return,
+    }
+    matched = {
+        metric: abs(value - float(record[metric]))
+        <= (5e-7 if metric in {"arr", "mdd", "totalReturn"} else 5e-5)
+        for metric, value in derived.items()
+    }
+    return {
+        "nav_terminal_value": format(values[-1], ".12g"),
+        "reported_total_return": format(float(record["totalReturn"]), ".12g"),
+        "derived_total_return": format(total_return, ".12g"),
+        "reported_arr": format(float(record["arr"]), ".12g"),
+        "derived_arr": format(annual_return, ".12g"),
+        "reported_sr": format(float(record["sr"]), ".12g"),
+        "derived_sr": format(derived["sr"], ".12g"),
+        "reported_mdd": format(float(record["mdd"]), ".12g"),
+        "derived_mdd": format(mdd, ".12g"),
+        "reported_cr": format(float(record["cr"]), ".12g"),
+        "derived_cr": format(derived["cr"], ".12g"),
+        "matching_metrics": sum(matched.values()),
+        "mismatching_metrics": ";".join(metric for metric, passed in matched.items() if not passed),
+    }
+
+
+def source_history_rows(scratch: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Inventory every public revision/ref and the revisioned supplementary edit."""
+    repo = scratch / "author_repo"
+    if git(repo, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise ValueError("Janus-Q history checkout is shallow")
+    commits = git(repo, "rev-list", "--reverse", "--all").splitlines()
+    if commits != list(AUTHOR_HISTORY_COMMITS):
+        raise ValueError(f"Janus-Q public history changed: {commits}")
+    unreachable = git(repo, "fsck", "--full", "--no-reflogs", "--unreachable", "--no-progress").strip()
+    if unreachable:
+        raise ValueError(f"Janus-Q has unreviewed unreachable objects: {unreachable}")
+    branches = json.loads((scratch / "discovery/github-branches.json").read_text())
+    branch_heads = sorted((row["name"], row["commit"]["sha"]) for row in branches)
+    if branch_heads != sorted((("gh-page", AUTHOR_RELEASE_COMMIT), ("main", AUTHOR_DEFAULT_HEAD))):
+        raise ValueError(f"Janus-Q public branches changed: {branch_heads}")
+    if json.loads((scratch / "discovery/github-tags.json").read_text()) or json.loads(
+        (scratch / "discovery/github-releases.json").read_text()
+    ):
+        raise ValueError("Janus-Q now exposes an unreviewed tag or release")
+
+    rows: list[dict[str, Any]] = []
+    output_rows: list[dict[str, Any]] = []
+    for commit in commits:
+        authored_at, subject = git(repo, "show", "-s", "--format=%aI%x09%s", commit).rstrip().split("\t", 1)
+        paths = git(repo, "ls-tree", "-r", "--name-only", commit).splitlines()
+        unexpected = set(paths) - AUTHOR_HISTORY_PATHS
+        if unexpected:
+            raise ValueError(f"Janus-Q history contains unreviewed paths: {sorted(unexpected)}")
+        system_source = [
+            path for path in paths
+            if path.endswith((".py", ".ipynb", ".r", ".jl", ".c", ".cpp", ".java", ".sh"))
+        ]
+        payloads = [path for path in paths if path.startswith("data/") and path.endswith(".json")]
+        rows.append({
+            "commit": commit,
+            "authored_at": authored_at,
+            "subject": subject,
+            "tracked_paths": len(paths),
+            "static_site_script_paths": sum(path.endswith(".js") for path in paths),
+            "structured_output_payload_paths": len(payloads),
+            "native_system_source_paths": len(system_source),
+            "native_system_source_found": bool(system_source),
+        })
+        if "data/event_type_backtest.json" in paths:
+            consistency = targeted_event_output_consistency(repo, commit)
+            output_rows.append({
+                "commit": commit,
+                "authored_at": authored_at,
+                **consistency,
+                "paper_result_credit": False,
+                "boundary": "supplementary event-specific output consistency; not native experiment regeneration",
+            })
+    if [row["matching_metrics"] for row in output_rows] != [5, 5, 1, 1, 1]:
+        raise ValueError("Janus-Q historical supplementary-output consistency changed")
+    return rows, output_rows
 
 
 def token_jaccard(left: str, right: str) -> float:
@@ -516,6 +654,8 @@ def method_rows() -> list[dict[str, str]]:
         ("official paper/source", "complete", "arXiv v1 PDF and complete 23-file source archive pinned; 16 official and rebuilt pages visually inspected"),
         ("attributable release", "static_outputs_and_data", "first-author repository commit, live project page, eight JSON outputs, figures, prompts and six dataset files pinned"),
         ("native implementation", "not_released", "paper-linked 4open archive is expired; first-author repository history contains only a static website and outputs, no training or backtest code"),
+        ("public repository history", "complete_two_branch_static_history", "all 10 revisions across main and gh-page audited; no tags, releases, unreachable objects, or native system source paths"),
+        ("supplementary event outputs", "revisioned_internal_conflict", "a historical Risk Warning/DeepSeek NAV tail was edited from 1.526124 to 1.426124; the paired metric record was then partly hand-edited and only total return remains consistent with the revised array"),
         ("license", "missing", "no license was observed for the project repository, project page, or Drive dataset"),
         ("base model", "missing", "Janus-Q backbone/checkpoint and immutable revision are not named"),
         ("SFT setup", "partial", "LoRA and optimizer grid/settings are printed, but selected epoch, GPU count, target modules, seed, code and checkpoint are absent"),
@@ -551,6 +691,7 @@ def internal_rows() -> list[dict[str, str]]:
         ("test_and_backtest_end", "unreconciled_extension", "test news ends Jan 25 while backtest/NAV ends Feb 6; a holding/price extension is plausible but not formally joined"),
         ("sharpe_formula", "incomplete", "paper prints E[r]/sigma_r without annualization; released output uses population standard deviation times sqrt(252)"),
         ("holding_csi300", "conflict", "holding-period JSON calls CSI 300 unchanged but its TR/SR differ from the main released backtest"),
+        ("event_specific_history_edit", "direct_internal_conflict", "the initial event-specific NAV/metric pair matches 5/5 metrics; after the public NAV and metric edits only 1/5 matches, while Calmar remains at its obsolete value"),
         ("reward_strength_gate", "method_conflict", "prose activates PnL only for strong signals; active algorithm applies it after direction gating without a strength condition"),
         ("reward_regularization", "method_conflict", "strength regularization/gate penalties are described or present in commented pseudocode but omitted from the active aggregate algorithm"),
         ("sharpe_improvement_claim", "rounding_overstatement", "1.3088 versus 0.6481 is a 101.94% relative increase, not strictly above 102.0%"),
@@ -656,6 +797,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     consistency = internal_rows()
     releases = release_rows(scratch)
     components = controlled_component_rows()
+    history, historical_outputs = source_history_rows(scratch)
 
     output.mkdir(parents=True, exist_ok=True)
     write_csv(output / "published_result_ledger.csv", results)
@@ -668,6 +810,8 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "internal_consistency_audit.csv", consistency)
     write_csv(output / "release_search_audit.csv", releases)
     write_csv(output / "component_execution_audit.csv", components)
+    write_csv(output / "released_source_history_inventory.csv", history)
+    write_csv(output / "historical_output_revision_consistency.csv", historical_outputs)
 
     result_counts = Counter(row["verification_status"] for row in results)
     source_provenance = {
@@ -691,6 +835,15 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "author_release_commit": AUTHOR_RELEASE_COMMIT,
         "author_release_commit_tree_files": 20,
         "author_release_contains_system_code": False,
+        "full_public_repository_history_audited": True,
+        "public_repository_commits": len(history),
+        "public_repository_branches": 2,
+        "public_repository_tags": 0,
+        "public_repository_releases": 0,
+        "unreachable_git_objects": 0,
+        "historical_native_system_source_paths": sum(row["native_system_source_paths"] for row in history),
+        "historical_supplementary_output_revisions_checked": len(historical_outputs),
+        "latest_supplementary_output_metrics_matching_array": historical_outputs[-1]["matching_metrics"],
         "paper_linked_code_archive": CODE_ARCHIVE_URL,
         "paper_linked_code_archive_observed_state": "expired",
         "author_dataset_url": DATASET_URL,
@@ -706,7 +859,9 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
 
 **Verdict: strong author-linked data and published-output recovery, but not an end-to-end replication.** The pinned arXiv `2602.19919v1` source rebuilds to the official 16-page count with {overlap:.2%} extracted-token multiset overlap. All 16 official and 16 rebuilt pages were visually inspected without observed clipping, overlap, missing assets, or unreadable research content.
 
-The source comments out—but clearly identifies—the live author project page. The page links a six-file Drive release and an anonymous 4open repository. The Drive data are downloadable; the 4open page now says **“The repository is expired.”** A repository with the exact paper name is owned by first author Xiang Li. Its current branch has only a one-byte README, but commit `{AUTHOR_RELEASE_COMMIT}` recovers a 20-file static website with the same eight JSON outputs and figures as the live page. Exhaustive inspection of every commit shows **no model-training, reward, prediction, CAR-construction, or backtest implementation**. No license was observed.
+The source comments out—but clearly identifies—the live author project page. The page links a six-file Drive release and an anonymous 4open repository. The Drive data are downloadable; the 4open page now says **“The repository is expired.”** A repository with the exact paper name is owned by first author Xiang Li. Its current branch has only a one-byte README, but commit `{AUTHOR_RELEASE_COMMIT}` recovers a 20-file static website with the same eight JSON outputs and figures as the live page. The complete public history has 10 revisions across `main` and `gh-page`, no tags, releases, or unreachable objects, and zero native system-source paths. No revision contains model-training, reward, prediction, CAR-construction, or backtest implementation. No license was observed.
+
+The history also exposes an important supplementary-output revision. The two branches initially uploaded byte-identical 20-file trees. On `gh-page`, the Risk Warning/DeepSeek NAV tail was later changed from `1.526124` to `1.426124`; its paired record was then edited in a separate commit from total return `0.526124` to `0.426124`, with ARR, Sharpe, and MDD changed independently while Calmar remained at its old `48.203`. Before the edits the array reproduces all 5/5 paired metrics. After them, only total return matches the revised array (1/5); derived ARR, Sharpe, MDD, and Calmar do not. These event-specific outputs are supplementary and do not change the separate main-table 61/130 accounting, but their current internal consistency is materially weaker than previously documented.
 
 The active empirical denominator is **130 displayed quantitative cells**: 90 in the main comparison table and 40 across two ablation tables. Author-linked JSON exactly corroborates **61/130 cells**, directly contradicts **1/130**, and provides no numeric backing for **68/130** (28 MAE/RMSE cells and all 40 ablation cells). The contradiction is material: the paper prints CSI 1000 Sharpe `-0.1036`; the author output and released NAV both give `-1.0360`. Corroboration is not regeneration: **0/130 cells were produced through the author-native experiment pipeline**.
 
@@ -744,6 +899,11 @@ Four controlled paper-equation checks pass and every author-data integrity check
         "paper_linked_code_archive_expired": True,
         "first_author_historical_tree_files": 20,
         "first_author_system_source_files": 0,
+        "first_author_public_history_commits_audited": len(history),
+        "first_author_public_branches_audited": 2,
+        "historical_native_system_source_paths": 0,
+        "historical_supplementary_output_revisions_checked": len(historical_outputs),
+        "latest_supplementary_output_metrics_matching_array": historical_outputs[-1]["matching_metrics"],
         "author_native_training_executed": False,
         "author_native_backtest_executed": False,
         "full_end_to_end_pipeline_reproduced": False,

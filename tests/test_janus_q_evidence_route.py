@@ -86,8 +86,9 @@ def test_native_ledger_records_dated_china_nav_and_precise_blocker() -> None:
     assert row["prespecified_G7_monthly_common_task_compatible"] == "N"
     assert row["blocking_stage"] == "A3_CN_only_portfolio_NAV_no_six_country_security_mapping"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:partial_61_of_130_table_cells_85_of_85_released_nav_metrics_"
-        "31999_of_31999_data_links_static_outputs_no_native_training_or_backtest"
+        "paper_audit:partial_61_of_130_table_cells_85_of_85_main_nav_metrics_full_"
+        "10_commit_history_supplementary_output_edit_1_of_5_metrics_consistent_"
+        "31999_of_31999_data_links_no_native_training_or_backtest"
     )
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     note = row["concise_evidence_note"]

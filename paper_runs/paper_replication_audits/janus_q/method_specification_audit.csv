@@ -2,6 +2,8 @@ dimension,status,detail
 official paper/source,complete,arXiv v1 PDF and complete 23-file source archive pinned; 16 official and rebuilt pages visually inspected
 attributable release,static_outputs_and_data,"first-author repository commit, live project page, eight JSON outputs, figures, prompts and six dataset files pinned"
 native implementation,not_released,"paper-linked 4open archive is expired; first-author repository history contains only a static website and outputs, no training or backtest code"
+public repository history,complete_two_branch_static_history,"all 10 revisions across main and gh-page audited; no tags, releases, unreachable objects, or native system source paths"
+supplementary event outputs,revisioned_internal_conflict,a historical Risk Warning/DeepSeek NAV tail was edited from 1.526124 to 1.426124; the paired metric record was then partly hand-edited and only total return remains consistent with the revised array
 license,missing,"no license was observed for the project repository, project page, or Drive dataset"
 base model,missing,Janus-Q backbone/checkpoint and immutable revision are not named
 SFT setup,partial,"LoRA and optimizer grid/settings are printed, but selected epoch, GPU count, target modules, seed, code and checkpoint are absent"

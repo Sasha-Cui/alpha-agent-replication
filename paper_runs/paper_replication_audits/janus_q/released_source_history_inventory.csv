@@ -1,0 +1,11 @@
+commit,authored_at,subject,tracked_paths,static_site_script_paths,structured_output_payload_paths,native_system_source_paths,native_system_source_found
+3473cef4fabe33cb1f77107c24376be13f1b89e4,2026-01-29T21:41:19+08:00,Initial commit,1,0,0,0,False
+36b8ead0f60ad14cb8e44cf56a33c7494d36e1f8,2026-01-30T11:01:35+08:00,Add files via upload,20,1,8,0,False
+31bcd9bae449e6820b7c88ceb85fdc4000df879c,2026-01-30T11:05:23+08:00,Add files via upload,20,1,8,0,False
+8a8fae7b331fad8c0f3eabbf51de4830810866f3,2026-01-30T11:06:06+08:00,Delete data directory,12,1,0,0,False
+9eb81682c6c86b9c583697fcc9b0dff7bb92c921,2026-01-30T11:06:15+08:00,Delete static directory,2,0,0,0,False
+8bd11441d5dea7caef2bb689d042259f6151d5b9,2026-01-30T11:06:32+08:00,Delete index.html,1,0,0,0,False
+526ac4e32d1e6904f5f3e2af25ea18886b61d325,2026-01-30T11:06:41+08:00,Update README.md,1,0,0,0,False
+e61562451a94cfaa4ea47e82b0267670c652bb3b,2026-01-30T11:08:27+08:00,Update event_type_nav_timeseries.json values,20,1,8,0,False
+1f07be86f0e237de6dae43c032ae0954485a54ab,2026-01-30T11:10:01+08:00,Update event_type_backtest.json,20,1,8,0,False
+4455e10202865d9fe0c167ed0bdea57af266fdc1,2026-01-30T11:38:38+08:00,Update index.html,20,1,8,0,False

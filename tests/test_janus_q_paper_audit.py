@@ -54,6 +54,11 @@ def test_manifest_preserves_static_release_boundary() -> None:
         "paper_linked_code_archive_expired": True,
         "first_author_historical_tree_files": 20,
         "first_author_system_source_files": 0,
+        "first_author_public_history_commits_audited": 10,
+        "first_author_public_branches_audited": 2,
+        "historical_native_system_source_paths": 0,
+        "historical_supplementary_output_revisions_checked": 5,
+        "latest_supplementary_output_metrics_matching_array": 1,
         "author_native_training_executed": False,
         "author_native_backtest_executed": False,
         "full_end_to_end_pipeline_reproduced": False,
@@ -161,6 +166,12 @@ def test_release_provenance_recovers_first_author_static_history_not_code() -> N
     assert provenance["author_release_commit"] == "4455e10202865d9fe0c167ed0bdea57af266fdc1"
     assert provenance["author_release_commit_tree_files"] == 20
     assert provenance["author_release_contains_system_code"] is False
+    assert provenance["full_public_repository_history_audited"] is True
+    assert provenance["public_repository_commits"] == 10
+    assert provenance["public_repository_branches"] == 2
+    assert provenance["public_repository_tags"] == provenance["public_repository_releases"] == 0
+    assert provenance["unreachable_git_objects"] == 0
+    assert provenance["historical_native_system_source_paths"] == 0
     assert provenance["paper_linked_code_archive_observed_state"] == "expired"
     assert provenance["observed_license"] == "NOASSERTION"
 
@@ -171,10 +182,32 @@ def test_release_provenance_recovers_first_author_static_history_not_code() -> N
     assert "private, renamed, deleted or later artifacts" in releases["bounded exact public searches"]["negative_search_boundary"]
 
 
+def test_complete_history_and_supplementary_output_edit_are_fail_closed() -> None:
+    history = csv_rows("released_source_history_inventory.csv")
+    assert [row["commit"] for row in history] == list(audit.AUTHOR_HISTORY_COMMITS)
+    assert len(history) == 10
+    assert {row["native_system_source_paths"] for row in history} == {"0"}
+    assert {row["native_system_source_found"] for row in history} == {"False"}
+    assert sum(int(row["structured_output_payload_paths"]) > 0 for row in history) == 5
+    outputs = csv_rows("historical_output_revision_consistency.csv")
+    assert len(outputs) == 5
+    assert [int(row["matching_metrics"]) for row in outputs] == [5, 5, 1, 1, 1]
+    assert outputs[0]["nav_terminal_value"].startswith("1.52612387067")
+    assert outputs[-1]["nav_terminal_value"].startswith("1.42612387067")
+    assert float(outputs[-1]["reported_total_return"]) == pytest.approx(
+        float(outputs[-1]["derived_total_return"]), abs=5e-7
+    )
+    assert outputs[-1]["mismatching_metrics"] == "arr;sr;mdd;cr"
+    assert outputs[-1]["reported_cr"] == "48.203"
+    assert float(outputs[-1]["derived_cr"]) == pytest.approx(33.022293, rel=1e-6)
+    assert {row["paper_result_credit"] for row in outputs} == {"False"}
+
+
 def test_internal_contradictions_and_readme_verdict_are_preserved() -> None:
     consistency = {row["check"]: row for row in csv_rows("internal_consistency_audit.csv")}
     assert consistency["dataset_headline"]["status"] == "conflict"
     assert consistency["csi1000_sharpe"]["status"] == "direct_contradiction"
+    assert consistency["event_specific_history_edit"]["status"] == "direct_internal_conflict"
     assert consistency["reward_strength_gate"]["status"] == "method_conflict"
     assert consistency["sharpe_improvement_claim"]["status"] == "rounding_overstatement"
 
@@ -187,6 +220,8 @@ def test_internal_contradictions_and_readme_verdict_are_preserved() -> None:
         "0/130 cells were produced through the author-native experiment pipeline",
         "**85/85 matching output metrics**",
         "all 31,999 JSONL records",
+        "complete public history has 10 revisions",
+        "only total return matches the revised array (1/5)",
         "strict_success` remains false",
     ):
         assert marker in readme

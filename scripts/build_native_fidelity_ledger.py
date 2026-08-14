@@ -74,7 +74,13 @@ ARTIFACT_NOTES = {
         "first-author-owned exact-name GitHub repository preserves a 20-file static "
         "site at commit 4455e102; every repository commit was inspected and none "
         "contains model-training, reward, CAR-construction, inference, portfolio, or "
-        "backtest system code. The release is nevertheless substantial author-output "
+        "backtest system code. The complete public history has 10 revisions on two "
+        "branches, no tags, releases, or unreachable objects, and zero native system "
+        "source paths. It also reveals that a supplementary event-specific NAV tail "
+        "and metric record were edited in separate commits: the initial pair matches "
+        "5/5 metrics, but the current pair matches only total return (1/5), with stale "
+        "Calmar and inconsistent ARR, Sharpe, and MDD. The release is nevertheless "
+        "substantial author-output "
         "evidence: 61/130 printed table cells exactly agree, one CSI-1000 Sharpe cell "
         "is directly contradicted, and 68 cells lack numeric backing. Five of ten "
         "empirical panels have released numeric backing, and 85/85 total-return, MDD, "
@@ -1334,7 +1340,7 @@ TARGETED_EXECUTION = {
     "SYS-FACTOR-MAD": "paper_audit:completed_six_paper_derived_mechanics_seven_fail_closed_zero_of_30_table_cells_zero_of_8_empirical_panels_no_attributable_pipeline_local_m0_proxy_no_paper_credit",
     "SYS-FIN-ANALYST": "paper_audit:completed_pre_live_R3_native_controlled_paths_97_official_decisions_replayed_zero_of_119_table_cells_zero_of_2_full_empirical_panels_major_table_figure_source_conflicts",
     "SYS-MACRO-ECONOMISTS-MACHINE": "paper_audit:completed_18_paper_derived_mechanics_four_fail_closed_zero_of_132_table_cells_zero_of_12_empirical_panels_no_attributable_pipeline_major_figure_table_conflicts",
-    "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_released_nav_metrics_31999_of_31999_data_links_static_outputs_no_native_training_or_backtest",
+    "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_main_nav_metrics_full_10_commit_history_supplementary_output_edit_1_of_5_metrics_consistent_31999_of_31999_data_links_no_native_training_or_backtest",
     "SYS-METAPS": "paper_audit:completed_12_paper_derived_mechanics_zero_of_492_table_cells_zero_of_20_empirical_panels_no_attributable_pipeline",
     "SYS-FIN-POS": "paper_audit:completed_11_paper_derived_mechanics_zero_of_294_current_and_225_v1_table_cells_zero_of_11_current_and_15_v1_empirical_panels_no_attributable_pipeline",
     "SYS-FIN-RS": "paper_audit:completed_three_shared_finpos_mechanics_zero_of_225_table_cells_216_exact_finpos_v1_cells_zero_empirical_panels_no_attributable_pipeline",

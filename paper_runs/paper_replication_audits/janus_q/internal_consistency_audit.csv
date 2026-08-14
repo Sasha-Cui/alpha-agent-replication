@@ -9,6 +9,7 @@ nav_start,one_day_difference,"paper caption begins Nov 12, 2024; released NAV st
 test_and_backtest_end,unreconciled_extension,test news ends Jan 25 while backtest/NAV ends Feb 6; a holding/price extension is plausible but not formally joined
 sharpe_formula,incomplete,paper prints E[r]/sigma_r without annualization; released output uses population standard deviation times sqrt(252)
 holding_csi300,conflict,holding-period JSON calls CSI 300 unchanged but its TR/SR differ from the main released backtest
+event_specific_history_edit,direct_internal_conflict,"the initial event-specific NAV/metric pair matches 5/5 metrics; after the public NAV and metric edits only 1/5 matches, while Calmar remains at its obsolete value"
 reward_strength_gate,method_conflict,prose activates PnL only for strong signals; active algorithm applies it after direction gating without a strength condition
 reward_regularization,method_conflict,strength regularization/gate penalties are described or present in commented pseudocode but omitted from the active aggregate algorithm
 sharpe_improvement_claim,rounding_overstatement,"1.3088 versus 0.6481 is a 101.94% relative increase, not strictly above 102.0%"
