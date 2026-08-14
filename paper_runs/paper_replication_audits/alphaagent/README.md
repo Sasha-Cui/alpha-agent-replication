@@ -10,9 +10,12 @@ legacy tree; both omissions made it materially too pessimistic.
 
 - Final paper: https://arxiv.org/pdf/2502.16789v2 (arXiv v2, 2025-06-09; SHA-256 `cf620c3b33a98edd4124230458b65741e1767fa37a3a180828de1035ded52ab1`).
 - Original preprint: https://arxiv.org/pdf/2502.16789v1 (10 pages; SHA-256 `943b286b40186ce03b8e39fc0dbd2f268807042c6192e9200e68972cb45ab890`).
+- Both official PDFs and both matching arXiv source archives are hash-pinned.
+  Each source compiles in two passes to the published 10-page count.
 - Official repository: https://github.com/RndmVariableQ/AlphaAgent. It has two unrelated Git roots, not one
   continuous history: 8 commits on rewritten `main` and 485 on public
-  `legacy-main`, 493 reachable commits in total.
+  `legacy-main`, 493 reachable commits in total. The public repository exposes
+  only those two heads, with no tags or releases.
 - Mechanism snapshot: `95e47882cbed3ba0cafd42e812fe0032a8ae0681` (2025-02-12), before arXiv v1.
   It contains 856 tracked files, including 331 Python modules and 15 factor CSVs.
 - The same author commit contains seven Qlib/MLflow run directories (385 files),
@@ -27,6 +30,15 @@ legacy tree; both omissions made it materially too pessimistic.
 
 ## What genuinely passes
 
+- The all-version lineage contains 106 stable numeric table-cell identities.
+  Version 2 revises five S&P500 AlphaForge result values and two test-period
+  labels. Three logical figure assets are byte-identical, three are revised,
+  and one base-LLM radar figure is added in v2. These are version facts, not
+  experimental reproduction credit.
+- The complete official two-root closure contains 493 commits, 3,907 blobs,
+  3,912 trees, and 2,499 unique historical file paths. All 385 historical
+  `saved_mlruns` paths belong to the same seven run IDs already audited; no
+  prediction, return series, holding, or portfolio-analysis path is present.
 - All 331 Python modules in the paper-era snapshot compile under Python 3.12.
 - The paper-era AST parser executes twice deterministically. Identical,
   commutative, and partially shared expressions return largest-common-subtree
@@ -69,6 +81,10 @@ legacy tree; both omissions made it materially too pessimistic.
   0/18. The run export omits predictions, daily returns, holdings/positions and
   complete portfolio-analysis artifacts, so its printed metrics cannot be
   recomputed from primitive outputs.
+- The seven run records and factor zoo existed on 2025-02-12 but were removed
+  on 2025-02-17. Consequently both the v1 submission cutoff (438 source
+  commits) and v2 cutoff (483 commits) contain zero native run directories and
+  zero factor-zoo files; recovery depends on earlier public history.
 - The exact Baostock CSI500 and Yahoo S&P500 panels, constituent histories, and
   data transformations are absent. The US config points only to unversioned local
   `us_data`; it does not establish Yahoo provenance or frozen panel identity.

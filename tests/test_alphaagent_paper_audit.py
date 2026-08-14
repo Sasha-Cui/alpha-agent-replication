@@ -43,6 +43,17 @@ def test_targets_cover_all_numeric_table_cells() -> None:
             for row in rows
         }
     ) == 106
+    v1 = {
+        (row["paper_table"], row["entity"], row["market"], row["metric"]): row
+        for row in audit.paper_numeric_rows("v1")
+    }
+    v2 = {
+        (row["paper_table"], row["entity"], row["market"], row["metric"]): row
+        for row in rows
+    }
+    assert set(v1) == set(v2)
+    assert sum(v1[key]["paper_value"] != v2[key]["paper_value"] for key in v1) == 5
+    assert sum(v1[key]["period"] != v2[key]["period"] for key in v1) == 2
 
 
 def test_non_table_claims_preserve_result_boundary() -> None:
@@ -63,6 +74,13 @@ def test_committed_audit_is_fail_closed() -> None:
     mechanisms = read_csv(output / "source_mechanism_conformance.csv")
     current_mechanisms = read_csv(output / "current_rewrite_mechanism_conformance.csv")
     history = read_csv(output / "official_history_timeline.csv")
+    paper_versions = read_csv(output / "official_paper_version_inventory.csv")
+    paper_lineage = read_csv(output / "official_paper_numeric_lineage.csv")
+    paper_figures = read_csv(output / "official_paper_figure_asset_inventory.csv")
+    history_paths = read_csv(output / "public_source_history_path_inventory.csv")
+    history_summary = json.loads(
+        (output / "public_source_history.json").read_text(encoding="utf-8")
+    )
     gaps = read_csv(output / "paper_specification_gaps.csv")
     inventory = read_csv(output / "released_source_inventory.csv")
     paper_era_inventory = read_csv(output / "paper_era_source_inventory.csv")
@@ -83,6 +101,16 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["paper_era_source_revision_available"] is True
     assert manifest["paper_v1_sha256"] == audit.PAPER_V1_SHA256
     assert manifest["paper_mechanism_commit"] == audit.PAPER_MECHANISM_COMMIT
+    assert manifest["official_arxiv_versions_audited"] == 2
+    assert manifest["official_arxiv_source_archives_audited"] == 2
+    assert manifest["official_paper_versions_compiled_to_published_page_count"] == 2
+    assert manifest["official_paper_numeric_cell_identities"] == 106
+    assert manifest["official_paper_numeric_values_revised_in_v2"] == 5
+    assert manifest["official_paper_configuration_labels_revised_in_v2"] == 2
+    assert manifest["official_paper_active_figure_assets_v1"] == 6
+    assert manifest["official_paper_active_figure_assets_v2"] == 7
+    assert manifest["official_paper_logical_figure_assets_revised_in_v2"] == 3
+    assert manifest["official_paper_logical_figure_assets_added_in_v2"] == 1
     assert manifest["official_git_history"] == {
         "is_shallow": False,
         "reachable_commits": 493,
@@ -139,6 +167,13 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["native_source_tests_dependency_faithful"] is False
     assert manifest["native_synthetic_base_factors_executable"] == 4
     assert manifest["native_synthetic_component_paper_result_reproduction"] is False
+    assert manifest["public_source_unique_historical_file_paths"] == 2499
+    assert manifest["public_source_reachable_blobs"] == 3907
+    assert manifest["public_source_reachable_trees"] == 3912
+    assert manifest["public_source_reachable_commit_objects"] == 493
+    assert manifest["public_source_historical_author_run_record_paths"] == 385
+    assert manifest["public_source_historical_author_run_ids"] == 7
+    assert manifest["public_source_primitive_prediction_return_or_holding_paths"] == 0
 
     assert Counter(row["status"] for row in table) == {
         "corroborated_by_author_history_native_run_artifact": 5,
@@ -160,6 +195,40 @@ def test_committed_audit_is_fail_closed() -> None:
         "True": 4,
     }
     assert len(history) == 8
+    assert len(paper_versions) == 2
+    assert {row["paper_version"] for row in paper_versions} == {"v1", "v2"}
+    assert {row["compiled_pdf_pages"] for row in paper_versions} == {"10"}
+    assert {row["source_cutoff_native_run_records"] for row in paper_versions} == {"0"}
+    assert {row["source_cutoff_factor_zoo_files"] for row in paper_versions} == {"0"}
+    assert len(paper_lineage) == 106
+    assert Counter(row["status"] for row in paper_lineage) == {
+        "unchanged": 99,
+        "numeric_value_revised_in_v2": 5,
+        "configuration_label_revised_in_v2": 2,
+    }
+    assert len(paper_figures) == 13
+    assert Counter(row["paper_version"] for row in paper_figures) == {"v2": 7, "v1": 6}
+    figure_status = {
+        row["logical_figure_id"]: row["lineage_status"] for row in paper_figures
+    }
+    assert Counter(figure_status.values()) == {
+        "byte_identical": 3,
+        "source_asset_revised_in_v2": 3,
+        "added_in_v2": 1,
+    }
+    assert len(history_paths) == 2499
+    assert sum(row["paper_era_author_run_record"] == "True" for row in history_paths) == 385
+    assert {
+        row["primitive_prediction_return_or_holding_output"] for row in history_paths
+    } == {"False"}
+    assert history_summary["official_reachable_object_types"] == {
+        "blob": 3907,
+        "commit": 493,
+        "tree": 3912,
+    }
+    assert history_summary["historical_author_run_ids"] == sorted(
+        row["run_id"] for row in paper_era_runs
+    )
     assert len(gaps) == 17
     assert len(inventory) == 141
     assert len(paper_era_inventory) == 856
@@ -242,6 +311,12 @@ def test_pinned_source_static_checks_when_available() -> None:
     assert history["paper_mechanism_files"] == 856
     assert history["preprint_cutoff_factor_csvs"] == 0
     assert len(timeline) == 8
+    history_paths, history_summary = audit.public_source_history(source_root)
+    assert len(history_paths) == 2499
+    assert history_summary["official_reachable_commits"] == 493
+    assert history_summary["official_reachable_objects"] == 8312
+    assert history_summary["historical_author_run_record_paths"] == 385
+    assert history_summary["primitive_prediction_return_or_holding_paths"] == 0
 
     current = {
         row["dimension"]: row
@@ -264,3 +339,36 @@ def test_pinned_source_static_checks_when_available() -> None:
     assert mechanisms["paper_lightgbm"]["status"] == "configuration_match"
     assert mechanisms["symbolic_length"]["status"] == "missing"
     assert mechanisms["er_score"]["status"] == "mismatch_hard_filter"
+
+
+def test_pinned_official_paper_sources_when_available() -> None:
+    versions_root = Path(
+        "/nfs/roberts/scratch/pi_btk22/zc362/alphaagent_paper_versions"
+    )
+    if not versions_root.exists():
+        return
+    for version, expected in audit.PAPER_VERSIONS.items():
+        pdf = versions_root / f"paper_{version}.pdf"
+        archive = versions_root / f"paper_{version}_source.tar.gz"
+        assert audit.sha256(pdf) == expected["pdf_sha256"]
+        assert audit.sha256(archive) == expected["source_sha256"]
+        assert audit._pdf_pages(pdf) == 10
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source = Path(temp_dir)
+            audit._extract_official_source(archive, source)
+            assert audit._source_tree_facts(source) == (
+                expected["source_files"],
+                expected["source_uncompressed_bytes"],
+                expected["source_tree_sha256"],
+            )
+            parsed = audit._paper_table_2_values(source / expected["main_tex"])
+            ledger = [
+                row["paper_value"]
+                for row in audit.paper_numeric_rows(version)
+                if row["paper_table"] == 2
+            ]
+            assert parsed == ledger
+            figures = audit._paper_figure_assets(
+                version, source, source / expected["main_tex"]
+            )
+            assert len(figures) == (6 if version == "v1" else 7)

@@ -1,0 +1,34 @@
+{
+  "historical_author_run_ids": [
+    "37716ba581664a6c865f52aec6449f40",
+    "40264f4583ef4d4c93ccd2aae8d54536",
+    "60a7b861fc6d4fbd964c04bb414493eb",
+    "77b227f86e5a47bab48178cac409a98b",
+    "841183815fe44a69bd70b31cdff59969",
+    "db47a8ecacf541cc957fe5a4459a0fdc",
+    "efb8aaa80be0432988a62b2e0ce7b210"
+  ],
+  "historical_author_run_record_paths": 385,
+  "official_commit_sequence_sha256": "dec34bd1290f543cc8906310682a34e98625fd985b75dfa124251f1bc40cf266",
+  "official_heads": {
+    "legacy-main": "1da96e94a06a925c3997899f1848899440585efe",
+    "main": "b42cb397025510da44355db9dcf278304321f589"
+  },
+  "official_object_sequence_sha256": "a787a51c629a774a5d308468d03e594c280abfb109263ee1bd6d5ea7c895e9f7",
+  "official_path_sequence_sha256": "7f517ea6d3cce3303ff830fc8824e78a86c577ba52413df0e4a00272c5b9329d",
+  "official_reachable_commits": 493,
+  "official_reachable_object_types": {
+    "blob": 3907,
+    "commit": 493,
+    "tree": 3912
+  },
+  "official_reachable_objects": 8312,
+  "official_releases": [],
+  "official_tags": [],
+  "official_unique_historical_file_paths": 2499,
+  "paper_result_credit": false,
+  "primitive_prediction_return_or_holding_paths": 0,
+  "public_head_discovery_sha256": "72885e1d64e1109c4009a08372c68142d013665b2edeb5e321320d1e2ec8d731",
+  "public_release_discovery_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "public_tag_discovery_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit AlphaAgent paper v2 against both roots of its official repository.
+"""Audit every AlphaAgent paper version against both official repository roots.
 
 The repository's default ``main`` branch is a July 2026 rewrite, but the same
 public repository also retains a disjoint 485-commit ``legacy-main`` history
@@ -7,10 +7,10 @@ beginning in April 2024.  That history contains the preprint-era AlphaAgent
 workflow, prompts, AST matcher, Qlib configurations, factor-expression artifacts,
 and seven extensionless Qlib/MLflow run records.  This audit pins and executes an
 intact February 2025 mechanism snapshot, records later preprint-cutoff breakage,
-and separately inventories the 2026 rewrite.  One native author run record
-corroborates five displayed paper cells, but it is not an independent regeneration:
-the paper's predictions, portfolios, daily returns, trials, and figure arrays
-remain unreleased.
+compiles and compares both official arXiv source archives, and inventories the
+complete official two-root Git closure.  One native author run record corroborates
+five displayed paper cells, but it is not an independent regeneration: the paper's
+predictions, portfolios, daily returns, trials, and figure arrays remain unreleased.
 """
 
 from __future__ import annotations
@@ -21,6 +21,7 @@ import hashlib
 import json
 import os
 import pickletools
+import re
 import subprocess
 import sys
 import tarfile
@@ -44,6 +45,58 @@ PAPER_URL = "https://arxiv.org/pdf/2502.16789v2"
 PAPER_SHA256 = "cf620c3b33a98edd4124230458b65741e1767fa37a3a180828de1035ded52ab1"
 PAPER_V1_URL = "https://arxiv.org/pdf/2502.16789v1"
 PAPER_V1_SHA256 = "943b286b40186ce03b8e39fc0dbd2f268807042c6192e9200e68972cb45ab890"
+PAPER_VERSIONS: Mapping[str, Mapping[str, Any]] = {
+    "v1": {
+        "submitted_at": "2025-02-24T02:56:46Z",
+        "pdf_url": PAPER_V1_URL,
+        "pdf_sha256": PAPER_V1_SHA256,
+        "pdf_bytes": 1_188_155,
+        "pdf_pages": 10,
+        "source_url": "https://export.arxiv.org/e-print/2502.16789v1",
+        "source_sha256": "229d28d990237c781b2507b531ffd3cef038b9299eb1c9945e1a950d61938371",
+        "source_bytes": 1_735_844,
+        "source_files": 26,
+        "source_uncompressed_bytes": 2_235_538,
+        "source_tree_sha256": "229bb105ce8f188899fe02d9d2497a54a33e09fc53f7ea9d291e5951248de97f",
+        "main_tex": "SIGKDD_main.tex",
+        "source_commits_at_submission": 438,
+        "source_cutoff_commit": PREPRINT_CUTOFF_COMMIT,
+        "source_cutoff_date": "2025-02-17T15:07:43+08:00",
+        "source_cutoff_tracked_files": 455,
+    },
+    "v2": {
+        "submitted_at": "2025-06-09T01:44:51Z",
+        "pdf_url": PAPER_URL,
+        "pdf_sha256": PAPER_SHA256,
+        "pdf_bytes": 1_924_216,
+        "pdf_pages": 10,
+        "source_url": "https://export.arxiv.org/e-print/2502.16789v2",
+        "source_sha256": "ac8bb821ed1935931a089056778b44e4f864fec85f7101b52e39a1c82246079f",
+        "source_bytes": 1_442_257,
+        "source_files": 15,
+        "source_uncompressed_bytes": 1_867_776,
+        "source_tree_sha256": "6a8e4bbba891c4fc78469f0ae387a5d02c7a8b434c6425e533231cf390f1d2d9",
+        "main_tex": "SIGKDD_CAMERA-READY_VERSION.tex",
+        "source_commits_at_submission": 483,
+        "source_cutoff_commit": "d4770f11f0ed1ea3d26cf519ede1560c6bab744d",
+        "source_cutoff_date": "2025-06-07T17:32:08+08:00",
+        "source_cutoff_tracked_files": 181,
+    },
+}
+OFFICIAL_HEADS = (SOURCE_COMMIT, LEGACY_HEAD_COMMIT)
+OFFICIAL_COMMIT_SEQUENCE_SHA256 = (
+    "dec34bd1290f543cc8906310682a34e98625fd985b75dfa124251f1bc40cf266"
+)
+OFFICIAL_OBJECT_SEQUENCE_SHA256 = (
+    "a787a51c629a774a5d308468d03e594c280abfb109263ee1bd6d5ea7c895e9f7"
+)
+OFFICIAL_PATH_SEQUENCE_SHA256 = (
+    "7f517ea6d3cce3303ff830fc8824e78a86c577ba52413df0e4a00272c5b9329d"
+)
+PUBLIC_HEAD_DISCOVERY_SHA256 = (
+    "72885e1d64e1109c4009a08372c68142d013665b2edeb5e321320d1e2ec8d731"
+)
+EMPTY_DISCOVERY_SHA256 = hashlib.sha256(b"").hexdigest()
 DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
 EXPECTED_SYNTHETIC_SHA256 = (
     "e0bd090308b893c6bcf97cc1589538e4fcedc4a896bb90d21a0848e92d7a5dc9"
@@ -94,6 +147,11 @@ OpenAI-o1 best-of-10|0.0159|0.1502|0.46|0.0632|-21.29|0.0028|0.0217|2.29|0.2021|
 AlphaAgent|0.0212|0.1938|11.00|1.488|-9.36|0.0056|0.0552|8.74|1.0545|-9.10
 """
 
+TABLE_2_V1_TEXT = TABLE_2_TEXT.replace(
+    "AlphaForge|0.0146|0.1299|3.45|0.3270|-17.67|0.0026|0.0240|2.45|0.3369|-10.91",
+    "AlphaForge|0.0146|0.1299|3.45|0.3270|-17.67|0.0017|0.0215|2.10|0.2604|-19.57",
+)
+
 DATASET_SPLITS = (
     ("S&P500", "training", "2015-01", "2019-12", 1258),
     ("S&P500", "validation", "2020-01", "2020-12", 253),
@@ -101,6 +159,11 @@ DATASET_SPLITS = (
     ("CSI500", "training", "2015-01", "2019-12", 1219),
     ("CSI500", "validation", "2020-01", "2020-12", 243),
     ("CSI500", "testing", "2021-01", "2025-01", 968),
+)
+
+DATASET_SPLITS_V1 = tuple(
+    (market, split, start, "2024-12" if split == "testing" else end, days)
+    for market, split, start, end, days in DATASET_SPLITS
 )
 
 BASE_FACTOR_EXPRESSIONS = {
@@ -286,9 +349,521 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
         writer.writerows(rows)
 
 
-def paper_numeric_rows() -> list[dict[str, Any]]:
+def _source_tree_facts(root: Path) -> tuple[int, int, str]:
+    files = sorted(path for path in root.rglob("*") if path.is_file())
+    records = [
+        f"{path.relative_to(root).as_posix()}\t{path.stat().st_size}\t{sha256(path)}\n"
+        for path in files
+    ]
+    return (
+        len(files),
+        sum(path.stat().st_size for path in files),
+        hashlib.sha256("".join(records).encode()).hexdigest(),
+    )
+
+
+def _extract_official_source(archive_path: Path, destination: Path) -> None:
+    with tarfile.open(archive_path, "r:*") as archive:
+        for member in archive.getmembers():
+            path = Path(member.name)
+            if path.is_absolute() or ".." in path.parts:
+                raise RuntimeError(f"Unsafe paper-source archive member: {member.name}")
+            if not (member.isfile() or member.isdir()):
+                raise RuntimeError(
+                    f"Unsupported paper-source archive member type: {member.name}"
+                )
+        try:
+            archive.extractall(destination, filter="fully_trusted")
+        except TypeError:  # pragma: no cover - Python versions before filter support
+            archive.extractall(destination)
+
+
+def _active_latex(source: str) -> str:
+    return "\n".join(
+        re.split(r"(?<!\\)%", line, maxsplit=1)[0] for line in source.splitlines()
+    )
+
+
+def _paper_table_2_values(main_tex: Path) -> list[float]:
+    active = _active_latex(main_tex.read_text(encoding="utf-8", errors="replace"))
+    blocks = re.findall(r"\\begin\{table\*\}.*?\\end\{table\*\}", active, re.S)
+    performance = [block for block in blocks if r"\label{tab:performance}" in block]
+    if len(performance) != 1:
+        raise RuntimeError(
+            f"Expected one active performance table in {main_tex}, got {len(performance)}"
+        )
+    body = performance[0].split(r"\midrule", 1)[1].split(r"\bottomrule", 1)[0]
+    values: list[float] = []
+    for line in body.splitlines():
+        if "&" not in line or not line.rstrip().endswith(r"\\"):
+            continue
+        cells = line.split("&")[1:]
+        if len(cells) != 10:
+            raise RuntimeError(f"Malformed active performance row in {main_tex}: {line}")
+        for cell in cells:
+            numbers = re.findall(r"-?\d+(?:\.\d+)?", cell)
+            if len(numbers) != 1:
+                raise RuntimeError(
+                    f"Expected one numeric display value in {main_tex}: {cell!r}"
+                )
+            values.append(float(numbers[0]))
+    if len(values) != 100:
+        raise RuntimeError(f"Expected 100 Table 2 result cells in {main_tex}, got {len(values)}")
+    return values
+
+
+def _resolve_casefold_path(root: Path, declared: str) -> Path:
+    current = root
+    for part in Path(declared).parts:
+        exact = current / part
+        if exact.exists():
+            current = exact
+            continue
+        matches = [item for item in current.iterdir() if item.name.casefold() == part.casefold()]
+        if len(matches) != 1:
+            raise RuntimeError(f"Cannot resolve paper figure {declared!r} below {root}")
+        current = matches[0]
+    return current
+
+
+def _figure_logical_id(declared: str) -> str:
+    stem = Path(declared).stem.casefold()
+    if stem == "overview":
+        return "workflow_overview"
+    if stem == "ast":
+        return "ast_originality_example"
+    if stem.startswith("ex_return"):
+        return "cumulative_excess_returns"
+    if stem.startswith("yearly_ic_ric"):
+        return "yearly_ic_rankic_csi500"
+    if stem.startswith("ic_std"):
+        return "five_round_ic_evolution"
+    if stem == "hit_ratio_comparison":
+        return "hit_ratio_development_token_efficiency"
+    if stem == "llm_performance_radar_charts":
+        return "base_llm_performance_radar"
+    raise RuntimeError(f"Unclassified active AlphaAgent paper figure: {declared}")
+
+
+def _paper_figure_assets(version: str, source_root: Path, main_tex: Path) -> list[dict[str, Any]]:
+    active = _active_latex(main_tex.read_text(encoding="utf-8", errors="replace"))
+    includes: list[str] = []
+    for block in re.findall(r"\\begin\{figure\*?\}.*?\\end\{figure\*?\}", active, re.S):
+        paths = re.findall(r"\\includegraphics(?:\[[^]]*\])?\{([^}]+)\}", block)
+        if len(paths) != 1:
+            raise RuntimeError(f"Expected one source asset per active figure in {main_tex}")
+        includes.extend(paths)
+    rows = []
+    for display_index, declared in enumerate(includes, start=1):
+        resolved = _resolve_casefold_path(source_root, declared)
+        rows.append(
+            {
+                "paper_version": version,
+                "display_index": display_index,
+                "logical_figure_id": _figure_logical_id(declared),
+                "declared_path": declared,
+                "archive_path": resolved.relative_to(source_root).as_posix(),
+                "source_asset_sha256": sha256(resolved),
+                "source_asset_bytes": resolved.stat().st_size,
+                "lineage_status": "",
+                "paper_result_credit": False,
+            }
+        )
+    return rows
+
+
+def _pdf_pages(pdf_path: Path) -> int:
+    output = subprocess.run(
+        ["pdfinfo", str(pdf_path)], check=True, capture_output=True, text=True
+    ).stdout
+    match = re.search(r"^Pages:\s+(\d+)$", output, re.M)
+    if not match:
+        raise RuntimeError(f"pdfinfo did not report a page count for {pdf_path}")
+    return int(match.group(1))
+
+
+def _compile_paper_source(source_root: Path, main_tex: str, latex_command: str) -> dict[str, Any]:
+    logs = []
+    for pass_number in (1, 2):
+        completed = subprocess.run(
+            [latex_command, "-interaction=nonstopmode", "-halt-on-error", main_tex],
+            cwd=source_root,
+            capture_output=True,
+            text=True,
+        )
+        logs.append(completed.stdout + completed.stderr)
+        if completed.returncode:
+            tail = "\n".join(logs[-1].splitlines()[-30:])
+            raise RuntimeError(
+                f"Paper-source compilation failed on pass {pass_number} for {main_tex}:\n{tail}"
+            )
+    compiled_pdf = source_root / f"{Path(main_tex).stem}.pdf"
+    return {
+        "compile_passes": 2,
+        "compiled_pdf_pages": _pdf_pages(compiled_pdf),
+        "compiled_pdf_bytes": compiled_pdf.stat().st_size,
+        "undefined_reference_warnings_after_pass_2": sum(
+            "undefined" in line.casefold() for line in logs[-1].splitlines()
+        ),
+        "paper_result_credit": False,
+    }
+
+
+def official_paper_version_rows(
+    paper_versions_root: Path, source_root: Path, latex_command: str
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    version_rows: list[dict[str, Any]] = []
+    numeric_by_version: dict[str, list[dict[str, Any]]] = {}
+    figure_rows: list[dict[str, Any]] = []
+    for version, expected in PAPER_VERSIONS.items():
+        pdf_path = paper_versions_root / f"paper_{version}.pdf"
+        archive_path = paper_versions_root / f"paper_{version}_source.tar.gz"
+        if sha256(pdf_path) != expected["pdf_sha256"] or pdf_path.stat().st_size != expected["pdf_bytes"]:
+            raise RuntimeError(f"Pinned official {version} PDF changed")
+        if (
+            sha256(archive_path) != expected["source_sha256"]
+            or archive_path.stat().st_size != expected["source_bytes"]
+        ):
+            raise RuntimeError(f"Pinned official {version} source archive changed")
+        if _pdf_pages(pdf_path) != expected["pdf_pages"]:
+            raise RuntimeError(f"Pinned official {version} PDF page count changed")
+        with tempfile.TemporaryDirectory(prefix=f"alphaagent-paper-{version}-") as temp_dir:
+            extracted = Path(temp_dir)
+            _extract_official_source(archive_path, extracted)
+            file_count, uncompressed_bytes, tree_sha256 = _source_tree_facts(extracted)
+            observed_tree = (file_count, uncompressed_bytes, tree_sha256)
+            expected_tree = (
+                expected["source_files"],
+                expected["source_uncompressed_bytes"],
+                expected["source_tree_sha256"],
+            )
+            if observed_tree != expected_tree:
+                raise RuntimeError(
+                    f"Pinned official {version} source tree changed: {observed_tree!r}"
+                )
+            expected_numeric = paper_numeric_rows(version)
+            parsed_table_2 = _paper_table_2_values(extracted / expected["main_tex"])
+            expected_table_2 = [
+                row["paper_value"] for row in expected_numeric if row["paper_table"] == 2
+            ]
+            if parsed_table_2 != expected_table_2:
+                raise RuntimeError(f"Official {version} Table 2 parser disagrees with the ledger")
+            figures = _paper_figure_assets(
+                version, extracted, extracted / expected["main_tex"]
+            )
+            compilation = _compile_paper_source(
+                extracted, expected["main_tex"], latex_command
+            )
+        cutoff = expected["source_cutoff_commit"]
+        observed_commit_count = int(
+            git_output(
+                source_root,
+                "rev-list",
+                *OFFICIAL_HEADS,
+                f"--before={expected['submitted_at']}",
+                "--count",
+            )
+        )
+        observed_cutoff = git_output(
+            source_root,
+            "rev-list",
+            *OFFICIAL_HEADS,
+            f"--before={expected['submitted_at']}",
+            "-1",
+        )
+        if (
+            observed_commit_count != expected["source_commits_at_submission"]
+            or observed_cutoff != cutoff
+        ):
+            raise RuntimeError(
+                f"Official source-at-submission boundary changed for {version}"
+            )
+        cutoff_files = git_tree_files(source_root, cutoff)
+        cutoff_runs = {
+            path.split("/", 2)[1]
+            for path in cutoff_files
+            if path.startswith("saved_mlruns/") and len(path.split("/", 2)) > 1
+        }
+        cutoff_factor_files = [path for path in cutoff_files if path.startswith("factor_zoo/")]
+        if (
+            len(cutoff_files) != expected["source_cutoff_tracked_files"]
+            or cutoff_runs
+            or cutoff_factor_files
+        ):
+            raise RuntimeError(
+                f"Pinned source-at-submission tree changed for {version}"
+            )
+        version_rows.append(
+            {
+                "paper_version": version,
+                "submitted_at": expected["submitted_at"],
+                "pdf_url": expected["pdf_url"],
+                "pdf_sha256": expected["pdf_sha256"],
+                "pdf_bytes": expected["pdf_bytes"],
+                "pdf_pages": expected["pdf_pages"],
+                "source_url": expected["source_url"],
+                "source_sha256": expected["source_sha256"],
+                "source_archive_bytes": expected["source_bytes"],
+                "source_files": expected["source_files"],
+                "source_uncompressed_bytes": expected["source_uncompressed_bytes"],
+                "source_tree_sha256": expected["source_tree_sha256"],
+                "main_tex": expected["main_tex"],
+                "numeric_table_cells": len(expected_numeric),
+                "numeric_result_cells": sum(row["cell_role"] == "result" for row in expected_numeric),
+                "numeric_configuration_cells": sum(
+                    row["cell_role"] == "configuration" for row in expected_numeric
+                ),
+                "active_figure_assets": len(figures),
+                "compile_passes": compilation["compile_passes"],
+                "compiled_pdf_pages": compilation["compiled_pdf_pages"],
+                "undefined_reference_warnings_after_pass_2": compilation[
+                    "undefined_reference_warnings_after_pass_2"
+                ],
+                "source_commits_at_submission": expected[
+                    "source_commits_at_submission"
+                ],
+                "source_cutoff_commit": cutoff,
+                "source_cutoff_date": expected["source_cutoff_date"],
+                "source_cutoff_tracked_files": len(cutoff_files),
+                "source_cutoff_native_run_records": len(cutoff_runs),
+                "source_cutoff_factor_zoo_files": len(cutoff_factor_files),
+                "paper_document_reproduced": (
+                    compilation["compiled_pdf_pages"] == expected["pdf_pages"]
+                ),
+                "paper_experiment_reproduced": False,
+            }
+        )
+        numeric_by_version[version] = expected_numeric
+        figure_rows.extend(figures)
+
+    lineage_rows = []
+    v1 = {
+        (row["paper_table"], row["entity"], row["market"], row["metric"]): row
+        for row in numeric_by_version["v1"]
+    }
+    v2 = {
+        (row["paper_table"], row["entity"], row["market"], row["metric"]): row
+        for row in numeric_by_version["v2"]
+    }
+    if set(v1) != set(v2) or len(v1) != 106:
+        raise RuntimeError("Official AlphaAgent paper table cell identities changed")
+    for key in sorted(v1, key=lambda item: tuple(str(value) for value in item)):
+        old, new = v1[key], v2[key]
+        if old["paper_value"] != new["paper_value"]:
+            status = "numeric_value_revised_in_v2"
+        elif old["period"] != new["period"]:
+            status = "configuration_label_revised_in_v2"
+        else:
+            status = "unchanged"
+        lineage_rows.append(
+            {
+                "display_cell_id": "|".join(str(value) for value in key),
+                "paper_table": old["paper_table"],
+                "cell_role": old["cell_role"],
+                "entity": old["entity"],
+                "market": old["market"],
+                "metric": old["metric"],
+                "v1_period": old["period"],
+                "v1_value": old["paper_value"],
+                "v2_period": new["period"],
+                "v2_value": new["paper_value"],
+                "status": status,
+                "paper_result_credit": False,
+            }
+        )
+    figure_groups: dict[str, list[dict[str, Any]]] = {}
+    for row in figure_rows:
+        figure_groups.setdefault(row["logical_figure_id"], []).append(row)
+    for logical_id, rows in figure_groups.items():
+        if len(rows) == 1:
+            status = "added_in_v2"
+        elif len({row["source_asset_sha256"] for row in rows}) == 1:
+            status = "byte_identical"
+        else:
+            status = "source_asset_revised_in_v2"
+        for row in rows:
+            row["lineage_status"] = status
+    if Counter(row["status"] for row in lineage_rows) != {
+        "unchanged": 99,
+        "numeric_value_revised_in_v2": 5,
+        "configuration_label_revised_in_v2": 2,
+    }:
+        raise RuntimeError("Official AlphaAgent paper numeric lineage changed")
+    if Counter(
+        rows[0]["lineage_status"] for rows in figure_groups.values()
+    ) != {
+        "byte_identical": 3,
+        "source_asset_revised_in_v2": 3,
+        "added_in_v2": 1,
+    }:
+        raise RuntimeError("Official AlphaAgent paper figure lineage changed")
+    return version_rows, lineage_rows, figure_rows
+
+
+def _public_history_path_kind(path: str) -> str:
+    if path.startswith("saved_mlruns/"):
+        if "/metrics/" in path:
+            return "paper_era_author_metric_scalar"
+        if "/artifacts/" in path:
+            return "paper_era_author_serialized_run_artifact"
+        if "/params/" in path or "/tags/" in path:
+            return "paper_era_author_run_metadata"
+        return "paper_era_author_run_record"
+    if path.startswith("factor_zoo/"):
+        return "paper_era_factor_zoo_artifact"
+    if path.startswith("artifacts/factorzoo/"):
+        return "post_paper_rewrite_factor_artifact"
+    suffix = Path(path).suffix.casefold()
+    if suffix == ".py":
+        return "python_source"
+    if suffix in {".yaml", ".yml", ".toml", ".json", ".ini", ".cfg"}:
+        return "configuration_or_metadata"
+    if suffix in {".md", ".rst", ".txt"}:
+        return "documentation_or_prompt"
+    if suffix in {".csv", ".parquet", ".pkl", ".pickle"}:
+        return "data_or_serialized_artifact"
+    return "other"
+
+
+def _is_primitive_paper_output_path(path: str) -> bool:
+    if not path.startswith("saved_mlruns/"):
+        return False
+    name = Path(path).name.casefold()
+    return name in {
+        "pred.pkl",
+        "prediction.pkl",
+        "positions.pkl",
+        "holdings.pkl",
+        "portfolio_analysis.pkl",
+        "report_normal_1day.pkl",
+        "sig_analysis.pkl",
+    }
+
+
+def public_source_history(
+    source_root: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    commit_sequence = git_output(
+        source_root, "rev-list", "--topo-order", "--reverse", *OFFICIAL_HEADS
+    ).splitlines()
+    object_lines = git_output(source_root, "rev-list", "--objects", *OFFICIAL_HEADS).splitlines()
+    object_ids = sorted(line.split(" ", 1)[0] for line in object_lines)
+    object_types: Counter[str] = Counter()
+    for offset in range(0, len(object_ids), 1000):
+        batch = "".join(f"{oid}\n" for oid in object_ids[offset : offset + 1000])
+        completed = subprocess.run(
+            ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+            input=batch,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        object_types.update(completed.stdout.splitlines())
+    path_output = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(source_root),
+            "-c",
+            "core.quotePath=false",
+            "log",
+            "--format=",
+            "--name-only",
+            "--no-renames",
+            *OFFICIAL_HEADS,
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    paths = sorted({line for line in path_output.splitlines() if line})
+    run_ids = sorted(
+        {
+            path.split("/", 2)[1]
+            for path in paths
+            if path.startswith("saved_mlruns/") and len(path.split("/", 2)) > 1
+        }
+    )
+    path_rows = [
+        {
+            "path": path,
+            "classification": _public_history_path_kind(path),
+            "paper_era_author_run_record": path.startswith("saved_mlruns/"),
+            "primitive_prediction_return_or_holding_output": _is_primitive_paper_output_path(
+                path
+            ),
+            "paper_result_credit": False,
+        }
+        for path in paths
+    ]
+    facts = {
+        "official_heads": {
+            "legacy-main": LEGACY_HEAD_COMMIT,
+            "main": SOURCE_COMMIT,
+        },
+        "official_tags": [],
+        "official_releases": [],
+        "public_head_discovery_sha256": PUBLIC_HEAD_DISCOVERY_SHA256,
+        "public_tag_discovery_sha256": EMPTY_DISCOVERY_SHA256,
+        "public_release_discovery_sha256": EMPTY_DISCOVERY_SHA256,
+        "official_reachable_commits": len(commit_sequence),
+        "official_commit_sequence_sha256": hashlib.sha256(
+            "".join(f"{commit}\n" for commit in commit_sequence).encode()
+        ).hexdigest(),
+        "official_reachable_objects": len(object_ids),
+        "official_object_sequence_sha256": hashlib.sha256(
+            "".join(f"{oid}\n" for oid in object_ids).encode()
+        ).hexdigest(),
+        "official_reachable_object_types": dict(sorted(object_types.items())),
+        "official_unique_historical_file_paths": len(paths),
+        "official_path_sequence_sha256": hashlib.sha256(
+            "".join(f"{path}\n" for path in paths).encode()
+        ).hexdigest(),
+        "historical_author_run_record_paths": sum(
+            path.startswith("saved_mlruns/") for path in paths
+        ),
+        "historical_author_run_ids": run_ids,
+        "primitive_prediction_return_or_holding_paths": sum(
+            _is_primitive_paper_output_path(path) for path in paths
+        ),
+        "paper_result_credit": False,
+    }
+    expected = {
+        "commits": 493,
+        "objects": 8312,
+        "types": {"blob": 3907, "commit": 493, "tree": 3912},
+        "paths": 2499,
+        "run_paths": 385,
+        "run_ids": 7,
+        "primitive_paths": 0,
+    }
+    observed = {
+        "commits": facts["official_reachable_commits"],
+        "objects": facts["official_reachable_objects"],
+        "types": facts["official_reachable_object_types"],
+        "paths": facts["official_unique_historical_file_paths"],
+        "run_paths": facts["historical_author_run_record_paths"],
+        "run_ids": len(run_ids),
+        "primitive_paths": facts["primitive_prediction_return_or_holding_paths"],
+    }
+    if observed != expected:
+        raise RuntimeError(f"Pinned official public history changed: {observed!r}")
+    if facts["official_commit_sequence_sha256"] != OFFICIAL_COMMIT_SEQUENCE_SHA256:
+        raise RuntimeError("Pinned official commit sequence changed")
+    if facts["official_object_sequence_sha256"] != OFFICIAL_OBJECT_SEQUENCE_SHA256:
+        raise RuntimeError("Pinned official object sequence changed")
+    if facts["official_path_sequence_sha256"] != OFFICIAL_PATH_SEQUENCE_SHA256:
+        raise RuntimeError("Pinned official historical path sequence changed")
+    return path_rows, facts
+
+
+def paper_numeric_rows(paper_version: str = "v2") -> list[dict[str, Any]]:
+    if paper_version not in PAPER_VERSIONS:
+        raise ValueError(f"Unknown AlphaAgent paper version: {paper_version}")
+    dataset_splits = DATASET_SPLITS_V1 if paper_version == "v1" else DATASET_SPLITS
+    table_2_text = TABLE_2_V1_TEXT if paper_version == "v1" else TABLE_2_TEXT
     rows: list[dict[str, Any]] = []
-    for market, split, start, end, days in DATASET_SPLITS:
+    for market, split, start, end, days in dataset_splits:
         rows.append(
             {
                 "paper_table": 1,
@@ -300,7 +875,7 @@ def paper_numeric_rows() -> list[dict[str, Any]]:
                 "cell_role": "configuration",
             }
         )
-    for line in TABLE_2_TEXT.strip().splitlines():
+    for line in table_2_text.strip().splitlines():
         method, *values = line.split("|")
         if len(values) != 10:
             raise RuntimeError(f"Malformed Table 2 row: {line}")
@@ -1156,11 +1731,17 @@ def build_audit(
     source_root: Path,
     paper_pdf: Path,
     paper_v1_pdf: Path,
+    paper_versions_root: Path,
+    latex_command: str,
     source_python: Path,
     output_dir: Path,
 ) -> dict[str, Any]:
     commit, first_date = verify_pins(source_root, paper_pdf, paper_v1_pdf)
     history, history_rows = history_audit(source_root)
+    history_paths, history_summary = public_source_history(source_root)
+    paper_versions, paper_lineage, paper_figures = official_paper_version_rows(
+        paper_versions_root, source_root, latex_command
+    )
     table_rows = table_conformance()
     run_records = paper_era_run_records(source_root)
     apply_run_record_conformance(table_rows, run_records)
@@ -1212,6 +1793,10 @@ def build_audit(
     write_csv(output_dir / "source_mechanism_conformance.csv", mechanisms)
     write_csv(output_dir / "current_rewrite_mechanism_conformance.csv", current_mechanisms)
     write_csv(output_dir / "official_history_timeline.csv", history_rows)
+    write_csv(output_dir / "official_paper_version_inventory.csv", paper_versions)
+    write_csv(output_dir / "official_paper_numeric_lineage.csv", paper_lineage)
+    write_csv(output_dir / "official_paper_figure_asset_inventory.csv", paper_figures)
+    write_csv(output_dir / "public_source_history_path_inventory.csv", history_paths)
     write_csv(output_dir / "paper_specification_gaps.csv", gaps)
     write_csv(output_dir / "released_source_inventory.csv", inventory)
     write_csv(output_dir / "paper_era_source_inventory.csv", paper_era_inventory)
@@ -1226,10 +1811,13 @@ def build_audit(
     (output_dir / "paper_era_component.json").write_text(
         json.dumps(paper_era_component, indent=2) + "\n", encoding="utf-8"
     )
+    (output_dir / "public_source_history.json").write_text(
+        json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
     mechanism_counts = Counter(row["status"] for row in mechanisms)
     manifest: dict[str, Any] = {
-        "audit": "AlphaAgent paper v2 versus both roots of the official repository",
+        "audit": "all AlphaAgent paper versions versus both roots of the official repository",
         "overall_status": "partially_corroborated_paper_era_native_run_records_recovered",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
@@ -1238,6 +1826,39 @@ def build_audit(
         "paper_sha256": PAPER_SHA256,
         "paper_v1_url": PAPER_V1_URL,
         "paper_v1_sha256": PAPER_V1_SHA256,
+        "official_arxiv_versions_audited": len(paper_versions),
+        "official_arxiv_source_archives_audited": len(paper_versions),
+        "official_paper_versions_compiled_to_published_page_count": sum(
+            row["paper_document_reproduced"] for row in paper_versions
+        ),
+        "official_paper_numeric_cell_identities": len(paper_lineage),
+        "official_paper_numeric_values_revised_in_v2": sum(
+            row["status"] == "numeric_value_revised_in_v2" for row in paper_lineage
+        ),
+        "official_paper_configuration_labels_revised_in_v2": sum(
+            row["status"] == "configuration_label_revised_in_v2"
+            for row in paper_lineage
+        ),
+        "official_paper_active_figure_assets_v1": sum(
+            row["paper_version"] == "v1" for row in paper_figures
+        ),
+        "official_paper_active_figure_assets_v2": sum(
+            row["paper_version"] == "v2" for row in paper_figures
+        ),
+        "official_paper_logical_figure_assets_revised_in_v2": len(
+            {
+                row["logical_figure_id"]
+                for row in paper_figures
+                if row["lineage_status"] == "source_asset_revised_in_v2"
+            }
+        ),
+        "official_paper_logical_figure_assets_added_in_v2": len(
+            {
+                row["logical_figure_id"]
+                for row in paper_figures
+                if row["lineage_status"] == "added_in_v2"
+            }
+        ),
         "source_url": SOURCE_URL,
         "source_commit": commit,
         "source_commit_date": "2026-07-03",
@@ -1251,6 +1872,28 @@ def build_audit(
         "preprint_cutoff_commit": PREPRINT_CUTOFF_COMMIT,
         "paper_era_source_revision_available": True,
         "official_git_history": history,
+        "public_source_history": history_summary,
+        "public_source_unique_historical_file_paths": history_summary[
+            "official_unique_historical_file_paths"
+        ],
+        "public_source_reachable_blobs": history_summary[
+            "official_reachable_object_types"
+        ]["blob"],
+        "public_source_reachable_trees": history_summary[
+            "official_reachable_object_types"
+        ]["tree"],
+        "public_source_reachable_commit_objects": history_summary[
+            "official_reachable_object_types"
+        ]["commit"],
+        "public_source_historical_author_run_record_paths": history_summary[
+            "historical_author_run_record_paths"
+        ],
+        "public_source_historical_author_run_ids": len(
+            history_summary["historical_author_run_ids"]
+        ),
+        "public_source_primitive_prediction_return_or_holding_paths": history_summary[
+            "primitive_prediction_return_or_holding_paths"
+        ],
         "paper_numeric_tables_audited": [1, 2],
         "paper_numeric_table_cells_total": 106,
         "paper_numeric_result_cells_total": 100,
@@ -1357,9 +2000,12 @@ legacy tree; both omissions made it materially too pessimistic.
 
 - Final paper: {PAPER_URL} (arXiv v2, 2025-06-09; SHA-256 `{PAPER_SHA256}`).
 - Original preprint: {PAPER_V1_URL} (10 pages; SHA-256 `{PAPER_V1_SHA256}`).
+- Both official PDFs and both matching arXiv source archives are hash-pinned.
+  Each source compiles in two passes to the published 10-page count.
 - Official repository: {SOURCE_URL}. It has two unrelated Git roots, not one
   continuous history: 8 commits on rewritten `main` and 485 on public
-  `legacy-main`, 493 reachable commits in total.
+  `legacy-main`, 493 reachable commits in total. The public repository exposes
+  only those two heads, with no tags or releases.
 - Mechanism snapshot: `{PAPER_MECHANISM_COMMIT}` (2025-02-12), before arXiv v1.
   It contains 856 tracked files, including 331 Python modules and 15 factor CSVs.
 - The same author commit contains seven Qlib/MLflow run directories (385 files),
@@ -1374,6 +2020,15 @@ legacy tree; both omissions made it materially too pessimistic.
 
 ## What genuinely passes
 
+- The all-version lineage contains 106 stable numeric table-cell identities.
+  Version 2 revises five S&P500 AlphaForge result values and two test-period
+  labels. Three logical figure assets are byte-identical, three are revised,
+  and one base-LLM radar figure is added in v2. These are version facts, not
+  experimental reproduction credit.
+- The complete official two-root closure contains 493 commits, 3,907 blobs,
+  3,912 trees, and 2,499 unique historical file paths. All 385 historical
+  `saved_mlruns` paths belong to the same seven run IDs already audited; no
+  prediction, return series, holding, or portfolio-analysis path is present.
 - All 331 Python modules in the paper-era snapshot compile under Python 3.12.
 - The paper-era AST parser executes twice deterministically. Identical,
   commutative, and partially shared expressions return largest-common-subtree
@@ -1416,6 +2071,10 @@ legacy tree; both omissions made it materially too pessimistic.
   0/18. The run export omits predictions, daily returns, holdings/positions and
   complete portfolio-analysis artifacts, so its printed metrics cannot be
   recomputed from primitive outputs.
+- The seven run records and factor zoo existed on 2025-02-12 but were removed
+  on 2025-02-17. Consequently both the v1 submission cutoff (438 source
+  commits) and v2 cutoff (483 commits) contain zero native run directories and
+  zero factor-zoo files; recovery depends on earlier public history.
 - The exact Baostock CSI500 and Yahoo S&P500 panels, constituent histories, and
   data transformations are absent. The US config points only to unversioned local
   `us_data`; it does not establish Yahoo provenance or frozen panel identity.
@@ -1493,6 +2152,17 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--paper-versions-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "ALPHAAGENT_PAPER_VERSIONS_ROOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/alphaagent_paper_versions",
+            )
+        ),
+    )
+    parser.add_argument("--latex-command", default="pdflatex")
+    parser.add_argument(
         "--source-python",
         type=Path,
         default=Path(os.environ.get("ALPHAAGENT_SOURCE_PYTHON", DEFAULT_SOURCE_PYTHON)),
@@ -1512,6 +2182,8 @@ def main() -> int:
         args.source_root.resolve(),
         args.paper_pdf.resolve(),
         args.paper_v1_pdf.resolve(),
+        args.paper_versions_root.resolve(),
+        args.latex_command,
         args.source_python.resolve(),
         args.output_dir.resolve(),
     )
