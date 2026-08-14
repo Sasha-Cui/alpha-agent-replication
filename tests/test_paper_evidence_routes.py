@@ -252,6 +252,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "component_checks_broken_cli_and_compile_missing_trading_lineage_2_forks_"
             "2_refs_2_official_history_heads_exhausted"
         ),
+        "CensusArxiv250720474": (
+            "paper_audit:completed_zero_of_20_performance_cells_public_components_only_"
+            "full_2273_commit_histories_2_forks_2_refs_2_unique_heads_exhausted"
+        ),
         "CensusArxiv260726642": (
             "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_"
             "full_two_commit_history_nine_tests_appendix_component_missing_research_"
@@ -283,6 +287,14 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     assert "0/214 empirical numeric units" in madevolve_blocker
     assert "Both accessible public forks and both branch refs" in madevolve_blocker
     assert "zero unique commits, zero unique blobs" in madevolve_blocker
+
+    mountainlion_blocker = routes.loc[
+        "CensusArxiv250720474", "precise_native_or_access_blocker"
+    ]
+    assert "0/20 forecasting-performance cells" in mountainlion_blocker
+    assert "complete official histories cover 2,273 commits" in mountainlion_blocker
+    assert "Both accessible public forks and both branch refs" in mountainlion_blocker
+    assert "one post-paper Bandit security workflow commit" in mountainlion_blocker
 
 
 def test_flag_trader_paper_only_audit_preserves_its_evidence_boundary() -> None:

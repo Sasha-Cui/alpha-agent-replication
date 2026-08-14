@@ -673,7 +673,7 @@ ARTIFACT_NOTES = {
     ),
     "SYS-MOUNTAIN-LION": (
         "N",
-        "A pinned arXiv-v1/v2 and attributable-source audit rebuilds both 17-page "
+        "A pinned arXiv-v1/v2/v3 and attributable-source audit rebuilds all three 17-page "
         "manuscripts deterministically, inventories all 30 Table 1 numeric units "
         "(10 ambiguous Alpha configurations and 20 CV/MSE results), seven verbatim "
         "prompt templates, six unique author figure assets, and ten material claims. "
@@ -691,7 +691,13 @@ ARTIFACT_NOTES = {
         "The platform also imports unreleased ml4gp product modules, requires private "
         "MySQL/Redis/plugin state, and has zero public test functions. Raw MSE values "
         "are compared across incompatible token price scales; improved-return and "
-        "extensive-ablation claims lack a return path or ablation protocol. The crypto "
+        "extensive-ablation claims lack a return path or ablation protocol. The complete "
+        "official histories cover 2,273 commits, 99 branches, two tags, 444 historical "
+        "paths, and 2,185 text blob revisions without a native result pipeline. Both "
+        "accessible public forks and both branch refs are exhausted: the frontend fork "
+        "is the official head, while the backend fork adds one post-paper Bandit security "
+        "workflow commit and one unique blob but no trading, forecasting, data, model, "
+        "metric, or result artifact. The crypto "
         "components cannot populate the six-country security-level common task.",
     ),
     "SYS-MASS": (
@@ -1492,7 +1498,10 @@ TARGETED_EXECUTION = {
         "paper_audit:completed_zero_of_766_final_native_results_full_release_history_"
         "signal_nonidentifiability_25_forks_26_refs_5_unique_heads_exhausted"
     ),
-    "SYS-MOUNTAIN-LION": "paper_audit:completed_zero_of_20_performance_cells_public_components_only",
+    "SYS-MOUNTAIN-LION": (
+        "paper_audit:completed_zero_of_20_performance_cells_public_components_only_"
+        "full_2273_commit_histories_2_forks_2_refs_2_unique_heads_exhausted"
+    ),
     "SYS-P1GPT": (
         "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_"
         "cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"

@@ -2,9 +2,9 @@
 
 ## Honest outcome
 
-The MountainLion paper is **not faithfully reproduced**. The audit verifies the
+The MountainLion paper is **not faithfully reproduced**. The audit verifies
 all three primary manuscript versions, two attributable public codebases, their
-complete currently reachable histories, several real product
+complete currently reachable histories, every currently accessible public fork, several real product
 components, and paper-declared formulas. It regenerates **0/20**
 published forecasting-performance cells and none of the material return,
 accuracy-improvement, retrieval-efficiency, whale-detection, engagement, or
@@ -48,6 +48,14 @@ word `Bridge(` in a product-classification prompt. Twenty-eight `kline_predictd`
 blob revisions remain database readers, and two exact ten-token menu revisions
 remain product configuration; none is a training or evaluation pipeline.
 
+The public fork surface was also exhausted as of 2026-08-14. Each attributable
+repository has one accessible fork, for two forks, two branch refs, and no tag
+refs. The frontend fork is exactly the official head. The backend fork is 83
+commits behind current upstream and adds one post-paper commit with one unique
+blob and one changed path: a GitHub Actions Bandit security-linter workflow.
+That workflow contains no trading, forecasting, model-fitting, data, metric, or
+paper-result artifact and earns no reproduction credit.
+
 ## Decisive reproduction boundary
 
 The public package contains no paper training panel, exchange/date/frequency,
@@ -88,6 +96,10 @@ numeric array is shipped, so the figure receives no result-reproduction credit.
 - `public_source_commit_inventory.csv`: all 2,273 reachable commits.
 - `public_source_historical_path_inventory.csv`: all 444 historical paths.
 - `public_source_history_content_scan.csv`: exhaustive text-revision search results.
+- `public_fork_branch_ref_snapshot.csv`: every accessible fork branch and upstream relation.
+- `public_fork_unique_head_inventory.csv`: the two distinct fork heads.
+- `public_fork_unique_commit_inventory.csv`: the sole commit beyond upstream history.
+- `public_fork_census.json`: combined fork counts and fail-closed interpretation.
 - `source_component_checks.csv`: executed and source-semantic component checks.
 - `paper_formula_component_checks.csv`: synthetic checks of declared equations.
 - `source_component_execution.json`: build/compile evidence and runtime blockers.
@@ -95,5 +107,5 @@ numeric array is shipped, so the figure receives no result-reproduction credit.
 - `public_source_discovery.csv`: attributable-source and bounded-search record.
 
 The negative search boundary is deliberately narrow: complete currently
-reachable public history is inspected, but this audit does not prove that private,
+reachable public history and current accessible forks are inspected, but this audit does not prove that private,
 unreachable-before-audit, or unindexed artifacts never existed.

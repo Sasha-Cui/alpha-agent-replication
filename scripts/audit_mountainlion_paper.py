@@ -242,6 +242,45 @@ PUBLIC_HISTORY_PINS = {
     },
 }
 
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_PINS = {
+    "frontend": {
+        "repository": "https://github.com/annihi1ation/MountainLion",
+        "upstream_repository": "https://github.com/MountainLionAi/MountainLion",
+        "directory": "public_forks/annihi1ation-MountainLion.git",
+        "branch": "main",
+        "head": "f7819f3537808d398f6c3da37e43b51ecebdbd42",
+        "upstream_head": "f7819f3537808d398f6c3da37e43b51ecebdbd42",
+        "common_base": "f7819f3537808d398f6c3da37e43b51ecebdbd42",
+        "commits_ahead": 0,
+        "commits_behind": 0,
+        "relation": "official_head_exact",
+        "unique_commits": [],
+        "unique_blobs": [],
+        "unique_changed_paths": [],
+    },
+    "backend": {
+        "repository": "https://github.com/davidfelosi1-eng/GenAI-Platform",
+        "upstream_repository": "https://github.com/MountainLionAi/GenAI-Platform",
+        "directory": "public_forks/davidfelosi1-eng-GenAI-Platform.git",
+        "branch": "main",
+        "head": "e218c871a6bba04eff7b3d0c0e89911128d83068",
+        "upstream_head": "3f76de1fe4d8d423f7d4e46e45f19f5bd43992ec",
+        "common_base": "f6f4b2685996adc59096a75ee7de76859e4956bc",
+        "commits_ahead": 1,
+        "commits_behind": 83,
+        "relation": "divergent_postpaper_security_workflow_only",
+        "unique_commits": ["e218c871a6bba04eff7b3d0c0e89911128d83068"],
+        "unique_blobs": ["22d5c1907688683b80f8489f1986ed6453198f82"],
+        "unique_changed_paths": [".github/workflows/bandit.yml"],
+        "unique_blob_sha256": {
+            "22d5c1907688683b80f8489f1986ed6453198f82": (
+                "064e0e340d5cb781a6721180aaa62c758f03fb4a8c910e229633e3a072a0afc2"
+            )
+        },
+    },
+}
+
 RUNTIME_FILE_PINS = {
     "frontend_build_repeat1.log": "0bfa5cf5c57a1e8161c98c8d907bc57968a7c93fca2cda7427943686ce45b977",
     "frontend_build_repeat2.log": "72085104fccf7cb584d05d424be42c3531649895a543f22be482ae96c061bb6a",
@@ -790,6 +829,269 @@ def public_source_history(
     if len(refs) != 101 or len(commits) != 2_273 or len(paths) != 444:
         raise RuntimeError("combined MountainLion complete-history boundary changed")
     return summaries, refs, commits, paths, scans
+
+
+def public_fork_audit(
+    audit_root: Path,
+) -> tuple[
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    dict[str, Any],
+]:
+    """Exhaust the public forks of both attributable repositories."""
+    branch_rows: list[dict[str, Any]] = []
+    head_rows: list[dict[str, Any]] = []
+    commit_rows: list[dict[str, Any]] = []
+    paper_patterns = {
+        "paper_title": re.compile(rb"mountainlion.{0,80}multi.?modal", re.I | re.S),
+        "table_value": re.compile(
+            rb"1997859\.43|3211419\.56|2169147\.17|3016065\.13", re.I
+        ),
+        "mse": re.compile(rb"\b(?:mse|mean[_ -]squared[_ -]error)\b", re.I),
+        "cross_validation": re.compile(
+            rb"cross[_ -]?validation|cross_val|gridsearch", re.I
+        ),
+        "model_fit": re.compile(
+            rb"train_test_split|decisiontreeregressor|ridge\s*\(|\.fit\(", re.I
+        ),
+        "kline_predictd": re.compile(rb"kline_predictd", re.I),
+    }
+
+    for source_id, pin in PUBLIC_FORK_PINS.items():
+        repository = audit_root / str(pin["directory"])
+        if not repository.is_dir():
+            raise FileNotFoundError(repository)
+        if git_text(repository, "rev-parse", "--is-shallow-repository").strip() != "false":
+            raise ValueError(f"{source_id} public-fork mirror is shallow")
+        origin = git_text(repository, "remote", "get-url", "origin").strip()
+        upstream = git_text(repository, "remote", "get-url", "upstream").strip()
+        if origin.removesuffix(".git") != str(pin["repository"]):
+            raise ValueError(f"{source_id} public-fork origin changed: {origin}")
+        if upstream.removesuffix(".git") != str(pin["upstream_repository"]):
+            raise ValueError(f"{source_id} public-fork upstream changed: {upstream}")
+        fsck = subprocess.run(
+            ["git", "-C", str(repository), "fsck", "--full", "--no-reflogs"],
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if fsck.returncode or fsck.stdout.strip() or fsck.stderr.strip():
+            raise ValueError(
+                f"{source_id} public-fork mirror failed fsck: {fsck.stdout}{fsck.stderr}"
+            )
+
+        branches = {}
+        for line in git_text(
+            repository,
+            "for-each-ref",
+            "--format=%(refname)%09%(objectname)",
+            "refs/heads",
+        ).splitlines():
+            refname, object_id = line.split("\t")
+            branches[refname] = object_id
+        expected_branches = {f"refs/heads/{pin['branch']}": pin["head"]}
+        if branches != expected_branches:
+            raise ValueError(f"{source_id} public-fork branches changed: {branches}")
+        tags = git_text(
+            repository,
+            "for-each-ref",
+            "--format=%(refname)%09%(objectname)",
+            "refs/tags",
+        ).splitlines()
+        if tags:
+            raise ValueError(f"{source_id} public-fork tag surface changed: {tags}")
+
+        fork_ref = f"refs/heads/{pin['branch']}"
+        upstream_ref = "refs/remotes/upstream/main"
+        fork_head = git_text(repository, "rev-parse", fork_ref).strip()
+        upstream_head = git_text(repository, "rev-parse", upstream_ref).strip()
+        common_base = git_text(repository, "merge-base", upstream_ref, fork_ref).strip()
+        upstream_only, fork_only = map(
+            int,
+            git_text(
+                repository,
+                "rev-list",
+                "--left-right",
+                "--count",
+                f"{upstream_ref}...{fork_ref}",
+            ).split(),
+        )
+        observed_relation = (
+            "official_head_exact"
+            if not upstream_only and not fork_only
+            else "divergent_postpaper_security_workflow_only"
+        )
+        expected_relation = str(pin["relation"])
+        if {
+            "fork_head": fork_head,
+            "upstream_head": upstream_head,
+            "common_base": common_base,
+            "commits_ahead": fork_only,
+            "commits_behind": upstream_only,
+            "relation": observed_relation,
+        } != {
+            "fork_head": pin["head"],
+            "upstream_head": pin["upstream_head"],
+            "common_base": pin["common_base"],
+            "commits_ahead": pin["commits_ahead"],
+            "commits_behind": pin["commits_behind"],
+            "relation": expected_relation,
+        }:
+            raise ValueError(f"{source_id} public-fork relation changed")
+
+        unique_commits = git_text(
+            repository, "rev-list", fork_ref, "--not", upstream_ref
+        ).splitlines()
+        if unique_commits != list(pin["unique_commits"]):
+            raise ValueError(f"{source_id} public-fork unique commits changed")
+        unique_object_lines = git_text(
+            repository, "rev-list", "--objects", fork_ref, "--not", upstream_ref
+        ).splitlines()
+        unique_object_ids = [line.split(" ", 1)[0] for line in unique_object_lines]
+        if unique_object_ids:
+            unique_object_types = git_text(
+                repository,
+                "cat-file",
+                "--batch-check=%(objecttype)",
+                input_text="".join(f"{object_id}\n" for object_id in unique_object_ids),
+            ).splitlines()
+        else:
+            unique_object_types = []
+        unique_blobs = sorted(
+            object_id
+            for object_id, object_type in zip(unique_object_ids, unique_object_types)
+            if object_type == "blob"
+        )
+        if unique_blobs != sorted(pin["unique_blobs"]):
+            raise ValueError(f"{source_id} public-fork unique blobs changed")
+
+        changed_paths = sorted(
+            {
+                path
+                for commit in unique_commits
+                for path in git_text(
+                    repository, "show", "--format=", "--name-only", commit
+                ).splitlines()
+                if path
+            }
+        )
+        if changed_paths != list(pin["unique_changed_paths"]):
+            raise ValueError(f"{source_id} public-fork changed paths changed")
+        result_paths = [
+            path for path in changed_paths if is_serialized_result_or_model_artifact_path(path)
+        ]
+        paper_hits: set[str] = set()
+        for blob in unique_blobs:
+            payload = subprocess.run(
+                ["git", "-C", str(repository), "cat-file", "blob", blob],
+                check=True,
+                capture_output=True,
+            ).stdout
+            expected_sha256 = pin.get("unique_blob_sha256", {}).get(blob)
+            if expected_sha256 is None or sha256_bytes(payload) != expected_sha256:
+                raise ValueError(f"{source_id} public-fork blob pin changed: {blob}")
+            normalized = payload.replace(b",", b"")
+            paper_hits.update(
+                name for name, pattern in paper_patterns.items() if pattern.search(normalized)
+            )
+        if result_paths or paper_hits:
+            raise ValueError(
+                f"{source_id} fork contains unreviewed result evidence: "
+                f"paths={result_paths}, literals={sorted(paper_hits)}"
+            )
+
+        for commit in unique_commits:
+            metadata = git_text(
+                repository,
+                "show",
+                "-s",
+                "--format=%H%x00%P%x00%aI%x00%cI%x00%an%x00%ae%x00%s",
+                commit,
+            ).strip().split("\0", 6)
+            if len(metadata) != 7:
+                raise ValueError(f"{source_id} public-fork commit metadata changed")
+            commit_rows.append({
+                "source_id": source_id,
+                "repository": pin["repository"],
+                "commit": metadata[0],
+                "parents": metadata[1],
+                "author_time": metadata[2],
+                "commit_time": metadata[3],
+                "author_name": metadata[4],
+                "author_email": metadata[5],
+                "subject": metadata[6],
+                "changed_paths": ";".join(changed_paths),
+                "unique_blob_count": len(unique_blobs),
+                "native_result_artifact_found": False,
+                "paper_result_credit": False,
+            })
+        branch_rows.append({
+            "source_id": source_id,
+            "repository": pin["repository"],
+            "upstream_repository": pin["upstream_repository"],
+            "branch": pin["branch"],
+            "head_commit": fork_head,
+            "upstream_head_commit": upstream_head,
+            "common_base_commit": common_base,
+            "relation_to_upstream_head": observed_relation,
+            "commits_ahead_of_upstream": fork_only,
+            "commits_behind_upstream": upstream_only,
+            "tag_refs": 0,
+            "unique_commits_beyond_upstream_history": len(unique_commits),
+            "unique_blobs_beyond_upstream_history": len(unique_blobs),
+            "unique_changed_paths": ";".join(changed_paths),
+            "result_shaped_unique_paths": len(result_paths),
+            "paper_domain_literal_hits_in_unique_blobs": len(paper_hits),
+            "native_result_artifact_found": False,
+            "paper_result_credit": False,
+        })
+        head_rows.append({
+            "source_id": source_id,
+            "head_commit": fork_head,
+            "repository": pin["repository"],
+            "branch_ref_count": 1,
+            "relation_to_upstream_head": observed_relation,
+            "unique_commits_beyond_upstream_history": len(unique_commits),
+            "unique_blobs_beyond_upstream_history": len(unique_blobs),
+            "native_result_artifact_found": False,
+            "paper_result_credit": False,
+        })
+
+    if len(branch_rows) != 2 or len(head_rows) != 2 or len(commit_rows) != 1:
+        raise ValueError("MountainLion combined public-fork census changed")
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "upstream_repositories": 2,
+        "github_rest_reported_forks": 2,
+        "accessible_public_forks": len(branch_rows),
+        "accessible_branch_refs": len(branch_rows),
+        "tag_refs": 0,
+        "unique_heads": len(head_rows),
+        "official_head_exact_unique_heads": sum(
+            row["relation_to_upstream_head"] == "official_head_exact"
+            for row in head_rows
+        ),
+        "divergent_unique_heads": sum(
+            row["relation_to_upstream_head"] != "official_head_exact"
+            for row in head_rows
+        ),
+        "unique_commits_beyond_upstream_history": sum(
+            int(row["unique_commits_beyond_upstream_history"]) for row in branch_rows
+        ),
+        "unique_blobs_beyond_upstream_history": sum(
+            int(row["unique_blobs_beyond_upstream_history"]) for row in branch_rows
+        ),
+        "native_result_artifacts_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "the frontend fork exactly matches its upstream head; the backend fork is "
+            "83 commits behind current upstream and adds one post-paper commit whose sole "
+            "unique path and blob are a Bandit security-linter workflow, not trading, "
+            "forecasting, model, data, or result lineage"
+        ),
+    }
+    return branch_rows, head_rows, commit_rows, summary
 
 
 def safe_tar_files(path: Path) -> dict[str, bytes]:
@@ -1847,9 +2149,9 @@ def readme_text(manifest: Mapping[str, Any]) -> str:
 
 ## Honest outcome
 
-The MountainLion paper is **not faithfully reproduced**. The audit verifies the
+The MountainLion paper is **not faithfully reproduced**. The audit verifies
 all three primary manuscript versions, two attributable public codebases, their
-complete currently reachable histories, several real product
+complete currently reachable histories, every currently accessible public fork, several real product
 components, and paper-declared formulas. It regenerates **0/{manifest['published_performance_result_units']}**
 published forecasting-performance cells and none of the material return,
 accuracy-improvement, retrieval-efficiency, whale-detection, engagement, or
@@ -1893,6 +2195,14 @@ word `Bridge(` in a product-classification prompt. Twenty-eight `kline_predictd`
 blob revisions remain database readers, and two exact ten-token menu revisions
 remain product configuration; none is a training or evaluation pipeline.
 
+The public fork surface was also exhausted as of 2026-08-14. Each attributable
+repository has one accessible fork, for two forks, two branch refs, and no tag
+refs. The frontend fork is exactly the official head. The backend fork is 83
+commits behind current upstream and adds one post-paper commit with one unique
+blob and one changed path: a GitHub Actions Bandit security-linter workflow.
+That workflow contains no trading, forecasting, model-fitting, data, metric, or
+paper-result artifact and earns no reproduction credit.
+
 ## Decisive reproduction boundary
 
 The public package contains no paper training panel, exchange/date/frequency,
@@ -1933,6 +2243,10 @@ numeric array is shipped, so the figure receives no result-reproduction credit.
 - `public_source_commit_inventory.csv`: all 2,273 reachable commits.
 - `public_source_historical_path_inventory.csv`: all 444 historical paths.
 - `public_source_history_content_scan.csv`: exhaustive text-revision search results.
+- `public_fork_branch_ref_snapshot.csv`: every accessible fork branch and upstream relation.
+- `public_fork_unique_head_inventory.csv`: the two distinct fork heads.
+- `public_fork_unique_commit_inventory.csv`: the sole commit beyond upstream history.
+- `public_fork_census.json`: combined fork counts and fail-closed interpretation.
 - `source_component_checks.csv`: executed and source-semantic component checks.
 - `paper_formula_component_checks.csv`: synthetic checks of declared equations.
 - `source_component_execution.json`: build/compile evidence and runtime blockers.
@@ -1940,7 +2254,7 @@ numeric array is shipped, so the figure receives no result-reproduction credit.
 - `public_source_discovery.csv`: attributable-source and bounded-search record.
 
 The negative search boundary is deliberately narrow: complete currently
-reachable public history is inspected, but this audit does not prove that private,
+reachable public history and current accessible forks are inspected, but this audit does not prove that private,
 unreachable-before-audit, or unindexed artifacts never existed.
 """
 
@@ -1961,6 +2275,7 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
     history_summaries, history_refs, history_commits, history_paths, history_scans = (
         public_source_history(audit_root)
     )
+    fork_branches, fork_heads, fork_commits, fork_summary = public_fork_audit(audit_root)
     execution = runtime_evidence(audit_root)
     components = source_component_checks(
         source_archives, execution, history_summaries
@@ -1986,6 +2301,10 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
     write_csv(output_dir / "public_source_commit_inventory.csv", history_commits)
     write_csv(output_dir / "public_source_historical_path_inventory.csv", history_paths)
     write_csv(output_dir / "public_source_history_content_scan.csv", history_scans)
+    write_csv(output_dir / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    write_csv(output_dir / "public_fork_unique_head_inventory.csv", fork_heads)
+    write_csv(output_dir / "public_fork_unique_commit_inventory.csv", fork_commits)
+    write_json(output_dir / "public_fork_census.json", fork_summary)
     write_csv(output_dir / "source_component_checks.csv", components)
     write_csv(output_dir / "paper_formula_component_checks.csv", formulas)
     write_csv(output_dir / "public_source_discovery.csv", discovery)
@@ -2043,6 +2362,23 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
             len(row["serialized_result_or_model_artifact_paths"])
             for row in history_summaries
         ),
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary[
+            "github_rest_reported_forks"
+        ],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_tag_refs_audited": fork_summary["tag_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_unique_commits_beyond_upstream_history": fork_summary[
+            "unique_commits_beyond_upstream_history"
+        ],
+        "public_fork_unique_blobs_beyond_upstream_history": fork_summary[
+            "unique_blobs_beyond_upstream_history"
+        ],
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "paper_corresponding_source_component_checks_passed": component_credits,
         "exact_native_paper_mechanism_dimensions_reproduced": 0,
         "paper_mechanism_dimensions_audited": len(mechanisms),
@@ -2061,7 +2397,7 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
         ),
         "negative_inference_boundary": (
             "no native paper-result pipeline found in the complete currently reachable "
-            "public histories or checked surfaces; not proof that private, "
+            "public histories, current accessible forks, or checked surfaces; not proof that private, "
             "unreachable-before-audit, or unindexed artifacts never existed"
         ),
     }

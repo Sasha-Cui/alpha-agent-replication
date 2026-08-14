@@ -62,6 +62,14 @@ def test_manifest_separates_documents_components_and_results() -> None:
     assert data["reachable_public_commits_audited"] == 2_273
     assert data["historical_text_blob_revisions_scanned"] == 2_185
     assert data["historical_serialized_result_or_model_artifact_paths_found"] == 0
+    assert data["public_forks_accessible"] == 2
+    assert data["public_fork_branch_refs_audited"] == 2
+    assert data["public_fork_unique_heads_audited"] == 2
+    assert data["public_fork_divergent_heads_audited"] == 1
+    assert data["public_fork_unique_commits_beyond_upstream_history"] == 1
+    assert data["public_fork_unique_blobs_beyond_upstream_history"] == 1
+    assert data["public_fork_native_result_artifacts_found"] is False
+    assert data["public_fork_paper_result_credit"] is False
 
 
 def test_primary_source_bundles_are_manuscript_only() -> None:
@@ -263,6 +271,71 @@ def test_history_content_matches_are_component_correspondence_not_training() -> 
     assert all(row["paper_result_credit"] == "False" for row in scans.values())
 
 
+def test_all_public_forks_add_no_native_result_lineage() -> None:
+    branches = rows("public_fork_branch_ref_snapshot.csv")
+    heads = rows("public_fork_unique_head_inventory.csv")
+    commits = rows("public_fork_unique_commit_inventory.csv")
+    census = json.loads((AUDIT_DIR / "public_fork_census.json").read_text())
+    assert len(branches) == 2
+    assert {row["source_id"] for row in branches} == {"frontend", "backend"}
+    assert {row["repository"] for row in branches} == {
+        "https://github.com/annihi1ation/MountainLion",
+        "https://github.com/davidfelosi1-eng/GenAI-Platform",
+    }
+    by_source = {row["source_id"]: row for row in branches}
+    assert by_source["frontend"]["relation_to_upstream_head"] == "official_head_exact"
+    assert by_source["frontend"]["commits_ahead_of_upstream"] == "0"
+    assert by_source["frontend"]["commits_behind_upstream"] == "0"
+    assert by_source["backend"]["relation_to_upstream_head"] == (
+        "divergent_postpaper_security_workflow_only"
+    )
+    assert by_source["backend"]["commits_ahead_of_upstream"] == "1"
+    assert by_source["backend"]["commits_behind_upstream"] == "83"
+    assert by_source["backend"]["unique_changed_paths"] == (
+        ".github/workflows/bandit.yml"
+    )
+    assert {row["result_shaped_unique_paths"] for row in branches} == {"0"}
+    assert {row["paper_domain_literal_hits_in_unique_blobs"] for row in branches} == {
+        "0"
+    }
+    assert {row["native_result_artifact_found"] for row in branches} == {"False"}
+    assert {row["paper_result_credit"] for row in branches} == {"False"}
+    assert len(heads) == 2
+    assert len(commits) == 1
+    assert commits[0]["commit"] == "e218c871a6bba04eff7b3d0c0e89911128d83068"
+    assert commits[0]["subject"] == "Create bandit.yml"
+    assert commits[0]["changed_paths"] == ".github/workflows/bandit.yml"
+    assert commits[0]["unique_blob_count"] == "1"
+    assert commits[0]["native_result_artifact_found"] == "False"
+    assert commits[0]["paper_result_credit"] == "False"
+    assert census["census_date"] == "2026-08-14"
+    assert census["upstream_repositories"] == 2
+    assert census["github_rest_reported_forks"] == 2
+    assert census["accessible_public_forks"] == 2
+    assert census["accessible_branch_refs"] == 2
+    assert census["tag_refs"] == 0
+    assert census["unique_heads"] == 2
+    assert census["official_head_exact_unique_heads"] == 1
+    assert census["divergent_unique_heads"] == 1
+    assert census["unique_commits_beyond_upstream_history"] == 1
+    assert census["unique_blobs_beyond_upstream_history"] == 1
+    assert census["native_result_artifacts_found"] == 0
+    assert census["paper_result_credit"] is False
+
+
+def test_pinned_public_fork_mirrors_rebuild_the_committed_inventory() -> None:
+    if not audit.DEFAULT_AUDIT_ROOT.is_dir():
+        return
+    branches, heads, commits, census = audit.public_fork_audit(
+        audit.DEFAULT_AUDIT_ROOT
+    )
+    assert len(branches) == 2
+    assert len(heads) == 2
+    assert len(commits) == 1
+    assert census["native_result_artifacts_found"] == 0
+    assert census["paper_result_credit"] is False
+
+
 def test_manifest_hashes_every_nonmanifest_output_and_readme_is_honest() -> None:
     data = manifest()
     expected = {
@@ -276,6 +349,8 @@ def test_manifest_hashes_every_nonmanifest_output_and_readme_is_honest() -> None
     assert "not faithfully reproduced" in text
     assert "0/20" in text
     assert "Installing more packages cannot recover" in text
+    assert "public fork surface was also exhausted" in text
+    assert "Bandit security-linter workflow" in text
     assert "does not prove" in text
 
 
@@ -293,7 +368,8 @@ def test_paper_routes_through_public_component_audit_not_proxy_credit() -> None:
     assert row["reachable_public_code_system_ids"] == audit.SYSTEM_ID
     assert row["static_fidelity_tiers"] == "R3"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_zero_of_20_performance_cells_public_components_only"
+        "paper_audit:completed_zero_of_20_performance_cells_public_components_only_"
+        "full_2273_commit_histories_2_forks_2_refs_2_unique_heads_exhausted"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert "0/20" in row["precise_native_or_access_blocker"]

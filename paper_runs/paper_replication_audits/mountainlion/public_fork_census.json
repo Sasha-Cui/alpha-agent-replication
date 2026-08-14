@@ -1,0 +1,16 @@
+{
+  "census_date": "2026-08-14",
+  "upstream_repositories": 2,
+  "github_rest_reported_forks": 2,
+  "accessible_public_forks": 2,
+  "accessible_branch_refs": 2,
+  "tag_refs": 0,
+  "unique_heads": 2,
+  "official_head_exact_unique_heads": 1,
+  "divergent_unique_heads": 1,
+  "unique_commits_beyond_upstream_history": 1,
+  "unique_blobs_beyond_upstream_history": 1,
+  "native_result_artifacts_found": 0,
+  "paper_result_credit": false,
+  "interpretation": "the frontend fork exactly matches its upstream head; the backend fork is 83 commits behind current upstream and adds one post-paper commit whose sole unique path and blob are a Bandit security-linter workflow, not trading, forecasting, model, data, or result lineage"
+}
