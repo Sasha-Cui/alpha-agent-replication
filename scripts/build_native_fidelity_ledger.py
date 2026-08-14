@@ -573,8 +573,14 @@ ARTIFACT_NOTES = {
         "TSLA experiment, and two occur in none of 171 reachable source blobs, so none "
         "receives result credit. Replaying the historical ablation actions independently "
         "matches 67/75 displayed Table 3--5 cells. This is author-output and metric-replay "
-        "evidence, not end-to-end FinMem reproduction: the original inputs, memories, "
-        "complete five-trial lineage, and exact paper configuration remain absent.",
+        "evidence, not end-to-end FinMem reproduction. A dated census exhausts 181 "
+        "accessible forks, 187 branch refs, 20 unique heads, and all 11 divergent heads. "
+        "None matches an official-source author identity or supplies a paper-result "
+        "artifact. The one extra action CSV is an unaffiliated post-paper, 19-row, "
+        "all-hold 2016 TSLA mini-run with the wrong model and top-K; a second fork has "
+        "GPT-3.5/top-K=3 checkpoint state but no action or metric result. The original "
+        "inputs, memories, complete five-trial lineage, and exact paper configuration "
+        "remain absent.",
     ),
     "SYS-HEDGE-AGENTS": (
         "N",
@@ -1418,7 +1424,7 @@ TARGETED_EXECUTION = {
     "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_results_seven_commit_history_zero_of_288_rule_record_matches",
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_missing_hybrid_pipeline_and_v2_lineage",
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
-    "SYS-FIN-MEM": "paper_audit:partial_227_of_235_author_output_cells_corroborated_67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells",
+    "SYS-FIN-MEM": "paper_audit:partial_227_of_235_author_output_cells_corroborated_67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells_181_accessible_forks_187_refs_20_unique_heads_exhausted",
     "SYS-FACTFIN": "paper_audit:completed_zero_of_525_numeric_cells_no_public_system_or_benchmark_release",
     "SYS-FACTOR-MINER": "paper_audit:completed_110_formula_syntax_components_zero_of_488_table_cells_zero_of_12100_heatmap_cells_no_author_native_pipeline",
     "SYS-FIN-VISION": "paper_audit:completed_zero_of_72_performance_cells_no_public_system_source",

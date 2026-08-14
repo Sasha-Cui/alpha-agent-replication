@@ -14,6 +14,12 @@ trained memories, complete five-trial paths, and exact paper configuration remai
 - Historical author-output snapshot: commit `0b7f499e556668bf49885fd8836efe85ef51558f`
   (2023-11-30), deleted from the current tree by commit
   `45169ea8509c29113c7e7945dc52a6b3e43521eb` (2024-02-09).
+- Public-fork census: GitHub REST reported 192
+  forks on 2026-08-14; GraphQL exposed
+  181 repositories and
+  187 branch refs. The
+  11 unavailable repositories are
+  explicitly not claimed as inspected.
 
 ## What is genuinely verified or reproduced
 
@@ -41,6 +47,19 @@ trained memories, complete five-trial paths, and exact paper configuration remai
 - This is stronger than paper-value transcription: it connects the paper values to
   author-shipped outputs and independently replays the ablation metric path. It is
   still not an end-to-end rerun of FinMem's LLM decisions or five repeated trials.
+- The complete accessible-fork snapshot collapses to 20
+  unique heads: 9 are reachable
+  from official history and all 11 divergent
+  heads were reviewed across 45 extra
+  commits and 299 changed paths. None
+  matches an official-source author identity or contributes a paper-result artifact.
+  One post-paper fork contains a 19-row, 2016 TSLA action CSV whose directions are all
+  hold, while its active config is phi3v/top-K=3 and its checkpoint identifies
+  GPT-3.5. A second contains GPT-3.5/top-K=3 TSLA checkpoint state but no action or
+  metric result file. These are unaffiliated mini-runs, not the paper's GPT-4-Turbo,
+  top-K=5, five-ticker, five-trial lineage, and receive zero paper credit. The second
+  branch deletes the 33-file historical author-output tree from the official root;
+  those deleted files are already counted once as official history, not fork evidence.
 
 - The released metric formulas and a hash-pinned Yahoo adjusted-close retrieval
   reproduce the full five-metric TSLA Buy-and-Hold row exactly at four decimals for

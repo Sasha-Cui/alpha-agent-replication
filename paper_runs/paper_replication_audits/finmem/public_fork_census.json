@@ -1,0 +1,35 @@
+{
+  "census_date": "2026-08-14",
+  "github_rest_reported_forks": 192,
+  "graphql_accessible_forks": 181,
+  "rest_minus_accessible_fork_gap": 11,
+  "accessibility_gap_interpretation": "deleted_private_or_otherwise_unavailable_not_inspected",
+  "graphql_accessible_branch_refs": 187,
+  "graphql_accessible_branch_ref_census_sha256": "cdf4678580ceb1e0bb3b3b2757a111ed56ef806a78c021737c8aba09bedb229e",
+  "graphql_accessible_branch_ref_snapshot_file_sha256": "4cb2de423df779cf6b863de9bc8884c5d10b5df651d51c15b9aae4fa8d12749c",
+  "representative_unique_head_refs": 20,
+  "representative_ref_census_sha256": "37d1917c35228b8fea949c20adc9943e5d363acdd9db803529ed425eb23bd0ba",
+  "unique_heads": 20,
+  "unique_head_sha256": "5a9d435698b065bda0b68327a3dd2255e30d6116c9f46899076985140662b324",
+  "heads_reachable_from_official_history": 9,
+  "divergent_heads_reviewed": 11,
+  "divergent_extra_commits_reviewed": 45,
+  "divergent_changed_paths_reviewed": 299,
+  "divergent_heads_matching_official_source_author_identity": 0,
+  "postpaper_native_action_paths_discovered": 1,
+  "postpaper_native_action_path": "tsla_gpt3.5.csv",
+  "postpaper_native_action_rows": 19,
+  "postpaper_native_action_date_range": "2016-01-13/2016-02-09",
+  "postpaper_native_action_unique_directions": [
+    0
+  ],
+  "postpaper_native_action_matches_paper_model_dates_topk_or_trials": false,
+  "postpaper_checkpoint_head": "d60e7e048849860db8c459c3abb9b578373a9289",
+  "postpaper_checkpoint_final_result_paths": [
+    "data/09_results/.gitkeep"
+  ],
+  "known_author_history_paths_deleted_not_newly_contributed": 33,
+  "paper_result_artifacts_discovered_in_divergent_fork_heads": 0,
+  "paper_result_credit": false,
+  "pickle_execution_policy": "byte_scan_only_no_deserialization"
+}

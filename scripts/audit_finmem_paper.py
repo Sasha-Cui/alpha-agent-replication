@@ -49,6 +49,110 @@ HISTORICAL_NOTEBOOK_BLOB = "3bd4a5557828c56fb8467617cb56a0c87915ce9f"
 PAPER_SHA256 = "acb7527d02871cfad7d2754314b9a803f917b326847a456579df9cf7b0a648b9"
 PAPER_URL = "https://arxiv.org/pdf/2311.13743"
 SOURCE_URL = "https://github.com/pipiku915/finmem-llm-stocktrading"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+# GitHub REST reported 192 forks on the census date. GraphQL could enumerate
+# 181 accessible fork repositories and all 187 of their branch refs. The
+# eleven-repository gap is retained explicitly; deleted, private, or otherwise
+# unavailable repositories are not represented as inspected.
+PUBLIC_FORK_REST_COUNT = 192
+PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT = 181
+PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT = 187
+PUBLIC_FORK_GRAPHQL_REF_SHA256 = "cdf4678580ceb1e0bb3b3b2757a111ed56ef806a78c021737c8aba09bedb229e"
+PUBLIC_FORK_SNAPSHOT_SHA256 = "4cb2de423df779cf6b863de9bc8884c5d10b5df651d51c15b9aae4fa8d12749c"
+PUBLIC_FORK_REPRESENTATIVE_REF_COUNT = 20
+PUBLIC_FORK_REPRESENTATIVE_REF_SHA256 = "37d1917c35228b8fea949c20adc9943e5d363acdd9db803529ed425eb23bd0ba"
+PUBLIC_FORK_UNIQUE_HEAD_SHA256 = "5a9d435698b065bda0b68327a3dd2255e30d6116c9f46899076985140662b324"
+PUBLIC_FORK_BASE_REACHABLE_HEAD_COUNT = 9
+PUBLIC_FORK_DIVERGENT_HEAD_COUNT = 11
+PUBLIC_FORK_DIVERGENT_SURFACE_SHA256 = "eca265fe2031aa49ca7fca7214c9c9eb898245000b9e4889884890ed95feee2d"
+PUBLIC_FORK_DIVERGENT_COMMIT_COUNT = 45
+PUBLIC_FORK_DIVERGENT_COMMIT_SHA256 = "f70a95b9ae6bc50c1b0b1ee40276d3e3f38fb7156f8f7574449779b5f4189b4f"
+PUBLIC_FORK_DIVERGENT_PATH_COUNT = 299
+PUBLIC_FORK_DIVERGENT_PATH_SHA256 = "8f00f9a5bf429b24e9bdc6983b41b9eeb08367a4542c6b68807dc055d32670ae"
+OFFICIAL_SOURCE_AUTHOR_EMAILS = {
+    "54829669+pipiku915@users.noreply.github.com",
+    "57229766+Carolyn-Jiang@users.noreply.github.com",
+    "hli113@stevens.edu",
+}
+OFFICIAL_SOURCE_AUTHOR_NAMES = {"Shirley Yu", "Haohang Li", "Yuechen Jiang"}
+EXPECTED_DIVERGENT_AUTHOR_EMAILS = {
+    "63671735+adamd1985@users.noreply.github.com",
+    "adomenech@izertis.com",
+    "cjie2399@usc.edu",
+    "esiebomaj@gmail.com",
+    "fateamjp@yahoo.co.jp",
+    "goseng123@gmail.com",
+    "gquiroga@dc.uba.ar",
+    "irfanilgin@gmail.com",
+    "jzljohn18@gmail.com",
+    "letiennn41@gmail.com",
+}
+FORK_MINIRUN_HEAD = "cf3f751faaf103ac871301e0b05d2e9919f5f269"
+FORK_CHECKPOINT_HEAD = "d60e7e048849860db8c459c3abb9b578373a9289"
+FORK_MINIRUN_CONFIG_SHA256 = "53c5e4de08986fc1bd608aad2d0f176445829cd61ef584e1ff2011715209e107"
+FORK_MINIRUN_ACTION_SHA256 = "f5fea23964dd8a3f48eb40f783ff708a1352a543d7fa40797aef90dfd34d789e"
+FORK_CHECKPOINT_CONFIG_SHA256 = "642f892206cb5a8c9966a396c093d9dd091b985c28e66afd55f51337d3546889"
+
+# Human review is encoded as a fail-closed classification only after the full
+# commit/path surface above is validated. Every entry is post-paper and has no
+# public identity match to the authors observed in the official source history.
+DIVERGENT_FORK_FINDINGS: Mapping[str, Mapping[str, Any]] = {
+    "0236c632e6634b960f02b16646e682e518bb0fbc": {
+        "commits": 17,
+        "paths": 19,
+        "classification": "unattributed_postpaper_data_pipeline_extension",
+    },
+    "13a00873e78ca0f67ee0a0ac01bea60a5623c133": {
+        "commits": 3,
+        "paths": 16,
+        "classification": "unattributed_postpaper_crypto_adaptation",
+    },
+    "16f2752d3f86415a1375fb82671c2db38a3dbd36": {
+        "commits": 1,
+        "paths": 1,
+        "classification": "unattributed_postpaper_source_only_change",
+    },
+    "1dbc0d816789547a5c713caa6c7a40b83a02cb04": {
+        "commits": 3,
+        "paths": 133,
+        "classification": "unattributed_postpaper_modular_rewrite_placeholders_only",
+    },
+    "21b1a5bd91ac7d0e1fd14e34acdd2dff9b7bc7f9": {
+        "commits": 9,
+        "paths": 25,
+        "classification": "unattributed_postpaper_csv_writer_code_without_output",
+    },
+    "3b30f241a01db86c4c1c62b361c879d30717d42e": {
+        "commits": 2,
+        "paths": 2,
+        "classification": "unattributed_postpaper_environment_only_change",
+    },
+    "51428f385640e9ec42b2797a44ae1d6193af42ce": {
+        "commits": 4,
+        "paths": 8,
+        "classification": "unattributed_postpaper_commodity_adaptation",
+    },
+    "afef9c5c886bafc322483151eaf4aeafe14a48ee": {
+        "commits": 2,
+        "paths": 2,
+        "classification": "unattributed_postpaper_build_only_change",
+    },
+    FORK_MINIRUN_HEAD: {
+        "commits": 2,
+        "paths": 73,
+        "classification": "unattributed_postpaper_tsla_hold_only_minirun_wrong_model_dates_topk",
+    },
+    FORK_CHECKPOINT_HEAD: {
+        "commits": 2,
+        "paths": 154,
+        "classification": "unattributed_postpaper_tsla_checkpoint_without_action_or_metric_output",
+    },
+    "fd352f7e86d28b7427b8f71211c5fcbd910589a0": {
+        "commits": 2,
+        "paths": 20,
+        "classification": "unattributed_postpaper_incomplete_fake_amzn_baseline_input",
+    },
+}
 PAPER_VERSIONS: Mapping[str, Mapping[str, Any]] = {
     "v1": {
         "submitted_at": "2023-11-23T00:24:40Z",
@@ -149,10 +253,7 @@ TABLE_4_V1_RAW = {
     "daily_volatility_pct": (0.039527, 0.027419, 0.032722, 0.017744),
     "annualized_volatility_pct": (0.038050, 0.025960, 0.029236, 0.009358),
 }
-TABLE_4_V2_PERCENT = {
-    metric: tuple(value * 100 for value in values)
-    for metric, values in TABLE_4_V1_RAW.items()
-}
+TABLE_4_V2_PERCENT = {metric: tuple(value * 100 for value in values) for metric, values in TABLE_4_V1_RAW.items()}
 SEPARATE_TSLA_FULL_DAILY_PERCENT = {
     "buy_and_hold": 3.9527,
     "self_adaptive": 2.7419,
@@ -264,6 +365,21 @@ def git_blob(root: Path, commit: str, path: str) -> bytes:
     ).stdout
 
 
+def _sha256_lines(lines: Sequence[str]) -> str:
+    return hashlib.sha256("".join(f"{line}\n" for line in lines).encode("utf-8")).hexdigest()
+
+
+def git_object_exists(root: Path, object_spec: str) -> bool:
+    return (
+        subprocess.run(
+            ["git", "-C", str(root), "cat-file", "-e", object_spec],
+            capture_output=True,
+            check=False,
+        ).returncode
+        == 0
+    )
+
+
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequence[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
@@ -311,9 +427,7 @@ def source_buy_hold_metrics(prices: np.ndarray) -> Dict[str, float]:
 def source_action_metrics(prices: np.ndarray, actions: np.ndarray) -> Dict[str, float]:
     """Reproduce the released signed-log-return metric path."""
     if len(actions) < len(prices) - 1:
-        raise RuntimeError(
-            f"Action path has {len(actions)} entries for {len(prices)} prices"
-        )
+        raise RuntimeError(f"Action path has {len(actions)} entries for {len(prices)} prices")
     daily = np.diff(np.log(prices)) * actions[: len(prices) - 1]
     daily_std = float(np.std(daily, ddof=1))
     cumulative = float(np.sum(daily))
@@ -338,8 +452,7 @@ def historical_repository_audit(source_root: Path) -> Dict[str, Any]:
     shallow = git_text(source_root, "rev-parse", "--is-shallow-repository").strip()
     commit_count = int(git_text(source_root, "rev-list", "--all", "--count").strip())
     object_ids = [
-        line.split(" ", 1)[0]
-        for line in git_text(source_root, "rev-list", "--objects", "--all").splitlines()
+        line.split(" ", 1)[0] for line in git_text(source_root, "rev-list", "--objects", "--all").splitlines()
     ]
     object_types = subprocess.run(
         ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
@@ -387,15 +500,13 @@ def historical_repository_audit(source_root: Path) -> Dict[str, Any]:
         "reachable_object_count": len(object_ids) == EXPECTED_REACHABLE_OBJECTS,
         "reachable_blob_count": object_counts["blob"] == EXPECTED_REACHABLE_BLOBS,
         "reachable_tree_count": object_counts["tree"] == EXPECTED_REACHABLE_TREES,
-        "reachable_object_commit_count": object_counts["commit"]
-        == EXPECTED_REACHABLE_COMMITS,
+        "reachable_object_commit_count": object_counts["commit"] == EXPECTED_REACHABLE_COMMITS,
         "no_unreachable_objects": not unreachable,
         "root_commit": roots == [SOURCE_ROOT_COMMIT],
         "historical_tree_file_count": len(paths) == EXPECTED_HISTORICAL_TREE_FILES,
         "historical_action_csv_count": len(csv_paths) == EXPECTED_HISTORICAL_ACTION_CSVS,
         "deletion_removed_entire_historical_tree": sorted(deleted) == sorted(paths),
-        "notebook_sha256": hashlib.sha256(notebook).hexdigest()
-        == HISTORICAL_NOTEBOOK_SHA256,
+        "notebook_sha256": hashlib.sha256(notebook).hexdigest() == HISTORICAL_NOTEBOOK_SHA256,
         "metrics_sha256": hashlib.sha256(metrics).hexdigest() == HISTORICAL_METRICS_SHA256,
     }
     if not all(checks.values()):
@@ -419,9 +530,7 @@ def historical_repository_audit(source_root: Path) -> Dict[str, Any]:
         "historical_metrics_path": HISTORICAL_METRICS_PATH,
         "historical_metrics_sha256": HISTORICAL_METRICS_SHA256,
         "deletion_commit": HISTORICAL_DELETION_COMMIT,
-        "deletion_authored_at": git_text(
-            source_root, "show", "-s", "--format=%aI", HISTORICAL_DELETION_COMMIT
-        ).strip(),
+        "deletion_authored_at": git_text(source_root, "show", "-s", "--format=%aI", HISTORICAL_DELETION_COMMIT).strip(),
         "deleted_tree_files": len(deleted),
     }
 
@@ -444,9 +553,7 @@ def notebook_text_output(notebook: Mapping[str, Any], cell_index: int) -> str:
 
 
 def parse_notebook_author_outputs(source_root: Path) -> List[Dict[str, Any]]:
-    notebook = json.loads(
-        git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, HISTORICAL_NOTEBOOK_PATH)
-    )
+    notebook = json.loads(git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, HISTORICAL_NOTEBOOK_PATH))
     values: Dict[Tuple[int, str, str, str], float] = {}
     for table, cell_index in NOTEBOOK_TABLE_CELLS.items():
         text = notebook_text_output(notebook, cell_index).replace("Buy & Hold", "BuyHold")
@@ -460,9 +567,7 @@ def parse_notebook_author_outputs(source_root: Path) -> List[Dict[str, Any]]:
                 strategy = NOTEBOOK_MODEL_NAMES[table][model]
                 for metric, raw in zip(METRICS, parts[2:]):
                     value = float(raw)
-                    values[(table, scope, strategy, metric)] = (
-                        value * 100 if metric in PERCENT_METRICS else value
-                    )
+                    values[(table, scope, strategy, metric)] = value * 100 if metric in PERCENT_METRICS else value
         else:
             header = next(line for line in lines if line.startswith("Unnamed: 0 & "))
             models = [part.strip().rstrip("\\").strip() for part in header.split(" & ")[1:]]
@@ -556,8 +661,7 @@ def paper_version_audit(
             "pdf_pages": len(reader.pages) == expected["pdf_pages"],
             "table_4_pdf_text": all(marker in table_text for marker in pdf_markers[version]),
             "source_sha256": sha256(archive_path) == expected["source_sha256"],
-            "source_archive_bytes": archive_path.stat().st_size
-            == expected["source_archive_bytes"],
+            "source_archive_bytes": archive_path.stat().st_size == expected["source_archive_bytes"],
         }
         with tarfile.open(archive_path, "r:*") as archive:
             members = archive.getmembers()
@@ -577,9 +681,7 @@ def paper_version_audit(
                 payload = stream.read()
                 extracted = extracted_root / member.name
                 if not extracted.is_file() or extracted.read_bytes() != payload:
-                    raise RuntimeError(
-                        f"Extracted {version} source differs from archive: {member.name}"
-                    )
+                    raise RuntimeError(f"Extracted {version} source differs from archive: {member.name}")
                 if member.name == "templateArxiv.tex":
                     role = "paper_primary_tex"
                 elif member.name.lower().endswith((".bib", ".bbl")):
@@ -633,9 +735,7 @@ def table_4_volatility_forensics(
     action_reproduction: Sequence[Mapping[str, Any]],
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     """Trace each disputed Table 4 cell through every reachable source blob."""
-    notebook = json.loads(
-        git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, HISTORICAL_NOTEBOOK_PATH)
-    )
+    notebook = json.loads(git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, HISTORICAL_NOTEBOOK_PATH))
     character_text = notebook_text_output(notebook, 18)
     separate_text = notebook_text_output(notebook, 19)
     required_character = (
@@ -688,9 +788,7 @@ def table_4_volatility_forensics(
         if result:
             historical_notebook_blobs.add(result.split()[2])
     if historical_notebook_blobs != {HISTORICAL_NOTEBOOK_BLOB}:
-        raise RuntimeError(
-            f"Expected one historical notebook blob, found {historical_notebook_blobs}"
-        )
+        raise RuntimeError(f"Expected one historical notebook blob, found {historical_notebook_blobs}")
 
     object_lines = git_text(source_root, "rev-list", "--objects", "--all").splitlines()
     object_ids = [line.split(" ", 1)[0] for line in object_lines]
@@ -704,11 +802,7 @@ def table_4_volatility_forensics(
     blob_ids = [oid for oid, kind in zip(object_ids, types) if kind == "blob"]
     if len(blob_ids) != EXPECTED_REACHABLE_BLOBS:
         raise RuntimeError(f"Expected 171 reachable blobs, found {len(blob_ids)}")
-    literals = {
-        f"{value:.6f}"
-        for values in TABLE_4_V1_RAW.values()
-        for value in values
-    }
+    literals = {f"{value:.6f}" for values in TABLE_4_V1_RAW.values() for value in values}
     hits: Dict[str, List[str]] = {literal: [] for literal in literals}
     for blob_id in blob_ids:
         payload = subprocess.run(
@@ -733,14 +827,10 @@ def table_4_volatility_forensics(
         raise RuntimeError(f"FinMem Table 4 reachable-blob findings changed: {hits}")
 
     author_index = {
-        (row["strategy_or_configuration"], row["metric"]): row
-        for row in author_outputs
-        if row["paper_table"] == 4
+        (row["strategy_or_configuration"], row["metric"]): row for row in author_outputs if row["paper_table"] == 4
     }
     action_index = {
-        (row["strategy_or_configuration"], row["metric"]): row
-        for row in action_reproduction
-        if row["paper_table"] == 4
+        (row["strategy_or_configuration"], row["metric"]): row for row in action_reproduction if row["paper_table"] == 4
     }
     rows: List[Dict[str, Any]] = []
     for metric in ("daily_volatility_pct", "annualized_volatility_pct"):
@@ -748,11 +838,7 @@ def table_4_volatility_forensics(
             paper_raw = TABLE_4_V1_RAW[metric][index]
             paper_percent = TABLE_4_V2_PERCENT[metric][index]
             native = float(author_index[(strategy, metric)]["historical_notebook_value"])
-            native_daily = float(
-                author_index[(strategy, "daily_volatility_pct")][
-                    "historical_notebook_value"
-                ]
-            )
+            native_daily = float(author_index[(strategy, "daily_volatility_pct")]["historical_notebook_value"])
             replay = float(action_index[(strategy, metric)]["recomputed_value"])
             literal = f"{paper_raw:.6f}"
             if metric == "annualized_volatility_pct":
@@ -822,9 +908,7 @@ def parse_action_csv(blob: bytes) -> Tuple[List[Tuple[datetime, int]], str]:
         raise RuntimeError("Historical action CSV is empty")
     fields = set(rows[0])
     date_field = next((name for name in ("date", "dates") if name in fields), None)
-    action_field = next(
-        (name for name in ("direction", "action", "actions") if name in fields), None
-    )
+    action_field = next((name for name in ("direction", "action", "actions") if name in fields), None)
     if not date_field or not action_field:
         raise RuntimeError(f"Unknown historical action schema: {sorted(fields)}")
     parsed = []
@@ -863,9 +947,7 @@ def historical_action_inventory(source_root: Path) -> List[Dict[str, Any]]:
                 "first_action_date": min(date for date, _ in actions).date().isoformat(),
                 "last_action_date": max(date for date, _ in actions).date().isoformat(),
                 "schema": schema,
-                "direction_values": ",".join(
-                    str(value) for value in sorted({value for _, value in actions})
-                ),
+                "direction_values": ",".join(str(value) for value in sorted({value for _, value in actions})),
             }
         )
     if len(rows) != EXPECTED_HISTORICAL_ACTION_CSVS:
@@ -873,13 +955,10 @@ def historical_action_inventory(source_root: Path) -> List[Dict[str, Any]]:
     return rows
 
 
-def historical_action_reproduction(
-    source_root: Path, price_root: Path
-) -> List[Dict[str, Any]]:
+def historical_action_reproduction(source_root: Path, price_root: Path) -> List[Dict[str, Any]]:
     prices, timestamps = load_adjusted_prices(price_root / "TSLA_ablation.json")
     trading_dates = [
-        datetime.fromtimestamp(timestamp, timezone.utc).replace(tzinfo=None).date()
-        for timestamp in timestamps
+        datetime.fromtimestamp(timestamp, timezone.utc).replace(tzinfo=None).date() for timestamp in timestamps
     ]
     first_date, last_date = min(trading_dates), max(trading_dates)
     action_cache: Dict[str, np.ndarray] = {}
@@ -893,22 +972,12 @@ def historical_action_reproduction(
             evidence = "synthetic_all_ones_buy_and_hold_path"
         else:
             if path not in action_cache:
-                parsed, _ = parse_action_csv(
-                    git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, path)
-                )
-                filtered = [
-                    (date.date(), value)
-                    for date, value in parsed
-                    if first_date <= date.date() <= last_date
-                ]
+                parsed, _ = parse_action_csv(git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, path))
+                filtered = [(date.date(), value) for date, value in parsed if first_date <= date.date() <= last_date]
                 action_dates = [date for date, _ in filtered]
                 if action_dates != trading_dates:
-                    raise RuntimeError(
-                        f"Historical action dates do not align to Yahoo trading dates: {path}"
-                    )
-                action_cache[path] = np.asarray(
-                    [value for _, value in filtered], dtype=float
-                )
+                    raise RuntimeError(f"Historical action dates do not align to Yahoo trading dates: {path}")
+                action_cache[path] = np.asarray([value for _, value in filtered], dtype=float)
             actions = action_cache[path]
             evidence = f"{HISTORICAL_ARTIFACT_COMMIT}:{path}"
         computed = source_action_metrics(prices, actions)[target["metric"]]
@@ -1010,11 +1079,7 @@ def volatility_identity_audit() -> List[Dict[str, Any]]:
                 "paper_annualized_volatility_pct": values["annualized_volatility_pct"],
                 "daily_times_sqrt_252_pct": implied,
                 "absolute_error": error,
-                "status": (
-                    "rounding_consistent"
-                    if error <= 0.001
-                    else "paper_internal_annualization_mismatch"
-                ),
+                "status": ("rounding_consistent" if error <= 0.001 else "paper_internal_annualization_mismatch"),
             }
         )
     return output
@@ -1140,11 +1205,295 @@ def source_config_audit(source_root: Path) -> List[Dict[str, Any]]:
     return list(rows)
 
 
+def public_fork_census(census_root: Path, branch_ref_snapshot: Path) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """Fail closed over every unique head in the dated accessible-fork census.
+
+    The local evidence store materializes one representative ref for each
+    unique head, while the committed GraphQL snapshot retains the complete
+    repository/branch mapping. Binary checkpoint files are byte-scanned only;
+    no untrusted pickle is deserialized.
+    """
+    if git_text(census_root, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise RuntimeError("FinMem public-fork census is shallow")
+    ref_lines = git_text(
+        census_root,
+        "for-each-ref",
+        "refs/fork-census",
+        "--format=%(refname)%09%(objectname)",
+    ).splitlines()
+    if (
+        len(ref_lines) != PUBLIC_FORK_REPRESENTATIVE_REF_COUNT
+        or _sha256_lines(ref_lines) != PUBLIC_FORK_REPRESENTATIVE_REF_SHA256
+    ):
+        raise RuntimeError("FinMem representative public-fork ref census changed")
+    refs = [line.split("\t", 1) for line in ref_lines]
+    unique_heads = sorted({head for _, head in refs})
+    if (
+        len(unique_heads) != PUBLIC_FORK_REPRESENTATIVE_REF_COUNT
+        or _sha256_lines(unique_heads) != PUBLIC_FORK_UNIQUE_HEAD_SHA256
+    ):
+        raise RuntimeError("FinMem public-fork unique-head census changed")
+
+    if sha256(branch_ref_snapshot) != PUBLIC_FORK_SNAPSHOT_SHA256:
+        raise RuntimeError("FinMem public-fork branch-ref snapshot bytes changed")
+    with branch_ref_snapshot.open(newline="", encoding="utf-8") as handle:
+        branch_rows = list(csv.DictReader(handle))
+    expected_columns = {
+        "repository",
+        "branch",
+        "head_commit",
+        "repository_created_at",
+        "repository_pushed_at",
+        "head_committed_at",
+        "head_author_login",
+        "head_author_name",
+        "head_author_email",
+        "head_subject",
+    }
+    if not branch_rows or set(branch_rows[0]) != expected_columns:
+        raise RuntimeError("FinMem public-fork branch-ref snapshot schema changed")
+    branch_rows.sort(key=lambda row: (row["repository"].lower(), row["branch"].lower(), row["head_commit"]))
+    canonical_branch_refs = [f"{row['repository']}\t{row['branch']}\t{row['head_commit']}" for row in branch_rows]
+    if (
+        len(branch_rows) != PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT
+        or len({row["repository"] for row in branch_rows}) != PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT
+        or len({(row["repository"], row["branch"]) for row in branch_rows}) != len(branch_rows)
+        or _sha256_lines(canonical_branch_refs) != PUBLIC_FORK_GRAPHQL_REF_SHA256
+        or {row["head_commit"] for row in branch_rows} != set(unique_heads)
+    ):
+        raise RuntimeError("FinMem complete public-fork branch-ref snapshot changed")
+
+    expected_structured_data_paths = {
+        FORK_MINIRUN_HEAD: (
+            "Fake-Sample-Data/example_input/Fake-News-Data-for-Each-Stock/AMZN_fake.csv",
+            "Fake-Sample-Data/example_input/Fake-News-Data-for-Each-Stock/MSFT_fake.csv",
+            "Fake-Sample-Data/example_input/Fake-News-Data-for-Each-Stock/NFLX_fake.csv",
+            "Fake-Sample-Data/example_input/Fake-News-Data-for-Each-Stock/TSLA_fake.csv",
+            "Fake-Sample-Data/example_input/filing_data.parquet",
+            "tsla_gpt3.5.csv",
+        )
+    }
+    structured_data_suffixes = (".csv", ".jsonl", ".log", ".npy", ".npz", ".parquet")
+    rows: List[Dict[str, Any]] = []
+    extra_commits_by_head: Dict[str, List[str]] = {}
+    changed_paths_by_head: Dict[str, List[str]] = {}
+    divergent_surface: List[str] = []
+    extra_author_emails: set[str] = set()
+    extra_author_names: set[str] = set()
+    all_extra_commits: set[str] = set()
+    all_extra_paths: set[str] = set()
+    for ref, head in refs:
+        extra_commits = sorted(git_text(census_root, "rev-list", head, "--not", SOURCE_COMMIT).splitlines())
+        changed_paths: set[str] = set()
+        extra_dates: List[str] = []
+        for commit in extra_commits:
+            changed_paths.update(
+                path
+                for path in git_text(
+                    census_root,
+                    "diff-tree",
+                    "--root",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    commit,
+                ).splitlines()
+                if path
+            )
+            meta = git_text(census_root, "show", "-s", "--format=%aI%x00%an%x00%ae", commit).rstrip("\n").split("\0")
+            if len(meta) != 3:
+                raise RuntimeError(f"Malformed FinMem fork commit metadata: {commit}")
+            extra_dates.append(meta[0])
+            extra_author_names.add(meta[1])
+            extra_author_emails.add(meta[2])
+        ordered_paths = sorted(changed_paths)
+        extra_commits_by_head[head] = extra_commits
+        changed_paths_by_head[head] = ordered_paths
+        if extra_commits:
+            divergent_surface.append(f"{head}\t{';'.join(extra_commits)}\t{';'.join(ordered_paths)}")
+            all_extra_commits.update(extra_commits)
+            all_extra_paths.update(ordered_paths)
+            expected = DIVERGENT_FORK_FINDINGS.get(head)
+            if expected is None:
+                raise RuntimeError(f"Unreviewed divergent FinMem fork head: {head}")
+            if (len(extra_commits), len(ordered_paths)) != (
+                expected["commits"],
+                expected["paths"],
+            ):
+                raise RuntimeError(f"FinMem fork surface changed for {head}")
+            paper_v2_time = datetime.fromisoformat(str(PAPER_VERSIONS["v2"]["submitted_at"]).replace("Z", "+00:00"))
+            if any(datetime.fromisoformat(value) <= paper_v2_time for value in extra_dates):
+                raise RuntimeError(f"Expected only post-paper divergent commits for {head}")
+            classification = str(expected["classification"])
+        else:
+            classification = "official_public_history_reachable"
+
+        final_structured_data_paths = tuple(
+            path
+            for path in ordered_paths
+            if path.lower().endswith(structured_data_suffixes) and git_object_exists(census_root, f"{head}:{path}")
+        )
+        if final_structured_data_paths != expected_structured_data_paths.get(head, ()):
+            raise RuntimeError(f"FinMem fork structured-data surface changed for {head}: {final_structured_data_paths}")
+        head_meta = (
+            git_text(census_root, "show", "-s", "--format=%cI%x00%an%x00%ae%x00%s", head).rstrip("\n").split("\0", 3)
+        )
+        if len(head_meta) != 4:
+            raise RuntimeError(f"Malformed FinMem fork-head metadata: {head}")
+        matching_branch_rows = [row for row in branch_rows if row["head_commit"] == head]
+        rows.append(
+            {
+                "representative_ref": ref,
+                "head_commit": head,
+                "head_date": head_meta[0],
+                "head_author_name": head_meta[1],
+                "head_author_email": head_meta[2],
+                "head_subject": head_meta[3],
+                "branch_ref_count": len(matching_branch_rows),
+                "repository_count": len({row["repository"] for row in matching_branch_rows}),
+                "repositories": ";".join(sorted({row["repository"] for row in matching_branch_rows})),
+                "extra_commit_count_beyond_official_head": len(extra_commits),
+                "extra_changed_path_count": len(ordered_paths),
+                "final_changed_structured_data_path_count": len(final_structured_data_paths),
+                "final_changed_structured_data_paths": ";".join(final_structured_data_paths),
+                "official_source_author_identity_match_in_extra_commits": False,
+                "classification": classification,
+                "paper_result_credit": False,
+            }
+        )
+
+    base_reachable = [row for row in rows if not row["extra_commit_count_beyond_official_head"]]
+    if len(base_reachable) != PUBLIC_FORK_BASE_REACHABLE_HEAD_COUNT:
+        raise RuntimeError("FinMem base-reachable public-fork head count changed")
+    if len(rows) - len(base_reachable) != PUBLIC_FORK_DIVERGENT_HEAD_COUNT:
+        raise RuntimeError("FinMem divergent public-fork head count changed")
+    if set(extra_commits_by_head) != set(unique_heads):
+        raise RuntimeError("FinMem unique-head review coverage changed")
+    if set(DIVERGENT_FORK_FINDINGS) != {head for head, commits in extra_commits_by_head.items() if commits}:
+        raise RuntimeError("FinMem reviewed divergent-head set changed")
+    if _sha256_lines(divergent_surface) != PUBLIC_FORK_DIVERGENT_SURFACE_SHA256:
+        raise RuntimeError("FinMem divergent fork commit/path surface changed")
+    if (
+        len(all_extra_commits) != PUBLIC_FORK_DIVERGENT_COMMIT_COUNT
+        or _sha256_lines(sorted(all_extra_commits)) != PUBLIC_FORK_DIVERGENT_COMMIT_SHA256
+        or len(all_extra_paths) != PUBLIC_FORK_DIVERGENT_PATH_COUNT
+        or _sha256_lines(sorted(all_extra_paths)) != PUBLIC_FORK_DIVERGENT_PATH_SHA256
+    ):
+        raise RuntimeError("FinMem aggregate divergent fork surface changed")
+    if extra_author_emails != EXPECTED_DIVERGENT_AUTHOR_EMAILS:
+        raise RuntimeError(f"FinMem divergent fork author identities changed: {extra_author_emails}")
+    if extra_author_emails & OFFICIAL_SOURCE_AUTHOR_EMAILS:
+        raise RuntimeError("FinMem divergent commits now match an official source author email")
+    if extra_author_names & OFFICIAL_SOURCE_AUTHOR_NAMES:
+        raise RuntimeError("FinMem divergent commits now match an official source author name")
+
+    mini_config = git_blob(census_root, FORK_MINIRUN_HEAD, "config/tsla_gpt_config.toml")
+    mini_action = git_blob(census_root, FORK_MINIRUN_HEAD, "tsla_gpt3.5.csv")
+    mini_state = git_blob(
+        census_root,
+        FORK_MINIRUN_HEAD,
+        "data/05_train_model_output/agent_1/state_dict.pkl",
+    )
+    if (
+        hashlib.sha256(mini_config).hexdigest() != FORK_MINIRUN_CONFIG_SHA256
+        or b'model = "phi3v"' not in mini_config
+        or b"top_k = 3" not in mini_config
+        or hashlib.sha256(mini_action).hexdigest() != FORK_MINIRUN_ACTION_SHA256
+        or b"gpt-3.5-turbo-0125" not in mini_state
+    ):
+        raise RuntimeError("FinMem post-paper TSLA mini-run evidence changed")
+    mini_action_rows = list(csv.DictReader(io.StringIO(mini_action.decode("utf-8"))))
+    if (
+        len(mini_action_rows) != 19
+        or mini_action_rows[0]["date"] != "2016-01-13"
+        or mini_action_rows[-1]["date"] != "2016-02-09"
+        or {row["symbol"] for row in mini_action_rows} != {"TSLA"}
+        or {row["direction"] for row in mini_action_rows} != {"0"}
+    ):
+        raise RuntimeError("FinMem post-paper TSLA mini-run action path changed")
+
+    checkpoint_config = git_blob(census_root, FORK_CHECKPOINT_HEAD, "config/tsla_gpt_config.toml")
+    checkpoint_state = git_blob(
+        census_root,
+        FORK_CHECKPOINT_HEAD,
+        "data/06_train_checkpoint/agent_1/state_dict.pkl",
+    )
+    checkpoint_result_paths = git_text(
+        census_root,
+        "ls-tree",
+        "-r",
+        "--name-only",
+        FORK_CHECKPOINT_HEAD,
+        "data/09_results",
+    ).splitlines()
+    if (
+        hashlib.sha256(checkpoint_config).hexdigest() != FORK_CHECKPOINT_CONFIG_SHA256
+        or b'model = "gpt-3.5-turbo-0125"' not in checkpoint_config
+        or b"top_k = 3" not in checkpoint_config
+        or b"gpt-3.5-turbo-0125" not in checkpoint_state
+        or checkpoint_result_paths != ["data/09_results/.gitkeep"]
+    ):
+        raise RuntimeError("FinMem post-paper checkpoint evidence changed")
+    deleted_author_tree_paths = [
+        path
+        for path in changed_paths_by_head[FORK_CHECKPOINT_HEAD]
+        if path.startswith("FinMem-LLM-trading-main/Visualize-metrics-test/")
+    ]
+    if (
+        len(deleted_author_tree_paths) != 33
+        or sum(path.lower().endswith(".csv") for path in deleted_author_tree_paths) != 18
+        or sum(path.lower().endswith(".ipynb") for path in deleted_author_tree_paths) != 7
+        or any(git_object_exists(census_root, f"{FORK_CHECKPOINT_HEAD}:{path}") for path in deleted_author_tree_paths)
+        or git_text(
+            census_root,
+            "rev-parse",
+            "316d5ac5140945f4886faaa9c4437f6aeacf67ed^",
+        ).strip()
+        != SOURCE_ROOT_COMMIT
+    ):
+        raise RuntimeError("FinMem fork deletion lineage changed")
+
+    summary: Dict[str, Any] = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_REST_COUNT,
+        "graphql_accessible_forks": PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT,
+        "rest_minus_accessible_fork_gap": (PUBLIC_FORK_REST_COUNT - PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT),
+        "accessibility_gap_interpretation": ("deleted_private_or_otherwise_unavailable_not_inspected"),
+        "graphql_accessible_branch_refs": PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT,
+        "graphql_accessible_branch_ref_census_sha256": PUBLIC_FORK_GRAPHQL_REF_SHA256,
+        "graphql_accessible_branch_ref_snapshot_file_sha256": sha256(branch_ref_snapshot),
+        "representative_unique_head_refs": len(rows),
+        "representative_ref_census_sha256": _sha256_lines(ref_lines),
+        "unique_heads": len(unique_heads),
+        "unique_head_sha256": _sha256_lines(unique_heads),
+        "heads_reachable_from_official_history": len(base_reachable),
+        "divergent_heads_reviewed": len(rows) - len(base_reachable),
+        "divergent_extra_commits_reviewed": len(all_extra_commits),
+        "divergent_changed_paths_reviewed": len(all_extra_paths),
+        "divergent_heads_matching_official_source_author_identity": 0,
+        "postpaper_native_action_paths_discovered": 1,
+        "postpaper_native_action_path": "tsla_gpt3.5.csv",
+        "postpaper_native_action_rows": len(mini_action_rows),
+        "postpaper_native_action_date_range": "2016-01-13/2016-02-09",
+        "postpaper_native_action_unique_directions": [0],
+        "postpaper_native_action_matches_paper_model_dates_topk_or_trials": False,
+        "postpaper_checkpoint_head": FORK_CHECKPOINT_HEAD,
+        "postpaper_checkpoint_final_result_paths": checkpoint_result_paths,
+        "known_author_history_paths_deleted_not_newly_contributed": len(deleted_author_tree_paths),
+        "paper_result_artifacts_discovered_in_divergent_fork_heads": 0,
+        "paper_result_credit": False,
+        "pickle_execution_policy": "byte_scan_only_no_deserialization",
+    }
+    return rows, summary
+
+
 def build_audit(
     source_root: Path,
     paper_path: Path,
     paper_version_root: Path,
     price_root: Path,
+    fork_census_root: Path,
+    fork_snapshot_path: Path,
     output_dir: Path,
 ) -> Dict[str, Any]:
     commit = git_head(source_root)
@@ -1166,6 +1515,7 @@ def build_audit(
     table_4_forensics, table_4_forensic_summary = table_4_volatility_forensics(
         source_root, author_outputs, action_reproduction
     )
+    fork_heads, fork_summary = public_fork_census(fork_census_root, fork_snapshot_path)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "tables_2_5_conformance.csv", conformance, list(conformance[0]))
@@ -1203,28 +1553,30 @@ def build_audit(
         table_4_forensics,
         list(table_4_forensics[0]),
     )
+    write_csv(
+        output_dir / "public_fork_unique_head_inventory.csv",
+        fork_heads,
+        list(fork_heads[0]),
+    )
     (output_dir / "table_4_volatility_forensics.json").write_text(
         json.dumps(table_4_forensic_summary, indent=2) + "\n", encoding="utf-8"
     )
+    (output_dir / "public_fork_census.json").write_text(json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8")
 
     matched = sum(row["status"] == "exact_displayed_precision_match" for row in conformance)
     mismatched = sum(row["status"].startswith("mismatch") for row in conformance)
     unverifiable = sum(row["status"].startswith("unverifiable") for row in conformance)
-    volatility_mismatches = sum(
-        row["status"] == "paper_internal_annualization_mismatch" for row in volatility
-    )
+    volatility_mismatches = sum(row["status"] == "paper_internal_annualization_mismatch" for row in volatility)
     row_groups: Dict[Tuple[int, str, str], List[Mapping[str, Any]]] = {}
     for row in conformance:
         key = (row["paper_table"], row["scope"], row["strategy_or_configuration"])
         row_groups.setdefault(key, []).append(row)
     fully_matched_rows = sum(
-        all(row["status"] == "exact_displayed_precision_match" for row in rows)
-        for rows in row_groups.values()
+        all(row["status"] == "exact_displayed_precision_match" for row in rows) for rows in row_groups.values()
     )
     mismatched_rows = sum(any(row["status"].startswith("mismatch") for row in rows) for rows in row_groups.values())
     unverifiable_rows = sum(
-        all(row["status"].startswith("unverifiable") for row in rows)
-        for rows in row_groups.values()
+        all(row["status"].startswith("unverifiable") for row in rows) for rows in row_groups.values()
     )
     if (matched, mismatched, unverifiable) != (16, 24, 195):
         raise RuntimeError(
@@ -1236,21 +1588,13 @@ def build_audit(
     if volatility_mismatches != 4:
         raise RuntimeError(f"Expected four Table 4 annualization mismatches, got {volatility_mismatches}")
 
-    author_matched = sum(
-        row["status"] == "author_output_exact_displayed_precision_match"
-        for row in author_outputs
-    )
+    author_matched = sum(row["status"] == "author_output_exact_displayed_precision_match" for row in author_outputs)
     author_last_decimal = sum(
-        row["status"] == "author_output_one_last_decimal_unit_difference"
-        for row in author_outputs
+        row["status"] == "author_output_one_last_decimal_unit_difference" for row in author_outputs
     )
-    author_conflicted = sum(
-        row["status"] == "paper_conflicts_with_preserved_author_output"
-        for row in author_outputs
-    )
+    author_conflicted = sum(row["status"] == "paper_conflicts_with_preserved_author_output" for row in author_outputs)
     action_matched = sum(
-        row["status"] == "historical_action_exact_displayed_precision_match"
-        for row in action_reproduction
+        row["status"] == "historical_action_exact_displayed_precision_match" for row in action_reproduction
     )
     action_conflicted = len(action_reproduction) - action_matched
     if (author_matched, author_last_decimal, author_conflicted) != (223, 4, 8):
@@ -1288,10 +1632,7 @@ def build_audit(
         )
     ]
     shipped_result_files = [
-        path
-        for directory in result_dirs
-        for path in directory.glob("*")
-        if path.is_file() and path.name != ".gitkeep"
+        path for directory in result_dirs for path in directory.glob("*") if path.is_file() and path.name != ".gitkeep"
     ]
     manifest: Dict[str, Any] = {
         "audit": "FinMem paper claims versus pinned public source history and price inputs",
@@ -1301,9 +1642,7 @@ def build_audit(
         "paper_url": PAPER_URL,
         "paper_sha256": PAPER_SHA256,
         "official_arxiv_versions_audited": len(paper_versions),
-        "official_arxiv_pdf_pages_pinned": sum(
-            int(row["pdf_pages"]) for row in paper_versions
-        ),
+        "official_arxiv_pdf_pages_pinned": sum(int(row["pdf_pages"]) for row in paper_versions),
         "official_table_4_pdf_pages_visually_inspected": len(paper_versions),
         "official_arxiv_source_files_inventoried": len(paper_source_files),
         "official_arxiv_version_inventory": paper_versions,
@@ -1337,9 +1676,7 @@ def build_audit(
         "main_table_buy_hold_rows_fully_matched": 0,
         "paper_table_4_annualization_identity_mismatches": volatility_mismatches,
         "paper_other_table_annualization_identity_mismatches": 0,
-        "table_4_disputed_volatility_cells_forensically_traced": len(
-            table_4_forensics
-        ),
+        "table_4_disputed_volatility_cells_forensically_traced": len(table_4_forensics),
         "table_4_annualized_cells_matching_native_daily_values": 4,
         "table_4_daily_cells_matching_separate_tsla_full_output": 2,
         "table_4_daily_cells_absent_from_all_reachable_source_blobs": 2,
@@ -1347,6 +1684,23 @@ def build_audit(
         "current_head_native_action_or_return_files_shipped": len(shipped_result_files),
         "historical_action_csvs_in_public_git_history": len(action_inventory),
         "historical_repository_audit": history,
+        "public_fork_census_date": fork_summary["census_date"],
+        "github_rest_reported_public_forks": fork_summary["github_rest_reported_forks"],
+        "graphql_accessible_public_forks": fork_summary["graphql_accessible_forks"],
+        "public_fork_accessibility_gap": fork_summary["rest_minus_accessible_fork_gap"],
+        "public_fork_branch_refs_examined": fork_summary["graphql_accessible_branch_refs"],
+        "public_fork_unique_heads_examined": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_examined": fork_summary["divergent_heads_reviewed"],
+        "public_fork_divergent_extra_commits_examined": fork_summary["divergent_extra_commits_reviewed"],
+        "public_fork_divergent_changed_paths_examined": fork_summary["divergent_changed_paths_reviewed"],
+        "public_fork_author_attributed_divergent_heads": fork_summary[
+            "divergent_heads_matching_official_source_author_identity"
+        ],
+        "public_fork_additional_native_action_paths": fork_summary["postpaper_native_action_paths_discovered"],
+        "public_fork_paper_result_artifacts_discovered": fork_summary[
+            "paper_result_artifacts_discovered_in_divergent_fork_heads"
+        ],
+        "public_fork_paper_result_credit": fork_summary["paper_result_credit"],
         "native_training_checkpoints_shipped": False,
         "native_testing_checkpoints_shipped": False,
         "original_paper_news_filings_snapshot_shipped": False,
@@ -1378,7 +1732,11 @@ def build_audit(
             "experiment, and two daily cells are absent from all 171 reachable source blobs. "
             "None earns result credit. This is strong paper-output lineage but not an end-to-end "
             "FinMem rerun: the original inputs, memories, complete five-trial outputs, and exact "
-            "paper configuration remain absent from the current public tree."
+            "paper configuration remain absent from the current public tree. An exhaustive dated "
+            "census of 181 accessible forks and 187 branch refs found 11 divergent unique heads, "
+            "but no author-attributed divergent lineage or additional paper-result artifact. The "
+            "one new action CSV is an unaffiliated, post-paper, 19-row all-hold TSLA mini-run using "
+            "the wrong model, dates, and top-K, so it receives zero paper credit."
         ),
         "source_file_sha256": {
             name: sha256(source_root / name)
@@ -1414,6 +1772,12 @@ trained memories, complete five-trial paths, and exact paper configuration remai
 - Historical author-output snapshot: commit `{HISTORICAL_ARTIFACT_COMMIT}`
   (2023-11-30), deleted from the current tree by commit
   `{HISTORICAL_DELETION_COMMIT}` (2024-02-09).
+- Public-fork census: GitHub REST reported {fork_summary["github_rest_reported_forks"]}
+  forks on {fork_summary["census_date"]}; GraphQL exposed
+  {fork_summary["graphql_accessible_forks"]} repositories and
+  {fork_summary["graphql_accessible_branch_refs"]} branch refs. The
+  {fork_summary["rest_minus_accessible_fork_gap"]} unavailable repositories are
+  explicitly not claimed as inspected.
 
 ## What is genuinely verified or reproduced
 
@@ -1426,8 +1790,8 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   contain {len(paper_source_files)} files in total. Table 4 was visually inspected on
   v1 page 17 and v2 page 18, and the printed cells were cross-checked against extracted
   PDF text and primary TeX. The same eight disputed numbers survive the revision.
-- Exhaustive byte scanning covers all {history['reachable_blobs']} blobs in the complete
-  {history['reachable_commits']}-commit source history. The four paper annualized cells
+- Exhaustive byte scanning covers all {history["reachable_blobs"]} blobs in the complete
+  {history["reachable_commits"]}-commit source history. The four paper annualized cells
   exactly equal the preserved character output's daily-volatility cells. Buy-and-Hold
   and Self-Adaptive daily values occur in a separate `TSLA-full.csv` notebook output
   whose returns and Sharpe ratios establish that it is a different experiment. The
@@ -1441,6 +1805,19 @@ trained memories, complete five-trial paths, and exact paper configuration remai
 - This is stronger than paper-value transcription: it connects the paper values to
   author-shipped outputs and independently replays the ablation metric path. It is
   still not an end-to-end rerun of FinMem's LLM decisions or five repeated trials.
+- The complete accessible-fork snapshot collapses to {fork_summary["unique_heads"]}
+  unique heads: {fork_summary["heads_reachable_from_official_history"]} are reachable
+  from official history and all {fork_summary["divergent_heads_reviewed"]} divergent
+  heads were reviewed across {fork_summary["divergent_extra_commits_reviewed"]} extra
+  commits and {fork_summary["divergent_changed_paths_reviewed"]} changed paths. None
+  matches an official-source author identity or contributes a paper-result artifact.
+  One post-paper fork contains a 19-row, 2016 TSLA action CSV whose directions are all
+  hold, while its active config is phi3v/top-K=3 and its checkpoint identifies
+  GPT-3.5. A second contains GPT-3.5/top-K=3 TSLA checkpoint state but no action or
+  metric result file. These are unaffiliated mini-runs, not the paper's GPT-4-Turbo,
+  top-K=5, five-ticker, five-trial lineage, and receive zero paper credit. The second
+  branch deletes the 33-file historical author-output tree from the official root;
+  those deleted files are already counted once as official history, not fork evidence.
 
 - The released metric formulas and a hash-pinned Yahoo adjusted-close retrieval
   reproduce the full five-metric TSLA Buy-and-Hold row exactly at four decimals for
@@ -1497,9 +1874,7 @@ a CI failure is desired until native paper action paths and original inputs exis
         for path in sorted(output_dir.iterdir())
         if path.is_file() and path.name != "manifest.json"
     }
-    (output_dir / "manifest.json").write_text(
-        json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
-    )
+    (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
 
 
@@ -1547,6 +1922,21 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--fork-census-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "FINMEM_FORK_CENSUS_ROOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/finmem_fork_census",
+            )
+        ),
+    )
+    parser.add_argument(
+        "--fork-snapshot",
+        type=Path,
+        default=project_root / "paper_runs/paper_replication_audits/finmem/public_fork_branch_ref_snapshot.csv",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=project_root / "paper_runs/paper_replication_audits/finmem",
@@ -1562,6 +1952,8 @@ def main() -> int:
         args.paper_pdf.resolve(),
         args.paper_version_root.resolve(),
         args.price_root.resolve(),
+        args.fork_census_root.resolve(),
+        args.fork_snapshot.resolve(),
         args.output_dir.resolve(),
     )
     print(json.dumps(manifest, indent=2))

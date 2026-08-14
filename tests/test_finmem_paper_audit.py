@@ -32,19 +32,14 @@ def test_paper_targets_cover_every_table_2_to_5_metric_cell() -> None:
         4: 20,
         5: 25,
     }
-    groups = {
-        (row["paper_table"], row["scope"], row["strategy_or_configuration"])
-        for row in rows
-    }
+    groups = {(row["paper_table"], row["scope"], row["strategy_or_configuration"]) for row in rows}
     assert len(groups) == 47
     assert Counter(row["metric"] for row in rows) == {metric: 47 for metric in audit.METRICS}
 
 
 def test_table_4_encodes_the_papers_volatility_values_without_repairing_them() -> None:
     rows = audit.volatility_identity_audit()
-    mismatches = [
-        row for row in rows if row["status"] == "paper_internal_annualization_mismatch"
-    ]
+    mismatches = [row for row in rows if row["status"] == "paper_internal_annualization_mismatch"]
     assert len(rows) == 47
     assert len(mismatches) == 4
     assert {row["paper_table"] for row in mismatches} == {4}
@@ -68,14 +63,12 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     paper_versions = read_csv(output / "official_paper_version_inventory.csv")
     paper_sources = read_csv(output / "official_paper_source_inventory.csv")
     table_4_provenance = read_csv(output / "table_4_volatility_provenance.csv")
-    table_4_forensics = json.loads(
-        (output / "table_4_volatility_forensics.json").read_text(encoding="utf-8")
-    )
+    table_4_forensics = json.loads((output / "table_4_volatility_forensics.json").read_text(encoding="utf-8"))
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
+    fork_branch_refs = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_summary = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
 
-    assert (
-        manifest["overall_status"]
-        == "author_outputs_partially_verified_not_end_to_end_reproduced"
-    )
+    assert manifest["overall_status"] == "author_outputs_partially_verified_not_end_to_end_reproduced"
     assert manifest["full_paper_reproduced"] is False
     assert manifest["end_to_end_agent_result_cells_reproduced"] == 0
     assert manifest["paper_result_rows_total"] == 47
@@ -122,6 +115,19 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     assert history["historical_metrics_sha256"] == audit.HISTORICAL_METRICS_SHA256
     assert history["deletion_commit"] == audit.HISTORICAL_DELETION_COMMIT
     assert history["deleted_tree_files"] == 33
+    assert manifest["public_fork_census_date"] == "2026-08-14"
+    assert manifest["github_rest_reported_public_forks"] == 192
+    assert manifest["graphql_accessible_public_forks"] == 181
+    assert manifest["public_fork_accessibility_gap"] == 11
+    assert manifest["public_fork_branch_refs_examined"] == 187
+    assert manifest["public_fork_unique_heads_examined"] == 20
+    assert manifest["public_fork_divergent_heads_examined"] == 11
+    assert manifest["public_fork_divergent_extra_commits_examined"] == 45
+    assert manifest["public_fork_divergent_changed_paths_examined"] == 299
+    assert manifest["public_fork_author_attributed_divergent_heads"] == 0
+    assert manifest["public_fork_additional_native_action_paths"] == 1
+    assert manifest["public_fork_paper_result_artifacts_discovered"] == 0
+    assert manifest["public_fork_paper_result_credit"] is False
     assert manifest["original_paper_news_filings_snapshot_shipped"] is False
     assert manifest["paper_selects_best_risk_profile_on_test_outcome"] is True
     assert manifest["paper_metric_is_self_financing_portfolio_return"] is False
@@ -140,9 +146,7 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     assert all(row["table_4_values_verified_in_primary_tex"] == "yes" for row in paper_versions)
     assert all(row["annualization_equation_verified_in_primary_tex"] == "yes" for row in paper_versions)
     assert all(
-        row["table_4_revision_status"]
-        == "same_numeric_values_retained_across_v1_and_v2"
-        for row in paper_versions
+        row["table_4_revision_status"] == "same_numeric_values_retained_across_v1_and_v2" for row in paper_versions
     )
     assert len(paper_sources) == 71
     assert Counter(row["version"] for row in paper_sources) == {"v1": 32, "v2": 39}
@@ -155,9 +159,7 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
         "paper_only_value_absent_from_all_reachable_source_blobs": 2,
     }
     assert all(row["defensible_paper_result_credit"] == "no" for row in table_4_provenance)
-    annual = [
-        row for row in table_4_provenance if row["metric"] == "annualized_volatility_pct"
-    ]
+    annual = [row for row in table_4_provenance if row["metric"] == "annualized_volatility_pct"]
     assert all(
         math.isclose(
             float(row["paper_v2_percent_value"]),
@@ -169,8 +171,7 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     absent = {
         row["strategy_or_configuration"]
         for row in table_4_provenance
-        if row["source_relation"]
-        == "paper_only_value_absent_from_all_reachable_source_blobs"
+        if row["source_relation"] == "paper_only_value_absent_from_all_reachable_source_blobs"
     }
     assert absent == {"risk_seeking", "risk_averse"}
     assert table_4_forensics["official_arxiv_versions_audited"] == 2
@@ -180,6 +181,40 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     assert table_4_forensics["reachable_blobs_byte_scanned"] == 171
     assert table_4_forensics["unique_historical_notebook_blobs"] == 1
     assert table_4_forensics["cells_receiving_defensible_paper_result_credit"] == 0
+
+    assert len(fork_branch_refs) == 187
+    assert len({row["repository"] for row in fork_branch_refs}) == 181
+    assert len({row["head_commit"] for row in fork_branch_refs}) == 20
+    assert len(fork_heads) == 20
+    assert Counter(row["classification"] for row in fork_heads)["official_public_history_reachable"] == 9
+    divergent = [row for row in fork_heads if row["classification"] != "official_public_history_reachable"]
+    assert len(divergent) == 11
+    assert sum(int(row["extra_commit_count_beyond_official_head"]) for row in divergent) == 47
+    assert all(row["official_source_author_identity_match_in_extra_commits"] == "False" for row in divergent)
+    assert all(row["paper_result_credit"] == "False" for row in fork_heads)
+    minirun = next(row for row in fork_heads if row["head_commit"] == audit.FORK_MINIRUN_HEAD)
+    assert minirun["classification"] == ("unattributed_postpaper_tsla_hold_only_minirun_wrong_model_dates_topk")
+    assert minirun["final_changed_structured_data_path_count"] == "6"
+    checkpoint = next(row for row in fork_heads if row["head_commit"] == audit.FORK_CHECKPOINT_HEAD)
+    assert checkpoint["classification"] == ("unattributed_postpaper_tsla_checkpoint_without_action_or_metric_output")
+    assert checkpoint["final_changed_structured_data_path_count"] == "0"
+    assert fork_summary["github_rest_reported_forks"] == 192
+    assert fork_summary["graphql_accessible_forks"] == 181
+    assert fork_summary["rest_minus_accessible_fork_gap"] == 11
+    assert fork_summary["graphql_accessible_branch_refs"] == 187
+    assert fork_summary["unique_heads"] == 20
+    assert fork_summary["heads_reachable_from_official_history"] == 9
+    assert fork_summary["divergent_heads_reviewed"] == 11
+    assert fork_summary["divergent_extra_commits_reviewed"] == 45
+    assert fork_summary["divergent_changed_paths_reviewed"] == 299
+    assert fork_summary["divergent_heads_matching_official_source_author_identity"] == 0
+    assert fork_summary["postpaper_native_action_rows"] == 19
+    assert fork_summary["postpaper_native_action_unique_directions"] == [0]
+    assert fork_summary["postpaper_native_action_matches_paper_model_dates_topk_or_trials"] is False
+    assert fork_summary["known_author_history_paths_deleted_not_newly_contributed"] == 33
+    assert fork_summary["paper_result_artifacts_discovered_in_divergent_fork_heads"] == 0
+    assert fork_summary["paper_result_credit"] is False
+    assert fork_summary["pickle_execution_policy"] == "byte_scan_only_no_deserialization"
 
     assert len(conformance) == 235
     assert Counter(row["status"] for row in conformance) == {
@@ -212,9 +247,7 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
         "paper_conflicts_with_preserved_author_output": 8,
     }
     substantive_conflicts = [
-        row
-        for row in author_outputs
-        if row["status"] == "paper_conflicts_with_preserved_author_output"
+        row for row in author_outputs if row["status"] == "paper_conflicts_with_preserved_author_output"
     ]
     assert {row["paper_table"] for row in substantive_conflicts} == {"4"}
     assert {row["metric"] for row in substantive_conflicts} == {
@@ -238,9 +271,7 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
         "historical_action_exact_displayed_precision_match": 67,
         "paper_conflicts_with_historical_action_replay": 8,
     }
-    assert Counter(
-        (row["paper_table"], row["status"]) for row in action_reproduction
-    ) == {
+    assert Counter((row["paper_table"], row["status"]) for row in action_reproduction) == {
         ("3", "historical_action_exact_displayed_precision_match"): 30,
         ("4", "historical_action_exact_displayed_precision_match"): 12,
         ("4", "paper_conflicts_with_historical_action_replay"): 8,
@@ -262,9 +293,12 @@ def test_native_ledger_credits_historical_actions_without_claiming_common_task_f
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:partial_227_of_235_author_output_cells_corroborated_"
-        "67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells"
+        "67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells_"
+        "181_accessible_forks_187_refs_20_unique_heads_exhausted"
     )
     note = row["concise_evidence_note"]
     assert "223 exact" in note
     assert "18 dated action CSVs" in note
+    assert "181 accessible forks" in note
+    assert "19-row" in note
     assert "not end-to-end FinMem reproduction" in note
