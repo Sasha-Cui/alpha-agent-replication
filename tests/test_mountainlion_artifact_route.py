@@ -83,7 +83,8 @@ def test_native_ledger_credits_components_but_no_native_result_output() -> None:
     assert row["prespecified_G7_monthly_common_task_compatible"] == "N"
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_zero_of_20_performance_cells_public_components_only"
+        "paper_audit:completed_zero_of_20_performance_cells_public_components_only_"
+        "full_2273_commit_histories_2_forks_2_refs_2_unique_heads_exhausted"
     )
     assert row["fidelity_class"] == "F1_static_no_native_output"
     note = row["concise_evidence_note"]

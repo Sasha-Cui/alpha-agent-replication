@@ -83,7 +83,8 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_"
         "empirical_panels_full_six_commit_history_direct_coauthor_framework_five_component_checks_broken_"
-        "cli_and_compile_missing_trading_lineage"
+        "cli_and_compile_missing_trading_lineage_2_forks_2_refs_2_official_history_"
+        "heads_exhausted"
     )
     note = row["concise_evidence_note"]
     for marker in (
