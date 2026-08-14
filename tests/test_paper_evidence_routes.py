@@ -149,23 +149,24 @@ def test_quantevolver_paper_audit_stays_separate_from_component_gate() -> None:
     assert "3/3 grade-B component gate" in row["precise_native_or_access_blocker"]
 
 
-def test_quantaalpha_audit_credits_components_but_zero_paper_results() -> None:
+def test_quantaalpha_audit_credits_baseline_but_not_headline_result() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
     row = routes[routes["canonical_work_id"].eq("CensusArxiv260207085")].iloc[0]
     assert row["paper_evidence_route"] == "public_code_available"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:partial_270_rendered_author_output_units_corroborated_"
-        "zero_of_344_table_cells_regenerated_components_only"
+        "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_"
+        "regenerated_270_author_output_units_main_claim_not_reproduced"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
     assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
-    assert "all 135 Python files" in row["precise_native_or_access_blocker"]
-    assert (
-        "196/344 table cells have author-output correspondence while 0/344 count as "
-        "native regenerations" in row["precise_native_or_access_blocker"]
-    )
+    assert "All 135 Python files" in row["precise_native_or_access_blocker"]
+    assert "28-commit author-attributed public lineage" in row["precise_native_or_access_blocker"]
+    assert "all eight v1/v2 metrics" in row["precise_native_or_access_blocker"]
+    assert "23/644 version-specific main-table cells" in row["precise_native_or_access_blocker"]
+    assert "IC 0.04170 versus 0.15008" in row["precise_native_or_access_blocker"]
+    assert "not an end-to-end QuantaAlpha reproduction" in row["precise_native_or_access_blocker"]
     assert "Large v1/v2-to-v3 result revisions" in row["precise_native_or_access_blocker"]
 
 

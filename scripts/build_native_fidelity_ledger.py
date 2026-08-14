@@ -276,21 +276,27 @@ ARTIFACT_NOTES = {
         "Y",
         "A pinned three-revision paper audit enumerates 344 numeric result table "
         "cells, 40 labeled figure/diagram values, 47 discrete unlabeled marker "
-        "points, and 10 raster return curves. The official release is substantial: "
-        "all 135 Python files in both the initial and current revisions compile, "
-        "and dependency-isolated native AST, trajectory persistence, lineage, and "
-        "crossover-selection components execute. The official README also ships a "
-        "complete 196-cell raster of the v3 main table, byte-identical copies of the "
-        "paper-source return, annual IC/RankIC, and iteration plots, plus the 17-label "
-        "case-study raster. This corroborates 270 rendered author-output units but "
-        "regenerates none of them. The checked-in experiment and mining-loop configs conflict "
-        "with the paper, claimed trajectory-segment repair/splicing is not structurally "
-        "implemented, and the sole upstream test fails because its template is absent. "
-        "No approximately-150-factor pool, trajectories, exact model/API runs, baselines, "
-        "seeds, predictions, portfolios, return arrays, or plot arrays are shipped, so "
-        "196/344 table cells have author-output correspondence while 0/344 count as "
-        "native regenerations. Large v1/v2-to-v3 result revisions "
-        "lack released lineage, and v3 contains direct figure/prose inconsistencies.",
+        "points, and 10 raster return curves. A 28-commit author-attributed public "
+        "lineage predates paper v1 and preserves factor pools, aggregate result JSONs, "
+        "logs, plots, and an official Git-LFS daily HDF. The current official heads "
+        "do not expose that complete public history. All 135 Python files in both the "
+        "initial and current revisions compile, and dependency-isolated native AST, "
+        "trajectory persistence, lineage, and crossover-selection components execute. "
+        "The author README and paper-source plots corroborate 270 rendered output units; "
+        "pre-publication aggregate JSONs correspond at paper rounding for 74/88 examined "
+        "v1/v2 cells. These are author-output lineage, not independent regeneration. "
+        "Using the recovered Python 3.12/Qlib 0.9.7 runtime and official HDF, the native "
+        "Alpha158(20) training, prediction, IC evaluation, and Top50/drop5 portfolio "
+        "independently reproduce all eight v1/v2 metrics at displayed precision. That "
+        "single baseline row contributes 23/644 version-specific main-table cells: eight "
+        "in v1, eight in v2, and seven in v3. The best paper-configured QuantaAlpha/GPT "
+        "rerun computes 148/150 released custom factors plus Alpha158(20), but materially "
+        "misses the headline result (IC 0.04170 versus 0.15008; IR 0.87738 versus 3.32512). "
+        "Two released expressions fail under the released operator library. Exact model "
+        "calls, prompts/responses, run ordering, seeds, predictions, holdings, raw returns, "
+        "and plot arrays remain absent. Large v1/v2-to-v3 result revisions lack released "
+        "lineage, and v3 contains direct figure/prose inconsistencies. This is one strong "
+        "baseline replication, not an end-to-end QuantaAlpha reproduction.",
     ),
     "SYS-QUANT-EVOLVER": (
         "N",
@@ -1407,7 +1413,7 @@ TARGETED_EXECUTION = {
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_component_gate_separate",
-    "SYS-QUANTA-ALPHA": "paper_audit:partial_270_rendered_author_output_units_corroborated_zero_of_344_table_cells_regenerated_components_only",
+    "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_regenerated_270_author_output_units_main_claim_not_reproduced",
     "SYS-RAPTOR": "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
@@ -1419,7 +1425,7 @@ TARGETED_EXECUTION = {
 
 OUTPUT_BLOCKS = {
     "SYS-ALPHA-AGENT": "A3_CN_US_aggregate_metrics_no_six_country_security_mapping",
-    "SYS-QUANTA-ALPHA": "A3_CN_US_rendered_outputs_no_six_country_security_mapping",
+    "SYS-QUANTA-ALPHA": "A3_CN_only_factor_and_portfolio_outputs_no_six_country_security_mapping",
     "SYS-FIN-ANALYST": "A3_wrong_asset_scope_TSLA_BTC_not_six_country_security_panel",
     "SYS-JANUS-Q": "A3_CN_only_portfolio_NAV_no_six_country_security_mapping",
     "SYS-ATLAS": "A3_US_XOM_precursor_portfolio_path_no_paper_run_identifier_or_six_country_security_mapping",
