@@ -90,6 +90,20 @@ def test_committed_manifest_keeps_document_and_experiment_credit_separate() -> N
     assert manifest["official_version_cell_ids_removed_in_v3"] == 7
     assert manifest["official_versions_result_figure_assets_byte_identical"] is True
     assert manifest["official_versions_with_public_source_at_submission"] == 1
+    assert manifest["public_fork_census_date"] == "2026-08-14"
+    assert manifest["github_rest_reported_public_forks"] == 26
+    assert manifest["graphql_accessible_public_forks"] == 26
+    assert manifest["public_fork_accessibility_gap"] == 0
+    assert manifest["public_fork_branch_refs_examined"] == 30
+    assert manifest["public_fork_unique_heads_examined"] == 7
+    assert manifest["public_fork_divergent_heads_examined"] == 5
+    assert manifest["public_fork_divergent_extra_commits_examined"] == 27
+    assert manifest["public_fork_divergent_changed_paths_examined"] == 93
+    assert manifest["public_fork_author_attributed_divergent_heads"] == 0
+    assert manifest["public_fork_new_final_unique_blobs_examined"] == 24
+    assert manifest["public_fork_native_agent_result_paths_discovered"] == 0
+    assert manifest["public_fork_exact_paper_result_paths_discovered"] == 0
+    assert manifest["public_fork_paper_result_credit"] is False
     assert native["paper_source_compilation"]["exit_code"] == 0
     assert native["paper_source_compilation"]["compiled_pages"] == 43
     assert native["paper_source_compilation"]["paper_result_credit"] is False
@@ -110,6 +124,9 @@ def test_committed_source_diagnostics_capture_material_conflicts() -> None:
     history = read_csv(output / "released_source_history_inventory.csv")
     history_paths = read_csv(output / "public_source_history_path_inventory.csv")
     history_summary = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
+    fork_refs = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
+    fork_summary = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
     configs = read_csv(output / "released_config_conformance.csv")
     static = read_csv(output / "released_python_static_compilation.csv")
     artifacts = read_csv(output / "released_data_artifact_inventory.csv")
@@ -154,6 +171,41 @@ def test_committed_source_diagnostics_capture_material_conflicts() -> None:
     assert {row["native_agent_result_path"] for row in history_paths} == {"False"}
     assert history_summary["reachable_object_counts"] == {"blob": 1902, "commit": 7, "tree": 327}
     assert history_summary["unreachable_objects"] == 0
+    assert len(fork_refs) == 30
+    assert len({row["repository"] for row in fork_refs}) == 26
+    assert len({row["head_commit"] for row in fork_refs}) == 7
+    assert len(fork_heads) == 7
+    assert Counter(row["classification"] for row in fork_heads)[
+        "official_public_history_reachable"
+    ] == 2
+    divergent = [
+        row for row in fork_heads
+        if row["classification"] != "official_public_history_reachable"
+    ]
+    assert len(divergent) == 5
+    assert sum(int(row["extra_commit_count_beyond_official_head"]) for row in divergent) == 41
+    assert all(row["new_final_native_agent_output_path_count"] == "0" for row in fork_heads)
+    assert all(
+        row["official_source_author_identity_match_in_extra_commits"] == "False"
+        for row in divergent
+    )
+    assert all(row["paper_result_credit"] == "False" for row in fork_heads)
+    assert fork_summary["github_rest_reported_forks"] == 26
+    assert fork_summary["graphql_accessible_forks"] == 26
+    assert fork_summary["rest_minus_accessible_fork_gap"] == 0
+    assert fork_summary["graphql_accessible_branch_refs"] == 30
+    assert fork_summary["unique_heads"] == 7
+    assert fork_summary["heads_reachable_from_official_history"] == 2
+    assert fork_summary["divergent_heads_reviewed"] == 5
+    assert fork_summary["divergent_extra_commits_reviewed"] == 27
+    assert fork_summary["divergent_changed_paths_reviewed"] == 93
+    assert fork_summary["divergent_heads_matching_official_source_author_identity"] == 0
+    assert fork_summary["new_final_blob_references_reviewed"] == 35
+    assert fork_summary["new_final_unique_blobs_reviewed"] == 24
+    assert fork_summary["new_final_paths_reviewed"] == 18
+    assert fork_summary["native_agent_result_paths_discovered"] == 0
+    assert fork_summary["exact_paper_result_table_or_figure_paths_discovered"] == 0
+    assert fork_summary["paper_result_credit"] is False
     assert len(configs) == 42
     assert all(row["all_reported_core_fields_match"] == "True" for row in configs)
     assert Counter(row["reflection_model"] for row in configs) == {"True": 36, "False": 6}
@@ -180,6 +232,13 @@ def test_pinned_primary_sources_and_dynamic_parsers_when_available() -> None:
     assert len(audit.config_conformance_rows(source)) == 42
     assert len(audit.source_reference_diagnostics(source)) == 81
     assert len(audit.static_python_rows(source)) == 142
+
+    census = Path("/nfs/roberts/scratch/pi_btk22/zc362/finagent_fork_census")
+    snapshot = ROOT / "paper_runs/paper_replication_audits/finagent/public_fork_branch_ref_snapshot.csv"
+    if census.exists() and snapshot.exists():
+        heads, summary = audit.public_fork_census(census, snapshot)
+        assert len(heads) == 7
+        assert summary["divergent_heads_reviewed"] == 5
 
     versions_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/finagent_paper_versions")
     if versions_root.exists():

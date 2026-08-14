@@ -533,6 +533,11 @@ ARTIFACT_NOTES = {
         "agent-output path. The 90 opaque rule-strategy records yield zero exact "
         "display-precision matches across 288 comparable high-precision Appendix "
         "Table 7 cells, and no released code path writes those best-result records. "
+        "A dated census exhausts all 26 reported and accessible forks, 30 branch "
+        "refs, seven unique heads, and five divergent heads. The 27 unique extra "
+        "commits and 24 new final-tree blobs are unaffiliated post-paper "
+        "function-calling, prompt/news, or FTSE MIB adaptations; none supplies a "
+        "native agent output or exact paper result artifact. "
         "No exact data snapshot, FinAgent memories, trajectories, actions, "
         "equity paths, or result records are shipped. The full validation chart path "
         "renders 14 future days, the environment is long-only despite the paper's "
@@ -1421,7 +1426,7 @@ TARGETED_EXECUTION = {
     "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
-    "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_results_seven_commit_history_zero_of_288_rule_record_matches",
+    "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_results_seven_commit_history_zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted",
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_missing_hybrid_pipeline_and_v2_lineage",
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:partial_227_of_235_author_output_cells_corroborated_67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells_181_accessible_forks_187_refs_20_unique_heads_exhausted",

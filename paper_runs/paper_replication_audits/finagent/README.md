@@ -33,6 +33,19 @@ corresponding high-precision Appendix Table 7 cells, with
 0 display-precision matches; no released code path writes those opaque
 `best_*` records.
 
+A dated GitHub census covers all 26
+reported and accessible public forks and 30
+branch refs, collapsing to 7 unique heads.
+Both official-history heads and all 5
+divergent heads were checked. The divergent surface contains
+27 unique extra commits,
+93 changed paths, and
+24 new final-tree blobs. It is
+limited to unaffiliated post-paper function-calling, prompt/news, and FTSE MIB
+source/data-pipeline adaptations. No divergent commit matches an official-source
+author identity, and no native agent result or exact paper table/figure artifact
+was found; all fork evidence receives zero paper-result credit.
+
 ## Material protocol conflicts
 
 The full validation runner renders the k-line chart with the plotting default

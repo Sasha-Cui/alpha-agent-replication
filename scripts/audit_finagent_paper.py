@@ -43,7 +43,65 @@ SOURCE_CURRENT_COMMIT = "17248a0b8b729ee3e093e30bb7bea7f52181f363"
 SOURCE_CURRENT_DATE = "2024-08-31T20:13:54+02:00"
 SOURCE_CURRENT_TREE = "71047850ceab7579e8c083dfada486bbbae17007"
 SOURCE_CURRENT_ARCHIVE_SHA256 = "e2954e7b22b4d1280ac28de2af979907ad3e7d5f1a8e203add2926414cff9c5c"
-AUDIT_DATE = "2026-08-13"
+AUDIT_DATE = "2026-08-14"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_REST_COUNT = 26
+PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT = 26
+PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT = 30
+PUBLIC_FORK_GRAPHQL_REF_SHA256 = "ac59ada9d1819a8117a8e5b1e0b9d4fc9c12eeda5981158d7950c7ee3db7c472"
+PUBLIC_FORK_SNAPSHOT_SHA256 = "9dbc6cf87c7cfee96b229da87c31636cd79864d93b85726f5c8ed946a8bda667"
+PUBLIC_FORK_REPRESENTATIVE_REF_COUNT = 7
+PUBLIC_FORK_REPRESENTATIVE_REF_SHA256 = "c81a0f886d967d03bda551198f966cf12aee39322456c76d29c397188923278a"
+PUBLIC_FORK_UNIQUE_HEAD_SHA256 = "9d8b679af9342aeb5105929b0a0cbf1bb7918c4e697f66886d5f05dd790531f2"
+PUBLIC_FORK_BASE_REACHABLE_HEAD_COUNT = 2
+PUBLIC_FORK_DIVERGENT_HEAD_COUNT = 5
+PUBLIC_FORK_DIVERGENT_SURFACE_SHA256 = "aa15a29fa402af261b6166d641a4069be4b58c451bf5e84261c7e994949c11e0"
+PUBLIC_FORK_DIVERGENT_COMMIT_COUNT = 27
+PUBLIC_FORK_DIVERGENT_COMMIT_SHA256 = "5b201884d7f1d8aab98070e46e096d8457769dc52aa829ebc6f2c79d055edf54"
+PUBLIC_FORK_DIVERGENT_PATH_COUNT = 93
+PUBLIC_FORK_DIVERGENT_PATH_SHA256 = "4f633b0846ee89294a8caab1b1fe8267784bce800e5b8ea535f9a85348bd1079"
+PUBLIC_FORK_NEW_FINAL_BLOB_REF_COUNT = 35
+PUBLIC_FORK_NEW_FINAL_BLOB_REF_SHA256 = "43cf3d331a05489660cf624422c9edb57194117083c1f9333d54e72cac8facfe"
+PUBLIC_FORK_NEW_FINAL_UNIQUE_BLOB_COUNT = 24
+PUBLIC_FORK_NEW_FINAL_UNIQUE_BLOB_SHA256 = "4a2c11840049c2176e1ecf0a8ee8dd980fdd4eec508f1889ffd305fadfee8a4d"
+PUBLIC_FORK_NEW_FINAL_PATH_COUNT = 18
+PUBLIC_FORK_NEW_FINAL_PATH_SHA256 = "3a29a706ca7a81002ef55aec2166462dece58bb624df6e07567e3b377bd28544"
+OFFICIAL_SOURCE_AUTHOR_EMAILS = {"1271421361@qq.com", "wt.zhang@ntu.edu.sg"}
+OFFICIAL_SOURCE_AUTHOR_NAMES = {"wentao", "Wentao Zhang"}
+EXPECTED_DIVERGENT_AUTHOR_EMAILS = {
+    "127190668+BilalB84@users.noreply.github.com",
+    "dltjrwlsajtwu@gmail.com",
+    "ij020554@konkuk.ac.kr",
+    "lute7071@gmail.com",
+    "sasmco12@gmail.com",
+}
+DIVERGENT_FORK_FINDINGS: Mapping[str, Mapping[str, Any]] = {
+    "035d6a18e42087f06918a33ccdfabdb128b19a0b": {
+        "commits": 9,
+        "paths": 80,
+        "classification": "unattributed_postpaper_function_call_source_extension",
+    },
+    "191f7f16bcf971a48d48a4b156f567907043cef6": {
+        "commits": 6,
+        "paths": 4,
+        "classification": "unattributed_postpaper_news_source_extension",
+    },
+    "8dd9fcf48d0d286bb0ac5a5c9e3bcac074726788": {
+        "commits": 5,
+        "paths": 71,
+        "classification": "unattributed_postpaper_function_call_source_extension",
+    },
+    "b2deb8f1a7b01133d7a28145c56c09c72edee456": {
+        "commits": 13,
+        "paths": 13,
+        "classification": "unattributed_postpaper_ftse_mib_data_pipeline_adaptation",
+    },
+    "b918d35623786e8fc0b58a94802015778da3db8b": {
+        "commits": 8,
+        "paths": 73,
+        "classification": "unattributed_postpaper_prompt_source_extension",
+    },
+}
 
 PAPER_VERSIONS = {
     1: {
@@ -196,6 +254,17 @@ def git(source_root: Path, *args: str, binary: bool = False) -> Any:
         capture_output=True, text=not binary,
     )
     return proc.stdout
+
+
+def sha256_lines(lines: Sequence[str]) -> str:
+    return sha256_bytes("".join(f"{line}\n" for line in lines).encode("utf-8"))
+
+
+def git_object_exists(source_root: Path, object_spec: str) -> bool:
+    return subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "-e", object_spec],
+        check=False, capture_output=True,
+    ).returncode == 0
 
 
 def git_archive_sha256(source_root: Path, commit: str) -> str:
@@ -823,6 +892,232 @@ def public_source_history(
     return rows, summary
 
 
+def public_fork_census(
+    census_root: Path, branch_ref_snapshot: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Audit every unique head in the dated accessible public-fork census."""
+    if str(git(census_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise RuntimeError("FinAgent public-fork census is shallow")
+    ref_lines = str(git(
+        census_root, "for-each-ref", "refs/fork-census",
+        "--format=%(refname)%09%(objectname)",
+    )).splitlines()
+    if (
+        len(ref_lines) != PUBLIC_FORK_REPRESENTATIVE_REF_COUNT
+        or sha256_lines(ref_lines) != PUBLIC_FORK_REPRESENTATIVE_REF_SHA256
+    ):
+        raise RuntimeError("FinAgent representative public-fork refs changed")
+    refs = [line.split("\t", 1) for line in ref_lines]
+    unique_heads = sorted({head for _, head in refs})
+    if (
+        len(unique_heads) != PUBLIC_FORK_REPRESENTATIVE_REF_COUNT
+        or sha256_lines(unique_heads) != PUBLIC_FORK_UNIQUE_HEAD_SHA256
+    ):
+        raise RuntimeError("FinAgent public-fork unique heads changed")
+
+    if sha256(branch_ref_snapshot) != PUBLIC_FORK_SNAPSHOT_SHA256:
+        raise RuntimeError("FinAgent public-fork branch-ref snapshot bytes changed")
+    with branch_ref_snapshot.open(newline="", encoding="utf-8") as handle:
+        branch_rows = list(csv.DictReader(handle))
+    expected_columns = {
+        "repository", "branch", "head_commit", "repository_created_at",
+        "repository_pushed_at", "head_committed_at", "head_author_login",
+        "head_author_name", "head_author_email", "head_subject",
+    }
+    if not branch_rows or set(branch_rows[0]) != expected_columns:
+        raise RuntimeError("FinAgent public-fork branch-ref schema changed")
+    branch_rows.sort(key=lambda row: (
+        row["repository"].lower(), row["branch"].lower(), row["head_commit"],
+    ))
+    canonical_branch_refs = [
+        f'{row["repository"]}\t{row["branch"]}\t{row["head_commit"]}'
+        for row in branch_rows
+    ]
+    if (
+        len(branch_rows) != PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT
+        or len({row["repository"] for row in branch_rows})
+        != PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT
+        or len({(row["repository"], row["branch"]) for row in branch_rows})
+        != len(branch_rows)
+        or sha256_lines(canonical_branch_refs) != PUBLIC_FORK_GRAPHQL_REF_SHA256
+        or {row["head_commit"] for row in branch_rows} != set(unique_heads)
+    ):
+        raise RuntimeError("FinAgent complete public-fork branch-ref snapshot changed")
+
+    base_objects = {
+        line.split(" ", 1)[0]
+        for line in str(git(census_root, "rev-list", "--objects", SOURCE_CURRENT_COMMIT)).splitlines()
+    }
+    output_suffixes = {
+        ".csv", ".json", ".jsonl", ".npy", ".npz", ".parquet",
+        ".pickle", ".pkl", ".tsv", ".xlsx",
+    }
+    output_tokens = (
+        "action", "agent_output", "equity", "memory_record", "portfolio",
+        "trading_record", "trajectory", "valid_record", "workdir",
+    )
+    rows: list[dict[str, Any]] = []
+    divergent_surface: list[str] = []
+    all_extra_commits: set[str] = set()
+    all_extra_paths: set[str] = set()
+    extra_author_emails: set[str] = set()
+    extra_author_names: set[str] = set()
+    extra_commits_by_head: dict[str, list[str]] = {}
+    new_final_blob_lines: list[str] = []
+    new_final_blobs: set[str] = set()
+    new_final_paths: set[str] = set()
+    all_native_output_paths: set[str] = set()
+    for ref, head in refs:
+        extra_commits = sorted(str(git(
+            census_root, "rev-list", head, "--not", SOURCE_CURRENT_COMMIT,
+        )).splitlines())
+        extra_commits_by_head[head] = extra_commits
+        changed_paths: set[str] = set()
+        extra_dates: list[str] = []
+        for commit in extra_commits:
+            changed_paths.update(
+                path for path in str(git(
+                    census_root, "diff-tree", "--root", "--no-commit-id",
+                    "--name-only", "-r", commit,
+                )).splitlines() if path
+            )
+            metadata = str(git(
+                census_root, "show", "-s", "--format=%aI%x00%an%x00%ae", commit,
+            )).rstrip("\n").split("\0")
+            if len(metadata) != 3:
+                raise RuntimeError(f"Malformed FinAgent fork commit metadata: {commit}")
+            extra_dates.append(metadata[0])
+            extra_author_names.add(metadata[1])
+            extra_author_emails.add(metadata[2])
+        ordered_paths = sorted(changed_paths)
+        if extra_commits:
+            expected = DIVERGENT_FORK_FINDINGS.get(head)
+            if expected is None:
+                raise RuntimeError(f"Unreviewed divergent FinAgent fork head: {head}")
+            if (len(extra_commits), len(ordered_paths)) != (
+                expected["commits"], expected["paths"],
+            ):
+                raise RuntimeError(f"FinAgent fork surface changed for {head}")
+            if any(value[:10] <= ARXIV_V3_DATE for value in extra_dates):
+                raise RuntimeError(f"Expected only post-v3 divergent commits for {head}")
+            divergent_surface.append(
+                f"{head}\t{';'.join(extra_commits)}\t{';'.join(ordered_paths)}"
+            )
+            all_extra_commits.update(extra_commits)
+            all_extra_paths.update(ordered_paths)
+            classification = str(expected["classification"])
+        else:
+            classification = "official_public_history_reachable"
+
+        head_new_paths: list[str] = []
+        head_native_outputs: list[str] = []
+        for line in str(git(census_root, "ls-tree", "-rl", head)).splitlines():
+            metadata, path = line.split("\t", 1)
+            _mode, object_type, object_id, size = metadata.split()
+            if object_type != "blob" or object_id in base_objects:
+                continue
+            new_final_blob_lines.append(f"{head}\t{path}\t{object_id}\t{size}")
+            new_final_blobs.add(object_id)
+            new_final_paths.add(path)
+            head_new_paths.append(path)
+            suffix = Path(path).suffix.lower()
+            if (
+                suffix in output_suffixes
+                and not path.startswith("res/strategy_record/")
+                and not path.startswith("tools/echarts-5.4.3/")
+                and any(token in path.lower() for token in output_tokens)
+            ):
+                head_native_outputs.append(path)
+                all_native_output_paths.add(path)
+        head_metadata = str(git(
+            census_root, "show", "-s", "--format=%cI%x00%an%x00%ae%x00%s", head,
+        )).rstrip("\n").split("\0", 3)
+        matching_branch_rows = [row for row in branch_rows if row["head_commit"] == head]
+        rows.append({
+            "representative_ref": ref,
+            "head_commit": head,
+            "head_date": head_metadata[0],
+            "head_author_name": head_metadata[1],
+            "head_author_email": head_metadata[2],
+            "head_subject": head_metadata[3],
+            "branch_ref_count": len(matching_branch_rows),
+            "repository_count": len({row["repository"] for row in matching_branch_rows}),
+            "repositories": ";".join(sorted({row["repository"] for row in matching_branch_rows})),
+            "extra_commit_count_beyond_official_head": len(extra_commits),
+            "extra_changed_path_count": len(ordered_paths),
+            "new_final_blob_path_count": len(head_new_paths),
+            "new_final_native_agent_output_path_count": len(head_native_outputs),
+            "new_final_native_agent_output_paths": ";".join(head_native_outputs),
+            "official_source_author_identity_match_in_extra_commits": False,
+            "classification": classification,
+            "paper_result_credit": False,
+        })
+
+    base_reachable = [row for row in rows if not row["extra_commit_count_beyond_official_head"]]
+    if len(base_reachable) != PUBLIC_FORK_BASE_REACHABLE_HEAD_COUNT:
+        raise RuntimeError("FinAgent base-reachable fork-head count changed")
+    if len(rows) - len(base_reachable) != PUBLIC_FORK_DIVERGENT_HEAD_COUNT:
+        raise RuntimeError("FinAgent divergent fork-head count changed")
+    if set(DIVERGENT_FORK_FINDINGS) != {
+        head for head, commits in extra_commits_by_head.items() if commits
+    }:
+        raise RuntimeError("FinAgent reviewed divergent-head set changed")
+    if sha256_lines(divergent_surface) != PUBLIC_FORK_DIVERGENT_SURFACE_SHA256:
+        raise RuntimeError("FinAgent divergent fork commit/path surface changed")
+    if (
+        len(all_extra_commits) != PUBLIC_FORK_DIVERGENT_COMMIT_COUNT
+        or sha256_lines(sorted(all_extra_commits)) != PUBLIC_FORK_DIVERGENT_COMMIT_SHA256
+        or len(all_extra_paths) != PUBLIC_FORK_DIVERGENT_PATH_COUNT
+        or sha256_lines(sorted(all_extra_paths)) != PUBLIC_FORK_DIVERGENT_PATH_SHA256
+    ):
+        raise RuntimeError("FinAgent aggregate divergent fork surface changed")
+    if (
+        len(new_final_blob_lines) != PUBLIC_FORK_NEW_FINAL_BLOB_REF_COUNT
+        or sha256_lines(new_final_blob_lines) != PUBLIC_FORK_NEW_FINAL_BLOB_REF_SHA256
+        or len(new_final_blobs) != PUBLIC_FORK_NEW_FINAL_UNIQUE_BLOB_COUNT
+        or sha256_lines(sorted(new_final_blobs)) != PUBLIC_FORK_NEW_FINAL_UNIQUE_BLOB_SHA256
+        or len(new_final_paths) != PUBLIC_FORK_NEW_FINAL_PATH_COUNT
+        or sha256_lines(sorted(new_final_paths)) != PUBLIC_FORK_NEW_FINAL_PATH_SHA256
+    ):
+        raise RuntimeError("FinAgent divergent fork final-blob surface changed")
+    if extra_author_emails != EXPECTED_DIVERGENT_AUTHOR_EMAILS:
+        raise RuntimeError(f"FinAgent divergent fork identities changed: {extra_author_emails}")
+    if extra_author_emails & OFFICIAL_SOURCE_AUTHOR_EMAILS:
+        raise RuntimeError("FinAgent divergent commits match an official source author email")
+    if extra_author_names & OFFICIAL_SOURCE_AUTHOR_NAMES:
+        raise RuntimeError("FinAgent divergent commits match an official source author name")
+    if all_native_output_paths:
+        raise RuntimeError(f"FinAgent fork native output paths require review: {all_native_output_paths}")
+
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_REST_COUNT,
+        "graphql_accessible_forks": PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT,
+        "rest_minus_accessible_fork_gap": (
+            PUBLIC_FORK_REST_COUNT - PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT
+        ),
+        "graphql_accessible_branch_refs": PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT,
+        "graphql_accessible_branch_ref_census_sha256": PUBLIC_FORK_GRAPHQL_REF_SHA256,
+        "graphql_accessible_branch_ref_snapshot_file_sha256": sha256(branch_ref_snapshot),
+        "representative_unique_head_refs": len(rows),
+        "representative_ref_census_sha256": sha256_lines(ref_lines),
+        "unique_heads": len(unique_heads),
+        "unique_head_sha256": sha256_lines(unique_heads),
+        "heads_reachable_from_official_history": len(base_reachable),
+        "divergent_heads_reviewed": len(rows) - len(base_reachable),
+        "divergent_extra_commits_reviewed": len(all_extra_commits),
+        "divergent_changed_paths_reviewed": len(all_extra_paths),
+        "divergent_heads_matching_official_source_author_identity": 0,
+        "new_final_blob_references_reviewed": len(new_final_blob_lines),
+        "new_final_unique_blobs_reviewed": len(new_final_blobs),
+        "new_final_paths_reviewed": len(new_final_paths),
+        "native_agent_result_paths_discovered": len(all_native_output_paths),
+        "exact_paper_result_table_or_figure_paths_discovered": 0,
+        "paper_result_credit": False,
+    }
+    return rows, summary
+
+
 def config_conformance_rows(source_root: Path) -> list[dict[str, Any]]:
     rows = []
     config_paths = sorted((source_root / "configs/exp").rglob("*.py"))
@@ -1153,6 +1448,19 @@ corresponding high-precision Appendix Table 7 cells, with
 {manifest['released_strategy_record_appendix_display_matches']} display-precision matches; no released code path writes those opaque
 `best_*` records.
 
+A dated GitHub census covers all {manifest['graphql_accessible_public_forks']}
+reported and accessible public forks and {manifest['public_fork_branch_refs_examined']}
+branch refs, collapsing to {manifest['public_fork_unique_heads_examined']} unique heads.
+Both official-history heads and all {manifest['public_fork_divergent_heads_examined']}
+divergent heads were checked. The divergent surface contains
+{manifest['public_fork_divergent_extra_commits_examined']} unique extra commits,
+{manifest['public_fork_divergent_changed_paths_examined']} changed paths, and
+{manifest['public_fork_new_final_unique_blobs_examined']} new final-tree blobs. It is
+limited to unaffiliated post-paper function-calling, prompt/news, and FTSE MIB
+source/data-pipeline adaptations. No divergent commit matches an official-source
+author identity, and no native agent result or exact paper table/figure artifact
+was found; all fork evidence receives zero paper-result credit.
+
 ## Material protocol conflicts
 
 The full validation runner renders the k-line chart with the plotting default
@@ -1178,6 +1486,8 @@ def audit(
     paper_versions_root: Path,
     output: Path,
     latex_command: str,
+    fork_census_root: Path,
+    fork_snapshot_path: Path,
 ) -> dict[str, Any]:
     validate_primary_inputs(source_root, paper_root)
     paper_source_root = paper_root / "source_v3"
@@ -1191,6 +1501,12 @@ def audit(
     strategy_conformance = strategy_record_paper_conformance_rows(source_root, tables)
     history = source_history_rows(source_root)
     history_paths, history_summary = public_source_history(source_root)
+    output_fork_snapshot = output / "public_fork_branch_ref_snapshot.csv"
+    if fork_snapshot_path.resolve() != output_fork_snapshot.resolve():
+        shutil.copyfile(fork_snapshot_path, output_fork_snapshot)
+    fork_heads, fork_summary = public_fork_census(
+        fork_census_root, output_fork_snapshot,
+    )
     configs = config_conformance_rows(source_root)
     references = source_reference_diagnostics(source_root)
     routes = processor_route_rows(source_root)
@@ -1211,6 +1527,7 @@ def audit(
         "official_paper_version_inventory.csv": paper_versions,
         "official_paper_result_lineage.csv": result_lineage,
         "public_source_history_path_inventory.csv": history_paths,
+        "public_fork_unique_head_inventory.csv": fork_heads,
         "released_config_conformance.csv": configs,
         "released_missing_reference_diagnostics.csv": references,
         "released_processor_route_diagnostics.csv": routes,
@@ -1227,6 +1544,9 @@ def audit(
     )
     (output / "public_source_history.json").write_text(
         json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8",
+    )
+    (output / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8",
     )
 
     manifest: dict[str, Any] = {
@@ -1296,6 +1616,32 @@ def audit(
         "public_source_discovered_branches": len(history_summary["discovered_public_branches"]),
         "public_source_discovered_tags": len(history_summary["discovered_public_tags"]),
         "public_source_discovered_releases": len(history_summary["discovered_public_releases"]),
+        "public_fork_census_date": fork_summary["census_date"],
+        "github_rest_reported_public_forks": fork_summary["github_rest_reported_forks"],
+        "graphql_accessible_public_forks": fork_summary["graphql_accessible_forks"],
+        "public_fork_accessibility_gap": fork_summary["rest_minus_accessible_fork_gap"],
+        "public_fork_branch_refs_examined": fork_summary["graphql_accessible_branch_refs"],
+        "public_fork_unique_heads_examined": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_examined": fork_summary["divergent_heads_reviewed"],
+        "public_fork_divergent_extra_commits_examined": fork_summary[
+            "divergent_extra_commits_reviewed"
+        ],
+        "public_fork_divergent_changed_paths_examined": fork_summary[
+            "divergent_changed_paths_reviewed"
+        ],
+        "public_fork_author_attributed_divergent_heads": fork_summary[
+            "divergent_heads_matching_official_source_author_identity"
+        ],
+        "public_fork_new_final_unique_blobs_examined": fork_summary[
+            "new_final_unique_blobs_reviewed"
+        ],
+        "public_fork_native_agent_result_paths_discovered": fork_summary[
+            "native_agent_result_paths_discovered"
+        ],
+        "public_fork_exact_paper_result_paths_discovered": fork_summary[
+            "exact_paper_result_table_or_figure_paths_discovered"
+        ],
+        "public_fork_paper_result_credit": fork_summary["paper_result_credit"],
         "released_experiment_configs": len(configs),
         "released_missing_references": len(references),
         "metric_formula_conflicts": sum(not row["matches_paper_formula"] for row in metrics),
@@ -1304,7 +1650,14 @@ def audit(
         "paper_result_credit": False,
     }
     (output / "README.md").write_text(render_readme(manifest), encoding="utf-8")
-    output_names = [*csv_outputs, "native_execution.json", "public_source_history.json", "README.md"]
+    output_names = [
+        *csv_outputs,
+        "native_execution.json",
+        "public_fork_branch_ref_snapshot.csv",
+        "public_fork_census.json",
+        "public_source_history.json",
+        "README.md",
+    ]
     manifest["output_sha256"] = {name: sha256(output / name) for name in sorted(output_names)}
     (output / "manifest.json").write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8",
@@ -1313,6 +1666,7 @@ def audit(
 
 
 def parse_args() -> argparse.Namespace:
+    project_root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--paper-root", type=Path, required=True)
@@ -1323,6 +1677,14 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--latex-command", default="pdflatex")
+    parser.add_argument(
+        "--fork-census-root", type=Path,
+        default=Path("/nfs/roberts/scratch/pi_btk22/zc362/finagent_fork_census"),
+    )
+    parser.add_argument(
+        "--fork-snapshot", type=Path,
+        default=project_root / "paper_runs/paper_replication_audits/finagent/public_fork_branch_ref_snapshot.csv",
+    )
     return parser.parse_args()
 
 
@@ -1334,6 +1696,8 @@ def main() -> None:
         args.paper_versions_root,
         args.output,
         args.latex_command,
+        args.fork_census_root,
+        args.fork_snapshot,
     )
     print(json.dumps(manifest, indent=2, sort_keys=True))
 

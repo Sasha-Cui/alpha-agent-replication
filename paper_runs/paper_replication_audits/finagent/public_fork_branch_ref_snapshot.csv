@@ -1,0 +1,31 @@
+repository,branch,head_commit,repository_created_at,repository_pushed_at,head_committed_at,head_author_login,head_author_name,head_author_email,head_subject
+agenticresearch/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-05-21T13:17:30Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+ai0learner/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-06-06T02:23:14Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+BilalB84/FinAgent,main,b2deb8f1a7b01133d7a28145c56c09c72edee456,2025-02-01T18:24:23Z,2025-02-01T20:00:04Z,2025-02-01T20:00:04Z,BilalB84,BilalB84,127190668+BilalB84@users.noreply.github.com,Update download_prices.py
+boomwang/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-02-20T19:45:33Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+BoxBy/FinAgent,functioncall,035d6a18e42087f06918a33ccdfabdb128b19a0b,2025-07-14T15:36:15Z,2025-07-19T21:06:37Z,2025-07-19T21:06:35Z,LEE5J,lee5j,dltjrwlsajtwu@gmail.com,make_prompt 중간방영
+BoxBy/FinAgent,get_news,191f7f16bcf971a48d48a4b156f567907043cef6,2025-07-14T15:36:15Z,2025-07-19T21:06:37Z,2025-07-18T04:34:08Z,dustywindow,minji,sasmco12@gmail.com,"adj_close 데이터에 없어서 주석처리, 값 숫자로 변환"
+BoxBy/FinAgent,main,8dd9fcf48d0d286bb0ac5a5c9e3bcac074726788,2025-07-14T15:36:15Z,2025-07-19T21:06:37Z,2025-07-17T12:40:15Z,BoxBy,BoxBy,lute7071@gmail.com,250717 meeting
+BoxBy/FinAgent,make_prompt,b918d35623786e8fc0b58a94802015778da3db8b,2025-07-14T15:36:15Z,2025-07-19T21:06:37Z,2025-07-17T15:08:34Z,pphhyy0620,pphhyy0620,ij020554@konkuk.ac.kr,modify create_sentiment_analysis_prompt/analyze_sentiment/analysis
+deepak-bhole/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2024-12-16T13:21:11Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+gaeml-hoo/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-02-11T02:22:38Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+heosanghun/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-12-05T01:01:53Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+hhxiao2020/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2024-11-28T12:33:45Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+jingmouren/DVampire-FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2024-12-31T09:21:10Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+jischeng/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-08-13T02:35:31Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+KrishSaraf/FinAgent-original,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-08-01T12:14:57Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+lemondy/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2024-12-31T09:27:49Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+lindd-zju/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-05-14T13:28:17Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+link0116/FinAgent-000,copilot/fix-copilot-unresponsive-issue,17248a0b8b729ee3e093e30bb7bea7f52181f363,2026-03-18T14:24:38Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+link0116/FinAgent-000,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2026-03-18T14:24:38Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+mdinacci/FinAgent,main,08fb217d374b6c923b0ab3e6dbd8213e1d0fcf1c,2024-08-29T12:44:25Z,2024-04-11T06:03:29Z,2024-04-11T06:03:24Z,DVampire,wentao,1271421361@qq.com,init commit
+mrayush18/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-05-21T13:10:13Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+nibirou/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-06-08T11:40:21Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+nooptr/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-06-18T02:09:21Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+QB-Data/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-08-29T13:12:38Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+roberteller/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-08-13T06:16:48Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+SamD-FTI/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-09-23T14:04:23Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+sruthikesh/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-02-16T04:06:41Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+upcllk/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2026-04-04T15:54:10Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+wangzhen263/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2025-02-15T03:12:17Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements
+xiangnanyue/FinAgent,main,17248a0b8b729ee3e093e30bb7bea7f52181f363,2024-10-24T08:38:18Z,2024-08-31T18:13:57Z,2024-08-31T18:13:54Z,DVampire,wentao,1271421361@qq.com,add requirements

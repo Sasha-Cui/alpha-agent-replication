@@ -210,7 +210,8 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "181_accessible_forks_187_refs_20_unique_heads_exhausted"
         ),
         "CensusArxiv240218485": (
-            "paper_audit:completed_zero_of_1061_results_seven_commit_history_zero_of_288_rule_record_matches"
+            "paper_audit:completed_zero_of_1061_results_seven_commit_history_"
+            "zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted"
         ),
         "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
