@@ -246,6 +246,12 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_"
             "component_gate_separate_4_forks_4_refs_1_official_head_exhausted"
         ),
+        "CensusArxiv260523007": (
+            "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_"
+            "empirical_panels_full_six_commit_history_direct_coauthor_framework_five_"
+            "component_checks_broken_cli_and_compile_missing_trading_lineage_2_forks_"
+            "2_refs_2_official_history_heads_exhausted"
+        ),
         "CensusArxiv260726642": (
             "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_"
             "full_two_commit_history_nine_tests_appendix_component_missing_research_"
@@ -270,6 +276,13 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     assert "3/10 Table 2 cells" in automate_blocker
     assert "0/40 Table 4 cells" in automate_blocker
     assert "24 public forks and 25 branch refs" in automate_blocker
+
+    madevolve_blocker = routes.loc[
+        "CensusArxiv260523007", "precise_native_or_access_blocker"
+    ]
+    assert "0/214 empirical numeric units" in madevolve_blocker
+    assert "Both accessible public forks and both branch refs" in madevolve_blocker
+    assert "zero unique commits, zero unique blobs" in madevolve_blocker
 
 
 def test_flag_trader_paper_only_audit_preserves_its_evidence_boundary() -> None:

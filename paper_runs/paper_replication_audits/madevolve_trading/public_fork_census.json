@@ -1,0 +1,16 @@
+{
+  "accessible_branch_refs": 2,
+  "accessible_public_forks": 2,
+  "census_date": "2026-08-14",
+  "divergent_unique_heads": 0,
+  "github_rest_reported_forks": 2,
+  "interpretation": "both accessible public forks and both branch refs resolve within the six-commit audited official history: one is the official head and one is its initial commit; they add no unique commit, blob, trading payload, or paper-result lineage",
+  "native_result_artifacts_found": 0,
+  "official_head_exact_unique_heads": 1,
+  "official_history_ancestor_unique_heads": 1,
+  "paper_result_credit": false,
+  "tag_refs": 0,
+  "unique_blobs_beyond_official_history": 0,
+  "unique_commits_beyond_official_history": 0,
+  "unique_heads": 2
+}

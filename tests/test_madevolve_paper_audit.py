@@ -98,6 +98,52 @@ def test_full_public_history_contains_no_latent_paper_payload() -> None:
     assert boundary["unreachable_git_objects"] == 0
 
 
+def test_every_public_fork_ref_stays_inside_audited_official_history() -> None:
+    branches = rows("public_fork_branch_ref_snapshot.csv")
+    heads = rows("public_fork_unique_head_inventory.csv")
+    census = json.loads((AUDIT_DIR / "public_fork_census.json").read_text())
+    assert len(branches) == 2
+    assert {row["repository"] for row in branches} == set(audit.PUBLIC_FORK_REPOSITORIES)
+    assert {row["head_commit"] for row in branches} == {
+        audit.REPOSITORY_HEAD,
+        audit.REPOSITORY_COMMITS[0],
+    }
+    assert {row["relation_to_official_head"] for row in branches} == {
+        "official_head_exact",
+        "official_history_ancestor",
+    }
+    assert {row["commits_ahead_of_official"] for row in branches} == {"0"}
+    assert {row["unique_commits_beyond_official_history"] for row in branches} == {"0"}
+    assert {row["unique_blobs_beyond_official_history"] for row in branches} == {"0"}
+    assert {row["native_result_artifact_found"] for row in branches} == {"False"}
+    assert {row["paper_result_credit"] for row in branches} == {"False"}
+    assert len(heads) == 2
+    assert {row["relation_to_official_history"] for row in heads} == {
+        "official_head_exact",
+        "official_history_ancestor",
+    }
+    assert census["census_date"] == "2026-08-14"
+    assert census["github_rest_reported_forks"] == 2
+    assert census["accessible_public_forks"] == 2
+    assert census["accessible_branch_refs"] == 2
+    assert census["tag_refs"] == 0
+    assert census["unique_heads"] == 2
+    assert census["official_head_exact_unique_heads"] == 1
+    assert census["official_history_ancestor_unique_heads"] == 1
+    assert census["divergent_unique_heads"] == 0
+    assert census["unique_commits_beyond_official_history"] == 0
+    assert census["unique_blobs_beyond_official_history"] == 0
+    assert census["native_result_artifacts_found"] == 0
+    assert census["paper_result_credit"] is False
+    data = manifest()
+    assert data["public_forks_accessible"] == 2
+    assert data["public_fork_branch_refs_audited"] == 2
+    assert data["public_fork_unique_heads_audited"] == 2
+    assert data["public_fork_divergent_heads_audited"] == 0
+    assert data["public_fork_native_result_artifacts_found"] is False
+    assert data["public_fork_paper_result_credit"] is False
+
+
 def test_license_boundary_distinguishes_declaration_from_license_text() -> None:
     release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
     assert release["license_declaration"] == "MIT"
@@ -228,6 +274,9 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
         "64/66 modules import",
         "full public Git history",
         "six commits on one branch",
+        "public fork surface was exhausted",
+        "two branch refs and no tag refs",
+        "zero unique commits, zero unique",
         "no trading-specific implementation",
         "0/214 empirical numeric table units",
         "0/21 empirical panels regenerated",

@@ -151,7 +151,10 @@ ARTIFACT_NOTES = {
         "has only six public revisions on one branch, with no tags, releases, or "
         "unreachable objects; every revision retains the same 69-path framework tree "
         "and contains zero structured result/data payloads or paper-domain literals "
-        "outside the README. The release "
+        "outside the README. Both accessible public forks and both branch refs were "
+        "also exhausted: one is the official head and one is the initial official-history "
+        "commit, so they add zero unique commits, zero unique blobs, and zero result "
+        "credit. The release "
         "contains no trading adapter, Polygon BTCUSD snapshot, forecaster, order/fill "
         "simulator, fees or impact engine, paper configs/seeds/model calls, candidate or "
         "best programs, run histories, Optuna studies, Claude Code search artifacts, "
@@ -1429,7 +1432,12 @@ TARGETED_EXECUTION = {
     "SYS-TRADE-IN-MINUTES": "paper_audit:completed_zero_of_349_active_empirical_units_zero_of_8_empirical_panels_listed_broken_supplement_no_attributable_pipeline",
     "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_full_stocksim_history_one_unattributed_xom_precursor_output_four_component_checks_missing_atlas_lineage",
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
-    "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_full_six_commit_history_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
+    "SYS-MAD-EVOLVE": (
+        "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_"
+        "panels_full_six_commit_history_direct_coauthor_framework_five_component_checks_"
+        "broken_cli_and_compile_missing_trading_lineage_2_forks_2_refs_2_official_history_"
+        "heads_exhausted"
+    ),
     "SYS-ALPHA-SCHEMA": (
         "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_"
         "full_two_commit_history_nine_tests_appendix_component_missing_research_lineage_"

@@ -1,0 +1,3 @@
+head_commit,authored_at,subject,repositories,branch_ref_count,relation_to_official_history,unique_commits_beyond_official_history,unique_blobs_beyond_official_history,native_result_artifact_found,paper_result_credit
+679b50b462ede99b91920e48fcca4c18d777ae61,2026-02-19T17:36:45-06:00,initial commit,mardom/MadEvolve,1,official_history_ancestor,0,0,False,False
+8b881d3a45d8f68050c28c8d64c2bb653001103a,2026-03-03T16:38:41-06:00,fix analyzer,2275131633/MadEvolve,1,official_head_exact,0,0,False,False

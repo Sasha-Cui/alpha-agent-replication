@@ -23,6 +23,13 @@ structured data/result payloads, and zero Bitcoin, backtest, portfolio, or
 paper-metric literals outside the README. No earlier or alternate public
 revision supplies the missing trading research lineage.
 
+The public fork surface was exhausted as of 2026-08-14. GitHub reports two
+accessible forks with two branch refs and no tag refs. One ref is exactly the
+official head and the other is the initial commit in the already-audited
+official history. The two refs therefore add zero unique commits, zero unique
+blobs, and zero trading or native-result artifacts. Neither fork supplies any
+of the missing experiment lineage or earns paper-result credit.
+
 The package does not run cleanly exactly as declared. Its editable install
 resolves 39 packages, but the documented CLI immediately fails because
 `python-dotenv` is imported and omitted from `pyproject.toml`. Adding that one

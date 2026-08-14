@@ -29,6 +29,19 @@ REPOSITORY_COMMITS = (
     "4f8f629cc98229845960441c0020b4ebf0626ef1",
     REPOSITORY_HEAD,
 )
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_REPOSITORIES = (
+    "2275131633/MadEvolve",
+    "mardom/MadEvolve",
+)
+PUBLIC_FORK_HEADS = {
+    "2275131633/MadEvolve": REPOSITORY_HEAD,
+    "mardom/MadEvolve": REPOSITORY_COMMITS[0],
+}
+PUBLIC_FORK_COUNT = 2
+PUBLIC_FORK_BRANCH_REF_COUNT = 2
+PUBLIC_FORK_UNIQUE_HEAD_COUNT = 2
+PUBLIC_FORK_TAG_REF_COUNT = 0
 RESULT_ARTIFACT_SUFFIXES = (
     ".ckpt", ".csv", ".db", ".json", ".jsonl", ".npy", ".npz", ".parquet",
     ".pickle", ".pkl", ".pt", ".pth", ".safetensors", ".sqlite", ".tsv",
@@ -179,6 +192,130 @@ def source_history_rows(scratch: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def public_fork_audit(
+    scratch: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Exhaust every accessible public fork ref against the official history."""
+    history_root = scratch / "discovery/madevolve-history"
+    actual_refs: dict[str, str] = {}
+    for line in git(
+        history_root,
+        "for-each-ref",
+        "--format=%(refname)%09%(objectname)",
+        "refs/remotes/forks",
+    ).stdout.splitlines():
+        refname, head = line.split("\t")
+        actual_refs[refname] = head
+    expected_refs = {
+        f"refs/remotes/forks/{repository.split('/', 1)[0]}/main": head
+        for repository, head in PUBLIC_FORK_HEADS.items()
+    }
+    if actual_refs != expected_refs:
+        raise ValueError(f"MadEvolve public-fork branch refs changed: {actual_refs}")
+    if git(history_root, "for-each-ref", "--format=%(refname)", "refs/tags").stdout.strip():
+        raise ValueError("MadEvolve public-fork checkout unexpectedly contains tags")
+    official = git(history_root, "rev-parse", "refs/remotes/origin/main").stdout.strip()
+    if official != REPOSITORY_HEAD:
+        raise ValueError("MadEvolve official remote head changed")
+
+    branch_rows: list[dict[str, Any]] = []
+    repositories_by_head: dict[str, list[str]] = {}
+    for repository in PUBLIC_FORK_REPOSITORIES:
+        owner = repository.split("/", 1)[0]
+        head = actual_refs[f"refs/remotes/forks/{owner}/main"]
+        official_only, fork_only = map(
+            int,
+            git(
+                history_root,
+                "rev-list",
+                "--left-right",
+                "--count",
+                f"{official}...{head}",
+            ).stdout.split(),
+        )
+        unique_commits = git(
+            history_root,
+            "rev-list",
+            head,
+            "--not",
+            "refs/remotes/origin/main",
+        ).stdout.splitlines()
+        if fork_only or unique_commits:
+            raise ValueError(f"MadEvolve fork adds unreviewed commits: {repository}")
+        if head == official:
+            relation = "official_head_exact"
+        elif head in REPOSITORY_COMMITS and not fork_only:
+            relation = "official_history_ancestor"
+        else:
+            raise ValueError(f"MadEvolve fork head is outside audited official history: {repository}")
+        repositories_by_head.setdefault(head, []).append(repository)
+        branch_rows.append({
+            "repository": repository,
+            "url": f"https://github.com/{repository}",
+            "branch": "main",
+            "head_commit": head,
+            "relation_to_official_head": relation,
+            "commits_ahead_of_official": fork_only,
+            "commits_behind_official": official_only,
+            "tag_refs": 0,
+            "unique_commits_beyond_official_history": 0,
+            "unique_blobs_beyond_official_history": 0,
+            "native_result_artifact_found": False,
+            "paper_result_credit": False,
+        })
+
+    unique_rows: list[dict[str, Any]] = []
+    for head, repositories in sorted(repositories_by_head.items()):
+        authored_at, subject = git(
+            history_root, "show", "-s", "--format=%aI%x09%s", head
+        ).stdout.rstrip("\n").split("\t", 1)
+        unique_rows.append({
+            "head_commit": head,
+            "authored_at": authored_at,
+            "subject": subject,
+            "repositories": ";".join(sorted(repositories)),
+            "branch_ref_count": len(repositories),
+            "relation_to_official_history": (
+                "official_head_exact" if head == official else "official_history_ancestor"
+            ),
+            "unique_commits_beyond_official_history": 0,
+            "unique_blobs_beyond_official_history": 0,
+            "native_result_artifact_found": False,
+            "paper_result_credit": False,
+        })
+    if len(branch_rows) != PUBLIC_FORK_BRANCH_REF_COUNT:
+        raise ValueError("MadEvolve public-fork branch-ref count changed")
+    if len(unique_rows) != PUBLIC_FORK_UNIQUE_HEAD_COUNT:
+        raise ValueError("MadEvolve public-fork unique-head count changed")
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_COUNT,
+        "accessible_public_forks": len(branch_rows),
+        "accessible_branch_refs": len(branch_rows),
+        "tag_refs": PUBLIC_FORK_TAG_REF_COUNT,
+        "unique_heads": len(unique_rows),
+        "official_head_exact_unique_heads": sum(
+            row["relation_to_official_history"] == "official_head_exact"
+            for row in unique_rows
+        ),
+        "official_history_ancestor_unique_heads": sum(
+            row["relation_to_official_history"] == "official_history_ancestor"
+            for row in unique_rows
+        ),
+        "divergent_unique_heads": 0,
+        "unique_commits_beyond_official_history": 0,
+        "unique_blobs_beyond_official_history": 0,
+        "native_result_artifacts_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "both accessible public forks and both branch refs resolve within the six-commit "
+            "audited official history: one is the official head and one is its initial commit; "
+            "they add no unique commit, blob, trading payload, or paper-result lineage"
+        ),
+    }
+    return branch_rows, unique_rows, summary
+
+
 def validate_tar(path: Path) -> list[tarfile.TarInfo]:
     with tarfile.open(path, "r:*") as archive:
         members = archive.getmembers()
@@ -257,6 +394,7 @@ def method_rows() -> list[dict[str, str]]:
         ("framework_release", "substantial_general_framework", "orchestrator, provider gateway, patch/rewrite modes, MAP-Elites, islands, elites, executors, storage, and reports"),
         ("framework_release_date", "precedes_paper", "pinned head committed 2026-03-03; paper submitted 2026-05-21"),
         ("framework_public_history", "complete_no_paper_payload", "all six commits on the only public branch audited; no tags, releases, unreachable objects, structured payloads, or paper-domain literals outside README"),
+        ("framework_public_forks", "complete_no_additional_payload", "both accessible forks and both branch refs audited; one is the official head and one is the initial official-history commit, with no unique commits, blobs, or result artifacts"),
         ("market_data", "specified_not_released", "Polygon BTCUSD one-minute OHLCV; exact downloaded snapshot and exchange-aggregation state absent"),
         ("temporal_split", "specified", "fit 2022--2023, optimize on 2024, held-out test through 2025-10-10"),
         ("trading_adapter", "missing", "no BTC, OHLCV, order, fill, inventory, PnL, market-impact, or backtest implementation in the release"),
@@ -298,6 +436,7 @@ def internal_rows() -> list[dict[str, str]]:
         ("source_compilation", "broken", "insight template contains unmatched parenthesis"),
         ("research_payload", "unreleased", "release contains no trading-specific code, data, configuration, candidate, or result artifact"),
         ("research_payload_history", "unreleased_all_revisions", "all six public revisions preserve the same 69-path framework tree with zero structured data/result payloads and zero paper-domain literals outside README"),
+        ("research_payload_forks", "unreleased_all_public_forks", "both accessible forks collapse to two official-history heads and add no unique commit, blob, trading payload, or result artifact"),
         ("live_trading_claim", "paper_disclaims_transfer", "paper says exchange-aggregated data is not directly tradable and live performance is unassessed"),
     )
     return [{"check": check, "status": status, "detail": detail} for check, status, detail in specs]
@@ -424,6 +563,13 @@ structured data/result payloads, and zero Bitcoin, backtest, portfolio, or
 paper-metric literals outside the README. No earlier or alternate public
 revision supplies the missing trading research lineage.
 
+The public fork surface was exhausted as of 2026-08-14. GitHub reports two
+accessible forks with two branch refs and no tag refs. One ref is exactly the
+official head and the other is the initial commit in the already-audited
+official history. The two refs therefore add zero unique commits, zero unique
+blobs, and zero trading or native-result artifacts. Neither fork supplies any
+of the missing experiment lineage or earns paper-result credit.
+
 The package does not run cleanly exactly as declared. Its editable install
 resolves 39 packages, but the documented CLI immediately fails because
 `python-dotenv` is imported and omitted from `pyproject.toml`. Adding that one
@@ -472,6 +618,10 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
     history = source_history_rows(scratch)
     write_csv(output / "released_source_history_inventory.csv", history)
+    fork_branches, fork_heads, fork_summary = public_fork_audit(scratch)
+    write_csv(output / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    write_csv(output / "public_fork_unique_head_inventory.csv", fork_heads)
+    write_json(output / "public_fork_census.json", fork_summary)
     release = release_audit(scratch)
     write_json(output / "release_execution_audit.json", release)
     write_json(output / "source_provenance.json", {
@@ -509,6 +659,23 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             "public_tags": 0,
             "public_releases": 0,
             "unreachable_git_objects": 0,
+            "public_fork_census_date": fork_summary["census_date"],
+            "public_forks_reported_by_github_rest": fork_summary[
+                "github_rest_reported_forks"
+            ],
+            "public_forks_accessible": fork_summary["accessible_public_forks"],
+            "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+            "public_fork_tag_refs_audited": fork_summary["tag_refs"],
+            "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+            "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+            "public_fork_unique_commits_beyond_official_history": fork_summary[
+                "unique_commits_beyond_official_history"
+            ],
+            "public_fork_unique_blobs_beyond_official_history": fork_summary[
+                "unique_blobs_beyond_official_history"
+            ],
+            "public_fork_native_result_artifacts_found": False,
+            "public_fork_paper_result_credit": False,
             "historical_structured_result_or_data_payload_paths": sum(
                 row["structured_result_or_data_payload_paths"] for row in history
             ),
@@ -534,6 +701,23 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "repository_history_paper_result_artifacts_found": sum(
             bool(row["paper_result_artifact_found"]) for row in history
         ),
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary[
+            "github_rest_reported_forks"
+        ],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_tag_refs_audited": fork_summary["tag_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_unique_commits_beyond_official_history": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "public_fork_unique_blobs_beyond_official_history": fork_summary[
+            "unique_blobs_beyond_official_history"
+        ],
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "native_component_checks_passed": 5, "modules_imported_after_audit_dependency": 64,
         "modules_failed_import_after_audit_dependency": 2,
         "full_launcher_operational_as_released": False,

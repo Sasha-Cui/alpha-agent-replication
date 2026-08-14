@@ -4,6 +4,7 @@ v1,framework_provenance,direct,paper links madevolve.org; site links coauthor Ti
 v1,framework_release,substantial_general_framework,"orchestrator, provider gateway, patch/rewrite modes, MAP-Elites, islands, elites, executors, storage, and reports"
 v1,framework_release_date,precedes_paper,pinned head committed 2026-03-03; paper submitted 2026-05-21
 v1,framework_public_history,complete_no_paper_payload,"all six commits on the only public branch audited; no tags, releases, unreachable objects, structured payloads, or paper-domain literals outside README"
+v1,framework_public_forks,complete_no_additional_payload,"both accessible forks and both branch refs audited; one is the official head and one is the initial official-history commit, with no unique commits, blobs, or result artifacts"
 v1,market_data,specified_not_released,Polygon BTCUSD one-minute OHLCV; exact downloaded snapshot and exchange-aggregation state absent
 v1,temporal_split,specified,"fit 2022--2023, optimize on 2024, held-out test through 2025-10-10"
 v1,trading_adapter,missing,"no BTC, OHLCV, order, fill, inventory, PnL, market-impact, or backtest implementation in the release"
