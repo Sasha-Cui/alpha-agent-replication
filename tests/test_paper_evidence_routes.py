@@ -139,13 +139,17 @@ def test_quantevolver_paper_audit_stays_separate_from_component_gate() -> None:
     assert row["paper_evidence_route"] == "public_code_available"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_component_gate_separate"
+        "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_"
+        "component_gate_separate_4_forks_4_refs_1_official_head_exhausted"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_disposition"] == "source_grounded_component_only"
     assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
     assert "0/75 table cells" in row["precise_native_or_access_blocker"]
     assert "two-commit public history" in row["precise_native_or_access_blocker"]
+    assert "four accessible public forks and four branch refs" in row[
+        "precise_native_or_access_blocker"
+    ]
     assert "3/3 grade-B component gate" in row["precise_native_or_access_blocker"]
 
 
@@ -237,6 +241,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_"
             "six_component_checks_broken_default_launcher_missing_research_lineage_"
             "6_forks_6_refs_4_unique_heads_exhausted"
+        ),
+        "CensusArxiv260515412": (
+            "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_"
+            "component_gate_separate_4_forks_4_refs_1_official_head_exhausted"
         ),
         "CensusArxiv260726642": (
             "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_"

@@ -337,7 +337,9 @@ ARTIFACT_NOTES = {
         "match or have meaningful analogues. These are components, not the paper "
         "experiment. The complete non-shallow two-commit public history contains "
         "zero result/log/checkpoint/data artifact paths and zero distinctive paper-result "
-        "literals outside the bundled PDF. The README explicitly excludes private market data, trained "
+        "literals outside the bundled PDF. All four accessible public forks and four "
+        "branch refs resolve exactly to the official head; they add zero unique commits, "
+        "zero unique blobs, and zero result credit. The README explicitly excludes private market data, trained "
         "checkpoints, experiment logs, and paper-specific reproduction scripts; no "
         "paper factors, baselines, fusion arrays, trials, seeds, or costs are shipped, "
         "so 0/75 table cells count as native reproductions. The separate 3/3 grade-B "
@@ -1489,7 +1491,10 @@ TARGETED_EXECUTION = {
     ),
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
-    "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_component_gate_separate",
+    "SYS-QUANT-EVOLVER": (
+        "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_"
+        "component_gate_separate_4_forks_4_refs_1_official_head_exhausted"
+    ),
     "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_regenerated_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced",
     "SYS-RAPTOR": "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",

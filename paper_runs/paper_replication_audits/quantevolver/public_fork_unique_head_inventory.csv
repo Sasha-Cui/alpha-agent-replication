@@ -1,0 +1,2 @@
+head_commit,repositories,branch_ref_count,official_head_exact,unique_commits_beyond_official_history,unique_blobs_beyond_official_history,native_result_artifact_found,paper_result_credit
+4eb0e78842138ada5334349585b114ad923564e8,effysxh/QuantEvolver;lusic2018/QuantEvolver;xtwp1024/QuantEvolver;yfhu86/QuantEvolver,4,True,0,0,False,False

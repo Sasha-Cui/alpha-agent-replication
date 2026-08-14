@@ -33,6 +33,17 @@ SOURCE_COMMIT = "4eb0e78842138ada5334349585b114ad923564e8"
 SOURCE_COMMIT_DATE = "2026-05-15T04:38:26+08:00"
 README_ONLY_COMMIT = "6372a607f68f2717af2fe99601f5ae228721495a"
 README_ONLY_COMMIT_DATE = "2026-05-15T04:37:50+08:00"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_REPOSITORIES = (
+    "xtwp1024/QuantEvolver",
+    "effysxh/QuantEvolver",
+    "yfhu86/QuantEvolver",
+    "lusic2018/QuantEvolver",
+)
+PUBLIC_FORK_COUNT = 4
+PUBLIC_FORK_BRANCH_REF_COUNT = 4
+PUBLIC_FORK_UNIQUE_HEAD_COUNT = 1
+PUBLIC_FORK_TAG_REF_COUNT = 0
 REPOSITORY_PDF_SHA256 = "9e72f2c188882b8f3cc8a67ac724021521c522d8f40627485a5921613548c905"
 DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
 
@@ -525,7 +536,9 @@ def source_history_inventory(source_root: Path) -> List[Dict[str, Any]]:
     """Inventory every reachable revision for latent paper-result artifacts."""
     if str(run_git(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
         raise RuntimeError("QuantEvolver source history is shallow; fetch it before auditing")
-    commits = str(run_git(source_root, "rev-list", "--reverse", "--all")).splitlines()
+    commits = str(
+        run_git(source_root, "rev-list", "--reverse", "refs/remotes/origin/main")
+    ).splitlines()
     if commits != [README_ONLY_COMMIT, SOURCE_COMMIT]:
         raise RuntimeError(f"QuantEvolver reachable public history changed: {commits}")
 
@@ -571,6 +584,113 @@ def source_history_inventory(source_root: Path) -> List[Dict[str, Any]]:
     ):
         raise RuntimeError("QuantEvolver history unexpectedly contains a latent result artifact")
     return rows
+
+
+def public_fork_audit(
+    source_root: Path,
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, Any]]:
+    """Exhaust every current public fork ref and require exact official-head identity."""
+    actual_refs = {}
+    for line in str(
+        run_git(
+            source_root,
+            "for-each-ref",
+            "--format=%(refname)%09%(objectname)",
+            "refs/remotes/forks",
+        )
+    ).splitlines():
+        refname, head = line.split("\t")
+        actual_refs[refname] = head
+    expected_refs = {
+        f"refs/remotes/forks/{repository.split('/', 1)[0]}/main": SOURCE_COMMIT
+        for repository in PUBLIC_FORK_REPOSITORIES
+    }
+    if actual_refs != expected_refs:
+        raise RuntimeError(f"QuantEvolver public-fork branch refs changed: {actual_refs}")
+    if str(
+        run_git(source_root, "for-each-ref", "--format=%(refname)", "refs/tags")
+    ).strip():
+        raise RuntimeError("QuantEvolver public-fork checkout unexpectedly contains tags")
+    official = str(run_git(source_root, "rev-parse", "refs/remotes/origin/main")).strip()
+    if official != SOURCE_COMMIT:
+        raise RuntimeError("QuantEvolver official remote head changed")
+
+    branch_rows: List[Dict[str, Any]] = []
+    for repository in PUBLIC_FORK_REPOSITORIES:
+        owner = repository.split("/", 1)[0]
+        head = actual_refs[f"refs/remotes/forks/{owner}/main"]
+        behind, ahead = map(
+            int,
+            str(
+                run_git(
+                    source_root,
+                    "rev-list",
+                    "--left-right",
+                    "--count",
+                    f"{official}...{head}",
+                )
+            ).split(),
+        )
+        if (ahead, behind) != (0, 0):
+            raise RuntimeError(f"QuantEvolver fork no longer matches official head: {repository}")
+        if str(
+            run_git(
+                source_root,
+                "rev-list",
+                head,
+                "--not",
+                "refs/remotes/origin/main",
+            )
+        ).strip():
+            raise RuntimeError(f"QuantEvolver fork adds unreviewed commits: {repository}")
+        branch_rows.append(
+            {
+                "repository": repository,
+                "url": f"https://github.com/{repository}",
+                "branch": "main",
+                "head_commit": head,
+                "relation_to_official_head": "official_head_exact",
+                "commits_ahead_of_official": ahead,
+                "commits_behind_official": behind,
+                "tag_refs": 0,
+                "unique_commits_beyond_official_history": 0,
+                "unique_blobs_beyond_official_history": 0,
+                "native_result_artifact_found": False,
+                "paper_result_credit": False,
+            }
+        )
+    unique_rows = [
+        {
+            "head_commit": SOURCE_COMMIT,
+            "repositories": ";".join(sorted(PUBLIC_FORK_REPOSITORIES)),
+            "branch_ref_count": len(branch_rows),
+            "official_head_exact": True,
+            "unique_commits_beyond_official_history": 0,
+            "unique_blobs_beyond_official_history": 0,
+            "native_result_artifact_found": False,
+            "paper_result_credit": False,
+        }
+    ]
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_COUNT,
+        "accessible_public_forks": len(branch_rows),
+        "accessible_branch_refs": len(branch_rows),
+        "tag_refs": PUBLIC_FORK_TAG_REF_COUNT,
+        "unique_heads": len(unique_rows),
+        "official_head_exact_unique_heads": len(unique_rows),
+        "divergent_unique_heads": 0,
+        "unique_commits_beyond_official_history": 0,
+        "unique_blobs_beyond_official_history": 0,
+        "native_result_artifacts_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "all four accessible public forks and all four branch refs resolve exactly "
+            "to the audited official head; they add no code, data, checkpoint, factor, "
+            "prediction, return, log, training, or paper-result lineage"
+        ),
+    }
+    return branch_rows, unique_rows, summary
 
 
 def paper_source_inventory(paper_source_root: Path) -> List[Dict[str, Any]]:
@@ -754,6 +874,7 @@ def build_audit(
     mechanisms = mechanism_conformance(source_root)
     inventory = source_inventory(source_root)
     history = source_history_inventory(source_root)
+    fork_branches, fork_heads, fork_summary = public_fork_audit(source_root)
     paper_assets = paper_source_inventory(paper_source_root)
     native = native_component_checks(source_root, source_python)
     component = component_gate_summary(component_root)
@@ -767,6 +888,11 @@ def build_audit(
     write_csv(output_dir / "source_mechanism_conformance.csv", mechanisms)
     write_csv(output_dir / "released_source_inventory.csv", inventory)
     write_csv(output_dir / "released_source_history_inventory.csv", history)
+    write_csv(output_dir / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    write_csv(output_dir / "public_fork_unique_head_inventory.csv", fork_heads)
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
+    )
     write_csv(output_dir / "paper_source_asset_inventory.csv", paper_assets)
     (output_dir / "native_component_execution.json").write_text(json.dumps(native, indent=2) + "\n", encoding="utf-8")
     (output_dir / "separate_component_gate.json").write_text(json.dumps(component, indent=2) + "\n", encoding="utf-8")
@@ -800,6 +926,23 @@ def build_audit(
         "source_history_paper_result_artifacts_found": sum(
             bool(row["paper_result_artifact_found"]) for row in history
         ),
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary[
+            "github_rest_reported_forks"
+        ],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_tag_refs_audited": fork_summary["tag_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_unique_commits_beyond_official_history": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "public_fork_unique_blobs_beyond_official_history": fork_summary[
+            "unique_blobs_beyond_official_history"
+        ],
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "paper_era_source_revision_available": True,
         "repository_bundled_pdf_sha256": REPOSITORY_PDF_SHA256,
         "repository_bundled_pdf_exact_arxiv_artifact": False,
@@ -851,7 +994,8 @@ def build_audit(
             "or meaningful analogues, all 55 released Python files compile, all three upstream tests pass, "
             "and the three valid example seeds plus a nine-task example bank execute deterministically. "
             "The complete two-commit public history contains no result/data artifact path and no paper "
-            "result literal outside the bundled PDF. The release explicitly excludes the paper data, checkpoint, logs, and reproduction "
+            "result literal outside the bundled PDF. All four accessible public forks and four branch "
+            "refs resolve exactly to the official head and add zero unique commits or blobs. The release explicitly excludes the paper data, checkpoint, logs, and reproduction "
             "scripts and ships none of the paper factors, baselines, fused outputs, result arrays, random "
             "seeds, costs, or exact experiment configuration. Therefore 0/75 table result cells and 0/31 "
             "non-table quantitative result claims are reproduced. The paper also conflicts with itself on "
@@ -916,8 +1060,12 @@ reproduced**. The implementation is genuine; the experiment is not public.
 - The complete non-shallow public history has exactly two commits. Across both
   revisions, there are **0** result/log/checkpoint/data artifact paths and **0**
   occurrences of seven distinctive displayed paper-result literals outside the
-  bundled paper PDF. There are no alternate branches, tags, releases, or
+  bundled paper PDF. There are no alternate official branches, tags, releases, or
   unreachable local Git objects supplying a hidden experiment path.
+- The complete dated public-fork surface has four accessible forks, four branch
+  refs, no tags, and one unique head. Every ref resolves exactly to the audited
+  official head, adding zero unique commits and zero unique blobs. The forks
+  therefore provide no missing experiment or result lineage.
 - The generic examples are not paper configs: they use placeholder model and
   asset names, January 2024 example windows, one GPU, and generic thresholds.
   The paper does not identify Benchmark A's asset, Benchmark B's exchange or

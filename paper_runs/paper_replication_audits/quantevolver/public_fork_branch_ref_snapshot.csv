@@ -1,0 +1,5 @@
+repository,url,branch,head_commit,relation_to_official_head,commits_ahead_of_official,commits_behind_official,tag_refs,unique_commits_beyond_official_history,unique_blobs_beyond_official_history,native_result_artifact_found,paper_result_credit
+xtwp1024/QuantEvolver,https://github.com/xtwp1024/QuantEvolver,main,4eb0e78842138ada5334349585b114ad923564e8,official_head_exact,0,0,0,0,0,False,False
+effysxh/QuantEvolver,https://github.com/effysxh/QuantEvolver,main,4eb0e78842138ada5334349585b114ad923564e8,official_head_exact,0,0,0,0,0,False,False
+yfhu86/QuantEvolver,https://github.com/yfhu86/QuantEvolver,main,4eb0e78842138ada5334349585b114ad923564e8,official_head_exact,0,0,0,0,0,False,False
+lusic2018/QuantEvolver,https://github.com/lusic2018/QuantEvolver,main,4eb0e78842138ada5334349585b114ad923564e8,official_head_exact,0,0,0,0,0,False,False

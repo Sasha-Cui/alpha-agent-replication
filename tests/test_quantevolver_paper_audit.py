@@ -81,6 +81,9 @@ def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> Non
     mechanisms = read_csv(output / "source_mechanism_conformance.csv")
     inventory = read_csv(output / "released_source_inventory.csv")
     history = read_csv(output / "released_source_history_inventory.csv")
+    fork_branches = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
+    fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
     paper_assets = read_csv(output / "paper_source_asset_inventory.csv")
     native = json.loads((output / "native_component_execution.json").read_text(encoding="utf-8"))
     component = json.loads((output / "separate_component_gate.json").read_text(encoding="utf-8"))
@@ -94,6 +97,16 @@ def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> Non
     assert manifest["source_history_result_or_data_artifact_paths"] == 0
     assert manifest["source_history_paper_result_literal_hits_outside_bundled_pdf"] == 0
     assert manifest["source_history_paper_result_artifacts_found"] == 0
+    assert manifest["public_forks_reported_by_github_rest"] == 4
+    assert manifest["public_forks_accessible"] == 4
+    assert manifest["public_fork_branch_refs_audited"] == 4
+    assert manifest["public_fork_tag_refs_audited"] == 0
+    assert manifest["public_fork_unique_heads_audited"] == 1
+    assert manifest["public_fork_divergent_heads_audited"] == 0
+    assert manifest["public_fork_unique_commits_beyond_official_history"] == 0
+    assert manifest["public_fork_unique_blobs_beyond_official_history"] == 0
+    assert manifest["public_fork_native_result_artifacts_found"] is False
+    assert manifest["public_fork_paper_result_credit"] is False
     assert manifest["paper_numeric_table_cells_total"] == 75
     assert manifest["native_paper_table_result_cells_reproduced"] == 0
     assert manifest["published_non_table_result_claims_total"] == 31
@@ -137,6 +150,34 @@ def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> Non
     assert {row["result_or_data_artifact_paths"] for row in history} == {"0"}
     assert {row["paper_result_literal_hits_outside_bundled_pdf"] for row in history} == {"0"}
     assert {row["paper_result_artifact_found"] for row in history} == {"False"}
+    assert len(fork_branches) == 4
+    assert {row["repository"] for row in fork_branches} == set(
+        audit.PUBLIC_FORK_REPOSITORIES
+    )
+    assert {row["head_commit"] for row in fork_branches} == {audit.SOURCE_COMMIT}
+    assert {row["relation_to_official_head"] for row in fork_branches} == {
+        "official_head_exact"
+    }
+    assert {row["unique_commits_beyond_official_history"] for row in fork_branches} == {
+        "0"
+    }
+    assert {row["unique_blobs_beyond_official_history"] for row in fork_branches} == {
+        "0"
+    }
+    assert {row["native_result_artifact_found"] for row in fork_branches} == {"False"}
+    assert {row["paper_result_credit"] for row in fork_branches} == {"False"}
+    assert len(fork_heads) == 1
+    assert fork_heads[0]["head_commit"] == audit.SOURCE_COMMIT
+    assert fork_heads[0]["branch_ref_count"] == "4"
+    assert fork_census["census_date"] == "2026-08-14"
+    assert fork_census["github_rest_reported_forks"] == 4
+    assert fork_census["accessible_branch_refs"] == 4
+    assert fork_census["tag_refs"] == 0
+    assert fork_census["unique_heads"] == 1
+    assert fork_census["official_head_exact_unique_heads"] == 1
+    assert fork_census["divergent_unique_heads"] == 0
+    assert fork_census["native_result_artifacts_found"] == 0
+    assert fork_census["paper_result_credit"] is False
     assert len(paper_assets) == 10
     assert sum(row["asset_role"] == "numeric_result_figure" for row in paper_assets) == 5
     assert {row["underlying_numeric_array_shipped"] for row in paper_assets} == {"False"}
@@ -171,4 +212,8 @@ def test_pinned_primary_sources_when_available() -> None:
     ]
     assert len(audit.source_inventory(source_root)) == 67
     assert len(audit.source_history_inventory(source_root)) == 2
+    branches, heads, summary = audit.public_fork_audit(source_root)
+    assert len(branches) == 4
+    assert len(heads) == 1
+    assert summary["native_result_artifacts_found"] == 0
     assert len(audit.paper_source_inventory(paper_source)) == 10

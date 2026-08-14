@@ -1,0 +1,15 @@
+{
+  "census_date": "2026-08-14",
+  "github_rest_reported_forks": 4,
+  "accessible_public_forks": 4,
+  "accessible_branch_refs": 4,
+  "tag_refs": 0,
+  "unique_heads": 1,
+  "official_head_exact_unique_heads": 1,
+  "divergent_unique_heads": 0,
+  "unique_commits_beyond_official_history": 0,
+  "unique_blobs_beyond_official_history": 0,
+  "native_result_artifacts_found": 0,
+  "paper_result_credit": false,
+  "interpretation": "all four accessible public forks and all four branch refs resolve exactly to the audited official head; they add no code, data, checkpoint, factor, prediction, return, log, training, or paper-result lineage"
+}
