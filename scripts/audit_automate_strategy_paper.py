@@ -45,6 +45,137 @@ DISCOVERY_SHA256 = {
 PAPER_SHA256 = "6585377002a3b049a6bfadef3152a74adfe12d68ff5c48cccb8c76de4fd1b540"
 PAPER_URL = "https://aclanthology.org/2025.findings-emnlp.1005.pdf"
 SOURCE_URL = "https://github.com/kouzhizhuo/Automate-Strategy-Finding-with-LLM-in-Quant-investment"
+PUBLIC_FORK_CENSUS_CHECKED_AT = "2026-08-14"
+PUBLIC_FORK_BRANCH_REF_SEQUENCE_SHA256 = (
+    "61c027bcfab368f1641f2d0f8e5b1901d5c6c89548464d6ef91922403cef8e2f"
+)
+PUBLIC_FORK_BRANCH_REFS: Tuple[Tuple[str, str, str], ...] = (
+    (
+        "ALADIN99I/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "6303684b315fc3bedfc9b87db0e38e3102033d50",
+    ),
+    (
+        "aptperson/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "6303684b315fc3bedfc9b87db0e38e3102033d50",
+    ),
+    (
+        "aptperson/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "New-project",
+        NEW_PROJECT_HEAD,
+    ),
+    (
+        "BrainLyh/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "chayao2015/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "colinmgeorge/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "DatAvalon/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "496ad96f1fc525dcc43109401c11bcc79928bcd9",
+    ),
+    (
+        "dkeraaaa/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "HUH99/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "jingmouren/kouzhizhuo-Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "496ad96f1fc525dcc43109401c11bcc79928bcd9",
+    ),
+    (
+        "JohnsRun/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "Lilneo786/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "maxclchen/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "6303684b315fc3bedfc9b87db0e38e3102033d50",
+    ),
+    (
+        "mengmajun/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "496ad96f1fc525dcc43109401c11bcc79928bcd9",
+    ),
+    (
+        "omarovic01/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "496ad96f1fc525dcc43109401c11bcc79928bcd9",
+    ),
+    (
+        "SBY7219/Automate-Strategy-with-LLM-in-Quant",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "ShawnWangXin/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "shenghansen/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "stophobia/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "496ad96f1fc525dcc43109401c11bcc79928bcd9",
+    ),
+    (
+        "WangGuolin/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "6303684b315fc3bedfc9b87db0e38e3102033d50",
+    ),
+    (
+        "wangyuaqi/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "496ad96f1fc525dcc43109401c11bcc79928bcd9",
+    ),
+    (
+        "Warden7/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "wrchow/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "xieerduoyishengzhidi/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        SOURCE_COMMIT,
+    ),
+    (
+        "yjj5855/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
+        "main",
+        "496ad96f1fc525dcc43109401c11bcc79928bcd9",
+    ),
+)
 PAPER_TABLE_2: Tuple[Tuple[str, float, float], ...] = (
     ("Momentum", 0.0092, 0.0208),
     ("Mean Reversion", 0.0135, 0.0187),
@@ -103,6 +234,37 @@ def git_bytes(root: Path, *args: str) -> bytes:
 
 def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
+
+
+def public_fork_ref_inventory(source_root: Path) -> List[Dict[str, Any]]:
+    """Validate the dated public-fork census against the pinned official history."""
+    refs = sorted(PUBLIC_FORK_BRANCH_REFS, key=lambda row: (row[0].lower(), row[1].lower(), row[2]))
+    canonical = "".join(f"{repository}\t{branch}\t{head}\n" for repository, branch, head in refs)
+    if sha256_bytes(canonical.encode("utf-8")) != PUBLIC_FORK_BRANCH_REF_SEQUENCE_SHA256:
+        raise RuntimeError("Automate Strategy public-fork census sequence changed")
+    if len({repository for repository, _branch, _head in refs}) != 24 or len(refs) != 25:
+        raise RuntimeError("Automate Strategy public-fork census cardinality changed")
+
+    rows: List[Dict[str, Any]] = []
+    for repository, branch, head in refs:
+        git(source_root, "cat-file", "-e", f"{head}^{{commit}}")
+        reachable = head in PUBLIC_HISTORY_COMMITS
+        if not reachable:
+            raise RuntimeError(
+                f"Automate Strategy fork head escaped the pinned official history: {repository}@{branch}"
+            )
+        rows.append(
+            {
+                "repository": repository,
+                "branch": branch,
+                "head_sha": head,
+                "reachable_from_pinned_official_history": reachable,
+                "additional_commits": 0,
+                "additional_result_or_log_paths": 0,
+                "paper_result_credit": False,
+            }
+        )
+    return rows
 
 
 def excel_column_index(reference: str) -> int:
@@ -586,6 +748,7 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     if sha256(paper_path) != PAPER_SHA256:
         raise RuntimeError("Official paper PDF hash does not match the pinned primary source")
     history, branch_components, history_summary = released_source_history_audit(source_root)
+    fork_refs = public_fork_ref_inventory(source_root)
 
     seed_path = source_root / "data/Seed Alpha.xlsx"
     source_main = (source_root / "main.py").read_text(encoding="utf-8")
@@ -615,6 +778,11 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         output_dir / "historical_branch_component_inventory.csv",
         branch_components,
         list(branch_components[0]),
+    )
+    write_csv(
+        output_dir / "public_fork_ref_inventory.csv",
+        fork_refs,
+        list(fork_refs[0]),
     )
     runtime_observation = historical_branch_runtime_observation()
     (output_dir / "historical_branch_runtime_observation.json").write_text(
@@ -657,6 +825,16 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "current_public_main_head": CURRENT_MAIN_HEAD,
         "new_project_branch_head": NEW_PROJECT_HEAD,
         "released_source_history": history_summary,
+        "public_fork_census_checked_at": PUBLIC_FORK_CENSUS_CHECKED_AT,
+        "public_forks_total": 24,
+        "public_fork_branch_refs_total": len(fork_refs),
+        "public_fork_branch_ref_sequence_sha256": PUBLIC_FORK_BRANCH_REF_SEQUENCE_SHA256,
+        "public_fork_branch_refs_reachable_from_official_history": sum(
+            bool(row["reachable_from_pinned_official_history"]) for row in fork_refs
+        ),
+        "public_divergent_fork_heads_total": 0,
+        "public_fork_additional_result_or_log_paths_total": 0,
+        "public_fork_paper_result_credit_paths_total": 0,
         "source_seed_workbook": str(seed_path.relative_to(source_root)),
         "source_seed_workbook_sha256": sha256(seed_path),
         "paper_table_2_cells_matched": table_2_matches,
@@ -719,7 +897,9 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             "to verify the paper's 53.173% Table 4 result. Complete public-history review also "
             "finds a later generic Grail branch, but its components are disconnected from the "
             "released data and materially differ from the paper's GPT-4o, CSA/RPA, and |A|-10-1 "
-            "MLP design."
+            "MLP design. A dated census of 24 public forks and 25 branch refs finds that every "
+            "fork head is already an exact commit in the audited official history, so no fork "
+            "adds paper-result lineage."
         ),
     }
     report = f"""# Automate Strategy Finding paper-level conformance audit
@@ -731,6 +911,10 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
 
 - Official paper: {PAPER_URL} (SHA-256 `{PAPER_SHA256}`).
 - Public source: {SOURCE_URL}, commit `{commit}`.
+- A bounded GitHub census on {PUBLIC_FORK_CENSUS_CHECKED_AT} covers all 24 accessible
+  forks and {len(fork_refs)} fork branch refs. Every head is an exact commit in the
+  already-audited official history, so the forks contribute no additional commit,
+  result/log path, or paper-result lineage.
 
 ## What the public artifacts establish
 
@@ -744,6 +928,8 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
 - The complete public Git surface was reviewed: {history_summary['public_commits_reviewed']}
   commits on {history_summary['public_branches_reviewed']} branches, 39 unique historical paths,
   zero tags/releases, and zero unreachable objects.
+- All {len(fork_refs)} branch refs across the 24 public forks resolve to those same
+  official-history commits. See `public_fork_ref_inventory.csv`.
 
 ## What is missing or inconsistent
 

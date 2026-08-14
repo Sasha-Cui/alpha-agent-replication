@@ -267,10 +267,21 @@ ARTIFACT_NOTES = {
     ),
     "SYS-AUTOMATE-STRATEGY": (
         "Y",
-        "The snapshot bundles seven 2022Q4 individual-factor analysis workbooks "
-        "with IC summaries and quantile-return/turnover series, plus prompt logs. "
-        "It does not ship the integrated 2023 portfolio path behind paper Table 4, "
-        "and the factor outputs are not a six-country security-level signal panel.",
+        "A pinned ACL-final audit finds seven 2022Q4 individual-factor analysis "
+        "workbooks with IC summaries, quantile-return/turnover series, prompt logs, "
+        "and a 37-row seed workbook. The inferable mean-absolute-IC rule reproduces "
+        "3/10 Table 2 cells at four-decimal precision. This is component evidence, "
+        "not the integrated result. The complete seven-commit, two-branch official "
+        "history contains 39 unique paths and no integrated Jan-2023--Jan-2024 "
+        "portfolio, weighted 12-alpha output, Table 4 schema, or reported 53.173% "
+        "return; 0/40 Table 4 cells are verifiable. The released DNN uses one hidden "
+        "node rather than 10 and lacks its inputs; the top-k/drop-n portfolio rule is "
+        "absent. The later generic Grail branch is disconnected from the workbooks and "
+        "does not implement the paper configuration. A dated census exhausts all 24 "
+        "public forks and 25 branch refs: every fork head is an exact commit already in "
+        "the official history, adding no result or log lineage. The paper also conflicts "
+        "internally on SSE50 return and full-model ablation Sharpe. The factor outputs "
+        "are not a six-country security-level signal panel.",
     ),
     "SYS-QUANTA-ALPHA": (
         "Y",
@@ -1391,7 +1402,7 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-QUANTER": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
     "SYS-CHAIN-OF-ALPHA": "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system",
     "SYS-TREEVO": "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_seven_prompt_templates_no_attributable_pipeline",
-    "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
+    "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_3_of_10_table2_component_cells_zero_of_40_integrated_portfolio_cells_24_forks_exhausted",
     "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
     "SYS-COG-ALPHA": "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_templates_four_author_curve_series_zero_regenerated",
     "SYS-CRYPTO-TRADE": "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_12_ablation_correspondences_zero_credit_37_forks_exhausted",

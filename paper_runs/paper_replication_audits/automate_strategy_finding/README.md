@@ -7,6 +7,10 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
 
 - Official paper: https://aclanthology.org/2025.findings-emnlp.1005.pdf (SHA-256 `6585377002a3b049a6bfadef3152a74adfe12d68ff5c48cccb8c76de4fd1b540`).
 - Public source: https://github.com/kouzhizhuo/Automate-Strategy-Finding-with-LLM-in-Quant-investment, commit `8b50203faf50d0b561cf5ffee4d63dcdc4551884`.
+- A bounded GitHub census on 2026-08-14 covers all 24 accessible
+  forks and 25 fork branch refs. Every head is an exact commit in the
+  already-audited official history, so the forks contribute no additional commit,
+  result/log path, or paper-result lineage.
 
 ## What the public artifacts establish
 
@@ -20,6 +24,8 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
 - The complete public Git surface was reviewed: 7
   commits on 2 branches, 39 unique historical paths,
   zero tags/releases, and zero unreachable objects.
+- All 25 branch refs across the 24 public forks resolve to those same
+  official-history commits. See `public_fork_ref_inventory.csv`.
 
 ## What is missing or inconsistent
 

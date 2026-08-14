@@ -212,7 +212,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
         "CensusArxiv250510278": "paper_audit:completed_zero_of_766_final_native_results_full_release_history_signal_nonidentifiability",
         "CensusArxiv250909995": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
-        "WorkAutomateStrategy": "paper_audit:completed_zero_of_40_integrated_portfolio_cells_factor_component_only",
+        "WorkAutomateStrategy": (
+            "paper_audit:completed_3_of_10_table2_component_cells_zero_of_40_integrated_"
+            "portfolio_cells_24_forks_exhausted"
+        ),
     }
     for work_id, status in expected.items():
         row = routes.loc[work_id]
@@ -223,6 +226,13 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     assert "All 12 Table 5 values" in cryptotrade_blocker
     assert "37 accessible public forks and 39 fork refs" in cryptotrade_blocker
     assert "260/480 cells remain method-faithfully unverifiable" in cryptotrade_blocker
+
+    automate_blocker = routes.loc[
+        "WorkAutomateStrategy", "precise_native_or_access_blocker"
+    ]
+    assert "3/10 Table 2 cells" in automate_blocker
+    assert "0/40 Table 4 cells" in automate_blocker
+    assert "24 public forks and 25 branch refs" in automate_blocker
 
 
 def test_flag_trader_paper_only_audit_preserves_its_evidence_boundary() -> None:

@@ -66,6 +66,10 @@ def test_committed_audit_records_partial_component_not_paper_replication() -> No
         newline="", encoding="utf-8"
     ) as handle:
         branch_components = list(csv.DictReader(handle))
+    with (output / "public_fork_ref_inventory.csv").open(
+        newline="", encoding="utf-8"
+    ) as handle:
+        fork_refs = list(csv.DictReader(handle))
     assert manifest["overall_status"] == "not_reproduced_missing_integrated_native_output"
     assert manifest["paper_table_2_cells_matched"] == 3
     assert manifest["paper_table_2_cells_total"] == 10
@@ -76,6 +80,15 @@ def test_committed_audit_records_partial_component_not_paper_replication() -> No
     assert manifest["source_agent_contains_hardcoded_credential"] is True
     assert manifest["source_agent_historical_credential_literal_present_at_pinned_commit"] is True
     assert manifest["source_agent_current_main_credential_redacted"] is True
+    assert manifest["public_fork_census_checked_at"] == "2026-08-14"
+    assert manifest["public_forks_total"] == 24
+    assert manifest["public_fork_branch_refs_total"] == 25
+    assert manifest["public_fork_branch_ref_sequence_sha256"] == (
+        "61c027bcfab368f1641f2d0f8e5b1901d5c6c89548464d6ef91922403cef8e2f"
+    )
+    assert manifest["public_fork_branch_refs_reachable_from_official_history"] == 25
+    assert manifest["public_divergent_fork_heads_total"] == 0
+    assert manifest["public_fork_paper_result_credit_paths_total"] == 0
     assert manifest["new_project_branch_reviewed"] is True
     assert manifest["new_project_branch_component_attempt_is_paper_faithful"] is False
     assert manifest["new_project_branch_paper_result_credit"] is False
@@ -120,6 +133,11 @@ def test_committed_audit_records_partial_component_not_paper_replication() -> No
     assert all(row["connected_to_released_workbooks"] == "False" for row in branch_components)
     assert all(row["paper_configuration_match"] == "False" for row in branch_components)
     assert all(row["paper_result_credit"] == "False" for row in branch_components)
+    assert len(fork_refs) == 25
+    assert len({row["repository"] for row in fork_refs}) == 24
+    assert all(row["reachable_from_pinned_official_history"] == "True" for row in fork_refs)
+    assert all(row["additional_commits"] == "0" for row in fork_refs)
+    assert all(row["paper_result_credit"] == "False" for row in fork_refs)
     assert len(inventory) == 7
     assert {row["sample_start"] for row in inventory} == {"2022-09-30"}
     assert {row["sample_end"] for row in inventory} == {"2022-12-30"}
