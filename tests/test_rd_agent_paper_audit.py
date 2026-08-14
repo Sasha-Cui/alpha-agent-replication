@@ -85,7 +85,8 @@ def test_committed_native_record_is_component_only() -> None:
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     native = json.loads((output / "native_execution.json").read_text(encoding="utf-8"))
     assert manifest["overall_status"] == (
-        "paper_specification_and_source_audited_zero_native_results_missing_run_artifacts"
+        "paper_specification_source_and_full_history_audited_zero_native_results_"
+        "missing_attributable_run_artifacts"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_numeric_table_cells_total"] == 534
@@ -94,6 +95,13 @@ def test_committed_native_record_is_component_only() -> None:
     assert manifest["paper_mechanisms_with_source_implementation"] == 21
     assert manifest["paper_mechanisms_verified_as_executed_in_reported_run"] == 0
     assert manifest["paper_configurations_verified_for_reported_run"] == 0
+    assert manifest["public_source_history_remote_refs"] == 231
+    assert manifest["public_source_history_reachable_commits"] == 3384
+    assert manifest["public_source_history_unique_changed_paths"] == 3188
+    assert manifest["public_source_history_keyword_paths"] == 329
+    assert manifest["public_source_history_artifact_candidates_inspected"] == 15
+    assert manifest["public_source_history_attributable_paper_run_artifacts"] == 0
+    assert manifest["paper_result_cells_reproduced_from_public_history"] == 0
     assert manifest["paper_era_data_science_and_kaggle_python_files_compiled"] == 233
     assert manifest["paper_era_scheduler_component_executed"] is True
     assert manifest["paper_era_interaction_kernel_executed"] is True
@@ -108,6 +116,44 @@ def test_committed_native_record_is_component_only() -> None:
     assert native["paper_result_credit"] is False
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
+
+
+def test_complete_public_history_bounds_developmental_outputs_without_credit() -> None:
+    output = ROOT / "paper_runs/paper_replication_audits/rd_agent"
+    history = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
+    paths = read_csv(output / "public_source_history_path_inventory.csv")
+    artifacts = read_csv(output / "public_source_history_artifact_candidates.csv")
+    assert history["remote_refs"] == 231
+    assert history["reachable_commits"] == 3384
+    assert history["unique_historical_changed_paths"] == 3188
+    assert history["keyword_paths"] == 329
+    assert history["bounded_artifact_candidates_inspected"] == 15
+    assert history["attributable_published_run_artifacts"] == 0
+    assert all(history["checks"].values())
+    assert len(paths) == 3188
+    assert sum(
+        row[
+            "contains_result_output_log_trace_checkpoint_submission_or_score_keyword"
+        ]
+        == "True"
+        for row in paths
+    ) == 329
+    assert sum(row["selected_artifact_candidate"] == "True" for row in paths) == 15
+    assert len(artifacts) == 15
+    assert Counter(row["artifact_role"] for row in artifacts) == {
+        "post_v2_single_competition_command_without_output": 1,
+        "pre_v1_three_competition_researcher_diagnostic": 3,
+        "pre_v1_automated_evaluation_metadata": 1,
+        "post_v2_unrelated_RL_benchmark": 1,
+        "between_v1_v2_39_competition_runner_ratio_diagnostic": 5,
+        "between_v1_v2_debug_LLM_pickle_not_deserialized": 2,
+        "pre_v1_single_example_solution_artifact": 2,
+    }
+    assert {
+        row["attributable_to_published_75_competition_three_seed_run"]
+        for row in artifacts
+    } == {"False"}
+    assert {row["paper_result_credit"] for row in artifacts + paths} == {"False"}
 
 
 def test_broken_trace_links_and_scope_boundary_are_explicit() -> None:
@@ -138,3 +184,7 @@ def test_pinned_primary_sources_when_available() -> None:
     assert all(row["required_source_tokens_found"] for row in mechanisms)
     snapshots = audit.source_snapshot_rows(source)
     assert [row["tracked_files"] for row in snapshots] == [536, 609, 907]
+    history, paths, artifacts = audit.public_source_history(source)
+    assert history["reachable_commits"] == 3384
+    assert len(paths) == 3188
+    assert len(artifacts) == 15

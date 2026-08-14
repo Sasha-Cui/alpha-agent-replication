@@ -14,6 +14,7 @@ Table 9 caption,caption calls two baseline configurations but table has two ML-M
 paper 90/10 selector,paper-era source defaults ValidationSelector to 80/20,source_default_mismatch,False
 paper algorithm defaults,"planner, LLM selection, multi-trace, and critique settings are off/one by default",paper_run_configuration_absent,False
 official trace links,two README aka.ms result links redirect to generic Bing pages at audit date,released_trace_links_broken,False
+complete public history,"3,384 commits across 231 remote branch/tag refs contain developmental diagnostics but no attributable 75-competition three-seed paper-run bundle",bounded_negative_result_evidence,False
 current README drift,"README retains v1-era table and reports hybrid 30.22±1.5, not final-paper 29.7±0.4",release_documentation_drift,False
 source compilation,38 paper-era data-science Python files compile; compilation is not execution,component_packaging_pass,True
 paper source compilation,v2 LaTeX compiles to 33 pages,paper_packaging_pass,True

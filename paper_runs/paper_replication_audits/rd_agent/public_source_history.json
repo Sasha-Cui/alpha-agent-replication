@@ -1,0 +1,22 @@
+{
+  "assessment": "developmental_and_unrelated_branch_artifacts_exist_but_no_75_competition_three_seed_paper_run_lineage",
+  "attributable_published_run_artifacts": 0,
+  "bounded_artifact_candidates_inspected": 15,
+  "checks": {
+    "artifact_candidate_paths_present": true,
+    "historical_changed_path_count": true,
+    "keyword_path_count": true,
+    "reachable_commit_count": true,
+    "remote_ref_count": true,
+    "remote_ref_snapshot_sha256": true,
+    "root_commit": true
+  },
+  "keyword_paths": 329,
+  "paper_result_cells_reproduced_from_history": 0,
+  "reachable_commits": 3384,
+  "remote_ref_snapshot_sha256": "89959be7063708bf4eb6f7b143d80f218873825048b5767a46c5ed32c9821e32",
+  "remote_refs": 231,
+  "root_commit": "c740262752b585bc59e41e26807d826ec7bebe75",
+  "scope": "all locally pinned remote branches and tags",
+  "unique_historical_changed_paths": 3188
+}

@@ -1,6 +1,6 @@
 # R&D-Agent paper-replication audit
 
-This audit uses the final 33-page arXiv v2 report as the result authority and pins both paper revisions plus the official repository at the last commit before each revision. It is fail-closed: source-code presence, paper compilation, and isolated component execution do not substitute for the reported 75-competition, three-seed experiments.
+This audit uses the final 33-page arXiv v2 report as the result authority and pins both paper revisions, the official repository at the last commit before each revision, and its complete public branch/tag path history. It is fail-closed: source-code presence, paper compilation, isolated component execution, and unattributed developmental outputs do not substitute for the reported 75-competition, three-seed experiments.
 
 ## Honest result
 
@@ -21,6 +21,12 @@ The cited primary record is the general **R&D-Agent** MLE-Bench report. It is no
 ## Revision and release drift
 
 The 7-page v1 paper reports 32 numeric cells from 24-hour runs using o1 and o3/GPT-4.1, with five or six seeds and standard deviations. The 33-page v2 is effectively a new experiment: 12-hour GPT-5/hybrid runs, three seeds, SEMs, ablations, raw runs, costs, and per-competition medal counts. Its 534 displayed numeric table cells represent 526 unique measurements. The current README still presents v1-era results and a hybrid value of 30.22±1.5, while v2 reports 29.7±0.4 and a new GPT-5 result of 35.1±0.4.
+
+## Complete public-history boundary
+
+The audit now walks 231 pinned remote refs, 3384 reachable commits, and 3188 unique historical paths. It inspects 329 paths whose names mention results, outputs, logs, traces, checkpoints, submissions, or scores and records fifteen bounded artifact candidates byte-for-byte.
+
+That history corrects an earlier overstatement: developmental artifacts do exist. They include three pre-v1 competition CSVs, five between-version diagnostics with 39 competitions each, two debug-LLM pickles inventoried without deserialization, one example solution, pre-paper metadata, one post-v2 run command, and an unrelated post-v2 AutoRL result. None carries the paper's 75-competition manifest, three seeds, model/config lineage, or published table outputs. They receive zero paper-result credit, but their existence is now explicit rather than hidden behind a blanket “no outputs” claim.
 
 ## What ran
 

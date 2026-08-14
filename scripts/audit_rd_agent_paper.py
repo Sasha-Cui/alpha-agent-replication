@@ -2,10 +2,12 @@
 """Fail-closed paper-level audit of R&D-Agent (arXiv:2505.14738).
 
 The final arXiv v2 source is the result authority.  The audit pins both paper
-revisions and the official repository at the last commit preceding each
-revision.  Released component code is credited as component evidence only;
-without the paper run configurations, traces, data snapshot, model snapshots,
-and raw outputs, it cannot receive published-result credit.
+revisions, the official repository at the last commit preceding each revision,
+and the complete public branch/tag path history.  Released component code and
+unattributed developmental outputs are credited as component/history evidence
+only; without the paper run configurations, traces, data snapshot, model
+snapshots, and attributable raw outputs, they cannot receive published-result
+credit.
 """
 from __future__ import annotations
 
@@ -32,7 +34,7 @@ from typing import Any, Mapping, Sequence
 
 ARXIV_URL = "https://arxiv.org/abs/2505.14738"
 SOURCE_URL = "https://github.com/microsoft/RD-Agent"
-AUDIT_DATE = "2026-08-11"
+AUDIT_DATE = "2026-08-14"
 ARXIV_API_SHA256 = "61b02f39c6282e252e0e509633c08cf9632588a99bafaa9f6510554dbcf9bb73"
 VERSIONS = {
     "v1": {
@@ -56,6 +58,68 @@ SOURCE_V2_COMMIT = "f360d0a212793eb044c218b5e13b095e684a632d"
 SOURCE_V2_DATE = "2025-09-23T16:20:00+08:00"
 SOURCE_CURRENT_COMMIT = "6762f84f9bc0f5c6486c50a00e128a57ac6c3683"
 SOURCE_CURRENT_DATE = "2026-08-04T19:50:56+08:00"
+SOURCE_HISTORY_ROOT_COMMIT = "c740262752b585bc59e41e26807d826ec7bebe75"
+SOURCE_HISTORY_REF_COUNT = 231
+SOURCE_HISTORY_REF_SHA256 = "89959be7063708bf4eb6f7b143d80f218873825048b5767a46c5ed32c9821e32"
+SOURCE_HISTORY_COMMIT_COUNT = 3384
+SOURCE_HISTORY_PATH_COUNT = 3188
+SOURCE_HISTORY_KEYWORD_PATH_COUNT = 329
+
+HISTORICAL_ARTIFACT_SPECS = (
+    (
+        "bf8bdfc7db4b6069542a59eb45a7d95c85939fe3",
+        "job_log.txt",
+        "post_v2_single_competition_command_without_output",
+    ),
+    *(
+        (
+            "2564d0ec2c0028c2a2faebab98c4112568443af5",
+            f"output_dir/{name}",
+            "pre_v1_three_competition_researcher_diagnostic",
+        )
+        for name in ("aggregated_results.csv", "results.csv", "results_filtered.csv")
+    ),
+    (
+        "b44bef5ec1546a26acca6ce0c84656d585417df0",
+        "rdagent/scenarios/kaggle/automated_evaluation/results/20241107_051618/experiment_info.json",
+        "pre_v1_automated_evaluation_metadata",
+    ),
+    (
+        "f455327dce876ef1ad2f36ce118a3ade07f355b0",
+        "rdagent/scenarios/rl/autorl_bench/results.csv",
+        "post_v2_unrelated_RL_benchmark",
+    ),
+    *(
+        (
+            "1226e3c46980d1eb072dfd1f0f4ca9bad8c854b4",
+            f"results/{name}_results.md",
+            "between_v1_v2_39_competition_runner_ratio_diagnostic",
+        )
+        for name in (
+            "diverse-mammoth",
+            "liberal-swan",
+            "moved-coral",
+            "ready-haddock",
+            "stable-racer",
+        )
+    ),
+    *(
+        (
+            "bd9266cb170a5e687d5d47fd627f9201b79cc38a",
+            f"scripts/exp/researcher/log/{stamp}/debug_llm.pkl",
+            "between_v1_v2_debug_LLM_pickle_not_deserialized",
+        )
+        for stamp in ("2025-04-08_03-05-05-888845", "2025-04-08_03-05-13-631223")
+    ),
+    *(
+        (
+            "416ecc8161ef0a18dc04b77ca2ca81a0de7ef219",
+            f"scripts/exp/researcher/output_dir/solution/1f0027620e684019a9d37666ce31bd78/{name}",
+            "pre_v1_single_example_solution_artifact",
+        )
+        for name in ("scores.csv", "submission.csv")
+    ),
+)
 
 METRICS = ("valid_submission", "above_median", "bronze", "silver", "gold", "any_medal")
 
@@ -144,6 +208,14 @@ def run_git(source_root: Path, *args: str, binary: bool = False) -> Any:
 
 def git_show(source_root: Path, commit: str, path: str) -> str:
     return str(run_git(source_root, "show", f"{commit}:{path}"))
+
+
+def git_blob(source_root: Path, commit: str, path: str) -> bytes:
+    return bytes(run_git(source_root, "show", f"{commit}:{path}", binary=True))
+
+
+def bytes_sha256(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
@@ -455,6 +527,181 @@ def source_snapshot_rows(source_root: Path) -> list[dict[str, Any]]:
     return rows
 
 
+HISTORY_KEYWORD_RE = re.compile(
+    r"result|output|log|trace|checkpoint|submission|score",
+    re.IGNORECASE,
+)
+
+
+def _history_path_role(path: str, candidate_roles: Mapping[str, str]) -> str:
+    if path in candidate_roles:
+        return candidate_roles[path]
+    if "/training_set/" in path or path.startswith("sample/"):
+        return "training_or_sample_reference_not_agent_run_output"
+    if path.startswith("scripts/exp/researcher/output_dir/extracted_ideas/"):
+        return "retrieved_idea_input_not_agent_run_output"
+    if path.startswith("scripts/exp/researcher/output_dir/idea"):
+        return "idea_pool_or_intermediate_not_paper_run_output"
+    if HISTORY_KEYWORD_RE.search(path):
+        return "keyword_path_source_template_test_or_unattributed_nonpaper_artifact"
+    return "ordinary_historical_source_path"
+
+
+def _artifact_scope_summary(path: str, role: str, blob: bytes) -> str:
+    if path.endswith(".pkl"):
+        return "opaque debug pickle inventoried without deserialization or execution"
+    text = blob.decode("utf-8", errors="replace")
+    if role == "post_v2_single_competition_command_without_output":
+        command = " ".join(text.split())
+        return f"one cafa-6 12-hour invocation and no result payload: {command}"
+    if role == "between_v1_v2_39_competition_runner_ratio_diagnostic":
+        rows = [
+            line
+            for line in text.splitlines()
+            if line.startswith("| ")
+            and not line.startswith("| Competition")
+            and not line.startswith("|---")
+        ]
+        populated = sum("N/A" not in row for row in rows)
+        if len(rows) != 39:
+            raise RuntimeError(f"Historical runner diagnostic row count changed: {path}")
+        return (
+            f"39 competition rows; {populated} populated Base/Prev/SOTA ratio rows; "
+            "not the paper's 75-competition medal outputs"
+        )
+    if role == "pre_v1_three_competition_researcher_diagnostic":
+        rows = list(csv.DictReader(io.StringIO(text)))
+        competitions = sorted({row["Competition"] for row in rows})
+        if len(competitions) != 3:
+            raise RuntimeError(f"Historical researcher competition census changed: {path}")
+        return f"{len(rows)} rows across three developmental competitions: {', '.join(competitions)}"
+    if role == "pre_v1_automated_evaluation_metadata":
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError:
+            if '"competition": "sf-crime"' not in text or '"results":' not in text:
+                raise RuntimeError("Historical automated-evaluation metadata changed")
+            return (
+                "malformed pre-paper sf-crime metadata ending with an empty results key; "
+                "not an executable result artifact"
+            )
+        return f"pre-paper automated-evaluation metadata with {len(payload)} top-level fields"
+    if role == "post_v2_unrelated_RL_benchmark":
+        rows = list(csv.DictReader(io.StringIO(text)))
+        return f"{len(rows)} post-paper AutoRL rows outside the MLE-Bench paper scope"
+    if role == "pre_v1_single_example_solution_artifact":
+        rows = list(csv.reader(io.StringIO(text)))
+        return f"single example-solution artifact with {max(0, len(rows) - 1)} data rows"
+    raise ValueError(f"missing historical artifact summary rule: {role}")
+
+
+def public_source_history(
+    source_root: Path,
+) -> tuple[dict[str, Any], list[dict[str, Any]], list[dict[str, Any]]]:
+    ref_lines = [
+        line
+        for line in str(
+            run_git(
+                source_root,
+                "for-each-ref",
+                "--format=%(refname) %(objectname)",
+                "refs/remotes/origin",
+                "refs/tags",
+            )
+        ).splitlines()
+        if not line.startswith("refs/remotes/origin/HEAD ")
+    ]
+    ref_snapshot = "\n".join(sorted(ref_lines)) + "\n"
+    roots = sorted(str(run_git(source_root, "rev-list", "--all", "--max-parents=0")).splitlines())
+    commits = sorted(set(str(run_git(source_root, "rev-list", "--all")).splitlines()))
+    paths = sorted(
+        {
+            path
+            for path in str(
+                run_git(source_root, "log", "--all", "--name-only", "--format=")
+            ).splitlines()
+            if path
+        }
+    )
+    candidate_roles = {path: role for _, path, role in HISTORICAL_ARTIFACT_SPECS}
+    checks = {
+        "remote_ref_count": len(ref_lines) == SOURCE_HISTORY_REF_COUNT,
+        "remote_ref_snapshot_sha256": (
+            bytes_sha256(ref_snapshot.encode("utf-8")) == SOURCE_HISTORY_REF_SHA256
+        ),
+        "reachable_commit_count": len(commits) == SOURCE_HISTORY_COMMIT_COUNT,
+        "root_commit": roots == [SOURCE_HISTORY_ROOT_COMMIT],
+        "historical_changed_path_count": len(paths) == SOURCE_HISTORY_PATH_COUNT,
+        "keyword_path_count": (
+            sum(bool(HISTORY_KEYWORD_RE.search(path)) for path in paths)
+            == SOURCE_HISTORY_KEYWORD_PATH_COUNT
+        ),
+        "artifact_candidate_paths_present": set(candidate_roles).issubset(paths),
+    }
+    if not all(checks.values()):
+        raise RuntimeError(f"Pinned R&D-Agent public history changed: {checks}")
+
+    path_rows = [
+        {
+            "historical_path": path,
+            "contains_result_output_log_trace_checkpoint_submission_or_score_keyword": bool(
+                HISTORY_KEYWORD_RE.search(path)
+            ),
+            "selected_artifact_candidate": path in candidate_roles,
+            "path_role": _history_path_role(path, candidate_roles),
+            "attributable_to_published_75_competition_three_seed_run": False,
+            "paper_result_credit": False,
+        }
+        for path in paths
+    ]
+
+    artifact_rows: list[dict[str, Any]] = []
+    for commit, path, role in HISTORICAL_ARTIFACT_SPECS:
+        blob = git_blob(source_root, commit, path)
+        commit_date = str(run_git(source_root, "show", "-s", "--format=%cI", commit)).strip()
+        remote_refs = sorted(
+            line.strip()
+            for line in str(run_git(source_root, "branch", "-r", "--contains", commit)).splitlines()
+            if line.strip() and " -> " not in line
+        )
+        artifact_rows.append(
+            {
+                "evidence_commit": commit,
+                "commit_date": commit_date,
+                "remote_refs_containing_commit": ";".join(remote_refs),
+                "historical_path": path,
+                "blob_sha256": bytes_sha256(blob),
+                "bytes": len(blob),
+                "artifact_role": role,
+                "scope_summary": _artifact_scope_summary(path, role, blob),
+                "attributable_to_published_75_competition_three_seed_run": False,
+                "contains_paper_run_config_seed_and_model_lineage": False,
+                "paper_result_credit": False,
+            }
+        )
+    if len(artifact_rows) != 15:
+        raise RuntimeError("Expected fifteen bounded historical artifact candidates")
+
+    summary = {
+        "scope": "all locally pinned remote branches and tags",
+        "remote_refs": len(ref_lines),
+        "remote_ref_snapshot_sha256": bytes_sha256(ref_snapshot.encode("utf-8")),
+        "reachable_commits": len(commits),
+        "root_commit": roots[0],
+        "unique_historical_changed_paths": len(paths),
+        "keyword_paths": sum(bool(HISTORY_KEYWORD_RE.search(path)) for path in paths),
+        "bounded_artifact_candidates_inspected": len(artifact_rows),
+        "attributable_published_run_artifacts": 0,
+        "paper_result_cells_reproduced_from_history": 0,
+        "assessment": (
+            "developmental_and_unrelated_branch_artifacts_exist_but_no_75_competition_"
+            "three_seed_paper_run_lineage"
+        ),
+        "checks": checks,
+    }
+    return summary, path_rows, artifact_rows
+
+
 def paper_asset_rows(paper_root: Path) -> list[dict[str, Any]]:
     result_assets = {"agent_performance_compact_new.pdf", "backend_comparison.pdf", "development_ablation_narrow.png", "lite_performance_comparison.pdf"}
     rows = []
@@ -488,6 +735,7 @@ def internal_check_rows() -> list[dict[str, Any]]:
         ("paper 90/10 selector", "paper-era source defaults ValidationSelector to 80/20", "source_default_mismatch", False),
         ("paper algorithm defaults", "planner, LLM selection, multi-trace, and critique settings are off/one by default", "paper_run_configuration_absent", False),
         ("official trace links", "two README aka.ms result links redirect to generic Bing pages at audit date", "released_trace_links_broken", False),
+        ("complete public history", "3,384 commits across 231 remote branch/tag refs contain developmental diagnostics but no attributable 75-competition three-seed paper-run bundle", "bounded_negative_result_evidence", False),
         ("current README drift", "README retains v1-era table and reports hybrid 30.22±1.5, not final-paper 29.7±0.4", "release_documentation_drift", False),
         ("source compilation", "38 paper-era data-science Python files compile; compilation is not execution", "component_packaging_pass", True),
         ("paper source compilation", "v2 LaTeX compiles to 33 pages", "paper_packaging_pass", True),
@@ -501,7 +749,7 @@ def gap_rows() -> list[dict[str, str]]:
         ("paper run commands", "No exact commands or environment variables for the six v2 paper runs/ablations are released."),
         ("run configuration", "No frozen config dump proves which non-default planner, scheduler, trace, selector, critique, or merge settings were used."),
         ("raw traces", "Prompts, responses, hypotheses, DAGs, generated code, validation scores, errors, and selections are absent."),
-        ("result artifacts", "No native logs, submissions, Kaggle scores, checkpoints, or per-competition run directories are included."),
+        ("result artifacts", "Complete branch/tag history contains developmental diagnostics, debug pickles, example outputs, and one run command, but no artifact is attributable to the published 75-competition three-seed runs."),
         ("broken result links", "Both advertised aka.ms result links currently resolve to generic Bing pages."),
         ("MLE-Bench snapshot", "Dockerfile clones openai/mle-bench without a commit and performs live Git LFS pulls."),
         ("Kaggle data", "The 75 competition datasets, exact versions, hashes, and access records are not archived."),
@@ -701,7 +949,7 @@ def source_component_execution(source_root: Path, component_python: str) -> dict
 def render_readme(manifest: Mapping[str, Any]) -> str:
     return f"""# R&D-Agent paper-replication audit
 
-This audit uses the final 33-page arXiv v2 report as the result authority and pins both paper revisions plus the official repository at the last commit before each revision. It is fail-closed: source-code presence, paper compilation, and isolated component execution do not substitute for the reported 75-competition, three-seed experiments.
+This audit uses the final 33-page arXiv v2 report as the result authority and pins both paper revisions, the official repository at the last commit before each revision, and its complete public branch/tag path history. It is fail-closed: source-code presence, paper compilation, isolated component execution, and unattributed developmental outputs do not substitute for the reported 75-competition, three-seed experiments.
 
 ## Honest result
 
@@ -722,6 +970,12 @@ The cited primary record is the general **R&D-Agent** MLE-Bench report. It is no
 ## Revision and release drift
 
 The 7-page v1 paper reports 32 numeric cells from 24-hour runs using o1 and o3/GPT-4.1, with five or six seeds and standard deviations. The 33-page v2 is effectively a new experiment: 12-hour GPT-5/hybrid runs, three seeds, SEMs, ablations, raw runs, costs, and per-competition medal counts. Its 534 displayed numeric table cells represent 526 unique measurements. The current README still presents v1-era results and a hybrid value of 30.22±1.5, while v2 reports 29.7±0.4 and a new GPT-5 result of 35.1±0.4.
+
+## Complete public-history boundary
+
+The audit now walks {manifest['public_source_history_remote_refs']} pinned remote refs, {manifest['public_source_history_reachable_commits']} reachable commits, and {manifest['public_source_history_unique_changed_paths']} unique historical paths. It inspects {manifest['public_source_history_keyword_paths']} paths whose names mention results, outputs, logs, traces, checkpoints, submissions, or scores and records fifteen bounded artifact candidates byte-for-byte.
+
+That history corrects an earlier overstatement: developmental artifacts do exist. They include three pre-v1 competition CSVs, five between-version diagnostics with 39 competitions each, two debug-LLM pickles inventoried without deserialization, one example solution, pre-paper metadata, one post-v2 run command, and an unrelated post-v2 AutoRL result. None carries the paper's 75-competition manifest, three seeds, model/config lineage, or published table outputs. They receive zero paper-result credit, but their existence is now explicit rather than hidden behind a blanket “no outputs” claim.
 
 ## What ran
 
@@ -746,6 +1000,7 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
     mechanisms = mechanism_rows(source_root)
     configs = config_rows(source_root)
     snapshots = source_snapshot_rows(source_root)
+    history, history_paths, history_artifacts = public_source_history(source_root)
     assets = paper_asset_rows(paper_root)
     checks = internal_check_rows()
     gaps = gap_rows()
@@ -776,6 +1031,8 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
         "paper_version_summary.csv": version_summary_rows(),
         "paper_source_asset_inventory.csv": assets,
         "released_source_snapshot_summary.csv": snapshots,
+        "public_source_history_path_inventory.csv": history_paths,
+        "public_source_history_artifact_candidates.csv": history_artifacts,
         "released_source_mechanism_conformance.csv": mechanisms,
         "released_source_config_conformance.csv": configs,
         "released_result_link_status.csv": links,
@@ -785,6 +1042,10 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
     for name, rows in csv_outputs.items():
         write_csv(output / name, rows)
     (output / "native_execution.json").write_text(json.dumps(native, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (output / "public_source_history.json").write_text(
+        json.dumps(history, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     manifest: dict[str, Any] = {
         "audit_date": AUDIT_DATE,
         "paper": "R&D-Agent: An LLM-Agent Framework Towards Autonomous Data Science",
@@ -794,7 +1055,7 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
         "official_source_url": SOURCE_URL,
         "official_source_revision_audited": SOURCE_CURRENT_COMMIT,
         "paper_era_source_revision": SOURCE_V2_COMMIT,
-        "overall_status": "paper_specification_and_source_audited_zero_native_results_missing_run_artifacts",
+        "overall_status": "paper_specification_source_and_full_history_audited_zero_native_results_missing_attributable_run_artifacts",
         "full_paper_reproduced": False,
         "paper_numeric_table_cells_total": len(table),
         "paper_numeric_table_cells_with_paper_result_credit": 0,
@@ -808,6 +1069,19 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
         "paper_mechanisms_verified_as_executed_in_reported_run": 0,
         "paper_configurations_total": len(configs),
         "paper_configurations_verified_for_reported_run": 0,
+        "public_source_history_remote_refs": history["remote_refs"],
+        "public_source_history_reachable_commits": history["reachable_commits"],
+        "public_source_history_unique_changed_paths": history["unique_historical_changed_paths"],
+        "public_source_history_keyword_paths": history["keyword_paths"],
+        "public_source_history_artifact_candidates_inspected": history[
+            "bounded_artifact_candidates_inspected"
+        ],
+        "public_source_history_attributable_paper_run_artifacts": history[
+            "attributable_published_run_artifacts"
+        ],
+        "paper_result_cells_reproduced_from_public_history": history[
+            "paper_result_cells_reproduced_from_history"
+        ],
         "paper_specification_gaps_total": len(gaps),
         "v1_numeric_table_cells": len(versions),
         "v2_numeric_table_cells": len(table),
@@ -819,7 +1093,12 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
         "primary_record_scope": "general MLE-Bench R&D-Agent report; not the separate R&D-Agent-Quant paper",
     }
     (output / "README.md").write_text(render_readme(manifest), encoding="utf-8")
-    output_names = [*csv_outputs, "native_execution.json", "README.md"]
+    output_names = [
+        *csv_outputs,
+        "native_execution.json",
+        "public_source_history.json",
+        "README.md",
+    ]
     manifest["output_sha256"] = {name: sha256(output / name) for name in sorted(output_names)}
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return manifest
