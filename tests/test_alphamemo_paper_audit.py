@@ -78,6 +78,9 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     inventory = read_csv(output / "released_source_inventory.csv")
     component = json.loads((output / "native_synthetic_component.json").read_text(encoding="utf-8"))
     history = json.loads((output / "official_source_history.json").read_text(encoding="utf-8"))
+    fork_branches = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
+    fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
 
     assert manifest["overall_status"] == "not_reproduced_native_synthetic_component_only"
     assert manifest["full_paper_reproduced"] is False
@@ -95,6 +98,16 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert manifest["source_history_tags"] == 0
     assert manifest["source_history_root_to_head_only_readme_changed"] is True
     assert manifest["source_history_native_result_artifacts_found"] is False
+    assert manifest["public_fork_census_date"] == "2026-08-14"
+    assert manifest["public_forks_reported_by_github_rest"] == 1
+    assert manifest["public_forks_accessible_via_graphql"] == 1
+    assert manifest["public_fork_branch_refs_audited"] == 1
+    assert manifest["public_fork_unique_heads_audited"] == 1
+    assert manifest["public_fork_divergent_heads_audited"] == 1
+    assert manifest["public_fork_paper_coauthor_heads_audited"] == 1
+    assert manifest["public_fork_coauthor_provenance_corroborated"] is True
+    assert manifest["public_fork_native_result_artifacts_found"] is False
+    assert manifest["public_fork_paper_result_credit"] is False
     assert manifest["root_readme_configuration_recovered"] is True
     assert manifest["root_readme_stable_data_snapshot_warning_recovered"] is True
     assert manifest["native_synthetic_smoke_deterministic"] is True
@@ -124,6 +137,25 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert {row["native_parser_executable"] for row in formulas} == {"True"}
     assert {row["paper_metric_reproduced"] for row in formulas} == {"False"}
     assert len(inventory) == 49
+    assert len(fork_branches) == 1
+    assert fork_branches[0]["repository"] == audit.PUBLIC_FORK_REPOSITORY
+    assert fork_branches[0]["head_commit"] == audit.PUBLIC_FORK_HEAD
+    assert fork_branches[0]["head_author_name"] == "Fengxiang He"
+    assert len(fork_heads) == 1
+    assert fork_heads[0]["extra_commit_count_beyond_official_head"] == "1"
+    assert fork_heads[0]["extra_changed_paths"] == "README.md"
+    assert fork_heads[0]["paper_author_identity_match"] == "True"
+    assert fork_heads[0]["classification"] == "paper_coauthor_provenance_only_readme_change"
+    assert fork_heads[0]["paper_result_credit"] == "False"
+    assert fork_census["paper_coauthor_authored_divergent_heads"] == 1
+    assert fork_census["coauthor_identity"] == "Fengxiang He"
+    assert fork_census["coauthor_is_named_paper_author"] is True
+    assert fork_census["coauthor_fork_only_replaces_placeholder_bibtex_author_metadata"] is True
+    assert fork_census[
+        "native_input_trajectory_factor_pool_prediction_return_or_metric_paths_discovered"
+    ] == 0
+    assert fork_census["exact_paper_result_table_or_figure_paths_discovered"] == 0
+    assert fork_census["paper_result_credit"] is False
 
     assert component["upstream_tests_passed"] == 1
     assert component["synthetic_smoke_runs"] == 2
@@ -214,3 +246,14 @@ def test_pinned_source_static_checks_when_source_is_available() -> None:
     assert findings["native_output_snapshot"]["status"] == "missing"
     assert findings["released_strategy_aliases"]["status"] == "aliases_not_distinct_methods"
     assert findings["released_smoke_memory_branch"]["status"] == "pre_memory_component_only"
+
+
+def test_public_fork_provenance_when_bouchet_clone_is_available() -> None:
+    fork_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/alphamemo_fork")
+    if not fork_root.exists():
+        return
+    branches, heads, summary = audit.public_fork_audit(fork_root)
+    assert len(branches) == len(heads) == 1
+    assert summary["paper_coauthor_authored_divergent_heads"] == 1
+    assert summary["exact_paper_result_table_or_figure_paths_discovered"] == 0
+    assert summary["paper_result_credit"] is False

@@ -9,6 +9,17 @@ trajectories, factor pools, predictions, returns, or table outputs.
 - Official paper: https://arxiv.org/pdf/2606.20625v1 (arXiv v1; SHA-256 `64dbd4558ec63a88bbf8fc8245b7eb43443878969531a9661e15c31f6fcedcd0`).
 - Official source: https://github.com/jarrettyu/AlphaMemo, commit `412fee13d905bf5a25f0958aa572b7c668ccb925` (2026-05-26).
 
+## Complete public-fork census
+
+- GitHub reported one fork on 2026-08-14, accessible through GraphQL with one
+  branch and one unique divergent head. The single extra commit was authored by
+  paper coauthor Fengxiang He minutes after the official head.
+- That commit changes only `README.md`, replacing `author={...}` with the six
+  named paper authors. All 49 tree paths otherwise match the official head. This
+  is useful author-provenance corroboration, but it adds no paper input, search
+  trajectory, factor pool, prediction, return, metric, table, or figure artifact
+  and therefore receives zero paper-result credit.
+
 ## Complete reachable source history
 
 - The non-shallow official clone contains exactly two reachable commits, one root,

@@ -31,6 +31,28 @@ PAPER_URL = "https://arxiv.org/pdf/2606.20625v1"
 PAPER_SHA256 = "64dbd4558ec63a88bbf8fc8245b7eb43443878969531a9661e15c31f6fcedcd0"
 SOURCE_ROOT_README_SHA256 = "d87aee04c794447755eb5f861834ea0b39bbd01476b08cbb7130be163b83ec79"
 DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_REST_COUNT = 1
+PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT = 1
+PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT = 1
+PUBLIC_FORK_GRAPHQL_REF_SHA256 = "8f9540d43255af78fd5687e00df5b0964b8908a85557902b7dbf613f857c0e90"
+PUBLIC_FORK_REPOSITORY = "FengxiangHe/alphamemo"
+PUBLIC_FORK_URL = "https://github.com/FengxiangHe/alphamemo"
+PUBLIC_FORK_HEAD = "36f584514b53fa88ddbb8837e7ae28cbf3f8973c"
+PUBLIC_FORK_HEAD_DATE = "2026-05-26T16:04:07Z"
+PUBLIC_FORK_AUTHOR_LOGIN = "FengxiangHe"
+PUBLIC_FORK_AUTHOR_NAME = "Fengxiang He"
+PUBLIC_FORK_AUTHOR_EMAIL = "47729453+FengxiangHe@users.noreply.github.com"
+PUBLIC_FORK_README_SHA256 = "54153f288ae31d286a448ad579f241fa280da66c7ea1451cfb27f6853775ce55"
+PUBLIC_FORK_DIFF_SHA256 = "523946b952ef7e556daf78f99d0c0dca14e905e7f1649771039ff9ae0e7f9ab1"
+PAPER_AUTHORS = (
+    "Hang Yu",
+    "Zifan Zheng",
+    "Jeff Z. Pan",
+    "Tongliang Liu",
+    "Zhiyong Wang",
+    "Fengxiang He",
+)
 
 RELEASED_STRATEGIES = ("alphamemo", "sspm", "veto", "structured", "graph", "gp", "random")
 ACTIVE_DIAGNOSTIC_SHA256 = {
@@ -213,6 +235,14 @@ def git_text(root: Path, *args: str) -> str:
     ).stdout
 
 
+def git_bytes(root: Path, *args: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
 def sha256_bytes(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 
@@ -355,6 +385,159 @@ def source_history_audit(source_root: Path) -> dict[str, Any]:
         "historical_native_result_artifacts_found": False,
         "paper_result_reproduction": False,
     }
+
+
+def public_fork_audit(
+    fork_root: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Audit the complete dated public-fork surface without result inflation."""
+    head = git_head(fork_root)
+    remote_url = git_text(fork_root, "remote", "get-url", "origin").strip()
+    is_shallow = git_text(fork_root, "rev-parse", "--is-shallow-repository").strip() == "true"
+    refs = [
+        line
+        for line in git_text(
+            fork_root,
+            "for-each-ref",
+            "--format=%(refname)|%(objectname)",
+            "refs/heads",
+            "refs/remotes",
+            "refs/tags",
+        ).splitlines()
+        if line
+    ]
+    expected_refs = {
+        f"refs/heads/main|{PUBLIC_FORK_HEAD}",
+        f"refs/remotes/origin/HEAD|{PUBLIC_FORK_HEAD}",
+        f"refs/remotes/origin/main|{PUBLIC_FORK_HEAD}",
+    }
+    if head != PUBLIC_FORK_HEAD or set(refs) != expected_refs:
+        raise RuntimeError("Pinned AlphaMemo public-fork head or refs changed")
+    if is_shallow or remote_url not in {PUBLIC_FORK_URL, f"{PUBLIC_FORK_URL}.git"}:
+        raise RuntimeError("Pinned AlphaMemo public-fork clone provenance changed")
+
+    extra_commits = [
+        line
+        for line in git_text(
+            fork_root, "rev-list", PUBLIC_FORK_HEAD, "--not", SOURCE_COMMIT
+        ).splitlines()
+        if line
+    ]
+    changed_paths = [
+        line
+        for line in git_text(
+            fork_root,
+            "diff",
+            "--name-status",
+            SOURCE_COMMIT,
+            PUBLIC_FORK_HEAD,
+        ).splitlines()
+        if line
+    ]
+    metadata = git_text(
+        fork_root,
+        "show",
+        "-s",
+        "--format=%aI%x1f%an%x1f%ae%x1f%s",
+        PUBLIC_FORK_HEAD,
+    ).strip().split("\x1f")
+    readme = git_bytes(fork_root, "show", f"{PUBLIC_FORK_HEAD}:README.md")
+    diff = git_bytes(
+        fork_root,
+        "diff",
+        SOURCE_COMMIT,
+        PUBLIC_FORK_HEAD,
+        "--",
+        "README.md",
+    )
+    tree_paths = git_text(
+        fork_root, "ls-tree", "-r", "--name-only", PUBLIC_FORK_HEAD
+    ).splitlines()
+    if extra_commits != [PUBLIC_FORK_HEAD] or changed_paths != ["M\tREADME.md"]:
+        raise RuntimeError("AlphaMemo public-fork commit/path surface changed")
+    if metadata != [
+        "2026-05-26T17:04:07+01:00",
+        PUBLIC_FORK_AUTHOR_NAME,
+        PUBLIC_FORK_AUTHOR_EMAIL,
+        "Update README.md",
+    ]:
+        raise RuntimeError(f"AlphaMemo public-fork commit metadata changed: {metadata}")
+    if len(tree_paths) != 49:
+        raise RuntimeError("AlphaMemo public-fork tree size changed")
+    if sha256_bytes(readme) != PUBLIC_FORK_README_SHA256:
+        raise RuntimeError("AlphaMemo coauthor-fork README bytes changed")
+    if sha256_bytes(diff) != PUBLIC_FORK_DIFF_SHA256:
+        raise RuntimeError("AlphaMemo coauthor-fork README diff changed")
+    readme_text = readme.decode("utf-8")
+    expected_author_line = (
+        "author={Yu, Hang and Zheng, Zifan and Pan, Jeff Z. and Liu, Tongliang "
+        "and Wang, Zhiyong and He, Fengxiang}"
+    )
+    if expected_author_line not in readme_text or "author={...}" in readme_text:
+        raise RuntimeError("AlphaMemo coauthor-fork author metadata changed")
+    if PUBLIC_FORK_AUTHOR_NAME not in PAPER_AUTHORS:
+        raise RuntimeError("AlphaMemo public-fork author no longer matches the paper author list")
+
+    branch_rows = [
+        {
+            "repository": PUBLIC_FORK_REPOSITORY,
+            "branch": "main",
+            "head_commit": PUBLIC_FORK_HEAD,
+            "repository_created_at": "2026-05-26T16:02:20Z",
+            "repository_pushed_at": "2026-05-26T16:04:08Z",
+            "head_committed_at": PUBLIC_FORK_HEAD_DATE,
+            "head_author_login": PUBLIC_FORK_AUTHOR_LOGIN,
+            "head_author_name": PUBLIC_FORK_AUTHOR_NAME,
+            "head_author_email": PUBLIC_FORK_AUTHOR_EMAIL,
+            "head_subject": "Update README.md",
+        }
+    ]
+    canonical_refs = [
+        f'{row["repository"]}\t{row["branch"]}\t{row["head_commit"]}' for row in branch_rows
+    ]
+    canonical_sha256 = sha256_bytes(
+        "".join(f"{line}\n" for line in canonical_refs).encode("utf-8")
+    )
+    if canonical_sha256 != PUBLIC_FORK_GRAPHQL_REF_SHA256:
+        raise RuntimeError("AlphaMemo public-fork branch-ref census changed")
+
+    unique_heads = [
+        {
+            "head_commit": PUBLIC_FORK_HEAD,
+            "repository": PUBLIC_FORK_REPOSITORY,
+            "branch": "main",
+            "extra_commit_count_beyond_official_head": 1,
+            "extra_changed_path_count": 1,
+            "extra_changed_paths": "README.md",
+            "paper_author_identity_match": True,
+            "paper_author_identity": PUBLIC_FORK_AUTHOR_NAME,
+            "placeholder_bibtex_authors_replaced_with_paper_authors": True,
+            "native_input_trajectory_factor_pool_prediction_return_or_metric_added": False,
+            "classification": "paper_coauthor_provenance_only_readme_change",
+            "paper_result_credit": False,
+        }
+    ]
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_REST_COUNT,
+        "graphql_accessible_forks": PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT,
+        "graphql_accessible_branch_refs": PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT,
+        "graphql_accessible_branch_ref_census_sha256": canonical_sha256,
+        "unique_heads": 1,
+        "divergent_heads_reviewed": 1,
+        "divergent_extra_commits_reviewed": 1,
+        "divergent_changed_paths_reviewed": 1,
+        "paper_coauthor_authored_divergent_heads": 1,
+        "coauthor_identity": PUBLIC_FORK_AUTHOR_NAME,
+        "coauthor_is_named_paper_author": True,
+        "coauthor_fork_only_replaces_placeholder_bibtex_author_metadata": True,
+        "coauthor_fork_readme_sha256": PUBLIC_FORK_README_SHA256,
+        "coauthor_fork_diff_sha256": PUBLIC_FORK_DIFF_SHA256,
+        "native_input_trajectory_factor_pool_prediction_return_or_metric_paths_discovered": 0,
+        "exact_paper_result_table_or_figure_paths_discovered": 0,
+        "paper_result_credit": False,
+    }
+    return branch_rows, unique_heads, summary
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
@@ -866,9 +1049,16 @@ def verify_pins(source_root: Path, paper_pdf: Path) -> str:
     return commit
 
 
-def build_audit(source_root: Path, paper_pdf: Path, source_python: Path, output_dir: Path) -> dict[str, Any]:
+def build_audit(
+    source_root: Path,
+    fork_root: Path,
+    paper_pdf: Path,
+    source_python: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
     commit = verify_pins(source_root, paper_pdf)
     history = source_history_audit(source_root)
+    fork_branches, fork_heads, fork_summary = public_fork_audit(fork_root)
     conformance = result_conformance()
     identities = paper_internal_identities()
     config = source_conformance(source_root)
@@ -892,11 +1082,16 @@ def build_audit(source_root: Path, paper_pdf: Path, source_python: Path, output_
     write_csv(output_dir / "source_mechanism_conformance.csv", config)
     write_csv(output_dir / "representative_factor_parser_audit.csv", factors)
     write_csv(output_dir / "released_source_inventory.csv", source)
+    write_csv(output_dir / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    write_csv(output_dir / "public_fork_unique_head_inventory.csv", fork_heads)
     (output_dir / "native_synthetic_component.json").write_text(
         json.dumps(component, indent=2) + "\n", encoding="utf-8"
     )
     (output_dir / "official_source_history.json").write_text(
         json.dumps(history, indent=2) + "\n", encoding="utf-8"
+    )
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
     )
 
     manifest: dict[str, Any] = {
@@ -916,6 +1111,18 @@ def build_audit(source_root: Path, paper_pdf: Path, source_python: Path, output_
         "source_history_tags": history["tag_count"],
         "source_history_root_to_head_only_readme_changed": history["root_to_head_changed_paths"] == ["M\tREADME.md"],
         "source_history_native_result_artifacts_found": False,
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary["github_rest_reported_forks"],
+        "public_forks_accessible_via_graphql": fork_summary["graphql_accessible_forks"],
+        "public_fork_branch_refs_audited": fork_summary["graphql_accessible_branch_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_heads_reviewed"],
+        "public_fork_paper_coauthor_heads_audited": fork_summary[
+            "paper_coauthor_authored_divergent_heads"
+        ],
+        "public_fork_coauthor_provenance_corroborated": True,
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "root_readme_configuration_recovered": True,
         "root_readme_stable_data_snapshot_warning_recovered": True,
         "paper_numeric_tables_audited": [2, 3, 4, 5, 6, 7, 8, 9],
@@ -960,6 +1167,9 @@ def build_audit(source_root: Path, paper_pdf: Path, source_python: Path, output_
             "The complete reachable official history has only two commits and 49-file trees; only README.md "
             "changes, and no historical result artifact exists. Its deleted root README recovers the intended "
             "500-step operating point and explicitly says the Yahoo data builders are approximate. The release "
+            "has one accessible public fork and one unique divergent head, authored by paper coauthor Fengxiang "
+            "He. Its sole commit changes only README.md to replace placeholder BibTeX authors with the six paper "
+            "authors; this corroborates provenance but adds no empirical artifact. The release "
             "is executable at the synthetic-component level: its sole test passes, all seven CLI strategies run "
             "deterministically in bounded diagnostics that activate the available memory branches, and all five "
             "paper formulas execute in the native parser on synthetic data. None of that reproduces the paper. "
@@ -984,6 +1194,17 @@ trajectories, factor pools, predictions, returns, or table outputs.
 
 - Official paper: {PAPER_URL} (arXiv v1; SHA-256 `{PAPER_SHA256}`).
 - Official source: {SOURCE_URL}, commit `{commit}` (2026-05-26).
+
+## Complete public-fork census
+
+- GitHub reported one fork on 2026-08-14, accessible through GraphQL with one
+  branch and one unique divergent head. The single extra commit was authored by
+  paper coauthor Fengxiang He minutes after the official head.
+- That commit changes only `README.md`, replacing `author={{...}}` with the six
+  named paper authors. All 49 tree paths otherwise match the official head. This
+  is useful author-provenance corroboration, but it adds no paper input, search
+  trajectory, factor pool, prediction, return, metric, table, or figure artifact
+  and therefore receives zero paper-result credit.
 
 ## Complete reachable source history
 
@@ -1079,6 +1300,16 @@ def parse_args() -> argparse.Namespace:
         default=Path(os.environ.get("ALPHAMEMO_PAPER_PDF", "/nfs/roberts/scratch/pi_btk22/zc362/alphamemo_paper.pdf")),
     )
     parser.add_argument(
+        "--fork-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "ALPHAMEMO_FORK_ROOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/alphamemo_fork",
+            )
+        ),
+    )
+    parser.add_argument(
         "--source-python",
         type=Path,
         default=Path(os.environ.get("ALPHAMEMO_SOURCE_PYTHON", DEFAULT_SOURCE_PYTHON)),
@@ -1096,6 +1327,7 @@ def main() -> int:
     args = parse_args()
     manifest = build_audit(
         args.source_root.resolve(),
+        args.fork_root.resolve(),
         args.paper_pdf.resolve(),
         args.source_python.resolve(),
         args.output_dir.resolve(),

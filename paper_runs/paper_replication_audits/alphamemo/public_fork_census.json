@@ -1,0 +1,20 @@
+{
+  "census_date": "2026-08-14",
+  "github_rest_reported_forks": 1,
+  "graphql_accessible_forks": 1,
+  "graphql_accessible_branch_refs": 1,
+  "graphql_accessible_branch_ref_census_sha256": "8f9540d43255af78fd5687e00df5b0964b8908a85557902b7dbf613f857c0e90",
+  "unique_heads": 1,
+  "divergent_heads_reviewed": 1,
+  "divergent_extra_commits_reviewed": 1,
+  "divergent_changed_paths_reviewed": 1,
+  "paper_coauthor_authored_divergent_heads": 1,
+  "coauthor_identity": "Fengxiang He",
+  "coauthor_is_named_paper_author": true,
+  "coauthor_fork_only_replaces_placeholder_bibtex_author_metadata": true,
+  "coauthor_fork_readme_sha256": "54153f288ae31d286a448ad579f241fa280da66c7ea1451cfb27f6853775ce55",
+  "coauthor_fork_diff_sha256": "523946b952ef7e556daf78f99d0c0dca14e905e7f1649771039ff9ae0e7f9ab1",
+  "native_input_trajectory_factor_pool_prediction_return_or_metric_paths_discovered": 0,
+  "exact_paper_result_table_or_figure_paths_discovered": 0,
+  "paper_result_credit": false
+}
