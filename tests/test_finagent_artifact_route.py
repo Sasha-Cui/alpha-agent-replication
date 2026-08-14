@@ -75,7 +75,7 @@ def test_native_ledger_does_not_promote_static_source_to_result_reproduction() -
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_zero_of_1061_results_seven_commit_history_"
-        "zero_of_288_rule_record_matches"
+        "zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted"
     )
     assert row["fidelity_class"] == "F1_static_no_native_output"
     assert "zero native results reproduced" in row["concise_evidence_note"]
