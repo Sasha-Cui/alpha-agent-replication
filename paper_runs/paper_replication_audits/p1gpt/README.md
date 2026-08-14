@@ -62,6 +62,9 @@ The checked archive is not the only revision inspected. A complete non-shallow
 clone contains 36 reachable commits across `main`, `develop`, and `gke/test`.
 Every revision was searched for paper-specific content and backtest, result,
 metric, position, portfolio, and trade paths; none contains the P1GPT experiment.
+The complete public-fork census on 2026-08-14 finds one accessible fork and one
+branch ref. Its head is byte-identical to the already-audited official `main`
+head, so it adds no commits, paths, prompts, outputs, or result evidence.
 
 ## Cited baseline-protocol boundary
 
@@ -88,6 +91,9 @@ excluded from native-method or result credit.
 - `internal_consistency.csv`: lookahead, metric, execution, and claim conflicts.
 - `public_source_file_inventory.csv`: all 38 web-client files.
 - `source_history_inventory.csv`: all 36 reachable web-client revisions.
+- `public_fork_branch_ref_snapshot.csv`: the complete dated accessible fork/branch surface.
+- `public_fork_unique_head_inventory.csv`: the sole fork head and zero-divergence boundary.
+- `public_fork_census.json`: fork completeness, head equivalence, and zero-credit verdict.
 - `cited_protocol_lineage.csv`: cited official sources and rejected later guess.
 - `public_component_execution.json`: attribution, compile, and private-service boundary.
 - `manuscript_rebuilds.json`: deterministic reconstruction and visual-QA record.

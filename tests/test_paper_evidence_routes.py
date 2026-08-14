@@ -220,6 +220,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "signal_nonidentifiability_25_forks_26_refs_5_unique_heads_exhausted"
         ),
         "CensusArxiv250909995": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
+        "CensusArxiv251023032": (
+            "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_"
+            "cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"
+        ),
         "CensusArxiv260620625": (
             "paper_audit:completed_two_commit_history_1_coauthor_fork_provenance_only_"
             "exhausted_seven_strategy_diagnostics_zero_of_474_native_results"

@@ -1,0 +1,15 @@
+{
+  "census_date": "2026-08-14",
+  "github_rest_reported_forks": 1,
+  "graphql_accessible_forks": 1,
+  "graphql_accessible_branch_refs": 1,
+  "graphql_accessible_branch_ref_census_sha256": "e930ff33bb18d98c30c1b630d936b2cc5d20ca2008d9931cecb4984add10e603",
+  "unique_heads": 1,
+  "heads_reachable_from_exhaustively_audited_official_history": 1,
+  "divergent_heads_reviewed": 0,
+  "divergent_extra_commits_reviewed": 0,
+  "divergent_changed_paths_reviewed": 0,
+  "native_agent_prompt_request_response_signal_return_or_result_paths_discovered": 0,
+  "exact_paper_result_table_or_figure_paths_discovered": 0,
+  "paper_result_credit": false
+}

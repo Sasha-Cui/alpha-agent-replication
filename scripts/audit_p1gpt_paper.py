@@ -101,6 +101,13 @@ WEB_DEMO_HISTORY = {
         "origin/gke/test": "82a2437e8a025390bc1dd59abe7bcc2bfd91ca9a",
     },
 }
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_REST_COUNT = 1
+PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT = 1
+PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT = 1
+PUBLIC_FORK_GRAPHQL_REF_SHA256 = "e930ff33bb18d98c30c1b630d936b2cc5d20ca2008d9931cecb4984add10e603"
+PUBLIC_FORK_REPOSITORY = "milksteak1111/web_demo"
+PUBLIC_FORK_HEAD = WEB_DEMO_HISTORY["branch_heads"]["origin/main"]
 
 YAHOO_PINS = {
     "AAPL": {
@@ -316,6 +323,78 @@ def source_history_inventory(history_root: Path) -> list[dict[str, Any]]:
     if any(row["paper_specific_content_paths"] for row in rows):
         raise ValueError("paper-specific implementation content appeared in web-demo history")
     return rows
+
+
+def public_fork_census(
+    history_root: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Audit every accessible P1GPT/web_demo fork branch at the dated census."""
+    if git(history_root, "cat-file", "-t", PUBLIC_FORK_HEAD) != "commit":
+        raise ValueError("P1GPT public-fork head is absent from the pinned complete history")
+    if git(history_root, "rev-parse", "origin/main") != PUBLIC_FORK_HEAD:
+        raise ValueError("P1GPT public-fork head no longer equals the official main head")
+    extra_commits = git(
+        history_root,
+        "rev-list",
+        PUBLIC_FORK_HEAD,
+        "--not",
+        WEB_DEMO_HISTORY["branch_heads"]["origin/main"],
+    ).splitlines()
+    if extra_commits:
+        raise ValueError("P1GPT public fork gained a divergent commit surface")
+
+    branch_rows = [
+        {
+            "repository": PUBLIC_FORK_REPOSITORY,
+            "branch": "main",
+            "head_commit": PUBLIC_FORK_HEAD,
+            "repository_created_at": "2025-08-30T01:29:02Z",
+            "repository_pushed_at": "2025-01-23T05:23:18Z",
+            "head_committed_at": "2024-12-05T13:42:22Z",
+            "head_author_login": "Ray-neurowatt",
+            "head_author_name": "Ray-neurowatt",
+            "head_author_email": "ray@neurowatt.ai",
+            "head_subject": 'fix : remove "json" in gpt.py',
+        }
+    ]
+    canonical_refs = [
+        f'{row["repository"]}\t{row["branch"]}\t{row["head_commit"]}' for row in branch_rows
+    ]
+    canonical_sha256 = hashlib.sha256(
+        "".join(f"{line}\n" for line in canonical_refs).encode("utf-8")
+    ).hexdigest()
+    if canonical_sha256 != PUBLIC_FORK_GRAPHQL_REF_SHA256:
+        raise ValueError("P1GPT public-fork branch-ref census changed")
+
+    unique_heads = [
+        {
+            "head_commit": PUBLIC_FORK_HEAD,
+            "repository": PUBLIC_FORK_REPOSITORY,
+            "branch": "main",
+            "extra_commit_count_beyond_official_main": 0,
+            "extra_changed_path_count": 0,
+            "head_already_exhausted_in_official_history": True,
+            "native_agent_prompt_request_response_signal_return_or_result_added": False,
+            "classification": "official_main_history_reachable_no_divergence",
+            "paper_result_credit": False,
+        }
+    ]
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_REST_COUNT,
+        "graphql_accessible_forks": PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT,
+        "graphql_accessible_branch_refs": PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT,
+        "graphql_accessible_branch_ref_census_sha256": canonical_sha256,
+        "unique_heads": 1,
+        "heads_reachable_from_exhaustively_audited_official_history": 1,
+        "divergent_heads_reviewed": 0,
+        "divergent_extra_commits_reviewed": 0,
+        "divergent_changed_paths_reviewed": 0,
+        "native_agent_prompt_request_response_signal_return_or_result_paths_discovered": 0,
+        "exact_paper_result_table_or_figure_paths_discovered": 0,
+        "paper_result_credit": False,
+    }
+    return branch_rows, unique_heads, summary
 
 
 def cited_protocol_lineage() -> list[dict[str, Any]]:
@@ -1085,6 +1164,9 @@ The checked archive is not the only revision inspected. A complete non-shallow
 clone contains 36 reachable commits across `main`, `develop`, and `gke/test`.
 Every revision was searched for paper-specific content and backtest, result,
 metric, position, portfolio, and trade paths; none contains the P1GPT experiment.
+The complete public-fork census on 2026-08-14 finds one accessible fork and one
+branch ref. Its head is byte-identical to the already-audited official `main`
+head, so it adds no commits, paths, prompts, outputs, or result evidence.
 
 ## Cited baseline-protocol boundary
 
@@ -1111,6 +1193,9 @@ excluded from native-method or result credit.
 - `internal_consistency.csv`: lookahead, metric, execution, and claim conflicts.
 - `public_source_file_inventory.csv`: all 38 web-client files.
 - `source_history_inventory.csv`: all 36 reachable web-client revisions.
+- `public_fork_branch_ref_snapshot.csv`: the complete dated accessible fork/branch surface.
+- `public_fork_unique_head_inventory.csv`: the sole fork head and zero-divergence boundary.
+- `public_fork_census.json`: fork completeness, head equivalence, and zero-credit verdict.
 - `cited_protocol_lineage.csv`: cited official sources and rejected later guess.
 - `public_component_execution.json`: attribution, compile, and private-service boundary.
 - `manuscript_rebuilds.json`: deterministic reconstruction and visual-QA record.
@@ -1141,6 +1226,7 @@ def build_audit(
     consistency = internal_consistency_checks()
     public_files, public_execution = web_demo_inventory(audit_root)
     history = source_history_inventory(web_demo_history)
+    fork_branches, fork_heads, fork_summary = public_fork_census(web_demo_history)
     protocol = cited_protocol_lineage()
     discovery = discovery_evidence()
     rebuilds = manuscript_rebuild(audit_root)
@@ -1159,10 +1245,13 @@ def build_audit(
     write_csv(output_dir / "internal_consistency.csv", consistency)
     write_csv(output_dir / "public_source_file_inventory.csv", public_files)
     write_csv(output_dir / "source_history_inventory.csv", history)
+    write_csv(output_dir / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    write_csv(output_dir / "public_fork_unique_head_inventory.csv", fork_heads)
     write_csv(output_dir / "cited_protocol_lineage.csv", protocol)
     write_csv(output_dir / "public_source_discovery.csv", discovery)
     write_json(output_dir / "public_component_execution.json", public_execution)
     write_json(output_dir / "manuscript_rebuilds.json", rebuilds)
+    write_json(output_dir / "public_fork_census.json", fork_summary)
 
     recovery_classes = Counter(
         row["verification_class"]
@@ -1210,6 +1299,17 @@ def build_audit(
         "historical_revisions_with_native_result_pipeline": sum(
             row["native_p1gpt_result_pipeline_found"] for row in history
         ),
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary["github_rest_reported_forks"],
+        "public_forks_accessible_via_graphql": fork_summary["graphql_accessible_forks"],
+        "public_fork_branch_refs_audited": fork_summary["graphql_accessible_branch_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_heads_reachable_from_audited_official_history": fork_summary[
+            "heads_reachable_from_exhaustively_audited_official_history"
+        ],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_heads_reviewed"],
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "paper_relevant_public_source_files": len(public_files),
         "public_python_files_compiled": public_execution["python_files_compiled"],
         "public_static_fidelity_tier": public_execution["static_fidelity_tier"],

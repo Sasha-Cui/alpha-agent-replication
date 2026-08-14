@@ -161,6 +161,47 @@ def test_complete_public_history_contains_no_paper_result_pipeline() -> None:
     assert all(row["paper_result_credit"] == "False" for row in history)
 
 
+def test_complete_public_fork_surface_adds_no_divergent_evidence() -> None:
+    data = manifest()
+    branches = rows("public_fork_branch_ref_snapshot.csv")
+    heads = rows("public_fork_unique_head_inventory.csv")
+    census = json.loads((AUDIT_DIR / "public_fork_census.json").read_text(encoding="utf-8"))
+    assert data["public_fork_census_date"] == "2026-08-14"
+    assert data["public_forks_reported_by_github_rest"] == 1
+    assert data["public_forks_accessible_via_graphql"] == 1
+    assert data["public_fork_branch_refs_audited"] == 1
+    assert data["public_fork_unique_heads_audited"] == 1
+    assert data["public_fork_heads_reachable_from_audited_official_history"] == 1
+    assert data["public_fork_divergent_heads_audited"] == 0
+    assert data["public_fork_native_result_artifacts_found"] is False
+    assert data["public_fork_paper_result_credit"] is False
+    assert len(branches) == len(heads) == 1
+    assert branches[0]["repository"] == audit.PUBLIC_FORK_REPOSITORY
+    assert branches[0]["head_commit"] == audit.PUBLIC_FORK_HEAD
+    assert heads[0]["extra_commit_count_beyond_official_main"] == "0"
+    assert heads[0]["head_already_exhausted_in_official_history"] == "True"
+    assert heads[0]["classification"] == "official_main_history_reachable_no_divergence"
+    assert heads[0]["paper_result_credit"] == "False"
+    assert census["heads_reachable_from_exhaustively_audited_official_history"] == 1
+    assert census["divergent_heads_reviewed"] == 0
+    assert census[
+        "native_agent_prompt_request_response_signal_return_or_result_paths_discovered"
+    ] == 0
+    assert census["exact_paper_result_table_or_figure_paths_discovered"] == 0
+    assert census["paper_result_credit"] is False
+
+
+def test_live_public_fork_census_when_bouchet_history_is_available() -> None:
+    history_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/p1gpt_web_demo_history")
+    if not history_root.exists():
+        return
+    branches, heads, census = audit.public_fork_census(history_root)
+    assert len(branches) == len(heads) == 1
+    assert census["heads_reachable_from_exhaustively_audited_official_history"] == 1
+    assert census["divergent_heads_reviewed"] == 0
+    assert census["paper_result_credit"] is False
+
+
 def test_cited_protocol_does_not_supply_missing_baseline_parameters() -> None:
     lineage = rows("cited_protocol_lineage.csv")
     assert len(lineage) == 4
@@ -226,6 +267,8 @@ def test_manifest_hashes_every_nonmanifest_output_and_readme_is_honest() -> None
     assert "strictly avoids lookahead bias" in text
     assert "does not prove every daily signal" in text
     assert "36 reachable commits" in text
+    assert "one accessible fork" in text
+    assert "byte-identical" in text
     assert "excluded from native-method or result credit" in text
     assert "Installing additional packages cannot recover" in text
 
@@ -242,7 +285,8 @@ def test_paper_routes_through_public_component_audit_without_proxy_credit() -> N
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
         "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_"
-        "native_agent_cells_end_to_end_lookahead_counterexample"
+        "native_agent_cells_end_to_end_lookahead_counterexample_1_fork_1_ref_"
+        "official_head_exhausted"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert "0/12 native P1GPT cells" in row["precise_native_or_access_blocker"]

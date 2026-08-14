@@ -423,7 +423,9 @@ ARTIFACT_NOTES = {
         "agent decisions or establish paper-time data lineage. All 36 reachable "
         "commits across the attributable P1GPT/Neurowatt web client's three branch "
         "heads were checked; the latest 38-file snapshot has 22 Python files that "
-        "compile, but no revision contains the paper experiment. The client calls "
+        "compile, but no revision contains the paper experiment. The sole accessible "
+        "public fork has one branch whose head exactly equals the already-audited "
+        "official main head, adding zero divergent commits, paths, or outputs. The client calls "
         "an unreleased main-llm service and ships no agents, paper daily prompt, "
         "requests/responses, market/news snapshots, KDJ+RSI or ZMR parameters, "
         "backtest runner, or native result arrays. The cited TradingAgents paper "
@@ -1457,7 +1459,10 @@ TARGETED_EXECUTION = {
         "signal_nonidentifiability_25_forks_26_refs_5_unique_heads_exhausted"
     ),
     "SYS-MOUNTAIN-LION": "paper_audit:completed_zero_of_20_performance_cells_public_components_only",
-    "SYS-P1GPT": "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_cells_end_to_end_lookahead_counterexample",
+    "SYS-P1GPT": (
+        "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_"
+        "cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"
+    ),
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_component_gate_separate",
