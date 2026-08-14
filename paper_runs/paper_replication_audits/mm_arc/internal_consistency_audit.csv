@@ -5,6 +5,8 @@ v1_transaction_cost_scope,explicit_future_work,legacy results do not include the
 v3_repository_claim,partially_supported,"substantial pipeline is released, but the full benchmark/controller/result lineage is not"
 v3_five_seed_claim,release_incomplete,paper reports five independently trained seeds; release contains only seed 42
 v3_complete_artifact_claim,retrieved_archive_incomplete,9 registered payloads are only LFS pointers
+v3_public_refresh,two_document_only_changes,the 2026-08-14 refresh changes DATA_CARD.md and MODEL_CARD.md only; 105 code/artifact files remain byte-identical
+v3_tokenizer_recovery,exact_bytes_unattributable,one generic tokenizer OID repeated across three paths is byte-exactly recoverable from an independent public GitHub blob; it is not MM-ARC author-output lineage
 v3_test_claim,verified_with_boundary,111 tests pass using python -m pytest without LFS/model execution
 v3_result_reconciliation_claim,not_independently_verifiable,no published-result arrays or table-generation path are released
 v3_acceptance_replay_scope,correctly_disclaimed,data/model cards state that the replay is not full benchmark reproduction

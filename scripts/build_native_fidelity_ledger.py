@@ -426,11 +426,19 @@ ARTIFACT_NOTES = {
         "its CI-style Python 3.12 run passes 111 tests, and the package contains "
         "the 62-asset universe, a 7,440-row acceptance replay, 60 strategy pools, "
         "and 300 active members. These are code-contract and deployment components, "
-        "not paper results. The retrieved release has 9 Git LFS pointers in place "
-        "of 340,563,208 registered payload bytes, so artifact verification fails "
-        "closed. Its data/model cards explicitly exclude the full benchmark, "
-        "training and experiment-controller history, and four of the five reported "
-        "trained seeds. No result arrays or paper table generator are released, so "
+        "not paper results. Two official snapshots are pinned; the 2026-08-14 refresh "
+        "changes only DATA_CARD.md and MODEL_CARD.md, leaving 105 code/artifact files "
+        "byte-identical. Both archives have 9 Git LFS pointers in place of 340,563,208 "
+        "registered payload bytes, and all nine official single-file endpoints return "
+        "file_not_found. One generic tokenizer OID repeated across three adapter paths "
+        "is byte-exactly recoverable from an independent public GitHub blob and loads "
+        "under the declared Transformers 5.11.0 runtime, raising verified registry "
+        "files from 26/35 to 29/35. It is not MM-ARC author lineage. Three trained "
+        "adapters, the router, and two strategy-history tables remain unavailable: "
+        "six paper-specific payloads and 306,295,258 bytes. The release still excludes "
+        "the full benchmark, training and experiment-controller history, and four of "
+        "the five reported trained seeds. No result arrays or paper table generator "
+        "are released, so "
         "0/671 legacy and 0/651 current table units and 0/18 empirical figure series "
         "reproduce. The short acceptance replay ships no dated performance stream "
         "compatible with the six-country monthly common task.",
@@ -1564,7 +1572,11 @@ TARGETED_EXECUTION = {
         "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_"
         "zero_regenerated_2_forks_2_refs_2_official_history_heads_exhausted"
     ),
-    "SYS-MM-DREX": "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_v3_release_111_tests_missing_lfs_and_research_lineage",
+    "SYS-MM-DREX": (
+        "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_v3_"
+        "release_111_tests_29_of_35_artifacts_verified_six_lfs_payloads_missing_"
+        "research_lineage_missing"
+    ),
     "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",
     "SYS-MASS": (
         "paper_audit:completed_zero_of_766_final_native_results_full_release_history_"

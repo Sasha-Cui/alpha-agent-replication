@@ -1,0 +1,3 @@
+observed_at_utc,archive_sha256,archive_bytes,uncompressed_bytes,files,changed_from_previous,changed_paths,code_or_artifact_paths_changed,lfs_pointer_files,note
+2026-08-12T23:18:45+00:00,b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d,1122274,2596204,107,initial_pinned_snapshot,,False,9,first recovered official bulk archive
+2026-08-14T21:45:30+00:00,830e4257125e67f4f9c64c9ae2a446b02593f83b94bd81b19aae225f5014f317,1121831,2595188,107,2_of_107_files,DATA_CARD.md;MODEL_CARD.md,False,9,latest public refresh removes two Limitations sections; equivalent benchmark/private-history boundaries remain elsewhere

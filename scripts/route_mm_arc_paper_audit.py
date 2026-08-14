@@ -17,8 +17,9 @@ import build_artifact_audit as artifact  # noqa: E402
 
 SYSTEM_ID = "SYS-MM-DREX"
 URL = "https://anonymous.4open.science/r/MM-ARC-32F7/"
-ARCHIVE_SHA256 = "b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d"
-OBSERVED_AT = "2026-08-12T00:00:00+00:00"
+ARCHIVE_SHA256 = "830e4257125e67f4f9c64c9ae2a446b02593f83b94bd81b19aae225f5014f317"
+PREVIOUS_ARCHIVE_SHA256 = "b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d"
+OBSERVED_AT = "2026-08-14T21:45:30+00:00"
 MANIFEST = ROOT / "paper_runs/paper_replication_audits/mm_arc/manifest.json"
 RELEASE_AUDIT = ROOT / "paper_runs/paper_replication_audits/mm_arc/release_execution_audit.json"
 REGISTRY = ROOT / "literature_review/census_v1/system_registry.csv"
@@ -48,10 +49,14 @@ def compact(value: Any) -> str:
 
 def static_observation() -> dict[str, Any]:
     return {
-        "archive_bytes": 1_122_274,
-        "archive_uncompressed_bytes": 2_596_204,
+        "archive_bytes": 1_121_831,
+        "archive_uncompressed_bytes": 2_595_188,
         "archive_sha256": ARCHIVE_SHA256,
+        "previous_archive_sha256": PREVIOUS_ARCHIVE_SHA256,
         "checked_at_utc": OBSERVED_AT,
+        "snapshot_count": 2,
+        "refresh_changed_paths": ["DATA_CARD.md", "MODEL_CARD.md"],
+        "refresh_unchanged_code_and_artifact_files": 105,
         "file_count": 107,
         "has_code": True,
         "has_environment": True,
@@ -69,7 +74,11 @@ def static_observation() -> dict[str, Any]:
             "artifacts/registry.json", "DATA_CARD.md", "MODEL_CARD.md",
         ],
         "git_lfs_pointer_files": 9,
-        "registered_payload_bytes_unavailable": 340_563_208,
+        "registered_payload_bytes_missing_from_official_endpoint": 340_563_208,
+        "exact_public_payload_unique_oids_recovered": 1,
+        "exact_public_payload_registered_paths_recovered": 3,
+        "registered_payload_bytes_unavailable_after_exact_public_recovery": 306_295_258,
+        "registered_artifact_files_verified_after_exact_public_recovery": 29,
     }
 
 
@@ -94,7 +103,8 @@ def mm_arc_row() -> dict[str, Any]:
         "license_source": f"pinned_archive_{ARCHIVE_SHA256}",
         "static_observation": observation,
         "errors": [
-            "retrieved bulk archive contains 9 Git LFS pointers rather than registered payloads"
+            "latest bulk archive contains 9 Git LFS pointers; official single-file endpoints return file_not_found",
+            "one generic tokenizer OID is independently byte-recoverable, but 6 paper-specific payloads remain unavailable",
         ],
     }
     basis = {

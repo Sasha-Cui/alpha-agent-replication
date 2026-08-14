@@ -6,6 +6,7 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 import tarfile
 import xml.etree.ElementTree as ET
 import zipfile
@@ -20,6 +21,19 @@ WORK_ID = "CensusArxiv250905080"
 SYSTEM_ID = "SYS-MM-DREX"
 ARXIV_ID = "2509.05080"
 REPOSITORY_URL = "https://anonymous.4open.science/r/MM-ARC-32F7/"
+LATEST_ARCHIVE = "discovery/MM-ARC-32F7-20260814.zip"
+LATEST_REPO = "repo-20260814"
+TOKENIZER_OID = "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506"
+TOKENIZER_BYTES = 11_422_650
+TOKENIZER_SOURCE_REPOSITORY = (
+    "zijiandongkurt/AI-Driven-Modular-Power-Electronics-Design-for-Next-Gen-Lithography"
+)
+TOKENIZER_SOURCE_COMMIT = "1c53940c0e8e19be895cf9e4025f9cb3b320e529"
+TOKENIZER_SOURCE_PATH = "checkpoints/sft/sft_001/final/tokenizer.json"
+LFS_POINTER_RE = re.compile(
+    rb"\Aversion https://git-lfs\.github\.com/spec/v1\n"
+    rb"oid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n\Z"
+)
 
 PINS = {
     "primary/arxiv-abs.html": "f4c90246ccfb9211dd1eb162146fa596e1f76e4121f4949135fef678fea09124",
@@ -34,11 +48,40 @@ PINS = {
     "build-v2/main.pdf": "16cb544f3e6b1b601c98dbcd6b667eb09890a6eaec1ba057b9b2d2504b4269dc",
     "build/main.pdf": "03b810f6edbd9aa776471c0f8f765b0831177a3e4fb4a8cce2672a6b1fe4c8f4",
     "discovery/MM-ARC-32F7.zip": "b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d",
+    LATEST_ARCHIVE: "830e4257125e67f4f9c64c9ae2a446b02593f83b94bd81b19aae225f5014f317",
+    "discovery/official-options-20260814.json": "d127e6b491e90ee97df601a25dfcd5e8c15c7a54c33d861af00bbac224eee308",
+    "discovery/official-files-labo_evaluator_adapter-20260814.json": "fe83c316daecc5d25f926e654c080ba7ea626b55938734b8109f203c41d0f90e",
+    "discovery/official-files-labo_generator_adapter-20260814.json": "4db4105879962c8b9150c7047a9673989426f9cf12a02af28eb3860c943fb334",
+    "discovery/official-files-qwen_regime_adapter-20260814.json": "933376132eac74b9c6f60f7b083a9c1efe37c03f274294192f93bd15e907cf26",
+    "discovery/official-files-rl_router_seed42-20260814.json": "8f2e2dd9bbcfcb8dfb0cda0b40badf54f703896779e19672286a93344177f44b",
+    "discovery/official-files-strategy_pool-20260814.json": "9281873da0aff6dc096115b09480290053ea6cba55ffddb4d1aba2cf91a6df39",
+    "discovery/tokenizer-source-github-20260814.json": "60868cc9877ee1c094505a731cfd6d54344873be659a01a6675baa93c052892d",
+    f"recovered_lfs/{TOKENIZER_OID}": TOKENIZER_OID,
+    "tokenizer-runtime-20260814.json": "87217e774cb93d4affcadcb2491375acae91d11cbd44511095b43955dbda5780",
+    "native-pytest-python-m-20260814.xml": "5fcd0f466c0eb3997a0f773382cbad78a51c5142982c5dce2f1fbc72bcb966e3",
+    "native-ruff-20260814.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "native-pytest.xml": "b90d330c409a39bc8f56b5fe0ab86a6164c3170253d783111a375899db2dffdb",
     "native-pytest-python-m.xml": "482613687bd83d2356ed750dc79fee155dbf3cdb0f4244f7dc7dc3bd501fbf2c",
     "native-ruff.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "artifact-verification.txt": "4a6f5ab963c39a6e465711d784183e3bf8586338838daf03387901b876933313",
 }
+
+OFFICIAL_LFS_PROBE_PATHS = (
+    "models/labo_evaluator_adapter/adapter_model.safetensors",
+    "models/labo_evaluator_adapter/tokenizer.json",
+    "models/labo_generator_adapter/adapter_model.safetensors",
+    "models/labo_generator_adapter/tokenizer.json",
+    "models/qwen_regime_adapter/adapter_model.safetensors",
+    "models/qwen_regime_adapter/tokenizer.json",
+    "models/rl_router_seed42/best_model.pt",
+    "strategy_pool/strict_rabo_sealed_rabo_robustness.csv",
+    "strategy_pool/strict_rabo_sealed_strategy_signals.csv",
+)
+for _relative in OFFICIAL_LFS_PROBE_PATHS:
+    _name = _relative.replace("/", "_")
+    PINS[f"discovery/official-lfs-{_name}-20260814.json"] = (
+        "ad8e0238bdf46cf71cf2f7e519a1e601e863bff47973b0d31f7623f14d319b72"
+    )
 
 V1_RESULT_TABLES = {
     "tab:comprehensive_results": 240,
@@ -103,12 +146,13 @@ def safe_archives(scratch: Path) -> None:
                 pure = PurePosixPath(member.name)
                 if pure.is_absolute() or ".." in pure.parts or member.issym() or member.islnk():
                     raise ValueError(f"unsafe archive member: {relative}:{member.name}")
-    with zipfile.ZipFile(scratch / "discovery/MM-ARC-32F7.zip") as archive:
-        for member in archive.infolist():
-            pure = PurePosixPath(member.filename)
-            mode = member.external_attr >> 16
-            if pure.is_absolute() or ".." in pure.parts or (mode & 0o170000) == 0o120000:
-                raise ValueError(f"unsafe repository archive member: {member.filename}")
+    for relative in ("discovery/MM-ARC-32F7.zip", LATEST_ARCHIVE):
+        with zipfile.ZipFile(scratch / relative) as archive:
+            for member in archive.infolist():
+                pure = PurePosixPath(member.filename)
+                mode = member.external_attr >> 16
+                if pure.is_absolute() or ".." in pure.parts or (mode & 0o170000) == 0o120000:
+                    raise ValueError(f"unsafe repository archive member: {relative}:{member.filename}")
 
 
 def validate_inputs(scratch: Path) -> dict[str, Any]:
@@ -136,10 +180,71 @@ def validate_inputs(scratch: Path) -> dict[str, Any]:
         if marker not in legacy:
             raise ValueError(f"legacy manuscript marker changed: {marker}")
     with zipfile.ZipFile(scratch / "discovery/MM-ARC-32F7.zip") as archive:
-        infos = archive.infolist()
-        if len(infos) != 107 or sum(item.file_size for item in infos) != 2_596_204:
-            raise ValueError("official repository archive inventory changed")
-    return {"legacy_source_files": 16, "current_source_files": 30, "release_files": 107}
+        old_payloads = {item.filename: archive.read(item.filename) for item in archive.infolist()}
+    with zipfile.ZipFile(scratch / LATEST_ARCHIVE) as archive:
+        new_payloads = {item.filename: archive.read(item.filename) for item in archive.infolist()}
+    if len(old_payloads) != 107 or sum(map(len, old_payloads.values())) != 2_596_204:
+        raise ValueError("2026-08-12 official repository archive inventory changed")
+    if len(new_payloads) != 107 or sum(map(len, new_payloads.values())) != 2_595_188:
+        raise ValueError("2026-08-14 official repository archive inventory changed")
+    if set(old_payloads) != set(new_payloads):
+        raise ValueError("official repository refresh changed the path inventory")
+    changed = sorted(path for path in old_payloads if old_payloads[path] != new_payloads[path])
+    if changed != ["DATA_CARD.md", "MODEL_CARD.md"]:
+        raise ValueError(f"unexpected 2026-08-14 release changes: {changed}")
+    latest_repo = scratch / LATEST_REPO
+    for relative, payload in new_payloads.items():
+        if (latest_repo / relative).read_bytes() != payload:
+            raise ValueError(f"latest extracted repository differs from archive: {relative}")
+    options = json.loads((scratch / "discovery/official-options-20260814.json").read_text())
+    if options.get("lastUpdateDate") != "2026-08-14T04:49:09.000Z":
+        raise ValueError("official repository refresh timestamp changed")
+    listed: dict[str, dict[str, Any]] = {}
+    for relative in (
+        "discovery/official-files-labo_evaluator_adapter-20260814.json",
+        "discovery/official-files-labo_generator_adapter-20260814.json",
+        "discovery/official-files-qwen_regime_adapter-20260814.json",
+        "discovery/official-files-rl_router_seed42-20260814.json",
+        "discovery/official-files-strategy_pool-20260814.json",
+    ):
+        for item in json.loads((scratch / relative).read_text()):
+            path = f"{item['path']}/{item['name']}".removeprefix("artifacts/")
+            listed[path] = item
+    if any(listed[path]["size"] != 133 for path in OFFICIAL_LFS_PROBE_PATHS):
+        raise ValueError("official public file listing no longer exposes all LFS pointers")
+    for relative in OFFICIAL_LFS_PROBE_PATHS:
+        name = relative.replace("/", "_")
+        body = json.loads(
+            (scratch / f"discovery/official-lfs-{name}-20260814.json").read_text()
+        )
+        if body != {"error": "file_not_found"}:
+            raise ValueError(f"official LFS endpoint outcome changed: {relative}")
+    source = json.loads(
+        (scratch / "discovery/tokenizer-source-github-20260814.json").read_text()
+    )
+    if (
+        source.get("path") != TOKENIZER_SOURCE_PATH
+        or source.get("sha") != "c7afbed2efcdf019f88ab0572ec29d3bf595dfe2"
+        or source.get("size") != TOKENIZER_BYTES
+    ):
+        raise ValueError("independent tokenizer source metadata changed")
+    runtime = json.loads((scratch / "tokenizer-runtime-20260814.json").read_text())
+    if (
+        runtime.get("payload_sha256") != TOKENIZER_OID
+        or runtime.get("transformers") != "5.11.0"
+        or runtime.get("tokenizers") != "0.22.2"
+        or runtime.get("protobuf") != "7.35.0"
+        or len(runtime.get("adapters", [])) != 3
+        or not all(item.get("decoded_round_trip_exact") for item in runtime["adapters"])
+    ):
+        raise ValueError("tokenizer runtime evidence changed")
+    return {
+        "legacy_source_files": 16,
+        "current_source_files": 30,
+        "release_files": 107,
+        "release_refresh_changed_files": changed,
+        "release_unchanged_files": 105,
+    }
 
 
 def result_rows(version: str, specifications: Mapping[str, int]) -> list[dict[str, Any]]:
@@ -175,15 +280,16 @@ def method_rows() -> list[dict[str, Any]]:
         ("v1_v2", "raw_results", "missing", "no return arrays, prediction files, or experiment ledger is released"),
         ("v3", "official_document_source", "complete_document_only", "30-file source package recovered and rebuilt"),
         ("v3", "official_repository", "substantial_release", "107-file Apache-2.0 anonymous release linked directly from the paper"),
+        ("v3", "official_repository_refresh", "two_document_files_changed", "the 2026-08-14 public refresh changes only DATA_CARD.md and MODEL_CARD.md; all 105 code/artifact files remain byte-identical"),
         ("v3", "universe_and_execution_contract", "released", "62-asset universe, per-market rules, and a 7,440-row acceptance replay are released"),
         ("v3", "strategy_pools", "mostly_released", "60 pools and 300 members are present; two large signal/robustness tables are LFS pointers"),
-        ("v3", "qwen_and_router_artifacts", "registered_but_payloads_unavailable", "three adapters and seed-42 router are 133-byte LFS pointers in the retrieved archive"),
+        ("v3", "qwen_and_router_artifacts", "tokenizers_recovered_weights_unavailable", "one exact generic tokenizer OID, repeated in three adapter directories, is independently recoverable; three trained adapters and the seed-42 router remain 133-byte LFS pointers"),
         ("v3", "full_benchmark_market_data", "missing", "the data card explicitly limits the release to a 120-observation acceptance fixture"),
         ("v3", "training_and_experiment_controller", "missing", "the model card explicitly places the full private history outside the release"),
         ("v3", "five_seed_training", "partial_one_seed_only", "the paper reports seeds 42--46; the release registers only seed 42"),
         ("v3", "result_arrays_and_report_generator", "missing", "the paper claims report generation but no published-table lineage arrays or table generator are present"),
         ("v3", "unit_integration_acceptance_tests", "executed", "111/111 pass with python -m pytest; tests use doubles and do not reproduce paper metrics"),
-        ("v3", "artifact_integrity", "blocked_missing_lfs_payloads", "26/35 registered files verify locally; 9 pointers fail closed before model execution"),
+        ("v3", "artifact_integrity", "partial_exact_public_recovery", "26/35 files verify from the official archive; exact independent tokenizer recovery raises this to 29/35, while six paper-specific payloads still fail closed before model execution"),
         ("v3", "published_results", "not_regenerated", "zero published numeric table units and zero empirical figures were regenerated"),
     )
     return [
@@ -192,8 +298,89 @@ def method_rows() -> list[dict[str, Any]]:
     ]
 
 
+def release_snapshot_rows() -> list[dict[str, Any]]:
+    return [
+        {
+            "observed_at_utc": "2026-08-12T23:18:45+00:00",
+            "archive_sha256": PINS["discovery/MM-ARC-32F7.zip"],
+            "archive_bytes": 1_122_274,
+            "uncompressed_bytes": 2_596_204,
+            "files": 107,
+            "changed_from_previous": "initial_pinned_snapshot",
+            "changed_paths": "",
+            "code_or_artifact_paths_changed": False,
+            "lfs_pointer_files": 9,
+            "note": "first recovered official bulk archive",
+        },
+        {
+            "observed_at_utc": "2026-08-14T21:45:30+00:00",
+            "archive_sha256": PINS[LATEST_ARCHIVE],
+            "archive_bytes": 1_121_831,
+            "uncompressed_bytes": 2_595_188,
+            "files": 107,
+            "changed_from_previous": "2_of_107_files",
+            "changed_paths": "DATA_CARD.md;MODEL_CARD.md",
+            "code_or_artifact_paths_changed": False,
+            "lfs_pointer_files": 9,
+            "note": "latest public refresh removes two Limitations sections; equivalent benchmark/private-history boundaries remain elsewhere",
+        },
+    ]
+
+
+def lfs_recovery_rows(scratch: Path, pointer_inventory: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    runtime = json.loads((scratch / "tokenizer-runtime-20260814.json").read_text())
+    recovered_payload = scratch / f"recovered_lfs/{TOKENIZER_OID}"
+    rows = []
+    for item in pointer_inventory:
+        pointer = (scratch / LATEST_REPO / "artifacts" / item["path"]).read_bytes()
+        match = LFS_POINTER_RE.fullmatch(pointer)
+        if match is None:
+            raise ValueError(f"not a canonical LFS pointer: {item['path']}")
+        oid = match.group(1).decode()
+        pointer_bytes = int(match.group(2))
+        if oid != item["expected_sha256"] or pointer_bytes != item["expected_bytes"]:
+            raise ValueError(f"LFS pointer disagrees with registry: {item['path']}")
+        recovered = oid == TOKENIZER_OID
+        if recovered and (
+            recovered_payload.stat().st_size != TOKENIZER_BYTES
+            or sha256(recovered_payload) != TOKENIZER_OID
+        ):
+            raise ValueError("recovered tokenizer payload no longer matches its content address")
+        rows.append({
+            "path": item["path"],
+            "oid_sha256": oid,
+            "registered_bytes": pointer_bytes,
+            "official_archive_observed_bytes": len(pointer),
+            "official_public_file_endpoint": "404_file_not_found_2026-08-14",
+            "exact_public_payload_recovered": recovered,
+            "recovery_source_repository": TOKENIZER_SOURCE_REPOSITORY if recovered else "",
+            "recovery_source_commit": TOKENIZER_SOURCE_COMMIT if recovered else "",
+            "recovery_source_path": TOKENIZER_SOURCE_PATH if recovered else "",
+            "payload_size_and_sha256_verified": recovered,
+            "registry_verification_after_hydration": recovered,
+            "declared_runtime_loaded": recovered,
+            "declared_runtime": (
+                f"Transformers {runtime['transformers']}; Tokenizers {runtime['tokenizers']}; "
+                f"Protobuf {runtime['protobuf']}" if recovered else ""
+            ),
+            "author_attributable_recovery": False,
+            "native_model_or_strategy_execution_enabled": False,
+            "paper_result_credit": False,
+            "boundary": (
+                "byte-identical generic tokenizer recovered from an independent public GitHub blob; no MM-ARC author lineage"
+                if recovered
+                else "paper-specific trained or historical payload remains unavailable from the official endpoint and public exact-hash searches"
+            ),
+        })
+    if len({row["oid_sha256"] for row in rows}) != 7:
+        raise ValueError("expected seven unique LFS content addresses")
+    if sum(row["exact_public_payload_recovered"] for row in rows) != 3:
+        raise ValueError("expected one tokenizer OID repeated across three recovered paths")
+    return rows
+
+
 def release_audit(scratch: Path) -> dict[str, Any]:
-    repo = scratch / "repo"
+    repo = scratch / LATEST_REPO
     registry = json.loads((repo / "artifacts/registry.json").read_text())
     good, bad = [], []
     for item in registry["artifacts"]:
@@ -213,7 +400,8 @@ def release_audit(scratch: Path) -> dict[str, Any]:
             bad.append(row)
     if len(good) != 26 or len(bad) != 9 or sum(row["expected_bytes"] for row in bad) != 340_563_208:
         raise ValueError("release LFS boundary changed")
-    junit = ET.parse(scratch / "native-pytest-python-m.xml").getroot().find("testsuite")
+    recovery = lfs_recovery_rows(scratch, bad)
+    junit = ET.parse(scratch / "native-pytest-python-m-20260814.xml").getroot().find("testsuite")
     direct = ET.parse(scratch / "native-pytest.xml").getroot().find("testsuite")
     if junit is None or direct is None:
         raise ValueError("pytest evidence has no suite")
@@ -221,16 +409,23 @@ def release_audit(scratch: Path) -> dict[str, Any]:
         raise ValueError("CI-style test evidence changed")
     if (direct.get("tests"), direct.get("errors")) != ("2", "2"):
         raise ValueError("direct pytest entry-point boundary changed")
-    if json.loads((scratch / "native-ruff.json").read_text()) != []:
+    if json.loads((scratch / "native-ruff-20260814.json").read_text()) != []:
         raise ValueError("Ruff evidence is not clean")
     verification = (scratch / "artifact-verification.txt").read_text()
     if "expected=87368144, observed=133" not in verification:
         raise ValueError("artifact fail-closed evidence changed")
     return {
         "url": REPOSITORY_URL,
-        "archive_sha256": PINS["discovery/MM-ARC-32F7.zip"],
+        "archive_sha256": PINS[LATEST_ARCHIVE],
+        "previous_archive_sha256": PINS["discovery/MM-ARC-32F7.zip"],
+        "archive_observed_at_utc": "2026-08-14T21:45:30+00:00",
+        "official_last_update_at_utc": "2026-08-14T04:49:09.000Z",
+        "archive_snapshot_count": 2,
+        "archive_refresh_changed_files": ["DATA_CARD.md", "MODEL_CARD.md"],
+        "archive_refresh_unchanged_code_and_artifact_files": 105,
         "archive_files": 107,
-        "archive_uncompressed_bytes": 2_596_204,
+        "archive_bytes": 1_121_831,
+        "archive_uncompressed_bytes": 2_595_188,
         "license": "Apache-2.0",
         "release_version": "v0.1.0",
         "artifact_registry_version": registry["version"],
@@ -241,6 +436,29 @@ def release_audit(scratch: Path) -> dict[str, Any]:
         "lfs_pointer_files": len(bad),
         "lfs_payload_bytes_unavailable": sum(row["expected_bytes"] for row in bad),
         "lfs_pointer_inventory": bad,
+        "unique_lfs_oids": len({row["oid_sha256"] for row in recovery}),
+        "official_public_lfs_endpoint_file_not_found": len(recovery),
+        "exact_public_payload_unique_oids_recovered": len({
+            row["oid_sha256"] for row in recovery if row["exact_public_payload_recovered"]
+        }),
+        "exact_public_payload_registered_paths_recovered": sum(
+            row["exact_public_payload_recovered"] for row in recovery
+        ),
+        "exact_public_payload_unique_bytes_recovered": TOKENIZER_BYTES,
+        "exact_public_payload_registered_bytes_recovered": 3 * TOKENIZER_BYTES,
+        "verified_payload_files_after_exact_public_recovery": len(good) + 3,
+        "verified_payload_bytes_after_exact_public_recovery": (
+            sum(row["expected_bytes"] for row in good) + 3 * TOKENIZER_BYTES
+        ),
+        "remaining_unavailable_pointer_files": len(bad) - 3,
+        "remaining_unavailable_unique_oids": 6,
+        "remaining_unavailable_registered_bytes": (
+            sum(row["expected_bytes"] for row in bad) - 3 * TOKENIZER_BYTES
+        ),
+        "tokenizer_recovery_source_attributable_to_mm_arc_authors": False,
+        "tokenizer_runtime_validation": json.loads(
+            (scratch / "tokenizer-runtime-20260814.json").read_text()
+        ),
         "base_model_id": registry["base_model"]["model_id"],
         "base_model_revision": registry["base_model"]["revision"],
         "base_model_registered_bytes": sum(item["bytes"] for item in registry["base_model"]["files"]),
@@ -253,7 +471,7 @@ def release_audit(scratch: Path) -> dict[str, Any]:
         "tests_download_lfs": False,
         "tests_use_model_runtime_doubles": True,
         "artifact_verification_passed": False,
-        "artifact_verification_failure": "first trained adapter is a 133-byte LFS pointer, not its registered 87,368,144-byte payload",
+        "artifact_verification_failure": "after exact tokenizer hydration, three trained adapters, the router, and two historical strategy tables remain 133-byte LFS pointers",
         "full_model_forward_executed_in_audit": False,
         "paper_decision_cycle_executed_in_audit": False,
         "published_table_or_figure_regenerated": False,
@@ -317,6 +535,8 @@ def internal_rows() -> list[dict[str, str]]:
         ("v3_repository_claim", "partially_supported", "substantial pipeline is released, but the full benchmark/controller/result lineage is not"),
         ("v3_five_seed_claim", "release_incomplete", "paper reports five independently trained seeds; release contains only seed 42"),
         ("v3_complete_artifact_claim", "retrieved_archive_incomplete", "9 registered payloads are only LFS pointers"),
+        ("v3_public_refresh", "two_document_only_changes", "the 2026-08-14 refresh changes DATA_CARD.md and MODEL_CARD.md only; 105 code/artifact files remain byte-identical"),
+        ("v3_tokenizer_recovery", "exact_bytes_unattributable", "one generic tokenizer OID repeated across three paths is byte-exactly recoverable from an independent public GitHub blob; it is not MM-ARC author-output lineage"),
         ("v3_test_claim", "verified_with_boundary", "111 tests pass using python -m pytest without LFS/model execution"),
         ("v3_result_reconciliation_claim", "not_independently_verifiable", "no published-result arrays or table-generation path are released"),
         ("v3_acceptance_replay_scope", "correctly_disclaimed", "data/model cards state that the replay is not full benchmark reproduction"),
@@ -342,14 +562,26 @@ Python 3.12 environment, Ruff and compilation pass and the release's CI-style
 results, not paper-result reproductions: CI checks out with LFS disabled and the
 model-facing tests use doubles.
 
-The retrieved official archive is not deployment-complete. Nine registered files
-are 133-byte Git LFS pointers, covering 340,563,208 expected bytes: three adapters,
-three tokenizers, one router, and two large strategy-pool tables. Artifact
-verification therefore fails closed. The data and model cards also explicitly say
-that the replay is an acceptance fixture, the full benchmark/training corpus is
-not included, the full private training and experiment-controller history is
-outside the release, and only trained seed 42 is packaged although the paper
-reports five seeds.
+Two official snapshots are pinned. The 2026-08-14 refresh changes only
+`DATA_CARD.md` and `MODEL_CARD.md` relative to 2026-08-12; all 105 code and
+artifact paths are byte-identical. The newer cards remove two explicit
+"Limitations" sections, but the README and remaining card text still identify
+the short replay as an acceptance fixture rather than the complete benchmark,
+place the private experiment-controller history outside the release, and package
+only trained seed 42 although the paper reports five seeds.
+
+The latest official archive is still not deployment-complete. Nine registered
+files are 133-byte Git LFS pointers, covering 340,563,208 expected bytes: three
+adapters, three tokenizers, one router, and two large strategy-pool tables. The
+official public single-file endpoints returned `404 file_not_found` for all nine.
+One generic tokenizer content address, repeated in three adapter directories, was
+recovered byte-exactly from an independent public GitHub blob. It validates under
+the declared Transformers 5.11.0 / Tokenizers 0.22.2 / Protobuf 7.35.0 contract
+and raises registry verification from 26/35 to 29/35 files. This is exact byte
+recovery, not MM-ARC author provenance. The three trained adapters, router, and
+two historical strategy tables remain unavailable: six files and 306,295,258
+registered bytes. Artifact verification and model execution therefore fail
+closed.
 
 Accordingly, the honest paper-level score remains **zero regenerated published
 numeric table units and zero regenerated empirical figure series for every
@@ -373,6 +605,11 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "figure_inventory.csv", figure_rows())
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
     release = release_audit(scratch)
+    write_csv(output / "release_snapshot_history.csv", release_snapshot_rows())
+    write_csv(
+        output / "lfs_payload_recovery_audit.csv",
+        lfs_recovery_rows(scratch, release["lfs_pointer_inventory"]),
+    )
     write_json(output / "release_execution_audit.json", release)
     provenance = {
         "work_id": WORK_ID,
@@ -389,11 +626,25 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             },
         },
         "official_repository": release,
+        "public_exact_payload_recovery": {
+            "classification": "independent_exact_content_not_author_attributable",
+            "source_repository": TOKENIZER_SOURCE_REPOSITORY,
+            "source_commit": TOKENIZER_SOURCE_COMMIT,
+            "source_path": TOKENIZER_SOURCE_PATH,
+            "payload_sha256": TOKENIZER_OID,
+            "payload_bytes": TOKENIZER_BYTES,
+            "registered_paths_recovered": 3,
+            "declared_runtime_loaded": True,
+            "native_model_or_strategy_execution_enabled": False,
+            "paper_result_credit": False,
+        },
         "release_boundary": {
             "v3_author_attribution": "directly linked from official v3 source",
             "v1_v2_implementation_recovered": False,
             "v3_runtime_source_recovered": True,
             "v3_deployment_payloads_all_recovered": False,
+            "v3_exact_generic_tokenizer_oid_recovered": True,
+            "v3_remaining_paper_specific_lfs_payloads": 6,
             "v3_complete_research_pipeline_recovered": False,
             "published_result_lineage_recovered": False,
         },
@@ -422,6 +673,15 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "official_repository_files": inventory["release_files"],
         "official_repository_tests_passed": release["tests_passed"],
         "official_repository_lfs_pointer_files": release["lfs_pointer_files"],
+        "official_repository_snapshots_pinned": release["archive_snapshot_count"],
+        "official_repository_refresh_changed_files": inventory["release_refresh_changed_files"],
+        "official_repository_refresh_unchanged_files": inventory["release_unchanged_files"],
+        "exact_public_payload_unique_oids_recovered": release["exact_public_payload_unique_oids_recovered"],
+        "exact_public_payload_registered_paths_recovered": release["exact_public_payload_registered_paths_recovered"],
+        "registered_artifact_files_verified_after_exact_public_recovery": release["verified_payload_files_after_exact_public_recovery"],
+        "remaining_unavailable_lfs_payload_files": release["remaining_unavailable_pointer_files"],
+        "remaining_unavailable_lfs_registered_bytes": release["remaining_unavailable_registered_bytes"],
+        "trained_adapter_router_or_strategy_history_payload_recovered": False,
         "full_training_and_experiment_controller_released": False,
         "full_benchmark_data_released": False,
         "all_five_trained_seeds_released": False,

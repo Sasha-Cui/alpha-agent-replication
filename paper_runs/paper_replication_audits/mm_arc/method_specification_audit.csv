@@ -9,13 +9,14 @@ v1_v2,trading_costs,absent,the paper's future-work section says transaction cost
 v1_v2,raw_results,missing,"no return arrays, prediction files, or experiment ledger is released"
 v3,official_document_source,complete_document_only,30-file source package recovered and rebuilt
 v3,official_repository,substantial_release,107-file Apache-2.0 anonymous release linked directly from the paper
+v3,official_repository_refresh,two_document_files_changed,the 2026-08-14 public refresh changes only DATA_CARD.md and MODEL_CARD.md; all 105 code/artifact files remain byte-identical
 v3,universe_and_execution_contract,released,"62-asset universe, per-market rules, and a 7,440-row acceptance replay are released"
 v3,strategy_pools,mostly_released,60 pools and 300 members are present; two large signal/robustness tables are LFS pointers
-v3,qwen_and_router_artifacts,registered_but_payloads_unavailable,three adapters and seed-42 router are 133-byte LFS pointers in the retrieved archive
+v3,qwen_and_router_artifacts,tokenizers_recovered_weights_unavailable,"one exact generic tokenizer OID, repeated in three adapter directories, is independently recoverable; three trained adapters and the seed-42 router remain 133-byte LFS pointers"
 v3,full_benchmark_market_data,missing,the data card explicitly limits the release to a 120-observation acceptance fixture
 v3,training_and_experiment_controller,missing,the model card explicitly places the full private history outside the release
 v3,five_seed_training,partial_one_seed_only,the paper reports seeds 42--46; the release registers only seed 42
 v3,result_arrays_and_report_generator,missing,the paper claims report generation but no published-table lineage arrays or table generator are present
 v3,unit_integration_acceptance_tests,executed,111/111 pass with python -m pytest; tests use doubles and do not reproduce paper metrics
-v3,artifact_integrity,blocked_missing_lfs_payloads,26/35 registered files verify locally; 9 pointers fail closed before model execution
+v3,artifact_integrity,partial_exact_public_recovery,"26/35 files verify from the official archive; exact independent tokenizer recovery raises this to 29/35, while six paper-specific payloads still fail closed before model execution"
 v3,published_results,not_regenerated,zero published numeric table units and zero empirical figures were regenerated

@@ -678,10 +678,10 @@
         "system_id": "SYS-MAD-EVOLVE"
       },
       {
-        "corrected_at_utc": "2026-08-12T00:00:00+00:00",
+        "corrected_at_utc": "2026-08-14T21:45:30+00:00",
         "evidence": "paper_runs/paper_replication_audits/mm_arc/source_provenance.json",
         "reason": "current v3 PDF directly links a substantial anonymous 4open release",
-        "source_archive_sha256": "b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d",
+        "source_archive_sha256": "830e4257125e67f4f9c64c9ae2a446b02593f83b94bd81b19aae225f5014f317",
         "system_id": "SYS-MM-DREX"
       },
       {

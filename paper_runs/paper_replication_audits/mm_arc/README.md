@@ -14,14 +14,26 @@ Python 3.12 environment, Ruff and compilation pass and the release's CI-style
 results, not paper-result reproductions: CI checks out with LFS disabled and the
 model-facing tests use doubles.
 
-The retrieved official archive is not deployment-complete. Nine registered files
-are 133-byte Git LFS pointers, covering 340,563,208 expected bytes: three adapters,
-three tokenizers, one router, and two large strategy-pool tables. Artifact
-verification therefore fails closed. The data and model cards also explicitly say
-that the replay is an acceptance fixture, the full benchmark/training corpus is
-not included, the full private training and experiment-controller history is
-outside the release, and only trained seed 42 is packaged although the paper
-reports five seeds.
+Two official snapshots are pinned. The 2026-08-14 refresh changes only
+`DATA_CARD.md` and `MODEL_CARD.md` relative to 2026-08-12; all 105 code and
+artifact paths are byte-identical. The newer cards remove two explicit
+"Limitations" sections, but the README and remaining card text still identify
+the short replay as an acceptance fixture rather than the complete benchmark,
+place the private experiment-controller history outside the release, and package
+only trained seed 42 although the paper reports five seeds.
+
+The latest official archive is still not deployment-complete. Nine registered
+files are 133-byte Git LFS pointers, covering 340,563,208 expected bytes: three
+adapters, three tokenizers, one router, and two large strategy-pool tables. The
+official public single-file endpoints returned `404 file_not_found` for all nine.
+One generic tokenizer content address, repeated in three adapter directories, was
+recovered byte-exactly from an independent public GitHub blob. It validates under
+the declared Transformers 5.11.0 / Tokenizers 0.22.2 / Protobuf 7.35.0 contract
+and raises registry verification from 26/35 to 29/35 files. This is exact byte
+recovery, not MM-ARC author provenance. The three trained adapters, router, and
+two historical strategy tables remain unavailable: six files and 306,295,258
+registered bytes. Artifact verification and model execution therefore fail
+closed.
 
 Accordingly, the honest paper-level score remains **zero regenerated published
 numeric table units and zero regenerated empirical figure series for every

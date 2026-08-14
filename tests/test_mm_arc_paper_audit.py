@@ -92,7 +92,13 @@ def test_official_release_is_substantial_but_not_deployment_complete() -> None:
     release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
     assert release["url"] == "https://anonymous.4open.science/r/MM-ARC-32F7/"
     assert release["archive_files"] == 107
-    assert release["archive_uncompressed_bytes"] == 2_596_204
+    assert release["archive_sha256"] == "830e4257125e67f4f9c64c9ae2a446b02593f83b94bd81b19aae225f5014f317"
+    assert release["previous_archive_sha256"] == "b0e647858678b06aaeeddb3cebcc6ee29af76d44877fc7d611c2a957f281098d"
+    assert release["archive_bytes"] == 1_121_831
+    assert release["archive_uncompressed_bytes"] == 2_595_188
+    assert release["archive_snapshot_count"] == 2
+    assert release["archive_refresh_changed_files"] == ["DATA_CARD.md", "MODEL_CARD.md"]
+    assert release["archive_refresh_unchanged_code_and_artifact_files"] == 105
     assert release["license"] == "Apache-2.0"
     assert release["registered_artifacts"] == 35
     assert release["registered_artifact_bytes"] == 341_958_665
@@ -102,10 +108,55 @@ def test_official_release_is_substantial_but_not_deployment_complete() -> None:
     assert release["lfs_payload_bytes_unavailable"] == 340_563_208
     assert len(release["lfs_pointer_inventory"]) == 9
     assert all(row["observed_bytes"] == 133 for row in release["lfs_pointer_inventory"])
+    assert release["unique_lfs_oids"] == 7
+    assert release["official_public_lfs_endpoint_file_not_found"] == 9
+    assert release["exact_public_payload_unique_oids_recovered"] == 1
+    assert release["exact_public_payload_registered_paths_recovered"] == 3
+    assert release["exact_public_payload_unique_bytes_recovered"] == 11_422_650
+    assert release["exact_public_payload_registered_bytes_recovered"] == 34_267_950
+    assert release["verified_payload_files_after_exact_public_recovery"] == 29
+    assert release["verified_payload_bytes_after_exact_public_recovery"] == 35_663_407
+    assert release["remaining_unavailable_pointer_files"] == 6
+    assert release["remaining_unavailable_unique_oids"] == 6
+    assert release["remaining_unavailable_registered_bytes"] == 306_295_258
+    assert release["tokenizer_recovery_source_attributable_to_mm_arc_authors"] is False
     assert release["base_model_id"] == "Qwen/Qwen3-VL-8B-Instruct"
     assert release["base_model_revision"] == "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
     assert release["base_model_registered_bytes"] == 17_545_907_231
     assert release["artifact_verification_passed"] is False
+
+
+def test_public_refresh_and_exact_tokenizer_recovery_are_fail_closed() -> None:
+    snapshots = rows("release_snapshot_history.csv")
+    assert len(snapshots) == 2
+    assert snapshots[1]["changed_paths"] == "DATA_CARD.md;MODEL_CARD.md"
+    assert snapshots[1]["code_or_artifact_paths_changed"] == "False"
+    recovery = rows("lfs_payload_recovery_audit.csv")
+    assert len(recovery) == 9
+    assert len({row["oid_sha256"] for row in recovery}) == 7
+    recovered = [row for row in recovery if row["exact_public_payload_recovered"] == "True"]
+    assert len(recovered) == 3
+    assert {row["oid_sha256"] for row in recovered} == {
+        "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506"
+    }
+    assert all(row["registry_verification_after_hydration"] == "True" for row in recovered)
+    assert all(row["declared_runtime_loaded"] == "True" for row in recovered)
+    assert all(row["author_attributable_recovery"] == "False" for row in recovered)
+    assert all(row["paper_result_credit"] == "False" for row in recovered)
+    unavailable = [row for row in recovery if row["exact_public_payload_recovered"] == "False"]
+    assert len(unavailable) == 6
+    assert sum(int(row["registered_bytes"]) for row in unavailable) == 306_295_258
+    assert all(row["official_public_file_endpoint"] == "404_file_not_found_2026-08-14" for row in recovery)
+    runtime = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())[
+        "tokenizer_runtime_validation"
+    ]
+    assert runtime["transformers"] == "5.11.0"
+    assert runtime["tokenizers"] == "0.22.2"
+    assert runtime["protobuf"] == "7.35.0"
+    assert runtime["model_forward_executed"] is False
+    assert runtime["paper_result_credit"] is False
+    assert len(runtime["adapters"]) == 3
+    assert all(item["decoded_round_trip_exact"] for item in runtime["adapters"])
 
 
 def test_native_code_checks_are_credited_only_as_code_contracts() -> None:
@@ -125,20 +176,25 @@ def test_native_code_checks_are_credited_only_as_code_contracts() -> None:
 
 def test_method_audit_records_every_material_research_boundary() -> None:
     methods = {(row["version"], row["dimension"]): row for row in rows("method_specification_audit.csv")}
-    assert len(methods) == 20
+    assert len(methods) == 21
     assert methods[("v1_v2", "author_native_runtime")]["status"] == "missing"
     assert methods[("v1_v2", "trading_costs")]["status"] == "absent"
     assert methods[("v3", "official_repository")]["status"] == "substantial_release"
+    assert methods[("v3", "official_repository_refresh")]["status"] == "two_document_files_changed"
+    assert methods[("v3", "qwen_and_router_artifacts")]["status"] == "tokenizers_recovered_weights_unavailable"
     assert methods[("v3", "full_benchmark_market_data")]["status"] == "missing"
     assert methods[("v3", "training_and_experiment_controller")]["status"] == "missing"
     assert methods[("v3", "five_seed_training")]["status"] == "partial_one_seed_only"
     assert methods[("v3", "result_arrays_and_report_generator")]["status"] == "missing"
+    assert methods[("v3", "artifact_integrity")]["status"] == "partial_exact_public_recovery"
     assert methods[("v3", "published_results")]["status"] == "not_regenerated"
     provenance = json.loads((AUDIT_DIR / "source_provenance.json").read_text())
     boundary = provenance["release_boundary"]
     assert boundary["v1_v2_implementation_recovered"] is False
     assert boundary["v3_runtime_source_recovered"] is True
     assert boundary["v3_deployment_payloads_all_recovered"] is False
+    assert boundary["v3_exact_generic_tokenizer_oid_recovered"] is True
+    assert boundary["v3_remaining_paper_specific_lfs_payloads"] == 6
     assert boundary["v3_complete_research_pipeline_recovered"] is False
     assert boundary["published_result_lineage_recovered"] is False
 
@@ -186,6 +242,7 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
     readme = (AUDIT_DIR / "README.md").read_text()
     for marker in (
         "wholesale 17-page replacement", "111 tests", "Git LFS pointers",
-        "zero regenerated published", "No proxy", "does not reproduce the legacy",
+        "29/35", "306,295,258", "zero regenerated published", "No proxy",
+        "does not reproduce the legacy",
     ):
         assert marker in readme

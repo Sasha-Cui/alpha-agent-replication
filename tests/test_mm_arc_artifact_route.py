@@ -33,8 +33,16 @@ def test_pinned_artifact_row_is_paper_linked_reachable_and_r3() -> None:
     assert observation["file_count"] == 107
     assert observation["has_runner"] is True
     assert observation["archive_sha256"] == route.ARCHIVE_SHA256
+    assert observation["previous_archive_sha256"] == route.PREVIOUS_ARCHIVE_SHA256
+    assert observation["snapshot_count"] == 2
+    assert observation["refresh_changed_paths"] == ["DATA_CARD.md", "MODEL_CARD.md"]
+    assert observation["refresh_unchanged_code_and_artifact_files"] == 105
     assert observation["git_lfs_pointer_files"] == 9
-    assert observation["registered_payload_bytes_unavailable"] == 340_563_208
+    assert observation["registered_payload_bytes_missing_from_official_endpoint"] == 340_563_208
+    assert observation["exact_public_payload_unique_oids_recovered"] == 1
+    assert observation["exact_public_payload_registered_paths_recovered"] == 3
+    assert observation["registered_payload_bytes_unavailable_after_exact_public_recovery"] == 306_295_258
+    assert observation["registered_artifact_files_verified_after_exact_public_recovery"] == 29
 
 
 def test_committed_artifact_audit_and_summary_include_mm_arc() -> None:
@@ -65,11 +73,13 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["fidelity_class"] == "F1_static_no_native_output"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_"
-        "v3_release_111_tests_missing_lfs_and_research_lineage"
+        "v3_release_111_tests_29_of_35_artifacts_verified_six_lfs_payloads_missing_"
+        "research_lineage_missing"
     )
     note = row["concise_evidence_note"]
     for marker in (
         "671 legacy", "651 current", "111 tests", "9 Git LFS pointers",
+        "29/35", "six paper-specific", "306,295,258",
         "0/671 legacy", "0/651 current", "0/18 empirical figure series",
     ):
         assert marker in note
@@ -119,7 +129,9 @@ def test_registries_preserve_legacy_identity_and_current_release() -> None:
     paper = next(item for item in registry if item["ref_index"] == "32")
     assert paper["code_status"] == "official_v3_anonymous_release"
     assert paper["code_url"] == route.URL
-    assert paper["execution_state"] == "audited_component_execution_only"
+    assert paper["execution_state"] == (
+        "audited_component_execution_and_exact_generic_tokenizer_only"
+    )
     assert paper["verdict"] == (
         "zero_of_671_legacy_and_zero_of_651_current_numeric_result_units_regenerated"
     )
