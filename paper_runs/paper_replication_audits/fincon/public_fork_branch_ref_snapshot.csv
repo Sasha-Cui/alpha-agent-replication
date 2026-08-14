@@ -1,0 +1,7 @@
+repository,url,branch,head_commit,relation_to_current_official_head,commits_beyond_official_history,commits_behind_current_official_head,current_tracked_files,current_source_code_files,current_data_model_or_result_files,native_fincon_pipeline_found,paper_result_credit
+CYP0630/FinCon,https://github.com/CYP0630/FinCon,main,831e3c2255f72304e104bdec64a62a1489109934,official_history_ancestor,0,10,1,0,0,False,False
+Niorlusx/FinCon,https://github.com/Niorlusx/FinCon,main,8fca5b6fea7cb5b09512ba77181a945ac02e53e7,official_history_ancestor,0,7,1,0,0,False,False
+NourhanEhab-04/FinCon,https://github.com/NourhanEhab-04/FinCon,main,ca3256d037c497871c064bc2f5abab106993e189,exact_current_official_head,0,0,1,0,0,False,False
+ZhiyangDeng1994/FinCon,https://github.com/ZhiyangDeng1994/FinCon,main,ca3256d037c497871c064bc2f5abab106993e189,exact_current_official_head,0,0,1,0,0,False,False
+jingmouren/The-FinAI-FinCon,https://github.com/jingmouren/The-FinAI-FinCon,main,831e3c2255f72304e104bdec64a62a1489109934,official_history_ancestor,0,10,1,0,0,False,False
+lucaspulliza-nyc/FinCon,https://github.com/lucaspulliza-nyc/FinCon,main,ca3256d037c497871c064bc2f5abab106993e189,exact_current_official_head,0,0,1,0,0,False,False

@@ -63,6 +63,10 @@ SOURCE_CURRENT_COMMIT = "ca3256d037c497871c064bc2f5abab106993e189"
 SOURCE_CURRENT_DATE = "2026-02-26T23:20:53-05:00"
 SOURCE_CURRENT_README_SHA256 = "0aa1113065f1e71ee8688b89d87ac72751f2e1c1912a9d7ac739c865f50cccd7"
 AUDIT_DATE = "2026-08-11"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_SNAPSHOT_SHA256 = "1ad971e0260acad6a147d910724b87b47660d8f828a6eb8f005084e7be8967f1"
+SOURCE_CODE_SUFFIXES = {".py", ".js", ".ts", ".java", ".cpp", ".c", ".go", ".rs"}
+DATA_MODEL_SUFFIXES = {".csv", ".json", ".parquet", ".pkl", ".pt", ".pth", ".bin"}
 
 METRICS = ("CR_pct", "SR", "MDD_pct")
 METHODS = ("B&H", "FinCon", "GA", "FinGPT", "FinMem", "FinAgent", "A2C", "PPO", "DQN")
@@ -403,8 +407,8 @@ def source_inventory(source_root: Path) -> list[dict[str, Any]]:
             "path": name,
             "sha256": sha256(path),
             "bytes": path.stat().st_size,
-            "source_code": path.suffix in {".py", ".js", ".ts", ".java", ".cpp", ".c", ".go", ".rs"},
-            "data_or_model_artifact": path.suffix.lower() in {".csv", ".json", ".parquet", ".pkl", ".pt", ".pth", ".bin"},
+            "source_code": path.suffix in SOURCE_CODE_SUFFIXES,
+            "data_or_model_artifact": path.suffix.lower() in DATA_MODEL_SUFFIXES,
             "status": "readme_only_no_fincon_implementation",
             "paper_result_credit": False,
         })
@@ -430,6 +434,171 @@ def source_history_rows(source_root: Path) -> list[dict[str, Any]]:
     if len(rows) != 11 or any(not row["only_readme"] for row in rows):
         raise RuntimeError("Official FinCon repository history changed")
     return rows
+
+
+def public_fork_audit(
+    source_root: Path,
+    paper_root: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Classify every accessible public fork head against official history."""
+    snapshot = json.loads(
+        (paper_root / "public_fork_snapshot.json").read_text(encoding="utf-8")
+    )
+    if len(snapshot) != 6:
+        raise RuntimeError(f"FinCon accessible fork count changed: {len(snapshot)}")
+    expected_refs: dict[str, tuple[str, str, str]] = {}
+    tag_refs = 0
+    for repository in snapshot:
+        full_name = repository["full_name"]
+        owner = full_name.split("/", 1)[0]
+        if repository["default_branch"] not in repository["branches"]:
+            raise RuntimeError(f"FinCon fork default branch missing: {full_name}")
+        tag_refs += len(repository["tags"])
+        for branch, head in repository["branches"].items():
+            ref = f"refs/remotes/forks/{owner}/{branch}"
+            if ref in expected_refs:
+                raise RuntimeError(f"duplicate FinCon fork ref: {ref}")
+            expected_refs[ref] = (full_name, branch, head)
+    if len(expected_refs) != 6 or tag_refs != 0:
+        raise RuntimeError("FinCon public fork branch/tag surface changed")
+
+    observed_refs = {
+        ref: str(run_git(source_root, "rev-parse", ref)).strip()
+        for ref in str(
+            run_git(
+                source_root,
+                "for-each-ref",
+                "--format=%(refname)",
+                "refs/remotes/forks",
+            )
+        ).splitlines()
+    }
+    expected_heads = {ref: values[2] for ref, values in expected_refs.items()}
+    if observed_refs != expected_heads:
+        raise RuntimeError(f"FinCon fetched fork refs changed: {observed_refs}")
+
+    official_commits = set(
+        str(run_git(source_root, "rev-list", SOURCE_CURRENT_COMMIT)).splitlines()
+    )
+    branch_rows: list[dict[str, Any]] = []
+    for ref, (repository, branch, head) in sorted(expected_refs.items()):
+        if head not in official_commits:
+            raise RuntimeError(f"FinCon fork head is outside official history: {ref}")
+        commits_beyond = int(
+            str(
+                run_git(
+                    source_root,
+                    "rev-list",
+                    "--count",
+                    head,
+                    "--not",
+                    SOURCE_CURRENT_COMMIT,
+                )
+            ).strip()
+        )
+        commits_behind = int(
+            str(
+                run_git(
+                    source_root,
+                    "rev-list",
+                    "--count",
+                    f"{head}..{SOURCE_CURRENT_COMMIT}",
+                )
+            ).strip()
+        )
+        paths = str(
+            run_git(source_root, "ls-tree", "-r", "--name-only", head)
+        ).splitlines()
+        source_paths = [
+            path for path in paths if Path(path).suffix.lower() in SOURCE_CODE_SUFFIXES
+        ]
+        payload_paths = [
+            path for path in paths if Path(path).suffix.lower() in DATA_MODEL_SUFFIXES
+        ]
+        if commits_beyond != 0 or paths != ["README.md"] or source_paths or payload_paths:
+            raise RuntimeError(f"FinCon fork evidence boundary changed: {ref}")
+        branch_rows.append({
+            "repository": repository,
+            "url": f"https://github.com/{repository}",
+            "branch": branch,
+            "head_commit": head,
+            "relation_to_current_official_head": (
+                "exact_current_official_head"
+                if head == SOURCE_CURRENT_COMMIT
+                else "official_history_ancestor"
+            ),
+            "commits_beyond_official_history": commits_beyond,
+            "commits_behind_current_official_head": commits_behind,
+            "current_tracked_files": len(paths),
+            "current_source_code_files": len(source_paths),
+            "current_data_model_or_result_files": len(payload_paths),
+            "native_fincon_pipeline_found": False,
+            "paper_result_credit": False,
+        })
+
+    fork_heads = sorted(set(observed_refs.values()))
+    official_objects = set(
+        str(
+            run_git(
+                source_root,
+                "rev-list",
+                "--objects",
+                "--no-object-names",
+                SOURCE_CURRENT_COMMIT,
+            )
+        ).splitlines()
+    )
+    fork_objects = set(
+        str(
+            run_git(
+                source_root,
+                "rev-list",
+                "--objects",
+                "--no-object-names",
+                *fork_heads,
+            )
+        ).splitlines()
+    )
+    unique_objects = fork_objects - official_objects
+    if unique_objects:
+        raise RuntimeError(f"FinCon forks contain unique objects: {unique_objects}")
+
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_reported_forks": 6,
+        "accessible_public_forks": len(snapshot),
+        "accessible_branch_refs": len(branch_rows),
+        "public_tag_refs": tag_refs,
+        "unique_heads": len(fork_heads),
+        "current_official_head_exact_refs": sum(
+            row["relation_to_current_official_head"] == "exact_current_official_head"
+            for row in branch_rows
+        ),
+        "official_history_ancestor_refs": sum(
+            row["relation_to_current_official_head"] == "official_history_ancestor"
+            for row in branch_rows
+        ),
+        "unique_commits_beyond_official_history": 0,
+        "unique_objects_beyond_official_history": 0,
+        "source_code_files_across_fork_heads": 0,
+        "data_model_or_result_files_across_fork_heads": 0,
+        "native_fincon_pipelines_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "All six public fork refs resolve to three commits already inside the "
+            "complete audited 11-commit official README-only history."
+        ),
+    }
+    expected_counts = {
+        "accessible_public_forks": 6,
+        "accessible_branch_refs": 6,
+        "unique_heads": 3,
+        "current_official_head_exact_refs": 3,
+        "official_history_ancestor_refs": 3,
+    }
+    if any(summary[key] != value for key, value in expected_counts.items()):
+        raise RuntimeError(f"FinCon public fork census changed: {summary}")
+    return branch_rows, summary
 
 
 def mechanism_conformance() -> list[dict[str, Any]]:
@@ -588,6 +757,7 @@ def validate_primary_inputs(source_root: Path, paper_root: Path) -> None:
         "source.tar": ARXIV_VERSIONS["v3"]["source_sha256"],
         "arxiv_api.xml": ARXIV_API_SHA256,
         "neurips2024.pdf": PROCEEDINGS_PDF_SHA256,
+        "public_fork_snapshot.json": PUBLIC_FORK_SNAPSHOT_SHA256,
     }
     for name, expected in expected_files.items():
         if sha256(paper_root / name) != expected:
@@ -647,6 +817,8 @@ This audit uses the 36-page NeurIPS 2024 proceedings paper as the result authori
 
 The current README explicitly says commercial APIs prevent release of the full system and associated data and promises a future code release. InvestorBench and Agent Market Arena are separate systems and receive no FinCon credit.
 
+The {PUBLIC_FORK_CENSUS_DATE} census also exhausts all six public forks and all six branch refs. They resolve to only three heads, all already inside the complete 11-commit official history: three refs equal the current official head, two equal the initial commit, and one points to an intermediate commit. Every head contains only `README.md`; the forks add zero commits, trees, blobs, code files, data/model/result files, or native-result evidence beyond the official history.
+
 ## Result census and revision drift
 
 The final paper displays 306 numeric cells. Nine FinCon metric triplets are repeated in the main table and both ablation tables, leaving 288 unique measurements. It also contains 106 result series across 18 raster assets; no underlying series or plot-generation code is released.
@@ -675,6 +847,7 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
     drift = version_drift_rows(table)
     source_files = source_inventory(source_root)
     history = source_history_rows(source_root)
+    fork_branches, fork_summary = public_fork_audit(source_root, paper_root)
     assets = source_asset_rows(paper_root)
     mechanisms = mechanism_conformance()
     configs = config_conformance()
@@ -686,7 +859,8 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "source_code_files": 0,
         "data_model_or_checkpoint_files": 0,
         "native_system_execution_attempted": False,
-        "native_system_execution_status": "impossible_no_fincon_implementation_released",
+        "native_system_execution_status": "impossible_no_fincon_implementation_released_in_official_history_or_any_accessible_public_fork",
+        "public_fork_census": fork_summary,
         "paper_latex_compilation": compile_paper_source(paper_root, latex_command),
         "paper_result_credit": False,
     }
@@ -700,6 +874,7 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "paper_source_asset_inventory.csv": assets,
         "released_source_inventory.csv": source_files,
         "released_source_history.csv": history,
+        "public_fork_branch_ref_snapshot.csv": fork_branches,
         "source_mechanism_conformance.csv": mechanisms,
         "source_config_conformance.csv": configs,
         "paper_specification_gaps.csv": gaps,
@@ -734,13 +909,31 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "official_repository_commits_total": len(history),
         "official_repository_tracked_files_current": len(source_files),
         "official_repository_source_code_files_current": 0,
+        "public_forks_audited": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_unique_commits_beyond_official_history": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "public_fork_native_fincon_pipelines_found": fork_summary[
+            "native_fincon_pipelines_found"
+        ],
         "v1_v2_numeric_cells_changed": 0,
         "v2_v3_shared_numeric_cells_changed": len(drift),
         "v3_numeric_cells_added": 105,
         "v3_arxiv_source_latex_compiled": native["paper_latex_compilation"]["exit_code"] == 0,
     }
     (output / "README.md").write_text(render_readme(manifest), encoding="utf-8")
-    output_names = [*csv_outputs, "native_execution.json", "README.md"]
+    (output / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    output_names = [
+        *csv_outputs,
+        "native_execution.json",
+        "public_fork_census.json",
+        "README.md",
+    ]
     manifest["output_sha256"] = {name: sha256(output / name) for name in sorted(output_names)}
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return manifest

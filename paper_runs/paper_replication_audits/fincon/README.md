@@ -13,6 +13,8 @@ This audit uses the 36-page NeurIPS 2024 proceedings paper as the result authori
 
 The current README explicitly says commercial APIs prevent release of the full system and associated data and promises a future code release. InvestorBench and Agent Market Arena are separate systems and receive no FinCon credit.
 
+The 2026-08-14 census also exhausts all six public forks and all six branch refs. They resolve to only three heads, all already inside the complete 11-commit official history: three refs equal the current official head, two equal the initial commit, and one points to an intermediate commit. Every head contains only `README.md`; the forks add zero commits, trees, blobs, code files, data/model/result files, or native-result evidence beyond the official history.
+
 ## Result census and revision drift
 
 The final paper displays 306 numeric cells. Nine FinCon metric triplets are repeated in the main table and both ablation tables, leaving 288 unique measurements. It also contains 106 result series across 18 raster assets; no underlying series or plot-generation code is released.

@@ -92,6 +92,11 @@ def test_committed_audit_records_no_released_implementation() -> None:
     assert manifest["official_repository_commits_total"] == len(history) == 11
     assert manifest["official_repository_tracked_files_current"] == 1
     assert manifest["official_repository_source_code_files_current"] == 0
+    assert manifest["public_forks_audited"] == 6
+    assert manifest["public_fork_branch_refs_audited"] == 6
+    assert manifest["public_fork_unique_heads_audited"] == 3
+    assert manifest["public_fork_unique_commits_beyond_official_history"] == 0
+    assert manifest["public_fork_native_fincon_pipelines_found"] == 0
     assert {row["only_readme"] for row in history} == {"True"}
     assert native["native_system_execution_attempted"] is False
     assert native["paper_latex_compilation"]["exit_code"] == 0
@@ -99,6 +104,35 @@ def test_committed_audit_records_no_released_implementation() -> None:
     assert native["paper_result_credit"] is False
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
+
+
+def test_all_public_forks_resolve_inside_readme_only_official_history() -> None:
+    output = ROOT / "paper_runs/paper_replication_audits/fincon"
+    branches = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
+    assert len(branches) == 6
+    assert Counter(row["relation_to_current_official_head"] for row in branches) == {
+        "exact_current_official_head": 3,
+        "official_history_ancestor": 3,
+    }
+    assert len({row["head_commit"] for row in branches}) == 3
+    assert all(row["commits_beyond_official_history"] == "0" for row in branches)
+    assert all(row["current_tracked_files"] == "1" for row in branches)
+    assert all(row["current_source_code_files"] == "0" for row in branches)
+    assert all(row["current_data_model_or_result_files"] == "0" for row in branches)
+    assert all(row["native_fincon_pipeline_found"] == "False" for row in branches)
+    assert all(row["paper_result_credit"] == "False" for row in branches)
+    assert census["github_reported_forks"] == 6
+    assert census["accessible_public_forks"] == 6
+    assert census["accessible_branch_refs"] == 6
+    assert census["public_tag_refs"] == 0
+    assert census["unique_heads"] == 3
+    assert census["current_official_head_exact_refs"] == 3
+    assert census["official_history_ancestor_refs"] == 3
+    assert census["unique_commits_beyond_official_history"] == 0
+    assert census["unique_objects_beyond_official_history"] == 0
+    assert census["native_fincon_pipelines_found"] == 0
+    assert census["paper_result_credit"] is False
 
 
 def test_pinned_primary_sources_when_available() -> None:
@@ -109,6 +143,9 @@ def test_pinned_primary_sources_when_available() -> None:
     audit.validate_primary_inputs(source, paper)
     assert len(audit.source_inventory(source)) == 1
     assert len(audit.source_history_rows(source)) == 11
+    branches, census = audit.public_fork_audit(source, paper)
+    assert len(branches) == 6
+    assert census["unique_commits_beyond_official_history"] == 0
     assets = audit.source_asset_rows(paper)
     assert len(assets) == 37
     assert sum(row["active_result_figure"] for row in assets) == 18

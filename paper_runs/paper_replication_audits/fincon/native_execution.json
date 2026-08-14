@@ -1,7 +1,7 @@
 {
   "data_model_or_checkpoint_files": 0,
   "native_system_execution_attempted": false,
-  "native_system_execution_status": "impossible_no_fincon_implementation_released",
+  "native_system_execution_status": "impossible_no_fincon_implementation_released_in_official_history_or_any_accessible_public_fork",
   "official_source_revision": "ca3256d037c497871c064bc2f5abab106993e189",
   "paper_latex_compilation": {
     "attempted": true,
@@ -16,6 +16,23 @@
     "undefined_reference_warnings": 196
   },
   "paper_result_credit": false,
+  "public_fork_census": {
+    "accessible_branch_refs": 6,
+    "accessible_public_forks": 6,
+    "census_date": "2026-08-14",
+    "current_official_head_exact_refs": 3,
+    "data_model_or_result_files_across_fork_heads": 0,
+    "github_reported_forks": 6,
+    "interpretation": "All six public fork refs resolve to three commits already inside the complete audited 11-commit official README-only history.",
+    "native_fincon_pipelines_found": 0,
+    "official_history_ancestor_refs": 3,
+    "paper_result_credit": false,
+    "public_tag_refs": 0,
+    "source_code_files_across_fork_heads": 0,
+    "unique_commits_beyond_official_history": 0,
+    "unique_heads": 3,
+    "unique_objects_beyond_official_history": 0
+  },
   "source_code_files": 0,
   "tracked_files": 1
 }

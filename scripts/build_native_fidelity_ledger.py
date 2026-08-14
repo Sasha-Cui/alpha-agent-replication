@@ -552,7 +552,10 @@ ARTIFACT_NOTES = {
         "(288 unique measurements) and 106 raster result series, with zero native "
         "results reproduced. Every one of the official repository's 11 commits "
         "contains only README.md: no FinCon code, prompts, configs, data, models, "
-        "tests, raw trajectories, or plot inputs are released. The arXiv LaTeX "
+        "tests, raw trajectories, or plot inputs are released. All six public forks "
+        "and six branch refs resolve to three heads already inside that complete "
+        "README-only history, adding zero unique commits, objects, or artifacts. "
+        "The arXiv LaTeX "
         "compiles, but paper packaging receives no system or result credit.",
     ),
     "SYS-FIN-AGENT": (
@@ -1505,7 +1508,10 @@ TARGETED_EXECUTION = {
     "SYS-CRYPTO-TRADE": "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_12_ablation_correspondences_zero_credit_37_forks_exhausted",
     "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
-    "SYS-FIN-CON": "paper_audit:completed_zero_of_306_native_results_official_code_not_released",
+    "SYS-FIN-CON": (
+        "paper_audit:completed_zero_of_306_native_results_official_code_not_released_"
+        "6_forks_6_refs_3_official_history_heads_exhausted"
+    ),
     "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_results_seven_commit_history_zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted",
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": (
         "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_"
