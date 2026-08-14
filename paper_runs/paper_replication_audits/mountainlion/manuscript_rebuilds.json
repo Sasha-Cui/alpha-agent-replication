@@ -28,5 +28,20 @@
     "full_contact_sheet_visual_qa": "passed_all_17_pages_readable_no_clipping_overlap_or_missing_content",
     "document_reconstruction_credit": true,
     "paper_result_reproduction": false
+  },
+  {
+    "paper_version": "2507.20474v3",
+    "build_method": "unmodified_primary_TeX_with_TeX_Live_2024",
+    "build_sha256": "a21917ef293813a8293025cae4efd5491a2a09640aed4a626afa58669890ea85",
+    "repeat_build_sha256": "a21917ef293813a8293025cae4efd5491a2a09640aed4a626afa58669890ea85",
+    "same_hash_across_independent_build_directories": true,
+    "page_count": 17,
+    "published_page_count": 17,
+    "normalized_extracted_word_set_jaccard": 0.9986821296784396,
+    "normalized_100dpi_raster_mean_absolute_difference": 8.638219201824401e-05,
+    "normalized_100dpi_raster_max_page_difference": 0.0011715597954543352,
+    "full_contact_sheet_visual_qa": "passed_all_17_pages_readable_no_clipping_overlap_or_missing_content",
+    "document_reconstruction_credit": true,
+    "paper_result_reproduction": false
   }
 ]

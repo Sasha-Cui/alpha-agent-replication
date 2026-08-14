@@ -1,0 +1,15 @@
+source_id,scan_id,text_blob_revision_hits,matched_paths,matched_blob_ids,interpretation,native_paper_result_pipeline_found,paper_result_credit
+frontend,paper_title,0,,,exact paper identity absent from all scanned text revisions,False,False
+frontend,table_value,0,,,displayed large-error Table 1 values absent from all scanned text revisions,False,False
+frontend,mse,0,,,no MSE metric implementation or reported MSE value found,False,False
+frontend,cross_validation,0,,,no cross-validation or grid-search implementation found,False,False
+frontend,model_fit,0,,,no model-fitting term found,False,False
+frontend,kline_predictd,0,,,database reader term absent,False,False
+frontend,exact_ten_token_product_menu,0,,,not present,False,False
+backend,paper_title,0,,,exact paper identity absent from all scanned text revisions,False,False
+backend,table_value,0,,,displayed large-error Table 1 values absent from all scanned text revisions,False,False
+backend,mse,0,,,no MSE metric implementation or reported MSE value found,False,False
+backend,cross_validation,0,,,no cross-validation or grid-search implementation found,False,False
+backend,model_fit,2,genaipf/dispatcher/prompt_templates_common/check_ai_ranking.py,ca3532534a560a901ec94414771c4384640cacee;d03a882a8f8025a22d93441561b13c685936920f,"two backend matches are the product-category word 'Bridge(', not model fitting",False,False
+backend,kline_predictd,28,genaipf/services/gpt_service.py;services/gpt_service.py,00663228054734d596968bb1f7578cb079c6be00;02e9cae3d582a3a2c714070c79c3b44c5e84736d;1e9a780448a4396fb0ff677328d56b8223c9c0a9;2f9e06424ba8593a2d1caa4ccd57aff6afed2350;4489ceee75f7dfd6c636dad497d8eabf7c973460;49946b24f1bf0e8bd9f7a1e34f6d895b582120df;4ec288e2ecca5ce9422d8328062ef66294a288ed;592ac86bfaf898d742eb74b45984b4ca7d658b42;5f12a456cd5b429c4e8ce033cdf4e5a8a3c4b137;61fe667d32467e6b84b4f82236f6db2c0db2681e;6c536bed14f31c0c8ef97b8ba9f8f656f3be295e;6f332264503544107d92d5d3dae02eb3bd666396;72d3ade7c671de1d1ac471e5cbdd6891db4e9528;7d593411dbc22721514b48a6a63818f78a21366a;7f320159124f9f8c858d86ad4690a3309f489eaa;816f10b07b9745857ad63702d76cd0181077801d;824e6aaab4154ef21eb149087c6d27e28df69af6;ab9885369649c76f7c2c0be1b804c15b5581441f;adef7bc4babf44b969e61eb859aa02ee1c02c8ba;ae35f07a71c45ca49d46ab599ae8a06038d58797;b92d23d08429390bbdea6153f36bc94f2b0ed1cb;bdbd234db21d8934ad703a380bda1b1ded44f211;c6a07ee638dcc7174ad9988da52e9dd953cf4c78;d25b2b13eed38604b2bbde27f4b315c5d6ada2e8;d383690e7a6974f79510e345f5fad10245137b26;d99ae63a60ddd170fcd3341d5463d86d5047f4f7;f37e8b62e52ea7d311b7143ff7851cce35e8ad79;f418a121fca0a4d98e60bcfe3eb7de9e7e7a334d,historical revisions of a reader for already-computed database rows; no fitting or evaluation,False,False
+backend,exact_ten_token_product_menu,2,genaipf/bot/tg/client/price_predict_client.py,0a7aefacc0814b0376209efd21884d861ea57174;3fa169771133bab9e3369aaabbf56df1e67fba72,"product configuration correspondence only; contains no panel, model, prediction, or metric",False,False

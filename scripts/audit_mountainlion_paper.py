@@ -25,10 +25,11 @@ import hashlib
 import json
 import math
 import re
+import subprocess
 import tarfile
 from collections import Counter
 from pathlib import Path, PurePosixPath
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Iterable, Mapping, Optional, Sequence
 
 from pypdf import PdfReader
 
@@ -47,12 +48,21 @@ PDF_PINS = {
         "url": "https://arxiv.org/pdf/2507.20474v1",
         "sha256": "373c801bde8b0b09544eb1631bc97f8ca86e72789f23dd7e7c1a812bab96b6bf",
         "pages": 17,
+        "submitted_at_utc": "2025-07-13T05:39:42Z",
     },
     "2507.20474v2": {
         "path": "2507.20474v2.pdf",
         "url": "https://arxiv.org/pdf/2507.20474v2",
         "sha256": "7c44766c7cacc8eef123ae7a55346e21401bac964283811d917b228ed6af7a7c",
         "pages": 17,
+        "submitted_at_utc": "2025-09-05T03:02:37Z",
+    },
+    "2507.20474v3": {
+        "path": "2507.20474v3.pdf",
+        "url": "https://arxiv.org/pdf/2507.20474v3",
+        "sha256": "6b898a90ad7d6d30c422cfc9b23c5bc4cc44a2d86744db0577253de3e8cd2018",
+        "pages": 17,
+        "submitted_at_utc": "2025-09-19T02:22:53Z",
     },
 }
 
@@ -70,6 +80,13 @@ SOURCE_PINS = {
         "sha256": "6174f61c84265a4f6d7ef0bc741c3c32d738758c8f3ff4bcb6d96af461e507bb",
         "file_count": 10,
         "main_sha256": "72067a2a5527ce89c57168a50cd32994ff4a8216b99b6280585824eaac1e23df",
+    },
+    "2507.20474v3": {
+        "path": "2507.20474v3.tar",
+        "url": "https://export.arxiv.org/e-print/2507.20474v3",
+        "sha256": "54e9a568471bd73a036f37db6b61b89c25690d23ecc64b265bfd59321d49bf5e",
+        "file_count": 10,
+        "main_sha256": "891645df41c0dc188f2312717b89216acfccaf2dbe14b1bc918f7e6c2055857d",
     },
 }
 
@@ -91,6 +108,15 @@ REBUILD_PINS = {
         "normalized_text_word_set_jaccard": 0.9989443124835049,
         "normalized_raster_mean_absolute_difference": 0.0000865630636805057,
         "normalized_raster_max_page_difference": 0.00114519,
+    },
+    "2507.20474v3": {
+        "first_glob": "build_v3_a.*/main.pdf",
+        "repeat_glob": "build_v3_b.*/main.pdf",
+        "sha256": "a21917ef293813a8293025cae4efd5491a2a09640aed4a626afa58669890ea85",
+        "pages": 17,
+        "normalized_text_word_set_jaccard": 0.9986821296784396,
+        "normalized_raster_mean_absolute_difference": 0.00008638219201824401,
+        "normalized_raster_max_page_difference": 0.0011715597954543352,
     },
 }
 
@@ -134,6 +160,85 @@ PUBLIC_SOURCE_PINS = {
         "file_count": 220,
         "license": "Apache-2.0",
         "paper_time_relation": "post_paper_drift_boundary_only",
+    },
+}
+
+PUBLIC_HISTORY_PINS = {
+    "frontend": {
+        "repository": "https://github.com/MountainLionAi/MountainLion",
+        "directory": "frontend_history",
+        "head": "f7819f3537808d398f6c3da37e43b51ecebdbd42",
+        "roots": [
+            "0a9fc9cf92d93d98314bc22f06b87d7346deee51",
+            "73012b5b6eb3ab01740ec1e389dccf6a170b2f29",
+        ],
+        "commits": 6,
+        "main_commits": 6,
+        "pre_v1_commits_all_refs": 6,
+        "pre_v1_commits_main": 6,
+        "objects": 180,
+        "object_types": {"blob": 153, "commit": 6, "tree": 21},
+        "objects_sha256": "805f0c808e9b0be85948e623d29ea4e3c13fe38c9de988b01c498d288154b126",
+        "commit_ids_sha256": "05edbfdeed3119c37d9634f2638110d00a3c6f38b9b729988dd84e4beddd6da6",
+        "remote_branches": 1,
+        "tags": 0,
+        "refs_sha256": "85af96a48d2722c820e23428d2303b2c495dd302a15eae240b4a56c5bef41ae0",
+        "unique_paths": 153,
+        "unique_paths_sha256": "651862f5fc0d91918f7be7cf51cb67a44555e80547e64cf2eef380641f4d788a",
+        "deleted_paths": [],
+        "path_object_pairs": 154,
+        "path_object_pairs_sha256": "1f758dd064b8006667a21df9f259b3ac9ac4298fabc3a5bbdb01c24f4ee51c05",
+        "serialized_result_or_model_artifact_paths": [],
+        "text_blob_revisions_scanned": 145,
+        "content_pattern_blob_hits": {
+            "cross_validation": 0,
+            "kline_predictd": 0,
+            "model_fit": 0,
+            "mse": 0,
+            "paper_title": 0,
+            "table_value": 0,
+        },
+    },
+    "backend": {
+        "repository": "https://github.com/MountainLionAi/GenAI-Platform",
+        "directory": "platform_history",
+        "head": "3f76de1fe4d8d423f7d4e46e45f19f5bd43992ec",
+        "roots": ["9d6e56294554e25065e109c9284a1804dc602b62"],
+        "commits": 2_267,
+        "main_commits": 2_221,
+        "pre_v1_commits_all_refs": 2_002,
+        "pre_v1_commits_main": 1_965,
+        "objects": 9_718,
+        "object_types": {"blob": 2_065, "commit": 2_267, "tree": 5_386},
+        "objects_sha256": "2c718f4f4dacc19564a4e6cef48f7ae041e6098bfbbb401aa55df55eb1ca2a7b",
+        "commit_ids_sha256": "89dcd16f44cd65c64b21422d491868762e4c2f04627a6d7f0ad2655e98c4ea94",
+        "remote_branches": 98,
+        "tags": 2,
+        "refs_sha256": "6d9d5ae3b654010e52021aeddfd1a77704f01df194fbf5bf307b1461f95bf831",
+        "unique_paths": 291,
+        "unique_paths_sha256": "ca6ef83579746db40b5dd5e66b3914ffacf4d2df0c65b646450e0105bb3de935",
+        "deleted_paths": [
+            "1.txt",
+            "README_en.md",
+            "examples/utils/onchain_t001.py",
+            "genaipf/test/pics/btc1.png",
+            "genaipf/test/response.txt",
+            "genaipf/test/test_by_request_client.py",
+            "genaipf/tools/search/1.txt",
+            "genaipf/tools/search/bing/1.txt",
+        ],
+        "path_object_pairs": 2_134,
+        "path_object_pairs_sha256": "d56794f2e40838551f66010e150205d30375992d2c87f632b7d4737d2275630b",
+        "serialized_result_or_model_artifact_paths": [],
+        "text_blob_revisions_scanned": 2_040,
+        "content_pattern_blob_hits": {
+            "cross_validation": 0,
+            "kline_predictd": 28,
+            "model_fit": 2,
+            "mse": 0,
+            "paper_title": 0,
+            "table_value": 0,
+        },
     },
 }
 
@@ -219,6 +324,474 @@ def unique_glob(root: Path, pattern: str) -> Path:
     return matches[0]
 
 
+def digest_lines(lines: Iterable[str]) -> str:
+    digest = hashlib.sha256()
+    for line in sorted(lines):
+        digest.update(line.encode("utf-8") + b"\n")
+    return digest.hexdigest()
+
+
+def git_text(
+    repository: Path,
+    *args: str,
+    input_text: Optional[str] = None,
+    check: bool = True,
+) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(repository), *args],
+        input=input_text,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if check and result.returncode:
+        raise RuntimeError(
+            f"git {' '.join(args)} failed in {repository}: {result.stderr.strip()}"
+        )
+    return result.stdout
+
+
+def history_ref_inventory(
+    source_id: str, repository: Path
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for namespace, ref_kind in (
+        ("refs/remotes/origin", "remote_branch"),
+        ("refs/tags", "tag"),
+    ):
+        output = git_text(
+            repository,
+            "for-each-ref",
+            "--format=%(refname:short)%00%(symref)%00%(objectname)%00%(objecttype)%00%(creatordate:iso-strict)",
+            namespace,
+        )
+        for line in output.splitlines():
+            name, symbolic_target, object_id, object_type, creator_time = line.split(
+                "\0"
+            )
+            if symbolic_target:
+                continue
+            if ref_kind == "remote_branch":
+                name = name.removeprefix("origin/")
+            rows.append(
+                {
+                    "source_id": source_id,
+                    "ref_kind": ref_kind,
+                    "ref_name": name,
+                    "object_id": object_id,
+                    "object_type": object_type,
+                    "creator_time": creator_time,
+                    "paper_result_credit": False,
+                }
+            )
+    return sorted(rows, key=lambda row: (row["ref_kind"], row["ref_name"]))
+
+
+def is_serialized_result_or_model_artifact_path(path: str) -> bool:
+    lower = path.lower()
+    parts = lower.split("/")
+    suffixes = (
+        ".log",
+        ".jsonl",
+        ".parquet",
+        ".pkl",
+        ".pickle",
+        ".pt",
+        ".pth",
+        ".onnx",
+        ".joblib",
+        ".xlsx",
+        ".xls",
+    )
+    result_directories = {
+        "result",
+        "results",
+        "prediction",
+        "predictions",
+        "output",
+        "outputs",
+        "train",
+        "training",
+        "dataset",
+        "datasets",
+    }
+    return lower.endswith(suffixes) or any(
+        part in result_directories for part in parts[:-1]
+    )
+
+
+def historical_content_scan(
+    source_id: str,
+    repository: Path,
+    object_ids: Sequence[str],
+    object_types: Sequence[str],
+    object_paths: Mapping[str, set[str]],
+) -> tuple[list[dict[str, Any]], int, dict[str, int]]:
+    patterns = {
+        "paper_title": re.compile(rb"mountainlion.{0,80}multi.?modal", re.I | re.S),
+        "table_value": re.compile(
+            rb"1997859\.43|3211419\.56|2169147\.17|3016065\.13", re.I
+        ),
+        "mse": re.compile(rb"\b(?:mse|mean[_ -]squared[_ -]error)\b", re.I),
+        "cross_validation": re.compile(
+            rb"cross[_ -]?validation|cross_val|gridsearch", re.I
+        ),
+        "model_fit": re.compile(
+            rb"train_test_split|decisiontreeregressor|ridge\s*\(|\.fit\(", re.I
+        ),
+        "kline_predictd": re.compile(rb"kline_predictd", re.I),
+    }
+    hits: dict[str, list[str]] = {name: [] for name in patterns}
+    token_menu_blobs: list[str] = []
+    text_blob_revisions = 0
+    if len(object_ids) != len(object_types):
+        raise RuntimeError("git object/type inventory length mismatch")
+    blob_ids = [
+        object_id
+        for object_id, object_type in zip(object_ids, object_types)
+        if object_type == "blob"
+    ]
+    process = subprocess.Popen(
+        ["git", "-C", str(repository), "cat-file", "--batch"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+    )
+    if process.stdin is None or process.stdout is None:
+        raise RuntimeError("git cat-file pipes unavailable")
+    tokens = {row[0].encode("ascii") for row in TABLE_VALUES}
+    for object_id in blob_ids:
+        process.stdin.write((object_id + "\n").encode("ascii"))
+        process.stdin.flush()
+        header = process.stdout.readline().split()
+        if len(header) != 3 or header[1] != b"blob":
+            raise RuntimeError(f"unexpected git cat-file response for {object_id}")
+        size = int(header[2])
+        payload = process.stdout.read(size)
+        process.stdout.read(1)
+        if size > 5_000_000 or b"\0" in payload:
+            continue
+        text_blob_revisions += 1
+        normalized = payload.replace(b",", b"")
+        for name, pattern in patterns.items():
+            if pattern.search(normalized):
+                hits[name].append(object_id)
+        if (
+            "genaipf/bot/tg/client/price_predict_client.py"
+            in object_paths.get(object_id, set())
+            and all(re.search(rb"\b" + token + rb"\b", payload) for token in tokens)
+        ):
+            token_menu_blobs.append(object_id)
+    process.stdin.close()
+    return_code = process.wait()
+    if return_code:
+        raise RuntimeError(f"git cat-file exited {return_code}")
+
+    interpretations = {
+        "paper_title": "exact paper identity absent from all scanned text revisions",
+        "table_value": "displayed large-error Table 1 values absent from all scanned text revisions",
+        "mse": "no MSE metric implementation or reported MSE value found",
+        "cross_validation": "no cross-validation or grid-search implementation found",
+        "model_fit": (
+            "two backend matches are the product-category word 'Bridge(', not model fitting"
+            if source_id == "backend"
+            else "no model-fitting term found"
+        ),
+        "kline_predictd": (
+            "historical revisions of a reader for already-computed database rows; no fitting or evaluation"
+            if source_id == "backend"
+            else "database reader term absent"
+        ),
+    }
+    rows = []
+    for pattern_name, object_matches in hits.items():
+        matched_paths = sorted(
+            {
+                path
+                for object_id in object_matches
+                for path in object_paths.get(object_id, set())
+            }
+        )
+        rows.append(
+            {
+                "source_id": source_id,
+                "scan_id": pattern_name,
+                "text_blob_revision_hits": len(object_matches),
+                "matched_paths": ";".join(matched_paths),
+                "matched_blob_ids": ";".join(sorted(object_matches)),
+                "interpretation": interpretations[pattern_name],
+                "native_paper_result_pipeline_found": False,
+                "paper_result_credit": False,
+            }
+        )
+    rows.append(
+        {
+            "source_id": source_id,
+            "scan_id": "exact_ten_token_product_menu",
+            "text_blob_revision_hits": len(token_menu_blobs),
+            "matched_paths": (
+                "genaipf/bot/tg/client/price_predict_client.py"
+                if token_menu_blobs
+                else ""
+            ),
+            "matched_blob_ids": ";".join(sorted(token_menu_blobs)),
+            "interpretation": (
+                "product configuration correspondence only; contains no panel, model, prediction, or metric"
+                if token_menu_blobs
+                else "not present"
+            ),
+            "native_paper_result_pipeline_found": False,
+            "paper_result_credit": False,
+        }
+    )
+    return rows, text_blob_revisions, {
+        name: len(object_matches) for name, object_matches in hits.items()
+    }
+
+
+def inspect_public_history(
+    source_id: str, repository: Path, pin: Mapping[str, Any]
+) -> tuple[
+    dict[str, Any],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+]:
+    if not repository.is_dir():
+        raise FileNotFoundError(repository)
+    if git_text(repository, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise ValueError(f"{source_id} history clone is shallow")
+    remote = git_text(repository, "remote", "get-url", "origin").strip()
+    if remote.removesuffix(".git") != str(pin["repository"]):
+        raise ValueError(f"{source_id} origin changed: {remote}")
+    if git_text(repository, "config", "--get", "remote.origin.promisor", check=False):
+        raise ValueError(f"{source_id} history clone is partial/promisor")
+    fsck = subprocess.run(
+        ["git", "-C", str(repository), "fsck", "--full", "--no-reflogs"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if fsck.returncode or fsck.stdout.strip() or fsck.stderr.strip():
+        raise ValueError(
+            f"{source_id} history clone failed fsck: {fsck.stdout}{fsck.stderr}"
+        )
+
+    commits = sorted(git_text(repository, "rev-list", "--all").splitlines())
+    roots = sorted(
+        git_text(repository, "rev-list", "--max-parents=0", "--all").splitlines()
+    )
+    main_commits = set(git_text(repository, "rev-list", "origin/main").splitlines())
+    pre_v1_all = set(
+        git_text(
+            repository,
+            "rev-list",
+            "--all",
+            "--before=2025-07-13T05:39:42Z",
+        ).splitlines()
+    )
+    pre_v1_main = set(
+        git_text(
+            repository,
+            "rev-list",
+            "origin/main",
+            "--before=2025-07-13T05:39:42Z",
+        ).splitlines()
+    )
+    object_lines = git_text(repository, "rev-list", "--objects", "--all").splitlines()
+    object_ids = [line.split(" ", 1)[0] for line in object_lines]
+    object_types = git_text(
+        repository,
+        "cat-file",
+        "--batch-check=%(objecttype)",
+        input_text="".join(f"{object_id}\n" for object_id in object_ids),
+    ).splitlines()
+    type_counts = dict(sorted(Counter(object_types).items()))
+
+    changed_paths = set(
+        filter(
+            None,
+            git_text(
+                repository, "log", "--all", "--name-only", "--pretty=format:"
+            ).splitlines(),
+        )
+    )
+    deleted_paths = set(
+        filter(
+            None,
+            git_text(
+                repository,
+                "log",
+                "--all",
+                "--diff-filter=D",
+                "--name-only",
+                "--pretty=format:",
+            ).splitlines(),
+        )
+    )
+    current_paths = set(
+        git_text(repository, "ls-tree", "-r", "--name-only", "origin/main").splitlines()
+    )
+    path_objects: dict[str, set[str]] = {}
+    object_paths: dict[str, set[str]] = {}
+    for commit in commits:
+        tree = subprocess.run(
+            ["git", "-C", str(repository), "ls-tree", "-r", "-z", commit],
+            capture_output=True,
+            check=True,
+        ).stdout
+        for record in tree.split(b"\0"):
+            if not record:
+                continue
+            metadata, raw_path = record.split(b"\t", 1)
+            object_id = metadata.split()[2].decode("ascii")
+            path = raw_path.decode("utf-8", errors="replace")
+            path_objects.setdefault(path, set()).add(object_id)
+            object_paths.setdefault(object_id, set()).add(path)
+    pairs = {
+        (path, object_id)
+        for path, object_set in path_objects.items()
+        for object_id in object_set
+    }
+    result_paths = {
+        path
+        for path in changed_paths
+        if is_serialized_result_or_model_artifact_path(path)
+    }
+
+    refs = history_ref_inventory(source_id, repository)
+    ref_digest = digest_lines(
+        "\0".join((row["ref_kind"], row["ref_name"], row["object_id"]))
+        for row in refs
+    )
+    scans, text_blobs, pattern_hits = historical_content_scan(
+        source_id, repository, object_ids, object_types, object_paths
+    )
+    observed = {
+        "repository": str(pin["repository"]),
+        "directory": str(pin["directory"]),
+        "head": git_text(repository, "rev-parse", "origin/main").strip(),
+        "roots": roots,
+        "commits": len(commits),
+        "main_commits": len(main_commits),
+        "pre_v1_commits_all_refs": len(pre_v1_all),
+        "pre_v1_commits_main": len(pre_v1_main),
+        "objects": len(object_ids),
+        "object_types": type_counts,
+        "objects_sha256": digest_lines(object_ids),
+        "commit_ids_sha256": digest_lines(commits),
+        "remote_branches": sum(row["ref_kind"] == "remote_branch" for row in refs),
+        "tags": sum(row["ref_kind"] == "tag" for row in refs),
+        "refs_sha256": ref_digest,
+        "unique_paths": len(changed_paths),
+        "unique_paths_sha256": digest_lines(changed_paths),
+        "deleted_paths": sorted(deleted_paths),
+        "path_object_pairs": len(pairs),
+        "path_object_pairs_sha256": digest_lines(
+            f"{path}\0{object_id}" for path, object_id in pairs
+        ),
+        "serialized_result_or_model_artifact_paths": sorted(result_paths),
+        "text_blob_revisions_scanned": text_blobs,
+        "content_pattern_blob_hits": pattern_hits,
+    }
+    expected = dict(pin)
+    if observed != expected:
+        changed = {
+            key: {"expected": expected.get(key), "observed": observed.get(key)}
+            for key in sorted(set(expected) | set(observed))
+            if expected.get(key) != observed.get(key)
+        }
+        raise ValueError(f"{source_id} complete-history boundary changed: {changed}")
+
+    log_output = git_text(
+        repository,
+        "log",
+        "--all",
+        "--format=%H%x00%P%x00%aI%x00%cI%x00%an%x00%ae%x00%s",
+    )
+    commit_rows = []
+    for line in log_output.splitlines():
+        commit, parents, author_time, commit_time, author_name, author_email, subject = (
+            line.split("\0", 6)
+        )
+        commit_rows.append(
+            {
+                "source_id": source_id,
+                "commit": commit,
+                "parents": parents,
+                "author_time": author_time,
+                "commit_time": commit_time,
+                "author_name": author_name,
+                "author_email": author_email,
+                "subject": subject,
+                "on_default_main": commit in main_commits,
+                "predates_arxiv_v1": commit in pre_v1_all,
+                "paper_result_credit": False,
+            }
+        )
+    if {row["commit"] for row in commit_rows} != set(commits):
+        raise RuntimeError(f"{source_id} commit inventory is not exhaustive")
+    commit_rows.sort(key=lambda row: row["commit"])
+
+    path_rows = [
+        {
+            "source_id": source_id,
+            "path": path,
+            "path_object_revisions": len(path_objects.get(path, set())),
+            "present_on_default_main": path in current_paths,
+            "deleted_in_reachable_history": path in deleted_paths,
+            "serialized_result_or_model_artifact_path": path in result_paths,
+            "native_paper_result_asset": False,
+            "paper_result_credit": False,
+        }
+        for path in sorted(changed_paths)
+    ]
+    summary = {
+        "source_id": source_id,
+        **observed,
+        "complete_nonshallow_clone": True,
+        "object_database_fsck_clean": True,
+        "symbolic_origin_alias_excluded_from_branch_count": True,
+        "historical_price_menu_blob_revisions": sum(
+            row["text_blob_revision_hits"]
+            for row in scans
+            if row["scan_id"] == "exact_ten_token_product_menu"
+        ),
+        "native_training_panel_model_prediction_result_or_table_runner_found": False,
+        "paper_result_credit": False,
+    }
+    return summary, refs, commit_rows, path_rows, scans
+
+
+def public_source_history(
+    audit_root: Path,
+) -> tuple[
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+]:
+    summaries: list[dict[str, Any]] = []
+    refs: list[dict[str, Any]] = []
+    commits: list[dict[str, Any]] = []
+    paths: list[dict[str, Any]] = []
+    scans: list[dict[str, Any]] = []
+    for source_id, pin in PUBLIC_HISTORY_PINS.items():
+        inspected = inspect_public_history(
+            source_id, audit_root / str(pin["directory"]), pin
+        )
+        summary_rows, ref_rows, commit_rows, path_rows, scan_rows = inspected
+        summaries.append(summary_rows)
+        refs.extend(ref_rows)
+        commits.extend(commit_rows)
+        paths.extend(path_rows)
+        scans.extend(scan_rows)
+    if len(refs) != 101 or len(commits) != 2_273 or len(paths) != 444:
+        raise RuntimeError("combined MountainLion complete-history boundary changed")
+    return summaries, refs, commits, paths, scans
+
+
 def safe_tar_files(path: Path) -> dict[str, bytes]:
     files: dict[str, bytes] = {}
     with tarfile.open(path, mode="r:*") as archive:
@@ -267,14 +840,25 @@ def paper_version_summary(audit_root: Path) -> list[dict[str, Any]]:
                 "paper_url": pdf_pin["url"],
                 "paper_sha256": pdf_pin["sha256"],
                 "page_count": pages,
+                "submitted_at_utc": pdf_pin["submitted_at_utc"],
                 "source_url": source_pin["url"],
                 "source_sha256": source_pin["sha256"],
                 "source_file_count": source_pin["file_count"],
                 "repository_pdf_sha256": LOCAL_PDF_SHA256,
                 "repository_pdf_byte_identical": pdf_pin["sha256"] == LOCAL_PDF_SHA256,
                 "revision_scope": (
-                    "v2 adds three authors and affiliations; audited experimental text, "
-                    "table, prompts, and six figure assets are unchanged from v1"
+                    {
+                        "2507.20474v1": "original arXiv submission",
+                        "2507.20474v2": (
+                            "adds three authors and affiliations; audited experimental text, "
+                            "table, prompts, and six figure assets are unchanged from v1"
+                        ),
+                        "2507.20474v3": (
+                            "adds Tianyu Shi corresponding-author contact and a bibliography "
+                            "page break; experimental text, table, prompts, and six figure "
+                            "assets are unchanged from v2"
+                        ),
+                    }[version]
                 ),
             }
         )
@@ -317,6 +901,7 @@ def paper_source_inventory(
     if Counter(row["paper_version"] for row in rows) != {
         "2507.20474v1": 11,
         "2507.20474v2": 10,
+        "2507.20474v3": 10,
     }:
         raise RuntimeError("paper source inventory boundary changed")
     return rows
@@ -343,7 +928,7 @@ def figure_inventory(source_rows: Sequence[Mapping[str, Any]]) -> list[dict[str,
                 "paper_result_credit": False,
             }
         )
-    if len(rows) != 12 or len({row["sha256"] for row in rows}) != 6:
+    if len(rows) != 18 or len({row["sha256"] for row in rows}) != 6:
         raise RuntimeError("versioned MountainLion figure boundary changed")
     return rows
 
@@ -359,7 +944,7 @@ def published_table_ledger() -> list[dict[str, Any]]:
             rows.append(
                 {
                     "canonical_work_id": WORK_ID,
-                    "paper_version": "2507.20474v1_v2_identical_table",
+                    "paper_version": "2507.20474v1_v2_v3_identical_table",
                     "paper_table": "Forecasting Results Across Tokens",
                     "token": token,
                     "metric": metric,
@@ -405,7 +990,7 @@ def prompt_inventory(main_tex: str) -> list[dict[str, Any]]:
     return [
         {
             "canonical_work_id": WORK_ID,
-            "paper_version": "2507.20474v1_v2_identical_prompt_section",
+            "paper_version": "2507.20474v1_v2_v3_identical_prompt_section",
             "prompt_id": prompt_id,
             "template_sha256": sha256_bytes(block.strip().encode("utf-8")),
             "template_character_count": len(block.strip()),
@@ -815,6 +1400,7 @@ def check_row(
 def source_component_checks(
     archives: Mapping[str, Mapping[str, bytes]],
     execution: Mapping[str, Any],
+    history_summaries: Sequence[Mapping[str, Any]],
 ) -> list[dict[str, Any]]:
     front = archives["frontend"]
     back = archives["backend_paper_time"]
@@ -870,6 +1456,14 @@ def source_component_checks(
     setup_text = back["setup.py"].decode("utf-8")
     env_text = back[".env.example"].decode("utf-8")
 
+    historical_commits = sum(int(row["commits"]) for row in history_summaries)
+    historical_paths = sum(int(row["unique_paths"]) for row in history_summaries)
+    historical_path_objects = sum(
+        int(row["path_object_pairs"]) for row in history_summaries
+    )
+    historical_text_blobs = sum(
+        int(row["text_blob_revisions_scanned"]) for row in history_summaries
+    )
     rows = [
         check_row(
             "frontend_exported_api_count",
@@ -1004,7 +1598,12 @@ def source_component_checks(
             "result_generation_assets",
             "frontend_and_backend",
             "training panel, fitted model, predictions, scores, and table runner",
-            "none found in 352 paper-relevant public source files",
+            (
+                f"none found across {historical_commits} reachable commits, "
+                f"{historical_paths} unique historical paths, "
+                f"{historical_path_objects} path/object revisions, and "
+                f"{historical_text_blobs} scanned text blob revisions"
+            ),
             "missing",
             False,
             "there is no public path capable of regenerating any Table 1 performance cell",
@@ -1105,13 +1704,13 @@ def paper_formula_component_checks() -> list[dict[str, Any]]:
 
 
 def discovery_evidence() -> list[dict[str, Any]]:
-    checked = "2026-08-12T16:38:40Z"
+    checked = "2026-08-14T07:28:14Z"
     entries = [
         (
-            "arxiv_v1_v2_pdf_and_source",
+            "arxiv_v1_v2_v3_pdf_and_source",
             "https://arxiv.org/abs/2507.20474",
             "primary_paper_source",
-            "two 17-page versions; 11/10-file manuscript bundles; no operational code/data",
+            "three 17-page versions; 11/10/10-file manuscript bundles; no operational code/data",
             True,
         ),
         (
@@ -1150,6 +1749,20 @@ def discovery_evidence() -> list[dict[str, Any]]:
             True,
         ),
         (
+            "frontend_complete_reachable_history",
+            "https://github.com/MountainLionAi/MountainLion",
+            "complete_public_history_audit",
+            "6 commits, 180 objects, 153 paths, 154 path/object revisions; no result-like path or paper pipeline",
+            True,
+        ),
+        (
+            "platform_complete_reachable_history",
+            "https://github.com/MountainLionAi/GenAI-Platform",
+            "complete_public_history_audit",
+            "2267 commits across 98 branches and 2 tags; 9718 objects, 291 paths, 2134 path/object revisions; no native paper pipeline",
+            True,
+        ),
+        (
             "paper_era_api",
             "https://api1-test.mountainlion.ai/v1/api/getCoinList",
             "deployment_observation",
@@ -1181,8 +1794,8 @@ def discovery_evidence() -> list[dict[str, Any]]:
             "attributable_primary_or_component_source": attributable,
             "native_paper_result_pipeline_found": False,
             "negative_inference_boundary": (
-                "absence in checked public surfaces is not proof that private, deleted, "
-                "historical, or unindexed artifacts never existed"
+                "absence from the complete currently reachable public histories is not proof "
+                "that private, unreachable-before-audit, or unindexed artifacts never existed"
             ),
         }
         for name, url, kind, result, attributable in entries
@@ -1235,7 +1848,8 @@ def readme_text(manifest: Mapping[str, Any]) -> str:
 ## Honest outcome
 
 The MountainLion paper is **not faithfully reproduced**. The audit verifies the
-primary manuscript, two attributable public codebases, several real product
+all three primary manuscript versions, two attributable public codebases, their
+complete currently reachable histories, several real product
 components, and paper-declared formulas. It regenerates **0/{manifest['published_performance_result_units']}**
 published forecasting-performance cells and none of the material return,
 accuracy-improvement, retrieval-efficiency, whale-detection, engagement, or
@@ -1245,7 +1859,7 @@ There is no defensible single percentage for overall paper faithfulness because
 document reconstruction, component correspondence, and experimental replay are
 not interchangeable. The auditable breakdown is:
 
-- manuscript reconstruction: 2/2 arXiv versions build deterministically to all
+- manuscript reconstruction: 3/3 arXiv versions build deterministically to all
   17 pages and pass full contact-sheet visual QA;
 - prompt documentation: 7/7 verbatim templates are present, but 0/7 substituted
   requests, exact runtime configurations, or responses are released/replayed;
@@ -1269,6 +1883,16 @@ ten Table 1 tokens in its price-prediction menu. These are genuine component
 correspondences, not a forecast experiment. The reader returns three already
 computed database rows; it does not fit models or generate Table 1.
 
+The complete currently reachable histories strengthen that boundary. The audit
+walks 2,273 commits across 99 real remote branches and two tags, verifies 9,898
+reachable Git objects, inventories 444 unique historical paths and 2,288
+path/object revisions, and scans 2,185 text blob revisions. No serialized
+result/model artifact path, paper title, published large-error table value, MSE implementation, or
+cross-validation implementation appears. The two broad `ridge(` matches are the
+word `Bridge(` in a product-classification prompt. Twenty-eight `kline_predictd`
+blob revisions remain database readers, and two exact ten-token menu revisions
+remain product configuration; none is a training or evaluation pipeline.
+
 ## Decisive reproduction boundary
 
 The public package contains no paper training panel, exchange/date/frequency,
@@ -1286,17 +1910,17 @@ best performer is not justified without a normalization convention. The paper
 also claims improved returns and extensive ablations without reporting a return
 path, transaction costs, an ablation table, or an ablation protocol.
 
-The author-rendered comparison figure and six diagram assets are preserved in
-both source versions. They establish what the authors placed in the paper, not
+The six figure assets, including the author-rendered comparison figure, are
+preserved in all three source versions. They establish what the authors placed in the paper, not
 how the outputs were produced. No underlying prompt response, source panel, or
 numeric array is shipped, so the figure receives no result-reproduction credit.
 
 ## Evidence files
 
 - `paper_version_summary.csv`: pinned PDFs and source archives.
-- `paper_source_inventory.csv`: every file in both primary TeX bundles.
+- `paper_source_inventory.csv`: every file in all three primary TeX bundles.
 - `published_table_numeric_ledger.csv`: all 30 Table 1 numeric units.
-- `author_figure_inventory.csv`: all 12 versioned figure assets (6 unique).
+- `author_figure_inventory.csv`: all 18 versioned figure assets (6 unique).
 - `prompt_inventory.csv`: all seven verbatim prompt templates and runtime gaps.
 - `material_claims.csv`: central quantitative and qualitative outcome claims.
 - `mechanism_conformance.csv`: 38 paper-mechanism dimensions.
@@ -1304,14 +1928,20 @@ numeric array is shipped, so the figure receives no result-reproduction credit.
 - `internal_consistency.csv`: ambiguities and paper-internal conflicts.
 - `public_source_snapshot_summary.csv`: three pinned public-code snapshots.
 - `public_source_file_inventory.csv`: every paper-relevant frontend/platform file.
+- `public_source_history_summary.json`: fail-closed object, ref, path, and scan pins.
+- `public_source_ref_inventory.csv`: all 99 real branches and two tags.
+- `public_source_commit_inventory.csv`: all 2,273 reachable commits.
+- `public_source_historical_path_inventory.csv`: all 444 historical paths.
+- `public_source_history_content_scan.csv`: exhaustive text-revision search results.
 - `source_component_checks.csv`: executed and source-semantic component checks.
 - `paper_formula_component_checks.csv`: synthetic checks of declared equations.
 - `source_component_execution.json`: build/compile evidence and runtime blockers.
 - `manuscript_rebuilds.json`: deterministic builds and visual-QA record.
 - `public_source_discovery.csv`: attributable-source and bounded-search record.
 
-The negative search boundary is deliberately narrow: this audit does not prove
-that private, deleted, historical, or unindexed artifacts never existed.
+The negative search boundary is deliberately narrow: complete currently
+reachable public history is inspected, but this audit does not prove that private,
+unreachable-before-audit, or unindexed artifacts never existed.
 """
 
 
@@ -1321,15 +1951,20 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
     paper_files = paper_source_inventory(bundles)
     figures = figure_inventory(paper_files)
     table = published_table_ledger()
-    prompts = prompt_inventory(bundles["2507.20474v2"]["main.tex"].decode("utf-8"))
+    prompts = prompt_inventory(bundles["2507.20474v3"]["main.tex"].decode("utf-8"))
     claims = material_claims()
     mechanisms = mechanism_conformance()
     gaps = specification_gaps()
     consistency = internal_consistency_checks()
     source_summaries, source_archives = public_source_snapshots(audit_root)
     public_files = public_source_file_inventory(source_archives)
+    history_summaries, history_refs, history_commits, history_paths, history_scans = (
+        public_source_history(audit_root)
+    )
     execution = runtime_evidence(audit_root)
-    components = source_component_checks(source_archives, execution)
+    components = source_component_checks(
+        source_archives, execution, history_summaries
+    )
     formulas = paper_formula_component_checks()
     discovery = discovery_evidence()
     rebuilds = manuscript_rebuilds(audit_root)
@@ -1346,6 +1981,11 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
     write_csv(output_dir / "internal_consistency.csv", consistency)
     write_csv(output_dir / "public_source_snapshot_summary.csv", source_summaries)
     write_csv(output_dir / "public_source_file_inventory.csv", public_files)
+    write_json(output_dir / "public_source_history_summary.json", history_summaries)
+    write_csv(output_dir / "public_source_ref_inventory.csv", history_refs)
+    write_csv(output_dir / "public_source_commit_inventory.csv", history_commits)
+    write_csv(output_dir / "public_source_historical_path_inventory.csv", history_paths)
+    write_csv(output_dir / "public_source_history_content_scan.csv", history_scans)
     write_csv(output_dir / "source_component_checks.csv", components)
     write_csv(output_dir / "paper_formula_component_checks.csv", formulas)
     write_csv(output_dir / "public_source_discovery.csv", discovery)
@@ -1385,6 +2025,24 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
         "attributable_public_repositories": 2,
         "pinned_public_source_snapshots": len(source_summaries),
         "paper_relevant_public_source_files": len(public_files),
+        "complete_public_repository_histories_audited": len(history_summaries),
+        "reachable_public_commits_audited": len(history_commits),
+        "public_remote_branches_audited": sum(
+            row["ref_kind"] == "remote_branch" for row in history_refs
+        ),
+        "public_tags_audited": sum(row["ref_kind"] == "tag" for row in history_refs),
+        "unique_historical_public_paths_audited": len(history_paths),
+        "historical_public_path_object_revisions_audited": sum(
+            int(row["path_object_revisions"]) for row in history_paths
+        ),
+        "historical_text_blob_revisions_scanned": sum(
+            int(row["text_blob_revisions_scanned"])
+            for row in history_summaries
+        ),
+        "historical_serialized_result_or_model_artifact_paths_found": sum(
+            len(row["serialized_result_or_model_artifact_paths"])
+            for row in history_summaries
+        ),
         "paper_corresponding_source_component_checks_passed": component_credits,
         "exact_native_paper_mechanism_dimensions_reproduced": 0,
         "paper_mechanism_dimensions_audited": len(mechanisms),
@@ -1402,9 +2060,9 @@ def build_audit(audit_root: Path, output_dir: Path) -> dict[str, Any]:
             "and costs are not"
         ),
         "negative_inference_boundary": (
-            "no native paper-result pipeline found in the pinned public sources and checked "
-            "surfaces; not proof that private, deleted, historical, or unindexed artifacts "
-            "never existed"
+            "no native paper-result pipeline found in the complete currently reachable "
+            "public histories or checked surfaces; not proof that private, "
+            "unreachable-before-audit, or unindexed artifacts never existed"
         ),
     }
     (output_dir / "README.md").write_text(readme_text(manifest), encoding="utf-8")

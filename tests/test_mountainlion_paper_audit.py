@@ -52,13 +52,16 @@ def test_table_denominator_is_exhaustive_and_fail_closed() -> None:
 def test_manifest_separates_documents_components_and_results() -> None:
     data = manifest()
     assert data["full_paper_reproduced"] is False
-    assert data["manuscripts_rebuilt_deterministically"] == 2
+    assert data["manuscripts_rebuilt_deterministically"] == 3
     assert data["published_numeric_table_units"] == 30
     assert data["published_configuration_units"] == 10
     assert data["published_performance_result_units"] == 20
     assert data["published_performance_result_units_faithfully_regenerated"] == 0
     assert data["manuscript_rebuilds_receive_result_credit"] is False
     assert data["native_result_generation_pipeline_found"] is False
+    assert data["reachable_public_commits_audited"] == 2_273
+    assert data["historical_text_blob_revisions_scanned"] == 2_185
+    assert data["historical_serialized_result_or_model_artifact_paths_found"] == 0
 
 
 def test_primary_source_bundles_are_manuscript_only() -> None:
@@ -66,6 +69,7 @@ def test_primary_source_bundles_are_manuscript_only() -> None:
     assert Counter(row["paper_version"] for row in inventory) == {
         "2507.20474v1": 11,
         "2507.20474v2": 10,
+        "2507.20474v3": 10,
     }
     assert all(row["operational_system_code"] == "False" for row in inventory)
     assert all(row["raw_numeric_result_array"] == "False" for row in inventory)
@@ -74,12 +78,12 @@ def test_primary_source_bundles_are_manuscript_only() -> None:
 
 def test_figure_assets_are_output_correspondence_not_result_replay() -> None:
     figures = rows("author_figure_inventory.csv")
-    assert len(figures) == 12
+    assert len(figures) == 18
     assert len({row["sha256"] for row in figures}) == 6
     case_outputs = [
         row for row in figures if row["author_rendered_output_correspondence"] == "True"
     ]
-    assert len(case_outputs) == 2
+    assert len(case_outputs) == 3
     assert {row["source_path"] for row in case_outputs} == {"fig/comp.pdf"}
     assert all(row["faithfully_regenerated_from_native_pipeline"] == "False" for row in figures)
     assert all(row["paper_result_credit"] == "False" for row in figures)
@@ -134,7 +138,10 @@ def test_source_semantics_match_product_components_and_fail_closed_on_results() 
     assert checks["backend_private_module_boundary"]["status"] == "blocked"
     assert checks["backend_public_tests"]["status"] == "missing"
     assert checks["result_generation_assets"]["status"] == "missing"
-    assert "none found in 352" in checks["result_generation_assets"]["observed"]
+    observed = checks["result_generation_assets"]["observed"]
+    assert "2273 reachable commits" in observed
+    assert "2288 path/object revisions" in observed
+    assert "2185 scanned text blob revisions" in observed
     assert all(row["exact_native_paper_mechanism_credit"] == "False" for row in checks.values())
     assert all(row["paper_result_credit"] == "False" for row in checks.values())
 
@@ -159,14 +166,101 @@ def test_paper_equation_demos_are_synthetic_components_only() -> None:
     assert negative["synthetic_output"] == "-1"
 
 
-def test_two_manuscript_rebuilds_are_deterministic_document_evidence_only() -> None:
+def test_three_manuscript_rebuilds_are_deterministic_document_evidence_only() -> None:
     rebuilds = json.loads((AUDIT_DIR / "manuscript_rebuilds.json").read_text(encoding="utf-8"))
-    assert len(rebuilds) == 2
+    assert len(rebuilds) == 3
     assert all(row["same_hash_across_independent_build_directories"] is True for row in rebuilds)
     assert all(row["page_count"] == 17 for row in rebuilds)
     assert all(row["normalized_extracted_word_set_jaccard"] > 0.998 for row in rebuilds)
     assert all("passed_all_17_pages" in row["full_contact_sheet_visual_qa"] for row in rebuilds)
     assert all(row["paper_result_reproduction"] is False for row in rebuilds)
+
+
+def test_current_arxiv_v3_is_explicitly_pinned_and_matches_repository_pdf() -> None:
+    versions = {row["paper_version"]: row for row in rows("paper_version_summary.csv")}
+    assert set(versions) == {"2507.20474v1", "2507.20474v2", "2507.20474v3"}
+    assert versions["2507.20474v3"]["submitted_at_utc"] == "2025-09-19T02:22:53Z"
+    assert versions["2507.20474v3"]["repository_pdf_byte_identical"] == "True"
+    assert versions["2507.20474v1"]["repository_pdf_byte_identical"] == "False"
+    assert versions["2507.20474v2"]["repository_pdf_byte_identical"] == "False"
+
+
+def test_complete_public_histories_are_exhaustive_and_receive_no_result_credit() -> None:
+    summaries = {
+        row["source_id"]: row
+        for row in json.loads(
+            (AUDIT_DIR / "public_source_history_summary.json").read_text(
+                encoding="utf-8"
+            )
+        )
+    }
+    assert summaries["frontend"]["commits"] == 6
+    assert summaries["backend"]["commits"] == 2_267
+    assert summaries["frontend"]["remote_branches"] == 1
+    assert summaries["backend"]["remote_branches"] == 98
+    assert summaries["backend"]["tags"] == 2
+    assert summaries["backend"]["deleted_paths"] == [
+        "1.txt",
+        "README_en.md",
+        "examples/utils/onchain_t001.py",
+        "genaipf/test/pics/btc1.png",
+        "genaipf/test/response.txt",
+        "genaipf/test/test_by_request_client.py",
+        "genaipf/tools/search/1.txt",
+        "genaipf/tools/search/bing/1.txt",
+    ]
+    assert all(row["complete_nonshallow_clone"] is True for row in summaries.values())
+    assert all(row["object_database_fsck_clean"] is True for row in summaries.values())
+    assert all(
+        row["native_training_panel_model_prediction_result_or_table_runner_found"]
+        is False
+        for row in summaries.values()
+    )
+    assert all(row["paper_result_credit"] is False for row in summaries.values())
+
+    refs = rows("public_source_ref_inventory.csv")
+    assert len(refs) == 101
+    assert Counter(row["ref_kind"] for row in refs) == {
+        "remote_branch": 99,
+        "tag": 2,
+    }
+    commits = rows("public_source_commit_inventory.csv")
+    assert Counter(row["source_id"] for row in commits) == {
+        "frontend": 6,
+        "backend": 2_267,
+    }
+    paths = rows("public_source_historical_path_inventory.csv")
+    assert Counter(row["source_id"] for row in paths) == {
+        "frontend": 153,
+        "backend": 291,
+    }
+    assert sum(int(row["path_object_revisions"]) for row in paths) == 2_288
+    assert all(
+        row["serialized_result_or_model_artifact_path"] == "False" for row in paths
+    )
+    assert all(row["paper_result_credit"] == "False" for row in commits + paths + refs)
+
+
+def test_history_content_matches_are_component_correspondence_not_training() -> None:
+    scans = {
+        (row["source_id"], row["scan_id"]): row
+        for row in rows("public_source_history_content_scan.csv")
+    }
+    assert scans[("backend", "paper_title")]["text_blob_revision_hits"] == "0"
+    assert scans[("backend", "table_value")]["text_blob_revision_hits"] == "0"
+    assert scans[("backend", "mse")]["text_blob_revision_hits"] == "0"
+    assert scans[("backend", "cross_validation")]["text_blob_revision_hits"] == "0"
+    assert scans[("backend", "model_fit")]["text_blob_revision_hits"] == "2"
+    assert "Bridge(" in scans[("backend", "model_fit")]["interpretation"]
+    assert scans[("backend", "kline_predictd")]["text_blob_revision_hits"] == "28"
+    assert (
+        scans[("backend", "exact_ten_token_product_menu")][
+            "text_blob_revision_hits"
+        ]
+        == "2"
+    )
+    assert all(row["native_paper_result_pipeline_found"] == "False" for row in scans.values())
+    assert all(row["paper_result_credit"] == "False" for row in scans.values())
 
 
 def test_manifest_hashes_every_nonmanifest_output_and_readme_is_honest() -> None:

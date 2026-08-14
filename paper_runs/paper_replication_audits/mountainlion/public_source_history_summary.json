@@ -1,0 +1,102 @@
+[
+  {
+    "source_id": "frontend",
+    "repository": "https://github.com/MountainLionAi/MountainLion",
+    "directory": "frontend_history",
+    "head": "f7819f3537808d398f6c3da37e43b51ecebdbd42",
+    "roots": [
+      "0a9fc9cf92d93d98314bc22f06b87d7346deee51",
+      "73012b5b6eb3ab01740ec1e389dccf6a170b2f29"
+    ],
+    "commits": 6,
+    "main_commits": 6,
+    "pre_v1_commits_all_refs": 6,
+    "pre_v1_commits_main": 6,
+    "objects": 180,
+    "object_types": {
+      "blob": 153,
+      "commit": 6,
+      "tree": 21
+    },
+    "objects_sha256": "805f0c808e9b0be85948e623d29ea4e3c13fe38c9de988b01c498d288154b126",
+    "commit_ids_sha256": "05edbfdeed3119c37d9634f2638110d00a3c6f38b9b729988dd84e4beddd6da6",
+    "remote_branches": 1,
+    "tags": 0,
+    "refs_sha256": "85af96a48d2722c820e23428d2303b2c495dd302a15eae240b4a56c5bef41ae0",
+    "unique_paths": 153,
+    "unique_paths_sha256": "651862f5fc0d91918f7be7cf51cb67a44555e80547e64cf2eef380641f4d788a",
+    "deleted_paths": [],
+    "path_object_pairs": 154,
+    "path_object_pairs_sha256": "1f758dd064b8006667a21df9f259b3ac9ac4298fabc3a5bbdb01c24f4ee51c05",
+    "serialized_result_or_model_artifact_paths": [],
+    "text_blob_revisions_scanned": 145,
+    "content_pattern_blob_hits": {
+      "paper_title": 0,
+      "table_value": 0,
+      "mse": 0,
+      "cross_validation": 0,
+      "model_fit": 0,
+      "kline_predictd": 0
+    },
+    "complete_nonshallow_clone": true,
+    "object_database_fsck_clean": true,
+    "symbolic_origin_alias_excluded_from_branch_count": true,
+    "historical_price_menu_blob_revisions": 0,
+    "native_training_panel_model_prediction_result_or_table_runner_found": false,
+    "paper_result_credit": false
+  },
+  {
+    "source_id": "backend",
+    "repository": "https://github.com/MountainLionAi/GenAI-Platform",
+    "directory": "platform_history",
+    "head": "3f76de1fe4d8d423f7d4e46e45f19f5bd43992ec",
+    "roots": [
+      "9d6e56294554e25065e109c9284a1804dc602b62"
+    ],
+    "commits": 2267,
+    "main_commits": 2221,
+    "pre_v1_commits_all_refs": 2002,
+    "pre_v1_commits_main": 1965,
+    "objects": 9718,
+    "object_types": {
+      "blob": 2065,
+      "commit": 2267,
+      "tree": 5386
+    },
+    "objects_sha256": "2c718f4f4dacc19564a4e6cef48f7ae041e6098bfbbb401aa55df55eb1ca2a7b",
+    "commit_ids_sha256": "89dcd16f44cd65c64b21422d491868762e4c2f04627a6d7f0ad2655e98c4ea94",
+    "remote_branches": 98,
+    "tags": 2,
+    "refs_sha256": "6d9d5ae3b654010e52021aeddfd1a77704f01df194fbf5bf307b1461f95bf831",
+    "unique_paths": 291,
+    "unique_paths_sha256": "ca6ef83579746db40b5dd5e66b3914ffacf4d2df0c65b646450e0105bb3de935",
+    "deleted_paths": [
+      "1.txt",
+      "README_en.md",
+      "examples/utils/onchain_t001.py",
+      "genaipf/test/pics/btc1.png",
+      "genaipf/test/response.txt",
+      "genaipf/test/test_by_request_client.py",
+      "genaipf/tools/search/1.txt",
+      "genaipf/tools/search/bing/1.txt"
+    ],
+    "path_object_pairs": 2134,
+    "path_object_pairs_sha256": "d56794f2e40838551f66010e150205d30375992d2c87f632b7d4737d2275630b",
+    "serialized_result_or_model_artifact_paths": [],
+    "text_blob_revisions_scanned": 2040,
+    "content_pattern_blob_hits": {
+      "paper_title": 0,
+      "table_value": 0,
+      "mse": 0,
+      "cross_validation": 0,
+      "model_fit": 2,
+      "kline_predictd": 28
+    },
+    "complete_nonshallow_clone": true,
+    "object_database_fsck_clean": true,
+    "symbolic_origin_alias_excluded_from_branch_count": true,
+    "historical_price_menu_blob_revisions": 2,
+    "native_training_panel_model_prediction_result_or_table_runner_found": false,
+    "paper_result_credit": false
+  }
+]
