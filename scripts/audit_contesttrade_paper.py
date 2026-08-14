@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Audit ContestTrade paper v4 against its pinned public source release.
+"""Audit every ContestTrade paper version against the full public source history.
 
 The audit is deliberately fail closed. It inventories every numeric result in
-paper Tables 1--3, statically traces the public CLI, checks the two isolated
-contest components, compares the ZI reward equations with released semantics,
-and inventories shipped model/cache artifacts. It never imports the upstream
-package, unpickles its joblib files, or calls an LLM or external data API.
+paper Tables 1--3 and both result figures, statically traces the public CLI,
+checks the two isolated contest components, compares the ZI reward equations,
+and exhausts all discovered public refs and paper source archives. It never
+imports the upstream package, unpickles joblib files, or calls an external API.
 """
 
 from __future__ import annotations
@@ -19,6 +19,7 @@ import os
 import re
 import subprocess
 import sys
+import tarfile
 from collections import Counter
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -28,6 +29,88 @@ SOURCE_COMMIT = "22432f9bbba5f1d6862d3b6b5508d4d882b40b94"
 SOURCE_URL = "https://github.com/FinStep-AI/ContestTrade"
 PAPER_URL = "https://arxiv.org/pdf/2508.00554v4"
 PAPER_SHA256 = "a2fd14e7e9074c535ab238a4a9028365c860169743e06223bd20302de549a15c"
+PAPER_VERSIONS = {
+    1: {
+        "submitted_at": "2025-08-01T11:48:13Z",
+        "pdf_sha256": "323cae5cc50ab6c7a2fa4acbce4d1f27582ad57ad6a1ec5f4ac1f8df92701c88",
+        "pdf_bytes": 3971025,
+        "pdf_pages": 9,
+        "source_sha256": "c6eed2c73639448e91e2957828fb78b67ff27730df6db8d04002be6b2a07dc59",
+        "source_bytes": 3240263,
+        "source_files": 12,
+        "source_uncompressed_bytes": 3866542,
+        "main_tex_sha256": "afd09dba622cef1b51f0d92d39233a9d05691cc3a2a784c3779a026299582c53",
+        "repository_commits_at_submission": 0,
+        "latest_public_commit_at_submission": "",
+        "public_source_state": "repository_not_yet_created",
+    },
+    2: {
+        "submitted_at": "2025-08-13T13:17:06Z",
+        "pdf_sha256": "63b5845e6db4bff28d2f742bb0e14e8c5b58e8c13e17b422dc63a5fd38bcec77",
+        "pdf_bytes": 4015275,
+        "pdf_pages": 9,
+        "source_sha256": "587ae77726956e0ede5674b0632e8bf082916957a06013f729a3937e3f5f9d2a",
+        "source_bytes": 3274447,
+        "source_files": 12,
+        "source_uncompressed_bytes": 3910578,
+        "main_tex_sha256": "115ed7e294848efb76c41ffd343b3bc3123a29f94aa9d1a6d6f90b751855026f",
+        "repository_commits_at_submission": 36,
+        "latest_public_commit_at_submission": "13eaf2acb87c348ff695d54a8d861ab3a486c099",
+        "public_source_state": "generic_agents_and_legacy_judger_no_data_or_research_contest",
+    },
+    3: {
+        "submitted_at": "2025-08-18T06:13:10Z",
+        "pdf_sha256": "5d4f7f2bb89c871c2c9508391afee7aa3795108aa00d8acc82378978d46b2070",
+        "pdf_bytes": 3966023,
+        "pdf_pages": 9,
+        "source_sha256": "e792beb2c64d8b5f6e45b71278d835fb2eabf4e1580b846d8a966855b3b00e7f",
+        "source_bytes": 3246448,
+        "source_files": 12,
+        "source_uncompressed_bytes": 3862059,
+        "main_tex_sha256": "b7ea1a1d4ffe3193bfd454c95fd01338f11b5caecd9c1da7ce38ab308c4317fd",
+        "repository_commits_at_submission": 53,
+        "latest_public_commit_at_submission": "750251a1cfc96470879ede7e513098466d9c27aa",
+        "public_source_state": "generic_agents_and_legacy_judger_no_data_or_research_contest",
+    },
+    4: {
+        "submitted_at": "2026-07-08T07:16:24Z",
+        "pdf_sha256": PAPER_SHA256,
+        "pdf_bytes": 3966727,
+        "pdf_pages": 8,
+        "source_sha256": "0394d207779d165a36fb203eb26683d735d51477df8ddeecbc9482ad96a4bac9",
+        "source_bytes": 3237611,
+        "source_files": 11,
+        "source_uncompressed_bytes": 3825318,
+        "main_tex_sha256": "6cd9686c58273c298d50ec32c8947a5618fd71fc52a790d1c07d53c97ccfdb83",
+        "repository_commits_at_submission": 130,
+        "latest_public_commit_at_submission": SOURCE_COMMIT,
+        "public_source_state": "isolated_contests_present_but_not_reachable_from_public_entrypoint",
+    },
+}
+ORIGINAL_MAIN_RESULT_RASTER_SHA256 = (
+    "d8af1c91d75a193d2a76359f6999f3f9998f3b5fb7dcf6a4e2f1c3e67a93f75e"
+)
+REVISED_MAIN_RESULT_RASTER_SHA256 = (
+    "eb9076ab2fd42c764f7a0f4a3bbdd7c2fd76a7bcc5c1a6f5caf7f908d8ef74d3"
+)
+ABLATION_RESULT_RASTER_SHA256 = (
+    "89b27648998bf7fc792f02ed1b2f4fac250acc64b31b657a5ce4fee82dcce38d"
+)
+PUBLIC_HISTORY_COMMIT_COUNT = 130
+PUBLIC_HISTORY_COMMIT_SHA256 = "2aa60512c4cdf45ff0827c1aa03619feefec2e26b1e9c8f7de465790b7bd7562"
+PUBLIC_HISTORY_PATH_COUNT = 132
+PUBLIC_HISTORY_PATH_SHA256 = "2143e79946a72bfa4cd40fbfc98153d993b2212579c34e2385bb9e44b33f3c47"
+PUBLIC_HISTORY_OBJECT_COUNTS = {"blob": 322, "commit": 130, "tag": 1, "tree": 267}
+PUBLIC_DISCOVERY_SHA256 = {
+    "branches.json": "9cab115b6d33e4361761c608c6653d453ecb4768fd78495f255e4aeacccae889",
+    "releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "tags.json": "594f4ddc47631fe6b14ce70ca09bb5b823d1cb7e3d28f59ed952268b5a121b8d",
+}
+FIRST_PUBLIC_REPOSITORY_COMMIT = "e42d8db87b0f54ce4013e47244c1196d612a95f5"
+FIRST_PUBLIC_CODE_COMMIT = "f8aa2364a3c2926111ec0d3fc4ed245d521ac7d8"
+FIRST_DATA_CONTEST_COMMIT = "01ce65b53015513af4f2d5e2f2bfda72dd4d4c5b"
+DATA_CONTEST_MODEL_COMMIT = "86a80065261782f34bdc79b90912f4870c2f8eee"
+FIRST_RESEARCH_CONTEST_COMMIT = "2ad4f371396ae21abd58ea5e9129f05dac8fb7cf"
 
 PINNED_SOURCE_SHA256 = {
     "README.md": "fb77bb27b3ba888c015d0fa9cbdc82bb083aa0be79d72081b030eff1ac771830",
@@ -88,6 +171,40 @@ MODEL_FEATURES = (
     "reward_mean_5d",
     "reward_std_5d",
 )
+MAIN_RESULT_SERIES = (
+    "MACD",
+    "RSI&KDJ",
+    "LGBM (LightGBM label in v1)",
+    "LSTM",
+    "PPO",
+    "A2C",
+    "MASS",
+    "CSI All Share",
+    "ContestTrade",
+)
+ABLATION_RESULT_SERIES = (
+    "w/o LLM Judge",
+    "w/o Deep Research",
+    "w/o Contest - Researcher",
+    "w/o Contest - Data Analyst",
+    "w/o All",
+    "ContestTrade (Full Model)",
+)
+NATIVE_RESULT_EXTENSIONS = {
+    ".ckpt",
+    ".csv",
+    ".h5",
+    ".hdf5",
+    ".ipynb",
+    ".jsonl",
+    ".npy",
+    ".npz",
+    ".parquet",
+    ".pickle",
+    ".pkl",
+    ".pt",
+    ".pth",
+}
 
 
 def sha256(path: Path) -> str:
@@ -115,6 +232,15 @@ def git_files(root: Path) -> list[str]:
         text=True,
     ).stdout
     return [line for line in output.splitlines() if line]
+
+
+def git_output(root: Path, *args: str, binary: bool = False) -> Any:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+        text=not binary,
+    ).stdout
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
@@ -205,6 +331,396 @@ def paper_internal_consistency() -> list[dict[str, Any]]:
         }
         for metric in METRICS
     ]
+
+
+def expected_result_value_sequences() -> list[tuple[str, ...]]:
+    sequences = []
+    for block, label_columns in (
+        (TABLE_1_TEXT, 1),
+        (TABLE_2_TEXT, 2),
+        (TABLE_3_TEXT, 1),
+    ):
+        for line in block.strip().splitlines():
+            sequences.append(tuple(line.split("|")[label_columns:]))
+    return list(dict.fromkeys(sequences))
+
+
+def sequence_present(text: str, values: Sequence[str]) -> bool:
+    pattern = r"&\s*" + r"\s*&\s*".join(re.escape(value) for value in values)
+    return re.search(pattern, text, flags=re.DOTALL) is not None
+
+
+def paper_figure_rows() -> list[dict[str, Any]]:
+    rows = []
+    for figure, digest, series in (
+        ("main performance raster", REVISED_MAIN_RESULT_RASTER_SHA256, MAIN_RESULT_SERIES),
+        ("ablation raster", ABLATION_RESULT_RASTER_SHA256, ABLATION_RESULT_SERIES),
+    ):
+        for label in series:
+            rows.append(
+                {
+                    "figure": figure,
+                    "series": label,
+                    "current_paper_raster_sha256": digest,
+                    "numeric_curve_array_released": False,
+                    "native_numeric_series_reproduced": False,
+                    "public_repository_exact_original_v1_raster": figure
+                    == "main performance raster",
+                    "status": (
+                        "author_raster_correspondence_without_numeric_curve_data"
+                        if figure == "main performance raster"
+                        else "official_paper_raster_only"
+                    ),
+                    "paper_result_credit": False,
+                }
+            )
+    if len(rows) != 15:
+        raise RuntimeError("ContestTrade result-figure series census changed")
+    return rows
+
+
+def pdf_page_count(path: Path) -> int:
+    output = subprocess.run(
+        ["pdfinfo", str(path)], check=True, capture_output=True, text=True
+    ).stdout
+    match = re.search(r"^Pages:\s+(\d+)$", output, flags=re.MULTILINE)
+    if not match:
+        raise RuntimeError("pdfinfo did not report a page count for %s" % path)
+    return int(match.group(1))
+
+
+def paper_version_inventory(
+    versions_root: Path, source_root: Path
+) -> list[dict[str, Any]]:
+    sequences = expected_result_value_sequences()
+    rows = []
+    for version, expected in PAPER_VERSIONS.items():
+        pdf_path = versions_root / f"paper_v{version}.pdf"
+        archive_path = versions_root / f"source_v{version}.tar"
+        if sha256(pdf_path) != expected["pdf_sha256"] or pdf_path.stat().st_size != expected["pdf_bytes"]:
+            raise RuntimeError("ContestTrade paper v%d PDF drift" % version)
+        if sha256(archive_path) != expected["source_sha256"] or archive_path.stat().st_size != expected["source_bytes"]:
+            raise RuntimeError("ContestTrade paper v%d source drift" % version)
+        if pdf_page_count(pdf_path) != expected["pdf_pages"]:
+            raise RuntimeError("ContestTrade paper v%d page census changed" % version)
+        with tarfile.open(archive_path) as archive:
+            files = [member for member in archive.getmembers() if member.isfile()]
+            if len(files) != expected["source_files"]:
+                raise RuntimeError("ContestTrade paper v%d source-file census changed" % version)
+            if sum(member.size for member in files) != expected["source_uncompressed_bytes"]:
+                raise RuntimeError("ContestTrade paper v%d source byte census changed" % version)
+            tex_handle = archive.extractfile("main.tex")
+            main_figure_handle = archive.extractfile("figures/main_result.jpg")
+            ablation_figure_handle = archive.extractfile("figures/ablation_study.jpg")
+            if tex_handle is None or main_figure_handle is None or ablation_figure_handle is None:
+                raise RuntimeError("ContestTrade paper v%d primary source assets missing" % version)
+            tex_bytes = tex_handle.read()
+            main_figure_bytes = main_figure_handle.read()
+            ablation_figure_bytes = ablation_figure_handle.read()
+        if hashlib.sha256(tex_bytes).hexdigest() != expected["main_tex_sha256"]:
+            raise RuntimeError("ContestTrade paper v%d main.tex drift" % version)
+        tex = tex_bytes.decode("utf-8")
+        normalized_tex = re.sub(r"\\textbf\{([^{}]*)\}", r"\1", tex)
+        verified_sequences = sum(sequence_present(normalized_tex, sequence) for sequence in sequences)
+        if verified_sequences != len(sequences):
+            raise RuntimeError("ContestTrade paper v%d result table values changed" % version)
+        main_digest = hashlib.sha256(main_figure_bytes).hexdigest()
+        expected_main_digest = (
+            ORIGINAL_MAIN_RESULT_RASTER_SHA256
+            if version == 1
+            else REVISED_MAIN_RESULT_RASTER_SHA256
+        )
+        if main_digest != expected_main_digest:
+            raise RuntimeError("ContestTrade paper v%d main result raster changed" % version)
+        if hashlib.sha256(ablation_figure_bytes).hexdigest() != ABLATION_RESULT_RASTER_SHA256:
+            raise RuntimeError("ContestTrade paper v%d ablation raster changed" % version)
+
+        cutoff = expected["submitted_at"]
+        commits_at_submission = int(
+            str(git_output(source_root, "rev-list", "--all", f"--before={cutoff}", "--count")).strip()
+        )
+        latest = str(
+            git_output(
+                source_root,
+                "log",
+                "--all",
+                f"--before={cutoff}",
+                "-1",
+                "--format=%H",
+            )
+        ).strip()
+        if commits_at_submission != expected["repository_commits_at_submission"]:
+            raise RuntimeError("ContestTrade repository cutoff changed for paper v%d" % version)
+        if latest != expected["latest_public_commit_at_submission"]:
+            raise RuntimeError("ContestTrade latest public cutoff commit changed for paper v%d" % version)
+        cutoff_paths = (
+            set(str(git_output(source_root, "ls-tree", "-r", "--name-only", latest)).splitlines())
+            if latest
+            else set()
+        )
+        data_contest_present = (
+            "contest_trade/contest/data_analyst/data_contest.py" in cutoff_paths
+        )
+        research_contest_present = (
+            "contest_trade/contest/researcher/research_contest.py" in cutoff_paths
+        )
+        rows.append(
+            {
+                "paper_version": f"v{version}",
+                "submitted_at": cutoff,
+                "pdf_sha256": expected["pdf_sha256"],
+                "pdf_bytes": expected["pdf_bytes"],
+                "pdf_pages": expected["pdf_pages"],
+                "source_archive_sha256": expected["source_sha256"],
+                "source_archive_bytes": expected["source_bytes"],
+                "source_files": expected["source_files"],
+                "source_uncompressed_bytes": expected["source_uncompressed_bytes"],
+                "main_tex_sha256": expected["main_tex_sha256"],
+                "distinct_result_row_value_sequences_verified": verified_sequences,
+                "displayed_table_cells": 49,
+                "displayed_figure_series": 15,
+                "result_values_same_as_v4": True,
+                "main_result_raster_sha256": main_digest,
+                "ablation_result_raster_sha256": ABLATION_RESULT_RASTER_SHA256,
+                "public_repository_commits_at_submission": commits_at_submission,
+                "latest_public_commit_at_submission": latest,
+                "data_contest_source_present_at_submission": data_contest_present,
+                "research_contest_source_present_at_submission": research_contest_present,
+                "public_source_state": expected["public_source_state"],
+                "native_result_reproduced": False,
+                "paper_result_credit": False,
+            }
+        )
+    return rows
+
+
+def source_milestone_rows(source_root: Path) -> list[dict[str, Any]]:
+    milestones = (
+        ("public repository created", FIRST_PUBLIC_REPOSITORY_COMMIT),
+        ("first public code tree", FIRST_PUBLIC_CODE_COMMIT),
+        ("Data Contest source introduced", FIRST_DATA_CONTEST_COMMIT),
+        ("Data Contest fixed models introduced", DATA_CONTEST_MODEL_COMMIT),
+        ("Research Contest source introduced", FIRST_RESEARCH_CONTEST_COMMIT),
+        ("current public source", SOURCE_COMMIT),
+    )
+    rows = []
+    for milestone, commit in milestones:
+        metadata = str(
+            git_output(source_root, "show", "-s", "--format=%H%x1f%cI%x1f%s", commit)
+        ).rstrip("\n")
+        commit_id, committed_at, subject = metadata.split("\x1f", 2)
+        rows.append(
+            {
+                "milestone": milestone,
+                "commit": commit_id,
+                "committed_at": committed_at,
+                "subject": subject,
+                "after_paper_v1": committed_at > PAPER_VERSIONS[1]["submitted_at"],
+                "after_paper_v2": committed_at > PAPER_VERSIONS[2]["submitted_at"],
+                "after_paper_v3": committed_at > PAPER_VERSIONS[3]["submitted_at"],
+                "paper_result_artifact_created": False,
+                "paper_result_credit": False,
+            }
+        )
+    return rows
+
+
+def public_source_history(
+    source_root: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    discovery_root = source_root / "release-discovery"
+    for name, expected in PUBLIC_DISCOVERY_SHA256.items():
+        if sha256(discovery_root / name) != expected:
+            raise RuntimeError("ContestTrade public discovery drift: %s" % name)
+    branches = json.loads((discovery_root / "branches.json").read_text(encoding="utf-8"))
+    tags = json.loads((discovery_root / "tags.json").read_text(encoding="utf-8"))
+    releases = json.loads((discovery_root / "releases.json").read_text(encoding="utf-8"))
+    branch_pairs = [(row["name"], row["commit"]["sha"]) for row in branches]
+    tag_pairs = [(row["name"], row["commit"]["sha"]) for row in tags]
+    if branch_pairs != [
+        ("dev", "b017ffaa23eee5043163b4a11b5803b6da58fd0e"),
+        ("main", SOURCE_COMMIT),
+    ]:
+        raise RuntimeError("ContestTrade public branch discovery changed")
+    if tag_pairs != [
+        ("v2.0", "7e960d01f7bba90c4e076fc8da59326838a861a5"),
+        ("v1.1", "3025a7150ca539d43617437c0253fe6caf0c0cba"),
+        ("v1.0", "750251a1cfc96470879ede7e513098466d9c27aa"),
+    ]:
+        raise RuntimeError("ContestTrade public tag discovery changed")
+    if releases:
+        raise RuntimeError("ContestTrade gained a public release requiring review")
+    if str(git_output(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise RuntimeError("ContestTrade source checkout is shallow")
+
+    commits_raw = str(git_output(source_root, "rev-list", "--reverse", "--all"))
+    commits = commits_raw.splitlines()
+    if len(commits) != PUBLIC_HISTORY_COMMIT_COUNT:
+        raise RuntimeError("ContestTrade public commit census changed")
+    if hashlib.sha256(commits_raw.encode("utf-8")).hexdigest() != PUBLIC_HISTORY_COMMIT_SHA256:
+        raise RuntimeError("ContestTrade public commit sequence changed")
+    path_lines = str(
+        git_output(source_root, "log", "--all", "--pretty=format:", "--name-only")
+    ).splitlines()
+    historical_paths = sorted({line for line in path_lines if line})
+    path_payload = ("\n".join(historical_paths) + "\n").encode("utf-8")
+    if len(historical_paths) != PUBLIC_HISTORY_PATH_COUNT:
+        raise RuntimeError("ContestTrade public historical path census changed")
+    if hashlib.sha256(path_payload).hexdigest() != PUBLIC_HISTORY_PATH_SHA256:
+        raise RuntimeError("ContestTrade public historical path inventory changed")
+
+    object_lines = str(git_output(source_root, "rev-list", "--objects", "--all")).splitlines()
+    object_ids = [line.split(" ", 1)[0] for line in object_lines]
+    object_proc = subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+        input="\n".join(object_ids) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    object_types = object_proc.stdout.splitlines()
+    object_counts = dict(Counter(object_types))
+    if object_counts != PUBLIC_HISTORY_OBJECT_COUNTS:
+        raise RuntimeError("ContestTrade reachable-object census changed")
+    fsck = subprocess.run(
+        ["git", "-C", str(source_root), "fsck", "--full", "--no-reflogs", "--unreachable"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if fsck.stdout.strip():
+        raise RuntimeError("ContestTrade has unreachable objects requiring review")
+
+    sequences = expected_result_value_sequences()
+    blob_sha256: dict[str, str] = {}
+    text_row_hit_blobs: list[str] = []
+    for object_id, object_type in zip(object_ids, object_types):
+        if object_type != "blob":
+            continue
+        raw = git_output(source_root, "cat-file", "-p", object_id, binary=True)
+        blob_sha256[object_id] = hashlib.sha256(raw).hexdigest()
+        if b"\x00" in raw[:8192]:
+            continue
+        text = raw.decode("utf-8", errors="replace")
+        if any(sequence_present(text, sequence) for sequence in sequences):
+            text_row_hit_blobs.append(object_id)
+    if text_row_hit_blobs:
+        raise RuntimeError("ContestTrade public history now contains a complete paper result row")
+
+    commit_rows: list[dict[str, Any]] = []
+    path_blobs: dict[str, set[str]] = {path: set() for path in historical_paths}
+    path_first: dict[str, tuple[str, str]] = {}
+    path_last: dict[str, tuple[str, str]] = {}
+    for commit in commits:
+        metadata = str(
+            git_output(source_root, "show", "-s", "--format=%H%x1f%cI%x1f%s", commit)
+        ).rstrip("\n")
+        commit_id, committed_at, subject = metadata.split("\x1f", 2)
+        paths = []
+        native_result_paths = []
+        exact_original_raster_paths = []
+        for line in str(git_output(source_root, "ls-tree", "-r", commit)).splitlines():
+            object_meta, path = line.split("\t", 1)
+            _mode, object_type, object_id = object_meta.split()
+            if object_type != "blob":
+                continue
+            paths.append(path)
+            path_blobs[path].add(object_id)
+            path_first.setdefault(path, (commit, committed_at))
+            path_last[path] = (commit, committed_at)
+            if Path(path).suffix.lower() in NATIVE_RESULT_EXTENSIONS:
+                native_result_paths.append(path)
+            if blob_sha256[object_id] == ORIGINAL_MAIN_RESULT_RASTER_SHA256:
+                exact_original_raster_paths.append(path)
+        data_contest_present = (
+            "contest_trade/contest/data_analyst/data_contest.py" in paths
+        )
+        research_contest_present = (
+            "contest_trade/contest/researcher/research_contest.py" in paths
+        )
+        commit_rows.append(
+            {
+                "commit": commit_id,
+                "committed_at": committed_at,
+                "subject": subject,
+                "tracked_files": len(paths),
+                "data_contest_source_present": data_contest_present,
+                "research_contest_source_present": research_contest_present,
+                "native_structured_result_paths": len(native_result_paths),
+                "native_structured_result_path_names": ";".join(native_result_paths),
+                "exact_original_v1_result_raster_paths": ";".join(
+                    exact_original_raster_paths
+                ),
+                "independently_regenerated_paper_results": 0,
+                "paper_result_credit": False,
+            }
+        )
+
+    path_rows: list[dict[str, Any]] = []
+    for path in historical_paths:
+        digests = {blob_sha256[object_id] for object_id in path_blobs[path]}
+        suffix = Path(path).suffix.lower()
+        exact_original_raster = ORIGINAL_MAIN_RESULT_RASTER_SHA256 in digests
+        if exact_original_raster:
+            classification = "author_original_v1_result_raster_correspondence"
+        elif suffix == ".joblib":
+            classification = "fixed_component_model_without_training_provenance"
+        elif suffix == ".json" and "/cache/" in path:
+            classification = "market_metadata_cache_not_paper_input_or_output"
+        else:
+            classification = "source_documentation_or_nonresult_media"
+        path_rows.append(
+            {
+                "path": path,
+                "extension": suffix,
+                "historical_blob_versions": len(path_blobs[path]),
+                "first_reachable_commit": path_first[path][0],
+                "first_reachable_committed_at": path_first[path][1],
+                "last_reachable_commit": path_last[path][0],
+                "last_reachable_committed_at": path_last[path][1],
+                "native_structured_result_path": suffix in NATIVE_RESULT_EXTENSIONS,
+                "exact_original_v1_result_raster": exact_original_raster,
+                "classification": classification,
+                "paper_result_credit": False,
+            }
+        )
+    native_paths = [row for row in path_rows if row["native_structured_result_path"]]
+    exact_raster_paths = [row["path"] for row in path_rows if row["exact_original_v1_result_raster"]]
+    if native_paths:
+        raise RuntimeError("ContestTrade public history gained a native result path")
+    if exact_raster_paths != ["assets/performance_comparison.jpg"]:
+        raise RuntimeError("ContestTrade original raster lineage changed")
+    revised_raster_blobs = sum(
+        digest == REVISED_MAIN_RESULT_RASTER_SHA256 for digest in blob_sha256.values()
+    )
+    ablation_raster_blobs = sum(
+        digest == ABLATION_RESULT_RASTER_SHA256 for digest in blob_sha256.values()
+    )
+    if revised_raster_blobs or ablation_raster_blobs:
+        raise RuntimeError("ContestTrade history gained another official result raster")
+
+    summary = {
+        "discovered_public_branches": [
+            {"name": name, "head": commit} for name, commit in branch_pairs
+        ],
+        "discovered_public_tags": [
+            {"name": name, "target_commit": commit} for name, commit in tag_pairs
+        ],
+        "discovered_public_releases": [],
+        "reachable_commits": len(commits),
+        "unique_historical_paths": len(historical_paths),
+        "reachable_object_counts": object_counts,
+        "unreachable_objects": 0,
+        "native_structured_result_paths": len(native_paths),
+        "text_blobs_with_complete_paper_result_row": len(text_row_hit_blobs),
+        "exact_original_v1_main_result_raster_paths": exact_raster_paths,
+        "exact_revised_main_result_raster_blobs": revised_raster_blobs,
+        "exact_ablation_result_raster_blobs": ablation_raster_blobs,
+        "raw_numeric_curve_files": 0,
+        "independently_regenerated_paper_results": 0,
+        "paper_result_credit": False,
+    }
+    return commit_rows, path_rows, summary
 
 
 def ast_class_methods(path: Path, class_name: str) -> set[str]:
@@ -481,10 +997,19 @@ def verify_pins(source_root: Path, paper_pdf: Path) -> str:
     return commit
 
 
-def build_audit(source_root: Path, paper_pdf: Path, output_dir: Path) -> dict[str, Any]:
+def build_audit(
+    source_root: Path,
+    paper_pdf: Path,
+    paper_versions_root: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
     commit = verify_pins(source_root, paper_pdf)
     conformance = result_conformance()
     identities = paper_internal_consistency()
+    figures = paper_figure_rows()
+    paper_versions = paper_version_inventory(paper_versions_root, source_root)
+    milestones = source_milestone_rows(source_root)
+    history_commits, history_paths, history_summary = public_source_history(source_root)
     reachability = entrypoint_reachability(source_root)
     zi_rows = zi_semantics_rows()
     models = safe_model_inventory(source_root)
@@ -494,6 +1019,10 @@ def build_audit(source_root: Path, paper_pdf: Path, output_dir: Path) -> dict[st
 
     if len(conformance) != 49 or {row["status"] for row in conformance} != {"unavailable_missing_native_result_path"}:
         raise RuntimeError("Pinned result-cell boundary changed")
+    if len(figures) != 15 or len(paper_versions) != 4:
+        raise RuntimeError("ContestTrade paper version/figure census changed")
+    if len(history_commits) != 130 or len(history_paths) != 132:
+        raise RuntimeError("ContestTrade full-history census changed")
     if len(source) != 117:
         raise RuntimeError(f"Expected 117 tracked source files, got {len(source)}")
     if len(caches) != 7 or len(models) != 2:
@@ -504,31 +1033,89 @@ def build_audit(source_root: Path, paper_pdf: Path, output_dir: Path) -> dict[st
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "tables_1_3_conformance.csv", conformance)
     write_csv(output_dir / "paper_internal_consistency.csv", identities)
+    write_csv(output_dir / "paper_figure_series_inventory.csv", figures)
+    write_csv(output_dir / "official_paper_version_inventory.csv", paper_versions)
+    write_csv(output_dir / "public_source_milestone_inventory.csv", milestones)
+    write_csv(output_dir / "public_source_history_commit_inventory.csv", history_commits)
+    write_csv(output_dir / "public_source_history_path_inventory.csv", history_paths)
     write_csv(output_dir / "source_entrypoint_reachability.csv", reachability)
     write_csv(output_dir / "zi_reward_semantics_audit.csv", zi_rows)
     write_csv(output_dir / "shipped_lightgbm_model_inventory.csv", models)
     write_csv(output_dir / "released_cache_inventory.csv", caches)
     write_csv(output_dir / "source_config_conformance.csv", config)
     write_csv(output_dir / "released_source_inventory.csv", source)
+    (output_dir / "public_source_history.json").write_text(
+        json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
     manifest: dict[str, Any] = {
-        "audit": "ContestTrade paper v4 Tables 1--3 versus pinned public release",
+        "audit": "ContestTrade arXiv v1--v4 results versus complete discovered public source history",
         "overall_status": "not_reproduced_public_entrypoint_omits_contests",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_version": "arXiv:2508.00554v4",
         "paper_sha256": PAPER_SHA256,
+        "official_paper_versions_audited": len(paper_versions),
+        "official_paper_pdf_pages_total": sum(row["pdf_pages"] for row in paper_versions),
+        "official_paper_source_files_total": sum(row["source_files"] for row in paper_versions),
+        "paper_result_values_stable_across_all_versions": all(
+            row["result_values_same_as_v4"] for row in paper_versions
+        ),
         "source_url": SOURCE_URL,
         "source_commit": commit,
         "source_commit_date": "2025-12-22",
         "paper_numeric_tables_audited": [1, 2, 3],
         "paper_numeric_result_cells_total": 49,
+        "paper_numeric_figure_series_total": len(figures),
+        "paper_result_display_units_total": 49 + len(figures),
         "paper_table_cell_counts": {"1": 27, "2": 4, "3": 18},
         "native_paper_result_cells_reproduced": 0,
         "paper_numeric_result_cells_unavailable": 49,
+        "native_numeric_figure_series_reproduced": 0,
+        "native_paper_result_display_units_reproduced": 0,
+        "public_repository_author_raster_series_correspondences": len(
+            MAIN_RESULT_SERIES
+        ),
+        "public_repository_exact_original_v1_result_raster": True,
+        "public_repository_raw_numeric_curve_files": history_summary[
+            "raw_numeric_curve_files"
+        ],
         "paper_internal_repeated_cells_consistent": 3,
         "paper_internal_repeated_cells_independent_reproductions": 0,
         "tracked_source_files_total": len(source),
+        "public_source_reachable_commits_total": history_summary["reachable_commits"],
+        "public_source_unique_historical_paths_total": history_summary[
+            "unique_historical_paths"
+        ],
+        "public_source_reachable_blobs_total": history_summary[
+            "reachable_object_counts"
+        ]["blob"],
+        "public_source_reachable_trees_total": history_summary[
+            "reachable_object_counts"
+        ]["tree"],
+        "public_source_reachable_commit_objects_total": history_summary[
+            "reachable_object_counts"
+        ]["commit"],
+        "public_source_reachable_tag_objects_total": history_summary[
+            "reachable_object_counts"
+        ]["tag"],
+        "public_source_unreachable_objects_total": history_summary[
+            "unreachable_objects"
+        ],
+        "public_source_native_structured_result_paths": history_summary[
+            "native_structured_result_paths"
+        ],
+        "public_source_text_blobs_with_complete_paper_result_row": history_summary[
+            "text_blobs_with_complete_paper_result_row"
+        ],
+        "paper_v1_public_repository_commits_at_submission": 0,
+        "paper_v2_public_repository_commits_at_submission": 36,
+        "paper_v3_public_repository_commits_at_submission": 53,
+        "paper_v1_predates_public_repository": True,
+        "paper_v2_data_and_research_contest_source_present_at_submission": False,
+        "paper_v3_data_and_research_contest_source_present_at_submission": False,
+        "data_contest_first_public_after_paper_v3": True,
+        "research_contest_first_public_after_paper_v3": True,
         "active_public_workflow_nodes": ["run_data_agents", "run_research_agents", "finalize"],
         "data_contest_reachable_from_public_entrypoint": False,
         "research_contest_reachable_from_public_entrypoint": False,
@@ -553,7 +1140,13 @@ def build_audit(source_root: Path, paper_pdf: Path, output_dir: Path) -> dict[st
         "audit_called_llm_or_external_api": False,
         "paper_v4_postdates_pinned_source_commit": True,
         "interpretation": (
-            "The public release contains agent utilities and inspectable pieces of both contests, "
+            "All four official paper versions retain the same 49 table cells and 15 result-figure "
+            "series. Paper v1 predates the public repository, and v2/v3 predate the first public "
+            "Data and Research Contest implementations. The repository later shipped the exact "
+            "original v1 main-result raster, corroborating nine author-rendered curves but no "
+            "numeric series. The complete 130-commit public history contains no native structured "
+            "result path or complete paper result row. The current release contains agent utilities "
+            "and inspectable pieces of both contests, "
             "but the CLI runs SimpleTradeCompany, whose graph has only data agents, research "
             "agents, and finalize. It never calls DataContest or ResearchContest and finalize "
             "passes through all research signals without the paper's allocation. The isolated "
@@ -562,74 +1155,86 @@ def build_audit(source_root: Path, paper_pdf: Path, output_dir: Path) -> dict[st
             "models but no rolling-training provenance, uses top-3 score sorting instead of the "
             "paper's token-budgeted facility-location allocator, and changes the signed ZI reward "
             "into a clipped positive-only average. With no paper data/output snapshot, experiment "
-            "driver, baselines, backtester, ablations, or seeds, 0/49 paper result cells can be "
-            "counted as native reproductions."
+            "driver, baselines, backtester, ablations, or seeds, 0/64 paper result display units "
+            "can be counted as native reproductions."
         ),
         "source_file_sha256": PINNED_SOURCE_SHA256,
     }
 
     report = f"""# ContestTrade paper-level conformance audit
 
-Overall verdict: **not reproduced**. The current paper (arXiv v4) and public
-source contain meaningful component-level evidence, but the released CLI does
-not execute either contest described as the core contribution.
+Overall verdict: **not reproduced**. All four official arXiv versions and all
+discovered public source refs have now been audited. The release provides useful
+component and author-output evidence, but no public revision executes the claimed
+system end to end or regenerates a paper result.
 
-## Primary sources
+## Primary sources and chronology
 
-- Official paper: {PAPER_URL} (SHA-256 `{PAPER_SHA256}`).
-- Public source: {SOURCE_URL}, commit `{commit}` (2025-12-22).
-
-The source snapshot predates paper v4 (2026-07-08). This timing may explain some
-formalism/source drift, but it cannot make absent public execution paths or data
-count as reproduced.
+- Official paper record: https://arxiv.org/abs/2508.00554. The v1--v4 PDFs and
+  TeX source archives are hash-pinned ({sum(row['pdf_pages'] for row in paper_versions)}
+  PDF pages and {sum(row['source_files'] for row in paper_versions)} source files).
+  Every version retains the same 49 table cells and 15 result-figure series.
+- Public source: {SOURCE_URL}, current commit `{commit}`. Discovery covers main and
+  dev, tags v1.0/v1.1/v2.0, no GitHub releases, {history_summary['reachable_commits']}
+  reachable commits, {history_summary['unique_historical_paths']} historical paths,
+  {sum(history_summary['reachable_object_counts'].values())} objects, and no
+  unreachable objects.
+- Paper v1 was submitted on 2025-08-01, before the public repository's first commit
+  on 2025-08-08 and before its first code tree on 2025-08-11. At v2 and v3 submission,
+  the public tree still contained neither the Data Contest nor Research Contest.
+  Those first appeared on 2025-08-26 and 2025-08-27, respectively.
+- Paper v4 (2026-07-08) postdates the current source head (2025-12-22), but the later
+  paper date cannot turn absent execution paths, inputs, or results into a replication.
 
 ## What the release genuinely preserves
 
-- A public CLI constructs `SimpleTradeCompany`; its data and research agent paths
-  are inspectable, and selected search tools bound requests to dates before the
-  trigger date.
+- `assets/performance_comparison.jpg` is byte-for-byte identical to the original v1
+  paper's main-result raster. This corroborates the authorship and lineage of all nine
+  visible curves, but the repository has no underlying dates/values and the revised
+  v2--v4 raster and six-series ablation raster occur only in paper source archives.
 - The isolated Data Contest contains five-day reward features and two serialized
-  LightGBM models. This audit reads their bytes only (never unpickles them) and
-  confirms the five feature names and L1-regression metadata. No training dates,
-  split, daily rolling trainer, seed, or dataset accompanies them.
-- The isolated Research weight optimizer implements the paper's positive-Sharpe
-  normalization rule. This is a component match, not an executed paper portfolio.
-- The paper is internally consistent where Table 3 Full repeats the three Table 1
-  ContestTrade metrics. Those identities are not independent results.
+  LightGBM models. This audit reads their bytes only (never unpickles them) and confirms
+  the five feature names and L1-regression metadata. No training dates, split, daily
+  rolling trainer, seed, or dataset accompanies them.
+- The isolated Research weight optimizer implements positive-Sharpe normalization.
+  This is a component match, not an executed paper portfolio.
+- The paper's repeated Full/Ours table cells are internally identical across all
+  versions. Repetition and author-rendered rasters are not independent reproductions.
 
 ## Why the claimed system is not replicated
 
-- Static tracing of the actual CLI reaches a three-node graph:
-  `run_data_agents -> run_research_agents -> finalize`. Neither `DataContest` nor
-  `ResearchContest` is imported or called. `finalize` simply exposes all research
-  signals; it does not construct the paper portfolio.
-- The isolated Research Contest requires two model files that are not released and
-  calls `predict_signal_scores`, which `ResearchPredictor` does not define. Its
-  default prediction horizon is three days, while paper v4 specifies five.
-- The Data Contest sorts predicted scores and retains top three. It does not implement
-  the paper's 32k-to-16k token-budgeted facility-location/lazy-greedy allocation or
-  embedding cosine diversity objective.
-- Paper Algorithm 1 sums signed rating x price change for ratings -2 through 2. The
-  released evaluator ignores every non-positive rating, clips changes to +/-20%, and
-  averages over valid observations. The committed synthetic diagnostic shows, for
-  example, paper reward 20 versus released reward 5 for a correct bullish and a
-  correct bearish observation.
-- The release has no immutable paper input panel, contest scores, selected factors,
-  actions, holdings, daily returns, experiment/backtest evaluator, baseline runner,
-  ablation driver, or paper-run seeds. The seven JSON caches are market metadata,
-  not the paper's news/financial/price inputs or outputs.
+- Exhaustive scanning of all 322 reachable blobs finds no CSV, Parquet, NumPy,
+  checkpoint, notebook, JSONL, or other native structured result path and no text blob
+  containing a complete paper result row. There are no raw numeric curves, contest
+  scores, selected factors, actions, holdings, daily returns, or run logs.
+- Static tracing of the actual CLI reaches `run_data_agents -> run_research_agents ->
+  finalize`. Neither `DataContest` nor `ResearchContest` is called, and `finalize`
+  exposes all research signals without constructing the paper portfolio.
+- The isolated Research Contest requires two absent model files and calls
+  `predict_signal_scores`, which `ResearchPredictor` does not define. Its default
+  prediction horizon is three days, while paper v4 specifies five.
+- The Data Contest sorts predicted scores and retains top three. No public revision
+  implements the paper's 32k-to-16k token-budgeted facility-location/lazy-greedy
+  allocator or embedding-cosine diversity objective.
+- Paper Algorithm 1 sums signed rating x price change. The released evaluator ignores
+  non-positive ratings, clips price changes to +/-20%, and averages observations. The
+  synthetic diagnostic gives paper reward 20 versus released reward 5 for one correct
+  bullish and one correct bearish observation.
+- The release lacks the immutable experiment panel, backtester/metric evaluator,
+  baseline and ablation runners, complete model/API snapshot, and run seeds. Its seven
+  JSON caches are market metadata, not paper inputs or outputs.
 
 ## Honest denominator
 
-All **49** numeric cells in Tables 1--3 are enumerated: 27 main performance cells,
-4 contest-score cells, and 18 ablation cells. **0/49** are native reproductions and
-49/49 are unavailable from released result paths. The three repeated Full/Ours
-cells agree internally but are counted only as identities. Static figures, code
-presence, model strings, and architectural proxies never receive result credit.
+The paper has **64 result display units**: 49 numeric table cells (27 main performance,
+4 contest-score, 18 ablation) plus 15 raster-only return series (9 main, 6 ablation).
+**0/64** are independently reproduced. The exact v1 raster is recorded separately as
+an author-output correspondence for nine series and receives no result credit. All 49
+table cells and all 15 numeric curves remain unavailable from native result paths.
 
-Run `scripts/audit_contesttrade_paper.py` to regenerate this evidence package. Use
-`--strict` to fail until the released system executes both contests and reproduces
-the native paper data, configurations, trajectories, portfolio, and all 49 values.
+Run `scripts/audit_contesttrade_paper.py` to regenerate this package. Use `--strict`
+to fail until the released system executes both contests and reproduces the pinned
+paper inputs, configurations, trajectories, portfolio, curves, and all 49 table cells.
 """
     (output_dir / "README.md").write_text(report, encoding="utf-8")
     manifest["output_sha256"] = {
@@ -667,6 +1272,16 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--paper-versions-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "CONTESTTRADE_PAPER_VERSIONS_ROOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/contesttrade_paper_versions",
+            )
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=project_root / "paper_runs/paper_replication_audits/contesttrade",
@@ -678,7 +1293,10 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     manifest = build_audit(
-        args.source_root.resolve(), args.paper_pdf.resolve(), args.output_dir.resolve()
+        args.source_root.resolve(),
+        args.paper_pdf.resolve(),
+        args.paper_versions_root.resolve(),
+        args.output_dir.resolve(),
     )
     print(json.dumps(manifest, indent=2))
     return int(args.strict and not manifest["full_paper_reproduced"])

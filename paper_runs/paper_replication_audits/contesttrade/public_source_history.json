@@ -1,0 +1,46 @@
+{
+  "discovered_public_branches": [
+    {
+      "head": "b017ffaa23eee5043163b4a11b5803b6da58fd0e",
+      "name": "dev"
+    },
+    {
+      "head": "22432f9bbba5f1d6862d3b6b5508d4d882b40b94",
+      "name": "main"
+    }
+  ],
+  "discovered_public_releases": [],
+  "discovered_public_tags": [
+    {
+      "name": "v2.0",
+      "target_commit": "7e960d01f7bba90c4e076fc8da59326838a861a5"
+    },
+    {
+      "name": "v1.1",
+      "target_commit": "3025a7150ca539d43617437c0253fe6caf0c0cba"
+    },
+    {
+      "name": "v1.0",
+      "target_commit": "750251a1cfc96470879ede7e513098466d9c27aa"
+    }
+  ],
+  "exact_ablation_result_raster_blobs": 0,
+  "exact_original_v1_main_result_raster_paths": [
+    "assets/performance_comparison.jpg"
+  ],
+  "exact_revised_main_result_raster_blobs": 0,
+  "independently_regenerated_paper_results": 0,
+  "native_structured_result_paths": 0,
+  "paper_result_credit": false,
+  "raw_numeric_curve_files": 0,
+  "reachable_commits": 130,
+  "reachable_object_counts": {
+    "blob": 322,
+    "commit": 130,
+    "tag": 1,
+    "tree": 267
+  },
+  "text_blobs_with_complete_paper_result_row": 0,
+  "unique_historical_paths": 132,
+  "unreachable_objects": 0
+}

@@ -1,0 +1,7 @@
+milestone,commit,committed_at,subject,after_paper_v1,after_paper_v2,after_paper_v3,paper_result_artifact_created,paper_result_credit
+public repository created,e42d8db87b0f54ce4013e47244c1196d612a95f5,2025-08-08T17:06:47+08:00,Initial commit,True,False,False,False,False
+first public code tree,f8aa2364a3c2926111ec0d3fc4ed245d521ac7d8,2025-08-11T02:13:47+08:00,* init v0 code,True,False,False,False,False
+Data Contest source introduced,01ce65b53015513af4f2d5e2f2bfda72dd4d4c5b,2025-08-26T14:20:06+08:00,feat: add DataContest system for factor evaluation and selection,True,True,True,False,False
+Data Contest fixed models introduced,86a80065261782f34bdc79b90912f4870c2f8eee,2025-08-26T19:51:18+08:00,update: integrate LightGBM predictor and fix selection logic,True,True,True,False,False
+Research Contest source introduced,2ad4f371396ae21abd58ea5e9129f05dac8fb7cf,2025-08-27T20:26:23+08:00,add research_contest,True,True,True,False,False
+current public source,22432f9bbba5f1d6862d3b6b5508d4d882b40b94,2025-12-22T17:26:26+08:00,adjust defult readme,True,True,True,False,False

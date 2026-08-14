@@ -1,62 +1,74 @@
 # ContestTrade paper-level conformance audit
 
-Overall verdict: **not reproduced**. The current paper (arXiv v4) and public
-source contain meaningful component-level evidence, but the released CLI does
-not execute either contest described as the core contribution.
+Overall verdict: **not reproduced**. All four official arXiv versions and all
+discovered public source refs have now been audited. The release provides useful
+component and author-output evidence, but no public revision executes the claimed
+system end to end or regenerates a paper result.
 
-## Primary sources
+## Primary sources and chronology
 
-- Official paper: https://arxiv.org/pdf/2508.00554v4 (SHA-256 `a2fd14e7e9074c535ab238a4a9028365c860169743e06223bd20302de549a15c`).
-- Public source: https://github.com/FinStep-AI/ContestTrade, commit `22432f9bbba5f1d6862d3b6b5508d4d882b40b94` (2025-12-22).
-
-The source snapshot predates paper v4 (2026-07-08). This timing may explain some
-formalism/source drift, but it cannot make absent public execution paths or data
-count as reproduced.
+- Official paper record: https://arxiv.org/abs/2508.00554. The v1--v4 PDFs and
+  TeX source archives are hash-pinned (35
+  PDF pages and 47 source files).
+  Every version retains the same 49 table cells and 15 result-figure series.
+- Public source: https://github.com/FinStep-AI/ContestTrade, current commit `22432f9bbba5f1d6862d3b6b5508d4d882b40b94`. Discovery covers main and
+  dev, tags v1.0/v1.1/v2.0, no GitHub releases, 130
+  reachable commits, 132 historical paths,
+  720 objects, and no
+  unreachable objects.
+- Paper v1 was submitted on 2025-08-01, before the public repository's first commit
+  on 2025-08-08 and before its first code tree on 2025-08-11. At v2 and v3 submission,
+  the public tree still contained neither the Data Contest nor Research Contest.
+  Those first appeared on 2025-08-26 and 2025-08-27, respectively.
+- Paper v4 (2026-07-08) postdates the current source head (2025-12-22), but the later
+  paper date cannot turn absent execution paths, inputs, or results into a replication.
 
 ## What the release genuinely preserves
 
-- A public CLI constructs `SimpleTradeCompany`; its data and research agent paths
-  are inspectable, and selected search tools bound requests to dates before the
-  trigger date.
+- `assets/performance_comparison.jpg` is byte-for-byte identical to the original v1
+  paper's main-result raster. This corroborates the authorship and lineage of all nine
+  visible curves, but the repository has no underlying dates/values and the revised
+  v2--v4 raster and six-series ablation raster occur only in paper source archives.
 - The isolated Data Contest contains five-day reward features and two serialized
-  LightGBM models. This audit reads their bytes only (never unpickles them) and
-  confirms the five feature names and L1-regression metadata. No training dates,
-  split, daily rolling trainer, seed, or dataset accompanies them.
-- The isolated Research weight optimizer implements the paper's positive-Sharpe
-  normalization rule. This is a component match, not an executed paper portfolio.
-- The paper is internally consistent where Table 3 Full repeats the three Table 1
-  ContestTrade metrics. Those identities are not independent results.
+  LightGBM models. This audit reads their bytes only (never unpickles them) and confirms
+  the five feature names and L1-regression metadata. No training dates, split, daily
+  rolling trainer, seed, or dataset accompanies them.
+- The isolated Research weight optimizer implements positive-Sharpe normalization.
+  This is a component match, not an executed paper portfolio.
+- The paper's repeated Full/Ours table cells are internally identical across all
+  versions. Repetition and author-rendered rasters are not independent reproductions.
 
 ## Why the claimed system is not replicated
 
-- Static tracing of the actual CLI reaches a three-node graph:
-  `run_data_agents -> run_research_agents -> finalize`. Neither `DataContest` nor
-  `ResearchContest` is imported or called. `finalize` simply exposes all research
-  signals; it does not construct the paper portfolio.
-- The isolated Research Contest requires two model files that are not released and
-  calls `predict_signal_scores`, which `ResearchPredictor` does not define. Its
-  default prediction horizon is three days, while paper v4 specifies five.
-- The Data Contest sorts predicted scores and retains top three. It does not implement
-  the paper's 32k-to-16k token-budgeted facility-location/lazy-greedy allocation or
-  embedding cosine diversity objective.
-- Paper Algorithm 1 sums signed rating x price change for ratings -2 through 2. The
-  released evaluator ignores every non-positive rating, clips changes to +/-20%, and
-  averages over valid observations. The committed synthetic diagnostic shows, for
-  example, paper reward 20 versus released reward 5 for a correct bullish and a
-  correct bearish observation.
-- The release has no immutable paper input panel, contest scores, selected factors,
-  actions, holdings, daily returns, experiment/backtest evaluator, baseline runner,
-  ablation driver, or paper-run seeds. The seven JSON caches are market metadata,
-  not the paper's news/financial/price inputs or outputs.
+- Exhaustive scanning of all 322 reachable blobs finds no CSV, Parquet, NumPy,
+  checkpoint, notebook, JSONL, or other native structured result path and no text blob
+  containing a complete paper result row. There are no raw numeric curves, contest
+  scores, selected factors, actions, holdings, daily returns, or run logs.
+- Static tracing of the actual CLI reaches `run_data_agents -> run_research_agents ->
+  finalize`. Neither `DataContest` nor `ResearchContest` is called, and `finalize`
+  exposes all research signals without constructing the paper portfolio.
+- The isolated Research Contest requires two absent model files and calls
+  `predict_signal_scores`, which `ResearchPredictor` does not define. Its default
+  prediction horizon is three days, while paper v4 specifies five.
+- The Data Contest sorts predicted scores and retains top three. No public revision
+  implements the paper's 32k-to-16k token-budgeted facility-location/lazy-greedy
+  allocator or embedding-cosine diversity objective.
+- Paper Algorithm 1 sums signed rating x price change. The released evaluator ignores
+  non-positive ratings, clips price changes to +/-20%, and averages observations. The
+  synthetic diagnostic gives paper reward 20 versus released reward 5 for one correct
+  bullish and one correct bearish observation.
+- The release lacks the immutable experiment panel, backtester/metric evaluator,
+  baseline and ablation runners, complete model/API snapshot, and run seeds. Its seven
+  JSON caches are market metadata, not paper inputs or outputs.
 
 ## Honest denominator
 
-All **49** numeric cells in Tables 1--3 are enumerated: 27 main performance cells,
-4 contest-score cells, and 18 ablation cells. **0/49** are native reproductions and
-49/49 are unavailable from released result paths. The three repeated Full/Ours
-cells agree internally but are counted only as identities. Static figures, code
-presence, model strings, and architectural proxies never receive result credit.
+The paper has **64 result display units**: 49 numeric table cells (27 main performance,
+4 contest-score, 18 ablation) plus 15 raster-only return series (9 main, 6 ablation).
+**0/64** are independently reproduced. The exact v1 raster is recorded separately as
+an author-output correspondence for nine series and receives no result credit. All 49
+table cells and all 15 numeric curves remain unavailable from native result paths.
 
-Run `scripts/audit_contesttrade_paper.py` to regenerate this evidence package. Use
-`--strict` to fail until the released system executes both contests and reproduces
-the native paper data, configurations, trajectories, portfolio, and all 49 values.
+Run `scripts/audit_contesttrade_paper.py` to regenerate this package. Use `--strict`
+to fail until the released system executes both contests and reproduces the pinned
+paper inputs, configurations, trajectories, portfolio, curves, and all 49 table cells.

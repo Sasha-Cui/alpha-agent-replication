@@ -1,0 +1,131 @@
+commit,committed_at,subject,tracked_files,data_contest_source_present,research_contest_source_present,native_structured_result_paths,native_structured_result_path_names,exact_original_v1_result_raster_paths,independently_regenerated_paper_results,paper_result_credit
+e42d8db87b0f54ce4013e47244c1196d612a95f5,2025-08-08T17:06:47+08:00,Initial commit,3,False,False,0,,,0,False
+fbba5877f649bffb75e6c85817e44b923368dea9,2025-08-08T17:11:52+08:00,Update README.md,3,False,False,0,,,0,False
+e03b9d0767bb9dbbf8f84da35712da07995dfce9,2025-08-08T17:17:11+08:00,Update README.md,3,False,False,0,,,0,False
+d5af1180540b712b930eaac001ca9e07519b4ef2,2025-08-08T17:20:56+08:00,Update LICENSE,3,False,False,0,,,0,False
+f8aa2364a3c2926111ec0d3fc4ed245d521ac7d8,2025-08-11T02:13:47+08:00,* init v0 code,55,False,False,0,,,0,False
+2459b89bdb757be342ab8f9631b806bc2f01b31c,2025-08-11T15:56:17+08:00,* Update README.md,57,False,False,0,,,0,False
+1a922c73dc9fefc6e2069d4fccbe400e3f6847ee,2025-08-11T15:57:42+08:00,* Add logo,62,False,False,0,,assets/performance_comparison.jpg,0,False
+1a3679b1e37c6ec218e4b0322b5a27ed8f1fe771,2025-08-11T17:57:41+08:00,docs: Update and sync README files,63,False,False,0,,assets/performance_comparison.jpg,0,False
+7223adf8c68c1c878fdb6efce355d45447832f03,2025-08-11T18:00:25+08:00,Merge pull request #1 from harooos/readme_update,63,False,False,0,,assets/performance_comparison.jpg,0,False
+3ce798292cfadf7a39a6f8acfdcef470524e75b0,2025-08-11T18:16:39+08:00,修改配置文件,62,False,False,0,,assets/performance_comparison.jpg,0,False
+273f19589f750311cbcbcefb7e5fbd0102ee8c35,2025-08-11T20:40:45+08:00,Merge pull request #2 from byx20001025/main,63,False,False,0,,assets/performance_comparison.jpg,0,False
+87c4edf353d62db3f9e12ea64787bb4d14e249ff,2025-08-11T20:53:47+08:00,cli update,63,False,False,0,,assets/performance_comparison.jpg,0,False
+878fba46c92be6df460adc8824817daa839aa06e,2025-08-11T21:16:31+08:00,修改serp_api搜索相关代码,62,False,False,0,,assets/performance_comparison.jpg,0,False
+0d54bf08a52fc2212e35e4c998e132c3b603e380,2025-08-12T11:11:28+08:00,Merge pull request #5 from byx20001025/main,63,False,False,0,,assets/performance_comparison.jpg,0,False
+6fc33fd416a00f2e0bd51a855adc77442b7c4e8e,2025-08-12T11:29:06+08:00,Merge pull request #4 from iamzuoyou/cli_dev,63,False,False,0,,assets/performance_comparison.jpg,0,False
+ccddb8303caf2a62209fd36ecaaa5b37a192b985,2025-08-12T17:45:07+08:00,* fix bug: factor content length && valid json filename for windows,63,False,False,0,,assets/performance_comparison.jpg,0,False
+accb3c80cf709b1a2bf7f6944b008a3d2cf3e34b,2025-08-12T17:55:56+08:00,* fix bug: model init,63,False,False,0,,assets/performance_comparison.jpg,0,False
+87da5a24fcee536efe8ae626940281075559823d,2025-08-12T18:05:47+08:00,Merge pull request #6 from harooos/yb_fix_bug,63,False,False,0,,assets/performance_comparison.jpg,0,False
+3763e148150a7d8dda01485b32739390d505ce8f,2025-08-12T19:38:07+08:00,* update tools,63,False,False,0,,assets/performance_comparison.jpg,0,False
+863c0a602b0aa4c0473e257e6b64de75b96d7111,2025-08-12T20:33:07+08:00,* update README.md,63,False,False,0,,assets/performance_comparison.jpg,0,False
+6f5d2de50e0295337ca0889a36fa1d1baf307679,2025-08-12T20:48:31+08:00,* namechange_data cached && config file relocated,64,False,False,0,,assets/performance_comparison.jpg,0,False
+115c2fcb263a77a92de908d92352ebe2ca32e209,2025-08-12T20:49:38+08:00,* update README,63,False,False,0,,assets/performance_comparison.jpg,0,False
+8ad1318e56b2725d103410a2d4d11e5aec08c63e,2025-08-12T20:56:49+08:00,* fix namechange_data cache dir,64,False,False,0,,assets/performance_comparison.jpg,0,False
+cf8ea21cfee19eed036a4da874c39d88a2bf1939,2025-08-12T21:00:39+08:00,Merge pull request #7 from harooos/yb_fix_bug,64,False,False,0,,assets/performance_comparison.jpg,0,False
+7e7b26fafbc5e524c454d5c02c138475f44a9976,2025-08-12T21:18:59+08:00,cli update & add detailed report,63,False,False,0,,assets/performance_comparison.jpg,0,False
+4e2a8f95bfa07a1fba4f53617d9da631a8d9fa72,2025-08-12T21:23:12+08:00,Merge pull request #8 from iamzuoyou/cli_dev,64,False,False,0,,assets/performance_comparison.jpg,0,False
+a36ed5452c65268d4c7dd2a7df394e552639d40d,2025-08-12T21:24:25+08:00,* update readme,68,False,False,0,,assets/performance_comparison.jpg,0,False
+3e8c05efce675685b9d21eef6fb08efab45586d8,2025-08-12T21:25:54+08:00,* update readme,68,False,False,0,,assets/performance_comparison.jpg,0,False
+99df2e4cf96e12058f6587ae55015f219679a84d,2025-08-12T21:29:56+08:00,* update readme_en,68,False,False,0,,assets/performance_comparison.jpg,0,False
+1ec1b01af3c68449bbc8a03a2747eb20aca4161c,2025-08-13T02:27:41+08:00,Merge branch 'FinStep-AI:main' into main,68,False,False,0,,assets/performance_comparison.jpg,0,False
+226ba991115ee31d8cb49a80762252dd5cb13377,2025-08-13T02:29:17+08:00,cli update: capture status from log,68,False,False,0,,assets/performance_comparison.jpg,0,False
+f14b556c7a336a1ef1ca9d0b66552f46f57706da,2025-08-13T02:51:39+08:00,update cli report jpg,67,False,False,0,,assets/performance_comparison.jpg,0,False
+7b1fbb3734768d925492030b27e743763c0d9283,2025-08-13T11:21:26+08:00,Merge pull request #9 from iamzuoyou/cli_dev,67,False,False,0,,assets/performance_comparison.jpg,0,False
+ebbcac9b455277bae095e7df836d4acfd70e1b9b,2025-08-13T17:08:51+08:00,* fix bug and refactor price_market source,67,False,False,0,,assets/performance_comparison.jpg,0,False
+7b2ecddba2dfbd3a8705bbbab49ca02b63aab0d0,2025-08-13T17:16:39+08:00,Merge pull request #10 from harooos/yb_fix_bug,67,False,False,0,,assets/performance_comparison.jpg,0,False
+13eaf2acb87c348ff695d54a8d861ab3a486c099,2025-08-13T20:52:17+08:00,update cli event stream,67,False,False,0,,assets/performance_comparison.jpg,0,False
+9afd4319b9cd9e3fcec320c9f87c0b5be7563df0,2025-08-13T23:33:49+08:00,* update Readme,68,False,False,0,,assets/performance_comparison.jpg,0,False
+16a786ab1b410db6b8825f283e4d4eee4e1ef6d7,2025-08-13T23:48:26+08:00,Merge pull request #11 from iamzuoyou/cli_dev,68,False,False,0,,assets/performance_comparison.jpg,0,False
+af1f3b9c494ff1a79590f075328b3325d5189e9d,2025-08-14T17:34:05+08:00,update signals' count of each agent,67,False,False,0,,assets/performance_comparison.jpg,0,False
+790383e085e5b9d1cccc5a72ef5442afa3aebf2b,2025-08-14T23:00:50+08:00,fix signal count(up_5) & add preference,67,False,False,0,,assets/performance_comparison.jpg,0,False
+022eb086ae193aa90fac358e850de2c964e6911c,2025-08-15T11:06:08+08:00,Merge pull request #13 from iamzuoyou/cli_dev,68,False,False,0,,assets/performance_comparison.jpg,0,False
+0a5c917a14d4116f17b14e28d7365b42d5cc6c34,2025-08-15T14:01:13+08:00,fix bug,68,False,False,0,,assets/performance_comparison.jpg,0,False
+1b5a3c77b7df5a2a8b22cce053a915cc25073979,2025-08-15T14:12:21+08:00,update readme,68,False,False,0,,assets/performance_comparison.jpg,0,False
+cf96f0999319fd16d9d2a8b5d553695e77469e3d,2025-08-15T14:16:03+08:00,Merge pull request #14 from harooos/fix_bug,68,False,False,0,,assets/performance_comparison.jpg,0,False
+632bceb7c67f7cb75809cfc167bb23c6da8dcbd1,2025-08-15T14:16:43+08:00,Merge pull request #15 from iamzuoyou/jzy_dev,68,False,False,0,,assets/performance_comparison.jpg,0,False
+8b829689755823fffcf86869dec5549ceb25606c,2025-08-15T15:17:55+08:00,update README_en.md,68,False,False,0,,assets/performance_comparison.jpg,0,False
+0bdc59530f6e5196f9701cbe2df8612869176c9e,2025-08-15T15:22:34+08:00,Merge pull request #16 from cmengting/main,68,False,False,0,,assets/performance_comparison.jpg,0,False
+9093395c5ee89a50bd82153536692cbb34bd3645,2025-08-15T18:12:14+08:00,fix logs path bug,68,False,False,0,,assets/performance_comparison.jpg,0,False
+706ac85f42eff9afe7a7eca76ef1b0d5e0e7d635,2025-08-15T18:18:09+08:00,Merge pull request #17 from iamzuoyou/jzy_dev,68,False,False,0,,assets/performance_comparison.jpg,0,False
+d3149ac5b7f0353981aa4a1aaaf1e7fc15b5a04d,2025-08-16T00:21:39+08:00,update readme,68,False,False,0,,assets/performance_comparison.jpg,0,False
+781c080547e5534fd2f384b1168c0c85fafaf2ef,2025-08-16T01:15:12+08:00,Merge pull request #18 from iamzuoyou/jzy_dev,68,False,False,0,,assets/performance_comparison.jpg,0,False
+b2ab2f5c7ba4ca7b0e623cd23d0d6f3f21e4a564,2025-08-18T00:25:12+08:00,fix hot_money trigger_time bug,68,False,False,0,,assets/performance_comparison.jpg,0,False
+750251a1cfc96470879ede7e513098466d9c27aa,2025-08-18T01:10:18+08:00,Merge pull request #21 from iamzuoyou/jzy_dev,68,False,False,0,,assets/performance_comparison.jpg,0,False
+69d5518f9ad2db0b75b2e83f34b63bb1eb29262e,2025-08-18T16:59:24+08:00,add Contributing guideline,70,False,False,0,,assets/performance_comparison.jpg,0,False
+bb43eccf27a4eda1b7f31d7cfc7459d2eabcadcd,2025-08-18T17:08:09+08:00,add star history,70,False,False,0,,assets/performance_comparison.jpg,0,False
+f9d92a5c21cfb3af7f69a333e44a038a280b34bb,2025-08-18T17:20:29+08:00,Merge pull request #24 from harooos/contributing,70,False,False,0,,assets/performance_comparison.jpg,0,False
+eb2b3d8914dc2c2d3e44d49ace1985618a0a95a0,2025-08-18T17:41:55+08:00,modify readme details,70,False,False,0,,assets/performance_comparison.jpg,0,False
+fb987913a169ebc2a24e2a4661ec6c60bec52c1c,2025-08-18T17:49:10+08:00,Merge pull request #26 from harooos/main,70,False,False,0,,assets/performance_comparison.jpg,0,False
+c021ea649bfdf3281cb3c884d389278bdcfacb2e,2025-08-18T18:56:27+08:00,add required config test,70,False,False,0,,assets/performance_comparison.jpg,0,False
+9a2fa4dfd6dbffbca9dda70fa0b78c8885e611b3,2025-08-18T18:56:27+08:00,fix config test,70,False,False,0,,assets/performance_comparison.jpg,0,False
+7e0dcc11c5f9553e8b0a4986babf49f5fe895878,2025-08-18T20:51:16+08:00,fix config test timeout,70,False,False,0,,assets/performance_comparison.jpg,0,False
+8293720e217560c7ac1bd3b04f375e88e4408845,2025-08-18T21:24:07+08:00,Merge pull request #30 from iamzuoyou/zuoyou_dev,70,False,False,0,,assets/performance_comparison.jpg,0,False
+fc9134979ab60b9349ae6969f35ec0d9d5fa6b58,2025-08-18T21:29:03+08:00,Merge pull request #31 from FinStep-AI/dev,70,False,False,0,,assets/performance_comparison.jpg,0,False
+e36ecef223eef563917b2d5812fac9599641a5d3,2025-08-21T22:22:34+08:00,增加datasource/sina_news_crawl.py 实时爬取sina财经新闻,71,False,False,0,,assets/performance_comparison.jpg,0,False
+5a0f1f0fdea91280b632d2724fb0e353720eb371,2025-08-21T22:22:34+08:00,新增data_source/thx_news_crawl.py 实时获取同花顺前端和后端新闻数据,72,False,False,0,,assets/performance_comparison.jpg,0,False
+00d2fedfff23779cb29c92f36fcff75711e6e850,2025-08-21T22:22:34+08:00,add akshare data_source,75,False,False,0,,assets/performance_comparison.jpg,0,False
+e3c27c85ebb560636e36e3fd65f141555a406a9b,2025-08-21T22:22:34+08:00,feat: 优化交易日历获取机制，增加缓存和AKShare fallback,76,False,False,0,,assets/performance_comparison.jpg,0,False
+ee40f9c3cb51e1d1b9649f6f64660bd3706ab247,2025-08-21T22:22:34+08:00,add akshare tools,80,False,False,0,,assets/performance_comparison.jpg,0,False
+2253c5be3e742e31aa13fa8a7fca8b9e9db1be4f,2025-08-21T22:22:34+08:00,fix some details of tools,80,False,False,0,,assets/performance_comparison.jpg,0,False
+39b9a610648bfcc476d72134f048331dc394e753,2025-08-21T22:22:34+08:00,fix some akshare error & add new config,81,False,False,0,,assets/performance_comparison.jpg,0,False
+a7f86dee022f1fdb0b45a1874f57ad42e29e0536,2025-08-21T22:22:34+08:00,feat: 为market_manager添加离线缓存支持,85,False,False,0,,assets/performance_comparison.jpg,0,False
+7470d794702ebe90055a9ecd24dc754798ac4088,2025-08-21T22:22:34+08:00,爬虫代码日志调整，并新增爬取失败跳过该地址，只当所有数据都爬取失败时报错,85,False,False,0,,assets/performance_comparison.jpg,0,False
+927fef3607aac7e4b748ff253f044c308ce936bf,2025-08-21T22:22:34+08:00,change config.akshare path,85,False,False,0,,assets/performance_comparison.jpg,0,False
+f577ae8f7d6af7c088091deb8c708c17cf213e4a,2025-08-21T22:22:34+08:00,update cli,85,False,False,0,,assets/performance_comparison.jpg,0,False
+3e8b32d1e04010a1b6b3d4d0f7bfe4d2732b1639,2025-08-21T22:22:34+08:00,add stock symbol search tool using akshare,86,False,False,0,,assets/performance_comparison.jpg,0,False
+cda7df7946fe36eb1f3a25f271e3455219be1097,2025-08-21T22:22:34+08:00,upadate readme,88,False,False,0,,assets/performance_comparison.jpg,0,False
+88789c71b1724d3aa8294f8e1c3943128d6d950d,2025-08-21T22:22:34+08:00,fix cli error,87,False,False,0,,assets/performance_comparison.jpg,0,False
+379b215bb36a06152337ce5375a0571604cf380f,2025-08-21T22:22:34+08:00,update readme,86,False,False,0,,assets/performance_comparison.jpg,0,False
+d40b8c6ed2c9dba63904339fb750a6ce1541b3e4,2025-08-21T22:22:34+08:00,update readme,86,False,False,0,,assets/performance_comparison.jpg,0,False
+6df5a3e1feba7c4bc47039a396bba9e146b66b1b,2025-08-21T22:22:34+08:00,修复了LLM测试连接时，部分模型返回结果存在空值导致LLM连接失败；增加新闻爬取时的时间下限，确保新闻时间跨度为一天内,86,False,False,0,,assets/performance_comparison.jpg,0,False
+9667243bd2f27727b5d42b80f85dfa2773e409ae,2025-08-21T22:22:34+08:00,* opt stock selector tool,86,False,False,0,,assets/performance_comparison.jpg,0,False
+3025a7150ca539d43617437c0253fe6caf0c0cba,2025-08-21T22:23:26+08:00,Merge branch 'dev',86,False,False,0,,assets/performance_comparison.jpg,0,False
+a6d23c994f3238f98a18d6f4f995cf7585d211a6,2025-08-22T17:44:12+08:00,add data analysis report in cli and readme,87,False,False,0,,assets/performance_comparison.jpg,0,False
+439b60a20abfe651f29b95098acc8694a7f69ba9,2025-08-22T17:59:58+08:00,Merge pull request #53 from iamzuoyou/zuoyou_dev,87,False,False,0,,assets/performance_comparison.jpg,0,False
+b326a8acaccb9e4de66e8d21624154fc8c11ed82,2025-08-22T19:09:35+08:00,Merge branch 'dev',87,False,False,0,,assets/performance_comparison.jpg,0,False
+92fce9cc479785044b2c930ab9458c80156d8402,2025-08-22T19:14:53+08:00,* add akshare check,87,False,False,0,,assets/performance_comparison.jpg,0,False
+542f140bb0b14852ddcf26f5186cc6c3d57e4f77,2025-08-24T10:37:51+08:00,* fix akshare cache error,87,False,False,0,,assets/performance_comparison.jpg,0,False
+7236f3310091ba66a55906b870711c65284feba2,2025-08-25T19:28:49+08:00,添加docker file,89,False,False,0,,assets/performance_comparison.jpg,0,False
+01ce65b53015513af4f2d5e2f2bfda72dd4d4c5b,2025-08-26T14:20:06+08:00,feat: add DataContest system for factor evaluation and selection,93,True,False,0,,assets/performance_comparison.jpg,0,False
+ec8139b838b356972338b3028d64bf461b2946d4,2025-08-26T19:38:59+08:00,Merge pull request #62 from lugesot/feature/add_docker,95,True,False,0,,assets/performance_comparison.jpg,0,False
+4551aff132f3a2c3636fa0a37a1774ea7b9b05b9,2025-08-26T19:45:34+08:00,adjust dockerfile & readme,95,True,False,0,,assets/performance_comparison.jpg,0,False
+184728eff2fe15a70b13ec4df53a176ea91b88a7,2025-08-26T19:47:28+08:00,Merge pull request #63 from iamzuoyou/zuoyou_dev,95,True,False,0,,assets/performance_comparison.jpg,0,False
+86a80065261782f34bdc79b90912f4870c2f8eee,2025-08-26T19:51:18+08:00,update: integrate LightGBM predictor and fix selection logic,95,True,False,0,,assets/performance_comparison.jpg,0,False
+76c02881613f8211e0f8973bd0eeeec7f6f4c5c7,2025-08-26T19:54:52+08:00,Merge pull request #65 from harooos/feat/add-data-contest-system,97,True,False,0,,assets/performance_comparison.jpg,0,False
+9b5148b45ceb62713add983bc88e5a1a2cc227fd,2025-08-26T19:57:38+08:00,Merge pull request #66 from FinStep-AI/dev,97,True,False,0,,assets/performance_comparison.jpg,0,False
+ae2623b8c3d453a4d5181e5603607f3f28fe8b65,2025-08-27T20:23:00+08:00,simplify main,97,True,False,0,,assets/performance_comparison.jpg,0,False
+2ad4f371396ae21abd58ea5e9129f05dac8fb7cf,2025-08-27T20:26:23+08:00,add research_contest,100,True,True,0,,assets/performance_comparison.jpg,0,False
+2c964c5213511e1bde5062f9b66ae18474a1f4c8,2025-08-27T20:36:44+08:00,Merge pull request #68 from iamzuoyou/zuoyou_dev,100,True,True,0,,assets/performance_comparison.jpg,0,False
+16f88b9b748e4398e9a9327aa37e5f0d393e9c3b,2025-08-27T20:40:19+08:00,Merge pull request #69 from FinStep-AI/dev,100,True,True,0,,assets/performance_comparison.jpg,0,False
+0ee264975c629315223d667ce536f2293e51b197,2025-08-28T18:08:10+08:00,update QR code,100,True,True,0,,assets/performance_comparison.jpg,0,False
+d871477609a82bbb11c1ed70dfc5aa94686e6add,2025-08-28T19:57:34+08:00,fix main signal display,100,True,True,0,,assets/performance_comparison.jpg,0,False
+5bf666fd9b0524d557c8bd5d02f2934774ceea6e,2025-08-28T20:02:54+08:00,Merge pull request #72 from iamzuoyou/zuoyou_dev,100,True,True,0,,assets/performance_comparison.jpg,0,False
+97909e7d4fb8aa4b9fad87494f4bc02354ba4de5,2025-08-28T20:06:05+08:00,Merge pull request #73 from FinStep-AI/dev,100,True,True,0,,assets/performance_comparison.jpg,0,False
+a56a1287f075d3fe5544f24507d304cfd22e242a,2025-08-28T20:58:22+08:00,fix: add prompt_toolkit version constraint for questionary compatibility,100,True,True,0,,assets/performance_comparison.jpg,0,False
+aecd60d34acb78f2058f7e18979469abd9f8ac4d,2025-08-30T16:22:42+08:00,[feat] us data sources,103,True,True,0,,assets/performance_comparison.jpg,0,False
+c35bf986ac32d18213411c6ddeaf0d9452ed1a4e,2025-08-30T16:24:05+08:00,Update fmp_utils.py,103,True,True,0,,assets/performance_comparison.jpg,0,False
+e3194ba98617cf1069b7a192fe9bae964030751c,2025-08-30T19:53:22+08:00,删除新增sys path的逻辑,104,True,True,0,,assets/performance_comparison.jpg,0,False
+2015725f5f71266680e721b305ee829bfc2b00b3,2025-08-31T04:16:49+08:00,Merge pull request #77 from stepfun-sunrui/us_feature_v1,104,True,True,0,,assets/performance_comparison.jpg,0,False
+86d243e0170cc39c7e1b37ce13d62a1fcf0b4499,2025-08-31T04:18:46+08:00,* add us tools us config,112,True,True,0,,assets/performance_comparison.jpg,0,False
+23f4fdae53f90df8ffbd165d7e41caca46f73553,2025-08-31T04:21:15+08:00,* update us config,112,True,True,0,,assets/performance_comparison.jpg,0,False
+3eba9ba85f0093c4f15c7d1da8c60382eae730b8,2025-08-31T13:02:38+08:00,* fix some bugs in us market,112,True,True,0,,assets/performance_comparison.jpg,0,False
+3a1387bc6e5356db7fe4e3c8237a9b4669adc777,2025-08-31T13:38:44+08:00,*  update config selection in cli,112,True,True,0,,assets/performance_comparison.jpg,0,False
+eaf58f246521a37d26fedf12bd3bf56629789f64,2025-08-31T19:32:57+08:00,fix us_price_market language,112,True,True,0,,assets/performance_comparison.jpg,0,False
+1001f573507228a20f062bc2dd8f414b1250cd55,2025-08-31T19:34:08+08:00,add english version cli,112,True,True,0,,assets/performance_comparison.jpg,0,False
+c1085f2a482d4e47937729462b357ca0111dd04c,2025-09-01T14:51:14+08:00,update readme,117,True,True,0,,assets/performance_comparison.jpg,0,False
+dd672d3a220607e98289047affca81c3652809a9,2025-09-01T14:59:00+08:00,Merge pull request #80 from iamzuoyou/zuoyou_dev,117,True,True,0,,assets/performance_comparison.jpg,0,False
+81e65c40242cc4f9ae712bf018b0c9e872f93d22,2025-09-01T17:36:10+08:00,add version in cli,117,True,True,0,,assets/performance_comparison.jpg,0,False
+7e960d01f7bba90c4e076fc8da59326838a861a5,2025-09-01T18:10:54+08:00,Merge pull request #82 from iamzuoyou/zuoyou_dev,117,True,True,0,,assets/performance_comparison.jpg,0,False
+cea20fcbcda2614a80b7f487f73769321a293641,2025-09-12T16:09:37+08:00,Update config.yaml,117,True,True,0,,assets/performance_comparison.jpg,0,False
+8e739c843ad0841991679cead3ba104538180c7e,2025-09-12T17:11:04+08:00,Add files via upload,117,True,True,0,,assets/performance_comparison.jpg,0,False
+1a8893ba83d9a14506e96ddceb09f7c05a72dd6e,2025-09-12T17:31:00+08:00,add comments,117,True,True,0,,assets/performance_comparison.jpg,0,False
+8714a802585b88c2ec9ceff2577aafc089700f5d,2025-09-12T19:17:39+08:00,update docker version to v2.0,117,True,True,0,,assets/performance_comparison.jpg,0,False
+b017ffaa23eee5043163b4a11b5803b6da58fd0e,2025-09-12T19:18:58+08:00,Merge pull request #85 from iamzuoyou/zuoyou_dev,117,True,True,0,,assets/performance_comparison.jpg,0,False
+02a533e3f03e1525a07873f358e6ab18cdfad7c2,2025-09-12T19:19:17+08:00,Merge pull request #86 from FinStep-AI/dev,117,True,True,0,,assets/performance_comparison.jpg,0,False
+93e2299a2993f2c2d1bb6fbf9cfd1b51c998c385,2025-09-12T20:10:11+08:00,Add assertions for API key validation in LLM models,117,True,True,0,,assets/performance_comparison.jpg,0,False
+98212162c7bc42f26ec740e90b594867919e87c0,2025-09-13T13:44:09+08:00,Merge pull request #84 from simon32123/main,117,True,True,0,,assets/performance_comparison.jpg,0,False
+43a1ff3259648f984cdd8825b6f1b088bea520a3,2025-09-13T13:45:22+08:00,* update uv env,117,True,True,0,,assets/performance_comparison.jpg,0,False
+79249b5ff48f115335041d2364f97fe370947daa,2025-09-13T20:16:30+08:00,* add default model provider,117,True,True,0,,assets/performance_comparison.jpg,0,False
+5d9b6485446b4ced297b076e1e8416e68ebb31e2,2025-10-13T20:28:42+08:00,update report,117,True,True,0,,assets/performance_comparison.jpg,0,False
+22432f9bbba5f1d6862d3b6b5508d4d882b40b94,2025-12-22T17:26:26+08:00,adjust defult readme,117,True,True,0,,assets/performance_comparison.jpg,0,False
