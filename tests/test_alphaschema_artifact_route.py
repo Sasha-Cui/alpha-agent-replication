@@ -72,12 +72,14 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["fidelity_class"] == "F1_static_no_native_output"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_"
-        "panels_full_two_commit_history_nine_tests_appendix_component_missing_research_lineage"
+        "panels_full_two_commit_history_nine_tests_appendix_component_missing_research_"
+        "lineage_4_forks_5_refs_2_unique_heads_exhausted"
     )
     note = row["concise_evidence_note"]
     for marker in (
         "212", "9 empirical panels", "two-commit public history", "9 author tests", "48 plans",
         "mock evaluator", "Appendix factor", "0/212", "0/9",
+        "All four accessible forks", "two commits and ten paths",
     ):
         assert marker in note
 

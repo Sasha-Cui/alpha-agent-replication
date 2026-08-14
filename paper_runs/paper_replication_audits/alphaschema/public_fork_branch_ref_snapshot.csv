@@ -1,0 +1,6 @@
+repository,branch,head_commit,repository_created_at,repository_pushed_at,head_committed_at,head_author_login,head_author_name,head_author_email,head_subject
+Castiel4517/AlphaSchema,feat/timeout-protection,15c3919a867b8bc8a5b3a0c358c2d6252fad76e8,2026-08-09T12:38:18Z,2026-08-09T14:33:32Z,2026-08-09T14:33:29Z,Castiel4517,Castiel4517,castiel4517@users.noreply.github.com,"feat: add SSL/timeout retry logic (3 retries, exponential backoff)"
+Castiel4517/AlphaSchema,main,1206a094abfaad7cc53e6dff39f8fae43e851acb,2026-08-09T12:38:18Z,2026-08-09T14:33:32Z,2026-07-29T08:06:41Z,JingyangYi,Jingyang Yi,2548504981yjy@gmail.com,docs: refresh bilingual README and add method figure
+chouyong/AlphaSchema,main,1206a094abfaad7cc53e6dff39f8fae43e851acb,2026-08-07T07:30:24Z,2026-07-29T08:31:19Z,2026-07-29T08:06:41Z,JingyangYi,Jingyang Yi,2548504981yjy@gmail.com,docs: refresh bilingual README and add method figure
+GitouYou/AlphaSchema,main,1206a094abfaad7cc53e6dff39f8fae43e851acb,2026-08-14T01:07:14Z,2026-07-29T08:31:19Z,2026-07-29T08:06:41Z,JingyangYi,Jingyang Yi,2548504981yjy@gmail.com,docs: refresh bilingual README and add method figure
+yoshino-polyu/AlphaSchema,main,1206a094abfaad7cc53e6dff39f8fae43e851acb,2026-07-31T23:54:09Z,2026-07-29T08:31:19Z,2026-07-29T08:06:41Z,JingyangYi,Jingyang Yi,2548504981yjy@gmail.com,docs: refresh bilingual README and add method figure

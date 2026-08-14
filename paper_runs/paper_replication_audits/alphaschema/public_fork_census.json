@@ -1,0 +1,17 @@
+{
+  "census_date": "2026-08-14",
+  "divergent_changed_paths_reviewed": 10,
+  "divergent_extra_commits_reviewed": 2,
+  "divergent_head_classification": "unaffiliated_postpaper_timeout_retry_hardening_and_package_metadata",
+  "divergent_heads_matching_paper_author_identity": 0,
+  "divergent_heads_reviewed": 1,
+  "exact_paper_result_table_or_figure_paths_discovered": 0,
+  "github_rest_reported_forks": 4,
+  "graphql_accessible_branch_ref_census_sha256": "b5997483f44a005307df625ca914d8dc4bb866f0e9e13af8d54d7475a63c1b34",
+  "graphql_accessible_branch_refs": 5,
+  "graphql_accessible_forks": 4,
+  "heads_reachable_from_official_history": 1,
+  "native_data_search_history_factor_prediction_portfolio_or_result_paths_discovered": 0,
+  "paper_result_credit": false,
+  "unique_heads": 2
+}

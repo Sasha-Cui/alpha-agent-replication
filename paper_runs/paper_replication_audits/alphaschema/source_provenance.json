@@ -112,6 +112,12 @@
     "default_end_to_end_launcher_operational": false,
     "full_public_history_audited": true,
     "historical_unclassified_result_artifact_paths": 0,
+    "public_fork_branch_refs_audited": 5,
+    "public_fork_census_date": "2026-08-14",
+    "public_fork_divergent_heads_audited": 1,
+    "public_fork_native_result_artifacts_found": false,
+    "public_fork_unique_heads_audited": 2,
+    "public_forks_accessible": 4,
     "public_history_commits": 2,
     "published_result_lineage_recovered": false,
     "runtime_source_recovered": true

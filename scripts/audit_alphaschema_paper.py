@@ -23,6 +23,36 @@ REPOSITORY_URL = "https://github.com/JingyangYi/AlphaSchema"
 REPOSITORY_HEAD = "1206a094abfaad7cc53e6dff39f8fae43e851acb"
 REPOSITORY_ROOT = "db11e667b08a0d0d6ce0609cdc6c2c9c804ca4cb"
 REPOSITORY_COMMIT_COUNT = 2
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_REST_COUNT = 4
+PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT = 4
+PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT = 5
+PUBLIC_FORK_GRAPHQL_REF_SHA256 = "b5997483f44a005307df625ca914d8dc4bb866f0e9e13af8d54d7475a63c1b34"
+PUBLIC_FORK_SNAPSHOT_SHA256 = "c09199396a487b72ee707f91f6f2ef1819a9975fee64d17d76bbc77adfc4dc2c"
+PUBLIC_FORK_REPRESENTATIVE_REF_SHA256 = "e2bdadbe5c77ccf6f3b317ccc0e793810bb6da18b3b0ff25a0a7da4b390c518b"
+PUBLIC_FORK_UNIQUE_HEAD_SHA256 = "aba636db44ef07a7656eae1b417a65437bdfd0c4610720e610273d19b025c137"
+PUBLIC_FORK_DIVERGENT_HEAD = "15c3919a867b8bc8a5b3a0c358c2d6252fad76e8"
+PUBLIC_FORK_DIVERGENT_COMMITS = (
+    "15c3919a867b8bc8a5b3a0c358c2d6252fad76e8",
+    "332a9f3e3dfec0e1dd975ec1d5e9fa4a04c8767e",
+)
+PUBLIC_FORK_DIVERGENT_COMMIT_SHA256 = "749b1db53b8ce2df36abf2131876feddbc2cd78ad66c7daea332422de984d13d"
+PUBLIC_FORK_DIVERGENT_PATHS = (
+    "alphaschema.egg-info/PKG-INFO",
+    "alphaschema.egg-info/SOURCES.txt",
+    "alphaschema.egg-info/dependency_links.txt",
+    "alphaschema.egg-info/entry_points.txt",
+    "alphaschema.egg-info/requires.txt",
+    "alphaschema.egg-info/top_level.txt",
+    "alphaschema/backend.py",
+    "alphaschema/cli.py",
+    "alphaschema/code_agent.py",
+    "alphaschema/workflow.py",
+)
+PUBLIC_FORK_DIVERGENT_PATH_SHA256 = "9c06f4f23fb4f05e277f79d4c61e519872ea9990799f537d731ab8fd6c03a090"
+PUBLIC_FORK_DIVERGENT_AUTHOR_NAME = "Castiel4517"
+PUBLIC_FORK_DIVERGENT_AUTHOR_EMAIL = "castiel4517@users.noreply.github.com"
+PAPER_AUTHOR_NAMES = {"Jingyang Yi", "Jian Yang", "Yifei Jin", "Yuqi Li", "Jian Li"}
 RESULT_PATH_PARTS = {
     "action", "actions", "checkpoint", "checkpoints", "experiment", "experiments",
     "fill", "fills", "holding", "holdings", "log", "logs", "output", "outputs",
@@ -78,6 +108,14 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
+def sha256_lines(lines: Iterable[str]) -> str:
+    return sha256_bytes("".join(f"{line}\n" for line in lines).encode("utf-8"))
 
 
 def write_csv(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
@@ -143,6 +181,160 @@ def source_history_rows(history_root: Path) -> list[dict[str, Any]]:
             }
         )
     return rows
+
+
+def public_fork_census(
+    census_root: Path,
+    branch_ref_snapshot: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Audit every accessible AlphaSchema fork branch and unique head."""
+    if git(census_root, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise ValueError("AlphaSchema public-fork census is shallow")
+    ref_lines = git(
+        census_root,
+        "for-each-ref",
+        "refs/fork-census",
+        "--format=%(refname)%09%(objectname)",
+    ).splitlines()
+    if len(ref_lines) != 2 or sha256_lines(ref_lines) != PUBLIC_FORK_REPRESENTATIVE_REF_SHA256:
+        raise ValueError("AlphaSchema representative public-fork refs changed")
+    refs = [line.split("\t", 1) for line in ref_lines]
+    unique_heads = sorted({head for _, head in refs})
+    if len(unique_heads) != 2 or sha256_lines(unique_heads) != PUBLIC_FORK_UNIQUE_HEAD_SHA256:
+        raise ValueError("AlphaSchema public-fork unique heads changed")
+
+    if sha256(branch_ref_snapshot) != PUBLIC_FORK_SNAPSHOT_SHA256:
+        raise ValueError("AlphaSchema public-fork branch-ref snapshot bytes changed")
+    with branch_ref_snapshot.open(newline="", encoding="utf-8") as handle:
+        branch_rows = list(csv.DictReader(handle))
+    expected_columns = (
+        "repository",
+        "branch",
+        "head_commit",
+        "repository_created_at",
+        "repository_pushed_at",
+        "head_committed_at",
+        "head_author_login",
+        "head_author_name",
+        "head_author_email",
+        "head_subject",
+    )
+    if not branch_rows or tuple(branch_rows[0]) != expected_columns:
+        raise ValueError("AlphaSchema public-fork branch-ref schema changed")
+    branch_rows.sort(
+        key=lambda row: (row["repository"].lower(), row["branch"].lower(), row["head_commit"])
+    )
+    canonical_refs = [
+        f'{row["repository"]}\t{row["branch"]}\t{row["head_commit"]}' for row in branch_rows
+    ]
+    if (
+        len(branch_rows) != PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT
+        or len({row["repository"] for row in branch_rows}) != PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT
+        or len({(row["repository"], row["branch"]) for row in branch_rows}) != len(branch_rows)
+        or sha256_lines(canonical_refs) != PUBLIC_FORK_GRAPHQL_REF_SHA256
+        or {row["head_commit"] for row in branch_rows} != set(unique_heads)
+    ):
+        raise ValueError("AlphaSchema complete public-fork branch-ref snapshot changed")
+
+    head_rows: list[dict[str, Any]] = []
+    all_extra_commits: set[str] = set()
+    all_changed_paths: set[str] = set()
+    extra_author_names: set[str] = set()
+    extra_author_emails: set[str] = set()
+    result_candidates: set[str] = set()
+    for ref, head in refs:
+        extra_commits = sorted(
+            line
+            for line in git(census_root, "rev-list", head, "--not", REPOSITORY_HEAD).splitlines()
+            if line
+        )
+        changed_paths: set[str] = set()
+        for commit in extra_commits:
+            changed_paths.update(
+                path
+                for path in git(
+                    census_root,
+                    "diff-tree",
+                    "--root",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    commit,
+                ).splitlines()
+                if path
+            )
+            author_name, author_email = git(
+                census_root, "show", "-s", "--format=%an%x09%ae", commit
+            ).strip().split("\t", 1)
+            extra_author_names.add(author_name)
+            extra_author_emails.add(author_email)
+        ordered_paths = sorted(changed_paths)
+        for path in ordered_paths:
+            lower = path.lower()
+            if (
+                any(part in RESULT_PATH_PARTS for part in lower.split("/"))
+                or lower.endswith(RESULT_ARTIFACT_SUFFIXES)
+            ):
+                result_candidates.add(path)
+        if extra_commits:
+            if head != PUBLIC_FORK_DIVERGENT_HEAD:
+                raise ValueError(f"unreviewed divergent AlphaSchema fork head: {head}")
+            classification = "unaffiliated_postpaper_timeout_retry_hardening_and_package_metadata"
+            all_extra_commits.update(extra_commits)
+            all_changed_paths.update(ordered_paths)
+        else:
+            classification = "official_public_history_reachable"
+        matching = [row for row in branch_rows if row["head_commit"] == head]
+        head_rows.append({
+            "representative_ref": ref,
+            "head_commit": head,
+            "branch_ref_count": len(matching),
+            "repository_count": len({row["repository"] for row in matching}),
+            "repositories": ";".join(sorted({row["repository"] for row in matching})),
+            "extra_commit_count_beyond_official_head": len(extra_commits),
+            "extra_changed_path_count": len(ordered_paths),
+            "extra_changed_paths": ";".join(ordered_paths),
+            "paper_author_identity_match_in_extra_commits": False,
+            "native_result_artifact_path_count": 0,
+            "classification": classification,
+            "paper_result_credit": False,
+        })
+
+    if sorted(all_extra_commits) != list(PUBLIC_FORK_DIVERGENT_COMMITS):
+        raise ValueError("AlphaSchema divergent fork commit set changed")
+    if sha256_lines(sorted(all_extra_commits)) != PUBLIC_FORK_DIVERGENT_COMMIT_SHA256:
+        raise ValueError("AlphaSchema divergent fork commit hash changed")
+    if sorted(all_changed_paths) != list(PUBLIC_FORK_DIVERGENT_PATHS):
+        raise ValueError("AlphaSchema divergent fork path set changed")
+    if sha256_lines(sorted(all_changed_paths)) != PUBLIC_FORK_DIVERGENT_PATH_SHA256:
+        raise ValueError("AlphaSchema divergent fork path hash changed")
+    if extra_author_names != {PUBLIC_FORK_DIVERGENT_AUTHOR_NAME} or extra_author_emails != {
+        PUBLIC_FORK_DIVERGENT_AUTHOR_EMAIL
+    }:
+        raise ValueError("AlphaSchema divergent fork author identity changed")
+    if extra_author_names & PAPER_AUTHOR_NAMES or result_candidates:
+        raise ValueError("AlphaSchema divergent fork attribution/result boundary changed")
+
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_REST_COUNT,
+        "graphql_accessible_forks": PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT,
+        "graphql_accessible_branch_refs": PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT,
+        "graphql_accessible_branch_ref_census_sha256": PUBLIC_FORK_GRAPHQL_REF_SHA256,
+        "unique_heads": len(unique_heads),
+        "heads_reachable_from_official_history": 1,
+        "divergent_heads_reviewed": 1,
+        "divergent_extra_commits_reviewed": len(all_extra_commits),
+        "divergent_changed_paths_reviewed": len(all_changed_paths),
+        "divergent_heads_matching_paper_author_identity": 0,
+        "divergent_head_classification": (
+            "unaffiliated_postpaper_timeout_retry_hardening_and_package_metadata"
+        ),
+        "native_data_search_history_factor_prediction_portfolio_or_result_paths_discovered": 0,
+        "exact_paper_result_table_or_figure_paths_discovered": 0,
+        "paper_result_credit": False,
+    }
+    return branch_rows, head_rows, summary
 
 
 def safe_archives(scratch: Path) -> None:
@@ -350,6 +542,13 @@ blobs are unchanged. Across both revisions, the only JSON payloads are the searc
 configuration and five schema definitions. No result/log/checkpoint/data path,
 factor pool, prediction, holding, return, or paper-result array is present.
 
+A dated census covers all four accessible public forks and five branch refs,
+which collapse to two unique heads. One head is official-history reachable. The
+sole divergent head has two unaffiliated post-paper commits touching ten paths:
+timeout/retry hardening plus generated `egg-info` package metadata. It adds no
+market data, search history, factor pool, prediction, portfolio, metric, table,
+figure, or other paper-result artifact and receives zero paper-result credit.
+
 Several release details diverge from the manuscript. The paper's main target is
 `Ref(close,-6)/Ref(close,-1)-1`, whereas the backend uses
 `close.shift(-5)/close-1`. The paper states 140 price-volume components
@@ -368,7 +567,12 @@ not a true reproduction of AlphaSchema's reported predictive or portfolio result
 """
 
 
-def build(scratch: Path, output: Path) -> dict[str, Any]:
+def build(
+    scratch: Path,
+    output: Path,
+    fork_census_root: Path,
+    fork_branch_ref_snapshot: Path,
+) -> dict[str, Any]:
     inventory = validate_inputs(scratch)
     output.mkdir(parents=True, exist_ok=True)
     results = result_rows()
@@ -386,6 +590,12 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
     history = source_history_rows(scratch / "discovery/alphaschema-history")
     write_csv(output / "released_source_history_inventory.csv", history)
+    fork_branches, fork_heads, fork_summary = public_fork_census(
+        fork_census_root, fork_branch_ref_snapshot
+    )
+    write_csv(output / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    write_csv(output / "public_fork_unique_head_inventory.csv", fork_heads)
+    write_json(output / "public_fork_census.json", fork_summary)
     release = release_audit(scratch)
     write_json(output / "release_execution_audit.json", release)
     write_json(output / "source_provenance.json", {
@@ -420,6 +630,12 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             "historical_unclassified_result_artifact_paths": sum(
                 row["unclassified_result_artifact_paths"] for row in history
             ),
+            "public_fork_census_date": fork_summary["census_date"],
+            "public_forks_accessible": fork_summary["graphql_accessible_forks"],
+            "public_fork_branch_refs_audited": fork_summary["graphql_accessible_branch_refs"],
+            "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+            "public_fork_divergent_heads_audited": fork_summary["divergent_heads_reviewed"],
+            "public_fork_native_result_artifacts_found": False,
         },
     })
     (output / "README.md").write_text(readme(), encoding="utf-8")
@@ -439,6 +655,21 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "repository_history_paper_result_artifacts_found": sum(
             bool(row["paper_result_artifact_found"]) for row in history
         ),
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary["github_rest_reported_forks"],
+        "public_forks_accessible_via_graphql": fork_summary["graphql_accessible_forks"],
+        "public_fork_branch_refs_audited": fork_summary["graphql_accessible_branch_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_heads_reachable_from_official_history": fork_summary[
+            "heads_reachable_from_official_history"
+        ],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_heads_reviewed"],
+        "public_fork_divergent_commits_audited": fork_summary[
+            "divergent_extra_commits_reviewed"
+        ],
+        "public_fork_divergent_paths_audited": fork_summary["divergent_changed_paths_reviewed"],
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "native_demo_plans": 48, "native_component_checks_passed": 3,
         "full_launcher_operational_as_released": False,
         "full_end_to_end_pipeline_reproduced": False, "strict_success": False,
@@ -455,9 +686,24 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--scratch", type=Path, default=DEFAULT_SCRATCH)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--fork-census-root",
+        type=Path,
+        default=Path("/nfs/roberts/scratch/pi_btk22/zc362/alphaschema_fork_census"),
+    )
+    parser.add_argument(
+        "--fork-branch-ref-snapshot",
+        type=Path,
+        default=DEFAULT_OUTPUT / "public_fork_branch_ref_snapshot.csv",
+    )
     parser.add_argument("--strict", action="store_true")
     args = parser.parse_args()
-    manifest = build(args.scratch, args.output)
+    manifest = build(
+        args.scratch,
+        args.output,
+        args.fork_census_root,
+        args.fork_branch_ref_snapshot,
+    )
     print(args.output)
     if args.strict and not manifest["strict_success"]:
         raise SystemExit(1)

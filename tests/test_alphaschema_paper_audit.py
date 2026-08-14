@@ -91,6 +91,42 @@ def test_complete_public_history_has_no_latent_result_artifact() -> None:
     assert data["repository_history_paper_result_artifacts_found"] == 0
 
 
+def test_complete_public_fork_surface_adds_only_unaffiliated_robustness_code() -> None:
+    branches = rows("public_fork_branch_ref_snapshot.csv")
+    heads = rows("public_fork_unique_head_inventory.csv")
+    census = json.loads((AUDIT_DIR / "public_fork_census.json").read_text())
+    data = manifest()
+    assert len(branches) == 5
+    assert len({row["repository"] for row in branches}) == 4
+    assert len(heads) == 2
+    assert Counter(row["classification"] for row in heads) == {
+        "official_public_history_reachable": 1,
+        "unaffiliated_postpaper_timeout_retry_hardening_and_package_metadata": 1,
+    }
+    divergent = next(row for row in heads if row["extra_commit_count_beyond_official_head"] == "2")
+    assert divergent["head_commit"] == audit.PUBLIC_FORK_DIVERGENT_HEAD
+    assert divergent["extra_changed_path_count"] == "10"
+    assert divergent["paper_author_identity_match_in_extra_commits"] == "False"
+    assert divergent["native_result_artifact_path_count"] == "0"
+    assert divergent["paper_result_credit"] == "False"
+    assert data["public_fork_census_date"] == "2026-08-14"
+    assert data["public_forks_reported_by_github_rest"] == 4
+    assert data["public_forks_accessible_via_graphql"] == 4
+    assert data["public_fork_branch_refs_audited"] == 5
+    assert data["public_fork_unique_heads_audited"] == 2
+    assert data["public_fork_heads_reachable_from_official_history"] == 1
+    assert data["public_fork_divergent_heads_audited"] == 1
+    assert data["public_fork_divergent_commits_audited"] == 2
+    assert data["public_fork_divergent_paths_audited"] == 10
+    assert data["public_fork_native_result_artifacts_found"] is False
+    assert data["public_fork_paper_result_credit"] is False
+    assert census[
+        "native_data_search_history_factor_prediction_portfolio_or_result_paths_discovered"
+    ] == 0
+    assert census["exact_paper_result_table_or_figure_paths_discovered"] == 0
+    assert census["paper_result_credit"] is False
+
+
 def test_author_tests_demo_and_appendix_component_have_no_result_credit() -> None:
     release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
     assert release["editable_install_passed"] is True
@@ -166,8 +202,10 @@ def test_generator_is_deterministic_and_strict_mode_fails_closed(tmp_path: Path)
         pytest.skip("pinned AlphaSchema source/release scratch is only available on Bouchet")
     first = tmp_path / "first"
     second = tmp_path / "second"
-    audit.build(audit.DEFAULT_SCRATCH, first)
-    audit.build(audit.DEFAULT_SCRATCH, second)
+    census_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/alphaschema_fork_census")
+    snapshot = AUDIT_DIR / "public_fork_branch_ref_snapshot.csv"
+    audit.build(audit.DEFAULT_SCRATCH, first, census_root, snapshot)
+    audit.build(audit.DEFAULT_SCRATCH, second, census_root, snapshot)
     assert {path.name: path.read_bytes() for path in first.iterdir()} == {
         path.name: path.read_bytes() for path in second.iterdir()
     }
@@ -195,6 +233,8 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
         "direct rather than inferred",
         "passes all 9 author tests",
         "complete non-shallow public history has only two commits",
+        "all four accessible public forks",
+        "two unaffiliated post-paper commits",
         "0/212 published numeric table units",
         "0/9 empirical panels regenerated",
         "not a true reproduction",

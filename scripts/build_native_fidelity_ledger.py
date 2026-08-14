@@ -168,7 +168,10 @@ ARTIFACT_NOTES = {
         "Python 3.10 environment, all 9 author tests, installation, bytecode compilation, "
         "and CLI help pass. The complete two-commit public history was checked; the "
         "second revision only changes documentation and adds a method diagram, and "
-        "neither revision contains a paper-result artifact. The deterministic demo completes three rounds and 48 plans "
+        "neither revision contains a paper-result artifact. All four accessible forks "
+        "and five branch refs collapse to two heads; the sole divergent unaffiliated "
+        "head adds only timeout/retry hardening and package metadata across two commits "
+        "and ten paths, with no native result artifact. The deterministic demo completes three rounds and 48 plans "
         "but uses a SHA-derived mock evaluator. The literal Appendix factor executes at "
         "periods 20 and 100 on a controlled synthetic panel with no reported leakage "
         "violations and a finite reward. These are component checks, not paper outputs. "
@@ -1416,7 +1419,11 @@ TARGETED_EXECUTION = {
     "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_full_stocksim_history_one_unattributed_xom_precursor_output_four_component_checks_missing_atlas_lineage",
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_full_six_commit_history_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
-    "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_full_two_commit_history_nine_tests_appendix_component_missing_research_lineage",
+    "SYS-ALPHA-SCHEMA": (
+        "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_"
+        "full_two_commit_history_nine_tests_appendix_component_missing_research_lineage_"
+        "4_forks_5_refs_2_unique_heads_exhausted"
+    ),
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_six_component_checks_broken_default_launcher_missing_research_lineage",
     "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions_71_fork_heads_zero_additional_credit",
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_v1_zero_of_953_v2_zero_of_1344_one_linked_input_one_date_prompt_no_author_native_pipeline",

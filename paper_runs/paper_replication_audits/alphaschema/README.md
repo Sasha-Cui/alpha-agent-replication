@@ -30,6 +30,13 @@ blobs are unchanged. Across both revisions, the only JSON payloads are the searc
 configuration and five schema definitions. No result/log/checkpoint/data path,
 factor pool, prediction, holding, return, or paper-result array is present.
 
+A dated census covers all four accessible public forks and five branch refs,
+which collapse to two unique heads. One head is official-history reachable. The
+sole divergent head has two unaffiliated post-paper commits touching ten paths:
+timeout/retry hardening plus generated `egg-info` package metadata. It adds no
+market data, search history, factor pool, prediction, portfolio, metric, table,
+figure, or other paper-result artifact and receives zero paper-result credit.
+
 Several release details diverge from the manuscript. The paper's main target is
 `Ref(close,-6)/Ref(close,-1)-1`, whereas the backend uses
 `close.shift(-5)/close-1`. The paper states 140 price-volume components
