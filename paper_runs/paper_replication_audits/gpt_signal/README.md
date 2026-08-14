@@ -7,6 +7,8 @@ tracked files in the author-owned `Yiningww/Thesis` repository. The author
 repository is not linked by the paper, but its pre-publication commit contains
 the exact company universe, FactSet workbooks, Yahoo price caches, GPT output
 CSVs, formulas, and analysis logic needed to trace the published figures.
+GH Archive also proves that the same account and repository name had a deleted
+predecessor before the surviving repository was recreated.
 
 ## Honest verdict
 
@@ -19,10 +21,18 @@ CSVs, formulas, and analysis logic needed to trace the published figures.
   box is exactly 0.02 above the deterministic replay, preserving the box shape
   while moving EVC's median from below the baseline to above it. This is now
   classified as an **untraceable uniform translation in the published vector**,
-  not a reproduced native result. The complete 20-commit history contains 230 unique reachable `.out`/
-  `.txt` blobs; an exhaustive 1,356-window scan finds no matching trace. The
-  only alternate author-coded EVC formula misses the plot by as much as 0.0959,
-  and the sole public fork and exact GitHub code searches add no missing run.
+  not a reproduced native result. The complete 20-commit history of the
+  surviving repository contains 230 unique reachable `.out`/`.txt` blobs; an
+  exhaustive 1,356-window scan finds no matching trace. The only alternate
+  author-coded EVC formula misses the plot by as much as 0.0959, and the sole
+  public fork and exact GitHub code searches add no missing run.
+- The surviving repository is not the account's complete public lineage. GH
+  Archive records a deleted predecessor (repository id 725860964) with 12
+  contiguous one-commit pushes and at least 13 known commit hashes, ending
+  2024-02-05. GitHub no longer serves its id or head, global commit search has
+  no hit, and Software Heritage did not capture the revision. It predates both
+  the recovered 2024-02-07 EVC output and the 2024-04-27 paper vector, so it
+  adds no paper-result credit, but it is an explicit unrecovered provenance gap.
 - The paper's RAPS equation uses `ROE / (P/E * beta)`, while the raw GPT output,
   released code, and all published cells use `ROE / (P/E ** beta)`. The printed
   equation misses 104/1,309 heatmap cells at two-decimal display precision.
@@ -40,11 +50,12 @@ The result grids can be replayed because the author repository preserved the
 post-generation inputs and code semantics. The scientific procedure is less
 faithful: the paper-listed repository was only a one-file placeholder in the
 surviving post-workshop capture; the real source is unlinked and unlicensed;
-there is no dependency lock; the current runner exits before step 2 and
-hardcodes the wrong monthly loop length; the paper formula conflicts with its
-results; monthly tests leak future data; and no portfolio, transaction-cost,
-runtime, statistical-significance, or human-efficiency experiment supports the
-broad alpha, speed, scale, or continual-refinement claims.
+its deleted predecessor is metadata-only; there is no dependency lock; the
+current runner exits before step 2 and hardcodes the wrong monthly loop length;
+the paper formula conflicts with its results; monthly tests leak future data;
+and no portfolio, transaction-cost, runtime, statistical-significance, or
+human-efficiency experiment supports the broad alpha, speed, scale, or
+continual-refinement claims.
 
 ## Evidence artifacts
 
@@ -54,8 +65,10 @@ broad alpha, speed, scale, or continual-refinement claims.
 - `boxplot_stat_reproduction.csv` and `boxplot_figure_summary.csv`: all five
   displayed box statistics for seven models across seven figures.
 - `author_history_inventory.csv` and `author_history_trace_conformance.csv`:
-  every public commit, all preserved 2016--2020 trace families, and their
-  paper-vector conformance.
+  every commit in the surviving repository, all preserved 2016--2020 trace
+  families, and their paper-vector conformance.
+- `deleted_predecessor_history.csv`: every commit hash exposed by the 12
+  archived predecessor PushEvents, with content and result credit kept false.
 - `all_sector_evc_formula_forensics.csv` and `all_sector_evc_forensics.json`:
   both author-coded EVC formulas, every reachable historical output blob/window,
   the exact shape-preserving +0.02 plot translation, and rejected alternatives.

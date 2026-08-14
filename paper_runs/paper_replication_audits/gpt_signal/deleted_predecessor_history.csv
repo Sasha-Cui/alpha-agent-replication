@@ -1,0 +1,14 @@
+repository_id,lineage_status,sequence,commit,observed_via,event_timestamp,actor,message,content_recovered,paper_result_credit
+725860964,deleted_predecessor_repository,0,e377bc2b53668ff74e04ac7f265a86c83dabcacc,first_push_payload_before,2023-12-01T02:50:38Z,,,no,no
+725860964,deleted_predecessor_repository,1,2a685ec8bfed77b139b293365cb1426f1568abd7,push_payload_commit,2023-12-01T02:50:38Z,Yiningww,Create Data,no,no
+725860964,deleted_predecessor_repository,2,599d37f981dcf569c0ebf9a33f90c735cc6f2954,push_payload_commit,2023-12-01T03:10:21Z,Yiningww,first commit,no,no
+725860964,deleted_predecessor_repository,3,84c3a89b7c72b57c2b43f1f1b75155d8a3752d82,push_payload_commit,2023-12-01T03:19:08Z,zhaojinm,remove key,no,no
+725860964,deleted_predecessor_repository,4,fbcdb17be65e16fb242d95b2e5bc4f8ca289eb67,push_payload_commit,2023-12-01T03:23:18Z,zhaojinm,Delete prompt.py,no,no
+725860964,deleted_predecessor_repository,5,c455516afd55c3c491c1dd8bd8e134632dc5c656,push_payload_commit,2023-12-01T03:55:37Z,Yiningww,Create README.md,no,no
+725860964,deleted_predecessor_repository,6,f231b0233b9527dcb16b595f7325817c0774f647,push_payload_commit,2023-12-24T05:29:17Z,Yiningww,Add files via upload,no,no
+725860964,deleted_predecessor_repository,7,f1227297a494a3a43da9f256b7e0e028dd071e22,push_payload_commit,2023-12-31T00:30:50Z,Yiningww,Add files via upload,no,no
+725860964,deleted_predecessor_repository,8,82841bad963466a14a86cbfd7ea5f6d1cd7aaf28,push_payload_commit,2024-02-04T23:55:21Z,Yiningww,Add files via upload,no,no
+725860964,deleted_predecessor_repository,9,01714f47296163a4847dd84bb061bb101ab20093,push_payload_commit,2024-02-05T00:08:21Z,Yiningww,Add files via upload,no,no
+725860964,deleted_predecessor_repository,10,9f180e867f37246c75e83f72f9e6c0166791e9b4,push_payload_commit,2024-02-05T00:10:13Z,Yiningww,Add files via upload,no,no
+725860964,deleted_predecessor_repository,11,c0ea88a2507bf6cc4a33ff839206108b212375cc,push_payload_commit,2024-02-05T00:35:13Z,Yiningww,Add files via upload,no,no
+725860964,deleted_predecessor_repository,12,34d9bcc89a103723a6e3fe4937e4d153b826e7c7,push_payload_commit,2024-02-05T00:37:05Z,Yiningww,Add files via upload,no,no

@@ -644,7 +644,7 @@
       {
         "corrected_at_utc": "2026-08-11T00:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/gpt_signal/source_provenance.json",
-        "reason": "author-owned pre-publication thesis repository recovers the exact GPT-Signal source, data, and outputs; the paper-listed repository is deleted and its surviving capture is only a placeholder",
+        "reason": "the surviving author-owned thesis repository recovers the exact GPT-Signal source, data, and outputs; the paper-listed repository is deleted and its surviving capture is only a placeholder; a separate deleted predecessor Thesis repository is metadata-only and receives no result credit",
         "source_head": "434230ca9123048a4d79e2cc1390b23b050ef68e",
         "system_id": "SYS-GPT-SIGNAL"
       },

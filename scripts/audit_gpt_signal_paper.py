@@ -63,6 +63,12 @@ EXPECTED_AUTHOR_FILES = 13_884
 EXPECTED_AUTHOR_BYTES = 170_997_569
 EXPECTED_AUTHOR_COMMITS = 20
 EXPECTED_AUTHOR_ROOT = "4862581984690c8f7619c1895217f422f7dfaa44"
+DELETED_AUTHOR_REPOSITORY_ID = 725_860_964
+SURVIVING_AUTHOR_REPOSITORY_ID = 753_929_683
+DELETED_AUTHOR_ROOT = "e377bc2b53668ff74e04ac7f265a86c83dabcacc"
+DELETED_AUTHOR_HEAD = "34d9bcc89a103723a6e3fe4937e4d153b826e7c7"
+DELETED_AUTHOR_PUSH_EVENTS = 12
+DELETED_AUTHOR_KNOWN_COMMITS = 13
 EXPECTED_AUTHOR_EXTENSIONS = {
     "csv": 13_264,
     "xlsx": 373,
@@ -83,7 +89,12 @@ EVIDENCE_HASHES = {
     "github_repos.json": "8a272b63c4fbbf11cb5e6eec10284bdf873f6e497374e459a31e033fdf0665c5",
     "github_search_exact.json": "0268da7713c8cc8413c2d0221bcad0a2e97de4ec6a2691d426e7d34a53881095",
     "github_user.json": "fe82a50e7671340ecc3c6d035870168a4feceeb97ec2a02e8caf2ff9b8d5d54e",
+    "gharchive_thesis_repo_recreation_20260814.json": "3ce3a63f3405e20b47061b1c438ae4d98667f8f8a74bd039e9afac5967b87ffc",
+    "github_deleted_thesis_repo_id_20260814.json": "a298fd3d1a255b0eb21a952212460852e05ba9721d3445fb42d7ad054d88f94a",
+    "github_search_deleted_thesis_head_20260814.json": "08c082fdf7ca87ba911a2aabb0f0cf2d3e482a6feeaac9713e4578c20b2600b2",
     "swh_origin.json": "1ff7378cf5607083e5e42658a9e0bee3b74347f0ae115225a821354a27681ca9",
+    "swh_deleted_thesis_head_20260814.json": "6e7387debc40ac30d5bbd88c28bbc2c080da931103af75a4ab0fec1071a3b396",
+    "swh_thesis_visits_20260814.json": "7a2197319fb3141377448eeadac67fd8b8c6cb18770f1bac7e035aac7a91c93f",
     "thesis_commits.json": "f49794967ec08587239b62fd89a989234eef6fd01d2060ed8aea8bdcf66936ac",
     "thesis_fork_main_ref_20260813.json": "c4a9222a6dd3b4e9c25169695ff65b14ee0929928e88c2cabd4233deed19a308",
     "thesis_forks_20260813.json": "f0069fb51a0362cd05d05e182cfb05a2d41da5b7ff1276edb1804a146c6849d8",
@@ -355,7 +366,7 @@ def author_source_inventory(repo: Path) -> tuple[list[dict[str, str]], dict[str,
 
 
 def author_history_inventory(repo: Path) -> list[dict[str, str]]:
-    """Inventory every public author commit and its preserved 2016--2020 traces."""
+    """Inventory the complete surviving-repository history and preserved traces."""
     shallow = str(git(repo, "rev-parse", "--is-shallow-repository")).strip()
     if shallow != "false":
         raise ValueError("author repository history is shallow; fetch full history before auditing")
@@ -403,7 +414,147 @@ def author_history_inventory(repo: Path) -> list[dict[str, str]]:
     return rows
 
 
-def validate_discovery_evidence(directory: Path) -> list[dict[str, str]]:
+def deleted_predecessor_history(
+    directory: Path,
+) -> tuple[list[dict[str, str]], dict[str, Any]]:
+    """Recover metadata, but no content, for the deleted predecessor repository."""
+    events = json.loads(
+        (directory / "gharchive_thesis_repo_recreation_20260814.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    if len(events) != 20 or events != sorted(events, key=lambda item: item["created_at"]):
+        raise ValueError("GH Archive Thesis recreation event sequence changed")
+
+    grouped = Counter((int(event["repo"]["id"]), event["type"]) for event in events)
+    expected_groups = Counter(
+        {
+            (DELETED_AUTHOR_REPOSITORY_ID, "CreateEvent"): 2,
+            (DELETED_AUTHOR_REPOSITORY_ID, "PushEvent"): DELETED_AUTHOR_PUSH_EVENTS,
+            (SURVIVING_AUTHOR_REPOSITORY_ID, "CreateEvent"): 2,
+            (SURVIVING_AUTHOR_REPOSITORY_ID, "MemberEvent"): 1,
+            (SURVIVING_AUTHOR_REPOSITORY_ID, "PushEvent"): 3,
+        }
+    )
+    if grouped != expected_groups:
+        raise ValueError(f"GH Archive Thesis repository-id census changed: {grouped}")
+
+    predecessor_pushes = [
+        event
+        for event in events
+        if int(event["repo"]["id"]) == DELETED_AUTHOR_REPOSITORY_ID
+        and event["type"] == "PushEvent"
+    ]
+    if any(
+        event["payload"]["ref"] != "refs/heads/main"
+        or int(event["payload"]["size"]) != 1
+        or int(event["payload"]["distinct_size"]) != 1
+        or len(event["payload"]["commits"]) != 1
+        for event in predecessor_pushes
+    ):
+        raise ValueError("Deleted predecessor push shape changed")
+    if predecessor_pushes[0]["payload"]["before"] != DELETED_AUTHOR_ROOT:
+        raise ValueError("Deleted predecessor root observation changed")
+    for prior, following in zip(predecessor_pushes, predecessor_pushes[1:]):
+        if prior["payload"]["head"] != following["payload"]["before"]:
+            raise ValueError("Deleted predecessor main history is no longer contiguous")
+    if predecessor_pushes[-1]["payload"]["head"] != DELETED_AUTHOR_HEAD:
+        raise ValueError("Deleted predecessor head observation changed")
+
+    commit_rows = [
+        {
+            "repository_id": str(DELETED_AUTHOR_REPOSITORY_ID),
+            "lineage_status": "deleted_predecessor_repository",
+            "sequence": "0",
+            "commit": DELETED_AUTHOR_ROOT,
+            "observed_via": "first_push_payload_before",
+            "event_timestamp": predecessor_pushes[0]["created_at"],
+            "actor": "",
+            "message": "",
+            "content_recovered": "no",
+            "paper_result_credit": "no",
+        }
+    ]
+    for sequence, event in enumerate(predecessor_pushes, start=1):
+        commit = event["payload"]["commits"][0]
+        if commit["sha"] != event["payload"]["head"]:
+            raise ValueError("Deleted predecessor event head/commit mismatch")
+        commit_rows.append(
+            {
+                "repository_id": str(DELETED_AUTHOR_REPOSITORY_ID),
+                "lineage_status": "deleted_predecessor_repository",
+                "sequence": str(sequence),
+                "commit": commit["sha"],
+                "observed_via": "push_payload_commit",
+                "event_timestamp": event["created_at"],
+                "actor": event["actor"]["login"],
+                "message": commit["message"],
+                "content_recovered": "no",
+                "paper_result_credit": "no",
+            }
+        )
+    if len(commit_rows) != DELETED_AUTHOR_KNOWN_COMMITS or len(
+        {row["commit"] for row in commit_rows}
+    ) != DELETED_AUTHOR_KNOWN_COMMITS:
+        raise ValueError("Deleted predecessor known-commit denominator changed")
+
+    current_repo = json.loads((directory / "thesis_repo.json").read_text(encoding="utf-8"))
+    if int(current_repo.get("id", 0)) != SURVIVING_AUTHOR_REPOSITORY_ID:
+        raise ValueError("Surviving Thesis repository id changed")
+    deleted_repo = json.loads(
+        (directory / "github_deleted_thesis_repo_id_20260814.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    deleted_search = json.loads(
+        (directory / "github_search_deleted_thesis_head_20260814.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    swh_head = json.loads(
+        (directory / "swh_deleted_thesis_head_20260814.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    swh_visits = json.loads(
+        (directory / "swh_thesis_visits_20260814.json").read_text(encoding="utf-8")
+    )
+    if deleted_repo.get("message") != "Not Found" or deleted_search.get("total_count") != 0:
+        raise ValueError("Deleted predecessor GitHub recovery status changed")
+    if swh_head.get("exception") != "NotFoundExc" or DELETED_AUTHOR_HEAD not in swh_head.get(
+        "reason", ""
+    ):
+        raise ValueError("Deleted predecessor Software Heritage revision status changed")
+    if [(visit["visit"], visit["status"]) for visit in swh_visits] != [
+        (3, "full"),
+        (2, "not_found"),
+        (1, "not_found"),
+    ]:
+        raise ValueError("Software Heritage Thesis visit history changed")
+
+    facts = {
+        "deleted_predecessor_repository_id": DELETED_AUTHOR_REPOSITORY_ID,
+        "deleted_predecessor_created_at": "2023-12-01T02:44:48Z",
+        "deleted_predecessor_push_events": len(predecessor_pushes),
+        "deleted_predecessor_known_commits": len(commit_rows),
+        "deleted_predecessor_root": DELETED_AUTHOR_ROOT,
+        "deleted_predecessor_head": DELETED_AUTHOR_HEAD,
+        "deleted_predecessor_last_push_at": predecessor_pushes[-1]["created_at"],
+        "deleted_predecessor_content_recovered": False,
+        "deleted_predecessor_github_commit_search_hits": 0,
+        "deleted_predecessor_software_heritage_revision_recovered": False,
+        "surviving_repository_id": SURVIVING_AUTHOR_REPOSITORY_ID,
+        "surviving_repository_created_at": current_repo["created_at"],
+        "deleted_predecessor_predates_recovered_evc_output": True,
+        "deleted_predecessor_predates_paper_vector": True,
+        "deleted_predecessor_paper_result_credit": False,
+    }
+    return commit_rows, facts
+
+
+def validate_discovery_evidence(
+    directory: Path,
+) -> tuple[list[dict[str, str]], list[dict[str, str]], dict[str, Any]]:
     rows: list[dict[str, str]] = []
     for name, expected in EVIDENCE_HASHES.items():
         path = directory / name
@@ -454,7 +605,8 @@ def validate_discovery_evidence(directory: Path) -> list[dict[str, str]]:
         raise ValueError("author repository API metadata changed")
     if len(commits) != 20 or commits[0].get("sha") != EXPECTED_AUTHOR_HEAD:
         raise ValueError("author repository commit evidence changed")
-    return rows
+    predecessor_rows, predecessor_facts = deleted_predecessor_history(directory)
+    return rows, predecessor_rows, predecessor_facts
 
 
 class ReplayData:
@@ -1134,7 +1286,8 @@ def method_audit() -> list[dict[str, str]]:
         ("plot runner", "six new-signal models plus baseline", "plot.py contains 12 candidate models and exits before save", "stale_runner", "published selection/manual state is not encoded"),
         ("correlation result lineage", "13 heatmaps", "1309/1309 cells recover with source formula", "reproduced_from_author_data", "strong result-level lineage"),
         ("Fama-MacBeth result lineage", "7 boxplots", "240/245 vector statistics recover", "partial_reproduction", "five all-sector EVC statistics are a uniform +0.02 plot translation; no author-native trace produces them"),
-        ("historical output traces", "not disclosed", "230 unique reachable .out/.txt blobs and 1,356 sliding 20-value windows exhaustively scanned; no direct or translated shape match", "history_exhausted", "the residual all-sector EVC translation cannot be attributed to a preserved author run"),
+        ("repository history continuity", "not disclosed", "GH Archive identifies a deleted predecessor repository with 12 one-commit pushes and at least 13 known commit hashes before the surviving repository was recreated", "deleted_predecessor_content_unrecovered", "the surviving 20-commit Git history is complete for repository id 753929683 but not the account's full prior public lineage; the predecessor predates both the recovered EVC output and the paper vector and receives no result credit"),
+        ("historical output traces", "not disclosed", "230 unique reachable .out/.txt blobs and 1,356 sliding 20-value windows exhaustively scanned in the surviving repository; no direct or translated shape match", "surviving_history_exhausted", "the residual all-sector EVC translation cannot be attributed to a preserved author run; deleted predecessor content remains unavailable but predates the EVC output and paper vector"),
         ("all-sector EVC plot", "median shown above baseline", "selected native formula reproduces all five statistics' shape exactly at -0.02; author prototype formula misses by up to 0.0959; no recoverable trace or mirror match", "untraceable_vector_translation", "the unexplained +0.02 published-vector translation changes the qualitative above/below-baseline conclusion and receives no result credit"),
         ("IT 3M prose", "5 out of 6 improve", "published vector medians show 6 out of 6", "paper_internal_contradiction", "prose does not match its figure"),
         ("Energy 1M generalization", "similar patterns", "only 1 of 6 medians exceeds baseline", "weak_support", "broad conclusion is not uniform across sectors/horizons"),
@@ -1164,6 +1317,7 @@ def artifact_audit() -> list[dict[str, str]]:
         {"artifact": "paper-listed GPT-signal repository", "url": PAPER_REPO_URL, "status": "current_404_one_archived_placeholder_capture", "relationship": "paper-promised code", "credit": "no system code recovered"},
         {"artifact": "Software Heritage paper-repo origin", "url": "https://archive.softwareheritage.org/api/1/origin/" + PAPER_REPO_URL + "/get/", "status": "not_found", "relationship": "archive search", "credit": "absence evidence only"},
         {"artifact": "author Thesis repository", "url": AUTHOR_REPO_URL, "status": "public_pinned_pre_paper_commit_no_license", "relationship": "author-owned unlinked source/data/output recovery", "credit": "deterministic result replay and source audit"},
+        {"artifact": "deleted predecessor Thesis repository", "url": AUTHOR_REPO_URL, "status": "gharchive_12_pushes_at_least_13_known_commits_content_unrecovered", "relationship": "same account and name under repository id 725860964 before id 753929683 was created; predates recovered EVC output and paper vector", "credit": "provenance gap only; no paper result credit"},
     ]
 
 
@@ -1173,7 +1327,8 @@ def native_execution_rows() -> list[dict[str, str]]:
         {"component": "author Python source compile", "attempted": "yes", "status": "pass", "detail": "6/6 tracked Python files compile in memory", "result_credit": "no"},
         {"component": "released data.py end-to-end", "attempted": "source_inspection", "status": "not_runnable_as_published", "detail": "exit after heatmap makes step 2 unreachable; monthly ii=19 is stale; yfinance dependency absent", "result_credit": "no"},
         {"component": "deterministic correlation replay", "attempted": "yes", "status": "pass_1309_of_1309", "detail": "author xlsx/CSV inputs plus released formula semantics", "result_credit": "author_data_replay"},
-        {"component": "author Git history", "attempted": "yes", "status": "pass_all_commits_and_reachable_output_blobs", "detail": "20 commits, 230 unique reachable .out/.txt blobs, and 1,356 sliding 20-value windows checked; none produces the all-sector EVC box", "result_credit": "history_level_lineage_only"},
+        {"component": "surviving author Git history", "attempted": "yes", "status": "pass_all_surviving_commits_and_reachable_output_blobs", "detail": "20 commits in repository id 753929683, 230 unique reachable .out/.txt blobs, and 1,356 sliding 20-value windows checked; none produces the all-sector EVC box", "result_credit": "history_level_lineage_only"},
+        {"component": "deleted predecessor repository", "attempted": "yes", "status": "metadata_only_content_unrecovered", "detail": "GH Archive preserves a contiguous 12-push, at-least-13-commit lineage for deleted repository id 725860964; GitHub search and Software Heritage recover no commit content; its final push predates the recovered EVC output and paper vector", "result_credit": "no_paper_result_credit"},
         {"component": "EVC formula revision forensics", "attempted": "yes", "status": "selected_formula_shape_exact_but_uniform_published_vector_translation", "detail": "selected formula matches the five-statistic shape at -0.02; prototype plus-one formula misses by up to 0.0959; sole fork and exact code searches add no run", "result_credit": "no_credit_for_untraceable_translation"},
         {"component": "deterministic boxplot replay", "attempted": "yes", "status": "partial_240_of_245", "detail": "five all-sector EVC statistics are a uniform +0.02 published-vector translation without recoverable native output lineage", "result_credit": "author_data_replay_except_five"},
         {"component": "GPT-4 signal generation", "attempted": "no", "status": "not_reproducible", "detail": "retired gpt-4-1106-preview, no seed/temperature, no request IDs; raw output recovered for 5/6", "result_credit": "historical_output_lineage_only"},
@@ -1192,6 +1347,8 @@ tracked files in the author-owned `Yiningww/Thesis` repository. The author
 repository is not linked by the paper, but its pre-publication commit contains
 the exact company universe, FactSet workbooks, Yahoo price caches, GPT output
 CSVs, formulas, and analysis logic needed to trace the published figures.
+GH Archive also proves that the same account and repository name had a deleted
+predecessor before the surviving repository was recreated.
 
 ## Honest verdict
 
@@ -1204,10 +1361,18 @@ CSVs, formulas, and analysis logic needed to trace the published figures.
   box is exactly 0.02 above the deterministic replay, preserving the box shape
   while moving EVC's median from below the baseline to above it. This is now
   classified as an **untraceable uniform translation in the published vector**,
-  not a reproduced native result. The complete 20-commit history contains 230 unique reachable `.out`/
-  `.txt` blobs; an exhaustive 1,356-window scan finds no matching trace. The
-  only alternate author-coded EVC formula misses the plot by as much as 0.0959,
-  and the sole public fork and exact GitHub code searches add no missing run.
+  not a reproduced native result. The complete 20-commit history of the
+  surviving repository contains 230 unique reachable `.out`/`.txt` blobs; an
+  exhaustive 1,356-window scan finds no matching trace. The only alternate
+  author-coded EVC formula misses the plot by as much as 0.0959, and the sole
+  public fork and exact GitHub code searches add no missing run.
+- The surviving repository is not the account's complete public lineage. GH
+  Archive records a deleted predecessor (repository id 725860964) with 12
+  contiguous one-commit pushes and at least 13 known commit hashes, ending
+  2024-02-05. GitHub no longer serves its id or head, global commit search has
+  no hit, and Software Heritage did not capture the revision. It predates both
+  the recovered 2024-02-07 EVC output and the 2024-04-27 paper vector, so it
+  adds no paper-result credit, but it is an explicit unrecovered provenance gap.
 - The paper's RAPS equation uses `ROE / (P/E * beta)`, while the raw GPT output,
   released code, and all published cells use `ROE / (P/E ** beta)`. The printed
   equation misses 104/1,309 heatmap cells at two-decimal display precision.
@@ -1225,11 +1390,12 @@ The result grids can be replayed because the author repository preserved the
 post-generation inputs and code semantics. The scientific procedure is less
 faithful: the paper-listed repository was only a one-file placeholder in the
 surviving post-workshop capture; the real source is unlinked and unlicensed;
-there is no dependency lock; the current runner exits before step 2 and
-hardcodes the wrong monthly loop length; the paper formula conflicts with its
-results; monthly tests leak future data; and no portfolio, transaction-cost,
-runtime, statistical-significance, or human-efficiency experiment supports the
-broad alpha, speed, scale, or continual-refinement claims.
+its deleted predecessor is metadata-only; there is no dependency lock; the
+current runner exits before step 2 and hardcodes the wrong monthly loop length;
+the paper formula conflicts with its results; monthly tests leak future data;
+and no portfolio, transaction-cost, runtime, statistical-significance, or
+human-efficiency experiment supports the broad alpha, speed, scale, or
+continual-refinement claims.
 
 ## Evidence artifacts
 
@@ -1239,8 +1405,10 @@ broad alpha, speed, scale, or continual-refinement claims.
 - `boxplot_stat_reproduction.csv` and `boxplot_figure_summary.csv`: all five
   displayed box statistics for seven models across seven figures.
 - `author_history_inventory.csv` and `author_history_trace_conformance.csv`:
-  every public commit, all preserved 2016--2020 trace families, and their
-  paper-vector conformance.
+  every commit in the surviving repository, all preserved 2016--2020 trace
+  families, and their paper-vector conformance.
+- `deleted_predecessor_history.csv`: every commit hash exposed by the 12
+  archived predecessor PushEvents, with content and result credit kept false.
 - `all_sector_evc_formula_forensics.csv` and `all_sector_evc_forensics.json`:
   both author-coded EVC formulas, every reachable historical output blob/window,
   the exact shape-preserving +0.02 plot translation, and rejected alternatives.
@@ -1264,7 +1432,9 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     paper_source = paper_source_inventory(args.source_archive.resolve(), args.source_dir.resolve())
     author_source, author_facts = author_source_inventory(args.author_repo.resolve())
     author_history = author_history_inventory(args.author_repo.resolve())
-    discovery = validate_discovery_evidence(args.evidence_dir.resolve())
+    discovery, predecessor_history, predecessor_facts = validate_discovery_evidence(
+        args.evidence_dir.resolve()
+    )
 
     data = ReplayData(args.author_repo.resolve())
     workbook_count = sum(
@@ -1286,6 +1456,18 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         args.author_repo.resolve(),
         args.source_dir.resolve(),
     )
+    evc_forensics.update(
+        {
+            "surviving_repository_history_fully_audited": True,
+            "deleted_predecessor_known_commits": predecessor_facts[
+                "deleted_predecessor_known_commits"
+            ],
+            "deleted_predecessor_content_recovered": False,
+            "deleted_predecessor_predates_recovered_evc_output": True,
+            "deleted_predecessor_predates_paper_vector": True,
+            "paper_result_credit_for_deleted_predecessor": False,
+        }
+    )
     formulas = formula_lineage(args.author_repo.resolve(), args.source_dir.resolve())
     lookahead = lookahead_trace(data)
     methods = method_audit()
@@ -1305,6 +1487,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         ("paper_source_inventory.csv", paper_source),
         ("author_source_inventory.csv", author_source),
         ("author_history_inventory.csv", author_history),
+        ("deleted_predecessor_history.csv", predecessor_history),
         ("author_history_trace_conformance.csv", history_traces),
         ("all_sector_evc_formula_forensics.csv", evc_formula_forensics),
         ("discovery_evidence.csv", discovery),
@@ -1347,10 +1530,12 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "archived_placeholder_tracked_files": 1,
         "author_repository": AUTHOR_REPO_URL,
         "author_repository_relationship": "author_owned_pre_publication_source_recovery_not_linked_by_paper",
-        "author_repository_history_fully_fetched": True,
-        "author_repository_public_commits": len(author_history),
+        "author_repository_history_fully_fetched": False,
+        "surviving_author_repository_history_fully_fetched": True,
+        "surviving_author_repository_public_commits": len(author_history),
         "author_repository_root_commit": EXPECTED_AUTHOR_ROOT,
         "author_repository_commits_with_all_sector_trace": 0,
+        **predecessor_facts,
         **author_facts,
         "relevant_companies": 93,
         "relevant_factset_workbooks": workbook_count,
@@ -1365,6 +1550,14 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "paper_listed_source_archived_placeholder_only": True,
         "paper_tex_rebuilt": True,
         "author_history_commits_audited": len(author_history),
+        "author_history_scope": "complete_surviving_repository_incomplete_prior_deleted_repository",
+        "deleted_predecessor_known_commits": predecessor_facts[
+            "deleted_predecessor_known_commits"
+        ],
+        "deleted_predecessor_content_recovered": False,
+        "deleted_predecessor_predates_recovered_evc_output": True,
+        "deleted_predecessor_predates_paper_vector": True,
+        "deleted_predecessor_paper_result_credit": False,
         "historical_energy_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "energy_3m"),
         "historical_information_technology_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "information_technology_3m"),
         "historical_all_sector_output_trace_recovered": False,
@@ -1402,6 +1595,20 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "author_source_files": len(author_source),
         "author_source_bytes": author_facts["tracked_bytes"],
         "author_history_commits_audited": len(author_history),
+        "author_history_scope": "complete_surviving_repository_incomplete_prior_deleted_repository",
+        "deleted_predecessor_repository_id": predecessor_facts[
+            "deleted_predecessor_repository_id"
+        ],
+        "deleted_predecessor_push_events": predecessor_facts[
+            "deleted_predecessor_push_events"
+        ],
+        "deleted_predecessor_known_commits": predecessor_facts[
+            "deleted_predecessor_known_commits"
+        ],
+        "deleted_predecessor_content_recovered": False,
+        "deleted_predecessor_predates_recovered_evc_output": True,
+        "deleted_predecessor_predates_paper_vector": True,
+        "deleted_predecessor_paper_result_credit": False,
         "historical_energy_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "energy_3m"),
         "historical_information_technology_3m_vector_statistics_matched": sum(row["match_tolerance_1e-4"] == "yes" for row in history_traces if row["trace"] == "information_technology_3m"),
         "historical_all_sector_output_trace_recovered": False,

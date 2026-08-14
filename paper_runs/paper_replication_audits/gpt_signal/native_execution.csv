@@ -3,7 +3,8 @@ arXiv TeX source,yes,pass,"pdflatex shell-escape, three passes, 13-page PDF; vec
 author Python source compile,yes,pass,6/6 tracked Python files compile in memory,no
 released data.py end-to-end,source_inspection,not_runnable_as_published,exit after heatmap makes step 2 unreachable; monthly ii=19 is stale; yfinance dependency absent,no
 deterministic correlation replay,yes,pass_1309_of_1309,author xlsx/CSV inputs plus released formula semantics,author_data_replay
-author Git history,yes,pass_all_commits_and_reachable_output_blobs,"20 commits, 230 unique reachable .out/.txt blobs, and 1,356 sliding 20-value windows checked; none produces the all-sector EVC box",history_level_lineage_only
+surviving author Git history,yes,pass_all_surviving_commits_and_reachable_output_blobs,"20 commits in repository id 753929683, 230 unique reachable .out/.txt blobs, and 1,356 sliding 20-value windows checked; none produces the all-sector EVC box",history_level_lineage_only
+deleted predecessor repository,yes,metadata_only_content_unrecovered,"GH Archive preserves a contiguous 12-push, at-least-13-commit lineage for deleted repository id 725860964; GitHub search and Software Heritage recover no commit content; its final push predates the recovered EVC output and paper vector",no_paper_result_credit
 EVC formula revision forensics,yes,selected_formula_shape_exact_but_uniform_published_vector_translation,selected formula matches the five-statistic shape at -0.02; prototype plus-one formula misses by up to 0.0959; sole fork and exact code searches add no run,no_credit_for_untraceable_translation
 deterministic boxplot replay,yes,partial_240_of_245,five all-sector EVC statistics are a uniform +0.02 published-vector translation without recoverable native output lineage,author_data_replay_except_five
 GPT-4 signal generation,no,not_reproducible,"retired gpt-4-1106-preview, no seed/temperature, no request IDs; raw output recovered for 5/6",historical_output_lineage_only

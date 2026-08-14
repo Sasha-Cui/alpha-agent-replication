@@ -147,13 +147,19 @@ def test_all_sector_evc_translation_has_no_native_formula_or_output_trace() -> N
     assert forensic["best_translation_shape_maximum_residual"] > 0.014
     assert forensic["sole_public_fork_head_matches_author_head"] is True
     assert forensic["exact_github_code_search_hits"] == 0
+    assert forensic["surviving_repository_history_fully_audited"] is True
+    assert forensic["deleted_predecessor_known_commits"] == 13
+    assert forensic["deleted_predecessor_content_recovered"] is False
+    assert forensic["deleted_predecessor_predates_recovered_evc_output"] is True
+    assert forensic["deleted_predecessor_predates_paper_vector"] is True
+    assert forensic["paper_result_credit_for_deleted_predecessor"] is False
     assert forensic["classification"] == (
         "untraceable_published_vector_uniform_translation_not_native_result_reproduction"
     )
     assert forensic["paper_result_credit_for_five_shifted_statistics"] is False
 
 
-def test_complete_author_history_exhausts_preserved_output_lineage() -> None:
+def test_complete_surviving_author_history_exhausts_preserved_output_lineage() -> None:
     history = csv_rows("author_history_inventory.csv")
     assert len(history) == 20
     assert history[0]["commit"] == audit.EXPECTED_AUTHOR_ROOT
@@ -173,6 +179,34 @@ def test_complete_author_history_exhausts_preserved_output_lineage() -> None:
         row["paper_result_credit"] == "historical_author_output_trace"
         for row in rows if row["trace"] == "energy_3m"
     )
+
+
+def test_deleted_predecessor_history_is_explicitly_unrecovered_and_zero_credit() -> None:
+    rows = csv_rows("deleted_predecessor_history.csv")
+    assert len(rows) == 13
+    assert rows[0]["commit"] == audit.DELETED_AUTHOR_ROOT
+    assert rows[-1]["commit"] == audit.DELETED_AUTHOR_HEAD
+    assert [int(row["sequence"]) for row in rows] == list(range(13))
+    assert {row["repository_id"] for row in rows} == {
+        str(audit.DELETED_AUTHOR_REPOSITORY_ID)
+    }
+    assert {row["content_recovered"] for row in rows} == {"no"}
+    assert {row["paper_result_credit"] for row in rows} == {"no"}
+
+    provenance = json.loads((OUTPUT / "source_provenance.json").read_text(encoding="utf-8"))
+    assert provenance["author_repository_history_fully_fetched"] is False
+    assert provenance["surviving_author_repository_history_fully_fetched"] is True
+    assert provenance["surviving_author_repository_public_commits"] == 20
+    assert provenance["deleted_predecessor_repository_id"] == 725_860_964
+    assert provenance["surviving_repository_id"] == 753_929_683
+    assert provenance["deleted_predecessor_push_events"] == 12
+    assert provenance["deleted_predecessor_known_commits"] == 13
+    assert provenance["deleted_predecessor_content_recovered"] is False
+    assert provenance["deleted_predecessor_github_commit_search_hits"] == 0
+    assert provenance["deleted_predecessor_software_heritage_revision_recovered"] is False
+    assert provenance["deleted_predecessor_predates_recovered_evc_output"] is True
+    assert provenance["deleted_predecessor_predates_paper_vector"] is True
+    assert provenance["deleted_predecessor_paper_result_credit"] is False
 
 
 def test_published_median_claims_are_counted_instead_of_generalized() -> None:
@@ -204,6 +238,9 @@ def test_deleted_paper_repo_and_recovered_unlinked_source_are_not_conflated() ->
     assert artifacts["paper-listed GPT-signal repository"]["status"] == "current_404_one_archived_placeholder_capture"
     assert artifacts["paper-listed GPT-signal repository"]["credit"] == "no system code recovered"
     assert artifacts["author Thesis repository"]["relationship"] == "author-owned unlinked source/data/output recovery"
+    assert artifacts["deleted predecessor Thesis repository"]["credit"] == (
+        "provenance gap only; no paper result credit"
+    )
     provenance = json.loads((OUTPUT / "source_provenance.json").read_text(encoding="utf-8"))
     assert provenance["archived_placeholder_tracked_files"] == 1
     assert provenance["author_repository_relationship"] == "author_owned_pre_publication_source_recovery_not_linked_by_paper"
@@ -216,14 +253,17 @@ def test_deleted_paper_repo_and_recovered_unlinked_source_are_not_conflated() ->
 
 def test_method_audit_states_every_major_nonfaithfulness_boundary() -> None:
     rows = {row["dimension"]: row for row in csv_rows("method_specification_audit.csv")}
-    assert len(rows) == 31
+    assert len(rows) == 32
     assert rows["LLM randomness"]["assessment"] == "missing"
     assert rows["iterative refinement"]["assessment"] == "unsupported"
     assert rows["FactSet access"]["assessment"] == "paper_error"
     assert rows["price field"]["assessment"] == "source_only_detail"
     assert rows["monthly cross-sections"]["assessment"] == "stale_runner"
     assert rows["native control flow"]["assessment"] == "stale_runner"
-    assert rows["historical output traces"]["assessment"] == "history_exhausted"
+    assert rows["repository history continuity"]["assessment"] == (
+        "deleted_predecessor_content_unrecovered"
+    )
+    assert rows["historical output traces"]["assessment"] == "surviving_history_exhausted"
     assert rows["significance"]["assessment"] == "unsupported"
     assert rows["economic evaluation"]["assessment"] == "missing"
     assert rows["speed/scale claims"]["assessment"] == "unsupported"
@@ -235,6 +275,16 @@ def test_manifest_reports_result_recovery_without_claiming_full_replication() ->
     assert manifest["published_result_units_reproduced"] == 1_549
     assert manifest["published_result_units"] == 1_554
     assert manifest["author_history_commits_audited"] == 20
+    assert manifest["author_history_scope"] == (
+        "complete_surviving_repository_incomplete_prior_deleted_repository"
+    )
+    assert manifest["deleted_predecessor_repository_id"] == 725_860_964
+    assert manifest["deleted_predecessor_push_events"] == 12
+    assert manifest["deleted_predecessor_known_commits"] == 13
+    assert manifest["deleted_predecessor_content_recovered"] is False
+    assert manifest["deleted_predecessor_predates_recovered_evc_output"] is True
+    assert manifest["deleted_predecessor_predates_paper_vector"] is True
+    assert manifest["deleted_predecessor_paper_result_credit"] is False
     assert manifest["historical_energy_3m_vector_statistics_matched"] == 35
     assert manifest["historical_information_technology_3m_vector_statistics_matched"] == 0
     assert manifest["historical_all_sector_output_trace_recovered"] is False
@@ -252,6 +302,12 @@ def test_manifest_reports_result_recovery_without_claiming_full_replication() ->
     assert manifest["llm_calls_made"] == 0
     assert native["llm_generation_reproduced"] is False
     assert native["author_history_commits_audited"] == 20
+    assert native["author_history_scope"] == (
+        "complete_surviving_repository_incomplete_prior_deleted_repository"
+    )
+    assert native["deleted_predecessor_known_commits"] == 13
+    assert native["deleted_predecessor_content_recovered"] is False
+    assert native["deleted_predecessor_paper_result_credit"] is False
     assert native["historical_energy_3m_vector_statistics_matched"] == 35
     assert native["reachable_unique_out_or_txt_blobs_scanned"] == 230
     assert native["historical_twenty_value_windows_scanned"] == 1_356

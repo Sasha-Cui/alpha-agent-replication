@@ -4,8 +4,10 @@
 The repository promised by the paper is now 404 and its surviving 2024 Wayback
 capture contains only a README.  A separate author-owned pre-publication thesis
 repository contains the exact data, GPT outputs, figures, and analysis code.
-This deterministic correction routes that recovered source at R1, preserves all
-other evidence corrections, and recomputes the public-artifact summary.
+GH Archive also proves that an earlier repository under the same account and
+name was deleted before this surviving source was created. This deterministic
+correction routes the surviving source at R1, preserves the predecessor as a
+zero-credit provenance gap, and recomputes the public-artifact summary.
 """
 from __future__ import annotations
 
@@ -150,6 +152,11 @@ def validate_inputs() -> None:
         "alternate_author_evc_formula_reproduces_plot": False,
         "all_sector_evc_plot_only_uniform_translation": True,
         "paper_result_credit_for_plot_translation": False,
+        "deleted_predecessor_repository_id": 725_860_964,
+        "deleted_predecessor_push_events": 12,
+        "deleted_predecessor_known_commits": 13,
+        "deleted_predecessor_content_recovered": False,
+        "deleted_predecessor_paper_result_credit": False,
         "llm_calls_made": 0,
         "full_end_to_end_pipeline_reproduced": False,
     }
@@ -163,6 +170,14 @@ def validate_inputs() -> None:
         raise ValueError("GPT-Signal author repository head changed from the pinned audit")
     if provenance["archive_sha256"] != ARCHIVE_SHA256:
         raise ValueError("GPT-Signal author archive hash changed from the pinned audit")
+    if provenance["author_repository_history_fully_fetched"] is not False:
+        raise ValueError("GPT-Signal deleted predecessor history gap was lost")
+    if provenance["surviving_author_repository_history_fully_fetched"] is not True:
+        raise ValueError("GPT-Signal surviving repository history status changed")
+    if provenance["deleted_predecessor_content_recovered"] is not False:
+        raise ValueError("GPT-Signal deleted predecessor content status changed")
+    if provenance["deleted_predecessor_paper_result_credit"] is not False:
+        raise ValueError("GPT-Signal deleted predecessor incorrectly received result credit")
     if provenance["license"] != "none_observed" or provenance["dependency_manifest"] != "none_observed":
         raise ValueError("GPT-Signal R1 license/environment basis changed")
     with REGISTRY.open(newline="", encoding="utf-8") as handle:
@@ -191,7 +206,7 @@ def route() -> None:
     summary_payload = json.loads(summary_json_path.read_text(encoding="utf-8"))
     correction = {
         "system_id": SYSTEM_ID,
-        "reason": "author-owned pre-publication thesis repository recovers the exact GPT-Signal source, data, and outputs; the paper-listed repository is deleted and its surviving capture is only a placeholder",
+        "reason": "the surviving author-owned thesis repository recovers the exact GPT-Signal source, data, and outputs; the paper-listed repository is deleted and its surviving capture is only a placeholder; a separate deleted predecessor Thesis repository is metadata-only and receives no result credit",
         "corrected_at_utc": ROW_AUDIT_AT,
         "evidence": "paper_runs/paper_replication_audits/gpt_signal/source_provenance.json",
         "source_head": HEAD,

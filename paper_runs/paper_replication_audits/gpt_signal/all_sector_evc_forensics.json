@@ -20,7 +20,12 @@
   "best_untranslated_window_start": 4,
   "blobs_with_at_least_20_adjusted_rsquare_values": 112,
   "classification": "untraceable_published_vector_uniform_translation_not_native_result_reproduction",
+  "deleted_predecessor_content_recovered": false,
+  "deleted_predecessor_known_commits": 13,
+  "deleted_predecessor_predates_paper_vector": true,
+  "deleted_predecessor_predates_recovered_evc_output": true,
   "exact_github_code_search_hits": 0,
+  "paper_result_credit_for_deleted_predecessor": false,
   "paper_result_credit_for_five_shifted_statistics": false,
   "paper_target": "all-sector 2016--2020 three-month EVC box",
   "paper_vector_created_at": "2024-04-27T00:42:40.890086",
@@ -30,6 +35,7 @@
   "sole_public_fork_head_matches_author_head": true,
   "source_selected_formula_shape_match_tolerance_1e-7": true,
   "source_selected_formula_uniform_offset": 0.02,
+  "surviving_repository_history_fully_audited": true,
   "translation_shape_matching_windows": 0,
   "untranslated_matching_windows": 0
 }

@@ -90,6 +90,9 @@ def test_native_ledger_credits_dated_outputs_but_not_full_reproduction() -> None
     assert "230 reachable output/text blobs" in note
     assert "1,356 candidate 20-value windows" in note
     assert "no direct or shape-translated all-sector match" in note
+    assert "deleted predecessor repository" in note
+    assert "at least 13 known commit hashes" in note
+    assert "receives no result credit" in note
     assert "one-month panels use future-quarter fundamentals" in note
     assert "six-country" in note
 
