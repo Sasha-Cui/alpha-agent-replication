@@ -36,6 +36,18 @@ published ATLAS XOM ROI means, and the artifact has no ATLAS, prompting-strategy
 model, seed, or paper-run identifier. It is recoverable StockSim native-output
 evidence, not an attributable ATLAS run or a regenerated paper result.
 
+A 2026-08-14 census also exhausts all five public forks: 11 branch refs resolve
+to eight unique heads. Four refs exactly match the official `main` head. The
+remaining seven heads belong to one active fork and collectively add 12 commits,
+26 trees, 22 blobs, and 13 changed paths after ATLAS v5. Those are genuine
+StockSim engineering changes covering AML agents, portfolio accounting,
+timestamp handling, synchronization, market microstructure, and two
+self-trade-prevention tests. No changed or reachable file contains an ATLAS,
+Adaptive-OPRO, paper-ID, promised-config, checkpoint, trajectory, action,
+rating, or result payload. None of the 12 commit author display names exactly
+matches a paper author. The work therefore improves StockSim but supplies no
+attributable ATLAS experiment or result evidence.
+
 The StockSim demo config is also closer to the method than a generic example:
 it exactly matches XOM, 2025-04-28 through 2025-06-28, daily decisions,
 $100,000 initial cash, and the market/news/fundamental analyst roles. It does
@@ -44,7 +56,7 @@ Adaptive-OPRO strategy logic, LLY/NVDA experiment configs, seven-model matrix,
 or three-run design. Ten later JSON files contain 191,015 AAPL orders from
 2025-03-01 for order-book replay and are unrelated to the ATLAS daily study.
 
-Every public revision predates ATLAS v1 and contains no ATLAS identifier,
+Every official revision predates ATLAS v1 and contains no ATLAS identifier,
 Adaptive-OPRO implementation, promised
 `configs/o4-mini-adaptive-opro-config.yaml`, exact three-asset experiment
 configuration, frozen Massive/Polygon data, news or fundamental inputs, model

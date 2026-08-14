@@ -92,7 +92,11 @@ ARTIFACT_NOTES = {
         "official and 209 rebuilt pages, 1,784 empirical numeric table units, and "
         "five empirical panels. The complete public StockSim history has 20 commits, "
         "two branches, zero tags/releases, 107 unique paths, and no unreachable "
-        "objects. Its initial commit contains a later-deleted XOM native precursor "
+        "objects. A census of all five public forks covers 11 branch refs and eight "
+        "unique heads. One active fork adds 12 post-v5 commits across 13 paths for "
+        "AML agents, accounting, timestamps, synchronization, and microstructure, "
+        "but exposes no ATLAS identifier or native paper-result payload. Its initial "
+        "commit contains a later-deleted XOM native precursor "
         "output with 20 dated explained orders and a 43-point portfolio path over "
         "ATLAS's exact window, ending +5.01564% from $100,000; that value matches no "
         "published ATLAS XOM ROI mean and has no paper-run identifier, so receives no "
@@ -108,7 +112,8 @@ ARTIFACT_NOTES = {
         "checks pass, 43/43 modules import, and four controlled checks pass for config "
         "validation, metrics, order matching, and candle triggers. These are StockSim "
         "precursor-component checks and receive no ATLAS result credit. All 20 "
-        "revisions have no ATLAS or Adaptive-OPRO implementation, promised sample "
+        "official revisions and all public-fork heads have no attributable ATLAS or "
+        "Adaptive-OPRO implementation, promised sample "
         "config, frozen "
         "market/news/fundamental inputs, model requests/responses, filled runtime "
         "prompts, optimizer trajectory, seeds, run artifacts, or result arrays. Its "
@@ -1449,7 +1454,7 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-LOGICS": "paper_audit:completed_zero_of_158_table_units_zero_of_204_figure_markers_zero_of_18_empirical_panels_two_paper_derived_algorithm_checks_three_unattributable_candidates",
     "SYS-ALPHA-AGENT-EVO": "paper_audit:completed_zero_of_147_table_units_zero_of_21_empirical_panels_zero_of_40_figure_annotations_listed_unrecovered_supplement_no_attributable_pipeline",
     "SYS-TRADE-IN-MINUTES": "paper_audit:completed_zero_of_349_active_empirical_units_zero_of_8_empirical_panels_listed_broken_supplement_no_attributable_pipeline",
-    "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_full_stocksim_history_one_unattributed_xom_precursor_output_four_component_checks_missing_atlas_lineage",
+    "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_full_stocksim_history_one_unattributed_xom_precursor_output_four_component_checks_missing_atlas_lineage_5_forks_11_refs_8_unique_heads_12_postpaper_commits_exhausted",
     "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
     "SYS-MAD-EVOLVE": (
         "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_"

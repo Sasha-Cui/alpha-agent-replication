@@ -49,6 +49,65 @@ STOCKSIM_HISTORY_COMMITS = (
 STOCKSIM_INITIAL_COMMIT = STOCKSIM_HISTORY_COMMITS[0]
 STOCKSIM_WEBSITE_HEAD = STOCKSIM_HISTORY_COMMITS[-1]
 STOCKSIM_HISTORY_PATHS_SHA256 = "5913570cb5553dbdba8a2c55c648fdc802270f9ead3f7655d55481c08fa950d4"
+STOCKSIM_OFFICIAL_REFS = ("refs/remotes/origin/main", "refs/remotes/origin/website")
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_HEADS = {
+    "refs/remotes/forks/Young20050706/main": REPOSITORY_HEAD,
+    "refs/remotes/forks/colsonSung/main": REPOSITORY_HEAD,
+    "refs/remotes/forks/jingmouren/main": REPOSITORY_HEAD,
+    "refs/remotes/forks/programmermw1986/main": REPOSITORY_HEAD,
+    "refs/remotes/forks/shmaiii/dashboard": "e2f690b54be6f2b05e4b9d448b538f594ff663f2",
+    "refs/remotes/forks/shmaiii/fix/market-data-source-timestamp": "7917911c790ed1ee1dbb6e423f855b7e789ff340",
+    "refs/remotes/forks/shmaiii/fix/settlement-barrier-consistency": "89bff8c642a4e1b04b6f3a5124656a705db29230",
+    "refs/remotes/forks/shmaiii/main": "4b59993913841a7249dd031e8f186caa1988892f",
+    "refs/remotes/forks/shmaiii/orderbook-self-trade-prevention": "ee3a361f79ad2ec3ffedd2d5790b7435d6728829",
+    "refs/remotes/forks/shmaiii/portfolio-metrics-state": "da8ae9bad605b0385aded617769127186df21f66",
+    "refs/remotes/forks/shmaiii/research/diversity-infrastructure": "faaafbbf388eaaa736090d954e153746195995fa",
+}
+PUBLIC_FORK_REPOSITORIES = {
+    "Young20050706": "Young20050706/StockSim",
+    "colsonSung": "colsonSung/StockSim",
+    "jingmouren": "jingmouren/harrypapa2002_StockSim",
+    "programmermw1986": "programmermw1986/StockSim",
+    "shmaiii": "shmaiii/StockSim",
+}
+PUBLIC_FORK_AHEAD_COUNTS = {
+    "refs/remotes/forks/Young20050706/main": 0,
+    "refs/remotes/forks/colsonSung/main": 0,
+    "refs/remotes/forks/jingmouren/main": 0,
+    "refs/remotes/forks/programmermw1986/main": 0,
+    "refs/remotes/forks/shmaiii/dashboard": 4,
+    "refs/remotes/forks/shmaiii/fix/market-data-source-timestamp": 6,
+    "refs/remotes/forks/shmaiii/fix/settlement-barrier-consistency": 8,
+    "refs/remotes/forks/shmaiii/main": 6,
+    "refs/remotes/forks/shmaiii/orderbook-self-trade-prevention": 6,
+    "refs/remotes/forks/shmaiii/portfolio-metrics-state": 5,
+    "refs/remotes/forks/shmaiii/research/diversity-infrastructure": 7,
+}
+PUBLIC_FORK_CHANGED_PATHS = {
+    "Dockerfile",
+    "agents/agent.py",
+    "agents/aml/__init__.py",
+    "agents/aml/institutional_trader.py",
+    "agents/aml/market_maker_trader.py",
+    "agents/aml/retail_trader.py",
+    "agents/benchmark_traders/trader.py",
+    "exchanges/exchange_agent.py",
+    "main_launcher.py",
+    "simulation/simulation_clock.py",
+    "test_orderbook_self_trade_prevention.py",
+    "utils/alpha_vantage_client.py",
+    "utils/orders.py",
+}
+PUBLIC_FORK_CHANGED_PATHS_SHA256 = "d4eeeee662e8d43df65e45efbdc5aecdbfad2c143ff4f3abd41d9001bc2f3b70"
+ATLAS_AUTHOR_NAMES = {
+    "Charidimos Papadakis",
+    "Angeliki Dimitriou",
+    "Giorgos Filandrianos",
+    "Maria Lymperaiou",
+    "Konstantinos Thomas",
+    "Giorgos Stamou",
+}
 STOCKSIM_CHARTS = {
     "charts/LLY_stocksim_chart.html": (13, 313, False, "511f4b8658a532df3bdaf63de78b174f5b7d81aa6459c63d13961c6ee42dc2a0"),
     "charts/NVDA.html": (10, 293, False, "ac4b8fa14f907ffa05254b4d53a23323e3a9241d7f6779df08255501efcb07fb"),
@@ -326,7 +385,7 @@ def stocksim_history_rows(
     repo = scratch / "stocksim"
     if git(repo, "rev-parse", "--is-shallow-repository").strip() != "false":
         raise ValueError("StockSim history checkout is shallow")
-    commits = git(repo, "rev-list", "--reverse", "--all").splitlines()
+    commits = git(repo, "rev-list", "--reverse", *STOCKSIM_OFFICIAL_REFS).splitlines()
     if commits != list(STOCKSIM_HISTORY_COMMITS):
         raise ValueError(f"StockSim public history changed: {commits}")
     unreachable = git(
@@ -346,7 +405,7 @@ def stocksim_history_rows(
     all_paths = sorted(
         set(
             git(
-                repo, "-c", "core.quotePath=false", "log", "--all", "--name-only",
+                repo, "-c", "core.quotePath=false", "log", *STOCKSIM_OFFICIAL_REFS, "--name-only",
                 "--pretty=format:",
             ).splitlines()
         )
@@ -474,6 +533,207 @@ def stocksim_history_rows(
     return rows, artifact_rows, summary
 
 
+def stocksim_public_fork_audit(
+    scratch: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Fail closed over every public StockSim fork branch visible at census time."""
+    repo = scratch / "stocksim"
+    observed_refs = {
+        ref: git(repo, "rev-parse", ref).strip()
+        for ref in git(
+            repo,
+            "for-each-ref",
+            "--format=%(refname)",
+            "refs/remotes/forks",
+        ).splitlines()
+    }
+    if observed_refs != PUBLIC_FORK_HEADS:
+        raise ValueError(f"StockSim public fork refs changed: {observed_refs}")
+
+    branch_rows: list[dict[str, Any]] = []
+    for ref, head in sorted(observed_refs.items()):
+        relative = ref.removeprefix("refs/remotes/forks/")
+        owner, branch = relative.split("/", 1)
+        repository = PUBLIC_FORK_REPOSITORIES[owner]
+        ahead = int(
+            git(repo, "rev-list", "--count", head, "--not", *STOCKSIM_OFFICIAL_REFS).strip()
+        )
+        behind_main = int(
+            git(repo, "rev-list", "--count", f"{head}..{REPOSITORY_HEAD}").strip()
+        )
+        if ahead != PUBLIC_FORK_AHEAD_COUNTS[ref] or behind_main != 0:
+            raise ValueError(
+                f"StockSim fork relationship changed for {ref}: "
+                f"ahead={ahead} behind_main={behind_main}"
+            )
+        relation = "exact_official_main" if head == REPOSITORY_HEAD else "descendant_of_official_main"
+        branch_rows.append({
+            "repository": repository,
+            "url": f"https://github.com/{repository}",
+            "branch": branch,
+            "head_commit": head,
+            "relation_to_official_head": relation,
+            "commits_ahead_of_official_history": ahead,
+            "commits_behind_official_main": behind_main,
+            "public_tag_refs": 0,
+            "native_atlas_result_payload_found": False,
+            "paper_result_credit": False,
+        })
+
+    fork_heads = sorted(set(observed_refs.values()))
+    official_objects = set(
+        git(
+            repo, "rev-list", "--objects", "--no-object-names", *STOCKSIM_OFFICIAL_REFS
+        ).splitlines()
+    )
+    fork_objects = set(
+        git(repo, "rev-list", "--objects", "--no-object-names", *fork_heads).splitlines()
+    )
+    unique_objects = sorted(fork_objects - official_objects)
+    object_types = {"commit": 0, "tree": 0, "blob": 0}
+    for object_id in unique_objects:
+        object_type = git(repo, "cat-file", "-t", object_id).strip()
+        if object_type not in object_types:
+            raise ValueError(f"unexpected StockSim fork object type: {object_type}")
+        object_types[object_type] += 1
+    if object_types != {"commit": 12, "tree": 26, "blob": 22}:
+        raise ValueError(f"StockSim public fork object surface changed: {object_types}")
+
+    unique_commits = sorted(
+        set(git(repo, "rev-list", *fork_heads, "--not", *STOCKSIM_OFFICIAL_REFS).splitlines())
+    )
+    if len(unique_commits) != 12:
+        raise ValueError(f"StockSim public fork commit surface changed: {len(unique_commits)}")
+
+    search_pattern = r"ATLAS|Adaptive[-_ ]OPRO|2510[.]15949|o4-mini-adaptive"
+    result_path_pattern = re.compile(
+        r"(^|/)(checkpoints?|results?|outputs?|logs?|actions?|trajectories?|rollouts?|ratings?)(/|$)",
+        re.IGNORECASE,
+    )
+    commit_rows: list[dict[str, Any]] = []
+    all_changed_paths: set[str] = set()
+    all_identifier_paths: set[str] = set()
+    all_result_paths: set[str] = set()
+    for commit in unique_commits:
+        metadata = git(
+            repo,
+            "show",
+            "-s",
+            "--format=%aI%x00%an%x00%ae%x00%s",
+            commit,
+        ).rstrip("\n").split("\x00", 3)
+        if len(metadata) != 4:
+            raise ValueError(f"StockSim fork metadata parse failed for {commit}")
+        authored_at, author_name, author_email, subject = metadata
+        changed_paths = sorted(
+            set(
+                git(
+                    repo,
+                    "diff-tree",
+                    "--root",
+                    "-m",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    commit,
+                ).splitlines()
+            )
+            - {""}
+        )
+        search = subprocess.run(
+            [
+                "git", "-C", str(repo), "grep", "-I", "-l", "-i", "-E",
+                search_pattern, commit, "--", "*.py", "*.yaml", "*.yml", "*.json",
+                "*.md", "*.txt", "*.j2",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if search.returncode not in {0, 1}:
+            raise ValueError(f"StockSim fork search failed at {commit}: {search.stderr}")
+        identifier_paths = sorted(set(search.stdout.splitlines()) - {""})
+        result_paths = sorted(path for path in changed_paths if result_path_pattern.search(path))
+        exact_author_name = author_name in ATLAS_AUTHOR_NAMES
+        all_changed_paths.update(changed_paths)
+        all_identifier_paths.update(identifier_paths)
+        all_result_paths.update(result_paths)
+        commit_rows.append({
+            "commit": commit,
+            "authored_at": authored_at,
+            "author_name": author_name,
+            "author_email": author_email,
+            "subject": subject,
+            "changed_paths": len(changed_paths),
+            "atlas_identifier_paths_at_commit": len(identifier_paths),
+            "changed_result_payload_paths": len(result_paths),
+            "authored_after_atlas_v5_submission": authored_at[:10] > VERSION_SPECS["v5"][0][:10],
+            "exact_atlas_author_display_name_match": exact_author_name,
+            "native_atlas_result_payload_found": False,
+            "paper_result_credit": False,
+        })
+    commit_rows.sort(key=lambda row: (row["authored_at"], row["commit"]))
+
+    changed_paths_digest = sha256_bytes(
+        ("\n".join(sorted(all_changed_paths)) + "\n").encode()
+    )
+    if (
+        all_changed_paths != PUBLIC_FORK_CHANGED_PATHS
+        or changed_paths_digest != PUBLIC_FORK_CHANGED_PATHS_SHA256
+        or all_identifier_paths
+        or all_result_paths
+        or not all(row["authored_after_atlas_v5_submission"] for row in commit_rows)
+        or any(row["exact_atlas_author_display_name_match"] for row in commit_rows)
+    ):
+        raise ValueError("StockSim public fork ATLAS-evidence boundary changed")
+
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": 5,
+        "accessible_public_forks": len(PUBLIC_FORK_REPOSITORIES),
+        "accessible_branch_refs": len(branch_rows),
+        "public_tag_refs": 0,
+        "unique_heads": len(fork_heads),
+        "official_head_exact_refs": sum(
+            row["relation_to_official_head"] == "exact_official_main" for row in branch_rows
+        ),
+        "divergent_unique_heads": len(set(fork_heads) - {REPOSITORY_HEAD}),
+        "unique_commits_beyond_official_history": len(unique_commits),
+        "unique_trees_beyond_official_history": object_types["tree"],
+        "unique_blobs_beyond_official_history": object_types["blob"],
+        "unique_changed_paths": len(all_changed_paths),
+        "unique_changed_paths_sha256": changed_paths_digest,
+        "atlas_identifier_paths": len(all_identifier_paths),
+        "changed_result_payload_paths": len(all_result_paths),
+        "post_v5_unique_commits": sum(
+            row["authored_after_atlas_v5_submission"] for row in commit_rows
+        ),
+        "exact_paper_author_display_name_attributions": sum(
+            row["exact_atlas_author_display_name_match"] for row in commit_rows
+        ),
+        "native_atlas_result_payloads_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "One fork contains genuine post-paper StockSim engineering in AML integration, "
+            "portfolio accounting, timestamp handling, synchronization, and market "
+            "microstructure, but no attributable ATLAS or Adaptive-OPRO experiment lineage."
+        ),
+    }
+    expected_summary_counts = {
+        "accessible_public_forks": 5,
+        "accessible_branch_refs": 11,
+        "unique_heads": 8,
+        "official_head_exact_refs": 4,
+        "divergent_unique_heads": 7,
+        "unique_commits_beyond_official_history": 12,
+        "unique_changed_paths": 13,
+        "post_v5_unique_commits": 12,
+    }
+    if any(summary[key] != value for key, value in expected_summary_counts.items()):
+        raise ValueError(f"StockSim public fork census changed: {summary}")
+    return branch_rows, commit_rows, summary
+
+
 def prompt_rows() -> list[dict[str, Any]]:
     prompts = (
         ("central_trader_initial", "central trading agent initial decision template"),
@@ -500,7 +760,7 @@ def method_rows() -> list[dict[str, str]]:
         ("official_document_source", "complete", "all five arXiv PDFs and source packages recovered and rebuilt"),
         ("framework_provenance", "cited_same_author_precursor", "paper cites StockSim; repository owner Charidimos Papadakis is first author"),
         ("framework_release_date", "precedes_paper", "pinned main head is dated 2025-07-15; ATLAS v1 was submitted 2025-10-10"),
-        ("paper_specific_release", "missing", "all 20 public StockSim revisions contain no ATLAS, Adaptive-OPRO, paper identifier, or promised ATLAS config"),
+        ("paper_specific_release", "missing", "all 20 official StockSim revisions and all 11 branch refs across five public forks contain no attributable ATLAS, Adaptive-OPRO, paper identifier, promised ATLAS config, or native paper-result payload"),
         ("precursor_xom_configuration", "partially_recovered", "StockSim demo matches XOM, 2025-04-28 to 2025-06-28, daily cadence, $100,000 cash, and three analyst roles; it lacks the ATLAS central agent, prompting strategies, other assets, and experiment matrix"),
         ("assets_and_period", "partially_recovered_not_frozen", "StockSim demo exactly matches XOM and the paper window; LLY/NVDA experiment configs and frozen vendor snapshots are absent"),
         ("market_regimes", "specified", "LLY bearish-volatile, XOM sideways, NVDA bullish"),
@@ -519,8 +779,8 @@ def method_rows() -> list[dict[str, str]]:
         ("as_declared_environment", "fails_obsolete_dependency", "requirements installs obsolete asyncio backport that is a SyntaxError on Python 3.12"),
         ("bounded_environment_adjustment", "component_checks_pass", "after removing backport, pip check, compileall, 43/43 imports, and four deterministic component checks pass"),
         ("full_launcher", "blocked_external_and_missing_paper_payload", "demo validates then stops for RabbitMQ, log path, and market-data API key; it is not ATLAS"),
-        ("author_tests", "absent", "zero tracked test files"),
-        ("search_for_release", "no_public_atlas_implementation_found", "all 20 commits, both branches, zero tags/releases, and exact GitHub searches expose no ATLAS implementation"),
+        ("author_tests", "absent_in_official_release", "zero tracked test files in the official release; one post-paper fork adds two StockSim self-trade-prevention tests, not ATLAS tests"),
+        ("search_for_release", "no_public_atlas_implementation_found", "all 20 official commits, both official branches, five public forks with 11 branch refs and eight unique heads, zero public tags/releases, and exact GitHub searches expose no attributable ATLAS implementation"),
     )
     return [{"version": "v5", "dimension": d, "status": s, "detail": detail} for d, s, detail in specs]
 
@@ -549,6 +809,7 @@ def internal_rows() -> list[dict[str, str]]:
         ("version_history", "fully_audited", "v1-v5 source and PDFs recovered, rebuilt, and visually paired"),
         ("stock_sim_lineage", "cited_same_author_component", "real first-party precursor framework, but no ATLAS-specific payload"),
         ("stock_sim_public_history", "fully_audited", "20 commits across main and website, zero tags/releases, 107 historical paths, and no unreachable objects"),
+        ("stock_sim_public_forks", "fully_audited_no_atlas_lineage", "five accessible forks expose 11 branch refs and eight unique heads; 12 post-v5 commits add genuine StockSim engineering across 13 paths but no ATLAS identifiers or native result payloads"),
         ("deleted_precursor_outputs", "recovered_no_paper_credit", "initial commit held LLY/NVDA/XOM charts; only XOM has 20 agent orders and a 43-point portfolio path, but it matches no published ATLAS XOM ROI mean"),
         ("lob_order_payloads", "unrelated_precursor_fixture", "191,015 AAPL order records dated 2025-03-01 support StockSim orderbook replay, not ATLAS's daily three-asset study"),
         ("repository_license", "readme_declaration_only", "README says MIT; no license-text file and GitHub reports no detected license"),
@@ -559,7 +820,11 @@ def internal_rows() -> list[dict[str, str]]:
     return [{"check": check, "status": status, "detail": detail} for check, status, detail in specs]
 
 
-def release_audit(scratch: Path, history: Mapping[str, Any]) -> dict[str, Any]:
+def release_audit(
+    scratch: Path,
+    history: Mapping[str, Any],
+    public_forks: Mapping[str, Any],
+) -> dict[str, Any]:
     archive = scratch / f"release/{REPOSITORY_HEAD}.tar.gz"
     members = validate_tar(archive)
     texts = tar_texts(archive)
@@ -640,6 +905,7 @@ def release_audit(scratch: Path, history: Mapping[str, Any]) -> dict[str, Any]:
         "paper_run_artifacts_released": False,
         "paper_result_arrays_released": False,
         "full_public_history_audit": dict(history),
+        "public_fork_census": dict(public_forks),
         "historical_precursor_native_output_recovered": True,
         "historical_precursor_output_attributable_to_atlas_paper_run": False,
         "published_table_or_figure_regenerated": False,
@@ -686,6 +952,18 @@ published ATLAS XOM ROI means, and the artifact has no ATLAS, prompting-strategy
 model, seed, or paper-run identifier. It is recoverable StockSim native-output
 evidence, not an attributable ATLAS run or a regenerated paper result.
 
+A 2026-08-14 census also exhausts all five public forks: 11 branch refs resolve
+to eight unique heads. Four refs exactly match the official `main` head. The
+remaining seven heads belong to one active fork and collectively add 12 commits,
+26 trees, 22 blobs, and 13 changed paths after ATLAS v5. Those are genuine
+StockSim engineering changes covering AML agents, portfolio accounting,
+timestamp handling, synchronization, market microstructure, and two
+self-trade-prevention tests. No changed or reachable file contains an ATLAS,
+Adaptive-OPRO, paper-ID, promised-config, checkpoint, trajectory, action,
+rating, or result payload. None of the 12 commit author display names exactly
+matches a paper author. The work therefore improves StockSim but supplies no
+attributable ATLAS experiment or result evidence.
+
 The StockSim demo config is also closer to the method than a generic example:
 it exactly matches XOM, 2025-04-28 through 2025-06-28, daily decisions,
 $100,000 initial cash, and the market/news/fundamental analyst roles. It does
@@ -694,7 +972,7 @@ Adaptive-OPRO strategy logic, LLY/NVDA experiment configs, seven-model matrix,
 or three-run design. Ten later JSON files contain 191,015 AAPL orders from
 2025-03-01 for order-book replay and are unrelated to the ATLAS daily study.
 
-Every public revision predates ATLAS v1 and contains no ATLAS identifier,
+Every official revision predates ATLAS v1 and contains no ATLAS identifier,
 Adaptive-OPRO implementation, promised
 `configs/o4-mini-adaptive-opro-config.yaml`, exact three-asset experiment
 configuration, frozen Massive/Polygon data, news or fundamental inputs, model
@@ -719,6 +997,9 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     tex = (scratch / "source-v5/acl_latex.tex").read_text(encoding="utf-8")
     history_rows, historical_artifacts, history_summary = stocksim_history_rows(
         scratch, tex
+    )
+    fork_branch_rows, fork_commit_rows, fork_summary = stocksim_public_fork_audit(
+        scratch
     )
     results = result_rows(tex)
     figures = figure_rows()
@@ -749,7 +1030,10 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
     write_csv(output / "released_source_history_inventory.csv", history_rows)
     write_csv(output / "historical_precursor_artifact_inventory.csv", historical_artifacts)
-    release = release_audit(scratch, history_summary)
+    write_csv(output / "public_fork_branch_ref_snapshot.csv", fork_branch_rows)
+    write_csv(output / "public_fork_unique_commit_inventory.csv", fork_commit_rows)
+    write_json(output / "public_fork_census.json", fork_summary)
+    release = release_audit(scratch, history_summary, fork_summary)
     write_json(output / "release_execution_audit.json", release)
     write_json(output / "source_provenance.json", {
         "work_id": WORK_ID, "system_id": SYSTEM_ID,
@@ -773,7 +1057,9 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
             "stock_sim_source_recovered": True,
             "stock_sim_component_execution_completed": True,
             "stock_sim_complete_public_history_reviewed": True,
+            "stock_sim_all_public_forks_reviewed": True,
             "stock_sim_precursor_native_output_recovered": True,
+            "stock_sim_fork_native_atlas_result_payload_recovered": False,
             "atlas_specific_source_recovered": False,
             "complete_research_inputs_recovered": False,
             "published_result_lineage_recovered": False,
@@ -806,6 +1092,16 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "repository_public_branches_audited": history_summary["public_branches_reviewed"],
         "repository_historical_unique_paths_audited": history_summary[
             "historical_unique_paths_reviewed"
+        ],
+        "public_forks_audited": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_unique_commits_beyond_official_history_audited": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "public_fork_unique_changed_paths_audited": fork_summary["unique_changed_paths"],
+        "public_fork_native_atlas_result_payloads_recovered": fork_summary[
+            "native_atlas_result_payloads_found"
         ],
         "historical_precursor_agent_output_artifacts_recovered": history_summary[
             "historical_precursor_agent_output_charts"

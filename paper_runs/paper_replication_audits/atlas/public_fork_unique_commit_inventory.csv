@@ -1,0 +1,13 @@
+commit,authored_at,author_name,author_email,subject,changed_paths,atlas_identifier_paths_at_commit,changed_result_payload_paths,authored_after_atlas_v5_submission,exact_atlas_author_display_name_match,native_atlas_result_payload_found,paper_result_credit
+91a4460855894bf44aeebd274ec71b7e70cf9377,2026-06-15T14:50:49+08:00,shmaiii,luongxuanmai2109@gmail.com,Update StockSim for AML integration and test run,3,0,0,True,False,False,False
+02017416327bb43ad0211fea7461b43056bb116d,2026-06-15T23:14:58+08:00,shmaiii,luongxuanmai2109@gmail.com,3 aml agents and synthetic data support,6,0,0,True,False,False,False
+f1f28c92b30b787ab8ea1eec66576a12235fa28b,2026-06-19T15:48:41+08:00,shmaiii,luongxuanmai2109@gmail.com,remove AML-related agents,5,0,0,True,False,False,False
+e2f690b54be6f2b05e4b9d448b538f594ff663f2,2026-06-29T14:45:46+08:00,Knight,sanskarmohapatra@gmail.com,fix orderbook lifecycle for AML dashboard,2,0,0,True,False,False,False
+e4492823c1ea0daf8ceb73d814fb08706c9c58fd,2026-07-01T19:21:58+08:00,Knight,74679047+Knight-101@users.noreply.github.com,fix orderbook lifecycle for AML dashboard (#1),2,0,0,True,False,False,False
+da8ae9bad605b0385aded617769127186df21f66,2026-07-15T18:22:46+08:00,Knight,sanskarmohapatra@gmail.com,fix portfolio mark to market accounting,1,0,0,True,False,False,False
+9ffc934bdb586fe172050da9cb4cc4abc5d0dc58,2026-07-16T14:45:48+08:00,Knight,74679047+Knight-101@users.noreply.github.com,fix portfolio mark to market accounting (#3),1,0,0,True,False,False,False
+7917911c790ed1ee1dbb6e423f855b7e789ff340,2026-07-22T19:30:28+08:00,DonovanPan,e1538686@u.nus.edu,Add source timestamps to portfolio price updates,1,0,0,True,False,False,False
+faaafbbf388eaaa736090d954e153746195995fa,2026-08-02T21:29:27+08:00,DonovanPan,e1538686@u.nus.edu,Add deterministic tick barriers and microstructure export,3,0,0,True,False,False,False
+89bff8c642a4e1b04b6f3a5124656a705db29230,2026-08-11T01:01:37+08:00,DonovanPan,e1538686@u.nus.edu,Add deterministic settlement synchronization,3,0,0,True,False,False,False
+ee3a361f79ad2ec3ffedd2d5790b7435d6728829,2026-08-11T11:55:02+08:00,Knight,sanskarmohapatra@gmail.com,prevent self-trades in order book,2,0,0,True,False,False,False
+4b59993913841a7249dd031e8f186caa1988892f,2026-08-14T12:04:44+08:00,Knight,74679047+Knight-101@users.noreply.github.com,prevent self-trades in order book (#5),2,0,0,True,False,False,False

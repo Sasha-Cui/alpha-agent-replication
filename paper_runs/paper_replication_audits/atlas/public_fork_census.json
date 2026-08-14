@@ -1,0 +1,22 @@
+{
+  "accessible_branch_refs": 11,
+  "accessible_public_forks": 5,
+  "atlas_identifier_paths": 0,
+  "census_date": "2026-08-14",
+  "changed_result_payload_paths": 0,
+  "divergent_unique_heads": 7,
+  "exact_paper_author_display_name_attributions": 0,
+  "github_rest_reported_forks": 5,
+  "interpretation": "One fork contains genuine post-paper StockSim engineering in AML integration, portfolio accounting, timestamp handling, synchronization, and market microstructure, but no attributable ATLAS or Adaptive-OPRO experiment lineage.",
+  "native_atlas_result_payloads_found": 0,
+  "official_head_exact_refs": 4,
+  "paper_result_credit": false,
+  "post_v5_unique_commits": 12,
+  "public_tag_refs": 0,
+  "unique_blobs_beyond_official_history": 22,
+  "unique_changed_paths": 13,
+  "unique_changed_paths_sha256": "d4eeeee662e8d43df65e45efbdc5aecdbfad2c143ff4f3abd41d9001bc2f3b70",
+  "unique_commits_beyond_official_history": 12,
+  "unique_heads": 8,
+  "unique_trees_beyond_official_history": 26
+}

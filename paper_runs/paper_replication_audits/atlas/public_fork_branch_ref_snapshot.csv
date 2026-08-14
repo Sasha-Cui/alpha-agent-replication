@@ -1,0 +1,12 @@
+repository,url,branch,head_commit,relation_to_official_head,commits_ahead_of_official_history,commits_behind_official_main,public_tag_refs,native_atlas_result_payload_found,paper_result_credit
+Young20050706/StockSim,https://github.com/Young20050706/StockSim,main,c1a25c195df4c93b2db4a748f80ceae0f1c9fe50,exact_official_main,0,0,0,False,False
+colsonSung/StockSim,https://github.com/colsonSung/StockSim,main,c1a25c195df4c93b2db4a748f80ceae0f1c9fe50,exact_official_main,0,0,0,False,False
+jingmouren/harrypapa2002_StockSim,https://github.com/jingmouren/harrypapa2002_StockSim,main,c1a25c195df4c93b2db4a748f80ceae0f1c9fe50,exact_official_main,0,0,0,False,False
+programmermw1986/StockSim,https://github.com/programmermw1986/StockSim,main,c1a25c195df4c93b2db4a748f80ceae0f1c9fe50,exact_official_main,0,0,0,False,False
+shmaiii/StockSim,https://github.com/shmaiii/StockSim,dashboard,e2f690b54be6f2b05e4b9d448b538f594ff663f2,descendant_of_official_main,4,0,0,False,False
+shmaiii/StockSim,https://github.com/shmaiii/StockSim,fix/market-data-source-timestamp,7917911c790ed1ee1dbb6e423f855b7e789ff340,descendant_of_official_main,6,0,0,False,False
+shmaiii/StockSim,https://github.com/shmaiii/StockSim,fix/settlement-barrier-consistency,89bff8c642a4e1b04b6f3a5124656a705db29230,descendant_of_official_main,8,0,0,False,False
+shmaiii/StockSim,https://github.com/shmaiii/StockSim,main,4b59993913841a7249dd031e8f186caa1988892f,descendant_of_official_main,6,0,0,False,False
+shmaiii/StockSim,https://github.com/shmaiii/StockSim,orderbook-self-trade-prevention,ee3a361f79ad2ec3ffedd2d5790b7435d6728829,descendant_of_official_main,6,0,0,False,False
+shmaiii/StockSim,https://github.com/shmaiii/StockSim,portfolio-metrics-state,da8ae9bad605b0385aded617769127186df21f66,descendant_of_official_main,5,0,0,False,False
+shmaiii/StockSim,https://github.com/shmaiii/StockSim,research/diversity-infrastructure,faaafbbf388eaaa736090d954e153746195995fa,descendant_of_official_main,7,0,0,False,False

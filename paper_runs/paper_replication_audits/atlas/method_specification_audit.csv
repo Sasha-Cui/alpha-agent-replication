@@ -2,7 +2,7 @@ version,dimension,status,detail
 v5,official_document_source,complete,all five arXiv PDFs and source packages recovered and rebuilt
 v5,framework_provenance,cited_same_author_precursor,paper cites StockSim; repository owner Charidimos Papadakis is first author
 v5,framework_release_date,precedes_paper,pinned main head is dated 2025-07-15; ATLAS v1 was submitted 2025-10-10
-v5,paper_specific_release,missing,"all 20 public StockSim revisions contain no ATLAS, Adaptive-OPRO, paper identifier, or promised ATLAS config"
+v5,paper_specific_release,missing,"all 20 official StockSim revisions and all 11 branch refs across five public forks contain no attributable ATLAS, Adaptive-OPRO, paper identifier, promised ATLAS config, or native paper-result payload"
 v5,precursor_xom_configuration,partially_recovered,"StockSim demo matches XOM, 2025-04-28 to 2025-06-28, daily cadence, $100,000 cash, and three analyst roles; it lacks the ATLAS central agent, prompting strategies, other assets, and experiment matrix"
 v5,assets_and_period,partially_recovered_not_frozen,StockSim demo exactly matches XOM and the paper window; LLY/NVDA experiment configs and frozen vendor snapshots are absent
 v5,market_regimes,specified,"LLY bearish-volatile, XOM sideways, NVDA bullish"
@@ -21,5 +21,5 @@ v5,published_results,not_regenerated,"zero of 1,784 empirical scalar units and z
 v5,as_declared_environment,fails_obsolete_dependency,requirements installs obsolete asyncio backport that is a SyntaxError on Python 3.12
 v5,bounded_environment_adjustment,component_checks_pass,"after removing backport, pip check, compileall, 43/43 imports, and four deterministic component checks pass"
 v5,full_launcher,blocked_external_and_missing_paper_payload,"demo validates then stops for RabbitMQ, log path, and market-data API key; it is not ATLAS"
-v5,author_tests,absent,zero tracked test files
-v5,search_for_release,no_public_atlas_implementation_found,"all 20 commits, both branches, zero tags/releases, and exact GitHub searches expose no ATLAS implementation"
+v5,author_tests,absent_in_official_release,"zero tracked test files in the official release; one post-paper fork adds two StockSim self-trade-prevention tests, not ATLAS tests"
+v5,search_for_release,no_public_atlas_implementation_found,"all 20 official commits, both official branches, five public forks with 11 branch refs and eight unique heads, zero public tags/releases, and exact GitHub searches expose no attributable ATLAS implementation"

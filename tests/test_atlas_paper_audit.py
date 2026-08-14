@@ -142,6 +142,55 @@ def test_complete_stocksim_history_recovers_precursor_output_without_paper_credi
     assert full["historical_lob_order_records"] == 191_015
 
 
+def test_all_public_stocksim_forks_are_exhausted_without_atlas_result_credit() -> None:
+    branches = rows("public_fork_branch_ref_snapshot.csv")
+    commits = rows("public_fork_unique_commit_inventory.csv")
+    census = json.loads((AUDIT_DIR / "public_fork_census.json").read_text())
+    assert len(branches) == 11
+    assert len({row["repository"] for row in branches}) == 5
+    assert len({row["head_commit"] for row in branches}) == 8
+    assert Counter(row["relation_to_official_head"] for row in branches) == {
+        "exact_official_main": 4,
+        "descendant_of_official_main": 7,
+    }
+    assert all(row["commits_behind_official_main"] == "0" for row in branches)
+    assert all(row["public_tag_refs"] == "0" for row in branches)
+    assert all(row["native_atlas_result_payload_found"] == "False" for row in branches)
+    assert all(row["paper_result_credit"] == "False" for row in branches)
+    assert len(commits) == 12
+    assert all(row["authored_after_atlas_v5_submission"] == "True" for row in commits)
+    assert all(row["atlas_identifier_paths_at_commit"] == "0" for row in commits)
+    assert all(row["changed_result_payload_paths"] == "0" for row in commits)
+    assert all(row["exact_atlas_author_display_name_match"] == "False" for row in commits)
+    assert all(row["native_atlas_result_payload_found"] == "False" for row in commits)
+    assert all(row["paper_result_credit"] == "False" for row in commits)
+    assert census == json.loads(
+        (AUDIT_DIR / "release_execution_audit.json").read_text()
+    )["public_fork_census"]
+    assert census["census_date"] == "2026-08-14"
+    assert census["github_rest_reported_forks"] == 5
+    assert census["accessible_public_forks"] == 5
+    assert census["accessible_branch_refs"] == 11
+    assert census["unique_heads"] == 8
+    assert census["official_head_exact_refs"] == 4
+    assert census["divergent_unique_heads"] == 7
+    assert census["unique_commits_beyond_official_history"] == 12
+    assert census["unique_trees_beyond_official_history"] == 26
+    assert census["unique_blobs_beyond_official_history"] == 22
+    assert census["unique_changed_paths"] == 13
+    assert census["atlas_identifier_paths"] == 0
+    assert census["changed_result_payload_paths"] == 0
+    assert census["native_atlas_result_payloads_found"] == 0
+    assert census["paper_result_credit"] is False
+    data = manifest()
+    assert data["public_forks_audited"] == 5
+    assert data["public_fork_branch_refs_audited"] == 11
+    assert data["public_fork_unique_heads_audited"] == 8
+    assert data["public_fork_unique_commits_beyond_official_history_audited"] == 12
+    assert data["public_fork_unique_changed_paths_audited"] == 13
+    assert data["public_fork_native_atlas_result_payloads_recovered"] == 0
+
+
 def test_demo_config_receives_partial_method_evidence_not_complete_atlas_credit() -> None:
     release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
     for field in (
@@ -282,7 +331,9 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
         "1,784 printed empirical scalar units", "43/43 modules import",
         "four controlled checks", "no ATLAS identifier",
         "20 commits across `main` and", "20 dated, explained orders",
-        "+5.01564%", "191,015 AAPL orders",
+        "+5.01564%", "191,015 AAPL orders", "all five public forks",
+        "11 branch refs", "eight unique heads", "12 commits",
+        "supplies no", "attributable ATLAS experiment or result evidence",
         "0/1,784 empirical numeric table units", "0/5 empirical panels regenerated",
         "not currently a true experimental replication", "package.",
     ):

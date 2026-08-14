@@ -93,12 +93,14 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_"
         "empirical_panels_full_stocksim_history_one_unattributed_xom_precursor_output_"
-        "four_component_checks_missing_atlas_lineage"
+        "four_component_checks_missing_atlas_lineage_5_forks_11_refs_8_unique_heads_"
+        "12_postpaper_commits_exhausted"
     )
     note = row["concise_evidence_note"]
     for marker in (
         "1,784", "five empirical panels", "43/43", "four controlled checks",
         "asyncio", "no ATLAS", "0/1,784", "0/5", "20 commits", "+5.01564%",
+        "five public forks", "11 branch refs", "eight unique heads", "12 post-v5 commits",
     ):
         assert marker in note
 

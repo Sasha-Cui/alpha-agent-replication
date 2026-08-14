@@ -6,6 +6,7 @@ current_result_scalar_inventory,source_parsed,"1,784 printed empirical scalars a
 version_history,fully_audited,"v1-v5 source and PDFs recovered, rebuilt, and visually paired"
 stock_sim_lineage,cited_same_author_component,"real first-party precursor framework, but no ATLAS-specific payload"
 stock_sim_public_history,fully_audited,"20 commits across main and website, zero tags/releases, 107 historical paths, and no unreachable objects"
+stock_sim_public_forks,fully_audited_no_atlas_lineage,five accessible forks expose 11 branch refs and eight unique heads; 12 post-v5 commits add genuine StockSim engineering across 13 paths but no ATLAS identifiers or native result payloads
 deleted_precursor_outputs,recovered_no_paper_credit,"initial commit held LLY/NVDA/XOM charts; only XOM has 20 agent orders and a 43-point portfolio path, but it matches no published ATLAS XOM ROI mean"
 lob_order_payloads,unrelated_precursor_fixture,"191,015 AAPL order records dated 2025-03-01 support StockSim orderbook replay, not ATLAS's daily three-asset study"
 repository_license,readme_declaration_only,README says MIT; no license-text file and GitHub reports no detected license
