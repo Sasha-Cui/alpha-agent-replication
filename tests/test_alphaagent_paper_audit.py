@@ -81,6 +81,10 @@ def test_committed_audit_is_fail_closed() -> None:
     history_summary = json.loads(
         (output / "public_source_history.json").read_text(encoding="utf-8")
     )
+    fork_heads = read_csv(output / "fork_default_head_census.csv")
+    fork_bundle = json.loads(
+        (output / "fork_data_bundle_audit.json").read_text(encoding="utf-8")
+    )
     gaps = read_csv(output / "paper_specification_gaps.csv")
     inventory = read_csv(output / "released_source_inventory.csv")
     paper_era_inventory = read_csv(output / "paper_era_source_inventory.csv")
@@ -174,6 +178,17 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["public_source_historical_author_run_record_paths"] == 385
     assert manifest["public_source_historical_author_run_ids"] == 7
     assert manifest["public_source_primitive_prediction_return_or_holding_paths"] == 0
+    assert manifest["fork_discovery_date"] == "2026-08-14"
+    assert manifest["fork_default_heads_total"] == 71
+    assert manifest["fork_unique_default_head_groups"] == 6
+    assert manifest["forks_at_official_heads"] == 67
+    assert manifest["divergent_fork_default_heads"] == 4
+    assert manifest["divergent_fork_paper_result_units_regenerated"] == 0
+    assert manifest["independent_fork_data_bundle_audited"] is True
+    assert manifest["independent_fork_data_bundle_calendar_start"] == "2020-01-02"
+    assert manifest["independent_fork_data_bundle_sp500_rows"] == 568
+    assert manifest["independent_fork_data_bundle_finite_membership_end_rows"] == 1
+    assert manifest["independent_fork_data_bundle_valid_paper_input"] is False
 
     assert Counter(row["status"] for row in table) == {
         "corroborated_by_author_history_native_run_artifact": 5,
@@ -229,6 +244,36 @@ def test_committed_audit_is_fail_closed() -> None:
     assert history_summary["historical_author_run_ids"] == sorted(
         row["run_id"] for row in paper_era_runs
     )
+    assert len(fork_heads) == 6
+    assert sum(int(row["repository_count"]) for row in fork_heads) == 71
+    assert Counter(row["default_head_commit"] for row in fork_heads) == {
+        audit.LEGACY_HEAD_COMMIT: 1,
+        audit.SOURCE_COMMIT: 1,
+        "e3634a100a33d2a21532e8bafcf458765a7aef8b": 1,
+        "bb6e330f33c2a68917f8ec489d147f9df8027bb2": 1,
+        audit.FORK_DATA_TIP: 1,
+        "e5e58cd6b1e8251436a8e5fbf65f0e82cd48bf3e": 1,
+    }
+    assert {row["paper_result_credit"] for row in fork_heads} == {"False"}
+    assert {
+        row["additional_attributable_author_native_artifact"] for row in fork_heads
+    } == {"False"}
+    assert sum(int(row["paper_result_units_regenerated"]) for row in fork_heads) == 0
+    assert fork_bundle["repository"] == "vodaza36/AlphaAgent"
+    assert fork_bundle["tip_commit"] == audit.FORK_DATA_TIP
+    assert fork_bundle["data_zip_sha256"] == audit.FORK_DATA_ZIP_SHA256
+    assert fork_bundle["data_zip_bytes"] == 17805441
+    assert fork_bundle["zip_entries"] == 3980
+    assert fork_bundle["calendar_rows"] == 1533
+    assert fork_bundle["calendar_start"] == "2020-01-02"
+    assert fork_bundle["calendar_end"] == "2026-02-06"
+    assert fork_bundle["feature_symbols"] == 568
+    assert fork_bundle["sp500_membership_rows"] == 568
+    assert fork_bundle["sp500_rows_with_finite_membership_end"] == 1
+    assert fork_bundle["archive_membership_file_supports_claim"] is False
+    assert fork_bundle["paper_training_start_2015_covered"] is False
+    assert fork_bundle["paper_result_units_regenerated"] == 0
+    assert fork_bundle["paper_result_credit"] is False
     assert len(gaps) == 17
     assert len(inventory) == 141
     assert len(paper_era_inventory) == 856
@@ -317,6 +362,14 @@ def test_pinned_source_static_checks_when_available() -> None:
     assert history_summary["official_reachable_objects"] == 8312
     assert history_summary["historical_author_run_record_paths"] == 385
     assert history_summary["primitive_prediction_return_or_holding_paths"] == 0
+    fork_heads, fork_bundle = audit.fork_default_head_audit(source_root)
+    assert len(fork_heads) == 6
+    assert sum(int(row["repository_count"]) for row in fork_heads) == 71
+    assert sum(int(row["paper_result_units_regenerated"]) for row in fork_heads) == 0
+    assert fork_bundle["data_zip_bytes"] == 17805441
+    assert fork_bundle["calendar_start"] == "2020-01-02"
+    assert fork_bundle["sp500_rows_with_finite_membership_end"] == 1
+    assert fork_bundle["paper_training_start_2015_covered"] is False
 
     current = {
         row["dimension"]: row

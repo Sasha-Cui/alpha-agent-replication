@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import io
 import json
 import os
 import pickletools
@@ -26,6 +27,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import zipfile
 from collections import Counter
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -84,6 +86,85 @@ PAPER_VERSIONS: Mapping[str, Mapping[str, Any]] = {
     },
 }
 OFFICIAL_HEADS = (SOURCE_COMMIT, LEGACY_HEAD_COMMIT)
+FORK_DISCOVERY_DATE = "2026-08-14"
+FORK_DEFAULT_HEAD_TOTAL = 71
+FORK_DATA_REPOSITORY = "vodaza36/AlphaAgent"
+FORK_DATA_TIP = "8f16d03d4048647d9eb6ce2e5224bfaff99f7812"
+FORK_DATA_ZIP_SHA256 = "ac0ead7c234f1aefa8c2dc0d4e5c2df04285b00cb1e78aba484b1e31f61f0ec5"
+FORK_DEFAULT_HEAD_GROUPS: tuple[Mapping[str, Any], ...] = (
+    {
+        "group_id": "official_legacy_head",
+        "repository": "57 fork default branches",
+        "repository_count": 57,
+        "tip_commit": LEGACY_HEAD_COMMIT,
+        "base_commit": LEGACY_HEAD_COMMIT,
+        "expected_commits_ahead": 0,
+        "expected_changed_paths": 0,
+        "expected_added_paths": 0,
+        "candidate_paths": "",
+        "classification": "unchanged_official_legacy_head",
+    },
+    {
+        "group_id": "official_rewrite_head",
+        "repository": "10 fork default branches",
+        "repository_count": 10,
+        "tip_commit": SOURCE_COMMIT,
+        "base_commit": SOURCE_COMMIT,
+        "expected_commits_ahead": 0,
+        "expected_changed_paths": 0,
+        "expected_added_paths": 0,
+        "candidate_paths": "",
+        "classification": "unchanged_official_rewrite_head",
+    },
+    {
+        "group_id": "hongyi_h_model_substitution",
+        "repository": "hongyi-h/AlphaAgent",
+        "repository_count": 1,
+        "tip_commit": "e3634a100a33d2a21532e8bafcf458765a7aef8b",
+        "base_commit": LEGACY_HEAD_COMMIT,
+        "expected_commits_ahead": 1,
+        "expected_changed_paths": 2,
+        "expected_added_paths": 0,
+        "candidate_paths": "",
+        "classification": "llm_endpoint_and_model_substitution_only",
+    },
+    {
+        "group_id": "hexa_localization",
+        "repository": "HexaWarriorW/AlphaAgent",
+        "repository_count": 1,
+        "tip_commit": "bb6e330f33c2a68917f8ec489d147f9df8027bb2",
+        "base_commit": LEGACY_HEAD_COMMIT,
+        "expected_commits_ahead": 8,
+        "expected_changed_paths": 59,
+        "expected_added_paths": 14,
+        "candidate_paths": "",
+        "classification": "localization_and_runtime_changes_no_paper_outputs",
+    },
+    {
+        "group_id": "vodaza_postpaper_run",
+        "repository": FORK_DATA_REPOSITORY,
+        "repository_count": 1,
+        "tip_commit": FORK_DATA_TIP,
+        "base_commit": LEGACY_HEAD_COMMIT,
+        "expected_commits_ahead": 19,
+        "expected_changed_paths": 43,
+        "expected_added_paths": 14,
+        "candidate_paths": "data/us_data.zip;hypothesis.md",
+        "classification": "unaffiliated_2026_data_bundle_and_new_hypothesis_summary",
+    },
+    {
+        "group_id": "wang_rewrite_extension",
+        "repository": "Wangchanghao12/AlphaAgent",
+        "repository_count": 1,
+        "tip_commit": "e5e58cd6b1e8251436a8e5fbf65f0e82cd48bf3e",
+        "base_commit": SOURCE_COMMIT,
+        "expected_commits_ahead": 40,
+        "expected_changed_paths": 48,
+        "expected_added_paths": 14,
+        "candidate_paths": "artifacts/factorzoo/stock_1d/mining_delivered_registry.json",
+        "classification": "disjoint_rewrite_extension_not_paper_experiment",
+    },
+)
 OFFICIAL_COMMIT_SEQUENCE_SHA256 = (
     "dec34bd1290f543cc8906310682a34e98625fd985b75dfa124251f1bc40cf266"
 )
@@ -855,6 +936,179 @@ def public_source_history(
     if facts["official_path_sequence_sha256"] != OFFICIAL_PATH_SEQUENCE_SHA256:
         raise RuntimeError("Pinned official historical path sequence changed")
     return path_rows, facts
+
+
+def fork_default_head_audit(
+    source_root: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Audit the bounded current fork-default-head census without promoting forks.
+
+    The 2026-08-14 GitHub GraphQL census contained 71 default branches grouped
+    into six unique heads. Sixty-seven point exactly at one of the two official
+    heads. The four divergent tips are locally object-pinned and checked below.
+    """
+    rows: list[dict[str, Any]] = []
+    for group in FORK_DEFAULT_HEAD_GROUPS:
+        tip = str(group["tip_commit"])
+        base = str(group["base_commit"])
+        if tip == base:
+            commits_ahead = changed_paths = added_paths = 0
+        else:
+            merge_base = git_output(source_root, "merge-base", base, tip)
+            if merge_base != base:
+                raise RuntimeError(
+                    f"Fork tip {tip} no longer descends from pinned base {base}"
+                )
+            commits_ahead = int(
+                git_output(source_root, "rev-list", "--count", f"{base}..{tip}")
+            )
+            changed_paths = len(
+                git_output(source_root, "diff", "--name-only", base, tip).splitlines()
+            )
+            added_paths = len(
+                git_output(
+                    source_root,
+                    "diff",
+                    "--diff-filter=A",
+                    "--name-only",
+                    base,
+                    tip,
+                ).splitlines()
+            )
+        observed = (commits_ahead, changed_paths, added_paths)
+        expected = (
+            int(group["expected_commits_ahead"]),
+            int(group["expected_changed_paths"]),
+            int(group["expected_added_paths"]),
+        )
+        if observed != expected:
+            raise RuntimeError(
+                f"Pinned fork surface changed for {group['group_id']}: {observed} != {expected}"
+            )
+        rows.append(
+            {
+                "discovery_date": FORK_DISCOVERY_DATE,
+                "group_id": group["group_id"],
+                "repository": group["repository"],
+                "repository_count": group["repository_count"],
+                "default_head_commit": tip,
+                "base_commit": base,
+                "commits_ahead_of_base": commits_ahead,
+                "changed_paths_from_base": changed_paths,
+                "added_paths_from_base": added_paths,
+                "candidate_data_or_result_paths": group["candidate_paths"],
+                "classification": group["classification"],
+                "additional_attributable_author_native_artifact": False,
+                "paper_result_units_regenerated": 0,
+                "paper_result_credit": False,
+            }
+        )
+    if sum(int(row["repository_count"]) for row in rows) != FORK_DEFAULT_HEAD_TOTAL:
+        raise RuntimeError("Pinned fork-default-head denominator changed")
+    if sum(row["default_head_commit"] not in OFFICIAL_HEADS for row in rows) != 4:
+        raise RuntimeError("Pinned divergent fork-head group count changed")
+    return rows, fork_data_bundle_audit(source_root)
+
+
+def fork_data_bundle_audit(source_root: Path) -> dict[str, Any]:
+    """Inspect the sole fork default head that ships a market-data candidate."""
+    zip_blob = _git_blob(source_root, FORK_DATA_TIP, "data/us_data.zip")
+    observed_zip_sha = hashlib.sha256(zip_blob).hexdigest()
+    if observed_zip_sha != FORK_DATA_ZIP_SHA256:
+        raise RuntimeError(
+            f"Pinned independent fork data ZIP changed: {observed_zip_sha}"
+        )
+    with zipfile.ZipFile(io.BytesIO(zip_blob)) as archive:
+        infos = archive.infolist()
+        calendar = archive.read("calendars/day.txt").decode().splitlines()
+        sp500_rows = [
+            line.split("\t")
+            for line in archive.read("instruments/sp500.txt").decode().splitlines()
+            if line
+        ]
+        all_rows = [
+            line.split("\t")
+            for line in archive.read("instruments/all.txt").decode().splitlines()
+            if line
+        ]
+        feature_symbols = {
+            name.split("/", 2)[1]
+            for name in archive.namelist()
+            if name.startswith("features/") and name.count("/") >= 2
+        }
+        uncompressed_bytes = sum(info.file_size for info in infos)
+    finite_membership_rows = sum(row[2] != "2099-12-31" for row in sp500_rows)
+    paper_pdf = _git_blob(source_root, FORK_DATA_TIP, "alphaagent-paper.pdf")
+    data_guide = _git_blob(source_root, FORK_DATA_TIP, "DATA.md").decode()
+    hypothesis = _git_blob(source_root, FORK_DATA_TIP, "hypothesis.md").decode()
+    observed = {
+        "zip_entries": len(infos),
+        "zip_uncompressed_bytes": uncompressed_bytes,
+        "calendar_rows": len(calendar),
+        "calendar_start": calendar[0],
+        "calendar_end": calendar[-1],
+        "feature_symbols": len(feature_symbols),
+        "sp500_membership_rows": len(sp500_rows),
+        "sp500_rows_with_finite_membership_end": finite_membership_rows,
+        "all_instrument_rows": len(all_rows),
+    }
+    expected = {
+        "zip_entries": 3980,
+        "zip_uncompressed_bytes": 23945945,
+        "calendar_rows": 1533,
+        "calendar_start": "2020-01-02",
+        "calendar_end": "2026-02-06",
+        "feature_symbols": 568,
+        "sp500_membership_rows": 568,
+        "sp500_rows_with_finite_membership_end": 1,
+        "all_instrument_rows": 568,
+    }
+    if observed != expected:
+        raise RuntimeError(f"Pinned independent fork data census changed: {observed!r}")
+    for marker in (
+        "survivorship-bias-free S&P 500 dataset",
+        "approximately 600 symbols",
+        "2020-2026",
+    ):
+        if marker not in data_guide:
+            raise RuntimeError(f"Pinned fork data-guide marker changed: {marker}")
+    for marker in (
+        "Mining Results (step_n=5, run 2026-02-09)",
+        "11.0785",
+        "spurious (data leak / look-ahead bias)",
+    ):
+        if marker not in hypothesis:
+            raise RuntimeError(f"Pinned fork hypothesis marker changed: {marker}")
+    if hashlib.sha256(paper_pdf).hexdigest() != PAPER_SHA256:
+        raise RuntimeError("Fork paper copy no longer matches official arXiv v2 PDF")
+    return {
+        "discovery_date": FORK_DISCOVERY_DATE,
+        "repository": FORK_DATA_REPOSITORY,
+        "tip_commit": FORK_DATA_TIP,
+        "official_repository_artifact": False,
+        "attributable_to_paper_authors": False,
+        "branched_after_official_legacy_head": True,
+        "bundled_paper_copy_sha256": PAPER_SHA256,
+        "bundled_paper_copy_matches_official_v2": True,
+        "data_zip_sha256": FORK_DATA_ZIP_SHA256,
+        "data_zip_bytes": len(zip_blob),
+        **observed,
+        "data_guide_claims_survivorship_bias_free": True,
+        "archive_membership_file_supports_claim": False,
+        "paper_training_start_2015_covered": False,
+        "paper_exact_yahoo_snapshot_or_transform_lineage_recovered": False,
+        "new_hypothesis_summary_date": "2026-02-09",
+        "new_hypothesis_summary_flags_1100pct_return_as_lookahead": True,
+        "new_hypothesis_raw_prediction_return_or_holding_arrays_shipped": False,
+        "paper_result_units_regenerated": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "This independent post-paper fork ships a new 2020-2026 Qlib bundle and a "
+            "2026 mining summary, not the paper experiment. Its sp500.txt has only one "
+            "finite membership end across 568 rows despite the survivorship-bias-free "
+            "label, and the calendar omits the paper's 2015-2019 training period."
+        ),
+    }
 
 
 def paper_numeric_rows(paper_version: str = "v2") -> list[dict[str, Any]]:
@@ -1739,6 +1993,7 @@ def build_audit(
     commit, first_date = verify_pins(source_root, paper_pdf, paper_v1_pdf)
     history, history_rows = history_audit(source_root)
     history_paths, history_summary = public_source_history(source_root)
+    fork_rows, fork_bundle = fork_default_head_audit(source_root)
     paper_versions, paper_lineage, paper_figures = official_paper_version_rows(
         paper_versions_root, source_root, latex_command
     )
@@ -1797,6 +2052,7 @@ def build_audit(
     write_csv(output_dir / "official_paper_numeric_lineage.csv", paper_lineage)
     write_csv(output_dir / "official_paper_figure_asset_inventory.csv", paper_figures)
     write_csv(output_dir / "public_source_history_path_inventory.csv", history_paths)
+    write_csv(output_dir / "fork_default_head_census.csv", fork_rows)
     write_csv(output_dir / "paper_specification_gaps.csv", gaps)
     write_csv(output_dir / "released_source_inventory.csv", inventory)
     write_csv(output_dir / "paper_era_source_inventory.csv", paper_era_inventory)
@@ -1813,6 +2069,9 @@ def build_audit(
     )
     (output_dir / "public_source_history.json").write_text(
         json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    (output_dir / "fork_data_bundle_audit.json").write_text(
+        json.dumps(fork_bundle, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
 
     mechanism_counts = Counter(row["status"] for row in mechanisms)
@@ -1894,6 +2153,37 @@ def build_audit(
         "public_source_primitive_prediction_return_or_holding_paths": history_summary[
             "primitive_prediction_return_or_holding_paths"
         ],
+        "fork_discovery_date": FORK_DISCOVERY_DATE,
+        "fork_default_heads_total": sum(
+            int(row["repository_count"]) for row in fork_rows
+        ),
+        "fork_unique_default_head_groups": len(fork_rows),
+        "forks_at_official_heads": sum(
+            int(row["repository_count"])
+            for row in fork_rows
+            if row["default_head_commit"] in OFFICIAL_HEADS
+        ),
+        "divergent_fork_default_heads": sum(
+            int(row["repository_count"])
+            for row in fork_rows
+            if row["default_head_commit"] not in OFFICIAL_HEADS
+        ),
+        "divergent_fork_paper_result_units_regenerated": sum(
+            int(row["paper_result_units_regenerated"])
+            for row in fork_rows
+            if row["default_head_commit"] not in OFFICIAL_HEADS
+        ),
+        "independent_fork_data_bundle_audited": True,
+        "independent_fork_data_bundle_calendar_start": fork_bundle[
+            "calendar_start"
+        ],
+        "independent_fork_data_bundle_sp500_rows": fork_bundle[
+            "sp500_membership_rows"
+        ],
+        "independent_fork_data_bundle_finite_membership_end_rows": fork_bundle[
+            "sp500_rows_with_finite_membership_end"
+        ],
+        "independent_fork_data_bundle_valid_paper_input": False,
         "paper_numeric_tables_audited": [1, 2],
         "paper_numeric_table_cells_total": 106,
         "paper_numeric_result_cells_total": 100,
@@ -1982,7 +2272,11 @@ def build_audit(
             "no predictions, holdings, returns, complete recorder artifacts, baseline outputs, or figure "
             "arrays survive. Thus mechanism faithfulness is substantial, 5/100 Table 2 cells are "
             "corroborated, 0/100 are independently regenerated, and 0/18 additional quantitative result "
-            "claims are reproduced."
+            "claims are reproduced. A bounded 2026-08-14 census of all 71 fork default heads found "
+            "four divergent tips but zero additional paper results. The sole fork data candidate is an "
+            "unaffiliated 2026 bundle whose calendar starts in 2020 and whose S&P500 membership file "
+            "has only one finite removal date across 568 rows; it cannot supply the paper's missing "
+            "2015 training panel or receive paper credit."
         ),
         "source_file_sha256": PINNED_SOURCE_SHA256,
         "paper_mechanism_file_sha256": PAPER_MECHANISM_SHA256,
@@ -2006,6 +2300,10 @@ legacy tree; both omissions made it materially too pessimistic.
   continuous history: 8 commits on rewritten `main` and 485 on public
   `legacy-main`, 493 reachable commits in total. The public repository exposes
   only those two heads, with no tags or releases.
+- A bounded GitHub GraphQL census on {FORK_DISCOVERY_DATE} covered all 71 fork
+  default branches: 57 point at the official legacy head, 10 at the official
+  rewrite head, and four are divergent. Each divergent tip is object-pinned and
+  audited separately; none receives author-native or paper-result credit.
 - Mechanism snapshot: `{PAPER_MECHANISM_COMMIT}` (2025-02-12), before arXiv v1.
   It contains 856 tracked files, including 331 Python modules and 15 factor CSVs.
 - The same author commit contains seven Qlib/MLflow run directories (385 files),
@@ -2093,6 +2391,14 @@ legacy tree; both omissions made it materially too pessimistic.
   and fitted LightGBM states. They expose only anonymous feature columns, however,
   so factor-pool identity, random seeds, predictions, returns, and portfolio paths
   remain missing. Exact metric correspondence is corroboration, not regeneration.
+- The only divergent fork with a data candidate is the unaffiliated 2026
+  `{FORK_DATA_REPOSITORY}` branch. Its 17,805,441-byte Qlib ZIP has 568 feature
+  symbols and a 1,533-day calendar from 2020-01-02 through 2026-02-06, so it omits
+  the paper's 2015--2019 training period. More seriously, its `sp500.txt` gives
+  only 1/568 rows a finite membership end despite calling the package
+  survivorship-bias-free. Its separate 2026 mining summary flags a 1,100% return
+  as look-ahead leakage and ships no primitive result arrays. This is useful
+  negative evidence, not a paper input or result.
 
 ## Honest boundary
 
@@ -2101,7 +2407,8 @@ default branch: this is a **substantial mechanism implementation with one exact
 five-cell native output correspondence**, not merely an analogue. It is still not
 an end-to-end replication of the published experiments.
 The 2026 CSI1000/Tushare data package, DSL expressions, and registry metrics belong
-to a disjoint rewrite and receive zero paper credit. Run
+to a disjoint rewrite and receive zero paper credit. The 71-fork census likewise
+adds zero paper-result units. Run
 `scripts/audit_alphaagent_paper.py` to regenerate the package; `--strict` remains
 fail-closed until paper-era inputs, predictions, portfolios, stochastic trial
 lineage, and every published result are reproduced.

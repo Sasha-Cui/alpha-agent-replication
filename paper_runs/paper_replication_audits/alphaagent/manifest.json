@@ -88,6 +88,17 @@
   "public_source_historical_author_run_record_paths": 385,
   "public_source_historical_author_run_ids": 7,
   "public_source_primitive_prediction_return_or_holding_paths": 0,
+  "fork_discovery_date": "2026-08-14",
+  "fork_default_heads_total": 71,
+  "fork_unique_default_head_groups": 6,
+  "forks_at_official_heads": 67,
+  "divergent_fork_default_heads": 4,
+  "divergent_fork_paper_result_units_regenerated": 0,
+  "independent_fork_data_bundle_audited": true,
+  "independent_fork_data_bundle_calendar_start": "2020-01-02",
+  "independent_fork_data_bundle_sp500_rows": 568,
+  "independent_fork_data_bundle_finite_membership_end_rows": 1,
+  "independent_fork_data_bundle_valid_paper_input": false,
   "paper_numeric_tables_audited": [
     1,
     2
@@ -164,7 +175,7 @@
   "native_synthetic_component_deterministic": true,
   "native_synthetic_component_paper_result_reproduction": false,
   "audit_runtime_called_llm_or_market_data_api": false,
-  "interpretation": "The official repository has two unrelated roots. Its default main is a July 2026 CSI1000/Tushare rewrite, but public legacy-main retains a substantial preprint-era implementation. A pinned February 2025 snapshot contains the multi-stage workflow, structured hypothesis, prompts, operator library, AST largest-common-subtree matcher, Alpha101 reference expressions, Qlib/LightGBM configs, feedback loop, and 15 factor CSVs. The released implementation is still not the paper's exact objective: SL, PC, numeric c1/c2, alpha=0.5, beta-weighted ER, GPT-3.5 execution provenance, 20 trial seeds, and exact factor-to-result lineage are missing or divergent. Seven extensionless Qlib/MLflow run records were recovered from the same author commit; one S&P500 record matches all five AlphaAgent Table 2 cells at display precision and ships its executed config plus fitted LightGBM state. Those 5/100 cells are author-artifact corroborations, not regenerations: no predictions, holdings, returns, complete recorder artifacts, baseline outputs, or figure arrays survive. Thus mechanism faithfulness is substantial, 5/100 Table 2 cells are corroborated, 0/100 are independently regenerated, and 0/18 additional quantitative result claims are reproduced.",
+  "interpretation": "The official repository has two unrelated roots. Its default main is a July 2026 CSI1000/Tushare rewrite, but public legacy-main retains a substantial preprint-era implementation. A pinned February 2025 snapshot contains the multi-stage workflow, structured hypothesis, prompts, operator library, AST largest-common-subtree matcher, Alpha101 reference expressions, Qlib/LightGBM configs, feedback loop, and 15 factor CSVs. The released implementation is still not the paper's exact objective: SL, PC, numeric c1/c2, alpha=0.5, beta-weighted ER, GPT-3.5 execution provenance, 20 trial seeds, and exact factor-to-result lineage are missing or divergent. Seven extensionless Qlib/MLflow run records were recovered from the same author commit; one S&P500 record matches all five AlphaAgent Table 2 cells at display precision and ships its executed config plus fitted LightGBM state. Those 5/100 cells are author-artifact corroborations, not regenerations: no predictions, holdings, returns, complete recorder artifacts, baseline outputs, or figure arrays survive. Thus mechanism faithfulness is substantial, 5/100 Table 2 cells are corroborated, 0/100 are independently regenerated, and 0/18 additional quantitative result claims are reproduced. A bounded 2026-08-14 census of all 71 fork default heads found four divergent tips but zero additional paper results. The sole fork data candidate is an unaffiliated 2026 bundle whose calendar starts in 2020 and whose S&P500 membership file has only one finite removal date across 568 rows; it cannot supply the paper's missing 2015 training panel or receive paper credit.",
   "source_file_sha256": {
     "README.md": "b90839541fdb8d2f31ba75d868e614561791f6f4e6f020a3a04ae6d1cf4ca292",
     "pyproject.toml": "7b8c4e7fe00b45d476384cc1c48a368f004624834b7dd152d967c3eb1039e3c7",
@@ -193,9 +204,11 @@
     "rdagent/scenarios/qlib/proposal/prompts_alphaagent.yaml": "65f65b096a910a7ec3f018e83b49ba2cf963179aa4b062a77b3a49915fa9f9a9"
   },
   "output_sha256": {
-    "README.md": "c25a915eb2c7bb5eeca35facdd4abb37867b785b4c6adee94127edf032a01485",
+    "README.md": "78ef49da0d2a9142ed9bfebe2946f82f2c9064117d1e14f9e153a290d073eca7",
     "current_rewrite_mechanism_conformance.csv": "4b4c16ca56e7add8a2cb60b4fb58d503513ae68f0bd9b1bd6d26b0d82d9744b5",
     "data_release_provenance.csv": "d6c45c4f1c942e688c87758b226ca8e19ea20a24afa4393c0365aeff2867dd76",
+    "fork_data_bundle_audit.json": "3be0997ec380b43be035c0e66ffa8fa9c0e8981b80d5309cfa13aaebf51d025a",
+    "fork_default_head_census.csv": "dda84475f9385a48d13ca917d4cac199592bab8cff8afb97d2da4d2f25e1c26a",
     "native_component.json": "b12c8f07a098afa144f0df6174e114eccb0a818cd76401aab9ff47f676b0b138",
     "official_history_timeline.csv": "b5e6e64ff8c29ad89048f9ff0ed6c096e52580501caad00894a2e079983945fb",
     "official_paper_figure_asset_inventory.csv": "45ad738525ba138d4dee679e75f4bfadce9a111319b2fdcf5b34b0d7c17c8744",

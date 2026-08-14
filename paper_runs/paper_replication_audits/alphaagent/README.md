@@ -16,6 +16,10 @@ legacy tree; both omissions made it materially too pessimistic.
   continuous history: 8 commits on rewritten `main` and 485 on public
   `legacy-main`, 493 reachable commits in total. The public repository exposes
   only those two heads, with no tags or releases.
+- A bounded GitHub GraphQL census on 2026-08-14 covered all 71 fork
+  default branches: 57 point at the official legacy head, 10 at the official
+  rewrite head, and four are divergent. Each divergent tip is object-pinned and
+  audited separately; none receives author-native or paper-result credit.
 - Mechanism snapshot: `95e47882cbed3ba0cafd42e812fe0032a8ae0681` (2025-02-12), before arXiv v1.
   It contains 856 tracked files, including 331 Python modules and 15 factor CSVs.
 - The same author commit contains seven Qlib/MLflow run directories (385 files),
@@ -103,6 +107,14 @@ legacy tree; both omissions made it materially too pessimistic.
   and fitted LightGBM states. They expose only anonymous feature columns, however,
   so factor-pool identity, random seeds, predictions, returns, and portfolio paths
   remain missing. Exact metric correspondence is corroboration, not regeneration.
+- The only divergent fork with a data candidate is the unaffiliated 2026
+  `vodaza36/AlphaAgent` branch. Its 17,805,441-byte Qlib ZIP has 568 feature
+  symbols and a 1,533-day calendar from 2020-01-02 through 2026-02-06, so it omits
+  the paper's 2015--2019 training period. More seriously, its `sp500.txt` gives
+  only 1/568 rows a finite membership end despite calling the package
+  survivorship-bias-free. Its separate 2026 mining summary flags a 1,100% return
+  as look-ahead leakage and ships no primitive result arrays. This is useful
+  negative evidence, not a paper input or result.
 
 ## Honest boundary
 
@@ -111,7 +123,8 @@ default branch: this is a **substantial mechanism implementation with one exact
 five-cell native output correspondence**, not merely an analogue. It is still not
 an end-to-end replication of the published experiments.
 The 2026 CSI1000/Tushare data package, DSL expressions, and registry metrics belong
-to a disjoint rewrite and receive zero paper credit. Run
+to a disjoint rewrite and receive zero paper credit. The 71-fork census likewise
+adds zero paper-result units. Run
 `scripts/audit_alphaagent_paper.py` to regenerate the package; `--strict` remains
 fail-closed until paper-era inputs, predictions, portfolios, stochastic trial
 lineage, and every published result are reproduced.

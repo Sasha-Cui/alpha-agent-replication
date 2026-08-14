@@ -225,8 +225,12 @@ ARTIFACT_NOTES = {
         "No frozen paper dataset, prediction, holding, return, complete recorder, baseline "
         "output, or figure array survives. Thus 5/100 Table 2 cells are corroborated, "
         "0/100 are independently regenerated, and 0/18 additional quantitative claims "
-        "are reproduced. The disjoint 2026 "
-        "data and registry remain zero-credit post-paper evidence.",
+        "are reproduced. A 2026-08-14 census covers all 71 fork default heads; four "
+        "diverge, but none adds a paper result. The sole fork data candidate is an "
+        "unaffiliated 2026 Qlib bundle whose calendar starts in 2020 and whose S&P500 "
+        "membership file gives only 1/568 rows a finite end date, so it cannot supply "
+        "the paper's missing 2015 training panel. The disjoint 2026 official rewrite "
+        "data/registry and all fork outputs remain zero-credit post-paper evidence.",
     ),
     "SYS-ALPHA-MEMO": (
         "N",
@@ -1359,7 +1363,7 @@ TARGETED_EXECUTION = {
     "SYS-MAD-EVOLVE": "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_panels_full_six_commit_history_direct_coauthor_framework_five_component_checks_broken_cli_and_compile_missing_trading_lineage",
     "SYS-ALPHA-SCHEMA": "paper_audit:completed_zero_of_212_numeric_units_zero_of_9_empirical_panels_full_two_commit_history_nine_tests_appendix_component_missing_research_lineage",
     "SYS-ALPHA-CRAFTER": "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_six_component_checks_broken_default_launcher_missing_research_lineage",
-    "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions",
+    "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions_71_fork_heads_zero_additional_credit",
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_v1_zero_of_953_v2_zero_of_1344_one_linked_input_one_date_prompt_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
     "SYS-ALPHA-GPT": "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_empirical_results",
