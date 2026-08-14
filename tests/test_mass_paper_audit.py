@@ -71,6 +71,9 @@ def test_committed_audit_preserves_internal_state_result_boundary() -> None:
     counterexample = json.loads(
         (output / "native_signal_nonidentifiability.json").read_text(encoding="utf-8")
     )
+    fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
+    fork_refs = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
 
     assert manifest["overall_status"] == "not_reproduced_partial_internal_state_only"
     assert manifest["full_paper_reproduced"] is False
@@ -107,6 +110,40 @@ def test_committed_audit_preserves_internal_state_result_boundary() -> None:
     assert manifest["source_history_tags"] == 0
     assert manifest["source_history_unique_paths"] == 58
     assert manifest["source_history_native_result_artifacts_found"] is False
+    assert manifest["public_fork_census_date"] == "2026-08-14"
+    assert manifest["public_forks_reported_by_github_rest"] == 25
+    assert manifest["public_forks_accessible_via_graphql"] == 25
+    assert manifest["public_fork_branch_refs_audited"] == 26
+    assert manifest["public_fork_unique_heads_audited"] == 5
+    assert manifest["public_fork_heads_reachable_from_official_history"] == 4
+    assert manifest["public_fork_divergent_heads_audited"] == 1
+    assert manifest["public_fork_divergent_commits_audited"] == 3
+    assert manifest["public_fork_divergent_paths_audited"] == 8
+    assert manifest["public_fork_semantically_new_market_panel_found"] is False
+    assert manifest["public_fork_native_result_artifacts_found"] is False
+    assert manifest["public_fork_paper_result_credit"] is False
+
+    assert len(fork_refs) == 26
+    assert len({row["repository"] for row in fork_refs}) == 25
+    assert len(fork_heads) == 5
+    assert Counter(row["classification"] for row in fork_heads) == {
+        "official_public_history_reachable": 4,
+        "unaffiliated_postpaper_source_adaptation_with_semantically_duplicate_market_panel": 1,
+    }
+    divergent_head = next(row for row in fork_heads if row["extra_commit_count_beyond_official_head"] == "3")
+    assert divergent_head["head_commit"] == audit.PUBLIC_FORK_DIVERGENT_HEAD
+    assert divergent_head["extra_changed_path_count"] == "8"
+    assert divergent_head["possible_native_output_paths"] == audit.PUBLIC_FORK_PARQUET_PATH
+    assert divergent_head["paper_result_credit"] == "False"
+    assert fork_census["fork_and_official_market_panel_bytes_differ"] is True
+    assert fork_census["fork_and_official_market_panels_semantically_identical"] is True
+    assert fork_census["semantic_panel_rows"] == 72_638
+    assert fork_census["semantic_panel_columns"] == 19
+    assert fork_census["semantic_panel_distinct_stocks"] == 100
+    assert fork_census["semantic_panel_distinct_dates"] == 1_457
+    assert fork_census["native_agent_decision_signal_portfolio_or_result_paths_discovered"] == 0
+    assert fork_census["exact_paper_result_table_or_figure_paths_discovered"] == 0
+    assert fork_census["paper_result_credit"] is False
 
     assert Counter(row["status"] for row in conformance) == {
         "unverifiable_no_shipped_native_signal_output_or_result_path": 766,
@@ -200,3 +237,20 @@ def test_committed_audit_preserves_internal_state_result_boundary() -> None:
     assert all(values[0] == 0.5 for values in counterexample["scenario_b_selected_signal"].values())
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
+
+
+def test_live_public_fork_census_when_bouchet_sources_are_available() -> None:
+    census = Path("/nfs/roberts/scratch/pi_btk22/zc362/mass_fork_census")
+    source = Path("/nfs/roberts/scratch/pi_btk22/zc362/mass_source")
+    snapshot = (
+        ROOT
+        / "paper_runs/paper_replication_audits/mass/public_fork_branch_ref_snapshot.csv"
+    )
+    if not census.exists() or not source.exists() or not snapshot.exists():
+        return
+    heads, summary, branch_rows = audit.public_fork_census(census, snapshot, source)
+    assert len(heads) == 5
+    assert len(branch_rows) == 26
+    assert summary["divergent_heads_reviewed"] == 1
+    assert summary["fork_and_official_market_panels_semantically_identical"] is True
+    assert summary["paper_result_credit"] is False

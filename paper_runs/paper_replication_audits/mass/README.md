@@ -33,6 +33,14 @@ timing logs, or API accounting needed to reproduce final Tables 1--2 and 4--8.
   an abandoned DTML/private-data precursor and cleaning utilities, not MASS
   decisions or results. The five ignored output directories have no reachable
   objects, and `git fsck --no-reflogs --unreachable` is empty.
+- GitHub reported 25 forks on 2026-08-14, all accessible through GraphQL. Their
+  26 branch refs collapse to five unique heads: four are reachable from official
+  history, and the sole divergent head has three unaffiliated commits touching
+  eight paths. It contains no decision, signal, portfolio, metric, table, or
+  figure artifact. Its only output-like path is `stock_disagreement/dataset/ih.parq`;
+  despite different Parquet bytes, its decoded 72,638-by-19 frame is exactly equal
+  to official `base_data.parq` cell for cell (100 stocks and 1,457 dates), so it
+  adds neither a new input panel nor paper-result credit.
 - The anonymous backup has 39 files. Its only extra path is an empty `.README`;
   every shared non-README blob is identical to the named release. Its README says
   the full dataset will be released after review, so it does not add the missing

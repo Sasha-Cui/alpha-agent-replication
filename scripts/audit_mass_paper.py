@@ -41,6 +41,35 @@ OPENREVIEW_URL = "https://openreview.net/forum?id=NNpE9iiPNR"
 OPENREVIEW_ARCHIVE_URL = "https://anonymous.4open.science/r/MASS-AC96"
 OPENREVIEW_FINAL_PDF_SHA256 = "92697642e0f68afb3679a47ed32be46e705fbe3e670a78b2930a691d1425d385"
 SNAPSHOT_SHA256 = "be7d40a8f0191bb6ee246b3a8537851b088be685afb52b51d823dde587f1a895"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_REST_COUNT = 25
+PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT = 25
+PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT = 26
+PUBLIC_FORK_GRAPHQL_REF_SHA256 = "b221a7835821c5dede7577a71cbf72e00b2b1ec8c77b691264aae7e453eeb9b5"
+PUBLIC_FORK_SNAPSHOT_SHA256 = "73b767a924901ae4c6e9a681b5f6407734a94df61a5f38c43d00edd78939f7c1"
+PUBLIC_FORK_REPRESENTATIVE_REF_COUNT = 5
+PUBLIC_FORK_REPRESENTATIVE_REF_SHA256 = "69b50131049f462e676bab32b55afc50dafffcd00943dc4a81a20ec98e221f76"
+PUBLIC_FORK_UNIQUE_HEAD_SHA256 = "46670d71f81f9c5d991ef8d772734ad5527bc332c98a783b367a445574e331a6"
+PUBLIC_FORK_BASE_REACHABLE_HEAD_COUNT = 4
+PUBLIC_FORK_DIVERGENT_HEAD = "331607e491ac5e097372286cb6b9d8ef4cd6d0d7"
+PUBLIC_FORK_DIVERGENT_SURFACE_SHA256 = "f69590a473eefa1e9ae21b1d18c98cda7315d0f11fe8bbf6df22024b2e29fa0d"
+PUBLIC_FORK_DIVERGENT_COMMIT_COUNT = 3
+PUBLIC_FORK_DIVERGENT_COMMIT_SHA256 = "23581439a30266a8337bb305283949376f0ddfa0dfd4fd0f4b418366d8ac5b20"
+PUBLIC_FORK_DIVERGENT_PATH_COUNT = 8
+PUBLIC_FORK_DIVERGENT_PATH_SHA256 = "099b6c1d30fe9f053a66c481ead1c8b3dcd4747dc08b7cdbc2ca27aed9c89c19"
+PUBLIC_FORK_DIVERGENT_AUTHOR_NAME = "albert11111111"
+PUBLIC_FORK_DIVERGENT_AUTHOR_EMAIL = "13370352616@163.com"
+PUBLIC_FORK_PARQUET_PATH = "stock_disagreement/dataset/ih.parq"
+PUBLIC_FORK_PARQUET_SHA256 = "c3dc02f7a5c409db5cb9ef8846866d365a078bd6656d203e21f8e49e6976a1b3"
+PUBLIC_FORK_PARQUET_BYTES = 5_037_514
+OFFICIAL_BASE_PARQUET_PATH = "stock_disagreement/dataset/base_data.parq"
+OFFICIAL_BASE_PARQUET_SHA256 = "32c03ee3f2c007efb6ec73e550bd53e29ff849131ab33bbaf3fe1d9e5e9704fd"
+OFFICIAL_SOURCE_AUTHOR_EMAILS = {
+    "hiyoungshen@gmail.com",
+    "taianguo@stu.pku.edu.cn",
+    "48055547+gta0804@users.noreply.github.com",
+}
+OFFICIAL_SOURCE_AUTHOR_NAMES = {"EachSheep", "gta0804", "taian guo(\u90ed\u6cf0\u5b89)"}
 
 SOURCE_HISTORY_COMMITS = (
     "b358fe9241abc213d1c7560afbda74dd51ce2c39",
@@ -363,6 +392,14 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
+def sha256_lines(lines: Sequence[str]) -> str:
+    return sha256_bytes("".join(f"{line}\n" for line in lines).encode("utf-8"))
+
+
 def git_text(root: Path, *args: str) -> str:
     return subprocess.run(
         ["git", "-C", str(root), *args],
@@ -370,6 +407,14 @@ def git_text(root: Path, *args: str) -> str:
         capture_output=True,
         text=True,
     ).stdout.strip()
+
+
+def git_bytes(root: Path, *args: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+    ).stdout
 
 
 def git_head(root: Path) -> str:
@@ -477,6 +522,229 @@ def source_history_audit(source_root: Path) -> Dict[str, Any]:
         ],
         "historical_native_decision_signal_portfolio_or_result_artifacts_found": False,
     }
+
+
+def public_fork_census(
+    census_root: Path,
+    branch_ref_snapshot: Path,
+    source_root: Path,
+) -> Tuple[List[Dict[str, Any]], Dict[str, Any], List[Dict[str, str]]]:
+    """Audit every accessible branch and unique head in the dated public-fork census."""
+    if git_text(census_root, "rev-parse", "--is-shallow-repository") != "false":
+        raise RuntimeError("MASS public-fork census is shallow")
+
+    ref_lines = git_text(
+        census_root,
+        "for-each-ref",
+        "refs/fork-census",
+        "--format=%(refname)%09%(objectname)",
+    ).splitlines()
+    if (
+        len(ref_lines) != PUBLIC_FORK_REPRESENTATIVE_REF_COUNT
+        or sha256_lines(ref_lines) != PUBLIC_FORK_REPRESENTATIVE_REF_SHA256
+    ):
+        raise RuntimeError("MASS representative public-fork refs changed")
+    refs = [line.split("\t", 1) for line in ref_lines]
+    unique_heads = sorted({head for _, head in refs})
+    if (
+        len(unique_heads) != PUBLIC_FORK_REPRESENTATIVE_REF_COUNT
+        or sha256_lines(unique_heads) != PUBLIC_FORK_UNIQUE_HEAD_SHA256
+    ):
+        raise RuntimeError("MASS public-fork unique heads changed")
+
+    if sha256(branch_ref_snapshot) != PUBLIC_FORK_SNAPSHOT_SHA256:
+        raise RuntimeError("MASS public-fork branch-ref snapshot bytes changed")
+    with branch_ref_snapshot.open(newline="", encoding="utf-8") as handle:
+        branch_rows = list(csv.DictReader(handle))
+    expected_columns = (
+        "repository",
+        "branch",
+        "head_commit",
+        "repository_created_at",
+        "repository_pushed_at",
+        "head_committed_at",
+        "head_author_login",
+        "head_author_name",
+        "head_author_email",
+        "head_subject",
+    )
+    if not branch_rows or tuple(branch_rows[0]) != expected_columns:
+        raise RuntimeError("MASS public-fork branch-ref schema changed")
+    branch_rows.sort(
+        key=lambda row: (row["repository"].lower(), row["branch"].lower(), row["head_commit"])
+    )
+    canonical_branch_refs = [
+        f'{row["repository"]}\t{row["branch"]}\t{row["head_commit"]}' for row in branch_rows
+    ]
+    if (
+        len(branch_rows) != PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT
+        or len({row["repository"] for row in branch_rows})
+        != PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT
+        or len({(row["repository"], row["branch"]) for row in branch_rows}) != len(branch_rows)
+        or sha256_lines(canonical_branch_refs) != PUBLIC_FORK_GRAPHQL_REF_SHA256
+        or {row["head_commit"] for row in branch_rows} != set(unique_heads)
+    ):
+        raise RuntimeError("MASS complete public-fork branch-ref snapshot changed")
+
+    rows: List[Dict[str, Any]] = []
+    divergent_surface: List[str] = []
+    all_extra_commits: set[str] = set()
+    all_extra_paths: set[str] = set()
+    extra_author_names: set[str] = set()
+    extra_author_emails: set[str] = set()
+    possible_native_output_paths: set[str] = set()
+    for ref, head in refs:
+        extra_commits = sorted(
+            git_text(census_root, "rev-list", head, "--not", SOURCE_COMMIT).splitlines()
+        )
+        changed_paths: set[str] = set()
+        for commit in extra_commits:
+            changed_paths.update(
+                path
+                for path in git_text(
+                    census_root,
+                    "diff-tree",
+                    "--root",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    commit,
+                ).splitlines()
+                if path
+            )
+            metadata = git_text(
+                census_root, "show", "-s", "--format=%an%x00%ae", commit
+            ).split("\0")
+            if len(metadata) != 2:
+                raise RuntimeError(f"Malformed MASS fork commit metadata: {commit}")
+            extra_author_names.add(metadata[0])
+            extra_author_emails.add(metadata[1])
+        ordered_paths = sorted(changed_paths)
+        if extra_commits:
+            if head != PUBLIC_FORK_DIVERGENT_HEAD:
+                raise RuntimeError(f"Unreviewed divergent MASS fork head: {head}")
+            divergent_surface.append(
+                f"{head}\t{';'.join(extra_commits)}\t{';'.join(ordered_paths)}"
+            )
+            all_extra_commits.update(extra_commits)
+            all_extra_paths.update(ordered_paths)
+            classification = (
+                "unaffiliated_postpaper_source_adaptation_with_semantically_duplicate_market_panel"
+            )
+        else:
+            classification = "official_public_history_reachable"
+
+        output_suffixes = {".csv", ".json", ".jsonl", ".npy", ".npz", ".parq", ".parquet", ".pkl"}
+        head_possible_outputs = [
+            path for path in ordered_paths if Path(path).suffix.lower() in output_suffixes
+        ]
+        possible_native_output_paths.update(head_possible_outputs)
+        matching_branch_rows = [row for row in branch_rows if row["head_commit"] == head]
+        head_metadata = git_text(
+            census_root, "show", "-s", "--format=%cI%x00%an%x00%ae%x00%s", head
+        ).split("\0", 3)
+        rows.append(
+            {
+                "representative_ref": ref,
+                "head_commit": head,
+                "head_date": head_metadata[0],
+                "head_author_name": head_metadata[1],
+                "head_author_email": head_metadata[2],
+                "head_subject": head_metadata[3],
+                "branch_ref_count": len(matching_branch_rows),
+                "repository_count": len({row["repository"] for row in matching_branch_rows}),
+                "repositories": ";".join(
+                    sorted({row["repository"] for row in matching_branch_rows})
+                ),
+                "extra_commit_count_beyond_official_head": len(extra_commits),
+                "extra_changed_path_count": len(ordered_paths),
+                "possible_native_output_paths": ";".join(head_possible_outputs),
+                "official_source_author_identity_match_in_extra_commits": False,
+                "classification": classification,
+                "paper_result_credit": False,
+            }
+        )
+
+    base_reachable = [row for row in rows if not row["extra_commit_count_beyond_official_head"]]
+    if len(base_reachable) != PUBLIC_FORK_BASE_REACHABLE_HEAD_COUNT or len(rows) != 5:
+        raise RuntimeError("MASS public-fork official/divergent head boundary changed")
+    if sha256_lines(divergent_surface) != PUBLIC_FORK_DIVERGENT_SURFACE_SHA256:
+        raise RuntimeError("MASS divergent fork commit/path surface changed")
+    if (
+        len(all_extra_commits) != PUBLIC_FORK_DIVERGENT_COMMIT_COUNT
+        or sha256_lines(sorted(all_extra_commits)) != PUBLIC_FORK_DIVERGENT_COMMIT_SHA256
+        or len(all_extra_paths) != PUBLIC_FORK_DIVERGENT_PATH_COUNT
+        or sha256_lines(sorted(all_extra_paths)) != PUBLIC_FORK_DIVERGENT_PATH_SHA256
+    ):
+        raise RuntimeError("MASS aggregate divergent fork surface changed")
+    if extra_author_names != {PUBLIC_FORK_DIVERGENT_AUTHOR_NAME} or extra_author_emails != {
+        PUBLIC_FORK_DIVERGENT_AUTHOR_EMAIL
+    }:
+        raise RuntimeError("MASS divergent fork author identities changed")
+    if extra_author_names & OFFICIAL_SOURCE_AUTHOR_NAMES or extra_author_emails & OFFICIAL_SOURCE_AUTHOR_EMAILS:
+        raise RuntimeError("MASS divergent fork commits match an official source author identity")
+    if possible_native_output_paths != {PUBLIC_FORK_PARQUET_PATH}:
+        raise RuntimeError(
+            f"MASS fork output-like paths require review: {sorted(possible_native_output_paths)}"
+        )
+
+    fork_parquet = git_bytes(
+        census_root, "show", f"{PUBLIC_FORK_DIVERGENT_HEAD}:{PUBLIC_FORK_PARQUET_PATH}"
+    )
+    official_parquet = (source_root / OFFICIAL_BASE_PARQUET_PATH).read_bytes()
+    if (
+        len(fork_parquet) != PUBLIC_FORK_PARQUET_BYTES
+        or sha256_bytes(fork_parquet) != PUBLIC_FORK_PARQUET_SHA256
+        or len(official_parquet) != PUBLIC_FORK_PARQUET_BYTES
+        or sha256_bytes(official_parquet) != OFFICIAL_BASE_PARQUET_SHA256
+    ):
+        raise RuntimeError("MASS public-fork or official market-panel bytes changed")
+    fork_frame = pd.read_parquet(io.BytesIO(fork_parquet))
+    official_frame = pd.read_parquet(io.BytesIO(official_parquet))
+    if not fork_frame.equals(official_frame):
+        raise RuntimeError("MASS divergent fork market panel is no longer semantically identical")
+    if (
+        fork_frame.shape != (72_638, 19)
+        or int(fork_frame["Stock"].nunique()) != 100
+        or int(fork_frame["Date"].nunique()) != 1_457
+        or (int(fork_frame["Date"].min()), int(fork_frame["Date"].max()))
+        != (20_180_102, 20_231_229)
+    ):
+        raise RuntimeError("MASS semantically duplicate fork market-panel schema changed")
+
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_REST_COUNT,
+        "graphql_accessible_forks": PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT,
+        "rest_minus_accessible_fork_gap": 0,
+        "graphql_accessible_branch_refs": PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT,
+        "graphql_accessible_branch_ref_census_sha256": PUBLIC_FORK_GRAPHQL_REF_SHA256,
+        "graphql_accessible_branch_ref_snapshot_file_sha256": sha256(branch_ref_snapshot),
+        "representative_unique_head_refs": len(rows),
+        "representative_ref_census_sha256": sha256_lines(ref_lines),
+        "unique_heads": len(unique_heads),
+        "unique_head_sha256": sha256_lines(unique_heads),
+        "heads_reachable_from_official_history": len(base_reachable),
+        "divergent_heads_reviewed": len(rows) - len(base_reachable),
+        "divergent_extra_commits_reviewed": len(all_extra_commits),
+        "divergent_changed_paths_reviewed": len(all_extra_paths),
+        "divergent_heads_matching_official_source_author_identity": 0,
+        "output_like_paths_discovered": sorted(possible_native_output_paths),
+        "fork_market_panel_path": PUBLIC_FORK_PARQUET_PATH,
+        "fork_market_panel_sha256": PUBLIC_FORK_PARQUET_SHA256,
+        "official_market_panel_path": OFFICIAL_BASE_PARQUET_PATH,
+        "official_market_panel_sha256": OFFICIAL_BASE_PARQUET_SHA256,
+        "fork_and_official_market_panel_bytes_differ": True,
+        "fork_and_official_market_panels_semantically_identical": True,
+        "semantic_panel_rows": len(fork_frame),
+        "semantic_panel_columns": len(fork_frame.columns),
+        "semantic_panel_distinct_stocks": int(fork_frame["Stock"].nunique()),
+        "semantic_panel_distinct_dates": int(fork_frame["Date"].nunique()),
+        "native_agent_decision_signal_portfolio_or_result_paths_discovered": 0,
+        "exact_paper_result_table_or_figure_paths_discovered": 0,
+        "paper_result_credit": False,
+    }
+    return rows, summary, branch_rows
 
 
 def release_lineage_audit(source_root: Path, anonymous_source_root: Path) -> Dict[str, Any]:
@@ -1122,6 +1390,8 @@ def source_config_audit(source_root: Path) -> List[Dict[str, str]]:
 def build_audit(
     source_root: Path,
     anonymous_source_root: Path,
+    fork_census_root: Path,
+    fork_branch_ref_snapshot: Path,
     paper_v1_path: Path,
     paper_path: Path,
     openreview_final_paper_path: Path,
@@ -1143,6 +1413,9 @@ def build_audit(
 
     conformance = result_conformance()
     history = source_history_audit(source_root)
+    fork_heads, fork_summary, fork_branch_rows = public_fork_census(
+        fork_census_root, fork_branch_ref_snapshot, source_root
+    )
     release_lineage = release_lineage_audit(source_root, anonymous_source_root)
     snapshot_rows, snapshot_summary = safe_distribution_snapshot(source_root / "ih_dist")
     signal_counterexample = native_signal_nonidentifiability(source_root, source_root / "ih_dist")
@@ -1166,11 +1439,24 @@ def build_audit(
     write_csv(output_dir / "distribution_snapshot_audit.csv", snapshot_rows, list(snapshot_rows[0]))
     write_csv(output_dir / "released_dataset_inventory.csv", datasets, list(datasets[0]))
     write_csv(output_dir / "source_config_conformance.csv", config, list(config[0]))
+    write_csv(
+        output_dir / "public_fork_branch_ref_snapshot.csv",
+        fork_branch_rows,
+        list(fork_branch_rows[0]),
+    )
+    write_csv(
+        output_dir / "public_fork_unique_head_inventory.csv",
+        fork_heads,
+        list(fork_heads[0]),
+    )
     (output_dir / "official_source_history.json").write_text(
         json.dumps(history, indent=2) + "\n", encoding="utf-8"
     )
     (output_dir / "official_release_lineage.json").write_text(
         json.dumps(release_lineage, indent=2) + "\n", encoding="utf-8"
+    )
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
     )
     (output_dir / "native_signal_nonidentifiability.json").write_text(
         json.dumps(signal_counterexample, indent=2) + "\n", encoding="utf-8"
@@ -1217,6 +1503,22 @@ def build_audit(
         "source_history_tags": history["tag_count"],
         "source_history_unique_paths": history["unique_historical_path_count"],
         "source_history_native_result_artifacts_found": False,
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_reported_by_github_rest": fork_summary["github_rest_reported_forks"],
+        "public_forks_accessible_via_graphql": fork_summary["graphql_accessible_forks"],
+        "public_fork_branch_refs_audited": fork_summary["graphql_accessible_branch_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_heads_reachable_from_official_history": fork_summary[
+            "heads_reachable_from_official_history"
+        ],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_heads_reviewed"],
+        "public_fork_divergent_commits_audited": fork_summary[
+            "divergent_extra_commits_reviewed"
+        ],
+        "public_fork_divergent_paths_audited": fork_summary["divergent_changed_paths_reviewed"],
+        "public_fork_semantically_new_market_panel_found": False,
+        "public_fork_native_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "paper_numeric_tables_audited": [1, 2, 4, 5, 6, 7, 8],
         "paper_descriptive_tables_audited": [3],
         "paper_descriptive_table_3_rows": len(descriptive_table_3),
@@ -1261,7 +1563,10 @@ def build_audit(
             "SSE50-like base/label panel and a safely decoded 263-date, 16-type optimizer-state "
             "trajectory. All non-README files common to both releases are blob-identical, and all "
             "13 official commits, 58 historical paths, ignored result paths, and unreachable objects "
-            "were audited. A native two-scenario counterexample proves the released distribution "
+            "were audited. All 25 accessible public forks and 26 branch refs collapse to five unique "
+            "heads; the sole divergent head is an unaffiliated source adaptation whose renamed Parquet "
+            "panel is semantically identical to the official panel and adds no result artifact. A native "
+            "two-scenario counterexample proves the released distribution "
             "does not determine signals. It does not reproduce any published result or empirical figure. "
             "All 766 numeric cells in "
             "the final Tables 1--2 and 4--8 lack native decisions/signals/baseline outputs/backtests/cost logs, the "
@@ -1305,6 +1610,14 @@ timing logs, or API accounting needed to reproduce final Tables 1--2 and 4--8.
   an abandoned DTML/private-data precursor and cleaning utilities, not MASS
   decisions or results. The five ignored output directories have no reachable
   objects, and `git fsck --no-reflogs --unreachable` is empty.
+- GitHub reported 25 forks on 2026-08-14, all accessible through GraphQL. Their
+  26 branch refs collapse to five unique heads: four are reachable from official
+  history, and the sole divergent head has three unaffiliated commits touching
+  eight paths. It contains no decision, signal, portfolio, metric, table, or
+  figure artifact. Its only output-like path is `stock_disagreement/dataset/ih.parq`;
+  despite different Parquet bytes, its decoded 72,638-by-19 frame is exactly equal
+  to official `base_data.parq` cell for cell (100 stocks and 1,457 dates), so it
+  adds neither a new input panel nor paper-result credit.
 - The anonymous backup has 39 files. Its only extra path is an empty `.README`;
   every shared non-README blob is identical to the named release. Its README says
   the full dataset will be released after review, so it does not add the missing
@@ -1389,6 +1702,26 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--fork-census-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "MASS_FORK_CENSUS_ROOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/mass_fork_census",
+            )
+        ),
+    )
+    parser.add_argument(
+        "--fork-branch-ref-snapshot",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "MASS_FORK_BRANCH_REF_SNAPSHOT",
+                "/tmp/mass_public_fork_branch_ref_snapshot.csv",
+            )
+        ),
+    )
+    parser.add_argument(
         "--paper-v1-pdf",
         type=Path,
         default=Path(
@@ -1432,6 +1765,8 @@ def main() -> int:
     manifest = build_audit(
         args.source_root.resolve(),
         args.anonymous_source_root.resolve(),
+        args.fork_census_root.resolve(),
+        args.fork_branch_ref_snapshot.resolve(),
         args.paper_v1_pdf.resolve(),
         args.paper_pdf.resolve(),
         args.openreview_final_paper_pdf.resolve(),

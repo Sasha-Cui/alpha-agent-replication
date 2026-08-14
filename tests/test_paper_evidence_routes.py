@@ -215,7 +215,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         ),
         "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
-        "CensusArxiv250510278": "paper_audit:completed_zero_of_766_final_native_results_full_release_history_signal_nonidentifiability",
+        "CensusArxiv250510278": (
+            "paper_audit:completed_zero_of_766_final_native_results_full_release_history_"
+            "signal_nonidentifiability_25_forks_26_refs_5_unique_heads_exhausted"
+        ),
         "CensusArxiv250909995": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
         "WorkAutomateStrategy": (
             "paper_audit:completed_3_of_10_table2_component_cells_zero_of_40_integrated_"

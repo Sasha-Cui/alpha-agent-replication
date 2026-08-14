@@ -23,6 +23,18 @@
   "source_history_tags": 0,
   "source_history_unique_paths": 58,
   "source_history_native_result_artifacts_found": false,
+  "public_fork_census_date": "2026-08-14",
+  "public_forks_reported_by_github_rest": 25,
+  "public_forks_accessible_via_graphql": 25,
+  "public_fork_branch_refs_audited": 26,
+  "public_fork_unique_heads_audited": 5,
+  "public_fork_heads_reachable_from_official_history": 4,
+  "public_fork_divergent_heads_audited": 1,
+  "public_fork_divergent_commits_audited": 3,
+  "public_fork_divergent_paths_audited": 8,
+  "public_fork_semantically_new_market_panel_found": false,
+  "public_fork_native_result_artifacts_found": false,
+  "public_fork_paper_result_credit": false,
   "paper_numeric_tables_audited": [
     1,
     2,
@@ -121,7 +133,7 @@
   "paper_risk_free_rate_identified": false,
   "paper_random_seed_protocol_identified": false,
   "audit_called_llm_or_external_api": false,
-  "interpretation": "The named release and author-provided anonymous backup provide meaningful component evidence: a complete 242-day 2023 SSE50-like base/label panel and a safely decoded 263-date, 16-type optimizer-state trajectory. All non-README files common to both releases are blob-identical, and all 13 official commits, 58 historical paths, ignored result paths, and unreachable objects were audited. A native two-scenario counterexample proves the released distribution does not determine signals. It does not reproduce any published result or empirical figure. All 766 numeric cells in the final Tables 1--2 and 4--8 lack native decisions/signals/baseline outputs/backtests/cost logs, the other paper pools are absent, and active source defaults differ from paper settings.",
+  "interpretation": "The named release and author-provided anonymous backup provide meaningful component evidence: a complete 242-day 2023 SSE50-like base/label panel and a safely decoded 263-date, 16-type optimizer-state trajectory. All non-README files common to both releases are blob-identical, and all 13 official commits, 58 historical paths, ignored result paths, and unreachable objects were audited. All 25 accessible public forks and 26 branch refs collapse to five unique heads; the sole divergent head is an unaffiliated source adaptation whose renamed Parquet panel is semantically identical to the official panel and adds no result artifact. A native two-scenario counterexample proves the released distribution does not determine signals. It does not reproduce any published result or empirical figure. All 766 numeric cells in the final Tables 1--2 and 4--8 lack native decisions/signals/baseline outputs/backtests/cost logs, the other paper pools are absent, and active source defaults differ from paper settings.",
   "source_file_sha256": {
     "README.md": "1b036a4dd5cfd87b24335609f11ba0a9a61ac49f53eb5578f57fe49d57f2bc5e",
     "ih_dist": "be7d40a8f0191bb6ee246b3a8537851b088be685afb52b51d823dde587f1a895",
@@ -136,7 +148,7 @@
     "stock_disagreement/utils/llm.py": "1f284173e84a99321ea70088a0deb93da98cdbf9b201959ea12f622d778a6069"
   },
   "output_sha256": {
-    "README.md": "4c5841ec7c760e9349667e3a3a0032d923c9cdadbf04766401585949bca65040",
+    "README.md": "0cc71a5a42f4ead2ccd3b3920936d4f1402db7e2cb5d55880d450e982aa524d4",
     "distribution_snapshot_audit.csv": "89a713bd57ce3aaf568c9b7fedc6261433362620db8931801c5056379754b1dc",
     "final_empirical_figure_inventory.csv": "49a1c1731bbc12da3fd119242809b5a0a7e320410a518215baa36b5e5416c148",
     "final_table_3_stock_inventory.csv": "5ceb609f2a3680c5ca0dbc0982aab27a79595b0e1bc64c4eba63c20ffee41a96",
@@ -144,6 +156,9 @@
     "native_signal_nonidentifiability.json": "e795a9d68fe8890cd3ee20aa012aa9b7dd225323608f440f9b4b5f9c88a3cf9b",
     "official_release_lineage.json": "753a2c2facb5468d9e24f75f1d49023cef529020974e08b5349da9670ad93da5",
     "official_source_history.json": "92c9d1b7234f98da3a44ca779f9fbe8d5c3487b2fb6aa47800e06812c1a01095",
+    "public_fork_branch_ref_snapshot.csv": "73b767a924901ae4c6e9a681b5f6407734a94df61a5f38c43d00edd78939f7c1",
+    "public_fork_census.json": "a5c76336dbf5eacae21129a22d14a68c9e9bcf29f251ed9c866b8bb6329fbf68",
+    "public_fork_unique_head_inventory.csv": "02b3add65e4a02fb869c5ed8ba16039d13c9d14b0b3ad398cd2b49f692b1b7e5",
     "released_dataset_inventory.csv": "36cdcd9d64cfc99d19cd2352db0eb8dc485d690bac74a0b37a3b83fb2fcd2f46",
     "source_config_conformance.csv": "258cac4ebc87ca1cdc9685b27eb71319807ecd034d776ca39f513852ffc35eaa"
   }

@@ -679,7 +679,11 @@ ARTIFACT_NOTES = {
         "263-date, 16-type learned distribution trajectory. The surviving anonymous "
         "backup adds no data or outputs: every shared non-README blob matches the "
         "named release. All 13 official commits and 58 historical paths contain no "
-        "cached decisions, signals, portfolios, or paper results. A native two-scenario "
+        "cached decisions, signals, portfolios, or paper results. A dated census exhausts "
+        "all 25 accessible public forks and 26 branch refs (five unique heads). Four heads "
+        "are official-history reachable; the sole divergent unaffiliated adaptation adds "
+        "no result artifact, and its renamed 72,638-row Parquet panel is cell-for-cell "
+        "identical to the official panel after decoding. A native two-scenario "
         "counterexample reuses the identical released distribution and valid 16x32-agent "
         "scale but changes ten signals, proving the optimizer state cannot identify the "
         "missing result path. All 766 numeric cells in final Tables 1--2 and 4--8 "
@@ -1442,7 +1446,10 @@ TARGETED_EXECUTION = {
     "SYS-MACI": "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_zero_regenerated",
     "SYS-MM-DREX": "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_v3_release_111_tests_missing_lfs_and_research_lineage",
     "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",
-    "SYS-MASS": "paper_audit:completed_zero_of_766_final_native_results_full_release_history_signal_nonidentifiability",
+    "SYS-MASS": (
+        "paper_audit:completed_zero_of_766_final_native_results_full_release_history_"
+        "signal_nonidentifiability_25_forks_26_refs_5_unique_heads_exhausted"
+    ),
     "SYS-MOUNTAIN-LION": "paper_audit:completed_zero_of_20_performance_cells_public_components_only",
     "SYS-P1GPT": "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_cells_end_to_end_lookahead_counterexample",
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
