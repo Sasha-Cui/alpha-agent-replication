@@ -1,0 +1,70 @@
+{
+  "author_linked_code_or_data_found": false,
+  "historical_result_like_path_object_revisions": 30,
+  "historical_result_like_unique_paths": 18,
+  "native_credit": false,
+  "paper_result_credit": false,
+  "repositories": [
+    {
+      "commits": 13,
+      "complete_non_partial_clone": true,
+      "fsck_full_returncode": 0,
+      "fsck_unreachable_or_dangling_findings": 0,
+      "head": "7b9e3f985b1fe10a234dab8c4a4d806537579b71",
+      "local_branches": [
+        "master"
+      ],
+      "native_credit": false,
+      "paper_author_overlap": false,
+      "paper_result_credit": false,
+      "reachable_object_ids_sha256": "7358822294b1d46320cbf766f6be42abbf8e5f3676986faf594d0174c3e658fc",
+      "reachable_object_types": {
+        "blob": 100427,
+        "commit": 13,
+        "tree": 184
+      },
+      "reachable_objects": 100624,
+      "repository": "https://github.com/tasoo-oos/LLMFactor",
+      "result_like_path_object_revisions": 0,
+      "result_like_unique_paths": 0,
+      "root": "734f27066fd7f037f3305e2dc53035a09684c4e9",
+      "tags": [],
+      "unique_historical_path_object_pairs": 103062,
+      "unique_historical_path_object_pairs_sha256": "6ce34dbfe3380773852c2a0db1a515bc22149ecf930bdfa97df5e6cc2ad779ac",
+      "unique_historical_paths": 103013,
+      "unique_historical_paths_sha256": "8ca46de9907fefb35096145142ae578259a9d29f79a23055e3473144d115244c"
+    },
+    {
+      "commits": 7,
+      "complete_non_partial_clone": true,
+      "fsck_full_returncode": 0,
+      "fsck_unreachable_or_dangling_findings": 0,
+      "head": "9b4749e843bc2246026f1302e82a8c66c0d050e7",
+      "local_branches": [
+        "master"
+      ],
+      "native_credit": false,
+      "paper_author_overlap": false,
+      "paper_result_credit": false,
+      "reachable_object_ids_sha256": "01dcad345a54de2d83bc8bdd0c7214118556c50c034419dfae60b600b2f9c683",
+      "reachable_object_types": {
+        "blob": 351214,
+        "commit": 7,
+        "tree": 480
+      },
+      "reachable_objects": 351701,
+      "repository": "https://github.com/Kuon12138/SKGP",
+      "result_like_path_object_revisions": 30,
+      "result_like_unique_paths": 18,
+      "root": "aaebe0eaf52addf30e0c1d76f76d26ec930b03e8",
+      "tags": [],
+      "unique_historical_path_object_pairs": 371725,
+      "unique_historical_path_object_pairs_sha256": "430a4fbeb7b70a1b7890af55139931bce67c8df17a59c1a70ff83a09324a41a9",
+      "unique_historical_paths": 371324,
+      "unique_historical_paths_sha256": "bca14d33043a6f928e82a8f953cbb044db719d68138e37f20118e3e72fdfec51"
+    }
+  ],
+  "total_commits": 20,
+  "total_reachable_objects": 452325,
+  "total_unique_historical_paths_by_repository": 474337
+}

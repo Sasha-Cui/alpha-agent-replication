@@ -44,6 +44,29 @@ EXPECTED_REBUILD_SHA256 = "c01a9e42c69dca0815f22f102c2cafdf5e3e76ec5e043c82cb667
 EXPECTED_SOURCE_MEMBERS = 9
 EXPECTED_TASOO_HEAD = "7b9e3f985b1fe10a234dab8c4a4d806537579b71"
 EXPECTED_KUON_HEAD = "9b4749e843bc2246026f1302e82a8c66c0d050e7"
+EXPECTED_TASOO_ROOT = "734f27066fd7f037f3305e2dc53035a09684c4e9"
+EXPECTED_KUON_ROOT = "aaebe0eaf52addf30e0c1d76f76d26ec930b03e8"
+EXPECTED_TASOO_DATA_COMMIT = "e04fda8bb4c44068496574ed81fc22a2b1be6c6e"
+EXPECTED_HISTORY = {
+    "tasoo-oos/LLMFactor": {
+        "commits": 13,
+        "objects": {"blob": 100427, "tree": 184, "commit": 13},
+        "unique_paths": 103013,
+        "unique_path_object_pairs": 103062,
+        "object_ids_sha256": "7358822294b1d46320cbf766f6be42abbf8e5f3676986faf594d0174c3e658fc",
+        "paths_sha256": "8ca46de9907fefb35096145142ae578259a9d29f79a23055e3473144d115244c",
+        "path_object_pairs_sha256": "6ce34dbfe3380773852c2a0db1a515bc22149ecf930bdfa97df5e6cc2ad779ac",
+    },
+    "Kuon12138/SKGP": {
+        "commits": 7,
+        "objects": {"blob": 351214, "tree": 480, "commit": 7},
+        "unique_paths": 371324,
+        "unique_path_object_pairs": 371725,
+        "object_ids_sha256": "01dcad345a54de2d83bc8bdd0c7214118556c50c034419dfae60b600b2f9c683",
+        "paths_sha256": "bca14d33043a6f928e82a8f953cbb044db719d68138e37f20118e3e72fdfec51",
+        "path_object_pairs_sha256": "430a4fbeb7b70a1b7890af55139931bce67c8df17a59c1a70ff83a09324a41a9",
+    },
+}
 
 GITHUB_QUERIES = (
     "LLMFactor in:name,description,readme",
@@ -569,10 +592,386 @@ def kuon_inventory(tree_path: Path, source_dir: Path) -> tuple[list[dict[str, st
     return rows, summary
 
 
+def git_bytes(repo: Path, *arguments: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(repo), *arguments],
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
+def git_text(repo: Path, *arguments: str) -> str:
+    return git_bytes(repo, *arguments).decode("utf-8", errors="replace").strip()
+
+
+def git_tree(repo: Path, commit: str) -> dict[str, dict[str, Any]]:
+    raw = git_bytes(repo, "ls-tree", "-r", "-l", "-z", commit)
+    entries: dict[str, dict[str, Any]] = {}
+    for record in raw.split(b"\0"):
+        if not record:
+            continue
+        metadata, path_bytes = record.split(b"\t", 1)
+        mode, object_type, object_id, size_text = metadata.decode().split()
+        path = path_bytes.decode("utf-8", errors="replace")
+        entries[path] = {
+            "mode": mode,
+            "type": object_type,
+            "object_id": object_id,
+            "size": 0 if size_text == "-" else int(size_text),
+        }
+    return entries
+
+
+def digest_lines(values: Iterable[str]) -> str:
+    digest = hashlib.sha256()
+    for value in sorted(values):
+        digest.update(value.encode("utf-8"))
+        digest.update(b"\n")
+    return digest.hexdigest()
+
+
+def result_like_path(path: str) -> bool:
+    parts = path.lower().split("/")
+    return path.lower().endswith(".log") or any(
+        part in {"log", "logs", "result", "results", "prediction", "predictions"}
+        for part in parts[:-1]
+    )
+
+
+def reachable_object_inventory(repo: Path) -> tuple[list[str], Counter[str]]:
+    object_ids = sorted(
+        {line.split(b" ", 1)[0].decode() for line in git_bytes(repo, "rev-list", "--objects", "--all").splitlines()}
+    )
+    batch = "".join(f"{object_id}\n" for object_id in object_ids).encode()
+    result = subprocess.run(
+        ["git", "-C", str(repo), "cat-file", "--batch-check=%(objecttype)"],
+        input=batch,
+        check=True,
+        capture_output=True,
+    )
+    types = Counter(result.stdout.decode().splitlines())
+    if sum(types.values()) != len(object_ids):
+        raise ValueError(f"object type census changed for {repo}")
+    return object_ids, types
+
+
+def repository_history(
+    repo: Path,
+    repository: str,
+    expected_root: str,
+    expected_head: str,
+    snapshot_commits: set[str],
+) -> tuple[
+    list[dict[str, str]],
+    dict[str, Any],
+    dict[str, dict[str, dict[str, Any]]],
+    dict[tuple[str, str], list[int]],
+]:
+    partial_clone = subprocess.run(
+        ["git", "-C", str(repo), "config", "--get", "extensions.partialClone"],
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    if partial_clone:
+        raise ValueError(f"history input must be a complete non-partial clone: {repo}")
+    commits = git_text(repo, "rev-list", "--reverse", "HEAD").splitlines()
+    expected = EXPECTED_HISTORY[repository]
+    if len(commits) != expected["commits"] or commits[0] != expected_root or commits[-1] != expected_head:
+        raise ValueError(f"pinned history endpoints changed for {repository}")
+
+    rows: list[dict[str, str]] = []
+    unique_paths: set[str] = set()
+    path_object_pairs: set[tuple[str, str]] = set()
+    result_occurrences: dict[tuple[str, str], list[int]] = {}
+    snapshots: dict[str, dict[str, dict[str, Any]]] = {}
+    for index, commit in enumerate(commits, 1):
+        entries = git_tree(repo, commit)
+        if commit in snapshot_commits:
+            snapshots[commit] = entries
+        unique_paths.update(entries)
+        path_object_pairs.update((path, entry["object_id"]) for path, entry in entries.items())
+        result_paths = [path for path in entries if result_like_path(path)]
+        for path in result_paths:
+            result_occurrences.setdefault((path, entries[path]["object_id"]), []).append(index)
+        metadata = git_bytes(repo, "show", "-s", "--format=%cI%x00%P%x00%T%x00%s", commit).decode(
+            "utf-8", errors="replace"
+        ).rstrip("\n").split("\0", 3)
+        committed_at, parents, tree_id, subject = metadata
+        rows.append(
+            {
+                "repository": repository,
+                "commit_index": str(index),
+                "commit": commit,
+                "committed_at": committed_at,
+                "parent_count": str(len(parents.split()) if parents else 0),
+                "tree_object_id": tree_id,
+                "subject_sha256": bytes_sha256(subject.encode()),
+                "tracked_paths": str(len(entries)),
+                "tracked_bytes": str(sum(entry["size"] for entry in entries.values())),
+                "python_paths": str(sum(path.endswith(".py") for path in entries)),
+                "csv_paths": str(sum(path.endswith(".csv") for path in entries)),
+                "gitlink_paths": str(sum(entry["type"] == "commit" for entry in entries.values())),
+                "result_like_paths": str(len(result_paths)),
+                "native_author_source": "no",
+                "paper_result_credit": "no",
+            }
+        )
+
+    if len(unique_paths) != expected["unique_paths"]:
+        raise ValueError(f"unique historical path count changed for {repository}: {len(unique_paths)}")
+    object_ids, object_types = reachable_object_inventory(repo)
+    if dict(object_types) != expected["objects"]:
+        raise ValueError(f"reachable object census changed for {repository}: {dict(object_types)}")
+    fsck = subprocess.run(
+        ["git", "-C", str(repo), "fsck", "--no-progress", "--full", "--unreachable", "--no-reflogs"],
+        capture_output=True,
+        text=True,
+    )
+    fsck_findings = [line for line in fsck.stdout.splitlines() if line.strip()]
+    if fsck.returncode != 0 or fsck_findings:
+        raise ValueError(f"full-history integrity check failed for {repository}: {fsck_findings[:3]}")
+    branches = git_text(repo, "for-each-ref", "--format=%(refname:short)", "refs/heads").splitlines()
+    tags = git_text(repo, "tag", "--list").splitlines()
+    object_ids_hash = digest_lines(object_ids)
+    paths_hash = digest_lines(unique_paths)
+    path_object_pairs_hash = digest_lines(f"{path}\0{object_id}" for path, object_id in path_object_pairs)
+    observed_history = {
+        "unique_path_object_pairs": len(path_object_pairs),
+        "object_ids_sha256": object_ids_hash,
+        "paths_sha256": paths_hash,
+        "path_object_pairs_sha256": path_object_pairs_hash,
+    }
+    if any(observed_history[key] != expected[key] for key in observed_history):
+        raise ValueError(f"historical manifest changed for {repository}: {observed_history}")
+    summary: dict[str, Any] = {
+        "repository": TASOO_REPO if repository == "tasoo-oos/LLMFactor" else KUON_REPO,
+        "root": commits[0],
+        "head": commits[-1],
+        "commits": len(commits),
+        "local_branches": branches,
+        "tags": tags,
+        "reachable_objects": len(object_ids),
+        "reachable_object_types": dict(sorted(object_types.items())),
+        "reachable_object_ids_sha256": object_ids_hash,
+        "unique_historical_paths": len(unique_paths),
+        "unique_historical_paths_sha256": paths_hash,
+        "unique_historical_path_object_pairs": len(path_object_pairs),
+        "unique_historical_path_object_pairs_sha256": path_object_pairs_hash,
+        "result_like_unique_paths": len({path for path, _ in result_occurrences}),
+        "result_like_path_object_revisions": len(result_occurrences),
+        "fsck_full_returncode": fsck.returncode,
+        "fsck_unreachable_or_dangling_findings": len(fsck_findings),
+        "complete_non_partial_clone": True,
+        "paper_author_overlap": False,
+        "native_credit": False,
+        "paper_result_credit": False,
+    }
+    return rows, summary, snapshots, result_occurrences
+
+
+def historical_dataset_stats(
+    repository: str,
+    commit: str,
+    dataset: str,
+    entries: dict[str, dict[str, Any]],
+    prefix: str,
+) -> dict[str, str]:
+    paths = [path for path in entries if path.startswith(prefix)]
+    dates: list[str] = []
+    tickers: set[str] = set()
+    for path in paths:
+        relative = path[len(prefix):]
+        ticker, _, date = relative.partition("/")
+        if ticker:
+            tickers.add(ticker)
+        if re.fullmatch(r"20\d\d-\d\d-\d\d", date):
+            dates.append(date)
+    return {
+        "repository": repository,
+        "snapshot_commit": commit,
+        "dataset": dataset,
+        "scope": "historical_daily_preprocessed_news",
+        "path_count": str(len(paths)),
+        "total_bytes": str(sum(entries[path]["size"] for path in paths)),
+        "unique_blob_ids": str(len({entries[path]["object_id"] for path in paths})),
+        "ticker_count": str(len(tickers)),
+        "date_min": min(dates),
+        "date_max": max(dates),
+        "comparison_repository": "",
+        "identical_path_object_pairs": "",
+        "normalized_path_rule": "",
+        "remaining_path_case_difference": "",
+        "native_credit": "no",
+        "paper_result_credit": "no",
+    }
+
+
+def historical_data_rows(
+    tasoo_entries: dict[str, dict[str, Any]],
+    kuon_entries: dict[str, dict[str, Any]],
+) -> list[dict[str, str]]:
+    rows = [
+        historical_dataset_stats(
+            "tasoo-oos/LLMFactor",
+            EXPECTED_TASOO_DATA_COMMIT,
+            "CMIN-US",
+            tasoo_entries,
+            "CMIN-Dataset/CMIN-US/news/preprocessed/",
+        ),
+        historical_dataset_stats(
+            "Kuon12138/SKGP",
+            EXPECTED_KUON_ROOT,
+            "CMIN-US",
+            kuon_entries,
+            "Data/CMIN-US/news/preprocessed/",
+        ),
+        historical_dataset_stats(
+            "Kuon12138/SKGP",
+            EXPECTED_KUON_ROOT,
+            "CMIN-CN",
+            kuon_entries,
+            "Data/CMIN-CN/news/preprocessed/",
+        ),
+    ]
+    observed = [(row["path_count"], row["ticker_count"], row["date_min"], row["date_max"]) for row in rows]
+    expected = [
+        ("102175", "110", "2018-01-01", "2021-12-31"),
+        ("102175", "110", "2018-01-01", "2021-12-31"),
+        ("266551", "300", "2018-01-01", "2021-12-31"),
+    ]
+    if observed != expected:
+        raise ValueError(f"historical CMIN daily snapshot changed: {observed}")
+
+    tasoo_prefix = "CMIN-Dataset/CMIN-US/"
+    kuon_prefix = "Data/CMIN-US/"
+    tasoo = {path[len(tasoo_prefix):]: entry["object_id"] for path, entry in tasoo_entries.items() if path.startswith(tasoo_prefix)}
+    kuon_raw = {path[len(kuon_prefix):]: entry["object_id"] for path, entry in kuon_entries.items() if path.startswith(kuon_prefix)}
+    kuon = {path.replace("price/preprocessed/", "price/processed/", 1): object_id for path, object_id in kuon_raw.items()}
+    identical = {path for path in set(tasoo) & set(kuon) if tasoo[path] == kuon[path]}
+    if (len(tasoo), len(kuon), len(identical)) != (102505, 102505, 102504):
+        raise ValueError("cross-repository CMIN-US lineage census changed")
+    tasoo_remaining = sorted(set(tasoo) - identical)
+    kuon_remaining = sorted(set(kuon) - identical)
+    if [path.casefold() for path in tasoo_remaining] != [path.casefold() for path in kuon_remaining]:
+        raise ValueError("cross-repository CMIN-US residual path is not a case-only rename")
+    rows.append(
+        {
+            "repository": "tasoo-oos/LLMFactor",
+            "snapshot_commit": EXPECTED_TASOO_DATA_COMMIT,
+            "dataset": "CMIN-US",
+            "scope": "cross_repository_historical_dataset_lineage",
+            "path_count": str(len(tasoo)),
+            "total_bytes": str(sum(entry["size"] for path, entry in tasoo_entries.items() if path.startswith(tasoo_prefix))),
+            "unique_blob_ids": str(len(set(tasoo.values()))),
+            "ticker_count": "110",
+            "date_min": "2018-01-01",
+            "date_max": "2021-12-31",
+            "comparison_repository": "Kuon12138/SKGP@" + EXPECTED_KUON_ROOT,
+            "identical_path_object_pairs": str(len(identical)),
+            "normalized_path_rule": "Kuon price/preprocessed/ normalized to Tasoo price/processed/",
+            "remaining_path_case_difference": f"{tasoo_remaining[0]} <-> {kuon_remaining[0]}",
+            "native_credit": "no",
+            "paper_result_credit": "no",
+        }
+    )
+    return rows
+
+
+def historical_result_rows(
+    repo: Path,
+    repository: str,
+    occurrences: dict[tuple[str, str], list[int]],
+) -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    for path, object_id in sorted(occurrences):
+        payload = git_bytes(repo, "cat-file", "blob", object_id)
+        text = payload.decode("utf-8", errors="replace")
+        json_shape = "not_json"
+        top_level_keys = ""
+        if path.lower().endswith(".json"):
+            try:
+                value = json.loads(text)
+                json_shape = type(value).__name__
+                if isinstance(value, dict):
+                    top_level_keys = "|".join(sorted(str(key) for key in value))
+            except json.JSONDecodeError:
+                json_shape = "invalid_json"
+        dates = sorted(set(re.findall(r"20\d\d-\d\d-\d\d", text)))
+        lower = text.lower()
+        has_error = any(marker in lower for marker in ("error", "traceback", "exception", "failed", "has no attribute"))
+        commit_indices = occurrences[(path, object_id)]
+        rows.append(
+            {
+                "repository": repository,
+                "path": path,
+                "source_object_id": object_id,
+                "bytes": str(len(payload)),
+                "present_in_commit_indices": "|".join(map(str, commit_indices)),
+                "first_commit_index": str(min(commit_indices)),
+                "last_commit_index": str(max(commit_indices)),
+                "json_shape": json_shape,
+                "top_level_keys": top_level_keys,
+                "iso_dates": "|".join(dates),
+                "contains_error_marker": str(has_error).lower(),
+                "content_emitted": "no_metadata_only",
+                "native_author_output": "no",
+                "paper_result_credit": "no",
+            }
+        )
+    return rows
+
+
+def community_history_artifacts(
+    tasoo_history: Path,
+    kuon_history: Path,
+) -> tuple[list[dict[str, str]], dict[str, Any], list[dict[str, str]], list[dict[str, str]]]:
+    tasoo_rows, tasoo_summary, tasoo_snapshots, tasoo_results = repository_history(
+        tasoo_history,
+        "tasoo-oos/LLMFactor",
+        EXPECTED_TASOO_ROOT,
+        EXPECTED_TASOO_HEAD,
+        {EXPECTED_TASOO_DATA_COMMIT},
+    )
+    kuon_rows, kuon_summary, kuon_snapshots, kuon_results = repository_history(
+        kuon_history,
+        "Kuon12138/SKGP",
+        EXPECTED_KUON_ROOT,
+        EXPECTED_KUON_HEAD,
+        {EXPECTED_KUON_ROOT},
+    )
+    if tasoo_results:
+        raise ValueError("Tasoo history unexpectedly contains a result/log/prediction output path")
+    data_rows = historical_data_rows(
+        tasoo_snapshots[EXPECTED_TASOO_DATA_COMMIT],
+        kuon_snapshots[EXPECTED_KUON_ROOT],
+    )
+    result_rows = historical_result_rows(kuon_history, "Kuon12138/SKGP", kuon_results)
+    if (
+        kuon_summary["result_like_unique_paths"],
+        len(result_rows),
+        sum(row["contains_error_marker"] == "true" for row in result_rows),
+    ) != (18, 30, 8):
+        raise ValueError("Kuon saved-result history census changed")
+    summary = {
+        "repositories": [tasoo_summary, kuon_summary],
+        "total_commits": len(tasoo_rows) + len(kuon_rows),
+        "total_reachable_objects": tasoo_summary["reachable_objects"] + kuon_summary["reachable_objects"],
+        "total_unique_historical_paths_by_repository": (
+            tasoo_summary["unique_historical_paths"] + kuon_summary["unique_historical_paths"]
+        ),
+        "historical_result_like_unique_paths": kuon_summary["result_like_unique_paths"],
+        "historical_result_like_path_object_revisions": len(result_rows),
+        "author_linked_code_or_data_found": False,
+        "native_credit": False,
+        "paper_result_credit": False,
+    }
+    return tasoo_rows + kuon_rows, summary, data_rows, result_rows
+
+
 def community_method_rows() -> list[dict[str, str]]:
     rows = []
     tasoo = (
-        ("author linkage", "nonmatch", "single commit by Tasoo Park; no paper-author overlap"),
+        ("author linkage", "nonmatch", "13-commit history by Tasoo Park; no paper-author overlap"),
         ("chronology", "post-paper", "created 2025-01-09, seven months after arXiv v1"),
         ("model", "different", "default llama-3.1-8B-instruct-Q8_0, not the three paper GPT aliases"),
         ("datasets", "partial", "CMIN-US only; no StockNet, CMIN-CN, or EDT"),
@@ -584,11 +983,11 @@ def community_method_rows() -> list[dict[str, str]]:
         ("generation parameters", "community_choice", "temperature=0 and max-token/stop settings absent from paper"),
         ("window/factor count", "match", "price_k=5 and factor_k=5"),
         ("metrics", "partial", "ACC/MCC plus F1 implemented"),
-        ("tests", "missing", "no tracked test paths"),
-        ("published results", "missing", "no tracked output reproduces any paper table cell"),
+        ("tests", "missing", "no tracked test paths across all 13 commits"),
+        ("published results", "missing", "no result/log/prediction output path across all 13 commits"),
     )
     kuon = (
-        ("author linkage", "nonmatch", "commits by Kuon12138; no paper-author overlap"),
+        ("author linkage", "nonmatch", "7-commit history by Kuon12138; no paper-author overlap"),
         ("chronology", "post-paper", "created 2025-04-03"),
         ("model", "different", "Llama 3.3 70B/OpenRouter or Ollama, not the paper aliases"),
         ("configuration security", "defective", "tracked config contains an apparent API credential; value intentionally omitted"),
@@ -601,7 +1000,7 @@ def community_method_rows() -> list[dict[str, str]]:
         ("source validity", "defective", "14/15 .py paths compile; xinghuo.py is a raw curl command"),
         ("saved AAPL result", "target_leakage", "result date 2021-12-22 reasons from 2021-12-31 prices"),
         ("saved AAPL prediction", "failed", "tracked output reports str has no attribute strftime"),
-        ("published results", "missing", "no tracked output reproduces any paper table cell"),
+        ("published results", "missing", "historical saved outputs exist but none reproduces any paper table cell"),
     )
     for repository, values in (("tasoo-oos/LLMFactor", tasoo), ("Kuon12138/SKGP", kuon)):
         for dimension, assessment, evidence in values:
@@ -681,9 +1080,11 @@ def readme(manifest: dict[str, Any]) -> str:
 This package audits the original arXiv v1 paper, the ACL 2024 authoritative
 record, the official TeX archive, every displayed result cell, the disclosed
 English/Chinese prompt skeletons, the ACC/MCC equations, six complete GitHub
-repository searches, and two prominent later community implementations. It is
-fail-closed: rebuilding the paper, rendering a prompt, evaluating a metric on a
-fixture, or running unaffiliated code does not reproduce an LLMFactor result.
+repository searches, and all {manifest['community_history_commits']} commits of
+two prominent later community implementations. It is fail-closed: rebuilding
+the paper, rendering a prompt, evaluating a metric on a fixture, recovering a
+later community dataset, or running unaffiliated code does not reproduce an
+LLMFactor result.
 
 ## Honest verdict
 
@@ -702,6 +1103,19 @@ fixture, or running unaffiliated code does not reproduce an LLMFactor result.
   relevant community repositories were created in 2025 by non-authors and
   materially change models, prompts, data paths, or windows. Neither reproduces
   a published cell.
+- The complete 13-commit Tasoo and 7-commit Kuon histories pass full Git object
+  integrity checks. Together they expose {manifest['community_history_reachable_objects']:,} reachable
+  objects and {manifest['community_history_unique_paths_by_repository']:,} per-repository unique
+  historical paths. Tasoo briefly committed 102,175 daily CMIN-US news files;
+  Kuon's root committed those same 102,175 files plus 266,551 CMIN-CN daily
+  files. After normalizing one directory rename, 102,504 of 102,505 CMIN-US
+  path/object pairs are byte-identical and the last differs only by `SNAP.csv`
+  case. This is community-dataset lineage, not independent paper data
+  provenance.
+- Kuon history contains {manifest['community_historical_result_like_paths']} result/log/prediction
+  paths and {manifest['community_historical_result_path_object_revisions']} distinct path/object
+  revisions. They are inventoried by hashes and structure only; some contain
+  errors or target leakage, and none matches a published cell.
 - The local `paper_llmfactor_explainable_price_news` strategy remains an M0
   narrative translation. It is a monthly characteristic portfolio with no
   news, prompts, relation/factor extraction, daily labels, or paper metrics.
@@ -739,6 +1153,12 @@ fixture, or running unaffiliated code does not reproduce an LLMFactor result.
 - `source_search_inventory.csv`, `community_source_inventory.csv`,
   `community_data_inventory.csv`, and `community_method_conformance.csv`:
   public-source evidence with zero native credit.
+- `community_source_history_commit_inventory.csv`,
+  `community_source_history_summary.json`,
+  `community_historical_data_inventory.csv`, and
+  `community_historical_result_inventory.csv`: all commits, integrity/object
+  censuses, deleted dataset snapshots, cross-repository lineage, and metadata-
+  only saved-output history, all with zero native or paper-result credit.
 - `local_mapping_conformance.csv`, `native_execution.json`, and `manifest.json`:
   the local proxy boundary and machine-readable verdict.
 """
@@ -770,11 +1190,15 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     issues = internal_consistency_rows()
     claims = claim_rows()
     searches = github_rows(args.github_search_dir)
-    tasoo_files, tasoo_summary = tasoo_inventory(args.tasoo_repo)
-    kuon_files, kuon_summary = kuon_inventory(args.kuon_tree, args.kuon_source)
+    tasoo_files, tasoo_summary = tasoo_inventory(args.tasoo_history)
+    kuon_files, kuon_summary = kuon_inventory(args.kuon_tree, args.kuon_history)
     community_files = tasoo_files + kuon_files
     community_methods = community_method_rows()
-    community_data = community_data_rows(args.tasoo_repo, args.kuon_tree)
+    community_data = community_data_rows(args.tasoo_history, args.kuon_tree)
+    history_commits, history_summary, historical_data, historical_results = community_history_artifacts(
+        args.tasoo_history,
+        args.kuon_history,
+    )
     mappings = local_mapping_rows()
 
     output = args.output.resolve()
@@ -794,10 +1218,14 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         ("community_source_inventory.csv", community_files),
         ("community_data_inventory.csv", community_data),
         ("community_method_conformance.csv", community_methods),
+        ("community_source_history_commit_inventory.csv", history_commits),
+        ("community_historical_data_inventory.csv", historical_data),
+        ("community_historical_result_inventory.csv", historical_results),
         ("local_mapping_conformance.csv", mappings),
     )
     for name, rows in artifacts:
         write_csv(output / name, rows, list(rows[0]))
+    write_json(output / "community_source_history_summary.json", history_summary)
 
     source_provenance = {
         "paper": "LLMFactor: Extracting Profitable Factors through Prompts for Explainable Stock Movement Prediction",
@@ -819,6 +1247,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "author_linked_code_or_data_found": False,
         "github_repository_searches": searches,
         "community_repositories": [tasoo_summary, kuon_summary],
+        "community_repository_histories": history_summary["repositories"],
         "kuon_tree_snapshot_sha256": sha256(args.kuon_tree),
     }
     write_json(output / "source_provenance.json", source_provenance)
@@ -865,6 +1294,12 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "repository_searches": len(searches),
         "author_linked_code_found": False,
         "community_source_objects": len(community_files),
+        "community_history_commits": history_summary["total_commits"],
+        "community_history_reachable_objects": history_summary["total_reachable_objects"],
+        "community_history_unique_paths_by_repository": history_summary["total_unique_historical_paths_by_repository"],
+        "community_historical_result_like_paths": history_summary["historical_result_like_unique_paths"],
+        "community_historical_result_path_object_revisions": history_summary["historical_result_like_path_object_revisions"],
+        "community_historical_data_rows": len(historical_data),
         "tasoo_head": tasoo_summary["head"],
         "kuon_head": kuon_summary["head"],
         "local_mapping_tier": "M0_narrative_translation",
@@ -885,9 +1320,9 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--arxiv-page", type=Path, required=True)
     result.add_argument("--acl-page", type=Path, required=True)
     result.add_argument("--github-search-dir", type=Path, required=True)
-    result.add_argument("--tasoo-repo", type=Path, required=True)
+    result.add_argument("--tasoo-history", type=Path, required=True)
     result.add_argument("--kuon-tree", type=Path, required=True)
-    result.add_argument("--kuon-source", type=Path, required=True)
+    result.add_argument("--kuon-history", type=Path, required=True)
     result.add_argument("--output", type=Path, default=ROOT / "paper_runs/paper_replication_audits/llmfactor")
     return result
 

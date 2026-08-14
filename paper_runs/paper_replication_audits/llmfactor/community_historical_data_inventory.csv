@@ -1,0 +1,5 @@
+repository,snapshot_commit,dataset,scope,path_count,total_bytes,unique_blob_ids,ticker_count,date_min,date_max,comparison_repository,identical_path_object_pairs,normalized_path_rule,remaining_path_case_difference,native_credit,paper_result_credit
+tasoo-oos/LLMFactor,e04fda8bb4c44068496574ed81fc22a2b1be6c6e,CMIN-US,historical_daily_preprocessed_news,102175,124875804,99994,110,2018-01-01,2021-12-31,,,,,no,no
+Kuon12138/SKGP,aaebe0eaf52addf30e0c1d76f76d26ec930b03e8,CMIN-US,historical_daily_preprocessed_news,102175,124875804,99994,110,2018-01-01,2021-12-31,,,,,no,no
+Kuon12138/SKGP,aaebe0eaf52addf30e0c1d76f76d26ec930b03e8,CMIN-CN,historical_daily_preprocessed_news,266551,297881447,248720,300,2018-01-01,2021-12-31,,,,,no,no
+tasoo-oos/LLMFactor,e04fda8bb4c44068496574ed81fc22a2b1be6c6e,CMIN-US,cross_repository_historical_dataset_lineage,102505,779832090,100324,110,2018-01-01,2021-12-31,Kuon12138/SKGP@aaebe0eaf52addf30e0c1d76f76d26ec930b03e8,102504,Kuon price/preprocessed/ normalized to Tasoo price/processed/,price/raw/SNAP.csv <-> price/raw/snap.csv,no,no

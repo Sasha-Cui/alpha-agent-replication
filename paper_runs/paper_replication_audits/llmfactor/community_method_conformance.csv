@@ -1,5 +1,5 @@
 repository,dimension,assessment,evidence,native_credit,paper_result_credit
-tasoo-oos/LLMFactor,author linkage,nonmatch,single commit by Tasoo Park; no paper-author overlap,no,no
+tasoo-oos/LLMFactor,author linkage,nonmatch,13-commit history by Tasoo Park; no paper-author overlap,no,no
 tasoo-oos/LLMFactor,chronology,post-paper,"created 2025-01-09, seven months after arXiv v1",no,no
 tasoo-oos/LLMFactor,model,different,"default llama-3.1-8B-instruct-Q8_0, not the three paper GPT aliases",no,no
 tasoo-oos/LLMFactor,datasets,partial,"CMIN-US only; no StockNet, CMIN-CN, or EDT",no,no
@@ -11,9 +11,9 @@ tasoo-oos/LLMFactor,price prompt,different,system-message decomposition and diff
 tasoo-oos/LLMFactor,generation parameters,community_choice,temperature=0 and max-token/stop settings absent from paper,no,no
 tasoo-oos/LLMFactor,window/factor count,match,price_k=5 and factor_k=5,no,no
 tasoo-oos/LLMFactor,metrics,partial,ACC/MCC plus F1 implemented,no,no
-tasoo-oos/LLMFactor,tests,missing,no tracked test paths,no,no
-tasoo-oos/LLMFactor,published results,missing,no tracked output reproduces any paper table cell,no,no
-Kuon12138/SKGP,author linkage,nonmatch,commits by Kuon12138; no paper-author overlap,no,no
+tasoo-oos/LLMFactor,tests,missing,no tracked test paths across all 13 commits,no,no
+tasoo-oos/LLMFactor,published results,missing,no result/log/prediction output path across all 13 commits,no,no
+Kuon12138/SKGP,author linkage,nonmatch,7-commit history by Kuon12138; no paper-author overlap,no,no
 Kuon12138/SKGP,chronology,post-paper,created 2025-04-03,no,no
 Kuon12138/SKGP,model,different,"Llama 3.3 70B/OpenRouter or Ollama, not the paper aliases",no,no
 Kuon12138/SKGP,configuration security,defective,tracked config contains an apparent API credential; value intentionally omitted,no,no
@@ -26,4 +26,4 @@ Kuon12138/SKGP,generation parameters,community_choice,"temperature=.7, top_p=.9 
 Kuon12138/SKGP,source validity,defective,14/15 .py paths compile; xinghuo.py is a raw curl command,no,no
 Kuon12138/SKGP,saved AAPL result,target_leakage,result date 2021-12-22 reasons from 2021-12-31 prices,no,no
 Kuon12138/SKGP,saved AAPL prediction,failed,tracked output reports str has no attribute strftime,no,no
-Kuon12138/SKGP,published results,missing,no tracked output reproduces any paper table cell,no,no
+Kuon12138/SKGP,published results,missing,historical saved outputs exist but none reproduces any paper table cell,no,no

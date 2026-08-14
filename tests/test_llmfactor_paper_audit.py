@@ -173,6 +173,76 @@ def test_community_data_and_method_divergences_are_explicit() -> None:
     assert all(row["paper_result_credit"] == "no" for row in methods)
 
 
+def test_complete_community_histories_are_pinned_integral_and_fail_closed() -> None:
+    summary = json.loads((OUTPUT / "community_source_history_summary.json").read_text(encoding="utf-8"))
+    assert summary["total_commits"] == 20
+    assert summary["total_reachable_objects"] == 452325
+    assert summary["total_unique_historical_paths_by_repository"] == 474337
+    assert summary["author_linked_code_or_data_found"] is False
+    assert summary["native_credit"] is False
+    assert summary["paper_result_credit"] is False
+
+    histories = {row["repository"].split("github.com/")[-1]: row for row in summary["repositories"]}
+    tasoo = histories["tasoo-oos/LLMFactor"]
+    kuon = histories["Kuon12138/SKGP"]
+    assert tasoo["root"] == audit.EXPECTED_TASOO_ROOT
+    assert tasoo["head"] == audit.EXPECTED_TASOO_HEAD
+    assert tasoo["commits"] == 13
+    assert tasoo["reachable_object_types"] == {"blob": 100427, "commit": 13, "tree": 184}
+    assert tasoo["unique_historical_paths"] == 103013
+    assert tasoo["unique_historical_path_object_pairs"] == 103062
+    assert kuon["root"] == audit.EXPECTED_KUON_ROOT
+    assert kuon["head"] == audit.EXPECTED_KUON_HEAD
+    assert kuon["commits"] == 7
+    assert kuon["reachable_object_types"] == {"blob": 351214, "commit": 7, "tree": 480}
+    assert kuon["unique_historical_paths"] == 371324
+    assert kuon["unique_historical_path_object_pairs"] == 371725
+    for row in histories.values():
+        assert row["complete_non_partial_clone"] is True
+        assert row["fsck_full_returncode"] == 0
+        assert row["fsck_unreachable_or_dangling_findings"] == 0
+        assert row["tags"] == []
+        assert row["paper_author_overlap"] is False
+        assert row["native_credit"] is False
+        assert row["paper_result_credit"] is False
+
+    commits = csv_rows("community_source_history_commit_inventory.csv")
+    assert len(commits) == 20
+    assert Counter(row["repository"] for row in commits) == {"tasoo-oos/LLMFactor": 13, "Kuon12138/SKGP": 7}
+    tasoo_paths = [int(row["tracked_paths"]) for row in commits if row["repository"] == "tasoo-oos/LLMFactor"]
+    kuon_paths = [int(row["tracked_paths"]) for row in commits if row["repository"] == "Kuon12138/SKGP"]
+    assert tasoo_paths == [9, 12, 13, 12, 102519, 102528, 241, 241, 245, 246, 248, 263, 269]
+    assert kuon_paths == [369979, 1672, 1671, 1680, 1687, 1696, 1690]
+    assert all(row["native_author_source"] == "no" for row in commits)
+    assert all(row["paper_result_credit"] == "no" for row in commits)
+
+
+def test_historical_community_data_and_outputs_do_not_gain_paper_credit() -> None:
+    data = csv_rows("community_historical_data_inventory.csv")
+    assert len(data) == 4
+    daily = {(row["repository"], row["dataset"]): row for row in data if row["scope"] == "historical_daily_preprocessed_news"}
+    assert daily[("tasoo-oos/LLMFactor", "CMIN-US")]["path_count"] == "102175"
+    assert daily[("tasoo-oos/LLMFactor", "CMIN-US")]["unique_blob_ids"] == "99994"
+    assert daily[("Kuon12138/SKGP", "CMIN-US")]["path_count"] == "102175"
+    assert daily[("Kuon12138/SKGP", "CMIN-CN")]["path_count"] == "266551"
+    assert daily[("Kuon12138/SKGP", "CMIN-CN")]["ticker_count"] == "300"
+    lineage = next(row for row in data if row["scope"] == "cross_repository_historical_dataset_lineage")
+    assert lineage["path_count"] == "102505"
+    assert lineage["identical_path_object_pairs"] == "102504"
+    assert lineage["remaining_path_case_difference"] == "price/raw/SNAP.csv <-> price/raw/snap.csv"
+    assert all(row["native_credit"] == "no" for row in data)
+    assert all(row["paper_result_credit"] == "no" for row in data)
+
+    results = csv_rows("community_historical_result_inventory.csv")
+    assert len(results) == 30
+    assert len({row["path"] for row in results}) == 18
+    assert Counter(row["json_shape"] for row in results) == {"dict": 24, "not_json": 6}
+    assert sum(row["contains_error_marker"] == "true" for row in results) == 8
+    assert all(row["content_emitted"] == "no_metadata_only" for row in results)
+    assert all(row["native_author_output"] == "no" for row in results)
+    assert all(row["paper_result_credit"] == "no" for row in results)
+
+
 def test_manifest_and_native_execution_state_the_honest_boundary() -> None:
     manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
     native = json.loads((OUTPUT / "native_execution.json").read_text(encoding="utf-8"))

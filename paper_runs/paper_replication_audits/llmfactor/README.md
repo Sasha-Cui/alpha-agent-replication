@@ -3,9 +3,11 @@
 This package audits the original arXiv v1 paper, the ACL 2024 authoritative
 record, the official TeX archive, every displayed result cell, the disclosed
 English/Chinese prompt skeletons, the ACC/MCC equations, six complete GitHub
-repository searches, and two prominent later community implementations. It is
-fail-closed: rebuilding the paper, rendering a prompt, evaluating a metric on a
-fixture, or running unaffiliated code does not reproduce an LLMFactor result.
+repository searches, and all 20 commits of
+two prominent later community implementations. It is fail-closed: rebuilding
+the paper, rendering a prompt, evaluating a metric on a fixture, recovering a
+later community dataset, or running unaffiliated code does not reproduce an
+LLMFactor result.
 
 ## Honest verdict
 
@@ -24,6 +26,19 @@ fixture, or running unaffiliated code does not reproduce an LLMFactor result.
   relevant community repositories were created in 2025 by non-authors and
   materially change models, prompts, data paths, or windows. Neither reproduces
   a published cell.
+- The complete 13-commit Tasoo and 7-commit Kuon histories pass full Git object
+  integrity checks. Together they expose 452,325 reachable
+  objects and 474,337 per-repository unique
+  historical paths. Tasoo briefly committed 102,175 daily CMIN-US news files;
+  Kuon's root committed those same 102,175 files plus 266,551 CMIN-CN daily
+  files. After normalizing one directory rename, 102,504 of 102,505 CMIN-US
+  path/object pairs are byte-identical and the last differs only by `SNAP.csv`
+  case. This is community-dataset lineage, not independent paper data
+  provenance.
+- Kuon history contains 18 result/log/prediction
+  paths and 30 distinct path/object
+  revisions. They are inventoried by hashes and structure only; some contain
+  errors or target leakage, and none matches a published cell.
 - The local `paper_llmfactor_explainable_price_news` strategy remains an M0
   narrative translation. It is a monthly characteristic portfolio with no
   news, prompts, relation/factor extraction, daily labels, or paper metrics.
@@ -61,5 +76,11 @@ fixture, or running unaffiliated code does not reproduce an LLMFactor result.
 - `source_search_inventory.csv`, `community_source_inventory.csv`,
   `community_data_inventory.csv`, and `community_method_conformance.csv`:
   public-source evidence with zero native credit.
+- `community_source_history_commit_inventory.csv`,
+  `community_source_history_summary.json`,
+  `community_historical_data_inventory.csv`, and
+  `community_historical_result_inventory.csv`: all commits, integrity/object
+  censuses, deleted dataset snapshots, cross-repository lineage, and metadata-
+  only saved-output history, all with zero native or paper-result credit.
 - `local_mapping_conformance.csv`, `native_execution.json`, and `manifest.json`:
   the local proxy boundary and machine-readable verdict.
