@@ -65,6 +65,8 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     label_summary = read_csv(output / "reward_label_summary.csv")
     source = read_csv(output / "source_config_conformance.csv")
     history = read_csv(output / "released_source_history_inventory.csv")
+    forks = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
 
     assert manifest["overall_status"] == (
         "not_reproduced_prompt_label_component_and_buy_hold_reconstruction_only"
@@ -98,6 +100,12 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     ] == 0
     assert source_history["historical_native_paper_result_payloads"] == 0
     assert source_history["history_complete_for_pinned_public_refs"] is True
+    assert manifest["public_forks_accessible"] == 11
+    assert manifest["public_fork_branch_refs_audited"] == 11
+    assert manifest["public_fork_unique_heads_audited"] == 2
+    assert manifest["public_fork_divergent_heads_audited"] == 0
+    assert manifest["public_fork_unique_commits_beyond_official_history"] == 0
+    assert manifest["public_fork_native_result_payloads_found"] == 0
     assert len(history) == 2
     assert [row["commit"] for row in history] == list(audit.PUBLIC_HISTORY_COMMITS)
     assert history[0]["changed_paths_relative_to_parent"] == "31"
@@ -105,6 +113,23 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     assert history[1]["evidence_role"] == "readme_citation_and_paper_link_update_only"
     assert all(row["native_paper_result_payload_present"] == "False" for row in history)
     assert all(row["paper_result_credit"] == "False" for row in history)
+    assert len(forks) == 11
+    assert Counter(row["relation_to_official_head"] for row in forks) == {
+        "official_head_exact": 1,
+        "official_history_ancestor": 10,
+    }
+    assert Counter(row["commits_behind_official"] for row in forks) == {"0": 1, "1": 10}
+    assert all(row["unique_commits_beyond_official_history"] == "0" for row in forks)
+    assert all(row["unique_blobs_beyond_official_history"] == "0" for row in forks)
+    assert all(row["native_result_payload_found"] == "False" for row in forks)
+    assert fork_census["census_date"] == audit.PUBLIC_FORK_CENSUS_DATE
+    assert fork_census["github_rest_reported_forks"] == 11
+    assert fork_census["accessible_public_forks"] == 11
+    assert fork_census["accessible_branch_refs"] == 11
+    assert fork_census["unique_heads"] == 2
+    assert fork_census["divergent_unique_heads"] == 0
+    assert fork_census["native_result_payloads_found"] == 0
+    assert fork_census["paper_result_credit"] is False
 
     assert Counter(row["status"] for row in conformance) == {
         "exact_displayed_precision_match_current_yahoo": 1,

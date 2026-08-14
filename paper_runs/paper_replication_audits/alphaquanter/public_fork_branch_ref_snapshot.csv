@@ -1,0 +1,12 @@
+repository,url,branch,head_commit,relation_to_official_head,commits_ahead_of_official,commits_behind_official,tag_refs,unique_commits_beyond_official_history,unique_blobs_beyond_official_history,native_result_payload_found,paper_result_credit
+Fisher188/AlphaQuanter,https://github.com/Fisher188/AlphaQuanter,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+Gentlemath/AlphaQuanter_for_BT,https://github.com/Gentlemath/AlphaQuanter_for_BT,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+Rockman-star/AlphaQuanter,https://github.com/Rockman-star/AlphaQuanter,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+TilianLi/AlphaQuanter,https://github.com/TilianLi/AlphaQuanter,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+chusri/AlphaQuanter,https://github.com/chusri/AlphaQuanter,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+leveonzhao/AlphaQuanter,https://github.com/leveonzhao/AlphaQuanter,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+lindafei01/finance-rl,https://github.com/lindafei01/finance-rl,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+visiondrag/AlphaQuanter,https://github.com/visiondrag/AlphaQuanter,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+wujun1047/AlphaQuanter,https://github.com/wujun1047/AlphaQuanter,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+wyxiong431/AlphaQuanter,https://github.com/wyxiong431/AlphaQuanter,main,e909ed46fc1a371112800588b28445ccca39970b,official_history_ancestor,0,1,0,0,0,False,False
+zhujiqixiushi/AlphaQuanter,https://github.com/zhujiqixiushi/AlphaQuanter,main,fac423cb1b45a3d0593e88a0f9805c338d7e0fea,official_head_exact,0,0,0,0,0,False,False

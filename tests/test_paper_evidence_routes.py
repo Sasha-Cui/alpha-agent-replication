@@ -210,7 +210,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_"
             "12_ablation_correspondences_zero_credit_37_forks_exhausted"
         ),
-        "CensusACL2026findingsacl456": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
+        "CensusACL2026findingsacl456": (
+            "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match_"
+            "11_forks_11_refs_2_official_history_heads_exhausted"
+        ),
         "CensusArxiv231113743": (
             "paper_audit:partial_227_of_235_author_output_cells_corroborated_"
             "67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells_"
@@ -283,6 +286,14 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     assert "All 12 Table 5 values" in cryptotrade_blocker
     assert "37 accessible public forks and 39 fork refs" in cryptotrade_blocker
     assert "260/480 cells remain method-faithfully unverifiable" in cryptotrade_blocker
+
+    alphaquanter_blocker = routes.loc[
+        "CensusACL2026findingsacl456", "precise_native_or_access_blocker"
+    ]
+    assert "all 11 accessible forks and 11 branch refs" in alphaquanter_blocker
+    assert "zero commits, blobs, tags, checkpoints, actions, result payloads, or ratings" in (
+        alphaquanter_blocker
+    )
 
     automate_blocker = routes.loc["WorkAutomateStrategy", "precise_native_or_access_blocker"]
     assert "3/10 Table 2 cells" in automate_blocker

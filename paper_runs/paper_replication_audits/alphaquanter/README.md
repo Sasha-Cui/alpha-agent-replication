@@ -9,6 +9,11 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
 
 - Official paper: https://aclanthology.org/2026.findings-acl.456.pdf (SHA-256 `433ff948a2a90cb7eb83cdb823d56ed49026795f7e2688bbe8b67bcdbd444fd5`).
 - Public source: https://github.com/horizon-llm/AlphaQuanter, commit `fac423cb1b45a3d0593e88a0f9805c338d7e0fea`.
+- The complete two-commit public history and all **11** accessible forks are
+  exhausted as of 2026-08-14. Each fork exposes one `main` branch: one is exact
+  at the current head and ten remain at the initial official commit. Across 11
+  refs and two unique official-history heads, the forks add zero commits,
+  blobs, tags, checkpoints, action streams, result payloads, or rating records.
 
 ## What is genuinely established
 

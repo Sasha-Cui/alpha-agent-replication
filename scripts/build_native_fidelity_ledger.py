@@ -472,7 +472,10 @@ ARTIFACT_NOTES = {
         "regimes. A released-semantics market-baseline reconstruction matches 1/34 "
         "repeated Buy-and-Hold cells at display precision. These are components, "
         "not agent outputs; all 756 non-market cells lack checkpoints, actions, "
-        "three-seed paths, logs, or human ratings, and the paper test split is absent.",
+        "three-seed paths, logs, or human ratings, and the paper test split is absent. "
+        "The complete two-commit history plus all 11 accessible forks and 11 branch "
+        "refs resolve to the same two official-history heads, adding zero commits, "
+        "blobs, tags, checkpoints, actions, result payloads, or ratings.",
     ),
     "SYS-CONTEST-TRADE": (
         "N",
@@ -1477,7 +1480,10 @@ TARGETED_EXECUTION = {
         "paper_audit:completed_zero_of_652_native_results_official_placeholder_"
         "9_forks_9_refs_2_official_history_heads_exhausted"
     ),
-    "SYS-ALPHA-QUANTER": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
+    "SYS-ALPHA-QUANTER": (
+        "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match_"
+        "11_forks_11_refs_2_official_history_heads_exhausted"
+    ),
     "SYS-CHAIN-OF-ALPHA": "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system",
     "SYS-TREEVO": "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_seven_prompt_templates_no_attributable_pipeline",
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_3_of_10_table2_component_cells_zero_of_40_integrated_portfolio_cells_24_forks_exhausted",

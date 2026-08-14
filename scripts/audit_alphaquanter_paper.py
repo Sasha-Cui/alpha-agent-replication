@@ -39,6 +39,33 @@ DISCOVERY_SHA256 = {
 PAPER_SHA256 = "433ff948a2a90cb7eb83cdb823d56ed49026795f7e2688bbe8b67bcdbd444fd5"
 PAPER_URL = "https://aclanthology.org/2026.findings-acl.456.pdf"
 SOURCE_URL = "https://github.com/horizon-llm/AlphaQuanter"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_HEADS = {
+    "refs/remotes/forks/Fisher188/main": INITIAL_COMMIT,
+    "refs/remotes/forks/Gentlemath/main": INITIAL_COMMIT,
+    "refs/remotes/forks/Rockman-star/main": INITIAL_COMMIT,
+    "refs/remotes/forks/TilianLi/main": INITIAL_COMMIT,
+    "refs/remotes/forks/chusri/main": INITIAL_COMMIT,
+    "refs/remotes/forks/leveonzhao/main": INITIAL_COMMIT,
+    "refs/remotes/forks/lindafei01/main": INITIAL_COMMIT,
+    "refs/remotes/forks/visiondrag/main": INITIAL_COMMIT,
+    "refs/remotes/forks/wujun1047/main": INITIAL_COMMIT,
+    "refs/remotes/forks/wyxiong431/main": INITIAL_COMMIT,
+    "refs/remotes/forks/zhujiqixiushi/main": SOURCE_COMMIT,
+}
+PUBLIC_FORK_REPOSITORIES = {
+    "Fisher188": "Fisher188/AlphaQuanter",
+    "Gentlemath": "Gentlemath/AlphaQuanter_for_BT",
+    "Rockman-star": "Rockman-star/AlphaQuanter",
+    "TilianLi": "TilianLi/AlphaQuanter",
+    "chusri": "chusri/AlphaQuanter",
+    "leveonzhao": "leveonzhao/AlphaQuanter",
+    "lindafei01": "lindafei01/finance-rl",
+    "visiondrag": "visiondrag/AlphaQuanter",
+    "wujun1047": "wujun1047/AlphaQuanter",
+    "wyxiong431": "wyxiong431/AlphaQuanter",
+    "zhujiqixiushi": "zhujiqixiushi/AlphaQuanter",
+}
 DISPLAY_TOLERANCE = 0.005 + 1e-12
 LABEL_EXACT_TOLERANCE = 1e-12
 LABEL_NEAR_TOLERANCE = 1e-6
@@ -861,6 +888,87 @@ def released_source_history_audit(
     return rows, summary
 
 
+def public_fork_audit(source_root: Path) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """Classify every public fork branch against both audited official commits."""
+    origin = git(source_root, "remote", "get-url", "origin").strip()
+    if origin.removesuffix(".git") != SOURCE_URL:
+        raise RuntimeError(f"AlphaQuanter origin changed: {origin}")
+    fork_refs: Dict[str, str] = {}
+    for line in git(
+        source_root,
+        "for-each-ref",
+        "--format=%(refname)%09%(objectname)",
+        "refs/remotes/forks",
+    ).splitlines():
+        refname, head = line.split("\t")
+        fork_refs[refname] = head
+    if fork_refs != PUBLIC_FORK_HEADS:
+        raise RuntimeError(f"AlphaQuanter public-fork refs changed: {fork_refs}")
+
+    official_commits = set(PUBLIC_HISTORY_COMMITS)
+    rows = []
+    for refname, head in sorted(fork_refs.items()):
+        owner = refname.split("/")[3]
+        ahead = int(git(source_root, "rev-list", "--count", head, "--not", SOURCE_COMMIT).strip())
+        behind = int(git(source_root, "rev-list", "--count", f"{head}..{SOURCE_COMMIT}").strip())
+        if head == SOURCE_COMMIT:
+            relation = "official_head_exact"
+        elif head in official_commits:
+            relation = "official_history_ancestor"
+        else:
+            relation = "divergent_from_official_history"
+        if ahead or relation == "divergent_from_official_history":
+            raise RuntimeError(f"AlphaQuanter fork adds unreviewed history: {refname} at {head}")
+        repository = PUBLIC_FORK_REPOSITORIES[owner]
+        rows.append(
+            {
+                "repository": repository,
+                "url": f"https://github.com/{repository}",
+                "branch": "main",
+                "head_commit": head,
+                "relation_to_official_head": relation,
+                "commits_ahead_of_official": ahead,
+                "commits_behind_official": behind,
+                "tag_refs": 0,
+                "unique_commits_beyond_official_history": 0,
+                "unique_blobs_beyond_official_history": 0,
+                "native_result_payload_found": False,
+                "paper_result_credit": False,
+            }
+        )
+    if Counter(row["relation_to_official_head"] for row in rows) != {
+        "official_head_exact": 1,
+        "official_history_ancestor": 10,
+    }:
+        raise RuntimeError("AlphaQuanter fork relation census changed")
+    if Counter(row["commits_behind_official"] for row in rows) != {0: 1, 1: 10}:
+        raise RuntimeError("AlphaQuanter fork behind-count census changed")
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "official_repository": "horizon-llm/AlphaQuanter",
+        "official_history_commits": len(official_commits),
+        "github_rest_reported_forks": 11,
+        "accessible_public_forks": len(rows),
+        "accessible_branch_refs": len(rows),
+        "tag_refs": 0,
+        "unique_heads": len({row["head_commit"] for row in rows}),
+        "official_head_exact_forks": 1,
+        "official_history_ancestor_forks": 10,
+        "divergent_unique_heads": 0,
+        "unique_commits_beyond_official_history": 0,
+        "unique_blobs_beyond_official_history": 0,
+        "native_result_payloads_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "all 11 accessible forks expose one main branch inside the complete two-commit "
+            "official history: one is exact at the current head and ten remain at the "
+            "initial complete released-component commit, so no fork adds a commit, blob, "
+            "tag, checkpoint, action stream, result payload, or rating record"
+        ),
+    }
+    return rows, summary
+
+
 def source_config_audit(source_root: Path) -> List[Dict[str, str]]:
     stock = source_root / "verl/recipe/langgraph_agent/stock_trading"
     create = (stock / "create_dataset.py").read_text(encoding="utf-8")
@@ -945,6 +1053,7 @@ def build_audit(
     release_files = source_release_inventory(source_root)
     config = source_config_audit(source_root)
     history, history_summary = released_source_history_audit(source_root)
+    fork_branches, fork_summary = public_fork_audit(source_root)
 
     table_counts = Counter(row["paper_table"] for row in conformance)
     expected_table_counts = {5: 192, 6: 9, 7: 12, 8: 15, 10: 216, 11: 216, 12: 40, 13: 45, 14: 45}
@@ -988,6 +1097,14 @@ def build_audit(
         history,
         list(history[0]),
     )
+    write_csv(
+        output_dir / "public_fork_branch_ref_snapshot.csv",
+        fork_branches,
+        list(fork_branches[0]),
+    )
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
+    )
 
     manifest: Dict[str, Any] = {
         "audit": "AlphaQuanter paper Tables 5--8 and 10--14 versus pinned public release",
@@ -998,6 +1115,17 @@ def build_audit(
         "source_url": SOURCE_URL,
         "source_commit": commit,
         "released_source_history": history_summary,
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_unique_commits_beyond_official_history": fork_summary[
+            "unique_commits_beyond_official_history"
+        ],
+        "public_fork_native_result_payloads_found": fork_summary[
+            "native_result_payloads_found"
+        ],
         "paper_numeric_tables_audited": [5, 6, 7, 8, 10, 11, 12, 13, 14],
         "paper_numeric_result_cells_total": len(conformance),
         "paper_table_cell_counts": dict(sorted(table_counts.items())),
@@ -1049,7 +1177,9 @@ def build_audit(
             "display precision. This is component evidence, not AlphaQuanter replication: all "
             "756 agent/cost/human-rating cells lack native checkpoints, actions, seed outputs, "
             "logs, or ratings; the paper test split and original multimodal snapshot are absent. "
-            "Complete public-history review finds no deleted or alternate result payload."
+            "Complete public-history review finds no deleted or alternate result payload, and "
+            "all 11 accessible forks resolve to its same two official commits without adding "
+            "another result lineage."
         ),
         "source_file_sha256": {relative: sha256(source_root / relative) for relative in PINNED_SOURCE_SHA256},
         "external_label_price_sha256": LABEL_PRICE_SHA256,
@@ -1067,6 +1197,11 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
 
 - Official paper: {PAPER_URL} (SHA-256 `{PAPER_SHA256}`).
 - Public source: {SOURCE_URL}, commit `{commit}`.
+- The complete two-commit public history and all **11** accessible forks are
+  exhausted as of 2026-08-14. Each fork exposes one `main` branch: one is exact
+  at the current head and ten remain at the initial official commit. Across 11
+  refs and two unique official-history heads, the forks add zero commits,
+  blobs, tags, checkpoints, action streams, result payloads, or rating records.
 
 ## What is genuinely established
 

@@ -1,0 +1,18 @@
+{
+  "census_date": "2026-08-14",
+  "official_repository": "horizon-llm/AlphaQuanter",
+  "official_history_commits": 2,
+  "github_rest_reported_forks": 11,
+  "accessible_public_forks": 11,
+  "accessible_branch_refs": 11,
+  "tag_refs": 0,
+  "unique_heads": 2,
+  "official_head_exact_forks": 1,
+  "official_history_ancestor_forks": 10,
+  "divergent_unique_heads": 0,
+  "unique_commits_beyond_official_history": 0,
+  "unique_blobs_beyond_official_history": 0,
+  "native_result_payloads_found": 0,
+  "paper_result_credit": false,
+  "interpretation": "all 11 accessible forks expose one main branch inside the complete two-commit official history: one is exact at the current head and ten remain at the initial complete released-component commit, so no fork adds a commit, blob, tag, checkpoint, action stream, result payload, or rating record"
+}
