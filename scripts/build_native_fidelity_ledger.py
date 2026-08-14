@@ -125,7 +125,10 @@ ARTIFACT_NOTES = {
         "A pinned QuantAgents audit inventories all 238 numeric table cells and "
         "14 empirical figure panels. The paper directly links the author-owned "
         "41-file repository, but it is an R1 static site, not a trading "
-        "implementation. Its leaderboard duplicates 90 main-table cells exactly; "
+        "implementation. Its complete seven-commit history is append-only: the "
+        "41-path historical union exactly equals the current tree, with no deleted "
+        "payload, and GitHub reports zero public forks. Its leaderboard duplicates "
+        "90 main-table cells exactly; "
         "four rendered algorithms, four agent profiles, and three meeting videos "
         "document intended behavior but are not executable source or raw traces. "
         "Thus 0/238 cells and 0/14 empirical panels reproduce. The site also contains "
@@ -1462,7 +1465,10 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT-EVO": "paper_audit:completed_zero_of_147_table_units_zero_of_21_empirical_panels_zero_of_40_figure_annotations_listed_unrecovered_supplement_no_attributable_pipeline",
     "SYS-TRADE-IN-MINUTES": "paper_audit:completed_zero_of_349_active_empirical_units_zero_of_8_empirical_panels_listed_broken_supplement_no_attributable_pipeline",
     "SYS-ATLAS": "paper_audit:completed_zero_of_1784_empirical_numeric_units_zero_of_5_empirical_panels_full_stocksim_history_one_unattributed_xom_precursor_output_four_component_checks_missing_atlas_lineage_5_forks_11_refs_8_unique_heads_12_postpaper_commits_exhausted",
-    "SYS-QUANT-AGENTS": "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_r1_static_site_no_system_source",
+    "SYS-QUANT-AGENTS": (
+        "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_"
+        "r1_static_site_no_system_source_full_7_commit_history_0_forks_exhausted"
+    ),
     "SYS-MAD-EVOLVE": (
         "paper_audit:completed_zero_of_214_empirical_numeric_units_zero_of_21_empirical_"
         "panels_full_six_commit_history_direct_coauthor_framework_five_component_checks_"

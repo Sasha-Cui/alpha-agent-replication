@@ -1,6 +1,7 @@
 {
   "author_site_meeting_videos_reviewed": 3,
   "author_site_static_assets_validated": true,
+  "complete_official_repository_history_reviewed": true,
   "llm_calls_made": 0,
   "manuscript_rebuild_is_system_execution": false,
   "manuscript_source_rebuilt": true,
@@ -10,6 +11,7 @@
   "native_portfolio_trajectories_loaded": 0,
   "original_market_rows_loaded": 0,
   "original_news_rows_loaded": 0,
+  "public_forks_reported_and_reviewed": 0,
   "public_quantagents_system_source_found": false,
   "published_empirical_panels_faithfully_regenerated": 0,
   "published_table_cells_faithfully_regenerated": 0,

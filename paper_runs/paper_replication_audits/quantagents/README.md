@@ -32,6 +32,14 @@ portfolio path, or result arrays. Its Paper/Code/Dataset buttons are commented
 and point to HedgeAgents. The bundled 6,141-record MathVista/VQA visualizer is
 unrelated template residue and receives no QuantAgents evidence credit.
 
+The complete official Git history is also exhausted as of
+2026-08-14: seven commits, one branch, zero tags, and 41 unique
+paths. The history is append-only, so its full path union exactly equals the
+current static-site tree; there are no deleted or history-only payloads. Every
+revision predates the paper by more than a year, and GitHub reports zero public
+forks. Thus neither official history nor a fork surface conceals a runnable
+QuantAgents implementation or raw result array.
+
 ## Material specification conflicts
 
 - Full-system volatility is 1.43% in the main and LLM tables but 1.23% in the

@@ -1,0 +1,18 @@
+{
+  "accessible_public_forks": 0,
+  "append_only_history": true,
+  "census_date": "2026-08-14",
+  "github_reported_public_forks": 0,
+  "historical_unique_paths_reviewed": 41,
+  "history_only_or_deleted_paths": 0,
+  "interpretation": "The complete seven-commit history is append-only and its 41-path union exactly equals the current static-site tree; no deleted implementation or raw result payload exists in public history, and GitHub reports zero forks.",
+  "official_branches_reviewed": 1,
+  "official_commits_reviewed": 7,
+  "official_tags": 0,
+  "package_or_environment_manifests_in_any_revision": 0,
+  "paper_result_credit": false,
+  "python_paths_in_any_revision": 0,
+  "quantagents_raw_result_arrays_found": 0,
+  "quantagents_trading_system_source_found": false,
+  "unreachable_objects": 0
+}

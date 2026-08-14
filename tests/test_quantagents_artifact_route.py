@@ -77,12 +77,14 @@ def test_native_ledger_records_zero_result_credit_and_precise_blocker() -> None:
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_zero_of_238_numeric_cells_zero_of_14_empirical_panels_"
-        "r1_static_site_no_system_source"
+        "r1_static_site_no_system_source_full_7_commit_history_0_forks_exhausted"
     )
     assert row["fidelity_class"] == "F1_static_no_native_output"
     note = row["concise_evidence_note"]
     assert "0/238 cells and 0/14 empirical panels reproduce" in note
     assert "R1 static site, not a trading implementation" in note
+    assert "complete seven-commit history is append-only" in note
+    assert "zero public forks" in note
     assert "6,141-record MathVista/VQA template" in note
     assert "material contamination risk, not proof" in note
 

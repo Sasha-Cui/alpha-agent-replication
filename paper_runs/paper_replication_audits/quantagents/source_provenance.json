@@ -32,7 +32,9 @@
   "project_site": "https://quantagents.github.io/",
   "release_boundary": {
     "author_documentation_recovered": true,
+    "complete_official_history_reviewed": true,
     "complete_research_data_recovered": false,
+    "public_fork_surface_reviewed": true,
     "published_result_lineage_recovered": false,
     "trading_system_source_recovered": false
   },

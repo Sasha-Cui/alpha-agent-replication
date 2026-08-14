@@ -14,6 +14,7 @@ import hashlib
 import html
 import json
 import re
+import subprocess
 import sys
 import tarfile
 from pathlib import Path, PurePosixPath
@@ -35,6 +36,17 @@ ARXIV_RECORD = "https://arxiv.org/abs/2510.04643v1"
 PROJECT_SITE = "https://quantagents.github.io/"
 REPOSITORY_URL = "https://github.com/QuantAgents/quantagents.github.io"
 REPOSITORY_HEAD = "a1d0d56d04d2b73a5fbc472ec9af865a29be6ef7"
+REPOSITORY_HISTORY_COMMITS = (
+    "1e20f5c3c1d65eaad9778cbd978950ad9e2f00e6",
+    "361777a10e89df05f1eacb3d459dedd3c8a430b9",
+    "c7483135265b2b88f8c9da84e500b9ecfd4d485b",
+    "39ba3f6f25eb12a65e113257d60927b27ad9a44e",
+    "423689e6e90b7306fe72d3b3d0b96a7bd7cd307d",
+    "fa59e764a9eae50db0ab24d3f29a4174aaf619b7",
+    REPOSITORY_HEAD,
+)
+REPOSITORY_HISTORY_PATHS_SHA256 = "aefd98d87e676627ab9ef9c2ea82dc4dbdb36d9ccee708045c96bf3daad83b8e"
+PUBLIC_SOURCE_CENSUS_DATE = "2026-08-14"
 OPENAI_MODEL_PAGE = "https://developers.openai.com/api/docs/models/gpt-4o"
 OPENAI_SYSTEM_CARD = "https://cdn.openai.com/gpt-4o-system-card.pdf"
 
@@ -137,6 +149,19 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def git(repo: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(repo), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
 def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
 
@@ -189,6 +214,130 @@ def validate_inputs(scratch: Path) -> dict[str, Any]:
         if marker not in text:
             raise ValueError(f"paper marker missing: {marker}")
     return {"source_files": source_files, "release_files": release_files}
+
+
+def repository_history_audit(
+    scratch: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Exhaust the complete official history and the zero-fork public surface."""
+    repo = scratch / "release/repository"
+    if git(repo, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise ValueError("QuantAgents history checkout is shallow")
+    if git(repo, "rev-parse", "HEAD").strip() != REPOSITORY_HEAD:
+        raise ValueError("QuantAgents history checkout head changed")
+    origin = git(repo, "remote", "get-url", "origin").strip().removesuffix(".git")
+    if origin != REPOSITORY_URL:
+        raise ValueError(f"QuantAgents history origin changed: {origin}")
+    commits = git(repo, "rev-list", "--reverse", "HEAD").splitlines()
+    if commits != list(REPOSITORY_HISTORY_COMMITS):
+        raise ValueError(f"QuantAgents official history changed: {commits}")
+    api_commits = json.loads((scratch / "release/commits.json").read_text())
+    if [row["sha"] for row in api_commits] != list(reversed(REPOSITORY_HISTORY_COMMITS)):
+        raise ValueError("QuantAgents pinned GitHub commit snapshot changed")
+    branches = json.loads((scratch / "release/branches.json").read_text())
+    if [(row["name"], row["commit"]["sha"]) for row in branches] != [
+        ("main", REPOSITORY_HEAD)
+    ]:
+        raise ValueError("QuantAgents public branch surface changed")
+    if json.loads((scratch / "release/tags.json").read_text()):
+        raise ValueError("QuantAgents public tag surface changed")
+    repository = json.loads((scratch / "release/repo.json").read_text())
+    if (
+        repository["default_branch"] != "main"
+        or repository["forks_count"] != 0
+        or repository["network_count"] != 0
+    ):
+        raise ValueError("QuantAgents public fork surface changed")
+    unreachable = git(
+        repo, "fsck", "--full", "--no-reflogs", "--unreachable", "--no-progress"
+    ).strip()
+    if unreachable:
+        raise ValueError(f"QuantAgents has unreviewed unreachable objects: {unreachable}")
+
+    all_paths = sorted(
+        set(
+            git(
+                repo,
+                "-c",
+                "core.quotePath=false",
+                "log",
+                "HEAD",
+                "--name-only",
+                "--pretty=format:",
+            ).splitlines()
+        )
+        - {""}
+    )
+    current_paths = sorted(git(repo, "ls-tree", "-r", "--name-only", "HEAD").splitlines())
+    digest = sha256_bytes(("\n".join(all_paths) + "\n").encode())
+    if (
+        len(all_paths) != 41
+        or all_paths != current_paths
+        or digest != REPOSITORY_HISTORY_PATHS_SHA256
+    ):
+        raise ValueError("QuantAgents historical path surface changed")
+
+    rows: list[dict[str, Any]] = []
+    previous_paths: set[str] = set()
+    for commit in commits:
+        authored_at, subject = git(
+            repo, "show", "-s", "--format=%aI%x00%s", commit
+        ).rstrip("\n").split("\x00", 1)
+        paths = set(git(repo, "ls-tree", "-r", "--name-only", commit).splitlines())
+        added = paths - previous_paths
+        removed = previous_paths - paths
+        python_paths = [path for path in paths if path.endswith(".py")]
+        manifest_paths = [
+            path
+            for path in paths
+            if Path(path).name
+            in {"pyproject.toml", "requirements.txt", "environment.yml", "package.json"}
+        ]
+        rows.append({
+            "commit": commit,
+            "authored_at": authored_at,
+            "subject": subject,
+            "tracked_paths": len(paths),
+            "paths_added_since_parent": len(added),
+            "paths_removed_since_parent": len(removed),
+            "python_paths": len(python_paths),
+            "package_or_environment_manifests": len(manifest_paths),
+            "quantagents_trading_system_source_found": False,
+            "quantagents_raw_result_array_found": False,
+            "paper_result_credit": False,
+        })
+        previous_paths = paths
+    if any(
+        row["paths_removed_since_parent"]
+        or row["python_paths"]
+        or row["package_or_environment_manifests"]
+        for row in rows
+    ):
+        raise ValueError("QuantAgents append-only static-site boundary changed")
+
+    summary = {
+        "census_date": PUBLIC_SOURCE_CENSUS_DATE,
+        "official_commits_reviewed": len(commits),
+        "official_branches_reviewed": len(branches),
+        "official_tags": 0,
+        "github_reported_public_forks": repository["forks_count"],
+        "accessible_public_forks": 0,
+        "unreachable_objects": 0,
+        "historical_unique_paths_reviewed": len(all_paths),
+        "history_only_or_deleted_paths": len(set(all_paths) - set(current_paths)),
+        "append_only_history": True,
+        "python_paths_in_any_revision": 0,
+        "package_or_environment_manifests_in_any_revision": 0,
+        "quantagents_trading_system_source_found": False,
+        "quantagents_raw_result_arrays_found": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "The complete seven-commit history is append-only and its 41-path union "
+            "exactly equals the current static-site tree; no deleted implementation or "
+            "raw result payload exists in public history, and GitHub reports zero forks."
+        ),
+    }
+    return rows, summary
 
 
 def _strip_html(value: str) -> str:
@@ -411,7 +560,7 @@ def artifact_access_rows() -> list[dict[str, Any]]:
     return [
         {"artifact": "official arXiv v1 PDF/source", "url": ARXIV_RECORD, "status": "recovered", "tier": "primary paper source", "system_source_credit": False},
         {"artifact": "paper-linked project site", "url": PROJECT_SITE, "status": "recovered and revision-pinned", "tier": "R1 author documentation", "system_source_credit": False},
-        {"artifact": "project repository", "url": REPOSITORY_URL, "status": "41 static-site files; MIT", "tier": "R1 author documentation", "system_source_credit": False},
+        {"artifact": "project repository", "url": REPOSITORY_URL, "status": "complete seven-commit history; 41 static-site files; MIT; zero public forks", "tier": "R1 author documentation", "system_source_credit": False},
         {"artifact": "QuantAgents code", "url": "", "status": "not released; no matching exact-title repository found", "tier": "missing", "system_source_credit": False},
         {"artifact": "QuantAgents dataset", "url": "", "status": "not released; site control is commented and misroutes to HedgeAgents", "tier": "missing", "system_source_credit": False},
         {"artifact": "MathVista template data", "url": "", "status": "6,141 unrelated VQA records explicitly excluded", "tier": "unrelated template residue", "system_source_credit": False},
@@ -453,6 +602,14 @@ LLM requests/responses, memory store, strategy pool, action log, orders, fills,
 portfolio path, or result arrays. Its Paper/Code/Dataset buttons are commented
 and point to HedgeAgents. The bundled 6,141-record MathVista/VQA visualizer is
 unrelated template residue and receives no QuantAgents evidence credit.
+
+The complete official Git history is also exhausted as of
+{PUBLIC_SOURCE_CENSUS_DATE}: seven commits, one branch, zero tags, and 41 unique
+paths. The history is append-only, so its full path union exactly equals the
+current static-site tree; there are no deleted or history-only payloads. Every
+revision predates the paper by more than a year, and GitHub reports zero public
+forks. Thus neither official history nor a fork surface conceals a runnable
+QuantAgents implementation or raw result array.
 
 ## Material specification conflicts
 
@@ -536,6 +693,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     consistency = consistency_rows()
     source_rows = source_inventory(inventory["source_files"], source_dir)
     documentation = site_documentation_rows()
+    history_rows, source_surface = repository_history_audit(scratch)
 
     output.mkdir(parents=True, exist_ok=True)
     write_csv(output / "paper_source_inventory.csv", source_rows)
@@ -550,6 +708,8 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         ("artifact", "name", "format", "shown_date", "duration_seconds", "video_frames", "runnable", "raw_trace", "system_source_credit"),
     )
     write_csv(output / "artifact_access_audit.csv", artifact_access_rows())
+    write_csv(output / "released_source_history_inventory.csv", history_rows)
+    write_json(output / "public_source_surface_audit.json", source_surface)
 
     repository = json.loads((scratch / "release/repo.json").read_text())
     owner = json.loads((scratch / "release/owner.json").read_text())
@@ -569,6 +729,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "branches": ["main"],
         "tags": [],
         "commit_count": 7,
+        "complete_public_history_audit": source_surface,
         "python_files": 0,
         "package_or_environment_manifests": 0,
         "system_runner_files": 0,
@@ -633,6 +794,8 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         },
         "release_boundary": {
             "author_documentation_recovered": True,
+            "complete_official_history_reviewed": True,
+            "public_fork_surface_reviewed": True,
             "trading_system_source_recovered": False,
             "complete_research_data_recovered": False,
             "published_result_lineage_recovered": False,
@@ -645,6 +808,8 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "manuscript_rebuild_is_system_execution": False,
         "author_site_static_assets_validated": True,
         "author_site_meeting_videos_reviewed": 3,
+        "complete_official_repository_history_reviewed": True,
+        "public_forks_reported_and_reviewed": 0,
         "public_quantagents_system_source_found": False,
         "quantagents_pipeline_executed": False,
         "llm_calls_made": 0,
@@ -683,6 +848,18 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "published_empirical_panels": sum(int(row["empirical_panels"]) for row in figures),
         "published_empirical_panels_faithfully_regenerated": 0,
         "project_repository_files": len(inventory["release_files"]),
+        "project_repository_commits_audited": source_surface[
+            "official_commits_reviewed"
+        ],
+        "project_repository_historical_unique_paths_audited": source_surface[
+            "historical_unique_paths_reviewed"
+        ],
+        "project_repository_history_only_or_deleted_paths": source_surface[
+            "history_only_or_deleted_paths"
+        ],
+        "project_repository_public_forks_audited": source_surface[
+            "accessible_public_forks"
+        ],
         "public_system_source_files_recovered": 0,
         "author_tests_passed": 0,
         "site_meeting_videos": 3,

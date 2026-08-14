@@ -101,6 +101,39 @@ def test_direct_project_route_is_pinned_r1_documentation() -> None:
     assert release["archive_uncompressed_bytes"] == 88_003_221
     assert release["repository_license"] == "MIT"
     assert release["license_text_file_present"] is True
+    assert release["complete_public_history_audit"]["official_commits_reviewed"] == 7
+    assert release["complete_public_history_audit"]["accessible_public_forks"] == 0
+
+
+def test_complete_official_history_and_zero_fork_surface_are_exhausted() -> None:
+    history = rows("released_source_history_inventory.csv")
+    surface = json.loads((AUDIT_DIR / "public_source_surface_audit.json").read_text())
+    assert len(history) == 7
+    assert [row["commit"] for row in history] == list(audit.REPOSITORY_HISTORY_COMMITS)
+    assert [int(row["tracked_paths"]) for row in history] == [1, 2, 10, 38, 39, 40, 41]
+    assert all(row["paths_removed_since_parent"] == "0" for row in history)
+    assert all(row["python_paths"] == "0" for row in history)
+    assert all(row["package_or_environment_manifests"] == "0" for row in history)
+    assert all(row["quantagents_trading_system_source_found"] == "False" for row in history)
+    assert all(row["quantagents_raw_result_array_found"] == "False" for row in history)
+    assert all(row["paper_result_credit"] == "False" for row in history)
+    assert surface["official_commits_reviewed"] == 7
+    assert surface["official_branches_reviewed"] == 1
+    assert surface["official_tags"] == 0
+    assert surface["github_reported_public_forks"] == 0
+    assert surface["accessible_public_forks"] == 0
+    assert surface["unreachable_objects"] == 0
+    assert surface["historical_unique_paths_reviewed"] == 41
+    assert surface["history_only_or_deleted_paths"] == 0
+    assert surface["append_only_history"] is True
+    assert surface["quantagents_trading_system_source_found"] is False
+    assert surface["quantagents_raw_result_arrays_found"] == 0
+    assert surface["paper_result_credit"] is False
+    data = manifest()
+    assert data["project_repository_commits_audited"] == 7
+    assert data["project_repository_historical_unique_paths_audited"] == 41
+    assert data["project_repository_history_only_or_deleted_paths"] == 0
+    assert data["project_repository_public_forks_audited"] == 0
 
 
 def test_site_has_documentation_and_videos_but_no_runnable_system() -> None:
@@ -179,6 +212,8 @@ def test_no_native_runtime_or_result_lineage_is_claimed() -> None:
     native = json.loads((AUDIT_DIR / "native_execution.json").read_text())
     assert native["manuscript_source_rebuilt"] is True
     assert native["manuscript_rebuild_is_system_execution"] is False
+    assert native["complete_official_repository_history_reviewed"] is True
+    assert native["public_forks_reported_and_reviewed"] == 0
     assert native["public_quantagents_system_source_found"] is False
     assert native["quantagents_pipeline_executed"] is False
     assert native["llm_calls_made"] == 0
@@ -225,6 +260,9 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
         "Zero of 238 cells",
         "zero of 14 empirical panels",
         "6,141-record MathVista/VQA",
+        "complete official Git history",
+        "zero public",
+        "no deleted or history-only payloads",
         "material contamination risk",
         "no QuantAgents mechanism or",
         "result credit",
