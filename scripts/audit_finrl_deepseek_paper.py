@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 import py_compile
+import re
 import subprocess
 import tempfile
 from collections import Counter
@@ -31,6 +32,25 @@ PRE_SUBMISSION_COMMIT = "43e58573274c480e4d5f5b3c946073e2cb2e49a6"
 PRE_SUBMISSION_DATE = "2025-02-07T18:05:01+01:00"
 CURRENT_COMMIT = "5c21a923214bca6370800efd45f8c6c1ef776ae7"
 CURRENT_DATE = "2025-04-08T14:22:13+02:00"
+PUBLIC_HISTORY_COMMIT_COUNT = 36
+PUBLIC_HISTORY_COMMIT_SHA256 = "7c0c0c7a57e610dc0cdb929eb63fc0f9205b733526b09c0f46cbc371d11ed09a"
+PUBLIC_HISTORY_PATH_COUNT = 48
+PUBLIC_HISTORY_PATH_SHA256 = "ebfa5d0dcb2a1f79da369f8762615e209c446977dc62ca50339d44e083adf8b6"
+PUBLIC_HISTORY_OBJECT_COUNTS = {"blob": 73, "commit": 36, "tree": 36}
+PUBLIC_DISCOVERY_SHA256 = {
+    "branches.json": "16b8c064d941ff13b36aef80101fd6997d5ec4d6b492c2d2f2e766b0aef8a3aa",
+    "releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "tags.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+}
+HISTORICAL_NOTEBOOK_BLOBS = 9
+HISTORICAL_NOTEBOOK_VALID_JSON_BLOBS = 7
+HISTORICAL_NOTEBOOK_MALFORMED_JSON_BLOBS = 2
+HISTORICAL_NOTEBOOK_OUTPUT_SIGNATURE_SHA256 = (
+    "11f14b79e04a05fe04e081dfd09fb93f2c8f496a3eda351b076ed07a974d8620"
+)
+HISTORICAL_TRAINING_LOG_BLOBS = 15
+HISTORICAL_LOGS_WITH_EXACT_RELEASED_CHECKPOINT_NAME = 10
+HISTORICAL_LOGS_WITH_PAPER_RELEVANT_CHECKPOINT_NAME = 5
 FINRL_NOTEBOOK_COMMIT = "cd016b667da1860939b43bb77aba7ff4e35f780f"
 ELEGANTRL_NOTEBOOK_COMMIT = "2fa34dd9236498beada8d8443d927970a9de1f7f"
 HF_DATASET_URL = "https://huggingface.co/datasets/benstaf/nasdaq_2013_2023"
@@ -355,7 +375,10 @@ def internal_checks() -> list[dict[str, Any]]:
         ("installation entrypoint", "installation_script.sh invokes nonexistent train_ppo_deepseek.py", "broken_installation_path"),
         ("current Python syntax", "risk_deepseek_deepinfra.py has an empty api_key assignment", "post_paper_syntax_error"),
         ("paper-era prompt implementation", "pre-submission source contains no LLM API scoring script", "missing_paper_era_source"),
-        ("official checkpoint source lineage", "several released names have no exact producing script/log filename", "provenance_gap"),
+        ("complete public source history", "all 36 reachable commits, 48 historical paths, 145 reachable objects, and zero unreachable objects audited", "pass"),
+        ("historical notebook outputs", "all 9 notebook blobs retain one identical 24-entry stale metric signature; 2 malformed revisions contain the same outputs and none contains a paper table value", "paper_source_result_conflict"),
+        ("historical training-log results", "15 training logs contain no Information Ratio, CVaR (5%), or Rachev Ratio evaluation outputs", "no_result_artifact"),
+        ("official checkpoint source lineage", "5/8 paper-relevant checkpoint basenames have an exact producing training-log filename; three are absent or mismatched", "partial_provenance_gap"),
     ]
     return [{"check": a, "evidence": b, "status": c} for a, b, c in checks]
 
@@ -372,12 +395,12 @@ def specification_gaps() -> list[dict[str, Any]]:
         ("paper evaluation RNG seeds/states", "notebook samples actions without a seed"),
         ("frozen Nasdaq-100 benchmark series", "notebook performs a live Yahoo download"),
         ("numeric portfolio paths behind six rasters", "only PNGs are in paper source"),
-        ("checkpoint-to-training-run manifest", "filenames do not provide exact lineage"),
+        ("checkpoint-to-training-run manifest", "history proves exact log filename lineage for 5/8 paper-relevant checkpoints, but three remain absent or mismatched"),
         ("exact 100-epoch DeepSeek 10% CPPO entrypoint", "not released"),
         ("exact 100-epoch DeepSeek 1% PPO entrypoint", "not released"),
         ("exact 100-epoch DeepSeek 1% CPPO checkpoint name mapping", "not released"),
         ("exact 100-epoch DeepSeek 0.1% CPPO checkpoint name mapping", "not released"),
-        ("paper table-generating notebook revision/output", "released stored outputs disagree"),
+        ("paper table-generating notebook revision/output", "all nine reachable notebook blobs share the same stale outputs and none matches a paper table value"),
         ("explanation of 2020 raster start versus 2019 protocol", "not provided"),
         ("Nasdaq membership/reconstitution protocol", "source uses a July 2023 survivor list"),
         ("rationale for VIX threshold 70", "material backtest rule absent from paper"),
@@ -405,6 +428,256 @@ def paper_source_inventory(source_root: Path) -> list[dict[str, Any]]:
         for path in sorted(source_root.rglob("*"))
         if path.is_file()
     ]
+
+
+def public_source_history(
+    source_root: Path, paper_root: Path
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Audit every object reachable from the repository's discovered public refs.
+
+    Historical author outputs and training logs are evidence of provenance, not
+    independent paper-result reproductions.  The function therefore validates
+    the complete public graph and remains fail-closed about result credit.
+    """
+
+    discovery_root = source_root / "release-discovery"
+    for name, expected in PUBLIC_DISCOVERY_SHA256.items():
+        path = discovery_root / name
+        if sha256(path) != expected:
+            raise ValueError("public-source discovery drift: %s" % path)
+    branches = json.loads((discovery_root / "branches.json").read_text(encoding="utf-8"))
+    tags = json.loads((discovery_root / "tags.json").read_text(encoding="utf-8"))
+    releases = json.loads((discovery_root / "releases.json").read_text(encoding="utf-8"))
+    if [(row["name"], row["commit"]["sha"]) for row in branches] != [("main", CURRENT_COMMIT)]:
+        raise ValueError("public branch discovery no longer matches the audited graph")
+    if tags or releases:
+        raise ValueError("new public tags or releases require an audit refresh")
+    if str(run_git(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise ValueError("public source checkout is shallow")
+
+    commits_raw = run_git(source_root, "rev-list", "--reverse", "--all")
+    commits = str(commits_raw).splitlines()
+    if len(commits) != PUBLIC_HISTORY_COMMIT_COUNT:
+        raise ValueError("public commit census changed")
+    if hashlib.sha256(str(commits_raw).encode("utf-8")).hexdigest() != PUBLIC_HISTORY_COMMIT_SHA256:
+        raise ValueError("public commit sequence changed")
+
+    path_lines = str(run_git(source_root, "log", "--all", "--pretty=format:", "--name-only")).splitlines()
+    historical_paths = sorted({line for line in path_lines if line})
+    path_payload = ("\n".join(historical_paths) + "\n").encode("utf-8")
+    if len(historical_paths) != PUBLIC_HISTORY_PATH_COUNT:
+        raise ValueError("public historical path census changed")
+    if hashlib.sha256(path_payload).hexdigest() != PUBLIC_HISTORY_PATH_SHA256:
+        raise ValueError("public historical path inventory changed")
+
+    object_lines = str(run_git(source_root, "rev-list", "--objects", "--all")).splitlines()
+    object_ids = [line.split(" ", 1)[0] for line in object_lines]
+    object_proc = subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+        input="\n".join(object_ids) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    object_counts = dict(Counter(object_proc.stdout.splitlines()))
+    if object_counts != PUBLIC_HISTORY_OBJECT_COUNTS:
+        raise ValueError("public reachable-object census changed")
+    fsck = subprocess.run(
+        ["git", "-C", str(source_root), "fsck", "--full", "--no-reflogs", "--unreachable"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if fsck.stdout.strip():
+        raise ValueError("unreachable repository objects require explicit audit")
+
+    commit_rows: list[dict[str, Any]] = []
+    notebook_first_seen: dict[str, tuple[str, str]] = {}
+    log_first_seen: dict[str, tuple[str, str]] = {}
+    for commit in commits:
+        metadata = str(run_git(source_root, "show", "-s", "--format=%H%x1f%cI%x1f%s", commit)).rstrip("\n")
+        commit_id, committed_at, subject = metadata.split("\x1f", 2)
+        tree_paths: list[str] = []
+        notebook_paths: list[str] = []
+        log_paths: list[str] = []
+        python_paths: list[str] = []
+        for line in str(run_git(source_root, "ls-tree", "-r", commit)).splitlines():
+            object_meta, path = line.split("\t", 1)
+            _mode, object_type, object_id = object_meta.split()
+            if object_type != "blob":
+                continue
+            tree_paths.append(path)
+            if path.endswith(".py"):
+                python_paths.append(path)
+            if path.endswith(".ipynb"):
+                notebook_paths.append(path)
+                notebook_first_seen.setdefault(object_id, (commit, path))
+            if path.endswith(".log"):
+                log_paths.append(path)
+                log_first_seen.setdefault(object_id, (commit, path))
+        commit_rows.append(
+            {
+                "commit": commit_id,
+                "committed_at": committed_at,
+                "subject": subject,
+                "tracked_files": len(tree_paths),
+                "python_files": len(python_paths),
+                "notebook_files": len(notebook_paths),
+                "training_log_files": len(log_paths),
+                "notebook_paths": ";".join(notebook_paths),
+                "training_log_paths": ";".join(log_paths),
+                "independently_regenerated_paper_results": 0,
+                "paper_result_credit": False,
+            }
+        )
+
+    if len(notebook_first_seen) != HISTORICAL_NOTEBOOK_BLOBS:
+        raise ValueError("historical notebook blob census changed")
+    metric_pattern = re.compile(
+        r"(Information Ratio|CVaR(?: \(5%\))?|Rachev Ratio):\s*(-?\d+\.\d+)"
+    )
+    paper_tokens = {
+        f"{value:.4f}"
+        for methods in TABLES.values()
+        for values in methods.values()
+        for value in values
+    }
+    notebook_rows: list[dict[str, Any]] = []
+    for object_id, (first_commit, first_path) in notebook_first_seen.items():
+        raw = run_git(source_root, "cat-file", "-p", object_id, binary=True)
+        decoded = raw.decode("utf-8", errors="replace")
+        pairs = metric_pattern.findall(decoded)
+        signature_payload = "\n".join("%s:%s" % pair for pair in pairs).encode("utf-8")
+        signature = hashlib.sha256(signature_payload).hexdigest()
+        valid_json = True
+        cell_count: Any = ""
+        output_cell_count: Any = ""
+        try:
+            notebook = json.loads(decoded)
+            cells = notebook.get("cells", [])
+            cell_count = len(cells)
+            output_cell_count = sum(
+                bool(metric_pattern.search(json.dumps(cell.get("outputs", [])))) for cell in cells
+            )
+        except json.JSONDecodeError:
+            valid_json = False
+        matched_tokens = sorted(token for token in paper_tokens if token in signature_payload.decode("utf-8"))
+        notebook_rows.append(
+            {
+                "blob": object_id,
+                "first_reachable_commit": first_commit,
+                "first_reachable_path": first_path,
+                "size_bytes": len(raw),
+                "valid_json": valid_json,
+                "notebook_cells": cell_count,
+                "stored_metric_output_cells": output_cell_count,
+                "stored_metric_entries": len(pairs),
+                "normalized_metric_output_sha256": signature,
+                "paper_numeric_tokens_matched": len(matched_tokens),
+                "matched_paper_numeric_tokens": ";".join(matched_tokens),
+                "status": "historical_author_output_no_paper_value_match",
+                "paper_result_credit": False,
+            }
+        )
+    valid_notebooks = sum(row["valid_json"] for row in notebook_rows)
+    malformed_notebooks = len(notebook_rows) - valid_notebooks
+    if (valid_notebooks, malformed_notebooks) != (
+        HISTORICAL_NOTEBOOK_VALID_JSON_BLOBS,
+        HISTORICAL_NOTEBOOK_MALFORMED_JSON_BLOBS,
+    ):
+        raise ValueError("historical notebook parse census changed")
+    if {row["stored_metric_entries"] for row in notebook_rows} != {24}:
+        raise ValueError("historical notebook stored-output census changed")
+    if {row["normalized_metric_output_sha256"] for row in notebook_rows} != {
+        HISTORICAL_NOTEBOOK_OUTPUT_SIGNATURE_SHA256
+    }:
+        raise ValueError("historical notebook outputs changed")
+    if any(row["paper_numeric_tokens_matched"] for row in notebook_rows):
+        raise ValueError("historical notebook now contains a paper numeric result")
+
+    if len(log_first_seen) != HISTORICAL_TRAINING_LOG_BLOBS:
+        raise ValueError("historical training-log blob census changed")
+    agent_tree = json.loads((paper_root / "hf_agents_tree.json").read_text(encoding="utf-8"))
+    released_checkpoints = {
+        Path(row["path"]).name for row in agent_tree if row["path"].endswith(".pth")
+    }
+    paper_relevant_checkpoints = set(EXPECTED_AGENT_HASHES)
+    log_rows: list[dict[str, Any]] = []
+    for object_id, (first_commit, first_path) in log_first_seen.items():
+        raw = run_git(source_root, "cat-file", "-p", object_id, binary=True)
+        decoded = raw.decode("utf-8", errors="replace")
+        saved_names = sorted(
+            set(re.findall(r"trained_models/([^/\s]+\.pth)", decoded))
+        )
+        exact_released = sorted(set(saved_names) & released_checkpoints)
+        exact_paper_relevant = sorted(set(saved_names) & paper_relevant_checkpoints)
+        completion_lines = len(re.findall(r"Training finished and saved in trained_models/", decoded))
+        evaluation_labels = sorted(
+            label
+            for label in ("Information Ratio", "CVaR (5%)", "Rachev Ratio")
+            if label in decoded
+        )
+        if evaluation_labels:
+            status = "training_log_contains_unexpected_evaluation_metric_requires_review"
+        elif not saved_names:
+            status = "incomplete_training_log_no_checkpoint_saved"
+        elif exact_released:
+            status = "training_only_exact_released_checkpoint_filename_lineage"
+        else:
+            status = "training_only_unreleased_checkpoint_filename"
+        log_rows.append(
+            {
+                "path": first_path,
+                "blob": object_id,
+                "first_reachable_commit": first_commit,
+                "size_bytes": len(raw),
+                "training_completion_lines": completion_lines,
+                "saved_checkpoint_basenames": ";".join(saved_names),
+                "exact_released_checkpoint_basenames": ";".join(exact_released),
+                "exact_paper_relevant_checkpoint_basenames": ";".join(exact_paper_relevant),
+                "contains_paper_evaluation_metric_labels": bool(evaluation_labels),
+                "paper_evaluation_metric_labels": ";".join(evaluation_labels),
+                "status": status,
+                "paper_result_credit": False,
+            }
+        )
+    released_log_matches = sum(bool(row["exact_released_checkpoint_basenames"]) for row in log_rows)
+    relevant_log_matches = sum(bool(row["exact_paper_relevant_checkpoint_basenames"]) for row in log_rows)
+    if released_log_matches != HISTORICAL_LOGS_WITH_EXACT_RELEASED_CHECKPOINT_NAME:
+        raise ValueError("released-checkpoint log lineage census changed")
+    if relevant_log_matches != HISTORICAL_LOGS_WITH_PAPER_RELEVANT_CHECKPOINT_NAME:
+        raise ValueError("paper-relevant checkpoint log lineage census changed")
+    if any(row["contains_paper_evaluation_metric_labels"] for row in log_rows):
+        raise ValueError("historical training log now contains result metrics")
+
+    summary = {
+        "discovered_public_branches": [{"name": "main", "head": CURRENT_COMMIT}],
+        "discovered_public_tags": [],
+        "discovered_public_releases": [],
+        "reachable_commits": len(commits),
+        "unique_historical_paths": len(historical_paths),
+        "reachable_object_counts": object_counts,
+        "unreachable_objects": 0,
+        "historical_notebook_blobs": len(notebook_rows),
+        "historical_notebook_valid_json_blobs": valid_notebooks,
+        "historical_notebook_malformed_json_blobs": malformed_notebooks,
+        "historical_notebook_distinct_metric_output_signatures": len(
+            {row["normalized_metric_output_sha256"] for row in notebook_rows}
+        ),
+        "historical_notebook_blobs_with_paper_numeric_match": sum(
+            bool(row["paper_numeric_tokens_matched"]) for row in notebook_rows
+        ),
+        "historical_training_log_blobs": len(log_rows),
+        "historical_training_logs_with_evaluation_metrics": sum(
+            row["contains_paper_evaluation_metric_labels"] for row in log_rows
+        ),
+        "historical_logs_with_exact_released_checkpoint_name": released_log_matches,
+        "paper_relevant_checkpoints_with_exact_training_log_name": relevant_log_matches,
+        "paper_relevant_checkpoints_total": len(paper_relevant_checkpoints),
+        "independently_regenerated_paper_results": 0,
+        "paper_result_credit": False,
+    }
+    return commit_rows, notebook_rows, log_rows, summary
 
 
 def hf_inventory(api_path: Path, tree_path: Path, kind: str) -> list[dict[str, Any]]:
@@ -439,7 +712,9 @@ def compile_revision(source_root: Path, revision: str) -> dict[str, Any]:
             try:
                 py_compile.compile(str(path), doraise=True)
             except Exception as exc:
-                failures.append({"path": path.name, "error": str(exc)})
+                failures.append(
+                    {"path": path.name, "error": str(exc).replace(str(path), path.name)}
+                )
     return {"revision": revision, "python_files": len(python_files), "compiled": len(python_files) - len(failures), "failures": failures}
 
 
@@ -515,6 +790,9 @@ def build_audit(
     paper_files = paper_source_inventory(paper_root / "source")
     data_files = hf_inventory(paper_root / "hf_nasdaq_api.json", paper_root / "hf_nasdaq_tree.json", "dataset")
     agent_files = hf_inventory(paper_root / "hf_agents_api.json", paper_root / "hf_agents_tree.json", "checkpoint")
+    history_commits, historical_notebooks, historical_logs, history_summary = public_source_history(
+        source_root, paper_root
+    )
     compile_pre = compile_revision(source_root, PRE_SUBMISSION_COMMIT)
     compile_current = compile_revision(source_root, CURRENT_COMMIT)
 
@@ -533,11 +811,17 @@ def build_audit(
         "paper_source_asset_inventory.csv": paper_files,
         "released_dataset_inventory.csv": data_files,
         "released_agent_inventory.csv": agent_files,
+        "released_source_history_inventory.csv": history_commits,
+        "historical_notebook_inventory.csv": historical_notebooks,
+        "historical_training_log_inventory.csv": historical_logs,
     }
     for name, rows in outputs.items():
         write_csv(output_dir / name, rows)
     (output_dir / "native_released_agent_execution.json").write_text(json.dumps(native, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (output_dir / "source_compilation.json").write_text(json.dumps({"pre_submission": compile_pre, "current": compile_current}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (output_dir / "public_source_history.json").write_text(
+        json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
     notebook_counts = Counter(row["status"] for row in notebook)
     native_matches = sum(str(row["display_precision_match"]) == "True" for row in tables)
@@ -568,6 +852,21 @@ def build_audit(
         "released_dataset_files_total": len(data_files),
         "released_checkpoint_files_total": sum(row["path"].endswith(".pth") for row in agent_files),
         "current_tracked_source_files_total": len(source_files),
+        "public_source_reachable_commits_total": history_summary["reachable_commits"],
+        "public_source_unique_historical_paths_total": history_summary["unique_historical_paths"],
+        "public_source_reachable_blobs_total": history_summary["reachable_object_counts"]["blob"],
+        "public_source_reachable_trees_total": history_summary["reachable_object_counts"]["tree"],
+        "public_source_reachable_commit_objects_total": history_summary["reachable_object_counts"]["commit"],
+        "public_source_unreachable_objects_total": history_summary["unreachable_objects"],
+        "historical_notebook_blobs_total": history_summary["historical_notebook_blobs"],
+        "historical_notebook_valid_json_blobs": history_summary["historical_notebook_valid_json_blobs"],
+        "historical_notebook_malformed_json_blobs": history_summary["historical_notebook_malformed_json_blobs"],
+        "historical_notebook_distinct_metric_output_signatures": history_summary["historical_notebook_distinct_metric_output_signatures"],
+        "historical_notebook_blobs_with_paper_numeric_match": history_summary["historical_notebook_blobs_with_paper_numeric_match"],
+        "historical_training_log_blobs_total": history_summary["historical_training_log_blobs"],
+        "historical_training_logs_with_evaluation_metrics": history_summary["historical_training_logs_with_evaluation_metrics"],
+        "historical_logs_with_exact_released_checkpoint_name": history_summary["historical_logs_with_exact_released_checkpoint_name"],
+        "paper_relevant_checkpoints_with_exact_training_log_name": history_summary["paper_relevant_checkpoints_with_exact_training_log_name"],
         "pre_submission_python_files_compiled": compile_pre["compiled"],
         "pre_submission_python_files_total": compile_pre["python_files"],
         "current_python_files_compiled": compile_current["compiled"],
@@ -580,15 +879,16 @@ def build_audit(
 
 ## Verdict
 
-The release is a substantial and unusually useful component package: the paper-era Hugging Face release contains 15 checkpoints, the dataset release contains frozen train/trade CSVs, the Git repository contains paper-era environments/training logs, and all eight checkpoints relevant to Tables 1--3 load and execute through the authors' environment code. That materially improves reproducibility, but it does not reproduce the paper.
+The release is a substantial and unusually useful component package: the paper-era Hugging Face release contains 15 checkpoints, the dataset release contains frozen train/trade CSVs, the Git repository contains paper-era environments/training logs, and all eight checkpoints relevant to Tables 1--3 load and execute through the authors' environment code. The complete discovered public graph has also been audited: 36 commits, 48 historical paths, 145 reachable objects, no tags or releases, and no unreachable objects. That materially improves reproducibility, but it does not reproduce the paper.
 
-The paper contains **36 displayed table cells representing 24 unique measurements**, **32 raster-only return series**, and **4 numeric IR labels in Figure 1**. The released notebook has stored values for {len(notebook) - notebook_counts['missing_stored_output']}/36 table cells, but **0 match the paper**; 9 cells have no stored output. Worse, its two stored evaluations of the same PPO and PPO-DeepSeek 10% series disagree on all six corresponding metrics. Three native protocols (stochastic seeds 0 and 42, plus policy means) executed all eight released checkpoints on hash-pinned released CSVs, but no table value earns paper-result credit. Information Ratio remains uncheckable from frozen inputs because the notebook downloads the benchmark live.
+The paper contains **36 displayed table cells representing 24 unique measurements**, **32 raster-only return series**, and **4 numeric IR labels in Figure 1**. The released notebook has stored values for {len(notebook) - notebook_counts['missing_stored_output']}/36 table cells, but **0 match the paper**; 9 cells have no stored output. Worse, its two stored evaluations of the same PPO and PPO-DeepSeek 10% series disagree on all six corresponding metrics. Every one of the nine historical notebook blobs—including two malformed revisions—contains the same 24 stored metric entries and none contains a paper table value. Three native protocols (stochastic seeds 0 and 42, plus policy means) executed all eight released checkpoints on hash-pinned released CSVs, but no table value earns paper-result credit. Information Ratio remains uncheckable from frozen inputs because the notebook downloads the benchmark live.
 
 ## Decisive fidelity gaps
 
 - The paper does not fix evaluation seeds, while the notebook samples Gaussian actions.
 - Figures 2--6 visibly start in 2020 despite the stated 2019--2023 trading interval.
 - The exact 100-epoch DeepSeek 10% CPPO training lineage is absent. The only committed 0.9--1.1 risk script is an older 25-epoch local-Qwen path; the 100-epoch DeepSeek scripts use smaller weights and unmatched output names.
+- Fifteen historical training logs establish partial checkpoint provenance, but they contain no paper evaluation metrics. Ten logs name a released checkpoint exactly; only 5/8 paper-relevant checkpoint names have exact log lineage.
 - The source's CPPO update is not the displayed CVaR-PPO Lagrangian: it applies a clipped per-step value adjustment to GAE, uses alpha=0.85, and repeatedly subtracts its full update buffer during trajectory finalization.
 - The one-article-per-stock/day sample, selection seed/IDs, raw selected inputs, LLM responses, frozen Yahoo benchmark, and table-generating result paths are absent.
 - The installation script invokes a nonexistent training file; the post-paper risk API script does not parse.

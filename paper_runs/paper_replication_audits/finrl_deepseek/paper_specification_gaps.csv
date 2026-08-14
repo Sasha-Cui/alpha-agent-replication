@@ -9,12 +9,12 @@ complete Python/package lock,not released,no
 paper evaluation RNG seeds/states,notebook samples actions without a seed,no
 frozen Nasdaq-100 benchmark series,notebook performs a live Yahoo download,no
 numeric portfolio paths behind six rasters,only PNGs are in paper source,no
-checkpoint-to-training-run manifest,filenames do not provide exact lineage,no
+checkpoint-to-training-run manifest,"history proves exact log filename lineage for 5/8 paper-relevant checkpoints, but three remain absent or mismatched",no
 exact 100-epoch DeepSeek 10% CPPO entrypoint,not released,no
 exact 100-epoch DeepSeek 1% PPO entrypoint,not released,no
 exact 100-epoch DeepSeek 1% CPPO checkpoint name mapping,not released,no
 exact 100-epoch DeepSeek 0.1% CPPO checkpoint name mapping,not released,no
-paper table-generating notebook revision/output,released stored outputs disagree,no
+paper table-generating notebook revision/output,all nine reachable notebook blobs share the same stale outputs and none matches a paper table value,no
 explanation of 2020 raster start versus 2019 protocol,not provided,no
 Nasdaq membership/reconstitution protocol,source uses a July 2023 survivor list,no
 rationale for VIX threshold 70,material backtest rule absent from paper,no

@@ -3,7 +3,7 @@
     "compiled": 26,
     "failures": [
       {
-        "error": "  File \"/tmp/tmpwde3l1tb/risk_deepseek_deepinfra.py\", line 10\n    base_url=\"https://api.deepinfra.com/v1/openai\",\n            ^\nSyntaxError: invalid syntax\n",
+        "error": "  File \"risk_deepseek_deepinfra.py\", line 10\n    base_url=\"https://api.deepinfra.com/v1/openai\",\n            ^\nSyntaxError: invalid syntax\n",
         "path": "risk_deepseek_deepinfra.py"
       }
     ],

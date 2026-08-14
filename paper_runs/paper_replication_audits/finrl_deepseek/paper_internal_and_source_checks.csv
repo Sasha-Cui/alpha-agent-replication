@@ -12,4 +12,7 @@ figure 1 training duration,caption says 3 years while 2019--2022 is four calenda
 installation entrypoint,installation_script.sh invokes nonexistent train_ppo_deepseek.py,broken_installation_path
 current Python syntax,risk_deepseek_deepinfra.py has an empty api_key assignment,post_paper_syntax_error
 paper-era prompt implementation,pre-submission source contains no LLM API scoring script,missing_paper_era_source
-official checkpoint source lineage,several released names have no exact producing script/log filename,provenance_gap
+complete public source history,"all 36 reachable commits, 48 historical paths, 145 reachable objects, and zero unreachable objects audited",pass
+historical notebook outputs,all 9 notebook blobs retain one identical 24-entry stale metric signature; 2 malformed revisions contain the same outputs and none contains a paper table value,paper_source_result_conflict
+historical training-log results,"15 training logs contain no Information Ratio, CVaR (5%), or Rachev Ratio evaluation outputs",no_result_artifact
+official checkpoint source lineage,5/8 paper-relevant checkpoint basenames have an exact producing training-log filename; three are absent or mismatched,partial_provenance_gap

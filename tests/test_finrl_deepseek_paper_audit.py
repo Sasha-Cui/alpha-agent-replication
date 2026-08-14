@@ -77,8 +77,11 @@ def test_committed_audit_records_native_execution_without_promoting_it() -> None
     native = json.loads(
         (output / "native_released_agent_execution.json").read_text(encoding="utf-8")
     )
+    history = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
     table = read_csv(output / "paper_numeric_table_conformance.csv")
     notebook = read_csv(output / "released_notebook_metric_conformance.csv")
+    historical_notebooks = read_csv(output / "historical_notebook_inventory.csv")
+    historical_logs = read_csv(output / "historical_training_log_inventory.csv")
     assert manifest["overall_status"] == (
         "released_data_checkpoints_and_code_execute_but_paper_results_not_reproduced"
     )
@@ -101,7 +104,35 @@ def test_committed_audit_records_native_execution_without_promoting_it() -> None
     assert manifest["pre_submission_python_files_total"] == 25
     assert manifest["current_python_files_compiled"] == 26
     assert manifest["current_python_files_total"] == 27
+    assert manifest["public_source_reachable_commits_total"] == 36
+    assert manifest["public_source_unique_historical_paths_total"] == 48
+    assert manifest["public_source_reachable_blobs_total"] == 73
+    assert manifest["public_source_reachable_trees_total"] == 36
+    assert manifest["public_source_reachable_commit_objects_total"] == 36
+    assert manifest["public_source_unreachable_objects_total"] == 0
+    assert manifest["historical_notebook_blobs_total"] == 9
+    assert manifest["historical_notebook_valid_json_blobs"] == 7
+    assert manifest["historical_notebook_malformed_json_blobs"] == 2
+    assert manifest["historical_notebook_distinct_metric_output_signatures"] == 1
+    assert manifest["historical_notebook_blobs_with_paper_numeric_match"] == 0
+    assert manifest["historical_training_log_blobs_total"] == 15
+    assert manifest["historical_training_logs_with_evaluation_metrics"] == 0
+    assert manifest["historical_logs_with_exact_released_checkpoint_name"] == 10
+    assert manifest["paper_relevant_checkpoints_with_exact_training_log_name"] == 5
     assert len(table) == 36 and len(notebook) == 36
+    assert len(historical_notebooks) == 9
+    assert {row["stored_metric_entries"] for row in historical_notebooks} == {"24"}
+    assert {
+        row["normalized_metric_output_sha256"] for row in historical_notebooks
+    } == {audit.HISTORICAL_NOTEBOOK_OUTPUT_SIGNATURE_SHA256}
+    assert {row["paper_numeric_tokens_matched"] for row in historical_notebooks} == {"0"}
+    assert len(historical_logs) == 15
+    assert sum(bool(row["exact_released_checkpoint_basenames"]) for row in historical_logs) == 10
+    assert sum(bool(row["exact_paper_relevant_checkpoint_basenames"]) for row in historical_logs) == 5
+    assert {row["contains_paper_evaluation_metric_labels"] for row in historical_logs} == {"False"}
+    assert history["reachable_commits"] == 36
+    assert history["reachable_object_counts"] == {"blob": 73, "commit": 36, "tree": 36}
+    assert history["paper_result_credit"] is False
     assert {row["paper_result_credit"] for row in table} == {"False"}
     assert native["source_revision"] == audit.CURRENT_COMMIT
     assert set(native["runs"]) == {
@@ -126,5 +157,11 @@ def test_pinned_primary_sources_when_available() -> None:
     assert audit.sha256(paper / "source.tar") == audit.PAPER_SOURCE_SHA256
     assert audit.sha256(paper / "arxiv_api.xml") == audit.ARXIV_API_SHA256
     assert len(audit.source_inventory(source)) == 47
+    commits, notebooks, logs, history = audit.public_source_history(source, paper)
+    assert len(commits) == 36
+    assert len(notebooks) == 9
+    assert len(logs) == 15
+    assert history["independently_regenerated_paper_results"] == 0
+    assert history["paper_result_credit"] is False
     native = audit.validate_native_inputs(artifacts)
     assert len(native["input_artifacts"]) == 11

@@ -1,0 +1,30 @@
+{
+  "discovered_public_branches": [
+    {
+      "head": "5c21a923214bca6370800efd45f8c6c1ef776ae7",
+      "name": "main"
+    }
+  ],
+  "discovered_public_releases": [],
+  "discovered_public_tags": [],
+  "historical_logs_with_exact_released_checkpoint_name": 10,
+  "historical_notebook_blobs": 9,
+  "historical_notebook_blobs_with_paper_numeric_match": 0,
+  "historical_notebook_distinct_metric_output_signatures": 1,
+  "historical_notebook_malformed_json_blobs": 2,
+  "historical_notebook_valid_json_blobs": 7,
+  "historical_training_log_blobs": 15,
+  "historical_training_logs_with_evaluation_metrics": 0,
+  "independently_regenerated_paper_results": 0,
+  "paper_relevant_checkpoints_total": 8,
+  "paper_relevant_checkpoints_with_exact_training_log_name": 5,
+  "paper_result_credit": false,
+  "reachable_commits": 36,
+  "reachable_object_counts": {
+    "blob": 73,
+    "commit": 36,
+    "tree": 36
+  },
+  "unique_historical_paths": 48,
+  "unreachable_objects": 0
+}
