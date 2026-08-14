@@ -3,7 +3,7 @@
     "html_sha256": "6f91650fbf2bb2203ca208e86abe2d5c9237b6851a64b266b9e592b0718679da",
     "url": "https://arxiv.org/abs/2505.11122"
   },
-  "audit_date": "2026-08-11",
+  "audit_date": "2026-08-13",
   "community_candidate": {
     "archive_sha256": "d46ec3b63a8e23743ffecf0c712521cb08dab43bd0ba56d54cfc166f2de6cda5",
     "author_linked": false,
@@ -34,6 +34,13 @@
       "github_search_title.json": "48fbd3f2123d07614408bf775e2e68db5c68f13afab9d0c06df7e9598b808a2c"
     }
   },
+  "intermediate_arxiv": {
+    "pages": 30,
+    "pdf_sha256": "602d63a9dde80aed7a4a5ab4e9765d92ae3e2cc78f8a2b105827902b5a6af7b6",
+    "source_sha256": "02dd9839308abe0fe6121023031b961c4f9d4607db4c20a74e2564844a5005a2",
+    "submitted": "2025-07-31",
+    "url": "https://arxiv.org/abs/2505.11122v2"
+  },
   "official_author_repository_found": false,
   "original_arxiv": {
     "pages": 30,
@@ -63,6 +70,6 @@
       "github_search_method.json": 7,
       "github_search_title.json": 4
     },
-    "validated_file_count": 9
+    "validated_file_count": 11
   }
 }

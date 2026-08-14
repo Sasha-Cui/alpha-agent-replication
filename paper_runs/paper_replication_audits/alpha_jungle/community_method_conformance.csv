@@ -10,7 +10,7 @@ exact six paper formulas,missing,None of the six disclosed Ours formulas appears
 LLM model,conflict,Default is gpt-4o-mini; the paper's main comparison uses GPT-4.1.,False,False
 search budget,conflict,"Default max_iterations is 20; paper comparisons use 1,000/2,000/3,000 generated formulas.",False,False
 data interval,conflict,Default 2020-01-01 through 2023-12-31 differs from the paper's 2011-2020 training and 2021-2024 testing.,False,False
-universe,partial_conflict,"Default exposes CSI300 only; paper reports CSI300 and CSI1000, and v3 adds S&P500.",False,False
+universe,partial_conflict,"Default exposes CSI300 only; paper reports CSI300 and CSI1000, and v2 adds S&P500.",False,False
 split date,conflict,Default 2022-01-01 split differs from the paper's 2021-01-01 test boundary.,False,False
 MCTS structure,partial,A community MCTS implementation exists but cannot be imported or tied to a paper run.,False,False
 FSA structure,partial,"A frequent-subtree module exists, but no released paper tree or factor zoo validates equivalence.",False,False

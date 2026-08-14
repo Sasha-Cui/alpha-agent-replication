@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Fail-closed paper/source audit for Alpha-Jungle (AAAI 2026).
 
-The nine-page AAAI-26 proceedings paper is the publication authority.  The
-original arXiv v1 and current v3 sources are audited separately because v3
-adds experiments and changes Annualized Return (AR) to Annualized Excess
-Return (AER).  The paper releases detailed prompt templates and six example
-formulas, but no author-linked implementation, data snapshot, factor pool,
-search trace, model output, or result artifact.
+The nine-page AAAI-26 proceedings paper is the publication authority.  All
+three official arXiv source releases are audited separately: v2 changes
+Annualized Return (AR) to Annualized Excess Return (AER) and expands the
+experiments, while v3 adds another experiment block.  The paper releases
+detailed prompt templates and six example formulas, but no author-linked
+implementation, data snapshot, factor pool, search trace, model output, or
+result artifact.
 
 An unaffiliated community repository is pinned and inspected as negative
 evidence only.  It is neither promoted to author source nor allowed to earn
@@ -28,9 +29,10 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 
-AUDIT_DATE = "2026-08-11"
+AUDIT_DATE = "2026-08-13"
 ARXIV_URL = "https://arxiv.org/abs/2505.11122"
 ARXIV_V1_URL = "https://arxiv.org/abs/2505.11122v1"
+ARXIV_V2_URL = "https://arxiv.org/abs/2505.11122v2"
 ARXIV_V3_URL = "https://arxiv.org/abs/2505.11122v3"
 AAAI_ARTICLE_URL = "https://ojs.aaai.org/index.php/AAAI/article/view/37069"
 AAAI_PDF_URL = "https://ojs.aaai.org/index.php/AAAI/article/download/37069/41031"
@@ -38,6 +40,8 @@ DOI = "10.1609/aaai.v40i2.37069"
 
 ARXIV_V1_PDF_SHA256 = "3cec26455b7f37c04b4dddeee3f947cdde7a49ea904bfd4862221642a0686c5f"
 ARXIV_V1_SOURCE_SHA256 = "3301816a94ef153b474c15a748c1b7ba3d23259154454da4497fd387c97f6170"
+ARXIV_V2_PDF_SHA256 = "602d63a9dde80aed7a4a5ab4e9765d92ae3e2cc78f8a2b105827902b5a6af7b6"
+ARXIV_V2_SOURCE_SHA256 = "02dd9839308abe0fe6121023031b961c4f9d4607db4c20a74e2564844a5005a2"
 ARXIV_V3_PDF_SHA256 = "1707743f661de3c3957ef02f7b7e6ee8f926377569185162d40b71115aa18a2b"
 ARXIV_V3_SOURCE_SHA256 = "8667c5c9a50bdaf23066af442e4b8fc5b8b98ba250af19110f997590616cd140"
 AAAI_FINAL_PDF_SHA256 = "439e6749988619d49e9e156ab040ebc5c6b48371ae8dce8e6db831bbbd3ca12a"
@@ -68,6 +72,18 @@ V1_TABLE_SPECS = (
     ("csi1000_lightgbm", "sections/Appendix.tex", "tab:experimental_result_csi1000_lgb", 12),
     ("csi1000_mlp", "sections/Appendix.tex", "tab:experimental_result_csi1000_mlp", 12),
 )
+V2_TABLE_SPECS = (
+    ("ablation", "sections/Experiment.tex", "tab:ablation_study", 8),
+    ("additional_comparison", "sections/Appendix.tex", "tab:additional_experimental_results", 8),
+    ("sp500", "sections/Appendix.tex", "tab:experimental_result_sp500", 6),
+    ("leakage", "sections/Appendix.tex", "tab:model-comparison", 4),
+    ("llm_sensitivity", "sections/Appendix.tex", "tab:llm_sensitivity", 8),
+    ("cost", "sections/Appendix.tex", "tab:cost_comparison", 6),
+    ("csi300_lightgbm", "sections/Appendix.tex", "tab:experimental_result_csi300_lgb", 12),
+    ("csi300_mlp", "sections/Appendix.tex", "tab:experimental_result_csi300_mlp", 12),
+    ("csi1000_lightgbm", "sections/Appendix.tex", "tab:experimental_result_csi1000_lgb", 12),
+    ("csi1000_mlp", "sections/Appendix.tex", "tab:experimental_result_csi1000_mlp", 12),
+)
 V3_TABLE_SPECS = (
     ("ablation", "sections/Experiment.tex", "tab:ablation_study", 8),
     ("additional_comparison", "sections/Appendix.tex", "tab:additional_experimental_results", 8),
@@ -86,6 +102,18 @@ V1_EXPECTED_TABLE_COUNTS = {
     "additional_comparison": 72,
     "leakage": 20,
     "llm_sensitivity": 32,
+    "csi300_lightgbm": 192,
+    "csi300_mlp": 192,
+    "csi1000_lightgbm": 192,
+    "csi1000_mlp": 192,
+}
+V2_EXPECTED_TABLE_COUNTS = {
+    "ablation": 64,
+    "additional_comparison": 128,
+    "sp500": 96,
+    "leakage": 20,
+    "llm_sensitivity": 48,
+    "cost": 60,
     "csi300_lightgbm": 192,
     "csi300_mlp": 192,
     "csi1000_lightgbm": 192,
@@ -288,14 +316,25 @@ def _extract_table(version: str, table_id: str, block: str, width: int) -> list[
 
 
 def parse_results(paper_root: Path, version: str) -> list[dict[str, Any]]:
-    specs = V1_TABLE_SPECS if version == "v1" else V3_TABLE_SPECS
+    specs_by_version = {
+        "v1": V1_TABLE_SPECS,
+        "v2": V2_TABLE_SPECS,
+        "v3": V3_TABLE_SPECS,
+    }
+    expected_by_version = {
+        "v1": V1_EXPECTED_TABLE_COUNTS,
+        "v2": V2_EXPECTED_TABLE_COUNTS,
+        "v3": V3_EXPECTED_TABLE_COUNTS,
+    }
+    if version not in specs_by_version:
+        raise ValueError(f"unsupported Alpha-Jungle paper version: {version}")
     source = paper_root / f"source_{version}"
     rows: list[dict[str, Any]] = []
-    for table_id, filename, label, width in specs:
+    for table_id, filename, label, width in specs_by_version[version]:
         text = (source / filename).read_text(encoding="utf-8")
         rows.extend(_extract_table(version, table_id, _table_for_label(text, label), width))
     counts = Counter(str(row["paper_table"]) for row in rows)
-    expected = Counter(V1_EXPECTED_TABLE_COUNTS if version == "v1" else V3_EXPECTED_TABLE_COUNTS)
+    expected = Counter(expected_by_version[version])
     if counts != expected:
         raise ValueError(f"{version} result census drifted: {counts}; expected {expected}")
     return rows
@@ -404,6 +443,152 @@ def version_lineage(v1: Sequence[Mapping[str, Any]], v3: Sequence[Mapping[str, A
     return output
 
 
+def adjacent_version_lineage(
+    earlier_rows: Sequence[Mapping[str, Any]],
+    current_rows: Sequence[Mapping[str, Any]],
+    earlier_version: str,
+    current_version: str,
+) -> list[dict[str, Any]]:
+    """Map semantically common result cells between adjacent official releases."""
+    pair = f"{earlier_version}_{current_version}"
+    output: list[dict[str, Any]] = []
+
+    def find(
+        rows: Sequence[Mapping[str, Any]], table: str, row_index: int, position: int
+    ) -> Mapping[str, Any]:
+        return next(
+            row
+            for row in rows
+            if row["paper_table"] == table
+            and int(row["row_index"]) == row_index
+            and int(row["result_position"]) == position
+        )
+
+    def add(earlier: Mapping[str, Any], current: Mapping[str, Any], mapping: str) -> None:
+        same = earlier["paper_value"] == current["paper_value"]
+        table = str(current["paper_table"])
+        position = int(current["result_position"])
+        relabel = (
+            earlier_version == "v1"
+            and current_version == "v2"
+            and table == "ablation"
+            and position in {2, 6}
+        )
+        current_ar_conflict = (
+            (table in FULL_TABLES or table in {"llm_sensitivity", "equal_cost"})
+            and str(current["metric"]).endswith("_AR")
+        )
+        if relabel:
+            status = (
+                f"{earlier_version}_AR_relabelled_as_{current_version}_AER_"
+                f"{'same_numeric_value' if same else 'changed_value'}"
+            )
+        else:
+            status = (
+                f"unchanged_between_{earlier_version}_{current_version}"
+                if same
+                else f"changed_between_{earlier_version}_{current_version}"
+            )
+        output.append(
+            {
+                "version_pair": pair,
+                "lineage_id": (
+                    f"{mapping}/{earlier['display_cell_id']}->{current['display_cell_id']}"
+                ),
+                "paper_table": table,
+                "mapping": mapping,
+                "earlier_version": earlier_version,
+                "earlier_row_index": earlier["row_index"],
+                "earlier_metric": earlier["metric"],
+                "earlier_value": earlier["paper_value"],
+                "current_version": current_version,
+                "current_row_index": current["row_index"],
+                "current_metric": current["metric"],
+                "current_value": current["paper_value"],
+                "same_numeric_display_value": same,
+                "AR_to_AER_semantic_relabel": relabel,
+                "current_AR_header_conflicts_with_AER_definition": current_ar_conflict,
+                "status": status,
+                "native_reproduction_credit": False,
+            }
+        )
+
+    if (earlier_version, current_version) == ("v1", "v2"):
+        direct_tables = ("ablation", "leakage", *FULL_TABLES)
+        sensitivity_rows = zip((0, 1, 2, 3), (0, 1, 2, 4))
+        additional_rows = zip(
+            range(12),
+            (0, 1, 3, 4, 5, 7, 8, 9, 11, 12, 13, 15),
+        )
+        additional_positions = ((2, 0), (3, 1), (4, 4), (5, 5))
+        expected_count, expected_same, expected_relabels = 932, 925, 16
+    elif (earlier_version, current_version) == ("v2", "v3"):
+        direct_tables = (
+            "ablation",
+            "sp500",
+            "leakage",
+            "llm_sensitivity",
+            "cost",
+            *FULL_TABLES,
+        )
+        sensitivity_rows = ()
+        additional_rows = zip(
+            range(16),
+            (0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 19),
+        )
+        additional_positions = tuple((position, position) for position in range(8))
+        expected_count, expected_same, expected_relabels = 1184, 1184, 0
+    else:
+        raise ValueError(f"unsupported adjacent version pair: {pair}")
+
+    for table in direct_tables:
+        earlier = _table_rows(earlier_rows, table)
+        current = _table_rows(current_rows, table)
+        if len(earlier) != len(current):
+            raise ValueError(f"{pair} direct lineage width changed for {table}")
+        for left, right in zip(earlier, current):
+            add(left, right, "same_table_cell_ordinal")
+
+    for earlier_row, current_row in sensitivity_rows:
+        for position in range(8):
+            add(
+                find(earlier_rows, "llm_sensitivity", earlier_row, position),
+                find(current_rows, "llm_sensitivity", current_row, position),
+                "same_LLM_semantic_row",
+            )
+
+    for earlier_row, current_row in additional_rows:
+        for earlier_position, current_position in additional_positions:
+            add(
+                find(
+                    earlier_rows,
+                    "additional_comparison",
+                    earlier_row,
+                    earlier_position,
+                ),
+                find(
+                    current_rows,
+                    "additional_comparison",
+                    current_row,
+                    current_position,
+                ),
+                "same_alpha_set_market_horizon_model_metric",
+            )
+
+    same_count = sum(bool(row["same_numeric_display_value"]) for row in output)
+    relabel_count = sum(bool(row["AR_to_AER_semantic_relabel"]) for row in output)
+    if (len(output), same_count, relabel_count) != (
+        expected_count,
+        expected_same,
+        expected_relabels,
+    ):
+        raise ValueError(
+            f"{pair} lineage drifted: cells={len(output)}, same={same_count}, "
+            f"relabels={relabel_count}"
+        )
+    return output
+
+
 def cost_arithmetic(v3: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
     rows = _table_rows(v3, "cost")
     by_row: dict[int, list[Mapping[str, Any]]] = {}
@@ -455,8 +640,9 @@ def cost_arithmetic(v3: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
 
 def formula_component_conformance(paper_root: Path, repo_root: Path) -> list[dict[str, Any]]:
     v1 = (paper_root / "source_v1/sections/Appendix.tex").read_text(encoding="utf-8")
+    v2 = (paper_root / "source_v2/sections/Appendix.tex").read_text(encoding="utf-8")
     v3 = (paper_root / "source_v3/sections/Appendix.tex").read_text(encoding="utf-8")
-    # Each formula has a distinctive operator fragment in both released sources.
+    # Each formula has a distinctive operator fragment in all released sources.
     anchors = (
         r"\op{Zscore}(\op{Ma}(\op{close}-\op{vwap},20),30)",
         r"\op{Std}(\op{Pct}(\op{vwap},20),25)\cdot\op{Sum}(\op{volume},40)/\op{volume}",
@@ -465,7 +651,7 @@ def formula_component_conformance(paper_root: Path, repo_root: Path) -> list[dic
         r"\op{Corr}(\op{Pct}(\op{close},10),\op{Pct}(\op{volume},10),10)",
         r"\op{Ma}(\op{Corr}(\op{volume},\op{close},20)\cdot\op{Skew}(\op{high}-\op{low},20),10)",
     )
-    if not all(anchor in v1 and anchor in v3 for anchor in anchors):
+    if not all(anchor in v1 and anchor in v2 and anchor in v3 for anchor in anchors):
         raise ValueError("one or more disclosed Alpha-Jungle formula anchors drifted")
 
     implementation = (repo_root / "scripts/run_fidelity_formula_components.py").read_text(encoding="utf-8")
@@ -482,6 +668,7 @@ def formula_component_conformance(paper_root: Path, repo_root: Path) -> list[dic
                 "paper_formula": formula,
                 "source_inputs": inputs,
                 "present_in_v1_source": True,
+                "present_in_v2_source": True,
                 "present_in_v3_source": True,
                 "local_candidate_id": candidate_id or "",
                 "local_formula_tree_preserved": tree_preserved,
@@ -600,7 +787,7 @@ def candidate_method_conformance(execution: Mapping[str, Any]) -> list[dict[str,
         ("LLM model", "conflict", "Default is gpt-4o-mini; the paper's main comparison uses GPT-4.1."),
         ("search budget", "conflict", "Default max_iterations is 20; paper comparisons use 1,000/2,000/3,000 generated formulas."),
         ("data interval", "conflict", "Default 2020-01-01 through 2023-12-31 differs from the paper's 2011-2020 training and 2021-2024 testing."),
-        ("universe", "partial_conflict", "Default exposes CSI300 only; paper reports CSI300 and CSI1000, and v3 adds S&P500."),
+        ("universe", "partial_conflict", "Default exposes CSI300 only; paper reports CSI300 and CSI1000, and v2 adds S&P500."),
         ("split date", "conflict", "Default 2022-01-01 split differs from the paper's 2021-01-01 test boundary."),
         ("MCTS structure", "partial", "A community MCTS implementation exists but cannot be imported or tied to a paper run."),
         ("FSA structure", "partial", "A frequent-subtree module exists, but no released paper tree or factor zoo validates equivalence."),
@@ -626,7 +813,7 @@ def figure_inventory(paper_root: Path) -> list[dict[str, Any]]:
         "parameter_sensitivity_analysis.pdf", "computation_cost.pdf", "efficiency_comparison.pdf",
     }
     rows: list[dict[str, Any]] = []
-    for version in ("v1", "v3"):
+    for version in ("v1", "v2", "v3"):
         for path in sorted((paper_root / f"source_{version}/img").iterdir()):
             if not path.is_file():
                 continue
@@ -642,16 +829,55 @@ def figure_inventory(paper_root: Path) -> list[dict[str, Any]]:
                     "status": "rendered_result_without_raw_plot_data" if result_bearing else "qualitative_or_method_illustration",
                 }
             )
-    if Counter(row["paper_version"] for row in rows) != {"v1": 14, "v3": 16}:
+    if Counter(row["paper_version"] for row in rows) != {
+        "v1": 14,
+        "v2": 16,
+        "v3": 16,
+    }:
         raise ValueError("source figure inventory drifted")
     return rows
+
+
+def figure_version_lineage(figures: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    by_version = {
+        version: {str(row["filename"]): row for row in figures if row["paper_version"] == version}
+        for version in ("v1", "v2", "v3")
+    }
+    output: list[dict[str, Any]] = []
+    for earlier_version, current_version in (("v1", "v2"), ("v2", "v3")):
+        common = sorted(by_version[earlier_version].keys() & by_version[current_version].keys())
+        for filename in common:
+            earlier = by_version[earlier_version][filename]
+            current = by_version[current_version][filename]
+            identical = earlier["sha256"] == current["sha256"]
+            output.append(
+                {
+                    "version_pair": f"{earlier_version}_{current_version}",
+                    "filename": filename,
+                    "earlier_sha256": earlier["sha256"],
+                    "current_sha256": current["sha256"],
+                    "byte_identical": identical,
+                    "result_bearing": current["result_bearing"],
+                    "raw_plot_data_released": False,
+                    "native_result_reproduced": False,
+                    "status": (
+                        "unchanged_rendered_asset_without_raw_plot_data"
+                        if identical
+                        else "revised_rendered_asset_without_raw_plot_data"
+                    ),
+                }
+            )
+    v2_v3 = [row for row in output if row["version_pair"] == "v2_v3"]
+    if len(v2_v3) != 16 or not all(bool(row["byte_identical"]) for row in v2_v3):
+        raise ValueError("expected all sixteen v2/v3 figure assets to be byte-identical")
+    return output
 
 
 def method_specification_audit() -> list[dict[str, Any]]:
     entries = [
         ("AAAI publication authority", "specified", "none", "Official AAAI-26 article, DOI, pages 997-1005, and PDF are pinned."),
         ("arXiv original authority", "specified", "none", "v1 PDF and 27-file source archive are pinned."),
-        ("arXiv current authority", "specified", "none", "v3 PDF and 28-file source archive are pinned."),
+        ("arXiv version lineage", "specified", "none", "v2 PDF and 29-file source archive and v3 PDF and 28-file source archive are pinned."),
         ("author-linked implementation", "missing", "blocking", "No code link appears in the AAAI paper, arXiv record/source, or author-matched search evidence."),
         ("official source revision", "missing", "blocking", "No executable author source revision exists."),
         ("official software license", "missing", "blocking", "No author software release exists to license."),
@@ -672,11 +898,11 @@ def method_specification_audit() -> list[dict[str, Any]]:
         ("Qlib revision", "missing", "blocking", "Qlib is cited without a commit/package version."),
         ("CSI300 point-in-time constituents", "missing", "blocking", "No membership history or snapshot is released."),
         ("CSI1000 point-in-time constituents", "missing", "blocking", "No membership history or snapshot is released."),
-        ("S&P500 point-in-time constituents", "missing", "blocking", "v3 adds S&P500 without membership history or snapshot."),
+        ("S&P500 point-in-time constituents", "missing", "blocking", "v2 adds S&P500 without membership history or snapshot."),
         ("price adjustment/corporate actions", "missing", "blocking", "Adjustment, split, dividend, suspension, and delisting rules are not pinned."),
         ("China train interval", "specified", "none", "2011-01-01 through 2020-12-31."),
         ("China test interval", "specified", "none", "2021-01-01 through 2024-11-30."),
-        ("S&P500 train/test intervals", "specified_v3", "none", "2007-2015 train and 2016-01-01 through 2020-10-10 test."),
+        ("S&P500 train/test intervals", "specified_v2_v3", "none", "2007-2015 train and 2016-01-01 through 2020-10-10 test."),
         ("bar frequency", "specified", "none", "Daily stock data are used."),
         ("input fields", "specified", "none", "Open, high, low, close, volume and vwap-dependent examples are documented."),
         ("prediction horizons", "specified", "none", "China experiments use 10- and 30-day forward returns; S&P500 uses 10-day."),
@@ -703,8 +929,8 @@ def method_specification_audit() -> list[dict[str, Any]]:
         ("drop-n rule", "specified", "none", "n=k/w is stated."),
         ("transaction cost", "specified", "none", "0.15% per trade is stated."),
         ("trade simulator implementation", "missing", "blocking", "No fills, turnover state, corporate-action handling, or return path is released."),
-        ("AER benchmark return", "missing", "blocking", "v3 defines excess return against a market benchmark without pinning its exact series/construction."),
-        ("v1 AR to v3/final AER lineage", "conflict", "blocking", "Sixteen final ablation AER cells equal v1 AR cells despite changed return semantics and no run lineage."),
+        ("AER benchmark return", "missing", "blocking", "v2 onward defines excess return against a market benchmark without pinning its exact series/construction."),
+        ("v1 AR to v2/v3/final AER lineage", "conflict", "blocking", "Sixteen v2, v3, and final ablation AER cells equal v1 AR cells despite changed return semantics and no run lineage."),
         ("v3 appendix metric headers", "conflict", "major", "228 v3 cells remain labelled AR while the current metric definition and main text use AER."),
         ("raw predictions/returns", "missing", "blocking", "No predictions, holdings, costs, benchmark returns, or equity paths are released."),
         ("main-table uncertainty", "missing", "blocking", "No repeated-run uncertainty or statistical tests accompany predictive/trading tables."),
@@ -734,9 +960,9 @@ def qualitative_claim_audit() -> list[dict[str, Any]]:
             "assessment": "not_publicly_reproducible",
         },
         {
-            "paper_version": "v3_and_final",
+            "paper_version": "v2_v3_and_final",
             "claim": "AER ablation results",
-            "observed": "16/16 AER-position cells retain the exact v1 AR display values after the metric changed from total to benchmark-excess return",
+            "observed": "16/16 AER-position cells in v2, v3, and the final retain the exact v1 AR display values after the metric changed from total to benchmark-excess return",
             "assessment": "unsupported_semantic_relabel_without_run_lineage",
         },
         {
@@ -752,7 +978,7 @@ def qualitative_claim_audit() -> list[dict[str, Any]]:
             "assessment": "internally_consistent_not_independently_reproduced",
         },
         {
-            "paper_version": "both",
+            "paper_version": "all_arxiv_versions",
             "claim": "data leakage concern is alleviated",
             "observed": "a direct-prompt performance comparison cannot establish absence of paper-formula contamination in proprietary LLM training data",
             "assessment": "evidence_does_not_identify_training_data_contamination",
@@ -782,13 +1008,18 @@ def compile_sources(paper_root: Path) -> dict[str, Any]:
     if shutil.which("pdflatex") is None or shutil.which("pdfinfo") is None:
         raise RuntimeError("pdflatex and pdfinfo are required for the Alpha-Jungle audit")
     results: dict[str, Any] = {}
-    for version, expected_pages, expected_files in (("v1", 30, 27), ("v3", 31, 28)):
+    for version, expected_pages, expected_files in (
+        ("v1", 30, 27),
+        ("v2", 30, 29),
+        ("v3", 31, 28),
+    ):
         source = paper_root / f"source_{version}"
         with tempfile.TemporaryDirectory(prefix=f"alpha-jungle-{version}-") as temp:
             work = Path(temp) / "source"
             shutil.copytree(source, work)
             exit_codes: list[int] = []
-            for _ in range(2):
+            final_output = ""
+            for _ in range(3):
                 proc = subprocess.run(
                     ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "main.tex"],
                     cwd=work,
@@ -796,6 +1027,7 @@ def compile_sources(paper_root: Path) -> dict[str, Any]:
                     text=True,
                 )
                 exit_codes.append(proc.returncode)
+                final_output = proc.stdout + proc.stderr
                 if proc.returncode:
                     raise RuntimeError(proc.stdout[-4000:] + proc.stderr[-4000:])
             info = subprocess.run(
@@ -808,10 +1040,14 @@ def compile_sources(paper_root: Path) -> dict[str, Any]:
             source_files = sum(path.is_file() for path in source.rglob("*"))
             if pages != expected_pages or source_files != expected_files:
                 raise ValueError(f"{version} source drift: pages={pages}, files={source_files}")
+            stable_cross_references = "Label(s) may have changed" not in final_output
+            if not stable_cross_references:
+                raise ValueError(f"{version} source cross-references did not stabilize")
             results[version] = {
                 "exit_codes": exit_codes,
                 "pages": pages,
                 "source_files": source_files,
+                "stable_cross_references": stable_cross_references,
                 "paper_result_credit": False,
             }
     return results
@@ -821,6 +1057,8 @@ def validate_inputs(paper_root: Path, community: Path) -> dict[str, Any]:
     expected = {
         paper_root / "arxiv_v1.pdf": ARXIV_V1_PDF_SHA256,
         paper_root / "arxiv_v1_source.tar": ARXIV_V1_SOURCE_SHA256,
+        paper_root / "arxiv_v2.pdf": ARXIV_V2_PDF_SHA256,
+        paper_root / "arxiv_v2_source.tar": ARXIV_V2_SOURCE_SHA256,
         paper_root / "arxiv_v3.pdf": ARXIV_V3_PDF_SHA256,
         paper_root / "arxiv_v3_source.tar": ARXIV_V3_SOURCE_SHA256,
         paper_root / "aaai_final.pdf": AAAI_FINAL_PDF_SHA256,
@@ -857,7 +1095,8 @@ def readme() -> str:
     return """# Alpha-Jungle paper-level replication audit
 
 The official nine-page AAAI-26 proceedings paper is the publication authority.
-The original arXiv v1 and current v3 extended sources are audited separately.
+All three official arXiv versions and source archives are pinned, compiled,
+parsed, and compared separately.
 
 ## Honest outcome
 
@@ -865,25 +1104,29 @@ The original arXiv v1 and current v3 extended sources are audited separately.
   author-linked code, immutable experiment configuration, China/S&P500 data
   snapshot, factor pool, search trace, LLM call log, predictions, holdings,
   return path, or native result output was found.
-- **Extended result reproduction: 0/956 v1 cells and 0/1,312 v3 cells.** Source
-  compilation and exact table parsing verify the documents, not the experiments.
+- **Extended result reproduction: 0/956 v1 cells, 0/1,184 v2 cells, and
+  0/1,312 v3 cells.** Source compilation and exact table parsing verify the
+  documents, not the experiments.
 - **Formula-component evidence: 3/6 disclosed Ours formula trees.** Formulas
   4-6 are already executed locally with their operator trees preserved, but
   only after daily-China to monthly-U.S. universe/cadence and researcher-
   portfolio adaptations. They receive no MCTS, model, portfolio, or paper-
   result credit. Formulas 1-3 require VWAP, absent from the approved JKP input.
-- **Prompts:** four detailed prompt templates are recoverable from both source
-  releases. Exact filled runtime prompts, model responses, and immutable model
+- **Prompts:** four detailed prompt templates are recoverable from every source
+  release. Exact filled runtime prompts, model responses, and immutable model
   snapshots are absent.
 
 ## Result-lineage warning
 
-Across 932 semantically common v1/v3 cells, 925 retain the same displayed
-number. All 16 v1 ablation cells labelled AR are unchanged when v3 and the
-published final relabel them AER, even though AR uses total portfolio returns
-and AER uses returns over an unspecified market benchmark. No executable run
-lineage is released. Separately, 228 current-v3 appendix cells still use AR
-headers while the current metric section and main text define AER.
+Across 932 semantically common v1/v2 cells, 925 retain the same displayed
+number; the seven revisions are confined to one LLM-sensitivity row. All 16 v1
+ablation cells labelled AR are unchanged when v2, v3, and the published final
+relabel them AER, even though AR uses total portfolio returns and AER uses
+returns over an unspecified market benchmark. All 1,184 semantically common
+v2/v3 result cells are unchanged. The 16 v2 and v3 figure assets are also
+byte-identical. No executable run lineage or raw plot data is released.
+Separately, 228 current-v3 appendix cells still use AR headers while the
+current metric section and main text define AER.
 
 The v3 cost table is arithmetically self-consistent: all 30 derived server,
 API, and total-cost cells recompute from values printed in the same table. This
@@ -934,16 +1177,22 @@ def main() -> None:
 
     validated = validate_inputs(paper_root, community)
     v1 = parse_results(paper_root, "v1")
+    v2 = parse_results(paper_root, "v2")
     v3 = parse_results(paper_root, "v3")
     published = published_final_rows(paper_root, v3)
     lineage = version_lineage(v1, v3)
+    v1_v2_lineage = adjacent_version_lineage(v1, v2, "v1", "v2")
+    v2_v3_lineage = adjacent_version_lineage(v2, v3, "v2", "v3")
     costs = cost_arithmetic(v3)
     formulas = formula_component_conformance(paper_root, repo_root)
-    prompts = {version: extract_prompts(paper_root, version) for version in ("v1", "v3")}
+    prompts = {
+        version: extract_prompts(paper_root, version) for version in ("v1", "v2", "v3")
+    }
     source_rows = candidate_source_inventory(community)
     execution = candidate_execution(community, args.candidate_python.resolve())
     candidate_conformance = candidate_method_conformance(execution)
     figures = figure_inventory(paper_root)
+    figure_lineage = figure_version_lineage(figures)
     methods = method_specification_audit()
     claims = qualitative_claim_audit()
     compilations = compile_sources(paper_root)
@@ -951,13 +1200,17 @@ def main() -> None:
     output.mkdir(parents=True, exist_ok=True)
     write_csv(output / "aaai_final_table_result_conformance.csv", published)
     write_csv(output / "v1_extended_table_result_conformance.csv", v1)
+    write_csv(output / "v2_extended_table_result_conformance.csv", v2)
     write_csv(output / "v3_extended_table_result_conformance.csv", v3)
     write_csv(output / "version_lineage_audit.csv", lineage)
+    write_csv(output / "v1_v2_version_lineage_audit.csv", v1_v2_lineage)
+    write_csv(output / "v2_v3_version_lineage_audit.csv", v2_v3_lineage)
     write_csv(output / "cost_arithmetic_audit.csv", costs)
     write_csv(output / "formula_component_conformance.csv", formulas)
     write_csv(output / "community_source_inventory.csv", source_rows)
     write_csv(output / "community_method_conformance.csv", candidate_conformance)
     write_csv(output / "figure_inventory.csv", figures)
+    write_csv(output / "figure_version_lineage.csv", figure_lineage)
     write_csv(output / "method_specification_audit.csv", methods)
     write_csv(output / "qualitative_claim_audit.csv", claims)
     for version, prompt in prompts.items():
@@ -982,6 +1235,7 @@ def main() -> None:
         "native_blocker": "no author-linked source, exact inputs/config, factor pool, trace, or result artifacts",
         "published_final_cells_reproduced": 0,
         "v1_extended_cells_reproduced": 0,
+        "v2_extended_cells_reproduced": 0,
         "v3_extended_cells_reproduced": 0,
         "paper_source_compilation": compilations,
         "official_pdf_table_text_verified": True,
@@ -1008,6 +1262,13 @@ def main() -> None:
             "pdf_sha256": ARXIV_V1_PDF_SHA256,
             "source_sha256": ARXIV_V1_SOURCE_SHA256,
             "submitted": "2025-05-16",
+            "pages": 30,
+        },
+        "intermediate_arxiv": {
+            "url": ARXIV_V2_URL,
+            "pdf_sha256": ARXIV_V2_PDF_SHA256,
+            "source_sha256": ARXIV_V2_SOURCE_SHA256,
+            "submitted": "2025-07-31",
             "pages": 30,
         },
         "current_arxiv": {
@@ -1042,17 +1303,22 @@ def main() -> None:
         "README.md",
         "aaai_final_table_result_conformance.csv",
         "v1_extended_table_result_conformance.csv",
+        "v2_extended_table_result_conformance.csv",
         "v3_extended_table_result_conformance.csv",
         "version_lineage_audit.csv",
+        "v1_v2_version_lineage_audit.csv",
+        "v2_v3_version_lineage_audit.csv",
         "cost_arithmetic_audit.csv",
         "formula_component_conformance.csv",
         "community_source_inventory.csv",
         "community_method_conformance.csv",
         "community_execution.json",
         "figure_inventory.csv",
+        "figure_version_lineage.csv",
         "method_specification_audit.csv",
         "qualitative_claim_audit.csv",
         "paper_prompts_v1.tex.txt",
+        "paper_prompts_v2.tex.txt",
         "paper_prompts_v3.tex.txt",
         "native_execution.json",
         "source_provenance.json",
@@ -1064,10 +1330,13 @@ def main() -> None:
         "overall_status": "zero_of_64_published_cells_reproduced_zero_native_results_three_of_six_formula_trees_conditionally_adapted",
         "full_paper_reproduced": False,
         "official_author_source_released": False,
+        "official_arxiv_versions_audited": 3,
         "published_final_table_result_cells": len(published),
         "published_final_table_result_cells_reproduced": 0,
         "v1_extended_table_result_cells": len(v1),
         "v1_extended_table_result_cells_reproduced": 0,
+        "v2_extended_table_result_cells": len(v2),
+        "v2_extended_table_result_cells_reproduced": 0,
         "v3_extended_table_result_cells": len(v3),
         "v3_extended_table_result_cells_reproduced": 0,
         "native_alpha_jungle_result_cells_reproduced": 0,
@@ -1077,6 +1346,18 @@ def main() -> None:
         "common_v1_v3_result_cells": len(lineage),
         "common_v1_v3_same_display_value": sum(bool(row["same_numeric_display_value"]) for row in lineage),
         "v1_AR_cells_relabelled_v3_AER": sum(bool(row["AR_to_AER_semantic_relabel"]) for row in lineage),
+        "common_v1_v2_result_cells": len(v1_v2_lineage),
+        "common_v1_v2_same_display_value": sum(
+            bool(row["same_numeric_display_value"]) for row in v1_v2_lineage
+        ),
+        "v1_AR_cells_relabelled_v2_AER": sum(
+            bool(row["AR_to_AER_semantic_relabel"]) for row in v1_v2_lineage
+        ),
+        "common_v2_v3_result_cells": len(v2_v3_lineage),
+        "common_v2_v3_same_display_value": sum(
+            bool(row["same_numeric_display_value"]) for row in v2_v3_lineage
+        ),
+        "v3_result_cells_added_beyond_v2": len(v3) - len(v2),
         "v3_AR_header_cells_conflicting_with_current_AER_definition": current_ar_header_conflicts,
         "cost_derived_cells_arithmetically_consistent": sum(bool(row["match_at_paper_precision"]) for row in costs),
         "cost_arithmetic_cells_with_paper_result_credit": 0,
@@ -1090,6 +1371,13 @@ def main() -> None:
         "method_severity_counts": dict(sorted(Counter(row["severity"] for row in methods).items())),
         "source_figure_files": len(figures),
         "result_bearing_source_figure_files": sum(bool(row["result_bearing"]) for row in figures),
+        "common_v2_v3_figure_assets": sum(
+            row["version_pair"] == "v2_v3" for row in figure_lineage
+        ),
+        "byte_identical_v2_v3_figure_assets": sum(
+            row["version_pair"] == "v2_v3" and bool(row["byte_identical"])
+            for row in figure_lineage
+        ),
         "output_sha256": {name: sha256(output / name) for name in tracked},
     }
     write_json(output / "manifest.json", manifest)

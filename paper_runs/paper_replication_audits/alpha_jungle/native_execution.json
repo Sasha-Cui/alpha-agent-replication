@@ -26,24 +26,40 @@
     "v1": {
       "exit_codes": [
         0,
+        0,
         0
       ],
       "pages": 30,
       "paper_result_credit": false,
-      "source_files": 27
+      "source_files": 27,
+      "stable_cross_references": true
+    },
+    "v2": {
+      "exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "pages": 30,
+      "paper_result_credit": false,
+      "source_files": 29,
+      "stable_cross_references": true
     },
     "v3": {
       "exit_codes": [
+        0,
         0,
         0
       ],
       "pages": 31,
       "paper_result_credit": false,
-      "source_files": 28
+      "source_files": 28,
+      "stable_cross_references": true
     }
   },
   "published_final_cells_reproduced": 0,
   "released_prompt_templates_recovered": 4,
   "v1_extended_cells_reproduced": 0,
+  "v2_extended_cells_reproduced": 0,
   "v3_extended_cells_reproduced": 0
 }

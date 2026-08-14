@@ -1,9 +1,15 @@
 {
   "adapted_formula_trees_executed": 3,
   "adapted_formula_trees_with_paper_result_credit": 0,
-  "audit_date": "2026-08-11",
+  "audit_date": "2026-08-13",
+  "byte_identical_v2_v3_figure_assets": 16,
+  "common_v1_v2_result_cells": 932,
+  "common_v1_v2_same_display_value": 925,
   "common_v1_v3_result_cells": 932,
   "common_v1_v3_same_display_value": 925,
+  "common_v2_v3_figure_assets": 16,
+  "common_v2_v3_result_cells": 1184,
+  "common_v2_v3_same_display_value": 1184,
   "community_candidate_import_success": false,
   "community_candidate_pytest_collection_errors": 3,
   "community_candidate_python_files": 40,
@@ -17,7 +23,7 @@
     "paper_only": 1,
     "partial": 7,
     "specified": 28,
-    "specified_v3": 1
+    "specified_v2_v3": 1
   },
   "method_severity_counts": {
     "blocking": 26,
@@ -26,23 +32,29 @@
   },
   "method_specification_dimensions": 63,
   "native_alpha_jungle_result_cells_reproduced": 0,
+  "official_arxiv_versions_audited": 3,
   "official_author_source_released": false,
   "output_sha256": {
-    "README.md": "298a8d004597bb7f6702851ab59ebc384dbeac0c57fcbae7dfffbac1212f89b5",
+    "README.md": "94260945207badf58041332acd9bc60a6c8f2e533a876cf2b7b77277eb1c1049",
     "aaai_final_table_result_conformance.csv": "276bd136fb01db46c95c5042d6a3e44335b5e6fd562b012d6ac177be82069c1a",
     "community_execution.json": "e3de4dd8fde160c7686be94442af7cb05b8fd462ab8e60b523b9f65a8e4d647b",
-    "community_method_conformance.csv": "8798d63692728b58a9a088ad2728abfa86b0b44faf0c0d21017ddc9320d6e851",
+    "community_method_conformance.csv": "80b824994136f6fc6ade065b4b7802f2a348c9b9dd25c4e6def8af5193fb1138",
     "community_source_inventory.csv": "2cd0776930af1eae3c94c6d490c7864d38a0d461db0d6f4b9686c46c2fea52f3",
     "cost_arithmetic_audit.csv": "4d6a7a9fdc66e9bee59b50a0b953df2e5815e5a52aa4128565fa6ee5a2a5992a",
-    "figure_inventory.csv": "8025377bbee2f9b998cd2b2c02d0157aea5960ec31d54ecdae40ea56cb96f51d",
-    "formula_component_conformance.csv": "28fb278a7ad60ac9733625c761f872412e8a85c0f011484465d13ddcae9662a6",
-    "method_specification_audit.csv": "4b061cf26a60295adca1b90543c7eab302087a928dafbc31830d0be46828f983",
-    "native_execution.json": "2f42ad57fdee156b917094a0a359a3b4a8717a55683e9c6d60cbbd17273d3e6d",
+    "figure_inventory.csv": "c26584f304f0e999045d474592cdc78be9f598c2c02e85c57f3afff01727e949",
+    "figure_version_lineage.csv": "69f3996c7908bc31e67287a371565c8deb5ac3ec293d128bc9d9b2adaecb983e",
+    "formula_component_conformance.csv": "5b109f1a2fccf14851148cf1735f141a52798830f397200145bfd2d4dc3e1d32",
+    "method_specification_audit.csv": "f7cb0a774d46bf6294bb833250eb93c5fef7e4d4beb6354e5a13da69460de750",
+    "native_execution.json": "f66ad3f9c167cea4dcf89f84f909f829bafa470f216e903ea0420abd6366ea22",
     "paper_prompts_v1.tex.txt": "65acb210fe5a12dd8249a2426306037f8af2d6cae014d3420a64cb61473b8e2a",
+    "paper_prompts_v2.tex.txt": "b3a99356f808aa54371384261d0721a07598e56359533deaae791a1c33dac412",
     "paper_prompts_v3.tex.txt": "b3a99356f808aa54371384261d0721a07598e56359533deaae791a1c33dac412",
-    "qualitative_claim_audit.csv": "3c88e1c7b71dd20fe2ddb0a042475efa486885d94034f5acd1feb9a2c9dd4faf",
-    "source_provenance.json": "d973e388451b3ca27bfed3b1499a4ffc425707553ae2064b74254437b7a011c9",
+    "qualitative_claim_audit.csv": "0c283b5746587a9a8dd2825a5cf74bbee27b286c23566badc553f9616d3b33fc",
+    "source_provenance.json": "efacd5dce02da4446250e5bb2629ae5263a587b8cb29625ac1a7e7d2d4b29630",
     "v1_extended_table_result_conformance.csv": "744e46cc6c6c3942181f7c2d82040111b4ab3bff48ef6cdf4b70da671f571213",
+    "v1_v2_version_lineage_audit.csv": "c750489a55fe3e6a78a004fefd01923d9fd972f2cf9a3bc4d561c858288a86ed",
+    "v2_extended_table_result_conformance.csv": "cdd5a413992ead8a2b5d99c50c9640f0ed0c0365b61ab68eb0b154bca4bc5355",
+    "v2_v3_version_lineage_audit.csv": "0dcef97015df33fe5889176604faf46a9941578a42b59dd3449ca9fed3909c62",
     "v3_extended_table_result_conformance.csv": "848ce75ff4c3bc76e3fe1f3fc4774fdbb8e3cf026722a885ca83d721e570a923",
     "version_lineage_audit.csv": "c91d3234ae5541d920125e75651651c9235ff22e2c48400adc8bb37175f8f77d"
   },
@@ -53,31 +65,50 @@
     "v1": {
       "exit_codes": [
         0,
+        0,
         0
       ],
       "pages": 30,
       "paper_result_credit": false,
-      "source_files": 27
+      "source_files": 27,
+      "stable_cross_references": true
+    },
+    "v2": {
+      "exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "pages": 30,
+      "paper_result_credit": false,
+      "source_files": 29,
+      "stable_cross_references": true
     },
     "v3": {
       "exit_codes": [
+        0,
         0,
         0
       ],
       "pages": 31,
       "paper_result_credit": false,
-      "source_files": 28
+      "source_files": 28,
+      "stable_cross_references": true
     }
   },
   "prompt_templates_recovered_per_version": 4,
   "published_final_table_result_cells": 64,
   "published_final_table_result_cells_reproduced": 0,
-  "result_bearing_source_figure_files": 15,
-  "source_figure_files": 30,
+  "result_bearing_source_figure_files": 23,
+  "source_figure_files": 46,
+  "v1_AR_cells_relabelled_v2_AER": 16,
   "v1_AR_cells_relabelled_v3_AER": 16,
   "v1_extended_table_result_cells": 956,
   "v1_extended_table_result_cells_reproduced": 0,
+  "v2_extended_table_result_cells": 1184,
+  "v2_extended_table_result_cells_reproduced": 0,
   "v3_AR_header_cells_conflicting_with_current_AER_definition": 228,
   "v3_extended_table_result_cells": 1312,
-  "v3_extended_table_result_cells_reproduced": 0
+  "v3_extended_table_result_cells_reproduced": 0,
+  "v3_result_cells_added_beyond_v2": 128
 }

@@ -1,9 +1,9 @@
 paper_version,claim,observed,assessment
 AAAI-26_final,published Table 1 result reproduction,0/64 official table cells reproduced from an author experiment path,not_publicly_reproducible
-v3_and_final,AER ablation results,16/16 AER-position cells retain the exact v1 AR display values after the metric changed from total to benchmark-excess return,unsupported_semantic_relabel_without_run_lineage
+v2_v3_and_final,AER ablation results,"16/16 AER-position cells in v2, v3, and the final retain the exact v1 AR display values after the metric changed from total to benchmark-excess return",unsupported_semantic_relabel_without_run_lineage
 v3,current evaluation consistently uses AER,"228 appendix result cells are still headed AR, including full and equal-cost tables",internally_inconsistent_metric_identity
 v3,cost-performance comparison,"30/30 derived server/API/total cells reconcile from same-table inputs, but no runtime/token logs independently support those inputs",internally_consistent_not_independently_reproduced
-both,data leakage concern is alleviated,a direct-prompt performance comparison cannot establish absence of paper-formula contamination in proprietary LLM training data,evidence_does_not_identify_training_data_contamination
+all_arxiv_versions,data leakage concern is alleviated,a direct-prompt performance comparison cannot establish absence of paper-formula contamination in proprietary LLM training data,evidence_does_not_identify_training_data_contamination
 AAAI-26_final,improved interpretability,"LLM rankings are reported, but selected formulas, exact judge calls, revisions, and per-seed outputs are not released; paper notes no formal human study",paper_only_automated_judgment_not_reproducible
 local,existing Alpha-Jungle formula component evidence,3/6 disclosed Ours trees execute only after daily-China to monthly-U.S. and researcher-portfolio adaptations,conditional_component_evidence_not_agent_or_paper_result_replication
 community_candidate,public implementation of the paper,"unaffiliated repository has no author link, fails import/tests, conflicts on core settings, and ships no paper outputs",not_author_source_and_not_operational_replication
