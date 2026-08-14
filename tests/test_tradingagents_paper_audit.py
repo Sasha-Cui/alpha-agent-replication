@@ -63,6 +63,20 @@ def test_paper_internal_metric_checks_fail_closed() -> None:
     assert len(inconsistencies) == 7
 
 
+def test_result_figure_denominator_is_explicit_and_fail_closed() -> None:
+    rows = audit.paper_figure_series()
+    assert len(rows) == 42
+    assert Counter(row["panel"] for row in rows) == {
+        "cumulative_return": 18,
+        "broker": 6,
+        "trade_net_profit_loss": 6,
+        "market": 6,
+        "transactions": 6,
+    }
+    assert {row["native_exact_series_reproduced"] for row in rows} == {False}
+    assert {row["paper_result_credit"] for row in rows} == {False}
+
+
 def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     output = ROOT / "paper_runs/paper_replication_audits/tradingagents"
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
@@ -76,6 +90,12 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     gaps = read_csv(output / "paper_specification_gaps.csv")
     inventory = read_csv(output / "released_source_inventory.csv")
     paper_assets = read_csv(output / "paper_source_asset_inventory.csv")
+    paper_versions = read_csv(output / "official_paper_version_inventory.csv")
+    figure_series = read_csv(output / "paper_figure_series_inventory.csv")
+    history_commits = read_csv(output / "public_source_history_commit_inventory.csv")
+    history_paths = read_csv(output / "public_source_history_path_inventory.csv")
+    history = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
+    current_source = read_csv(output / "current_source_conformance.csv")
     component = json.loads((output / "native_component.json").read_text(encoding="utf-8"))
     author_outputs = read_csv(output / "author_output_correspondence.csv")
 
@@ -83,6 +103,11 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_era_source_revision_available"] is False
     assert manifest["paper_era_author_project_site_available"] is True
+    assert manifest["official_paper_versions_audited"] == 7
+    assert manifest["paper_versions_with_executable_source_at_submission"] == 0
+    assert manifest["paper_versions_with_exact_author_site_table_at_submission"] == 7
+    assert manifest["paper_v1_through_v6_comparison_plot_final_label"] == "StockGPTStrategy"
+    assert manifest["paper_v7_comparison_plot_final_label"] == "TradingAgents"
     assert manifest["source_commit"] == audit.SOURCE_COMMIT
     assert manifest["pre_release_tree_files"] == 3
     assert manifest["paper_numeric_table_cells_total"] == 77
@@ -93,6 +118,10 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["author_output_table_cells_independently_regenerated"] == 0
     assert manifest["published_non_table_result_claims_total"] == 12
     assert manifest["native_non_table_result_claims_reproduced"] == 0
+    assert manifest["paper_result_figure_series_total"] == 42
+    assert manifest["native_exact_result_figure_series_reproduced"] == 0
+    assert manifest["paper_presented_empirical_units_total"] == 131
+    assert manifest["native_presented_empirical_units_reproduced"] == 0
     assert manifest["annualized_return_pairs_checked"] == 17
     assert manifest["annualized_return_pairs_matching_published_equation"] == 0
     assert manifest["paper_internal_inconsistencies_total"] == 7
@@ -112,6 +141,22 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["audit_runtime_called_llm_or_market_data_api"] is False
     assert manifest["paper_era_author_rendered_table_shipped"] is True
     assert manifest["paper_era_author_raw_result_arrays_shipped"] is False
+    assert manifest["public_source_reachable_commits_total"] == 257
+    assert manifest["public_source_unique_historical_paths_total"] == 189
+    assert manifest["public_source_reachable_blobs_total"] == 1009
+    assert manifest["public_source_reachable_trees_total"] == 918
+    assert manifest["public_source_reachable_commit_objects_total"] == 257
+    assert manifest["public_source_reachable_tag_objects_total"] == 7
+    assert manifest["public_source_unreachable_objects_total"] == 0
+    assert manifest["public_source_native_structured_result_paths"] == 0
+    assert manifest["public_source_raw_numeric_curve_or_event_array_paths"] == 0
+    assert manifest["public_source_exact_author_table_blob_versions"] == 15
+    assert manifest["public_source_discovered_branches_total"] == 2
+    assert manifest["public_source_discovered_tags_total"] == 10
+    assert manifest["public_source_discovered_releases_total"] == 8
+    assert manifest["current_public_source_tracked_files"] == 160
+    assert manifest["current_public_source_python_files"] == 137
+    assert manifest["current_public_source_test_files"] == 54
 
     assert len(table) == 77
     assert {row["paper_result_credit"] for row in table} == {"False"}
@@ -148,6 +193,31 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert len(paper_assets) == 26
     assert sum(row["asset_role"] == "numeric_result_figure" for row in paper_assets) == 6
     assert {row["underlying_numeric_array_shipped"] for row in paper_assets} == {"False"}
+    assert len(paper_versions) == 7
+    assert {row["displayed_table_numeric_cells"] for row in paper_versions} == {"77"}
+    assert {row["displayed_result_figure_series"] for row in paper_versions} == {"42"}
+    assert {row["executable_source_present_at_submission"] for row in paper_versions} == {"False"}
+    assert {row["native_result_reproduced"] for row in paper_versions} == {"False"}
+    assert [row["compare_plot_final_series_label"] for row in paper_versions] == [
+        "StockGPTStrategy",
+        "StockGPTStrategy",
+        "StockGPTStrategy",
+        "StockGPTStrategy",
+        "StockGPTStrategy",
+        "StockGPTStrategy",
+        "TradingAgents",
+    ]
+    assert len(figure_series) == 42
+    assert {row["native_exact_series_reproduced"] for row in figure_series} == {"False"}
+    assert len(history_commits) == 257
+    assert len(history_paths) == 189
+    assert sum(row["contains_exact_author_table_in_history"] == "True" for row in history_paths) == 2
+    assert {row["native_structured_result_path"] for row in history_paths} == {"False"}
+    assert history["reachable_object_counts"] == {"blob": 1009, "commit": 257, "tag": 7, "tree": 918}
+    assert history["unreachable_objects"] == 0
+    assert history["exact_author_table_paths"] == ["index.html", "index_complete.html"]
+    assert len(current_source) == 10
+    assert {row["paper_result_credit"] for row in current_source} == {"False"}
 
     assert component["tracked_python_files_compiled"] == 39
     assert component["compile_status"] == "passed_without_importing_declared_dependencies"

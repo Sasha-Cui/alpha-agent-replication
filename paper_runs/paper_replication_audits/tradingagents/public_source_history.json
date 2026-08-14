@@ -1,0 +1,141 @@
+{
+  "current_source_commit": "a33fd4c0f134485a43553a2c23a63cb14adbd88f",
+  "current_tracked_files": 160,
+  "discovered_public_branches": [
+    {
+      "head": "a33fd4c0f134485a43553a2c23a63cb14adbd88f",
+      "name": "main"
+    },
+    {
+      "head": "b4b133eb2d4e1eae16b0018826259c628f0fd0e6",
+      "name": "v0.2.0"
+    }
+  ],
+  "discovered_public_releases": [
+    {
+      "assets": 0,
+      "published_at": "2026-07-05T14:32:25Z",
+      "tag": "v0.3.1",
+      "target": "main"
+    },
+    {
+      "assets": 0,
+      "published_at": "2026-06-22T02:05:10Z",
+      "tag": "v0.3.0",
+      "target": "main"
+    },
+    {
+      "assets": 0,
+      "published_at": "2026-05-11T09:27:40Z",
+      "tag": "v0.2.5",
+      "target": "main"
+    },
+    {
+      "assets": 0,
+      "published_at": "2026-04-25T22:33:19Z",
+      "tag": "v0.2.4",
+      "target": "main"
+    },
+    {
+      "assets": 0,
+      "published_at": "2026-03-29T19:50:48Z",
+      "tag": "v0.2.3",
+      "target": "main"
+    },
+    {
+      "assets": 0,
+      "published_at": "2026-03-22T23:51:27Z",
+      "tag": "v0.2.2",
+      "target": "main"
+    },
+    {
+      "assets": 0,
+      "published_at": "2026-03-15T23:35:26Z",
+      "tag": "v0.2.1",
+      "target": "main"
+    },
+    {
+      "assets": 0,
+      "published_at": "2026-02-04T07:35:20Z",
+      "tag": "v0.2.0",
+      "target": "main"
+    }
+  ],
+  "discovered_public_tags": [
+    {
+      "name": "v0.3.1",
+      "target_commit": "01477f9afb7a47b849ed4c9259d3a9a4738d9fda"
+    },
+    {
+      "name": "v0.3.0",
+      "target_commit": "85946c2f60768ab2dae23a5a36cd927662feef94"
+    },
+    {
+      "name": "v0.2.5",
+      "target_commit": "a5cb7cbd61d217fb0bc43f017392a861257afe6a"
+    },
+    {
+      "name": "v0.2.4",
+      "target_commit": "7c37249f808f9c169ad2198dc384166e7ca7adf9"
+    },
+    {
+      "name": "v0.2.3",
+      "target_commit": "4641c03340c70e0e75e74234c998325164c72b36"
+    },
+    {
+      "name": "v0.2.2",
+      "target_commit": "589b351f2ab55a8a37d846848479cebc810a5a36"
+    },
+    {
+      "name": "v0.2.1",
+      "target_commit": "551fd7f074fab8e1080d4ca30efaa4b6b4cd7517"
+    },
+    {
+      "name": "v0.2.0",
+      "target_commit": "e9470b69c457acbecd62d0707a2f7c045d7f53c9"
+    },
+    {
+      "name": "v0.1.1",
+      "target_commit": "47176ba8a25cbbf8feb24417765eb189c61885da"
+    },
+    {
+      "name": "v0.1.0",
+      "target_commit": "cc97cb6d5deb10eac370db0c6678e2796a62eba8"
+    }
+  ],
+  "exact_author_table_blob_versions": 15,
+  "exact_author_table_paths": [
+    "index.html",
+    "index_complete.html"
+  ],
+  "first_exact_author_table_commit": "db9f63fa54059ec8ae262ef10557c853b6a011a7",
+  "first_exact_author_table_commit_date": "2024-12-28T11:56:38+08:00",
+  "first_exact_author_table_sha256": "169868f714b9ef74da76ee2895a004cdb8e758851505409fc91cc12ec3287a4c",
+  "historical_path_extension_counts": {
+    ".bat": 2,
+    ".example": 2,
+    ".html": 2,
+    ".lock": 1,
+    ".md": 5,
+    ".png": 11,
+    ".py": 153,
+    ".sh": 2,
+    ".toml": 1,
+    ".txt": 2,
+    ".yml": 2,
+    "[none]": 6
+  },
+  "independently_regenerated_paper_results": 0,
+  "native_structured_result_paths": 0,
+  "paper_result_credit": false,
+  "raw_numeric_curve_or_event_array_paths": 0,
+  "reachable_commits": 257,
+  "reachable_object_counts": {
+    "blob": 1009,
+    "commit": 257,
+    "tag": 7,
+    "tree": 918
+  },
+  "unique_historical_paths": 189,
+  "unreachable_objects": 0
+}

@@ -1,0 +1,11 @@
+dimension,paper_requirement,observed_in_current_public_source,status,paper_result_credit
+separate_portfolio_manager,separate fund manager,True,later_component_match,False
+analyst_concurrency,four analysts concurrently gather data,False,still_mismatch_sequential,False
+paper_model_assignment,deep models for analysts/researchers/trader,False,still_mismatch_quick_models,False
+decision_vocabulary,buy/sell/hold,False,changed_to_five_tier_rating,False
+portfolio_execution_state,"cash, holdings, positions, orders, and fills",False,still_missing,False
+paper_backtest_runner,2024-01-01 through 2024-03-29 replay,False,still_missing,False
+paper_baseline_implementations,"B&H, MACD, KDJ+RSI, ZMR, SMA",False,still_missing,False
+paper_metric_implementations,"CR, AR, SR, and MDD evaluator",False,still_missing,False
+paper_data_and_outputs,"frozen inputs, decisions, fills, NAVs, returns, and plot arrays",False,still_missing,False
+modern_source_quality,tests and dependency lock,54 test modules present; uv.lock absent from current main but present elsewhere in public history,partial_tests_present_current_lock_absent_not_paper_reproduction,False

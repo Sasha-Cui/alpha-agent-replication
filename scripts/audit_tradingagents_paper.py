@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""Audit TradingAgents arXiv v7 against the nearest official source release.
+"""Audit every TradingAgents paper version and the full public source history.
 
-The latest paper revision predates the first public code release by about two
-days.  This audit therefore pins arXiv v7, the official pre-release project-site
-snapshot, and the official v0.1.0 tag; enumerates every numeric cell in Table 1;
-checks the paper's own metric identities; audits the published appendix
-transcript and source mechanisms; and executes only dependency-isolated
-deterministic components from the tagged source.  It records exact author-output
-correspondence separately from independent regeneration and never promotes
-compilation, graph topology, paper figures, current web data, or a fresh one-day
-LLM decision to reproduction of the paper backtest.
+The project site, including the complete result table, predates arXiv v1. The
+executable implementation does not: the first public code release arrived about
+52 hours after v7. This fail-closed audit pins all seven arXiv PDFs and source
+archives, every discovered public branch/tag/release and reachable Git object,
+the paper-era site, and the nearest v0.1.0 implementation. It inventories every
+Table 1 cell and every plotted result series, checks internal metric identities,
+and executes only dependency-isolated deterministic components from v0.1.0.
+Author-rendered correspondence is never promoted to independent regeneration.
 """
 
 from __future__ import annotations
@@ -39,11 +38,155 @@ SOURCE_URL = "https://github.com/TauricResearch/TradingAgents"
 SOURCE_COMMIT = "cc97cb6d5deb10eac370db0c6678e2796a62eba8"
 SOURCE_TAG = "v0.1.0"
 SOURCE_COMMIT_DATE = "2025-06-05T03:08:28-07:00"
+CURRENT_SOURCE_COMMIT = "a33fd4c0f134485a43553a2c23a63cb14adbd88f"
 PRE_RELEASE_COMMIT = "635e91ac75f68e5a48eaf0c07760252f73326118"
 PRE_RELEASE_COMMIT_DATE = "2025-02-02T12:53:37-08:00"
 PRE_RELEASE_TABLE_PATH = "index_complete.html"
 PRE_RELEASE_TABLE_SHA256 = "7f38e893195179f58364ea760ca61440a791acd6205cb1c12ba5c62909c6e9bf"
+FIRST_PUBLIC_COMMIT = "c2fa046a9bc169b218c827127f2e44338ebd0890"
+FIRST_EXACT_TABLE_COMMIT = "db9f63fa54059ec8ae262ef10557c853b6a011a7"
+FIRST_EXACT_TABLE_COMMIT_DATE = "2024-12-28T11:56:38+08:00"
+FIRST_EXACT_TABLE_BLOB = "a13337c440f63c955bcceffa09daafad806aae69"
+FIRST_EXACT_TABLE_SHA256 = "169868f714b9ef74da76ee2895a004cdb8e758851505409fc91cc12ec3287a4c"
 DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
+
+PAPER_VERSIONS = {
+    1: {
+        "submitted_at": "2024-12-28T12:54:06Z",
+        "pdf_sha256": "ed4729448e5a288ce1ed7b86181448a8f5e1b271b742cf0e39b836bc382667c2",
+        "pdf_bytes": 2438241,
+        "pdf_pages": 27,
+        "source_sha256": "0e94d0b50bc501201d158795d5a991f35390030007bcf74f62ed4d1556bebb42",
+        "source_bytes": 1701575,
+        "source_files": 25,
+        "source_uncompressed_bytes": 2329271,
+        "main_path": "aaai25.tex",
+        "main_sha256": "c6a4020732cff55be9b28e5242c86d8f0c5e799ee8a39e500e7d36446d4d1018",
+        "table_sha256": "a82934597f6ac2a9b77a3c0e023c31cb8d7a875caa1820a2208558f50b0f0eb6",
+        "repository_commits_at_submission": 9,
+        "latest_public_commit_at_submission": "0ef7b4657943d6a393fb3b135236080f4a116ab3",
+        "public_tree_files_at_submission": 2,
+        "compare_figure_generation": "original_stockgpt_legend",
+    },
+    2: {
+        "submitted_at": "2025-01-09T16:36:26Z",
+        "pdf_sha256": "89a6ec3de2a76f1c2aae530d8dbdffe8bb0caf82ee3561f5998c6489f528cabf",
+        "pdf_bytes": 2438273,
+        "pdf_pages": 27,
+        "source_sha256": "7b58fe12ee4bb9eab117a495cb78ca6f9d986c93ad6ace01ab6fc304618f8f07",
+        "source_bytes": 1705530,
+        "source_files": 25,
+        "source_uncompressed_bytes": 2329881,
+        "main_path": "aaai25.tex",
+        "main_sha256": "b7fdf8d2a8b4170809c57596fe9b9a4e03b8cbf93d056d2b7d4448739e07f188",
+        "table_sha256": "a82934597f6ac2a9b77a3c0e023c31cb8d7a875caa1820a2208558f50b0f0eb6",
+        "repository_commits_at_submission": 12,
+        "latest_public_commit_at_submission": "413d9ecbcfa960420ebda55f97372a2b638097f4",
+        "public_tree_files_at_submission": 3,
+        "compare_figure_generation": "original_stockgpt_legend",
+    },
+    3: {
+        "submitted_at": "2025-01-10T20:02:32Z",
+        "pdf_sha256": "bab7dccd7a3f9d6d586ba7a6a6266fb137a443ea2042cab9198021afbbc9f9ee",
+        "pdf_bytes": 2439443,
+        "pdf_pages": 27,
+        "source_sha256": "f73e6cf850b6cab841a8c6278ffec316dd96e7404c18890868df9fbf0c1328dd",
+        "source_bytes": 1714273,
+        "source_files": 25,
+        "source_uncompressed_bytes": 2329893,
+        "main_path": "aaai25.tex",
+        "main_sha256": "dc8d6bdfc9380c0c65a9951eb38d785b4ff956c0b737b2022dede74cd0e65d2c",
+        "table_sha256": "a82934597f6ac2a9b77a3c0e023c31cb8d7a875caa1820a2208558f50b0f0eb6",
+        "repository_commits_at_submission": 12,
+        "latest_public_commit_at_submission": "413d9ecbcfa960420ebda55f97372a2b638097f4",
+        "public_tree_files_at_submission": 3,
+        "compare_figure_generation": "original_stockgpt_legend",
+    },
+    4: {
+        "submitted_at": "2025-02-23T18:23:52Z",
+        "pdf_sha256": "be1d6c91748834330f70433795fd26654a2a6255fac8646bc53b4e9426072744",
+        "pdf_bytes": 2457207,
+        "pdf_pages": 27,
+        "source_sha256": "941690d21485fc138cd8ae0c0628b9191581dd0754a2c2bbfed5db719c6b927c",
+        "source_bytes": 1706631,
+        "source_files": 25,
+        "source_uncompressed_bytes": 2329056,
+        "main_path": "aaai25.tex",
+        "main_sha256": "64b3e7fb90440758bcf82cedc86dc009bf0359ce842d2ffe89eab6ad1cfbfeb6",
+        "table_sha256": "f7107171ff7c27d239743c7d7cccd97e4267ca7be3ed05affd2a7e38d8549711",
+        "repository_commits_at_submission": 19,
+        "latest_public_commit_at_submission": PRE_RELEASE_COMMIT,
+        "public_tree_files_at_submission": 3,
+        "compare_figure_generation": "original_stockgpt_legend",
+    },
+    5: {
+        "submitted_at": "2025-03-02T15:57:39Z",
+        "pdf_sha256": "e567beba01cb6f1c641c9beef49fd305d32c3efd74f08cc5ce1df11499167973",
+        "pdf_bytes": 2456554,
+        "pdf_pages": 27,
+        "source_sha256": "8d9f88f6761938906fed37bcfe679d3bbe7809ab69a154cd0c209b9a4e7a72ba",
+        "source_bytes": 1704734,
+        "source_files": 25,
+        "source_uncompressed_bytes": 2329045,
+        "main_path": "aaai25.tex",
+        "main_sha256": "0418f40c37fb41ab3ddba1283f46abf83e034df67cecd2042d97891b8d199dd5",
+        "table_sha256": "f7107171ff7c27d239743c7d7cccd97e4267ca7be3ed05affd2a7e38d8549711",
+        "repository_commits_at_submission": 19,
+        "latest_public_commit_at_submission": PRE_RELEASE_COMMIT,
+        "public_tree_files_at_submission": 3,
+        "compare_figure_generation": "original_stockgpt_legend",
+    },
+    6: {
+        "submitted_at": "2025-04-15T19:23:27Z",
+        "pdf_sha256": "c1b58227ff5dc3a02f0482e57d14ea368cf517ed692c102fb2323aed4abab8ce",
+        "pdf_bytes": 2599685,
+        "pdf_pages": 27,
+        "source_sha256": "90aaa45bc8905d7e2e1f61f01d38692b66a5f87bacaf4ae65845694a794ce656",
+        "source_bytes": 1854705,
+        "source_files": 26,
+        "source_uncompressed_bytes": 2501606,
+        "main_path": "aaai25.tex",
+        "main_sha256": "fb4d6b69731952123585fe40e3f1b3aab238e65204b15f35dc201eaf70df8a09",
+        "table_sha256": "f7107171ff7c27d239743c7d7cccd97e4267ca7be3ed05affd2a7e38d8549711",
+        "repository_commits_at_submission": 19,
+        "latest_public_commit_at_submission": PRE_RELEASE_COMMIT,
+        "public_tree_files_at_submission": 3,
+        "compare_figure_generation": "original_stockgpt_legend",
+    },
+    7: {
+        "submitted_at": PAPER_DATE,
+        "pdf_sha256": PAPER_SHA256,
+        "pdf_bytes": 1903362,
+        "pdf_pages": 38,
+        "source_sha256": PAPER_SOURCE_SHA256,
+        "source_bytes": 1422118,
+        "source_files": 26,
+        "source_uncompressed_bytes": 1795582,
+        "main_path": "main.tex",
+        "main_sha256": "9074ffe583f36834d97c0a8676519fb89332ecfc8502963046225291bb43f4d3",
+        "table_sha256": "00c777122162fe05520a7f45212ee34d226fb0d5e363fc9347404795c2632ca4",
+        "repository_commits_at_submission": 19,
+        "latest_public_commit_at_submission": PRE_RELEASE_COMMIT,
+        "public_tree_files_at_submission": 3,
+        "compare_figure_generation": "reencoded_tradingagents_legend",
+    },
+}
+
+ORIGINAL_COMPARE_SHA256 = {
+    "AAPL": "8fae0c90b23e7b7680575de2b5faefe8742c7c388a7a93826daa1339eca9026f",
+    "GOOGL": "3fa5ce1753aaf625d5a34f39346a6622bd47479005d350e26d3ccb82d5058e77",
+    "AMZN": "18c687b80ca1d3e4dac64ffc3de4113153a45b14726fbcbfef02edd9a0320e45",
+}
+PUBLIC_HISTORY_COMMIT_COUNT = 257
+PUBLIC_HISTORY_COMMIT_SHA256 = "6f0c8a613b9fa0f19c0a14c0c659b17725914618075fc39b498fcd0f21b27575"
+PUBLIC_HISTORY_PATH_COUNT = 189
+PUBLIC_HISTORY_PATH_SHA256 = "4bac9550fa14b23de1db1ecb1aacf659dcada3946496e3de2c8f3b6fa616c534"
+PUBLIC_HISTORY_OBJECT_COUNTS = {"blob": 1009, "commit": 257, "tag": 7, "tree": 918}
+PUBLIC_DISCOVERY_SHA256 = {
+    "branches.json": "fdeef154d01c23e4c8c8ed663ba39bc5ad38b7bcf12726d3b961edb0a7e855d1",
+    "releases.json": "9e183c10d90535590256f690d019766facff63427086ba2dd984c60a614ba856",
+    "tags.json": "9272a23403304eb2c8849262998dbddcd8c6d03f636495059563e7131b9afe9d",
+}
 
 PINNED_SOURCE_SHA256 = {
     "README.md": "aed2e950144639d239d9cb20b0c8ccd58ac6cb9aba611b5142de802289b7c236",
@@ -75,6 +218,41 @@ FIGURE_SHA256 = {
     "figures/AMZN/details.pdf": "56b380a7103985e142e76ae6d3b0ec1b0ec8394d7677c7bca5b18d0d5476f3c5",
     "figures/GOOGL/compare.pdf": "981423ff58684e6153f393b1ce423e6613223383188482cc616d31adbd333610",
     "figures/GOOGL/details.pdf": "6fabc415d0eaf6c0bcd29ba89534fdb1c6a2acaad047db320dd373941c54025f",
+}
+
+COMPARE_SERIES = (
+    "BuyAndHoldStrategy",
+    "MACDStrategy",
+    "KDJRSIStrategy",
+    "ZMRStrategy",
+    "SMAStrategy",
+    "TradingAgents (StockGPTStrategy label in v1-v6)",
+)
+DETAIL_SERIES = (
+    ("broker", "cash"),
+    ("broker", "value"),
+    ("trade_net_profit_loss", "positive trades"),
+    ("trade_net_profit_loss", "negative trades"),
+    ("market", "OHLC candlesticks"),
+    ("market", "volume bars"),
+    ("transactions", "buy markers"),
+    ("transactions", "sell markers"),
+)
+NATIVE_RESULT_EXTENSIONS = {
+    ".ckpt",
+    ".csv",
+    ".h5",
+    ".hdf5",
+    ".ipynb",
+    ".jsonl",
+    ".log",
+    ".npy",
+    ".npz",
+    ".parquet",
+    ".pickle",
+    ".pkl",
+    ".pt",
+    ".pth",
 }
 
 METRICS = ("CR_pct", "AR_pct", "SR", "MDD_pct")
@@ -224,32 +402,50 @@ def paper_table_rows(author_output_verified: bool = False) -> list[dict[str, Any
     return rows
 
 
+def expected_table_values() -> list[float]:
+    return [
+        float(value)
+        for method in PERFORMANCE.values()
+        for asset in ASSETS
+        for value in method[asset]
+        if value is not None
+    ] + [
+        float(value)
+        for asset in ASSETS
+        for value in IMPROVEMENT[asset]
+        if value is not None
+    ]
+
+
+def exact_html_table_values(payload: bytes) -> list[float]:
+    if b"TradingAgents" not in payload or b"26.62" not in payload:
+        return []
+    html = payload.decode("utf-8", errors="replace")
+    for table_html in re.findall(r"<table[^>]*>(.*?)</table>", html, re.S):
+        cells = [
+            re.sub(r"<[^>]+>", "", cell).strip()
+            for cell in re.findall(r"<td[^>]*>(.*?)</td>", table_html, re.S)
+        ]
+        observed = []
+        for cell in cells:
+            normalized = cell.replace("&amp;", "&").replace("%", "")
+            try:
+                observed.append(float(normalized))
+            except ValueError:
+                continue
+        if observed == expected_table_values():
+            return observed
+    return []
+
+
 def author_output_correspondence(source_root: Path) -> list[dict[str, Any]]:
     payload = git_blob_at(source_root, PRE_RELEASE_COMMIT, PRE_RELEASE_TABLE_PATH)
     observed_hash = sha256_bytes(payload)
     if observed_hash != PRE_RELEASE_TABLE_SHA256:
         raise RuntimeError(f"Pre-release project-site hash changed: {observed_hash}")
 
-    html = payload.decode("utf-8")
-    expected = [
-        value
-        for method in PERFORMANCE.values()
-        for asset in ASSETS
-        for value in method[asset]
-        if value is not None
-    ] + [value for asset in ASSETS for value in IMPROVEMENT[asset] if value is not None]
-    table_start = html.index('<table class="table is-striped is-fullwidth is-centered">')
-    table_end = html.index("</table>", table_start)
-    table_html = html[table_start:table_end]
-    cells = [re.sub(r"<[^>]+>", "", cell).strip() for cell in re.findall(r"<td[^>]*>(.*?)</td>", table_html, re.S)]
-    observed = []
-    for cell in cells:
-        normalized = cell.replace("&amp;", "&").replace("%", "")
-        try:
-            observed.append(float(normalized))
-        except ValueError:
-            continue
-    if len(observed) != 77 or observed != expected:
+    observed = exact_html_table_values(payload)
+    if len(observed) != 77:
         raise RuntimeError("Official project-site Table 1 no longer matches all 77 paper values in order")
 
     return [
@@ -265,6 +461,210 @@ def author_output_correspondence(source_root: Path) -> list[dict[str, Any]]:
             "independently_regenerated": False,
             "paper_result_credit": False,
         }
+    ]
+
+
+def pdf_page_count(path: Path) -> int:
+    output = subprocess.run(
+        ["pdfinfo", str(path)], check=True, capture_output=True, text=True
+    ).stdout
+    match = re.search(r"^Pages:\s+(\d+)$", output, flags=re.MULTILINE)
+    if not match:
+        raise RuntimeError(f"pdfinfo did not report a page count for {path}")
+    return int(match.group(1))
+
+
+def paper_version_inventory(versions_root: Path, source_root: Path) -> list[dict[str, Any]]:
+    rows = []
+    for version, expected in PAPER_VERSIONS.items():
+        pdf_path = versions_root / f"paper_v{version}.pdf"
+        archive_path = versions_root / f"paper_v{version}_source.tar.gz"
+        if sha256(pdf_path) != expected["pdf_sha256"] or pdf_path.stat().st_size != expected["pdf_bytes"]:
+            raise RuntimeError(f"TradingAgents paper v{version} PDF drift")
+        if pdf_page_count(pdf_path) != expected["pdf_pages"]:
+            raise RuntimeError(f"TradingAgents paper v{version} page census changed")
+        if sha256(archive_path) != expected["source_sha256"] or archive_path.stat().st_size != expected["source_bytes"]:
+            raise RuntimeError(f"TradingAgents paper v{version} source archive drift")
+        with tarfile.open(archive_path) as archive:
+            files = [member for member in archive.getmembers() if member.isfile()]
+            if len(files) != expected["source_files"]:
+                raise RuntimeError(f"TradingAgents paper v{version} source-file census changed")
+            if sum(member.size for member in files) != expected["source_uncompressed_bytes"]:
+                raise RuntimeError(f"TradingAgents paper v{version} source byte census changed")
+
+            def archive_bytes(relative: str) -> bytes:
+                handle = archive.extractfile(relative)
+                if handle is None:
+                    raise RuntimeError(f"TradingAgents paper v{version} missing {relative}")
+                return handle.read()
+
+            main = archive_bytes(str(expected["main_path"]))
+            table = archive_bytes("tables/results.tex")
+            compare = {
+                asset: archive_bytes(f"figures/{asset}/compare.pdf") for asset in ASSETS
+            }
+            details = {
+                asset: archive_bytes(f"figures/{asset}/details.pdf") for asset in ASSETS
+            }
+        if sha256_bytes(main) != expected["main_sha256"]:
+            raise RuntimeError(f"TradingAgents paper v{version} main TeX drift")
+        if sha256_bytes(table) != expected["table_sha256"]:
+            raise RuntimeError(f"TradingAgents paper v{version} Table 1 source drift")
+        expected_compare = FIGURE_SHA256 if version == 7 else {
+            f"figures/{asset}/compare.pdf": ORIGINAL_COMPARE_SHA256[asset] for asset in ASSETS
+        }
+        for asset in ASSETS:
+            if sha256_bytes(compare[asset]) != expected_compare[f"figures/{asset}/compare.pdf"]:
+                raise RuntimeError(f"TradingAgents paper v{version} {asset} comparison figure drift")
+            if sha256_bytes(details[asset]) != FIGURE_SHA256[f"figures/{asset}/details.pdf"]:
+                raise RuntimeError(f"TradingAgents paper v{version} {asset} detail figure drift")
+
+        cutoff = str(expected["submitted_at"])
+        commit_count = int(str(run_git(source_root, "rev-list", "--all", f"--before={cutoff}", "--count")).strip())
+        latest = str(
+            run_git(source_root, "log", "--all", f"--before={cutoff}", "-1", "--format=%H")
+        ).strip()
+        if commit_count != expected["repository_commits_at_submission"] or latest != expected["latest_public_commit_at_submission"]:
+            raise RuntimeError(f"TradingAgents public-source cutoff changed for paper v{version}")
+        cutoff_files = git_files_at(source_root, latest)
+        if len(cutoff_files) != expected["public_tree_files_at_submission"]:
+            raise RuntimeError(f"TradingAgents cutoff tree changed for paper v{version}")
+        table_paths = []
+        for relative in cutoff_files:
+            if not relative.endswith(".html"):
+                continue
+            if len(exact_html_table_values(git_blob_at(source_root, latest, relative))) == 77:
+                table_paths.append(relative)
+        if not table_paths or any(relative.endswith(".py") for relative in cutoff_files):
+            raise RuntimeError(f"TradingAgents paper-era site/code boundary changed for v{version}")
+        rows.append(
+            {
+                "paper_version": f"v{version}",
+                "submitted_at": cutoff,
+                "pdf_sha256": expected["pdf_sha256"],
+                "pdf_bytes": expected["pdf_bytes"],
+                "pdf_pages": expected["pdf_pages"],
+                "source_archive_sha256": expected["source_sha256"],
+                "source_archive_bytes": expected["source_bytes"],
+                "source_files": expected["source_files"],
+                "source_uncompressed_bytes": expected["source_uncompressed_bytes"],
+                "main_tex_sha256": expected["main_sha256"],
+                "table_1_tex_sha256": expected["table_sha256"],
+                "displayed_table_numeric_cells": 77,
+                "displayed_result_figure_series": 42,
+                "table_values_same_as_v7": True,
+                "compare_plot_final_series_label": "TradingAgents" if version == 7 else "StockGPTStrategy",
+                "compare_plot_pdf_same_as_v1": version <= 6,
+                "detail_plot_pdfs_same_as_v1": True,
+                "public_repository_commits_at_submission": commit_count,
+                "latest_public_commit_at_submission": latest,
+                "public_tree_files_at_submission": len(cutoff_files),
+                "exact_author_table_paths_at_submission": ";".join(table_paths),
+                "executable_source_present_at_submission": False,
+                "public_source_state": "exact_author_site_table_only_no_executable_implementation",
+                "native_result_reproduced": False,
+                "paper_result_credit": False,
+            }
+        )
+    return rows
+
+
+def paper_figure_series() -> list[dict[str, Any]]:
+    rows = []
+    for asset in ASSETS:
+        compare_path = f"figures/{asset}/compare.pdf"
+        for series in COMPARE_SERIES:
+            rows.append(
+                {
+                    "figure": f"{asset} cumulative-return comparison",
+                    "source_asset": compare_path,
+                    "asset": asset,
+                    "panel": "cumulative_return",
+                    "series": series,
+                    "v7_source_pdf_sha256": FIGURE_SHA256[compare_path],
+                    "paper_source_asset_present": True,
+                    "underlying_numeric_data_or_plot_code_released": False,
+                    "native_exact_series_reproduced": False,
+                    "status": "author_vector_figure_only_no_numeric_curve_array",
+                    "paper_result_credit": False,
+                }
+            )
+        details_path = f"figures/{asset}/details.pdf"
+        for panel, series in DETAIL_SERIES:
+            rows.append(
+                {
+                    "figure": f"{asset} detailed transaction history",
+                    "source_asset": details_path,
+                    "asset": asset,
+                    "panel": panel,
+                    "series": series,
+                    "v7_source_pdf_sha256": FIGURE_SHA256[details_path],
+                    "paper_source_asset_present": True,
+                    "underlying_numeric_data_or_plot_code_released": False,
+                    "native_exact_series_reproduced": False,
+                    "status": "author_vector_figure_only_no_numeric_series_or_event_array",
+                    "paper_result_credit": False,
+                }
+            )
+    if len(rows) != 42:
+        raise RuntimeError("TradingAgents result-figure series census changed")
+    return rows
+
+
+def current_source_conformance(source_root: Path) -> list[dict[str, Any]]:
+    files = git_files_at(source_root, CURRENT_SOURCE_COMMIT)
+    python_files = [path for path in files if path.endswith(".py")]
+    python_text = "\n".join(
+        git_blob_at(source_root, CURRENT_SOURCE_COMMIT, path).decode("utf-8", errors="replace")
+        for path in python_files
+    )
+    setup = git_blob_at(source_root, CURRENT_SOURCE_COMMIT, "tradingagents/graph/setup.py").decode()
+    signal = git_blob_at(source_root, CURRENT_SOURCE_COMMIT, "tradingagents/graph/signal_processing.py").decode()
+    baseline_implementation = any(
+        token in python_text
+        for token in ("BuyAndHoldStrategy", "KDJRSIStrategy", "ZMRStrategy", "SMAStrategy")
+    )
+    metric_implementation = any(
+        token in python_text.lower()
+        for token in ("max_drawdown", "sharpe_ratio", "cumulative_return")
+    )
+    execution_implementation = any(
+        token in python_text.lower() for token in ("initial_capital", "commission", "slippage")
+    )
+    backtest_path = any("backtest" in Path(path).name.lower() for path in python_files)
+    native_result_path = any(Path(path).suffix.lower() in NATIVE_RESULT_EXTENSIONS for path in files)
+    rows = [
+        ("separate_portfolio_manager", "separate fund manager", 'workflow.add_node("Portfolio Manager"' in setup, "later_component_match"),
+        ("analyst_concurrency", "four analysts concurrently gather data", "# Connect analysts in sequence" not in setup, "still_mismatch_sequential"),
+        ("paper_model_assignment", "deep models for analysts/researchers/trader", "create_market_analyst(self.deep_thinking_llm)" in setup, "still_mismatch_quick_models"),
+        ("decision_vocabulary", "buy/sell/hold", "5-tier portfolio rating" not in signal, "changed_to_five_tier_rating"),
+        ("portfolio_execution_state", "cash, holdings, positions, orders, and fills", execution_implementation, "still_missing"),
+        ("paper_backtest_runner", "2024-01-01 through 2024-03-29 replay", backtest_path, "still_missing"),
+        ("paper_baseline_implementations", "B&H, MACD, KDJ+RSI, ZMR, SMA", baseline_implementation, "still_missing"),
+        ("paper_metric_implementations", "CR, AR, SR, and MDD evaluator", metric_implementation, "still_missing"),
+        ("paper_data_and_outputs", "frozen inputs, decisions, fills, NAVs, returns, and plot arrays", native_result_path, "still_missing"),
+        (
+            "modern_source_quality",
+            "tests and dependency lock",
+            "54 test modules present; uv.lock absent from current main but present elsewhere in public history",
+            "partial_tests_present_current_lock_absent_not_paper_reproduction",
+        ),
+    ]
+    if len(files) != 160 or len(python_files) != 137:
+        raise RuntimeError("TradingAgents current source census changed")
+    if sum(path.startswith("tests/test_") and path.endswith(".py") for path in files) != 54:
+        raise RuntimeError("TradingAgents current test census changed")
+    if any((execution_implementation, backtest_path, baseline_implementation, metric_implementation, native_result_path)):
+        raise RuntimeError("TradingAgents current source gained a paper reproduction mechanism requiring review")
+    return [
+        {
+            "dimension": dimension,
+            "paper_requirement": requirement,
+            "observed_in_current_public_source": observed,
+            "status": status,
+            "paper_result_credit": False,
+        }
+        for dimension, requirement, observed, status in rows
     ]
 
 
@@ -1125,15 +1525,224 @@ def git_files_at(source_root: Path, commit: str) -> list[str]:
     return sorted(line for line in output.splitlines() if line)
 
 
+def public_source_history(
+    source_root: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    discovery_root = source_root / "release-discovery"
+    for name, expected in PUBLIC_DISCOVERY_SHA256.items():
+        if sha256(discovery_root / name) != expected:
+            raise RuntimeError(f"TradingAgents public discovery drift: {name}")
+    branches = json.loads((discovery_root / "branches.json").read_text(encoding="utf-8"))
+    tags = json.loads((discovery_root / "tags.json").read_text(encoding="utf-8"))
+    releases = json.loads((discovery_root / "releases.json").read_text(encoding="utf-8"))
+    branch_pairs = [(row["name"], row["commit"]["sha"]) for row in branches]
+    tag_pairs = [(row["name"], row["commit"]["sha"]) for row in tags]
+    release_rows = [
+        (row["tag_name"], row["target_commitish"], row["published_at"], len(row["assets"]))
+        for row in releases
+    ]
+    if branch_pairs != [
+        ("main", CURRENT_SOURCE_COMMIT),
+        ("v0.2.0", "b4b133eb2d4e1eae16b0018826259c628f0fd0e6"),
+    ]:
+        raise RuntimeError("TradingAgents public branch discovery changed")
+    if tag_pairs != [
+        ("v0.3.1", "01477f9afb7a47b849ed4c9259d3a9a4738d9fda"),
+        ("v0.3.0", "85946c2f60768ab2dae23a5a36cd927662feef94"),
+        ("v0.2.5", "a5cb7cbd61d217fb0bc43f017392a861257afe6a"),
+        ("v0.2.4", "7c37249f808f9c169ad2198dc384166e7ca7adf9"),
+        ("v0.2.3", "4641c03340c70e0e75e74234c998325164c72b36"),
+        ("v0.2.2", "589b351f2ab55a8a37d846848479cebc810a5a36"),
+        ("v0.2.1", "551fd7f074fab8e1080d4ca30efaa4b6b4cd7517"),
+        ("v0.2.0", "e9470b69c457acbecd62d0707a2f7c045d7f53c9"),
+        ("v0.1.1", "47176ba8a25cbbf8feb24417765eb189c61885da"),
+        ("v0.1.0", SOURCE_COMMIT),
+    ]:
+        raise RuntimeError("TradingAgents public tag discovery changed")
+    if release_rows != [
+        ("v0.3.1", "main", "2026-07-05T14:32:25Z", 0),
+        ("v0.3.0", "main", "2026-06-22T02:05:10Z", 0),
+        ("v0.2.5", "main", "2026-05-11T09:27:40Z", 0),
+        ("v0.2.4", "main", "2026-04-25T22:33:19Z", 0),
+        ("v0.2.3", "main", "2026-03-29T19:50:48Z", 0),
+        ("v0.2.2", "main", "2026-03-22T23:51:27Z", 0),
+        ("v0.2.1", "main", "2026-03-15T23:35:26Z", 0),
+        ("v0.2.0", "main", "2026-02-04T07:35:20Z", 0),
+    ]:
+        raise RuntimeError("TradingAgents public release discovery changed")
+    if str(run_git(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise RuntimeError("TradingAgents source checkout is shallow")
+
+    commits_raw = str(run_git(source_root, "rev-list", "--reverse", "--all"))
+    commits = commits_raw.splitlines()
+    if len(commits) != PUBLIC_HISTORY_COMMIT_COUNT:
+        raise RuntimeError("TradingAgents public commit census changed")
+    if hashlib.sha256(commits_raw.encode("utf-8")).hexdigest() != PUBLIC_HISTORY_COMMIT_SHA256:
+        raise RuntimeError("TradingAgents public commit sequence changed")
+    path_lines = str(run_git(source_root, "log", "--all", "--pretty=format:", "--name-only")).splitlines()
+    historical_paths = sorted({line for line in path_lines if line})
+    path_payload = ("\n".join(historical_paths) + "\n").encode("utf-8")
+    if len(historical_paths) != PUBLIC_HISTORY_PATH_COUNT:
+        raise RuntimeError("TradingAgents public historical path census changed")
+    if hashlib.sha256(path_payload).hexdigest() != PUBLIC_HISTORY_PATH_SHA256:
+        raise RuntimeError("TradingAgents public historical path inventory changed")
+
+    object_lines = str(run_git(source_root, "rev-list", "--objects", "--all")).splitlines()
+    object_ids = [line.split(" ", 1)[0] for line in object_lines]
+    object_proc = subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+        input="\n".join(object_ids) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    object_types = object_proc.stdout.splitlines()
+    object_counts = dict(Counter(object_types))
+    if object_counts != PUBLIC_HISTORY_OBJECT_COUNTS:
+        raise RuntimeError("TradingAgents reachable-object census changed")
+    fsck = subprocess.run(
+        ["git", "-C", str(source_root), "fsck", "--full", "--no-reflogs", "--unreachable"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if fsck.stdout.strip():
+        raise RuntimeError("TradingAgents has unreachable objects requiring review")
+
+    blob_sha256: dict[str, str] = {}
+    exact_table_blobs: set[str] = set()
+    for object_id, object_type in zip(object_ids, object_types):
+        if object_type != "blob":
+            continue
+        raw = run_git(source_root, "cat-file", "-p", object_id, binary=True)
+        assert isinstance(raw, bytes)
+        blob_sha256[object_id] = sha256_bytes(raw)
+        if len(exact_html_table_values(raw)) == 77:
+            exact_table_blobs.add(object_id)
+    if len(exact_table_blobs) != 15:
+        raise RuntimeError("TradingAgents exact author-table blob census changed")
+    if blob_sha256.get(FIRST_EXACT_TABLE_BLOB) != FIRST_EXACT_TABLE_SHA256:
+        raise RuntimeError("TradingAgents first author result table changed")
+
+    commit_rows: list[dict[str, Any]] = []
+    path_blobs: dict[str, set[str]] = {path: set() for path in historical_paths}
+    path_first: dict[str, tuple[str, str]] = {}
+    path_last: dict[str, tuple[str, str]] = {}
+    exact_table_paths_all: set[str] = set()
+    for commit in commits:
+        metadata = str(run_git(source_root, "show", "-s", "--format=%H%x1f%cI%x1f%s", commit)).rstrip("\n")
+        commit_id, committed_at, subject = metadata.split("\x1f", 2)
+        paths = []
+        native_result_paths = []
+        exact_table_paths = []
+        python_files = 0
+        for line in str(run_git(source_root, "ls-tree", "-r", commit)).splitlines():
+            object_meta, path = line.split("\t", 1)
+            _mode, object_type, object_id = object_meta.split()
+            if object_type != "blob":
+                continue
+            paths.append(path)
+            path_blobs[path].add(object_id)
+            path_first.setdefault(path, (commit_id, committed_at))
+            path_last[path] = (commit_id, committed_at)
+            suffix = Path(path).suffix.lower()
+            if suffix == ".py":
+                python_files += 1
+            if suffix in NATIVE_RESULT_EXTENSIONS:
+                native_result_paths.append(path)
+            if object_id in exact_table_blobs:
+                exact_table_paths.append(path)
+                exact_table_paths_all.add(path)
+        commit_rows.append(
+            {
+                "commit": commit_id,
+                "committed_at": committed_at,
+                "subject": subject,
+                "tracked_files": len(paths),
+                "python_files": python_files,
+                "executable_source_present": python_files > 0,
+                "exact_author_table_paths": ";".join(exact_table_paths),
+                "exact_author_table_cells": 77 if exact_table_paths else 0,
+                "native_structured_result_paths": len(native_result_paths),
+                "native_structured_result_path_names": ";".join(native_result_paths),
+                "independently_regenerated_paper_results": 0,
+                "paper_result_credit": False,
+            }
+        )
+
+    path_rows: list[dict[str, Any]] = []
+    for path in historical_paths:
+        blob_ids = path_blobs[path]
+        suffix = Path(path).suffix.lower()
+        exact_table = bool(blob_ids & exact_table_blobs)
+        if exact_table:
+            classification = "author_rendered_exact_table_correspondence"
+        elif suffix == ".png":
+            classification = "documentation_screenshot_or_architecture_media"
+        else:
+            classification = "source_test_configuration_or_documentation"
+        path_rows.append(
+            {
+                "path": path,
+                "extension": suffix,
+                "historical_blob_versions": len(blob_ids),
+                "first_reachable_commit": path_first[path][0],
+                "first_reachable_committed_at": path_first[path][1],
+                "last_reachable_commit": path_last[path][0],
+                "last_reachable_committed_at": path_last[path][1],
+                "native_structured_result_path": suffix in NATIVE_RESULT_EXTENSIONS,
+                "contains_exact_author_table_in_history": exact_table,
+                "classification": classification,
+                "paper_result_credit": False,
+            }
+        )
+    native_paths = [row for row in path_rows if row["native_structured_result_path"]]
+    if native_paths:
+        raise RuntimeError("TradingAgents public history gained a native result path")
+    if exact_table_paths_all != {"index.html", "index_complete.html"}:
+        raise RuntimeError("TradingAgents author-table path lineage changed")
+
+    extension_counts = Counter(row["extension"] or "[none]" for row in path_rows)
+    summary = {
+        "discovered_public_branches": [{"name": name, "head": commit} for name, commit in branch_pairs],
+        "discovered_public_tags": [{"name": name, "target_commit": commit} for name, commit in tag_pairs],
+        "discovered_public_releases": [
+            {"tag": tag, "target": target, "published_at": published, "assets": assets}
+            for tag, target, published, assets in release_rows
+        ],
+        "reachable_commits": len(commits),
+        "unique_historical_paths": len(historical_paths),
+        "historical_path_extension_counts": dict(sorted(extension_counts.items())),
+        "reachable_object_counts": object_counts,
+        "unreachable_objects": 0,
+        "native_structured_result_paths": 0,
+        "raw_numeric_curve_or_event_array_paths": 0,
+        "exact_author_table_blob_versions": len(exact_table_blobs),
+        "exact_author_table_paths": sorted(exact_table_paths_all),
+        "first_exact_author_table_commit": FIRST_EXACT_TABLE_COMMIT,
+        "first_exact_author_table_commit_date": FIRST_EXACT_TABLE_COMMIT_DATE,
+        "first_exact_author_table_sha256": FIRST_EXACT_TABLE_SHA256,
+        "current_source_commit": CURRENT_SOURCE_COMMIT,
+        "current_tracked_files": len(git_files_at(source_root, CURRENT_SOURCE_COMMIT)),
+        "independently_regenerated_paper_results": 0,
+        "paper_result_credit": False,
+    }
+    return commit_rows, path_rows, summary
+
+
 def build_audit(
     source_root: Path,
     paper_pdf: Path,
     paper_source_archive: Path,
     paper_source_root: Path,
+    paper_versions_root: Path,
     source_python: Path,
     output_dir: Path,
 ) -> dict[str, Any]:
     verify_pins(source_root, paper_pdf, paper_source_archive, paper_source_root)
+    paper_versions = paper_version_inventory(paper_versions_root, source_root)
+    figure_series = paper_figure_series()
+    history_commits, history_paths, history_summary = public_source_history(source_root)
     author_outputs = author_output_correspondence(source_root)
     table = paper_table_rows(author_output_verified=True)
     annualization = annualization_identity()
@@ -1145,6 +1754,7 @@ def build_audit(
     gaps = specification_gaps()
     inventory = source_inventory(source_root)
     paper_assets = paper_source_inventory(paper_source_root)
+    current_source = current_source_conformance(source_root)
     component = run_native_component_checks(source_root, source_python)
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1159,12 +1769,20 @@ def build_audit(
     write_csv(output_dir / "paper_specification_gaps.csv", gaps)
     write_csv(output_dir / "released_source_inventory.csv", inventory)
     write_csv(output_dir / "paper_source_asset_inventory.csv", paper_assets)
+    write_csv(output_dir / "official_paper_version_inventory.csv", paper_versions)
+    write_csv(output_dir / "paper_figure_series_inventory.csv", figure_series)
+    write_csv(output_dir / "public_source_history_commit_inventory.csv", history_commits)
+    write_csv(output_dir / "public_source_history_path_inventory.csv", history_paths)
+    write_csv(output_dir / "current_source_conformance.csv", current_source)
+    (output_dir / "public_source_history.json").write_text(
+        json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     (output_dir / "native_component.json").write_text(json.dumps(component, indent=2) + "\n", encoding="utf-8")
 
     mechanism_counts = Counter(row["status"] for row in mechanisms)
     credit = sum(bool(row["paper_mechanism_credit"]) for row in mechanisms)
     manifest: dict[str, Any] = {
-        "audit": "TradingAgents arXiv v7 versus nearest official v0.1.0 source release",
+        "audit": "TradingAgents all official paper versions versus full public source history",
         "overall_status": "not_reproduced_nearest_release_architecture_components_only",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
@@ -1172,12 +1790,22 @@ def build_audit(
         "paper_date": PAPER_DATE,
         "paper_sha256": PAPER_SHA256,
         "paper_source_sha256": PAPER_SOURCE_SHA256,
+        "official_paper_versions_audited": len(paper_versions),
+        "paper_versions_with_identical_table_values": 7,
+        "paper_versions_with_executable_source_at_submission": 0,
+        "paper_versions_with_exact_author_site_table_at_submission": 7,
+        "paper_v1_through_v6_comparison_plot_final_label": "StockGPTStrategy",
+        "paper_v7_comparison_plot_final_label": "TradingAgents",
         "source_url": SOURCE_URL,
         "source_tag": SOURCE_TAG,
         "source_commit": SOURCE_COMMIT,
         "source_commit_date": SOURCE_COMMIT_DATE,
         "pre_release_commit": PRE_RELEASE_COMMIT,
         "pre_release_tree_files": 3,
+        "first_public_repository_commit": FIRST_PUBLIC_COMMIT,
+        "first_exact_author_table_commit": FIRST_EXACT_TABLE_COMMIT,
+        "first_exact_author_table_commit_date": FIRST_EXACT_TABLE_COMMIT_DATE,
+        "first_exact_author_table_sha256": FIRST_EXACT_TABLE_SHA256,
         "paper_era_source_revision_available": False,
         "paper_era_author_project_site_available": True,
         "paper_era_author_project_site_commit": PRE_RELEASE_COMMIT,
@@ -1194,6 +1822,10 @@ def build_audit(
         "published_non_table_quantitative_claims_total": len(claims),
         "published_non_table_result_claims_total": 12,
         "native_non_table_result_claims_reproduced": 0,
+        "paper_result_figure_series_total": len(figure_series),
+        "native_exact_result_figure_series_reproduced": 0,
+        "paper_presented_empirical_units_total": len(table) + 12 + len(figure_series),
+        "native_presented_empirical_units_reproduced": 0,
         "annualized_return_pairs_checked": len(annualization),
         "annualized_return_pairs_matching_published_equation": 0,
         "improvement_cells_checked": len(improvement),
@@ -1213,6 +1845,28 @@ def build_audit(
         "paper_source_assets_total": len(paper_assets),
         "numeric_result_figures_total": 6,
         "numeric_result_figure_arrays_shipped": 0,
+        "current_public_source_commit": CURRENT_SOURCE_COMMIT,
+        "current_public_source_tracked_files": history_summary["current_tracked_files"],
+        "current_public_source_python_files": 137,
+        "current_public_source_test_files": 54,
+        "current_public_source_conformance_dimensions": len(current_source),
+        "public_source_reachable_commits_total": history_summary["reachable_commits"],
+        "public_source_unique_historical_paths_total": history_summary["unique_historical_paths"],
+        "public_source_reachable_blobs_total": history_summary["reachable_object_counts"]["blob"],
+        "public_source_reachable_trees_total": history_summary["reachable_object_counts"]["tree"],
+        "public_source_reachable_commit_objects_total": history_summary["reachable_object_counts"]["commit"],
+        "public_source_reachable_tag_objects_total": history_summary["reachable_object_counts"]["tag"],
+        "public_source_unreachable_objects_total": history_summary["unreachable_objects"],
+        "public_source_native_structured_result_paths": history_summary["native_structured_result_paths"],
+        "public_source_raw_numeric_curve_or_event_array_paths": history_summary[
+            "raw_numeric_curve_or_event_array_paths"
+        ],
+        "public_source_exact_author_table_blob_versions": history_summary[
+            "exact_author_table_blob_versions"
+        ],
+        "public_source_discovered_branches_total": len(history_summary["discovered_public_branches"]),
+        "public_source_discovered_tags_total": len(history_summary["discovered_public_tags"]),
+        "public_source_discovered_releases_total": len(history_summary["discovered_public_releases"]),
         "native_source_python_files_compiled": component["tracked_python_files_compiled"],
         "native_source_upstream_tests_shipped": 0,
         "native_source_dependency_environment_reproduced": False,
@@ -1230,18 +1884,27 @@ def build_audit(
         "native_paper_cost_or_seed_ledger_shipped": False,
         "audit_runtime_called_llm_or_market_data_api": False,
         "interpretation": (
-            "The nearest official code is a substantial multi-agent architecture release, but it "
-            "arrived about 52 hours after arXiv v7 and the immediately preceding Git tree contains "
-            "only site files. It implements several paper roles, structured state, debates, memories, "
+            "All seven official paper versions retain the same 77 Table 1 values and 42 plotted "
+            "result series. The exact rendered table existed on the official project site before "
+            "arXiv v1, but every paper-version cutoff contains only two or three site files and no "
+            "executable implementation. The nearest official code is a substantial multi-agent "
+            "architecture release, but it arrived about 52 hours after v7. It implements several "
+            "paper roles, structured state, debates, memories, "
             "tool loops, prompts, and runtime logging. Its pre-release official project site also "
             "contains all 77 Table 1 values in the same order as the paper. This corroborates the "
             "published author output but is not an independent regeneration. It does not ship the paper data, experiment "
             "configuration, portfolio/execution engine, baseline or metric code, backtest runner, "
             "actions, fills, NAVs, returns, plots, seeds, or costs. Its analysts are sequential, its "
             "model assignment conflicts with the paper, only 6/11 appendix tool names remain, and "
-            "several advertised config values are not wired into the graph. Therefore 77/77 Table 1 "
-            "cells have exact author-output correspondence, while 0/77 Table 1 numeric cells and "
-            "0/12 additional quantitative result claims are independently reproduced. The paper "
+            "several advertised config values are not wired into the graph. The full discovered "
+            "public history has 257 commits, 189 historical paths, 2,191 reachable objects, no "
+            "unreachable objects, and no native result-data or curve/event-array path. Later source "
+            "adds a separate Portfolio Manager and tests, and the wider history includes a lockfile, "
+            "but current main still has no lock and the project still has no paper "
+            "backtester, baselines, metrics, frozen data, or result outputs. Therefore 77/77 Table 1 "
+            "cells have exact author-output correspondence, while 0/77 Table 1 numeric cells, 0/42 "
+            "plotted series, and 0/12 additional quantitative result claims are independently "
+            "reproduced. The paper "
             "also contains internal numeric inconsistencies: all 17 CR/AR pairs fail its literal "
             "annualization equation, GOOGL Sharpe improvement is arithmetically wrong, and the prose "
             "MDD bound contradicts AMZN."
@@ -1253,13 +1916,20 @@ def build_audit(
 
     report = f"""# TradingAgents paper-level conformance audit
 
-Overall verdict: **not reproduced**. The nearest official release implements a
+Overall verdict: **not reproduced**. All seven official revisions and every
+reachable public source object were audited. The nearest release implements a
 meaningful architecture subset, but not the experiment that produced the paper.
 
 ## Primary-source pins
 
-- Official paper: {PAPER_URL} ({PAPER_VERSION}, {PAPER_DATE}; PDF SHA-256
+- Official paper record: all seven revisions of arXiv:2412.20138. The current
+  revision is {PAPER_URL} ({PAPER_VERSION}, {PAPER_DATE}; PDF SHA-256
   `{PAPER_SHA256}`; source archive SHA-256 `{PAPER_SOURCE_SHA256}`).
+- The seven pinned PDFs contain 27, 27, 27, 27, 27, 27, and 38 pages. Their
+  source archives contain 25--26 files. All preserve the same 77 Table 1 values
+  and 42 plotted result series. The comparison plots call the final series
+  `StockGPTStrategy` in v1--v6 and `TradingAgents` in v7; the raw comparison
+  PDFs were re-encoded for v7, while all three detail PDFs are byte-identical.
 - Official source: {SOURCE_URL}, tag `{SOURCE_TAG}`, commit `{SOURCE_COMMIT}`
   ({SOURCE_COMMIT_DATE}). It is the first public code release, about 52.4 hours
   after v7. Its parent `{PRE_RELEASE_COMMIT}` contains only the README and two
@@ -1284,13 +1954,19 @@ meaningful architecture subset, but not the experiment that produced the paper.
 - All 77 Table 1 values are present in the official pre-release project-site HTML
   in exactly the paper's order. This corroborates an author-rendered output; it
   does not independently regenerate any cell or expose the underlying arrays.
+- The exact 77-value table first appears at `{FIRST_EXACT_TABLE_COMMIT}`
+  ({FIRST_EXACT_TABLE_COMMIT_DATE}), before v1. It persists through 15 distinct
+  HTML blobs on `index.html` and `index_complete.html`.
 
 ## Why the paper is not replicated
 
 - Table 1 has **77 numeric cells**: 68 direct method results and nine derived
   improvements. **77/77** have exact author-output correspondence, but **0/77**
-  independently regenerate through the released pipeline. Twelve additional
-  quantitative result claims in prose/figures also have zero reproductions.
+  independently regenerate through the released pipeline. The six result PDFs
+  contain **42 plotted series/event groups**; **0/42** regenerate from native
+  numeric arrays. Twelve additional quantitative result claims in prose/figures
+  also have zero reproductions. Thus all **131 presentation-level empirical
+  audit units** have zero independent native reproductions.
 - No frozen multimodal dataset, 60-indicator definition, experiment config,
   backtest runner, baseline implementation, metric code, portfolio state,
   position sizing, execution engine, commission/slippage rules, action history,
@@ -1304,6 +1980,14 @@ meaningful architecture subset, but not the experiment that produced the paper.
 - Five of eleven appendix tool names are absent from the nearest release. The
   exact AAPL 2024-11-19 transcript and BUY cannot be replayed without its frozen
   inputs, model snapshots, prompts/tool schemas, and trace.
+- Full public-history exhaustion found 257 commits, 189 historical paths, 1,009
+  blobs, 918 trees, 257 commit objects, seven annotated-tag objects, and no
+  unreachable objects. The discovered two branches, ten tags, and eight GitHub
+  releases contain no CSV/Parquet/NumPy/notebook/checkpoint/log result path and
+  no numeric curve/event arrays. Later source adds tests and a separate Portfolio
+  Manager, and another public ref contains a lockfile, but current main has no
+  dependency lock and the project still has no paper backtester, baselines,
+  metrics, frozen paper data, portfolio execution ledger, or paper outputs.
 
 ## Paper-internal barriers
 
@@ -1322,9 +2006,10 @@ meaningful architecture subset, but not the experiment that produced the paper.
 ## Honest boundary
 
 The architecture and the historical rendered table are real and useful, but a
-current one-day run would use mutable data and changed model endpoints and would
-not reproduce the 2024 paper. The vector figures expose annotations, not their
-daily numeric arrays. Run
+current one-day run would use mutable data, substantially later source, and
+changed model endpoints and would not reproduce the 2024 paper. The vector
+figures expose curves, events, and annotations, not their daily numeric arrays.
+Run
 `scripts/audit_tradingagents_paper.py` to regenerate this package; `--strict`
 fails until the native paper data, exact experiment source/configuration, models,
 traces, portfolio/execution rules, baselines, daily outputs, and published values
@@ -1381,6 +2066,16 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--paper-versions-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "TRADINGAGENTS_PAPER_VERSIONS_ROOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_paper_versions",
+            )
+        ),
+    )
+    parser.add_argument(
         "--source-python",
         type=Path,
         default=Path(os.environ.get("TRADINGAGENTS_SOURCE_PYTHON", DEFAULT_SOURCE_PYTHON)),
@@ -1401,6 +2096,7 @@ def main() -> int:
         args.paper_pdf,
         args.paper_source_archive,
         args.paper_source_root,
+        args.paper_versions_root,
         args.source_python,
         args.output_dir,
     )

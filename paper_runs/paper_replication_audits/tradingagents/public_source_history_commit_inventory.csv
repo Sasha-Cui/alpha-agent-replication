@@ -1,0 +1,258 @@
+commit,committed_at,subject,tracked_files,python_files,executable_source_present,exact_author_table_paths,exact_author_table_cells,native_structured_result_paths,native_structured_result_path_names,independently_regenerated_paper_results,paper_result_credit
+c2fa046a9bc169b218c827127f2e44338ebd0890,2024-12-28T11:32:06+08:00,TradingAgents-AI,2,0,False,,0,0,,0,False
+a70ca6e1a1dfad960f5bc379a6b8d12cda0f4830,2024-12-28T11:47:36+08:00,Figures,2,0,False,,0,0,,0,False
+db9f63fa54059ec8ae262ef10557c853b6a011a7,2024-12-28T11:56:38+08:00,Citations,2,0,False,index.html,77,0,,0,False
+8b7b5b9c78f60f846e79740fb8a0491ffe445450,2024-12-28T12:28:02+08:00,Layout,2,0,False,,0,0,,0,False
+2e8a02e874c8b1421c9af47dd415efaa1d3faf2d,2024-12-28T12:35:29+08:00,Layout,2,0,False,index.html,77,0,,0,False
+fac7eca73f201d8d42afe04f77e8465edaa6fe3c,2024-12-28T12:51:51+08:00,Layout,2,0,False,index.html,77,0,,0,False
+1920757ed9bde412f1f969e0830a16575f4b9573,2024-12-28T13:06:03+08:00,Layout,2,0,False,index.html,77,0,,0,False
+21890ac942f2c563e2922dc0b71190c777dd8c58,2024-12-28T13:35:10+08:00,Results,2,0,False,index.html,77,0,,0,False
+0ef7b4657943d6a393fb3b135236080f4a116ab3,2024-12-28T13:41:45+08:00,Results,2,0,False,index.html,77,0,,0,False
+c850ddf1a7d05aa2a134665d71a3220f61c2b8e2,2024-12-29T15:00:27+08:00,Brief version,3,0,False,index.html;index_complete.html,77,0,,0,False
+c252bbb155a09619f5936dba3729f34bea759ae0,2024-12-29T15:04:43+08:00,Brief,3,0,False,index.html;index_complete.html,77,0,,0,False
+413d9ecbcfa960420ebda55f97372a2b638097f4,2024-12-31T11:58:35+08:00,Paper and Code links,3,0,False,index.html;index_complete.html,77,0,,0,False
+1a2074b60ec89908044d543badadb89983cd1390,2025-01-20T21:21:43-08:00,Update README.md,3,0,False,index.html;index_complete.html,77,0,,0,False
+5986f61283f05d37a68f15e94f37e2a2cad822dc,2025-01-20T21:25:41-08:00,Update index.html,3,0,False,index.html;index_complete.html,77,0,,0,False
+ee0502bf864f2fdfbb5c964691051ce065e642bf,2025-01-20T21:36:27-08:00,Update index.html,3,0,False,index.html;index_complete.html,77,0,,0,False
+6945ab30cf5f2ff0335bea3529556b50087232cc,2025-01-20T22:09:22-08:00,Update index.html,3,0,False,index.html;index_complete.html,77,0,,0,False
+1f55a4d229c607c79e0ae07ed4b55aa0cd83b39d,2025-01-20T22:13:50-08:00,Update index.html,3,0,False,index.html;index_complete.html,77,0,,0,False
+af6f916ffddf7b2468d80e7ed52c965db4422876,2025-01-23T17:17:32-08:00,Reference,3,0,False,index.html;index_complete.html,77,0,,0,False
+635e91ac75f68e5a48eaf0c07760252f73326118,2025-02-02T12:53:37-08:00,Schema upload,3,0,False,index.html;index_complete.html,77,0,,0,False
+cc97cb6d5deb10eac370db0c6678e2796a62eba8,2025-06-05T04:27:57-07:00,chore(release): v0.1.0 – initial public release of TradingAgents,56,39,True,index.html,77,0,,0,False
+5f1c9c43cf2f3cdd0dedd258821c7d2798b95df2,2025-06-05T11:14:05-07:00,removed static site,55,39,True,,0,0,,0,False
+47176ba8a25cbbf8feb24417765eb189c61885da,2025-06-07T12:17:58-07:00,chore(release): v0.1.1 – TradingAgents cleaned release,55,39,True,,0,0,,0,False
+e994e56c23889f4e223659c2d0017f8d1714597d,2025-06-07T15:04:43-07:00,Remove EODHD from readme,55,39,True,,0,0,,0,False
+0fdfd3586784193d7dc69bfa7bc0b4f2002caca2,2025-06-08T13:16:10-07:00,Fix default python usage config code,55,39,True,,0,0,,0,False
+0013415378dc83f45f7cf56d3457f6bcef381b90,2025-06-09T15:14:41-07:00,Add star history,55,39,True,,0,0,,0,False
+a87986839632535a61bdd1383e8c9f81dd3a87da,2025-06-09T15:51:06-07:00,docs: add links to other language versions of README (#13),55,39,True,,0,0,,0,False
+99789f9cd1747b369b5c0d21ec150b5b628cd717,2025-06-11T14:19:25+02:00,"Add support for other backends, such as OpenRouter and olama This aims to offer alternative OpenAI capable api's. This offers people to experiment with running the application locally",55,39,True,,0,0,,0,False
+9647359246eb1d42ef86da345024e88823dbc4d6,2025-06-12T11:25:07+09:00,save reports & logs under results_dir,55,39,True,,0,0,,0,False
+570644d9396a1f5c6dc14f34e3d19cb2556caf20,2025-06-11T19:43:39-07:00,Fix ticker hardcoding in prompt (#28),55,39,True,,0,0,,0,False
+417b09712ce1ea316e22f054f257888a985fa5f1,2025-06-12T13:53:28+09:00,refactor,55,39,True,,0,0,,0,False
+90b23e72f5aa2c121f62b404df6ac143793d2844,2025-06-15T16:06:20-07:00,Merge pull request #25 from maxer137/main,55,39,True,,0,0,,0,False
+da84ef43aa8f02eff45b8a1333ed522bcc01c7ac,2025-06-15T22:20:59-07:00,"main works, cli bugs",58,39,True,,0,0,,0,False
+7eaf4d995f2838757b522ba905ed51a36c8e1ffc,2025-06-15T23:14:47-07:00,update clear msg bc anthropic needs at least 1 msg in chat call,58,39,True,,0,0,,0,False
+383deb72aac77d898c11e9bbbf5bfd17790a5371,2025-06-18T19:08:10-07:00,Updated README.md,55,39,True,,0,0,,0,False
+2af7ef3d798d8a94fe12129c4b85ce83e1126b8c,2025-06-19T21:48:16+05:30,fundamentals_analyst.py(spelling mistake.markdown),55,39,True,,0,0,,0,False
+ed32081f57cde68bc2045ea5b4cf2dd434a87942,2025-06-19T15:00:07-04:00,Merge pull request #44 from TauricResearch/dev,58,39,True,,0,0,,0,False
+c2f897fc67555fae590bb690f3a548779f73a96e,2025-06-19T15:05:08-04:00,Merge pull request #43 from AtharvSabde/patch-1,58,39,True,,0,0,,0,False
+1e86e74314bfa9beb10e1da882a1bef1ff800669,2025-06-19T15:10:36-04:00,Merge pull request #40 from RealMyth21/main,58,39,True,,0,0,,0,False
+11804f88ffa8313b042f02161eb7afb6ea0f2910,2025-06-20T15:58:22+05:30,Updated requirements.txt based on latest commit,58,39,True,,0,0,,0,False
+52284ce13c92d0abf68b32ed630ac8b31a81f97d,2025-06-21T12:51:34-07:00,fixed anthropic support. Anthropic has different format of response when it has tool calls. Explicit handling added,58,39,True,,0,0,,0,False
+b8f712b17030f5d447d775a70d928cf7bf55b803,2025-06-21T23:29:26-07:00,Exclude `.env` from Git,58,39,True,,0,0,,0,False
+b575bd0941cdc7d79151b35cc4f10d970463b509,2025-06-23T20:38:14-04:00,Merge pull request #52 from TauricResearch/dev,58,39,True,,0,0,,0,False
+7abff0f354440a2bce0d6282a488e225f3f808c1,2025-06-23T20:40:58-04:00,Merge pull request #46 from AtharvSabde/patch-2,58,39,True,,0,0,,0,False
+ee3d499894afda74c29fc42b6e94290698897c41,2025-06-25T08:43:19+09:00,Merge branch 'TauricResearch:main' into save_results,58,39,True,,0,0,,0,False
+78ea029a0bbe3ea23c0016c1f54d022bc8c28459,2025-06-25T23:57:05-04:00,Docker support and Ollama support (#47),74,44,True,,0,0,,0,False
+26c5ba5a786e1da47c90b014faad889d759f6c76,2025-06-26T00:07:58-04:00,"Revert ""Docker support and Ollama support (#47)"" (#57)",58,39,True,,0,0,,0,False
+43aa9c5d09baac7a4fda6d0fce82e9d21b0f3532,2025-06-26T00:27:01-04:00,Local Ollama (#53),58,39,True,,0,0,,0,False
+718df3493256ab607955c44903f3971c5c587313,2025-06-26T00:28:30-04:00,Merge pull request #29 from ZeroAct/save_results,58,39,True,,0,0,,0,False
+fda4f664e8f77851f3df7d9a2119778ddc4bd458,2025-07-01T09:17:46-07:00,Merge pull request #49 from Zhongyi-Lu/a,58,39,True,,0,0,,0,False
+f704828f89d1166692e5075d32509ebb93560320,2025-07-03T17:43:40+05:00,"Fix: Prevent infinite loops, enable reflection, and improve logging",58,39,True,,0,0,,0,False
+c73e374e7c7229e3b731e961ce165a9b2da30916,2025-07-03T10:14:06-04:00,Update main.py,58,39,True,,0,0,,0,False
+a438acdbbd622a4d3c112d23f7462651f8f9aeee,2025-07-03T10:15:39-04:00,Merge pull request #89 from Mirza-Samad-Ahmed-Baig/fixes,58,39,True,,0,0,,0,False
+a6734d71bcca0543296bc2f202a2c98dbf74612f,2025-09-26T16:17:50+08:00,WIP,65,46,True,,0,0,,0,False
+0ab323c2c6575d474575a0a623654dec126c55ce,2025-09-26T22:57:50+08:00,Add Alpha Vantage API integration as primary data provider,71,52,True,,0,0,,0,False
+8b04ec307fa5cd8cb39a0cedce6260f3b1b3ee52,2025-09-26T23:25:33+08:00,minor fix,71,52,True,,0,0,,0,False
+6211b1132ae8b0806977e59a6bba246796ec6af4,2025-09-26T23:36:36+08:00,Improve Alpha Vantage indicator column parsing with robust mapping,71,52,True,,0,0,,0,False
+7bcc2cbd8aa4ccf05e3a86ea7afae74e1aa2b649,2025-09-26T23:52:26+08:00,Update configuration documentation for Alpha Vantage data vendor,71,52,True,,0,0,,0,False
+7fc9c28a94d177851c205d4958be88014d16eba6,2025-09-26T23:58:51+08:00,Add environment variable configuration support,72,52,True,,0,0,,0,False
+86bc0e793fd0d7fca5b5925af6b3632b4ff75282,2025-09-27T00:04:59+08:00,minor fix,72,52,True,,0,0,,0,False
+8fdbbcca3d9aabc7315e6e7659567ac39af9b337,2025-09-29T18:22:31+08:00,alpha vantage api key url,72,52,True,,0,0,,0,False
+b01051b9f478fb054f4c6e93598322df74bd8a46,2025-09-30T12:43:27+08:00,Switch default data vendor,72,52,True,,0,0,,0,False
+d23fb539e963c5ed7f473799cdac183b3ba75eee,2025-09-30T13:27:48+08:00,minor fix,72,52,True,,0,0,,0,False
+c07dcf026b1daf5a89a80bf80a2664a1088709f2,2025-10-03T22:40:09-07:00,added fallbacks for tools,72,52,True,,0,0,,0,False
+32be17c606ffbab0ae4b418579c3ba222d27dfa3,2025-10-05T16:01:30-07:00,Merge pull request #235 from luohy15/data_vendor,72,52,True,,0,0,,0,False
+7bb2941b07b091ab8327bdce1aaafafef3447ddd,2025-10-06T19:58:01-07:00,optimized yfin fetching to be much faster,73,53,True,,0,0,,0,False
+a5dcc7da452e2840fedea4a4beede3175c8ccd62,2025-10-06T20:33:12-07:00,update readme,73,53,True,,0,0,,0,False
+b2ef960da7b82152b043a99e9de25277eb3a5b0e,2025-10-09T00:32:04-07:00,updated readme,73,53,True,,0,0,,0,False
+13b826a31dacf2ac73b88b12825a5e94c5f823be,2025-10-09T00:34:10-07:00,Merge pull request #245 from TauricResearch/feat/tooloptim,73,53,True,,0,0,,0,False
+79051580b86497e411a3756aa3c8f8b9d95e650f,2026-02-03T22:27:20Z,feat: add multi-provider LLM support with factory pattern,82,61,True,,0,0,,0,False
+d4dadb82fc768425e8237e0cd092e23c890dea2a,2026-02-03T22:27:20Z,feat: add multi-provider LLM support with thinking configurations,83,62,True,,0,0,,0,False
+a3761bdd664fd038b5240bc766c57d51c5257212,2026-02-03T22:27:20Z,feat: update Ollama and OpenRouter model options,83,62,True,,0,0,,0,False
+50961b24774dd4b897f75cfc4fc21311c1df9cbd,2026-02-03T22:27:20Z,refactor: rename risky/safe agents to aggressive/conservative,83,62,True,,0,0,,0,False
+3d040f8da463156e3d62e201153b967d56f7edf2,2026-02-03T22:27:20Z,feat: add yfinance support to accommodate community request for stability and quota,83,62,True,,0,0,,0,False
+b75940e90125ab87d8a20d822071542117712caf,2026-02-03T22:27:20Z,feat: add announcements panel fetching from api.tauric.ai/v1/announcements,85,64,True,,0,0,,0,False
+b06936f420308eae420904c6876ffd349f991fc5,2026-02-03T22:27:20Z,fix: improve data vendor implementations and tool signatures,85,64,True,,0,0,,0,False
+54cdb146d0d6aaf32adadca8414bed36020c57e7,2026-02-03T22:27:20Z,feat: add footer statistics tracking with LangChain callbacks,85,64,True,,0,0,,0,False
+93b87d511947ecba58e455d742a3b62af37509fe,2026-02-03T22:27:20Z,fix: analyst status tracking and message deduplication,85,64,True,,0,0,,0,False
+224941d8c2c2f3b7c720d3038cf895295c4a6cd2,2026-02-03T22:27:20Z,feat: add post-analysis report saving and fix display truncation,85,64,True,,0,0,,0,False
+102b026d23991e522fd5ab7c172293a2466c82d3,2026-02-03T22:27:20Z,refactor: clean up codebase and streamline documentation,79,58,True,,0,0,,0,False
+6cd35179fa24a78141387b06919dee9b65da0896,2026-02-03T23:08:12Z,chore: clean up dependencies and fix Ollama auth,79,58,True,,0,0,,0,False
+aba1880c8c107b57c1fdf2116618414bddc23709,2026-02-03T23:16:38Z,chore: update .gitignore to official Python template,79,58,True,,0,0,,0,False
+393d4c6a1bbde184c023906f51f7c2b39a760052,2026-02-03T23:30:55Z,chore: add data_cache to .gitignore,79,58,True,,0,0,,0,False
+80aab35119f1ca08008fc3d4df6ddb074c532c8d,2026-02-04T00:13:10Z,docs: update README for v0.2.0 release,79,58,True,,0,0,,0,False
+b4b133eb2d4e1eae16b0018826259c628f0fd0e6,2026-02-04T00:39:15Z,fix: add typer dependency,79,58,True,,0,0,,0,False
+e9470b69c457acbecd62d0707a2f7c045d7f53c9,2026-02-03T23:13:43-08:00,TradingAgents v0.2.0: Multi-Provider LLM Support & Optimizations (#331),79,58,True,,0,0,,0,False
+66a02b319368805acee6b7b41d10c65e89679d8f,2026-02-05T11:01:53+07:00,security: patch LangGrinch vulnerability in langchain-core,79,58,True,,0,0,,0,False
+8b3068d091373b8b5507c7e9fcf7f0d617187737,2026-02-07T00:04:44-08:00,Merge pull request #335 from RinZ27/security/patch-langchain-core-vulnerability,79,58,True,,0,0,,0,False
+50c82a25b5faef6dd39671d1a6b50d3a8a9e37ce,2026-02-07T08:18:46Z,"chore: consolidate dependencies to pyproject.toml, remove setup.py",77,57,True,,0,0,,0,False
+5fec171a1eaa700c82cb6e0a37fadc714c547743,2026-02-07T08:26:51Z,chore: add build-system config and update version to 0.2.0,77,57,True,,0,0,,0,False
+35856ff33e8c07787f0066eaf2d7d8836da2a2d3,2026-02-09T18:21:21+08:00,fix(risk_manager): 修复基本面报告数据源错误,77,57,True,,0,0,,0,False
+f047f26df0e2ca2b065539c0ed13be7f485329b7,2026-02-24T16:28:56-08:00,Merge pull request #341 from Ljx-007/fix/risk-manager-fundamental-report,77,57,True,,0,0,,0,False
+8a606620706d61aeda9da42b59410af9b128efda,2026-03-15T16:16:42Z,chore: remove unused chainlit dependency (CVE-2026-22218),77,57,True,,0,0,,0,False
+907bc8022a2e9ad44e0b8eca6c5f05cb2bc13dc1,2026-03-15T09:31:59-07:00,fix: pass debate round config to ConditionalLogic (#361),77,57,True,,0,0,,0,False
+3642f5917c2072ab6e990eede7c6ef1b2b82b8ce,2026-03-15T16:44:23Z,fix: add explicit UTF-8 encoding to all file open() calls,77,57,True,,0,0,,0,False
+eec6ca4b53eee475f9111bb4cc46637640ce867a,2026-03-15T17:54:32Z,fix: initialize all debate state fields in propagation.py,77,57,True,,0,0,,0,False
+fe9c8d5d31848fcad7d78e04560dfbe6ca98c932,2026-03-15T18:05:36Z,fix: handle comma-separated indicators in get_indicators tool,77,57,True,,0,0,,0,False
+9cc283ac22e938cb917f5887bdd6ae2b1c6cf5be,2026-03-15T18:21:05Z,fix: add missing console import to cli/utils.py,77,57,True,,0,0,,0,False
+b0f9d180f90e50fd1eb354386ca4d9a7936564a2,2026-03-15T18:29:43Z,fix: harden stock data parsing against malformed CSV and NaN values,77,57,True,,0,0,,0,False
+551fd7f074fab8e1080d4ca30efaa4b6b4cd7517,2026-03-15T23:34:50Z,"chore: update model lists, bump to v0.2.1, fix package build",78,58,True,,0,0,,0,False
+b19c5c18fb24b4b7a78310f905f619a856cdf2f3,2026-03-15T23:39:05Z,docs: add v0.2.1 release note to README,78,58,True,,0,0,,0,False
+64f07671b9736f44abdcc22eb33ef64ccdea7167,2026-03-16T07:41:20+08:00,fix: add http_client support for SSL certificate customization,78,58,True,,0,0,,0,False
+f362a160c309a680cac460aa9de217ec63e434e6,2026-03-15T16:53:04-07:00,Merge pull request #379 from yang1002378395-cmyk/fix-ssl-http-client-support,78,58,True,,0,0,,0,False
+08bfe70a6990a2756e7fefdd48a45c41e0f2f42f,2026-03-21T21:10:13+08:00,fix: preserve exchange-qualified tickers across agent prompts,79,59,True,,0,0,,0,False
+7d200d834ab8cbd109d518d01d9f2103edfa0a5f,2026-03-21T21:31:38+08:00,style: inline single-use instrument context vars,79,59,True,,0,0,,0,False
+3ff28f3559c3598cd5efb6f3469735e14ce7f3e0,2026-03-22T20:34:03Z,fix: use OpenAI Responses API for native models,78,58,True,,0,0,,0,False
+0b13145dc0e145fad9e09298ae7c66ba729f38b0,2026-03-22T20:40:18Z,fix: handle list content when writing report sections,78,58,True,,0,0,,0,False
+77755f0431b284690ddc835ee66684dab25fbb33,2026-03-22T21:38:01Z,"chore: consolidate install, fix CLI portability, normalize LLM responses",78,58,True,,0,0,,0,False
+bd9b1e5efa1fabcfd34d49a07bdc9f0b018f2847,2026-03-22T21:57:05Z,feat: add Anthropic effort level support for Claude models,78,58,True,,0,0,,0,False
+7cca9c924e786a7f8340179a9710164161988ef8,2026-03-22T22:11:08Z,fix: add exponential backoff retry for yfinance rate limits (#426),78,58,True,,0,0,,0,False
+c3ba3bf428ab664f9a130c8ed1a027a7aec603f6,2026-03-22T15:36:14-07:00,Merge pull request #413 from CadeYu/codex/exchange-qualified-tickers,79,59,True,,0,0,,0,False
+318adda0c64ec04985f36a81834b2fe8c75dd717,2026-03-22T23:07:20Z,refactor: five-tier rating scale and streamlined agent prompts,79,59,True,,0,0,,0,False
+b8b2825783f490faeebfef5ddaf0178f70b2b0ba,2026-03-22T23:30:29Z,"refactor: standardize portfolio manager, five-tier rating scale, fix analyst status tracking",79,59,True,,0,0,,0,False
+6c9c9ce1fdc3053381bf2b7f3bca41f62d12c098,2026-03-22T23:42:37Z,fix: set process-level UTF-8 default for cross-platform consistency,79,59,True,,0,0,,0,False
+589b351f2ab55a8a37d846848479cebc810a5a36,2026-03-22T23:47:56Z,TradingAgents v0.2.2,79,59,True,,0,0,,0,False
+f5026009f97b797541899bbd4e55e1f520e71df7,2026-03-24T14:35:02+01:00,fix(llm_clients): standardize Google API key to unified api_key param,80,60,True,,0,0,,0,False
+047b38971cba6b390d04bb73e7191f2c05ee135e,2026-03-24T14:52:51+01:00,refactor: simplify api_key mapping and consolidate tests,80,60,True,,0,0,,0,False
+8793336dade0709b95233969147feafc00dc9ff4,2026-03-25T21:23:02+08:00,sync model validation with cli catalog,80,60,True,,0,0,,0,False
+bd6a5b75b5361654acd8ed0d935b301573b8f992,2026-03-25T21:46:56+08:00,fix model catalog typing and known-model helper,80,60,True,,0,0,,0,False
+e1113880a1da00c80258612657fd4f8e68a79ef2,2026-03-29T17:34:35Z,fix: prevent look-ahead bias in backtesting data fetchers (#475),79,59,True,,0,0,,0,False
+f3f58bdbdcb6200e70dc1689254af19333f7c8f3,2026-03-29T17:42:24Z,fix: add yf_retry to yfinance news fetchers (#445),79,59,True,,0,0,,0,False
+ae8c8aebe85179590a2af5ce4622de6b9067f9d1,2026-03-29T17:50:30Z,fix: gracefully handle invalid indicator names in tool calls (#429),79,59,True,,0,0,,0,False
+46e1b600b8026a4ec43d3d93d687643c39cfb097,2026-03-29T10:54:28-07:00,Merge pull request #453 from javierdejesusda/fix/standardize-google-api-key,80,60,True,,0,0,,0,False
+58e99421bd8ae3cab7820f2ca0e8398892d71425,2026-03-29T17:59:52Z,fix: pass base_url to Google and Anthropic clients for proxy support (#427),80,60,True,,0,0,,0,False
+c61242a28cd390dd3f23f710b53846afd1da4faa,2026-03-29T11:07:51-07:00,Merge pull request #464 from CadeYu/sync-validator-models,82,62,True,,0,0,,0,False
+6cddd26d6eab51e12ca8ab73b02bf9372980ca19,2026-03-29T19:19:01Z,feat: multi-language output support for analyst reports and final decision (#472),82,62,True,,0,0,,0,False
+e75d17bc51981b49ed47c6a2c2016100e0689e09,2026-03-29T19:45:36Z,chore: update model lists and defaults to GPT-5.4 family,82,62,True,,0,0,,0,False
+4641c03340c70e0e75e74234c998325164c72b36,2026-03-29T19:50:46Z,TradingAgents v0.2.3,82,62,True,,0,0,,0,False
+2d2c9e6d66bfe6a0393d41a93e3c9189baf9f7f7,2026-03-31T09:55:33+08:00,add analyst execution planning and timing hooks,80,60,True,,0,0,,0,False
+4300b68f197676e8973047c648e72c93b684f139,2026-03-31T10:04:35+08:00,merge upstream main into analyst-phase1-observability,84,64,True,,0,0,,0,False
+f4519bcb84ab6a9ebf687ca83a3bf8e15d22ded4,2026-03-31T10:09:57+08:00,use execution plan metadata for first analyst,84,64,True,,0,0,,0,False
+7004dfe5540a5a82166927eaf11645ed9a6dc1e6,2026-04-04T07:07:53Z,"fix: remove hardcoded Google endpoint that caused 404 (#493, #496)",82,62,True,,0,0,,0,False
+28d5cc661fc706b4711d15d5257884bdc4600b01,2026-04-04T07:14:10Z,fix: add missing pandas import in y_finance.py (#488),82,62,True,,0,0,,0,False
+7269f877c1276f2e45c1e3455ed499f5e6746d6e,2026-04-04T07:22:01Z,fix: portfolio manager reads trader's proposal and research plan (#503),82,62,True,,0,0,,0,False
+78fb66aed1a5664d163489e756f52750ecfc0ac2,2026-04-04T07:23:31Z,fix: normalize indicator names to lowercase (#490),82,62,True,,0,0,,0,False
+bdc5fc62d32d048dc79bd124c5099fba84bb2971,2026-04-04T07:28:03Z,chore: bump langchain-google-genai minimum to 4.0.0 for thought signature support,82,62,True,,0,0,,0,False
+bdb9c29d44a2f97eede350567cef654ff93031ce,2026-04-04T07:35:35Z,"refactor: remove stale imports, use configurable results path (#499)",82,62,True,,0,0,,0,False
+4f965bf46af0c1de294993334af3aaf7a5bc79bd,2026-04-04T07:56:44Z,"feat: dynamic OpenRouter model selection with search (#482, #337)",82,62,True,,0,0,,0,False
+10c136f49c82e11f0e324c9c50cda1638a8ed5a7,2026-04-04T08:14:01Z,feat: add Docker support for cross-platform deployment,85,62,True,,0,0,,0,False
+59d6b2152d846a94304c4cbb30ba1d6b30e71c05,2026-04-13T05:26:04Z,"fix: use ~/.tradingagents/ for cache and logs, resolving Docker permission issue (#519)",85,62,True,,0,0,,0,False
+b0f6058299ed0e31677a1e3eb31b662aca10abd4,2026-04-13T07:12:07Z,"feat: add DeepSeek, Qwen, GLM, and Azure OpenAI provider support",87,63,True,,0,0,,0,False
+fa4d01c23acef4882fd74dd5be75dd3c7a4bc5f7,2026-04-13T07:21:33Z,"fix: process all chunk messages for tool call logging, harden memory score normalization (#534, #531)",87,63,True,,0,0,,0,False
+8536ccacdd1cb05b2e8d2d4aa195d72c5aeb2e0d,2026-04-17T18:57:31-04:00,chore: ignore CLAUDE.md (local AI assistant context file),87,63,True,,0,0,,0,False
+e7ec9800217861de2d41f409f99eccd9afd39a8e,2026-04-18T20:42:11+08:00,feat: add analysis-only crypto asset mode,80,60,True,,0,0,,0,False
+99ec63f966fe858a86aab8dc219a96d6c7a50170,2026-04-18T21:07:54+08:00,merge upstream main into crypto-analysis-mvp,89,65,True,,0,0,,0,False
+6abc768c1d0d2d65263140ba6d30f086b4ea98f6,2026-04-19T22:43:14-04:00,feat: replace per-agent BM25 memory with persistent append-only decision log,88,64,True,,0,0,,0,False
+872b063e6917929335bafc20ef1070fba9e54a69,2026-04-25T07:25:32Z,"fix: use explicit encoding=""utf-8"" for all file I/O so Windows users avoid cp1252 crashes (#543, #550, #576)",87,63,True,,0,0,,0,False
+8e7654f0df735e89436de3adb1eab53ba33afeb8,2026-04-25T07:41:36Z,fix: drop past-memory directive and placeholder from agent prompts when memory is empty (#572),87,63,True,,0,0,,0,False
+f85f5d9f5d9243549fe7860be8611698051fda29,2026-04-25T07:41:36Z,test: lazy-load LLM provider clients and add API-key fixtures so the test suite runs cleanly without credentials (#588),88,64,True,,0,0,,0,False
+ebd2e12e676111391c114fbf4fd3c811aaa9c17b,2026-04-25T08:24:03Z,"feat: replace per-agent BM25 memory with persistent decision log (#578, #563, #564, #579)",89,65,True,,0,0,,0,False
+4cbd4b086fd94074d79987c8ca31daec8d33902c,2026-04-25T08:47:15Z,feat: add LangGraph checkpoint resume for crash recovery (#594),91,67,True,,0,0,,0,False
+0fda24515f56be44bdf568a19d85b20f69ee60b6,2026-04-25T19:57:26Z,feat: structured-output Portfolio Manager + 5-tier rating consistency (#434),94,70,True,,0,0,,0,False
+bba147798f9b440bcf08fe3f3db3ca8464f9c73a,2026-04-25T20:27:23Z,"feat: structured-output Trader and Research Manager (#434, finishes the trio)",96,72,True,,0,0,,0,False
+4016fd4efa8d43ddde9d00cc59531490b9ac6a9a,2026-04-25T20:54:19Z,fix: stop leaking OpenAI base_url into non-OpenAI provider clients,96,72,True,,0,0,,0,False
+7c37249f808f9c169ad2198dc384166e7ca7adf9,2026-04-25T22:16:09Z,"chore: release v0.2.4 — structured agents, checkpoint, memory log, providers",98,73,True,,0,0,,0,False
+2c97bad45c773760db3ef7cb787a9fd1fbf7ac67,2026-05-01T18:56:36Z,fix(security): validate ticker before using as path component (#618),99,74,True,,0,0,,0,False
+7e9e7b83c7fcc18d941300b253c6ed24d985788d,2026-05-01T19:23:23Z,feat: DeepSeek V4 thinking-mode round-trip via DeepSeekChatOpenAI subclass,100,75,True,,0,0,,0,False
+5bae826749147e66098891a0caf2815c574c44aa,2026-05-08T18:57:09+08:00,Merge remote-tracking branch 'upstream/main' into crypto-analysis-mvp,102,77,True,,0,0,,0,False
+db7e0a67e2722a5be8b870f5661efa3b6753419a,2026-05-10T09:49:07Z,fix(cli): load .env from user's CWD when run as console script,100,75,True,,0,0,,0,False
+c405867bde1627bb573ea069f0531569a631e594,2026-05-10T19:20:23Z,fix: merge streamed chunks into final_state so reports save correctly,100,75,True,,0,0,,0,False
+e2c850eb173423382d34d16bb5e1863e7a45e8a1,2026-05-10T19:29:41Z,fix(cli): preserve exchange suffixes in ticker prompt,100,75,True,,0,0,,0,False
+afdc6d4ec1008da88a8004e0d76a34381daab9ef,2026-05-10T19:39:57Z,chore: suppress upstream langgraph allowed_objects deprecation noise,100,75,True,,0,0,,0,False
+22bb91bd839dc382f244313fc7392d0e64b04590,2026-05-11T01:12:28Z,fix(llm): structured output for DeepSeek V4 and reasoner,102,77,True,,0,0,,0,False
+704b7627f2a11c0ab9259dab7308e39c85eecec4,2026-05-11T01:34:45Z,fix(docker): pre-create .tradingagents dir with appuser ownership,102,77,True,,0,0,,0,False
+19d22b54a98aa050fae0cd6671deae9cd9f53ce3,2026-05-11T02:03:27Z,feat(llm): add MiniMax as a built-in provider,102,77,True,,0,0,,0,False
+9482cae188bd6a3b0e0ddd82fe45a0972885cf75,2026-05-11T02:30:24Z,fix: bundle config/recursion/missing-key fixes,103,78,True,,0,0,,0,False
+e1316686f89692cc01a46f1389da5a51c8e1a300,2026-05-11T02:40:33Z,fix(llm): MiniMax integration polish vs official docs,104,79,True,,0,0,,0,False
+78fe77f4e659d7458d2e6785421d4c04636a0412,2026-05-11T02:49:57Z,feat(llm): bump OpenAI catalog to GPT-5.5 frontier,104,79,True,,0,0,,0,False
+9e00c8117f3d20616c60e050a68aff85e72fb480,2026-05-11T02:56:59Z,feat(llm): bump Anthropic catalog to Claude Opus 4.7 frontier,104,79,True,,0,0,,0,False
+4f057e290cd31b5f1e182ce7a56893abc4202c76,2026-05-11T03:32:00Z,feat(llm): swap Gemini 3.1 Flash-Lite to GA stable,104,79,True,,0,0,,0,False
+0011b5ebf54d6709cc9e6f1ab129684b6166653b,2026-05-11T03:45:43Z,feat(llm): align xAI catalog with docs — adopt grok-4.20 frontier,104,79,True,,0,0,,0,False
+faaeebac70bce1aed48ee53a164b4305460a27a4,2026-05-11T04:16:11Z,feat(cli): collapse regional duplicates; refresh Qwen catalog,104,79,True,,0,0,,0,False
+d0dd0420ad20d1fc32759c738855b7d591ee8f69,2026-05-11T04:19:50Z,feat(llm): GLM dual-region split + catalog refresh,104,79,True,,0,0,,0,False
+0fcf13624e8ab20b1cb3e10ebfd51dccf0b0213a,2026-05-11T05:20:07Z,feat(agents): rename to sentiment_analyst; integrate StockTwits + Reddit,107,82,True,,0,0,,0,False
+384fe1a3d2b507ca5e970bab1540bdd1346c384e,2026-05-11T05:30:52Z,feat(news): configurable fetch params via DEFAULT_CONFIG,107,82,True,,0,0,,0,False
+6b384f74f94c2b2d16e6114a709f1b5bb2d4fcd5,2026-05-11T05:41:42Z,"feat(i18n): localize researchers, risk debators, research mgr, trader",107,82,True,,0,0,,0,False
+d13e9b79469abe142fcda7b26d03fcaf6a99262b,2026-05-11T06:12:31Z,feat(config): TRADINGAGENTS_* env-var overlay for DEFAULT_CONFIG,108,83,True,,0,0,,0,False
+9f7abfcbd576686685210f2dc6b8ec52c5d744ba,2026-05-11T06:12:34Z,feat(cli): detect missing provider API keys and persist to .env,110,85,True,,0,0,,0,False
+879e2bb5da53b0a3f78de014bb165ba7de55e83b,2026-05-11T06:25:22Z,refactor: align display label and docs with sentiment_analyst rename,110,85,True,,0,0,,0,False
+a2f343bb546fde4d2fc9f0a276ff44aa53f88442,2026-05-11T16:41:09+08:00,Merge remote-tracking branch 'upstream/main' into crypto-analysis-mvp,112,87,True,,0,0,,0,False
+249caba06fde88a2fade075ad584845a555e9884,2026-05-11T16:44:00+08:00,Merge remote-tracking branch 'upstream/main' into analyst-phase1-observability,112,87,True,,0,0,,0,False
+f10daa28241ac9a6b7aaa52fc82d1ded9b157ad8,2026-05-11T08:46:21Z,feat(ollama): OLLAMA_BASE_URL end-to-end with endpoint confirmation,111,86,True,,0,0,,0,False
+800862405dd5f932ae1776b2b46e7d927f415854,2026-05-11T09:03:06Z,feat(ollama): allow Custom model ID in the CLI dropdown,111,86,True,,0,0,,0,False
+819e813a14414363aaa45fb8e174d1a30b40d5c1,2026-05-11T09:07:38Z,"docs(readme): Ollama line covers endpoint, pull, custom model",111,86,True,,0,0,,0,False
+78d063dc5c39e962f66fb30468872269c72d8cb9,2026-05-11T09:14:28Z,feat(reflection): configurable alpha benchmark for non-US tickers,111,86,True,,0,0,,0,False
+a5cb7cbd61d217fb0bc43f017392a861257afe6a,2026-05-11T09:27:36Z,"chore: release v0.2.5 — sentiment analyst, env-var config, more providers",111,86,True,,0,0,,0,False
+b16fe53efe822b5ee53e1bccaa6a76a0573569fe,2026-05-17T00:01:46-07:00,Merge #487 — analyst execution planning and timing hooks,113,88,True,,0,0,,0,False
+a2e7ac15995536ad5088d02e337f0a332e1535a6,2026-05-17T00:01:49-07:00,Merge #567 — analysis-only crypto asset mode,115,90,True,,0,0,,0,False
+3e5e99b36842a7d7f3c245517af486d7c3ccb454,2026-05-17T07:25:59Z,"fix(graph): integrate #487 + #567 — sentiment label, route, propagate asset_type",115,90,True,,0,0,,0,False
+e848b5e8125dd70c95ec3b0d143426b01afdb820,2026-05-17T07:49:42Z,fix(llm): gate MiniMax reasoning_split by model capability (#826),115,90,True,,0,0,,0,False
+61522e103e61601c553b4544abcd53fa7ebf9f1d,2026-05-17T07:54:06Z,fix(llm): skip Anthropic effort kwarg on non-supporting models (#831),116,91,True,,0,0,,0,False
+d7b40a2a5ce67cc6166a63e9b4c4c0df09296ff9,2026-05-30T23:56:32Z,fix(graph): resolve instrument identity to stop wrong-company hallucination,117,92,True,,0,0,,0,False
+3543e5397eb4dbeb7683360144da407a0a50918e,2026-05-31T00:14:37Z,fix(dataflows): fall back to Reddit RSS search when JSON 403s,118,93,True,,0,0,,0,False
+a66aa8fb94062c60ccd83b7eb350c19e16c32728,2026-05-31T00:51:30Z,fix(deps): require yfinance >=1.4.1 and tolerate non-Date index column,119,94,True,,0,0,,0,False
+e80636fc0ef9a33d5f5584fcdfea44b19291a3d0,2026-05-31T01:45:25Z,feat(sentiment): structured output for the Sentiment Analyst,119,94,True,,0,0,,0,False
+47cbb321fe67c1833ae26a5536e548c7f2910bb7,2026-05-31T01:58:32Z,feat(market): verified market-data snapshot to ground numeric claims,122,97,True,,0,0,,0,False
+8a22594607dd6b905c9cd685a7242510e2abf526,2026-05-31T03:51:50Z,feat(config): expose sampling temperature and document reproducibility,123,98,True,,0,0,,0,False
+2c9f1bfe655d3c78992e4847a2135948652679b5,2026-05-31T06:13:35Z,fix(cli): consolidate duplicate get_ticker and only announce non-stock asset type,123,98,True,,0,0,,0,False
+8694bd070d6d8db787b57d7c0e3d88b2ff7ffedd,2026-05-31T06:20:55Z,fix(llm): send MiniMax reasoning_split via extra_body so the openai SDK accepts it (#826),123,98,True,,0,0,,0,False
+d6762d60958760415a9f8fe2d344fb794f33eb8c,2026-05-31T06:28:06Z,chore: gitignore .env.enterprise and reports/,123,98,True,,0,0,,0,False
+c93b92c7a47348198c45353e1f2c046b9066f3fb,2026-05-31T07:29:19Z,feat(markets): add China A-share benchmarks and document non-US tickers,123,98,True,,0,0,,0,False
+2f85be624ed2d0096d00fbcf60a74a7026ca3800,2026-05-31T08:01:03Z,chore(llm): add latest models and default to GPT-5.5,123,98,True,,0,0,,0,False
+1ff3f07a73ff11dbf6fac699ac4e051fcc5f4e69,2026-05-31T22:38:47Z,fix: support commodity/forex/crypto tickers and never invent prices (#781),126,101,True,,0,0,,0,False
+2e67782f20b41508ca6842aef909535f6658c7f1,2026-05-31T22:38:48Z,feat(cli): skip interactive LLM selection when configured via environment (#873),127,102,True,,0,0,,0,False
+04f434e86db88e7707bf16db8ed7183f9764fe26,2026-06-01T02:02:47Z,chore: README housekeeping and remove stale TODO,126,102,True,,0,0,,0,False
+2a58c2208ffbdbefa785f8117441fb86792b5fcd,2026-06-13T20:29:24Z,"ci: add test/lint/smoke workflow, declare python-dotenv, recommend Python 3.12",127,102,True,,0,0,,0,False
+7c8fe2fe9f0f29548c838f75c9cba47f9302390c,2026-06-13T20:39:52Z,fix(data): normalize symbols on the identity and reflection paths,128,103,True,,0,0,,0,False
+76add9048f936b1ab383eece0584d4d13d35c2fa,2026-06-13T20:50:21Z,fix(cli): unify ticker handling with the data-path symbol normalizer,129,104,True,,0,0,,0,False
+65608831f88b06d35c7978d715e2c146839b700f,2026-06-13T21:11:25Z,fix(data): respect the configured vendor chain and log vendor failures,130,105,True,,0,0,,0,False
+dab07688fba33c33c3e7d874ec554cf3201caa8d,2026-06-13T21:30:11Z,fix(data): include the requested end date in yfinance fetches,131,106,True,,0,0,,0,False
+a597063747bb2a684d593839c6d1825a33cc6032,2026-06-13T21:30:11Z,fix(cli): correct invalid escape sequence in confirm_ollama_endpoint docstring,131,106,True,,0,0,,0,False
+e4be7cc5a34bce313d7d6d9b1fdecab03225943f,2026-06-13T21:47:06Z,fix(data): add Alpha Vantage request timeout and stop mislabeling bad keys,132,107,True,,0,0,,0,False
+0c1231a4057c4348d5f1fa1f45c1002921b0d035,2026-06-13T21:54:07Z,fix(data): keep future/undated news out of historical windows,133,108,True,,0,0,,0,False
+4e7821d574ece422d83ddef7b60e2de6944988cc,2026-06-14T02:46:29Z,fix(graph): register get_verified_market_snapshot in the market ToolNode,134,109,True,,0,0,,0,False
+20d3b0782f6ad1f5c40ddc511cba29abdbec81e9,2026-06-14T03:22:24Z,feat(llm): unify OpenAI-compatible providers behind a registry + generic endpoint,136,111,True,,0,0,,0,False
+295e84cd546a36b0f8b2eb977de0e4493211ebf0,2026-06-14T04:13:39Z,"feat(llm): add NVIDIA NIM, Kimi, Groq, and Mistral providers",136,111,True,,0,0,,0,False
+895ed130f9df5a63889610c9e77af39567bd0a54,2026-06-14T04:24:54Z,feat(llm): add Amazon Bedrock as a first-class provider,138,113,True,,0,0,,0,False
+ddfb840ecfa6030931a07ed5fbf5805e41721de1,2026-06-14T06:08:31Z,feat(data): add FRED macro indicators as an optional vendor,141,116,True,,0,0,,0,False
+db059034a2a54189928b5ae2f62b96a7cc7e2f6f,2026-06-14T06:30:43Z,feat(data): add Polymarket prediction markets as a keyless vendor,144,119,True,,0,0,,0,False
+7df18fc9128d45b4ccf9b31570b2252a383595e4,2026-06-14T07:10:15Z,refactor(data): unify vendor errors under a VendorError hierarchy,146,121,True,,0,0,,0,False
+9fd54f83682284fed82ec54e3719a12fd440a0f9,2026-06-14T07:10:15Z,fix(data): reject stale yfinance OHLCV instead of reporting wrong prices,147,122,True,,0,0,,0,False
+eeb84aa63b6f39b332f5e1eb03f8dd2cf6c9ff78,2026-06-14T07:23:19Z,fix(reddit): go RSS-first with 429 backoff and robust transport errors,147,122,True,,0,0,,0,False
+308757c9997e1d331eb998261acdc76e957ccf8b,2026-06-14T07:23:19Z,fix(data): catch http.client transport errors in StockTwits,148,123,True,,0,0,,0,False
+3cddf1e331dbbd5d993ace62edbb58cb3dd65713,2026-06-14T07:23:19Z,fix(llm): use the OpenAI Responses API only for native endpoints,149,124,True,,0,0,,0,False
+cbc5f67d42635452b0d72015c4d1c1c375b50817,2026-06-14T15:56:59Z,test(i18n): guard that every report agent applies the output language,150,125,True,,0,0,,0,False
+e3bc87298243b2ca7865e853953f447d8c326c2b,2026-06-14T16:38:36Z,chore(lint): make the repository ruff-clean under the strict select,150,125,True,,0,0,,0,False
+6b6177ebf7d1666365c5d23872ec35f3c4505c3b,2026-06-14T16:38:36Z,ci: lint the full repository,150,125,True,,0,0,,0,False
+03600f3121071b35e21af477460d2fadc305d0b3,2026-06-14T17:03:17Z,chore(models): refresh the model catalog to current provider lineups,150,125,True,,0,0,,0,False
+7aef10acbd06be1ba8ce5b7487d9f828bef5137d,2026-06-14T18:12:57Z,"fix(sentiment): guide an informative, high-signal narrative",150,125,True,,0,0,,0,False
+c15200dc286b66abce3f1bcf09b298dc06b8539d,2026-06-14T18:49:02Z,fix(cli): label OpenRouter prompts and shortlist mainstream models,151,126,True,,0,0,,0,False
+a420ad0f3b7d8f2ebb48afd85eb1632b62f7cbb0,2026-06-21T21:03:05Z,fix(cli): honor env precedence for LLM and run config,153,128,True,,0,0,,0,False
+7bb16c5daa31eac602723526865d46b7cd35f04c,2026-06-21T21:03:05Z,"chore(models): retire deprecated models, simplify thinking config",154,129,True,,0,0,,0,False
+ee1ece3347304f8c1a4855d09d03fb24b4e7dfa1,2026-06-21T21:28:59Z,fix(dataflows): degrade gracefully when an optional vendor fails,154,129,True,,0,0,,0,False
+9ad98c55c5bee4b6cd142e9783c6d52783048c62,2026-06-21T21:28:59Z,fix(data): normalize ticker on the news path,154,129,True,,0,0,,0,False
+517eeaf4b9ad2dfecb852fef78125ff6370ff640,2026-06-21T22:09:43Z,fix(structured): harden structured output for local servers and thinking models,154,129,True,,0,0,,0,False
+709fe2b6465896cd9377f324f083707080155262,2026-06-21T22:09:43Z,fix(graph): dedupe the trailing message in the debug stream,154,129,True,,0,0,,0,False
+0405168f20869642e5365054e4ad4b3ff2e43bc9,2026-06-21T22:31:35Z,fix(schema): coerce null-ish strings in optional float fields,154,129,True,,0,0,,0,False
+ec3974b84eaeff93454ef3fa2f7005d4daf55baf,2026-06-21T22:31:35Z,chore(config): remove the no-op analyst_concurrency_limit knob,154,129,True,,0,0,,0,False
+0b61effd6cebc7ec27e6f8aab0ac2fb9188774f6,2026-06-21T22:31:35Z,chore(deps): remove the unused uv.lock,153,129,True,,0,0,,0,False
+a0120e1805b00a154d56a53dac713ba1c5ba48c8,2026-06-21T23:22:30Z,feat(reporting): share the report-tree writer between the CLI and the API,155,131,True,,0,0,,0,False
+2b2d685df66912287277091fcfaa5b3d0f6d6693,2026-06-21T23:50:33Z,fix(prompts): put the current date at the top of analyst prompts,155,131,True,,0,0,,0,False
+8ab24f30aff9897c5cc59b2f028264d08652af49,2026-06-21T23:50:33Z,test: make the API-key fixture robust to empty-string env vars,155,131,True,,0,0,,0,False
+cbd17ac3e0a13a5a9bc26ee4d3524692a12d554a,2026-06-21T23:50:33Z,docs: drop retired model IDs from the reproducibility note and smoke script,155,131,True,,0,0,,0,False
+85946c2f60768ab2dae23a5a36cd927662feef94,2026-06-22T02:05:07Z,chore: release v0.3.0,155,131,True,,0,0,,0,False
+3570f2e1e679c9ef13e48c926c0692ba0e70eb0a,2026-07-05T14:29:06Z,fix(dataflows): apply the Alpha Vantage fundamentals look-ahead filter,155,131,True,,0,0,,0,False
+622f99d28a39d845a4fff8f73729a1f3c09b23ac,2026-07-05T14:29:07Z,fix(analysts): align the news prompt with the get_news tool signature,156,132,True,,0,0,,0,False
+b47a828a4f53202b2e0173f518f94dfba0be246a,2026-07-05T14:29:07Z,fix(graph): give the shared debate/risk routers a complete path_map,157,133,True,,0,0,,0,False
+daf1da9c351fb333c4af6b9efb041ab591187dd1,2026-07-05T14:29:07Z,fix(graph): key checkpoints on graph shape and expose the LLM retry budget,158,134,True,,0,0,,0,False
+a102afa090dad4912a2a445d294ccfc49cc0e1ce,2026-07-05T14:29:07Z,fix(dataflows): map crypto to StockTwits/Reddit sentiment symbols,158,134,True,,0,0,,0,False
+43bd32befaf35d861b37be0b5f72e0f2076f3ace,2026-07-05T14:29:07Z,feat(llm): support Bedrock API-key auth via AWS_BEARER_TOKEN_BEDROCK,158,134,True,,0,0,,0,False
+0f70af2f31c17d623ecedf35f2ea258a1ecccf92,2026-07-05T14:29:07Z,feat(llm): add Claude Sonnet 5 and Fable 5 to the catalog,158,134,True,,0,0,,0,False
+01477f9afb7a47b849ed4c9259d3a9a4738d9fda,2026-07-05T14:29:07Z,chore: release v0.3.1,158,134,True,,0,0,,0,False
+40774ca0428b5fc7c7180aed9bb58e331ce58689,2026-07-18T06:28:38Z,fix(dataflows): make the Yahoo news window UTC and end-exclusive,158,134,True,,0,0,,0,False
+d78c698d0eeebbe630d662721f30a99149e77ff8,2026-07-18T06:28:38Z,fix(dataflows): refresh the same-day OHLCV cache,159,135,True,,0,0,,0,False
+3f6c082695ef90d4b1402fae19b7e138fbb5576a,2026-07-18T06:28:38Z,fix(cli): report an unusable terminal instead of a prompt_toolkit traceback,160,136,True,,0,0,,0,False
+030b434585b63a3d9934aaec90ef5cfdd84f87c3,2026-07-18T06:28:38Z,fix(agents): stop priming tool calls in schema-only structured agents,161,137,True,,0,0,,0,False
+7bbe33ab1d530a2f72c8763e0ccdfdf1cc039216,2026-07-18T15:23:59Z,docs: add trending badge,161,137,True,,0,0,,0,False
+a33fd4c0f134485a43553a2c23a63cb14adbd88f,2026-07-18T15:55:04Z,docs: streamline README header,160,137,True,,0,0,,0,False
