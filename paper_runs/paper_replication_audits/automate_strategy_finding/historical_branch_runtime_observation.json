@@ -1,0 +1,48 @@
+{
+  "observed_at": "2026-08-13",
+  "source_commit": "f28e274c8be373a7e3c1a325846f07d67b079250",
+  "environment": {
+    "host": "Bouchet CPU node",
+    "python": "3.12.3",
+    "pytorch": "2.7.1",
+    "transformers": "4.55.2",
+    "modules": [
+      "PyTorch/2.7.1-foss-2024a-CUDA-12.8.0",
+      "Transformers/4.55.2-gfbf-2024a"
+    ]
+  },
+  "probe_scope": "Author files reconstructed unchanged as one importable Python package; no paper data, prompt, model API, or claimed result was supplied or fabricated.",
+  "static_python_files_parsed": 5,
+  "reconstructed_package_import": "passed",
+  "multi_agent_synthetic_probe": {
+    "status": "passed",
+    "input": {
+      "confidence": 0.8,
+      "agent": "moderate",
+      "confidence_threshold": 0.6,
+      "max_exposure": 0.5
+    },
+    "observed_mean_confidence": 0.8,
+    "observed_mean_exposure": 0.5,
+    "paper_result_credit": false
+  },
+  "optimizer_short_batch_probe": {
+    "status": "failed",
+    "input_shape": [
+      1,
+      2
+    ],
+    "batch_size": 32,
+    "exception_type": "ZeroDivisionError",
+    "cause": "integer batch count is zero and the epoch returns total_loss / num_batches",
+    "paper_result_credit": false
+  },
+  "default_constructor_probe": {
+    "status": "environment_crash_before_model_construction",
+    "signal": "SIGILL",
+    "boundary": "Bouchet's centrally supplied tokenizers binary crashed while loading the downloaded GPT-2 tokenizer",
+    "author_code_failure_inferred": false,
+    "paper_result_credit": false
+  },
+  "interpretation": "The branch is importable when reconstructed under a valid package name, and its simple confidence-scaling agent can execute. This does not connect it to the paper experiment. The optimizer has a directly observed short-batch defect; the default constructor was not adjudicated because the environment crashed in a dependency before model construction."
+}

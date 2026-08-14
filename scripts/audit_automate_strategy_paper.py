@@ -25,6 +25,23 @@ from xml.etree import ElementTree as ET
 
 
 SOURCE_COMMIT = "8b50203faf50d0b561cf5ffee4d63dcdc4551884"
+CURRENT_MAIN_HEAD = "ebcb5ed44a71664316c99b021026358a44aef38d"
+NEW_PROJECT_HEAD = "f28e274c8be373a7e3c1a325846f07d67b079250"
+PUBLIC_HISTORY_COMMITS = (
+    "6145cd5cf12158ee9f29c02467f616b947958ac3",
+    "496ad96f1fc525dcc43109401c11bcc79928bcd9",
+    "6303684b315fc3bedfc9b87db0e38e3102033d50",
+    "3e95d2141b4b53aad5be2becf83eb2f56d60ab32",
+    NEW_PROJECT_HEAD,
+    SOURCE_COMMIT,
+    CURRENT_MAIN_HEAD,
+)
+PUBLIC_HISTORY_PATHS_SHA256 = "9a670889ddde51ed3e506e3163d4d25c18eac76641469d178df6d21ecbe0cac4"
+DISCOVERY_SHA256 = {
+    "branches.json": "3654717f907163f1879d2a58d0fb8279681a98c16669a771bdf852bdbdae9e04",
+    "tags.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+}
 PAPER_SHA256 = "6585377002a3b049a6bfadef3152a74adfe12d68ff5c48cccb8c76de4fd1b540"
 PAPER_URL = "https://aclanthology.org/2025.findings-emnlp.1005.pdf"
 SOURCE_URL = "https://github.com/kouzhizhuo/Automate-Strategy-Finding-with-LLM-in-Quant-investment"
@@ -65,6 +82,27 @@ def git_head(root: Path) -> str:
         capture_output=True,
         text=True,
     ).stdout.strip()
+
+
+def git(root: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def git_bytes(root: Path, *args: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
+def sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
 
 
 def excel_column_index(reference: str) -> int:
@@ -257,12 +295,297 @@ def table_4_unverifiable_rows() -> List[Dict[str, Any]]:
     return rows
 
 
+def _contains_usable_credential_literal(text: str) -> bool:
+    """Detect a likely usable literal without ever returning or recording its value."""
+    for match in re.finditer(r"api_key\s*=\s*[\"']([^\"']+)[\"']", text):
+        value = match.group(1).strip()
+        if len(value) >= 20 and set(value) != {"*"} and "redact" not in value.lower():
+            return True
+    return False
+
+
+def released_source_history_audit(
+    source_root: Path,
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, Any]]:
+    """Inspect every public revision and the later New-project branch fail-closed."""
+    if git(source_root, "rev-parse", "--is-shallow-repository").strip() != "false":
+        raise RuntimeError("Automate Strategy Finding source checkout is shallow")
+    commits = tuple(git(source_root, "rev-list", "--reverse", "--all").splitlines())
+    if commits != PUBLIC_HISTORY_COMMITS:
+        raise RuntimeError(f"Public source history changed: {commits}")
+    unreachable = git(
+        source_root,
+        "fsck",
+        "--full",
+        "--no-reflogs",
+        "--unreachable",
+        "--no-progress",
+    ).strip()
+    if unreachable:
+        raise RuntimeError(f"Public source has unreviewed unreachable objects: {unreachable}")
+
+    discovery_root = source_root / "release-discovery"
+    for filename, expected in DISCOVERY_SHA256.items():
+        path = discovery_root / filename
+        if not path.is_file() or sha256(path) != expected:
+            raise RuntimeError(f"Pinned GitHub discovery response changed: {filename}")
+    branches = json.loads((discovery_root / "branches.json").read_text(encoding="utf-8"))
+    branch_heads = sorted((row["name"], row["commit"]["sha"]) for row in branches)
+    expected_heads = sorted((("main", CURRENT_MAIN_HEAD), ("New-project", NEW_PROJECT_HEAD)))
+    if branch_heads != expected_heads:
+        raise RuntimeError(f"Public branch heads changed: {branch_heads}")
+    if json.loads((discovery_root / "tags.json").read_text(encoding="utf-8")):
+        raise RuntimeError("Public repository now exposes an unreviewed tag")
+    if json.loads((discovery_root / "releases.json").read_text(encoding="utf-8")):
+        raise RuntimeError("Public repository now exposes an unreviewed release")
+
+    all_paths = sorted(
+        set(
+            git(
+                source_root,
+                "-c",
+                "core.quotePath=false",
+                "log",
+                "--all",
+                "--name-only",
+                "--pretty=format:",
+            ).splitlines()
+        )
+        - {""}
+    )
+    paths_digest = sha256_bytes(("\n".join(all_paths) + "\n").encode("utf-8"))
+    if len(all_paths) != 39 or paths_digest != PUBLIC_HISTORY_PATHS_SHA256:
+        raise RuntimeError(f"Historical path surface changed: {len(all_paths)} {paths_digest}")
+
+    evidence_roles = {
+        PUBLIC_HISTORY_COMMITS[0]: "repository_initialization_only",
+        PUBLIC_HISTORY_COMMITS[1]: "factor_prompt_log_and_workbook_component_release",
+        PUBLIC_HISTORY_COMMITS[2]: "placeholder_path_added_no_experiment_evidence",
+        PUBLIC_HISTORY_COMMITS[3]: "later_generic_grail_component_attempt_added",
+        PUBLIC_HISTORY_COMMITS[4]: "generic_grail_documentation_and_dependencies_updated",
+        SOURCE_COMMIT: "placeholder_path_renamed_no_experiment_evidence",
+        CURRENT_MAIN_HEAD: "credential_redaction_only_no_experiment_evidence",
+    }
+    history_rows: List[Dict[str, Any]] = []
+    grail_names = {
+        "__init__.py",
+        "main.py",
+        "multi_agent_system.py",
+        "seed_alphas_factory.py",
+        "weight_optimization.py",
+    }
+    result_pattern = re.compile(r"53[.]173|53[.]17|top-k|drop-n|2023-01|202301|2024-01|202401", re.I)
+    for commit in commits:
+        authored_at, subject = git(
+            source_root, "show", "-s", "--format=%aI%x09%s", commit
+        ).rstrip().split("\t", 1)
+        paths = git(
+            source_root, "-c", "core.quotePath=false", "ls-tree", "-r", "--name-only", commit
+        ).splitlines()
+        text_paths = [
+            path
+            for path in paths
+            if Path(path).suffix.lower() in {".py", ".m", ".md", ".txt"}
+        ]
+        integrated_literal_paths = []
+        for path in text_paths:
+            text = git_bytes(source_root, "show", f"{commit}:{path}").decode(
+                "utf-8", errors="replace"
+            )
+            if result_pattern.search(text):
+                integrated_literal_paths.append(path)
+        agent_text = (
+            git_bytes(source_root, "show", f"{commit}:AutoGPT/main.py").decode(
+                "utf-8", errors="replace"
+            )
+            if "AutoGPT/main.py" in paths
+            else ""
+        )
+        memberships = [
+            name
+            for name, head in branch_heads
+            if subprocess.run(
+                ["git", "-C", str(source_root), "merge-base", "--is-ancestor", commit, head],
+                check=False,
+            ).returncode
+            == 0
+        ]
+        history_rows.append(
+            {
+                "commit": commit,
+                "authored_at": authored_at,
+                "subject": subject,
+                "public_branch_membership": ";".join(sorted(memberships)),
+                "tracked_paths": len(paths),
+                "python_source_paths": sum(path.endswith(".py") for path in paths),
+                "xlsx_paths": sum(path.endswith(".xlsx") for path in paths),
+                "grail_component_paths": sum(path in grail_names for path in paths),
+                "integrated_result_or_portfolio_rule_literal_paths": len(integrated_literal_paths),
+                "usable_hardcoded_credential_literal_present": _contains_usable_credential_literal(
+                    agent_text
+                ),
+                "evidence_role": evidence_roles[commit],
+                "integrated_native_portfolio_output_present": False,
+                "published_result_regenerated": False,
+                "paper_result_credit": False,
+            }
+        )
+    if any(row["integrated_result_or_portfolio_rule_literal_paths"] for row in history_rows):
+        raise RuntimeError("An unreviewed integrated-result or portfolio-rule literal appeared")
+    if not history_rows[-2]["usable_hardcoded_credential_literal_present"]:
+        raise RuntimeError("Pinned historical credential-presence boundary changed")
+    if history_rows[-1]["usable_hardcoded_credential_literal_present"]:
+        raise RuntimeError("Current main unexpectedly still contains a usable credential literal")
+
+    component_specs = (
+        (
+            "main.py",
+            "pipeline_orchestrator",
+            "imports root-level siblings relatively, so the documented root checkout is not an importable grail package; defaults are 100-64-10 rather than paper |A|-10-1",
+        ),
+        (
+            "seed_alphas_factory.py",
+            "document_classifier_placeholder",
+            "uses GPT-2 sequence classification rather than paper GPT-4o and reads outputs.hidden_states without requesting hidden states; it does not generate executable alpha formulas",
+        ),
+        (
+            "multi_agent_system.py",
+            "generic_confidence_scaler",
+            "creates conservative/moderate/aggressive copies that rescale a caller-provided confidence; it does not implement paper CSA/RPA market-conditioned IC and risk evaluation",
+        ),
+        (
+            "weight_optimization.py",
+            "generic_two_linear_layer_trainer",
+            "accepts caller-supplied tensors, defaults to 64 hidden and 10 outputs, and never constructs paper alpha histories, future returns, composite stock scores, or portfolio",
+        ),
+        (
+            "README.md",
+            "generic_grail_usage_claim",
+            "documents an absent grail package and caller placeholders; no frozen input, command, seed, checkpoint, or expected native output is supplied",
+        ),
+        (
+            "requirements.txt",
+            "unpinned_dependency_ranges",
+            "declares broad minimum versions only; no lockfile or environment pin establishes an executable historical runtime",
+        ),
+    )
+    component_rows = []
+    for path, role, finding in component_specs:
+        value = git_bytes(source_root, "show", f"{NEW_PROJECT_HEAD}:{path}")
+        if path.endswith(".py"):
+            compile(value.decode("utf-8"), path, "exec")
+        component_rows.append(
+            {
+                "branch": "New-project",
+                "commit": NEW_PROJECT_HEAD,
+                "path": path,
+                "sha256": sha256_bytes(value),
+                "component_role": role,
+                "static_syntax_valid": path.endswith(".py"),
+                "connected_to_released_workbooks": False,
+                "paper_configuration_match": False,
+                "native_run_shipped": False,
+                "published_result_regenerated": False,
+                "paper_result_credit": False,
+                "finding": finding,
+            }
+        )
+
+    summary = {
+        "public_commits_reviewed": len(commits),
+        "public_branches_reviewed": len(branch_heads),
+        "public_branch_heads": dict(branch_heads),
+        "public_tags": 0,
+        "public_releases": 0,
+        "unreachable_git_objects": 0,
+        "historical_unique_paths_reviewed": len(all_paths),
+        "history_complete_for_pinned_public_refs": True,
+        "current_main_diff_from_pinned_commit": "credential_redaction_only",
+        "current_main_contains_usable_hardcoded_credential_literal": False,
+        "pinned_commit_historically_contains_usable_hardcoded_credential_literal": True,
+        "new_project_branch_components_reviewed": len(component_rows),
+        "new_project_python_syntax_valid": True,
+        "new_project_documented_import_layout_exists": False,
+        "new_project_uses_paper_gpt4o_seed_alpha_generation": False,
+        "new_project_implements_paper_csa_and_rpa": False,
+        "new_project_default_mlp_architecture_matches_paper": False,
+        "new_project_connected_to_released_workbooks": False,
+        "new_project_native_run_or_result_shipped": False,
+        "new_project_paper_result_credit": False,
+    }
+    return history_rows, component_rows, summary
+
+
+def historical_branch_runtime_observation() -> Dict[str, Any]:
+    """Return the bounded native probe recorded on Bouchet for the branch payload."""
+    return {
+        "observed_at": "2026-08-13",
+        "source_commit": NEW_PROJECT_HEAD,
+        "environment": {
+            "host": "Bouchet CPU node",
+            "python": "3.12.3",
+            "pytorch": "2.7.1",
+            "transformers": "4.55.2",
+            "modules": [
+                "PyTorch/2.7.1-foss-2024a-CUDA-12.8.0",
+                "Transformers/4.55.2-gfbf-2024a",
+            ],
+        },
+        "probe_scope": (
+            "Author files reconstructed unchanged as one importable Python package; no paper "
+            "data, prompt, model API, or claimed result was supplied or fabricated."
+        ),
+        "static_python_files_parsed": 5,
+        "reconstructed_package_import": "passed",
+        "multi_agent_synthetic_probe": {
+            "status": "passed",
+            "input": {
+                "confidence": 0.8,
+                "agent": "moderate",
+                "confidence_threshold": 0.6,
+                "max_exposure": 0.5,
+            },
+            "observed_mean_confidence": 0.8,
+            "observed_mean_exposure": 0.5,
+            "paper_result_credit": False,
+        },
+        "optimizer_short_batch_probe": {
+            "status": "failed",
+            "input_shape": [1, 2],
+            "batch_size": 32,
+            "exception_type": "ZeroDivisionError",
+            "cause": (
+                "integer batch count is zero and the epoch returns total_loss / num_batches"
+            ),
+            "paper_result_credit": False,
+        },
+        "default_constructor_probe": {
+            "status": "environment_crash_before_model_construction",
+            "signal": "SIGILL",
+            "boundary": (
+                "Bouchet's centrally supplied tokenizers binary crashed while loading the "
+                "downloaded GPT-2 tokenizer"
+            ),
+            "author_code_failure_inferred": False,
+            "paper_result_credit": False,
+        },
+        "interpretation": (
+            "The branch is importable when reconstructed under a valid package name, and its "
+            "simple confidence-scaling agent can execute. This does not connect it to the paper "
+            "experiment. The optimizer has a directly observed short-batch defect; the default "
+            "constructor was not adjudicated because the environment crashed in a dependency "
+            "before model construction."
+        ),
+    }
+
+
 def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[str, Any]:
     commit = git_head(source_root)
     if commit != SOURCE_COMMIT:
         raise RuntimeError(f"Expected source commit {SOURCE_COMMIT}, found {commit}")
     if sha256(paper_path) != PAPER_SHA256:
         raise RuntimeError("Official paper PDF hash does not match the pinned primary source")
+    history, branch_components, history_summary = released_source_history_audit(source_root)
 
     seed_path = source_root / "data/Seed Alpha.xlsx"
     source_main = (source_root / "main.py").read_text(encoding="utf-8")
@@ -283,6 +606,20 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     )
     table_4 = table_4_unverifiable_rows()
     write_csv(output_dir / "table_4_conformance.csv", table_4, list(table_4[0]))
+    write_csv(
+        output_dir / "released_source_history_inventory.csv",
+        history,
+        list(history[0]),
+    )
+    write_csv(
+        output_dir / "historical_branch_component_inventory.csv",
+        branch_components,
+        list(branch_components[0]),
+    )
+    runtime_observation = historical_branch_runtime_observation()
+    (output_dir / "historical_branch_runtime_observation.json").write_text(
+        json.dumps(runtime_observation, indent=2) + "\n", encoding="utf-8"
+    )
     paper_inconsistencies = (
         {
             "claim": "SSE50 benchmark final return",
@@ -317,6 +654,9 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "paper_sha256": PAPER_SHA256,
         "source_url": SOURCE_URL,
         "source_commit": commit,
+        "current_public_main_head": CURRENT_MAIN_HEAD,
+        "new_project_branch_head": NEW_PROJECT_HEAD,
+        "released_source_history": history_summary,
         "source_seed_workbook": str(seed_path.relative_to(source_root)),
         "source_seed_workbook_sha256": sha256(seed_path),
         "paper_table_2_cells_matched": table_2_matches,
@@ -351,12 +691,35 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "source_agent_contains_hardcoded_credential": bool(
             re.search(r"api_key\s*=\s*[\"'][^\"']+[\"']", source_agent)
         ),
+        "source_agent_historical_credential_literal_present_at_pinned_commit": (
+            _contains_usable_credential_literal(source_agent)
+        ),
+        "source_agent_current_main_credential_redacted": not history_summary[
+            "current_main_contains_usable_hardcoded_credential_literal"
+        ],
+        "new_project_branch_reviewed": True,
+        "new_project_branch_component_attempt_is_paper_faithful": False,
+        "new_project_branch_bounded_runtime_probe": {
+            "package_import": runtime_observation["reconstructed_package_import"],
+            "multi_agent_synthetic_probe": runtime_observation["multi_agent_synthetic_probe"][
+                "status"
+            ],
+            "optimizer_short_batch_probe": runtime_observation[
+                "optimizer_short_batch_probe"
+            ]["status"],
+            "default_constructor_probe": runtime_observation["default_constructor_probe"][
+                "status"
+            ],
+        },
+        "new_project_branch_paper_result_credit": False,
         "paper_internal_numeric_inconsistencies_recorded": len(paper_inconsistencies),
         "interpretation": (
             "The public artifacts support a partial 2022Q4 factor-analysis and prompt-selection "
             "component audit. They do not contain the 2023 integrated portfolio path required "
-            "to verify the paper's 53.173% Table 4 result, and the released DNN width differs "
-            "from the paper."
+            "to verify the paper's 53.173% Table 4 result. Complete public-history review also "
+            "finds a later generic Grail branch, but its components are disconnected from the "
+            "released data and materially differ from the paper's GPT-4o, CSA/RPA, and |A|-10-1 "
+            "MLP design."
         ),
     }
     report = f"""# Automate Strategy Finding paper-level conformance audit
@@ -378,6 +741,9 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
   workflow. This is component evidence, not the paper's final strategy.
 - Recomputing Table 2 with the inferable mean-absolute-IC rule matches
   {table_2_matches}/{len(table_2)} displayed cells at four-decimal precision.
+- The complete public Git surface was reviewed: {history_summary['public_commits_reviewed']}
+  commits on {history_summary['public_branches_reviewed']} branches, 39 unique historical paths,
+  zero tags/releases, and zero unreachable objects.
 
 ## What is missing or inconsistent
 
@@ -390,10 +756,24 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
   required `result/profit.csv` and `result/alpha/` inputs are absent.
 - The paper's top-k/drop-n portfolio rule (k=13, n=5) is not implemented in the
   released Python or MATLAB files.
+- The later `New-project` branch adds a generic "Grail" scaffold, but it does not
+  recover the missing experiment. It defaults to GPT-2 rather than GPT-4o; its
+  three risk-profile copies merely rescale caller-provided confidence rather than
+  implementing the paper's market-conditioned CSA/RPA; and its default MLP is
+  100-64-10 rather than |A|-10-1. It accepts caller-supplied tensors, is not wired
+  to any released workbook, and ships no command, frozen input, checkpoint, native
+  output, portfolio path, or reported metric. Static syntax validity is not result credit.
+- A bounded Bouchet probe imported the reconstructed package and exercised the simple
+  confidence scaler. A one-row optimizer call failed with division by zero because
+  it creates zero batches. Default GPT-2 construction could not be adjudicated: the
+  centrally supplied tokenizer dependency terminated with SIGILL before model
+  construction, so that environment crash is explicitly not attributed to author code.
 - The paper itself reports SSE50 return as -13.22% in Table 4 but -11.73% in prose,
   and full-model ablation Sharpe as 1.94 in Table 7 but 1.73 in prose.
 - The factor runner requires unbundled RQData access. The public agent file also
-  embeds a credential literal; this audit never prints, validates, or uses it.
+  contained a usable credential literal at the pinned historical commit. Current
+  `main` redacts it, and that redaction is the only later main-branch change. This
+  audit never prints, validates, or uses the historical value.
 
 Run `scripts/audit_automate_strategy_paper.py` to regenerate this package. Use
 `--strict` when a CI failure is desired until a native integrated return path exists.

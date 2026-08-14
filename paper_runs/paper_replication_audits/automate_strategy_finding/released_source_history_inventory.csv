@@ -1,0 +1,8 @@
+commit,authored_at,subject,public_branch_membership,tracked_paths,python_source_paths,xlsx_paths,grail_component_paths,integrated_result_or_portfolio_rule_literal_paths,usable_hardcoded_credential_literal_present,evidence_role,integrated_native_portfolio_output_present,published_result_regenerated,paper_result_credit
+6145cd5cf12158ee9f29c02467f616b947958ac3,2024-08-08T23:39:44+08:00,Initial commit,New-project;main,1,0,0,0,0,False,repository_initialization_only,False,False,False
+496ad96f1fc525dcc43109401c11bcc79928bcd9,2024-08-08T23:48:14+08:00,Add files via upload,New-project;main,33,3,11,1,0,True,factor_prompt_log_and_workbook_component_release,False,False,False
+6303684b315fc3bedfc9b87db0e38e3102033d50,2025-03-21T10:51:45+08:00,Create Project by cursor,New-project;main,34,3,11,1,0,True,placeholder_path_added_no_experiment_evidence,False,False,False
+3e95d2141b4b53aad5be2becf83eb2f56d60ab32,2025-03-21T10:53:55+08:00,Add files via upload,New-project,38,7,11,5,0,True,later_generic_grail_component_attempt_added,False,False,False
+f28e274c8be373a7e3c1a325846f07d67b079250,2025-03-21T10:55:11+08:00,Add files via upload,New-project,38,7,11,5,0,True,generic_grail_documentation_and_dependencies_updated,False,False,False
+8b50203faf50d0b561cf5ffee4d63dcdc4551884,2025-05-20T15:35:28+08:00,Rename Project by cursor to Project,main,34,3,11,1,0,True,placeholder_path_renamed_no_experiment_evidence,False,False,False
+ebcb5ed44a71664316c99b021026358a44aef38d,2026-08-06T14:58:13+08:00,Update main.py,main,34,3,11,1,0,False,credential_redaction_only_no_experiment_evidence,False,False,False

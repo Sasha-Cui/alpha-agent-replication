@@ -58,6 +58,14 @@ def test_committed_audit_records_partial_component_not_paper_replication() -> No
         inventory = list(csv.DictReader(handle))
     with (output / "table_4_conformance.csv").open(newline="", encoding="utf-8") as handle:
         table_4 = list(csv.DictReader(handle))
+    with (output / "released_source_history_inventory.csv").open(
+        newline="", encoding="utf-8"
+    ) as handle:
+        history = list(csv.DictReader(handle))
+    with (output / "historical_branch_component_inventory.csv").open(
+        newline="", encoding="utf-8"
+    ) as handle:
+        branch_components = list(csv.DictReader(handle))
     assert manifest["overall_status"] == "not_reproduced_missing_integrated_native_output"
     assert manifest["paper_table_2_cells_matched"] == 3
     assert manifest["paper_table_2_cells_total"] == 10
@@ -66,6 +74,52 @@ def test_committed_audit_records_partial_component_not_paper_replication() -> No
     assert manifest["native_integrated_portfolio_return_shipped"] is False
     assert manifest["dnn_hidden_width_matches"] is False
     assert manifest["source_agent_contains_hardcoded_credential"] is True
+    assert manifest["source_agent_historical_credential_literal_present_at_pinned_commit"] is True
+    assert manifest["source_agent_current_main_credential_redacted"] is True
+    assert manifest["new_project_branch_reviewed"] is True
+    assert manifest["new_project_branch_component_attempt_is_paper_faithful"] is False
+    assert manifest["new_project_branch_paper_result_credit"] is False
+    runtime = json.loads(
+        (output / "historical_branch_runtime_observation.json").read_text(encoding="utf-8")
+    )
+    assert runtime["source_commit"] == audit.NEW_PROJECT_HEAD
+    assert runtime["reconstructed_package_import"] == "passed"
+    assert runtime["multi_agent_synthetic_probe"]["status"] == "passed"
+    assert runtime["multi_agent_synthetic_probe"]["paper_result_credit"] is False
+    assert runtime["optimizer_short_batch_probe"]["status"] == "failed"
+    assert runtime["optimizer_short_batch_probe"]["exception_type"] == "ZeroDivisionError"
+    assert runtime["default_constructor_probe"]["status"].startswith("environment_crash")
+    assert runtime["default_constructor_probe"]["author_code_failure_inferred"] is False
+    source_history = manifest["released_source_history"]
+    assert source_history["public_commits_reviewed"] == 7
+    assert source_history["public_branches_reviewed"] == 2
+    assert source_history["public_tags"] == 0
+    assert source_history["public_releases"] == 0
+    assert source_history["unreachable_git_objects"] == 0
+    assert source_history["historical_unique_paths_reviewed"] == 39
+    assert source_history["history_complete_for_pinned_public_refs"] is True
+    assert source_history["current_main_diff_from_pinned_commit"] == "credential_redaction_only"
+    assert source_history["new_project_default_mlp_architecture_matches_paper"] is False
+    assert source_history["new_project_connected_to_released_workbooks"] is False
+    assert source_history["new_project_native_run_or_result_shipped"] is False
+    assert source_history["new_project_paper_result_credit"] is False
+    assert len(history) == 7
+    assert history[-1]["commit"] == audit.CURRENT_MAIN_HEAD
+    assert history[-1]["evidence_role"] == "credential_redaction_only_no_experiment_evidence"
+    assert history[-1]["usable_hardcoded_credential_literal_present"] == "False"
+    assert all(row["paper_result_credit"] == "False" for row in history)
+    assert len(branch_components) == 6
+    assert {row["path"] for row in branch_components} == {
+        "README.md",
+        "main.py",
+        "multi_agent_system.py",
+        "requirements.txt",
+        "seed_alphas_factory.py",
+        "weight_optimization.py",
+    }
+    assert all(row["connected_to_released_workbooks"] == "False" for row in branch_components)
+    assert all(row["paper_configuration_match"] == "False" for row in branch_components)
+    assert all(row["paper_result_credit"] == "False" for row in branch_components)
     assert len(inventory) == 7
     assert {row["sample_start"] for row in inventory} == {"2022-09-30"}
     assert {row["sample_end"] for row in inventory} == {"2022-12-30"}
