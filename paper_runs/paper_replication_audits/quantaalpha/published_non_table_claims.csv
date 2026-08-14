@@ -10,9 +10,9 @@ configuration,validation split,2021-01-01--2021-12-31,standalone_backtest_config
 configuration,test split,2022-01-01--2025-12-26,standalone_backtest_config_matches_but_mining_config_conflicts,False,False
 configuration,next-day return label,"Ref(close,-2)/Ref(close,-1)-1",matches_configs,False,False
 configuration,basic features,open/high/low/close/volume/vwap,mining_config_uses_four_engineered_features_and_no_vwap,False,False
-configuration,planning directions,10,checked_in_experiment_uses_2,False,False
-configuration,factors per hypothesis,3,checked_in_experiment_uses_1,False,False
-configuration,evolution iterations,5 mutation+crossover cycles,checked_in_experiment_max_rounds_3_and_docs_max_rounds_11,False,False
+configuration,planning directions,10,historical_windows_branch_discloses_10_seed_groups_but_current_main_uses_2,False,False
+configuration,factors per hypothesis,3,historical_experiment_note_says_usually_3_but_current_main_uses_1,False,False
+configuration,evolution iterations,5 mutation+crossover cycles,historical_experiment_note_says_5_epochs_11_rounds_but_current_main_uses_3_rounds,False,False
 configuration,TopkDropout,topk=50 n_drop=5,matches_configs,False,False
 configuration,buy and sell cost,0.05% / 0.15%,matches_configs,False,False
 configuration,deal price,open,matches_configs,False,False

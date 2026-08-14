@@ -1,4 +1,5 @@
 {
+  "component_python": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/alpha-agent-replication-py39-20260813-quantaalpha/bin/python",
   "current_compile": {
     "python_files": 135,
     "compiled": 135,

@@ -1,0 +1,62 @@
+commit,commit_date,subject,public_branch_membership,tree_path_count,python_path_count,image_path_count,native_result_artifact_path_count,native_result_artifact_paths,paper_result_credit
+2f06d9fafaf21c07abd1a224551dbb437d341087,2026-02-09T01:02:43+08:00,init,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,245,135,13,0,,False
+0b20d8fd4e63f70cc96847dc162fcba4501e106a,2026-02-09T01:23:18+08:00,update,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+5e484b5e77e5b62667c26e11eed1425817ff8367,2026-02-09T01:31:11+08:00,update,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+8f2f7340cdbeee9fe005ac0728a74410011443e0,2026-02-09T01:38:40+08:00,Revise Qlib data preparation instructions,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+7530ef9702e047c4ef308160067519df683e2b2c,2026-02-09T01:39:24+08:00,Revise data preparation section in README,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+d812b57a6554ef78b12d31f969025a19667ffc3c,2026-02-09T01:42:08+08:00,Update README.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+d2da4dbda147f7c31b1f6a8096acf3c66554bac4,2026-02-09T01:50:34+08:00,Update README_CN.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+c5bad6f34fdf96c76547b4a07dac1237be187875,2026-02-09T01:52:12+08:00,Update README_CN.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+77402860f9235f02f3e02b83c3b4ebaa55d5420f,2026-02-09T01:58:35+08:00,Update README.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+e328dd959e06dcc62d8a9029e0d982ca01501ca0,2026-02-09T16:19:48+08:00,Update README_CN.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+a5578a71f1aeaee6a6b44c60d54db9ffd0fa1c85,2026-02-09T16:20:17+08:00,Add demo video link to README,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+09c44592621c4af43bd1842e327c72bec0d7e08b,2026-02-09T16:24:53+08:00,Update demo video link in README,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,246,135,14,0,,False
+357ccfa7266c335ca24f67121e7aadb3a903115a,2026-02-09T16:29:41+08:00,Add files via upload,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,247,135,14,0,,False
+d03febf324fd3fe928a08a46e430a471686900e8,2026-02-09T17:24:44+08:00,Update README.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,247,135,14,0,,False
+d108d36cc5ebbe2f60ed775b289c75d24424e5d7,2026-02-09T18:19:08+08:00,Delete images directory,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+79d0a17b9be4d5d4ec0e8e2d64eb70a6bdcfc884,2026-02-09T18:20:53+08:00,Update README.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+500a0af73f1599eb9c122e7cfd75b0531f5580f2,2026-02-09T18:53:52+08:00,"feat: skip uncached factors in backtest, use cached-only mode",anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+c86ceb82f8c1e3f984e0132921c019bff0f26d3b,2026-02-10T00:03:29+08:00,chore: exclude frontend-v2 from repo; i18n comments/docs to English,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,199,134,10,0,,False
+f1e506eeb5cf19086a50b95c8f91fa7c39487515,2026-02-10T01:15:53+08:00,Update README.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,199,134,10,0,,False
+784c214dcc6e8aac885875e510b59c061d9bf5aa,2026-02-10T01:20:00+08:00,Create workflow,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,200,134,10,0,,False
+76fed2555ddc2cd63f78382c7600ffd70ece6413,2026-02-10T01:26:23+08:00,Delete .github/workflow,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,199,134,10,0,,False
+6655321753450d6e149339c4738f0e3d60264c28,2026-02-10T01:29:17+08:00,Update README.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,199,134,10,0,,False
+d8cf5fe9aa46958164357c011e1b90184e51805b,2026-02-10T01:34:18+08:00,Remove frontend-v2 directory from .gitignore,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,199,134,10,0,,False
+270f29db91499ecef8ebedd4382ad1dbfe65e978,2026-02-10T01:37:05+08:00,feat: add frontend-v2 folder to repo,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+4b9095faef06f0ffd92f0a115a70bbac558eb34d,2026-02-10T11:20:13+08:00,Update README.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+04846d1610610deeca6ec62f3e3c7ae5d27c7cae,2026-02-10T11:22:00+08:00,Update README.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+60ac5d4644b23d63c24c82a1d8947b45455a22c8,2026-02-10T11:27:05+08:00,Update README_CN.md,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+55f275e2b92645af7b27fb780de4ac5e36ac338c,2026-02-10T17:17:50+08:00,Update start.sh,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+1074ec27d6c11559e0dd2fa6da04f7f6163b7a3f,2026-02-10T18:12:41+08:00,Initial commit: QuantaAlpha-clean project,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+c9681d034b69004d17973f46c182e1c247d20fb4,2026-02-11T01:47:20+08:00,init,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+c54c09a36f1308bf50482b1037b93920e8240cd3,2026-02-11T10:18:08+08:00,fix: improve Windows platform compatibility,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+18473bc11b97b1eeb2692bb8deacfdb5e5a36b82,2026-02-11T10:21:12+08:00,fix win,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main;windows,243,135,10,0,,False
+bd99236481adffdb0aed95e74863be3b3a596c1a,2026-02-11T21:49:18+08:00,feat: Windows compatibility + backtest data pipeline fixes,windows,246,137,10,0,,False
+67b307b1ac77566d56758f86a21f757e403f96e4,2026-02-11T22:06:31+08:00,"revert: restore factorlib path to PROJECT_ROOT-based, remove CWD-relative FACTORLIB_DIR",windows,246,137,10,0,,False
+b342a28b9c769946b2c8ec0ae31de69a082a29c6,2026-02-11T23:10:00+08:00,fix windows display,windows,246,137,10,0,,False
+a7a97bee5c93e3b05d4e69aefec02815ff9a7c2d,2026-02-11T23:19:27+08:00,fix: Windows compatibility for backend symlink and process management,windows,246,137,10,0,,False
+760cf9f950af9befc71590ed2465e4a7aea324bc,2026-02-12T17:03:25+08:00,fix: add seed and random_state to LGBModel in mining backtest configs for reproducibility,windows,246,137,10,0,,False
+7988bdd10b731c84262a9b7807b83098e9778381,2026-02-12T17:15:22+08:00,feat: model name as free input with examples; add QuantaAlpha Windows startup guide,windows,247,137,10,0,,False
+8dd5965edd220622169cd9b127526cdc910b5867,2026-02-12T17:40:57+08:00,fix: handle GBK UnicodeEncodeError in QlibLocalEnv on Windows console,windows,247,137,10,0,,False
+0ed649c51ef556f06446c7083fe66fb55eae7633,2026-02-12T17:53:09+08:00,fix: replace all Rich/print with logger in QlibLocalEnv to fully bypass colorama GBK crash,windows,247,137,10,0,,False
+85237c51e2e9c8a5698959d652dffeb1890dd6e2,2026-02-12T18:08:48+08:00,fix: add PYTHONUNBUFFERED and -u flag to mining/backtest subprocesses for real-time output streaming,windows,247,137,10,0,,False
+090487347e8cb38762efbd808c66ca36555b973b,2026-02-13T17:26:55+08:00,fix: add ProcessInf to factor mining configs for robust backtesting,windows,247,137,10,0,,False
+6bf8704a0973f3bef330aea7d8a491fddaf8f318,2026-02-14T01:47:49+08:00,docs: add experiment reproduction docs (EN/CN links),windows,250,137,10,0,,False
+4091cd865f8fbb3429fe52b656eca3175640620d,2026-02-14T03:05:36+08:00,docs(experiment): sync EN with latest CN periods,windows,250,137,10,0,,False
+18da3b35678cf401aab86a84cf0450cb3f895d26,2026-02-14T03:23:19+08:00,docs(readme): move experiment links under quick start,windows,250,137,10,0,,False
+dd36dff6ca58fdfec842723d029752291beb84be,2026-02-14T03:46:17+08:00,docs(experiment): use EN default + CN suffix files,windows,251,137,10,0,,False
+c9d55b5c4cf55c77be421450acd72bd41d8b9abb,2026-02-21T20:04:35+08:00,Fix_PrecomputedDataHandler_fetch_method,windows,251,137,10,0,,False
+3cd2748dc37d12b04d5bd9d88f2c3e47a3dfec24,2026-03-20T16:36:35+08:00,Update conf_baseline.yaml,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main,243,135,10,0,,False
+453e5752c5805407147e31b6cb19cb5e8bfa21d9,2026-03-20T16:36:51+08:00,Update test date range in YAML configuration,anonymous;dependabot/pip/prod-1f4a4f1c40;fix_win;main,243,135,10,0,,False
+28f1619565001df99721f7b11e1cfb127bb31103,2026-04-22T02:57:10Z,build(requirements): bump the prod group across 1 directory with 3 updates,dependabot/pip/prod-1f4a4f1c40,243,135,10,0,,False
+446b0a197b120ed97f392544b3bba9bcec83a72a,2026-05-05T20:43:58+08:00,Anonymize repository for double-blind review,anonymous,241,135,9,0,,False
+a12098d347dad8feae3013186d651f375db17aa2,2026-05-05T21:32:15+08:00,Tighten anonymous review sanitization,anonymous,240,135,9,0,,False
+8ff4c9c47a1f4099b0d107e3da8cf3a158d47f73,2026-05-05T21:36:44+08:00,Remove README performance figures,anonymous,240,135,9,0,,False
+d74be0d28413ba5436002f51e7edd52bda4509fd,2026-05-05T22:39:02+08:00,Remove remaining README images,anonymous,240,135,9,0,,False
+fe755e3041c8fedf191990e727337eb2043a0bea,2026-05-05T23:08:20+08:00,Remove identifying README links,anonymous,240,135,9,0,,False
+43237cf65920c5cf70fa80c5496dbc96cfa834ab,2026-05-06T13:28:18+08:00,Anonymize personal identifiers and private paths,anonymous,240,135,9,0,,False
+be80873637d59f6956b64ba38484a78209354158,2026-05-06T21:49:41+08:00,Delete .github directory,main,236,135,10,0,,False
+3d459a933ec1b27d9c825acfe0b9a2178fca7a73,2026-05-06T21:53:19+08:00,Delete .github directory,anonymous,234,135,9,0,,False
+418758f9f7b9f324d6ed43ed807ce94872198aa9,2026-05-07T15:53:49+08:00,Update README.md,anonymous,234,135,9,0,,False
+6eb78a1ed3039ff22a6655c07d23ef26ba8d60a0,2026-06-21T18:25:00+08:00,Update README results and figures to match arXiv v2,main,237,135,11,0,,False
+b7ceb27b1001261d7a95b209a963664ae1f8ab23,2026-06-29T12:55:11-04:00,Update README language and Coming Soon preview,main,237,135,11,0,,False

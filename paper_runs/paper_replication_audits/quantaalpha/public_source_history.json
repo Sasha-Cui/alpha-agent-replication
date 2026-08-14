@@ -1,0 +1,27 @@
+{
+  "repository_shallow": false,
+  "public_branch_heads": {
+    "anonymous": "418758f9f7b9f324d6ed43ed807ce94872198aa9",
+    "dependabot/pip/prod-1f4a4f1c40": "28f1619565001df99721f7b11e1cfb127bb31103",
+    "fix_win": "453e5752c5805407147e31b6cb19cb5e8bfa21d9",
+    "main": "b7ceb27b1001261d7a95b209a963664ae1f8ab23",
+    "windows": "c9d55b5c4cf55c77be421450acd72bd41d8b9abb"
+  },
+  "public_branches_total": 5,
+  "public_tags_total": 0,
+  "public_releases_total": 0,
+  "reachable_commits_total": 61,
+  "reachable_commit_sequence_sha256": "b80b2012e992519f128940ccfd9776c2d8cd9c4d4ee8f4c41f9fddd04e12c179",
+  "unique_historical_paths_total": 259,
+  "historical_path_list_sha256": "83193eff0de95293fdd842b9b59518cdc9407ee34a639dbe022e177c67c559fc",
+  "reachable_object_counts": {
+    "commit": 61,
+    "tree": 242,
+    "blob": 410
+  },
+  "unreachable_objects_total": 0,
+  "native_result_artifact_paths_total": 0,
+  "historical_json_paths_total": 8,
+  "historical_image_blobs_total": 13,
+  "paper_result_credit": false
+}

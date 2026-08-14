@@ -93,6 +93,25 @@ def test_revision_conflicts_and_missing_artifacts_are_explicit() -> None:
     assert sum(row["paper_mechanism_credit"] for row in mechanisms) == 15
 
 
+def test_early_paper_main_table_parser_is_fail_closed() -> None:
+    paper = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_paper")
+    if not paper.exists():
+        return
+    v1 = audit._parse_v1_v2_main_table(paper / "source_v1/tables/main_table.tex")
+    v2 = audit._parse_v1_v2_main_table(paper / "source_v2/tables/main_table.tex")
+    assert len(v1) == 224 and v1 == v2
+    assert Counter(metric for _, metric, _ in v1) == {
+        "IC": 28,
+        "ICIR": 28,
+        "Rank_IC": 28,
+        "Rank_ICIR": 28,
+        "IR": 28,
+        "CR": 28,
+        "ARR_pct": 28,
+        "MDD_pct": 28,
+    }
+
+
 def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration() -> None:
     output = ROOT / "paper_runs/paper_replication_audits/quantaalpha"
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
@@ -104,9 +123,12 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     inventory = read_csv(output / "released_source_inventory.csv")
     datasets = read_csv(output / "released_dataset_inventory.csv")
     author_outputs = read_csv(output / "author_output_correspondence.csv")
-    assert manifest["overall_status"] == (
-        "author_rendered_outputs_corroborated_no_end_to_end_regeneration"
-    )
+    history_commits = read_csv(output / "released_source_history_inventory.csv")
+    history_paths = read_csv(output / "released_source_history_paths.csv")
+    branch_evidence = read_csv(output / "historical_branch_evidence_inventory.csv")
+    versioned_tables = read_csv(output / "paper_version_main_table_conformance.csv")
+    history_summary = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
+    assert manifest["overall_status"] == ("author_rendered_outputs_corroborated_no_end_to_end_regeneration")
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_numeric_table_cells_total"] == 344
     assert manifest["native_numeric_table_cells_reproduced"] == 0
@@ -125,6 +147,21 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert manifest["author_output_underlying_arrays_shipped"] is False
     assert manifest["paper_result_arrays_shipped"] == 0
     assert manifest["paper_factor_pool_shipped"] is False
+    assert manifest["paper_seeds_shipped"] is False
+    assert manifest["paper_seeds_field_means_random_or_run_seed_lineage"] is True
+    assert manifest["historical_direction_seed_groups_disclosed"] is True
+    assert manifest["paper_run_direction_seed_selection_and_order_shipped"] is False
+    assert manifest["versioned_main_table_cells_total"] == 644
+    assert manifest["versioned_main_table_cells_by_paper_version"] == {
+        "v1": 224,
+        "v2": 224,
+        "v3": 196,
+    }
+    assert manifest["versioned_main_table_cells_author_output_corroborated"] == 644
+    assert manifest["versioned_main_table_cells_independently_regenerated"] == 0
+    assert manifest["distinct_author_rendered_main_table_cells_across_versions"] == 420
+    assert manifest["historical_v1_v2_main_table_cells_corroborated"] == 224
+    assert manifest["historical_v1_v2_main_table_cells_independently_regenerated"] == 0
     assert manifest["tracked_source_files_total"] == 237
     assert manifest["tracked_source_python_files_total"] == 135
     assert manifest["native_current_python_files_compiled"] == 135
@@ -133,6 +170,22 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert manifest["native_upstream_tests_passed"] == 0
     assert manifest["native_upstream_tests_failed"] == 1
     assert manifest["local_motif_proxy_paper_result_credit"] is False
+    assert manifest["public_source_branches_total"] == 5
+    assert manifest["public_source_tags_total"] == 0
+    assert manifest["public_source_releases_total"] == 0
+    assert manifest["public_source_reachable_commits_total"] == 61
+    assert manifest["public_source_unique_historical_paths_total"] == 259
+    assert manifest["public_source_reachable_object_counts"] == {
+        "blob": 410,
+        "tree": 242,
+        "commit": 61,
+    }
+    assert manifest["public_source_unreachable_objects_total"] == 0
+    assert manifest["public_source_native_result_artifact_paths_total"] == 0
+    assert manifest["historical_branch_evidence_items_total"] == 8
+    assert manifest["historical_direction_seed_groups_total"] == 10
+    assert manifest["historical_direction_seed_factor_expressions_total"] == 30
+    assert manifest["historical_operational_frontend_files_total"] == 44
     assert len(tables) == 344 and len(labels) == 40 and len(points) == 47
     assert len(configs) == 28 and Counter(row["status"] for row in configs)["conflict"] == 11
     assert len(inventory) == 237
@@ -145,6 +198,28 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert {row["underlying_numeric_arrays_shipped"] for row in author_outputs} == {"0"}
     assert {row["independently_regenerated"] for row in author_outputs} == {"False"}
     assert len(datasets) == 5 and {row["paper_result_artifact"] for row in datasets} == {"False"}
+    assert len(history_commits) == 61
+    assert {row["native_result_artifact_path_count"] for row in history_commits} == {"0"}
+    assert {row["paper_result_credit"] for row in history_commits} == {"False"}
+    assert len(history_paths) == 259
+    assert {row["native_result_artifact_candidate"] for row in history_paths} == {"False"}
+    assert Counter(row["history_role"] for row in history_paths)["author_rendered_result_output"] == 6
+    assert len(branch_evidence) == 8
+    assert {row["underlying_run_artifact"] for row in branch_evidence} == {"False"}
+    assert {row["paper_result_credit"] for row in branch_evidence} == {"False"}
+    assert len(versioned_tables) == 644
+    assert Counter(row["paper_version"] for row in versioned_tables) == {
+        "v1": 224,
+        "v2": 224,
+        "v3": 196,
+    }
+    assert {row["author_output_correspondence"] for row in versioned_tables} == {"True"}
+    assert {row["independently_regenerated"] for row in versioned_tables} == {"False"}
+    assert history_summary["reachable_commits_total"] == 61
+    assert history_summary["unique_historical_paths_total"] == 259
+    assert history_summary["historical_json_paths_total"] == 8
+    assert history_summary["historical_image_blobs_total"] == 13
+    assert history_summary["native_result_artifact_paths_total"] == 0
     assert native["component_driver_returncode"] == 0
     assert native["component_checks"]["trajectory_roundtrip"] is True
     assert native["component_checks"]["lineage_roundtrip"] is True
@@ -167,3 +242,10 @@ def test_pinned_primary_sources_when_available() -> None:
     outputs = audit.author_output_correspondence(source, paper / "source")
     assert len(outputs) == 5
     assert sum(row["published_result_units_corroborated"] for row in outputs) == 270
+    history_commits, history_paths, history_summary = audit.public_source_history(source)
+    assert len(history_commits) == 61 and len(history_paths) == 259
+    assert history_summary["native_result_artifact_paths_total"] == 0
+    evidence = audit.historical_branch_evidence(source)
+    assert len(evidence) == 8
+    versioned = audit.paper_version_main_table_rows(source, paper / "source")
+    assert len(versioned) == 644

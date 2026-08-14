@@ -18,6 +18,7 @@ import hashlib
 import json
 import os
 import py_compile
+import re
 import subprocess
 import sys
 import tarfile
@@ -49,6 +50,44 @@ SOURCE_COMMIT = "b7ceb27b1001261d7a95b209a963664ae1f8ab23"
 SOURCE_COMMIT_DATE = "2026-06-29T12:55:11-04:00"
 INITIAL_COMMIT = "2f06d9fafaf21c07abd1a224551dbb437d341087"
 INITIAL_COMMIT_DATE = "2026-02-09T01:02:43+08:00"
+PUBLIC_BRANCH_HEADS = {
+    "anonymous": "418758f9f7b9f324d6ed43ed807ce94872198aa9",
+    "dependabot/pip/prod-1f4a4f1c40": "28f1619565001df99721f7b11e1cfb127bb31103",
+    "fix_win": "453e5752c5805407147e31b6cb19cb5e8bfa21d9",
+    "main": SOURCE_COMMIT,
+    "windows": "c9d55b5c4cf55c77be421450acd72bd41d8b9abb",
+}
+PUBLIC_HISTORY_COMMIT_COUNT = 61
+PUBLIC_HISTORY_COMMIT_SHA256 = "b80b2012e992519f128940ccfd9776c2d8cd9c4d4ee8f4c41f9fddd04e12c179"
+PUBLIC_HISTORY_PATH_COUNT = 259
+PUBLIC_HISTORY_PATH_SHA256 = "83193eff0de95293fdd842b9b59518cdc9407ee34a639dbe022e177c67c559fc"
+PUBLIC_HISTORY_OBJECT_COUNTS = {"blob": 410, "tree": 242, "commit": 61}
+DISCOVERY_SHA256 = {
+    "branches.json": "be6243fec5525a694c2a72cd28f4ebe71f2bd642ad141974a54a68863ec98fd9",
+    "releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "tags.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+}
+HISTORICAL_MAIN_TABLE_RASTERS = {
+    "docs/images/主实验.png": "c5272933b3f87c77d28e516bc55f23dc25701a38f0391ccc6248b2b7054dbc33",
+    "images/主实验.png": "aa0ad5d81e36870570a9b23b00940e7a6244eb57a7ae87d9219276d499befbd1",
+}
+V1_V2_MAIN_TABLE_SHA256 = "206b0c14959311a7146174cca7ed77168aaa2c6f73c0b4594272b04b6ec907ef"
+NATIVE_RESULT_SUFFIXES = (
+    ".csv",
+    ".feather",
+    ".h5",
+    ".hdf5",
+    ".jsonl",
+    ".log",
+    ".npy",
+    ".npz",
+    ".parquet",
+    ".pickle",
+    ".pkl",
+    ".pt",
+    ".pth",
+    ".ckpt",
+)
 CURRENT_README_SHA256 = "737dbb80c047cd1f2ad90b31e10ccc45b38ea2f490b42a57584c5b30a830e222"
 RELEASED_PAPER_OUTPUT_SHA256 = {
     "docs/images/case_study.png": "c67841b6e471b73d1c32ca3dfd44abd844915572918c7fc908de49f5dab90e85",
@@ -172,9 +211,7 @@ def sha256(path: Path) -> str:
 
 
 def run_git(source_root: Path, *args: str, binary: bool = False) -> Any:
-    result = subprocess.run(
-        ["git", "-C", str(source_root), *args], check=True, capture_output=True, text=not binary
-    )
+    result = subprocess.run(["git", "-C", str(source_root), *args], check=True, capture_output=True, text=not binary)
     return result.stdout
 
 
@@ -185,6 +222,444 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _sha256_lines(lines: Sequence[str]) -> str:
+    return hashlib.sha256(("\n".join(lines) + "\n").encode("utf-8")).hexdigest()
+
+
+def _historical_paths(source_root: Path) -> list[str]:
+    payload = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(source_root),
+            "-c",
+            "core.quotePath=false",
+            "log",
+            "--all",
+            "--pretty=format:",
+            "--name-only",
+            "-z",
+        ],
+        check=True,
+        capture_output=True,
+    ).stdout
+    return sorted(
+        {part.decode("utf-8") for part in payload.split(b"\0") if part},
+        key=lambda item: item.encode("utf-8"),
+    )
+
+
+def _history_path_role(path: str) -> str:
+    lower = path.lower()
+    if path in HISTORICAL_MAIN_TABLE_RASTERS or path in RELEASED_PAPER_OUTPUT_SHA256:
+        return "author_rendered_result_output"
+    if lower.startswith("frontend-v2/"):
+        return "historical_operational_frontend_or_bridge"
+    if lower.endswith(NATIVE_RESULT_SUFFIXES):
+        return "native_result_artifact_candidate"
+    if lower.endswith(".json"):
+        return "configuration_or_software_descriptor_json"
+    if lower.endswith((".png", ".jpg", ".jpeg", ".gif", ".pdf")):
+        return "documentation_image_or_document"
+    return "source_config_or_documentation"
+
+
+def public_source_history(
+    source_root: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Audit every reachable public commit/path and fail closed on release drift."""
+    if str(run_git(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
+        raise RuntimeError("QuantaAlpha source history is shallow")
+
+    discovery_root = source_root / "release-discovery"
+    for name, expected in DISCOVERY_SHA256.items():
+        path = discovery_root / name
+        if sha256(path) != expected:
+            raise RuntimeError(f"Pinned GitHub release-discovery response changed: {name}")
+    branches_payload = json.loads((discovery_root / "branches.json").read_text(encoding="utf-8"))
+    discovered_heads = {item["name"]: item["commit"]["sha"] for item in branches_payload}
+    if discovered_heads != PUBLIC_BRANCH_HEADS:
+        raise RuntimeError(f"Public QuantaAlpha branch heads changed: {discovered_heads}")
+    if json.loads((discovery_root / "tags.json").read_text(encoding="utf-8")) != []:
+        raise RuntimeError("Unexpected QuantaAlpha public tag discovered")
+    if json.loads((discovery_root / "releases.json").read_text(encoding="utf-8")) != []:
+        raise RuntimeError("Unexpected QuantaAlpha public release discovered")
+    for branch, expected in PUBLIC_BRANCH_HEADS.items():
+        observed = str(run_git(source_root, "rev-parse", f"origin/{branch}")).strip()
+        if observed != expected:
+            raise RuntimeError(f"Local public branch pin changed: {branch}")
+
+    commits = str(run_git(source_root, "rev-list", "--reverse", "--all")).splitlines()
+    if len(commits) != PUBLIC_HISTORY_COMMIT_COUNT or _sha256_lines(commits) != PUBLIC_HISTORY_COMMIT_SHA256:
+        raise RuntimeError("QuantaAlpha reachable commit history changed")
+    paths = _historical_paths(source_root)
+    if len(paths) != PUBLIC_HISTORY_PATH_COUNT or _sha256_lines(paths) != PUBLIC_HISTORY_PATH_SHA256:
+        raise RuntimeError("QuantaAlpha reachable path history changed")
+
+    fsck = subprocess.run(
+        ["git", "-C", str(source_root), "fsck", "--full", "--no-reflogs", "--unreachable"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if fsck.stdout.strip():
+        raise RuntimeError(f"Unreachable QuantaAlpha objects require review: {fsck.stdout}")
+
+    object_lines = str(run_git(source_root, "rev-list", "--objects", "--all")).splitlines()
+    object_ids = [line.split(" ", 1)[0] for line in object_lines]
+    types = subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+        input="\n".join(object_ids) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    object_counts = dict(Counter(types))
+    if object_counts != PUBLIC_HISTORY_OBJECT_COUNTS:
+        raise RuntimeError(f"QuantaAlpha reachable object census changed: {object_counts}")
+
+    branch_commit_sets = {
+        branch: set(str(run_git(source_root, "rev-list", commit)).splitlines())
+        for branch, commit in PUBLIC_BRANCH_HEADS.items()
+    }
+    tree_paths: dict[str, set[str]] = {}
+    commit_rows = []
+    for commit in commits:
+        commit_paths = set(
+            str(
+                run_git(
+                    source_root,
+                    "-c",
+                    "core.quotePath=false",
+                    "ls-tree",
+                    "-r",
+                    "--name-only",
+                    commit,
+                )
+            ).splitlines()
+        )
+        tree_paths[commit] = commit_paths
+        meta = str(run_git(source_root, "show", "-s", "--format=%cI%x00%s", commit)).rstrip("\n").split("\0", 1)
+        memberships = sorted(branch for branch, members in branch_commit_sets.items() if commit in members)
+        native_result_paths = sorted(path for path in commit_paths if path.lower().endswith(NATIVE_RESULT_SUFFIXES))
+        commit_rows.append(
+            {
+                "commit": commit,
+                "commit_date": meta[0],
+                "subject": meta[1],
+                "public_branch_membership": ";".join(memberships),
+                "tree_path_count": len(commit_paths),
+                "python_path_count": sum(path.lower().endswith(".py") for path in commit_paths),
+                "image_path_count": sum(
+                    path.lower().endswith((".png", ".jpg", ".jpeg", ".gif")) for path in commit_paths
+                ),
+                "native_result_artifact_path_count": len(native_result_paths),
+                "native_result_artifact_paths": ";".join(native_result_paths),
+                "paper_result_credit": False,
+            }
+        )
+
+    present_counts = Counter(path for commit_paths in tree_paths.values() for path in commit_paths)
+    branch_path_sets = {branch: tree_paths[commit] for branch, commit in PUBLIC_BRANCH_HEADS.items()}
+    path_rows = []
+    for path in paths:
+        role = _history_path_role(path)
+        path_rows.append(
+            {
+                "relative_path": path,
+                "suffix": Path(path).suffix.lower(),
+                "history_role": role,
+                "commits_present": present_counts[path],
+                "public_branch_heads_present": ";".join(
+                    branch for branch, members in branch_path_sets.items() if path in members
+                ),
+                "native_result_artifact_candidate": role == "native_result_artifact_candidate",
+                "author_rendered_output": role == "author_rendered_result_output",
+                "paper_result_credit": False,
+            }
+        )
+
+    raw_candidates = [row for row in path_rows if row["native_result_artifact_candidate"]]
+    if raw_candidates:
+        raise RuntimeError(f"Historical native result candidates require review: {raw_candidates}")
+    summary = {
+        "repository_shallow": False,
+        "public_branch_heads": PUBLIC_BRANCH_HEADS,
+        "public_branches_total": len(PUBLIC_BRANCH_HEADS),
+        "public_tags_total": 0,
+        "public_releases_total": 0,
+        "reachable_commits_total": len(commits),
+        "reachable_commit_sequence_sha256": _sha256_lines(commits),
+        "unique_historical_paths_total": len(paths),
+        "historical_path_list_sha256": _sha256_lines(paths),
+        "reachable_object_counts": object_counts,
+        "unreachable_objects_total": 0,
+        "native_result_artifact_paths_total": 0,
+        "historical_json_paths_total": sum(path.lower().endswith(".json") for path in paths),
+        "historical_image_blobs_total": len(
+            {
+                line.split(" ", 1)[0]
+                for line in object_lines
+                if " " in line and line.rsplit(" ", 1)[-1].lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
+            }
+        ),
+        "paper_result_credit": False,
+    }
+    if summary["historical_json_paths_total"] != 8 or summary["historical_image_blobs_total"] != 13:
+        raise RuntimeError(f"QuantaAlpha historical structured-asset census changed: {summary}")
+    return commit_rows, path_rows, summary
+
+
+def historical_branch_evidence(source_root: Path) -> list[dict[str, Any]]:
+    windows = PUBLIC_BRANCH_HEADS["windows"]
+    original = json.loads(str(run_git(source_root, "show", f"{windows}:experiment/original_direction.json")))
+    portfolios = original.get("factor_portfolios", [])
+    descriptions = [item.get("description", "") for item in portfolios]
+    expression_count = sum(description.count("expression:") for description in descriptions)
+    if len(portfolios) != 10 or expression_count != 30:
+        raise RuntimeError("Historical QuantaAlpha direction-seed inventory changed")
+    notes = str(run_git(source_root, "show", f"{windows}:experiment/README_EXPERIMENT.md"))
+    required_notes = (
+        "Plan parallelism**: 10 directions",
+        "5 epochs, 11 rounds in total",
+        "usually 3",
+        "2022-01-01 to 2025-12-26",
+        "no fallback logic",
+    )
+    if not all(token in notes for token in required_notes):
+        raise RuntimeError("Historical QuantaAlpha experiment note changed")
+    frontend_paths = str(
+        run_git(
+            source_root,
+            "-c",
+            "core.quotePath=false",
+            "ls-tree",
+            "-r",
+            "--name-only",
+            windows,
+            "--",
+            "frontend-v2",
+        )
+    ).splitlines()
+    if len(frontend_paths) != 44:
+        raise RuntimeError("Historical QuantaAlpha frontend inventory changed")
+
+    baseline = str(
+        run_git(
+            source_root,
+            "show",
+            f"{windows}:quantaalpha/factors/factor_template/conf_baseline.yaml",
+        )
+    )
+    required_baseline_tokens = (
+        "train: [2016-01-01, 2019-12-31]",
+        "valid: [2020-01-01, 2020-12-31]",
+        "test: [2021-01-01, 2025-12-26]",
+        "seed: 42",
+        "random_state: 42",
+        "start_time: 2021-01-01",
+        "end_time: 2021-12-31",
+    )
+    if not all(token in baseline for token in required_baseline_tokens):
+        raise RuntimeError("Historical Windows branch Qlib profile changed")
+
+    for path, expected in HISTORICAL_MAIN_TABLE_RASTERS.items():
+        blob = run_git(source_root, "show", f"{INITIAL_COMMIT}:{path}", binary=True)
+        if hashlib.sha256(blob).hexdigest() != expected:
+            raise RuntimeError(f"Historical QuantaAlpha result raster changed: {path}")
+
+    json_paths = [path for path in _historical_paths(source_root) if path.lower().endswith(".json")]
+    expected_json_paths = {
+        "experiment/original_direction.json",
+        "experiment/original_direction_CN.json",
+        "frontend-v2/package-lock.json",
+        "frontend-v2/package.json",
+        "frontend-v2/tsconfig.json",
+        "frontend-v2/tsconfig.node.json",
+        "quantaalpha/components/benchmark/example.json",
+        "quantaalpha/contrib/model/coder/benchmark/model_dict.json",
+    }
+    if set(json_paths) != expected_json_paths:
+        raise RuntimeError(f"Historical QuantaAlpha JSON surface changed: {json_paths}")
+
+    return [
+        {
+            "evidence": "paper_direction_seed_groups",
+            "public_ref": f"windows@{windows}",
+            "paths": "experiment/original_direction.json;experiment/original_direction_CN.json",
+            "observed_units": 10,
+            "detail": "10 seed groups containing 30 named Alpha158(20)-derived factor expressions",
+            "evidence_role": "paper_configuration_specification",
+            "underlying_run_artifact": False,
+            "paper_result_credit": False,
+        },
+        {
+            "evidence": "paper_experiment_notes",
+            "public_ref": f"windows@{windows}",
+            "paths": "experiment/README_EXPERIMENT.md;experiment/README_EXPERIMENT_CN.md",
+            "observed_units": 2,
+            "detail": "documents 10 directions, 5 epochs/11 rounds, 3 factors, mining-vs-final IC periods, and no embedding fallback",
+            "evidence_role": "paper_configuration_specification",
+            "underlying_run_artifact": False,
+            "paper_result_credit": False,
+        },
+        {
+            "evidence": "windows_qlib_profile",
+            "public_ref": f"windows@{windows}",
+            "paths": "quantaalpha/factors/factor_template/conf_baseline.yaml;quantaalpha/factors/factor_template/conf_combined_factors.yaml",
+            "observed_units": 2,
+            "detail": "adds seed/random_state 42 and extends test through 2025, but train/valid remain 2016-2019/2020 and port_analysis backtest remains 2021",
+            "evidence_role": "partial_configuration_not_paper_profile",
+            "underlying_run_artifact": False,
+            "paper_result_credit": False,
+        },
+        {
+            "evidence": "operational_frontend_and_backend_bridge",
+            "public_ref": f"windows@{windows}",
+            "paths": "frontend-v2/",
+            "observed_units": len(frontend_paths),
+            "detail": "44-file UI/backend launches native CLI and reads external live factor/backtest JSON; it embeds no paper result arrays",
+            "evidence_role": "historical_operational_source",
+            "underlying_run_artifact": False,
+            "paper_result_credit": False,
+        },
+        {
+            "evidence": "v1_v2_main_table_raster",
+            "public_ref": f"initial@{INITIAL_COMMIT}",
+            "paths": "docs/images/主实验.png",
+            "observed_units": 224,
+            "detail": "high-resolution raster completely visually corresponds to the identical 224-cell v1/v2 main tables; no numeric array or derivation",
+            "evidence_role": "author_rendered_result_output",
+            "underlying_run_artifact": False,
+            "paper_result_credit": False,
+        },
+        {
+            "evidence": "v1_v2_duplicate_main_table_raster",
+            "public_ref": f"initial@{INITIAL_COMMIT}",
+            "paths": "images/主实验.png",
+            "observed_units": 0,
+            "detail": "lower-resolution duplicate of the same v1/v2 table; counted as zero additional result units",
+            "evidence_role": "duplicate_author_rendered_result_output",
+            "underlying_run_artifact": False,
+            "paper_result_credit": False,
+        },
+        {
+            "evidence": "reachable_json_surface",
+            "public_ref": "all_public_branches",
+            "paths": ";".join(json_paths),
+            "observed_units": len(json_paths),
+            "detail": "all JSON files are seed/configuration, frontend descriptors, or benchmark examples; none is a paper run result",
+            "evidence_role": "complete_structured_file_boundary",
+            "underlying_run_artifact": False,
+            "paper_result_credit": False,
+        },
+        {
+            "evidence": "native_result_file_types",
+            "public_ref": "all_61_reachable_commits",
+            "paths": "",
+            "observed_units": 0,
+            "detail": "no CSV, Parquet, pickle, HDF, NumPy, checkpoint, log, or JSONL path occurs anywhere in public history",
+            "evidence_role": "complete_negative_result_artifact_boundary",
+            "underlying_run_artifact": False,
+            "paper_result_credit": False,
+        },
+    ]
+
+
+def _parse_v1_v2_main_table(path: Path) -> list[tuple[str, str, str]]:
+    if sha256(path) != V1_V2_MAIN_TABLE_SHA256:
+        raise RuntimeError(f"Pinned QuantaAlpha early main table changed: {path}")
+    text = "\n".join(line.split("%", 1)[0] for line in path.read_text(encoding="utf-8").splitlines())
+    metrics = ("IC", "ICIR", "Rank_IC", "Rank_ICIR", "IR", "CR", "ARR_pct", "MDD_pct")
+    parsed: list[tuple[str, str, str]] = []
+    row_index = 0
+    for chunk in text.split(r"\\"):
+        columns = chunk.split("&")
+        if len(columns) != 10:
+            continue
+        values = []
+        for column in columns[-8:]:
+            tokens = re.findall(r"(?<![A-Za-z0-9])[-+]?\d+(?:\.\d+)?", column)
+            if not tokens:
+                values = []
+                break
+            values.append(tokens[-1])
+        if len(values) != 8:
+            continue
+        row_index += 1
+        method_tex = re.sub(r"\s+", " ", columns[1]).strip()
+        method = f"row_{row_index:02d}:{method_tex}"
+        parsed.extend((method, metric, value) for metric, value in zip(metrics, values))
+    if row_index != 28 or len(parsed) != 224:
+        raise RuntimeError(f"QuantaAlpha early main-table census changed: {row_index}/{len(parsed)}")
+    return parsed
+
+
+def paper_version_main_table_rows(source_root: Path, paper_source_root: Path) -> list[dict[str, Any]]:
+    early_roots = {
+        "v1": paper_source_root.parent / "source_v1",
+        "v2": paper_source_root.parent / "source_v2",
+    }
+    early_tables = {
+        version: _parse_v1_v2_main_table(root / "tables/main_table.tex") for version, root in early_roots.items()
+    }
+    if early_tables["v1"] != early_tables["v2"]:
+        raise RuntimeError("QuantaAlpha v1/v2 main tables are no longer identical")
+    high_res = run_git(
+        source_root,
+        "show",
+        f"{INITIAL_COMMIT}:docs/images/主实验.png",
+        binary=True,
+    )
+    if hashlib.sha256(high_res).hexdigest() != HISTORICAL_MAIN_TABLE_RASTERS["docs/images/主实验.png"]:
+        raise RuntimeError("Historical QuantaAlpha early table raster changed")
+    rows: list[dict[str, Any]] = []
+    for version, cells in early_tables.items():
+        for method, metric, value in cells:
+            rows.append(
+                {
+                    "paper_version": version,
+                    "paper_source_table_sha256": V1_V2_MAIN_TABLE_SHA256,
+                    "method": method,
+                    "metric": metric,
+                    "paper_value": value,
+                    "author_raster_path": "docs/images/主实验.png",
+                    "author_raster_commit": INITIAL_COMMIT,
+                    "author_raster_sha256": HISTORICAL_MAIN_TABLE_RASTERS["docs/images/主实验.png"],
+                    "author_output_correspondence": True,
+                    "native_reproduced_value": "",
+                    "independently_regenerated": False,
+                    "paper_result_credit": False,
+                }
+            )
+    current_table_sha = sha256(paper_source_root / "tables/main_table.tex")
+    for method, values in MAIN_RESULTS.items():
+        for metric, value in zip(METRICS, values):
+            rows.append(
+                {
+                    "paper_version": "v3",
+                    "paper_source_table_sha256": current_table_sha,
+                    "method": method,
+                    "metric": metric,
+                    "paper_value": value,
+                    "author_raster_path": "docs/images/主实验.png",
+                    "author_raster_commit": SOURCE_COMMIT,
+                    "author_raster_sha256": RELEASED_PAPER_OUTPUT_SHA256["docs/images/主实验.png"],
+                    "author_output_correspondence": True,
+                    "native_reproduced_value": "",
+                    "independently_regenerated": False,
+                    "paper_result_credit": False,
+                }
+            )
+    if len(rows) != 644 or Counter(row["paper_version"] for row in rows) != {
+        "v1": 224,
+        "v2": 224,
+        "v3": 196,
+    }:
+        raise RuntimeError("QuantaAlpha versioned main-table census changed")
+    return rows
 
 
 def _result_row(table: str, item: str, metric: str, value: Any, role: str = "direct") -> dict[str, Any]:
@@ -211,25 +686,57 @@ def _result_row(table: str, item: str, metric: str, value: Any, role: str = "dir
 def paper_table_rows() -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for method, values in MAIN_RESULTS.items():
-        rows.extend(_result_row("Table 1 Main CSI300 results", method, metric, value) for metric, value in zip(METRICS, values))
+        rows.extend(
+            _result_row("Table 1 Main CSI300 results", method, metric, value) for metric, value in zip(METRICS, values)
+        )
     for variant, (direct, deltas) in EVOLUTION_ABLATION.items():
-        rows.extend(_result_row("Table 2 Evolution-component ablation", variant, metric, value) for metric, value in zip(EVOLUTION_METRICS, direct))
-        rows.extend(_result_row("Table 2 Evolution-component ablation", variant, metric, value, "displayed_delta") for metric, value in zip(EVOLUTION_METRICS, deltas))
+        rows.extend(
+            _result_row("Table 2 Evolution-component ablation", variant, metric, value)
+            for metric, value in zip(EVOLUTION_METRICS, direct)
+        )
+        rows.extend(
+            _result_row("Table 2 Evolution-component ablation", variant, metric, value, "displayed_delta")
+            for metric, value in zip(EVOLUTION_METRICS, deltas)
+        )
     for seed, values in SEED_RESULTS.items():
-        rows.extend(_result_row("Appendix Table 2 Cross-seed core metrics", seed, metric, value) for metric, value in zip(SEED_METRICS, values))
+        rows.extend(
+            _result_row("Appendix Table 2 Cross-seed core metrics", seed, metric, value)
+            for metric, value in zip(SEED_METRICS, values)
+        )
     for metric, values in SEED_VARIANCE.items():
-        rows.extend(_result_row("Appendix Table 3 Cross-seed variance", metric, stat, value) for stat, value in zip(("mean", "std", "CV_pct", "range"), values))
+        rows.extend(
+            _result_row("Appendix Table 3 Cross-seed variance", metric, stat, value)
+            for stat, value in zip(("mean", "std", "CV_pct", "range"), values)
+        )
     for library_metric, values in DAILY_STATS.items():
-        rows.extend(_result_row("Appendix Table 4 Daily IC statistics", library_metric, metric, value) for metric, value in zip(DAILY_METRICS, values))
+        rows.extend(
+            _result_row("Appendix Table 4 Daily IC statistics", library_metric, metric, value)
+            for metric, value in zip(DAILY_METRICS, values)
+        )
     for parent, values in PARENT_RESULTS.items():
-        rows.extend(_result_row("Appendix C Parent trajectory metrics", parent, metric, value) for metric, value in zip(("Rank_IC", "IC", "IR"), values))
+        rows.extend(
+            _result_row("Appendix C Parent trajectory metrics", parent, metric, value)
+            for metric, value in zip(("Rank_IC", "IC", "IR"), values)
+        )
     for metric, values in CASE_RESULTS.items():
-        rows.extend(_result_row("Appendix C Backtest metrics", item, metric, value) for item, value in zip(("offspring", "baseline"), values))
-    rows.extend(_result_row("Appendix C Detailed statistics", "offspring", metric, value) for metric, value in DETAIL_RESULTS.items())
+        rows.extend(
+            _result_row("Appendix C Backtest metrics", item, metric, value)
+            for item, value in zip(("offspring", "baseline"), values)
+        )
+    rows.extend(
+        _result_row("Appendix C Detailed statistics", "offspring", metric, value)
+        for metric, value in DETAIL_RESULTS.items()
+    )
     for factor, values in REPRESENTATIVE_FACTORS.items():
-        rows.extend(_result_row("Appendix D Representative factors", factor, metric, value) for metric, value in zip(("Rank_IC", "IC"), values))
+        rows.extend(
+            _result_row("Appendix D Representative factors", factor, metric, value)
+            for metric, value in zip(("Rank_IC", "IC"), values)
+        )
     for metric, values in FACTOR_SUMMARY.items():
-        rows.extend(_result_row("Appendix D Factor summary", library, metric, value) for library, value in zip(("QA", "AA"), values))
+        rows.extend(
+            _result_row("Appendix D Factor summary", library, metric, value)
+            for library, value in zip(("QA", "AA"), values)
+        )
     expected = {
         "Table 1 Main CSI300 results": 196,
         "Table 2 Evolution-component ablation": 28,
@@ -260,7 +767,19 @@ def figure_label_rows() -> list[dict[str, Any]]:
     for variant, values in gate.items():
         role = "baseline" if variant == "QuantaAlpha" else "delta"
         for metric, value in zip(EVOLUTION_METRICS, values):
-            rows.append({"figure": "Figure 3 quality-gate ablation", "item": variant, "metric": metric, "value_role": role, "paper_value": value, "native_reproduced_value": "", "author_output_correspondence": False, "status": "not_reproduced_raster_only", "paper_result_credit": False})
+            rows.append(
+                {
+                    "figure": "Figure 3 quality-gate ablation",
+                    "item": variant,
+                    "metric": metric,
+                    "value_role": role,
+                    "paper_value": value,
+                    "native_reproduced_value": "",
+                    "author_output_correspondence": False,
+                    "status": "not_reproduced_raster_only",
+                    "paper_result_credit": False,
+                }
+            )
     case = {
         "pool iteration 1": ("unspecified_factor_pool_performance", 13.27),
         "pool iteration 2": ("unspecified_factor_pool_performance", 19.14),
@@ -281,9 +800,33 @@ def figure_label_rows() -> list[dict[str, Any]]:
         "iteration 5 crossover / MDD": ("MDD_pct", 11.4),
     }
     for item, (metric, value) in case.items():
-        rows.append({"figure": "Appendix E iterative case-study raster", "item": item, "metric": metric, "value_role": "label", "paper_value": value, "native_reproduced_value": "", "author_output_correspondence": True, "status": "corroborated_by_author_readme_case_study_raster_not_regenerated", "paper_result_credit": False})
+        rows.append(
+            {
+                "figure": "Appendix E iterative case-study raster",
+                "item": item,
+                "metric": metric,
+                "value_role": "label",
+                "paper_value": value,
+                "native_reproduced_value": "",
+                "author_output_correspondence": True,
+                "status": "corroborated_by_author_readme_case_study_raster_not_regenerated",
+                "paper_result_credit": False,
+            }
+        )
     for item, value in (("Parent 1", 0.0216), ("Parent 2", 0.0246), ("Offspring", 0.0311)):
-        rows.append({"figure": "Appendix C evolution-path diagram", "item": item, "metric": "Rank_IC", "value_role": "label", "paper_value": value, "native_reproduced_value": "", "author_output_correspondence": False, "status": "not_reproduced_tex_label_only", "paper_result_credit": False})
+        rows.append(
+            {
+                "figure": "Appendix C evolution-path diagram",
+                "item": item,
+                "metric": "Rank_IC",
+                "value_role": "label",
+                "paper_value": value,
+                "native_reproduced_value": "",
+                "author_output_correspondence": False,
+                "status": "not_reproduced_tex_label_only",
+                "paper_result_credit": False,
+            }
+        )
     if len(rows) != 40:
         raise RuntimeError(f"QuantaAlpha figure-label census changed: {len(rows)}")
     return rows
@@ -294,10 +837,34 @@ def plot_point_rows() -> list[dict[str, Any]]:
     for panel, metric in (("Figure 4 IC", "IC"), ("Figure 4 Rank IC", "Rank_IC")):
         for method in ("QuantaAlpha", "AlphaAgent", "RD-Agent", "Alpha158"):
             for year in (2022, 2023, 2024, 2025):
-                rows.append({"figure_panel": panel, "series": method, "x_position": year, "metric": metric, "paper_value": "unlabeled_marker", "native_reproduced_value": "", "author_output_correspondence": True, "status": "exact_author_and_paper_raster_correspondence_no_array", "paper_result_credit": False})
+                rows.append(
+                    {
+                        "figure_panel": panel,
+                        "series": method,
+                        "x_position": year,
+                        "metric": metric,
+                        "paper_value": "unlabeled_marker",
+                        "native_reproduced_value": "",
+                        "author_output_correspondence": True,
+                        "status": "exact_author_and_paper_raster_correspondence_no_array",
+                        "paper_result_credit": False,
+                    }
+                )
     for method in ("QuantaAlpha", "AlphaAgent", "RD-Agent"):
         for iteration in range(1, 6):
-            rows.append({"figure_panel": "Figure 5 evolutionary alpha-mining efficiency", "series": method, "x_position": iteration, "metric": "IC_distribution_central_marker", "paper_value": "unlabeled_marker", "native_reproduced_value": "", "author_output_correspondence": True, "status": "exact_author_and_paper_raster_correspondence_no_array_or_band_definition", "paper_result_credit": False})
+            rows.append(
+                {
+                    "figure_panel": "Figure 5 evolutionary alpha-mining efficiency",
+                    "series": method,
+                    "x_position": iteration,
+                    "metric": "IC_distribution_central_marker",
+                    "paper_value": "unlabeled_marker",
+                    "native_reproduced_value": "",
+                    "author_output_correspondence": True,
+                    "status": "exact_author_and_paper_raster_correspondence_no_array_or_band_definition",
+                    "paper_result_credit": False,
+                }
+            )
     if len(rows) != 47:
         raise RuntimeError(f"QuantaAlpha discrete plot-point census changed: {len(rows)}")
     return rows
@@ -310,15 +877,50 @@ def published_non_table_claims() -> list[dict[str, Any]]:
         ("result", "v3 GPT-5.2 MDD", "11.80%", "not_reproduced"),
         ("result", "v3 zero-shot CSI500 cumulative excess return", "40.28%", "not_reproduced_no_return_array"),
         ("result", "v3 zero-shot S&P500 cumulative excess return", "19.1%", "not_reproduced_no_data_or_return_array"),
-        ("result", "approximately 150 validated factors enter final LightGBM", "approximately 150", "not_reproduced_factor_pool_absent"),
-        ("configuration", "CSI300/500/S&P500 train split", "2016-01-01--2020-12-31", "standalone_backtest_config_matches"),
+        (
+            "result",
+            "approximately 150 validated factors enter final LightGBM",
+            "approximately 150",
+            "not_reproduced_factor_pool_absent",
+        ),
+        (
+            "configuration",
+            "CSI300/500/S&P500 train split",
+            "2016-01-01--2020-12-31",
+            "standalone_backtest_config_matches",
+        ),
         ("configuration", "validation split", "2021-01-01--2021-12-31", "standalone_backtest_config_matches"),
-        ("configuration", "test split", "2022-01-01--2025-12-26", "standalone_backtest_config_matches_but_mining_config_conflicts"),
+        (
+            "configuration",
+            "test split",
+            "2022-01-01--2025-12-26",
+            "standalone_backtest_config_matches_but_mining_config_conflicts",
+        ),
         ("configuration", "next-day return label", "Ref(close,-2)/Ref(close,-1)-1", "matches_configs"),
-        ("configuration", "basic features", "open/high/low/close/volume/vwap", "mining_config_uses_four_engineered_features_and_no_vwap"),
-        ("configuration", "planning directions", "10", "checked_in_experiment_uses_2"),
-        ("configuration", "factors per hypothesis", "3", "checked_in_experiment_uses_1"),
-        ("configuration", "evolution iterations", "5 mutation+crossover cycles", "checked_in_experiment_max_rounds_3_and_docs_max_rounds_11"),
+        (
+            "configuration",
+            "basic features",
+            "open/high/low/close/volume/vwap",
+            "mining_config_uses_four_engineered_features_and_no_vwap",
+        ),
+        (
+            "configuration",
+            "planning directions",
+            "10",
+            "historical_windows_branch_discloses_10_seed_groups_but_current_main_uses_2",
+        ),
+        (
+            "configuration",
+            "factors per hypothesis",
+            "3",
+            "historical_experiment_note_says_usually_3_but_current_main_uses_1",
+        ),
+        (
+            "configuration",
+            "evolution iterations",
+            "5 mutation+crossover cycles",
+            "historical_experiment_note_says_5_epochs_11_rounds_but_current_main_uses_3_rounds",
+        ),
         ("configuration", "TopkDropout", "topk=50 n_drop=5", "matches_configs"),
         ("configuration", "buy and sell cost", "0.05% / 0.15%", "matches_configs"),
         ("configuration", "deal price", "open", "matches_configs"),
@@ -375,24 +977,111 @@ def paper_version_drift() -> list[dict[str, Any]]:
 
 def internal_and_source_checks() -> list[dict[str, Any]]:
     return [
-        {"check": "v3 abstract headline versus Table 1", "status": "compatible", "evidence": "0.0472 IC, 4.68% ARR, 11.80% MDD"},
-        {"check": "Table 1 QuantaAlpha/DeepSeek versus Table 2 full row", "status": "compatible", "evidence": "0.0461, 0.0450, 4.53, 15.10"},
-        {"check": "Figure 3 full row versus Table 2 full row", "status": "compatible_at_figure_precision", "evidence": "0.046/0.045/4.53/15.10"},
-        {"check": "v3 GPT-5.2 QuantaAlpha minus RD-Agent prose", "status": "arithmetically_compatible", "evidence": "IC +0.0186, ARR +1.10pp, MDD -4.96pp"},
-        {"check": "v3 GPT-5.2 QuantaAlpha minus AlphaAgent prose", "status": "arithmetically_compatible", "evidence": "IC +0.0125, ARR +3.57pp, MDD -2.09pp"},
-        {"check": "cross-seed mean/std/range table", "status": "arithmetically_compatible_at_display_precision", "evidence": "summary recomputes from three displayed combinations"},
-        {"check": "daily t statistics", "status": "approximately_compatible_with_n_966", "evidence": "mean/(std/sqrt(966)) agrees after rounding"},
-        {"check": "Figure 1 curve endpoints versus prose transfer returns", "status": "paper_graphic_prose_conflict", "evidence": "raster visually terminates near 69% CSI500 and 82% S&P500, not 40.28% and 19.1%"},
-        {"check": "Figure 1 caption/prose metric versus y-axis", "status": "ambiguous_metric_label", "evidence": "caption/prose say cumulative excess return; axes say cumulative return"},
-        {"check": "Figure 4 year coverage versus prose", "status": "paper_graphic_prose_conflict", "evidence": "prose says 2021--2025; figure shows 2022--2025"},
-        {"check": "Appendix C factor identity versus evolution diagram", "status": "paper_internal_round_conflict", "evidence": "identity says Round 10 while offspring diagram says Round 8 Crossover"},
-        {"check": "v1/v2 versus v3 headline results", "status": "large_unexplained_revision", "evidence": "IC 0.1501->0.0472; ARR 27.75->4.68; transfer 160/137->40.28/19.1"},
-        {"check": "official repo README versus current paper", "status": "matches_v3_headline", "evidence": "README reports current lower headline values"},
-        {"check": "paper source Figure 1 versus repository docs Figure 1", "status": "byte_identical", "evidence": "SHA-256 35d013008dd023c096f53ede8fa5b149944ed30b657b514e946bf2f6252061c3"},
-        {"check": "current source default experiment versus paper profile", "status": "conflict", "evidence": "2 directions, 3 rounds, 2 crossovers, 1 factor/hypothesis, consistency disabled"},
-        {"check": "native mining-loop Qlib config versus paper split", "status": "conflict", "evidence": "train 2016-2019, valid 2020, test/backtest 2021 only"},
-        {"check": "standalone backtest config versus paper split and costs", "status": "substantially_compatible", "evidence": "2016-2025 split, label, TopkDropout, open price, costs match"},
-        {"check": "paper reported result arrays in source release", "status": "absent", "evidence": "no factor pool, trajectories, predictions, returns, metrics, or plot arrays"},
+        {
+            "check": "v3 abstract headline versus Table 1",
+            "status": "compatible",
+            "evidence": "0.0472 IC, 4.68% ARR, 11.80% MDD",
+        },
+        {
+            "check": "Table 1 QuantaAlpha/DeepSeek versus Table 2 full row",
+            "status": "compatible",
+            "evidence": "0.0461, 0.0450, 4.53, 15.10",
+        },
+        {
+            "check": "Figure 3 full row versus Table 2 full row",
+            "status": "compatible_at_figure_precision",
+            "evidence": "0.046/0.045/4.53/15.10",
+        },
+        {
+            "check": "v3 GPT-5.2 QuantaAlpha minus RD-Agent prose",
+            "status": "arithmetically_compatible",
+            "evidence": "IC +0.0186, ARR +1.10pp, MDD -4.96pp",
+        },
+        {
+            "check": "v3 GPT-5.2 QuantaAlpha minus AlphaAgent prose",
+            "status": "arithmetically_compatible",
+            "evidence": "IC +0.0125, ARR +3.57pp, MDD -2.09pp",
+        },
+        {
+            "check": "cross-seed mean/std/range table",
+            "status": "arithmetically_compatible_at_display_precision",
+            "evidence": "summary recomputes from three displayed combinations",
+        },
+        {
+            "check": "daily t statistics",
+            "status": "approximately_compatible_with_n_966",
+            "evidence": "mean/(std/sqrt(966)) agrees after rounding",
+        },
+        {
+            "check": "Figure 1 curve endpoints versus prose transfer returns",
+            "status": "paper_graphic_prose_conflict",
+            "evidence": "raster visually terminates near 69% CSI500 and 82% S&P500, not 40.28% and 19.1%",
+        },
+        {
+            "check": "Figure 1 caption/prose metric versus y-axis",
+            "status": "ambiguous_metric_label",
+            "evidence": "caption/prose say cumulative excess return; axes say cumulative return",
+        },
+        {
+            "check": "Figure 4 year coverage versus prose",
+            "status": "paper_graphic_prose_conflict",
+            "evidence": "prose says 2021--2025; figure shows 2022--2025",
+        },
+        {
+            "check": "Appendix C factor identity versus evolution diagram",
+            "status": "paper_internal_round_conflict",
+            "evidence": "identity says Round 10 while offspring diagram says Round 8 Crossover",
+        },
+        {
+            "check": "v1/v2 versus v3 headline results",
+            "status": "large_unexplained_revision",
+            "evidence": "IC 0.1501->0.0472; ARR 27.75->4.68; transfer 160/137->40.28/19.1",
+        },
+        {
+            "check": "official repo README versus current paper",
+            "status": "matches_v3_headline",
+            "evidence": "README reports current lower headline values",
+        },
+        {
+            "check": "paper source Figure 1 versus repository docs Figure 1",
+            "status": "byte_identical",
+            "evidence": "SHA-256 35d013008dd023c096f53ede8fa5b149944ed30b657b514e946bf2f6252061c3",
+        },
+        {
+            "check": "current source default experiment versus paper profile",
+            "status": "conflict",
+            "evidence": "2 directions, 3 rounds, 2 crossovers, 1 factor/hypothesis, consistency disabled",
+        },
+        {
+            "check": "native mining-loop Qlib config versus paper split",
+            "status": "conflict",
+            "evidence": "train 2016-2019, valid 2020, test/backtest 2021 only",
+        },
+        {
+            "check": "standalone backtest config versus paper split and costs",
+            "status": "substantially_compatible",
+            "evidence": "2016-2025 split, label, TopkDropout, open price, costs match",
+        },
+        {
+            "check": "paper reported result arrays in source release",
+            "status": "absent",
+            "evidence": "no factor pool, trajectories, predictions, returns, metrics, or plot arrays",
+        },
+        {
+            "check": "complete public Git history result arrays",
+            "status": "absent",
+            "evidence": "61 commits, five branch heads, 259 historical paths, zero native result-artifact file types",
+        },
+        {
+            "check": "historical Windows branch versus paper search specification",
+            "status": "specification_disclosure_not_executable_profile",
+            "evidence": "10 seed groups/30 expressions and 5 epochs/11 rounds are documented, but no matching run config or run lineage is shipped",
+        },
+        {
+            "check": "v1/v2 paper main tables versus historical README raster",
+            "status": "complete_visual_correspondence_not_regeneration",
+            "evidence": "the identical 224-cell v1/v2 tables correspond to the pinned historical author raster",
+        },
     ]
 
 
@@ -411,7 +1100,10 @@ def specification_gaps() -> list[dict[str, Any]]:
         ("models", "API error/retry/fallback trace"),
         ("search", "paper-faithful executable experiment profile"),
         ("search", "mapping of five iterations to original/mutation/crossover rounds"),
-        ("search", "ten initial planning directions and their text"),
+        (
+            "search",
+            "selection, ordering, and exact prompt insertion of the 10 disclosed seed groups in each reported run",
+        ),
         ("search", "all mutation parent selections and outputs"),
         ("search", "all crossover parent selections and outputs"),
         ("search", "claimed trajectory-segment repair/splice records"),
@@ -447,47 +1139,144 @@ def specification_gaps() -> list[dict[str, Any]]:
         ("environment", "hardware and library versions for paper runs"),
         ("audit", "paper-era immutable source tag tied to each arXiv version"),
     ]
-    return [{"category": category, "missing_or_ambiguous_item": item, "resolved": "no", "effect": "prevents_exact_paper_replication"} for category, item in gaps]
+    return [
+        {
+            "category": category,
+            "missing_or_ambiguous_item": item,
+            "resolved": "no",
+            "effect": "prevents_exact_paper_replication",
+        }
+        for category, item in gaps
+    ]
 
 
 def mechanism_conformance() -> list[dict[str, Any]]:
     rows = [
-        ("planning", "parallel initial direction generation", "implemented_analogue", "native code and prompts exist; default count is 2 rather than paper 10"),
-        ("trajectory", "complete hypothesis/factors/code/results/feedback record", "implemented_match", "StrategyTrajectory persists the declared lifecycle fields"),
+        (
+            "planning",
+            "parallel initial direction generation",
+            "implemented_analogue",
+            "native code and prompts exist; default count is 2 rather than paper 10",
+        ),
+        (
+            "trajectory",
+            "complete hypothesis/factors/code/results/feedback record",
+            "implemented_match",
+            "StrategyTrajectory persists the declared lifecycle fields",
+        ),
         ("trajectory", "lineage parent IDs", "implemented_match", "parent_ids are persisted"),
-        ("trajectory", "persistent trajectory pool", "implemented_match", "JSON save/load executes in isolated component test"),
-        ("mutation", "mechanism-level variation", "partial_analogue", "prompt generates an orthogonal/independent new strategy"),
-        ("mutation", "failed-step localization", "not_implemented_as_claimed", "no code localizes the failed trajectory step"),
-        ("mutation", "rewrite only failed trajectory segment", "not_implemented_as_claimed", "generation returns a new hypothesis rather than patching a stored segment"),
-        ("mutation", "preserve other trajectory segments", "not_implemented_as_claimed", "no splice/preservation representation exists"),
+        (
+            "trajectory",
+            "persistent trajectory pool",
+            "implemented_match",
+            "JSON save/load executes in isolated component test",
+        ),
+        (
+            "mutation",
+            "mechanism-level variation",
+            "partial_analogue",
+            "prompt generates an orthogonal/independent new strategy",
+        ),
+        (
+            "mutation",
+            "failed-step localization",
+            "not_implemented_as_claimed",
+            "no code localizes the failed trajectory step",
+        ),
+        (
+            "mutation",
+            "rewrite only failed trajectory segment",
+            "not_implemented_as_claimed",
+            "generation returns a new hypothesis rather than patching a stored segment",
+        ),
+        (
+            "mutation",
+            "preserve other trajectory segments",
+            "not_implemented_as_claimed",
+            "no splice/preservation representation exists",
+        ),
         ("crossover", "performance-aware parent selection", "implemented_match", "RankIC-based strategies exist"),
         ("crossover", "diverse direction/phase preference", "implemented_match", "combination score rewards both"),
-        ("crossover", "validated trajectory-segment reuse", "not_implemented_as_claimed", "only truncated textual summaries are sent to the LLM"),
+        (
+            "crossover",
+            "validated trajectory-segment reuse",
+            "not_implemented_as_claimed",
+            "only truncated textual summaries are sent to the LLM",
+        ),
         ("crossover", "actual segment splicing", "not_implemented_as_claimed", "no structured segment splice exists"),
-        ("consistency", "hypothesis-description-expression checker", "implemented_match", "LLM consistency checker and correction loop exist"),
+        (
+            "consistency",
+            "hypothesis-description-expression checker",
+            "implemented_match",
+            "LLM consistency checker and correction loop exist",
+        ),
         ("consistency", "enabled in shipped experiment", "config_conflict", "consistency_enabled is false"),
-        ("consistency", "fail-closed checker errors", "not_implemented_as_claimed", "exception path returns consistent=true"),
+        (
+            "consistency",
+            "fail-closed checker errors",
+            "not_implemented_as_claimed",
+            "exception path returns consistent=true",
+        ),
         ("complexity", "symbol-length constraint", "implemented_match", "native AST-backed regulator exists"),
         ("complexity", "base-feature constraint", "implemented_match", "native AST-backed regulator exists"),
         ("complexity", "free-argument ratio constraint", "implemented_match", "native AST-backed regulator exists"),
         ("complexity", "paper thresholds", "config_conflict", "checked-in 200/5/0.5 versus documented paper 250/6/0.5"),
         ("redundancy", "AST common-subtree matching", "implemented_match", "native parser and matcher execute"),
-        ("redundancy", "paper factor-zoo snapshot", "missing_artifact", "factor_zoo_path is null and no paper pool is shipped"),
-        ("redundancy", "fail-closed regulator errors", "not_implemented_as_claimed", "regulator catches errors and permits progress"),
+        (
+            "redundancy",
+            "paper factor-zoo snapshot",
+            "missing_artifact",
+            "factor_zoo_path is null and no paper pool is shipped",
+        ),
+        (
+            "redundancy",
+            "fail-closed regulator errors",
+            "not_implemented_as_claimed",
+            "regulator catches errors and permits progress",
+        ),
         ("factor_generation", "three factors per hypothesis", "config_conflict", "checked-in default is one"),
         ("factor_generation", "public prompts", "implemented_match", "prompt YAML files are tracked"),
         ("backtest", "Qlib factor evaluation", "implemented_match", "native runner/config path exists"),
-        ("backtest", "paper data split in mining loop", "config_conflict", "selected conf_baseline test/backtest ends in 2021"),
-        ("backtest", "paper standalone split/cost profile", "implemented_match", "configs/backtest.yaml matches most declared settings"),
+        (
+            "backtest",
+            "paper data split in mining loop",
+            "config_conflict",
+            "selected conf_baseline test/backtest ends in 2021",
+        ),
+        (
+            "backtest",
+            "paper standalone split/cost profile",
+            "implemented_match",
+            "configs/backtest.yaml matches most declared settings",
+        ),
         ("portfolio", "TopkDropout top50/drop5", "implemented_match", "both configs specify it"),
         ("portfolio", "open execution and costs", "implemented_match", "0.05%/0.15% and open are configured"),
         ("release", "paper factor pool", "missing_artifact", "no generated factor library is tracked"),
         ("release", "paper trajectories", "missing_artifact", "no trajectory pool is tracked"),
-        ("release", "published predictions/returns/results", "missing_artifact", "no result arrays or metrics are tracked"),
+        (
+            "release",
+            "published predictions/returns/results",
+            "missing_artifact",
+            "no result arrays or metrics are tracked",
+        ),
         ("release", "baseline reproduction assets", "missing_artifact", "no per-baseline configs/runs are shipped"),
-        ("release", "fully resolved environment", "partial_analogue", "dependency metadata exists but audit environment cannot resolve full stack"),
+        (
+            "release",
+            "fully resolved environment",
+            "partial_analogue",
+            "dependency metadata exists but audit environment cannot resolve full stack",
+        ),
     ]
-    return [{"category": cat, "paper_dimension": dim, "status": status, "evidence": evidence, "paper_mechanism_credit": status == "implemented_match"} for cat, dim, status, evidence in rows]
+    return [
+        {
+            "category": cat,
+            "paper_dimension": dim,
+            "status": status,
+            "evidence": evidence,
+            "paper_mechanism_credit": status == "implemented_match",
+        }
+        for cat, dim, status, evidence in rows
+    ]
 
 
 def config_conformance(source_root: Path) -> list[dict[str, Any]]:
@@ -495,15 +1284,32 @@ def config_conformance(source_root: Path) -> list[dict[str, Any]]:
 
     exp = yaml.safe_load((source_root / "configs/experiment.yaml").read_text(encoding="utf-8"))
     bt = yaml.safe_load((source_root / "configs/backtest.yaml").read_text(encoding="utf-8"))
-    mine = yaml.safe_load((source_root / "quantaalpha/factors/factor_template/conf_baseline.yaml").read_text(encoding="utf-8"))
+    mine = yaml.safe_load(
+        (source_root / "quantaalpha/factors/factor_template/conf_baseline.yaml").read_text(encoding="utf-8")
+    )
     values = [
         ("planning.num_directions", 10, exp["planning"]["num_directions"], "conflict"),
-        ("evolution.max_rounds", "five mutation+crossover cycles (mapping ambiguous)", exp["evolution"]["max_rounds"], "conflict"),
+        (
+            "evolution.max_rounds",
+            "five mutation+crossover cycles (mapping ambiguous)",
+            exp["evolution"]["max_rounds"],
+            "conflict",
+        ),
         ("evolution.crossover_size", 2, exp["evolution"]["crossover_size"], "match"),
-        ("evolution.crossover_n", "not stated in paper; source docs say 10", exp["evolution"]["crossover_n"], "not_paper_specified_and_docs_conflict"),
+        (
+            "evolution.crossover_n",
+            "not stated in paper; source docs say 10",
+            exp["evolution"]["crossover_n"],
+            "not_paper_specified_and_docs_conflict",
+        ),
         ("quality_gate.consistency_enabled", True, exp["quality_gate"]["consistency_enabled"], "conflict"),
         ("quality_gate.complexity_enabled", True, exp["quality_gate"]["complexity_enabled"], "match"),
-        ("quality_gate.redundancy_enabled", True, exp["quality_gate"]["redundancy_enabled"], "match_but_no_paper_factor_zoo"),
+        (
+            "quality_gate.redundancy_enabled",
+            True,
+            exp["quality_gate"]["redundancy_enabled"],
+            "match_but_no_paper_factor_zoo",
+        ),
         ("factor.factors_per_hypothesis", 3, exp["factor"]["factors_per_hypothesis"], "conflict"),
         ("factor.symbol_length_threshold", 250, exp["factor"]["complexity"]["symbol_length_threshold"], "conflict"),
         ("factor.base_features_threshold", 6, exp["factor"]["complexity"]["base_features_threshold"], "conflict"),
@@ -516,22 +1322,86 @@ def config_conformance(source_root: Path) -> list[dict[str, Any]]:
         ("standalone.dataset.test", ["2022-01-01", "2025-12-26"], bt["dataset"]["segments"]["test"], "match"),
         ("standalone.strategy.topk", 50, bt["backtest"]["strategy"]["kwargs"]["topk"], "match"),
         ("standalone.strategy.n_drop", 5, bt["backtest"]["strategy"]["kwargs"]["n_drop"], "match"),
-        ("standalone.exchange.deal_price", "open", bt["backtest"]["backtest"]["exchange_kwargs"]["deal_price"], "match"),
+        (
+            "standalone.exchange.deal_price",
+            "open",
+            bt["backtest"]["backtest"]["exchange_kwargs"]["deal_price"],
+            "match",
+        ),
         ("standalone.exchange.open_cost", 0.0005, bt["backtest"]["backtest"]["exchange_kwargs"]["open_cost"], "match"),
-        ("standalone.exchange.close_cost", 0.0015, bt["backtest"]["backtest"]["exchange_kwargs"]["close_cost"], "match"),
-        ("standalone.exchange.limit_threshold", 0.095, bt["backtest"]["backtest"]["exchange_kwargs"]["limit_threshold"], "match"),
-        ("mining.dataset.train", ["2016-01-01", "2020-12-31"], mine["task"]["dataset"]["kwargs"]["segments"]["train"], "conflict"),
-        ("mining.dataset.valid", ["2021-01-01", "2021-12-31"], mine["task"]["dataset"]["kwargs"]["segments"]["valid"], "conflict"),
-        ("mining.dataset.test", ["2022-01-01", "2025-12-26"], mine["task"]["dataset"]["kwargs"]["segments"]["test"], "conflict"),
-        ("mining.backtest.period", ["2022-01-01", "2025-12-26"], [mine["port_analysis_config"]["backtest"]["start_time"], mine["port_analysis_config"]["backtest"]["end_time"]], "conflict"),
-        ("mining.feature_count", 6, len(mine["data_handler_config"]["data_loader"]["kwargs"]["config"]["feature"][0]), "conflict"),
+        (
+            "standalone.exchange.close_cost",
+            0.0015,
+            bt["backtest"]["backtest"]["exchange_kwargs"]["close_cost"],
+            "match",
+        ),
+        (
+            "standalone.exchange.limit_threshold",
+            0.095,
+            bt["backtest"]["backtest"]["exchange_kwargs"]["limit_threshold"],
+            "match",
+        ),
+        (
+            "mining.dataset.train",
+            ["2016-01-01", "2020-12-31"],
+            mine["task"]["dataset"]["kwargs"]["segments"]["train"],
+            "conflict",
+        ),
+        (
+            "mining.dataset.valid",
+            ["2021-01-01", "2021-12-31"],
+            mine["task"]["dataset"]["kwargs"]["segments"]["valid"],
+            "conflict",
+        ),
+        (
+            "mining.dataset.test",
+            ["2022-01-01", "2025-12-26"],
+            mine["task"]["dataset"]["kwargs"]["segments"]["test"],
+            "conflict",
+        ),
+        (
+            "mining.backtest.period",
+            ["2022-01-01", "2025-12-26"],
+            [
+                mine["port_analysis_config"]["backtest"]["start_time"],
+                mine["port_analysis_config"]["backtest"]["end_time"],
+            ],
+            "conflict",
+        ),
+        (
+            "mining.feature_count",
+            6,
+            len(mine["data_handler_config"]["data_loader"]["kwargs"]["config"]["feature"][0]),
+            "conflict",
+        ),
     ]
-    return [{"parameter": name, "paper_value": json.dumps(paper, default=str), "released_value": json.dumps(released, default=str), "status": status} for name, paper, released, status in values]
+    return [
+        {
+            "parameter": name,
+            "paper_value": json.dumps(paper, default=str),
+            "released_value": json.dumps(released, default=str),
+            "status": status,
+        }
+        for name, paper, released, status in values
+    ]
 
 
 def source_inventory(source_root: Path) -> list[dict[str, Any]]:
-    files = str(run_git(source_root, "-c", "core.quotePath=false", "ls-tree", "-r", "--name-only", SOURCE_COMMIT)).splitlines()
-    result_patterns = ("result", "metric", "trajectory", "factor_pool", "prediction", "return", "holding", "order", "fill", "seed")
+    files = str(
+        run_git(source_root, "-c", "core.quotePath=false", "ls-tree", "-r", "--name-only", SOURCE_COMMIT)
+    ).splitlines()
+    result_patterns = (
+        "result",
+        "metric",
+        "trajectory",
+        "factor_pool",
+        "prediction",
+        "return",
+        "holding",
+        "order",
+        "fill",
+        "seed",
+    )
     rows = []
     for rel in files:
         blob = run_git(source_root, "show", f"{SOURCE_COMMIT}:{rel}", binary=True)
@@ -548,13 +1418,19 @@ def source_inventory(source_root: Path) -> list[dict[str, Any]]:
             role = "documentation_image"
         elif any(token in lower for token in result_patterns):
             role = "code_or_schema_named_like_output_not_paper_result"
-        rows.append({"relative_path": rel, "bytes": len(blob), "sha256": hashlib.sha256(blob).hexdigest(), "role": role, "paper_result_artifact": paper_result_artifact})
+        rows.append(
+            {
+                "relative_path": rel,
+                "bytes": len(blob),
+                "sha256": hashlib.sha256(blob).hexdigest(),
+                "role": role,
+                "paper_result_artifact": paper_result_artifact,
+            }
+        )
     return rows
 
 
-def author_output_correspondence(
-    source_root: Path, paper_source_root: Path
-) -> list[dict[str, Any]]:
+def author_output_correspondence(source_root: Path, paper_source_root: Path) -> list[dict[str, Any]]:
     """Pin exact and visually verified rendered author outputs.
 
     Figure 3--5 repository blobs are byte-identical to the v3 paper-source
@@ -618,9 +1494,7 @@ def author_output_correspondence(
     )
     rows = []
     for output, repository_path, paper_path, kind, units, arrays in definitions:
-        repository_blob = run_git(
-            source_root, "show", f"{SOURCE_COMMIT}:{repository_path}", binary=True
-        )
+        repository_blob = run_git(source_root, "show", f"{SOURCE_COMMIT}:{repository_path}", binary=True)
         repository_sha = hashlib.sha256(repository_blob).hexdigest()
         if repository_sha != RELEASED_PAPER_OUTPUT_SHA256[repository_path]:
             raise RuntimeError(f"Pinned author output changed: {repository_path}")
@@ -648,10 +1522,24 @@ def author_output_correspondence(
 
 def paper_source_inventory(paper_source_root: Path) -> list[dict[str, Any]]:
     rows = []
-    numeric = {"images/figure3.png", "images/figure4.png", "images/figure5.png", "images/ablation.pdf", "images/case_study.pdf"}
+    numeric = {
+        "images/figure3.png",
+        "images/figure4.png",
+        "images/figure5.png",
+        "images/ablation.pdf",
+        "images/case_study.pdf",
+    }
     for path in sorted(p for p in paper_source_root.rglob("*") if p.is_file()):
         rel = path.relative_to(paper_source_root).as_posix()
-        rows.append({"relative_path": rel, "bytes": path.stat().st_size, "sha256": sha256(path), "asset_role": "numeric_result_figure" if rel in numeric else "paper_source", "underlying_numeric_array": False})
+        rows.append(
+            {
+                "relative_path": rel,
+                "bytes": path.stat().st_size,
+                "sha256": sha256(path),
+                "asset_role": "numeric_result_figure" if rel in numeric else "paper_source",
+                "underlying_numeric_array": False,
+            }
+        )
     return rows
 
 
@@ -663,18 +1551,25 @@ def dataset_inventory(dataset_api: Path, tree_api: Path, debug_h5: Path) -> list
     rows = []
     for item in tree:
         lfs = item.get("lfs", {})
-        rows.append({
-            "path": item["path"], "bytes": item["size"], "git_oid": item["oid"],
-            "lfs_sha256": lfs.get("oid", ""), "last_commit": item["lastCommit"]["id"],
-            "last_commit_date": item["lastCommit"]["date"], "public": not meta["private"],
-            "gated": meta["gated"], "paper_result_artifact": False,
-        })
+        rows.append(
+            {
+                "path": item["path"],
+                "bytes": item["size"],
+                "git_oid": item["oid"],
+                "lfs_sha256": lfs.get("oid", ""),
+                "last_commit": item["lastCommit"]["id"],
+                "last_commit_date": item["lastCommit"]["date"],
+                "public": not meta["private"],
+                "gated": meta["gated"],
+                "paper_result_artifact": False,
+            }
+        )
     if sha256(debug_h5) != HF_DEBUG_SHA256:
         raise RuntimeError("Hugging Face debug HDF pin changed")
     return rows
 
 
-COMPONENT_DRIVER = r'''import importlib.util, json, sys, tempfile, types
+COMPONENT_DRIVER = r"""import importlib.util, json, sys, tempfile, types
 from pathlib import Path
 root = Path(sys.argv[1])
 def package(name):
@@ -718,14 +1613,16 @@ groups = op.select_crossover_pairs(items, crossover_size=2, crossover_n=2, prefe
 assert len(groups) == 2 and all(len(g)==2 for g in groups)
 assert any("t2" in [x.trajectory_id for x in g] for g in groups)
 print(json.dumps({"ast_parse":True,"base_features":3,"free_args":4,"common_subtree_size":match.size,"trajectory_roundtrip":True,"lineage_roundtrip":True,"crossover_groups":len(groups),"llm_or_market_api_called":False}, sort_keys=True))
-'''
+"""
 
 
 def compile_revision(source_root: Path, commit: str | None = None) -> dict[str, Any]:
     with tempfile.TemporaryDirectory() as td:
         root = source_root
         if commit:
-            archive = subprocess.run(["git", "-C", str(source_root), "archive", commit], check=True, capture_output=True).stdout
+            archive = subprocess.run(
+                ["git", "-C", str(source_root), "archive", commit], check=True, capture_output=True
+            ).stdout
             tar_path = Path(td) / "src.tar"
             tar_path.write_bytes(archive)
             with tarfile.open(tar_path) as handle:
@@ -735,7 +1632,11 @@ def compile_revision(source_root: Path, commit: str | None = None) -> dict[str, 
         failures = []
         for path in py_files:
             try:
-                py_compile.compile(str(path), doraise=True, cfile=str(Path(td) / (hashlib.sha256(str(path).encode()).hexdigest() + ".pyc")))
+                py_compile.compile(
+                    str(path),
+                    doraise=True,
+                    cfile=str(Path(td) / (hashlib.sha256(str(path).encode()).hexdigest() + ".pyc")),
+                )
             except Exception as exc:
                 failures.append({"path": str(path.relative_to(root)), "error": str(exc)})
         return {"python_files": len(py_files), "compiled": len(py_files) - len(failures), "failures": failures}
@@ -744,10 +1645,23 @@ def compile_revision(source_root: Path, commit: str | None = None) -> dict[str, 
 def native_execution(source_root: Path) -> dict[str, Any]:
     current = compile_revision(source_root)
     initial = compile_revision(source_root, INITIAL_COMMIT)
-    component = subprocess.run([sys.executable, "-c", COMPONENT_DRIVER, str(source_root)], capture_output=True, text=True)
-    component_payload = json.loads(component.stdout.strip().splitlines()[-1]) if component.returncode == 0 else {"error": component.stderr[-3000:]}
-    upstream = subprocess.run([sys.executable, str(source_root / "quantaalpha/factors/coder/test.py")], cwd=source_root / "quantaalpha/factors/coder", capture_output=True, text=True)
+    component_python = os.environ.get("QUANTAALPHA_COMPONENT_PYTHON", sys.executable)
+    component = subprocess.run(
+        [component_python, "-c", COMPONENT_DRIVER, str(source_root)], capture_output=True, text=True
+    )
+    component_payload = (
+        json.loads(component.stdout.strip().splitlines()[-1])
+        if component.returncode == 0
+        else {"error": component.stderr[-3000:]}
+    )
+    upstream = subprocess.run(
+        [component_python, str(source_root / "quantaalpha/factors/coder/test.py")],
+        cwd=source_root / "quantaalpha/factors/coder",
+        capture_output=True,
+        text=True,
+    )
     return {
+        "component_python": component_python,
         "current_compile": current,
         "initial_compile": initial,
         "component_driver_returncode": component.returncode,
@@ -755,7 +1669,9 @@ def native_execution(source_root: Path) -> dict[str, Any]:
         "upstream_tests_discovered": 1,
         "upstream_tests_passed": int(upstream.returncode == 0),
         "upstream_tests_failed": int(upstream.returncode != 0),
-        "upstream_test_failure": "missing template_debug.jinjia2" if "template_debug.jinjia2" in upstream.stderr else upstream.stderr[-1000:],
+        "upstream_test_failure": "missing template_debug.jinjia2"
+        if "template_debug.jinjia2" in upstream.stderr
+        else upstream.stderr[-1000:],
         "full_native_environment_reproduced": False,
         "paper_experiment_executed": False,
         "paper_result_cells_reproduced": 0,
@@ -764,7 +1680,13 @@ def native_execution(source_root: Path) -> dict[str, Any]:
     }
 
 
-def verify_pins(source_root: Path, papers: Mapping[str, tuple[Path, Path]], paper_source_root: Path, dataset_api: Path, debug_h5: Path) -> None:
+def verify_pins(
+    source_root: Path,
+    papers: Mapping[str, tuple[Path, Path]],
+    paper_source_root: Path,
+    dataset_api: Path,
+    debug_h5: Path,
+) -> None:
     if str(run_git(source_root, "rev-parse", "HEAD")).strip() != SOURCE_COMMIT:
         raise RuntimeError("Official source HEAD pin changed")
     if sha256(source_root / "README.md") != CURRENT_README_SHA256:
@@ -780,7 +1702,15 @@ def verify_pins(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
         raise RuntimeError("Official dataset pin changed")
 
 
-def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], paper_source_root: Path, dataset_api: Path, tree_api: Path, debug_h5: Path, output_dir: Path) -> dict[str, Any]:
+def build_audit(
+    source_root: Path,
+    papers: Mapping[str, tuple[Path, Path]],
+    paper_source_root: Path,
+    dataset_api: Path,
+    tree_api: Path,
+    debug_h5: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
     verify_pins(source_root, papers, paper_source_root, dataset_api, debug_h5)
     output_dir.mkdir(parents=True, exist_ok=True)
     tables = paper_table_rows()
@@ -794,6 +1724,9 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
     configs = config_conformance(source_root)
     versions = paper_version_drift()
     inventory = source_inventory(source_root)
+    history_commits, history_paths, history_summary = public_source_history(source_root)
+    branch_evidence = historical_branch_evidence(source_root)
+    versioned_main_table = paper_version_main_table_rows(source_root, paper_source_root)
     paper_assets = paper_source_inventory(paper_source_root)
     datasets = dataset_inventory(dataset_api, tree_api, debug_h5)
     native = native_execution(source_root)
@@ -808,6 +1741,10 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
         "source_mechanism_conformance.csv": mechanisms,
         "source_config_conformance.csv": configs,
         "released_source_inventory.csv": inventory,
+        "released_source_history_inventory.csv": history_commits,
+        "released_source_history_paths.csv": history_paths,
+        "historical_branch_evidence_inventory.csv": branch_evidence,
+        "paper_version_main_table_conformance.csv": versioned_main_table,
         "released_dataset_inventory.csv": datasets,
         "paper_source_asset_inventory.csv": paper_assets,
         "author_output_correspondence.csv": author_outputs,
@@ -815,6 +1752,9 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
     for name, rows in outputs.items():
         write_csv(output_dir / name, rows)
     (output_dir / "native_component_execution.json").write_text(json.dumps(native, indent=2) + "\n", encoding="utf-8")
+    (output_dir / "public_source_history.json").write_text(
+        json.dumps(history_summary, indent=2) + "\n", encoding="utf-8"
+    )
     status_counts = Counter(row["status"] for row in mechanisms)
     manifest: dict[str, Any] = {
         "paper": "QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining",
@@ -850,12 +1790,10 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
             row["correspondence_kind"] == "byte_identical" for row in author_outputs
         ),
         "author_output_assets_visually_and_ocr_verified": sum(
-            row["correspondence_kind"] == "complete_visual_and_ocr_correspondence"
-            for row in author_outputs
+            row["correspondence_kind"] == "complete_visual_and_ocr_correspondence" for row in author_outputs
         ),
         "author_output_result_claims_corroborated": sum(
-            row["claim_role"] == "result" and row["author_output_correspondence"]
-            for row in claims
+            row["claim_role"] == "result" and row["author_output_correspondence"] for row in claims
         ),
         "author_output_dated_return_raster_shipped": True,
         "author_output_underlying_arrays_shipped": False,
@@ -864,6 +1802,9 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
         "paper_trajectory_pool_shipped": False,
         "paper_baseline_runs_shipped": False,
         "paper_seeds_shipped": False,
+        "paper_seeds_field_means_random_or_run_seed_lineage": True,
+        "historical_direction_seed_groups_disclosed": True,
+        "paper_run_direction_seed_selection_and_order_shipped": False,
         "paper_cost_ledger_shipped": False,
         "published_non_table_claims_total": len(claims),
         "published_result_claims_total": sum(row["claim_role"] == "result" for row in claims),
@@ -871,6 +1812,17 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
         "paper_internal_and_source_checks_total": len(checks),
         "paper_version_drift_claims_total": len(versions),
         "large_unexplained_revision_claims_total": len(versions),
+        "versioned_main_table_cells_total": len(versioned_main_table),
+        "versioned_main_table_cells_by_paper_version": dict(
+            Counter(row["paper_version"] for row in versioned_main_table)
+        ),
+        "versioned_main_table_cells_author_output_corroborated": sum(
+            row["author_output_correspondence"] for row in versioned_main_table
+        ),
+        "versioned_main_table_cells_independently_regenerated": 0,
+        "distinct_author_rendered_main_table_cells_across_versions": 420,
+        "historical_v1_v2_main_table_cells_corroborated": 224,
+        "historical_v1_v2_main_table_cells_independently_regenerated": 0,
         "source_mechanism_dimensions_total": len(mechanisms),
         "source_mechanism_status_counts": dict(status_counts),
         "source_mechanism_matches": status_counts["implemented_match"],
@@ -880,6 +1832,18 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
         "tracked_source_files_total": len(inventory),
         "tracked_source_python_files_total": sum(row["relative_path"].endswith(".py") for row in inventory),
         "tracked_source_test_files_total": 1,
+        "public_source_branches_total": history_summary["public_branches_total"],
+        "public_source_tags_total": history_summary["public_tags_total"],
+        "public_source_releases_total": history_summary["public_releases_total"],
+        "public_source_reachable_commits_total": history_summary["reachable_commits_total"],
+        "public_source_unique_historical_paths_total": history_summary["unique_historical_paths_total"],
+        "public_source_reachable_object_counts": history_summary["reachable_object_counts"],
+        "public_source_unreachable_objects_total": history_summary["unreachable_objects_total"],
+        "public_source_native_result_artifact_paths_total": history_summary["native_result_artifact_paths_total"],
+        "historical_branch_evidence_items_total": len(branch_evidence),
+        "historical_direction_seed_groups_total": 10,
+        "historical_direction_seed_factor_expressions_total": 30,
+        "historical_operational_frontend_files_total": 44,
         "paper_source_assets_total": len(paper_assets),
         "released_dataset_files_total": len(datasets),
         "released_dataset_is_public": True,
@@ -902,50 +1866,62 @@ def build_audit(source_root: Path, papers: Mapping[str, tuple[Path, Path]], pape
             "pool, run trajectories, prompts/responses, seeds, baselines, predictions, holdings, return arrays, "
             "or plot arrays are released. The official README does ship the complete 196-cell v3 main-table "
             "raster, exact paper-source copies of Figures 3--5, and the 17-label case-study raster: 270 rendered "
-            "output units are author-output corroborations, while 0/344 table cells, 0/40 labeled figure values, "
+            "output units are current author-output corroborations, while 0/344 table cells, 0/40 labeled figure values, "
             "0/47 discrete figure markers, and 0/10 return-curve arrays are independently regenerated. Moreover, "
-            "v1/v2 headline results were sharply reduced in v3 without released run lineage, and v3 contains "
+            "the complete 61-commit/five-branch public history adds 10 seed groups, 30 factor expressions, paper-default "
+            "experiment notes, an operational frontend, and a 224-cell v1/v2 table raster, but no native result file. "
+            "The v1/v2 headline results were sharply reduced in v3 without released run lineage, and v3 contains "
             "direct figure/prose and round-label inconsistencies. The public HF dataset helps infrastructure "
             "reproducibility but is not a result artifact and lacks sufficient provenance for exact replication."
         ),
     }
     report = f"""# QuantaAlpha paper-level conformance audit
 
-Overall verdict: **substantial native implementation and 270 rendered author-output
-units corroborated; zero published results independently regenerated**.
+Overall verdict: **substantial native implementation, 270 current rendered author-output
+units plus 224 distinct historical v1/v2 table cells corroborated; zero published results
+independently regenerated**.
 
 ## Primary-source boundary
 
-- All three arXiv revisions of [2602.07085]({PAPER_URL}) are pinned by PDF and source-archive SHA-256. The current audit targets v3, submitted {PAPER_VERSIONS['v3']['date']}.
+- All three arXiv revisions of [2602.07085]({PAPER_URL}) are pinned by PDF and source-archive SHA-256. The current audit targets v3, submitted {PAPER_VERSIONS["v3"]["date"]}.
 - The official source is pinned to `{SOURCE_COMMIT}` ({SOURCE_COMMIT_DATE}). Its initial substantial revision was committed 56.91 hours after v1 submission, so the source is useful but not a pre-submission snapshot.
+- The complete public Git surface is pinned: **{history_summary["reachable_commits_total"]} reachable commits**, **{history_summary["public_branches_total"]} branch heads**, **{history_summary["unique_historical_paths_total"]} unique historical paths**, no tags/releases, and no unreachable objects. This includes deleted files and non-main branches rather than treating current `main` as the release boundary.
 - The official public [Hugging Face dataset]({HF_DATASET_URL}) is pinned to `{HF_DATASET_COMMIT}`. It provides a Qlib package and daily HDF files, but no paper result arrays.
 
 ## Complete numeric-result boundary
 
 - The v3 paper contains **344 numeric result table cells**: 196 main-table cells, 28 evolution-ablation values/deltas, 56 seed/daily-statistic cells, and 64 case-study/factor-analysis cells. The official README ships a complete raster of all **196/196 main-table cells**; these are author-output correspondences, while **0/344** cells are independently regenerated.
+- The identical v1/v2 paper main tables contain **224 cells** each. A pinned high-resolution historical README raster completely corresponds to those 224 cells; the lower-resolution duplicate is not double-counted. Across paper versions, **644/644 version-specific main-table cells** have an author-rendered correspondence, representing **420 distinct rendered cells**, while **0/644** are independently regenerated.
 - Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. The README ships the 17-label case-study raster and byte-identical copies of the paper-source Figure 3--5 assets, corroborating **17 labels, 47 markers, and 10 curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are regenerated.
 - The paper says approximately 150 validated factors feed a common LightGBM model. No such factor pool, run trajectory, prediction, portfolio, return, or metric artifact is shipped.
 
 ## What really works
 
-- The release is not pseudocode: **{native['current_compile']['compiled']}/{native['current_compile']['python_files']}** current Python files and **{native['initial_compile']['compiled']}/{native['initial_compile']['python_files']}** initial-release Python files compile. The audit executes native expression parsing/complexity/subtree matching, trajectory JSON round-trip, lineage round-trip, and performance/diversity-aware crossover selection without calling an LLM or market API.
-- Public prompt/config/source paths implement meaningful planning, full trajectory records, mutation/crossover generation, semantic consistency, AST complexity/redundancy checks, Qlib evaluation, and TopkDropout backtesting. **{status_counts['implemented_match']}/{len(mechanisms)}** audited mechanism dimensions are implementation matches.
+- The release is not pseudocode: **{native["current_compile"]["compiled"]}/{native["current_compile"]["python_files"]}** current Python files and **{native["initial_compile"]["compiled"]}/{native["initial_compile"]["python_files"]}** initial-release Python files compile. The audit executes native expression parsing/complexity/subtree matching, trajectory JSON round-trip, lineage round-trip, and performance/diversity-aware crossover selection without calling an LLM or market API.
+- Public prompt/config/source paths implement meaningful planning, full trajectory records, mutation/crossover generation, semantic consistency, AST complexity/redundancy checks, Qlib evaluation, and TopkDropout backtesting. **{status_counts["implemented_match"]}/{len(mechanisms)}** audited mechanism dimensions are implementation matches.
 - `configs/backtest.yaml` substantially matches the paper's date split, target, preprocessing, Top-50/drop-5 portfolio, open execution, limit, and 0.05%/0.15% costs.
+- A historical `windows` branch materially improves specification disclosure: it ships **10 seed groups with 30 concrete Alpha158(20)-derived expressions**, says the paper used 5 epochs/11 rounds and usually 3 new factors, distinguishes 2021 mining feedback from 2022--2025 final evaluation, and ships a 44-file frontend/backend bridge. These are configuration and implementation evidence, not run results.
 
 ## Why it is not faithful yet
 
 - The actual checked-in `configs/experiment.yaml` is a demo profile: 2 rather than 10 directions, 3 rounds rather than the paper's five mutation/crossover cycles, 2 rather than the documented 10 crossover combinations, 1 rather than 3 factors per hypothesis, lower complexity limits, and the consistency gate disabled.
+- The historical Windows Qlib profile adds seed/random-state 42 and extends its dataset test segment through 2025, but still trains/validates on 2016--2019/2020 and leaves its portfolio-analysis backtest in 2021. It is therefore not an executable paper-faithful profile.
 - The mining runner selects `quantaalpha/factors/factor_template/conf_baseline.yaml`, whose train/validation/test split is 2016--2019/2020/2021 and whose backtest ends in 2021. The paper reports 2016--2020/2021/2022--2025. The matching standalone backtest config does not repair the mining-loop mismatch.
 - Paper prose describes mutation as targeted failed-segment repair and crossover as reuse/splicing of validated trajectory segments. The source generates new hypotheses from truncated textual summaries; it does not localize, preserve, or splice structured trajectory segments.
 - The only tracked upstream test fails because `template_debug.jinjia2` is missing. The full dependency/runtime stack is not reproduced here.
 - v1/v2 reported IC 0.1501, ARR 27.75%, MDD 7.98%, and transfer returns 160%/137%; v3 reports 0.0472, 4.68%, 11.80%, and 40.28%/19.1%. No released result lineage explains the revision. In v3, Figure 1's visible endpoints do not agree with its prose, Figure 4 omits 2021 despite the text's 2021--2025 claim, and Appendix C labels the same offspring Round 10 and Round 8.
+- Across all 61 public commits and all 259 historical paths, there is **no CSV, Parquet, pickle, HDF, NumPy array, model checkpoint, log, or JSONL result path**. All eight historical JSON paths are seed/configuration, frontend descriptors, or benchmark examples. Thus deleted history contains more specification and rendered output, but no hidden factor pool or raw published run.
 
 ## Honest interpretation
 
 This repository is close to a credible clean-room *implementation framework*, but far from a verifiable replication of the reported study. Its rendered result outputs materially improve author-output availability, but screenshots cannot establish the inputs, execution, or raw result path. Running it with newly chosen APIs/data would produce a new experiment, not regenerate the published one. `--strict` intentionally remains nonzero until an end-to-end pinned paper profile reproduces every claimed artifact and result within declared tolerances.
 """
     (output_dir / "README.md").write_text(report, encoding="utf-8")
-    manifest["output_sha256"] = {path.name: sha256(path) for path in sorted(output_dir.iterdir()) if path.is_file() and path.name != "manifest.json"}
+    manifest["output_sha256"] = {
+        path.name: sha256(path)
+        for path in sorted(output_dir.iterdir())
+        if path.is_file() and path.name != "manifest.json"
+    }
     (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
 
@@ -954,7 +1930,13 @@ def parse_args() -> argparse.Namespace:
     project_root = Path(__file__).resolve().parents[1]
     base = Path(os.environ.get("QUANTAALPHA_PAPER_ROOT", "/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_paper"))
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source-root", type=Path, default=Path(os.environ.get("QUANTAALPHA_SOURCE_ROOT", "/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_source")))
+    parser.add_argument(
+        "--source-root",
+        type=Path,
+        default=Path(
+            os.environ.get("QUANTAALPHA_SOURCE_ROOT", "/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_source")
+        ),
+    )
     parser.add_argument("--paper-v1-pdf", type=Path, default=base / "paper_v1.pdf")
     parser.add_argument("--paper-v1-source", type=Path, default=base / "source_v1.tar")
     parser.add_argument("--paper-v2-pdf", type=Path, default=base / "paper_v2.pdf")
@@ -965,7 +1947,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset-api", type=Path, default=base / "hf_dataset_api.json")
     parser.add_argument("--dataset-tree-api", type=Path, default=base / "hf_tree_api.json")
     parser.add_argument("--debug-h5", type=Path, default=base / "daily_pv_debug.h5")
-    parser.add_argument("--output-dir", type=Path, default=project_root / "paper_runs/paper_replication_audits/quantaalpha")
+    parser.add_argument(
+        "--output-dir", type=Path, default=project_root / "paper_runs/paper_replication_audits/quantaalpha"
+    )
     parser.add_argument("--strict", action="store_true", help="Return nonzero until the full paper is reproduced")
     return parser.parse_args()
 
@@ -977,7 +1961,15 @@ def main() -> int:
         "v2": (args.paper_v2_pdf, args.paper_v2_source),
         "v3": (args.paper_v3_pdf, args.paper_v3_source),
     }
-    manifest = build_audit(args.source_root, papers, args.paper_source_root, args.dataset_api, args.dataset_tree_api, args.debug_h5, args.output_dir)
+    manifest = build_audit(
+        args.source_root,
+        papers,
+        args.paper_source_root,
+        args.dataset_api,
+        args.dataset_tree_api,
+        args.debug_h5,
+        args.output_dir,
+    )
     print(json.dumps(manifest, indent=2))
     return 1 if args.strict and not manifest["full_paper_reproduced"] else 0
 

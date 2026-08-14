@@ -12,7 +12,7 @@ models,exact per-run prompt/message transcripts,no,prevents_exact_paper_replicat
 models,API error/retry/fallback trace,no,prevents_exact_paper_replication
 search,paper-faithful executable experiment profile,no,prevents_exact_paper_replication
 search,mapping of five iterations to original/mutation/crossover rounds,no,prevents_exact_paper_replication
-search,ten initial planning directions and their text,no,prevents_exact_paper_replication
+search,"selection, ordering, and exact prompt insertion of the 10 disclosed seed groups in each reported run",no,prevents_exact_paper_replication
 search,all mutation parent selections and outputs,no,prevents_exact_paper_replication
 search,all crossover parent selections and outputs,no,prevents_exact_paper_replication
 search,claimed trajectory-segment repair/splice records,no,prevents_exact_paper_replication
