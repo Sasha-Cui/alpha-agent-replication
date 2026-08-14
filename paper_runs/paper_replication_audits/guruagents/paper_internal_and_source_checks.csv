@@ -1,16 +1,22 @@
 check,status,evidence
+official arXiv version history,exhausted_one_version,"arXiv API exposes v1 only; PDF, source archive, figures, and two-pass compilation are pinned"
+official GitHub history,exhausted_all_public_refs,"2 branches, 19 commits, 592 paths, and 628 blobs"
+historical Table 1 artifacts,not_reproduced,four workbook blobs scanned; best is 2/70 rounding matches
+historical paper-style plots,not_reproduced,three versions of the paper-relevant notebook contain six plots; 0 match either paper image
 Table 1 native cell reproduction,partial_two_cells_only,2/70 cells; both are benchmark MDD
 Table 1 complete rows,not_reproduced,0/7 rows match all ten metrics
 native notebook versus shipped workbook,exact_source_artifact_reproduction,"all seven paths match to <1e-12, but are not the paper paths"
 paper horizon versus source workbook,contradiction,paper says Q4 2023-Q2 2025; shipped agent paths run 2024-01-01 to 2025-08-12
 paper Figure 1 visual horizon,contradiction,paper image extends beyond the stated Q2 2025 endpoint
-Figure 2 first visible Buffett bar,contradiction,"paper-visible ticker set differs; paper-only=['AVGO'], source-only=['CDNS', 'COST', 'IDXX', 'ISRG', 'KLAC', 'LULU', 'PEP', 'REGN', 'ROST', 'SNPS', 'TSLA', 'VRTX']"
-raw portfolio weight sums,contradiction,2/35 sum to 100
-raw duplicate tickers,contradiction,9/35 contain duplicates
-strict prompt output,contradiction,0/35 satisfy the full contract
-expected tool calls,supported_component,35/35 archived runs call every declared tool once
-runtime model,supported_component,all 35 logs identify gpt-4o-2024-08-06
-runtime model fingerprint,determinism_not_established,three system fingerprints appear across the 35 archived runs
+Figure 2 first visible Buffett bar,contradiction,"both public variants differ; paper-only versus current=['AVGO'], versus older=['AVGO']"
+current paper-window raw portfolio weight sums,contradiction,2/35 sum to 100
+all archived raw portfolio weight sums,contradiction,16/95 sum to 100
+all archived raw duplicate tickers,contradiction,17/95 contain duplicates
+strict prompt output,contradiction,0/95 satisfy the full contract
+expected tool calls,supported_component,95/95 archived runs call every declared tool once
+runtime model,supported_component,all 95 logs identify gpt-4o-2024-08-06
+runtime model fingerprint,determinism_not_established,three system fingerprints appear across the 95 archived runs
+same-labeled period alternatives,reported_run_not_attributable,0/25 portfolio files match exactly and 4/25 ticker sets match; inputs were not controlled
 transaction cost,contradiction,transaction_cost=0.0001 is declared but unused in calculate_agent_returns
 agent/benchmark frequency,contradiction,paper-window agents have 540 calendar observations versus 374 benchmark trading observations
 benchmark instruments,contradiction,paper labels indices; source downloads QQQ and SPY
@@ -19,4 +25,4 @@ Buffett scoring inputs,contradiction,seven prompt inputs are not returned by any
 valuation units,implementation_defect,"archived tool logs report million-scale P/E and P/B values (for example MSFT P/E 33,479,836)"
 price column,implementation_difference,native backtest selects CLOSE_ before DIV_ADJ_CLOSE
 released README,stale_nonoperational,documents Carlisle/Driehaus and nonexistent config/backtest modules instead of the paper system
-source/result chronology,qualified_provenance,code was present before Aug-21 runs; artifacts were first committed Aug 31; notebook code hash is invariant
+source/result chronology,qualified_provenance,"all 19 commits were audited; code predates archived runs, but no public manifest identifies the reported workbook/portfolio lineage"

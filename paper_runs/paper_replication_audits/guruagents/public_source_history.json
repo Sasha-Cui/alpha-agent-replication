@@ -1,0 +1,26 @@
+{
+  "authority": "complete reachable history of the official GitHub repository",
+  "audit_date": "2026-08-14",
+  "remote_refs": {
+    "refs/heads/develop": "df8c7d70ab4668ecfc2acae76fc561933a74fe7f",
+    "refs/heads/main": "74ad2e6ce2e604c73a6fc2829d48ab58fe6be050"
+  },
+  "remote_ref_snapshot_sha256": "4b5936c6d04c8fb61b588d6c7c1ed2de4c3622826db0a5275a2223f9b182a747",
+  "branches": 2,
+  "tags": 0,
+  "root_commit": "f2a3e3ab22887dcdbf5ce4bde81601a283c99730",
+  "reachable_commits": 19,
+  "unique_paths": 592,
+  "unique_blobs": 628,
+  "unique_xlsx_blobs": 7,
+  "unique_notebook_blobs": 20,
+  "paper_relevant_multi_agent_workbook_blobs": 4,
+  "best_historical_workbook_table_matches": 2,
+  "paper_table_cells_total": 70,
+  "paper_relevant_multi_agent_notebook_blobs": 3,
+  "paper_relevant_historical_embedded_plots": 6,
+  "historical_embedded_plots_matching_paper_figures": 0,
+  "historical_notebooks_with_complete_paper_table_generator": 0,
+  "paper_result_artifact_recovered_from_history": false,
+  "interpretation": "All public branches, reachable commits, paths, workbook versions, and notebook versions were scanned. Historical artifacts add developmental evidence but recover neither the reported table generator nor an exact published figure or complete paper result."
+}

@@ -1,0 +1,20 @@
+commit,author_date,committer_date,author,subject,parents,reachable_remote_refs
+f2a3e3ab22887dcdbf5ce4bde81601a283c99730,2025-07-20T23:50:04+09:00,2025-07-20T23:50:04+09:00,yejining99,start,,refs/heads/develop; refs/heads/main
+8cf631cf3f11f9e2e4a0b4fdf3fd1bac8b28b333,2025-07-20T23:50:17+09:00,2025-07-20T23:50:17+09:00,yejining99,test,f2a3e3ab22887dcdbf5ce4bde81601a283c99730,refs/heads/develop; refs/heads/main
+b02feba330af779d86e73f9f81f80c50389a9a3b,2025-07-20T23:54:52+09:00,2025-07-20T23:54:52+09:00,yejining99,test,8cf631cf3f11f9e2e4a0b4fdf3fd1bac8b28b333,refs/heads/develop; refs/heads/main
+91ba9c63e11d5f78e966b53020a9c591325163b5,2025-07-21T22:58:56+09:00,2025-07-21T22:58:56+09:00,yejining99,multi_agent,b02feba330af779d86e73f9f81f80c50389a9a3b,refs/heads/develop; refs/heads/main
+4e740e2e5c36a7d4836eb1297557f87df3fabb9d,2025-08-15T16:52:12+09:00,2025-08-15T16:52:12+09:00,yejining99,change,91ba9c63e11d5f78e966b53020a9c591325163b5,refs/heads/develop; refs/heads/main
+20776de1581387671c1522d156355be9d251ac2e,2025-08-15T16:58:57+09:00,2025-08-15T16:58:57+09:00,yejining99,change,4e740e2e5c36a7d4836eb1297557f87df3fabb9d,refs/heads/develop; refs/heads/main
+36a36f3d98ac597f0d9af2463403b289c91fd29c,2025-08-17T22:50:39+09:00,2025-08-17T22:50:39+09:00,yejining99,graham agent 완성,20776de1581387671c1522d156355be9d251ac2e,refs/heads/develop; refs/heads/main
+49ced76002cc824de9ccc0bd5d46207d7b28af23,2025-08-18T21:42:38+09:00,2025-08-18T21:42:38+09:00,yejining99,single agent 코드 수정,36a36f3d98ac597f0d9af2463403b289c91fd29c,refs/heads/develop; refs/heads/main
+a6f5de6188f2b33bb406fe9f86cb1f03d8f1347d,2025-08-24T05:53:45Z,2025-08-24T05:53:45Z,young,절대경로 -> 상대경로 수정,49ced76002cc824de9ccc0bd5d46207d7b28af23,refs/heads/develop
+fe749e4f31e7953d0d7c104c33e253bb842f473b,2025-08-24T05:54:26Z,2025-08-24T05:54:26Z,young,백테스팅용 패키지 추가,a6f5de6188f2b33bb406fe9f86cb1f03d8f1347d,refs/heads/develop
+9e2a728120b629327a432601f6581845841720d8,2025-08-24T05:55:20Z,2025-08-24T05:55:20Z,young,"router agent, master agent 추가",fe749e4f31e7953d0d7c104c33e253bb842f473b,refs/heads/develop
+efa30c5ac7c346e7e60fb2b45232c295020ea02e,2025-08-24T05:56:07Z,2025-08-24T05:56:07Z,young,"2025년 1,2분기 실험",9e2a728120b629327a432601f6581845841720d8,refs/heads/develop
+f1e1fb7930af53d13c9a650b4e3f504c95c732a2,2025-08-24T10:01:22Z,2025-08-24T10:01:22Z,young,백테스팅 코드에 5명 에이전트 각각과 종합 에이전트 결과 추가,efa30c5ac7c346e7e60fb2b45232c295020ea02e,refs/heads/develop
+43eba42f86b8b592bb70747178991c9b13d5d1b1,2025-08-24T10:01:35Z,2025-08-24T10:01:35Z,young,single agent의 기존 결과가 있는 경우 skip하도록 수정,f1e1fb7930af53d13c9a650b4e3f504c95c732a2,refs/heads/develop
+fab11f118e36044be6cd3acbffcce97c8e7fc3bc,2025-08-24T10:02:09Z,2025-08-24T10:02:09Z,young,"router agent, master agent 결과 추가",43eba42f86b8b592bb70747178991c9b13d5d1b1,refs/heads/develop
+e28ec1ebdf9d8576d5f366de72755bd1ba0bcc28,2025-08-26T13:02:31Z,2025-08-26T13:02:31Z,young,single agent의 anaysis json으로부터 유효한 ticker만 가져와서 분석하도록 수정,fab11f118e36044be6cd3acbffcce97c8e7fc3bc,refs/heads/develop
+df8c7d70ab4668ecfc2acae76fc561933a74fe7f,2025-08-26T13:27:59Z,2025-08-26T13:27:59Z,young,"router agent, master agent 결과 추가",e28ec1ebdf9d8576d5f366de72755bd1ba0bcc28,refs/heads/develop
+017550adc5e0c6f04408a5af092fc852ba027bfb,2025-08-31T14:32:25+09:00,2025-08-31T14:32:25+09:00,yejining99,change,49ced76002cc824de9ccc0bd5d46207d7b28af23,refs/heads/main
+74ad2e6ce2e604c73a6fc2829d48ab58fe6be050,2025-08-31T14:37:52+09:00,2025-08-31T14:37:52+09:00,yejining99,change,017550adc5e0c6f04408a5af092fc852ba027bfb,refs/heads/main

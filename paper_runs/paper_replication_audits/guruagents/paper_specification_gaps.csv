@@ -10,6 +10,7 @@ benchmark identity,Paper names indices while source uses QQQ and SPY ETFs,blocki
 observation frequency,Agent paths include forward-filled weekends; benchmarks use trading days,blocking,False
 risk-free rate,Sharpe convention is not specified in the paper,material,False
 model determinism,No seed/repeated-run proof; archived fingerprints vary,blocking,False
+reported-run attribution,Four workbooks and same-period alternate portfolios exist without a manifest identifying the paper run,blocking,False
 runtime prompt authority,Appendix prompts are edited versions of source templates,material,False
 software environment,"No pinned dependency lock, image, or Python version",material,False
 portable execution,Agent constructors contain absolute Windows data/result paths,material,False
