@@ -487,15 +487,27 @@ ARTIFACT_NOTES = {
     ),
     "SYS-CONTEST-TRADE": (
         "N",
-        "A pinned arXiv-v4 audit enumerates all 49 numeric cells in Tables 1--3. "
+        "A pinned arXiv-v1--v4 audit inventories all 49 numeric table cells and "
+        "15 result-figure series; 0/64 result display units reproduce natively. "
+        "The complete 130-commit official history contains no structured native "
+        "result path or complete paper result row. A dated census exhausts all 153 "
+        "git-accessible public forks and their 186 branch plus 26 tag refs, collapsing "
+        "to 52 unique heads. All 21 divergent heads, 88 extra commits, 200 changed "
+        "paths, and 381 new blobs were inspected. They add genuine community "
+        "engineering, one signal-count-only date-loop command, one mixed manual/AI "
+        "personal portfolio ledger from February 2026, three failure diagnostics, "
+        "and an exact paper-v3 PDF copy, but no paper experiment result or missing "
+        "native-contest lineage. Four stale REST fork listings were inaccessible and "
+        "are explicitly not claimed as inspected. "
         "The released CLI runs a three-node agent graph that never calls either "
         "paper contest and does not construct the Sharpe-weighted portfolio. The "
         "isolated Research Contest lacks both required models and a method it calls; "
         "the isolated Data Contest ships two fixed models without rolling-training "
         "provenance, uses top-3 sorting rather than facility-location allocation, and "
         "changes the paper's signed ZI sum into a clipped positive-only average. No "
-        "native inputs, outputs, evaluator, baselines, ablations, or seeds are shipped, "
-        "so zero paper result cells count as native reproductions.",
+        "native paper inputs, trajectories, outputs, evaluator, baselines, ablations, "
+        "or seeds are shipped, so the fork portfolio and author raster receive zero "
+        "paper-result credit.",
     ),
     "SYS-COG-ALPHA": (
         "N",
@@ -1505,7 +1517,10 @@ TARGETED_EXECUTION = {
     "SYS-CHAIN-OF-ALPHA": "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system",
     "SYS-TREEVO": "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_seven_prompt_templates_no_attributable_pipeline",
     "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_3_of_10_table2_component_cells_zero_of_40_integrated_portfolio_cells_24_forks_exhausted",
-    "SYS-CONTEST-TRADE": "paper_audit:completed_zero_of_49_native_results",
+    "SYS-CONTEST-TRADE": (
+        "paper_audit:completed_zero_of_64_result_display_units_153_accessible_forks_"
+        "212_refs_52_unique_heads_21_divergent_heads_exhausted"
+    ),
     "SYS-COG-ALPHA": (
         "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_templates_"
         "four_author_curve_series_zero_regenerated_full_1_commit_history_1_fork_1_ref_"

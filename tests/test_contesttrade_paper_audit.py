@@ -57,6 +57,12 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     history_commits = read_csv(output / "public_source_history_commit_inventory.csv")
     history_paths = read_csv(output / "public_source_history_path_inventory.csv")
     history = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
+    fork_repositories = read_csv(output / "public_fork_repository_access_inventory.csv")
+    fork_refs = read_csv(output / "public_fork_ref_snapshot.csv")
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
+    fork_commits = read_csv(output / "public_fork_divergent_commit_inventory.csv")
+    fork_paths = read_csv(output / "public_fork_divergent_path_inventory.csv")
+    fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
     reachability = read_csv(output / "source_entrypoint_reachability.csv")
     zi_rows = read_csv(output / "zi_reward_semantics_audit.csv")
     models = read_csv(output / "shipped_lightgbm_model_inventory.csv")
@@ -94,6 +100,29 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert manifest["public_source_unreachable_objects_total"] == 0
     assert manifest["public_source_native_structured_result_paths"] == 0
     assert manifest["public_source_text_blobs_with_complete_paper_result_row"] == 0
+    assert manifest["public_fork_rest_repository_listings"] == 157
+    assert manifest["public_forks_accessible"] == 153
+    assert manifest["public_fork_stale_or_inaccessible_rest_listings"] == 4
+    assert manifest["public_fork_branch_refs_audited"] == 186
+    assert manifest["public_fork_tag_refs_audited"] == 26
+    assert manifest["public_fork_unique_heads_audited"] == 52
+    assert manifest["public_fork_divergent_heads_audited"] == 21
+    assert manifest["public_fork_divergent_commits_audited"] == 88
+    assert manifest["public_fork_divergent_paths_audited"] == 200
+    assert manifest["public_fork_new_blobs_audited"] == 381
+    assert manifest["public_fork_new_text_blobs_with_complete_paper_result_row"] == 0
+    assert manifest["public_fork_exact_official_paper_v3_pdf_copies"] == 1
+    assert manifest["public_fork_date_loop_backtest_heads"] == 2
+    assert manifest["public_fork_date_loop_backtest_constructs_paper_portfolio_or_metrics"] is False
+    assert manifest["public_fork_native_nonpaper_personal_portfolio_paths"] == 1
+    assert manifest["public_fork_runtime_failure_diagnostic_paths"] == 3
+    assert manifest["public_fork_heads_integrating_data_contest"] == 0
+    assert manifest["public_fork_heads_integrating_research_contest"] == 0
+    assert manifest["public_fork_heads_with_required_research_models"] == 0
+    assert manifest["public_fork_heads_with_research_predict_signal_scores_method"] == 0
+    assert manifest["public_fork_heads_with_facility_location_allocator"] == 0
+    assert manifest["public_fork_native_paper_result_artifacts_found"] == 0
+    assert manifest["public_fork_paper_result_credit"] is False
     assert manifest["public_repository_exact_original_v1_result_raster"] is True
     assert manifest["public_repository_author_raster_series_correspondences"] == 9
     assert manifest["public_repository_raw_numeric_curve_files"] == 0
@@ -139,6 +168,80 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     }
     assert history["paper_result_credit"] is False
 
+    assert len(fork_repositories) == 157
+    assert Counter(row["accessible_via_git"] for row in fork_repositories) == {
+        "True": 153,
+        "False": 4,
+    }
+    assert {
+        row["repository"]
+        for row in fork_repositories
+        if row["accessible_via_git"] == "False"
+    } == audit.PUBLIC_FORK_INACCESSIBLE_REPOSITORIES
+    assert Counter(row["ref_kind"] for row in fork_refs) == {"branch": 186, "tag": 26}
+    assert Counter(row["relation_to_official_history"] for row in fork_refs) == {
+        "official_history_reachable": 191,
+        "divergent": 21,
+    }
+    assert len(fork_heads) == 52
+    assert Counter(row["relation_to_official_history"] for row in fork_heads) == {
+        "official_head_exact": 1,
+        "official_history_reachable": 30,
+        "divergent": 21,
+    }
+    assert sum(row["date_loop_backtest_command_present"] == "True" for row in fork_heads) == 2
+    assert sum(
+        row["native_nonpaper_personal_portfolio_ledger_present"] == "True"
+        for row in fork_heads
+    ) == 1
+    assert {row["data_contest_called_from_main"] for row in fork_heads} == {"False"}
+    assert {row["research_contest_called_from_main"] for row in fork_heads} == {"False"}
+    assert {row["research_model_files"] for row in fork_heads} == {"0"}
+    assert {row["research_predict_signal_scores_method"] for row in fork_heads} == {"False"}
+    assert {row["facility_location_allocator_present"] for row in fork_heads} == {"False"}
+    assert {row["native_paper_result_artifact_present"] for row in fork_heads} == {"False"}
+    assert len(fork_commits) == 88
+    assert {row["complete_paper_result_row_hits"] for row in fork_commits} == {"0"}
+    assert {row["native_paper_result_artifact_present"] for row in fork_commits} == {"False"}
+    assert len(fork_paths) == 200
+    paths_by_name = {row["path"]: row for row in fork_paths}
+    assert paths_by_name["2508.00554v3.pdf"]["exact_official_paper_v3_pdf_copy"] == "True"
+    assert paths_by_name["cli/main.py"]["date_loop_backtest_source"] == "True"
+    assert (
+        paths_by_name["agents_workspace/portfolio.json"][
+            "native_nonpaper_personal_portfolio_ledger"
+        ]
+        == "True"
+    )
+    assert sum(row["runtime_failure_diagnostic"] == "True" for row in fork_paths) == 3
+    assert {row["native_paper_result_artifact"] for row in fork_paths} == {"False"}
+    assert fork_census["divergent_new_object_counts"] == {
+        "blob": 381,
+        "commit": 88,
+        "tree": 292,
+    }
+    assert fork_census["new_text_blobs_with_complete_paper_result_row"] == 0
+    assert fork_census["native_nonpaper_personal_portfolio_semantics"] == [
+        {
+            "ai_records": 7,
+            "blob": "614ce068753a48f36f9f5d93ad7e7921fc9b328b",
+            "daily_stat_records": 21,
+            "first_date": "2026-02-02",
+            "history_records": 16,
+            "last_date": "2026-02-03",
+            "manual_records": 9,
+        },
+        {
+            "ai_records": 7,
+            "blob": "c1ffddd4b5b7950d671b33cbfa0e3aca17691011",
+            "daily_stat_records": 25,
+            "first_date": "2026-02-02",
+            "history_records": 16,
+            "last_date": "2026-02-04",
+            "manual_records": 9,
+        },
+    ]
+
     reach = {row["check"]: row for row in reachability}
     assert reach["active_workflow_nodes"]["status"] == "mismatch_contests_and_portfolio_absent"
     assert reach["data_contest_reachable"]["observed"] == "False"
@@ -171,3 +274,43 @@ def test_pinned_source_static_checks_when_source_is_available() -> None:
     assert len(paths) == 132
     assert history["native_structured_result_paths"] == 0
     assert history["independently_regenerated_paper_results"] == 0
+    snapshot = versions_root / "public_fork_snapshot.json"
+    if snapshot.exists():
+        repositories, refs, heads, fork_commits, fork_paths, fork_summary = (
+            audit.public_fork_audit(source_root, snapshot)
+        )
+        assert len(repositories) == 157
+        assert len(refs) == 212
+        assert len(heads) == 52
+        assert len(fork_commits) == 88
+        assert len(fork_paths) == 200
+        assert fork_summary["native_paper_result_artifacts_found"] == 0
+
+
+def test_contesttrade_fork_audit_is_routed_to_the_frozen_ledgers() -> None:
+    native_rows = read_csv(
+        ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv"
+    )
+    native = next(row for row in native_rows if row["system_id"] == "SYS-CONTEST-TRADE")
+    expected_status = (
+        "paper_audit:completed_zero_of_64_result_display_units_153_accessible_forks_"
+        "212_refs_52_unique_heads_21_divergent_heads_exhausted"
+    )
+    assert native["targeted_execution_audit_status"] == expected_status
+    assert "All 21 divergent heads, 88 extra commits, 200 changed paths" in native[
+        "concise_evidence_note"
+    ]
+    assert "381 new blobs" in native["concise_evidence_note"]
+    assert "mixed manual/AI personal portfolio ledger" in native[
+        "concise_evidence_note"
+    ]
+
+    route_rows = read_csv(
+        ROOT
+        / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
+    )
+    route = next(row for row in route_rows if row["system_ids"] == "SYS-CONTEST-TRADE")
+    assert route["native_execution_audit_status"] == expected_status
+    assert route["full_prompt_search_training_pipeline_reproduced"] == "no"
+    assert route["good_faith_reconstruction"] == "yes"
+    assert route["proxy_role"] == "secondary_diagnostic_after_native_review"

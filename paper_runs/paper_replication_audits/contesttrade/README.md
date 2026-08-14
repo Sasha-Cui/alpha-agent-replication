@@ -16,6 +16,17 @@ system end to end or regenerates a paper result.
   reachable commits, 132 historical paths,
   720 objects, and no
   unreachable objects.
+- Public forks: the 2026-08-14 REST snapshot listed
+  157 repositories. Four stale listings
+  returned 404/inaccessible Git endpoints; all 153
+  git-accessible forks were exhausted across 186
+  branch refs and 26 tag refs. Their
+  52 unique heads include
+  21 divergent heads, collectively adding
+  88 commits,
+  200 changed paths, and
+  381 genuinely new blobs beyond
+  the explicit official-history boundary.
 - Paper v1 was submitted on 2025-08-01, before the public repository's first commit
   on 2025-08-08 and before its first code tree on 2025-08-11. At v2 and v3 submission,
   the public tree still contained neither the Data Contest nor Research Contest.
@@ -44,6 +55,19 @@ system end to end or regenerates a paper result.
   checkpoint, notebook, JSONL, or other native structured result path and no text blob
   containing a complete paper result row. There are no raw numeric curves, contest
   scores, selected factors, actions, holdings, daily returns, or run logs.
+- The fork-only blob scan likewise finds zero complete paper result rows. One fork adds
+  a date-loop command called `backtest`, but its function only invokes
+  `SimpleTradeCompany`, prints research-signal counts, and never calls either contest,
+  constructs holdings/returns, or calculates Sharpe/drawdown. No fork head repairs the
+  missing Research models/method or adds the facility-location allocator.
+- One later personal fork commits two versions of `agents_workspace/portfolio.json`.
+  They contain 16 mixed manual/AI trade records (nine manual, seven AI) and 21/25
+  intraday snapshots from 2026-02-02 through 2026-02-04. They are useful evidence that
+  a community auto-trading adaptation ran, but they are not the paper experiment panel,
+  are manually intervened, contain no paper metrics, and receive zero paper credit.
+- Three other fork paths are runtime failure diagnostics; the longest terminates in a
+  LangGraph recursion error followed by a missing-`traceback` `NameError`. An exact
+  paper-v3 PDF copy and U.S.-market news inputs are provenance/input evidence only.
 - Static tracing of the actual CLI reaches `run_data_agents -> run_research_agents ->
   finalize`. Neither `DataContest` nor `ResearchContest` is called, and `finalize`
   exposes all research signals without constructing the paper portfolio.

@@ -4,7 +4,7 @@
 The audit is deliberately fail closed. It inventories every numeric result in
 paper Tables 1--3 and both result figures, statically traces the public CLI,
 checks the two isolated contest components, compares the ZI reward equations,
-and exhausts all discovered public refs and paper source archives. It never
+and exhausts all official refs, accessible public forks, and paper source archives. It never
 imports the upstream package, unpickles joblib files, or calls an external API.
 """
 
@@ -101,10 +101,74 @@ PUBLIC_HISTORY_COMMIT_SHA256 = "2aa60512c4cdf45ff0827c1aa03619feefec2e26b1e9c8f7
 PUBLIC_HISTORY_PATH_COUNT = 132
 PUBLIC_HISTORY_PATH_SHA256 = "2143e79946a72bfa4cd40fbfc98153d993b2212579c34e2385bb9e44b33f3c47"
 PUBLIC_HISTORY_OBJECT_COUNTS = {"blob": 322, "commit": 130, "tag": 1, "tree": 267}
+OFFICIAL_HISTORY_TIPS = (
+    "refs/remotes/origin/main",
+    "refs/remotes/origin/dev",
+    "refs/tags/v2.0",
+    "refs/tags/v1.1",
+    "refs/tags/v1.0",
+)
 PUBLIC_DISCOVERY_SHA256 = {
     "branches.json": "9cab115b6d33e4361761c608c6653d453ecb4768fd78495f255e4aeacccae889",
     "releases.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "tags.json": "594f4ddc47631fe6b14ce70ca09bb5b823d1cb7e3d28f59ed952268b5a121b8d",
+}
+PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+PUBLIC_FORK_SNAPSHOT_SHA256 = (
+    "087e935650f0782b76d279b9b17a430aebea574bcc79b80a8c8c8b25d5273aa5"
+)
+PUBLIC_FORK_REPOSITORY_LISTINGS = 157
+PUBLIC_FORK_ACCESSIBLE_REPOSITORIES = 153
+PUBLIC_FORK_BRANCH_REFS = 186
+PUBLIC_FORK_TAG_REFS = 26
+PUBLIC_FORK_REF_SEQUENCE_SHA256 = (
+    "70905bdd119c37e86d22baa8485b434ddd1b79592e0c6a8785fd3b5ca2f181c6"
+)
+PUBLIC_FORK_UNIQUE_HEADS = 52
+PUBLIC_FORK_DIVERGENT_HEADS = 21
+PUBLIC_FORK_DIVERGENT_COMMITS = 88
+PUBLIC_FORK_DIVERGENT_COMMIT_SHA256 = (
+    "86a9148c54e782e2a7ed0f5228993d36aa29e8ab03d84d9bb807c58126d07e82"
+)
+PUBLIC_FORK_DIVERGENT_PATHS = 200
+PUBLIC_FORK_DIVERGENT_PATH_SHA256 = (
+    "0c02a8f2c27b053b24d3b735e848e2f787a74e981143a9bc097f5f37f766d862"
+)
+PUBLIC_FORK_NEW_OBJECT_COUNTS = {"blob": 381, "commit": 88, "tree": 292}
+PUBLIC_FORK_NEW_OBJECT_SHA256 = (
+    "77f4692e336746cedbd602d7c2607da952723fd60de33a445a3cc2b3c303a7bd"
+)
+PUBLIC_FORK_INACCESSIBLE_REPOSITORIES = {
+    "b08240/ContestTrade",
+    "forgottenAc1/ContestTrade",
+    "litom914295/ContestTrade",
+    "zhenhaip/ContestTrade",
+}
+PUBLIC_FORK_STRUCTURED_CHANGED_PATHS = {
+    ".claude/settings.local.json",
+    "2508.00554v3.pdf",
+    "agents_workspace/portfolio.json",
+    "cli/static/welcome.txt",
+    "contest_trade/config/belief_list.json",
+    "contest_trade/config/etf_pool.txt",
+    "contest_trade/utils/cache/market_manager/csi1000_components_cache.json",
+    "contest_trade/utils/cache/market_manager/csi300_components_cache.json",
+    "contest_trade/utils/cache/market_manager/csi500_components_cache.json",
+    "contest_trade/utils/cache/market_manager/namechange_data.json",
+    "contest_trade/utils/cache/market_manager/stock_basic_cache.json",
+    "contest_trade/utils/cache/market_manager/trade_calendar.json",
+    "contest_trade/utils/cache/market_manager/us_stock_basic_cache.json",
+    "contest_trade/utils/cache/tencent_code_cache.json",
+    "crash_report.txt",
+    "debug_log.txt",
+    "polygon_news.json",
+    "requirements.txt",
+    "run_output.txt",
+    "seekingalpha_news.json",
+}
+PUBLIC_FORK_PORTFOLIO_BLOBS = {
+    "614ce068753a48f36f9f5d93ad7e7921fc9b328b",
+    "c1ffddd4b5b7950d671b33cbfa0e3aca17691011",
 }
 FIRST_PUBLIC_REPOSITORY_COMMIT = "e42d8db87b0f54ce4013e47244c1196d612a95f5"
 FIRST_PUBLIC_CODE_COMMIT = "f8aa2364a3c2926111ec0d3fc4ed245d521ac7d8"
@@ -241,6 +305,11 @@ def git_output(root: Path, *args: str, binary: bool = False) -> Any:
         capture_output=True,
         text=not binary,
     ).stdout
+
+
+def git_zpaths(root: Path, *args: str) -> list[str]:
+    raw = git_output(root, *args, binary=True)
+    return [item.decode("utf-8") for item in raw.split(b"\0") if item]
 
 
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
@@ -437,13 +506,21 @@ def paper_version_inventory(
 
         cutoff = expected["submitted_at"]
         commits_at_submission = int(
-            str(git_output(source_root, "rev-list", "--all", f"--before={cutoff}", "--count")).strip()
+            str(
+                git_output(
+                    source_root,
+                    "rev-list",
+                    *OFFICIAL_HISTORY_TIPS,
+                    f"--before={cutoff}",
+                    "--count",
+                )
+            ).strip()
         )
         latest = str(
             git_output(
                 source_root,
                 "log",
-                "--all",
+                *OFFICIAL_HISTORY_TIPS,
                 f"--before={cutoff}",
                 "-1",
                 "--format=%H",
@@ -553,14 +630,22 @@ def public_source_history(
     if str(git_output(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
         raise RuntimeError("ContestTrade source checkout is shallow")
 
-    commits_raw = str(git_output(source_root, "rev-list", "--reverse", "--all"))
+    commits_raw = str(
+        git_output(source_root, "rev-list", "--reverse", *OFFICIAL_HISTORY_TIPS)
+    )
     commits = commits_raw.splitlines()
     if len(commits) != PUBLIC_HISTORY_COMMIT_COUNT:
         raise RuntimeError("ContestTrade public commit census changed")
     if hashlib.sha256(commits_raw.encode("utf-8")).hexdigest() != PUBLIC_HISTORY_COMMIT_SHA256:
         raise RuntimeError("ContestTrade public commit sequence changed")
     path_lines = str(
-        git_output(source_root, "log", "--all", "--pretty=format:", "--name-only")
+        git_output(
+            source_root,
+            "log",
+            *OFFICIAL_HISTORY_TIPS,
+            "--pretty=format:",
+            "--name-only",
+        )
     ).splitlines()
     historical_paths = sorted({line for line in path_lines if line})
     path_payload = ("\n".join(historical_paths) + "\n").encode("utf-8")
@@ -569,7 +654,9 @@ def public_source_history(
     if hashlib.sha256(path_payload).hexdigest() != PUBLIC_HISTORY_PATH_SHA256:
         raise RuntimeError("ContestTrade public historical path inventory changed")
 
-    object_lines = str(git_output(source_root, "rev-list", "--objects", "--all")).splitlines()
+    object_lines = str(
+        git_output(source_root, "rev-list", "--objects", *OFFICIAL_HISTORY_TIPS)
+    ).splitlines()
     object_ids = [line.split(" ", 1)[0] for line in object_lines]
     object_proc = subprocess.run(
         ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
@@ -721,6 +808,617 @@ def public_source_history(
         "paper_result_credit": False,
     }
     return commit_rows, path_rows, summary
+
+
+def _git_show_text(source_root: Path, commit: str, path: str) -> str:
+    proc = subprocess.run(
+        ["git", "-C", str(source_root), "show", f"{commit}:{path}"],
+        capture_output=True,
+    )
+    return proc.stdout.decode("utf-8", errors="replace") if proc.returncode == 0 else ""
+
+
+def _loose_result_sequence_present(text: str, values: Sequence[str]) -> bool:
+    bounded_gap = r"[\s\S]{0,240}?"
+    tokens = [rf"(?<![\d.]){re.escape(value)}(?![\d.])" for value in values]
+    return re.search(bounded_gap.join(tokens), text) is not None
+
+
+def _fork_path_classification(path: str) -> str:
+    if path == "agents_workspace/portfolio.json":
+        return "postpaper_personal_mixed_manual_and_ai_trade_ledger_not_paper_experiment"
+    if path in {"crash_report.txt", "debug_log.txt", "run_output.txt"}:
+        return "postpaper_runtime_failure_diagnostic_not_result"
+    if path == "2508.00554v3.pdf":
+        return "exact_official_paper_v3_pdf_copy_not_result"
+    if path in {"polygon_news.json", "seekingalpha_news.json"}:
+        return "us_market_news_input_snapshot_not_paper_panel"
+    if "/cache/" in path or path.endswith("_cache.json"):
+        return "market_metadata_cache_not_paper_experiment_input_or_output"
+    if path == "contest_trade/contest/researcher/lightgbm_predictor/train_model.py":
+        return "research_training_scaffold_still_missing_models_and_called_method"
+    if path in {
+        ".claude/settings.local.json",
+        "cli/static/welcome.txt",
+        "contest_trade/config/belief_list.json",
+        "contest_trade/config/etf_pool.txt",
+        "requirements.txt",
+    }:
+        return "configuration_dependency_or_static_input_not_paper_result"
+    return "implementation_documentation_or_nonresult_media"
+
+
+def public_fork_audit(
+    source_root: Path,
+    snapshot_path: Path,
+) -> tuple[
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    dict[str, Any],
+]:
+    """Exhaust every accessible public fork ref without widening official history."""
+    if sha256(snapshot_path) != PUBLIC_FORK_SNAPSHOT_SHA256:
+        raise RuntimeError("ContestTrade public-fork snapshot changed")
+    snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+    if len(snapshot) != PUBLIC_FORK_REPOSITORY_LISTINGS:
+        raise RuntimeError("ContestTrade public-fork REST listing count changed")
+
+    repository_rows: list[dict[str, Any]] = []
+    ref_rows: list[dict[str, Any]] = []
+    refs_by_head: dict[str, list[tuple[str, str, str]]] = {}
+    inaccessible: set[str] = set()
+    for item in snapshot:
+        repository = item["full_name"]
+        has_error = bool(item.get("ref_error"))
+        if has_error:
+            inaccessible.add(repository)
+            if item["branches"] or item["tags"]:
+                raise RuntimeError("Inaccessible ContestTrade fork unexpectedly has refs")
+        repository_rows.append(
+            {
+                "repository": repository,
+                "url": item["clone_url"].removesuffix(".git"),
+                "default_branch": item["default_branch"],
+                "accessible_via_git": not has_error,
+                "branch_refs": len(item["branches"]),
+                "tag_refs": len(item["tags"]),
+                "access_classification": (
+                    "accessible_refs_exhausted"
+                    if not has_error
+                    else "stale_rest_listing_repository_now_404_or_inaccessible"
+                ),
+            }
+        )
+        for kind, refs in (("branch", item["branches"]), ("tag", item["tags"])):
+            for name, head in refs.items():
+                refs_by_head.setdefault(head, []).append((repository, kind, name))
+                ref_rows.append(
+                    {
+                        "repository": repository,
+                        "url": item["clone_url"].removesuffix(".git"),
+                        "ref_kind": kind,
+                        "ref_name": name,
+                        "head_commit": head,
+                    }
+                )
+    repository_rows.sort(key=lambda row: str(row["repository"]).casefold())
+    ref_rows.sort(
+        key=lambda row: (
+            str(row["repository"]).casefold(),
+            str(row["ref_kind"]),
+            str(row["ref_name"]),
+        )
+    )
+    if inaccessible != PUBLIC_FORK_INACCESSIBLE_REPOSITORIES:
+        raise RuntimeError("ContestTrade inaccessible public-fork set changed")
+    if len(repository_rows) - len(inaccessible) != PUBLIC_FORK_ACCESSIBLE_REPOSITORIES:
+        raise RuntimeError("ContestTrade accessible public-fork count changed")
+    if Counter(row["ref_kind"] for row in ref_rows) != {
+        "branch": PUBLIC_FORK_BRANCH_REFS,
+        "tag": PUBLIC_FORK_TAG_REFS,
+    }:
+        raise RuntimeError("ContestTrade public-fork ref counts changed")
+    ref_payload = (
+        "\n".join(
+            "\t".join(
+                (
+                    str(row["repository"]),
+                    str(row["ref_kind"]),
+                    str(row["ref_name"]),
+                    str(row["head_commit"]),
+                )
+            )
+            for row in ref_rows
+        )
+        + "\n"
+    ).encode("utf-8")
+    if hashlib.sha256(ref_payload).hexdigest() != PUBLIC_FORK_REF_SEQUENCE_SHA256:
+        raise RuntimeError("ContestTrade public-fork ref sequence changed")
+
+    official_commits = set(
+        str(git_output(source_root, "rev-list", *OFFICIAL_HISTORY_TIPS)).splitlines()
+    )
+    if len(official_commits) != PUBLIC_HISTORY_COMMIT_COUNT:
+        raise RuntimeError("ContestTrade explicit official history changed")
+    for head in refs_by_head:
+        present = subprocess.run(
+            ["git", "-C", str(source_root), "cat-file", "-e", f"{head}^{{commit}}"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ).returncode
+        if present:
+            raise RuntimeError(f"ContestTrade public-fork object missing: {head}")
+    if len(refs_by_head) != PUBLIC_FORK_UNIQUE_HEADS:
+        raise RuntimeError("ContestTrade public-fork unique-head count changed")
+    divergent_heads = sorted(set(refs_by_head) - official_commits)
+    if len(divergent_heads) != PUBLIC_FORK_DIVERGENT_HEADS:
+        raise RuntimeError("ContestTrade divergent public-fork head count changed")
+
+    divergent_commits_raw = str(
+        git_output(
+            source_root,
+            "rev-list",
+            "--reverse",
+            *divergent_heads,
+            "--not",
+            *OFFICIAL_HISTORY_TIPS,
+        )
+    )
+    divergent_commits = divergent_commits_raw.splitlines()
+    if len(divergent_commits) != PUBLIC_FORK_DIVERGENT_COMMITS:
+        raise RuntimeError("ContestTrade divergent public-fork commit count changed")
+    if (
+        hashlib.sha256(divergent_commits_raw.encode("utf-8")).hexdigest()
+        != PUBLIC_FORK_DIVERGENT_COMMIT_SHA256
+    ):
+        raise RuntimeError("ContestTrade divergent public-fork commit sequence changed")
+    commit_paths: dict[str, list[str]] = {}
+    changed_paths: set[str] = set()
+    for commit in divergent_commits:
+        paths = sorted(
+            set(
+                git_zpaths(
+                    source_root,
+                    "diff-tree",
+                    "--root",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    "-z",
+                    commit,
+                )
+            )
+        )
+        commit_paths[commit] = paths
+        changed_paths.update(paths)
+    changed_path_payload = ("\n".join(sorted(changed_paths)) + "\n").encode("utf-8")
+    if len(changed_paths) != PUBLIC_FORK_DIVERGENT_PATHS:
+        raise RuntimeError("ContestTrade divergent public-fork path count changed")
+    if (
+        hashlib.sha256(changed_path_payload).hexdigest()
+        != PUBLIC_FORK_DIVERGENT_PATH_SHA256
+    ):
+        raise RuntimeError("ContestTrade divergent public-fork path inventory changed")
+    structured_suffixes = {
+        ".ckpt",
+        ".csv",
+        ".h5",
+        ".hdf5",
+        ".ipynb",
+        ".json",
+        ".jsonl",
+        ".npy",
+        ".npz",
+        ".parquet",
+        ".pdf",
+        ".pickle",
+        ".pkl",
+        ".pt",
+        ".pth",
+        ".txt",
+    }
+    structured_changed_paths = {
+        path for path in changed_paths if Path(path).suffix.casefold() in structured_suffixes
+    }
+    if structured_changed_paths != PUBLIC_FORK_STRUCTURED_CHANGED_PATHS:
+        raise RuntimeError("ContestTrade fork structured-path surface changed")
+
+    official_object_ids = {
+        line.split(" ", 1)[0]
+        for line in str(
+            git_output(source_root, "rev-list", "--objects", *OFFICIAL_HISTORY_TIPS)
+        ).splitlines()
+    }
+    fork_object_lines = str(
+        git_output(source_root, "rev-list", "--objects", *divergent_heads)
+    ).splitlines()
+    new_object_ids = sorted(
+        {line.split(" ", 1)[0] for line in fork_object_lines} - official_object_ids
+    )
+    new_object_payload = ("\n".join(new_object_ids) + "\n").encode("utf-8")
+    if hashlib.sha256(new_object_payload).hexdigest() != PUBLIC_FORK_NEW_OBJECT_SHA256:
+        raise RuntimeError("ContestTrade fork unique-object inventory changed")
+    object_proc = subprocess.run(
+        ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
+        input="\n".join(new_object_ids) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    object_types = object_proc.stdout.splitlines()
+    new_object_counts = dict(Counter(object_types))
+    if new_object_counts != PUBLIC_FORK_NEW_OBJECT_COUNTS:
+        raise RuntimeError("ContestTrade fork unique-object type census changed")
+    new_blob_ids = {
+        object_id
+        for object_id, object_type in zip(new_object_ids, object_types)
+        if object_type == "blob"
+    }
+
+    path_new_blobs: dict[str, set[str]] = {path: set() for path in changed_paths}
+    for commit in divergent_commits:
+        raw_tree = git_output(source_root, "ls-tree", "-r", "-z", commit, binary=True)
+        for raw_line in raw_tree.split(b"\0"):
+            if not raw_line:
+                continue
+            object_meta, raw_path = raw_line.split(b"\t", 1)
+            _mode, object_type, object_id = object_meta.decode("ascii").split()
+            path = raw_path.decode("utf-8")
+            if object_type == "blob" and object_id in new_blob_ids and path in path_new_blobs:
+                path_new_blobs[path].add(object_id)
+
+    paper_row_hit_blobs: list[str] = []
+    paper_identifier_blobs: list[str] = []
+    empirical_keyword_blobs: list[str] = []
+    backtest_function_blobs: list[str] = []
+    blob_sha256: dict[str, str] = {}
+    sequences = expected_result_value_sequences()
+    empirical_pattern = re.compile(
+        r"\bsharpe\b|cumulative[ _-]*return|max(?:imum)?[ _-]*drawdown|\bbacktest(?:ing)?\b",
+        re.IGNORECASE,
+    )
+    for blob_id in sorted(new_blob_ids):
+        raw = git_output(source_root, "cat-file", "-p", blob_id, binary=True)
+        blob_sha256[blob_id] = hashlib.sha256(raw).hexdigest()
+        if b"\x00" in raw[:8192]:
+            continue
+        text = raw.decode("utf-8", errors="replace")
+        if any(_loose_result_sequence_present(text, sequence) for sequence in sequences):
+            paper_row_hit_blobs.append(blob_id)
+        if "2508.00554" in text:
+            paper_identifier_blobs.append(blob_id)
+        if empirical_pattern.search(text):
+            empirical_keyword_blobs.append(blob_id)
+        if "def backtest" in text:
+            tree = ast.parse(text)
+            functions = [
+                node
+                for node in ast.walk(tree)
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                and node.name == "backtest"
+            ]
+            if functions:
+                body = ast.get_source_segment(text, functions[0]) or ""
+                required = (
+                    "SimpleTradeCompany",
+                    "run_company(trigger_time)",
+                    'final_state.get("research_signals", [])',
+                )
+                if not all(marker in body for marker in required):
+                    raise RuntimeError("ContestTrade fork backtest body changed")
+                if any(
+                    marker in body.casefold()
+                    for marker in ("datacontest", "researchcontest", "sharpe", "drawdown", "portfolio")
+                ):
+                    raise RuntimeError("ContestTrade fork backtest gained an unreviewed result path")
+                backtest_function_blobs.append(blob_id)
+    if paper_row_hit_blobs:
+        raise RuntimeError("ContestTrade public fork contains a complete paper result row")
+    if len(paper_identifier_blobs) != 8 or len(empirical_keyword_blobs) != 4:
+        raise RuntimeError("ContestTrade fork paper/empirical text surface changed")
+    if len(backtest_function_blobs) != 1:
+        raise RuntimeError("ContestTrade fork backtest implementation census changed")
+
+    if path_new_blobs["agents_workspace/portfolio.json"] != PUBLIC_FORK_PORTFOLIO_BLOBS:
+        raise RuntimeError("ContestTrade personal portfolio ledger lineage changed")
+    portfolio_stats = []
+    for blob_id in sorted(PUBLIC_FORK_PORTFOLIO_BLOBS):
+        payload = json.loads(
+            git_output(source_root, "cat-file", "-p", blob_id, binary=True)
+        )
+        history = payload.get("history", [])
+        daily_stats = payload.get("daily_stats", [])
+        portfolio_stats.append(
+            {
+                "blob": blob_id,
+                "history_records": len(history),
+                "manual_records": sum("MANUAL" in row.get("type", "") for row in history),
+                "ai_records": sum("MANUAL" not in row.get("type", "") for row in history),
+                "daily_stat_records": len(daily_stats),
+                "first_date": min(row["date"] for row in daily_stats),
+                "last_date": max(row["date"] for row in daily_stats),
+            }
+        )
+    if {
+        (
+            row["history_records"],
+            row["manual_records"],
+            row["ai_records"],
+            row["daily_stat_records"],
+            row["first_date"],
+            row["last_date"],
+        )
+        for row in portfolio_stats
+    } != {
+        (16, 9, 7, 21, "2026-02-02", "2026-02-03"),
+        (16, 9, 7, 25, "2026-02-02", "2026-02-04"),
+    }:
+        raise RuntimeError("ContestTrade personal portfolio ledger semantics changed")
+    paper_v3_blobs = {
+        blob_id
+        for blob_id in path_new_blobs["2508.00554v3.pdf"]
+        if blob_sha256[blob_id] == PAPER_VERSIONS[3]["pdf_sha256"]
+    }
+    if len(paper_v3_blobs) != 1:
+        raise RuntimeError("ContestTrade fork paper-v3 PDF copy changed")
+    diagnostics = {
+        "crash_report.txt": ("GraphRecursionError", "NameError: name 'traceback' is not defined"),
+        "debug_log.txt": ("Import/Init error",),
+        "run_output.txt": (),
+    }
+    for path, markers in diagnostics.items():
+        if not path_new_blobs[path]:
+            raise RuntimeError(f"ContestTrade fork diagnostic disappeared: {path}")
+        if markers:
+            texts = [
+                git_output(source_root, "cat-file", "-p", blob, binary=True).decode(
+                    "utf-8", errors="replace"
+                )
+                for blob in path_new_blobs[path]
+            ]
+            if not all(any(marker in text for text in texts) for marker in markers):
+                raise RuntimeError(f"ContestTrade fork diagnostic changed: {path}")
+
+    unique_commits_by_head = {
+        head: str(
+            git_output(
+                source_root,
+                "rev-list",
+                head,
+                "--not",
+                *OFFICIAL_HISTORY_TIPS,
+            )
+        ).splitlines()
+        for head in refs_by_head
+    }
+    head_rows: list[dict[str, Any]] = []
+    for head in sorted(refs_by_head):
+        paths = git_zpaths(source_root, "ls-tree", "-r", "--name-only", "-z", head)
+        main_text = _git_show_text(source_root, head, "contest_trade/main.py")
+        predictor_text = _git_show_text(
+            source_root,
+            head,
+            "contest_trade/contest/researcher/research_predictor.py",
+        )
+        data_contest_text = _git_show_text(
+            source_root,
+            head,
+            "contest_trade/contest/data_analyst/data_contest.py",
+        )
+        cli_text = _git_show_text(source_root, head, "cli/main.py")
+        research_models = [
+            path
+            for path in paths
+            if "contest/researcher/lightgbm_predictor/" in path
+            and path.endswith(".joblib")
+        ]
+        data_integrated = "DataContest(" in main_text
+        research_integrated = "ResearchContest(" in main_text
+        predict_method = "def predict_signal_scores" in predictor_text
+        facility_allocator = (
+            "facility_location" in data_contest_text.casefold()
+            or "lazy_greedy" in data_contest_text.casefold()
+        )
+        backtest_present = "def backtest" in cli_text
+        portfolio_present = "agents_workspace/portfolio.json" in paths
+        behind, ahead = map(
+            int,
+            str(
+                git_output(
+                    source_root,
+                    "rev-list",
+                    "--left-right",
+                    "--count",
+                    f"{SOURCE_COMMIT}...{head}",
+                )
+            ).split(),
+        )
+        merge_proc = subprocess.run(
+            ["git", "-C", str(source_root), "merge-base", SOURCE_COMMIT, head],
+            capture_output=True,
+            text=True,
+        )
+        merge_base = merge_proc.stdout.strip() if merge_proc.returncode == 0 else ""
+        relation = (
+            "official_head_exact"
+            if head == SOURCE_COMMIT
+            else "official_history_reachable"
+            if head in official_commits
+            else "divergent"
+        )
+        refs = sorted(refs_by_head[head])
+        head_rows.append(
+            {
+                "head_commit": head,
+                "repositories_and_refs": ";".join(
+                    f"{repository}:{kind}:{name}" for repository, kind, name in refs
+                ),
+                "ref_count": len(refs),
+                "relation_to_official_history": relation,
+                "merge_base_with_official_head": merge_base,
+                "commits_ahead_of_official_head": ahead,
+                "commits_behind_official_head": behind,
+                "unique_commits_beyond_official_history": len(unique_commits_by_head[head]),
+                "tracked_paths": len(paths),
+                "data_contest_called_from_main": data_integrated,
+                "research_contest_called_from_main": research_integrated,
+                "research_model_files": len(research_models),
+                "research_predict_signal_scores_method": predict_method,
+                "facility_location_allocator_present": facility_allocator,
+                "date_loop_backtest_command_present": backtest_present,
+                "native_nonpaper_personal_portfolio_ledger_present": portfolio_present,
+                "native_paper_result_artifact_present": False,
+                "paper_result_credit": False,
+            }
+        )
+    if any(
+        row["data_contest_called_from_main"]
+        or row["research_contest_called_from_main"]
+        or row["research_model_files"]
+        or row["research_predict_signal_scores_method"]
+        or row["facility_location_allocator_present"]
+        for row in head_rows
+    ):
+        raise RuntimeError("ContestTrade fork gained an unreviewed native-contest path")
+    if sum(row["date_loop_backtest_command_present"] for row in head_rows) != 2:
+        raise RuntimeError("ContestTrade fork backtest-head count changed")
+    if sum(row["native_nonpaper_personal_portfolio_ledger_present"] for row in head_rows) != 1:
+        raise RuntimeError("ContestTrade fork portfolio-head count changed")
+
+    for row in ref_rows:
+        head = str(row["head_commit"])
+        row["relation_to_official_history"] = (
+            "official_history_reachable" if head in official_commits else "divergent"
+        )
+        row["unique_commits_beyond_official_history"] = len(unique_commits_by_head[head])
+        row["paper_result_credit"] = False
+
+    commit_rows: list[dict[str, Any]] = []
+    result_shaped_paths = {
+        "agents_workspace/portfolio.json",
+        "crash_report.txt",
+        "debug_log.txt",
+        "run_output.txt",
+    }
+    for sequence, commit in enumerate(divergent_commits, start=1):
+        metadata = str(
+            git_output(
+                source_root,
+                "show",
+                "-s",
+                "--format=%aI%x1f%an%x1f%ae%x1f%s",
+                commit,
+            )
+        ).rstrip("\n").split("\x1f", 3)
+        if len(metadata) != 4:
+            raise RuntimeError("ContestTrade fork commit metadata parse changed")
+        paths = commit_paths[commit]
+        special = sorted(set(paths) & PUBLIC_FORK_STRUCTURED_CHANGED_PATHS)
+        nonpaper_outputs = sorted(set(paths) & result_shaped_paths)
+        classifications = sorted({_fork_path_classification(path) for path in paths})
+        commit_rows.append(
+            {
+                "sequence": sequence,
+                "commit": commit,
+                "authored_at": metadata[0],
+                "author_name": metadata[1],
+                "author_email": metadata[2],
+                "subject": metadata[3],
+                "changed_paths": len(paths),
+                "structured_or_paper_paths": ";".join(special),
+                "nonpaper_result_shaped_paths": ";".join(nonpaper_outputs),
+                "path_classifications": ";".join(classifications),
+                "complete_paper_result_row_hits": 0,
+                "native_paper_result_artifact_present": False,
+                "paper_result_credit": False,
+            }
+        )
+
+    path_rows: list[dict[str, Any]] = []
+    backtest_blob_set = set(backtest_function_blobs)
+    for path in sorted(changed_paths):
+        blobs = path_new_blobs[path]
+        classification = _fork_path_classification(path)
+        path_rows.append(
+            {
+                "path": path,
+                "extension": Path(path).suffix.casefold(),
+                "new_blob_versions": len(blobs),
+                "classification": classification,
+                "exact_official_paper_v3_pdf_copy": path == "2508.00554v3.pdf",
+                "date_loop_backtest_source": bool(blobs & backtest_blob_set),
+                "native_nonpaper_personal_portfolio_ledger": (
+                    path == "agents_workspace/portfolio.json"
+                ),
+                "runtime_failure_diagnostic": path in diagnostics,
+                "native_paper_result_artifact": False,
+                "paper_result_credit": False,
+            }
+        )
+
+    official_ref_count = sum(
+        str(row["head_commit"]) in official_commits for row in ref_rows
+    )
+    summary = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "snapshot_sha256": PUBLIC_FORK_SNAPSHOT_SHA256,
+        "github_rest_repository_listings": len(repository_rows),
+        "accessible_public_forks": len(repository_rows) - len(inaccessible),
+        "stale_or_inaccessible_rest_listings": len(inaccessible),
+        "stale_or_inaccessible_repositories": sorted(inaccessible),
+        "accessible_branch_refs": sum(row["ref_kind"] == "branch" for row in ref_rows),
+        "tag_refs": sum(row["ref_kind"] == "tag" for row in ref_rows),
+        "all_refs_audited": len(ref_rows),
+        "unique_heads": len(head_rows),
+        "official_history_reachable_unique_heads": len(head_rows) - len(divergent_heads),
+        "divergent_unique_heads": len(divergent_heads),
+        "refs_reachable_from_official_history": official_ref_count,
+        "refs_beyond_official_history": len(ref_rows) - official_ref_count,
+        "divergent_unique_commits": len(divergent_commits),
+        "divergent_changed_paths": len(changed_paths),
+        "divergent_new_object_counts": new_object_counts,
+        "structured_or_paper_changed_paths": len(structured_changed_paths),
+        "new_text_blobs_with_paper_identifier": len(paper_identifier_blobs),
+        "new_text_blobs_with_empirical_keywords": len(empirical_keyword_blobs),
+        "new_text_blobs_with_complete_paper_result_row": len(paper_row_hit_blobs),
+        "exact_official_paper_v3_pdf_copies": len(paper_v3_blobs),
+        "date_loop_backtest_function_blobs": len(backtest_function_blobs),
+        "date_loop_backtest_heads": sum(
+            row["date_loop_backtest_command_present"] for row in head_rows
+        ),
+        "date_loop_backtest_constructs_paper_portfolio_or_metrics": False,
+        "native_nonpaper_personal_portfolio_paths": 1,
+        "native_nonpaper_personal_portfolio_blob_versions": len(portfolio_stats),
+        "native_nonpaper_personal_portfolio_semantics": portfolio_stats,
+        "runtime_failure_diagnostic_paths": len(diagnostics),
+        "name_bearing_paper_coauthor_account_divergent_refs": sum(
+            row["repository"] == "stepfun-sunrui/ContestTrade"
+            and row["relation_to_official_history"] == "divergent"
+            for row in ref_rows
+        ),
+        "name_bearing_account_identity_independently_verified": False,
+        "heads_integrating_data_contest": 0,
+        "heads_integrating_research_contest": 0,
+        "heads_with_required_research_models": 0,
+        "heads_with_research_predict_signal_scores_method": 0,
+        "heads_with_facility_location_allocator": 0,
+        "native_paper_result_artifacts_found": 0,
+        "independently_regenerated_paper_results": 0,
+        "paper_result_credit": False,
+        "interpretation": (
+            "all 153 git-accessible forks and 212 branch/tag refs were exhausted; 21 "
+            "divergent heads add community engineering, a signal-count-only date-loop "
+            "command, one mixed manual/AI personal portfolio ledger dated February 2026, "
+            "and failure diagnostics, but no head integrates either paper contest, ships "
+            "the required research models or called method, implements facility-location "
+            "allocation, or exposes the paper panel, trajectories, portfolio, numeric "
+            "curves, table rows, baselines, ablations, seeds, or metrics"
+        ),
+    }
+    return repository_rows, ref_rows, head_rows, commit_rows, path_rows, summary
 
 
 def ast_class_methods(path: Path, class_name: str) -> set[str]:
@@ -1001,6 +1699,7 @@ def build_audit(
     source_root: Path,
     paper_pdf: Path,
     paper_versions_root: Path,
+    fork_snapshot_path: Path,
     output_dir: Path,
 ) -> dict[str, Any]:
     commit = verify_pins(source_root, paper_pdf)
@@ -1010,6 +1709,14 @@ def build_audit(
     paper_versions = paper_version_inventory(paper_versions_root, source_root)
     milestones = source_milestone_rows(source_root)
     history_commits, history_paths, history_summary = public_source_history(source_root)
+    (
+        fork_repositories,
+        fork_refs,
+        fork_heads,
+        fork_commits,
+        fork_paths,
+        fork_summary,
+    ) = public_fork_audit(source_root, fork_snapshot_path)
     reachability = entrypoint_reachability(source_root)
     zi_rows = zi_semantics_rows()
     models = safe_model_inventory(source_root)
@@ -1023,6 +1730,14 @@ def build_audit(
         raise RuntimeError("ContestTrade paper version/figure census changed")
     if len(history_commits) != 130 or len(history_paths) != 132:
         raise RuntimeError("ContestTrade full-history census changed")
+    if (
+        len(fork_repositories) != PUBLIC_FORK_REPOSITORY_LISTINGS
+        or len(fork_refs) != PUBLIC_FORK_BRANCH_REFS + PUBLIC_FORK_TAG_REFS
+        or len(fork_heads) != PUBLIC_FORK_UNIQUE_HEADS
+        or len(fork_commits) != PUBLIC_FORK_DIVERGENT_COMMITS
+        or len(fork_paths) != PUBLIC_FORK_DIVERGENT_PATHS
+    ):
+        raise RuntimeError("ContestTrade full public-fork census changed")
     if len(source) != 117:
         raise RuntimeError(f"Expected 117 tracked source files, got {len(source)}")
     if len(caches) != 7 or len(models) != 2:
@@ -1038,6 +1753,11 @@ def build_audit(
     write_csv(output_dir / "public_source_milestone_inventory.csv", milestones)
     write_csv(output_dir / "public_source_history_commit_inventory.csv", history_commits)
     write_csv(output_dir / "public_source_history_path_inventory.csv", history_paths)
+    write_csv(output_dir / "public_fork_repository_access_inventory.csv", fork_repositories)
+    write_csv(output_dir / "public_fork_ref_snapshot.csv", fork_refs)
+    write_csv(output_dir / "public_fork_unique_head_inventory.csv", fork_heads)
+    write_csv(output_dir / "public_fork_divergent_commit_inventory.csv", fork_commits)
+    write_csv(output_dir / "public_fork_divergent_path_inventory.csv", fork_paths)
     write_csv(output_dir / "source_entrypoint_reachability.csv", reachability)
     write_csv(output_dir / "zi_reward_semantics_audit.csv", zi_rows)
     write_csv(output_dir / "shipped_lightgbm_model_inventory.csv", models)
@@ -1047,9 +1767,12 @@ def build_audit(
     (output_dir / "public_source_history.json").write_text(
         json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
     manifest: dict[str, Any] = {
-        "audit": "ContestTrade arXiv v1--v4 results versus complete discovered public source history",
+        "audit": "ContestTrade arXiv v1--v4 results versus complete official history and accessible public-fork surface",
         "overall_status": "not_reproduced_public_entrypoint_omits_contests",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
@@ -1108,6 +1831,62 @@ def build_audit(
         "public_source_text_blobs_with_complete_paper_result_row": history_summary[
             "text_blobs_with_complete_paper_result_row"
         ],
+        "public_fork_census_date": fork_summary["census_date"],
+        "public_fork_rest_repository_listings": fork_summary[
+            "github_rest_repository_listings"
+        ],
+        "public_forks_accessible": fork_summary["accessible_public_forks"],
+        "public_fork_stale_or_inaccessible_rest_listings": fork_summary[
+            "stale_or_inaccessible_rest_listings"
+        ],
+        "public_fork_branch_refs_audited": fork_summary["accessible_branch_refs"],
+        "public_fork_tag_refs_audited": fork_summary["tag_refs"],
+        "public_fork_unique_heads_audited": fork_summary["unique_heads"],
+        "public_fork_divergent_heads_audited": fork_summary["divergent_unique_heads"],
+        "public_fork_divergent_commits_audited": fork_summary[
+            "divergent_unique_commits"
+        ],
+        "public_fork_divergent_paths_audited": fork_summary["divergent_changed_paths"],
+        "public_fork_new_blobs_audited": fork_summary["divergent_new_object_counts"][
+            "blob"
+        ],
+        "public_fork_new_text_blobs_with_complete_paper_result_row": fork_summary[
+            "new_text_blobs_with_complete_paper_result_row"
+        ],
+        "public_fork_exact_official_paper_v3_pdf_copies": fork_summary[
+            "exact_official_paper_v3_pdf_copies"
+        ],
+        "public_fork_date_loop_backtest_heads": fork_summary[
+            "date_loop_backtest_heads"
+        ],
+        "public_fork_date_loop_backtest_constructs_paper_portfolio_or_metrics": (
+            fork_summary["date_loop_backtest_constructs_paper_portfolio_or_metrics"]
+        ),
+        "public_fork_native_nonpaper_personal_portfolio_paths": fork_summary[
+            "native_nonpaper_personal_portfolio_paths"
+        ],
+        "public_fork_runtime_failure_diagnostic_paths": fork_summary[
+            "runtime_failure_diagnostic_paths"
+        ],
+        "public_fork_heads_integrating_data_contest": fork_summary[
+            "heads_integrating_data_contest"
+        ],
+        "public_fork_heads_integrating_research_contest": fork_summary[
+            "heads_integrating_research_contest"
+        ],
+        "public_fork_heads_with_required_research_models": fork_summary[
+            "heads_with_required_research_models"
+        ],
+        "public_fork_heads_with_research_predict_signal_scores_method": fork_summary[
+            "heads_with_research_predict_signal_scores_method"
+        ],
+        "public_fork_heads_with_facility_location_allocator": fork_summary[
+            "heads_with_facility_location_allocator"
+        ],
+        "public_fork_native_paper_result_artifacts_found": fork_summary[
+            "native_paper_result_artifacts_found"
+        ],
+        "public_fork_paper_result_credit": False,
         "paper_v1_public_repository_commits_at_submission": 0,
         "paper_v2_public_repository_commits_at_submission": 36,
         "paper_v3_public_repository_commits_at_submission": 53,
@@ -1145,7 +1924,11 @@ def build_audit(
             "Data and Research Contest implementations. The repository later shipped the exact "
             "original v1 main-result raster, corroborating nine author-rendered curves but no "
             "numeric series. The complete 130-commit public history contains no native structured "
-            "result path or complete paper result row. The current release contains agent utilities "
+            "result path or complete paper result row. A dated census also exhausts all 153 "
+            "git-accessible public forks and their 212 refs: 21 divergent heads and 88 extra "
+            "commits add genuine community engineering, a signal-count-only date loop, one "
+            "mixed manual/AI February-2026 personal portfolio ledger, and failure diagnostics, "
+            "but no paper experiment result or missing native-contest lineage. The current release contains agent utilities "
             "and inspectable pieces of both contests, "
             "but the CLI runs SimpleTradeCompany, whose graph has only data agents, research "
             "agents, and finalize. It never calls DataContest or ResearchContest and finalize "
@@ -1179,6 +1962,17 @@ system end to end or regenerates a paper result.
   reachable commits, {history_summary['unique_historical_paths']} historical paths,
   {sum(history_summary['reachable_object_counts'].values())} objects, and no
   unreachable objects.
+- Public forks: the {fork_summary['census_date']} REST snapshot listed
+  {fork_summary['github_rest_repository_listings']} repositories. Four stale listings
+  returned 404/inaccessible Git endpoints; all {fork_summary['accessible_public_forks']}
+  git-accessible forks were exhausted across {fork_summary['accessible_branch_refs']}
+  branch refs and {fork_summary['tag_refs']} tag refs. Their
+  {fork_summary['unique_heads']} unique heads include
+  {fork_summary['divergent_unique_heads']} divergent heads, collectively adding
+  {fork_summary['divergent_unique_commits']} commits,
+  {fork_summary['divergent_changed_paths']} changed paths, and
+  {fork_summary['divergent_new_object_counts']['blob']} genuinely new blobs beyond
+  the explicit official-history boundary.
 - Paper v1 was submitted on 2025-08-01, before the public repository's first commit
   on 2025-08-08 and before its first code tree on 2025-08-11. At v2 and v3 submission,
   the public tree still contained neither the Data Contest nor Research Contest.
@@ -1207,6 +2001,19 @@ system end to end or regenerates a paper result.
   checkpoint, notebook, JSONL, or other native structured result path and no text blob
   containing a complete paper result row. There are no raw numeric curves, contest
   scores, selected factors, actions, holdings, daily returns, or run logs.
+- The fork-only blob scan likewise finds zero complete paper result rows. One fork adds
+  a date-loop command called `backtest`, but its function only invokes
+  `SimpleTradeCompany`, prints research-signal counts, and never calls either contest,
+  constructs holdings/returns, or calculates Sharpe/drawdown. No fork head repairs the
+  missing Research models/method or adds the facility-location allocator.
+- One later personal fork commits two versions of `agents_workspace/portfolio.json`.
+  They contain 16 mixed manual/AI trade records (nine manual, seven AI) and 21/25
+  intraday snapshots from 2026-02-02 through 2026-02-04. They are useful evidence that
+  a community auto-trading adaptation ran, but they are not the paper experiment panel,
+  are manually intervened, contain no paper metrics, and receive zero paper credit.
+- Three other fork paths are runtime failure diagnostics; the longest terminates in a
+  LangGraph recursion error followed by a missing-`traceback` `NameError`. An exact
+  paper-v3 PDF copy and U.S.-market news inputs are provenance/input evidence only.
 - Static tracing of the actual CLI reaches `run_data_agents -> run_research_agents ->
   finalize`. Neither `DataContest` nor `ResearchContest` is called, and `finalize`
   exposes all research signals without constructing the paper portfolio.
@@ -1282,6 +2089,16 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--fork-snapshot",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "CONTESTTRADE_FORK_SNAPSHOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/contesttrade_paper_versions/public_fork_snapshot.json",
+            )
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=project_root / "paper_runs/paper_replication_audits/contesttrade",
@@ -1296,6 +2113,7 @@ def main() -> int:
         args.source_root.resolve(),
         args.paper_pdf.resolve(),
         args.paper_versions_root.resolve(),
+        args.fork_snapshot.resolve(),
         args.output_dir.resolve(),
     )
     print(json.dumps(manifest, indent=2))

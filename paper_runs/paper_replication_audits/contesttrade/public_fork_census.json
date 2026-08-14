@@ -1,0 +1,70 @@
+{
+  "accessible_branch_refs": 186,
+  "accessible_public_forks": 153,
+  "all_refs_audited": 212,
+  "census_date": "2026-08-14",
+  "date_loop_backtest_constructs_paper_portfolio_or_metrics": false,
+  "date_loop_backtest_function_blobs": 1,
+  "date_loop_backtest_heads": 2,
+  "divergent_changed_paths": 200,
+  "divergent_new_object_counts": {
+    "blob": 381,
+    "commit": 88,
+    "tree": 292
+  },
+  "divergent_unique_commits": 88,
+  "divergent_unique_heads": 21,
+  "exact_official_paper_v3_pdf_copies": 1,
+  "github_rest_repository_listings": 157,
+  "heads_integrating_data_contest": 0,
+  "heads_integrating_research_contest": 0,
+  "heads_with_facility_location_allocator": 0,
+  "heads_with_required_research_models": 0,
+  "heads_with_research_predict_signal_scores_method": 0,
+  "independently_regenerated_paper_results": 0,
+  "interpretation": "all 153 git-accessible forks and 212 branch/tag refs were exhausted; 21 divergent heads add community engineering, a signal-count-only date-loop command, one mixed manual/AI personal portfolio ledger dated February 2026, and failure diagnostics, but no head integrates either paper contest, ships the required research models or called method, implements facility-location allocation, or exposes the paper panel, trajectories, portfolio, numeric curves, table rows, baselines, ablations, seeds, or metrics",
+  "name_bearing_account_identity_independently_verified": false,
+  "name_bearing_paper_coauthor_account_divergent_refs": 1,
+  "native_nonpaper_personal_portfolio_blob_versions": 2,
+  "native_nonpaper_personal_portfolio_paths": 1,
+  "native_nonpaper_personal_portfolio_semantics": [
+    {
+      "ai_records": 7,
+      "blob": "614ce068753a48f36f9f5d93ad7e7921fc9b328b",
+      "daily_stat_records": 21,
+      "first_date": "2026-02-02",
+      "history_records": 16,
+      "last_date": "2026-02-03",
+      "manual_records": 9
+    },
+    {
+      "ai_records": 7,
+      "blob": "c1ffddd4b5b7950d671b33cbfa0e3aca17691011",
+      "daily_stat_records": 25,
+      "first_date": "2026-02-02",
+      "history_records": 16,
+      "last_date": "2026-02-04",
+      "manual_records": 9
+    }
+  ],
+  "native_paper_result_artifacts_found": 0,
+  "new_text_blobs_with_complete_paper_result_row": 0,
+  "new_text_blobs_with_empirical_keywords": 4,
+  "new_text_blobs_with_paper_identifier": 8,
+  "official_history_reachable_unique_heads": 31,
+  "paper_result_credit": false,
+  "refs_beyond_official_history": 21,
+  "refs_reachable_from_official_history": 191,
+  "runtime_failure_diagnostic_paths": 3,
+  "snapshot_sha256": "087e935650f0782b76d279b9b17a430aebea574bcc79b80a8c8c8b25d5273aa5",
+  "stale_or_inaccessible_repositories": [
+    "b08240/ContestTrade",
+    "forgottenAc1/ContestTrade",
+    "litom914295/ContestTrade",
+    "zhenhaip/ContestTrade"
+  ],
+  "stale_or_inaccessible_rest_listings": 4,
+  "structured_or_paper_changed_paths": 20,
+  "tag_refs": 26,
+  "unique_heads": 52
+}
