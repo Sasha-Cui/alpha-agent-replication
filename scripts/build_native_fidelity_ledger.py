@@ -7,6 +7,7 @@ materials ship native dated outputs with timing and identifiers sufficient for
 the prespecified six-country monthly JKP evaluator without replacing the
 system's core mechanism.
 """
+
 from __future__ import annotations
 
 import csv
@@ -16,19 +17,8 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 CENSUS = ROOT / "literature_review" / "census_v1" / "system_registry.csv"
-AUDIT = (
-    ROOT
-    / "paper_runs"
-    / "submission_evidence"
-    / "artifact_audit"
-    / "artifact_audit.csv"
-)
-OUTPUT = (
-    ROOT
-    / "paper_runs"
-    / "submission_evidence"
-    / "native_fidelity_ledger.csv"
-)
+AUDIT = ROOT / "paper_runs" / "submission_evidence" / "artifact_audit" / "artifact_audit.csv"
+OUTPUT = ROOT / "paper_runs" / "submission_evidence" / "native_fidelity_ledger.csv"
 EXPECTED_FT = 67
 URL_RE = re.compile(r"https?://[^;\s]+")
 
@@ -594,18 +584,20 @@ ARTIFACT_NOTES = {
     "SYS-MACI": (
         "Y",
         "A pinned three-revision audit separates the v1/v2 four-expert GPT-4o "
-        "experiment from the rewritten v3 multi-architecture experiment. The first "
-        "author's pre-submission repository is substantial v1-style source and all "
-        "16 compiled v1 figure assets have author-output correspondence, covering 21 "
-        "plotted quantitative units. This is output verification, not regeneration: "
-        "0/321 v1/v2 table units and 0/21 plotted units regenerate because constants, "
-        "raw/processed data, exact weekly universes, checkpoints, requests/responses, "
-        "prediction records, and portfolio arrays are absent. A labelled reconstruction "
-        "passes deterministic source-component checks but the runner stops at missing "
-        "blockchain data. The current repository contains no v3 hierarchical, "
-        "collaborative, debate, memory, RAG, or skill implementation; 0/442 v3 table "
-        "units and 0/142 plotted units regenerate. Both lineages are crypto-only and "
-        "cannot populate the six-country security-level common task.",
+        "experiment from the rewritten v3 multi-architecture experiment. The complete "
+        "164-commit v1/v2 repository history recovers substantial source, all 21 "
+        "published plotted units as author output, and 962 deleted fine-tuning-format "
+        "message records. The paper-listed anonymous v3 artifact resolves to the first "
+        "author's 20-commit cryptoMAS repository: all three architectures and 42 tracked "
+        "files are recovered, 394/442 table units and 136/142 plotted units have pinned "
+        "author-output correspondence, and nine non-RAG orchestration paths pass fixture "
+        "component checks. This is output/source verification, not regeneration: 0/321 "
+        "v1/v2 table units and 0/442 v3 table units regenerate. The v3 runner imports three "
+        "environ.data modules absent from every public commit; raw data, checkpoints, "
+        "processed records, inference traces, and native result lineage remain absent. "
+        "Its single-agent RAG and Skill modes both collapse to zero-shot despite distinct "
+        "paper results. Both lineages are crypto-only and cannot populate the six-country "
+        "security-level common task.",
     ),
     "SYS-MOUNTAIN-LION": (
         "N",
@@ -1398,7 +1390,7 @@ TARGETED_EXECUTION = {
     "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
     "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
-    "SYS-MACI": "paper_audit:completed_v1_v2_zero_of_321_table_units_21_author_output_plot_units_zero_regenerated_v3_zero_of_442_no_v3_code",
+    "SYS-MACI": "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_zero_regenerated",
     "SYS-MM-DREX": "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_v3_release_111_tests_missing_lfs_and_research_lineage",
     "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",
     "SYS-MASS": "paper_audit:completed_zero_of_766_final_native_results_full_release_history_signal_nonidentifiability",
@@ -1545,9 +1537,7 @@ def main() -> None:
                 "system_id": sid,
                 "native_task": native_task(source),
                 "public_artifact_status": artifact_status,
-                "static_tier": STATIC_TIER_OVERRIDES.get(
-                    sid, observed["static_fidelity_tier"]
-                ),
+                "static_tier": STATIC_TIER_OVERRIDES.get(sid, observed["static_fidelity_tier"]),
                 "native_dated_signal_or_return_shipped": shipped,
                 "prespecified_G7_monthly_common_task_compatible": "N",
                 "blocking_stage": block,
@@ -1568,9 +1558,7 @@ def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     temporary = OUTPUT.with_suffix(".csv.tmp")
     with temporary.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(
-            stream, fieldnames=FIELDS, lineterminator="\n"
-        )
+        writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(output_rows)
     temporary.replace(OUTPUT)

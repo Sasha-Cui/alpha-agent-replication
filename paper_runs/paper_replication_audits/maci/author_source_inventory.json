@@ -7,7 +7,7 @@
   "current_constants_present": true,
   "pre_submission_data_files": 0,
   "pre_submission_processed_data_files": 0,
-  "v3_architecture_capability_term_file_hits": {
+  "v1_v2_repository_v3_architecture_capability_term_file_hits": {
     "hierarchical": 0,
     "collaborative": 0,
     "debate": 0,
@@ -15,6 +15,19 @@
     "skill": 0,
     "memory": 0
   },
-  "v3_implementation_recovered": false,
-  "qualification": "A zero lexical hit supports, but cannot alone prove, absence; manual source inspection also found only the v1-style system."
+  "v1_v2_repository_contains_v3_implementation": false,
+  "v3_author_commit": "318e0fe905fed8b7f544322c3db1dfed6784d178",
+  "v3_tracked_files": 42,
+  "v3_python_files": 24,
+  "v3_architecture_files": [
+    "environ/architectures/__init__.py",
+    "environ/architectures/ablation.py",
+    "environ/architectures/base_arch.py",
+    "environ/architectures/collaborative.py",
+    "environ/architectures/debate.py",
+    "environ/architectures/hierarchical.py"
+  ],
+  "v3_data_package_present": false,
+  "v3_implementation_recovered": true,
+  "qualification": "The separate first-author cryptoMAS repository recovers the v3 implementation. Its missing data package prevents end-to-end execution and result regeneration."
 }

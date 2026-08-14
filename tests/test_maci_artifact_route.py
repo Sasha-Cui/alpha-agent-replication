@@ -1,4 +1,5 @@
 """Contracts for routing the pinned MACI author artifact."""
+
 from __future__ import annotations
 
 import csv
@@ -20,20 +21,34 @@ def csv_rows(path: Path, delimiter: str = ",") -> list[dict[str, str]]:
         return list(csv.DictReader(handle, delimiter=delimiter))
 
 
-def test_pinned_author_row_is_reachable_mit_and_honestly_r2() -> None:
+def test_both_pinned_author_rows_are_reachable_mit_and_honestly_r2() -> None:
     row = route.maci_row()
     assert row["artifact_urls"] == route.URL
     assert row["default_branch_head_shas"].endswith(route.HEAD)
-    assert row["observed_licenses"] == "lyc0603/multi-agent=MIT"
+    assert row["observed_licenses"] == ("lyc0603/multi-agent=MIT;lyc0603/cryptoMAS=MIT")
+    assert row["artifact_url_count"] == 2
     assert row["public_artifact_listed"] == "Y"
     assert row["reachability_outcome"] == "reachable_all"
     assert row["static_fidelity_tier"] == "R2"
-    result = json.loads(row["artifact_url_results_json"])[0]
-    observation = result["static_observation"]
-    assert observation["archive_bytes"] == 316_791_931
-    assert observation["file_count"] == 6547
-    assert observation["has_runner"] is True
-    assert observation["has_support"] is False
+    results = json.loads(row["artifact_url_results_json"])
+    assert [result["github_owner_repo"] for result in results] == [
+        "lyc0603/multi-agent",
+        "lyc0603/cryptoMAS",
+    ]
+    v1 = results[0]["static_observation"]
+    assert v1["archive_bytes"] == 316_791_931
+    assert v1["file_count"] == 6547
+    assert v1["has_runner"] is True
+    assert v1["has_support"] is False
+    v3 = results[1]["static_observation"]
+    assert v3["archive_bytes"] == 372_772
+    assert v3["file_count"] == 42
+    assert v3["python_file_count"] == 24
+    assert v3["known_missing_runner_modules"] == [
+        "environ/data/coingecko.py",
+        "environ/data/cointelegraph.py",
+        "environ/data/rag_store.py",
+    ]
 
 
 def test_committed_audit_preserves_prior_corrections_and_adds_only_maci() -> None:
@@ -64,8 +79,9 @@ def test_committed_audit_preserves_prior_corrections_and_adds_only_maci() -> Non
         "SYS-P1GPT",
         "SYS-RAPTOR",
         "SYS-MM-DREX",
-            "SYS-MAD-EVOLVE",
-        "SYS-QUANT-AGENTS", "SYS-ATLAS",
+        "SYS-MAD-EVOLVE",
+        "SYS-QUANT-AGENTS",
+        "SYS-ATLAS",
     }
     assert payload["metadata"]["registry_sha256"] == route.sha256(route.REGISTRY)
 
@@ -80,11 +96,10 @@ def test_native_and_paper_routes_keep_output_verification_below_reproduction() -
     assert row["blocking_stage"] == "A3_wrong_asset_class_crypto"
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     assert "0/321 v1/v2 table units" in row["concise_evidence_note"]
-    assert "0/442 v3 table units" in row["concise_evidence_note"]
+    assert "0/442 v3 table units regenerate" in row["concise_evidence_note"]
+    assert "394/442 table units" in row["concise_evidence_note"]
 
-    routes = csv_rows(
-        ROOT / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
-    )
+    routes = csv_rows(ROOT / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv")
     paper = next(item for item in routes if item["canonical_work_id"] == "CensusArxiv250100826")
     assert paper["paper_evidence_route"] == "public_code_available"
     assert paper["native_pipeline_disposition"] == "targeted_execution_recorded"
@@ -97,6 +112,9 @@ def test_static_assets_reflect_maci_once() -> None:
     assert r"\newcommand{\ReachableArtifactCountFT}{35}" in generated
     assert r"\newcommand{\LicensedArtifactCountFT}{20}" in generated
     assert r"\newcommand{\PinnedRepoCountFT}{34}" in generated
-    assert r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 32, \artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 18}" in generated
+    assert (
+        r"\newcommand{\ArtifactTierSummaryFT}{\artifacttier{R0}: 32, \artifacttier{R1}: 11, \artifacttier{R2}: 6, \artifacttier{R3}: 18}"
+        in generated
+    )
     assert r"\newcommand{\NativeDatedOutputCount}{12}" in generated
     assert r"\newcommand{\TargetedAuditCount}{67}" in generated

@@ -663,11 +663,12 @@
         "system_id": "SYS-JANUS-Q"
       },
       {
-        "corrected_at_utc": "2026-08-12T00:00:00+00:00",
+        "corrected_at_utc": "2026-08-14T08:00:00+00:00",
         "evidence": "paper_runs/paper_replication_audits/maci/manifest.json",
-        "reason": "the first-author v1/v2 source repository was recovered after the frozen registry; the rewritten v3 implementation remains unreleased",
+        "reason": "the first-author v1/v2 source and paper-listed first-author v3 source repositories were recovered after the frozen registry; both remain incomplete for native result regeneration",
         "source_head": "2326185cc2d1eff02724cfeb88116ebb13f904e7",
-        "system_id": "SYS-MACI"
+        "system_id": "SYS-MACI",
+        "v3_source_head": "318e0fe905fed8b7f544322c3db1dfed6784d178"
       },
       {
         "corrected_at_utc": "2026-08-12T22:00:00+00:00",

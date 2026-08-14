@@ -1,0 +1,109 @@
+{
+  "table_lineage": {
+    "published_table_units": 442,
+    "author_output_verified_units": 394,
+    "author_output_different_units": 48,
+    "mismatch_strategy_counts": {
+      "LSTM": 17,
+      "Informer": 18,
+      "Autoformer": 13
+    },
+    "native_regenerated_units": 0,
+    "paper_result_credit": false
+  },
+  "figure_lineage": {
+    "paper": "MACI arXiv 2501.00826v3",
+    "author_repository": "https://github.com/lyc0603/cryptoMAS",
+    "author_head": "318e0fe905fed8b7f544322c3db1dfed6784d178",
+    "figures": [
+      {
+        "asset": "flow.pdf",
+        "role": "method_diagram",
+        "published_plotted_result_units": 0,
+        "author_output_verified_units": 0,
+        "paper_sha256": "7c16b3933b02707bb0d84b77d3ade99307b942ab0c013ad1ddeafaaf25f7741a",
+        "author_sha256": "7c16b3933b02707bb0d84b77d3ade99307b942ab0c013ad1ddeafaaf25f7741a",
+        "author_output_correspondence": "byte_identical",
+        "evidence": "Exact paper/author-repository bytes.",
+        "native_result_regenerated": false,
+        "paper_result_credit": false
+      },
+      {
+        "asset": "model_comparison_ann_vol.pdf",
+        "role": "quantitative_result_figure",
+        "published_plotted_result_units": 48,
+        "author_output_verified_units": 48,
+        "paper_sha256": "7386a4f8c8645748ddc171ac0ba094ebace80396d883e94b181c43064235fb0a",
+        "author_sha256": "7386a4f8c8645748ddc171ac0ba094ebace80396d883e94b181c43064235fb0a",
+        "author_output_correspondence": "byte_identical",
+        "evidence": "Exact paper/author-repository bytes.",
+        "native_result_regenerated": false,
+        "paper_result_credit": false
+      },
+      {
+        "asset": "model_comparison_cum_ret.pdf",
+        "role": "quantitative_result_figure",
+        "published_plotted_result_units": 48,
+        "author_output_verified_units": 48,
+        "paper_sha256": "a932df3b3878d5bd56aa1a76ff0b5032fdae0e38d7cbdf2756486f16ef0a1782",
+        "author_sha256": "a932df3b3878d5bd56aa1a76ff0b5032fdae0e38d7cbdf2756486f16ef0a1782",
+        "author_output_correspondence": "byte_identical",
+        "evidence": "Exact paper/author-repository bytes.",
+        "native_result_regenerated": false,
+        "paper_result_credit": false
+      },
+      {
+        "asset": "portfolio.pdf",
+        "role": "quantitative_result_figure",
+        "published_plotted_result_units": 23,
+        "author_output_verified_units": 20,
+        "paper_sha256": "368433897d6036075704eb276f06f690b174beffd4e660f2516b0e581cfbb505",
+        "author_sha256": "2e4af2bf512a936d83e546a7d4f401d92ec10f89b1002963cd701f91ed7e8ced",
+        "author_output_correspondence": "20_of_23_paper_paths_share_author_vector_geometry_three_final_baselines_changed",
+        "evidence": "Twenty 52-week paths pair after one shared affine y-axis transform; three deep-learning paths changed, and the repository adds three ablation paths.",
+        "native_result_regenerated": false,
+        "paper_result_credit": false
+      },
+      {
+        "asset": "risk_return.pdf",
+        "role": "quantitative_result_figure",
+        "published_plotted_result_units": 23,
+        "author_output_verified_units": 20,
+        "paper_sha256": "003266b78dbd2418786c84b8032ab86d69a62f9b9b526a899f785cddf348b549",
+        "author_sha256": "5dccf3fdd8514bfdd63864894d739235dd58fc17fcbf0b7b559044eb1295b952",
+        "author_output_correspondence": "20_of_23_paper_points_have_matching_author_table_coordinates_three_final_baselines_changed",
+        "evidence": "Twenty strategy cumulative-return/volatility coordinate pairs match the pinned author table; LSTM, Informer, and Autoformer differ, and the repository adds three ablation points.",
+        "native_result_regenerated": false,
+        "paper_result_credit": false
+      }
+    ],
+    "portfolio_vector_geometry": {
+      "paper_main_52_week_paths": 23,
+      "author_main_52_week_paths": 26,
+      "paired_paths": 23,
+      "shared_paths_after_single_affine_y_axis_transform": 20,
+      "changed_deep_learning_baseline_paths": 3,
+      "author_extra_ablation_paths": 3,
+      "shared_y_axis_affine_scale": 1.0004106556754957,
+      "shared_y_axis_affine_offset": -0.010591683204283331,
+      "maximum_shared_x_coordinate_difference": 0.0,
+      "maximum_shared_affine_y_residual": 9.936052833836584e-07
+    },
+    "published_plotted_result_units": 142,
+    "author_output_verified_units": 136,
+    "native_result_regenerated_units": 0,
+    "manual_visual_qa": {
+      "date": "2026-08-14",
+      "status": "passed_side_by_side_full_resolution_review",
+      "checks": [
+        "readable",
+        "not_clipped",
+        "paper/repository relationship consistent with vector and table audit"
+      ]
+    },
+    "paper_result_credit": false
+  },
+  "anonymous_artifact_readme_sha256": "fd1c5988cf2d27d93497b551d115d781b2da210f3213a71cdeb274b9581da433",
+  "anonymous_readme_matches_v3_repository": true,
+  "paper_result_credit": false
+}

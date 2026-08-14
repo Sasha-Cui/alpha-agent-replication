@@ -7,8 +7,8 @@ v1/v2,test_period,conflicting,Paper says November 2023--September 2024; figures 
 v1/v2,universe,high_level_only,Weekly top-30 CoinGecko universe stated; exact memberships are absent.
 v1/v2,raw_inputs,missing,data/ and processed_data/ are gitignored and absent.
 v1/v2,processed_inputs,missing,"Factors, news, charts, prices, and labels are absent."
-v1/v2,prompt_templates,substantial_source_present,Templates and prompt generator are released; exact instantiated prompts are absent.
-v1/v2,model_requests_responses,missing,"No immutable requests, responses, token/logprob records, or retry logs."
+v1/v2,prompt_templates,templates_plus_deleted_training_messages,"Templates are released, and complete history recovers 962 fine-tuning-format system/user/assistant message records; the exact selected training job remains absent."
+v1/v2,model_requests_responses,training_examples_only,"Complete history recovers training messages, but no immutable inference requests/responses, token/logprob records, or retry logs."
 v1/v2,checkpoints,missing,"Runner names pickle checkpoints, but none are released."
 v1/v2,prediction_records,missing,"Runner names JSON records, but none are released."
 v1/v2,portfolio_rules,source_present,"Top-quintile, linear-probability ensemble, and market weights are inspectable."
@@ -17,18 +17,20 @@ v1/v2,risk_free_rate,source_uses_zero,Portfolio evaluator uses zero; paper does 
 v1/v2,seeds_repetitions_uncertainty,missing,"No seeds, repetitions, or uncertainty lineage."
 v1/v2,table_outputs,missing,Zero of 321 printed table units are shipped as source-derived records.
 v1/v2,figure_outputs,author_output_verified,All 16 compiled figure assets have author-repository content lineage; this is not regeneration.
-v3,system_architecture,paper_only,"Hierarchical, collaborative, and debate architectures are described but absent from code."
+v3,system_architecture,source_present_component_verified,"Pinned source implements hierarchical, collaborative, and two-round debate orchestration; nine non-RAG architecture/capability component paths execute with fixture agent outputs."
 v3,model_snapshots,missing,"GPT-4o, GPT-5, and Claude Sonnet 4.5 snapshot IDs are not pinned."
 v3,experiment_period,specified,"Calendar 2025, 52 weeks."
-v3,universe,high_level_only,Fixed top-15 layer-1 cryptocurrencies; exact membership/corporate actions are absent.
-v3,raw_and_processed_inputs,missing,"No frozen price/news rows, timestamps, or retrieval corpus."
-v3,memory_rag_skill_state,missing,"No memory, retrieval index, skill library, or updates."
-v3,prompts,partial_appendix,Three prompts compile; unfilled runtime inputs and exact requests/responses are absent.
+v3,universe,exact_list_source_present,The same fixed 15-symbol universe is explicit in the paper and released agent source.
+v3,raw_and_processed_inputs,missing_source_package_and_data,"No frozen price/news rows, timestamps, result records, or retrieval corpus are released; all three environ.data modules imported by the runner are absent from every public-history commit."
+v3,memory_rag_skill_state,partial_source_rag_unrunnable,Rolling memory and skill indicators are implemented; the RAG agent shell is present but its RAGStore implementation and corpus are absent.
+v3,prompts,substantial_source_present,Three prompts compile in the appendix and runtime source contains agent/system templates; exact instantiated requests and responses are absent.
+v3,react_loop,paper_source_conflict,"The paper says ReAct reasoning/action interleaving is compulsory, while source provides single request/final JSON calls and CoT reasoning tags but no observation/action loop."
+v3,single_agent_capabilities,hard_source_result_conflict,The runner maps both single-agent RAG and Skill to zero-shot although the paper reports distinct results for all three variants.
 v3,decision_traces,missing,No traces are released despite the traceability claim.
 v3,actions_orders_fills,missing,"No action, order, fill, or timing record."
-v3,baseline_code_checkpoints,missing,Five deep-learning and all agent baseline runtimes are absent.
-v3,transaction_costs_slippage,missing,No executable market-friction contract.
+v3,baseline_code_checkpoints,source_present_inputs_checkpoints_missing,"Baseline runner code is released, but frozen inputs, trained checkpoints, and native outputs are absent."
+v3,transaction_costs_slippage,source_present,Portfolio execution applies the stated 0.1% cost to buys and sells and omits slippage.
 v3,risk_free_rate,hard_result_method_conflict,"Printed full-period Sharpe values imply approximately zero, not the cited Fama-French T-bill series."
 v3,seeds_repetitions_uncertainty,missing,"No seeds, repetitions, confidence intervals, or run dispersion."
-v3,table_outputs,missing,Zero of 442 printed table units have input-to-output run lineage.
-v3,figure_outputs,paper_vector_only,142 plotted bars/lines/points are published without underlying result arrays.
+v3,table_outputs,394_author_output_verified_zero_regenerated,"394/442 printed units match pinned author-repository tables; all 28 ablation units and 366/414 performance units correspond, but zero have input-to-output run lineage."
+v3,figure_outputs,136_author_output_verified_zero_regenerated,Two 48-bar model-comparison figures are byte-identical; 20/23 portfolio paths and 20/23 risk/return points correspond. Zero of 142 units regenerate from inputs.

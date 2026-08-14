@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Route the pinned MACI paper/source audit into the frozen artifact evidence.
 
-The generic artifact crawler cannot inspect the 316 MB author archive under
-its 50 MB safety limit. This deterministic correction replaces only MACI,
-preserves prior post-freeze corrections, and recomputes the public-artifact
-summary from the pinned multi-version paper/source audit.
+The generic artifact crawler cannot inspect the 316 MB v1/v2 author archive
+under its 50 MB safety limit and the frozen registry predates the paper-listed
+v3 repository. This deterministic correction replaces only MACI, preserves
+prior post-freeze corrections, and recomputes the public-artifact summary from
+the pinned multi-version paper/source/history audit.
 """
+
 from __future__ import annotations
 
 import csv
@@ -22,28 +24,54 @@ import build_artifact_audit as artifact  # noqa: E402
 
 
 SYSTEM_ID = "SYS-MACI"
-URL = "https://github.com/lyc0603/multi-agent"
-OWNER_REPO = "lyc0603/multi-agent"
-HEAD = "2326185cc2d1eff02724cfeb88116ebb13f904e7"
-OBSERVED_AT = "2026-08-12T00:07:52+00:00"
-ROW_AUDIT_AT = "2026-08-12T00:00:00+00:00"
-ARCHIVE_BYTES = 316_791_931
+V1_URL = "https://github.com/lyc0603/multi-agent"
+V3_URL = "https://github.com/lyc0603/cryptoMAS"
+URL = f"{V1_URL} ; {V3_URL}"
+V1_OWNER_REPO = "lyc0603/multi-agent"
+V3_OWNER_REPO = "lyc0603/cryptoMAS"
+OWNER_REPO = f"{V1_OWNER_REPO};{V3_OWNER_REPO}"
+V1_HEAD = "2326185cc2d1eff02724cfeb88116ebb13f904e7"
+V3_HEAD = "318e0fe905fed8b7f544322c3db1dfed6784d178"
+HEAD = f"{V1_OWNER_REPO}@main={V1_HEAD};{V3_OWNER_REPO}@main={V3_HEAD}"
+OBSERVED_AT = "2026-08-14T08:00:00+00:00"
+ROW_AUDIT_AT = "2026-08-14T08:00:00+00:00"
+V1_ARCHIVE_BYTES = 316_791_931
+V3_ARCHIVE_BYTES = 372_772
 PAPER_MANIFEST = ROOT / "paper_runs/paper_replication_audits/maci/manifest.json"
 SOURCE_INVENTORY = ROOT / "paper_runs/paper_replication_audits/maci/author_source_inventory.json"
 REGISTRY = ROOT / "literature_review/census_v1/system_registry.csv"
 AUDIT_DIR = ROOT / "paper_runs/submission_evidence/artifact_audit"
 
 AUDIT_FIELDS = [
-    "system_id", "system_name", "stratum", "main_FT", "artifact_urls",
-    "artifact_url_count", "artifact_url_types", "public_artifact_listed",
-    "reachability_outcome", "github_owner_repos", "default_branch_head_shas",
-    "observed_licenses", "static_fidelity_tier", "static_fidelity_basis_json",
-    "failure_category", "native_execution_attempted", "audit_timestamp_utc",
-    "artifact_url_results_json", "errors_json",
+    "system_id",
+    "system_name",
+    "stratum",
+    "main_FT",
+    "artifact_urls",
+    "artifact_url_count",
+    "artifact_url_types",
+    "public_artifact_listed",
+    "reachability_outcome",
+    "github_owner_repos",
+    "default_branch_head_shas",
+    "observed_licenses",
+    "static_fidelity_tier",
+    "static_fidelity_basis_json",
+    "failure_category",
+    "native_execution_attempted",
+    "audit_timestamp_utc",
+    "artifact_url_results_json",
+    "errors_json",
 ]
 SUMMARY_FIELDS = [
-    "group", "metric", "successes", "denominator", "proportion",
-    "wilson_95_lower", "wilson_95_upper", "z",
+    "group",
+    "metric",
+    "successes",
+    "denominator",
+    "proportion",
+    "wilson_95_lower",
+    "wilson_95_upper",
+    "z",
 ]
 
 
@@ -55,9 +83,9 @@ def compact(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
-def static_observation() -> dict[str, Any]:
+def v1_static_observation() -> dict[str, Any]:
     return {
-        "archive_bytes": ARCHIVE_BYTES,
+        "archive_bytes": V1_ARCHIVE_BYTES,
         "checked_at_utc": OBSERVED_AT,
         "file_count": 6547,
         "has_code": True,
@@ -114,36 +142,104 @@ def static_observation() -> dict[str, Any]:
     }
 
 
+def v3_static_observation() -> dict[str, Any]:
+    return {
+        "archive_bytes": V3_ARCHIVE_BYTES,
+        "archive_sha256": "4fe3f01735c96dedb58b58dfeafa0b2c74207a1555ae7f50b081d5f5cd7a2af0",
+        "checked_at_utc": OBSERVED_AT,
+        "file_count": 42,
+        "python_file_count": 24,
+        "has_code": True,
+        "has_environment": True,
+        "has_runner": True,
+        "has_support": False,
+        "explicit_nonrunnable": False,
+        "code_markers": [
+            "environ/agents/base.py",
+            "environ/agents/crypto_agent.py",
+            "environ/agents/news_agent.py",
+            "environ/agents/rag_crypto_agent.py",
+            "environ/agents/skill_crypto_agent.py",
+            "environ/agents/trading_agent.py",
+            "environ/architectures/hierarchical.py",
+            "environ/architectures/collaborative.py",
+            "environ/architectures/debate.py",
+            "environ/architectures/ablation.py",
+            "environ/evaluation/metrics.py",
+        ],
+        "environment_markers": ["pyproject.toml"],
+        "runner_markers": [
+            "scripts/run_experiment.py",
+            "scripts/run_ablation.py",
+            "scripts/benchmarks.py",
+            "scripts/evaluate.py",
+        ],
+        "support_markers": [],
+        "known_missing_runner_modules": [
+            "environ/data/coingecko.py",
+            "environ/data/cointelegraph.py",
+            "environ/data/rag_store.py",
+        ],
+    }
+
+
 def maci_row() -> dict[str, Any]:
-    observation = static_observation()
+    v1_observation = v1_static_observation()
+    v3_observation = v3_static_observation()
     definitions = {
         "R0": "no listed public artifact or no reachable artifact",
         "R1": "reachable landing page, documentation, pseudocode, or statically incomplete repository",
         "R2": "observable source code plus dependency/setup manifest",
         "R3": "R2 plus a runner and tests/examples/configuration support",
     }
-    result = {
-        "url": URL,
-        "url_type": "github_repository",
-        "check_method": "git ls-remote plus bounded 316 MB archive inspection and full multi-version paper/source audit",
-        "checked_at_utc": OBSERVED_AT,
-        "reachable": True,
-        "github_owner_repo": OWNER_REPO,
-        "default_branch": "main",
-        "head_sha": HEAD,
-        "observed_license": "MIT",
-        "license_source": "github_api_and_pinned_author_archive",
-        "static_observation": observation,
-        "errors": [],
-    }
+    results = [
+        {
+            "url": V1_URL,
+            "url_type": "github_repository",
+            "check_method": "git ls-remote plus full 164-commit history, pinned archive, source, execution, table, and figure audit",
+            "checked_at_utc": OBSERVED_AT,
+            "reachable": True,
+            "github_owner_repo": V1_OWNER_REPO,
+            "default_branch": "main",
+            "head_sha": V1_HEAD,
+            "observed_license": "MIT",
+            "license_source": "github_api_and_pinned_author_archive",
+            "static_observation": v1_observation,
+            "errors": [],
+        },
+        {
+            "url": V3_URL,
+            "url_type": "github_repository",
+            "check_method": "paper-listed anonymous README resolution plus git ls-remote and full 20-commit source/output/execution audit",
+            "checked_at_utc": OBSERVED_AT,
+            "reachable": True,
+            "github_owner_repo": V3_OWNER_REPO,
+            "default_branch": "main",
+            "head_sha": V3_HEAD,
+            "observed_license": "MIT",
+            "license_source": "github_api_and_pinned_author_archive",
+            "static_observation": v3_observation,
+            "errors": [
+                "raw runner import stops at missing environ.data; all three imported data modules are absent from complete public history"
+            ],
+        },
+    ]
     basis = {
         "definition": definitions,
-        "evidence": [{
-            "url": URL,
-            "tier": "R2",
-            "basis": "code+environment manifest; runners present but no qualifying test/example/config support package",
-            "markers": observation,
-        }],
+        "evidence": [
+            {
+                "url": V1_URL,
+                "tier": "R2",
+                "basis": "code+environment manifest; runners present but no qualifying test/example/config support package",
+                "markers": v1_observation,
+            },
+            {
+                "url": V3_URL,
+                "tier": "R2",
+                "basis": "code+environment manifest and runners present; no tests/examples/config support package, and native runner imports missing modules",
+                "markers": v3_observation,
+            },
+        ],
     }
     return {
         "system_id": SYSTEM_ID,
@@ -151,19 +247,19 @@ def maci_row() -> dict[str, Any]:
         "stratum": "T",
         "main_FT": "Y",
         "artifact_urls": URL,
-        "artifact_url_count": 1,
-        "artifact_url_types": "github_repository",
+        "artifact_url_count": 2,
+        "artifact_url_types": "github_repository;github_repository",
         "public_artifact_listed": "Y",
         "reachability_outcome": "reachable_all",
         "github_owner_repos": OWNER_REPO,
-        "default_branch_head_shas": f"{OWNER_REPO}@main={HEAD}",
-        "observed_licenses": f"{OWNER_REPO}=MIT",
+        "default_branch_head_shas": HEAD,
+        "observed_licenses": f"{V1_OWNER_REPO}=MIT;{V3_OWNER_REPO}=MIT",
         "static_fidelity_tier": "R2",
         "static_fidelity_basis_json": compact(basis),
         "failure_category": "none",
         "native_execution_attempted": "N",
         "audit_timestamp_utc": ROW_AUDIT_AT,
-        "artifact_url_results_json": compact([result]),
+        "artifact_url_results_json": compact(results),
         "errors_json": "[]",
     }
 
@@ -177,20 +273,24 @@ def validate_inputs() -> None:
         "v1_published_plotted_result_units_regenerated": 0,
         "v3_published_table_units": 442,
         "v3_table_units_faithfully_regenerated": 0,
-        "v3_source_files_recovered": 0,
+        "v3_table_units_author_output_verified": 394,
+        "v3_plotted_bars_lines_points_author_output_verified": 136,
+        "v3_source_files_recovered": 42,
     }
     for key, value in expected.items():
         if manifest.get(key) != value:
             raise ValueError(f"MACI paper manifest mismatch for {key}")
     inventory = json.loads(SOURCE_INVENTORY.read_text(encoding="utf-8"))
-    if inventory["current_commit"] != HEAD:
+    if inventory["current_commit"] != V1_HEAD:
         raise ValueError("MACI current author head changed from the pinned audit")
-    if inventory["v3_implementation_recovered"] is not False:
-        raise ValueError("MACI audit unexpectedly reports a v3 implementation")
+    if inventory["v3_author_commit"] != V3_HEAD:
+        raise ValueError("MACI v3 author head changed from the pinned audit")
+    if inventory["v3_implementation_recovered"] is not True:
+        raise ValueError("MACI audit no longer reports the recovered v3 implementation")
     with REGISTRY.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle, delimiter="|"))
     row = next(item for item in rows if item["system_id"] == SYSTEM_ID)
-    if row["official_artifact"] != URL:
+    if row["official_artifact"] != V1_URL:
         raise ValueError("MACI registry route is not the first-author repository")
 
 
@@ -213,13 +313,15 @@ def route() -> None:
     summary_payload = json.loads(summary_json_path.read_text(encoding="utf-8"))
     correction = {
         "system_id": SYSTEM_ID,
-        "reason": "the first-author v1/v2 source repository was recovered after the frozen registry; the rewritten v3 implementation remains unreleased",
+        "reason": "the first-author v1/v2 source and paper-listed first-author v3 source repositories were recovered after the frozen registry; both remain incomplete for native result regeneration",
         "corrected_at_utc": ROW_AUDIT_AT,
         "evidence": "paper_runs/paper_replication_audits/maci/manifest.json",
-        "source_head": HEAD,
+        "source_head": V1_HEAD,
+        "v3_source_head": V3_HEAD,
     }
     corrections = [
-        item for item in audit_payload["metadata"].get("post_freeze_evidence_corrections", [])
+        item
+        for item in audit_payload["metadata"].get("post_freeze_evidence_corrections", [])
         if item["system_id"] != SYSTEM_ID
     ]
     corrections.append(correction)

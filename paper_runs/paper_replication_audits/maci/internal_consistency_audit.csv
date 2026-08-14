@@ -6,7 +6,7 @@ v1/v2,forty_three_week_lineage,strong_internal_correspondence,"Market accuracies
 v1/v2,fine_tuning_coverage,source_execution_gap,Only the crypto-factor fine-tuning block is active; other expert blocks are commented and require manual edits.
 v1/v2,explanation_dimensions,paper_source_mismatch,Judge source scores eight criteria; paper reports five and releases no evaluation records.
 v1/v2,figure_revision,author_output_verified_not_regenerated,All compiled assets correspond; portfolio legends/width and one scatter label changed after the pinned pre-submission commit.
-v3,code_lineage,no_v3_implementation_recovered,Current author source retains the v1-style system and contains none of the v3 architectures/capabilities.
+v3,code_lineage,v3_source_recovered_incomplete,"The paper-listed anonymous artifact resolves to first-author cryptoMAS source with all three architectures, but the runner's coingecko, cointelegraph, and RAGStore modules are absent from all 20 commits."
 v3,strictly_out_of_pretraining_claim,claim_not_supported,Official provider dates/cutoffs do not support treating all calendar-2025 observations as strictly outside every model's training distribution.
 v3,retrospective_model_availability,temporal_validity_risk,"GPT-5 and Claude Sonnet 4.5 were released during 2025, so their full-year evaluations were necessarily retrospective."
 v3,risk_free_rate,hard_method_result_conflict,"Across 23 full-period rows, implied weekly RF ranges -0.005332% to 0.004666% (mean -0.000252%), effectively zero rather than the cited 2025 Fama-French T-bill rate."

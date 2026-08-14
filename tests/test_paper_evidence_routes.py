@@ -1,4 +1,5 @@
 """Contract tests for the mutually exclusive paper evidence routes."""
+
 from __future__ import annotations
 
 import importlib.util
@@ -15,26 +16,13 @@ assert SPEC.loader is not None
 SPEC.loader.exec_module(MODULE)
 TEX_OUTPUT = ROOT / "docs/paper/generated_evidence_routes.tex"
 
-OUTPUT = (
-    ROOT
-    / "paper_runs/submission_evidence/replication_scope/"
-    "paper_evidence_route_ledger.csv"
-)
+OUTPUT = ROOT / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
 
 
 def test_route_precedence_puts_public_code_before_mapping_fidelity() -> None:
-    assert (
-        MODULE.classify_route(True, {"M0_narrative_translation"})
-        == MODULE.PUBLIC_CODE_ROUTE
-    )
-    assert (
-        MODULE.classify_route(False, {"M1_named_rule_partial_support"})
-        == MODULE.PAPER_SPECIFIED_ROUTE
-    )
-    assert (
-        MODULE.classify_route(False, {"M1_example_or_motif_partial_support"})
-        == MODULE.PAPER_UNDERSPECIFIED_ROUTE
-    )
+    assert MODULE.classify_route(True, {"M0_narrative_translation"}) == MODULE.PUBLIC_CODE_ROUTE
+    assert MODULE.classify_route(False, {"M1_named_rule_partial_support"}) == MODULE.PAPER_SPECIFIED_ROUTE
+    assert MODULE.classify_route(False, {"M1_example_or_motif_partial_support"}) == MODULE.PAPER_UNDERSPECIFIED_ROUTE
 
 
 def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
@@ -44,27 +32,18 @@ def test_retained_papers_have_one_exhaustive_evidence_route() -> None:
         "paper_only_underspecified": 34,
         "public_code_available": 35,
     }
-    assert not routes["paper_evidence_route"].eq(
-        "paper_only_sufficiently_specified"
-    ).any()
-    assert routes[
-        "full_prompt_search_training_pipeline_reproduced"
-    ].eq("no").all()
+    assert not routes["paper_evidence_route"].eq("paper_only_sufficiently_specified").any()
+    assert routes["full_prompt_search_training_pipeline_reproduced"].eq("no").all()
 
 
 def test_chain_of_alpha_withdrawn_paper_audit_stays_paper_only() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
-    row = routes[
-        routes["canonical_work_id"].eq("CensusArxiv250806312")
-    ].iloc[0]
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv250806312")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_zero_of_180_result_cells_withdrawn_"
-        "no_attributable_system"
+        "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["proxy_role"] == "clearly_labeled_favorable_motif_proxy"
@@ -78,17 +57,12 @@ def test_chain_of_alpha_withdrawn_paper_audit_stays_paper_only() -> None:
 
 def test_treevo_two_version_paper_audit_stays_paper_only() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
-    row = routes[
-        routes["canonical_work_id"].eq("CensusArxiv250816334")
-    ].iloc[0]
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv250816334")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_"
-        "seven_prompt_templates_no_attributable_pipeline"
+        "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_seven_prompt_templates_no_attributable_pipeline"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["proxy_role"] == "no_proxy"
@@ -111,12 +85,8 @@ def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     reconstructed = public[public["good_faith_reconstruction"].eq("yes")]
     assert len(reconstructed) == 22
     fincon = public[public["canonical_work_id"].eq("CensusArxiv240706567")]
-    assert fincon["native_pipeline_disposition"].eq(
-        "targeted_execution_recorded"
-    ).all()
-    assert reconstructed["proxy_role"].eq(
-        "secondary_diagnostic_after_native_review"
-    ).all()
+    assert fincon["native_pipeline_disposition"].eq("targeted_execution_recorded").all()
+    assert reconstructed["proxy_role"].eq("secondary_diagnostic_after_native_review").all()
 
 
 def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() -> None:
@@ -194,15 +164,12 @@ def test_quantaalpha_audit_credits_components_but_zero_paper_results() -> None:
     assert "all 135 Python files" in row["precise_native_or_access_blocker"]
     assert (
         "196/344 table cells have author-output correspondence while 0/344 count as "
-        "native regenerations"
-        in row["precise_native_or_access_blocker"]
+        "native regenerations" in row["precise_native_or_access_blocker"]
     )
-    assert "Large v1/v2-to-v3 result revisions" in row[
-        "precise_native_or_access_blocker"
-    ]
+    assert "Large v1/v2-to-v3 result revisions" in row["precise_native_or_access_blocker"]
 
 
-def test_maci_route_separates_v1_source_lineage_from_unreleased_v3_system() -> None:
+def test_maci_route_separates_both_incomplete_author_source_lineages() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
     row = routes[routes["canonical_work_id"].eq("CensusArxiv250100826")].iloc[0]
     assert row["paper_evidence_route"] == "public_code_available"
@@ -210,28 +177,26 @@ def test_maci_route_separates_v1_source_lineage_from_unreleased_v3_system() -> N
     assert row["static_fidelity_tiers"] == "R2"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_v1_v2_zero_of_321_table_units_21_author_output_"
-        "plot_units_zero_regenerated_v3_zero_of_442_no_v3_code"
+        "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_zero_regenerated"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_disposition"] == "availability_only_no_performance_inference"
     assert row["proxy_role"] == "no_proxy"
     blocker = row["precise_native_or_access_blocker"]
     assert "0/321 v1/v2 table units" in blocker
-    assert "0/442 v3 table units" in blocker
+    assert "0/442 v3 table units regenerate" in blocker
     assert "author-output correspondence" in blocker
-    assert "no v3 hierarchical" in blocker
+    assert "394/442 table units" in blocker
+    assert "three environ.data modules" in blocker
+    assert "single-agent RAG and Skill" in blocker
     assert "six-country security-level common task" in blocker
 
 
 def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> None:
-    routes = pd.read_csv(OUTPUT, keep_default_na=False).set_index(
-        "canonical_work_id"
-    )
+    routes = pd.read_csv(OUTPUT, keep_default_na=False).set_index("canonical_work_id")
     expected = {
         "CensusACL2024emnlpmain63": (
-            "paper_audit:partial_214_of_468_cells_corroborated_40_from_author_"
-            "llm_traces_zero_fresh_llm_regeneration"
+            "paper_audit:partial_214_of_468_cells_corroborated_40_from_author_llm_traces_zero_fresh_llm_regeneration"
         ),
         "CensusACL2026findingsacl456": "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match",
         "CensusArxiv231113743": (
@@ -239,8 +204,7 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells"
         ),
         "CensusArxiv240218485": (
-            "paper_audit:completed_zero_of_1061_results_seven_commit_history_"
-            "zero_of_288_rule_record_matches"
+            "paper_audit:completed_zero_of_1061_results_seven_commit_history_zero_of_288_rule_record_matches"
         ),
         "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
         "CensusArxiv250207393": "paper_audit:completed_zero_of_36_native_results_released_checkpoints_mismatch",
@@ -259,9 +223,7 @@ def test_flag_trader_paper_only_audit_preserves_its_evidence_boundary() -> None:
     row = routes[routes["canonical_work_id"].eq("CensusACL2025findingsacl716")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
         "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results"
     )
@@ -275,12 +237,9 @@ def test_efs_paper_only_audit_preserves_versions_and_zero_native_credit() -> Non
     row = routes[routes["canonical_work_id"].eq("CensusArxiv250717211")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_"
-        "v2_revision_audited"
+        "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M1_example_or_motif_partial_support"
@@ -295,9 +254,7 @@ def test_alpha_jungle_audit_preserves_zero_result_and_component_boundaries() -> 
     row = routes[routes["canonical_work_id"].eq("CensusArxiv250511122")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
         "paper_audit:completed_zero_of_64_published_cells_zero_native_results_"
         "three_of_six_formula_trees_conditionally_adapted"
@@ -315,17 +272,12 @@ def test_alpha_jungle_audit_preserves_zero_result_and_component_boundaries() -> 
 
 def test_alphaagents_audit_preserves_source_recovery_and_zero_result_boundaries() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
-    row = routes[
-        routes["canonical_work_id"].eq("CensusArxiv250811152")
-    ].iloc[0]
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv250811152")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_"
-        "plotted_series_no_native_agent_pipeline"
+        "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
@@ -344,9 +296,7 @@ def test_alpha_gpt_audit_preserves_versioned_result_and_formula_boundaries() -> 
     row = routes[routes["canonical_work_id"].eq("WorkAlphaGPT")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
         "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_"
         "final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_"
@@ -366,14 +316,10 @@ def test_alpha_gpt_audit_preserves_versioned_result_and_formula_boundaries() -> 
 
 def test_alpha_gpt2_route_does_not_invent_an_empirical_result_denominator() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
-    row = routes[
-        routes["canonical_work_id"].eq("CensusArxiv240209746")
-    ].iloc[0]
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv240209746")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
         "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_"
         "final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_"
@@ -392,17 +338,12 @@ def test_alpha_gpt2_route_does_not_invent_an_empirical_result_denominator() -> N
 
 def test_llmfactor_audit_preserves_component_and_zero_result_boundaries() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
-    row = routes[
-        routes["canonical_work_id"].eq("CensusArxiv240610811")
-    ].iloc[0]
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv240610811")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_"
-        "zero_of_206_total_cells_no_author_code"
+        "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
@@ -419,14 +360,10 @@ def test_llmfactor_audit_preserves_component_and_zero_result_boundaries() -> Non
 
 def test_quantagent_self_improving_audit_preserves_code_and_result_boundaries() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
-    row = routes[
-        routes["canonical_work_id"].eq("CensusArxiv240203755")
-    ].iloc[0]
+    row = routes[routes["canonical_work_id"].eq("CensusArxiv240203755")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
         "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_"
         "zero_of_400_heatmap_cells_no_native_agent_pipeline"
@@ -445,17 +382,12 @@ def test_quantagent_self_improving_audit_preserves_code_and_result_boundaries() 
 
 def test_fama_audit_preserves_zero_result_and_motif_only_boundaries() -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)
-    row = routes[
-        routes["canonical_work_id"].eq("CensusACL2024findingsacl233")
-    ].iloc[0]
+    row = routes[routes["canonical_work_id"].eq("CensusACL2024findingsacl233")].iloc[0]
     assert row["paper_evidence_route"] == "paper_only_underspecified"
     assert row["reachable_public_code_system_ids"] == ""
-    assert row["native_pipeline_disposition"] == (
-        "paper_only_audit_recorded_no_native_code_pipeline"
-    )
+    assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_"
-        "no_native_pipeline_equation_conflicts"
+        "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M1_example_or_motif_partial_support"
@@ -488,38 +420,23 @@ def test_alpha_r1_placeholder_audit_never_promotes_the_motif_proxy() -> None:
 
 def test_paper_only_partial_components_are_not_native_procedure_replications() -> None:
     routes = pd.read_csv(OUTPUT)
-    partial = routes[
-        routes["proxy_role"].eq("partial_source_component_not_full_procedure")
-    ]
+    partial = routes[routes["proxy_role"].eq("partial_source_component_not_full_procedure")]
     assert len(partial) == 3
     assert set(partial["mapping_count"]) == {1, 2, 3}
-    assert partial["paper_evidence_route"].eq(
-        "paper_only_underspecified"
-    ).all()
-    assert partial["mapping_fidelity_tiers"].eq(
-        "M1_example_or_motif_partial_support"
-    ).all()
+    assert partial["paper_evidence_route"].eq("paper_only_underspecified").all()
+    assert partial["mapping_fidelity_tiers"].eq("M1_example_or_motif_partial_support").all()
 
 
 def test_tracked_route_ledger_matches_the_deterministic_builder() -> None:
     expected = MODULE.build_routes(
         pd.read_csv(ROOT / "literature_review/census_v1/primary_record_metadata.csv"),
-        pd.read_csv(
-            ROOT
-            / "paper_runs/submission_evidence/replication_scope/"
-            "work_level_evidence_waterfall.csv"
-        ),
-        pd.read_csv(
-            ROOT
-            / "paper_runs/submission_evidence/replication_scope/"
-            "mapping_scope_ledger.csv"
-        ),
-        pd.read_csv(
-            ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv"
-        ),
+        pd.read_csv(ROOT / "paper_runs/submission_evidence/replication_scope/work_level_evidence_waterfall.csv"),
+        pd.read_csv(ROOT / "paper_runs/submission_evidence/replication_scope/mapping_scope_ledger.csv"),
+        pd.read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv"),
     )
     actual = pd.read_csv(OUTPUT, keep_default_na=False)
     pd.testing.assert_frame_equal(actual, expected, check_dtype=False)
+
 
 def test_generated_paper_macros_match_route_counts(tmp_path: Path) -> None:
     routes = pd.read_csv(OUTPUT, keep_default_na=False)

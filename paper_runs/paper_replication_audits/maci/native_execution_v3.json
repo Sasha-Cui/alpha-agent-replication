@@ -1,0 +1,783 @@
+{
+  "repository": "https://github.com/lyc0603/cryptoMAS",
+  "head": "318e0fe905fed8b7f544322c3db1dfed6784d178",
+  "pyproject_sha256": "358905ab4753caec779e9dd544aead20099c2c2dba5810f72866a84eb3c40bb0",
+  "compile": {
+    "python_file_count": 24,
+    "all_passed": true,
+    "failures": []
+  },
+  "raw_runner_import": {
+    "command": "/nfs/roberts/project/pi_btk22/zc362/environments/current/kt-default/bin/python -m scripts.run_experiment --help",
+    "exit_code": 1,
+    "passed": false,
+    "stderr_last_line": "ModuleNotFoundError: No module named 'environ.data'",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "dependency_and_setup_contract": {
+    "declared_python_requirement": ">=3.10",
+    "declared_dependency_count": 16,
+    "declared_dependencies_in_current_audit_environment": {
+      "numpy": true,
+      "pandas": true,
+      "scipy": true,
+      "requests": true,
+      "matplotlib": true,
+      "seaborn": true,
+      "openai": true,
+      "beautifulsoup4": true,
+      "lxml": false,
+      "python-dateutil": true,
+      "tqdm": true,
+      "python-dotenv": true,
+      "tiktoken": true,
+      "torch": true,
+      "scikit-learn": true,
+      "neuralforecast": false
+    },
+    "anthropic_imported_by_source": true,
+    "anthropic_declared": false,
+    "readme_fetch_spaces_command_present": true,
+    "readme_fetch_spaces_file_present": false,
+    "missing_source_modules": [
+      "environ.data.coingecko",
+      "environ.data.cointelegraph",
+      "environ.data.rag_store"
+    ],
+    "source_modules_present_in_any_public_history_commit": {
+      "environ/data/coingecko.py": false,
+      "environ/data/cointelegraph.py": false,
+      "environ/data/rag_store.py": false
+    }
+  },
+  "architecture_component_execution": {
+    "rows": [
+      {
+        "architecture": "hierarchical",
+        "capability": "zero_shot",
+        "execution_kind": "unmodified_source_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 3,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "crypto_signals",
+            "news_output",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "hierarchical",
+        "capability": "chain_of_thought",
+        "execution_kind": "unmodified_source_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 3,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "crypto_signals",
+            "news_output",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "hierarchical",
+        "capability": "skill",
+        "execution_kind": "unmodified_source_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 3,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "crypto_signals",
+            "news_output",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "hierarchical",
+        "capability": "rag",
+        "execution_kind": "unmodified_source_expected_failure",
+        "passed": false,
+        "exception": "ModuleNotFoundError: No module named 'environ.data'",
+        "call_count": 0,
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "hierarchical",
+        "capability": "rag",
+        "execution_kind": "missing_rag_store_overlay_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 3,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "crypto_signals",
+            "news_output",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": true,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "collaborative",
+        "capability": "zero_shot",
+        "execution_kind": "unmodified_source_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 5,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "assets",
+            "peer_context",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "peer_context",
+            "week"
+          ],
+          [
+            "crypto_signals",
+            "news_output",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "collaborative",
+        "capability": "chain_of_thought",
+        "execution_kind": "unmodified_source_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 5,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "assets",
+            "peer_context",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "peer_context",
+            "week"
+          ],
+          [
+            "crypto_signals",
+            "news_output",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "collaborative",
+        "capability": "skill",
+        "execution_kind": "unmodified_source_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 5,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "assets",
+            "peer_context",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "peer_context",
+            "week"
+          ],
+          [
+            "crypto_signals",
+            "news_output",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "collaborative",
+        "capability": "rag",
+        "execution_kind": "unmodified_source_expected_failure",
+        "passed": false,
+        "exception": "ModuleNotFoundError: No module named 'environ.data'",
+        "call_count": 0,
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "collaborative",
+        "capability": "rag",
+        "execution_kind": "missing_rag_store_overlay_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 5,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "assets",
+            "peer_context",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "peer_context",
+            "week"
+          ],
+          [
+            "crypto_signals",
+            "news_output",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": true,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "debate",
+        "capability": "zero_shot",
+        "execution_kind": "unmodified_source_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 7,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "assets",
+            "debate",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "debate",
+            "week"
+          ],
+          [
+            "assets",
+            "debate",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "debate",
+            "week"
+          ],
+          [
+            "debate_transcript",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "debate",
+        "capability": "chain_of_thought",
+        "execution_kind": "unmodified_source_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 7,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "assets",
+            "debate",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "debate",
+            "week"
+          ],
+          [
+            "assets",
+            "debate",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "debate",
+            "week"
+          ],
+          [
+            "debate_transcript",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "debate",
+        "capability": "skill",
+        "execution_kind": "unmodified_source_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 7,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "assets",
+            "debate",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "debate",
+            "week"
+          ],
+          [
+            "assets",
+            "debate",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "debate",
+            "week"
+          ],
+          [
+            "debate_transcript",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "debate",
+        "capability": "rag",
+        "execution_kind": "unmodified_source_expected_failure",
+        "passed": false,
+        "exception": "ModuleNotFoundError: No module named 'environ.data'",
+        "call_count": 0,
+        "rag_store_overlay": false,
+        "llm_calls": 0
+      },
+      {
+        "architecture": "debate",
+        "capability": "rag",
+        "execution_kind": "missing_rag_store_overlay_with_fixture_agent_outputs",
+        "passed": true,
+        "exception": "",
+        "call_count": 7,
+        "call_kinds": [
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "crypto",
+          "news",
+          "trading"
+        ],
+        "context_key_sets": [
+          [
+            "assets",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "week"
+          ],
+          [
+            "assets",
+            "debate",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "debate",
+            "week"
+          ],
+          [
+            "assets",
+            "debate",
+            "rag_examples",
+            "week"
+          ],
+          [
+            "articles",
+            "debate",
+            "week"
+          ],
+          [
+            "debate_transcript",
+            "portfolio",
+            "week"
+          ]
+        ],
+        "memory_entry_counts": {
+          "crypto_agent": 1,
+          "news_agent": 1,
+          "trading_agent": 1
+        },
+        "rag_store_overlay": true,
+        "llm_calls": 0
+      }
+    ],
+    "unmodified_non_rag_passed": 9,
+    "unmodified_non_rag_denominator": 9,
+    "unmodified_rag_failures": 3,
+    "unmodified_rag_denominator": 3,
+    "overlay_rag_passed": 3,
+    "overlay_rag_denominator": 3,
+    "paper_result_credit": false
+  },
+  "single_agent_capability_contract": {
+    "runner_capability_to_agent_capability": {
+      "zero_shot": "zero_shot",
+      "chain_of_thought": "chain_of_thought",
+      "rag": "zero_shot",
+      "skill": "zero_shot"
+    },
+    "rag_is_distinct_in_single_agent_wrapper": false,
+    "skill_is_distinct_in_single_agent_wrapper": false,
+    "paper_reports_distinct_single_agent_rag_and_skill_results": true,
+    "paper_result_credit": false
+  },
+  "runner_dry_run_with_missing_data_overlay": {
+    "passed": true,
+    "week": "2025-W02",
+    "universe": [
+      "BTC",
+      "ETH",
+      "BNB",
+      "XRP",
+      "SOL",
+      "TRX",
+      "ADA",
+      "BCH",
+      "HYPE",
+      "XMR",
+      "ZEC",
+      "LTC",
+      "SUI",
+      "AVAX",
+      "HBAR"
+    ],
+    "record_keys": [
+      "architecture",
+      "capability",
+      "crypto_signals",
+      "execution_prices",
+      "news_output",
+      "portfolio_after",
+      "portfolio_before",
+      "trading_actions",
+      "week"
+    ],
+    "source_modified": false,
+    "supplied_overlay": "in_memory fake environ.data.coingecko and environ.data.cointelegraph modules",
+    "dry_run_placeholder_only": true,
+    "llm_calls": 0,
+    "paper_result_credit": false
+  },
+  "metric_component_execution": {
+    "passed": true,
+    "deterministic_result": {
+      "final_value": 121042.44,
+      "total_return_pct": 21.04,
+      "annualized_return_pct": 21.04,
+      "annualized_vol_pct": 8.68,
+      "sharpe": 2.424,
+      "sortino": 11.446,
+      "max_drawdown_pct": -1.0,
+      "calmar": 21.042,
+      "win_rate_pct": 50.0,
+      "best_week_pct": 2.0,
+      "worst_week_pct": -1.0,
+      "n_weeks": 52
+    },
+    "synthetic_input_only": true,
+    "paper_result_credit": false
+  },
+  "paper_source_claim_conflicts": [
+    {
+      "claim": "three backbone models execute by default",
+      "status": "conflict",
+      "evidence": "OPENAI_MODELS lists only gpt-4o and gpt-5; Claude is accepted only if manually supplied.",
+      "validated": true
+    },
+    {
+      "claim": "ReAct-style reasoning/action interleaving is compulsory in every configuration",
+      "status": "not_implemented_as_claimed",
+      "evidence": "Source has chain-of-thought reasoning tags and final JSON actions, but no ReAct observation/action loop.",
+      "validated": true
+    },
+    {
+      "claim": "all four single-agent capability variants are distinct",
+      "status": "conflict",
+      "evidence": "The single-agent wrapper maps both rag and skill to zero_shot.",
+      "validated": true
+    }
+  ],
+  "llm_calls_made": 0,
+  "external_api_calls_made": 0,
+  "full_paper_runner_executed": false,
+  "paper_results_regenerated": 0,
+  "component_execution_is_paper_result_replication": false
+}
