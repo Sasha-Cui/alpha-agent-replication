@@ -1,0 +1,260 @@
+{
+  "sharpe_annualization": {
+    "rounding_precision_decimals": 2,
+    "cell_bounds": [
+      {
+        "method": "B&H",
+        "ticker": "AAPL",
+        "paper_sharpe": 0.56,
+        "sqrt252_recalculation": 0.562679076359,
+        "admissible_annualization_days_low": 245.1686723492781,
+        "admissible_annualization_days_high_exclusive": 254.08317321872676,
+        "admissible_integer_days_240_to_260": [
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "B&H",
+        "ticker": "GOOGL",
+        "paper_sharpe": 1.05,
+        "sqrt252_recalculation": 1.04708556389,
+        "admissible_annualization_days_low": 250.9971427046742,
+        "admissible_annualization_days_high_exclusive": 255.82390033091724,
+        "admissible_integer_days_240_to_260": [
+          251,
+          252,
+          253,
+          254,
+          255
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "B&H",
+        "ticker": "TSLA",
+        "paper_sharpe": 0.52,
+        "sqrt252_recalculation": 0.520782910603,
+        "admissible_annualization_days_low": 246.43452403224632,
+        "admissible_annualization_days_high_exclusive": 256.09771207988643,
+        "admissible_integer_days_240_to_260": [
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255,
+          256
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "MACD",
+        "ticker": "AAPL",
+        "paper_sharpe": -0.59,
+        "sqrt252_recalculation": -0.585166346542,
+        "admissible_annualization_days_low": 251.85674716059395,
+        "admissible_annualization_days_high_exclusive": 260.54082814969473,
+        "admissible_integer_days_240_to_260": [
+          252,
+          253,
+          254,
+          255,
+          256,
+          257,
+          258,
+          259,
+          260
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "MACD",
+        "ticker": "GOOGL",
+        "paper_sharpe": 0.83,
+        "sqrt252_recalculation": 0.832011958028,
+        "admissible_annualization_days_low": 247.77033126737047,
+        "admissible_annualization_days_high_exclusive": 253.81328810709624,
+        "admissible_integer_days_240_to_260": [
+          248,
+          249,
+          250,
+          251,
+          252,
+          253
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "MACD",
+        "ticker": "TSLA",
+        "paper_sharpe": 0.88,
+        "sqrt252_recalculation": 0.878558614186,
+        "admissible_annualization_days_low": 249.96267529787985,
+        "admissible_annualization_days_high_exclusive": 255.70875606227844,
+        "admissible_integer_days_240_to_260": [
+          250,
+          251,
+          252,
+          253,
+          254,
+          255
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "SMA",
+        "ticker": "AAPL",
+        "paper_sharpe": -1.03,
+        "sqrt252_recalculation": -1.02720620852,
+        "admissible_annualization_days_low": 250.91868351482861,
+        "admissible_annualization_days_high_exclusive": 255.83854062883728,
+        "admissible_integer_days_240_to_260": [
+          251,
+          252,
+          253,
+          254,
+          255
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "SMA",
+        "ticker": "GOOGL",
+        "paper_sharpe": 2.9,
+        "sqrt252_recalculation": 2.89825155494,
+        "admissible_annualization_days_low": 251.4348784495901,
+        "admissible_annualization_days_high_exclusive": 253.17490702009025,
+        "admissible_integer_days_240_to_260": [
+          252,
+          253
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "SMA",
+        "ticker": "TSLA",
+        "paper_sharpe": 0.68,
+        "sqrt252_recalculation": 0.684167597059,
+        "admissible_annualization_days_low": 245.2918299030184,
+        "admissible_annualization_days_high_exclusive": 252.6135723154871,
+        "admissible_integer_days_240_to_260": [
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "P1GPT",
+        "ticker": "AAPL",
+        "paper_sharpe": 3.38,
+        "sqrt252_recalculation": 3.38771451092,
+        "admissible_annualization_days_low": 250.1119754151676,
+        "admissible_annualization_days_high_exclusive": 251.5963162250938,
+        "admissible_integer_days_240_to_260": [
+          251
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "P1GPT",
+        "ticker": "GOOGL",
+        "paper_sharpe": 2.71,
+        "sqrt252_recalculation": 2.712861499,
+        "admissible_annualization_days_low": 250.5415936091732,
+        "admissible_annualization_days_high_exclusive": 252.39745092462815,
+        "admissible_integer_days_240_to_260": [
+          251,
+          252
+        ],
+        "native_agent_result_credit": false
+      },
+      {
+        "method": "P1GPT",
+        "ticker": "TSLA",
+        "paper_sharpe": 2.31,
+        "sqrt252_recalculation": 2.31294206068,
+        "admissible_annualization_days_low": 250.27236213591345,
+        "admissible_annualization_days_high_exclusive": 252.4486333054786,
+        "admissible_integer_days_240_to_260": [
+          251,
+          252
+        ],
+        "native_agent_result_credit": false
+      }
+    ],
+    "group_intersections": {
+      "p1gpt_author_plot_rows": {
+        "cell_count": 3,
+        "joint_admissible_low": 250.5415936091732,
+        "joint_admissible_high_exclusive": 251.5963162250938,
+        "joint_interval_nonempty": true,
+        "joint_admissible_integer_days_240_to_260": [
+          251
+        ]
+      },
+      "recomputed_rule_baselines": {
+        "cell_count": 9,
+        "joint_admissible_low": 251.85674716059395,
+        "joint_admissible_high_exclusive": 252.6135723154871,
+        "joint_interval_nonempty": true,
+        "joint_admissible_integer_days_240_to_260": [
+          252
+        ]
+      },
+      "all_recomputed_rows": {
+        "cell_count": 12,
+        "joint_admissible_low": 251.85674716059395,
+        "joint_admissible_high_exclusive": 251.5963162250938,
+        "joint_interval_nonempty": false,
+        "joint_admissible_integer_days_240_to_260": []
+      }
+    },
+    "single_common_convention_recovers_all_12_cells": false,
+    "interpretation": "P1GPT rows jointly admit 251 days and rule baselines jointly admit 252; no shared annualization value recovers all displayed Sharpe cells",
+    "paper_result_credit": false
+  },
+  "googl_buy_hold_capital_consistency": {
+    "price_field": "pinned_current_unadjusted_close",
+    "first_date": "2025-02-03",
+    "last_date": "2025-09-30",
+    "first_close": 201.22999572753906,
+    "last_close": 243.10000610351562,
+    "maximum_absolute_close_drop": 61.68000793457031,
+    "drawdown_peak_date": "2025-02-04",
+    "drawdown_trough_date": "2025-04-08",
+    "paper_CR_pct": 4.19,
+    "paper_MDD_pct": 6.41,
+    "starting_capital_interval_matching_CR_at_two_decimals": [
+      998.0932151603471,
+      1000.4781451846252
+    ],
+    "starting_capital_interval_matching_MDD_at_two_decimals": [
+      956.3466071279738,
+      957.8477728052311
+    ],
+    "capital_interval_intersection": [
+      998.0932151603471,
+      957.8477728052311
+    ],
+    "single_constant_starting_capital_recovers_both_cells": false,
+    "interpretation": "the same close path requires disjoint starting-capital intervals for the reported cumulative return and maximum drawdown",
+    "paper_result_credit": false
+  }
+}

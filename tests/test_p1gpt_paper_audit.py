@@ -50,6 +50,10 @@ def test_manifest_separates_recalculation_from_native_reproduction() -> None:
     assert data["p1gpt_cells_verified_from_author_plot_outputs"] == 11
     assert data["baseline_cells_recalculated"] == 36
     assert data["baseline_cells_independently_recalculated"] == 35
+    assert data["p1gpt_sharpe_joint_admissible_integer_annualization_days"] == [251]
+    assert data["rule_baseline_sharpe_joint_admissible_integer_annualization_days"] == [252]
+    assert data["single_sharpe_annualization_convention_recovers_all_recomputed_cells"] is False
+    assert data["single_starting_capital_recovers_googl_buy_hold_cr_and_mdd"] is False
     assert data["unsupported_kdj_rsi_zmr_cells"] == 24
     assert data["native_p1gpt_result_cells_faithfully_regenerated_end_to_end"] == 0
     assert data["native_p1gpt_agent_decisions_independently_regenerated"] == 0
@@ -124,6 +128,33 @@ def test_present_day_market_snapshots_never_receive_paper_time_credit() -> None:
     assert all(row["paper_time_snapshot"] == "False" for row in snapshots)
     assert all(row["exact_paper_data_source_identified"] == "False" for row in snapshots)
     assert all(row["paper_result_credit"] == "False" for row in snapshots)
+
+
+def test_metric_convention_forensics_do_not_promote_conditional_matches() -> None:
+    evidence = json.loads(
+        (AUDIT_DIR / "metric_convention_forensics.json").read_text(encoding="utf-8")
+    )
+    sharpe = evidence["sharpe_annualization"]
+    assert len(sharpe["cell_bounds"]) == 12
+    assert sharpe["group_intersections"]["p1gpt_author_plot_rows"][
+        "joint_admissible_integer_days_240_to_260"
+    ] == [251]
+    assert sharpe["group_intersections"]["recomputed_rule_baselines"][
+        "joint_admissible_integer_days_240_to_260"
+    ] == [252]
+    assert sharpe["group_intersections"]["all_recomputed_rows"][
+        "joint_interval_nonempty"
+    ] is False
+    assert sharpe["single_common_convention_recovers_all_12_cells"] is False
+    assert sharpe["paper_result_credit"] is False
+    googl = evidence["googl_buy_hold_capital_consistency"]
+    cr_low, cr_high = googl["starting_capital_interval_matching_CR_at_two_decimals"]
+    mdd_low, mdd_high = googl["starting_capital_interval_matching_MDD_at_two_decimals"]
+    assert 998 < cr_low < cr_high < 1001
+    assert 956 < mdd_low < mdd_high < 958
+    assert cr_low > mdd_high
+    assert googl["single_constant_starting_capital_recovers_both_cells"] is False
+    assert googl["paper_result_credit"] is False
 
 
 def test_public_web_client_is_attributable_r3_component_not_result_pipeline() -> None:
@@ -270,6 +301,8 @@ def test_manifest_hashes_every_nonmanifest_output_and_readme_is_honest() -> None
     assert "one accessible fork" in text
     assert "byte-identical" in text
     assert "excluded from native-method or result credit" in text
+    assert "no single convention recovers all 12" in text
+    assert "disjoint intervals" in text
     assert "Installing additional packages cannot recover" in text
 
 

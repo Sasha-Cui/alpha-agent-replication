@@ -806,6 +806,125 @@ def result_recovery_checks(
     return checks, position_rows
 
 
+def metric_convention_forensics(
+    audit_root: Path, recoveries: Sequence[Mapping[str, Any]]
+) -> dict[str, Any]:
+    """Bound conventions that could round to the displayed Sharpe/MDD cells."""
+    sharpe_rows = [row for row in recoveries if row["metric"] == "SR"]
+    if len(sharpe_rows) != 12:
+        raise ValueError("P1GPT Sharpe sensitivity denominator changed")
+    cell_bounds = []
+    for row in sharpe_rows:
+        calculated = abs(float(row["calculated_value"]))
+        paper = abs(float(row["paper_value"]))
+        unannualized = calculated / math.sqrt(252.0)
+        low = ((paper - 0.005) / unannualized) ** 2
+        high = ((paper + 0.005) / unannualized) ** 2
+        cell_bounds.append(
+            {
+                "method": row["method"],
+                "ticker": row["ticker"],
+                "paper_sharpe": float(row["paper_value"]),
+                "sqrt252_recalculation": float(row["calculated_value"]),
+                "admissible_annualization_days_low": low,
+                "admissible_annualization_days_high_exclusive": high,
+                "admissible_integer_days_240_to_260": [
+                    day for day in range(240, 261) if low <= day < high
+                ],
+                "native_agent_result_credit": False,
+            }
+        )
+
+    group_filters = {
+        "p1gpt_author_plot_rows": lambda row: row["method"] == "P1GPT",
+        "recomputed_rule_baselines": lambda row: row["method"] != "P1GPT",
+        "all_recomputed_rows": lambda _row: True,
+    }
+    groups = {}
+    for name, predicate in group_filters.items():
+        selected = [row for row in cell_bounds if predicate(row)]
+        low = max(row["admissible_annualization_days_low"] for row in selected)
+        high = min(row["admissible_annualization_days_high_exclusive"] for row in selected)
+        groups[name] = {
+            "cell_count": len(selected),
+            "joint_admissible_low": low,
+            "joint_admissible_high_exclusive": high,
+            "joint_interval_nonempty": low < high,
+            "joint_admissible_integer_days_240_to_260": [
+                day for day in range(240, 261) if low <= day < high
+            ],
+        }
+    if groups["p1gpt_author_plot_rows"]["joint_admissible_integer_days_240_to_260"] != [251]:
+        raise ValueError("P1GPT conditional Sharpe convention changed")
+    if groups["recomputed_rule_baselines"]["joint_admissible_integer_days_240_to_260"] != [252]:
+        raise ValueError("P1GPT baseline Sharpe convention changed")
+    if groups["all_recomputed_rows"]["joint_interval_nonempty"]:
+        raise ValueError("one Sharpe annualization convention unexpectedly recovers all rows")
+
+    googl = parse_yahoo_rows(audit_root, "GOOGL")
+    closes = [row["close"] for row in googl]
+    base = closes[0]
+    peak = closes[0]
+    peak_index = 0
+    max_drop = -1.0
+    drawdown_pair = (0, 0)
+    for index, value in enumerate(closes):
+        if value > peak:
+            peak = value
+            peak_index = index
+        absolute_drop = peak - value
+        if absolute_drop > max_drop:
+            max_drop = absolute_drop
+            drawdown_pair = (peak_index, index)
+    final_profit = closes[-1] - base
+    peak_delta = closes[drawdown_pair[0]] - base
+    cr_low, cr_high = 0.04185, 0.04195
+    mdd_low, mdd_high = 0.06405, 0.06415
+    cr_capital = [final_profit / cr_high, final_profit / cr_low]
+    mdd_capital = [
+        max_drop / mdd_high - peak_delta,
+        max_drop / mdd_low - peak_delta,
+    ]
+    capital_intersection = [max(cr_capital[0], mdd_capital[0]), min(cr_capital[1], mdd_capital[1])]
+    if capital_intersection[0] < capital_intersection[1]:
+        raise ValueError("one starting capital unexpectedly recovers GOOGL CR and MDD")
+
+    return {
+        "sharpe_annualization": {
+            "rounding_precision_decimals": 2,
+            "cell_bounds": cell_bounds,
+            "group_intersections": groups,
+            "single_common_convention_recovers_all_12_cells": False,
+            "interpretation": (
+                "P1GPT rows jointly admit 251 days and rule baselines jointly admit 252; "
+                "no shared annualization value recovers all displayed Sharpe cells"
+            ),
+            "paper_result_credit": False,
+        },
+        "googl_buy_hold_capital_consistency": {
+            "price_field": "pinned_current_unadjusted_close",
+            "first_date": googl[0]["date"],
+            "last_date": googl[-1]["date"],
+            "first_close": base,
+            "last_close": closes[-1],
+            "maximum_absolute_close_drop": max_drop,
+            "drawdown_peak_date": googl[drawdown_pair[0]]["date"],
+            "drawdown_trough_date": googl[drawdown_pair[1]]["date"],
+            "paper_CR_pct": TABLE_VALUES["B&H"]["GOOGL"][0],
+            "paper_MDD_pct": TABLE_VALUES["B&H"]["GOOGL"][3],
+            "starting_capital_interval_matching_CR_at_two_decimals": cr_capital,
+            "starting_capital_interval_matching_MDD_at_two_decimals": mdd_capital,
+            "capital_interval_intersection": capital_intersection,
+            "single_constant_starting_capital_recovers_both_cells": False,
+            "interpretation": (
+                "the same close path requires disjoint starting-capital intervals for the "
+                "reported cumulative return and maximum drawdown"
+            ),
+            "paper_result_credit": False,
+        },
+    }
+
+
 def market_snapshot_checks(audit_root: Path) -> list[dict[str, Any]]:
     rows = []
     for ticker in ("AAPL", "GOOGL", "TSLA"):
@@ -1010,8 +1129,8 @@ def internal_consistency_checks() -> list[dict[str, Any]]:
         ("march_report_market_cap", "March 24 report prints $3.68T market cap at $220.73", "$220.73 times the then-reported 15.022073B shares is about $3.316T", "internally_inconsistent_or_future_snapshot"),
         ("lookahead_claim", "paper says simulation strictly avoids lookahead", "at least one dated case report contains future information", "claim_contradicted_by_embedded_output"),
         ("same_close_timing", "agents receive current context and execute at same-day close", "decision timestamp and publication cutoff are absent", "lookahead_boundary_undefined"),
-        ("risk_free_rate", "Sharpe equation subtracts 3-month Treasury yield", "zero RF, sqrt(252), population SD recovers 11 P1GPT cells exactly; AAPL SR is 3.3877 and normally rounds to 3.39 rather than 3.38", "equation_execution_conflict"),
-        ("buy_hold_googl_mdd", "Table 2 prints 6.41% MDD for GOOGL buy-and-hold", "the same close series that exactly recovers CR, AR, and SR gives 6.14% conventional MDD", "displayed_cell_not_recovered"),
+        ("risk_free_rate", "Sharpe equation subtracts 3-month Treasury yield", "zero RF and population SD recover the display only with method-specific annualization: P1GPT rows jointly admit 251 days, rule baselines 252, and no common value; the declared Treasury subtraction remains absent", "equation_execution_conflict"),
+        ("buy_hold_googl_mdd", "Table 2 prints 6.41% MDD for GOOGL buy-and-hold", "the pinned close path gives 6.14%; matching CR requires about $998.09-$1,000.48 initial capital while matching MDD requires $956.35-$957.85, so no constant capital reconciles both", "displayed_cell_not_recovered"),
         ("no_leverage", "paper assumes no leverage", "plotted positions reach 3 AAPL, 7 GOOGL, 2 TSLA units against $1000 NAV", "meaning_of_leverage_or_position_undefined"),
         ("buy_semantics", "Buy means enter a position", "plots repeatedly accumulate integer units", "execution_policy_underspecified"),
         ("start_date", "paper states February 1", "figures and 166-row calculation start February 3, first trading day", "calendar_boundary_underspecified"),
@@ -1115,7 +1234,9 @@ multi-agent experiment:
 - native P1GPT output verification: 11/12 P1GPT cells match after recovering the
   author-rendered daily position bars and applying them to the pinned present-day
   Yahoo response; AAPL Sharpe computes to 3.3877, normally 3.39 rather than the
-  printed 3.38;
+  printed 3.38. All three P1GPT Sharpe cells conditionally round as printed with
+  251-day annualization, while all nine recomputed rule-baseline Sharpe cells
+  jointly require 252 days; no single convention recovers all 12;
 - rule baselines: 35/36 cells for B&H, MACD, and SMA independently match; the
   same GOOGL close series that recovers B&H CR, AR, and SR gives 6.14% MDD,
   rather than the printed 6.41%;
@@ -1148,6 +1269,13 @@ close-to-close P&L; 252/166 annualization; annualized Sharpe with zero risk-free
 rate and population standard deviation; and integer positions as high as seven.
 The zero risk-free rate conflicts with the paper's 3-month-Treasury statement,
 and multi-unit accumulation needs clarification against the "no leverage" claim.
+Rounding inversion further rules out a single Sharpe convention: the P1GPT cells'
+joint admissible annualization interval is 250.542--251.596 days, while the rule
+baselines require 251.857--252.614 days. The same pinned GOOGL close path also
+requires starting capital in $998.09--$1,000.48 to round to the reported 4.19%
+return but $956.35--$957.85 to round to the reported 6.41% drawdown. These
+disjoint intervals preserve both cells as an unresolved data/code-path conflict,
+not an extra reproduction.
 
 ## Public component boundary
 
@@ -1187,6 +1315,7 @@ excluded from native-method or result credit.
 - `result_recovery_checks.csv`: 48 exact displayed-cell checks and boundaries.
 - `recovered_author_plot_positions.csv`: 498 author-rendered daily bar values.
 - `market_snapshot_checks.csv`: three pinned present-day Yahoo responses.
+- `metric_convention_forensics.json`: Sharpe annualization and GOOGL capital-interval bounds.
 - `prompt_inventory.csv`: the sole paper prompt and missing runtime evidence.
 - `mechanism_conformance.csv`: 36 mechanism dimensions.
 - `specification_gaps.csv`: inputs required for exact replay.
@@ -1219,6 +1348,7 @@ def build_audit(
     figures = figure_inventory(files)
     table = published_result_ledger()
     recoveries, positions = result_recovery_checks(audit_root, files)
+    metric_forensics = metric_convention_forensics(audit_root, recoveries)
     snapshots = market_snapshot_checks(audit_root)
     prompts = prompt_inventory()
     mechanisms = mechanism_conformance()
@@ -1252,6 +1382,7 @@ def build_audit(
     write_json(output_dir / "public_component_execution.json", public_execution)
     write_json(output_dir / "manuscript_rebuilds.json", rebuilds)
     write_json(output_dir / "public_fork_census.json", fork_summary)
+    write_json(output_dir / "metric_convention_forensics.json", metric_forensics)
 
     recovery_classes = Counter(
         row["verification_class"]
@@ -1283,6 +1414,22 @@ def build_audit(
             "independent_baseline_recalculation_current_snapshot_not_paper_lineage"
         ],
         "baseline_cells_recalculated": 36,
+        "p1gpt_sharpe_joint_admissible_integer_annualization_days": metric_forensics[
+            "sharpe_annualization"
+        ]["group_intersections"]["p1gpt_author_plot_rows"][
+            "joint_admissible_integer_days_240_to_260"
+        ],
+        "rule_baseline_sharpe_joint_admissible_integer_annualization_days": metric_forensics[
+            "sharpe_annualization"
+        ]["group_intersections"]["recomputed_rule_baselines"][
+            "joint_admissible_integer_days_240_to_260"
+        ],
+        "single_sharpe_annualization_convention_recovers_all_recomputed_cells": metric_forensics[
+            "sharpe_annualization"
+        ]["single_common_convention_recovers_all_12_cells"],
+        "single_starting_capital_recovers_googl_buy_hold_cr_and_mdd": metric_forensics[
+            "googl_buy_hold_capital_consistency"
+        ]["single_constant_starting_capital_recovers_both_cells"],
         "unsupported_kdj_rsi_zmr_cells": 24,
         "native_p1gpt_result_cells_faithfully_regenerated_end_to_end": 0,
         "native_p1gpt_agent_decisions_independently_regenerated": 0,

@@ -13,7 +13,9 @@ multi-agent experiment:
 - native P1GPT output verification: 11/12 P1GPT cells match after recovering the
   author-rendered daily position bars and applying them to the pinned present-day
   Yahoo response; AAPL Sharpe computes to 3.3877, normally 3.39 rather than the
-  printed 3.38;
+  printed 3.38. All three P1GPT Sharpe cells conditionally round as printed with
+  251-day annualization, while all nine recomputed rule-baseline Sharpe cells
+  jointly require 252 days; no single convention recovers all 12;
 - rule baselines: 35/36 cells for B&H, MACD, and SMA independently match; the
   same GOOGL close series that recovers B&H CR, AR, and SR gives 6.14% MDD,
   rather than the printed 6.41%;
@@ -46,6 +48,13 @@ close-to-close P&L; 252/166 annualization; annualized Sharpe with zero risk-free
 rate and population standard deviation; and integer positions as high as seven.
 The zero risk-free rate conflicts with the paper's 3-month-Treasury statement,
 and multi-unit accumulation needs clarification against the "no leverage" claim.
+Rounding inversion further rules out a single Sharpe convention: the P1GPT cells'
+joint admissible annualization interval is 250.542--251.596 days, while the rule
+baselines require 251.857--252.614 days. The same pinned GOOGL close path also
+requires starting capital in $998.09--$1,000.48 to round to the reported 4.19%
+return but $956.35--$957.85 to round to the reported 6.41% drawdown. These
+disjoint intervals preserve both cells as an unresolved data/code-path conflict,
+not an extra reproduction.
 
 ## Public component boundary
 
@@ -85,6 +94,7 @@ excluded from native-method or result credit.
 - `result_recovery_checks.csv`: 48 exact displayed-cell checks and boundaries.
 - `recovered_author_plot_positions.csv`: 498 author-rendered daily bar values.
 - `market_snapshot_checks.csv`: three pinned present-day Yahoo responses.
+- `metric_convention_forensics.json`: Sharpe annualization and GOOGL capital-interval bounds.
 - `prompt_inventory.csv`: the sole paper prompt and missing runtime evidence.
 - `mechanism_conformance.csv`: 36 mechanism dimensions.
 - `specification_gaps.csv`: inputs required for exact replay.
