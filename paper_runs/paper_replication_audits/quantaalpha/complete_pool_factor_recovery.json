@@ -1,0 +1,44 @@
+{
+  "author_source_commit": "8a034319ff925d9dc621077ebf97d48e1890dad2",
+  "author_source_modified": false,
+  "base_cache_files_seeded": 0,
+  "compatibility_change": "MEAN uses groupby(level='datetime').transform('mean') to preserve the security index required by TS_SUM",
+  "complete_pool_factor_count": 170,
+  "complete_pool_metrics": {
+    "IC": 0.04228714198020135,
+    "ICIR": 0.24450177492931327,
+    "Rank IC": 0.04112504915862232,
+    "Rank ICIR": 0.2409205148586877,
+    "annualized_return": 0.03608321762580485,
+    "calmar_ratio": 0.2873205920363893,
+    "information_ratio": 0.5136689182304162,
+    "max_drawdown": -0.1255852125671344
+  },
+  "data_rows": 727818,
+  "factor_json_sha256": "659baa259a909b5e5600dc0270c076d95f7e1d4fde6479e74cd4e3f558a0bf4e",
+  "factors": [
+    {
+      "cache_sha256": "2f5f65015121d8be3b9a3b86fe7a34e3591d685ecf10546a467beffdc0457294",
+      "expression_sha256": "355a78541ec8d8afcc4ff2369aa10a1d5b9a33d1826d95acdc5866c99e929b9e",
+      "factor_name": "ResidualMom_AbsorpGate_20D",
+      "finite_rows": 715629,
+      "maximum": 3.5631700337639685,
+      "mean": -0.2419926111304396,
+      "minimum": -1.9419616078489168,
+      "rows": 727818,
+      "std": 0.2519121450923362
+    },
+    {
+      "cache_sha256": "70ef6f9f04272e93c547feaf234d80d9b3ea5209c862e5738c91b801307e9464",
+      "expression_sha256": "b3522acd0e2ee047ae44ad7e94a687f5323bd09c38b6da898d5e3205ce35382f",
+      "factor_name": "ResidualMom_VolumeConfirm_20D",
+      "finite_rows": 715629,
+      "maximum": 15.457761224949467,
+      "mean": -0.16460262731524009,
+      "minimum": -10.961957503988152,
+      "rows": 727818,
+      "std": 0.7623996685348888
+    }
+  ],
+  "llm_or_market_api_called": false
+}

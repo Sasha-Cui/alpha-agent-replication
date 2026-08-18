@@ -197,6 +197,40 @@ QA_GPT_COMBINED_168_NATIVE_METRICS = {
     "ARR_pct": 6.052344883424508,
     "MDD_pct": 11.929289879771857,
 }
+QA_GPT_COMPLETE_170_RAW_METRICS = {
+    "IC": 0.04228714198020135,
+    "ICIR": 0.24450177492931327,
+    "Rank IC": 0.04112504915862232,
+    "Rank ICIR": 0.2409205148586877,
+    "annualized_return": 0.03608321762580485,
+    "information_ratio": 0.5136689182304162,
+    "max_drawdown": -0.1255852125671344,
+    "calmar_ratio": 0.2873205920363893,
+}
+QA_GPT_COMPLETE_170_NATIVE_METRICS = {
+    "IC": QA_GPT_COMPLETE_170_RAW_METRICS["IC"],
+    "ICIR": QA_GPT_COMPLETE_170_RAW_METRICS["ICIR"],
+    "Rank_IC": QA_GPT_COMPLETE_170_RAW_METRICS["Rank IC"],
+    "Rank_ICIR": QA_GPT_COMPLETE_170_RAW_METRICS["Rank ICIR"],
+    "IR": QA_GPT_COMPLETE_170_RAW_METRICS["information_ratio"],
+    "CR": QA_GPT_COMPLETE_170_RAW_METRICS["calmar_ratio"],
+    "ARR_pct": 100 * QA_GPT_COMPLETE_170_RAW_METRICS["annualized_return"],
+    "MDD_pct": -100 * QA_GPT_COMPLETE_170_RAW_METRICS["max_drawdown"],
+}
+COMPLETE_POOL_FACTOR_JSON_SHA256 = "659baa259a909b5e5600dc0270c076d95f7e1d4fde6479e74cd4e3f558a0bf4e"
+COMPLETE_POOL_DRIVER_SHA256 = "f70c091b3047da25fab50dc49dcc376cc7dce986f0d326716c7a10209195eed4"
+COMPLETE_POOL_EVIDENCE_SHA256 = {
+    "complete_pool_factor_recovery.json": "0045816ec49555868320f30fdd3721df7d4af627a5c4f9d4e01c7519e929423d",
+    "complete_pool_native_result.json": "f7752a607cc6b5e2671e694ce7bf2392db2cc2a312b0d6772eba2e5333d59069",
+    "complete_pool_repeatability.json": "e49ab47f2f1fe76ba337d6421a924f2de5e12b8822f0600c262d079340e97386",
+    "complete_pool_native_rerun.log": "58ae3284b09ca69df7df1e25e7a41da0d56dba6915363bb94085cd79e9ace08e",
+    "complete_pool_native_rerun_repeat.log": "c84051c411f18a8e6d345069bdd26ddfdc3cdb573e8921451a6f385fbbdae9cf",
+}
+COMPLETE_POOL_REPAIRED_FACTORS = (
+    "ResidualMom_AbsorpGate_20D",
+    "ResidualMom_VolumeConfirm_20D",
+)
+COMPLETE_POOL_REPEAT_MAX_ABS_DIFFERENCE = 1.4432899320127035e-15
 
 # Curated aggregate artifacts with the strongest rounded correspondence to the
 # v1/v2 table.  Filename/model alignment is recorded separately because a
@@ -969,6 +1003,87 @@ def recovered_data_provenance() -> list[dict[str, Any]]:
     ]
 
 
+def verify_complete_pool_evidence(output_dir: Path) -> dict[str, Any]:
+    """Fail closed on the preserved two-run complete-pool execution evidence."""
+    for name, expected in COMPLETE_POOL_EVIDENCE_SHA256.items():
+        path = output_dir / name
+        if sha256(path) != expected:
+            raise RuntimeError(f"QuantaAlpha complete-pool evidence hash changed: {name}")
+    driver = Path(__file__).with_name("rerun_quantaalpha_complete_pool.py")
+    if sha256(driver) != COMPLETE_POOL_DRIVER_SHA256:
+        raise RuntimeError("QuantaAlpha complete-pool rerun driver changed")
+
+    recovery = json.loads((output_dir / "complete_pool_factor_recovery.json").read_text(encoding="utf-8"))
+    result = json.loads((output_dir / "complete_pool_native_result.json").read_text(encoding="utf-8"))
+    repeats = json.loads((output_dir / "complete_pool_repeatability.json").read_text(encoding="utf-8"))
+    if recovery.get("author_source_commit") != PREPUBLICATION_RESULTS_COMMIT:
+        raise RuntimeError("QuantaAlpha complete-pool source commit drifted")
+    if recovery.get("author_source_modified") is not False:
+        raise RuntimeError("QuantaAlpha complete-pool evidence used a modified author checkout")
+    if recovery.get("factor_json_sha256") != COMPLETE_POOL_FACTOR_JSON_SHA256:
+        raise RuntimeError("QuantaAlpha complete-pool factor JSON drifted")
+    if recovery.get("complete_pool_factor_count") != 170 or recovery.get("data_rows") != 727_818:
+        raise RuntimeError("QuantaAlpha complete-pool execution shape drifted")
+    factor_rows = recovery.get("factors", [])
+    if tuple(sorted(row["factor_name"] for row in factor_rows)) != tuple(
+        sorted(COMPLETE_POOL_REPAIRED_FACTORS)
+    ):
+        raise RuntimeError("QuantaAlpha compatibility-repaired factor identities drifted")
+    if any(row["rows"] != 727_818 or row["finite_rows"] != 715_629 for row in factor_rows):
+        raise RuntimeError("QuantaAlpha compatibility factor coverage drifted")
+    if recovery.get("llm_or_market_api_called") is not False:
+        raise RuntimeError("QuantaAlpha complete-pool rerun unexpectedly called an external API")
+
+    if result.get("num_factors") != 170:
+        raise RuntimeError("QuantaAlpha complete-pool result factor count drifted")
+    observed = result.get("metrics", {})
+    recovered = recovery.get("complete_pool_metrics", {})
+    for metric, expected in QA_GPT_COMPLETE_170_RAW_METRICS.items():
+        if abs(float(observed[metric]) - expected) > 1e-15:
+            raise RuntimeError(f"QuantaAlpha complete-pool metric drifted: {metric}")
+        if abs(float(recovered[metric]) - expected) > 1e-15:
+            raise RuntimeError(f"QuantaAlpha recovery summary metric drifted: {metric}")
+
+    repeat_metrics = (
+        "IC",
+        "ICIR",
+        "Rank_IC",
+        "Rank_ICIR",
+        "annualized_return",
+        "information_ratio",
+        "max_drawdown",
+        "calmar_ratio",
+    )
+    if len(repeats) != 2 or {row.get("num_factors") for row in repeats} != {170}:
+        raise RuntimeError("QuantaAlpha complete-pool repeat census drifted")
+    repeat_max_abs_difference = max(
+        abs(float(repeats[0][metric]) - float(repeats[1][metric])) for metric in repeat_metrics
+    )
+    if repeat_max_abs_difference > 2e-15:
+        raise RuntimeError("QuantaAlpha complete-pool reruns are not numerically deterministic")
+
+    for name in ("complete_pool_native_rerun.log", "complete_pool_native_rerun_repeat.log"):
+        text = (output_dir / name).read_text(encoding="utf-8")
+        required = (
+            "成功 150, 失败 0",
+            "总因子数量: 170",
+            "IC:               0.042287",
+            "年化收益:         0.0361",
+            "信息比率:         0.5137",
+            "最大回撤:         -0.1256",
+        )
+        if not all(token in text for token in required):
+            raise RuntimeError(f"QuantaAlpha complete-pool log is incomplete: {name}")
+    return {
+        "evidence_sha256": dict(COMPLETE_POOL_EVIDENCE_SHA256),
+        "driver_sha256": COMPLETE_POOL_DRIVER_SHA256,
+        "factor_json_sha256": COMPLETE_POOL_FACTOR_JSON_SHA256,
+        "repaired_factors": list(COMPLETE_POOL_REPAIRED_FACTORS),
+        "repeat_runs": len(repeats),
+        "repeat_max_abs_difference": repeat_max_abs_difference,
+    }
+
+
 def native_rerun_conformance() -> list[dict[str, Any]]:
     paper_alpha = {
         "IC": 0.0051,
@@ -1000,20 +1115,35 @@ def native_rerun_conformance() -> list[dict[str, Any]]:
             ALPHA158_20_NATIVE_METRICS,
             True,
             "independently_regenerated_matches_paper_rounding",
+            "unmodified_released_pipeline",
+            0,
         ),
         (
             "QuantaAlpha / GPT-5.2 v1-v2 configuration",
             "v1;v2",
             170,
-            168,
+            170,
             paper_qa_gpt,
-            QA_GPT_COMBINED_168_NATIVE_METRICS,
+            QA_GPT_COMPLETE_170_NATIVE_METRICS,
             False,
-            "not_reproduced_two_public_expressions_fail_and_remaining_result_materially_differs",
+            "not_reproduced_all_public_expressions_execute_after_documented_operator_compatibility_repair",
+            "released_pipeline_with_one_documented_mean_broadcast_compatibility_repair",
+            1,
         ),
     )
     rows = []
-    for method, versions, expected_factors, executed_factors, paper_values, observed, reproduced, status in definitions:
+    for (
+        method,
+        versions,
+        expected_factors,
+        executed_factors,
+        paper_values,
+        observed,
+        reproduced,
+        status,
+        execution_basis,
+        compatibility_repairs,
+    ) in definitions:
         for metric, paper_value in paper_values.items():
             rows.append(
                 {
@@ -1027,6 +1157,8 @@ def native_rerun_conformance() -> list[dict[str, Any]]:
                     "executed_factor_count": executed_factors,
                     "independently_regenerated": reproduced,
                     "status": status,
+                    "execution_basis": execution_basis,
+                    "compatibility_repairs": compatibility_repairs,
                     "source_commit": PREPUBLICATION_RESULTS_COMMIT,
                     "data_fingerprint_sha256": RECOVERED_PROVIDER_MATRIX_SHA256,
                 }
@@ -1036,7 +1168,7 @@ def native_rerun_conformance() -> list[dict[str, Any]]:
     return rows
 
 
-def native_result_regeneration_payload() -> dict[str, Any]:
+def native_result_regeneration_payload(complete_evidence: Mapping[str, Any]) -> dict[str, Any]:
     return {
         "runtime": RERUN_ENVIRONMENT,
         "runtime_provenance": {
@@ -1061,13 +1193,36 @@ def native_result_regeneration_payload() -> dict[str, Any]:
         },
         "quantaalpha_gpt_v1_v2": {
             "paper_factor_count": 170,
-            "publicly_recomputed_factor_count": 168,
-            "failed_public_expressions": ["ResidualMom_AbsorpGate_20D", "ResidualMom_VolumeConfirm_20D"],
-            "native_metrics": QA_GPT_COMBINED_168_NATIVE_METRICS,
-            "full_result_json_sha256": "90c7204b684d7d1f059f79551321b6bbd082b34948a91916f9d138c2235a14ff",
-            "full_log_sha256": "3d6a68993d883c79548f7e945f366e13c720af76eb4600f96cb2ab42c2031559",
+            "publicly_recomputed_factor_count": 170,
+            "released_operator_failures_without_repair": list(COMPLETE_POOL_REPAIRED_FACTORS),
+            "compatibility_repairs": [
+                {
+                    "operator": "MEAN",
+                    "released_behavior": "groupby('datetime').mean() drops the instrument index",
+                    "audit_behavior": "groupby(level='datetime').transform('mean') broadcasts the cross-sectional mean",
+                    "reason": "the two public expressions immediately apply per-instrument TS_SUM and their prose specifies a market mean",
+                    "author_checkout_modified": False,
+                }
+            ],
+            "native_metrics": QA_GPT_COMPLETE_170_NATIVE_METRICS,
+            "raw_native_metrics": QA_GPT_COMPLETE_170_RAW_METRICS,
+            "full_result_json_sha256": COMPLETE_POOL_EVIDENCE_SHA256["complete_pool_native_result.json"],
+            "full_log_sha256": COMPLETE_POOL_EVIDENCE_SHA256["complete_pool_native_rerun.log"],
+            "repeat_log_sha256": COMPLETE_POOL_EVIDENCE_SHA256[
+                "complete_pool_native_rerun_repeat.log"
+            ],
+            "repeatability_json_sha256": COMPLETE_POOL_EVIDENCE_SHA256[
+                "complete_pool_repeatability.json"
+            ],
+            "repeat_runs": complete_evidence["repeat_runs"],
+            "repeat_max_abs_difference": complete_evidence["repeat_max_abs_difference"],
+            "incomplete_168_factor_sensitivity": {
+                "factor_count": 168,
+                "native_metrics": QA_GPT_COMBINED_168_NATIVE_METRICS,
+                "interpretation": "the two repaired factors lower ARR and IR rather than explaining the paper gap",
+            },
             "paper_cells_independently_regenerated": 0,
-            "status": "mechanically_executed_but_not_result_reproduced",
+            "status": "complete_public_pool_executed_after_documented_compatibility_repair_but_result_not_reproduced",
         },
         "llm_or_market_api_called_during_rerun": False,
     }
@@ -1760,7 +1915,7 @@ def internal_and_source_checks() -> list[dict[str, Any]]:
         {
             "check": "QuantaAlpha GPT v1/v2 native result regeneration",
             "status": "material_non_reproduction",
-            "evidence": "168/170 factors execute; IC 0.04170 vs 0.15008 and IR 0.87738 vs 3.32512; two public expressions fail in the released operator library",
+            "evidence": "all 170 factors execute after one documented MEAN broadcast compatibility repair; IC 0.04229 vs 0.15008 and IR 0.51367 vs 3.32512; two repeat runs agree within 1.45e-15",
         },
     ]
 
@@ -2385,7 +2540,7 @@ def native_execution(source_root: Path) -> dict[str, Any]:
         "full_native_environment_reproduced": False,
         "recovered_baseline_native_environment_reproduced": True,
         "paper_experiment_executed": True,
-        "paper_experiment_execution_scope": "Alpha158(20) full row and 168/170-factor QuantaAlpha/GPT diagnostic",
+        "paper_experiment_execution_scope": "Alpha158(20) full row and complete 170/170-factor QuantaAlpha/GPT diagnostic after one documented operator compatibility repair",
         "paper_result_cells_reproduced": 8,
         "component_execution_is_paper_result_credit": False,
         "llm_or_market_api_called": False,
@@ -2426,6 +2581,7 @@ def build_audit(
 ) -> dict[str, Any]:
     verify_pins(source_root, papers, paper_source_root, dataset_api, debug_h5)
     output_dir.mkdir(parents=True, exist_ok=True)
+    complete_pool_evidence = verify_complete_pool_evidence(output_dir)
     tables = paper_table_rows()
     labels = figure_label_rows()
     points = plot_point_rows()
@@ -2445,7 +2601,7 @@ def build_audit(
     prepublication_results = prepublication_result_conformance(public_census_root, paper_source_root)
     recovered_data = recovered_data_provenance()
     rerun_rows = native_rerun_conformance()
-    regeneration = native_result_regeneration_payload()
+    regeneration = native_result_regeneration_payload(complete_pool_evidence)
     branch_evidence = historical_branch_evidence(source_root)
     versioned_main_table = paper_version_main_table_rows(source_root, paper_source_root)
     paper_assets = paper_source_inventory(paper_source_root)
@@ -2593,6 +2749,16 @@ def build_audit(
         ),
         "alpha158_20_published_metric_cells_independently_regenerated": 8,
         "quantaalpha_gpt_v1_v2_published_metric_cells_independently_regenerated": 0,
+        "quantaalpha_public_custom_factors_recomputed": 150,
+        "quantaalpha_complete_pool_total_factors": 170,
+        "quantaalpha_complete_pool_compatibility_repairs": 1,
+        "quantaalpha_complete_pool_repeat_runs": complete_pool_evidence["repeat_runs"],
+        "quantaalpha_complete_pool_repeat_max_abs_difference": complete_pool_evidence[
+            "repeat_max_abs_difference"
+        ],
+        "quantaalpha_complete_pool_native_metrics": QA_GPT_COMPLETE_170_NATIVE_METRICS,
+        "quantaalpha_complete_pool_evidence_sha256": complete_pool_evidence["evidence_sha256"],
+        "quantaalpha_complete_pool_driver_sha256": complete_pool_evidence["driver_sha256"],
         "official_author_daily_pv_lfs_sha256": AUTHOR_DAILY_PV_LFS_SHA256,
         "recovered_provider_cross_artifact_matrix_sha256": RECOVERED_PROVIDER_MATRIX_SHA256,
         "source_mechanism_dimensions_total": len(mechanisms),
@@ -2634,10 +2800,12 @@ def build_audit(
             "author-attributed 28-commit lineage predates paper v1 and contains factor pools, aggregate result "
             "JSONs, logs, plots, and an official Git-LFS market-data object. The recovered native Python "
             "3.12/Qlib 0.9.7 pipeline independently reproduces all eight Alpha158(20) cells at paper rounding. "
-            "That is real paper-result credit, but it is only one baseline row. The best paper-configured "
-            "QuantaAlpha/GPT rerun executes 168 of 170 factors and materially misses the claimed v1/v2 result "
-            "(IC 0.04170 versus 0.15008; IR 0.87738 versus 3.32512). Two released expressions fail under the "
-            "released operator library. Raw predictions, returns, holdings, prompt transcripts, complete run "
+            "That is real paper-result credit, but it is only one baseline row. The complete paper-configured "
+            "QuantaAlpha/GPT rerun executes all 170 factors after one documented MEAN broadcast compatibility "
+            "repair and materially misses the claimed v1/v2 result (IC 0.04229 versus 0.15008; ARR 3.61% "
+            "versus 27.75%; IR 0.51367 versus 3.32512). Two complete reruns agree within 1.45e-15. The two "
+            "repaired factors lower ARR and IR relative to the prior 168-factor diagnostic, so they do not "
+            "explain the headline gap. Raw author predictions, returns, holdings, prompt transcripts, complete run "
             "lineage, and plot arrays remain absent. The v1/v2-to-v3 result revision and v3 internal conflicts "
             "also remain unexplained. A dated census exhausted all 267 GraphQL-accessible public forks and "
             "357 branch refs (77 unique heads): nine author-attributed post-v1 heads add source/config/docs but "
@@ -2666,7 +2834,7 @@ headline QuantaAlpha result does not reproduce**.
 - The v3 paper contains **344 numeric table cells**. The README raster corroborates all 196 main-table cells as author output, but only the seven v3 Alpha158(20) cells are independently regenerated.
 - The identical v1/v2 main tables contain 224 cells each. Native aggregate JSONs give rounded correspondence for **{sum(row["rounded_match"] for row in prepublication_results)}/{len(prepublication_results)} examined cells** across 11 rows. These are author-output lineage, not independent regeneration; filename/model conflicts are retained in the ledger.
 - The native Alpha158(20) run reproduces all **8/8** v1/v2 metrics, including training, prediction, IC/RankIC evaluation, and the Top50/drop5 portfolio. Across version-specific tables this is **23/644** regenerated cells (8 in v1, 8 in v2, 7 in v3).
-- The paper-configured QuantaAlpha/GPT diagnostic recomputes 148/150 public custom factors plus Alpha158(20), but does not reproduce the claim: IC **0.04170 vs 0.15008**, ARR **6.05% vs 27.75%**, IR **0.87738 vs 3.32512**, and MDD **11.93% vs 7.98%**.
+- The paper-configured QuantaAlpha/GPT diagnostic recomputes all **150/150 public custom factors plus Alpha158(20)** after one documented `MEAN` broadcast compatibility repair, but does not reproduce the claim: IC **0.04229 vs 0.15008**, ARR **3.61% vs 27.75%**, IR **0.51367 vs 3.32512**, and MDD **12.56% vs 7.98%**. Two complete runs agree within **{complete_pool_evidence["repeat_max_abs_difference"]:.3g}** across all eight metrics. Adding the repaired factors lowers ARR and IR relative to the earlier 168-factor diagnostic, so the missing pair cannot explain the headline.
 - Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. The README ships the 17-label case-study raster and byte-identical copies of the paper-source Figure 3--5 assets, corroborating **17 labels, 47 markers, and 10 curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are regenerated.
 
 ## What really works
@@ -2674,13 +2842,14 @@ headline QuantaAlpha result does not reproduce**.
 - The release is not pseudocode: **{native["current_compile"]["compiled"]}/{native["current_compile"]["python_files"]}** current Python files and **{native["initial_compile"]["compiled"]}/{native["initial_compile"]["python_files"]}** initial-release Python files compile. The audit executes native expression parsing/complexity/subtree matching, trajectory JSON round-trip, lineage round-trip, and performance/diversity-aware crossover selection without calling an LLM or market API.
 - Public prompt/config/source paths implement meaningful planning, full trajectory records, mutation/crossover generation, semantic consistency, AST complexity/redundancy checks, Qlib evaluation, and TopkDropout backtesting. **{status_counts["implemented_match"]}/{len(mechanisms)}** audited mechanism dimensions are implementation matches.
 - The recovered `backtest_v2` profile matches the paper split, label, LightGBM seed, Top-50/drop-5 portfolio, open execution, and 0.05%/0.15% costs closely enough to reproduce Alpha158(20) exactly at displayed precision.
+- `scripts/rerun_quantaalpha_complete_pool.py` ships the complete-pool recovery path. Its factor-recovery record, result JSON, two native logs, and two-run repeatability record are hash-pinned in this audit; it leaves the author checkout unmodified and makes no LLM or market API call.
 - Pre-publication pools preserve IDs, formulas, descriptions, implementation code, backtest feedback, and cache lineage for the LLM-generated factors.
 
 ## Why it is not faithful yet
 
 - The actual checked-in `configs/experiment.yaml` is a demo profile: 2 rather than 10 directions, 3 rounds rather than the paper's five mutation/crossover cycles, 2 rather than the documented 10 crossover combinations, 1 rather than 3 factors per hypothesis, lower complexity limits, and the consistency gate disabled.
 - Paper prose describes mutation as targeted failed-segment repair and crossover as reuse/splicing of validated trajectory segments. The source generates new hypotheses from truncated textual summaries; it does not localize, preserve, or splice structured trajectory segments.
-- The current-source upstream test still fails because `template_debug.jinjia2` is missing. The released custom loader also refuses factors whose author cache paths are gone; two public expressions remain invalid under the released operator library.
+- The current-source upstream test still fails because `template_debug.jinjia2` is missing. The released custom loader also refuses factors whose author cache paths are gone. Two public expressions remain invalid in the unmodified operator library; the complete-pool diagnostic therefore records, isolates, and discloses one cross-sectional-mean broadcast repair instead of treating the repaired execution as exact unmodified-source fidelity.
 - Exact LLM snapshots, prompts/responses, retry traces, parent selections, seeds, predictions, holdings, raw daily returns, and plot arrays are absent. Package versions beyond directly evidenced Python 3.12/Qlib 0.9.7 are time-bounded inference.
 - v1/v2 reported IC 0.1501, ARR 27.75%, MDD 7.98%, and transfer returns 160%/137%; v3 reports 0.0472, 4.68%, 11.80%, and 40.28%/19.1%. No released result lineage explains the revision. In v3, Figure 1's visible endpoints do not agree with its prose, Figure 4 omits 2021 despite the text's 2021--2025 claim, and Appendix C labels the same offspring Round 10 and Round 8.
 

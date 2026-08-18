@@ -170,7 +170,12 @@ def test_quantaalpha_audit_credits_baseline_but_not_headline_result() -> None:
     assert "28-commit author-attributed public lineage" in row["precise_native_or_access_blocker"]
     assert "all eight v1/v2 metrics" in row["precise_native_or_access_blocker"]
     assert "23/644 version-specific main-table cells" in row["precise_native_or_access_blocker"]
-    assert "IC 0.04170 versus 0.15008" in row["precise_native_or_access_blocker"]
+    assert "all 150 released custom factors plus Alpha158(20)" in row[
+        "precise_native_or_access_blocker"
+    ]
+    assert "IC 0.04229 versus 0.15008" in row["precise_native_or_access_blocker"]
+    assert "ARR 3.61% versus 27.75%" in row["precise_native_or_access_blocker"]
+    assert "agree within 1.45e-15" in row["precise_native_or_access_blocker"]
     assert "267 GraphQL-accessible forks and 357 branch refs" in row["precise_native_or_access_blocker"]
     assert "12 deleted/private/otherwise unavailable" in row["precise_native_or_access_blocker"]
     assert "not an end-to-end QuantaAlpha reproduction" in row["precise_native_or_access_blocker"]

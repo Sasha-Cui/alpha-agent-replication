@@ -1,0 +1,26 @@
+{
+  "experiment_name": "quantaalpha_recovered_qa_gpt_complete_170_full",
+  "factor_source": "combined",
+  "num_factors": 170,
+  "test_period": "default",
+  "test_period_name": "2022-2025全年",
+  "ic_only": false,
+  "metrics": {
+    "IC": 0.04228714198020135,
+    "ICIR": 0.24450177492931327,
+    "Rank IC": 0.04112504915862232,
+    "Rank ICIR": 0.2409205148586877,
+    "annualized_return": 0.03608321762580485,
+    "information_ratio": 0.5136689182304162,
+    "max_drawdown": -0.1255852125671344,
+    "calmar_ratio": 0.2873205920363893
+  },
+  "config": {
+    "data_range": "2016-01-01 ~ 2025-12-26",
+    "test_range": "2022-01-01 ~ 2025-12-26",
+    "backtest_range": "2022-01-01 ~ 2025-12-26",
+    "market": "csi300",
+    "benchmark": "SH000300"
+  },
+  "elapsed_seconds": 107.093985080719
+}

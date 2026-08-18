@@ -1,0 +1,186 @@
+[535014:MainThread](2026-08-18 17:35:44,527) INFO - qlib.Initialization - [config.py:452] - default_conf: client.
+[535014:MainThread](2026-08-18 17:35:45,170) INFO - qlib.Initialization - [__init__.py:75] - qlib successfully initialized based on client settings.
+[535014:MainThread](2026-08-18 17:35:45,171) INFO - qlib.Initialization - [__init__.py:77] - data_path={'__DEFAULT_FREQ': PosixPath('/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/provider/cn_data')}
+2026-08-18 17:35:46,860 -     计算: ResidualMom_AbsorpGate_20D
+2026-08-18 17:35:48,411 -     计算: ResidualMom_VolumeConfirm_20D
+2026-08-18 17:35:49,480 - ✓ 加载配置文件: /nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/source_8a0343/backtest_v2/config.yaml
+[535014:MainThread](2026-08-18 17:35:49,488) INFO - qlib.Initialization - [config.py:452] - default_conf: client.
+[535014:MainThread](2026-08-18 17:35:49,489) INFO - qlib.Initialization - [__init__.py:75] - qlib successfully initialized based on client settings.
+[535014:MainThread](2026-08-18 17:35:49,490) INFO - qlib.Initialization - [__init__.py:77] - data_path={'__DEFAULT_FREQ': PosixPath('/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/provider/cn_data')}
+2026-08-18 17:35:49,490 - ✓ Qlib 初始化完成: /nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/provider/cn_data
+2026-08-18 17:35:49,490 - 更新测试集时间: ['2022-01-01', '2025-12-26']
+2026-08-18 17:35:49,490 - 应用测试时间段: 2022-2025全年
+2026-08-18 17:35:49,490 - 📊 加载因子源: combined
+2026-08-18 17:35:49,490 -   ✓ 加载 Alpha158(20) 因子库: 20 个因子
+2026-08-18 17:35:49,495 -   ✓ 加载自定义因子: 150 个 (使用自定义计算器)
+2026-08-18 17:35:49,496 -   ✓ 组合因子: 20 个Qlib兼容, 150 个需要LLM计算
+[535014:MainThread](2026-08-18 17:35:49,497) INFO - qlib.Initialization - [config.py:452] - default_conf: client.
+[535014:MainThread](2026-08-18 17:35:49,498) INFO - qlib.Initialization - [__init__.py:75] - qlib successfully initialized based on client settings.
+[535014:MainThread](2026-08-18 17:35:49,498) INFO - qlib.Initialization - [__init__.py:77] - data_path={'__DEFAULT_FREQ': PosixPath('/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/provider/cn_data')}
+
+======================================================================
+🚀 开始回测: quantaalpha_recovered_qa_gpt_complete_170_full
+📁 因子库: /nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/source_8a0343/factor_library/RANKIC_desc_150_QA_round11_best_gpt_123_csi300.json
+📅 测试时间段: 2022-2025全年
+======================================================================
+
+📊 第一步：加载因子...
+AUDIT_RECOVERY loaded 150 public expressions without author-local caches
+  ✓ Qlib 兼容因子: 20 个
+  ✓ 需要计算的自定义因子: 150 个
+
+🔧 第二步：计算自定义因子...
+  获取股票数据...
+2026-08-18 17:35:51,254 - ✓ 加载股票数据: 727818 行
+2026-08-18 17:35:51,254 -   ✓ 加载股票数据: 727818 条记录
+2026-08-18 17:35:51,347 - 数据准备完成: 727818 行, 列: ['$open', '$high', '$low', '$close', '$volume', '$vwap', '$return']
+2026-08-18 17:35:51,347 - 开始处理 150 个因子 (并行度: 1)...
+2026-08-18 17:35:54,328 - 因子处理完成: 成功 150, 失败 0
+2026-08-18 17:35:54,328 -   统计: {'cache_location': 0, 'md5_cache': 150, 'computed': 0, 'failed': 0, 'empty_expr': 0}
+2026-08-18 17:35:56,759 -   结果 DataFrame: (727818, 150)
+2026-08-18 17:35:56,788 -   ✓ 因子计算完成: 150 个因子, 727818 行数据
+2026-08-18 17:35:56,794 -   检测到预计算因子: 150 个因子, 727818 行数据
+  ✓ 成功计算 150 个因子
+
+📈 第三步：创建数据集...
+  使用自定义因子模式 (预计算因子值)...
+  计算因子数量: 150
+  计算标签...
+  标签表达式: Ref($close, -2) / Ref($close, -1) - 1
+  标签数据行数: 727818
+  加载 20 个 Qlib 兼容因子...
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/nfs/roberts/project/pi_btk22/zc362/environments/venvs/quantaalpha-replication-py312-20260814-v1/lib/python3.12/site-packages/mlflow/tracking/_tracking_service/utils.py:178: FutureWarning: The filesystem tracking backend (e.g., './mlruns') will be deprecated in February 2026. Consider transitioning to a database backend (e.g., 'sqlite:///mlflow.db') to take advantage of the latest MLflow features. See https://github.com/mlflow/mlflow/issues/18534 for more details and migration guidance. For migrating existing data, https://github.com/mlflow/mlflow-export-import can be used.
+  return FileStore(store_uri, store_uri)
+[535014:MainThread](2026-08-18 17:37:10,994) INFO - qlib.workflow - [exp.py:258] - Experiment 863777624824240413 starts running ...
+[535014:MainThread](2026-08-18 17:37:11,424) INFO - qlib.workflow - [recorder.py:345] - Recorder a809c86d970c4a758180f8e54db38b73 starts running under Experiment 863777624824240413 ...
+[535014:MainThread](2026-08-18 17:37:16,735) INFO - qlib.workflow - [record_temp.py:198] - Signal record 'pred.pkl' has been saved as the artifact of the Experiment 863777624824240413
+  总因子数量: 170
+  数据行数: 727818
+  应用数据预处理...
+  预处理后数据行数: 716950
+  训练集: ['2016-01-01', '2020-12-31']
+  验证集: ['2021-01-01', '2021-12-31']
+  测试集: ['2022-01-01', '2025-12-26']
+
+🤖 第四步：训练模型并执行回测...
+ModuleNotFoundError. CatBoostModel are skipped. (optional: maybe installing CatBoostModel can fix it.)
+ModuleNotFoundError. XGBModel is skipped(optional: maybe installing xgboost can fix it).
+ModuleNotFoundError.  PyTorch models are skipped (optional: maybe installing pytorch can fix it).
+  训练 LightGBM 模型...
+Training until validation scores don't improve for 50 rounds
+[20]	train's l2: 0.0829816	valid's l2: 0.0832339
+[40]	train's l2: 0.082762	valid's l2: 0.0832218
+[60]	train's l2: 0.0825901	valid's l2: 0.0832242
+[80]	train's l2: 0.0824634	valid's l2: 0.0832246
+Early stopping, best iteration is:
+[48]	train's l2: 0.0826878	valid's l2: 0.0832189
+  ✓ 模型训练完成 (耗时: 4.60秒)
+  生成预测...
+  ✓ 预测数据形状: (289311,)
+'The following are prediction results of the LGBModel model.'
+                          score
+instrument datetime
+SH600000   2022-01-04  0.002974
+           2022-01-05  0.006278
+           2022-01-06  0.019959
+           2022-01-07  0.005481
+           2022-01-10  0.011747
+  计算 IC 指标...
+Downloading artifacts:   0%|          | 0/1 [00:00<?, ?it/s]Downloading artifacts:   0%|          | 0/1 [00:00<?, ?it/s]
+Downloading artifacts:   0%|          | 0/1 [00:00<?, ?it/s]Downloading artifacts: 100%|██████████| 1/1 [00:00<00:00, 110.11it/s]Downloading artifacts: 100%|██████████| 1/1 [00:00<00:00, 108.08it/s]
+Downloading artifacts:   0%|          | 0/1 [00:00<?, ?it/s]Downloading artifacts:   0%|          | 0/1 [00:00<?, ?it/s]
+Downloading artifacts:   0%|          | 0/1 [00:00<?, ?it/s]Downloading artifacts: 100%|██████████| 1/1 [00:00<00:00, 166.37it/s]Downloading artifacts: 100%|██████████| 1/1 [00:00<00:00, 159.05it/s]
+{'IC': np.float64(0.04228714198020135),
+ 'ICIR': np.float64(0.24450177492931327),
+ 'Rank IC': np.float64(0.04112504915862232),
+ 'Rank ICIR': np.float64(0.2409205148586877)}
+Downloading artifacts:   0%|          | 0/1 [00:00<?, ?it/s]Downloading artifacts: 100%|██████████| 1/1 [00:00<00:00, 478.31it/s]Downloading artifacts: 100%|██████████| 1/1 [00:00<00:00, 442.90it/s]
+Downloading artifacts:   0%|          | 0/1 [00:00<?, ?it/s]Downloading artifacts: 100%|██████████| 1/1 [00:00<00:00, 348.08it/s]Downloading artifacts: 100%|██████████| 1/1 [00:00<00:00, 324.41it/s]
+  ✓ IC=0.042287, ICIR=0.244502
+  ✓ Rank IC=0.041125, Rank ICIR=0.240921
+  执行组合回测...
+  ✓ 股票数量: 394
+  检查并过滤价格异常数据...
+[535014:MainThread](2026-08-18 17:37:20,525) INFO - qlib.backtest caller - [__init__.py:93] - Create new exchange
+  ⚠️ 发现 350 条价格为0/NaN的记录
+[535014:MainThread](2026-08-18 17:37:22,922) WARNING - qlib.online operator - [exchange.py:219] - $open field data contains nan.
+[535014:MainThread](2026-08-18 17:37:22,923) WARNING - qlib.online operator - [exchange.py:219] - $open field data contains nan.
+[535014:MainThread](2026-08-18 17:37:24,191) WARNING - qlib.BaseExecutor - [executor.py:121] - `common_infra` is not set for <qlib.backtest.executor.SimulatorExecutor object at 0x1546c992dfa0>
+backtest loop:   0%|          | 0/966 [00:00<?, ?it/s]/nfs/roberts/project/pi_btk22/zc362/environments/venvs/quantaalpha-replication-py312-20260814-v1/lib/python3.12/site-packages/qlib/utils/index_data.py:492: RuntimeWarning: Mean of empty slice
+  return np.nanmean(self.data)
+backtest loop:   2%|▏         | 21/966 [00:00<00:04, 209.98it/s]backtest loop:   4%|▍         | 42/966 [00:00<00:04, 209.46it/s]backtest loop:   7%|▋         | 63/966 [00:00<00:04, 201.82it/s]backtest loop:   9%|▊         | 84/966 [00:00<00:04, 199.74it/s]backtest loop:  11%|█         | 106/966 [00:00<00:04, 204.47it/s]backtest loop:  13%|█▎        | 128/966 [00:00<00:04, 202.89it/s]backtest loop:  15%|█▌        | 149/966 [00:00<00:03, 204.85it/s]backtest loop:  18%|█▊        | 171/966 [00:00<00:03, 207.66it/s]backtest loop:  20%|█▉        | 192/966 [00:00<00:03, 204.55it/s]backtest loop:  22%|██▏       | 214/966 [00:01<00:03, 207.52it/s]backtest loop:  24%|██▍       | 236/966 [00:01<00:03, 209.81it/s]backtest loop:  27%|██▋       | 257/966 [00:01<00:03, 205.43it/s]backtest loop:  29%|██▉       | 279/966 [00:01<00:03, 207.90it/s]backtest loop:  31%|███       | 300/966 [00:01<00:03, 208.42it/s]backtest loop:  33%|███▎      | 321/966 [00:01<00:03, 201.00it/s]backtest loop:  35%|███▌      | 342/966 [00:01<00:03, 200.32it/s]backtest loop:  38%|███▊      | 363/966 [00:01<00:02, 202.20it/s]backtest loop:  40%|███▉      | 384/966 [00:01<00:02, 203.78it/s]backtest loop:  42%|████▏     | 405/966 [00:01<00:02, 201.13it/s]backtest loop:  44%|████▍     | 426/966 [00:02<00:02, 203.58it/s]backtest loop:  46%|████▋     | 447/966 [00:02<00:02, 205.38it/s]backtest loop:  48%|████▊     | 468/966 [00:02<00:02, 206.69it/s]backtest loop:  51%|█████     | 489/966 [00:02<00:02, 203.32it/s]backtest loop:  53%|█████▎    | 510/966 [00:02<00:02, 204.74it/s]backtest loop:  55%|█████▍    | 531/966 [00:02<00:02, 205.66it/s]backtest loop:  57%|█████▋    | 552/966 [00:02<00:02, 202.77it/s]backtest loop:  59%|█████▉    | 573/966 [00:02<00:01, 201.03it/s]backtest loop:  61%|██████▏   | 594/966 [00:02<00:01, 203.59it/s]backtest loop:  64%|██████▎   | 615/966 [00:03<00:01, 205.32it/s]backtest loop:  66%|██████▌   | 636/966 [00:03<00:01, 202.75it/s]backtest loop:  68%|██████▊   | 658/966 [00:03<00:01, 206.04it/s]backtest loop:  70%|███████   | 679/966 [00:03<00:01, 200.84it/s]backtest loop:  72%|███████▏  | 700/966 [00:03<00:01, 203.11it/s]backtest loop:  75%|███████▍  | 721/966 [00:03<00:01, 204.84it/s]backtest loop:  77%|███████▋  | 742/966 [00:03<00:01, 202.04it/s]backtest loop:  79%|███████▉  | 763/966 [00:03<00:01, 196.18it/s]backtest loop:  81%|████████  | 784/966 [00:03<00:00, 199.90it/s]backtest loop:  83%|████████▎ | 805/966 [00:03<00:00, 199.30it/s]backtest loop:  86%|████████▌ | 826/966 [00:04<00:00, 202.11it/s]backtest loop:  88%|████████▊ | 847/966 [00:04<00:00, 200.65it/s]backtest loop:  90%|████████▉ | 869/966 [00:04<00:00, 204.37it/s]backtest loop:  92%|█████████▏| 890/966 [00:04<00:00, 205.96it/s]backtest loop:  94%|█████████▍| 911/966 [00:04<00:00, 199.17it/s]backtest loop:  96%|█████████▋| 932/966 [00:04<00:00, 202.08it/s]backtest loop:  99%|█████████▊| 953/966 [00:04<00:00, 204.37it/s]backtest loop: 100%|██████████| 966/966 [00:04<00:00, 203.54it/s]
+[535014:MainThread](2026-08-18 17:37:28,962) INFO - qlib.timer - [log.py:127] - Time cost: 0.000s | waiting `async_log` Done
+  ✓ 组合回测完成 (耗时: 11.61秒)
+  ✓ 提取了组合策略指标
+
+======================================================================
+📈 回测结果:
+======================================================================
+
+【IC 指标】
+  IC:               0.042287
+  ICIR:             0.244502
+  Rank IC:          0.041125
+  Rank ICIR:        0.240921
+
+【策略指标】
+  年化收益:         0.0361
+  信息比率:         0.5137
+  最大回撤:         -0.1256
+  卡尔玛比率:       0.2873
+
+⏱️  总耗时: 99.49 秒
+======================================================================
+
+✓ 结果已保存到: /nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/reruns/qa_gpt_complete_170_driver_actual/qa_gpt_complete_170_recovered_full_backtest_metrics.json
+
+✓ 已追加到汇总: /nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/reruns/qa_gpt_complete_170_driver_actual/batch_summary.json
+/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_recovery/complete_pool_factor_recovery.json
+{
+  "author_source_commit": "8a034319ff925d9dc621077ebf97d48e1890dad2",
+  "author_source_modified": false,
+  "base_cache_files_seeded": 0,
+  "compatibility_change": "MEAN uses groupby(level='datetime').transform('mean') to preserve the security index required by TS_SUM",
+  "complete_pool_factor_count": 170,
+  "complete_pool_metrics": {
+    "IC": 0.04228714198020135,
+    "ICIR": 0.24450177492931327,
+    "Rank IC": 0.04112504915862232,
+    "Rank ICIR": 0.2409205148586877,
+    "annualized_return": 0.036083217625804805,
+    "calmar_ratio": 0.28732059203638843,
+    "information_ratio": 0.5136689182304147,
+    "max_drawdown": -0.12558521256713462
+  },
+  "data_rows": 727818,
+  "factor_json_sha256": "659baa259a909b5e5600dc0270c076d95f7e1d4fde6479e74cd4e3f558a0bf4e",
+  "factors": [
+    {
+      "cache_sha256": "2f5f65015121d8be3b9a3b86fe7a34e3591d685ecf10546a467beffdc0457294",
+      "expression_sha256": "355a78541ec8d8afcc4ff2369aa10a1d5b9a33d1826d95acdc5866c99e929b9e",
+      "factor_name": "ResidualMom_AbsorpGate_20D",
+      "finite_rows": 715629,
+      "maximum": 3.5631700337639685,
+      "mean": -0.2419926111304396,
+      "minimum": -1.9419616078489168,
+      "rows": 727818,
+      "std": 0.2519121450923362
+    },
+    {
+      "cache_sha256": "70ef6f9f04272e93c547feaf234d80d9b3ea5209c862e5738c91b801307e9464",
+      "expression_sha256": "b3522acd0e2ee047ae44ad7e94a687f5323bd09c38b6da898d5e3205ce35382f",
+      "factor_name": "ResidualMom_VolumeConfirm_20D",
+      "finite_rows": 715629,
+      "maximum": 15.457761224949467,
+      "mean": -0.16460262731524009,
+      "minimum": -10.961957503988152,
+      "rows": 727818,
+      "std": 0.7623996685348888
+    }
+  ],
+  "llm_or_market_api_called": false
+}

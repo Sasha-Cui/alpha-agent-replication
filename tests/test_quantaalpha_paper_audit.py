@@ -141,6 +141,15 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     recovered_data = read_csv(output / "recovered_data_provenance.csv")
     reruns = read_csv(output / "native_rerun_conformance.csv")
     regeneration = json.loads((output / "native_result_regeneration.json").read_text(encoding="utf-8"))
+    complete_recovery = json.loads(
+        (output / "complete_pool_factor_recovery.json").read_text(encoding="utf-8")
+    )
+    complete_result = json.loads(
+        (output / "complete_pool_native_result.json").read_text(encoding="utf-8")
+    )
+    complete_repeats = json.loads(
+        (output / "complete_pool_repeatability.json").read_text(encoding="utf-8")
+    )
     assert manifest["overall_status"] == (
         "one_published_baseline_row_regenerated_main_quantaalpha_claim_not_reproduced"
     )
@@ -197,6 +206,12 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert manifest["native_rerun_metric_cells_independently_regenerated"] == 8
     assert manifest["alpha158_20_published_metric_cells_independently_regenerated"] == 8
     assert manifest["quantaalpha_gpt_v1_v2_published_metric_cells_independently_regenerated"] == 0
+    assert manifest["quantaalpha_public_custom_factors_recomputed"] == 150
+    assert manifest["quantaalpha_complete_pool_total_factors"] == 170
+    assert manifest["quantaalpha_complete_pool_compatibility_repairs"] == 1
+    assert manifest["quantaalpha_complete_pool_repeat_runs"] == 2
+    assert manifest["quantaalpha_complete_pool_repeat_max_abs_difference"] <= 2e-15
+    assert manifest["quantaalpha_complete_pool_native_metrics"] == audit.QA_GPT_COMPLETE_170_NATIVE_METRICS
     assert manifest["current_official_ref_surface_is_complete_public_history"] is False
     assert manifest["tracked_source_files_total"] == 237
     assert manifest["tracked_source_python_files_total"] == 135
@@ -296,8 +311,25 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert recovered_data[0]["sha256"] == audit.AUTHOR_DAILY_PV_LFS_SHA256
     assert len(reruns) == 16
     assert Counter(row["independently_regenerated"] for row in reruns) == {"True": 8, "False": 8}
+    assert Counter(row["executed_factor_count"] for row in reruns) == {"20": 8, "170": 8}
+    assert Counter(row["compatibility_repairs"] for row in reruns) == {"0": 8, "1": 8}
     assert regeneration["alpha158_20"]["paper_cells_independently_regenerated"] == 8
     assert regeneration["quantaalpha_gpt_v1_v2"]["paper_cells_independently_regenerated"] == 0
+    assert regeneration["quantaalpha_gpt_v1_v2"]["publicly_recomputed_factor_count"] == 170
+    assert regeneration["quantaalpha_gpt_v1_v2"]["repeat_runs"] == 2
+    assert regeneration["quantaalpha_gpt_v1_v2"]["repeat_max_abs_difference"] <= 2e-15
+    assert regeneration["quantaalpha_gpt_v1_v2"]["native_metrics"] == (
+        audit.QA_GPT_COMPLETE_170_NATIVE_METRICS
+    )
+    assert complete_recovery["author_source_modified"] is False
+    assert complete_recovery["complete_pool_factor_count"] == 170
+    assert {row["factor_name"] for row in complete_recovery["factors"]} == set(
+        audit.COMPLETE_POOL_REPAIRED_FACTORS
+    )
+    assert complete_result["num_factors"] == 170
+    assert complete_result["metrics"] == audit.QA_GPT_COMPLETE_170_RAW_METRICS
+    assert len(complete_repeats) == 2
+    assert audit.verify_complete_pool_evidence(output)["repeat_runs"] == 2
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
 

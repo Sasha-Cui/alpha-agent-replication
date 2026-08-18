@@ -43,25 +43,62 @@
   },
   "quantaalpha_gpt_v1_v2": {
     "paper_factor_count": 170,
-    "publicly_recomputed_factor_count": 168,
-    "failed_public_expressions": [
+    "publicly_recomputed_factor_count": 170,
+    "released_operator_failures_without_repair": [
       "ResidualMom_AbsorpGate_20D",
       "ResidualMom_VolumeConfirm_20D"
     ],
+    "compatibility_repairs": [
+      {
+        "operator": "MEAN",
+        "released_behavior": "groupby('datetime').mean() drops the instrument index",
+        "audit_behavior": "groupby(level='datetime').transform('mean') broadcasts the cross-sectional mean",
+        "reason": "the two public expressions immediately apply per-instrument TS_SUM and their prose specifies a market mean",
+        "author_checkout_modified": false
+      }
+    ],
     "native_metrics": {
-      "IC": 0.04169854922210531,
-      "ICIR": 0.24708259038837793,
-      "Rank_IC": 0.040913089744675654,
-      "Rank_ICIR": 0.2451467139839747,
-      "IR": 0.8773766571791948,
-      "CR": 0.5073516482894166,
-      "ARR_pct": 6.052344883424508,
-      "MDD_pct": 11.929289879771858
+      "IC": 0.04228714198020135,
+      "ICIR": 0.24450177492931327,
+      "Rank_IC": 0.04112504915862232,
+      "Rank_ICIR": 0.2409205148586877,
+      "IR": 0.5136689182304162,
+      "CR": 0.2873205920363893,
+      "ARR_pct": 3.608321762580485,
+      "MDD_pct": 12.55852125671344
     },
-    "full_result_json_sha256": "90c7204b684d7d1f059f79551321b6bbd082b34948a91916f9d138c2235a14ff",
-    "full_log_sha256": "3d6a68993d883c79548f7e945f366e13c720af76eb4600f96cb2ab42c2031559",
+    "raw_native_metrics": {
+      "IC": 0.04228714198020135,
+      "ICIR": 0.24450177492931327,
+      "Rank IC": 0.04112504915862232,
+      "Rank ICIR": 0.2409205148586877,
+      "annualized_return": 0.03608321762580485,
+      "information_ratio": 0.5136689182304162,
+      "max_drawdown": -0.1255852125671344,
+      "calmar_ratio": 0.2873205920363893
+    },
+    "full_result_json_sha256": "f7752a607cc6b5e2671e694ce7bf2392db2cc2a312b0d6772eba2e5333d59069",
+    "full_log_sha256": "58ae3284b09ca69df7df1e25e7a41da0d56dba6915363bb94085cd79e9ace08e",
+    "repeat_log_sha256": "c84051c411f18a8e6d345069bdd26ddfdc3cdb573e8921451a6f385fbbdae9cf",
+    "repeatability_json_sha256": "e49ab47f2f1fe76ba337d6421a924f2de5e12b8822f0600c262d079340e97386",
+    "repeat_runs": 2,
+    "repeat_max_abs_difference": 1.4432899320127035e-15,
+    "incomplete_168_factor_sensitivity": {
+      "factor_count": 168,
+      "native_metrics": {
+        "IC": 0.04169854922210531,
+        "ICIR": 0.24708259038837793,
+        "Rank_IC": 0.040913089744675654,
+        "Rank_ICIR": 0.2451467139839747,
+        "IR": 0.8773766571791948,
+        "CR": 0.5073516482894166,
+        "ARR_pct": 6.052344883424508,
+        "MDD_pct": 11.929289879771858
+      },
+      "interpretation": "the two repaired factors lower ARR and IR rather than explaining the paper gap"
+    },
     "paper_cells_independently_regenerated": 0,
-    "status": "mechanically_executed_but_not_result_reproduced"
+    "status": "complete_public_pool_executed_after_documented_compatibility_repair_but_result_not_reproduced"
   },
   "llm_or_market_api_called_during_rerun": false
 }

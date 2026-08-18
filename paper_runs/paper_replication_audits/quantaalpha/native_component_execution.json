@@ -28,7 +28,7 @@
   "full_native_environment_reproduced": false,
   "recovered_baseline_native_environment_reproduced": true,
   "paper_experiment_executed": true,
-  "paper_experiment_execution_scope": "Alpha158(20) full row and 168/170-factor QuantaAlpha/GPT diagnostic",
+  "paper_experiment_execution_scope": "Alpha158(20) full row and complete 170/170-factor QuantaAlpha/GPT diagnostic after one documented operator compatibility repair",
   "paper_result_cells_reproduced": 8,
   "component_execution_is_paper_result_credit": false,
   "llm_or_market_api_called": false
