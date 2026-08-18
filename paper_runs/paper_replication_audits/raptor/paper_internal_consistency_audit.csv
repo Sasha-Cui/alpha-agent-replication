@@ -6,8 +6,8 @@ RAP-I04,price coverage,Price snapshots are said to end 2025-07-27 while the prin
 RAP-I05,Reddit coverage,Reddit snapshots are said to end 2025-08-19 while daily agent execution is claimed through 2025-08-29.,no
 RAP-I06,case-study timing,"The WAB case is dated 2025-09-01, after the stated evaluation end date 2025-08-29.",no
 RAP-I07,rolling range,Section 4.3 reports -2.42 to 5.27; Figure 3 reports -5.26 to 10.34.,no
-RAP-I08,rolling moments,Section 4.3 reports mean 1.41 and SD 2.63; extended validation reports 1.60 +/- 3.28.,no
-RAP-I09,rolling convention,Released sample-SD code gives extrema near -5.27/10.34 and final 3.79; population SD gives final 3.89 but incompatible extrema.,no
+RAP-I08,rolling moments,"Section 4.3 reports mean 1.41 and SD 2.63; full-window 20-day sample-SD Sharpe with 2% annual RF exactly recovers extended validation 1.60 +/- 3.28, but not the paragraph values.",no
+RAP-I09,rolling convention,"At least three conventions are mixed: expanding sample-SD/zero-RF for Figure 3 extrema, population-SD/zero-RF for its final 3.89, and full-window sample-SD/2%-RF for extended mean/SD.",no
 RAP-I10,trace inclusion,"Appendix says one complete redacted trace is included, but only three WAB narrative snippets and a small perturbation table appear.",no
 RAP-I11,Deflated Sharpe,"Appendix says it is reported alongside naive Sharpe, but no Deflated Sharpe value appears.",no
 RAP-I12,diagnostic reporting,"Appendix promises Calmar, turnover, beta, tracking error and VaR/CVaR, but none is reported for the experiment.",no

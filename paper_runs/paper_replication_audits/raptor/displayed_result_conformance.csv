@@ -18,8 +18,8 @@ RAP-016,Extended validation,RAPTOR,annualized_volatility_percent,19.30,19.304261
 RAP-017,Extended validation,RAPTOR,sharpe,1.0,0.9897422727517595,,verified_rounded,author_output,no,author_output_verification_only
 RAP-018,Extended validation,RAPTOR,sortino,1.28,1.2787050163631515,,verified_rounded,author_output,no,author_output_verification_only
 RAP-019,Extended validation,RAPTOR,maximum_drawdown_percent,-15.33,-15.33365025620428,,verified_rounded,author_output,no,author_output_verification_only
-RAP-020,Extended validation,rolling,rolling_20d_mean,1.60,2.150896430904414,,conflict,none,no,no_result_credit
-RAP-021,Extended validation,rolling,rolling_20d_sd,3.28,3.4382877364555493,,conflict,none,no,no_result_credit
+RAP-020,Extended validation,rolling,rolling_20d_mean,1.60,1.5993969802199037,,verified_rounded_full_20d_window_sample_sd_rf2pct,author_output,no,author_output_verification_only
+RAP-021,Extended validation,rolling,rolling_20d_sd,3.28,3.2759617841049122,,verified_rounded_full_20d_window_sample_sd_rf2pct,author_output,no,author_output_verification_only
 RAP-022,Extended validation,rolling,longer_window_lower,1.1,,,unavailable,none,no,no_result_credit
 RAP-023,Extended validation,rolling,longer_window_upper,1.4,,,unavailable,none,no,no_result_credit
 RAP-024,Extended validation,RAPTOR,approximate_full_period_sharpe,1.0,0.9897422727517595,,verified_rounded,author_output,no,author_output_verification_only

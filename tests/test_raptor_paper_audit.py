@@ -5,6 +5,7 @@ import csv
 import importlib.util
 import json
 import math
+import statistics
 from collections import Counter
 from pathlib import Path
 
@@ -102,9 +103,9 @@ def test_all_empirical_scalar_assertions_are_counted_without_inflating_credit() 
     rows = csv_rows("displayed_result_conformance.csv")
     assert len(rows) == 42
     verified = [row for row in rows if row["verification_status"].startswith("verified")]
-    assert len(verified) == 19
+    assert len(verified) == 21
     assert Counter(row["verification_source"] for row in verified) == {
-        "author_output": 16, "current_public_response": 3,
+        "author_output": 18, "current_public_response": 3,
     }
     assert all(row["independent_end_to_end_reproduction"] == "no" for row in rows)
     assert Counter(row["scope"] for row in rows) == {
@@ -141,11 +142,24 @@ def test_rolling_sharpe_conflicts_are_numerically_exposed() -> None:
     assert math.isclose(manifest["rolling_sample_mean"], 2.150896430904414)
     assert math.isclose(manifest["rolling_sample_final"], 3.7898775588598927)
     assert math.isclose(manifest["rolling_population_final"], 3.8883323324435795)
+    assert math.isclose(manifest["rolling_full20_rf2_sample_mean"], 1.5993969802199037)
+    assert math.isclose(manifest["rolling_full20_rf2_sample_sd"], 3.2759617841049122)
     rows = csv_rows("rolling_sharpe_reproduction.csv")
     assert len(rows) == 166
     assert rows[0]["daily_return"] == ""
     assert rows[-1]["date"] == "2025-08-29"
     assert math.isclose(float(rows[-1]["rolling_sharpe_20d_sample_sd"]), 3.7898775588598927)
+    full_window = [
+        float(row["rolling_sharpe_20d_full_window_sample_sd_rf2pct"])
+        for row in rows
+        if row["rolling_sharpe_20d_full_window_sample_sd_rf2pct"]
+    ]
+    assert len(full_window) == 146
+    assert round(statistics.mean(full_window), 2) == 1.60
+    assert round(statistics.stdev(full_window), 2) == 3.28
+    displayed = {row["result_id"]: row for row in csv_rows("displayed_result_conformance.csv")}
+    assert displayed["RAP-020"]["verification_status"].startswith("verified_rounded_full_20d")
+    assert displayed["RAP-021"]["verification_status"].startswith("verified_rounded_full_20d")
 
 
 def test_method_audit_exposes_output_runner_divergence_and_missing_inputs() -> None:
@@ -200,12 +214,12 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
 
     native = json.loads((OUTPUT / "native_execution.json").read_text(encoding="utf-8"))
     manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
-    assert native["author_output_verified_scalar_results"] == 16
+    assert native["author_output_verified_scalar_results"] == 18
     assert native["current_public_response_verified_scalar_results"] == 3
-    assert native["displayed_scalar_results_verified"] == 19
+    assert native["displayed_scalar_results_verified"] == 21
     assert native["end_to_end_result_cells_reproduced"] == 0
     assert native["llm_calls_made"] == 0
-    assert manifest["overall_fidelity"] == "full_author_history_and_166_output_snapshots_audited_19_of_42_scalar_units_verified_16_from_shipped_output_3_from_current_public_benchmark_response_zero_end_to_end_result_cells_reproduced"
+    assert manifest["overall_fidelity"] == "full_author_history_and_166_output_snapshots_audited_21_of_42_scalar_units_verified_18_from_shipped_output_3_from_current_public_benchmark_response_zero_end_to_end_result_cells_reproduced"
     assert manifest["author_result_snapshots"] == 166
     assert manifest["compiled_python_files"] == 94
     assert manifest["paper_result_credit"] == "output_or_current_public_response_verification_only_no_end_to_end_result_credit"
@@ -213,6 +227,7 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
 
     readme = " ".join((OUTPUT / "README.md").read_text(encoding="utf-8").split())
     assert "End-to-end RAPTOR result cells reproduced: 0/42" in readme
-    assert "19/42" in readme
+    assert "21/42" in readme
+    assert "18/42" in readme
     assert "3/42" in readme
     assert "output verification, not a rerun" in readme

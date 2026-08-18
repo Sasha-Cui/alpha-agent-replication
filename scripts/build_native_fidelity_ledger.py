@@ -402,11 +402,14 @@ ARTIFACT_NOTES = {
         "links the lead author's Apache-2.0 repository; a separately pinned GitHub "
         "copy is a high-confidence double-blind derivative with 815 byte-identical "
         "files. The release ships 166 dated portfolio snapshots. Its native "
-        "postprocessor runs, and those snapshots independently recover 16/42 scalar "
+        "postprocessor runs, and those snapshots independently recover 18/42 scalar "
         "units, including the initial/final NAV, total and annualized return, "
-        "volatility, Sharpe, Sortino, and maximum drawdown. A hash-pinned current "
+        "volatility, Sharpe, Sortino, maximum drawdown, and the extended-validation "
+        "rolling mean/SD. The latter require a full 20-return window, sample SD, "
+        "2%/252 daily RF, and sqrt(252) annualization; the paper still mixes different "
+        "rolling conventions elsewhere. A hash-pinned current "
         "Yahoo S&P 500 response additionally verifies the two displayed 10.08% "
-        "benchmark units and the 3.35-point comparison, for 19/42 checked displayed "
+        "benchmark units and the 3.35-point comparison, for 21/42 checked displayed "
         "units overall; those three checks are not paper-time input lineage. This is "
         "author-output/current-response verification, not experiment reproduction: "
         "0/42 result units and 0/3 exact "
@@ -1605,7 +1608,7 @@ TARGETED_EXECUTION = {
         "component_gate_separate_4_forks_4_refs_1_official_head_exhausted"
     ),
     "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_regenerated_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced",
-    "SYS-RAPTOR": "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
+    "SYS-RAPTOR": "paper_audit:completed_21_of_42_displayed_scalar_units_checked_18_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
     "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
     "SYS-TRADING-AGENTS": "paper_audit:completed_77_of_77_author_table_cells_corroborated_zero_native_regenerated",

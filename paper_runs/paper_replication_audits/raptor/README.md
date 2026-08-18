@@ -12,28 +12,29 @@ author history is also inventoried, including the later `validation_fixes` branc
 
 - **End-to-end RAPTOR result cells reproduced: 0/42.**
 - **Published scalar units independently verified from author-shipped output:
-  16/42.**
+  18/42.**
   The released 166 daily snapshots recover the initial/final value, return,
-  annualized return, volatility, Sharpe, Sortino, maximum drawdown, coverage, and
-  two Figure 3 extrema. This is output verification, not a rerun of the agent and
-  portfolio pipeline.
+  annualized return, volatility, Sharpe, Sortino, maximum drawdown, coverage, two
+  Figure 3 extrema, and the extended-validation rolling mean/SD. This is output
+  verification, not a rerun of the agent and portfolio pipeline.
 - **Additional displayed scalar units independently checked from a pinned current
   public response: 3/42.**
   Yahoo's 165-session adjusted-close path from 2025-01-02 through 2025-08-29
   yields 10.08272879% for the S&P 500, which rounds
   to 10.08%; subtracting it from the released RAPTOR endpoint yields 3.35 percentage
-  points. Thus 19/42 displayed units
+  points. Thus 21/42 displayed units
   are checked in total, but these three are not paper-time input lineage.
 - The native snapshot visualizer executes and emits six CSV/PNG artifacts. The
   candidate backtest runner fails immediately because `testing/stock_prices.csv`
   is not released. The paper-time S&P 500 series is also absent; the current public
   response verifies its endpoint but cannot establish pointwise Figure 2 equality.
-- The paper's 20-day Sharpe descriptions conflict. Released sample-SD code gives
-  min -5.2675, max 10.3435,
-  mean 2.1509, and final
-  3.7899. Population SD gives the reported final
-  3.89 but not the reported extrema; no single disclosed convention yields all
-  caption values.
+- The extended-validation rolling mean and SD are reproducible: requiring a full
+  20-return window, subtracting 2%/252 daily, using sample SD, and annualizing by
+  sqrt(252) gives 1.5994 and
+  3.2760, which round to 1.60 and 3.28.
+  The paper nevertheless mixes conventions. Expanding sample-SD/zero-RF values
+  recover Figure 3's extrema, while population SD is needed for its final 3.89;
+  neither convention produces the Section 4.3 -2.42/5.27/1.41/2.63 quartet.
 
 ## Why the full paper is not reproduced
 

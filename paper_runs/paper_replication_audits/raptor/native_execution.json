@@ -1,10 +1,10 @@
 {
-  "author_output_verified_scalar_results": 16,
+  "author_output_verified_scalar_results": 18,
   "candidate_backtest_runner_attempted": true,
   "candidate_backtest_runner_status": "blocked_missing_testing_stock_prices_csv",
   "current_public_response_verified_scalar_results": 3,
   "displayed_scalar_results": 42,
-  "displayed_scalar_results_verified": 19,
+  "displayed_scalar_results_verified": 21,
   "end_to_end_multi_agent_backtest_attempted": false,
   "end_to_end_reason": "unreleased_inputs_and_request_logs_plus_conflicting_paper_and_runner_protocols",
   "end_to_end_result_cells_reproduced": 0,

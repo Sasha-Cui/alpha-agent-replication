@@ -97,15 +97,16 @@ def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() ->
     assert row["static_fidelity_tiers"] == "R3"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_19_of_42_displayed_scalar_units_checked_16_"
+        "paper_audit:completed_21_of_42_displayed_scalar_units_checked_18_"
         "author_output_3_current_public_benchmark_zero_end_to_end_result_cells"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_disposition"] == "availability_only_no_performance_inference"
     assert row["proxy_role"] == "no_proxy"
     blocker = row["precise_native_or_access_blocker"]
-    assert "recover 16/42 scalar units" in blocker
-    assert "19/42 checked displayed units" in blocker
+    assert "recover 18/42 scalar units" in blocker
+    assert "21/42 checked displayed units" in blocker
+    assert "full 20-return window" in blocker
     assert "not paper-time input lineage" in blocker
     assert "0/42 result units" in blocker
     assert "missing testing/stock_prices.csv" in blocker

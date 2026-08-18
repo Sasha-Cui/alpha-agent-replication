@@ -396,15 +396,22 @@ def snapshot_rows(repo: Path) -> list[tuple[str, Path, dict[str, Any]]]:
     return rows
 
 
-def rolling_sharpe(returns_with_initial_nan: list[float], window: int = 20, ddof: int = 1) -> list[float]:
+def rolling_sharpe(
+    returns_with_initial_nan: list[float],
+    window: int = 20,
+    ddof: int = 1,
+    min_periods: int = 2,
+    annual_risk_free_rate: float = 0.0,
+) -> list[float]:
     result: list[float] = []
     for index in range(len(returns_with_initial_nan)):
         values = [value for value in returns_with_initial_nan[max(0, index - window + 1):index + 1] if math.isfinite(value)]
-        if len(values) < 2:
+        if len(values) < min_periods:
             result.append(float("nan"))
             continue
         volatility = statistics.stdev(values) if ddof == 1 else statistics.pstdev(values)
-        result.append(float("nan") if volatility <= 0 else statistics.mean(values) / volatility * math.sqrt(252))
+        daily_excess = statistics.mean(values) - annual_risk_free_rate / 252
+        result.append(float("nan") if volatility <= 0 else daily_excess / volatility * math.sqrt(252))
     return result
 
 
@@ -425,8 +432,17 @@ def metric_reproduction(repo: Path) -> tuple[list[dict[str, str]], list[dict[str
         drawdowns.append(value / peak - 1)
     rolling_sample = rolling_sharpe([float("nan"), *returns], ddof=1)
     rolling_population = rolling_sharpe([float("nan"), *returns], ddof=0)
+    rolling_full20_rf2_sample = rolling_sharpe(
+        [float("nan"), *returns],
+        ddof=1,
+        min_periods=20,
+        annual_risk_free_rate=0.02,
+    )
     finite_sample = [value for value in rolling_sample if math.isfinite(value)]
     finite_population = [value for value in rolling_population if math.isfinite(value)]
+    finite_full20_rf2_sample = [
+        value for value in rolling_full20_rf2_sample if math.isfinite(value)
+    ]
     computed = {
         "n": float(len(values)),
         "initial_value": values[0],
@@ -446,7 +462,16 @@ def metric_reproduction(repo: Path) -> tuple[list[dict[str, str]], list[dict[str
         "rolling_population_min": min(finite_population),
         "rolling_population_max": max(finite_population),
         "rolling_population_final": finite_population[-1],
+        "rolling_full20_rf2_sample_min": min(finite_full20_rf2_sample),
+        "rolling_full20_rf2_sample_max": max(finite_full20_rf2_sample),
+        "rolling_full20_rf2_sample_mean": statistics.mean(finite_full20_rf2_sample),
+        "rolling_full20_rf2_sample_sd": statistics.stdev(finite_full20_rf2_sample),
+        "rolling_full20_rf2_sample_final": finite_full20_rf2_sample[-1],
     }
+    if round(computed["rolling_full20_rf2_sample_mean"], 2) != 1.60:
+        raise ValueError("extended-validation rolling mean lineage changed")
+    if round(computed["rolling_full20_rf2_sample_sd"], 2) != 3.28:
+        raise ValueError("extended-validation rolling SD lineage changed")
     specs = [
         ("trading_days", "166", computed["n"], 0, "exact"),
         ("initial_value_usd", "1000000.00", computed["initial_value"], 2, "exact"),
@@ -483,6 +508,9 @@ def metric_reproduction(repo: Path) -> tuple[list[dict[str, str]], list[dict[str
             "daily_return": "" if index == 0 else repr(returns[index - 1]),
             "rolling_sharpe_20d_sample_sd": "" if not math.isfinite(rolling_sample[index]) else repr(rolling_sample[index]),
             "rolling_sharpe_20d_population_sd": "" if not math.isfinite(rolling_population[index]) else repr(rolling_population[index]),
+            "rolling_sharpe_20d_full_window_sample_sd_rf2pct": ""
+            if not math.isfinite(rolling_full20_rf2_sample[index])
+            else repr(rolling_full20_rf2_sample[index]),
         }
         for index, ((date, _, _), value) in enumerate(zip(snapshots, values))
     ]
@@ -546,8 +574,22 @@ def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float
     add("Extended validation", "RAPTOR", "sharpe", "1.0", "sharpe", "verified_rounded")
     add("Extended validation", "RAPTOR", "sortino", "1.28", "sortino", "verified_rounded")
     add("Extended validation", "RAPTOR", "maximum_drawdown_percent", "-15.33", "maximum_drawdown_pct", "verified_rounded")
-    add("Extended validation", "rolling", "rolling_20d_mean", "1.60", "rolling_sample_mean", "conflict")
-    add("Extended validation", "rolling", "rolling_20d_sd", "3.28", "rolling_sample_sd", "conflict")
+    add(
+        "Extended validation",
+        "rolling",
+        "rolling_20d_mean",
+        "1.60",
+        "rolling_full20_rf2_sample_mean",
+        "verified_rounded_full_20d_window_sample_sd_rf2pct",
+    )
+    add(
+        "Extended validation",
+        "rolling",
+        "rolling_20d_sd",
+        "3.28",
+        "rolling_full20_rf2_sample_sd",
+        "verified_rounded_full_20d_window_sample_sd_rf2pct",
+    )
     add("Extended validation", "rolling", "longer_window_lower", "1.1")
     add("Extended validation", "rolling", "longer_window_upper", "1.4")
     add("Extended validation", "RAPTOR", "approximate_full_period_sharpe", "1.0", "sharpe", "verified_rounded")
@@ -571,7 +613,7 @@ def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float
     if len(rows) != 42:
         raise AssertionError(f"displayed-result denominator changed: {len(rows)}")
     verified = [row for row in rows if row["verification_status"].startswith("verified")]
-    if len(verified) != 19 or sum(row["verification_source"] == "author_output" for row in verified) != 16:
+    if len(verified) != 21 or sum(row["verification_source"] == "author_output" for row in verified) != 18:
         raise AssertionError("verified displayed-result count changed")
     return rows
 
@@ -662,8 +704,8 @@ def consistency_rows() -> list[dict[str, str]]:
         ("Reddit coverage", "Reddit snapshots are said to end 2025-08-19 while daily agent execution is claimed through 2025-08-29."),
         ("case-study timing", "The WAB case is dated 2025-09-01, after the stated evaluation end date 2025-08-29."),
         ("rolling range", "Section 4.3 reports -2.42 to 5.27; Figure 3 reports -5.26 to 10.34."),
-        ("rolling moments", "Section 4.3 reports mean 1.41 and SD 2.63; extended validation reports 1.60 +/- 3.28."),
-        ("rolling convention", "Released sample-SD code gives extrema near -5.27/10.34 and final 3.79; population SD gives final 3.89 but incompatible extrema."),
+        ("rolling moments", "Section 4.3 reports mean 1.41 and SD 2.63; full-window 20-day sample-SD Sharpe with 2% annual RF exactly recovers extended validation 1.60 +/- 3.28, but not the paragraph values."),
+        ("rolling convention", "At least three conventions are mixed: expanding sample-SD/zero-RF for Figure 3 extrema, population-SD/zero-RF for its final 3.89, and full-window sample-SD/2%-RF for extended mean/SD."),
         ("trace inclusion", "Appendix says one complete redacted trace is included, but only three WAB narrative snippets and a small perturbation table appear."),
         ("Deflated Sharpe", "Appendix says it is reported alongside naive Sharpe, but no Deflated Sharpe value appears."),
         ("diagnostic reporting", "Appendix promises Calmar, turnover, beta, tracking error and VaR/CVaR, but none is reported for the experiment."),
@@ -816,9 +858,9 @@ author history is also inventoried, including the later `validation_fixes` branc
 - **Published scalar units independently verified from author-shipped output:
   {manifest['author_output_verified_scalar_results']}/{manifest['displayed_scalar_results']}.**
   The released 166 daily snapshots recover the initial/final value, return,
-  annualized return, volatility, Sharpe, Sortino, maximum drawdown, coverage, and
-  two Figure 3 extrema. This is output verification, not a rerun of the agent and
-  portfolio pipeline.
+  annualized return, volatility, Sharpe, Sortino, maximum drawdown, coverage, two
+  Figure 3 extrema, and the extended-validation rolling mean/SD. This is output
+  verification, not a rerun of the agent and portfolio pipeline.
 - **Additional displayed scalar units independently checked from a pinned current
   public response: {manifest['current_public_response_verified_scalar_results']}/{manifest['displayed_scalar_results']}.**
   Yahoo's 165-session adjusted-close path from 2025-01-02 through 2025-08-29
@@ -830,12 +872,13 @@ author history is also inventoried, including the later `validation_fixes` branc
   candidate backtest runner fails immediately because `testing/stock_prices.csv`
   is not released. The paper-time S&P 500 series is also absent; the current public
   response verifies its endpoint but cannot establish pointwise Figure 2 equality.
-- The paper's 20-day Sharpe descriptions conflict. Released sample-SD code gives
-  min {manifest['rolling_sample_min']:.4f}, max {manifest['rolling_sample_max']:.4f},
-  mean {manifest['rolling_sample_mean']:.4f}, and final
-  {manifest['rolling_sample_final']:.4f}. Population SD gives the reported final
-  3.89 but not the reported extrema; no single disclosed convention yields all
-  caption values.
+- The extended-validation rolling mean and SD are reproducible: requiring a full
+  20-return window, subtracting 2%/252 daily, using sample SD, and annualizing by
+  sqrt(252) gives {manifest['rolling_full20_rf2_sample_mean']:.4f} and
+  {manifest['rolling_full20_rf2_sample_sd']:.4f}, which round to 1.60 and 3.28.
+  The paper nevertheless mixes conventions. Expanding sample-SD/zero-RF values
+  recover Figure 3's extrema, while population SD is needed for its final 3.89;
+  neither convention produces the Section 4.3 -2.42/5.27/1.41/2.63 quartet.
 
 ## Why the full paper is not reproduced
 
@@ -1001,7 +1044,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
     manifest = {
         "audit": "RAPTOR OpenReview / CEUR paper and public-source audit",
-        "overall_fidelity": "full_author_history_and_166_output_snapshots_audited_19_of_42_scalar_units_verified_16_from_shipped_output_3_from_current_public_benchmark_response_zero_end_to_end_result_cells_reproduced",
+        "overall_fidelity": "full_author_history_and_166_output_snapshots_audited_21_of_42_scalar_units_verified_18_from_shipped_output_3_from_current_public_benchmark_response_zero_end_to_end_result_cells_reproduced",
         "official_pdf_pages_audited": EXPECTED_PDF_PAGES,
         "official_pdf_pages_visually_inspected": EXPECTED_PDF_PAGES,
         "tracked_source_files": len(source_files),
@@ -1035,6 +1078,11 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "rolling_sample_sd": computed["rolling_sample_sd"],
         "rolling_sample_final": computed["rolling_sample_final"],
         "rolling_population_final": computed["rolling_population_final"],
+        "rolling_full20_rf2_sample_min": computed["rolling_full20_rf2_sample_min"],
+        "rolling_full20_rf2_sample_max": computed["rolling_full20_rf2_sample_max"],
+        "rolling_full20_rf2_sample_mean": computed["rolling_full20_rf2_sample_mean"],
+        "rolling_full20_rf2_sample_sd": computed["rolling_full20_rf2_sample_sd"],
+        "rolling_full20_rf2_sample_final": computed["rolling_full20_rf2_sample_final"],
         "paper_result_credit": "output_or_current_public_response_verification_only_no_end_to_end_result_credit",
     }
     write_json(output / "manifest.json", manifest)
