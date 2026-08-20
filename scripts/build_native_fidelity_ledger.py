@@ -1464,7 +1464,12 @@ PAPER_ONLY_AUDIT_NOTES = {
     "SYS-FLAG-TRADER": (
         "A pinned ACL-final/arXiv-v3 audit inventories all 360 displayed numeric "
         "result cells. Six of 20 checked Buy-and-Hold baseline cells reproduce "
-        "literally from the first author-linked InvestorBench release, but zero "
+        "literally from the first author-linked InvestorBench release. A separate "
+        "hash-pinned current Yahoo response verifies all four missing TSLA Buy-and-Hold "
+        "cells on the exact 150-session paper window: raw close recovers CR/MDD and "
+        "AV/SR require mixed 365-day volatility and 252-day return annualization. "
+        "Those four are current-response checks, not paper-time or author-release lineage; "
+        "10/360 displayed cells are checked, six receive baseline credit, and zero "
         "FLAG-Trader cells reproduce. The 22 paper settings, prompt template, and "
         "TeX are static document evidence. No author-linked FLAG-Trader source, "
         "checkpoint, exact configuration, seeds, actions, equity paths, or result "
@@ -1572,7 +1577,7 @@ TARGETED_EXECUTION = {
         "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_4_official_history_"
         "heads_exhausted"
     ),
-    "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results",
+    "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_4_current_response_verified_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:partial_227_of_235_author_output_cells_corroborated_67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells_181_accessible_forks_187_refs_20_unique_heads_exhausted",
     "SYS-FACTFIN": "paper_audit:completed_zero_of_525_numeric_cells_no_public_system_or_benchmark_release",
     "SYS-FACTOR-MINER": "paper_audit:completed_110_formula_syntax_components_zero_of_488_table_cells_zero_of_12100_heatmap_cells_no_author_native_pipeline",

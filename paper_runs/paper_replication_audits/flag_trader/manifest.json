@@ -1,7 +1,7 @@
 {
   "acl_url": "https://aclanthology.org/2025.findings-acl.716/",
   "arxiv_url": "https://arxiv.org/abs/2502.11433v3",
-  "audit_date": "2026-08-11",
+  "audit_date": "2026-08-20",
   "buy_hold_cells_checked_against_released_baseline": 20,
   "buy_hold_cells_literal_matches": 6,
   "buy_hold_cells_paper_compatible_matches": 7,
@@ -18,6 +18,7 @@
   "input_sha256": {
     "acl_final_pdf": "38d188a03105f07911d05c6fc14ba7cb2333939f3871f45a48f9cc541401d099",
     "arxiv_v3_source": "b57ac81b8c705817e055ece553e5cbc1d0ef1f37b615e6cdbfa3eb896823eb23",
+    "current_tsla_yahoo_response": "f10236dca00f66b36460b6c3ab91d7649b0bbf794c157fb9472e60f7bbf1bf3d",
     "investorbench_archive": "1675cf2cbe6039598d33c68a82b1a8cbe3abc8d59cda9eeca31ea2a1748e374b",
     "unaffiliated_archive": "868fc11a9dad5ca9a3c97837187b666d02d22573f6c7bd872d3d601a13c9685d"
   },
@@ -26,9 +27,10 @@
   "investorbench_release_tracked_files": 48,
   "method_assessment_counts": {
     "conflict": 12,
-    "missing": 26,
+    "missing": 25,
     "paper_only": 1,
     "partial": 4,
+    "partial_current_response": 1,
     "specified": 5
   },
   "method_severity_counts": {
@@ -40,6 +42,7 @@
   "method_specification_dimensions": 48,
   "native_execution": {
     "acl_final_result_tables_crosschecked_against_v3_source": true,
+    "current_tsla_response_cells_verified_without_paper_time_lineage": 4,
     "flag_trader_native_execution_attempted": false,
     "investorbench_baseline_cells_with_paper_result_credit": 6,
     "investorbench_baseline_formula_executed": true,
@@ -62,25 +65,31 @@
   "official_flag_trader_source_released": false,
   "official_flag_trader_trajectory_released": false,
   "output_sha256": {
-    "README.md": "79933b06a4676c9ae7fa716b84d66dbdb286698f1c9c0c878d50dc6102e9133d",
+    "README.md": "0c6f962936f0953e53663eb7975af988bd77a677a9b925bbe4afca8976b2a92c",
     "buy_hold_baseline_reproduction.csv": "afc6afa50cc792e25bd39e36bd4ad9fd1f47d4bbfd44c4715ed8844925435a60",
     "investorbench_source_inventory.csv": "a16897de06642e49de775d1e3d70fedfd8e6bad5a4afe06e94d7f38ec97d9e99",
-    "method_specification_audit.csv": "15491333f3996bd58fd8b4fc01ef2665c151dbbb4d927a834f94db9ee18ed49e",
-    "native_execution.json": "80dcc289ba2c363cf9657a8be3dce910b32bc22f6905470648268587e7a4671b",
+    "method_specification_audit.csv": "2d0e66ee8454bdf0fef9c321170e4ee1712b48f6ea7d5c46a0328460c6426401",
+    "native_execution.json": "19a98c5b53ac70629fc526bf173293628777df9a2c49b17bbd01a3a6c96dfe44",
     "paper_hyperparameters.csv": "158a95aa7c6c742713704f3eeeadb31d7f30d315d4fddae0ac67d0b72ffa47a3",
     "paper_prompt_template.txt": "ae4880992690401385cf2cf60ca10cb5ee055c62e40c66e0598fa28ab5a0c701",
-    "paper_table_result_conformance.csv": "76bbbb85ec2a8cabfb93aea223df14a52e41948c4c32f3fb1da00a63fd53504e",
+    "paper_table_result_conformance.csv": "85d335cd30bc4b94ab1a38bfc211c8d7cc4fc3db8c79546a0753f2e5b00b0530",
     "qualitative_claim_audit.csv": "a7956f902aa5e1732278020578f0602b6c158caff46f52e243f1db8dcb1711e6",
-    "source_provenance.json": "c6a7c059a303dcc55c648e670d57ef13b47d4764e0ec38462a5e2d1817a9642c",
-    "unaffiliated_candidate_audit.csv": "c37395819918c5a63be22bc24c08880a30c224239bc8de59c516496a9f9e80cc"
+    "source_provenance.json": "27272ef305a50e4d5c6bd43d18fe33498273cae257cd1190d18711061676f2b1",
+    "tsla_current_response_reproduction.csv": "ab43466b621c862a61ddb4f919b81f53acb717ba646abad9a95136262c15dad3",
+    "unaffiliated_candidate_audit.csv": "c37395819918c5a63be22bc24c08880a30c224239bc8de59c516496a9f9e80cc",
+    "yahoo_tsla_response.json": "f10236dca00f66b36460b6c3ab91d7649b0bbf794c157fb9472e60f7bbf1bf3d"
   },
-  "overall_status": "partial_6_of_360_author_linked_buy_hold_baseline_cells_reproduced_zero_flag_trader_native_results",
+  "overall_status": "partial_6_of_360_author_linked_buy_hold_baseline_cells_reproduced_4_current_response_verified_zero_flag_trader_native_results",
   "paper": "FLAG-TRADER: Fusion LLM-Agent with Gradient-based Reinforcement Learning for Financial Trading",
   "paper_compile_pages": 14,
   "paper_evidence_route": "paper_only_underspecified",
   "paper_hyperparameter_settings": 22,
   "paper_prompt_template_recovered": true,
+  "paper_table_cells_checked_total": 10,
   "paper_table_cells_reproduced": 6,
   "paper_table_cells_total": 360,
+  "paper_table_cells_verified_current_public_response": 4,
+  "tsla_current_response_cells_checked": 4,
+  "tsla_current_response_cells_matching": 4,
   "unaffiliated_candidate_paper_credit": false
 }

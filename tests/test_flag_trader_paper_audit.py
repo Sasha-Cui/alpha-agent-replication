@@ -45,6 +45,12 @@ def test_committed_result_census_is_complete_and_fail_closed() -> None:
     assert len(credited) == 6
     assert {row["model"] for row in credited} == {"Buy & Hold"}
     assert {row["native_flag_trader_result_credit"] for row in rows} == {"False"}
+    current = [row for row in rows if row["current_public_response_verification"] == "True"]
+    assert len(current) == 4
+    assert {(row["asset"], row["metric"]) for row in current} == {
+        ("TSLA", "CR_pct"), ("TSLA", "SR"), ("TSLA", "AV_pct"), ("TSLA", "MDD_pct")
+    }
+    assert {row["paper_result_credit"] for row in current} == {"False"}
 
 
 def test_author_linked_baseline_execution_is_partial_and_formula_specific() -> None:
@@ -87,6 +93,26 @@ def test_paper_claims_do_not_overstate_table_dominance() -> None:
     assert convergence["assessment"].startswith("unsupported")
 
 
+def test_current_tsla_response_verifies_four_cells_without_paper_time_credit() -> None:
+    output = ROOT / "paper_runs/paper_replication_audits/flag_trader"
+    rows = read_csv(output / "tsla_current_response_reproduction.csv")
+    assert len(rows) == 4
+    assert {row["metric"] for row in rows} == {"CR_pct", "SR", "AV_pct", "MDD_pct"}
+    assert {row["match_at_paper_precision"] for row in rows} == {"True"}
+    assert {row["paper_time_snapshot"] for row in rows} == {"False"}
+    assert {row["paper_result_credit"] for row in rows} == {"False"}
+    assert next(row for row in rows if row["metric"] == "CR_pct")[
+        "pinned_current_yahoo_value"
+    ].startswith("39.243875")
+    assert next(row for row in rows if row["metric"] == "AV_pct")[
+        "pinned_current_yahoo_value"
+    ].startswith("75.853563")
+    assert next(row for row in rows if row["metric"] == "SR")[
+        "pinned_current_yahoo_value"
+    ].startswith("0.869170")
+    assert audit.sha256(output / "yahoo_tsla_response.json") == audit.YAHOO_TSLA_SHA256
+
+
 def test_configuration_and_method_gaps_remain_separate_from_execution() -> None:
     output = ROOT / "paper_runs/paper_replication_audits/flag_trader"
     hyperparameters = read_csv(output / "paper_hyperparameters.csv")
@@ -109,12 +135,14 @@ def test_manifest_and_all_committed_evidence_hashes_are_consistent() -> None:
     provenance = json.loads((output / "source_provenance.json").read_text(encoding="utf-8"))
     assert manifest["overall_status"] == (
         "partial_6_of_360_author_linked_buy_hold_baseline_cells_reproduced_"
-        "zero_flag_trader_native_results"
+        "4_current_response_verified_zero_flag_trader_native_results"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_evidence_route"] == "paper_only_underspecified"
     assert manifest["paper_table_cells_total"] == 360
     assert manifest["paper_table_cells_reproduced"] == 6
+    assert manifest["paper_table_cells_verified_current_public_response"] == 4
+    assert manifest["paper_table_cells_checked_total"] == 10
     assert manifest["flag_trader_native_result_cells_reproduced"] == 0
     assert manifest["paper_compile_pages"] == 14
     assert manifest["paper_hyperparameter_settings"] == 22
@@ -122,11 +150,15 @@ def test_manifest_and_all_committed_evidence_hashes_are_consistent() -> None:
     assert manifest["investorbench_release_python_files"] == 23
     assert manifest["investorbench_release_native_result_artifacts"] == 0
     assert manifest["buy_hold_cells_paper_compatible_matches"] == 7
+    assert manifest["tsla_current_response_cells_checked"] == 4
+    assert manifest["tsla_current_response_cells_matching"] == 4
     assert manifest["official_flag_trader_source_released"] is False
     assert native["flag_trader_native_execution_attempted"] is False
     assert native["paper_latex_compilation"]["exit_codes"] == [0, 0]
     assert provenance["author_linked_baseline_release"]["commit"] == audit.INVESTORBENCH_COMMIT
     assert provenance["unaffiliated_candidate"]["paper_credit"] is False
+    assert provenance["current_tsla_market_response"]["paper_time_snapshot"] is False
+    assert provenance["current_tsla_market_response"]["paper_result_credit"] is False
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
 
@@ -144,4 +176,6 @@ def test_pinned_sources_and_dynamic_parsers_when_available() -> None:
     assert len(audit.parse_hyperparameters(paper)) == 22
     baseline = audit.buy_hold_reproduction(investorbench, results)
     assert sum(row["paper_result_credit"] for row in baseline) == 6
+    current = audit.tsla_current_response_reproduction(paper, results)
+    assert len(current) == 4 and all(row["match_at_paper_precision"] for row in current)
     assert len(audit.source_inventory(investorbench)) == 48

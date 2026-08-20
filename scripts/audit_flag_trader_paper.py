@@ -20,6 +20,7 @@ import subprocess
 import tarfile
 import tempfile
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -31,6 +32,13 @@ ARXIV_URL = "https://arxiv.org/abs/2502.11433v3"
 ARXIV_SOURCE_URL = "https://export.arxiv.org/e-print/2502.11433v3"
 ARXIV_SOURCE_SHA256 = "b57ac81b8c705817e055ece553e5cbc1d0ef1f37b615e6cdbfa3eb896823eb23"
 ARXIV_V3_SUBMITTED = "2025-02-19T03:40:56Z"
+YAHOO_TSLA_URL = (
+    "https://query1.finance.yahoo.com/v8/finance/chart/TSLA"
+    "?period1=1601510400&period2=1620345600&interval=1d"
+    "&events=history&includeAdjustedClose=true"
+)
+YAHOO_TSLA_SHA256 = "f10236dca00f66b36460b6c3ab91d7649b0bbf794c157fb9472e60f7bbf1bf3d"
+YAHOO_TSLA_RETRIEVAL_DATE = "2026-08-20"
 
 INVESTORBENCH_URL = "https://github.com/felis33/INVESTOR-BENCH"
 INVESTORBENCH_COMMIT = "3509aeca668824cf2970e3950781d4d09f6c2adb"
@@ -54,7 +62,7 @@ UNAFFILIATED_ARCHIVE_SHA256 = "868fc11a9dad5ca9a3c97837187b666d02d22573f6c7bd872
 
 GITHUB_SEARCH_SNAPSHOT_SHA256 = "0bbf2c09299701341ee98bf95261225d5c37aaecad5acfedbe14a9f1cb5e17f0"
 THE_FINAI_REPOS_SNAPSHOT_SHA256 = "0832f1f1caabe241dc6daadc1cd045ed397fda9ca9c42a931b33d067effb4f1b"
-AUDIT_DATE = "2026-08-11"
+AUDIT_DATE = "2026-08-20"
 
 TABLE_ASSETS = (("MSFT", "JNJ", "UVV"), ("HON", "TSLA", "BTC"))
 ALL_ASSETS = tuple(asset for group in TABLE_ASSETS for asset in group)
@@ -249,6 +257,7 @@ def validate_primary_inputs(
         paper_root / "source_v3.tar": ARXIV_SOURCE_SHA256,
         paper_root / "github_search_flag_trader.json": GITHUB_SEARCH_SNAPSHOT_SHA256,
         paper_root / "the_finai_repos.json": THE_FINAI_REPOS_SNAPSHOT_SHA256,
+        paper_root / "yahoo_TSLA_current_20260820.json": YAHOO_TSLA_SHA256,
         investorbench_source / "LICENSE": INVESTORBENCH_LICENSE_SHA256,
     }
     for path, expected in expected_files.items():
@@ -450,37 +459,117 @@ def buy_hold_reproduction(
     return rows
 
 
+def tsla_current_response_reproduction(
+    paper_root: Path,
+    paper_results: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    """Check the missing TSLA baseline against a pinned current Yahoo response."""
+    response = paper_root / "yahoo_TSLA_current_20260820.json"
+    if sha256(response) != YAHOO_TSLA_SHA256:
+        raise ValueError("pinned TSLA Yahoo response changed")
+    payload = json.loads(response.read_text(encoding="utf-8"))
+    result = payload["chart"]["result"][0]
+    timestamps = result["timestamp"]
+    closes = [float(value) for value in result["indicators"]["quote"][0]["close"]]
+    dates = [datetime.fromtimestamp(value, timezone.utc).date().isoformat() for value in timestamps]
+    if len(closes) != 150 or dates[0] != "2020-10-01" or dates[-1] != "2021-05-06":
+        raise ValueError("TSLA current-response observation window changed")
+    literal = _buy_hold_metrics(closes, 252)
+    returns = [math.log(right / left) for left, right in zip(closes, closes[1:])]
+    annualized_volatility_365 = _sample_standard_deviation(returns) * math.sqrt(365)
+    compatible = dict(literal)
+    compatible["AV_pct"] = 100 * annualized_volatility_365
+    compatible["SR"] = (
+        (sum(returns) / (len(closes) / 252)) / annualized_volatility_365
+    )
+    paper_values = {
+        str(row["metric"]): float(row["paper_value"])
+        for row in paper_results
+        if row["model"] == "Buy & Hold" and row["asset"] == "TSLA"
+    }
+    rows = []
+    for metric in METRICS:
+        value = compatible[metric]
+        match = round(value, 3) == paper_values[metric]
+        rows.append({
+            "asset": "TSLA",
+            "metric": metric,
+            "paper_value": f"{paper_values[metric]:.3f}",
+            "pinned_current_yahoo_value": f"{value:.9f}",
+            "match_at_paper_precision": match,
+            "observations": len(closes),
+            "test_start": dates[0],
+            "test_end": dates[-1],
+            "response_sha256": YAHOO_TSLA_SHA256,
+            "price_field": "unadjusted_close",
+            "return_annualization_days": 252,
+            "volatility_annualization_days": 365 if metric in {"SR", "AV_pct"} else "",
+            "verification_class": (
+                "pinned_current_response_matches_not_paper_time_input_lineage"
+                if match else "pinned_current_response_conflict"
+            ),
+            "paper_time_snapshot": False,
+            "paper_result_credit": False,
+            "native_flag_trader_result_credit": False,
+        })
+    if len(rows) != 4 or not all(row["match_at_paper_precision"] for row in rows):
+        raise ValueError("FLAG-Trader TSLA current-response reproduction changed")
+    return rows
+
+
 def result_conformance(
     paper_results: Sequence[Mapping[str, Any]],
     baseline_rows: Sequence[Mapping[str, Any]],
+    current_response_rows: Sequence[Mapping[str, Any]],
 ) -> list[dict[str, Any]]:
     reproduced = {
         (row["asset"], row["metric"]): row
         for row in baseline_rows
         if row["paper_result_credit"]
     }
+    current_verified = {
+        (row["asset"], row["metric"]): row
+        for row in current_response_rows
+        if row["match_at_paper_precision"]
+    }
     rows: list[dict[str, Any]] = []
     for record in paper_results:
         key = (record["asset"], record["metric"])
         baseline = reproduced.get(key) if record["model"] == "Buy & Hold" else None
+        current = current_verified.get(key) if record["model"] == "Buy & Hold" else None
         rows.append(
             {
                 **record,
                 "reproduced_value": (
-                    baseline["released_investorbench_literal_value"] if baseline else ""
+                    baseline["released_investorbench_literal_value"]
+                    if baseline
+                    else current["pinned_current_yahoo_value"]
+                    if current
+                    else ""
                 ),
-                "reproduction_scope": "author_linked_investorbench_baseline" if baseline else "",
+                "reproduction_scope": (
+                    "author_linked_investorbench_baseline"
+                    if baseline
+                    else "pinned_current_yahoo_response_not_paper_time_lineage"
+                    if current
+                    else ""
+                ),
+                "current_public_response_verification": current is not None,
                 "paper_result_credit": baseline is not None,
                 "native_flag_trader_result_credit": False,
                 "status": (
                     "reproduced_author_linked_baseline_cell"
                     if baseline
+                    else "verified_current_response_not_paper_time_input_lineage"
+                    if current
                     else "not_reproduced_no_exact_model_actions_trajectory_or_result_output"
                 ),
             }
         )
     if sum(row["paper_result_credit"] for row in rows) != 6:
         raise ValueError("paper result credit must remain six baseline cells")
+    if sum(row["current_public_response_verification"] for row in rows) != 4:
+        raise ValueError("FLAG-Trader current-response verification count changed")
     return rows
 
 
@@ -584,7 +673,7 @@ def method_specification_audit() -> list[dict[str, Any]]:
         ("data_vendor", "not stated", "no exact upstream source", "missing", "blocking"),
         ("data_snapshot", "not stated", "no retrieval time or raw FLAG snapshot", "missing", "blocking"),
         ("price_adjustment", "not stated", "released baseline adjusted prices conflict with four equity CR cells", "conflict", "blocking"),
-        ("tsla_data", "evaluated in paper", "absent from author-linked InvestorBench release", "missing", "blocking"),
+        ("tsla_data", "evaluated in paper", "absent from author-linked InvestorBench release; a pinned current Yahoo response verifies all four displayed Buy-and-Hold cells but is not paper-time lineage", "partial_current_response", "blocking"),
         ("news_macro_data", "state includes news sentiment or macro indicators", "sources, fields, timing and preprocessing absent", "missing", "blocking"),
         ("state_representation", "text says price/news; equation says Price/Vol/RSI; prompt shows history/account/memory", "three incompatible descriptions", "conflict", "blocking"),
         ("transaction_costs", "prompt instructs minimizing costs", "no cost parameter or transition deduction", "conflict", "blocking"),
@@ -668,6 +757,13 @@ result tables contain {manifest['paper_table_cells_total']} displayed numeric ce
   literal pinned execution matches four equity Buy-and-Hold MDD cells plus BTC
   AV and MDD. The BTC CR differs in the last displayed digit. This is baseline
   evidence, not FLAG-Trader evidence.
+- **Four additional TSLA Buy-and-Hold cells are independently checked, not reproduced.**
+  A hash-pinned current Yahoo response for the exact 150-session paper window
+  reproduces TSLA CR and MDD from unadjusted close. Its AV and Sharpe also match,
+  but only when volatility uses 365 days while return uses 252. Because the paper
+  did not freeze this response, these cells receive current-response verification
+  only and no author-baseline or FLAG-Trader result credit. In total, 10/360
+  displayed cells are checked while only 6/360 have author-linked baseline credit.
 - The BTC Sharpe cell matches only when return annualization uses 252 days while
   volatility uses 365; the released evaluator uses one calendar consistently.
 - FLAG-Trader is best in only 7/24 metric-by-asset comparisons (7/12 CR/SR and
@@ -709,7 +805,8 @@ def audit(
     hyperparameters = parse_hyperparameters(paper_root)
     prompt = extract_prompt_template(paper_root)
     baseline = buy_hold_reproduction(investorbench_source, paper_results)
-    conformance = result_conformance(paper_results, baseline)
+    tsla_current = tsla_current_response_reproduction(paper_root, paper_results)
+    conformance = result_conformance(paper_results, baseline, tsla_current)
     claims = qualitative_claim_audit(paper_results)
     methods = method_specification_audit()
     inventory = source_inventory(investorbench_source)
@@ -721,18 +818,23 @@ def audit(
     output.mkdir(parents=True, exist_ok=True)
     write_csv(output / "paper_table_result_conformance.csv", conformance)
     write_csv(output / "buy_hold_baseline_reproduction.csv", baseline)
+    write_csv(output / "tsla_current_response_reproduction.csv", tsla_current)
     write_csv(output / "paper_hyperparameters.csv", hyperparameters)
     write_csv(output / "qualitative_claim_audit.csv", claims)
     write_csv(output / "method_specification_audit.csv", methods)
     write_csv(output / "investorbench_source_inventory.csv", inventory)
     write_csv(output / "unaffiliated_candidate_audit.csv", candidate)
     (output / "paper_prompt_template.txt").write_text(prompt, encoding="utf-8")
+    (output / "yahoo_tsla_response.json").write_bytes(
+        (paper_root / "yahoo_TSLA_current_20260820.json").read_bytes()
+    )
 
     native_execution = {
         "flag_trader_native_execution_attempted": False,
         "reason": "no author-linked FLAG-Trader implementation, checkpoint, config, or trajectory released",
         "investorbench_baseline_formula_executed": True,
         "investorbench_baseline_cells_with_paper_result_credit": 6,
+        "current_tsla_response_cells_verified_without_paper_time_lineage": 4,
         "investorbench_python_files_compiled": investor_python,
         "unaffiliated_candidate_executed_as_flag_trader": False,
         "unaffiliated_candidate_python_files_compiled": unaffiliated_python,
@@ -762,6 +864,13 @@ def audit(
             "archive_sha256": INVESTORBENCH_ARCHIVE_SHA256,
             "relationship": "paper_explicitly_adopts_InvestorBench_baselines_not_FLAG_Trader_source",
         },
+        "current_tsla_market_response": {
+            "url": YAHOO_TSLA_URL,
+            "retrieval_date": YAHOO_TSLA_RETRIEVAL_DATE,
+            "sha256": YAHOO_TSLA_SHA256,
+            "paper_time_snapshot": False,
+            "paper_result_credit": False,
+        },
         "unaffiliated_candidate": {
             "url": UNAFFILIATED_URL,
             "commit": UNAFFILIATED_COMMIT,
@@ -783,12 +892,19 @@ def audit(
         "arxiv_url": ARXIV_URL,
         "overall_status": (
             "partial_6_of_360_author_linked_buy_hold_baseline_cells_reproduced_"
-            "zero_flag_trader_native_results"
+            "4_current_response_verified_zero_flag_trader_native_results"
         ),
         "full_paper_reproduced": False,
         "paper_evidence_route": "paper_only_underspecified",
         "paper_table_cells_total": len(conformance),
         "paper_table_cells_reproduced": sum(row["paper_result_credit"] for row in conformance),
+        "paper_table_cells_verified_current_public_response": sum(
+            row["current_public_response_verification"] for row in conformance
+        ),
+        "paper_table_cells_checked_total": sum(
+            row["paper_result_credit"] or row["current_public_response_verification"]
+            for row in conformance
+        ),
         "flag_trader_native_result_cells_reproduced": sum(
             row["native_flag_trader_result_credit"] for row in conformance
         ),
@@ -804,6 +920,10 @@ def audit(
         "buy_hold_cells_literal_matches": sum(row["paper_result_credit"] for row in baseline),
         "buy_hold_cells_paper_compatible_matches": sum(
             row["paper_compatible_match_at_paper_precision"] for row in baseline
+        ),
+        "tsla_current_response_cells_checked": len(tsla_current),
+        "tsla_current_response_cells_matching": sum(
+            row["match_at_paper_precision"] for row in tsla_current
         ),
         "flag_trader_best_metric_asset_cells": 7,
         "flag_trader_best_primary_cells": 7,
@@ -822,6 +942,7 @@ def audit(
             "arxiv_v3_source": ARXIV_SOURCE_SHA256,
             "investorbench_archive": INVESTORBENCH_ARCHIVE_SHA256,
             "unaffiliated_archive": UNAFFILIATED_ARCHIVE_SHA256,
+            "current_tsla_yahoo_response": YAHOO_TSLA_SHA256,
         },
     }
     readme = build_readme(manifest)

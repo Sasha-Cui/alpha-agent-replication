@@ -340,10 +340,15 @@ def test_flag_trader_paper_only_audit_preserves_its_evidence_boundary() -> None:
     assert row["reachable_public_code_system_ids"] == ""
     assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_zero_flag_native_results"
+        "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_"
+        "4_current_response_verified_zero_flag_native_results"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert "zero FLAG-Trader cells reproduce" in row["precise_native_or_access_blocker"]
+    assert "all four missing TSLA Buy-and-Hold cells" in row[
+        "precise_native_or_access_blocker"
+    ]
+    assert "10/360 displayed cells are checked" in row["precise_native_or_access_blocker"]
     assert "No author-linked FLAG-Trader source" in row["precise_native_or_access_blocker"]
 
 

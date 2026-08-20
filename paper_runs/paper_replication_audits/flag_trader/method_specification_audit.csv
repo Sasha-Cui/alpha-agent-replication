@@ -23,7 +23,7 @@ optimizer,text says SGD; table says learning rate of optimizer,optimizer type ab
 data_vendor,not stated,no exact upstream source,missing,blocking,False,False
 data_snapshot,not stated,no retrieval time or raw FLAG snapshot,missing,blocking,False,False
 price_adjustment,not stated,released baseline adjusted prices conflict with four equity CR cells,conflict,blocking,False,False
-tsla_data,evaluated in paper,absent from author-linked InvestorBench release,missing,blocking,False,False
+tsla_data,evaluated in paper,absent from author-linked InvestorBench release; a pinned current Yahoo response verifies all four displayed Buy-and-Hold cells but is not paper-time lineage,partial_current_response,blocking,False,False
 news_macro_data,state includes news sentiment or macro indicators,"sources, fields, timing and preprocessing absent",missing,blocking,False,False
 state_representation,text says price/news; equation says Price/Vol/RSI; prompt shows history/account/memory,three incompatible descriptions,conflict,blocking,False,False
 transaction_costs,prompt instructs minimizing costs,no cost parameter or transition deduction,conflict,blocking,False,False

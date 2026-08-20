@@ -1,361 +1,361 @@
-paper_table,model,asset,metric,paper_value,reproduced_value,reproduction_scope,paper_result_credit,native_flag_trader_result_credit,status
-Table 1,Buy & Hold,MSFT,CR_pct,15.340,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Buy & Hold,MSFT,SR,1.039,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Buy & Hold,MSFT,AV_pct,24.980,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Buy & Hold,MSFT,MDD_pct,9.428,9.428045774,author_linked_investorbench_baseline,True,False,reproduced_author_linked_baseline_cell
-Table 1,Buy & Hold,JNJ,CR_pct,13.895,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Buy & Hold,JNJ,SR,1.343,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Buy & Hold,JNJ,AV_pct,17.500,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Buy & Hold,JNJ,MDD_pct,9.847,9.847460398,author_linked_investorbench_baseline,True,False,reproduced_author_linked_baseline_cell
-Table 1,Buy & Hold,UVV,CR_pct,36.583,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Buy & Hold,UVV,SR,2.112,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Buy & Hold,UVV,AV_pct,29.299,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Buy & Hold,UVV,MDD_pct,15.406,15.406338419,author_linked_investorbench_baseline,True,False,reproduced_author_linked_baseline_cell
-Table 1,Palmyra-Fin-70B,MSFT,CR_pct,14.697,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,MSFT,SR,0.897,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,MSFT,AV_pct,27.518,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,MSFT,MDD_pct,9.428,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,JNJ,CR_pct,5.748,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,JNJ,SR,0.450,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,JNJ,AV_pct,19.317,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,JNJ,MDD_pct,9.367,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,UVV,CR_pct,37.875,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,UVV,SR,2.039,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,UVV,AV_pct,31.200,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Palmyra-Fin-70B,UVV,MDD_pct,15.967,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,MSFT,CR_pct,17.184,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,MSFT,SR,0.962,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,MSFT,AV_pct,30.000,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,MSFT,MDD_pct,9.428,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,JNJ,CR_pct,13.561,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,JNJ,SR,1.086,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,JNJ,AV_pct,20.864,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,JNJ,MDD_pct,9.847,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,UVV,CR_pct,41.508,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,UVV,SR,2.147,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,UVV,AV_pct,32.479,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-o1-preview,UVV,MDD_pct,9.633,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,MSFT,CR_pct,16.654,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,MSFT,SR,0.932,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,MSFT,AV_pct,30.022,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,MSFT,MDD_pct,9.428,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,JNJ,CR_pct,13.712,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,JNJ,SR,1.103,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,JNJ,AV_pct,20.894,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,JNJ,MDD_pct,9.860,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,UVV,CR_pct,31.791,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,UVV,SR,1.640,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,UVV,AV_pct,32.567,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4,UVV,MDD_pct,10.434,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,MSFT,CR_pct,12.461,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,MSFT,SR,0.924,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,MSFT,AV_pct,22.653,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,MSFT,MDD_pct,6.647,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,JNJ,CR_pct,9.099,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,JNJ,SR,0.875,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,JNJ,AV_pct,17.471,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,JNJ,MDD_pct,7.169,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,UVV,CR_pct,8.043,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,UVV,SR,0.496,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,UVV,AV_pct,27.241,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,GPT-4o,UVV,MDD_pct,14.889,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,MSFT,CR_pct,7.421,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,MSFT,SR,0.588,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,MSFT,AV_pct,21.238,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,MSFT,MDD_pct,6.973,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,JNJ,CR_pct,14.353,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,JNJ,SR,1.140,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,JNJ,AV_pct,20.995,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,JNJ,MDD_pct,9.812,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,UVV,CR_pct,37.178,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,UVV,SR,1.822,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,UVV,AV_pct,34.223,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-72B-Instruct,UVV,MDD_pct,13.365,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,MSFT,CR_pct,17.396,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,MSFT,SR,1.335,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,MSFT,AV_pct,21.892,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,MSFT,MDD_pct,7.045,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,JNJ,CR_pct,13.868,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,JNJ,SR,1.121,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,JNJ,AV_pct,20.779,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,JNJ,MDD_pct,9.825,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,UVV,CR_pct,35.981,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,UVV,SR,1.728,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,UVV,AV_pct,34.986,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-70B-Instruct,UVV,MDD_pct,15.406,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,MSFT,CR_pct,13.941,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,MSFT,SR,0.834,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,MSFT,AV_pct,28.081,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,MSFT,MDD_pct,7.850,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,JNJ,CR_pct,14.426,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,JNJ,SR,1.185,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,JNJ,AV_pct,20.450,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,JNJ,MDD_pct,9.825,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,UVV,CR_pct,29.940,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,UVV,SR,1.481,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,UVV,AV_pct,33.964,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-67B-Chat,UVV,MDD_pct,15.407,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,MSFT,CR_pct,22.093,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,MSFT,SR,1.253,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,MSFT,AV_pct,29.613,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,MSFT,MDD_pct,9.428,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,JNJ,CR_pct,14.004,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,JNJ,SR,1.180,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,JNJ,AV_pct,19.938,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,JNJ,MDD_pct,9.847,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,UVV,CR_pct,20.889,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,UVV,SR,1.020,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,UVV,AV_pct,34.417,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-34B-Chat,UVV,MDD_pct,14.936,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,MSFT,CR_pct,-0.557,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,MSFT,SR,-0.041,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,MSFT,AV_pct,22.893,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,MSFT,MDD_pct,8.946,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,JNJ,CR_pct,2.905,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,JNJ,SR,0.292,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,JNJ,AV_pct,16.725,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,JNJ,MDD_pct,7.169,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,UVV,CR_pct,-1.623,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,UVV,SR,-0.097,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,UVV,AV_pct,27.973,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen2.5-32B-Instruct,UVV,MDD_pct,17.986,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),MSFT,CR_pct,11.904,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),MSFT,SR,0.694,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),MSFT,AV_pct,28.796,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),MSFT,MDD_pct,16.094,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),JNJ,CR_pct,-7.482,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),JNJ,SR,-0.670,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),JNJ,AV_pct,18.773,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),JNJ,MDD_pct,17.806,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),UVV,CR_pct,33.560,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),UVV,SR,1.703,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),UVV,AV_pct,33.099,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,DeepSeek-V2-Lite (15.7B),UVV,MDD_pct,12.984,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,MSFT,CR_pct,19.333,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,MSFT,SR,1.094,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,MSFT,AV_pct,29.690,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,MSFT,MDD_pct,9.428,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,JNJ,CR_pct,18.606,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,JNJ,SR,1.611,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,JNJ,AV_pct,19.409,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,JNJ,MDD_pct,10.986,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,UVV,CR_pct,49.415,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,UVV,SR,2.410,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,UVV,AV_pct,34.446,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Yi-1.5-9B-Chat,UVV,MDD_pct,11.430,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,MSFT,CR_pct,22.703,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,MSFT,SR,1.322,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,MSFT,AV_pct,28.855,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,MSFT,MDD_pct,7.385,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,JNJ,CR_pct,13.988,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,JNJ,SR,1.486,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,JNJ,AV_pct,20.460,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,JNJ,MDD_pct,9.969,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,UVV,CR_pct,41.108,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,UVV,SR,1.981,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,UVV,AV_pct,34.866,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Llama-3.1-8B-Instruct,UVV,MDD_pct,16.429,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,MSFT,CR_pct,-10.305,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,MSFT,SR,-0.724,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,MSFT,AV_pct,23.937,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,MSFT,MDD_pct,23.371,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,JNJ,CR_pct,21.852,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,JNJ,SR,0.980,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,JNJ,AV_pct,37.425,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,JNJ,MDD_pct,9.573,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,UVV,CR_pct,11.752,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,UVV,SR,0.853,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,UVV,AV_pct,22.988,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,Qwen-2.5-Instruct-7B,UVV,MDD_pct,15.451,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,MSFT,CR_pct,20.106,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,MSFT,SR,1.373,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,MSFT,AV_pct,24.932,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,MSFT,MDD_pct,9.428,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,JNJ,CR_pct,33.724,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,JNJ,SR,3.344,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,JNJ,AV_pct,17.174,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,JNJ,MDD_pct,9.320,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,UVV,CR_pct,46.799,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,UVV,SR,1.463,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,UVV,AV_pct,67.758,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 1,SmolLM2-135M-Instruct,UVV,MDD_pct,35.039,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,HON,CR_pct,33.256,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,HON,SR,2.347,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,HON,AV_pct,23.967,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,HON,MDD_pct,9.195,9.194873327,author_linked_investorbench_baseline,True,False,reproduced_author_linked_baseline_cell
-Table 2,Buy & Hold,TSLA,CR_pct,39.244,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,TSLA,SR,0.869,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,TSLA,AV_pct,75.854,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,TSLA,MDD_pct,37.975,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,BTC,CR_pct,21.821,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,BTC,SR,0.683,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Buy & Hold,BTC,AV_pct,37.426,37.426284890,author_linked_investorbench_baseline,True,False,reproduced_author_linked_baseline_cell
-Table 2,Buy & Hold,BTC,MDD_pct,20.796,20.795798903,author_linked_investorbench_baseline,True,False,reproduced_author_linked_baseline_cell
-Table 2,Palmyra-Fin-70B,HON,CR_pct,20.016,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,HON,SR,1.464,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,HON,AV_pct,22.974,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,HON,MDD_pct,6.824,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,TSLA,CR_pct,-6.661,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,TSLA,SR,-0.222,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,TSLA,AV_pct,50.379,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,TSLA,MDD_pct,25.820,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,BTC,CR_pct,-20.812,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,BTC,SR,-1.212,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,BTC,AV_pct,20.036,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Palmyra-Fin-70B,BTC,MDD_pct,27.782,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,HON,CR_pct,13.162,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,HON,SR,0.776,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,HON,AV_pct,28.511,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,HON,MDD_pct,11.558,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,TSLA,CR_pct,34.499,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,TSLA,SR,0.796,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,TSLA,AV_pct,72.822,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,TSLA,MDD_pct,35.490,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,BTC,CR_pct,34.060,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,BTC,SR,1.114,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,BTC,AV_pct,35.846,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-o1-preview,BTC,MDD_pct,17.075,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,HON,CR_pct,34.342,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,HON,SR,2.005,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,HON,AV_pct,28.779,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,HON,MDD_pct,9.195,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,TSLA,CR_pct,45.246,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,TSLA,SR,1.190,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,TSLA,AV_pct,63.896,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,TSLA,MDD_pct,25.031,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,BTC,CR_pct,22.396,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,BTC,SR,0.828,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,BTC,AV_pct,31.699,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4,BTC,MDD_pct,17.206,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,HON,CR_pct,38.540,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,HON,SR,2.418,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,HON,AV_pct,26.782,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,HON,MDD_pct,8.979,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,TSLA,CR_pct,45.946,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,TSLA,SR,1.348,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,TSLA,AV_pct,57.281,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,TSLA,MDD_pct,21.631,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,BTC,CR_pct,14.330,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,BTC,SR,0.532,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,BTC,AV_pct,31.304,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,GPT-4o,BTC,MDD_pct,17.278,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,HON,CR_pct,34.309,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,HON,SR,2.000,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,HON,AV_pct,28.779,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,HON,MDD_pct,9.292,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,TSLA,CR_pct,39.112,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,TSLA,SR,1.075,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,TSLA,AV_pct,61.136,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,TSLA,MDD_pct,26.985,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,BTC,CR_pct,0.549,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,BTC,SR,0.325,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,BTC,AV_pct,1.979,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-72B-Instruct,BTC,MDD_pct,0.897,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,HON,CR_pct,43.944,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,HON,SR,2.646,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,HON,AV_pct,27.903,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,HON,MDD_pct,8.993,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,TSLA,CR_pct,37.545,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,TSLA,SR,0.891,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,TSLA,AV_pct,70.815,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,TSLA,MDD_pct,29.813,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,BTC,CR_pct,20.440,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,BTC,SR,0.758,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,BTC,AV_pct,31.604,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-70B-Instruct,BTC,MDD_pct,17.813,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,HON,CR_pct,32.536,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,HON,SR,1.909,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,HON,AV_pct,28.628,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,HON,MDD_pct,10.782,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,TSLA,CR_pct,35.647,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,TSLA,SR,0.885,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,TSLA,AV_pct,67.660,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,TSLA,MDD_pct,33.359,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,BTC,CR_pct,28.307,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,BTC,SR,0.891,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,BTC,AV_pct,37.219,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-67B-Chat,BTC,MDD_pct,17.944,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,HON,CR_pct,30.743,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,HON,SR,1.823,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,HON,AV_pct,28.335,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,HON,MDD_pct,9.195,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,TSLA,CR_pct,35.364,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,TSLA,SR,0.808,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,TSLA,AV_pct,73.561,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,TSLA,MDD_pct,35.490,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,BTC,CR_pct,13.620,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,BTC,SR,0.434,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,BTC,AV_pct,36.778,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-34B-Chat,BTC,MDD_pct,22.790,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,HON,CR_pct,26.332,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,HON,SR,1.980,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,HON,AV_pct,22.348,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,HON,MDD_pct,5.261,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,TSLA,CR_pct,21.336,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,TSLA,SR,0.729,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,TSLA,AV_pct,49.157,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,TSLA,MDD_pct,20.704,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,BTC,CR_pct,11.566,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,BTC,SR,0.869,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,BTC,AV_pct,15.608,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen2.5-32B-Instruct,BTC,MDD_pct,7.984,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),HON,CR_pct,16.686,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),HON,SR,0.974,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),HON,AV_pct,28.771,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),HON,MDD_pct,16.806,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),TSLA,CR_pct,31.458,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),TSLA,SR,0.744,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),TSLA,AV_pct,68.524,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),TSLA,MDD_pct,35.404,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),BTC,CR_pct,4.804,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),BTC,SR,0.153,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),BTC,AV_pct,36.846,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,DeepSeek-V2-Lite (15.7B),BTC,MDD_pct,20.562,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,HON,CR_pct,29.028,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,HON,SR,1.700,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,HON,AV_pct,28.682,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,HON,MDD_pct,12.588,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,TSLA,CR_pct,31.350,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,TSLA,SR,0.703,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,TSLA,AV_pct,74.895,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,TSLA,MDD_pct,37.975,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,BTC,CR_pct,7.953,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,BTC,SR,0.253,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,BTC,AV_pct,36.799,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Yi-1.5-9B-Chat,BTC,MDD_pct,26.545,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,HON,CR_pct,39.079,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,HON,SR,2.320,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,HON,AV_pct,28.299,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,HON,MDD_pct,10.341,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,TSLA,CR_pct,35.622,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,TSLA,SR,0.832,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,TSLA,AV_pct,71.936,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,TSLA,MDD_pct,36.383,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,BTC,CR_pct,20.521,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,BTC,SR,0.646,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,BTC,AV_pct,37.240,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Llama-3.1-8B-Instruct,BTC,MDD_pct,21.104,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,HON,CR_pct,4.291,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,HON,SR,0.285,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,HON,AV_pct,24.933,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,HON,MDD_pct,14.156,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,TSLA,CR_pct,41.203,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,TSLA,SR,0.925,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,TSLA,AV_pct,74.862,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,TSLA,MDD_pct,37.975,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,BTC,CR_pct,19.477,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,BTC,SR,0.612,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,BTC,AV_pct,37.289,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,Qwen-2.5-Instruct-7B,BTC,MDD_pct,20.796,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,HON,CR_pct,34.342,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,HON,SR,2.429,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,HON,AV_pct,23.913,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,HON,MDD_pct,10.872,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,TSLA,CR_pct,50.394,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,TSLA,SR,1.362,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,TSLA,AV_pct,64.004,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,TSLA,MDD_pct,37.975,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,BTC,CR_pct,45.511,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,BTC,SR,1.734,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,BTC,AV_pct,30.903,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
-Table 2,SmolLM2-135M-Instruct,BTC,MDD_pct,24.440,,,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+paper_table,model,asset,metric,paper_value,reproduced_value,reproduction_scope,current_public_response_verification,paper_result_credit,native_flag_trader_result_credit,status
+Table 1,Buy & Hold,MSFT,CR_pct,15.340,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Buy & Hold,MSFT,SR,1.039,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Buy & Hold,MSFT,AV_pct,24.980,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Buy & Hold,MSFT,MDD_pct,9.428,9.428045774,author_linked_investorbench_baseline,False,True,False,reproduced_author_linked_baseline_cell
+Table 1,Buy & Hold,JNJ,CR_pct,13.895,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Buy & Hold,JNJ,SR,1.343,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Buy & Hold,JNJ,AV_pct,17.500,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Buy & Hold,JNJ,MDD_pct,9.847,9.847460398,author_linked_investorbench_baseline,False,True,False,reproduced_author_linked_baseline_cell
+Table 1,Buy & Hold,UVV,CR_pct,36.583,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Buy & Hold,UVV,SR,2.112,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Buy & Hold,UVV,AV_pct,29.299,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Buy & Hold,UVV,MDD_pct,15.406,15.406338419,author_linked_investorbench_baseline,False,True,False,reproduced_author_linked_baseline_cell
+Table 1,Palmyra-Fin-70B,MSFT,CR_pct,14.697,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,MSFT,SR,0.897,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,MSFT,AV_pct,27.518,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,MSFT,MDD_pct,9.428,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,JNJ,CR_pct,5.748,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,JNJ,SR,0.450,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,JNJ,AV_pct,19.317,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,JNJ,MDD_pct,9.367,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,UVV,CR_pct,37.875,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,UVV,SR,2.039,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,UVV,AV_pct,31.200,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Palmyra-Fin-70B,UVV,MDD_pct,15.967,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,MSFT,CR_pct,17.184,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,MSFT,SR,0.962,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,MSFT,AV_pct,30.000,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,MSFT,MDD_pct,9.428,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,JNJ,CR_pct,13.561,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,JNJ,SR,1.086,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,JNJ,AV_pct,20.864,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,JNJ,MDD_pct,9.847,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,UVV,CR_pct,41.508,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,UVV,SR,2.147,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,UVV,AV_pct,32.479,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-o1-preview,UVV,MDD_pct,9.633,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,MSFT,CR_pct,16.654,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,MSFT,SR,0.932,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,MSFT,AV_pct,30.022,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,MSFT,MDD_pct,9.428,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,JNJ,CR_pct,13.712,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,JNJ,SR,1.103,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,JNJ,AV_pct,20.894,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,JNJ,MDD_pct,9.860,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,UVV,CR_pct,31.791,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,UVV,SR,1.640,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,UVV,AV_pct,32.567,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4,UVV,MDD_pct,10.434,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,MSFT,CR_pct,12.461,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,MSFT,SR,0.924,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,MSFT,AV_pct,22.653,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,MSFT,MDD_pct,6.647,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,JNJ,CR_pct,9.099,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,JNJ,SR,0.875,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,JNJ,AV_pct,17.471,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,JNJ,MDD_pct,7.169,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,UVV,CR_pct,8.043,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,UVV,SR,0.496,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,UVV,AV_pct,27.241,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,GPT-4o,UVV,MDD_pct,14.889,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,MSFT,CR_pct,7.421,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,MSFT,SR,0.588,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,MSFT,AV_pct,21.238,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,MSFT,MDD_pct,6.973,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,JNJ,CR_pct,14.353,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,JNJ,SR,1.140,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,JNJ,AV_pct,20.995,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,JNJ,MDD_pct,9.812,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,UVV,CR_pct,37.178,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,UVV,SR,1.822,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,UVV,AV_pct,34.223,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-72B-Instruct,UVV,MDD_pct,13.365,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,MSFT,CR_pct,17.396,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,MSFT,SR,1.335,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,MSFT,AV_pct,21.892,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,MSFT,MDD_pct,7.045,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,JNJ,CR_pct,13.868,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,JNJ,SR,1.121,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,JNJ,AV_pct,20.779,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,JNJ,MDD_pct,9.825,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,UVV,CR_pct,35.981,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,UVV,SR,1.728,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,UVV,AV_pct,34.986,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-70B-Instruct,UVV,MDD_pct,15.406,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,MSFT,CR_pct,13.941,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,MSFT,SR,0.834,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,MSFT,AV_pct,28.081,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,MSFT,MDD_pct,7.850,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,JNJ,CR_pct,14.426,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,JNJ,SR,1.185,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,JNJ,AV_pct,20.450,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,JNJ,MDD_pct,9.825,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,UVV,CR_pct,29.940,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,UVV,SR,1.481,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,UVV,AV_pct,33.964,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-67B-Chat,UVV,MDD_pct,15.407,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,MSFT,CR_pct,22.093,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,MSFT,SR,1.253,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,MSFT,AV_pct,29.613,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,MSFT,MDD_pct,9.428,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,JNJ,CR_pct,14.004,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,JNJ,SR,1.180,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,JNJ,AV_pct,19.938,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,JNJ,MDD_pct,9.847,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,UVV,CR_pct,20.889,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,UVV,SR,1.020,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,UVV,AV_pct,34.417,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-34B-Chat,UVV,MDD_pct,14.936,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,MSFT,CR_pct,-0.557,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,MSFT,SR,-0.041,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,MSFT,AV_pct,22.893,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,MSFT,MDD_pct,8.946,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,JNJ,CR_pct,2.905,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,JNJ,SR,0.292,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,JNJ,AV_pct,16.725,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,JNJ,MDD_pct,7.169,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,UVV,CR_pct,-1.623,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,UVV,SR,-0.097,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,UVV,AV_pct,27.973,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen2.5-32B-Instruct,UVV,MDD_pct,17.986,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),MSFT,CR_pct,11.904,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),MSFT,SR,0.694,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),MSFT,AV_pct,28.796,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),MSFT,MDD_pct,16.094,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),JNJ,CR_pct,-7.482,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),JNJ,SR,-0.670,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),JNJ,AV_pct,18.773,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),JNJ,MDD_pct,17.806,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),UVV,CR_pct,33.560,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),UVV,SR,1.703,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),UVV,AV_pct,33.099,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,DeepSeek-V2-Lite (15.7B),UVV,MDD_pct,12.984,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,MSFT,CR_pct,19.333,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,MSFT,SR,1.094,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,MSFT,AV_pct,29.690,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,MSFT,MDD_pct,9.428,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,JNJ,CR_pct,18.606,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,JNJ,SR,1.611,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,JNJ,AV_pct,19.409,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,JNJ,MDD_pct,10.986,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,UVV,CR_pct,49.415,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,UVV,SR,2.410,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,UVV,AV_pct,34.446,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Yi-1.5-9B-Chat,UVV,MDD_pct,11.430,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,MSFT,CR_pct,22.703,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,MSFT,SR,1.322,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,MSFT,AV_pct,28.855,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,MSFT,MDD_pct,7.385,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,JNJ,CR_pct,13.988,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,JNJ,SR,1.486,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,JNJ,AV_pct,20.460,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,JNJ,MDD_pct,9.969,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,UVV,CR_pct,41.108,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,UVV,SR,1.981,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,UVV,AV_pct,34.866,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Llama-3.1-8B-Instruct,UVV,MDD_pct,16.429,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,MSFT,CR_pct,-10.305,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,MSFT,SR,-0.724,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,MSFT,AV_pct,23.937,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,MSFT,MDD_pct,23.371,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,JNJ,CR_pct,21.852,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,JNJ,SR,0.980,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,JNJ,AV_pct,37.425,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,JNJ,MDD_pct,9.573,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,UVV,CR_pct,11.752,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,UVV,SR,0.853,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,UVV,AV_pct,22.988,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,Qwen-2.5-Instruct-7B,UVV,MDD_pct,15.451,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,MSFT,CR_pct,20.106,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,MSFT,SR,1.373,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,MSFT,AV_pct,24.932,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,MSFT,MDD_pct,9.428,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,JNJ,CR_pct,33.724,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,JNJ,SR,3.344,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,JNJ,AV_pct,17.174,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,JNJ,MDD_pct,9.320,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,UVV,CR_pct,46.799,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,UVV,SR,1.463,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,UVV,AV_pct,67.758,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 1,SmolLM2-135M-Instruct,UVV,MDD_pct,35.039,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Buy & Hold,HON,CR_pct,33.256,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Buy & Hold,HON,SR,2.347,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Buy & Hold,HON,AV_pct,23.967,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Buy & Hold,HON,MDD_pct,9.195,9.194873327,author_linked_investorbench_baseline,False,True,False,reproduced_author_linked_baseline_cell
+Table 2,Buy & Hold,TSLA,CR_pct,39.244,39.243875147,pinned_current_yahoo_response_not_paper_time_lineage,True,False,False,verified_current_response_not_paper_time_input_lineage
+Table 2,Buy & Hold,TSLA,SR,0.869,0.869170899,pinned_current_yahoo_response_not_paper_time_lineage,True,False,False,verified_current_response_not_paper_time_input_lineage
+Table 2,Buy & Hold,TSLA,AV_pct,75.854,75.853563811,pinned_current_yahoo_response_not_paper_time_lineage,True,False,False,verified_current_response_not_paper_time_input_lineage
+Table 2,Buy & Hold,TSLA,MDD_pct,37.975,37.975318670,pinned_current_yahoo_response_not_paper_time_lineage,True,False,False,verified_current_response_not_paper_time_input_lineage
+Table 2,Buy & Hold,BTC,CR_pct,21.821,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Buy & Hold,BTC,SR,0.683,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Buy & Hold,BTC,AV_pct,37.426,37.426284890,author_linked_investorbench_baseline,False,True,False,reproduced_author_linked_baseline_cell
+Table 2,Buy & Hold,BTC,MDD_pct,20.796,20.795798903,author_linked_investorbench_baseline,False,True,False,reproduced_author_linked_baseline_cell
+Table 2,Palmyra-Fin-70B,HON,CR_pct,20.016,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,HON,SR,1.464,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,HON,AV_pct,22.974,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,HON,MDD_pct,6.824,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,TSLA,CR_pct,-6.661,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,TSLA,SR,-0.222,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,TSLA,AV_pct,50.379,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,TSLA,MDD_pct,25.820,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,BTC,CR_pct,-20.812,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,BTC,SR,-1.212,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,BTC,AV_pct,20.036,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Palmyra-Fin-70B,BTC,MDD_pct,27.782,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,HON,CR_pct,13.162,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,HON,SR,0.776,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,HON,AV_pct,28.511,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,HON,MDD_pct,11.558,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,TSLA,CR_pct,34.499,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,TSLA,SR,0.796,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,TSLA,AV_pct,72.822,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,TSLA,MDD_pct,35.490,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,BTC,CR_pct,34.060,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,BTC,SR,1.114,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,BTC,AV_pct,35.846,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-o1-preview,BTC,MDD_pct,17.075,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,HON,CR_pct,34.342,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,HON,SR,2.005,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,HON,AV_pct,28.779,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,HON,MDD_pct,9.195,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,TSLA,CR_pct,45.246,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,TSLA,SR,1.190,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,TSLA,AV_pct,63.896,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,TSLA,MDD_pct,25.031,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,BTC,CR_pct,22.396,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,BTC,SR,0.828,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,BTC,AV_pct,31.699,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4,BTC,MDD_pct,17.206,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,HON,CR_pct,38.540,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,HON,SR,2.418,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,HON,AV_pct,26.782,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,HON,MDD_pct,8.979,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,TSLA,CR_pct,45.946,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,TSLA,SR,1.348,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,TSLA,AV_pct,57.281,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,TSLA,MDD_pct,21.631,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,BTC,CR_pct,14.330,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,BTC,SR,0.532,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,BTC,AV_pct,31.304,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,GPT-4o,BTC,MDD_pct,17.278,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,HON,CR_pct,34.309,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,HON,SR,2.000,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,HON,AV_pct,28.779,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,HON,MDD_pct,9.292,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,TSLA,CR_pct,39.112,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,TSLA,SR,1.075,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,TSLA,AV_pct,61.136,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,TSLA,MDD_pct,26.985,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,BTC,CR_pct,0.549,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,BTC,SR,0.325,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,BTC,AV_pct,1.979,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-72B-Instruct,BTC,MDD_pct,0.897,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,HON,CR_pct,43.944,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,HON,SR,2.646,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,HON,AV_pct,27.903,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,HON,MDD_pct,8.993,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,TSLA,CR_pct,37.545,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,TSLA,SR,0.891,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,TSLA,AV_pct,70.815,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,TSLA,MDD_pct,29.813,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,BTC,CR_pct,20.440,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,BTC,SR,0.758,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,BTC,AV_pct,31.604,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-70B-Instruct,BTC,MDD_pct,17.813,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,HON,CR_pct,32.536,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,HON,SR,1.909,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,HON,AV_pct,28.628,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,HON,MDD_pct,10.782,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,TSLA,CR_pct,35.647,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,TSLA,SR,0.885,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,TSLA,AV_pct,67.660,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,TSLA,MDD_pct,33.359,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,BTC,CR_pct,28.307,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,BTC,SR,0.891,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,BTC,AV_pct,37.219,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-67B-Chat,BTC,MDD_pct,17.944,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,HON,CR_pct,30.743,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,HON,SR,1.823,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,HON,AV_pct,28.335,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,HON,MDD_pct,9.195,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,TSLA,CR_pct,35.364,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,TSLA,SR,0.808,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,TSLA,AV_pct,73.561,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,TSLA,MDD_pct,35.490,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,BTC,CR_pct,13.620,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,BTC,SR,0.434,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,BTC,AV_pct,36.778,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-34B-Chat,BTC,MDD_pct,22.790,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,HON,CR_pct,26.332,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,HON,SR,1.980,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,HON,AV_pct,22.348,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,HON,MDD_pct,5.261,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,TSLA,CR_pct,21.336,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,TSLA,SR,0.729,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,TSLA,AV_pct,49.157,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,TSLA,MDD_pct,20.704,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,BTC,CR_pct,11.566,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,BTC,SR,0.869,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,BTC,AV_pct,15.608,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen2.5-32B-Instruct,BTC,MDD_pct,7.984,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),HON,CR_pct,16.686,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),HON,SR,0.974,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),HON,AV_pct,28.771,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),HON,MDD_pct,16.806,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),TSLA,CR_pct,31.458,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),TSLA,SR,0.744,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),TSLA,AV_pct,68.524,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),TSLA,MDD_pct,35.404,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),BTC,CR_pct,4.804,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),BTC,SR,0.153,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),BTC,AV_pct,36.846,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,DeepSeek-V2-Lite (15.7B),BTC,MDD_pct,20.562,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,HON,CR_pct,29.028,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,HON,SR,1.700,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,HON,AV_pct,28.682,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,HON,MDD_pct,12.588,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,TSLA,CR_pct,31.350,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,TSLA,SR,0.703,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,TSLA,AV_pct,74.895,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,TSLA,MDD_pct,37.975,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,BTC,CR_pct,7.953,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,BTC,SR,0.253,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,BTC,AV_pct,36.799,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Yi-1.5-9B-Chat,BTC,MDD_pct,26.545,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,HON,CR_pct,39.079,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,HON,SR,2.320,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,HON,AV_pct,28.299,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,HON,MDD_pct,10.341,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,TSLA,CR_pct,35.622,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,TSLA,SR,0.832,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,TSLA,AV_pct,71.936,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,TSLA,MDD_pct,36.383,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,BTC,CR_pct,20.521,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,BTC,SR,0.646,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,BTC,AV_pct,37.240,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Llama-3.1-8B-Instruct,BTC,MDD_pct,21.104,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,HON,CR_pct,4.291,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,HON,SR,0.285,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,HON,AV_pct,24.933,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,HON,MDD_pct,14.156,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,TSLA,CR_pct,41.203,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,TSLA,SR,0.925,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,TSLA,AV_pct,74.862,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,TSLA,MDD_pct,37.975,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,BTC,CR_pct,19.477,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,BTC,SR,0.612,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,BTC,AV_pct,37.289,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,Qwen-2.5-Instruct-7B,BTC,MDD_pct,20.796,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,HON,CR_pct,34.342,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,HON,SR,2.429,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,HON,AV_pct,23.913,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,HON,MDD_pct,10.872,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,TSLA,CR_pct,50.394,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,TSLA,SR,1.362,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,TSLA,AV_pct,64.004,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,TSLA,MDD_pct,37.975,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,BTC,CR_pct,45.511,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,BTC,SR,1.734,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,BTC,AV_pct,30.903,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output
+Table 2,SmolLM2-135M-Instruct,BTC,MDD_pct,24.440,,,False,False,False,not_reproduced_no_exact_model_actions_trajectory_or_result_output

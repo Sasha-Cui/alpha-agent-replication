@@ -15,6 +15,13 @@ result tables contain 360 displayed numeric cells.
   literal pinned execution matches four equity Buy-and-Hold MDD cells plus BTC
   AV and MDD. The BTC CR differs in the last displayed digit. This is baseline
   evidence, not FLAG-Trader evidence.
+- **Four additional TSLA Buy-and-Hold cells are independently checked, not reproduced.**
+  A hash-pinned current Yahoo response for the exact 150-session paper window
+  reproduces TSLA CR and MDD from unadjusted close. Its AV and Sharpe also match,
+  but only when volatility uses 365 days while return uses 252. Because the paper
+  did not freeze this response, these cells receive current-response verification
+  only and no author-baseline or FLAG-Trader result credit. In total, 10/360
+  displayed cells are checked while only 6/360 have author-linked baseline credit.
 - The BTC Sharpe cell matches only when return annualization uses 252 days while
   volatility uses 365; the released evaluator uses one calendar consistently.
 - FLAG-Trader is best in only 7/24 metric-by-asset comparisons (7/12 CR/SR and

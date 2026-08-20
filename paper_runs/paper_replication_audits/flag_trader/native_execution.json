@@ -1,5 +1,6 @@
 {
   "acl_final_result_tables_crosschecked_against_v3_source": true,
+  "current_tsla_response_cells_verified_without_paper_time_lineage": 4,
   "flag_trader_native_execution_attempted": false,
   "investorbench_baseline_cells_with_paper_result_credit": 6,
   "investorbench_baseline_formula_executed": true,
