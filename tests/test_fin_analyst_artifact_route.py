@@ -67,12 +67,13 @@ def test_native_ledger_credits_dated_outputs_but_not_common_task_or_paper_result
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_pre_live_R3_native_controlled_paths_97_official_decisions_"
-        "replayed_zero_of_119_table_cells_zero_of_2_full_empirical_panels_major_table_"
+        "replayed_5_of_119_output_verified_zero_end_to_end_zero_of_2_full_empirical_panels_major_table_"
         "figure_source_conflicts"
     )
     note = row["concise_evidence_note"]
     for marker in (
-        "97 paper-window decisions", "0/119 printed table cells",
+        "97 paper-window decisions", "5/119 printed table cells",
+        "BTC maximum drawdown",
         "TSLA +4.79%", "BTC replays -0.10%", "three HOLD votes to BUY",
         "cannot supply the six-country security-level common task",
     ):
@@ -91,7 +92,8 @@ def test_paper_route_prioritizes_public_native_evidence_without_overclaiming() -
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_disposition"] == "availability_only_no_performance_inference"
     assert row["proxy_role"] == "no_proxy"
-    assert "0/119 printed table cells" in row["precise_native_or_access_blocker"]
+    assert "5/119 printed table cells" in row["precise_native_or_access_blocker"]
+    assert "0/119 cells reproduce end to end" in row["precise_native_or_access_blocker"]
 
 
 def test_static_assets_reflect_evidence_derived_counts() -> None:
@@ -110,4 +112,4 @@ def test_static_assets_reflect_evidence_derived_counts() -> None:
     assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{34\xspace}" in routes
     failure = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
     assert "Fin-Analyst at FinMMEval Task 3 & reachable" in failure
-    assert "0/119 printed table cells" in failure
+    assert "5/119 printed table cells" in failure

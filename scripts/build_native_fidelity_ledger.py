@@ -40,9 +40,13 @@ ARTIFACT_NOTES = {
         "startup loads 6,030 JSONL records plus 249 TA rows, and controlled stubs "
         "exercise the TSLA router/eight LLM call seams and BTC vote without paid or "
         "external calls. The organizer's public database recovers 97 paper-window "
-        "decisions, and its pinned scorer replays all 97. This is strong source and "
-        "dated-output evidence but not paper-result reproduction: 0/119 printed "
-        "table cells and 0/2 full empirical panels regenerate at display precision. "
+        "decisions, and its pinned scorer replays all 97. 5/119 printed table "
+        "cells regenerate at display precision from these outputs: both TSLA/BTC acted-day "
+        "exposure cells, both day-level hit rates, and BTC maximum drawdown. Four composite "
+        "long/short hit/PnL cells recover their hit-rate component but not PnL and receive no "
+        "full-cell credit. This is strong source and dated-output verification, not an LLM "
+        "action-generation rerun: 0/119 cells reproduce end to end and 0/2 full empirical "
+        "panels regenerate. "
         "Raw prices verify both plotted Buy-and-Hold endpoints only. Official actions "
         "plus the scorer produce TSLA +4.79%, Sharpe 1.58, 45% win rate instead of "
         "+13.51%, 4.10, 88%; BTC replays -0.10%, agreeing with the figure/prose but "
@@ -1490,7 +1494,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 TARGETED_EXECUTION = {
     "SYS-FACTOR-MAD": "paper_audit:completed_six_paper_derived_mechanics_seven_fail_closed_zero_of_30_table_cells_zero_of_8_empirical_panels_no_attributable_pipeline_local_m0_proxy_no_paper_credit",
-    "SYS-FIN-ANALYST": "paper_audit:completed_pre_live_R3_native_controlled_paths_97_official_decisions_replayed_zero_of_119_table_cells_zero_of_2_full_empirical_panels_major_table_figure_source_conflicts",
+    "SYS-FIN-ANALYST": "paper_audit:completed_pre_live_R3_native_controlled_paths_97_official_decisions_replayed_5_of_119_output_verified_zero_end_to_end_zero_of_2_full_empirical_panels_major_table_figure_source_conflicts",
     "SYS-MACRO-ECONOMISTS-MACHINE": "paper_audit:completed_18_paper_derived_mechanics_four_fail_closed_zero_of_132_table_cells_zero_of_12_empirical_panels_no_attributable_pipeline_major_figure_table_conflicts",
     "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_main_nav_metrics_full_10_commit_history_supplementary_output_edit_1_of_5_metrics_consistent_31999_of_31999_data_links_no_native_training_or_backtest",
     "SYS-METAPS": "paper_audit:completed_12_paper_derived_mechanics_zero_of_492_table_cells_zero_of_20_empirical_panels_no_attributable_pipeline",

@@ -11,5 +11,5 @@ btc_all_hold_majority,source_method_conflict,"paper says final action is majorit
 btc_missing_fear_greed,source_method_conflict,"when endpoint fails, source adds the momentum vote in the fallback and then adds it again unconditionally"
 fear_greed_interpretation,narrative_rule_tension,paper calls extreme fear a long opportunity but maps scores <=40 to SELL
 full_prompts_claim,specification_conflict,"appendix says full prompts, but all nine rows are abridged versions of the released native constants"
-live_error_attribution_denominators,accounting_conflict,paper counts TSLA 19/33 and BTC 31/50 acted days while the public rows and next-move availability require different denominator conventions
+live_error_attribution_denominators,mixed_conventions_exactly_replayed,TSLA uses 33 observable market-session transitions and excludes one zero next move; BTC counts all 50 rows including its terminal action with no within-window next move. These distinct conventions reproduce both printed exposure and hit-rate cells but are not one uniform rule.
 mutable_model_replay,irrecoverable_exactness,"gpt-4o-mini alias, SDK/image dependencies, requests/responses, cache state, and API seed are not frozen"

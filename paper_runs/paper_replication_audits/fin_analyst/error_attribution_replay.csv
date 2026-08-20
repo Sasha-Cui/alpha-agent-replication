@@ -1,0 +1,13 @@
+row_label,asset,paper_components,organizer_replay_components,matching_components,total_components,full_printed_cell_match,author_native_decision_pipeline_reexecuted,verification_class,paper_result_credit
+Final return (net of fees),TSLA,[13.51],[4.790982629154003],0,1,False,False,organizer_output_conflict,False
+Acted days / exposure,TSLA,"[19.0, 33.0, 58.0]","[19.0, 33.0, 58.0]",3,3,True,False,official_decision_and_organizer_output_verification,False
+Hit rate (acted days),TSLA,[0.632],[0.631578947368421],1,1,True,False,official_decision_and_organizer_output_verification,False
+Long days: hit / total PnL,TSLA,"[0.75, -1.55]","[0.75, -0.2729171554699872]",1,2,False,False,partial_component_match_not_full_printed_cell,False
+Short days: hit / total PnL,TSLA,"[0.6, 15.17]","[0.6, 15.55800155479642]",1,2,False,False,partial_component_match_not_full_printed_cell,False
+Max equity drawdown,TSLA,[-6.1],[-7.153674351341688],0,1,False,False,organizer_output_conflict,False
+Final return (net of fees),BTC,[-5.3],[-0.0975519159096015],0,1,False,False,organizer_output_conflict,False
+Acted days / exposure,BTC,"[31.0, 50.0, 62.0]","[31.0, 50.0, 62.0]",3,3,True,False,official_decision_and_organizer_output_verification,False
+Hit rate (acted days),BTC,[0.387],[0.3870967741935484],1,1,True,False,official_decision_and_organizer_output_verification,False
+Long days: hit / total PnL,BTC,"[0.17, -6.5]","[0.16666666666666666, -5.565057502493797]",1,2,False,False,partial_component_match_not_full_printed_cell,False
+Short days: hit / total PnL,BTC,"[0.44, 7.71]","[0.44, 8.97312628316631]",1,2,False,False,partial_component_match_not_full_printed_cell,False
+Max equity drawdown,BTC,[-11.1],[-11.098150033047627],1,1,True,False,official_decision_and_organizer_output_verification,False

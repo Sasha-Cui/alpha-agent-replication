@@ -51,7 +51,7 @@ def test_original_source_rebuild_and_public_lineage_are_pinned() -> None:
     assert provenance["organizer"]["source_commit"] == audit.ARENA_COMMIT
 
 
-def test_all_119_empirical_table_cells_fail_closed() -> None:
+def test_all_119_empirical_table_cells_separate_output_verification_from_llm_replay() -> None:
     results = rows("published_result_ledger.csv")
     assert len(results) == 119
     assert Counter(row["table_label"] for row in results) == {
@@ -61,10 +61,23 @@ def test_all_119_empirical_table_cells_fail_closed() -> None:
         "tab:ablation": 20,
         "tab:error_attribution": 12,
     }
-    assert sum(row["official_input_or_result_record_recovered"] == "True" for row in results) == 8
+    assert sum(row["official_input_or_result_record_recovered"] == "True" for row in results) == 20
     assert all(row["source_document_recovered"] == "True" for row in results)
     assert all(row["author_native_decision_pipeline_reexecuted"] == "False" for row in results)
-    assert all(row["published_result_regenerated_at_display_precision"] == "False" for row in results)
+    verified = [
+        row for row in results
+        if row["published_result_regenerated_at_display_precision"] == "True"
+    ]
+    assert len(verified) == 5
+    assert {
+        (row["row_label"], row["quantitative_column_index"]) for row in verified
+    } == {
+        ("Acted days / exposure", "1"),
+        ("Acted days / exposure", "2"),
+        ("Hit rate (acted days)", "1"),
+        ("Hit rate (acted days)", "2"),
+        ("Max equity drawdown", "2"),
+    }
     assert all(row["paper_result_credit"] == "False" for row in results)
 
 
@@ -108,6 +121,27 @@ def test_official_live_decisions_replay_but_contradict_table() -> None:
     assert all(row["all_printed_live_metrics_match"] == "False" for row in replay.values())
 
 
+def test_error_attribution_replay_recovers_five_full_cells_and_four_partial_components() -> None:
+    replay = rows("error_attribution_replay.csv")
+    assert len(replay) == 12
+    exact = [row for row in replay if row["full_printed_cell_match"] == "True"]
+    assert len(exact) == 5
+    assert {(row["row_label"], row["asset"]) for row in exact} == {
+        ("Acted days / exposure", "TSLA"),
+        ("Acted days / exposure", "BTC"),
+        ("Hit rate (acted days)", "TSLA"),
+        ("Hit rate (acted days)", "BTC"),
+        ("Max equity drawdown", "BTC"),
+    }
+    partial = [row for row in replay if row["verification_class"] == "partial_component_match_not_full_printed_cell"]
+    assert len(partial) == 4
+    assert {row["row_label"] for row in partial} == {
+        "Long days: hit / total PnL", "Short days: hit / total PnL"
+    }
+    assert {row["matching_components"] for row in partial} == {"1"}
+    assert all(row["paper_result_credit"] == "False" for row in replay)
+
+
 def test_native_controlled_run_exposes_btc_vote_defects_without_external_calls() -> None:
     execution = load_json("native_execution.json")
     assert execution["pip_check_passed"] is True
@@ -138,6 +172,9 @@ def test_figure_and_internal_conflicts_are_not_silently_reconciled() -> None:
     assert checks["btc_all_hold_majority"]["status"] == "source_method_conflict"
     assert checks["btc_missing_fear_greed"]["status"] == "source_method_conflict"
     assert checks["full_prompts_claim"]["status"] == "specification_conflict"
+    assert checks["live_error_attribution_denominators"]["status"] == (
+        "mixed_conventions_exactly_replayed"
+    )
 
 
 def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) -> None:
@@ -146,7 +183,9 @@ def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) ->
     assert manifest["empirical_figure_panels"] == 2
     assert manifest["paper_window_official_decision_rows_recovered"] == 97
     assert manifest["paper_window_official_rows_replayed_with_organizer_scorer"] == 97
-    assert manifest["published_table_cells_regenerated"] == 0
+    assert manifest["published_table_cells_regenerated"] == 5
+    assert manifest["published_table_cells_verified_from_official_decisions_and_organizer_output"] == 5
+    assert manifest["published_table_cells_reproduced_end_to_end_from_native_llm_pipeline"] == 0
     assert manifest["full_empirical_figure_panels_regenerated"] == 0
     assert manifest["strict_success"] is False
     assert manifest["generated_file_sha256"] == {
@@ -156,7 +195,7 @@ def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) ->
     }
     readme = " ".join((AUDIT_DIR / "README.md").read_text().split())
     for marker in (
-        "119 displayed empirical table cells", "Zero of 119 printed table cells",
+        "119 displayed empirical table cells", "Five of 119 printed cells",
         "Three BTC HOLD votes become BUY", "99.96% extracted-token overlap",
         "strict_success` is false", "far from 100% paper-result faithfulness",
     ):
