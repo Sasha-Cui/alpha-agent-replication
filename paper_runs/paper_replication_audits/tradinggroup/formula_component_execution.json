@@ -10,7 +10,7 @@
     "cost_ratio": 0.001,
     "decision_reward": 0.017,
     "equity_return": 0.02,
-    "forecast_epsilon": 0.011040000000000003,
+    "forecast_epsilon": 0.01104,
     "hybrid_retrieval": 0.7,
     "news_influence": 0.73,
     "realized_return": 0.10000000000000009,
@@ -19,5 +19,5 @@
     "take_profit": 0.03,
     "weighted_hit": 0.7999999782996711
   },
-  "values_sha256": "af61eced3f46d9cb2e947e9035285bdc6ed8054499c1054a8238bb483023d137"
+  "values_sha256": "5d2cf4a704853770ccbf77f2d9f5df532b29f88e49585ae33d9de44e466b8766"
 }

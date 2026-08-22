@@ -28,4 +28,5 @@ raw_table_arrays,missing,no raw results
 figure_curve_arrays,missing,no cumulative-return arrays
 baseline_framework,recovered,historical FINSABER commit and author-linked inputs
 baseline_environment,reconstructed,exact listed versions for relevant packages
+baseline_model_training_window,recovered_but_paper_omitted,two years exactly regenerates all 32 ARIMA/XGBoost cells; repository default changed from two to three years before submission
 inference_engine,partial,vLLM named; version/config absent

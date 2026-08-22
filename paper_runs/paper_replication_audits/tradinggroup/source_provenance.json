@@ -26,7 +26,34 @@
     "adapter_boundary": "removes eager imports of unused external/RL modules only; strategy, data transform, commission, dates, and metrics unchanged",
     "commit": "0e794285e48fd71a4d9579ef022ee726b1e36f8a",
     "commit_authored": "2025-08-09T13:43:15+01:00",
-    "execution_config": {
+    "execution_packages": {
+      "backtrader": "1.9.78.123",
+      "matplotlib": "3.10.3",
+      "numpy": "2.3.0",
+      "pandas": "2.3.0",
+      "python-dotenv": "1.1.0",
+      "statsmodels": "0.14.2",
+      "xgboost": "3.0.2"
+    },
+    "import_adapter_sha256": "d35df9a3a948c76dcf272dd68c396679e613ba4e4d57323e5bbfe1c13961abd9",
+    "model_training_window_finding": "two years exactly regenerates all 32 eligible ARIMA/XGBoost cells; the paper does not state this parameter",
+    "origin": "https://github.com/waylonli/FINSABER.git",
+    "paper_lineage_execution_config": {
+      "date_from": "2022-10-06",
+      "date_to": "2023-04-10",
+      "save_results": false,
+      "setup_name": "cherry_pick_both_finmem",
+      "silence": true,
+      "tickers": [
+        "TSLA",
+        "NFLX",
+        "AMZN",
+        "MSFT",
+        "COIN"
+      ],
+      "training_years": 2
+    },
+    "pinned_default_execution_config": {
       "date_from": "2022-10-06",
       "date_to": "2023-04-10",
       "save_results": false,
@@ -40,17 +67,6 @@
         "COIN"
       ]
     },
-    "execution_packages": {
-      "backtrader": "1.9.78.123",
-      "matplotlib": "3.10.3",
-      "numpy": "2.3.0",
-      "pandas": "2.3.0",
-      "python-dotenv": "1.1.0",
-      "statsmodels": "0.14.2",
-      "xgboost": "3.0.2"
-    },
-    "import_adapter_sha256": "d35df9a3a948c76dcf272dd68c396679e613ba4e4d57323e5bbfe1c13961abd9",
-    "origin": "https://github.com/waylonli/FINSABER.git",
     "price_csv_sha256": "f67e3972dceefbbdf6c17b84b30957a7b83518401955fff8ae0bc4ae206fa83f",
     "safe_pickle_forbidden_construction_opcodes": {},
     "safe_pickle_global_references": {
@@ -58,7 +74,10 @@
     },
     "selective_data_sha256": "f8bfd5b3b68796b82d1857c06e1bb39991b8a973dc6d41a7ec63ff29a4e2df6f",
     "tag_containing_commit": "v2.0.1",
-    "tree": "ad47d1a27e39f359218d05e971d0599e09a489a1"
+    "three_year_default_restore_commit": "55e5c7532dcc94a4363efad3885914f117125124",
+    "training_year_override_commit": "5c4cbcff4b9f4b7e41fdf1deeb93371024f8cbab",
+    "tree": "ad47d1a27e39f359218d05e971d0599e09a489a1",
+    "two_year_default_commit": "1f3f83f4804f731d96fa95e4120cf7bffc93cc3c"
   },
   "release_boundary": {
     "attributable_tradinggroup_implementation_recovered": false,

@@ -36,6 +36,9 @@ SYSTEM_ID = "SYS-TRADING-GROUP"
 ARXIV_ID = "2508.17565"
 FINSABER_COMMIT = "0e794285e48fd71a4d9579ef022ee726b1e36f8a"
 FINSABER_TREE = "ad47d1a27e39f359218d05e971d0599e09a489a1"
+FINSABER_TWO_YEAR_DEFAULT_COMMIT = "1f3f83f4804f731d96fa95e4120cf7bffc93cc3c"
+FINSABER_THREE_YEAR_RESTORE_COMMIT = "55e5c7532dcc94a4363efad3885914f117125124"
+FINSABER_TRAINING_OVERRIDE_COMMIT = "5c4cbcff4b9f4b7e41fdf1deeb93371024f8cbab"
 
 PINS = {
     "raw/api.xml": "730eb6cb45ed0b415baa486cc01c0df63d0847a9d8a6e8b36f9a067bf8834461",
@@ -52,6 +55,7 @@ PINS = {
     "finsaber_selective_data.safe-audit.json": "12daba1f8869463140b24846481779f82321fc9c6dbea00809d75ad1704ac1cf",
     "finsaber-test-window-summary.json": "5c4aa3986293c3454634ef5fc78a5cdb834a024cf39efea387fc139dcc141851",
     "finsaber-execution-pinned.json": "63a2bf3922c7d063815e0790c7dc4ccd70f91481dcd64ac25994b7b948548f86",
+    "finsaber-execution-two-year-models.json": "bd387429c16d9d50dd40b87af9146e91f95bbe660cca46f901ef59207aa8133a",
     "finsaber-import-adapter.patch": "d35df9a3a948c76dcf272dd68c396679e613ba4e4d57323e5bbfe1c13961abd9",
     "discovery/github_code_title_arxiv.json": "66dbe8168d3d815eb63df27ad987bc092ced800e728ee06f6dbec5715963b09a",
     "discovery/github_code_checkpoint.json": "dc28063e8a4942ab20b81767b9645df891a70daee48927b440dfaad138c765e7",
@@ -141,6 +145,38 @@ def validate_inputs(scratch: Path) -> dict[str, Any]:
         raise ValueError("pinned FINSABER commit is unavailable")
     if git_output(repo, "rev-parse", f"{FINSABER_COMMIT}^{{tree}}").strip() != FINSABER_TREE:
         raise ValueError("pinned FINSABER tree changed")
+
+    for commit in (
+        FINSABER_TWO_YEAR_DEFAULT_COMMIT,
+        FINSABER_THREE_YEAR_RESTORE_COMMIT,
+        FINSABER_TRAINING_OVERRIDE_COMMIT,
+    ):
+        if git_output(repo, "rev-parse", f"{commit}^{{commit}}").strip() != commit:
+            raise ValueError(f"historical FINSABER commit is unavailable: {commit}")
+    model_paths = (
+        "backtest/strategy/timing/arima_predictor.py",
+        "backtest/strategy/timing/xgboost_predictor.py",
+    )
+    for model_path in model_paths:
+        two_year_source = git_output(
+            repo, "show", f"{FINSABER_TWO_YEAR_DEFAULT_COMMIT}:{model_path}"
+        )
+        three_year_source = git_output(
+            repo, "show", f"{FINSABER_THREE_YEAR_RESTORE_COMMIT}:{model_path}"
+        )
+        if '("train_period", 252 * 2)' not in two_year_source:
+            raise ValueError(
+                f"two-year FINSABER model default is absent at pinned commit: {model_path}"
+            )
+        if '("train_period", 252 * 3)' not in three_year_source:
+            raise ValueError(
+                f"three-year FINSABER model default is absent at pinned commit: {model_path}"
+            )
+    override_source = git_output(
+        repo, "show", f"{FINSABER_TRAINING_OVERRIDE_COMMIT}:backtest/finsaber_bt.py"
+    )
+    if "test_config.training_years * 252" not in override_source:
+        raise ValueError("FINSABER training-year override is not present at its pinned commit")
 
     with tarfile.open(scratch / "raw/source.tar") as archive:
         members = [
@@ -368,10 +404,9 @@ def source_csv_values(repo: Path) -> dict[tuple[str, str, str], float]:
     return output
 
 
-def execution_values(scratch: Path) -> tuple[dict[tuple[str, str, str], float], dict]:
-    document = json.loads(
-        (scratch / "finsaber-execution-pinned.json").read_text(encoding="utf-8")
-    )
+def values_from_execution_document(
+    document: Mapping[str, Any],
+) -> dict[tuple[str, str, str], float]:
     output: dict[tuple[str, str, str], float] = {}
     for class_name, ticker_results in document["results"].items():
         strategy = EXECUTION_CLASS_TO_PAPER[class_name]
@@ -384,7 +419,38 @@ def execution_values(scratch: Path) -> tuple[dict[tuple[str, str, str], float], 
             }
             for metric, value in mapping.items():
                 output[(ticker, strategy, metric)] = float(value)
-    return output, document
+    return output
+
+
+def execution_values(
+    scratch: Path,
+) -> tuple[
+    dict[tuple[str, str, str], float],
+    dict[tuple[str, str, str], float],
+    dict[str, Any],
+]:
+    default_document = json.loads(
+        (scratch / "finsaber-execution-pinned.json").read_text(encoding="utf-8")
+    )
+    two_year_document = json.loads(
+        (scratch / "finsaber-execution-two-year-models.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    if two_year_document["inputs"]["config"].get("training_years") != 2:
+        raise ValueError("paper-lineage model execution did not record two training years")
+    if set(two_year_document["results"]) != {
+        "ARIMAPredictorStrategy", "XGBoostPredictorStrategy",
+    }:
+        raise ValueError("paper-lineage execution must contain exactly ARIMA and XGBoost")
+
+    default = values_from_execution_document(default_document)
+    paper_lineage = dict(default)
+    paper_lineage.update(values_from_execution_document(two_year_document))
+    return paper_lineage, default, {
+        "pinned_default_three_year": default_document,
+        "paper_lineage_two_year_models": two_year_document,
+    }
 
 
 def within_display_precision(value: float, paper: Mapping[str, Any]) -> bool:
@@ -396,7 +462,7 @@ def result_and_execution_ledgers(
     paper_rows: list[dict[str, Any]], repo: Path, scratch: Path
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict]:
     source = source_csv_values(repo)
-    execution, execution_document = execution_values(scratch)
+    execution, default_execution, execution_documents = execution_values(scratch)
     paper_by_key = {
         (row["ticker"], row["result_group"], row["metric"]): row
         for row in paper_rows if row["table"] == "Table 1"
@@ -427,6 +493,8 @@ def result_and_execution_ledgers(
         ticker, strategy, metric = key
         paper = paper_by_key[key]
         source_value = source.get(key)
+        default_value = default_execution.get(key)
+        model_lineage = strategy in {"ARIMA", "XGBoost"}
         execution_ledger.append(
             {
                 "ticker": ticker,
@@ -437,6 +505,17 @@ def result_and_execution_ledgers(
                 "fresh_execution_value": f"{execution[key]:.12g}",
                 "fresh_execution_matches_paper": within_display_precision(
                     execution[key], paper
+                ),
+                "execution_configuration": (
+                    "historical_two_year_model_window"
+                    if model_lineage else "pinned_default"
+                ),
+                "pinned_default_execution_value": (
+                    "" if default_value is None else f"{default_value:.12g}"
+                ),
+                "pinned_default_execution_matches_paper": (
+                    False if default_value is None
+                    else within_display_precision(default_value, paper)
                 ),
                 "historical_source_csv_value": (
                     "" if source_value is None else source_value
@@ -479,7 +558,7 @@ def result_and_execution_ledgers(
                 "native_tradinggroup_credit": False,
             }
         )
-    return published, execution_ledger, source_ledger, execution_document
+    return published, execution_ledger, source_ledger, execution_documents
 
 
 class RestrictedDataUnpickler(pickle.Unpickler):
@@ -569,11 +648,11 @@ def formula_inventory() -> list[dict[str, Any]]:
 
 def formula_component_execution() -> dict[str, Any]:
     returns = [-0.012, 0.009, 0.014, -0.005, 0.006] * 4
-    mean = sum(returns) / len(returns)
+    mean = math.fsum(returns) / len(returns)
     simplified_atr = 100 * math.sqrt(
-        sum((value - mean) ** 2 for value in returns) / len(returns)
+        math.fsum((value - mean) ** 2 for value in returns) / len(returns)
     )
-    epsilon = max(1.2 * sum(abs(value) for value in returns) / 20, 0.005)
+    epsilon = max(1.2 * math.fsum(abs(value) for value in returns) / 20, 0.005)
     values = {
         "news_influence": 0.55 * 0.6 + 0.25 * 0.8 + 0.20,
         "hybrid_retrieval": 1.0 * 0.5 + 0.8 * 0.25,
@@ -663,6 +742,7 @@ def method_specification() -> list[dict[str, Any]]:
         ("figure_curve_arrays", "missing", "no cumulative-return arrays"),
         ("baseline_framework", "recovered", "historical FINSABER commit and author-linked inputs"),
         ("baseline_environment", "reconstructed", "exact listed versions for relevant packages"),
+        ("baseline_model_training_window", "recovered_but_paper_omitted", "two years exactly regenerates all 32 ARIMA/XGBoost cells; repository default changed from two to three years before submission"),
         ("inference_engine", "partial", "vLLM named; version/config absent"),
     ]
     return [
@@ -683,9 +763,9 @@ def internal_consistency(annotation_rows: list[dict[str, Any]]) -> list[dict[str
         {"claim_id": "tsla_rm_pc_spr_annotation", "status": "annotation_rounding_mismatch", "audit_finding": "Displayed 1.070 to 0.409 is -61.776%, which rounds to -62%, not printed -61%."},
         {"claim_id": "tsla_rm_pc_cr_annotation", "status": "annotation_and_prose_rounding_mismatch", "audit_finding": "Displayed 21.904 to 5.276 is -75.913%, which rounds to -76%, not printed/prose -77%."},
         {"claim_id": "global_optimum", "status": "overbroad_ambiguous_claim", "audit_finding": "The claim of globally optimal overall performance is not a defined aggregate metric; TradingGroup is not best on every individual metric for TSLA or COIN."},
-        {"claim_id": "finsaber_coin_execution", "status": "advertised_runner_conflict", "audit_finding": "The historical runner omits COIN for all eight executed strategies because its three-year prior-history guard fails, yet Table 1 prints COIN rows."},
+        {"claim_id": "finsaber_coin_execution", "status": "advertised_runner_conflict", "audit_finding": "The historical default runner omits COIN for all eight strategies under its prior-history guards; the recovered two-year model run still lacks enough COIN history, yet Table 1 prints a numeric XGBoost row."},
         {"claim_id": "deterministic_baselines", "status": "substantial_fresh_reproduction", "audit_finding": "Fresh pinned execution matches 96/96 paper cells for six deterministic strategies on four eligible tickers."},
-        {"claim_id": "model_baselines", "status": "unresolved_result_lineage_mismatch", "audit_finding": "Exact listed dependency versions reproduce 0/16 ARIMA and 0/16 XGBoost paper cells."},
+        {"claim_id": "model_baselines", "status": "exact_historical_configuration_reproduction", "audit_finding": "A two-year training window reproduces 16/16 ARIMA and 16/16 XGBoost cells exactly; the paper omits this parameter and the source default was restored to three years before submission."},
         {"claim_id": "source_csv_lineage", "status": "historical_output_conflict", "audit_finding": "Historical committed FINSABER CSVs match only 59/168 comparable numeric paper cells; fresh deterministic execution matches more of the TradingGroup paper than those CSVs."},
         {"claim_id": "native_results", "status": "unverifiable_without_release", "audit_finding": "No native agent code, checkpoint, trajectories, actions, fills, NAVs, or figure arrays were released."},
     ]
@@ -717,7 +797,7 @@ def discovery_evidence(scratch: Path) -> list[dict[str, Any]]:
 
 
 def source_provenance(
-    scratch: Path, validated: dict[str, Any], execution_document: dict
+    scratch: Path, validated: dict[str, Any], execution_documents: dict
 ) -> dict[str, Any]:
     safe_audit = json.loads(
         (scratch / "finsaber_selective_data.safe-audit.json").read_text()
@@ -746,8 +826,19 @@ def source_provenance(
             "price_csv_sha256": PINS["finsaber_price_only.csv"],
             "safe_pickle_global_references": safe_audit["opcode_audit"]["global_references"],
             "safe_pickle_forbidden_construction_opcodes": safe_audit["opcode_audit"]["forbidden_construction_opcodes"],
-            "execution_packages": execution_document["execution"]["packages"],
-            "execution_config": execution_document["inputs"]["config"],
+            "execution_packages": execution_documents[
+                "paper_lineage_two_year_models"
+            ]["execution"]["packages"],
+            "paper_lineage_execution_config": execution_documents[
+                "paper_lineage_two_year_models"
+            ]["inputs"]["config"],
+            "pinned_default_execution_config": execution_documents[
+                "pinned_default_three_year"
+            ]["inputs"]["config"],
+            "two_year_default_commit": FINSABER_TWO_YEAR_DEFAULT_COMMIT,
+            "three_year_default_restore_commit": FINSABER_THREE_YEAR_RESTORE_COMMIT,
+            "training_year_override_commit": FINSABER_TRAINING_OVERRIDE_COMMIT,
+            "model_training_window_finding": "two years exactly regenerates all 32 eligible ARIMA/XGBoost cells; the paper does not state this parameter",
             "import_adapter_sha256": PINS["finsaber-import-adapter.patch"],
             "adapter_boundary": "removes eager imports of unused external/RL modules only; strategy, data transform, commission, dates, and metrics unchanged",
         },
@@ -765,7 +856,7 @@ def source_provenance(
 def readme() -> str:
     return """# TradingGroup paper-level replication audit
 
-Overall verdict: **paper document, exact test data, formulas, and substantial
+Overall verdict: **paper document, exact test data, formulas, and all eligible
 source-adjacent baselines reproduced; native TradingGroup experiment not
 reproduced**.
 
@@ -783,10 +874,13 @@ reproduced**.
   filings; and both filing types for the other four tickers.
 - The exact historical pre-submission FINSABER commit and both author-linked
   input files execute under the relevant versions from its requirements. Eight
-  Table 1 strategies yield 128 eligible cells. Buy-and-Hold, SMA, WMA, ATR,
-  Bollinger, and Turn-of-Month reproduce **96/96** cells at paper display
-  precision; ARIMA and XGBoost reproduce **0/32**. Every strategy omits COIN
-  under the runner's three-year-history guard.
+  Table 1 strategies yield 128 eligible cells and reproduce **128/128** at paper
+  display precision. The six deterministic strategies account for 96/96. A
+  historical two-year training window exactly recovers the remaining 16/16
+  ARIMA and 16/16 XGBoost cells. The paper omits this parameter, and FINSABER
+  restored a three-year default before the paper's submission. The audited
+  runner omits COIN; even the recovered two-year model window lacks enough prior
+  COIN history.
 - All 13 printed formula units execute on a declared synthetic fixture. This is
   formula-component evidence only. Figure 2 contains useful but truncated
   runtime-shaped examples for all five agents.
@@ -804,9 +898,14 @@ framework and data source; it is not the missing TradingGroup system.
 ## Important consistency and lineage findings
 
 - The recovered data confirms the paper's detailed test-set claims exactly.
-- Six deterministic baselines regenerate perfectly, but the FINSABER repository's
-  historical committed result CSVs match only 59/168 comparable numeric paper
-  cells. Exact listed dependency versions do not reconcile ARIMA/XGBoost.
+- All 128 eligible baseline cells regenerate exactly. The model cells require
+  the source repository's historical two-year training window; its later
+  three-year default produces 0/32 model-cell matches. Because the paper never
+  states this parameter, result lineage is recovered but the method remains
+  under-specified.
+- The FINSABER repository's historical committed result CSVs match only 59/168
+  comparable numeric paper cells and therefore are not the paper's result
+  lineage.
 - The advertised historical runner omits COIN because its three-year prior-data
   guard fails, while the paper prints COIN values for those baselines.
 - Table 2 supports the claim that PEFT improves SPR and CR on all five tickers
@@ -833,7 +932,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     table2 = table2_rows(tex)
     table3, annotations = table3_rows(tex)
     paper_rows = table1 + table2 + table3
-    published, execution, source_comparison, execution_document = (
+    published, execution, source_comparison, execution_documents = (
         result_and_execution_ledgers(
             paper_rows, validated["finsaber_repo"], scratch
         )
@@ -855,7 +954,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "discovery_evidence.csv", discovery_evidence(scratch))
     write_json(
         output / "source_provenance.json",
-        source_provenance(scratch, validated, execution_document),
+        source_provenance(scratch, validated, execution_documents),
     )
     (output / "README.md").write_text(readme(), encoding="utf-8")
 
@@ -885,6 +984,14 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "source_adjacent_baseline_cells_executed": len(execution),
         "source_adjacent_baseline_cells_matching_paper": sum(
             row["fresh_execution_matches_paper"] for row in execution
+        ),
+        "source_adjacent_baseline_cells_matching_pinned_default": sum(
+            row["pinned_default_execution_matches_paper"] for row in execution
+        ),
+        "model_baseline_training_years_recovered": 2,
+        "model_baseline_cells_matching_paper": sum(
+            row["fresh_execution_matches_paper"]
+            for row in execution if row["strategy"] in {"ARIMA", "XGBoost"}
         ),
         "historical_source_csv_comparable_numeric_cells": len(source_comparison) - source_statuses["paper_dash_or_no_numeric_cell"],
         "historical_source_csv_cells_matching_paper": source_statuses["matches_paper_at_display_precision"],

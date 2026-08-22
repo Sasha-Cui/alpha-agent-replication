@@ -1,6 +1,6 @@
 # TradingGroup paper-level replication audit
 
-Overall verdict: **paper document, exact test data, formulas, and substantial
+Overall verdict: **paper document, exact test data, formulas, and all eligible
 source-adjacent baselines reproduced; native TradingGroup experiment not
 reproduced**.
 
@@ -18,10 +18,13 @@ reproduced**.
   filings; and both filing types for the other four tickers.
 - The exact historical pre-submission FINSABER commit and both author-linked
   input files execute under the relevant versions from its requirements. Eight
-  Table 1 strategies yield 128 eligible cells. Buy-and-Hold, SMA, WMA, ATR,
-  Bollinger, and Turn-of-Month reproduce **96/96** cells at paper display
-  precision; ARIMA and XGBoost reproduce **0/32**. Every strategy omits COIN
-  under the runner's three-year-history guard.
+  Table 1 strategies yield 128 eligible cells and reproduce **128/128** at paper
+  display precision. The six deterministic strategies account for 96/96. A
+  historical two-year training window exactly recovers the remaining 16/16
+  ARIMA and 16/16 XGBoost cells. The paper omits this parameter, and FINSABER
+  restored a three-year default before the paper's submission. The audited
+  runner omits COIN; even the recovered two-year model window lacks enough prior
+  COIN history.
 - All 13 printed formula units execute on a declared synthetic fixture. This is
   formula-component evidence only. Figure 2 contains useful but truncated
   runtime-shaped examples for all five agents.
@@ -39,9 +42,14 @@ framework and data source; it is not the missing TradingGroup system.
 ## Important consistency and lineage findings
 
 - The recovered data confirms the paper's detailed test-set claims exactly.
-- Six deterministic baselines regenerate perfectly, but the FINSABER repository's
-  historical committed result CSVs match only 59/168 comparable numeric paper
-  cells. Exact listed dependency versions do not reconcile ARIMA/XGBoost.
+- All 128 eligible baseline cells regenerate exactly. The model cells require
+  the source repository's historical two-year training window; its later
+  three-year default produces 0/32 model-cell matches. Because the paper never
+  states this parameter, result lineage is recovered but the method remains
+  under-specified.
+- The FINSABER repository's historical committed result CSVs match only 59/168
+  comparable numeric paper cells and therefore are not the paper's result
+  lineage.
 - The advertised historical runner omits COIN because its three-year prior-data
   guard fails, while the paper prints COIN values for those baselines.
 - Table 2 supports the claim that PEFT improves SPR and CR on all five tickers

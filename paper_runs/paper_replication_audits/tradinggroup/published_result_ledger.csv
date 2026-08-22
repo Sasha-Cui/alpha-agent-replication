@@ -23,14 +23,14 @@ Table 1,TSLA,Turn of The Month,SPR,0.219,0.219,3,False,none,,True,True,False,Fal
 Table 1,TSLA,Turn of The Month,CR,3.636,3.636,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,TSLA,Turn of The Month,MDD,-11.643,-11.643,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,TSLA,Turn of The Month,AV,31.043,31.043,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
-Table 1,TSLA,ARIMA,SPR,0.464,0.464,3,False,none,,True,False,False,False,False,none
-Table 1,TSLA,ARIMA,CR,10.301,10.301,3,False,none,,True,False,False,False,False,none
-Table 1,TSLA,ARIMA,MDD,-23.524,-23.524,3,False,none,,True,False,False,False,False,none
-Table 1,TSLA,ARIMA,AV,41.496,41.496,3,False,none,,True,False,False,False,False,none
-Table 1,TSLA,XGBoost,SPR,-0.262,-0.262,3,False,none,,True,False,False,False,False,none
-Table 1,TSLA,XGBoost,CR,-14.133,-14.133,3,False,none,,True,False,False,False,False,none
-Table 1,TSLA,XGBoost,MDD,-43.457,-43.457,3,False,none,,True,False,False,False,False,none
-Table 1,TSLA,XGBoost,AV,47.944,47.944,3,False,none,,True,False,False,False,False,none
+Table 1,TSLA,ARIMA,SPR,0.464,0.464,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,ARIMA,CR,10.301,10.301,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,ARIMA,MDD,-23.524,-23.524,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,ARIMA,AV,41.496,41.496,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,XGBoost,SPR,-0.262,-0.262,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,XGBoost,CR,-14.133,-14.133,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,XGBoost,MDD,-43.457,-43.457,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,TSLA,XGBoost,AV,47.944,47.944,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,TSLA,A2C,SPR,-0.343,-0.343,3,False,none,,False,False,False,False,False,none
 Table 1,TSLA,A2C,CR,-20.423,-20.423,3,False,none,,False,False,False,False,False,none
 Table 1,TSLA,A2C,MDD,-52.592,-52.592,3,False,none,,False,False,False,False,False,none
@@ -71,14 +71,14 @@ Table 1,NFLX,Turn of The Month,SPR,0.559,0.559,3,False,none,,True,True,False,Fal
 Table 1,NFLX,Turn of The Month,CR,8.383,8.383,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,NFLX,Turn of The Month,MDD,-10.641,-10.641,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,NFLX,Turn of The Month,AV,17.194,17.194,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
-Table 1,NFLX,ARIMA,SPR,1.946,1.946,3,False,none,,True,False,False,False,False,none
-Table 1,NFLX,ARIMA,CR,53.64,53.64,2,False,none,,True,False,False,False,False,none
-Table 1,NFLX,ARIMA,MDD,-13.247,-13.247,3,False,none,,True,False,False,False,False,none
-Table 1,NFLX,ARIMA,AV,31.591,31.591,3,False,none,,True,False,False,False,False,none
-Table 1,NFLX,XGBoost,SPR,0.734,0.734,3,False,none,,True,False,False,False,False,none
-Table 1,NFLX,XGBoost,CR,9.452,9.452,3,False,none,,True,False,False,False,False,none
-Table 1,NFLX,XGBoost,MDD,-7.197,-7.197,3,False,none,,True,False,False,False,False,none
-Table 1,NFLX,XGBoost,AV,14.386,14.386,3,False,none,,True,False,False,False,False,none
+Table 1,NFLX,ARIMA,SPR,1.946,1.946,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,ARIMA,CR,53.64,53.64,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,ARIMA,MDD,-13.247,-13.247,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,ARIMA,AV,31.591,31.591,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,XGBoost,SPR,0.734,0.734,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,XGBoost,CR,9.452,9.452,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,XGBoost,MDD,-7.197,-7.197,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,NFLX,XGBoost,AV,14.386,14.386,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,NFLX,SAC,SPR,1.325,1.325,3,False,none,,False,False,False,False,False,none
 Table 1,NFLX,SAC,CR,42.872,42.872,3,False,none,,False,False,False,False,False,none
 Table 1,NFLX,SAC,MDD,-20.121,-20.121,3,False,none,,False,False,False,False,False,none
@@ -119,14 +119,14 @@ Table 1,AMZN,Turn of The Month,SPR,-0.037,-0.037,3,False,none,,True,True,False,F
 Table 1,AMZN,Turn of The Month,CR,0.044,0.044,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,AMZN,Turn of The Month,MDD,-14.892,-14.892,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,AMZN,Turn of The Month,AV,20.723,20.723,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
-Table 1,AMZN,ARIMA,SPR,0.029,0.029,3,False,none,,True,False,False,False,False,none
-Table 1,AMZN,ARIMA,CR,0.553,0.553,3,False,none,,True,False,False,False,False,none
-Table 1,AMZN,ARIMA,MDD,-10.854,-10.854,3,False,none,,True,False,False,False,False,none
-Table 1,AMZN,ARIMA,AV,24.267,24.267,3,False,none,,True,False,False,False,False,none
-Table 1,AMZN,XGBoost,SPR,-0.361,-0.361,3,False,none,,True,False,False,False,False,none
-Table 1,AMZN,XGBoost,CR,-5.295,-5.295,3,False,none,,True,False,False,False,False,none
-Table 1,AMZN,XGBoost,MDD,-19.91,-19.91,2,False,none,,True,False,False,False,False,none
-Table 1,AMZN,XGBoost,AV,22.413,22.413,3,False,none,,True,False,False,False,False,none
+Table 1,AMZN,ARIMA,SPR,0.029,0.029,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,ARIMA,CR,0.553,0.553,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,ARIMA,MDD,-10.854,-10.854,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,ARIMA,AV,24.267,24.267,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,XGBoost,SPR,-0.361,-0.361,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,XGBoost,CR,-5.295,-5.295,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,XGBoost,MDD,-19.91,-19.91,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,AMZN,XGBoost,AV,22.413,22.413,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,AMZN,FinMem,SPR,-0.888,-0.888,3,False,none,,False,False,False,False,False,none
 Table 1,AMZN,FinMem,CR,-4.83,-4.83,2,False,none,,False,False,False,False,False,none
 Table 1,AMZN,FinMem,MDD,-10.281,-10.281,3,False,none,,False,False,False,False,False,none
@@ -163,14 +163,14 @@ Table 1,MSFT,Turn of The Month,SPR,-0.036,-0.036,3,False,none,,True,True,False,F
 Table 1,MSFT,Turn of The Month,CR,0.951,0.951,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,MSFT,Turn of The Month,MDD,-11.95,-11.95,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,MSFT,Turn of The Month,AV,15.09,15.09,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
-Table 1,MSFT,ARIMA,SPR,1.095,1.095,3,False,none,,True,False,False,False,False,none
-Table 1,MSFT,ARIMA,CR,20.228,20.228,3,False,none,,True,False,False,False,False,none
-Table 1,MSFT,ARIMA,MDD,-12.073,-12.073,3,False,none,,True,False,False,False,False,none
-Table 1,MSFT,ARIMA,AV,22.993,22.993,3,False,none,,True,False,False,False,False,none
-Table 1,MSFT,XGBoost,SPR,0.989,0.989,3,False,none,,True,False,False,False,False,none
-Table 1,MSFT,XGBoost,CR,15.874,15.874,3,False,none,,True,False,False,False,False,none
-Table 1,MSFT,XGBoost,MDD,-11.028,-11.028,3,False,none,,True,False,False,False,False,none
-Table 1,MSFT,XGBoost,AV,19.503,19.503,3,False,none,,True,False,False,False,False,none
+Table 1,MSFT,ARIMA,SPR,1.095,1.095,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,ARIMA,CR,20.228,20.228,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,ARIMA,MDD,-12.073,-12.073,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,ARIMA,AV,22.993,22.993,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,XGBoost,SPR,0.989,0.989,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,XGBoost,CR,15.874,15.874,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,XGBoost,MDD,-11.028,-11.028,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,MSFT,XGBoost,AV,19.503,19.503,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,MSFT,A2C,SPR,0.973,0.973,3,False,none,,False,False,False,False,False,none
 Table 1,MSFT,A2C,CR,21.026,21.026,3,False,none,,False,False,False,False,False,none
 Table 1,MSFT,A2C,MDD,-14.099,-14.099,3,False,none,,False,False,False,False,False,none

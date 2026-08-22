@@ -69,12 +69,12 @@ def test_complete_result_denominator_separates_native_and_baseline_credit() -> N
     assert all(row["native_pipeline_executed"] == "False" for row in ledger)
     assert all(row["native_result_regenerated"] == "False" for row in ledger)
     credited = [row for row in ledger if row["paper_result_credit"] == "True"]
-    assert len(credited) == 96
+    assert len(credited) == 128
     assert all(row["credit_class"] == "source_adjacent_baseline_execution" for row in credited)
     assert all(row["native_tradinggroup_result"] == "False" for row in credited)
 
 
-def test_exact_finsaber_execution_recovers_six_baselines_not_native_system() -> None:
+def test_exact_finsaber_execution_recovers_all_eligible_baselines_not_native_system() -> None:
     ledger = rows("finsaber_execution_ledger.csv")
     assert len(ledger) == manifest()["source_adjacent_baseline_cells_executed"] == 128
     assert Counter(row["strategy"] for row in ledger) == {
@@ -88,7 +88,7 @@ def test_exact_finsaber_execution_recovers_six_baselines_not_native_system() -> 
         "XGBoost": 16,
     }
     matches = [row for row in ledger if row["fresh_execution_matches_paper"] == "True"]
-    assert len(matches) == manifest()["source_adjacent_baseline_cells_matching_paper"] == 96
+    assert len(matches) == manifest()["source_adjacent_baseline_cells_matching_paper"] == 128
     assert Counter(row["strategy"] for row in matches) == {
         "Buy and Hold": 16,
         "SMA Cross": 16,
@@ -96,8 +96,22 @@ def test_exact_finsaber_execution_recovers_six_baselines_not_native_system() -> 
         "ATR Band": 16,
         "Bollinger Bands": 16,
         "Turn of The Month": 16,
+        "ARIMA": 16,
+        "XGBoost": 16,
     }
-    assert not any(row["strategy"] in {"ARIMA", "XGBoost"} for row in matches)
+    model_rows = [row for row in ledger if row["strategy"] in {"ARIMA", "XGBoost"}]
+    assert all(
+        row["execution_configuration"] == "historical_two_year_model_window"
+        for row in model_rows
+    )
+    assert all(row["fresh_execution_matches_paper"] == "True" for row in model_rows)
+    assert all(
+        row["pinned_default_execution_matches_paper"] == "False"
+        for row in model_rows
+    )
+    assert manifest()["source_adjacent_baseline_cells_matching_pinned_default"] == 96
+    assert manifest()["model_baseline_training_years_recovered"] == 2
+    assert manifest()["model_baseline_cells_matching_paper"] == 32
     assert all(row["ticker"] != "COIN" for row in ledger)
     assert all(row["native_tradinggroup_credit"] == "False" for row in ledger)
     source = rows("finsaber_source_output_comparison.csv")
@@ -170,7 +184,7 @@ def test_displayed_arithmetic_and_framework_conflicts_are_audited() -> None:
     checks = {row["claim_id"]: row for row in rows("internal_consistency_audit.csv")}
     assert checks["dataset_claims"]["status"] == "passes_recovered_data_check"
     assert checks["deterministic_baselines"]["status"] == "substantial_fresh_reproduction"
-    assert checks["model_baselines"]["status"] == "unresolved_result_lineage_mismatch"
+    assert checks["model_baselines"]["status"] == "exact_historical_configuration_reproduction"
     assert checks["finsaber_coin_execution"]["status"] == "advertised_runner_conflict"
     assert checks["global_optimum"]["status"] == "overbroad_ambiguous_claim"
     assert checks["native_results"]["status"] == "unverifiable_without_release"
@@ -178,9 +192,10 @@ def test_displayed_arithmetic_and_framework_conflicts_are_audited() -> None:
 
 def test_method_and_discovery_ledgers_do_not_invent_native_release() -> None:
     methods = {row["dimension"]: row for row in rows("method_specification_audit.csv")}
-    assert len(methods) == 30
+    assert len(methods) == 31
     assert methods["test_data"]["status"] == "recovered"
     assert methods["baseline_framework"]["status"] == "recovered"
+    assert methods["baseline_model_training_window"]["status"] == "recovered_but_paper_omitted"
     for dimension in (
         "peft_hyperparameters", "checkpoint", "full_prompts",
         "runtime_model_requests", "chain_of_thought", "style_multipliers",
@@ -199,6 +214,9 @@ def test_method_and_discovery_ledgers_do_not_invent_native_release() -> None:
     assert boundary["attributable_tradinggroup_implementation_recovered"] is False
     assert boundary["qwen3_trader_checkpoint_recovered"] is False
     assert boundary["finsaber_is_source_adjacent_baseline_framework_not_tradinggroup_source"] is True
+    finsaber = provenance["finsaber"]
+    assert finsaber["paper_lineage_execution_config"]["training_years"] == 2
+    assert "all 32" in finsaber["model_training_window_finding"]
 
 
 def test_generator_is_deterministic_and_strict_mode_fails_closed(tmp_path: Path) -> None:
@@ -239,6 +257,7 @@ def test_manifest_hashes_outputs_and_readme_states_honest_boundary() -> None:
     text = (AUDIT_DIR / "README.md").read_text(encoding="utf-8")
     assert "native TradingGroup experiment not\nreproduced" in text
     assert "**0/120 unique native table cells**" in text
-    assert "**96/96**" in text
+    assert "**128/128**" in text
+    assert "16/16 XGBoost" in text
     assert "FINSABER is the cited baseline" in text
     assert "bounded public search" in text
