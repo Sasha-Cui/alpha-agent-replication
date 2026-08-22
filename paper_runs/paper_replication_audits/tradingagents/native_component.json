@@ -1,11 +1,18 @@
 {
   "source_commit": "cc97cb6d5deb10eac370db0c6678e2796a62eba8",
-  "source_python": "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+  "source_python": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_tradingagents_v010_python.sh",
   "tracked_python_files_compiled": 39,
-  "compile_status": "passed_without_importing_declared_dependencies",
+  "compile_status": "passed_in_reconstructed_declared_dependency_environment",
   "upstream_tests_shipped": 0,
-  "dependency_environment_reproduced": false,
-  "dependency_isolation": "import-only fakes for LangChain/LangGraph; actual tagged routing/setup/propagation/signal files executed",
+  "dependency_environment_reproduced": true,
+  "release_declared_requirements": 24,
+  "dependency_environment_scope": "all 24 release-declared unpinned requirements resolved in clean Python 3.10; exact 2025 package versions remain unrecoverable",
+  "exact_historical_dependency_versions_recovered": false,
+  "pip_check": "No broken requirements found.",
+  "dependency_freeze_sha256": "d35fd4aa1827f0fe4c151f5b0c3e383620c599215a188f23f2d367c78819b826",
+  "dependency_freeze_lines": 247,
+  "network_boundary": "httpx sync/async and requests sends blocked; constructor completed with zero attempts",
+  "dependency_isolation": "none for imports, OpenAI clients, Chroma memories, LangGraph, ToolNode, source factories, or graph compilation",
   "semantic_component": {
     "conditional_router_count": 9,
     "conditional_router_nodes": [
@@ -118,6 +125,292 @@
     ]
   },
   "semantic_component_sha256": "a3737503e9519966698005768d6afac2aa688565a18695f18800418cfc6848a1",
+  "real_dependency_component": {
+    "compiled_graph_type": "langgraph.graph.state.CompiledStateGraph",
+    "conditional_edge_count": 18,
+    "graph_edge_count": 30,
+    "graph_edges": [
+      {
+        "conditional": true,
+        "source": "Bear Researcher",
+        "target": "Bull Researcher"
+      },
+      {
+        "conditional": true,
+        "source": "Bear Researcher",
+        "target": "Research Manager"
+      },
+      {
+        "conditional": true,
+        "source": "Bull Researcher",
+        "target": "Bear Researcher"
+      },
+      {
+        "conditional": true,
+        "source": "Bull Researcher",
+        "target": "Research Manager"
+      },
+      {
+        "conditional": true,
+        "source": "Fundamentals Analyst",
+        "target": "Msg Clear Fundamentals"
+      },
+      {
+        "conditional": true,
+        "source": "Fundamentals Analyst",
+        "target": "tools_fundamentals"
+      },
+      {
+        "conditional": true,
+        "source": "Market Analyst",
+        "target": "Msg Clear Market"
+      },
+      {
+        "conditional": true,
+        "source": "Market Analyst",
+        "target": "tools_market"
+      },
+      {
+        "conditional": false,
+        "source": "Msg Clear Fundamentals",
+        "target": "Bull Researcher"
+      },
+      {
+        "conditional": false,
+        "source": "Msg Clear Market",
+        "target": "Social Analyst"
+      },
+      {
+        "conditional": false,
+        "source": "Msg Clear News",
+        "target": "Fundamentals Analyst"
+      },
+      {
+        "conditional": false,
+        "source": "Msg Clear Social",
+        "target": "News Analyst"
+      },
+      {
+        "conditional": true,
+        "source": "Neutral Analyst",
+        "target": "Risk Judge"
+      },
+      {
+        "conditional": true,
+        "source": "Neutral Analyst",
+        "target": "Risky Analyst"
+      },
+      {
+        "conditional": true,
+        "source": "News Analyst",
+        "target": "Msg Clear News"
+      },
+      {
+        "conditional": true,
+        "source": "News Analyst",
+        "target": "tools_news"
+      },
+      {
+        "conditional": false,
+        "source": "Research Manager",
+        "target": "Trader"
+      },
+      {
+        "conditional": false,
+        "source": "Risk Judge",
+        "target": "__end__"
+      },
+      {
+        "conditional": true,
+        "source": "Risky Analyst",
+        "target": "Risk Judge"
+      },
+      {
+        "conditional": true,
+        "source": "Risky Analyst",
+        "target": "Safe Analyst"
+      },
+      {
+        "conditional": true,
+        "source": "Safe Analyst",
+        "target": "Neutral Analyst"
+      },
+      {
+        "conditional": true,
+        "source": "Safe Analyst",
+        "target": "Risk Judge"
+      },
+      {
+        "conditional": true,
+        "source": "Social Analyst",
+        "target": "Msg Clear Social"
+      },
+      {
+        "conditional": true,
+        "source": "Social Analyst",
+        "target": "tools_social"
+      },
+      {
+        "conditional": false,
+        "source": "Trader",
+        "target": "Risky Analyst"
+      },
+      {
+        "conditional": false,
+        "source": "__start__",
+        "target": "Market Analyst"
+      },
+      {
+        "conditional": false,
+        "source": "tools_fundamentals",
+        "target": "Fundamentals Analyst"
+      },
+      {
+        "conditional": false,
+        "source": "tools_market",
+        "target": "Market Analyst"
+      },
+      {
+        "conditional": false,
+        "source": "tools_news",
+        "target": "News Analyst"
+      },
+      {
+        "conditional": false,
+        "source": "tools_social",
+        "target": "Social Analyst"
+      }
+    ],
+    "graph_node_count_including_start_end": 22,
+    "graph_nodes": [
+      "Bear Researcher",
+      "Bull Researcher",
+      "Fundamentals Analyst",
+      "Market Analyst",
+      "Msg Clear Fundamentals",
+      "Msg Clear Market",
+      "Msg Clear News",
+      "Msg Clear Social",
+      "Neutral Analyst",
+      "News Analyst",
+      "Research Manager",
+      "Risk Judge",
+      "Risky Analyst",
+      "Safe Analyst",
+      "Social Analyst",
+      "Trader",
+      "__end__",
+      "__start__",
+      "tools_fundamentals",
+      "tools_market",
+      "tools_news",
+      "tools_social"
+    ],
+    "imported_module_names": [
+      "tradingagents.agents",
+      "tradingagents.agents.analysts.fundamentals_analyst",
+      "tradingagents.agents.analysts.market_analyst",
+      "tradingagents.agents.analysts.news_analyst",
+      "tradingagents.agents.analysts.social_media_analyst",
+      "tradingagents.agents.managers.research_manager",
+      "tradingagents.agents.managers.risk_manager",
+      "tradingagents.agents.researchers.bear_researcher",
+      "tradingagents.agents.researchers.bull_researcher",
+      "tradingagents.agents.risk_mgmt.aggresive_debator",
+      "tradingagents.agents.risk_mgmt.conservative_debator",
+      "tradingagents.agents.risk_mgmt.neutral_debator",
+      "tradingagents.agents.trader.trader",
+      "tradingagents.agents.utils.agent_states",
+      "tradingagents.agents.utils.agent_utils",
+      "tradingagents.agents.utils.memory",
+      "tradingagents.dataflows",
+      "tradingagents.dataflows.config",
+      "tradingagents.dataflows.finnhub_utils",
+      "tradingagents.dataflows.googlenews_utils",
+      "tradingagents.dataflows.interface",
+      "tradingagents.dataflows.reddit_utils",
+      "tradingagents.dataflows.stockstats_utils",
+      "tradingagents.dataflows.utils",
+      "tradingagents.dataflows.yfin_utils",
+      "tradingagents.default_config",
+      "tradingagents.graph",
+      "tradingagents.graph.conditional_logic",
+      "tradingagents.graph.propagation",
+      "tradingagents.graph.reflection",
+      "tradingagents.graph.setup",
+      "tradingagents.graph.signal_processing",
+      "tradingagents.graph.trading_graph"
+    ],
+    "imported_source_modules": 33,
+    "initial_state_keys": [
+      "company_of_interest",
+      "fundamentals_report",
+      "investment_debate_state",
+      "market_report",
+      "messages",
+      "news_report",
+      "risk_debate_state",
+      "sentiment_report",
+      "trade_date"
+    ],
+    "network_attempts": [],
+    "python": "3.10.8 (main, Mar 11 2026, 20:08:57) [GCC 12.2.0]",
+    "recursion_limit": 100,
+    "resolved_packages": {
+      "akshare": "1.18.88",
+      "backtrader": "1.9.78.123",
+      "chainlit": "2.11.1",
+      "chromadb": "1.5.9",
+      "eodhd": "1.0.32",
+      "feedparser": "6.0.14",
+      "finnhub-python": "2.4.29",
+      "langchain-experimental": "0.4.2",
+      "langchain-openai": "1.6.0",
+      "langgraph": "1.2.11",
+      "numpy": "2.2.6",
+      "openai": "3.3.1",
+      "pandas": "2.3.3",
+      "parsel": "1.11.0",
+      "praw": "8.0.3",
+      "pytz": "2026.3.post1",
+      "questionary": "2.1.1",
+      "redis": "8.1.0",
+      "requests": "2.34.2",
+      "rich": "15.0.0",
+      "stockstats": "0.6.8",
+      "tqdm": "4.70.0",
+      "tushare": "1.4.29",
+      "yfinance": "1.6.0"
+    },
+    "tool_count": 16,
+    "tool_names_by_group": {
+      "fundamentals": [
+        "get_finnhub_company_insider_sentiment",
+        "get_finnhub_company_insider_transactions",
+        "get_fundamentals_openai",
+        "get_simfin_balance_sheet",
+        "get_simfin_cashflow",
+        "get_simfin_income_stmt"
+      ],
+      "market": [
+        "get_YFin_data",
+        "get_YFin_data_online",
+        "get_stockstats_indicators_report",
+        "get_stockstats_indicators_report_online"
+      ],
+      "news": [
+        "get_finnhub_news",
+        "get_global_news_openai",
+        "get_google_news",
+        "get_reddit_news"
+      ],
+      "social": [
+        "get_reddit_stock_info",
+        "get_stock_news_openai"
+      ]
+    }
+  },
+  "real_dependency_component_sha256": "7b48edd20b772c9784f5dd06b80202b57f5275f6813c2c095c034c2208045e09",
   "deterministic_across_two_runs": true,
   "paper_result_reproduction": false
 }

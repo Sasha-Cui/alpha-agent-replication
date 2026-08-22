@@ -97,6 +97,7 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     history = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
     current_source = read_csv(output / "current_source_conformance.csv")
     component = json.loads((output / "native_component.json").read_text(encoding="utf-8"))
+    freeze = (output / "reconstructed_environment_freeze.txt").read_text(encoding="utf-8")
     author_outputs = read_csv(output / "author_output_correspondence.csv")
 
     assert manifest["overall_status"] == ("not_reproduced_nearest_release_architecture_components_only")
@@ -137,7 +138,12 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["paper_source_assets_total"] == 26
     assert manifest["numeric_result_figure_arrays_shipped"] == 0
     assert manifest["native_source_upstream_tests_shipped"] == 0
-    assert manifest["native_source_dependency_environment_reproduced"] is False
+    assert manifest["native_source_dependency_environment_reproduced"] is True
+    assert manifest["native_source_exact_historical_dependency_versions_recovered"] is False
+    assert manifest["native_source_modules_imported_with_real_dependencies"] == 33
+    assert manifest["native_source_real_graph_nodes_including_start_end"] == 22
+    assert manifest["native_source_real_graph_edges"] == 30
+    assert manifest["native_source_real_tool_count"] == 16
     assert manifest["audit_runtime_called_llm_or_market_data_api"] is False
     assert manifest["paper_era_author_rendered_table_shipped"] is True
     assert manifest["paper_era_author_raw_result_arrays_shipped"] is False
@@ -220,13 +226,28 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert {row["paper_result_credit"] for row in current_source} == {"False"}
 
     assert component["tracked_python_files_compiled"] == 39
-    assert component["compile_status"] == "passed_without_importing_declared_dependencies"
+    assert component["compile_status"] == "passed_in_reconstructed_declared_dependency_environment"
     assert component["upstream_tests_shipped"] == 0
-    assert component["dependency_environment_reproduced"] is False
+    assert component["dependency_environment_reproduced"] is True
+    assert component["release_declared_requirements"] == 24
+    assert component["exact_historical_dependency_versions_recovered"] is False
+    assert component["pip_check"] == "No broken requirements found."
+    assert component["dependency_freeze_sha256"] == audit.RECONSTRUCTED_ENV_FREEZE_SHA256
+    assert component["dependency_freeze_lines"] == 247
+    assert len(freeze.splitlines()) == 247
+    assert audit.sha256_bytes(freeze.encode()) == audit.RECONSTRUCTED_ENV_FREEZE_SHA256
     assert component["deterministic_across_two_runs"] is True
     assert component["semantic_component"]["topology_node_count"] == 20
     assert component["semantic_component"]["unconditional_edge_count"] == 12
     assert component["semantic_component"]["conditional_router_count"] == 9
+    real = component["real_dependency_component"]
+    assert real["imported_source_modules"] == 33
+    assert real["compiled_graph_type"] == "langgraph.graph.state.CompiledStateGraph"
+    assert real["graph_node_count_including_start_end"] == 22
+    assert real["graph_edge_count"] == 30
+    assert real["conditional_edge_count"] == 18
+    assert real["tool_count"] == 16
+    assert real["network_attempts"] == []
     assert component["paper_result_reproduction"] is False
 
     for filename, expected in manifest["output_sha256"].items():
@@ -254,3 +275,8 @@ def test_pinned_primary_sources_when_available() -> None:
         "exact_released_tool_name": 6,
         "absent_from_nearest_release": 5,
     }
+    source_python = Path(audit.DEFAULT_SOURCE_PYTHON)
+    if source_python.is_file():
+        component = audit.run_native_component_checks(source_root, source_python)
+        assert component["dependency_environment_reproduced"] is True
+        assert component["real_dependency_component"]["network_attempts"] == []

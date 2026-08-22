@@ -23,11 +23,17 @@ meaningful architecture subset, but not the experiment that produced the paper.
 
 ## What genuinely passes
 
-- All 39 tagged Python files compile under Python 3.12. The actual tagged graph
-  setup, routing, state initialization, and signal extraction execute twice with
-  identical output when unavailable framework imports are replaced by import-only
-  fakes. This validates deterministic topology components, not the dependency
-  environment, LLM calls, data, backtest, or paper results.
+- All 39 tagged Python files compile in a clean Python 3.10 environment resolving
+  all 24 release-declared requirements. All 33 source modules import, and the
+  actual OpenAI clients, Chroma memories, LangGraph, ToolNodes, source factories,
+  and graph compiler deterministically construct a 22-node, 30-edge graph with
+  16 tools. HTTP sends are blocked and the constructor makes zero attempts. The
+  release did not pin package versions, so this reconstructs a compatible
+  declared-dependency environment, not the exact historical environment, LLM
+  calls, data, backtest, or paper results. A narrower route/state/signal check
+  also remains deterministic with inert audit inputs.
+- `reconstructed_environment_freeze.txt` records all 247 resolved package lines;
+  its SHA-256 is checked before every dependency-backed audit execution.
 - The release contains four analyst roles, structured shared reports, bull/bear
   debate, a research manager, trader, three risk perspectives, role prompts,
   memories/reflection hooks, categorical BUY/SELL/HOLD extraction, and runtime

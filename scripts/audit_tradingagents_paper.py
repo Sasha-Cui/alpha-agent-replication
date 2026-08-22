@@ -7,7 +7,8 @@ executable implementation does not: the first public code release arrived about
 archives, every discovered public branch/tag/release and reachable Git object,
 the paper-era site, and the nearest v0.1.0 implementation. It inventories every
 Table 1 cell and every plotted result series, checks internal metric identities,
-and executes only dependency-isolated deterministic components from v0.1.0.
+and executes deterministic components plus the real dependency-backed graph
+constructor from v0.1.0 without external API calls.
 Author-rendered correspondence is never promoted to independent regeneration.
 """
 
@@ -48,7 +49,12 @@ FIRST_EXACT_TABLE_COMMIT = "db9f63fa54059ec8ae262ef10557c853b6a011a7"
 FIRST_EXACT_TABLE_COMMIT_DATE = "2024-12-28T11:56:38+08:00"
 FIRST_EXACT_TABLE_BLOB = "a13337c440f63c955bcceffa09daafad806aae69"
 FIRST_EXACT_TABLE_SHA256 = "169868f714b9ef74da76ee2895a004cdb8e758851505409fc91cc12ec3287a4c"
-DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
+DEFAULT_SOURCE_PYTHON = str(
+    Path(__file__).resolve().with_name("run_tradingagents_v010_python.sh")
+)
+RECONSTRUCTED_ENV_FREEZE_SHA256 = (
+    "d35fd4aa1827f0fe4c151f5b0c3e383620c599215a188f23f2d367c78819b826"
+)
 
 PAPER_VERSIONS = {
     1: {
@@ -1431,17 +1437,153 @@ print(json.dumps(result, sort_keys=True))
 """
 
 
+REAL_COMPONENT_DRIVER = r"""
+import importlib
+import importlib.metadata
+import json
+import os
+import sys
+from pathlib import Path
+
+import httpx
+import requests
+
+root = Path(sys.argv[1]).resolve()
+sys.path.insert(0, str(root))
+os.environ["OPENAI_API_KEY"] = "sk-audit-placeholder-never-sent"
+os.environ["ANONYMIZED_TELEMETRY"] = "False"
+
+network_attempts = []
+
+def block_sync_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f"httpx:{request.method}:{request.url}")
+    raise RuntimeError("network disabled during dependency-backed component audit")
+
+async def block_async_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f"httpx-async:{request.method}:{request.url}")
+    raise RuntimeError("network disabled during dependency-backed component audit")
+
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f"requests:{request.method}:{request.url}")
+    raise RuntimeError("network disabled during dependency-backed component audit")
+
+httpx.Client.send = block_sync_httpx
+httpx.AsyncClient.send = block_async_httpx
+requests.sessions.Session.send = block_requests
+
+module_names = []
+for path in sorted((root / "tradingagents").rglob("*.py")):
+    parts = list(path.relative_to(root).with_suffix("").parts)
+    if parts[-1] == "__init__":
+        parts = parts[:-1]
+    name = ".".join(parts)
+    if name and name not in module_names:
+        module_names.append(name)
+for name in module_names:
+    importlib.import_module(name)
+
+from tradingagents.default_config import DEFAULT_CONFIG
+from tradingagents.graph.trading_graph import TradingAgentsGraph
+
+config = dict(DEFAULT_CONFIG)
+config["project_dir"] = str(root)
+graph = TradingAgentsGraph(config=config)
+compiled = graph.graph
+view = compiled.get_graph()
+edges = [
+    {
+        "source": edge.source,
+        "target": edge.target,
+        "conditional": bool(edge.conditional),
+    }
+    for edge in view.edges
+]
+edges.sort(key=lambda edge: (edge["source"], edge["target"], edge["conditional"]))
+initial = graph.propagator.create_initial_state("AAPL", "2024-01-02")
+
+package_names = [
+    "akshare", "backtrader", "chainlit", "chromadb", "eodhd", "feedparser",
+    "finnhub-python", "langchain-experimental", "langchain-openai", "langgraph",
+    "numpy", "openai", "pandas", "parsel", "praw", "pytz", "questionary",
+    "redis", "requests", "rich", "stockstats", "tqdm", "tushare", "yfinance",
+]
+packages = {name: importlib.metadata.version(name) for name in package_names}
+
+result = {
+    "python": sys.version,
+    "imported_source_modules": len(module_names),
+    "imported_module_names": module_names,
+    "compiled_graph_type": f"{type(compiled).__module__}.{type(compiled).__name__}",
+    "graph_nodes": sorted(view.nodes),
+    "graph_node_count_including_start_end": len(view.nodes),
+    "graph_edges": edges,
+    "graph_edge_count": len(edges),
+    "conditional_edge_count": sum(edge["conditional"] for edge in edges),
+    "tool_names_by_group": {
+        group: sorted(node.tools_by_name) for group, node in graph.tool_nodes.items()
+    },
+    "tool_count": sum(len(node.tools_by_name) for node in graph.tool_nodes.values()),
+    "initial_state_keys": sorted(initial),
+    "recursion_limit": graph.propagator.get_graph_args()["config"]["recursion_limit"],
+    "resolved_packages": packages,
+    "network_attempts": network_attempts,
+}
+print(json.dumps(result, sort_keys=True))
+"""
+
+
 def run_native_component_checks(source_root: Path, source_python: Path) -> dict[str, Any]:
+    if not source_python.is_file():
+        raise FileNotFoundError(source_python)
+    clean_env = os.environ.copy()
+    clean_env.pop("PYTHONPATH", None)
+    clean_env.update(
+        {
+            "OPENAI_API_KEY": "sk-audit-placeholder-never-sent",
+            "ANONYMIZED_TELEMETRY": "False",
+        }
+    )
+    pip_check = subprocess.run(
+        [str(source_python), "-m", "pip", "check"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    )
+    freeze = subprocess.run(
+        [str(source_python), "-m", "pip", "freeze", "--all"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    ).stdout
+    freeze_sha256 = sha256_bytes(freeze.encode())
+    if freeze_sha256 != RECONSTRUCTED_ENV_FREEZE_SHA256:
+        raise RuntimeError(
+            "TradingAgents reconstructed environment changed: "
+            f"{freeze_sha256} != {RECONSTRUCTED_ENV_FREEZE_SHA256}"
+        )
+
     archive = run_git(source_root, "archive", "--format=tar", SOURCE_COMMIT, binary=True)
     assert isinstance(archive, bytes)
     with tempfile.TemporaryDirectory(prefix="tradingagents-v010-") as temporary:
         root = Path(temporary)
         with tarfile.open(fileobj=io.BytesIO(archive), mode="r:") as bundle:
             bundle.extractall(root, filter="data")
+        declared_requirements = [
+            line.strip()
+            for line in (root / "requirements.txt").read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        ]
+        if len(declared_requirements) != 24:
+            raise RuntimeError(
+                f"Pinned source requirement count changed: {len(declared_requirements)}"
+            )
         compile_run = subprocess.run(
             [str(source_python), "-m", "compileall", "-q", str(root)],
             capture_output=True,
             text=True,
+            env=clean_env,
         )
         if compile_run.returncode:
             raise RuntimeError(f"Pinned source compile failed: {compile_run.stderr}")
@@ -1454,10 +1596,30 @@ def run_native_component_checks(source_root: Path, source_python: Path) -> dict[
                 check=True,
                 capture_output=True,
                 text=True,
+                env=clean_env,
             )
             outputs.append(json.loads(run.stdout))
         if outputs[0] != outputs[1]:
             raise RuntimeError("Dependency-isolated source topology check is nondeterministic")
+        real_driver = root / "_audit_real_dependency_driver.py"
+        real_driver.write_text(REAL_COMPONENT_DRIVER, encoding="utf-8")
+        real_outputs = []
+        for _ in range(2):
+            run = subprocess.run(
+                [str(source_python), str(real_driver), str(root)],
+                capture_output=True,
+                text=True,
+                cwd=root,
+                env=clean_env,
+            )
+            if run.returncode:
+                raise RuntimeError(
+                    "Dependency-backed source graph check failed:\n"
+                    f"stdout:\n{run.stdout}\nstderr:\n{run.stderr}"
+                )
+            real_outputs.append(json.loads(run.stdout))
+        if real_outputs[0] != real_outputs[1]:
+            raise RuntimeError("Dependency-backed source graph check is nondeterministic")
     observed = outputs[0]
     expected = {
         "topology_node_count": 20,
@@ -1471,17 +1633,47 @@ def run_native_component_checks(source_root: Path, source_python: Path) -> dict[
     for key, value in expected.items():
         if observed[key] != value:
             raise RuntimeError(f"Pinned source component changed for {key}: {observed[key]!r}")
+    real_observed = real_outputs[0]
+    real_expected = {
+        "imported_source_modules": 33,
+        "compiled_graph_type": "langgraph.graph.state.CompiledStateGraph",
+        "graph_node_count_including_start_end": 22,
+        "graph_edge_count": 30,
+        "conditional_edge_count": 18,
+        "tool_count": 16,
+        "recursion_limit": 100,
+        "network_attempts": [],
+    }
+    for key, value in real_expected.items():
+        if real_observed[key] != value:
+            raise RuntimeError(
+                f"Pinned dependency-backed source component changed for {key}: "
+                f"{real_observed[key]!r}"
+            )
     normalized = json.dumps(observed, sort_keys=True, separators=(",", ":")).encode()
+    real_normalized = json.dumps(
+        real_observed, sort_keys=True, separators=(",", ":")
+    ).encode()
     return {
         "source_commit": SOURCE_COMMIT,
         "source_python": str(source_python),
         "tracked_python_files_compiled": 39,
-        "compile_status": "passed_without_importing_declared_dependencies",
+        "compile_status": "passed_in_reconstructed_declared_dependency_environment",
         "upstream_tests_shipped": 0,
-        "dependency_environment_reproduced": False,
-        "dependency_isolation": "import-only fakes for LangChain/LangGraph; actual tagged routing/setup/propagation/signal files executed",
+        "dependency_environment_reproduced": True,
+        "release_declared_requirements": len(declared_requirements),
+        "dependency_environment_scope": "all 24 release-declared unpinned requirements resolved in clean Python 3.10; exact 2025 package versions remain unrecoverable",
+        "exact_historical_dependency_versions_recovered": False,
+        "pip_check": pip_check.stdout.strip(),
+        "dependency_freeze_sha256": freeze_sha256,
+        "dependency_freeze_lines": len(freeze.splitlines()),
+        "_dependency_freeze_text": freeze,
+        "network_boundary": "httpx sync/async and requests sends blocked; constructor completed with zero attempts",
+        "dependency_isolation": "none for imports, OpenAI clients, Chroma memories, LangGraph, ToolNode, source factories, or graph compilation",
         "semantic_component": observed,
         "semantic_component_sha256": sha256_bytes(normalized),
+        "real_dependency_component": real_observed,
+        "real_dependency_component_sha256": sha256_bytes(real_normalized),
         "deterministic_across_two_runs": True,
         "paper_result_reproduction": False,
     }
@@ -1756,6 +1948,7 @@ def build_audit(
     paper_assets = paper_source_inventory(paper_source_root)
     current_source = current_source_conformance(source_root)
     component = run_native_component_checks(source_root, source_python)
+    dependency_freeze = component.pop("_dependency_freeze_text")
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "table_1_conformance.csv", table)
@@ -1778,6 +1971,9 @@ def build_audit(
         json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     (output_dir / "native_component.json").write_text(json.dumps(component, indent=2) + "\n", encoding="utf-8")
+    (output_dir / "reconstructed_environment_freeze.txt").write_text(
+        dependency_freeze, encoding="utf-8"
+    )
 
     mechanism_counts = Counter(row["status"] for row in mechanisms)
     credit = sum(bool(row["paper_mechanism_credit"]) for row in mechanisms)
@@ -1869,7 +2065,24 @@ def build_audit(
         "public_source_discovered_releases_total": len(history_summary["discovered_public_releases"]),
         "native_source_python_files_compiled": component["tracked_python_files_compiled"],
         "native_source_upstream_tests_shipped": 0,
-        "native_source_dependency_environment_reproduced": False,
+        "native_source_dependency_environment_reproduced": component[
+            "dependency_environment_reproduced"
+        ],
+        "native_source_exact_historical_dependency_versions_recovered": component[
+            "exact_historical_dependency_versions_recovered"
+        ],
+        "native_source_modules_imported_with_real_dependencies": component[
+            "real_dependency_component"
+        ]["imported_source_modules"],
+        "native_source_real_graph_nodes_including_start_end": component[
+            "real_dependency_component"
+        ]["graph_node_count_including_start_end"],
+        "native_source_real_graph_edges": component[
+            "real_dependency_component"
+        ]["graph_edge_count"],
+        "native_source_real_tool_count": component[
+            "real_dependency_component"
+        ]["tool_count"],
         "native_topology_component_deterministic": True,
         "native_topology_component_paper_result_reproduction": False,
         "native_paper_data_snapshot_shipped": False,
@@ -1890,7 +2103,10 @@ def build_audit(
             "executable implementation. The nearest official code is a substantial multi-agent "
             "architecture release, but it arrived about 52 hours after v7. It implements several "
             "paper roles, structured state, debates, memories, "
-            "tool loops, prompts, and runtime logging. Its pre-release official project site also "
+            "tool loops, prompts, and runtime logging. A clean Python 3.10 environment resolves all "
+            "24 release-declared requirements, imports all 33 source modules, and constructs the "
+            "real 22-node, 30-edge graph with 16 tools without an external request; the unpinned "
+            "requirements cannot recover exact 2025 package versions. Its pre-release official project site also "
             "contains all 77 Table 1 values in the same order as the paper. This corroborates the "
             "published author output but is not an independent regeneration. It does not ship the paper data, experiment "
             "configuration, portfolio/execution engine, baseline or metric code, backtest runner, "
@@ -1939,11 +2155,17 @@ meaningful architecture subset, but not the experiment that produced the paper.
 
 ## What genuinely passes
 
-- All 39 tagged Python files compile under Python 3.12. The actual tagged graph
-  setup, routing, state initialization, and signal extraction execute twice with
-  identical output when unavailable framework imports are replaced by import-only
-  fakes. This validates deterministic topology components, not the dependency
-  environment, LLM calls, data, backtest, or paper results.
+- All 39 tagged Python files compile in a clean Python 3.10 environment resolving
+  all 24 release-declared requirements. All 33 source modules import, and the
+  actual OpenAI clients, Chroma memories, LangGraph, ToolNodes, source factories,
+  and graph compiler deterministically construct a 22-node, 30-edge graph with
+  16 tools. HTTP sends are blocked and the constructor makes zero attempts. The
+  release did not pin package versions, so this reconstructs a compatible
+  declared-dependency environment, not the exact historical environment, LLM
+  calls, data, backtest, or paper results. A narrower route/state/signal check
+  also remains deterministic with inert audit inputs.
+- `reconstructed_environment_freeze.txt` records all 247 resolved package lines;
+  its SHA-256 is checked before every dependency-backed audit execution.
 - The release contains four analyst roles, structured shared reports, bull/bear
   debate, a research manager, trader, three risk perspectives, role prompts,
   memories/reflection hooks, categorical BUY/SELL/HOLD extraction, and runtime
