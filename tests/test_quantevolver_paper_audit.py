@@ -86,6 +86,9 @@ def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> Non
     fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
     paper_assets = read_csv(output / "paper_source_asset_inventory.csv")
     native = json.loads((output / "native_component_execution.json").read_text(encoding="utf-8"))
+    freeze = (output / "reconstructed_environment_freeze.txt").read_text(
+        encoding="utf-8"
+    )
     component = json.loads((output / "separate_component_gate.json").read_text(encoding="utf-8"))
 
     assert manifest["overall_status"] == "not_reproduced_substantial_public_framework_zero_paper_results"
@@ -126,6 +129,14 @@ def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> Non
     assert manifest["tracked_source_files_total"] == 67
     assert manifest["tracked_source_python_files_total"] == 55
     assert manifest["tracked_source_upstream_test_files_total"] == 3
+    assert manifest["native_source_dependency_environment_reproduced"] is True
+    assert manifest["native_source_exact_historical_dependency_versions_recovered"] is False
+    assert manifest["native_source_modules_imported_with_real_dependencies"] == 52
+    assert manifest["native_rft_task_bank_tasks_prepared"] == 9
+    assert manifest["native_rft_training_prompt_rows_prepared"] == 16
+    assert manifest["native_rft_validation_prompt_rows_prepared"] == 4
+    assert manifest["native_rft_verl_dataset_subclass_resolved"] is True
+    assert manifest["native_full_gpu_training_environment_reproduced"] is False
     assert manifest["separate_component_gate_counted"] == 3
     assert manifest["separate_component_gate_passed"] is True
     assert manifest["separate_component_gate_grade"] == "B"
@@ -183,11 +194,34 @@ def test_committed_audit_is_self_hashing_and_component_gate_is_separate() -> Non
     assert {row["underlying_numeric_array_shipped"] for row in paper_assets} == {"False"}
 
     assert native["tracked_python_files_compiled"] == 55
+    assert native["compile_status"] == "passed_in_reconstructed_declared_environment"
     assert native["upstream_tests_status"] == "passed"
+    assert native["pip_check"] == "No broken requirements found."
+    assert native["dependency_environment_reproduced"] is True
+    assert native["declared_all_environment_reconstructed"] is True
+    assert native["compatible_verl_environment_reconstructed"] is True
+    assert native["exact_historical_dependency_versions_recovered"] is False
+    assert native["full_gpu_training_environment_reproduced"] is False
+    assert native["dependency_freeze_sha256"] == audit.RECONSTRUCTED_ENV_FREEZE_SHA256
+    assert native["dependency_freeze_lines"] == 119
+    assert len(freeze.splitlines()) == 119
+    assert audit.sha256_bytes(freeze.encode()) == audit.RECONSTRUCTED_ENV_FREEZE_SHA256
     assert native["public_quickstart_component"]["valid_seeds"] == 3
     assert native["public_quickstart_component"]["invalid_seeds"] == 1
     assert native["public_quickstart_component"]["example_task_bank_tasks"] == 9
     assert native["deterministic_released_seed_dsl_components"] is True
+    real = native["real_dependency_component"]
+    assert real["imported_source_modules"] == 52
+    assert real["vllm_installed"] is False
+    assert real["verl_dataset_subclass"] is True
+    assert real["task_bank_tasks"] == 9
+    assert real["train_prompt_rows"] == 16
+    assert real["validation_prompt_rows"] == 4
+    assert real["advantage_estimator"] == "grpo"
+    assert real["rollout_backend"] == "vllm"
+    assert real["torch_cuda_available"] is False
+    assert real["ray_initialized"] is False
+    assert real["network_attempts"] == []
     assert native["paper_result_reproduction"] is False
 
     assert component["counted_components"] == 3
@@ -217,3 +251,8 @@ def test_pinned_primary_sources_when_available() -> None:
     assert len(heads) == 1
     assert summary["native_result_artifacts_found"] == 0
     assert len(audit.paper_source_inventory(paper_source)) == 10
+    source_python = Path(audit.DEFAULT_SOURCE_PYTHON)
+    if source_python.is_file():
+        native = audit.native_component_checks(source_root, source_python)
+        assert native["dependency_environment_reproduced"] is True
+        assert native["real_dependency_component"]["network_attempts"] == []

@@ -45,7 +45,13 @@ PUBLIC_FORK_BRANCH_REF_COUNT = 4
 PUBLIC_FORK_UNIQUE_HEAD_COUNT = 1
 PUBLIC_FORK_TAG_REF_COUNT = 0
 REPOSITORY_PDF_SHA256 = "9e72f2c188882b8f3cc8a67ac724021521c522d8f40627485a5921613548c905"
-DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
+DEFAULT_SOURCE_PYTHON = (
+    "/nfs/roberts/project/pi_btk22/zc362/environments/current/"
+    "quantevolver-v010/bin/python"
+)
+RECONSTRUCTED_ENV_FREEZE_SHA256 = (
+    "6bd00b45a9459fee897feb1c7f786cb2d71e5c7d8faeffeff469106709d43c21"
+)
 
 PAPER_RESULT_LITERALS = ("53.22", "0.0586", "50.2644", "125.6", "2.26", "0.1923", "0.0500")
 RESULT_PATH_PARTS = {
@@ -722,10 +728,149 @@ def run_checked(command: Sequence[str], cwd: Path, env: Mapping[str, str], timeo
     )
 
 
+REAL_ENV_DRIVER = r"""
+import hashlib
+import httpx
+import importlib
+import importlib.metadata
+import importlib.util
+import json
+import ray
+import requests
+import tempfile
+import torch
+from pathlib import Path
+
+import pandas as pd
+
+network_attempts = []
+
+def block_sync_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f"httpx:{request.method}:{request.url}")
+    raise RuntimeError("network disabled during QuantEvolver environment audit")
+
+async def block_async_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f"httpx-async:{request.method}:{request.url}")
+    raise RuntimeError("network disabled during QuantEvolver environment audit")
+
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f"requests:{request.method}:{request.url}")
+    raise RuntimeError("network disabled during QuantEvolver environment audit")
+
+httpx.Client.send = block_sync_httpx
+httpx.AsyncClient.send = block_async_httpx
+requests.sessions.Session.send = block_requests
+
+module_names = []
+for path in sorted(Path("quant_evolver").rglob("*.py")):
+    parts = list(path.with_suffix("").parts)
+    if parts[-1] == "__init__":
+        parts = parts[:-1]
+    name = ".".join(parts)
+    if name and name not in module_names:
+        module_names.append(name)
+for name in module_names:
+    importlib.import_module(name)
+
+from quant_evolver.rft.config import RFTConfig
+from quant_evolver.rft.no_think_dataset import NoThinkRLHFDataset
+from quant_evolver.rft.task_bank import (
+    TaskBankBuilder,
+    TaskBuildConfig,
+    save_task_bank,
+)
+from quant_evolver.rft.verl_main import build_verl_config
+from quant_evolver.seeds.library import load_seed_candidates
+from quant_evolver.seeds.pipeline import SeedPipeline
+from quant_evolver.utils.config import load_config
+from verl.utils.dataset.rl_dataset import RLHFDataset
+
+with tempfile.TemporaryDirectory(prefix="quantevolver-rft-audit-") as temporary:
+    root = Path(temporary)
+    seeds = load_seed_candidates("examples/seed_candidates.yaml")
+    evaluations = SeedPipeline().run_static(seeds)
+    task_cfg = TaskBuildConfig.from_dict(
+        load_config("configs/example_seed_pipeline.yaml")["task_bank"]
+    )
+    bank = TaskBankBuilder(task_cfg).build_from_seed_evaluations(evaluations)
+    task_path = root / "task_bank.yaml"
+    save_task_bank(bank, task_path)
+    raw = load_config("configs/example_rft_pure_verl.yaml")["rft"]
+    raw.update(
+        {
+            "run_root": str(root / "run"),
+            "output_dir": str(root / "factors"),
+            "task_bank_path": str(task_path),
+        }
+    )
+    rft = RFTConfig.from_dict(raw)
+    cfg = build_verl_config(rft)
+    train = pd.read_parquet(cfg.data.train_files[0])
+    validation = pd.read_parquet(cfg.data.val_files[0])
+
+package_names = [
+    "backtrader",
+    "numpy",
+    "omegaconf",
+    "pandas",
+    "pyarrow",
+    "pytest",
+    "PyYAML",
+    "quant-evolver",
+    "ray",
+    "ruff",
+    "scipy",
+    "tensordict",
+    "torch",
+    "transformers",
+    "verl",
+]
+packages = {name: importlib.metadata.version(name) for name in package_names}
+result = {
+    "imported_source_modules": len(module_names),
+    "imported_module_names": module_names,
+    "resolved_packages": packages,
+    "torch_cuda_available": torch.cuda.is_available(),
+    "ray_initialized": ray.is_initialized(),
+    "vllm_installed": importlib.util.find_spec("vllm") is not None,
+    "verl_dataset_subclass": issubclass(NoThinkRLHFDataset, RLHFDataset),
+    "seed_candidates": len(seeds),
+    "valid_seed_candidates": sum(item.valid for item in evaluations),
+    "task_bank_tasks": len(bank.tasks),
+    "train_prompt_rows": len(train),
+    "validation_prompt_rows": len(validation),
+    "train_data_sources": sorted(train["data_source"].unique()),
+    "validation_data_sources": sorted(validation["data_source"].unique()),
+    "advantage_estimator": cfg.algorithm.adv_estimator,
+    "rollout_backend": cfg.actor_rollout_ref.rollout.name,
+    "network_attempts": network_attempts,
+}
+print(json.dumps(result, sort_keys=True))
+"""
+
+
 def native_component_checks(source_root: Path, source_python: Path) -> Dict[str, Any]:
-    env = dict(os.environ)
+    if not source_python.is_file():
+        raise FileNotFoundError(source_python)
+    clean_env = dict(os.environ)
+    clean_env.pop("PYTHONPATH", None)
+    env = dict(clean_env)
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     env["PYTHONPATH"] = str(source_root)
+    pip_check = run_checked(
+        [str(source_python), "-m", "pip", "check"], source_root, clean_env
+    )
+    freeze = run_checked(
+        [str(source_python), "-m", "pip", "freeze", "--all"],
+        source_root,
+        clean_env,
+    ).stdout
+    freeze_sha256 = sha256_bytes(freeze.encode())
+    if freeze_sha256 != RECONSTRUCTED_ENV_FREEZE_SHA256:
+        raise RuntimeError(
+            "QuantEvolver reconstructed environment changed: "
+            f"{freeze_sha256} != {RECONSTRUCTED_ENV_FREEZE_SHA256}"
+        )
     version = run_checked([str(source_python), "--version"], source_root, env).stdout.strip()
     if not version:
         version = run_checked([str(source_python), "--version"], source_root, env).stderr.strip()
@@ -790,21 +935,65 @@ print(json.dumps({
 }))
 """
     smoke = json.loads(run_checked([str(source_python), "-c", smoke_code], source_root, env).stdout.splitlines()[-1])
+    real_outputs = []
+    for _ in range(2):
+        run = run_checked(
+            [str(source_python), "-c", REAL_ENV_DRIVER],
+            source_root,
+            env,
+        )
+        real_outputs.append(json.loads(run.stdout.splitlines()[-1]))
+    if real_outputs[0] != real_outputs[1]:
+        raise RuntimeError("QuantEvolver dependency-backed component is nondeterministic")
+    real = real_outputs[0]
+    expected_real = {
+        "imported_source_modules": 52,
+        "torch_cuda_available": False,
+        "ray_initialized": False,
+        "vllm_installed": False,
+        "verl_dataset_subclass": True,
+        "seed_candidates": 4,
+        "valid_seed_candidates": 3,
+        "task_bank_tasks": 9,
+        "train_prompt_rows": 16,
+        "validation_prompt_rows": 4,
+        "advantage_estimator": "grpo",
+        "rollout_backend": "vllm",
+        "network_attempts": [],
+    }
+    for key, value in expected_real.items():
+        if real[key] != value:
+            raise RuntimeError(
+                f"QuantEvolver dependency-backed component changed for {key}: "
+                f"{real[key]!r}"
+            )
+    real_normalized = json.dumps(real, sort_keys=True, separators=(",", ":")).encode()
     return {
         "source_python": version,
         "tracked_python_files_compiled": compiled["compiled"],
-        "compile_status": "passed_via_source_python_without_importing_modules",
+        "compile_status": "passed_in_reconstructed_declared_environment",
         "upstream_tests_shipped": 3,
         "upstream_tests_status": "passed" if tests_passed else "unexpected_output",
         "upstream_test_summary": "3 passed" if tests_passed else "unexpected pytest output",
+        "pip_check": pip_check.stdout.strip(),
+        "dependency_environment_reproduced": True,
+        "declared_all_environment_reconstructed": True,
+        "compatible_verl_environment_reconstructed": True,
+        "exact_historical_dependency_versions_recovered": False,
+        "full_gpu_training_environment_reproduced": False,
+        "verl_selection_boundary": "verl 0.5.0 is a compatibility selection for the released API/config shape; QuantEvolver does not pin Verl or vLLM",
+        "dependency_freeze_sha256": freeze_sha256,
+        "dependency_freeze_lines": len(freeze.splitlines()),
+        "_dependency_freeze_text": freeze,
         "public_quickstart_component": smoke,
+        "real_dependency_component": real,
+        "real_dependency_component_sha256": sha256_bytes(real_normalized),
         "deterministic_released_seed_dsl_components": all(
             item["deterministic"] for item in smoke["dsl_values"].values()
         ),
         "paper_data_used": False,
         "llm_or_market_api_called": False,
         "verl_training_executed": False,
-        "dependency_environment_reproduced": False,
         "paper_result_reproduction": False,
     }
 
@@ -877,6 +1066,7 @@ def build_audit(
     fork_branches, fork_heads, fork_summary = public_fork_audit(source_root)
     paper_assets = paper_source_inventory(paper_source_root)
     native = native_component_checks(source_root, source_python)
+    dependency_freeze = native.pop("_dependency_freeze_text")
     component = component_gate_summary(component_root)
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -895,6 +1085,9 @@ def build_audit(
     )
     write_csv(output_dir / "paper_source_asset_inventory.csv", paper_assets)
     (output_dir / "native_component_execution.json").write_text(json.dumps(native, indent=2) + "\n", encoding="utf-8")
+    (output_dir / "reconstructed_environment_freeze.txt").write_text(
+        dependency_freeze, encoding="utf-8"
+    )
     (output_dir / "separate_component_gate.json").write_text(json.dumps(component, indent=2) + "\n", encoding="utf-8")
 
     status_counts = Counter(row["status"] for row in mechanisms)
@@ -972,7 +1165,30 @@ def build_audit(
         "native_source_upstream_tests_passed": native["upstream_tests_status"] == "passed",
         "native_released_seed_components_executed": len(native["public_quickstart_component"]["dsl_values"]),
         "native_example_task_bank_tasks_built": native["public_quickstart_component"]["example_task_bank_tasks"],
-        "native_source_dependency_environment_reproduced": False,
+        "native_source_dependency_environment_reproduced": native[
+            "dependency_environment_reproduced"
+        ],
+        "native_source_exact_historical_dependency_versions_recovered": native[
+            "exact_historical_dependency_versions_recovered"
+        ],
+        "native_source_modules_imported_with_real_dependencies": native[
+            "real_dependency_component"
+        ]["imported_source_modules"],
+        "native_rft_task_bank_tasks_prepared": native["real_dependency_component"][
+            "task_bank_tasks"
+        ],
+        "native_rft_training_prompt_rows_prepared": native[
+            "real_dependency_component"
+        ]["train_prompt_rows"],
+        "native_rft_validation_prompt_rows_prepared": native[
+            "real_dependency_component"
+        ]["validation_prompt_rows"],
+        "native_rft_verl_dataset_subclass_resolved": native[
+            "real_dependency_component"
+        ]["verl_dataset_subclass"],
+        "native_full_gpu_training_environment_reproduced": native[
+            "full_gpu_training_environment_reproduced"
+        ],
         "native_paper_market_data_shipped": False,
         "native_paper_checkpoint_shipped": False,
         "native_paper_experiment_logs_shipped": False,
@@ -992,7 +1208,11 @@ def build_audit(
             "task-bank builder, evaluators, DiCo-like archives, and Verl/GRPO wiring are substantive. "
             f"{mechanism_credit}/{len(mechanisms)} audited paper mechanism dimensions are direct matches "
             "or meaningful analogues, all 55 released Python files compile, all three upstream tests pass, "
-            "and the three valid example seeds plus a nine-task example bank execute deterministically. "
+            "and all 52 package modules import in a clean dependency environment. The three valid "
+            "example seeds form a nine-task bank and deterministically produce 16 training and four "
+            "validation prompt rows through the released Verl bridge. This is preparatory-path evidence, "
+            "not training: QuantEvolver pins neither Verl nor vLLM, vLLM is absent, and no GPU worker, "
+            "model, rollout, reward loop, or optimizer runs. "
             "The complete two-commit public history contains no result/data artifact path and no paper "
             "result literal outside the bundled PDF. All four accessible public forks and four branch "
             "refs resolve exactly to the official head and add zero unique commits or blobs. The release explicitly excludes the paper data, checkpoint, logs, and reproduction "
@@ -1028,11 +1248,18 @@ reproduced**. The implementation is genuine; the experiment is not public.
 ## What genuinely passes
 
 - All {native['tracked_python_files_compiled']} released package Python files
-  parse under the source's Python 3.12 environment. All three upstream tests
-  pass. The actual released seed validator accepts 3/4 example seeds, the
-  example configuration builds nine seed-window tasks, and all three valid DSL
-  expressions execute twice with identical values on deterministic synthetic
-  OHLCV data.
+  parse in a clean Python 3.12 environment and all 52 package modules import.
+  All three upstream tests pass. The actual released seed validator accepts 3/4
+  example seeds, the example configuration builds nine seed-window tasks, and
+  all three valid DSL expressions execute twice with identical values on
+  deterministic synthetic OHLCV data.
+- The released RFT bridge resolves against a compatibility-selected Verl 0.5.0:
+  the nine tasks produce 16 training and four validation prompt rows, the
+  `NoThinkRLHFDataset` subclass resolves, and the merged config selects GRPO and
+  a vLLM rollout. This is not a training run or an exact historical environment:
+  QuantEvolver pins neither Verl nor vLLM, vLLM is absent, and no GPU, model,
+  rollout, reward loop, or optimizer executes. The 119-line resolved package
+  freeze is tracked and hash-checked.
 - {mechanism_credit}/{len(mechanisms)} audited mechanism dimensions are direct
   matches or substantial analogues. The release includes structured scenario
   refinement, oracle-style seed generation, DSL validation/realization, seed

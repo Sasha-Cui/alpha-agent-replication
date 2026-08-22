@@ -16,11 +16,18 @@ reproduced**. The implementation is genuine; the experiment is not public.
 ## What genuinely passes
 
 - All 55 released package Python files
-  parse under the source's Python 3.12 environment. All three upstream tests
-  pass. The actual released seed validator accepts 3/4 example seeds, the
-  example configuration builds nine seed-window tasks, and all three valid DSL
-  expressions execute twice with identical values on deterministic synthetic
-  OHLCV data.
+  parse in a clean Python 3.12 environment and all 52 package modules import.
+  All three upstream tests pass. The actual released seed validator accepts 3/4
+  example seeds, the example configuration builds nine seed-window tasks, and
+  all three valid DSL expressions execute twice with identical values on
+  deterministic synthetic OHLCV data.
+- The released RFT bridge resolves against a compatibility-selected Verl 0.5.0:
+  the nine tasks produce 16 training and four validation prompt rows, the
+  `NoThinkRLHFDataset` subclass resolves, and the merged config selects GRPO and
+  a vLLM rollout. This is not a training run or an exact historical environment:
+  QuantEvolver pins neither Verl nor vLLM, vLLM is absent, and no GPU, model,
+  rollout, reward loop, or optimizer executes. The 119-line resolved package
+  freeze is tracked and hash-checked.
 - 38/67 audited mechanism dimensions are direct
   matches or substantial analogues. The release includes structured scenario
   refinement, oracle-style seed generation, DSL validation/realization, seed
