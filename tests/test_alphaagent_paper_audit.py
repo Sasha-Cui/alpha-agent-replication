@@ -94,6 +94,9 @@ def test_committed_audit_is_fail_closed() -> None:
     data_release = read_csv(output / "data_release_provenance.csv")
     factors = read_csv(output / "synthetic_base_factor_component.csv")
     component = json.loads((output / "native_component.json").read_text(encoding="utf-8"))
+    rewrite_freeze = (output / "current_rewrite_environment_freeze.txt").read_text(
+        encoding="utf-8"
+    )
     paper_era_component = json.loads(
         (output / "paper_era_component.json").read_text(encoding="utf-8")
     )
@@ -167,8 +170,13 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["native_paper_prediction_or_return_series_shipped"] is False
     assert manifest["native_paper_holdings_or_complete_qlib_recorders_shipped"] is False
     assert manifest["native_paper_figure_arrays_shipped"] is False
-    assert manifest["native_source_tests_passed_with_dependency_stubs"] == 80
-    assert manifest["native_source_tests_dependency_faithful"] is False
+    assert manifest["native_source_tests_passed_with_dependency_stubs"] == 0
+    assert manifest["native_source_tests_passed_with_real_dependencies"] == 80
+    assert manifest["native_source_tests_dependency_faithful"] is True
+    assert manifest["current_rewrite_dependency_environment_reproduced"] is True
+    assert manifest["current_rewrite_exact_historical_dependency_versions_recovered"] is False
+    assert manifest["current_rewrite_source_modules_imported"] == 72
+    assert manifest["paper_era_dependency_environment_reproduced"] is False
     assert manifest["native_synthetic_base_factors_executable"] == 4
     assert manifest["native_synthetic_component_paper_result_reproduction"] is False
     assert manifest["public_source_unique_historical_file_paths"] == 2499
@@ -314,9 +322,18 @@ def test_committed_audit_is_fail_closed() -> None:
     assert {row["native_parser_executable"] for row in factors} == {"True"}
     assert {row["paper_metric_reproduced"] for row in factors} == {"False"}
     assert component["upstream_tests"]["tests_passed"] == 80
-    assert component["upstream_tests"]["status"] == (
-        "passed_with_import_only_dependency_stubs"
-    )
+    assert component["upstream_tests"]["status"] == "passed_with_real_declared_dependencies"
+    assert component["upstream_tests"]["dependency_stubs"] == []
+    assert component["upstream_tests"]["imported_source_modules"] == 72
+    assert component["upstream_tests"]["network_attempts"] == []
+    assert component["upstream_tests"]["deterministic_across_two_runs"] is True
+    assert component["dependency_environment_reproduced"] is True
+    assert component["exact_historical_dependency_versions_recovered"] is False
+    assert component["pip_check"] == "No broken requirements found."
+    assert component["dependency_freeze_sha256"] == audit.REWRITE_ENV_FREEZE_SHA256
+    assert component["dependency_freeze_lines"] == 126
+    assert len(rewrite_freeze.splitlines()) == 126
+    assert audit.sha256_bytes(rewrite_freeze.encode()) == audit.REWRITE_ENV_FREEZE_SHA256
     assert component["synthetic_base_factor_component"]["deterministic"] is True
     assert component["synthetic_base_factor_component"]["sha256"] == (
         "e0bd090308b893c6bcf97cc1589538e4fcedc4a896bb90d21a0848e92d7a5dc9"
@@ -392,6 +409,12 @@ def test_pinned_source_static_checks_when_available() -> None:
     assert mechanisms["paper_lightgbm"]["status"] == "configuration_match"
     assert mechanisms["symbolic_length"]["status"] == "missing"
     assert mechanisms["er_score"]["status"] == "mismatch_hard_filter"
+
+    source_python = Path(audit.DEFAULT_SOURCE_PYTHON)
+    if source_python.is_file():
+        component, _ = audit.run_native_component_checks(source_root, source_python)
+        assert component["upstream_tests"]["dependency_stubs"] == []
+        assert component["upstream_tests"]["network_attempts"] == []
 
 
 def test_pinned_official_paper_sources_when_available() -> None:

@@ -1,13 +1,32 @@
 {
-  "source_python": "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
-  "source_python_version": "Python 3.12.8",
+  "source_python": "/nfs/roberts/project/pi_btk22/zc362/environments/venvs/alphaagent-rewrite-py312-20260822-v1/bin/python",
+  "source_python_version": "Python 3.12.4",
+  "dependency_environment_reproduced": true,
+  "exact_historical_dependency_versions_recovered": false,
+  "dependency_scope": "post-paper 2026 rewrite only; not the 2025 paper-era RD-Agent/Qlib environment",
+  "pip_check": "No broken requirements found.",
+  "dependency_freeze_sha256": "98a93cf29257f73ff3e26d2f4a1fe2ab264c1ea9d1d9eed4fd2d978ff6d99f02",
+  "dependency_freeze_lines": 126,
   "upstream_tests": {
-    "status": "passed_with_import_only_dependency_stubs",
+    "status": "passed_with_real_declared_dependencies",
     "tests_passed": 80,
-    "dependency_stubs": [
-      "tushare",
-      "agentscope"
-    ],
+    "dependency_stubs": [],
+    "imported_source_modules": 72,
+    "resolved_packages": {
+      "agentscope": "2.0.6",
+      "alphaagent": "0.1.0",
+      "lightgbm": "4.7.0",
+      "numba": "0.67.0",
+      "numpy": "1.26.4",
+      "openai": "3.3.1",
+      "pandas": "2.3.3",
+      "pyarrow": "25.0.1",
+      "pytest": "9.1.1",
+      "scikit-learn": "1.9.0",
+      "tushare": "1.4.29"
+    },
+    "network_attempts": [],
+    "deterministic_across_two_runs": true,
     "network_or_llm_calls": false,
     "paper_result_reproduction": false,
     "summary_tail": "80 passed"

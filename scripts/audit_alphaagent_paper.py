@@ -178,7 +178,13 @@ PUBLIC_HEAD_DISCOVERY_SHA256 = (
     "72885e1d64e1109c4009a08372c68142d013665b2edeb5e321320d1e2ec8d731"
 )
 EMPTY_DISCOVERY_SHA256 = hashlib.sha256(b"").hexdigest()
-DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
+DEFAULT_SOURCE_PYTHON = (
+    "/nfs/roberts/project/pi_btk22/zc362/environments/current/"
+    "alphaagent-rewrite/bin/python"
+)
+REWRITE_ENV_FREEZE_SHA256 = (
+    "98a93cf29257f73ff3e26d2f4a1fe2ab264c1ea9d1d9eed4fd2d978ff6d99f02"
+)
 EXPECTED_SYNTHETIC_SHA256 = (
     "e0bd090308b893c6bcf97cc1589538e4fcedc4a896bb90d21a0848e92d7a5dc9"
 )
@@ -261,6 +267,10 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
 
 
 def git_head(root: Path) -> str:
@@ -1821,36 +1831,90 @@ def data_release_provenance() -> list[dict[str, Any]]:
 
 def _run_source_tests(source_root: Path, source_python: Path) -> dict[str, Any]:
     program = r"""
-import sys, types, pytest
-mods = {}
-for name in ['tushare', 'agentscope', 'agentscope.agent', 'agentscope.event', 'agentscope.message']:
-    mod = types.ModuleType(name)
-    sys.modules[name] = mod
-    mods[name] = mod
-mods['tushare'].pro_api = lambda *args, **kwargs: None
-mods['agentscope.agent'].Agent = type('Agent', (), {})
-for name in ['ConfirmResult', 'EventType', 'UserConfirmResultEvent']:
-    setattr(mods['agentscope.event'], name, type(name, (), {}))
-mods['agentscope.message'].UserMsg = type('UserMsg', (), {})
-raise SystemExit(pytest.main(['tests', '-q']))
+import aiohttp, httpx, importlib, importlib.metadata, json, pytest, requests
+from pathlib import Path
+
+network_attempts = []
+def block_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during AlphaAgent source audit')
+async def block_httpx_async(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx-async:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during AlphaAgent source audit')
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f'requests:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during AlphaAgent source audit')
+async def block_aiohttp(self, method, url, *args, **kwargs):
+    network_attempts.append(f'aiohttp:{method}:{url}')
+    raise RuntimeError('network disabled during AlphaAgent source audit')
+httpx.Client.send = block_httpx
+httpx.AsyncClient.send = block_httpx_async
+requests.sessions.Session.send = block_requests
+aiohttp.ClientSession._request = block_aiohttp
+
+modules = []
+for path in sorted(Path('alphaagent').rglob('*.py')):
+    parts = list(path.with_suffix('').parts)
+    if parts[-1] == '__init__':
+        parts = parts[:-1]
+    name = '.'.join(parts)
+    if name and name not in modules:
+        modules.append(name)
+for name in modules:
+    importlib.import_module(name)
+
+exit_code = pytest.main(['tests', '-q', '-p', 'no:cacheprovider'])
+packages = {
+    name: importlib.metadata.version(name)
+    for name in (
+        'agentscope', 'alphaagent', 'lightgbm', 'numba', 'numpy', 'openai',
+        'pandas', 'pyarrow', 'pytest', 'scikit-learn', 'tushare'
+    )
+}
+print(json.dumps({
+    'exit_code': exit_code,
+    'imported_source_modules': len(modules),
+    'imported_module_names': modules,
+    'resolved_packages': packages,
+    'network_attempts': network_attempts,
+}, sort_keys=True))
+raise SystemExit(exit_code)
 """
     env = os.environ.copy()
     env["PYTHONPATH"] = str(source_root)
-    completed = subprocess.run(
-        [str(source_python), "-c", program],
-        cwd=source_root,
-        env=env,
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    combined = completed.stdout + completed.stderr
-    if "80 passed" not in combined:
-        raise RuntimeError(f"Pinned source test count changed:\n{combined}")
+    outputs = []
+    summaries = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [str(source_python), "-c", program],
+            cwd=source_root,
+            env=env,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        combined = completed.stdout + completed.stderr
+        if "80 passed" not in combined:
+            raise RuntimeError(f"Pinned source test count changed:\n{combined}")
+        outputs.append(json.loads(completed.stdout.splitlines()[-1]))
+        summaries.append("80 passed")
+    if outputs[0] != outputs[1]:
+        raise RuntimeError("AlphaAgent real-dependency source check is nondeterministic")
+    observed = outputs[0]
+    if (
+        observed["exit_code"] != 0
+        or observed["imported_source_modules"] != 72
+        or observed["network_attempts"]
+    ):
+        raise RuntimeError(f"AlphaAgent real-dependency source boundary changed: {observed}")
     return {
-        "status": "passed_with_import_only_dependency_stubs",
+        "status": "passed_with_real_declared_dependencies",
         "tests_passed": 80,
-        "dependency_stubs": ["tushare", "agentscope"],
+        "dependency_stubs": [],
+        "imported_source_modules": observed["imported_source_modules"],
+        "resolved_packages": observed["resolved_packages"],
+        "network_attempts": observed["network_attempts"],
+        "deterministic_across_two_runs": True,
         "network_or_llm_calls": False,
         "paper_result_reproduction": False,
         "summary_tail": "80 passed",
@@ -1861,13 +1925,10 @@ def _run_base_factor_component(
     source_root: Path, source_python: Path
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     program = r"""
-import hashlib, json, sys, types
+import hashlib, json, sys
 import numpy as np
 import pandas as pd
 
-stub = types.ModuleType('tushare')
-stub.pro_api = lambda *args, **kwargs: None
-sys.modules['tushare'] = stub
 from alphaagent.dsl import eval_factor
 
 expressions = json.loads(sys.argv[1])
@@ -1933,6 +1994,30 @@ print(json.dumps({'sha256': digest.hexdigest(), 'rows': rows}, sort_keys=True))
 def run_native_component_checks(
     source_root: Path, source_python: Path
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    if not source_python.is_file():
+        raise FileNotFoundError(source_python)
+    clean_env = os.environ.copy()
+    clean_env.pop("PYTHONPATH", None)
+    pip_check = subprocess.run(
+        [str(source_python), "-m", "pip", "check"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    )
+    freeze = subprocess.run(
+        [str(source_python), "-m", "pip", "freeze", "--all"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    ).stdout
+    freeze_sha256 = sha256_bytes(freeze.encode())
+    if freeze_sha256 != REWRITE_ENV_FREEZE_SHA256:
+        raise RuntimeError(
+            "AlphaAgent rewrite environment changed: "
+            f"{freeze_sha256} != {REWRITE_ENV_FREEZE_SHA256}"
+        )
     tests = _run_source_tests(source_root, source_python)
     synthetic, rows = _run_base_factor_component(source_root, source_python)
     component = {
@@ -1943,6 +2028,13 @@ def run_native_component_checks(
             capture_output=True,
             text=True,
         ).stdout.strip(),
+        "dependency_environment_reproduced": True,
+        "exact_historical_dependency_versions_recovered": False,
+        "dependency_scope": "post-paper 2026 rewrite only; not the 2025 paper-era RD-Agent/Qlib environment",
+        "pip_check": pip_check.stdout.strip(),
+        "dependency_freeze_sha256": freeze_sha256,
+        "dependency_freeze_lines": len(freeze.splitlines()),
+        "_dependency_freeze_text": freeze,
         "upstream_tests": tests,
         "synthetic_base_factor_component": synthetic,
         "paper_result_reproduction": False,
@@ -2006,6 +2098,7 @@ def build_audit(
     registry = current_registry_rows(source_root)
     release = data_release_provenance()
     component, base_factors = run_native_component_checks(source_root, source_python)
+    rewrite_dependency_freeze = component.pop("_dependency_freeze_text")
 
     with tempfile.TemporaryDirectory(prefix="alphaagent-paper-era-") as temp_dir:
         paper_era_root = Path(temp_dir)
@@ -2063,6 +2156,9 @@ def build_audit(
     write_csv(output_dir / "synthetic_base_factor_component.csv", base_factors)
     (output_dir / "native_component.json").write_text(
         json.dumps(component, indent=2) + "\n", encoding="utf-8"
+    )
+    (output_dir / "current_rewrite_environment_freeze.txt").write_text(
+        rewrite_dependency_freeze, encoding="utf-8"
     )
     (output_dir / "paper_era_component.json").write_text(
         json.dumps(paper_era_component, indent=2) + "\n", encoding="utf-8"
@@ -2251,8 +2347,21 @@ def build_audit(
         "native_paper_baseline_outputs_shipped": False,
         "native_paper_figure_arrays_shipped": False,
         "native_paper_metric_or_figure_arrays_shipped": False,
-        "native_source_tests_passed_with_dependency_stubs": 80,
-        "native_source_tests_dependency_faithful": False,
+        "native_source_tests_passed_with_dependency_stubs": 0,
+        "native_source_tests_passed_with_real_dependencies": component[
+            "upstream_tests"
+        ]["tests_passed"],
+        "native_source_tests_dependency_faithful": True,
+        "current_rewrite_dependency_environment_reproduced": component[
+            "dependency_environment_reproduced"
+        ],
+        "current_rewrite_exact_historical_dependency_versions_recovered": component[
+            "exact_historical_dependency_versions_recovered"
+        ],
+        "current_rewrite_source_modules_imported": component["upstream_tests"][
+            "imported_source_modules"
+        ],
+        "paper_era_dependency_environment_reproduced": False,
         "native_synthetic_base_factors_executable": 4,
         "native_synthetic_component_deterministic": True,
         "native_synthetic_component_paper_result_reproduction": False,
@@ -2357,9 +2466,12 @@ legacy tree; both omissions made it materially too pessimistic.
   features, but neither matches the complete five-cell China row. Three other US
   and one China record use a 2020 test start or altered train split and receive
   no paper-cell credit.
-- Separately, all 80 tests in the 2026 rewrite pass with import-only Tushare and
-  AgentScope stubs, and its four synthetic base factors are deterministic. Those
-  checks receive no paper-result credit.
+- Separately, all 80 tests in the 2026 rewrite pass twice with real AgentScope,
+  Tushare, OpenAI, LightGBM, and scikit-learn dependencies; all 72 rewrite
+  modules import and no blocked HTTP send is attempted. Its 126-line environment
+  freeze is tracked, and four synthetic base factors remain deterministic. This
+  closes the rewrite's dependency-test gap, not the paper-era environment or any
+  paper result, so these checks receive no paper-result credit.
 
 ## Why the paper is still not replicated
 

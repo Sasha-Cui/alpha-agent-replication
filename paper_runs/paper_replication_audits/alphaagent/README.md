@@ -73,9 +73,12 @@ legacy tree; both omissions made it materially too pessimistic.
   features, but neither matches the complete five-cell China row. Three other US
   and one China record use a 2020 test start or altered train split and receive
   no paper-cell credit.
-- Separately, all 80 tests in the 2026 rewrite pass with import-only Tushare and
-  AgentScope stubs, and its four synthetic base factors are deterministic. Those
-  checks receive no paper-result credit.
+- Separately, all 80 tests in the 2026 rewrite pass twice with real AgentScope,
+  Tushare, OpenAI, LightGBM, and scikit-learn dependencies; all 72 rewrite
+  modules import and no blocked HTTP send is attempted. Its 126-line environment
+  freeze is tracked, and four synthetic base factors remain deterministic. This
+  closes the rewrite's dependency-test gap, not the paper-era environment or any
+  paper result, so these checks receive no paper-result credit.
 
 ## Why the paper is still not replicated
 
