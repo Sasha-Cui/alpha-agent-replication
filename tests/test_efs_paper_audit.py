@@ -33,8 +33,8 @@ def test_committed_v1_and_v2_result_censuses_are_complete() -> None:
     assert Counter(row["paper_table"] for row in v1) == audit.V1_EXPECTED_TABLE_COUNTS
     assert len(v2) == 877
     assert Counter(row["paper_table"] for row in v2) == audit.V2_EXPECTED_TABLE_COUNTS
-    assert sum(row["paper_result_credit"] == "True" for row in v1) == 5
-    assert sum(row["paper_result_credit"] == "True" for row in v2) == 8
+    assert sum(row["paper_result_credit"] == "True" for row in v1) == 6
+    assert sum(row["paper_result_credit"] == "True" for row in v2) == 11
     assert {row["native_efs_result_credit"] for row in v1 + v2} == {"False"}
 
 
@@ -51,6 +51,23 @@ def test_cited_baseline_credit_is_formula_specific_and_not_efs_credit() -> None:
     assert {row["protocol"] for row in rows} == {
         "cited_ASMCVaR_623xN_price_relatives_row0_initial_622_equal_weight_transitions"
     }
+
+
+def test_cited_mssrm_source_execution_is_deterministic_but_mostly_mismatches() -> None:
+    rows = read_csv(output_dir() / "cited_mssrm_native_reproduction.csv")
+    assert len(rows) == 69
+    assert Counter(row["paper_version"] for row in rows) == {"v1": 45, "v2": 24}
+    assert sum(row["paper_result_credit"] == "True" for row in rows if row["paper_version"] == "v1") == 1
+    assert sum(row["paper_result_credit"] == "True" for row in rows if row["paper_version"] == "v2") == 3
+    v1_match = next(row for row in rows if row["paper_version"] == "v1" and row["paper_result_credit"] == "True")
+    assert (v1_match["sparsity"], v1_match["dataset"], v1_match["metric"]) == (
+        "10", "FF100MEOP", "SR"
+    )
+    assert {row["native_mssrm_source_evidence"] for row in rows} == {"True"}
+    assert {row["native_efs_evidence"] for row in rows} == {"False"}
+    assert {row["full_wealth_path_repeat_equal"] for row in rows} == {"True"}
+    assert len({row["cw_sha256"] for row in rows}) == 15
+    assert {row["octave_version"] for row in rows} == {audit.MSSRM_OCTAVE_VERSION}
 
 
 def test_revision_lineage_detects_carryovers_and_semantic_relabels() -> None:
@@ -84,15 +101,19 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     native = json.loads((output_dir() / "native_execution.json").read_text(encoding="utf-8"))
     provenance = json.loads((output_dir() / "source_provenance.json").read_text(encoding="utf-8"))
     assert manifest["overall_status"] == (
-        "partial_5_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_"
+        "partial_6_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_"
         "v2_audited_separately"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_evidence_route"] == "paper_only_underspecified"
     assert manifest["original_v1_table_result_cells"] == 773
-    assert manifest["original_v1_table_cells_reproduced"] == 5
+    assert manifest["original_v1_table_cells_reproduced"] == 6
     assert manifest["current_v2_table_result_cells"] == 877
-    assert manifest["current_v2_table_cells_reproduced"] == 8
+    assert manifest["current_v2_table_cells_reproduced"] == 11
+    assert manifest["cited_mssrm_v1_cells_checked"] == 45
+    assert manifest["cited_mssrm_v1_cells_reproduced"] == 1
+    assert manifest["cited_mssrm_v2_cells_checked"] == 24
+    assert manifest["cited_mssrm_v2_cells_reproduced"] == 3
     assert manifest["native_efs_result_cells_reproduced"] == 0
     assert manifest["v1_v2_common_benchmark_cells_same_at_v2_precision"] == 240
     assert manifest["scores_to_weights_cells_relabelled_as_rw"] == 48
@@ -100,7 +121,12 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert manifest["paper_source_compilation"]["v2"]["pages"] == 13
     assert native["efs_native_execution_attempted"] is False
     assert native["cited_baseline_formula_executed"] is True
+    assert native["cited_mssrm_source_executed_with_octave"] is True
+    assert native["cited_mssrm_native_runs"] == 30
+    assert native["cited_mssrm_full_paths_repeat_exact"] == 15
+    assert native["native_efs_cells_with_credit"] == 0
     assert provenance["official_efs_repository_found"] is False
+    assert provenance["cited_mssrm_native_execution"]["full_paths_repeat_exact"] == 15
     assert provenance["original_paper"]["pdf_sha256"] == audit.ARXIV_V1_PDF_SHA256
     assert provenance["current_revision"]["pdf_sha256"] == audit.ARXIV_V2_PDF_SHA256
     for filename, expected in manifest["output_sha256"].items():
@@ -118,8 +144,15 @@ def test_pinned_sources_and_dynamic_parsers_when_available() -> None:
     v2 = audit.parse_v2_results(paper)
     metrics = audit.baseline_metrics(asm_cvar)
     baseline = audit.apply_baseline_credit(v1, metrics) + audit.apply_baseline_credit(v2, metrics)
+    results = Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_octave_runs")
+    if results.exists():
+        mssrm_metrics = audit.load_mssrm_native_metrics(results)
+        mssrm_baseline = audit.apply_mssrm_credit(v1, mssrm_metrics) + audit.apply_mssrm_credit(v2, mssrm_metrics)
+        assert len(mssrm_baseline) == 69
     lineage = audit.apply_version_lineage(v1, v2)
     assert (len(v1), len(v2), len(baseline), len(lineage)) == (773, 877, 27, 240)
-    assert sum(row["paper_result_credit"] for row in v1) == 5
-    assert sum(row["paper_result_credit"] for row in v2) == 8
+    expected_v1 = 6 if results.exists() else 5
+    expected_v2 = 11 if results.exists() else 8
+    assert sum(row["paper_result_credit"] for row in v1) == expected_v1
+    assert sum(row["paper_result_credit"] for row in v2) == expected_v2
     assert sum(row["method_semantics_relabelled"] for row in lineage) == 48

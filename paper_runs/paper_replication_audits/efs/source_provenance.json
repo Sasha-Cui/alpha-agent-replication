@@ -1,5 +1,5 @@
 {
-  "audit_date": "2026-08-11",
+  "audit_date": "2026-08-24",
   "author_hosted_pdf": {
     "byte_identical_to_v1": true,
     "sha256": "7bde1f690bab7c9f694e6f8810502884394e48de6c118a895b68fcaad1a20b26",
@@ -20,6 +20,36 @@
     "paper_credit": "baseline_source_only",
     "tree": "3a0bd2408d16d3702321e009701adcf81629e83b",
     "url": "https://github.com/linyizun2024/ASMCVaR"
+  },
+  "cited_mssrm_native_execution": {
+    "cw_sha256": {
+      "FF100MEOP_m10": "d7335570766fdb6a1b3fcf53a881e752fa523a4ec5412ecce1f96ae54b5dc653",
+      "FF100MEOP_m15": "b5976b773f39f9210282cb9b9a61329cc5605d5272184a0f32b14ff168a2bb81",
+      "FF100MEOP_m20": "19b9acb22a0e7fdea6deaf47e7298700081192889f147845a8c9718cf153ef36",
+      "FF100_m10": "a6dda551f1e401e45820fd8a90205386de2914f5fa9a20f3ad7e645a5b0becec",
+      "FF100_m15": "29454ad4d6122051d91f71586153bbe281f6e9b5a20a3a628b890c44e4e16f21",
+      "FF100_m20": "4ec492771f9c9e8e17ab7775814b46ad81a60d34b262a052e1770b944c75829f",
+      "FF25_m10": "bebe50b0c5660a2f71cd858beaf9e6a0ee07716def50eebc1306dbf8309bd491",
+      "FF25_m15": "e3f6c19cdfdfb297402f773d6b6182b4598cdc6d3e3cb2726a8793dc557ba9be",
+      "FF25_m20": "db5ffa0699304a63e5e5aab0a483e5f782e4a9388dcb901800f8a2a83c2b03ab",
+      "FF32_m10": "92cad40eb1380a6782169cefe29597235285d092dba3ee8ff7bb914ab426e0fd",
+      "FF32_m15": "baec5f111c166a2d6dc731839bb09274d935c217e0ece512abe31a64b6957324",
+      "FF32_m20": "7039cff0c527daaad6cf59608df21097cab15ba849d4b530c177398fa362b6c2",
+      "FF49_m10": "5738fcd4a3a620dd52cbaec6817bb74e1971f6607c737f2688ae25ee26e0ff38",
+      "FF49_m15": "fafd9b3c5c0c134668d421237f2aa245670c3168b172f6d0d92a12ca8a15f219",
+      "FF49_m20": "73139b9e4d4450c4e25d8a43e6799c3c8abd2c9bfcb929a0b1d2ca8caaf8b117"
+    },
+    "full_paths_repeat_exact": 15,
+    "lookback": 60,
+    "octave_version": "9.2.0",
+    "paper_credit": "baseline_source_only",
+    "runs": 30,
+    "sparsity_values": [
+      10,
+      15,
+      20
+    ],
+    "tick2ret_compatibility_shim": "x[1:]/x[:-1]-1"
   },
   "cited_mssrm_release": {
     "archive_sha256": "20e6f756109f725ba56074463f5ba2a3694695dd15267d0455cd3f070386c3ac",

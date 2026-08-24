@@ -28,7 +28,7 @@ import numpy as np
 from scipy.io import loadmat
 
 
-AUDIT_DATE = "2026-08-11"
+AUDIT_DATE = "2026-08-24"
 ARXIV_V1_URL = "https://arxiv.org/abs/2507.17211v1"
 ARXIV_V2_URL = "https://arxiv.org/abs/2507.17211v2"
 ARXIV_V1_PDF_SHA256 = "7bde1f690bab7c9f694e6f8810502884394e48de6c118a895b68fcaad1a20b26"
@@ -833,13 +833,17 @@ datasets, paper structure, and results.
 - **EFS itself: 0 native result cells reproduced in either version.** No
   author-linked EFS code, exact configuration, model snapshot, factor pool,
   search trace, action/weight path, raw return, or result output was found.
-- **Original v1: 5/773 table-result cells reproduced, all 1/N MDD baselines.**
-  The check executes the equal-weight formula on the exact 623-row benchmark
-  matrices in the official ASMCVaR release cited by EFS. This is baseline
-  evidence, not EFS evidence.
-- **Current v2: 8/877 cells reproduced at its coarser display precision, again
-  baseline-only.** Paper/source compilation and table parsing are document
-  evidence and receive no experiment credit.
+- **Original v1: 6/773 table-result cells reproduced, all cited-baseline
+  evidence.** Five are 1/N MDD cells. Exact mSSRM source execution reproduces
+  only 1/45 mSSRM cells at paper precision; its paired CW and MDD disagree, so
+  the isolated Sharpe match does not reproduce a complete result row.
+- **Current v2: 11/877 cells reproduce at its coarser display precision.** Eight
+  are 1/N cells and 3/24 are mSSRM cells. All are cited-baseline evidence, not
+  EFS evidence. Paper compilation and parsing receive no experiment credit.
+
+The mSSRM release was run twice for every combination of five pinned matrices
+and m={10,15,20}. All 15 full 623-point wealth paths were bit-identical across
+repeats, yet 44/45 original-v1 cells disagree with EFS at printed precision.
 
 ## Version-lineage warning
 
@@ -870,9 +874,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--paper-root", type=Path, default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_paper_audit"))
     parser.add_argument("--output", type=Path, default=Path("paper_runs/paper_replication_audits/efs"))
+    parser.add_argument(
+        "--mssrm-results-root",
+        type=Path,
+        default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_octave_runs"),
+    )
     args = parser.parse_args()
     paper_root = args.paper_root.resolve()
     output = args.output.resolve()
+    mssrm_results_root = args.mssrm_results_root.resolve()
     mssrm = paper_root / "mssrm_source"
     asm_cvar = paper_root / "asm_cvar_source"
 
@@ -881,6 +891,8 @@ def main() -> None:
     v2 = parse_v2_results(paper_root)
     metrics = baseline_metrics(asm_cvar)
     baseline = apply_baseline_credit(v1, metrics) + apply_baseline_credit(v2, metrics)
+    mssrm_metrics = load_mssrm_native_metrics(mssrm_results_root)
+    mssrm_baseline = apply_mssrm_credit(v1, mssrm_metrics) + apply_mssrm_credit(v2, mssrm_metrics)
     lineage = apply_version_lineage(v1, v2)
     figures = figure_inventory(paper_root)
     methods = method_specification_audit()
@@ -893,6 +905,7 @@ def main() -> None:
     write_csv(output / "v1_table_result_conformance.csv", v1)
     write_csv(output / "v2_table_result_conformance.csv", v2)
     write_csv(output / "cited_baseline_reproduction.csv", baseline)
+    write_csv(output / "cited_mssrm_native_reproduction.csv", mssrm_baseline)
     write_csv(output / "version_lineage_audit.csv", lineage)
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "method_specification_audit.csv", methods)
@@ -906,11 +919,29 @@ def main() -> None:
         "reason": "no author-linked EFS implementation, config, factor pool, checkpoint, or result path released",
         "paper_source_compilation": compilations,
         "cited_baseline_formula_executed": True,
-        "v1_cited_baseline_cells_with_credit": sum(row["paper_result_credit"] for row in baseline if row["paper_version"] == "v1"),
-        "v2_cited_baseline_cells_with_credit": sum(row["paper_result_credit"] for row in baseline if row["paper_version"] == "v2"),
+        "v1_cited_baseline_cells_with_credit": sum(
+            row["paper_result_credit"] for row in baseline + mssrm_baseline
+            if row["paper_version"] == "v1"
+        ),
+        "v2_cited_baseline_cells_with_credit": sum(
+            row["paper_result_credit"] for row in baseline + mssrm_baseline
+            if row["paper_version"] == "v2"
+        ),
         "native_efs_cells_with_credit": 0,
-        "matlab_baseline_source_executed": False,
-        "matlab_reason": "MATLAB/Octave unavailable; only the deterministic 1/N formula and released matrices were needed for credited cells",
+        "matlab_baseline_source_executed": True,
+        "cited_mssrm_source_executed_with_octave": True,
+        "cited_mssrm_native_runs": 30,
+        "cited_mssrm_full_paths_repeat_exact": 15,
+        "cited_mssrm_v1_cells_checked": 45,
+        "cited_mssrm_v1_cells_matching": 1,
+        "cited_mssrm_v2_cells_checked": 24,
+        "cited_mssrm_v2_cells_matching": 3,
+        "cited_asmcvar_source_executed_with_octave": False,
+        "matlab_reason": (
+            "mSSRM ran natively under Octave 9.2.0 with an exact tick2ret compatibility shim; "
+            "the untouched ASMCVaR entry point has a Windows-only path and its directly invoked "
+            "exact core exceeded a 30-minute interactive cap"
+        ),
     }
     write_json(output / "native_execution.json", native)
     provenance = {
@@ -921,6 +952,16 @@ def main() -> None:
         "official_efs_repository_found": False,
         "github_repository_search": {"queries": ["2507.17211", "Evolutionary Factor Search", "EFS sparse portfolio LLM"], "total_repositories": 0, "snapshot_sha256": GITHUB_SEARCH_SHA256},
         "cited_mssrm_release": {"url": MSSRM_URL, "commit": MSSRM_COMMIT, "tree": MSSRM_TREE, "archive_sha256": MSSRM_ARCHIVE_SHA256, "paper_credit": "baseline_source_only"},
+        "cited_mssrm_native_execution": {
+            "octave_version": MSSRM_OCTAVE_VERSION,
+            "lookback": 60,
+            "sparsity_values": [10, 15, 20],
+            "runs": 30,
+            "full_paths_repeat_exact": 15,
+            "tick2ret_compatibility_shim": "x[1:]/x[:-1]-1",
+            "cw_sha256": {f"{dataset}_m{sparsity}": value for (dataset, sparsity), value in sorted(MSSRM_CW_SHA256.items())},
+            "paper_credit": "baseline_source_only",
+        },
         "cited_asmcvar_release": {"url": ASMCVAR_URL, "commit": ASMCVAR_COMMIT, "tree": ASMCVAR_TREE, "archive_sha256": ASMCVAR_ARCHIVE_SHA256, "data_sha256": ASMCVAR_DATA_SHA256, "paper_credit": "baseline_source_only"},
         "validation": validated,
     }
@@ -928,7 +969,8 @@ def main() -> None:
 
     tracked = [
         "README.md", "v1_table_result_conformance.csv", "v2_table_result_conformance.csv",
-        "cited_baseline_reproduction.csv", "version_lineage_audit.csv", "figure_inventory.csv",
+        "cited_baseline_reproduction.csv", "cited_mssrm_native_reproduction.csv",
+        "version_lineage_audit.csv", "figure_inventory.csv",
         "method_specification_audit.csv", "qualitative_claim_audit.csv",
         "cited_baseline_source_inventory.csv", "paper_prompt_v1.tex.txt",
         "native_execution.json", "source_provenance.json",
@@ -937,7 +979,7 @@ def main() -> None:
         "paper": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
         "audit_date": AUDIT_DATE,
         "paper_evidence_route": "paper_only_underspecified",
-        "overall_status": "partial_5_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
+        "overall_status": "partial_6_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
         "full_paper_reproduced": False,
         "official_efs_source_released": False,
         "original_v1_table_result_cells": len(v1),
@@ -945,6 +987,14 @@ def main() -> None:
         "current_v2_table_result_cells": len(v2),
         "current_v2_table_cells_reproduced": sum(row["paper_result_credit"] for row in v2),
         "native_efs_result_cells_reproduced": 0,
+        "cited_mssrm_v1_cells_checked": 45,
+        "cited_mssrm_v1_cells_reproduced": sum(
+            row["paper_result_credit"] for row in mssrm_baseline if row["paper_version"] == "v1"
+        ),
+        "cited_mssrm_v2_cells_checked": 24,
+        "cited_mssrm_v2_cells_reproduced": sum(
+            row["paper_result_credit"] for row in mssrm_baseline if row["paper_version"] == "v2"
+        ),
         "v1_v2_common_benchmark_cells": len(lineage),
         "v1_v2_common_benchmark_cells_same_at_v2_precision": sum(row["same_at_v2_precision"] for row in lineage),
         "scores_to_weights_cells_relabelled_as_rw": sum(row["method_semantics_relabelled"] for row in lineage),

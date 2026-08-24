@@ -1,8 +1,16 @@
 {
+  "cited_asmcvar_source_executed_with_octave": false,
   "cited_baseline_formula_executed": true,
+  "cited_mssrm_full_paths_repeat_exact": 15,
+  "cited_mssrm_native_runs": 30,
+  "cited_mssrm_source_executed_with_octave": true,
+  "cited_mssrm_v1_cells_checked": 45,
+  "cited_mssrm_v1_cells_matching": 1,
+  "cited_mssrm_v2_cells_checked": 24,
+  "cited_mssrm_v2_cells_matching": 3,
   "efs_native_execution_attempted": false,
-  "matlab_baseline_source_executed": false,
-  "matlab_reason": "MATLAB/Octave unavailable; only the deterministic 1/N formula and released matrices were needed for credited cells",
+  "matlab_baseline_source_executed": true,
+  "matlab_reason": "mSSRM ran natively under Octave 9.2.0 with an exact tick2ret compatibility shim; the untouched ASMCVaR entry point has a Windows-only path and its directly invoked exact core exceeded a 30-minute interactive cap",
   "native_efs_cells_with_credit": 0,
   "paper_source_compilation": {
     "v1": {
@@ -28,6 +36,6 @@
     }
   },
   "reason": "no author-linked EFS implementation, config, factor pool, checkpoint, or result path released",
-  "v1_cited_baseline_cells_with_credit": 5,
-  "v2_cited_baseline_cells_with_credit": 8
+  "v1_cited_baseline_cells_with_credit": 6,
+  "v2_cited_baseline_cells_with_credit": 11
 }

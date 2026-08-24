@@ -9,13 +9,17 @@ datasets, paper structure, and results.
 - **EFS itself: 0 native result cells reproduced in either version.** No
   author-linked EFS code, exact configuration, model snapshot, factor pool,
   search trace, action/weight path, raw return, or result output was found.
-- **Original v1: 5/773 table-result cells reproduced, all 1/N MDD baselines.**
-  The check executes the equal-weight formula on the exact 623-row benchmark
-  matrices in the official ASMCVaR release cited by EFS. This is baseline
-  evidence, not EFS evidence.
-- **Current v2: 8/877 cells reproduced at its coarser display precision, again
-  baseline-only.** Paper/source compilation and table parsing are document
-  evidence and receive no experiment credit.
+- **Original v1: 6/773 table-result cells reproduced, all cited-baseline
+  evidence.** Five are 1/N MDD cells. Exact mSSRM source execution reproduces
+  only 1/45 mSSRM cells at paper precision; its paired CW and MDD disagree, so
+  the isolated Sharpe match does not reproduce a complete result row.
+- **Current v2: 11/877 cells reproduce at its coarser display precision.** Eight
+  are 1/N cells and 3/24 are mSSRM cells. All are cited-baseline evidence, not
+  EFS evidence. Paper compilation and parsing receive no experiment credit.
+
+The mSSRM release was run twice for every combination of five pinned matrices
+and m={10,15,20}. All 15 full 623-point wealth paths were bit-identical across
+repeats, yet 44/45 original-v1 cells disagree with EFS at printed precision.
 
 ## Version-lineage warning
 
