@@ -26,6 +26,7 @@ from typing import Any, Mapping, Sequence
 
 import numpy as np
 from scipy.io import loadmat
+from scipy.stats import t as student_t
 
 
 AUDIT_DATE = "2026-08-24"
@@ -89,6 +90,36 @@ ASMCVAR_ORIGINAL_T60_VALUES = {
 }
 ASMCVAR_V1_ROW_BY_SPARSITY = {10: 7, 15: 15, 20: 23}
 ASMCVAR_V2_ROW_BY_SPARSITY = {10: 7, 15: 15}
+ASMCVAR_OBSERVATIONS = {"FF25": 623, "FF25EU": 391, "FF32": 623, "FF49": 623, "FF100": 623, "FF100MEOP": 623}
+ASMCVAR_ASSETS = {"FF25": 25, "FF25EU": 25, "FF32": 32, "FF49": 49, "FF100": 100, "FF100MEOP": 100}
+ASMCVAR_ALPHA_P_VALUES = {
+    ("FF25", 10): {"alpha": "0.0022", "p_value": "0.0006"},
+    ("FF25EU", 10): {"alpha": "0.0027", "p_value": "0"},
+    ("FF32", 10): {"alpha": "0.0027", "p_value": "0.0002"},
+    ("FF49", 10): {"alpha": "0.0029", "p_value": "0.0049"},
+    ("FF100", 10): {"alpha": "0.0023", "p_value": "0.0038"},
+    ("FF100MEOP", 10): {"alpha": "0.0020", "p_value": "0.0060"},
+    ("FF25", 15): {"alpha": "0.0019", "p_value": "0.0029"},
+    ("FF25EU", 15): {"alpha": "0.0027", "p_value": "0"},
+    ("FF32", 15): {"alpha": "0.0025", "p_value": "0.0001"},
+    ("FF49", 15): {"alpha": "0.0024", "p_value": "0.0112"},
+    ("FF100", 15): {"alpha": "0.0025", "p_value": "0.0012"},
+    ("FF100MEOP", 15): {"alpha": "0.0017", "p_value": "0.0109"},
+    ("FF25", 20): {"alpha": "0.0019", "p_value": "0.0017"},
+    ("FF25EU", 20): {"alpha": "0.0025", "p_value": "0"},
+    ("FF32", 20): {"alpha": "0.0024", "p_value": "0.0001"},
+    ("FF49", 20): {"alpha": "0.0023", "p_value": "0.0098"},
+    ("FF100", 20): {"alpha": "0.0024", "p_value": "0.0010"},
+    ("FF100MEOP", 20): {"alpha": "0.0016", "p_value": "0.0114"},
+}
+ASMCVAR_OVERLAP_VALUES = {
+    "FF25": {"p10_15_mean": "0.9115", "p10_15_std": "0.1182", "p15_20_mean": "0.9554", "p15_20_std": "0.0808"},
+    "FF25EU": {"p10_15_mean": "0.9147", "p10_15_std": "0.1215", "p15_20_mean": "0.9553", "p15_20_std": "0.0854"},
+    "FF32": {"p10_15_mean": "0.8919", "p10_15_std": "0.1307", "p15_20_mean": "0.9348", "p15_20_std": "0.0958"},
+    "FF49": {"p10_15_mean": "0.9468", "p10_15_std": "0.0832", "p15_20_mean": "0.9372", "p15_20_std": "0.0825"},
+    "FF100": {"p10_15_mean": "0.9222", "p10_15_std": "0.1060", "p15_20_mean": "0.9543", "p15_20_std": "0.0766"},
+    "FF100MEOP": {"p10_15_mean": "0.9018", "p10_15_std": "0.1154", "p15_20_mean": "0.9478", "p15_20_std": "0.0724"},
+}
 ASMCVAR_DATA_SHA256 = {
     "FF25new": "0f4c1e91708ce9098d12e81525468dcaa5946d5bff508db7eb953d3cd43744f4",
     "FF32new": "3eb4af4e3b3080fb226364d3b84e2d392366b9be4ba95ecf863346f2d3d143ec",
@@ -518,6 +549,245 @@ def baseline_metrics(asm_cvar: Path) -> dict[str, dict[str, float]]:
             "assets": float(matrix.shape[1]),
         }
     return output
+
+
+def validate_asmcvar_original_input(original_root: Path) -> dict[str, Any]:
+    paper = original_root / "paper.pdf"
+    if sha256(paper) != ASMCVAR_PAPER_SHA256:
+        raise ValueError("pinned ASMCVaR PMLR paper hash mismatch")
+    info = subprocess.run(["pdfinfo", str(paper)], check=True, capture_output=True, text=True).stdout
+    pages = int(re.search(r"^Pages:\s+(\d+)$", info, re.MULTILINE).group(1))
+    if pages != ASMCVAR_PAPER_PAGES:
+        raise ValueError(f"ASMCVaR PMLR paper page count drifted: {pages}")
+    return {"paper_sha256": ASMCVAR_PAPER_SHA256, "paper_pages": pages}
+
+
+def load_asmcvar_native_metrics(
+    results_root: Path, *, allow_missing: bool = False
+) -> dict[tuple[str, int], dict[str, Any]]:
+    output: dict[tuple[str, int], dict[str, Any]] = {}
+    for dataset, source_name in ASMCVAR_DATASETS.items():
+        for sparsity in (10, 15, 20):
+            path = results_root / f"asmcvar_{source_name}_m{sparsity}_matlab_run1.mat"
+            if not path.exists() and allow_missing:
+                continue
+            payload = loadmat(path)
+            wealth = np.asarray(payload["CW"], dtype="<f8").reshape(-1)
+            weights = np.asarray(payload["all_w"], dtype="<f8")
+            observations = ASMCVAR_OBSERVATIONS[dataset]
+            assets = ASMCVAR_ASSETS[dataset]
+            runout = int(np.asarray(payload["runout"]).reshape(-1)[0])
+            final_t = int(np.asarray(payload["t"]).reshape(-1)[0])
+            if wealth.shape != (observations,) or weights.shape != (assets, observations):
+                raise ValueError(f"invalid ASMCVaR result shape: {path}")
+            if runout != 0 or final_t != observations:
+                raise ValueError(f"incomplete ASMCVaR execution: {path}")
+            if not np.isfinite(wealth).all() or not np.isfinite(weights).all() or np.any(wealth <= 0):
+                raise ValueError(f"non-finite ASMCVaR result: {path}")
+            if np.max(np.abs(weights.sum(axis=0) - 1.0)) > 1e-10 or float(weights.min()) < -1e-12:
+                raise ValueError(f"infeasible ASMCVaR weights: {path}")
+            returns = wealth[1:] / wealth[:-1] - 1.0
+            peaks = np.maximum.accumulate(wealth)
+            repeat_path = results_root / f"asmcvar_{source_name}_m{sparsity}_matlab_run2.mat"
+            repeat_equal = None
+            repeat_cw_sha256 = ""
+            if repeat_path.exists():
+                repeated = np.asarray(loadmat(repeat_path)["CW"], dtype="<f8").reshape(-1)
+                repeat_equal = bool(np.array_equal(wealth, repeated))
+                repeat_cw_sha256 = bytes_sha256(repeated.tobytes(order="C"))
+            output[(dataset, sparsity)] = {
+                "CW": float(wealth[-1]),
+                "SR": float(returns.mean() / returns.std(ddof=0)),
+                "MDD": float(np.max(1.0 - wealth / peaks)),
+                "wealth": wealth,
+                "weights": weights,
+                "observations": observations,
+                "assets": assets,
+                "cw_sha256": bytes_sha256(wealth.tobytes(order="C")),
+                "weights_sha256": bytes_sha256(weights.tobytes(order="C")),
+                "repeat_path_present": repeat_path.exists(),
+                "repeat_path_equal": repeat_equal,
+                "repeat_cw_sha256": repeat_cw_sha256,
+                "matlab_release": "2023b",
+            }
+    if not allow_missing and len(output) != 18:
+        raise ValueError(f"expected 18 ASMCVaR native executions, found {len(output)}")
+    return output
+
+
+def apply_asmcvar_credit(
+    rows: list[dict[str, Any]], metrics: Mapping[tuple[str, int], Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    version = str(rows[0]["paper_version"])
+    row_by_sparsity = ASMCVAR_V1_ROW_BY_SPARSITY if version == "v1" else ASMCVAR_V2_ROW_BY_SPARSITY
+    sparsity_by_row = {row_index: sparsity for sparsity, row_index in row_by_sparsity.items()}
+    audit_rows: list[dict[str, Any]] = []
+    for row in rows:
+        row_index = int(row["row_index"])
+        if row["paper_table"] != "benchmark" or row_index not in sparsity_by_row:
+            continue
+        sparsity = sparsity_by_row[row_index]
+        dataset, metric = str(row["dataset"]), str(row["metric"])
+        native = metrics[(dataset, sparsity)]
+        reproduced = float(native[metric])
+        rendered = _format_like(reproduced, str(row["paper_value"]))
+        match = rendered == row["paper_value"]
+        row["cited_baseline_recomputed_value"] = f"{reproduced:.12g}"
+        row["cited_baseline_match_at_paper_precision"] = match
+        row["paper_result_credit"] = match
+        audit_rows.append(
+            {
+                "paper_version": version,
+                "sparsity": sparsity,
+                "dataset": dataset,
+                "metric": metric,
+                "paper_value": row["paper_value"],
+                "recomputed_value": f"{reproduced:.12g}",
+                "recomputed_at_paper_precision": rendered,
+                "match_at_paper_precision": match,
+                "matlab_release": native["matlab_release"],
+                "cw_sha256": native["cw_sha256"],
+                "weights_sha256": native["weights_sha256"],
+                "native_asmcvar_source_evidence": True,
+                "native_efs_evidence": False,
+                "paper_result_credit": match,
+            }
+        )
+    expected = 45 if version == "v1" else 24
+    if len(audit_rows) != expected:
+        raise ValueError(f"expected {expected} ASMCVaR comparison cells for {version}")
+    return audit_rows
+
+
+def original_asmcvar_paper_conformance(
+    metrics: Mapping[tuple[str, int], Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for (dataset, sparsity), paper_values in ASMCVAR_ORIGINAL_T60_VALUES.items():
+        native = metrics[(dataset, sparsity)]
+        for metric in ("CW", "SR"):
+            paper_value = paper_values[metric]
+            reproduced = float(native[metric])
+            rendered = _format_like(reproduced, paper_value)
+            match = rendered == paper_value
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "sparsity": sparsity,
+                    "lookback": 60,
+                    "metric": metric,
+                    "paper_value": paper_value,
+                    "recomputed_value": f"{reproduced:.12g}",
+                    "recomputed_at_paper_precision": rendered,
+                    "match_at_paper_precision": match,
+                    "paper_location": "Table 4" if metric == "CW" else "Table 5",
+                    "matlab_release": native["matlab_release"],
+                    "cw_sha256": native["cw_sha256"],
+                    "original_asmcvar_paper_result_credit": match,
+                    "native_efs_evidence": False,
+                }
+            )
+    if len(rows) != 36:
+        raise ValueError("expected 36 original ASMCVaR CW/SR cells")
+    return rows
+
+
+def _uniform_buy_hold_path(data: np.ndarray) -> np.ndarray:
+    observations, assets = data.shape
+    cumulative = 1.0
+    path = np.ones(observations, dtype=float)
+    day_weight = np.ones(assets, dtype=float) / assets
+    evolved_weight = np.zeros(assets, dtype=float)
+    for index in range(observations):
+        if index >= 5:
+            day_weight = evolved_weight.copy()
+        day_weight = day_weight / day_weight.sum()
+        daily_return = float(data[index] @ day_weight)
+        cumulative *= daily_return
+        path[index] = cumulative
+        evolved_weight = day_weight * data[index] / daily_return
+    return path
+
+
+def asmcvar_alpha_conformance(
+    metrics: Mapping[tuple[str, int], Mapping[str, Any]], asm_cvar: Path
+) -> list[dict[str, Any]]:
+    data_root = asm_cvar / "Codes_for_Experiments_in_Paper" / "DataSets"
+    market_returns: dict[str, np.ndarray] = {}
+    for dataset, source_name in ASMCVAR_DATASETS.items():
+        data = np.asarray(loadmat(data_root / f"{source_name}.mat")["data"], dtype=float)
+        market = _uniform_buy_hold_path(data)
+        market_returns[dataset] = market[1:] / market[:-1] - 1.0
+    rows: list[dict[str, Any]] = []
+    for (dataset, sparsity), paper_values in ASMCVAR_ALPHA_P_VALUES.items():
+        strategy = np.asarray(metrics[(dataset, sparsity)]["wealth"], dtype=float)
+        strategy_returns = strategy[1:] / strategy[:-1] - 1.0
+        market = market_returns[dataset]
+        design = np.column_stack([np.ones(market.size), market])
+        covariance = np.linalg.inv(design.T @ design)
+        estimate = covariance @ design.T @ strategy_returns
+        residual = strategy_returns - design @ estimate
+        squared_error = float(residual @ residual)
+        degrees = market.size - 2
+        standard_error = np.sqrt(np.diag(covariance) * squared_error / degrees)
+        t_value = estimate / standard_error
+        values = {"alpha": float(estimate[0]), "p_value": float(student_t.cdf(-t_value[0], degrees))}
+        for metric in ("alpha", "p_value"):
+            paper_value = paper_values[metric]
+            rendered = _format_like(values[metric], paper_value)
+            match = rendered == paper_value
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "sparsity": sparsity,
+                    "metric": metric,
+                    "paper_value": paper_value,
+                    "recomputed_value": f"{values[metric]:.12g}",
+                    "recomputed_at_paper_precision": rendered,
+                    "match_at_paper_precision": match,
+                    "paper_location": "Table 3",
+                    "original_asmcvar_paper_result_credit": match,
+                    "native_efs_evidence": False,
+                }
+            )
+    if len(rows) != 36:
+        raise ValueError("expected 36 original ASMCVaR alpha/p-value cells")
+    return rows
+
+
+def asmcvar_overlap_conformance(
+    metrics: Mapping[tuple[str, int], Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for dataset, paper_values in ASMCVAR_OVERLAP_VALUES.items():
+        supports = {m: np.asarray(metrics[(dataset, m)]["weights"]) != 0 for m in (10, 15, 20)}
+        p10_15 = np.count_nonzero(supports[10] & supports[15], axis=0) / np.count_nonzero(supports[10], axis=0)
+        p15_20 = np.count_nonzero(supports[15] & supports[20], axis=0) / np.count_nonzero(supports[15], axis=0)
+        values = {
+            "p10_15_mean": float(p10_15.mean()),
+            "p10_15_std": float(p10_15.std(ddof=1)),
+            "p15_20_mean": float(p15_20.mean()),
+            "p15_20_std": float(p15_20.std(ddof=1)),
+        }
+        for metric, paper_value in paper_values.items():
+            rendered = _format_like(values[metric], paper_value)
+            match = rendered == paper_value
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "metric": metric,
+                    "paper_value": paper_value,
+                    "recomputed_value": f"{values[metric]:.12g}",
+                    "recomputed_at_paper_precision": rendered,
+                    "match_at_paper_precision": match,
+                    "paper_location": "Table 2",
+                    "original_asmcvar_paper_result_credit": match,
+                    "native_efs_evidence": False,
+                }
+            )
+    if len(rows) != 24:
+        raise ValueError("expected 24 original ASMCVaR overlap cells")
+    return rows
 
 
 def load_mssrm_native_metrics(
