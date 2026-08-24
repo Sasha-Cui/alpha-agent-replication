@@ -21,6 +21,18 @@ own normalized 110-factor catalog matches only 2/110 printed formulas exactly.
 It is therefore classified as an unaffiliated interpretation and receives zero
 native FactorMiner result credit.
 
+A second public repository, `fongfongfongwong/factor-mining-tsinghua`,
+was created on 2026-02-17, one day after paper submission.  Its README explicitly
+calls it paper-inspired and replaces Gemini with Claude, the paper's data
+construction with AkShare, and the paper's backend protocol with pure NumPy.
+Its full nine-commit history has no paper-author name match.  In a clean pinned
+Python 3.12 environment all 25 Python files parse and the environment passes
+dependency checks, but its advertised no-LLM pipeline fails unchanged because
+it hard-codes an absent sibling parquet.  A network-blocked synthetic harness
+executes all 16 shipped test expressions and repeats bit-identically.  Those
+synthetic Sharpe/return values test only this candidate's mechanics; they are
+not paper-market results and receive zero FactorMiner result credit.
+
 ## Honest end-to-end boundary
 
 The native FactorMiner experiment is **not reproduced**.  No attributable

@@ -15,7 +15,9 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 import re
+import subprocess
 import tarfile
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable, Mapping
@@ -28,6 +30,9 @@ WORK_ID = "CensusArxiv260214670"
 SYSTEM_ID = "SYS-FACTOR-MINER"
 ARXIV_ID = "2602.14670"
 INDEPENDENT_COMMIT = "201309cfe3df51f84af8eeb509354d3853ae512a"
+CANDIDATE_COMMIT = "9765c9c1171a53bdaf15db91bab23459a6c4c10a"
+CANDIDATE_TREE = "fb7934e985d5c32a235dbd9dd8fedae40555ff4a"
+CANDIDATE_BRANCH_COMMIT = "7442bdff117b57ca37fbc252865d4e4ad1945ed4"
 
 PINS = {
     "primary/arxiv-abs.html": "9c2407faad50295bb64ccd4672f52e47c840425539b3d057537fb841bbb7e6b3",
@@ -51,6 +56,17 @@ PINS = {
     "discovery/minihellboy/catalog-comparison.json": "22525533fd6c4e66628980491711ee8fdd64139b32c8fa3112350173f4d321dd",
     "discovery/heatmap.txt": "21089e90a94b01ecfff5ef22d98ff3e2b21634b1682c5260aa4102edbb4c7e9b",
     "discovery/heatmap-appendix-name-comparison.json": "a00f726f20e8346d6d297398b0c5d7e8d6c8ec7ff7a8714ea1d974ff57836c41",
+    "discovery/fongfongfongwong/commit.txt": "64c1d44d80a09494d054beb39b81c4db7d583504134d827229fc2bb617be6f59",
+    "discovery/fongfongfongwong/environment-freeze.txt": "c322718a48a9444b82e3e853db95f4c1bbd5ac7864c3f0d12f8b3e2c82cb2652",
+    "discovery/fongfongfongwong/environment-pip-check.txt": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "discovery/fongfongfongwong/environment-python.txt": "4c3569f5da09975434dd9fd9a91fadbc4367a91d8f3c3fab59e9241ab9ee4bd8",
+    "discovery/fongfongfongwong/history.tsv": "667b904a9d20e93d43e01f968fd614521c9bba0a793d11772131956ef6385df3",
+    "discovery/fongfongfongwong/repo.json": "70f29573013449208b4f2b2cf63743659a7817539a1c8ef1a2b2f05f91ded87d",
+    "discovery/fongfongfongwong/source-files.txt": "dc519f877a11ff3314e1d7ecbb27997208941cce280fcea26a20bec1b41a1bba",
+    "discovery/fongfongfongwong/synthetic-component-execution.json": "d850b3351d86e80028d7ccf07008d4dc5a341be0f344a87e0cfc6617ab015fdd",
+    "discovery/fongfongfongwong/unchanged-pipeline-exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "discovery/fongfongfongwong/unchanged-pipeline-stderr.txt": "b6b922e2e9e1bafb8756f5c2102f1ce89b7378ae17c5d6e32341c34b4c54385f",
+    "discovery/fongfongfongwong/unchanged-pipeline-stdout.txt": "439ec59d6430b9a8c34460728272561abc0c01053b569275c425410abbe88f19",
 }
 
 SOURCE_TREE = ("dba5118c046871e7ebf74c0cd38d66ae4b93544680d49b80224b77699827053a", 33)
@@ -78,6 +94,166 @@ def safe_tar(path: Path) -> None:
             pure = PurePosixPath(member.name)
             if pure.is_absolute() or ".." in pure.parts or member.issym() or member.islnk():
                 raise ValueError(f"unsafe archive member: {member.name}")
+
+
+def git_value(checkout: Path, *args: str) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(checkout), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip()
+
+
+def validate_candidate(scratch: Path) -> dict[str, Any]:
+    evidence = scratch / "discovery/fongfongfongwong"
+    checkout = scratch / "discovery/fongfongfongwong-repo"
+    repo = json.loads((evidence / "repo.json").read_text())
+    if (
+        repo["full_name"] != "fongfongfongwong/factor-mining-tsinghua"
+        or repo["created_at"] != "2026-02-17T16:41:19Z"
+        or repo["default_branch"] != "main"
+        or repo["owner"]["login"] != "fongfongfongwong"
+    ):
+        raise ValueError("additional independent candidate identity changed")
+
+    history = [line.split("\t", 4) for line in (evidence / "history.tsv").read_text().splitlines() if line]
+    if len(history) != 9 or any(len(row) != 5 for row in history):
+        raise ValueError("additional independent candidate history changed")
+    author_names = sorted({row[2] for row in history})
+    if author_names != ["Cursor Agent", "Fongyeung Wong"]:
+        raise ValueError(f"additional candidate authors changed: {author_names}")
+    paper_authors = {
+        "Yanlong Wang",
+        "Jian Xu",
+        "Hongkang Zhang",
+        "Shao-Lun Huang",
+        "Danny Dongning Sun",
+        "Xiao-Ping Zhang",
+    }
+    if paper_authors.intersection(author_names):
+        raise ValueError("additional candidate unexpectedly matches a paper author")
+
+    files = (evidence / "source-files.txt").read_text().splitlines()
+    if len(files) != 59 or len(set(files)) != 59:
+        raise ValueError("additional candidate source inventory changed")
+    python_files = [relative for relative in files if relative.endswith(".py")]
+    if len(python_files) != 25:
+        raise ValueError(f"expected 25 candidate Python files, found {len(python_files)}")
+    for relative in python_files:
+        compile((checkout / relative).read_text(), relative, "exec")
+
+    if (evidence / "commit.txt").read_text().strip() != CANDIDATE_COMMIT:
+        raise ValueError("additional candidate commit evidence changed")
+    if git_value(checkout, "rev-parse", "HEAD") != CANDIDATE_COMMIT:
+        raise ValueError("additional candidate checkout head changed")
+    if git_value(checkout, "rev-parse", "HEAD^{tree}") != CANDIDATE_TREE:
+        raise ValueError("additional candidate source tree changed")
+    if git_value(checkout, "rev-list", "--all", "--count") != "9":
+        raise ValueError("additional candidate reachable history changed")
+    if git_value(checkout, "rev-parse", "--is-shallow-repository") != "false":
+        raise ValueError("additional candidate checkout is shallow")
+    if git_value(checkout, "status", "--short"):
+        raise ValueError("additional candidate checkout is dirty")
+    refs = dict(
+        line.split()
+        for line in git_value(
+            checkout,
+            "for-each-ref",
+            "--format=%(refname) %(objectname)",
+            "refs/remotes/origin",
+        ).splitlines()
+    )
+    expected_refs = {
+        "refs/remotes/origin/HEAD": CANDIDATE_COMMIT,
+        "refs/remotes/origin/main": CANDIDATE_COMMIT,
+        "refs/remotes/origin/cursor/development-environment-setup-dc23": (CANDIDATE_BRANCH_COMMIT),
+    }
+    if refs != expected_refs:
+        raise ValueError(f"additional candidate refs changed: {refs}")
+    fsck = subprocess.run(
+        ["git", "-C", str(checkout), "fsck", "--full", "--no-reflogs", "--unreachable"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if fsck.stdout.strip():
+        raise ValueError(f"additional candidate has unreachable objects: {fsck.stdout}")
+
+    readme = (checkout / "README.md").read_text()
+    for marker in (
+        "inspired by the [FactorMiner paper]",
+        "**Data**: AkShare",
+        "**LLM**: Anthropic Claude API",
+        "**Compute**: Pure NumPy",
+    ):
+        if marker not in readme:
+            raise ValueError(f"additional candidate README marker changed: {marker}")
+
+    freeze = (evidence / "environment-freeze.txt").read_text().splitlines()
+    if len(freeze) != 94 or "torch==2.13.0" not in freeze:
+        raise ValueError("additional candidate installed environment changed")
+    if (evidence / "environment-python.txt").read_text().strip() != "Python 3.12.14":
+        raise ValueError("additional candidate Python version changed")
+    if (evidence / "environment-pip-check.txt").read_text().strip() != "No broken requirements found.":
+        raise ValueError("additional candidate environment is inconsistent")
+
+    if (evidence / "unchanged-pipeline-exit.txt").read_text().strip() != "1":
+        raise ValueError("additional candidate unchanged pipeline status changed")
+    pipeline_error = (evidence / "unchanged-pipeline-stderr.txt").read_text()
+    for marker in (
+        "FileNotFoundError: Local data not found:",
+        "factor_investing/data/processed/daily_20180101_20241231.parquet",
+    ):
+        if marker not in pipeline_error:
+            raise ValueError(f"additional candidate failure marker changed: {marker}")
+
+    execution = json.loads((evidence / "synthetic-component-execution.json").read_text())
+    if (
+        execution["candidate_scope"] != "unaffiliated_component_only_zero_paper_credit"
+        or execution["seed"] != 20260824
+        or execution["repeat_equal"] is not True
+        or execution["network_attempts"] != []
+        or execution["payload_sha256"] != "547225c3ae6124a51f9957a6bb09ac8107c9308c774c41d195a92ffb836c849d"
+        or execution["result"]["expressions"] != 16
+    ):
+        raise ValueError("additional candidate synthetic execution changed")
+
+    return {
+        "repository": "https://github.com/fongfongfongwong/factor-mining-tsinghua",
+        "repository_created": "2026-02-17T16:41:19Z",
+        "paper_submitted": "2026-02-16",
+        "commit": CANDIDATE_COMMIT,
+        "source_tree": CANDIDATE_TREE,
+        "reachable_commits": len(history),
+        "tracked_files": len(files),
+        "python_files_parsed": len(python_files),
+        "public_commit_author_names": author_names,
+        "paper_author_name_matches": 0,
+        "readme_self_classification": "inspired_by_factor_miner_paper",
+        "material_protocol_changes": [
+            "Gemini 3 Flash replaced by Anthropic Claude",
+            "paper market-data construction replaced by AkShare",
+            "paper runtime/backend protocol replaced by pure NumPy",
+            "paper prompts, memory, accepted factors, and result lineage absent",
+        ],
+        "unchanged_no_llm_entrypoint": {
+            "exit_code": 1,
+            "failure": "FileNotFoundError",
+            "reason": "hard-coded sibling author-local parquet is absent",
+        },
+        "installed_environment": {
+            "python": "3.12.14",
+            "frozen_distributions": len(freeze),
+            "pip_check_passed": True,
+        },
+        "synthetic_component_execution": execution,
+        "author_attribution_evidence_recovered": False,
+        "classification": "unaffiliated_post_paper_inspired_component_implementation",
+        "author_native_code_credit": False,
+        "paper_result_credit": False,
+    }
 
 
 def write_csv(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
@@ -128,7 +304,8 @@ def validate_inputs(scratch: Path) -> dict[str, Any]:
         raise ValueError("independent repository owner identity changed")
     if INDEPENDENT_COMMIT not in (scratch / "discovery/minihellboy/commit.txt").read_text():
         raise ValueError("independent implementation commit marker changed")
-    return {"source_files": SOURCE_TREE[1]}
+    candidate = validate_candidate(scratch)
+    return {"source_files": SOURCE_TREE[1], "candidate": candidate}
 
 
 def parse_formulas(tex: str) -> list[dict[str, str]]:
@@ -375,8 +552,8 @@ def heatmap_audit(scratch: Path) -> dict[str, Any]:
         "shape": [110, 110],
         "printed_numeric_annotations": 12100,
         "unique_offdiagonal_pairs": len(offdiag),
-        "printed_mean_absolute_offdiagonal": sum(offdiag) / len(offdiag),
-        "printed_mean_absolute_including_diagonal": sum(full) / len(full),
+        "printed_mean_absolute_offdiagonal": math.fsum(offdiag) / len(offdiag),
+        "printed_mean_absolute_including_diagonal": math.fsum(full) / len(full),
         "caption_claimed_average_absolute_correlation": 0.203,
         "pairs_at_or_above_admission_threshold_0_5": sum(value >= 0.5 for value in offdiag),
         "pairs_strictly_above_admission_threshold_0_5": sum(value > 0.5 for value in offdiag),
@@ -469,6 +646,7 @@ def discovery_rows(scratch: Path) -> list[dict[str, Any]]:
         {"route": "github_code_exact_title", "result_count": title["total_count"], "finding": "visible matches do not establish an author-attributable release", "attributable_native_artifact_recovered": False, "negative_search_limit": "bounded current indexed search only"},
         {"route": "github_academic_author_emails", "result_count": commits, "finding": "zero public commit matches for the first three Tsinghua academic emails", "attributable_native_artifact_recovered": False, "negative_search_limit": "email search cannot rule out aliases, private repositories, or different accounts"},
         {"route": "minihellboy_factorminer", "result_count": 1, "finding": "post-paper implementation by aaron/proton account; documentation says it follows/extends the paper and lacks paper datasets/baselines/A100 results", "attributable_native_artifact_recovered": False, "negative_search_limit": "absence of a public author link is not proof of identity; no affirmative attribution evidence was found"},
+        {"route": "fongfongfongwong_factor_mining_tsinghua", "result_count": 1, "finding": "repository created one day after paper submission and explicitly says inspired by FactorMiner; substitutes Claude, AkShare, and pure NumPy, with no paper-result lineage", "attributable_native_artifact_recovered": False, "negative_search_limit": "public repository and reachable history only; absence of an author link is not proof of identity"},
     ]
 
 
@@ -492,6 +670,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "formula_component_ledger.csv", formula_ledger)
     write_csv(output / "method_specification_audit.csv", methods)
     write_csv(output / "internal_consistency_audit.csv", consistency)
+    write_json(output / "independent_candidate_audit.json", validated["candidate"])
     write_csv(output / "discovery_evidence.csv", discovery)
     write_json(output / "independent_formula_execution.json", component)
     write_json(output / "heatmap_audit.json", heatmap)
@@ -513,6 +692,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         {
             "arxiv": {"id": ARXIV_ID, "version": "v1", "submitted": "2026-02-16", "pages": 20, "source_files": validated["source_files"], "rebuild_pages": 20, "rebuild_token_multiset_jaccard": 0.9997785405824383, "visual_qa": {"pages_inspected": 20, "unreadable_clipped_or_overlapping_pages": 0}},
             "independent_implementation": {"repository": "https://github.com/minihellboy/factorminer", "commit": INDEPENDENT_COMMIT, "repository_created": "2026-02-26", "paper_submitted": "2026-02-16", "owner_public_name": "aaron", "owner_public_email_domain": "proton.me", "author_attribution_evidence_recovered": False, "classification": "unaffiliated_post_paper_interpretation"},
+            "additional_independent_candidate": validated["candidate"],
             "release_boundary": {"attributable_native_implementation_recovered": False, "exact_printed_formula_syntax_recovered": True, "complete_author_operator_semantics_recovered": False, "paper_data_recovered": False, "prompts_or_model_calls_recovered": False, "raw_result_arrays_recovered": False, "reported_results_linked_to_appendix_formula_catalog": False, "bounded_negative_search_is_proof_of_nonexistence": False},
         },
     )
@@ -539,6 +719,18 @@ representative definitions for a claimed 60+ operator registry, Factor 001's
 own normalized 110-factor catalog matches only 2/110 printed formulas exactly.
 It is therefore classified as an unaffiliated interpretation and receives zero
 native FactorMiner result credit.
+
+A second public repository, `fongfongfongwong/factor-mining-tsinghua`,
+was created on 2026-02-17, one day after paper submission.  Its README explicitly
+calls it paper-inspired and replaces Gemini with Claude, the paper's data
+construction with AkShare, and the paper's backend protocol with pure NumPy.
+Its full nine-commit history has no paper-author name match.  In a clean pinned
+Python 3.12 environment all 25 Python files parse and the environment passes
+dependency checks, but its advertised no-LLM pipeline fails unchanged because
+it hard-codes an absent sibling parquet.  A network-blocked synthetic harness
+executes all 16 shipped test expressions and repeats bit-identically.  Those
+synthetic Sharpe/return values test only this candidate's mechanics; they are
+not paper-market results and receive zero FactorMiner result credit.
 
 ## Honest end-to-end boundary
 
@@ -597,6 +789,11 @@ not an independently verified paper-level market replication.
         "printed_formula_syntax_recovered": 110,
         "independent_exact_formula_synthetic_executions": 110,
         "author_native_formula_executions": 0,
+        "independent_public_implementations_audited": 2,
+        "additional_candidate_synthetic_expressions_executed": 16,
+        "additional_candidate_synthetic_repeat_bit_identical": True,
+        "additional_candidate_unchanged_pipeline_completed": False,
+        "independent_candidate_paper_result_credit": 0,
         "published_numeric_table_cells": len(results),
         "published_heatmap_numeric_annotations": 12100,
         "published_other_exact_figure_annotations": 34,

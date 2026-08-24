@@ -1,10 +1,15 @@
 {
+  "additional_candidate_synthetic_expressions_executed": 16,
+  "additional_candidate_synthetic_repeat_bit_identical": true,
+  "additional_candidate_unchanged_pipeline_completed": false,
   "arxiv_id": "2602.14670",
   "attributable_native_implementation_recovered": false,
   "author_native_formula_executions": 0,
   "empirical_vector_pdf_panels": 27,
   "full_end_to_end_pipeline_reproduced": false,
+  "independent_candidate_paper_result_credit": 0,
   "independent_exact_formula_synthetic_executions": 110,
+  "independent_public_implementations_audited": 2,
   "native_figure_panels_regenerated": 0,
   "native_heatmap_cells_regenerated": 0,
   "native_numeric_table_cells_regenerated": 0,
@@ -15,17 +20,18 @@
     "v1"
   ],
   "output_sha256": {
-    "README.md": "f22c00dd184a1e629d9b4d8eeedc32a7809b573661a2c95c064f03226bc42eff",
-    "discovery_evidence.csv": "ff05f5568393f2027276a78b39b6c540394c11861a7fd32192d203651e6942a2",
+    "README.md": "9444b5916223e31a8ddbed63e3d8b3dfc6392f244a804e01e7b92ae2d03f7f4e",
+    "discovery_evidence.csv": "854e60f987360c912d937edbb2de12d60dd2a62dd493fe2e5f1683810301d437",
     "figure_inventory.csv": "670698db09824c75845b06ee07a208c5b36b90b03b24640f9b0dbe1d27c4e9c0",
     "formula_component_ledger.csv": "fb1d26440c14acd27a729d0b97ebbbc71479b266dfcd0b44eb81d7990f988fae",
-    "heatmap_audit.json": "232c9cf1f4a5b16fe9c68f5130ef7a5b245668cc5745bd3ad2442d6eec10aeb8",
+    "heatmap_audit.json": "00ff75171ddc414eb3465085094b735c0d9b31086c8f7f13434b8639b31df741",
+    "independent_candidate_audit.json": "662905e61dece5f6f2d20d7ca9c7bffd18dc59d760272aa7420f6b92e7656134",
     "independent_formula_execution.json": "a0e8e1d8ef13e441acf819fd7ffb33c7a362069814ae013426233375bf91326e",
     "internal_consistency_audit.csv": "ff0f7091f8d782ff48b4edc4c36f7b1d4adb80c8380947eb5c6a49f610f1b4a6",
     "method_specification_audit.csv": "9f485a0f41df69933674b0d15fdf35b7d77232dc2ce7f60116e379e4b09958bc",
     "model_release_chronology.json": "49264b3a32cc9ac3dbbe572edbc32fc4851901c48430ded752c0b0a8b229f618",
     "published_result_ledger.csv": "f81db7c327ea2093d60894ca28547061a47d8ecf08050ca09bd5173530989cf5",
-    "source_provenance.json": "14ae848dfc02f7f0c974bd5be0a146912f6affbf7dea105b8d49b5f9ede96a84"
+    "source_provenance.json": "a2807a8964804e714766b53c483f77cfd576b0107b89763f2273ace1befdbcf0"
   },
   "paper_evidence_route": "paper_only_formula_syntax_component_no_native_results",
   "printed_formula_syntax_recovered": 110,

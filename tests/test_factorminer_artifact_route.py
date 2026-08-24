@@ -37,6 +37,9 @@ def test_factorminer_audit_routes_to_paper_only_without_artifact_inflation() -> 
     assert "12,100 annotations" in note
     assert "all 110 exact strings" in note
     assert "exactly matches just 2/110 printed formulas" in note
+    assert "second pinned repository" in note
+    assert "unchanged no-LLM pipeline fails" in note
+    assert "zero paper-result credit" in note
     assert "Zero regenerate from an author-native experiment" in note
     assert "10/110 heatmap labels conflict" in note
     assert "only 29/44 columns including ties" in note

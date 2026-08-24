@@ -1,4 +1,66 @@
 {
+  "additional_independent_candidate": {
+    "author_attribution_evidence_recovered": false,
+    "author_native_code_credit": false,
+    "classification": "unaffiliated_post_paper_inspired_component_implementation",
+    "commit": "9765c9c1171a53bdaf15db91bab23459a6c4c10a",
+    "installed_environment": {
+      "frozen_distributions": 94,
+      "pip_check_passed": true,
+      "python": "3.12.14"
+    },
+    "material_protocol_changes": [
+      "Gemini 3 Flash replaced by Anthropic Claude",
+      "paper market-data construction replaced by AkShare",
+      "paper runtime/backend protocol replaced by pure NumPy",
+      "paper prompts, memory, accepted factors, and result lineage absent"
+    ],
+    "paper_author_name_matches": 0,
+    "paper_result_credit": false,
+    "paper_submitted": "2026-02-16",
+    "public_commit_author_names": [
+      "Cursor Agent",
+      "Fongyeung Wong"
+    ],
+    "python_files_parsed": 25,
+    "reachable_commits": 9,
+    "readme_self_classification": "inspired_by_factor_miner_paper",
+    "repository": "https://github.com/fongfongfongwong/factor-mining-tsinghua",
+    "repository_created": "2026-02-17T16:41:19Z",
+    "source_tree": "fb7934e985d5c32a235dbd9dd8fedae40555ff4a",
+    "synthetic_component_execution": {
+      "candidate_scope": "unaffiliated_component_only_zero_paper_credit",
+      "network_attempts": [],
+      "payload_sha256": "547225c3ae6124a51f9957a6bb09ac8107c9308c774c41d195a92ffb836c849d",
+      "repeat_equal": true,
+      "result": {
+        "best_expression": "cs_rank(mul(ts_corr(close, volume, 10), ts_std(returns, 10)))",
+        "best_ic": 0.011663539202088603,
+        "expressions": 16,
+        "library_backtest": {
+          "annual_return": 0.035624155774109045,
+          "max_drawdown": -0.14290925056853807,
+          "sharpe": 0.33177254863007044,
+          "turnover": 1.2713173740637393,
+          "win_ratio": 0.4967637540453074
+        },
+        "single_backtest": {
+          "annual_return": 0.09323333162494052,
+          "max_drawdown": -0.12326336801869878,
+          "sharpe": 0.7640022259279478,
+          "turnover": 1.3250403877221326,
+          "win_ratio": 0.529126213592233
+        }
+      },
+      "seed": 20260824
+    },
+    "tracked_files": 59,
+    "unchanged_no_llm_entrypoint": {
+      "exit_code": 1,
+      "failure": "FileNotFoundError",
+      "reason": "hard-coded sibling author-local parquet is absent"
+    }
+  },
   "arxiv": {
     "id": "2602.14670",
     "pages": 20,

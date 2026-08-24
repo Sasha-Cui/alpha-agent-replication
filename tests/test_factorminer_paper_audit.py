@@ -172,7 +172,7 @@ def test_method_and_model_boundaries_are_fail_closed() -> None:
 
 def test_discovery_does_not_promote_post_paper_interpretation_to_native() -> None:
     discovery = rows("discovery_evidence.csv")
-    assert len(discovery) == 6
+    assert len(discovery) == 7
     assert all(row["attributable_native_artifact_recovered"] == "False" for row in discovery)
     provenance = json.loads((AUDIT_DIR / "source_provenance.json").read_text())
     independent = provenance["independent_implementation"]
@@ -187,6 +187,59 @@ def test_discovery_does_not_promote_post_paper_interpretation_to_native() -> Non
     assert boundary["complete_author_operator_semantics_recovered"] is False
     assert boundary["reported_results_linked_to_appendix_formula_catalog"] is False
     assert boundary["bounded_negative_search_is_proof_of_nonexistence"] is False
+
+
+def test_additional_independent_candidate_is_component_only() -> None:
+    candidate = json.loads(
+        (AUDIT_DIR / "independent_candidate_audit.json").read_text()
+    )
+    assert candidate["repository"].endswith(
+        "fongfongfongwong/factor-mining-tsinghua"
+    )
+    assert candidate["repository_created"] == "2026-02-17T16:41:19Z"
+    assert candidate["paper_submitted"] == "2026-02-16"
+    assert candidate["commit"] == "9765c9c1171a53bdaf15db91bab23459a6c4c10a"
+    assert candidate["source_tree"] == "fb7934e985d5c32a235dbd9dd8fedae40555ff4a"
+    assert candidate["reachable_commits"] == 9
+    assert candidate["tracked_files"] == 59
+    assert candidate["python_files_parsed"] == 25
+    assert candidate["paper_author_name_matches"] == 0
+    assert candidate["readme_self_classification"] == "inspired_by_factor_miner_paper"
+    assert candidate["unchanged_no_llm_entrypoint"] == {
+        "exit_code": 1,
+        "failure": "FileNotFoundError",
+        "reason": "hard-coded sibling author-local parquet is absent",
+    }
+    assert candidate["installed_environment"] == {
+        "python": "3.12.14",
+        "frozen_distributions": 94,
+        "pip_check_passed": True,
+    }
+    execution = candidate["synthetic_component_execution"]
+    assert execution["candidate_scope"] == (
+        "unaffiliated_component_only_zero_paper_credit"
+    )
+    assert execution["seed"] == 20260824
+    assert execution["repeat_equal"] is True
+    assert execution["network_attempts"] == []
+    assert execution["payload_sha256"] == (
+        "547225c3ae6124a51f9957a6bb09ac8107c9308c774c41d195a92ffb836c849d"
+    )
+    assert execution["result"]["expressions"] == 16
+    assert execution["result"]["single_backtest"]["sharpe"] == pytest.approx(
+        0.7640022259279478
+    )
+    assert candidate["author_attribution_evidence_recovered"] is False
+    assert candidate["author_native_code_credit"] is False
+    assert candidate["paper_result_credit"] is False
+    provenance = json.loads((AUDIT_DIR / "source_provenance.json").read_text())
+    assert provenance["additional_independent_candidate"] == candidate
+    data = manifest()
+    assert data["independent_public_implementations_audited"] == 2
+    assert data["additional_candidate_synthetic_expressions_executed"] == 16
+    assert data["additional_candidate_synthetic_repeat_bit_identical"] is True
+    assert data["additional_candidate_unchanged_pipeline_completed"] is False
+    assert data["independent_candidate_paper_result_credit"] == 0
 
 
 def test_generator_is_deterministic_and_strict_mode_fails_closed(tmp_path: Path) -> None:
@@ -225,3 +278,6 @@ def test_manifest_hashes_every_output_and_readme_states_boundary() -> None:
     assert "10 same-ID labels conflict" in text
     assert "29/44" in text
     assert "unaffiliated interpretation" in text
+    assert "fongfongfongwong/factor-mining-tsinghua" in text
+    assert "fails unchanged" in text
+    assert "zero FactorMiner result credit" in text
