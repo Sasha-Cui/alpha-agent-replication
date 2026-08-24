@@ -12,6 +12,12 @@
   "matlab_baseline_source_executed": true,
   "matlab_reason": "mSSRM ran natively under Octave 9.2.0 with an exact tick2ret compatibility shim; the untouched ASMCVaR entry point has a Windows-only path and its directly invoked exact core exceeded a 30-minute interactive cap",
   "native_efs_cells_with_credit": 0,
+  "original_mssrm_full_paths_repeat_exact": 18,
+  "original_mssrm_mirror_native_runs": 36,
+  "original_mssrm_neurips_supplement_native_runs": 6,
+  "original_mssrm_paper_cells_checked": 36,
+  "original_mssrm_paper_cells_matching": 36,
+  "original_mssrm_supplement_paths_equal_mirror": 6,
   "paper_source_compilation": {
     "v1": {
       "exit_codes": [

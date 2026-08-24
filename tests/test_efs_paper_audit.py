@@ -70,6 +70,23 @@ def test_cited_mssrm_source_execution_is_deterministic_but_mostly_mismatches() -
     assert {row["octave_version"] for row in rows} == {audit.MSSRM_OCTAVE_VERSION}
 
 
+def test_original_mssrm_paper_reproduces_despite_efs_baseline_mismatch() -> None:
+    original = read_csv(output_dir() / "cited_mssrm_original_paper_reproduction.csv")
+    supplement = read_csv(output_dir() / "cited_mssrm_neurips_supplement_correspondence.csv")
+    assert len(original) == 36
+    assert {row["dataset"] for row in original} == set(audit.MSSRM_ORIGINAL_DATASETS)
+    assert {row["sparsity"] for row in original} == {"10", "15", "20"}
+    assert {row["metric"] for row in original} == {"CW", "SR"}
+    assert {row["original_mssrm_paper_result_credit"] for row in original} == {"True"}
+    assert {row["full_wealth_path_repeat_equal"] for row in original} == {"True"}
+    assert len({row["cw_sha256"] for row in original}) == 18
+    assert {row["native_efs_evidence"] for row in original} == {"False"}
+    assert len(supplement) == 6
+    assert {row["full_wealth_path_equal_to_mirror"] for row in supplement} == {"True"}
+    assert {row["sharpe_equal_to_mirror"] for row in supplement} == {"True"}
+    assert {row["native_efs_evidence"] for row in supplement} == {"False"}
+
+
 def test_revision_lineage_detects_carryovers_and_semantic_relabels() -> None:
     rows = read_csv(output_dir() / "version_lineage_audit.csv")
     assert len(rows) == 240
@@ -114,6 +131,10 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert manifest["cited_mssrm_v1_cells_reproduced"] == 1
     assert manifest["cited_mssrm_v2_cells_checked"] == 24
     assert manifest["cited_mssrm_v2_cells_reproduced"] == 3
+    assert manifest["original_mssrm_paper_cells_checked"] == 36
+    assert manifest["original_mssrm_paper_cells_reproduced"] == 36
+    assert manifest["original_mssrm_neurips_supplement_paths_checked"] == 6
+    assert manifest["original_mssrm_neurips_supplement_paths_equal_mirror"] == 6
     assert manifest["native_efs_result_cells_reproduced"] == 0
     assert manifest["v1_v2_common_benchmark_cells_same_at_v2_precision"] == 240
     assert manifest["scores_to_weights_cells_relabelled_as_rw"] == 48
@@ -124,9 +145,14 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert native["cited_mssrm_source_executed_with_octave"] is True
     assert native["cited_mssrm_native_runs"] == 30
     assert native["cited_mssrm_full_paths_repeat_exact"] == 15
+    assert native["original_mssrm_paper_cells_matching"] == 36
+    assert native["original_mssrm_full_paths_repeat_exact"] == 18
+    assert native["original_mssrm_supplement_paths_equal_mirror"] == 6
     assert native["native_efs_cells_with_credit"] == 0
     assert provenance["official_efs_repository_found"] is False
-    assert provenance["cited_mssrm_native_execution"]["full_paths_repeat_exact"] == 15
+    assert provenance["cited_mssrm_native_execution"]["efs_comparison_full_paths_repeat_exact"] == 15
+    assert provenance["cited_mssrm_original_paper"]["pdf_sha256"] == audit.MSSRM_PAPER_SHA256
+    assert provenance["cited_mssrm_original_paper"]["reported_cells_reproduced"] == 36
     assert provenance["original_paper"]["pdf_sha256"] == audit.ARXIV_V1_PDF_SHA256
     assert provenance["current_revision"]["pdf_sha256"] == audit.ARXIV_V2_PDF_SHA256
     for filename, expected in manifest["output_sha256"].items():
@@ -149,6 +175,11 @@ def test_pinned_sources_and_dynamic_parsers_when_available() -> None:
         mssrm_metrics = audit.load_mssrm_native_metrics(results)
         mssrm_baseline = audit.apply_mssrm_credit(v1, mssrm_metrics) + audit.apply_mssrm_credit(v2, mssrm_metrics)
         assert len(mssrm_baseline) == 69
+        original_metrics = audit.load_mssrm_native_metrics(results, audit.MSSRM_ORIGINAL_DATASETS)
+        assert len(audit.original_mssrm_paper_conformance(original_metrics)) == 36
+        assert len(audit.mssrm_supplement_correspondence(results, original_metrics)) == 6
+        original_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/mssrm_original_paper")
+        assert audit.validate_mssrm_original_inputs(original_root, asm_cvar)["paper_pages"] == 28
     lineage = audit.apply_version_lineage(v1, v2)
     assert (len(v1), len(v2), len(baseline), len(lineage)) == (773, 877, 27, 240)
     expected_v1 = 6 if results.exists() else 5

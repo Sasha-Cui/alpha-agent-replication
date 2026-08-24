@@ -573,7 +573,6 @@ def apply_mssrm_credit(
                 "native_source_runs": 2,
                 "full_wealth_path_repeat_equal": native["repeat_paths_equal"],
                 "cw_sha256": native["cw_sha256"],
-                "run_elapsed_seconds": ";".join(f"{value:.6f}" for value in native["run_elapsed_seconds"]),
                 "native_mssrm_source_evidence": True,
                 "native_efs_evidence": False,
                 "paper_result_credit": match,
@@ -996,9 +995,12 @@ datasets, paper structure, and results.
   are 1/N cells and 3/24 are mSSRM cells. All are cited-baseline evidence, not
   EFS evidence. Paper compilation and parsing receive no experiment credit.
 
-The mSSRM release was run twice for every combination of five pinned matrices
+The mSSRM release was run twice for every combination of five EFS matrices
 and m={10,15,20}. All 15 full 623-point wealth paths were bit-identical across
 repeats, yet 44/45 original-v1 cells disagree with EFS at printed precision.
+This is an EFS baseline-protocol mismatch, not a failure to replicate mSSRM:
+all 36 CW/SR cells in the original NeurIPS mSSRM paper reproduce, and all six
+untouched conference-supplement m=10 wealth paths equal the mirror bit-for-bit.
 
 ## Version-lineage warning
 
@@ -1034,20 +1036,30 @@ def main() -> None:
         type=Path,
         default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_octave_runs"),
     )
+    parser.add_argument(
+        "--mssrm-original-root",
+        type=Path,
+        default=Path("/nfs/roberts/scratch/pi_btk22/zc362/mssrm_original_paper"),
+    )
     args = parser.parse_args()
     paper_root = args.paper_root.resolve()
     output = args.output.resolve()
     mssrm_results_root = args.mssrm_results_root.resolve()
+    mssrm_original_root = args.mssrm_original_root.resolve()
     mssrm = paper_root / "mssrm_source"
     asm_cvar = paper_root / "asm_cvar_source"
 
     validated = validate_inputs(paper_root, mssrm, asm_cvar)
+    validated_mssrm_original = validate_mssrm_original_inputs(mssrm_original_root, asm_cvar)
     v1 = parse_v1_results(paper_root)
     v2 = parse_v2_results(paper_root)
     metrics = baseline_metrics(asm_cvar)
     baseline = apply_baseline_credit(v1, metrics) + apply_baseline_credit(v2, metrics)
     mssrm_metrics = load_mssrm_native_metrics(mssrm_results_root)
     mssrm_baseline = apply_mssrm_credit(v1, mssrm_metrics) + apply_mssrm_credit(v2, mssrm_metrics)
+    mssrm_original_metrics = load_mssrm_native_metrics(mssrm_results_root, MSSRM_ORIGINAL_DATASETS)
+    mssrm_original = original_mssrm_paper_conformance(mssrm_original_metrics)
+    mssrm_supplement = mssrm_supplement_correspondence(mssrm_results_root, mssrm_original_metrics)
     lineage = apply_version_lineage(v1, v2)
     figures = figure_inventory(paper_root)
     methods = method_specification_audit()
@@ -1061,6 +1073,8 @@ def main() -> None:
     write_csv(output / "v2_table_result_conformance.csv", v2)
     write_csv(output / "cited_baseline_reproduction.csv", baseline)
     write_csv(output / "cited_mssrm_native_reproduction.csv", mssrm_baseline)
+    write_csv(output / "cited_mssrm_original_paper_reproduction.csv", mssrm_original)
+    write_csv(output / "cited_mssrm_neurips_supplement_correspondence.csv", mssrm_supplement)
     write_csv(output / "version_lineage_audit.csv", lineage)
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "method_specification_audit.csv", methods)
@@ -1091,6 +1105,12 @@ def main() -> None:
         "cited_mssrm_v1_cells_matching": 1,
         "cited_mssrm_v2_cells_checked": 24,
         "cited_mssrm_v2_cells_matching": 3,
+        "original_mssrm_paper_cells_checked": 36,
+        "original_mssrm_paper_cells_matching": 36,
+        "original_mssrm_mirror_native_runs": 36,
+        "original_mssrm_full_paths_repeat_exact": 18,
+        "original_mssrm_neurips_supplement_native_runs": 6,
+        "original_mssrm_supplement_paths_equal_mirror": 6,
         "cited_asmcvar_source_executed_with_octave": False,
         "matlab_reason": (
             "mSSRM ran natively under Octave 9.2.0 with an exact tick2ret compatibility shim; "
@@ -1107,12 +1127,27 @@ def main() -> None:
         "official_efs_repository_found": False,
         "github_repository_search": {"queries": ["2507.17211", "Evolutionary Factor Search", "EFS sparse portfolio LLM"], "total_repositories": 0, "snapshot_sha256": GITHUB_SEARCH_SHA256},
         "cited_mssrm_release": {"url": MSSRM_URL, "commit": MSSRM_COMMIT, "tree": MSSRM_TREE, "archive_sha256": MSSRM_ARCHIVE_SHA256, "paper_credit": "baseline_source_only"},
+        "cited_mssrm_original_paper": {
+            "url": MSSRM_PAPER_URL,
+            "pdf_sha256": MSSRM_PAPER_SHA256,
+            "pages": 28,
+            "supplement_url": MSSRM_SUPPLEMENT_URL,
+            "supplement_sha256": MSSRM_SUPPLEMENT_SHA256,
+            "validation": validated_mssrm_original,
+            "reported_cells_checked": 36,
+            "reported_cells_reproduced": 36,
+            "paper_credit": "original_mssrm_paper_only_not_efs",
+        },
         "cited_mssrm_native_execution": {
             "octave_version": MSSRM_OCTAVE_VERSION,
             "lookback": 60,
             "sparsity_values": [10, 15, 20],
-            "runs": 30,
-            "full_paths_repeat_exact": 15,
+            "efs_comparison_runs": 30,
+            "efs_comparison_full_paths_repeat_exact": 15,
+            "original_paper_mirror_runs": 36,
+            "original_paper_full_paths_repeat_exact": 18,
+            "neurips_supplement_m10_runs": 6,
+            "neurips_supplement_paths_equal_mirror": 6,
             "tick2ret_compatibility_shim": "x[1:]/x[:-1]-1",
             "cw_sha256": {f"{dataset}_m{sparsity}": value for (dataset, sparsity), value in sorted(MSSRM_CW_SHA256.items())},
             "paper_credit": "baseline_source_only",
@@ -1125,6 +1160,8 @@ def main() -> None:
     tracked = [
         "README.md", "v1_table_result_conformance.csv", "v2_table_result_conformance.csv",
         "cited_baseline_reproduction.csv", "cited_mssrm_native_reproduction.csv",
+        "cited_mssrm_original_paper_reproduction.csv",
+        "cited_mssrm_neurips_supplement_correspondence.csv",
         "version_lineage_audit.csv", "figure_inventory.csv",
         "method_specification_audit.csv", "qualitative_claim_audit.csv",
         "cited_baseline_source_inventory.csv", "paper_prompt_v1.tex.txt",
@@ -1149,6 +1186,14 @@ def main() -> None:
         "cited_mssrm_v2_cells_checked": 24,
         "cited_mssrm_v2_cells_reproduced": sum(
             row["paper_result_credit"] for row in mssrm_baseline if row["paper_version"] == "v2"
+        ),
+        "original_mssrm_paper_cells_checked": len(mssrm_original),
+        "original_mssrm_paper_cells_reproduced": sum(
+            row["original_mssrm_paper_result_credit"] for row in mssrm_original
+        ),
+        "original_mssrm_neurips_supplement_paths_checked": len(mssrm_supplement),
+        "original_mssrm_neurips_supplement_paths_equal_mirror": sum(
+            row["full_wealth_path_equal_to_mirror"] for row in mssrm_supplement
         ),
         "v1_v2_common_benchmark_cells": len(lineage),
         "v1_v2_common_benchmark_cells_same_at_v2_precision": sum(row["same_at_v2_precision"] for row in lineage),

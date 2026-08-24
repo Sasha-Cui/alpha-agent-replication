@@ -17,9 +17,12 @@ datasets, paper structure, and results.
   are 1/N cells and 3/24 are mSSRM cells. All are cited-baseline evidence, not
   EFS evidence. Paper compilation and parsing receive no experiment credit.
 
-The mSSRM release was run twice for every combination of five pinned matrices
+The mSSRM release was run twice for every combination of five EFS matrices
 and m={10,15,20}. All 15 full 623-point wealth paths were bit-identical across
 repeats, yet 44/45 original-v1 cells disagree with EFS at printed precision.
+This is an EFS baseline-protocol mismatch, not a failure to replicate mSSRM:
+all 36 CW/SR cells in the original NeurIPS mSSRM paper reproduce, and all six
+untouched conference-supplement m=10 wealth paths equal the mirror bit-for-bit.
 
 ## Version-lineage warning
 
