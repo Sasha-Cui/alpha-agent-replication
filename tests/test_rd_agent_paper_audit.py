@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import importlib.util
 import json
 import sys
@@ -84,6 +85,9 @@ def test_committed_native_record_is_component_only() -> None:
     output = ROOT / "paper_runs/paper_replication_audits/rd_agent"
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     native = json.loads((output / "native_execution.json").read_text(encoding="utf-8"))
+    freeze = (output / "paper_era_environment_freeze.txt").read_text(
+        encoding="utf-8"
+    )
     assert manifest["overall_status"] == (
         "paper_specification_source_and_full_history_audited_zero_native_results_"
         "missing_attributable_run_artifacts"
@@ -105,6 +109,11 @@ def test_committed_native_record_is_component_only() -> None:
     assert manifest["paper_era_data_science_and_kaggle_python_files_compiled"] == 233
     assert manifest["paper_era_scheduler_component_executed"] is True
     assert manifest["paper_era_interaction_kernel_executed"] is True
+    assert manifest["paper_era_dependency_environment_reproduced"] is True
+    assert manifest["paper_era_exact_historical_dependency_versions_recovered"] is False
+    assert manifest["paper_era_source_modules_imported"] == 192
+    assert manifest["paper_era_upstream_offline_tests_passed"] == 2
+    assert manifest["paper_era_mle_bench_container_reproduced"] is False
     assert native["full_native_paper_execution_attempted"] is False
     assert native["paper_source_compilation"]["exit_codes"] == [0, 0]
     assert native["paper_source_compilation"]["produced_pdf_pages"] == 33
@@ -113,6 +122,33 @@ def test_committed_native_record_is_component_only() -> None:
     assert interaction["passed"] is True
     assert interaction["best_history"] == "history_high"
     assert interaction["paper_result_credit"] is False
+    environment = native["released_source_component_execution"][
+        "dependency_environment"
+    ]
+    assert environment["dependency_environment_reproduced"] is True
+    assert environment["exact_historical_dependency_versions_recovered"] is False
+    assert environment["dependency_release_cutoff_utc"] == audit.SOURCE_V2_COMMIT_UTC
+    assert environment["dependency_freeze_sha256"] == audit.PAPER_ENV_FREEZE_SHA256
+    assert environment["dependency_freeze_lines"] == 243
+    assert environment["pip_check"] == "No broken requirements found."
+    assert environment["selected_source_modules"] == 192
+    assert environment["imported_source_modules"] == 192
+    assert environment["module_import_failures"] == []
+    assert environment["upstream_offline_tests_passed"] == 2
+    assert environment["upstream_offline_test_runs"] == 2
+    assert environment["litellm_local_model_cost_map"] is True
+    assert environment["network_attempts"] == []
+    assert environment["torch_optional_extra_installed"] is True
+    assert environment["torch_version"] == "2.4.0+cpu"
+    assert environment["mle_bench_container_reproduced"] is False
+    assert environment["mle_bench_dockerfile_uses_unpinned_live_clone"] is True
+    assert environment["rdagent_direct_url"]["vcs_info"]["commit_id"] == (
+        audit.SOURCE_V2_COMMIT
+    )
+    assert len(freeze.splitlines()) == 243
+    assert hashlib.sha256(freeze.encode()).hexdigest() == (
+        audit.PAPER_ENV_FREEZE_SHA256
+    )
     assert native["paper_result_credit"] is False
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected

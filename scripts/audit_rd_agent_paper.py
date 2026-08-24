@@ -56,6 +56,7 @@ SOURCE_V1_COMMIT = "2112d676d0938de6fea163b2e5eb9c36771e7041"
 SOURCE_V1_DATE = "2025-05-19T17:59:42+08:00"
 SOURCE_V2_COMMIT = "f360d0a212793eb044c218b5e13b095e684a632d"
 SOURCE_V2_DATE = "2025-09-23T16:20:00+08:00"
+SOURCE_V2_COMMIT_UTC = "2025-09-23T08:20:00Z"
 SOURCE_CURRENT_COMMIT = "6762f84f9bc0f5c6486c50a00e128a57ac6c3683"
 SOURCE_CURRENT_DATE = "2026-08-04T19:50:56+08:00"
 SOURCE_HISTORY_ROOT_COMMIT = "c740262752b585bc59e41e26807d826ec7bebe75"
@@ -64,6 +65,12 @@ SOURCE_HISTORY_REF_SHA256 = "89959be7063708bf4eb6f7b143d80f218873825048b5767a46c
 SOURCE_HISTORY_COMMIT_COUNT = 3384
 SOURCE_HISTORY_PATH_COUNT = 3188
 SOURCE_HISTORY_KEYWORD_PATH_COUNT = 329
+DEFAULT_PAPER_PYTHON = str(
+    Path(__file__).resolve().parent / "run_rd_agent_mle_paper_python.sh"
+)
+PAPER_ENV_FREEZE_SHA256 = (
+    "f2dffb539b367a2eaf0799943990ec8a2f1dcc6d56a72af28d035a5fba29c52a"
+)
 
 HISTORICAL_ARTIFACT_SPECS = (
     (
@@ -892,7 +899,229 @@ print(json.dumps({"passed": True, "selected_count": len(selected), "best_history
     }
 
 
-def source_component_execution(source_root: Path, component_python: str) -> dict[str, Any]:
+def _marked_json(stdout: str) -> dict[str, Any]:
+    for line in reversed(stdout.splitlines()):
+        if line.startswith("@@@"):
+            return json.loads(line.removeprefix("@@@"))
+    raise RuntimeError(f"Subprocess did not emit a marked JSON summary:\n{stdout}")
+
+
+def dependency_environment_execution(
+    snapshot_root: Path, paper_python: Path
+) -> tuple[dict[str, Any], str]:
+    if not paper_python.is_file():
+        raise FileNotFoundError(paper_python)
+    clean_env = os.environ.copy()
+    clean_env.pop("PYTHONPATH", None)
+    clean_env["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    pip_check = subprocess.run(
+        [str(paper_python), "-m", "pip", "check"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    )
+    freeze = subprocess.run(
+        [str(paper_python), "-m", "pip", "freeze", "--all"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    ).stdout
+    freeze_sha256 = hashlib.sha256(freeze.encode()).hexdigest()
+    if freeze_sha256 != PAPER_ENV_FREEZE_SHA256:
+        raise RuntimeError(
+            f"R&D-Agent paper environment changed: {freeze_sha256} != "
+            f"{PAPER_ENV_FREEZE_SHA256}"
+        )
+
+    import_program = r"""
+import aiohttp, httpx, importlib, importlib.metadata, json, requests
+from pathlib import Path
+
+network_attempts = []
+def block_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during R&D-Agent paper audit')
+async def block_httpx_async(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx-async:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during R&D-Agent paper audit')
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f'requests:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during R&D-Agent paper audit')
+async def block_aiohttp(self, method, url, *args, **kwargs):
+    network_attempts.append(f'aiohttp:{method}:{url}')
+    raise RuntimeError('network disabled during R&D-Agent paper audit')
+httpx.Client.send = block_httpx
+httpx.AsyncClient.send = block_httpx_async
+requests.sessions.Session.send = block_requests
+aiohttp.ClientSession._request = block_aiohttp
+
+modules = []
+for file in sorted(Path('rdagent').rglob('*.py')):
+    fstr = str(file)
+    if (
+        'example' in fstr
+        or 'meta_tpl' in fstr
+        or 'template' in fstr
+        or 'tpl' in fstr
+        or 'model_coder' in fstr
+        or 'llm_st' in fstr
+    ):
+        continue
+    if (
+        'rdagent/log/ui/' in fstr
+        or fstr.endswith('rdagent/app/cli.py')
+        or fstr.endswith('rdagent/app/CI/run.py')
+        or fstr.endswith('rdagent/app/utils/ape.py')
+        or fstr.endswith('rdagent/log/ui/utils.py')
+    ):
+        continue
+    modules.append(fstr[fstr.index('rdagent'):-3].replace('/', '.'))
+
+imported = []
+failures = []
+for name in modules:
+    try:
+        importlib.import_module(name)
+        imported.append(name)
+    except Exception as exc:
+        failures.append({
+            'module': name,
+            'exception_type': type(exc).__name__,
+            'message': str(exc),
+        })
+
+distribution = importlib.metadata.distribution('rdagent')
+direct_url = json.loads((Path(distribution._path) / 'direct_url.json').read_text())
+packages = {
+    name: importlib.metadata.version(name)
+    for name in (
+        'azureml-mlflow', 'litellm', 'mlflow', 'openai', 'pandas',
+        'pydantic-ai-slim', 'pytest', 'rdagent', 'scikit-learn', 'streamlit', 'torch'
+    )
+}
+print('@@@' + json.dumps({
+    'selected_source_modules': len(modules),
+    'imported_source_modules': len(imported),
+    'imported_module_names': imported,
+    'failures': failures,
+    'network_attempts': network_attempts,
+    'rdagent_direct_url': direct_url,
+    'resolved_packages': packages,
+}, sort_keys=True))
+"""
+    import_outputs = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [str(paper_python), "-c", import_program],
+            cwd=snapshot_root,
+            env=clean_env,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+        import_outputs.append(_marked_json(completed.stdout))
+    if import_outputs[0] != import_outputs[1]:
+        raise RuntimeError("R&D-Agent module import inventory is nondeterministic")
+    imports = import_outputs[0]
+    if (
+        imports["selected_source_modules"] != 192
+        or imports["imported_source_modules"] != 192
+        or imports["failures"]
+        or imports["network_attempts"]
+        or imports["resolved_packages"]["torch"] != "2.4.0+cpu"
+        or imports["rdagent_direct_url"].get("vcs_info", {}).get("commit_id")
+        != SOURCE_V2_COMMIT
+    ):
+        raise RuntimeError(f"R&D-Agent dependency/import boundary changed: {imports}")
+
+    pytest_program = r"""
+import aiohttp, httpx, json, pytest, requests
+network_attempts = []
+def block_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during R&D-Agent paper audit')
+async def block_httpx_async(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx-async:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during R&D-Agent paper audit')
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f'requests:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during R&D-Agent paper audit')
+async def block_aiohttp(self, method, url, *args, **kwargs):
+    network_attempts.append(f'aiohttp:{method}:{url}')
+    raise RuntimeError('network disabled during R&D-Agent paper audit')
+httpx.Client.send = block_httpx
+httpx.AsyncClient.send = block_httpx_async
+requests.sessions.Session.send = block_requests
+aiohttp.ClientSession._request = block_aiohttp
+exit_code = pytest.main(['test', '-m', 'offline', '-q', '-p', 'no:cacheprovider'])
+print('@@@' + json.dumps({'exit_code': exit_code, 'network_attempts': network_attempts}, sort_keys=True))
+raise SystemExit(exit_code)
+"""
+    test_outputs = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [str(paper_python), "-c", pytest_program],
+            cwd=snapshot_root,
+            env=clean_env,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=240,
+        )
+        summary = _marked_json(completed.stdout)
+        combined = completed.stdout + completed.stderr
+        if (
+            completed.returncode != 0
+            or summary != {"exit_code": 0, "network_attempts": []}
+            or "2 passed" not in combined
+            or "95 deselected" not in combined
+        ):
+            raise RuntimeError(f"R&D-Agent offline tests changed:\n{combined}")
+        test_outputs.append(summary)
+
+    return (
+        {
+            "dependency_environment_reproduced": True,
+            "exact_historical_dependency_versions_recovered": False,
+            "dependency_release_cutoff_utc": SOURCE_V2_COMMIT_UTC,
+            "python": str(paper_python),
+            "python_version": subprocess.run(
+                [str(paper_python), "--version"],
+                check=True,
+                capture_output=True,
+                text=True,
+                env=clean_env,
+            ).stdout.strip(),
+            "pip_check": pip_check.stdout.strip(),
+            "dependency_freeze_sha256": freeze_sha256,
+            "dependency_freeze_lines": len(freeze.splitlines()),
+            "rdagent_direct_url": imports["rdagent_direct_url"],
+            "resolved_packages": imports["resolved_packages"],
+            "selected_source_modules": imports["selected_source_modules"],
+            "imported_source_modules": imports["imported_source_modules"],
+            "imported_module_names": imports["imported_module_names"],
+            "module_import_failures": imports["failures"],
+            "module_import_inventory_deterministic_across_two_runs": True,
+            "upstream_offline_tests_passed": 2,
+            "upstream_offline_test_runs": len(test_outputs),
+            "litellm_local_model_cost_map": True,
+            "network_attempts": imports["network_attempts"],
+            "torch_optional_extra_installed": True,
+            "torch_version": imports["resolved_packages"]["torch"],
+            "mle_bench_container_reproduced": False,
+            "mle_bench_dockerfile_uses_unpinned_live_clone": True,
+            "paper_result_reproduction": False,
+        },
+        freeze,
+    )
+
+
+def source_component_execution(
+    source_root: Path, component_python: str, paper_python: Path
+) -> dict[str, Any]:
     archive_bytes = run_git(source_root, "archive", SOURCE_V2_COMMIT, binary=True)
     with tempfile.TemporaryDirectory(prefix="rd-agent-source-") as tmp:
         tmp_path = Path(tmp)
@@ -905,6 +1134,9 @@ def source_component_execution(source_root: Path, component_python: str) -> dict
         ]
         py_files = sorted(path for root in paths for path in root.rglob("*.py"))
         compiled = all(compileall.compile_file(str(path), quiet=2, force=True) for path in py_files)
+        dependency_environment, dependency_freeze = dependency_environment_execution(
+            tmp_path, paper_python
+        )
 
         scheduler_path = tmp_path / "rdagent/scenarios/data_science/proposal/exp_gen/trace_scheduler.py"
         package = types.ModuleType("rdagent")
@@ -941,7 +1173,9 @@ def source_component_execution(source_root: Path, component_python: str) -> dict
                 tmp_path / "rdagent/scenarios/data_science/proposal/exp_gen/proposal.py",
                 component_python,
             ),
-            "scope": "paper-era data-science/Kaggle compilation plus dependency-isolated scheduler and interaction-kernel components",
+            "dependency_environment": dependency_environment,
+            "_dependency_freeze_text": dependency_freeze,
+            "scope": "paper-era dependency-backed source imports/tests plus native scheduler and interaction-kernel components",
             "paper_result_credit": False,
         }
 
@@ -979,11 +1213,11 @@ That history corrects an earlier overstatement: developmental artifacts do exist
 
 ## What ran
 
-The v2 LaTeX source compiled twice to a 33-page PDF. All 233 paper-era Python files across the data-science and Kaggle MLE paths compiled, the native probabilistic scheduler's softmax helper executed, and the exact paper-era interaction-kernel methods executed with deterministic synthetic embeddings. These checks earn component-packaging credit only and zero published-result credit.
+The v2 LaTeX source compiled twice to a 33-page PDF. All 233 paper-era Python files across the data-science and Kaggle MLE paths compiled. A date-bounded Python 3.10 environment installs the exact paper-era R&D-Agent commit plus the Dockerfile's PyTorch 2.4.0 CPU-compatible build, passes `pip check`, and tracks a 243-line freeze. The authors' complete offline suite passes twice with real dependencies: 192/192 modules selected by their import test load, with no HTTP attempts after enabling LiteLLM's pinned local-cost-map switch. The native probabilistic scheduler's softmax helper and exact paper-era interaction-kernel methods also execute deterministically. These checks earn dependency/component execution credit only and zero published-result credit.
 
 ## Why the reported experiment did not run
 
-An exact run is not presently specified or provisioned. The paper requires 75 Kaggle datasets, three 12-hour runs per main configuration plus ablations, Azure model deployments, a V100-class environment, and frozen MLE-Bench grading. The release's MLE-Bench Dockerfile performs an unpinned live clone; paper-era defaults also disable the planner and LLM selector, set one trace, and default holdout selection to 80/20 rather than the paper's 90/10. Both advertised result-trace links now redirect to generic Bing pages. Running a guessed modern configuration would be expensive but would not be a faithful replication.
+An exact run is not presently specified or provisioned. The paper requires 75 Kaggle datasets, three 12-hour runs per main configuration plus ablations, Azure model deployments, a V100-class environment, and frozen MLE-Bench grading. The host environment above is compatible and source-pinned, not historically exact: requirements were unpinned. The separate MLE-Bench Dockerfile uses a PyTorch 2.4.0/CUDA 12.4 base but performs an unpinned live clone of MLE-Bench, so the paper container remains unreproduced. Paper-era defaults also disable the planner and LLM selector, set one trace, and default holdout selection to 80/20 rather than the paper's 90/10. Both advertised result-trace links now redirect to generic Bing pages. Running a guessed modern configuration would be expensive but would not be a faithful replication.
 
 ## Material internal inconsistencies
 
@@ -991,7 +1225,14 @@ The main text says ML-Master/GPT-5 achieves 16.9±2.0, while Table 2 and Figure 
 """
 
 
-def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str, component_python: str) -> dict[str, Any]:
+def audit(
+    source_root: Path,
+    paper_root: Path,
+    output: Path,
+    latex_command: str,
+    component_python: str,
+    paper_python: Path,
+) -> dict[str, Any]:
     validate_inputs(source_root, paper_root)
     table = paper_table_rows(paper_root)
     unique = unique_measurement_rows(table)
@@ -1004,6 +1245,10 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
     assets = paper_asset_rows(paper_root)
     checks = internal_check_rows()
     gaps = gap_rows()
+    source_execution = source_component_execution(
+        source_root, component_python, paper_python
+    )
+    dependency_freeze = source_execution.pop("_dependency_freeze_text")
     native = {
         "official_source_url": SOURCE_URL,
         "full_native_paper_execution_attempted": False,
@@ -1014,7 +1259,7 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
         "docker_command_available": shutil.which("docker") is not None,
         "singularity_or_apptainer_available": bool(shutil.which("singularity") or shutil.which("apptainer")),
         "paper_source_compilation": compile_paper(paper_root, latex_command),
-        "released_source_component_execution": source_component_execution(source_root, component_python),
+        "released_source_component_execution": source_execution,
         "paper_result_credit": False,
     }
     links = [
@@ -1042,6 +1287,9 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
     for name, rows in csv_outputs.items():
         write_csv(output / name, rows)
     (output / "native_execution.json").write_text(json.dumps(native, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (output / "paper_era_environment_freeze.txt").write_text(
+        dependency_freeze, encoding="utf-8"
+    )
     (output / "public_source_history.json").write_text(
         json.dumps(history, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -1090,6 +1338,21 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
         "paper_era_data_science_and_kaggle_python_files_compiled": native["released_source_component_execution"]["data_science_and_kaggle_python_files_compiled"],
         "paper_era_scheduler_component_executed": native["released_source_component_execution"]["native_scheduler_softmax_passed"],
         "paper_era_interaction_kernel_executed": native["released_source_component_execution"]["native_interaction_kernel_execution"]["passed"],
+        "paper_era_dependency_environment_reproduced": native[
+            "released_source_component_execution"
+        ]["dependency_environment"]["dependency_environment_reproduced"],
+        "paper_era_exact_historical_dependency_versions_recovered": native[
+            "released_source_component_execution"
+        ]["dependency_environment"]["exact_historical_dependency_versions_recovered"],
+        "paper_era_source_modules_imported": native[
+            "released_source_component_execution"
+        ]["dependency_environment"]["imported_source_modules"],
+        "paper_era_upstream_offline_tests_passed": native[
+            "released_source_component_execution"
+        ]["dependency_environment"]["upstream_offline_tests_passed"],
+        "paper_era_mle_bench_container_reproduced": native[
+            "released_source_component_execution"
+        ]["dependency_environment"]["mle_bench_container_reproduced"],
         "primary_record_scope": "general MLE-Bench R&D-Agent report; not the separate R&D-Agent-Quant paper",
     }
     (output / "README.md").write_text(render_readme(manifest), encoding="utf-8")
@@ -1098,6 +1361,7 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str,
         "native_execution.json",
         "public_source_history.json",
         "README.md",
+        "paper_era_environment_freeze.txt",
     ]
     manifest["output_sha256"] = {name: sha256(output / name) for name in sorted(output_names)}
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -1110,13 +1374,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--paper-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--latex-command", default="pdflatex")
-    parser.add_argument("--component-python", default=sys.executable)
+    parser.add_argument("--component-python", default=DEFAULT_PAPER_PYTHON)
+    parser.add_argument(
+        "--paper-python",
+        type=Path,
+        default=Path(os.environ.get("RD_AGENT_PAPER_PYTHON", DEFAULT_PAPER_PYTHON)),
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    manifest = audit(args.source_root, args.paper_root, args.output, args.latex_command, args.component_python)
+    manifest = audit(
+        args.source_root,
+        args.paper_root,
+        args.output,
+        args.latex_command,
+        args.component_python,
+        args.paper_python.resolve(),
+    )
     print(json.dumps(manifest, indent=2, sort_keys=True))
 
 
