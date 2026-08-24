@@ -362,7 +362,7 @@ def test_efs_paper_only_audit_preserves_versions_and_zero_native_credit() -> Non
     assert row["reachable_public_code_system_ids"] == ""
     assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_6_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited"
+        "paper_audit:completed_7_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M1_example_or_motif_partial_support"
