@@ -657,7 +657,14 @@ ARTIFACT_NOTES = {
         "the forks add zero unique commits, zero unique blobs, and zero result credit. Its "
         "ten tracked files include five Python components, a config, "
         "requirements, and 65,733 WSJ metadata records; all Python files compile. "
-        "This is static component evidence, not experiment output. Article bodies, "
+        "A date-bounded 135-package environment now passes dependency checks: four "
+        "source modules import twice with zero HTTP attempts, model.py loads offline, "
+        "native Chroma add/query/filter/pad runs twice on supplied embeddings, and the "
+        "released report-plus-asset model forward path emits finite values twice on a "
+        "disclosed CPU fixture. analysis.py advances to the missing private news-library "
+        "index. PyYAML and PEFT repairs plus a CUDA no-op make this compatible rather "
+        "than historically exact. This is runnable component evidence, not experiment "
+        "output. Article bodies, "
         "CRSP returns, manual factors, report embeddings, checkpoints, baselines, "
         "portfolio/pricing evaluators, sweep histories, and result arrays are absent. "
         "The model never ingests the paper's central manual-factor input or performs "
@@ -1609,9 +1616,10 @@ TARGETED_EXECUTION = {
         "zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted"
     ),
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": (
-        "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_"
-        "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_4_official_history_"
-        "heads_exhausted"
+        "paper_audit:completed_zero_of_162_v2_table_results_runnable_135_package_"
+        "environment_4_modules_chroma_memory_model_forward_full_nine_commit_history_"
+        "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_"
+        "4_official_history_heads_exhausted"
     ),
     "SYS-FLAG-TRADER": "paper_audit:completed_6_of_360_author_linked_buy_hold_baseline_cells_4_current_response_verified_zero_flag_native_results",
     "SYS-FIN-MEM": "paper_audit:partial_227_of_235_author_output_cells_corroborated_67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells_181_accessible_forks_187_refs_20_unique_heads_exhausted",
