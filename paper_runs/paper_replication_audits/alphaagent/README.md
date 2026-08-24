@@ -25,6 +25,9 @@ legacy tree; both omissions made it materially too pessimistic.
 - The same author commit contains seven Qlib/MLflow run directories (385 files),
   executed on 2025-01-28: four S&P500 and three CSI500 runs. Every directory has
   metrics, parameters, a serialized task/config, and a fitted LightGBM state.
+- The paper-era Qlib Dockerfile pins Qlib commit `c9ed050ef034fe6519c14b59f3d207abcb693282` and a
+  PyTorch 2.2.1/CUDA 12.1 base image, then leaves CatBoost and XGBoost unpinned
+  while pinning SciPy 1.11.4. The audit preserves this host/container split.
 - The 2025-02-17 preprint-cutoff commit `0bc7a34ed9701a0149ae990b6484e7c73b347ea0` removed the
   factor zoo. The audit intentionally pins the earlier mechanism-complete tree
   and records that deletion instead of pretending the cutoff head is runnable.
@@ -43,7 +46,26 @@ legacy tree; both omissions made it materially too pessimistic.
   3,912 trees, and 2,499 unique historical file paths. All 385 historical
   `saved_mlruns` paths belong to the same seven run IDs already audited; no
   prediction, return series, holding, or portfolio-analysis path is present.
-- All 331 Python modules in the paper-era snapshot compile under Python 3.12.
+- All 331 Python files in the paper-era snapshot compile under the reconstructed
+  Python 3.10 host environment.
+- The exact RD-Agent commit is installed with a hard dependency-release cutoff of
+  `2025-02-12T13:30:56Z`. Its 153-line freeze passes `pip check`. Of 113
+  modules selected by the authors' own import test, 112 import twice with real
+  dependencies and zero blocked HTTP attempts. The sole failure is the committed
+  developer file `rdagent.components.coder.factor_coder.test`, which opens the
+  author's absolute `/home/tangziyi/RD-Agent/.../template_debug.jinjia2` path.
+  The authors' singleton test passes twice; their import test therefore remains
+  honestly 1/2 rather than being patched or reported green.
+- A separate 119-line Qlib compatibility freeze passes `pip check`, installs the
+  exact Qlib commit from the Dockerfile, retains SciPy 1.11.4, and resolves
+  CatBoost 1.2.7 and XGBoost 2.1.4 using the same historical cutoff. PyTorch
+  2.2.1 CPU substitutes for the unavailable CUDA container, so exact-container
+  credit remains false.
+- All seven shipped LightGBM model strings load twice in that Qlib environment.
+  The matching S&P500 artifact is a 9-feature, 3-tree fitted model; deterministic
+  zero/one-vector probes and feature-importance summaries are tracked. This proves
+  the fitted states are executable, not that their paper inputs or metrics were
+  regenerated.
 - The paper-era AST parser executes twice deterministically. Identical,
   commutative, and partially shared expressions return largest-common-subtree
   sizes 4, 3, and 3. An exact Alpha101 probe matches itself with size 23.
@@ -95,6 +117,10 @@ legacy tree; both omissions made it materially too pessimistic.
 - The exact Baostock CSI500 and Yahoo S&P500 panels, constituent histories, and
   data transformations are absent. The US config points only to unversioned local
   `us_data`; it does not establish Yahoo provenance or frozen panel identity.
+- RD-Agent's host requirements and the Qlib Dockerfile's CatBoost/XGBoost installs
+  were unpinned. A commit-date release cutoff gives a reproducible compatible
+  reconstruction, but cannot prove the authors' exact installed wheels. Bouchet's
+  CPU environment also does not reproduce the mirrored CUDA 12.1 image digest.
 - The code defaults to GPT-4-turbo, while the paper reports GPT-3.5-turbo. The
   executed model/API snapshot, temperature, seeds, token limits, initial research
   directions, and 20 independent trial trajectories are not pinned.

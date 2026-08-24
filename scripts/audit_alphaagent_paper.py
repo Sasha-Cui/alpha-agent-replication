@@ -39,6 +39,8 @@ SOURCE_FIRST_COMMIT = "7debd15ca98309a8df9c1d50aca3831f320687cf"
 LEGACY_HEAD_COMMIT = "1da96e94a06a925c3997899f1848899440585efe"
 LEGACY_ROOT_COMMIT = "c740262752b585bc59e41e26807d826ec7bebe75"
 PAPER_MECHANISM_COMMIT = "95e47882cbed3ba0cafd42e812fe0032a8ae0681"
+PAPER_MECHANISM_COMMIT_UTC = "2025-02-12T13:30:56Z"
+QLIB_SOURCE_COMMIT = "c9ed050ef034fe6519c14b59f3d207abcb693282"
 LATEST_FULL_TREE_PREPRINT_COMMIT = "3cbb7b7e9abe9bc3f3beaa7fcb2102293fbbea4a"
 PREPRINT_CUTOFF_COMMIT = "0bc7a34ed9701a0149ae990b6484e7c73b347ea0"
 PAPER_RUN_RECORD_TREE = "09339a924f84bd42915e8643fcd39a60ac81e911"
@@ -182,8 +184,25 @@ DEFAULT_SOURCE_PYTHON = (
     "/nfs/roberts/project/pi_btk22/zc362/environments/current/"
     "alphaagent-rewrite/bin/python"
 )
+DEFAULT_PAPER_HOST_PYTHON = str(
+    Path(__file__).resolve().parent / "run_alphaagent_paper_host_python.sh"
+)
+DEFAULT_PAPER_QLIB_PYTHON = str(
+    Path(__file__).resolve().parent / "run_alphaagent_paper_qlib_python.sh"
+)
 REWRITE_ENV_FREEZE_SHA256 = (
     "98a93cf29257f73ff3e26d2f4a1fe2ab264c1ea9d1d9eed4fd2d978ff6d99f02"
+)
+PAPER_HOST_ENV_FREEZE_SHA256 = (
+    "040a0414d4bb482cb18ec5bb60f3b3e0b495ac17a41a2ebdd4693f3275ec640c"
+)
+PAPER_QLIB_ENV_FREEZE_SHA256 = (
+    "450be5351acb35eb1d3b6b443226cac7a730bb8cce9101146f3e777c22ece1f2"
+)
+PAPER_ERA_IMPORT_FAILURE_MODULE = "rdagent.components.coder.factor_coder.test"
+PAPER_ERA_IMPORT_FAILURE_PATH = (
+    "/home/tangziyi/RD-Agent/rdagent/components/coder/factor_coder/"
+    "template_debug.jinjia2"
 )
 EXPECTED_SYNTHETIC_SHA256 = (
     "e0bd090308b893c6bcf97cc1589538e4fcedc4a896bb90d21a0848e92d7a5dc9"
@@ -1691,11 +1710,415 @@ def paper_era_factor_rows(snapshot_root: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _marked_json(stdout: str) -> dict[str, Any]:
+    for line in reversed(stdout.splitlines()):
+        if line.startswith("@@@"):
+            return json.loads(line.removeprefix("@@@"))
+    raise RuntimeError(f"Subprocess did not emit a marked JSON summary:\n{stdout}")
+
+
+def _python_environment_snapshot(
+    python: Path, expected_freeze_sha256: str
+) -> tuple[dict[str, Any], str]:
+    if not python.is_file():
+        raise FileNotFoundError(python)
+    clean_env = os.environ.copy()
+    clean_env.pop("PYTHONPATH", None)
+    pip_check = subprocess.run(
+        [str(python), "-m", "pip", "check"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    )
+    freeze = subprocess.run(
+        [str(python), "-m", "pip", "freeze", "--all"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    ).stdout
+    freeze_sha256 = sha256_bytes(freeze.encode())
+    if freeze_sha256 != expected_freeze_sha256:
+        raise RuntimeError(
+            f"Paper-era environment changed: {freeze_sha256} != "
+            f"{expected_freeze_sha256}"
+        )
+    return (
+        {
+            "python": str(python),
+            "python_version": subprocess.run(
+                [str(python), "--version"],
+                check=True,
+                capture_output=True,
+                text=True,
+                env=clean_env,
+            ).stdout.strip(),
+            "pip_check": pip_check.stdout.strip(),
+            "dependency_freeze_sha256": freeze_sha256,
+            "dependency_freeze_lines": len(freeze.splitlines()),
+        },
+        freeze,
+    )
+
+
+def _run_paper_era_host_checks(
+    snapshot_root: Path, host_python: Path
+) -> tuple[dict[str, Any], str]:
+    environment, freeze = _python_environment_snapshot(
+        host_python, PAPER_HOST_ENV_FREEZE_SHA256
+    )
+    import_program = r"""
+import aiohttp, httpx, importlib, importlib.metadata, json, requests
+from pathlib import Path
+
+network_attempts = []
+def block_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during paper-era AlphaAgent audit')
+async def block_httpx_async(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx-async:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during paper-era AlphaAgent audit')
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f'requests:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during paper-era AlphaAgent audit')
+async def block_aiohttp(self, method, url, *args, **kwargs):
+    network_attempts.append(f'aiohttp:{method}:{url}')
+    raise RuntimeError('network disabled during paper-era AlphaAgent audit')
+httpx.Client.send = block_httpx
+httpx.AsyncClient.send = block_httpx_async
+requests.sessions.Session.send = block_requests
+aiohttp.ClientSession._request = block_aiohttp
+
+modules = []
+for file in sorted(Path('rdagent').rglob('*.py')):
+    fstr = str(file)
+    if 'meta_tpl' in fstr or 'template' in fstr or 'tpl' in fstr or 'model_coder' in fstr:
+        continue
+    if (
+        fstr.endswith('rdagent/log/ui/app.py')
+        or fstr.endswith('rdagent/app/cli.py')
+        or fstr.endswith('rdagent/app/CI/run.py')
+    ):
+        continue
+    modules.append(fstr[fstr.index('rdagent'):-3].replace('/', '.'))
+
+imported = []
+failures = []
+for name in modules:
+    try:
+        importlib.import_module(name)
+        imported.append(name)
+    except Exception as exc:
+        failures.append({
+            'module': name,
+            'exception_type': type(exc).__name__,
+            'message': str(exc),
+        })
+
+distribution = importlib.metadata.distribution('rdagent')
+direct_url_path = Path(distribution._path) / 'direct_url.json'
+packages = {
+    name: importlib.metadata.version(name)
+    for name in (
+        'aiohttp', 'docker', 'langchain', 'langchain-community', 'numpy',
+        'openai', 'pandas', 'pytest', 'rdagent', 'scikit-learn', 'streamlit'
+    )
+}
+print('@@@' + json.dumps({
+    'selected_source_modules': len(modules),
+    'imported_source_modules': len(imported),
+    'imported_module_names': imported,
+    'failures': failures,
+    'network_attempts': network_attempts,
+    'resolved_packages': packages,
+    'rdagent_direct_url': json.loads(direct_url_path.read_text()),
+}, sort_keys=True))
+"""
+    clean_env = os.environ.copy()
+    clean_env["PYTHONPATH"] = str(snapshot_root)
+    import_outputs = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [str(host_python), "-c", import_program],
+            cwd=snapshot_root,
+            env=clean_env,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        import_outputs.append(_marked_json(completed.stdout))
+    if import_outputs[0] != import_outputs[1]:
+        raise RuntimeError("Paper-era RD-Agent module import inventory is nondeterministic")
+    imports = import_outputs[0]
+    expected_failure = {
+        "module": PAPER_ERA_IMPORT_FAILURE_MODULE,
+        "exception_type": "FileNotFoundError",
+        "message": f"[Errno 2] No such file or directory: '{PAPER_ERA_IMPORT_FAILURE_PATH}'",
+    }
+    if (
+        imports["selected_source_modules"] != 113
+        or imports["imported_source_modules"] != 112
+        or imports["failures"] != [expected_failure]
+        or imports["network_attempts"]
+    ):
+        raise RuntimeError(f"Paper-era RD-Agent import boundary changed: {imports}")
+    direct_url = imports["rdagent_direct_url"]
+    if direct_url.get("vcs_info", {}).get("commit_id") != PAPER_MECHANISM_COMMIT:
+        raise RuntimeError(f"Wrong RD-Agent environment commit: {direct_url}")
+
+    pytest_program = r"""
+import aiohttp, httpx, json, pytest, requests, sys
+network_attempts = []
+def block_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during paper-era AlphaAgent audit')
+async def block_httpx_async(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx-async:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during paper-era AlphaAgent audit')
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f'requests:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during paper-era AlphaAgent audit')
+async def block_aiohttp(self, method, url, *args, **kwargs):
+    network_attempts.append(f'aiohttp:{method}:{url}')
+    raise RuntimeError('network disabled during paper-era AlphaAgent audit')
+httpx.Client.send = block_httpx
+httpx.AsyncClient.send = block_httpx_async
+requests.sessions.Session.send = block_requests
+aiohttp.ClientSession._request = block_aiohttp
+exit_code = pytest.main(sys.argv[1:])
+print('@@@' + json.dumps({'exit_code': exit_code, 'network_attempts': network_attempts}, sort_keys=True))
+raise SystemExit(exit_code)
+"""
+    misc_summaries = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [
+                str(host_python),
+                "-c",
+                pytest_program,
+                "test/utils/test_misc.py",
+                "-q",
+                "-p",
+                "no:cacheprovider",
+            ],
+            cwd=snapshot_root,
+            env=clean_env,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        summary = _marked_json(completed.stdout)
+        combined = completed.stdout + completed.stderr
+        if completed.returncode != 0 or summary != {"exit_code": 0, "network_attempts": []}:
+            raise RuntimeError(f"Paper-era singleton test failed:\n{combined}")
+        if "1 passed" not in combined:
+            raise RuntimeError(f"Paper-era singleton test count changed:\n{combined}")
+        misc_summaries.append(summary)
+
+    import_test = subprocess.run(
+        [
+            str(host_python),
+            "-c",
+            pytest_program,
+            "test/utils/test_import.py",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+        ],
+        cwd=snapshot_root,
+        env=clean_env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    import_test_summary = _marked_json(import_test.stdout)
+    import_test_combined = import_test.stdout + import_test.stderr
+    if (
+        import_test.returncode != 1
+        or import_test_summary != {"exit_code": 1, "network_attempts": []}
+        or "1 failed" not in import_test_combined
+        or PAPER_ERA_IMPORT_FAILURE_PATH not in import_test_combined
+    ):
+        raise RuntimeError(
+            "Paper-era upstream import-test failure boundary changed:\n"
+            + import_test_combined
+        )
+
+    environment.update(
+        {
+            "dependency_environment_reproduced": True,
+            "exact_historical_dependency_versions_recovered": False,
+            "dependency_release_cutoff_utc": PAPER_MECHANISM_COMMIT_UTC,
+            "source_commit_in_environment": PAPER_MECHANISM_COMMIT,
+            "resolved_packages": imports["resolved_packages"],
+            "selected_source_modules": imports["selected_source_modules"],
+            "imported_source_modules": imports["imported_source_modules"],
+            "imported_module_names": imports["imported_module_names"],
+            "module_import_failures": imports["failures"],
+            "module_import_inventory_deterministic_across_two_runs": True,
+            "upstream_offline_tests": {
+                "tests_total": 2,
+                "tests_passed": 1,
+                "tests_failed": 1,
+                "passing_test": "test/utils/test_misc.py::MiscTest::test_singleton",
+                "passing_test_runs": len(misc_summaries),
+                "expected_source_failure_test": (
+                    "test/utils/test_import.py::TestRDAgentImports::test_import_modules"
+                ),
+                "expected_source_failure_module": PAPER_ERA_IMPORT_FAILURE_MODULE,
+                "expected_source_failure_path": PAPER_ERA_IMPORT_FAILURE_PATH,
+                "failure_is_dependency_error": False,
+            },
+            "network_attempts": imports["network_attempts"],
+            "rdagent_direct_url": direct_url,
+            "paper_result_reproduction": False,
+        }
+    )
+    return environment, freeze
+
+
+def _run_paper_era_qlib_checks(
+    snapshot_root: Path, qlib_python: Path
+) -> tuple[dict[str, Any], str, list[dict[str, Any]]]:
+    environment, freeze = _python_environment_snapshot(
+        qlib_python, PAPER_QLIB_ENV_FREEZE_SHA256
+    )
+    program = r"""
+import hashlib, importlib.metadata, json, pickletools
+from pathlib import Path
+import lightgbm as lgb
+import numpy as np
+import qlib
+import requests
+
+network_attempts = []
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f'requests:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during paper-era AlphaAgent Qlib audit')
+requests.sessions.Session.send = block_requests
+
+root = Path('.')
+executions = []
+for run_dir in sorted((root / 'saved_mlruns').iterdir()):
+    blob = (run_dir / 'artifacts/config').read_bytes()
+    strings = [
+        argument
+        for _opcode, argument, _position in pickletools.genops(blob)
+        if isinstance(argument, str)
+    ]
+    model_state = next(value for value in strings if value.startswith('tree\nversion='))
+    booster = lgb.Booster(model_str=model_state)
+    probe = np.vstack([
+        np.zeros(booster.num_feature(), dtype=np.float64),
+        np.ones(booster.num_feature(), dtype=np.float64),
+    ])
+    predictions = booster.predict(probe)
+    feature_names = booster.feature_name()
+    executions.append({
+        'run_id': run_dir.name,
+        'model_features': booster.num_feature(),
+        'model_trees': booster.num_trees(),
+        'model_current_iteration': booster.current_iteration(),
+        'model_per_iteration': booster.num_model_per_iteration(),
+        'feature_names_sha256': hashlib.sha256('\n'.join(feature_names).encode()).hexdigest(),
+        'zero_probe_prediction': float(predictions[0]),
+        'one_probe_prediction': float(predictions[1]),
+        'probe_predictions_sha256': hashlib.sha256(
+            predictions.astype('<f8', copy=False).tobytes()
+        ).hexdigest(),
+        'split_importance_sum': int(booster.feature_importance('split').sum()),
+        'gain_importance_sum': float(booster.feature_importance('gain').sum()),
+    })
+
+packages = {
+    name: importlib.metadata.version(name)
+    for name in ('catboost', 'lightgbm', 'mlflow', 'pyqlib', 'scipy', 'torch', 'xgboost')
+}
+qlib_distribution = importlib.metadata.distribution('pyqlib')
+qlib_direct_url = json.loads(
+    (Path(qlib_distribution._path) / 'direct_url.json').read_text()
+)
+torch_distribution = importlib.metadata.distribution('torch')
+torch_direct_url = json.loads(
+    (Path(torch_distribution._path) / 'direct_url.json').read_text()
+)
+print('@@@' + json.dumps({
+    'executions': executions,
+    'network_attempts': network_attempts,
+    'qlib_direct_url': qlib_direct_url,
+    'qlib_import_version': qlib.__version__,
+    'resolved_packages': packages,
+    'torch_direct_url': torch_direct_url,
+}, sort_keys=True))
+"""
+    clean_env = os.environ.copy()
+    clean_env.pop("PYTHONPATH", None)
+    outputs = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [str(qlib_python), "-c", program],
+            cwd=snapshot_root,
+            env=clean_env,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        outputs.append(_marked_json(completed.stdout))
+    if outputs[0] != outputs[1]:
+        raise RuntimeError("Paper-era fitted LightGBM execution is nondeterministic")
+    observed = outputs[0]
+    executions = observed["executions"]
+    expected_packages = {
+        "catboost": "1.2.7",
+        "lightgbm": "4.5.0",
+        "mlflow": "1.30.0",
+        "pyqlib": "0.9.5.99",
+        "scipy": "1.11.4",
+        "torch": "2.2.1+cpu",
+        "xgboost": "2.1.4",
+    }
+    matching_execution = next(
+        row for row in executions if row["run_id"] == "77b227f86e5a47bab48178cac409a98b"
+    )
+    if (
+        len(executions) != 7
+        or observed["network_attempts"]
+        or observed["resolved_packages"] != expected_packages
+        or observed["qlib_direct_url"].get("vcs_info", {}).get("commit_id")
+        != QLIB_SOURCE_COMMIT
+        or matching_execution["model_features"] != 9
+        or matching_execution["model_trees"] != 3
+    ):
+        raise RuntimeError(f"Paper-era Qlib/model boundary changed: {observed}")
+    environment.update(
+        {
+            "dependency_environment_reproduced": True,
+            "exact_historical_dependency_versions_recovered": False,
+            "exact_cuda_container_reproduced": False,
+            "cpu_compatibility_substitution": True,
+            "dependency_release_cutoff_utc": PAPER_MECHANISM_COMMIT_UTC,
+            "source_commit_in_environment": QLIB_SOURCE_COMMIT,
+            "qlib_import_version": observed["qlib_import_version"],
+            "qlib_direct_url": observed["qlib_direct_url"],
+            "torch_direct_url": observed["torch_direct_url"],
+            "resolved_packages": observed["resolved_packages"],
+            "fitted_lightgbm_states_loaded": len(executions),
+            "fitted_lightgbm_state_execution_runs": 2,
+            "fitted_lightgbm_state_execution_deterministic": True,
+            "network_attempts": observed["network_attempts"],
+            "native_backtests_reexecuted": 0,
+            "paper_result_reproduction": False,
+        }
+    )
+    return environment, freeze, executions
+
+
 def run_paper_era_component_checks(
-    snapshot_root: Path, source_python: Path
+    snapshot_root: Path, host_python: Path, qlib_python: Path
 ) -> dict[str, Any]:
     compile_result = subprocess.run(
-        [str(source_python), "-m", "compileall", "-q", str(snapshot_root)],
+        [str(host_python), "-m", "compileall", "-q", str(snapshot_root)],
         check=True,
         capture_output=True,
         text=True,
@@ -1749,7 +2172,7 @@ print(json.dumps({
     outputs = []
     for _ in range(2):
         completed = subprocess.run(
-            [str(source_python), "-c", program, str(snapshot_root)],
+            [str(host_python), "-c", program, str(snapshot_root)],
             cwd=snapshot_root,
             check=True,
             capture_output=True,
@@ -1773,6 +2196,12 @@ print(json.dumps({
     }
     if outputs[0] != expected:
         raise RuntimeError(f"Pinned paper-era AST behavior changed: {outputs[0]!r}")
+    host_environment, host_freeze = _run_paper_era_host_checks(
+        snapshot_root, host_python
+    )
+    qlib_environment, qlib_freeze, model_executions = _run_paper_era_qlib_checks(
+        snapshot_root, qlib_python
+    )
     return {
         "snapshot_commit": PAPER_MECHANISM_COMMIT,
         "python_files_compiled": 331,
@@ -1780,6 +2209,17 @@ print(json.dumps({
         "ast_component_runs": 2,
         "ast_component_deterministic": True,
         **outputs[0],
+        "dependency_architecture": (
+            "RD-Agent host process plus a separately built Qlib backtest runtime"
+        ),
+        "dependency_environment_reproduced": True,
+        "exact_historical_dependency_versions_recovered": False,
+        "exact_cuda_container_reproduced": False,
+        "host_environment": host_environment,
+        "qlib_environment": qlib_environment,
+        "fitted_model_executions": model_executions,
+        "_host_dependency_freeze_text": host_freeze,
+        "_qlib_dependency_freeze_text": qlib_freeze,
         "network_or_llm_calls": False,
         "paper_result_reproduction": False,
     }
@@ -2080,6 +2520,8 @@ def build_audit(
     paper_versions_root: Path,
     latex_command: str,
     source_python: Path,
+    paper_host_python: Path,
+    paper_qlib_python: Path,
     output_dir: Path,
 ) -> dict[str, Any]:
     commit, first_date = verify_pins(source_root, paper_pdf, paper_v1_pdf)
@@ -2114,8 +2556,40 @@ def build_audit(
         paper_era_inventory = paper_era_source_inventory(source_root, paper_era_root)
         paper_era_factors = paper_era_factor_rows(paper_era_root)
         paper_era_component = run_paper_era_component_checks(
-            paper_era_root, source_python
+            paper_era_root, paper_host_python, paper_qlib_python
         )
+        paper_host_dependency_freeze = paper_era_component.pop(
+            "_host_dependency_freeze_text"
+        )
+        paper_qlib_dependency_freeze = paper_era_component.pop(
+            "_qlib_dependency_freeze_text"
+        )
+        model_executions = {
+            row["run_id"]: row
+            for row in paper_era_component["fitted_model_executions"]
+        }
+        if set(model_executions) != {row["run_id"] for row in run_records}:
+            raise RuntimeError("Fitted-model execution/run-record IDs differ")
+        for row in run_records:
+            execution = model_executions[row["run_id"]]
+            row.update(
+                {
+                    "fitted_lightgbm_state_loaded": True,
+                    "model_features_loaded": execution["model_features"],
+                    "model_trees_loaded": execution["model_trees"],
+                    "model_current_iteration": execution["model_current_iteration"],
+                    "model_per_iteration": execution["model_per_iteration"],
+                    "feature_names_sha256": execution["feature_names_sha256"],
+                    "zero_probe_prediction": execution["zero_probe_prediction"],
+                    "one_probe_prediction": execution["one_probe_prediction"],
+                    "probe_predictions_sha256": execution[
+                        "probe_predictions_sha256"
+                    ],
+                    "split_importance_sum": execution["split_importance_sum"],
+                    "gain_importance_sum": execution["gain_importance_sum"],
+                    "fitted_model_execution_paper_result_credit": False,
+                }
+            )
 
     if len(inventory) != 141:
         raise RuntimeError(f"Expected 141 tracked source files, got {len(inventory)}")
@@ -2159,6 +2633,12 @@ def build_audit(
     )
     (output_dir / "current_rewrite_environment_freeze.txt").write_text(
         rewrite_dependency_freeze, encoding="utf-8"
+    )
+    (output_dir / "paper_era_host_environment_freeze.txt").write_text(
+        paper_host_dependency_freeze, encoding="utf-8"
+    )
+    (output_dir / "paper_era_qlib_environment_freeze.txt").write_text(
+        paper_qlib_dependency_freeze, encoding="utf-8"
     )
     (output_dir / "paper_era_component.json").write_text(
         json.dumps(paper_era_component, indent=2) + "\n", encoding="utf-8"
@@ -2308,6 +2788,17 @@ def build_audit(
         "paper_era_qlib_mlflow_records_with_fitted_models": sum(
             bool(row["fitted_lightgbm_state_shipped"]) for row in run_records
         ),
+        "paper_era_fitted_lightgbm_states_loaded": sum(
+            bool(row["fitted_lightgbm_state_loaded"]) for row in run_records
+        ),
+        "paper_era_fitted_lightgbm_state_execution_deterministic": (
+            paper_era_component["qlib_environment"][
+                "fitted_lightgbm_state_execution_deterministic"
+            ]
+        ),
+        "paper_era_native_backtests_reexecuted": paper_era_component[
+            "qlib_environment"
+        ]["native_backtests_reexecuted"],
         "paper_era_qlib_mlflow_full_table_row_matches": sum(
             bool(row["all_five_display_cells_match"]) for row in run_records
         ),
@@ -2361,7 +2852,43 @@ def build_audit(
         "current_rewrite_source_modules_imported": component["upstream_tests"][
             "imported_source_modules"
         ],
-        "paper_era_dependency_environment_reproduced": False,
+        "paper_era_dependency_environment_reproduced": paper_era_component[
+            "dependency_environment_reproduced"
+        ],
+        "paper_era_host_dependency_environment_reproduced": paper_era_component[
+            "host_environment"
+        ]["dependency_environment_reproduced"],
+        "paper_era_qlib_dependency_environment_reproduced": paper_era_component[
+            "qlib_environment"
+        ]["dependency_environment_reproduced"],
+        "paper_era_exact_historical_dependency_versions_recovered": (
+            paper_era_component["exact_historical_dependency_versions_recovered"]
+        ),
+        "paper_era_exact_cuda_container_reproduced": paper_era_component[
+            "exact_cuda_container_reproduced"
+        ],
+        "paper_era_dependency_release_cutoff_utc": PAPER_MECHANISM_COMMIT_UTC,
+        "paper_era_rdagent_commit_in_environment": paper_era_component[
+            "host_environment"
+        ]["source_commit_in_environment"],
+        "paper_era_qlib_commit_in_environment": paper_era_component[
+            "qlib_environment"
+        ]["source_commit_in_environment"],
+        "paper_era_host_selected_source_modules": paper_era_component[
+            "host_environment"
+        ]["selected_source_modules"],
+        "paper_era_host_source_modules_imported": paper_era_component[
+            "host_environment"
+        ]["imported_source_modules"],
+        "paper_era_host_source_module_failures": len(
+            paper_era_component["host_environment"]["module_import_failures"]
+        ),
+        "paper_era_upstream_offline_tests_passed": paper_era_component[
+            "host_environment"
+        ]["upstream_offline_tests"]["tests_passed"],
+        "paper_era_upstream_offline_tests_failed": paper_era_component[
+            "host_environment"
+        ]["upstream_offline_tests"]["tests_failed"],
         "native_synthetic_base_factors_executable": 4,
         "native_synthetic_component_deterministic": True,
         "native_synthetic_component_paper_result_reproduction": False,
@@ -2372,12 +2899,18 @@ def build_audit(
             "implementation. A pinned February 2025 snapshot contains the multi-stage workflow, "
             "structured hypothesis, prompts, operator library, AST largest-common-subtree matcher, "
             "Alpha101 reference expressions, Qlib/LightGBM configs, feedback loop, and 15 factor CSVs. "
+            "The exact RD-Agent commit now resolves in a date-bounded host environment, and a separate "
+            "Qlib compatibility environment pins the Dockerfile's exact Qlib commit and declared "
+            "PyTorch/SciPy/CatBoost/XGBoost layer. This reproduces the released dependency architecture, "
+            "not the exact CUDA image or unknowable versions of requirements the authors left unpinned. "
             "The released implementation is still not the paper's exact objective: SL, PC, numeric "
             "c1/c2, alpha=0.5, beta-weighted ER, GPT-3.5 execution provenance, 20 trial seeds, and exact "
             "factor-to-result lineage are missing or divergent. Seven extensionless Qlib/MLflow run "
             "records were recovered from the same author commit; one S&P500 record matches all five "
             "AlphaAgent Table 2 cells at display precision and ships its executed config plus fitted "
-            "LightGBM state. Those 5/100 cells are author-artifact corroborations, not regenerations: "
+            "LightGBM state. All seven fitted states load natively and deterministically, but without "
+            "the input panel they cannot regenerate predictions or metrics. Those 5/100 cells are "
+            "author-artifact corroborations, not regenerations: "
             "no predictions, holdings, returns, complete recorder artifacts, baseline outputs, or figure "
             "arrays survive. Thus mechanism faithfulness is substantial, 5/100 Table 2 cells are "
             "corroborated, 0/100 are independently regenerated, and 0/18 additional quantitative result "
@@ -2418,6 +2951,9 @@ legacy tree; both omissions made it materially too pessimistic.
 - The same author commit contains seven Qlib/MLflow run directories (385 files),
   executed on 2025-01-28: four S&P500 and three CSI500 runs. Every directory has
   metrics, parameters, a serialized task/config, and a fitted LightGBM state.
+- The paper-era Qlib Dockerfile pins Qlib commit `{QLIB_SOURCE_COMMIT}` and a
+  PyTorch 2.2.1/CUDA 12.1 base image, then leaves CatBoost and XGBoost unpinned
+  while pinning SciPy 1.11.4. The audit preserves this host/container split.
 - The 2025-02-17 preprint-cutoff commit `{PREPRINT_CUTOFF_COMMIT}` removed the
   factor zoo. The audit intentionally pins the earlier mechanism-complete tree
   and records that deletion instead of pretending the cutoff head is runnable.
@@ -2436,7 +2972,26 @@ legacy tree; both omissions made it materially too pessimistic.
   3,912 trees, and 2,499 unique historical file paths. All 385 historical
   `saved_mlruns` paths belong to the same seven run IDs already audited; no
   prediction, return series, holding, or portfolio-analysis path is present.
-- All 331 Python modules in the paper-era snapshot compile under Python 3.12.
+- All 331 Python files in the paper-era snapshot compile under the reconstructed
+  Python 3.10 host environment.
+- The exact RD-Agent commit is installed with a hard dependency-release cutoff of
+  `{PAPER_MECHANISM_COMMIT_UTC}`. Its 153-line freeze passes `pip check`. Of 113
+  modules selected by the authors' own import test, 112 import twice with real
+  dependencies and zero blocked HTTP attempts. The sole failure is the committed
+  developer file `rdagent.components.coder.factor_coder.test`, which opens the
+  author's absolute `/home/tangziyi/RD-Agent/.../template_debug.jinjia2` path.
+  The authors' singleton test passes twice; their import test therefore remains
+  honestly 1/2 rather than being patched or reported green.
+- A separate 119-line Qlib compatibility freeze passes `pip check`, installs the
+  exact Qlib commit from the Dockerfile, retains SciPy 1.11.4, and resolves
+  CatBoost 1.2.7 and XGBoost 2.1.4 using the same historical cutoff. PyTorch
+  2.2.1 CPU substitutes for the unavailable CUDA container, so exact-container
+  credit remains false.
+- All seven shipped LightGBM model strings load twice in that Qlib environment.
+  The matching S&P500 artifact is a 9-feature, 3-tree fitted model; deterministic
+  zero/one-vector probes and feature-importance summaries are tracked. This proves
+  the fitted states are executable, not that their paper inputs or metrics were
+  regenerated.
 - The paper-era AST parser executes twice deterministically. Identical,
   commutative, and partially shared expressions return largest-common-subtree
   sizes 4, 3, and 3. An exact Alpha101 probe matches itself with size 23.
@@ -2488,6 +3043,10 @@ legacy tree; both omissions made it materially too pessimistic.
 - The exact Baostock CSI500 and Yahoo S&P500 panels, constituent histories, and
   data transformations are absent. The US config points only to unversioned local
   `us_data`; it does not establish Yahoo provenance or frozen panel identity.
+- RD-Agent's host requirements and the Qlib Dockerfile's CatBoost/XGBoost installs
+  were unpinned. A commit-date release cutoff gives a reproducible compatible
+  reconstruction, but cannot prove the authors' exact installed wheels. Bouchet's
+  CPU environment also does not reproduce the mirrored CUDA 12.1 image digest.
 - The code defaults to GPT-4-turbo, while the paper reports GPT-3.5-turbo. The
   executed model/API snapshot, temperature, seeds, token limits, initial research
   directions, and 20 independent trial trajectories are not pinned.
@@ -2587,6 +3146,24 @@ def parse_args() -> argparse.Namespace:
         default=Path(os.environ.get("ALPHAAGENT_SOURCE_PYTHON", DEFAULT_SOURCE_PYTHON)),
     )
     parser.add_argument(
+        "--paper-host-python",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "ALPHAAGENT_PAPER_HOST_PYTHON", DEFAULT_PAPER_HOST_PYTHON
+            )
+        ),
+    )
+    parser.add_argument(
+        "--paper-qlib-python",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "ALPHAAGENT_PAPER_QLIB_PYTHON", DEFAULT_PAPER_QLIB_PYTHON
+            )
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=project_root / "paper_runs/paper_replication_audits/alphaagent",
@@ -2604,6 +3181,8 @@ def main() -> int:
         args.paper_versions_root.resolve(),
         args.latex_command,
         args.source_python.resolve(),
+        args.paper_host_python.resolve(),
+        args.paper_qlib_python.resolve(),
         args.output_dir.resolve(),
     )
     print(json.dumps(manifest, indent=2))

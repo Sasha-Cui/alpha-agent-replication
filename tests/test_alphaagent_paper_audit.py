@@ -97,6 +97,12 @@ def test_committed_audit_is_fail_closed() -> None:
     rewrite_freeze = (output / "current_rewrite_environment_freeze.txt").read_text(
         encoding="utf-8"
     )
+    paper_host_freeze = (output / "paper_era_host_environment_freeze.txt").read_text(
+        encoding="utf-8"
+    )
+    paper_qlib_freeze = (output / "paper_era_qlib_environment_freeze.txt").read_text(
+        encoding="utf-8"
+    )
     paper_era_component = json.loads(
         (output / "paper_era_component.json").read_text(encoding="utf-8")
     )
@@ -149,6 +155,9 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["paper_era_factor_expression_rows"] == 268
     assert manifest["paper_era_qlib_mlflow_run_records"] == 7
     assert manifest["paper_era_qlib_mlflow_records_with_fitted_models"] == 7
+    assert manifest["paper_era_fitted_lightgbm_states_loaded"] == 7
+    assert manifest["paper_era_fitted_lightgbm_state_execution_deterministic"] is True
+    assert manifest["paper_era_native_backtests_reexecuted"] == 0
     assert manifest["paper_era_qlib_mlflow_full_table_row_matches"] == 1
     assert manifest["paper_era_qlib_mlflow_display_cells_corroborated"] == 5
     assert manifest["paper_era_named_alpha101_reference_rows"] == 101
@@ -176,7 +185,23 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["current_rewrite_dependency_environment_reproduced"] is True
     assert manifest["current_rewrite_exact_historical_dependency_versions_recovered"] is False
     assert manifest["current_rewrite_source_modules_imported"] == 72
-    assert manifest["paper_era_dependency_environment_reproduced"] is False
+    assert manifest["paper_era_dependency_environment_reproduced"] is True
+    assert manifest["paper_era_host_dependency_environment_reproduced"] is True
+    assert manifest["paper_era_qlib_dependency_environment_reproduced"] is True
+    assert manifest["paper_era_exact_historical_dependency_versions_recovered"] is False
+    assert manifest["paper_era_exact_cuda_container_reproduced"] is False
+    assert manifest["paper_era_dependency_release_cutoff_utc"] == (
+        audit.PAPER_MECHANISM_COMMIT_UTC
+    )
+    assert manifest["paper_era_rdagent_commit_in_environment"] == (
+        audit.PAPER_MECHANISM_COMMIT
+    )
+    assert manifest["paper_era_qlib_commit_in_environment"] == audit.QLIB_SOURCE_COMMIT
+    assert manifest["paper_era_host_selected_source_modules"] == 113
+    assert manifest["paper_era_host_source_modules_imported"] == 112
+    assert manifest["paper_era_host_source_module_failures"] == 1
+    assert manifest["paper_era_upstream_offline_tests_passed"] == 1
+    assert manifest["paper_era_upstream_offline_tests_failed"] == 1
     assert manifest["native_synthetic_base_factors_executable"] == 4
     assert manifest["native_synthetic_component_paper_result_reproduction"] is False
     assert manifest["public_source_unique_historical_file_paths"] == 2499
@@ -312,6 +337,16 @@ def test_committed_audit_is_fail_closed() -> None:
     assert int(exact_runs[0]["display_cells_matching_alphaagent_row"]) == 5
     assert int(exact_runs[0]["paper_result_cells_corroborated"]) == 5
     assert int(exact_runs[0]["generated_factor_features"]) == 5
+    assert int(exact_runs[0]["model_features_loaded"]) == 9
+    assert int(exact_runs[0]["model_trees_loaded"]) == 3
+    assert {row["fitted_lightgbm_state_loaded"] for row in paper_era_runs} == {
+        "True"
+    }
+    assert {
+        row["fitted_model_execution_paper_result_credit"] for row in paper_era_runs
+    } == {"False"}
+    assert all(len(row["feature_names_sha256"]) == 64 for row in paper_era_runs)
+    assert all(len(row["probe_predictions_sha256"]) == 64 for row in paper_era_runs)
     assert {row["predictions_returns_holdings_shipped"] for row in paper_era_runs} == {"False"}
     assert len(registry) == 8
     assert {row["paper_result_credit"] for row in registry} == {"False"}
@@ -353,6 +388,67 @@ def test_committed_audit_is_fail_closed() -> None:
     assert paper_era_component["figure4_candidate_parse_failures"] == [
         "Lagged_Volume_Change_Factor_3D"
     ]
+    assert paper_era_component["dependency_environment_reproduced"] is True
+    assert paper_era_component["exact_historical_dependency_versions_recovered"] is False
+    assert paper_era_component["exact_cuda_container_reproduced"] is False
+    host_environment = paper_era_component["host_environment"]
+    assert host_environment["dependency_freeze_sha256"] == (
+        audit.PAPER_HOST_ENV_FREEZE_SHA256
+    )
+    assert host_environment["dependency_freeze_lines"] == 153
+    assert host_environment["pip_check"] == "No broken requirements found."
+    assert host_environment["source_commit_in_environment"] == audit.PAPER_MECHANISM_COMMIT
+    assert host_environment["selected_source_modules"] == 113
+    assert host_environment["imported_source_modules"] == 112
+    assert host_environment["network_attempts"] == []
+    assert host_environment["module_import_failures"] == [
+        {
+            "module": audit.PAPER_ERA_IMPORT_FAILURE_MODULE,
+            "exception_type": "FileNotFoundError",
+            "message": (
+                "[Errno 2] No such file or directory: "
+                f"'{audit.PAPER_ERA_IMPORT_FAILURE_PATH}'"
+            ),
+        }
+    ]
+    assert host_environment["upstream_offline_tests"]["tests_passed"] == 1
+    assert host_environment["upstream_offline_tests"]["tests_failed"] == 1
+    assert host_environment["upstream_offline_tests"]["failure_is_dependency_error"] is False
+    qlib_environment = paper_era_component["qlib_environment"]
+    assert qlib_environment["dependency_freeze_sha256"] == (
+        audit.PAPER_QLIB_ENV_FREEZE_SHA256
+    )
+    assert qlib_environment["dependency_freeze_lines"] == 119
+    assert qlib_environment["pip_check"] == "No broken requirements found."
+    assert qlib_environment["source_commit_in_environment"] == audit.QLIB_SOURCE_COMMIT
+    assert qlib_environment["resolved_packages"] == {
+        "catboost": "1.2.7",
+        "lightgbm": "4.5.0",
+        "mlflow": "1.30.0",
+        "pyqlib": "0.9.5.99",
+        "scipy": "1.11.4",
+        "torch": "2.2.1+cpu",
+        "xgboost": "2.1.4",
+    }
+    assert qlib_environment["fitted_lightgbm_states_loaded"] == 7
+    assert qlib_environment["native_backtests_reexecuted"] == 0
+    assert qlib_environment["network_attempts"] == []
+    assert len(paper_era_component["fitted_model_executions"]) == 7
+    matching_model = next(
+        row
+        for row in paper_era_component["fitted_model_executions"]
+        if row["run_id"] == "77b227f86e5a47bab48178cac409a98b"
+    )
+    assert matching_model["model_features"] == 9
+    assert matching_model["model_trees"] == 3
+    assert len(paper_host_freeze.splitlines()) == 153
+    assert audit.sha256_bytes(paper_host_freeze.encode()) == (
+        audit.PAPER_HOST_ENV_FREEZE_SHA256
+    )
+    assert len(paper_qlib_freeze.splitlines()) == 119
+    assert audit.sha256_bytes(paper_qlib_freeze.encode()) == (
+        audit.PAPER_QLIB_ENV_FREEZE_SHA256
+    )
     assert paper_era_component["paper_result_reproduction"] is False
 
     for filename, expected in manifest["output_sha256"].items():
