@@ -42,6 +42,14 @@ MSSRM_URL = "https://github.com/linyizun2024/mSSRM"
 MSSRM_COMMIT = "4e1be268746c3c046455e2a264279f622fceaef6"
 MSSRM_TREE = "4a8a92e08c8038194b42703541374278a456db9f"
 MSSRM_ARCHIVE_SHA256 = "20e6f756109f725ba56074463f5ba2a3694695dd15267d0455cd3f070386c3ac"
+MSSRM_PAPER_URL = "https://papers.nips.cc/paper_files/paper/2024/file/1eaa5146756be028ad6fff1efcc8e6bd-Paper-Conference.pdf"
+MSSRM_PAPER_SHA256 = "27dce79e66e5278e8c75338bf1b414954b69ef30e3599bfaea01356c123109a7"
+MSSRM_SUPPLEMENT_URL = "https://papers.nips.cc/paper_files/paper/2024/file/1eaa5146756be028ad6fff1efcc8e6bd-Supplemental-Conference.zip"
+MSSRM_SUPPLEMENT_SHA256 = "fe9bf3918dad5bd2f077a65c77d6e67ff6b5be97338b0ea260134cd0d94440f4"
+MSSRM_SUPPLEMENT_CODE_SHA256 = {
+    "PGSAl0_w0.m": "23ab9b8811e0b322247700474b1cd983a398783cc90a8298600c819ceb2d051f",
+    "PGSAl0_w0run.m": "5243bcb940a9dc3b4bddf43a92367302a1ad9cf52f90bc78b7c99cd6c1db708f",
+}
 
 ASMCVAR_URL = "https://github.com/linyizun2024/ASMCVaR"
 ASMCVAR_COMMIT = "0ed6a63ca02118cc305ae5d34f2cf24489c024a5"
@@ -65,6 +73,43 @@ MSSRM_DATASETS = {
     "FF100": "FF100new",
     "FF100MEOP": "FF100MEOPnew",
 }
+MSSRM_ORIGINAL_DATASETS = {
+    "FF25": "FF25new",
+    "FF25EU": "FF25EUnew",
+    "FF32": "FF32new",
+    "FF49": "FF49new",
+    "FF100": "FF100new",
+    "FF100MEINV": "FF100MEINVnew",
+}
+MSSRM_OBSERVATIONS = {
+    "FF25": 623,
+    "FF25EU": 391,
+    "FF32": 623,
+    "FF49": 623,
+    "FF100": 623,
+    "FF100MEINV": 623,
+    "FF100MEOP": 623,
+}
+MSSRM_ORIGINAL_T60_VALUES = {
+    ("FF25", 10): {"CW": "615.34", "SR": "0.2481"},
+    ("FF25EU", 10): {"CW": "126.02", "SR": "0.2712"},
+    ("FF32", 10): {"CW": "991.89", "SR": "0.2612"},
+    ("FF49", 10): {"CW": "285.02", "SR": "0.2151"},
+    ("FF100", 10): {"CW": "527.09", "SR": "0.2290"},
+    ("FF100MEINV", 10): {"CW": "375.75", "SR": "0.2217"},
+    ("FF25", 15): {"CW": "614.71", "SR": "0.2481"},
+    ("FF25EU", 15): {"CW": "125.19", "SR": "0.2708"},
+    ("FF32", 15): {"CW": "996.32", "SR": "0.2615"},
+    ("FF49", 15): {"CW": "262.54", "SR": "0.2135"},
+    ("FF100", 15): {"CW": "522.28", "SR": "0.2289"},
+    ("FF100MEINV", 15): {"CW": "383.44", "SR": "0.2232"},
+    ("FF25", 20): {"CW": "614.70", "SR": "0.2481"},
+    ("FF25EU", 20): {"CW": "125.19", "SR": "0.2708"},
+    ("FF32", 20): {"CW": "996.23", "SR": "0.2615"},
+    ("FF49", 20): {"CW": "262.06", "SR": "0.2134"},
+    ("FF100", 20): {"CW": "515.50", "SR": "0.2285"},
+    ("FF100MEINV", 20): {"CW": "384.65", "SR": "0.2234"},
+}
 MSSRM_V1_ROW_BY_SPARSITY = {10: 6, 15: 14, 20: 22}
 MSSRM_V2_ROW_BY_SPARSITY = {10: 6, 15: 14}
 MSSRM_CW_SHA256 = {
@@ -83,6 +128,12 @@ MSSRM_CW_SHA256 = {
     ("FF100MEOP", 10): "d7335570766fdb6a1b3fcf53a881e752fa523a4ec5412ecce1f96ae54b5dc653",
     ("FF100MEOP", 15): "b5976b773f39f9210282cb9b9a61329cc5605d5272184a0f32b14ff168a2bb81",
     ("FF100MEOP", 20): "19b9acb22a0e7fdea6deaf47e7298700081192889f147845a8c9718cf153ef36",
+    ("FF25EU", 10): "8013d469c21f45196337a75f86a6c42dcbad657ad80fce9ad8389d54fc6324b0",
+    ("FF25EU", 15): "11429d2ce75c7839b04f7d4f94365b66c0d2504debf082a8fb9abd85c158e8d0",
+    ("FF25EU", 20): "c3eaf4466216cebb41b876dbf6251f9afa53f1e3e2f286ba152cde2d12afe727",
+    ("FF100MEINV", 10): "562f59f9c43fbd69a45290bef1654c9c81c1d95ed138289376066f6013f41b19",
+    ("FF100MEINV", 15): "df4935359d8c14142e8fafa48271f00a093a3260f00fc727fbfcdac0a9b6dda4",
+    ("FF100MEINV", 20): "22e9df4224359ef939c31bced8d5eb49f18625162575bf1251e59debd29a87ff",
 }
 
 V1_TABLE_SPECS = (
@@ -435,16 +486,19 @@ def baseline_metrics(asm_cvar: Path) -> dict[str, dict[str, float]]:
     return output
 
 
-def load_mssrm_native_metrics(results_root: Path) -> dict[tuple[str, int], dict[str, Any]]:
+def load_mssrm_native_metrics(
+    results_root: Path, datasets: Mapping[str, str] = MSSRM_DATASETS
+) -> dict[tuple[str, int], dict[str, Any]]:
     output: dict[tuple[str, int], dict[str, Any]] = {}
-    for dataset, source_name in MSSRM_DATASETS.items():
+    for dataset, source_name in datasets.items():
         for sparsity in (10, 15, 20):
             runs: list[dict[str, Any]] = []
             for repeat in (1, 2):
                 path = results_root / f"mssrm_{source_name}_m{sparsity}_run{repeat}.mat"
                 payload = loadmat(path)
                 wealth = np.asarray(payload["CW"], dtype="<f8").reshape(-1)
-                if wealth.shape != (623,) or not np.isfinite(wealth).all():
+                expected_observations = MSSRM_OBSERVATIONS[dataset]
+                if wealth.shape != (expected_observations,) or not np.isfinite(wealth).all():
                     raise ValueError(f"invalid mSSRM wealth path: {path}")
                 runs.append(
                     {
@@ -476,8 +530,9 @@ def load_mssrm_native_metrics(results_root: Path) -> dict[tuple[str, int], dict[
                 "run_elapsed_seconds": [run["elapsed_seconds"] for run in runs],
                 "run_file_sha256": [run["file_sha256"] for run in runs],
             }
-    if len(output) != 15:
-        raise ValueError("expected 15 mSSRM dataset/sparsity executions")
+    expected = len(datasets) * 3
+    if len(output) != expected:
+        raise ValueError(f"expected {expected} mSSRM dataset/sparsity executions")
     return output
 
 
@@ -531,6 +586,106 @@ def apply_mssrm_credit(
     if sum(row["paper_result_credit"] for row in audit_rows) != expected_matches:
         raise ValueError(f"mSSRM paper-precision match census drifted for {version}")
     return audit_rows
+
+
+def validate_mssrm_original_inputs(original_root: Path, asm_cvar: Path) -> dict[str, Any]:
+    paper = original_root / "paper.pdf"
+    supplement = original_root / "supplement.zip"
+    code_root = original_root / "supplement" / "mSSRMcode"
+    if sha256(paper) != MSSRM_PAPER_SHA256:
+        raise ValueError("pinned mSSRM NeurIPS paper hash mismatch")
+    if sha256(supplement) != MSSRM_SUPPLEMENT_SHA256:
+        raise ValueError("pinned mSSRM NeurIPS supplement hash mismatch")
+    for filename, expected in MSSRM_SUPPLEMENT_CODE_SHA256.items():
+        if sha256(code_root / filename) != expected:
+            raise ValueError(f"mSSRM NeurIPS supplement code hash mismatch: {filename}")
+    data_root = asm_cvar / "Codes_for_Experiments_in_Paper" / "DataSets"
+    for dataset, source_name in MSSRM_ORIGINAL_DATASETS.items():
+        supplement_data = code_root / f"{dataset}.mat"
+        mirror_data = data_root / f"{source_name}.mat"
+        if sha256(supplement_data) != sha256(mirror_data):
+            raise ValueError(f"mSSRM supplement/mirror matrix mismatch: {dataset}")
+    info = subprocess.run(["pdfinfo", str(paper)], check=True, capture_output=True, text=True).stdout
+    pages = int(re.search(r"^Pages:\s+(\d+)$", info, re.MULTILINE).group(1))
+    if pages != 28:
+        raise ValueError(f"mSSRM NeurIPS paper page count drifted: {pages}")
+    return {
+        "paper_sha256": MSSRM_PAPER_SHA256,
+        "supplement_sha256": MSSRM_SUPPLEMENT_SHA256,
+        "paper_pages": pages,
+        "supplement_code_sha256": MSSRM_SUPPLEMENT_CODE_SHA256,
+        "supplement_matrices_byte_identical_to_mirror": len(MSSRM_ORIGINAL_DATASETS),
+    }
+
+
+def original_mssrm_paper_conformance(
+    metrics: Mapping[tuple[str, int], Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for (dataset, sparsity), paper_values in MSSRM_ORIGINAL_T60_VALUES.items():
+        native = metrics[(dataset, sparsity)]
+        for metric in ("CW", "SR"):
+            paper_value = paper_values[metric]
+            reproduced = float(native[metric])
+            rendered = _format_like(reproduced, paper_value)
+            match = rendered == paper_value
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "sparsity": sparsity,
+                    "lookback": 60,
+                    "metric": metric,
+                    "paper_value": paper_value,
+                    "recomputed_value": f"{reproduced:.12g}",
+                    "recomputed_at_paper_precision": rendered,
+                    "match_at_paper_precision": match,
+                    "paper_location": "Table 2 and Appendix Table 6" if metric == "CW" else "Table 1 and Appendix Table 6",
+                    "native_source_runs": 2,
+                    "full_wealth_path_repeat_equal": native["repeat_paths_equal"],
+                    "cw_sha256": native["cw_sha256"],
+                    "original_mssrm_paper_result_credit": match,
+                    "native_efs_evidence": False,
+                }
+            )
+    if len(rows) != 36 or sum(row["original_mssrm_paper_result_credit"] for row in rows) != 36:
+        raise ValueError("expected all 36 original mSSRM paper cells to reproduce")
+    return rows
+
+
+def mssrm_supplement_correspondence(
+    results_root: Path, metrics: Mapping[tuple[str, int], Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for dataset in MSSRM_ORIGINAL_DATASETS:
+        path = results_root / f"neurips_supp_{dataset}_m10.mat"
+        payload = loadmat(path)
+        wealth = np.asarray(payload["CW"], dtype="<f8").reshape(-1)
+        source_sharpe = float(np.asarray(payload["sharpe"]).reshape(-1)[0])
+        mirror = metrics[(dataset, 10)]
+        wealth_sha = bytes_sha256(wealth.tobytes(order="C"))
+        full_path_equal = (
+            wealth.shape == (MSSRM_OBSERVATIONS[dataset],) and wealth_sha == mirror["cw_sha256"]
+        )
+        sharpe_equal = np.isclose(source_sharpe, float(mirror["SR"]), rtol=0.0, atol=1e-14)
+        rows.append(
+            {
+                "dataset": dataset,
+                "sparsity": 10,
+                "lookback": 60,
+                "supplement_function": "PGSAl0_w0run",
+                "mirror_function": "run_mSSRM_PGA",
+                "supplement_result_file_sha256": sha256(path),
+                "cw_sha256": wealth_sha,
+                "full_wealth_path_equal_to_mirror": full_path_equal,
+                "sharpe_equal_to_mirror": bool(sharpe_equal),
+                "native_efs_evidence": False,
+            }
+        )
+    if len(rows) != 6 or not all(
+        row["full_wealth_path_equal_to_mirror"] and row["sharpe_equal_to_mirror"] for row in rows
+    ):
+        raise ValueError("NeurIPS supplement/mirror mSSRM correspondence failed")
+    return rows
 
 
 def _format_like(value: float, paper_value: str) -> str:
