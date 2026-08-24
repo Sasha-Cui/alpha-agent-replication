@@ -57,6 +57,34 @@ ASMCVAR_DATA_SHA256 = {
     "FF25EUnew": "d3897865a555c8b9c8624b0ba7e0dab920c3cf0a783dec4b7a362fdd03732915",
 }
 
+MSSRM_OCTAVE_VERSION = "9.2.0"
+MSSRM_DATASETS = {
+    "FF25": "FF25new",
+    "FF32": "FF32new",
+    "FF49": "FF49new",
+    "FF100": "FF100new",
+    "FF100MEOP": "FF100MEOPnew",
+}
+MSSRM_V1_ROW_BY_SPARSITY = {10: 6, 15: 14, 20: 22}
+MSSRM_V2_ROW_BY_SPARSITY = {10: 6, 15: 14}
+MSSRM_CW_SHA256 = {
+    ("FF25", 10): "bebe50b0c5660a2f71cd858beaf9e6a0ee07716def50eebc1306dbf8309bd491",
+    ("FF25", 15): "e3f6c19cdfdfb297402f773d6b6182b4598cdc6d3e3cb2726a8793dc557ba9be",
+    ("FF25", 20): "db5ffa0699304a63e5e5aab0a483e5f782e4a9388dcb901800f8a2a83c2b03ab",
+    ("FF32", 10): "92cad40eb1380a6782169cefe29597235285d092dba3ee8ff7bb914ab426e0fd",
+    ("FF32", 15): "baec5f111c166a2d6dc731839bb09274d935c217e0ece512abe31a64b6957324",
+    ("FF32", 20): "7039cff0c527daaad6cf59608df21097cab15ba849d4b530c177398fa362b6c2",
+    ("FF49", 10): "5738fcd4a3a620dd52cbaec6817bb74e1971f6607c737f2688ae25ee26e0ff38",
+    ("FF49", 15): "fafd9b3c5c0c134668d421237f2aa245670c3168b172f6d0d92a12ca8a15f219",
+    ("FF49", 20): "73139b9e4d4450c4e25d8a43e6799c3c8abd2c9bfcb929a0b1d2ca8caaf8b117",
+    ("FF100", 10): "a6dda551f1e401e45820fd8a90205386de2914f5fa9a20f3ad7e645a5b0becec",
+    ("FF100", 15): "29454ad4d6122051d91f71586153bbe281f6e9b5a20a3a628b890c44e4e16f21",
+    ("FF100", 20): "4ec492771f9c9e8e17ab7775814b46ad81a60d34b262a052e1770b944c75829f",
+    ("FF100MEOP", 10): "d7335570766fdb6a1b3fcf53a881e752fa523a4ec5412ecce1f96ae54b5dc653",
+    ("FF100MEOP", 15): "b5976b773f39f9210282cb9b9a61329cc5605d5272184a0f32b14ff168a2bb81",
+    ("FF100MEOP", 20): "19b9acb22a0e7fdea6deaf47e7298700081192889f147845a8c9718cf153ef36",
+}
+
 V1_TABLE_SPECS = (
     ("benchmark", "tables/benchmark.tex", "tab:bench_performance_metrics", 2, 15, (15,)),
     ("real_market", "tables/market_performance.tex", "tab:performance_metrics", 2, 9, (9,)),
@@ -405,6 +433,104 @@ def baseline_metrics(asm_cvar: Path) -> dict[str, dict[str, float]]:
             "assets": float(matrix.shape[1]),
         }
     return output
+
+
+def load_mssrm_native_metrics(results_root: Path) -> dict[tuple[str, int], dict[str, Any]]:
+    output: dict[tuple[str, int], dict[str, Any]] = {}
+    for dataset, source_name in MSSRM_DATASETS.items():
+        for sparsity in (10, 15, 20):
+            runs: list[dict[str, Any]] = []
+            for repeat in (1, 2):
+                path = results_root / f"mssrm_{source_name}_m{sparsity}_run{repeat}.mat"
+                payload = loadmat(path)
+                wealth = np.asarray(payload["CW"], dtype="<f8").reshape(-1)
+                if wealth.shape != (623,) or not np.isfinite(wealth).all():
+                    raise ValueError(f"invalid mSSRM wealth path: {path}")
+                runs.append(
+                    {
+                        "path": path,
+                        "wealth": wealth,
+                        "source_sharpe": float(np.asarray(payload["sharpe"]).reshape(-1)[0]),
+                        "elapsed_seconds": float(np.asarray(payload["elapsed"]).reshape(-1)[0]),
+                        "file_sha256": sha256(path),
+                    }
+                )
+            if not np.array_equal(runs[0]["wealth"], runs[1]["wealth"]):
+                raise ValueError(f"mSSRM repeated wealth paths differ: {dataset} m={sparsity}")
+            wealth = runs[0]["wealth"]
+            wealth_sha = bytes_sha256(wealth.tobytes(order="C"))
+            if wealth_sha != MSSRM_CW_SHA256[(dataset, sparsity)]:
+                raise ValueError(f"mSSRM wealth hash drifted: {dataset} m={sparsity}")
+            returns = wealth[1:] / wealth[:-1] - 1.0
+            sharpe = float(returns.mean() / returns.std(ddof=1))
+            if not all(np.isclose(run["source_sharpe"], sharpe, rtol=0.0, atol=1e-14) for run in runs):
+                raise ValueError(f"mSSRM source/Python Sharpe mismatch: {dataset} m={sparsity}")
+            peaks = np.maximum.accumulate(wealth)
+            output[(dataset, sparsity)] = {
+                "CW": float(wealth[-1]),
+                "SR": sharpe,
+                "MDD": float(np.max(1.0 - wealth / peaks)),
+                "observations": int(wealth.size),
+                "cw_sha256": wealth_sha,
+                "repeat_paths_equal": True,
+                "run_elapsed_seconds": [run["elapsed_seconds"] for run in runs],
+                "run_file_sha256": [run["file_sha256"] for run in runs],
+            }
+    if len(output) != 15:
+        raise ValueError("expected 15 mSSRM dataset/sparsity executions")
+    return output
+
+
+def apply_mssrm_credit(
+    rows: list[dict[str, Any]], metrics: Mapping[tuple[str, int], Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    version = str(rows[0]["paper_version"])
+    row_by_sparsity = MSSRM_V1_ROW_BY_SPARSITY if version == "v1" else MSSRM_V2_ROW_BY_SPARSITY
+    sparsity_by_row = {row_index: sparsity for sparsity, row_index in row_by_sparsity.items()}
+    audit_rows: list[dict[str, Any]] = []
+    for row in rows:
+        row_index = int(row["row_index"])
+        if row["paper_table"] != "benchmark" or row_index not in sparsity_by_row:
+            continue
+        sparsity = sparsity_by_row[row_index]
+        dataset, metric = str(row["dataset"]), str(row["metric"])
+        native = metrics[(dataset, sparsity)]
+        reproduced = float(native[metric])
+        rendered = _format_like(reproduced, str(row["paper_value"]))
+        match = rendered == row["paper_value"]
+        row["cited_baseline_recomputed_value"] = f"{reproduced:.12g}"
+        row["cited_baseline_match_at_paper_precision"] = match
+        row["paper_result_credit"] = match
+        audit_rows.append(
+            {
+                "paper_version": version,
+                "sparsity": sparsity,
+                "dataset": dataset,
+                "metric": metric,
+                "paper_value": row["paper_value"],
+                "recomputed_value": f"{reproduced:.12g}",
+                "recomputed_at_paper_precision": rendered,
+                "match_at_paper_precision": match,
+                "source_commit": MSSRM_COMMIT,
+                "octave_version": MSSRM_OCTAVE_VERSION,
+                "source_function": "run_mSSRM_PGA(60,data,m)",
+                "tick2ret_compatibility_shim": "x[1:]/x[:-1]-1",
+                "native_source_runs": 2,
+                "full_wealth_path_repeat_equal": native["repeat_paths_equal"],
+                "cw_sha256": native["cw_sha256"],
+                "run_elapsed_seconds": ";".join(f"{value:.6f}" for value in native["run_elapsed_seconds"]),
+                "native_mssrm_source_evidence": True,
+                "native_efs_evidence": False,
+                "paper_result_credit": match,
+            }
+        )
+    expected_rows = 45 if version == "v1" else 24
+    expected_matches = 1 if version == "v1" else 3
+    if len(audit_rows) != expected_rows:
+        raise ValueError(f"expected {expected_rows} mSSRM comparison cells for {version}")
+    if sum(row["paper_result_credit"] for row in audit_rows) != expected_matches:
+        raise ValueError(f"mSSRM paper-precision match census drifted for {version}")
+    return audit_rows
 
 
 def _format_like(value: float, paper_value: str) -> str:
