@@ -622,6 +622,41 @@ def load_asmcvar_native_metrics(
     return output
 
 
+def asmcvar_native_inventory(
+    metrics: Mapping[tuple[str, int], Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for (dataset, sparsity), native in sorted(metrics.items()):
+        weights = np.asarray(native["weights"], dtype=float)
+        rows.append(
+            {
+                "dataset": dataset,
+                "sparsity": sparsity,
+                "observations": native["observations"],
+                "assets": native["assets"],
+                "matlab_release": native["matlab_release"],
+                "terminal_cw": f"{float(native['CW']):.12g}",
+                "population_sharpe": f"{float(native['SR']):.12g}",
+                "maximum_drawdown": f"{float(native['MDD']):.12g}",
+                "max_weight_sum_error": f"{float(np.max(np.abs(weights.sum(axis=0) - 1.0))):.12g}",
+                "minimum_weight": f"{float(weights.min()):.12g}",
+                "cw_sha256": native["cw_sha256"],
+                "weights_sha256": native["weights_sha256"],
+                "repeat_path_present": native["repeat_path_present"],
+                "repeat_path_equal": native["repeat_path_equal"] if native["repeat_path_present"] else "",
+                "native_asmcvar_source_evidence": True,
+                "native_efs_evidence": False,
+            }
+        )
+    if len(rows) != 18:
+        raise ValueError("expected 18 ASMCVaR native inventory rows")
+    if sum(row["repeat_path_present"] for row in rows) != 1:
+        raise ValueError("expected exactly one ASMCVaR same-runtime repeat")
+    if not next(row for row in rows if row["repeat_path_present"])["repeat_path_equal"]:
+        raise ValueError("ASMCVaR same-runtime repeat changed")
+    return rows
+
+
 def asmcvar_cross_runtime_correspondence(results_root: Path) -> list[dict[str, Any]]:
     matlab_path = results_root / "asmcvar_FF25new_m10_matlab_run1.mat"
     octave_path = results_root / "asmcvar_ff25_slurm.mat"
@@ -691,8 +726,22 @@ def apply_asmcvar_credit(
             }
         )
     expected = 45 if version == "v1" else 24
+    expected_matches = 1 if version == "v1" else 2
     if len(audit_rows) != expected:
         raise ValueError(f"expected {expected} ASMCVaR comparison cells for {version}")
+    if sum(row["paper_result_credit"] for row in audit_rows) != expected_matches:
+        raise ValueError(f"ASMCVaR EFS match census drifted for {version}")
+    complete_rows = {
+        (int(row["sparsity"]), str(row["dataset"]))
+        for row in audit_rows
+        if all(
+            candidate["paper_result_credit"]
+            for candidate in audit_rows
+            if candidate["sparsity"] == row["sparsity"] and candidate["dataset"] == row["dataset"]
+        )
+    }
+    if complete_rows:
+        raise ValueError(f"unexpected complete EFS ASMCVaR rows: {sorted(complete_rows)}")
     return audit_rows
 
 
@@ -726,6 +775,11 @@ def original_asmcvar_paper_conformance(
             )
     if len(rows) != 36:
         raise ValueError("expected 36 original ASMCVaR CW/SR cells")
+    mismatches = [row for row in rows if not row["original_asmcvar_paper_result_credit"]]
+    if [(row["dataset"], row["sparsity"], row["metric"]) for row in mismatches] != [
+        ("FF49", 10, "SR")
+    ]:
+        raise ValueError("original ASMCVaR performance mismatch census drifted")
     return rows
 
 
@@ -1330,13 +1384,13 @@ datasets, paper structure, and results.
 - **EFS itself: 0 native result cells reproduced in either version.** No
   author-linked EFS code, exact configuration, model snapshot, factor pool,
   search trace, action/weight path, raw return, or result output was found.
-- **Original v1: 6/773 table-result cells reproduced, all cited-baseline
-  evidence.** Five are 1/N MDD cells. Exact mSSRM source execution reproduces
-  only 1/45 mSSRM cells at paper precision; its paired CW and MDD disagree, so
-  the isolated Sharpe match does not reproduce a complete result row.
-- **Current v2: 11/877 cells reproduce at its coarser display precision.** Eight
-  are 1/N cells and 3/24 are mSSRM cells. All are cited-baseline evidence, not
-  EFS evidence. Paper compilation and parsing receive no experiment credit.
+- **Original v1: 7/773 table-result cells reproduced, all cited-baseline
+  evidence.** Five are 1/N MDD cells; mSSRM and ASMCVaR contribute one isolated
+  cell each. Neither cited sparse method reproduces a complete EFS row.
+- **Current v2: 13/877 cells reproduce at its coarser display precision.** Eight
+  are 1/N cells, three are mSSRM cells, and two are ASMCVaR cells. All are
+  cited-baseline evidence, not EFS evidence. Paper compilation and parsing
+  receive no experiment credit.
 
 The mSSRM release was run twice for every combination of five EFS matrices
 and m={10,15,20}. All 15 full 623-point wealth paths were bit-identical across
@@ -1344,6 +1398,15 @@ repeats, yet 44/45 original-v1 cells disagree with EFS at printed precision.
 This is an EFS baseline-protocol mismatch, not a failure to replicate mSSRM:
 all 36 CW/SR cells in the original NeurIPS mSSRM paper reproduce, and all six
 untouched conference-supplement m=10 wealth paths equal the mirror bit-for-bit.
+
+The ASMCVaR release was executed for all six original-paper datasets and
+m={10,15,20} under MATLAB R2023b. It reproduces 95/96 original ICML empirical
+cells: all 18 CW, 17/18 Sharpe, all 36 alpha/p-value, and all 24 sparsity-overlap
+cells. The sole conflict is FF49 m=10 Sharpe: released code prints 0.2338 while
+the paper prints 0.2339. Against EFS, only 1/45 v1 and 2/24 v2 ASMCVaR cells
+match at display precision, and no complete row matches. A same-runtime repeat
+is bit-identical; an independent Octave execution agrees within disclosed
+floating-point tolerances.
 
 ## Version-lineage warning
 
@@ -1384,16 +1447,23 @@ def main() -> None:
         type=Path,
         default=Path("/nfs/roberts/scratch/pi_btk22/zc362/mssrm_original_paper"),
     )
+    parser.add_argument(
+        "--asmcvar-original-root",
+        type=Path,
+        default=Path("/nfs/roberts/scratch/pi_btk22/zc362/asmcvar_original_paper"),
+    )
     args = parser.parse_args()
     paper_root = args.paper_root.resolve()
     output = args.output.resolve()
     mssrm_results_root = args.mssrm_results_root.resolve()
     mssrm_original_root = args.mssrm_original_root.resolve()
+    asmcvar_original_root = args.asmcvar_original_root.resolve()
     mssrm = paper_root / "mssrm_source"
     asm_cvar = paper_root / "asm_cvar_source"
 
     validated = validate_inputs(paper_root, mssrm, asm_cvar)
     validated_mssrm_original = validate_mssrm_original_inputs(mssrm_original_root, asm_cvar)
+    validated_asmcvar_original = validate_asmcvar_original_input(asmcvar_original_root)
     v1 = parse_v1_results(paper_root)
     v2 = parse_v2_results(paper_root)
     metrics = baseline_metrics(asm_cvar)
@@ -1403,6 +1473,13 @@ def main() -> None:
     mssrm_original_metrics = load_mssrm_native_metrics(mssrm_results_root, MSSRM_ORIGINAL_DATASETS)
     mssrm_original = original_mssrm_paper_conformance(mssrm_original_metrics)
     mssrm_supplement = mssrm_supplement_correspondence(mssrm_results_root, mssrm_original_metrics)
+    asmcvar_metrics = load_asmcvar_native_metrics(mssrm_results_root)
+    asmcvar_inventory = asmcvar_native_inventory(asmcvar_metrics)
+    asmcvar_efs = apply_asmcvar_credit(v1, asmcvar_metrics) + apply_asmcvar_credit(v2, asmcvar_metrics)
+    asmcvar_performance = original_asmcvar_paper_conformance(asmcvar_metrics)
+    asmcvar_alpha = asmcvar_alpha_conformance(asmcvar_metrics, asm_cvar)
+    asmcvar_overlap = asmcvar_overlap_conformance(asmcvar_metrics)
+    asmcvar_cross_runtime = asmcvar_cross_runtime_correspondence(mssrm_results_root)
     lineage = apply_version_lineage(v1, v2)
     figures = figure_inventory(paper_root)
     methods = method_specification_audit()
@@ -1418,6 +1495,12 @@ def main() -> None:
     write_csv(output / "cited_mssrm_native_reproduction.csv", mssrm_baseline)
     write_csv(output / "cited_mssrm_original_paper_reproduction.csv", mssrm_original)
     write_csv(output / "cited_mssrm_neurips_supplement_correspondence.csv", mssrm_supplement)
+    write_csv(output / "cited_asmcvar_native_execution_inventory.csv", asmcvar_inventory)
+    write_csv(output / "cited_asmcvar_efs_reproduction.csv", asmcvar_efs)
+    write_csv(output / "cited_asmcvar_original_performance_reproduction.csv", asmcvar_performance)
+    write_csv(output / "cited_asmcvar_original_alpha_reproduction.csv", asmcvar_alpha)
+    write_csv(output / "cited_asmcvar_original_overlap_reproduction.csv", asmcvar_overlap)
+    write_csv(output / "cited_asmcvar_cross_runtime_correspondence.csv", asmcvar_cross_runtime)
     write_csv(output / "version_lineage_audit.csv", lineage)
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "method_specification_audit.csv", methods)
@@ -1432,11 +1515,11 @@ def main() -> None:
         "paper_source_compilation": compilations,
         "cited_baseline_formula_executed": True,
         "v1_cited_baseline_cells_with_credit": sum(
-            row["paper_result_credit"] for row in baseline + mssrm_baseline
+            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs
             if row["paper_version"] == "v1"
         ),
         "v2_cited_baseline_cells_with_credit": sum(
-            row["paper_result_credit"] for row in baseline + mssrm_baseline
+            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs
             if row["paper_version"] == "v2"
         ),
         "native_efs_cells_with_credit": 0,
@@ -1454,11 +1537,26 @@ def main() -> None:
         "original_mssrm_full_paths_repeat_exact": 18,
         "original_mssrm_neurips_supplement_native_runs": 6,
         "original_mssrm_supplement_paths_equal_mirror": 6,
-        "cited_asmcvar_source_executed_with_octave": False,
+        "cited_asmcvar_source_executed_with_matlab": True,
+        "cited_asmcvar_matlab_release": "2023b",
+        "cited_asmcvar_native_configurations": 18,
+        "cited_asmcvar_same_runtime_repeats_exact": 1,
+        "cited_asmcvar_cross_runtime_fields_equivalent": 2,
+        "cited_asmcvar_v1_cells_checked": 45,
+        "cited_asmcvar_v1_cells_matching": 1,
+        "cited_asmcvar_v2_cells_checked": 24,
+        "cited_asmcvar_v2_cells_matching": 2,
+        "original_asmcvar_performance_cells_checked": 36,
+        "original_asmcvar_performance_cells_matching": 35,
+        "original_asmcvar_alpha_cells_checked": 36,
+        "original_asmcvar_alpha_cells_matching": 36,
+        "original_asmcvar_overlap_cells_checked": 24,
+        "original_asmcvar_overlap_cells_matching": 24,
+        "original_asmcvar_total_cells_checked": 96,
+        "original_asmcvar_total_cells_matching": 95,
         "matlab_reason": (
-            "mSSRM ran natively under Octave 9.2.0 with an exact tick2ret compatibility shim; "
-            "the untouched ASMCVaR entry point has a Windows-only path and its directly invoked "
-            "exact core exceeded a 30-minute interactive cap"
+            "ASMCVaR ran under MATLAB R2023b for all 18 paper configurations; "
+            "FF25 m=10 also ran under Octave 9.2.0 and matched MATLAB within tolerance"
         ),
     }
     write_json(output / "native_execution.json", native)
@@ -1496,6 +1594,24 @@ def main() -> None:
             "paper_credit": "baseline_source_only",
         },
         "cited_asmcvar_release": {"url": ASMCVAR_URL, "commit": ASMCVAR_COMMIT, "tree": ASMCVAR_TREE, "archive_sha256": ASMCVAR_ARCHIVE_SHA256, "data_sha256": ASMCVAR_DATA_SHA256, "paper_credit": "baseline_source_only"},
+        "cited_asmcvar_original_paper": {
+            "url": ASMCVAR_PAPER_URL,
+            "pdf_url": ASMCVAR_PAPER_PDF_URL,
+            "pdf_sha256": ASMCVAR_PAPER_SHA256,
+            "pages": ASMCVAR_PAPER_PAGES,
+            "validation": validated_asmcvar_original,
+            "reported_cells_checked": 96,
+            "reported_cells_reproduced": 95,
+            "paper_credit": "original_asmcvar_paper_only_not_efs",
+        },
+        "cited_asmcvar_native_execution": {
+            "matlab_release": "2023b",
+            "configurations": 18,
+            "same_runtime_repeat_exact": True,
+            "cross_runtime_fields_equivalent": 2,
+            "tick2ret_and_sharpe": "MATLAB Financial Toolbox population-standard-deviation convention",
+            "paper_credit": "baseline_source_only",
+        },
         "validation": validated,
     }
     write_json(output / "source_provenance.json", provenance)
@@ -1505,6 +1621,11 @@ def main() -> None:
         "cited_baseline_reproduction.csv", "cited_mssrm_native_reproduction.csv",
         "cited_mssrm_original_paper_reproduction.csv",
         "cited_mssrm_neurips_supplement_correspondence.csv",
+        "cited_asmcvar_native_execution_inventory.csv", "cited_asmcvar_efs_reproduction.csv",
+        "cited_asmcvar_original_performance_reproduction.csv",
+        "cited_asmcvar_original_alpha_reproduction.csv",
+        "cited_asmcvar_original_overlap_reproduction.csv",
+        "cited_asmcvar_cross_runtime_correspondence.csv",
         "version_lineage_audit.csv", "figure_inventory.csv",
         "method_specification_audit.csv", "qualitative_claim_audit.csv",
         "cited_baseline_source_inventory.csv", "paper_prompt_v1.tex.txt",
@@ -1514,7 +1635,7 @@ def main() -> None:
         "paper": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
         "audit_date": AUDIT_DATE,
         "paper_evidence_route": "paper_only_underspecified",
-        "overall_status": "partial_6_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
+        "overall_status": "partial_7_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
         "full_paper_reproduced": False,
         "official_efs_source_released": False,
         "original_v1_table_result_cells": len(v1),
@@ -1537,6 +1658,19 @@ def main() -> None:
         "original_mssrm_neurips_supplement_paths_checked": len(mssrm_supplement),
         "original_mssrm_neurips_supplement_paths_equal_mirror": sum(
             row["full_wealth_path_equal_to_mirror"] for row in mssrm_supplement
+        ),
+        "cited_asmcvar_v1_cells_checked": 45,
+        "cited_asmcvar_v1_cells_reproduced": sum(
+            row["paper_result_credit"] for row in asmcvar_efs if row["paper_version"] == "v1"
+        ),
+        "cited_asmcvar_v2_cells_checked": 24,
+        "cited_asmcvar_v2_cells_reproduced": sum(
+            row["paper_result_credit"] for row in asmcvar_efs if row["paper_version"] == "v2"
+        ),
+        "original_asmcvar_cells_checked": 96,
+        "original_asmcvar_cells_reproduced": sum(
+            row["original_asmcvar_paper_result_credit"]
+            for row in asmcvar_performance + asmcvar_alpha + asmcvar_overlap
         ),
         "v1_v2_common_benchmark_cells": len(lineage),
         "v1_v2_common_benchmark_cells_same_at_v2_precision": sum(row["same_at_v2_precision"] for row in lineage),

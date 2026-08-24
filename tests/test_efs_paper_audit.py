@@ -33,8 +33,8 @@ def test_committed_v1_and_v2_result_censuses_are_complete() -> None:
     assert Counter(row["paper_table"] for row in v1) == audit.V1_EXPECTED_TABLE_COUNTS
     assert len(v2) == 877
     assert Counter(row["paper_table"] for row in v2) == audit.V2_EXPECTED_TABLE_COUNTS
-    assert sum(row["paper_result_credit"] == "True" for row in v1) == 6
-    assert sum(row["paper_result_credit"] == "True" for row in v2) == 11
+    assert sum(row["paper_result_credit"] == "True" for row in v1) == 7
+    assert sum(row["paper_result_credit"] == "True" for row in v2) == 13
     assert {row["native_efs_result_credit"] for row in v1 + v2} == {"False"}
 
 
@@ -87,6 +87,39 @@ def test_original_mssrm_paper_reproduces_despite_efs_baseline_mismatch() -> None
     assert {row["native_efs_evidence"] for row in supplement} == {"False"}
 
 
+def test_asmcvar_original_paper_reproduces_but_efs_rows_do_not() -> None:
+    inventory = read_csv(output_dir() / "cited_asmcvar_native_execution_inventory.csv")
+    efs = read_csv(output_dir() / "cited_asmcvar_efs_reproduction.csv")
+    performance = read_csv(output_dir() / "cited_asmcvar_original_performance_reproduction.csv")
+    alpha = read_csv(output_dir() / "cited_asmcvar_original_alpha_reproduction.csv")
+    overlap = read_csv(output_dir() / "cited_asmcvar_original_overlap_reproduction.csv")
+    cross_runtime = read_csv(output_dir() / "cited_asmcvar_cross_runtime_correspondence.csv")
+    assert len(inventory) == 18
+    assert {row["matlab_release"] for row in inventory} == {"2023b"}
+    assert {row["native_asmcvar_source_evidence"] for row in inventory} == {"True"}
+    assert {row["native_efs_evidence"] for row in inventory} == {"False"}
+    repeated = [row for row in inventory if row["repeat_path_present"] == "True"]
+    assert len(repeated) == 1 and repeated[0]["repeat_path_equal"] == "True"
+    assert Counter(row["paper_version"] for row in efs) == {"v1": 45, "v2": 24}
+    assert Counter((row["paper_version"], row["paper_result_credit"]) for row in efs) == {
+        ("v1", "False"): 44,
+        ("v1", "True"): 1,
+        ("v2", "False"): 22,
+        ("v2", "True"): 2,
+    }
+    assert {row["native_efs_evidence"] for row in efs} == {"False"}
+    assert len(performance) == 36
+    mismatch = [row for row in performance if row["original_asmcvar_paper_result_credit"] == "False"]
+    assert [(row["dataset"], row["sparsity"], row["metric"]) for row in mismatch] == [
+        ("FF49", "10", "SR")
+    ]
+    assert sum(row["original_asmcvar_paper_result_credit"] == "True" for row in performance) == 35
+    assert len(alpha) == 36 and {row["original_asmcvar_paper_result_credit"] for row in alpha} == {"True"}
+    assert len(overlap) == 24 and {row["original_asmcvar_paper_result_credit"] for row in overlap} == {"True"}
+    assert len(cross_runtime) == 2
+    assert {row["equivalent_within_tolerance"] for row in cross_runtime} == {"True"}
+
+
 def test_revision_lineage_detects_carryovers_and_semantic_relabels() -> None:
     rows = read_csv(output_dir() / "version_lineage_audit.csv")
     assert len(rows) == 240
@@ -118,15 +151,15 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     native = json.loads((output_dir() / "native_execution.json").read_text(encoding="utf-8"))
     provenance = json.loads((output_dir() / "source_provenance.json").read_text(encoding="utf-8"))
     assert manifest["overall_status"] == (
-        "partial_6_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_"
+        "partial_7_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_"
         "v2_audited_separately"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_evidence_route"] == "paper_only_underspecified"
     assert manifest["original_v1_table_result_cells"] == 773
-    assert manifest["original_v1_table_cells_reproduced"] == 6
+    assert manifest["original_v1_table_cells_reproduced"] == 7
     assert manifest["current_v2_table_result_cells"] == 877
-    assert manifest["current_v2_table_cells_reproduced"] == 11
+    assert manifest["current_v2_table_cells_reproduced"] == 13
     assert manifest["cited_mssrm_v1_cells_checked"] == 45
     assert manifest["cited_mssrm_v1_cells_reproduced"] == 1
     assert manifest["cited_mssrm_v2_cells_checked"] == 24
@@ -135,6 +168,12 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert manifest["original_mssrm_paper_cells_reproduced"] == 36
     assert manifest["original_mssrm_neurips_supplement_paths_checked"] == 6
     assert manifest["original_mssrm_neurips_supplement_paths_equal_mirror"] == 6
+    assert manifest["cited_asmcvar_v1_cells_checked"] == 45
+    assert manifest["cited_asmcvar_v1_cells_reproduced"] == 1
+    assert manifest["cited_asmcvar_v2_cells_checked"] == 24
+    assert manifest["cited_asmcvar_v2_cells_reproduced"] == 2
+    assert manifest["original_asmcvar_cells_checked"] == 96
+    assert manifest["original_asmcvar_cells_reproduced"] == 95
     assert manifest["native_efs_result_cells_reproduced"] == 0
     assert manifest["v1_v2_common_benchmark_cells_same_at_v2_precision"] == 240
     assert manifest["scores_to_weights_cells_relabelled_as_rw"] == 48
@@ -148,11 +187,18 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert native["original_mssrm_paper_cells_matching"] == 36
     assert native["original_mssrm_full_paths_repeat_exact"] == 18
     assert native["original_mssrm_supplement_paths_equal_mirror"] == 6
+    assert native["cited_asmcvar_source_executed_with_matlab"] is True
+    assert native["cited_asmcvar_native_configurations"] == 18
+    assert native["cited_asmcvar_same_runtime_repeats_exact"] == 1
+    assert native["original_asmcvar_total_cells_matching"] == 95
     assert native["native_efs_cells_with_credit"] == 0
     assert provenance["official_efs_repository_found"] is False
     assert provenance["cited_mssrm_native_execution"]["efs_comparison_full_paths_repeat_exact"] == 15
     assert provenance["cited_mssrm_original_paper"]["pdf_sha256"] == audit.MSSRM_PAPER_SHA256
     assert provenance["cited_mssrm_original_paper"]["reported_cells_reproduced"] == 36
+    assert provenance["cited_asmcvar_original_paper"]["pdf_sha256"] == audit.ASMCVAR_PAPER_SHA256
+    assert provenance["cited_asmcvar_original_paper"]["reported_cells_reproduced"] == 95
+    assert provenance["cited_asmcvar_native_execution"]["configurations"] == 18
     assert provenance["original_paper"]["pdf_sha256"] == audit.ARXIV_V1_PDF_SHA256
     assert provenance["current_revision"]["pdf_sha256"] == audit.ARXIV_V2_PDF_SHA256
     for filename, expected in manifest["output_sha256"].items():
@@ -180,10 +226,20 @@ def test_pinned_sources_and_dynamic_parsers_when_available() -> None:
         assert len(audit.mssrm_supplement_correspondence(results, original_metrics)) == 6
         original_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/mssrm_original_paper")
         assert audit.validate_mssrm_original_inputs(original_root, asm_cvar)["paper_pages"] == 28
+        asmcvar_metrics = audit.load_asmcvar_native_metrics(results)
+        asmcvar_efs = audit.apply_asmcvar_credit(v1, asmcvar_metrics) + audit.apply_asmcvar_credit(v2, asmcvar_metrics)
+        assert len(audit.asmcvar_native_inventory(asmcvar_metrics)) == 18
+        assert len(asmcvar_efs) == 69
+        assert len(audit.original_asmcvar_paper_conformance(asmcvar_metrics)) == 36
+        assert len(audit.asmcvar_alpha_conformance(asmcvar_metrics, asm_cvar)) == 36
+        assert len(audit.asmcvar_overlap_conformance(asmcvar_metrics)) == 24
+        assert len(audit.asmcvar_cross_runtime_correspondence(results)) == 2
+        asmcvar_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/asmcvar_original_paper")
+        assert audit.validate_asmcvar_original_input(asmcvar_root)["paper_pages"] == 17
     lineage = audit.apply_version_lineage(v1, v2)
     assert (len(v1), len(v2), len(baseline), len(lineage)) == (773, 877, 27, 240)
-    expected_v1 = 6 if results.exists() else 5
-    expected_v2 = 11 if results.exists() else 8
+    expected_v1 = 7 if results.exists() else 5
+    expected_v2 = 13 if results.exists() else 8
     assert sum(row["paper_result_credit"] for row in v1) == expected_v1
     assert sum(row["paper_result_credit"] for row in v2) == expected_v2
     assert sum(row["method_semantics_relabelled"] for row in lineage) == 48

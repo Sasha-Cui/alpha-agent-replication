@@ -1,5 +1,13 @@
 {
-  "cited_asmcvar_source_executed_with_octave": false,
+  "cited_asmcvar_cross_runtime_fields_equivalent": 2,
+  "cited_asmcvar_matlab_release": "2023b",
+  "cited_asmcvar_native_configurations": 18,
+  "cited_asmcvar_same_runtime_repeats_exact": 1,
+  "cited_asmcvar_source_executed_with_matlab": true,
+  "cited_asmcvar_v1_cells_checked": 45,
+  "cited_asmcvar_v1_cells_matching": 1,
+  "cited_asmcvar_v2_cells_checked": 24,
+  "cited_asmcvar_v2_cells_matching": 2,
   "cited_baseline_formula_executed": true,
   "cited_mssrm_full_paths_repeat_exact": 15,
   "cited_mssrm_native_runs": 30,
@@ -10,8 +18,16 @@
   "cited_mssrm_v2_cells_matching": 3,
   "efs_native_execution_attempted": false,
   "matlab_baseline_source_executed": true,
-  "matlab_reason": "mSSRM ran natively under Octave 9.2.0 with an exact tick2ret compatibility shim; the untouched ASMCVaR entry point has a Windows-only path and its directly invoked exact core exceeded a 30-minute interactive cap",
+  "matlab_reason": "ASMCVaR ran under MATLAB R2023b for all 18 paper configurations; FF25 m=10 also ran under Octave 9.2.0 and matched MATLAB within tolerance",
   "native_efs_cells_with_credit": 0,
+  "original_asmcvar_alpha_cells_checked": 36,
+  "original_asmcvar_alpha_cells_matching": 36,
+  "original_asmcvar_overlap_cells_checked": 24,
+  "original_asmcvar_overlap_cells_matching": 24,
+  "original_asmcvar_performance_cells_checked": 36,
+  "original_asmcvar_performance_cells_matching": 35,
+  "original_asmcvar_total_cells_checked": 96,
+  "original_asmcvar_total_cells_matching": 95,
   "original_mssrm_full_paths_repeat_exact": 18,
   "original_mssrm_mirror_native_runs": 36,
   "original_mssrm_neurips_supplement_native_runs": 6,
@@ -42,6 +58,6 @@
     }
   },
   "reason": "no author-linked EFS implementation, config, factor pool, checkpoint, or result path released",
-  "v1_cited_baseline_cells_with_credit": 6,
-  "v2_cited_baseline_cells_with_credit": 11
+  "v1_cited_baseline_cells_with_credit": 7,
+  "v2_cited_baseline_cells_with_credit": 13
 }

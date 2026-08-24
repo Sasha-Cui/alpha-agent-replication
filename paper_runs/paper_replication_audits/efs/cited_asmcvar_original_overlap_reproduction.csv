@@ -1,0 +1,25 @@
+dataset,metric,paper_value,recomputed_value,recomputed_at_paper_precision,match_at_paper_precision,paper_location,original_asmcvar_paper_result_credit,native_efs_evidence
+FF25,p10_15_mean,0.9115,0.911454641188,0.9115,True,Table 2,True,False
+FF25,p10_15_std,0.1182,0.118234585588,0.1182,True,Table 2,True,False
+FF25,p15_20_mean,0.9554,0.955435485047,0.9554,True,Table 2,True,False
+FF25,p15_20_std,0.0808,0.0807541500139,0.0808,True,Table 2,True,False
+FF25EU,p10_15_mean,0.9147,0.914731885846,0.9147,True,Table 2,True,False
+FF25EU,p10_15_std,0.1215,0.121459751669,0.1215,True,Table 2,True,False
+FF25EU,p15_20_mean,0.9553,0.95534246985,0.9553,True,Table 2,True,False
+FF25EU,p15_20_std,0.0854,0.0853848246289,0.0854,True,Table 2,True,False
+FF32,p10_15_mean,0.8919,0.891861621837,0.8919,True,Table 2,True,False
+FF32,p10_15_std,0.1307,0.130680391667,0.1307,True,Table 2,True,False
+FF32,p15_20_mean,0.9348,0.934782714166,0.9348,True,Table 2,True,False
+FF32,p15_20_std,0.0958,0.0957522437495,0.0958,True,Table 2,True,False
+FF49,p10_15_mean,0.9468,0.946785585863,0.9468,True,Table 2,True,False
+FF49,p10_15_std,0.0832,0.0831630051453,0.0832,True,Table 2,True,False
+FF49,p15_20_mean,0.9372,0.937228718782,0.9372,True,Table 2,True,False
+FF49,p15_20_std,0.0825,0.082540111129,0.0825,True,Table 2,True,False
+FF100,p10_15_mean,0.9222,0.922172277318,0.9222,True,Table 2,True,False
+FF100,p10_15_std,0.1060,0.106049505629,0.1060,True,Table 2,True,False
+FF100,p15_20_mean,0.9543,0.954253621311,0.9543,True,Table 2,True,False
+FF100,p15_20_std,0.0766,0.0765855439024,0.0766,True,Table 2,True,False
+FF100MEOP,p10_15_mean,0.9018,0.901831437376,0.9018,True,Table 2,True,False
+FF100MEOP,p10_15_std,0.1154,0.115364103555,0.1154,True,Table 2,True,False
+FF100MEOP,p15_20_mean,0.9478,0.947772741749,0.9478,True,Table 2,True,False
+FF100MEOP,p15_20_std,0.0724,0.0724453296746,0.0724,True,Table 2,True,False

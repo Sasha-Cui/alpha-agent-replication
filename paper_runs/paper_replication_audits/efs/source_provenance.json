@@ -5,6 +5,27 @@
     "sha256": "7bde1f690bab7c9f694e6f8810502884394e48de6c118a895b68fcaad1a20b26",
     "url": "https://www.cs.cityu.edu.hk/~cliu644/HomePage/doc/EFS/EFS_PDF.pdf"
   },
+  "cited_asmcvar_native_execution": {
+    "configurations": 18,
+    "cross_runtime_fields_equivalent": 2,
+    "matlab_release": "2023b",
+    "paper_credit": "baseline_source_only",
+    "same_runtime_repeat_exact": true,
+    "tick2ret_and_sharpe": "MATLAB Financial Toolbox population-standard-deviation convention"
+  },
+  "cited_asmcvar_original_paper": {
+    "pages": 17,
+    "paper_credit": "original_asmcvar_paper_only_not_efs",
+    "pdf_sha256": "a2790162761a5436d628ece00c66aed2564ea0d9633f4483d57e022602c7e09d",
+    "pdf_url": "https://raw.githubusercontent.com/mlresearch/v235/main/assets/lin24w/lin24w.pdf",
+    "reported_cells_checked": 96,
+    "reported_cells_reproduced": 95,
+    "url": "https://proceedings.mlr.press/v235/lin24w.html",
+    "validation": {
+      "paper_pages": 17,
+      "paper_sha256": "a2790162761a5436d628ece00c66aed2564ea0d9633f4483d57e022602c7e09d"
+    }
+  },
   "cited_asmcvar_release": {
     "archive_sha256": "6c553f0d799a8379dc01a78a02fc86b02612fea6eeb21f5b0641c327b8801f9a",
     "commit": "0ed6a63ca02118cc305ae5d34f2cf24489c024a5",
