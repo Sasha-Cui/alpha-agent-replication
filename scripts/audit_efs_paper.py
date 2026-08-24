@@ -55,6 +55,40 @@ ASMCVAR_URL = "https://github.com/linyizun2024/ASMCVaR"
 ASMCVAR_COMMIT = "0ed6a63ca02118cc305ae5d34f2cf24489c024a5"
 ASMCVAR_TREE = "3a0bd2408d16d3702321e009701adcf81629e83b"
 ASMCVAR_ARCHIVE_SHA256 = "6c553f0d799a8379dc01a78a02fc86b02612fea6eeb21f5b0641c327b8801f9a"
+ASMCVAR_PAPER_URL = "https://proceedings.mlr.press/v235/lin24w.html"
+ASMCVAR_PAPER_PDF_URL = "https://raw.githubusercontent.com/mlresearch/v235/main/assets/lin24w/lin24w.pdf"
+ASMCVAR_PAPER_SHA256 = "a2790162761a5436d628ece00c66aed2564ea0d9633f4483d57e022602c7e09d"
+ASMCVAR_PAPER_PAGES = 17
+ASMCVAR_DATASETS = {
+    "FF25": "FF25new",
+    "FF25EU": "FF25EUnew",
+    "FF32": "FF32new",
+    "FF49": "FF49new",
+    "FF100": "FF100new",
+    "FF100MEOP": "FF100MEOPnew",
+}
+ASMCVAR_ORIGINAL_T60_VALUES = {
+    ("FF25", 10): {"CW": "973.23", "SR": "0.2610"},
+    ("FF25EU", 10): {"CW": "122.82", "SR": "0.2758"},
+    ("FF32", 10): {"CW": "1122.76", "SR": "0.2638"},
+    ("FF49", 10): {"CW": "758.66", "SR": "0.2339"},
+    ("FF100", 10): {"CW": "966.32", "SR": "0.2446"},
+    ("FF100MEOP", 10): {"CW": "783.47", "SR": "0.2363"},
+    ("FF25", 15): {"CW": "827.18", "SR": "0.2541"},
+    ("FF25EU", 15): {"CW": "123.13", "SR": "0.2765"},
+    ("FF32", 15): {"CW": "1303.80", "SR": "0.2615"},
+    ("FF49", 15): {"CW": "694.83", "SR": "0.2286"},
+    ("FF100", 15): {"CW": "1126", "SR": "0.2503"},
+    ("FF100MEOP", 15): {"CW": "712.45", "SR": "0.2326"},
+    ("FF25", 20): {"CW": "872.03", "SR": "0.2558"},
+    ("FF25EU", 20): {"CW": "113.28", "SR": "0.2713"},
+    ("FF32", 20): {"CW": "1317.01", "SR": "0.2603"},
+    ("FF49", 20): {"CW": "767.61", "SR": "0.2300"},
+    ("FF100", 20): {"CW": "1117.20", "SR": "0.2501"},
+    ("FF100MEOP", 20): {"CW": "714.49", "SR": "0.2322"},
+}
+ASMCVAR_V1_ROW_BY_SPARSITY = {10: 7, 15: 15, 20: 23}
+ASMCVAR_V2_ROW_BY_SPARSITY = {10: 7, 15: 15}
 ASMCVAR_DATA_SHA256 = {
     "FF25new": "0f4c1e91708ce9098d12e81525468dcaa5946d5bff508db7eb953d3cd43744f4",
     "FF32new": "3eb4af4e3b3080fb226364d3b84e2d392366b9be4ba95ecf863346f2d3d143ec",
