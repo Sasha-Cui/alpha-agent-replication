@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import importlib.util
 import json
 import sys
@@ -68,11 +69,14 @@ def test_committed_manifest_keeps_document_and_experiment_credit_separate() -> N
     output = ROOT / "paper_runs/paper_replication_audits/finagent"
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     native = json.loads((output / "native_execution.json").read_text(encoding="utf-8"))
+    freeze = (output / "paper_era_environment_freeze.txt").read_text(
+        encoding="utf-8"
+    )
     assert manifest["overall_status"] == (
         "substantial_author_linked_source_but_zero_of_1061_published_result_units_reproduced"
     )
     assert manifest["replication_tier"] == (
-        "R2_substantial_static_implementation_no_paper_result_reproduction"
+        "R3_runnable_component_environment_no_paper_result_reproduction"
     )
     assert manifest["paper_document_reproduced"] is True
     assert manifest["full_paper_reproduced"] is False
@@ -108,6 +112,50 @@ def test_committed_manifest_keeps_document_and_experiment_credit_separate() -> N
     assert native["paper_source_compilation"]["compiled_pages"] == 43
     assert native["paper_source_compilation"]["paper_result_credit"] is False
     assert native["full_native_system_execution_attempted"] is False
+    assert manifest["paper_era_dependency_environment_reproduced"] is True
+    assert manifest["paper_era_exact_historical_dependency_versions_recovered"] is False
+    assert manifest["paper_era_entrypoint_help_passed"] is True
+    assert manifest["paper_era_core_modules_imported"] == 65
+    assert manifest["paper_era_controlled_native_component_runs"] == 2
+    assert manifest["paper_era_future_state_exposure_observed"] is True
+    assert manifest["paper_era_released_metric_functions_executed"] == 7
+    assert native["entrypoint_help_probe"]["exit_code"] == 0
+    assert native["entrypoint_help_probe"]["passed"] is True
+    environment = native["dependency_environment"]
+    assert environment["dependency_environment_reproduced"] is True
+    assert environment["exact_historical_dependency_versions_recovered"] is False
+    assert environment["dependency_release_cutoff_utc"] == audit.SOURCE_CURRENT_DATE_UTC
+    assert environment["author_requirements_commit"] == audit.SOURCE_CURRENT_COMMIT
+    assert environment["author_requirements_sha256"] == audit.SOURCE_REQUIREMENTS_SHA256
+    assert environment["author_requirements_only_postpaper_change"] is True
+    assert environment["pip_check"] == "No broken requirements found."
+    assert environment["dependency_freeze_sha256"] == audit.PAPER_ENV_FREEZE_SHA256
+    assert environment["dependency_freeze_lines"] == 148
+    assert environment["entrypoint_help_runs"] == 2
+    assert environment["selected_core_modules"] == 65
+    assert environment["imported_core_modules"] == 65
+    assert environment["module_import_failures"] == []
+    assert environment["network_attempts"] == []
+    assert environment["pandas_ta_historical_version"] == "0.3.14b0"
+    assert environment["pandas_ta_unaffiliated_mirror_commit"] == (
+        audit.PANDAS_TA_MIRROR_COMMIT
+    )
+    assert environment["pandas_ta_original_pypi_distribution_available"] is False
+    assert environment["source_tests_shipped"] == 0
+    assert environment["controlled_native_component_runs"] == 2
+    assert environment["controlled_native_component_deterministic"] is True
+    assert environment["future_state_exposure_observed"] is True
+    assert environment["long_only_trading_path_executed"] is True
+    assert environment["transaction_cost_path_executed"] is True
+    assert environment["released_metric_functions_executed"] == 7
+    controlled = environment["controlled_native_component"]
+    assert controlled["environment"][0]["info"]["date"] == "2024-01-03"
+    assert controlled["environment"][0]["state_max"] == "2024-01-05"
+    assert controlled["environment"][1]["info"]["position"] == 9
+    assert controlled["environment"][3]["info"]["position"] == 0
+    assert abs(controlled["metrics"]["MDD"] - 0.02) < 1e-12
+    assert len(freeze.splitlines()) == 148
+    assert hashlib.sha256(freeze.encode()).hexdigest() == audit.PAPER_ENV_FREEZE_SHA256
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
 

@@ -3,8 +3,9 @@
 This is a fail-closed audit of the original KDD 2024 paper, all three official
 arXiv versions and source archives, and the repository linked by the lead
 author's homepage.  The release is substantial—142 Python
-files, prompts, configs, agent modules, and rule-strategy records—but it is not
-an executable experimental package for the published claims.
+files, prompts, configs, agent modules, and rule-strategy records. Its core and
+CLI now execute in a reconstructed environment, but the missing research inputs
+and outputs still prevent an executable package for the published claims.
 
 ## Honest outcome
 
@@ -18,8 +19,12 @@ an executable experimental package for the published claims.
 - Public source timing: v1 and v2 predate the repository; v3 has the six-commit
   paper-era tree available. Only v3 is evaluated against public implementation.
 - Static released-source mechanisms matching the paper: 13 of 31 audited claims.
+- Dependency-backed source boundary: the original CLI help passes twice, all
+  65 core modules import twice with
+  real dependencies and zero HTTP attempts, and two controlled native trading/
+  metric runs agree exactly.
 - Published result units: **0 of 1061 reproduced** (959 table cells and 102 figure units).
-- Overall tier: **R2 / substantial static implementation evidence, no paper-result reproduction**.
+- Overall tier: **R3 / runnable component environment, no paper-result reproduction**.
 
 No paper-result credit is assigned to values transcribed from LaTeX, plot-only
 graphics, rule-strategy parameter records, static compilation, or document
@@ -45,6 +50,25 @@ limited to unaffiliated post-paper function-calling, prompt/news, and FTSE MIB
 source/data-pipeline adaptations. No divergent commit matches an official-source
 author identity, and no native agent result or exact paper table/figure artifact
 was found; all fork evidence receives zero paper-result credit.
+
+## What now executes
+
+The authors added only `requirements.txt` after the paper-era source commit;
+every other tracked path is unchanged. Resolving those author-listed packages
+with a 2024-08-31 release cutoff produces a clean 148-line environment freeze.
+The historical `pandas-ta` 0.3.14b0 distribution has been removed from PyPI, so
+its runtime code is recovered from a hash-pinned unaffiliated mirror and receives
+no provenance or result credit; rewritten Poetry metadata required a temporary
+post-cutoff build tool that was removed from the final environment. Consequently
+the environment is compatible and reproducible, not historically exact.
+
+The original `tools/main.py --help` path succeeds, 65/65 `finagent` modules
+import, and no blocked network send is attempted. A deterministic controlled
+fixture executes BUY/HOLD/SELL through the native long-only environment with its
+10-bp transaction cost and runs ARR, VOL, downside deviation, MDD, Sharpe,
+Calmar, and Sortino functions. It also directly observes that a January 3 state
+contains prices through January 5 when `look_forward_days=2`. These are stronger
+native component and protocol-conflict checks, never paper-performance evidence.
 
 ## Material protocol conflicts
 

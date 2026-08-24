@@ -15,10 +15,10 @@ import csv
 import hashlib
 import importlib.util
 import json
+import os
 import re
 import shutil
 import subprocess
-import sys
 import tarfile
 import tempfile
 from collections import Counter
@@ -41,8 +41,20 @@ SOURCE_PAPER_TREE = "70c0a2277fded3b77195b74ab71e0d2c8723a6a4"
 SOURCE_PAPER_ARCHIVE_SHA256 = "9d530843df299e08c8642b296dd5116f229fd8fb41fb42b13a8d0f113f275d4d"
 SOURCE_CURRENT_COMMIT = "17248a0b8b729ee3e093e30bb7bea7f52181f363"
 SOURCE_CURRENT_DATE = "2024-08-31T20:13:54+02:00"
+SOURCE_CURRENT_DATE_UTC = "2024-08-31T18:13:54Z"
 SOURCE_CURRENT_TREE = "71047850ceab7579e8c083dfada486bbbae17007"
 SOURCE_CURRENT_ARCHIVE_SHA256 = "e2954e7b22b4d1280ac28de2af979907ad3e7d5f1a8e203add2926414cff9c5c"
+SOURCE_REQUIREMENTS_SHA256 = (
+    "036fbac0cb161617b732478980aa484ef72d27ddd393739fa0fd343a03edb838"
+)
+PANDAS_TA_MIRROR_URL = "https://github.com/MerlinR/Pandas-ta-fork"
+PANDAS_TA_MIRROR_COMMIT = "45db59038e6414216195dd1c24413d56ff829958"
+DEFAULT_PAPER_PYTHON = str(
+    Path(__file__).resolve().parent / "run_finagent_paper_python.sh"
+)
+PAPER_ENV_FREEZE_SHA256 = (
+    "a22e445cbb6f87bf6ee65f8b24c8ef66109b64be15d64e031963a0b2e2e3529b"
+)
 AUDIT_DATE = "2026-08-14"
 PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
 PUBLIC_FORK_REST_COUNT = 26
@@ -1385,10 +1397,277 @@ def compile_paper_source(paper_root: Path, latex_command: str) -> dict[str, Any]
         }
 
 
-def native_execution(source_root: Path, paper_root: Path, latex_command: str) -> dict[str, Any]:
-    cli = subprocess.run(
-        [sys.executable, str(source_root / "tools/main.py"), "--help"],
-        cwd=source_root, capture_output=True, text=True, timeout=60,
+def _marked_json(stdout: str) -> dict[str, Any]:
+    for line in reversed(stdout.splitlines()):
+        if line.startswith("@@@"):
+            return json.loads(line.removeprefix("@@@"))
+    raise RuntimeError(f"Subprocess did not emit a marked JSON summary:\n{stdout}")
+
+
+def dependency_environment_execution(
+    source_root: Path, paper_python: Path
+) -> tuple[dict[str, Any], str]:
+    if not paper_python.is_file():
+        raise FileNotFoundError(paper_python)
+    if sha256(source_root / "requirements.txt") != SOURCE_REQUIREMENTS_SHA256:
+        raise RuntimeError("FinAgent author requirements changed")
+    clean_env = dict(os.environ)
+    clean_env.pop("PYTHONPATH", None)
+    pip_check = subprocess.run(
+        [str(paper_python), "-m", "pip", "check"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    )
+    freeze = subprocess.run(
+        [str(paper_python), "-m", "pip", "freeze", "--all"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=clean_env,
+    ).stdout
+    freeze_sha256 = hashlib.sha256(freeze.encode()).hexdigest()
+    if freeze_sha256 != PAPER_ENV_FREEZE_SHA256:
+        raise RuntimeError(
+            f"FinAgent environment changed: {freeze_sha256} != "
+            f"{PAPER_ENV_FREEZE_SHA256}"
+        )
+
+    entrypoint_program = r"""
+import runpy, sys
+sys.path.insert(0, '.')
+sys.argv = ['tools/main.py', '--help']
+runpy.run_path('tools/main.py', run_name='__main__')
+"""
+    help_outputs = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [str(paper_python), "-c", entrypoint_program],
+            cwd=source_root,
+            env=clean_env,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        if "Main" not in completed.stdout or "--if_train" not in completed.stdout:
+            raise RuntimeError(f"FinAgent entrypoint help changed:\n{completed.stdout}")
+        help_outputs.append(completed.stdout)
+    if help_outputs[0] != help_outputs[1]:
+        raise RuntimeError("FinAgent entrypoint help is nondeterministic")
+
+    import_program = r"""
+import aiohttp, httpx, importlib, importlib.metadata, json, requests, sys
+from pathlib import Path
+sys.path.insert(0, '.')
+network_attempts = []
+def block_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during FinAgent paper audit')
+async def block_httpx_async(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx-async:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during FinAgent paper audit')
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f'requests:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during FinAgent paper audit')
+async def block_aiohttp(self, method, url, *args, **kwargs):
+    network_attempts.append(f'aiohttp:{method}:{url}')
+    raise RuntimeError('network disabled during FinAgent paper audit')
+httpx.Client.send = block_httpx
+httpx.AsyncClient.send = block_httpx_async
+requests.sessions.Session.send = block_requests
+aiohttp.ClientSession._request = block_aiohttp
+
+modules = []
+for file in sorted(Path('finagent').rglob('*.py')):
+    parts = list(file.with_suffix('').parts)
+    if parts[-1] == '__init__':
+        parts = parts[:-1]
+    name = '.'.join(parts)
+    if name and name not in modules:
+        modules.append(name)
+imported = []
+failures = []
+for name in modules:
+    try:
+        importlib.import_module(name)
+        imported.append(name)
+    except Exception as exc:
+        failures.append({
+            'module': name,
+            'exception_type': type(exc).__name__,
+            'message': str(exc),
+        })
+distribution = importlib.metadata.distribution('pandas-ta')
+direct_url = json.loads((Path(distribution._path) / 'direct_url.json').read_text())
+packages = {
+    name: importlib.metadata.version(name)
+    for name in (
+        'gym', 'langchain', 'mmengine', 'numpy', 'openai', 'pandas',
+        'pandas-ta', 'scikit-learn', 'scikit-learn-extra', 'yfinance'
+    )
+}
+print('@@@' + json.dumps({
+    'selected_core_modules': len(modules),
+    'imported_core_modules': len(imported),
+    'imported_module_names': imported,
+    'failures': failures,
+    'network_attempts': network_attempts,
+    'pandas_ta_direct_url': direct_url,
+    'resolved_packages': packages,
+}, sort_keys=True))
+"""
+    import_outputs = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [str(paper_python), "-c", import_program],
+            cwd=source_root,
+            env=clean_env,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+        import_outputs.append(_marked_json(completed.stdout))
+    if import_outputs[0] != import_outputs[1]:
+        raise RuntimeError("FinAgent core import inventory is nondeterministic")
+    imports = import_outputs[0]
+    if (
+        imports["selected_core_modules"] != 65
+        or imports["imported_core_modules"] != 65
+        or imports["failures"]
+        or imports["network_attempts"]
+        or imports["resolved_packages"]["pandas-ta"] != "0.3.14b0"
+        or imports["pandas_ta_direct_url"].get("vcs_info", {}).get("commit_id")
+        != PANDAS_TA_MIRROR_COMMIT
+    ):
+        raise RuntimeError(f"FinAgent dependency/import boundary changed: {imports}")
+
+    component_program = r"""
+import json, types
+import numpy as np
+import pandas as pd
+from finagent.environment.trading import EnvironmentTrading
+from finagent.metrics.metrics import ARR, VOL, DD, MDD, SR, CR, SOR
+
+dates = pd.date_range('2024-01-01', periods=8, freq='D')
+prices = pd.DataFrame({
+    'timestamp': dates,
+    'adj_close': [100.0, 101.0, 103.0, 102.0, 106.0, 104.0, 108.0, 110.0],
+})
+news = pd.DataFrame({'timestamp': dates, 'text': [f'n{i}' for i in range(8)]})
+dataset = types.SimpleNamespace(
+    prices={'AAPL': prices}, news={'AAPL': news}, guidances=None,
+    sentiments=None, economics=None,
+)
+environment = EnvironmentTrading(
+    dataset=dataset, selected_asset='AAPL', start_date='2024-01-03',
+    end_date='2024-01-07', look_back_days=1, look_forward_days=2,
+    initial_amount=1000.0, transaction_cost_pct=0.001,
+)
+state, info = environment.reset()
+rows = [{
+    'phase': 'reset', 'info': info, 'state_rows': len(state['price']),
+    'state_min': str(state['price'].index.min().date()),
+    'state_max': str(state['price'].index.max().date()),
+}]
+for action in (1, 0, -1):
+    state, reward, done, truncated, info = environment.step(action)
+    rows.append({
+        'action': action, 'reward': reward, 'done': done,
+        'truncated': truncated, 'info': info,
+        'state_max': str(state['price'].index.max().date()),
+    })
+returns = np.array([0.01, -0.02, 0.03, -0.01, 0.005], dtype=float)
+mdd = MDD(returns)
+downside = DD(returns)
+metrics = {
+    'ARR': ARR(returns), 'VOL': VOL(returns), 'DD': downside,
+    'MDD': mdd, 'SR': SR(returns), 'CR': CR(returns, mdd),
+    'SOR': SOR(returns, downside),
+}
+print('@@@' + json.dumps({'environment': rows, 'metrics': metrics}, sort_keys=True))
+"""
+    component_outputs = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [str(paper_python), "-c", component_program],
+            cwd=source_root,
+            env=clean_env,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        component_outputs.append(_marked_json(completed.stdout))
+    if component_outputs[0] != component_outputs[1]:
+        raise RuntimeError("FinAgent native component execution is nondeterministic")
+    component = component_outputs[0]
+    if (
+        component["environment"][0]["state_max"] != "2024-01-05"
+        or component["environment"][0]["info"]["date"] != "2024-01-03"
+        or component["environment"][1]["info"]["position"] != 9
+        or component["environment"][3]["info"]["position"] != 0
+        or not abs(component["metrics"]["MDD"] - 0.02) < 1e-12
+    ):
+        raise RuntimeError(f"FinAgent native component boundary changed: {component}")
+
+    return (
+        {
+            "dependency_environment_reproduced": True,
+            "exact_historical_dependency_versions_recovered": False,
+            "dependency_release_cutoff_utc": SOURCE_CURRENT_DATE_UTC,
+            "author_requirements_commit": SOURCE_CURRENT_COMMIT,
+            "author_requirements_sha256": SOURCE_REQUIREMENTS_SHA256,
+            "author_requirements_only_postpaper_change": True,
+            "python": str(paper_python),
+            "python_version": subprocess.run(
+                [str(paper_python), "--version"], check=True,
+                capture_output=True, text=True, env=clean_env,
+            ).stdout.strip(),
+            "pip_check": pip_check.stdout.strip(),
+            "dependency_freeze_sha256": freeze_sha256,
+            "dependency_freeze_lines": len(freeze.splitlines()),
+            "entrypoint_help_passed": True,
+            "entrypoint_help_runs": len(help_outputs),
+            "entrypoint_help_sha256": hashlib.sha256(
+                help_outputs[0].encode()
+            ).hexdigest(),
+            "selected_core_modules": imports["selected_core_modules"],
+            "imported_core_modules": imports["imported_core_modules"],
+            "imported_module_names": imports["imported_module_names"],
+            "module_import_failures": imports["failures"],
+            "module_import_inventory_deterministic_across_two_runs": True,
+            "network_attempts": imports["network_attempts"],
+            "resolved_packages": imports["resolved_packages"],
+            "pandas_ta_historical_version": "0.3.14b0",
+            "pandas_ta_unaffiliated_mirror_url": PANDAS_TA_MIRROR_URL,
+            "pandas_ta_unaffiliated_mirror_commit": PANDAS_TA_MIRROR_COMMIT,
+            "pandas_ta_original_pypi_distribution_available": False,
+            "postcutoff_mirror_build_tool_used_then_removed": "poetry-core==2.1.3",
+            "source_tests_shipped": 0,
+            "controlled_native_component_runs": 2,
+            "controlled_native_component_deterministic": True,
+            "controlled_native_component": component,
+            "future_state_exposure_observed": True,
+            "long_only_trading_path_executed": True,
+            "transaction_cost_path_executed": True,
+            "released_metric_functions_executed": 7,
+            "paper_result_reproduction": False,
+        },
+        freeze,
+    )
+
+
+def native_execution(
+    source_root: Path,
+    paper_root: Path,
+    latex_command: str,
+    paper_python: Path,
+) -> dict[str, Any]:
+    environment, freeze = dependency_environment_execution(
+        source_root, paper_python
     )
     requirements_at_paper_commit = git(
         source_root, "ls-tree", "-r", "--name-only", SOURCE_PAPER_COMMIT,
@@ -1398,10 +1677,16 @@ def native_execution(source_root: Path, paper_root: Path, latex_command: str) ->
         "released_python_static_compilation": {"files": 142, "syntax_errors": 0},
         "entrypoint_help_probe": {
             "attempted": True,
-            "exit_code": cli.returncode,
-            "stderr_tail": cli.stderr[-1500:],
-            "interpretation": "audit environment dependency probe only; the exact paper commit shipped no dependency specification",
+            "exit_code": 0,
+            "passed": environment["entrypoint_help_passed"],
+            "runs": environment["entrypoint_help_runs"],
+            "interpretation": (
+                "the original paper source entrypoint resolves under author-added "
+                "requirements guidance; this is component, not result, evidence"
+            ),
         },
+        "dependency_environment": environment,
+        "_dependency_freeze_text": freeze,
         "paper_commit_has_requirements_file": "requirements.txt" in requirements_at_paper_commit,
         "full_native_system_execution_attempted": False,
         "full_native_system_execution_reason": (
@@ -1418,8 +1703,9 @@ def render_readme(manifest: Mapping[str, Any]) -> str:
 This is a fail-closed audit of the original KDD 2024 paper, all three official
 arXiv versions and source archives, and the repository linked by the lead
 author's homepage.  The release is substantial—{manifest['released_python_files']} Python
-files, prompts, configs, agent modules, and rule-strategy records—but it is not
-an executable experimental package for the published claims.
+files, prompts, configs, agent modules, and rule-strategy records. Its core and
+CLI now execute in a reconstructed environment, but the missing research inputs
+and outputs still prevent an executable package for the published claims.
 
 ## Honest outcome
 
@@ -1433,8 +1719,12 @@ an executable experimental package for the published claims.
 - Public source timing: v1 and v2 predate the repository; v3 has the six-commit
   paper-era tree available. Only v3 is evaluated against public implementation.
 - Static released-source mechanisms matching the paper: {manifest['released_source_mechanisms_verified']} of {manifest['paper_mechanisms_audited']} audited claims.
+- Dependency-backed source boundary: the original CLI help passes twice, all
+  {manifest['paper_era_core_modules_imported']} core modules import twice with
+  real dependencies and zero HTTP attempts, and two controlled native trading/
+  metric runs agree exactly.
 - Published result units: **0 of {manifest['published_result_display_units_total']} reproduced** ({manifest['paper_numeric_display_cells_total']} table cells and {manifest['paper_figure_display_units_total']} figure units).
-- Overall tier: **R2 / substantial static implementation evidence, no paper-result reproduction**.
+- Overall tier: **R3 / runnable component environment, no paper-result reproduction**.
 
 No paper-result credit is assigned to values transcribed from LaTeX, plot-only
 graphics, rule-strategy parameter records, static compilation, or document
@@ -1460,6 +1750,25 @@ limited to unaffiliated post-paper function-calling, prompt/news, and FTSE MIB
 source/data-pipeline adaptations. No divergent commit matches an official-source
 author identity, and no native agent result or exact paper table/figure artifact
 was found; all fork evidence receives zero paper-result credit.
+
+## What now executes
+
+The authors added only `requirements.txt` after the paper-era source commit;
+every other tracked path is unchanged. Resolving those author-listed packages
+with a 2024-08-31 release cutoff produces a clean 148-line environment freeze.
+The historical `pandas-ta` 0.3.14b0 distribution has been removed from PyPI, so
+its runtime code is recovered from a hash-pinned unaffiliated mirror and receives
+no provenance or result credit; rewritten Poetry metadata required a temporary
+post-cutoff build tool that was removed from the final environment. Consequently
+the environment is compatible and reproducible, not historically exact.
+
+The original `tools/main.py --help` path succeeds, 65/65 `finagent` modules
+import, and no blocked network send is attempted. A deterministic controlled
+fixture executes BUY/HOLD/SELL through the native long-only environment with its
+10-bp transaction cost and runs ARR, VOL, downside deviation, MDD, Sharpe,
+Calmar, and Sortino functions. It also directly observes that a January 3 state
+contains prices through January 5 when `look_forward_days=2`. These are stronger
+native component and protocol-conflict checks, never paper-performance evidence.
 
 ## Material protocol conflicts
 
@@ -1488,6 +1797,7 @@ def audit(
     latex_command: str,
     fork_census_root: Path,
     fork_snapshot_path: Path,
+    paper_python: Path,
 ) -> dict[str, Any]:
     validate_primary_inputs(source_root, paper_root)
     paper_source_root = paper_root / "source_v3"
@@ -1515,7 +1825,10 @@ def audit(
     mechanisms = mechanism_rows()
     internal = internal_check_rows()
     artifacts = data_artifact_rows(source_root)
-    native = native_execution(source_root, paper_root, latex_command)
+    native = native_execution(
+        source_root, paper_root, latex_command, paper_python
+    )
+    dependency_freeze = native.pop("_dependency_freeze_text")
 
     csv_outputs = {
         "paper_numeric_table_conformance.csv": tables,
@@ -1541,6 +1854,9 @@ def audit(
         write_csv(output / filename, rows)
     (output / "native_execution.json").write_text(
         json.dumps(native, indent=2, sort_keys=True) + "\n", encoding="utf-8",
+    )
+    (output / "paper_era_environment_freeze.txt").write_text(
+        dependency_freeze, encoding="utf-8"
     )
     (output / "public_source_history.json").write_text(
         json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8",
@@ -1584,7 +1900,7 @@ def audit(
         "source_current_commit": SOURCE_CURRENT_COMMIT,
         "source_change_after_paper_commit": "requirements.txt_only",
         "overall_status": "substantial_author_linked_source_but_zero_of_1061_published_result_units_reproduced",
-        "replication_tier": "R2_substantial_static_implementation_no_paper_result_reproduction",
+        "replication_tier": "R3_runnable_component_environment_no_paper_result_reproduction",
         "full_paper_reproduced": False,
         "paper_document_reproduced": bool(native["paper_source_compilation"].get("matches_arxiv_page_count")),
         "paper_numeric_display_cells_total": len(tables),
@@ -1645,6 +1961,27 @@ def audit(
         "released_experiment_configs": len(configs),
         "released_missing_references": len(references),
         "metric_formula_conflicts": sum(not row["matches_paper_formula"] for row in metrics),
+        "paper_era_dependency_environment_reproduced": native[
+            "dependency_environment"
+        ]["dependency_environment_reproduced"],
+        "paper_era_exact_historical_dependency_versions_recovered": native[
+            "dependency_environment"
+        ]["exact_historical_dependency_versions_recovered"],
+        "paper_era_entrypoint_help_passed": native["dependency_environment"][
+            "entrypoint_help_passed"
+        ],
+        "paper_era_core_modules_imported": native["dependency_environment"][
+            "imported_core_modules"
+        ],
+        "paper_era_controlled_native_component_runs": native[
+            "dependency_environment"
+        ]["controlled_native_component_runs"],
+        "paper_era_future_state_exposure_observed": native[
+            "dependency_environment"
+        ]["future_state_exposure_observed"],
+        "paper_era_released_metric_functions_executed": native[
+            "dependency_environment"
+        ]["released_metric_functions_executed"],
         "exact_dataset_released": False,
         "agent_result_records_released": False,
         "paper_result_credit": False,
@@ -1657,6 +1994,7 @@ def audit(
         "public_fork_census.json",
         "public_source_history.json",
         "README.md",
+        "paper_era_environment_freeze.txt",
     ]
     manifest["output_sha256"] = {name: sha256(output / name) for name in sorted(output_names)}
     (output / "manifest.json").write_text(
@@ -1685,6 +2023,11 @@ def parse_args() -> argparse.Namespace:
         "--fork-snapshot", type=Path,
         default=project_root / "paper_runs/paper_replication_audits/finagent/public_fork_branch_ref_snapshot.csv",
     )
+    parser.add_argument(
+        "--paper-python",
+        type=Path,
+        default=Path(os.environ.get("FINAGENT_PAPER_PYTHON", DEFAULT_PAPER_PYTHON)),
+    )
     return parser.parse_args()
 
 
@@ -1698,6 +2041,7 @@ def main() -> None:
         args.latex_command,
         args.fork_census_root,
         args.fork_snapshot,
+        args.paper_python.resolve(),
     )
     print(json.dumps(manifest, indent=2, sort_keys=True))
 
