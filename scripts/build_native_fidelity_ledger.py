@@ -238,7 +238,16 @@ ARTIFACT_NOTES = {
         "structured hypothesis and prompts, AST largest-common-subtree matcher, 101 "
         "Alpha101 references, full LightGBM/Qlib configs, metric feedback, and 15 CSVs "
         "with 268 factor-expression rows. The AST/Alpha101 path executes deterministically. "
+        "A commit-date-bounded Python 3.10 host environment installs the exact RD-Agent "
+        "commit and passes its dependency check: 112/113 modules selected by the authors' "
+        "import test load twice with real dependencies and zero HTTP attempts. The sole "
+        "failure is a committed developer script that opens the author's absolute "
+        "template_debug.jinjia2 path, not a dependency failure. A separate dependency-clean "
+        "Qlib compatibility environment installs the exact Qlib commit pinned by the "
+        "paper-era Dockerfile. Its CPU PyTorch substitution and historically bounded "
+        "unpinned packages do not receive exact CUDA-container or exact-version credit. "
         "The same author commit also preserves seven extensionless Qlib/MLflow run records. "
+        "All seven fitted LightGBM states load twice and produce deterministic probe outputs. "
         "One full-period S&P500 record carries the paper configuration and fitted LightGBM "
         "state; its IC, ICIR, AR, IR, and MDD round exactly to all five AlphaAgent S&P500 "
         "Table 2 cells. This is native author-artifact corroboration, not regeneration, "
@@ -493,7 +502,15 @@ ARTIFACT_NOTES = {
         "paper-era source components, but no run configs, traces, frozen Kaggle/MLE-"
         "Bench data, model snapshots, seeds, submissions, or checkpoints prove which "
         "non-default alternatives generated the paper results; advertised trace links "
-        "are broken. Component compilation/execution receives no result credit.",
+        "are broken. A commit-date-bounded Python 3.10 environment installs the exact "
+        "paper-era source revision, includes the Dockerfile's PyTorch 2.4.0 "
+        "CPU-compatible build, passes its 243-package dependency freeze, and runs "
+        "both upstream offline tests twice. All 192 modules selected by the authors' "
+        "import test load twice with real dependencies and zero HTTP attempts when "
+        "LiteLLM's local cost map is enabled. This proves the host source environment, "
+        "not the paper run: the separate CUDA Dockerfile performs an unpinned live "
+        "MLE-Bench clone and remains unreproduced. Dependency/component execution "
+        "receives no result credit.",
     ),
     "SYS-ALPHA-QUANTER": (
         "N",
@@ -1256,10 +1273,13 @@ PAPER_ONLY_AUDIT_NOTES = {
         "120 unique after 20 duplicated all-enabled ablation cells. The exact "
         "author-linked FINSABER data confirms all five ticker-specific test-data "
         "claims. Its pre-submission framework commit and exact listed dependency "
-        "versions execute eight source-adjacent baselines: 96/128 eligible cells "
-        "match the paper, all from six deterministic strategies; ARIMA and XGBoost "
-        "match 0/32, and the advertised runner omits COIN under a three-year-history "
-        "guard despite the paper printing COIN rows. These are baseline/data "
+        "versions execute eight source-adjacent baselines. Six deterministic strategies "
+        "match directly; source-history inspection shows ARIMA and XGBoost used an older "
+        "two-year training window that the paper omitted and later source defaults changed "
+        "to three years. Replaying that source-adjacent two-year lineage recovers all 32 "
+        "ARIMA/XGBoost cells, so 128/128 eligible baseline cells match at display precision. "
+        "The advertised three-year runner still omits COIN under its history guard despite "
+        "the paper printing COIN rows. These are baseline/data "
         "components, not the TradingGroup system. No attributable implementation, "
         "Qwen3-Trader-8B-PEFT checkpoint, 1,080 trajectories, complete prompts or "
         "model calls, actions, fills, NAVs, returns, or raw arrays are released, so "
@@ -1535,7 +1555,12 @@ TARGETED_EXECUTION = {
         "six_component_checks_broken_default_launcher_missing_research_lineage_"
         "6_forks_6_refs_4_unique_heads_exhausted"
     ),
-    "SYS-ALPHA-AGENT": "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_zero_regenerated_20_of_32_mechanism_dimensions_71_fork_heads_zero_additional_credit",
+    "SYS-ALPHA-AGENT": (
+        "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_"
+        "zero_regenerated_paper_era_host_and_qlib_environments_112_of_113_modules_"
+        "7_of_7_fitted_models_executable_20_of_32_mechanism_dimensions_"
+        "71_fork_heads_zero_additional_credit"
+    ),
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_v1_zero_of_953_v2_zero_of_1344_one_linked_input_one_date_prompt_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
     "SYS-ALPHA-GPT": "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_empirical_results",
@@ -1618,10 +1643,17 @@ TARGETED_EXECUTION = {
     ),
     "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_regenerated_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced",
     "SYS-RAPTOR": "paper_audit:completed_21_of_42_displayed_scalar_units_checked_18_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
-    "SYS-RD-AGENT-QUANT": "paper_audit:completed_zero_of_534_native_results_components_only",
+    "SYS-RD-AGENT-QUANT": (
+        "paper_audit:completed_zero_of_534_native_results_"
+        "paper_era_environment_192_modules_2_offline_tests_components_only"
+    ),
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
     "SYS-TRADING-AGENTS": "paper_audit:completed_77_of_77_author_table_cells_corroborated_zero_native_regenerated",
-    "SYS-TRADING-GROUP": "paper_audit:completed_96_of_128_source_adjacent_baseline_cells_zero_of_120_unique_native_table_cells_zero_of_15_native_curves",
+    "SYS-TRADING-GROUP": (
+        "paper_audit:completed_128_of_128_source_adjacent_baseline_cells_"
+        "32_model_cells_recovered_from_omitted_two_year_window_"
+        "zero_of_120_unique_native_table_cells_zero_of_15_native_curves"
+    ),
     "SYS-TRADING-R1": (
         "paper_audit:completed_zero_of_348_published_numeric_units_official_placeholder_"
         "29_accessible_forks_29_refs_2_unique_heads_4_readme_only_commits_exhausted"

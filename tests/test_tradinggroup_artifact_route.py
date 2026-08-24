@@ -23,11 +23,13 @@ def test_paper_route_records_completed_audit_without_inventing_code() -> None:
         "paper_only_audit_recorded_no_native_code_pipeline"
     )
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_96_of_128_source_adjacent_baseline_cells_"
+        "paper_audit:completed_128_of_128_source_adjacent_baseline_cells_"
+        "32_model_cells_recovered_from_omitted_two_year_window_"
         "zero_of_120_unique_native_table_cells_zero_of_15_native_curves"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     blocker = row["precise_native_or_access_blocker"]
-    assert "96/128" in blocker and "0/120" in blocker and "0/15" in blocker
+    assert "128/128" in blocker and "two-year" in blocker
+    assert "0/120" in blocker and "0/15" in blocker
     assert "Qwen3-Trader" in blocker and "FINSABER" in blocker
     assert row["proxy_role"] == "no_proxy"
