@@ -591,10 +591,16 @@ def load_asmcvar_native_metrics(
             repeat_path = results_root / f"asmcvar_{source_name}_m{sparsity}_matlab_run2.mat"
             repeat_equal = None
             repeat_cw_sha256 = ""
+            repeat_weights_sha256 = ""
             if repeat_path.exists():
-                repeated = np.asarray(loadmat(repeat_path)["CW"], dtype="<f8").reshape(-1)
-                repeat_equal = bool(np.array_equal(wealth, repeated))
+                repeated_payload = loadmat(repeat_path)
+                repeated = np.asarray(repeated_payload["CW"], dtype="<f8").reshape(-1)
+                repeated_weights = np.asarray(repeated_payload["all_w"], dtype="<f8")
+                repeat_equal = bool(
+                    np.array_equal(wealth, repeated) and np.array_equal(weights, repeated_weights)
+                )
                 repeat_cw_sha256 = bytes_sha256(repeated.tobytes(order="C"))
+                repeat_weights_sha256 = bytes_sha256(repeated_weights.tobytes(order="C"))
             output[(dataset, sparsity)] = {
                 "CW": float(wealth[-1]),
                 "SR": float(returns.mean() / returns.std(ddof=0)),
@@ -608,11 +614,42 @@ def load_asmcvar_native_metrics(
                 "repeat_path_present": repeat_path.exists(),
                 "repeat_path_equal": repeat_equal,
                 "repeat_cw_sha256": repeat_cw_sha256,
+                "repeat_weights_sha256": repeat_weights_sha256,
                 "matlab_release": "2023b",
             }
     if not allow_missing and len(output) != 18:
         raise ValueError(f"expected 18 ASMCVaR native executions, found {len(output)}")
     return output
+
+
+def asmcvar_cross_runtime_correspondence(results_root: Path) -> list[dict[str, Any]]:
+    matlab_path = results_root / "asmcvar_FF25new_m10_matlab_run1.mat"
+    octave_path = results_root / "asmcvar_ff25_slurm.mat"
+    matlab_payload = loadmat(matlab_path)
+    octave_payload = loadmat(octave_path)
+    rows: list[dict[str, Any]] = []
+    for field in ("CW", "all_w"):
+        matlab_values = np.asarray(matlab_payload[field], dtype=float)
+        octave_values = np.asarray(octave_payload[field], dtype=float)
+        max_absolute_difference = float(np.max(np.abs(matlab_values - octave_values)))
+        tolerance = 1e-11 if field == "CW" else 1e-13
+        rows.append(
+            {
+                "dataset": "FF25",
+                "sparsity": 10,
+                "field": field,
+                "shape": "x".join(str(value) for value in matlab_values.shape),
+                "matlab_sha256": bytes_sha256(np.asarray(matlab_values, dtype="<f8").tobytes(order="C")),
+                "octave_sha256": bytes_sha256(np.asarray(octave_values, dtype="<f8").tobytes(order="C")),
+                "max_absolute_difference": f"{max_absolute_difference:.12g}",
+                "absolute_tolerance": f"{tolerance:.12g}",
+                "equivalent_within_tolerance": max_absolute_difference <= tolerance,
+                "native_efs_evidence": False,
+            }
+        )
+    if not all(row["equivalent_within_tolerance"] for row in rows):
+        raise ValueError("MATLAB/Octave ASMCVaR correspondence failed")
+    return rows
 
 
 def apply_asmcvar_credit(
@@ -761,8 +798,10 @@ def asmcvar_overlap_conformance(
     rows: list[dict[str, Any]] = []
     for dataset, paper_values in ASMCVAR_OVERLAP_VALUES.items():
         supports = {m: np.asarray(metrics[(dataset, m)]["weights"]) != 0 for m in (10, 15, 20)}
-        p10_15 = np.count_nonzero(supports[10] & supports[15], axis=0) / np.count_nonzero(supports[10], axis=0)
-        p15_20 = np.count_nonzero(supports[15] & supports[20], axis=0) / np.count_nonzero(supports[15], axis=0)
+        # PALM starts at MATLAB t=6; the first five columns are temporary 1/N
+        # warmup portfolios and are excluded from the paper's sparsity census.
+        p10_15 = (np.count_nonzero(supports[10] & supports[15], axis=0) / np.count_nonzero(supports[10], axis=0))[5:]
+        p15_20 = (np.count_nonzero(supports[15] & supports[20], axis=0) / np.count_nonzero(supports[15], axis=0))[5:]
         values = {
             "p10_15_mean": float(p10_15.mean()),
             "p10_15_std": float(p10_15.std(ddof=1)),
