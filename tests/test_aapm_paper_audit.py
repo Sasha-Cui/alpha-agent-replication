@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import importlib.util
 import json
 from collections import Counter
@@ -228,19 +229,57 @@ def test_complete_public_fork_surface_adds_no_unique_history_or_results() -> Non
 
 def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     execution = {row["component"]: row for row in csv_rows("native_execution.csv")}
+    assert execution["dependency environment"]["status"] == "pass"
     assert execution["source syntax compile"]["status"] == "pass"
-    assert execution["analysis.py entrypoint"]["status"] == "blocked_before_component"
-    assert "chromadb" in execution["analysis.py entrypoint"]["detail"]
-    assert execution["model.py entrypoint"]["status"] == "blocked_before_component"
-    assert "wandb" in execution["model.py entrypoint"]["detail"]
+    assert execution["analysis.py entrypoint"]["status"] == "blocked_missing_private_input"
+    assert "Data/library/index.csv" in execution["analysis.py entrypoint"]["detail"]
+    assert execution["model.py entrypoint"]["status"] == "pass"
+    assert execution["native Chroma memory"]["status"] == "pass"
+    assert execution["native model forward"]["status"] == (
+        "pass_with_disclosed_cpu_adaptation"
+    )
     assert execution["model training"]["status"] == "not_reachable_no_entrypoint_and_inputs"
     assert execution["portfolio and pricing evaluation"]["status"] == "not_released"
     assert execution["end-to-end paper experiment"]["attempted"] == "no"
 
     manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
+    raw = json.loads((OUTPUT / "native_execution.json").read_text(encoding="utf-8"))
+    freeze = (OUTPUT / "paper_era_environment_freeze.txt").read_text(
+        encoding="utf-8"
+    )
     assert manifest["author_output_result_cells_available"] == 0
     assert manifest["end_to_end_result_cells_reproduced"] == 0
     assert manifest["llm_calls_made"] == 0
+    assert manifest["paper_era_dependency_environment_reproduced"] is True
+    assert manifest["paper_era_exact_historical_dependency_versions_recovered"] is False
+    assert manifest["paper_era_source_modules_imported"] == 4
+    assert manifest["paper_era_analysis_reached_missing_private_input"] is True
+    assert manifest["paper_era_model_module_entrypoint_passed"] is True
+    assert manifest["paper_era_memory_component_runs"] == 2
+    assert manifest["paper_era_model_forward_component_runs"] == 2
+    environment = raw["dependency environment"]
+    assert environment["dependency_release_cutoff_utc"] == audit.PAPER_ERA_COMMIT_UTC
+    assert environment["requirements_sha256"] == audit.REQUIREMENTS_SHA256
+    assert environment["requirements_yaml_name_repaired_to_pyyaml"] is True
+    assert environment["flagembedding_missing_peft_repaired"] is True
+    assert environment["pip_check"] == "No broken requirements found."
+    assert environment["dependency_freeze_sha256"] == audit.PAPER_ENV_FREEZE_SHA256
+    assert environment["dependency_freeze_lines"] == 135
+    assert environment["source_tests_shipped"] == 0
+    assert environment["source_modules_imported"] == ["utils", "prompt", "memdb", "model"]
+    assert environment["source_module_import_failures"] == []
+    assert environment["network_attempts"] == []
+    assert environment["analysis_missing_private_input"] == "Data/library/index.csv"
+    assert environment["memory_component_deterministic"] is True
+    assert environment["memory_component"]["query_ids"] == [["alpha", "beta"]]
+    assert environment["memory_component"]["filtered_ids"] == [["beta", "", ""]]
+    assert environment["model_forward_component_deterministic"] is True
+    assert environment["model_forward_component"]["parameters"] == 49
+    assert environment["model_forward_component"]["finite"] is True
+    assert environment["model_forward_cpu_cuda_noop_adaptation"] is True
+    assert environment["paper_result_reproduction"] is False
+    assert len(freeze.splitlines()) == 135
+    assert hashlib.sha256(freeze.encode()).hexdigest() == audit.PAPER_ENV_FREEZE_SHA256
     assert manifest["paper_result_credit"] == "no_result_credit_component_source_audit_only"
     assert manifest["overall_fidelity"] == "official_papers_sources_code_and_metadata_audited_zero_of_162_v2_result_cells_reproduced"
     readme = " ".join((OUTPUT / "README.md").read_text(encoding="utf-8").split())

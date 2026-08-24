@@ -1,26 +1,164 @@
 {
   "analysis.py entrypoint": {
     "command": [
-      "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+      "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh",
       "analysis.py",
       "0"
     ],
     "returncode": 1,
-    "stderr": "Traceback (most recent call last):\n  File \"/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/analysis.py\", line 6, in <module>\n    from memdb import MemDB\n  File \"/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/memdb.py\", line 1, in <module>\n    import chromadb\nModuleNotFoundError: No module named 'chromadb'\n",
+    "stderr": "/nfs/roberts/project/pi_btk22/zc362/environments/current/aapm-paper-era/lib/python3.10/site-packages/transformers/utils/hub.py:127: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.\n  warnings.warn(\nTraceback (most recent call last):\n  File \"/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/analysis.py\", line 12, in <module>\n    index=pd.read_csv(os.path.join(lib_dir, \"index.csv\"))\n  File \"/nfs/roberts/project/pi_btk22/zc362/environments/current/aapm-paper-era/lib/python3.10/site-packages/pandas/io/parsers/readers.py\", line 1026, in read_csv\n    return _read(filepath_or_buffer, kwds)\n  File \"/nfs/roberts/project/pi_btk22/zc362/environments/current/aapm-paper-era/lib/python3.10/site-packages/pandas/io/parsers/readers.py\", line 620, in _read\n    parser = TextFileReader(filepath_or_buffer, **kwds)\n  File \"/nfs/roberts/project/pi_btk22/zc362/environments/current/aapm-paper-era/lib/python3.10/site-packages/pandas/io/parsers/readers.py\", line 1620, in __init__\n    self._engine = self._make_engine(f, self.engine)\n  File \"/nfs/roberts/project/pi_btk22/zc362/environments/current/aapm-paper-era/lib/python3.10/site-packages/pandas/io/parsers/readers.py\", line 1880, in _make_engine\n    self.handles = get_handle(\n  File \"/nfs/roberts/project/pi_btk22/zc362/environments/current/aapm-paper-era/lib/python3.10/site-packages/pandas/io/common.py\", line 873, in get_handle\n    handle = open(\nFileNotFoundError: [Errno 2] No such file or directory: './Data/library/index.csv'\n",
     "stdout": ""
+  },
+  "dependency environment": {
+    "analysis_entrypoint_reached_missing_private_input": true,
+    "analysis_missing_private_input": "Data/library/index.csv",
+    "chroma_telemetry_disabled": true,
+    "cpu_torch_substitution": true,
+    "dependency_environment_reproduced": true,
+    "dependency_freeze_lines": 135,
+    "dependency_freeze_sha256": "b6010c0bca5dd6bb77adb1872e79c488f08679331ea04f34acacf75949028d7a",
+    "dependency_release_cutoff_utc": "2024-09-25T18:06:58Z",
+    "exact_historical_dependency_versions_recovered": false,
+    "flagembedding_missing_peft_repaired": true,
+    "memory_component": {
+      "count": 2,
+      "filtered_ids": [
+        [
+          "beta",
+          "",
+          ""
+        ]
+      ],
+      "masks": [
+        [
+          true,
+          false,
+          false
+        ]
+      ],
+      "network_attempts": [],
+      "query_documents": [
+        [
+          "alpha document",
+          "beta document"
+        ]
+      ],
+      "query_ids": [
+        [
+          "alpha",
+          "beta"
+        ]
+      ]
+    },
+    "memory_component_deterministic": true,
+    "memory_component_runs": 2,
+    "model_forward_audit_seed": 42,
+    "model_forward_component": {
+      "cuda_available": false,
+      "dev_rows": 4,
+      "finite": true,
+      "output": [
+        0.5412126183509827,
+        -0.11938613653182983
+      ],
+      "parameters": 49,
+      "test_rows": 4,
+      "train_rows": 4
+    },
+    "model_forward_component_deterministic": true,
+    "model_forward_component_runs": 2,
+    "model_forward_cpu_cuda_noop_adaptation": true,
+    "model_hub_offline": true,
+    "model_module_entrypoint_passed": true,
+    "network_attempts": [],
+    "paper_result_reproduction": false,
+    "pip_check": "No broken requirements found.",
+    "python": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh",
+    "python_version": "Python 3.10.8",
+    "requirements_sha256": "f0e7f9acc96283e678b3f5bc1f78b84a65f360ff327d31adf67f982510f0a77d",
+    "requirements_yaml_name_repaired_to_pyyaml": true,
+    "resolved_packages": {
+      "FlagEmbedding": "1.2.11",
+      "PyYAML": "6.0.2",
+      "chromadb": "0.5.7",
+      "numpy": "2.1.1",
+      "openai": "1.48.0",
+      "pandas": "2.2.3",
+      "peft": "0.13.0",
+      "torch": "2.4.1+cpu",
+      "transformers": "4.44.2",
+      "wandb": "0.18.1"
+    },
+    "source_module_import_failures": [],
+    "source_modules_imported": [
+      "utils",
+      "prompt",
+      "memdb",
+      "model"
+    ],
+    "source_modules_selected": [
+      "utils",
+      "prompt",
+      "memdb",
+      "model"
+    ],
+    "source_tests_shipped": 0,
+    "wandb_disabled": true
   },
   "model.py entrypoint": {
     "command": [
-      "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+      "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh",
       "model.py"
     ],
-    "returncode": 1,
-    "stderr": "Traceback (most recent call last):\n  File \"/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/model.py\", line 8, in <module>\n    import wandb\nModuleNotFoundError: No module named 'wandb'\n",
+    "returncode": 0,
+    "stderr": "",
     "stdout": ""
+  },
+  "native Chroma memory": {
+    "count": 2,
+    "filtered_ids": [
+      [
+        "beta",
+        "",
+        ""
+      ]
+    ],
+    "masks": [
+      [
+        true,
+        false,
+        false
+      ]
+    ],
+    "network_attempts": [],
+    "query_documents": [
+      [
+        "alpha document",
+        "beta document"
+      ]
+    ],
+    "query_ids": [
+      [
+        "alpha",
+        "beta"
+      ]
+    ]
+  },
+  "native model forward": {
+    "cuda_available": false,
+    "dev_rows": 4,
+    "finite": true,
+    "output": [
+      0.5412126183509827,
+      -0.11938613653182983
+    ],
+    "parameters": 49,
+    "test_rows": 4,
+    "train_rows": 4
   },
   "source syntax compile": {
     "command": [
-      "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python",
+      "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh",
       "-m",
       "compileall",
       "-q",

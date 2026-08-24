@@ -10,9 +10,12 @@ complete nine-commit official GitHub history, every released file, all
 - **End-to-end AAPM result cells reproduced: 0/162.** No native
   checkpoint, prediction array, portfolio-return series, baseline output, or
   table-valued result is released.
-- The official repository is useful component code, not an executable paper
-  replication. Five Python files compile, but `analysis.py` is blocked before
-  analysis and `model.py` has no training entrypoint. The article bodies,
+- The official repository is runnable component code, not an executable paper
+  replication. A 135-package environment passes dependency checks; all four
+  importable source modules load twice without HTTP, native Chroma memory and
+  model-forward fixtures pass twice, and `model.py` exits cleanly offline.
+  `analysis.py` now reaches the unreleased `Data/library/index.csv`, while the
+  source still has no training entrypoint. The article bodies,
   returns, manual factors, generated embeddings, baselines, evaluation code,
   sweep histories, and native outputs are absent.
 - The central hybrid claim is not implemented in the released model:
@@ -52,6 +55,24 @@ complete nine-commit official GitHub history, every released file, all
   never applied.
 - The paper fixes LLM temperature at 0.2, but the released API calls do not pass
   a temperature. Requirements are unpinned and list `yaml` rather than PyYAML.
+- FlagEmbedding 1.2.11 omits its required `peft` dependency. The reconstructed
+  environment adds the date-bounded package and substitutes PyYAML for the
+  invalid `yaml` requirement. PyTorch 2.4.1 CPU satisfies the README's >=2.0
+  instruction but not its contradictory statement that 1.10.1 was tested.
+
+## Native component boundary
+
+- The paper-era source-date cutoff, complete freeze, and clean dependency check
+  are tracked. Exact historical versions remain unknown because every author
+  requirement is unpinned.
+- A supplied-embedding fixture executes the released Chroma add, query, filter,
+  and pad paths without loading a model or calling an API.
+- A controlled six-date/two-asset fixture executes the released report-plus-asset
+  embedding forward method with 49 parameters and finite outputs. The audit uses
+  a disclosed CUDA no-op and seed 42 on CPU; this is component conformance, not
+  training or paper-result credit.
+- W&B, Chroma telemetry, model hubs, and outbound HTTP are disabled. No LLM,
+  embedding-model, paid-data, or credentialed call is made.
 
 ## Evidence boundary
 

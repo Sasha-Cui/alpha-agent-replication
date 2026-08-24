@@ -1,15 +1,10 @@
 component,attempted,command,returncode,status,detail,end_to_end_result_credit
-source syntax compile,yes,/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python -m compileall -q .,0,pass,,no
-analysis.py entrypoint,yes,/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python analysis.py 0,1,blocked_before_component,"Traceback (most recent call last):
-  File ""/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/analysis.py"", line 6, in <module>
-    from memdb import MemDB
-  File ""/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/memdb.py"", line 1, in <module>
-    import chromadb
-ModuleNotFoundError: No module named 'chromadb'",no
-model.py entrypoint,yes,/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python model.py,1,blocked_before_component,"Traceback (most recent call last):
-  File ""/nfs/roberts/scratch/pi_btk22/zc362/aapm_audit/source/model.py"", line 8, in <module>
-    import wandb
-ModuleNotFoundError: No module named 'wandb'",no
+dependency environment,yes,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh -m pip check,0,pass,135-line date-bounded freeze; four source modules import twice with zero HTTP attempts,no
+source syntax compile,yes,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh -m compileall -q .,0,pass,five released Python files compile,no
+analysis.py entrypoint,yes,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh analysis.py 0,1,blocked_missing_private_input,dependency resolution succeeds; Data/library/index.csv is not released,no
+model.py entrypoint,yes,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh model.py,0,pass,module definitions load with W&B disabled; no training entrypoint exists,no
+native Chroma memory,yes,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh -c <controlled memory fixture>,0,pass,supplied-embedding add/query/filter/pad path passes twice without API or model calls,no
+native model forward,yes,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/scripts/run_aapm_paper_python.sh -c <controlled CPU model fixture>,0,pass_with_disclosed_cpu_adaptation,released report+asset embedding forward path emits finite values twice; CUDA no-op and audit seed are not paper execution,no
 model training,no,,,not_reachable_no_entrypoint_and_inputs,"No Model instantiation/trainloop call; daily embeddings, returns, factors, and valid W&B credentials are absent.",no
 portfolio and pricing evaluation,no,,,not_released,"No TP/EW/VW, alpha/t/GRS, baseline, or figure-generation code exists in the official repository.",no
 end-to-end paper experiment,no,,,blocked_missing_code_data_outputs_and_provenance,"Executing paid LLM calls cannot reconstruct missing articles, CRSP/factors, v2 model lineage, baselines, portfolios, or result arrays.",no

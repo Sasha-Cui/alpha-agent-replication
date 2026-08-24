@@ -37,6 +37,7 @@ V2_PAGES = 19
 
 CURRENT_HEAD = "cc54e4337fcd4089dc69e4a1173e82a675648475"
 PAPER_ERA_COMMIT = "f7096b19c9387377b7f3c9ca9795345321968a7c"
+PAPER_ERA_COMMIT_UTC = "2024-09-25T18:06:58Z"
 PAPER_ERA_TREE_SHA256 = "4617508f0c4fc984a97ca258d575963adeb589aef4db7b9bee86d48d9315856c"
 PAPER_ERA_ARCHIVE_SHA256 = "3e5b0a22abe15a3d55ff933c03f8e4859190dca23a75eb2980983765836022f3"
 CURRENT_TREE_SHA256 = "fe28d88828b080f86f7493c182d5d7f29d4e4cd92a2d9f4e526cc08dfb7794e3"
@@ -71,6 +72,11 @@ PUBLIC_FORK_COUNT = 14
 PUBLIC_FORK_BRANCH_REF_COUNT = 14
 PUBLIC_FORK_UNIQUE_HEAD_COUNT = 4
 PUBLIC_FORK_TAG_REF_COUNT = 0
+REQUIREMENTS_SHA256 = "f0e7f9acc96283e678b3f5bc1f78b84a65f360ff327d31adf67f982510f0a77d"
+DEFAULT_PAPER_PYTHON = ROOT / "scripts/run_aapm_paper_python.sh"
+PAPER_ENV_FREEZE_SHA256 = (
+    "b6010c0bca5dd6bb77adb1872e79c488f08679331ea04f34acacf75949028d7a"
+)
 
 TABLE_METRICS = {
     "table:sr": ["SR_TP", "SR_EW", "SR_VW", "MDD_TP", "MDD_EW", "MDD_VW"],
@@ -721,33 +727,403 @@ def github_evidence(directory: Path) -> tuple[list[dict[str, str]], dict[str, An
     return rows, facts
 
 
+def _marked_json(stdout: str) -> dict[str, Any]:
+    for line in reversed(stdout.splitlines()):
+        if line.startswith("@@@"):
+            return json.loads(line.removeprefix("@@@"))
+    raise RuntimeError(f"Subprocess did not emit marked JSON:\n{stdout}")
+
+
 def run_native(repo: Path, python: Path) -> tuple[list[dict[str, str]], dict[str, Any]]:
-    def run(name: str, args: list[str]) -> tuple[dict[str, str], dict[str, Any]]:
-        result = subprocess.run(args, cwd=repo, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=60)
-        combined = (result.stdout + result.stderr).strip()
-        return ({
-            "component": name, "attempted": "yes", "command": " ".join(args),
-            "returncode": str(result.returncode), "status": "pass" if result.returncode == 0 else "blocked_before_component",
-            "detail": combined[-1500:], "end_to_end_result_credit": "no",
-        }, {"command": args, "returncode": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
-    rows: list[dict[str, str]] = []
-    raw: dict[str, Any] = {}
-    compile_row, compile_raw = run("source syntax compile", [str(python), "-m", "compileall", "-q", "."])
-    rows.append(compile_row)
-    raw["source syntax compile"] = compile_raw
-    analysis_row, analysis_raw = run("analysis.py entrypoint", [str(python), "analysis.py", "0"])
-    rows.append(analysis_row)
-    raw["analysis.py entrypoint"] = analysis_raw
-    model_row, model_raw = run("model.py entrypoint", [str(python), "model.py"])
-    rows.append(model_row)
-    raw["model.py entrypoint"] = model_raw
-    if compile_row["status"] != "pass":
+    if not python.is_file():
+        raise FileNotFoundError(python)
+    if sha256(repo / "requirements.txt") != REQUIREMENTS_SHA256:
+        raise RuntimeError("AAPM requirements changed")
+    clean_env = dict(os.environ)
+    clean_env.pop("PYTHONPATH", None)
+    clean_env.update(
+        {
+            "WANDB_MODE": "disabled",
+            "WANDB_SILENT": "true",
+            "ANONYMIZED_TELEMETRY": "false",
+            "HF_HUB_OFFLINE": "1",
+            "TRANSFORMERS_OFFLINE": "1",
+            "TOKENIZERS_PARALLELISM": "false",
+        }
+    )
+    pip_check = subprocess.run(
+        [str(python), "-m", "pip", "check"], check=True,
+        cwd=repo, env=clean_env, text=True, capture_output=True,
+    )
+    freeze = subprocess.run(
+        [str(python), "-m", "pip", "freeze", "--all"], check=True,
+        cwd=repo, env=clean_env, text=True, capture_output=True,
+    ).stdout
+    freeze_sha256 = bytes_sha256(freeze.encode())
+    if freeze_sha256 != PAPER_ENV_FREEZE_SHA256:
+        raise RuntimeError(
+            f"AAPM environment changed: {freeze_sha256} != {PAPER_ENV_FREEZE_SHA256}"
+        )
+
+    def run(args: list[str], timeout: int = 120) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            args, cwd=repo, env=clean_env, text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout,
+        )
+
+    compile_raw = run([str(python), "-m", "compileall", "-q", "."])
+    if compile_raw.returncode != 0:
         raise ValueError("released Python sources no longer compile")
-    rows += [
-        {"component": "model training", "attempted": "no", "command": "", "returncode": "", "status": "not_reachable_no_entrypoint_and_inputs", "detail": "No Model instantiation/trainloop call; daily embeddings, returns, factors, and valid W&B credentials are absent.", "end_to_end_result_credit": "no"},
-        {"component": "portfolio and pricing evaluation", "attempted": "no", "command": "", "returncode": "", "status": "not_released", "detail": "No TP/EW/VW, alpha/t/GRS, baseline, or figure-generation code exists in the official repository.", "end_to_end_result_credit": "no"},
-        {"component": "end-to-end paper experiment", "attempted": "no", "command": "", "returncode": "", "status": "blocked_missing_code_data_outputs_and_provenance", "detail": "Executing paid LLM calls cannot reconstruct missing articles, CRSP/factors, v2 model lineage, baselines, portfolios, or result arrays.", "end_to_end_result_credit": "no"},
+    analysis_raw = run([str(python), "analysis.py", "0"], timeout=180)
+    analysis_combined = analysis_raw.stdout + analysis_raw.stderr
+    if (
+        analysis_raw.returncode != 1
+        or "Data/library/index.csv" not in analysis_combined
+        or "ModuleNotFoundError" in analysis_combined
+    ):
+        raise RuntimeError(f"AAPM analysis boundary changed:\n{analysis_combined}")
+    model_raw = run([str(python), "model.py"], timeout=180)
+    if model_raw.returncode != 0:
+        raise RuntimeError(f"AAPM model module no longer loads:\n{model_raw.stderr}")
+
+    import_program = r"""
+import aiohttp, httpx, importlib, importlib.metadata, json, requests
+network_attempts = []
+def block_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during AAPM audit')
+async def block_httpx_async(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx-async:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during AAPM audit')
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f'requests:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during AAPM audit')
+async def block_aiohttp(self, method, url, *args, **kwargs):
+    network_attempts.append(f'aiohttp:{method}:{url}')
+    raise RuntimeError('network disabled during AAPM audit')
+httpx.Client.send = block_httpx
+httpx.AsyncClient.send = block_httpx_async
+requests.sessions.Session.send = block_requests
+aiohttp.ClientSession._request = block_aiohttp
+modules = ['utils', 'prompt', 'memdb', 'model']
+imported = []
+failures = []
+for name in modules:
+    try:
+        importlib.import_module(name)
+        imported.append(name)
+    except Exception as exc:
+        failures.append({
+            'module': name,
+            'exception_type': type(exc).__name__,
+            'message': str(exc),
+        })
+packages = {
+    name: importlib.metadata.version(name)
+    for name in (
+        'chromadb', 'FlagEmbedding', 'numpy', 'openai', 'pandas', 'peft',
+        'PyYAML', 'torch', 'transformers', 'wandb'
+    )
+}
+print('@@@' + json.dumps({
+    'selected_modules': modules,
+    'imported_modules': imported,
+    'failures': failures,
+    'network_attempts': network_attempts,
+    'resolved_packages': packages,
+}, sort_keys=True))
+"""
+    import_outputs = []
+    for _ in range(2):
+        completed = run([str(python), "-c", import_program], timeout=240)
+        if completed.returncode != 0:
+            raise RuntimeError(f"AAPM module inventory failed:\n{completed.stderr}")
+        import_outputs.append(_marked_json(completed.stdout))
+    if import_outputs[0] != import_outputs[1]:
+        raise RuntimeError("AAPM module imports are nondeterministic")
+    imports = import_outputs[0]
+    if (
+        imports["imported_modules"] != ["utils", "prompt", "memdb", "model"]
+        or imports["failures"]
+        or imports["network_attempts"]
+        or imports["resolved_packages"]["torch"] != "2.4.1+cpu"
+    ):
+        raise RuntimeError(f"AAPM module boundary changed: {imports}")
+
+    memory_program = r"""
+import aiohttp, httpx, json, requests, tempfile
+from memdb import MemDB
+network_attempts = []
+def block_httpx(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during AAPM memory audit')
+async def block_httpx_async(self, request, *args, **kwargs):
+    network_attempts.append(f'httpx-async:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during AAPM memory audit')
+def block_requests(self, request, *args, **kwargs):
+    network_attempts.append(f'requests:{request.method}:{request.url}')
+    raise RuntimeError('network disabled during AAPM memory audit')
+async def block_aiohttp(self, method, url, *args, **kwargs):
+    network_attempts.append(f'aiohttp:{method}:{url}')
+    raise RuntimeError('network disabled during AAPM memory audit')
+httpx.Client.send = block_httpx
+httpx.AsyncClient.send = block_httpx_async
+requests.sessions.Session.send = block_requests
+aiohttp.ClientSession._request = block_aiohttp
+with tempfile.TemporaryDirectory() as tmp:
+    config = {
+        'name': 'fixture', 'dirs': {'ckpt': tmp},
+        'model': {'emb_type': 'openai', 'embed': 'text-embedding-3-small'},
+        'apikeys': {'openai': 'test'},
+    }
+    database = MemDB('fixture', config)
+    database.add(
+        ['alpha document', 'beta document'],
+        [
+            {'Type': 'News', 'Datetime': '2024-01-01'},
+            {'Type': 'Excert', 'Source': 'fixture'},
+        ],
+        emb=[[1.0, 0.0], [0.0, 1.0]], path=['alpha', 'beta'],
+    )
+    exact = database.query(emb=[[1.0, 0.0]], k=2, ret_emb=True)
+    padded, masks = database.query(
+        emb=[[1.0, 0.0]], k=3, filter=[['alpha']], ret_emb=False, pad=True
+    )
+    result = {
+        'count': database.collection.count(),
+        'query_ids': exact['ids'],
+        'query_documents': exact['documents'],
+        'filtered_ids': padded['ids'],
+        'masks': masks,
+        'network_attempts': network_attempts,
+    }
+print('@@@' + json.dumps(result, sort_keys=True))
+"""
+    memory_outputs = []
+    for _ in range(2):
+        completed = run([str(python), "-c", memory_program], timeout=240)
+        if completed.returncode != 0:
+            raise RuntimeError(f"AAPM memory component failed:\n{completed.stderr}")
+        memory_outputs.append(_marked_json(completed.stdout))
+    if memory_outputs[0] != memory_outputs[1]:
+        raise RuntimeError("AAPM memory component is nondeterministic")
+    memory = memory_outputs[0]
+    if (
+        memory["count"] != 2
+        or memory["query_ids"] != [["alpha", "beta"]]
+        or memory["filtered_ids"] != [["beta", "", ""]]
+        or memory["masks"] != [[True, False, False]]
+        or memory["network_attempts"]
+    ):
+        raise RuntimeError(f"AAPM memory boundary changed: {memory}")
+
+    model_program = r"""
+import json, os, sys, tempfile
+from pathlib import Path
+import pandas as pd
+import torch
+source = Path.cwd()
+with tempfile.TemporaryDirectory() as temp:
+    root = Path(temp)
+    data = root / 'Data'
+    (data / 'library').mkdir(parents=True)
+    (root / 'Ckpt').mkdir()
+    (root / 'config.yaml').write_text('''name: fixture
+dirs:
+  root: ./
+  data: ./Data
+  ckpt: ./Ckpt
+apikeys:
+  wandb: YOUR_KEY
+model:
+  dsize: 2
+  d_emb: 4
+  d_model: 2
+  dropout: 0.0
+  lr: 0.001
+  batchsize: 2
+  epochs: 1
+  earlystop: 1
+''')
+    dates = [
+        '2022-06-29', '2022-06-30', '2022-07-01',
+        '2022-09-30', '2022-10-01', '2022-10-02',
     ]
+    pd.DataFrame({
+        'date': dates,
+        'embedding': ['[1.0, 0.0, 0.0, 0.0]'] * len(dates),
+    }).to_csv(data / 'daily_emb_dapm.csv', index=False)
+    pd.DataFrame([
+        {'date': date, 'PERMNO': permno, 'RET': 0.01 * (index + 1)}
+        for index, date in enumerate(dates) for permno in (10001, 10002)
+    ]).to_csv(data / 'daily_ret_dapm.csv', index=False)
+    pd.DataFrame({'path': []}).to_csv(data / 'library/index.csv', index=False)
+    os.chdir(root)
+    sys.path.insert(0, str(source))
+    import model
+    original_cuda = torch.nn.Module.cuda
+    torch.nn.Module.cuda = lambda self, *args, **kwargs: self
+    try:
+        torch.manual_seed(42)
+        instance = model.Model(model.config, 'fixture')
+        instance.train()
+        output = instance(
+            torch.tensor([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0]]),
+            torch.tensor([0, 1]),
+        )
+        result = {
+            'parameters': sum(parameter.numel() for parameter in instance.parameters()),
+            'train_rows': len(instance.train_df),
+            'dev_rows': len(instance.dev_df),
+            'test_rows': len(instance.test_df),
+            'output': output.detach().tolist(),
+            'finite': bool(torch.isfinite(output).all()),
+            'cuda_available': torch.cuda.is_available(),
+        }
+    finally:
+        torch.nn.Module.cuda = original_cuda
+print('@@@' + json.dumps(result, sort_keys=True))
+"""
+    model_outputs = []
+    for _ in range(2):
+        completed = run([str(python), "-c", model_program], timeout=240)
+        if completed.returncode != 0:
+            raise RuntimeError(f"AAPM model component failed:\n{completed.stderr}")
+        model_outputs.append(_marked_json(completed.stdout))
+    if model_outputs[0] != model_outputs[1]:
+        raise RuntimeError("AAPM model forward component is nondeterministic")
+    model = model_outputs[0]
+    if (
+        model["parameters"] != 49
+        or model["train_rows"] != 4
+        or model["dev_rows"] != 4
+        or model["test_rows"] != 4
+        or not model["finite"]
+        or model["cuda_available"]
+    ):
+        raise RuntimeError(f"AAPM model component boundary changed: {model}")
+
+    environment = {
+        "dependency_environment_reproduced": True,
+        "exact_historical_dependency_versions_recovered": False,
+        "dependency_release_cutoff_utc": PAPER_ERA_COMMIT_UTC,
+        "requirements_sha256": REQUIREMENTS_SHA256,
+        "requirements_yaml_name_repaired_to_pyyaml": True,
+        "flagembedding_missing_peft_repaired": True,
+        "python": str(python),
+        "python_version": subprocess.run(
+            [str(python), "--version"], check=True, env=clean_env,
+            text=True, capture_output=True,
+        ).stdout.strip(),
+        "pip_check": pip_check.stdout.strip(),
+        "dependency_freeze_sha256": freeze_sha256,
+        "dependency_freeze_lines": len(freeze.splitlines()),
+        "resolved_packages": imports["resolved_packages"],
+        "source_tests_shipped": 0,
+        "source_modules_selected": imports["selected_modules"],
+        "source_modules_imported": imports["imported_modules"],
+        "source_module_import_failures": imports["failures"],
+        "network_attempts": imports["network_attempts"],
+        "wandb_disabled": True,
+        "model_hub_offline": True,
+        "chroma_telemetry_disabled": True,
+        "cpu_torch_substitution": True,
+        "analysis_entrypoint_reached_missing_private_input": True,
+        "analysis_missing_private_input": "Data/library/index.csv",
+        "model_module_entrypoint_passed": True,
+        "memory_component_runs": len(memory_outputs),
+        "memory_component_deterministic": True,
+        "memory_component": memory,
+        "model_forward_component_runs": len(model_outputs),
+        "model_forward_component_deterministic": True,
+        "model_forward_component": model,
+        "model_forward_cpu_cuda_noop_adaptation": True,
+        "model_forward_audit_seed": 42,
+        "paper_result_reproduction": False,
+    }
+    rows = [
+        {
+            "component": "dependency environment", "attempted": "yes",
+            "command": f"{python} -m pip check", "returncode": "0", "status": "pass",
+            "detail": "135-line date-bounded freeze; four source modules import twice with zero HTTP attempts",
+            "end_to_end_result_credit": "no",
+        },
+        {
+            "component": "source syntax compile", "attempted": "yes",
+            "command": f"{python} -m compileall -q .", "returncode": "0", "status": "pass",
+            "detail": "five released Python files compile", "end_to_end_result_credit": "no",
+        },
+        {
+            "component": "analysis.py entrypoint", "attempted": "yes",
+            "command": f"{python} analysis.py 0", "returncode": "1",
+            "status": "blocked_missing_private_input",
+            "detail": "dependency resolution succeeds; Data/library/index.csv is not released",
+            "end_to_end_result_credit": "no",
+        },
+        {
+            "component": "model.py entrypoint", "attempted": "yes",
+            "command": f"{python} model.py", "returncode": "0", "status": "pass",
+            "detail": "module definitions load with W&B disabled; no training entrypoint exists",
+            "end_to_end_result_credit": "no",
+        },
+        {
+            "component": "native Chroma memory", "attempted": "yes",
+            "command": f"{python} -c <controlled memory fixture>", "returncode": "0",
+            "status": "pass",
+            "detail": "supplied-embedding add/query/filter/pad path passes twice without API or model calls",
+            "end_to_end_result_credit": "no",
+        },
+        {
+            "component": "native model forward", "attempted": "yes",
+            "command": f"{python} -c <controlled CPU model fixture>", "returncode": "0",
+            "status": "pass_with_disclosed_cpu_adaptation",
+            "detail": "released report+asset embedding forward path emits finite values twice; CUDA no-op and audit seed are not paper execution",
+            "end_to_end_result_credit": "no",
+        },
+        {
+            "component": "model training", "attempted": "no", "command": "",
+            "returncode": "", "status": "not_reachable_no_entrypoint_and_inputs",
+            "detail": "No Model instantiation/trainloop call; daily embeddings, returns, factors, and valid W&B credentials are absent.",
+            "end_to_end_result_credit": "no",
+        },
+        {
+            "component": "portfolio and pricing evaluation", "attempted": "no",
+            "command": "", "returncode": "", "status": "not_released",
+            "detail": "No TP/EW/VW, alpha/t/GRS, baseline, or figure-generation code exists in the official repository.",
+            "end_to_end_result_credit": "no",
+        },
+        {
+            "component": "end-to-end paper experiment", "attempted": "no",
+            "command": "", "returncode": "",
+            "status": "blocked_missing_code_data_outputs_and_provenance",
+            "detail": "Executing paid LLM calls cannot reconstruct missing articles, CRSP/factors, v2 model lineage, baselines, portfolios, or result arrays.",
+            "end_to_end_result_credit": "no",
+        },
+    ]
+    raw = {
+        "dependency environment": environment,
+        "source syntax compile": {
+            "command": [str(python), "-m", "compileall", "-q", "."],
+            "returncode": compile_raw.returncode,
+            "stdout": compile_raw.stdout,
+            "stderr": compile_raw.stderr,
+        },
+        "analysis.py entrypoint": {
+            "command": [str(python), "analysis.py", "0"],
+            "returncode": analysis_raw.returncode,
+            "stdout": analysis_raw.stdout,
+            "stderr": analysis_raw.stderr,
+        },
+        "model.py entrypoint": {
+            "command": [str(python), "model.py"],
+            "returncode": model_raw.returncode,
+            "stdout": model_raw.stdout,
+            "stderr": model_raw.stderr,
+        },
+        "native Chroma memory": memory,
+        "native model forward": model,
+        "_dependency_freeze_text": freeze,
+    }
     return rows, raw
 
 
@@ -764,9 +1140,12 @@ complete nine-commit official GitHub history, every released file, all
 - **End-to-end AAPM result cells reproduced: 0/{manifest['v2_table_result_cells']}.** No native
   checkpoint, prediction array, portfolio-return series, baseline output, or
   table-valued result is released.
-- The official repository is useful component code, not an executable paper
-  replication. Five Python files compile, but `analysis.py` is blocked before
-  analysis and `model.py` has no training entrypoint. The article bodies,
+- The official repository is runnable component code, not an executable paper
+  replication. A 135-package environment passes dependency checks; all four
+  importable source modules load twice without HTTP, native Chroma memory and
+  model-forward fixtures pass twice, and `model.py` exits cleanly offline.
+  `analysis.py` now reaches the unreleased `Data/library/index.csv`, while the
+  source still has no training entrypoint. The article bodies,
   returns, manual factors, generated embeddings, baselines, evaluation code,
   sweep histories, and native outputs are absent.
 - The central hybrid claim is not implemented in the released model:
@@ -806,6 +1185,24 @@ complete nine-commit official GitHub history, every released file, all
   never applied.
 - The paper fixes LLM temperature at 0.2, but the released API calls do not pass
   a temperature. Requirements are unpinned and list `yaml` rather than PyYAML.
+- FlagEmbedding 1.2.11 omits its required `peft` dependency. The reconstructed
+  environment adds the date-bounded package and substitutes PyYAML for the
+  invalid `yaml` requirement. PyTorch 2.4.1 CPU satisfies the README's >=2.0
+  instruction but not its contradictory statement that 1.10.1 was tested.
+
+## Native component boundary
+
+- The paper-era source-date cutoff, complete freeze, and clean dependency check
+  are tracked. Exact historical versions remain unknown because every author
+  requirement is unpinned.
+- A supplied-embedding fixture executes the released Chroma add, query, filter,
+  and pad paths without loading a model or calling an API.
+- A controlled six-date/two-asset fixture executes the released report-plus-asset
+  embedding forward method with 49 parameters and finite outputs. The audit uses
+  a disclosed CUDA no-op and seed 42 on CPU; this is component conformance, not
+  training or paper-result credit.
+- W&B, Chroma telemetry, model hubs, and outbound HTTP are disabled. No LLM,
+  embedding-model, paid-data, or credentialed call is made.
 
 ## Evidence boundary
 
@@ -838,6 +1235,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     consistency = consistency_audit()
     searches, github_facts = github_evidence(args.github_evidence_dir)
     execution, execution_raw = run_native(args.repo, args.python)
+    dependency_freeze = execution_raw.pop("_dependency_freeze_text")
 
     write_csv(output / "source_file_inventory.csv", inventory, list(inventory[0]))
     write_csv(output / "released_source_history_inventory.csv", history, list(history[0]))
@@ -863,6 +1261,9 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     write_csv(output / "source_search_inventory.csv", searches, list(searches[0]))
     write_csv(output / "native_execution.csv", execution, list(execution[0]))
     write_json(output / "native_execution.json", execution_raw)
+    (output / "paper_era_environment_freeze.txt").write_text(
+        dependency_freeze, encoding="utf-8"
+    )
     provenance = {
         "arxiv_record": ARXIV_RECORD, "v1_pdf_url": V1_PDF_URL, "v2_pdf_url": V2_PDF_URL,
         "v1_pdf_sha256": V1_PDF_SHA256, "v2_pdf_sha256": V2_PDF_SHA256,
@@ -916,6 +1317,27 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "v2_foundation_model_cells": 48, "quantitative_figure_units": len(units),
         "author_output_result_cells_available": 0, "end_to_end_result_cells_reproduced": 0,
         "llm_calls_made": 0, "paid_or_credentialed_data_calls_made": 0,
+        "paper_era_dependency_environment_reproduced": execution_raw[
+            "dependency environment"
+        ]["dependency_environment_reproduced"],
+        "paper_era_exact_historical_dependency_versions_recovered": execution_raw[
+            "dependency environment"
+        ]["exact_historical_dependency_versions_recovered"],
+        "paper_era_source_modules_imported": len(
+            execution_raw["dependency environment"]["source_modules_imported"]
+        ),
+        "paper_era_analysis_reached_missing_private_input": execution_raw[
+            "dependency environment"
+        ]["analysis_entrypoint_reached_missing_private_input"],
+        "paper_era_model_module_entrypoint_passed": execution_raw[
+            "dependency environment"
+        ]["model_module_entrypoint_passed"],
+        "paper_era_memory_component_runs": execution_raw[
+            "dependency environment"
+        ]["memory_component_runs"],
+        "paper_era_model_forward_component_runs": execution_raw[
+            "dependency environment"
+        ]["model_forward_component_runs"],
         "overall_fidelity": "official_papers_sources_code_and_metadata_audited_zero_of_162_v2_result_cells_reproduced",
         "paper_result_credit": "no_result_credit_component_source_audit_only",
     }
@@ -934,7 +1356,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--v2-source", type=Path, required=True)
     result.add_argument("--repo", type=Path, required=True)
     result.add_argument("--github-evidence-dir", type=Path, required=True)
-    result.add_argument("--python", type=Path, required=True)
+    result.add_argument("--python", type=Path, default=DEFAULT_PAPER_PYTHON)
     result.add_argument("--output", type=Path, default=ROOT / "paper_runs/paper_replication_audits/aapm")
     return result
 
