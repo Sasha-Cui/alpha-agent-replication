@@ -620,8 +620,15 @@ ARTIFACT_NOTES = {
         "The author-linked MIT release is substantial: the paper-era tree has 341 "
         "files, all 142 Python files compile, 42 experiment configs retain the core "
         "dates/horizons/assets, and the LaTeX source reproduces the 43-page paper. "
-        "These are static implementation and document evidence, not experiment "
-        "outputs. All seven reachable commits were checked; none contains a FinAgent "
+        "The authors' sole post-paper source change adds requirements.txt. Resolving "
+        "that guidance with an August 2024 cutoff produces a clean 148-package "
+        "environment: the original CLI help succeeds twice, 65/65 core modules import "
+        "twice with zero HTTP attempts, and native long-only trading, 10-bp fee, "
+        "future-state, and seven metric-function paths execute deterministically. The "
+        "removed historical pandas-ta runtime is recovered from a pinned unaffiliated "
+        "mirror, so the environment is compatible rather than historically exact. "
+        "These are runnable component and document evidence, not experiment outputs. "
+        "All seven reachable commits were checked; none contains a FinAgent "
         "agent-output path. The 90 opaque rule-strategy records yield zero exact "
         "display-precision matches across 288 comparable high-precision Appendix "
         "Table 7 cells, and no released code path writes those best-result records. "
@@ -1596,7 +1603,11 @@ TARGETED_EXECUTION = {
         "paper_audit:completed_zero_of_306_native_results_official_code_not_released_"
         "6_forks_6_refs_3_official_history_heads_exhausted"
     ),
-    "SYS-FIN-AGENT": "paper_audit:completed_zero_of_1061_results_seven_commit_history_zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted",
+    "SYS-FIN-AGENT": (
+        "paper_audit:completed_zero_of_1061_results_runnable_148_package_environment_"
+        "65_core_modules_native_trading_and_metrics_seven_commit_history_"
+        "zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted"
+    ),
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": (
         "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_"
         "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_4_official_history_"

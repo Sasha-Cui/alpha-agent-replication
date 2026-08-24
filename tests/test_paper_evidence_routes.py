@@ -225,10 +225,12 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells_"
             "181_accessible_forks_187_refs_20_unique_heads_exhausted"
         ),
-        "CensusArxiv240218485": (
-            "paper_audit:completed_zero_of_1061_results_seven_commit_history_"
-            "zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted"
-        ),
+            "CensusArxiv240218485": (
+                "paper_audit:completed_zero_of_1061_results_runnable_148_package_"
+                "environment_65_core_modules_native_trading_and_metrics_seven_commit_"
+                "history_zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_"
+                "heads_exhausted"
+            ),
         "CensusArxiv240917266": (
             "paper_audit:completed_zero_of_162_v2_table_results_full_nine_commit_history_"
             "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_4_official_history_"
