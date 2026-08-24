@@ -1394,10 +1394,12 @@ PAPER_ONLY_AUDIT_NOTES = {
     ),
     "SYS-EFS": (
         "A pinned two-version EFS audit inventories 773 original-v1 and 877 "
-        "current-v2 numeric table-result cells. Executing the cited 1/N formula "
-        "on the exact 623-row matrices in the official ASMCVaR release reproduces "
-        "5/773 v1 cells and 8/877 v2 cells at each paper's display precision; all "
-        "are cited-baseline evidence and zero are native EFS results. No author-linked "
+        "current-v2 numeric table-result cells. The cited 1/N formula reproduces "
+        "5 v1 and 8 v2 cells on the exact 623-row matrices. Thirty exact-source "
+        "mSSRM Octave runs produce 15 bit-identical repeated wealth paths but match "
+        "only 1/45 v1 and 3/24 v2 mSSRM cells. Combined credit is 6/773 v1 and "
+        "11/877 v2 cells; all are cited-baseline evidence and zero are native EFS "
+        "results. No author-linked "
         "EFS source, exact configuration, model snapshot, data snapshot, factor pool, "
         "search trace, actions, weights, returns, seeds, or result records are released. "
         "All 240 v2 benchmark cells common to v1 are rounded carryovers, including "
@@ -1604,7 +1606,7 @@ TARGETED_EXECUTION = {
         "official_head_exhausted"
     ),
     "SYS-CRYPTO-TRADE": "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_12_ablation_correspondences_zero_credit_37_forks_exhausted",
-    "SYS-EFS": "paper_audit:completed_5_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
+    "SYS-EFS": "paper_audit:completed_6_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": (
         "paper_audit:completed_zero_of_306_native_results_official_code_not_released_"
