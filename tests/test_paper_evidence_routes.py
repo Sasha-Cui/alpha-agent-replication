@@ -285,8 +285,8 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "lineage_4_forks_5_refs_2_unique_heads_exhausted"
         ),
         "WorkAutomateStrategy": (
-            "paper_audit:completed_3_of_10_table2_component_cells_zero_of_40_integrated_"
-            "portfolio_cells_24_forks_exhausted"
+            "paper_audit:completed_3_of_10_table2_12_of_25_table3_source_cells_"
+            "zero_of_40_integrated_portfolio_cells_24_forks_exhausted"
         ),
     }
     for work_id, status in expected.items():
