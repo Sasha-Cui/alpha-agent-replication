@@ -25,7 +25,7 @@ import subprocess
 import tarfile
 import tempfile
 from collections import Counter
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -55,6 +55,22 @@ DEFAULT_SOURCE_PYTHON = str(
 RECONSTRUCTED_ENV_FREEZE_SHA256 = (
     "d35fd4aa1827f0fe4c151f5b0c3e383620c599215a188f23f2d367c78819b826"
 )
+DEFAULT_YAHOO_DIAGNOSTIC_ROOT = Path(
+    "/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_audit/price_diagnostics"
+)
+YAHOO_DIAGNOSTIC_OBSERVED_ON = "2026-08-25"
+YAHOO_DIAGNOSTIC_SHA256 = {
+    "AAPL": "636df21618f5ad5108644432648ad4aa30615723bf6ef4d5762be04343af2fe8",
+    "GOOGL": "be84e9e6d5662ffcd5603cc1f9181bee66a29ccde7dca0e9dc683c6fc6eae367",
+    "AMZN": "5636e487c47d318c2e15daa6ff3b129ec4533eac4432d1dbeaef27c21bcefeb6",
+}
+YAHOO_DIAGNOSTIC_URLS = {
+    ticker: (
+        f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+        "?period1=1704067200&period2=1711929600&interval=1d&events=history&includeAdjustedClose=true"
+    )
+    for ticker in ("AAPL", "GOOGL", "AMZN")
+}
 
 PAPER_VERSIONS = {
     1: {
@@ -406,6 +422,93 @@ def paper_table_rows(author_output_verified: bool = False) -> list[dict[str, Any
     }:
         raise RuntimeError("TradingAgents Table 1 numeric-cell denominator changed")
     return rows
+
+
+def current_yahoo_buy_hold_diagnostic(root: Path) -> list[dict[str, Any]]:
+    """Check the literal B&H window against a pinned current Yahoo response.
+
+    The paper lists Yahoo among several data sources but never identifies the
+    provider used for prices, so these rows are adverse current-public
+    correspondence rather than paper-time input or result credit.
+    """
+    inclusive_days = (date(2024, 3, 29) - date(2024, 1, 1)).days + 1
+    years = inclusive_days / 365.25
+    formulas = {
+        "CR_pct": "100 * (last_adjusted_close / first_adjusted_close - 1)",
+        "AR_pct": "paper literal: 100 * ((last / first) ** (1 / (89 / 365.25)) - 1)",
+        "SR": "zero-risk-free diagnostic: mean(simple daily return) / sample SD * sqrt(252)",
+        "MDD_pct": "100 * maximum peak-to-trough drawdown of adjusted close",
+    }
+    output: list[dict[str, Any]] = []
+    for asset in ASSETS:
+        path = root / f"{asset}_2024q1_yahoo.json"
+        if sha256(path) != YAHOO_DIAGNOSTIC_SHA256[asset]:
+            raise RuntimeError(f"Pinned current Yahoo response changed: {asset}")
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if payload.get("chart", {}).get("error") is not None:
+            raise RuntimeError(f"Pinned current Yahoo response is an error: {asset}")
+        results = payload["chart"]["result"]
+        if len(results) != 1 or results[0]["meta"]["symbol"] != asset:
+            raise RuntimeError(f"Pinned current Yahoo response identity changed: {asset}")
+        result = results[0]
+        timestamps = result["timestamp"]
+        prices = result["indicators"]["adjclose"][0]["adjclose"]
+        if len(timestamps) != 61 or len(prices) != 61 or any(value is None for value in prices):
+            raise RuntimeError(f"Pinned current Yahoo response row count changed: {asset}")
+        dates = [
+            datetime.fromtimestamp(value, timezone.utc).date().isoformat()
+            for value in timestamps
+        ]
+        if dates[0] != "2024-01-02" or dates[-1] != "2024-03-28":
+            raise RuntimeError(f"Pinned current Yahoo response date range changed: {asset}")
+        values = [float(value) for value in prices]
+        returns = [values[index] / values[index - 1] - 1 for index in range(1, len(values))]
+        mean = sum(returns) / len(returns)
+        sample_variance = sum((value - mean) ** 2 for value in returns) / (len(returns) - 1)
+        sample_sd = sample_variance**0.5
+        cumulative_return = values[-1] / values[0] - 1
+        annualized_return = (1 + cumulative_return) ** (1 / years) - 1
+        peak = values[0]
+        maximum_drawdown = 0.0
+        for value in values:
+            peak = max(peak, value)
+            maximum_drawdown = max(maximum_drawdown, (peak - value) / peak)
+        diagnostics = {
+            "CR_pct": 100 * cumulative_return,
+            "AR_pct": 100 * annualized_return,
+            "SR": mean / sample_sd * (252**0.5),
+            "MDD_pct": 100 * maximum_drawdown,
+        }
+        paper_values = dict(zip(METRICS, PERFORMANCE["B&H"][asset]))
+        for metric in METRICS:
+            observed = diagnostics[metric]
+            paper_value = float(paper_values[metric])
+            difference = observed - paper_value
+            output.append(
+                {
+                    "asset": asset,
+                    "metric": metric,
+                    "paper_value": paper_value,
+                    "current_yahoo_diagnostic_value": observed,
+                    "current_minus_paper": difference,
+                    "display_precision_match": abs(difference) <= 0.005,
+                    "formula": formulas[metric],
+                    "formula_fully_specified_by_paper": metric != "SR",
+                    "response_rows": len(values),
+                    "response_start": dates[0],
+                    "response_end": dates[-1],
+                    "response_sha256": YAHOO_DIAGNOSTIC_SHA256[asset],
+                    "response_url": YAHOO_DIAGNOSTIC_URLS[asset],
+                    "observed_on": YAHOO_DIAGNOSTIC_OBSERVED_ON,
+                    "paper_price_provider_mapping_recovered": False,
+                    "paper_time_input_lineage": False,
+                    "native_paper_result_credit": False,
+                    "status": "current_public_yahoo_diagnostic_mismatch_no_paper_time_lineage",
+                }
+            )
+    if len(output) != 12 or any(row["display_precision_match"] for row in output):
+        raise RuntimeError("Current Yahoo B&H diagnostic boundary changed")
+    return output
 
 
 def expected_table_values() -> list[float]:
@@ -1929,6 +2032,7 @@ def build_audit(
     paper_source_root: Path,
     paper_versions_root: Path,
     source_python: Path,
+    yahoo_diagnostic_root: Path,
     output_dir: Path,
 ) -> dict[str, Any]:
     verify_pins(source_root, paper_pdf, paper_source_archive, paper_source_root)
@@ -1937,6 +2041,7 @@ def build_audit(
     history_commits, history_paths, history_summary = public_source_history(source_root)
     author_outputs = author_output_correspondence(source_root)
     table = paper_table_rows(author_output_verified=True)
+    yahoo_diagnostic = current_yahoo_buy_hold_diagnostic(yahoo_diagnostic_root)
     annualization = annualization_identity()
     improvement = improvement_identity()
     claims = published_non_table_claims()
@@ -1952,6 +2057,7 @@ def build_audit(
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "table_1_conformance.csv", table)
+    write_csv(output_dir / "current_yahoo_buy_hold_diagnostic.csv", yahoo_diagnostic)
     write_csv(output_dir / "author_output_correspondence.csv", author_outputs)
     write_csv(output_dir / "annualized_return_identity_audit.csv", annualization)
     write_csv(output_dir / "improvement_identity_audit.csv", improvement)
@@ -2015,6 +2121,13 @@ def build_audit(
         "native_paper_table_result_cells_reproduced": 0,
         "author_output_table_cells_corroborated": 77,
         "author_output_table_cells_independently_regenerated": 0,
+        "current_public_yahoo_buy_hold_cells_checked": len(yahoo_diagnostic),
+        "current_public_yahoo_buy_hold_cells_matching": sum(
+            row["display_precision_match"] for row in yahoo_diagnostic
+        ),
+        "current_public_yahoo_observed_on": YAHOO_DIAGNOSTIC_OBSERVED_ON,
+        "current_public_yahoo_has_paper_time_input_lineage": False,
+        "current_public_yahoo_paper_price_provider_mapping_recovered": False,
         "published_non_table_quantitative_claims_total": len(claims),
         "published_non_table_result_claims_total": 12,
         "native_non_table_result_claims_reproduced": 0,
@@ -2108,7 +2221,11 @@ def build_audit(
             "real 22-node, 30-edge graph with 16 tools without an external request; the unpinned "
             "requirements cannot recover exact 2025 package versions. Its pre-release official project site also "
             "contains all 77 Table 1 values in the same order as the paper. This corroborates the "
-            "published author output but is not an independent regeneration. It does not ship the paper data, experiment "
+            "published author output but is not an independent regeneration. A hash-pinned current "
+            "Yahoo adjusted-close diagnostic checks all 12 Buy-and-Hold cells under the paper's literal "
+            "window and finds zero display-precision matches. Because the paper lists several providers "
+            "without mapping prices and no paper-time response survives, this is adverse current-public "
+            "correspondence with zero paper-result credit. It does not ship the paper data, experiment "
             "configuration, portfolio/execution engine, baseline or metric code, backtest runner, "
             "actions, fills, NAVs, returns, plots, seeds, or costs. Its analysts are sequential, its "
             "model assignment conflicts with the paper, only 6/11 appendix tool names remain, and "
@@ -2189,6 +2306,13 @@ meaningful architecture subset, but not the experiment that produced the paper.
   numeric arrays. Twelve additional quantitative result claims in prose/figures
   also have zero reproductions. Thus all **131 presentation-level empirical
   audit units** have zero independent native reproductions.
+- A hash-pinned current Yahoo adjusted-close response provides 61 sessions from
+  2024-01-02 through 2024-03-28 for each table asset. Under the paper's literal
+  January 1--March 29 window, all **12/12 Buy-and-Hold cells mismatch** at display
+  precision. Current cumulative returns are -7.51% AAPL, +9.24% GOOGL, and
+  +20.31% AMZN, versus -5.23%, +7.78%, and +17.10% in the paper. The paper does
+  not identify which listed provider supplied prices, and this 2026 observation
+  has no paper-time lineage, so it is adverse diagnostic evidence only.
 - No frozen multimodal dataset, 60-indicator definition, experiment config,
   backtest runner, baseline implementation, metric code, portfolio state,
   position sizing, execution engine, commission/slippage rules, action history,
@@ -2303,6 +2427,15 @@ def parse_args() -> argparse.Namespace:
         default=Path(os.environ.get("TRADINGAGENTS_SOURCE_PYTHON", DEFAULT_SOURCE_PYTHON)),
     )
     parser.add_argument(
+        "--yahoo-diagnostic-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "TRADINGAGENTS_YAHOO_DIAGNOSTIC_ROOT", DEFAULT_YAHOO_DIAGNOSTIC_ROOT
+            )
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=project_root / "paper_runs/paper_replication_audits/tradingagents",
@@ -2320,6 +2453,7 @@ def main() -> int:
         args.paper_source_root,
         args.paper_versions_root,
         args.source_python,
+        args.yahoo_diagnostic_root,
         args.output_dir,
     )
     print(json.dumps(manifest, indent=2))

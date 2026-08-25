@@ -57,6 +57,13 @@ meaningful architecture subset, but not the experiment that produced the paper.
   numeric arrays. Twelve additional quantitative result claims in prose/figures
   also have zero reproductions. Thus all **131 presentation-level empirical
   audit units** have zero independent native reproductions.
+- A hash-pinned current Yahoo adjusted-close response provides 61 sessions from
+  2024-01-02 through 2024-03-28 for each table asset. Under the paper's literal
+  January 1--March 29 window, all **12/12 Buy-and-Hold cells mismatch** at display
+  precision. Current cumulative returns are -7.51% AAPL, +9.24% GOOGL, and
+  +20.31% AMZN, versus -5.23%, +7.78%, and +17.10% in the paper. The paper does
+  not identify which listed provider supplied prices, and this 2026 observation
+  has no paper-time lineage, so it is adverse diagnostic evidence only.
 - No frozen multimodal dataset, 60-indicator definition, experiment config,
   backtest runner, baseline implementation, metric code, portfolio state,
   position sizing, execution engine, commission/slippage rules, action history,

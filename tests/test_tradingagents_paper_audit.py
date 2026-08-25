@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import importlib.util
 import json
+import math
 import sys
 from collections import Counter
 from pathlib import Path
@@ -92,6 +93,7 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     paper_assets = read_csv(output / "paper_source_asset_inventory.csv")
     paper_versions = read_csv(output / "official_paper_version_inventory.csv")
     figure_series = read_csv(output / "paper_figure_series_inventory.csv")
+    yahoo = read_csv(output / "current_yahoo_buy_hold_diagnostic.csv")
     history_commits = read_csv(output / "public_source_history_commit_inventory.csv")
     history_paths = read_csv(output / "public_source_history_path_inventory.csv")
     history = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
@@ -124,6 +126,13 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["paper_presented_empirical_units_total"] == 131
     assert manifest["native_presented_empirical_units_reproduced"] == 0
     assert manifest["annualized_return_pairs_checked"] == 17
+    assert manifest["current_public_yahoo_buy_hold_cells_checked"] == 12
+    assert manifest["current_public_yahoo_buy_hold_cells_matching"] == 0
+    assert manifest["current_public_yahoo_observed_on"] == "2026-08-25"
+    assert manifest["current_public_yahoo_has_paper_time_input_lineage"] is False
+    assert (
+        manifest["current_public_yahoo_paper_price_provider_mapping_recovered"] is False
+    )
     assert manifest["annualized_return_pairs_matching_published_equation"] == 0
     assert manifest["paper_internal_inconsistencies_total"] == 7
     assert manifest["paper_specification_gaps_total"] == 27
@@ -178,6 +187,26 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert len(annualization) == 17
     assert {row["display_precision_match"] for row in annualization} == {"False"}
     assert len(improvements) == 9
+    assert len(yahoo) == 12
+    assert Counter(row["asset"] for row in yahoo) == {"AAPL": 4, "GOOGL": 4, "AMZN": 4}
+    assert {row["display_precision_match"] for row in yahoo} == {"False"}
+    assert {row["paper_time_input_lineage"] for row in yahoo} == {"False"}
+    assert {row["native_paper_result_credit"] for row in yahoo} == {"False"}
+    assert Counter(row["formula_fully_specified_by_paper"] for row in yahoo) == {
+        "True": 9,
+        "False": 3,
+    }
+    cumulative = {
+        row["asset"]: float(row["current_yahoo_diagnostic_value"])
+        for row in yahoo
+        if row["metric"] == "CR_pct"
+    }
+    assert math.isclose(cumulative["AAPL"], -7.509797567549237)
+    assert math.isclose(cumulative["GOOGL"], 9.235007082040148)
+    assert math.isclose(cumulative["AMZN"], 20.30948689024379)
+    assert {row["response_rows"] for row in yahoo} == {"61"}
+    assert {row["response_start"] for row in yahoo} == {"2024-01-02"}
+    assert {row["response_end"] for row in yahoo} == {"2024-03-28"}
     assert len(claims) == 14
     assert Counter(row["claim_role"] for row in claims) == {
         "result": 12,
@@ -275,6 +304,13 @@ def test_pinned_primary_sources_when_available() -> None:
         "exact_released_tool_name": 6,
         "absent_from_nearest_release": 5,
     }
+    diagnostic_root = audit.DEFAULT_YAHOO_DIAGNOSTIC_ROOT
+    if diagnostic_root.is_dir():
+        diagnostic = audit.current_yahoo_buy_hold_diagnostic(diagnostic_root)
+        assert len(diagnostic) == 12
+        assert {row["display_precision_match"] for row in diagnostic} == {False}
+        assert {row["paper_time_input_lineage"] for row in diagnostic} == {False}
+        assert {row["native_paper_result_credit"] for row in diagnostic} == {False}
     source_python = Path(audit.DEFAULT_SOURCE_PYTHON)
     if source_python.is_file():
         component = audit.run_native_component_checks(source_root, source_python)
