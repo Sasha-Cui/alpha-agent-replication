@@ -283,6 +283,33 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
         assert audit.sha256(output / filename) == expected
 
 
+def test_global_evidence_route_preserves_current_yahoo_boundary() -> None:
+    ledger = read_csv(
+        ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv"
+    )
+    row = next(item for item in ledger if item["system_id"] == "SYS-TRADING-AGENTS")
+    assert row["targeted_execution_audit_status"] == (
+        "paper_audit:completed_77_of_77_author_table_cells_corroborated_12_current_"
+        "yahoo_baseline_cells_checked_zero_matches_zero_native_regenerated"
+    )
+    note = row["concise_evidence_note"]
+    assert "current Yahoo adjusted-close diagnostic" in note
+    assert "all 12 Buy-and-Hold cells" in note
+    assert "matches 0/12 at display precision" in note
+    assert "no paper-time lineage" in note
+
+    route = read_csv(
+        ROOT
+        / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
+    )
+    route_row = next(
+        item for item in route if item["canonical_work_id"] == "CensusArxiv241220138"
+    )
+    assert "matches 0/12 at display precision" in route_row["precise_native_or_access_blocker"]
+    failures = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
+    assert "matches 0/12 at display precision" in failures
+
+
 def test_pinned_primary_sources_when_available() -> None:
     source_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_source")
     paper_source = Path("/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_paper_v7/source")

@@ -855,7 +855,11 @@ ARTIFACT_NOTES = {
         "about 52 hours after the paper; its parent contains only three site files. "
         "The paper-era official project-site HTML contains all 77 Table 1 values in "
         "the same order as the paper. This is exact author-output correspondence, "
-        "not an independent regeneration or a raw result array. "
+        "not an independent regeneration or a raw result array. A hash-pinned current "
+        "Yahoo adjusted-close diagnostic checks all 12 Buy-and-Hold cells under the "
+        "paper's literal window and matches 0/12 at display precision. The paper does "
+        "not map prices to one of its several listed providers, and the 2026 response "
+        "has no paper-time lineage, so this is adverse diagnostic evidence only. "
         "All 39 Python files compile and dependency-isolated native graph routing "
         "executes deterministically, while 14/45 paper mechanism dimensions match "
         "or have meaningful analogues. These are architecture components, not the "
@@ -1709,7 +1713,7 @@ TARGETED_EXECUTION = {
         "paper_era_environment_192_modules_2_offline_tests_components_only"
     ),
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
-    "SYS-TRADING-AGENTS": "paper_audit:completed_77_of_77_author_table_cells_corroborated_zero_native_regenerated",
+    "SYS-TRADING-AGENTS": "paper_audit:completed_77_of_77_author_table_cells_corroborated_12_current_yahoo_baseline_cells_checked_zero_matches_zero_native_regenerated",
     "SYS-TRADING-GROUP": (
         "paper_audit:completed_128_of_128_source_adjacent_baseline_cells_"
         "32_model_cells_recovered_from_omitted_two_year_window_"
