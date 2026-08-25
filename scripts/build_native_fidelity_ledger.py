@@ -1405,14 +1405,20 @@ PAPER_ONLY_AUDIT_NOTES = {
         "mSSRM Octave runs produce 15 bit-identical repeated wealth paths but match "
         "only 1/45 v1 and 3/24 v2 mSSRM cells. The same source reproduces all 36 "
         "CW/SR cells in the original NeurIPS mSSRM paper, and six untouched conference-"
-        "supplement paths equal the mirror bit-for-bit. Separately, all 18 ASMCVaR "
-        "configurations run under MATLAB R2023b and reproduce 95/96 original ICML "
-        "empirical cells; the sole conflict is FF49 m=10 Sharpe 0.2338 from source "
-        "versus 0.2339 in print. ASMCVaR matches only 1/45 v1 and 2/24 v2 EFS "
-        "cells, with no complete row. These discrepancies are specific to EFS's "
-        "undisclosed baseline protocol. Combined credit is 7/773 v1 and 13/877 v2 "
-        "cells; all are cited-baseline evidence and zero are native EFS "
-        "results. No author-linked "
+        "supplement paths equal the mirror bit-for-bit. Its source-grounded m=N "
+        "non-sparse Max-Sharpe limit repeats across 10 more runs but matches 0/15 v1 "
+        "and only 1/12 v2 cells. Separately, all 18 ASMCVaR configurations run under "
+        "MATLAB R2023b and reproduce 95/96 original ICML empirical cells; the sole "
+        "conflict is FF49 m=10 Sharpe 0.2338 from source versus 0.2339 in print. A "
+        "direct equations-(1)-(3) Mean-CVaR replay reproduces all 12 original-paper "
+        "CW/SR cells with bit-identical Python 3.9/3.12 paths, but only 2/15 v1 and "
+        "2/12 v2 EFS cells. ASMCVaR itself matches only 1/45 v1 and 2/24 v2 EFS "
+        "cells. A three-commit repository owned by paper coauthor Zhao-Rong Lai "
+        "redirects to the executed ASMCVaR source, establishing attribution but "
+        "adding no result files. No compared method reproduces a complete EFS row. "
+        "These discrepancies are specific to EFS's undisclosed baseline protocol. "
+        "Combined credit is 9/773 v1 and 16/877 v2 cells; all are cited-baseline "
+        "evidence and zero are native EFS results. No author-linked "
         "EFS source, exact configuration, model snapshot, data snapshot, factor pool, "
         "search trace, actions, weights, returns, seeds, or result records are released. "
         "All 240 v2 benchmark cells common to v1 are rounded carryovers, including "
@@ -1619,7 +1625,7 @@ TARGETED_EXECUTION = {
         "official_head_exhausted"
     ),
     "SYS-CRYPTO-TRADE": "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_12_ablation_correspondences_zero_credit_37_forks_exhausted",
-    "SYS-EFS": "paper_audit:completed_7_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
+    "SYS-EFS": "paper_audit:completed_9_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": (
         "paper_audit:completed_zero_of_306_native_results_official_code_not_released_"

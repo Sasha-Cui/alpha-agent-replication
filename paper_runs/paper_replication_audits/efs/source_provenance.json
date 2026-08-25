@@ -1,9 +1,22 @@
 {
-  "audit_date": "2026-08-24",
+  "audit_date": "2026-08-25",
   "author_hosted_pdf": {
     "byte_identical_to_v1": true,
     "sha256": "7bde1f690bab7c9f694e6f8810502884394e48de6c118a895b68fcaad1a20b26",
     "url": "https://www.cs.cityu.edu.hk/~cliu644/HomePage/doc/EFS/EFS_PDF.pdf"
+  },
+  "cited_asmcvar_author_redirect": {
+    "additional_executable_source": false,
+    "archive_sha256": "b4c40161735a877a3985e6f8637d8d04472b1d6e4161348fba06783e3b87bb14",
+    "commit": "848fc5361b37346a84f11fe1d4d626ba7f0306c1",
+    "commit_author": "Zhao-Rong Lai",
+    "commit_email": "laizhr@jnu.edu.cn",
+    "establishes_author_attribution_for_target": true,
+    "paper_coauthor": true,
+    "reachable_commits": 3,
+    "redirect_target": "https://github.com/linyizun2024/ASMCVaR",
+    "tree": "f557ed346acf87aff52864639b71a416e20abaac",
+    "url": "https://github.com/laizhr/ASMCVaR"
   },
   "cited_asmcvar_native_execution": {
     "configurations": 18,
@@ -41,6 +54,63 @@
     "paper_credit": "baseline_source_only",
     "tree": "3a0bd2408d16d3702321e009701adcf81629e83b",
     "url": "https://github.com/linyizun2024/ASMCVaR"
+  },
+  "cited_max_sharpe_limit_execution": {
+    "author_released_efs_baseline_wrapper": false,
+    "configurations": 5,
+    "efs_v1_cells_checked": 15,
+    "efs_v1_cells_reproduced": 0,
+    "efs_v2_cells_checked": 12,
+    "efs_v2_cells_reproduced": 1,
+    "epsilon": 0.001,
+    "lookback": 60,
+    "m_equals_asset_count": true,
+    "native_runs": 10,
+    "octave_version": "9.2.0",
+    "paper_credit": "source_grounded_non_sparse_limit_only_not_native_efs",
+    "same_runtime_repeat_paths_exact": 5,
+    "source_commit": "4e1be268746c3c046455e2a264279f622fceaef6",
+    "source_model": "mSSRM paper equations (3.3)-(3.4), m=N",
+    "wealth_sha256": {
+      "FF100": "76f595cdb96d6dd0e45213b6d40717b56a08e0431ea19edf609b096ab6e88b0e",
+      "FF100MEOP": "9053dd8061fb2604d4578435aad3cb1c195e4cb00b2e1ddf1b9a74cb42e12d6e",
+      "FF25": "4a19712b03a64d898aeb4d822bb2186a3b9c3eec57016ec449ace786d9f838fb",
+      "FF32": "0c4d9c6b49a6d3f2af88bb05a6a69299cb839aaaeec2d46cf646477113903d81",
+      "FF49": "04a89a716e55688cb4cca2828414564ba48058230f0fe0964293555fe468e8ea"
+    }
+  },
+  "cited_mean_cvar_execution": {
+    "confidence": 0.95,
+    "configurations": 6,
+    "cross_python_runtime_metadata_equal": true,
+    "efs_v1_cells_checked": 15,
+    "efs_v1_cells_reproduced": 2,
+    "efs_v2_cells_checked": 12,
+    "efs_v2_cells_reproduced": 2,
+    "initial_equal_weight_periods": 5,
+    "lookback": 60,
+    "model": "ASMCVaR paper equations (1)-(3)",
+    "original_paper_cells_checked": 12,
+    "original_paper_cells_reproduced": 12,
+    "paper_credit": "original_mean_cvar_baseline_only_not_native_efs",
+    "same_runtime_repeat_paths_exact": 6,
+    "solver": "scipy.optimize.linprog(method='highs')",
+    "wealth_sha256": {
+      "FF100": "01d3572b16e1dd2032c606b2c5de86758041baa42aacdf19380d09153950fbc3",
+      "FF100MEOP": "9dc12f3a1798e8141d2af850184e559c97ea9b2e39f75ed7c0b7b5ec5651f1d4",
+      "FF25": "d67f9f2924dea78f57cf19e57472d2e7e608b25f0fc68e10a9d9f02becba8f36",
+      "FF25EU": "79376853fa66c158fe8ce9bfd521e0d85a2a1c5aa72a5f4e9fc1733f02fb614b",
+      "FF32": "56a148d0738c190905494023a12e0ef42a3ec52d9f21ac1a9b1606a9d3d58191",
+      "FF49": "533e6dc6edd46418775e2bd130447703e3e44b7672c9615d885abbd9854ce812"
+    },
+    "weights_sha256": {
+      "FF100": "9ea314d0dfc33506785a000ecf9b3ab06df1944ad0c9215012379d87e278b6e2",
+      "FF100MEOP": "74abf1bd06a25b0703578db17c602c6c028a3142314aa19a054dfed27723898e",
+      "FF25": "377800a385252eb197702dde67e70bfa55984bfddf613cf1ff3ae58f94cbe573",
+      "FF25EU": "b22b5ec1c1cde62bad509af8b94da6df18bfcc188b0d766d2e92141833329b0c",
+      "FF32": "70c9fc77ab08480cf41698316fb8f947ede5894e30e75b10090c68c82e05d706",
+      "FF49": "32bc30673ef4b94f27b527b7afa74ce1a982d096b3f5436b93163c51d158c2bb"
+    }
   },
   "cited_mssrm_native_execution": {
     "cw_sha256": {
@@ -145,6 +215,7 @@
     "url": "https://arxiv.org/abs/2507.17211v1"
   },
   "validation": {
+    "asmcvar_author_redirect_commits": 3,
     "github_search_total": 0,
     "validated_file_count": 16
   }

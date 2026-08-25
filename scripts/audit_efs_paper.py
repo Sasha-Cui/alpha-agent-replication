@@ -29,7 +29,7 @@ from scipy.io import loadmat
 from scipy.stats import t as student_t
 
 
-AUDIT_DATE = "2026-08-24"
+AUDIT_DATE = "2026-08-25"
 ARXIV_V1_URL = "https://arxiv.org/abs/2507.17211v1"
 ARXIV_V2_URL = "https://arxiv.org/abs/2507.17211v2"
 ARXIV_V1_PDF_SHA256 = "7bde1f690bab7c9f694e6f8810502884394e48de6c118a895b68fcaad1a20b26"
@@ -56,6 +56,12 @@ ASMCVAR_URL = "https://github.com/linyizun2024/ASMCVaR"
 ASMCVAR_COMMIT = "0ed6a63ca02118cc305ae5d34f2cf24489c024a5"
 ASMCVAR_TREE = "3a0bd2408d16d3702321e009701adcf81629e83b"
 ASMCVAR_ARCHIVE_SHA256 = "6c553f0d799a8379dc01a78a02fc86b02612fea6eeb21f5b0641c327b8801f9a"
+ASMCVAR_AUTHOR_REDIRECT_URL = "https://github.com/laizhr/ASMCVaR"
+ASMCVAR_AUTHOR_REDIRECT_COMMIT = "848fc5361b37346a84f11fe1d4d626ba7f0306c1"
+ASMCVAR_AUTHOR_REDIRECT_TREE = "f557ed346acf87aff52864639b71a416e20abaac"
+ASMCVAR_AUTHOR_REDIRECT_ARCHIVE_SHA256 = "b4c40161735a877a3985e6f8637d8d04472b1d6e4161348fba06783e3b87bb14"
+ASMCVAR_AUTHOR_REDIRECT_README_SHA256 = "dc36b2228a4431c2bf52781add181568ec4ace01a31d140d7517113623e50d49"
+ASMCVAR_AUTHOR_REDIRECT_COMMITS = 3
 ASMCVAR_PAPER_URL = "https://proceedings.mlr.press/v235/lin24w.html"
 ASMCVAR_PAPER_PDF_URL = "https://raw.githubusercontent.com/mlresearch/v235/main/assets/lin24w/lin24w.pdf"
 ASMCVAR_PAPER_SHA256 = "a2790162761a5436d628ece00c66aed2564ea0d9633f4483d57e022602c7e09d"
@@ -92,6 +98,32 @@ ASMCVAR_V1_ROW_BY_SPARSITY = {10: 7, 15: 15, 20: 23}
 ASMCVAR_V2_ROW_BY_SPARSITY = {10: 7, 15: 15}
 ASMCVAR_OBSERVATIONS = {"FF25": 623, "FF25EU": 391, "FF32": 623, "FF49": 623, "FF100": 623, "FF100MEOP": 623}
 ASMCVAR_ASSETS = {"FF25": 25, "FF25EU": 25, "FF32": 32, "FF49": 49, "FF100": 100, "FF100MEOP": 100}
+MEAN_CVAR_CONFIDENCE = 0.95
+MEAN_CVAR_ORIGINAL_VALUES = {
+    "FF25": {"CW": "333.41", "SR": "0.2305"},
+    "FF25EU": {"CW": "18.60", "SR": "0.1803"},
+    "FF32": {"CW": "331.14", "SR": "0.2375"},
+    "FF49": {"CW": "150.15", "SR": "0.2220"},
+    "FF100": {"CW": "70.31", "SR": "0.1738"},
+    "FF100MEOP": {"CW": "306.40", "SR": "0.2204"},
+}
+MEAN_CVAR_WEALTH_SHA256 = {
+    "FF25": "d67f9f2924dea78f57cf19e57472d2e7e608b25f0fc68e10a9d9f02becba8f36",
+    "FF25EU": "79376853fa66c158fe8ce9bfd521e0d85a2a1c5aa72a5f4e9fc1733f02fb614b",
+    "FF32": "56a148d0738c190905494023a12e0ef42a3ec52d9f21ac1a9b1606a9d3d58191",
+    "FF49": "533e6dc6edd46418775e2bd130447703e3e44b7672c9615d885abbd9854ce812",
+    "FF100": "01d3572b16e1dd2032c606b2c5de86758041baa42aacdf19380d09153950fbc3",
+    "FF100MEOP": "9dc12f3a1798e8141d2af850184e559c97ea9b2e39f75ed7c0b7b5ec5651f1d4",
+}
+MEAN_CVAR_WEIGHTS_SHA256 = {
+    "FF25": "377800a385252eb197702dde67e70bfa55984bfddf613cf1ff3ae58f94cbe573",
+    "FF25EU": "b22b5ec1c1cde62bad509af8b94da6df18bfcc188b0d766d2e92141833329b0c",
+    "FF32": "70c9fc77ab08480cf41698316fb8f947ede5894e30e75b10090c68c82e05d706",
+    "FF49": "32bc30673ef4b94f27b527b7afa74ce1a982d096b3f5436b93163c51d158c2bb",
+    "FF100": "9ea314d0dfc33506785a000ecf9b3ab06df1944ad0c9215012379d87e278b6e2",
+    "FF100MEOP": "74abf1bd06a25b0703578db17c602c6c028a3142314aa19a054dfed27723898e",
+}
+
 ASMCVAR_ALPHA_P_VALUES = {
     ("FF25", 10): {"alpha": "0.0022", "p_value": "0.0006"},
     ("FF25EU", 10): {"alpha": "0.0027", "p_value": "0"},
@@ -199,6 +231,13 @@ MSSRM_CW_SHA256 = {
     ("FF100MEINV", 10): "562f59f9c43fbd69a45290bef1654c9c81c1d95ed138289376066f6013f41b19",
     ("FF100MEINV", 15): "df4935359d8c14142e8fafa48271f00a093a3260f00fc727fbfcdac0a9b6dda4",
     ("FF100MEINV", 20): "22e9df4224359ef939c31bced8d5eb49f18625162575bf1251e59debd29a87ff",
+}
+MSSRM_NONSPARSE_CW_SHA256 = {
+    "FF25": "4a19712b03a64d898aeb4d822bb2186a3b9c3eec57016ec449ace786d9f838fb",
+    "FF32": "0c4d9c6b49a6d3f2af88bb05a6a69299cb839aaaeec2d46cf646477113903d81",
+    "FF49": "04a89a716e55688cb4cca2828414564ba48058230f0fe0964293555fe468e8ea",
+    "FF100": "76f595cdb96d6dd0e45213b6d40717b56a08e0431ea19edf609b096ab6e88b0e",
+    "FF100MEOP": "9053dd8061fb2604d4578435aad3cb1c195e4cb00b2e1ddf1b9a74cb42e12d6e",
 }
 
 V1_TABLE_SPECS = (
@@ -499,6 +538,7 @@ def validate_inputs(paper_root: Path, mssrm: Path, asm_cvar: Path) -> dict[str, 
         paper_root / "github_search_title.json": GITHUB_SEARCH_SHA256,
         paper_root / "github_search_efs.json": GITHUB_SEARCH_SHA256,
     }
+    author_redirect = paper_root / "asmcvar_author_redirect"
     data_dir = asm_cvar / "Codes_for_Experiments_in_Paper" / "DataSets"
     expected.update({data_dir / f"{name}.mat": value for name, value in ASMCVAR_DATA_SHA256.items()})
     for path, value in expected.items():
@@ -507,6 +547,12 @@ def validate_inputs(paper_root: Path, mssrm: Path, asm_cvar: Path) -> dict[str, 
     for repo, commit, tree, archive in (
         (mssrm, MSSRM_COMMIT, MSSRM_TREE, MSSRM_ARCHIVE_SHA256),
         (asm_cvar, ASMCVAR_COMMIT, ASMCVAR_TREE, ASMCVAR_ARCHIVE_SHA256),
+        (
+            author_redirect,
+            ASMCVAR_AUTHOR_REDIRECT_COMMIT,
+            ASMCVAR_AUTHOR_REDIRECT_TREE,
+            ASMCVAR_AUTHOR_REDIRECT_ARCHIVE_SHA256,
+        ),
     ):
         if run_git(repo, "rev-parse", "HEAD").strip() != commit:
             raise ValueError(f"commit mismatch: {repo}")
@@ -514,12 +560,28 @@ def validate_inputs(paper_root: Path, mssrm: Path, asm_cvar: Path) -> dict[str, 
             raise ValueError(f"tree mismatch: {repo}")
         if _archive_sha(repo, commit) != archive:
             raise ValueError(f"archive mismatch: {repo}")
-    searches = [json.loads((paper_root / name).read_text()) for name in (
-        "github_search_arxiv.json", "github_search_title.json", "github_search_efs.json"
-    )]
+    redirect_readme = author_redirect / "README.md"
+    if sha256(redirect_readme) != ASMCVAR_AUTHOR_REDIRECT_README_SHA256:
+        raise ValueError("ASMCVaR coauthor redirect README changed")
+    if ASMCVAR_URL not in redirect_readme.read_text():
+        raise ValueError("ASMCVaR coauthor redirect target changed")
+    if int(run_git(author_redirect, "rev-list", "--all", "--count")) != ASMCVAR_AUTHOR_REDIRECT_COMMITS:
+        raise ValueError("ASMCVaR coauthor redirect history changed")
+    searches = [
+        json.loads((paper_root / name).read_text())
+        for name in (
+            "github_search_arxiv.json",
+            "github_search_title.json",
+            "github_search_efs.json",
+        )
+    ]
     if any(payload.get("total_count") != 0 for payload in searches):
         raise ValueError("GitHub repository search no longer represents an empty snapshot")
-    return {"validated_file_count": len(expected), "github_search_total": 0}
+    return {
+        "validated_file_count": len(expected),
+        "github_search_total": 0,
+        "asmcvar_author_redirect_commits": ASMCVAR_AUTHOR_REDIRECT_COMMITS,
+    }
 
 
 def baseline_metrics(asm_cvar: Path) -> dict[str, dict[str, float]]:
@@ -560,6 +622,91 @@ def validate_asmcvar_original_input(original_root: Path) -> dict[str, Any]:
     if pages != ASMCVAR_PAPER_PAGES:
         raise ValueError(f"ASMCVaR PMLR paper page count drifted: {pages}")
     return {"paper_sha256": ASMCVAR_PAPER_SHA256, "paper_pages": pages}
+
+
+def load_mean_cvar_metrics(results_root: Path) -> dict[str, dict[str, Any]]:
+    metadata = json.loads(
+        (results_root / "mean_cvar_execution_metadata.json").read_text()
+    )
+    if (
+        metadata["paper_credit_scope"]
+        != "original_mean_cvar_baseline_only_not_native_efs"
+        or metadata["model"] != "ASMCVaR paper equations (1)-(3)"
+        or metadata["confidence"] != MEAN_CVAR_CONFIDENCE
+        or metadata["lookback"] != 60
+        or metadata["initial_equal_weight_periods"] != 5
+    ):
+        raise ValueError("Mean-CVaR execution protocol changed")
+
+    output: dict[str, dict[str, Any]] = {}
+    for dataset, source_name in ASMCVAR_DATASETS.items():
+        runs = []
+        for repeat in (1, 2):
+            path = results_root / f"mean_cvar_{source_name}_run{repeat}.npz"
+            with np.load(path, allow_pickle=False) as payload:
+                wealth = np.asarray(payload["wealth"], dtype=float)
+                weights = np.asarray(payload["weights"], dtype=float)
+            expected_shape = (ASMCVAR_OBSERVATIONS[dataset],)
+            expected_weights = (
+                ASMCVAR_OBSERVATIONS[dataset],
+                ASMCVAR_ASSETS[dataset],
+            )
+            if wealth.shape != expected_shape or weights.shape != expected_weights:
+                raise ValueError(f"Mean-CVaR output shape changed: {path}")
+            if not np.isfinite(wealth).all() or not np.isfinite(weights).all():
+                raise ValueError(f"Mean-CVaR output is non-finite: {path}")
+            if (
+                np.min(weights) < -1e-10
+                or not np.allclose(weights.sum(axis=1), 1.0, rtol=0.0, atol=1e-9)
+            ):
+                raise ValueError(f"Mean-CVaR weights are infeasible: {path}")
+            runs.append((wealth, weights))
+        if not (
+            np.array_equal(runs[0][0], runs[1][0])
+            and np.array_equal(runs[0][1], runs[1][1])
+        ):
+            raise ValueError(f"Mean-CVaR repeats differ: {dataset}")
+
+        wealth, weights = runs[0]
+        wealth_sha = bytes_sha256(wealth.tobytes(order="C"))
+        weights_sha = bytes_sha256(weights.tobytes(order="C"))
+        if wealth_sha != MEAN_CVAR_WEALTH_SHA256[dataset]:
+            raise ValueError(f"Mean-CVaR wealth path changed: {dataset}")
+        if weights_sha != MEAN_CVAR_WEIGHTS_SHA256[dataset]:
+            raise ValueError(f"Mean-CVaR weight path changed: {dataset}")
+        returns = wealth[1:] / wealth[:-1] - 1.0
+        peaks = np.maximum.accumulate(np.r_[1.0, wealth])[:-1]
+        metrics = {
+            "CW": float(wealth[-1]),
+            "SR": float(returns.mean() / returns.std(ddof=0)),
+            "MDD": float(np.max(1.0 - wealth / peaks)),
+        }
+        recorded = metadata["results"][dataset]
+        if (
+            recorded["source_name"] != source_name
+            or recorded["wealth_sha256"] != wealth_sha
+            or recorded["weights_sha256"] != weights_sha
+            or recorded["repeat_equal"] is not True
+            or any(
+                not np.isclose(
+                    metrics[key],
+                    float(recorded["metrics"][key]),
+                    rtol=0.0,
+                    atol=1e-15,
+                )
+                for key in metrics
+            )
+        ):
+            raise ValueError(f"Mean-CVaR metadata changed: {dataset}")
+        output[dataset] = {
+            **metrics,
+            "wealth_sha256": wealth_sha,
+            "weights_sha256": weights_sha,
+            "repeat_paths_equal": True,
+        }
+    if set(output) != set(ASMCVAR_DATASETS):
+        raise ValueError("Mean-CVaR dataset coverage changed")
+    return output
 
 
 def load_asmcvar_native_metrics(
@@ -932,6 +1079,70 @@ def load_mssrm_native_metrics(
         raise ValueError(f"expected {expected} mSSRM dataset/sparsity executions")
     return output
 
+def load_mssrm_nonsparse_metrics(
+    results_root: Path,
+) -> dict[str, dict[str, Any]]:
+    output: dict[str, dict[str, Any]] = {}
+    for dataset, source_name in MSSRM_DATASETS.items():
+        runs: list[dict[str, Any]] = []
+        for repeat in (1, 2):
+            path = (
+                results_root
+                / f"mssrm_nonsparse_{source_name}_run{repeat}.mat"
+            )
+            payload = loadmat(path)
+            wealth = np.asarray(payload["CW"], dtype="<f8").reshape(-1)
+            if (
+                wealth.shape != (MSSRM_OBSERVATIONS[dataset],)
+                or not np.isfinite(wealth).all()
+            ):
+                raise ValueError(f"invalid non-sparse mSSRM wealth path: {path}")
+            runs.append(
+                {
+                    "wealth": wealth,
+                    "source_sharpe": float(
+                        np.asarray(payload["sharpe"]).reshape(-1)[0]
+                    ),
+                    "elapsed_seconds": float(
+                        np.asarray(payload["elapsed"]).reshape(-1)[0]
+                    ),
+                    "file_sha256": sha256(path),
+                }
+            )
+        if not np.array_equal(runs[0]["wealth"], runs[1]["wealth"]):
+            raise ValueError(f"non-sparse mSSRM repeats differ: {dataset}")
+        wealth = runs[0]["wealth"]
+        wealth_sha = bytes_sha256(wealth.tobytes(order="C"))
+        if wealth_sha != MSSRM_NONSPARSE_CW_SHA256[dataset]:
+            raise ValueError(f"non-sparse mSSRM wealth hash changed: {dataset}")
+        returns = wealth[1:] / wealth[:-1] - 1.0
+        sharpe = float(returns.mean() / returns.std(ddof=1))
+        if not all(
+            np.isclose(run["source_sharpe"], sharpe, rtol=0.0, atol=1e-14)
+            for run in runs
+        ):
+            raise ValueError(
+                f"non-sparse mSSRM source/Python Sharpe mismatch: {dataset}"
+            )
+        peaks = np.maximum.accumulate(wealth)
+        output[dataset] = {
+            "CW": float(wealth[-1]),
+            "SR": sharpe,
+            "MDD": float(np.max(1.0 - wealth / peaks)),
+            "observations": int(wealth.size),
+            "asset_count": ASMCVAR_ASSETS[dataset],
+            "cw_sha256": wealth_sha,
+            "repeat_paths_equal": True,
+            "run_elapsed_seconds": [
+                run["elapsed_seconds"] for run in runs
+            ],
+            "run_file_sha256": [run["file_sha256"] for run in runs],
+        }
+    if set(output) != set(MSSRM_DATASETS):
+        raise ValueError("non-sparse mSSRM dataset coverage changed")
+    return output
+
+
 
 def apply_mssrm_credit(
     rows: list[dict[str, Any]], metrics: Mapping[tuple[str, int], Mapping[str, Any]]
@@ -1091,6 +1302,169 @@ def _format_like(value: float, paper_value: str) -> str:
     quantum = Decimal(1).scaleb(-decimals)
     rendered = format(scaled.quantize(quantum, rounding=ROUND_HALF_UP), f".{decimals}f")
     return rendered + ("%" if paper_value.endswith("%") else "")
+
+
+def original_mean_cvar_conformance(
+    metrics: Mapping[str, Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for dataset, paper_values in MEAN_CVAR_ORIGINAL_VALUES.items():
+        native = metrics[dataset]
+        for metric, paper_value in paper_values.items():
+            reproduced = float(native[metric])
+            rendered = _format_like(reproduced, paper_value)
+            match = rendered == paper_value
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "metric": metric,
+                    "paper_value": paper_value,
+                    "recomputed_value": f"{reproduced:.12g}",
+                    "recomputed_at_paper_precision": rendered,
+                    "match_at_paper_precision": match,
+                    "confidence": MEAN_CVAR_CONFIDENCE,
+                    "lookback": 60,
+                    "model": "ASMCVaR paper equations (1)-(3)",
+                    "wealth_sha256": native["wealth_sha256"],
+                    "weights_sha256": native["weights_sha256"],
+                    "repeat_paths_equal": native["repeat_paths_equal"],
+                    "original_mean_cvar_paper_result_credit": match,
+                }
+            )
+    if len(rows) != 12 or not all(
+        row["original_mean_cvar_paper_result_credit"] for row in rows
+    ):
+        raise ValueError("expected all 12 original Mean-CVaR cells to reproduce")
+    return rows
+
+
+def apply_mean_cvar_credit(
+    rows: list[dict[str, Any]],
+    metrics: Mapping[str, Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    version = str(rows[0]["paper_version"])
+    label = "Min-cVaR" if version == "v1" else "Min-CVaR"
+    audit_rows: list[dict[str, Any]] = []
+    for row in rows:
+        if row["paper_table"] != "benchmark" or row["row_label"] != label:
+            continue
+        dataset, metric = str(row["dataset"]), str(row["metric"])
+        native = metrics[dataset]
+        reproduced = float(native[metric])
+        rendered = _format_like(reproduced, str(row["paper_value"]))
+        match = rendered == row["paper_value"]
+        row["cited_baseline_recomputed_value"] = f"{reproduced:.12g}"
+        row["cited_baseline_match_at_paper_precision"] = match
+        row["paper_result_credit"] = match
+        audit_rows.append(
+            {
+                "paper_version": version,
+                "dataset": dataset,
+                "metric": metric,
+                "paper_value": row["paper_value"],
+                "recomputed_value": f"{reproduced:.12g}",
+                "recomputed_at_paper_precision": rendered,
+                "match_at_paper_precision": match,
+                "confidence": MEAN_CVAR_CONFIDENCE,
+                "lookback": 60,
+                "model": "ASMCVaR paper equations (1)-(3)",
+                "wealth_sha256": native["wealth_sha256"],
+                "weights_sha256": native["weights_sha256"],
+                "repeat_paths_equal": native["repeat_paths_equal"],
+                "source_grounded_mean_cvar_evidence": True,
+                "native_efs_evidence": False,
+                "paper_result_credit": match,
+            }
+        )
+    expected_rows = 15 if version == "v1" else 12
+    if len(audit_rows) != expected_rows:
+        raise ValueError(
+            f"expected {expected_rows} EFS Mean-CVaR comparison cells for {version}"
+        )
+    if sum(row["paper_result_credit"] for row in audit_rows) != 2:
+        raise ValueError(f"EFS Mean-CVaR match census drifted for {version}")
+    complete_datasets = {
+        dataset
+        for dataset in {str(row["dataset"]) for row in audit_rows}
+        if all(
+            row["paper_result_credit"]
+            for row in audit_rows
+            if row["dataset"] == dataset
+        )
+    }
+    if complete_datasets:
+        raise ValueError(
+            f"unexpected complete EFS Mean-CVaR rows: {sorted(complete_datasets)}"
+        )
+    return audit_rows
+
+
+def apply_max_sharpe_limit_credit(
+    rows: list[dict[str, Any]],
+    metrics: Mapping[str, Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    version = str(rows[0]["paper_version"])
+    audit_rows: list[dict[str, Any]] = []
+    for row in rows:
+        if (
+            row["paper_table"] != "benchmark"
+            or row["row_label"] != "Max-Sharpe"
+        ):
+            continue
+        dataset, metric = str(row["dataset"]), str(row["metric"])
+        native = metrics[dataset]
+        reproduced = float(native[metric])
+        rendered = _format_like(reproduced, str(row["paper_value"]))
+        match = rendered == row["paper_value"]
+        row["cited_baseline_recomputed_value"] = f"{reproduced:.12g}"
+        row["cited_baseline_match_at_paper_precision"] = match
+        row["paper_result_credit"] = match
+        audit_rows.append(
+            {
+                "paper_version": version,
+                "dataset": dataset,
+                "metric": metric,
+                "paper_value": row["paper_value"],
+                "recomputed_value": f"{reproduced:.12g}",
+                "recomputed_at_paper_precision": rendered,
+                "match_at_paper_precision": match,
+                "source_model": "mSSRM paper equations (3.3)-(3.4), m=N",
+                "source_commit": MSSRM_COMMIT,
+                "lookback": 60,
+                "epsilon": "0.001",
+                "asset_count": native["asset_count"],
+                "cw_sha256": native["cw_sha256"],
+                "full_wealth_path_repeat_equal": native[
+                    "repeat_paths_equal"
+                ],
+                "source_grounded_max_sharpe_limit_evidence": True,
+                "author_released_efs_baseline_wrapper": False,
+                "native_efs_evidence": False,
+                "paper_result_credit": match,
+            }
+        )
+    expected_rows = 15 if version == "v1" else 12
+    expected_matches = 0 if version == "v1" else 1
+    if len(audit_rows) != expected_rows:
+        raise ValueError(
+            f"expected {expected_rows} EFS Max-Sharpe comparison cells for {version}"
+        )
+    if sum(row["paper_result_credit"] for row in audit_rows) != expected_matches:
+        raise ValueError(f"EFS Max-Sharpe match census drifted for {version}")
+    complete_datasets = {
+        dataset
+        for dataset in {str(row["dataset"]) for row in audit_rows}
+        if all(
+            row["paper_result_credit"]
+            for row in audit_rows
+            if row["dataset"] == dataset
+        )
+    }
+    if complete_datasets:
+        raise ValueError(
+            f"unexpected complete EFS Max-Sharpe rows: {sorted(complete_datasets)}"
+        )
+    return audit_rows
 
 
 def apply_baseline_credit(
@@ -1384,13 +1758,13 @@ datasets, paper structure, and results.
 - **EFS itself: 0 native result cells reproduced in either version.** No
   author-linked EFS code, exact configuration, model snapshot, factor pool,
   search trace, action/weight path, raw return, or result output was found.
-- **Original v1: 7/773 table-result cells reproduced, all cited-baseline
-  evidence.** Five are 1/N MDD cells; mSSRM and ASMCVaR contribute one isolated
-  cell each. Neither cited sparse method reproduces a complete EFS row.
-- **Current v2: 13/877 cells reproduce at its coarser display precision.** Eight
-  are 1/N cells, three are mSSRM cells, and two are ASMCVaR cells. All are
-  cited-baseline evidence, not EFS evidence. Paper compilation and parsing
-  receive no experiment credit.
+- **Original v1: 9/773 table-result cells reproduce, all cited-baseline
+  evidence.** Five are 1/N MDD cells, two are Mean-CVaR cells, and mSSRM plus
+  ASMCVaR contribute one isolated cell each.
+- **Current v2: 16/877 cells reproduce at its coarser display precision.**
+  Eight are 1/N, three mSSRM, two Mean-CVaR, two ASMCVaR, and one is the
+  source-grounded mSSRM m=N Max-Sharpe limit. None forms a complete reproduced
+  row or receives native EFS credit.
 
 The mSSRM release was run twice for every combination of five EFS matrices
 and m={10,15,20}. All 15 full 623-point wealth paths were bit-identical across
@@ -1407,6 +1781,25 @@ the paper prints 0.2339. Against EFS, only 1/45 v1 and 2/24 v2 ASMCVaR cells
 match at display precision, and no complete row matches. A same-runtime repeat
 is bit-identical; an independent Octave execution agrees within disclosed
 floating-point tolerances.
+The conventional Mean-CVaR baseline from the original ASMCVaR paper was
+reimplemented directly from equations (1)--(3), with the disclosed rolling
+window and conventional c=0.95 confidence. All six full wealth/weight paths
+repeat bit-identically under Python 3.9 and 3.12, and all 12 published CW/SR
+cells reproduce. Against EFS, only 2/15 v1 and 2/12 v2 cells match, with no
+complete row.
+
+The mSSRM source was also run at m=N, which removes the cardinality restriction
+from equations (3.3)--(3.4) and supplies a source-grounded regularized
+Max-Sharpe limit. All five full paths repeat bit-identically across 10 Octave
+runs. It matches 0/15 v1 and only 1/12 v2 Max-Sharpe cells (FF25 MDD at coarse
+precision), so it does not recover an EFS Max-Sharpe row. The EFS authors did
+not release the wrapper needed to prove that this was their implementation.
+
+A three-commit repository owned by ASMCVaR coauthor Zhao-Rong Lai explicitly
+redirects to the executed `linyizun2024/ASMCVaR` repository. This establishes
+author attribution for that cited source, but adds no executable files or EFS
+lineage.
+
 
 ## Version-lineage warning
 
@@ -1443,6 +1836,11 @@ def main() -> None:
         default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_octave_runs"),
     )
     parser.add_argument(
+        "--nonsparse-results-root",
+        type=Path,
+        default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_nonsparse_runs"),
+    )
+    parser.add_argument(
         "--mssrm-original-root",
         type=Path,
         default=Path("/nfs/roberts/scratch/pi_btk22/zc362/mssrm_original_paper"),
@@ -1456,10 +1854,12 @@ def main() -> None:
     paper_root = args.paper_root.resolve()
     output = args.output.resolve()
     mssrm_results_root = args.mssrm_results_root.resolve()
+    nonsparse_results_root = args.nonsparse_results_root.resolve()
     mssrm_original_root = args.mssrm_original_root.resolve()
     asmcvar_original_root = args.asmcvar_original_root.resolve()
     mssrm = paper_root / "mssrm_source"
     asm_cvar = paper_root / "asm_cvar_source"
+    asmcvar_author_redirect = paper_root / "asmcvar_author_redirect"
 
     validated = validate_inputs(paper_root, mssrm, asm_cvar)
     validated_mssrm_original = validate_mssrm_original_inputs(mssrm_original_root, asm_cvar)
@@ -1480,13 +1880,22 @@ def main() -> None:
     asmcvar_alpha = asmcvar_alpha_conformance(asmcvar_metrics, asm_cvar)
     asmcvar_overlap = asmcvar_overlap_conformance(asmcvar_metrics)
     asmcvar_cross_runtime = asmcvar_cross_runtime_correspondence(mssrm_results_root)
+    mean_cvar_metrics = load_mean_cvar_metrics(nonsparse_results_root)
+    mean_cvar_original = original_mean_cvar_conformance(mean_cvar_metrics)
+    mean_cvar_efs = apply_mean_cvar_credit(v1, mean_cvar_metrics) + apply_mean_cvar_credit(v2, mean_cvar_metrics)
+    max_sharpe_limit_metrics = load_mssrm_nonsparse_metrics(nonsparse_results_root)
+    max_sharpe_limit_efs = apply_max_sharpe_limit_credit(v1, max_sharpe_limit_metrics) + apply_max_sharpe_limit_credit(v2, max_sharpe_limit_metrics)
     lineage = apply_version_lineage(v1, v2)
     figures = figure_inventory(paper_root)
     methods = method_specification_audit()
     claims = qualitative_claim_audit()
     prompt = extract_v1_prompt(paper_root)
     compilations = compile_sources(paper_root)
-    source_rows = source_inventory(mssrm, MSSRM_COMMIT) + source_inventory(asm_cvar, ASMCVAR_COMMIT)
+    source_rows = (
+        source_inventory(mssrm, MSSRM_COMMIT)
+        + source_inventory(asm_cvar, ASMCVAR_COMMIT)
+        + source_inventory(asmcvar_author_redirect, ASMCVAR_AUTHOR_REDIRECT_COMMIT)
+    )
 
     output.mkdir(parents=True, exist_ok=True)
     write_csv(output / "v1_table_result_conformance.csv", v1)
@@ -1501,6 +1910,9 @@ def main() -> None:
     write_csv(output / "cited_asmcvar_original_alpha_reproduction.csv", asmcvar_alpha)
     write_csv(output / "cited_asmcvar_original_overlap_reproduction.csv", asmcvar_overlap)
     write_csv(output / "cited_asmcvar_cross_runtime_correspondence.csv", asmcvar_cross_runtime)
+    write_csv(output / "cited_mean_cvar_original_paper_reproduction.csv", mean_cvar_original)
+    write_csv(output / "cited_mean_cvar_efs_reproduction.csv", mean_cvar_efs)
+    write_csv(output / "cited_max_sharpe_limit_efs_reproduction.csv", max_sharpe_limit_efs)
     write_csv(output / "version_lineage_audit.csv", lineage)
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "method_specification_audit.csv", methods)
@@ -1515,11 +1927,11 @@ def main() -> None:
         "paper_source_compilation": compilations,
         "cited_baseline_formula_executed": True,
         "v1_cited_baseline_cells_with_credit": sum(
-            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs
+            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs + mean_cvar_efs + max_sharpe_limit_efs
             if row["paper_version"] == "v1"
         ),
         "v2_cited_baseline_cells_with_credit": sum(
-            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs
+            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs + mean_cvar_efs + max_sharpe_limit_efs
             if row["paper_version"] == "v2"
         ),
         "native_efs_cells_with_credit": 0,
@@ -1554,6 +1966,25 @@ def main() -> None:
         "original_asmcvar_overlap_cells_matching": 24,
         "original_asmcvar_total_cells_checked": 96,
         "original_asmcvar_total_cells_matching": 95,
+        "cited_mean_cvar_equations_executed": True,
+        "cited_mean_cvar_confidence": MEAN_CVAR_CONFIDENCE,
+        "cited_mean_cvar_native_configurations": 6,
+        "cited_mean_cvar_full_paths_repeat_exact": 6,
+        "cited_mean_cvar_v1_cells_checked": 15,
+        "cited_mean_cvar_v1_cells_matching": 2,
+        "cited_mean_cvar_v2_cells_checked": 12,
+        "cited_mean_cvar_v2_cells_matching": 2,
+        "original_mean_cvar_cells_checked": 12,
+        "original_mean_cvar_cells_matching": 12,
+        "cited_max_sharpe_limit_executed_with_octave": True,
+        "cited_max_sharpe_limit_model": "mSSRM paper equations (3.3)-(3.4), m=N",
+        "cited_max_sharpe_limit_native_configurations": 5,
+        "cited_max_sharpe_limit_native_runs": 10,
+        "cited_max_sharpe_limit_full_paths_repeat_exact": 5,
+        "cited_max_sharpe_limit_v1_cells_checked": 15,
+        "cited_max_sharpe_limit_v1_cells_matching": 0,
+        "cited_max_sharpe_limit_v2_cells_checked": 12,
+        "cited_max_sharpe_limit_v2_cells_matching": 1,
         "matlab_reason": (
             "ASMCVaR ran under MATLAB R2023b for all 18 paper configurations; "
             "FF25 m=10 also ran under Octave 9.2.0 and matched MATLAB within tolerance"
@@ -1593,7 +2024,38 @@ def main() -> None:
             "cw_sha256": {f"{dataset}_m{sparsity}": value for (dataset, sparsity), value in sorted(MSSRM_CW_SHA256.items())},
             "paper_credit": "baseline_source_only",
         },
+        "cited_max_sharpe_limit_execution": {
+            "source_model": "mSSRM paper equations (3.3)-(3.4), m=N",
+            "source_commit": MSSRM_COMMIT,
+            "octave_version": MSSRM_OCTAVE_VERSION,
+            "lookback": 60,
+            "epsilon": 0.001,
+            "m_equals_asset_count": True,
+            "configurations": 5,
+            "native_runs": 10,
+            "same_runtime_repeat_paths_exact": 5,
+            "efs_v1_cells_checked": 15,
+            "efs_v1_cells_reproduced": 0,
+            "efs_v2_cells_checked": 12,
+            "efs_v2_cells_reproduced": 1,
+            "wealth_sha256": MSSRM_NONSPARSE_CW_SHA256,
+            "author_released_efs_baseline_wrapper": False,
+            "paper_credit": "source_grounded_non_sparse_limit_only_not_native_efs",
+        },
         "cited_asmcvar_release": {"url": ASMCVAR_URL, "commit": ASMCVAR_COMMIT, "tree": ASMCVAR_TREE, "archive_sha256": ASMCVAR_ARCHIVE_SHA256, "data_sha256": ASMCVAR_DATA_SHA256, "paper_credit": "baseline_source_only"},
+        "cited_asmcvar_author_redirect": {
+            "url": ASMCVAR_AUTHOR_REDIRECT_URL,
+            "commit": ASMCVAR_AUTHOR_REDIRECT_COMMIT,
+            "tree": ASMCVAR_AUTHOR_REDIRECT_TREE,
+            "archive_sha256": ASMCVAR_AUTHOR_REDIRECT_ARCHIVE_SHA256,
+            "reachable_commits": ASMCVAR_AUTHOR_REDIRECT_COMMITS,
+            "commit_author": "Zhao-Rong Lai",
+            "commit_email": "laizhr@jnu.edu.cn",
+            "paper_coauthor": True,
+            "redirect_target": ASMCVAR_URL,
+            "establishes_author_attribution_for_target": True,
+            "additional_executable_source": False,
+        },
         "cited_asmcvar_original_paper": {
             "url": ASMCVAR_PAPER_URL,
             "pdf_url": ASMCVAR_PAPER_PDF_URL,
@@ -1612,6 +2074,25 @@ def main() -> None:
             "tick2ret_and_sharpe": "MATLAB Financial Toolbox population-standard-deviation convention",
             "paper_credit": "baseline_source_only",
         },
+        "cited_mean_cvar_execution": {
+            "model": "ASMCVaR paper equations (1)-(3)",
+            "confidence": MEAN_CVAR_CONFIDENCE,
+            "lookback": 60,
+            "initial_equal_weight_periods": 5,
+            "solver": "scipy.optimize.linprog(method='highs')",
+            "configurations": 6,
+            "same_runtime_repeat_paths_exact": 6,
+            "cross_python_runtime_metadata_equal": True,
+            "original_paper_cells_checked": 12,
+            "original_paper_cells_reproduced": 12,
+            "efs_v1_cells_checked": 15,
+            "efs_v1_cells_reproduced": 2,
+            "efs_v2_cells_checked": 12,
+            "efs_v2_cells_reproduced": 2,
+            "wealth_sha256": MEAN_CVAR_WEALTH_SHA256,
+            "weights_sha256": MEAN_CVAR_WEIGHTS_SHA256,
+            "paper_credit": "original_mean_cvar_baseline_only_not_native_efs",
+        },
         "validation": validated,
     }
     write_json(output / "source_provenance.json", provenance)
@@ -1626,6 +2107,9 @@ def main() -> None:
         "cited_asmcvar_original_alpha_reproduction.csv",
         "cited_asmcvar_original_overlap_reproduction.csv",
         "cited_asmcvar_cross_runtime_correspondence.csv",
+        "cited_mean_cvar_original_paper_reproduction.csv",
+        "cited_mean_cvar_efs_reproduction.csv",
+        "cited_max_sharpe_limit_efs_reproduction.csv",
         "version_lineage_audit.csv", "figure_inventory.csv",
         "method_specification_audit.csv", "qualitative_claim_audit.csv",
         "cited_baseline_source_inventory.csv", "paper_prompt_v1.tex.txt",
@@ -1635,7 +2119,7 @@ def main() -> None:
         "paper": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
         "audit_date": AUDIT_DATE,
         "paper_evidence_route": "paper_only_underspecified",
-        "overall_status": "partial_7_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
+        "overall_status": "partial_9_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
         "full_paper_reproduced": False,
         "official_efs_source_released": False,
         "original_v1_table_result_cells": len(v1),
@@ -1671,6 +2155,30 @@ def main() -> None:
         "original_asmcvar_cells_reproduced": sum(
             row["original_asmcvar_paper_result_credit"]
             for row in asmcvar_performance + asmcvar_alpha + asmcvar_overlap
+        ),
+        "cited_mean_cvar_v1_cells_checked": 15,
+        "cited_mean_cvar_v1_cells_reproduced": sum(
+            row["paper_result_credit"] for row in mean_cvar_efs if row["paper_version"] == "v1"
+        ),
+        "cited_mean_cvar_v2_cells_checked": 12,
+        "cited_mean_cvar_v2_cells_reproduced": sum(
+            row["paper_result_credit"] for row in mean_cvar_efs if row["paper_version"] == "v2"
+        ),
+        "original_mean_cvar_cells_checked": len(mean_cvar_original),
+        "original_mean_cvar_cells_reproduced": sum(
+            row["original_mean_cvar_paper_result_credit"] for row in mean_cvar_original
+        ),
+        "cited_max_sharpe_limit_v1_cells_checked": 15,
+        "cited_max_sharpe_limit_v1_cells_reproduced": sum(
+            row["paper_result_credit"]
+            for row in max_sharpe_limit_efs
+            if row["paper_version"] == "v1"
+        ),
+        "cited_max_sharpe_limit_v2_cells_checked": 12,
+        "cited_max_sharpe_limit_v2_cells_reproduced": sum(
+            row["paper_result_credit"]
+            for row in max_sharpe_limit_efs
+            if row["paper_version"] == "v2"
         ),
         "v1_v2_common_benchmark_cells": len(lineage),
         "v1_v2_common_benchmark_cells_same_at_v2_precision": sum(row["same_at_v2_precision"] for row in lineage),

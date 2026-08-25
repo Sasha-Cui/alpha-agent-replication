@@ -9,13 +9,13 @@ datasets, paper structure, and results.
 - **EFS itself: 0 native result cells reproduced in either version.** No
   author-linked EFS code, exact configuration, model snapshot, factor pool,
   search trace, action/weight path, raw return, or result output was found.
-- **Original v1: 7/773 table-result cells reproduced, all cited-baseline
-  evidence.** Five are 1/N MDD cells; mSSRM and ASMCVaR contribute one isolated
-  cell each. Neither cited sparse method reproduces a complete EFS row.
-- **Current v2: 13/877 cells reproduce at its coarser display precision.** Eight
-  are 1/N cells, three are mSSRM cells, and two are ASMCVaR cells. All are
-  cited-baseline evidence, not EFS evidence. Paper compilation and parsing
-  receive no experiment credit.
+- **Original v1: 9/773 table-result cells reproduce, all cited-baseline
+  evidence.** Five are 1/N MDD cells, two are Mean-CVaR cells, and mSSRM plus
+  ASMCVaR contribute one isolated cell each.
+- **Current v2: 16/877 cells reproduce at its coarser display precision.**
+  Eight are 1/N, three mSSRM, two Mean-CVaR, two ASMCVaR, and one is the
+  source-grounded mSSRM m=N Max-Sharpe limit. None forms a complete reproduced
+  row or receives native EFS credit.
 
 The mSSRM release was run twice for every combination of five EFS matrices
 and m={10,15,20}. All 15 full 623-point wealth paths were bit-identical across
@@ -32,6 +32,25 @@ the paper prints 0.2339. Against EFS, only 1/45 v1 and 2/24 v2 ASMCVaR cells
 match at display precision, and no complete row matches. A same-runtime repeat
 is bit-identical; an independent Octave execution agrees within disclosed
 floating-point tolerances.
+The conventional Mean-CVaR baseline from the original ASMCVaR paper was
+reimplemented directly from equations (1)--(3), with the disclosed rolling
+window and conventional c=0.95 confidence. All six full wealth/weight paths
+repeat bit-identically under Python 3.9 and 3.12, and all 12 published CW/SR
+cells reproduce. Against EFS, only 2/15 v1 and 2/12 v2 cells match, with no
+complete row.
+
+The mSSRM source was also run at m=N, which removes the cardinality restriction
+from equations (3.3)--(3.4) and supplies a source-grounded regularized
+Max-Sharpe limit. All five full paths repeat bit-identically across 10 Octave
+runs. It matches 0/15 v1 and only 1/12 v2 Max-Sharpe cells (FF25 MDD at coarse
+precision), so it does not recover an EFS Max-Sharpe row. The EFS authors did
+not release the wrapper needed to prove that this was their implementation.
+
+A three-commit repository owned by ASMCVaR coauthor Zhao-Rong Lai explicitly
+redirects to the executed `linyizun2024/ASMCVaR` repository. This establishes
+author attribution for that cited source, but adds no executable files or EFS
+lineage.
+
 
 ## Version-lineage warning
 
