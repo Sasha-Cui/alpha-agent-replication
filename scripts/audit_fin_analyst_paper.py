@@ -12,6 +12,7 @@ import os
 import re
 import subprocess
 import tarfile
+import zipfile
 from collections import Counter
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable, Mapping
@@ -33,6 +34,28 @@ ARENA_SPACE = "https://huggingface.co/spaces/TheFinAI/Agent-Market-Arena"
 AUTHOR_COMMIT = "85ab4781e74ed3deb9a7ef49bca3fa23b1ed9738"
 DATASET_COMMIT = "3ae0b896ed02e882c362f8edc90fd276159f5c5e"
 ARENA_COMMIT = "70c388c317b22322145ca8c2a5fe7aa5fe89dba3"
+AUTHOR_ARCHIVE_COMMIT = "5c7db3f9dd34108979218187eb2a81d9efe581d0"
+AUTHOR_ARCHIVE_DELETION_COMMIT = "65273e6cc6bf1c10577bb02095a099d6bcefb584"
+AUTHOR_ARCHIVE_LFS_SHA256 = (
+    "906caf4995c1984853d05fc7e70812d3d2f6050035a5851ff17aa0c49e766036"
+)
+AUTHOR_ARCHIVE_BYTES = 9_356
+OFFLINE_BASELINE_REVISIONS = {
+    "TSLA": {
+        "commit": "5b6ddd542ff5c940c87901ed2dff132888ce66fc",
+        "dataset_end": "2026-05-20",
+    },
+    "BTC": {
+        "commit": "c1b9ecd98b7ccc913d915621e313867e19e44555",
+        "dataset_end": "2026-05-21",
+    },
+}
+DECLARED_OFFLINE_END = "2026-05-10"
+EXPECTED_HISTORY_COUNTS = {
+    "author_space": {"commits": 5, "objects": 25, "paths": 13},
+    "dataset": {"commits": 103, "objects": 615, "paths": 4},
+    "organizer": {"commits": 327, "objects": 1807, "paths": 104},
+}
 
 PINS = {
     "primary/arxiv-abs.html": "95bdb9c6838813a55180f04675179f29d988d99555418ffb2767304f57380875",
@@ -80,6 +103,54 @@ def sha256(path: Path) -> str:
 
 def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
+
+
+def git_bytes(root: Path, *args: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
+def git_text(root: Path, *args: str) -> str:
+    return git_bytes(root, *args).decode("utf-8").strip()
+
+
+def repository_history_facts(root: Path) -> dict[str, Any]:
+    commits = int(git_text(root, "rev-list", "--all", "--count"))
+    object_lines = git_text(root, "rev-list", "--objects", "--all").splitlines()
+    path_lines = git_text(root, "log", "--all", "--name-only", "--format=").splitlines()
+    paths = sorted({line for line in path_lines if line})
+    unique_heads = {
+        line
+        for line in git_text(
+            root,
+            "for-each-ref",
+            "--format=%(objectname)",
+            "refs/heads",
+            "refs/remotes",
+        ).splitlines()
+        if line
+    }
+    return {
+        "commits": commits,
+        "objects": len(object_lines),
+        "paths": len(paths),
+        "unique_ref_heads": len(unique_heads),
+        "historical_paths": paths,
+    }
+
+
+def lfs_pointer(value: bytes) -> tuple[str, int]:
+    text = value.decode("ascii")
+    match = re.fullmatch(
+        r"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize (\d+)\n?",
+        text,
+    )
+    if match is None:
+        raise ValueError("malformed Git LFS pointer")
+    return match.group(1), int(match.group(2))
 
 
 def write_csv(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
@@ -188,12 +259,18 @@ def table_rows(environment: str) -> list[list[str]]:
 
 
 def result_rows(
-    source: str, error_replay: list[dict[str, Any]] | None = None
+    source: str,
+    error_replay: list[dict[str, Any]] | None = None,
+    baseline_replay: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     error_evidence = {
         (row["row_label"], row["asset"]): row for row in (error_replay or [])
     }
     all_rows: list[dict[str, Any]] = []
+    baseline_evidence = {
+        (row["table_label"], row["row_label"], row["quantitative_column_index"]): row
+        for row in (baseline_replay or [])
+    }
     for label, (expected_labels, expected_count) in TABLE_SPECS.items():
         selected: list[dict[str, Any]] = []
         for row_index, cells in enumerate(table_rows(table_environment(source, label)), 1):
@@ -209,8 +286,18 @@ def result_rows(
                     continue
                 asset = ("TSLA", "BTC")[column_index - 1] if label == "tab:error_attribution" else ""
                 error_row = error_evidence.get((match_label, asset))
-                recovered = (label == "tab:results" and column_index <= 4) or error_row is not None
-                regenerated = bool(error_row and error_row["full_printed_cell_match"])
+                baseline_row = baseline_evidence.get(
+                    (label, match_label, column_index)
+                )
+                recovered = (
+                    (label == "tab:results" and column_index <= 4)
+                    or error_row is not None
+                    or baseline_row is not None
+                )
+                regenerated = bool(
+                    (error_row and error_row["full_printed_cell_match"])
+                    or (baseline_row and baseline_row["matches_at_display_precision"])
+                )
                 selected.append({
                     "table_label": label,
                     "row_index": row_index,
@@ -221,10 +308,20 @@ def result_rows(
                     "source_document_recovered": True,
                     "official_input_or_result_record_recovered": recovered,
                     "author_native_decision_pipeline_reexecuted": False,
-                    "organizer_postprocessor_replayed": recovered,
+                    "organizer_postprocessor_replayed": bool(
+                        error_row or (label == "tab:results" and column_index <= 4)
+                    ),
+                    "official_historical_dataset_replayed": baseline_row is not None,
+                    "paper_protocol_period_match": (
+                        baseline_row["paper_protocol_period_match"]
+                        if baseline_row
+                        else ""
+                    ),
                     "published_result_regenerated_at_display_precision": regenerated,
                     "paper_result_credit": False,
                     "blocking_reason": (
+                        "official-history baseline regeneration: the printed cell is recovered exactly from a later asset-specific dataset revision whose endpoint conflicts with the paper's declared 2026-05-10 cutoff"
+                        if baseline_row and regenerated else
                         "organizer-output verification: official decisions and the pinned scorer reproduce the printed cell; action-generation LLM calls were not rerun"
                         if regenerated else
                         "organizer-output partial check: official decisions recover part of the composite cell but not every printed component"
@@ -352,6 +449,307 @@ def dataset_rows(scratch: Path) -> list[dict[str, Any]]:
         if abs(observed_return - raw_return) > 1e-10:
             raise ValueError(f"dataset return changed for {asset}")
     return rows
+
+
+def dataset_revision_rows(scratch: Path) -> list[dict[str, Any]]:
+    """Verify and inventory every official historical dataset payload."""
+    import pandas as pd
+
+    repository = scratch / "native/CLEF_Task3_Trading"
+    payload_root = scratch / "historical/dataset_revisions"
+    printed_returns = {"TSLA": 0.379, "BTC": -0.315}
+    output: list[dict[str, Any]] = []
+    for asset in ("TSLA", "BTC"):
+        relative = f"data/{asset}-00000-of-00001.parquet"
+        revisions = [
+            line.split("|", 1)
+            for line in git_text(
+                repository,
+                "log",
+                "--all",
+                "--format=%H|%cI",
+                "--",
+                relative,
+            ).splitlines()
+            if line
+        ]
+        if len(revisions) != 102:
+            raise ValueError(f"historical {asset} revision count changed")
+        for commit, committed_at in revisions:
+            oid, expected_size = lfs_pointer(
+                git_bytes(repository, "show", f"{commit}:{relative}")
+            )
+            path = payload_root / f"{commit}_{asset}.parquet"
+            if path.stat().st_size != expected_size or sha256(path) != oid:
+                raise ValueError(f"historical dataset payload mismatch: {path.name}")
+            frame = pd.read_parquet(path, columns=["date", "prices"])
+            dates = frame["date"].astype(str)
+            paper_slice = frame[
+                dates.between("2025-08-01", DECLARED_OFFLINE_END)
+            ]
+            values = paper_slice["prices"].astype("<f8").to_numpy()
+            observed_return = float(values[-1] / values[0] - 1)
+            output.append(
+                {
+                    "asset": asset,
+                    "commit": commit,
+                    "committed_at": committed_at,
+                    "lfs_sha256": oid,
+                    "lfs_bytes": expected_size,
+                    "payload_verified_against_lfs_pointer": True,
+                    "dataset_rows": len(frame),
+                    "dataset_start": str(frame["date"].iloc[0]),
+                    "dataset_end": str(frame["date"].iloc[-1]),
+                    "declared_period_rows_available": len(paper_slice),
+                    "declared_period_price_sha256": sha256_bytes(values.tobytes()),
+                    "declared_period_raw_return": observed_return,
+                    "fully_covers_declared_period": (
+                        str(frame["date"].iloc[-1]) >= DECLARED_OFFLINE_END
+                    ),
+                    "declared_period_return_matches_printed": (
+                        round(observed_return, 3) == printed_returns[asset]
+                    ),
+                    "recovered_table_baseline_revision": (
+                        commit == OFFLINE_BASELINE_REVISIONS[asset]["commit"]
+                    ),
+                }
+            )
+    if len(output) != 204:
+        raise ValueError("official historical dataset payload census changed")
+    for asset in ("TSLA", "BTC"):
+        rows = [row for row in output if row["asset"] == asset]
+        full = [row for row in rows if row["fully_covers_declared_period"]]
+        if (
+            len(rows) != 102
+            or len(full) != 20
+            or len({row["declared_period_price_sha256"] for row in full}) != 1
+            or any(row["declared_period_return_matches_printed"] for row in full)
+            or sum(row["recovered_table_baseline_revision"] for row in rows) != 1
+        ):
+            raise ValueError(f"historical dataset lineage boundary changed: {asset}")
+    return output
+
+
+def offline_baseline_reproduction(
+    scratch: Path,
+) -> list[dict[str, Any]]:
+    """Regenerate both seven-cell Buy-and-Hold rows from hidden later snapshots."""
+    import numpy as np
+    import pandas as pd
+
+    payload_root = scratch / "historical/dataset_revisions"
+    printed = {
+        "TSLA": (0.379, 0.000, 0.96, 0.318, 0.299, 0.37, 293),
+        "BTC": (-0.315, 0.000, -0.68, -0.277, 0.497, 0.49, 294),
+    }
+    metrics = ("CR", "alpha_BH", "Sharpe", "AR", "MDD", "WR", "N_tr")
+    formulas = (
+        "last_price / first_price - 1",
+        "CR_buy_and_hold - CR_buy_and_hold",
+        "mean(simple_daily_return) / sample_sd(simple_daily_return) * sqrt(252)",
+        "(last_price / first_price) ** (252 / total_rows) - 1",
+        "absolute maximum drawdown of the price index",
+        "fraction of N-1 simple daily returns greater than zero",
+        "total dataset rows (despite the N_tr label)",
+    )
+    decimals = (3, 3, 2, 3, 3, 2, 0)
+    output: list[dict[str, Any]] = []
+    for asset in ("TSLA", "BTC"):
+        revision = OFFLINE_BASELINE_REVISIONS[asset]
+        path = payload_root / f"{revision['commit']}_{asset}.parquet"
+        frame = pd.read_parquet(path, columns=["date", "prices"])
+        prices = frame["prices"].astype(float)
+        returns = prices.pct_change().dropna()
+        cumulative_return = float(prices.iloc[-1] / prices.iloc[0] - 1)
+        reproduced = (
+            cumulative_return,
+            0.0,
+            float(returns.mean() / returns.std(ddof=1) * np.sqrt(252)),
+            float((1 + cumulative_return) ** (252 / len(frame)) - 1),
+            float(-(prices / prices.cummax() - 1).min()),
+            float((returns > 0).mean()),
+            len(frame),
+        )
+        table_label = "tab:tsla" if asset == "TSLA" else "tab:btc"
+        for column_index, (metric, formula, expected, observed, digits) in enumerate(
+            zip(metrics, formulas, printed[asset], reproduced, decimals),
+            1,
+        ):
+            matches = round(float(observed), digits) == round(float(expected), digits)
+            output.append(
+                {
+                    "table_label": table_label,
+                    "row_label": "Buy & Hold",
+                    "asset": asset,
+                    "quantitative_column_index": column_index,
+                    "metric": metric,
+                    "printed_value": expected,
+                    "reproduced_value": observed,
+                    "display_decimals": digits,
+                    "absolute_difference": abs(float(observed) - float(expected)),
+                    "matches_at_display_precision": matches,
+                    "formula": formula,
+                    "dataset_commit": revision["commit"],
+                    "dataset_start": str(frame["date"].iloc[0]),
+                    "dataset_end": str(frame["date"].iloc[-1]),
+                    "declared_dataset_end": DECLARED_OFFLINE_END,
+                    "paper_protocol_period_match": False,
+                    "author_native_agent_pipeline_reexecuted": False,
+                    "paper_result_credit": False,
+                    "verification_class": (
+                        "official_history_baseline_cell_regenerated_wrong_declared_endpoint"
+                        if matches
+                        else "official_history_baseline_cell_mismatch"
+                    ),
+                }
+            )
+    if len(output) != 14 or not all(
+        row["matches_at_display_precision"] for row in output
+    ):
+        raise ValueError("historical offline baseline reproduction changed")
+    return output
+
+
+def release_history_audit(
+    scratch: Path,
+    revisions: list[dict[str, Any]],
+) -> dict[str, Any]:
+    repositories = {
+        "author_space": scratch / "native/Fin_Analyst",
+        "dataset": scratch / "native/CLEF_Task3_Trading",
+        "organizer": scratch / "native/Agent-Market-Arena",
+    }
+    facts = {
+        name: repository_history_facts(path)
+        for name, path in repositories.items()
+    }
+    for name, expected in EXPECTED_HISTORY_COUNTS.items():
+        observed = facts[name]
+        if any(observed[key] != value for key, value in expected.items()):
+            raise ValueError(f"{name} full-history census changed: {observed}")
+
+    author_repository = repositories["author_space"]
+    pointer = git_bytes(
+        author_repository,
+        "show",
+        f"{AUTHOR_ARCHIVE_COMMIT}:files.zip",
+    )
+    oid, size = lfs_pointer(pointer)
+    if (oid, size) != (AUTHOR_ARCHIVE_LFS_SHA256, AUTHOR_ARCHIVE_BYTES):
+        raise ValueError("deleted author archive pointer changed")
+    deleted = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(author_repository),
+            "cat-file",
+            "-e",
+            f"{AUTHOR_ARCHIVE_DELETION_COMMIT}:files.zip",
+        ],
+        capture_output=True,
+    )
+    if deleted.returncode == 0:
+        raise ValueError("historical author archive is no longer deleted at the pin")
+    archive_path = scratch / "historical/files-5c7db3f.zip"
+    if archive_path.stat().st_size != size or sha256(archive_path) != oid:
+        raise ValueError("deleted author archive payload does not match LFS pointer")
+    with zipfile.ZipFile(archive_path) as archive:
+        members = archive.infolist()
+        names = [member.filename for member in members]
+        if any(
+            PurePosixPath(name).is_absolute()
+            or ".." in PurePosixPath(name).parts
+            for name in names
+        ):
+            raise ValueError("unsafe deleted author archive member")
+        member_rows = [
+            {
+                "path": member.filename,
+                "bytes": member.file_size,
+                "sha256": sha256_bytes(archive.read(member)),
+            }
+            for member in members
+            if not member.is_dir()
+        ]
+    if names != ["app.py", "Dockerfile", "requirements.txt", "README.md"]:
+        raise ValueError(f"deleted author archive inventory changed: {names}")
+    if sum(row["bytes"] for row in member_rows) != 26_747:
+        raise ValueError("deleted author archive uncompressed size changed")
+
+    full_by_asset = {
+        asset: [
+            row
+            for row in revisions
+            if row["asset"] == asset and row["fully_covers_declared_period"]
+        ]
+        for asset in ("TSLA", "BTC")
+    }
+    recovered_rows = {
+        row["asset"]: row for row in revisions if row["recovered_table_baseline_revision"]
+    }
+    if git_bytes(
+        repositories["organizer"],
+        "show",
+        f"{ARENA_COMMIT}:public/data/asset_requests.json",
+    ).strip() != b"[]":
+        raise ValueError("organizer's sole historical data JSON changed")
+    primitive_suffixes = {".csv", ".parquet", ".jsonl", ".db", ".sqlite", ".pkl", ".zip"}
+    primitive_paths = [
+        path
+        for path in facts["organizer"]["historical_paths"]
+        if PurePosixPath(path).suffix.lower() in primitive_suffixes
+    ]
+    if primitive_paths:
+        raise ValueError(
+            f"organizer history gained primitive decision/result candidates: {primitive_paths}"
+        )
+    return {
+        "author_space": {
+            **{key: facts["author_space"][key] for key in ("commits", "objects", "paths", "unique_ref_heads")},
+            "deleted_lfs_archive_commit": AUTHOR_ARCHIVE_COMMIT,
+            "deleted_lfs_archive_deletion_commit": AUTHOR_ARCHIVE_DELETION_COMMIT,
+            "deleted_lfs_archive_sha256": oid,
+            "deleted_lfs_archive_bytes": size,
+            "deleted_lfs_archive_members": member_rows,
+            "deleted_lfs_archive_contains_decisions_or_results": False,
+        },
+        "dataset": {
+            **{key: facts["dataset"][key] for key in ("commits", "objects", "paths", "unique_ref_heads")},
+            "historical_paths": facts["dataset"]["historical_paths"],
+            "lfs_payload_revisions": len(revisions),
+            "lfs_payloads_verified": sum(
+                row["payload_verified_against_lfs_pointer"] for row in revisions
+            ),
+            "fully_covering_declared_period_revisions_per_asset": {
+                asset: len(rows) for asset, rows in full_by_asset.items()
+            },
+            "unique_declared_period_price_paths_among_full_revisions": {
+                asset: len({row["declared_period_price_sha256"] for row in rows})
+                for asset, rows in full_by_asset.items()
+            },
+            "full_declared_period_revisions_matching_printed_return": {
+                asset: sum(row["declared_period_return_matches_printed"] for row in rows)
+                for asset, rows in full_by_asset.items()
+            },
+            "recovered_table_baseline_revisions": {
+                asset: {
+                    "commit": row["commit"],
+                    "dataset_rows": row["dataset_rows"],
+                    "dataset_end": row["dataset_end"],
+                }
+                for asset, row in recovered_rows.items()
+            },
+            "historical_action_or_result_paths": 0,
+        },
+        "organizer": {
+            **{key: facts["organizer"][key] for key in ("commits", "objects", "paths", "unique_ref_heads")},
+            "historical_database_contents_in_git": False,
+            "historical_primitive_decision_or_result_paths": 0,
+            "sole_data_json": "public/data/asset_requests.json",
+            "sole_data_json_value": [],
+        },
+        "paper_result_credit": False,
+    }
 
 
 def replay_rows(scratch: Path) -> list[dict[str, Any]]:
@@ -631,7 +1029,7 @@ print(json.dumps(result, sort_keys=True))
 def method_rows() -> list[dict[str, str]]:
     values = (
         ("official paper and source", "complete", "single 13-page arXiv-v1 PDF and nine-file source archive pinned; all official/rebuilt pages visually checked"),
-        ("author implementation", "substantial_pre_live_R3", "first-author Hugging Face Space, 13 files, Docker runner, requirements, seven corpora, commit 85ab478 on 2026-05-04"),
+        ("author implementation", "substantial_pre_live_R3", "complete five-commit first-author Space history, 12 unique paths, Docker runner, requirements and seven corpora; the deleted four-file LFS archive is source-only"),
         ("license", "absent", "no license file or declared license observed in author Space"),
         ("dependency environment", "unlocked", "python:3.11-slim plus six lower-bounded requirements; no exact lock or image digest"),
         ("model", "mutable_alias", "gpt-4o-mini, temperature .1, JSON mode, token caps; no dated snapshot, seed, request IDs, or responses"),
@@ -643,9 +1041,9 @@ def method_rows() -> list[dict[str, str]]:
         ("official live decisions", "recovered", "97 paper-window rows: 47 TSLA and 50 BTC, from organizer public database snapshot"),
         ("organizer scoring", "replayed_current", "pinned May-22 organizer scorer with 6-bp fees and 10-bp execution slippage"),
         ("live result reproduction", "partial_output_verification", "headline return/alpha/Sharpe/win cells conflict, but five Table 7 cells reproduce from the official decisions and pinned organizer output"),
-        ("offline dataset", "recovered_pre_live", "May-11 revision has exact paper date span, price ranges, and 194/283 distinct observations"),
+        ("offline dataset", "complete_103_commit_history", "all 204 TSLA/BTC LFS payloads verify; the 20 revisions per asset covering the declared May-10 endpoint share one identical period path that conflicts with both printed returns"),
         ("offline actions", "missing", "no immutable gpt-4o-mini calls/responses, historical Fear & Greed series, action path, seed, or cache state"),
-        ("offline results", "missing", "no raw paths, baseline actions, ablation runs, result arrays, or generator"),
+        ("offline results", "baseline_only_recovered_from_mislabeled_period", "all 14 Buy-and-Hold cells regenerate from asset-specific May-20/May-21 dataset endpoints, not the paper's declared May-10 endpoint; agent and ablation paths remain absent"),
         ("cost model", "paper_partial_source_current", "paper says net of fees but omits full implementation; current organizer source uses 6-bp fees plus 10-bp slippage"),
         ("rank provenance", "not_recoverable", "current dynamic leaderboard cannot prove historical ranks as displayed on 2026-07-05"),
         ("statistical inference", "absent", "paper explicitly reports no significance testing"),
@@ -668,6 +1066,9 @@ def consistency_rows() -> list[dict[str, str]]:
         ("fear_greed_interpretation", "narrative_rule_tension", "paper calls extreme fear a long opportunity but maps scores <=40 to SELL"),
         ("full_prompts_claim", "specification_conflict", "appendix says full prompts, but all nine rows are abridged versions of the released native constants"),
         ("live_error_attribution_denominators", "mixed_conventions_exactly_replayed", "TSLA uses 33 observable market-session transitions and excludes one zero next move; BTC counts all 50 rows including its terminal action with no within-window next move. These distinct conventions reproduce both printed exposure and hit-rate cells but are not one uniform rule."),
+        ("declared_offline_period_vs_table_lineage", "major_protocol_conflict", "all 20 official revisions per asset covering the declared May-10 endpoint have identical period prices and yield +41.542% TSLA/-27.517% BTC, not +37.9%/-31.5%"),
+        ("offline_baseline_mixed_asset_endpoints", "exact_hidden_lineage_recovered", "all seven TSLA Buy-and-Hold cells require the May-20 endpoint, while all seven BTC cells require May-21; both are later than the common May-10 period printed in the paper"),
+        ("offline_ntr_semantics", "label_and_protocol_conflict", "the displayed N_tr values 293/294 equal total calendar rows in the recovered later snapshots, exceed the declared 283 calendar rows and 194 TSLA trading days, and are not an executed-trade count"),
         ("mutable_model_replay", "irrecoverable_exactness", "gpt-4o-mini alias, SDK/image dependencies, requests/responses, cache state, and API seed are not frozen"),
     )
     return [{"check": a, "status": b, "detail": c} for a, b, c in values]
@@ -676,9 +1077,9 @@ def consistency_rows() -> list[dict[str, str]]:
 def release_rows() -> list[dict[str, Any]]:
     values = (
         ("paper/arXiv exact GitHub search", "no repository", "bounded search result pinned; negative search is not proof of absence", False),
-        ("first-author Hugging Face Space", AUTHOR_SPACE, f"strong attribution; created before live window; pinned {AUTHOR_COMMIT}", True),
-        ("organizer dataset", DATASET_URL, f"103-revision history; pre-live dataset pinned {DATASET_COMMIT}", True),
-        ("organizer arena", ARENA_SPACE, f"public scorer repository pinned {ARENA_COMMIT}; public database snapshot separately hashed", True),
+        ("first-author Hugging Face Space", AUTHOR_SPACE, f"all five commits and 12 paths audited; deleted LFS payload recovered; pinned {AUTHOR_COMMIT}", True),
+        ("organizer dataset", DATASET_URL, f"all 103 commits, four paths and 204 LFS payload revisions audited; pre-live dataset pin {DATASET_COMMIT}", True),
+        ("organizer arena", ARENA_SPACE, f"all 327 commits, 104 paths and two unique ref heads audited; scorer pin {ARENA_COMMIT}; public database snapshot separately hashed", True),
     )
     return [{"search_or_artifact": a, "result": b, "boundary": c, "attributable_or_official": d} for a, b, c, d in values]
 
@@ -694,8 +1095,11 @@ def build(scratch: Path, output: Path) -> None:
     )
     if overlap < 0.999:
         raise ValueError(f"source rebuild overlap regressed: {overlap}")
+    dataset_revisions = dataset_revision_rows(scratch)
+    baseline_replay = offline_baseline_reproduction(scratch)
+    history = release_history_audit(scratch, dataset_revisions)
     error_replay = error_attribution_replay(scratch)
-    tables = result_rows(source, error_replay)
+    tables = result_rows(source, error_replay, baseline_replay)
     prompts = prompt_rows(source, app_source)
     corpora = corpus_rows(scratch)
     datasets = dataset_rows(scratch)
@@ -708,6 +1112,9 @@ def build(scratch: Path, output: Path) -> None:
     write_csv(output / "native_corpus_inventory.csv", corpora)
     write_csv(output / "offline_dataset_audit.csv", datasets)
     write_csv(output / "live_result_replay.csv", replays)
+    write_csv(output / "dataset_revision_lineage.csv", dataset_revisions)
+    write_csv(output / "offline_baseline_reproduction.csv", baseline_replay)
+    write_json(output / "release_history_audit.json", history)
     write_csv(output / "error_attribution_replay.csv", error_replay)
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "method_specification_audit.csv", method_rows())
@@ -728,15 +1135,15 @@ def build(scratch: Path, output: Path) -> None:
     write_json(output / "source_provenance.json", provenance)
     readme = """# Fin-Analyst paper-faithfulness audit
 
-This audit uses the official 13-page arXiv-v1 paper, its complete nine-file source archive, a pre-live first-author Hugging Face deployment, the official organizer dataset and scorer, and a pinned snapshot of the organizer's public per-day decision log. The unmodified source rebuild reaches 99.96% extracted-token overlap; all official and rebuilt pages were visually checked.
+This audit uses the official 13-page arXiv-v1 paper and source, the complete five-commit first-author Space history, every one of the official dataset's 103 commits and 204 LFS payload revisions, all 327 organizer commits, and a pinned public per-day decision log. The unmodified source rebuild reaches 99.96% extracted-token overlap; all official and rebuilt pages were visually checked.
 
 The paper has **119 displayed empirical table cells** and **two empirical figure panels**. The attributable R3 deployment materially improves source-level fidelity: its Docker/FastAPI runner, nine native prompts, seven corpora, TSLA routing, BTC vote and failure behavior are inspectable. A dependency-isolated controlled run loads all corpora and exercises the native endpoint and voting paths without paid or external model calls. The public organizer log recovers 97 paper-window decisions, and the pinned organizer scorer replays them.
 
-That evidence does **not** reproduce the headline empirical claims or the LLM action-generation pipeline. Five of 119 printed cells do, however, regenerate exactly from the official decisions and pinned organizer postprocessor: TSLA and BTC acted-day exposure, both day-level hit rates, and BTC maximum drawdown. The four composite long/short hit/PnL cells recover their hit-rate components but not their PnL components, so they receive no full-cell credit. Zero of two full empirical panels regenerate. The raw price series verifies the two plotted Buy-and-Hold endpoints, but not the agent curves. Current official decisions plus the organizer scorer yield TSLA +4.79%/Sharpe 1.58/45% win rate rather than +13.51%/4.10/88%. BTC replays essentially flat (-0.10%), which agrees with the paper's figure and prose but conflicts with its table (-5.30%); the table's BTC alpha, Sharpe and win rate are likewise stale or inconsistent. The pinned pre-live dataset matches the paper's windows, counts and price ranges, yet its raw Buy-and-Hold returns do not match either offline table.
+That evidence does **not** reproduce the headline empirical claims or the LLM action-generation pipeline. **Nineteen of 119 printed cells regenerate exactly:** five live error-attribution cells from official decisions and the pinned organizer postprocessor, plus all 14 cells in the two offline Buy-and-Hold rows. The baseline lineage exposes a major protocol conflict: the TSLA row requires the official May-21 revision ending May 20, while BTC requires the May-22 revision ending May 21; the paper declares one common May-10 endpoint. All 20 official revisions per asset that fully cover the declared period contain one identical May-10 price path, and none matches the printed Buy-and-Hold return. The displayed N_tr values 293/294 are the total rows of the later snapshots, not trades under the stated daily protocol. The four composite live hit/PnL cells recover their hit-rate components but not their PnL components. Zero of two full empirical panels regenerate. Current official decisions still yield TSLA +4.79%/Sharpe 1.58/45% rather than +13.51%/4.10/88%, while BTC replays essentially flat (-0.10%) rather than the table's -5.30%.
 
-Native inspection also finds method-level defects. Three BTC HOLD votes become BUY because the code compares only BUY and SELL counts; a failed Fear & Greed request double-counts momentum. All nine appendix prompt rows are abridged relative to the released constants despite being labeled full prompts. The model alias, API calls, cache state, image, SDK and dependencies are not immutably frozen, the released TA and WSB corpora are stale before the live window ends, and no offline action/ablation paths or result generator are shipped.
+Native inspection also finds method-level defects. Three BTC HOLD votes become BUY because the code compares only BUY and SELL counts; a failed Fear & Greed request double-counts momentum. All nine appendix prompt rows are abridged relative to the released constants despite being labeled full prompts. The deleted first-author LFS ZIP is recoverable but contains only four source files already represented in the surviving release. The complete dataset and organizer histories add no action, ablation, cache, database, or result artifact. The model alias, API calls, cache state, image, SDK and dependencies are not immutably frozen, and the released TA and WSB corpora are stale before the live window ends.
 
-Therefore `strict_success` is false. This is strong native source and output-lineage recovery, not an end-to-end regeneration. The honest result is substantially closer than a paper-only proxy, while still far from 100% paper-result faithfulness.
+Therefore `strict_success` is false. This is strong source, baseline and output-lineage recovery, not an end-to-end Fin-Analyst regeneration. The empirical record is materially closer than a paper-only proxy, but its two baseline rows reproduce only under asset-specific endpoints that contradict the paper, and no native agent or ablation result is regenerated.
 """
     (output / "README.md").write_text(readme)
     generated_names = [path.name for path in output.iterdir() if path.name != "manifest.json"]
@@ -745,12 +1152,32 @@ Therefore `strict_success` is false. This is strong native source and output-lin
         "active_empirical_table_cells": 119, "empirical_figure_panels": 2,
         "attributable_pre_live_native_implementation_found": True,
         "native_controlled_execution_passed": True,
+        "author_space_history_commits": history["author_space"]["commits"],
+        "author_space_deleted_lfs_archive_recovered": True,
+        "author_space_deleted_lfs_archive_contains_results": False,
+        "official_dataset_history_commits": history["dataset"]["commits"],
+        "official_dataset_lfs_payloads_verified": history["dataset"][
+            "lfs_payloads_verified"
+        ],
+        "official_dataset_full_declared_period_revisions_per_asset": history[
+            "dataset"
+        ]["fully_covering_declared_period_revisions_per_asset"],
+        "official_dataset_full_declared_period_revisions_matching_printed_return": history[
+            "dataset"
+        ]["full_declared_period_revisions_matching_printed_return"],
+        "organizer_history_commits": history["organizer"]["commits"],
+        "organizer_historical_primitive_decision_or_result_paths": history[
+            "organizer"
+        ]["historical_primitive_decision_or_result_paths"],
         "paper_window_official_decision_rows_recovered": 97,
         "paper_window_official_rows_replayed_with_organizer_scorer": 97,
         "published_table_cells_regenerated": sum(
             row["published_result_regenerated_at_display_precision"] for row in tables
         ),
         "published_table_cells_verified_from_official_decisions_and_organizer_output": 5,
+        "published_baseline_cells_regenerated_from_official_history": 14,
+        "published_baseline_cells_regenerated_with_declared_endpoint": 0,
+        "published_baseline_cells_regenerated_with_recovered_mixed_endpoints": 14,
         "published_table_cells_reproduced_end_to_end_from_native_llm_pipeline": 0,
         "full_empirical_figure_panels_regenerated": 0,
         "displayed_figure_endpoints_verified": 2,

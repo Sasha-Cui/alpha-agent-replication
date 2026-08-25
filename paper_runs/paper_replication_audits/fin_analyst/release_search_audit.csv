@@ -1,5 +1,5 @@
 search_or_artifact,result,boundary,attributable_or_official
 paper/arXiv exact GitHub search,no repository,bounded search result pinned; negative search is not proof of absence,False
-first-author Hugging Face Space,https://huggingface.co/spaces/Mohotarema/Fin_Analyst,strong attribution; created before live window; pinned 85ab4781e74ed3deb9a7ef49bca3fa23b1ed9738,True
-organizer dataset,https://huggingface.co/datasets/TheFinAI/CLEF_Task3_Trading,103-revision history; pre-live dataset pinned 3ae0b896ed02e882c362f8edc90fd276159f5c5e,True
-organizer arena,https://huggingface.co/spaces/TheFinAI/Agent-Market-Arena,public scorer repository pinned 70c388c317b22322145ca8c2a5fe7aa5fe89dba3; public database snapshot separately hashed,True
+first-author Hugging Face Space,https://huggingface.co/spaces/Mohotarema/Fin_Analyst,all five commits and 12 paths audited; deleted LFS payload recovered; pinned 85ab4781e74ed3deb9a7ef49bca3fa23b1ed9738,True
+organizer dataset,https://huggingface.co/datasets/TheFinAI/CLEF_Task3_Trading,"all 103 commits, four paths and 204 LFS payload revisions audited; pre-live dataset pin 3ae0b896ed02e882c362f8edc90fd276159f5c5e",True
+organizer arena,https://huggingface.co/spaces/TheFinAI/Agent-Market-Arena,"all 327 commits, 104 paths and two unique ref heads audited; scorer pin 70c388c317b22322145ca8c2a5fe7aa5fe89dba3; public database snapshot separately hashed",True
