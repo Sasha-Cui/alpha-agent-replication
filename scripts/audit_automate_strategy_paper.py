@@ -184,6 +184,21 @@ PAPER_TABLE_2: Tuple[Tuple[str, float, float], ...] = (
     ("Growth", 0.0146, 0.0217),
 )
 PAPER_TABLE_3_SELECTED_INDICES = (1, 3, 9, 10, 13, 15, 17, 20, 21, 27, 30, 33)
+PAPER_TABLE_3: Tuple[Tuple[int, int, float, float], ...] = (
+    (1, 1, -0.1459, 0.0209),
+    (2, 3, -1.0265, -0.0225),
+    (3, 9, -0.1978, 0.0193),
+    (4, 10, 0.0556, -0.0186),
+    (5, 13, -0.9450, -0.0186),
+    (6, 15, -0.4053, -0.0185),
+    (7, 17, -0.3199, 0.0194),
+    (8, 20, 3.6186, 0.0278),
+    (9, 21, -0.1830, 0.0236),
+    (10, 27, -3.2145, -0.0194),
+    (11, 30, -0.0058, 0.0187),
+    (12, 33, -1.8351, -0.0215),
+)
+PAPER_TABLE_3_COMBINED_IC = -0.0587
 PAPER_TABLE_4: Tuple[Tuple[str, Tuple[float, ...]], ...] = (
     ("Ours", (53.173, 0.287, 0.762, 0.208, 1.052)),
     ("XGBoost", (9.532, 0.038, 1.019, 0.067, 0.103)),
@@ -407,6 +422,77 @@ def table_2_audit(seed_rows: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]
                     ),
                 }
             )
+    return output
+
+
+def table_3_audit(seed_rows: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+    by_index = {int(row["index"]): row for row in seed_rows}
+    output: List[Dict[str, Any]] = []
+    for paper_row, source_index, paper_weight, paper_ic in PAPER_TABLE_3:
+        source = by_index[source_index]
+        error = abs(float(source["ic"]) - paper_ic)
+        output.append(
+            {
+                "paper_row": paper_row,
+                "source_seed_index": source_index,
+                "source_alpha": source["alpha"],
+                "source_formula": source["formula"],
+                "metric": "ic",
+                "paper_value": paper_ic,
+                "source_value": source["ic"],
+                "absolute_error": error,
+                "rounding_tolerance": DISPLAY_TOLERANCE,
+                "status": (
+                    "author_workbook_exact_rounding_match"
+                    if error <= DISPLAY_TOLERANCE
+                    else "author_workbook_mismatch"
+                ),
+                "author_source_corroborated": error <= DISPLAY_TOLERANCE,
+                "native_integrated_portfolio_reproduced": False,
+                "evidence": "data/Seed Alpha.xlsx signed IC",
+            }
+        )
+        output.append(
+            {
+                "paper_row": paper_row,
+                "source_seed_index": source_index,
+                "source_alpha": source["alpha"],
+                "source_formula": source["formula"],
+                "metric": "weight",
+                "paper_value": paper_weight,
+                "source_value": "",
+                "absolute_error": "",
+                "rounding_tolerance": DISPLAY_TOLERANCE,
+                "status": "unverifiable_missing_trained_dnn_output",
+                "author_source_corroborated": False,
+                "native_integrated_portfolio_reproduced": False,
+                "evidence": "no released selected-alpha weight artifact",
+            }
+        )
+    output.append(
+        {
+            "paper_row": "combined",
+            "source_seed_index": "",
+            "source_alpha": "Weighted Combination",
+            "source_formula": "",
+            "metric": "ic",
+            "paper_value": PAPER_TABLE_3_COMBINED_IC,
+            "source_value": "",
+            "absolute_error": "",
+            "rounding_tolerance": DISPLAY_TOLERANCE,
+            "status": "unverifiable_missing_trained_dnn_output",
+            "author_source_corroborated": False,
+            "native_integrated_portfolio_reproduced": False,
+            "evidence": "no released 12-alpha combined prediction or return path",
+        }
+    )
+    matched = [
+        row
+        for row in output
+        if row["status"] == "author_workbook_exact_rounding_match"
+    ]
+    if len(output) != 25 or len(matched) != 12:
+        raise RuntimeError("Automate Strategy Table 3 conformance census changed")
     return output
 
 
@@ -756,12 +842,14 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     source_dnn = (source_root / "train_dnn.m").read_text(encoding="utf-8")
     seeds = seed_alpha_rows(seed_path)
     table_2 = table_2_audit(seeds)
+    table_3 = table_3_audit(seeds)
     inventory = result_workbook_inventory(source_root)
     if len(inventory) != 7:
         raise RuntimeError(f"Expected seven pinned factor-analysis workbooks, found {len(inventory)}")
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "table_2_conformance.csv", table_2, list(table_2[0]))
+    write_csv(output_dir / "table_3_conformance.csv", table_3, list(table_3[0]))
     write_csv(
         output_dir / "factor_workbook_inventory.csv",
         inventory,
@@ -813,6 +901,8 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     hidden_match = re.search(r"hiddenLayerSize\s*=\s*(\d+)", source_dnn)
     source_hidden_nodes = int(hidden_match.group(1)) if hidden_match else None
     table_2_matches = sum(row["status"] == "exact_rounding_match" for row in table_2)
+    table_3_corroborated = sum(bool(row["author_source_corroborated"]) for row in table_3)
+    table_3_unverifiable = sum(row["status"].startswith("unverifiable") for row in table_3)
     covers_paper_window = any(bool(row["covers_paper_test_window"]) for row in inventory)
     integrated_schema = any(bool(row["has_integrated_strategy_schema"]) for row in inventory)
     manifest = {
@@ -841,6 +931,9 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "paper_table_2_cells_total": len(table_2),
         "paper_table_4_cells_verified": 0,
         "paper_table_4_cells_unverifiable": len(table_4),
+        "paper_table_3_cells_total": len(table_3),
+        "paper_table_3_cells_author_source_corroborated": table_3_corroborated,
+        "paper_table_3_cells_unverifiable": table_3_unverifiable,
         "factor_analysis_workbooks": len(inventory),
         "factor_analysis_window_start": min(row["sample_start"] for row in inventory),
         "factor_analysis_window_end": max(row["sample_end"] for row in inventory),
@@ -925,6 +1018,9 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
   workflow. This is component evidence, not the paper's final strategy.
 - Recomputing Table 2 with the inferable mean-absolute-IC rule matches
   {table_2_matches}/{len(table_2)} displayed cells at four-decimal precision.
+- The seed workbook corroborates all {table_3_corroborated}/12 signed IC cells
+  printed for Table 3's selected alphas at four-decimal precision. This is
+  author-source component evidence, not an integrated portfolio replay.
 - The complete public Git surface was reviewed: {history_summary['public_commits_reviewed']}
   commits on {history_summary['public_branches_reviewed']} branches, 39 unique historical paths,
   zero tags/releases, and zero unreachable objects.
@@ -936,8 +1032,9 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
 - No shipped workbook contains the integrated Jan 2023--Jan 2024 portfolio path,
   Table 4 schema, or the reported 53.173% final return; all {len(table_4)} Table 4
   metric cells are therefore unverifiable, not zero-filled or counted as failures.
-- Table 3 reports 12 selected alphas, while the public AutoGPT candidate directory
-  contains seven individual-factor workbooks and no weighted 12-alpha portfolio.
+- Table 3's 12 learned weights and combined IC are absent. The public AutoGPT
+  candidate directory contains only seven individual-factor workbooks and no
+  weighted 12-alpha portfolio, prediction, or return path.
 - The paper describes a 10-node DNN; `train_dnn.m` sets one hidden node and its
   required `result/profit.csv` and `result/alpha/` inputs are absent.
 - The paper's top-k/drop-n portfolio rule (k=13, n=5) is not implemented in the

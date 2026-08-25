@@ -46,6 +46,9 @@
   "paper_table_2_cells_total": 10,
   "paper_table_4_cells_verified": 0,
   "paper_table_4_cells_unverifiable": 40,
+  "paper_table_3_cells_total": 25,
+  "paper_table_3_cells_author_source_corroborated": 12,
+  "paper_table_3_cells_unverifiable": 13,
   "factor_analysis_workbooks": 7,
   "factor_analysis_window_start": "2022-09-30",
   "factor_analysis_window_end": "2022-12-30",
@@ -84,7 +87,7 @@
   "paper_internal_numeric_inconsistencies_recorded": 2,
   "interpretation": "The public artifacts support a partial 2022Q4 factor-analysis and prompt-selection component audit. They do not contain the 2023 integrated portfolio path required to verify the paper's 53.173% Table 4 result. Complete public-history review also finds a later generic Grail branch, but its components are disconnected from the released data and materially differ from the paper's GPT-4o, CSA/RPA, and |A|-10-1 MLP design. A dated census of 24 public forks and 25 branch refs finds that every fork head is already an exact commit in the audited official history, so no fork adds paper-result lineage.",
   "output_sha256": {
-    "README.md": "004fd54c17ab7a9cf039e43fa019e77c8e674c2b6142fcee3ac899a21d982e91",
+    "README.md": "35090542d8f0904bd85e756c56f4d64f78b211cf182bb4cc5c2f5514ecd2cbe0",
     "factor_workbook_inventory.csv": "3f2d34a4c4a168e04deca9be652157fbeaf08057ecf18c44297735ec2a9d1c30",
     "historical_branch_component_inventory.csv": "bd6d29c1fc990b7c6da0c9b17b09ccf62f15a333ec6567d0e09c55db16e4d2b2",
     "historical_branch_runtime_observation.json": "c89b9831b9e9e1539f6f67ae88b6910be0b9e5891e1049f1b98bdf89e5104834",
@@ -92,6 +95,7 @@
     "public_fork_ref_inventory.csv": "2c71051d0458839b7a71eb1cfa725d029e171a53b38cf68cd2bb71c9f62bd6be",
     "released_source_history_inventory.csv": "e25f8e888039cc89288585fb7bd8c2669c8d98d56cd21c912165da389e908f4d",
     "table_2_conformance.csv": "c7b7b0d656d2be071403b026872406fdd0a489dd6990a7ad91c697b5e4690b17",
+    "table_3_conformance.csv": "29aa48dbc789e5e9fed1dcbb5e78b67204657f0da5df21d3435ed7e7f56e06a1",
     "table_4_conformance.csv": "f88c59afb1fb13c8d337022bbeafcadae234aa076f60a0046d084dfe7f7c19df"
   }
 }

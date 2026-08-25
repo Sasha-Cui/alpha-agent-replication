@@ -19,6 +19,8 @@ SPEC.loader.exec_module(audit)
 def test_published_targets_cover_table_2_and_table_4() -> None:
     assert len(audit.PAPER_TABLE_2) == 5
     assert len(audit.PAPER_TABLE_3_SELECTED_INDICES) == 12
+    assert len(audit.PAPER_TABLE_3) == 12
+    assert audit.PAPER_TABLE_3_COMBINED_IC == -0.0587
     assert len(audit.PAPER_TABLE_4) == 8
     assert len(audit.TABLE_4_METRICS) == 5
     assert audit.PAPER_TABLE_4[0][1][0] == 53.173
@@ -56,6 +58,8 @@ def test_committed_audit_records_partial_component_not_paper_replication() -> No
         newline="", encoding="utf-8"
     ) as handle:
         inventory = list(csv.DictReader(handle))
+    with (output / "table_3_conformance.csv").open(newline="", encoding="utf-8") as handle:
+        table_3 = list(csv.DictReader(handle))
     with (output / "table_4_conformance.csv").open(newline="", encoding="utf-8") as handle:
         table_4 = list(csv.DictReader(handle))
     with (output / "released_source_history_inventory.csv").open(
@@ -73,6 +77,9 @@ def test_committed_audit_records_partial_component_not_paper_replication() -> No
     assert manifest["overall_status"] == "not_reproduced_missing_integrated_native_output"
     assert manifest["paper_table_2_cells_matched"] == 3
     assert manifest["paper_table_2_cells_total"] == 10
+    assert manifest["paper_table_3_cells_total"] == 25
+    assert manifest["paper_table_3_cells_author_source_corroborated"] == 12
+    assert manifest["paper_table_3_cells_unverifiable"] == 13
     assert manifest["paper_table_4_cells_verified"] == 0
     assert manifest["paper_table_4_cells_unverifiable"] == 40
     assert manifest["native_integrated_portfolio_return_shipped"] is False
@@ -143,5 +150,24 @@ def test_committed_audit_records_partial_component_not_paper_replication() -> No
     assert {row["sample_end"] for row in inventory} == {"2022-12-30"}
     assert all(row["covers_paper_test_window"] == "False" for row in inventory)
     assert all(row["status"].startswith("unverifiable") for row in table_4)
+    assert len(table_3) == 25
+    corroborated = [
+        row for row in table_3 if row["author_source_corroborated"] == "True"
+    ]
+    assert len(corroborated) == 12
+    assert {row["metric"] for row in corroborated} == {"ic"}
+    assert {int(row["source_seed_index"]) for row in corroborated} == set(
+        audit.PAPER_TABLE_3_SELECTED_INDICES
+    )
+    unverifiable = [
+        row for row in table_3 if row["status"].startswith("unverifiable")
+    ]
+    assert len(unverifiable) == 13
+    assert sum(row["metric"] == "weight" for row in unverifiable) == 12
+    assert any(row["paper_row"] == "combined" for row in unverifiable)
+    assert all(
+        row["native_integrated_portfolio_reproduced"] == "False"
+        for row in table_3
+    )
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected

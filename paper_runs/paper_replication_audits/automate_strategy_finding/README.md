@@ -21,6 +21,9 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
   workflow. This is component evidence, not the paper's final strategy.
 - Recomputing Table 2 with the inferable mean-absolute-IC rule matches
   3/10 displayed cells at four-decimal precision.
+- The seed workbook corroborates all 12/12 signed IC cells
+  printed for Table 3's selected alphas at four-decimal precision. This is
+  author-source component evidence, not an integrated portfolio replay.
 - The complete public Git surface was reviewed: 7
   commits on 2 branches, 39 unique historical paths,
   zero tags/releases, and zero unreachable objects.
@@ -32,8 +35,9 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
 - No shipped workbook contains the integrated Jan 2023--Jan 2024 portfolio path,
   Table 4 schema, or the reported 53.173% final return; all 40 Table 4
   metric cells are therefore unverifiable, not zero-filled or counted as failures.
-- Table 3 reports 12 selected alphas, while the public AutoGPT candidate directory
-  contains seven individual-factor workbooks and no weighted 12-alpha portfolio.
+- Table 3's 12 learned weights and combined IC are absent. The public AutoGPT
+  candidate directory contains only seven individual-factor workbooks and no
+  weighted 12-alpha portfolio, prediction, or return path.
 - The paper describes a 10-node DNN; `train_dnn.m` sets one hidden node and its
   required `result/profit.csv` and `result/alpha/` inputs are absent.
 - The paper's top-k/drop-n portfolio rule (k=13, n=5) is not implemented in the
