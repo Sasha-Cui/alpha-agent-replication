@@ -33,8 +33,8 @@ def test_committed_v1_and_v2_result_censuses_are_complete() -> None:
     assert Counter(row["paper_table"] for row in v1) == audit.V1_EXPECTED_TABLE_COUNTS
     assert len(v2) == 877
     assert Counter(row["paper_table"] for row in v2) == audit.V2_EXPECTED_TABLE_COUNTS
-    assert sum(row["paper_result_credit"] == "True" for row in v1) == 9
-    assert sum(row["paper_result_credit"] == "True" for row in v2) == 16
+    assert sum(row["paper_result_credit"] == "True" for row in v1) == 10
+    assert sum(row["paper_result_credit"] == "True" for row in v2) == 18
     assert {row["native_efs_result_credit"] for row in v1 + v2} == {"False"}
 
 
@@ -193,6 +193,53 @@ def test_max_sharpe_source_limit_does_not_recover_efs_rows() -> None:
     assert {row["native_efs_evidence"] for row in rows} == {"False"}
 
 
+def test_sspo_original_paper_reproduces_but_efs_rows_do_not() -> None:
+    original = read_csv(
+        output_dir() / "cited_sspo_original_paper_reproduction.csv"
+    )
+    efs = read_csv(output_dir() / "cited_sspo_efs_reproduction.csv")
+    assert len(original) == 10
+    assert {row["dataset"] for row in original} == set(
+        audit.SSPO_ORIGINAL_DATASETS
+    )
+    assert {row["metric"] for row in original} == {"CW", "SR"}
+    assert {row["source_commit"] for row in original} == {audit.SSPO_COMMIT}
+    assert {row["data_commit"] for row in original} == {audit.OLPS_COMMIT}
+    assert {row["repeat_paths_equal"] for row in original} == {"True"}
+    assert {row["original_sspo_paper_result_credit"] for row in original} == {
+        "True"
+    }
+    assert Counter(row["paper_version"] for row in efs) == {
+        "v1": 15,
+        "v2": 12,
+    }
+    assert Counter(
+        (row["paper_version"], row["paper_result_credit"]) for row in efs
+    ) == {
+        ("v1", "False"): 14,
+        ("v1", "True"): 1,
+        ("v2", "False"): 10,
+        ("v2", "True"): 2,
+    }
+    matches = {
+        (row["paper_version"], row["dataset"], row["metric"])
+        for row in efs
+        if row["paper_result_credit"] == "True"
+    }
+    assert matches == {
+        ("v1", "FF100", "SR"),
+        ("v2", "FF100", "CW"),
+        ("v2", "FF100", "SR"),
+    }
+    assert {row["wthresh_compatibility"] for row in efs} == {
+        "exact_soft_threshold"
+    }
+    assert {row["full_paths_repeat_equal"] for row in efs} == {"True"}
+    assert len({row["cw_sha256"] for row in efs}) == 5
+    assert {row["native_sspo_source_evidence"] for row in efs} == {"True"}
+    assert {row["native_efs_evidence"] for row in efs} == {"False"}
+
+
 def test_revision_lineage_detects_carryovers_and_semantic_relabels() -> None:
     rows = read_csv(output_dir() / "version_lineage_audit.csv")
     assert len(rows) == 240
@@ -224,15 +271,15 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     native = json.loads((output_dir() / "native_execution.json").read_text(encoding="utf-8"))
     provenance = json.loads((output_dir() / "source_provenance.json").read_text(encoding="utf-8"))
     assert manifest["overall_status"] == (
-        "partial_9_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_"
+        "partial_10_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_"
         "v2_audited_separately"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_evidence_route"] == "paper_only_underspecified"
     assert manifest["original_v1_table_result_cells"] == 773
-    assert manifest["original_v1_table_cells_reproduced"] == 9
+    assert manifest["original_v1_table_cells_reproduced"] == 10
     assert manifest["current_v2_table_result_cells"] == 877
-    assert manifest["current_v2_table_cells_reproduced"] == 16
+    assert manifest["current_v2_table_cells_reproduced"] == 18
     assert manifest["cited_mssrm_v1_cells_checked"] == 45
     assert manifest["cited_mssrm_v1_cells_reproduced"] == 1
     assert manifest["cited_mssrm_v2_cells_checked"] == 24
@@ -255,6 +302,12 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert manifest["cited_max_sharpe_limit_v1_cells_reproduced"] == 0
     assert manifest["cited_max_sharpe_limit_v2_cells_checked"] == 12
     assert manifest["cited_max_sharpe_limit_v2_cells_reproduced"] == 1
+    assert manifest["cited_sspo_v1_cells_checked"] == 15
+    assert manifest["cited_sspo_v1_cells_reproduced"] == 1
+    assert manifest["cited_sspo_v2_cells_checked"] == 12
+    assert manifest["cited_sspo_v2_cells_reproduced"] == 2
+    assert manifest["original_sspo_cells_checked"] == 10
+    assert manifest["original_sspo_cells_reproduced"] == 10
     assert manifest["native_efs_result_cells_reproduced"] == 0
     assert manifest["v1_v2_common_benchmark_cells_same_at_v2_precision"] == 240
     assert manifest["scores_to_weights_cells_relabelled_as_rw"] == 48
@@ -278,6 +331,11 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert native["cited_max_sharpe_limit_executed_with_octave"] is True
     assert native["cited_max_sharpe_limit_native_runs"] == 10
     assert native["cited_max_sharpe_limit_full_paths_repeat_exact"] == 5
+    assert native["cited_sspo_source_executed_with_octave"] is True
+    assert native["cited_sspo_native_runs"] == 10
+    assert native["cited_sspo_full_paths_repeat_exact"] == 5
+    assert native["original_sspo_cells_matching"] == 10
+    assert native["sspo_wthresh_compatibility"] == "exact_soft_threshold"
     assert native["native_efs_cells_with_credit"] == 0
     assert provenance["official_efs_repository_found"] is False
     assert provenance["cited_mssrm_native_execution"]["efs_comparison_full_paths_repeat_exact"] == 15
@@ -296,6 +354,13 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert provenance["cited_max_sharpe_limit_execution"]["efs_v1_cells_reproduced"] == 0
     assert provenance["cited_max_sharpe_limit_execution"]["efs_v2_cells_reproduced"] == 1
     assert provenance["original_paper"]["pdf_sha256"] == audit.ARXIV_V1_PDF_SHA256
+    assert provenance["cited_sspo_original_paper"]["reported_cells_reproduced"] == 10
+    assert provenance["cited_sspo_release"]["linked_by_jmlr_paper_page"] is True
+    assert provenance["cited_sspo_data_release"]["commit"] == audit.OLPS_COMMIT
+    assert provenance["cited_sspo_native_execution"]["native_runs"] == 20
+    assert provenance["cited_sspo_native_execution"]["same_runtime_repeat_paths_exact"] == 10
+    assert provenance["cited_sspo_native_execution"]["efs_v1_cells_reproduced"] == 1
+    assert provenance["cited_sspo_native_execution"]["efs_v2_cells_reproduced"] == 2
     assert provenance["current_revision"]["pdf_sha256"] == audit.ARXIV_V2_PDF_SHA256
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output_dir() / filename) == expected
@@ -311,6 +376,8 @@ def test_pinned_sources_and_dynamic_parsers_when_available() -> None:
     assert validated["github_search_total"] == 0
     assert validated["asmcvar_author_redirect_commits"] == 3
     v1 = audit.parse_v1_results(paper)
+    assert validated["sspo_source_commits"] == 6
+    assert validated["olps_source_commits"] == 44
     v2 = audit.parse_v2_results(paper)
     metrics = audit.baseline_metrics(asm_cvar)
     baseline = audit.apply_baseline_credit(v1, metrics) + audit.apply_baseline_credit(v2, metrics)
@@ -344,9 +411,16 @@ def test_pinned_sources_and_dynamic_parsers_when_available() -> None:
         assert len(audit.apply_max_sharpe_limit_credit(v1, max_sharpe)) == 15
         assert len(audit.apply_max_sharpe_limit_credit(v2, max_sharpe)) == 12
     lineage = audit.apply_version_lineage(v1, v2)
+    sspo_results = Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_sspo_runs")
+    if sspo_results.exists():
+        original_sspo = audit.load_sspo_metrics(sspo_results, original=True)
+        assert len(audit.original_sspo_conformance(original_sspo)) == 10
+        efs_sspo = audit.load_sspo_metrics(sspo_results, original=False)
+        assert len(audit.apply_sspo_credit(v1, efs_sspo)) == 15
+        assert len(audit.apply_sspo_credit(v2, efs_sspo)) == 12
     assert (len(v1), len(v2), len(baseline), len(lineage)) == (773, 877, 27, 240)
-    expected_v1 = (7 if results.exists() else 5) + (2 if nonsparse.exists() else 0)
-    expected_v2 = (13 if results.exists() else 8) + (3 if nonsparse.exists() else 0)
+    expected_v1 = (7 if results.exists() else 5) + (2 if nonsparse.exists() else 0) + (1 if sspo_results.exists() else 0)
+    expected_v2 = (13 if results.exists() else 8) + (3 if nonsparse.exists() else 0) + (2 if sspo_results.exists() else 0)
     assert sum(row["paper_result_credit"] for row in v1) == expected_v1
     assert sum(row["paper_result_credit"] for row in v2) == expected_v2
     assert sum(row["method_semantics_relabelled"] for row in lineage) == 48

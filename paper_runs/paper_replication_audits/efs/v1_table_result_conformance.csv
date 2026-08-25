@@ -14,21 +14,21 @@ v1,benchmark,0,Baseline | 1/N,11,FF100,MDD,0.549,0.54876606898,True,False,True,v
 v1,benchmark,0,Baseline | 1/N,12,FF100MEOP,CW,371.33,367.764858628,False,False,False,version_specific_result
 v1,benchmark,0,Baseline | 1/N,13,FF100MEOP,SR,0.209,0.207488076412,False,False,False,version_specific_result
 v1,benchmark,0,Baseline | 1/N,14,FF100MEOP,MDD,0.532,0.531532764619,True,False,True,version_specific_result
-v1,benchmark,1,SSPO,0,FF25,CW,76.70,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,1,FF25,SR,0.140,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,2,FF25,MDD,0.784,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,3,FF32,CW,15.37,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,4,FF32,SR,0.100,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,5,FF32,MDD,0.733,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,6,FF49,CW,62.27,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,7,FF49,SR,0.114,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,8,FF49,MDD,0.878,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,9,FF100,CW,1.21,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,10,FF100,SR,0.046,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,11,FF100,MDD,0.823,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,12,FF100MEOP,CW,9.97,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,13,FF100MEOP,SR,0.086,,False,False,False,version_specific_result
-v1,benchmark,1,SSPO,14,FF100MEOP,MDD,0.814,,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,0,FF25,CW,76.70,24.1177077812,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,1,FF25,SR,0.140,0.111692938705,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,2,FF25,MDD,0.784,0.84560604786,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,3,FF32,CW,15.37,12.0474741843,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,4,FF32,SR,0.100,0.0934792990194,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,5,FF32,MDD,0.733,0.684844123441,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,6,FF49,CW,62.27,0.711220067807,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,7,FF49,SR,0.114,0.0490571129253,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,8,FF49,MDD,0.878,0.958705228818,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,9,FF100,CW,1.21,0.987056872239,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,10,FF100,SR,0.046,0.0463404557787,True,False,True,version_specific_result
+v1,benchmark,1,SSPO,11,FF100,MDD,0.823,0.858600264674,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,12,FF100MEOP,CW,9.97,8.89316867119,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,13,FF100MEOP,SR,0.086,0.0854967039122,False,False,False,version_specific_result
+v1,benchmark,1,SSPO,14,FF100MEOP,MDD,0.814,0.842714585141,False,False,False,version_specific_result
 v1,benchmark,2,Min-cVaR,0,FF25,CW,386.71,333.413629283,False,False,False,version_specific_result
 v1,benchmark,2,Min-cVaR,1,FF25,SR,0.239,0.230475458767,False,False,False,version_specific_result
 v1,benchmark,2,Min-cVaR,2,FF25,MDD,0.538,0.542902657007,False,False,False,version_specific_result

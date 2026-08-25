@@ -33,6 +33,15 @@
   "cited_mssrm_v1_cells_matching": 1,
   "cited_mssrm_v2_cells_checked": 24,
   "cited_mssrm_v2_cells_matching": 3,
+  "cited_sspo_full_paths_repeat_exact": 5,
+  "cited_sspo_native_configurations": 5,
+  "cited_sspo_native_runs": 10,
+  "cited_sspo_source_commit": "2fac74d5ca6a75476c69c04963830bb35a0e263b",
+  "cited_sspo_source_executed_with_octave": true,
+  "cited_sspo_v1_cells_checked": 15,
+  "cited_sspo_v1_cells_matching": 1,
+  "cited_sspo_v2_cells_checked": 12,
+  "cited_sspo_v2_cells_matching": 2,
   "efs_native_execution_attempted": false,
   "matlab_baseline_source_executed": true,
   "matlab_reason": "ASMCVaR ran under MATLAB R2023b for all 18 paper configurations; FF25 m=10 also ran under Octave 9.2.0 and matched MATLAB within tolerance",
@@ -53,6 +62,8 @@
   "original_mssrm_paper_cells_checked": 36,
   "original_mssrm_paper_cells_matching": 36,
   "original_mssrm_supplement_paths_equal_mirror": 6,
+  "original_sspo_cells_checked": 10,
+  "original_sspo_cells_matching": 10,
   "paper_source_compilation": {
     "v1": {
       "exit_codes": [
@@ -77,6 +88,7 @@
     }
   },
   "reason": "no author-linked EFS implementation, config, factor pool, checkpoint, or result path released",
-  "v1_cited_baseline_cells_with_credit": 9,
-  "v2_cited_baseline_cells_with_credit": 16
+  "sspo_wthresh_compatibility": "exact_soft_threshold",
+  "v1_cited_baseline_cells_with_credit": 10,
+  "v2_cited_baseline_cells_with_credit": 18
 }

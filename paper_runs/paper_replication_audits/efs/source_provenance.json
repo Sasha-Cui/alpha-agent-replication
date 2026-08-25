@@ -179,6 +179,91 @@
     "tree": "4a8a92e08c8038194b42703541374278a456db9f",
     "url": "https://github.com/linyizun2024/mSSRM"
   },
+  "cited_sspo_data_release": {
+    "archive_sha256": "c1714ff82441df44ed74e54ee2fdfeb7091f69a9912de296ee098019079c19e8",
+    "commit": "9120783cd59a7966b0f78e2b5668030a4378b8af",
+    "data_sha256": {
+      "djia": "4e268f3f35ee133680805f972477ac6021f54c58d372eec78b03ffc8dcde718c",
+      "nyse-n": "9b68189218f845a54c6760b1c37a100aa7437498a0df79e7178772735e76808e",
+      "nyse-o": "d69006454ac25b3eead931fd7964a15da6f13d3383dea1c652c1cd8a3b3a1b0e",
+      "sp500": "3026a41802a09833a4abdbffbb318dfa143349709abd3a6277ea4b687054716c",
+      "tse": "5e623ef7656ca2ce9d028db7f640913e6f015d60364ccccd3b6f63c8f83857ce"
+    },
+    "reachable_commits": 44,
+    "tree": "b6d1491d55d827f4dd070112bcab98ab5e6d4643",
+    "url": "https://github.com/OLPS/OLPS"
+  },
+  "cited_sspo_native_execution": {
+    "default_parameters": {
+      "eta": 0.005,
+      "gamma": 0.01,
+      "lambda": 0.5,
+      "window": 5,
+      "zeta": 500
+    },
+    "efs_configurations": 5,
+    "efs_cw_sha256": {
+      "FF100": "102badafe627be2d4fbd3cbeb5f1d3984c79705df0637f98722162ebb6a2db0f",
+      "FF100MEOP": "7082bbf8f560267a95583b1f1e2815675efce40b716691a11192249ea6ba96d2",
+      "FF25": "dccdbe28c9b0e327a766a40b2542f56c6cbb22de1165cbaa59262c1daf70f98c",
+      "FF32": "393e4395a418f9c34fdaf71fd2712d2bdbf3098fb933cb64d12051ae173a2642",
+      "FF49": "814a5a7697ebf0d07fdcbd7a81aadc8f6a95a4ded626e0ce11ac26a130ce067b"
+    },
+    "efs_v1_cells_checked": 15,
+    "efs_v1_cells_reproduced": 1,
+    "efs_v2_cells_checked": 12,
+    "efs_v2_cells_reproduced": 2,
+    "efs_weights_sha256": {
+      "FF100": "755ba469e9b016a78f4a20c8667b9a6df633dca87e08e52cc70b4330b86302f0",
+      "FF100MEOP": "0768c6f60c7957c3bf1039c5153987f215b4cf05fa6744cb1d53a483bdc3b8cd",
+      "FF25": "a3324763c1edd6a1da5993a4dfd4e5f75fa3b3d96c061585498e8f6d998e5779",
+      "FF32": "f747e7bb82e331a9b8a5493e1b12599e5aeffb0529be0cd4cc508eabf951fc74",
+      "FF49": "1c41b42b3d0f047a515fb675d206ec68bad159cc70f12549fb153d64fc212ee2"
+    },
+    "native_runs": 20,
+    "octave_version": "9.2.0",
+    "original_cw_sha256": {
+      "DJIA": "61beb3c4a27d6dac3c2c08058046828c1003cdd132d7200d286ab3278a407bde",
+      "NYSEN": "626f0a2fadefc2925d0cf608230a712d8930f24affe48bb0c4084af168da4b21",
+      "NYSEO": "aa5744c93696a18bad17eeb9f1b42fb52a68a2d57cbf157a07e4001f23533df0",
+      "SP500": "548cb8a985356eb8a3fe7f19e48bc8b6375f9aeaa70de77952558f649a9c6f2d",
+      "TSE": "46f4272844f8db6d6045f4bb25b3fec7de711c17569ff94f1fe7645331ebb20e"
+    },
+    "original_paper_cells_checked": 10,
+    "original_paper_cells_reproduced": 10,
+    "original_paper_configurations": 5,
+    "original_weights_sha256": {
+      "DJIA": "a62c745c4baa809d88ab1ffee299fd53e87347633e35ee638324e9ebede1a64b",
+      "NYSEN": "4440c2def39f09ab58b40270586efa8290a3e86399f75e6a7b3b8ef97658ba64",
+      "NYSEO": "6a8b9348b95b0230e314cd65d394739ea5276bd2d8ca99a0ab78fd657bd506fd",
+      "SP500": "5e1f01ac554548a1f326d0c121f9b78e1e9f991e8fbb736ea54e8208ae9b6f40",
+      "TSE": "dfb490601519778fee7b1c0fe0e16ca3af7f256a048a411d3f67911c13b2df78"
+    },
+    "paper_credit": "original_sspo_and_cited_baseline_only_not_native_efs",
+    "same_runtime_repeat_paths_exact": 10,
+    "wthresh_compatibility": "exact_soft_threshold"
+  },
+  "cited_sspo_original_paper": {
+    "pages": 28,
+    "paper_credit": "original_sspo_paper_only_not_efs",
+    "pdf_sha256": "ef14005487080e777845afe26ea158262c40f57bcb45b411f3cb421ad6fab783",
+    "reported_cells_checked": 10,
+    "reported_cells_reproduced": 10,
+    "url": "https://www.jmlr.org/papers/volume19/17-558/17-558.pdf",
+    "validation": {
+      "paper_pages": 28,
+      "paper_sha256": "ef14005487080e777845afe26ea158262c40f57bcb45b411f3cb421ad6fab783"
+    }
+  },
+  "cited_sspo_release": {
+    "archive_sha256": "e66a1d87e598fa016102af66d681e10cc0022afe31a911061bdcd0197e95f1f0",
+    "commit": "2fac74d5ca6a75476c69c04963830bb35a0e263b",
+    "linked_by_jmlr_paper_page": true,
+    "paper_credit": "baseline_source_only",
+    "reachable_commits": 6,
+    "tree": "dfd70b36f9378a9a17488fb904f4922f318e01be",
+    "url": "https://github.com/laizhr/SSPO"
+  },
   "current_revision": {
     "authors": [
       "Jiandong Chen",
@@ -217,6 +302,8 @@
   "validation": {
     "asmcvar_author_redirect_commits": 3,
     "github_search_total": 0,
-    "validated_file_count": 16
+    "olps_source_commits": 44,
+    "sspo_source_commits": 6,
+    "validated_file_count": 26
   }
 }

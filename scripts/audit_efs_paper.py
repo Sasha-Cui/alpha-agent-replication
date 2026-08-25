@@ -51,6 +51,77 @@ MSSRM_SUPPLEMENT_CODE_SHA256 = {
     "PGSAl0_w0.m": "23ab9b8811e0b322247700474b1cd983a398783cc90a8298600c819ceb2d051f",
     "PGSAl0_w0run.m": "5243bcb940a9dc3b4bddf43a92367302a1ad9cf52f90bc78b7c99cd6c1db708f",
 }
+SSPO_URL = "https://github.com/laizhr/SSPO"
+SSPO_COMMIT = "2fac74d5ca6a75476c69c04963830bb35a0e263b"
+SSPO_TREE = "dfd70b36f9378a9a17488fb904f4922f318e01be"
+SSPO_COMMITS = 6
+SSPO_ARCHIVE_SHA256 = "e66a1d87e598fa016102af66d681e10cc0022afe31a911061bdcd0197e95f1f0"
+SSPO_PAPER_URL = "https://www.jmlr.org/papers/volume19/17-558/17-558.pdf"
+SSPO_PAPER_SHA256 = "ef14005487080e777845afe26ea158262c40f57bcb45b411f3cb421ad6fab783"
+SSPO_PAPER_PAGES = 28
+SSPO_SOURCE_SHA256 = {
+    "README.md": "4dd95f26669deee51c75ffbd3bf6dd332d21255b51f68629f535f8eb40bd3e83",
+    "SSPO_fun.m": "c545e6f717a6f2b65ede145d5db33ebfe8aacd90d5e420fa1fdbd6fc6eda97a5",
+    "SSPO_run.m": "be4088702b69f394156c077c33825d4daa90c3d2c7ce69cc6315cfded36011c1",
+    "simplex_projection_selfnorm2.m": "1640b6f6bc30394a13ea95133d11b0007e345cae591b0f65e7d70c1b2b51950f",
+}
+SSPO_ORIGINAL_DATASETS = {
+    "NYSEO": "nyse-o",
+    "NYSEN": "nyse-n",
+    "DJIA": "djia",
+    "SP500": "sp500",
+    "TSE": "tse",
+}
+SSPO_ORIGINAL_VALUES = {
+    "NYSEO": {"CW": "1.06E+18", "SR": "0.2073"},
+    "NYSEN": {"CW": "1.62E+9", "SR": "0.1060"},
+    "DJIA": {"CW": "3.68", "SR": "0.0919"},
+    "SP500": {"CW": "16.97", "SR": "0.0791"},
+    "TSE": {"CW": "364.94", "SR": "0.1054"},
+}
+SSPO_ORIGINAL_OBSERVATIONS = {"NYSEO": 5651, "NYSEN": 6431, "DJIA": 507, "SP500": 1276, "TSE": 1259}
+SSPO_ORIGINAL_ASSETS = {"NYSEO": 36, "NYSEN": 23, "DJIA": 30, "SP500": 25, "TSE": 88}
+OLPS_URL = "https://github.com/OLPS/OLPS"
+OLPS_COMMIT = "9120783cd59a7966b0f78e2b5668030a4378b8af"
+OLPS_TREE = "b6d1491d55d827f4dd070112bcab98ab5e6d4643"
+OLPS_ARCHIVE_SHA256 = "c1714ff82441df44ed74e54ee2fdfeb7091f69a9912de296ee098019079c19e8"
+OLPS_COMMITS = 44
+OLPS_DATA_SHA256 = {
+    "nyse-o": "d69006454ac25b3eead931fd7964a15da6f13d3383dea1c652c1cd8a3b3a1b0e",
+    "nyse-n": "9b68189218f845a54c6760b1c37a100aa7437498a0df79e7178772735e76808e",
+    "djia": "4e268f3f35ee133680805f972477ac6021f54c58d372eec78b03ffc8dcde718c",
+    "sp500": "3026a41802a09833a4abdbffbb318dfa143349709abd3a6277ea4b687054716c",
+    "tse": "5e623ef7656ca2ce9d028db7f640913e6f015d60364ccccd3b6f63c8f83857ce",
+}
+
+SSPO_EFS_CW_SHA256 = {
+    "FF25": "dccdbe28c9b0e327a766a40b2542f56c6cbb22de1165cbaa59262c1daf70f98c",
+    "FF32": "393e4395a418f9c34fdaf71fd2712d2bdbf3098fb933cb64d12051ae173a2642",
+    "FF49": "814a5a7697ebf0d07fdcbd7a81aadc8f6a95a4ded626e0ce11ac26a130ce067b",
+    "FF100": "102badafe627be2d4fbd3cbeb5f1d3984c79705df0637f98722162ebb6a2db0f",
+    "FF100MEOP": "7082bbf8f560267a95583b1f1e2815675efce40b716691a11192249ea6ba96d2",
+}
+SSPO_EFS_WEIGHTS_SHA256 = {
+    "FF25": "a3324763c1edd6a1da5993a4dfd4e5f75fa3b3d96c061585498e8f6d998e5779",
+    "FF32": "f747e7bb82e331a9b8a5493e1b12599e5aeffb0529be0cd4cc508eabf951fc74",
+    "FF49": "1c41b42b3d0f047a515fb675d206ec68bad159cc70f12549fb153d64fc212ee2",
+    "FF100": "755ba469e9b016a78f4a20c8667b9a6df633dca87e08e52cc70b4330b86302f0",
+    "FF100MEOP": "0768c6f60c7957c3bf1039c5153987f215b4cf05fa6744cb1d53a483bdc3b8cd",
+}
+SSPO_ORIGINAL_CW_SHA256 = {
+    "NYSEO": "aa5744c93696a18bad17eeb9f1b42fb52a68a2d57cbf157a07e4001f23533df0",
+    "NYSEN": "626f0a2fadefc2925d0cf608230a712d8930f24affe48bb0c4084af168da4b21",
+    "DJIA": "61beb3c4a27d6dac3c2c08058046828c1003cdd132d7200d286ab3278a407bde",
+    "SP500": "548cb8a985356eb8a3fe7f19e48bc8b6375f9aeaa70de77952558f649a9c6f2d",
+    "TSE": "46f4272844f8db6d6045f4bb25b3fec7de711c17569ff94f1fe7645331ebb20e",
+}
+SSPO_ORIGINAL_WEIGHTS_SHA256 = {
+    "NYSEO": "6a8b9348b95b0230e314cd65d394739ea5276bd2d8ca99a0ab78fd657bd506fd",
+    "NYSEN": "4440c2def39f09ab58b40270586efa8290a3e86399f75e6a7b3b8ef97658ba64",
+    "DJIA": "a62c745c4baa809d88ab1ffee299fd53e87347633e35ee638324e9ebede1a64b",
+    "SP500": "5e1f01ac554548a1f326d0c121f9b78e1e9f991e8fbb736ea54e8208ae9b6f40",
+    "TSE": "dfb490601519778fee7b1c0fe0e16ca3af7f256a048a411d3f67911c13b2df78",
+}
 
 ASMCVAR_URL = "https://github.com/linyizun2024/ASMCVaR"
 ASMCVAR_COMMIT = "0ed6a63ca02118cc305ae5d34f2cf24489c024a5"
@@ -538,6 +609,18 @@ def validate_inputs(paper_root: Path, mssrm: Path, asm_cvar: Path) -> dict[str, 
         paper_root / "github_search_title.json": GITHUB_SEARCH_SHA256,
         paper_root / "github_search_efs.json": GITHUB_SEARCH_SHA256,
     }
+    sspo = paper_root / "sspo_source"
+    olps = paper_root / "olps_source"
+    expected[paper_root / "sspo_paper.pdf"] = SSPO_PAPER_SHA256
+    expected.update(
+        {sspo / relative: value for relative, value in SSPO_SOURCE_SHA256.items()}
+    )
+    expected.update(
+        {
+            olps / "Data" / f"{source_name}.mat": value
+            for source_name, value in OLPS_DATA_SHA256.items()
+        }
+    )
     author_redirect = paper_root / "asmcvar_author_redirect"
     data_dir = asm_cvar / "Codes_for_Experiments_in_Paper" / "DataSets"
     expected.update({data_dir / f"{name}.mat": value for name, value in ASMCVAR_DATA_SHA256.items()})
@@ -553,6 +636,8 @@ def validate_inputs(paper_root: Path, mssrm: Path, asm_cvar: Path) -> dict[str, 
             ASMCVAR_AUTHOR_REDIRECT_TREE,
             ASMCVAR_AUTHOR_REDIRECT_ARCHIVE_SHA256,
         ),
+        (sspo, SSPO_COMMIT, SSPO_TREE, SSPO_ARCHIVE_SHA256),
+        (olps, OLPS_COMMIT, OLPS_TREE, OLPS_ARCHIVE_SHA256),
     ):
         if run_git(repo, "rev-parse", "HEAD").strip() != commit:
             raise ValueError(f"commit mismatch: {repo}")
@@ -567,6 +652,10 @@ def validate_inputs(paper_root: Path, mssrm: Path, asm_cvar: Path) -> dict[str, 
         raise ValueError("ASMCVaR coauthor redirect target changed")
     if int(run_git(author_redirect, "rev-list", "--all", "--count")) != ASMCVAR_AUTHOR_REDIRECT_COMMITS:
         raise ValueError("ASMCVaR coauthor redirect history changed")
+    if int(run_git(sspo, "rev-list", "--all", "--count")) != SSPO_COMMITS:
+        raise ValueError("SSPO source history changed")
+    if int(run_git(olps, "rev-list", "--all", "--count")) != OLPS_COMMITS:
+        raise ValueError("OLPS source history changed")
     searches = [
         json.loads((paper_root / name).read_text())
         for name in (
@@ -581,6 +670,8 @@ def validate_inputs(paper_root: Path, mssrm: Path, asm_cvar: Path) -> dict[str, 
         "validated_file_count": len(expected),
         "github_search_total": 0,
         "asmcvar_author_redirect_commits": ASMCVAR_AUTHOR_REDIRECT_COMMITS,
+        "sspo_source_commits": SSPO_COMMITS,
+        "olps_source_commits": OLPS_COMMITS,
     }
 
 
@@ -622,6 +713,22 @@ def validate_asmcvar_original_input(original_root: Path) -> dict[str, Any]:
     if pages != ASMCVAR_PAPER_PAGES:
         raise ValueError(f"ASMCVaR PMLR paper page count drifted: {pages}")
     return {"paper_sha256": ASMCVAR_PAPER_SHA256, "paper_pages": pages}
+
+
+def validate_sspo_original_input(paper_root: Path) -> dict[str, Any]:
+    paper = paper_root / "sspo_paper.pdf"
+    if sha256(paper) != SSPO_PAPER_SHA256:
+        raise ValueError("pinned SSPO JMLR paper hash mismatch")
+    info = subprocess.run(
+        ["pdfinfo", str(paper)],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    pages = int(re.search(r"^Pages:\s+(\d+)$", info, re.MULTILINE).group(1))
+    if pages != SSPO_PAPER_PAGES:
+        raise ValueError(f"SSPO JMLR paper page count changed: {pages}")
+    return {"paper_sha256": SSPO_PAPER_SHA256, "paper_pages": pages}
 
 
 def load_mean_cvar_metrics(results_root: Path) -> dict[str, dict[str, Any]]:
@@ -1144,6 +1251,98 @@ def load_mssrm_nonsparse_metrics(
 
 
 
+def load_sspo_metrics(
+    results_root: Path,
+    *,
+    original: bool,
+) -> dict[str, dict[str, Any]]:
+    datasets = SSPO_ORIGINAL_DATASETS if original else MSSRM_DATASETS
+    observations = SSPO_ORIGINAL_OBSERVATIONS if original else MSSRM_OBSERVATIONS
+    assets = SSPO_ORIGINAL_ASSETS if original else ASMCVAR_ASSETS
+    expected_cw = SSPO_ORIGINAL_CW_SHA256 if original else SSPO_EFS_CW_SHA256
+    expected_weights = (
+        SSPO_ORIGINAL_WEIGHTS_SHA256 if original else SSPO_EFS_WEIGHTS_SHA256
+    )
+    output: dict[str, dict[str, Any]] = {}
+    for dataset, source_name in datasets.items():
+        runs: list[dict[str, Any]] = []
+        for repeat in (1, 2):
+            prefix = "sspo_original_" if original else "sspo_"
+            path = results_root / f"{prefix}{source_name}_run{repeat}.mat"
+            payload = loadmat(path)
+            wealth = np.asarray(payload["CW"], dtype="<f8").reshape(-1)
+            daily = np.asarray(
+                payload["daily_incre_fact"], dtype="<f8"
+            ).reshape(-1)
+            weights = np.asarray(payload["daily_port_total"], dtype="<f8")
+            if (
+                wealth.shape != (observations[dataset],)
+                or daily.shape != wealth.shape
+                or weights.shape != (assets[dataset], observations[dataset])
+            ):
+                raise ValueError(f"SSPO output shape changed: {path}")
+            if not (
+                np.isfinite(wealth).all()
+                and np.isfinite(daily).all()
+                and np.isfinite(weights).all()
+            ):
+                raise ValueError(f"SSPO output is non-finite: {path}")
+            if (
+                np.min(weights) < -1e-12
+                or not np.allclose(weights.sum(axis=0), 1.0, rtol=0.0, atol=1e-9)
+            ):
+                raise ValueError(f"SSPO weights are infeasible: {path}")
+            if not np.allclose(
+                wealth[1:] / wealth[:-1],
+                daily[1:],
+                rtol=0.0,
+                atol=1e-13,
+            ):
+                raise ValueError(f"SSPO daily/wealth lineage changed: {path}")
+            runs.append(
+                {
+                    "wealth": wealth,
+                    "daily": daily,
+                    "weights": weights,
+                    "elapsed_seconds": float(
+                        np.asarray(payload["elapsed"]).reshape(-1)[0]
+                    ),
+                    "file_sha256": sha256(path),
+                }
+            )
+        if not all(
+            np.array_equal(runs[0][field], runs[1][field])
+            for field in ("wealth", "daily", "weights")
+        ):
+            raise ValueError(f"SSPO repeats differ: {dataset}")
+
+        wealth = runs[0]["wealth"]
+        weights = runs[0]["weights"]
+        cw_sha = bytes_sha256(wealth.tobytes(order="C"))
+        weights_sha = bytes_sha256(weights.tobytes(order="C"))
+        if cw_sha != expected_cw[dataset] or weights_sha != expected_weights[dataset]:
+            raise ValueError(f"SSPO path hash changed: {dataset}")
+        returns = wealth[1:] / wealth[:-1] - 1.0
+        peaks = np.maximum.accumulate(wealth)
+        output[dataset] = {
+            "CW": float(wealth[-1]),
+            "SR": float(returns.mean() / returns.std(ddof=0)),
+            "MDD": float(np.max(1.0 - wealth / peaks)),
+            "observations": observations[dataset],
+            "assets": assets[dataset],
+            "cw_sha256": cw_sha,
+            "weights_sha256": weights_sha,
+            "repeat_paths_equal": True,
+            "run_elapsed_seconds": [
+                run["elapsed_seconds"] for run in runs
+            ],
+            "run_file_sha256": [run["file_sha256"] for run in runs],
+        }
+    if set(output) != set(datasets):
+        raise ValueError("SSPO dataset coverage changed")
+    return output
+
+
 def apply_mssrm_credit(
     rows: list[dict[str, Any]], metrics: Mapping[tuple[str, int], Mapping[str, Any]]
 ) -> list[dict[str, Any]]:
@@ -1298,10 +1497,120 @@ def mssrm_supplement_correspondence(
 def _format_like(value: float, paper_value: str) -> str:
     raw = paper_value.rstrip("%")
     decimals = len(raw.split(".", 1)[1]) if "." in raw else 0
+    scientific = re.fullmatch(r"[-+]?\d+(?:\.(\d+))?[Ee]([+-]?\d+)", raw)
+    if scientific:
+        decimals = len(scientific.group(1) or "")
+        exponent = int(scientific.group(2))
+        mantissa = Decimal(str(value)).scaleb(-exponent)
+        quantum = Decimal(1).scaleb(-decimals)
+        rendered = format(mantissa.quantize(quantum, rounding=ROUND_HALF_UP), f".{decimals}f")
+        return f"{rendered}E{exponent:+d}"
     scaled = Decimal(str(value)) * (Decimal(100) if paper_value.endswith("%") else Decimal(1))
     quantum = Decimal(1).scaleb(-decimals)
     rendered = format(scaled.quantize(quantum, rounding=ROUND_HALF_UP), f".{decimals}f")
     return rendered + ("%" if paper_value.endswith("%") else "")
+
+
+def original_sspo_conformance(
+    metrics: Mapping[str, Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for dataset, paper_values in SSPO_ORIGINAL_VALUES.items():
+        native = metrics[dataset]
+        for metric, paper_value in paper_values.items():
+            reproduced = float(native[metric])
+            rendered = _format_like(reproduced, paper_value)
+            match = rendered == paper_value
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "metric": metric,
+                    "paper_value": paper_value,
+                    "recomputed_value": f"{reproduced:.15g}",
+                    "recomputed_at_paper_precision": rendered,
+                    "match_at_paper_precision": match,
+                    "source_commit": SSPO_COMMIT,
+                    "data_commit": OLPS_COMMIT,
+                    "window": 5,
+                    "lambda": 0.5,
+                    "gamma": 0.01,
+                    "eta": 0.005,
+                    "zeta": 500,
+                    "cw_sha256": native["cw_sha256"],
+                    "weights_sha256": native["weights_sha256"],
+                    "repeat_paths_equal": native["repeat_paths_equal"],
+                    "original_sspo_paper_result_credit": match,
+                }
+            )
+    if len(rows) != 10 or not all(
+        row["original_sspo_paper_result_credit"] for row in rows
+    ):
+        raise ValueError("expected all 10 original SSPO CW/SR cells to reproduce")
+    return rows
+
+
+def apply_sspo_credit(
+    rows: list[dict[str, Any]],
+    metrics: Mapping[str, Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    version = str(rows[0]["paper_version"])
+    audit_rows: list[dict[str, Any]] = []
+    for row in rows:
+        if row["paper_table"] != "benchmark" or row["row_label"] != "SSPO":
+            continue
+        dataset, metric = str(row["dataset"]), str(row["metric"])
+        native = metrics[dataset]
+        reproduced = float(native[metric])
+        rendered = _format_like(reproduced, str(row["paper_value"]))
+        match = rendered == row["paper_value"]
+        row["cited_baseline_recomputed_value"] = f"{reproduced:.12g}"
+        row["cited_baseline_match_at_paper_precision"] = match
+        row["paper_result_credit"] = match
+        audit_rows.append(
+            {
+                "paper_version": version,
+                "dataset": dataset,
+                "metric": metric,
+                "paper_value": row["paper_value"],
+                "recomputed_value": f"{reproduced:.12g}",
+                "recomputed_at_paper_precision": rendered,
+                "match_at_paper_precision": match,
+                "source_commit": SSPO_COMMIT,
+                "window": 5,
+                "lambda": 0.5,
+                "gamma": 0.01,
+                "eta": 0.005,
+                "zeta": 500,
+                "octave_version": MSSRM_OCTAVE_VERSION,
+                "wthresh_compatibility": "exact_soft_threshold",
+                "cw_sha256": native["cw_sha256"],
+                "weights_sha256": native["weights_sha256"],
+                "full_paths_repeat_equal": native["repeat_paths_equal"],
+                "native_sspo_source_evidence": True,
+                "native_efs_evidence": False,
+                "paper_result_credit": match,
+            }
+        )
+    expected_rows = 15 if version == "v1" else 12
+    expected_matches = 1 if version == "v1" else 2
+    if len(audit_rows) != expected_rows:
+        raise ValueError(
+            f"expected {expected_rows} EFS SSPO comparison cells for {version}"
+        )
+    if sum(row["paper_result_credit"] for row in audit_rows) != expected_matches:
+        raise ValueError(f"EFS SSPO match census changed for {version}")
+    complete_datasets = {
+        dataset
+        for dataset in {str(row["dataset"]) for row in audit_rows}
+        if all(
+            row["paper_result_credit"]
+            for row in audit_rows
+            if row["dataset"] == dataset
+        )
+    }
+    if complete_datasets:
+        raise ValueError(f"unexpected complete EFS SSPO rows: {complete_datasets}")
+    return audit_rows
 
 
 def original_mean_cvar_conformance(
@@ -1758,13 +2067,13 @@ datasets, paper structure, and results.
 - **EFS itself: 0 native result cells reproduced in either version.** No
   author-linked EFS code, exact configuration, model snapshot, factor pool,
   search trace, action/weight path, raw return, or result output was found.
-- **Original v1: 9/773 table-result cells reproduce, all cited-baseline
-  evidence.** Five are 1/N MDD cells, two are Mean-CVaR cells, and mSSRM plus
-  ASMCVaR contribute one isolated cell each.
-- **Current v2: 16/877 cells reproduce at its coarser display precision.**
-  Eight are 1/N, three mSSRM, two Mean-CVaR, two ASMCVaR, and one is the
-  source-grounded mSSRM m=N Max-Sharpe limit. None forms a complete reproduced
-  row or receives native EFS credit.
+- **Original v1: 10/773 table-result cells reproduce, all cited-baseline
+  evidence.** Five are 1/N MDD cells, two are Mean-CVaR cells, and SSPO,
+  mSSRM, plus ASMCVaR contribute one isolated cell each.
+- **Current v2: 18/877 cells reproduce at its coarser display precision.**
+  Eight are 1/N, three mSSRM, two SSPO, two Mean-CVaR, two ASMCVaR, and one is
+  the source-grounded mSSRM m=N Max-Sharpe limit. None forms a complete
+  reproduced row or receives native EFS credit.
 
 The mSSRM release was run twice for every combination of five EFS matrices
 and m={10,15,20}. All 15 full 623-point wealth paths were bit-identical across
@@ -1781,6 +2090,7 @@ the paper prints 0.2339. Against EFS, only 1/45 v1 and 2/24 v2 ASMCVaR cells
 match at display precision, and no complete row matches. A same-runtime repeat
 is bit-identical; an independent Octave execution agrees within disclosed
 floating-point tolerances.
+
 The conventional Mean-CVaR baseline from the original ASMCVaR paper was
 reimplemented directly from equations (1)--(3), with the disclosed rolling
 window and conventional c=0.95 confidence. All six full wealth/weight paths
@@ -1794,6 +2104,12 @@ Max-Sharpe limit. All five full paths repeat bit-identically across 10 Octave
 runs. It matches 0/15 v1 and only 1/12 v2 Max-Sharpe cells (FF25 MDD at coarse
 precision), so it does not recover an EFS Max-Sharpe row. The EFS authors did
 not release the wrapper needed to prove that this was their implementation.
+The JMLR-linked SSPO source and the exact five OLPS datasets reproduce all 10
+original-paper CW/SR cells, with all full wealth/weight paths equal across
+repeats. The only Octave shim is MATLAB's standard soft-threshold operation.
+On EFS's Fama--French matrices the same pinned source matches just 1/15 v1 and
+2/12 v2 cells, all isolated in FF100, and no complete SSPO row.
+
 
 A three-commit repository owned by ASMCVaR coauthor Zhao-Rong Lai explicitly
 redirects to the executed `linyizun2024/ASMCVaR` repository. This establishes
@@ -1841,6 +2157,11 @@ def main() -> None:
         default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_nonsparse_runs"),
     )
     parser.add_argument(
+        "--sspo-results-root",
+        type=Path,
+        default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_sspo_runs"),
+    )
+    parser.add_argument(
         "--mssrm-original-root",
         type=Path,
         default=Path("/nfs/roberts/scratch/pi_btk22/zc362/mssrm_original_paper"),
@@ -1855,15 +2176,18 @@ def main() -> None:
     output = args.output.resolve()
     mssrm_results_root = args.mssrm_results_root.resolve()
     nonsparse_results_root = args.nonsparse_results_root.resolve()
+    sspo_results_root = args.sspo_results_root.resolve()
     mssrm_original_root = args.mssrm_original_root.resolve()
     asmcvar_original_root = args.asmcvar_original_root.resolve()
     mssrm = paper_root / "mssrm_source"
     asm_cvar = paper_root / "asm_cvar_source"
     asmcvar_author_redirect = paper_root / "asmcvar_author_redirect"
+    sspo = paper_root / "sspo_source"
 
     validated = validate_inputs(paper_root, mssrm, asm_cvar)
     validated_mssrm_original = validate_mssrm_original_inputs(mssrm_original_root, asm_cvar)
     validated_asmcvar_original = validate_asmcvar_original_input(asmcvar_original_root)
+    validated_sspo_original = validate_sspo_original_input(paper_root)
     v1 = parse_v1_results(paper_root)
     v2 = parse_v2_results(paper_root)
     metrics = baseline_metrics(asm_cvar)
@@ -1885,6 +2209,9 @@ def main() -> None:
     mean_cvar_efs = apply_mean_cvar_credit(v1, mean_cvar_metrics) + apply_mean_cvar_credit(v2, mean_cvar_metrics)
     max_sharpe_limit_metrics = load_mssrm_nonsparse_metrics(nonsparse_results_root)
     max_sharpe_limit_efs = apply_max_sharpe_limit_credit(v1, max_sharpe_limit_metrics) + apply_max_sharpe_limit_credit(v2, max_sharpe_limit_metrics)
+    sspo_efs_metrics = load_sspo_metrics(sspo_results_root, original=False)
+    sspo_efs = apply_sspo_credit(v1, sspo_efs_metrics) + apply_sspo_credit(v2, sspo_efs_metrics)
+    sspo_original = original_sspo_conformance(load_sspo_metrics(sspo_results_root, original=True))
     lineage = apply_version_lineage(v1, v2)
     figures = figure_inventory(paper_root)
     methods = method_specification_audit()
@@ -1895,6 +2222,7 @@ def main() -> None:
         source_inventory(mssrm, MSSRM_COMMIT)
         + source_inventory(asm_cvar, ASMCVAR_COMMIT)
         + source_inventory(asmcvar_author_redirect, ASMCVAR_AUTHOR_REDIRECT_COMMIT)
+        + source_inventory(sspo, SSPO_COMMIT)
     )
 
     output.mkdir(parents=True, exist_ok=True)
@@ -1913,6 +2241,8 @@ def main() -> None:
     write_csv(output / "cited_mean_cvar_original_paper_reproduction.csv", mean_cvar_original)
     write_csv(output / "cited_mean_cvar_efs_reproduction.csv", mean_cvar_efs)
     write_csv(output / "cited_max_sharpe_limit_efs_reproduction.csv", max_sharpe_limit_efs)
+    write_csv(output / "cited_sspo_efs_reproduction.csv", sspo_efs)
+    write_csv(output / "cited_sspo_original_paper_reproduction.csv", sspo_original)
     write_csv(output / "version_lineage_audit.csv", lineage)
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "method_specification_audit.csv", methods)
@@ -1927,11 +2257,11 @@ def main() -> None:
         "paper_source_compilation": compilations,
         "cited_baseline_formula_executed": True,
         "v1_cited_baseline_cells_with_credit": sum(
-            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs + mean_cvar_efs + max_sharpe_limit_efs
+            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs + mean_cvar_efs + max_sharpe_limit_efs + sspo_efs
             if row["paper_version"] == "v1"
         ),
         "v2_cited_baseline_cells_with_credit": sum(
-            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs + mean_cvar_efs + max_sharpe_limit_efs
+            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs + mean_cvar_efs + max_sharpe_limit_efs + sspo_efs
             if row["paper_version"] == "v2"
         ),
         "native_efs_cells_with_credit": 0,
@@ -1985,6 +2315,18 @@ def main() -> None:
         "cited_max_sharpe_limit_v1_cells_matching": 0,
         "cited_max_sharpe_limit_v2_cells_checked": 12,
         "cited_max_sharpe_limit_v2_cells_matching": 1,
+        "cited_sspo_source_executed_with_octave": True,
+        "cited_sspo_source_commit": SSPO_COMMIT,
+        "cited_sspo_native_configurations": 5,
+        "cited_sspo_native_runs": 10,
+        "cited_sspo_full_paths_repeat_exact": 5,
+        "cited_sspo_v1_cells_checked": 15,
+        "cited_sspo_v1_cells_matching": 1,
+        "cited_sspo_v2_cells_checked": 12,
+        "cited_sspo_v2_cells_matching": 2,
+        "original_sspo_cells_checked": 10,
+        "original_sspo_cells_matching": 10,
+        "sspo_wthresh_compatibility": "exact_soft_threshold",
         "matlab_reason": (
             "ASMCVaR ran under MATLAB R2023b for all 18 paper configurations; "
             "FF25 m=10 also ran under Octave 9.2.0 and matched MATLAB within tolerance"
@@ -2043,6 +2385,58 @@ def main() -> None:
             "paper_credit": "source_grounded_non_sparse_limit_only_not_native_efs",
         },
         "cited_asmcvar_release": {"url": ASMCVAR_URL, "commit": ASMCVAR_COMMIT, "tree": ASMCVAR_TREE, "archive_sha256": ASMCVAR_ARCHIVE_SHA256, "data_sha256": ASMCVAR_DATA_SHA256, "paper_credit": "baseline_source_only"},
+        "cited_sspo_original_paper": {
+            "url": SSPO_PAPER_URL,
+            "pdf_sha256": SSPO_PAPER_SHA256,
+            "pages": SSPO_PAPER_PAGES,
+            "validation": validated_sspo_original,
+            "reported_cells_checked": 10,
+            "reported_cells_reproduced": 10,
+            "paper_credit": "original_sspo_paper_only_not_efs",
+        },
+        "cited_sspo_release": {
+            "url": SSPO_URL,
+            "commit": SSPO_COMMIT,
+            "tree": SSPO_TREE,
+            "archive_sha256": SSPO_ARCHIVE_SHA256,
+            "reachable_commits": SSPO_COMMITS,
+            "linked_by_jmlr_paper_page": True,
+            "paper_credit": "baseline_source_only",
+        },
+        "cited_sspo_data_release": {
+            "url": OLPS_URL,
+            "commit": OLPS_COMMIT,
+            "tree": OLPS_TREE,
+            "archive_sha256": OLPS_ARCHIVE_SHA256,
+            "reachable_commits": OLPS_COMMITS,
+            "data_sha256": OLPS_DATA_SHA256,
+        },
+        "cited_sspo_native_execution": {
+            "octave_version": MSSRM_OCTAVE_VERSION,
+            "default_parameters": {
+                "window": 5,
+                "lambda": 0.5,
+                "gamma": 0.01,
+                "eta": 0.005,
+                "zeta": 500,
+            },
+            "wthresh_compatibility": "exact_soft_threshold",
+            "efs_configurations": 5,
+            "original_paper_configurations": 5,
+            "native_runs": 20,
+            "same_runtime_repeat_paths_exact": 10,
+            "original_paper_cells_checked": 10,
+            "original_paper_cells_reproduced": 10,
+            "efs_v1_cells_checked": 15,
+            "efs_v1_cells_reproduced": 1,
+            "efs_v2_cells_checked": 12,
+            "efs_v2_cells_reproduced": 2,
+            "efs_cw_sha256": SSPO_EFS_CW_SHA256,
+            "efs_weights_sha256": SSPO_EFS_WEIGHTS_SHA256,
+            "original_cw_sha256": SSPO_ORIGINAL_CW_SHA256,
+            "original_weights_sha256": SSPO_ORIGINAL_WEIGHTS_SHA256,
+            "paper_credit": "original_sspo_and_cited_baseline_only_not_native_efs",
+        },
         "cited_asmcvar_author_redirect": {
             "url": ASMCVAR_AUTHOR_REDIRECT_URL,
             "commit": ASMCVAR_AUTHOR_REDIRECT_COMMIT,
@@ -2110,6 +2504,8 @@ def main() -> None:
         "cited_mean_cvar_original_paper_reproduction.csv",
         "cited_mean_cvar_efs_reproduction.csv",
         "cited_max_sharpe_limit_efs_reproduction.csv",
+        "cited_sspo_efs_reproduction.csv",
+        "cited_sspo_original_paper_reproduction.csv",
         "version_lineage_audit.csv", "figure_inventory.csv",
         "method_specification_audit.csv", "qualitative_claim_audit.csv",
         "cited_baseline_source_inventory.csv", "paper_prompt_v1.tex.txt",
@@ -2119,7 +2515,7 @@ def main() -> None:
         "paper": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
         "audit_date": AUDIT_DATE,
         "paper_evidence_route": "paper_only_underspecified",
-        "overall_status": "partial_9_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
+        "overall_status": "partial_10_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
         "full_paper_reproduced": False,
         "official_efs_source_released": False,
         "original_v1_table_result_cells": len(v1),
@@ -2179,6 +2575,22 @@ def main() -> None:
             row["paper_result_credit"]
             for row in max_sharpe_limit_efs
             if row["paper_version"] == "v2"
+        ),
+        "cited_sspo_v1_cells_checked": 15,
+        "cited_sspo_v1_cells_reproduced": sum(
+            row["paper_result_credit"]
+            for row in sspo_efs
+            if row["paper_version"] == "v1"
+        ),
+        "cited_sspo_v2_cells_checked": 12,
+        "cited_sspo_v2_cells_reproduced": sum(
+            row["paper_result_credit"]
+            for row in sspo_efs
+            if row["paper_version"] == "v2"
+        ),
+        "original_sspo_cells_checked": len(sspo_original),
+        "original_sspo_cells_reproduced": sum(
+            row["original_sspo_paper_result_credit"] for row in sspo_original
         ),
         "v1_v2_common_benchmark_cells": len(lineage),
         "v1_v2_common_benchmark_cells_same_at_v2_precision": sum(row["same_at_v2_precision"] for row in lineage),

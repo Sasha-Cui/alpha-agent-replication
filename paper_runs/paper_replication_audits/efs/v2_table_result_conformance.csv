@@ -11,18 +11,18 @@ v2,benchmark,0,Baseline | 1/N,8,FF49,MDD,0.53,0.526895538992,True,False,True,rou
 v2,benchmark,0,Baseline | 1/N,9,FF100,CW,389,385.763824236,False,False,False,rounded_v1_value_carried_into_v2
 v2,benchmark,0,Baseline | 1/N,10,FF100,SR,0.21,0.208693719333,True,False,True,rounded_v1_value_carried_into_v2
 v2,benchmark,0,Baseline | 1/N,11,FF100,MDD,0.55,0.54876606898,True,False,True,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,0,FF25,CW,77,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,1,FF25,SR,0.14,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,2,FF25,MDD,0.78,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,3,FF32,CW,15,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,4,FF32,SR,0.10,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,5,FF32,MDD,0.73,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,6,FF49,CW,62,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,7,FF49,SR,0.11,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,8,FF49,MDD,0.88,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,9,FF100,CW,1,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,10,FF100,SR,0.05,,False,False,False,rounded_v1_value_carried_into_v2
-v2,benchmark,1,SSPO,11,FF100,MDD,0.82,,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,0,FF25,CW,77,24.1177077812,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,1,FF25,SR,0.14,0.111692938705,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,2,FF25,MDD,0.78,0.84560604786,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,3,FF32,CW,15,12.0474741843,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,4,FF32,SR,0.10,0.0934792990194,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,5,FF32,MDD,0.73,0.684844123441,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,6,FF49,CW,62,0.711220067807,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,7,FF49,SR,0.11,0.0490571129253,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,8,FF49,MDD,0.88,0.958705228818,False,False,False,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,9,FF100,CW,1,0.987056872239,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,10,FF100,SR,0.05,0.0463404557787,True,False,True,rounded_v1_value_carried_into_v2
+v2,benchmark,1,SSPO,11,FF100,MDD,0.82,0.858600264674,False,False,False,rounded_v1_value_carried_into_v2
 v2,benchmark,2,Min-CVaR,0,FF25,CW,387,333.413629283,False,False,False,rounded_v1_value_carried_into_v2
 v2,benchmark,2,Min-CVaR,1,FF25,SR,0.24,0.230475458767,False,False,False,rounded_v1_value_carried_into_v2
 v2,benchmark,2,Min-CVaR,2,FF25,MDD,0.54,0.542902657007,True,False,True,rounded_v1_value_carried_into_v2
