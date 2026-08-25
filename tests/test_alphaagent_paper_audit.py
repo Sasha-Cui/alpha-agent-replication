@@ -85,6 +85,9 @@ def test_committed_audit_is_fail_closed() -> None:
     fork_bundle = json.loads(
         (output / "fork_data_bundle_audit.json").read_text(encoding="utf-8")
     )
+    run_inputs = json.loads(
+        (output / "paper_era_run_input_audit.json").read_text(encoding="utf-8")
+    )
     gaps = read_csv(output / "paper_specification_gaps.csv")
     inventory = read_csv(output / "released_source_inventory.csv")
     paper_era_inventory = read_csv(output / "paper_era_source_inventory.csv")
@@ -222,6 +225,18 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["independent_fork_data_bundle_sp500_rows"] == 568
     assert manifest["independent_fork_data_bundle_finite_membership_end_rows"] == 1
     assert manifest["independent_fork_data_bundle_valid_paper_input"] is False
+    assert manifest["paper_era_matching_run_id"] == audit.MATCHING_RUN_ID
+    assert manifest["paper_era_matching_run_generated_factor_features"] == 5
+    assert manifest["paper_era_run_time_public_factor_candidates"] == 4
+    assert manifest["paper_era_exact_generated_factor_lineage_recovered"] is False
+    assert manifest["paper_era_qlib_fallback_archive_sha256"] == (
+        audit.QLIB_US_DATA_ARCHIVE_SHA256
+    )
+    assert manifest["paper_era_qlib_fallback_calendar_start"] == "1999-12-31"
+    assert manifest["paper_era_qlib_fallback_calendar_end"] == "2020-11-10"
+    assert manifest["paper_era_qlib_fallback_has_spx_benchmark"] is False
+    assert manifest["paper_era_qlib_fallback_covers_test_period"] is False
+    assert manifest["paper_era_matching_run_replayable_from_released_inputs"] is False
 
     assert Counter(row["status"] for row in table) == {
         "corroborated_by_author_history_native_run_artifact": 5,
@@ -307,6 +322,35 @@ def test_committed_audit_is_fail_closed() -> None:
     assert fork_bundle["paper_training_start_2015_covered"] is False
     assert fork_bundle["paper_result_units_regenerated"] == 0
     assert fork_bundle["paper_result_credit"] is False
+    assert run_inputs["matching_run_id"] == audit.MATCHING_RUN_ID
+    assert run_inputs["matching_run_started_utc"] == audit.MATCHING_RUN_STARTED_UTC
+    assert run_inputs["public_head_at_run_time"] == audit.RUN_TIME_PUBLIC_HEAD
+    assert run_inputs["matching_run_generated_factor_features"] == 5
+    assert run_inputs["run_time_public_us_factor_candidate_rows"] == 4
+    assert run_inputs["paper_snapshot_us_factor_candidate_rows"] == 6
+    assert run_inputs["factor_candidates_added_after_run"] == [
+        "5D_VolumeSpike_Confirmation6",
+        "Stable_MeanReversion_10D",
+    ]
+    assert run_inputs["combined_factors_df_ever_tracked"] is False
+    assert run_inputs["exact_generated_factor_lineage_recovered"] is False
+    assert run_inputs["qlib_data_downloader_sha256"] == (
+        audit.QLIB_DATA_DOWNLOADER_SHA256
+    )
+    assert run_inputs["qlib_data_archive_sha256"] == audit.QLIB_US_DATA_ARCHIVE_SHA256
+    assert run_inputs["qlib_data_archive_bytes"] == 450_094_816
+    assert run_inputs["qlib_data_zip_entries"] == 71_959
+    assert run_inputs["qlib_data_calendar_rows"] == 5_250
+    assert run_inputs["qlib_data_calendar_start"] == "1999-12-31"
+    assert run_inputs["qlib_data_calendar_end"] == "2020-11-10"
+    assert run_inputs["qlib_data_sp500_membership_rows"] == 755
+    assert run_inputs["qlib_data_feature_symbols"] == 8_994
+    assert run_inputs["qlib_data_has_spx_feature"] is False
+    assert run_inputs["qlib_data_has_gspc_feature"] is True
+    assert run_inputs["paper_test_period_covered"] is False
+    assert run_inputs["matching_run_replayable_from_released_inputs"] is False
+    assert run_inputs["native_backtests_reexecuted"] == 0
+    assert run_inputs["paper_result_credit"] is False
     assert len(gaps) == 17
     assert len(inventory) == 141
     assert len(paper_era_inventory) == 856
@@ -483,6 +527,21 @@ def test_pinned_source_static_checks_when_available() -> None:
     assert fork_bundle["calendar_start"] == "2020-01-02"
     assert fork_bundle["sp500_rows_with_finite_membership_end"] == 1
     assert fork_bundle["paper_training_start_2015_covered"] is False
+
+    qlib_source = Path(audit.DEFAULT_PAPER_QLIB_SOURCE_ROOT)
+    qlib_archive = Path(audit.DEFAULT_PAPER_QLIB_DATA_ARCHIVE)
+    if qlib_source.exists() and qlib_archive.exists():
+        run_inputs = audit.paper_era_run_input_audit(
+            source_root, qlib_source, qlib_archive
+        )
+        assert run_inputs["matching_run_id"] == audit.MATCHING_RUN_ID
+        assert run_inputs["run_time_public_us_factor_candidate_rows"] == 4
+        assert run_inputs["paper_snapshot_us_factor_candidate_rows"] == 6
+        assert run_inputs["qlib_data_archive_sha256"] == (
+            audit.QLIB_US_DATA_ARCHIVE_SHA256
+        )
+        assert run_inputs["paper_test_period_covered"] is False
+        assert run_inputs["matching_run_replayable_from_released_inputs"] is False
 
     current = {
         row["dimension"]: row

@@ -41,6 +41,28 @@ LEGACY_ROOT_COMMIT = "c740262752b585bc59e41e26807d826ec7bebe75"
 PAPER_MECHANISM_COMMIT = "95e47882cbed3ba0cafd42e812fe0032a8ae0681"
 PAPER_MECHANISM_COMMIT_UTC = "2025-02-12T13:30:56Z"
 QLIB_SOURCE_COMMIT = "c9ed050ef034fe6519c14b59f3d207abcb693282"
+MATCHING_RUN_ID = "77b227f86e5a47bab48178cac409a98b"
+MATCHING_RUN_STARTED_UTC = "2025-01-28T05:53:44.771Z"
+RUN_TIME_PUBLIC_HEAD = "0e1747b36a0d5f1b5d3c5ca23bff659f891c69d4"
+RUN_TIME_US_FACTOR_PATH = "rdagent/app/qlib_rd_loop/us_factors.csv"
+PAPER_ERA_US_FACTOR_PATH = "factor_zoo/us_factors.csv"
+QLIB_DATA_DOWNLOADER_SHA256 = (
+    "53abbe19beebb29da47806a574d31f393cc963e0acdc5c7e41efac092f8f044c"
+)
+QLIB_US_VERSIONED_DATA_URL = (
+    "https://github.com/SunsetWolf/qlib_dataset/releases/download/v2/"
+    "qlib_data_us_1d_0.9.5.zip"
+)
+QLIB_US_FALLBACK_DATA_URL = (
+    "https://github.com/SunsetWolf/qlib_dataset/releases/download/v2/"
+    "qlib_data_us_1d_latest.zip"
+)
+QLIB_US_DATA_ARCHIVE_SHA256 = (
+    "20e3283009784843dcfe690488bf3aa739e64159f1da51a9ec33dd3fb647187f"
+)
+QLIB_US_DATA_ARCHIVE_BYTES = 450_094_816
+QLIB_US_DATA_ASSET_LAST_MODIFIED_UTC = "2024-05-22T06:54:13Z"
+QLIB_US_DATA_OBSERVED_ON = "2026-08-25"
 LATEST_FULL_TREE_PREPRINT_COMMIT = "3cbb7b7e9abe9bc3f3beaa7fcb2102293fbbea4a"
 PREPRINT_CUTOFF_COMMIT = "0bc7a34ed9701a0149ae990b6484e7c73b347ea0"
 PAPER_RUN_RECORD_TREE = "09339a924f84bd42915e8643fcd39a60ac81e911"
@@ -189,6 +211,13 @@ DEFAULT_PAPER_HOST_PYTHON = str(
 )
 DEFAULT_PAPER_QLIB_PYTHON = str(
     Path(__file__).resolve().parent / "run_alphaagent_paper_qlib_python.sh"
+)
+DEFAULT_PAPER_QLIB_SOURCE_ROOT = (
+    "/nfs/roberts/scratch/pi_btk22/zc362/qlib_alphaagent_paper_era"
+)
+DEFAULT_PAPER_QLIB_DATA_ARCHIVE = (
+    "/nfs/roberts/scratch/pi_btk22/zc362/alphaagent_qlib_us_095/"
+    "20260825115404_qlib_data_us_1d_latest.zip"
 )
 REWRITE_ENV_FREEZE_SHA256 = (
     "98a93cf29257f73ff3e26d2f4a1fe2ab264c1ea9d1d9eed4fd2d978ff6d99f02"
@@ -1389,6 +1418,150 @@ def paper_era_run_records(source_root: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def paper_era_run_input_audit(
+    source_root: Path,
+    qlib_source_root: Path,
+    qlib_data_archive: Path,
+    run_records: Sequence[Mapping[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Test whether the matching author run can be replayed from released inputs.
+
+    This deliberately separates an executable fitted model and matching scalar
+    record from a regeneration. It audits both candidate-factor chronology and
+    the exact Qlib downloader/data route pinned by the paper-era Dockerfile.
+    """
+    records = list(run_records or paper_era_run_records(source_root))
+    matching = next(row for row in records if row["run_id"] == MATCHING_RUN_ID)
+    if (
+        int(matching["run_started_utc_ms"]) != 1_738_043_624_771
+        or int(matching["generated_factor_features"]) != 5
+    ):
+        raise RuntimeError("Matching AlphaAgent run identity changed")
+
+    run_head = git_output(
+        source_root,
+        "rev-list",
+        PAPER_MECHANISM_COMMIT,
+        f"--before={MATCHING_RUN_STARTED_UTC}",
+        "--max-count=1",
+    )
+    if run_head != RUN_TIME_PUBLIC_HEAD:
+        raise RuntimeError(f"Public head at matching-run time changed: {run_head}")
+
+    def factor_rows(commit: str, path: str) -> list[dict[str, str]]:
+        payload = _git_blob(source_root, commit, path).decode("utf-8")
+        return list(csv.DictReader(io.StringIO(payload)))
+
+    run_time_factors = factor_rows(RUN_TIME_PUBLIC_HEAD, RUN_TIME_US_FACTOR_PATH)
+    paper_snapshot_factors = factor_rows(PAPER_MECHANISM_COMMIT, PAPER_ERA_US_FACTOR_PATH)
+    if len(run_time_factors) != 4 or len(paper_snapshot_factors) != 6:
+        raise RuntimeError("Pinned US factor-candidate chronology changed")
+    run_time_expressions = {row["factor_expression"] for row in run_time_factors}
+    later_factor_names = [
+        row["factor_name"]
+        for row in paper_snapshot_factors
+        if row["factor_expression"] not in run_time_expressions
+    ]
+    if later_factor_names != [
+        "5D_VolumeSpike_Confirmation6",
+        "Stable_MeanReversion_10D",
+    ]:
+        raise RuntimeError(f"Post-run factor additions changed: {later_factor_names}")
+    object_paths = [
+        line.split(" ", 1)[1]
+        for line in git_output(source_root, "rev-list", "--objects", "--all").splitlines()
+        if " " in line
+    ]
+    combined_paths = [
+        path for path in object_paths if path.endswith("combined_factors_df.pkl")
+    ]
+    if combined_paths:
+        raise RuntimeError(f"A combined factor input unexpectedly exists: {combined_paths}")
+
+    downloader_blob = _git_blob(
+        qlib_source_root, QLIB_SOURCE_COMMIT, "qlib/tests/data.py"
+    )
+    if sha256_bytes(downloader_blob) != QLIB_DATA_DOWNLOADER_SHA256:
+        raise RuntimeError("Pinned paper-era Qlib downloader changed")
+    downloader_text = downloader_blob.decode("utf-8")
+    required_downloader_fragments = (
+        'REMOTE_URL = "https://github.com/SunsetWolf/qlib_dataset/releases/download"',
+        'dataset_version = "v2" if dataset_version is None else dataset_version',
+        '_get_file_name_with_version("latest", dataset_version=version)',
+    )
+    if not all(fragment in downloader_text for fragment in required_downloader_fragments):
+        raise RuntimeError("Paper-era Qlib downloader fallback semantics changed")
+
+    if qlib_data_archive.stat().st_size != QLIB_US_DATA_ARCHIVE_BYTES:
+        raise RuntimeError("Pinned Qlib US archive size changed")
+    if sha256(qlib_data_archive) != QLIB_US_DATA_ARCHIVE_SHA256:
+        raise RuntimeError("Pinned Qlib US archive hash changed")
+    with zipfile.ZipFile(qlib_data_archive) as archive:
+        names = archive.namelist()
+        calendars = archive.read("calendars/day.txt").decode().splitlines()
+        sp500_rows = archive.read("instruments/sp500.txt").decode().splitlines()
+        feature_symbols = {
+            name.split("/")[1]
+            for name in names
+            if name.startswith("features/")
+            and name.count("/") >= 2
+            and name.split("/")[1]
+        }
+    if (
+        len(names) != 71_959
+        or len(calendars) != 5_250
+        or calendars[0] != "1999-12-31"
+        or calendars[-1] != "2020-11-10"
+        or len(sp500_rows) != 755
+        or len(feature_symbols) != 8_994
+    ):
+        raise RuntimeError("Pinned Qlib US archive contents changed")
+
+    return {
+        "matching_run_id": MATCHING_RUN_ID,
+        "matching_run_started_utc": MATCHING_RUN_STARTED_UTC,
+        "matching_run_generated_factor_features": 5,
+        "public_head_at_run_time": RUN_TIME_PUBLIC_HEAD,
+        "public_head_at_run_time_committed_at": git_output(
+            source_root, "show", "-s", "--format=%cI", RUN_TIME_PUBLIC_HEAD
+        ),
+        "run_time_public_us_factor_candidate_path": RUN_TIME_US_FACTOR_PATH,
+        "run_time_public_us_factor_candidate_rows": len(run_time_factors),
+        "paper_snapshot_us_factor_candidate_path": PAPER_ERA_US_FACTOR_PATH,
+        "paper_snapshot_us_factor_candidate_rows": len(paper_snapshot_factors),
+        "factor_candidates_added_after_run": later_factor_names,
+        "run_time_candidate_file_matches_model_generated_feature_count": False,
+        "combined_factors_df_ever_tracked": False,
+        "exact_generated_factor_lineage_recovered": False,
+        "qlib_source_commit": QLIB_SOURCE_COMMIT,
+        "qlib_data_downloader_path": "qlib/tests/data.py",
+        "qlib_data_downloader_sha256": QLIB_DATA_DOWNLOADER_SHA256,
+        "qlib_data_versioned_url": QLIB_US_VERSIONED_DATA_URL,
+        "qlib_data_versioned_url_available_when_observed": False,
+        "qlib_data_fallback_url": QLIB_US_FALLBACK_DATA_URL,
+        "qlib_data_fallback_asset_last_modified_utc": QLIB_US_DATA_ASSET_LAST_MODIFIED_UTC,
+        "qlib_data_observed_on": QLIB_US_DATA_OBSERVED_ON,
+        "qlib_data_archive_bytes": QLIB_US_DATA_ARCHIVE_BYTES,
+        "qlib_data_archive_sha256": QLIB_US_DATA_ARCHIVE_SHA256,
+        "qlib_data_zip_entries": len(names),
+        "qlib_data_calendar_rows": len(calendars),
+        "qlib_data_calendar_start": calendars[0],
+        "qlib_data_calendar_end": calendars[-1],
+        "qlib_data_sp500_membership_rows": len(sp500_rows),
+        "qlib_data_feature_symbols": len(feature_symbols),
+        "qlib_data_has_spx_feature": "spx" in feature_symbols,
+        "qlib_data_has_gspc_feature": "^gspc" in feature_symbols,
+        "paper_training_period_covered": True,
+        "paper_validation_period_fully_covered": False,
+        "paper_test_period_covered": False,
+        "matching_run_benchmark_available": False,
+        "matching_run_replayable_from_released_inputs": False,
+        "native_backtests_reexecuted": 0,
+        "paper_result_credit": False,
+        "status": "released_downloader_archive_and_factor_history_cannot_replay_matching_run",
+    }
+
+
 def apply_run_record_conformance(
     table_rows: list[dict[str, Any]], run_rows: Sequence[Mapping[str, Any]]
 ) -> None:
@@ -2522,6 +2695,8 @@ def build_audit(
     source_python: Path,
     paper_host_python: Path,
     paper_qlib_python: Path,
+    paper_qlib_source_root: Path,
+    paper_qlib_data_archive: Path,
     output_dir: Path,
 ) -> dict[str, Any]:
     commit, first_date = verify_pins(source_root, paper_pdf, paper_v1_pdf)
@@ -2534,6 +2709,12 @@ def build_audit(
     table_rows = table_conformance()
     run_records = paper_era_run_records(source_root)
     apply_run_record_conformance(table_rows, run_records)
+    run_input_audit = paper_era_run_input_audit(
+        source_root,
+        paper_qlib_source_root,
+        paper_qlib_data_archive,
+        run_records,
+    )
     claims = published_non_table_claims()
     gaps = specification_gaps()
     inventory = source_inventory(source_root)
@@ -2648,6 +2829,10 @@ def build_audit(
     )
     (output_dir / "fork_data_bundle_audit.json").write_text(
         json.dumps(fork_bundle, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    (output_dir / "paper_era_run_input_audit.json").write_text(
+        json.dumps(run_input_audit, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
     )
 
     mechanism_counts = Counter(row["status"] for row in mechanisms)
@@ -2799,6 +2984,34 @@ def build_audit(
         "paper_era_native_backtests_reexecuted": paper_era_component[
             "qlib_environment"
         ]["native_backtests_reexecuted"],
+        "paper_era_matching_run_id": run_input_audit["matching_run_id"],
+        "paper_era_matching_run_generated_factor_features": run_input_audit[
+            "matching_run_generated_factor_features"
+        ],
+        "paper_era_run_time_public_factor_candidates": run_input_audit[
+            "run_time_public_us_factor_candidate_rows"
+        ],
+        "paper_era_exact_generated_factor_lineage_recovered": run_input_audit[
+            "exact_generated_factor_lineage_recovered"
+        ],
+        "paper_era_qlib_fallback_archive_sha256": run_input_audit[
+            "qlib_data_archive_sha256"
+        ],
+        "paper_era_qlib_fallback_calendar_start": run_input_audit[
+            "qlib_data_calendar_start"
+        ],
+        "paper_era_qlib_fallback_calendar_end": run_input_audit[
+            "qlib_data_calendar_end"
+        ],
+        "paper_era_qlib_fallback_has_spx_benchmark": run_input_audit[
+            "qlib_data_has_spx_feature"
+        ],
+        "paper_era_qlib_fallback_covers_test_period": run_input_audit[
+            "paper_test_period_covered"
+        ],
+        "paper_era_matching_run_replayable_from_released_inputs": run_input_audit[
+            "matching_run_replayable_from_released_inputs"
+        ],
         "paper_era_qlib_mlflow_full_table_row_matches": sum(
             bool(row["all_five_display_cells_match"]) for row in run_records
         ),
@@ -2912,7 +3125,14 @@ def build_audit(
             "the input panel they cannot regenerate predictions or metrics. Those 5/100 cells are "
             "author-artifact corroborations, not regenerations: "
             "no predictions, holdings, returns, complete recorder artifacts, baseline outputs, or figure "
-            "arrays survive. Thus mechanism faithfulness is substantial, 5/100 Table 2 cells are "
+            "arrays survive. The exact Qlib downloader falls back to a hash-pinned 450,094,816-byte "
+            "US archive whose calendar ends on 2020-11-10 and lacks the configured SPX benchmark, so "
+            "it cannot execute the matching run's 2021--2024 test. The public head at the run timestamp "
+            "has four US candidate factors while the fitted model requires five generated features; "
+            "the later paper snapshot has six after adding two candidates. No combined_factors_df.pkl "
+            "exists anywhere in the complete history. Thus neither the exact factor order nor the input "
+            "panel can be reconstructed from released artifacts. No paper-result credit is added. "
+            "Mechanism faithfulness is substantial, 5/100 Table 2 cells are "
             "corroborated, 0/100 are independently regenerated, and 0/18 additional quantitative result "
             "claims are reproduced. A bounded 2026-08-14 census of all 71 fork default heads found "
             "four divergent tips but zero additional paper results. The sole fork data candidate is an "
@@ -2992,6 +3212,12 @@ legacy tree; both omissions made it materially too pessimistic.
   zero/one-vector probes and feature-importance summaries are tracked. This proves
   the fitted states are executable, not that their paper inputs or metrics were
   regenerated.
+- The exact Qlib downloader and its fallback route are now executed and pinned.
+  The 450,094,816-byte US archive has 71,959 entries, 8,994 feature symbols,
+  755 S&P500 membership rows, and 5,250 calendar dates from 1999-12-31 through
+  2020-11-10. These are primary-source data-provenance facts; because the archive
+  has no 2021--2024 observations and no `SPX` feature, they establish a replay
+  failure rather than paper-result credit.
 - The paper-era AST parser executes twice deterministically. Identical,
   commutative, and partially shared expressions return largest-common-subtree
   sizes 4, 3, and 3. An exact Alpha101 probe matches itself with size 23.
@@ -3042,7 +3268,18 @@ legacy tree; both omissions made it materially too pessimistic.
   zero factor-zoo files; recovery depends on earlier public history.
 - The exact Baostock CSI500 and Yahoo S&P500 panels, constituent histories, and
   data transformations are absent. The US config points only to unversioned local
-  `us_data`; it does not establish Yahoo provenance or frozen panel identity.
+  `us_data`; it does not establish frozen panel identity. The paper-era Qlib
+  downloader first asks for a versioned 0.9.5 archive, which is unavailable, then
+  falls back to the hash-pinned `latest` asset observed on 2026-08-25. That asset
+  reports Last-Modified 2024-05-22 but ends on 2020-11-10, lacks the configured
+  `SPX` benchmark, does not fully cover validation, and has zero test-period dates.
+  It therefore cannot be the missing panel or run the released 2021--2024 task.
+- The matching model requires five generated features. At its 2025-01-28 run
+  timestamp, the latest public commit contains four US candidate expressions; the
+  paper snapshot contains six only after two more were added on 2025-02-12. The
+  model stores anonymous `Column_0`--`Column_8` names, and no
+  `combined_factors_df.pkl` exists in any reachable Git object. The exact five
+  expressions, order, values, and preprocessing lineage are not recoverable.
 - RD-Agent's host requirements and the Qlib Dockerfile's CatBoost/XGBoost installs
   were unpinned. A commit-date release cutoff gives a reproducible compatible
   reconstruction, but cannot prove the authors' exact installed wheels. Bouchet's
@@ -3164,6 +3401,26 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--paper-qlib-source-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "ALPHAAGENT_PAPER_QLIB_SOURCE_ROOT",
+                DEFAULT_PAPER_QLIB_SOURCE_ROOT,
+            )
+        ),
+    )
+    parser.add_argument(
+        "--paper-qlib-data-archive",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "ALPHAAGENT_PAPER_QLIB_DATA_ARCHIVE",
+                DEFAULT_PAPER_QLIB_DATA_ARCHIVE,
+            )
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=project_root / "paper_runs/paper_replication_audits/alphaagent",
@@ -3183,6 +3440,8 @@ def main() -> int:
         args.source_python.resolve(),
         args.paper_host_python.resolve(),
         args.paper_qlib_python.resolve(),
+        args.paper_qlib_source_root.resolve(),
+        args.paper_qlib_data_archive.resolve(),
         args.output_dir.resolve(),
     )
     print(json.dumps(manifest, indent=2))

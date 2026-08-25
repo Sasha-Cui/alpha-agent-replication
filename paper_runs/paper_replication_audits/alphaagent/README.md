@@ -66,6 +66,12 @@ legacy tree; both omissions made it materially too pessimistic.
   zero/one-vector probes and feature-importance summaries are tracked. This proves
   the fitted states are executable, not that their paper inputs or metrics were
   regenerated.
+- The exact Qlib downloader and its fallback route are now executed and pinned.
+  The 450,094,816-byte US archive has 71,959 entries, 8,994 feature symbols,
+  755 S&P500 membership rows, and 5,250 calendar dates from 1999-12-31 through
+  2020-11-10. These are primary-source data-provenance facts; because the archive
+  has no 2021--2024 observations and no `SPX` feature, they establish a replay
+  failure rather than paper-result credit.
 - The paper-era AST parser executes twice deterministically. Identical,
   commutative, and partially shared expressions return largest-common-subtree
   sizes 4, 3, and 3. An exact Alpha101 probe matches itself with size 23.
@@ -116,7 +122,18 @@ legacy tree; both omissions made it materially too pessimistic.
   zero factor-zoo files; recovery depends on earlier public history.
 - The exact Baostock CSI500 and Yahoo S&P500 panels, constituent histories, and
   data transformations are absent. The US config points only to unversioned local
-  `us_data`; it does not establish Yahoo provenance or frozen panel identity.
+  `us_data`; it does not establish frozen panel identity. The paper-era Qlib
+  downloader first asks for a versioned 0.9.5 archive, which is unavailable, then
+  falls back to the hash-pinned `latest` asset observed on 2026-08-25. That asset
+  reports Last-Modified 2024-05-22 but ends on 2020-11-10, lacks the configured
+  `SPX` benchmark, does not fully cover validation, and has zero test-period dates.
+  It therefore cannot be the missing panel or run the released 2021--2024 task.
+- The matching model requires five generated features. At its 2025-01-28 run
+  timestamp, the latest public commit contains four US candidate expressions; the
+  paper snapshot contains six only after two more were added on 2025-02-12. The
+  model stores anonymous `Column_0`--`Column_8` names, and no
+  `combined_factors_df.pkl` exists in any reachable Git object. The exact five
+  expressions, order, values, and preprocessing lineage are not recoverable.
 - RD-Agent's host requirements and the Qlib Dockerfile's CatBoost/XGBoost installs
   were unpinned. A commit-date release cutoff gives a reproducible compatible
   reconstruction, but cannot prove the authors' exact installed wheels. Bouchet's
