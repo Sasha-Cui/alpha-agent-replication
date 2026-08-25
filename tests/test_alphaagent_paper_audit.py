@@ -499,6 +499,23 @@ def test_committed_audit_is_fail_closed() -> None:
         assert audit.sha256(output / filename) == expected
 
 
+def test_global_evidence_route_preserves_run_input_replay_failure() -> None:
+    ledger = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
+    row = next(item for item in ledger if item["system_id"] == "SYS-ALPHA-AGENT")
+    note = row["concise_evidence_note"]
+    assert "450,094,816-byte US archive" in note
+    assert "calendar ends on 2020-11-10" in note
+    assert "four US candidate expressions" in note
+    assert "requires five generated features" in note
+    assert "No combined_factors_df.pkl exists" in note
+    assert "adds no paper-result credit" in note
+
+    failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
+    assert "450,094,816-byte" in failure_table
+    assert "2020-11-10" in failure_table
+    assert r"combined\_factors\_df.pkl" in failure_table
+
+
 def test_pinned_source_static_checks_when_available() -> None:
     source_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/alphaagent_source")
     if not source_root.exists():
