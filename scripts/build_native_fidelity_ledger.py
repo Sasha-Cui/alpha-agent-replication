@@ -494,7 +494,12 @@ ARTIFACT_NOTES = {
         "convention. On the same GOOGL close path, matching reported return requires "
         "about $998.09-$1,000.48 starting capital while matching drawdown requires "
         "$956.35-$957.85, so one constant-capital path cannot recover both. These 46 exact "
-        "checks verify author outputs and baselines; they do not regenerate "
+        "checks verify author outputs and baselines. A separate calibration of the "
+        "author AAPL comparison raster reproduces B&H, MACD, SMA, and P1GPT table "
+        "MDDs within 0.21 points but implies about 10.00% KDJ+RSI MDD and 13.21% "
+        "ZMR MDD, versus 1.78% and 5.46% in Table 2. Those two additional cells are "
+        "author-raster/table contradictions, not baseline-rule reproductions. The checks "
+        "do not regenerate "
         "agent decisions or establish paper-time data lineage. All 36 reachable "
         "commits across the attributable P1GPT/Neurowatt web client's three branch "
         "heads were checked; the latest 38-file snapshot has 22 Python files that "
@@ -1697,8 +1702,8 @@ TARGETED_EXECUTION = {
         "full_2273_commit_histories_2_forks_2_refs_2_unique_heads_exhausted"
     ),
     "SYS-P1GPT": (
-        "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_"
-        "cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"
+        "paper_audit:completed_46_of_72_exact_cells_verified_2_author_raster_mdd_"
+        "contradictions_zero_of_12_native_agent_cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"
     ),
     "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",

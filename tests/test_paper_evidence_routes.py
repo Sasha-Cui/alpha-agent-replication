@@ -253,8 +253,8 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "1_fork_1_ref_official_head_exhausted"
         ),
         "CensusArxiv251023032": (
-            "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_native_agent_"
-            "cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"
+            "paper_audit:completed_46_of_72_exact_cells_verified_2_author_raster_mdd_"
+            "contradictions_zero_of_12_native_agent_cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"
         ),
         "CensusArxiv260620625": (
             "paper_audit:completed_two_commit_history_1_coauthor_fork_provenance_only_"

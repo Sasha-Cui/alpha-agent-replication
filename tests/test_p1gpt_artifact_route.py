@@ -85,8 +85,9 @@ def test_native_ledger_credits_static_component_but_zero_native_outputs() -> Non
     assert row["prespecified_G7_monthly_common_task_compatible"] == "N"
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_"
-        "native_agent_cells_end_to_end_lookahead_counterexample_1_fork_1_ref_"
+        "paper_audit:completed_46_of_72_exact_cells_verified_2_author_raster_mdd_"
+        "contradictions_zero_of_12_native_agent_cells_end_to_end_lookahead_"
+        "counterexample_1_fork_1_ref_"
         "official_head_exhausted"
     )
     assert row["fidelity_class"] == "F1_static_no_native_output"
@@ -94,6 +95,9 @@ def test_native_ledger_credits_static_component_but_zero_native_outputs() -> Non
     assert "11/12 P1GPT cells" in note
     assert "35 of another 36 cells" in note
     assert "6.14%, not the printed 6.41%" in note
+    assert "10.00% KDJ+RSI MDD" in note
+    assert "13.21% ZMR MDD" in note
+    assert "author-raster/table contradictions" in note
     assert "0/12 native P1GPT cells" in note
     assert "sole accessible public fork" in note
     assert "zero divergent commits" in note

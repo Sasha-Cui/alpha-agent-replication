@@ -356,11 +356,14 @@ def test_paper_routes_through_public_component_audit_without_proxy_credit() -> N
     assert row["static_fidelity_tiers"] == "R3"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_46_of_72_displayed_cells_verified_zero_of_12_"
-        "native_agent_cells_end_to_end_lookahead_counterexample_1_fork_1_ref_"
+        "paper_audit:completed_46_of_72_exact_cells_verified_2_author_raster_mdd_"
+        "contradictions_zero_of_12_native_agent_cells_end_to_end_lookahead_"
+        "counterexample_1_fork_1_ref_"
         "official_head_exhausted"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert "0/12 native P1GPT cells" in row["precise_native_or_access_blocker"]
+    assert "10.00% KDJ+RSI MDD" in row["precise_native_or_access_blocker"]
+    assert "author-raster/table contradictions" in row["precise_native_or_access_blocker"]
     assert "lookahead" in row["precise_native_or_access_blocker"]
     assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
