@@ -77,13 +77,17 @@ def test_native_ledger_credits_outputs_but_not_end_to_end_reproduction() -> None
     assert row["blocking_stage"] == "A3_US_only_not_six_country"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_21_of_42_displayed_scalar_units_checked_18_"
-        "author_output_3_current_public_benchmark_zero_end_to_end_result_cells"
+        "author_output_3_current_public_benchmark_3_of_3_raster_correspondences_"
+        "zero_raw_series_zero_end_to_end_result_cells"
     )
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     note = row["concise_evidence_note"]
     assert "recover 18/42 scalar units" in note
     assert "21/42 checked displayed units" in note
     assert "full 20-return window" in note
+    assert "7,313 blue portfolio pixels reproduce exactly" in note
+    assert "3/3 raster curves have source/output correspondence" in note
+    assert "exact raw-series credit at 0/3" in note
     assert "0/42 result units" in note
     assert "author-output/current-response verification, not experiment reproduction" in note
 
@@ -103,4 +107,6 @@ def test_static_paper_assets_reflect_raptor_correction() -> None:
     assert "RAPTOR & reachable" in failure_table
     assert "recover 18/42 scalar units" in failure_table
     assert "21/42 checked displayed units" in failure_table
+    assert "3/3 raster curves have source/output correspondence" in failure_table
+    assert "exact raw-series credit at 0/3" in failure_table
     assert "0/42 result units" in failure_table
