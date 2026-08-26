@@ -641,7 +641,14 @@ ARTIFACT_NOTES = {
         "(288 unique measurements) and 106 raster result series, with zero native "
         "results reproduced. Every one of the official repository's 11 commits "
         "contains only README.md: no FinCon code, prompts, configs, data, models, "
-        "tests, raw trajectories, or plot inputs are released. All six public forks "
+        "tests, raw trajectories, or plot inputs are released. Eight hash-pinned "
+        "current Yahoo responses independently check the 24 Table 2 Buy-and-Hold "
+        "cells over the stated window. Only four match at displayed precision "
+        "(AMZN return/Sharpe, MSFT return, and NFLX return), while all eight "
+        "maximum-drawdown cells and 20/24 cells overall disagree. These are current-"
+        "response checks without paper-time input lineage, not author-baseline or "
+        "FinCon result credit. "
+        "All six public forks "
         "and six branch refs resolve to three heads already inside that complete "
         "README-only history, adding zero unique commits, objects, or artifacts. "
         "The arXiv LaTeX "
@@ -1672,7 +1679,8 @@ TARGETED_EXECUTION = {
     "SYS-EFS": "paper_audit:completed_10_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": (
-        "paper_audit:completed_zero_of_306_native_results_official_code_not_released_"
+        "paper_audit:completed_zero_of_306_native_results_24_buy_hold_current_checks_"
+        "4_matches_20_mismatches_official_code_not_released_"
         "6_forks_6_refs_3_official_history_heads_exhausted"
     ),
     "SYS-FIN-AGENT": (

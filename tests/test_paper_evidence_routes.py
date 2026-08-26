@@ -86,6 +86,19 @@ def test_public_code_proxies_are_secondary_and_have_precise_blockers() -> None:
     assert len(reconstructed) == 22
     fincon = public[public["canonical_work_id"].eq("CensusArxiv240706567")]
     assert fincon["native_pipeline_disposition"].eq("targeted_execution_recorded").all()
+    fincon_row = fincon.iloc[0]
+    assert fincon_row["native_execution_audit_status"] == (
+        "paper_audit:completed_zero_of_306_native_results_24_buy_hold_current_checks_"
+        "4_matches_20_mismatches_official_code_not_released_"
+        "6_forks_6_refs_3_official_history_heads_exhausted"
+    )
+    fincon_blocker = fincon_row["precise_native_or_access_blocker"]
+    assert "24 Table 2 Buy-and-Hold cells" in fincon_blocker
+    assert "Only four match at displayed precision" in fincon_blocker
+    assert "all eight maximum-drawdown cells" in fincon_blocker
+    assert "20/24 cells overall disagree" in fincon_blocker
+    assert "without paper-time input lineage" in fincon_blocker
+    assert "not author-baseline or FinCon result credit" in fincon_blocker
     assert reconstructed["proxy_role"].eq("secondary_diagnostic_after_native_review").all()
 
 
