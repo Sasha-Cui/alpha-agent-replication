@@ -6,6 +6,14 @@ This audit uses the 36-page NeurIPS 2024 proceedings paper as the result authori
 
 - **Full paper reproduced:** no.
 - **Displayed numeric table cells reproduced:** 0 / 306.
+- **Buy-and-Hold cells independently checked against pinned current responses:**
+  24 / 306,
+  with 4 displayed matches and
+  20 mismatches. The matches
+  are AMZN cumulative return and Sharpe, MSFT cumulative return, and NFLX cumulative
+  return under the predeclared adjusted-close log-return conventions. These are
+  current-response checks only: the paper-time Yahoo snapshot is absent and they
+  receive zero author-baseline or FinCon result credit.
 - **Unique numeric measurements reproduced:** 0 / 288.
 - **Raster result series reproduced from native numeric data:** 0 / 106.
 - **Paper mechanisms verified in released implementation:** 0 / 33.
@@ -17,7 +25,9 @@ The 2026-08-14 census also exhausts all six public forks and all six branch refs
 
 ## Result census and revision drift
 
-The final paper displays 306 numeric cells. Nine FinCon metric triplets are repeated in the main table and both ablation tables, leaving 288 unique measurements. It also contains 106 result series across 18 raster assets; no underlying series or plot-generation code is released.
+The final paper displays 306 numeric cells. Nine FinCon metric triplets are repeated in the main table and both ablation tables, leaving 288 unique measurements. The eight Table 2 Buy-and-Hold rows account for 24 cells. Pinned present-day Yahoo responses over the stated 2022-10-05 through 2023-06-10 window match only 4/24 at displayed precision; all eight maximum-drawdown cells and 20/24 cells overall disagree. This does not prove the original frozen inputs were wrong, but it bounds how much of the published baseline table follows from a current public reconstruction.
+
+The paper also contains 106 result series across 18 raster assets; no underlying series or plot-generation code is released.
 
 The v1 and v2 arXiv releases have the same 201 result cells. In v3/final, 105 cells were added and 64 of the 201 shared cells changed. The release provides no raw trajectories or derivation explaining those changes. `paper_version_numeric_drift.csv` records every changed shared cell.
 

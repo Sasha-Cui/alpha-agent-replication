@@ -11,10 +11,13 @@ from __future__ import annotations
 
 import argparse
 import csv
+import datetime as dt
 import hashlib
 import json
+import math
 import re
 import shutil
+import statistics
 import subprocess
 import tarfile
 import tempfile
@@ -62,9 +65,20 @@ SOURCE_INITIAL_README_SHA256 = "d95577ba29c9d3e1cd9392c2a89ef5a1a83851d278a5b93e
 SOURCE_CURRENT_COMMIT = "ca3256d037c497871c064bc2f5abab106993e189"
 SOURCE_CURRENT_DATE = "2026-02-26T23:20:53-05:00"
 SOURCE_CURRENT_README_SHA256 = "0aa1113065f1e71ee8688b89d87ac72751f2e1c1912a9d7ac739c865f50cccd7"
-AUDIT_DATE = "2026-08-11"
+AUDIT_DATE = "2026-08-26"
 PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
 PUBLIC_FORK_SNAPSHOT_SHA256 = "1ad971e0260acad6a147d910724b87b47660d8f828a6eb8f005084e7be8967f1"
+YAHOO_RESPONSE_RETRIEVED_DATE = "2026-08-26"
+YAHOO_RESPONSE_PINS = {
+    "AAPL": ("yahoo_aapl_20221005_20230610.json", "e9d4987ea24c2e6a2654e0281b5072345993b966c027c8e194012d86f0d664ae"),
+    "AMZN": ("yahoo_amzn_20221005_20230610.json", "629ebb601877bd8a1949eee0be547375cfc20e3e6621537c265cb233a5199f56"),
+    "COIN": ("yahoo_coin_20221005_20230610.json", "b2aa879c788f372bbaf4c46cd68c37c4e0c9149ece7a1d2fe6765bcdfa42950d"),
+    "GOOG": ("yahoo_goog_20221005_20230610.json", "f36bb3d6e7199cbac5f1cecc32624fc4097c944bdbd092a6a0fb2c99ecaeecea"),
+    "MSFT": ("yahoo_msft_20221005_20230610.json", "1cf2b48480af717dd74839cbd3032af534d50ca51a81f2b81671b552a75bc724"),
+    "NFLX": ("yahoo_nflx_20221005_20230610.json", "53a8ea1bd3ba84ca83c5060545fdd57b3da48e6624d3765eee13daccc60a2a87"),
+    "NIO": ("yahoo_nio_20221005_20230610.json", "99b266cd7af29613c0bea6ca283df5da9a36a7e653467de73c783373f25f9bc1"),
+    "TSLA": ("yahoo_tsla_20221005_20230610.json", "858f6baaf1935b3a15d60a48a9f83d6d53a7e2ba95473c5f1a8c84ea0358dc1c"),
+}
 SOURCE_CODE_SUFFIXES = {".py", ".js", ".ts", ".java", ".cpp", ".c", ".go", ".rs"}
 DATA_MODEL_SUFFIXES = {".csv", ".json", ".parquet", ".pkl", ".pt", ".pth", ".bin"}
 
@@ -252,6 +266,103 @@ def paper_table_rows() -> list[dict[str, Any]]:
     }
     if len(rows) != 306 or Counter(row["paper_table"] for row in rows) != expected:
         raise RuntimeError("FinCon paper numeric table census changed")
+    return rows
+
+
+def _buy_hold_metrics(prices: Sequence[float]) -> dict[str, float]:
+    if len(prices) < 2 or any(value <= 0 for value in prices):
+        raise ValueError("Buy-and-Hold price path is invalid")
+    log_returns = [math.log(prices[index] / prices[index - 1]) for index in range(1, len(prices))]
+    peak = prices[0]
+    maximum_drawdown = 0.0
+    for price in prices:
+        peak = max(peak, price)
+        maximum_drawdown = max(maximum_drawdown, 1 - price / peak)
+    return {
+        "CR_pct": sum(log_returns) * 100,
+        "SR": statistics.mean(log_returns) / statistics.stdev(log_returns) * math.sqrt(252),
+        "MDD_pct": maximum_drawdown * 100,
+    }
+
+
+def buy_hold_current_response_rows(response_dir: Path) -> list[dict[str, Any]]:
+    formulas = {
+        "CR_pct": "sum daily log adjusted-close returns times 100",
+        "SR": "mean daily log adjusted-close return divided by sample SD times sqrt(252), risk-free rate zero",
+        "MDD_pct": "maximum one minus adjusted close divided by running adjusted-close peak, times 100",
+    }
+    rows: list[dict[str, Any]] = []
+    for asset, methods in SINGLE_RESULTS.items():
+        filename, expected_hash = YAHOO_RESPONSE_PINS[asset]
+        path = response_dir / filename
+        if sha256(path) != expected_hash:
+            raise RuntimeError(f"Pinned FinCon current Yahoo response changed: {asset}")
+        result = json.loads(path.read_text(encoding="utf-8"))["chart"]["result"][0]
+        if result["meta"]["symbol"] != asset:
+            raise RuntimeError(f"FinCon Yahoo response symbol changed: {asset}")
+        timestamps = result["timestamp"]
+        close = result["indicators"]["quote"][0]["close"]
+        adjusted = result["indicators"]["adjclose"][0]["adjclose"]
+        if (
+            len(timestamps) != 171
+            or len(close) != len(timestamps)
+            or len(adjusted) != len(timestamps)
+            or any(value is None for value in close)
+            or any(value is None for value in adjusted)
+        ):
+            raise RuntimeError(f"FinCon Yahoo response coverage changed: {asset}")
+        dates = [
+            dt.datetime.fromtimestamp(timestamp, dt.timezone.utc).date().isoformat()
+            for timestamp in timestamps
+        ]
+        if dates[0] != "2022-10-05" or dates[-1] != "2023-06-09":
+            raise RuntimeError(f"FinCon Yahoo response dates changed: {asset}: {dates[0]} to {dates[-1]}")
+        adjusted_metrics = _buy_hold_metrics([float(value) for value in adjusted])
+        unadjusted_metrics = _buy_hold_metrics([float(value) for value in close])
+        for metric, paper_value in zip(METRICS, methods["B&H"]):
+            adjusted_value = adjusted_metrics[metric]
+            unadjusted_value = unadjusted_metrics[metric]
+            adjusted_match = round(adjusted_value, 3) == paper_value
+            unadjusted_match = round(unadjusted_value, 3) == paper_value
+            rows.append(
+                {
+                    "asset": asset,
+                    "metric": metric,
+                    "paper_value": f"{paper_value:.3f}",
+                    "current_adjusted_close_value": repr(adjusted_value),
+                    "current_unadjusted_close_value": repr(unadjusted_value),
+                    "adjusted_close_display_match": adjusted_match,
+                    "unadjusted_close_display_match": unadjusted_match,
+                    "any_predeclared_basis_display_match": adjusted_match or unadjusted_match,
+                    "formula": formulas[metric],
+                    "response_file": filename,
+                    "response_sha256": expected_hash,
+                    "observations": len(timestamps),
+                    "first_date": dates[0],
+                    "last_date": dates[-1],
+                    "response_retrieved_date": YAHOO_RESPONSE_RETRIEVED_DATE,
+                    "paper_time_input_lineage": False,
+                    "author_baseline_result_credit": False,
+                    "fincon_result_credit": False,
+                    "status": (
+                        "current_response_display_match_not_paper_time_lineage"
+                        if adjusted_match or unadjusted_match
+                        else "current_response_mismatch"
+                    ),
+                }
+            )
+    matched = {
+        (row["asset"], row["metric"])
+        for row in rows
+        if row["any_predeclared_basis_display_match"]
+    }
+    if len(rows) != 24 or matched != {
+        ("AMZN", "CR_pct"),
+        ("AMZN", "SR"),
+        ("MSFT", "CR_pct"),
+        ("NFLX", "CR_pct"),
+    }:
+        raise RuntimeError(f"FinCon current-response Buy-and-Hold result changed: {matched}")
     return rows
 
 
@@ -810,6 +921,14 @@ This audit uses the 36-page NeurIPS 2024 proceedings paper as the result authori
 
 - **Full paper reproduced:** no.
 - **Displayed numeric table cells reproduced:** 0 / {manifest['paper_numeric_table_cells_total']}.
+- **Buy-and-Hold cells independently checked against pinned current responses:**
+  {manifest['buy_hold_current_response_cells_checked']} / {manifest['paper_numeric_table_cells_total']},
+  with {manifest['buy_hold_current_response_cells_matching']} displayed matches and
+  {manifest['buy_hold_current_response_cells_mismatching']} mismatches. The matches
+  are AMZN cumulative return and Sharpe, MSFT cumulative return, and NFLX cumulative
+  return under the predeclared adjusted-close log-return conventions. These are
+  current-response checks only: the paper-time Yahoo snapshot is absent and they
+  receive zero author-baseline or FinCon result credit.
 - **Unique numeric measurements reproduced:** 0 / {manifest['paper_unique_numeric_measurements_total']}.
 - **Raster result series reproduced from native numeric data:** 0 / {manifest['paper_figure_series_total']}.
 - **Paper mechanisms verified in released implementation:** 0 / {manifest['paper_mechanisms_total']}.
@@ -821,7 +940,9 @@ The {PUBLIC_FORK_CENSUS_DATE} census also exhausts all six public forks and all 
 
 ## Result census and revision drift
 
-The final paper displays 306 numeric cells. Nine FinCon metric triplets are repeated in the main table and both ablation tables, leaving 288 unique measurements. It also contains 106 result series across 18 raster assets; no underlying series or plot-generation code is released.
+The final paper displays 306 numeric cells. Nine FinCon metric triplets are repeated in the main table and both ablation tables, leaving 288 unique measurements. The eight Table 2 Buy-and-Hold rows account for 24 cells. Pinned present-day Yahoo responses over the stated 2022-10-05 through 2023-06-10 window match only 4/24 at displayed precision; all eight maximum-drawdown cells and 20/24 cells overall disagree. This does not prove the original frozen inputs were wrong, but it bounds how much of the published baseline table follows from a current public reconstruction.
+
+The paper also contains 106 result series across 18 raster assets; no underlying series or plot-generation code is released.
 
 The v1 and v2 arXiv releases have the same 201 result cells. In v3/final, 105 cells were added and 64 of the 201 shared cells changed. The release provides no raw trajectories or derivation explaining those changes. `paper_version_numeric_drift.csv` records every changed shared cell.
 
@@ -842,6 +963,7 @@ The final paper contains material inconsistencies: Table numbering does not matc
 def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str) -> dict[str, Any]:
     validate_primary_inputs(source_root, paper_root)
     table = paper_table_rows()
+    buy_hold_checks = buy_hold_current_response_rows(output)
     unique = unique_measurement_rows(table)
     figures = figure_rows()
     drift = version_drift_rows(table)
@@ -862,11 +984,16 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "native_system_execution_status": "impossible_no_fincon_implementation_released_in_official_history_or_any_accessible_public_fork",
         "public_fork_census": fork_summary,
         "paper_latex_compilation": compile_paper_source(paper_root, latex_command),
+        "current_yahoo_buy_hold_cells_checked": len(buy_hold_checks),
+        "current_yahoo_buy_hold_cells_matching": sum(
+            row["any_predeclared_basis_display_match"] for row in buy_hold_checks
+        ),
         "paper_result_credit": False,
     }
     output.mkdir(parents=True, exist_ok=True)
     csv_outputs = {
         "paper_numeric_table_conformance.csv": table,
+        "buy_hold_current_response_conformance.csv": buy_hold_checks,
         "paper_unique_measurement_conformance.csv": unique,
         "paper_figure_series_inventory.csv": figures,
         "paper_version_numeric_drift.csv": drift,
@@ -895,6 +1022,18 @@ def audit(source_root: Path, paper_root: Path, output: Path, latex_command: str)
         "full_paper_reproduced": False,
         "paper_numeric_table_cells_total": len(table),
         "paper_numeric_table_cells_with_paper_result_credit": 0,
+        "buy_hold_current_response_cells_checked": len(buy_hold_checks),
+        "buy_hold_current_response_cells_matching": sum(
+            row["any_predeclared_basis_display_match"] for row in buy_hold_checks
+        ),
+        "buy_hold_current_response_cells_mismatching": sum(
+            not row["any_predeclared_basis_display_match"] for row in buy_hold_checks
+        ),
+        "buy_hold_current_response_paper_time_lineage": False,
+        "buy_hold_current_response_fincon_result_credit": 0,
+        "current_yahoo_response_sha256": {
+            asset: expected_hash for asset, (_, expected_hash) in YAHOO_RESPONSE_PINS.items()
+        },
         "paper_unique_numeric_measurements_total": len(unique),
         "paper_unique_numeric_measurements_with_paper_result_credit": 0,
         "paper_figure_assets_total": len(FIGURES),

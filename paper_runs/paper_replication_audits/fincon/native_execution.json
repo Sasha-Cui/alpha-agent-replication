@@ -1,4 +1,6 @@
 {
+  "current_yahoo_buy_hold_cells_checked": 24,
+  "current_yahoo_buy_hold_cells_matching": 4,
   "data_model_or_checkpoint_files": 0,
   "native_system_execution_attempted": false,
   "native_system_execution_status": "impossible_no_fincon_implementation_released_in_official_history_or_any_accessible_public_fork",

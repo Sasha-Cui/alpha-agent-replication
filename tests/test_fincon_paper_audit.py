@@ -80,6 +80,7 @@ def test_committed_audit_records_no_released_implementation() -> None:
     unique = read_csv(output / "paper_unique_measurement_conformance.csv")
     figures = read_csv(output / "paper_figure_series_inventory.csv")
     history = read_csv(output / "released_source_history.csv")
+    buy_hold = read_csv(output / "buy_hold_current_response_conformance.csv")
     assert manifest["overall_status"] == (
         "paper_specification_audited_but_official_code_and_data_not_released"
     )
@@ -88,6 +89,29 @@ def test_committed_audit_records_no_released_implementation() -> None:
     assert manifest["paper_unique_numeric_measurements_total"] == len(unique) == 288
     assert manifest["paper_figure_series_total"] == len(figures) == 106
     assert manifest["paper_numeric_table_cells_with_paper_result_credit"] == 0
+    assert manifest["buy_hold_current_response_cells_checked"] == len(buy_hold) == 24
+    assert manifest["buy_hold_current_response_cells_matching"] == 4
+    assert manifest["buy_hold_current_response_cells_mismatching"] == 20
+    assert manifest["buy_hold_current_response_paper_time_lineage"] is False
+    assert manifest["buy_hold_current_response_fincon_result_credit"] == 0
+    assert Counter(row["status"] for row in buy_hold) == {
+        "current_response_display_match_not_paper_time_lineage": 4,
+        "current_response_mismatch": 20,
+    }
+    matched = {
+        (row["asset"], row["metric"])
+        for row in buy_hold
+        if row["any_predeclared_basis_display_match"] == "True"
+    }
+    assert matched == {
+        ("AMZN", "CR_pct"),
+        ("AMZN", "SR"),
+        ("MSFT", "CR_pct"),
+        ("NFLX", "CR_pct"),
+    }
+    assert {row["paper_time_input_lineage"] for row in buy_hold} == {"False"}
+    assert {row["author_baseline_result_credit"] for row in buy_hold} == {"False"}
+    assert {row["fincon_result_credit"] for row in buy_hold} == {"False"}
     assert manifest["paper_mechanisms_verified_in_released_source"] == 0
     assert manifest["official_repository_commits_total"] == len(history) == 11
     assert manifest["official_repository_tracked_files_current"] == 1
@@ -101,7 +125,11 @@ def test_committed_audit_records_no_released_implementation() -> None:
     assert native["native_system_execution_attempted"] is False
     assert native["paper_latex_compilation"]["exit_code"] == 0
     assert native["paper_latex_compilation"]["paper_result_credit"] is False
+    assert native["current_yahoo_buy_hold_cells_checked"] == 24
+    assert native["current_yahoo_buy_hold_cells_matching"] == 4
     assert native["paper_result_credit"] is False
+    for _asset, (filename, expected) in audit.YAHOO_RESPONSE_PINS.items():
+        assert audit.sha256(output / filename) == expected
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
 
