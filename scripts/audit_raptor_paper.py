@@ -10,11 +10,14 @@ The audit distinguishes three very different things:
 Only the first two are currently possible.  Missing price/benchmark inputs and
 material paper/runner disagreements prevent an end-to-end result reproduction.
 """
+
 from __future__ import annotations
 
 import argparse
+import base64
 import csv
 import hashlib
+import io
 import json
 import math
 import os
@@ -26,7 +29,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+import matplotlib
+import numpy as np
+import pandas as pd
+from PIL import Image
 from pypdf import PdfReader
+from scipy.ndimage import distance_transform_edt
+
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,8 +46,12 @@ ROOT = Path(__file__).resolve().parents[1]
 OPENREVIEW_RECORD = "https://openreview.net/forum?id=ziuTkKhgT0"
 CEUR_RECORD = "https://ceur-ws.org/Vol-4162/"
 CEUR_PDF = "https://ceur-ws.org/Vol-4162/paper8.pdf"
-FOUROPEN_URL = "https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing"
-ANONYMOUS_REPO_URL = "https://github.com/anonymouspenguin3/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing"
+FOUROPEN_URL = (
+    "https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing"
+)
+ANONYMOUS_REPO_URL = (
+    "https://github.com/anonymouspenguin3/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing"
+)
 AUTHOR_REPO_URL = "https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture"
 YAHOO_GSPC_URL = (
     "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?"
@@ -63,6 +79,10 @@ EXPECTED_AUTHOR_VALIDATION_FILES = 845
 EXPECTED_YAHOO_GSPC_SHA256 = "95f61e16d6b4a5b81f772fcd8b2971b14ecef2a0161a7fdcdeb04a51fb44f743"
 EXPECTED_YAHOO_GSPC_OBSERVATIONS = 165
 EXPECTED_TRACKED_FILES = 825
+EXPECTED_PAPER_FIGURE_2_RGB_SHA256 = "d3fe3fd892d499cb72b2ff2c803763cbf3a96dea87bf84de5c1f8b3abc2f060d"
+EXPECTED_PAPER_FIGURE_3_RGB_SHA256 = "b602ed873fae56069f6ff27ed25008a1f5f5e0310924360128373263c57ff335"
+EXPECTED_NOTEBOOK_FIGURE_2_PNG_SHA256 = "7de3e695fab3846b409c1f481ba51db77345d608c828374292232ed0bdc6fdd4"
+EXPECTED_NOTEBOOK_FIGURE_2_RGB_SHA256 = "58be0ff34bd5fb29d069a9aa4be607b76ed94ac2f52f239c20ec178fc3cd4b20"
 EXPECTED_SNAPSHOTS = 166
 EXPECTED_DECISION_FILES = 503
 EXPECTED_PYTHON_FILES = 94
@@ -244,11 +264,17 @@ def repository_relationship(anonymous: Path, author: Path) -> list[dict[str, str
                 "relationship": relationship,
                 "anonymous_sha256": bytes_sha256(lval) if lval is not None else "",
                 "author_sha256": bytes_sha256(rval) if rval is not None else "",
-                "paper_relevant": "yes" if role(name) in {
-                    "author_result_snapshot", "author_day0_decision_output",
-                    "author_trade_or_optimizer_report", "author_executed_notebook",
-                    "candidate_backtest_runner", "native_result_postprocessor",
-                } else "no",
+                "paper_relevant": "yes"
+                if role(name)
+                in {
+                    "author_result_snapshot",
+                    "author_day0_decision_output",
+                    "author_trade_or_optimizer_report",
+                    "author_executed_notebook",
+                    "candidate_backtest_runner",
+                    "native_result_postprocessor",
+                }
+                else "no",
             }
         )
     counts = Counter(row["relationship"] for row in rows)
@@ -256,8 +282,11 @@ def repository_relationship(anonymous: Path, author: Path) -> list[dict[str, str
     if counts != expected:
         raise ValueError(f"repository relationship changed: {counts}")
     key_paths = [
-        "testing/mvo_blm_runner.py", "testingLoopMultithreaded.py", "mvo_blm_runner.py",
-        "testing/scripts/visualize.py", "testing/2025-08-29/portfolio_snapshot_2025-08-29.json",
+        "testing/mvo_blm_runner.py",
+        "testingLoopMultithreaded.py",
+        "mvo_blm_runner.py",
+        "testing/scripts/visualize.py",
+        "testing/2025-08-29/portfolio_snapshot_2025-08-29.json",
     ]
     if any(next(row for row in rows if row["path"] == name)["relationship"] != "byte_identical" for name in key_paths):
         raise ValueError("paper-relevant source relationship changed")
@@ -284,12 +313,16 @@ def source_history_rows(author: Path) -> list[dict[str, str]]:
                 "containing_refs": ";".join(sorted(ref.strip() for ref in refs if ref.strip())),
                 "tracked_files": str(len(paths)),
                 "python_files": str(sum(name.endswith(".py") for name in paths)),
-                "portfolio_snapshots": str(sum(bool(re.search(r"portfolio_snapshot_\d{4}-\d{2}-\d{2}\.json$", name)) for name in paths)),
+                "portfolio_snapshots": str(
+                    sum(bool(re.search(r"portfolio_snapshot_\d{4}-\d{2}-\d{2}\.json$", name)) for name in paths)
+                ),
                 "stock_prices_csv": str(sum(name.endswith("stock_prices.csv") for name in lowered)),
                 "benchmark_data_files": str(
                     sum(bool(re.search(r"(?:sp500|s&p|gspc).*\.(?:csv|json)$", name)) for name in lowered)
                 ),
-                "paper_result_credit": "author_output_audit_only" if commit in {EXPECTED_AUTHOR_HEAD, "63977bfbb7a68912c0fb86e0c4db57f3e7cdd793"} else "none",
+                "paper_result_credit": "author_output_audit_only"
+                if commit in {EXPECTED_AUTHOR_HEAD, "63977bfbb7a68912c0fb86e0c4db57f3e7cdd793"}
+                else "none",
             }
         )
     expected = {
@@ -307,14 +340,28 @@ def source_history_rows(author: Path) -> list[dict[str, str]]:
 
 def validation_branch_rows(author: Path) -> list[dict[str, str]]:
     main_paths = set(str(git(author, "ls-tree", "-r", "--name-only", EXPECTED_AUTHOR_HEAD)).splitlines())
-    validation_paths = set(str(git(author, "ls-tree", "-r", "--name-only", EXPECTED_AUTHOR_VALIDATION_HEAD)).splitlines())
+    validation_paths = set(
+        str(git(author, "ls-tree", "-r", "--name-only", EXPECTED_AUTHOR_VALIDATION_HEAD)).splitlines()
+    )
     added = sorted(validation_paths - main_paths)
     removed = sorted(main_paths - validation_paths)
     if len(added) != 20 or removed:
         raise ValueError(f"validation branch delta changed: {len(added)} added, {len(removed)} removed")
-    enhancement = bytes(git(author, "show", f"{EXPECTED_AUTHOR_VALIDATION_HEAD}:paper_enhancements/enhanced_paper_sections.md", binary=True))
-    validator = bytes(git(author, "show", f"{EXPECTED_AUTHOR_VALIDATION_HEAD}:evaluation/statistical_validation.py", binary=True))
-    if not all(token in enhancement for token in (b"Claims 12.49% vs 10.08%", b"p-value: 0.019", b"January 2020 - December 2024")):
+    enhancement = bytes(
+        git(
+            author,
+            "show",
+            f"{EXPECTED_AUTHOR_VALIDATION_HEAD}:paper_enhancements/enhanced_paper_sections.md",
+            binary=True,
+        )
+    )
+    validator = bytes(
+        git(author, "show", f"{EXPECTED_AUTHOR_VALIDATION_HEAD}:evaluation/statistical_validation.py", binary=True)
+    )
+    if not all(
+        token in enhancement
+        for token in (b"Claims 12.49% vs 10.08%", b"p-value: 0.019", b"January 2020 - December 2024")
+    ):
         raise ValueError("post-publication enhancement claims changed")
     if b"aligned_benchmarkay" not in validator or b"np.random.choice" not in validator:
         raise ValueError("post-publication statistical-validator defects changed")
@@ -347,7 +394,11 @@ def benchmark_reproduction(path: Path, system_return_pct: float) -> tuple[list[d
     result = json.loads(path.read_text(encoding="utf-8"))["chart"]["result"][0]
     timestamps = result["timestamp"]
     closes = result["indicators"]["adjclose"][0]["adjclose"]
-    if len(timestamps) != EXPECTED_YAHOO_GSPC_OBSERVATIONS or len(closes) != len(timestamps) or any(value is None for value in closes):
+    if (
+        len(timestamps) != EXPECTED_YAHOO_GSPC_OBSERVATIONS
+        or len(closes) != len(timestamps)
+        or any(value is None for value in closes)
+    ):
         raise ValueError("Yahoo GSPC response coverage changed")
     dates = [datetime.fromtimestamp(value, timezone.utc).date().isoformat() for value in timestamps]
     benchmark_return_pct = (float(closes[-1]) / float(closes[0]) - 1) * 100
@@ -405,7 +456,9 @@ def rolling_sharpe(
 ) -> list[float]:
     result: list[float] = []
     for index in range(len(returns_with_initial_nan)):
-        values = [value for value in returns_with_initial_nan[max(0, index - window + 1):index + 1] if math.isfinite(value)]
+        values = [
+            value for value in returns_with_initial_nan[max(0, index - window + 1) : index + 1] if math.isfinite(value)
+        ]
         if len(values) < min_periods:
             result.append(float("nan"))
             continue
@@ -440,9 +493,7 @@ def metric_reproduction(repo: Path) -> tuple[list[dict[str, str]], list[dict[str
     )
     finite_sample = [value for value in rolling_sample if math.isfinite(value)]
     finite_population = [value for value in rolling_population if math.isfinite(value)]
-    finite_full20_rf2_sample = [
-        value for value in rolling_full20_rf2_sample if math.isfinite(value)
-    ]
+    finite_full20_rf2_sample = [value for value in rolling_full20_rf2_sample if math.isfinite(value)]
     computed = {
         "n": float(len(values)),
         "initial_value": values[0],
@@ -506,8 +557,12 @@ def metric_reproduction(repo: Path) -> tuple[list[dict[str, str]], list[dict[str
             "date": date,
             "net_liquidation": repr(value),
             "daily_return": "" if index == 0 else repr(returns[index - 1]),
-            "rolling_sharpe_20d_sample_sd": "" if not math.isfinite(rolling_sample[index]) else repr(rolling_sample[index]),
-            "rolling_sharpe_20d_population_sd": "" if not math.isfinite(rolling_population[index]) else repr(rolling_population[index]),
+            "rolling_sharpe_20d_sample_sd": ""
+            if not math.isfinite(rolling_sample[index])
+            else repr(rolling_sample[index]),
+            "rolling_sharpe_20d_population_sd": ""
+            if not math.isfinite(rolling_population[index])
+            else repr(rolling_population[index]),
             "rolling_sharpe_20d_full_window_sample_sd_rf2pct": ""
             if not math.isfinite(rolling_full20_rf2_sample[index])
             else repr(rolling_full20_rf2_sample[index]),
@@ -541,13 +596,15 @@ def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float
             credit_boundary = "no_result_credit"
         rows.append(
             {
-                "result_id": f"RAP-{len(rows)+1:03d}",
+                "result_id": f"RAP-{len(rows) + 1:03d}",
                 "location": location,
                 "scope": scope,
                 "metric": metric,
                 "displayed_value": displayed,
                 "author_output_value": "" if value is None or verification_source != "author_output" else repr(value),
-                "current_public_response_value": "" if value is None or verification_source != "current_public_response" else repr(value),
+                "current_public_response_value": ""
+                if value is None or verification_source != "current_public_response"
+                else repr(value),
                 "verification_status": status,
                 "verification_source": verification_source if status.startswith("verified") else "none",
                 "independent_end_to_end_reproduction": "no",
@@ -556,10 +613,34 @@ def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float
         )
 
     add("Abstract", "RAPTOR", "total_return_percent", "13.43", "total_return_pct", "verified_rounded")
-    add("Abstract", "benchmark", "SP500_total_return_percent", "10.08", "benchmark_return_pct", "verified_rounded_current_yahoo_response_not_paper_lineage", "current_public_response")
+    add(
+        "Abstract",
+        "benchmark",
+        "SP500_total_return_percent",
+        "10.08",
+        "benchmark_return_pct",
+        "verified_rounded_current_yahoo_response_not_paper_lineage",
+        "current_public_response",
+    )
     add("Section 4.3 paragraph 1", "RAPTOR", "total_return_percent", "13.43", "total_return_pct", "verified_rounded")
-    add("Section 4.3 paragraph 1", "benchmark", "SP500_total_return_percent", "10.08", "benchmark_return_pct", "verified_rounded_current_yahoo_response_not_paper_lineage", "current_public_response")
-    add("Section 4.3 paragraph 1", "comparison", "excess_percentage_points", "3.35", "excess_percentage_points", "verified_rounded_current_yahoo_response_not_paper_lineage", "current_public_response")
+    add(
+        "Section 4.3 paragraph 1",
+        "benchmark",
+        "SP500_total_return_percent",
+        "10.08",
+        "benchmark_return_pct",
+        "verified_rounded_current_yahoo_response_not_paper_lineage",
+        "current_public_response",
+    )
+    add(
+        "Section 4.3 paragraph 1",
+        "comparison",
+        "excess_percentage_points",
+        "3.35",
+        "excess_percentage_points",
+        "verified_rounded_current_yahoo_response_not_paper_lineage",
+        "current_public_response",
+    )
     add("Section 4.3 paragraph 2", "RAPTOR", "overall_sharpe", "1.0", "sharpe", "verified_rounded")
     add("Section 4.3 paragraph 2", "rolling", "rolling_20d_min", "-2.42")
     add("Section 4.3 paragraph 2", "rolling", "rolling_20d_max", "5.27")
@@ -570,10 +651,24 @@ def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float
     add("Extended validation", "RAPTOR", "final_value_usd", "1134348.19", "final_value", "verified_rounded")
     add("Extended validation", "RAPTOR", "total_return_percent", "13.43", "total_return_pct", "verified_rounded")
     add("Extended validation", "RAPTOR", "annualized_return_percent", "21.09", "annual_return_pct", "verified_rounded")
-    add("Extended validation", "RAPTOR", "annualized_volatility_percent", "19.30", "annual_volatility_pct", "verified_rounded")
+    add(
+        "Extended validation",
+        "RAPTOR",
+        "annualized_volatility_percent",
+        "19.30",
+        "annual_volatility_pct",
+        "verified_rounded",
+    )
     add("Extended validation", "RAPTOR", "sharpe", "1.0", "sharpe", "verified_rounded")
     add("Extended validation", "RAPTOR", "sortino", "1.28", "sortino", "verified_rounded")
-    add("Extended validation", "RAPTOR", "maximum_drawdown_percent", "-15.33", "maximum_drawdown_pct", "verified_rounded")
+    add(
+        "Extended validation",
+        "RAPTOR",
+        "maximum_drawdown_percent",
+        "-15.33",
+        "maximum_drawdown_pct",
+        "verified_rounded",
+    )
     add(
         "Extended validation",
         "rolling",
@@ -593,9 +688,23 @@ def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float
     add("Extended validation", "rolling", "longer_window_lower", "1.1")
     add("Extended validation", "rolling", "longer_window_upper", "1.4")
     add("Extended validation", "RAPTOR", "approximate_full_period_sharpe", "1.0", "sharpe", "verified_rounded")
-    add("Figure 3 caption", "rolling", "rolling_20d_min", "-5.26", "rolling_sample_min", "verified_near_by_truncation_not_standard_rounding")
+    add(
+        "Figure 3 caption",
+        "rolling",
+        "rolling_20d_min",
+        "-5.26",
+        "rolling_sample_min",
+        "verified_near_by_truncation_not_standard_rounding",
+    )
     add("Figure 3 caption", "rolling", "rolling_20d_max", "10.34", "rolling_sample_max", "verified_rounded")
-    add("Figure 3 caption", "rolling", "rolling_20d_final", "3.89", "rolling_sample_final", "conflict_population_sd_only_matches")
+    add(
+        "Figure 3 caption",
+        "rolling",
+        "rolling_20d_final",
+        "3.89",
+        "rolling_sample_final",
+        "conflict_population_sd_only_matches",
+    )
     add("Section 4.3 coverage", "RAPTOR", "coverage_ratio_166_of_166", "1.0", "coverage_ratio", "verified_exact")
     for ticker, base, perturb, delta in (
         ("WAB", ".112", ".087", "-.025"),
@@ -618,79 +727,626 @@ def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float
     return rows
 
 
-def figure_rows() -> list[dict[str, str]]:
+def opaque_rgb(image: Image.Image) -> np.ndarray:
+    rgba = image.convert("RGBA")
+    background = Image.new("RGBA", rgba.size, "white")
+    background.alpha_composite(rgba)
+    return np.asarray(background.convert("RGB"))
+
+
+def paper_figure_rasters(paper: Path) -> tuple[np.ndarray, np.ndarray]:
+    images = {item.image.size: opaque_rgb(item.image) for item in PdfReader(paper).pages[5].images}
+    if set(images) != {(1500, 600), (1000, 400)}:
+        raise ValueError(f"RAPTOR page-6 embedded image inventory changed: {set(images)}")
+    figure_2 = images[(1500, 600)]
+    figure_3 = images[(1000, 400)]
+    if bytes_sha256(figure_2.tobytes()) != EXPECTED_PAPER_FIGURE_2_RGB_SHA256:
+        raise ValueError("RAPTOR Figure 2 embedded raster changed")
+    if bytes_sha256(figure_3.tobytes()) != EXPECTED_PAPER_FIGURE_3_RGB_SHA256:
+        raise ValueError("RAPTOR Figure 3 embedded raster changed")
+    return figure_2, figure_3
+
+
+def author_notebook_figure_2(repo: Path) -> np.ndarray:
+    notebook = json.loads((repo / "testing/visualization.out.ipynb").read_text(encoding="utf-8"))
+    source = "".join(notebook["cells"][1]["source"])
+    required = (
+        "Cumulative Return (Portfolio vs S&P 500)",
+        "sp500_closing_prices.csv",
+        "plt.savefig(out_path, dpi=150)",
+        "S&P 500 (^GSPC)",
+    )
+    if not all(token in source for token in required):
+        raise ValueError("RAPTOR executed-notebook Figure 2 source changed")
+    image_payloads = [
+        "".join(output["data"]["image/png"])
+        for output in notebook["cells"][1]["outputs"]
+        if "image/png" in output.get("data", {})
+    ]
+    if len(image_payloads) != 1:
+        raise ValueError("RAPTOR executed-notebook Figure 2 output inventory changed")
+    raw = base64.b64decode(image_payloads[0])
+    image = Image.open(io.BytesIO(raw)).convert("RGB")
+    if (
+        bytes_sha256(raw) != EXPECTED_NOTEBOOK_FIGURE_2_PNG_SHA256
+        or bytes_sha256(image.tobytes()) != EXPECTED_NOTEBOOK_FIGURE_2_RGB_SHA256
+        or image.size != (987, 390)
+    ):
+        raise ValueError("RAPTOR executed-notebook Figure 2 raster changed")
+    return np.asarray(image)
+
+
+def render_figure_2_from_snapshots_and_current_response(
+    repo: Path,
+    yahoo_response: Path,
+) -> np.ndarray:
+    snapshots = snapshot_rows(repo)
+    frame = (
+        pd.DataFrame(
+            {
+                "date": pd.to_datetime([date for date, _, _ in snapshots]),
+                "net_liquidation": [float(data["net_liquidation"]) for _, _, data in snapshots],
+            }
+        )
+        .sort_values("date")
+        .reset_index(drop=True)
+    )
+    portfolio_cumulative = frame["net_liquidation"] / frame["net_liquidation"].iloc[0]
+
+    result = json.loads(yahoo_response.read_text(encoding="utf-8"))["chart"]["result"][0]
+    benchmark = pd.DataFrame(
+        {
+            "Date": pd.to_datetime(
+                [
+                    datetime.fromtimestamp(timestamp, timezone.utc).date().isoformat()
+                    for timestamp in result["timestamp"]
+                ]
+            ),
+            "Close": result["indicators"]["adjclose"][0]["adjclose"],
+        }
+    )
+    benchmark_close = benchmark.set_index("Date")["Close"]
+    benchmark_aligned = benchmark_close.reindex(frame["date"], method="ffill")
+    benchmark_cumulative = benchmark_aligned / benchmark_aligned.dropna().iloc[0]
+
+    plt.close("all")
+    plt.rcdefaults()
+    plt.figure(figsize=(10, 4))
+    plt.plot(
+        frame["date"],
+        portfolio_cumulative - 1.0,
+        label="Portfolio",
+        linewidth=1.8,
+        marker="o",
+        markersize=2,
+    )
+    plt.plot(
+        frame["date"],
+        benchmark_cumulative - 1.0,
+        label="S&P 500 (^GSPC)",
+        linestyle="--",
+        linewidth=1.5,
+    )
+    plt.title("Cumulative Return (Portfolio vs S&P 500)")
+    plt.xlabel("Date")
+    plt.ylabel("Cumulative Return (− 1)")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.tight_layout()
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format="png", dpi=150)
+    plt.close()
+    buffer.seek(0)
+    return np.asarray(Image.open(buffer).convert("RGB"))
+
+
+def same_size_color_mask_stats(
+    paper: np.ndarray,
+    comparison: np.ndarray,
+    color: tuple[int, int, int],
+    x_limits: tuple[int, int] | None = None,
+) -> dict[str, float]:
+    if paper.shape != comparison.shape:
+        raise ValueError(f"Raster dimensions differ: {paper.shape} != {comparison.shape}")
+    color_array = np.asarray(color, dtype=np.uint8)
+    paper_mask = np.all(paper == color_array, axis=2)
+    comparison_mask = np.all(comparison == color_array, axis=2)
+    if x_limits is not None:
+        minimum, maximum = x_limits
+        paper_mask[:, :minimum] = False
+        paper_mask[:, maximum + 1 :] = False
+        comparison_mask[:, :minimum] = False
+        comparison_mask[:, maximum + 1 :] = False
+
+    def distance_values(source: np.ndarray, target: np.ndarray) -> np.ndarray:
+        distances = distance_transform_edt(~target)
+        y, x = np.nonzero(source)
+        return distances[y, x]
+
+    paper_to_comparison = distance_values(paper_mask, comparison_mask)
+    comparison_to_paper = distance_values(comparison_mask, paper_mask)
+    return {
+        "paper_pixels": float(paper_mask.sum()),
+        "comparison_pixels": float(comparison_mask.sum()),
+        "intersection_pixels": float(np.logical_and(paper_mask, comparison_mask).sum()),
+        "paper_within_2px_fraction": float(np.mean(paper_to_comparison <= 2)),
+        "comparison_within_2px_fraction": float(np.mean(comparison_to_paper <= 2)),
+        "paper_max_distance_px": float(paper_to_comparison.max()),
+        "comparison_max_distance_px": float(comparison_to_paper.max()),
+    }
+
+
+def notebook_affine_distance_stats(
+    notebook: np.ndarray,
+    paper: np.ndarray,
+    color: tuple[int, int, int],
+) -> dict[str, float]:
+    color_array = np.asarray(color, dtype=np.uint8)
+    notebook_mask = np.all(notebook == color_array, axis=2)
+    paper_mask = np.all(paper == color_array, axis=2)
+    notebook_axes = (82, 978, 32, 337)
+    paper_axes = (130, 1474, 56, 513)
+
+    def data_limits(left: int, right: int) -> tuple[int, int]:
+        width = right - left
+        return (
+            round(left + width * 0.05 / 1.10),
+            round(right - width * 0.05 / 1.10),
+        )
+
+    notebook_min, notebook_max = data_limits(*notebook_axes[:2])
+    paper_min, paper_max = data_limits(*paper_axes[:2])
+    notebook_mask[:, :notebook_min] = False
+    notebook_mask[:, notebook_max + 1 :] = False
+    paper_mask[:, :paper_min] = False
+    paper_mask[:, paper_max + 1 :] = False
+
+    y, x = np.nonzero(notebook_mask)
+    mapped_x = np.rint(
+        paper_axes[0] + (x - notebook_axes[0]) * (paper_axes[1] - paper_axes[0]) / (notebook_axes[1] - notebook_axes[0])
+    ).astype(int)
+    mapped_y = np.rint(
+        paper_axes[2] + (y - notebook_axes[2]) * (paper_axes[3] - paper_axes[2]) / (notebook_axes[3] - notebook_axes[2])
+    ).astype(int)
+    distances = distance_transform_edt(~paper_mask)[mapped_y, mapped_x]
+    return {
+        "notebook_data_pixels": float(len(distances)),
+        "within_2px_fraction": float(np.mean(distances <= 2)),
+        "maximum_distance_px": float(distances.max()),
+    }
+
+
+def figure_raster_forensics(
+    paper: Path,
+    repo: Path,
+    yahoo_response: Path,
+) -> list[dict[str, str]]:
+    paper_figure_2, paper_figure_3 = paper_figure_rasters(paper)
+    notebook_figure_2 = author_notebook_figure_2(repo)
+    regenerated_figure_2 = render_figure_2_from_snapshots_and_current_response(repo, yahoo_response)
+    regenerated_figure_3 = opaque_rgb(Image.open(repo / "testing/results/rolling_sharpe.png"))
+
+    blue = (31, 119, 180)
+    orange = (255, 127, 14)
+    portfolio = same_size_color_mask_stats(
+        paper_figure_2, regenerated_figure_2, blue, x_limits=(191, 1413)
+    )
+    benchmark = same_size_color_mask_stats(
+        paper_figure_2, regenerated_figure_2, orange, x_limits=(191, 1413)
+    )
+    rolling = same_size_color_mask_stats(paper_figure_3, regenerated_figure_3, blue)
+    notebook_portfolio = notebook_affine_distance_stats(notebook_figure_2, paper_figure_2, blue)
+    notebook_benchmark = notebook_affine_distance_stats(notebook_figure_2, paper_figure_2, orange)
+    figure_2_equal_fraction = float(np.mean(np.all(paper_figure_2 == regenerated_figure_2, axis=2)))
+    figure_3_equal_fraction = float(np.mean(np.all(paper_figure_3 == regenerated_figure_3, axis=2)))
+
+    expected_counts = (
+        portfolio["paper_pixels"],
+        portfolio["comparison_pixels"],
+        portfolio["intersection_pixels"],
+        benchmark["paper_pixels"],
+        benchmark["comparison_pixels"],
+        benchmark["intersection_pixels"],
+        rolling["paper_pixels"],
+        rolling["comparison_pixels"],
+        rolling["intersection_pixels"],
+        notebook_portfolio["notebook_data_pixels"],
+        notebook_benchmark["notebook_data_pixels"],
+    )
+    if expected_counts != (
+        7313.0,
+        7313.0,
+        7313.0,
+        3132.0,
+        3147.0,
+        3132.0,
+        3530.0,
+        3527.0,
+        2922.0,
+        2648.0,
+        969.0,
+    ):
+        raise ValueError(f"RAPTOR figure-raster color census changed: {expected_counts}")
+    if (
+        figure_2_equal_fraction != 0.9999477777777778
+        or notebook_portfolio["maximum_distance_px"] > 2
+        or notebook_benchmark["maximum_distance_px"] > 2
+        or min(
+            portfolio["paper_within_2px_fraction"],
+            portfolio["comparison_within_2px_fraction"],
+            benchmark["paper_within_2px_fraction"],
+            notebook_portfolio["within_2px_fraction"],
+            notebook_benchmark["within_2px_fraction"],
+            rolling["paper_within_2px_fraction"],
+            rolling["comparison_within_2px_fraction"],
+        )
+        != 1.0
+    ):
+        raise ValueError("RAPTOR figure-raster correspondence changed")
+
+    specs = (
+        (
+            "Figure 2",
+            "RAPTOR cumulative return",
+            blue,
+            portfolio,
+            notebook_portfolio,
+            figure_2_equal_fraction,
+            "166 author snapshots plus pinned current Yahoo response; author notebook raster independently checked",
+            "author_snapshots",
+        ),
+        (
+            "Figure 2",
+            "S&P 500 cumulative return",
+            orange,
+            benchmark,
+            notebook_benchmark,
+            figure_2_equal_fraction,
+            "pinned current Yahoo response plus author executed-notebook raster",
+            "missing_paper_time_csv_current_response_only",
+        ),
+        (
+            "Figure 3",
+            "20-day rolling Sharpe",
+            blue,
+            rolling,
+            None,
+            figure_3_equal_fraction,
+            "released snapshot postprocessor regenerated raster",
+            "author_snapshots_derived_series",
+        ),
+    )
+    rows: list[dict[str, str]] = []
+    for figure, series, color, stats, notebook_stats, equal_fraction, basis, lineage in specs:
+        rows.append(
+            {
+                "figure": figure,
+                "series": series,
+                "color_rgb": "|".join(map(str, color)),
+                "paper_exact_color_pixels": str(int(stats["paper_pixels"])),
+                "comparison_exact_color_pixels": str(int(stats["comparison_pixels"])),
+                "exact_color_intersection_pixels": str(int(stats["intersection_pixels"])),
+                "paper_color_pixels_within_2px_fraction": repr(stats["paper_within_2px_fraction"]),
+                "comparison_color_pixels_within_2px_fraction": repr(stats["comparison_within_2px_fraction"]),
+                "paper_max_distance_px": repr(stats["paper_max_distance_px"]),
+                "comparison_max_distance_px": repr(stats["comparison_max_distance_px"]),
+                "author_notebook_data_color_pixels": (
+                    "" if notebook_stats is None else str(int(notebook_stats["notebook_data_pixels"]))
+                ),
+                "author_notebook_affine_max_distance_px": (
+                    "" if notebook_stats is None else repr(notebook_stats["maximum_distance_px"])
+                ),
+                "whole_figure_exact_rgb_fraction": repr(equal_fraction),
+                "comparison_basis": basis,
+                "paper_time_numeric_input_lineage": lineage,
+                "raster_correspondence_verified": "yes",
+                "published_raw_numeric_series_available": "no",
+                "end_to_end_pipeline_reproduced": "no",
+            }
+        )
+    return rows
+
+
+def figure_rows(forensics: list[dict[str, str]]) -> list[dict[str, str]]:
+    verified = {(row["figure"], row["series"]) for row in forensics}
+    if verified != {
+        ("Figure 2", "RAPTOR cumulative return"),
+        ("Figure 2", "S&P 500 cumulative return"),
+        ("Figure 3", "20-day rolling Sharpe"),
+    }:
+        raise ValueError("RAPTOR figure-raster correspondence inventory changed")
     return [
         {
-            "figure": "Figure 2", "series": "RAPTOR cumulative return", "source_series_available": "yes",
-            "native_postprocessor_generated": "yes", "published_raw_series_available": "no",
-            "exact_published_series_reproduced": "no", "assessment": "author snapshot path reconstructed; visual-only paper curve prevents pointwise equality test",
+            "figure": "Figure 2",
+            "series": "RAPTOR cumulative return",
+            "source_series_available": "yes",
+            "native_postprocessor_generated": "yes",
+            "published_raw_series_available": "no",
+            "exact_published_series_reproduced": "no_raw_series",
+            "raster_curve_correspondence_verified": "yes",
+            "assessment": "all 7,313 published blue pixels reproduce exactly from the 166 author snapshots; author-notebook raster also maps within two pixels",
         },
         {
-            "figure": "Figure 2", "series": "S&P 500 cumulative return", "source_series_available": "yes_current_public_response",
-            "native_postprocessor_generated": "no", "published_raw_series_available": "no",
-            "exact_published_series_reproduced": "no", "assessment": "165-date pinned current Yahoo response recovers the 10.08% endpoint, but the author did not freeze the paper-time series and the visual-only curve prevents pointwise equality testing",
+            "figure": "Figure 2",
+            "series": "S&P 500 cumulative return",
+            "source_series_available": "author_notebook_raster_plus_current_public_response",
+            "native_postprocessor_generated": "no",
+            "published_raw_series_available": "no",
+            "exact_published_series_reproduced": "no_paper_time_raw_series",
+            "raster_curve_correspondence_verified": "yes",
+            "assessment": "all 3,132 published orange pixels occur in the current-response regeneration and the author notebook maps within two pixels; the missing paper-time CSV still blocks raw-series lineage",
         },
         {
-            "figure": "Figure 3", "series": "20-day rolling Sharpe", "source_series_available": "yes",
-            "native_postprocessor_generated": "yes", "published_raw_series_available": "no",
-            "exact_published_series_reproduced": "no", "assessment": "source series explains caption extrema but not the caption terminal value under one standard-deviation convention",
+            "figure": "Figure 3",
+            "series": "20-day rolling Sharpe",
+            "source_series_available": "yes",
+            "native_postprocessor_generated": "yes",
+            "published_raw_series_available": "no",
+            "exact_published_series_reproduced": "no_published_raw_series",
+            "raster_curve_correspondence_verified": "yes",
+            "assessment": "all regenerated and published blue curve pixels lie within two pixels; source series explains caption extrema but not the caption terminal value under one standard-deviation convention",
         },
     ]
 
 
 def method_rows() -> list[dict[str, str]]:
     specs = [
-        ("investment universe", "S&P 500 constituents", "503-ticker universe file", "close", "universe membership vintage not documented"),
+        (
+            "investment universe",
+            "S&P 500 constituents",
+            "503-ticker universe file",
+            "close",
+            "universe membership vintage not documented",
+        ),
         ("evaluation horizon", "2025-01-01 to 2025-08-29", "166 matching dated snapshots", "exact_output", ""),
         ("initial capital", "$1,000,000", "first snapshot $1,000,000", "exact_output", ""),
         ("price inputs", "offline OHLCV snapshots through 2025-07-27", "no tracked price CSV", "missing", "blocking"),
-        ("benchmark inputs", "S&P 500 / SPY same horizon", "paper-time testing/sp500_closing_prices.csv absent; pinned current Yahoo response has 165 sessions", "paper_snapshot_missing_current_response_verified", "blocks exact lineage, not rounded endpoint check"),
+        (
+            "benchmark inputs",
+            "S&P 500 / SPY same horizon",
+            "paper-time testing/sp500_closing_prices.csv absent; pinned current Yahoo response has 165 sessions",
+            "paper_snapshot_missing_current_response_verified",
+            "blocks exact lineage, not rounded endpoint check",
+        ),
         ("Finnhub snapshots", "date-bounded news/insider/fundamental JSON", "none tracked", "missing", "blocking"),
         ("Reddit snapshots", "2025-01-01 to 2025-08-19", "none tracked", "missing", "blocking"),
         ("SimFin snapshots", "quarterly statements", "none tracked", "missing", "blocking"),
         ("Perplexity snapshots", "per-date macro JSON", "none tracked", "missing", "blocking"),
-        ("point-in-time controls", "network disabled; only local snapshots", "runners contain live yfinance/API fallbacks", "conflict", "blocking"),
-        ("agent roles", "analysts, bull/bear researchers, risk managers, execution", "implementations are present", "substantial", "no run trace"),
-        ("blackboard schema", "typed append-only JSONL", "schema/storage code present but zero tracked JSONL logs", "partial", "no run evidence"),
-        ("debate rounds", "typically 2-3 per side", "conditional logic present; exact reported-run settings not pinned", "partial", ""),
-        ("LLM model", "not named", "default code names gpt-4o-mini but request logs absent", "underspecified", "blocking"),
-        ("LLM temperature and sampling", "not specified", "multiple source defaults; no request logs", "underspecified", "blocking"),
-        ("prompts", "proprietary prompts withheld", "many source prompts present; exact reported requests absent", "partial", "blocking"),
-        ("random seeds", "fixed seeds claimed by rubric", "no experiment seed or deterministic replay bundle", "missing", "blocking"),
-        ("paper cadence abstract", "biweekly", "testing runner uses >=14 calendar days", "close", "not identical to ten trading days"),
-        ("paper cadence setup", "daily, no fixed cadence", "contradicts paper Data/Appendix and both runners", "conflict", "blocking"),
-        ("paper cadence appendix", "every 10 trading days", "multithreaded runner has a 10-market-day path", "partial", "reported outputs align to another runner"),
-        ("output cadence", "unspecified lineage", "author log records 17 rebalances at >=14 calendar-day intervals from Jan 6", "different", "blocking"),
-        ("agent rerun frequency", "Data says Day 0 reuse; Setup says every day", "only Jan 1 has 503 decision files", "conflict", "blocking"),
-        ("multithreaded range runner", "Day 0 pipeline then scheduled allocation", "Day 0 enters revaluation-only early return when rebalance_mode is false", "implementation_bug", "blocking"),
-        ("decision persistence", "reuse prior decisions", "testing runner instead derives views from recent returns by default", "different", "blocking"),
-        ("categorical view mapping", "BUY/HOLD/SELL -> +2%/0/-2% annualized", "core BL code supports mapping", "exact_component", "not the output runner default"),
-        ("output-runner views", "categorical agent views", "recent-return mean by default; optional GPT-4o-mini daily-return prediction", "different", "blocking"),
+        (
+            "point-in-time controls",
+            "network disabled; only local snapshots",
+            "runners contain live yfinance/API fallbacks",
+            "conflict",
+            "blocking",
+        ),
+        (
+            "agent roles",
+            "analysts, bull/bear researchers, risk managers, execution",
+            "implementations are present",
+            "substantial",
+            "no run trace",
+        ),
+        (
+            "blackboard schema",
+            "typed append-only JSONL",
+            "schema/storage code present but zero tracked JSONL logs",
+            "partial",
+            "no run evidence",
+        ),
+        (
+            "debate rounds",
+            "typically 2-3 per side",
+            "conditional logic present; exact reported-run settings not pinned",
+            "partial",
+            "",
+        ),
+        (
+            "LLM model",
+            "not named",
+            "default code names gpt-4o-mini but request logs absent",
+            "underspecified",
+            "blocking",
+        ),
+        (
+            "LLM temperature and sampling",
+            "not specified",
+            "multiple source defaults; no request logs",
+            "underspecified",
+            "blocking",
+        ),
+        (
+            "prompts",
+            "proprietary prompts withheld",
+            "many source prompts present; exact reported requests absent",
+            "partial",
+            "blocking",
+        ),
+        (
+            "random seeds",
+            "fixed seeds claimed by rubric",
+            "no experiment seed or deterministic replay bundle",
+            "missing",
+            "blocking",
+        ),
+        (
+            "paper cadence abstract",
+            "biweekly",
+            "testing runner uses >=14 calendar days",
+            "close",
+            "not identical to ten trading days",
+        ),
+        (
+            "paper cadence setup",
+            "daily, no fixed cadence",
+            "contradicts paper Data/Appendix and both runners",
+            "conflict",
+            "blocking",
+        ),
+        (
+            "paper cadence appendix",
+            "every 10 trading days",
+            "multithreaded runner has a 10-market-day path",
+            "partial",
+            "reported outputs align to another runner",
+        ),
+        (
+            "output cadence",
+            "unspecified lineage",
+            "author log records 17 rebalances at >=14 calendar-day intervals from Jan 6",
+            "different",
+            "blocking",
+        ),
+        (
+            "agent rerun frequency",
+            "Data says Day 0 reuse; Setup says every day",
+            "only Jan 1 has 503 decision files",
+            "conflict",
+            "blocking",
+        ),
+        (
+            "multithreaded range runner",
+            "Day 0 pipeline then scheduled allocation",
+            "Day 0 enters revaluation-only early return when rebalance_mode is false",
+            "implementation_bug",
+            "blocking",
+        ),
+        (
+            "decision persistence",
+            "reuse prior decisions",
+            "testing runner instead derives views from recent returns by default",
+            "different",
+            "blocking",
+        ),
+        (
+            "categorical view mapping",
+            "BUY/HOLD/SELL -> +2%/0/-2% annualized",
+            "core BL code supports mapping",
+            "exact_component",
+            "not the output runner default",
+        ),
+        (
+            "output-runner views",
+            "categorical agent views",
+            "recent-return mean by default; optional GPT-4o-mini daily-return prediction",
+            "different",
+            "blocking",
+        ),
         ("root-runner views", "categorical agent views", "constant +2% for every ticker", "different", "blocking"),
         ("selection matrix", "identity", "core BL implementation uses identity", "exact_component", ""),
-        ("confidence matrix", "0.5 * tau * diag(P Sigma P^T)", "core BL implementation matches; output runner uses empirical variance + 1e-4", "mixed", "blocking"),
-        ("covariance lookback", "252 trading days annualized", "output runner uses at most 60 prior observations", "different", "blocking"),
+        (
+            "confidence matrix",
+            "0.5 * tau * diag(P Sigma P^T)",
+            "core BL implementation matches; output runner uses empirical variance + 1e-4",
+            "mixed",
+            "blocking",
+        ),
+        (
+            "covariance lookback",
+            "252 trading days annualized",
+            "output runner uses at most 60 prior observations",
+            "different",
+            "blocking",
+        ),
         ("risk aversion", "3.0", "core BL default 3.0; output runner sets 5.0", "mixed", "blocking"),
         ("tau", "0.025", "core BL default .025; output runner sets .05", "mixed", "blocking"),
-        ("optimization universe", "eligible S&P 500 constituents", "output runner limits optimization to top 50 holdings and views to top 10", "different", "blocking"),
+        (
+            "optimization universe",
+            "eligible S&P 500 constituents",
+            "output runner limits optimization to top 50 holdings and views to top 10",
+            "different",
+            "blocking",
+        ),
         ("long-only", "optional", "reported source paths force long-only", "partial", ""),
-        ("transaction fees", "5 bps per unit turnover", "no matching deduction in candidate execution paths or snapshots", "missing", "blocking"),
-        ("slippage", "5 bps per unit turnover", "no matching deduction in candidate execution paths or snapshots", "missing", "blocking"),
+        (
+            "transaction fees",
+            "5 bps per unit turnover",
+            "no matching deduction in candidate execution paths or snapshots",
+            "missing",
+            "blocking",
+        ),
+        (
+            "slippage",
+            "5 bps per unit turnover",
+            "no matching deduction in candidate execution paths or snapshots",
+            "missing",
+            "blocking",
+        ),
         ("daily net values", "166 complete snapshots", "166 snapshots with all three named fields", "exact_output", ""),
-        ("benchmark result", "10.08%", "pinned current Yahoo ^GSPC adjusted-close response independently gives 10.0827288%", "verified_current_response", "not paper-time frozen input or end-to-end credit"),
-        ("WAB case study", "2025-09-01 trace and BL perturbation", "no Sep 1 outputs; Jan 1 WAB output is a different contradictory trace", "missing", "blocking"),
-        ("complete trace", "messages, tool calls, decision, weights included", "no such complete trace in paper or release", "missing", "blocking"),
-        ("Deflated Sharpe", "reported alongside naive Sharpe", "no value or implementation output", "missing", "blocking"),
-        ("additional diagnostics", "Calmar, turnover, beta, tracking error, VaR/CVaR", "not reported for the published experiment", "missing", "blocking"),
-        ("environment pinning", "lockfile/container/OS notes", "uv.lock present; no container or OS notes", "partial", ""),
-        ("one-command regeneration", "tables and figures", "README documents CLI only; missing inputs stop backtest runner", "missing", "blocking"),
+        (
+            "benchmark result",
+            "10.08%",
+            "pinned current Yahoo ^GSPC adjusted-close response independently gives 10.0827288%",
+            "verified_current_response",
+            "not paper-time frozen input or end-to-end credit",
+        ),
+        (
+            "WAB case study",
+            "2025-09-01 trace and BL perturbation",
+            "no Sep 1 outputs; Jan 1 WAB output is a different contradictory trace",
+            "missing",
+            "blocking",
+        ),
+        (
+            "complete trace",
+            "messages, tool calls, decision, weights included",
+            "no such complete trace in paper or release",
+            "missing",
+            "blocking",
+        ),
+        (
+            "Deflated Sharpe",
+            "reported alongside naive Sharpe",
+            "no value or implementation output",
+            "missing",
+            "blocking",
+        ),
+        (
+            "additional diagnostics",
+            "Calmar, turnover, beta, tracking error, VaR/CVaR",
+            "not reported for the published experiment",
+            "missing",
+            "blocking",
+        ),
+        (
+            "environment pinning",
+            "lockfile/container/OS notes",
+            "uv.lock present; no container or OS notes",
+            "partial",
+            "",
+        ),
+        (
+            "one-command regeneration",
+            "tables and figures",
+            "README documents CLI only; missing inputs stop backtest runner",
+            "missing",
+            "blocking",
+        ),
         ("automated tests", "not stated", "one collected function has no asserts and catches exceptions", "weak", ""),
         ("source syntax", "operational source", "all 93 Python files compile", "pass", "syntax only"),
-        ("native visualization", "regenerate figures", "testing/scripts/visualize.py executes and emits six artifacts", "pass_component", "not end-to-end"),
-        ("result lineage", "reported system result", "headline scalars derive exactly from released snapshots", "verified_output", "pipeline lineage remains unrerunnable"),
+        (
+            "native visualization",
+            "regenerate figures",
+            "testing/scripts/visualize.py executes and emits six artifacts",
+            "pass_component",
+            "not end-to-end",
+        ),
+        (
+            "result lineage",
+            "reported system result",
+            "headline scalars derive exactly from released snapshots",
+            "verified_output",
+            "pipeline lineage remains unrerunnable",
+        ),
     ]
     return [
-        {"dimension": d, "paper_specification": p, "released_source_or_output": s, "assessment": a, "severity_or_note": n, "end_to_end_credit": "no"}
+        {
+            "dimension": d,
+            "paper_specification": p,
+            "released_source_or_output": s,
+            "assessment": a,
+            "severity_or_note": n,
+            "end_to_end_credit": "no",
+        }
         for d, p, s, a, n in specs
     ]
 
@@ -698,21 +1354,57 @@ def method_rows() -> list[dict[str, str]]:
 def consistency_rows() -> list[dict[str, str]]:
     issues = [
         ("horizon label", "Abstract calls the study a one-year reconstruction; all reported dates span eight months."),
-        ("cadence", "Abstract/Introduction say biweekly, Section 4.2 says daily with no fixed cadence, and Appendix B.3 says every 10 trading days."),
-        ("agent frequency", "Section 4.1 says comprehensive agents run primarily on Day 0 and later dates reuse decisions; Section 4.2 says the complete pipeline reruns every trading date."),
-        ("price coverage", "Price snapshots are said to end 2025-07-27 while the principal evaluation continues to 2025-08-29."),
-        ("Reddit coverage", "Reddit snapshots are said to end 2025-08-19 while daily agent execution is claimed through 2025-08-29."),
+        (
+            "cadence",
+            "Abstract/Introduction say biweekly, Section 4.2 says daily with no fixed cadence, and Appendix B.3 says every 10 trading days.",
+        ),
+        (
+            "agent frequency",
+            "Section 4.1 says comprehensive agents run primarily on Day 0 and later dates reuse decisions; Section 4.2 says the complete pipeline reruns every trading date.",
+        ),
+        (
+            "price coverage",
+            "Price snapshots are said to end 2025-07-27 while the principal evaluation continues to 2025-08-29.",
+        ),
+        (
+            "Reddit coverage",
+            "Reddit snapshots are said to end 2025-08-19 while daily agent execution is claimed through 2025-08-29.",
+        ),
         ("case-study timing", "The WAB case is dated 2025-09-01, after the stated evaluation end date 2025-08-29."),
         ("rolling range", "Section 4.3 reports -2.42 to 5.27; Figure 3 reports -5.26 to 10.34."),
-        ("rolling moments", "Section 4.3 reports mean 1.41 and SD 2.63; full-window 20-day sample-SD Sharpe with 2% annual RF exactly recovers extended validation 1.60 +/- 3.28, but not the paragraph values."),
-        ("rolling convention", "At least three conventions are mixed: expanding sample-SD/zero-RF for Figure 3 extrema, population-SD/zero-RF for its final 3.89, and full-window sample-SD/2%-RF for extended mean/SD."),
-        ("trace inclusion", "Appendix says one complete redacted trace is included, but only three WAB narrative snippets and a small perturbation table appear."),
-        ("Deflated Sharpe", "Appendix says it is reported alongside naive Sharpe, but no Deflated Sharpe value appears."),
-        ("diagnostic reporting", "Appendix promises Calmar, turnover, beta, tracking error and VaR/CVaR, but none is reported for the experiment."),
-        ("reproducibility rating", "The paper assigns High under an all-five rubric while necessary inputs and a working one-command paper regeneration are absent."),
-        ("alpha wording", "A return difference versus SPY is described as nontrivial alpha without a factor regression or beta estimate."),
+        (
+            "rolling moments",
+            "Section 4.3 reports mean 1.41 and SD 2.63; full-window 20-day sample-SD Sharpe with 2% annual RF exactly recovers extended validation 1.60 +/- 3.28, but not the paragraph values.",
+        ),
+        (
+            "rolling convention",
+            "At least three conventions are mixed: expanding sample-SD/zero-RF for Figure 3 extrema, population-SD/zero-RF for its final 3.89, and full-window sample-SD/2%-RF for extended mean/SD.",
+        ),
+        (
+            "trace inclusion",
+            "Appendix says one complete redacted trace is included, but only three WAB narrative snippets and a small perturbation table appear.",
+        ),
+        (
+            "Deflated Sharpe",
+            "Appendix says it is reported alongside naive Sharpe, but no Deflated Sharpe value appears.",
+        ),
+        (
+            "diagnostic reporting",
+            "Appendix promises Calmar, turnover, beta, tracking error and VaR/CVaR, but none is reported for the experiment.",
+        ),
+        (
+            "reproducibility rating",
+            "The paper assigns High under an all-five rubric while necessary inputs and a working one-command paper regeneration are absent.",
+        ),
+        (
+            "alpha wording",
+            "A return difference versus SPY is described as nontrivial alpha without a factor regression or beta estimate.",
+        ),
     ]
-    return [{"issue_id": f"RAP-I{index:02d}", "issue": issue, "evidence": evidence, "paper_result_credit": "no"} for index, (issue, evidence) in enumerate(issues, start=1)]
+    return [
+        {"issue_id": f"RAP-I{index:02d}", "issue": issue, "evidence": evidence, "paper_result_credit": "no"}
+        for index, (issue, evidence) in enumerate(issues, start=1)
+    ]
 
 
 def decision_rows(repo: Path) -> list[dict[str, str]]:
@@ -723,8 +1415,10 @@ def decision_rows(repo: Path) -> list[dict[str, str]]:
     finals: Counter[str] = Counter()
     flagged: list[str] = []
     patterns = [
-        r"\brecommend(?:ation)?(?:ed)?\s+(?:to\s+)?sell\b", r"\bselling\s+(?:the\s+)?stock\b",
-        r"\breduction of holdings\b", r"\breduce (?:our |the )?(?:position|exposure|holdings)\b",
+        r"\brecommend(?:ation)?(?:ed)?\s+(?:to\s+)?sell\b",
+        r"\bselling\s+(?:the\s+)?stock\b",
+        r"\breduction of holdings\b",
+        r"\breduce (?:our |the )?(?:position|exposure|holdings)\b",
         r"\bdo not provide a solid foundation for holding or buying\b",
     ]
     for path in files:
@@ -742,15 +1436,55 @@ def decision_rows(repo: Path) -> list[dict[str, str]]:
         raise ValueError(f"decision-output distribution changed: {headers}, {finals}, {len(flagged)}")
     aapl = (repo / "testing/2025-01-01/AAPL.txt").read_text(encoding="utf-8")
     wab = (repo / "testing/2025-01-01/WAB.txt").read_text(encoding="utf-8")
-    if "recommendation to sell" not in aapl or "DECISION: BUY" not in aapl or "strategic reduction of holdings" not in wab:
+    if (
+        "recommendation to sell" not in aapl
+        or "DECISION: BUY" not in aapl
+        or "strategic reduction of holdings" not in wab
+    ):
         raise ValueError("manual contradiction fixtures changed")
     return [
-        {"check": "decision_file_coverage", "value": str(len(files)), "assessment": "only_2025-01-01", "evidence": "no later per-ticker decision files", "paper_result_credit": "no"},
-        {"check": "header_distribution", "value": json.dumps(dict(headers), sort_keys=True), "assessment": "no_SELL_headers", "evidence": "long-only guardrails rewrite SELL to HOLD/BUY", "paper_result_credit": "no"},
-        {"check": "final_proposal_distribution", "value": json.dumps(dict(finals), sort_keys=True), "assessment": "one_file_has_no_final_marker", "evidence": "502/503 explicit finals", "paper_result_credit": "no"},
-        {"check": "automated_sell_language_flags_among_BUY", "value": str(len(flagged)), "assessment": "screen_only_not_236_manual_adjudications", "evidence": "regex flags recommendation/reduction language", "paper_result_credit": "no"},
-        {"check": "AAPL_manual_trace", "value": "BUY header and final", "assessment": "contradiction", "evidence": "rationale explicitly supports recommendation to sell", "paper_result_credit": "no"},
-        {"check": "WAB_manual_trace", "value": "BUY header and final", "assessment": "contradiction_and_wrong_case_date", "evidence": "Jan 1 rationale recommends strategic reduction; paper case is Sep 1 and claims aggressive positive stance", "paper_result_credit": "no"},
+        {
+            "check": "decision_file_coverage",
+            "value": str(len(files)),
+            "assessment": "only_2025-01-01",
+            "evidence": "no later per-ticker decision files",
+            "paper_result_credit": "no",
+        },
+        {
+            "check": "header_distribution",
+            "value": json.dumps(dict(headers), sort_keys=True),
+            "assessment": "no_SELL_headers",
+            "evidence": "long-only guardrails rewrite SELL to HOLD/BUY",
+            "paper_result_credit": "no",
+        },
+        {
+            "check": "final_proposal_distribution",
+            "value": json.dumps(dict(finals), sort_keys=True),
+            "assessment": "one_file_has_no_final_marker",
+            "evidence": "502/503 explicit finals",
+            "paper_result_credit": "no",
+        },
+        {
+            "check": "automated_sell_language_flags_among_BUY",
+            "value": str(len(flagged)),
+            "assessment": "screen_only_not_236_manual_adjudications",
+            "evidence": "regex flags recommendation/reduction language",
+            "paper_result_credit": "no",
+        },
+        {
+            "check": "AAPL_manual_trace",
+            "value": "BUY header and final",
+            "assessment": "contradiction",
+            "evidence": "rationale explicitly supports recommendation to sell",
+            "paper_result_credit": "no",
+        },
+        {
+            "check": "WAB_manual_trace",
+            "value": "BUY header and final",
+            "assessment": "contradiction_and_wrong_case_date",
+            "evidence": "Jan 1 rationale recommends strategic reduction; paper case is Sep 1 and claims aggressive positive stance",
+            "paper_result_credit": "no",
+        },
     ]
 
 
@@ -770,15 +1504,20 @@ def search_rows(directory: Path) -> list[dict[str, str]]:
         names = [item["full_name"] for item in data.get("items", [])]
         rows.append(
             {
-                "query": queries[path.name], "total_count": str(data["total_count"]),
+                "query": queries[path.name],
+                "total_count": str(data["total_count"]),
                 "incomplete_results": str(data["incomplete_results"]).lower(),
-                "repositories": ";".join(names), "evidence_sha256": sha256(path),
+                "repositories": ";".join(names),
+                "evidence_sha256": sha256(path),
                 "native_credit": "no_search_itself_is_not_execution",
             }
         )
     if [int(row["total_count"]) for row in rows] != [0, 0, 1, 0]:
         raise ValueError("GitHub search totals changed")
-    if rows[2]["repositories"] != "anonymouspenguin3/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing":
+    if (
+        rows[2]["repositories"]
+        != "anonymouspenguin3/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing"
+    ):
         raise ValueError("anonymous mirror search result changed")
     return rows
 
@@ -799,7 +1538,15 @@ def fouropen_rows(directory: Path) -> list[dict[str, str]]:
         data = json.loads(body.read_text(encoding="utf-8"))
         if data.get("error") != error:
             raise ValueError(f"4open error changed: {endpoint}")
-        rows.append({"endpoint": endpoint, "final_http_status": status, "response": error, "body_sha256": digest, "reachable_artifact": "no"})
+        rows.append(
+            {
+                "endpoint": endpoint,
+                "final_http_status": status,
+                "response": error,
+                "body_sha256": digest,
+                "reachable_artifact": "no",
+            }
+        )
     return rows
 
 
@@ -807,37 +1554,124 @@ def native_execution_rows(repo: Path, python: Path) -> list[dict[str, str]]:
     env = {key: value for key, value in os.environ.items() if key not in {"OPENAI_API_KEY", "SK_PROJ_KEY"}}
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     runner = subprocess.run(
-        [str(python), "testing/mvo_blm_runner.py"], cwd=repo, env=env,
-        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=60,
+        [str(python), "testing/mvo_blm_runner.py"],
+        cwd=repo,
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=60,
     )
-    if runner.returncode != 1 or "testing/stock_prices.csv" not in runner.stderr or "FileNotFoundError" not in runner.stderr:
+    if (
+        runner.returncode != 1
+        or "testing/stock_prices.csv" not in runner.stderr
+        or "FileNotFoundError" not in runner.stderr
+    ):
         raise ValueError(f"candidate paper runner failure changed: {runner.returncode}: {runner.stderr[-500:]}")
     visualizer = subprocess.run(
-        [str(python), "testing/scripts/visualize.py"], cwd=repo, env=env,
-        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=60,
+        [str(python), "testing/scripts/visualize.py"],
+        cwd=repo,
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=60,
     )
     outputs = sorted(path.name for path in (repo / "testing/results").glob("*"))
-    expected_outputs = ["net_liquidation.csv", "net_liquidation.png", "rolling_sharpe.csv", "rolling_sharpe.png", "top_gainers.csv", "top_losers.csv"]
+    expected_outputs = [
+        "net_liquidation.csv",
+        "net_liquidation.png",
+        "rolling_sharpe.csv",
+        "rolling_sharpe.png",
+        "top_gainers.csv",
+        "top_losers.csv",
+    ]
     if visualizer.returncode != 0 or outputs != expected_outputs:
         raise ValueError(f"native visualizer execution changed: {visualizer.returncode}: {outputs}")
     source = (repo / "test_execution.py").read_text(encoding="utf-8")
     return [
-        {"component": "testing/mvo_blm_runner.py", "attempted": "yes", "status": "blocked_before_backtest", "detail": "FileNotFoundError: tracked testing/stock_prices.csv is absent", "paper_result_credit": "no"},
-        {"component": "testing/scripts/visualize.py", "attempted": "yes", "status": "pass", "detail": "six snapshot-derived CSV/PNG artifacts emitted", "paper_result_credit": "author_output_postprocessing_only"},
-        {"component": "Python source compile", "attempted": "yes", "status": "pass", "detail": "94/94 anonymous-release Python files compiled in memory", "paper_result_credit": "no"},
-        {"component": "pytest collection", "attempted": "collect_only", "status": "one_function", "detail": f"test_execution.py asserts={source.count('assert ')} and catches ImportError/Exception", "paper_result_credit": "no"},
-        {"component": "end-to-end multi-agent backtest", "attempted": "no", "status": "not_operationally_defined", "detail": "unreleased inputs/API request logs plus conflicting runners would make a fresh run non-comparable", "paper_result_credit": "no"},
+        {
+            "component": "testing/mvo_blm_runner.py",
+            "attempted": "yes",
+            "status": "blocked_before_backtest",
+            "detail": "FileNotFoundError: tracked testing/stock_prices.csv is absent",
+            "paper_result_credit": "no",
+        },
+        {
+            "component": "testing/scripts/visualize.py",
+            "attempted": "yes",
+            "status": "pass",
+            "detail": "six snapshot-derived CSV/PNG artifacts emitted",
+            "paper_result_credit": "author_output_postprocessing_only",
+        },
+        {
+            "component": "Python source compile",
+            "attempted": "yes",
+            "status": "pass",
+            "detail": "94/94 anonymous-release Python files compiled in memory",
+            "paper_result_credit": "no",
+        },
+        {
+            "component": "pytest collection",
+            "attempted": "collect_only",
+            "status": "one_function",
+            "detail": f"test_execution.py asserts={source.count('assert ')} and catches ImportError/Exception",
+            "paper_result_credit": "no",
+        },
+        {
+            "component": "end-to-end multi-agent backtest",
+            "attempted": "no",
+            "status": "not_operationally_defined",
+            "detail": "unreleased inputs/API request logs plus conflicting runners would make a fresh run non-comparable",
+            "paper_result_credit": "no",
+        },
     ]
 
 
 def artifact_rows() -> list[dict[str, str]]:
     return [
-        {"artifact": "OpenReview record", "url": OPENREVIEW_RECORD, "status": "public_record_no_revisions_displayed", "relationship": "original workshop record", "credit": "paper provenance"},
-        {"artifact": "CEUR final PDF", "url": CEUR_PDF, "status": "public_pinned_11_pages", "relationship": "published final paper", "credit": "paper provenance"},
-        {"artifact": "listed 4open snapshot", "url": FOUROPEN_URL, "status": "expired_410_files_options_root_401", "relationship": "paper-listed anonymous artifact", "credit": "none"},
-        {"artifact": "anonymous GitHub mirror", "url": ANONYMOUS_REPO_URL, "status": "public_pinned_Apache_2_0", "relationship": "high-confidence double-blind mirror inferred from exact slug, preparation script, dates and source identity", "credit": "source/output audit"},
-        {"artifact": "author GitHub repository", "url": AUTHOR_REPO_URL, "status": "public_pinned_Apache_2_0", "relationship": "linked by hidden page-9 URI in the published PDF", "credit": "author attribution and source/output audit"},
-        {"artifact": "current Yahoo S&P 500 chart response", "url": YAHOO_GSPC_URL, "status": "public_response_pinned_by_sha256", "relationship": "independent present-day endpoint check; not a paper-time frozen input", "credit": "three displayed scalar checks; no end-to-end result credit"},
+        {
+            "artifact": "OpenReview record",
+            "url": OPENREVIEW_RECORD,
+            "status": "public_record_no_revisions_displayed",
+            "relationship": "original workshop record",
+            "credit": "paper provenance",
+        },
+        {
+            "artifact": "CEUR final PDF",
+            "url": CEUR_PDF,
+            "status": "public_pinned_11_pages",
+            "relationship": "published final paper",
+            "credit": "paper provenance",
+        },
+        {
+            "artifact": "listed 4open snapshot",
+            "url": FOUROPEN_URL,
+            "status": "expired_410_files_options_root_401",
+            "relationship": "paper-listed anonymous artifact",
+            "credit": "none",
+        },
+        {
+            "artifact": "anonymous GitHub mirror",
+            "url": ANONYMOUS_REPO_URL,
+            "status": "public_pinned_Apache_2_0",
+            "relationship": "high-confidence double-blind mirror inferred from exact slug, preparation script, dates and source identity",
+            "credit": "source/output audit",
+        },
+        {
+            "artifact": "author GitHub repository",
+            "url": AUTHOR_REPO_URL,
+            "status": "public_pinned_Apache_2_0",
+            "relationship": "linked by hidden page-9 URI in the published PDF",
+            "credit": "author attribution and source/output audit",
+        },
+        {
+            "artifact": "current Yahoo S&P 500 chart response",
+            "url": YAHOO_GSPC_URL,
+            "status": "public_response_pinned_by_sha256",
+            "relationship": "independent present-day endpoint check; not a paper-time frozen input",
+            "credit": "three displayed scalar checks; no end-to-end result credit",
+        },
     ]
 
 
@@ -854,28 +1688,42 @@ author history is also inventoried, including the later `validation_fixes` branc
 
 ## Honest verdict
 
-- **End-to-end RAPTOR result cells reproduced: 0/{manifest['displayed_scalar_results']}.**
+- **End-to-end RAPTOR result cells reproduced: 0/{manifest["displayed_scalar_results"]}.**
 - **Published scalar units independently verified from author-shipped output:
-  {manifest['author_output_verified_scalar_results']}/{manifest['displayed_scalar_results']}.**
+  {manifest["author_output_verified_scalar_results"]}/{manifest["displayed_scalar_results"]}.**
   The released 166 daily snapshots recover the initial/final value, return,
   annualized return, volatility, Sharpe, Sortino, maximum drawdown, coverage, two
   Figure 3 extrema, and the extended-validation rolling mean/SD. This is output
   verification, not a rerun of the agent and portfolio pipeline.
 - **Additional displayed scalar units independently checked from a pinned current
-  public response: {manifest['current_public_response_verified_scalar_results']}/{manifest['displayed_scalar_results']}.**
+  public response: {manifest["current_public_response_verified_scalar_results"]}/{manifest["displayed_scalar_results"]}.**
   Yahoo's 165-session adjusted-close path from 2025-01-02 through 2025-08-29
-  yields {manifest['benchmark_return_percent']:.8f}% for the S&P 500, which rounds
+  yields {manifest["benchmark_return_percent"]:.8f}% for the S&P 500, which rounds
   to 10.08%; subtracting it from the released RAPTOR endpoint yields 3.35 percentage
-  points. Thus {manifest['displayed_scalar_results_verified']}/42 displayed units
+  points. Thus {manifest["displayed_scalar_results_verified"]}/42 displayed units
   are checked in total, but these three are not paper-time input lineage.
+- **Published raster-curve correspondences verified:
+  {manifest["published_figure_raster_curve_correspondences_verified"]}/3.**
+  Figure 2's portfolio line regenerates all 7,313 exact blue pixels from the 166
+  author snapshots. Its benchmark line regenerates all 3,132 published orange
+  pixels from the pinned current Yahoo response; the regenerated image adds only
+  15 orange pixels at the final segment. Across the complete 1500x600 chart,
+  899,953/900,000 RGB pixels are identical. The author-executed notebook independently
+  preserves both curves at display resolution and maps to the paper within two
+  pixels after the documented 1.5x axes transform.
+- Figure 3's released snapshot postprocessor regenerates the 20-day rolling-Sharpe
+  curve with every exact-color pixel in both directions within two pixels. These
+  are strong raster/output correspondences, not native-agent reruns: the paper
+  publishes no raw figure arrays, the paper-time benchmark CSV remains absent,
+  and exact published raw-series credit stays 0/3.
 - The native snapshot visualizer executes and emits six CSV/PNG artifacts. The
   candidate backtest runner fails immediately because `testing/stock_prices.csv`
-  is not released. The paper-time S&P 500 series is also absent; the current public
-  response verifies its endpoint but cannot establish pointwise Figure 2 equality.
+  is not released. The current public response verifies the historical benchmark
+  raster and endpoint but does not supply paper-time provenance.
 - The extended-validation rolling mean and SD are reproducible: requiring a full
   20-return window, subtracting 2%/252 daily, using sample SD, and annualizing by
-  sqrt(252) gives {manifest['rolling_full20_rf2_sample_mean']:.4f} and
-  {manifest['rolling_full20_rf2_sample_sd']:.4f}, which round to 1.60 and 3.28.
+  sqrt(252) gives {manifest["rolling_full20_rf2_sample_mean"]:.4f} and
+  {manifest["rolling_full20_rf2_sample_sd"]:.4f}, which round to 1.60 and 3.28.
   The paper nevertheless mixes conventions. Expanding sample-SD/zero-RF values
   recover Figure 3's extrema, while population SD is needed for its final 3.89;
   neither convention produces the Section 4.3 -2.42/5.27/1.41/2.63 quartet.
@@ -918,9 +1766,10 @@ author history is also inventoried, including the later `validation_fixes` branc
 - `snapshot_metric_reproduction.csv`, `rolling_sharpe_reproduction.csv`, and
   `displayed_result_conformance.csv`: output-derived calculations and the
   fail-closed 42-unit empirical denominator.
-- `figure_series_conformance.csv`, `method_specification_audit.csv`,
-  `paper_internal_consistency_audit.csv`, and `decision_trace_audit.csv`: series,
-  method, paper, and released-decision boundaries.
+- `figure_series_conformance.csv` and `figure_raster_forensics.csv`: numeric-series
+  availability and exact-color raster correspondence without raw-series inflation.
+- `method_specification_audit.csv`, `paper_internal_consistency_audit.csv`, and
+  `decision_trace_audit.csv`: method, paper, and released-decision boundaries.
 - `native_execution.csv`, `native_execution.json`, and `manifest.json`: exact
   commands/outcomes and machine-readable verdict.
 """
@@ -933,7 +1782,9 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     if sha256(args.ceur_record) != EXPECTED_CEUR_RECORD_SHA256:
         raise ValueError("CEUR volume record hash changed")
     _, pdf_links = validate_paper(paper)
-    anonymous_paths = validate_repo(anonymous, EXPECTED_ANONYMOUS_HEAD, EXPECTED_ANONYMOUS_TREE_SHA256, EXPECTED_ANONYMOUS_ARCHIVE_SHA256)
+    anonymous_paths = validate_repo(
+        anonymous, EXPECTED_ANONYMOUS_HEAD, EXPECTED_ANONYMOUS_TREE_SHA256, EXPECTED_ANONYMOUS_ARCHIVE_SHA256
+    )
     validate_repo(author, EXPECTED_AUTHOR_HEAD, EXPECTED_AUTHOR_TREE_SHA256, EXPECTED_AUTHOR_ARCHIVE_SHA256)
     if str(git(anonymous, "rev-list", "--max-parents=0", "HEAD")).strip() != EXPECTED_ANONYMOUS_INITIAL:
         raise ValueError("anonymous initial commit changed")
@@ -949,13 +1800,18 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     metrics, rolling, computed = metric_reproduction(anonymous)
     benchmark_rows, benchmark = benchmark_reproduction(args.yahoo_gspc_response.resolve(), computed["total_return_pct"])
     results = displayed_result_rows(computed, benchmark)
-    figures = figure_rows()
     methods = method_rows()
     issues = consistency_rows()
     decisions = decision_rows(anonymous)
     searches = search_rows(args.github_search_dir)
     fouropen = fouropen_rows(args.fouropen_evidence_dir)
     executions = native_execution_rows(anonymous, args.python.resolve())
+    figure_forensics = figure_raster_forensics(
+        paper,
+        anonymous,
+        args.yahoo_gspc_response.resolve(),
+    )
+    figures = figure_rows(figure_forensics)
     artifacts = artifact_rows()
 
     output = args.output.resolve()
@@ -970,6 +1826,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         ("rolling_sharpe_reproduction.csv", rolling),
         ("displayed_result_conformance.csv", results),
         ("figure_series_conformance.csv", figures),
+        ("figure_raster_forensics.csv", figure_forensics),
         ("method_specification_audit.csv", methods),
         ("paper_internal_consistency_audit.csv", issues),
         ("decision_trace_audit.csv", decisions),
@@ -984,7 +1841,17 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     role_counts = Counter(row["role"] for row in source_files)
     source_provenance = {
         "paper": "RAPTOR: Reasoned Agentic Portfolio Trading with Orchestrated Rebalancing",
-        "authors": ["Blake Almon", "Matthew Caliboso", "Alex Kim", "Rohan Dutta", "Rohan Raman", "Mithil Srungarapu", "Vasu Sharma", "Kevin Zhu", "Sunishchal Dev"],
+        "authors": [
+            "Blake Almon",
+            "Matthew Caliboso",
+            "Alex Kim",
+            "Rohan Dutta",
+            "Rohan Raman",
+            "Mithil Srungarapu",
+            "Vasu Sharma",
+            "Kevin Zhu",
+            "Sunishchal Dev",
+        ],
         "openreview_record": OPENREVIEW_RECORD,
         "openreview_record_note": "record inspected in signed-in browser; revision history displayed no revisions; command-line PDF access was Cloudflare-blocked",
         "ceur_record": CEUR_RECORD,
@@ -1062,6 +1929,14 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "end_to_end_result_cells_reproduced": 0,
         "figure_series": len(figures),
         "exact_published_figure_series_reproduced": 0,
+        "published_figure_raster_curve_correspondences_verified": sum(
+            row["raster_correspondence_verified"] == "yes" for row in figure_forensics
+        ),
+        "figure_2_whole_image_exact_rgb_fraction": float(
+            figure_forensics[0]["whole_figure_exact_rgb_fraction"]
+        ),
+        "figure_2_whole_image_different_pixels": 47,
+        "figure_2_author_notebook_png_sha256": EXPECTED_NOTEBOOK_FIGURE_2_PNG_SHA256,
         "method_dimensions": len(methods),
         "internal_consistency_issues": len(issues),
         "decision_files": EXPECTED_DECISION_FILES,
@@ -1092,7 +1967,12 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
-    result.add_argument("--paper", type=Path, default=ROOT / "literature_review/papers/56_raptor_reasoned_agentic_portfolio_trading_with_orchestrated_rebalancing.pdf")
+    result.add_argument(
+        "--paper",
+        type=Path,
+        default=ROOT
+        / "literature_review/papers/56_raptor_reasoned_agentic_portfolio_trading_with_orchestrated_rebalancing.pdf",
+    )
     result.add_argument("--ceur-record", type=Path, required=True)
     result.add_argument("--anonymous-repo", type=Path, required=True)
     result.add_argument("--author-repo", type=Path, required=True)

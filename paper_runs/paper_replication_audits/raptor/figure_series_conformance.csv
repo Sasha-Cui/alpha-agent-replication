@@ -1,4 +1,4 @@
-figure,series,source_series_available,native_postprocessor_generated,published_raw_series_available,exact_published_series_reproduced,assessment
-Figure 2,RAPTOR cumulative return,yes,yes,no,no,author snapshot path reconstructed; visual-only paper curve prevents pointwise equality test
-Figure 2,S&P 500 cumulative return,yes_current_public_response,no,no,no,"165-date pinned current Yahoo response recovers the 10.08% endpoint, but the author did not freeze the paper-time series and the visual-only curve prevents pointwise equality testing"
-Figure 3,20-day rolling Sharpe,yes,yes,no,no,source series explains caption extrema but not the caption terminal value under one standard-deviation convention
+figure,series,source_series_available,native_postprocessor_generated,published_raw_series_available,exact_published_series_reproduced,raster_curve_correspondence_verified,assessment
+Figure 2,RAPTOR cumulative return,yes,yes,no,no_raw_series,yes,"all 7,313 published blue pixels reproduce exactly from the 166 author snapshots; author-notebook raster also maps within two pixels"
+Figure 2,S&P 500 cumulative return,author_notebook_raster_plus_current_public_response,no,no,no_paper_time_raw_series,yes,"all 3,132 published orange pixels occur in the current-response regeneration and the author notebook maps within two pixels; the missing paper-time CSV still blocks raw-series lineage"
+Figure 3,20-day rolling Sharpe,yes,yes,no,no_published_raw_series,yes,all regenerated and published blue curve pixels lie within two pixels; source series explains caption extrema but not the caption terminal value under one standard-deviation convention

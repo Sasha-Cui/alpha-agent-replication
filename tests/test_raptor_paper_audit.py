@@ -162,6 +162,44 @@ def test_rolling_sharpe_conflicts_are_numerically_exposed() -> None:
     assert displayed["RAP-021"]["verification_status"].startswith("verified_rounded_full_20d")
 
 
+def test_published_figure_rasters_have_source_correspondence_without_raw_series_inflation() -> None:
+    rows = csv_rows("figure_raster_forensics.csv")
+    assert len(rows) == 3
+    keyed = {(row["figure"], row["series"]): row for row in rows}
+    assert all(row["raster_correspondence_verified"] == "yes" for row in rows)
+    assert all(row["published_raw_numeric_series_available"] == "no" for row in rows)
+    assert all(row["end_to_end_pipeline_reproduced"] == "no" for row in rows)
+
+    portfolio = keyed[("Figure 2", "RAPTOR cumulative return")]
+    assert portfolio["paper_exact_color_pixels"] == "7313"
+    assert portfolio["comparison_exact_color_pixels"] == "7313"
+    assert portfolio["exact_color_intersection_pixels"] == "7313"
+    assert float(portfolio["paper_color_pixels_within_2px_fraction"]) == 1.0
+    assert float(portfolio["comparison_color_pixels_within_2px_fraction"]) == 1.0
+    assert float(portfolio["author_notebook_affine_max_distance_px"]) <= 2.0
+    assert math.isclose(float(portfolio["whole_figure_exact_rgb_fraction"]), 0.9999477777777778)
+
+    benchmark = keyed[("Figure 2", "S&P 500 cumulative return")]
+    assert benchmark["paper_exact_color_pixels"] == "3132"
+    assert benchmark["comparison_exact_color_pixels"] == "3147"
+    assert benchmark["exact_color_intersection_pixels"] == "3132"
+    assert float(benchmark["paper_color_pixels_within_2px_fraction"]) == 1.0
+    assert float(benchmark["comparison_color_pixels_within_2px_fraction"]) > 0.995
+    assert float(benchmark["author_notebook_affine_max_distance_px"]) <= 2.0
+    assert benchmark["paper_time_numeric_input_lineage"] == "missing_paper_time_csv_current_response_only"
+
+    rolling = keyed[("Figure 3", "20-day rolling Sharpe")]
+    assert rolling["paper_exact_color_pixels"] == "3530"
+    assert rolling["comparison_exact_color_pixels"] == "3527"
+    assert float(rolling["paper_color_pixels_within_2px_fraction"]) == 1.0
+    assert float(rolling["comparison_color_pixels_within_2px_fraction"]) == 1.0
+
+    series = csv_rows("figure_series_conformance.csv")
+    assert len(series) == 3
+    assert all(row["raster_curve_correspondence_verified"] == "yes" for row in series)
+    assert all(row["exact_published_series_reproduced"].startswith("no_") for row in series)
+
+
 def test_method_audit_exposes_output_runner_divergence_and_missing_inputs() -> None:
     rows = {row["dimension"]: row for row in csv_rows("method_specification_audit.csv")}
     assert len(rows) == 48
@@ -224,6 +262,10 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     assert manifest["compiled_python_files"] == 94
     assert manifest["paper_result_credit"] == "output_or_current_public_response_verification_only_no_end_to_end_result_credit"
     assert math.isclose(manifest["benchmark_return_percent"], 10.08272879383032)
+    assert manifest["published_figure_raster_curve_correspondences_verified"] == 3
+    assert manifest["exact_published_figure_series_reproduced"] == 0
+    assert manifest["figure_2_whole_image_different_pixels"] == 47
+    assert math.isclose(manifest["figure_2_whole_image_exact_rgb_fraction"], 0.9999477777777778)
 
     readme = " ".join((OUTPUT / "README.md").read_text(encoding="utf-8").split())
     assert "End-to-end RAPTOR result cells reproduced: 0/42" in readme
@@ -231,3 +273,5 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     assert "18/42" in readme
     assert "3/42" in readme
     assert "output verification, not a rerun" in readme
+    assert "Published raster-curve correspondences verified: 3/3" in readme
+    assert "exact published raw-series credit stays 0/3" in readme

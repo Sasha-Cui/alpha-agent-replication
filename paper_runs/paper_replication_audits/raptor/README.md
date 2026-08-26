@@ -24,10 +24,24 @@ author history is also inventoried, including the later `validation_fixes` branc
   to 10.08%; subtracting it from the released RAPTOR endpoint yields 3.35 percentage
   points. Thus 21/42 displayed units
   are checked in total, but these three are not paper-time input lineage.
+- **Published raster-curve correspondences verified:
+  3/3.**
+  Figure 2's portfolio line regenerates all 7,313 exact blue pixels from the 166
+  author snapshots. Its benchmark line regenerates all 3,132 published orange
+  pixels from the pinned current Yahoo response; the regenerated image adds only
+  15 orange pixels at the final segment. Across the complete 1500x600 chart,
+  899,953/900,000 RGB pixels are identical. The author-executed notebook independently
+  preserves both curves at display resolution and maps to the paper within two
+  pixels after the documented 1.5x axes transform.
+- Figure 3's released snapshot postprocessor regenerates the 20-day rolling-Sharpe
+  curve with every exact-color pixel in both directions within two pixels. These
+  are strong raster/output correspondences, not native-agent reruns: the paper
+  publishes no raw figure arrays, the paper-time benchmark CSV remains absent,
+  and exact published raw-series credit stays 0/3.
 - The native snapshot visualizer executes and emits six CSV/PNG artifacts. The
   candidate backtest runner fails immediately because `testing/stock_prices.csv`
-  is not released. The paper-time S&P 500 series is also absent; the current public
-  response verifies its endpoint but cannot establish pointwise Figure 2 equality.
+  is not released. The current public response verifies the historical benchmark
+  raster and endpoint but does not supply paper-time provenance.
 - The extended-validation rolling mean and SD are reproducible: requiring a full
   20-return window, subtracting 2%/252 daily, using sample SD, and annualizing by
   sqrt(252) gives 1.5994 and
@@ -74,8 +88,9 @@ author history is also inventoried, including the later `validation_fixes` branc
 - `snapshot_metric_reproduction.csv`, `rolling_sharpe_reproduction.csv`, and
   `displayed_result_conformance.csv`: output-derived calculations and the
   fail-closed 42-unit empirical denominator.
-- `figure_series_conformance.csv`, `method_specification_audit.csv`,
-  `paper_internal_consistency_audit.csv`, and `decision_trace_audit.csv`: series,
-  method, paper, and released-decision boundaries.
+- `figure_series_conformance.csv` and `figure_raster_forensics.csv`: numeric-series
+  availability and exact-color raster correspondence without raw-series inflation.
+- `method_specification_audit.csv`, `paper_internal_consistency_audit.csv`, and
+  `decision_trace_audit.csv`: method, paper, and released-decision boundaries.
 - `native_execution.csv`, `native_execution.json`, and `manifest.json`: exact
   commands/outcomes and machine-readable verdict.
