@@ -442,9 +442,17 @@ ARTIFACT_NOTES = {
         "Yahoo S&P 500 response additionally verifies the two displayed 10.08% "
         "benchmark units and the 3.35-point comparison, for 21/42 checked displayed "
         "units overall; those three checks are not paper-time input lineage. This is "
+        "also enough to test the rendered figures without inflating raw-series credit. "
+        "Figure 2's 7,313 blue portfolio pixels reproduce exactly from the snapshots, "
+        "all 3,132 published orange benchmark pixels occur in the current-response "
+        "rendering, and the full 900,000-pixel image differs at only 47 pixels. The "
+        "author-executed notebook independently preserves both curves within a two-pixel "
+        "affine tolerance. Figure 3's published and source-regenerated rolling-Sharpe "
+        "curve pixels are likewise mutually within two pixels. Thus 3/3 raster curves "
+        "have source/output correspondence, while the absent published raw arrays and "
+        "paper-time benchmark CSV keep exact raw-series credit at 0/3. This remains "
         "author-output/current-response verification, not experiment reproduction: "
-        "0/42 result units and 0/3 exact "
-        "figure series reproduce end to end. The candidate backtest stops on the "
+        "0/42 result units reproduce end to end. The candidate backtest stops on the "
         "missing testing/stock_prices.csv; SPY inputs, point-in-time research inputs, "
         "immutable model requests, seeds, and execution-cost lineage are absent, "
         "while paper/source cadence, view construction, and rolling-Sharpe conventions "
@@ -1718,7 +1726,10 @@ TARGETED_EXECUTION = {
         "component_gate_separate_4_forks_4_refs_1_official_head_exhausted"
     ),
     "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_regenerated_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced",
-    "SYS-RAPTOR": "paper_audit:completed_21_of_42_displayed_scalar_units_checked_18_author_output_3_current_public_benchmark_zero_end_to_end_result_cells",
+    "SYS-RAPTOR": (
+        "paper_audit:completed_21_of_42_displayed_scalar_units_checked_18_author_output_"
+        "3_current_public_benchmark_3_of_3_raster_correspondences_zero_raw_series_zero_end_to_end_result_cells"
+    ),
     "SYS-RD-AGENT-QUANT": (
         "paper_audit:completed_zero_of_534_native_results_"
         "paper_era_environment_192_modules_2_offline_tests_components_only"

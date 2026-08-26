@@ -98,7 +98,8 @@ def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() ->
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
         "paper_audit:completed_21_of_42_displayed_scalar_units_checked_18_"
-        "author_output_3_current_public_benchmark_zero_end_to_end_result_cells"
+        "author_output_3_current_public_benchmark_3_of_3_raster_correspondences_"
+        "zero_raw_series_zero_end_to_end_result_cells"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_disposition"] == "availability_only_no_performance_inference"
@@ -108,6 +109,11 @@ def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() ->
     assert "21/42 checked displayed units" in blocker
     assert "full 20-return window" in blocker
     assert "not paper-time input lineage" in blocker
+    assert "7,313 blue portfolio pixels reproduce exactly" in blocker
+    assert "3,132 published orange benchmark pixels" in blocker
+    assert "full 900,000-pixel image differs at only 47 pixels" in blocker
+    assert "3/3 raster curves have source/output correspondence" in blocker
+    assert "exact raw-series credit at 0/3" in blocker
     assert "0/42 result units" in blocker
     assert "missing testing/stock_prices.csv" in blocker
     assert "paper/source cadence" in blocker
