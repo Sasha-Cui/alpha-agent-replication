@@ -480,7 +480,11 @@ ARTIFACT_NOTES = {
         "under the declared Transformers 5.11.0 runtime, raising verified registry "
         "files from 26/35 to 29/35. It is not MM-ARC author lineage. Three trained "
         "adapters, the router, and two strategy-history tables remain unavailable: "
-        "six paper-specific payloads and 306,295,258 bytes. The release still excludes "
+        "six paper-specific payloads and 306,295,258 bytes. "
+        "An authenticated global code search checks all six remaining SHA-256 content "
+        "addresses plus four distinctive release names; all ten complete queries return "
+        "zero indexed files. This is bounded negative evidence, not proof against "
+        "private, deleted, or unindexed copies. The release still excludes "
         "the full benchmark, training and experiment-controller history, and four of "
         "the five reported trained seeds. No result arrays or paper table generator "
         "are released, so "
@@ -1721,6 +1725,7 @@ TARGETED_EXECUTION = {
     "SYS-MM-DREX": (
         "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_v3_"
         "release_111_tests_29_of_35_artifacts_verified_six_lfs_payloads_missing_"
+        "10_global_exact_searches_zero_hits_"
         "research_lineage_missing"
     ),
     "SYS-MARKET-SENSE-AI": "paper_audit:completed_2025_zero_of_157_2026_zero_of_250_no_operational_release",

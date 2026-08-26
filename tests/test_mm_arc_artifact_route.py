@@ -74,12 +74,14 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_v1_v2_zero_of_671_v3_zero_of_651_substantial_"
         "v3_release_111_tests_29_of_35_artifacts_verified_six_lfs_payloads_missing_"
+        "10_global_exact_searches_zero_hits_"
         "research_lineage_missing"
     )
     note = row["concise_evidence_note"]
     for marker in (
         "671 legacy", "651 current", "111 tests", "9 Git LFS pointers",
         "29/35", "six paper-specific", "306,295,258",
+        "all six remaining SHA-256", "all ten complete queries return zero indexed files",
         "0/671 legacy", "0/651 current", "0/18 empirical figure series",
     ):
         assert marker in note
@@ -117,6 +119,7 @@ def test_static_paper_assets_reflect_mm_arc_correction() -> None:
     assert "MM-DREX & reachable" in failure_table
     assert "0/671 legacy" in failure_table
     assert "0/651 current" in failure_table
+    assert "all ten complete queries return zero indexed files" in failure_table
 
 
 def test_registries_preserve_legacy_identity_and_current_release() -> None:
