@@ -76,10 +76,17 @@ def test_native_ledger_does_not_promote_static_source_to_result_reproduction() -
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_zero_of_1061_results_runnable_148_package_environment_"
         "65_core_modules_native_trading_and_metrics_seven_commit_history_"
+        "13_of_36_current_input_buy_hold_unique_matches_"
+        "19_of_54_displayed_buy_hold_matches_"
         "zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted"
     )
     assert row["fidelity_class"] == "F1_static_no_native_output"
     assert "zero native results reproduced" in row["concise_evidence_note"]
+    assert "13/36 unique high-precision Buy-and-Hold cells" in row["concise_evidence_note"]
+    assert "19/54 displayed cells" in row["concise_evidence_note"]
+    assert "AMZN and TSLA match all six metrics" in row["concise_evidence_note"]
+    assert "Financial Modeling Prep" in row["concise_evidence_note"]
+    assert "zero paper-time or FinAgent result credit" in row["concise_evidence_note"]
 
 
 def test_static_paper_assets_and_claim_hashes_reflect_the_correction() -> None:
@@ -95,6 +102,9 @@ def test_static_paper_assets_and_claim_hashes_reflect_the_correction() -> None:
     assert "DVampire/FinAgent" in system_table
     assert "FinAgent & reachable" in failure_table
     assert "zero native results reproduced" in failure_table
+    assert "13/36 unique high-precision Buy-and-Hold cells" in failure_table
+    assert "19/54 displayed cells" in failure_table
+    assert "zero paper-time or FinAgent result credit" in failure_table
     claims = {row["macro"]: row for row in csv_rows(ROOT / "paper_runs/submission_evidence/claims.csv")}
     assert claims["ArtifactCountFT"]["rendered_value"] == "36"
     assert claims["ArtifactCountFT"]["source_sha256"] == route.sha256(

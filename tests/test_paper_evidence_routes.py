@@ -248,7 +248,9 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "CensusArxiv240218485": (
                 "paper_audit:completed_zero_of_1061_results_runnable_148_package_"
                 "environment_65_core_modules_native_trading_and_metrics_seven_commit_"
-                "history_zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_"
+                "history_13_of_36_current_input_buy_hold_unique_matches_"
+                "19_of_54_displayed_buy_hold_matches_"
+                "zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_"
                 "heads_exhausted"
             ),
             "CensusArxiv240917266": (

@@ -669,6 +669,13 @@ ARTIFACT_NOTES = {
         "removed historical pandas-ta runtime is recovered from a pinned unaffiliated "
         "mirror, so the environment is compatible rather than historically exact. "
         "These are runnable component and document evidence, not experiment outputs. "
+        "A source-method replay then applies the released whole-share long-only "
+        "environment, 10-bp entry cost, reset-record convention, adjusted-close path, "
+        "and six metric functions to six hash-pinned current Yahoo responses. It "
+        "matches 13/36 unique high-precision Buy-and-Hold cells and 19/54 displayed "
+        "cells after Table 4 repeats: AMZN and TSLA match all six metrics and AAPL "
+        "matches volatility. The paper source specifies Financial Modeling Prep, so "
+        "these current-input matches receive zero paper-time or FinAgent result credit. "
         "All seven reachable commits were checked; none contains a FinAgent "
         "agent-output path. The 90 opaque rule-strategy records yield zero exact "
         "display-precision matches across 288 comparable high-precision Appendix "
@@ -1686,6 +1693,8 @@ TARGETED_EXECUTION = {
     "SYS-FIN-AGENT": (
         "paper_audit:completed_zero_of_1061_results_runnable_148_package_environment_"
         "65_core_modules_native_trading_and_metrics_seven_commit_history_"
+        "13_of_36_current_input_buy_hold_unique_matches_"
+        "19_of_54_displayed_buy_hold_matches_"
         "zero_of_288_rule_record_matches_26_forks_30_refs_7_unique_heads_exhausted"
     ),
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": (
