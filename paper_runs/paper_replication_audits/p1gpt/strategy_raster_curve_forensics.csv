@@ -1,0 +1,7 @@
+method,line_rgb,exact_core_pixels_after_legend,populated_x_columns_after_legend,final_core_y,paper_CR_pct_used_for_affine_calibration,endpoint_calibration_residual_pixels,paper_MDD_pct,raster_center_path_MDD_pct,raster_minus_paper_MDD_pp,raster_center_path_peak_x,raster_center_path_trough_x,within_0_25pp_calibration_tolerance,status,native_strategy_or_agent_pipeline_executed,paper_result_credit
+B&H,31|119|180,6406,1329,675,2.66,-0.39011129111941045,7.33,7.1251276493144236,-0.20487235068557652,309,565,True,author_raster_path_calibrates_with_table_mdd,False,False
+MACD,255|127|14,4599,1324,864.5,-1.87,0.06577494297573594,4.79,4.772530571179854,-0.017469428820145794,309,1023,True,author_raster_path_calibrates_with_table_mdd,False,False
+KDJ+RSI,44|160|44,7496,1302,665,2.92,0.4601027440098733,1.78,10.000963491588767,8.220963491588767,281,642,False,author_raster_path_materially_conflicts_with_table_mdd,False,False
+ZMR,214|39|40,8561,1348,682,2.5,-0.06716608196813922,5.46,13.213543900464774,7.753543900464774,322,565,False,author_raster_path_materially_conflicts_with_table_mdd,False,False
+SMA,148|103|189,5341,1348,942,-3.73,-0.054987000640835504,7.57,7.552481275565076,-0.017518724434924415,310,738,True,author_raster_path_calibrates_with_table_mdd,False,False
+P1GPT,107|66|38,12063,1349,112,16.16,-0.013613313257224036,2.02,2.0050739304609664,-0.014926069539033637,310,440,True,author_raster_path_calibrates_with_table_mdd,False,False

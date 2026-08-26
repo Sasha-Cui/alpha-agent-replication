@@ -16,3 +16,5 @@ best_baseline_gap,annual returns exceed best rules by over 20 pp on average,"dis
 drawdown_prose,P1GPT drawdowns around 2% and below 7% for other assets,"GOOGL is 7.08%, not below 7%",rounded_prose_overstatement,False
 paper_source_code,arXiv source is complete manuscript bundle,zero operational agent/backtest Python or raw result arrays,document_only_source,False
 web_demo_boundary,attributable P1GPT web client is public,paper daily prompt absent; private /invoke service and database are not released,component_not_experiment,False
+aapl_kdj_rsi_raster_mdd,Table 2 prints AAPL KDJ+RSI MDD 1.78%,the author strategy-comparison raster center path implies approximately 10.00% after calibration on all six displayed CR endpoints,author_raster_table_metric_conflict,False
+aapl_zmr_raster_mdd,Table 2 prints AAPL ZMR MDD 5.46%,the author strategy-comparison raster center path implies approximately 13.21% after calibration on all six displayed CR endpoints,author_raster_table_metric_conflict,False

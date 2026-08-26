@@ -44,7 +44,7 @@ def test_manifest_separates_recalculation_from_native_reproduction() -> None:
     data = manifest()
     assert data["full_paper_reproduced"] is False
     assert data["published_table_result_cells"] == 72
-    assert data["displayed_table_cells_recalculated_or_checked"] == 48
+    assert data["displayed_table_cells_recalculated_or_checked"] == 50
     assert data["displayed_table_cells_exactly_verified"] == 46
     assert data["p1gpt_cells_checked_from_author_plot_outputs"] == 12
     assert data["p1gpt_cells_verified_from_author_plot_outputs"] == 11
@@ -54,7 +54,11 @@ def test_manifest_separates_recalculation_from_native_reproduction() -> None:
     assert data["rule_baseline_sharpe_joint_admissible_integer_annualization_days"] == [252]
     assert data["single_sharpe_annualization_convention_recovers_all_recomputed_cells"] is False
     assert data["single_starting_capital_recovers_googl_buy_hold_cr_and_mdd"] is False
-    assert data["unsupported_kdj_rsi_zmr_cells"] == 24
+    assert data["unsupported_kdj_rsi_zmr_cells"] == 22
+    assert data["unsupported_kdj_rsi_zmr_cells_with_author_raster_contradiction"] == 2
+    assert data["strategy_raster_curve_mdd_rows_checked"] == 6
+    assert data["strategy_raster_curve_mdd_calibration_rows_within_0_25pp"] == 4
+    assert data["strategy_raster_curve_mdd_conflicts"] == 2
     assert data["native_p1gpt_result_cells_faithfully_regenerated_end_to_end"] == 0
     assert data["native_p1gpt_agent_decisions_independently_regenerated"] == 0
     assert data["direct_lookahead_counterexamples"] == 1
@@ -117,6 +121,37 @@ def test_author_plot_positions_are_output_values_not_agent_decisions() -> None:
     } == {"AAPL": 3, "GOOGL": 7, "TSLA": 2}
     assert all(row["agent_decision_or_rationale_recovered"] == "False" for row in positions)
     assert all(row["paper_result_credit"] == "False" for row in positions)
+
+
+def test_author_strategy_raster_contradicts_two_baseline_mdds() -> None:
+    raster = rows("strategy_raster_curve_forensics.csv")
+    assert len(raster) == 6
+    assert {row["method"] for row in raster} == {
+        "B&H", "MACD", "KDJ+RSI", "ZMR", "SMA", "P1GPT"
+    }
+    calibrated = [
+        row for row in raster
+        if row["within_0_25pp_calibration_tolerance"] == "True"
+    ]
+    assert {row["method"] for row in calibrated} == {"B&H", "MACD", "SMA", "P1GPT"}
+    conflicts = [
+        row for row in raster
+        if row["status"] == "author_raster_path_materially_conflicts_with_table_mdd"
+    ]
+    assert {row["method"] for row in conflicts} == {"KDJ+RSI", "ZMR"}
+    values = {row["method"]: row for row in conflicts}
+    assert 9.9 < float(values["KDJ+RSI"]["raster_center_path_MDD_pct"]) < 10.1
+    assert float(values["KDJ+RSI"]["paper_MDD_pct"]) == 1.78
+    assert 13.1 < float(values["ZMR"]["raster_center_path_MDD_pct"]) < 13.3
+    assert float(values["ZMR"]["paper_MDD_pct"]) == 5.46
+    assert all(
+        int(row["raster_center_path_peak_x"])
+        < int(row["raster_center_path_trough_x"])
+        for row in raster
+    )
+    assert all(abs(float(row["endpoint_calibration_residual_pixels"])) < 0.5 for row in raster)
+    assert {row["native_strategy_or_agent_pipeline_executed"] for row in raster} == {"False"}
+    assert {row["paper_result_credit"] for row in raster} == {"False"}
 
 
 def test_present_day_market_snapshots_never_receive_paper_time_credit() -> None:
@@ -258,7 +293,9 @@ def test_cited_protocol_does_not_supply_missing_baseline_parameters() -> None:
 
 def test_consistency_audit_records_lookahead_and_metric_conflicts() -> None:
     checks = {row["check_id"]: row for row in rows("internal_consistency.csv")}
-    assert len(checks) == 17
+    assert len(checks) == 19
+    assert checks["aapl_kdj_rsi_raster_mdd"]["status"] == "author_raster_table_metric_conflict"
+    assert checks["aapl_zmr_raster_mdd"]["status"] == "author_raster_table_metric_conflict"
     assert checks["march_report_future_iphone_air"]["status"] == "direct_lookahead_counterexample"
     assert checks["lookahead_claim"]["status"] == "claim_contradicted_by_embedded_output"
     assert checks["risk_free_rate"]["status"] == "equation_execution_conflict"
@@ -294,6 +331,8 @@ def test_manifest_hashes_every_nonmanifest_output_and_readme_is_honest() -> None
     text = (AUDIT_DIR / "README.md").read_text(encoding="utf-8")
     assert "not faithfully reproduced end to end" in text
     assert "46 exact matches" in text
+    assert "two raster contradictions" in text
+    assert "13.21% ZMR MDD" in text
     assert "0/12 P1GPT cells" in text
     assert "strictly avoids lookahead bias" in text
     assert "does not prove every daily signal" in text

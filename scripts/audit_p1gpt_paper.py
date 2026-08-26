@@ -742,6 +742,127 @@ def recover_plot_positions(image_bytes: bytes, ticker: str) -> list[int]:
     return positions
 
 
+def strategy_raster_curve_forensics(image_bytes: bytes) -> list[dict[str, Any]]:
+    """Compare AAPL table MDDs with paths encoded in the author raster.
+
+    The plot is a 150-DPI Matplotlib raster with exact core line colors.  Its
+    six final colored y positions are an affine transform of the six displayed
+    AAPL cumulative returns (maximum residual below half a pixel).  Applying
+    that transform to the median core pixel in every populated x column yields
+    approximate NAV paths.  This is raster/output forensics, not source-array,
+    baseline-rule, or native-agent execution.
+    """
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    if image.size != (1800, 1200):
+        raise ValueError(f"unexpected strategy comparison dimensions: {image.size}")
+    colors = {
+        "B&H": (31, 119, 180),
+        "MACD": (255, 127, 14),
+        "KDJ+RSI": (44, 160, 44),
+        "ZMR": (214, 39, 40),
+        "SMA": (148, 103, 189),
+        "P1GPT": (107, 66, 38),
+    }
+    expected_columns = {
+        "B&H": 1329,
+        "MACD": 1324,
+        "KDJ+RSI": 1302,
+        "ZMR": 1348,
+        "SMA": 1348,
+        "P1GPT": 1349,
+    }
+    final_core_y = {
+        method: statistics.median(
+            y
+            for y in range(80, 1120)
+            if image.getpixel((1607, y)) == color
+        )
+        for method, color in colors.items()
+    }
+    cumulative_returns = {
+        method: float(TABLE_VALUES[method]["AAPL"][0]) for method in colors
+    }
+    x_values = list(cumulative_returns.values())
+    y_values = [float(final_core_y[method]) for method in colors]
+    mean_x = statistics.mean(x_values)
+    mean_y = statistics.mean(y_values)
+    slope = sum(
+        (x - mean_x) * (y - mean_y) for x, y in zip(x_values, y_values)
+    ) / sum((x - mean_x) ** 2 for x in x_values)
+    intercept = mean_y - slope * mean_x
+    residuals = {
+        method: float(final_core_y[method])
+        - (intercept + slope * cumulative_returns[method])
+        for method in colors
+    }
+    if slope >= 0 or max(abs(value) for value in residuals.values()) >= 0.5:
+        raise ValueError("strategy raster endpoint calibration changed")
+
+    rows: list[dict[str, Any]] = []
+    for method, color in colors.items():
+        centers = []
+        exact_pixels = 0
+        for x in range(260, 1609):
+            ys = [
+                y
+                for y in range(80, 1120)
+                if image.getpixel((x, y)) == color
+            ]
+            if ys:
+                exact_pixels += len(ys)
+                centers.append((x, float(statistics.median(ys))))
+        if len(centers) != expected_columns[method]:
+            raise ValueError(f"strategy raster curve column count changed: {method}")
+        peak_nav = float("-inf")
+        raster_mdd = 0.0
+        peak_x = drawdown_peak_x = trough_x = -1
+        for x, y in centers:
+            cumulative_return = (y - intercept) / slope
+            nav = 1.0 + cumulative_return / 100.0
+            if nav > peak_nav:
+                peak_nav = nav
+                peak_x = x
+            drawdown = (peak_nav - nav) / peak_nav
+            if drawdown > raster_mdd:
+                raster_mdd = drawdown
+                drawdown_peak_x = peak_x
+                trough_x = x
+        raster_mdd_pct = 100.0 * raster_mdd
+        paper_mdd = float(TABLE_VALUES[method]["AAPL"][3])
+        difference = raster_mdd_pct - paper_mdd
+        calibrated = abs(difference) <= 0.25
+        conflict = method in {"KDJ+RSI", "ZMR"} and difference > 5.0
+        if method not in {"KDJ+RSI", "ZMR"} and not calibrated:
+            raise ValueError(f"strategy raster calibration row changed: {method}")
+        if method in {"KDJ+RSI", "ZMR"} and not conflict:
+            raise ValueError(f"strategy raster conflict boundary changed: {method}")
+        rows.append(
+            {
+                "method": method,
+                "line_rgb": "|".join(str(value) for value in color),
+                "exact_core_pixels_after_legend": exact_pixels,
+                "populated_x_columns_after_legend": len(centers),
+                "final_core_y": final_core_y[method],
+                "paper_CR_pct_used_for_affine_calibration": cumulative_returns[method],
+                "endpoint_calibration_residual_pixels": residuals[method],
+                "paper_MDD_pct": paper_mdd,
+                "raster_center_path_MDD_pct": raster_mdd_pct,
+                "raster_minus_paper_MDD_pp": difference,
+                "raster_center_path_peak_x": drawdown_peak_x,
+                "raster_center_path_trough_x": trough_x,
+                "within_0_25pp_calibration_tolerance": calibrated,
+                "status": (
+                    "author_raster_path_materially_conflicts_with_table_mdd"
+                    if conflict
+                    else "author_raster_path_calibrates_with_table_mdd"
+                ),
+                "native_strategy_or_agent_pipeline_executed": False,
+                "paper_result_credit": False,
+            }
+        )
+    return rows
+
+
 def result_recovery_checks(
     audit_root: Path, files: Mapping[str, bytes]
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
@@ -1225,8 +1346,9 @@ def readme_text(manifest: Mapping[str, Any]) -> str:
 
 P1GPT is **not faithfully reproduced end to end**. The manuscript is fully and
 deterministically reconstructed, and {manifest['displayed_table_cells_exactly_verified']}/72 displayed Table 2
-cells can be checked exactly. Those checks are not the same as regenerating the
-multi-agent experiment:
+cells can be checked exactly. Two additional MDD cells are materially contradicted
+by the author-rendered comparison raster. Those checks are not the same as
+regenerating the multi-agent experiment:
 
 - document reconstruction: 1/1 arXiv version rebuilds twice to byte-identical
   17-page PDFs; normalized extracted text is identical to the published PDF and
@@ -1241,12 +1363,17 @@ multi-agent experiment:
   same GOOGL close series that recovers B&H CR, AR, and SR gives 6.14% MDD,
   rather than the printed 6.41%;
 - unsupported baselines: 0/24 KDJ+RSI and ZMR cells can be regenerated because
-  their windows, thresholds, equilibrium definition, and action rules are absent;
+  their windows, thresholds, equilibrium definition, and action rules are absent.
+  Raster-path forensics now checks two of those cells adversely: four calibration
+  curves recover their table MDDs within 0.21 percentage points, while the same
+  extraction implies approximately 10.00% AAPL KDJ+RSI MDD and 13.21% ZMR MDD,
+  versus 1.78% and 5.46% in Table 2. This is an author-figure/table conflict, not
+  baseline-rule reproduction;
 - actual agent replay: 0/12 P1GPT cells regenerate from agent code, prompts,
   requests, responses, and paper-time data, because those inputs are not public.
 
-The 46 exact matches are therefore **result verification**, not full-system
-replication. The Yahoo response was pinned during this audit, not by the paper.
+The 46 exact matches and two raster contradictions are therefore **result
+verification**, not full-system replication. The Yahoo response was pinned during this audit, not by the paper.
 The plotted positions are author-rendered outputs, not independently generated
 agent decisions.
 
@@ -1311,6 +1438,7 @@ excluded from native-method or result credit.
 - `paper_version_summary.csv`: pinned primary PDF/source and local identity.
 - `paper_source_inventory.csv`: all 12 arXiv source files.
 - `author_figure_inventory.csv`: all seven embedded assets.
+- `strategy_raster_curve_forensics.csv`: six AAPL curve/MDD checks and two material table conflicts.
 - `published_result_ledger.csv`: all 72 Table 2 cells.
 - `result_recovery_checks.csv`: 48 exact displayed-cell checks and boundaries.
 - `recovered_author_plot_positions.csv`: 498 author-rendered daily bar values.
@@ -1354,6 +1482,27 @@ def build_audit(
     mechanisms = mechanism_conformance()
     gaps = specification_gaps()
     consistency = internal_consistency_checks()
+    raster_forensics = strategy_raster_curve_forensics(
+        files["images/strategy_comparison_cum_returns.png"]
+    )
+    raster_conflicts = [
+        row
+        for row in raster_forensics
+        if row["status"] == "author_raster_path_materially_conflicts_with_table_mdd"
+    ]
+    for row in raster_conflicts:
+        consistency.append(
+            {
+                "check_id": f"aapl_{row['method'].lower().replace('+', '_').replace('&', '_')}_raster_mdd",
+                "paper_statement": f"Table 2 prints AAPL {row['method']} MDD {row['paper_MDD_pct']:.2f}%",
+                "audit_observation": (
+                    f"the author strategy-comparison raster center path implies approximately "
+                    f"{row['raster_center_path_MDD_pct']:.2f}% after calibration on all six displayed CR endpoints"
+                ),
+                "status": "author_raster_table_metric_conflict",
+                "paper_result_credit": False,
+            }
+        )
     public_files, public_execution = web_demo_inventory(audit_root)
     history = source_history_inventory(web_demo_history)
     fork_branches, fork_heads, fork_summary = public_fork_census(web_demo_history)
@@ -1373,6 +1522,7 @@ def build_audit(
     write_csv(output_dir / "mechanism_conformance.csv", mechanisms)
     write_csv(output_dir / "specification_gaps.csv", gaps)
     write_csv(output_dir / "internal_consistency.csv", consistency)
+    write_csv(output_dir / "strategy_raster_curve_forensics.csv", raster_forensics)
     write_csv(output_dir / "public_source_file_inventory.csv", public_files)
     write_csv(output_dir / "source_history_inventory.csv", history)
     write_csv(output_dir / "public_fork_branch_ref_snapshot.csv", fork_branches)
@@ -1402,7 +1552,7 @@ def build_audit(
         "published_table_result_cells": len(table),
         "published_native_p1gpt_result_cells": 12,
         "published_baseline_result_cells": 60,
-        "displayed_table_cells_recalculated_or_checked": len(recoveries),
+        "displayed_table_cells_recalculated_or_checked": len(recoveries) + len(raster_conflicts),
         "displayed_table_cells_exactly_verified": sum(
             row["display_rounding_exact_match"] for row in recoveries
         ),
@@ -1430,7 +1580,15 @@ def build_audit(
         "single_starting_capital_recovers_googl_buy_hold_cr_and_mdd": metric_forensics[
             "googl_buy_hold_capital_consistency"
         ]["single_constant_starting_capital_recovers_both_cells"],
-        "unsupported_kdj_rsi_zmr_cells": 24,
+        "unsupported_kdj_rsi_zmr_cells": 24 - len(raster_conflicts),
+        "unsupported_kdj_rsi_zmr_cells_with_author_raster_contradiction": len(
+            raster_conflicts
+        ),
+        "strategy_raster_curve_mdd_rows_checked": len(raster_forensics),
+        "strategy_raster_curve_mdd_calibration_rows_within_0_25pp": sum(
+            row["within_0_25pp_calibration_tolerance"] for row in raster_forensics
+        ),
+        "strategy_raster_curve_mdd_conflicts": len(raster_conflicts),
         "native_p1gpt_result_cells_faithfully_regenerated_end_to_end": 0,
         "native_p1gpt_agent_decisions_independently_regenerated": 0,
         "author_plot_daily_position_values_recovered": len(positions),

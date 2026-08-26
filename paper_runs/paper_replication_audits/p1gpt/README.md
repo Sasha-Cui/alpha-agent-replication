@@ -4,8 +4,9 @@
 
 P1GPT is **not faithfully reproduced end to end**. The manuscript is fully and
 deterministically reconstructed, and 46/72 displayed Table 2
-cells can be checked exactly. Those checks are not the same as regenerating the
-multi-agent experiment:
+cells can be checked exactly. Two additional MDD cells are materially contradicted
+by the author-rendered comparison raster. Those checks are not the same as
+regenerating the multi-agent experiment:
 
 - document reconstruction: 1/1 arXiv version rebuilds twice to byte-identical
   17-page PDFs; normalized extracted text is identical to the published PDF and
@@ -20,12 +21,17 @@ multi-agent experiment:
   same GOOGL close series that recovers B&H CR, AR, and SR gives 6.14% MDD,
   rather than the printed 6.41%;
 - unsupported baselines: 0/24 KDJ+RSI and ZMR cells can be regenerated because
-  their windows, thresholds, equilibrium definition, and action rules are absent;
+  their windows, thresholds, equilibrium definition, and action rules are absent.
+  Raster-path forensics now checks two of those cells adversely: four calibration
+  curves recover their table MDDs within 0.21 percentage points, while the same
+  extraction implies approximately 10.00% AAPL KDJ+RSI MDD and 13.21% ZMR MDD,
+  versus 1.78% and 5.46% in Table 2. This is an author-figure/table conflict, not
+  baseline-rule reproduction;
 - actual agent replay: 0/12 P1GPT cells regenerate from agent code, prompts,
   requests, responses, and paper-time data, because those inputs are not public.
 
-The 46 exact matches are therefore **result verification**, not full-system
-replication. The Yahoo response was pinned during this audit, not by the paper.
+The 46 exact matches and two raster contradictions are therefore **result
+verification**, not full-system replication. The Yahoo response was pinned during this audit, not by the paper.
 The plotted positions are author-rendered outputs, not independently generated
 agent decisions.
 
@@ -90,6 +96,7 @@ excluded from native-method or result credit.
 - `paper_version_summary.csv`: pinned primary PDF/source and local identity.
 - `paper_source_inventory.csv`: all 12 arXiv source files.
 - `author_figure_inventory.csv`: all seven embedded assets.
+- `strategy_raster_curve_forensics.csv`: six AAPL curve/MDD checks and two material table conflicts.
 - `published_result_ledger.csv`: all 72 Table 2 cells.
 - `result_recovery_checks.csv`: 48 exact displayed-cell checks and boundaries.
 - `recovered_author_plot_positions.csv`: 498 author-rendered daily bar values.
