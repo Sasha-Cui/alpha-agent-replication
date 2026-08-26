@@ -67,6 +67,11 @@
   "paper_author_history_ref": "refs/remotes/fork_nchen/nchen",
   "paper_author_history_commit": "2a6cefe6ea7dc291070b63e5699f95370a7d32d7",
   "paper_author_history_commits_audited": 89,
+  "paper_author_history_unique_output_blobs_audited": 83,
+  "paper_author_history_output_blob_bytes_audited": 209739069,
+  "paper_author_history_final_return_sharpe_summaries_audited": 1371,
+  "paper_author_history_output_blobs_naming_time_series_model": 0,
+  "paper_author_history_output_blobs_matching_time_series_return_sharpe_pair": 0,
   "full_period_time_series_result_logs_shipped": false,
   "all_time_series_implementations_shipped": false,
   "readme_example_is_full_period_result": false,
@@ -80,7 +85,7 @@
   "source_fixed_gas_fee_asset_units": 0.0014700000000000002,
   "source_contains_hardcoded_credential_literal": false,
   "audit_imported_or_used_credential_module": false,
-  "interpretation": "The released market data, native environment, costs, and traditional-signal logic reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history additionally corroborates 40 LLM cells through exact metric and native state replay. All 12 Table 5 values also have exact author-history numeric correspondences and replay through their historical code snapshots, but every selected trace conflicts with the paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells receive zero method-faithful credit. This is strong component/output evidence, not a full CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but not method-faithful explanations, validation selection is not implemented as described, and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref census finds no additional attributable paper outputs.",
+  "interpretation": "The released market data, native environment, costs, and traditional-signal logic reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history additionally corroborates 40 LLM cells through exact metric and native state replay. All 12 Table 5 values also have exact author-history numeric correspondences and replay through their historical code snapshots, but every selected trace conflicts with the paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells receive zero method-faithful credit. This is strong component/output evidence, not a full CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but not method-faithful explanations, validation selection is not implemented as described, and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref census finds no additional attributable paper outputs. All 83 unique output blobs in the coauthor history were also scanned: none names a released time-series baseline or matches a paper time-series return/Sharpe pair.",
   "source_file_sha256": {
     "README.md": "af3e98ec66435814f195919abc1b0c6523b7aec02b93e10878c53de3159ade80",
     "env_history.py": "78cbc77b5c11ce024638a41f76f48a513a12b38c9d657431b3f76a3efcd8a7ab",
@@ -92,8 +97,9 @@
     "utils.py": "5c178dce5994e0914a94166e2e74e5f0cbae10fab945fd2eb3f5eb5ebe689abe"
   },
   "output_sha256": {
-    "README.md": "2e6bdcfe1755fb1f20ce8a56b8e51657e9f896dbc976b96e6fabbc4b36f57b66",
+    "README.md": "4dc7dda18e122fa9e69d006e8a37ffb285a2839e4bf3030c96a0d782c786d9f4",
     "author_history_llm_trace_audit.csv": "8529a2cac2d6d76ae49dea60758c77c17270d5127d0f6fec30ce49b017650484",
+    "author_history_output_artifact_census.csv": "3d6d573ea4027ff171a88a6a263a3e0fcd2fba3297ceb94a15f3061d9c10d62f",
     "data_inventory.csv": "501a90ede31d0ac67d9a482c7ad7bf9d6685497ccbd14b57d014512e39bb56fe",
     "dataset_split_conformance.csv": "81dba3dd5937ba27f9490d704b18f7809fed894a8d1b4720c5ca87241924beb3",
     "paper_internal_inconsistencies.csv": "5582d13bf21f6734459b4e0c628b9ffe38b6cc8aeb3e792bcb1f6f8fa042d930",

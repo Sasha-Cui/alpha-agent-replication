@@ -66,6 +66,7 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     history = read_csv(output / "source_history_inventory.csv")
     fork_divergence = read_csv(output / "public_fork_divergence_inventory.csv")
     traces = read_csv(output / "author_history_llm_trace_audit.csv")
+    output_artifacts = read_csv(output / "author_history_output_artifact_census.csv")
     ablation_traces = read_csv(output / "table_5_author_trace_audit.csv")
     ablation = read_csv(output / "table_5_conformance.csv")
 
@@ -92,6 +93,11 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert manifest["matching_full_period_llm_result_traces_recovered_from_paper_author_history"] is True
     assert manifest["paper_author_history_commit"] == audit.AUTHOR_HISTORY_COMMIT
     assert manifest["paper_author_history_commits_audited"] == 89
+    assert manifest["paper_author_history_unique_output_blobs_audited"] == 83
+    assert manifest["paper_author_history_output_blob_bytes_audited"] == 209739069
+    assert manifest["paper_author_history_final_return_sharpe_summaries_audited"] == 1371
+    assert manifest["paper_author_history_output_blobs_naming_time_series_model"] == 0
+    assert manifest["paper_author_history_output_blobs_matching_time_series_return_sharpe_pair"] == 0
     assert manifest["full_period_time_series_result_logs_shipped"] is False
     assert manifest["source_contains_hardcoded_credential_literal"] is False
     assert manifest["audit_imported_or_used_credential_module"] is False
@@ -186,6 +192,13 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert sum(row["full_period_trace"] == "False" for row in diagnostic) == 1
     assert all(row["model_identity_status"] == "match" for row in credited)
     assert all(row["full_period_trace"] == "True" for row in credited)
+
+    assert len(output_artifacts) == 83
+    assert sum(int(row["blob_bytes"]) for row in output_artifacts) == 209739069
+    assert sum(int(row["final_return_sharpe_summaries"]) for row in output_artifacts) == 1371
+    assert {row["exact_time_series_model_tokens"] for row in output_artifacts} == {""}
+    assert {row["paper_time_series_return_sharpe_pair_matches"] for row in output_artifacts} == {"0"}
+    assert {row["status"] for row in output_artifacts} == {"no_time_series_model_identity_or_paper_return_sharpe_pair"}
 
     assert len(ablation_traces) == 7
     selected_ablation = [row for row in ablation_traces if row["trace_role"] == "selected_numeric_correspondence"]

@@ -313,13 +313,17 @@ def public_fork_divergence_inventory(source_root: Path) -> List[Dict[str, Any]]:
                     f"CryptoTrade fork-census {field} changed for {ref}: expected {expected[field]!r}, found {value!r}"
                 )
 
-        committed_at, author_name, subject = git(
-            source_root,
-            "show",
-            "-s",
-            "--format=%aI%x09%an%x09%s",
-            ref,
-        ).rstrip("\n").split("\t", 2)
+        committed_at, author_name, subject = (
+            git(
+                source_root,
+                "show",
+                "-s",
+                "--format=%aI%x09%an%x09%s",
+                ref,
+            )
+            .rstrip("\n")
+            .split("\t", 2)
+        )
         rows.append(
             {
                 "repository": expected["repository"],
@@ -465,7 +469,11 @@ def replay_author_actions(
 def author_trace_audit(
     environment_module: Any,
     source_root: Path,
-) -> Tuple[List[Dict[str, Any]], Dict[Tuple[str, str, str], Dict[str, Any]]]:
+) -> Tuple[
+    List[Dict[str, Any]],
+    Dict[Tuple[str, str, str], Dict[str, Any]],
+    List[Dict[str, Any]],
+]:
     """Recover paper-era outputs from the public branch of paper coauthor Nuo Chen."""
     if git(source_root, "rev-parse", AUTHOR_HISTORY_REF).strip() != AUTHOR_HISTORY_COMMIT:
         raise RuntimeError("Pinned CryptoTrade author-history ref is absent or changed")
@@ -490,14 +498,20 @@ def author_trace_audit(
 
     targets = paper_result_rows()
     paper: Dict[Tuple[str, str, str], Dict[str, float]] = {}
+    time_series_paper: Dict[Tuple[str, str, str], Dict[str, float]] = {}
     for target in targets:
         if target["strategy"] in LLM_STRATEGIES:
             paper.setdefault((target["asset"], target["strategy"], target["regime"]), {})[target["metric"]] = float(
                 target["paper_value"]
             )
+        if target["strategy"] in TIME_SERIES_STRATEGIES:
+            time_series_paper.setdefault((target["asset"], target["strategy"], target["regime"]), {})[
+                target["metric"]
+            ] = float(target["paper_value"])
 
     rows: List[Dict[str, Any]] = []
     credited: Dict[Tuple[str, str, str], Dict[str, Any]] = {}
+    output_artifacts: List[Dict[str, Any]] = []
     seen_blobs = set()
     for commit in commits:
         for item in git(source_root, "ls-tree", "-rl", commit).splitlines():
@@ -509,6 +523,50 @@ def author_trace_audit(
                 continue
             seen_blobs.add(blob)
             text = git(source_root, "cat-file", "blob", blob)
+            model_tokens = sorted(
+                set(
+                    value.lower()
+                    for value in re.findall(
+                        r"(?i)\b(?:lstm|informer|autoformer|timesnet|patchtst)\b",
+                        text,
+                    )
+                )
+            )
+            summaries = [
+                (float(total_return), float(sharpe))
+                for total_return, sharpe in re.findall(
+                    r"(?:FINAL return|Total return):\s*(-?\d+(?:\.\d+)?),\s*"
+                    r"sharpe ratio:\s*(-?\d+(?:\.\d+)?)",
+                    text,
+                    flags=re.I,
+                )
+            ]
+            matching_time_series_rows = sorted(
+                {
+                    key
+                    for total_return, sharpe in summaries
+                    for key, expected in time_series_paper.items()
+                    if abs(total_return - expected["total_return_pct"]) <= DISPLAY_TOLERANCE
+                    and abs(sharpe - expected["sharpe_ratio"]) <= DISPLAY_TOLERANCE
+                }
+            )
+            output_artifacts.append(
+                {
+                    "author_commit_first_seen": commit,
+                    "author_blob": blob,
+                    "author_path_first_seen": path,
+                    "blob_bytes": int(metadata.split()[3]),
+                    "exact_time_series_model_tokens": ";".join(model_tokens),
+                    "final_return_sharpe_summaries": len(summaries),
+                    "paper_time_series_return_sharpe_pair_matches": len(matching_time_series_rows),
+                    "matching_paper_rows": ";".join("|".join(key) for key in matching_time_series_rows),
+                    "status": (
+                        "candidate_time_series_evidence_requires_review"
+                        if model_tokens or matching_time_series_rows
+                        else "no_time_series_model_identity_or_paper_return_sharpe_pair"
+                    ),
+                }
+            )
             if not text.startswith("Namespace("):
                 continue
             try:
@@ -598,7 +656,18 @@ def author_trace_audit(
     }
     if set(credited) != expected_matches:
         raise RuntimeError("Recovered CryptoTrade paper-row trace inventory changed")
-    return rows, credited
+    if (
+        len(output_artifacts),
+        sum(row["blob_bytes"] for row in output_artifacts),
+        sum(row["final_return_sharpe_summaries"] for row in output_artifacts),
+    ) != (83, 209739069, 1371):
+        raise RuntimeError("Recovered CryptoTrade author output-blob census changed")
+    if any(
+        row["exact_time_series_model_tokens"] or row["paper_time_series_return_sharpe_pair_matches"]
+        for row in output_artifacts
+    ):
+        raise RuntimeError("Recovered CryptoTrade history has new candidate time-series evidence")
+    return rows, credited, output_artifacts
 
 
 def _final_return_and_sharpe(text: str) -> Tuple[float, float]:
@@ -1319,7 +1388,7 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     environment_module = load_environment(source_root)
     history = source_history_inventory(source_root)
     fork_divergence = public_fork_divergence_inventory(source_root)
-    author_trace_rows, author_traces = author_trace_audit(environment_module, source_root)
+    author_trace_rows, author_traces, author_output_artifacts = author_trace_audit(environment_module, source_root)
     ablation_trace_rows, ablation_conformance = ablation_trace_audit(source_root)
     conformance, reproduced = result_conformance(environment_module, source_root, author_traces)
     splits = split_conformance(environment_module, source_root, reproduced)
@@ -1343,6 +1412,11 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         output_dir / "author_history_llm_trace_audit.csv",
         author_trace_rows,
         list(author_trace_rows[0]),
+    )
+    write_csv(
+        output_dir / "author_history_output_artifact_census.csv",
+        author_output_artifacts,
+        list(author_output_artifacts[0]),
     )
     write_csv(
         output_dir / "table_5_author_trace_audit.csv",
@@ -1419,9 +1493,7 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "public_divergent_fork_heads_author_attributed": sum(
             row["attribution"] == "paper_author" for row in fork_divergence
         ),
-        "public_divergent_fork_result_or_log_paths_total": sum(
-            row["result_or_log_paths"] for row in fork_divergence
-        ),
+        "public_divergent_fork_result_or_log_paths_total": sum(row["result_or_log_paths"] for row in fork_divergence),
         "public_divergent_fork_paper_result_credit_paths_total": 0,
         "paper_result_metric_cells_total": len(conformance) + len(ablation_conformance),
         "paper_tables_2_4_metric_cells_total": len(conformance),
@@ -1492,6 +1564,17 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "paper_author_history_ref": AUTHOR_HISTORY_REF,
         "paper_author_history_commit": AUTHOR_HISTORY_COMMIT,
         "paper_author_history_commits_audited": AUTHOR_HISTORY_COMMIT_COUNT,
+        "paper_author_history_unique_output_blobs_audited": len(author_output_artifacts),
+        "paper_author_history_output_blob_bytes_audited": sum(row["blob_bytes"] for row in author_output_artifacts),
+        "paper_author_history_final_return_sharpe_summaries_audited": sum(
+            row["final_return_sharpe_summaries"] for row in author_output_artifacts
+        ),
+        "paper_author_history_output_blobs_naming_time_series_model": sum(
+            bool(row["exact_time_series_model_tokens"]) for row in author_output_artifacts
+        ),
+        "paper_author_history_output_blobs_matching_time_series_return_sharpe_pair": sum(
+            bool(row["paper_time_series_return_sharpe_pair_matches"]) for row in author_output_artifacts
+        ),
         "full_period_time_series_result_logs_shipped": False,
         "all_time_series_implementations_shipped": False,
         "readme_example_is_full_period_result": False,
@@ -1519,7 +1602,9 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             "CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but "
             "not method-faithful explanations, validation selection is not implemented as described, "
             "and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref "
-            "census finds no additional attributable paper outputs."
+            "census finds no additional attributable paper outputs. All 83 unique output blobs in the "
+            "coauthor history were also scanned: none names a released time-series baseline or matches "
+            "a paper time-series return/Sharpe pair."
         ),
         "source_file_sha256": {
             name: sha256(source_root / name)
@@ -1617,6 +1702,11 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
   on the full requested interval, and ships no result path.
+- The complete coauthor history contains 83 unique `.out` blobs totaling
+  209,739,069 bytes. An exhaustive scan of their 1,371 final return/Sharpe summaries
+  finds no standalone LSTM, Informer, AutoFormer, TimesNet, or PatchTST model token
+  and no return/Sharpe pair matching any of the 45 published time-series rows. See
+  `author_history_output_artifact_census.csv`.
 - The paper says SMA/SLMA parameters are selected on validation performance. The
   source prints candidate validation results and then hard-codes SMA=15 and
   SLMA=15/30. Only {manifest["paper_described_validation_selections_matching_released_data_argmax"]}/6

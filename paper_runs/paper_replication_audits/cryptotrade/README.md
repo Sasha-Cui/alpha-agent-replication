@@ -72,6 +72,11 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
   on the full requested interval, and ships no result path.
+- The complete coauthor history contains 83 unique `.out` blobs totaling
+  209,739,069 bytes. An exhaustive scan of their 1,371 final return/Sharpe summaries
+  finds no standalone LSTM, Informer, AutoFormer, TimesNet, or PatchTST model token
+  and no return/Sharpe pair matching any of the 45 published time-series rows. See
+  `author_history_output_artifact_census.csv`.
 - The paper says SMA/SLMA parameters are selected on validation performance. The
   source prints candidate validation results and then hard-codes SMA=15 and
   SLMA=15/30. Only 1/6
