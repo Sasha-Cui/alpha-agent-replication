@@ -119,6 +119,9 @@ def test_official_release_is_substantial_but_not_deployment_complete() -> None:
     assert release["remaining_unavailable_pointer_files"] == 6
     assert release["remaining_unavailable_unique_oids"] == 6
     assert release["remaining_unavailable_registered_bytes"] == 306_295_258
+    assert release["global_exact_lfs_code_search_queries"] == 10
+    assert release["global_exact_lfs_code_search_hits"] == 0
+    assert release["global_remaining_lfs_oids_queried"] == 6
     assert release["tokenizer_recovery_source_attributable_to_mm_arc_authors"] is False
     assert release["base_model_id"] == "Qwen/Qwen3-VL-8B-Instruct"
     assert release["base_model_revision"] == "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b"
@@ -147,6 +150,23 @@ def test_public_refresh_and_exact_tokenizer_recovery_are_fail_closed() -> None:
     assert len(unavailable) == 6
     assert sum(int(row["registered_bytes"]) for row in unavailable) == 306_295_258
     assert all(row["official_public_file_endpoint"] == "404_file_not_found_2026-08-14" for row in recovery)
+    searches = rows("global_lfs_recovery_search.csv")
+    assert len(searches) == 10
+    assert Counter(row["query_type"] for row in searches) == {
+        "oid_sha256": 6,
+        "distinctive_path": 2,
+        "distinctive_directory": 2,
+    }
+    assert {row["total_count"] for row in searches} == {"0"}
+    assert {row["incomplete_results"] for row in searches} == {"False"}
+    assert {row["public_payload_or_pointer_hit"] for row in searches} == {"False"}
+    assert {row["native_model_or_strategy_execution_enabled"] for row in searches} == {"False"}
+    assert {row["paper_result_credit"] for row in searches} == {"False"}
+    assert {row["checked_at_utc"] for row in searches} == {"2026-08-26T16:52:00Z"}
+    data = manifest()
+    assert data["global_exact_lfs_code_search_queries"] == 10
+    assert data["global_exact_lfs_code_search_hits"] == 0
+    assert data["global_remaining_lfs_oids_queried"] == 6
     runtime = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())[
         "tokenizer_runtime_validation"
     ]
@@ -243,6 +263,7 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
     for marker in (
         "wholesale 17-page replacement", "111 tests", "Git LFS pointers",
         "29/35", "306,295,258", "zero regenerated published", "No proxy",
+        "All ten complete searches returned zero indexed files",
         "does not reproduce the legacy",
     ):
         assert marker in readme

@@ -77,10 +77,26 @@ OFFICIAL_LFS_PROBE_PATHS = (
     "strategy_pool/strict_rabo_sealed_rabo_robustness.csv",
     "strategy_pool/strict_rabo_sealed_strategy_signals.csv",
 )
+GLOBAL_LFS_CODE_SEARCHES = (
+    ("oid_3b15057d.json", "oid_sha256", "3b15057d0e35dd46b53ee4908a666d22cb895970d78b1a81ab6fc42a03013ee7"),
+    ("oid_125629f1.json", "oid_sha256", "125629f100aec4277a89251e081fca7e78191f6f818566bfc1b9f5e393f15697"),
+    ("oid_44fc4462.json", "oid_sha256", "44fc4462b52592b23378e97e2fd48d451c61fcbcd7d0c0db36be14093a8f7f1c"),
+    ("oid_4a34b844.json", "oid_sha256", "4a34b844a21c6122444ff6b9d9fb980182e28eb6a7efd5d90b41ae9168154b92"),
+    ("oid_e363735b.json", "oid_sha256", "e363735b6ac8833ef45a69564a270746ca660e78cdab17acd00f20f7220669f8"),
+    ("oid_71873cdf.json", "oid_sha256", "71873cdffe2e04404cc5e91c731ced28c741e2fab7e06c36510c0820184d3da7"),
+    ("name_strategy_signals.json", "distinctive_path", "strict_rabo_sealed_strategy_signals.csv"),
+    ("name_rabo_robustness.json", "distinctive_path", "strict_rabo_sealed_rabo_robustness.csv"),
+    ("name_labo_evaluator.json", "distinctive_directory", "labo_evaluator_adapter"),
+    ("name_qwen_regime.json", "distinctive_directory", "qwen_regime_adapter"),
+)
 for _relative in OFFICIAL_LFS_PROBE_PATHS:
     _name = _relative.replace("/", "_")
     PINS[f"discovery/official-lfs-{_name}-20260814.json"] = (
         "ad8e0238bdf46cf71cf2f7e519a1e601e863bff47973b0d31f7623f14d319b72"
+    )
+for _filename, _, _ in GLOBAL_LFS_CODE_SEARCHES:
+    PINS[f"discovery/global_search_20260826/{_filename}"] = (
+        "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f"
     )
 
 V1_RESULT_TABLES = {
@@ -379,6 +395,59 @@ def lfs_recovery_rows(scratch: Path, pointer_inventory: list[dict[str, Any]]) ->
     return rows
 
 
+def global_lfs_search_rows(
+    scratch: Path,
+    pointer_inventory: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    remaining_oids = {
+        row["expected_sha256"]
+        for row in pointer_inventory
+        if row["expected_sha256"] != TOKENIZER_OID
+    }
+    queried_oids = {
+        query
+        for _, query_type, query in GLOBAL_LFS_CODE_SEARCHES
+        if query_type == "oid_sha256"
+    }
+    if remaining_oids != queried_oids:
+        raise ValueError("MM-ARC global LFS OID search coverage changed")
+    rows: list[dict[str, Any]] = []
+    for filename, query_type, query in GLOBAL_LFS_CODE_SEARCHES:
+        payload = json.loads(
+            (
+                scratch
+                / "discovery/global_search_20260826"
+                / filename
+            ).read_text()
+        )
+        if (
+            payload.get("total_count") != 0
+            or payload.get("incomplete_results") is not False
+            or payload.get("items") != []
+        ):
+            raise ValueError(f"MM-ARC exact public code search changed: {filename}")
+        rows.append(
+            {
+                "query_type": query_type,
+                "query": query,
+                "service": "GitHub authenticated global code search",
+                "checked_at_utc": "2026-08-26T16:52:00Z",
+                "total_count": 0,
+                "incomplete_results": False,
+                "public_payload_or_pointer_hit": False,
+                "native_model_or_strategy_execution_enabled": False,
+                "paper_result_credit": False,
+                "boundary": (
+                    "bounded exact-hash/name search found no indexed public recovery; "
+                    "private, deleted, unindexed, or non-GitHub copies remain possible"
+                ),
+            }
+        )
+    if len(rows) != 10:
+        raise ValueError("MM-ARC global LFS search inventory changed")
+    return rows
+
+
 def release_audit(scratch: Path) -> dict[str, Any]:
     repo = scratch / LATEST_REPO
     registry = json.loads((repo / "artifacts/registry.json").read_text())
@@ -583,6 +652,12 @@ two historical strategy tables remain unavailable: six files and 306,295,258
 registered bytes. Artifact verification and model execution therefore fail
 closed.
 
+An authenticated GitHub global code search on 2026-08-26 checked each of the six
+remaining SHA-256 content addresses plus four distinctive release path/directory
+names. All ten complete searches returned zero indexed files. This strengthens
+the public-recovery boundary but is not proof that private, deleted, unindexed,
+or non-GitHub copies do not exist.
+
 Accordingly, the honest paper-level score remains **zero regenerated published
 numeric table units and zero regenerated empirical figure series for every
 version**. The release materially improves implementation and deployment
@@ -606,10 +681,20 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_csv(output / "internal_consistency_audit.csv", internal_rows())
     release = release_audit(scratch)
     write_csv(output / "release_snapshot_history.csv", release_snapshot_rows())
+    recovery = lfs_recovery_rows(scratch, release["lfs_pointer_inventory"])
     write_csv(
         output / "lfs_payload_recovery_audit.csv",
-        lfs_recovery_rows(scratch, release["lfs_pointer_inventory"]),
+        recovery,
     )
+    global_searches = global_lfs_search_rows(
+        scratch, release["lfs_pointer_inventory"]
+    )
+    write_csv(output / "global_lfs_recovery_search.csv", global_searches)
+    release["global_exact_lfs_code_search_queries"] = len(global_searches)
+    release["global_exact_lfs_code_search_hits"] = sum(
+        row["public_payload_or_pointer_hit"] for row in global_searches
+    )
+    release["global_remaining_lfs_oids_queried"] = 6
     write_json(output / "release_execution_audit.json", release)
     provenance = {
         "work_id": WORK_ID,
@@ -681,6 +766,9 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "registered_artifact_files_verified_after_exact_public_recovery": release["verified_payload_files_after_exact_public_recovery"],
         "remaining_unavailable_lfs_payload_files": release["remaining_unavailable_pointer_files"],
         "remaining_unavailable_lfs_registered_bytes": release["remaining_unavailable_registered_bytes"],
+        "global_exact_lfs_code_search_queries": release["global_exact_lfs_code_search_queries"],
+        "global_exact_lfs_code_search_hits": release["global_exact_lfs_code_search_hits"],
+        "global_remaining_lfs_oids_queried": release["global_remaining_lfs_oids_queried"],
         "trained_adapter_router_or_strategy_history_payload_recovered": False,
         "full_training_and_experiment_controller_released": False,
         "full_benchmark_data_released": False,

@@ -24,6 +24,9 @@
   "exact_public_payload_unique_bytes_recovered": 11422650,
   "exact_public_payload_unique_oids_recovered": 1,
   "full_model_forward_executed_in_audit": false,
+  "global_exact_lfs_code_search_hits": 0,
+  "global_exact_lfs_code_search_queries": 10,
+  "global_remaining_lfs_oids_queried": 6,
   "lfs_payload_bytes_unavailable": 340563208,
   "lfs_pointer_files": 9,
   "lfs_pointer_inventory": [

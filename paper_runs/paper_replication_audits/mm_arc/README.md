@@ -35,6 +35,12 @@ two historical strategy tables remain unavailable: six files and 306,295,258
 registered bytes. Artifact verification and model execution therefore fail
 closed.
 
+An authenticated GitHub global code search on 2026-08-26 checked each of the six
+remaining SHA-256 content addresses plus four distinctive release path/directory
+names. All ten complete searches returned zero indexed files. This strengthens
+the public-recovery boundary but is not proof that private, deleted, unindexed,
+or non-GitHub copies do not exist.
+
 Accordingly, the honest paper-level score remains **zero regenerated published
 numeric table units and zero regenerated empirical figure series for every
 version**. The release materially improves implementation and deployment
