@@ -614,7 +614,10 @@ ARTIFACT_NOTES = {
         "ETH-sideways daily statistics duplicate ETH-bear, while four SOL-bear cells require "
         "a 1-day SMA outside the disclosed and released [5,10,15,20,30] grid. The originally "
         "cited anonymous repository has expired, the 11-commit official history contains no "
-        "result/log path, and 248 main-table LLM/time-series cells remain unverifiable. All "
+        "result/log path, and 248 main-table LLM/time-series cells remain unverifiable. All 83 "
+        "unique coauthor-history output blobs (209,739,069 bytes) were scanned across 1,371 "
+        "final return/Sharpe summaries; none contains a standalone released time-series model "
+        "name or matches a published time-series return/Sharpe pair. All "
         "12 Table 5 values have exact author-history numeric correspondences and replay against "
         "their historical snapshots, but receive zero method-faithful credit because the traces "
         "declare GPT-3.5 rather than GPT-4o and the Full match is BTC rather than ETH. A dated "
@@ -1654,7 +1657,10 @@ TARGETED_EXECUTION = {
         "four_author_curve_series_zero_regenerated_full_1_commit_history_1_fork_1_ref_"
         "official_head_exhausted"
     ),
-    "SYS-CRYPTO-TRADE": "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_12_ablation_correspondences_zero_credit_37_forks_exhausted",
+    "SYS-CRYPTO-TRADE": (
+        "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_"
+        "12_ablation_correspondences_zero_credit_83_author_outputs_no_time_series_match_37_forks_exhausted"
+    ),
     "SYS-EFS": "paper_audit:completed_10_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": (
