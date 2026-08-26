@@ -23,6 +23,15 @@ and outputs still prevent an executable package for the published claims.
   65 core modules import twice with
   real dependencies and zero HTTP attempts, and two controlled native trading/
   metric runs agree exactly.
+- Source-method/current-input baseline check: the released whole-share long-only
+  environment, 10-bp entry cost, reset-record convention, adjusted-close path,
+  and six released metric functions were replayed on six hash-pinned current
+  Yahoo responses over the declared validation window. They match
+  13/36 unique
+  high-precision Buy-and-Hold cells and
+  19/54
+  displayed cells after Table 4 repeats. AMZN and TSLA match all six metrics;
+  AAPL additionally matches VOL. The other 23 unique cells disagree.
 - Published result units: **0 of 1061 reproduced** (959 table cells and 102 figure units).
 - Overall tier: **R3 / runnable component environment, no paper-result reproduction**.
 
@@ -30,7 +39,12 @@ No paper-result credit is assigned to values transcribed from LaTeX, plot-only
 graphics, rule-strategy parameter records, static compilation, or document
 compilation.  The repository contains no exact dataset snapshot, FinAgent
 memories, trajectories, action/equity paths, checkpoints, or native result
-tables. All 7 reachable commits, 1955 historical paths, and
+tables. The current checks use Yahoo rather than the paper source's Financial
+Modeling Prep vendor and therefore establish source-method/current-input
+correspondence only. They receive zero paper-time, author-baseline, or FinAgent
+result credit.
+
+All 7 reachable commits, 1955 historical paths, and
 1902 blobs were checked; no unreachable object or native agent-output path
 exists. The only discovered branch is `main`, with no tags or releases. The 90
 shipped rule records yield 288 default/trained comparisons against the

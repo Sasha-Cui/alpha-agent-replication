@@ -12,12 +12,15 @@ from __future__ import annotations
 
 import argparse
 import csv
+import datetime as dt
 import hashlib
 import importlib.util
 import json
+import math
 import os
 import re
 import shutil
+import statistics
 import subprocess
 import tarfile
 import tempfile
@@ -55,8 +58,17 @@ DEFAULT_PAPER_PYTHON = str(
 PAPER_ENV_FREEZE_SHA256 = (
     "a22e445cbb6f87bf6ee65f8b24c8ef66109b64be15d64e031963a0b2e2e3529b"
 )
-AUDIT_DATE = "2026-08-14"
+AUDIT_DATE = "2026-08-26"
 PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+YAHOO_RESPONSE_RETRIEVED_DATE = "2026-08-26"
+YAHOO_RESPONSE_PINS = {
+    "AAPL": ("yahoo_aapl_20220601_20240102.json", "387e42e056b5031ea8d29e30788ab80fdb7f7e6455add9859125babc280ee92c", 398, "AAPL"),
+    "AMZN": ("yahoo_amzn_20220601_20240102.json", "4e5e40eba37c88434eff25745ecb41e91ba9b0a9b70061932fb52b19f9689641", 398, "AMZN"),
+    "GOOGL": ("yahoo_googl_20220601_20240102.json", "d23a28688050bf7bb20f16ab140ef0c00ca5576ff7df2741881ae537c3f88eae", 398, "GOOGL"),
+    "MSFT": ("yahoo_msft_20220601_20240102.json", "2cb1fb1ca26654c7dcd384de2ced8a123da17e55fb23b36d9aa0d30dbe123695", 398, "MSFT"),
+    "TSLA": ("yahoo_tsla_20220601_20240102.json", "c8c1b56d26395852240f6624f87229a99b3b021b593de8c3afd4792649867532", 398, "TSLA"),
+    "ETHUSD": ("yahoo_ethusd_20220601_20240102.json", "bb76b2439bdc737ecae6557409d1f139289de9d2d6822e793c5c688156f129c7", 581, "ETH-USD"),
+}
 PUBLIC_FORK_REST_COUNT = 26
 PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT = 26
 PUBLIC_FORK_GRAPHQL_BRANCH_REF_COUNT = 30
@@ -450,6 +462,172 @@ def paper_table_rows(paper_source_root: Path, paper_version: int = 3) -> list[di
         row["paper_table"] for row in rows
     ) != expected_counts:
         raise RuntimeError("FinAgent paper table census changed")
+    return rows
+
+
+def _finagent_metric_values(returns: Sequence[float]) -> dict[str, float]:
+    values = [float(value) for value in returns]
+    cumulative: list[float] = []
+    wealth = 1.0
+    for value in values:
+        wealth *= 1 + value
+        cumulative.append(wealth)
+    peak = cumulative[0]
+    maximum_drawdown = 0.0
+    for value in cumulative:
+        peak = max(peak, value)
+        maximum_drawdown = max(maximum_drawdown, (peak - value) / peak)
+    mean = statistics.fmean(values)
+    volatility = statistics.pstdev(values)
+    downside = statistics.pstdev([value for value in values if value < 0])
+    return {
+        "ARR_pct": (cumulative[-1] - 1) / len(values) * 252 * 100,
+        "SR": mean * math.sqrt(len(values)) / volatility,
+        "MDD_pct": maximum_drawdown * 100,
+        "SOR": mean * 252 / downside,
+        "CR": mean * 252 / maximum_drawdown,
+        "VOL": volatility,
+    }
+
+
+def _replay_buy_and_hold(prices: Sequence[float]) -> tuple[list[float], dict[str, float]]:
+    cash = 10_000.0
+    position = 0
+    value = 10_000.0
+    returns = [0.0]
+    for index, price_value in enumerate(prices[:-1]):
+        price = float(price_value)
+        previous_value = value
+        if index == 0:
+            buy_position = math.floor(cash / price / 1.001)
+            cash -= buy_position * price * 1.001
+            position += buy_position
+        value = cash + position * price
+        returns.append((value - previous_value) / previous_value)
+    return returns, _finagent_metric_values(returns)
+
+
+def buy_hold_current_response_rows(
+    source_root: Path,
+    response_dir: Path,
+    table_rows: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    environment_source = (
+        source_root / "finagent/environment/trading.py"
+    ).read_text(encoding="utf-8")
+    metric_source = (
+        source_root / "finagent/metrics/metrics.py"
+    ).read_text(encoding="utf-8")
+    runner_source = (
+        source_root / "tools/main_strategy.py"
+    ).read_text(encoding="utf-8")
+    required_source_tokens = (
+        'initial_amount: float = 1e4',
+        'transaction_cost_pct: float = 1e-3',
+        'return self.prices_df.iloc[self.day]["adj_close"]',
+        'return int(np.floor(self.cash / price / (1 + self.transaction_cost_pct)))',
+        'res = (np.cumprod(ret + 1.0)[-1] - 1.0) / ret.shape[0] * 252',
+        'res = 1.0 * np.mean(ret) * np.sqrt(ret.shape[0]) / np.std(ret)',
+        '"ret": []',
+        'trading_records["ret"].append(info["ret"])',
+    )
+    combined_source = environment_source + metric_source + runner_source
+    if not all(token in combined_source for token in required_source_tokens):
+        raise RuntimeError("FinAgent Buy-and-Hold source semantics changed")
+
+    paper_values = {
+        (str(row["item"]).split("/", 1)[0], str(row["metric"])): float(row["paper_value"])
+        for row in table_rows
+        if row["paper_table"] in {
+            "Appendix Table 7 panel 1",
+            "Appendix Table 7 panel 2",
+        }
+        and str(row["item"]).endswith("/B&H")
+    }
+    if len(paper_values) != 36:
+        raise RuntimeError("FinAgent Appendix Buy-and-Hold cell inventory changed")
+
+    rows: list[dict[str, Any]] = []
+    for asset, (filename, expected_hash, expected_observations, expected_symbol) in YAHOO_RESPONSE_PINS.items():
+        path = response_dir / filename
+        if sha256(path) != expected_hash:
+            raise RuntimeError(f"Pinned FinAgent current Yahoo response changed: {asset}")
+        result = json.loads(path.read_text(encoding="utf-8"))["chart"]["result"][0]
+        if result["meta"]["symbol"] != expected_symbol:
+            raise RuntimeError(f"FinAgent current Yahoo response symbol changed: {asset}")
+        timestamps = result["timestamp"]
+        adjusted = result["indicators"]["adjclose"][0]["adjclose"]
+        if (
+            len(timestamps) != expected_observations
+            or len(adjusted) != len(timestamps)
+            or any(value is None for value in adjusted)
+        ):
+            raise RuntimeError(f"FinAgent current Yahoo response coverage changed: {asset}")
+        dated_prices = [
+            (
+                dt.datetime.fromtimestamp(timestamp, dt.timezone.utc).date(),
+                float(price),
+            )
+            for timestamp, price in zip(timestamps, adjusted)
+            if dt.date(2023, 6, 1)
+            <= dt.datetime.fromtimestamp(timestamp, dt.timezone.utc).date()
+            < dt.date(2024, 1, 1)
+        ]
+        expected_validation_observations = 214 if asset == "ETHUSD" else 147
+        if (
+            len(dated_prices) != expected_validation_observations
+            or dated_prices[0][0] != dt.date(2023, 6, 1)
+            or dated_prices[-1][0]
+            != (dt.date(2023, 12, 31) if asset == "ETHUSD" else dt.date(2023, 12, 29))
+        ):
+            raise RuntimeError(f"FinAgent current-response validation window changed: {asset}")
+        returns, computed = _replay_buy_and_hold(
+            [price for _, price in dated_prices]
+        )
+        for metric in ("ARR_pct", "SR", "MDD_pct", "SOR", "CR", "VOL"):
+            paper_value = paper_values[(asset, metric)]
+            current_value = computed[metric]
+            display_match = round(current_value, 4) == paper_value
+            rows.append(
+                {
+                    "asset": asset,
+                    "metric": metric,
+                    "paper_value": f"{paper_value:.4f}",
+                    "current_response_value": repr(current_value),
+                    "display_match": display_match,
+                    "response_file": filename,
+                    "response_sha256": expected_hash,
+                    "raw_response_observations": len(timestamps),
+                    "validation_price_observations": len(dated_prices),
+                    "recorded_return_observations": len(returns),
+                    "validation_first_date": dated_prices[0][0].isoformat(),
+                    "validation_last_date": dated_prices[-1][0].isoformat(),
+                    "response_retrieved_date": YAHOO_RESPONSE_RETRIEVED_DATE,
+                    "paper_source_price_vendor": "Financial Modeling Prep",
+                    "current_response_vendor": "Yahoo",
+                    "source_method_replayed": True,
+                    "paper_time_input_lineage": False,
+                    "author_baseline_result_credit": False,
+                    "finagent_result_credit": False,
+                    "status": (
+                        "source_method_current_response_display_match_no_paper_time_input"
+                        if display_match
+                        else "source_method_current_response_mismatch"
+                    ),
+                }
+            )
+    matched = {
+        (row["asset"], row["metric"])
+        for row in rows
+        if row["display_match"]
+    }
+    expected_matched = {
+        ("AAPL", "VOL"),
+        *{("AMZN", metric) for metric in ("ARR_pct", "SR", "MDD_pct", "SOR", "CR", "VOL")},
+        *{("TSLA", metric) for metric in ("ARR_pct", "SR", "MDD_pct", "SOR", "CR", "VOL")},
+    }
+    if len(rows) != 36 or matched != expected_matched:
+        raise RuntimeError(f"FinAgent current-response Buy-and-Hold result changed: {matched}")
     return rows
 
 
@@ -1723,6 +1901,15 @@ and outputs still prevent an executable package for the published claims.
   {manifest['paper_era_core_modules_imported']} core modules import twice with
   real dependencies and zero HTTP attempts, and two controlled native trading/
   metric runs agree exactly.
+- Source-method/current-input baseline check: the released whole-share long-only
+  environment, 10-bp entry cost, reset-record convention, adjusted-close path,
+  and six released metric functions were replayed on six hash-pinned current
+  Yahoo responses over the declared validation window. They match
+  {manifest['buy_hold_current_response_unique_cells_matching']}/36 unique
+  high-precision Buy-and-Hold cells and
+  {manifest['buy_hold_current_response_display_cells_matching_including_table4_repeats']}/54
+  displayed cells after Table 4 repeats. AMZN and TSLA match all six metrics;
+  AAPL additionally matches VOL. The other 23 unique cells disagree.
 - Published result units: **0 of {manifest['published_result_display_units_total']} reproduced** ({manifest['paper_numeric_display_cells_total']} table cells and {manifest['paper_figure_display_units_total']} figure units).
 - Overall tier: **R3 / runnable component environment, no paper-result reproduction**.
 
@@ -1730,7 +1917,12 @@ No paper-result credit is assigned to values transcribed from LaTeX, plot-only
 graphics, rule-strategy parameter records, static compilation, or document
 compilation.  The repository contains no exact dataset snapshot, FinAgent
 memories, trajectories, action/equity paths, checkpoints, or native result
-tables. All {manifest['reachable_source_history_commits']} reachable commits, {manifest['public_source_unique_historical_paths']} historical paths, and
+tables. The current checks use Yahoo rather than the paper source's Financial
+Modeling Prep vendor and therefore establish source-method/current-input
+correspondence only. They receive zero paper-time, author-baseline, or FinAgent
+result credit.
+
+All {manifest['reachable_source_history_commits']} reachable commits, {manifest['public_source_unique_historical_paths']} historical paths, and
 {manifest['public_source_reachable_blobs']} blobs were checked; no unreachable object or native agent-output path
 exists. The only discovered branch is `main`, with no tags or releases. The 90
 shipped rule records yield {manifest['released_strategy_record_appendix_comparisons']} default/trained comparisons against the
@@ -1805,6 +1997,7 @@ def audit(
 
     paper_versions, result_lineage = paper_version_rows(paper_versions_root, source_root)
     tables = paper_table_rows(paper_source_root)
+    buy_hold_current = buy_hold_current_response_rows(source_root, output, tables)
     figures = paper_figure_rows(paper_source_root)
     inventory = source_inventory(source_root)
     strategies = strategy_record_rows(source_root)
@@ -1828,10 +2021,17 @@ def audit(
     native = native_execution(
         source_root, paper_root, latex_command, paper_python
     )
+    native["current_response_buy_hold_unique_cells_checked"] = len(buy_hold_current)
+    native["current_response_buy_hold_unique_cells_matching"] = sum(
+        row["display_match"] for row in buy_hold_current
+    )
+    native["current_response_buy_hold_paper_time_input_lineage"] = False
+    native["current_response_buy_hold_finagent_result_credit"] = 0
     dependency_freeze = native.pop("_dependency_freeze_text")
 
     csv_outputs = {
         "paper_numeric_table_conformance.csv": tables,
+        "buy_hold_current_response_conformance.csv": buy_hold_current,
         "paper_figure_display_inventory.csv": figures,
         "released_source_inventory.csv": inventory,
         "released_strategy_record_inventory.csv": strategies,
@@ -1905,6 +2105,23 @@ def audit(
         "paper_document_reproduced": bool(native["paper_source_compilation"].get("matches_arxiv_page_count")),
         "paper_numeric_display_cells_total": len(tables),
         "paper_numeric_display_cells_with_paper_result_credit": sum(row["paper_result_credit"] for row in tables),
+        "buy_hold_current_response_unique_cells_checked": len(buy_hold_current),
+        "buy_hold_current_response_unique_cells_matching": sum(
+            row["display_match"] for row in buy_hold_current
+        ),
+        "buy_hold_current_response_unique_cells_mismatching": sum(
+            not row["display_match"] for row in buy_hold_current
+        ),
+        "buy_hold_current_response_display_cells_checked_including_table4_repeats": 54,
+        "buy_hold_current_response_display_cells_matching_including_table4_repeats": (
+            sum(row["display_match"] for row in buy_hold_current)
+            + sum(row["display_match"] and row["metric"] in {"ARR_pct", "SR", "MDD_pct"} for row in buy_hold_current)
+        ),
+        "buy_hold_current_response_paper_time_input_lineage": False,
+        "buy_hold_current_response_finagent_result_credit": 0,
+        "current_yahoo_response_sha256": {
+            asset: expected_hash for asset, (_, expected_hash, _, _) in YAHOO_RESPONSE_PINS.items()
+        },
         "paper_figure_display_units_total": len(figures),
         "paper_figure_display_units_with_paper_result_credit": sum(row["paper_result_credit"] for row in figures),
         "published_result_display_units_total": len(tables) + len(figures),

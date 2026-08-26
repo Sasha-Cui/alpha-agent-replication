@@ -1,4 +1,8 @@
 {
+  "current_response_buy_hold_finagent_result_credit": 0,
+  "current_response_buy_hold_paper_time_input_lineage": false,
+  "current_response_buy_hold_unique_cells_checked": 36,
+  "current_response_buy_hold_unique_cells_matching": 13,
   "dependency_environment": {
     "author_requirements_commit": "17248a0b8b729ee3e093e30bb7bea7f52181f363",
     "author_requirements_only_postpaper_change": true,
@@ -226,7 +230,7 @@
   "paper_source_compilation": {
     "attempted": true,
     "compiled_pages": 43,
-    "compiled_pdf_sha256": "262216731bc1e9f92c2d58d3539652385d2f0bf148e82970d960d5ab067e6b36",
+    "compiled_pdf_sha256": "6cafd8560a1a9a83b8518af3be8cea84d8c2a80f6d3d2bf465566f3a3483bb1d",
     "exit_code": 0,
     "matches_arxiv_page_count": true,
     "paper_result_credit": false,

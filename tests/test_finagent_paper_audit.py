@@ -69,6 +69,7 @@ def test_committed_manifest_keeps_document_and_experiment_credit_separate() -> N
     output = ROOT / "paper_runs/paper_replication_audits/finagent"
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     native = json.loads((output / "native_execution.json").read_text(encoding="utf-8"))
+    buy_hold = read_csv(output / "buy_hold_current_response_conformance.csv")
     freeze = (output / "paper_era_environment_freeze.txt").read_text(
         encoding="utf-8"
     )
@@ -82,6 +83,37 @@ def test_committed_manifest_keeps_document_and_experiment_credit_separate() -> N
     assert manifest["full_paper_reproduced"] is False
     assert manifest["published_result_display_units_total"] == 1061
     assert manifest["published_result_display_units_reproduced"] == 0
+    assert manifest["buy_hold_current_response_unique_cells_checked"] == len(buy_hold) == 36
+    assert manifest["buy_hold_current_response_unique_cells_matching"] == 13
+    assert manifest["buy_hold_current_response_unique_cells_mismatching"] == 23
+    assert manifest["buy_hold_current_response_display_cells_checked_including_table4_repeats"] == 54
+    assert manifest["buy_hold_current_response_display_cells_matching_including_table4_repeats"] == 19
+    assert manifest["buy_hold_current_response_paper_time_input_lineage"] is False
+    assert manifest["buy_hold_current_response_finagent_result_credit"] == 0
+    assert Counter(row["status"] for row in buy_hold) == {
+        "source_method_current_response_display_match_no_paper_time_input": 13,
+        "source_method_current_response_mismatch": 23,
+    }
+    matched = {
+        (row["asset"], row["metric"])
+        for row in buy_hold
+        if row["display_match"] == "True"
+    }
+    assert matched == {
+        ("AAPL", "VOL"),
+        *(("AMZN", metric) for metric in ("ARR_pct", "SR", "MDD_pct", "SOR", "CR", "VOL")),
+        *(("TSLA", metric) for metric in ("ARR_pct", "SR", "MDD_pct", "SOR", "CR", "VOL")),
+    }
+    assert {row["source_method_replayed"] for row in buy_hold} == {"True"}
+    assert {row["paper_time_input_lineage"] for row in buy_hold} == {"False"}
+    assert {row["author_baseline_result_credit"] for row in buy_hold} == {"False"}
+    assert {row["finagent_result_credit"] for row in buy_hold} == {"False"}
+    assert native["current_response_buy_hold_unique_cells_checked"] == 36
+    assert native["current_response_buy_hold_unique_cells_matching"] == 13
+    assert native["current_response_buy_hold_paper_time_input_lineage"] is False
+    assert native["current_response_buy_hold_finagent_result_credit"] == 0
+    for _asset, (filename, expected, _observations, _symbol) in audit.YAHOO_RESPONSE_PINS.items():
+        assert audit.sha256(output / filename) == expected
     assert manifest["paper_result_credit"] is False
     assert manifest["official_arxiv_versions_audited"] == 3
     assert manifest["arxiv_v1_numeric_table_cells"] == 768
