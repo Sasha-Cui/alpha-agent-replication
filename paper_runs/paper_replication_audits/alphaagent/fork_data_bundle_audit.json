@@ -11,7 +11,7 @@
   "data_guide_claims_survivorship_bias_free": true,
   "data_zip_bytes": 17805441,
   "data_zip_sha256": "ac0ead7c234f1aefa8c2dc0d4e5c2df04285b00cb1e78aba484b1e31f61f0ec5",
-  "discovery_date": "2026-08-14",
+  "discovery_date": "2026-08-30",
   "feature_symbols": 568,
   "interpretation": "This independent post-paper fork ships a new 2020-2026 Qlib bundle and a 2026 mining summary, not the paper experiment. Its sp500.txt has only one finite membership end across 568 rows despite the survivorship-bias-free label, and the calendar omits the paper's 2015-2019 training period.",
   "new_hypothesis_raw_prediction_return_or_holding_arrays_shipped": false,

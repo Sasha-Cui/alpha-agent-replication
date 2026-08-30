@@ -31,26 +31,25 @@ def test_targets_cover_all_numeric_table_cells() -> None:
         "result": 100,
         "configuration": 6,
     }
-    assert len(
-        {
-            (
-                row["paper_table"],
-                row["entity"],
-                row["market"],
-                row["period"],
-                row["metric"],
-            )
-            for row in rows
-        }
-    ) == 106
+    assert (
+        len(
+            {
+                (
+                    row["paper_table"],
+                    row["entity"],
+                    row["market"],
+                    row["period"],
+                    row["metric"],
+                )
+                for row in rows
+            }
+        )
+        == 106
+    )
     v1 = {
-        (row["paper_table"], row["entity"], row["market"], row["metric"]): row
-        for row in audit.paper_numeric_rows("v1")
+        (row["paper_table"], row["entity"], row["market"], row["metric"]): row for row in audit.paper_numeric_rows("v1")
     }
-    v2 = {
-        (row["paper_table"], row["entity"], row["market"], row["metric"]): row
-        for row in rows
-    }
+    v2 = {(row["paper_table"], row["entity"], row["market"], row["metric"]): row for row in rows}
     assert set(v1) == set(v2)
     assert sum(v1[key]["paper_value"] != v2[key]["paper_value"] for key in v1) == 5
     assert sum(v1[key]["period"] != v2[key]["period"] for key in v1) == 2
@@ -78,16 +77,11 @@ def test_committed_audit_is_fail_closed() -> None:
     paper_lineage = read_csv(output / "official_paper_numeric_lineage.csv")
     paper_figures = read_csv(output / "official_paper_figure_asset_inventory.csv")
     history_paths = read_csv(output / "public_source_history_path_inventory.csv")
-    history_summary = json.loads(
-        (output / "public_source_history.json").read_text(encoding="utf-8")
-    )
+    history_summary = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
     fork_heads = read_csv(output / "fork_default_head_census.csv")
-    fork_bundle = json.loads(
-        (output / "fork_data_bundle_audit.json").read_text(encoding="utf-8")
-    )
-    run_inputs = json.loads(
-        (output / "paper_era_run_input_audit.json").read_text(encoding="utf-8")
-    )
+    fork_bundle = json.loads((output / "fork_data_bundle_audit.json").read_text(encoding="utf-8"))
+    run_inputs = json.loads((output / "paper_era_run_input_audit.json").read_text(encoding="utf-8"))
+    fork_wang_registry = read_csv(output / "fork_wang_postpaper_registry_metrics.csv")
     gaps = read_csv(output / "paper_specification_gaps.csv")
     inventory = read_csv(output / "released_source_inventory.csv")
     paper_era_inventory = read_csv(output / "paper_era_source_inventory.csv")
@@ -97,22 +91,12 @@ def test_committed_audit_is_fail_closed() -> None:
     data_release = read_csv(output / "data_release_provenance.csv")
     factors = read_csv(output / "synthetic_base_factor_component.csv")
     component = json.loads((output / "native_component.json").read_text(encoding="utf-8"))
-    rewrite_freeze = (output / "current_rewrite_environment_freeze.txt").read_text(
-        encoding="utf-8"
-    )
-    paper_host_freeze = (output / "paper_era_host_environment_freeze.txt").read_text(
-        encoding="utf-8"
-    )
-    paper_qlib_freeze = (output / "paper_era_qlib_environment_freeze.txt").read_text(
-        encoding="utf-8"
-    )
-    paper_era_component = json.loads(
-        (output / "paper_era_component.json").read_text(encoding="utf-8")
-    )
+    rewrite_freeze = (output / "current_rewrite_environment_freeze.txt").read_text(encoding="utf-8")
+    paper_host_freeze = (output / "paper_era_host_environment_freeze.txt").read_text(encoding="utf-8")
+    paper_qlib_freeze = (output / "paper_era_qlib_environment_freeze.txt").read_text(encoding="utf-8")
+    paper_era_component = json.loads((output / "paper_era_component.json").read_text(encoding="utf-8"))
 
-    assert manifest["overall_status"] == (
-        "partially_corroborated_paper_era_native_run_records_recovered"
-    )
+    assert manifest["overall_status"] == ("partially_corroborated_paper_era_native_run_records_recovered")
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_era_source_revision_available"] is True
     assert manifest["paper_v1_sha256"] == audit.PAPER_V1_SHA256
@@ -193,12 +177,8 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["paper_era_qlib_dependency_environment_reproduced"] is True
     assert manifest["paper_era_exact_historical_dependency_versions_recovered"] is False
     assert manifest["paper_era_exact_cuda_container_reproduced"] is False
-    assert manifest["paper_era_dependency_release_cutoff_utc"] == (
-        audit.PAPER_MECHANISM_COMMIT_UTC
-    )
-    assert manifest["paper_era_rdagent_commit_in_environment"] == (
-        audit.PAPER_MECHANISM_COMMIT
-    )
+    assert manifest["paper_era_dependency_release_cutoff_utc"] == (audit.PAPER_MECHANISM_COMMIT_UTC)
+    assert manifest["paper_era_rdagent_commit_in_environment"] == (audit.PAPER_MECHANISM_COMMIT)
     assert manifest["paper_era_qlib_commit_in_environment"] == audit.QLIB_SOURCE_COMMIT
     assert manifest["paper_era_host_selected_source_modules"] == 113
     assert manifest["paper_era_host_source_modules_imported"] == 112
@@ -214,10 +194,10 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["public_source_historical_author_run_record_paths"] == 385
     assert manifest["public_source_historical_author_run_ids"] == 7
     assert manifest["public_source_primitive_prediction_return_or_holding_paths"] == 0
-    assert manifest["fork_discovery_date"] == "2026-08-14"
-    assert manifest["fork_default_heads_total"] == 71
+    assert manifest["fork_discovery_date"] == "2026-08-30"
+    assert manifest["fork_default_heads_total"] == 73
     assert manifest["fork_unique_default_head_groups"] == 6
-    assert manifest["forks_at_official_heads"] == 67
+    assert manifest["forks_at_official_heads"] == 69
     assert manifest["divergent_fork_default_heads"] == 4
     assert manifest["divergent_fork_paper_result_units_regenerated"] == 0
     assert manifest["independent_fork_data_bundle_audited"] is True
@@ -225,13 +205,17 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["independent_fork_data_bundle_sp500_rows"] == 568
     assert manifest["independent_fork_data_bundle_finite_membership_end_rows"] == 1
     assert manifest["independent_fork_data_bundle_valid_paper_input"] is False
+    assert manifest["wang_fork_tip_commit"] == audit.FORK_WANG_TIP
+    assert manifest["wang_fork_commits_ahead_of_rewrite"] == 51
+    assert manifest["wang_fork_changed_paths_from_rewrite"] == 130
+    assert manifest["wang_fork_postpaper_registry_metric_entries"] == 26
+    assert manifest["wang_fork_postpaper_registry_entries_attributable_to_paper_run"] == 0
+    assert manifest["wang_fork_postpaper_registry_entries_receiving_paper_credit"] == 0
     assert manifest["paper_era_matching_run_id"] == audit.MATCHING_RUN_ID
     assert manifest["paper_era_matching_run_generated_factor_features"] == 5
     assert manifest["paper_era_run_time_public_factor_candidates"] == 4
     assert manifest["paper_era_exact_generated_factor_lineage_recovered"] is False
-    assert manifest["paper_era_qlib_fallback_archive_sha256"] == (
-        audit.QLIB_US_DATA_ARCHIVE_SHA256
-    )
+    assert manifest["paper_era_qlib_fallback_archive_sha256"] == (audit.QLIB_US_DATA_ARCHIVE_SHA256)
     assert manifest["paper_era_qlib_fallback_calendar_start"] == "1999-12-31"
     assert manifest["paper_era_qlib_fallback_calendar_end"] == "2020-11-10"
     assert manifest["paper_era_qlib_fallback_has_spx_benchmark"] is False
@@ -271,9 +255,7 @@ def test_committed_audit_is_fail_closed() -> None:
     }
     assert len(paper_figures) == 13
     assert Counter(row["paper_version"] for row in paper_figures) == {"v2": 7, "v1": 6}
-    figure_status = {
-        row["logical_figure_id"]: row["lineage_status"] for row in paper_figures
-    }
+    figure_status = {row["logical_figure_id"]: row["lineage_status"] for row in paper_figures}
     assert Counter(figure_status.values()) == {
         "byte_identical": 3,
         "source_asset_revised_in_v2": 3,
@@ -281,31 +263,25 @@ def test_committed_audit_is_fail_closed() -> None:
     }
     assert len(history_paths) == 2499
     assert sum(row["paper_era_author_run_record"] == "True" for row in history_paths) == 385
-    assert {
-        row["primitive_prediction_return_or_holding_output"] for row in history_paths
-    } == {"False"}
+    assert {row["primitive_prediction_return_or_holding_output"] for row in history_paths} == {"False"}
     assert history_summary["official_reachable_object_types"] == {
         "blob": 3907,
         "commit": 493,
         "tree": 3912,
     }
-    assert history_summary["historical_author_run_ids"] == sorted(
-        row["run_id"] for row in paper_era_runs
-    )
+    assert history_summary["historical_author_run_ids"] == sorted(row["run_id"] for row in paper_era_runs)
     assert len(fork_heads) == 6
-    assert sum(int(row["repository_count"]) for row in fork_heads) == 71
+    assert sum(int(row["repository_count"]) for row in fork_heads) == 73
     assert Counter(row["default_head_commit"] for row in fork_heads) == {
         audit.LEGACY_HEAD_COMMIT: 1,
         audit.SOURCE_COMMIT: 1,
         "e3634a100a33d2a21532e8bafcf458765a7aef8b": 1,
         "bb6e330f33c2a68917f8ec489d147f9df8027bb2": 1,
         audit.FORK_DATA_TIP: 1,
-        "e5e58cd6b1e8251436a8e5fbf65f0e82cd48bf3e": 1,
+        audit.FORK_WANG_TIP: 1,
     }
     assert {row["paper_result_credit"] for row in fork_heads} == {"False"}
-    assert {
-        row["additional_attributable_author_native_artifact"] for row in fork_heads
-    } == {"False"}
+    assert {row["additional_attributable_author_native_artifact"] for row in fork_heads} == {"False"}
     assert sum(int(row["paper_result_units_regenerated"]) for row in fork_heads) == 0
     assert fork_bundle["repository"] == "vodaza36/AlphaAgent"
     assert fork_bundle["tip_commit"] == audit.FORK_DATA_TIP
@@ -322,6 +298,14 @@ def test_committed_audit_is_fail_closed() -> None:
     assert fork_bundle["paper_training_start_2015_covered"] is False
     assert fork_bundle["paper_result_units_regenerated"] == 0
     assert fork_bundle["paper_result_credit"] is False
+    assert len(fork_wang_registry) == 26
+    assert {row["tip_commit"] for row in fork_wang_registry} == {audit.FORK_WANG_TIP}
+    assert {row["ingest_status"] for row in fork_wang_registry} == {"stored"}
+    assert {row["source"] for row in fork_wang_registry} == {"submit"}
+    assert {row["postpaper_disjoint_rewrite_artifact"] for row in fork_wang_registry} == {"True"}
+    assert {row["attributable_to_paper_run"] for row in fork_wang_registry} == {"False"}
+    assert {row["paper_result_credit"] for row in fork_wang_registry} == {"False"}
+    assert len({row["factor_id"] for row in fork_wang_registry}) == 26
     assert run_inputs["matching_run_id"] == audit.MATCHING_RUN_ID
     assert run_inputs["matching_run_started_utc"] == audit.MATCHING_RUN_STARTED_UTC
     assert run_inputs["public_head_at_run_time"] == audit.RUN_TIME_PUBLIC_HEAD
@@ -334,9 +318,7 @@ def test_committed_audit_is_fail_closed() -> None:
     ]
     assert run_inputs["combined_factors_df_ever_tracked"] is False
     assert run_inputs["exact_generated_factor_lineage_recovered"] is False
-    assert run_inputs["qlib_data_downloader_sha256"] == (
-        audit.QLIB_DATA_DOWNLOADER_SHA256
-    )
+    assert run_inputs["qlib_data_downloader_sha256"] == (audit.QLIB_DATA_DOWNLOADER_SHA256)
     assert run_inputs["qlib_data_archive_sha256"] == audit.QLIB_US_DATA_ARCHIVE_SHA256
     assert run_inputs["qlib_data_archive_bytes"] == 450_094_816
     assert run_inputs["qlib_data_zip_entries"] == 71_959
@@ -358,9 +340,7 @@ def test_committed_audit_is_fail_closed() -> None:
     assert {row["paper_result_credit"] for row in paper_era_inventory} == {"False"}
     assert len(paper_era_factors) == 15
     assert sum(int(row["expression_rows"]) for row in paper_era_factors) == 268
-    alpha101 = next(
-        row for row in paper_era_factors if row["path"] == "factor_zoo/alpha101.csv"
-    )
+    alpha101 = next(row for row in paper_era_factors if row["path"] == "factor_zoo/alpha101.csv")
     assert int(alpha101["expression_rows"]) == 116
     assert int(alpha101["alpha101_reference_rows"]) == 101
     assert int(alpha101["other_expression_rows"]) == 15
@@ -374,21 +354,15 @@ def test_committed_audit_is_fail_closed() -> None:
     ):
         assert all(len(row[hash_field]) == 64 for row in paper_era_runs)
     exact_runs = [row for row in paper_era_runs if row["all_five_display_cells_match"] == "True"]
-    assert [row["run_id"] for row in exact_runs] == [
-        "77b227f86e5a47bab48178cac409a98b"
-    ]
+    assert [row["run_id"] for row in exact_runs] == ["77b227f86e5a47bab48178cac409a98b"]
     assert exact_runs[0]["market"] == "S&P500"
     assert int(exact_runs[0]["display_cells_matching_alphaagent_row"]) == 5
     assert int(exact_runs[0]["paper_result_cells_corroborated"]) == 5
     assert int(exact_runs[0]["generated_factor_features"]) == 5
     assert int(exact_runs[0]["model_features_loaded"]) == 9
     assert int(exact_runs[0]["model_trees_loaded"]) == 3
-    assert {row["fitted_lightgbm_state_loaded"] for row in paper_era_runs} == {
-        "True"
-    }
-    assert {
-        row["fitted_model_execution_paper_result_credit"] for row in paper_era_runs
-    } == {"False"}
+    assert {row["fitted_lightgbm_state_loaded"] for row in paper_era_runs} == {"True"}
+    assert {row["fitted_model_execution_paper_result_credit"] for row in paper_era_runs} == {"False"}
     assert all(len(row["feature_names_sha256"]) == 64 for row in paper_era_runs)
     assert all(len(row["probe_predictions_sha256"]) == 64 for row in paper_era_runs)
     assert {row["predictions_returns_holdings_shipped"] for row in paper_era_runs} == {"False"}
@@ -429,16 +403,12 @@ def test_committed_audit_is_fail_closed() -> None:
     assert paper_era_component["alpha101_self_match_exact"] is True
     assert paper_era_component["figure4_candidate_factor_rows"] == 15
     assert paper_era_component["figure4_candidate_parseable_rows"] == 14
-    assert paper_era_component["figure4_candidate_parse_failures"] == [
-        "Lagged_Volume_Change_Factor_3D"
-    ]
+    assert paper_era_component["figure4_candidate_parse_failures"] == ["Lagged_Volume_Change_Factor_3D"]
     assert paper_era_component["dependency_environment_reproduced"] is True
     assert paper_era_component["exact_historical_dependency_versions_recovered"] is False
     assert paper_era_component["exact_cuda_container_reproduced"] is False
     host_environment = paper_era_component["host_environment"]
-    assert host_environment["dependency_freeze_sha256"] == (
-        audit.PAPER_HOST_ENV_FREEZE_SHA256
-    )
+    assert host_environment["dependency_freeze_sha256"] == (audit.PAPER_HOST_ENV_FREEZE_SHA256)
     assert host_environment["dependency_freeze_lines"] == 153
     assert host_environment["pip_check"] == "No broken requirements found."
     assert host_environment["source_commit_in_environment"] == audit.PAPER_MECHANISM_COMMIT
@@ -449,19 +419,14 @@ def test_committed_audit_is_fail_closed() -> None:
         {
             "module": audit.PAPER_ERA_IMPORT_FAILURE_MODULE,
             "exception_type": "FileNotFoundError",
-            "message": (
-                "[Errno 2] No such file or directory: "
-                f"'{audit.PAPER_ERA_IMPORT_FAILURE_PATH}'"
-            ),
+            "message": (f"[Errno 2] No such file or directory: '{audit.PAPER_ERA_IMPORT_FAILURE_PATH}'"),
         }
     ]
     assert host_environment["upstream_offline_tests"]["tests_passed"] == 1
     assert host_environment["upstream_offline_tests"]["tests_failed"] == 1
     assert host_environment["upstream_offline_tests"]["failure_is_dependency_error"] is False
     qlib_environment = paper_era_component["qlib_environment"]
-    assert qlib_environment["dependency_freeze_sha256"] == (
-        audit.PAPER_QLIB_ENV_FREEZE_SHA256
-    )
+    assert qlib_environment["dependency_freeze_sha256"] == (audit.PAPER_QLIB_ENV_FREEZE_SHA256)
     assert qlib_environment["dependency_freeze_lines"] == 119
     assert qlib_environment["pip_check"] == "No broken requirements found."
     assert qlib_environment["source_commit_in_environment"] == audit.QLIB_SOURCE_COMMIT
@@ -486,13 +451,9 @@ def test_committed_audit_is_fail_closed() -> None:
     assert matching_model["model_features"] == 9
     assert matching_model["model_trees"] == 3
     assert len(paper_host_freeze.splitlines()) == 153
-    assert audit.sha256_bytes(paper_host_freeze.encode()) == (
-        audit.PAPER_HOST_ENV_FREEZE_SHA256
-    )
+    assert audit.sha256_bytes(paper_host_freeze.encode()) == (audit.PAPER_HOST_ENV_FREEZE_SHA256)
     assert len(paper_qlib_freeze.splitlines()) == 119
-    assert audit.sha256_bytes(paper_qlib_freeze.encode()) == (
-        audit.PAPER_QLIB_ENV_FREEZE_SHA256
-    )
+    assert audit.sha256_bytes(paper_qlib_freeze.encode()) == (audit.PAPER_QLIB_ENV_FREEZE_SHA256)
     assert paper_era_component["paper_result_reproduction"] is False
 
     for filename, expected in manifest["output_sha256"].items():
@@ -538,42 +499,36 @@ def test_pinned_source_static_checks_when_available() -> None:
     assert history_summary["primitive_prediction_return_or_holding_paths"] == 0
     fork_heads, fork_bundle = audit.fork_default_head_audit(source_root)
     assert len(fork_heads) == 6
-    assert sum(int(row["repository_count"]) for row in fork_heads) == 71
+    assert sum(int(row["repository_count"]) for row in fork_heads) == 73
     assert sum(int(row["paper_result_units_regenerated"]) for row in fork_heads) == 0
     assert fork_bundle["data_zip_bytes"] == 17805441
     assert fork_bundle["calendar_start"] == "2020-01-02"
     assert fork_bundle["sp500_rows_with_finite_membership_end"] == 1
     assert fork_bundle["paper_training_start_2015_covered"] is False
+    fork_wang_registry = audit.fork_wang_registry_rows(source_root)
+    assert len(fork_wang_registry) == 26
+    assert {row["tip_commit"] for row in fork_wang_registry} == {audit.FORK_WANG_TIP}
+    assert {row["paper_result_credit"] for row in fork_wang_registry} == {False}
 
     qlib_source = Path(audit.DEFAULT_PAPER_QLIB_SOURCE_ROOT)
     qlib_archive = Path(audit.DEFAULT_PAPER_QLIB_DATA_ARCHIVE)
     if qlib_source.exists() and qlib_archive.exists():
-        run_inputs = audit.paper_era_run_input_audit(
-            source_root, qlib_source, qlib_archive
-        )
+        run_inputs = audit.paper_era_run_input_audit(source_root, qlib_source, qlib_archive)
         assert run_inputs["matching_run_id"] == audit.MATCHING_RUN_ID
         assert run_inputs["run_time_public_us_factor_candidate_rows"] == 4
         assert run_inputs["paper_snapshot_us_factor_candidate_rows"] == 6
-        assert run_inputs["qlib_data_archive_sha256"] == (
-            audit.QLIB_US_DATA_ARCHIVE_SHA256
-        )
+        assert run_inputs["qlib_data_archive_sha256"] == (audit.QLIB_US_DATA_ARCHIVE_SHA256)
         assert run_inputs["paper_test_period_covered"] is False
         assert run_inputs["matching_run_replayable_from_released_inputs"] is False
 
-    current = {
-        row["dimension"]: row
-        for row in audit.current_source_conformance(source_root)
-    }
+    current = {row["dimension"]: row for row in audit.current_source_conformance(source_root)}
     assert current["paper_era_source"]["status"] == "mismatch_post_paper_rewrite"
     assert current["largest_common_subtree"]["status"] == "missing"
 
     with tempfile.TemporaryDirectory() as temp_dir:
         snapshot = Path(temp_dir)
         audit.extract_git_commit(source_root, audit.PAPER_MECHANISM_COMMIT, snapshot)
-        mechanisms = {
-            row["dimension"]: row
-            for row in audit.paper_era_source_conformance(snapshot)
-        }
+        mechanisms = {row["dimension"]: row for row in audit.paper_era_source_conformance(snapshot)}
     assert mechanisms["paper_era_source"]["status"] == "recovered_preprint_source"
     assert mechanisms["ast_representation"]["status"] == "component_match"
     assert mechanisms["largest_common_subtree"]["status"] == "component_match"
@@ -590,9 +545,7 @@ def test_pinned_source_static_checks_when_available() -> None:
 
 
 def test_pinned_official_paper_sources_when_available() -> None:
-    versions_root = Path(
-        "/nfs/roberts/scratch/pi_btk22/zc362/alphaagent_paper_versions"
-    )
+    versions_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/alphaagent_paper_versions")
     if not versions_root.exists():
         return
     for version, expected in audit.PAPER_VERSIONS.items():
@@ -610,13 +563,7 @@ def test_pinned_official_paper_sources_when_available() -> None:
                 expected["source_tree_sha256"],
             )
             parsed = audit._paper_table_2_values(source / expected["main_tex"])
-            ledger = [
-                row["paper_value"]
-                for row in audit.paper_numeric_rows(version)
-                if row["paper_table"] == 2
-            ]
+            ledger = [row["paper_value"] for row in audit.paper_numeric_rows(version) if row["paper_table"] == 2]
             assert parsed == ledger
-            figures = audit._paper_figure_assets(
-                version, source, source / expected["main_tex"]
-            )
+            figures = audit._paper_figure_assets(version, source, source / expected["main_tex"])
             assert len(figures) == (6 if version == "v1" else 7)

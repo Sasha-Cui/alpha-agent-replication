@@ -16,9 +16,9 @@ legacy tree; both omissions made it materially too pessimistic.
   continuous history: 8 commits on rewritten `main` and 485 on public
   `legacy-main`, 493 reachable commits in total. The public repository exposes
   only those two heads, with no tags or releases.
-- A bounded GitHub GraphQL census on 2026-08-14 covered all 71 fork
+- A bounded GitHub GraphQL census on 2026-08-30 covered all 73 fork
   default branches: 57 point at the official legacy head, 10 at the official
-  rewrite head, and four are divergent. Each divergent tip is object-pinned and
+  rewrite head plus two new unchanged forks, and four are divergent. Each divergent tip is object-pinned and
   audited separately; none receives author-native or paper-result credit.
 - Mechanism snapshot: `95e47882cbed3ba0cafd42e812fe0032a8ae0681` (2025-02-12), before arXiv v1.
   It contains 856 tracked files, including 331 Python modules and 15 factor CSVs.
@@ -162,14 +162,22 @@ legacy tree; both omissions made it materially too pessimistic.
   as look-ahead leakage and ships no primitive result arrays. This is useful
   negative evidence, not a paper input or result.
 
+- The advanced `Wangchanghao12/AlphaAgent` tip is 51 commits ahead of the
+  disjoint rewrite and changes 130 paths. It preserves 26 stored factor-registry
+  entries and 75 newly delivered DSL files, with IC, ICIR, rank-IC, annualized
+  long-short IR, decile, autocorrelation, and Newey--West diagnostics. These
+  experiments were ingested in 2026 and evaluate 2018--2025 data under the
+  rewrite's different objective and universe. They are genuine post-paper fork
+  outputs, not the paper's five-factor fitted run, and receive zero paper credit.
+
 ## Honest boundary
 
 The official historical source is much closer to the paper than the rewritten
 default branch: this is a **substantial mechanism implementation with one exact
 five-cell native output correspondence**, not merely an analogue. It is still not
 an end-to-end replication of the published experiments.
-The 2026 CSI1000/Tushare data package, DSL expressions, and registry metrics belong
-to a disjoint rewrite and receive zero paper credit. The 71-fork census likewise
+The 2026 CSI1000/Tushare data packages, DSL expressions, and both official/fork
+registry metric sets belong to disjoint rewrites and receive zero paper credit. The 73-fork census likewise
 adds zero paper-result units. Run
 `scripts/audit_alphaagent_paper.py` to regenerate the package; `--strict` remains
 fail-closed until paper-era inputs, predictions, portfolios, stochastic trial
