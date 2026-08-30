@@ -21,7 +21,7 @@ import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Sequence, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
@@ -551,7 +551,9 @@ def reward_label_audit(
     return rows, summaries, price_inventory
 
 
-def released_buy_every_day_metrics(frame: pd.DataFrame) -> Dict[str, float]:
+def released_buy_every_day_metrics(
+    frame: pd.DataFrame, close_column: str = "adjusted_close"
+) -> Dict[str, float]:
     """Mirror the released Backtrader BuyAndHold loop without importing it.
 
     The released collector rounds OHLC to cents. Each BUY is submitted at a
@@ -564,7 +566,7 @@ def released_buy_every_day_metrics(frame: pd.DataFrame) -> Dict[str, float]:
         raise ValueError("Backtest requires at least two observations")
     work = frame.copy().reset_index(drop=True)
     work["open"] = work["open"].round(2)
-    work["adjusted_close"] = work["adjusted_close"].round(2)
+    work["valuation_close"] = work[close_column].round(2)
     cash = 1_000_000.0
     shares = 0
     pending_size = 0
@@ -576,10 +578,10 @@ def released_buy_every_day_metrics(frame: pd.DataFrame) -> Dict[str, float]:
                 cash -= execution_cost
                 shares += pending_size
             pending_size = 0
-        values.append(cash + shares * float(row["adjusted_close"]))
+        values.append(cash + shares * float(row["valuation_close"]))
         if index < len(work) - 1:
             pending_size = max(
-                int(math.floor(cash * 0.9 / float(row["adjusted_close"]))),
+                int(math.floor(cash * 0.9 / float(row["valuation_close"]))),
                 0,
             )
     value_array = np.asarray(values, dtype=float)
@@ -677,6 +679,139 @@ def buy_hold_audit(
         )
     return metrics, rows, inventory
 
+
+
+def buy_hold_protocol_sensitivity(price_root: Path) -> List[Dict[str, Any]]:
+    """Bound price-column and rolling-window interpretations on pinned current data.
+
+    These diagnostics use the paper's repeated-daily-BUY market definition and
+    the released simulator. They receive no paper-result credit because the
+    paper-time market snapshot is unavailable.
+    """
+    frames: Dict[str, pd.DataFrame] = {}
+    for filename, expected in TEST_PRICE_SHA256.items():
+        path = price_root / filename
+        if sha256(path) != expected:
+            raise RuntimeError(f"Pinned AlphaQuanter test-price hash changed for {filename}")
+        ticker = filename.removesuffix(".json")
+        frame = load_yahoo_frame(path)
+        frames[ticker] = frame[
+            frame["date"].between("2025-01-01", "2025-06-30")
+        ].reset_index(drop=True)
+
+    def released_windows(frame: pd.DataFrame) -> List[pd.DataFrame]:
+        return [
+            frame.iloc[start : start + 60]
+            for start in range(0, len(frame), 5)
+            if start + 60 <= len(frame)
+        ]
+
+    def paper_windows(frame: pd.DataFrame) -> List[pd.DataFrame]:
+        dates = pd.to_datetime(frame["date"])
+        start = pd.Timestamp(frame["date"].min())
+        final = pd.Timestamp(frame["date"].max())
+        windows: List[pd.DataFrame] = []
+        while start + pd.DateOffset(months=3) <= final:
+            end = start + pd.DateOffset(months=3)
+            selected = frame[(dates >= start) & (dates <= end)]
+            if len(selected) >= 2:
+                windows.append(selected)
+            start += pd.Timedelta(days=7)
+        return windows
+
+    def calculate(
+        close_column: str, rolling: Optional[str]
+    ) -> Dict[str, Dict[str, float]]:
+        values: Dict[str, Dict[str, float]] = {}
+        for ticker, frame in frames.items():
+            if rolling is None:
+                values[ticker] = released_buy_every_day_metrics(frame, close_column)
+                continue
+            windows = (
+                released_windows(frame) if rolling == "released_60x5"
+                else paper_windows(frame)
+            )
+            values[ticker] = {
+                metric: float(np.mean([
+                    released_buy_every_day_metrics(window, close_column)[metric]
+                    for window in windows
+                ]))
+                for metric in ("arr_pct", "sr", "mdd_pct")
+            }
+            values[ticker]["windows"] = len(windows)
+        return values
+
+    def flatten(values: Mapping[str, Mapping[str, float]]) -> Dict[str, float]:
+        output = {
+            f"{ticker}_{metric}": float(values[ticker][metric])
+            for ticker in TICKERS
+            for metric in ("arr_pct", "sr", "mdd_pct")
+        }
+        for metric in ("arr_pct", "sr", "mdd_pct"):
+            output[f"average_{metric}"] = float(np.mean([
+                values[ticker][metric] for ticker in TICKERS
+            ]))
+        return output
+
+    protocol_metrics: Dict[tuple[str, str], Dict[int, Dict[str, float]]] = {}
+    for close_column in ("adjusted_close", "unadjusted_close"):
+        full = calculate(close_column, None)
+        full_flat = flatten(full)
+        protocol_metrics[("full_period_released_evaluator", close_column)] = {
+            5: {
+                **{f"{ticker}_arr_pct": full[ticker]["arr_pct"] for ticker in TICKERS},
+                "average_arr_pct": full_flat["average_arr_pct"],
+                "average_sr": full_flat["average_sr"],
+                "average_mdd_pct": full_flat["average_mdd_pct"],
+            },
+            10: full_flat,
+            11: full_flat,
+        }
+        for name, rolling in (
+            ("rolling_released_60_observations_step_5", "released_60x5"),
+            ("rolling_paper_3_calendar_months_step_7_days", "paper_3mo_7d"),
+        ):
+            values = calculate(close_column, rolling)
+            flattened = flatten(values)
+            protocol_metrics[(name, close_column)] = {
+                12: {
+                    **{f"{ticker}_arr_pct": values[ticker]["arr_pct"] for ticker in TICKERS},
+                    "average_arr_pct": flattened["average_arr_pct"],
+                    "average_sr": flattened["average_sr"],
+                    "average_mdd_pct": flattened["average_mdd_pct"],
+                }
+            }
+
+    rows: List[Dict[str, Any]] = []
+    for (protocol, close_column), table_metrics in protocol_metrics.items():
+        for target in paper_result_rows():
+            table = int(target["paper_table"])
+            if table not in table_metrics:
+                continue
+            is_buy_hold = (
+                table in {5, 10, 11}
+                and target["family_or_setting"] == "Market"
+                and target["method"] == "B&H"
+            ) or (table == 12 and target["method"] == "Buy & Hold")
+            if not is_buy_hold:
+                continue
+            actual = float(table_metrics[table][str(target["metric"])])
+            error = abs(actual - float(target["paper_value"]))
+            rows.append({
+                "protocol": protocol, "price_column": close_column,
+                "paper_table": table,
+                "family_or_setting": target["family_or_setting"],
+                "method": target["method"], "metric": target["metric"],
+                "paper_value": target["paper_value"],
+                "current_input_value": actual, "absolute_error": error,
+                "display_tolerance": DISPLAY_TOLERANCE,
+                "display_precision_match": error <= DISPLAY_TOLERANCE,
+                "paper_result_credit": False,
+                "evidence_boundary": "pinned current Yahoo inputs; paper-time snapshot unavailable",
+            })
+    if len(rows) != 84:
+        raise RuntimeError(f"AlphaQuanter Buy-and-Hold protocol census changed: {len(rows)}")
+    return rows
 
 def result_conformance(buy_hold_metrics: Mapping[int, Mapping[str, float]]) -> List[Dict[str, Any]]:
     rows = []
@@ -1002,7 +1137,7 @@ def source_config_audit(source_root: Path) -> List[Dict[str, str]]:
         {"dimension": "stock_universe", "paper": "GOOGL,META,MSFT,NVDA,TSLA", "released": "same five tickers in both Parquets", "status": "match"},
         {"dimension": "train_split", "paper": "2022-09-01 to 2024-03-30; 395 days", "released": "2022-09-01 to last trading day 2024-03-28; 395 dates", "status": "trading_calendar_match"},
         {"dimension": "validation_split", "paper": "2024-05-15 to 2024-11-14; 128 days", "released": "same dates and 128 dates, but file/split named test", "status": "values_match_role_mislabeled"},
-        {"dimension": "test_split", "paper": "2025-01-01 to 2025-06-30; 122 days", "released": "absent; current exchange calendar retrieval has 121 observations", "status": "missing"},
+        {"dimension": "test_split", "paper": "2025-01-01 to 2025-06-30; 122 days", "released": "paper test split absent; pinned current retrieval has 122 observations", "status": "calendar_count_matches_inputs_missing"},
         {"dimension": "forward_horizon_H", "paper": "7", "released": "k=2..8 relative to t+1 (seven future returns)", "status": "match"},
         {"dimension": "forward_weight_decay", "paper": "exponential eta, numeric eta not disclosed", "released": "lambda=0.8", "status": "paper_underspecified"},
         {"dimension": "decision_threshold_theta", "paper": "1.5%", "released": "THRESHOLD=1.5", "status": "match"},
@@ -1048,6 +1183,7 @@ def build_audit(
     dataset_rows, examples = dataset_inventory(source_root)
     label_rows, label_summary, label_prices = reward_label_audit(examples, label_price_root)
     buy_hold_metrics, buy_hold_rows, test_prices = buy_hold_audit(test_price_root)
+    buy_hold_protocol_rows = buy_hold_protocol_sensitivity(test_price_root)
     conformance = result_conformance(buy_hold_metrics)
     inconsistencies = paper_internal_consistency()
     release_files = source_release_inventory(source_root)
@@ -1086,6 +1222,11 @@ def build_audit(
     write_csv(output_dir / "reward_label_conformance.csv", label_rows, list(label_rows[0]))
     write_csv(output_dir / "reward_label_summary.csv", label_summary, list(label_summary[0]))
     write_csv(output_dir / "buy_hold_reconstruction.csv", buy_hold_rows, list(buy_hold_rows[0]))
+    write_csv(
+        output_dir / "buy_hold_protocol_sensitivity.csv",
+        buy_hold_protocol_rows,
+        list(buy_hold_protocol_rows[0]),
+    )
     price_inventory = [*label_prices, *test_prices]
     price_fields = list(dict.fromkeys(key for row in price_inventory for key in row))
     write_csv(output_dir / "external_price_input_inventory.csv", price_inventory, price_fields)
@@ -1136,7 +1277,33 @@ def build_audit(
         "buy_hold_cells_mismatched_current_yahoo": result_status[
             "mismatch_against_pinned_current_yahoo"
         ],
+        "buy_hold_protocol_sensitivity_cells": len(buy_hold_protocol_rows),
+        "buy_hold_protocol_display_matches": {
+            f"{protocol}|{price_column}": sum(
+                bool(row["display_precision_match"])
+                for row in buy_hold_protocol_rows
+                if row["protocol"] == protocol and row["price_column"] == price_column
+            )
+            for protocol, price_column in sorted({
+                (str(row["protocol"]), str(row["price_column"]))
+                for row in buy_hold_protocol_rows
+            })
+        },
+        "buy_hold_protocol_cells_with_paper_result_credit": sum(
+            bool(row["paper_result_credit"]) for row in buy_hold_protocol_rows
+        ),
         "non_buy_hold_cells_unverifiable": 756,
+        "buy_hold_protocol_aggregate_absolute_error": {
+            f"{protocol}|{price_column}": sum(
+                float(row["absolute_error"])
+                for row in buy_hold_protocol_rows
+                if row["protocol"] == protocol and row["price_column"] == price_column
+            )
+            for protocol, price_column in sorted({
+                (str(row["protocol"]), str(row["price_column"]))
+                for row in buy_hold_protocol_rows
+            })
+        },
         "paper_internal_table_5_vs_10_11_display_mismatches": len(inconsistencies),
         "released_prompt_label_rows": len(label_rows),
         "released_prompt_label_trading_dates": {"train": 395, "validation": 128},
@@ -1152,7 +1319,7 @@ def build_audit(
         ],
         "released_test_named_file_is_paper_validation_split": True,
         "paper_stated_test_trading_days": 122,
-        "current_exchange_calendar_test_observations": 121,
+        "current_exchange_calendar_test_observations": 122,
         "native_training_checkpoints_shipped": False,
         "native_agent_action_or_return_series_shipped": False,
         "native_three_seed_outputs_shipped": False,
@@ -1174,12 +1341,13 @@ def build_audit(
             "formula, tool/reward code, and a partial VERL integration. Current Yahoo prices "
             "reproduce 523 labels exactly and 2,612/2,615 BUY/HOLD/SELL regimes; an exact released-"
             "semantics Buy-and-Hold reconstruction matches only 1/34 repeated paper cells at "
-            "display precision. This is component evidence, not AlphaQuanter replication: all "
-            "756 agent/cost/human-rating cells lack native checkpoints, actions, seed outputs, "
-            "logs, or ratings; the paper test split and original multimodal snapshot are absent. "
-            "Complete public-history review finds no deleted or alternate result payload, and "
-            "all 11 accessible forks resolve to its same two official commits without adding "
-            "another result lineage."
+            "display precision. An 84-cell protocol sensitivity checks both released price columns "
+            "and both the paper and source rolling definitions without increasing result credit. "
+            "This is component evidence, not AlphaQuanter replication: all 756 agent/cost/human-"
+            "rating cells lack native checkpoints, actions, seed outputs, logs, or ratings; the "
+            "paper test split and original multimodal snapshot are absent. Complete public-history "
+            "review finds no deleted or alternate result payload, and all 11 accessible forks "
+            "resolve to its same two official commits without adding another result lineage."
         ),
         "source_file_sha256": {relative: sha256(source_root / relative) for relative in PINNED_SOURCE_SHA256},
         "external_label_price_sha256": LABEL_PRICE_SHA256,
@@ -1224,6 +1392,14 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   component check, not an agent result.
 - The complete public Git surface contains exactly 2 commits on one branch, 31 unique
   historical paths, no tags/releases, and no unreachable objects. The initial commit
+- A fail-closed 84-cell sensitivity ledger tests adjusted and unadjusted closes
+  under the full-period evaluator, the released 60-observation/5-row rolling
+  evaluator, and the paper's three-calendar-month/7-day rule. The closest current-
+  input Table 12 path is the released rolling rule with unadjusted close (aggregate
+  absolute error {manifest['buy_hold_protocol_aggregate_absolute_error']['rolling_released_60_observations_step_5|unadjusted_close']:.3f}
+  across eight cells), versus {manifest['buy_hold_protocol_aggregate_absolute_error']['rolling_paper_3_calendar_months_step_7_days|unadjusted_close']:.3f}
+  for the literal paper rule. This is diagnostic evidence of a protocol conflict,
+  not paper-time result credit.
   already contains the complete released component tree; the only later change is
   `README.md` citation and paper-link editing. No revision contains a checkpoint,
   result/output/log, action/trajectory, rating, or other native paper-result payload.
@@ -1235,8 +1411,8 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   unverifiable because no trained checkpoint, generated action path, per-seed trial,
   baseline output, token/cost log, or individual human rating is shipped.
 - The release's `test.parquet` is the paper's 2024 validation split. No 2025 test
-  Parquet is present. The paper states 122 test trading days, while the current
-  exchange-calendar retrieval has 121 observations in the stated inclusive bounds.
+  Parquet is present. The pinned current retrieval has the paper-stated 122 trading
+  observations, but it does not recover the missing prompts, actions, or paper-time inputs.
 - The checkout contains 31 tracked files and is a patch over VERL, not a standalone
   training tree: `run.sh` invokes absent `verl.trainer.main_ppo`; collection and
   evaluation use `/path/to/collected_data/`; documentation points to a plural
@@ -1247,7 +1423,8 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   source evaluation uses population std and multiplies by sqrt(number of rows).
 - The rolling paper says three calendar months stepped seven days; source evaluation
   uses 60 observations stepped five rows and is hardcoded to the 128-row 2024
-  validation split. The audit uses that released source behavior for its diagnostic.
+  validation split. The audit now reports both interpretations and both released
+  price columns rather than silently choosing the better fit.
 - Table 5 disagrees with detailed Tables 10--11 in three displayed ARR cells by 0.01
   percentage point: FinRLA2C MSFT, FinRLA2C NVDA, and FinRLPPO MSFT.
 
