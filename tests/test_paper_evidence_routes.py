@@ -268,7 +268,11 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "paper_audit:completed_zero_of_766_final_native_results_full_release_history_"
             "signal_nonidentifiability_25_forks_26_refs_5_unique_heads_exhausted"
         ),
-        "CensusArxiv250909995": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
+        "CensusArxiv250909995": (
+            "paper_audit:completed_zero_of_600_versioned_zero_of_272_current_native_results_"
+            "204_official_commits_608_forks_700_refs_112_heads_exhausted_"
+            "undocumented_feature_gap"
+        ),
         "CensusArxiv251118850": (
             "paper_audit:completed_v1_zero_of_150_current_zero_of_306_39_prompt_"
             "templates_four_author_curve_series_zero_regenerated_full_1_commit_history_"

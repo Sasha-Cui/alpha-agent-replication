@@ -872,14 +872,24 @@ ARTIFACT_NOTES = {
     ),
     "SYS-QUANT-AGENT-HFT": (
         "N",
-        "A pinned arXiv-v4 audit checks all 272 numeric cells in Tables 1--2 and "
-        "all 1,600 released benchmark CSVs. Every asset/horizon set has 100x100 "
-        "rows and exact paper date endpoints, but the original 5,000-bar panels "
-        "are absent. The paper-described recent-40-close LR reconstruction matches "
-        "0/8 accuracies; all eight match only with an undocumented three-bar feature "
-        "gap. No experiment evaluator, native predictions/risk ratios, baseline "
-        "implementations, seeds/splits, portfolio paths, or numeric 1-hour paths "
-        "are shipped, so zero paper result cells count as native reproductions.",
+        "A pinned four-version QuantHarness audit checks all 600 version-specific "
+        "numeric cells, including all 272 current-v4 cells, and all 1,600 released "
+        "benchmark CSVs. Every asset/horizon set has 100x100 rows and exact paper "
+        "date endpoints, but the original 5,000-bar panels are absent. The "
+        "paper-described recent-40-close LR reconstruction matches 0/8 accuracies; "
+        "all eight match only with an undocumented three-bar feature gap. The "
+        "complete official history now contains 204 commits; nine post-paper commits "
+        "change six provider, interface, test, or documentation paths and add no "
+        "result artifact. A dated census exhausts all 608 accessible of 613 reported "
+        "public forks, 700 branch refs, 112 unique heads, 70 divergent heads, 595 "
+        "extra commits, 4,845 changed paths, and 2,072 new blobs. Scans of 1,739 "
+        "text blobs and 2,228 analysis-history rows across 42 community database "
+        "versions find zero complete paper result rows. Three unaffiliated backtest "
+        "families materially change the model, universe, window, frequency, overlays, "
+        "or strategy; the sole AAPL overlap matches 0/3 comparable cells. No official "
+        "or fork artifact supplies the paper evaluator, benchmark predictions/risk "
+        "ratios, seeds/splits, portfolio paths, or exact numeric result lineage, so "
+        "zero paper result cells count as native reproductions.",
     ),
     "SYS-TRADING-AGENTS": (
         "N",
@@ -1741,7 +1751,11 @@ TARGETED_EXECUTION = {
         "paper_audit:completed_46_of_72_exact_cells_verified_2_author_raster_mdd_"
         "contradictions_zero_of_12_native_agent_cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"
     ),
-    "SYS-QUANT-AGENT-HFT": "paper_audit:completed_zero_of_272_native_results_undocumented_feature_gap",
+    "SYS-QUANT-AGENT-HFT": (
+        "paper_audit:completed_zero_of_600_versioned_zero_of_272_current_native_results_"
+        "204_official_commits_608_forks_700_refs_112_heads_exhausted_"
+        "undocumented_feature_gap"
+    ),
     "SYS-QUANT-AGENT-SELF-IMPROVING": "paper_audit:completed_document_and_4_listings_zero_of_17_line_series_zero_of_400_heatmap_cells_no_native_agent_pipeline",
     "SYS-QUANT-EVOLVER": (
         "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_"
