@@ -98,10 +98,10 @@
     }
   ],
   "full_native_paper_execution_attempted": false,
-  "full_native_paper_execution_blocker": "Exact paper return paths, Figure 2 portfolio data, Table 1 generator, point-in-time inputs, and applied transaction-cost path are absent from every public paper/source version.",
+  "full_native_paper_execution_blocker": "Exact five-agent paper return paths, Figure 2 portfolio data, Table 1 generator, point-in-time inputs, and applied transaction-cost path are absent from every public paper/source version; the two benchmark rows are independently regenerated.",
   "public_source_history": {
     "authority": "complete reachable history of the official GitHub repository",
-    "audit_date": "2026-08-14",
+    "audit_date": "2026-08-30",
     "remote_refs": {
       "refs/heads/develop": "df8c7d70ab4668ecfc2acae76fc561933a74fe7f",
       "refs/heads/main": "74ad2e6ce2e604c73a6fc2829d48ab58fe6be050"

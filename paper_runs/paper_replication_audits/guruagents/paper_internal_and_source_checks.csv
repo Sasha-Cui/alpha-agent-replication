@@ -3,11 +3,12 @@ official arXiv version history,exhausted_one_version,"arXiv API exposes v1 only;
 official GitHub history,exhausted_all_public_refs,"2 branches, 19 commits, 592 paths, and 628 blobs"
 historical Table 1 artifacts,not_reproduced,four workbook blobs scanned; best is 2/70 rounding matches
 historical paper-style plots,not_reproduced,three versions of the paper-relevant notebook contain six plots; 0 match either paper image
-Table 1 native cell reproduction,partial_two_cells_only,2/70 cells; both are benchmark MDD
-Table 1 complete rows,not_reproduced,0/7 rows match all ten metrics
+Table 1 native cell reproduction,two_complete_benchmark_rows_only,20/70 cells; all 20 QQQ/SPY cells regenerate from one common released-cache window
+Table 1 complete rows,partial_two_benchmark_rows,2/7 rows match all ten metrics; 0/5 agent rows match
 native notebook versus shipped workbook,exact_source_artifact_reproduction,"all seven paths match to <1e-12, but are not the paper paths"
-paper horizon versus source workbook,contradiction,paper says Q4 2023-Q2 2025; shipped agent paths run 2024-01-01 to 2025-08-12
-paper Figure 1 visual horizon,contradiction,paper image extends beyond the stated Q2 2025 endpoint
+paper horizon versus effective benchmark window,recovered_caption_contradiction,"the unique common cache window reproducing all 20 benchmark cells is 2023-11-01 through 2025-08-01, not the captioned Q2 2025 endpoint"
+paper horizon versus source workbook,contradiction,shipped agent paths run 2024-01-01 through 2025-08-12 rather than the recovered paper-effective window
+paper Figure 1 visual horizon,supports_recovered_window,paper image extends beyond Q2 2025 to approximately the recovered 2025-08-01 endpoint
 Figure 2 first visible Buffett bar,contradiction,"both public variants differ; paper-only versus current=['AVGO'], versus older=['AVGO']"
 current paper-window raw portfolio weight sums,contradiction,2/35 sum to 100
 all archived raw portfolio weight sums,contradiction,16/95 sum to 100
@@ -26,3 +27,4 @@ valuation units,implementation_defect,"archived tool logs report million-scale P
 price column,implementation_difference,native backtest selects CLOSE_ before DIV_ADJ_CLOSE
 released README,stale_nonoperational,documents Carlisle/Driehaus and nonexistent config/backtest modules instead of the paper system
 source/result chronology,qualified_provenance,"all 19 commits were audited; code predates archived runs, but no public manifest identifies the reported workbook/portfolio lineage"
+released agent portfolio protocol variants,no_complete_agent_row_reproduced,"640 coherent variants tested across both public portfolio lineages, both source price columns, and stated/no-cost treatments; best candidate matches 2/10 cells"

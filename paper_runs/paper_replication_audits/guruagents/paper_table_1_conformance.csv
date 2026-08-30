@@ -49,23 +49,23 @@ Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,sharpe_annualiz
 Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-21.7132,-22.961223422058485,1.248023422058484,5.0000001000000005e-05,mismatch,False
 Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-1.1024,-1.203123852360308,0.10072385236030801,5.0000001000000005e-05,mismatch,False
 Edward Altman,Edward_Altman_Returns,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-2.0331,-2.1621298702515355,0.12902987025153534,5.0000001000000005e-05,mismatch,False
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,cagr_pct,CAGR,29.3611,24.211329389379888,5.149770610620113,5.0000001000000005e-05,mismatch,False
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,mean_daily,mean (daily),0.0011,0.0009687499041649049,0.00013125009583509514,5.0000001000000005e-05,mismatch,False
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,std_daily,std (daily),0.0135,0.014291324171569829,0.000791324171569829,5.0000001000000005e-05,mismatch,False
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,mean_annualized,mean (ann.),0.2827,0.24412497584955603,0.038575024150443976,5.0000001000000005e-05,mismatch,False
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,std_annualized,std (ann.),0.215,0.2268677379826797,0.011867737982679705,5.0000001000000005e-05,mismatch,False
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,sharpe_daily,Sharpe,0.0828,0.06778587432031448,0.01501412567968552,5.0000001000000005e-05,mismatch,False
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,sharpe_annualized,Sharpe (ann.),1.3151,1.0760673951277897,0.23903260487221023,5.0000001000000005e-05,mismatch,False
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-22.7683,-22.768303549553814,3.549553813542161e-06,5.0000001000000005e-05,exact_rounding_match,True
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-1.3911,-1.531725518763585,0.14062551876358498,5.0000001000000005e-05,mismatch,False
-NASDAQ 100,Benchmark_QQQ,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-2.429,-2.5621976610514383,0.1331976610514385,5.0000001000000005e-05,mismatch,False
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,cagr_pct,CAGR,26.3131,21.175423784545533,5.137676215454466,5.0000001000000005e-05,mismatch,False
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,mean_daily,mean (daily),0.001,0.0008315461703500329,0.00016845382964996716,5.0000001000000005e-05,mismatch,False
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,std_daily,std (daily),0.0107,0.011279290699083405,0.0005792906990834054,5.0000001000000005e-05,mismatch,False
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,mean_annualized,mean (ann.),0.25,0.20954963492820827,0.04045036507179173,5.0000001000000005e-05,mismatch,False
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,std_annualized,std (ann.),0.1698,0.17905318892987138,0.00925318892987137,5.0000001000000005e-05,mismatch,False
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,sharpe_daily,Sharpe,0.0928,0.0737232679371946,0.0190767320628054,5.0000001000000005e-05,mismatch,False
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,sharpe_annualized,Sharpe (ann.),1.4728,1.1703205968047923,0.30247940319520783,5.0000001000000005e-05,mismatch,False
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,max_drawdown_pct,MDD,-18.7552,-18.755235977747365,3.5977747366189305e-05,5.0000001000000005e-05,exact_rounding_match,True
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,var_90_pct,VaR0.9,-0.9144,-1.0752101273907866,0.1608101273907866,5.0000001000000005e-05,mismatch,False
-S&P 500,Benchmark_SPY,paper_labeled_through_2025Q2,cvar_90_pct,CVaR0.9,-1.8389,-1.9452648757115405,0.10636487571154052,5.0000001000000005e-05,mismatch,False
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,cagr_pct,CAGR,29.3611,29.361081229756536,1.877024346441658e-05,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,mean_daily,mean (daily),0.0011,0.0011219767585770903,2.197675857709019e-05,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,std_daily,std (daily),0.0135,0.013543704870139017,4.370487013901671e-05,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,mean_annualized,mean (ann.),0.2827,0.28273814316142676,3.814316142675134e-05,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,std_annualized,std (ann.),0.215,0.2149996495010531,3.504989468938735e-07,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,sharpe_daily,Sharpe,0.0828,0.08284119960785692,4.1199607856923226e-05,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,sharpe_annualized,Sharpe (ann.),1.3151,1.3150632748359055,3.672516409447546e-05,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,max_drawdown_pct,MDD,-22.7683,-22.768303549553835,3.5495538348584432e-06,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,var_90_pct,VaR0.9,-1.3911,-1.3910983710745017,1.628925498264877e-06,5.0000001000000005e-05,exact_rounding_match,True
+NASDAQ 100,Benchmark_QQQ,recovered_effective_window_2023-11-01_through_2025-08-01,cvar_90_pct,CVaR0.9,-2.429,-2.429031490619464,3.149061946405851e-05,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,cagr_pct,CAGR,26.3131,26.31312620710964,2.62071096415184e-05,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,mean_daily,mean (daily),0.001,0.0009922096899803263,7.790310019673702e-06,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,std_daily,std (daily),0.0107,0.010694784974550628,5.215025449371163e-06,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,mean_annualized,mean (ann.),0.25,0.2500368418750422,3.684187504221503e-05,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,std_annualized,std (ann.),0.1698,0.16977444820782725,2.5551792172756604e-05,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,sharpe_daily,Sharpe,0.0928,0.09277509480942293,2.4905190577059755e-05,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,sharpe_annualized,Sharpe (ann.),1.4728,1.4727589723570347,4.1027642965429933e-05,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,max_drawdown_pct,MDD,-18.7552,-18.75523597774732,3.597774732000403e-05,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,var_90_pct,VaR0.9,-0.9144,-0.9143834259698714,1.6574030128557737e-05,5.0000001000000005e-05,exact_rounding_match,True
+S&P 500,Benchmark_SPY,recovered_effective_window_2023-11-01_through_2025-08-01,cvar_90_pct,CVaR0.9,-1.8389,-1.8389456602569774,4.566025697738674e-05,5.0000001000000005e-05,exact_rounding_match,True

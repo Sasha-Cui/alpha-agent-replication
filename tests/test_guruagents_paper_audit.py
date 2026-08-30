@@ -30,12 +30,46 @@ def test_committed_table_census_is_complete_and_fail_closed() -> None:
     assert len(diagnostics) == 140
     assert len(summary) == 14
     exact = [row for row in rows if row["paper_result_credit"] == "True"]
-    assert len(exact) == 2
-    assert {(row["strategy"], row["metric"]) for row in exact} == {
-        ("NASDAQ 100", "max_drawdown_pct"),
-        ("S&P 500", "max_drawdown_pct"),
-    }
+    assert len(exact) == 20
+    assert {row["strategy"] for row in exact} == {"NASDAQ 100", "S&P 500"}
+    assert all(
+        row["window"] == "recovered_effective_window_2023-11-01_through_2025-08-01"
+        for row in exact
+    )
     assert sum(row["full_paper_row_reproduced"] == "True" for row in summary) == 0
+
+
+def test_released_benchmark_cache_uniquely_recovers_both_paper_rows() -> None:
+    output = ROOT / "paper_runs/paper_replication_audits/guruagents"
+    rows = read_csv(output / "benchmark_effective_window_conformance.csv")
+    candidates = read_csv(output / "benchmark_window_search_top_candidates.csv")
+    search = read_csv(output / "benchmark_window_search_summary.csv")
+    assert len(rows) == 20
+    assert {row["status"] for row in rows} == {"exact_rounding_match"}
+    assert {row["paper_result_credit"] for row in rows} == {"True"}
+    assert {(row["ticker"], row["observations"]) for row in rows} == {
+        ("QQQ", "438"), ("SPY", "438")
+    }
+    assert candidates[0]["matched_cells"] == "20"
+    assert (candidates[0]["start"], candidates[0]["end"]) == ("2023-11-01", "2025-08-01")
+    assert search[0]["candidate_common_windows"] == "5985"
+    assert search[0]["perfect_20_of_20_windows"] == "1"
+    assert search[0]["unique_recovered_start"] == "2023-11-01"
+    assert search[0]["unique_recovered_end"] == "2025-08-01"
+    assert search[0]["caption_end_matches_recovered_end"] == "False"
+
+
+
+def test_all_coherent_released_agent_portfolio_variants_still_fail() -> None:
+    output = ROOT / "paper_runs/paper_replication_audits/guruagents"
+    rows = read_csv(output / "agent_protocol_variant_summary.csv")
+    assert len(rows) == 20
+    assert sum(int(row["portfolio_variants_evaluated"]) for row in rows) == 640
+    assert max(int(row["best_display_precision_matches"]) for row in rows) == 2
+    assert {row["complete_agent_row_reproduced"] for row in rows} == {"False"}
+    assert {row["paper_result_credit"] for row in rows} == {"False"}
+    assert {row["price_column"] for row in rows} == {"CLOSE_", "DIV_ADJ_CLOSE"}
+    assert {row["transaction_cost"] for row in rows} == {"none", "paper_1bp_half_L1"}
 
 
 def test_figures_and_appendix_prompts_are_not_overcredited() -> None:
@@ -130,12 +164,21 @@ def test_manifest_is_honest_and_outputs_are_self_verifying() -> None:
     output = ROOT / "paper_runs/paper_replication_audits/guruagents"
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["overall_status"] == (
-        "full_public_history_audited_public_workbook_reproduced_but_paper_results_not_reproduced_two_of_70_cells_only"
+        "benchmark_protocol_recovered_20_of_70_cells_reproduced_agent_results_not_reproduced"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_table_cells_total"] == 70
-    assert manifest["paper_table_cells_with_result_credit"] == 2
-    assert manifest["paper_table_rows_fully_reproduced"] == 0
+    assert manifest["paper_table_cells_with_result_credit"] == 20
+    assert manifest["paper_table_rows_fully_reproduced"] == 2
+    assert manifest["paper_benchmark_table_cells_reproduced"] == 20
+    assert manifest["paper_effective_window_start"] == "2023-11-01"
+    assert manifest["paper_effective_window_end"] == "2025-08-01"
+    assert manifest["benchmark_window_candidate_count"] == 5985
+    assert manifest["benchmark_window_perfect_match_count"] == 1
+    assert manifest["paper_caption_end_matches_effective_window"] is False
+    assert manifest["released_agent_protocol_variants_tested"] == 640
+    assert manifest["released_agent_protocol_complete_rows_reproduced"] == 0
+    assert manifest["released_agent_protocol_best_display_matches"] == 2
     assert manifest["paper_figure_units_with_result_credit"] == 0
     assert manifest["paper_appendix_prompts_verbatim_runtime"] == 0
     assert manifest["paper"]["versions_total"] == 1
@@ -172,7 +215,14 @@ def test_primary_sources_are_pinned_when_available() -> None:
     table, diagnostics, summaries = audit.table_conformance_rows(source)
     assert (len(table), len(diagnostics), len(summaries)) == (70, 140, 14)
     runs, portfolios = audit.archived_run_and_portfolio_rows(source)
+    benchmarks, candidates, search = audit.benchmark_effective_window_rows(source)
+    assert len(benchmarks) == 20
+    assert candidates[0]["matched_cells"] == 20
+    assert search["perfect_20_of_20_windows"] == 1
     assert (len(runs), len(portfolios)) == (95, 95)
+    agent_variants = audit.agent_protocol_variant_rows(source)
+    assert len(agent_variants) == 20
+    assert max(row["best_display_precision_matches"] for row in agent_variants) == 2
     assert len(audit.overlapping_archived_run_rows(source, portfolios)) == 25
     history = audit.public_source_history_rows(source)
     assert history[0]["reachable_commits"] == 19

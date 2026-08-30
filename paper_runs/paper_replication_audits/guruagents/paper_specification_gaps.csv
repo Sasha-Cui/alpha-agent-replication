@@ -1,5 +1,5 @@
 dimension,missing_or_conflicting_evidence,severity,resolved_by_public_sources
-paper-result return paths,Exact Figure 1 paths and Table 1 input series are absent,blocking,False
+paper-result agent return paths,Exact five-agent Figure 1 paths and Table 1 input series are absent; benchmark paths are recovered,blocking,False
 paper Figure 2 data,The plotted holdings/weights differ from all released result histories,blocking,False
 Table 1 generator,Released notebook omits CAGR/moments/VaR/CVaR table-generation code,blocking,False
 transaction costs,Paper says 1 bp of gross turnover; source never applies the parameter,blocking,False
