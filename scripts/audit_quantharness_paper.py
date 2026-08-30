@@ -14,13 +14,16 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import io
 import json
 import os
 import re
+import sqlite3
 import struct
 import subprocess
 import sys
 import tarfile
+import tempfile
 from collections import Counter
 from decimal import Decimal
 from pathlib import Path
@@ -31,7 +34,8 @@ import pandas as pd
 
 
 SOURCE_COMMIT = "00a88cbbc3b946cbdf506038545d6b5c2df6a344"
-SOURCE_URL = "https://github.com/Y-Research-SBU/QuantAgent"
+SOURCE_URL = "https://github.com/Y-Research-SBU/QuantHarness"
+SOURCE_LEGACY_URL = "https://github.com/Y-Research-SBU/QuantAgent"
 PAPER_URL = "https://arxiv.org/abs/2509.09995"
 PAPER_API_SHA256 = "338887e5c299807fcf431fb274b9241b00b2f660618196e07fb88d5aac20f718"
 PAPER_ABS_SHA256 = "e8148b824b789559d8ce6bb729e6242378a8e6cb9cf7553fcb66cd92dba70fa2"
@@ -86,16 +90,49 @@ PAPER_VERSIONS: Dict[str, Dict[str, Any]] = {
     },
 }
 PAPER_SHA256 = PAPER_VERSIONS["v4"]["pdf_sha256"]
-PUBLIC_BRANCH_HEADS = {
+PAPER_ERA_PUBLIC_BRANCH_HEADS = {
     "gh-pages": "c6383f1d821b1def48d4f3f5d857fbdf5df405d4",
     "main": SOURCE_COMMIT,
 }
-PUBLIC_REMOTE_REF_SHA256 = "be6e113d00d4c9927bbfd8ba4e8b9405b77b034c2491acbedb217debf926ff8a"
-PUBLIC_HISTORY_COMMIT_COUNT = 195
-PUBLIC_HISTORY_COMMIT_SHA256 = "dd81a6771fd0881662706bf20fde7755f1fa843854de4b480fa8e10fa5b645c8"
+PUBLIC_BRANCH_HEADS = {
+    "gh-pages": "aa6c669d0eb1a156bec04c70508980f525157141",
+    "main": "2e64c7befa75a88d254a426f5f29fa61b0b56732",
+}
+PUBLIC_REMOTE_REF_SHA256 = "3e9c1b81db0b1036c9e022fef59750e8fc13c4bb42c0bf3f6b71eaef5e95c4fe"
+PUBLIC_HISTORY_COMMIT_COUNT = 204
+PUBLIC_HISTORY_COMMIT_SHA256 = "da4997e1d5d4e904b9ee2a3d375116d0daff153ab3b026bf2bf61f22b30f6e61"
 PUBLIC_HISTORY_PATH_COUNT = 1870
 PUBLIC_HISTORY_PATH_SHA256 = "6be757876c08518cc096a8114edc25d9d74728e069c95276d43b20294394a6b7"
-PUBLIC_HISTORY_OBJECT_COUNTS = {"commit": 195, "tree": 279, "blob": 2228}
+PUBLIC_HISTORY_OBJECT_COUNTS = {"commit": 204, "tree": 291, "blob": 2244}
+POSTPAPER_OFFICIAL_COMMIT_COUNT = 9
+POSTPAPER_OFFICIAL_COMMIT_SHA256 = "cf01c6673da89a08fbea6dd4e6f793ab68681836a0cacd62722a804be2aad688"
+POSTPAPER_OFFICIAL_CHANGED_PATH_COUNT = 6
+POSTPAPER_OFFICIAL_CHANGED_PATH_SHA256 = "aac87d0fa7d5f39984645c53697fad9174245e6f03ab2f55efab3382d7444344"
+PUBLIC_FORK_CENSUS_DATE = "2026-08-30"
+PUBLIC_FORK_REST_COUNT = 613
+PUBLIC_FORK_ACCESSIBLE_COUNT = 608
+PUBLIC_FORK_BRANCH_REF_COUNT = 700
+PUBLIC_FORK_BRANCH_REF_SHA256 = "0eafedc7296f1975d1b9ab816724cfa2cfc483d86a58ed3371b6cb3b2b298bd0"
+PUBLIC_FORK_SNAPSHOT_SHA256 = "787c9e03726313ce301ba8ca1a46bd215787b921cac979717d044ef6dd3fa630"
+PUBLIC_FORK_UNIQUE_HEAD_COUNT = 112
+PUBLIC_FORK_UNIQUE_HEAD_SHA256 = "5f5b053d155719ac4ecddea6dce7703f3e5d38db61506a3eeb4c2dd3a4bad13c"
+PUBLIC_FORK_DIVERGENT_HEAD_COUNT = 70
+PUBLIC_FORK_DIVERGENT_HEAD_SHA256 = "6720c06df6080dac87ee92c71e77c1ce364cc5137328488c8107dfe293b6ac1d"
+PUBLIC_FORK_EXTRA_COMMIT_COUNT = 595
+PUBLIC_FORK_EXTRA_COMMIT_SHA256 = "340f9c53b253b28cf88526cb83124f7de670d2082e43308db9e19f0b5a53de74"
+PUBLIC_FORK_CHANGED_PATH_COUNT = 4845
+PUBLIC_FORK_CHANGED_PATH_SHA256 = "3a29ef34c2911d4bef6aef92ec9b3da35fe14d1b5e6a265a3a331cc4afa4b3be"
+PUBLIC_FORK_NEW_OBJECT_COUNTS = {"commit": 595, "tree": 1117, "blob": 2072}
+PUBLIC_FORK_NEW_OBJECT_SHA256 = "11310e5d8da57d067cb374aa1d58f4e6994a003a45bc0a12bdbf52e556ff3d6c"
+PUBLIC_FORK_NEW_BLOB_SHA256 = "d34b46d0332c0ef2d1ce6c711a47c04496e96bddf237f675f4a753bffab0ac1b"
+PUBLIC_FORK_NEW_BLOB_BYTES = 887238813
+PUBLIC_FORK_TEXT_BLOBS_SCANNED = 1739
+PUBLIC_FORK_TRADING_DB_BLOBS = 42
+PUBLIC_FORK_TRADING_DB_HISTORY_ROWS = 2228
+PUBLIC_FORK_BUILD_DB_BLOBS = 2
+PUBLIC_FORK_TASS_MAIN_HEAD = "bbaddd441de4f7bed6f8b9f694da1fda991eb29e"
+PUBLIC_FORK_TASS_TEST_HEAD = "94bf2a5c6b1fced7c8a30c2435b87518145102b8"
+PUBLIC_FORK_TASS_MINIRUN_COMMIT = "fda501ef0bb48eedc47e133429ae9158f1908cb2"
 NATIVE_RESULT_SUFFIXES = (
     ".feather",
     ".h5",
@@ -476,9 +513,7 @@ def tex_table_numeric_tokens(main_tex: Path, label: str) -> List[Decimal]:
     if start < 0:
         raise RuntimeError(f"Could not find table containing {label} in {main_tex}")
     table = text[start:end]
-    table = table[
-        table.index(r"\midrule") + len(r"\midrule") : table.index(r"\bottomrule")
-    ]
+    table = table[table.index(r"\midrule") + len(r"\midrule") : table.index(r"\bottomrule")]
     data_lines = []
     for line in table.splitlines():
         line = re.sub(r"(?<!\\)%.*$", "", line)
@@ -491,10 +526,7 @@ def tex_table_numeric_tokens(main_tex: Path, label: str) -> List[Decimal]:
         )
         data_lines.append(line)
     return [
-        Decimal(value.lstrip("+"))
-        for value in re.findall(
-            r"(?<![A-Za-z])[-+]?\d+(?:\.\d+)?", "\n".join(data_lines)
-        )
+        Decimal(value.lstrip("+")) for value in re.findall(r"(?<![A-Za-z])[-+]?\d+(?:\.\d+)?", "\n".join(data_lines))
     ]
 
 
@@ -516,13 +548,10 @@ def paper_version_result_rows(paper_versions_root: Path) -> List[Dict[str, Any]]
         ("v4", "tab:performance_metrics"): portfolio_rows,
     }
     for (version, label), rows in expected.items():
-        observed = tex_table_numeric_tokens(
-            paper_versions_root / f"source_{version}" / "main.tex", label
-        )
+        observed = tex_table_numeric_tokens(paper_versions_root / f"source_{version}" / "main.tex", label)
         if observed != _row_values(rows):
             raise RuntimeError(
-                f"Official {version} table {label} changed: "
-                f"observed {len(observed)} cells, expected {len(rows)}"
+                f"Official {version} table {label} changed: observed {len(observed)} cells, expected {len(rows)}"
             )
 
     output: List[Dict[str, Any]] = []
@@ -557,12 +586,8 @@ def paper_version_result_rows(paper_versions_root: Path) -> List[Dict[str, Any]]
                 }
             )
 
-    old_image = HISTORICAL_RESULT_IMAGES[
-        "369deaf966fb19bd5cd9cc8bbcbd846d713f3afe"
-    ]["sha256"]
-    expanded_image = HISTORICAL_RESULT_IMAGES[
-        "8cb62e42e92b73da79bade2c1b19bac4e1af0a8a"
-    ]["sha256"]
+    old_image = HISTORICAL_RESULT_IMAGES["369deaf966fb19bd5cd9cc8bbcbd846d713f3afe"]["sha256"]
+    expanded_image = HISTORICAL_RESULT_IMAGES["8cb62e42e92b73da79bade2c1b19bac4e1af0a8a"]["sha256"]
     append_rows("v1", "original_4h", old_rows, old_image)
     append_rows("v2", "original_4h", old_rows, old_image)
     append_rows("v3", "expanded_4h", expanded_4h_rows, expanded_image)
@@ -574,9 +599,7 @@ def paper_version_result_rows(paper_versions_root: Path) -> List[Dict[str, Any]]
 
 
 def pdf_page_count(path: Path) -> int:
-    output = subprocess.run(
-        ["pdfinfo", str(path)], check=True, capture_output=True, text=True
-    ).stdout
+    output = subprocess.run(["pdfinfo", str(path)], check=True, capture_output=True, text=True).stdout
     match = re.search(r"^Pages:\s+(\d+)$", output, flags=re.MULTILINE)
     if not match:
         raise RuntimeError(f"Could not read PDF page count: {path}")
@@ -601,9 +624,7 @@ def paper_version_inventory(paper_versions_root: Path) -> List[Dict[str, Any]]:
             "source_files": sum(path.is_file() for path in source_dir.rglob("*")),
             "main_tex_sha256": sha256(main_tex),
             "line_chart_pdf_sha256": (
-                sha256(source_dir / "assets/line_chart.pdf")
-                if (source_dir / "assets/line_chart.pdf").is_file()
-                else ""
+                sha256(source_dir / "assets/line_chart.pdf") if (source_dir / "assets/line_chart.pdf").is_file() else ""
             ),
         }
         with tarfile.open(archive, "r:*") as handle:
@@ -618,13 +639,9 @@ def paper_version_inventory(paper_versions_root: Path) -> List[Dict[str, Any]]:
             "line_chart_pdf_sha256",
         ):
             if observed[key] != expected[key]:
-                raise RuntimeError(
-                    f"Official paper {version} {key} changed: {observed[key]}"
-                )
+                raise RuntimeError(f"Official paper {version} {key} changed: {observed[key]}")
         if archive_files != expected["source_files"]:
-            raise RuntimeError(
-                f"Official paper {version} archive/extracted file counts differ"
-            )
+            raise RuntimeError(f"Official paper {version} archive/extracted file counts differ")
         rows.append(
             {
                 "paper_version": version,
@@ -633,9 +650,7 @@ def paper_version_inventory(paper_versions_root: Path) -> List[Dict[str, Any]]:
                 **observed,
                 "table_family": expected["table_family"],
                 "numeric_result_cells": expected["numeric_result_cells"],
-                "author_rendered_correspondence_cells": expected[
-                    "author_rendered_correspondence_cells"
-                ],
+                "author_rendered_correspondence_cells": expected["author_rendered_correspondence_cells"],
                 "native_result_cells_independently_regenerated": 0,
             }
         )
@@ -688,10 +703,7 @@ def load_4h_arrays(source_root: Path) -> Dict[str, np.ndarray]:
     arrays: Dict[str, np.ndarray] = {}
     for asset in ASSETS_4H:
         files = natural_csv_files(benchmark_directory(source_root, "4h", asset))
-        values = [
-            pd.read_csv(path)[["Close", "High", "Low"]].to_numpy(dtype=float)
-            for path in files
-        ]
+        values = [pd.read_csv(path)[["Close", "High", "Low"]].to_numpy(dtype=float) for path in files]
         array = np.stack(values)
         if array.shape != (100, 100, 3):
             raise RuntimeError(f"Unexpected {asset} benchmark shape: {array.shape}")
@@ -721,9 +733,7 @@ def directional_accuracy(
     return hits, 100.0 * hits / 300.0
 
 
-def extrema_returns(
-    values: np.ndarray, directions_long: np.ndarray, reference_index: int = 96
-) -> Tuple[float, float]:
+def extrema_returns(values: np.ndarray, directions_long: np.ndarray, reference_index: int = 96) -> Tuple[float, float]:
     close = values[:, :, 0]
     high = values[:, :, 1]
     low = values[:, :, 2]
@@ -743,9 +753,7 @@ def extrema_returns(
 
 def lr_alignment_audit(arrays: Mapping[str, np.ndarray]) -> Tuple[List[Dict[str, Any]], List[Tuple[int, int]]]:
     records = table_2_records()
-    published = {
-        row["asset"]: row["accuracy_pct"] for row in records if row["method"] == "LR"
-    }
+    published = {row["asset"]: row["accuracy_pct"] for row in records if row["method"] == "LR"}
     rows = []
     for asset in ASSETS_4H:
         close = arrays[asset][:, :, 0]
@@ -787,10 +795,7 @@ def lr_alignment_audit(arrays: Mapping[str, np.ndarray]) -> Tuple[List[Dict[str,
     # paper's one-decimal precision.
     published_vector = np.asarray([published[asset] for asset in ASSETS_4H])
     direction_cache = {
-        end: {
-            asset: linear_regression_directions(arrays[asset][:, :, 0], end)
-            for asset in ASSETS_4H
-        }
+        end: {asset: linear_regression_directions(arrays[asset][:, :, 0], end) for asset in ASSETS_4H}
         for end in range(40, 98)
     }
     exact_alignments: List[Tuple[int, int]] = []
@@ -798,9 +803,7 @@ def lr_alignment_audit(arrays: Mapping[str, np.ndarray]) -> Tuple[List[Dict[str,
         for reference in range(97):
             values = []
             for asset in ASSETS_4H:
-                _, value = directional_accuracy(
-                    arrays[asset][:, :, 0], direction_cache[end][asset], reference
-                )
+                _, value = directional_accuracy(arrays[asset][:, :, 0], direction_cache[end][asset], reference)
                 values.append(round(value, 1))
             if np.array_equal(np.asarray(values), published_vector):
                 exact_alignments.append((end, reference))
@@ -910,9 +913,7 @@ def history_path_role(path: str) -> str:
         "assets/benchmark_4h.png",
     }:
         return "author_rendered_benchmark_coverage_figure"
-    if (lower.endswith(".csv") and not lower.startswith("benchmark/")) or lower.endswith(
-        NATIVE_RESULT_SUFFIXES
-    ):
+    if (lower.endswith(".csv") and not lower.startswith("benchmark/")) or lower.endswith(NATIVE_RESULT_SUFFIXES):
         return "native_result_artifact_candidate"
     if lower.endswith((".png", ".jpg", ".jpeg", ".gif", ".mp4")):
         return "documentation_demo_or_qualitative_paper_asset"
@@ -960,10 +961,7 @@ def public_source_history(
 
     heads = list(PUBLIC_BRANCH_HEADS.values())
     commits = str(run_git(source_root, "rev-list", "--reverse", *heads)).splitlines()
-    if (
-        len(commits) != PUBLIC_HISTORY_COMMIT_COUNT
-        or sha256_lines(commits) != PUBLIC_HISTORY_COMMIT_SHA256
-    ):
+    if len(commits) != PUBLIC_HISTORY_COMMIT_COUNT or sha256_lines(commits) != PUBLIC_HISTORY_COMMIT_SHA256:
         raise RuntimeError("Pinned QuantAgent reachable commit history changed")
     paths = historical_paths(source_root, heads)
     if len(paths) != PUBLIC_HISTORY_PATH_COUNT or sha256_lines(paths) != PUBLIC_HISTORY_PATH_SHA256:
@@ -981,9 +979,7 @@ def public_source_history(
     object_counts = dict(Counter(object_types))
     if object_counts != PUBLIC_HISTORY_OBJECT_COUNTS:
         raise RuntimeError(f"Pinned QuantAgent object census changed: {object_counts}")
-    fsck = str(
-        run_git(source_root, "fsck", "--full", "--no-reflogs", "--unreachable")
-    ).strip()
+    fsck = str(run_git(source_root, "fsck", "--full", "--no-reflogs", "--unreachable")).strip()
     if fsck:
         raise RuntimeError(f"Unreachable QuantAgent Git objects require review: {fsck}")
 
@@ -1016,17 +1012,13 @@ def public_source_history(
                     result_blob_commits.setdefault(object_id, set()).add(commit)
                     result_blob_paths.setdefault(object_id, set()).add(path)
         commit_trees[commit] = entries
-        commit_date, subject = str(
-            run_git(source_root, "show", "-s", "--format=%cI%x00%s", commit)
-        ).rstrip("\n").split("\0", 1)
-        commit_meta[commit] = (commit_date, subject)
-        memberships = sorted(
-            branch for branch, members in branch_commit_sets.items() if commit in members
+        commit_date, subject = (
+            str(run_git(source_root, "show", "-s", "--format=%cI%x00%s", commit)).rstrip("\n").split("\0", 1)
         )
+        commit_meta[commit] = (commit_date, subject)
+        memberships = sorted(branch for branch, members in branch_commit_sets.items() if commit in members)
         native_candidates = sorted(
-            path
-            for path in entries
-            if history_path_role(path) == "native_result_artifact_candidate"
+            path for path in entries if history_path_role(path) == "native_result_artifact_candidate"
         )
         commit_rows.append(
             {
@@ -1036,12 +1028,9 @@ def public_source_history(
                 "public_branch_membership": ";".join(memberships),
                 "tree_path_count": len(entries),
                 "benchmark_csv_path_count": sum(
-                    path.startswith("benchmark/") and path.endswith(".csv")
-                    for path in entries
+                    path.startswith("benchmark/") and path.endswith(".csv") for path in entries
                 ),
-                "author_rendered_result_path_count": sum(
-                    path in HISTORICAL_RESULT_PATHS for path in entries
-                ),
+                "author_rendered_result_path_count": sum(path in HISTORICAL_RESULT_PATHS for path in entries),
                 "native_result_artifact_candidate_count": len(native_candidates),
                 "native_result_artifact_candidate_paths": ";".join(native_candidates),
                 "paper_result_credit": False,
@@ -1049,9 +1038,7 @@ def public_source_history(
         )
 
     present_counts = Counter(path for tree in commit_trees.values() for path in tree)
-    head_trees = {
-        branch: commit_trees[head] for branch, head in PUBLIC_BRANCH_HEADS.items()
-    }
+    head_trees = {branch: commit_trees[head] for branch, head in PUBLIC_BRANCH_HEADS.items()}
     path_rows = []
     for path in paths:
         role = history_path_role(path)
@@ -1061,28 +1048,18 @@ def public_source_history(
                 "suffix": Path(path).suffix.lower(),
                 "history_role": role,
                 "commits_present": present_counts[path],
-                "public_branch_heads_present": ";".join(
-                    branch for branch, tree in head_trees.items() if path in tree
-                ),
-                "native_result_artifact_candidate": role
-                == "native_result_artifact_candidate",
+                "public_branch_heads_present": ";".join(branch for branch, tree in head_trees.items() if path in tree),
+                "native_result_artifact_candidate": role == "native_result_artifact_candidate",
                 "author_rendered_result_output": path in HISTORICAL_RESULT_PATHS,
                 "paper_result_credit": False,
             }
         )
-    native_candidates = [
-        row for row in path_rows if row["native_result_artifact_candidate"]
-    ]
+    native_candidates = [row for row in path_rows if row["native_result_artifact_candidate"]]
     if native_candidates:
-        raise RuntimeError(
-            f"Historical native result candidates require manual review: {native_candidates}"
-        )
+        raise RuntimeError(f"Historical native result candidates require manual review: {native_candidates}")
 
     if set(result_blob_commits) != set(HISTORICAL_RESULT_IMAGES):
-        raise RuntimeError(
-            "Pinned historical result-image blob set changed: "
-            f"{sorted(result_blob_commits)}"
-        )
+        raise RuntimeError(f"Pinned historical result-image blob set changed: {sorted(result_blob_commits)}")
     commit_order = {commit: index for index, commit in enumerate(commits)}
     image_rows = []
     for object_id, expected in HISTORICAL_RESULT_IMAGES.items():
@@ -1118,15 +1095,9 @@ def public_source_history(
                     for branch, members in branch_commit_sets.items()
                     if any(commit in members for commit in blob_commits)
                 ),
-                "canonical_correspondence": expected[
-                    "canonical_correspondence"
-                ],
-                "distinct_table_cells_corresponded": expected[
-                    "distinct_table_cells_corresponded"
-                ],
-                "version_specific_table_cells_corresponded": expected[
-                    "version_specific_table_cells_corresponded"
-                ],
+                "canonical_correspondence": expected["canonical_correspondence"],
+                "distinct_table_cells_corresponded": expected["distinct_table_cells_corresponded"],
+                "version_specific_table_cells_corresponded": expected["version_specific_table_cells_corresponded"],
                 "correspondence_kind": expected["correspondence_kind"],
                 "underlying_numeric_result_array_shipped": False,
                 "independently_regenerated": False,
@@ -1135,7 +1106,7 @@ def public_source_history(
         )
 
     summary: Dict[str, Any] = {
-        "audit_date": "2026-08-14",
+        "audit_date": "2026-08-30",
         "repository_shallow": False,
         "public_branch_heads": PUBLIC_BRANCH_HEADS,
         "public_branches_total": len(PUBLIC_BRANCH_HEADS),
@@ -1147,35 +1118,25 @@ def public_source_history(
         "reachable_object_counts": object_counts,
         "unreachable_objects_total": 0,
         "historical_benchmark_csv_paths_total": sum(
-            row["history_role"] == "released_sampled_benchmark_segment"
-            for row in path_rows
+            row["history_role"] == "released_sampled_benchmark_segment" for row in path_rows
         ),
         "historical_benchmark_asset_horizon_sets_total": 18,
         "historical_native_result_artifact_candidates_total": 0,
-        "historical_author_rendered_result_paths_total": len(
-            HISTORICAL_RESULT_PATHS
-        ),
+        "historical_author_rendered_result_paths_total": len(HISTORICAL_RESULT_PATHS),
         "historical_unique_result_image_blobs_total": len(image_rows),
-        "historical_unique_table_image_blobs_total": sum(
-            "table" in row["role"] for row in image_rows
-        ),
-        "historical_unique_one_hour_result_chart_blobs_total": sum(
-            "one_hour" in row["role"] for row in image_rows
-        ),
+        "historical_unique_table_image_blobs_total": sum("table" in row["role"] for row in image_rows),
+        "historical_unique_one_hour_result_chart_blobs_total": sum("one_hour" in row["role"] for row in image_rows),
         "official_one_hour_figure_author_raster_correspondences_total": sum(
-            "one_hour" in row["role"] and bool(row["paper_versions_corresponded"])
-            for row in image_rows
+            "one_hour" in row["role"] and bool(row["paper_versions_corresponded"]) for row in image_rows
         ),
         "intermediate_nonpaper_one_hour_result_rasters_total": sum(
-            "one_hour" in row["role"] and not row["paper_versions_corresponded"]
-            for row in image_rows
+            "one_hour" in row["role"] and not row["paper_versions_corresponded"] for row in image_rows
         ),
         "distinct_table_cells_author_rendered_correspondence": sum(
             int(row["distinct_table_cells_corresponded"]) for row in image_rows
         ),
         "version_specific_table_cells_author_rendered_correspondence": sum(
-            int(row["version_specific_table_cells_corresponded"])
-            for row in image_rows
+            int(row["version_specific_table_cells_corresponded"]) for row in image_rows
         ),
         "historical_native_predictions_evaluators_returns_or_portfolio_paths": False,
         "paper_result_credit_from_author_rendered_images": False,
@@ -1187,6 +1148,572 @@ def public_source_history(
     if summary["version_specific_table_cells_author_rendered_correspondence"] != 480:
         raise RuntimeError("Version-specific table correspondence census changed")
     return commit_rows, path_rows, image_rows, summary
+
+
+def postpaper_official_source_audit(
+    source_root: Path,
+) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """Inventory official changes after the v4 paper-era source snapshot."""
+    current_heads = list(PUBLIC_BRANCH_HEADS.values())
+    paper_heads = list(PAPER_ERA_PUBLIC_BRANCH_HEADS.values())
+    commits = str(run_git(source_root, "rev-list", "--reverse", *current_heads, "--not", *paper_heads)).splitlines()
+    if len(commits) != POSTPAPER_OFFICIAL_COMMIT_COUNT or sha256_lines(commits) != POSTPAPER_OFFICIAL_COMMIT_SHA256:
+        raise RuntimeError("QuantHarness post-paper official commit surface changed")
+    changed_paths: set[str] = set()
+    rows: List[Dict[str, Any]] = []
+    for commit in commits:
+        paths = sorted(
+            path
+            for path in str(
+                run_git(
+                    source_root,
+                    "diff-tree",
+                    "--root",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    commit,
+                )
+            ).splitlines()
+            if path
+        )
+        changed_paths.update(paths)
+        commit_date, author_name, author_email, subject = (
+            str(run_git(source_root, "show", "-s", "--format=%cI%x00%an%x00%ae%x00%s", commit))
+            .rstrip("\n")
+            .split("\0", 3)
+        )
+        native_result_paths = [path for path in paths if history_path_role(path) == "native_result_artifact_candidate"]
+        if native_result_paths:
+            raise RuntimeError(f"Post-paper official native result paths require review: {native_result_paths}")
+        rows.append(
+            {
+                "commit": commit,
+                "commit_date": commit_date,
+                "author_name": author_name,
+                "author_email": author_email,
+                "subject": subject,
+                "changed_path_count": len(paths),
+                "changed_paths": ";".join(paths),
+                "native_result_artifact_path_count": 0,
+                "classification": "postpaper_provider_documentation_or_interface_change",
+                "paper_result_credit": False,
+            }
+        )
+    ordered_paths = sorted(changed_paths)
+    if (
+        len(ordered_paths) != POSTPAPER_OFFICIAL_CHANGED_PATH_COUNT
+        or sha256_lines(ordered_paths) != POSTPAPER_OFFICIAL_CHANGED_PATH_SHA256
+    ):
+        raise RuntimeError("QuantHarness post-paper official path surface changed")
+    return rows, {
+        "paper_era_branch_heads": PAPER_ERA_PUBLIC_BRANCH_HEADS,
+        "current_branch_heads": PUBLIC_BRANCH_HEADS,
+        "postpaper_commits": len(commits),
+        "postpaper_commit_sha256": sha256_lines(commits),
+        "postpaper_changed_paths": len(ordered_paths),
+        "postpaper_changed_path_sha256": sha256_lines(ordered_paths),
+        "native_result_artifacts_added": 0,
+        "paper_result_credit": False,
+    }
+
+
+def _object_ids(source_root: Path, heads: Sequence[str]) -> set[str]:
+    return {line.split(" ", 1)[0] for line in str(run_git(source_root, "rev-list", "--objects", *heads)).splitlines()}
+
+
+def _git_csv(source_root: Path, commit: str, path: str) -> Tuple[bytes, List[Dict[str, str]]]:
+    payload = run_git(source_root, "show", f"{commit}:{path}", binary=True)
+    return payload, list(csv.DictReader(io.StringIO(payload.decode("utf-8"))))
+
+
+def public_fork_audit(
+    source_root: Path, branch_ref_snapshot: Path
+) -> Tuple[
+    List[Dict[str, str]],
+    List[Dict[str, Any]],
+    List[Dict[str, Any]],
+    List[Dict[str, Any]],
+    List[Dict[str, Any]],
+    Dict[str, Any],
+]:
+    """Fail closed over every accessible public-fork branch and unique head."""
+    if sha256(branch_ref_snapshot) != PUBLIC_FORK_SNAPSHOT_SHA256:
+        raise RuntimeError("QuantHarness public-fork branch snapshot hash changed")
+    with branch_ref_snapshot.open(newline="", encoding="utf-8") as handle:
+        branch_rows = list(csv.DictReader(handle))
+    expected_columns = {
+        "repository",
+        "branch",
+        "head_commit",
+        "repository_created_at",
+        "repository_pushed_at",
+        "repository_archived",
+        "repository_disabled",
+        "head_committed_at",
+        "head_author_login",
+        "head_author_name",
+        "head_author_email",
+        "head_subject",
+    }
+    if not branch_rows or set(branch_rows[0]) != expected_columns:
+        raise RuntimeError("QuantHarness public-fork branch snapshot schema changed")
+    branch_rows.sort(key=lambda row: (row["repository"].lower(), row["branch"].lower(), row["head_commit"]))
+    canonical_refs = [f"{row['repository']}\t{row['branch']}\t{row['head_commit']}" for row in branch_rows]
+    repositories = {row["repository"] for row in branch_rows}
+    unique_heads = sorted({row["head_commit"] for row in branch_rows})
+    if (
+        len(branch_rows) != PUBLIC_FORK_BRANCH_REF_COUNT
+        or len(repositories) != PUBLIC_FORK_ACCESSIBLE_COUNT
+        or len({(row["repository"], row["branch"]) for row in branch_rows}) != len(branch_rows)
+        or sha256_lines(canonical_refs) != PUBLIC_FORK_BRANCH_REF_SHA256
+        or len(unique_heads) != PUBLIC_FORK_UNIQUE_HEAD_COUNT
+        or sha256_lines(unique_heads) != PUBLIC_FORK_UNIQUE_HEAD_SHA256
+    ):
+        raise RuntimeError("QuantHarness complete public-fork branch surface changed")
+    for head in unique_heads:
+        subprocess.run(
+            ["git", "-C", str(source_root), "cat-file", "-e", f"{head}^{{commit}}"],
+            check=True,
+            capture_output=True,
+        )
+
+    refs_by_head: Dict[str, List[Dict[str, str]]] = {}
+    for row in branch_rows:
+        refs_by_head.setdefault(row["head_commit"], []).append(row)
+    base_heads = list(PUBLIC_BRANCH_HEADS.values())
+    extra_commits_by_head: Dict[str, List[str]] = {}
+    changed_paths_by_head: Dict[str, List[str]] = {}
+    path_heads: Dict[str, set[str]] = {}
+    head_rows: List[Dict[str, Any]] = []
+    for head in unique_heads:
+        extra_commits = sorted(str(run_git(source_root, "rev-list", head, "--not", *base_heads)).splitlines())
+        paths: set[str] = set()
+        for commit in extra_commits:
+            paths.update(
+                path
+                for path in str(
+                    run_git(
+                        source_root,
+                        "diff-tree",
+                        "--root",
+                        "--no-commit-id",
+                        "--name-only",
+                        "-r",
+                        commit,
+                    )
+                ).splitlines()
+                if path
+            )
+        ordered_paths = sorted(paths)
+        for path in ordered_paths:
+            path_heads.setdefault(path, set()).add(head)
+        extra_commits_by_head[head] = extra_commits
+        changed_paths_by_head[head] = ordered_paths
+        refs = refs_by_head[head]
+        repositories_for_head = sorted({row["repository"] for row in refs})
+        branches_for_head = sorted({row["branch"] for row in refs})
+        if not extra_commits:
+            classification = (
+                "author_personal_fork_official_history_snapshot"
+                if "wyattz23/QA" in repositories_for_head
+                else "official_history_reachable"
+            )
+        elif head in {PUBLIC_FORK_TASS_MAIN_HEAD, PUBLIC_FORK_TASS_TEST_HEAD}:
+            classification = "unaffiliated_method_adaptation_with_nonpaper_backtest_outputs"
+        else:
+            classification = "unaffiliated_code_data_or_interface_extension"
+        head_date, author_name, author_email, subject = (
+            str(run_git(source_root, "show", "-s", "--format=%cI%x00%an%x00%ae%x00%s", head))
+            .rstrip("\n")
+            .split("\0", 3)
+        )
+        head_rows.append(
+            {
+                "head_commit": head,
+                "head_date": head_date,
+                "head_author_name": author_name,
+                "head_author_email": author_email,
+                "head_subject": subject,
+                "repository_count": len(repositories_for_head),
+                "repositories": ";".join(repositories_for_head),
+                "branch_count": len(refs),
+                "branches": ";".join(branches_for_head),
+                "extra_commit_count_beyond_current_official_history": len(extra_commits),
+                "extra_changed_path_count": len(ordered_paths),
+                "classification": classification,
+                "author_attributed_paper_lineage": "wyattz23/QA" in repositories_for_head,
+                "paper_result_credit": False,
+            }
+        )
+
+    divergent_heads = sorted(head for head in unique_heads if extra_commits_by_head[head])
+    all_extra_commits = sorted({commit for commits in extra_commits_by_head.values() for commit in commits})
+    all_changed_paths = sorted(path_heads)
+    if (
+        len(divergent_heads) != PUBLIC_FORK_DIVERGENT_HEAD_COUNT
+        or sha256_lines(divergent_heads) != PUBLIC_FORK_DIVERGENT_HEAD_SHA256
+        or len(all_extra_commits) != PUBLIC_FORK_EXTRA_COMMIT_COUNT
+        or sha256_lines(all_extra_commits) != PUBLIC_FORK_EXTRA_COMMIT_SHA256
+        or len(all_changed_paths) != PUBLIC_FORK_CHANGED_PATH_COUNT
+        or sha256_lines(all_changed_paths) != PUBLIC_FORK_CHANGED_PATH_SHA256
+    ):
+        raise RuntimeError("QuantHarness divergent public-fork surface changed")
+
+    commit_heads: Dict[str, set[str]] = {}
+    for head, commits in extra_commits_by_head.items():
+        for commit in commits:
+            commit_heads.setdefault(commit, set()).add(head)
+    commit_rows: List[Dict[str, Any]] = []
+    for commit in all_extra_commits:
+        commit_date, author_name, author_email, subject = (
+            str(run_git(source_root, "show", "-s", "--format=%cI%x00%an%x00%ae%x00%s", commit))
+            .rstrip("\n")
+            .split("\0", 3)
+        )
+        paths = sorted(
+            path
+            for path in str(
+                run_git(
+                    source_root,
+                    "diff-tree",
+                    "--root",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    commit,
+                )
+            ).splitlines()
+            if path
+        )
+        result_like = [
+            path
+            for path in paths
+            if any(
+                token in path.lower()
+                for token in (
+                    "result",
+                    "backtest",
+                    "performance",
+                    "metric",
+                    "equity",
+                    "portfolio",
+                    "prediction",
+                    "signal",
+                    "trade",
+                    "return",
+                    "history",
+                )
+            )
+        ]
+        commit_rows.append(
+            {
+                "commit": commit,
+                "commit_date": commit_date,
+                "author_name": author_name,
+                "author_email": author_email,
+                "subject": subject,
+                "reachable_divergent_head_count": len(commit_heads[commit]),
+                "changed_path_count": len(paths),
+                "result_like_changed_path_count": len(result_like),
+                "result_like_changed_paths": ";".join(result_like),
+                "paper_result_credit": False,
+            }
+        )
+
+    path_rows: List[Dict[str, Any]] = []
+    for path in all_changed_paths:
+        lower = path.lower()
+        if lower == "trading_data.db":
+            role = "community_live_analysis_database"
+        elif lower.startswith(("strategy_results/", "backtest_results", "docs/backtest_findings")):
+            role = "unaffiliated_backtest_output_or_supporting_path"
+        elif any(
+            token in lower
+            for token in (
+                "result",
+                "backtest",
+                "performance",
+                "metric",
+                "equity",
+                "portfolio",
+                "prediction",
+                "signal",
+                "trade",
+                "return",
+                "history",
+            )
+        ):
+            role = "result_like_community_path_manual_boundary"
+        else:
+            role = "community_code_configuration_documentation_or_build_path"
+        path_rows.append(
+            {
+                "relative_path": path,
+                "suffix": Path(path).suffix.lower(),
+                "divergent_head_count": len(path_heads[path]),
+                "role": role,
+                "attributable_paper_result_artifact": False,
+                "paper_result_credit": False,
+            }
+        )
+
+    base_objects = _object_ids(source_root, base_heads)
+    fork_object_lines = str(run_git(source_root, "rev-list", "--objects", *unique_heads)).splitlines()
+    fork_objects = {line.split(" ", 1)[0] for line in fork_object_lines}
+    object_path: Dict[str, str] = {}
+    for line in fork_object_lines:
+        object_id, *rest = line.split(" ", 1)
+        if rest:
+            object_path.setdefault(object_id, rest[0])
+    new_objects = sorted(fork_objects - base_objects)
+    if (
+        len(new_objects) != sum(PUBLIC_FORK_NEW_OBJECT_COUNTS.values())
+        or sha256_lines(new_objects) != PUBLIC_FORK_NEW_OBJECT_SHA256
+    ):
+        raise RuntimeError("QuantHarness public-fork new-object surface changed")
+    metadata = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(source_root),
+            "cat-file",
+            "--batch-check=%(objectname) %(objecttype) %(objectsize)",
+        ],
+        input="\n".join(new_objects) + "\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    object_counts: Counter[str] = Counter()
+    new_blobs: List[str] = []
+    blob_sizes: Dict[str, int] = {}
+    for line in metadata:
+        object_id, object_type, object_size = line.split()
+        object_counts[object_type] += 1
+        if object_type == "blob":
+            new_blobs.append(object_id)
+            blob_sizes[object_id] = int(object_size)
+    new_blobs.sort()
+    if (
+        dict(object_counts) != PUBLIC_FORK_NEW_OBJECT_COUNTS
+        or sha256_lines(new_blobs) != PUBLIC_FORK_NEW_BLOB_SHA256
+        or sum(blob_sizes.values()) != PUBLIC_FORK_NEW_BLOB_BYTES
+    ):
+        raise RuntimeError("QuantHarness public-fork blob census changed")
+
+    paper_groups: Dict[Tuple[int, str, str], List[float]] = {}
+    for row in paper_result_rows():
+        key = (int(row["paper_table"]), str(row["asset"]), str(row["method"]))
+        paper_groups.setdefault(key, []).append(float(row["paper_value"]))
+    number_pattern = re.compile(r"(?<![A-Za-z0-9_])[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?")
+    text_blobs_scanned = 0
+    complete_paper_row_matches: List[Tuple[str, int, str, str]] = []
+    db_blobs: List[str] = []
+    for blob in new_blobs:
+        path = object_path.get(blob, "")
+        if path.lower().endswith(".db"):
+            db_blobs.append(blob)
+        if blob_sizes[blob] > 5_000_000:
+            continue
+        payload = run_git(source_root, "cat-file", "blob", blob, binary=True)
+        if b"\x00" in payload[:8192]:
+            continue
+        try:
+            text = payload.decode("utf-8")
+        except UnicodeDecodeError:
+            continue
+        text_blobs_scanned += 1
+        lower = text.lower()
+        numbers = [float(value) for value in number_pattern.findall(text)]
+        for (table, asset, method), values in paper_groups.items():
+            if asset.lower() not in lower or method.lower() not in lower:
+                continue
+            if all(any(abs(observed - target) < 1e-9 for observed in numbers) for target in values):
+                complete_paper_row_matches.append((blob, table, asset, method))
+    if text_blobs_scanned != PUBLIC_FORK_TEXT_BLOBS_SCANNED or complete_paper_row_matches:
+        raise RuntimeError(
+            f"QuantHarness public-fork text result scan changed: {text_blobs_scanned}, {complete_paper_row_matches[:5]}"
+        )
+
+    trading_db_blobs = 0
+    build_db_blobs = 0
+    history_rows = 0
+    db_paper_row_matches: List[Tuple[str, str, str]] = []
+    asset_counts: Counter[str] = Counter()
+    timeframe_counts: Counter[str] = Counter()
+    start_dates: List[str] = []
+    end_dates: List[str] = []
+    for blob in sorted(db_blobs):
+        payload = run_git(source_root, "cat-file", "blob", blob, binary=True)
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as handle:
+            handle.write(payload)
+            temporary_path = Path(handle.name)
+        try:
+            connection = sqlite3.connect(f"file:{temporary_path}?mode=ro", uri=True)
+            tables = {row[0] for row in connection.execute("select name from sqlite_master where type='table'")}
+            if "analysis_history" not in tables:
+                build_db_blobs += 1
+                connection.close()
+                continue
+            trading_db_blobs += 1
+            columns = {row[1] for row in connection.execute('pragma table_info("analysis_history")')}
+            required = {
+                "asset",
+                "timeframe",
+                "start_date",
+                "end_date",
+                "result_summary",
+                "result_details",
+            }
+            if not required <= columns:
+                raise RuntimeError("Community trading database schema changed")
+            records = connection.execute(
+                "select asset,timeframe,start_date,end_date,result_summary,result_details from analysis_history"
+            )
+            for asset, timeframe, start_date, end_date, result_summary, result_details in records:
+                history_rows += 1
+                asset_text = str(asset)
+                asset_counts[asset_text] += 1
+                timeframe_counts[str(timeframe)] += 1
+                if start_date:
+                    start_dates.append(str(start_date))
+                if end_date:
+                    end_dates.append(str(end_date))
+                text = f"{result_summary or ''}\n{result_details or ''}"
+                lower = text.lower()
+                numbers = [float(value) for value in number_pattern.findall(text)]
+                for (_, paper_asset, method), values in paper_groups.items():
+                    if paper_asset.lower() != asset_text.lower() or method.lower() not in lower:
+                        continue
+                    if all(any(abs(observed - target) < 1e-9 for observed in numbers) for target in values):
+                        db_paper_row_matches.append((blob, asset_text, method))
+            connection.close()
+        finally:
+            temporary_path.unlink(missing_ok=True)
+    if (
+        trading_db_blobs != PUBLIC_FORK_TRADING_DB_BLOBS
+        or build_db_blobs != PUBLIC_FORK_BUILD_DB_BLOBS
+        or history_rows != PUBLIC_FORK_TRADING_DB_HISTORY_ROWS
+        or db_paper_row_matches
+        or min(start_dates) != "2024-01-01"
+        or max(end_dates) != "2026-07-08"
+        or timeframe_counts != {"1d": 2170, "4h": 36, "1h": 22}
+    ):
+        raise RuntimeError("QuantHarness public-fork database evidence changed")
+
+    tass_main_payload, tass_main_rows = _git_csv(
+        source_root,
+        PUBLIC_FORK_TASS_MAIN_HEAD,
+        "docs/backtest_findings_20260606/summary.csv",
+    )
+    tass_mini_payload, tass_mini_rows = _git_csv(
+        source_root,
+        PUBLIC_FORK_TASS_MINIRUN_COMMIT,
+        "backtest_results_quant/summary.csv",
+    )
+    tass_strategy_payload, tass_strategy_rows = _git_csv(
+        source_root,
+        PUBLIC_FORK_TASS_TEST_HEAD,
+        "strategy_results/aggregate.csv",
+    )
+    if (
+        len(tass_main_rows) != 3
+        or hashlib.sha256(tass_main_payload).hexdigest()
+        != "70b025242754c1513bcbea57565617c6fa0495741cb6d393fdf3dd20a5fc4b1e"
+        or len(tass_mini_rows) != 2
+        or hashlib.sha256(tass_mini_payload).hexdigest()
+        != "0698ee76d47710dbd05e1b3639d6485875d0707f331f38d0ecd45dcd6e9ec3af"
+        or len(tass_strategy_rows) != 24
+        or hashlib.sha256(tass_strategy_payload).hexdigest()
+        != "a098bfa08a2b82d6e0ace39876772ecd05b873e04e74884a806e86cb9d4656c8"
+    ):
+        raise RuntimeError("QuantHarness noteworthy fork result payload changed")
+    mini_aapl = next(row for row in tass_mini_rows if row["symbol"] == "AAPL")
+    mini_matches = sum(
+        (
+            abs(float(mini_aapl["agent_total_return"]) * 100.0 - (-22.51)) < 0.005,
+            abs(float(mini_aapl["sharpe_annual"]) - (-0.155)) < 0.0005,
+            abs(float(mini_aapl["max_drawdown"]) * 100.0 - 25.44) < 0.005,
+        )
+    )
+    if mini_matches:
+        raise RuntimeError("Unaffiliated AAPL mini-run now matches a paper metric")
+    result_artifact_rows = [
+        {
+            "source_head_or_commit": PUBLIC_FORK_TASS_MINIRUN_COMMIT,
+            "repository": "TasS-RV/QuantAgent-Build",
+            "artifact": "historical_deleted_backtest_results_quant/summary.csv",
+            "rows": len(tass_mini_rows),
+            "assets": ";".join(sorted(row["symbol"] for row in tass_mini_rows)),
+            "window_or_protocol": "2024-10-20_to_2025-02-27_daily_tiny_3_or_5_trade_run",
+            "method_relation": "unaffiliated_adaptation_with_AAPL_overlap",
+            "comparable_paper_cells": 3,
+            "matching_paper_cells": mini_matches,
+            "paper_result_credit": False,
+        },
+        {
+            "source_head_or_commit": PUBLIC_FORK_TASS_MAIN_HEAD,
+            "repository": "TasS-RV/QuantAgent-Build",
+            "artifact": "docs/backtest_findings_20260606/summary.csv",
+            "rows": len(tass_main_rows),
+            "assets": ";".join(sorted(row["symbol"] for row in tass_main_rows)),
+            "window_or_protocol": "2025-06-01_to_2026-06-06_weekly_gemini_2_5_flash_lite_with_overlays",
+            "method_relation": "unaffiliated_materially_modified_LLM_backtest",
+            "comparable_paper_cells": 0,
+            "matching_paper_cells": 0,
+            "paper_result_credit": False,
+        },
+        {
+            "source_head_or_commit": PUBLIC_FORK_TASS_TEST_HEAD,
+            "repository": "TasS-RV/QuantAgent-Build",
+            "artifact": "strategy_results/aggregate.csv",
+            "rows": len(tass_strategy_rows),
+            "assets": "GOOGL;JNJ;XOM",
+            "window_or_protocol": "2015_to_2026_daily_classic_strategy_grid",
+            "method_relation": "unaffiliated_non_LLM_classic_strategy_lab",
+            "comparable_paper_cells": 0,
+            "matching_paper_cells": 0,
+            "paper_result_credit": False,
+        },
+    ]
+
+    summary: Dict[str, Any] = {
+        "census_date": PUBLIC_FORK_CENSUS_DATE,
+        "github_rest_reported_forks": PUBLIC_FORK_REST_COUNT,
+        "graphql_accessible_forks": len(repositories),
+        "rest_minus_accessible_fork_gap": PUBLIC_FORK_REST_COUNT - len(repositories),
+        "accessibility_gap_interpretation": "deleted_private_or_otherwise_unavailable_not_inspected",
+        "graphql_accessible_branch_refs": len(branch_rows),
+        "graphql_accessible_branch_ref_census_sha256": sha256_lines(canonical_refs),
+        "branch_ref_snapshot_file_sha256": sha256(branch_ref_snapshot),
+        "unique_heads": len(unique_heads),
+        "unique_head_sha256": sha256_lines(unique_heads),
+        "heads_reachable_from_current_official_history": len(unique_heads) - len(divergent_heads),
+        "divergent_heads_reviewed": len(divergent_heads),
+        "divergent_extra_commits_reviewed": len(all_extra_commits),
+        "divergent_changed_paths_reviewed": len(all_changed_paths),
+        "new_object_counts": dict(object_counts),
+        "new_blob_bytes": sum(blob_sizes.values()),
+        "new_text_blobs_scanned": text_blobs_scanned,
+        "new_text_blobs_with_complete_paper_result_row": 0,
+        "new_database_blobs": len(db_blobs),
+        "community_trading_database_blobs": trading_db_blobs,
+        "community_trading_database_history_rows_across_versions": history_rows,
+        "community_trading_database_distinct_assets": len(asset_counts),
+        "community_trading_database_top_assets": dict(asset_counts.most_common(10)),
+        "community_trading_database_timeframes": dict(timeframe_counts),
+        "community_trading_database_min_start_date": min(start_dates),
+        "community_trading_database_max_end_date": max(end_dates),
+        "database_history_rows_with_complete_paper_result_row": 0,
+        "author_personal_fork_heads_with_extra_commits": 0,
+        "unaffiliated_backtest_artifact_families_reviewed": len(result_artifact_rows),
+        "unaffiliated_AAPL_mini_run_comparable_cells": 3,
+        "unaffiliated_AAPL_mini_run_matching_cells": mini_matches,
+        "native_paper_result_artifacts_found": False,
+        "paper_result_credit": False,
+    }
+    return branch_rows, head_rows, commit_rows, path_rows, result_artifact_rows, summary
 
 
 def historical_benchmark_set_inventory(
@@ -1212,20 +1739,16 @@ def historical_benchmark_set_inventory(
                 "asset": asset,
                 "unique_historical_segment_paths": len(members),
                 "paths_present_at_main_head": sum(
-                    "main" in str(row["public_branch_heads_present"]).split(";")
-                    for row in members
+                    "main" in str(row["public_branch_heads_present"]).split(";") for row in members
                 ),
                 "paths_present_at_gh_pages_head": sum(
-                    "gh-pages" in str(row["public_branch_heads_present"]).split(";")
-                    for row in members
+                    "gh-pages" in str(row["public_branch_heads_present"]).split(";") for row in members
                 ),
                 "original_5000_bar_panel_present": False,
                 "native_predictions_or_results_present": False,
             }
         )
-    if len(rows) != 18 or {row["unique_historical_segment_paths"] for row in rows} != {
-        100
-    }:
+    if len(rows) != 18 or {row["unique_historical_segment_paths"] for row in rows} != {100}:
         raise RuntimeError(f"Historical benchmark-set census changed: {rows}")
     return rows
 
@@ -1422,9 +1945,7 @@ def source_config_audit(source_root: Path) -> List[Dict[str, Any]]:
 
 def internal_accuracy_identity() -> List[Dict[str, Any]]:
     records = table_2_records()
-    baseline = {
-        row["asset"]: row["accuracy_pct"] for row in records if row["method"] == "Baseline"
-    }
+    baseline = {row["asset"]: row["accuracy_pct"] for row in records if row["method"] == "Baseline"}
     rows = []
     for record in records:
         if record["delta_accuracy_pct"] is None:
@@ -1491,9 +2012,7 @@ def table_conformance(
 ) -> List[Dict[str, Any]]:
     alignment = {row["asset"]: row for row in alignment_rows}
     records = table_2_records()
-    baseline = {
-        row["asset"]: row["accuracy_pct"] for row in records if row["method"] == "Baseline"
-    }
+    baseline = {row["asset"]: row["accuracy_pct"] for row in records if row["method"] == "Baseline"}
     inferred_extrema: Dict[Tuple[str, str], float] = {}
     for asset in ASSETS_4H:
         direction = linear_regression_directions(arrays[asset][:, :, 0], 94)
@@ -1511,15 +2030,9 @@ def table_conformance(
             evidence = "paper_value_only_no_shipped_returns_equity_curve_or_table_1_evaluator"
         elif target["metric"] == "delta_accuracy_pct":
             record = next(
-                row
-                for row in records
-                if row["asset"] == target["asset"] and row["method"] == target["method"]
+                row for row in records if row["asset"] == target["asset"] and row["method"] == target["method"]
             )
-            audit_value = (
-                (record["accuracy_pct"] - baseline[target["asset"]])
-                / baseline[target["asset"]]
-                * 100.0
-            )
+            audit_value = (record["accuracy_pct"] - baseline[target["asset"]]) / baseline[target["asset"]] * 100.0
             absolute_error = abs(target["paper_value"] - audit_value)
             tolerance = ACCURACY_DISPLAY_TOLERANCE
             status = (
@@ -1575,7 +2088,10 @@ def table_conformance(
 
 
 def build_audit(
-    source_root: Path, paper_versions_root: Path, output_dir: Path
+    source_root: Path,
+    paper_versions_root: Path,
+    branch_ref_snapshot: Path,
+    output_dir: Path,
 ) -> Dict[str, Any]:
     commit = git_head(source_root)
     if commit != SOURCE_COMMIT:
@@ -1599,6 +2115,15 @@ def build_audit(
         history_images,
         history_summary,
     ) = public_source_history(source_root)
+    postpaper_rows, postpaper_summary = postpaper_official_source_audit(source_root)
+    (
+        fork_branches,
+        fork_heads,
+        fork_commits,
+        fork_paths,
+        fork_results,
+        fork_summary,
+    ) = public_fork_audit(source_root, branch_ref_snapshot)
     history_benchmark_sets = historical_benchmark_set_inventory(history_paths)
     arrays = load_4h_arrays(source_root)
     alignments, exact_alignment_pairs = lr_alignment_audit(arrays)
@@ -1629,9 +2154,7 @@ def build_audit(
         raise RuntimeError("Released benchmark inventory changed")
     if Counter(int(row["released_distinct_timestamps"]) for row in inventory) != Counter({4082: 15, 4440: 1}):
         raise RuntimeError("Released benchmark overlap counts changed")
-    identity_mismatches = [
-        row for row in identities if row["status"] == "paper_internal_mismatch"
-    ]
+    identity_mismatches = [row for row in identities if row["status"] == "paper_internal_mismatch"]
     if [(row["asset"], row["method"]) for row in identity_mismatches] != [("SPX", "Our")]:
         raise RuntimeError(f"Published delta-accuracy identity findings changed: {identity_mismatches}")
     if Counter(row["paper_version"] for row in versioned_results) != {
@@ -1643,10 +2166,7 @@ def build_audit(
         raise RuntimeError("Version-specific paper result census changed")
     if sum(row["author_rendered_correspondence"] for row in versioned_results) != 480:
         raise RuntimeError("Version-specific author-rendered correspondence changed")
-    if any(
-        row["independently_regenerated_from_native_result_path"]
-        for row in versioned_results
-    ):
+    if any(row["independently_regenerated_from_native_result_path"] for row in versioned_results):
         raise RuntimeError("Native version-specific result credit requires manual review")
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1691,11 +2211,45 @@ def build_audit(
         json.dumps(history_summary, indent=2, sort_keys=False) + "\n",
         encoding="utf-8",
     )
+    write_csv(
+        output_dir / "postpaper_official_source_changes.csv",
+        postpaper_rows,
+        list(postpaper_rows[0]),
+    )
+    write_csv(
+        output_dir / "public_fork_branch_ref_snapshot.csv",
+        fork_branches,
+        list(fork_branches[0]),
+    )
+    write_csv(
+        output_dir / "public_fork_unique_head_inventory.csv",
+        fork_heads,
+        list(fork_heads[0]),
+    )
+    write_csv(
+        output_dir / "public_fork_divergent_commit_inventory.csv",
+        fork_commits,
+        list(fork_commits[0]),
+    )
+    write_csv(
+        output_dir / "public_fork_divergent_path_inventory.csv",
+        fork_paths,
+        list(fork_paths[0]),
+    )
+    write_csv(
+        output_dir / "public_fork_result_artifact_audit.csv",
+        fork_results,
+        list(fork_results[0]),
+    )
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2, sort_keys=False) + "\n",
+        encoding="utf-8",
+    )
 
     manifest: Dict[str, Any] = {
-        "audit": "QuantHarness all official paper versions versus full pinned public source history",
-        "audit_date": "2026-08-14",
-        "overall_status": "not_reproduced_full_history_exhausted_author_table_rasters_only",
+        "audit": "QuantHarness official paper versions, official history, and accessible public-fork network",
+        "audit_date": "2026-08-30",
+        "overall_status": "not_reproduced_full_history_and_608_forks_exhausted_author_table_rasters_only",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_versions": PAPER_VERSIONS,
@@ -1714,26 +2268,21 @@ def build_audit(
         "version_specific_native_result_cells_independently_regenerated": 0,
         "version_specific_result_cells_without_author_rendered_correspondence": 120,
         "source_url": SOURCE_URL,
+        "source_legacy_url": SOURCE_LEGACY_URL,
         "source_commit": commit,
         "source_commit_date": "2026-07-23",
+        "paper_era_public_source_branch_heads": PAPER_ERA_PUBLIC_BRANCH_HEADS,
         "public_source_branch_heads": PUBLIC_BRANCH_HEADS,
+        "postpaper_official_commits_audited": postpaper_summary["postpaper_commits"],
+        "postpaper_official_changed_paths_audited": postpaper_summary["postpaper_changed_paths"],
+        "postpaper_official_native_result_artifacts_added": postpaper_summary["native_result_artifacts_added"],
         "public_source_branches_total": history_summary["public_branches_total"],
         "public_source_tags_total": history_summary["public_tags_total"],
-        "public_source_reachable_commits_total": history_summary[
-            "reachable_commits_total"
-        ],
-        "public_source_unique_historical_paths_total": history_summary[
-            "unique_historical_paths_total"
-        ],
-        "public_source_reachable_object_counts": history_summary[
-            "reachable_object_counts"
-        ],
-        "public_source_unreachable_objects_total": history_summary[
-            "unreachable_objects_total"
-        ],
-        "public_source_historical_benchmark_csv_paths_total": history_summary[
-            "historical_benchmark_csv_paths_total"
-        ],
+        "public_source_reachable_commits_total": history_summary["reachable_commits_total"],
+        "public_source_unique_historical_paths_total": history_summary["unique_historical_paths_total"],
+        "public_source_reachable_object_counts": history_summary["reachable_object_counts"],
+        "public_source_unreachable_objects_total": history_summary["unreachable_objects_total"],
+        "public_source_historical_benchmark_csv_paths_total": history_summary["historical_benchmark_csv_paths_total"],
         "public_source_historical_benchmark_asset_horizon_sets_total": history_summary[
             "historical_benchmark_asset_horizon_sets_total"
         ],
@@ -1755,6 +2304,34 @@ def build_audit(
         "intermediate_nonpaper_one_hour_result_rasters_total": history_summary[
             "intermediate_nonpaper_one_hour_result_rasters_total"
         ],
+        "public_fork_census_date": fork_summary["census_date"],
+        "github_rest_reported_public_forks": fork_summary["github_rest_reported_forks"],
+        "graphql_accessible_public_forks": fork_summary["graphql_accessible_forks"],
+        "public_fork_accessibility_gap": fork_summary["rest_minus_accessible_fork_gap"],
+        "public_fork_branch_refs_examined": fork_summary["graphql_accessible_branch_refs"],
+        "public_fork_unique_heads_examined": fork_summary["unique_heads"],
+        "public_fork_heads_reachable_from_official_history": fork_summary[
+            "heads_reachable_from_current_official_history"
+        ],
+        "public_fork_divergent_heads_examined": fork_summary["divergent_heads_reviewed"],
+        "public_fork_divergent_extra_commits_examined": fork_summary["divergent_extra_commits_reviewed"],
+        "public_fork_divergent_changed_paths_examined": fork_summary["divergent_changed_paths_reviewed"],
+        "public_fork_new_object_counts": fork_summary["new_object_counts"],
+        "public_fork_new_blob_bytes_examined": fork_summary["new_blob_bytes"],
+        "public_fork_new_text_blobs_scanned": fork_summary["new_text_blobs_scanned"],
+        "public_fork_complete_paper_result_rows_found_in_new_text_blobs": 0,
+        "public_fork_community_trading_database_blobs_examined": fork_summary["community_trading_database_blobs"],
+        "public_fork_community_trading_database_history_rows_examined": fork_summary[
+            "community_trading_database_history_rows_across_versions"
+        ],
+        "public_fork_database_history_rows_with_complete_paper_result_row": 0,
+        "public_fork_unaffiliated_backtest_artifact_families_reviewed": fork_summary[
+            "unaffiliated_backtest_artifact_families_reviewed"
+        ],
+        "public_fork_unaffiliated_AAPL_mini_run_comparable_cells": 3,
+        "public_fork_unaffiliated_AAPL_mini_run_matching_cells": 0,
+        "public_fork_native_paper_result_artifacts_found": False,
+        "public_fork_paper_result_credit": False,
         "one_hour_figure_numeric_points_or_arrays_shipped": False,
         "historical_native_predictions_evaluators_returns_or_portfolio_paths": False,
         "paper_numeric_tables_audited": [1, 2],
@@ -1782,9 +2359,7 @@ def build_audit(
         "released_benchmark_asset_horizon_sets": 16,
         "released_sets_with_100_segments_of_100_rows": 16,
         "released_sets_whose_union_matches_paper_date_endpoints": 16,
-        "released_distinct_timestamps_by_set": Counter(
-            int(row["released_distinct_timestamps"]) for row in inventory
-        ),
+        "released_distinct_timestamps_by_set": Counter(int(row["released_distinct_timestamps"]) for row in inventory),
         "original_5000_bar_panels_shipped": False,
         "benchmark_tree_sha256": tree_hash,
         "tracked_source_files_total": len(git_files(source_root)),
@@ -1804,27 +2379,30 @@ def build_audit(
         "paper_table_1_positive_tradingagent_drawdown_anomalies": 8,
         "paper_internal_anomalies_total": len(anomalies),
         "interpretation": (
-            "All four official paper revisions and the complete two-branch, 195-commit public "
-            "history are exhausted. The papers contain 600 version-specific result cells (360 "
-            "distinct across revisions). Pinned author table rasters correspond to 480/600 "
-            "version-specific cells (240 distinct), but this is author-output corroboration: "
-            "0/600 cells are independently regenerated. History contains 1,800 sampled "
-            "benchmark CSV paths across 18 asset/horizon directories, four table-image blobs, "
-            "and three one-hour chart blobs, but no native predictions, risk ratios, evaluator, "
-            "baseline runs, seeds, portfolio/return paths, or numeric chart arrays. In current "
-            "v4, the paper-described 40-close LR path matches 0/8 accuracies; all eight match "
-            "only with a unique undocumented three-bar feature gap. These are forensic "
-            "component findings, not QuantHarness replication."
+            "All four official paper revisions, the complete two-branch 204-commit official "
+            "history, and all 608 accessible public forks are exhausted. The papers contain "
+            "600 version-specific result cells (360 distinct); 480 author-rendered table-cell "
+            "correspondences remain static corroboration, and 0/600 cells are independently "
+            "regenerated. Nine post-paper official commits modify six provider, interface, "
+            "test, or documentation paths and add no result artifact. The fork census covers "
+            "700 branch refs, 112 unique heads, 70 divergent heads, 595 extra commits, 4,845 "
+            "changed paths, and 2,072 genuinely new blobs. Scans of 1,739 text blobs and 2,228 "
+            "analysis-history rows across 42 community trading-database versions find zero "
+            "complete published result rows. Three unaffiliated backtest families materially "
+            "change the model, universe, window, frequency, overlays, or strategy; the sole "
+            "AAPL overlap matches 0/3 comparable cells. No fork supplies the paper evaluator, "
+            "benchmark predictions, risk ratios, portfolio path, or exact result lineage."
         ),
         "source_file_sha256": PINNED_SOURCE_SHA256,
     }
 
     report = f"""# QuantHarness paper-level conformance audit
 
-Overall verdict: **not reproduced after auditing every official paper revision and
-the complete public Git history**. The release provides substantial sampled inputs,
-an inspectable multi-agent web framework, and author-rendered result images, but not
-the experiment runner or native data paths needed to regenerate a published result.
+Overall verdict: **not reproduced after auditing every official paper revision, the
+complete official history, and every accessible public-fork branch**. The release
+provides substantial sampled inputs, an inspectable multi-agent web framework, and
+author-rendered result images, but not the experiment runner or native data paths
+needed to regenerate a published result.
 
 ## Primary-source boundary
 
@@ -1833,12 +2411,45 @@ the experiment runner or native data paths needed to regenerate a published resu
   current v4 has 32. The v3/v4 `line_chart.pdf` assets are pinned separately;
   the exact submission dates and hashes are recorded in
   `official_paper_version_inventory.csv`.
-- The official [{SOURCE_URL}]({SOURCE_URL}) source is pinned at current `main`
-  commit `{commit}`. The audited public surface contains both branch heads,
-  **{history_summary['reachable_commits_total']} reachable commits**,
-  **{history_summary['unique_historical_paths_total']} unique historical paths**,
-  **{history_summary['reachable_object_counts']['blob']} blobs**, no tags, and no
+- The paper-era official [{SOURCE_URL}]({SOURCE_URL}) source (renamed from the
+  `Y-Research-SBU/QuantAgent` legacy URL) is pinned at `main` commit `{commit}`.
+  The current public surface is separately pinned through
+  `{PUBLIC_BRANCH_HEADS["main"]}` and contains both branch heads,
+  **{history_summary["reachable_commits_total"]} reachable commits**,
+  **{history_summary["unique_historical_paths_total"]} unique historical paths**,
+  **{history_summary["reachable_object_counts"]["blob"]} blobs**, no tags, and no
   unreachable objects. Deleted paths and `gh-pages` are included.
+- Nine post-paper official commits touch only six provider, interface, test, or
+  documentation paths. They add Gemini support, update MiniMax, and refresh the star
+  chart; they add no evaluator, prediction, risk-ratio, return, or result artifact.
+
+## Complete public-fork boundary
+
+- GitHub REST reported **{fork_summary["github_rest_reported_forks"]} forks** on
+  {fork_summary["census_date"]}. GraphQL exposed all branches for
+  **{fork_summary["graphql_accessible_forks"]} repositories** and
+  **{fork_summary["graphql_accessible_branch_refs"]} branch refs**; the remaining
+  {fork_summary["rest_minus_accessible_fork_gap"]} deleted, private, or otherwise
+  unavailable forks are not claimed as inspected.
+- The accessible surface collapses to **{fork_summary["unique_heads"]} unique heads**.
+  Of these, {fork_summary["heads_reachable_from_current_official_history"]} are
+  reachable from current official history and **{fork_summary["divergent_heads_reviewed"]}**
+  diverge. The divergent surface contains **{fork_summary["divergent_extra_commits_reviewed"]}
+  extra commits**, **{fork_summary["divergent_changed_paths_reviewed"]} changed paths**,
+  and **{fork_summary["new_object_counts"]["blob"]} genuinely new blobs** totaling
+  {fork_summary["new_blob_bytes"]:,} bytes.
+- A content scan covers {fork_summary["new_text_blobs_scanned"]} new text blobs and all
+  {fork_summary["community_trading_database_history_rows_across_versions"]}
+  `analysis_history` rows across {fork_summary["community_trading_database_blobs"]}
+  distinct community `trading_data.db` versions. It finds zero complete published
+  result rows. The databases contain live/community analyses from 2024--2026 rather
+  than the paper's fixed 100-segment benchmark, and their result tables are empty.
+- One unaffiliated fork contributes three real but non-paper backtest families: a tiny
+  AAPL/BTC run, a weekly Gemini-2.5-Flash-Lite GOOGL/XOM/JNJ run with added overlays,
+  and a daily classic-strategy grid. The AAPL overlap matches 0/3 comparable paper
+  cells; the other families use the wrong universe, model, window, frequency, or
+  strategy. They receive no paper-result credit. The only identifiable coauthor-owned
+  fork is an unchanged official-history snapshot.
 
 ## Paper-version evolution and rendered evidence
 
@@ -1938,9 +2549,7 @@ seeds/splits, portfolio series, and numeric 1-hour outputs reproduce the paper.
         for path in sorted(output_dir.iterdir())
         if path.is_file() and path.name != "manifest.json"
     }
-    (output_dir / "manifest.json").write_text(
-        json.dumps(manifest, indent=2, sort_keys=False) + "\n", encoding="utf-8"
-    )
+    (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=False) + "\n", encoding="utf-8")
     return manifest
 
 
@@ -1968,6 +2577,16 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--fork-snapshot",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "QUANTHARNESS_FORK_SNAPSHOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_paper/public_fork_branch_ref_snapshot_2026-08-30.csv",
+            )
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=project_root / "paper_runs/paper_replication_audits/quantharness",
@@ -1981,6 +2600,7 @@ def main() -> int:
     manifest = build_audit(
         args.source_root.resolve(),
         args.paper_versions_root.resolve(),
+        args.fork_snapshot.resolve(),
         args.output_dir.resolve(),
     )
     print(json.dumps(manifest, indent=2))

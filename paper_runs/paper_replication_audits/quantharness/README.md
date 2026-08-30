@@ -1,9 +1,10 @@
 # QuantHarness paper-level conformance audit
 
-Overall verdict: **not reproduced after auditing every official paper revision and
-the complete public Git history**. The release provides substantial sampled inputs,
-an inspectable multi-agent web framework, and author-rendered result images, but not
-the experiment runner or native data paths needed to regenerate a published result.
+Overall verdict: **not reproduced after auditing every official paper revision, the
+complete official history, and every accessible public-fork branch**. The release
+provides substantial sampled inputs, an inspectable multi-agent web framework, and
+author-rendered result images, but not the experiment runner or native data paths
+needed to regenerate a published result.
 
 ## Primary-source boundary
 
@@ -12,12 +13,45 @@ the experiment runner or native data paths needed to regenerate a published resu
   current v4 has 32. The v3/v4 `line_chart.pdf` assets are pinned separately;
   the exact submission dates and hashes are recorded in
   `official_paper_version_inventory.csv`.
-- The official [https://github.com/Y-Research-SBU/QuantAgent](https://github.com/Y-Research-SBU/QuantAgent) source is pinned at current `main`
-  commit `00a88cbbc3b946cbdf506038545d6b5c2df6a344`. The audited public surface contains both branch heads,
-  **195 reachable commits**,
+- The paper-era official [https://github.com/Y-Research-SBU/QuantHarness](https://github.com/Y-Research-SBU/QuantHarness) source (renamed from the
+  `Y-Research-SBU/QuantAgent` legacy URL) is pinned at `main` commit `00a88cbbc3b946cbdf506038545d6b5c2df6a344`.
+  The current public surface is separately pinned through
+  `2e64c7befa75a88d254a426f5f29fa61b0b56732` and contains both branch heads,
+  **204 reachable commits**,
   **1870 unique historical paths**,
-  **2228 blobs**, no tags, and no
+  **2244 blobs**, no tags, and no
   unreachable objects. Deleted paths and `gh-pages` are included.
+- Nine post-paper official commits touch only six provider, interface, test, or
+  documentation paths. They add Gemini support, update MiniMax, and refresh the star
+  chart; they add no evaluator, prediction, risk-ratio, return, or result artifact.
+
+## Complete public-fork boundary
+
+- GitHub REST reported **613 forks** on
+  2026-08-30. GraphQL exposed all branches for
+  **608 repositories** and
+  **700 branch refs**; the remaining
+  5 deleted, private, or otherwise
+  unavailable forks are not claimed as inspected.
+- The accessible surface collapses to **112 unique heads**.
+  Of these, 42 are
+  reachable from current official history and **70**
+  diverge. The divergent surface contains **595
+  extra commits**, **4845 changed paths**,
+  and **2072 genuinely new blobs** totaling
+  887,238,813 bytes.
+- A content scan covers 1739 new text blobs and all
+  2228
+  `analysis_history` rows across 42
+  distinct community `trading_data.db` versions. It finds zero complete published
+  result rows. The databases contain live/community analyses from 2024--2026 rather
+  than the paper's fixed 100-segment benchmark, and their result tables are empty.
+- One unaffiliated fork contributes three real but non-paper backtest families: a tiny
+  AAPL/BTC run, a weekly Gemini-2.5-Flash-Lite GOOGL/XOM/JNJ run with added overlays,
+  and a daily classic-strategy grid. The AAPL overlap matches 0/3 comparable paper
+  cells; the other families use the wrong universe, model, window, frequency, or
+  strategy. They receive no paper-result credit. The only identifiable coauthor-owned
+  fork is an unchanged official-history snapshot.
 
 ## Paper-version evolution and rendered evidence
 

@@ -46,11 +46,19 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     history_sets = read_csv(output / "public_source_history_benchmark_set_inventory.csv")
     history_images = read_csv(output / "historical_result_image_inventory.csv")
     history = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
-
+    postpaper = read_csv(output / "postpaper_official_source_changes.csv")
+    fork_branches = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
+    fork_commits = read_csv(output / "public_fork_divergent_commit_inventory.csv")
+    fork_paths = read_csv(output / "public_fork_divergent_path_inventory.csv")
+    fork_results = read_csv(output / "public_fork_result_artifact_audit.csv")
+    fork_summary = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
     assert manifest["overall_status"] == (
-        "not_reproduced_full_history_exhausted_author_table_rasters_only"
+        "not_reproduced_full_history_and_608_forks_exhausted_author_table_rasters_only"
     )
     assert manifest["full_paper_reproduced"] is False
+    assert manifest["source_url"] == "https://github.com/Y-Research-SBU/QuantHarness"
+    assert manifest["source_legacy_url"] == "https://github.com/Y-Research-SBU/QuantAgent"
     assert manifest["paper_versions_audited"] == 4
     assert manifest["version_specific_paper_numeric_result_cells_total"] == 600
     assert manifest["version_specific_paper_numeric_result_cells_by_version"] == {
@@ -65,12 +73,12 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert manifest["version_specific_native_result_cells_independently_regenerated"] == 0
     assert manifest["public_source_branches_total"] == 2
     assert manifest["public_source_tags_total"] == 0
-    assert manifest["public_source_reachable_commits_total"] == 195
+    assert manifest["public_source_reachable_commits_total"] == 204
     assert manifest["public_source_unique_historical_paths_total"] == 1870
     assert manifest["public_source_reachable_object_counts"] == {
-        "commit": 195,
-        "tree": 279,
-        "blob": 2228,
+        "commit": 204,
+        "tree": 291,
+        "blob": 2244,
     }
     assert manifest["public_source_unreachable_objects_total"] == 0
     assert manifest["public_source_historical_benchmark_csv_paths_total"] == 1800
@@ -81,17 +89,40 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert manifest["public_source_historical_unique_one_hour_result_chart_blobs_total"] == 3
     assert manifest["official_one_hour_figure_author_raster_correspondences_total"] == 2
     assert manifest["intermediate_nonpaper_one_hour_result_rasters_total"] == 1
+    assert manifest["postpaper_official_commits_audited"] == 9
+    assert manifest["postpaper_official_changed_paths_audited"] == 6
+    assert manifest["postpaper_official_native_result_artifacts_added"] == 0
+    assert manifest["github_rest_reported_public_forks"] == 613
+    assert manifest["graphql_accessible_public_forks"] == 608
+    assert manifest["public_fork_accessibility_gap"] == 5
+    assert manifest["public_fork_branch_refs_examined"] == 700
+    assert manifest["public_fork_unique_heads_examined"] == 112
+    assert manifest["public_fork_heads_reachable_from_official_history"] == 42
+    assert manifest["public_fork_divergent_heads_examined"] == 70
+    assert manifest["public_fork_divergent_extra_commits_examined"] == 595
+    assert manifest["public_fork_divergent_changed_paths_examined"] == 4845
+    assert manifest["public_fork_new_object_counts"] == {
+        "blob": 2072,
+        "commit": 595,
+        "tree": 1117,
+    }
+    assert manifest["public_fork_new_blob_bytes_examined"] == 887238813
+    assert manifest["public_fork_new_text_blobs_scanned"] == 1739
+    assert manifest["public_fork_complete_paper_result_rows_found_in_new_text_blobs"] == 0
+    assert manifest["public_fork_community_trading_database_blobs_examined"] == 42
+    assert manifest["public_fork_community_trading_database_history_rows_examined"] == 2228
+    assert manifest["public_fork_database_history_rows_with_complete_paper_result_row"] == 0
+    assert manifest["public_fork_unaffiliated_backtest_artifact_families_reviewed"] == 3
+    assert manifest["public_fork_unaffiliated_AAPL_mini_run_comparable_cells"] == 3
+    assert manifest["public_fork_unaffiliated_AAPL_mini_run_matching_cells"] == 0
+    assert manifest["public_fork_native_paper_result_artifacts_found"] is False
+    assert manifest["public_fork_paper_result_credit"] is False
     assert manifest["one_hour_figure_numeric_points_or_arrays_shipped"] is False
     assert manifest["paper_numeric_result_cells_total"] == 272
     assert manifest["native_paper_result_cells_reproduced"] == 0
     assert manifest["numeric_result_cells_unverifiable"] == 224
     assert manifest["paper_described_lr_accuracy_cells_matched"] == 0
-    assert (
-        manifest[
-            "published_lr_accuracy_cells_exact_only_with_undocumented_three_bar_feature_gap"
-        ]
-        == 8
-    )
+    assert manifest["published_lr_accuracy_cells_exact_only_with_undocumented_three_bar_feature_gap"] == 8
     assert manifest["inferred_gap_lr_extrema_cells_display_matched"] == 7
     assert manifest["paper_internal_delta_identity_cells_consistent"] == 23
     assert manifest["paper_internal_delta_identity_cells_inconsistent"] == 1
@@ -111,9 +142,7 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     }
     assert len(alignments) == 8
     assert {row["paper_described_status"] for row in alignments} == {"mismatch"}
-    assert {row["inferred_status"] for row in alignments} == {
-        "display_match_only_with_undocumented_three_bar_gap"
-    }
+    assert {row["inferred_status"] for row in alignments} == {"display_match_only_with_undocumented_three_bar_gap"}
     assert {row["inferred_feature_rows_zero_based"] for row in alignments} == {"54:94"}
     assert {row["undocumented_feature_gap_rows"] for row in alignments} == {"94:97"}
 
@@ -158,13 +187,10 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
         "v4": 272,
     }
     assert sum(row["author_rendered_correspondence"] == "True" for row in versioned_results) == 480
-    assert all(
-        row["independently_regenerated_from_native_result_path"] == "False"
-        for row in versioned_results
-    )
+    assert all(row["independently_regenerated_from_native_result_path"] == "False" for row in versioned_results)
     assert all(row["paper_result_credit"] == "False" for row in versioned_results)
 
-    assert len(history_commits) == 195
+    assert len(history_commits) == 204
     assert len(history_paths) == 1870
     assert len(history_sets) == 18
     assert {row["unique_historical_segment_paths"] for row in history_sets} == {"100"}
@@ -172,34 +198,46 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert sum("table" in row["role"] for row in history_images) == 4
     assert sum("one_hour" in row["role"] for row in history_images) == 3
     assert sum(int(row["distinct_table_cells_corresponded"]) for row in history_images) == 240
-    assert (
-        sum(int(row["version_specific_table_cells_corresponded"]) for row in history_images)
-        == 480
-    )
+    assert sum(int(row["version_specific_table_cells_corresponded"]) for row in history_images) == 480
     assert all(row["underlying_numeric_result_array_shipped"] == "False" for row in history_images)
     assert all(row["paper_result_credit"] == "False" for row in history_images)
-    assert Counter(row["history_role"] for row in history_paths)[
-        "released_sampled_benchmark_segment"
-    ] == 1800
-    assert Counter(row["history_role"] for row in history_paths)[
-        "author_rendered_result_output_no_underlying_array"
-    ] == 3
+    assert Counter(row["history_role"] for row in history_paths)["released_sampled_benchmark_segment"] == 1800
+    assert (
+        Counter(row["history_role"] for row in history_paths)["author_rendered_result_output_no_underlying_array"] == 3
+    )
     assert not any(row["native_result_artifact_candidate"] == "True" for row in history_paths)
-    assert history["reachable_commits_total"] == 195
+    assert history["reachable_commits_total"] == 204
     assert history["unique_historical_paths_total"] == 1870
     assert history["historical_native_result_artifact_candidates_total"] == 0
     assert history["official_one_hour_figure_author_raster_correspondences_total"] == 2
     assert history["intermediate_nonpaper_one_hour_result_rasters_total"] == 1
     assert history["paper_result_credit_from_author_rendered_images"] is False
 
+    assert len(postpaper) == 9
+    assert {row["native_result_artifact_path_count"] for row in postpaper} == {"0"}
+    assert len(fork_branches) == 700
+    assert len({row["repository"] for row in fork_branches}) == 608
+    assert len({row["head_commit"] for row in fork_branches}) == 112
+    assert len(fork_heads) == 112
+    assert sum(int(row["extra_commit_count_beyond_current_official_history"]) > 0 for row in fork_heads) == 70
+    assert len(fork_commits) == 595
+    assert len(fork_paths) == 4845
+    assert len(fork_results) == 3
+    assert sum(int(row["comparable_paper_cells"]) for row in fork_results) == 3
+    assert sum(int(row["matching_paper_cells"]) for row in fork_results) == 0
+    assert all(row["paper_result_credit"] == "False" for row in fork_results)
+    assert fork_summary["github_rest_reported_forks"] == 613
+    assert fork_summary["graphql_accessible_forks"] == 608
+    assert fork_summary["rest_minus_accessible_fork_gap"] == 5
+    assert fork_summary["new_text_blobs_with_complete_paper_result_row"] == 0
+    assert fork_summary["database_history_rows_with_complete_paper_result_row"] == 0
+    assert fork_summary["paper_result_credit"] is False
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
 
 
 def test_lr_reconstruction_uses_only_released_four_hour_segments() -> None:
-    source_root = Path(
-        "/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_source"
-    )
+    source_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_source")
     if not source_root.exists():
         return
     arrays = audit.load_4h_arrays(source_root)
@@ -210,9 +248,7 @@ def test_lr_reconstruction_uses_only_released_four_hour_segments() -> None:
 
 
 def test_all_official_paper_versions_match_pinned_tables_and_archives() -> None:
-    paper_root = Path(
-        "/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_paper"
-    )
+    paper_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_paper")
     if not paper_root.exists():
         return
     versions = audit.paper_version_inventory(paper_root)
@@ -225,23 +261,37 @@ def test_all_official_paper_versions_match_pinned_tables_and_archives() -> None:
         "v4": 272,
     }
     assert sum(row["author_rendered_correspondence"] for row in rows) == 480
-    assert not any(
-        row["independently_regenerated_from_native_result_path"] for row in rows
-    )
+    assert not any(row["independently_regenerated_from_native_result_path"] for row in rows)
 
 
 def test_full_public_source_history_has_no_hidden_native_result_path() -> None:
-    source_root = Path(
-        "/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_source"
-    )
+    source_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_source")
     if not source_root.exists():
         return
     commits, paths, images, history = audit.public_source_history(source_root)
     sets = audit.historical_benchmark_set_inventory(paths)
-    assert len(commits) == 195
+    assert len(commits) == 204
     assert len(paths) == 1870
     assert len(sets) == 18
     assert len(images) == 7
     assert history["historical_benchmark_csv_paths_total"] == 1800
     assert history["historical_native_result_artifact_candidates_total"] == 0
     assert history["version_specific_table_cells_author_rendered_correspondence"] == 480
+
+
+def test_full_public_fork_surface_has_no_native_paper_result_path() -> None:
+    source_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/quantagent_hft_source")
+    if not source_root.exists():
+        return
+    snapshot = ROOT / "paper_runs/paper_replication_audits/quantharness/public_fork_branch_ref_snapshot.csv"
+    branches, heads, commits, paths, results, summary = audit.public_fork_audit(source_root, snapshot)
+    assert len(branches) == 700
+    assert len(heads) == 112
+    assert len(commits) == 595
+    assert len(paths) == 4845
+    assert len(results) == 3
+    assert summary["graphql_accessible_forks"] == 608
+    assert summary["divergent_heads_reviewed"] == 70
+    assert summary["new_text_blobs_with_complete_paper_result_row"] == 0
+    assert summary["database_history_rows_with_complete_paper_result_row"] == 0
+    assert summary["native_paper_result_artifacts_found"] is False
