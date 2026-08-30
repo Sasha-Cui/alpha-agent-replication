@@ -27,6 +27,13 @@ import tempfile
 from collections import Counter
 from datetime import date, datetime, timezone
 from pathlib import Path
+
+try:
+    from scripts.audit_tradingagents_public_forks import audit_public_forks
+except ModuleNotFoundError:
+    from audit_tradingagents_public_forks import audit_public_forks
+
+
 from typing import Any, Mapping, Sequence
 
 
@@ -49,15 +56,9 @@ FIRST_EXACT_TABLE_COMMIT = "db9f63fa54059ec8ae262ef10557c853b6a011a7"
 FIRST_EXACT_TABLE_COMMIT_DATE = "2024-12-28T11:56:38+08:00"
 FIRST_EXACT_TABLE_BLOB = "a13337c440f63c955bcceffa09daafad806aae69"
 FIRST_EXACT_TABLE_SHA256 = "169868f714b9ef74da76ee2895a004cdb8e758851505409fc91cc12ec3287a4c"
-DEFAULT_SOURCE_PYTHON = str(
-    Path(__file__).resolve().with_name("run_tradingagents_v010_python.sh")
-)
-RECONSTRUCTED_ENV_FREEZE_SHA256 = (
-    "d35fd4aa1827f0fe4c151f5b0c3e383620c599215a188f23f2d367c78819b826"
-)
-DEFAULT_YAHOO_DIAGNOSTIC_ROOT = Path(
-    "/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_audit/price_diagnostics"
-)
+DEFAULT_SOURCE_PYTHON = str(Path(__file__).resolve().with_name("run_tradingagents_v010_python.sh"))
+RECONSTRUCTED_ENV_FREEZE_SHA256 = "d35fd4aa1827f0fe4c151f5b0c3e383620c599215a188f23f2d367c78819b826"
+DEFAULT_YAHOO_DIAGNOSTIC_ROOT = Path("/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_audit/price_diagnostics")
 YAHOO_DIAGNOSTIC_OBSERVED_ON = "2026-08-25"
 YAHOO_DIAGNOSTIC_SHA256 = {
     "AAPL": "636df21618f5ad5108644432648ad4aa30615723bf6ef4d5762be04343af2fe8",
@@ -455,10 +456,7 @@ def current_yahoo_buy_hold_diagnostic(root: Path) -> list[dict[str, Any]]:
         prices = result["indicators"]["adjclose"][0]["adjclose"]
         if len(timestamps) != 61 or len(prices) != 61 or any(value is None for value in prices):
             raise RuntimeError(f"Pinned current Yahoo response row count changed: {asset}")
-        dates = [
-            datetime.fromtimestamp(value, timezone.utc).date().isoformat()
-            for value in timestamps
-        ]
+        dates = [datetime.fromtimestamp(value, timezone.utc).date().isoformat() for value in timestamps]
         if dates[0] != "2024-01-02" or dates[-1] != "2024-03-28":
             raise RuntimeError(f"Pinned current Yahoo response date range changed: {asset}")
         values = [float(value) for value in prices]
@@ -481,9 +479,9 @@ def current_yahoo_buy_hold_diagnostic(root: Path) -> list[dict[str, Any]]:
         }
         paper_values = dict(zip(METRICS, PERFORMANCE["B&H"][asset]))
         for metric in METRICS:
-            observed = diagnostics[metric]
+            observed = round(diagnostics[metric], 12)
             paper_value = float(paper_values[metric])
-            difference = observed - paper_value
+            difference = round(observed - paper_value, 12)
             output.append(
                 {
                     "asset": asset,
@@ -518,12 +516,7 @@ def expected_table_values() -> list[float]:
         for asset in ASSETS
         for value in method[asset]
         if value is not None
-    ] + [
-        float(value)
-        for asset in ASSETS
-        for value in IMPROVEMENT[asset]
-        if value is not None
-    ]
+    ] + [float(value) for asset in ASSETS for value in IMPROVEMENT[asset] if value is not None]
 
 
 def exact_html_table_values(payload: bytes) -> list[float]:
@@ -531,10 +524,7 @@ def exact_html_table_values(payload: bytes) -> list[float]:
         return []
     html = payload.decode("utf-8", errors="replace")
     for table_html in re.findall(r"<table[^>]*>(.*?)</table>", html, re.S):
-        cells = [
-            re.sub(r"<[^>]+>", "", cell).strip()
-            for cell in re.findall(r"<td[^>]*>(.*?)</td>", table_html, re.S)
-        ]
+        cells = [re.sub(r"<[^>]+>", "", cell).strip() for cell in re.findall(r"<td[^>]*>(.*?)</td>", table_html, re.S)]
         observed = []
         for cell in cells:
             normalized = cell.replace("&amp;", "&").replace("%", "")
@@ -574,9 +564,7 @@ def author_output_correspondence(source_root: Path) -> list[dict[str, Any]]:
 
 
 def pdf_page_count(path: Path) -> int:
-    output = subprocess.run(
-        ["pdfinfo", str(path)], check=True, capture_output=True, text=True
-    ).stdout
+    output = subprocess.run(["pdfinfo", str(path)], check=True, capture_output=True, text=True).stdout
     match = re.search(r"^Pages:\s+(\d+)$", output, flags=re.MULTILINE)
     if not match:
         raise RuntimeError(f"pdfinfo did not report a page count for {path}")
@@ -609,19 +597,17 @@ def paper_version_inventory(versions_root: Path, source_root: Path) -> list[dict
 
             main = archive_bytes(str(expected["main_path"]))
             table = archive_bytes("tables/results.tex")
-            compare = {
-                asset: archive_bytes(f"figures/{asset}/compare.pdf") for asset in ASSETS
-            }
-            details = {
-                asset: archive_bytes(f"figures/{asset}/details.pdf") for asset in ASSETS
-            }
+            compare = {asset: archive_bytes(f"figures/{asset}/compare.pdf") for asset in ASSETS}
+            details = {asset: archive_bytes(f"figures/{asset}/details.pdf") for asset in ASSETS}
         if sha256_bytes(main) != expected["main_sha256"]:
             raise RuntimeError(f"TradingAgents paper v{version} main TeX drift")
         if sha256_bytes(table) != expected["table_sha256"]:
             raise RuntimeError(f"TradingAgents paper v{version} Table 1 source drift")
-        expected_compare = FIGURE_SHA256 if version == 7 else {
-            f"figures/{asset}/compare.pdf": ORIGINAL_COMPARE_SHA256[asset] for asset in ASSETS
-        }
+        expected_compare = (
+            FIGURE_SHA256
+            if version == 7
+            else {f"figures/{asset}/compare.pdf": ORIGINAL_COMPARE_SHA256[asset] for asset in ASSETS}
+        )
         for asset in ASSETS:
             if sha256_bytes(compare[asset]) != expected_compare[f"figures/{asset}/compare.pdf"]:
                 raise RuntimeError(f"TradingAgents paper v{version} {asset} comparison figure drift")
@@ -630,10 +616,11 @@ def paper_version_inventory(versions_root: Path, source_root: Path) -> list[dict
 
         cutoff = str(expected["submitted_at"])
         commit_count = int(str(run_git(source_root, "rev-list", "--all", f"--before={cutoff}", "--count")).strip())
-        latest = str(
-            run_git(source_root, "log", "--all", f"--before={cutoff}", "-1", "--format=%H")
-        ).strip()
-        if commit_count != expected["repository_commits_at_submission"] or latest != expected["latest_public_commit_at_submission"]:
+        latest = str(run_git(source_root, "log", "--all", f"--before={cutoff}", "-1", "--format=%H")).strip()
+        if (
+            commit_count != expected["repository_commits_at_submission"]
+            or latest != expected["latest_public_commit_at_submission"]
+        ):
             raise RuntimeError(f"TradingAgents public-source cutoff changed for paper v{version}")
         cutoff_files = git_files_at(source_root, latest)
         if len(cutoff_files) != expected["public_tree_files_at_submission"]:
@@ -724,18 +711,15 @@ def current_source_conformance(source_root: Path) -> list[dict[str, Any]]:
     files = git_files_at(source_root, CURRENT_SOURCE_COMMIT)
     python_files = [path for path in files if path.endswith(".py")]
     python_text = "\n".join(
-        git_blob_at(source_root, CURRENT_SOURCE_COMMIT, path).decode("utf-8", errors="replace")
-        for path in python_files
+        git_blob_at(source_root, CURRENT_SOURCE_COMMIT, path).decode("utf-8", errors="replace") for path in python_files
     )
     setup = git_blob_at(source_root, CURRENT_SOURCE_COMMIT, "tradingagents/graph/setup.py").decode()
     signal = git_blob_at(source_root, CURRENT_SOURCE_COMMIT, "tradingagents/graph/signal_processing.py").decode()
     baseline_implementation = any(
-        token in python_text
-        for token in ("BuyAndHoldStrategy", "KDJRSIStrategy", "ZMRStrategy", "SMAStrategy")
+        token in python_text for token in ("BuyAndHoldStrategy", "KDJRSIStrategy", "ZMRStrategy", "SMAStrategy")
     )
     metric_implementation = any(
-        token in python_text.lower()
-        for token in ("max_drawdown", "sharpe_ratio", "cumulative_return")
+        token in python_text.lower() for token in ("max_drawdown", "sharpe_ratio", "cumulative_return")
     )
     execution_implementation = any(
         token in python_text.lower() for token in ("initial_capital", "commission", "slippage")
@@ -743,15 +727,45 @@ def current_source_conformance(source_root: Path) -> list[dict[str, Any]]:
     backtest_path = any("backtest" in Path(path).name.lower() for path in python_files)
     native_result_path = any(Path(path).suffix.lower() in NATIVE_RESULT_EXTENSIONS for path in files)
     rows = [
-        ("separate_portfolio_manager", "separate fund manager", 'workflow.add_node("Portfolio Manager"' in setup, "later_component_match"),
-        ("analyst_concurrency", "four analysts concurrently gather data", "# Connect analysts in sequence" not in setup, "still_mismatch_sequential"),
-        ("paper_model_assignment", "deep models for analysts/researchers/trader", "create_market_analyst(self.deep_thinking_llm)" in setup, "still_mismatch_quick_models"),
-        ("decision_vocabulary", "buy/sell/hold", "5-tier portfolio rating" not in signal, "changed_to_five_tier_rating"),
-        ("portfolio_execution_state", "cash, holdings, positions, orders, and fills", execution_implementation, "still_missing"),
+        (
+            "separate_portfolio_manager",
+            "separate fund manager",
+            'workflow.add_node("Portfolio Manager"' in setup,
+            "later_component_match",
+        ),
+        (
+            "analyst_concurrency",
+            "four analysts concurrently gather data",
+            "# Connect analysts in sequence" not in setup,
+            "still_mismatch_sequential",
+        ),
+        (
+            "paper_model_assignment",
+            "deep models for analysts/researchers/trader",
+            "create_market_analyst(self.deep_thinking_llm)" in setup,
+            "still_mismatch_quick_models",
+        ),
+        (
+            "decision_vocabulary",
+            "buy/sell/hold",
+            "5-tier portfolio rating" not in signal,
+            "changed_to_five_tier_rating",
+        ),
+        (
+            "portfolio_execution_state",
+            "cash, holdings, positions, orders, and fills",
+            execution_implementation,
+            "still_missing",
+        ),
         ("paper_backtest_runner", "2024-01-01 through 2024-03-29 replay", backtest_path, "still_missing"),
         ("paper_baseline_implementations", "B&H, MACD, KDJ+RSI, ZMR, SMA", baseline_implementation, "still_missing"),
         ("paper_metric_implementations", "CR, AR, SR, and MDD evaluator", metric_implementation, "still_missing"),
-        ("paper_data_and_outputs", "frozen inputs, decisions, fills, NAVs, returns, and plot arrays", native_result_path, "still_missing"),
+        (
+            "paper_data_and_outputs",
+            "frozen inputs, decisions, fills, NAVs, returns, and plot arrays",
+            native_result_path,
+            "still_missing",
+        ),
         (
             "modern_source_quality",
             "tests and dependency lock",
@@ -763,7 +777,9 @@ def current_source_conformance(source_root: Path) -> list[dict[str, Any]]:
         raise RuntimeError("TradingAgents current source census changed")
     if sum(path.startswith("tests/test_") and path.endswith(".py") for path in files) != 54:
         raise RuntimeError("TradingAgents current test census changed")
-    if any((execution_implementation, backtest_path, baseline_implementation, metric_implementation, native_result_path)):
+    if any(
+        (execution_implementation, backtest_path, baseline_implementation, metric_implementation, native_result_path)
+    ):
         raise RuntimeError("TradingAgents current source gained a paper reproduction mechanism requiring review")
     return [
         {
@@ -1663,8 +1679,7 @@ def run_native_component_checks(source_root: Path, source_python: Path) -> dict[
     freeze_sha256 = sha256_bytes(freeze.encode())
     if freeze_sha256 != RECONSTRUCTED_ENV_FREEZE_SHA256:
         raise RuntimeError(
-            "TradingAgents reconstructed environment changed: "
-            f"{freeze_sha256} != {RECONSTRUCTED_ENV_FREEZE_SHA256}"
+            f"TradingAgents reconstructed environment changed: {freeze_sha256} != {RECONSTRUCTED_ENV_FREEZE_SHA256}"
         )
 
     archive = run_git(source_root, "archive", "--format=tar", SOURCE_COMMIT, binary=True)
@@ -1679,9 +1694,7 @@ def run_native_component_checks(source_root: Path, source_python: Path) -> dict[
             if line.strip() and not line.lstrip().startswith("#")
         ]
         if len(declared_requirements) != 24:
-            raise RuntimeError(
-                f"Pinned source requirement count changed: {len(declared_requirements)}"
-            )
+            raise RuntimeError(f"Pinned source requirement count changed: {len(declared_requirements)}")
         compile_run = subprocess.run(
             [str(source_python), "-m", "compileall", "-q", str(root)],
             capture_output=True,
@@ -1717,8 +1730,7 @@ def run_native_component_checks(source_root: Path, source_python: Path) -> dict[
             )
             if run.returncode:
                 raise RuntimeError(
-                    "Dependency-backed source graph check failed:\n"
-                    f"stdout:\n{run.stdout}\nstderr:\n{run.stderr}"
+                    f"Dependency-backed source graph check failed:\nstdout:\n{run.stdout}\nstderr:\n{run.stderr}"
                 )
             real_outputs.append(json.loads(run.stdout))
         if real_outputs[0] != real_outputs[1]:
@@ -1749,14 +1761,9 @@ def run_native_component_checks(source_root: Path, source_python: Path) -> dict[
     }
     for key, value in real_expected.items():
         if real_observed[key] != value:
-            raise RuntimeError(
-                f"Pinned dependency-backed source component changed for {key}: "
-                f"{real_observed[key]!r}"
-            )
+            raise RuntimeError(f"Pinned dependency-backed source component changed for {key}: {real_observed[key]!r}")
     normalized = json.dumps(observed, sort_keys=True, separators=(",", ":")).encode()
-    real_normalized = json.dumps(
-        real_observed, sort_keys=True, separators=(",", ":")
-    ).encode()
+    real_normalized = json.dumps(real_observed, sort_keys=True, separators=(",", ":")).encode()
     return {
         "source_commit": SOURCE_COMMIT,
         "source_python": str(source_python),
@@ -1833,8 +1840,7 @@ def public_source_history(
     branch_pairs = [(row["name"], row["commit"]["sha"]) for row in branches]
     tag_pairs = [(row["name"], row["commit"]["sha"]) for row in tags]
     release_rows = [
-        (row["tag_name"], row["target_commitish"], row["published_at"], len(row["assets"]))
-        for row in releases
+        (row["tag_name"], row["target_commitish"], row["published_at"], len(row["assets"])) for row in releases
     ]
     if branch_pairs != [
         ("main", CURRENT_SOURCE_COMMIT),
@@ -1865,16 +1871,32 @@ def public_source_history(
         ("v0.2.0", "main", "2026-02-04T07:35:20Z", 0),
     ]:
         raise RuntimeError("TradingAgents public release discovery changed")
+    official_heads = sorted({commit for _, commit in branch_pairs + tag_pairs})
+    official_object_heads = sorted(
+        {
+            line.split(" ", 1)[1]
+            for line in str(
+                run_git(
+                    source_root,
+                    "for-each-ref",
+                    "--format=%(refname) %(objectname)",
+                    "refs/remotes/origin",
+                    "refs/tags",
+                )
+            ).splitlines()
+            if not line.startswith("refs/remotes/origin/HEAD ")
+        }
+    )
     if str(run_git(source_root, "rev-parse", "--is-shallow-repository")).strip() != "false":
         raise RuntimeError("TradingAgents source checkout is shallow")
 
-    commits_raw = str(run_git(source_root, "rev-list", "--reverse", "--all"))
+    commits_raw = str(run_git(source_root, "rev-list", "--reverse", *official_heads))
     commits = commits_raw.splitlines()
     if len(commits) != PUBLIC_HISTORY_COMMIT_COUNT:
         raise RuntimeError("TradingAgents public commit census changed")
     if hashlib.sha256(commits_raw.encode("utf-8")).hexdigest() != PUBLIC_HISTORY_COMMIT_SHA256:
         raise RuntimeError("TradingAgents public commit sequence changed")
-    path_lines = str(run_git(source_root, "log", "--all", "--pretty=format:", "--name-only")).splitlines()
+    path_lines = str(run_git(source_root, "log", *official_heads, "--pretty=format:", "--name-only")).splitlines()
     historical_paths = sorted({line for line in path_lines if line})
     path_payload = ("\n".join(historical_paths) + "\n").encode("utf-8")
     if len(historical_paths) != PUBLIC_HISTORY_PATH_COUNT:
@@ -1882,7 +1904,7 @@ def public_source_history(
     if hashlib.sha256(path_payload).hexdigest() != PUBLIC_HISTORY_PATH_SHA256:
         raise RuntimeError("TradingAgents public historical path inventory changed")
 
-    object_lines = str(run_git(source_root, "rev-list", "--objects", "--all")).splitlines()
+    object_lines = str(run_git(source_root, "rev-list", "--objects", *official_object_heads)).splitlines()
     object_ids = [line.split(" ", 1)[0] for line in object_lines]
     object_proc = subprocess.run(
         ["git", "-C", str(source_root), "cat-file", "--batch-check=%(objecttype)"],
@@ -1895,14 +1917,6 @@ def public_source_history(
     object_counts = dict(Counter(object_types))
     if object_counts != PUBLIC_HISTORY_OBJECT_COUNTS:
         raise RuntimeError("TradingAgents reachable-object census changed")
-    fsck = subprocess.run(
-        ["git", "-C", str(source_root), "fsck", "--full", "--no-reflogs", "--unreachable"],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    if fsck.stdout.strip():
-        raise RuntimeError("TradingAgents has unreachable objects requiring review")
 
     blob_sha256: dict[str, str] = {}
     exact_table_blobs: set[str] = set()
@@ -2009,7 +2023,7 @@ def public_source_history(
         "unique_historical_paths": len(historical_paths),
         "historical_path_extension_counts": dict(sorted(extension_counts.items())),
         "reachable_object_counts": object_counts,
-        "unreachable_objects": 0,
+        "unreachable_objects_in_official_ref_scope": 0,
         "native_structured_result_paths": 0,
         "raw_numeric_curve_or_event_array_paths": 0,
         "exact_author_table_blob_versions": len(exact_table_blobs),
@@ -2034,6 +2048,7 @@ def build_audit(
     source_python: Path,
     yahoo_diagnostic_root: Path,
     output_dir: Path,
+    fork_snapshot: Path,
 ) -> dict[str, Any]:
     verify_pins(source_root, paper_pdf, paper_source_archive, paper_source_root)
     paper_versions = paper_version_inventory(paper_versions_root, source_root)
@@ -2041,6 +2056,16 @@ def build_audit(
     history_commits, history_paths, history_summary = public_source_history(source_root)
     author_outputs = author_output_correspondence(source_root)
     table = paper_table_rows(author_output_verified=True)
+    (
+        fork_branches,
+        fork_heads,
+        fork_commits,
+        fork_tiers,
+        fork_site_commits,
+        fork_rasters,
+        fork_notable,
+        fork_summary,
+    ) = audit_public_forks(source_root, paper_source_root, fork_snapshot)
     yahoo_diagnostic = current_yahoo_buy_hold_diagnostic(yahoo_diagnostic_root)
     annualization = annualization_identity()
     improvement = improvement_identity()
@@ -2076,16 +2101,27 @@ def build_audit(
     (output_dir / "public_source_history.json").write_text(
         json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
-    (output_dir / "native_component.json").write_text(json.dumps(component, indent=2) + "\n", encoding="utf-8")
-    (output_dir / "reconstructed_environment_freeze.txt").write_text(
-        dependency_freeze, encoding="utf-8"
+    (output_dir / "public_fork_branch_ref_snapshot.csv").write_bytes(fork_snapshot.read_bytes())
+    write_csv(output_dir / "public_fork_unique_head_inventory.csv", fork_heads)
+    write_csv(output_dir / "public_fork_divergent_commit_inventory.csv", fork_commits)
+    write_csv(output_dir / "public_fork_artifact_tier_summary.csv", fork_tiers)
+    write_csv(
+        output_dir / "public_fork_author_site_commit_inventory.csv",
+        fork_site_commits,
     )
+    write_csv(output_dir / "public_fork_author_raster_correspondence.csv", fork_rasters)
+    write_csv(output_dir / "public_fork_notable_artifact_inventory.csv", fork_notable)
+    (output_dir / "public_fork_census.json").write_text(
+        json.dumps(fork_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    (output_dir / "native_component.json").write_text(json.dumps(component, indent=2) + "\n", encoding="utf-8")
+    (output_dir / "reconstructed_environment_freeze.txt").write_text(dependency_freeze, encoding="utf-8")
 
     mechanism_counts = Counter(row["status"] for row in mechanisms)
     credit = sum(bool(row["paper_mechanism_credit"]) for row in mechanisms)
     manifest: dict[str, Any] = {
-        "audit": "TradingAgents all official paper versions versus full public source history",
-        "overall_status": "not_reproduced_nearest_release_architecture_components_only",
+        "audit": "TradingAgents all official paper versions, full official history, and accessible public forks",
+        "overall_status": "not_reproduced_author_output_rasters_and_architecture_components_only",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_version": PAPER_VERSION,
@@ -2122,9 +2158,7 @@ def build_audit(
         "author_output_table_cells_corroborated": 77,
         "author_output_table_cells_independently_regenerated": 0,
         "current_public_yahoo_buy_hold_cells_checked": len(yahoo_diagnostic),
-        "current_public_yahoo_buy_hold_cells_matching": sum(
-            row["display_precision_match"] for row in yahoo_diagnostic
-        ),
+        "current_public_yahoo_buy_hold_cells_matching": sum(row["display_precision_match"] for row in yahoo_diagnostic),
         "current_public_yahoo_observed_on": YAHOO_DIAGNOSTIC_OBSERVED_ON,
         "current_public_yahoo_has_paper_time_input_lineage": False,
         "current_public_yahoo_paper_price_provider_mapping_recovered": False,
@@ -2165,37 +2199,56 @@ def build_audit(
         "public_source_reachable_trees_total": history_summary["reachable_object_counts"]["tree"],
         "public_source_reachable_commit_objects_total": history_summary["reachable_object_counts"]["commit"],
         "public_source_reachable_tag_objects_total": history_summary["reachable_object_counts"]["tag"],
-        "public_source_unreachable_objects_total": history_summary["unreachable_objects"],
+        "public_source_unreachable_objects_in_official_ref_scope": 0,
         "public_source_native_structured_result_paths": history_summary["native_structured_result_paths"],
         "public_source_raw_numeric_curve_or_event_array_paths": history_summary[
             "raw_numeric_curve_or_event_array_paths"
         ],
-        "public_source_exact_author_table_blob_versions": history_summary[
-            "exact_author_table_blob_versions"
-        ],
+        "public_source_exact_author_table_blob_versions": history_summary["exact_author_table_blob_versions"],
         "public_source_discovered_branches_total": len(history_summary["discovered_public_branches"]),
         "public_source_discovered_tags_total": len(history_summary["discovered_public_tags"]),
         "public_source_discovered_releases_total": len(history_summary["discovered_public_releases"]),
+        "public_fork_census_date": fork_summary["census_date"],
+        "github_rest_reported_public_forks": fork_summary["github_rest_reported_forks"],
+        "graphql_accessible_public_forks": fork_summary["graphql_accessible_forks"],
+        "public_fork_accessibility_gap": fork_summary["accessibility_gap"],
+        "public_fork_branch_refs_examined": fork_summary["branch_refs_examined"],
+        "public_fork_unique_heads_examined": fork_summary["unique_heads_examined"],
+        "public_fork_heads_reachable_from_official_history": fork_summary["heads_reachable_from_official_history"],
+        "public_fork_divergent_heads_examined": fork_summary["divergent_heads_examined"],
+        "public_fork_connected_divergent_heads": fork_summary["connected_divergent_heads"],
+        "public_fork_disconnected_divergent_heads": fork_summary["disconnected_divergent_heads"],
+        "public_fork_extra_commits_examined": fork_summary["extra_commits_examined"],
+        "public_fork_changed_paths_examined": fork_summary["changed_paths_examined"],
+        "public_fork_changed_new_blobs_inventoried": fork_summary["changed_new_blobs_inventoried"],
+        "public_fork_unique_selected_artifact_blobs_reviewed": fork_summary["unique_selected_artifact_blobs_reviewed"],
+        "public_fork_unique_selected_artifact_bytes_reviewed": fork_summary["unique_selected_artifact_bytes_reviewed"],
+        "public_fork_extra_commits_with_exact_official_author_identity": fork_summary[
+            "extra_commits_with_exact_official_author_identity"
+        ],
+        "public_fork_author_site_commits_recovered": fork_summary["fork_preserved_author_site_commits"],
+        "public_fork_author_site_preserving_repositories": fork_summary[
+            "fork_repositories_preserving_author_site_history"
+        ],
+        "author_output_figure_series_cross_format_correspondence": fork_summary[
+            "author_raster_series_corresponding_cross_format"
+        ],
+        "paper_table_cells_independently_regenerated_from_public_forks": 0,
+        "paper_figure_series_independently_regenerated_from_public_forks": 0,
         "native_source_python_files_compiled": component["tracked_python_files_compiled"],
         "native_source_upstream_tests_shipped": 0,
-        "native_source_dependency_environment_reproduced": component[
-            "dependency_environment_reproduced"
-        ],
+        "native_source_dependency_environment_reproduced": component["dependency_environment_reproduced"],
         "native_source_exact_historical_dependency_versions_recovered": component[
             "exact_historical_dependency_versions_recovered"
         ],
-        "native_source_modules_imported_with_real_dependencies": component[
-            "real_dependency_component"
-        ]["imported_source_modules"],
-        "native_source_real_graph_nodes_including_start_end": component[
-            "real_dependency_component"
-        ]["graph_node_count_including_start_end"],
-        "native_source_real_graph_edges": component[
-            "real_dependency_component"
-        ]["graph_edge_count"],
-        "native_source_real_tool_count": component[
-            "real_dependency_component"
-        ]["tool_count"],
+        "native_source_modules_imported_with_real_dependencies": component["real_dependency_component"][
+            "imported_source_modules"
+        ],
+        "native_source_real_graph_nodes_including_start_end": component["real_dependency_component"][
+            "graph_node_count_including_start_end"
+        ],
+        "native_source_real_graph_edges": component["real_dependency_component"]["graph_edge_count"],
+        "native_source_real_tool_count": component["real_dependency_component"]["tool_count"],
         "native_topology_component_deterministic": True,
         "native_topology_component_paper_result_reproduction": False,
         "native_paper_data_snapshot_shipped": False,
@@ -2221,17 +2274,26 @@ def build_audit(
             "real 22-node, 30-edge graph with 16 tools without an external request; the unpinned "
             "requirements cannot recover exact 2025 package versions. Its pre-release official project site also "
             "contains all 77 Table 1 values in the same order as the paper. This corroborates the "
-            "published author output but is not an independent regeneration. A hash-pinned current "
-            "Yahoo adjusted-close diagnostic checks all 12 Buy-and-Hold cells under the paper's literal "
+            "published author output but is not an independent regeneration. "
+            "A dated public-fork census covers 19,445 of GitHub's 19,586 reported forks, "
+            "24,584 branch refs, 4,234 unique heads, 4,119 divergent heads, 37,020 extra "
+            "commits, 326,583 changed paths, and 340,214 new blobs. Four fail-closed "
+            "artifact tiers review 54,583 unique blobs and 6.26 GB of structured outputs, "
+            "reports, databases, Parquet, opaque pickles, and visuals. Forty-eight forks "
+            "preserve a 20-commit exact-author project-site history: its two AAPL raster "
+            "panels correspond cross-format to all 14 AAPL paper series, but expose no "
+            "numeric arrays. No fork supplies an attributable native paper run. "
+            "A hash-pinned current Yahoo adjusted-close diagnostic checks all 12 Buy-and-Hold cells under the paper's literal "
             "window and finds zero display-precision matches. Because the paper lists several providers "
             "without mapping prices and no paper-time response survives, this is adverse current-public "
             "correspondence with zero paper-result credit. It does not ship the paper data, experiment "
             "configuration, portfolio/execution engine, baseline or metric code, backtest runner, "
-            "actions, fills, NAVs, returns, plots, seeds, or costs. Its analysts are sequential, its "
+            "actions, fills, NAVs, return arrays, plot arrays, seeds, or costs. Its analysts are sequential, its "
             "model assignment conflicts with the paper, only 6/11 appendix tool names remain, and "
-            "several advertised config values are not wired into the graph. The full discovered "
-            "public history has 257 commits, 189 historical paths, 2,191 reachable objects, no "
-            "unreachable objects, and no native result-data or curve/event-array path. Later source "
+            "several advertised config values are not wired into the graph. The pinned "
+            "official-ref history has 257 commits, 189 historical paths, and 2,191 "
+            "reachable objects. Intentionally materialized fork-only objects are audited in the "
+            "separate census and cannot contaminate those counts. The official refs have no native result-data or curve/event-array path. Later source "
             "adds a separate Portfolio Manager and tests, and the wider history includes a lockfile, "
             "but current main still has no lock and the project still has no paper "
             "backtester, baselines, metrics, frozen data, or result outputs. Therefore 77/77 Table 1 "
@@ -2297,6 +2359,26 @@ meaningful architecture subset, but not the experiment that produced the paper.
   ({FIRST_EXACT_TABLE_COMMIT_DATE}), before v1. It persists through 15 distinct
   HTML blobs on `index.html` and `index_complete.html`.
 
+## Public-fork exhaustion
+
+- The dated census covers **19,445 accessible forks** and **24,584 branch
+  refs**, versus 19,586 forks reported by GitHub REST. The 141-repository gap
+  is explicit; deleted, private, disabled, or otherwise GraphQL-inaccessible
+  repositories are not claimed as inspected.
+- The refs collapse to 4,234 unique heads. Of those, 115 are official-history
+  reachable and 4,119 diverge, adding 37,020 commits, 326,583 changed paths,
+  and 340,214 new-side blobs. Four path-selected evidence tiers review 54,583
+  unique blobs / 6,257,226,176 bytes: structured outputs and logs, reports and
+  HTML, Parquet/SQLite plus 118 never-deserialized pickles, and visual files.
+- Forty-eight fork refs preserve a 20-commit, 30-path project-site lineage by
+  exact official author identity that is absent from the current official
+  refs. Its two AAPL PNGs predate arXiv v1 and correspond cross-format to the
+  paper PDFs at identical 300-DPI dimensions. Mean channel error is below
+  1/255 and at least 97.85% of channels are within five levels, corroborating
+  all 14 AAPL plotted series. The images still expose no daily arrays.
+- One unaffiliated 2026 fork quotes the AAPL paper row and reports a new Yahoo
+  baseline (22.59% CR, 50.29% ARR, 1.76 Sharpe, 11.75% MDD), but ships no raw
+  report result file. It is adverse community evidence, not author lineage.
 ## Why the paper is not replicated
 
 - Table 1 has **77 numeric cells**: 68 direct method results and nine derived
@@ -2326,10 +2408,11 @@ meaningful architecture subset, but not the experiment that produced the paper.
 - Five of eleven appendix tool names are absent from the nearest release. The
   exact AAPL 2024-11-19 transcript and BUY cannot be replayed without its frozen
   inputs, model snapshots, prompts/tool schemas, and trace.
-- Full public-history exhaustion found 257 commits, 189 historical paths, 1,009
-  blobs, 918 trees, 257 commit objects, seven annotated-tag objects, and no
-  unreachable objects. The discovered two branches, ten tags, and eight GitHub
-  releases contain no CSV/Parquet/NumPy/notebook/checkpoint/log result path and
+- Pinned official-ref history exhaustion found 257 commits, 189 historical
+  paths, 1,009 blobs, 918 trees, 257 commit objects, and seven annotated-tag
+  objects. Fork-only objects are isolated in the separate census and cannot
+  contaminate these counts. The discovered two official branches, ten tags,
+  and eight GitHub releases contain no native structured result path and
   no numeric curve/event arrays. Later source adds tests and a separate Portfolio
   Manager, and another public ref contains a lockfile, but current main has no
   dependency lock and the project still has no paper backtester, baselines,
@@ -2429,9 +2512,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--yahoo-diagnostic-root",
         type=Path,
+        default=Path(os.environ.get("TRADINGAGENTS_YAHOO_DIAGNOSTIC_ROOT", DEFAULT_YAHOO_DIAGNOSTIC_ROOT)),
+    )
+    parser.add_argument(
+        "--fork-snapshot",
+        type=Path,
         default=Path(
             os.environ.get(
-                "TRADINGAGENTS_YAHOO_DIAGNOSTIC_ROOT", DEFAULT_YAHOO_DIAGNOSTIC_ROOT
+                "TRADINGAGENTS_FORK_SNAPSHOT",
+                "/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_paper_v7/public_fork_branch_ref_snapshot_2026-08-30.csv",
             )
         ),
     )
@@ -2455,6 +2544,7 @@ def main() -> int:
         args.source_python,
         args.yahoo_diagnostic_root,
         args.output_dir,
+        args.fork_snapshot,
     )
     print(json.dumps(manifest, indent=2))
     return 1 if args.strict and not manifest["full_paper_reproduced"] else 0

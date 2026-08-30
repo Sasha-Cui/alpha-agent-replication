@@ -101,8 +101,16 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     component = json.loads((output / "native_component.json").read_text(encoding="utf-8"))
     freeze = (output / "reconstructed_environment_freeze.txt").read_text(encoding="utf-8")
     author_outputs = read_csv(output / "author_output_correspondence.csv")
+    fork_branches = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
+    fork_commits = read_csv(output / "public_fork_divergent_commit_inventory.csv")
+    fork_tiers = read_csv(output / "public_fork_artifact_tier_summary.csv")
+    fork_site = read_csv(output / "public_fork_author_site_commit_inventory.csv")
+    fork_rasters = read_csv(output / "public_fork_author_raster_correspondence.csv")
+    fork_notable = read_csv(output / "public_fork_notable_artifact_inventory.csv")
+    fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
 
-    assert manifest["overall_status"] == ("not_reproduced_nearest_release_architecture_components_only")
+    assert manifest["overall_status"] == "not_reproduced_author_output_rasters_and_architecture_components_only"
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_era_source_revision_available"] is False
     assert manifest["paper_era_author_project_site_available"] is True
@@ -130,9 +138,7 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["current_public_yahoo_buy_hold_cells_matching"] == 0
     assert manifest["current_public_yahoo_observed_on"] == "2026-08-25"
     assert manifest["current_public_yahoo_has_paper_time_input_lineage"] is False
-    assert (
-        manifest["current_public_yahoo_paper_price_provider_mapping_recovered"] is False
-    )
+    assert manifest["current_public_yahoo_paper_price_provider_mapping_recovered"] is False
     assert manifest["annualized_return_pairs_matching_published_equation"] == 0
     assert manifest["paper_internal_inconsistencies_total"] == 7
     assert manifest["paper_specification_gaps_total"] == 27
@@ -162,7 +168,7 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["public_source_reachable_trees_total"] == 918
     assert manifest["public_source_reachable_commit_objects_total"] == 257
     assert manifest["public_source_reachable_tag_objects_total"] == 7
-    assert manifest["public_source_unreachable_objects_total"] == 0
+    assert manifest["public_source_unreachable_objects_in_official_ref_scope"] == 0
     assert manifest["public_source_native_structured_result_paths"] == 0
     assert manifest["public_source_raw_numeric_curve_or_event_array_paths"] == 0
     assert manifest["public_source_exact_author_table_blob_versions"] == 15
@@ -172,14 +178,53 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["current_public_source_tracked_files"] == 160
     assert manifest["current_public_source_python_files"] == 137
     assert manifest["current_public_source_test_files"] == 54
+    assert manifest["github_rest_reported_public_forks"] == 19586
+    assert manifest["graphql_accessible_public_forks"] == 19445
+    assert manifest["public_fork_accessibility_gap"] == 141
+    assert manifest["public_fork_branch_refs_examined"] == 24584
+    assert manifest["public_fork_unique_heads_examined"] == 4234
+    assert manifest["public_fork_heads_reachable_from_official_history"] == 115
+    assert manifest["public_fork_divergent_heads_examined"] == 4119
+    assert manifest["public_fork_connected_divergent_heads"] == 4083
+    assert manifest["public_fork_disconnected_divergent_heads"] == 36
+    assert manifest["public_fork_extra_commits_examined"] == 37020
+    assert manifest["public_fork_changed_paths_examined"] == 326583
+    assert manifest["public_fork_changed_new_blobs_inventoried"] == 340214
+    assert manifest["public_fork_unique_selected_artifact_blobs_reviewed"] == 54583
+    assert manifest["public_fork_unique_selected_artifact_bytes_reviewed"] == 6257226176
+    assert manifest["public_fork_extra_commits_with_exact_official_author_identity"] == 1172
+    assert manifest["public_fork_author_site_commits_recovered"] == 20
+    assert manifest["public_fork_author_site_preserving_repositories"] == 48
+    assert manifest["author_output_figure_series_cross_format_correspondence"] == 14
+    assert manifest["paper_table_cells_independently_regenerated_from_public_forks"] == 0
+    assert manifest["paper_figure_series_independently_regenerated_from_public_forks"] == 0
 
     assert len(table) == 77
+    assert len(fork_branches) == 24584
+    assert len({row["repository"] for row in fork_branches}) == 19445
+    assert len(fork_heads) == 4234
+    assert Counter(row["status"] for row in fork_heads) == {
+        "official_history_reachable": 115,
+        "connected_divergent": 4083,
+        "disconnected_divergent": 36,
+    }
+    assert len(fork_commits) == 37020
+    assert [int(row["selected_blobs"]) for row in fork_tiers] == [10910, 39823, 1931, 1922]
+    assert len(fork_site) == 20
+    assert len(fork_rasters) == 2
+    assert sum(int(row["series_corresponding"]) for row in fork_rasters) == 14
+    assert {row["cross_format_raster_correspondence"] for row in fork_rasters} == {"True"}
+    assert {row["underlying_numeric_array_recovered"] for row in fork_rasters} == {"False"}
+    assert {row["native_series_regenerated"] for row in fork_rasters} == {"False"}
+    assert {row["paper_result_credit"] for row in fork_rasters} == {"False"}
+    assert {row["artifact_role"] for row in fork_notable} == {"paper_quote_only", "unaffiliated_aapl_baseline"}
+    assert {row["raw_result_lineage_shipped"] for row in fork_notable} == {"False"}
+    assert fork_census["attributable_paper_run_artifacts"] == 0
+    assert fork_census["paper_table_cells_independently_regenerated_from_forks"] == 0
     assert {row["paper_result_credit"] for row in table} == {"False"}
     assert {row["author_output_correspondence"] for row in table} == {"True"}
     assert {row["author_output_value"] for row in table} == {row["paper_value"] for row in table}
-    assert {row["status"] for row in table} == {
-        "corroborated_by_exact_author_project_site_table_not_regenerated"
-    }
+    assert {row["status"] for row in table} == {"corroborated_by_exact_author_project_site_table_not_regenerated"}
     assert len(author_outputs) == 1
     assert author_outputs[0]["published_result_units_corroborated"] == "77"
     assert author_outputs[0]["independently_regenerated"] == "False"
@@ -197,9 +242,7 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
         "False": 3,
     }
     cumulative = {
-        row["asset"]: float(row["current_yahoo_diagnostic_value"])
-        for row in yahoo
-        if row["metric"] == "CR_pct"
+        row["asset"]: float(row["current_yahoo_diagnostic_value"]) for row in yahoo if row["metric"] == "CR_pct"
     }
     assert math.isclose(cumulative["AAPL"], -7.509797567549237)
     assert math.isclose(cumulative["GOOGL"], 9.235007082040148)
@@ -249,7 +292,7 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert sum(row["contains_exact_author_table_in_history"] == "True" for row in history_paths) == 2
     assert {row["native_structured_result_path"] for row in history_paths} == {"False"}
     assert history["reachable_object_counts"] == {"blob": 1009, "commit": 257, "tag": 7, "tree": 918}
-    assert history["unreachable_objects"] == 0
+    assert history["unreachable_objects_in_official_ref_scope"] == 0
     assert history["exact_author_table_paths"] == ["index.html", "index_complete.html"]
     assert len(current_source) == 10
     assert {row["paper_result_credit"] for row in current_source} == {"False"}
@@ -284,27 +327,24 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
 
 
 def test_global_evidence_route_preserves_current_yahoo_boundary() -> None:
-    ledger = read_csv(
-        ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv"
-    )
+    ledger = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
     row = next(item for item in ledger if item["system_id"] == "SYS-TRADING-AGENTS")
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_77_of_77_author_table_cells_corroborated_12_current_"
-        "yahoo_baseline_cells_checked_zero_matches_zero_native_regenerated"
+        "paper_audit:completed_77_of_77_author_table_cells_corroborated_14_of_42_"
+        "author_raster_series_cross_format_12_current_yahoo_cells_zero_matches_19445_"
+        "forks_24584_refs_4234_heads_exhausted_zero_native_regenerated"
     )
     note = row["concise_evidence_note"]
     assert "current Yahoo adjusted-close diagnostic" in note
     assert "all 12 Buy-and-Hold cells" in note
     assert "matches 0/12 at display precision" in note
     assert "no paper-time lineage" in note
+    assert "19,445 accessible public forks" in note
+    assert "14/42 paper series" in note
+    assert "No fork provides a native paper run" in note
 
-    route = read_csv(
-        ROOT
-        / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
-    )
-    route_row = next(
-        item for item in route if item["canonical_work_id"] == "CensusArxiv241220138"
-    )
+    route = read_csv(ROOT / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv")
+    route_row = next(item for item in route if item["canonical_work_id"] == "CensusArxiv241220138")
     assert "matches 0/12 at display precision" in route_row["precise_native_or_access_blocker"]
     failures = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
     assert "matches 0/12 at display precision" in failures
@@ -313,7 +353,8 @@ def test_global_evidence_route_preserves_current_yahoo_boundary() -> None:
 def test_pinned_primary_sources_when_available() -> None:
     source_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_source")
     paper_source = Path("/nfs/roberts/scratch/pi_btk22/zc362/tradingagents_paper_v7/source")
-    if not source_root.exists() or not paper_source.exists():
+    fork_snapshot = paper_source.parent / "public_fork_branch_ref_snapshot_2026-08-30.csv"
+    if not source_root.exists() or not paper_source.exists() or not fork_snapshot.exists():
         return
 
     assert str(audit.run_git(source_root, "rev-parse", "v0.1.0^{}")).strip() == (audit.SOURCE_COMMIT)
@@ -343,3 +384,9 @@ def test_pinned_primary_sources_when_available() -> None:
         component = audit.run_native_component_checks(source_root, source_python)
         assert component["dependency_environment_reproduced"] is True
         assert component["real_dependency_component"]["network_attempts"] == []
+    fork = audit.audit_public_forks(source_root, paper_source, fork_snapshot, deep_scan=False)
+    branch_rows, head_rows, commit_rows, tier_rows, site_rows, _, notable_rows, census = fork
+    assert [len(branch_rows), len(head_rows), len(commit_rows)] == [24584, 4234, 37020]
+    assert [int(row["selected_blobs"]) for row in tier_rows] == [10910, 39823, 1931, 1922]
+    assert len(site_rows) == 20
+    assert len(notable_rows) == 2

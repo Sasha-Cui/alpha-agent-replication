@@ -48,6 +48,26 @@ meaningful architecture subset, but not the experiment that produced the paper.
   (2024-12-28T11:56:38+08:00), before v1. It persists through 15 distinct
   HTML blobs on `index.html` and `index_complete.html`.
 
+## Public-fork exhaustion
+
+- The dated census covers **19,445 accessible forks** and **24,584 branch
+  refs**, versus 19,586 forks reported by GitHub REST. The 141-repository gap
+  is explicit; deleted, private, disabled, or otherwise GraphQL-inaccessible
+  repositories are not claimed as inspected.
+- The refs collapse to 4,234 unique heads. Of those, 115 are official-history
+  reachable and 4,119 diverge, adding 37,020 commits, 326,583 changed paths,
+  and 340,214 new-side blobs. Four path-selected evidence tiers review 54,583
+  unique blobs / 6,257,226,176 bytes: structured outputs and logs, reports and
+  HTML, Parquet/SQLite plus 118 never-deserialized pickles, and visual files.
+- Forty-eight fork refs preserve a 20-commit, 30-path project-site lineage by
+  exact official author identity that is absent from the current official
+  refs. Its two AAPL PNGs predate arXiv v1 and correspond cross-format to the
+  paper PDFs at identical 300-DPI dimensions. Mean channel error is below
+  1/255 and at least 97.85% of channels are within five levels, corroborating
+  all 14 AAPL plotted series. The images still expose no daily arrays.
+- One unaffiliated 2026 fork quotes the AAPL paper row and reports a new Yahoo
+  baseline (22.59% CR, 50.29% ARR, 1.76 Sharpe, 11.75% MDD), but ships no raw
+  report result file. It is adverse community evidence, not author lineage.
 ## Why the paper is not replicated
 
 - Table 1 has **77 numeric cells**: 68 direct method results and nine derived
@@ -77,10 +97,11 @@ meaningful architecture subset, but not the experiment that produced the paper.
 - Five of eleven appendix tool names are absent from the nearest release. The
   exact AAPL 2024-11-19 transcript and BUY cannot be replayed without its frozen
   inputs, model snapshots, prompts/tool schemas, and trace.
-- Full public-history exhaustion found 257 commits, 189 historical paths, 1,009
-  blobs, 918 trees, 257 commit objects, seven annotated-tag objects, and no
-  unreachable objects. The discovered two branches, ten tags, and eight GitHub
-  releases contain no CSV/Parquet/NumPy/notebook/checkpoint/log result path and
+- Pinned official-ref history exhaustion found 257 commits, 189 historical
+  paths, 1,009 blobs, 918 trees, 257 commit objects, and seven annotated-tag
+  objects. Fork-only objects are isolated in the separate census and cannot
+  contaminate these counts. The discovered two official branches, ten tags,
+  and eight GitHub releases contain no native structured result path and
   no numeric curve/event arrays. Later source adds tests and a separate Portfolio
   Manager, and another public ref contains a lockfile, but current main has no
   dependency lock and the project still has no paper backtester, baselines,

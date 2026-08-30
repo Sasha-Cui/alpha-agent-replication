@@ -137,5 +137,5 @@
     "tree": 918
   },
   "unique_historical_paths": 189,
-  "unreachable_objects": 0
+  "unreachable_objects_in_official_ref_scope": 0
 }
