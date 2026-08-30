@@ -15,6 +15,7 @@ import contextlib
 import csv
 import hashlib
 import io
+import itertools
 import json
 import math
 import os
@@ -35,7 +36,7 @@ from xml.etree import ElementTree as ET
 
 ARXIV_URL = "https://arxiv.org/abs/2510.01664"
 SOURCE_URL = "https://github.com/yejining99/GuruAgents"
-AUDIT_DATE = "2026-08-14"
+AUDIT_DATE = "2026-08-30"
 PAPER_VERSION = "v1"
 PAPER_VERSIONS_TOTAL = 1
 PAPER_DATE = "2025-10-02T04:45:27Z"
@@ -72,6 +73,8 @@ SOURCE_NOTEBOOK_SHA256 = "e3c53f38ac37741f5989faa852b52f0a78776ccc5770c7a3cf9cf4
 PAPER_END = date(2025, 6, 30)
 PAPER_COST_BPS = 1.0
 
+PAPER_EFFECTIVE_START = date(2023, 11, 1)
+PAPER_EFFECTIVE_END = date(2025, 8, 1)
 AGENTS: dict[str, dict[str, Any]] = {
     "graham": {
         "paper_name": "Benjamin Graham",
@@ -378,6 +381,313 @@ def calculate_metrics(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
         "source_notebook_annualized_return_pct": (nav[-1] ** (252 / len(observations)) - 1) * 100,
     }
 
+
+
+def benchmark_cache_paths(source_root: Path) -> dict[str, list[dict[str, Any]]]:
+    """Load the released ETF cache in the shape expected by ``calculate_metrics``."""
+    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in read_csv(source_root / "data/benchmark_data.csv"):
+        ticker = row.get("ticker", "")
+        if ticker not in {"QQQ", "SPY"} or not row.get("date") or not row.get("price"):
+            continue
+        grouped[ticker].append({"date": row["date"], "price": float(row["price"])})
+    for rows in grouped.values():
+        rows.sort(key=lambda row: row["date"])
+    if set(grouped) != {"QQQ", "SPY"}:
+        raise RuntimeError("released benchmark cache does not contain QQQ and SPY")
+    return grouped
+
+
+def benchmark_metrics_for_window(
+    paths: Mapping[str, Sequence[Mapping[str, Any]]], start: date, end: date
+) -> dict[str, dict[str, Any]]:
+    results: dict[str, dict[str, Any]] = {}
+    for ticker, rows in paths.items():
+        selected = [
+            row for row in rows
+            if start <= date.fromisoformat(str(row["date"])) <= end
+        ]
+        if len(selected) < 2:
+            raise ValueError(f"insufficient {ticker} observations for {start} through {end}")
+        first = float(selected[0]["price"])
+        previous: float | None = None
+        shaped: list[dict[str, Any]] = []
+        for row in selected:
+            price = float(row["price"])
+            shaped.append({
+                "date": date.fromisoformat(str(row["date"])),
+                "normalized_value": price / first,
+                "daily_return": None if previous is None else price / previous - 1,
+            })
+            previous = price
+        results[ticker] = calculate_metrics(shaped)
+    return results
+
+
+def benchmark_effective_window_rows(
+    source_root: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Recover and verify the one common cache window that yields both paper rows.
+
+    The search is deliberately restricted to starts in the paper-stated Q4 2023
+    and ends from Q2 2025 through the released cache/visible Figure 1 horizon.
+    Credit is awarded only because one common window reproduces all 20 cells,
+    not because different endpoints are selected metric by metric.
+    """
+    paths = benchmark_cache_paths(source_root)
+    paper_by_ticker = {
+        "QQQ": next(row for row in PAPER_TABLE if row[0] == "NASDAQ 100"),
+        "SPY": next(row for row in PAPER_TABLE if row[0] == "S&P 500"),
+    }
+    common_dates = sorted(
+        set(str(row["date"]) for row in paths["QQQ"])
+        & set(str(row["date"]) for row in paths["SPY"])
+    )
+    starts = [
+        date.fromisoformat(day) for day in common_dates
+        if date(2023, 10, 1) <= date.fromisoformat(day) <= date(2023, 12, 31)
+    ]
+    ends = [
+        date.fromisoformat(day) for day in common_dates
+        if date(2025, 4, 1) <= date.fromisoformat(day) <= date(2025, 8, 15)
+    ]
+    candidates: list[dict[str, Any]] = []
+    for start in starts:
+        for end in ends:
+            calculated = benchmark_metrics_for_window(paths, start, end)
+            ticker_matches: dict[str, int] = {}
+            absolute_error = 0.0
+            for ticker, (_, _, expected_values) in paper_by_ticker.items():
+                matched = 0
+                for (metric, _, decimals), expected in zip(METRICS, expected_values):
+                    actual = float(calculated[ticker][metric])
+                    tolerance = .5 * 10 ** (-decimals) + 1e-12
+                    matched += int(abs(actual - expected) <= tolerance)
+                    absolute_error += abs(actual - expected)
+                ticker_matches[ticker] = matched
+            candidates.append({
+                "start": start.isoformat(), "end": end.isoformat(),
+                "matched_cells": sum(ticker_matches.values()),
+                "QQQ_matched_cells": ticker_matches["QQQ"],
+                "SPY_matched_cells": ticker_matches["SPY"],
+                "aggregate_absolute_error": absolute_error,
+            })
+    candidates.sort(
+        key=lambda row: (
+            -int(row["matched_cells"]), float(row["aggregate_absolute_error"]),
+            row["start"], row["end"],
+        )
+    )
+    perfect = [row for row in candidates if row["matched_cells"] == 20]
+    if (
+        len(perfect) != 1
+        or perfect[0]["start"] != PAPER_EFFECTIVE_START.isoformat()
+        or perfect[0]["end"] != PAPER_EFFECTIVE_END.isoformat()
+    ):
+        raise RuntimeError("paper benchmark effective-window recovery is no longer unique")
+
+    calculated = benchmark_metrics_for_window(paths, PAPER_EFFECTIVE_START, PAPER_EFFECTIVE_END)
+    conformance: list[dict[str, Any]] = []
+    for ticker, (strategy, sheet, expected_values) in paper_by_ticker.items():
+        for (metric, paper_label, decimals), expected in zip(METRICS, expected_values):
+            actual = float(calculated[ticker][metric])
+            tolerance = .5 * 10 ** (-decimals) + 1e-12
+            exact = abs(actual - expected) <= tolerance
+            conformance.append({
+                "strategy": strategy, "ticker": ticker, "sheet": sheet,
+                "window_start": PAPER_EFFECTIVE_START.isoformat(),
+                "window_end": PAPER_EFFECTIVE_END.isoformat(),
+                "observations": calculated[ticker]["observations"],
+                "return_observations": calculated[ticker]["return_observations"],
+                "metric": metric, "paper_label": paper_label,
+                "paper_value": expected, "regenerated_value": actual,
+                "absolute_error": abs(actual - expected),
+                "rounding_tolerance": tolerance,
+                "status": "exact_rounding_match" if exact else "mismatch",
+                "paper_result_credit": exact,
+                "protocol": (
+                    "released ETF cache; common recovered window; sample std; "
+                    "252-day annualization; zero risk-free rate"
+                ),
+            })
+    if len(conformance) != 20 or not all(row["paper_result_credit"] for row in conformance):
+        raise RuntimeError("released benchmark cache no longer reproduces both paper rows")
+    summary = {
+        "search_start_region": "paper-stated Q4 2023 trading dates",
+        "search_end_region": (
+            "2025-04-01 through released/visible Figure 1 horizon 2025-08-15"
+        ),
+        "candidate_common_windows": len(candidates),
+        "perfect_20_of_20_windows": len(perfect),
+        "unique_recovered_start": perfect[0]["start"],
+        "unique_recovered_end": perfect[0]["end"],
+        "paper_caption_end": PAPER_END.isoformat(),
+        "caption_end_matches_recovered_end": PAPER_END == PAPER_EFFECTIVE_END,
+    }
+    return conformance, candidates[:10], summary
+
+
+def agent_protocol_variant_rows(source_root: Path) -> list[dict[str, Any]]:
+    """Exhaust coherent public portfolio choices under the recovered paper window.
+
+    This is adverse diagnostic evidence, not paper-result credit. The released
+    notebook lags quarter-labelled portfolios and therefore cannot cover the
+    recovered 2023-11-01 start. We test the necessary same-quarter interpretation,
+    every current/older public portfolio choice for the five overlapping quarters,
+    both released price columns, and both no-cost and paper-stated 1 bp turnover
+    treatments. No metric-specific endpoint or portfolio selection is allowed.
+    """
+    try:
+        import pandas as pd  # type: ignore
+    except ImportError as exc:
+        raise RuntimeError("GuruAgents agent-protocol audit requires pandas") from exc
+
+    paper_by_agent = {
+        key: next(row for row in PAPER_TABLE if row[0] == info["paper_name"])
+        for key, info in AGENTS.items()
+    }
+    portfolios: dict[tuple[str, str], dict[str, tuple[date, date, dict[str, float]]]] = {}
+    all_tickers: set[str] = set()
+    for collection in ("results", "results_22_24"):
+        for agent, info in AGENTS.items():
+            periods: dict[str, tuple[date, date, dict[str, float]]] = {}
+            directory = source_root / collection / info["directory"]
+            for path in sorted(directory.glob(f"{info['prefix']}_portfolio_*.csv")):
+                match = re.search(r"(\d{4}-\d{2}-\d{2})_(\d{4}-\d{2}-\d{2})", path.name)
+                if match is None:
+                    continue
+                seen: set[str] = set()
+                raw_weights: list[tuple[str, float]] = []
+                for row in read_csv(path):
+                    ticker = str(row.get("Ticker", "")).strip()
+                    if not ticker or ticker in seen:
+                        continue
+                    seen.add(ticker)
+                    raw_weights.append((ticker, float(row["Weight (%)"])))
+                total = sum(weight for _, weight in raw_weights)
+                if not raw_weights or total == 0:
+                    continue
+                weights = {ticker: weight / total for ticker, weight in raw_weights}
+                all_tickers.update(weights)
+                periods[match.group(1)] = (
+                    date.fromisoformat(match.group(1)),
+                    date.fromisoformat(match.group(2)),
+                    weights,
+                )
+            portfolios[(collection, agent)] = periods
+
+    frame = pd.read_csv(
+        source_root / "data/nasdaq100_ohlcv.csv",
+        usecols=["TICKERSYMBOL", "EVAL_D", "CLOSE_", "DIV_ADJ_CLOSE"],
+    )
+    frame = frame[frame["TICKERSYMBOL"].astype(str).isin(all_tickers)].copy()
+    frame["EVAL_D"] = pd.to_datetime(frame["EVAL_D"])
+    frame = frame[
+        (frame["EVAL_D"] >= "2023-10-01")
+        & (frame["EVAL_D"] <= PAPER_EFFECTIVE_END.isoformat())
+    ].sort_values("EVAL_D")
+    frame = frame.drop_duplicates(["EVAL_D", "TICKERSYMBOL"], keep="last")
+    pivots = {
+        column: frame.pivot(index="EVAL_D", columns="TICKERSYMBOL", values=column).sort_index()
+        for column in ("CLOSE_", "DIV_ADJ_CLOSE")
+    }
+
+    def run_variant(
+        agent: str, use_older: Mapping[str, bool], price_column: str, apply_cost: bool
+    ) -> dict[str, Any]:
+        public_periods = portfolios[("results", agent)]
+        pieces: list[Any] = []
+        base = 1.0
+        previous_weights: dict[str, float] = {}
+        for period_key in sorted(public_periods):
+            collection = "results_22_24" if use_older.get(period_key, False) else "results"
+            start, end, weights = portfolios[(collection, agent)][period_key]
+            if period_key == max(public_periods):
+                end = PAPER_EFFECTIVE_END
+            available = [ticker for ticker in weights if ticker in pivots[price_column].columns]
+            prices = pivots[price_column].loc[
+                (pivots[price_column].index >= pd.Timestamp(start))
+                & (pivots[price_column].index <= pd.Timestamp(end)),
+                available,
+            ].dropna(axis=1, how="all")
+            if prices.empty:
+                continue
+            first_prices = prices.bfill().iloc[0]
+            relative = prices.ffill().divide(first_prices)
+            period_value = relative.mul(
+                pd.Series({ticker: weights[ticker] for ticker in prices.columns})
+            ).sum(axis=1, min_count=1)
+            turnover_cost = 0.0
+            if apply_cost:
+                turnover = .5 * sum(
+                    abs(weights.get(ticker, 0.0) - previous_weights.get(ticker, 0.0))
+                    for ticker in set(weights) | set(previous_weights)
+                )
+                turnover_cost = turnover * PAPER_COST_BPS / 10_000
+            period_value = base * (1 - turnover_cost) * period_value
+            pieces.append(period_value)
+            base = float(period_value.dropna().iloc[-1])
+            previous_weights = weights
+        path = pd.concat(pieces).sort_index()
+        path = path[~path.index.duplicated(keep="last")]
+        path = path[
+            (path.index >= pd.Timestamp(PAPER_EFFECTIVE_START))
+            & (path.index <= pd.Timestamp(PAPER_EFFECTIVE_END))
+        ]
+        shaped: list[dict[str, Any]] = []
+        previous: float | None = None
+        for timestamp, value in path.items():
+            numeric = float(value)
+            shaped.append({
+                "date": timestamp.date(), "normalized_value": numeric,
+                "daily_return": None if previous is None else numeric / previous - 1,
+            })
+            previous = numeric
+        return calculate_metrics(shaped)
+
+    rows: list[dict[str, Any]] = []
+    for agent, (_, _, paper_values) in paper_by_agent.items():
+        current_periods = portfolios[("results", agent)]
+        older_periods = portfolios[("results_22_24", agent)]
+        overlap = sorted(
+            period for period in set(current_periods) & set(older_periods)
+            if period <= "2024-10-01"
+        )
+        if len(overlap) != 5:
+            raise RuntimeError(f"expected five overlapping released periods for {agent}")
+        for price_column in ("CLOSE_", "DIV_ADJ_CLOSE"):
+            for apply_cost in (False, True):
+                candidates: list[tuple[int, float, tuple[bool, ...], dict[str, Any]]] = []
+                for flags in itertools.product((False, True), repeat=len(overlap)):
+                    calculated = run_variant(agent, dict(zip(overlap, flags)), price_column, apply_cost)
+                    matched = 0
+                    relative_error = 0.0
+                    for (metric, _, decimals), expected in zip(METRICS, paper_values):
+                        actual = float(calculated[metric])
+                        matched += int(abs(actual - expected) <= .5 * 10 ** (-decimals) + 1e-12)
+                        relative_error += abs(actual - expected) / (abs(expected) + 1e-4)
+                    candidates.append((matched, relative_error, flags, calculated))
+                matched, relative_error, flags, calculated = min(
+                    candidates, key=lambda item: (-item[0], item[1], item[2])
+                )
+                row: dict[str, Any] = {
+                    "agent": paper_by_agent[agent][0], "price_column": price_column,
+                    "transaction_cost": "paper_1bp_half_L1" if apply_cost else "none",
+                    "portfolio_variants_evaluated": len(candidates),
+                    "overlap_periods": ";".join(overlap),
+                    "best_variant_older_flags": "".join("1" if flag else "0" for flag in flags),
+                    "best_display_precision_matches": matched, "paper_metrics_total": len(METRICS),
+                    "best_aggregate_relative_error": relative_error,
+                    "complete_agent_row_reproduced": matched == len(METRICS),
+                    "paper_result_credit": False,
+                }
+                row.update({f"best_{metric}": calculated[metric] for metric, _, _ in METRICS})
+                rows.append(row)
+    if len(rows) != 20 or sum(int(row["portfolio_variants_evaluated"]) for row in rows) != 640:
+        raise RuntimeError("GuruAgents released-portfolio protocol census changed")
+    if any(row["complete_agent_row_reproduced"] for row in rows):
+        raise RuntimeError("a released GuruAgents agent protocol unexpectedly reproduces a paper row")
+    return rows
 
 def table_conformance_rows(source_root: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     workbook = source_root / "results/multi_agent_backtest_results.xlsx"
@@ -1215,7 +1525,7 @@ def mechanism_rows() -> list[dict[str, Any]]:
 
 def specification_gap_rows() -> list[dict[str, Any]]:
     gaps = (
-        ("paper-result return paths", "Exact Figure 1 paths and Table 1 input series are absent", "blocking"),
+        ("paper-result agent return paths", "Exact five-agent Figure 1 paths and Table 1 input series are absent; benchmark paths are recovered", "blocking"),
         ("paper Figure 2 data", "The plotted holdings/weights differ from all released result histories", "blocking"),
         ("Table 1 generator", "Released notebook omits CAGR/moments/VaR/CVaR table-generation code", "blocking"),
         ("transaction costs", "Paper says 1 bp of gross turnover; source never applies the parameter", "blocking"),
@@ -1274,16 +1584,18 @@ def internal_check_rows(
          "evidence": f"four workbook blobs scanned; best is {history['best_historical_workbook_table_matches']}/70 rounding matches"},
         {"check": "historical paper-style plots", "status": "not_reproduced",
          "evidence": "three versions of the paper-relevant notebook contain six plots; 0 match either paper image"},
-        {"check": "Table 1 native cell reproduction", "status": "partial_two_cells_only",
-         "evidence": f"{sum(bool(row['paper_result_credit']) for row in table_rows)}/70 cells; both are benchmark MDD"},
-        {"check": "Table 1 complete rows", "status": "not_reproduced",
-         "evidence": "0/7 rows match all ten metrics"},
+        {"check": "Table 1 native cell reproduction", "status": "two_complete_benchmark_rows_only",
+         "evidence": f"{sum(bool(row['paper_result_credit']) for row in table_rows)}/70 cells; all 20 QQQ/SPY cells regenerate from one common released-cache window"},
+        {"check": "Table 1 complete rows", "status": "partial_two_benchmark_rows",
+         "evidence": "2/7 rows match all ten metrics; 0/5 agent rows match"},
         {"check": "native notebook versus shipped workbook", "status": "exact_source_artifact_reproduction",
          "evidence": "all seven paths match to <1e-12, but are not the paper paths"},
+        {"check": "paper horizon versus effective benchmark window", "status": "recovered_caption_contradiction",
+         "evidence": "the unique common cache window reproducing all 20 benchmark cells is 2023-11-01 through 2025-08-01, not the captioned Q2 2025 endpoint"},
         {"check": "paper horizon versus source workbook", "status": "contradiction",
-         "evidence": "paper says Q4 2023-Q2 2025; shipped agent paths run 2024-01-01 to 2025-08-12"},
-        {"check": "paper Figure 1 visual horizon", "status": "contradiction",
-         "evidence": "paper image extends beyond the stated Q2 2025 endpoint"},
+         "evidence": "shipped agent paths run 2024-01-01 through 2025-08-12 rather than the recovered paper-effective window"},
+        {"check": "paper Figure 1 visual horizon", "status": "supports_recovered_window",
+         "evidence": "paper image extends beyond Q2 2025 to approximately the recovered 2025-08-01 endpoint"},
         {"check": "Figure 2 first visible Buffett bar", "status": "contradiction",
          "evidence": f"both public variants differ; paper-only versus current={sorted(paper_visible-source_first)}, versus older={sorted(paper_visible-older_first)}"},
         {"check": "current paper-window raw portfolio weight sums", "status": "contradiction",
@@ -1335,16 +1647,31 @@ a public workbook is not the same as reproducing the paper.
 
 **The paper is not faithfully reproduced.** Native execution of the released
 notebook reproduces all seven shipped workbook paths to floating-point error,
-but the workbook does not reproduce Table 1 or either paper figure. Only two of
-the 70 Table 1 cells match at the paper's rounding precision, both benchmark
-maximum-drawdown values; no complete table row matches. None of the 42 audited
-figure units receives paper-result credit. Exhausting the public history does
-not change that verdict: all {manifest['source_history_reachable_commits']}
-commits, {manifest['source_history_unique_paths']} paths, four versions of the
-multi-agent workbook, and three versions of the paper-relevant notebook were
-checked. No historical workbook exceeds 2/70 Table 1 matches, none implements
-the missing complete Table 1 generator, and none of six historical notebook
-plots matches either paper figure.
+but that workbook does not reproduce Table 1 or either paper figure. A separate,
+source-grounded protocol reconstruction does recover both benchmark rows:
+released QQQ and SPY prices from 2023-11-01 through 2025-08-01 regenerate all
+20 benchmark cells at the paper's four-decimal precision. This is the only
+perfect common window among {manifest['benchmark_window_candidate_count']}
+windows searched across the paper-stated Q4 2023 start region and the Q2-to-
+Figure-1 endpoint region. It proves that the table uses ETFs and extends into
+Q3 2025, despite the paper caption saying Q2 2025.
+
+The five agent rows remain unreproduced (0/50 cells), so the overall verdict
+does not become a full replication. None of the 42 audited figure units receives
+paper-result credit. To test whether the public alternatives can nevertheless
+recover those rows,
+the audit exhausts {manifest['released_agent_protocol_variants_tested']} coherent
+agent protocols: every per-quarter choice between the two released portfolio
+lineages, both source price columns, and both stated-cost and no-cost treatments
+under the recovered window. No complete agent row appears; the best candidate
+matches only {manifest['released_agent_protocol_best_display_matches']}/10 cells.
+
+Separately, all {manifest['source_history_reachable_commits']} commits,
+{manifest['source_history_unique_paths']} paths, four versions of the multi-agent
+workbook, and three versions of the paper-relevant notebook were checked. No
+historical workbook exceeds 2/70 Table 1 matches, none implements the missing
+complete Table 1 generator, and none of six historical notebook plots matches
+either paper figure.
 
 The release nevertheless contains valuable component evidence: 95 archived
 GPT-4o-2024-08-06 agent decisions (35 in the current collection and 60 in the
@@ -1359,9 +1686,10 @@ repeat trials.
 
 ## Most consequential breaks
 
-- The paper says Q4 2023 through Q2 2025, while the public agent workbook runs
-  from 2024-01-01 through 2025-08-12 and the paper's own Figure 1 visibly runs
-  past Q2 2025.
+- The paper says Q4 2023 through Q2 2025, but the unique exact benchmark window
+  is 2023-11-01 through 2025-08-01 and Figure 1 visibly reaches that later
+  horizon. The public agent workbook instead runs 2024-01-01 through
+  2025-08-12.
 - The declared 1 bp gross-turnover cost is never applied.
 - Agent paths contain forward-filled calendar days while QQQ/SPY contain
   trading days; 252-day annualization is then applied to both.
@@ -1372,7 +1700,8 @@ repeat trials.
   portfolios sum to 100, 17/95 contain duplicates, and 0/95 satisfy the entire
   strict output contract. In the current 35-run collection, only 2/35 sum to
   100.
-- Exact Table 1 generation code, paper Figure 1 paths, and paper Figure 2
+- Exact five-agent Table 1 input paths, complete Table 1 generation code,
+  paper Figure 1 agent paths, and paper Figure 2
   portfolio distributions are not released in any public commit. The visible
   paper distributions differ from both same-period public portfolio variants.
 - Quarter labels are used as if data were available the next day; filing dates
@@ -1380,12 +1709,15 @@ repeat trials.
 
 ## Accounting boundary
 
-- Table 1: **{manifest['paper_table_cells_with_result_credit']}/70 cells**, **0/7 full rows**.
+- Table 1: **{manifest['paper_table_cells_with_result_credit']}/70 cells**, **{manifest['paper_table_rows_fully_reproduced']}/7 full rows**
+  (both benchmark rows; 0/5 agent rows and 0/50 agent cells).
 - Figures: **0/42 audited units**.
 - Exact appendix prompts: **0/5** (all are edited presentations of runtime templates).
 - Native public-workbook reproduction: **7/7 series** (component/source-artifact evidence only).
 - Public source history: **2/2 branches, 19/19 commits, 592/592 paths** audited.
-- Historical paper artifacts recovered: **0** complete table/figure/run artifacts.
+- Effective benchmark protocol: **2023-11-01 through 2025-08-01, 20/20 cells**.
+- Released agent protocol census: **{manifest['released_agent_protocol_variants_tested']} variants,
+  0 complete rows; best candidate 2/10 cells**.
 - Full-paper reproduction: **no**.
 
 See `manifest.json` for the machine-readable summary and the CSV ledgers for
@@ -1398,6 +1730,29 @@ def build_audit(source_root: Path, paper_root: Path, output_dir: Path) -> dict[s
     output_dir.mkdir(parents=True, exist_ok=True)
 
     table_rows, diagnostics, summaries = table_conformance_rows(source_root)
+    benchmark_rows, benchmark_window_candidates, benchmark_window_summary = (
+        benchmark_effective_window_rows(source_root)
+    )
+    agent_protocol_rows = agent_protocol_variant_rows(source_root)
+    benchmark_by_cell = {
+        (row["strategy"], row["metric"]): row for row in benchmark_rows
+    }
+    for row in table_rows:
+        recovered = benchmark_by_cell.get((row["strategy"], row["metric"]))
+        if recovered is None:
+            continue
+        row.update({
+            "window": (
+                f"recovered_effective_window_{PAPER_EFFECTIVE_START}_through_"
+                f"{PAPER_EFFECTIVE_END}"
+            ),
+            "native_reproduced_value": recovered["regenerated_value"],
+            "absolute_error": recovered["absolute_error"],
+            "rounding_tolerance": recovered["rounding_tolerance"],
+            "status": recovered["status"],
+            "paper_result_credit": recovered["paper_result_credit"],
+        })
+
     prompt_rows = source_prompt_rows(source_root, paper_root)
     run_rows, portfolio_rows = archived_run_and_portfolio_rows(source_root)
     overlapping_rows = overlapping_archived_run_rows(source_root, portfolio_rows)
@@ -1420,10 +1775,19 @@ def build_audit(source_root: Path, paper_root: Path, output_dir: Path) -> dict[s
     checks = internal_check_rows(
         table_rows, run_rows, portfolio_rows, overlapping_rows, history, source_root
     )
+    checks.append({
+        "check": "released agent portfolio protocol variants",
+        "status": "no_complete_agent_row_reproduced",
+        "evidence": "640 coherent variants tested across both public portfolio lineages, both source price columns, and stated/no-cost treatments; best candidate matches 2/10 cells",
+    })
 
     outputs: dict[str, Sequence[Mapping[str, Any]]] = {
         "paper_table_1_conformance.csv": table_rows,
         "source_workbook_metric_diagnostics.csv": diagnostics,
+        "agent_protocol_variant_summary.csv": agent_protocol_rows,
+        "benchmark_effective_window_conformance.csv": benchmark_rows,
+        "benchmark_window_search_top_candidates.csv": benchmark_window_candidates,
+        "benchmark_window_search_summary.csv": [benchmark_window_summary],
         "source_workbook_window_summary.csv": summaries,
         "paper_figure_unit_conformance.csv": figures,
         "source_prompt_conformance.csv": prompt_rows,
@@ -1456,9 +1820,9 @@ def build_audit(source_root: Path, paper_root: Path, output_dir: Path) -> dict[s
         "native_backtest_series": native_rows,
         "full_native_paper_execution_attempted": False,
         "full_native_paper_execution_blocker": (
-            "Exact paper return paths, Figure 2 portfolio data, Table 1 generator, "
-            "point-in-time inputs, and applied transaction-cost path are absent from "
-            "every public paper/source version."
+            "Exact five-agent paper return paths, Figure 2 portfolio data, Table 1 generator, "
+            "point-in-time inputs, and applied transaction-cost path are absent from every public "
+            "paper/source version; the two benchmark rows are independently regenerated."
         ),
         "public_source_history": history,
         "paper_result_credit": False,
@@ -1468,7 +1832,13 @@ def build_audit(source_root: Path, paper_root: Path, output_dir: Path) -> dict[s
     )
 
     exact_cells = sum(bool(row["paper_result_credit"]) for row in table_rows)
-    full_rows = sum(bool(row["full_paper_row_reproduced"]) for row in summaries if row["window"] == "paper_labeled_through_2025Q2")
+    cells_by_strategy: dict[str, list[Mapping[str, Any]]] = defaultdict(list)
+    for row in table_rows:
+        cells_by_strategy[str(row["strategy"])].append(row)
+    full_rows = sum(
+        len(rows) == len(METRICS) and all(bool(row["paper_result_credit"]) for row in rows)
+        for rows in cells_by_strategy.values()
+    )
     manifest: dict[str, Any] = {
         "audit": "GuruAgents fail-closed paper-level replication audit",
         "audit_date": AUDIT_DATE,
@@ -1483,14 +1853,37 @@ def build_audit(source_root: Path, paper_root: Path, output_dir: Path) -> dict[s
                    "remote_refs": SOURCE_REMOTE_REFS,
                    "remote_ref_snapshot_sha256": SOURCE_REMOTE_REF_SNAPSHOT_SHA256,
                    "full_public_history_audited": True},
-        "overall_status": "full_public_history_audited_public_workbook_reproduced_but_paper_results_not_reproduced_two_of_70_cells_only",
+        "overall_status": "benchmark_protocol_recovered_20_of_70_cells_reproduced_agent_results_not_reproduced",
         "full_paper_reproduced": False,
         "paper_table_cells_total": 70,
         "paper_table_cells_with_result_credit": exact_cells,
         "paper_table_rows_total": 7,
         "paper_table_rows_fully_reproduced": full_rows,
+        "paper_benchmark_table_cells_total": 20,
+        "benchmark_window_candidate_count": benchmark_window_summary[
+            "candidate_common_windows"
+        ],
+        "benchmark_window_perfect_match_count": benchmark_window_summary["perfect_20_of_20_windows"],
+        "paper_benchmark_table_cells_reproduced": sum(
+            bool(row["paper_result_credit"]) for row in benchmark_rows
+        ),
+        "paper_effective_window_start": PAPER_EFFECTIVE_START.isoformat(),
+        "paper_effective_window_end": PAPER_EFFECTIVE_END.isoformat(),
+        "paper_effective_window_unique_in_supported_search": True,
+        "paper_caption_end_matches_effective_window": PAPER_END == PAPER_EFFECTIVE_END,
         "paper_figure_units_total": len(figures),
         "paper_figure_units_with_result_credit": sum(bool(row["paper_result_credit"]) for row in figures),
+        "paper_agent_table_cells_total": 50,
+        "paper_agent_table_cells_with_result_credit": 0,
+        "released_agent_protocol_variants_tested": sum(
+            int(row["portfolio_variants_evaluated"]) for row in agent_protocol_rows
+        ),
+        "released_agent_protocol_complete_rows_reproduced": sum(
+            bool(row["complete_agent_row_reproduced"]) for row in agent_protocol_rows
+        ),
+        "released_agent_protocol_best_display_matches": max(
+            int(row["best_display_precision_matches"]) for row in agent_protocol_rows
+        ),
         "paper_appendix_prompts_total": len(prompt_rows),
         "paper_appendix_prompts_verbatim_runtime": sum(bool(row["paper_appendix_is_verbatim_runtime_prompt"]) for row in prompt_rows),
         "source_history_reachable_commits": history["reachable_commits"],
@@ -1522,9 +1915,11 @@ def build_audit(source_root: Path, paper_root: Path, output_dir: Path) -> dict[s
         "blocking_specification_gaps": sum(row["severity"] == "blocking" for row in gaps),
         "honest_interpretation": (
             "GuruAgents has a reproducible current source artifact and unusually rich archived component evidence. "
-            "The only official paper version and complete public GitHub history were exhausted, but the headline "
-            "performance paths, table, plotted portfolios, cost treatment, point-in-time protocol, reported-run "
-            "lineage, and deterministic-scoring claim remain unreproduced."
+            "A single common 2023-11-01 through 2025-08-01 window over the released QQQ/SPY cache independently "
+            "regenerates both complete benchmark rows (20/20 cells), proving that the paper's actual endpoint "
+            "extends beyond its Q2 2025 caption. The five headline agent paths, their 50 table cells, plotted "
+            "portfolios, cost treatment, point-in-time protocol, reported-run lineage, and deterministic-scoring "
+            "claim remain unreproduced."
         ),
     }
     (output_dir / "README.md").write_text(build_readme(manifest), encoding="utf-8")
