@@ -274,12 +274,16 @@ ARTIFACT_NOTES = {
         "No frozen paper dataset, prediction, holding, return, complete recorder, baseline "
         "output, or figure array survives. Thus 5/100 Table 2 cells are corroborated, "
         "0/100 are independently regenerated, and 0/18 additional quantitative claims "
-        "are reproduced. A 2026-08-14 census covers all 71 fork default heads; four "
-        "diverge, but none adds a paper result. The sole fork data candidate is an "
-        "unaffiliated 2026 Qlib bundle whose calendar starts in 2020 and whose S&P500 "
-        "membership file gives only 1/568 rows a finite end date, so it cannot supply "
-        "the paper's missing 2015 training panel. The disjoint 2026 official rewrite "
-        "data/registry and all fork outputs remain zero-credit post-paper evidence.",
+        "are reproduced. A 2026-08-30 census covers all 73 fork default heads; 69 "
+        "remain at official heads and four diverge. The advanced Wang fork is now "
+        "51 commits ahead of the rewrite and preserves 26 stored factor-registry "
+        "entries plus 75 newly delivered DSL files with IC/ICIR/rank-IC, decile, "
+        "and annualized long-short diagnostics. These are genuine 2026 outputs on "
+        "2018--2025 data under a disjoint objective/universe, not paper-run lineage. "
+        "The other fork data candidate is an unaffiliated 2026 Qlib bundle whose "
+        "calendar starts in 2020 and whose S&P500 membership file gives only 1/568 "
+        "rows a finite end date, so it cannot supply the missing 2015 training panel. "
+        "The disjoint rewrite data/registries and all fork outputs remain zero-credit.",
     ),
     "SYS-ALPHA-MEMO": (
         "N",
@@ -1678,7 +1682,7 @@ TARGETED_EXECUTION = {
         "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_"
         "zero_regenerated_paper_era_host_and_qlib_environments_112_of_113_modules_"
         "7_of_7_fitted_models_executable_20_of_32_mechanism_dimensions_"
-        "71_fork_heads_zero_additional_credit"
+        "73_fork_heads_26_wang_postpaper_registry_entries_zero_additional_credit"
     ),
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_v1_zero_of_953_v2_zero_of_1344_one_linked_input_one_date_prompt_no_author_native_pipeline",
     "SYS-ALPHA-AGENTS": "paper_audit:completed_source_document_and_7_portfolios_zero_of_20_plotted_series_no_native_agent_pipeline",
