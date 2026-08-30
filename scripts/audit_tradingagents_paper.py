@@ -2101,7 +2101,7 @@ def build_audit(
     (output_dir / "public_source_history.json").write_text(
         json.dumps(history_summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
-    (output_dir / "public_fork_branch_ref_snapshot.csv").write_bytes(fork_snapshot.read_bytes())
+    write_csv(output_dir / "public_fork_branch_ref_snapshot.csv", fork_branches)
     write_csv(output_dir / "public_fork_unique_head_inventory.csv", fork_heads)
     write_csv(output_dir / "public_fork_divergent_commit_inventory.csv", fork_commits)
     write_csv(output_dir / "public_fork_artifact_tier_summary.csv", fork_tiers)
