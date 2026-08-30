@@ -2,7 +2,7 @@ gap,detail,impact
 paper run commands,No exact commands or environment variables for the six v2 paper runs/ablations are released.,prevents exact paper-level replication
 run configuration,"No frozen config dump proves which non-default planner, scheduler, trace, selector, critique, or merge settings were used.",prevents exact paper-level replication
 raw traces,"Prompts, responses, hypotheses, DAGs, generated code, validation scores, errors, and selections are absent.",prevents exact paper-level replication
-result artifacts,"Complete branch/tag history contains developmental diagnostics, debug pickles, example outputs, and one run command, but no artifact is attributable to the published 75-competition three-seed runs.",prevents exact paper-level replication
+result artifacts,"Complete branch/tag history and all 1,854 accessible public forks contain developmental diagnostics, debug pickles, example outputs, preserved world-model artifacts, and run commands, but no artifact is attributable to the published 75-competition three-seed runs.",prevents exact paper-level replication
 broken result links,Both advertised aka.ms result links currently resolve to generic Bing pages.,prevents exact paper-level replication
 MLE-Bench snapshot,Dockerfile clones openai/mle-bench without a commit and performs live Git LFS pulls.,prevents exact paper-level replication
 Kaggle data,"The 75 competition datasets, exact versions, hashes, and access records are not archived.",prevents exact paper-level replication

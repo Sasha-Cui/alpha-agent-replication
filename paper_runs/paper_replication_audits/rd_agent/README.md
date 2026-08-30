@@ -1,6 +1,6 @@
 # R&D-Agent paper-replication audit
 
-This audit uses the final 33-page arXiv v2 report as the result authority and pins both paper revisions, the official repository at the last commit before each revision, and its complete public branch/tag path history. It is fail-closed: source-code presence, paper compilation, isolated component execution, and unattributed developmental outputs do not substitute for the reported 75-competition, three-seed experiments.
+This audit uses the final 33-page arXiv v2 report as the result authority and pins both paper revisions, the official repository at the last commit before each revision, its complete public branch/tag path history, and every accessible public-fork branch. It is fail-closed: source-code presence, paper compilation, isolated component execution, and unattributed developmental outputs do not substitute for the reported 75-competition, three-seed experiments.
 
 ## Honest result
 
@@ -27,6 +27,14 @@ The 7-page v1 paper reports 32 numeric cells from 24-hour runs using o1 and o3/G
 The audit now walks 231 pinned remote refs, 3384 reachable commits, and 3188 unique historical paths. It inspects 329 paths whose names mention results, outputs, logs, traces, checkpoints, submissions, or scores and records fifteen bounded artifact candidates byte-for-byte.
 
 That history corrects an earlier overstatement: developmental artifacts do exist. They include three pre-v1 competition CSVs, five between-version diagnostics with 39 competitions each, two debug-LLM pickles inventoried without deserialization, one example solution, pre-paper metadata, one post-v2 run command, and an unrelated post-v2 AutoRL result. None carries the paper's 75-competition manifest, three seeds, model/config lineage, or published table outputs. They receive zero paper-result credit, but their existence is now explicit rather than hidden behind a blanket “no outputs” claim.
+
+## Complete public-fork boundary
+
+GitHub reported 1862 forks on 2026-08-30. GraphQL exposed every branch for 1854 repositories and 33775 branch refs; the remaining 8 deleted, private, or otherwise unavailable repositories are not claimed as inspected. The accessible surface collapses to 1261 unique heads. Of those, 642 are already reachable from the pinned official history and 619 diverge, adding 4727 commits, 6383 paths, and 15752 changed blob versions.
+
+The fork network materially expands attributable development history: 2896 extra commits use an exact name/e-mail identity already present in official history, and 2938 use an official-history e-mail. This is source-lineage evidence, not proof that any commit generated a paper result. A fail-closed content review inspects 65 high-relevance result/data blobs across 56 paths. It finds zero complete published result rows and no 75-competition, three-seed bundle.
+
+One deleted `world_model` development head, preserved by 16 fork refs, carries descriptions for 74/75 paper competitions and 15 notebooks. Fourteen notebooks are unexecuted. The sole executed teacher-chain notebook uses a Qwen3 reward-model workflow, has 11 output objects, contains no medal or MLE-Bench result payload, and matches zero published rows. Its commit author name resembles paper coauthor Jingyuan Li, but the public profile/commit e-mail does not match the paper e-mail; identity is therefore left unresolved. These artifacts improve mechanism and task-universe provenance only and receive zero paper-result credit.
 
 ## What ran
 
