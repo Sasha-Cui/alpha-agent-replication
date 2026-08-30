@@ -36,6 +36,14 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   component check, not an agent result.
 - The complete public Git surface contains exactly 2 commits on one branch, 31 unique
   historical paths, no tags/releases, and no unreachable objects. The initial commit
+- A fail-closed 84-cell sensitivity ledger tests adjusted and unadjusted closes
+  under the full-period evaluator, the released 60-observation/5-row rolling
+  evaluator, and the paper's three-calendar-month/7-day rule. The closest current-
+  input Table 12 path is the released rolling rule with unadjusted close (aggregate
+  absolute error 1.038
+  across eight cells), versus 58.539
+  for the literal paper rule. This is diagnostic evidence of a protocol conflict,
+  not paper-time result credit.
   already contains the complete released component tree; the only later change is
   `README.md` citation and paper-link editing. No revision contains a checkpoint,
   result/output/log, action/trajectory, rating, or other native paper-result payload.
@@ -47,8 +55,8 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   unverifiable because no trained checkpoint, generated action path, per-seed trial,
   baseline output, token/cost log, or individual human rating is shipped.
 - The release's `test.parquet` is the paper's 2024 validation split. No 2025 test
-  Parquet is present. The paper states 122 test trading days, while the current
-  exchange-calendar retrieval has 121 observations in the stated inclusive bounds.
+  Parquet is present. The pinned current retrieval has the paper-stated 122 trading
+  observations, but it does not recover the missing prompts, actions, or paper-time inputs.
 - The checkout contains 31 tracked files and is a patch over VERL, not a standalone
   training tree: `run.sh` invokes absent `verl.trainer.main_ppo`; collection and
   evaluation use `/path/to/collected_data/`; documentation points to a plural
@@ -59,7 +67,8 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   source evaluation uses population std and multiplies by sqrt(number of rows).
 - The rolling paper says three calendar months stepped seven days; source evaluation
   uses 60 observations stepped five rows and is hardcoded to the 128-row 2024
-  validation split. The audit uses that released source behavior for its diagnostic.
+  validation split. The audit now reports both interpretations and both released
+  price columns rather than silently choosing the better fit.
 - Table 5 disagrees with detailed Tables 10--11 in three displayed ARR cells by 0.01
   percentage point: FinRLA2C MSFT, FinRLA2C NVDA, and FinRLPPO MSFT.
 

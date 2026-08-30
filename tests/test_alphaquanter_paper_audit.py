@@ -66,6 +66,7 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     source = read_csv(output / "source_config_conformance.csv")
     history = read_csv(output / "released_source_history_inventory.csv")
     forks = read_csv(output / "public_fork_branch_ref_snapshot.csv")
+    protocols = read_csv(output / "buy_hold_protocol_sensitivity.csv")
     fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
 
     assert manifest["overall_status"] == (
@@ -76,6 +77,17 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     assert manifest["buy_hold_cells_recomputed"] == 34
     assert manifest["buy_hold_cells_matched_current_yahoo_at_display_precision"] == 1
     assert manifest["buy_hold_cells_mismatched_current_yahoo"] == 33
+    assert manifest["current_exchange_calendar_test_observations"] == 122
+    assert manifest["buy_hold_protocol_sensitivity_cells"] == 84
+    assert manifest["buy_hold_protocol_cells_with_paper_result_credit"] == 0
+    assert manifest["buy_hold_protocol_display_matches"] == {
+        "full_period_released_evaluator|adjusted_close": 0,
+        "full_period_released_evaluator|unadjusted_close": 0,
+        "rolling_paper_3_calendar_months_step_7_days|adjusted_close": 1,
+        "rolling_paper_3_calendar_months_step_7_days|unadjusted_close": 0,
+        "rolling_released_60_observations_step_5|adjusted_close": 1,
+        "rolling_released_60_observations_step_5|unadjusted_close": 1,
+    }
     assert manifest["non_buy_hold_cells_unverifiable"] == 756
     assert manifest["released_prompt_label_rows"] == 2615
     assert manifest["reward_label_exact_numeric_matches_current_yahoo"] == 523
@@ -160,7 +172,8 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     assert len(source) == 26
     assert Counter(row["status"] for row in source) == {
         "match": 7,
-        "missing": 8,
+        "missing": 7,
+        "calendar_count_matches_inputs_missing": 1,
         "mismatch": 3,
         "paper_underspecified": 2,
         "trading_calendar_match": 1,
@@ -170,6 +183,13 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
         "missing_original_inputs": 1,
         "not_operational_without_upstream_merge": 1,
     }
+
+    assert len(protocols) == 84
+    assert {row["paper_result_credit"] for row in protocols} == {"False"}
+    errors = manifest["buy_hold_protocol_aggregate_absolute_error"]
+    assert min(errors, key=errors.get) == (
+        "rolling_released_60_observations_step_5|unadjusted_close"
+    )
 
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected

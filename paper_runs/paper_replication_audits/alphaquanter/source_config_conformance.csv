@@ -2,7 +2,7 @@ dimension,paper,released,status
 stock_universe,"GOOGL,META,MSFT,NVDA,TSLA",same five tickers in both Parquets,match
 train_split,2022-09-01 to 2024-03-30; 395 days,2022-09-01 to last trading day 2024-03-28; 395 dates,trading_calendar_match
 validation_split,2024-05-15 to 2024-11-14; 128 days,"same dates and 128 dates, but file/split named test",values_match_role_mislabeled
-test_split,2025-01-01 to 2025-06-30; 122 days,absent; current exchange calendar retrieval has 121 observations,missing
+test_split,2025-01-01 to 2025-06-30; 122 days,paper test split absent; pinned current retrieval has 122 observations,calendar_count_matches_inputs_missing
 forward_horizon_H,7,k=2..8 relative to t+1 (seven future returns),match
 forward_weight_decay,"exponential eta, numeric eta not disclosed",lambda=0.8,paper_underspecified
 decision_threshold_theta,1.5%,THRESHOLD=1.5,match
