@@ -906,7 +906,15 @@ ARTIFACT_NOTES = {
         "about 52 hours after the paper; its parent contains only three site files. "
         "The paper-era official project-site HTML contains all 77 Table 1 values in "
         "the same order as the paper. This is exact author-output correspondence, "
-        "not an independent regeneration or a raw result array. A hash-pinned current "
+        "not an independent regeneration or a raw result array. A dated census covers "
+        "19,445 accessible public forks, 24,584 branch refs, 4,234 unique heads, "
+        "4,119 divergent heads, 37,020 extra commits, 326,583 changed paths, and "
+        "340,214 new blobs. Four evidence tiers inspect 54,583 unique selected blobs "
+        "and 6.26 GB. Forty-eight forks preserve a 20-commit exact-author site history; "
+        "its two pre-v1 AAPL rasters correspond cross-format to 14/42 paper series, "
+        "but expose no numeric arrays. An unaffiliated 2026 AAPL baseline materially "
+        "differs and ships no raw result file. No fork provides a native paper run. "
+        "A hash-pinned current "
         "Yahoo adjusted-close diagnostic checks all 12 Buy-and-Hold cells under the "
         "paper's literal window and matches 0/12 at display precision. The paper does "
         "not map prices to one of its several listed providers, and the 2026 response "
@@ -1779,7 +1787,9 @@ TARGETED_EXECUTION = {
         "components_only"
     ),
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
-    "SYS-TRADING-AGENTS": "paper_audit:completed_77_of_77_author_table_cells_corroborated_12_current_yahoo_baseline_cells_checked_zero_matches_zero_native_regenerated",
+    "SYS-TRADING-AGENTS": (
+        "paper_audit:completed_77_of_77_author_table_cells_corroborated_14_of_42_author_raster_series_cross_format_12_current_yahoo_cells_zero_matches_19445_forks_24584_refs_4234_heads_exhausted_zero_native_regenerated"
+    ),
     "SYS-TRADING-GROUP": (
         "paper_audit:completed_128_of_128_source_adjacent_baseline_cells_"
         "32_model_cells_recovered_from_omitted_two_year_window_"
