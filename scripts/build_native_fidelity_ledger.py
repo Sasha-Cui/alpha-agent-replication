@@ -537,8 +537,15 @@ ARTIFACT_NOTES = {
         "paper-era source components, but no run configs, traces, frozen Kaggle/MLE-"
         "Bench data, model snapshots, seeds, submissions, or checkpoints prove which "
         "non-default alternatives generated the paper results; advertised trace links "
-        "are broken. A commit-date-bounded Python 3.10 environment installs the exact "
-        "paper-era source revision, includes the Dockerfile's PyTorch 2.4.0 "
+        "are broken. A public-fork census then covers 1,854 of GitHub's 1,862 "
+        "reported forks, 33,775 branch refs, 1,261 unique heads, 619 divergent heads, "
+        "4,727 extra commits, and 6,383 changed paths. It reviews all 65 high-relevance "
+        "blobs across 56 result/data paths. Preserved world-model development material "
+        "maps 74 of the paper's 75 competitions, but its 15 notebooks contain no "
+        "complete paper result row; neither those artifacts nor an unrelated Qlib "
+        "checkpoint supplies attributable three-seed MLE-Bench results. A commit-date-"
+        "bounded Python 3.10 environment installs the exact paper-era source revision, "
+        "includes the Dockerfile's PyTorch 2.4.0 "
         "CPU-compatible build, passes its 243-package dependency freeze, and runs "
         "both upstream offline tests twice. All 192 modules selected by the authors' "
         "import test load twice with real dependencies and zero HTTP attempts when "
@@ -1767,8 +1774,9 @@ TARGETED_EXECUTION = {
         "3_current_public_benchmark_3_of_3_raster_correspondences_zero_raw_series_zero_end_to_end_result_cells"
     ),
     "SYS-RD-AGENT-QUANT": (
-        "paper_audit:completed_zero_of_534_native_results_"
-        "paper_era_environment_192_modules_2_offline_tests_components_only"
+        "paper_audit:completed_zero_of_534_native_results_paper_era_environment_"
+        "192_modules_2_offline_tests_1854_forks_33775_refs_1261_heads_exhausted_"
+        "components_only"
     ),
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
     "SYS-TRADING-AGENTS": "paper_audit:completed_77_of_77_author_table_cells_corroborated_12_current_yahoo_baseline_cells_checked_zero_matches_zero_native_regenerated",
