@@ -599,7 +599,12 @@ ARTIFACT_NOTES = {
         "A pinned paper audit checks all 790 numeric cells in Tables 5--8 and 10--14. "
         "The release ships 2,615 training/validation prompt-label rows: a current "
         "Yahoo retrieval reproduces 523 labels exactly and 2,612 reward regimes. A "
-        "released-semantics market-baseline reconstruction matches 1/34 repeated "
+        "bounded constant-adjustment-scale reconstruction on that pinned reference "
+        "recovers all 2,615 numeric labels exactly across ten hash-pinned cent paths. "
+        "The equations retain seven unconstrained path degrees before imposing the "
+        "market reference, so this is price-ratio lineage rather than a unique absolute "
+        "author snapshot. A released-semantics market-baseline reconstruction matches "
+        "1/34 repeated "
         "Buy-and-Hold cells at display precision. The pinned current retrieval has the "
         "paper-stated 122 sessions, so calendar count is not a blocker, but the original "
         "prompts, actions, and paper-time snapshot remain absent. A fail-closed 84-cell "
@@ -1769,6 +1774,7 @@ TARGETED_EXECUTION = {
     ),
     "SYS-ALPHA-QUANTER": (
         "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match_"
+        "2615_of_2615_released_reward_labels_recovered_"
         "122_sessions_84_protocol_sensitivity_cells_zero_paper_time_credit_"
         "11_forks_11_refs_2_official_history_heads_exhausted"
     ),

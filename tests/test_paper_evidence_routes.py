@@ -256,6 +256,7 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         ),
         "CensusACL2026findingsacl456": (
             "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match_"
+            "2615_of_2615_released_reward_labels_recovered_"
             "122_sessions_84_protocol_sensitivity_cells_zero_paper_time_credit_"
             "11_forks_11_refs_2_official_history_heads_exhausted"
         ),
