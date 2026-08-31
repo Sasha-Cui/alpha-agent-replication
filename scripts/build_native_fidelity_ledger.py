@@ -642,6 +642,9 @@ ARTIFACT_NOTES = {
         "period is present, all four displayed metrics match, and every recorded action replays "
         "through the pinned official environment/data with zero state error. Six other numeric "
         "matches receive no credit because five declare the wrong model and one is truncated. "
+        "Reassigning the five full-period model-mismatch traces to their declared "
+        "GPT-3.5 paper rows matches only 1/20 individual cells and 0/5 complete rows; "
+        "the sixth diagnostic trace has matching GPT-4 identity but is truncated. "
         "This verifies historical author outputs, not fresh LLM decision regeneration. The six "
         "residual cells are numerically diagnosed but receive no method-faithful credit: two "
         "ETH-sideways daily statistics duplicate ETH-bear, while four SOL-bear cells require "
@@ -1734,7 +1737,8 @@ TARGETED_EXECUTION = {
     ),
     "SYS-CRYPTO-TRADE": (
         "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_"
-        "12_ablation_correspondences_zero_credit_83_author_outputs_no_time_series_match_37_forks_exhausted"
+        "12_ablation_correspondences_zero_credit_5_model_mismatch_traces_zero_declared_model_rows_"
+        "83_author_outputs_no_time_series_match_37_forks_exhausted"
     ),
     "SYS-EFS": "paper_audit:completed_10_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",

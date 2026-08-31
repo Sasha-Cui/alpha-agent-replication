@@ -608,6 +608,17 @@ def author_trace_audit(
                 "gpt_4o": "gpt-4o",
             }[key[1]]
             model_matches = declared_model == expected_model
+            declared_strategy = {
+                "gpt-3.5-turbo": "gpt_3_5_turbo",
+                "gpt-4-turbo": "gpt_4",
+                "gpt-4o": "gpt_4o",
+            }[declared_model]
+            declared_key = (key[0], declared_strategy, key[2])
+            declared_expected = paper[declared_key]
+            declared_matches = sum(
+                abs(metrics[metric] - declared_expected[metric]) <= DISPLAY_TOLERANCE
+                for metric in METRICS
+            )
             row = {
                 "asset": key[0],
                 "paper_strategy": key[1],
@@ -621,6 +632,10 @@ def author_trace_audit(
                 "full_period_trace": full_period,
                 "last_recorded_date": states[-1]["date"],
                 "paper_metric_cells_matching": len(METRICS),
+                "trace_declared_model_paper_strategy": declared_strategy,
+                "trace_declared_model_metric_cells_matching": declared_matches,
+                "trace_declared_model_complete_paper_row_match": declared_matches == len(METRICS),
+                "trace_declared_model_reassignment_required": not model_matches,
                 "action_replay_exact": replay_exact,
                 "action_replay_maximum_absolute_state_error": maximum_error,
                 "author_commit": commit,
@@ -667,6 +682,13 @@ def author_trace_audit(
         for row in output_artifacts
     ):
         raise RuntimeError("Recovered CryptoTrade history has new candidate time-series evidence")
+    reassignment_rows = [row for row in rows if row["trace_declared_model_reassignment_required"]]
+    if (
+        len(reassignment_rows),
+        sum(int(row["trace_declared_model_metric_cells_matching"]) for row in reassignment_rows),
+        sum(bool(row["trace_declared_model_complete_paper_row_match"]) for row in reassignment_rows),
+    ) != (5, 1, 0):
+        raise RuntimeError("CryptoTrade declared-model reassignment boundary changed")
     return rows, credited, output_artifacts
 
 
@@ -1511,6 +1533,24 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "author_history_llm_rows_numeric_match_but_no_credit": sum(
             trace["credit_status"].startswith("diagnostic") for trace in author_traces.values()
         ),
+        "author_history_model_mismatch_traces_reassignment_checked": sum(
+            bool(row["trace_declared_model_reassignment_required"])
+            for row in author_trace_rows
+        ),
+        "author_history_declared_model_metric_cells_checked": 4 * sum(
+            bool(row["trace_declared_model_reassignment_required"])
+            for row in author_trace_rows
+        ),
+        "author_history_declared_model_metric_cells_matching": sum(
+            int(row["trace_declared_model_metric_cells_matching"])
+            for row in author_trace_rows
+            if row["trace_declared_model_reassignment_required"]
+        ),
+        "author_history_declared_model_complete_rows_matching": sum(
+            bool(row["trace_declared_model_complete_paper_row_match"])
+            for row in author_trace_rows
+            if row["trace_declared_model_reassignment_required"]
+        ),
         "paper_result_metric_cells_unverifiable": unverifiable + len(ablation_conformance),
         "paper_strategy_regime_or_ablation_rows_total": len(grouped) + len(PAPER_ABLATION),
         "paper_strategy_regime_rows_total": len(grouped),
@@ -1595,6 +1635,8 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             "The released market data, native environment, costs, and traditional-signal logic "
             "reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history "
             "additionally corroborates 40 LLM cells through exact metric and native state replay. "
+            "The five full-period model-mismatched traces cannot be reassigned to their declared "
+            "GPT-3.5 paper rows: only 1/20 declared-model cells and 0/5 complete rows match. "
             "All 12 Table 5 values also have exact author-history numeric correspondences and replay "
             "through their historical code snapshots, but every selected trace conflicts with the "
             "paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells "
@@ -1668,6 +1710,10 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   and the trace matching the Full row is BTC-bull rather than the ETH experiment
   described around Table 5. The closer ETH/full-prompt trace reports 28.11%/0.08,
   not 28.47%/0.23.
+  Reassigning the five full-period model-mismatched traces to their declared
+  GPT-3.5 rows does not rescue them: only 1/20 individual cells coincides and
+  0/5 complete declared-model rows match. The sixth diagnostic trace has the
+  correct GPT-4 identity but ends before the paper period.
 - ETH-sideways SMA matches the paper's -5.45% total return and -0.07 Sharpe, but
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
