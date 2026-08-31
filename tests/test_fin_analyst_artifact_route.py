@@ -67,18 +67,27 @@ def test_native_ledger_credits_dated_outputs_but_not_common_task_or_paper_result
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:partial_33_of_119_displayed_cells_regenerated_28_deterministic_offline_"
-        "baseline_mixed_endpoints_5_live_output_verified_97_official_decisions_replayed_zero_end_"
-        "to_end_full_435_commit_baseline_generator_search_zero_random_momentum_"
-        "5_103_327_histories_exhausted"
+        "baseline_mixed_endpoints_5_live_cells_exact_native_organizer_scorer_6_arrays_"
+        "24_scalars_97_official_decisions_zero_end_to_end_full_435_commit_baseline_"
+        "generator_search_zero_random_momentum_5_103_327_histories_exhausted"
     )
     note = row["concise_evidence_note"]
     for marker in (
-        "97 paper-window decisions", "33/119 printed table cells",
+        "97 paper-window decisions",
+        "33/119 printed table cells",
+        "Exact pinned perf.js execution",
+        "six with-fee/no-fee/Buy-and-Hold equity arrays",
+        "20 metric scalars",
+        "four win-rate/trade scalars",
+        "fee/slippage-aware Buy-and-Hold series does not match",
         "all 28 cells in the offline Buy-and-Hold and deterministic Always-HOLD rows",
-        "TSLA ends May 20 with 293 rows", "BTC ends May 21 with 294",
+        "TSLA ends May 20 with 293 rows",
+        "BTC ends May 21 with 294",
         "20 official revisions per asset",
         "BTC maximum drawdown",
-        "TSLA +4.79%", "BTC replays -0.10%", "three HOLD votes to BUY",
+        "TSLA +4.79%",
+        "BTC replays -0.10%",
+        "three HOLD votes to BUY",
         "full-history content census across all 435 commits",
         "zero source-level Random sampling calls",
         "Momentum appears only in the live app and input documentation",

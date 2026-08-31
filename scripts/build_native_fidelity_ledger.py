@@ -43,8 +43,11 @@ ARTIFACT_NOTES = {
         "startup loads 6,030 JSONL records plus 249 TA rows, and controlled stubs "
         "exercise the TSLA router/eight LLM call seams and BTC vote without paid or "
         "external calls. The organizer's public database recovers 97 paper-window "
-        "decisions, and its pinned scorer replays all 97. In total, 33/119 printed table "
-        "cells regenerate at display precision: five live output cells (both TSLA/BTC "
+        "decisions. Exact pinned perf.js execution over the raw snapshot regenerates "
+        "six with-fee/no-fee/Buy-and-Hold equity arrays (291 points), 20 metric scalars, "
+        "and four win-rate/trade scalars exactly, with zero network calls. In total, "
+        "33/119 printed table cells regenerate at display precision: five live output "
+        "cells verified through the native organizer scorer (both TSLA/BTC "
         "acted-day exposure cells, both day-level hit rates, and BTC maximum drawdown) "
         "plus all 28 cells in the offline Buy-and-Hold and deterministic Always-HOLD rows. "
         "The four baseline rows require different later official revisions: TSLA ends May "
@@ -54,7 +57,7 @@ ARTIFACT_NOTES = {
         "PnL and receive no full-cell credit. This is strong source and dated-output "
         "verification, not an LLM action-generation rerun: 0/119 cells reproduce end to "
         "end and 0/2 full empirical panels regenerate. "
-        "Raw prices verify both plotted Buy-and-Hold endpoints and both constant-cash rows. Official actions "
+        "Raw price ratios verify both plotted Buy-and-Hold endpoints and both constant-cash rows; the exact organizer's fee/slippage-aware Buy-and-Hold series does not match those plotted endpoints. Official actions "
         "plus the scorer produce TSLA +4.79%, Sharpe 1.58, 45% win rate instead of "
         "+13.51%, 4.10, 88%; BTC replays -0.10%, agreeing with the figure/prose but "
         "contradicting the -5.30% table. Every one of the 20 official revisions per asset "
@@ -1727,7 +1730,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 TARGETED_EXECUTION = {
     "SYS-FACTOR-MAD": "paper_audit:completed_six_paper_derived_mechanics_seven_fail_closed_zero_of_30_table_cells_zero_of_8_empirical_panels_no_attributable_pipeline_local_m0_proxy_no_paper_credit",
-    "SYS-FIN-ANALYST": "paper_audit:partial_33_of_119_displayed_cells_regenerated_28_deterministic_offline_baseline_mixed_endpoints_5_live_output_verified_97_official_decisions_replayed_zero_end_to_end_full_435_commit_baseline_generator_search_zero_random_momentum_5_103_327_histories_exhausted",
+    "SYS-FIN-ANALYST": "paper_audit:partial_33_of_119_displayed_cells_regenerated_28_deterministic_offline_baseline_mixed_endpoints_5_live_cells_exact_native_organizer_scorer_6_arrays_24_scalars_97_official_decisions_zero_end_to_end_full_435_commit_baseline_generator_search_zero_random_momentum_5_103_327_histories_exhausted",
     "SYS-MACRO-ECONOMISTS-MACHINE": "paper_audit:completed_18_paper_derived_mechanics_four_fail_closed_zero_of_132_table_cells_zero_of_12_empirical_panels_no_attributable_pipeline_major_figure_table_conflicts",
     "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_main_nav_metrics_full_10_commit_history_supplementary_output_edit_1_of_5_metrics_consistent_31999_of_31999_data_links_no_native_training_or_backtest",
     "SYS-METAPS": "paper_audit:completed_12_paper_derived_mechanics_zero_of_492_table_cells_zero_of_20_empirical_panels_no_attributable_pipeline",
