@@ -29,7 +29,7 @@ from scipy.io import loadmat
 from scipy.stats import t as student_t
 
 
-AUDIT_DATE = "2026-08-25"
+AUDIT_DATE = "2026-08-31"
 ARXIV_V1_URL = "https://arxiv.org/abs/2507.17211v1"
 ARXIV_V2_URL = "https://arxiv.org/abs/2507.17211v2"
 ARXIV_V1_PDF_SHA256 = "7bde1f690bab7c9f694e6f8810502884394e48de6c118a895b68fcaad1a20b26"
@@ -169,6 +169,27 @@ ASMCVAR_V1_ROW_BY_SPARSITY = {10: 7, 15: 15, 20: 23}
 ASMCVAR_V2_ROW_BY_SPARSITY = {10: 7, 15: 15}
 ASMCVAR_OBSERVATIONS = {"FF25": 623, "FF25EU": 391, "FF32": 623, "FF49": 623, "FF100": 623, "FF100MEOP": 623}
 ASMCVAR_ASSETS = {"FF25": 25, "FF25EU": 25, "FF32": 32, "FF49": 49, "FF100": 100, "FF100MEOP": 100}
+UBAH_CW_SHA256 = {
+    "FF25": "fc9a8feaf182775e0467d94daeb74244eec28246a701a2fb1292f3990167d7e7",
+    "FF32": "5daac5c6edffc8e32405fdca8666e71e69aaf2f7bc199ac92d713302527c85da",
+    "FF49": "dc9bb4ed0bfbd94b1300660617263e156d53d8feab708203cbbedf3f93a7fccf",
+    "FF100": "1349d9e9d44975b994786143bcc0a1759768389f1c6ed310e0bd720e5616d1da",
+    "FF100MEOP": "eb61a9383c71740ab2501bf558497b84ac68784be62f6b06c595d0e947027b2d",
+}
+UBAH_DAILY_RETURN_SHA256 = {
+    "FF25": "676b872dc81f3a1607c443e1c2c1b7a12fd060dbfbbc47adb0deb2c52fb1b940",
+    "FF32": "21bedc4289516f24f1d97ce64a694d555f88860ab4e9b5a139518dae4dccb7c9",
+    "FF49": "e00baf38cf794699db69a53ec8c930ee87620e5e37f4cd28c86ca39215505375",
+    "FF100": "221bf5bdd6529199ae2b12d110634e82803c010110676384182699af295f788a",
+    "FF100MEOP": "d0c144a0e8cd8a840259a97641e8d8c21a9baab324daf75f8169314aac70b1b4",
+}
+UBAH_WEIGHTS_SHA256 = {
+    "FF25": "a749d8e4ef33461e6f35417ed4a1c1d2614f962472b5581f5ea4537a3aff8357",
+    "FF32": "ba8ac99163884ccbe3789b190ea0dbe20d4a5389ffdfc54d678c715aa3b3b068",
+    "FF49": "80826cdbf3d3dcd21cebe48b2fc02b631a10518efc678d164130438027c71e26",
+    "FF100": "35b650716696ded3b13ac8370c37b55ed22e3e65f757834a3f779de450ae6d5a",
+    "FF100MEOP": "9fcacae8902881db99266f10a56fa2711436bf52e9a6e4cda06e8aaa4fd02bc5",
+}
 MEAN_CVAR_CONFIDENCE = 0.95
 MEAN_CVAR_ORIGINAL_VALUES = {
     "FF25": {"CW": "333.41", "SR": "0.2305"},
@@ -700,6 +721,96 @@ def baseline_metrics(asm_cvar: Path) -> dict[str, dict[str, float]]:
             "MDD": float(np.max(1.0 - wealth / peaks)),
             "rows": float(matrix.shape[0]),
             "assets": float(matrix.shape[1]),
+        }
+    return output
+
+
+def load_ubah_native_metrics(results_root: Path) -> dict[str, dict[str, Any]]:
+    output: dict[str, dict[str, Any]] = {}
+    for dataset in ("FF25", "FF32", "FF49", "FF100", "FF100MEOP"):
+        source_name = ASMCVAR_DATASETS[dataset]
+        assets = ASMCVAR_ASSETS[dataset]
+        runs: list[dict[str, Any]] = []
+        for repeat in (1, 2):
+            path = results_root / f"ubah_{source_name}_run{repeat}.mat"
+            payload = loadmat(path)
+            wealth = np.asarray(payload["cumprod_ret"], dtype="<f8").reshape(-1)
+            daily = np.asarray(payload["daily_ret"], dtype="<f8").reshape(-1)
+            weights = np.asarray(payload["daily_portfolio"], dtype="<f8")
+            metrics = {
+                "CW": float(np.asarray(payload["cum_ret"]).reshape(-1)[0]),
+                "SR": float(np.asarray(payload["Sharpe"]).reshape(-1)[0]),
+                "MDD": float(np.asarray(payload["MaxDD"]).reshape(-1)[0]),
+            }
+            release = str(np.asarray(payload["matlab_release"]).reshape(-1)[0])
+            if (
+                wealth.shape != (623,)
+                or daily.shape != (623,)
+                or weights.shape != (623, assets)
+            ):
+                raise ValueError(f"invalid UBAH output shape: {path}")
+            if (
+                not np.isfinite(wealth).all()
+                or not np.isfinite(daily).all()
+                or not np.isfinite(weights).all()
+                or np.any(wealth <= 0)
+                or np.any(daily <= 0)
+            ):
+                raise ValueError(f"non-finite UBAH output: {path}")
+            if (
+                release != "2023b"
+                or not np.isclose(metrics["CW"], wealth[-1], rtol=0.0, atol=1e-12)
+                or not np.allclose(weights.sum(axis=1), 1.0, rtol=0.0, atol=1e-12)
+                or not np.allclose(
+                    weights[:5],
+                    np.full((5, assets), 1.0 / assets),
+                    rtol=0.0,
+                    atol=1e-15,
+                )
+                or np.allclose(
+                    weights[5],
+                    np.full(assets, 1.0 / assets),
+                    rtol=0.0,
+                    atol=1e-12,
+                )
+                or not np.allclose(
+                    wealth[1:] / wealth[:-1],
+                    daily[1:],
+                    rtol=0.0,
+                    atol=1e-14,
+                )
+            ):
+                raise ValueError(f"UBAH source protocol changed: {path}")
+            runs.append(
+                {
+                    "metrics": metrics,
+                    "wealth": wealth,
+                    "daily": daily,
+                    "weights": weights,
+                    "cw_sha256": bytes_sha256(wealth.tobytes(order="C")),
+                    "daily_sha256": bytes_sha256(daily.tobytes(order="C")),
+                    "weights_sha256": bytes_sha256(weights.tobytes(order="C")),
+                }
+            )
+        if not all(
+            np.array_equal(runs[0][field], runs[1][field])
+            for field in ("wealth", "daily", "weights")
+        ) or runs[0]["metrics"] != runs[1]["metrics"]:
+            raise ValueError(f"UBAH repeats differ: {dataset}")
+        run = runs[0]
+        if (
+            run["cw_sha256"] != UBAH_CW_SHA256[dataset]
+            or run["daily_sha256"] != UBAH_DAILY_RETURN_SHA256[dataset]
+            or run["weights_sha256"] != UBAH_WEIGHTS_SHA256[dataset]
+        ):
+            raise ValueError(f"UBAH source output changed: {dataset}")
+        output[dataset] = {
+            **run["metrics"],
+            "cw_sha256": run["cw_sha256"],
+            "daily_return_sha256": run["daily_sha256"],
+            "weights_sha256": run["weights_sha256"],
+            "repeat_paths_equal": True,
+            "matlab_release": "2023b",
         }
     return output
 
@@ -1511,6 +1622,67 @@ def _format_like(value: float, paper_value: str) -> str:
     return rendered + ("%" if paper_value.endswith("%") else "")
 
 
+def apply_ubah_source_credit(
+    rows: list[dict[str, Any]], metrics: Mapping[str, Mapping[str, Any]]
+) -> list[dict[str, Any]]:
+    audit_rows: list[dict[str, Any]] = []
+    for row in rows:
+        if row["paper_table"] != "benchmark" or int(row["row_index"]) != 0:
+            continue
+        dataset, metric = str(row["dataset"]), str(row["metric"])
+        native = metrics[dataset]
+        reproduced = float(native[metric])
+        rendered = _format_like(reproduced, str(row["paper_value"]))
+        match = rendered == row["paper_value"]
+        already_credited = bool(row["paper_result_credit"])
+        if match:
+            row["paper_result_credit"] = True
+        audit_rows.append(
+            {
+                "paper_version": row["paper_version"],
+                "dataset": dataset,
+                "metric": metric,
+                "paper_value": row["paper_value"],
+                "recomputed_value": f"{reproduced:.12g}",
+                "recomputed_at_paper_precision": rendered,
+                "match_at_paper_precision": match,
+                "already_credited_by_daily_rebalanced_1_over_N": already_credited,
+                "new_unique_paper_result_credit": match and not already_credited,
+                "protocol": (
+                    "cited_ASMCVaR_ubah_run_self_MATLAB_R2023b_all_623_rows_"
+                    "first_5_equal_weight_then_drifted_buy_and_hold"
+                ),
+                "source_commit": ASMCVAR_COMMIT,
+                "source_functions": (
+                    "ubah_run_self.m;ubah_kernel.m;ubah_expert.m;"
+                    "sharpe1self.m;MATLAB maxdrawdown"
+                ),
+                "matlab_release": native["matlab_release"],
+                "native_runs": 2,
+                "full_paths_repeat_equal": native["repeat_paths_equal"],
+                "cw_sha256": native["cw_sha256"],
+                "daily_return_sha256": native["daily_return_sha256"],
+                "weights_sha256": native["weights_sha256"],
+                "author_released_efs_baseline_wrapper": False,
+                "native_ubah_source_evidence": True,
+                "native_efs_evidence": False,
+                "paper_result_credit": match,
+            }
+        )
+    version = str(rows[0]["paper_version"])
+    expected_rows = 15 if version == "v1" else 12
+    expected_matches = 1 if version == "v1" else 2
+    expected_new = 1 if version == "v1" else 0
+    if (
+        len(audit_rows) != expected_rows
+        or sum(row["paper_result_credit"] for row in audit_rows) != expected_matches
+        or sum(row["new_unique_paper_result_credit"] for row in audit_rows)
+        != expected_new
+    ):
+        raise ValueError(f"EFS UBAH source match census drifted for {version}")
+    return audit_rows
+
+
 def original_sspo_conformance(
     metrics: Mapping[str, Mapping[str, Any]],
 ) -> list[dict[str, Any]]:
@@ -1799,7 +1971,11 @@ def apply_baseline_credit(
                 "recomputed_value": f"{reproduced:.12g}",
                 "recomputed_at_paper_precision": rendered,
                 "match_at_paper_precision": match,
-                "protocol": "cited_ASMCVaR_623xN_price_relatives_row0_initial_622_equal_weight_transitions",
+                "protocol": (
+                    "audit_reconstruction_daily_rebalanced_1_over_N_on_cited_"
+                    "ASMCVaR_matrices_row0_initial_622_transitions"
+                ),
+                "author_released_baseline_wrapper": False,
                 "native_efs_evidence": False,
                 "paper_result_credit": match,
             }
@@ -2067,12 +2243,14 @@ datasets, paper structure, and results.
 - **EFS itself: 0 native result cells reproduced in either version.** No
   author-linked EFS code, exact configuration, model snapshot, factor pool,
   search trace, action/weight path, raw return, or result output was found.
-- **Original v1: 10/773 table-result cells reproduce, all cited-baseline
-  evidence.** Five are 1/N MDD cells, two are Mean-CVaR cells, and SSPO,
-  mSSRM, plus ASMCVaR contribute one isolated cell each.
+- **Original v1: 11/773 table-result cells reproduce, all cited-baseline
+  evidence.** Five are daily-rebalanced 1/N MDD cells; the exact cited UBAH
+  source adds the FF25 Sharpe cell; two are Mean-CVaR cells; and SSPO, mSSRM,
+  plus ASMCVaR contribute one isolated cell each.
 - **Current v2: 18/877 cells reproduce at its coarser display precision.**
-  Eight are 1/N, three mSSRM, two SSPO, two Mean-CVaR, two ASMCVaR, and one is
-  the source-grounded mSSRM m=N Max-Sharpe limit. None forms a complete
+  Eight are daily-rebalanced 1/N, three mSSRM, two SSPO, two Mean-CVaR, two
+  ASMCVaR, and one is the source-grounded mSSRM m=N Max-Sharpe limit. The two
+  exact-source UBAH matches overlap the eight 1/N cells. None forms a complete
   reproduced row or receives native EFS credit.
 
 The mSSRM release was run twice for every combination of five EFS matrices
@@ -2090,6 +2268,16 @@ the paper prints 0.2339. Against EFS, only 1/45 v1 and 2/24 v2 ASMCVaR cells
 match at display precision, and no complete row matches. A same-runtime repeat
 is bit-identical; an independent Octave execution agrees within disclosed
 floating-point tolerances.
+
+The cited release's exact `ubah_run_self.m` path was also executed twice on all
+five EFS matrices under MATLAB R2023b. All five 623-point wealth, daily-return,
+and weight paths are bit-identical across repeats. The source consumes all 623
+rows, holds equal weights for the first five periods, and then propagates
+drifted buy-and-hold weights; this is materially different from the audit's
+direct daily-rebalanced 1/N interpretation that treats row zero as initial.
+Source-native UBAH matches 1/15 v1 cells and 2/12 v2 cells. The v1 FF25 Sharpe
+match is one new unique cell; both v2 matches already coincide with the
+daily-rebalanced ledger. No complete 1/N row matches under either protocol.
 
 The conventional Mean-CVaR baseline from the original ASMCVaR paper was
 reimplemented directly from equations (1)--(3), with the disclosed rolling
@@ -2152,6 +2340,11 @@ def main() -> None:
         default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_octave_runs"),
     )
     parser.add_argument(
+        "--ubah-results-root",
+        type=Path,
+        default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_ubah_runs"),
+    )
+    parser.add_argument(
         "--nonsparse-results-root",
         type=Path,
         default=Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_nonsparse_runs"),
@@ -2175,6 +2368,7 @@ def main() -> None:
     paper_root = args.paper_root.resolve()
     output = args.output.resolve()
     mssrm_results_root = args.mssrm_results_root.resolve()
+    ubah_results_root = args.ubah_results_root.resolve()
     nonsparse_results_root = args.nonsparse_results_root.resolve()
     sspo_results_root = args.sspo_results_root.resolve()
     mssrm_original_root = args.mssrm_original_root.resolve()
@@ -2192,6 +2386,10 @@ def main() -> None:
     v2 = parse_v2_results(paper_root)
     metrics = baseline_metrics(asm_cvar)
     baseline = apply_baseline_credit(v1, metrics) + apply_baseline_credit(v2, metrics)
+    ubah_metrics = load_ubah_native_metrics(ubah_results_root)
+    ubah_source = apply_ubah_source_credit(
+        v1, ubah_metrics
+    ) + apply_ubah_source_credit(v2, ubah_metrics)
     mssrm_metrics = load_mssrm_native_metrics(mssrm_results_root)
     mssrm_baseline = apply_mssrm_credit(v1, mssrm_metrics) + apply_mssrm_credit(v2, mssrm_metrics)
     mssrm_original_metrics = load_mssrm_native_metrics(mssrm_results_root, MSSRM_ORIGINAL_DATASETS)
@@ -2229,6 +2427,7 @@ def main() -> None:
     write_csv(output / "v1_table_result_conformance.csv", v1)
     write_csv(output / "v2_table_result_conformance.csv", v2)
     write_csv(output / "cited_baseline_reproduction.csv", baseline)
+    write_csv(output / "cited_ubah_source_reproduction.csv", ubah_source)
     write_csv(output / "cited_mssrm_native_reproduction.csv", mssrm_baseline)
     write_csv(output / "cited_mssrm_original_paper_reproduction.csv", mssrm_original)
     write_csv(output / "cited_mssrm_neurips_supplement_correspondence.csv", mssrm_supplement)
@@ -2256,17 +2455,22 @@ def main() -> None:
         "reason": "no author-linked EFS implementation, config, factor pool, checkpoint, or result path released",
         "paper_source_compilation": compilations,
         "cited_baseline_formula_executed": True,
-        "v1_cited_baseline_cells_with_credit": sum(
-            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs + mean_cvar_efs + max_sharpe_limit_efs + sspo_efs
-            if row["paper_version"] == "v1"
-        ),
-        "v2_cited_baseline_cells_with_credit": sum(
-            row["paper_result_credit"] for row in baseline + mssrm_baseline + asmcvar_efs + mean_cvar_efs + max_sharpe_limit_efs + sspo_efs
-            if row["paper_version"] == "v2"
-        ),
+        "v1_cited_baseline_cells_with_credit": sum(row["paper_result_credit"] for row in v1),
+        "v2_cited_baseline_cells_with_credit": sum(row["paper_result_credit"] for row in v2),
         "native_efs_cells_with_credit": 0,
         "matlab_baseline_source_executed": True,
         "cited_mssrm_source_executed_with_octave": True,
+        "cited_ubah_source_executed_with_matlab": True,
+        "cited_ubah_matlab_release": "2023b",
+        "cited_ubah_native_configurations": 5,
+        "cited_ubah_native_runs": 10,
+        "cited_ubah_full_paths_repeat_exact": 5,
+        "cited_ubah_v1_cells_checked": 15,
+        "cited_ubah_v1_cells_matching": 1,
+        "cited_ubah_v1_new_unique_cells": 1,
+        "cited_ubah_v2_cells_checked": 12,
+        "cited_ubah_v2_cells_matching": 2,
+        "cited_ubah_v2_new_unique_cells": 0,
         "cited_mssrm_native_runs": 30,
         "cited_mssrm_full_paths_repeat_exact": 15,
         "cited_mssrm_v1_cells_checked": 45,
@@ -2460,6 +2664,34 @@ def main() -> None:
             "reported_cells_reproduced": 95,
             "paper_credit": "original_asmcvar_paper_only_not_efs",
         },
+        "cited_ubah_native_execution": {
+            "source_commit": ASMCVAR_COMMIT,
+            "source_functions": [
+                "ubah_run_self.m",
+                "ubah_kernel.m",
+                "ubah_expert.m",
+                "sharpe1self.m",
+                "MATLAB maxdrawdown",
+            ],
+            "matlab_release": "2023b",
+            "matrix_rows": 623,
+            "first_equal_weight_periods": 5,
+            "subsequent_weights": "drifted_buy_and_hold",
+            "configurations": 5,
+            "native_runs": 10,
+            "same_runtime_repeat_paths_exact": 5,
+            "efs_v1_cells_checked": 15,
+            "efs_v1_cells_reproduced": 1,
+            "efs_v1_new_unique_cells": 1,
+            "efs_v2_cells_checked": 12,
+            "efs_v2_cells_reproduced": 2,
+            "efs_v2_new_unique_cells": 0,
+            "wealth_sha256": UBAH_CW_SHA256,
+            "daily_return_sha256": UBAH_DAILY_RETURN_SHA256,
+            "weights_sha256": UBAH_WEIGHTS_SHA256,
+            "author_released_efs_baseline_wrapper": False,
+            "paper_credit": "cited_source_baseline_only_not_native_efs",
+        },
         "cited_asmcvar_native_execution": {
             "matlab_release": "2023b",
             "configurations": 18,
@@ -2494,6 +2726,7 @@ def main() -> None:
     tracked = [
         "README.md", "v1_table_result_conformance.csv", "v2_table_result_conformance.csv",
         "cited_baseline_reproduction.csv", "cited_mssrm_native_reproduction.csv",
+        "cited_ubah_source_reproduction.csv",
         "cited_mssrm_original_paper_reproduction.csv",
         "cited_mssrm_neurips_supplement_correspondence.csv",
         "cited_asmcvar_native_execution_inventory.csv", "cited_asmcvar_efs_reproduction.csv",
@@ -2515,7 +2748,7 @@ def main() -> None:
         "paper": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
         "audit_date": AUDIT_DATE,
         "paper_evidence_route": "paper_only_underspecified",
-        "overall_status": "partial_10_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
+        "overall_status": "partial_11_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_v2_audited_separately",
         "full_paper_reproduced": False,
         "official_efs_source_released": False,
         "original_v1_table_result_cells": len(v1),
@@ -2523,6 +2756,24 @@ def main() -> None:
         "current_v2_table_result_cells": len(v2),
         "current_v2_table_cells_reproduced": sum(row["paper_result_credit"] for row in v2),
         "native_efs_result_cells_reproduced": 0,
+        "cited_ubah_v1_cells_checked": 15,
+        "cited_ubah_v1_cells_reproduced": sum(
+            row["paper_result_credit"]
+            for row in ubah_source
+            if row["paper_version"] == "v1"
+        ),
+        "cited_ubah_v1_new_unique_cells": sum(
+            row["new_unique_paper_result_credit"]
+            for row in ubah_source
+            if row["paper_version"] == "v1"
+        ),
+        "cited_ubah_v2_cells_checked": 12,
+        "cited_ubah_v2_cells_reproduced": sum(
+            row["paper_result_credit"]
+            for row in ubah_source
+            if row["paper_version"] == "v2"
+        ),
+        "cited_ubah_v2_new_unique_cells": 0,
         "cited_mssrm_v1_cells_checked": 45,
         "cited_mssrm_v1_cells_reproduced": sum(
             row["paper_result_credit"] for row in mssrm_baseline if row["paper_version"] == "v1"

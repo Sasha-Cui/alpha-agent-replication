@@ -1,6 +1,6 @@
 paper_version,paper_table,row_index,row_label,result_position,dataset,metric,paper_value,cited_baseline_recomputed_value,cited_baseline_match_at_paper_precision,native_efs_result_credit,paper_result_credit,version_lineage_status
 v1,benchmark,0,Baseline | 1/N,0,FF25,CW,374.13,373.765729685,False,False,False,version_specific_result
-v1,benchmark,0,Baseline | 1/N,1,FF25,SR,0.229,0.227617734477,False,False,False,version_specific_result
+v1,benchmark,0,Baseline | 1/N,1,FF25,SR,0.229,0.227617734477,False,False,True,version_specific_result
 v1,benchmark,0,Baseline | 1/N,2,FF25,MDD,0.548,0.547644971276,True,False,True,version_specific_result
 v1,benchmark,0,Baseline | 1/N,3,FF32,CW,452.84,446.630829807,False,False,False,version_specific_result
 v1,benchmark,0,Baseline | 1/N,4,FF32,SR,0.225,0.223376243881,False,False,False,version_specific_result

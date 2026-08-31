@@ -1,5 +1,5 @@
 {
-  "audit_date": "2026-08-25",
+  "audit_date": "2026-08-31",
   "author_hosted_pdf": {
     "byte_identical_to_v1": true,
     "sha256": "7bde1f690bab7c9f694e6f8810502884394e48de6c118a895b68fcaad1a20b26",
@@ -263,6 +263,52 @@
     "reachable_commits": 6,
     "tree": "dfd70b36f9378a9a17488fb904f4922f318e01be",
     "url": "https://github.com/laizhr/SSPO"
+  },
+  "cited_ubah_native_execution": {
+    "author_released_efs_baseline_wrapper": false,
+    "configurations": 5,
+    "daily_return_sha256": {
+      "FF100": "221bf5bdd6529199ae2b12d110634e82803c010110676384182699af295f788a",
+      "FF100MEOP": "d0c144a0e8cd8a840259a97641e8d8c21a9baab324daf75f8169314aac70b1b4",
+      "FF25": "676b872dc81f3a1607c443e1c2c1b7a12fd060dbfbbc47adb0deb2c52fb1b940",
+      "FF32": "21bedc4289516f24f1d97ce64a694d555f88860ab4e9b5a139518dae4dccb7c9",
+      "FF49": "e00baf38cf794699db69a53ec8c930ee87620e5e37f4cd28c86ca39215505375"
+    },
+    "efs_v1_cells_checked": 15,
+    "efs_v1_cells_reproduced": 1,
+    "efs_v1_new_unique_cells": 1,
+    "efs_v2_cells_checked": 12,
+    "efs_v2_cells_reproduced": 2,
+    "efs_v2_new_unique_cells": 0,
+    "first_equal_weight_periods": 5,
+    "matlab_release": "2023b",
+    "matrix_rows": 623,
+    "native_runs": 10,
+    "paper_credit": "cited_source_baseline_only_not_native_efs",
+    "same_runtime_repeat_paths_exact": 5,
+    "source_commit": "0ed6a63ca02118cc305ae5d34f2cf24489c024a5",
+    "source_functions": [
+      "ubah_run_self.m",
+      "ubah_kernel.m",
+      "ubah_expert.m",
+      "sharpe1self.m",
+      "MATLAB maxdrawdown"
+    ],
+    "subsequent_weights": "drifted_buy_and_hold",
+    "wealth_sha256": {
+      "FF100": "1349d9e9d44975b994786143bcc0a1759768389f1c6ed310e0bd720e5616d1da",
+      "FF100MEOP": "eb61a9383c71740ab2501bf558497b84ac68784be62f6b06c595d0e947027b2d",
+      "FF25": "fc9a8feaf182775e0467d94daeb74244eec28246a701a2fb1292f3990167d7e7",
+      "FF32": "5daac5c6edffc8e32405fdca8666e71e69aaf2f7bc199ac92d713302527c85da",
+      "FF49": "dc9bb4ed0bfbd94b1300660617263e156d53d8feab708203cbbedf3f93a7fccf"
+    },
+    "weights_sha256": {
+      "FF100": "35b650716696ded3b13ac8370c37b55ed22e3e65f757834a3f779de450ae6d5a",
+      "FF100MEOP": "9fcacae8902881db99266f10a56fa2711436bf52e9a6e4cda06e8aaa4fd02bc5",
+      "FF25": "a749d8e4ef33461e6f35417ed4a1c1d2614f962472b5581f5ea4537a3aff8357",
+      "FF32": "ba8ac99163884ccbe3789b190ea0dbe20d4a5389ffdfc54d678c715aa3b3b068",
+      "FF49": "80826cdbf3d3dcd21cebe48b2fc02b631a10518efc678d164130438027c71e26"
+    }
   },
   "current_revision": {
     "authors": [

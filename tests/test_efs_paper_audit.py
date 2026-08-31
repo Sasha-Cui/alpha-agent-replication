@@ -33,7 +33,7 @@ def test_committed_v1_and_v2_result_censuses_are_complete() -> None:
     assert Counter(row["paper_table"] for row in v1) == audit.V1_EXPECTED_TABLE_COUNTS
     assert len(v2) == 877
     assert Counter(row["paper_table"] for row in v2) == audit.V2_EXPECTED_TABLE_COUNTS
-    assert sum(row["paper_result_credit"] == "True" for row in v1) == 10
+    assert sum(row["paper_result_credit"] == "True" for row in v1) == 11
     assert sum(row["paper_result_credit"] == "True" for row in v2) == 18
     assert {row["native_efs_result_credit"] for row in v1 + v2} == {"False"}
 
@@ -49,8 +49,45 @@ def test_cited_baseline_credit_is_formula_specific_and_not_efs_credit() -> None:
     assert len(v2_credit) == 8
     assert {row["native_efs_evidence"] for row in rows} == {"False"}
     assert {row["protocol"] for row in rows} == {
-        "cited_ASMCVaR_623xN_price_relatives_row0_initial_622_equal_weight_transitions"
+        "audit_reconstruction_daily_rebalanced_1_over_N_on_cited_"
+        "ASMCVaR_matrices_row0_initial_622_transitions"
     }
+    assert {row["author_released_baseline_wrapper"] for row in rows} == {
+        "False"
+    }
+
+
+def test_cited_ubah_source_adds_one_unique_v1_cell_without_protocol_mixing() -> None:
+    rows = read_csv(output_dir() / "cited_ubah_source_reproduction.csv")
+    assert Counter(row["paper_version"] for row in rows) == {"v1": 15, "v2": 12}
+    matches = {
+        (row["paper_version"], row["dataset"], row["metric"])
+        for row in rows
+        if row["paper_result_credit"] == "True"
+    }
+    assert matches == {
+        ("v1", "FF25", "SR"),
+        ("v2", "FF25", "SR"),
+        ("v2", "FF49", "SR"),
+    }
+    new_unique = [
+        row for row in rows if row["new_unique_paper_result_credit"] == "True"
+    ]
+    assert [
+        (row["paper_version"], row["dataset"], row["metric"])
+        for row in new_unique
+    ] == [("v1", "FF25", "SR")]
+    assert {row["matlab_release"] for row in rows} == {"2023b"}
+    assert {row["source_commit"] for row in rows} == {audit.ASMCVAR_COMMIT}
+    assert {row["native_ubah_source_evidence"] for row in rows} == {"True"}
+    assert {row["native_efs_evidence"] for row in rows} == {"False"}
+    assert {row["full_paths_repeat_equal"] for row in rows} == {"True"}
+    assert {row["author_released_efs_baseline_wrapper"] for row in rows} == {
+        "False"
+    }
+    assert len({row["cw_sha256"] for row in rows}) == 5
+    assert len({row["daily_return_sha256"] for row in rows}) == 5
+    assert len({row["weights_sha256"] for row in rows}) == 5
 
 
 def test_cited_mssrm_source_execution_is_deterministic_but_mostly_mismatches() -> None:
@@ -271,15 +308,21 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     native = json.loads((output_dir() / "native_execution.json").read_text(encoding="utf-8"))
     provenance = json.loads((output_dir() / "source_provenance.json").read_text(encoding="utf-8"))
     assert manifest["overall_status"] == (
-        "partial_10_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_"
+        "partial_11_of_773_cited_baseline_cells_reproduced_zero_efs_native_results_"
         "v2_audited_separately"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_evidence_route"] == "paper_only_underspecified"
     assert manifest["original_v1_table_result_cells"] == 773
-    assert manifest["original_v1_table_cells_reproduced"] == 10
+    assert manifest["original_v1_table_cells_reproduced"] == 11
     assert manifest["current_v2_table_result_cells"] == 877
     assert manifest["current_v2_table_cells_reproduced"] == 18
+    assert manifest["cited_ubah_v1_cells_checked"] == 15
+    assert manifest["cited_ubah_v1_cells_reproduced"] == 1
+    assert manifest["cited_ubah_v1_new_unique_cells"] == 1
+    assert manifest["cited_ubah_v2_cells_checked"] == 12
+    assert manifest["cited_ubah_v2_cells_reproduced"] == 2
+    assert manifest["cited_ubah_v2_new_unique_cells"] == 0
     assert manifest["cited_mssrm_v1_cells_checked"] == 45
     assert manifest["cited_mssrm_v1_cells_reproduced"] == 1
     assert manifest["cited_mssrm_v2_cells_checked"] == 24
@@ -315,6 +358,14 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert manifest["paper_source_compilation"]["v2"]["pages"] == 13
     assert native["efs_native_execution_attempted"] is False
     assert native["cited_baseline_formula_executed"] is True
+    assert native["v1_cited_baseline_cells_with_credit"] == 11
+    assert native["v2_cited_baseline_cells_with_credit"] == 18
+    assert native["cited_ubah_source_executed_with_matlab"] is True
+    assert native["cited_ubah_matlab_release"] == "2023b"
+    assert native["cited_ubah_native_runs"] == 10
+    assert native["cited_ubah_full_paths_repeat_exact"] == 5
+    assert native["cited_ubah_v1_new_unique_cells"] == 1
+    assert native["cited_ubah_v2_new_unique_cells"] == 0
     assert native["cited_mssrm_source_executed_with_octave"] is True
     assert native["cited_mssrm_native_runs"] == 30
     assert native["cited_mssrm_full_paths_repeat_exact"] == 15
@@ -344,6 +395,13 @@ def test_manifest_provenance_and_all_evidence_hashes_are_consistent() -> None:
     assert provenance["cited_asmcvar_original_paper"]["pdf_sha256"] == audit.ASMCVAR_PAPER_SHA256
     assert provenance["cited_asmcvar_original_paper"]["reported_cells_reproduced"] == 95
     assert provenance["cited_asmcvar_native_execution"]["configurations"] == 18
+    ubah = provenance["cited_ubah_native_execution"]
+    assert ubah["source_commit"] == audit.ASMCVAR_COMMIT
+    assert ubah["native_runs"] == 10
+    assert ubah["same_runtime_repeat_paths_exact"] == 5
+    assert ubah["efs_v1_new_unique_cells"] == 1
+    assert ubah["efs_v2_new_unique_cells"] == 0
+    assert ubah["wealth_sha256"] == audit.UBAH_CW_SHA256
     redirect = provenance["cited_asmcvar_author_redirect"]
     assert redirect["commit"] == audit.ASMCVAR_AUTHOR_REDIRECT_COMMIT
     assert redirect["paper_coauthor"] is True
@@ -381,6 +439,14 @@ def test_pinned_sources_and_dynamic_parsers_when_available() -> None:
     v2 = audit.parse_v2_results(paper)
     metrics = audit.baseline_metrics(asm_cvar)
     baseline = audit.apply_baseline_credit(v1, metrics) + audit.apply_baseline_credit(v2, metrics)
+    ubah_results = Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_ubah_runs")
+    if ubah_results.exists():
+        ubah_metrics = audit.load_ubah_native_metrics(ubah_results)
+        ubah_rows = audit.apply_ubah_source_credit(
+            v1, ubah_metrics
+        ) + audit.apply_ubah_source_credit(v2, ubah_metrics)
+        assert len(ubah_rows) == 27
+        assert sum(row["new_unique_paper_result_credit"] for row in ubah_rows) == 1
     results = Path("/nfs/roberts/scratch/pi_btk22/zc362/efs_octave_runs")
     if results.exists():
         mssrm_metrics = audit.load_mssrm_native_metrics(results)
@@ -419,7 +485,7 @@ def test_pinned_sources_and_dynamic_parsers_when_available() -> None:
         assert len(audit.apply_sspo_credit(v1, efs_sspo)) == 15
         assert len(audit.apply_sspo_credit(v2, efs_sspo)) == 12
     assert (len(v1), len(v2), len(baseline), len(lineage)) == (773, 877, 27, 240)
-    expected_v1 = (7 if results.exists() else 5) + (2 if nonsparse.exists() else 0) + (1 if sspo_results.exists() else 0)
+    expected_v1 = (7 if results.exists() else 5) + (1 if ubah_results.exists() else 0) + (2 if nonsparse.exists() else 0) + (1 if sspo_results.exists() else 0)
     expected_v2 = (13 if results.exists() else 8) + (3 if nonsparse.exists() else 0) + (2 if sspo_results.exists() else 0)
     assert sum(row["paper_result_credit"] for row in v1) == expected_v1
     assert sum(row["paper_result_credit"] for row in v2) == expected_v2
