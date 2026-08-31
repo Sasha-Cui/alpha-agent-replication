@@ -82,6 +82,10 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert manifest["author_history_llm_rows_corroborated"] == 10
     assert manifest["author_history_llm_rows_numeric_match_but_no_credit"] == 6
     assert manifest["paper_metric_cells_corroborated_total"] == 214
+    assert manifest["author_history_model_mismatch_traces_reassignment_checked"] == 5
+    assert manifest["author_history_declared_model_metric_cells_checked"] == 20
+    assert manifest["author_history_declared_model_metric_cells_matching"] == 1
+    assert manifest["author_history_declared_model_complete_rows_matching"] == 0
     assert manifest["paper_numeric_evidence_correspondences_total"] == 226
     assert manifest["author_history_numeric_metric_cells_corresponding"] == 52
     assert manifest["paper_result_metric_cells_unverifiable"] == 260
@@ -192,6 +196,18 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert sum(row["full_period_trace"] == "False" for row in diagnostic) == 1
     assert all(row["model_identity_status"] == "match" for row in credited)
     assert all(row["full_period_trace"] == "True" for row in credited)
+    reassignment = [
+        row for row in diagnostic
+        if row["trace_declared_model_reassignment_required"] == "True"
+    ]
+    assert len(reassignment) == 5
+    assert {row["trace_declared_model_paper_strategy"] for row in reassignment} == {
+        "gpt_3_5_turbo"
+    }
+    assert sum(int(row["trace_declared_model_metric_cells_matching"]) for row in reassignment) == 1
+    assert {row["trace_declared_model_complete_paper_row_match"] for row in reassignment} == {"False"}
+    assert {row["trace_declared_model_reassignment_required"] for row in credited} == {"False"}
+    assert {row["trace_declared_model_complete_paper_row_match"] for row in credited} == {"True"}
 
     assert len(output_artifacts) == 83
     assert sum(int(row["blob_bytes"]) for row in output_artifacts) == 209739069

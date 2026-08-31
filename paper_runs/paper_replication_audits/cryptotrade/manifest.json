@@ -31,6 +31,10 @@
   "author_history_llm_metric_cells_corroborated": 40,
   "author_history_llm_rows_corroborated": 10,
   "author_history_llm_rows_numeric_match_but_no_credit": 6,
+  "author_history_model_mismatch_traces_reassignment_checked": 5,
+  "author_history_declared_model_metric_cells_checked": 20,
+  "author_history_declared_model_metric_cells_matching": 1,
+  "author_history_declared_model_complete_rows_matching": 0,
   "paper_result_metric_cells_unverifiable": 260,
   "paper_strategy_regime_or_ablation_rows_total": 123,
   "paper_strategy_regime_rows_total": 117,
@@ -85,7 +89,7 @@
   "source_fixed_gas_fee_asset_units": 0.0014700000000000002,
   "source_contains_hardcoded_credential_literal": false,
   "audit_imported_or_used_credential_module": false,
-  "interpretation": "The released market data, native environment, costs, and traditional-signal logic reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history additionally corroborates 40 LLM cells through exact metric and native state replay. All 12 Table 5 values also have exact author-history numeric correspondences and replay through their historical code snapshots, but every selected trace conflicts with the paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells receive zero method-faithful credit. This is strong component/output evidence, not a full CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but not method-faithful explanations, validation selection is not implemented as described, and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref census finds no additional attributable paper outputs. All 83 unique output blobs in the coauthor history were also scanned: none names a released time-series baseline or matches a paper time-series return/Sharpe pair.",
+  "interpretation": "The released market data, native environment, costs, and traditional-signal logic reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history additionally corroborates 40 LLM cells through exact metric and native state replay. The five full-period model-mismatched traces cannot be reassigned to their declared GPT-3.5 paper rows: only 1/20 declared-model cells and 0/5 complete rows match. All 12 Table 5 values also have exact author-history numeric correspondences and replay through their historical code snapshots, but every selected trace conflicts with the paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells receive zero method-faithful credit. This is strong component/output evidence, not a full CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but not method-faithful explanations, validation selection is not implemented as described, and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref census finds no additional attributable paper outputs. All 83 unique output blobs in the coauthor history were also scanned: none names a released time-series baseline or matches a paper time-series return/Sharpe pair.",
   "source_file_sha256": {
     "README.md": "af3e98ec66435814f195919abc1b0c6523b7aec02b93e10878c53de3159ade80",
     "env_history.py": "78cbc77b5c11ce024638a41f76f48a513a12b38c9d657431b3f76a3efcd8a7ab",
@@ -97,8 +101,8 @@
     "utils.py": "5c178dce5994e0914a94166e2e74e5f0cbae10fab945fd2eb3f5eb5ebe689abe"
   },
   "output_sha256": {
-    "README.md": "4dc7dda18e122fa9e69d006e8a37ffb285a2839e4bf3030c96a0d782c786d9f4",
-    "author_history_llm_trace_audit.csv": "8529a2cac2d6d76ae49dea60758c77c17270d5127d0f6fec30ce49b017650484",
+    "README.md": "aad0a762ae936bdff558e7391c68842a30cc84d6cc7d4c1caab3d34bf296ef9b",
+    "author_history_llm_trace_audit.csv": "9a5ef331d48da805a028731eb0282260cfa903cbf234a545e30c665ce1442e26",
     "author_history_output_artifact_census.csv": "3d6d573ea4027ff171a88a6a263a3e0fcd2fba3297ceb94a15f3061d9c10d62f",
     "data_inventory.csv": "501a90ede31d0ac67d9a482c7ad7bf9d6685497ccbd14b57d014512e39bb56fe",
     "dataset_split_conformance.csv": "81dba3dd5937ba27f9490d704b18f7809fed894a8d1b4720c5ca87241924beb3",

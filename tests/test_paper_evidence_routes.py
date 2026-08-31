@@ -233,7 +233,8 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     expected = {
         "CensusACL2024emnlpmain63": (
             "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_"
-            "12_ablation_correspondences_zero_credit_83_author_outputs_no_time_series_match_"
+            "12_ablation_correspondences_zero_credit_5_model_mismatch_traces_zero_"
+            "declared_model_rows_83_author_outputs_no_time_series_match_"
             "37_forks_exhausted"
         ),
         "CensusACL2026findingsacl456": (
@@ -326,6 +327,9 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     assert "83 unique coauthor-history output blobs" in cryptotrade_blocker
     assert "1,371 final return/Sharpe summaries" in cryptotrade_blocker
     assert "none contains a standalone released time-series model name" in cryptotrade_blocker
+    assert "five full-period model-mismatch traces" in cryptotrade_blocker
+    assert "1/20 individual cells" in cryptotrade_blocker
+    assert "0/5 complete rows" in cryptotrade_blocker
     assert "37 accessible public forks and 39 fork refs" in cryptotrade_blocker
     assert "260/480 cells remain method-faithfully unverifiable" in cryptotrade_blocker
 

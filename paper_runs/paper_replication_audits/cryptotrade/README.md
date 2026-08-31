@@ -38,6 +38,10 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   and the trace matching the Full row is BTC-bull rather than the ETH experiment
   described around Table 5. The closer ETH/full-prompt trace reports 28.11%/0.08,
   not 28.47%/0.23.
+  Reassigning the five full-period model-mismatched traces to their declared
+  GPT-3.5 rows does not rescue them: only 1/20 individual cells coincides and
+  0/5 complete declared-model rows match. The sixth diagnostic trace has the
+  correct GPT-4 identity but ends before the paper period.
 - ETH-sideways SMA matches the paper's -5.45% total return and -0.07 Sharpe, but
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
