@@ -23,18 +23,17 @@ def test_paper_route_records_completed_audit_without_inventing_code() -> None:
         "paper_only_audit_recorded_no_native_code_pipeline"
     )
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_152_of_156_source_adjacent_baseline_cells_"
-        "120_of_120_deterministic_32_of_36_model_cells_24_coin_guard_cells_recovered_"
-        "4_xgboost_coin_cells_conflict_"
+        "paper_audit:completed_156_of_156_source_adjacent_baseline_cells_"
+        "120_of_120_deterministic_36_of_36_model_cells_mixed_two_year_one_year_lineage_no_uniform_window_"
         "zero_of_120_unique_native_table_cells_zero_of_15_native_curves"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     blocker = row["precise_native_or_access_blocker"]
-    assert "152/156" in blocker and "two-year" in blocker
+    assert "156/156" in blocker and "two-year" in blocker
     assert "120/120 deterministic cells" in blocker
     assert "24 COIN cells" in blocker
-    assert "16/20 XGBoost cells" in blocker
-    assert "matches 0/4 COIN cells" in blocker
+    assert "36/36 model" in blocker and "one-year" in blocker
+    assert "16/20 and 4/20" in blocker
     assert "0/120" in blocker and "0/15" in blocker
     assert "Qwen3-Trader" in blocker and "FINSABER" in blocker
     assert row["proxy_role"] == "no_proxy"

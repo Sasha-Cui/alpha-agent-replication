@@ -1441,12 +1441,13 @@ PAPER_ONLY_AUDIT_NOTES = {
         "versions execute eight source-adjacent baselines. Removing only the six deterministic "
         "strategies' unused prior-period guard exposes 24 COIN cells: all match while the 96 "
         "original control cells remain unchanged, yielding 120/120 deterministic cells. "
-        "Source-history inspection shows ARIMA and XGBoost used an older two-year training "
-        "window that the paper omitted and later defaults changed to three years. That lineage "
-        "recovers 16/16 ARIMA and 16/20 XGBoost cells. An available-history adapter runs the "
-        "printed COIN XGBoost row without changing the model and preserves 16/16 controls, but "
-        "matches 0/4 COIN cells. Overall, 152/156 numeric baseline cells reproduce at display "
-        "precision. The adapters preserve formulas, test data, commissions, dates, and metrics. "
+        "Source-history inspection shows that the paper omitted its model training-window rule "
+        "and later defaults changed to three years. A two-year window recovers all 32 ARIMA and "
+        "XGBoost cells on the four control tickers; a one-year window recovers the remaining "
+        "4/4 COIN XGBoost cells, yielding 36/36 model and 156/156 total baseline cells. Uniform "
+        "two-year and one-year XGBoost profiles match only 16/20 and 4/20 cells respectively, "
+        "so the numeric lineage is recovered but the method remains under-specified. The "
+        "executions preserve formulas, test data, commissions, dates, and metrics. "
         "These are baseline/data "
         "components, not the TradingGroup system. No attributable implementation, "
         "Qwen3-Trader-8B-PEFT checkpoint, 1,080 trajectories, complete prompts or "
@@ -1877,9 +1878,8 @@ TARGETED_EXECUTION = {
         "19445_forks_24584_refs_4234_heads_exhausted_zero_native_regenerated"
     ),
     "SYS-TRADING-GROUP": (
-        "paper_audit:completed_152_of_156_source_adjacent_baseline_cells_"
-        "120_of_120_deterministic_32_of_36_model_cells_24_coin_guard_cells_recovered_"
-        "4_xgboost_coin_cells_conflict_"
+        "paper_audit:completed_156_of_156_source_adjacent_baseline_cells_"
+        "120_of_120_deterministic_36_of_36_model_cells_mixed_two_year_one_year_lineage_no_uniform_window_"
         "zero_of_120_unique_native_table_cells_zero_of_15_native_curves"
     ),
     "SYS-TRADING-R1": (
