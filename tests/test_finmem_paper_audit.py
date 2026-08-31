@@ -60,6 +60,9 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     author_outputs = read_csv(output / "historical_author_output_conformance.csv")
     action_inventory = read_csv(output / "historical_action_inventory.csv")
     action_reproduction = read_csv(output / "historical_action_metric_reproduction.csv")
+    native_metrics = read_csv(
+        output / "historical_native_metric_function_execution.csv"
+    )
     paper_versions = read_csv(output / "official_paper_version_inventory.csv")
     paper_sources = read_csv(output / "official_paper_source_inventory.csv")
     table_4_provenance = read_csv(output / "table_4_volatility_provenance.csv")
@@ -89,6 +92,19 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
     assert manifest["historical_action_metric_cells_conflicted_with_paper"] == 8
     assert manifest["historical_action_metric_rows_fully_matched"] == 11
     assert manifest["historical_action_metric_rows_conflicted_with_paper"] == 4
+    assert manifest["historical_native_metric_configurations_executed"] == 15
+    assert manifest["historical_native_metric_cells_executed"] == 75
+    assert manifest["historical_native_metric_cells_matching_audit_adapter"] == 75
+    assert manifest["historical_native_metric_cells_matching_paper"] == 67
+    assert manifest["historical_native_metric_rows_fully_matching_paper"] == 11
+    assert manifest["historical_native_metric_rows_conflicted_with_paper"] == 4
+    assert (
+        manifest["historical_native_metric_maximum_adapter_error"] < 6e-13
+    )
+    assert manifest["historical_native_metric_yfinance_version"] == "0.2.32"
+    assert manifest["historical_native_metric_live_yfinance_calls"] == 0
+    assert manifest["source_calculate_metrics_function_operational"] is True
+    assert manifest["source_metrics_entrypoint_operational_as_released"] is False
     assert manifest["buy_hold_cells_recomputed"] == 40
     assert manifest["buy_hold_cells_matched"] == 16
     assert manifest["buy_hold_cells_mismatched_against_current_yahoo"] == 24
@@ -277,6 +293,34 @@ def test_committed_audit_distinguishes_history_from_end_to_end_reproduction() ->
         ("4", "paper_conflicts_with_historical_action_replay"): 8,
         ("5", "historical_action_exact_displayed_precision_match"): 25,
     }
+
+    assert len(native_metrics) == 15
+    assert Counter(row["paper_table"] for row in native_metrics) == {
+        "3": 6,
+        "4": 4,
+        "5": 5,
+    }
+    assert {row["source_commit"] for row in native_metrics} == {
+        audit.HISTORICAL_ARTIFACT_COMMIT
+    }
+    assert {row["source_sha256"] for row in native_metrics} == {
+        audit.HISTORICAL_METRICS_SHA256
+    }
+    assert {row["source_function"] for row in native_metrics} == {
+        "calculate_metrics"
+    }
+    assert {row["yfinance_version_imported"] for row in native_metrics} == {"0.2.32"}
+    assert {row["live_yfinance_calls"] for row in native_metrics} == {"0"}
+    assert {row["all_five_metrics_match_audit_adapter"] for row in native_metrics} == {
+        "True"
+    }
+    assert max(
+        float(row["maximum_absolute_error_against_audit_adapter"])
+        for row in native_metrics
+    ) < 6e-13
+    assert sum(int(row["paper_cells_matched"]) for row in native_metrics) == 67
+    assert sum(row["paper_row_fully_matched"] == "True" for row in native_metrics) == 11
+    assert {row["native_agent_result_credit"] for row in native_metrics} == {"False"}
 
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected

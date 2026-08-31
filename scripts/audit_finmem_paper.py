@@ -1001,6 +1001,137 @@ def historical_action_reproduction(source_root: Path, price_root: Path) -> List[
     return rows
 
 
+def historical_native_metric_function_execution(
+    source_root: Path, price_root: Path
+) -> List[Dict[str, Any]]:
+    metrics_blob = git_blob(
+        source_root,
+        HISTORICAL_ARTIFACT_COMMIT,
+        HISTORICAL_METRICS_PATH,
+    )
+    if hashlib.sha256(metrics_blob).hexdigest() != HISTORICAL_METRICS_SHA256:
+        raise RuntimeError("Historical FinMem metric source changed")
+    namespace: Dict[str, Any] = {"__name__": "finmem_historical_metrics"}
+    exec(
+        compile(
+            metrics_blob.decode("utf-8"),
+            HISTORICAL_METRICS_PATH,
+            "exec",
+        ),
+        namespace,
+    )
+    calculate_metrics = namespace.get("calculate_metrics")
+    yfinance_module = namespace.get("yf")
+    if not callable(calculate_metrics) or getattr(
+        yfinance_module, "__version__", ""
+    ) != "0.2.32":
+        raise RuntimeError("Historical FinMem metric dependency contract changed")
+
+    network_calls = 0
+
+    def blocked_download(*args: Any, **kwargs: Any) -> None:
+        nonlocal network_calls
+        network_calls += 1
+        raise RuntimeError("live yfinance download forbidden in pinned FinMem audit")
+
+    yfinance_module.download = blocked_download
+    prices, timestamps = load_adjusted_prices(price_root / "TSLA_ablation.json")
+    trading_dates = [
+        datetime.fromtimestamp(timestamp, timezone.utc).replace(tzinfo=None).date()
+        for timestamp in timestamps
+    ]
+    first_date, last_date = min(trading_dates), max(trading_dates)
+    targets = [row for row in paper_table_rows() if row["paper_table"] in {3, 4, 5}]
+    metric_order = (
+        "cumulative_return_pct",
+        "sharpe_ratio",
+        "daily_volatility_pct",
+        "annualized_volatility_pct",
+        "max_drawdown_pct",
+    )
+    rows: List[Dict[str, Any]] = []
+    for paper_table, strategy in sorted({
+        (int(row["paper_table"]), str(row["strategy_or_configuration"]))
+        for row in targets
+    }):
+        path = HISTORICAL_ABLATION_ACTION_PATHS.get((paper_table, strategy), "")
+        if strategy == "buy_and_hold":
+            actions = np.ones(len(prices), dtype=float)
+            action_evidence = "synthetic_all_ones_buy_and_hold_path"
+        else:
+            parsed, _ = parse_action_csv(
+                git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, path)
+            )
+            filtered = [
+                (date.date(), value)
+                for date, value in parsed
+                if first_date <= date.date() <= last_date
+            ]
+            if [date for date, _ in filtered] != trading_dates:
+                raise RuntimeError(
+                    f"Historical action dates do not align for native metric run: {path}"
+                )
+            actions = np.asarray([value for _, value in filtered], dtype=float)
+            action_evidence = f"{HISTORICAL_ARTIFACT_COMMIT}:{path}"
+        native_tuple = calculate_metrics(prices.tolist(), actions.tolist())
+        native_values = {
+            metric: float(value) * (100.0 if index in {0, 2, 3, 4} else 1.0)
+            for index, (metric, value) in enumerate(zip(metric_order, native_tuple))
+        }
+        adapter_values = source_action_metrics(prices, actions)
+        adapter_errors = {
+            metric: abs(native_values[metric] - adapter_values[metric])
+            for metric in metric_order
+        }
+        paper_values = {
+            str(row["metric"]): float(row["paper_value"])
+            for row in targets
+            if int(row["paper_table"]) == paper_table
+            and row["strategy_or_configuration"] == strategy
+        }
+        paper_matches = {
+            metric: abs(native_values[metric] - paper_values[metric])
+            <= DISPLAY_TOLERANCE
+            for metric in metric_order
+        }
+        rows.append(
+            {
+                "paper_table": paper_table,
+                "strategy_or_configuration": strategy,
+                "source_commit": HISTORICAL_ARTIFACT_COMMIT,
+                "source_path": HISTORICAL_METRICS_PATH,
+                "source_sha256": HISTORICAL_METRICS_SHA256,
+                "source_function": "calculate_metrics",
+                "yfinance_version_imported": yfinance_module.__version__,
+                "live_yfinance_calls": network_calls,
+                "price_input": "TSLA_ablation.json",
+                "price_input_sha256": PRICE_SHA256["TSLA_ablation.json"],
+                "action_evidence": action_evidence,
+                **{f"native_{metric}": native_values[metric] for metric in metric_order},
+                "maximum_absolute_error_against_audit_adapter": max(
+                    adapter_errors.values()
+                ),
+                "all_five_metrics_match_audit_adapter": all(
+                    error <= 1e-12 for error in adapter_errors.values()
+                ),
+                "paper_cells_matched": sum(paper_matches.values()),
+                "paper_cells_conflicted": len(paper_matches) - sum(paper_matches.values()),
+                "paper_row_fully_matched": all(paper_matches.values()),
+                "native_metric_function_evidence": True,
+                "native_agent_result_credit": False,
+            }
+        )
+    if (
+        len(rows) != 15
+        or network_calls != 0
+        or not all(row["all_five_metrics_match_audit_adapter"] for row in rows)
+        or sum(row["paper_cells_matched"] for row in rows) != 67
+        or sum(row["paper_row_fully_matched"] for row in rows) != 11
+    ):
+        raise RuntimeError("FinMem native metric-function execution census changed")
+    return rows
+
+
 def price_input_inventory(price_root: Path) -> Tuple[List[Dict[str, Any]], Dict[str, Dict[str, float]]]:
     inventory = []
     metrics: Dict[str, Dict[str, float]] = {}
@@ -1511,6 +1642,9 @@ def build_audit(
     author_outputs = parse_notebook_author_outputs(source_root)
     action_inventory = historical_action_inventory(source_root)
     action_reproduction = historical_action_reproduction(source_root, price_root)
+    native_metric_runs = historical_native_metric_function_execution(
+        source_root, price_root
+    )
     paper_versions, paper_source_files = paper_version_audit(paper_version_root)
     table_4_forensics, table_4_forensic_summary = table_4_volatility_forensics(
         source_root, author_outputs, action_reproduction
@@ -1537,6 +1671,11 @@ def build_audit(
         output_dir / "historical_action_metric_reproduction.csv",
         action_reproduction,
         list(action_reproduction[0]),
+    )
+    write_csv(
+        output_dir / "historical_native_metric_function_execution.csv",
+        native_metric_runs,
+        list(native_metric_runs[0]),
     )
     write_csv(
         output_dir / "official_paper_version_inventory.csv",
@@ -1663,6 +1802,28 @@ def build_audit(
         "historical_action_metric_cells_conflicted_with_paper": action_conflicted,
         "historical_action_metric_rows_fully_matched": 11,
         "historical_action_metric_rows_conflicted_with_paper": 4,
+        "historical_native_metric_configurations_executed": len(native_metric_runs),
+        "historical_native_metric_cells_executed": len(native_metric_runs) * 5,
+        "historical_native_metric_cells_matching_audit_adapter": sum(
+            5
+            for row in native_metric_runs
+            if row["all_five_metrics_match_audit_adapter"]
+        ),
+        "historical_native_metric_cells_matching_paper": sum(
+            row["paper_cells_matched"] for row in native_metric_runs
+        ),
+        "historical_native_metric_rows_fully_matching_paper": sum(
+            row["paper_row_fully_matched"] for row in native_metric_runs
+        ),
+        "historical_native_metric_rows_conflicted_with_paper": sum(
+            not row["paper_row_fully_matched"] for row in native_metric_runs
+        ),
+        "historical_native_metric_maximum_adapter_error": max(
+            row["maximum_absolute_error_against_audit_adapter"]
+            for row in native_metric_runs
+        ),
+        "historical_native_metric_yfinance_version": "0.2.32",
+        "historical_native_metric_live_yfinance_calls": 0,
         "buy_hold_cells_recomputed": matched + mismatched,
         "buy_hold_cells_matched": matched,
         "buy_hold_cells_mismatched_against_current_yahoo": mismatched,
@@ -1714,6 +1875,7 @@ def build_audit(
         "paper_repeated_trials": 5,
         "source_trial_seeds_shipped": False,
         "paper_selects_best_risk_profile_on_test_outcome": True,
+        "source_calculate_metrics_function_operational": True,
         "source_metrics_entrypoint_operational_as_released": False,
         "paper_metric_is_self_financing_portfolio_return": False,
         "paper_metric_interpretation": (
@@ -1724,8 +1886,10 @@ def build_audit(
             "The full public Git history preserves an executed notebook that corroborates "
             "227/235 displayed paper cells (223 exact and four differing by one last-decimal "
             "unit) and 18 dated action CSVs. "
-            "Replaying the ablation actions "
-            "against a hash-pinned Yahoo response independently reproduces 67/75 displayed "
+            "The exact historical calculate_metrics function executes all 15 recovered "
+            "configurations with yfinance 0.2.32 imported, zero network calls, and all 75 "
+            "values matching the audit adapter within 1e-12. Replaying the ablation actions "
+            "against a hash-pinned Yahoo response reproduces 67/75 displayed "
             "Table 3--5 cells. The remaining eight are both Table 4 volatility columns. Both "
             "official arXiv versions and their TeX sources retain them: four annualized cells "
             "exactly equal native daily values, two daily cells match a separate TSLA "
@@ -1798,10 +1962,12 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   Risk-Seeking and Risk-Averse daily values occur in no reachable public source blob.
   This bounded evidence supports a cross-experiment/mislabeled-table construction
   defect; it does not prove what may have existed in unavailable private artifacts.
-- Independently applying the released metric code to the historical dated action CSVs
-  and a hash-pinned Yahoo response reproduces {action_matched}/75 displayed cells in
-  Tables 3--5. Tables 3 and 5 match completely (55/55); Table 4 matches cumulative
-  return, Sharpe, and drawdown (12/20) but conflicts on the same eight volatility cells.
+- The exact pinned `calculate_metrics` function executes all 15 historical action
+  configurations with yfinance 0.2.32 imported and live downloads blocked. All 75
+  values match the independent adapter within 1e-12 and {action_matched}/75 match
+  the paper at display precision. Tables 3 and 5 match completely (55/55); Table 4
+  matches cumulative return, Sharpe, and drawdown (12/20) but conflicts on the same
+  eight volatility cells.
 - This is stronger than paper-value transcription: it connects the paper values to
   author-shipped outputs and independently replays the ablation metric path. It is
   still not an end-to-end rerun of FinMem's LLM decisions or five repeated trials.
@@ -1845,9 +2011,10 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   released. `Fake-Sample-Data.zip` explicitly contains Kaggle-derived fake news and
   sample pipeline objects, not paper inputs or agent outputs; pickle payloads were
   inventoried without execution.
-- The metrics script is not directly operational: it references an undefined
-  lowercase ticker, hard-codes author-local result paths, and uses yfinance/pandas
-  without declaring them in either locked environment file.
+- The reusable metric function now executes, but the outer script entrypoint remains
+  non-operational: it references an undefined lowercase ticker, hard-codes author-local
+  result paths, and uses yfinance/pandas without declaring them in either locked
+  environment file.
 - The paper averages five repeated trials but provides no seeds or trial paths. It
   also reports whichever of three risk profiles has the highest cumulative return
   on the test period, an outcome-selected figure rather than a prespecified profile.

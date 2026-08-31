@@ -40,10 +40,12 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   Risk-Seeking and Risk-Averse daily values occur in no reachable public source blob.
   This bounded evidence supports a cross-experiment/mislabeled-table construction
   defect; it does not prove what may have existed in unavailable private artifacts.
-- Independently applying the released metric code to the historical dated action CSVs
-  and a hash-pinned Yahoo response reproduces 67/75 displayed cells in
-  Tables 3--5. Tables 3 and 5 match completely (55/55); Table 4 matches cumulative
-  return, Sharpe, and drawdown (12/20) but conflicts on the same eight volatility cells.
+- The exact pinned `calculate_metrics` function executes all 15 historical action
+  configurations with yfinance 0.2.32 imported and live downloads blocked. All 75
+  values match the independent adapter within 1e-12 and 67/75 match
+  the paper at display precision. Tables 3 and 5 match completely (55/55); Table 4
+  matches cumulative return, Sharpe, and drawdown (12/20) but conflicts on the same
+  eight volatility cells.
 - This is stronger than paper-value transcription: it connects the paper values to
   author-shipped outputs and independently replays the ablation metric path. It is
   still not an end-to-end rerun of FinMem's LLM decisions or five repeated trials.
@@ -87,9 +89,10 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   released. `Fake-Sample-Data.zip` explicitly contains Kaggle-derived fake news and
   sample pipeline objects, not paper inputs or agent outputs; pickle payloads were
   inventoried without execution.
-- The metrics script is not directly operational: it references an undefined
-  lowercase ticker, hard-codes author-local result paths, and uses yfinance/pandas
-  without declaring them in either locked environment file.
+- The reusable metric function now executes, but the outer script entrypoint remains
+  non-operational: it references an undefined lowercase ticker, hard-codes author-local
+  result paths, and uses yfinance/pandas without declaring them in either locked
+  environment file.
 - The paper averages five repeated trials but provides no seeds or trial paths. It
   also reports whichever of three risk profiles has the highest cumulative return
   on the test period, an outcome-selected figure rather than a prespecified profile.
