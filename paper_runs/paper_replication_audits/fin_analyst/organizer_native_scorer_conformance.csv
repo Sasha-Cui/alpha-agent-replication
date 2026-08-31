@@ -1,0 +1,3 @@
+asset,raw_snapshot_asset_rows,selected_paper_window_rows,excluded_post_window_rows,selected_rows_match_saved_replay_rows,equity_with_fees_points,equity_without_fees_points,buy_and_hold_equity_points,equity_with_fees_exact,equity_without_fees_exact,buy_and_hold_equity_exact,five_metrics_with_fees_exact,five_metrics_without_fees_exact,win_rate_and_trade_count_exact,all_native_scorer_outputs_exact,published_cells_verified_via_native_scorer,author_native_decision_pipeline_reexecuted,paper_result_credit
+TSLA,47,47,0,True,47,47,47,True,True,True,True,True,True,True,2,False,False
+BTC,55,50,5,True,50,50,50,True,True,True,True,True,True,True,3,False,False

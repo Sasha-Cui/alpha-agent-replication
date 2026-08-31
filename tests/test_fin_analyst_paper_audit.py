@@ -49,6 +49,9 @@ def test_original_source_rebuild_and_public_lineage_are_pinned() -> None:
     }
     assert provenance["dataset"]["pre_live_commit"] == audit.DATASET_COMMIT
     assert provenance["organizer"]["source_commit"] == audit.ARENA_COMMIT
+    assert provenance["organizer"]["scorer_path"] == "src/lib/perf.js"
+    assert provenance["organizer"]["scorer_sha256"] == (audit.ORGANIZER_PERF_SHA256)
+    assert provenance["organizer"]["native_scorer_executed"] is True
 
 
 def test_all_119_empirical_table_cells_separate_output_verification_from_llm_replay() -> None:
@@ -64,26 +67,20 @@ def test_all_119_empirical_table_cells_separate_output_verification_from_llm_rep
     assert sum(row["official_input_or_result_record_recovered"] == "True" for row in results) == 48
     assert all(row["source_document_recovered"] == "True" for row in results)
     assert all(row["author_native_decision_pipeline_reexecuted"] == "False" for row in results)
-    verified = [
-        row for row in results
-        if row["published_result_regenerated_at_display_precision"] == "True"
-    ]
+    assert sum(row["organizer_native_scorer_executed"] == "True" for row in results) == 20
+    verified = [row for row in results if row["published_result_regenerated_at_display_precision"] == "True"]
     assert len(verified) == 33
     baseline = [row for row in verified if row["official_historical_dataset_replayed"] == "True"]
     assert len(baseline) == 28
-    assert {
-        (row["table_label"], row["row_label"], row["quantitative_column_index"])
-        for row in baseline
-    } == {
+    assert {(row["table_label"], row["row_label"], row["quantitative_column_index"]) for row in baseline} == {
         *{("tab:tsla", label, str(index)) for label in ("Buy & Hold", "Always HOLD") for index in range(1, 8)},
         *{("tab:btc", label, str(index)) for label in ("Buy & Hold", "Always HOLD") for index in range(1, 8)},
     }
     assert {row["paper_protocol_period_match"] for row in baseline} == {"False"}
     live = [row for row in verified if row["official_historical_dataset_replayed"] == "False"]
     assert len(live) == 5
-    assert {
-        (row["row_label"], row["quantitative_column_index"]) for row in live
-    } == {
+    assert all(row["organizer_native_scorer_executed"] == "True" for row in live)
+    assert {(row["row_label"], row["quantitative_column_index"]) for row in live} == {
         ("Acted days / exposure", "1"),
         ("Acted days / exposure", "2"),
         ("Hit rate (acted days)", "1"),
@@ -236,6 +233,38 @@ def test_full_history_search_finds_no_random_or_momentum_baseline_generator() ->
 
 
 def test_official_live_decisions_replay_but_contradict_table() -> None:
+    native = load_json("organizer_native_scorer_execution.json")
+    conformance = rows("organizer_native_scorer_conformance.csv")
+    assert native["source_commit"] == audit.ARENA_COMMIT
+    assert native["source_sha256"] == audit.ORGANIZER_PERF_SHA256
+    assert native["runner_sha256"] == audit.ORGANIZER_RUNNER_SHA256
+    assert native["runner_path"] == "scripts/run_fin_analyst_organizer_scorer.mjs"
+    assert native["decision_snapshot_sha256"] == (audit.PINS["discovery/arena-fin-analyst-rows.json"])
+    assert native["decision_snapshot_rows"] == 102
+    assert native["selected_decision_rows"] == 97
+    assert native["excluded_post_window_btc_rows"] == 5
+    assert native["runtime"] == {
+        "node": "v20.13.1",
+        "platform": "linux",
+        "architecture": "x64",
+    }
+    assert native["network_calls"] == 0
+    assert native["conformance"] == {
+        "assets_executed": 2,
+        "selected_official_decision_rows": 97,
+        "equity_arrays_exact": 6,
+        "equity_points_exact": 291,
+        "metric_scalars_exact": 20,
+        "win_rate_trade_scalars_exact": 4,
+        "published_cells_verified_via_native_scorer": 5,
+        "author_native_decision_pipeline_reexecuted": False,
+        "paper_result_credit": False,
+    }
+    assert len(conformance) == 2
+    assert {row["asset"] for row in conformance} == {"TSLA", "BTC"}
+    assert {row["all_native_scorer_outputs_exact"] for row in conformance} == {"True"}
+    assert sum(int(row["published_cells_verified_via_native_scorer"]) for row in conformance) == 5
+    assert {row["paper_result_credit"] for row in conformance} == {"False"}
     replay = {row["asset"]: row for row in rows("live_result_replay.csv")}
     assert replay["TSLA"]["decision_rows"] == "47"
     assert replay["BTC"]["decision_rows"] == "50"
@@ -245,6 +274,9 @@ def test_official_live_decisions_replay_but_contradict_table() -> None:
     assert float(replay["BTC"]["organizer_replay_return_pct"]) == pytest.approx(-0.09755191591)
     assert replay["BTC"]["organizer_replay_win_rate_pct"] == "40"
     assert all(row["all_printed_live_metrics_match"] == "False" for row in replay.values())
+    assert {row["organizer_native_scorer_executed"] for row in replay.values()} == {"True"}
+    assert {row["organizer_native_scorer_source_sha256"] for row in replay.values()} == {audit.ORGANIZER_PERF_SHA256}
+    assert {row["organizer_native_scorer_network_calls"] for row in replay.values()} == {"0"}
 
 
 def test_error_attribution_replay_recovers_five_full_cells_and_four_partial_components() -> None:
@@ -261,10 +293,9 @@ def test_error_attribution_replay_recovers_five_full_cells_and_four_partial_comp
     }
     partial = [row for row in replay if row["verification_class"] == "partial_component_match_not_full_printed_cell"]
     assert len(partial) == 4
-    assert {row["row_label"] for row in partial} == {
-        "Long days: hit / total PnL", "Short days: hit / total PnL"
-    }
+    assert {row["row_label"] for row in partial} == {"Long days: hit / total PnL", "Short days: hit / total PnL"}
     assert {row["matching_components"] for row in partial} == {"1"}
+    assert {row["organizer_native_scorer_executed"] for row in replay} == {"True"}
     assert all(row["paper_result_credit"] == "False" for row in replay)
 
 
@@ -275,6 +306,17 @@ def test_native_controlled_run_exposes_btc_vote_defects_without_external_calls()
     assert execution["paid_or_external_model_calls"] == 0
     assert execution["external_fear_greed_calls"] == 0
     assert execution["author_native_paper_actions_regenerated"] == 0
+    assert execution["organizer_native_scorer"] == {
+        "assets_executed": 2,
+        "selected_official_decision_rows": 97,
+        "equity_arrays_exact": 6,
+        "equity_points_exact": 291,
+        "metric_scalars_exact": 20,
+        "win_rate_trade_scalars_exact": 4,
+        "published_cells_verified_via_native_scorer": 5,
+        "author_native_decision_pipeline_reexecuted": False,
+        "paper_result_credit": False,
+    }
     controlled = execution["controlled_execution"]
     assert controlled["tsla_endpoint"]["response"] == {"recommended_action": "SELL"}
     assert controlled["tsla_endpoint"]["llm_call_seams_exercised"] == 8
@@ -290,6 +332,8 @@ def test_figure_and_internal_conflicts_are_not_silently_reconciled() -> None:
     empirical = [row for row in figures if row["empirical"] == "True"]
     assert len(empirical) == 2
     assert all(row["buy_hold_endpoint_matches_rounding"] == "True" for row in empirical)
+    assert all(row["organizer_native_buy_hold_matches_rounding"] == "False" for row in empirical)
+    assert all("exact native organizer Buy-and-Hold includes fees/slippage" in row["boundary"] for row in empirical)
     assert all(row["agent_endpoint_matches"] == "False" for row in empirical)
     assert all(row["full_panel_regenerated"] == "False" for row in empirical)
     checks = {row["check"]: row for row in rows("internal_consistency_audit.csv")}
@@ -298,18 +342,10 @@ def test_figure_and_internal_conflicts_are_not_silently_reconciled() -> None:
     assert checks["btc_all_hold_majority"]["status"] == "source_method_conflict"
     assert checks["btc_missing_fear_greed"]["status"] == "source_method_conflict"
     assert checks["full_prompts_claim"]["status"] == "specification_conflict"
-    assert checks["live_error_attribution_denominators"]["status"] == (
-        "mixed_conventions_exactly_replayed"
-    )
-    assert checks["declared_offline_period_vs_table_lineage"]["status"] == (
-        "major_protocol_conflict"
-    )
-    assert checks["offline_baseline_mixed_asset_endpoints"]["status"] == (
-        "exact_hidden_lineage_recovered"
-    )
-    assert checks["offline_ntr_semantics"]["status"] == (
-        "label_and_protocol_conflict"
-    )
+    assert checks["live_error_attribution_denominators"]["status"] == ("mixed_conventions_exactly_replayed")
+    assert checks["declared_offline_period_vs_table_lineage"]["status"] == ("major_protocol_conflict")
+    assert checks["offline_baseline_mixed_asset_endpoints"]["status"] == ("exact_hidden_lineage_recovered")
+    assert checks["offline_ntr_semantics"]["status"] == ("label_and_protocol_conflict")
 
 
 def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) -> None:
@@ -318,8 +354,28 @@ def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) ->
     assert manifest["empirical_figure_panels"] == 2
     assert manifest["paper_window_official_decision_rows_recovered"] == 97
     assert manifest["paper_window_official_rows_replayed_with_organizer_scorer"] == 97
+    assert manifest["organizer_native_scorer_executed"] is True
+    assert manifest["organizer_native_scorer_source_commit"] == audit.ARENA_COMMIT
+    assert manifest["organizer_native_scorer_source_sha256"] == (audit.ORGANIZER_PERF_SHA256)
+    assert manifest["organizer_native_scorer_runner_sha256"] == (
+        audit.ORGANIZER_RUNNER_SHA256
+    )
+    assert manifest["organizer_native_scorer_runtime"] == {
+        "node": "v20.13.1",
+        "platform": "linux",
+        "architecture": "x64",
+    }
+    assert manifest["organizer_native_scorer_network_calls"] == 0
+    assert manifest["organizer_native_scorer_assets_executed"] == 2
+    assert manifest["organizer_native_scorer_official_decision_rows"] == 97
+    assert manifest["organizer_native_scorer_equity_arrays_exact"] == 6
+    assert manifest["organizer_native_scorer_equity_points_exact"] == 291
+    assert manifest["organizer_native_scorer_metric_scalars_exact"] == 20
+    assert manifest["organizer_native_scorer_win_rate_trade_scalars_exact"] == 4
     assert manifest["published_table_cells_regenerated"] == 33
     assert manifest["published_table_cells_verified_from_official_decisions_and_organizer_output"] == 5
+    assert manifest["published_table_cells_verified_via_exact_native_organizer_scorer"] == 5
+    assert manifest["published_table_cells_reproduced_from_native_llm_decisions"] == 0
     assert manifest["published_baseline_cells_regenerated_from_official_history"] == 28
     assert manifest["published_baseline_cells_regenerated_with_declared_endpoint"] == 0
     assert manifest["published_baseline_cells_regenerated_with_recovered_mixed_endpoints"] == 28
@@ -351,19 +407,24 @@ def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) ->
     assert manifest["full_empirical_figure_panels_regenerated"] == 0
     assert manifest["strict_success"] is False
     assert manifest["generated_file_sha256"] == {
-        path.name: file_sha256(path)
-        for path in AUDIT_DIR.iterdir()
-        if path.is_file() and path.name != "manifest.json"
+        path.name: file_sha256(path) for path in AUDIT_DIR.iterdir() if path.is_file() and path.name != "manifest.json"
     }
     readme = " ".join((AUDIT_DIR / "README.md").read_text().split())
     for marker in (
-        "119 displayed empirical table cells", "Thirty-three of 119 printed cells",
+        "119 displayed empirical table cells",
+        "Thirty-three of 119 printed cells",
+        "exact pinned src/lib/perf.js scorer now executes those raw rows",
+        "all six with-fee/no-fee/Buy-and-Hold equity arrays (291 points)",
+        "five live error-attribution cells from official decisions and exact native organizer scoring",
         "all 28 cells in the Buy-and-Hold and deterministic Always-HOLD rows",
-        "May-21 revision ending May 20", "May-22 revision ending May 21",
-        "Three BTC HOLD votes become BUY", "99.96% extracted-token overlap",
+        "May-21 revision ending May 20",
+        "May-22 revision ending May 21",
+        "Three BTC HOLD votes become BUY",
+        "99.96% extracted-token overlap",
         "full-history generator census searches all 435 reachable",
         "zero source-level Random sampling calls",
-        "strict_success` is false", "no native agent, random/momentum baseline, or ablation result is regenerated",
+        "strict_success` is false",
+        "no native agent, random/momentum baseline, or ablation result is regenerated",
     ):
         assert marker in readme
     if not audit.DEFAULT_SCRATCH.is_dir() or not audit.NATIVE_ENV.is_dir():

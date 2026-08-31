@@ -10,7 +10,7 @@ BTC runtime,native_controlled_with_defects,native vote runs; three HOLD votes be
 persistent corpora,complete_static_snapshot,"7/7 files load, 6,030 JSONL records plus 249 TA rows"
 live freshness,partial,TA stops 2025-12-30 and WSB stops 2026-04-12 before May-June live evaluation
 official live decisions,recovered,"97 paper-window rows: 47 TSLA and 50 BTC, from organizer public database snapshot"
-organizer scoring,replayed_current,pinned May-22 organizer scorer with 6-bp fees and 10-bp execution slippage
+organizer scoring,native_exact_current,exact pinned perf.js executes 97 official rows with 6-bp fees and 10-bp execution slippage; six equity arrays and 24 scalar outputs match the stored replay exactly
 live result reproduction,partial_output_verification,"headline return/alpha/Sharpe/win cells conflict, but five Table 7 cells reproduce from the official decisions and pinned organizer output"
 offline dataset,complete_103_commit_history,all 204 TSLA/BTC LFS payloads verify; the 20 revisions per asset covering the declared May-10 endpoint share one identical period path that conflicts with both printed returns
 offline actions,missing_after_full_history_search,"all 435 author/dataset/organizer commits contain no Random generator, seed-42 implementation, exact offline table identifier, or backtest generator; momentum source hits are limited to the live app and input documentation"

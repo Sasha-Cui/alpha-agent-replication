@@ -16,6 +16,9 @@
   "official_rebuilt_token_jaccard": 0.9995831017231795,
   "organizer": {
     "decision_snapshot_sha256": "8817fd68587630ab5eff44e93dfa3135399ad135c40e913963bee2c0c81a4a06",
+    "native_scorer_executed": true,
+    "scorer_path": "src/lib/perf.js",
+    "scorer_sha256": "62e6e637900d6e5d84c6671df19ab7d17641d7ebc4dce8127930b7f1d65315b5",
     "source_commit": "70c388c317b22322145ca8c2a5fe7aa5fe89dba3",
     "url": "https://huggingface.co/spaces/TheFinAI/Agent-Market-Arena"
   },

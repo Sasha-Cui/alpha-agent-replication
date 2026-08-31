@@ -12,6 +12,7 @@ import os
 import re
 import subprocess
 import tarfile
+import tempfile
 import zipfile
 from collections import Counter
 from pathlib import Path, PurePosixPath
@@ -34,6 +35,13 @@ ARENA_SPACE = "https://huggingface.co/spaces/TheFinAI/Agent-Market-Arena"
 AUTHOR_COMMIT = "85ab4781e74ed3deb9a7ef49bca3fa23b1ed9738"
 DATASET_COMMIT = "3ae0b896ed02e882c362f8edc90fd276159f5c5e"
 ARENA_COMMIT = "70c388c317b22322145ca8c2a5fe7aa5fe89dba3"
+ORGANIZER_PERF_SHA256 = (
+    "62e6e637900d6e5d84c6671df19ab7d17641d7ebc4dce8127930b7f1d65315b5"
+)
+ORGANIZER_RUNNER = ROOT / "scripts/run_fin_analyst_organizer_scorer.mjs"
+ORGANIZER_RUNNER_SHA256 = (
+    "4112e9d74b065130e98636f69d7942258503c8a37094cea67541b48b0837434f"
+)
 AUTHOR_ARCHIVE_COMMIT = "5c7db3f9dd34108979218187eb2a81d9efe581d0"
 AUTHOR_ARCHIVE_DELETION_COMMIT = "65273e6cc6bf1c10577bb02095a099d6bcefb584"
 AUTHOR_ARCHIVE_LFS_SHA256 = (
@@ -464,6 +472,9 @@ def result_rows(
                     "organizer_postprocessor_replayed": bool(
                         error_row or (label == "tab:results" and column_index <= 4)
                     ),
+                    "organizer_native_scorer_executed": bool(
+                        error_row or (label == "tab:results" and column_index <= 4)
+                    ),
                     "official_historical_dataset_replayed": baseline_row is not None,
                     "paper_protocol_period_match": (
                         baseline_row["paper_protocol_period_match"]
@@ -475,13 +486,13 @@ def result_rows(
                     "blocking_reason": (
                         "official-history baseline regeneration: the printed cell is recovered exactly from a later asset-specific dataset revision whose endpoint conflicts with the paper's declared 2026-05-10 cutoff"
                         if baseline_row and regenerated else
-                        "organizer-output verification: official decisions and the pinned scorer reproduce the printed cell; action-generation LLM calls were not rerun"
+                        "native-organizer verification: official decisions and exact pinned perf.js execution reproduce the printed cell; action-generation LLM calls were not rerun"
                         if regenerated else
-                        "organizer-output partial check: official decisions recover part of the composite cell but not every printed component"
+                        "native-organizer partial check: official decisions recover part of the composite cell but not every printed component"
                         if error_row and error_row["matching_components"] else
-                        "organizer-output conflict: official decisions and the pinned scorer do not reproduce the printed cell"
+                        "native-organizer conflict: official decisions and exact pinned perf.js execution do not reproduce the printed cell"
                         if error_row else
-                        "live: official actions and current organizer scorer disagree with the printed cell"
+                        "live: official actions and exact current organizer perf.js execution disagree with the printed cell"
                         if recovered else
                         "offline: no author actions, model calls, seed, raw path, or result generator was released"
                     ),
@@ -977,22 +988,183 @@ def release_history_audit(
     }
 
 
-def replay_rows(scratch: Path) -> list[dict[str, Any]]:
+def official_decision_rows(scratch: Path, asset: str) -> list[dict[str, Any]]:
+    snapshot_path = scratch / "discovery/arena-fin-analyst-rows.json"
+    if sha256(snapshot_path) != PINS["discovery/arena-fin-analyst-rows.json"]:
+        raise ValueError("official organizer decision snapshot changed")
+    snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+    rows = sorted(
+        (
+            row
+            for row in snapshot
+            if row.get("agent_name") == "Fin_Analyst"
+            and row.get("asset") == asset
+        ),
+        key=lambda row: row["date"],
+    )
+    expected_raw = 47 if asset == "TSLA" else 55
+    if len(rows) != expected_raw:
+        raise ValueError(f"official {asset} decision count changed")
+    return rows if asset == "TSLA" else rows[:50]
+
+
+def native_organizer_scorer_execution(
+    scratch: Path,
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    repository = scratch / "native/Agent-Market-Arena"
+    perf_path = repository / "src/lib/perf.js"
+    decisions_path = scratch / "discovery/arena-fin-analyst-rows.json"
+    if git_text(repository, "rev-parse", "HEAD") != ARENA_COMMIT:
+        raise ValueError("organizer checkout is not pinned to the scorer commit")
+    if sha256(perf_path) != ORGANIZER_PERF_SHA256:
+        raise ValueError("organizer perf.js source changed")
+    if not ORGANIZER_RUNNER.exists():
+        raise ValueError("native organizer scorer runner is absent")
+    if sha256(ORGANIZER_RUNNER) != ORGANIZER_RUNNER_SHA256:
+        raise ValueError("native organizer scorer runner changed")
+
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        output_path = Path(temporary_directory) / "native-organizer.json"
+        completed = subprocess.run(
+            [
+                "node",
+                str(ORGANIZER_RUNNER),
+                "--source",
+                str(perf_path),
+                "--decisions",
+                str(decisions_path),
+                "--source-commit",
+                ARENA_COMMIT,
+                "--output",
+                str(output_path),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        payload = json.loads(output_path.read_text(encoding="utf-8"))
+    if completed.stdout or completed.stderr:
+        raise ValueError("native organizer scorer emitted unexpected output")
+    if (
+        payload["source_commit"] != ARENA_COMMIT
+        or payload["source_sha256"] != ORGANIZER_PERF_SHA256
+        or payload["decision_snapshot_sha256"]
+        != PINS["discovery/arena-fin-analyst-rows.json"]
+        or payload["decision_snapshot_rows"] != 102
+        or payload["selected_decision_rows"] != 97
+        or payload["excluded_post_window_btc_rows"] != 5
+        or payload["runtime"]
+        != {"node": "v20.13.1", "platform": "linux", "architecture": "x64"}
+        or payload["network_calls"] != 0
+        or set(payload["results"]) != {"TSLA", "BTC"}
+    ):
+        raise ValueError("native organizer scorer provenance changed")
+
+    rows: list[dict[str, Any]] = []
+    for asset in ("TSLA", "BTC"):
+        selected = official_decision_rows(scratch, asset)
+        saved = json.loads(
+            (scratch / f"replay/{asset}.json").read_text(encoding="utf-8")
+        )
+        current = payload["results"][asset]
+        arrays = {
+            "equity_with_fees": "eq",
+            "equity_without_fees": "eq0",
+            "buy_and_hold_equity": "bh",
+        }
+        array_exact = {
+            name: current[name] == saved[saved_name]
+            for name, saved_name in arrays.items()
+        }
+        metrics_with_fees_exact = current["metrics_with_fees"] == saved["metrics"]
+        metrics_without_fees_exact = (
+            current["metrics_without_fees"] == saved["metrics0"]
+        )
+        win_rate_exact = current["win_rate"] == saved["wr"]
+        decisions_exact = selected == saved["rows"]
+        all_exact = (
+            decisions_exact
+            and all(array_exact.values())
+            and metrics_with_fees_exact
+            and metrics_without_fees_exact
+            and win_rate_exact
+        )
+        rows.append(
+            {
+                "asset": asset,
+                "raw_snapshot_asset_rows": 47 if asset == "TSLA" else 55,
+                "selected_paper_window_rows": len(selected),
+                "excluded_post_window_rows": 0 if asset == "TSLA" else 5,
+                "selected_rows_match_saved_replay_rows": decisions_exact,
+                "equity_with_fees_points": len(current["equity_with_fees"]),
+                "equity_without_fees_points": len(
+                    current["equity_without_fees"]
+                ),
+                "buy_and_hold_equity_points": len(
+                    current["buy_and_hold_equity"]
+                ),
+                "equity_with_fees_exact": array_exact["equity_with_fees"],
+                "equity_without_fees_exact": array_exact[
+                    "equity_without_fees"
+                ],
+                "buy_and_hold_equity_exact": array_exact[
+                    "buy_and_hold_equity"
+                ],
+                "five_metrics_with_fees_exact": metrics_with_fees_exact,
+                "five_metrics_without_fees_exact": metrics_without_fees_exact,
+                "win_rate_and_trade_count_exact": win_rate_exact,
+                "all_native_scorer_outputs_exact": all_exact,
+                "published_cells_verified_via_native_scorer": (
+                    2 if asset == "TSLA" else 3
+                ),
+                "author_native_decision_pipeline_reexecuted": False,
+                "paper_result_credit": False,
+            }
+        )
+    if (
+        len(rows) != 2
+        or not all(row["all_native_scorer_outputs_exact"] for row in rows)
+        or sum(
+            row["published_cells_verified_via_native_scorer"] for row in rows
+        )
+        != 5
+    ):
+        raise ValueError("native organizer scorer conformance changed")
+    payload["runner_path"] = "scripts/run_fin_analyst_organizer_scorer.mjs"
+    payload["runner_sha256"] = ORGANIZER_RUNNER_SHA256
+    payload["conformance"] = {
+        "assets_executed": 2,
+        "selected_official_decision_rows": 97,
+        "equity_arrays_exact": 6,
+        "equity_points_exact": 291,
+        "metric_scalars_exact": 20,
+        "win_rate_trade_scalars_exact": 4,
+        "published_cells_verified_via_native_scorer": 5,
+        "author_native_decision_pipeline_reexecuted": False,
+        "paper_result_credit": False,
+    }
+    return payload, rows
+
+
+def replay_rows(
+    scratch: Path,
+    organizer_execution: Mapping[str, Any] | None = None,
+) -> list[dict[str, Any]]:
     paper = {
         "TSLA": {"return": 13.51, "alpha": 28.33, "sharpe": 4.10, "win": 88.0, "rank": "1st / gold"},
         "BTC": {"return": -5.30, "alpha": 17.63, "sharpe": -1.09, "win": 36.0, "rank": "13th"},
     }
+    if organizer_execution is None:
+        organizer_execution = native_organizer_scorer_execution(scratch)[0]
     rows = []
     for asset in ("TSLA", "BTC"):
-        value = json.loads((scratch / f"replay/{asset}.json").read_text())
-        decisions = value["rows"][:50] if asset == "BTC" else value["rows"]
-        expected = 50 if asset == "BTC" else 47
-        if len(decisions) != expected:
-            raise ValueError(f"live decision window changed for {asset}")
-        metrics = value["metrics"]
-        bh = 100 * (value["bh"][-1] / value["bh"][0] - 1)
+        decisions = official_decision_rows(scratch, asset)
+        current = organizer_execution["results"][asset]
+        metrics = current["metrics_with_fees"]
+        buy_and_hold = current["buy_and_hold_equity"]
+        bh = 100 * (buy_and_hold[-1] / buy_and_hold[0] - 1)
         alpha = metrics["total_return"] - bh
-        wr = value["wr"]
+        wr = current["win_rate"]
         rows.append({
             "asset": asset, "decision_rows": len(decisions),
             "window_start": decisions[0]["date"], "window_end": decisions[-1]["date"],
@@ -1001,15 +1173,23 @@ def replay_rows(scratch: Path) -> list[dict[str, Any]]:
             "paper_sharpe": paper[asset]["sharpe"], "organizer_replay_sharpe": metrics["sharpe_ratio"],
             "paper_win_rate_pct": paper[asset]["win"], "organizer_replay_win_rate_pct": wr["winRate"],
             "organizer_replay_trade_count": wr["trades"], "paper_rank": paper[asset]["rank"],
+            "organizer_native_scorer_executed": True,
+            "organizer_native_scorer_source_sha256": ORGANIZER_PERF_SHA256,
+            "organizer_native_scorer_network_calls": 0,
             "historical_rank_reproducible": False,
             "all_printed_live_metrics_match": False,
-            "boundary": "official decisions + pinned organizer scorer replay; action-generation LLM calls not rerun",
+            "boundary": "official decisions + exact pinned organizer perf.js execution; action-generation LLM calls not rerun",
         })
     return rows
 
 
-def error_attribution_replay(scratch: Path) -> list[dict[str, Any]]:
+def error_attribution_replay(
+    scratch: Path,
+    organizer_execution: Mapping[str, Any] | None = None,
+) -> list[dict[str, Any]]:
     """Replay the paper's day-level Table 7 statistics from official decisions."""
+    if organizer_execution is None:
+        organizer_execution = native_organizer_scorer_execution(scratch)[0]
     paper = {
         "TSLA": {
             "Final return (net of fees)": (13.51,),
@@ -1030,9 +1210,8 @@ def error_attribution_replay(scratch: Path) -> list[dict[str, Any]]:
     }
     output: list[dict[str, Any]] = []
     for asset in ("TSLA", "BTC"):
-        payload = json.loads((scratch / f"replay/{asset}.json").read_text())
-        decisions = payload["rows"][:50] if asset == "BTC" else payload["rows"]
-        scorer = payload["metrics"]
+        decisions = official_decision_rows(scratch, asset)
+        scorer = organizer_execution["results"][asset]["metrics_with_fees"]
         if asset == "TSLA":
             observations = [row for row in decisions if row["trade_day"]]
             transitions = observations[:-1]
@@ -1126,8 +1305,9 @@ def error_attribution_replay(scratch: Path) -> list[dict[str, Any]]:
                 "total_components": len(component_matches),
                 "full_printed_cell_match": all(component_matches),
                 "author_native_decision_pipeline_reexecuted": False,
+                "organizer_native_scorer_executed": True,
                 "verification_class": (
-                    "official_decision_and_organizer_output_verification"
+                    "official_decision_and_native_organizer_scorer_verification"
                     if all(component_matches)
                     else "partial_component_match_not_full_printed_cell"
                     if any(component_matches)
@@ -1150,28 +1330,55 @@ def error_attribution_replay(scratch: Path) -> list[dict[str, Any]]:
     return output
 
 
-def figure_rows(scratch: Path) -> list[dict[str, Any]]:
-    values = {
-        "TSLA": (113326.0, 85313.0, 104623.48455502151, 85313.17459058214),
-        "BTC": (99906.0, 73708.0, 99742.76385138858, 73707.63369556762),
-    }
+def figure_rows(
+    scratch: Path,
+    organizer_execution: Mapping[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    if organizer_execution is None:
+        organizer_execution = native_organizer_scorer_execution(scratch)[0]
+    values = {}
+    for asset, paper_agent, paper_buy_hold in (
+        ("TSLA", 113326.0, 85313.0),
+        ("BTC", 99906.0, 73708.0),
+    ):
+        decisions = official_decision_rows(scratch, asset)
+        raw_buy_hold = (
+            100000 * float(decisions[-1]["price"]) / float(decisions[0]["price"])
+        )
+        values[asset] = (
+            paper_agent,
+            paper_buy_hold,
+            organizer_execution["results"][asset]["equity_with_fees"][-1],
+            raw_buy_hold,
+            organizer_execution["results"][asset]["buy_and_hold_equity"][-1],
+        )
     rows = [{
         "figure": "Figure 1", "panel": "architecture", "empirical": False,
         "source_asset_sha256": "7498eb4bb7139482bca56df56f0b5efb19b3adbb2b057f0e13199a24225f04a0",
         "full_panel_regenerated": False, "exact_displayed_endpoint_annotations_verified": "not_applicable",
         "boundary": "conceptual diagram",
     }]
-    for asset, (paper_agent, paper_bh, replay_agent, raw_bh) in values.items():
+    for asset, (
+        paper_agent,
+        paper_bh,
+        replay_agent,
+        raw_bh,
+        native_bh,
+    ) in values.items():
         rows.append({
             "figure": "Figure 2", "panel": asset, "empirical": True,
             "source_asset_sha256": "394e57057eaee99b2002a8dea8438c8df9ce31ddc2bfdfc43362727de7e50baf",
             "paper_agent_endpoint": paper_agent, "organizer_replay_agent_endpoint": replay_agent,
             "paper_buy_hold_endpoint": paper_bh, "raw_price_ratio_buy_hold_endpoint": raw_bh,
+            "organizer_native_buy_hold_endpoint": native_bh,
             "agent_endpoint_matches": abs(paper_agent - replay_agent) < 0.5,
             "buy_hold_endpoint_matches_rounding": round(raw_bh) == round(paper_bh),
+            "organizer_native_buy_hold_matches_rounding": (
+                round(native_bh) == round(paper_bh)
+            ),
             "full_panel_regenerated": False,
             "exact_displayed_endpoint_annotations_verified": "1/2",
-            "boundary": "raw Buy-and-Hold endpoint verifies; agent curve/end does not reproduce from current official actions/scorer",
+            "boundary": "raw price-ratio Buy-and-Hold endpoint verifies; exact native organizer Buy-and-Hold includes fees/slippage and does not; agent curve/end also conflicts",
         })
     return rows
 
@@ -1264,7 +1471,11 @@ def method_rows() -> list[dict[str, str]]:
         ("persistent corpora", "complete_static_snapshot", "7/7 files load, 6,030 JSONL records plus 249 TA rows"),
         ("live freshness", "partial", "TA stops 2025-12-30 and WSB stops 2026-04-12 before May-June live evaluation"),
         ("official live decisions", "recovered", "97 paper-window rows: 47 TSLA and 50 BTC, from organizer public database snapshot"),
-        ("organizer scoring", "replayed_current", "pinned May-22 organizer scorer with 6-bp fees and 10-bp execution slippage"),
+        (
+            "organizer scoring",
+            "native_exact_current",
+            "exact pinned perf.js executes 97 official rows with 6-bp fees and 10-bp execution slippage; six equity arrays and 24 scalar outputs match the stored replay exactly",
+        ),
         ("live result reproduction", "partial_output_verification", "headline return/alpha/Sharpe/win cells conflict, but five Table 7 cells reproduce from the official decisions and pinned organizer output"),
         ("offline dataset", "complete_103_commit_history", "all 204 TSLA/BTC LFS payloads verify; the 20 revisions per asset covering the declared May-10 endpoint share one identical period path that conflicts with both printed returns"),
         ("offline actions", "missing_after_full_history_search", "all 435 author/dataset/organizer commits contain no Random generator, seed-42 implementation, exact offline table identifier, or backtest generator; momentum source hits are limited to the live app and input documentation"),
@@ -1327,14 +1538,18 @@ def build(scratch: Path, output: Path) -> None:
     ]
     baseline_search = offline_baseline_generator_search(scratch)
     history = release_history_audit(scratch, dataset_revisions)
-    error_replay = error_attribution_replay(scratch)
+    organizer_execution, organizer_conformance = (
+        native_organizer_scorer_execution(scratch)
+    )
+    error_replay = error_attribution_replay(scratch, organizer_execution)
     tables = result_rows(source, error_replay, baseline_replay)
     prompts = prompt_rows(source, app_source)
     corpora = corpus_rows(scratch)
     datasets = dataset_rows(scratch)
-    replays = replay_rows(scratch)
-    figures = figure_rows(scratch)
+    replays = replay_rows(scratch, organizer_execution)
+    figures = figure_rows(scratch, organizer_execution)
     execution = native_execution(scratch)
+    execution["organizer_native_scorer"] = organizer_execution["conformance"]
     output.mkdir(parents=True, exist_ok=True)
     write_csv(output / "published_result_ledger.csv", tables)
     write_csv(output / "prompt_correspondence.csv", prompts)
@@ -1346,6 +1561,14 @@ def build(scratch: Path, output: Path) -> None:
     write_csv(output / "offline_baseline_generator_search.csv", baseline_search)
     write_json(output / "release_history_audit.json", history)
     write_csv(output / "error_attribution_replay.csv", error_replay)
+    write_csv(
+        output / "organizer_native_scorer_conformance.csv",
+        organizer_conformance,
+    )
+    write_json(
+        output / "organizer_native_scorer_execution.json",
+        organizer_execution,
+    )
     write_csv(output / "figure_inventory.csv", figures)
     write_csv(output / "method_specification_audit.csv", method_rows())
     write_csv(output / "internal_consistency_audit.csv", consistency_rows())
@@ -1359,7 +1582,16 @@ def build(scratch: Path, output: Path) -> None:
         "paper_source_sha256": {name: sha256_bytes(value) for name, value in sorted(files.items())},
         "author_space": {"url": AUTHOR_SPACE, "commit": AUTHOR_COMMIT, "tracked_files": 13, "license": "NOASSERTION"},
         "dataset": {"url": DATASET_URL, "pre_live_commit": DATASET_COMMIT},
-        "organizer": {"url": ARENA_SPACE, "source_commit": ARENA_COMMIT, "decision_snapshot_sha256": PINS["discovery/arena-fin-analyst-rows.json"]},
+        "organizer": {
+            "url": ARENA_SPACE,
+            "source_commit": ARENA_COMMIT,
+            "scorer_path": "src/lib/perf.js",
+            "scorer_sha256": ORGANIZER_PERF_SHA256,
+            "decision_snapshot_sha256": PINS[
+                "discovery/arena-fin-analyst-rows.json"
+            ],
+            "native_scorer_executed": True,
+        },
         "negative_search_boundary": "bounded searches do not prove private, deleted, moved, renamed, or unindexed artifacts never existed",
     }
     write_json(output / "source_provenance.json", provenance)
@@ -1367,9 +1599,9 @@ def build(scratch: Path, output: Path) -> None:
 
 This audit uses the official 13-page arXiv-v1 paper and source, the complete five-commit first-author Space history, every one of the official dataset's 103 commits and 204 LFS payload revisions, all 327 organizer commits, and a pinned public per-day decision log. The unmodified source rebuild reaches 99.96% extracted-token overlap; all official and rebuilt pages were visually checked.
 
-The paper has **119 displayed empirical table cells** and **two empirical figure panels**. The attributable R3 deployment materially improves source-level fidelity: its Docker/FastAPI runner, nine native prompts, seven corpora, TSLA routing, BTC vote and failure behavior are inspectable. A dependency-isolated controlled run loads all corpora and exercises the native endpoint and voting paths without paid or external model calls. The public organizer log recovers 97 paper-window decisions, and the pinned organizer scorer replays them.
+The paper has **119 displayed empirical table cells** and **two empirical figure panels**. The attributable R3 deployment materially improves source-level fidelity: its Docker/FastAPI runner, nine native prompts, seven corpora, TSLA routing, BTC vote and failure behavior are inspectable. A dependency-isolated controlled run loads all corpora and exercises the native endpoint and voting paths without paid or external model calls. The public organizer log recovers 97 paper-window decisions. The exact pinned src/lib/perf.js scorer now executes those raw rows with zero network calls: all six with-fee/no-fee/Buy-and-Hold equity arrays (291 points), 20 metric values, and four win-rate/trade scalars match the prior replay exactly.
 
-That evidence does **not** reproduce the headline empirical claims or the LLM action-generation pipeline. **Thirty-three of 119 printed cells regenerate exactly:** five live error-attribution cells from official decisions and the pinned organizer postprocessor, plus all 28 cells in the Buy-and-Hold and deterministic Always-HOLD rows. The baseline lineage exposes a major protocol conflict: both TSLA rows require the official May-21 revision ending May 20, while both BTC rows require the May-22 revision ending May 21; the paper declares one common May-10 endpoint. All 20 official revisions per asset that fully cover the declared period contain one identical May-10 price path, and none matches the printed Buy-and-Hold return or the Always-HOLD alpha derived from it. The Buy-and-Hold N_tr values 293/294 are total rows of the later snapshots, not trades under the stated daily protocol; Always HOLD correctly yields zero trades. The four composite live hit/PnL cells recover their hit-rate components but not their PnL components. Zero of two full empirical panels regenerate. Current official decisions still yield TSLA +4.79%/Sharpe 1.58/45% rather than +13.51%/4.10/88%, while BTC replays essentially flat (-0.10%) rather than the table's -5.30%.
+That evidence does **not** reproduce the headline empirical claims or the LLM action-generation pipeline. **Thirty-three of 119 printed cells regenerate exactly:** five live error-attribution cells from official decisions and exact native organizer scoring, plus all 28 cells in the Buy-and-Hold and deterministic Always-HOLD rows. The baseline lineage exposes a major protocol conflict: both TSLA rows require the official May-21 revision ending May 20, while both BTC rows require the May-22 revision ending May 21; the paper declares one common May-10 endpoint. All 20 official revisions per asset that fully cover the declared period contain one identical May-10 price path, and none matches the printed Buy-and-Hold return or the Always-HOLD alpha derived from it. The Buy-and-Hold N_tr values 293/294 are total rows of the later snapshots, not trades under the stated daily protocol; Always HOLD correctly yields zero trades. The four composite live hit/PnL cells recover their hit-rate components but not their PnL components. Zero of two full empirical panels regenerate. Current official decisions still yield TSLA +4.79%/Sharpe 1.58/45% rather than +13.51%/4.10/88%, while BTC replays essentially flat (-0.10%) rather than the table's -5.30%.
 
 Native inspection also finds method-level defects. Three BTC HOLD votes become BUY because the code compares only BUY and SELL counts; a failed Fear & Greed request double-counts momentum. All nine appendix prompt rows are abridged relative to the released constants despite being labeled full prompts. The deleted first-author LFS ZIP is recoverable but contains only four source files already represented in the surviving release. The complete dataset and organizer histories add no action, ablation, cache, database, or result artifact. The model alias, API calls, cache state, image, SDK and dependencies are not immutably frozen, and the released TA and WSB corpora are stale before the live window ends.
 
@@ -1403,10 +1635,42 @@ Therefore `strict_success` is false. This is strong source, baseline and output-
         ]["historical_primitive_decision_or_result_paths"],
         "paper_window_official_decision_rows_recovered": 97,
         "paper_window_official_rows_replayed_with_organizer_scorer": 97,
+        "organizer_native_scorer_executed": True,
+        "organizer_native_scorer_source_commit": ARENA_COMMIT,
+        "organizer_native_scorer_source_sha256": ORGANIZER_PERF_SHA256,
+        "organizer_native_scorer_runner_sha256": ORGANIZER_RUNNER_SHA256,
+        "organizer_native_scorer_runtime": organizer_execution["runtime"],
+        "organizer_native_scorer_network_calls": organizer_execution[
+            "network_calls"
+        ],
+        "organizer_native_scorer_assets_executed": organizer_execution[
+            "conformance"
+        ]["assets_executed"],
+        "organizer_native_scorer_official_decision_rows": organizer_execution[
+            "conformance"
+        ]["selected_official_decision_rows"],
+        "organizer_native_scorer_equity_arrays_exact": organizer_execution[
+            "conformance"
+        ]["equity_arrays_exact"],
+        "organizer_native_scorer_equity_points_exact": organizer_execution[
+            "conformance"
+        ]["equity_points_exact"],
+        "organizer_native_scorer_metric_scalars_exact": organizer_execution[
+            "conformance"
+        ]["metric_scalars_exact"],
+        "organizer_native_scorer_win_rate_trade_scalars_exact": (
+            organizer_execution["conformance"]["win_rate_trade_scalars_exact"]
+        ),
         "published_table_cells_regenerated": sum(
             row["published_result_regenerated_at_display_precision"] for row in tables
         ),
         "published_table_cells_verified_from_official_decisions_and_organizer_output": 5,
+        "published_table_cells_verified_via_exact_native_organizer_scorer": (
+            organizer_execution["conformance"][
+                "published_cells_verified_via_native_scorer"
+            ]
+        ),
+        "published_table_cells_reproduced_from_native_llm_decisions": 0,
         "published_baseline_cells_regenerated_from_official_history": 28,
         "published_baseline_cells_regenerated_with_declared_endpoint": 0,
         "published_baseline_cells_regenerated_with_recovered_mixed_endpoints": 28,

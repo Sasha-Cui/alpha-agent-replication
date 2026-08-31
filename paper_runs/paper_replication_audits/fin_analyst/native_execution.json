@@ -52,6 +52,17 @@
     "endpoint exception boundary"
   ],
   "native_environment_python": "3.12 audit reconstruction; author Dockerfile specifies mutable python:3.11-slim",
+  "organizer_native_scorer": {
+    "assets_executed": 2,
+    "author_native_decision_pipeline_reexecuted": false,
+    "equity_arrays_exact": 6,
+    "equity_points_exact": 291,
+    "metric_scalars_exact": 20,
+    "paper_result_credit": false,
+    "published_cells_verified_via_native_scorer": 5,
+    "selected_official_decision_rows": 97,
+    "win_rate_trade_scalars_exact": 4
+  },
   "paid_or_external_model_calls": 0,
   "pip_check_passed": true,
   "published_table_cells_regenerated": 0,
