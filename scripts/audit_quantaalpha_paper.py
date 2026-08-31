@@ -227,6 +227,24 @@ QA_GPT_COMBINED_168_NATIVE_METRICS = {
     "ARR_pct": 6.052344883424508,
     "MDD_pct": 11.929289879771857,
 }
+ALPHA360_PROTOCOL_GRID_EVIDENCE_SHA256 = (
+    "fa6763476a595568981056b00aef621359004d6589c5d7ae59fa2d3d41c854ec"
+)
+ALPHA360_PROTOCOL_GRID_DRIVER_SHA256 = (
+    "77e754f6ceaebcded5e827d5041cfe4ecb63be450225d27a74e5d10346d8c72c"
+)
+ALPHA360_QLIB_V097_NATIVE_METRICS = {
+    "IC": 0.01093085608834224,
+    "ICIR": 0.07353135664619322,
+    "Rank_IC": 0.022188435706433893,
+    "Rank_ICIR": 0.1479827452758495,
+    "IR": 0.7664056546052619,
+    "CR": 0.547441651105386,
+    "ARR_pct": 6.739275382027141,
+    "MDD_pct": 12.310490749871327,
+}
+QLIB_V097_SOURCE_COMMIT = "da920b7f954f48ab1bb64117c976710de198373e"
+
 QA_GPT_COMPLETE_170_RAW_METRICS = {
     "IC": 0.04228714198020135,
     "ICIR": 0.24450177492931327,
@@ -1190,6 +1208,118 @@ def verify_deterministic_baseline_evidence(output_dir: Path) -> dict[str, Any]:
 
 
 
+def verify_alpha360_protocol_grid(output_dir: Path) -> dict[str, Any]:
+    evidence_path = output_dir / "alpha360_protocol_grid_evidence.json"
+    driver_path = Path(__file__).with_name(
+        "rerun_quantaalpha_alpha360_protocol_grid.py"
+    )
+    if sha256(evidence_path) != ALPHA360_PROTOCOL_GRID_EVIDENCE_SHA256:
+        raise RuntimeError("QuantaAlpha Alpha360 protocol-grid evidence drifted")
+    if sha256(driver_path) != ALPHA360_PROTOCOL_GRID_DRIVER_SHA256:
+        raise RuntimeError("QuantaAlpha Alpha360 protocol-grid driver drifted")
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    expected_summary = {
+        "coherent_profiles_checked": 2,
+        "coherent_metric_cells_checked": 16,
+        "coherent_metric_cells_matching": 0,
+        "coherent_complete_rows_matching": 0,
+        "diagnostic_hybrid_profiles_checked": 2,
+        "diagnostic_predictive_cells_checked": 8,
+        "diagnostic_predictive_cells_matching": 0,
+        "paper_result_cells_added": 0,
+    }
+    if evidence.get("summary") != expected_summary:
+        raise RuntimeError("QuantaAlpha Alpha360 protocol-grid summary drifted")
+    pins = evidence.get("source_pins", {})
+    if (
+        pins.get("author_source_commit") != PREPUBLICATION_RESULTS_COMMIT
+        or pins.get("qlib_source_commit") != QLIB_V097_SOURCE_COMMIT
+        or pins.get("provider_cross_artifact_matrix_sha256")
+        != RECOVERED_PROVIDER_MATRIX_SHA256
+    ):
+        raise RuntimeError("QuantaAlpha Alpha360 protocol-grid source pins drifted")
+    for key, value in evidence.get("runtime", {}).items():
+        if RERUN_ENVIRONMENT.get(key) != value:
+            raise RuntimeError(f"QuantaAlpha Alpha360 runtime drifted: {key}")
+    profiles = evidence.get("profiles", {})
+    if set(profiles) != {
+        "quantaalpha_release",
+        "qlib_v097",
+        "official_model_author_processors",
+        "author_model_official_processors",
+    }:
+        raise RuntimeError("QuantaAlpha Alpha360 protocol profiles drifted")
+    qlib_profile = profiles["qlib_v097"]
+    qlib_runs = qlib_profile.get("runs", [])
+    if len(qlib_runs) != 2 or qlib_profile.get("metrics_checked") != 8:
+        raise RuntimeError("Qlib v0.9.7 Alpha360 repeat census drifted")
+    for metric, expected in ALPHA360_QLIB_V097_NATIVE_METRICS.items():
+        if abs(float(qlib_runs[0]["native_metrics"][metric]) - expected) > 1e-15:
+            raise RuntimeError(f"Qlib v0.9.7 Alpha360 metric drifted: {metric}")
+    if qlib_profile.get("repeat_max_abs_difference", 1.0) > 6e-14:
+        raise RuntimeError("Qlib v0.9.7 Alpha360 repeats are not stable")
+    if any(
+        profile.get("paper_metric_cells_matching") != 0
+        or profile.get("paper_result_credit") is not False
+        for profile in profiles.values()
+    ):
+        raise RuntimeError("QuantaAlpha Alpha360 protocol-grid credit boundary drifted")
+    return {
+        "evidence": evidence,
+        "evidence_sha256": ALPHA360_PROTOCOL_GRID_EVIDENCE_SHA256,
+        "driver_sha256": ALPHA360_PROTOCOL_GRID_DRIVER_SHA256,
+    }
+
+
+def alpha360_protocol_grid_rows(
+    grid_evidence: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    evidence = grid_evidence["evidence"]
+    paper_values = evidence["paper_values"]
+    metric_order = (
+        "IC",
+        "ICIR",
+        "Rank_IC",
+        "Rank_ICIR",
+        "IR",
+        "CR",
+        "ARR_pct",
+        "MDD_pct",
+    )
+    rows = []
+    for profile_name, profile in evidence["profiles"].items():
+        observed = profile["runs"][0]["native_metrics"]
+        for metric in metric_order:
+            if metric not in observed:
+                continue
+            paper_value = float(paper_values[metric])
+            rows.append(
+                {
+                    "profile": profile_name,
+                    "classification": profile["classification"],
+                    "model_profile": profile["model_profile"],
+                    "processor_profile": profile["processor_profile"],
+                    "deal_price": profile["deal_price"],
+                    "metric": metric,
+                    "paper_value": paper_value,
+                    "native_value": observed[metric],
+                    "absolute_difference": abs(observed[metric] - paper_value),
+                    "matches_displayed_paper_value": False,
+                    "profile_complete_paper_row_match": profile[
+                        "complete_paper_row_match"
+                    ],
+                    "paper_result_credit": False,
+                    "run_count": len(profile["runs"]),
+                    "repeat_max_abs_difference": profile[
+                        "repeat_max_abs_difference"
+                    ],
+                }
+            )
+    if len(rows) != 24 or any(row["matches_displayed_paper_value"] for row in rows):
+        raise RuntimeError("QuantaAlpha Alpha360 protocol-grid row census drifted")
+    return rows
+
+
 def native_rerun_conformance() -> list[dict[str, Any]]:
     paper_alpha = {
         "IC": 0.0051,
@@ -1327,6 +1457,7 @@ def native_rerun_conformance() -> list[dict[str, Any]]:
 def native_result_regeneration_payload(
     complete_evidence: Mapping[str, Any],
     deterministic_evidence: Mapping[str, Any],
+    alpha360_grid: Mapping[str, Any],
 ) -> dict[str, Any]:
     return {
         "runtime": RERUN_ENVIRONMENT,
@@ -1377,6 +1508,16 @@ def native_result_regeneration_payload(
             "paper_cells_independently_regenerated": 0,
             "complete_paper_row_match": False,
             "status": "native_rerun_conflicts_with_all_displayed_metrics",
+            "coherent_primary_source_profiles_checked": alpha360_grid["evidence"][
+                "summary"
+            ]["coherent_profiles_checked"],
+            "coherent_profile_metric_cells_matching": alpha360_grid["evidence"][
+                "summary"
+            ]["coherent_metric_cells_matching"],
+            "qlib_v097_native_metrics": ALPHA360_QLIB_V097_NATIVE_METRICS,
+            "protocol_grid_evidence_sha256": alpha360_grid["evidence_sha256"],
+            "protocol_grid_driver_sha256": alpha360_grid["driver_sha256"],
+            "protocol_grid_paper_result_cells_added": 0,
         },
 
         "quantaalpha_gpt_v1_v2": {
@@ -2774,6 +2915,7 @@ def build_audit(
     output_dir.mkdir(parents=True, exist_ok=True)
     complete_pool_evidence = verify_complete_pool_evidence(output_dir)
     deterministic_evidence = verify_deterministic_baseline_evidence(output_dir)
+    alpha360_grid = verify_alpha360_protocol_grid(output_dir)
     tables = paper_table_rows()
     labels = figure_label_rows()
     points = plot_point_rows()
@@ -2792,8 +2934,11 @@ def build_audit(
     )
     prepublication_results = prepublication_result_conformance(public_census_root, paper_source_root)
     recovered_data = recovered_data_provenance()
+    alpha360_grid_rows = alpha360_protocol_grid_rows(alpha360_grid)
     rerun_rows = native_rerun_conformance()
-    regeneration = native_result_regeneration_payload(complete_pool_evidence, deterministic_evidence)
+    regeneration = native_result_regeneration_payload(
+        complete_pool_evidence, deterministic_evidence, alpha360_grid
+    )
     branch_evidence = historical_branch_evidence(source_root)
     versioned_main_table = paper_version_main_table_rows(source_root, paper_source_root)
     paper_assets = paper_source_inventory(paper_source_root)
@@ -2817,6 +2962,7 @@ def build_audit(
         "prepublication_result_conformance.csv": prepublication_results,
         "recovered_data_provenance.csv": recovered_data,
         "native_rerun_conformance.csv": rerun_rows,
+        "alpha360_protocol_grid_conformance.csv": alpha360_grid_rows,
         "historical_branch_evidence_inventory.csv": branch_evidence,
         "paper_version_main_table_conformance.csv": versioned_main_table,
         "released_dataset_inventory.csv": datasets,
@@ -2955,6 +3101,25 @@ def build_audit(
         "deterministic_baseline_author_checkout_modified": deterministic_evidence["evidence"][
             "author_source_modified"
         ],
+        "alpha360_protocol_grid_profiles_checked": len(
+            alpha360_grid["evidence"]["profiles"]
+        ),
+        "alpha360_protocol_grid_metric_rows": len(alpha360_grid_rows),
+        "alpha360_protocol_grid_coherent_profiles_checked": alpha360_grid["evidence"][
+            "summary"
+        ]["coherent_profiles_checked"],
+        "alpha360_protocol_grid_coherent_cells_matching": alpha360_grid["evidence"][
+            "summary"
+        ]["coherent_metric_cells_matching"],
+        "alpha360_protocol_grid_diagnostic_cells_matching": alpha360_grid["evidence"][
+            "summary"
+        ]["diagnostic_predictive_cells_matching"],
+        "alpha360_qlib_v097_native_metrics": ALPHA360_QLIB_V097_NATIVE_METRICS,
+        "alpha360_qlib_v097_repeat_max_abs_difference": alpha360_grid["evidence"][
+            "profiles"
+        ]["qlib_v097"]["repeat_max_abs_difference"],
+        "alpha360_protocol_grid_evidence_sha256": alpha360_grid["evidence_sha256"],
+        "alpha360_protocol_grid_driver_sha256": alpha360_grid["driver_sha256"],
 
         "quantaalpha_gpt_v1_v2_published_metric_cells_independently_regenerated": 0,
         "quantaalpha_public_custom_factors_recomputed": 150,
@@ -3044,6 +3209,7 @@ regenerated; the headline QuantaAlpha result does not reproduce**.
 - The identical v1/v2 main tables contain 224 cells each. Native aggregate JSONs give rounded correspondence for **{sum(row["rounded_match"] for row in prepublication_results)}/{len(prepublication_results)} examined cells** across 11 rows. These are author-output lineage, not independent regeneration; filename/model conflicts are retained in the ledger.
 - The native Alpha158(20) run reproduces all **8/8** v1/v2 metrics, including training, prediction, IC/RankIC evaluation, and the Top50/drop5 portfolio. Adding the isolated Alpha158 IC match brings the version-specific total to **26/644** regenerated cells (9 in v1, 9 in v2, 8 in v3).
 - The same released pipeline rerun twice matches only **1/8** Alpha158 historical cells (**1/7** current cells) and **0/8** Alpha360 historical cells (**0/7** current cells). Alpha158 returns 1.44% rather than 2.66% with 13.77% rather than 10.15% drawdown; Alpha360 returns -2.32% rather than +4.09%. The two runs per baseline agree within **{max(deterministic_evidence["evidence"]["baselines"]["alpha158"]["repeat_max_abs_difference"], deterministic_evidence["evidence"]["baselines"]["alpha360"]["repeat_max_abs_difference"]):.3g}**.
+- A bounded Alpha360 protocol grid adds Qlib v0.9.7's exact official Alpha360/LightGBM preprocessing, model, and close-execution profile alongside the coherent QuantaAlpha release profile. Qlib v0.9.7 yields IC **0.01093**, ARR **6.74%**, IR **0.76641**, and MDD **12.31%**, and matches **0/8** paper cells; two full runs agree within **{alpha360_grid["evidence"]["profiles"]["qlib_v097"]["repeat_max_abs_difference"]:.3g}**. Across the two coherent source profiles, **0/16 profile-cell checks** match. Two model/preprocessing hybrids match **0/8 predictive profile-cell checks** and receive diagnostic-only credit.
 - The paper-configured QuantaAlpha/GPT diagnostic recomputes all **150/150 public custom factors plus Alpha158(20)** after one documented `MEAN` broadcast compatibility repair, but does not reproduce the claim: IC **0.04229 vs 0.15008**, ARR **3.61% vs 27.75%**, IR **0.51367 vs 3.32512**, and MDD **12.56% vs 7.98%**. Two complete runs agree within **{complete_pool_evidence["repeat_max_abs_difference"]:.3g}** across all eight metrics. Adding the repaired factors lowers ARR and IR relative to the earlier 168-factor diagnostic, so the missing pair cannot explain the headline.
 - Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. The README ships the 17-label case-study raster and byte-identical copies of the paper-source Figure 3--5 assets, corroborating **17 labels, 47 markers, and 10 curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are regenerated.
 
@@ -3053,6 +3219,7 @@ regenerated; the headline QuantaAlpha result does not reproduce**.
 - Public prompt/config/source paths implement meaningful planning, full trajectory records, mutation/crossover generation, semantic consistency, AST complexity/redundancy checks, Qlib evaluation, and TopkDropout backtesting. **{status_counts["implemented_match"]}/{len(mechanisms)}** audited mechanism dimensions are implementation matches.
 - The recovered `backtest_v2` profile matches the paper split, label, LightGBM seed, Top-50/drop-5 portfolio, open execution, and 0.05%/0.15% costs closely enough to reproduce Alpha158(20) exactly at displayed precision.
 - `scripts/rerun_quantaalpha_deterministic_baselines.py` runs Alpha158 and Alpha360 twice in fresh processes, substitutes only the fingerprinted provider/output paths, leaves the author checkout clean, and emits normalized evidence without elapsed-time noise.
+- `scripts/rerun_quantaalpha_alpha360_protocol_grid.py` pins Qlib v0.9.7's workflow, handler, loader, and tag commit; reruns the exact Qlib profile twice; and keeps both model/preprocessing hybrids explicitly outside paper-result credit.
 - `scripts/rerun_quantaalpha_complete_pool.py` ships the complete-pool recovery path. Its factor-recovery record, result JSON, two native logs, and two-run repeatability record are hash-pinned in this audit; it leaves the author checkout unmodified and makes no LLM or market API call.
 - Pre-publication pools preserve IDs, formulas, descriptions, implementation code, backtest feedback, and cache lineage for the LLM-generated factors.
 

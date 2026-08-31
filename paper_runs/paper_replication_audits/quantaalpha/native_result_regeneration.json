@@ -81,7 +81,22 @@
     "provider_path_substitution_only": true,
     "paper_cells_independently_regenerated": 0,
     "complete_paper_row_match": false,
-    "status": "native_rerun_conflicts_with_all_displayed_metrics"
+    "status": "native_rerun_conflicts_with_all_displayed_metrics",
+    "coherent_primary_source_profiles_checked": 2,
+    "coherent_profile_metric_cells_matching": 0,
+    "qlib_v097_native_metrics": {
+      "IC": 0.01093085608834224,
+      "ICIR": 0.07353135664619322,
+      "Rank_IC": 0.022188435706433893,
+      "Rank_ICIR": 0.1479827452758495,
+      "IR": 0.7664056546052619,
+      "CR": 0.547441651105386,
+      "ARR_pct": 6.739275382027141,
+      "MDD_pct": 12.310490749871327
+    },
+    "protocol_grid_evidence_sha256": "fa6763476a595568981056b00aef621359004d6589c5d7ae59fa2d3d41c854ec",
+    "protocol_grid_driver_sha256": "77e754f6ceaebcded5e827d5041cfe4ecb63be450225d27a74e5d10346d8c72c",
+    "protocol_grid_paper_result_cells_added": 0
   },
   "quantaalpha_gpt_v1_v2": {
     "paper_factor_count": 170,

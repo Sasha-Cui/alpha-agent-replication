@@ -1,0 +1,199 @@
+{
+  "audit": "QuantaAlpha Alpha360 primary-source protocol grid",
+  "interpretation": "Neither coherent primary-source profile reproduces any Alpha360 paper cell. The two hybrids isolate model-versus-preprocessing sensitivity but are diagnostic only and also reproduce no predictive cell.",
+  "paper_values": {
+    "ARR_pct": "4.09",
+    "CR": "0.3550",
+    "IC": "0.0105",
+    "ICIR": "0.0636",
+    "IR": "0.6009",
+    "MDD_pct": "11.52",
+    "Rank_IC": "0.0306",
+    "Rank_ICIR": "0.1889"
+  },
+  "profiles": {
+    "author_model_official_processors": {
+      "classification": "diagnostic_hybrid_no_result_credit",
+      "complete_paper_row_match": false,
+      "deal_price": "open",
+      "metrics_checked": 4,
+      "model_profile": "quantaalpha_released",
+      "paper_metric_cells_matching": 0,
+      "paper_metrics_matching_at_display_precision": [],
+      "paper_result_credit": false,
+      "processor_profile": "qlib_v0.9.7_official_alpha360",
+      "repeat_max_abs_difference": 0.0,
+      "runs": [
+        {
+          "native_metrics": {
+            "IC": 0.008039359260968108,
+            "ICIR": 0.05528341443134342,
+            "Rank_IC": 0.018814333673792757,
+            "Rank_ICIR": 0.12687700152042466
+          },
+          "run_index": 1
+        }
+      ]
+    },
+    "official_model_author_processors": {
+      "classification": "diagnostic_hybrid_no_result_credit",
+      "complete_paper_row_match": false,
+      "deal_price": "open",
+      "metrics_checked": 4,
+      "model_profile": "qlib_v0.9.7_official_lightgbm",
+      "paper_metric_cells_matching": 0,
+      "paper_metrics_matching_at_display_precision": [],
+      "paper_result_credit": false,
+      "processor_profile": "quantaalpha_released",
+      "repeat_max_abs_difference": 0.0,
+      "runs": [
+        {
+          "native_metrics": {
+            "IC": 0.004062339646436139,
+            "ICIR": 0.025588812582932316,
+            "Rank_IC": 0.024046803507160052,
+            "Rank_ICIR": 0.14978218196347148
+          },
+          "run_index": 1
+        }
+      ]
+    },
+    "qlib_v097": {
+      "classification": "coherent_primary_source_candidate",
+      "complete_paper_row_match": false,
+      "deal_price": "close",
+      "metrics_checked": 8,
+      "model_profile": "qlib_v0.9.7_official_lightgbm",
+      "paper_metric_cells_matching": 0,
+      "paper_metrics_matching_at_display_precision": [],
+      "paper_result_credit": false,
+      "processor_profile": "qlib_v0.9.7_official_alpha360",
+      "repeat_max_abs_difference": 5.329070518200751e-15,
+      "runs": [
+        {
+          "native_metrics": {
+            "ARR_pct": 6.739275382027141,
+            "CR": 0.547441651105386,
+            "IC": 0.01093085608834224,
+            "ICIR": 0.07353135664619322,
+            "IR": 0.7664056546052619,
+            "MDD_pct": 12.310490749871327,
+            "Rank_IC": 0.022188435706433893,
+            "Rank_ICIR": 0.1479827452758495
+          },
+          "run_index": 1
+        },
+        {
+          "native_metrics": {
+            "ARR_pct": 6.739275382027136,
+            "CR": 0.5474416511053853,
+            "IC": 0.010930856088342239,
+            "ICIR": 0.0735313566461932,
+            "IR": 0.7664056546052604,
+            "MDD_pct": 12.310490749871333,
+            "Rank_IC": 0.022188435706433893,
+            "Rank_ICIR": 0.1479827452758495
+          },
+          "run_index": 2
+        }
+      ]
+    },
+    "quantaalpha_release": {
+      "classification": "coherent_primary_source_candidate",
+      "complete_paper_row_match": false,
+      "deal_price": "open",
+      "metrics_checked": 8,
+      "model_profile": "quantaalpha_released",
+      "paper_metric_cells_matching": 0,
+      "paper_metrics_matching_at_display_precision": [],
+      "paper_result_credit": false,
+      "processor_profile": "quantaalpha_released",
+      "repeat_max_abs_difference": 2.4868995751603507e-14,
+      "runs": [
+        {
+          "native_metrics": {
+            "ARR_pct": -2.317726425230115,
+            "CR": -0.10058727852404369,
+            "IC": 0.003818284923497764,
+            "ICIR": 0.0241068757968068,
+            "IR": -0.29976955802381816,
+            "MDD_pct": 23.04194386446296,
+            "Rank_IC": 0.023642529653072432,
+            "Rank_ICIR": 0.14681537138071488
+          },
+          "run_index": 1
+        },
+        {
+          "native_metrics": {
+            "ARR_pct": -2.317726425230115,
+            "CR": -0.10058727852404356,
+            "IC": 0.003818284923497764,
+            "ICIR": 0.0241068757968068,
+            "IR": -0.29976955802381866,
+            "MDD_pct": 23.041943864462986,
+            "Rank_IC": 0.023642529653072432,
+            "Rank_ICIR": 0.14681537138071488
+          },
+          "run_index": 2
+        }
+      ]
+    }
+  },
+  "protocol": {
+    "benchmark": "SH000300",
+    "close_cost": 0.0015,
+    "factor_count": 360,
+    "factor_source": "alpha360",
+    "llm_or_market_api_called": false,
+    "market": "csi300",
+    "open_cost": 0.0005,
+    "portfolio": "TopkDropout top50/drop5",
+    "test": [
+      "2022-01-01",
+      "2025-12-26"
+    ],
+    "train": [
+      "2016-01-01",
+      "2020-12-31"
+    ],
+    "valid": [
+      "2021-01-01",
+      "2021-12-31"
+    ]
+  },
+  "runtime": {
+    "lightgbm": "4.6.0",
+    "mlflow": "3.8.1",
+    "numpy": "2.4.1",
+    "pandas": "2.3.3",
+    "pyqlib": "0.9.7",
+    "python": "3.12.3",
+    "scikit_learn": "1.8.0"
+  },
+  "source_pins": {
+    "author_source_commit": "8a034319ff925d9dc621077ebf97d48e1890dad2",
+    "author_source_file_sha256": {
+      "backtest_runner.py": "7dc494582fb3666474a1f8e30d4f693433a8af5db5361fba40a01a48f3dfa89a",
+      "config.yaml": "e5512fc183cb58b9e016953823128e99dec520447ad88221aba957b1c59bc206",
+      "factor_loader.py": "3d8e5c0d6c3d8683fe438ce2273e28e4f544b410e9fcdfd189d3eccb0c612062"
+    },
+    "provider_cross_artifact_matrix_sha256": "5b50aa45aaaf925efc9bfdc2dedb6e4211e3ee6297abaeccf3b356ee90609c4e",
+    "qlib_source_commit": "da920b7f954f48ab1bb64117c976710de198373e",
+    "qlib_source_file_sha256": {
+      "examples/benchmarks/LightGBM/workflow_config_lightgbm_Alpha360.yaml": "84cf98f54703ae9bc5257e2a0c07ff6307712ec40266c83ee45cbc28149b6a08",
+      "qlib/contrib/data/handler.py": "b621481c6009c39066c67c71390fd2bea635f56daf9f2c4e38817eff268e3232",
+      "qlib/contrib/data/loader.py": "814b7f7ab3d418ae3c87ce352220080b239eba2670eac9e38376b794be4075cb"
+    },
+    "qlib_source_tag": "v0.9.7"
+  },
+  "summary": {
+    "coherent_complete_rows_matching": 0,
+    "coherent_metric_cells_checked": 16,
+    "coherent_metric_cells_matching": 0,
+    "coherent_profiles_checked": 2,
+    "diagnostic_hybrid_profiles_checked": 2,
+    "diagnostic_predictive_cells_checked": 8,
+    "diagnostic_predictive_cells_matching": 0,
+    "paper_result_cells_added": 0
+  }
+}

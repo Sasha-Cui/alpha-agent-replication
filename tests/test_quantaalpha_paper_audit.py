@@ -144,6 +144,10 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     deterministic = json.loads(
         (output / "deterministic_baseline_native_evidence.json").read_text(encoding="utf-8")
     )
+    alpha360_grid = json.loads(
+        (output / "alpha360_protocol_grid_evidence.json").read_text(encoding="utf-8")
+    )
+    alpha360_grid_rows = read_csv(output / "alpha360_protocol_grid_conformance.csv")
     complete_recovery = json.loads(
         (output / "complete_pool_factor_recovery.json").read_text(encoding="utf-8")
     )
@@ -217,6 +221,21 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert manifest["deterministic_baseline_evidence_sha256"] == audit.DETERMINISTIC_BASELINE_EVIDENCE_SHA256
     assert manifest["deterministic_baseline_driver_sha256"] == audit.DETERMINISTIC_BASELINE_DRIVER_SHA256
     assert manifest["deterministic_baseline_author_checkout_modified"] is False
+    assert manifest["alpha360_protocol_grid_profiles_checked"] == 4
+    assert manifest["alpha360_protocol_grid_metric_rows"] == 24
+    assert manifest["alpha360_protocol_grid_coherent_profiles_checked"] == 2
+    assert manifest["alpha360_protocol_grid_coherent_cells_matching"] == 0
+    assert manifest["alpha360_protocol_grid_diagnostic_cells_matching"] == 0
+    assert manifest["alpha360_qlib_v097_native_metrics"] == (
+        audit.ALPHA360_QLIB_V097_NATIVE_METRICS
+    )
+    assert manifest["alpha360_qlib_v097_repeat_max_abs_difference"] <= 6e-14
+    assert manifest["alpha360_protocol_grid_evidence_sha256"] == (
+        audit.ALPHA360_PROTOCOL_GRID_EVIDENCE_SHA256
+    )
+    assert manifest["alpha360_protocol_grid_driver_sha256"] == (
+        audit.ALPHA360_PROTOCOL_GRID_DRIVER_SHA256
+    )
 
     assert manifest["quantaalpha_gpt_v1_v2_published_metric_cells_independently_regenerated"] == 0
     assert manifest["quantaalpha_public_custom_factors_recomputed"] == 150
@@ -344,6 +363,50 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert deterministic["baselines"]["alpha158"]["complete_paper_row_match"] is False
     assert deterministic["baselines"]["alpha360"]["complete_paper_row_match"] is False
     assert audit.verify_deterministic_baseline_evidence(output)["evidence"]["source_commit"] == audit.PREPUBLICATION_RESULTS_COMMIT
+
+    assert len(alpha360_grid_rows) == 24
+    assert Counter(row["classification"] for row in alpha360_grid_rows) == {
+        "coherent_primary_source_candidate": 16,
+        "diagnostic_hybrid_no_result_credit": 8,
+    }
+    assert Counter(row["profile"] for row in alpha360_grid_rows) == {
+        "quantaalpha_release": 8,
+        "qlib_v097": 8,
+        "official_model_author_processors": 4,
+        "author_model_official_processors": 4,
+    }
+    assert {row["matches_displayed_paper_value"] for row in alpha360_grid_rows} == {
+        "False"
+    }
+    assert {row["paper_result_credit"] for row in alpha360_grid_rows} == {"False"}
+    assert alpha360_grid["summary"] == {
+        "coherent_profiles_checked": 2,
+        "coherent_metric_cells_checked": 16,
+        "coherent_metric_cells_matching": 0,
+        "coherent_complete_rows_matching": 0,
+        "diagnostic_hybrid_profiles_checked": 2,
+        "diagnostic_predictive_cells_checked": 8,
+        "diagnostic_predictive_cells_matching": 0,
+        "paper_result_cells_added": 0,
+    }
+    assert alpha360_grid["source_pins"]["qlib_source_commit"] == (
+        audit.QLIB_V097_SOURCE_COMMIT
+    )
+    qlib_profile = alpha360_grid["profiles"]["qlib_v097"]
+    assert len(qlib_profile["runs"]) == 2
+    assert qlib_profile["runs"][0]["native_metrics"] == (
+        audit.ALPHA360_QLIB_V097_NATIVE_METRICS
+    )
+    assert qlib_profile["repeat_max_abs_difference"] <= 6e-14
+    assert qlib_profile["paper_metric_cells_matching"] == 0
+    assert qlib_profile["paper_result_credit"] is False
+    assert regeneration["alpha360"]["coherent_primary_source_profiles_checked"] == 2
+    assert regeneration["alpha360"]["coherent_profile_metric_cells_matching"] == 0
+    assert regeneration["alpha360"]["protocol_grid_paper_result_cells_added"] == 0
+    verified_grid = audit.verify_alpha360_protocol_grid(output)
+    assert verified_grid["evidence_sha256"] == (
+        audit.ALPHA360_PROTOCOL_GRID_EVIDENCE_SHA256
+    )
 
     assert complete_recovery["author_source_modified"] is False
     assert complete_recovery["complete_pool_factor_count"] == 170
