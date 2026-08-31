@@ -28,6 +28,14 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   matching BUY/HOLD/SELL reward regimes. All 640 validation regimes match. The three
   threshold crossings are documented row by row. These small differences are
   consistent with a changed adjusted-price snapshot and are not evidence of paper error.
+- A bounded constant-adjustment-scale reconstruction on the pinned Yahoo reference
+  recovers **all 2,615/2,615 released numeric reward labels exactly**. One nonempty
+  scale interval works for both splits of each ticker, and all ten cent-path hashes
+  are pinned. The label equations retain seven unconstrained path degrees before
+  the market reference is imposed, so this is a source-adjacent price-ratio lineage,
+  not proof of a unique absolute author snapshot. It does not recover the absent
+  2025 paper-test inputs, decisions, or results and receives zero paper-result
+  credit.
 - The audit reconstructs the released Backtrader market baseline exactly: cent-rounded
   OHLC, next-open order execution, repeated daily BUY orders using 90% of remaining
   cash, 0.1% commission, and the released ARR/SR/MDD formulas. On the current 2025

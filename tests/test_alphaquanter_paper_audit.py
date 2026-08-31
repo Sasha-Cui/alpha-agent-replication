@@ -63,6 +63,7 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     datasets = read_csv(output / "released_dataset_inventory.csv")
     labels = read_csv(output / "reward_label_conformance.csv")
     label_summary = read_csv(output / "reward_label_summary.csv")
+    label_lineage = read_csv(output / "reward_label_lineage_recovery.csv")
     source = read_csv(output / "source_config_conformance.csv")
     history = read_csv(output / "released_source_history_inventory.csv")
     forks = read_csv(output / "public_fork_branch_ref_snapshot.csv")
@@ -94,6 +95,17 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     assert manifest["reward_label_within_1e_6_current_yahoo"] == 525
     assert manifest["reward_label_regime_matches_current_yahoo"] == 2612
     assert manifest["reward_label_regime_mismatches_current_yahoo"] == 3
+    assert manifest["reward_label_lineage_recovery_rows"] == 10
+    assert manifest["reward_label_lineage_exact_numeric_matches"] == 2615
+    assert manifest["reward_label_lineage_total"] == 2615
+    assert manifest["reward_label_lineage_algebraic_nullity"] == 7
+    assert (
+        manifest[
+            "reward_label_lineage_absolute_author_price_level_uniquely_identified"
+        ]
+        is False
+    )
+    assert manifest["reward_label_lineage_paper_result_credit"] == 0
     assert manifest["paper_test_action_rows_shipped"] == 0
     assert manifest["native_training_checkpoints_shipped"] is False
     assert manifest["released_complete_verl_runtime"] is False
@@ -168,6 +180,48 @@ def test_committed_audit_keeps_component_and_agent_results_separate() -> None:
     assert sum(int(row["reward_regime_mismatches"]) for row in label_summary) == 3
     validation = [row for row in label_summary if "validation" in row["paper_role"]]
     assert sum(int(row["reward_regime_mismatches"]) for row in validation) == 0
+
+    assert Counter(row["paper_role"] for row in label_lineage) == {
+        "paper_train": 5,
+        "paper_validation_released_as_test": 5,
+    }
+    assert Counter(
+        (
+            row["paper_role"],
+            row["price_path_variables"],
+            row["label_equations"],
+        )
+        for row in label_lineage
+    ) == {
+        ("paper_train", "402", "395"): 5,
+        ("paper_validation_released_as_test", "135", "128"): 5,
+    }
+    assert sum(int(row["released_labels"]) for row in label_lineage) == 2615
+    assert sum(int(row["exact_numeric_matches"]) for row in label_lineage) == 2615
+    assert max(
+        float(row["maximum_absolute_error"]) for row in label_lineage
+    ) < 4e-15
+    assert {
+        (row["paper_role"], row["ticker"]): row["cent_path_sha256"]
+        for row in label_lineage
+    } == audit.LABEL_LINEAGE_PATH_SHA256
+    assert {
+        row["algebraic_nullity_before_market_reference"] for row in label_lineage
+    } == {"7"}
+    assert all(
+        float(row["scale_interval_lower"])
+        < float(row["scale_interval_midpoint"])
+        < float(row["scale_interval_upper"])
+        for row in label_lineage
+    )
+    assert {
+        row["absolute_author_price_level_uniquely_identified"]
+        for row in label_lineage
+    } == {"False"}
+    assert {row["paper_2025_test_snapshot_recovered"] for row in label_lineage} == {
+        "False"
+    }
+    assert {row["paper_result_credit"] for row in label_lineage} == {"False"}
 
     assert len(source) == 26
     assert Counter(row["status"] for row in source) == {

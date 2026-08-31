@@ -101,6 +101,27 @@ TEST_PRICE_SHA256 = {
 }
 
 
+LABEL_LINEAGE_SCALE_INTERVALS = {
+    "GOOGL": (1.002852790625871, 1.0028530686312027),
+    "META": (1.003277361985582, 1.0032776384058608),
+    "MSFT": (1.007987424387945, 1.0079876797405944),
+    "NVDA": (1.0013314801640691, 1.0013319379320265),
+    "TSLA": (0.9999858249698538, 1.0000141888797394),
+}
+LABEL_LINEAGE_PATH_SHA256 = {
+    ("paper_train", "GOOGL"): "2647845d86c263095ba0c6dfc62d461a01f19a86074bc69d199f62746b71ab3f",
+    ("paper_train", "META"): "66a9e0eba7e7aa380237be4db3684144ab27cc615b17e6a701f5bee91959f7e4",
+    ("paper_train", "MSFT"): "e083fe78bd31f9f9d899a61c6e6f65e2f4fce17311e83e9db668de745cb3b9cd",
+    ("paper_train", "NVDA"): "0e4b7f7d16afb4bceb741e725d40690a8d76b5add4e30cae9e8a1a713a78e65a",
+    ("paper_train", "TSLA"): "590b65ccaad5b5645332b8a69f26b58ed86d6533e262adea07a6e6943f9e322a",
+    ("paper_validation_released_as_test", "GOOGL"): "a12ce04ccd8e3c5d89a12cc924979db8d59e17b8292ecdca65b7f935e5148545",
+    ("paper_validation_released_as_test", "META"): "8b9b8ec07c452664e8767fb378782ce03dc672c9f1927374e04557b0d118f08e",
+    ("paper_validation_released_as_test", "MSFT"): "21142ca6af135659ed7bdd846eb9cbedc1659d7afe40b1f1f3534b38ee079aed",
+    ("paper_validation_released_as_test", "NVDA"): "dfcd4505c38ea34df281ba20443567baf5c337d7699c1c0a59bcc9d661fe98b3",
+    ("paper_validation_released_as_test", "TSLA"): "f3c764b0a5f6f4e4aab18512b8122e1fcc0a73dd565d378d8ed4935227204cad",
+}
+
+
 TABLE_5_METRICS = (
     "GOOGL_arr_pct",
     "META_arr_pct",
@@ -549,6 +570,97 @@ def reward_label_audit(
             }
         )
     return rows, summaries, price_inventory
+
+
+def reward_label_lineage_audit(
+    examples: Sequence[Mapping[str, Any]], price_root: Path
+) -> List[Dict[str, Any]]:
+    grouped: Dict[Tuple[str, str], List[Mapping[str, Any]]] = {}
+    for example in examples:
+        key = (str(example["paper_role"]), str(example["ticker"]))
+        grouped.setdefault(key, []).append(example)
+
+    output: List[Dict[str, Any]] = []
+    for role in ("paper_train", "paper_validation_released_as_test"):
+        for ticker in TICKERS:
+            selected = sorted(grouped[(role, ticker)], key=lambda row: str(row["date"]))
+            price_path = price_root / f"{ticker}.json"
+            if sha256(price_path) != LABEL_PRICE_SHA256[f"{ticker}.json"]:
+                raise RuntimeError(f"AlphaQuanter label-lineage price pin changed: {ticker}")
+            frame = load_yahoo_frame(price_path)
+            positions = {
+                date: index for index, date in enumerate(frame["date"].astype(str))
+            }
+            lower, upper = LABEL_LINEAGE_SCALE_INTERVALS[ticker]
+            if not lower < upper:
+                raise RuntimeError(f"empty AlphaQuanter scale interval: {ticker}")
+            midpoint = (lower + upper) / 2.0
+            scaled_prices = np.round(
+                frame["adjusted_close"].to_numpy(dtype=float) * midpoint,
+                2,
+            )
+            errors = []
+            for example in selected:
+                index = positions[str(example["date"])]
+                returns = np.asarray(
+                    [
+                        scaled_prices[index + offset] / scaled_prices[index + 1]
+                        - 1.0
+                        for offset in range(2, 9)
+                    ]
+                )
+                raw_weights = np.asarray(
+                    [0.8 ** (offset - 1) for offset in range(2, 9)],
+                    dtype=float,
+                )
+                weights = 100.0 * raw_weights / raw_weights.sum()
+                recomputed = float(returns @ weights)
+                errors.append(abs(recomputed - float(example["ground_truth"])))
+            first = positions[str(selected[0]["date"])]
+            cent_path = np.rint(
+                scaled_prices[first + 1 : first + len(selected) + 8] * 100.0
+            ).astype("<i8")
+            path_hash = hashlib.sha256(cent_path.tobytes(order="C")).hexdigest()
+            expected_hash = LABEL_LINEAGE_PATH_SHA256[(role, ticker)]
+            exact = sum(error <= LABEL_EXACT_TOLERANCE for error in errors)
+            if path_hash != expected_hash or exact != len(selected):
+                raise RuntimeError(
+                    f"AlphaQuanter label-lineage reconstruction drifted: {role}/{ticker}"
+                )
+            output.append(
+                {
+                    "paper_role": role,
+                    "ticker": ticker,
+                    "released_labels": len(selected),
+                    "exact_numeric_matches": exact,
+                    "maximum_absolute_error": max(errors),
+                    "scale_interval_lower": lower,
+                    "scale_interval_upper": upper,
+                    "scale_interval_midpoint": midpoint,
+                    "scale_interval_width": upper - lower,
+                    "price_path_variables": len(cent_path),
+                    "label_equations": len(selected),
+                    "algebraic_nullity_before_market_reference": 7,
+                    "cent_path_minimum_date": frame["date"].iloc[first + 1],
+                    "cent_path_maximum_date": frame["date"].iloc[
+                        first + len(selected) + 7
+                    ],
+                    "cent_path_sha256": path_hash,
+                    "current_yahoo_reference_sha256": LABEL_PRICE_SHA256[
+                        f"{ticker}.json"
+                    ],
+                    "reconstruction_class": (
+                        "constant_adjustment_scale_on_pinned_current_yahoo_reference"
+                    ),
+                    "absolute_author_price_level_uniquely_identified": False,
+                    "paper_2025_test_snapshot_recovered": False,
+                    "native_alphaquanter_result_credit": False,
+                    "paper_result_credit": False,
+                }
+            )
+    if len(output) != 10 or sum(row["exact_numeric_matches"] for row in output) != 2615:
+        raise RuntimeError("AlphaQuanter label-lineage census changed")
+    return output
 
 
 def released_buy_every_day_metrics(
@@ -1182,6 +1294,7 @@ def build_audit(
 
     dataset_rows, examples = dataset_inventory(source_root)
     label_rows, label_summary, label_prices = reward_label_audit(examples, label_price_root)
+    label_lineage = reward_label_lineage_audit(examples, label_price_root)
     buy_hold_metrics, buy_hold_rows, test_prices = buy_hold_audit(test_price_root)
     buy_hold_protocol_rows = buy_hold_protocol_sensitivity(test_price_root)
     conformance = result_conformance(buy_hold_metrics)
@@ -1221,6 +1334,11 @@ def build_audit(
     write_csv(output_dir / "released_dataset_inventory.csv", dataset_rows, list(dataset_rows[0]))
     write_csv(output_dir / "reward_label_conformance.csv", label_rows, list(label_rows[0]))
     write_csv(output_dir / "reward_label_summary.csv", label_summary, list(label_summary[0]))
+    write_csv(
+        output_dir / "reward_label_lineage_recovery.csv",
+        label_lineage,
+        list(label_lineage[0]),
+    )
     write_csv(output_dir / "buy_hold_reconstruction.csv", buy_hold_rows, list(buy_hold_rows[0]))
     write_csv(
         output_dir / "buy_hold_protocol_sensitivity.csv",
@@ -1317,6 +1435,18 @@ def build_audit(
         "reward_label_regime_mismatches_current_yahoo": label_status[
             "current_yahoo_difference_crosses_reward_threshold"
         ],
+        "reward_label_lineage_recovery_rows": len(label_lineage),
+        "reward_label_lineage_exact_numeric_matches": sum(
+            row["exact_numeric_matches"] for row in label_lineage
+        ),
+        "reward_label_lineage_total": len(label_rows),
+        "reward_label_lineage_ticker_scale_intervals": {
+            ticker: {"lower": bounds[0], "upper": bounds[1]}
+            for ticker, bounds in LABEL_LINEAGE_SCALE_INTERVALS.items()
+        },
+        "reward_label_lineage_algebraic_nullity": 7,
+        "reward_label_lineage_absolute_author_price_level_uniquely_identified": False,
+        "reward_label_lineage_paper_result_credit": 0,
         "released_test_named_file_is_paper_validation_split": True,
         "paper_stated_test_trading_days": 122,
         "current_exchange_calendar_test_observations": 122,
@@ -1339,9 +1469,12 @@ def build_audit(
         "interpretation": (
             "The release genuinely preserves 2,615 dated prompts and reward labels, the reward "
             "formula, tool/reward code, and a partial VERL integration. Current Yahoo prices "
-            "reproduce 523 labels exactly and 2,612/2,615 BUY/HOLD/SELL regimes; an exact released-"
-            "semantics Buy-and-Hold reconstruction matches only 1/34 repeated paper cells at "
-            "display precision. An 84-cell protocol sensitivity checks both released price columns "
+            "reproduce 523 labels exactly and 2,612/2,615 BUY/HOLD/SELL regimes. A bounded "
+            "constant-adjustment-scale reconstruction on that pinned reference reproduces all "
+            "2,615 released numeric labels exactly, while retaining seven unconstrained path "
+            "degrees and no 2025 paper-test lineage. An exact released-semantics Buy-and-Hold "
+            "reconstruction matches only 1/34 repeated paper cells at display precision. An "
+            "84-cell protocol sensitivity checks both released price columns "
             "and both the paper and source rolling definitions without increasing result credit. "
             "This is component evidence, not AlphaQuanter replication: all 756 agent/cost/human-"
             "rating cells lack native checkpoints, actions, seed outputs, logs, or ratings; the "
@@ -1384,6 +1517,14 @@ multimodal inputs, decisions, three-seed paths, token/cost logs, or human rating
   matching BUY/HOLD/SELL reward regimes. All 640 validation regimes match. The three
   threshold crossings are documented row by row. These small differences are
   consistent with a changed adjusted-price snapshot and are not evidence of paper error.
+- A bounded constant-adjustment-scale reconstruction on the pinned Yahoo reference
+  recovers **all 2,615/2,615 released numeric reward labels exactly**. One nonempty
+  scale interval works for both splits of each ticker, and all ten cent-path hashes
+  are pinned. The label equations retain seven unconstrained path degrees before
+  the market reference is imposed, so this is a source-adjacent price-ratio lineage,
+  not proof of a unique absolute author snapshot. It does not recover the absent
+  2025 paper-test inputs, decisions, or results and receives zero paper-result
+  credit.
 - The audit reconstructs the released Backtrader market baseline exactly: cent-rounded
   OHLC, next-open order execution, repeated daily BUY orders using 90% of remaining
   cash, 0.1% commission, and the released ARR/SR/MDD formulas. On the current 2025

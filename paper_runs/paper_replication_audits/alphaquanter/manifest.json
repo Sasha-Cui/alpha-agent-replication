@@ -86,6 +86,34 @@
   "reward_label_within_1e_6_current_yahoo": 525,
   "reward_label_regime_matches_current_yahoo": 2612,
   "reward_label_regime_mismatches_current_yahoo": 3,
+  "reward_label_lineage_recovery_rows": 10,
+  "reward_label_lineage_exact_numeric_matches": 2615,
+  "reward_label_lineage_total": 2615,
+  "reward_label_lineage_ticker_scale_intervals": {
+    "GOOGL": {
+      "lower": 1.002852790625871,
+      "upper": 1.0028530686312027
+    },
+    "META": {
+      "lower": 1.003277361985582,
+      "upper": 1.0032776384058608
+    },
+    "MSFT": {
+      "lower": 1.007987424387945,
+      "upper": 1.0079876797405944
+    },
+    "NVDA": {
+      "lower": 1.0013314801640691,
+      "upper": 1.0013319379320265
+    },
+    "TSLA": {
+      "lower": 0.9999858249698538,
+      "upper": 1.0000141888797394
+    }
+  },
+  "reward_label_lineage_algebraic_nullity": 7,
+  "reward_label_lineage_absolute_author_price_level_uniquely_identified": false,
+  "reward_label_lineage_paper_result_credit": 0,
   "released_test_named_file_is_paper_validation_split": true,
   "paper_stated_test_trading_days": 122,
   "current_exchange_calendar_test_observations": 122,
@@ -101,7 +129,7 @@
   "paper_sharpe_formula_matches_source": false,
   "audit_called_llm_or_paid_external_api": false,
   "buy_hold_reference_engine_validation": "cent-rounded reconstruction checked against Backtrader 1.9.78.123 using the pinned current test-price inputs; maximum observed differences were below 0.00001 percentage point ARR, 0.0000002 SR, and 0.000002 percentage point MDD",
-  "interpretation": "The release genuinely preserves 2,615 dated prompts and reward labels, the reward formula, tool/reward code, and a partial VERL integration. Current Yahoo prices reproduce 523 labels exactly and 2,612/2,615 BUY/HOLD/SELL regimes; an exact released-semantics Buy-and-Hold reconstruction matches only 1/34 repeated paper cells at display precision. An 84-cell protocol sensitivity checks both released price columns and both the paper and source rolling definitions without increasing result credit. This is component evidence, not AlphaQuanter replication: all 756 agent/cost/human-rating cells lack native checkpoints, actions, seed outputs, logs, or ratings; the paper test split and original multimodal snapshot are absent. Complete public-history review finds no deleted or alternate result payload, and all 11 accessible forks resolve to its same two official commits without adding another result lineage.",
+  "interpretation": "The release genuinely preserves 2,615 dated prompts and reward labels, the reward formula, tool/reward code, and a partial VERL integration. Current Yahoo prices reproduce 523 labels exactly and 2,612/2,615 BUY/HOLD/SELL regimes. A bounded constant-adjustment-scale reconstruction on that pinned reference reproduces all 2,615 released numeric labels exactly, while retaining seven unconstrained path degrees and no 2025 paper-test lineage. An exact released-semantics Buy-and-Hold reconstruction matches only 1/34 repeated paper cells at display precision. An 84-cell protocol sensitivity checks both released price columns and both the paper and source rolling definitions without increasing result credit. This is component evidence, not AlphaQuanter replication: all 756 agent/cost/human-rating cells lack native checkpoints, actions, seed outputs, logs, or ratings; the paper test split and original multimodal snapshot are absent. Complete public-history review finds no deleted or alternate result payload, and all 11 accessible forks resolve to its same two official commits without adding another result lineage.",
   "source_file_sha256": {
     "README.md": "966424a93d889b8a9bfd82322d3007efe151c539e992001fac8bcaa4d61e8366",
     "verl/README.md": "3fc3ca47c8849b966e034919ab364c615c0d03b90ce66f46fe1aa62996cda3f0",
@@ -129,7 +157,7 @@
     "TSLA.json": "14bedddfb21edc67bef3d7067ce56bc96e5806957dbfd7244f1e387cfcf3bd35"
   },
   "output_sha256": {
-    "README.md": "9413f806eed2fb5164a1b87579127d1b0fa64de8afeb2ef77348313050295458",
+    "README.md": "c24697489acc8f4cead253a5cc73cfbd4b113a224d9ebc8f28b8ded3f3e13ed4",
     "buy_hold_protocol_sensitivity.csv": "4efe4d2a6c1f964f27999758ea25295f2c09bcc2d13300c00538585ab2e8ba0e",
     "buy_hold_reconstruction.csv": "489fe2185f9b74dd33de9c19c6260527e6d65d07db9266aae51ae619c49f2d9f",
     "external_price_input_inventory.csv": "b935f3c2b71fbae0f510f4971c215cd62e693d73c5d7ec5fa15b49f2c3e22eaf",
@@ -140,6 +168,7 @@
     "released_source_history_inventory.csv": "50d1e788d273622d9d21d3f90ca8a531e0047e0e328225aa0eceb0a8bef5cabe",
     "released_source_inventory.csv": "9baeaedd687d0fdebd7cef374709dcfe1ab6087c1037c658233a15b515d2d245",
     "reward_label_conformance.csv": "c6107953fec07f152213c2422721cef36c873a5f98c6a8e266f5c412e94b8a1c",
+    "reward_label_lineage_recovery.csv": "84257474d7c078ee2a348439585bfcb164e4e0075c26dd7769ee7b4e93d84ccf",
     "reward_label_summary.csv": "1331134d94a46cfafcf1067f17fb2b1059dda81eee6e21a9f51c47090ff3260a",
     "source_config_conformance.csv": "dfdc4d9e672919e716f3eae71a3ea3012b657a7009e74e285f1caf1eb03a2743",
     "tables_5_8_10_14_conformance.csv": "d995760c8b141c250883f278ec1e4560a886a701c8b8e0415c5d93160888b9b0"
