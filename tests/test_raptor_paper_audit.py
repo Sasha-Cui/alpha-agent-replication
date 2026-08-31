@@ -103,10 +103,12 @@ def test_all_empirical_scalar_assertions_are_counted_without_inflating_credit() 
     rows = csv_rows("displayed_result_conformance.csv")
     assert len(rows) == 42
     verified = [row for row in rows if row["verification_status"].startswith("verified")]
-    assert len(verified) == 21
+    assert len(verified) == 29
     assert Counter(row["verification_source"] for row in verified) == {
-        "author_output": 18, "current_public_response": 3,
+        "author_output": 18, "current_public_response": 3, "paper_internal_consistency": 8,
     }
+    assert sum(row["verification_status"] != "unavailable" for row in rows) == 36
+    assert sum(row["verification_status"] == "unavailable" for row in rows) == 6
     assert all(row["independent_end_to_end_reproduction"] == "no" for row in rows)
     assert Counter(row["scope"] for row in rows) == {
         "RAPTOR": 14, "rolling": 11, "interpretability": 14, "benchmark": 2, "comparison": 1,
@@ -114,7 +116,26 @@ def test_all_empirical_scalar_assertions_are_counted_without_inflating_credit() 
     table = [row for row in rows if row["location"] == "Table 1"]
     assert len(table) == 9
     assert all(row["author_output_value"] == "" for row in table)
-    assert all(row["credit_boundary"] == "no_result_credit" for row in table)
+    assert Counter(row["credit_boundary"] for row in table) == {
+        "no_result_credit": 6,
+        "paper_internal_consistency_only_no_native_result_credit": 3,
+    }
+
+
+    internal = csv_rows("paper_internal_scalar_checks.csv")
+    assert len(internal) == 8
+    assert Counter(row["check_type"] for row in internal) == {
+        "paper_internal_arithmetic": 3,
+        "paper_internal_duplicate": 5,
+    }
+    assert {row["match_at_display_precision"] for row in internal} == {"True"}
+    assert {row["paper_result_credit"] for row in internal} == {"False"}
+    explanation = [row for row in rows if row["location"] == "Table 1 explanation"]
+    assert len(explanation) == 5
+    assert {
+        row["verification_source"] for row in explanation
+    } == {"paper_internal_consistency"}
+
 
 
 def test_current_public_benchmark_response_recovers_three_displayed_units_without_lineage_credit() -> None:
@@ -144,6 +165,12 @@ def test_rolling_sharpe_conflicts_are_numerically_exposed() -> None:
     assert math.isclose(manifest["rolling_population_final"], 3.8883323324435795)
     assert math.isclose(manifest["rolling_full20_rf2_sample_mean"], 1.5993969802199037)
     assert math.isclose(manifest["rolling_full20_rf2_sample_sd"], 3.2759617841049122)
+    assert manifest["rolling_claim_forensic_rows"] == 1168
+    assert manifest["rolling_section_20d_conventions"] == 8
+    assert manifest["rolling_section_20d_claim_cells_matching"] == 0
+    assert manifest["rolling_longer_window_conventions"] == 1160
+    assert manifest["rolling_longer_any_endpoint_matches"] == 290
+    assert manifest["rolling_longer_both_endpoints_match"] == 11
     rows = csv_rows("rolling_sharpe_reproduction.csv")
     assert len(rows) == 166
     assert rows[0]["daily_return"] == ""
@@ -157,10 +184,33 @@ def test_rolling_sharpe_conflicts_are_numerically_exposed() -> None:
     assert len(full_window) == 146
     assert round(statistics.mean(full_window), 2) == 1.60
     assert round(statistics.stdev(full_window), 2) == 3.28
+
+    forensic = csv_rows("rolling_claim_convention_forensics.csv")
+    assert len(forensic) == 1168
+    section = [row for row in forensic if row["claim_scope"] == "section_4_3_explicit_20_day"]
+    longer = [row for row in forensic if row["claim_scope"] == "extended_validation_unspecified_longer_window"]
+    assert len(section) == 8
+    assert {row["section_claim_cells_matching"] for row in section} == {"0"}
+    assert len(longer) == 1160
+    assert sum(
+        row["longer_lower_1_1_matches_mean_or_final"] == "True"
+        or row["longer_upper_1_4_matches_mean_or_final"] == "True"
+        for row in longer
+    ) == 290
+    assert sum(row["longer_both_endpoints_match"] == "True" for row in longer) == 11
+
     displayed = {row["result_id"]: row for row in csv_rows("displayed_result_conformance.csv")}
     assert displayed["RAP-020"]["verification_status"].startswith("verified_rounded_full_20d")
     assert displayed["RAP-021"]["verification_status"].startswith("verified_rounded_full_20d")
 
+    assert {
+        displayed[f"RAP-{number:03d}"]["verification_status"]
+        for number in range(7, 11)
+    } == {"checked_conflict_all_eight_standard_20d_conventions"}
+    assert {
+        displayed[f"RAP-{number:03d}"]["verification_status"]
+        for number in range(22, 24)
+    } == {"checked_underspecified_1160_longer_window_conventions"}
 
 def test_published_figure_rasters_have_source_correspondence_without_raw_series_inflation() -> None:
     rows = csv_rows("figure_raster_forensics.csv")
@@ -254,13 +304,24 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
     assert native["author_output_verified_scalar_results"] == 18
     assert native["current_public_response_verified_scalar_results"] == 3
-    assert native["displayed_scalar_results_verified"] == 21
+    assert native["paper_internal_verified_scalar_results"] == 8
+    assert native["displayed_scalar_results_verified"] == 29
+    assert native["displayed_scalar_results_checked"] == 36
+    assert native["rolling_claim_conflicts_checked"] == 5
+    assert native["rolling_claims_underspecified_checked"] == 2
     assert native["end_to_end_result_cells_reproduced"] == 0
     assert native["llm_calls_made"] == 0
-    assert manifest["overall_fidelity"] == "full_author_history_and_166_output_snapshots_audited_21_of_42_scalar_units_verified_18_from_shipped_output_3_from_current_public_benchmark_response_zero_end_to_end_result_cells_reproduced"
+    assert manifest["overall_fidelity"] == "full_author_history_and_166_output_snapshots_audited_36_of_42_scalar_units_checked_29_verified_18_author_output_3_current_public_8_paper_internal_5_conflicts_2_underspecified_6_unavailable_zero_end_to_end_result_cells_reproduced"
     assert manifest["author_result_snapshots"] == 166
     assert manifest["compiled_python_files"] == 94
-    assert manifest["paper_result_credit"] == "output_or_current_public_response_verification_only_no_end_to_end_result_credit"
+    assert manifest["paper_internal_scalar_checks"] == 8
+    assert manifest["paper_internal_verified_scalar_results"] == 8
+    assert manifest["displayed_scalar_results_verified"] == 29
+    assert manifest["displayed_scalar_results_checked"] == 36
+    assert manifest["displayed_scalar_results_unavailable"] == 6
+    assert manifest["rolling_claim_conflicts_checked"] == 5
+    assert manifest["rolling_claims_underspecified_checked"] == 2
+    assert manifest["paper_result_credit"] == "output_current_response_or_paper_internal_verification_only_no_end_to_end_result_credit"
     assert math.isclose(manifest["benchmark_return_percent"], 10.08272879383032)
     assert manifest["published_figure_raster_curve_correspondences_verified"] == 3
     assert manifest["exact_published_figure_series_reproduced"] == 0
@@ -269,9 +330,15 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
 
     readme = " ".join((OUTPUT / "README.md").read_text(encoding="utf-8").split())
     assert "End-to-end RAPTOR result cells reproduced: 0/42" in readme
-    assert "21/42" in readme
+    assert "29/42" in readme
+    assert "36/42" in readme
     assert "18/42" in readme
     assert "3/42" in readme
+    assert "8/42" in readme
+    assert "6/42 remain unavailable" in readme
+    assert "All 8 standard" in readme
+    assert "290 of 1160 conventions" in readme
+    assert "11 hit both" in readme
     assert "output verification, not a rerun" in readme
     assert "Published raster-curve correspondences verified: 3/3" in readme
     assert "exact published raw-series credit stays 0/3" in readme

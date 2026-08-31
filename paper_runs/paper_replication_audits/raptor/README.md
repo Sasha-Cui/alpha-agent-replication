@@ -22,8 +22,17 @@ author history is also inventoried, including the later `validation_fixes` branc
   Yahoo's 165-session adjusted-close path from 2025-01-02 through 2025-08-29
   yields 10.08272879% for the S&P 500, which rounds
   to 10.08%; subtracting it from the released RAPTOR endpoint yields 3.35 percentage
-  points. Thus 21/42 displayed units
-  are checked in total, but these three are not paper-time input lineage.
+  points. These three are not paper-time input lineage.
+- **Paper-internal arithmetic or exact repetition checks:
+  8/42.**
+  Three Table 1 deltas equal perturbed minus base weights, and five explanation
+  values exactly repeat their table cells. These are document-consistency checks,
+  not author-output or native-agent results.
+- Across author output, the current benchmark response, and paper-internal checks,
+  29/42 units verify. Including five
+  checked rolling conflicts and two underspecified longer-window claims,
+  36/42 units are checked and
+  6/42 remain unavailable.
 - **Published raster-curve correspondences verified:
   3/3.**
   Figure 2's portfolio line regenerates all 7,313 exact blue pixels from the 166
@@ -46,9 +55,14 @@ author history is also inventoried, including the later `validation_fixes` branc
   20-return window, subtracting 2%/252 daily, using sample SD, and annualizing by
   sqrt(252) gives 1.5994 and
   3.2760, which round to 1.60 and 3.28.
-  The paper nevertheless mixes conventions. Expanding sample-SD/zero-RF values
-  recover Figure 3's extrema, while population SD is needed for its final 3.89;
-  neither convention produces the Section 4.3 -2.42/5.27/1.41/2.63 quartet.
+  All 8 standard sample/population,
+  expanding/full-window, and 0%/2% risk-free conventions match 0/4 cells in the
+  Section 4.3 -2.42/5.27/1.41/2.63 quartet. Across every integer longer window
+  from 21 to 165, 290 of
+  1160 conventions hit at least one
+  rounded 1.1/1.4 endpoint and 11
+  hit both, so the unspecified longer-window statement does not identify a
+  reproducible protocol.
 
 ## Why the full paper is not reproduced
 
@@ -85,8 +99,9 @@ author history is also inventoried, including the later `validation_fixes` branc
   reachable author revision and the 20-file later-branch delta.
 - `benchmark_snapshot_reproduction.csv`: the hash-pinned current Yahoo benchmark
   response, its 165 adjusted closes, and the explicit non-lineage boundary.
-- `snapshot_metric_reproduction.csv`, `rolling_sharpe_reproduction.csv`, and
-  `displayed_result_conformance.csv`: output-derived calculations and the
+- `snapshot_metric_reproduction.csv`, `rolling_sharpe_reproduction.csv`,
+  `rolling_claim_convention_forensics.csv`, `paper_internal_scalar_checks.csv`,
+  and `displayed_result_conformance.csv`: output-derived calculations and the
   fail-closed 42-unit empirical denominator.
 - `figure_series_conformance.csv` and `figure_raster_forensics.csv`: numeric-series
   availability and exact-color raster correspondence without raw-series inflation.

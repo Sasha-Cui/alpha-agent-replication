@@ -1,0 +1,9 @@
+result_id,check_type,ticker,source_result_id,displayed_value,computed_or_source_value,match_at_display_precision,paper_result_credit
+RAP-031,paper_internal_arithmetic,WAB,,-0.025,-0.02500000000000001,True,False
+RAP-034,paper_internal_arithmetic,SPY,,0.008,0.008000000000000007,True,False
+RAP-037,paper_internal_arithmetic,XLI,,0.006,0.0059999999999999915,True,False
+RAP-038,paper_internal_duplicate,WAB,RAP-029,0.112,0.112,True,False
+RAP-039,paper_internal_duplicate,WAB,RAP-030,0.087,0.087,True,False
+RAP-040,paper_internal_duplicate,WAB,RAP-031,-0.025,-0.025,True,False
+RAP-041,paper_internal_duplicate,SPY,RAP-034,0.008,0.008,True,False
+RAP-042,paper_internal_duplicate,XLI,RAP-037,0.006,0.006,True,False

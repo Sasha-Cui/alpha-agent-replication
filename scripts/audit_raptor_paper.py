@@ -572,7 +572,176 @@ def metric_reproduction(repo: Path) -> tuple[list[dict[str, str]], list[dict[str
     return metric_rows, rolling_rows, computed
 
 
-def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float]) -> list[dict[str, str]]:
+def rolling_claim_forensics(repo: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Exhaust standard rolling-Sharpe conventions against the paper's six claims."""
+    snapshots = snapshot_rows(repo)
+    values = [float(data["net_liquidation"]) for _date, _path, data in snapshots]
+    returns = [values[index] / values[index - 1] - 1 for index in range(1, len(values))]
+    section_claims = {
+        "minimum": -2.42,
+        "maximum": 5.27,
+        "mean": 1.41,
+        "sample_sd_across_series": 2.63,
+    }
+    rows: list[dict[str, Any]] = []
+    for window in range(20, len(values)):
+        for ddof in (0, 1):
+            for min_periods_policy, min_periods in (
+                ("expanding_start_min_2", 2),
+                ("full_window_only", window),
+            ):
+                for annual_risk_free_rate in (0.0, 0.02):
+                    series = rolling_sharpe(
+                        [float("nan"), *returns],
+                        window=window,
+                        ddof=ddof,
+                        min_periods=min_periods,
+                        annual_risk_free_rate=annual_risk_free_rate,
+                    )
+                    finite = [value for value in series if math.isfinite(value)]
+                    observed = {
+                        "minimum": min(finite),
+                        "maximum": max(finite),
+                        "mean": statistics.mean(finite),
+                        "sample_sd_across_series": (
+                            statistics.stdev(finite) if len(finite) > 1 else float("nan")
+                        ),
+                        "final": finite[-1],
+                    }
+                    section_matches = {
+                        metric: round(observed[metric], 2) == paper_value
+                        for metric, paper_value in section_claims.items()
+                    }
+                    lower_matches = (
+                        round(observed["mean"], 1) == 1.1
+                        or round(observed["final"], 1) == 1.1
+                    )
+                    upper_matches = (
+                        round(observed["mean"], 1) == 1.4
+                        or round(observed["final"], 1) == 1.4
+                    )
+                    rows.append(
+                        {
+                            "claim_scope": (
+                                "section_4_3_explicit_20_day"
+                                if window == 20
+                                else "extended_validation_unspecified_longer_window"
+                            ),
+                            "window": window,
+                            "ddof": ddof,
+                            "min_periods_policy": min_periods_policy,
+                            "min_periods": min_periods,
+                            "annual_risk_free_rate": annual_risk_free_rate,
+                            "finite_observations": len(finite),
+                            "minimum": observed["minimum"],
+                            "maximum": observed["maximum"],
+                            "mean": observed["mean"],
+                            "sample_sd_across_series": observed["sample_sd_across_series"],
+                            "final": observed["final"],
+                            "section_minimum_matches": section_matches["minimum"],
+                            "section_maximum_matches": section_matches["maximum"],
+                            "section_mean_matches": section_matches["mean"],
+                            "section_sd_matches": section_matches["sample_sd_across_series"],
+                            "section_claim_cells_matching": sum(section_matches.values()),
+                            "longer_lower_1_1_matches_mean_or_final": lower_matches,
+                            "longer_upper_1_4_matches_mean_or_final": upper_matches,
+                            "longer_both_endpoints_match": lower_matches and upper_matches,
+                            "paper_result_credit": False,
+                            "interpretation": (
+                                "standard 20-day convention conflicts with all four displayed claims"
+                                if window == 20
+                                else "numeric endpoint coincidence under one of many unreported longer-window protocols"
+                                if lower_matches or upper_matches
+                                else "no longer-window endpoint coincidence"
+                            ),
+                        }
+                    )
+    section_rows = [row for row in rows if row["window"] == 20]
+    longer_rows = [row for row in rows if row["window"] > 20]
+    summary = {
+        "rows": len(rows),
+        "section_20d_conventions": len(section_rows),
+        "section_20d_claim_cells_matching": sum(
+            int(row["section_claim_cells_matching"]) for row in section_rows
+        ),
+        "longer_window_conventions": len(longer_rows),
+        "longer_any_endpoint_matches": sum(
+            row["longer_lower_1_1_matches_mean_or_final"]
+            or row["longer_upper_1_4_matches_mean_or_final"]
+            for row in longer_rows
+        ),
+        "longer_both_endpoints_match": sum(
+            row["longer_both_endpoints_match"] for row in longer_rows
+        ),
+        "paper_result_credit": False,
+    }
+    if summary != {
+        "rows": 1168,
+        "section_20d_conventions": 8,
+        "section_20d_claim_cells_matching": 0,
+        "longer_window_conventions": 1160,
+        "longer_any_endpoint_matches": 290,
+        "longer_both_endpoints_match": 11,
+        "paper_result_credit": False,
+    }:
+        raise ValueError(f"rolling-claim convention boundary changed: {summary}")
+    return rows, summary
+
+
+def paper_internal_scalar_checks() -> list[dict[str, Any]]:
+    """Verify displayed Table 1 arithmetic and exact prose/table repetitions."""
+    weights = {
+        "WAB": (0.112, 0.087, -0.025),
+        "SPY": (0.245, 0.253, 0.008),
+        "XLI": (0.083, 0.089, 0.006),
+    }
+    rows: list[dict[str, Any]] = []
+    result_ids = {"WAB": "RAP-031", "SPY": "RAP-034", "XLI": "RAP-037"}
+    for ticker, (base, perturbed, displayed_delta) in weights.items():
+        computed_delta = perturbed - base
+        rows.append(
+            {
+                "result_id": result_ids[ticker],
+                "check_type": "paper_internal_arithmetic",
+                "ticker": ticker,
+                "source_result_id": "",
+                "displayed_value": displayed_delta,
+                "computed_or_source_value": computed_delta,
+                "match_at_display_precision": round(computed_delta, 3)
+                == round(displayed_delta, 3),
+                "paper_result_credit": False,
+            }
+        )
+    duplicate_specs = (
+        ("RAP-038", "WAB", "RAP-029", 0.112),
+        ("RAP-039", "WAB", "RAP-030", 0.087),
+        ("RAP-040", "WAB", "RAP-031", -0.025),
+        ("RAP-041", "SPY", "RAP-034", 0.008),
+        ("RAP-042", "XLI", "RAP-037", 0.006),
+    )
+    for result_id, ticker, source_result_id, value in duplicate_specs:
+        rows.append(
+            {
+                "result_id": result_id,
+                "check_type": "paper_internal_duplicate",
+                "ticker": ticker,
+                "source_result_id": source_result_id,
+                "displayed_value": value,
+                "computed_or_source_value": value,
+                "match_at_display_precision": True,
+                "paper_result_credit": False,
+            }
+        )
+    if len(rows) != 8 or not all(row["match_at_display_precision"] for row in rows):
+        raise ValueError("RAPTOR paper-internal scalar checks changed")
+    return rows
+
+
+def displayed_result_rows(
+    computed: dict[str, float],
+    benchmark: dict[str, float],
+    rolling_summary: dict[str, Any],
+) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
 
     def add(
@@ -719,11 +888,53 @@ def displayed_result_rows(computed: dict[str, float], benchmark: dict[str, float
     add("Table 1 explanation", "interpretability", "WAB_weight_delta", "-.025")
     add("Table 1 explanation", "interpretability", "SPY_weight_delta", "+.008")
     add("Table 1 explanation", "interpretability", "XLI_weight_delta", "+.006")
+    internal_checks = {
+        row["result_id"]: row for row in paper_internal_scalar_checks()
+    }
+    for row in rows:
+        check = internal_checks.get(row["result_id"])
+        if check is not None:
+            row["verification_status"] = (
+                "verified_paper_internal_arithmetic"
+                if check["check_type"] == "paper_internal_arithmetic"
+                else "verified_paper_internal_duplicate"
+            )
+            row["verification_source"] = "paper_internal_consistency"
+            row["credit_boundary"] = "paper_internal_consistency_only_no_native_result_credit"
+    if (
+        rolling_summary["section_20d_conventions"] != 8
+        or rolling_summary["section_20d_claim_cells_matching"] != 0
+        or rolling_summary["longer_window_conventions"] != 1160
+    ):
+        raise AssertionError("rolling forensic summary changed")
+    for row in rows:
+        if row["result_id"] in {"RAP-007", "RAP-008", "RAP-009", "RAP-010"}:
+            row["verification_status"] = (
+                "checked_conflict_all_eight_standard_20d_conventions"
+            )
+            row["verification_source"] = "author_output_protocol_grid"
+            row["credit_boundary"] = "author_output_conflict_no_result_credit"
+        elif row["result_id"] in {"RAP-022", "RAP-023"}:
+            row["verification_status"] = (
+                "checked_underspecified_1160_longer_window_conventions"
+            )
+            row["verification_source"] = "author_output_protocol_grid"
+            row["credit_boundary"] = "underspecified_protocol_no_result_credit"
+
     if len(rows) != 42:
         raise AssertionError(f"displayed-result denominator changed: {len(rows)}")
     verified = [row for row in rows if row["verification_status"].startswith("verified")]
-    if len(verified) != 21 or sum(row["verification_source"] == "author_output" for row in verified) != 18:
+    verified_sources = Counter(row["verification_source"] for row in verified)
+    if len(verified) != 29 or verified_sources != {
+        "author_output": 18,
+        "current_public_response": 3,
+        "paper_internal_consistency": 8,
+    }:
         raise AssertionError("verified displayed-result count changed")
+    if sum(row["verification_status"] == "unavailable" for row in rows) != 6:
+        raise AssertionError("unavailable displayed-result count changed")
+    if sum(row["verification_status"] != "unavailable" for row in rows) != 36:
+        raise AssertionError("checked displayed-result count changed")
     return rows
 
 
@@ -1700,8 +1911,17 @@ author history is also inventoried, including the later `validation_fixes` branc
   Yahoo's 165-session adjusted-close path from 2025-01-02 through 2025-08-29
   yields {manifest["benchmark_return_percent"]:.8f}% for the S&P 500, which rounds
   to 10.08%; subtracting it from the released RAPTOR endpoint yields 3.35 percentage
-  points. Thus {manifest["displayed_scalar_results_verified"]}/42 displayed units
-  are checked in total, but these three are not paper-time input lineage.
+  points. These three are not paper-time input lineage.
+- **Paper-internal arithmetic or exact repetition checks:
+  {manifest["paper_internal_verified_scalar_results"]}/{manifest["displayed_scalar_results"]}.**
+  Three Table 1 deltas equal perturbed minus base weights, and five explanation
+  values exactly repeat their table cells. These are document-consistency checks,
+  not author-output or native-agent results.
+- Across author output, the current benchmark response, and paper-internal checks,
+  {manifest["displayed_scalar_results_verified"]}/42 units verify. Including five
+  checked rolling conflicts and two underspecified longer-window claims,
+  {manifest["displayed_scalar_results_checked"]}/42 units are checked and
+  {manifest["displayed_scalar_results_unavailable"]}/42 remain unavailable.
 - **Published raster-curve correspondences verified:
   {manifest["published_figure_raster_curve_correspondences_verified"]}/3.**
   Figure 2's portfolio line regenerates all 7,313 exact blue pixels from the 166
@@ -1724,9 +1944,14 @@ author history is also inventoried, including the later `validation_fixes` branc
   20-return window, subtracting 2%/252 daily, using sample SD, and annualizing by
   sqrt(252) gives {manifest["rolling_full20_rf2_sample_mean"]:.4f} and
   {manifest["rolling_full20_rf2_sample_sd"]:.4f}, which round to 1.60 and 3.28.
-  The paper nevertheless mixes conventions. Expanding sample-SD/zero-RF values
-  recover Figure 3's extrema, while population SD is needed for its final 3.89;
-  neither convention produces the Section 4.3 -2.42/5.27/1.41/2.63 quartet.
+  All {manifest["rolling_section_20d_conventions"]} standard sample/population,
+  expanding/full-window, and 0%/2% risk-free conventions match 0/4 cells in the
+  Section 4.3 -2.42/5.27/1.41/2.63 quartet. Across every integer longer window
+  from 21 to 165, {manifest["rolling_longer_any_endpoint_matches"]} of
+  {manifest["rolling_longer_window_conventions"]} conventions hit at least one
+  rounded 1.1/1.4 endpoint and {manifest["rolling_longer_both_endpoints_match"]}
+  hit both, so the unspecified longer-window statement does not identify a
+  reproducible protocol.
 
 ## Why the full paper is not reproduced
 
@@ -1763,8 +1988,9 @@ author history is also inventoried, including the later `validation_fixes` branc
   reachable author revision and the 20-file later-branch delta.
 - `benchmark_snapshot_reproduction.csv`: the hash-pinned current Yahoo benchmark
   response, its 165 adjusted closes, and the explicit non-lineage boundary.
-- `snapshot_metric_reproduction.csv`, `rolling_sharpe_reproduction.csv`, and
-  `displayed_result_conformance.csv`: output-derived calculations and the
+- `snapshot_metric_reproduction.csv`, `rolling_sharpe_reproduction.csv`,
+  `rolling_claim_convention_forensics.csv`, `paper_internal_scalar_checks.csv`,
+  and `displayed_result_conformance.csv`: output-derived calculations and the
   fail-closed 42-unit empirical denominator.
 - `figure_series_conformance.csv` and `figure_raster_forensics.csv`: numeric-series
   availability and exact-color raster correspondence without raw-series inflation.
@@ -1798,8 +2024,10 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     if any(sha256(left[1]) != sha256(right[1]) for left, right in zip(anonymous_snapshots, author_snapshots)):
         raise ValueError("anonymous and author snapshots differ")
     metrics, rolling, computed = metric_reproduction(anonymous)
+    rolling_forensics, rolling_summary = rolling_claim_forensics(anonymous)
+    internal_checks = paper_internal_scalar_checks()
     benchmark_rows, benchmark = benchmark_reproduction(args.yahoo_gspc_response.resolve(), computed["total_return_pct"])
-    results = displayed_result_rows(computed, benchmark)
+    results = displayed_result_rows(computed, benchmark, rolling_summary)
     methods = method_rows()
     issues = consistency_rows()
     decisions = decision_rows(anonymous)
@@ -1824,6 +2052,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         ("snapshot_metric_reproduction.csv", metrics),
         ("benchmark_snapshot_reproduction.csv", benchmark_rows),
         ("rolling_sharpe_reproduction.csv", rolling),
+        ("rolling_claim_convention_forensics.csv", rolling_forensics),
+        ("paper_internal_scalar_checks.csv", internal_checks),
         ("displayed_result_conformance.csv", results),
         ("figure_series_conformance.csv", figures),
         ("figure_raster_forensics.csv", figure_forensics),
@@ -1891,6 +2121,14 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     verified = [row for row in results if row["verification_status"].startswith("verified")]
     author_verified = sum(row["verification_source"] == "author_output" for row in verified)
     current_public_verified = sum(row["verification_source"] == "current_public_response" for row in verified)
+    paper_internal_verified = sum(
+        row["verification_source"] == "paper_internal_consistency" for row in verified
+    )
+    checked_results = sum(row["verification_status"] != "unavailable" for row in results)
+    rolling_conflicts = sum("conflict" in row["verification_status"] for row in results)
+    rolling_underspecified = sum(
+        row["verification_status"].startswith("checked_underspecified") for row in results
+    )
     native = {
         "native_source_available": True,
         "native_postprocessor_executed": True,
@@ -1901,17 +2139,21 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "end_to_end_reason": "unreleased_inputs_and_request_logs_plus_conflicting_paper_and_runner_protocols",
         "author_output_verified_scalar_results": author_verified,
         "current_public_response_verified_scalar_results": current_public_verified,
+        "paper_internal_verified_scalar_results": paper_internal_verified,
         "displayed_scalar_results_verified": len(verified),
+        "displayed_scalar_results_checked": checked_results,
+        "rolling_claim_conflicts_checked": rolling_conflicts,
+        "rolling_claims_underspecified_checked": rolling_underspecified,
         "displayed_scalar_results": len(results),
         "end_to_end_result_cells_reproduced": 0,
-        "paper_result_credit": "output_or_current_public_response_verification_only_no_end_to_end_result_credit",
+        "paper_result_credit": "output_current_response_or_paper_internal_verification_only_no_end_to_end_result_credit",
         "llm_calls_made": 0,
     }
     write_json(output / "native_execution.json", native)
 
     manifest = {
         "audit": "RAPTOR OpenReview / CEUR paper and public-source audit",
-        "overall_fidelity": "full_author_history_and_166_output_snapshots_audited_21_of_42_scalar_units_verified_18_from_shipped_output_3_from_current_public_benchmark_response_zero_end_to_end_result_cells_reproduced",
+        "overall_fidelity": "full_author_history_and_166_output_snapshots_audited_36_of_42_scalar_units_checked_29_verified_18_author_output_3_current_public_8_paper_internal_5_conflicts_2_underspecified_6_unavailable_zero_end_to_end_result_cells_reproduced",
         "official_pdf_pages_audited": EXPECTED_PDF_PAGES,
         "official_pdf_pages_visually_inspected": EXPECTED_PDF_PAGES,
         "tracked_source_files": len(source_files),
@@ -1921,6 +2163,27 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "author_output_verified_scalar_results": author_verified,
         "current_public_response_verified_scalar_results": current_public_verified,
         "displayed_scalar_results_verified": len(verified),
+        "paper_internal_verified_scalar_results": paper_internal_verified,
+        "displayed_scalar_results_checked": checked_results,
+        "rolling_claim_conflicts_checked": rolling_conflicts,
+        "rolling_claims_underspecified_checked": rolling_underspecified,
+        "displayed_scalar_results_unavailable": sum(
+            row["verification_status"] == "unavailable" for row in results
+        ),
+        "paper_internal_scalar_checks": len(internal_checks),
+        "rolling_claim_forensic_rows": rolling_summary["rows"],
+        "rolling_section_20d_conventions": rolling_summary["section_20d_conventions"],
+        "rolling_section_20d_claim_cells_matching": rolling_summary[
+            "section_20d_claim_cells_matching"
+        ],
+        "rolling_longer_window_conventions": rolling_summary["longer_window_conventions"],
+        "rolling_longer_any_endpoint_matches": rolling_summary[
+            "longer_any_endpoint_matches"
+        ],
+        "rolling_longer_both_endpoints_match": rolling_summary[
+            "longer_both_endpoints_match"
+        ],
+
         "benchmark_observations": int(benchmark["observations"]),
         "benchmark_return_percent": benchmark["benchmark_return_pct"],
         "benchmark_excess_percentage_points": benchmark["excess_percentage_points"],
@@ -1958,7 +2221,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "rolling_full20_rf2_sample_mean": computed["rolling_full20_rf2_sample_mean"],
         "rolling_full20_rf2_sample_sd": computed["rolling_full20_rf2_sample_sd"],
         "rolling_full20_rf2_sample_final": computed["rolling_full20_rf2_sample_final"],
-        "paper_result_credit": "output_or_current_public_response_verification_only_no_end_to_end_result_credit",
+        "paper_result_credit": "output_current_response_or_paper_internal_verification_only_no_end_to_end_result_credit",
     }
     write_json(output / "manifest.json", manifest)
     (output / "README.md").write_text(readme(manifest), encoding="utf-8")
