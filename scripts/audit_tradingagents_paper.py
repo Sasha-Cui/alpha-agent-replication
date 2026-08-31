@@ -509,6 +509,139 @@ def current_yahoo_buy_hold_diagnostic(root: Path) -> list[dict[str, Any]]:
     return output
 
 
+
+
+def current_yahoo_buy_hold_window_forensics(
+    root: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Exhaust common Q1 Yahoo close windows against the three B&H returns."""
+    paper_returns = {
+        asset: float(PERFORMANCE["B&H"][asset][0]) for asset in ASSETS
+    }
+    data: dict[str, dict[str, Any]] = {}
+    for asset in ASSETS:
+        path = root / f"{asset}_2024q1_yahoo.json"
+        if sha256(path) != YAHOO_DIAGNOSTIC_SHA256[asset]:
+            raise RuntimeError(f"Pinned current Yahoo response changed: {asset}")
+        result = json.loads(path.read_text(encoding="utf-8"))["chart"]["result"][0]
+        dates = [
+            datetime.fromtimestamp(value, timezone.utc).date().isoformat()
+            for value in result["timestamp"]
+        ]
+        data[asset] = {
+            "dates": dates,
+            "adjusted_close": result["indicators"]["adjclose"][0]["adjclose"],
+            "unadjusted_close": result["indicators"]["quote"][0]["close"],
+        }
+    date_sequences = {tuple(item["dates"]) for item in data.values()}
+    if len(date_sequences) != 1:
+        raise RuntimeError("Pinned Yahoo assets no longer share one Q1 calendar")
+    dates = data[ASSETS[0]]["dates"]
+    if len(dates) != 61 or dates[0] != "2024-01-02" or dates[-1] != "2024-03-28":
+        raise RuntimeError("Pinned Yahoo common Q1 calendar changed")
+
+    rows: list[dict[str, Any]] = []
+    for price_field in ("adjusted_close", "unadjusted_close"):
+        for start_index in range(len(dates) - 1):
+            for end_index in range(start_index + 1, len(dates)):
+                observed = {
+                    asset: 100
+                    * (
+                        float(data[asset][price_field][end_index])
+                        / float(data[asset][price_field][start_index])
+                        - 1
+                    )
+                    for asset in ASSETS
+                }
+                matching_assets = [
+                    asset
+                    for asset in ASSETS
+                    if f"{observed[asset]:.2f}" == f"{paper_returns[asset]:.2f}"
+                ]
+                rows.append(
+                    {
+                        "price_field": price_field,
+                        "start_date": dates[start_index],
+                        "end_date": dates[end_index],
+                        "sessions_inclusive": end_index - start_index + 1,
+                        "AAPL_CR_pct": observed["AAPL"],
+                        "GOOGL_CR_pct": observed["GOOGL"],
+                        "AMZN_CR_pct": observed["AMZN"],
+                        "AAPL_display_match": "AAPL" in matching_assets,
+                        "GOOGL_display_match": "GOOGL" in matching_assets,
+                        "AMZN_display_match": "AMZN" in matching_assets,
+                        "matching_assets": ";".join(matching_assets),
+                        "matching_asset_count": len(matching_assets),
+                        "total_absolute_error_pct_points": sum(
+                            abs(observed[asset] - paper_returns[asset])
+                            for asset in ASSETS
+                        ),
+                        "paper_time_input_lineage": False,
+                        "native_paper_result_credit": False,
+                        "status": (
+                            "isolated_asset_coincidence_no_common_window_or_paper_time_lineage"
+                            if matching_assets
+                            else "common_window_mismatch_no_paper_time_lineage"
+                        ),
+                    }
+                )
+    best_by_field = {
+        price_field: min(
+            (
+                row
+                for row in rows
+                if row["price_field"] == price_field
+            ),
+            key=lambda row: float(row["total_absolute_error_pct_points"]),
+        )
+        for price_field in ("adjusted_close", "unadjusted_close")
+    }
+    summary = {
+        "common_date_windows": 1830,
+        "price_fields": 2,
+        "window_profiles_checked": len(rows),
+        "return_cells_checked": len(rows) * len(ASSETS),
+        "display_precision_matches": sum(
+            int(row["matching_asset_count"]) for row in rows
+        ),
+        "max_assets_matching_in_one_profile": max(
+            int(row["matching_asset_count"]) for row in rows
+        ),
+        "full_common_windows_matching": sum(
+            int(row["matching_asset_count"]) == len(ASSETS) for row in rows
+        ),
+        "assets_with_any_match": sorted(
+            {
+                asset
+                for row in rows
+                for asset in str(row["matching_assets"]).split(";")
+                if asset
+            }
+        ),
+        "adjusted_close_best_total_absolute_error_pct_points": best_by_field[
+            "adjusted_close"
+        ]["total_absolute_error_pct_points"],
+        "unadjusted_close_best_total_absolute_error_pct_points": best_by_field[
+            "unadjusted_close"
+        ]["total_absolute_error_pct_points"],
+        "paper_result_credit": False,
+    }
+    expected = {
+        "common_date_windows": 1830,
+        "price_fields": 2,
+        "window_profiles_checked": 3660,
+        "return_cells_checked": 10980,
+        "display_precision_matches": 3,
+        "max_assets_matching_in_one_profile": 1,
+        "full_common_windows_matching": 0,
+        "assets_with_any_match": ["AAPL", "GOOGL"],
+        "adjusted_close_best_total_absolute_error_pct_points": 1.7903151397409438,
+        "unadjusted_close_best_total_absolute_error_pct_points": 1.6692763509613622,
+        "paper_result_credit": False,
+    }
+    if summary != expected:
+        raise RuntimeError(f"TradingAgents Yahoo window boundary changed: {summary}")
+    return rows, summary
 def expected_table_values() -> list[float]:
     return [
         float(value)
@@ -2155,6 +2288,9 @@ def build_audit(
         fork_summary,
     ) = audit_public_forks(source_root, paper_source_root, fork_snapshot)
     yahoo_diagnostic = current_yahoo_buy_hold_diagnostic(yahoo_diagnostic_root)
+    yahoo_window_rows, yahoo_window_summary = (
+        current_yahoo_buy_hold_window_forensics(yahoo_diagnostic_root)
+    )
     annualization = annualization_identity()
     improvement = improvement_identity()
     claims = published_non_table_claims()
@@ -2171,6 +2307,9 @@ def build_audit(
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "table_1_conformance.csv", table)
     write_csv(output_dir / "current_yahoo_buy_hold_diagnostic.csv", yahoo_diagnostic)
+    write_csv(
+        output_dir / "current_yahoo_buy_hold_window_forensics.csv", yahoo_window_rows
+    )
     write_csv(output_dir / "author_output_correspondence.csv", author_outputs)
     write_csv(output_dir / "annualized_return_identity_audit.csv", annualization)
     write_csv(output_dir / "improvement_identity_audit.csv", improvement)
@@ -2251,6 +2390,26 @@ def build_audit(
         "current_public_yahoo_observed_on": YAHOO_DIAGNOSTIC_OBSERVED_ON,
         "current_public_yahoo_has_paper_time_input_lineage": False,
         "current_public_yahoo_paper_price_provider_mapping_recovered": False,
+        "current_public_yahoo_common_date_windows_checked": yahoo_window_summary[
+            "common_date_windows"
+        ],
+        "current_public_yahoo_close_fields_checked": yahoo_window_summary["price_fields"],
+        "current_public_yahoo_window_profiles_checked": yahoo_window_summary[
+            "window_profiles_checked"
+        ],
+        "current_public_yahoo_window_return_cells_checked": yahoo_window_summary[
+            "return_cells_checked"
+        ],
+        "current_public_yahoo_window_return_cells_matching": yahoo_window_summary[
+            "display_precision_matches"
+        ],
+        "current_public_yahoo_max_assets_matching_one_window": yahoo_window_summary[
+            "max_assets_matching_in_one_profile"
+        ],
+        "current_public_yahoo_full_common_windows_matching": yahoo_window_summary[
+            "full_common_windows_matching"
+        ],
+        "current_public_yahoo_window_forensics_paper_result_credit": False,
         "published_non_table_quantitative_claims_total": len(claims),
         "published_non_table_result_claims_total": 12,
         "native_non_table_result_claims_reproduced": 0,
@@ -2383,9 +2542,14 @@ def build_audit(
             "A hash-pinned current Yahoo adjusted-close diagnostic checks all 12 Buy-and-Hold cells under the paper's literal "
             "window and finds zero display-precision matches. Because the paper lists several providers "
             "without mapping prices and no paper-time response survives, this is adverse current-public "
-            "correspondence with zero paper-result credit. The three author Matplotlib comparison PDFs "
-            "expose 17 cumulative-return vector endpoints; only one matches its Table 1 CR cell, while "
-            "16 conflict, including all three TradingAgents endpoints. It does not ship the paper data, experiment "
+            "correspondence with zero paper-result credit. "
+            "Exhausting all 1,830 common Q1 trading-date windows under both Yahoo adjusted "
+            "and unadjusted close checks 10,980 asset-return profile cells. Only three isolated "
+            "profile cells match, no profile matches more than one asset, and no AMZN return "
+            "matches. Thus no hidden common Q1 window recovers the three B&H returns; these "
+            "current-response checks also receive zero paper-result credit. "
+            "The three author Matplotlib comparison PDFs expose 17 cumulative-return vector endpoints; "
+            "only one matches its Table 1 CR cell, while 16 conflict, including all three TradingAgents endpoints. It does not ship the paper data, experiment "
             "configuration, portfolio/execution engine, baseline or metric code, backtest runner, "
             "actions, fills, NAVs, return arrays, plot arrays, seeds, or costs. Its analysts are sequential, its "
             "model assignment conflicts with the paper, only 6/11 appendix tool names remain, and "
@@ -2499,6 +2663,12 @@ meaningful architecture subset, but not the experiment that produced the paper.
   +20.31% AMZN, versus -5.23%, +7.78%, and +17.10% in the paper. The paper does
   not identify which listed provider supplied prices, and this 2026 observation
   has no paper-time lineage, so it is adverse diagnostic evidence only.
+- Exhausting all **1,830 common Q1 trading-date windows** under adjusted and
+  unadjusted Yahoo close produces 3,660 profiles and 10,980 asset-return checks.
+  Only three isolated profile cells match at display precision, no profile matches
+  more than one asset, AMZN never matches, and **0 common windows** recover all
+  three B&H returns. This rules out a hidden shared Q1 endpoint within the pinned
+  response but remains current-public diagnostic evidence with zero result credit.
 - No frozen multimodal dataset, 60-indicator definition, experiment config,
   backtest runner, baseline implementation, metric code, portfolio state,
   position sizing, execution engine, commission/slippage rules, action history,

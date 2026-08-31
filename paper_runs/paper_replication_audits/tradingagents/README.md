@@ -89,6 +89,12 @@ meaningful architecture subset, but not the experiment that produced the paper.
   +20.31% AMZN, versus -5.23%, +7.78%, and +17.10% in the paper. The paper does
   not identify which listed provider supplied prices, and this 2026 observation
   has no paper-time lineage, so it is adverse diagnostic evidence only.
+- Exhausting all **1,830 common Q1 trading-date windows** under adjusted and
+  unadjusted Yahoo close produces 3,660 profiles and 10,980 asset-return checks.
+  Only three isolated profile cells match at display precision, no profile matches
+  more than one asset, AMZN never matches, and **0 common windows** recover all
+  three B&H returns. This rules out a hidden shared Q1 endpoint within the pinned
+  response but remains current-public diagnostic evidence with zero result credit.
 - No frozen multimodal dataset, 60-indicator definition, experiment config,
   backtest runner, baseline implementation, metric code, portfolio state,
   position sizing, execution engine, commission/slippage rules, action history,

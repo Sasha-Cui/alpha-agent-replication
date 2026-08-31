@@ -95,6 +95,7 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     figure_series = read_csv(output / "paper_figure_series_inventory.csv")
     vector_endpoints = read_csv(output / "paper_vector_curve_endpoint_conformance.csv")
     yahoo = read_csv(output / "current_yahoo_buy_hold_diagnostic.csv")
+    yahoo_windows = read_csv(output / "current_yahoo_buy_hold_window_forensics.csv")
     history_commits = read_csv(output / "public_source_history_commit_inventory.csv")
     history_paths = read_csv(output / "public_source_history_path_inventory.csv")
     history = json.loads((output / "public_source_history.json").read_text(encoding="utf-8"))
@@ -144,6 +145,14 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["current_public_yahoo_observed_on"] == "2026-08-25"
     assert manifest["current_public_yahoo_has_paper_time_input_lineage"] is False
     assert manifest["current_public_yahoo_paper_price_provider_mapping_recovered"] is False
+    assert manifest["current_public_yahoo_common_date_windows_checked"] == 1830
+    assert manifest["current_public_yahoo_close_fields_checked"] == 2
+    assert manifest["current_public_yahoo_window_profiles_checked"] == 3660
+    assert manifest["current_public_yahoo_window_return_cells_checked"] == 10980
+    assert manifest["current_public_yahoo_window_return_cells_matching"] == 3
+    assert manifest["current_public_yahoo_max_assets_matching_one_window"] == 1
+    assert manifest["current_public_yahoo_full_common_windows_matching"] == 0
+    assert manifest["current_public_yahoo_window_forensics_paper_result_credit"] is False
     assert manifest["annualized_return_pairs_matching_published_equation"] == 0
     assert manifest["paper_internal_inconsistencies_total"] == 7
     assert manifest["paper_specification_gaps_total"] == 27
@@ -264,6 +273,48 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert {row["response_rows"] for row in yahoo} == {"61"}
     assert {row["response_start"] for row in yahoo} == {"2024-01-02"}
     assert {row["response_end"] for row in yahoo} == {"2024-03-28"}
+
+    assert len(yahoo_windows) == 3660
+    assert Counter(row["price_field"] for row in yahoo_windows) == {
+        "adjusted_close": 1830,
+        "unadjusted_close": 1830,
+    }
+    assert Counter(row["matching_asset_count"] for row in yahoo_windows) == {
+        "0": 3657,
+        "1": 3,
+    }
+    exact_windows = [
+        row for row in yahoo_windows if row["matching_asset_count"] == "1"
+    ]
+    assert Counter(row["matching_assets"] for row in exact_windows) == {
+        "AAPL": 1,
+        "GOOGL": 2,
+    }
+    assert Counter(row["price_field"] for row in exact_windows) == {
+        "adjusted_close": 2,
+        "unadjusted_close": 1,
+    }
+    assert all(row["matching_assets"] != "AMZN" for row in yahoo_windows)
+    assert {row["paper_time_input_lineage"] for row in yahoo_windows} == {"False"}
+    assert {row["native_paper_result_credit"] for row in yahoo_windows} == {"False"}
+    best = {
+        field: min(
+            (row for row in yahoo_windows if row["price_field"] == field),
+            key=lambda row: float(row["total_absolute_error_pct_points"]),
+        )
+        for field in ("adjusted_close", "unadjusted_close")
+    }
+    assert {
+        (row["start_date"], row["end_date"]) for row in best.values()
+    } == {("2024-01-02", "2024-03-19")}
+    assert math.isclose(
+        float(best["adjusted_close"]["total_absolute_error_pct_points"]),
+        1.7903151397409438,
+    )
+    assert math.isclose(
+        float(best["unadjusted_close"]["total_absolute_error_pct_points"]),
+        1.6692763509613622,
+    )
     assert len(claims) == 14
     assert Counter(row["claim_role"] for row in claims) == {
         "result": 12,
