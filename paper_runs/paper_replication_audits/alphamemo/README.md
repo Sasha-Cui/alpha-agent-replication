@@ -36,6 +36,9 @@ trajectories, factor pools, predictions, returns, or table outputs.
 ## What genuinely passes
 
 - The release's one smoke test passes under a compatible Python 3.12 environment.
+  Separately, a central Python 3.11.11 environment imports the paper's exact
+  declared `pyqlib==0.9.7`, `lightgbm==4.6.0`, `mlflow==3.12.0`, and
+  `baostock==0.9.1` pins and passes the author test.
 - Two identical native synthetic runs produce the same SHA-256 and the documented
   12-step summary. That smoke has warmup 30, so its last batch starts at step 8 and
   never exercises AlphaMemo's memory-policy branch.
@@ -54,6 +57,30 @@ trajectories, factor pools, predictions, returns, or table outputs.
 - Sixty-nine pairwise cross-table identities agree exactly. These are repeated
   printed values, never independent empirical reproductions.
 
+## Native current-data pipeline probe
+
+- The released Yahoo builder was run on 2026-08-31 from a pinned official Qlib
+  U.S. instrument file. Its first 20 sorted historical symbols yielded 14 market
+  assets plus `^GSPC`; `ABC`, `ABK`, `ABMD`, `ABS`, `ACAS`, and `ADS` were no
+  longer downloadable. The frozen probe contains 2,511 trading days from
+  2016-01-04 through 2025-12-26 and 93 hash-pinned files.
+- On that panel, raw `main-table` execution evaluates 12/12 factors, then fails
+  during export because `qlib_data.py` defines `SELF_EVO_ROOT` as `parents[3]`,
+  one level above the repository. The released qrun wrapper is also tracked as
+  mode `100644`, so direct backtest execution raises `PermissionError`.
+- A scratch-only template symlink and an executable copy of the byte-identical
+  qrun wrapper let the otherwise unchanged source complete twice: factor export,
+  LightGBM training, prediction, Top-k/drop portfolio simulation, costs, and all
+  19 exported metrics. Search JSON and selected formulas are byte-identical; the
+  maximum metric difference across repeats is below `1e-12`. Replay makes zero
+  LLM calls and zero network attempts.
+- This is not a paper configuration. It uses only 14 current-source stocks, a
+  heuristic generator, budget 12, warmup 4, and no CSI500. Zero factors pass the
+  released 0.10 admission threshold, yet `main-table` still exports and backtests
+  all 12 merely valid candidates because `include_all_ok_candidates=True`.
+  Therefore all current-input search, prediction, portfolio, and metric outputs
+  receive **zero paper-result credit**.
+
 ## Why the paper is not replicated
 
 - Across Tables 2--9 there are **484 numeric experimental cells**: 474 results and
@@ -65,6 +92,10 @@ trajectories, factor pools, predictions, returns, or table outputs.
   daily return, Qlib recorder, baseline output, random seed run, or table CSV is
   tracked. The current-download data builders cannot recreate the authors' frozen
   data state.
+- The bounded real-data replay proves the native downstream pipeline can run only
+  after two compatibility repairs; it cannot recover the missing full universe,
+  paper-time rows, DeepSeek calls, admitted factor pool, five seeds, or reported
+  outputs. Its 19 metrics are diagnostic values, not matches to Tables 2--9.
 - The advertised `run_main.sh` uses `SUCCESS_ICIR=0.02`, while the paper specifies
   an admission threshold of 0.10. It runs only one balanced AlphaMemo seed; no exact
   residual, fixed-budget, eight-baseline, or NoGate/AbsOLM/ManualMut/NoAPV runner is
@@ -82,8 +113,9 @@ trajectories, factor pools, predictions, returns, or table outputs.
 
 ## Honest boundary
 
-The native synthetic smoke, parser execution, matching arguments, and internal
-paper identities remain component evidence. They receive zero paper-result credit.
+The native synthetic smoke, current-data real-pipeline replay, parser execution,
+matching arguments, and internal paper identities remain component evidence. They
+receive zero paper-result credit.
 Run `scripts/audit_alphamemo_paper.py` to regenerate this package; use `--strict`
 to fail until the exact paper inputs, trajectories, pools, outputs, mechanisms, and
 all 474 result cells are independently reproduced.

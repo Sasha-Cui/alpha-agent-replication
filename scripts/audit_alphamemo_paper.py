@@ -4,8 +4,9 @@
 The audit enumerates all numeric experimental cells in Tables 2--9, separates
 result cells from configuration cells, checks repeated-paper identities, traces
 the complete reachable official history and active runner, and executes bounded
-deterministic synthetic diagnostics across every released strategy. It does not
-call an LLM, download market data, or count synthetic outputs, repeated cells,
+deterministic synthetic diagnostics across every released strategy, and replays
+the real-data path twice on a frozen current-input probe. It does not call an LLM
+during replay or count synthetic/current-input outputs, repeated cells,
 source-code presence, or diagnostic strategy runs as paper-result reproduction.
 """
 
@@ -31,6 +32,19 @@ PAPER_URL = "https://arxiv.org/pdf/2606.20625v1"
 PAPER_SHA256 = "64dbd4558ec63a88bbf8fc8245b7eb43443878969531a9661e15c31f6fcedcd0"
 SOURCE_ROOT_README_SHA256 = "d87aee04c794447755eb5f861834ea0b39bbd01476b08cbb7130be163b83ec79"
 DEFAULT_SOURCE_PYTHON = "/nfs/roberts/project/pi_btk22/zc362/environments/bin/kt-python"
+DEFAULT_PAPER_SOURCE_PYTHON = (
+    "/nfs/roberts/project/pi_btk22/zc362/environments/current/alphamemo-paper/bin/python"
+)
+DEFAULT_REAL_DATA_PROVIDER = (
+    "/nfs/roberts/scratch/pi_btk22/zc362/alphamemo_us_probe_20"
+)
+DEFAULT_QLIB_SOURCE = (
+    "/nfs/roberts/scratch/pi_btk22/zc362/alphamemo_qlib_source/us_data"
+)
+DEFAULT_REAL_PROBE_WORK_ROOT = (
+    "/nfs/roberts/scratch/pi_btk22/zc362/alphamemo_real_probe_work"
+)
+REAL_DATA_DRIVER = Path(__file__).with_name("run_alphamemo_real_data_probe.py")
 PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
 PUBLIC_FORK_REST_COUNT = 1
 PUBLIC_FORK_GRAPHQL_ACCESSIBLE_COUNT = 1
@@ -730,7 +744,9 @@ def source_conformance(source_root: Path) -> list[dict[str, Any]]:
     residual = text("sspm/memory/residual.py")
     motifs = text("sspm/core/motifs.py")
     dag = text("sspm/core/dag.py")
+    qlib_data = text("sspm/evaluation/qlib_data.py")
     qlib_export = text("sspm/evaluation/qlib_export.py")
+    qrun = text("scripts/qrun_alphamemo.sh")
     generator = text("sspm/generation/openai_compatible.py")
     collect = text("scripts/collect_results.py")
     cli = text("sspm/cli.py")
@@ -762,6 +778,9 @@ def source_conformance(source_root: Path) -> list[dict[str, Any]]:
         ("mechanism_ablation_runner", "NoGate, AbsOLM, ManualMut, NoAPV", "none of these named variants/removed-component paths exist", "missing"),
         ("main_baseline_runner", "eight baselines in Table 2", "official runner strategies only alphamemo; collectors do not execute paper baselines", "missing"),
         ("native_input_snapshot", "exact CSI500/S&P500 Qlib panels", "current-download builder scripts only; no data snapshot", "missing"),
+        ("qlib_template_resolution", "main-table resolves its repository-local Qlib templates", "qlib_data.py sets SELF_EVO_ROOT to parents[3], one level above the repository, so raw real-data export fails after search", "broken_active_path"),
+        ("qlib_backtest_entrypoint_mode", "advertised qrun wrapper is directly executable", "scripts/qrun_alphamemo.sh is tracked and checked out as mode 100644, so raw qlib-backtest raises PermissionError", "broken_active_path"),
+        ("factor_admission_to_backtest", "only factors passing the paper admission gate enter the pool/backtest", "main-table exports include_all_ok_candidates=True, so the probe backtests 12 valid candidates even though zero pass the 0.10 success threshold", "mismatch_active_runner"),
         ("native_output_snapshot", "paper trajectories, pools, predictions, returns, and metrics", "no tracked runs/data/result files", "missing"),
         ("representative_factor_snapshot", "five Table 9 formulas and metrics", "none of the factor names/formulas is tracked in source", "missing"),
         ("llm_model", "deepseek/deepseek-v4-flash through OpenRouter", "official runner default matches mutable model alias", "configuration_match_unpinned_endpoint"),
@@ -781,6 +800,10 @@ def source_conformance(source_root: Path) -> list[dict[str, Any]]:
     assert "if success and result.ok" in graph
     assert "np.argsort(-scores)[:k]" in dag
     assert "factor_arrays[: config.max_factors]" in qlib_export
+    assert "include_all_ok_candidates: bool = True" in qlib_export
+    assert "SELF_EVO_ROOT = Path(__file__).resolve().parents[3]" in qlib_data
+    assert (source_root / "scripts/qrun_alphamemo.sh").stat().st_mode & 0o111 == 0
+    assert 'exec "${PYTHON_BIN}" -m qlib.cli.run "$@"' in qrun
     assert "Requested edit motif" in generator
     assert "read_variant_dirs" in collect
     assert "paper2025" in cli and "2025-12-26" in cli
@@ -1035,6 +1058,70 @@ print(json.dumps(out))
     return component, factor_rows
 
 
+def run_native_real_data_probe(
+    source_root: Path,
+    source_python: Path,
+    provider: Path,
+    qlib_source: Path,
+    work_root: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    if not REAL_DATA_DRIVER.exists():
+        raise RuntimeError(f"AlphaMemo real-data probe driver is missing: {REAL_DATA_DRIVER}")
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(REAL_DATA_DRIVER),
+            "--source-root",
+            str(source_root),
+            "--source-python",
+            str(source_python),
+            "--provider",
+            str(provider),
+            "--qlib-source",
+            str(qlib_source),
+            "--work-root",
+            str(work_root),
+            "--output-dir",
+            str(output_dir),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(
+        (output_dir / "alphamemo_real_data_probe.json").read_text(encoding="utf-8")
+    )
+    current = payload["frozen_current_data"]
+    raw = payload["raw_execution"]
+    compatible = payload["compatible_execution"]
+    if payload["source_commit"] != SOURCE_COMMIT or not payload["source_unmodified"]:
+        raise RuntimeError("AlphaMemo real-data probe changed the pinned source")
+    if current["trading_days"] != 2511 or current["market_assets"] != 14:
+        raise RuntimeError("AlphaMemo frozen current-data surface changed")
+    if raw["returncode"] == 0 or not raw["search_completed"]:
+        raise RuntimeError("AlphaMemo raw real-data failure boundary changed")
+    if compatible["runs"] != 2 or not compatible["search_byte_identical"]:
+        raise RuntimeError("AlphaMemo compatible real-data search is not deterministic")
+    if compatible["search_summary"]["n_ok"] != 12:
+        raise RuntimeError("AlphaMemo compatible real-data evaluation count changed")
+    if compatible["search_summary"]["n_effective"] != 0:
+        raise RuntimeError("AlphaMemo compatible real-data admission boundary changed")
+    if compatible["n_selected_factors"] != 12 or compatible["metric_count"] != 19:
+        raise RuntimeError("AlphaMemo compatible export/backtest surface changed")
+    if not compatible["metrics_repeat_atol_1e_12"]:
+        raise RuntimeError("AlphaMemo compatible real-data metrics are not repeatable")
+    if compatible["network_attempts"] or compatible["llm_calls"] != 0:
+        raise RuntimeError("AlphaMemo real-data replay crossed the offline boundary")
+    if compatible["paper_configuration"] or compatible["paper_result_credit"]:
+        raise RuntimeError("AlphaMemo component probe received paper credit")
+    if payload["paper_result_cells_reproduced"] != 0:
+        raise RuntimeError("AlphaMemo real-data probe overclaimed paper results")
+    if not result.stdout.strip():
+        raise RuntimeError("AlphaMemo real-data probe emitted no manifest")
+    return payload
+
+
 def verify_pins(source_root: Path, paper_pdf: Path) -> str:
     commit = git_head(source_root)
     if commit != SOURCE_COMMIT:
@@ -1054,6 +1141,10 @@ def build_audit(
     fork_root: Path,
     paper_pdf: Path,
     source_python: Path,
+    paper_source_python: Path,
+    real_data_provider: Path,
+    qlib_source: Path,
+    real_probe_work_root: Path,
     output_dir: Path,
 ) -> dict[str, Any]:
     commit = verify_pins(source_root, paper_pdf)
@@ -1064,6 +1155,15 @@ def build_audit(
     config = source_conformance(source_root)
     source = source_inventory(source_root)
     component, factors = run_native_component_checks(source_root, source_python)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    real_probe = run_native_real_data_probe(
+        source_root,
+        paper_source_python,
+        real_data_provider,
+        qlib_source,
+        real_probe_work_root,
+        output_dir,
+    )
 
     if len(source) != 49:
         raise RuntimeError(f"Expected 49 tracked source files, got {len(source)}")
@@ -1076,7 +1176,6 @@ def build_audit(
     if len(factors) != 5 or not all(row["native_parser_executable"] for row in factors):
         raise RuntimeError("Published formula parser diagnostic changed")
 
-    output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "tables_2_9_conformance.csv", conformance)
     write_csv(output_dir / "paper_internal_identities.csv", identities)
     write_csv(output_dir / "source_mechanism_conformance.csv", config)
@@ -1096,7 +1195,7 @@ def build_audit(
 
     manifest: dict[str, Any] = {
         "audit": "AlphaMemo paper v1 Tables 2--9 versus pinned official source",
-        "overall_status": "not_reproduced_native_synthetic_component_only",
+        "overall_status": "not_reproduced_native_current_data_pipeline_component_only",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_version": "arXiv:2606.20625v1",
@@ -1139,6 +1238,58 @@ def build_audit(
         "paper_internal_identities_independent_reproductions": 0,
         "tracked_source_files_total": len(source),
         "native_source_tests_passed": 1,
+        "paper_declared_python_environment_reproduced": True,
+        "paper_declared_python_version": real_probe["environment"]["python"],
+        "paper_declared_environment_package_count": real_probe["environment"][
+            "package_count"
+        ],
+        "native_current_data_builder_snapshot_replayed": True,
+        "native_current_data_trading_days": real_probe["frozen_current_data"][
+            "trading_days"
+        ],
+        "native_current_data_market_assets": real_probe["frozen_current_data"][
+            "market_assets"
+        ],
+        "native_current_data_benchmark_series": real_probe["frozen_current_data"][
+            "benchmark_series"
+        ],
+        "native_current_data_raw_search_completed": real_probe["raw_execution"][
+            "search_completed"
+        ],
+        "native_current_data_raw_export_failed_template_root": True,
+        "native_current_data_raw_qrun_failed_nonexecutable": True,
+        "native_current_data_compatible_end_to_end_runs": real_probe[
+            "compatible_execution"
+        ]["runs"],
+        "native_current_data_search_byte_identical": real_probe[
+            "compatible_execution"
+        ]["search_byte_identical"],
+        "native_current_data_valid_factor_evaluations": real_probe[
+            "compatible_execution"
+        ]["search_summary"]["n_ok"],
+        "native_current_data_admitted_factors": real_probe["compatible_execution"][
+            "search_summary"
+        ]["n_effective"],
+        "native_current_data_selected_backtest_factors": real_probe[
+            "compatible_execution"
+        ]["n_selected_factors"],
+        "native_current_data_exported_metric_values": real_probe[
+            "compatible_execution"
+        ]["metric_count"],
+        "native_current_data_metrics_repeat_atol_1e_12": real_probe[
+            "compatible_execution"
+        ]["metrics_repeat_atol_1e_12"],
+        "native_current_data_max_reported_repeat_difference": real_probe[
+            "compatible_execution"
+        ]["max_reported_repeat_difference"],
+        "native_current_data_replay_llm_calls": real_probe["compatible_execution"][
+            "llm_calls"
+        ],
+        "native_current_data_replay_network_attempts": len(
+            real_probe["compatible_execution"]["network_attempts"]
+        ),
+        "native_current_data_probe_paper_configuration": False,
+        "native_current_data_probe_paper_result_credit": False,
         "native_synthetic_smoke_deterministic": True,
         "native_synthetic_smoke_memory_policy_branch_exercised": False,
         "native_synthetic_smoke_paper_result_reproduction": False,
@@ -1162,7 +1313,9 @@ def build_audit(
         "paper_active_runner_admission_threshold_matched": False,
         "paper_fixed_budget_size_disclosed": False,
         "paper_fixed_budget_and_ablation_runners_shipped": False,
-        "audit_called_llm_or_external_data_api": False,
+        "audit_used_external_yahoo_api_to_acquire_frozen_current_snapshot": True,
+        "real_data_replay_called_llm_or_external_data_api": False,
+        "audit_called_llm_or_external_data_api": True,
         "interpretation": (
             "The complete reachable official history has only two commits and 49-file trees; only README.md "
             "changes, and no historical result artifact exists. Its deleted root README recovers the intended "
@@ -1172,7 +1325,15 @@ def build_audit(
             "authors; this corroborates provenance but adds no empirical artifact. The release "
             "is executable at the synthetic-component level: its sole test passes, all seven CLI strategies run "
             "deterministically in bounded diagnostics that activate the available memory branches, and all five "
-            "paper formulas execute in the native parser on synthetic data. None of that reproduces the paper. "
+            "paper formulas execute in the native parser on synthetic data. A separate Python 3.11 environment "
+            "with the paper's declared direct pins replays a frozen current Yahoo/Qlib panel. The raw main-table "
+            "path completes 12 factor evaluations before failing because qlib_data.py resolves templates one "
+            "parent above the repository; the tracked qrun wrapper is also non-executable. With a scratch-only "
+            "template symlink and byte-identical executable wrapper copy, two runs complete native factor export, "
+            "LightGBM training, predictions, portfolio/cost simulation, and 19 metrics. Search output is byte-"
+            "identical and metrics agree within 1e-12, with zero LLM or network calls during replay. This bounded "
+            "14-stock heuristic diagnostic admits zero factors at the 0.10 threshold and receives zero paper "
+            "credit. None of that reproduces the paper. "
             "The official 12-step smoke itself never reaches its 30-step memory warmup. No Qlib input snapshot, reported LLM "
             "trajectory, factor pool, prediction, return, or table output is shipped, leaving 0/474 result cells "
             "natively reproduced. The active official runner also uses ICIR threshold 0.02 instead of the paper's "
@@ -1222,6 +1383,9 @@ trajectories, factor pools, predictions, returns, or table outputs.
 ## What genuinely passes
 
 - The release's one smoke test passes under a compatible Python 3.12 environment.
+  Separately, a central Python 3.11.11 environment imports the paper's exact
+  declared `pyqlib==0.9.7`, `lightgbm==4.6.0`, `mlflow==3.12.0`, and
+  `baostock==0.9.1` pins and passes the author test.
 - Two identical native synthetic runs produce the same SHA-256 and the documented
   12-step summary. That smoke has warmup 30, so its last batch starts at step 8 and
   never exercises AlphaMemo's memory-policy branch.
@@ -1240,6 +1404,30 @@ trajectories, factor pools, predictions, returns, or table outputs.
 - Sixty-nine pairwise cross-table identities agree exactly. These are repeated
   printed values, never independent empirical reproductions.
 
+## Native current-data pipeline probe
+
+- The released Yahoo builder was run on 2026-08-31 from a pinned official Qlib
+  U.S. instrument file. Its first 20 sorted historical symbols yielded 14 market
+  assets plus `^GSPC`; `ABC`, `ABK`, `ABMD`, `ABS`, `ACAS`, and `ADS` were no
+  longer downloadable. The frozen probe contains 2,511 trading days from
+  2016-01-04 through 2025-12-26 and 93 hash-pinned files.
+- On that panel, raw `main-table` execution evaluates 12/12 factors, then fails
+  during export because `qlib_data.py` defines `SELF_EVO_ROOT` as `parents[3]`,
+  one level above the repository. The released qrun wrapper is also tracked as
+  mode `100644`, so direct backtest execution raises `PermissionError`.
+- A scratch-only template symlink and an executable copy of the byte-identical
+  qrun wrapper let the otherwise unchanged source complete twice: factor export,
+  LightGBM training, prediction, Top-k/drop portfolio simulation, costs, and all
+  19 exported metrics. Search JSON and selected formulas are byte-identical; the
+  maximum metric difference across repeats is below `1e-12`. Replay makes zero
+  LLM calls and zero network attempts.
+- This is not a paper configuration. It uses only 14 current-source stocks, a
+  heuristic generator, budget 12, warmup 4, and no CSI500. Zero factors pass the
+  released 0.10 admission threshold, yet `main-table` still exports and backtests
+  all 12 merely valid candidates because `include_all_ok_candidates=True`.
+  Therefore all current-input search, prediction, portfolio, and metric outputs
+  receive **zero paper-result credit**.
+
 ## Why the paper is not replicated
 
 - Across Tables 2--9 there are **484 numeric experimental cells**: 474 results and
@@ -1251,6 +1439,10 @@ trajectories, factor pools, predictions, returns, or table outputs.
   daily return, Qlib recorder, baseline output, random seed run, or table CSV is
   tracked. The current-download data builders cannot recreate the authors' frozen
   data state.
+- The bounded real-data replay proves the native downstream pipeline can run only
+  after two compatibility repairs; it cannot recover the missing full universe,
+  paper-time rows, DeepSeek calls, admitted factor pool, five seeds, or reported
+  outputs. Its 19 metrics are diagnostic values, not matches to Tables 2--9.
 - The advertised `run_main.sh` uses `SUCCESS_ICIR=0.02`, while the paper specifies
   an admission threshold of 0.10. It runs only one balanced AlphaMemo seed; no exact
   residual, fixed-budget, eight-baseline, or NoGate/AbsOLM/ManualMut/NoAPV runner is
@@ -1268,8 +1460,9 @@ trajectories, factor pools, predictions, returns, or table outputs.
 
 ## Honest boundary
 
-The native synthetic smoke, parser execution, matching arguments, and internal
-paper identities remain component evidence. They receive zero paper-result credit.
+The native synthetic smoke, current-data real-pipeline replay, parser execution,
+matching arguments, and internal paper identities remain component evidence. They
+receive zero paper-result credit.
 Run `scripts/audit_alphamemo_paper.py` to regenerate this package; use `--strict`
 to fail until the exact paper inputs, trajectories, pools, outputs, mechanisms, and
 all 474 result cells are independently reproduced.
@@ -1315,6 +1508,34 @@ def parse_args() -> argparse.Namespace:
         default=Path(os.environ.get("ALPHAMEMO_SOURCE_PYTHON", DEFAULT_SOURCE_PYTHON)),
     )
     parser.add_argument(
+        "--paper-source-python",
+        type=Path,
+        default=Path(
+            os.environ.get("ALPHAMEMO_PAPER_SOURCE_PYTHON", DEFAULT_PAPER_SOURCE_PYTHON)
+        ),
+    )
+    parser.add_argument(
+        "--real-data-provider",
+        type=Path,
+        default=Path(
+            os.environ.get("ALPHAMEMO_REAL_DATA_PROVIDER", DEFAULT_REAL_DATA_PROVIDER)
+        ),
+    )
+    parser.add_argument(
+        "--qlib-source",
+        type=Path,
+        default=Path(os.environ.get("ALPHAMEMO_QLIB_SOURCE", DEFAULT_QLIB_SOURCE)),
+    )
+    parser.add_argument(
+        "--real-probe-work-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "ALPHAMEMO_REAL_PROBE_WORK_ROOT", DEFAULT_REAL_PROBE_WORK_ROOT
+            )
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=project_root / "paper_runs/paper_replication_audits/alphamemo",
@@ -1330,6 +1551,10 @@ def main() -> int:
         args.fork_root.resolve(),
         args.paper_pdf.resolve(),
         args.source_python.resolve(),
+        args.paper_source_python.absolute(),
+        args.real_data_provider.resolve(),
+        args.qlib_source.resolve(),
+        args.real_probe_work_root.resolve(),
         args.output_dir.resolve(),
     )
     print(json.dumps(manifest, indent=2))

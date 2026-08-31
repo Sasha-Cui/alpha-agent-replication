@@ -1,0 +1,7 @@
+stage,raw_status,compatibility_status,paper_result_credit,evidence
+paper_declared_environment,pass,pass,False,"Python 3.11 with exact declared pyqlib, LightGBM, MLflow, and BaoStock pins"
+current_yahoo_qlib_builder,pass_frozen_snapshot,not_needed,False,"2511 days, 14 source-selected stocks, and one benchmark; six obsolete symbols unavailable"
+native_qlib_search,pass_12_of_12_evaluations_zero_admitted,pass_twice_byte_identical,False,released Qlib evaluator and heuristic generator
+native_factor_export,fail_template_root_parents_3,pass_twice_12_factors,False,scratch-only template symlink; pinned source unchanged
+native_qrun_entrypoint,fail_mode_100644,pass_byte_identical_executable_copy,False,scratch-only executable bit repair; pinned source unchanged
+native_lightgbm_portfolio_backtest,unreachable_after_two_release_defects,pass_twice_19_metrics_atol_1e-12,False,"training, prediction, portfolio, cost, and metric paths execute offline"

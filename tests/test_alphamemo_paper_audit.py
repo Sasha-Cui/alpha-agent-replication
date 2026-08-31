@@ -16,6 +16,13 @@ audit = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = audit
 SPEC.loader.exec_module(audit)
 
+REAL_DRIVER = ROOT / "scripts/run_alphamemo_real_data_probe.py"
+REAL_SPEC = importlib.util.spec_from_file_location("alphamemo_real_data_probe", REAL_DRIVER)
+assert REAL_SPEC and REAL_SPEC.loader
+real_probe = importlib.util.module_from_spec(REAL_SPEC)
+sys.modules[REAL_SPEC.name] = real_probe
+REAL_SPEC.loader.exec_module(real_probe)
+
 
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8") as handle:
@@ -81,8 +88,15 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     fork_branches = read_csv(output / "public_fork_branch_ref_snapshot.csv")
     fork_heads = read_csv(output / "public_fork_unique_head_inventory.csv")
     fork_census = json.loads((output / "public_fork_census.json").read_text(encoding="utf-8"))
+    current_data = read_csv(output / "alphamemo_current_data_snapshot.csv")
+    paper_environment = read_csv(output / "alphamemo_paper_environment.csv")
+    real_metrics = read_csv(output / "alphamemo_real_data_metrics.csv")
+    native_stages = read_csv(output / "alphamemo_native_stage_audit.csv")
+    real = json.loads((output / "alphamemo_real_data_probe.json").read_text(encoding="utf-8"))
 
-    assert manifest["overall_status"] == "not_reproduced_native_synthetic_component_only"
+    assert manifest["overall_status"] == (
+        "not_reproduced_native_current_data_pipeline_component_only"
+    )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_numeric_table_cells_total"] == 484
     assert manifest["paper_numeric_result_cells_total"] == 474
@@ -91,6 +105,28 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert manifest["active_official_runner_configuration_cells_matched"] == 4
     assert manifest["paper_pairwise_internal_identity_matches"] == 69
     assert manifest["native_source_tests_passed"] == 1
+    assert manifest["paper_declared_python_environment_reproduced"] is True
+    assert manifest["paper_declared_python_version"] == "3.11.11"
+    assert manifest["paper_declared_environment_package_count"] == 202
+    assert manifest["native_current_data_builder_snapshot_replayed"] is True
+    assert manifest["native_current_data_trading_days"] == 2511
+    assert manifest["native_current_data_market_assets"] == 14
+    assert manifest["native_current_data_benchmark_series"] == 1
+    assert manifest["native_current_data_raw_search_completed"] is True
+    assert manifest["native_current_data_raw_export_failed_template_root"] is True
+    assert manifest["native_current_data_raw_qrun_failed_nonexecutable"] is True
+    assert manifest["native_current_data_compatible_end_to_end_runs"] == 2
+    assert manifest["native_current_data_search_byte_identical"] is True
+    assert manifest["native_current_data_valid_factor_evaluations"] == 12
+    assert manifest["native_current_data_admitted_factors"] == 0
+    assert manifest["native_current_data_selected_backtest_factors"] == 12
+    assert manifest["native_current_data_exported_metric_values"] == 19
+    assert manifest["native_current_data_metrics_repeat_atol_1e_12"] is True
+    assert manifest["native_current_data_max_reported_repeat_difference"] == 0.0
+    assert manifest["native_current_data_replay_llm_calls"] == 0
+    assert manifest["native_current_data_replay_network_attempts"] == 0
+    assert manifest["native_current_data_probe_paper_configuration"] is False
+    assert manifest["native_current_data_probe_paper_result_credit"] is False
     assert manifest["source_history_reachable_commits"] == 2
     assert manifest["source_history_root_commits"] == 1
     assert manifest["source_history_local_branches"] == 1
@@ -124,7 +160,9 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert manifest["published_representative_formula_metrics_reproduced"] == 0
     assert manifest["paper_ast_diff_mechanism_implemented_faithfully"] is False
     assert manifest["paper_parent_context_implemented_faithfully"] is False
-    assert manifest["audit_called_llm_or_external_data_api"] is False
+    assert manifest["audit_used_external_yahoo_api_to_acquire_frozen_current_snapshot"] is True
+    assert manifest["real_data_replay_called_llm_or_external_data_api"] is False
+    assert manifest["audit_called_llm_or_external_data_api"] is True
 
     assert Counter(row["status"] for row in conformance) == {
         "unavailable_missing_native_result_path": 474,
@@ -132,7 +170,7 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
         "configuration_not_reproduced_by_released_diagnostic_runner": 6,
     }
     assert len(identities) == 69
-    assert len(source) == 36
+    assert len(source) == 39
     assert len(formulas) == 5
     assert {row["native_parser_executable"] for row in formulas} == {"True"}
     assert {row["paper_metric_reproduced"] for row in formulas} == {"False"}
@@ -192,6 +230,48 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert active["paper_result_reproduction"] is False
     assert component["paper_result_reproduction"] is False
 
+    assert len(current_data) == 93
+    assert sum(int(row["size_bytes"]) for row in current_data) == 920_339
+    assert len(paper_environment) == 202
+    environment = {row["package"]: row["version"] for row in paper_environment}
+    assert {key: environment[key] for key in real_probe.EXPECTED_DIRECT_PACKAGES} == (
+        real_probe.EXPECTED_DIRECT_PACKAGES
+    )
+    assert len(real_metrics) == 19
+    assert max(float(row["absolute_difference"]) for row in real_metrics) <= 1e-12
+    assert {row["paper_result_credit"] for row in real_metrics} == {"False"}
+    assert len(native_stages) == 6
+    assert {row["paper_result_credit"] for row in native_stages} == {"False"}
+
+    assert real["source_commit"] == audit.SOURCE_COMMIT
+    assert real["source_unmodified"] is True
+    assert real["environment"]["python"] == "3.11.11"
+    assert real["environment"]["package_count"] == 202
+    assert real["frozen_current_data"]["provider_file_count"] == 93
+    assert real["frozen_current_data"]["provider_total_bytes"] == 920_339
+    assert real["frozen_current_data"]["paper_time_snapshot"] is False
+    assert real["frozen_current_data"]["point_in_time_2025_membership"] is False
+    assert real["raw_execution"]["returncode"] != 0
+    assert real["raw_execution"]["search_completed"] is True
+    assert real["raw_execution"]["paper_result_credit"] is False
+    compatible = real["compatible_execution"]
+    assert compatible["runs"] == 2
+    assert compatible["search_byte_identical"] is True
+    assert compatible["selected_formulas_byte_identical"] is True
+    assert compatible["search_summary"]["n_ok"] == 12
+    assert compatible["search_summary"]["n_effective"] == 0
+    assert compatible["n_selected_factors"] == 12
+    assert compatible["metric_count"] == 19
+    assert compatible["metric_reporting_decimal_places"] == 12
+    assert compatible["expected_metrics_atol_1e_12"] is True
+    assert compatible["metrics_repeat_atol_1e_12"] is True
+    assert compatible["max_reported_repeat_difference"] == 0.0
+    assert compatible["network_attempts"] == []
+    assert compatible["llm_calls"] == 0
+    assert compatible["paper_configuration"] is False
+    assert compatible["paper_result_credit"] is False
+    assert real["paper_result_cells_reproduced"] == 0
+
     assert history["is_shallow_repository"] is False
     assert history["reachable_commit_count"] == 2
     assert history["root_commit_count"] == 1
@@ -244,6 +324,9 @@ def test_pinned_source_static_checks_when_source_is_available() -> None:
     assert findings["ast_diff_motif"]["status"] == "mismatch"
     assert findings["parent_context"]["status"] == "mismatch"
     assert findings["native_output_snapshot"]["status"] == "missing"
+    assert findings["qlib_template_resolution"]["status"] == "broken_active_path"
+    assert findings["qlib_backtest_entrypoint_mode"]["status"] == "broken_active_path"
+    assert findings["factor_admission_to_backtest"]["status"] == "mismatch_active_runner"
     assert findings["released_strategy_aliases"]["status"] == "aliases_not_distinct_methods"
     assert findings["released_smoke_memory_branch"]["status"] == "pre_memory_component_only"
 
@@ -257,3 +340,18 @@ def test_public_fork_provenance_when_bouchet_clone_is_available() -> None:
     assert summary["paper_coauthor_authored_divergent_heads"] == 1
     assert summary["exact_paper_result_table_or_figure_paths_discovered"] == 0
     assert summary["paper_result_credit"] is False
+
+
+def test_real_data_probe_inputs_when_bouchet_assets_are_available() -> None:
+    source_root = Path("/nfs/roberts/scratch/pi_btk22/zc362/alphamemo_source")
+    source_python = Path(audit.DEFAULT_PAPER_SOURCE_PYTHON)
+    provider = Path(audit.DEFAULT_REAL_DATA_PROVIDER)
+    qlib_source = Path(audit.DEFAULT_QLIB_SOURCE)
+    if not all(path.exists() for path in (source_root, source_python, provider, qlib_source)):
+        return
+    provider_rows, env_rows, summary = real_probe.validate_inputs(
+        source_root, source_python, provider, qlib_source
+    )
+    assert len(provider_rows) == real_probe.PROVIDER_FILE_COUNT
+    assert len(env_rows) == real_probe.ENVIRONMENT_PACKAGE_COUNT
+    assert summary["manifest_sha256"] == real_probe.ENVIRONMENT_MANIFEST_SHA256

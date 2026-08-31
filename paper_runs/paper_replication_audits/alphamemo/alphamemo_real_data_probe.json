@@ -1,0 +1,92 @@
+{
+  "source_commit": "412fee13d905bf5a25f0958aa572b7c668ccb925",
+  "source_unmodified": true,
+  "environment": {
+    "python": "3.11.11",
+    "package_count": 202,
+    "manifest_sha256": "460227814c582c751708bb664f1e7c59effcb7f76b696e8188e88c1518ee9875",
+    "direct_packages": {
+      "baostock": "0.9.1",
+      "lightgbm": "4.6.0",
+      "mlflow": "3.12.0",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3",
+      "pyqlib": "0.9.7",
+      "pyyaml": "6.0.3",
+      "scipy": "1.17.1",
+      "yfinance": "1.7.0"
+    }
+  },
+  "frozen_current_data": {
+    "acquisition_date": "2026-08-31",
+    "builder": "scripts/build_us_qlib_yfinance.py",
+    "builder_limit": 20,
+    "requested_start": "2016-01-01",
+    "requested_end_exclusive": "2025-12-27",
+    "calendar_start": "2016-01-04",
+    "calendar_end": "2025-12-26",
+    "trading_days": 2511,
+    "market_assets": 14,
+    "benchmark_series": 1,
+    "failed_first_twenty_symbols": [
+      "ABC",
+      "ABK",
+      "ABMD",
+      "ABS",
+      "ACAS",
+      "ADS"
+    ],
+    "provider_file_count": 93,
+    "provider_total_bytes": 920339,
+    "provider_manifest_sha256": "f3c7a475498dfda4b272053a4f4a96990cd8007911afd7285126e0d4f2c3eecc",
+    "official_qlib_source_instrument_rows": 755,
+    "official_qlib_source_calendar_end": "2020-11-10",
+    "official_qlib_source_market_instruments_sha256": "a65cb612d217432e0b8fad217c27b16a40261f62ce350b911d52ce6fa32d182a",
+    "paper_time_snapshot": false,
+    "point_in_time_2025_membership": false
+  },
+  "raw_execution": {
+    "returncode": 1,
+    "search_completed": true,
+    "search_sha256": "271f4ef9f8cd72e5fe6950cdb1534123a4d6d80e44b7b50d23872d771e19e893",
+    "first_failure": "missing Qlib template config due SELF_EVO_ROOT=parents[3]",
+    "expected_missing_path": "WORKSPACE/templates/qlib_factor_template/conf_us_combined_kdd_ver.yaml",
+    "paper_result_credit": false
+  },
+  "compatible_execution": {
+    "runs": 2,
+    "search_byte_identical": true,
+    "search_sha256": "271f4ef9f8cd72e5fe6950cdb1534123a4d6d80e44b7b50d23872d771e19e893",
+    "selected_formulas_byte_identical": true,
+    "selected_formulas_sha256": "43852412d25735e34c609e6cea7476958b66ca2aa87a704f344b6afe22308904",
+    "search_summary": {
+      "strategy": "alphamemo",
+      "n_effective": 0,
+      "n_ok": 12,
+      "budget": 12,
+      "mean_abs_ic_ok": 0.010306790392143692,
+      "mean_abs_ic_discovered": 0.0,
+      "mean_abs_icir_discovered": 0.0,
+      "mean_abs_ric_discovered": 0.0,
+      "mean_abs_ricir_discovered": 0.0
+    },
+    "n_selected_factors": 12,
+    "n_dates": 2511,
+    "n_instruments": 14,
+    "metric_count": 19,
+    "metric_reporting_decimal_places": 12,
+    "expected_metrics_atol_1e_12": true,
+    "metrics_repeat_atol_1e_12": true,
+    "max_reported_repeat_difference": 0.0,
+    "network_attempts": [],
+    "llm_calls": 0,
+    "template_symlink_compatibility": true,
+    "qrun_executable_bit_compatibility": true,
+    "source_files_changed": false,
+    "paper_configuration": false,
+    "paper_result_credit": false,
+    "main_table_summaries_have_qlib_metrics": true
+  },
+  "paper_result_cells_reproduced": 0,
+  "interpretation": "The released current-data builder and native Qlib search/export/LightGBM/portfolio pipeline execute twice after two explicit scratch-only compatibility repairs. The bounded heuristic probe uses 14 current-source stocks, admits zero factors at the released 0.10 threshold, and is not the paper configuration or input snapshot."
+}

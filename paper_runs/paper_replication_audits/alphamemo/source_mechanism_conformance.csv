@@ -26,6 +26,9 @@ fixed_budget_seeds,5/2/5/5 by method,"benchmark defaults to seeds 0,1,2 and no p
 mechanism_ablation_runner,"NoGate, AbsOLM, ManualMut, NoAPV",none of these named variants/removed-component paths exist,missing
 main_baseline_runner,eight baselines in Table 2,official runner strategies only alphamemo; collectors do not execute paper baselines,missing
 native_input_snapshot,exact CSI500/S&P500 Qlib panels,current-download builder scripts only; no data snapshot,missing
+qlib_template_resolution,main-table resolves its repository-local Qlib templates,"qlib_data.py sets SELF_EVO_ROOT to parents[3], one level above the repository, so raw real-data export fails after search",broken_active_path
+qlib_backtest_entrypoint_mode,advertised qrun wrapper is directly executable,"scripts/qrun_alphamemo.sh is tracked and checked out as mode 100644, so raw qlib-backtest raises PermissionError",broken_active_path
+factor_admission_to_backtest,only factors passing the paper admission gate enter the pool/backtest,"main-table exports include_all_ok_candidates=True, so the probe backtests 12 valid candidates even though zero pass the 0.10 success threshold",mismatch_active_runner
 native_output_snapshot,"paper trajectories, pools, predictions, returns, and metrics",no tracked runs/data/result files,missing
 representative_factor_snapshot,five Table 9 formulas and metrics,none of the factor names/formulas is tracked in source,missing
 llm_model,deepseek/deepseek-v4-flash through OpenRouter,official runner default matches mutable model alias,configuration_match_unpinned_endpoint

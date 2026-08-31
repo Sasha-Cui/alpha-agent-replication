@@ -1,0 +1,20 @@
+metric,run_1,run_2,absolute_difference,paper_result_credit,status
+1day.excess_return_with_cost.annualized_return,-0.02580440791,-0.02580440791,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.excess_return_with_cost.information_ratio,-0.241495598242,-0.241495598242,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.excess_return_with_cost.max_drawdown,-0.256279124017,-0.256279124017,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.excess_return_with_cost.mean,-0.000108421882,-0.000108421882,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.excess_return_with_cost.std,0.006926218703,0.006926218703,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.excess_return_without_cost.annualized_return,0.004365728772,0.004365728772,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.excess_return_without_cost.information_ratio,0.040841953977,0.040841953977,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.excess_return_without_cost.max_drawdown,-0.185703758912,-0.185703758912,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.excess_return_without_cost.mean,1.8343398e-05,1.8343398e-05,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.excess_return_without_cost.std,0.006928859592,0.006928859592,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.ffr,1.0,1.0,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.pa,0.0,0.0,0.0,False,current_input_bounded_heuristic_diagnostic_only
+1day.pos,0.0,0.0,0.0,False,current_input_bounded_heuristic_diagnostic_only
+IC,-0.007283669014,-0.007283669014,0.0,False,current_input_bounded_heuristic_diagnostic_only
+ICIR,-0.02411134416,-0.02411134416,0.0,False,current_input_bounded_heuristic_diagnostic_only
+Rank IC,-0.006518398144,-0.006518398144,0.0,False,current_input_bounded_heuristic_diagnostic_only
+Rank ICIR,-0.021596624363,-0.021596624363,0.0,False,current_input_bounded_heuristic_diagnostic_only
+l2.train,0.893032141768,0.893032141768,0.0,False,current_input_bounded_heuristic_diagnostic_only
+l2.valid,0.917004529819,0.917004529819,0.0,False,current_input_bounded_heuristic_diagnostic_only
