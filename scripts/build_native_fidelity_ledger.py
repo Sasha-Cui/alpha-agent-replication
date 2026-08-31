@@ -918,8 +918,12 @@ ARTIFACT_NOTES = {
         "its two pre-v1 AAPL rasters correspond cross-format to 14/42 paper series, "
         "but expose no numeric arrays. An unaffiliated 2026 AAPL baseline materially "
         "differs and ships no raw result file. No fork provides a native paper run. "
-        "A hash-pinned current "
-        "Yahoo adjusted-close diagnostic checks all 12 Buy-and-Hold cells under the "
+        "The three primary-paper Matplotlib PDFs expose 17 cumulative-return vector "
+        "endpoints. Only AMZN KDJ&RSI matches its Table 1 CR cell; the other 16, "
+        "including all three TradingAgents endpoints, conflict. This is author-output "
+        "consistency evidence, not independent regeneration. "
+        "A hash-pinned current Yahoo adjusted-close diagnostic checks all 12 "
+        "Buy-and-Hold cells under the "
         "paper's literal window and matches 0/12 at display precision. The paper does "
         "not map prices to one of its several listed providers, and the 2026 response "
         "has no paper-time lineage, so this is adverse diagnostic evidence only. "
@@ -930,8 +934,8 @@ ARTIFACT_NOTES = {
         "portfolio/execution path, baselines, metrics, actions, fills, NAVs, returns, "
         "traces, seeds, or costs are shipped, so 77/77 cells are corroborated but "
         "0/77 table cells count as native reproductions. The paper itself has "
-        "unresolved CR/AR formula, improvement, "
-        "MDD-bound, and asset-universe inconsistencies.",
+        "unresolved vector/table endpoint, CR/AR formula, improvement, MDD-bound, "
+        "and asset-universe inconsistencies.",
     ),
     "SYS-TRADING-R1": (
         "N",
@@ -1792,7 +1796,8 @@ TARGETED_EXECUTION = {
     ),
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
     "SYS-TRADING-AGENTS": (
-        "paper_audit:completed_77_of_77_author_table_cells_corroborated_14_of_42_author_raster_series_cross_format_12_current_yahoo_cells_zero_matches_19445_forks_24584_refs_4234_heads_exhausted_zero_native_regenerated"
+        "paper_audit:completed_77_of_77_author_table_cells_corroborated_16_of_17_vector_endpoints_conflict_"
+        "14_of_42_author_raster_series_cross_format_12_current_yahoo_cells_zero_matches_19445_forks_24584_refs_4234_heads_exhausted_zero_native_regenerated"
     ),
     "SYS-TRADING-GROUP": (
         "paper_audit:completed_128_of_128_source_adjacent_baseline_cells_"

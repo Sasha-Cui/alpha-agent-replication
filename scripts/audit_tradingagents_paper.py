@@ -707,6 +707,93 @@ def paper_figure_series() -> list[dict[str, Any]]:
     return rows
 
 
+def paper_vector_curve_endpoint_rows(paper_source_root: Path) -> list[dict[str, Any]]:
+    """Recover cumulative-return endpoints from the paper's Matplotlib vector PDFs.
+
+    The coordinates are author-rendered presentation evidence. They can test
+    cross-artifact consistency with Table 1, but they are not an independently
+    regenerated return array and never receive paper-result credit.
+    """
+    from pypdf import PdfReader
+
+    colors = {
+        "0.122 0.467 0.706": "B&H",
+        "1 0.498 0.055": "MACD",
+        "0.173 0.627 0.173": "KDJ&RSI",
+        "0.839 0.153 0.157": "ZMR",
+        "0.58 0.404 0.741": "SMA",
+        "0.549 0.337 0.294": "TradingAgents",
+    }
+    rows: list[dict[str, Any]] = []
+    for asset in ASSETS:
+        relative = f"figures/{asset}/compare.pdf"
+        path = paper_source_root / relative
+        if sha256(path) != FIGURE_SHA256[relative]:
+            raise RuntimeError(f"TradingAgents vector figure changed: {relative}")
+        page = PdfReader(path).pages[0]
+        content = page.get_contents().get_data().decode("latin1")
+        ticks: list[tuple[float, float]] = []
+
+        def visit_text(text: str, _cm: Any, tm: Any, _font: Any, _size: Any) -> None:
+            if re.fullmatch(r"\s*\d\.\d\d\s*", text):
+                ticks.append((float(text), float(tm[5])))
+
+        page.extract_text(visitor_text=visit_text)
+        unique_ticks = sorted(set(ticks))
+        if len(unique_ticks) < 5:
+            raise RuntimeError(f"TradingAgents y-axis calibration changed: {relative}")
+        value_per_point = (
+            (unique_ticks[-1][0] - unique_ticks[0][0])
+            / (unique_ticks[-1][1] - unique_ticks[0][1])
+        )
+        for color, method in colors.items():
+            paper_value = PERFORMANCE[method][asset][0]
+            if paper_value is None:
+                continue
+            blocks = re.findall(
+                re.escape(color) + r" RG\s+2 w[^\n]*\n(.*?)\nS",
+                content,
+                flags=re.S,
+            )
+            point_sequences = [
+                [
+                    (float(x), float(y))
+                    for x, y in re.findall(r"(-?[\d.]+) (-?[\d.]+) [ml]", block)
+                ]
+                for block in blocks
+            ]
+            point_sequences = [points for points in point_sequences if len(points) > 10]
+            if not point_sequences:
+                raise RuntimeError(f"TradingAgents vector series missing: {asset} {method}")
+            points = max(point_sequences, key=len)
+            values = [1 + y * value_per_point for _, y in points]
+            endpoint_cr = 100 * (values[-1] / values[0] - 1)
+            difference = endpoint_cr - float(paper_value)
+            exact = abs(difference) <= .005 + 1e-12
+            rows.append({
+                "asset": asset, "method": method, "metric": "CR_pct",
+                "paper_table_value": paper_value,
+                "vector_endpoint_value": values[-1],
+                "vector_endpoint_cr_pct": endpoint_cr,
+                "vector_minus_table": difference,
+                "display_precision_match": exact,
+                "vector_path_points": len(points),
+                "source_asset": relative,
+                "source_asset_sha256": FIGURE_SHA256[relative],
+                "status": (
+                    "exact_author_figure_table_endpoint_correspondence"
+                    if exact else "author_figure_endpoint_conflicts_with_table"
+                ),
+                "native_paper_result_credit": False,
+            })
+    if len(rows) != 17:
+        raise RuntimeError(f"TradingAgents vector endpoint census changed: {len(rows)}")
+    exact_rows = [row for row in rows if row["display_precision_match"]]
+    if [(row["asset"], row["method"]) for row in exact_rows] != [("AMZN", "KDJ&RSI")]:
+        raise RuntimeError(f"TradingAgents vector/table endpoint boundary changed: {exact_rows}")
+    return rows
+
+
 def current_source_conformance(source_root: Path) -> list[dict[str, Any]]:
     files = git_files_at(source_root, CURRENT_SOURCE_COMMIT)
     python_files = [path for path in files if path.endswith(".py")]
@@ -2053,6 +2140,7 @@ def build_audit(
     verify_pins(source_root, paper_pdf, paper_source_archive, paper_source_root)
     paper_versions = paper_version_inventory(paper_versions_root, source_root)
     figure_series = paper_figure_series()
+    vector_endpoints = paper_vector_curve_endpoint_rows(paper_source_root)
     history_commits, history_paths, history_summary = public_source_history(source_root)
     author_outputs = author_output_correspondence(source_root)
     table = paper_table_rows(author_output_verified=True)
@@ -2095,6 +2183,7 @@ def build_audit(
     write_csv(output_dir / "paper_source_asset_inventory.csv", paper_assets)
     write_csv(output_dir / "official_paper_version_inventory.csv", paper_versions)
     write_csv(output_dir / "paper_figure_series_inventory.csv", figure_series)
+    write_csv(output_dir / "paper_vector_curve_endpoint_conformance.csv", vector_endpoints)
     write_csv(output_dir / "public_source_history_commit_inventory.csv", history_commits)
     write_csv(output_dir / "public_source_history_path_inventory.csv", history_paths)
     write_csv(output_dir / "current_source_conformance.csv", current_source)
@@ -2168,6 +2257,14 @@ def build_audit(
         "paper_result_figure_series_total": len(figure_series),
         "native_exact_result_figure_series_reproduced": 0,
         "paper_presented_empirical_units_total": len(table) + 12 + len(figure_series),
+        "paper_vector_curve_endpoints_total": len(vector_endpoints),
+        "paper_vector_curve_endpoints_matching_table": sum(
+            bool(row["display_precision_match"]) for row in vector_endpoints
+        ),
+        "paper_vector_curve_endpoints_conflicting_with_table": sum(
+            not bool(row["display_precision_match"]) for row in vector_endpoints
+        ),
+        "paper_vector_curve_endpoints_with_native_result_credit": 0,
         "native_presented_empirical_units_reproduced": 0,
         "annualized_return_pairs_checked": len(annualization),
         "annualized_return_pairs_matching_published_equation": 0,
@@ -2286,7 +2383,9 @@ def build_audit(
             "A hash-pinned current Yahoo adjusted-close diagnostic checks all 12 Buy-and-Hold cells under the paper's literal "
             "window and finds zero display-precision matches. Because the paper lists several providers "
             "without mapping prices and no paper-time response survives, this is adverse current-public "
-            "correspondence with zero paper-result credit. It does not ship the paper data, experiment "
+            "correspondence with zero paper-result credit. The three author Matplotlib comparison PDFs "
+            "expose 17 cumulative-return vector endpoints; only one matches its Table 1 CR cell, while "
+            "16 conflict, including all three TradingAgents endpoints. It does not ship the paper data, experiment "
             "configuration, portfolio/execution engine, baseline or metric code, backtest runner, "
             "actions, fills, NAVs, return arrays, plot arrays, seeds, or costs. Its analysts are sequential, its "
             "model assignment conflicts with the paper, only 6/11 appendix tool names remain, and "
@@ -2301,8 +2400,8 @@ def build_audit(
             "plotted series, and 0/12 additional quantitative result claims are independently "
             "reproduced. The paper "
             "also contains internal numeric inconsistencies: all 17 CR/AR pairs fail its literal "
-            "annualization equation, GOOGL Sharpe improvement is arithmetically wrong, and the prose "
-            "MDD bound contradicts AMZN."
+            "annualization equation, 16/17 vector endpoints conflict with Table 1 CR, GOOGL Sharpe "
+            "improvement is arithmetically wrong, and the prose MDD bound contradicts AMZN."
         ),
         "source_file_sha256": PINNED_SOURCE_SHA256,
         "paper_source_file_sha256": PINNED_PAPER_SOURCE_SHA256,
@@ -2356,6 +2455,11 @@ meaningful architecture subset, but not the experiment that produced the paper.
   in exactly the paper's order. This corroborates an author-rendered output; it
   does not independently regenerate any cell or expose the underlying arrays.
 - The exact 77-value table first appears at `{FIRST_EXACT_TABLE_COMMIT}`
+- The Matplotlib vector coordinates recover all 17 plotted cumulative-return
+  endpoints that have Table 1 CR counterparts. Only AMZN KDJ&RSI matches at
+  display precision; the other 16 conflict, including all three TradingAgents
+  endpoints. These are cross-artifact author-output checks, not independently
+  regenerated return arrays or paper-result credit.
   ({FIRST_EXACT_TABLE_COMMIT_DATE}), before v1. It persists through 15 distinct
   HTML blobs on `index.html` and `index_complete.html`.
 
@@ -2422,6 +2526,9 @@ meaningful architecture subset, but not the experiment that produced the paper.
 
 - All 17 displayed CR/AR pairs fail the paper's literal annualized-return formula
   for the stated 89-day period; for example, AAPL TradingAgents CR=26.62% implies
+- Sixteen of 17 vector cumulative-return endpoints conflict with their Table 1
+  CR cells. For example, the AAPL TradingAgents curve ends at about +29.06%,
+  versus +26.62% in the table.
   about 163.43% annualized, not the reported 30.5%.
 - GOOGL TradingAgents SR 6.39 minus the best displayed baseline 2.31 is 4.08,
   not the reported 4.26. The improvement row is otherwise mostly absolute metric
@@ -2436,8 +2543,8 @@ meaningful architecture subset, but not the experiment that produced the paper.
 
 The architecture and the historical rendered table are real and useful, but a
 current one-day run would use mutable data, substantially later source, and
-changed model endpoints and would not reproduce the 2024 paper. The vector
-figures expose curves, events, and annotations, not their daily numeric arrays.
+changed model endpoints and would not reproduce the 2024 paper. Vector drawing
+coordinates support endpoint checks but do not expose the original daily arrays.
 Run
 `scripts/audit_tradingagents_paper.py` to regenerate this package; `--strict`
 fails until the native paper data, exact experiment source/configuration, models,
