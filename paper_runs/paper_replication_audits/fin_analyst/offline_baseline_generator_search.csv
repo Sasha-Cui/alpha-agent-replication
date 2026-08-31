@@ -1,0 +1,16 @@
+repository,reachable_commits_examined,search_family,python_regex,raw_matches_across_commits_and_text,source_matches_across_commits,unique_source_hits,source_paths,offline_baseline_generator_candidate,interpretation
+author_space,5,exact_offline_identifiers,"Always[ _-]+HOLD|NewsOnly|Fin-Analyst[ _-]*\(rule-based\)|alpha[_ -]*BH|sigma\S{0,8}42",4,0,0,,False,"no exact offline table label, sigma-42 marker, or alpha_BH identifier"
+author_space,5,random_generator_calls,"np\.random|numpy\.random|random\.(seed|choice|choices|randint|random)|Math\.random|seed\S{0,8}42",0,0,0,,False,no random sampling call or seed-42 implementation
+author_space,5,random_term,(?<![A-Za-z])Random(?![A-Za-z]),116,0,0,,False,Random appears only in bundled corpus text or not at all
+author_space,5,momentum_term,(?<![A-Za-z])Momentum(?![A-Za-z]),366,26,13,app.py,False,"momentum appears only as a live-agent/input term, not an offline generator"
+author_space,5,backtest_term,(?<![A-Za-z])backtest(?![A-Za-z]),4,0,0,,False,backtest appears only in bundled corpus text or not at all
+dataset,103,exact_offline_identifiers,"Always[ _-]+HOLD|NewsOnly|Fin-Analyst[ _-]*\(rule-based\)|alpha[_ -]*BH|sigma\S{0,8}42",0,0,0,,False,"no exact offline table label, sigma-42 marker, or alpha_BH identifier"
+dataset,103,random_generator_calls,"np\.random|numpy\.random|random\.(seed|choice|choices|randint|random)|Math\.random|seed\S{0,8}42",0,0,0,,False,no random sampling call or seed-42 implementation
+dataset,103,random_term,(?<![A-Za-z])Random(?![A-Za-z]),0,0,0,,False,Random appears only in bundled corpus text or not at all
+dataset,103,momentum_term,(?<![A-Za-z])Momentum(?![A-Za-z]),102,102,1,README.md,False,"momentum appears only as a live-agent/input term, not an offline generator"
+dataset,103,backtest_term,(?<![A-Za-z])backtest(?![A-Za-z]),0,0,0,,False,backtest appears only in bundled corpus text or not at all
+organizer,327,exact_offline_identifiers,"Always[ _-]+HOLD|NewsOnly|Fin-Analyst[ _-]*\(rule-based\)|alpha[_ -]*BH|sigma\S{0,8}42",0,0,0,,False,"no exact offline table label, sigma-42 marker, or alpha_BH identifier"
+organizer,327,random_generator_calls,"np\.random|numpy\.random|random\.(seed|choice|choices|randint|random)|Math\.random|seed\S{0,8}42",0,0,0,,False,no random sampling call or seed-42 implementation
+organizer,327,random_term,(?<![A-Za-z])Random(?![A-Za-z]),0,0,0,,False,Random appears only in bundled corpus text or not at all
+organizer,327,momentum_term,(?<![A-Za-z])Momentum(?![A-Za-z]),153,153,6,src/views/RequestView.vue,False,"momentum appears only as a live-agent/input term, not an offline generator"
+organizer,327,backtest_term,(?<![A-Za-z])backtest(?![A-Za-z]),0,0,0,,False,backtest appears only in bundled corpus text or not at all

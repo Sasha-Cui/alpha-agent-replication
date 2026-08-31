@@ -197,6 +197,44 @@ def test_all_historical_dataset_payloads_pin_hidden_two_baseline_rows() -> None:
     assert {row["dataset_end"] for row in baseline if row["asset"] == "BTC"} == {"2026-05-21"}
 
 
+def test_full_history_search_finds_no_random_or_momentum_baseline_generator() -> None:
+    search = rows("offline_baseline_generator_search.csv")
+    assert len(search) == 15
+    assert Counter(row["repository"] for row in search) == {
+        "author_space": 5,
+        "dataset": 5,
+        "organizer": 5,
+    }
+    assert {row["offline_baseline_generator_candidate"] for row in search} == {"False"}
+    no_source_families = {
+        "exact_offline_identifiers",
+        "random_generator_calls",
+        "random_term",
+        "backtest_term",
+    }
+    assert {
+        row["source_matches_across_commits"]
+        for row in search
+        if row["search_family"] in no_source_families
+    } == {"0"}
+    momentum = {
+        row["repository"]: row
+        for row in search
+        if row["search_family"] == "momentum_term"
+    }
+    assert {name: row["source_paths"] for name, row in momentum.items()} == {
+        "author_space": "app.py",
+        "dataset": "README.md",
+        "organizer": "src/views/RequestView.vue",
+    }
+    assert {name: row["unique_source_hits"] for name, row in momentum.items()} == {
+        "author_space": "13",
+        "dataset": "1",
+        "organizer": "6",
+    }
+
+
+
 def test_official_live_decisions_replay_but_contradict_table() -> None:
     replay = {row["asset"]: row for row in rows("live_result_replay.csv")}
     assert replay["TSLA"]["decision_rows"] == "47"
@@ -287,6 +325,19 @@ def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) ->
     assert manifest["published_baseline_cells_regenerated_with_recovered_mixed_endpoints"] == 28
     assert manifest["published_buy_hold_cells_regenerated_with_recovered_mixed_endpoints"] == 14
     assert manifest["published_always_hold_cells_regenerated_with_recovered_mixed_endpoints"] == 14
+    assert manifest["offline_baseline_history_commits_examined"] == 435
+    assert manifest["offline_baseline_history_search_rows"] == 15
+    assert manifest["offline_baseline_history_search_families"] == 5
+    assert manifest["offline_baseline_generator_candidates"] == 0
+    assert manifest["offline_exact_identifier_source_hits"] == 0
+    assert manifest["offline_random_generator_source_hits"] == 0
+    assert manifest["offline_random_term_source_hits"] == 0
+    assert manifest["offline_momentum_source_paths"] == {
+        "author_space": "app.py",
+        "dataset": "README.md",
+        "organizer": "src/views/RequestView.vue",
+    }
+
     assert manifest["author_space_history_commits"] == 5
     assert manifest["author_space_deleted_lfs_archive_recovered"] is True
     assert manifest["author_space_deleted_lfs_archive_contains_results"] is False
@@ -310,6 +361,8 @@ def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) ->
         "all 28 cells in the Buy-and-Hold and deterministic Always-HOLD rows",
         "May-21 revision ending May 20", "May-22 revision ending May 21",
         "Three BTC HOLD votes become BUY", "99.96% extracted-token overlap",
+        "full-history generator census searches all 435 reachable",
+        "zero source-level Random sampling calls",
         "strict_success` is false", "no native agent, random/momentum baseline, or ablation result is regenerated",
     ):
         assert marker in readme

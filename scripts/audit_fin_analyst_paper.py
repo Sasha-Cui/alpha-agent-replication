@@ -57,6 +57,31 @@ EXPECTED_HISTORY_COUNTS = {
     "organizer": {"commits": 327, "objects": 1807, "paths": 104},
 }
 
+OFFLINE_BASELINE_SEARCH_PATTERNS = {
+    "exact_offline_identifiers": (
+        r"Always[ _-]+HOLD|NewsOnly|Fin-Analyst[ _-]*\(rule-based\)|"
+        r"alpha[_ -]*BH|sigma\S{0,8}42"
+    ),
+    "random_generator_calls": (
+        r"np\.random|numpy\.random|random\.(seed|choice|choices|randint|random)|"
+        r"Math\.random|seed\S{0,8}42"
+    ),
+    "random_term": r"(?<![A-Za-z])Random(?![A-Za-z])",
+    "momentum_term": r"(?<![A-Za-z])Momentum(?![A-Za-z])",
+    "backtest_term": r"(?<![A-Za-z])backtest(?![A-Za-z])",
+}
+OFFLINE_BASELINE_GIT_GREP_PATTERN = (
+    r"Always[ _-]+HOLD|NewsOnly|Fin-Analyst[ _-]*\(rule-based\)|"
+    r"alpha[_ -]*BH|sigma[^[:space:]]{0,8}42|np\.random|numpy\.random|"
+    r"random\.(seed|choice|choices|randint|random)|Math\.random|"
+    r"seed[^[:space:]]{0,8}42|(^|[^A-Za-z])(Random|Momentum|backtest)([^A-Za-z]|$)"
+)
+SOURCE_LIKE_SUFFIXES = {
+    ".py", ".js", ".ts", ".vue", ".mjs", ".md", ".txt", ".json", ".toml", ".yaml", ".yml"
+}
+
+
+
 PINS = {
     "primary/arxiv-abs.html": "95bdb9c6838813a55180f04675179f29d988d99555418ffb2767304f57380875",
     "primary/arxiv-api.xml": "a9ae0cdc05b10433dbfda5af323fd7a3bc6a3672f8d59a218e1c5d7243177065",
@@ -140,6 +165,134 @@ def repository_history_facts(root: Path) -> dict[str, Any]:
         "unique_ref_heads": len(unique_heads),
         "historical_paths": paths,
     }
+
+
+def offline_baseline_generator_search(scratch: Path) -> list[dict[str, Any]]:
+    """Exhaust every pinned history for the missing Random/Momentum baseline generators."""
+    repositories = {
+        "author_space": scratch / "native/Fin_Analyst",
+        "dataset": scratch / "native/CLEF_Task3_Trading",
+        "organizer": scratch / "native/Agent-Market-Arena",
+    }
+    compiled = {
+        family: re.compile(pattern, re.IGNORECASE)
+        for family, pattern in OFFLINE_BASELINE_SEARCH_PATTERNS.items()
+    }
+    expected_momentum_paths = {
+        "author_space": {"app.py"},
+        "dataset": {"README.md"},
+        "organizer": {"src/views/RequestView.vue"},
+    }
+    output: list[dict[str, Any]] = []
+    for repository, root in repositories.items():
+        commits = git_text(root, "rev-list", "--all").splitlines()
+        expected_commits = EXPECTED_HISTORY_COUNTS[repository]["commits"]
+        if len(commits) != expected_commits:
+            raise ValueError(f"{repository} baseline-search commit census changed")
+        completed = subprocess.run(
+            [
+                "git", "-C", str(root), "grep", "-n", "-I", "-i", "-E",
+                OFFLINE_BASELINE_GIT_GREP_PATTERN, *commits,
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if completed.returncode not in {0, 1}:
+            raise RuntimeError(f"{repository} historical baseline grep failed")
+        parsed = []
+        for line in completed.stdout.splitlines():
+            match = re.match(r"^([0-9a-f]{40}):([^:]+):(\d+):(.*)$", line)
+            if match is None:
+                raise ValueError(f"unexpected historical grep row: {line[:120]}")
+            commit, path, line_number, content = match.groups()
+            source_like = (
+                Path(path).suffix.lower() in SOURCE_LIKE_SUFFIXES
+                and not path.endswith((".jsonl", ".csv"))
+            )
+            parsed.append(
+                {
+                    "commit": commit,
+                    "path": path,
+                    "line_number": int(line_number),
+                    "content": content,
+                    "source_like": source_like,
+                }
+            )
+        for family, pattern in compiled.items():
+            matches = [row for row in parsed if pattern.search(row["content"])]
+            source_matches = [row for row in matches if row["source_like"]]
+            unique_source = sorted(
+                {
+                    (row["path"], row["line_number"], row["content"])
+                    for row in source_matches
+                }
+            )
+            source_paths = sorted({row[0] for row in unique_source})
+            candidate = bool(unique_source) and family in {
+                "exact_offline_identifiers",
+                "random_generator_calls",
+                "random_term",
+                "backtest_term",
+            }
+            if family == "exact_offline_identifiers":
+                interpretation = (
+                    "potential exact offline baseline identifier requires review"
+                    if candidate
+                    else "no exact offline table label, sigma-42 marker, or alpha_BH identifier"
+                )
+            elif family == "random_generator_calls":
+                interpretation = (
+                    "potential random baseline generator requires review"
+                    if candidate
+                    else "no random sampling call or seed-42 implementation"
+                )
+            elif family == "random_term":
+                interpretation = (
+                    "potential source-level Random baseline reference requires review"
+                    if candidate
+                    else "Random appears only in bundled corpus text or not at all"
+                )
+            elif family == "momentum_term":
+                interpretation = (
+                    "momentum appears only as a live-agent/input term, not an offline generator"
+                    if unique_source
+                    else "no source-level momentum term"
+                )
+            else:
+                interpretation = (
+                    "potential source-level backtest generator requires review"
+                    if candidate
+                    else "backtest appears only in bundled corpus text or not at all"
+                )
+            output.append(
+                {
+                    "repository": repository,
+                    "reachable_commits_examined": len(commits),
+                    "search_family": family,
+                    "python_regex": OFFLINE_BASELINE_SEARCH_PATTERNS[family],
+                    "raw_matches_across_commits_and_text": len(matches),
+                    "source_matches_across_commits": len(source_matches),
+                    "unique_source_hits": len(unique_source),
+                    "source_paths": ";".join(source_paths),
+                    "offline_baseline_generator_candidate": candidate,
+                    "interpretation": interpretation,
+                }
+            )
+        momentum_row = next(
+            row
+            for row in output
+            if row["repository"] == repository and row["search_family"] == "momentum_term"
+        )
+        if set(filter(None, momentum_row["source_paths"].split(";"))) != expected_momentum_paths[
+            repository
+        ]:
+            raise ValueError(f"{repository} momentum-source boundary changed")
+    if len(output) != 15 or any(
+        row["offline_baseline_generator_candidate"] for row in output
+    ):
+        raise ValueError("Fin-Analyst offline baseline generator search boundary changed")
+    return output
+
 
 
 def lfs_pointer(value: bytes) -> tuple[str, int]:
@@ -1114,7 +1267,7 @@ def method_rows() -> list[dict[str, str]]:
         ("organizer scoring", "replayed_current", "pinned May-22 organizer scorer with 6-bp fees and 10-bp execution slippage"),
         ("live result reproduction", "partial_output_verification", "headline return/alpha/Sharpe/win cells conflict, but five Table 7 cells reproduce from the official decisions and pinned organizer output"),
         ("offline dataset", "complete_103_commit_history", "all 204 TSLA/BTC LFS payloads verify; the 20 revisions per asset covering the declared May-10 endpoint share one identical period path that conflicts with both printed returns"),
-        ("offline actions", "missing", "no immutable gpt-4o-mini calls/responses, historical Fear & Greed series, action path, seed, or cache state"),
+        ("offline actions", "missing_after_full_history_search", "all 435 author/dataset/organizer commits contain no Random generator, seed-42 implementation, exact offline table identifier, or backtest generator; momentum source hits are limited to the live app and input documentation"),
         ("offline results", "deterministic_baselines_only_recovered_from_mislabeled_period", "all 28 Buy-and-Hold and Always-HOLD cells regenerate from asset-specific May-20/May-21 dataset endpoints, not the paper's declared May-10 endpoint; random, momentum, agent, and ablation paths remain absent"),
         ("cost model", "paper_partial_source_current", "paper says net of fees but omits full implementation; current organizer source uses 6-bp fees plus 10-bp slippage"),
         ("rank provenance", "not_recoverable", "current dynamic leaderboard cannot prove historical ranks as displayed on 2026-07-05"),
@@ -1172,6 +1325,7 @@ def build(scratch: Path, output: Path) -> None:
         *offline_baseline_reproduction(scratch),
         *offline_always_hold_reproduction(scratch),
     ]
+    baseline_search = offline_baseline_generator_search(scratch)
     history = release_history_audit(scratch, dataset_revisions)
     error_replay = error_attribution_replay(scratch)
     tables = result_rows(source, error_replay, baseline_replay)
@@ -1189,6 +1343,7 @@ def build(scratch: Path, output: Path) -> None:
     write_csv(output / "live_result_replay.csv", replays)
     write_csv(output / "dataset_revision_lineage.csv", dataset_revisions)
     write_csv(output / "offline_baseline_reproduction.csv", baseline_replay)
+    write_csv(output / "offline_baseline_generator_search.csv", baseline_search)
     write_json(output / "release_history_audit.json", history)
     write_csv(output / "error_attribution_replay.csv", error_replay)
     write_csv(output / "figure_inventory.csv", figures)
@@ -1217,6 +1372,8 @@ The paper has **119 displayed empirical table cells** and **two empirical figure
 That evidence does **not** reproduce the headline empirical claims or the LLM action-generation pipeline. **Thirty-three of 119 printed cells regenerate exactly:** five live error-attribution cells from official decisions and the pinned organizer postprocessor, plus all 28 cells in the Buy-and-Hold and deterministic Always-HOLD rows. The baseline lineage exposes a major protocol conflict: both TSLA rows require the official May-21 revision ending May 20, while both BTC rows require the May-22 revision ending May 21; the paper declares one common May-10 endpoint. All 20 official revisions per asset that fully cover the declared period contain one identical May-10 price path, and none matches the printed Buy-and-Hold return or the Always-HOLD alpha derived from it. The Buy-and-Hold N_tr values 293/294 are total rows of the later snapshots, not trades under the stated daily protocol; Always HOLD correctly yields zero trades. The four composite live hit/PnL cells recover their hit-rate components but not their PnL components. Zero of two full empirical panels regenerate. Current official decisions still yield TSLA +4.79%/Sharpe 1.58/45% rather than +13.51%/4.10/88%, while BTC replays essentially flat (-0.10%) rather than the table's -5.30%.
 
 Native inspection also finds method-level defects. Three BTC HOLD votes become BUY because the code compares only BUY and SELL counts; a failed Fear & Greed request double-counts momentum. All nine appendix prompt rows are abridged relative to the released constants despite being labeled full prompts. The deleted first-author LFS ZIP is recoverable but contains only four source files already represented in the surviving release. The complete dataset and organizer histories add no action, ablation, cache, database, or result artifact. The model alias, API calls, cache state, image, SDK and dependencies are not immutably frozen, and the released TA and WSB corpora are stale before the live window ends.
+
+A full-history generator census searches all 435 reachable author, dataset, and organizer commits. It finds zero source-level Random sampling calls, seed-42 implementations, exact offline table identifiers, or backtest generators. Momentum appears only in the live app and input schema/examples; bundled corpus mentions receive no implementation credit. The Random and Momentum rows therefore remain unrecoverable rather than being guessed from their labels.
 
 Therefore `strict_success` is false. This is strong source, baseline and output-lineage recovery, not an end-to-end Fin-Analyst regeneration. The empirical record is materially closer than a paper-only proxy, but its four deterministic baseline rows reproduce only under asset-specific endpoints that contradict the paper, and no native agent, random/momentum baseline, or ablation result is regenerated.
 """
@@ -1255,6 +1412,38 @@ Therefore `strict_success` is false. This is strong source, baseline and output-
         "published_baseline_cells_regenerated_with_recovered_mixed_endpoints": 28,
         "published_buy_hold_cells_regenerated_with_recovered_mixed_endpoints": 14,
         "published_always_hold_cells_regenerated_with_recovered_mixed_endpoints": 14,
+        "offline_baseline_history_commits_examined": sum(
+            {
+                row["repository"]: row["reachable_commits_examined"]
+                for row in baseline_search
+            }.values()
+        ),
+        "offline_baseline_history_search_rows": len(baseline_search),
+        "offline_baseline_history_search_families": len(OFFLINE_BASELINE_SEARCH_PATTERNS),
+        "offline_baseline_generator_candidates": sum(
+            row["offline_baseline_generator_candidate"] for row in baseline_search
+        ),
+        "offline_exact_identifier_source_hits": sum(
+            row["source_matches_across_commits"]
+            for row in baseline_search
+            if row["search_family"] == "exact_offline_identifiers"
+        ),
+        "offline_random_generator_source_hits": sum(
+            row["source_matches_across_commits"]
+            for row in baseline_search
+            if row["search_family"] == "random_generator_calls"
+        ),
+        "offline_random_term_source_hits": sum(
+            row["source_matches_across_commits"]
+            for row in baseline_search
+            if row["search_family"] == "random_term"
+        ),
+        "offline_momentum_source_paths": {
+            row["repository"]: row["source_paths"]
+            for row in baseline_search
+            if row["search_family"] == "momentum_term"
+        },
+
         "published_table_cells_reproduced_end_to_end_from_native_llm_pipeline": 0,
         "full_empirical_figure_panels_regenerated": 0,
         "displayed_figure_endpoints_verified": 2,

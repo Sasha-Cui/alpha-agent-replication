@@ -13,7 +13,7 @@ official live decisions,recovered,"97 paper-window rows: 47 TSLA and 50 BTC, fro
 organizer scoring,replayed_current,pinned May-22 organizer scorer with 6-bp fees and 10-bp execution slippage
 live result reproduction,partial_output_verification,"headline return/alpha/Sharpe/win cells conflict, but five Table 7 cells reproduce from the official decisions and pinned organizer output"
 offline dataset,complete_103_commit_history,all 204 TSLA/BTC LFS payloads verify; the 20 revisions per asset covering the declared May-10 endpoint share one identical period path that conflicts with both printed returns
-offline actions,missing,"no immutable gpt-4o-mini calls/responses, historical Fear & Greed series, action path, seed, or cache state"
+offline actions,missing_after_full_history_search,"all 435 author/dataset/organizer commits contain no Random generator, seed-42 implementation, exact offline table identifier, or backtest generator; momentum source hits are limited to the live app and input documentation"
 offline results,deterministic_baselines_only_recovered_from_mislabeled_period,"all 28 Buy-and-Hold and Always-HOLD cells regenerate from asset-specific May-20/May-21 dataset endpoints, not the paper's declared May-10 endpoint; random, momentum, agent, and ablation paths remain absent"
 cost model,paper_partial_source_current,paper says net of fees but omits full implementation; current organizer source uses 6-bp fees plus 10-bp slippage
 rank provenance,not_recoverable,current dynamic leaderboard cannot prove historical ranks as displayed on 2026-07-05
