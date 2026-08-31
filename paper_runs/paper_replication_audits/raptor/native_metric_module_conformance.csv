@@ -1,0 +1,4 @@
+function,points,finite_points,output_sha256,published_correspondence,audit_series_compared,audit_series_finite_points_compared,maximum_audit_series_absolute_error,nan_pattern_matches_audit,native_agent_or_backtest_executed,paper_result_credit
+rolling_calmar_60,165,163,3d5f49c8c7b9447dc554d69e2e0e66fa75fd1b2eaf6ca3581f812394f558b03d,no exact published scalar/curve target,False,0,,,False,False
+rolling_sharpe_20,165,164,8127b0772ab589a593f67d45634e29cbc796fc1596ce4f03b5b1fa548fcdc10c,Figure 3 rolling-Sharpe output correspondence,True,164,1.7763568394002505e-15,True,False,False
+rolling_sortino_20,165,164,66b3482be08587a09899930961e053460d9e151ddbcc406ad14de5290cc4d856,no exact published scalar/curve target,False,0,,,False,False

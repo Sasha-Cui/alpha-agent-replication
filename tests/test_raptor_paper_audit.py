@@ -66,6 +66,11 @@ def test_anonymous_and_author_repositories_have_auditable_lineage() -> None:
     assert provenance["anonymous_repository_head"] == audit.EXPECTED_ANONYMOUS_HEAD
     assert provenance["author_repository_head"] == audit.EXPECTED_AUTHOR_HEAD
     assert provenance["all_166_snapshots_identical"] is True
+    assert provenance["native_metric_module_path"] == "testing/mvo/metrics.py"
+    assert (
+        provenance["native_metric_module_sha256"]
+        == audit.EXPECTED_NATIVE_METRIC_MODULE_SHA256
+    )
     assert "inference" in provenance["anonymous_to_author_relationship"]
 
     history = csv_rows("source_history_inventory.csv")
@@ -295,13 +300,72 @@ def test_access_and_search_evidence_recovers_public_source_but_not_expired_4open
 
 def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     execution = {row["component"]: row for row in csv_rows("native_execution.csv")}
+    assert len(execution) == 6
     assert execution["testing/mvo_blm_runner.py"]["status"] == "blocked_before_backtest"
     assert "stock_prices.csv" in execution["testing/mvo_blm_runner.py"]["detail"]
     assert execution["testing/scripts/visualize.py"]["status"] == "pass"
+    assert execution["testing/mvo/metrics.py"]["attempted"] == "yes_twice"
+    assert execution["testing/mvo/metrics.py"]["status"] == "pass"
+    assert (
+        execution["testing/mvo/metrics.py"]["paper_result_credit"]
+        == "author_output_postprocessing_only"
+    )
     assert execution["end-to-end multi-agent backtest"]["attempted"] == "no"
 
     native = json.loads((OUTPUT / "native_execution.json").read_text(encoding="utf-8"))
+    metric_execution = json.loads(
+        (OUTPUT / "native_metric_module_execution.json").read_text(encoding="utf-8")
+    )
+    metric_rows = {
+        row["function"]: row
+        for row in csv_rows("native_metric_module_conformance.csv")
+    }
+    assert set(metric_rows) == set(audit.EXPECTED_NATIVE_METRIC_OUTPUT_SHA256)
+    assert {name: int(row["points"]) for name, row in metric_rows.items()} == {
+        "rolling_calmar_60": 165,
+        "rolling_sharpe_20": 165,
+        "rolling_sortino_20": 165,
+    }
+    assert {name: int(row["finite_points"]) for name, row in metric_rows.items()} == {
+        "rolling_calmar_60": 163,
+        "rolling_sharpe_20": 164,
+        "rolling_sortino_20": 164,
+    }
+    assert {
+        name: row["output_sha256"] for name, row in metric_rows.items()
+    } == audit.EXPECTED_NATIVE_METRIC_OUTPUT_SHA256
+    sharpe = metric_rows["rolling_sharpe_20"]
+    assert sharpe["audit_series_compared"] == "True"
+    assert sharpe["audit_series_finite_points_compared"] == "164"
+    assert float(sharpe["maximum_audit_series_absolute_error"]) <= 2e-15
+    assert sharpe["nan_pattern_matches_audit"] == "True"
+    assert all(row["native_agent_or_backtest_executed"] == "False" for row in metric_rows.values())
+    assert all(row["paper_result_credit"] == "False" for row in metric_rows.values())
+    assert metric_execution["source_sha256"] == audit.EXPECTED_NATIVE_METRIC_MODULE_SHA256
+    assert metric_execution["network_attempts"] == []
+    assert metric_execution["snapshot_rows"] == 166
+    assert metric_execution["return_rows"] == 165
+    assert metric_execution["output_sha256"] == audit.EXPECTED_NATIVE_METRIC_OUTPUT_SHA256
+    assert metric_execution["conformance"] == {
+        "execution_runs": 2,
+        "functions_executed": 3,
+        "native_agent_or_backtest_executed": False,
+        "output_points": 495,
+        "paper_result_credit": False,
+        "rolling_sharpe_finite_points_compared": 164,
+        "rolling_sharpe_maximum_absolute_error": 1.7763568394002505e-15,
+        "rolling_sharpe_nan_pattern_match": True,
+        "rolling_sharpe_points_compared": 165,
+    }
     manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
+    assert native["native_metric_module_executed"] is True
+    assert native["native_metric_module_execution_runs"] == 2
+    assert native["native_metric_functions_executed"] == 3
+    assert native["native_metric_output_points"] == 495
+    assert native["native_metric_rolling_sharpe_points_compared"] == 165
+    assert native["native_metric_rolling_sharpe_finite_points_compared"] == 164
+    assert native["native_metric_rolling_sharpe_nan_pattern_match"] is True
+    assert native["native_metric_rolling_sharpe_maximum_absolute_error"] <= 2e-15
     assert native["author_output_verified_scalar_results"] == 18
     assert native["current_public_response_verified_scalar_results"] == 3
     assert native["paper_internal_verified_scalar_results"] == 8
@@ -321,6 +385,12 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     assert manifest["displayed_scalar_results_unavailable"] == 6
     assert manifest["rolling_claim_conflicts_checked"] == 5
     assert manifest["rolling_claims_underspecified_checked"] == 2
+    assert manifest["native_metric_module_executed"] is True
+    assert manifest["native_metric_module_execution_runs"] == 2
+    assert manifest["native_metric_functions_executed"] == 3
+    assert manifest["native_metric_output_points"] == 495
+    assert manifest["native_metric_rolling_sharpe_points_compared"] == 165
+    assert manifest["native_metric_rolling_sharpe_maximum_absolute_error"] <= 2e-15
     assert manifest["paper_result_credit"] == "output_current_response_or_paper_internal_verification_only_no_end_to_end_result_credit"
     assert math.isclose(manifest["benchmark_return_percent"], 10.08272879383032)
     assert manifest["published_figure_raster_curve_correspondences_verified"] == 3
@@ -342,3 +412,5 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     assert "output verification, not a rerun" in readme
     assert "Published raster-curve correspondences verified: 3/3" in readme
     assert "exact published raw-series credit stays 0/3" in readme
+    assert "emits 495 values across rolling Sharpe" in readme
+    assert "earns no end-to-end agent or paper-result credit" in readme

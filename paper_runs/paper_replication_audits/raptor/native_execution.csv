@@ -4,3 +4,4 @@ testing/scripts/visualize.py,yes,pass,six snapshot-derived CSV/PNG artifacts emi
 Python source compile,yes,pass,94/94 anonymous-release Python files compiled in memory,no
 pytest collection,collect_only,one_function,test_execution.py asserts=0 and catches ImportError/Exception,no
 end-to-end multi-agent backtest,no,not_operationally_defined,unreleased inputs/API request logs plus conflicting runners would make a fresh run non-comparable,no
+testing/mvo/metrics.py,yes_twice,pass,three native rolling functions executed; 165 Sharpe points match the audit within 2e-15,author_output_postprocessing_only

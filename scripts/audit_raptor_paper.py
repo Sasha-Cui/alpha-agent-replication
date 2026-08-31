@@ -86,6 +86,14 @@ EXPECTED_NOTEBOOK_FIGURE_2_RGB_SHA256 = "58be0ff34bd5fb29d069a9aa4be607b76ed94ac
 EXPECTED_SNAPSHOTS = 166
 EXPECTED_DECISION_FILES = 503
 EXPECTED_PYTHON_FILES = 94
+EXPECTED_NATIVE_METRIC_MODULE_SHA256 = (
+    "b7d840cdb74d1447ffc8594007d2e5edef3bd30a1d98cfcdf774151b75a94aa7"
+)
+EXPECTED_NATIVE_METRIC_OUTPUT_SHA256 = {
+    "rolling_sharpe_20": "8127b0772ab589a593f67d45634e29cbc796fc1596ce4f03b5b1fa548fcdc10c",
+    "rolling_sortino_20": "66b3482be08587a09899930961e053460d9e151ddbcc406ad14de5290cc4d856",
+    "rolling_calmar_60": "3d5f49c8c7b9447dc554d69e2e0e66fa75fd1b2eaf6ca3581f812394f558b03d",
+}
 
 
 def sha256(path: Path) -> str:
@@ -1839,6 +1847,204 @@ def native_execution_rows(repo: Path, python: Path) -> list[dict[str, str]]:
     ]
 
 
+def native_metric_module_execution(
+    repo: Path,
+    python: Path,
+    rolling_rows: list[dict[str, str]],
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    module_path = repo / "testing/mvo/metrics.py"
+    if sha256(module_path) != EXPECTED_NATIVE_METRIC_MODULE_SHA256:
+        raise ValueError("RAPTOR native metric module changed")
+    program = r"""
+import hashlib
+import importlib.metadata
+import importlib.util
+import json
+import math
+import socket
+import sys
+from pathlib import Path
+
+import numpy as np
+
+network_attempts = []
+def block_connect(self, address):
+    network_attempts.append(str(address))
+    raise RuntimeError("network disabled during RAPTOR native metric audit")
+socket.socket.connect = block_connect
+
+root = Path(sys.argv[1])
+module_path = root / "testing/mvo/metrics.py"
+spec = importlib.util.spec_from_file_location("raptor_native_metrics", module_path)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+
+dates = []
+portfolio_values = []
+for directory in sorted((root / "testing").iterdir()):
+    snapshot = directory / f"portfolio_snapshot_{directory.name}.json"
+    if snapshot.exists() and len(directory.name) == 10:
+        payload = json.loads(snapshot.read_text())
+        dates.append(directory.name)
+        portfolio_values.append(float(payload.get("net_liquidation", payload.get("portfolio_value"))))
+returns = [
+    portfolio_values[index] / portfolio_values[index - 1] - 1.0
+    for index in range(1, len(portfolio_values))
+]
+
+outputs = {
+    "rolling_sharpe_20": module.rolling_sharpe(returns, 20),
+    "rolling_sortino_20": module.rolling_sortino(returns, 20),
+    "rolling_calmar_60": module.rolling_calmar(returns, 60),
+}
+serialized = {}
+encoded = {}
+for name, series_values in outputs.items():
+    canonical = "\n".join(
+        "nan" if not math.isfinite(value) else format(value, ".17g")
+        for value in series_values
+    ).encode()
+    serialized[name] = hashlib.sha256(canonical).hexdigest()
+    encoded[name] = [
+        None if not math.isfinite(value) else float(value)
+        for value in series_values
+    ]
+
+print(json.dumps({
+    "source_path": "testing/mvo/metrics.py",
+    "source_sha256": hashlib.sha256(module_path.read_bytes()).hexdigest(),
+    "runtime": {
+        "python": sys.version.split()[0],
+        "numpy": importlib.metadata.version("numpy"),
+    },
+    "network_attempts": network_attempts,
+    "snapshot_rows": len(portfolio_values),
+    "return_rows": len(returns),
+    "first_snapshot_date": dates[0],
+    "last_snapshot_date": dates[-1],
+    "output_sha256": serialized,
+    "outputs": encoded,
+}, sort_keys=True))
+"""
+    env = {
+        key: value
+        for key, value in os.environ.items()
+        if key not in {"OPENAI_API_KEY", "SK_PROJ_KEY", "PYTHONPATH"}
+    }
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    outputs = []
+    for _ in range(2):
+        completed = subprocess.run(
+            [str(python), "-c", program, str(repo)],
+            cwd=repo,
+            env=env,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        if completed.stderr:
+            raise ValueError(
+                "RAPTOR native metric module emitted stderr: "
+                + completed.stderr[-500:]
+            )
+        outputs.append(json.loads(completed.stdout))
+    if outputs[0] != outputs[1]:
+        raise ValueError("RAPTOR native metric module execution is nondeterministic")
+    payload = outputs[0]
+    if (
+        payload["source_sha256"] != EXPECTED_NATIVE_METRIC_MODULE_SHA256
+        or payload["output_sha256"] != EXPECTED_NATIVE_METRIC_OUTPUT_SHA256
+        or payload["network_attempts"]
+        or payload["snapshot_rows"] != EXPECTED_SNAPSHOTS
+        or payload["return_rows"] != EXPECTED_SNAPSHOTS - 1
+        or payload["first_snapshot_date"] != "2025-01-01"
+        or payload["last_snapshot_date"] != "2025-08-29"
+    ):
+        raise ValueError(
+            "RAPTOR native metric module provenance changed: "
+            + json.dumps(
+                {
+                    "source_sha256": payload["source_sha256"],
+                    "output_sha256": payload["output_sha256"],
+                    "network_attempts": payload["network_attempts"],
+                    "snapshot_rows": payload["snapshot_rows"],
+                    "return_rows": payload["return_rows"],
+                    "first_snapshot_date": payload["first_snapshot_date"],
+                    "last_snapshot_date": payload["last_snapshot_date"],
+                },
+                sort_keys=True,
+            )
+        )
+
+    expected_sharpe = [
+        None
+        if row["rolling_sharpe_20d_sample_sd"] == ""
+        else float(row["rolling_sharpe_20d_sample_sd"])
+        for row in rolling_rows[1:]
+    ]
+    native_sharpe = payload["outputs"]["rolling_sharpe_20"]
+    if len(expected_sharpe) != len(native_sharpe):
+        raise ValueError("RAPTOR native/audit Sharpe lengths differ")
+    finite_errors = [
+        abs(float(native) - float(expected))
+        for native, expected in zip(native_sharpe, expected_sharpe)
+        if native is not None and expected is not None
+    ]
+    nan_pattern_match = [
+        value is None for value in native_sharpe
+    ] == [
+        value is None for value in expected_sharpe
+    ]
+    if (
+        not nan_pattern_match
+        or len(finite_errors) != 164
+        or max(finite_errors) > 2e-15
+    ):
+        raise ValueError("RAPTOR native/audit rolling Sharpe diverged")
+
+    rows = []
+    direct_claim = {
+        "rolling_sharpe_20": "Figure 3 rolling-Sharpe output correspondence",
+        "rolling_sortino_20": "no exact published scalar/curve target",
+        "rolling_calmar_60": "no exact published scalar/curve target",
+    }
+    for name, values in payload["outputs"].items():
+        rows.append(
+            {
+                "function": name,
+                "points": len(values),
+                "finite_points": sum(value is not None for value in values),
+                "output_sha256": payload["output_sha256"][name],
+                "published_correspondence": direct_claim[name],
+                "audit_series_compared": name == "rolling_sharpe_20",
+                "audit_series_finite_points_compared": (
+                    len(finite_errors) if name == "rolling_sharpe_20" else 0
+                ),
+                "maximum_audit_series_absolute_error": (
+                    max(finite_errors) if name == "rolling_sharpe_20" else ""
+                ),
+                "nan_pattern_matches_audit": (
+                    nan_pattern_match if name == "rolling_sharpe_20" else ""
+                ),
+                "native_agent_or_backtest_executed": False,
+                "paper_result_credit": False,
+            }
+        )
+    payload["conformance"] = {
+        "execution_runs": 2,
+        "functions_executed": 3,
+        "output_points": sum(len(values) for values in payload["outputs"].values()),
+        "rolling_sharpe_points_compared": len(native_sharpe),
+        "rolling_sharpe_finite_points_compared": len(finite_errors),
+        "rolling_sharpe_maximum_absolute_error": max(finite_errors),
+        "rolling_sharpe_nan_pattern_match": nan_pattern_match,
+        "native_agent_or_backtest_executed": False,
+        "paper_result_credit": False,
+    }
+    return payload, rows
+
+
 def artifact_rows() -> list[dict[str, str]]:
     return [
         {
@@ -1940,6 +2146,13 @@ author history is also inventoried, including the later `validation_fixes` branc
   candidate backtest runner fails immediately because `testing/stock_prices.csv`
   is not released. The current public response verifies the historical benchmark
   raster and endpoint but does not supply paper-time provenance.
+- The exact native `testing/mvo/metrics.py` module executes twice and deterministically
+  emits {manifest["native_metric_output_points"]} values across rolling Sharpe,
+  Sortino, and Calmar. Its {manifest["native_metric_rolling_sharpe_points_compared"]}
+  Sharpe values match the independent audit series to a maximum absolute error of
+  {manifest["native_metric_rolling_sharpe_maximum_absolute_error"]:.3g}. Sortino and
+  Calmar have no exact published target, so this is native postprocessor evidence
+  and earns no end-to-end agent or paper-result credit.
 - The extended-validation rolling mean and SD are reproducible: requiring a full
   20-return window, subtracting 2%/252 daily, using sample SD, and annualizing by
   sqrt(252) gives {manifest["rolling_full20_rf2_sample_mean"]:.4f} and
@@ -2024,6 +2237,11 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     if any(sha256(left[1]) != sha256(right[1]) for left, right in zip(anonymous_snapshots, author_snapshots)):
         raise ValueError("anonymous and author snapshots differ")
     metrics, rolling, computed = metric_reproduction(anonymous)
+    native_metric_module, native_metric_rows = native_metric_module_execution(
+        anonymous,
+        args.python.resolve(),
+        rolling,
+    )
     rolling_forensics, rolling_summary = rolling_claim_forensics(anonymous)
     internal_checks = paper_internal_scalar_checks()
     benchmark_rows, benchmark = benchmark_reproduction(args.yahoo_gspc_response.resolve(), computed["total_return_pct"])
@@ -2034,6 +2252,18 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     searches = search_rows(args.github_search_dir)
     fouropen = fouropen_rows(args.fouropen_evidence_dir)
     executions = native_execution_rows(anonymous, args.python.resolve())
+    executions.append(
+        {
+            "component": "testing/mvo/metrics.py",
+            "attempted": "yes_twice",
+            "status": "pass",
+            "detail": (
+                "three native rolling functions executed; 165 Sharpe points "
+                "match the audit within 2e-15"
+            ),
+            "paper_result_credit": "author_output_postprocessing_only",
+        }
+    )
     figure_forensics = figure_raster_forensics(
         paper,
         anonymous,
@@ -2064,6 +2294,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         ("fouropen_access_audit.csv", fouropen),
         ("artifact_access_audit.csv", artifacts),
         ("native_execution.csv", executions),
+        ("native_metric_module_conformance.csv", native_metric_rows),
     )
     for name, rows in csv_artifacts:
         write_csv(output / name, rows, list(rows[0]))
@@ -2114,9 +2345,15 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "byte_identical_common_files": 815,
         "paper_relevant_candidate_runners_identical": True,
         "all_166_snapshots_identical": True,
+        "native_metric_module_path": "testing/mvo/metrics.py",
+        "native_metric_module_sha256": EXPECTED_NATIVE_METRIC_MODULE_SHA256,
         "license": "Apache-2.0",
     }
     write_json(output / "source_provenance.json", source_provenance)
+    write_json(
+        output / "native_metric_module_execution.json",
+        native_metric_module,
+    )
 
     verified = [row for row in results if row["verification_status"].startswith("verified")]
     author_verified = sum(row["verification_source"] == "author_output" for row in verified)
@@ -2133,6 +2370,33 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "native_source_available": True,
         "native_postprocessor_executed": True,
         "native_postprocessor_status": "pass",
+        "native_metric_module_executed": True,
+        "native_metric_module_source_sha256": EXPECTED_NATIVE_METRIC_MODULE_SHA256,
+        "native_metric_module_execution_runs": native_metric_module[
+            "conformance"
+        ]["execution_runs"],
+        "native_metric_functions_executed": native_metric_module[
+            "conformance"
+        ]["functions_executed"],
+        "native_metric_output_points": native_metric_module["conformance"][
+            "output_points"
+        ],
+        "native_metric_rolling_sharpe_points_compared": native_metric_module[
+            "conformance"
+        ]["rolling_sharpe_points_compared"],
+        "native_metric_rolling_sharpe_finite_points_compared": (
+            native_metric_module["conformance"][
+                "rolling_sharpe_finite_points_compared"
+            ]
+        ),
+        "native_metric_rolling_sharpe_maximum_absolute_error": (
+            native_metric_module["conformance"][
+                "rolling_sharpe_maximum_absolute_error"
+            ]
+        ),
+        "native_metric_rolling_sharpe_nan_pattern_match": native_metric_module[
+            "conformance"
+        ]["rolling_sharpe_nan_pattern_match"],
         "candidate_backtest_runner_attempted": True,
         "candidate_backtest_runner_status": "blocked_missing_testing_stock_prices_csv",
         "end_to_end_multi_agent_backtest_attempted": False,
@@ -2209,6 +2473,25 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "repository_searches": len(searches),
         "anonymous_author_byte_identical_files": 815,
         "native_postprocessor_status": "pass",
+        "native_metric_module_executed": True,
+        "native_metric_module_source_sha256": EXPECTED_NATIVE_METRIC_MODULE_SHA256,
+        "native_metric_module_execution_runs": native_metric_module[
+            "conformance"
+        ]["execution_runs"],
+        "native_metric_functions_executed": native_metric_module[
+            "conformance"
+        ]["functions_executed"],
+        "native_metric_output_points": native_metric_module["conformance"][
+            "output_points"
+        ],
+        "native_metric_rolling_sharpe_points_compared": native_metric_module[
+            "conformance"
+        ]["rolling_sharpe_points_compared"],
+        "native_metric_rolling_sharpe_maximum_absolute_error": (
+            native_metric_module["conformance"][
+                "rolling_sharpe_maximum_absolute_error"
+            ]
+        ),
         "candidate_backtest_runner_status": "blocked_missing_testing_stock_prices_csv",
         "rolling_sample_min": computed["rolling_sample_min"],
         "rolling_sample_max": computed["rolling_sample_max"],

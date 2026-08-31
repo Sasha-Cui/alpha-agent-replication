@@ -51,6 +51,13 @@ author history is also inventoried, including the later `validation_fixes` branc
   candidate backtest runner fails immediately because `testing/stock_prices.csv`
   is not released. The current public response verifies the historical benchmark
   raster and endpoint but does not supply paper-time provenance.
+- The exact native `testing/mvo/metrics.py` module executes twice and deterministically
+  emits 495 values across rolling Sharpe,
+  Sortino, and Calmar. Its 165
+  Sharpe values match the independent audit series to a maximum absolute error of
+  1.78e-15. Sortino and
+  Calmar have no exact published target, so this is native postprocessor evidence
+  and earns no end-to-end agent or paper-result credit.
 - The extended-validation rolling mean and SD are reproducible: requiring a full
   20-return window, subtracting 2%/252 daily, using sample SD, and annualizing by
   sqrt(252) gives 1.5994 and

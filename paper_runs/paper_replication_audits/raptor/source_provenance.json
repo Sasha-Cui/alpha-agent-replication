@@ -34,6 +34,8 @@
   "ceur_record_sha256": "23629695a80fbe193afa7710cadfc3014f6a52be5f9e9c43790dea60be9be8a8",
   "license": "Apache-2.0",
   "listed_anonymous_artifact": "https://anonymous.4open.science/r/RAPTOR-Reasoned-Agentic-Portfolio-Trading-with-Orchestrated-Rebalancing",
+  "native_metric_module_path": "testing/mvo/metrics.py",
+  "native_metric_module_sha256": "b7d840cdb74d1447ffc8594007d2e5edef3bd30a1d98cfcdf774151b75a94aa7",
   "openreview_record": "https://openreview.net/forum?id=ziuTkKhgT0",
   "openreview_record_note": "record inspected in signed-in browser; revision history displayed no revisions; command-line PDF access was Cloudflare-blocked",
   "paper": "RAPTOR: Reasoned Agentic Portfolio Trading with Orchestrated Rebalancing",
