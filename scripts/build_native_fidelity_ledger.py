@@ -259,6 +259,10 @@ ARTIFACT_NOTES = {
         "unpinned packages do not receive exact CUDA-container or exact-version credit. "
         "The same author commit also preserves seven extensionless Qlib/MLflow run records. "
         "All seven fitted LightGBM states load twice and produce deterministic probe outputs. "
+        "Every multi-record mean/median hypothesis is enumerated: 30 candidates in total. "
+        "Only two consist entirely of full-paper-period records, and both match zero displayed "
+        "cells; 13 off-period candidates have one- or two-cell numeric coincidences, while no "
+        "multi-record aggregate matches a full row. "
         "One full-period S&P500 record carries the paper configuration and fitted LightGBM "
         "state; its IC, ICIR, AR, IR, and MDD round exactly to all five AlphaAgent S&P500 "
         "Table 2 cells. This is native author-artifact corroboration, not regeneration, "
@@ -1711,7 +1715,9 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-AGENT": (
         "paper_audit:partial_5_of_100_table_cells_corroborated_by_author_mlflow_record_"
         "zero_regenerated_paper_era_host_and_qlib_environments_112_of_113_modules_"
-        "7_of_7_fitted_models_executable_20_of_32_mechanism_dimensions_"
+        "7_of_7_fitted_models_executable_30_multi_record_aggregations_"
+        "2_full_period_zero_matches_13_offperiod_coincidences_zero_full_rows_"
+        "20_of_32_mechanism_dimensions_"
         "73_fork_heads_26_wang_postpaper_registry_entries_zero_additional_credit"
     ),
     "SYS-AGENTIC-AI-SCREENING": "paper_audit:completed_v1_zero_of_953_v2_zero_of_1344_one_linked_input_one_date_prompt_no_author_native_pipeline",

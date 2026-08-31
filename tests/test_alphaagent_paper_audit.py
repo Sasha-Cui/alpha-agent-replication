@@ -87,6 +87,7 @@ def test_committed_audit_is_fail_closed() -> None:
     paper_era_inventory = read_csv(output / "paper_era_source_inventory.csv")
     paper_era_factors = read_csv(output / "paper_era_factor_artifacts.csv")
     paper_era_runs = read_csv(output / "paper_era_mlflow_run_records.csv")
+    paper_era_aggregations = read_csv(output / "paper_era_mlflow_aggregation_forensics.csv")
     registry = read_csv(output / "post_paper_registry_metrics.csv")
     data_release = read_csv(output / "data_release_provenance.csv")
     factors = read_csv(output / "synthetic_base_factor_component.csv")
@@ -141,6 +142,13 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["paper_era_factor_csv_files"] == 15
     assert manifest["paper_era_factor_expression_rows"] == 268
     assert manifest["paper_era_qlib_mlflow_run_records"] == 7
+    assert manifest["paper_era_mlflow_multi_record_aggregation_candidates"] == 30
+    assert manifest["paper_era_mlflow_full_period_aggregation_candidates"] == 2
+    assert manifest["paper_era_mlflow_aggregation_candidates_with_numeric_coincidence"] == 13
+    assert manifest["paper_era_mlflow_aggregation_valid_period_display_cells_matching"] == 0
+    assert manifest["paper_era_mlflow_aggregation_full_table_row_matches"] == 0
+    assert manifest["paper_era_mlflow_aggregation_max_display_cells_matching"] == 2
+
     assert manifest["paper_era_qlib_mlflow_records_with_fitted_models"] == 7
     assert manifest["paper_era_fitted_lightgbm_states_loaded"] == 7
     assert manifest["paper_era_fitted_lightgbm_state_execution_deterministic"] is True
@@ -366,6 +374,41 @@ def test_committed_audit_is_fail_closed() -> None:
     assert all(len(row["feature_names_sha256"]) == 64 for row in paper_era_runs)
     assert all(len(row["probe_predictions_sha256"]) == 64 for row in paper_era_runs)
     assert {row["predictions_returns_holdings_shipped"] for row in paper_era_runs} == {"False"}
+    assert len(paper_era_aggregations) == 30
+    assert Counter(row["market"] for row in paper_era_aggregations) == {
+        "CSI500": 8,
+        "S&P500": 22,
+    }
+    assert Counter(row["aggregation"] for row in paper_era_aggregations) == {
+        "mean": 15,
+        "median": 15,
+    }
+    assert sum(
+        row["all_runs_cover_full_paper_period"] == "True"
+        for row in paper_era_aggregations
+    ) == 2
+    assert sum(
+        int(row["display_cells_matching"]) > 0
+        for row in paper_era_aggregations
+    ) == 13
+    assert {
+        row["valid_period_display_cells_matching"] for row in paper_era_aggregations
+    } == {"0"}
+    assert {row["all_five_display_cells_match"] for row in paper_era_aggregations} == {
+        "False"
+    }
+    assert {row["paper_result_credit"] for row in paper_era_aggregations} == {"False"}
+    csi_aggregation_matches = [
+        row
+        for row in paper_era_aggregations
+        if row["market"] == "CSI500" and int(row["display_cells_matching"])
+    ]
+    assert len(csi_aggregation_matches) == 1
+    assert csi_aggregation_matches[0]["aggregation"] == "mean"
+    assert csi_aggregation_matches[0]["run_count"] == "3"
+    assert csi_aggregation_matches[0]["display_metrics_matching"] == "IC"
+    assert csi_aggregation_matches[0]["all_runs_cover_full_paper_period"] == "False"
+
     assert len(registry) == 8
     assert {row["paper_result_credit"] for row in registry} == {"False"}
     assert len(data_release) == 1
@@ -464,6 +507,10 @@ def test_global_evidence_route_preserves_run_input_replay_failure() -> None:
     ledger = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
     row = next(item for item in ledger if item["system_id"] == "SYS-ALPHA-AGENT")
     note = row["concise_evidence_note"]
+    assert "30 candidates in total" in note
+    assert "Only two consist entirely of full-paper-period records" in note
+    assert "both match zero displayed cells" in note
+    assert "13 off-period candidates" in note
     assert "450,094,816-byte US archive" in note
     assert "calendar ends on 2020-11-10" in note
     assert "four US candidate expressions" in note
@@ -472,6 +519,8 @@ def test_global_evidence_route_preserves_run_input_replay_failure() -> None:
     assert "adds no paper-result credit" in note
 
     failure_table = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
+    assert "30 candidates in total" in failure_table
+    assert "13 off-period candidates" in failure_table
     assert "450,094,816-byte" in failure_table
     assert "2020-11-10" in failure_table
     assert r"combined\_factors\_df.pkl" in failure_table
