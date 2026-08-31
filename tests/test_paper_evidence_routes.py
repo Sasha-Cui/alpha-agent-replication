@@ -324,7 +324,9 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         ),
         "WorkAutomateStrategy": (
             "paper_audit:completed_3_of_10_table2_12_of_25_table3_source_cells_"
-            "zero_of_40_integrated_portfolio_cells_24_forks_exhausted"
+            "37_of_100_seed_alphas_7_of_9_categories_192_same_size_subsets_zero_matches_"
+            "5_declared_unique_closest_zero_of_40_integrated_portfolio_cells_"
+            "24_forks_exhausted"
         ),
     }
     for work_id, status in expected.items():
@@ -353,6 +355,11 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
 
     automate_blocker = routes.loc["WorkAutomateStrategy", "precise_native_or_access_blocker"]
     assert "3/10 Table 2 cells" in automate_blocker
+    assert "100-alpha SAF across nine categories" in automate_blocker
+    assert "only 37 alphas across seven categories" in automate_blocker
+    assert "all 192 same-size selected-alpha subsets" in automate_blocker
+    assert "zero selected-mean value match" in automate_blocker
+    assert "uniquely closest in all five categories" in automate_blocker
     assert "0/40 Table 4 cells" in automate_blocker
     assert "24 public forks and 25 branch refs" in automate_blocker
 

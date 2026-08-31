@@ -335,11 +335,17 @@ ARTIFACT_NOTES = {
         "Y",
         "A pinned ACL-final audit finds seven 2022Q4 individual-factor analysis "
         "workbooks with IC summaries, quantile-return/turnover series, prompt logs, "
-        "and a 37-row seed workbook. The inferable mean-absolute-IC rule reproduces "
-        "3/10 Table 2 cells at four-decimal precision. The same workbook corroborates "
-        "all 12 signed IC cells for Table 3's selected alphas; its 12 learned weights "
-        "and combined IC remain unavailable. This is component evidence, not the "
-        "integrated result. The complete seven-commit, two-branch official "
+        "and a seed workbook. The paper claims a 100-alpha SAF across nine categories; "
+        "the workbook releases only 37 alphas across seven categories, with 32 rows in "
+        "the five Table 2 categories and five unprinted Quality/Technical rows. The "
+        "inferable mean-absolute-IC rule reproduces 3/10 Table 2 cells at four-decimal "
+        "precision, all category-wide means from this incomplete universe. Exhausting "
+        "all 192 same-size selected-alpha subsets finds zero selected-mean value match. "
+        "The Table 3 subset is uniquely closest in all five categories, which supports "
+        "selection identity but not the displayed IC values. The same workbook "
+        "corroborates all 12 signed IC cells for Table 3's selected alphas; its 12 "
+        "learned weights and combined IC remain unavailable. This is component evidence, "
+        "not the integrated result. The complete seven-commit, two-branch official "
         "history contains 39 unique paths and no integrated Jan-2023--Jan-2024 "
         "portfolio, weighted 12-alpha output, Table 4 schema, or reported 53.173% "
         "return; 0/40 Table 4 cells are verifiable. The released DNN uses one hidden "
@@ -1747,7 +1753,11 @@ TARGETED_EXECUTION = {
     ),
     "SYS-CHAIN-OF-ALPHA": "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system",
     "SYS-TREEVO": "paper_audit:completed_v1_zero_of_114_v2_zero_of_293_seven_prompt_templates_no_attributable_pipeline",
-    "SYS-AUTOMATE-STRATEGY": "paper_audit:completed_3_of_10_table2_12_of_25_table3_source_cells_zero_of_40_integrated_portfolio_cells_24_forks_exhausted",
+    "SYS-AUTOMATE-STRATEGY": (
+        "paper_audit:completed_3_of_10_table2_12_of_25_table3_source_cells_"
+        "37_of_100_seed_alphas_7_of_9_categories_192_same_size_subsets_zero_matches_"
+        "5_declared_unique_closest_zero_of_40_integrated_portfolio_cells_24_forks_exhausted"
+    ),
     "SYS-CONTEST-TRADE": (
         "paper_audit:completed_zero_of_64_result_display_units_153_accessible_forks_"
         "212_refs_52_unique_heads_21_divergent_heads_exhausted"
