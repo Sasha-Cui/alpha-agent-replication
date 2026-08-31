@@ -468,7 +468,13 @@ ARTIFACT_NOTES = {
         "links the lead author's Apache-2.0 repository; a separately pinned GitHub "
         "copy is a high-confidence double-blind derivative with 815 byte-identical "
         "files. The release ships 166 dated portfolio snapshots. Its native "
-        "postprocessor runs, and those snapshots recover 18/42 scalar "
+        "postprocessor runs. The exact testing/mvo/metrics.py module executes "
+        "twice and deterministically emits 495 values across rolling Sharpe, "
+        "Sortino, and Calmar; all 165 native Sharpe values match the independent "
+        "audit series within 1.78e-15, including 164 finite values and the exact "
+        "NaN pattern. Sortino and Calmar have no exact published targets, so this "
+        "module execution earns no native-agent, backtest, or paper-result credit. "
+        "The snapshots recover 18/42 scalar "
         "units, including the initial/final NAV, total and annualized return, "
         "volatility, Sharpe, Sortino, maximum drawdown, and the extended-validation "
         "rolling mean/SD. The latter require a full 20-return window, sample SD, "
@@ -1893,7 +1899,8 @@ TARGETED_EXECUTION = {
     "SYS-RAPTOR": (
         "paper_audit:completed_36_of_42_displayed_scalar_units_checked_29_verified_18_author_output_"
         "3_current_public_benchmark_8_paper_internal_5_conflicts_2_underspecified_6_unavailable_"
-        "3_of_3_raster_correspondences_zero_raw_series_zero_end_to_end_result_cells"
+        "3_of_3_raster_correspondences_zero_raw_series_native_metric_module_3_functions_"
+        "495_points_165_sharpe_matches_zero_end_to_end_result_cells"
     ),
     "SYS-RD-AGENT-QUANT": (
         "paper_audit:completed_zero_of_534_native_results_paper_era_environment_"

@@ -79,7 +79,8 @@ def test_native_ledger_credits_outputs_but_not_end_to_end_reproduction() -> None
         "paper_audit:completed_36_of_42_displayed_scalar_units_checked_29_verified_18_"
         "author_output_3_current_public_benchmark_8_paper_internal_5_conflicts_"
         "2_underspecified_6_unavailable_3_of_3_raster_correspondences_"
-        "zero_raw_series_zero_end_to_end_result_cells"
+        "zero_raw_series_native_metric_module_3_functions_495_points_"
+        "165_sharpe_matches_zero_end_to_end_result_cells"
     )
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     note = row["concise_evidence_note"]
@@ -94,6 +95,11 @@ def test_native_ledger_credits_outputs_but_not_end_to_end_reproduction() -> None
     assert "7,313 blue portfolio pixels reproduce exactly" in note
     assert "3/3 raster curves have source/output correspondence" in note
     assert "exact raw-series credit at 0/3" in note
+    assert "testing/mvo/metrics.py module executes twice" in note
+    assert "deterministically emits 495 values" in note
+    assert "all 165 native Sharpe values match" in note
+    assert "within 1.78e-15" in note
+    assert "earns no native-agent, backtest, or paper-result credit" in note
     assert "0/42 result units" in note
     assert "author-output/current-response/paper-internal verification, not experiment reproduction" in note
 
@@ -117,4 +123,7 @@ def test_static_paper_assets_reflect_raptor_correction() -> None:
     assert "8/42 paper-internal" in failure_table
     assert "3/3 raster curves have source/output correspondence" in failure_table
     assert "exact raw-series credit at 0/3" in failure_table
+    assert "deterministically emits 495 values" in failure_table
+    assert "all 165 native Sharpe values match" in failure_table
+    assert "earns no native-agent, backtest, or paper-result credit" in failure_table
     assert "0/42 result units" in failure_table

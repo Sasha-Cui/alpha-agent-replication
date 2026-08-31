@@ -113,7 +113,8 @@ def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() ->
         "paper_audit:completed_36_of_42_displayed_scalar_units_checked_29_verified_18_"
         "author_output_3_current_public_benchmark_8_paper_internal_5_conflicts_"
         "2_underspecified_6_unavailable_3_of_3_raster_correspondences_"
-        "zero_raw_series_zero_end_to_end_result_cells"
+        "zero_raw_series_native_metric_module_3_functions_495_points_"
+        "165_sharpe_matches_zero_end_to_end_result_cells"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_disposition"] == "availability_only_no_performance_inference"
@@ -134,6 +135,11 @@ def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() ->
     assert "full 900,000-pixel image differs at only 47 pixels" in blocker
     assert "3/3 raster curves have source/output correspondence" in blocker
     assert "exact raw-series credit at 0/3" in blocker
+    assert "testing/mvo/metrics.py module executes twice" in blocker
+    assert "deterministically emits 495 values" in blocker
+    assert "all 165 native Sharpe values match" in blocker
+    assert "within 1.78e-15" in blocker
+    assert "earns no native-agent, backtest, or paper-result credit" in blocker
     assert "0/42 result units" in blocker
     assert "missing testing/stock_prices.csv" in blocker
     assert "paper/source cadence" in blocker
