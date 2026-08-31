@@ -360,9 +360,14 @@ ARTIFACT_NOTES = {
         "Using the recovered Python 3.12/Qlib 0.9.7 runtime and official HDF, the native "
         "Alpha158(20) training, prediction, IC evaluation, and Top50/drop5 portfolio "
         "independently reproduce all eight v1/v2 metrics at displayed precision. That "
-        "single baseline row contributes 23/644 version-specific main-table cells: eight "
-        "in v1, eight in v2, and seven in v3. The complete paper-configured QuantaAlpha/GPT "
-        "rerun computes all 150 released custom factors plus Alpha158(20) after one disclosed "
+        "complete row plus the isolated Alpha158 IC match contribute 26/644 version-specific "
+        "main-table cells: nine in v1, nine in v2, and eight in v3. Two fresh executions each "
+        "of the released Alpha158 and Alpha360 paths are numerically stable. Alpha158 matches "
+        "only 1/8 historical metrics (1/7 current metrics), returning 1.44% rather than 2.66% "
+        "with 13.77% rather than 10.15% drawdown. Alpha360 matches 0/8 historical metrics "
+        "(0/7 current metrics) and returns -2.32% rather than +4.09%. The complete "
+        "paper-configured QuantaAlpha/GPT rerun computes all 150 released custom factors plus "
+        "Alpha158(20) after one disclosed "
         "cross-sectional-MEAN broadcast compatibility repair, but materially misses the headline "
         "result (IC 0.04229 versus 0.15008; ARR 3.61% versus 27.75%; IR 0.51367 versus 3.32512). "
         "Two complete executions agree within 1.45e-15; adding the repaired factor pair lowers "
@@ -1806,7 +1811,7 @@ TARGETED_EXECUTION = {
         "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_"
         "component_gate_separate_4_forks_4_refs_1_official_head_exhausted"
     ),
-    "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_regenerated_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced",
+    "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_plus_alpha158_ic_26_of_644_versioned_main_table_cells_regenerated_alpha360_zero_matches_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced",
     "SYS-RAPTOR": (
         "paper_audit:completed_21_of_42_displayed_scalar_units_checked_18_author_output_"
         "3_current_public_benchmark_3_of_3_raster_correspondences_zero_raw_series_zero_end_to_end_result_cells"

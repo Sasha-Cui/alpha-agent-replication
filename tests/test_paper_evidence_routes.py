@@ -179,9 +179,9 @@ def test_quantaalpha_audit_credits_baseline_but_not_headline_result() -> None:
     assert row["paper_evidence_route"] == "public_code_available"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:partial_one_baseline_row_23_of_644_versioned_main_table_cells_"
-        "regenerated_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_"
-        "exhausted_main_claim_not_reproduced"
+        "paper_audit:partial_one_baseline_row_plus_alpha158_ic_26_of_644_versioned_main_"
+        "table_cells_regenerated_alpha360_zero_matches_270_author_output_units_267_accessible_"
+        "forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
@@ -189,7 +189,10 @@ def test_quantaalpha_audit_credits_baseline_but_not_headline_result() -> None:
     assert "All 135 Python files" in row["precise_native_or_access_blocker"]
     assert "28-commit author-attributed public lineage" in row["precise_native_or_access_blocker"]
     assert "all eight v1/v2 metrics" in row["precise_native_or_access_blocker"]
-    assert "23/644 version-specific main-table cells" in row["precise_native_or_access_blocker"]
+    assert "26/644 version-specific main-table cells" in row["precise_native_or_access_blocker"]
+    assert "Alpha158 matches only 1/8 historical metrics" in row["precise_native_or_access_blocker"]
+    assert "Alpha360 matches 0/8 historical metrics" in row["precise_native_or_access_blocker"]
+    assert "returns -2.32% rather than +4.09%" in row["precise_native_or_access_blocker"]
     assert "all 150 released custom factors plus Alpha158(20)" in row[
         "precise_native_or_access_blocker"
     ]
