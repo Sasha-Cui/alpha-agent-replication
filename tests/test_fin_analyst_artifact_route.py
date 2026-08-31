@@ -68,7 +68,8 @@ def test_native_ledger_credits_dated_outputs_but_not_common_task_or_paper_result
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:partial_33_of_119_displayed_cells_regenerated_28_deterministic_offline_"
         "baseline_mixed_endpoints_5_live_output_verified_97_official_decisions_replayed_zero_end_"
-        "to_end_full_5_103_327_commit_histories_exhausted"
+        "to_end_full_435_commit_baseline_generator_search_zero_random_momentum_"
+        "5_103_327_histories_exhausted"
     )
     note = row["concise_evidence_note"]
     for marker in (
@@ -78,6 +79,9 @@ def test_native_ledger_credits_dated_outputs_but_not_common_task_or_paper_result
         "20 official revisions per asset",
         "BTC maximum drawdown",
         "TSLA +4.79%", "BTC replays -0.10%", "three HOLD votes to BUY",
+        "full-history content census across all 435 commits",
+        "zero source-level Random sampling calls",
+        "Momentum appears only in the live app and input documentation",
         "cannot supply the six-country security-level common task",
     ):
         assert marker in note
