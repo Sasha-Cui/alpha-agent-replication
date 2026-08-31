@@ -24,8 +24,18 @@
   },
   "finsaber": {
     "adapter_boundary": "removes eager imports of unused external/RL modules only; strategy, data transform, commission, dates, and metrics unchanged",
+    "baseline_driver_sha256": "cd38787c7b08fb70e60cd8a4edaa5bda63da69157112e679b424fdeb2a4ea1ec",
     "commit": "0e794285e48fd71a4d9579ef022ee726b1e36f8a",
     "commit_authored": "2025-08-09T13:43:15+01:00",
+    "deterministic_coin_adapter": {
+      "incomplete_model_history_guard_bypassed": false,
+      "prepared_runner_sha256": "c26cc01268fcc88d69fde8f6f69fc22ad0982d0db378e6e4fe5fce1a99b29777",
+      "prepared_source_snapshot_modified_during_run": false,
+      "scope": "deterministic_strategies_only",
+      "strategy_formula_changed": false,
+      "unused_prior_period_guard_bypassed": true
+    },
+    "deterministic_coin_finding": "removing only the unused prior-period guard reproduces all 24 COIN deterministic cells and leaves all 96 controls unchanged",
     "execution_packages": {
       "backtrader": "1.9.78.123",
       "matplotlib": "3.10.3",
@@ -36,7 +46,7 @@
       "xgboost": "3.0.2"
     },
     "import_adapter_sha256": "d35df9a3a948c76dcf272dd68c396679e613ba4e4d57323e5bbfe1c13961abd9",
-    "model_training_window_finding": "two years exactly regenerates all 32 eligible ARIMA/XGBoost cells; the paper does not state this parameter",
+    "model_training_window_finding": "two years exactly regenerates 32/36 numeric ARIMA/XGBoost cells; the available-history COIN XGBoost run matches 0/4 and the paper does not state the parameter",
     "origin": "https://github.com/waylonli/FINSABER.git",
     "paper_lineage_execution_config": {
       "date_from": "2022-10-06",
@@ -67,6 +77,7 @@
         "COIN"
       ]
     },
+    "prepared_runner_sha256": "c26cc01268fcc88d69fde8f6f69fc22ad0982d0db378e6e4fe5fce1a99b29777",
     "price_csv_sha256": "f67e3972dceefbbdf6c17b84b30957a7b83518401955fff8ae0bc4ae206fa83f",
     "safe_pickle_forbidden_construction_opcodes": {},
     "safe_pickle_global_references": {
@@ -77,7 +88,16 @@
     "three_year_default_restore_commit": "55e5c7532dcc94a4363efad3885914f117125124",
     "training_year_override_commit": "5c4cbcff4b9f4b7e41fdf1deeb93371024f8cbab",
     "tree": "ad47d1a27e39f359218d05e971d0599e09a489a1",
-    "two_year_default_commit": "1f3f83f4804f731d96fa95e4120cf7bffc93cc3c"
+    "two_year_default_commit": "1f3f83f4804f731d96fa95e4120cf7bffc93cc3c",
+    "xgboost_adapted_runner_sha256": "138044d73ca97e5dc42aefa037bf61cd07fa476b854c2c5493447d3f095050fd",
+    "xgboost_coin_adapter": {
+      "incomplete_model_history_guard_bypassed": true,
+      "prepared_runner_sha256": "138044d73ca97e5dc42aefa037bf61cd07fa476b854c2c5493447d3f095050fd",
+      "prepared_source_snapshot_modified_during_run": false,
+      "scope": "xgboost_available_pretest_history_only",
+      "strategy_formula_changed": false,
+      "unused_prior_period_guard_bypassed": false
+    }
   },
   "release_boundary": {
     "attributable_tradinggroup_implementation_recovered": false,

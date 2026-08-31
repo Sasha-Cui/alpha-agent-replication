@@ -1,8 +1,8 @@
 # TradingGroup paper-level replication audit
 
-Overall verdict: **paper document, exact test data, formulas, and all eligible
-source-adjacent baselines reproduced; native TradingGroup experiment not
-reproduced**.
+Overall verdict: **paper document, exact test data, formulas, and 152/156
+source-adjacent baseline cells reproduced; native TradingGroup experiment
+not reproduced**.
 
 ## What is faithfully recovered
 
@@ -17,14 +17,18 @@ reproduced**.
   TSLA/MSFT news, 22 AMZN news dates, no NFLX/COIN news; MSFT quarterly-only
   filings; and both filing types for the other four tickers.
 - The exact historical pre-submission FINSABER commit and both author-linked
-  input files execute under the relevant versions from its requirements. Eight
-  Table 1 strategies yield 128 eligible cells and reproduce **128/128** at paper
-  display precision. The six deterministic strategies account for 96/96. A
-  historical two-year training window exactly recovers the remaining 16/16
-  ARIMA and 16/16 XGBoost cells. The paper omits this parameter, and FINSABER
-  restored a three-year default before the paper's submission. The audited
-  runner omits COIN; even the recovered two-year model window lacks enough prior
-  COIN history.
+  input files execute under the relevant versions from its requirements. All
+  **156 numeric Table 1 baseline cells execute and 152/156 match** at paper
+  display precision. The six deterministic strategies reproduce **120/120**.
+  Removing only their unused outer `prior_period` guard exposes all 24 COIN cells;
+  every cell matches while all 96 original control cells remain unchanged.
+- A historical two-year training window recovers 16/16 ARIMA and 16/20 XGBoost
+  cells. A second adapter retains every available pre-test COIN observation while
+  leaving XGBoost unchanged; all 16 control cells remain exact, but the four COIN
+  cells match 0/4. The paper omits the model training window, and FINSABER restored
+  a three-year default before submission. Both adapters preserve strategy formulas,
+  test data, commissions, dates, and metric code. This is source-adjacent baseline
+  result credit, not native TradingGroup reproduction.
 - All 13 printed formula units execute on a declared synthetic fixture. This is
   formula-component evidence only. Figure 2 contains useful but truncated
   runtime-shaped examples for all five agents.
@@ -42,16 +46,17 @@ framework and data source; it is not the missing TradingGroup system.
 ## Important consistency and lineage findings
 
 - The recovered data confirms the paper's detailed test-set claims exactly.
-- All 128 eligible baseline cells regenerate exactly. The model cells require
-  the source repository's historical two-year training window; its later
-  three-year default produces 0/32 model-cell matches. Because the paper never
-  states this parameter, result lineage is recovered but the method remains
-  under-specified.
+- **152/156 numeric baseline cells regenerate exactly.** All 120 deterministic
+  cells match. The model cells require the source repository's hidden two-year
+  window: ARIMA matches 16/16 and XGBoost 16/20, while the later three-year
+  default produces 0/32 matches on the original four tickers. Because the paper
+  never states this parameter, model-lineage remains under-specified.
 - The FINSABER repository's historical committed result CSVs match only 59/168
   comparable numeric paper cells and therefore are not the paper's result
   lineage.
-- The advertised historical runner omits COIN because its three-year prior-data
-  guard fails, while the paper prints COIN values for those baselines.
+- The advertised runner's unused deterministic history guard hid 24 exact COIN
+  cells. Its XGBoost history guard hid a runnable COIN row, but all four values
+  conflict with the paper even when every available pre-test observation is used.
 - Table 2 supports the claim that PEFT improves SPR and CR on all five tickers
   and improves both MDD and AV for MSFT.
 - Only 58/60 Table 3 percentage annotations round from the displayed values.

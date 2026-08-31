@@ -191,34 +191,34 @@ Table 1,MSFT,TradingGroup,SPR,1.655,1.655,3,True,none,,False,False,False,False,F
 Table 1,MSFT,TradingGroup,CR,20.273,20.273,3,True,none,,False,False,False,False,False,none
 Table 1,MSFT,TradingGroup,MDD,-9.887,-9.887,3,True,none,,False,False,False,False,False,none
 Table 1,MSFT,TradingGroup,AV,21.952,21.952,3,True,none,,False,False,False,False,False,none
-Table 1,COIN,Buy and Hold,SPR,0.17,0.17,2,False,none,,False,False,False,False,False,none
-Table 1,COIN,Buy and Hold,CR,-12.729,-12.729,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Buy and Hold,MDD,-54.402,-54.402,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Buy and Hold,AV,86.718,86.718,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,SMA Cross,SPR,-0.365,-0.365,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,SMA Cross,CR,-21.327,-21.327,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,SMA Cross,MDD,-48.57,-48.57,2,False,none,,False,False,False,False,False,none
-Table 1,COIN,SMA Cross,AV,59.914,59.914,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,WMA Cross,SPR,0.245,0.245,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,WMA Cross,CR,1.338,1.338,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,WMA Cross,MDD,-38.834,-38.834,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,WMA Cross,AV,55.764,55.764,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,ATR Band,SPR,0.933,0.933,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,ATR Band,CR,25.169,25.169,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,ATR Band,MDD,-22.906,-22.906,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,ATR Band,AV,38.716,38.716,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Bollinger Bands,SPR,-0.795,-0.795,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Bollinger Bands,CR,-24.371,-24.371,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Bollinger Bands,MDD,-40.733,-40.733,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Bollinger Bands,AV,43.904,43.904,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Turn of The Month,SPR,0.713,0.713,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Turn of The Month,CR,21.243,21.243,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Turn of The Month,MDD,-21.522,-21.522,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,Turn of The Month,AV,49.36,49.36,2,False,none,,False,False,False,False,False,none
-Table 1,COIN,XGBoost,SPR,1.52,1.52,2,False,none,,False,False,False,False,False,none
-Table 1,COIN,XGBoost,CR,84.256,84.256,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,XGBoost,MDD,-31.901,-31.901,3,False,none,,False,False,False,False,False,none
-Table 1,COIN,XGBoost,AV,68.724,68.724,3,False,none,,False,False,False,False,False,none
+Table 1,COIN,Buy and Hold,SPR,0.17,0.17,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Buy and Hold,CR,-12.729,-12.729,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Buy and Hold,MDD,-54.402,-54.402,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Buy and Hold,AV,86.718,86.718,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,SMA Cross,SPR,-0.365,-0.365,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,SMA Cross,CR,-21.327,-21.327,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,SMA Cross,MDD,-48.57,-48.57,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,SMA Cross,AV,59.914,59.914,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,WMA Cross,SPR,0.245,0.245,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,WMA Cross,CR,1.338,1.338,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,WMA Cross,MDD,-38.834,-38.834,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,WMA Cross,AV,55.764,55.764,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,ATR Band,SPR,0.933,0.933,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,ATR Band,CR,25.169,25.169,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,ATR Band,MDD,-22.906,-22.906,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,ATR Band,AV,38.716,38.716,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Bollinger Bands,SPR,-0.795,-0.795,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Bollinger Bands,CR,-24.371,-24.371,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Bollinger Bands,MDD,-40.733,-40.733,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Bollinger Bands,AV,43.904,43.904,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Turn of The Month,SPR,0.713,0.713,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Turn of The Month,CR,21.243,21.243,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Turn of The Month,MDD,-21.522,-21.522,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,Turn of The Month,AV,49.36,49.36,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,XGBoost,SPR,1.52,1.52,2,False,none,,True,False,False,False,False,none
+Table 1,COIN,XGBoost,CR,84.256,84.256,3,False,none,,True,False,False,False,False,none
+Table 1,COIN,XGBoost,MDD,-31.901,-31.901,3,False,none,,True,False,False,False,False,none
+Table 1,COIN,XGBoost,AV,68.724,68.724,3,False,none,,True,False,False,False,False,none
 Table 1,COIN,SAC,SPR,0.184,0.184,3,False,none,,False,False,False,False,False,none
 Table 1,COIN,SAC,CR,-13.011,-13.011,3,False,none,,False,False,False,False,False,none
 Table 1,COIN,SAC,MDD,-55.542,-55.542,3,False,none,,False,False,False,False,False,none

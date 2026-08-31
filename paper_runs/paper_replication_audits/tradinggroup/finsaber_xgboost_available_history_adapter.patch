@@ -1,0 +1,10 @@
+--- a/backtest/finsaber_bt.py
++++ b/backtest/finsaber_bt.py
+@@ -168,7 +168,7 @@
+             if train_data is not None:
+                 if train_data.index.min().year > pd.to_datetime(test_config.date_from).year - train_year:
+                     print(f"Train data for {ticker} is not enough at year {pd.to_datetime(test_config.date_from).year}")
+-                    continue
++                    # Audit adapter: retain every available pre-test observation.
+
+             # detect if the stock is delisted in the middle of the period, if it is, assign 0 price to the missing dates

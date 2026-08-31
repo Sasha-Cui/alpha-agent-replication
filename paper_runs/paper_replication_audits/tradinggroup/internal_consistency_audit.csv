@@ -8,8 +8,8 @@ table3_annotations,two_rounding_mismatches,58/60 annotations round from displaye
 tsla_rm_pc_spr_annotation,annotation_rounding_mismatch,"Displayed 1.070 to 0.409 is -61.776%, which rounds to -62%, not printed -61%."
 tsla_rm_pc_cr_annotation,annotation_and_prose_rounding_mismatch,"Displayed 21.904 to 5.276 is -75.913%, which rounds to -76%, not printed/prose -77%."
 global_optimum,overbroad_ambiguous_claim,The claim of globally optimal overall performance is not a defined aggregate metric; TradingGroup is not best on every individual metric for TSLA or COIN.
-finsaber_coin_execution,advertised_runner_conflict,"The historical default runner omits COIN for all eight strategies under its prior-history guards; the recovered two-year model run still lacks enough COIN history, yet Table 1 prints a numeric XGBoost row."
-deterministic_baselines,substantial_fresh_reproduction,Fresh pinned execution matches 96/96 paper cells for six deterministic strategies on four eligible tickers.
-model_baselines,exact_historical_configuration_reproduction,A two-year training window reproduces 16/16 ARIMA and 16/16 XGBoost cells exactly; the paper omits this parameter and the source default was restored to three years before submission.
+finsaber_coin_execution,deterministic_guard_resolved_model_conflict_retained,Removing only the unused deterministic prior-period guard recovers all 24 COIN rule-baseline cells. Retaining all available COIN history under the unchanged two-year XGBoost configuration reproduces 0/4 printed model cells.
+deterministic_baselines,complete_fresh_reproduction,Fresh pinned execution matches 120/120 paper cells for six deterministic strategies on all five tickers; the 96 original control cells are unchanged by the guard adapter.
+model_baselines,partial_historical_configuration_reproduction,"A two-year training window reproduces 16/16 ARIMA and 16/20 XGBoost cells; the available-history COIN adapter matches 0/4, and the paper omits this parameter."
 source_csv_lineage,historical_output_conflict,Historical committed FINSABER CSVs match only 59/168 comparable numeric paper cells; fresh deterministic execution matches more of the TradingGroup paper than those CSVs.
 native_results,unverifiable_without_release,"No native agent code, checkpoint, trajectories, actions, fills, NAVs, or figure arrays were released."

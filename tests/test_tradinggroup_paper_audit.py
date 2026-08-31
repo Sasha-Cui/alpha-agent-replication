@@ -69,50 +69,81 @@ def test_complete_result_denominator_separates_native_and_baseline_credit() -> N
     assert all(row["native_pipeline_executed"] == "False" for row in ledger)
     assert all(row["native_result_regenerated"] == "False" for row in ledger)
     credited = [row for row in ledger if row["paper_result_credit"] == "True"]
-    assert len(credited) == 128
+    assert len(credited) == 152
     assert all(row["credit_class"] == "source_adjacent_baseline_execution" for row in credited)
     assert all(row["native_tradinggroup_result"] == "False" for row in credited)
 
 
 def test_exact_finsaber_execution_recovers_all_eligible_baselines_not_native_system() -> None:
     ledger = rows("finsaber_execution_ledger.csv")
-    assert len(ledger) == manifest()["source_adjacent_baseline_cells_executed"] == 128
+    assert len(ledger) == manifest()["source_adjacent_baseline_cells_executed"] == 156
     assert Counter(row["strategy"] for row in ledger) == {
-        "Buy and Hold": 16,
-        "SMA Cross": 16,
-        "WMA Cross": 16,
-        "ATR Band": 16,
-        "Bollinger Bands": 16,
-        "Turn of The Month": 16,
+        "Buy and Hold": 20,
+        "SMA Cross": 20,
+        "WMA Cross": 20,
+        "ATR Band": 20,
+        "Bollinger Bands": 20,
+        "Turn of The Month": 20,
         "ARIMA": 16,
-        "XGBoost": 16,
+        "XGBoost": 20,
     }
     matches = [row for row in ledger if row["fresh_execution_matches_paper"] == "True"]
-    assert len(matches) == manifest()["source_adjacent_baseline_cells_matching_paper"] == 128
+    assert len(matches) == manifest()["source_adjacent_baseline_cells_matching_paper"] == 152
     assert Counter(row["strategy"] for row in matches) == {
-        "Buy and Hold": 16,
-        "SMA Cross": 16,
-        "WMA Cross": 16,
-        "ATR Band": 16,
-        "Bollinger Bands": 16,
-        "Turn of The Month": 16,
+        "Buy and Hold": 20,
+        "SMA Cross": 20,
+        "WMA Cross": 20,
+        "ATR Band": 20,
+        "Bollinger Bands": 20,
+        "Turn of The Month": 20,
         "ARIMA": 16,
         "XGBoost": 16,
     }
     model_rows = [row for row in ledger if row["strategy"] in {"ARIMA", "XGBoost"}]
-    assert all(
-        row["execution_configuration"] == "historical_two_year_model_window"
+    assert len(model_rows) == 36
+    assert Counter(row["execution_configuration"] for row in model_rows) == {
+        "historical_two_year_model_window": 32,
+        "available_pretest_history_guard_bypass": 4,
+    }
+    historical_models = [
+        row
         for row in model_rows
-    )
-    assert all(row["fresh_execution_matches_paper"] == "True" for row in model_rows)
+        if row["execution_configuration"] == "historical_two_year_model_window"
+    ]
+    available_history = [
+        row
+        for row in model_rows
+        if row["execution_configuration"] == "available_pretest_history_guard_bypass"
+    ]
+    assert all(row["fresh_execution_matches_paper"] == "True" for row in historical_models)
+    assert all(row["fresh_execution_matches_paper"] == "False" for row in available_history)
     assert all(
         row["pinned_default_execution_matches_paper"] == "False"
         for row in model_rows
     )
-    assert manifest()["source_adjacent_baseline_cells_matching_pinned_default"] == 96
-    assert manifest()["model_baseline_training_years_recovered"] == 2
-    assert manifest()["model_baseline_cells_matching_paper"] == 32
-    assert all(row["ticker"] != "COIN" for row in ledger)
+    data = manifest()
+    assert data["source_adjacent_baseline_cells_matching_pinned_default"] == 96
+    assert data["model_baseline_training_years_recovered"] == 2
+    assert data["model_baseline_cells_executed"] == 36
+    assert data["model_baseline_cells_matching_paper"] == 32
+    assert data["deterministic_baseline_cells_executed"] == 120
+    assert data["deterministic_baseline_cells_matching_paper"] == 120
+    assert data["deterministic_coin_cells_executed"] == 24
+    assert data["deterministic_coin_cells_matching_paper"] == 24
+    assert data["xgboost_coin_cells_executed"] == 4
+    assert data["xgboost_coin_cells_matching_paper"] == 0
+    assert data["guard_adapter_cells_executed"] == 28
+    assert data["baseline_execution_configuration_counts"] == {
+        "pinned_default": 96,
+        "historical_two_year_model_window": 32,
+        "unused_prior_period_guard_bypass": 24,
+        "available_pretest_history_guard_bypass": 4,
+    }
+    assert Counter(row["guard_adapter_used"] for row in ledger) == {
+        "False": 128,
+        "True": 28,
+    }
+    assert all(row["strategy_formula_changed"] == "False" for row in ledger)
     assert all(row["native_tradinggroup_credit"] == "False" for row in ledger)
     source = rows("finsaber_source_output_comparison.csv")
     assert len(source) == 172
@@ -183,19 +214,25 @@ def test_displayed_arithmetic_and_framework_conflicts_are_audited() -> None:
     }
     checks = {row["claim_id"]: row for row in rows("internal_consistency_audit.csv")}
     assert checks["dataset_claims"]["status"] == "passes_recovered_data_check"
-    assert checks["deterministic_baselines"]["status"] == "substantial_fresh_reproduction"
-    assert checks["model_baselines"]["status"] == "exact_historical_configuration_reproduction"
-    assert checks["finsaber_coin_execution"]["status"] == "advertised_runner_conflict"
+    assert checks["deterministic_baselines"]["status"] == "complete_fresh_reproduction"
+    assert checks["model_baselines"]["status"] == "partial_historical_configuration_reproduction"
+    assert checks["finsaber_coin_execution"]["status"] == "deterministic_guard_resolved_model_conflict_retained"
     assert checks["global_optimum"]["status"] == "overbroad_ambiguous_claim"
     assert checks["native_results"]["status"] == "unverifiable_without_release"
 
 
 def test_method_and_discovery_ledgers_do_not_invent_native_release() -> None:
     methods = {row["dimension"]: row for row in rows("method_specification_audit.csv")}
-    assert len(methods) == 31
+    assert len(methods) == 33
     assert methods["test_data"]["status"] == "recovered"
     assert methods["baseline_framework"]["status"] == "recovered"
     assert methods["baseline_model_training_window"]["status"] == "recovered_but_paper_omitted"
+    assert methods["baseline_deterministic_coin_guard"]["status"] == (
+        "recovered_with_formula_preserving_adapter"
+    )
+    assert methods["baseline_xgboost_coin_history"]["status"] == (
+        "conflict_after_available_history_adapter"
+    )
     for dimension in (
         "peft_hyperparameters", "checkpoint", "full_prompts",
         "runtime_model_requests", "chain_of_thought", "style_multipliers",
@@ -216,7 +253,13 @@ def test_method_and_discovery_ledgers_do_not_invent_native_release() -> None:
     assert boundary["finsaber_is_source_adjacent_baseline_framework_not_tradinggroup_source"] is True
     finsaber = provenance["finsaber"]
     assert finsaber["paper_lineage_execution_config"]["training_years"] == 2
-    assert "all 32" in finsaber["model_training_window_finding"]
+    assert "32/36" in finsaber["model_training_window_finding"]
+    assert "all 24 COIN deterministic cells" in finsaber["deterministic_coin_finding"]
+    assert finsaber["baseline_driver_sha256"] == audit.FINSABER_BASELINE_DRIVER_SHA256
+    assert finsaber["deterministic_coin_adapter"]["unused_prior_period_guard_bypassed"] is True
+    assert finsaber["xgboost_coin_adapter"]["incomplete_model_history_guard_bypassed"] is True
+    assert finsaber["deterministic_coin_adapter"]["strategy_formula_changed"] is False
+    assert finsaber["xgboost_coin_adapter"]["strategy_formula_changed"] is False
 
 
 def test_generator_is_deterministic_and_strict_mode_fails_closed(tmp_path: Path) -> None:
@@ -255,9 +298,11 @@ def test_manifest_hashes_outputs_and_readme_states_honest_boundary() -> None:
     assert set(data["output_sha256"]) == expected
     assert all(len(value) == 64 for value in data["output_sha256"].values())
     text = (AUDIT_DIR / "README.md").read_text(encoding="utf-8")
-    assert "native TradingGroup experiment not\nreproduced" in text
+    assert "native TradingGroup experiment\nnot reproduced" in text
     assert "**0/120 unique native table cells**" in text
-    assert "**128/128**" in text
-    assert "16/16 XGBoost" in text
+    assert "152/156" in text
+    assert "**120/120**" in text
+    assert "16/20 XGBoost" in text
+    assert "match 0/4" in text
     assert "FINSABER is the cited baseline" in text
     assert "bounded public search" in text
