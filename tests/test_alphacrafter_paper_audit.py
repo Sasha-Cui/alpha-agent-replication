@@ -209,9 +209,47 @@ def test_native_components_pass_without_paper_result_credit() -> None:
 
 def test_full_launcher_and_multimarket_boundaries_fail_closed() -> None:
     release = json.loads((AUDIT_DIR / "release_execution_audit.json").read_text())
+    probe = json.loads(
+        (AUDIT_DIR / "registered_model_override_execution.json").read_text()
+    )
     assert release["default_requested_model"] == "gpt-5.3-codex"
     assert release["registered_models"] == ["gpt-5", "gpt-5.2"]
     assert release["full_launcher_reached_model_api"] is False
+    assert release["registered_model_override_probe"] == probe
+    assert probe["configuration_override"].startswith("only the three")
+    assert probe["override_model"] == "gpt-5.2"
+    assert probe["override_model_matches_paper_experiment_protocol"] is False
+    assert probe["network_disabled_at_socket_connect"] is True
+    assert probe["returncode"] == 1
+    assert probe["native_agents_initialized"] == 5
+    assert probe["native_miner_agents_initialized"] == 3
+    assert probe["native_screener_agents_initialized"] == 1
+    assert probe["native_trader_agents_initialized"] == 1
+    assert probe["native_toolkits_loaded"] == 5
+    assert probe["native_strategy_hook_loads"] == 2
+    assert probe["workflow_cycles_started"] == 1
+    assert probe["model_api_requests_attempted"] == 4
+    assert probe["model_api_responses_received"] == 0
+    assert probe["miner_request_failures"] == 3
+    assert probe["screener_request_failures"] == 1
+    assert probe["model_api_boundary_reached"] is True
+    assert probe["end_to_end_agent_pipeline_completed"] is False
+    assert probe["published_table_or_figure_regenerated"] is False
+    assert probe["paper_result_credit"] is False
+    assert set(probe["evidence_sha256"]) == {
+        "config.yaml",
+        "returncode.txt",
+        "sitecustomize.py",
+        "stderr.txt",
+        "stdout.txt",
+    }
+    assert all(len(value) == 64 for value in probe["evidence_sha256"].values())
+    data = manifest()
+    assert data["registered_model_override_probe_completed"] is True
+    assert data["registered_model_override_native_agents_initialized"] == 5
+    assert data["registered_model_override_model_api_requests_attempted"] == 4
+    assert data["registered_model_override_model_api_responses_received"] == 0
+    assert data["registered_model_override_paper_result_credit"] is False
     methods = {
         (row["version"], row["dimension"]): row
         for row in rows("method_specification_audit.csv")
@@ -290,6 +328,11 @@ def test_manifest_hashes_every_output_and_readme_states_honest_boundary() -> Non
         "strongly attributable",
         "does not directly link",
         "fails before any API call",
+        "controlled copied-tree probe",
+        "initializes all five native agents",
+        "attempts four model requests",
+        "receives zero model responses",
+        "not a faithful run",
         "complete non-shallow repository history has 13 commits",
         "accessible forks, six branch refs, no tags",
         "four unique heads",

@@ -34,6 +34,38 @@
   "pytest_outcome": "no tests collected (exit 5)",
   "python_files": 48,
   "python_version": "3.10.8",
+  "registered_model_override_probe": {
+    "configuration_override": "only the three gpt-5.3-codex role codes were replaced with the shipped gpt-5.2 registry code",
+    "end_to_end_agent_pipeline_completed": false,
+    "evidence_sha256": {
+      "config.yaml": "a2936074ff2d80d22d70ea0e0c06e0605b6b81f7c2062571e514e98c54b28d02",
+      "returncode.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "sitecustomize.py": "91055d1a05b13eb57004e2d04a3d7ea89a959690c19c37c51058b9d451e2ff75",
+      "stderr.txt": "b348121fd186e91c2adfb890eb6494d98fb64a93cc19f667938342ed4bd932c6",
+      "stdout.txt": "1ed7e611f76e138bcb37273b17f0cdcdcfa140d2e4d96b6979eca02e5408f360"
+    },
+    "execution_tree_role": "temporary copy of the pinned release",
+    "miner_request_failures": 3,
+    "model_api_boundary_reached": true,
+    "model_api_requests_attempted": 4,
+    "model_api_responses_received": 0,
+    "native_agents_initialized": 5,
+    "native_miner_agents_initialized": 3,
+    "native_screener_agents_initialized": 1,
+    "native_strategy_hook_loads": 2,
+    "native_toolkits_loaded": 5,
+    "native_trader_agents_initialized": 1,
+    "network_disabled_at_socket_connect": true,
+    "override_model": "gpt-5.2",
+    "override_model_matches_paper_experiment_protocol": false,
+    "paper_result_credit": false,
+    "published_table_or_figure_regenerated": false,
+    "repository_source_files_modified_before_execution": false,
+    "returncode": 1,
+    "screener_request_failures": 1,
+    "source_head_sha": "c6dbc1ba4e0a4ecbc3ea1454c5290dbea4b36b0d",
+    "workflow_cycles_started": 1
+  },
   "registered_models": [
     "gpt-5",
     "gpt-5.2"

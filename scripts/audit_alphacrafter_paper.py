@@ -139,6 +139,11 @@ PINS = {
     "discovery/alphacrafter-c6dbc1b.zip": "41b7b55892cd43ec8594b7a6070ae2a70ebdf4da38b3b52ee06e99d54e0660b1",
     "native-component-checks.json": "9d1fbc4c5014b1884f76eaa6634d752aeb11a805b0b747bcf58b04d89c18928f",
     "native-main.txt": "d778467aa5554cb4de99089056f06013ed5791aa2ab93a72128486e89ea68b55",
+    "native-registered-model-probe.config.yaml": "a2936074ff2d80d22d70ea0e0c06e0605b6b81f7c2062571e514e98c54b28d02",
+    "native-registered-model-probe.returncode.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "native-registered-model-probe.sitecustomize.py": "91055d1a05b13eb57004e2d04a3d7ea89a959690c19c37c51058b9d451e2ff75",
+    "native-registered-model-probe.stderr.txt": "b348121fd186e91c2adfb890eb6494d98fb64a93cc19f667938342ed4bd932c6",
+    "native-registered-model-probe.stdout.txt": "1ed7e611f76e138bcb37273b17f0cdcdcfa140d2e4d96b6979eca02e5408f360",
     "native-pip-freeze.txt": "39ec7c8a551a4b96634c5ea1869ef87d21c16c44e62c2b9335c30211526222e8",
     "native-pytest.txt": "e20bfc015edf2db51a15a3b771e93294c2104148ca78858528c2278ae8946637",
     "native-ruff.json": "8a73043953116a9bbb20c65a1ea602e4f385d9aad8e294fec88b291465d4672b",
@@ -802,6 +807,102 @@ def v2_build_verification(scratch: Path) -> dict[str, Any]:
     }
 
 
+def registered_model_override_probe(scratch: Path, repo: Path) -> dict[str, Any]:
+    prefix = "native-registered-model-probe"
+    original_config = (repo / "alphacrafter/config.yaml").read_text()
+    override_config = (scratch / f"{prefix}.config.yaml").read_text()
+    expected_override = original_config.replace(
+        'code: "gpt-5.3-codex"',
+        'code: "gpt-5.2"',
+    )
+    if override_config.rstrip("\n") != expected_override.rstrip("\n"):
+        raise ValueError("registered-model probe changed more than three model codes")
+
+    guard = (scratch / f"{prefix}.sitecustomize.py").read_text()
+    if (
+        "socket.socket.connect = _blocked_connect" not in guard
+        or "network disabled during AlphaCrafter audit" not in guard
+    ):
+        raise ValueError("registered-model probe network guard changed")
+
+    stdout = (scratch / f"{prefix}.stdout.txt").read_text()
+    stderr = (scratch / f"{prefix}.stderr.txt").read_text()
+    returncode = int((scratch / f"{prefix}.returncode.txt").read_text().strip())
+    expected_stdout_counts = {
+        "agent_initializations": ("Agent initialized with model: gpt-5.2", 5),
+        "miner_toolkits": ("Loaded tools: ['read_file', 'write_file', 'shell']", 3),
+        "screener_toolkits": (
+            "Loaded tools: ['read_file', 'write_file', 'shell', 'get_index_data', "
+            "'get_financial_statements', 'get_news']",
+            1,
+        ),
+        "trader_toolkits": ("Loaded tools: ['read_file', 'write_file', 'backtest', 'step']", 1),
+        "strategy_hook_loads": ("Hook loaded: strategy_hook", 2),
+        "cycle_one_starts": ("CYCLE 1/150", 1),
+        "model_api_requests": ("API Request - 1 messages", 4),
+        "miner_connection_failures": ("failed: Connection error.", 3),
+        "screener_connection_failures": ("Unexpected error: Connection error.", 1),
+    }
+    observed = {
+        name: stdout.count(marker)
+        for name, (marker, _expected) in expected_stdout_counts.items()
+    }
+    expected = {
+        name: count
+        for name, (_marker, count) in expected_stdout_counts.items()
+    }
+    if observed != expected:
+        raise ValueError(
+            f"registered-model probe transcript changed: {observed} != {expected}"
+        )
+    if (
+        returncode != 1
+        or "network disabled during AlphaCrafter audit" not in stderr
+        or "openai.APIConnectionError: Connection error." not in stderr
+        or "API Response" in stdout
+    ):
+        raise ValueError("registered-model probe boundary changed")
+
+    return {
+        "source_head_sha": REPOSITORY_HEAD,
+        "execution_tree_role": "temporary copy of the pinned release",
+        "repository_source_files_modified_before_execution": False,
+        "configuration_override": (
+            "only the three gpt-5.3-codex role codes were replaced with the "
+            "shipped gpt-5.2 registry code"
+        ),
+        "override_model": "gpt-5.2",
+        "override_model_matches_paper_experiment_protocol": False,
+        "network_disabled_at_socket_connect": True,
+        "returncode": returncode,
+        "native_agents_initialized": observed["agent_initializations"],
+        "native_miner_agents_initialized": 3,
+        "native_screener_agents_initialized": 1,
+        "native_trader_agents_initialized": 1,
+        "native_toolkits_loaded": 5,
+        "native_strategy_hook_loads": observed["strategy_hook_loads"],
+        "workflow_cycles_started": observed["cycle_one_starts"],
+        "model_api_requests_attempted": observed["model_api_requests"],
+        "model_api_responses_received": 0,
+        "miner_request_failures": observed["miner_connection_failures"],
+        "screener_request_failures": observed["screener_connection_failures"],
+        "model_api_boundary_reached": True,
+        "end_to_end_agent_pipeline_completed": False,
+        "published_table_or_figure_regenerated": False,
+        "paper_result_credit": False,
+        "evidence_sha256": {
+            name: PINS[f"{prefix}.{name}"]
+            for name in (
+                "config.yaml",
+                "returncode.txt",
+                "sitecustomize.py",
+                "stderr.txt",
+                "stdout.txt",
+            )
+        },
+    }
+
+
 def release_audit(scratch: Path) -> dict[str, Any]:
     repo = scratch / "repo/NJU-LINK-AlphaCrafter-c6dbc1b"
     readme = (repo / "README.md").read_text(errors="replace")
@@ -838,6 +939,7 @@ def release_audit(scratch: Path) -> dict[str, Any]:
     help_text = (scratch / "native-help.txt").read_text()
     if "Run quantitative trading workflow" not in help_text:
         raise ValueError("native CLI help evidence changed")
+    override_probe = registered_model_override_probe(scratch, repo)
     return {
         "url": REPOSITORY_URL,
         "head_sha": REPOSITORY_HEAD,
@@ -860,6 +962,7 @@ def release_audit(scratch: Path) -> dict[str, Any]:
         "registered_models": model_codes,
         "full_launcher_reached_model_api": False,
         "full_launcher_failure": "default requested model is absent from the shipped model registry",
+        "registered_model_override_probe": override_probe,
         "a_share_component_check": {key: components[key] for key in (
             "a_share_buy_success", "a_share_t_plus_one_unlock_success",
             "a_share_sell_success", "a_share_final_assets",
@@ -912,6 +1015,15 @@ paper evaluates GPT, Claude, and Gemini, while the runtime initializes only the
 OpenAI Responses client. The launcher always injects the A-share instruction and
 constructs its trading tools in their default A-share mode, so the released main
 path does not select the paper's U.S. workflow even though U.S. components exist.
+
+A controlled copied-tree probe changes only those three role codes to the shipped
+`gpt-5.2` registry entry and blocks socket connections before execution. It
+initializes all five native agents and their toolkits, loads both trader strategy
+hooks, begins cycle 1, and attempts four model requests before the guard stops all
+three miners and the screener. It receives zero model responses and regenerates no
+paper output. This locates the next launcher boundary, but it is not a faithful run:
+`gpt-5.2` is not the paper's disclosed GPT/Claude/Gemini experiment configuration,
+and the paper-time data, requests, responses, seeds, and outputs remain absent.
 
 The release ships index series and empty/template schemas, not the paper's stock,
 fundamental, statement, or news corpus. Its calendars end on 2026-03-31, before
@@ -977,6 +1089,10 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     write_json(output / "public_fork_census.json", fork_summary)
     release = release_audit(scratch)
     write_json(output / "release_execution_audit.json", release)
+    write_json(
+        output / "registered_model_override_execution.json",
+        release["registered_model_override_probe"],
+    )
     provenance = {
         "work_id": WORK_ID,
         "system_id": SYSTEM_ID,
@@ -1091,6 +1207,17 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "public_fork_paper_result_credit": False,
         "native_component_checks_passed": 6,
         "full_launcher_operational_as_released": False,
+        "registered_model_override_probe_completed": True,
+        "registered_model_override_native_agents_initialized": release[
+            "registered_model_override_probe"
+        ]["native_agents_initialized"],
+        "registered_model_override_model_api_requests_attempted": release[
+            "registered_model_override_probe"
+        ]["model_api_requests_attempted"],
+        "registered_model_override_model_api_responses_received": release[
+            "registered_model_override_probe"
+        ]["model_api_responses_received"],
+        "registered_model_override_paper_result_credit": False,
         "full_end_to_end_pipeline_reproduced": False,
         "strict_success": False,
     }

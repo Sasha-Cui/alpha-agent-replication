@@ -28,6 +28,15 @@ OpenAI Responses client. The launcher always injects the A-share instruction and
 constructs its trading tools in their default A-share mode, so the released main
 path does not select the paper's U.S. workflow even though U.S. components exist.
 
+A controlled copied-tree probe changes only those three role codes to the shipped
+`gpt-5.2` registry entry and blocks socket connections before execution. It
+initializes all five native agents and their toolkits, loads both trader strategy
+hooks, begins cycle 1, and attempts four model requests before the guard stops all
+three miners and the screener. It receives zero model responses and regenerates no
+paper output. This locates the next launcher boundary, but it is not a faithful run:
+`gpt-5.2` is not the paper's disclosed GPT/Claude/Gemini experiment configuration,
+and the paper-time data, requests, responses, seeds, and outputs remain absent.
+
 The release ships index series and empty/template schemas, not the paper's stock,
 fundamental, statement, or news corpus. Its calendars end on 2026-03-31, before
 the revised live period ends on 2026-06-12. Baseline implementations, point-in-time
