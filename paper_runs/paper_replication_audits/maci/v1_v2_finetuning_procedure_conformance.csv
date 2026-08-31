@@ -1,0 +1,6 @@
+dimension,released_or_recovered_state,audit_execution,outcome,paper_result_credit
+active_source_contract,one active FTAgent.fine_tuning call using single_0510.jsonl,AST/source hashes pinned at the dataset commit,base model and two same-object checkpoint aliases recovered,False
+combined_training_file,single_0510.jsonl absent from every Git object,source-specified cross-sectional then market concatenation,961 records; 2455569 bytes; deterministic SHA-256,False
+openai_vision_schema,930 image examples and 31 text-only examples,official current static limits and formats checked locally,static contract passes; no service-side validation performed,False
+native_upload_job_method,FTAgent.fine_tuning source method,in-memory OpenAI stub with socket connections blocked,"one file create, one job create, one successful retrieve; zero network",False
+remote_lineage,"actual upload, job, checkpoint, and inference records absent",none,paper run use and result lineage remain unverified,False

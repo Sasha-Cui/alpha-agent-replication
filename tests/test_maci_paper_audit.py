@@ -70,6 +70,20 @@ def test_manifest_keeps_both_experiments_and_the_zero_result_boundary() -> None:
     assert manifest["v1_v2_historical_fine_tuning_files_added_after_paper_v2"] is True
     assert manifest["v1_v2_actual_fine_tuning_upload_job_checkpoint_recovered"] is False
     assert manifest["v1_v2_fine_tuning_payload_paper_result_credit"] is False
+    assert manifest["v1_v2_reconstructed_single_0510_records"] == 961
+    assert manifest["v1_v2_reconstructed_single_0510_bytes"] == 2_455_569
+    assert (
+        manifest["v1_v2_reconstructed_single_0510_sha256"]
+        == audit.RECONSTRUCTED_SINGLE_0510_SHA256
+    )
+    assert manifest["v1_v2_reconstructed_single_0510_image_examples"] == 930
+    assert manifest["v1_v2_reconstructed_single_0510_text_only_examples"] == 31
+    assert manifest["v1_v2_openai_vision_fine_tuning_static_contract_passed"] is True
+    assert manifest["v1_v2_native_fine_tuning_contract_network_attempts"] == 0
+    assert manifest["v1_v2_native_fine_tuning_contract_file_create_calls"] == 1
+    assert manifest["v1_v2_native_fine_tuning_contract_job_create_calls"] == 1
+    assert manifest["v1_v2_native_fine_tuning_remote_job_created"] is False
+    assert manifest["v1_v2_native_fine_tuning_procedure_paper_result_credit"] is False
     assert manifest["v3_non_rag_architecture_component_paths_passed"] == 9
     assert manifest["v3_non_rag_architecture_component_paths_denominator"] == 9
     assert manifest["v3_rag_architecture_paths_blocked_by_missing_source_module"] == 3
@@ -159,6 +173,26 @@ def test_raw_source_execution_fails_closed_and_overlay_remains_labelled() -> Non
     )
     assert native["deterministic_component_harness_passed"] is True
     assert native["component_execution_is_paper_result_replication"] is False
+    fine_tuning = native["fine_tuning_procedure_reconstruction"]
+    assert fine_tuning["source_method"] == "FTAgent.fine_tuning"
+    assert fine_tuning["network_attempts"] == []
+    assert fine_tuning["openai_client_initializations"] == 3
+    assert fine_tuning["file_create_calls"] == [
+        {
+            "purpose": "fine-tune",
+            "bytes": 2_455_569,
+            "sha256": audit.RECONSTRUCTED_SINGLE_0510_SHA256,
+        }
+    ]
+    assert fine_tuning["fine_tuning_job_create_calls"] == [
+        {"training_file": "file-audit", "model": "gpt-4o-2024-08-06"}
+    ]
+    assert fine_tuning["fine_tuning_job_retrieve_calls"] == [
+        {"job_id": "job-audit"}
+    ]
+    assert fine_tuning["remote_file_uploaded"] is False
+    assert fine_tuning["remote_fine_tuning_job_created"] is False
+    assert fine_tuning["paper_result_credit"] is False
 
 
 def test_v3_source_components_execute_but_raw_runner_and_rag_fail_closed() -> None:
@@ -207,7 +241,7 @@ def test_pinned_manuscripts_rebuild_deterministically_and_pass_visual_qa() -> No
 
 def test_method_prompt_and_internal_consistency_gaps_remain_explicit() -> None:
     methods = {(row["paper_version"], row["dimension"]): row for row in csv_rows("method_specification_audit.csv")}
-    assert len(methods) == 35
+    assert len(methods) == 36
     assert methods[("v1/v2", "raw_inputs")]["status"] == (
         "market_inputs_missing_training_images_recovered"
     )
@@ -216,6 +250,9 @@ def test_method_prompt_and_internal_consistency_gaps_remain_explicit() -> None:
     )
     assert methods[("v1/v2", "prompt_templates")]["status"] == (
         "templates_plus_complete_historical_training_payload"
+    )
+    assert methods[("v1/v2", "fine_tuning_procedure")]["status"] == (
+        "native_contract_reconstructed_remote_job_missing"
     )
     assert methods[("v1/v2", "fine_tuned_model_ids")]["status"] == "incomplete_unverified"
     assert methods[("v3", "system_architecture")]["status"] == ("source_present_component_verified")
@@ -240,8 +277,9 @@ def test_method_prompt_and_internal_consistency_gaps_remain_explicit() -> None:
 
 def test_primary_sources_and_both_author_repositories_preserve_v3_boundaries() -> None:
     sources = csv_rows("external_primary_source_audit.csv")
-    assert len(sources) == 7
+    assert len(sources) == 8
     assert {row["subject"] for row in sources} >= {
+        "GPT-4o vision fine-tuning contract",
         "GPT-5 release and snapshot",
         "Claude Sonnet 4.5 release",
         "Claude Sonnet 4.5 training boundary",
@@ -251,6 +289,7 @@ def test_primary_sources_and_both_author_repositories_preserve_v3_boundaries() -
     assert validation["fama_french_archive_sha256"] == audit.EXPECTED["fama_french_archive"]
     assert min(validation["fama_french_2025_monthly_rf_pct"].values()) == 0.30
     assert max(validation["fama_french_2025_monthly_rf_pct"].values()) == 0.38
+    assert validation["provider_source_count"] == 7
 
     inventory = json.loads((OUTPUT / "author_source_inventory.json").read_text(encoding="utf-8"))
     assert inventory["pre_submission_constants_present"] is False
@@ -331,6 +370,50 @@ def test_complete_public_histories_recover_training_records_not_results() -> Non
     assert payload["fine_tuning_job_and_selected_checkpoint_recovered"] is False
     assert payload["paper_run_use_verified"] is False
     assert payload["paper_result_credit"] is False
+
+    procedure = json.loads(
+        (OUTPUT / "v1_v2_finetuning_procedure.json").read_text(encoding="utf-8")
+    )
+    procedure_rows = csv_rows("v1_v2_finetuning_procedure_conformance.csv")
+    reconstructed = OUTPUT / "v1_v2_reconstructed_single_0510.jsonl"
+    assert reconstructed.stat().st_size == 2_455_569
+    assert sha256(reconstructed) == audit.RECONSTRUCTED_SINGLE_0510_SHA256
+    with reconstructed.open(encoding="utf-8") as stream:
+        reconstructed_rows = [json.loads(line) for line in stream]
+    assert len(reconstructed_rows) == 961
+    assert procedure["source_contract"]["base_model"] == "gpt-4o-2024-08-06"
+    assert procedure["source_contract"]["active_fine_tuning_calls"] == 1
+    assert procedure["source_contract"]["component_dataset_paths"] == [
+        "test/single_cs_0510.jsonl",
+        "test/single_mkt_0510.jsonl",
+    ]
+    assert procedure["source_contract"]["checkpoint_names"] == [
+        "cs_vision_0510.pkl",
+        "mkt_news_0510.pkl",
+    ]
+    assert procedure["source_contract"][
+        "same_agent_object_saved_to_both_checkpoint_names"
+    ] is True
+    assert procedure["source_contract"]["multi_agent_fine_tuning_blocks_active"] is False
+    schema = procedure["reconstructed_dataset"]
+    assert schema["records"] == 961
+    assert schema["image_examples"] == 930
+    assert schema["text_only_examples"] == 31
+    assert schema["maximum_images_per_example"] == 1
+    assert schema["maximum_image_bytes"] == 71_085
+    assert schema["image_formats"] == ["PNG"]
+    assert schema["image_modes"] == ["RGBA"]
+    assert schema["image_detail_values"] == ["high"]
+    assert schema["assistant_image_outputs"] == 0
+    assert schema["official_openai_static_vision_fine_tuning_contract_passed"] is True
+    assert schema["official_openai_documentation"] == audit.OPENAI_VISION_FINE_TUNING_DOC
+    assert procedure["actual_uploaded_file_identity_recovered"] is False
+    assert procedure["actual_job_id_recovered"] is False
+    assert procedure["actual_selected_checkpoint_recovered"] is False
+    assert procedure["paper_run_use_verified"] is False
+    assert procedure["paper_result_credit"] is False
+    assert len(procedure_rows) == 5
+    assert {row["paper_result_credit"] for row in procedure_rows} == {"False"}
     assert history["v3_missing_module_paths_present_in_any_commit"] == {
         "environ/data/coingecko.py": False,
         "environ/data/cointelegraph.py": False,
@@ -380,4 +463,8 @@ def test_manifest_hashes_cover_every_committed_audit_output() -> None:
     assert "Zero of 442" in readme
     assert "all referenced images are therefore recoverable" in readme
     assert "does not prove they were the uploaded paper training set" in readme
+    assert "Replaying its commented construction deterministically concatenates" in readme
+    assert "one `purpose=\"fine-tune\"` file call" in readme
+    assert "same agent object under both" in readme
+    assert "reconstructs the local procedure, not the paper's remote job" in readme
     assert "do not fill any missing experimental data" in readme

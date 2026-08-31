@@ -83,5 +83,36 @@
   "component_execution_is_paper_result_replication": false,
   "v1_v2_table_units_regenerated": 0,
   "v3_table_units_regenerated": 0,
-  "llm_calls_made": 0
+  "llm_calls_made": 0,
+  "fine_tuning_procedure_reconstruction": {
+    "source_method": "FTAgent.fine_tuning",
+    "non_target_import_adapter": "tenacity decorators are identity-stubbed because the target fine_tuning method does not use retry logic",
+    "network_attempts": [],
+    "openai_client_initializations": 3,
+    "file_create_calls": [
+      {
+        "purpose": "fine-tune",
+        "bytes": 2455569,
+        "sha256": "d76dfa507eb85d6b0a34246a702dce3eab76f5244bff0098621887e530f77765"
+      }
+    ],
+    "fine_tuning_job_create_calls": [
+      {
+        "training_file": "file-audit",
+        "model": "gpt-4o-2024-08-06"
+      }
+    ],
+    "fine_tuning_job_retrieve_calls": [
+      {
+        "job_id": "job-audit"
+      }
+    ],
+    "job_hyperparameters_explicitly_set": false,
+    "validation_file_explicitly_set": false,
+    "suffix_explicitly_set": false,
+    "stub_output_model": "ft:audit-placeholder",
+    "remote_file_uploaded": false,
+    "remote_fine_tuning_job_created": false,
+    "paper_result_credit": false
+  }
 }

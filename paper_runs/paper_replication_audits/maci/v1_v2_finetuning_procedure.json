@@ -1,0 +1,80 @@
+{
+  "actual_job_id_recovered": false,
+  "actual_selected_checkpoint_recovered": false,
+  "actual_uploaded_file_identity_recovered": false,
+  "native_zero_network_execution": {
+    "file_create_calls": [
+      {
+        "bytes": 2455569,
+        "purpose": "fine-tune",
+        "sha256": "d76dfa507eb85d6b0a34246a702dce3eab76f5244bff0098621887e530f77765"
+      }
+    ],
+    "fine_tuning_job_create_calls": [
+      {
+        "model": "gpt-4o-2024-08-06",
+        "training_file": "file-audit"
+      }
+    ],
+    "fine_tuning_job_retrieve_calls": [
+      {
+        "job_id": "job-audit"
+      }
+    ],
+    "job_hyperparameters_explicitly_set": false,
+    "network_attempts": [],
+    "non_target_import_adapter": "tenacity decorators are identity-stubbed because the target fine_tuning method does not use retry logic",
+    "openai_client_initializations": 3,
+    "paper_result_credit": false,
+    "remote_file_uploaded": false,
+    "remote_fine_tuning_job_created": false,
+    "source_method": "FTAgent.fine_tuning",
+    "stub_output_model": "ft:audit-placeholder",
+    "suffix_explicitly_set": false,
+    "validation_file_explicitly_set": false
+  },
+  "paper_result_credit": false,
+  "paper_run_use_verified": false,
+  "reconstructed_dataset": {
+    "assistant_image_outputs": 0,
+    "bytes": 2455569,
+    "documentation_retrieved_utc_date": "2026-08-31",
+    "image_detail_values": [
+      "high"
+    ],
+    "image_examples": 930,
+    "image_formats": [
+      "PNG"
+    ],
+    "image_modes": [
+      "RGBA"
+    ],
+    "maximum_image_bytes": 71085,
+    "maximum_images_per_example": 1,
+    "official_openai_documentation": "https://developers.openai.com/api/docs/guides/vision-fine-tuning",
+    "official_openai_static_vision_fine_tuning_contract_passed": true,
+    "records": 961,
+    "sha256": "d76dfa507eb85d6b0a34246a702dce3eab76f5244bff0098621887e530f77765",
+    "text_only_examples": 31
+  },
+  "source_contract": {
+    "active_fine_tuning_calls": 1,
+    "agent_source_path": "environ/agent.py",
+    "agent_source_sha256": "124e421d488216ba1568e0e1f57812ef2a00d9aa00543c5ea1147cc32bb8ad45",
+    "base_model": "gpt-4o-2024-08-06",
+    "checkpoint_names": [
+      "cs_vision_0510.pkl",
+      "mkt_news_0510.pkl"
+    ],
+    "component_dataset_paths": [
+      "test/single_cs_0510.jsonl",
+      "test/single_mkt_0510.jsonl"
+    ],
+    "dataset_commit": "3236cd6929707315315f76240ec2f930e1e4f43f",
+    "expected_dataset_path": "processed_data/train/single_0510.jsonl",
+    "fine_tuning_script_path": "scripts/fine_tuning.py",
+    "fine_tuning_script_sha256": "81120d926bce060df84036744f225fd6f6b2480241328195dfd62ccfee5bd555",
+    "multi_agent_fine_tuning_blocks_active": false,
+    "same_agent_object_saved_to_both_checkpoint_names": true
+  }
+}

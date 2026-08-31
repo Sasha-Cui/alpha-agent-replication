@@ -3,7 +3,7 @@ v1/v2,artifact_placeholder,hard_release_claim_conflict,v1 literally prints URL_T
 v1/v2,python_requirement,hard_environment_conflict,"pyproject claims >=3.9.15, while two released match statements fail to parse on Python 3.9."
 v1/v2,test_dates,unresolved_date_conflict,"Paper says through September 2024, plots through August, and source handlers through 2024-12-31."
 v1/v2,forty_three_week_lineage,strong_internal_correspondence,"Market accuracies are 43-week fractions and annualizing 0.8347 over 43 weeks gives 1.083195, matching 108.32%. Values: [0.5814, 0.5581, 0.5814, 0.4651, 0.5814, 0.5581, 0.5116, 0.5581, 0.5814]."
-v1/v2,fine_tuning_coverage,source_execution_gap,Only the crypto-factor fine-tuning block is active; other expert blocks are commented and require manual edits.
+v1/v2,fine_tuning_coverage,source_execution_gap,"Only one single_0510 fine-tuning call is active; multi-agent expert blocks are commented, and the same resulting agent object is serialized as both cs_vision_0510.pkl and mkt_news_0510.pkl."
 v1/v2,explanation_dimensions,paper_source_mismatch,Judge source scores eight criteria; paper reports five and releases no evaluation records.
 v1/v2,figure_revision,author_output_verified_not_regenerated,All compiled assets correspond; portfolio legends/width and one scatter label changed after the pinned pre-submission commit.
 v3,code_lineage,v3_source_recovered_incomplete,"The paper-listed anonymous artifact resolves to first-author cryptoMAS source with all three architectures, but the runner's coingecko, cointelegraph, and RAGStore modules are absent from all 20 commits."

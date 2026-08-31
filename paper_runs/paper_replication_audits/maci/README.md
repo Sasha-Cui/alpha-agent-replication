@@ -22,6 +22,20 @@ payloads and all referenced images are therefore recoverable, not merely URL
 provenance. The files were added in May 2025 after paper v2, however, so this does
 not prove they were the uploaded paper training set.
 
+The active historical source expects `processed_data/train/single_0510.jsonl`.
+Replaying its commented construction deterministically concatenates the recovered
+930-record cross-sectional file and 31-record market file into 961 examples and
+2,455,569 bytes (SHA-256 `{RECONSTRUCTED_SINGLE_0510_SHA256}`). Against official
+OpenAI vision fine-tuning constraints, the reconstructed file has 930 one-image
+examples, 31 text-only examples, at most one image per example, 71,085 bytes per
+image at maximum, PNG/RGBA inputs, and no assistant image outputs. The exact
+`FTAgent.fine_tuning` method executes with an in-memory OpenAI stub and blocked
+sockets, issuing one `purpose="fine-tune"` file call, one job-create call for
+`gpt-4o-2024-08-06`, and one successful status retrieval. No remote upload or job
+is performed. Source then serializes the same agent object under both
+`cs_vision_0510.pkl` and `mkt_news_0510.pkl`; all multi-agent fine-tuning blocks
+are commented. This reconstructs the local procedure, not the paper's remote job.
+
 The public GitHub fork surface is also exhausted as of 2026-08-14. Both
 accessible forks expose one `main` branch: one is exact at the official head
 and the other is a three-commit-behind ancestor within the already audited

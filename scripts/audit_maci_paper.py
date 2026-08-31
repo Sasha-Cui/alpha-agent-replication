@@ -13,11 +13,15 @@ end-to-end paper-result reproduction.
 from __future__ import annotations
 
 import argparse
+import ast
 import csv
 import hashlib
 import json
 import re
+import socket
 import subprocess
+import sys
+import types
 from collections import Counter
 from difflib import SequenceMatcher
 from io import BytesIO
@@ -75,6 +79,19 @@ TRAINING_JSONL_PINS = {
 }
 TRAINING_IMAGE_MANIFEST_SHA256 = (
     "64d6cea8f5d3c5b52f720b9daa12764c440a2e652ac38da3c6baeb8422148f7b"
+)
+FINE_TUNING_SCRIPT_SHA256 = (
+    "81120d926bce060df84036744f225fd6f6b2480241328195dfd62ccfee5bd555"
+)
+FINE_TUNING_AGENT_SHA256 = (
+    "124e421d488216ba1568e0e1f57812ef2a00d9aa00543c5ea1147cc32bb8ad45"
+)
+RECONSTRUCTED_SINGLE_0510_SHA256 = (
+    "d76dfa507eb85d6b0a34246a702dce3eab76f5244bff0098621887e530f77765"
+)
+RECONSTRUCTED_SINGLE_0510_BYTES = 2_455_569
+OPENAI_VISION_FINE_TUNING_DOC = (
+    "https://developers.openai.com/api/docs/guides/vision-fine-tuning"
 )
 PUBLIC_FORK_HEADS = {
     "refs/remotes/forks/gelove/main": "2326185cc2d1eff02724cfeb88116ebb13f904e7",
@@ -961,6 +978,351 @@ def fine_tuning_record_lineage(
     return records, summary
 
 
+def fine_tuning_procedure_reconstruction(
+    author_current: Path,
+    training_records: Sequence[Mapping[str, Any]],
+    combined_path: Path,
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Reconstruct the active fine-tuning dataset and execute its API contract offline."""
+    script_bytes = git_bytes(
+        author_current,
+        "show",
+        f"{TRAINING_RECORDS_COMMIT}:scripts/fine_tuning.py",
+    )
+    agent_bytes = git_bytes(
+        author_current,
+        "show",
+        f"{TRAINING_RECORDS_COMMIT}:environ/agent.py",
+    )
+    if (
+        sha256_bytes(script_bytes) != FINE_TUNING_SCRIPT_SHA256
+        or sha256_bytes(agent_bytes) != FINE_TUNING_AGENT_SHA256
+    ):
+        raise ValueError("MACI historical fine-tuning source changed")
+
+    script_tree = ast.parse(script_bytes.decode("utf-8"))
+    fine_tuning_calls = [
+        node
+        for node in ast.walk(script_tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "fine_tuning"
+    ]
+    active_model_calls = [
+        node
+        for node in ast.walk(script_tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "FTAgent"
+    ]
+    checkpoint_names = []
+    same_agent_checkpoint_dump = False
+    for node in ast.walk(script_tree):
+        if isinstance(node, ast.For) and isinstance(node.iter, (ast.List, ast.Tuple)):
+            values = [
+                item.value
+                for item in node.iter.elts
+                if isinstance(item, ast.Constant) and isinstance(item.value, str)
+            ]
+            if values == ["cs_vision_0510", "mkt_news_0510"]:
+                checkpoint_names = [f"{value}.pkl" for value in values]
+                same_agent_checkpoint_dump = any(
+                    isinstance(child, ast.Call)
+                    and isinstance(child.func, ast.Attribute)
+                    and isinstance(child.func.value, ast.Name)
+                    and child.func.value.id == "pickle"
+                    and child.func.attr == "dump"
+                    and child.args
+                    and isinstance(child.args[0], ast.Name)
+                    and child.args[0].id == "agent"
+                    for child in ast.walk(node)
+                )
+    if (
+        len(fine_tuning_calls) != 1
+        or len(active_model_calls) != 1
+        or checkpoint_names != ["cs_vision_0510.pkl", "mkt_news_0510.pkl"]
+        or not same_agent_checkpoint_dump
+    ):
+        raise ValueError("MACI active fine-tuning source contract changed")
+    model_keywords = {
+        keyword.arg: keyword.value.value
+        for keyword in active_model_calls[0].keywords
+        if keyword.arg and isinstance(keyword.value, ast.Constant)
+    }
+    if model_keywords != {"model": "gpt-4o-2024-08-06"}:
+        raise ValueError("MACI active fine-tuning base model changed")
+
+    combined_records = []
+    component_paths = [
+        "test/single_cs_0510.jsonl",
+        "test/single_mkt_0510.jsonl",
+    ]
+    for dataset_path in component_paths:
+        raw = git_bytes(
+            author_current,
+            "show",
+            f"{TRAINING_RECORDS_COMMIT}:{dataset_path}",
+        )
+        combined_records.extend(json.loads(line) for line in raw.decode("utf-8").splitlines())
+    combined = "".join(json.dumps(record) + "\n" for record in combined_records).encode()
+    if (
+        len(combined_records) != 961
+        or len(combined) != RECONSTRUCTED_SINGLE_0510_BYTES
+        or sha256_bytes(combined) != RECONSTRUCTED_SINGLE_0510_SHA256
+    ):
+        raise ValueError("MACI reconstructed single_0510 dataset changed")
+    combined_path.write_bytes(combined)
+
+    image_by_url = {
+        str(row["image_url"]): row
+        for row in training_records
+        if row["image_url"]
+    }
+    image_examples = 0
+    text_only_examples = 0
+    maximum_images = 0
+    maximum_image_bytes = 0
+    assistant_image_outputs = 0
+    detail_values: set[str] = set()
+    for record in combined_records:
+        messages = record["messages"]
+        if [message["role"] for message in messages] != ["system", "user", "assistant"]:
+            raise ValueError("MACI reconstructed training message roles changed")
+        images = []
+        for message in messages:
+            if isinstance(message["content"], list):
+                for item in message["content"]:
+                    if item.get("type") == "image_url":
+                        images.append(item["image_url"])
+                        assistant_image_outputs += int(message["role"] == "assistant")
+        maximum_images = max(maximum_images, len(images))
+        if images:
+            image_examples += 1
+        else:
+            text_only_examples += 1
+        for image in images:
+            url = image["url"]
+            if url not in image_by_url:
+                raise ValueError(f"MACI combined training image is unrecovered: {url}")
+            maximum_image_bytes = max(
+                maximum_image_bytes,
+                int(image_by_url[url]["image_bytes"]),
+            )
+            detail_values.add(str(image.get("detail", "")))
+    if (
+        image_examples != 930
+        or text_only_examples != 31
+        or maximum_images != 1
+        or maximum_image_bytes != 71_085
+        or assistant_image_outputs != 0
+        or detail_values != {"high"}
+    ):
+        raise ValueError("MACI reconstructed training schema changed")
+
+    calls: dict[str, list[dict[str, Any]]] = {
+        "client": [],
+        "file_create": [],
+        "job_create": [],
+        "job_retrieve": [],
+    }
+
+    class Files:
+        @staticmethod
+        def create(*, file: Any, purpose: str) -> Any:
+            data = file.read()
+            calls["file_create"].append(
+                {
+                    "purpose": purpose,
+                    "bytes": len(data),
+                    "sha256": sha256_bytes(data),
+                }
+            )
+            return types.SimpleNamespace(id="file-audit")
+
+    class Jobs:
+        @staticmethod
+        def create(*, training_file: str, model: str) -> Any:
+            calls["job_create"].append(
+                {"training_file": training_file, "model": model}
+            )
+            return types.SimpleNamespace(id="job-audit")
+
+        @staticmethod
+        def retrieve(job_id: str) -> Any:
+            calls["job_retrieve"].append({"job_id": job_id})
+            return types.SimpleNamespace(
+                status="succeeded",
+                fine_tuned_model="ft:audit-placeholder",
+            )
+
+    class AuditOpenAI:
+        def __init__(self, *, api_key: str) -> None:
+            calls["client"].append({"placeholder_key_present": bool(api_key)})
+            self.files = Files()
+            self.fine_tuning = types.SimpleNamespace(jobs=Jobs())
+
+    saved_modules = {
+        name: sys.modules.get(name)
+        for name in ("openai", "tenacity", "environ", "environ.constants")
+    }
+    openai_module = types.ModuleType("openai")
+    openai_module.OpenAI = AuditOpenAI
+    environ_module = types.ModuleType("environ")
+    environ_module.__path__ = []
+    constants_module = types.ModuleType("environ.constants")
+    constants_module.OPEN_AI_API_KEY = "audit-placeholder-not-a-real-key"
+    constants_module.PROCESSED_DATA_PATH = combined_path.parent
+    tenacity_module = types.ModuleType("tenacity")
+
+    def identity_retry(*_args: Any, **_kwargs: Any) -> Any:
+        return lambda function: function
+
+    tenacity_module.retry = identity_retry
+    tenacity_module.stop_after_attempt = lambda *_args, **_kwargs: object()
+    tenacity_module.wait_random_exponential = lambda *_args, **_kwargs: object()
+    network_attempts = []
+    original_connect = socket.socket.connect
+
+    def blocked_connect(_socket: socket.socket, address: Any) -> None:
+        network_attempts.append(repr(address))
+        raise RuntimeError(f"network disabled during MACI fine-tuning audit: {address!r}")
+
+    try:
+        sys.modules["openai"] = openai_module
+        sys.modules["tenacity"] = tenacity_module
+        sys.modules["environ"] = environ_module
+        sys.modules["environ.constants"] = constants_module
+        socket.socket.connect = blocked_connect
+        namespace = {
+            "__file__": "environ/agent.py",
+            "__name__": "maci_finetuning_agent_audit",
+        }
+        exec(compile(agent_bytes, "environ/agent.py", "exec"), namespace)
+        agent = namespace["FTAgent"](model="gpt-4o-2024-08-06")
+        agent.fine_tuning(str(combined_path))
+    finally:
+        socket.socket.connect = original_connect
+        for name, previous in saved_modules.items():
+            if previous is None:
+                sys.modules.pop(name, None)
+            else:
+                sys.modules[name] = previous
+    if (
+        network_attempts
+        or calls["file_create"]
+        != [
+            {
+                "purpose": "fine-tune",
+                "bytes": RECONSTRUCTED_SINGLE_0510_BYTES,
+                "sha256": RECONSTRUCTED_SINGLE_0510_SHA256,
+            }
+        ]
+        or calls["job_create"]
+        != [{"training_file": "file-audit", "model": "gpt-4o-2024-08-06"}]
+        or calls["job_retrieve"] != [{"job_id": "job-audit"}]
+        or agent.model != "ft:audit-placeholder"
+    ):
+        raise ValueError("MACI native fine-tuning API contract changed")
+
+    source = {
+        "dataset_commit": TRAINING_RECORDS_COMMIT,
+        "fine_tuning_script_path": "scripts/fine_tuning.py",
+        "fine_tuning_script_sha256": FINE_TUNING_SCRIPT_SHA256,
+        "agent_source_path": "environ/agent.py",
+        "agent_source_sha256": FINE_TUNING_AGENT_SHA256,
+        "active_fine_tuning_calls": len(fine_tuning_calls),
+        "base_model": "gpt-4o-2024-08-06",
+        "expected_dataset_path": "processed_data/train/single_0510.jsonl",
+        "component_dataset_paths": component_paths,
+        "checkpoint_names": checkpoint_names,
+        "same_agent_object_saved_to_both_checkpoint_names": same_agent_checkpoint_dump,
+        "multi_agent_fine_tuning_blocks_active": False,
+    }
+    schema = {
+        "records": len(combined_records),
+        "bytes": len(combined),
+        "sha256": sha256_bytes(combined),
+        "image_examples": image_examples,
+        "text_only_examples": text_only_examples,
+        "maximum_images_per_example": maximum_images,
+        "maximum_image_bytes": maximum_image_bytes,
+        "image_formats": ["PNG"],
+        "image_modes": ["RGBA"],
+        "image_detail_values": sorted(detail_values),
+        "assistant_image_outputs": assistant_image_outputs,
+        "official_openai_static_vision_fine_tuning_contract_passed": True,
+        "official_openai_documentation": OPENAI_VISION_FINE_TUNING_DOC,
+        "documentation_retrieved_utc_date": "2026-08-31",
+    }
+    native = {
+        "source_method": "FTAgent.fine_tuning",
+        "non_target_import_adapter": (
+            "tenacity decorators are identity-stubbed because the target "
+            "fine_tuning method does not use retry logic"
+        ),
+        "network_attempts": network_attempts,
+        "openai_client_initializations": len(calls["client"]),
+        "file_create_calls": calls["file_create"],
+        "fine_tuning_job_create_calls": calls["job_create"],
+        "fine_tuning_job_retrieve_calls": calls["job_retrieve"],
+        "job_hyperparameters_explicitly_set": False,
+        "validation_file_explicitly_set": False,
+        "suffix_explicitly_set": False,
+        "stub_output_model": agent.model,
+        "remote_file_uploaded": False,
+        "remote_fine_tuning_job_created": False,
+        "paper_result_credit": False,
+    }
+    summary = {
+        "source_contract": source,
+        "reconstructed_dataset": schema,
+        "native_zero_network_execution": native,
+        "actual_uploaded_file_identity_recovered": False,
+        "actual_job_id_recovered": False,
+        "actual_selected_checkpoint_recovered": False,
+        "paper_run_use_verified": False,
+        "paper_result_credit": False,
+    }
+    rows = [
+        {
+            "dimension": "active_source_contract",
+            "released_or_recovered_state": "one active FTAgent.fine_tuning call using single_0510.jsonl",
+            "audit_execution": "AST/source hashes pinned at the dataset commit",
+            "outcome": "base model and two same-object checkpoint aliases recovered",
+            "paper_result_credit": False,
+        },
+        {
+            "dimension": "combined_training_file",
+            "released_or_recovered_state": "single_0510.jsonl absent from every Git object",
+            "audit_execution": "source-specified cross-sectional then market concatenation",
+            "outcome": "961 records; 2455569 bytes; deterministic SHA-256",
+            "paper_result_credit": False,
+        },
+        {
+            "dimension": "openai_vision_schema",
+            "released_or_recovered_state": "930 image examples and 31 text-only examples",
+            "audit_execution": "official current static limits and formats checked locally",
+            "outcome": "static contract passes; no service-side validation performed",
+            "paper_result_credit": False,
+        },
+        {
+            "dimension": "native_upload_job_method",
+            "released_or_recovered_state": "FTAgent.fine_tuning source method",
+            "audit_execution": "in-memory OpenAI stub with socket connections blocked",
+            "outcome": "one file create, one job create, one successful retrieve; zero network",
+            "paper_result_credit": False,
+        },
+        {
+            "dimension": "remote_lineage",
+            "released_or_recovered_state": "actual upload, job, checkpoint, and inference records absent",
+            "audit_execution": "none",
+            "outcome": "paper run use and result lineage remain unverified",
+            "paper_result_credit": False,
+        },
+    ]
+    return summary, rows
+
+
 def figure_rows(source: Path, author: Path, comparison: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
     comparison_by_name = {row["asset"]: row for row in comparison}
     result_units = {
@@ -1099,6 +1461,12 @@ def method_rows() -> list[dict[str, Any]]:
             "prompt_templates",
             "templates_plus_complete_historical_training_payload",
             "Templates plus 962 fine-tuning-format message records and all 930 distinct referenced image payloads are recovered. The files were added post-v2, and the actual uploaded file, job, and selected checkpoint remain absent.",
+        ),
+        (
+            "v1/v2",
+            "fine_tuning_procedure",
+            "native_contract_reconstructed_remote_job_missing",
+            "Active source constructs single_0510.jsonl from the recovered 930-record cross-sectional and 31-record market files, submits it once to gpt-4o-2024-08-06, and serializes the same resulting agent under two checkpoint names. The reconstructed 961-record file and zero-network API call contract execute locally; the actual upload, job, and checkpoint do not survive.",
         ),
         (
             "v1/v2",
@@ -1306,7 +1674,7 @@ def consistency_rows(
             "v1/v2",
             "fine_tuning_coverage",
             "source_execution_gap",
-            "Only the crypto-factor fine-tuning block is active; other expert blocks are commented and require manual edits.",
+            "Only one single_0510 fine-tuning call is active; multi-agent expert blocks are commented, and the same resulting agent object is serialized as both cs_vision_0510.pkl and mkt_news_0510.pkl.",
         ),
         (
             "v1/v2",
@@ -1498,6 +1866,21 @@ def external_primary_source_rows() -> list[dict[str, Any]]:
             "primary_source": "https://developers.openai.com/api/docs/models/gpt-4o",
             "source_fact": "OpenAI lists gpt-4o-2024-08-06 as a dated snapshot.",
             "audit_implication": "v1 source pins a real snapshot; v3 says GPT-4o without a snapshot ID.",
+        },
+        {
+            "subject": "GPT-4o vision fine-tuning contract",
+            "primary_source": OPENAI_VISION_FINE_TUNING_DOC,
+            "source_fact": (
+                "Official OpenAI documentation lists gpt-4o-2024-08-06 for vision "
+                "fine-tuning and permits HTTP image_url JSONL data with at most "
+                "50,000 image examples, 10 images per example, 10 MB per image, "
+                "PNG/JPEG/WEBP formats, and RGB/RGBA modes."
+            ),
+            "audit_implication": (
+                "The reconstructed 961-record single_0510 dataset passes these "
+                "static constraints; no upload, service validation, or remote job "
+                "is performed in the audit."
+            ),
         },
         {
             "subject": "GPT-5 release and snapshot",
@@ -1811,6 +2194,16 @@ def main() -> None:
 
     output = args.output
     output.mkdir(parents=True, exist_ok=True)
+    fine_tuning_procedure, fine_tuning_procedure_rows = (
+        fine_tuning_procedure_reconstruction(
+            args.author_current,
+            training_records,
+            output / "v1_v2_reconstructed_single_0510.jsonl",
+        )
+    )
+    execution["fine_tuning_procedure_reconstruction"] = fine_tuning_procedure[
+        "native_zero_network_execution"
+    ]
     write_csv(output / "source_lineage.csv", source_rows())
     write_csv(output / "published_result_ledger_v1_v2.csv", v1)
     write_csv(output / "published_result_ledger_v3.csv", v3)
@@ -1824,6 +2217,10 @@ def main() -> None:
     write_csv(output / "external_primary_source_audit.csv", external_primary_source_rows())
     write_csv(output / "public_fork_branch_ref_snapshot.csv", fork_branches)
     write_csv(output / "v1_v2_finetuning_record_lineage.csv", training_records)
+    write_csv(
+        output / "v1_v2_finetuning_procedure_conformance.csv",
+        fine_tuning_procedure_rows,
+    )
     (output / "public_fork_census.json").write_text(
         json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
     )
@@ -1832,6 +2229,10 @@ def main() -> None:
     (output / "repository_history.json").write_text(json.dumps(repository_history, indent=2) + "\n", encoding="utf-8")
     (output / "v1_v2_finetuning_payload_summary.json").write_text(
         json.dumps(training_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    (output / "v1_v2_finetuning_procedure.json").write_text(
+        json.dumps(fine_tuning_procedure, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     (output / "v3_author_output_summary.json").write_text(
@@ -1857,7 +2258,7 @@ def main() -> None:
             {
                 "fama_french_archive_sha256": sha256_file(args.fama_french_archive),
                 "fama_french_2025_monthly_rf_pct": fama_french_rf,
-                "provider_source_count": 6,
+                "provider_source_count": 7,
                 "paper_result_credit": False,
             },
             indent=2,
@@ -1907,6 +2308,37 @@ def main() -> None:
         ],
         "v1_v2_actual_fine_tuning_upload_job_checkpoint_recovered": False,
         "v1_v2_fine_tuning_payload_paper_result_credit": False,
+        "v1_v2_reconstructed_single_0510_records": fine_tuning_procedure[
+            "reconstructed_dataset"
+        ]["records"],
+        "v1_v2_reconstructed_single_0510_bytes": fine_tuning_procedure[
+            "reconstructed_dataset"
+        ]["bytes"],
+        "v1_v2_reconstructed_single_0510_sha256": fine_tuning_procedure[
+            "reconstructed_dataset"
+        ]["sha256"],
+        "v1_v2_reconstructed_single_0510_image_examples": fine_tuning_procedure[
+            "reconstructed_dataset"
+        ]["image_examples"],
+        "v1_v2_reconstructed_single_0510_text_only_examples": fine_tuning_procedure[
+            "reconstructed_dataset"
+        ]["text_only_examples"],
+        "v1_v2_openai_vision_fine_tuning_static_contract_passed": fine_tuning_procedure[
+            "reconstructed_dataset"
+        ]["official_openai_static_vision_fine_tuning_contract_passed"],
+        "v1_v2_native_fine_tuning_contract_network_attempts": len(
+            fine_tuning_procedure["native_zero_network_execution"]["network_attempts"]
+        ),
+        "v1_v2_native_fine_tuning_contract_file_create_calls": len(
+            fine_tuning_procedure["native_zero_network_execution"]["file_create_calls"]
+        ),
+        "v1_v2_native_fine_tuning_contract_job_create_calls": len(
+            fine_tuning_procedure["native_zero_network_execution"][
+                "fine_tuning_job_create_calls"
+            ]
+        ),
+        "v1_v2_native_fine_tuning_remote_job_created": False,
+        "v1_v2_native_fine_tuning_procedure_paper_result_credit": False,
         "v1_v2_public_history_commits_audited": repository_history["v1_v2_repository_history"]["commit_count"],
         "v1_v2_public_fork_census_date": fork_summary["census_date"],
         "v1_v2_public_forks_accessible": fork_summary["accessible_public_forks"],
@@ -1963,7 +2395,7 @@ def main() -> None:
             row["visual_qa"]["status"].startswith("passed_") for row in manuscripts
         ),
         "manuscript_rebuilds_are_result_replication": False,
-        "provider_primary_sources_audited": 6,
+        "provider_primary_sources_audited": 7,
         "fama_french_archive_hash_verified": True,
         "llm_calls_made": int(execution.get("llm_calls_made", 0)) + int(v3_execution["llm_calls_made"]),
         "paper_evidence_route_v1_v2": "public_code_available_incomplete_author_source",
@@ -1992,6 +2424,20 @@ at the current official head and total 53,574,400 bytes. The 962 record-level
 payloads and all referenced images are therefore recoverable, not merely URL
 provenance. The files were added in May 2025 after paper v2, however, so this does
 not prove they were the uploaded paper training set.
+
+The active historical source expects `processed_data/train/single_0510.jsonl`.
+Replaying its commented construction deterministically concatenates the recovered
+930-record cross-sectional file and 31-record market file into 961 examples and
+2,455,569 bytes (SHA-256 `{RECONSTRUCTED_SINGLE_0510_SHA256}`). Against official
+OpenAI vision fine-tuning constraints, the reconstructed file has 930 one-image
+examples, 31 text-only examples, at most one image per example, 71,085 bytes per
+image at maximum, PNG/RGBA inputs, and no assistant image outputs. The exact
+`FTAgent.fine_tuning` method executes with an in-memory OpenAI stub and blocked
+sockets, issuing one `purpose="fine-tune"` file call, one job-create call for
+`gpt-4o-2024-08-06`, and one successful status retrieval. No remote upload or job
+is performed. Source then serializes the same agent object under both
+`cs_vision_0510.pkl` and `mkt_news_0510.pkl`; all multi-agent fine-tuning blocks
+are commented. This reconstructs the local procedure, not the paper's remote job.
 
 The public GitHub fork surface is also exhausted as of 2026-08-14. Both
 accessible forks expose one `main` branch: one is exact at the official head
