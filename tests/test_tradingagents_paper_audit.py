@@ -93,6 +93,7 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     paper_assets = read_csv(output / "paper_source_asset_inventory.csv")
     paper_versions = read_csv(output / "official_paper_version_inventory.csv")
     figure_series = read_csv(output / "paper_figure_series_inventory.csv")
+    vector_endpoints = read_csv(output / "paper_vector_curve_endpoint_conformance.csv")
     yahoo = read_csv(output / "current_yahoo_buy_hold_diagnostic.csv")
     history_commits = read_csv(output / "public_source_history_commit_inventory.csv")
     history_paths = read_csv(output / "public_source_history_path_inventory.csv")
@@ -133,6 +134,10 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert manifest["native_exact_result_figure_series_reproduced"] == 0
     assert manifest["paper_presented_empirical_units_total"] == 131
     assert manifest["native_presented_empirical_units_reproduced"] == 0
+    assert manifest["paper_vector_curve_endpoints_total"] == 17
+    assert manifest["paper_vector_curve_endpoints_matching_table"] == 1
+    assert manifest["paper_vector_curve_endpoints_conflicting_with_table"] == 16
+    assert manifest["paper_vector_curve_endpoints_with_native_result_credit"] == 0
     assert manifest["annualized_return_pairs_checked"] == 17
     assert manifest["current_public_yahoo_buy_hold_cells_checked"] == 12
     assert manifest["current_public_yahoo_buy_hold_cells_matching"] == 0
@@ -230,6 +235,15 @@ def test_committed_audit_is_fail_closed_and_self_hashing() -> None:
     assert author_outputs[0]["independently_regenerated"] == "False"
     assert author_outputs[0]["paper_result_credit"] == "False"
     assert len(annualization) == 17
+    assert len(vector_endpoints) == 17
+    assert Counter(row["status"] for row in vector_endpoints) == {
+        "author_figure_endpoint_conflicts_with_table": 16,
+        "exact_author_figure_table_endpoint_correspondence": 1,
+    }
+    exact_vector = next(row for row in vector_endpoints if row["display_precision_match"] == "True")
+    assert (exact_vector["asset"], exact_vector["method"]) == ("AMZN", "KDJ&RSI")
+    assert {row["native_paper_result_credit"] for row in vector_endpoints} == {"False"}
+
     assert {row["display_precision_match"] for row in annualization} == {"False"}
     assert len(improvements) == 9
     assert len(yahoo) == 12
@@ -330,7 +344,8 @@ def test_global_evidence_route_preserves_current_yahoo_boundary() -> None:
     ledger = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
     row = next(item for item in ledger if item["system_id"] == "SYS-TRADING-AGENTS")
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:completed_77_of_77_author_table_cells_corroborated_14_of_42_"
+        "paper_audit:completed_77_of_77_author_table_cells_corroborated_16_of_17_"
+        "vector_endpoints_conflict_14_of_42_"
         "author_raster_series_cross_format_12_current_yahoo_cells_zero_matches_19445_"
         "forks_24584_refs_4234_heads_exhausted_zero_native_regenerated"
     )
@@ -342,6 +357,8 @@ def test_global_evidence_route_preserves_current_yahoo_boundary() -> None:
     assert "19,445 accessible public forks" in note
     assert "14/42 paper series" in note
     assert "No fork provides a native paper run" in note
+    assert "17 cumulative-return vector endpoints" in note
+    assert "other 16" in note
 
     route = read_csv(ROOT / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv")
     route_row = next(item for item in route if item["canonical_work_id"] == "CensusArxiv241220138")
@@ -372,6 +389,10 @@ def test_pinned_primary_sources_when_available() -> None:
         "exact_released_tool_name": 6,
         "absent_from_nearest_release": 5,
     }
+    vector_endpoints = audit.paper_vector_curve_endpoint_rows(paper_source)
+    assert len(vector_endpoints) == 17
+    assert sum(row["display_precision_match"] for row in vector_endpoints) == 1
+    assert {row["native_paper_result_credit"] for row in vector_endpoints} == {False}
     diagnostic_root = audit.DEFAULT_YAHOO_DIAGNOSTIC_ROOT
     if diagnostic_root.is_dir():
         diagnostic = audit.current_yahoo_buy_hold_diagnostic(diagnostic_root)

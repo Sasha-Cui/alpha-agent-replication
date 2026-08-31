@@ -45,6 +45,11 @@ meaningful architecture subset, but not the experiment that produced the paper.
   in exactly the paper's order. This corroborates an author-rendered output; it
   does not independently regenerate any cell or expose the underlying arrays.
 - The exact 77-value table first appears at `db9f63fa54059ec8ae262ef10557c853b6a011a7`
+- The Matplotlib vector coordinates recover all 17 plotted cumulative-return
+  endpoints that have Table 1 CR counterparts. Only AMZN KDJ&RSI matches at
+  display precision; the other 16 conflict, including all three TradingAgents
+  endpoints. These are cross-artifact author-output checks, not independently
+  regenerated return arrays or paper-result credit.
   (2024-12-28T11:56:38+08:00), before v1. It persists through 15 distinct
   HTML blobs on `index.html` and `index_complete.html`.
 
@@ -111,6 +116,9 @@ meaningful architecture subset, but not the experiment that produced the paper.
 
 - All 17 displayed CR/AR pairs fail the paper's literal annualized-return formula
   for the stated 89-day period; for example, AAPL TradingAgents CR=26.62% implies
+- Sixteen of 17 vector cumulative-return endpoints conflict with their Table 1
+  CR cells. For example, the AAPL TradingAgents curve ends at about +29.06%,
+  versus +26.62% in the table.
   about 163.43% annualized, not the reported 30.5%.
 - GOOGL TradingAgents SR 6.39 minus the best displayed baseline 2.31 is 4.08,
   not the reported 4.26. The improvement row is otherwise mostly absolute metric
@@ -125,8 +133,8 @@ meaningful architecture subset, but not the experiment that produced the paper.
 
 The architecture and the historical rendered table are real and useful, but a
 current one-day run would use mutable data, substantially later source, and
-changed model endpoints and would not reproduce the 2024 paper. The vector
-figures expose curves, events, and annotations, not their daily numeric arrays.
+changed model endpoints and would not reproduce the 2024 paper. Vector drawing
+coordinates support endpoint checks but do not expose the original daily arrays.
 Run
 `scripts/audit_tradingagents_paper.py` to regenerate this package; `--strict`
 fails until the native paper data, exact experiment source/configuration, models,
