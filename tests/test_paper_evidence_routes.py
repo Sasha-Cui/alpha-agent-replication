@@ -262,7 +262,7 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         ),
         "CensusArxiv231113743": (
             "paper_audit:partial_227_of_235_author_output_cells_corroborated_"
-            "67_of_75_native_metric_function_cells_reproduced_zero_end_to_end_agent_cells_"
+            "67_of_75_native_metric_main_cells_reproduced_zero_end_to_end_agent_cells_"
             "181_accessible_forks_187_refs_20_unique_heads_exhausted"
         ),
             "CensusArxiv240218485": (
