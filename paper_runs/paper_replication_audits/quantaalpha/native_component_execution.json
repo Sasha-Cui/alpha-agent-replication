@@ -24,12 +24,24 @@
   "upstream_tests_discovered": 1,
   "upstream_tests_passed": 0,
   "upstream_tests_failed": 1,
-  "upstream_test_failure": "Traceback (most recent call last):\n  File \"/nfs/roberts/scratch/pi_btk22/zc362/quantaalpha_source/quantaalpha/factors/coder/test.py\", line 2, in <module>\n    from jinja2 import Template\nModuleNotFoundError: No module named 'jinja2'\n",
+  "upstream_test_failure": "missing template_debug.jinjia2",
+  "upstream_test_dependency_import_passed": true,
   "full_native_environment_reproduced": false,
   "recovered_baseline_native_environment_reproduced": true,
   "paper_experiment_executed": true,
   "paper_experiment_execution_scope": "Alpha158(20), Alpha158, and Alpha360 native baselines plus the complete 170/170-factor QuantaAlpha/GPT diagnostic after one operator compatibility repair",
   "paper_result_cells_reproduced": 9,
   "component_execution_is_paper_result_credit": false,
-  "llm_or_market_api_called": false
+  "llm_or_market_api_called": false,
+  "adapted_upstream_test_execution": {
+    "execution_runs": 2,
+    "declared_environment_freeze_lines": 351,
+    "native_factor_rows": 48700,
+    "native_factor_finite_rows": 48600,
+    "native_factor_canonical_sha256": "6b894e78abebc6e83022e95241a2753a0edb8343cea79e974becdd7e0433cd53",
+    "network_attempts": [],
+    "paper_experiment_executed": false,
+    "published_result_cells_reproduced": 0,
+    "paper_result_credit": false
+  }
 }

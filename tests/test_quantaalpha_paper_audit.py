@@ -157,6 +157,15 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     complete_repeats = json.loads(
         (output / "complete_pool_repeatability.json").read_text(encoding="utf-8")
     )
+    upstream_test = json.loads(
+        (output / "quantaalpha_upstream_test_execution.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    upstream_rows = read_csv(output / "quantaalpha_upstream_test_conformance.csv")
+    upstream_freeze = (
+        output / "quantaalpha_upstream_environment_freeze.txt"
+    ).read_text(encoding="utf-8")
     assert manifest["overall_status"] == (
         "one_baseline_row_plus_one_alpha158_cell_regenerated_main_claim_not_reproduced"
     )
@@ -252,6 +261,25 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert manifest["native_component_driver_passed"] is True
     assert manifest["native_upstream_tests_passed"] == 0
     assert manifest["native_upstream_tests_failed"] == 1
+    assert manifest["adapted_upstream_test_execution_runs"] == 2
+    assert manifest["adapted_upstream_test_passed_runs"] == 2
+    assert manifest["adapted_upstream_test_environment_freeze_lines"] == 351
+    assert manifest["adapted_upstream_test_native_factor_rows"] == 48_700
+    assert manifest["adapted_upstream_test_native_factor_finite_rows"] == 48_600
+    assert manifest["adapted_upstream_test_native_factor_nan_rows"] == 100
+    assert (
+        manifest["adapted_upstream_test_native_factor_canonical_sha256"]
+        == audit.UPSTREAM_TEST_OUTPUT_CANONICAL_SHA256
+    )
+    assert manifest["adapted_upstream_test_network_attempts"] == 0
+    assert manifest["adapted_upstream_test_published_result_cells_reproduced"] == 0
+    assert manifest["adapted_upstream_test_paper_result_credit"] is False
+    assert manifest["adapted_upstream_test_evidence_sha256"] == (
+        audit.UPSTREAM_TEST_EVIDENCE_SHA256
+    )
+    assert manifest["adapted_upstream_test_driver_sha256"] == (
+        audit.UPSTREAM_TEST_DRIVER_SHA256
+    )
     assert manifest["local_motif_proxy_paper_result_credit"] is False
     assert manifest["public_source_branches_total"] == 5
     assert manifest["public_source_tags_total"] == 0
@@ -313,6 +341,20 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert native["component_execution_is_paper_result_credit"] is False
     assert native["paper_experiment_executed"] is True
     assert native["paper_result_cells_reproduced"] == 9
+    assert native["upstream_test_failure"] == "missing template_debug.jinjia2"
+    assert native["upstream_test_dependency_import_passed"] is True
+    adapted = native["adapted_upstream_test_execution"]
+    assert adapted["execution_runs"] == 2
+    assert adapted["declared_environment_freeze_lines"] == 351
+    assert adapted["native_factor_rows"] == 48_700
+    assert adapted["native_factor_finite_rows"] == 48_600
+    assert adapted["native_factor_canonical_sha256"] == (
+        audit.UPSTREAM_TEST_OUTPUT_CANONICAL_SHA256
+    )
+    assert adapted["network_attempts"] == []
+    assert adapted["paper_experiment_executed"] is False
+    assert adapted["published_result_cells_reproduced"] == 0
+    assert adapted["paper_result_credit"] is False
     assert len(prepublication_history) == 28
     assert {row["before_v1_submission"] for row in prepublication_history} == {"True"}
     assert len(fork_heads) == 77
@@ -417,6 +459,40 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert complete_result["metrics"] == audit.QA_GPT_COMPLETE_170_RAW_METRICS
     assert len(complete_repeats) == 2
     assert audit.verify_complete_pool_evidence(output)["repeat_runs"] == 2
+    assert upstream_test["execution_runs"] == 2
+    assert upstream_test["original_test_modified"] is False
+    assert upstream_test["unadapted_test_execution"] == {
+        "dependency_import_passed": True,
+        "failure": "missing template_debug.jinjia2",
+        "network_attempts": [],
+        "paper_result_credit": False,
+        "returncode": 1,
+    }
+    assert upstream_test["environment"]["pip_check"] == "No broken requirements found."
+    assert upstream_test["environment"]["freeze_lines"] == 351
+    assert upstream_test["environment"]["resolved_versions"]["rdagent"] == "0.8.0"
+    assert upstream_test["environment"]["resolved_versions"]["pyqlib"] == "0.9.7"
+    assert len(upstream_test["runs"]) == 2
+    assert {run["returncode"] for run in upstream_test["runs"]} == {0}
+    assert {tuple(run["network_attempts"]) for run in upstream_test["runs"]} == {()}
+    assert {run["result_rows"] for run in upstream_test["runs"]} == {48_700}
+    assert {run["result_finite_rows"] for run in upstream_test["runs"]} == {48_600}
+    assert {run["result_nan_rows"] for run in upstream_test["runs"]} == {100}
+    assert {run["result_canonical_sha256"] for run in upstream_test["runs"]} == {
+        audit.UPSTREAM_TEST_OUTPUT_CANONICAL_SHA256
+    }
+    assert upstream_test["canonical_outputs_identical"] is True
+    assert upstream_test["paper_experiment_executed"] is False
+    assert upstream_test["published_result_cells_reproduced"] == 0
+    assert upstream_test["paper_result_credit"] is False
+    assert len(upstream_rows) == 5
+    assert {row["paper_result_credit"] for row in upstream_rows} == {"False"}
+    assert len(upstream_freeze.splitlines()) == 351
+    assert "rdagent==0.8.0" in upstream_freeze
+    assert "pyqlib==0.9.7" in upstream_freeze
+    assert audit.verify_upstream_test_evidence(output)["driver_sha256"] == (
+        audit.UPSTREAM_TEST_DRIVER_SHA256
+    )
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
 

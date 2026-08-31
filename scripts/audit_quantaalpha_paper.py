@@ -279,6 +279,19 @@ COMPLETE_POOL_REPAIRED_FACTORS = (
     "ResidualMom_VolumeConfirm_20D",
 )
 COMPLETE_POOL_REPEAT_MAX_ABS_DIFFERENCE = 1.4432899320127035e-15
+UPSTREAM_TEST_DRIVER_SHA256 = (
+    "9d21b3a2e179e9e023629adf16da1e6ab37b368139d4d982a1964b01739086be"
+)
+UPSTREAM_TEST_EVIDENCE_SHA256 = {
+    "quantaalpha_upstream_environment_freeze.txt": "b4bf882ce38c200efa1ded4fa87f54f450c812d4409d153ef38a00fd5d50a099",
+    "quantaalpha_upstream_test_conformance.csv": "63d3031448cc9102cacd3a01c280c45cc9ac61b8e5d6c05ae34acac008234a16",
+    "quantaalpha_upstream_test_execution.json": "f4d3a0c9d83b0c2e9b7a98d35c69efca327d0e372aa556e4e9ed7a76a952da04",
+    "quantaalpha_upstream_test_run_1.stdout.txt": "2be2c6101124b42e8d2e85e377fc92d6decbbb81aeac48bd000083770673a265",
+    "quantaalpha_upstream_test_run_2.stdout.txt": "2be2c6101124b42e8d2e85e377fc92d6decbbb81aeac48bd000083770673a265",
+}
+UPSTREAM_TEST_OUTPUT_CANONICAL_SHA256 = (
+    "6b894e78abebc6e83022e95241a2753a0edb8343cea79e974becdd7e0433cd53"
+)
 
 # Curated aggregate artifacts with the strongest rounded correspondence to the
 # v1/v2 table.  Filename/model alignment is recorded separately because a
@@ -1129,6 +1142,89 @@ def verify_complete_pool_evidence(output_dir: Path) -> dict[str, Any]:
         "repaired_factors": list(COMPLETE_POOL_REPAIRED_FACTORS),
         "repeat_runs": len(repeats),
         "repeat_max_abs_difference": repeat_max_abs_difference,
+    }
+
+
+def verify_upstream_test_evidence(output_dir: Path) -> dict[str, Any]:
+    """Fail closed on the adapted two-run release-test execution evidence."""
+    for name, expected in UPSTREAM_TEST_EVIDENCE_SHA256.items():
+        if sha256(output_dir / name) != expected:
+            raise RuntimeError(f"QuantaAlpha upstream-test evidence hash changed: {name}")
+    driver = Path(__file__).with_name("run_quantaalpha_upstream_test.py")
+    if sha256(driver) != UPSTREAM_TEST_DRIVER_SHA256:
+        raise RuntimeError("QuantaAlpha upstream-test driver changed")
+
+    payload = json.loads(
+        (output_dir / "quantaalpha_upstream_test_execution.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    if payload.get("author_source_commit") != SOURCE_COMMIT:
+        raise RuntimeError("QuantaAlpha upstream-test source commit drifted")
+    if payload.get("author_source_modified") is not False:
+        raise RuntimeError("QuantaAlpha upstream-test evidence modified the author checkout")
+    if payload.get("original_test_modified") is not False:
+        raise RuntimeError("QuantaAlpha upstream test was modified")
+    environment = payload.get("environment", {})
+    if (
+        environment.get("python") != "3.12.3"
+        or environment.get("pip_check") != "No broken requirements found."
+        or environment.get("freeze_lines") != 351
+        or environment.get("freeze_sha256")
+        != UPSTREAM_TEST_EVIDENCE_SHA256[
+            "quantaalpha_upstream_environment_freeze.txt"
+        ]
+        or environment.get("resolved_versions", {}).get("rdagent") != "0.8.0"
+        or environment.get("resolved_versions", {}).get("pyqlib") != "0.9.7"
+    ):
+        raise RuntimeError("QuantaAlpha upstream-test environment drifted")
+    adapters = payload.get("adapters", {})
+    return_adapter = adapters.get("return_column", {})
+    if (
+        "byte-identical temporary alias" not in adapters.get("template_alias", "")
+        or return_adapter.get("return_rows") != 48_700
+        or return_adapter.get("return_finite_rows") != 48_700
+        or return_adapter.get("return_canonical_sha256")
+        != "3e49b0d8342a2345b6afd3a080a3ea7a1c6536bd9c479aa68351948238fbd6f5"
+    ):
+        raise RuntimeError("QuantaAlpha upstream-test adapter evidence drifted")
+    unadapted = payload.get("unadapted_test_execution", {})
+    if (
+        unadapted.get("returncode") != 1
+        or unadapted.get("dependency_import_passed") is not True
+        or unadapted.get("failure") != "missing template_debug.jinjia2"
+        or unadapted.get("network_attempts") != []
+        or unadapted.get("paper_result_credit") is not False
+    ):
+        raise RuntimeError("QuantaAlpha unadapted upstream-test boundary drifted")
+    runs = payload.get("runs", [])
+    if len(runs) != 2 or payload.get("execution_runs") != 2:
+        raise RuntimeError("QuantaAlpha upstream-test repeat census drifted")
+    for run in runs:
+        if (
+            run.get("returncode") != 0
+            or run.get("network_attempts") != []
+            or run.get("result_rows") != 48_700
+            or run.get("result_finite_rows") != 48_600
+            or run.get("result_nan_rows") != 100
+            or run.get("result_canonical_sha256")
+            != UPSTREAM_TEST_OUTPUT_CANONICAL_SHA256
+        ):
+            raise RuntimeError("QuantaAlpha upstream-test native output drifted")
+    if (
+        payload.get("canonical_outputs_identical") is not True
+        or payload.get("native_upstream_test_passed") is not True
+        or payload.get("native_factor_series_generated") is not True
+        or payload.get("llm_or_market_api_called") is not False
+        or payload.get("paper_experiment_executed") is not False
+        or payload.get("published_result_cells_reproduced") != 0
+        or payload.get("paper_result_credit") is not False
+    ):
+        raise RuntimeError("QuantaAlpha upstream-test credit boundary drifted")
+    return {
+        "evidence": payload,
+        "evidence_sha256": dict(UPSTREAM_TEST_EVIDENCE_SHA256),
+        "driver_sha256": UPSTREAM_TEST_DRIVER_SHA256,
     }
 
 
@@ -2836,7 +2932,10 @@ def compile_revision(source_root: Path, commit: str | None = None) -> dict[str, 
         return {"python_files": len(py_files), "compiled": len(py_files) - len(failures), "failures": failures}
 
 
-def native_execution(source_root: Path) -> dict[str, Any]:
+def native_execution(
+    source_root: Path,
+    upstream_test_evidence: Mapping[str, Any],
+) -> dict[str, Any]:
     current = compile_revision(source_root)
     initial = compile_revision(source_root, INITIAL_COMMIT)
     component_python = os.environ.get("QUANTAALPHA_COMPONENT_PYTHON", sys.executable)
@@ -2848,12 +2947,7 @@ def native_execution(source_root: Path) -> dict[str, Any]:
         if component.returncode == 0
         else {"error": component.stderr[-3000:]}
     )
-    upstream = subprocess.run(
-        [component_python, str(source_root / "quantaalpha/factors/coder/test.py")],
-        cwd=source_root / "quantaalpha/factors/coder",
-        capture_output=True,
-        text=True,
-    )
+    unadapted = upstream_test_evidence["evidence"]["unadapted_test_execution"]
     return {
         "component_python": component_python,
         "current_compile": current,
@@ -2861,11 +2955,12 @@ def native_execution(source_root: Path) -> dict[str, Any]:
         "component_driver_returncode": component.returncode,
         "component_checks": component_payload,
         "upstream_tests_discovered": 1,
-        "upstream_tests_passed": int(upstream.returncode == 0),
-        "upstream_tests_failed": int(upstream.returncode != 0),
-        "upstream_test_failure": "missing template_debug.jinjia2"
-        if "template_debug.jinjia2" in upstream.stderr
-        else upstream.stderr[-1000:],
+        "upstream_tests_passed": 0,
+        "upstream_tests_failed": 1,
+        "upstream_test_failure": unadapted["failure"],
+        "upstream_test_dependency_import_passed": unadapted[
+            "dependency_import_passed"
+        ],
         "full_native_environment_reproduced": False,
         "recovered_baseline_native_environment_reproduced": True,
         "paper_experiment_executed": True,
@@ -2914,6 +3009,7 @@ def build_audit(
     verify_pins(source_root, papers, paper_source_root, dataset_api, debug_h5)
     output_dir.mkdir(parents=True, exist_ok=True)
     complete_pool_evidence = verify_complete_pool_evidence(output_dir)
+    upstream_test_evidence = verify_upstream_test_evidence(output_dir)
     deterministic_evidence = verify_deterministic_baseline_evidence(output_dir)
     alpha360_grid = verify_alpha360_protocol_grid(output_dir)
     tables = paper_table_rows()
@@ -2943,7 +3039,24 @@ def build_audit(
     versioned_main_table = paper_version_main_table_rows(source_root, paper_source_root)
     paper_assets = paper_source_inventory(paper_source_root)
     datasets = dataset_inventory(dataset_api, tree_api, debug_h5)
-    native = native_execution(source_root)
+    native = native_execution(source_root, upstream_test_evidence)
+    native["adapted_upstream_test_execution"] = {
+        "execution_runs": upstream_test_evidence["evidence"]["execution_runs"],
+        "declared_environment_freeze_lines": upstream_test_evidence["evidence"][
+            "environment"
+        ]["freeze_lines"],
+        "native_factor_rows": upstream_test_evidence["evidence"]["runs"][0][
+            "result_rows"
+        ],
+        "native_factor_finite_rows": upstream_test_evidence["evidence"]["runs"][0][
+            "result_finite_rows"
+        ],
+        "native_factor_canonical_sha256": UPSTREAM_TEST_OUTPUT_CANONICAL_SHA256,
+        "network_attempts": [],
+        "paper_experiment_executed": False,
+        "published_result_cells_reproduced": 0,
+        "paper_result_credit": False,
+    }
     outputs = {
         "paper_numeric_table_conformance.csv": tables,
         "paper_numeric_figure_labels.csv": labels,
@@ -3165,6 +3278,34 @@ def build_audit(
         "native_component_driver_passed": native["component_driver_returncode"] == 0,
         "native_upstream_tests_passed": native["upstream_tests_passed"],
         "native_upstream_tests_failed": native["upstream_tests_failed"],
+        "adapted_upstream_test_execution_runs": upstream_test_evidence["evidence"][
+            "execution_runs"
+        ],
+        "adapted_upstream_test_passed_runs": 2,
+        "adapted_upstream_test_environment_freeze_lines": upstream_test_evidence[
+            "evidence"
+        ]["environment"]["freeze_lines"],
+        "adapted_upstream_test_native_factor_rows": upstream_test_evidence["evidence"][
+            "runs"
+        ][0]["result_rows"],
+        "adapted_upstream_test_native_factor_finite_rows": upstream_test_evidence[
+            "evidence"
+        ]["runs"][0]["result_finite_rows"],
+        "adapted_upstream_test_native_factor_nan_rows": upstream_test_evidence["evidence"][
+            "runs"
+        ][0]["result_nan_rows"],
+        "adapted_upstream_test_native_factor_canonical_sha256": (
+            UPSTREAM_TEST_OUTPUT_CANONICAL_SHA256
+        ),
+        "adapted_upstream_test_network_attempts": 0,
+        "adapted_upstream_test_published_result_cells_reproduced": 0,
+        "adapted_upstream_test_paper_result_credit": False,
+        "adapted_upstream_test_evidence_sha256": upstream_test_evidence[
+            "evidence_sha256"
+        ],
+        "adapted_upstream_test_driver_sha256": upstream_test_evidence[
+            "driver_sha256"
+        ],
         "audit_runtime_called_llm_or_market_data_api": False,
         "local_motif_proxy_candidate": "code_quantaalpha_evolutionary_factor_miner",
         "local_motif_proxy_paper_result_credit": False,
@@ -3179,7 +3320,10 @@ def build_audit(
             "repair and materially misses the claimed v1/v2 result (IC 0.04229 versus 0.15008; ARR 3.61% "
             "versus 27.75%; IR 0.51367 versus 3.32512). Two complete reruns agree within 1.45e-15. The two "
             "repaired factors lower ARR and IR relative to the prior 168-factor diagnostic, so they do not "
-            "explain the headline gap. Raw author predictions, returns, holdings, prompt transcripts, complete run "
+            "explain the headline gap. A separate declared-dependency probe runs the original factor-coder "
+            "test twice after two disclosed copied-tree repairs, producing identical 48,700-row canonical "
+            "factor outputs with zero API calls and zero paper-result credit. Raw author predictions, returns, "
+            "holdings, prompt transcripts, complete run "
             "lineage, and plot arrays remain absent. The v1/v2-to-v3 result revision and v3 internal conflicts "
             "also remain unexplained. A dated census exhausted all 267 GraphQL-accessible public forks and "
             "357 branch refs (77 unique heads): nine author-attributed post-v1 heads add source/config/docs but "
@@ -3221,13 +3365,14 @@ regenerated; the headline QuantaAlpha result does not reproduce**.
 - `scripts/rerun_quantaalpha_deterministic_baselines.py` runs Alpha158 and Alpha360 twice in fresh processes, substitutes only the fingerprinted provider/output paths, leaves the author checkout clean, and emits normalized evidence without elapsed-time noise.
 - `scripts/rerun_quantaalpha_alpha360_protocol_grid.py` pins Qlib v0.9.7's workflow, handler, loader, and tag commit; reruns the exact Qlib profile twice; and keeps both model/preprocessing hybrids explicitly outside paper-result credit.
 - `scripts/rerun_quantaalpha_complete_pool.py` ships the complete-pool recovery path. Its factor-recovery record, result JSON, two native logs, and two-run repeatability record are hash-pinned in this audit; it leaves the author checkout unmodified and makes no LLM or market API call.
+- `scripts/run_quantaalpha_upstream_test.py` executes the unmodified released factor-coder test twice in a 351-line declared-dependency environment. A temporary Git archive maps the missing `template_debug.jinjia2` name byte-for-byte to the shipped template and derives `$return` from the official 48,700-row HDF with the release's own instrument-level close-return formula. Both runs produce the same 48,700-point canonical hash, with 48,600 finite values, 100 warm-up NaNs, and zero network attempts. This is native component evidence and adds zero published-result cells.
 - Pre-publication pools preserve IDs, formulas, descriptions, implementation code, backtest feedback, and cache lineage for the LLM-generated factors.
 
 ## Why it is not faithful yet
 
 - The actual checked-in `configs/experiment.yaml` is a demo profile: 2 rather than 10 directions, 3 rounds rather than the paper's five mutation/crossover cycles, 2 rather than the documented 10 crossover combinations, 1 rather than 3 factors per hypothesis, lower complexity limits, and the consistency gate disabled.
 - Paper prose describes mutation as targeted failed-segment repair and crossover as reuse/splicing of validated trajectory segments. The source generates new hypotheses from truncated textual summaries; it does not localize, preserve, or splice structured trajectory segments.
-- The current-source upstream test still fails because `template_debug.jinjia2` is missing. The released custom loader also refuses factors whose author cache paths are gone. Two public expressions remain invalid in the unmodified operator library; the complete-pool diagnostic therefore records, isolates, and discloses one cross-sectional-mean broadcast repair instead of treating the repaired execution as exact unmodified-source fidelity.
+- The current-source upstream test remains non-operational as shipped: it names an absent `template_debug.jinjia2`, and the official debug HDF lacks the `$return` column required by its literal expression. The copied-tree audit repairs both explicitly and passes, but the resulting factor has no published target or experiment lineage. The released custom loader also refuses factors whose author cache paths are gone. Two public expressions remain invalid in the unmodified operator library; the complete-pool diagnostic therefore records, isolates, and discloses one cross-sectional-mean broadcast repair instead of treating the repaired execution as exact unmodified-source fidelity.
 - Exact LLM snapshots, prompts/responses, retry traces, parent selections, seeds, predictions, holdings, raw daily returns, and plot arrays are absent. Package versions beyond directly evidenced Python 3.12/Qlib 0.9.7 are time-bounded inference.
 - v1/v2 reported IC 0.1501, ARR 27.75%, MDD 7.98%, and transfer returns 160%/137%; v3 reports 0.0472, 4.68%, 11.80%, and 40.28%/19.1%. No released result lineage explains the revision. In v3, Figure 1's visible endpoints do not agree with its prose, Figure 4 omits 2021 despite the text's 2021--2025 claim, and Appendix C labels the same offspring Round 10 and Round 8.
 

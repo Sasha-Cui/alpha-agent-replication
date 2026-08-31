@@ -1,0 +1,6 @@
+dimension,released_state,audit_adapter,execution_outcome,paper_result_credit
+declared_dependency_environment,requirements.txt pins rdagent 0.8.0; remaining packages unpinned,resolved 351 package lines,No broken requirements found.,False
+debug_template,test.py requests missing template_debug.jinjia2,byte-identical alias of shipped template.jinjia2,template rendered in both runs,False
+return_input,official debug HDF lacks the test expression's $return column,released instrument-level close pct_change formula,48700 finite return rows,False
+original_upstream_test,unmodified test cannot run against shipped paths/schema,two temporary copied-tree runs with network blocked,unadapted full-environment run fails on missing template; adapted 2/2 passed; zero network attempts,False
+native_factor_output,no published target or result lineage,none beyond the two disclosed input/path repairs,48700 rows; 48600 finite; canonical sha256 6b894e78abebc6e83022e95241a2753a0edb8343cea79e974becdd7e0433cd53,False

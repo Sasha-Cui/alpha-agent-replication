@@ -1,0 +1,154 @@
+{
+  "adapters": {
+    "adapter_scope": "temporary Git-archive copies only",
+    "return_column": {
+      "adapted_columns": [
+        "$open",
+        "$close",
+        "$high",
+        "$low",
+        "$volume",
+        "$factor",
+        "$return"
+      ],
+      "return_canonical_sha256": "3e49b0d8342a2345b6afd3a080a3ea7a1c6536bd9c479aa68351948238fbd6f5",
+      "return_finite_rows": 48700,
+      "return_formula": "df.groupby('instrument')['$close'].pct_change().fillna(0)",
+      "return_rows": 48700,
+      "source_columns": [
+        "$open",
+        "$close",
+        "$high",
+        "$low",
+        "$volume",
+        "$factor"
+      ],
+      "source_rows": 48700
+    },
+    "template_alias": "template_debug.jinjia2 is a byte-identical temporary alias of the shipped template.jinjia2"
+  },
+  "author_source_commit": "b7ceb27b1001261d7a95b209a963664ae1f8ab23",
+  "author_source_modified": false,
+  "canonical_outputs_identical": true,
+  "environment": {
+    "freeze_lines": 351,
+    "freeze_sha256": "b4bf882ce38c200efa1ded4fa87f54f450c812d4409d153ef38a00fd5d50a099",
+    "pip_check": "No broken requirements found.",
+    "python": "3.12.3",
+    "resolved_versions": {
+      "jinja2": "3.1.6",
+      "numpy": "1.26.4",
+      "pandas": "2.3.3",
+      "pyqlib": "0.9.7",
+      "rdagent": "0.8.0",
+      "seaborn": "0.13.2",
+      "tables": "3.11.1"
+    }
+  },
+  "execution_runs": 2,
+  "llm_or_market_api_called": false,
+  "native_factor_series_generated": true,
+  "native_upstream_test_passed": true,
+  "original_test_modified": false,
+  "paper_experiment_executed": false,
+  "paper_result_credit": false,
+  "published_result_cells_reproduced": 0,
+  "raw_hdf_container_hashes_excluded": "PyTables container metadata is not stable; indexed canonical values are hash-pinned instead",
+  "runs": [
+    {
+      "input_adapter": {
+        "adapted_columns": [
+          "$open",
+          "$close",
+          "$high",
+          "$low",
+          "$volume",
+          "$factor",
+          "$return"
+        ],
+        "return_canonical_sha256": "3e49b0d8342a2345b6afd3a080a3ea7a1c6536bd9c479aa68351948238fbd6f5",
+        "return_finite_rows": 48700,
+        "return_formula": "df.groupby('instrument')['$close'].pct_change().fillna(0)",
+        "return_rows": 48700,
+        "source_columns": [
+          "$open",
+          "$close",
+          "$high",
+          "$low",
+          "$volume",
+          "$factor"
+        ],
+        "source_rows": 48700
+      },
+      "network_attempts": [],
+      "result_canonical_sha256": "6b894e78abebc6e83022e95241a2753a0edb8343cea79e974becdd7e0433cd53",
+      "result_finite_rows": 48600,
+      "result_maximum": 9.899999999996988,
+      "result_mean": -3.764706881856498e-18,
+      "result_minimum": -2.0498693163557884,
+      "result_nan_rows": 100,
+      "result_rows": 48700,
+      "result_sample_std": 0.9949976737608598,
+      "returncode": 0,
+      "stdout_sha256": "2be2c6101124b42e8d2e85e377fc92d6decbbb81aeac48bd000083770673a265",
+      "warning_messages": [
+        "llama is not installed."
+      ]
+    },
+    {
+      "input_adapter": {
+        "adapted_columns": [
+          "$open",
+          "$close",
+          "$high",
+          "$low",
+          "$volume",
+          "$factor",
+          "$return"
+        ],
+        "return_canonical_sha256": "3e49b0d8342a2345b6afd3a080a3ea7a1c6536bd9c479aa68351948238fbd6f5",
+        "return_finite_rows": 48700,
+        "return_formula": "df.groupby('instrument')['$close'].pct_change().fillna(0)",
+        "return_rows": 48700,
+        "source_columns": [
+          "$open",
+          "$close",
+          "$high",
+          "$low",
+          "$volume",
+          "$factor"
+        ],
+        "source_rows": 48700
+      },
+      "network_attempts": [],
+      "result_canonical_sha256": "6b894e78abebc6e83022e95241a2753a0edb8343cea79e974becdd7e0433cd53",
+      "result_finite_rows": 48600,
+      "result_maximum": 9.899999999996988,
+      "result_mean": -3.764706881856498e-18,
+      "result_minimum": -2.0498693163557884,
+      "result_nan_rows": 100,
+      "result_rows": 48700,
+      "result_sample_std": 0.9949976737608598,
+      "returncode": 0,
+      "stdout_sha256": "2be2c6101124b42e8d2e85e377fc92d6decbbb81aeac48bd000083770673a265",
+      "warning_messages": [
+        "llama is not installed."
+      ]
+    }
+  ],
+  "source_pins": {
+    "official_debug_h5_sha256": "03816baa04a9ccefeaca8ccd6968c30f6a9a879330ae496d6fa19d6cd3208ebc",
+    "requirements_sha256": "6d4c6587b1ffdac4bf446b9d4e5e3e4d888948a7609e2847dd3ccc91f86df729",
+    "shipped_template_path": "quantaalpha/factors/coder/template.jinjia2",
+    "shipped_template_sha256": "838ef362ae15474358410d54f79d52054b4dd2b1d4db8b5b3f30fd3b87af0829",
+    "test_path": "quantaalpha/factors/coder/test.py",
+    "test_sha256": "df4473a6c38603183be4da9ca05b844cd1173e525c83f3843454047a97525eba"
+  },
+  "unadapted_test_execution": {
+    "dependency_import_passed": true,
+    "failure": "missing template_debug.jinjia2",
+    "network_attempts": [],
+    "paper_result_credit": false,
+    "returncode": 1
+  }
+}
