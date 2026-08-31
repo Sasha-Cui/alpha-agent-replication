@@ -1,5 +1,19 @@
 {
-  "credit_reason": "Released components execute, but the paper/notebook fix no evaluation seed or benchmark snapshot, and no run reproduces the paper table at displayed precision.",
+  "credit_reason": "Released components execute, but only 17/24 stored protocol/configuration records reproduce exactly on the current pinned rerun; the paper fixes no evaluation seed or paper-time benchmark, the released notebook alignment is non-operational, and no current IR matches the paper.",
+  "current_rerun_conformance": {
+    "configurations_exact": 17,
+    "configurations_total": 24,
+    "exact_configurations_by_current_file": {
+      "native_current_mean.json": 7,
+      "native_current_seed0.json": 4,
+      "native_current_seed42.json": 6
+    },
+    "information_ratio_display_precision_matches": 0,
+    "information_ratio_measurements": 24,
+    "maximum_final_asset_relative_difference": 0.3160458603059728,
+    "paper_result_credit": false,
+    "protocols_all_configurations_exact": 0
+  },
   "execution_driver": "scripts/run_finrl_deepseek_native.py",
   "execution_environment": {
     "device": "cpu",

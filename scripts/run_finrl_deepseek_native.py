@@ -5,11 +5,14 @@ The paper audit consumes this driver's hash-validated outputs. It uses the
 authors' environment modules unchanged and provides only the tiny
 Gymnasium/SB3 import surface those modules require.
 """
+
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib
 import json
+import platform
 import sys
 import types
 from pathlib import Path
@@ -109,9 +112,7 @@ class MLPCritic(nn.Module):
 class MLPActorCritic(nn.Module):
     def __init__(self, observation_space, action_space, hidden_sizes=(64, 64), activation=nn.Tanh):
         super().__init__()
-        self.pi = MLPGaussianActor(
-            observation_space.shape[0], action_space.shape[0], hidden_sizes, activation
-        )
+        self.pi = MLPGaussianActor(observation_space.shape[0], action_space.shape[0], hidden_sizes, activation)
         self.v = MLPCritic(observation_space.shape[0], hidden_sizes, activation)
 
     def step(self, obs, stochastic=True):
@@ -176,24 +177,100 @@ def predict(model, environment, stochastic):
             state, _, done, _, _ = environment.step(action)
             if done:
                 break
-    return np.asarray(environment.asset_memory, dtype=float)
+    return (
+        np.asarray(environment.asset_memory, dtype=float),
+        pd.DatetimeIndex(pd.to_datetime(environment.date_memory)),
+    )
 
 
-def tail_metrics(assets):
+def load_benchmark(path: Path):
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    observations = payload["observations"]
+    canonical = "\n".join(f"{row['date']},{float(row['close']):.17g}" for row in observations).encode()
+    canonical_sha256 = hashlib.sha256(canonical).hexdigest()
+    if (
+        canonical_sha256 != payload["canonical_close_sha256"]
+        or len(observations) != payload["valid_close_observations"]
+    ):
+        raise ValueError("pinned benchmark canonical series changed")
+    series = pd.Series(
+        [float(row["close"]) for row in observations],
+        index=pd.DatetimeIndex(pd.to_datetime([row["date"] for row in observations])),
+        name="NDX_close",
+    )
+    if not series.index.is_unique or not series.index.is_monotonic_increasing:
+        raise ValueError("pinned benchmark dates are not unique and ordered")
+    summary = {
+        "path": path.name,
+        "artifact_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "canonical_close_sha256": canonical_sha256,
+        "symbol": payload["metadata"]["symbol"],
+        "long_name": payload["metadata"]["longName"],
+        "requested_start": payload["requested_period"]["start"],
+        "requested_end_exclusive": payload["requested_period"]["end_exclusive"],
+        "timestamps_total": int(payload["timestamps_total"]),
+        "all_ohlcv_null_timestamps": int(payload["all_ohlcv_null_timestamps"]),
+        "valid_close_observations": int(payload["valid_close_observations"]),
+        "first_valid_date": observations[0]["date"],
+        "last_valid_date": observations[-1]["date"],
+        "retrieval_date_utc": payload["retrieval_date_utc"],
+        "raw_response_sha256": payload["raw_response_sha256"],
+        "raw_responses_byte_identical": payload["raw_responses_byte_identical"],
+    }
+    return series, summary
+
+
+def tail_metrics(assets, dates, benchmark=None):
+    if len(assets) != len(dates):
+        raise ValueError("native asset and date memories differ in length")
     normalized = pd.Series(assets[1:] / assets[1] * 1_000_000)
     returns = normalized.pct_change().dropna()
     lower = np.percentile(returns, 5)
     upper = np.percentile(returns, 95)
     cvar = returns[returns <= lower].mean()
     rachev = returns[returns >= upper].mean() / abs(returns[returns <= lower].mean())
-    return {
+    serialized_path = "\n".join(
+        f"{date.date().isoformat()},{float(asset):.17g}" for date, asset in zip(dates, assets)
+    ).encode()
+    metrics = {
         "n_assets": int(len(assets)),
         "n_returns": int(len(returns)),
         "initial_asset": float(assets[0]),
         "final_asset": float(assets[-1]),
         "cvar": float(cvar),
         "rachev_ratio": float(rachev),
+        "date_memory_count": int(len(dates)),
+        "date_memory_first": dates[0].date().isoformat(),
+        "date_memory_last": dates[-1].date().isoformat(),
+        "native_asset_date_path_sha256": hashlib.sha256(serialized_path).hexdigest(),
     }
+    if benchmark is not None:
+        strategy = pd.Series(
+            assets / assets[0] * 1_000_000,
+            index=dates,
+            name="strategy",
+        )
+        normalized_benchmark = benchmark / benchmark.iloc[0] * 1_000_000
+        common_dates = strategy.index.intersection(normalized_benchmark.index)
+        strategy_returns = strategy.reindex(common_dates).pct_change().dropna()
+        benchmark_returns = normalized_benchmark.reindex(common_dates).pct_change().dropna()
+        strategy_returns, benchmark_returns = strategy_returns.align(benchmark_returns, join="inner")
+        excess_returns = strategy_returns - benchmark_returns
+        information_ratio = excess_returns.mean() / excess_returns.std()
+        metrics.update(
+            {
+                "information_ratio": float(information_ratio),
+                "benchmark_common_dates": int(len(common_dates)),
+                "benchmark_aligned_returns": int(len(excess_returns)),
+                "benchmark_first_common_date": common_dates[0].date().isoformat(),
+                "benchmark_last_common_date": common_dates[-1].date().isoformat(),
+                "benchmark_alignment": (
+                    "environment_native_asset_memory_paired_with_date_memory;intersection_with_pinned_NDX_close_dates"
+                ),
+                "released_notebook_alignment_reused": False,
+            }
+        )
+    return metrics
 
 
 def main():
@@ -201,6 +278,7 @@ def main():
     p.add_argument("--source", type=Path, required=True)
     p.add_argument("--artifacts", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--benchmark", type=Path)
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--deterministic", action="store_true")
     args = p.parse_args()
@@ -216,21 +294,36 @@ def main():
         ("PPO-DeepSeek 1%", "env_stocktrading_llm_1", sent_df, 1, "agent_ppo_deepseek_100_epochs_20k_steps_1.pth"),
         ("PPO-DeepSeek 0.1%", "env_stocktrading_llm_01", sent_df, 1, "agent_ppo_deepseek_100_epochs_20k_steps_01.pth"),
         ("CPPO-DeepSeek 10%", "env_stocktrading_llm_risk", risk_df, 2, "agent_cppo_deepseek_100_epochs_20k_steps.pth"),
-        ("CPPO-DeepSeek 1%", "env_stocktrading_llm_risk_1", risk_df, 2, "agent_cppo_deepseek_100_epochs_20k_steps_1.pth"),
-        ("CPPO-DeepSeek 0.1%", "env_stocktrading_llm_risk_01", risk_df, 2, "agent_cppo_deepseek_100_epochs_20k_steps_01.pth"),
+        (
+            "CPPO-DeepSeek 1%",
+            "env_stocktrading_llm_risk_1",
+            risk_df,
+            2,
+            "agent_cppo_deepseek_100_epochs_20k_steps_1.pth",
+        ),
+        (
+            "CPPO-DeepSeek 0.1%",
+            "env_stocktrading_llm_risk_01",
+            risk_df,
+            2,
+            "agent_cppo_deepseek_100_epochs_20k_steps_01.pth",
+        ),
     ]
+    benchmark = None
+    benchmark_summary = None
+    if args.benchmark is not None:
+        benchmark, benchmark_summary = load_benchmark(args.benchmark)
+
     torch.manual_seed(args.seed)
     results = {}
     for label, module_name, df, extra, checkpoint in specs:
         cls = importlib.import_module(module_name).StockTradingEnv
         env = make_env(cls, df, extra)
         model = MLPActorCritic(env.observation_space, env.action_space, hidden_sizes=(512, 512))
-        model.load_state_dict(
-            torch.load(args.artifacts / "agents" / checkpoint, map_location="cpu", weights_only=True)
-        )
+        model.load_state_dict(torch.load(args.artifacts / "agents" / checkpoint, map_location="cpu", weights_only=True))
         model.eval()
-        assets = predict(model, env, stochastic=not args.deterministic)
-        metrics = tail_metrics(assets)
+        assets, dates = predict(model, env, stochastic=not args.deterministic)
+        metrics = tail_metrics(assets, dates, benchmark)
         metrics.update({"checkpoint": checkpoint, "environment_module": module_name})
         results[label] = metrics
         print(label, json.dumps(metrics, sort_keys=True), flush=True)
@@ -238,6 +331,15 @@ def main():
         "seed": args.seed,
         "action_mode": "mean" if args.deterministic else "sample",
         "source_revision": "5c21a923214bca6370800efd45f8c6c1ef776ae7",
+        "runtime": {
+            "python": platform.python_version(),
+            "torch": torch.__version__,
+            "numpy": np.__version__,
+            "pandas": pd.__version__,
+            "platform_machine": platform.machine(),
+            "torch_num_threads": torch.get_num_threads(),
+        },
+        "benchmark": benchmark_summary,
         "results": results,
     }
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")

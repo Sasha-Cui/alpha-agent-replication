@@ -58,6 +58,25 @@ HF_DATASET_URL = "https://huggingface.co/datasets/benstaf/nasdaq_2013_2023"
 HF_DATASET_COMMIT = "b80bc15e4320eac68f53cfdd2fff3365e55dfedd"
 HF_AGENTS_URL = "https://huggingface.co/benstaf/Trading_agents"
 HF_AGENTS_COMMIT = "2153a7266aac75f9613fdae1bde09dbd38691c59"
+NDX_BENCHMARK_ARTIFACT_SHA256 = "0dddb243c4a3af5252a81b799139c34bf6059312364e044b9755927ad3b17ddf"
+NDX_BENCHMARK_CANONICAL_CLOSE_SHA256 = "741b52b9a19377d113f52f3f3b9ab6ae82cca2b8ca913642da327361f448283b"
+NATIVE_CURRENT_RERUN_FILES = {
+    "native_seed0.json": {
+        "path": "native_current_seed0.json",
+        "sha256": "87eb4ce214a06029dc3918f38bf3d7ce62d07642363fad77532ae79cdb058cdb",
+        "expected_exact_configurations": 4,
+    },
+    "native_seed42.json": {
+        "path": "native_current_seed42.json",
+        "sha256": "0bcedd969ee3d36d832f3def0dff229e228ad3641d9016605e52bf81cf5ec9ed",
+        "expected_exact_configurations": 6,
+    },
+    "native_mean.json": {
+        "path": "native_current_mean.json",
+        "sha256": "3e262297a63047afc3dfcc894d119dfc3315b4e5fd974d2241764743f686bba8",
+        "expected_exact_configurations": 7,
+    },
+}
 OFFICIAL_HISTORY_TIPS = (CURRENT_COMMIT,)
 
 PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
@@ -298,7 +317,9 @@ def paper_table_rows(native_seed0: Optional[Mapping[str, Any]] = None) -> list[d
         for method, values in methods.items():
             for metric, paper_value in zip(METRICS, values):
                 native_value: Any = ""
-                if metric == "CVaR" and method in native:
+                if metric == "Information Ratio" and method in native:
+                    native_value = native[method]["information_ratio"]
+                elif metric == "CVaR" and method in native:
                     native_value = native[method]["cvar"]
                 elif metric == "Rachev Ratio" and method in native:
                     native_value = native[method]["rachev_ratio"]
@@ -313,7 +334,7 @@ def paper_table_rows(native_seed0: Optional[Mapping[str, Any]] = None) -> list[d
                         "native_seed0_value": "" if native_value == "" else f"{float(native_value):.12g}",
                         "display_precision_match": match,
                         "status": (
-                            "not_reproduced_benchmark_series_not_frozen"
+                            "native_current_benchmark_alignment_repair_mismatch_no_credit"
                             if metric == "Information Ratio"
                             else "native_value_matches_but_protocol_unpinned_no_credit"
                             if match
@@ -1595,6 +1616,169 @@ def validate_native_inputs(artifacts_root: Path) -> dict[str, Any]:
     }
 
 
+def validate_current_native_reruns(
+    native: Mapping[str, Any],
+    artifacts_root: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    benchmark_path = output_dir / "yahoo_ndx_20190101_20231231.json"
+    if sha256(benchmark_path) != NDX_BENCHMARK_ARTIFACT_SHA256:
+        raise ValueError("FinRL-DeepSeek pinned NDX benchmark artifact changed")
+    benchmark = json.loads(benchmark_path.read_text(encoding="utf-8"))
+    observations = benchmark["observations"]
+    canonical = "\n".join(f"{row['date']},{float(row['close']):.17g}" for row in observations).encode()
+    if (
+        hashlib.sha256(canonical).hexdigest() != NDX_BENCHMARK_CANONICAL_CLOSE_SHA256
+        or len(observations) != 937
+        or benchmark["timestamps_total"] != 979
+        or benchmark["all_ohlcv_null_timestamps"] != 42
+        or observations[0]["date"] != "2020-02-11"
+        or observations[-1]["date"] != "2023-12-29"
+    ):
+        raise ValueError("FinRL-DeepSeek pinned NDX benchmark content changed")
+
+    paper_ir = {method: values[0] for table in TABLES.values() for method, values in table.items()}
+    runtime_expected = {
+        "python": "3.12.8",
+        "torch": "2.10.0+cu128",
+        "numpy": "2.3.5",
+        "pandas": "2.2.3",
+        "platform_machine": "x86_64",
+        "torch_num_threads": 8,
+    }
+    metric_keys = ("final_asset", "cvar", "rachev_ratio")
+    static_keys = (
+        "checkpoint",
+        "environment_module",
+        "initial_asset",
+        "n_assets",
+        "n_returns",
+    )
+    rows: list[dict[str, Any]] = []
+    current_runs: dict[str, Any] = {}
+    exact_by_protocol: dict[str, int] = {}
+    for stored_name, expected in NATIVE_CURRENT_RERUN_FILES.items():
+        current_path = output_dir / str(expected["path"])
+        if sha256(current_path) != expected["sha256"]:
+            raise ValueError(f"FinRL-DeepSeek current rerun changed: {current_path.name}")
+        stored = native["runs"][stored_name]
+        current = json.loads(current_path.read_text(encoding="utf-8"))
+        current_runs[current_path.name] = current
+        if (
+            current["source_revision"] != CURRENT_COMMIT
+            or current["runtime"] != runtime_expected
+            or current["benchmark"]["artifact_sha256"] != NDX_BENCHMARK_ARTIFACT_SHA256
+            or current["benchmark"]["canonical_close_sha256"] != NDX_BENCHMARK_CANONICAL_CLOSE_SHA256
+            or set(current["results"]) != set(stored["results"])
+        ):
+            raise ValueError(f"FinRL-DeepSeek current rerun provenance changed: {current_path.name}")
+        protocol_exact = 0
+        for strategy in sorted(stored["results"]):
+            old = stored["results"][strategy]
+            new = current["results"][strategy]
+            if any(old[key] != new[key] for key in static_keys):
+                raise ValueError(f"FinRL-DeepSeek rerun static provenance changed: {strategy}")
+            exact = all(old[key] == new[key] for key in metric_keys)
+            protocol_exact += int(exact)
+            ir = float(new["information_ratio"])
+            ir_match = f"{ir:.4f}" == f"{paper_ir[strategy]:.4f}"
+            rows.append(
+                {
+                    "stored_protocol_file": stored_name,
+                    "current_rerun_file": current_path.name,
+                    "action_mode": current["action_mode"],
+                    "seed": current["seed"],
+                    "strategy": strategy,
+                    "stored_final_asset": old["final_asset"],
+                    "current_final_asset": new["final_asset"],
+                    "final_asset_absolute_difference": abs(new["final_asset"] - old["final_asset"]),
+                    "final_asset_relative_difference": abs(new["final_asset"] - old["final_asset"])
+                    / abs(old["final_asset"]),
+                    "stored_cvar": old["cvar"],
+                    "current_cvar": new["cvar"],
+                    "cvar_absolute_difference": abs(new["cvar"] - old["cvar"]),
+                    "stored_rachev_ratio": old["rachev_ratio"],
+                    "current_rachev_ratio": new["rachev_ratio"],
+                    "rachev_absolute_difference": abs(new["rachev_ratio"] - old["rachev_ratio"]),
+                    "all_three_stored_metrics_exact_on_current_rerun": exact,
+                    "current_information_ratio": ir,
+                    "paper_information_ratio": paper_ir[strategy],
+                    "information_ratio_display_precision_match": ir_match,
+                    "benchmark_common_dates": new["benchmark_common_dates"],
+                    "benchmark_aligned_returns": new["benchmark_aligned_returns"],
+                    "benchmark_first_common_date": new["benchmark_first_common_date"],
+                    "benchmark_last_common_date": new["benchmark_last_common_date"],
+                    "benchmark_alignment": new["benchmark_alignment"],
+                    "released_notebook_alignment_reused": new["released_notebook_alignment_reused"],
+                    "native_asset_date_path_sha256": new["native_asset_date_path_sha256"],
+                    "paper_result_credit": False,
+                }
+            )
+        exact_by_protocol[current_path.name] = protocol_exact
+        if protocol_exact != expected["expected_exact_configurations"]:
+            raise ValueError(f"FinRL-DeepSeek rerun exact-count changed: {current_path.name}")
+
+    data_path = artifacts_root / "data/trade_data_2019_2023.csv"
+    with data_path.open(newline="", encoding="utf-8") as handle:
+        trade_dates = {row["date"] for row in csv.DictReader(handle)}
+    asset_counts = {
+        row["date_memory_count"] for current in current_runs.values() for row in current["results"].values()
+    }
+    common_counts = {
+        row["benchmark_common_dates"] for current in current_runs.values() for row in current["results"].values()
+    }
+    return_counts = {
+        row["benchmark_aligned_returns"] for current in current_runs.values() for row in current["results"].values()
+    }
+    if (
+        len(rows) != 24
+        or sum(row["all_three_stored_metrics_exact_on_current_rerun"] for row in rows) != 17
+        or sum(row["information_ratio_display_precision_match"] for row in rows) != 0
+        or asset_counts != {1257}
+        or len(trade_dates) != 1257
+        or common_counts != {936}
+        or return_counts != {935}
+    ):
+        raise ValueError("FinRL-DeepSeek current rerun census changed")
+    alignment = [
+        {
+            "released_trade_unique_dates": len(trade_dates),
+            "native_asset_memory_values": next(iter(asset_counts)),
+            "released_notebook_asset_values_after_assets_1_slice": (next(iter(asset_counts)) - 1),
+            "released_notebook_trade_dates_used_as_index": len(trade_dates),
+            "released_notebook_exact_series_construction_operational": False,
+            "failure": ("1256 sliced asset values cannot be indexed by 1257 trade dates"),
+            "audit_repair": (
+                "pair full native asset_memory with native date_memory, then intersect with pinned NDX close dates"
+            ),
+            "pinned_ndx_timestamps_total": benchmark["timestamps_total"],
+            "pinned_ndx_all_ohlcv_null_timestamps": benchmark["all_ohlcv_null_timestamps"],
+            "pinned_ndx_valid_close_observations": len(observations),
+            "pinned_ndx_first_valid_date": observations[0]["date"],
+            "pinned_ndx_last_valid_date": observations[-1]["date"],
+            "common_dates": next(iter(common_counts)),
+            "aligned_returns": next(iter(return_counts)),
+            "paper_time_benchmark_snapshot": False,
+            "paper_result_credit": False,
+        }
+    ]
+    return {
+        "runs": current_runs,
+        "conformance_rows": rows,
+        "alignment_rows": alignment,
+        "exact_configurations_by_current_file": exact_by_protocol,
+        "configurations_total": len(rows),
+        "configurations_exact": sum(row["all_three_stored_metrics_exact_on_current_rerun"] for row in rows),
+        "protocols_all_configurations_exact": sum(count == 8 for count in exact_by_protocol.values()),
+        "maximum_final_asset_relative_difference": max(row["final_asset_relative_difference"] for row in rows),
+        "information_ratio_measurements": len(rows),
+        "information_ratio_display_precision_matches": sum(
+            row["information_ratio_display_precision_match"] for row in rows
+        ),
+        "paper_result_credit": False,
+    }
+
+
 def build_audit(
     source_root: Path,
     paper_root: Path,
@@ -1619,7 +1803,24 @@ def build_audit(
 
     output_dir.mkdir(parents=True, exist_ok=True)
     native = validate_native_inputs(artifacts_root)
-    seed0 = native["runs"]["native_seed0.json"]
+    reruns = validate_current_native_reruns(native, artifacts_root, output_dir)
+    native["current_rerun_conformance"] = {
+        "configurations_total": reruns["configurations_total"],
+        "configurations_exact": reruns["configurations_exact"],
+        "protocols_all_configurations_exact": reruns["protocols_all_configurations_exact"],
+        "exact_configurations_by_current_file": reruns["exact_configurations_by_current_file"],
+        "maximum_final_asset_relative_difference": reruns["maximum_final_asset_relative_difference"],
+        "information_ratio_measurements": reruns["information_ratio_measurements"],
+        "information_ratio_display_precision_matches": reruns["information_ratio_display_precision_matches"],
+        "paper_result_credit": False,
+    }
+    native["credit_reason"] = (
+        "Released components execute, but only 17/24 stored protocol/configuration "
+        "records reproduce exactly on the current pinned rerun; the paper fixes no "
+        "evaluation seed or paper-time benchmark, the released notebook alignment "
+        "is non-operational, and no current IR matches the paper."
+    )
+    seed0 = reruns["runs"]["native_current_seed0.json"]
     tables = paper_table_rows(seed0)
     unique = unique_measurement_rows(tables)
     notebook = notebook_conformance_rows()
@@ -1668,6 +1869,8 @@ def build_audit(
         "public_fork_notebook_table_conformance.csv": forks[
             "community_table_conformance"
         ],
+        "native_current_rerun_conformance.csv": reruns["conformance_rows"],
+        "notebook_benchmark_alignment_audit.csv": reruns["alignment_rows"],
     }
     for name, rows in outputs.items():
         write_csv(output_dir / name, rows)
@@ -1706,6 +1909,31 @@ def build_audit(
         "native_exact_figure_series_reproduced": 0,
         "paper_relevant_released_checkpoints_executed": 8,
         "native_evaluation_protocols_executed": 3,
+        "native_current_rerun_configurations_total": reruns["configurations_total"],
+        "native_current_rerun_configurations_exact": reruns["configurations_exact"],
+        "native_current_rerun_exact_by_file": reruns["exact_configurations_by_current_file"],
+        "native_current_rerun_protocols_all_configurations_exact": reruns["protocols_all_configurations_exact"],
+        "native_current_rerun_maximum_final_asset_relative_difference": reruns[
+            "maximum_final_asset_relative_difference"
+        ],
+        "native_current_information_ratio_measurements": reruns["information_ratio_measurements"],
+        "native_current_information_ratio_display_precision_matches": reruns[
+            "information_ratio_display_precision_matches"
+        ],
+        "native_current_information_ratio_paper_result_credit": 0,
+        "pinned_ndx_benchmark_artifact_sha256": NDX_BENCHMARK_ARTIFACT_SHA256,
+        "pinned_ndx_benchmark_canonical_close_sha256": (NDX_BENCHMARK_CANONICAL_CLOSE_SHA256),
+        "pinned_ndx_benchmark_timestamps_total": 979,
+        "pinned_ndx_benchmark_all_ohlcv_null_timestamps": 42,
+        "pinned_ndx_benchmark_valid_close_observations": 937,
+        "pinned_ndx_benchmark_first_valid_date": "2020-02-11",
+        "pinned_ndx_benchmark_last_valid_date": "2023-12-29",
+        "released_notebook_exact_benchmark_alignment_operational": False,
+        "released_notebook_trade_dates": 1257,
+        "released_notebook_sliced_asset_values": 1256,
+        "native_repaired_benchmark_common_dates": 936,
+        "native_repaired_benchmark_aligned_returns": 935,
+        "native_repaired_benchmark_is_paper_time_snapshot": False,
         "released_dataset_files_total": len(data_files),
         "released_checkpoint_files_total": sum(row["path"].endswith(".pth") for row in agent_files),
         "current_tracked_source_files_total": len(source_files),
@@ -1787,7 +2015,11 @@ def build_audit(
 
 The release is a substantial and unusually useful component package: the paper-era Hugging Face release contains 15 checkpoints, the dataset release contains frozen train/trade CSVs, the Git repository contains paper-era environments/training logs, and all eight checkpoints relevant to Tables 1--3 load and execute through the authors' environment code. The complete official graph has also been audited behind an explicit provenance boundary: 36 commits, 48 historical paths, 145 reachable objects, no tags or releases, and no unreachable objects. Fork refs cannot widen those author-source claims. That materially improves reproducibility, but it does not reproduce the paper.
 
-The paper contains **36 displayed table cells representing 24 unique measurements**, **32 raster-only return series**, and **4 numeric IR labels in Figure 1**. The released notebook has stored values for {len(notebook) - notebook_counts['missing_stored_output']}/36 table cells, but **0 match the paper**; 9 cells have no stored output. Worse, its two stored evaluations of the same PPO and PPO-DeepSeek 10% series disagree on all six corresponding metrics. Every one of the nine historical notebook blobs—including two malformed revisions—contains the same 24 stored metric entries and none contains a paper table value. Three native protocols (stochastic seeds 0 and 42, plus policy means) executed all eight released checkpoints on hash-pinned released CSVs, but no table value earns paper-result credit. Information Ratio remains uncheckable from frozen inputs because the notebook downloads the benchmark live.
+The paper contains **36 displayed table cells representing 24 unique measurements**, **32 raster-only return series**, and **4 numeric IR labels in Figure 1**. The released notebook has stored values for {len(notebook) - notebook_counts["missing_stored_output"]}/36 table cells, but **0 match the paper**; 9 cells have no stored output. Worse, its two stored evaluations of the same PPO and PPO-DeepSeek 10% series disagree on all six corresponding metrics. Every one of the nine historical notebook blobs—including two malformed revisions—contains the same 24 stored metric entries and none contains a paper table value.
+
+Three exact-runtime current reruns execute all eight released checkpoints under stochastic seeds 0 and 42 and deterministic policy means. Only **{reruns["configurations_exact"]}/{reruns["configurations_total"]}** stored protocol/configuration records reproduce all three recorded metrics exactly: 4/8 for seed 0, 6/8 for seed 42, and 7/8 for policy means. The largest final-asset deviation is **{reruns["maximum_final_asset_relative_difference"]:.2%}**, so the stale records are not merely serialization drift.
+
+The audit now pins a canonical Yahoo NDX close series with 937 valid observations—the exact row count printed by the notebook—and computes 24 current Information Ratios through each native environment's paired asset/date memory. **0/24 match the paper at four decimals.** These are current-input diagnostics, not paper-result reproduction: the exact released notebook construction is non-operational because it indexes 1,256 sliced asset values with 1,257 trade dates, and the audit's date-memory repair plus 2026 retrieval is not the missing paper-time benchmark snapshot.
 
 The public-fork census exhausted all **{fork_summary['accessible_public_forks']} accessible repositories, {fork_summary['all_refs_audited']} refs, {fork_summary['unique_heads']} unique heads, {fork_summary['divergent_unique_commits']} divergent commits, {fork_summary['divergent_changed_paths']} changed paths, and {fork_summary['divergent_new_object_counts']['blob']} genuinely new blobs** returned by the pinned listing snapshot; one stale listing was inaccessible. One post-paper community notebook downloads the authors' `benstaf/Trading_agents` checkpoint snapshot, repairs paths/device placement and return alignment, and stores 33 metric entries. It supplies correspondence for {fork_summary['community_table_cells_corresponded']}/36 paper table cells, but **all {fork_summary['community_table_cells_mismatching_paper']} supplied cells disagree at displayed precision** and 6 remain absent. This is adverse community evidence against the released-checkpoint backtest correspondence, not an author result, a retraining replication, or proof that the paper is false.
 
@@ -1800,7 +2032,7 @@ A later divergent adaptation contributes 82 syntax-valid Python files, including
 - The exact 100-epoch DeepSeek 10% CPPO training lineage is absent. The only committed 0.9--1.1 risk script is an older 25-epoch local-Qwen path; the 100-epoch DeepSeek scripts use smaller weights and unmatched output names.
 - Fifteen historical training logs establish partial checkpoint provenance, but they contain no paper evaluation metrics. Ten logs name a released checkpoint exactly; only 5/8 paper-relevant checkpoint names have exact log lineage.
 - The source's CPPO update is not the displayed CVaR-PPO Lagrangian: it applies a clipped per-step value adjustment to GAE, uses alpha=0.85, and repeatedly subtracts its full update buffer during trajectory finalization.
-- The one-article-per-stock/day sample, selection seed/IDs, raw selected inputs, LLM responses, frozen Yahoo benchmark, and table-generating result paths are absent.
+- The one-article-per-stock/day sample, selection seed/IDs, raw selected inputs, LLM responses, paper-time Yahoo benchmark snapshot, and table-generating result paths are absent. A 2026 NDX close retrieval is pinned only as current-input evidence.
 - The installation script invokes a nonexistent training file; the post-paper risk API script does not parse.
 
 ## Honest proximity

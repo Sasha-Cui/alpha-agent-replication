@@ -1,37 +1,37 @@
 paper_table,method,metric,unique_measurement_id,paper_value,native_seed0_value,display_precision_match,status,paper_result_credit
-Table 1 main 100-epoch comparison,PPO,Information Ratio,PPO / Information Ratio,0.0100,,False,not_reproduced_benchmark_series_not_frozen,False
-Table 1 main 100-epoch comparison,PPO,CVaR,PPO / CVaR,-0.0394,-0.0355065194816,False,native_released_checkpoint_mismatch,False
-Table 1 main 100-epoch comparison,PPO,Rachev Ratio,PPO / Rachev Ratio,1.0637,1.0638255359,False,native_released_checkpoint_mismatch,False
-Table 1 main 100-epoch comparison,CPPO,Information Ratio,CPPO / Information Ratio,-0.0148,,False,not_reproduced_benchmark_series_not_frozen,False
-Table 1 main 100-epoch comparison,CPPO,CVaR,CPPO / CVaR,-0.0439,-0.0406206710234,False,native_released_checkpoint_mismatch,False
-Table 1 main 100-epoch comparison,CPPO,Rachev Ratio,CPPO / Rachev Ratio,1.0404,1.09911357713,False,native_released_checkpoint_mismatch,False
-Table 1 main 100-epoch comparison,PPO-DeepSeek 10%,Information Ratio,PPO-DeepSeek 10% / Information Ratio,-0.0093,,False,not_reproduced_benchmark_series_not_frozen,False
-Table 1 main 100-epoch comparison,PPO-DeepSeek 10%,CVaR,PPO-DeepSeek 10% / CVaR,-0.0338,-0.0366769576926,False,native_released_checkpoint_mismatch,False
-Table 1 main 100-epoch comparison,PPO-DeepSeek 10%,Rachev Ratio,PPO-DeepSeek 10% / Rachev Ratio,0.9890,0.931489851311,False,native_released_checkpoint_mismatch,False
-Table 1 main 100-epoch comparison,CPPO-DeepSeek 10%,Information Ratio,CPPO-DeepSeek 10% / Information Ratio,0.0078,,False,not_reproduced_benchmark_series_not_frozen,False
-Table 1 main 100-epoch comparison,CPPO-DeepSeek 10%,CVaR,CPPO-DeepSeek 10% / CVaR,-0.0437,-0.0434379156108,False,native_released_checkpoint_mismatch,False
-Table 1 main 100-epoch comparison,CPPO-DeepSeek 10%,Rachev Ratio,CPPO-DeepSeek 10% / Rachev Ratio,0.9818,0.867346440408,False,native_released_checkpoint_mismatch,False
-Table 2 PPO infusion,PPO,Information Ratio,PPO / Information Ratio,0.0100,,False,not_reproduced_benchmark_series_not_frozen,False
-Table 2 PPO infusion,PPO,CVaR,PPO / CVaR,-0.0394,-0.0355065194816,False,native_released_checkpoint_mismatch,False
-Table 2 PPO infusion,PPO,Rachev Ratio,PPO / Rachev Ratio,1.0637,1.0638255359,False,native_released_checkpoint_mismatch,False
-Table 2 PPO infusion,PPO-DeepSeek 10%,Information Ratio,PPO-DeepSeek 10% / Information Ratio,-0.0093,,False,not_reproduced_benchmark_series_not_frozen,False
-Table 2 PPO infusion,PPO-DeepSeek 10%,CVaR,PPO-DeepSeek 10% / CVaR,-0.0338,-0.0366769576926,False,native_released_checkpoint_mismatch,False
-Table 2 PPO infusion,PPO-DeepSeek 10%,Rachev Ratio,PPO-DeepSeek 10% / Rachev Ratio,0.9890,0.931489851311,False,native_released_checkpoint_mismatch,False
-Table 2 PPO infusion,PPO-DeepSeek 1%,Information Ratio,PPO-DeepSeek 1% / Information Ratio,-0.0252,,False,not_reproduced_benchmark_series_not_frozen,False
+Table 1 main 100-epoch comparison,PPO,Information Ratio,PPO / Information Ratio,0.0100,0.00386310541501,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
+Table 1 main 100-epoch comparison,PPO,CVaR,PPO / CVaR,-0.0394,-0.0354826555234,False,native_released_checkpoint_mismatch,False
+Table 1 main 100-epoch comparison,PPO,Rachev Ratio,PPO / Rachev Ratio,1.0637,1.04650806832,False,native_released_checkpoint_mismatch,False
+Table 1 main 100-epoch comparison,CPPO,Information Ratio,CPPO / Information Ratio,-0.0148,0.000392483916971,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
+Table 1 main 100-epoch comparison,CPPO,CVaR,CPPO / CVaR,-0.0439,-0.0409173234688,False,native_released_checkpoint_mismatch,False
+Table 1 main 100-epoch comparison,CPPO,Rachev Ratio,CPPO / Rachev Ratio,1.0404,1.10250558489,False,native_released_checkpoint_mismatch,False
+Table 1 main 100-epoch comparison,PPO-DeepSeek 10%,Information Ratio,PPO-DeepSeek 10% / Information Ratio,-0.0093,-0.0359598302083,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
+Table 1 main 100-epoch comparison,PPO-DeepSeek 10%,CVaR,PPO-DeepSeek 10% / CVaR,-0.0338,-0.036581947979,False,native_released_checkpoint_mismatch,False
+Table 1 main 100-epoch comparison,PPO-DeepSeek 10%,Rachev Ratio,PPO-DeepSeek 10% / Rachev Ratio,0.9890,0.969598802301,False,native_released_checkpoint_mismatch,False
+Table 1 main 100-epoch comparison,CPPO-DeepSeek 10%,Information Ratio,CPPO-DeepSeek 10% / Information Ratio,0.0078,0.0137808196517,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
+Table 1 main 100-epoch comparison,CPPO-DeepSeek 10%,CVaR,CPPO-DeepSeek 10% / CVaR,-0.0437,-0.0443729903008,False,native_released_checkpoint_mismatch,False
+Table 1 main 100-epoch comparison,CPPO-DeepSeek 10%,Rachev Ratio,CPPO-DeepSeek 10% / Rachev Ratio,0.9818,0.892604026306,False,native_released_checkpoint_mismatch,False
+Table 2 PPO infusion,PPO,Information Ratio,PPO / Information Ratio,0.0100,0.00386310541501,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
+Table 2 PPO infusion,PPO,CVaR,PPO / CVaR,-0.0394,-0.0354826555234,False,native_released_checkpoint_mismatch,False
+Table 2 PPO infusion,PPO,Rachev Ratio,PPO / Rachev Ratio,1.0637,1.04650806832,False,native_released_checkpoint_mismatch,False
+Table 2 PPO infusion,PPO-DeepSeek 10%,Information Ratio,PPO-DeepSeek 10% / Information Ratio,-0.0093,-0.0359598302083,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
+Table 2 PPO infusion,PPO-DeepSeek 10%,CVaR,PPO-DeepSeek 10% / CVaR,-0.0338,-0.036581947979,False,native_released_checkpoint_mismatch,False
+Table 2 PPO infusion,PPO-DeepSeek 10%,Rachev Ratio,PPO-DeepSeek 10% / Rachev Ratio,0.9890,0.969598802301,False,native_released_checkpoint_mismatch,False
+Table 2 PPO infusion,PPO-DeepSeek 1%,Information Ratio,PPO-DeepSeek 1% / Information Ratio,-0.0252,0.0285299660125,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
 Table 2 PPO infusion,PPO-DeepSeek 1%,CVaR,PPO-DeepSeek 1% / CVaR,-0.0459,-0.0409900793522,False,native_released_checkpoint_mismatch,False
 Table 2 PPO infusion,PPO-DeepSeek 1%,Rachev Ratio,PPO-DeepSeek 1% / Rachev Ratio,1.0394,0.92860551996,False,native_released_checkpoint_mismatch,False
-Table 2 PPO infusion,PPO-DeepSeek 0.1%,Information Ratio,PPO-DeepSeek 0.1% / Information Ratio,-0.0011,,False,not_reproduced_benchmark_series_not_frozen,False
+Table 2 PPO infusion,PPO-DeepSeek 0.1%,Information Ratio,PPO-DeepSeek 0.1% / Information Ratio,-0.0011,-0.0288839250413,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
 Table 2 PPO infusion,PPO-DeepSeek 0.1%,CVaR,PPO-DeepSeek 0.1% / CVaR,-0.0375,-0.0359172800882,False,native_released_checkpoint_mismatch,False
 Table 2 PPO infusion,PPO-DeepSeek 0.1%,Rachev Ratio,PPO-DeepSeek 0.1% / Rachev Ratio,0.9536,0.914172641932,False,native_released_checkpoint_mismatch,False
-Table 3 CPPO infusion,CPPO,Information Ratio,CPPO / Information Ratio,-0.0148,,False,not_reproduced_benchmark_series_not_frozen,False
-Table 3 CPPO infusion,CPPO,CVaR,CPPO / CVaR,-0.0439,-0.0406206710234,False,native_released_checkpoint_mismatch,False
-Table 3 CPPO infusion,CPPO,Rachev Ratio,CPPO / Rachev Ratio,1.0404,1.09911357713,False,native_released_checkpoint_mismatch,False
-Table 3 CPPO infusion,CPPO-DeepSeek 10%,Information Ratio,CPPO-DeepSeek 10% / Information Ratio,0.0078,,False,not_reproduced_benchmark_series_not_frozen,False
-Table 3 CPPO infusion,CPPO-DeepSeek 10%,CVaR,CPPO-DeepSeek 10% / CVaR,-0.0437,-0.0434379156108,False,native_released_checkpoint_mismatch,False
-Table 3 CPPO infusion,CPPO-DeepSeek 10%,Rachev Ratio,CPPO-DeepSeek 10% / Rachev Ratio,0.9818,0.867346440408,False,native_released_checkpoint_mismatch,False
-Table 3 CPPO infusion,CPPO-DeepSeek 1%,Information Ratio,CPPO-DeepSeek 1% / Information Ratio,-0.0032,,False,not_reproduced_benchmark_series_not_frozen,False
+Table 3 CPPO infusion,CPPO,Information Ratio,CPPO / Information Ratio,-0.0148,0.000392483916971,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
+Table 3 CPPO infusion,CPPO,CVaR,CPPO / CVaR,-0.0439,-0.0409173234688,False,native_released_checkpoint_mismatch,False
+Table 3 CPPO infusion,CPPO,Rachev Ratio,CPPO / Rachev Ratio,1.0404,1.10250558489,False,native_released_checkpoint_mismatch,False
+Table 3 CPPO infusion,CPPO-DeepSeek 10%,Information Ratio,CPPO-DeepSeek 10% / Information Ratio,0.0078,0.0137808196517,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
+Table 3 CPPO infusion,CPPO-DeepSeek 10%,CVaR,CPPO-DeepSeek 10% / CVaR,-0.0437,-0.0443729903008,False,native_released_checkpoint_mismatch,False
+Table 3 CPPO infusion,CPPO-DeepSeek 10%,Rachev Ratio,CPPO-DeepSeek 10% / Rachev Ratio,0.9818,0.892604026306,False,native_released_checkpoint_mismatch,False
+Table 3 CPPO infusion,CPPO-DeepSeek 1%,Information Ratio,CPPO-DeepSeek 1% / Information Ratio,-0.0032,0.0128127653701,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
 Table 3 CPPO infusion,CPPO-DeepSeek 1%,CVaR,CPPO-DeepSeek 1% / CVaR,-0.0365,-0.030931779798,False,native_released_checkpoint_mismatch,False
 Table 3 CPPO infusion,CPPO-DeepSeek 1%,Rachev Ratio,CPPO-DeepSeek 1% / Rachev Ratio,0.9573,0.993485258556,False,native_released_checkpoint_mismatch,False
-Table 3 CPPO infusion,CPPO-DeepSeek 0.1%,Information Ratio,CPPO-DeepSeek 0.1% / Information Ratio,-0.0060,,False,not_reproduced_benchmark_series_not_frozen,False
+Table 3 CPPO infusion,CPPO-DeepSeek 0.1%,Information Ratio,CPPO-DeepSeek 0.1% / Information Ratio,-0.0060,-0.0474367922323,False,native_current_benchmark_alignment_repair_mismatch_no_credit,False
 Table 3 CPPO infusion,CPPO-DeepSeek 0.1%,CVaR,CPPO-DeepSeek 0.1% / CVaR,-0.0441,-0.0481234367694,False,native_released_checkpoint_mismatch,False
 Table 3 CPPO infusion,CPPO-DeepSeek 0.1%,Rachev Ratio,CPPO-DeepSeek 0.1% / Rachev Ratio,0.9789,0.932289176402,False,native_released_checkpoint_mismatch,False
