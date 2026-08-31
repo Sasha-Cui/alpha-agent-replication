@@ -420,7 +420,7 @@ def test_efs_paper_only_audit_preserves_versions_and_zero_native_credit() -> Non
     assert row["reachable_public_code_system_ids"] == ""
     assert row["native_pipeline_disposition"] == ("paper_only_audit_recorded_no_native_code_pipeline")
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_10_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited"
+        "paper_audit:completed_11_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M1_example_or_motif_partial_support"
@@ -431,7 +431,9 @@ def test_efs_paper_only_audit_preserves_versions_and_zero_native_credit() -> Non
     assert "all 12 original-paper CW/SR cells" in row["precise_native_or_access_blocker"]
     assert "0/15 v1 and only 1/12 v2" in row["precise_native_or_access_blocker"]
     assert "all 10 original-paper CW/SR cells" in row["precise_native_or_access_blocker"]
-    assert "Combined credit is 10/773 v1 and 18/877 v2" in row["precise_native_or_access_blocker"]
+    assert "Combined credit is 11/773 v1 and 18/877 v2" in row["precise_native_or_access_blocker"]
+    assert "exact cited ASMCVaR UBAH source" in row["precise_native_or_access_blocker"]
+    assert "FF25 Sharpe adds one unique v1 cell" in row["precise_native_or_access_blocker"]
 
 
 def test_alpha_jungle_audit_preserves_zero_result_and_component_boundaries() -> None:

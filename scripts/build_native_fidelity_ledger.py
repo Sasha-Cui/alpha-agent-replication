@@ -1549,8 +1549,13 @@ PAPER_ONLY_AUDIT_NOTES = {
     ),
     "SYS-EFS": (
         "A pinned two-version EFS audit inventories 773 original-v1 and 877 "
-        "current-v2 numeric table-result cells. The cited 1/N formula reproduces "
-        "5 v1 and 8 v2 cells on the exact 623-row matrices. Thirty exact-source "
+        "current-v2 numeric table-result cells. A direct daily-rebalanced 1/N "
+        "reconstruction reproduces 5 v1 and 8 v2 cells on the exact 623-row "
+        "matrices. Separately, the exact cited ASMCVaR UBAH source consumes all "
+        "623 rows, holds equal weights for five periods, and then drifts buy-and-hold "
+        "weights. Ten MATLAB R2023b runs produce five bit-identical repeated paths "
+        "and match 1/15 v1 and 2/12 v2 cells; FF25 Sharpe adds one unique v1 cell, "
+        "while both v2 matches overlap the daily-rebalanced ledger. Thirty exact-source "
         "mSSRM Octave runs produce 15 bit-identical repeated wealth paths but match "
         "only 1/45 v1 and 3/24 v2 mSSRM cells. The same source reproduces all 36 "
         "CW/SR cells in the original NeurIPS mSSRM paper, and six untouched conference-"
@@ -1569,7 +1574,7 @@ PAPER_ONLY_AUDIT_NOTES = {
         "redirects to the executed ASMCVaR source, establishing attribution but "
         "adding no result files. No compared method reproduces a complete EFS row. "
         "These discrepancies are specific to EFS's undisclosed baseline protocol. "
-        "Combined credit is 10/773 v1 and 18/877 v2 cells; all are cited-baseline "
+        "Combined credit is 11/773 v1 and 18/877 v2 cells; all are cited-baseline "
         "evidence and zero are native EFS results. No author-linked "
         "EFS source, exact configuration, model snapshot, data snapshot, factor pool, "
         "search trace, actions, weights, returns, seeds, or result records are released. "
@@ -1788,7 +1793,7 @@ TARGETED_EXECUTION = {
         "12_ablation_correspondences_zero_credit_5_model_mismatch_traces_zero_declared_model_rows_"
         "83_author_outputs_no_time_series_match_37_forks_exhausted"
     ),
-    "SYS-EFS": "paper_audit:completed_10_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
+    "SYS-EFS": "paper_audit:completed_11_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",
     "SYS-FIN-CON": (
         "paper_audit:completed_zero_of_306_native_results_24_buy_hold_current_checks_"
