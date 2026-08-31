@@ -918,7 +918,15 @@ ARTIFACT_NOTES = {
         "Thus every historical message and referenced image payload is recoverable. "
         "The files were added post-v2 in May 2025, and no evidence identifies them as "
         "the actual uploaded file or recovers the fine-tuning job/selected checkpoint, "
-        "so they receive no paper-result credit. The paper-listed anonymous v3 artifact resolves to the first "
+        "so they receive no paper-result credit. Active historical source deterministically "
+        "combines the 930 cross-sectional and 31 market records into the missing 961-record "
+        "single_0510.jsonl. It passes the official OpenAI static vision-fine-tuning limits. "
+        "The exact FTAgent.fine_tuning method executes with sockets blocked and an in-memory "
+        "OpenAI stub, making one file-create, one gpt-4o-2024-08-06 job-create, and one "
+        "successful status-retrieval call. No remote upload/job occurs. Source then saves "
+        "the same agent object under cs_vision_0510.pkl and mkt_news_0510.pkl while all "
+        "multi-agent fine-tuning blocks remain commented, so the paper's expert/checkpoint "
+        "lineage is still unverified. The paper-listed anonymous v3 artifact resolves to the first "
         "author's 20-commit cryptoMAS repository: all three architectures and 42 tracked "
         "files are recovered, 394/442 table units and 136/142 plotted units have pinned "
         "author-output correspondence, and nine non-RAG orchestration paths pass fixture "
@@ -1881,6 +1889,7 @@ TARGETED_EXECUTION = {
     "SYS-MACI": (
         "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_"
         "962_training_records_930_images_recovered_post_v2_no_job_lineage_"
+        "single_0510_961_records_native_contract_zero_network_same_agent_2_checkpoint_aliases_"
         "zero_regenerated_2_forks_2_refs_2_official_history_heads_exhausted"
     ),
     "SYS-MM-DREX": (

@@ -246,6 +246,8 @@ def test_maci_route_separates_both_incomplete_author_source_lineages() -> None:
     assert row["native_execution_audit_status"] == (
         "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_"
         "962_training_records_930_images_recovered_post_v2_no_job_lineage_"
+        "single_0510_961_records_native_contract_zero_network_same_agent_2_checkpoint_"
+        "aliases_"
         "zero_regenerated_2_forks_2_refs_2_official_history_heads_exhausted"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
@@ -263,6 +265,13 @@ def test_maci_route_separates_both_incomplete_author_source_lineages() -> None:
     assert "files were added post-v2" in blocker
     assert "actual uploaded file" in blocker
     assert "receive no paper-result credit" in blocker
+    assert "missing 961-record single_0510.jsonl" in blocker
+    assert "official OpenAI static vision-fine-tuning limits" in blocker
+    assert "exact FTAgent.fine_tuning method executes" in blocker
+    assert "one gpt-4o-2024-08-06 job-create" in blocker
+    assert "No remote upload/job occurs" in blocker
+    assert "same agent object" in blocker
+    assert "multi-agent fine-tuning blocks remain commented" in blocker
     assert "three environ.data modules" in blocker
     assert "single-agent RAG and Skill" in blocker
     assert "Both accessible v1/v2 forks" in blocker

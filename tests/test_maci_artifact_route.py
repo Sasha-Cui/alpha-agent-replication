@@ -109,6 +109,17 @@ def test_native_and_paper_routes_keep_output_verification_below_reproduction() -
     assert "files were added post-v2" in row["concise_evidence_note"]
     assert "actual uploaded file" in row["concise_evidence_note"]
     assert "receive no paper-result credit" in row["concise_evidence_note"]
+    assert "missing 961-record single_0510.jsonl" in row["concise_evidence_note"]
+    assert "official OpenAI static vision-fine-tuning limits" in row[
+        "concise_evidence_note"
+    ]
+    assert "exact FTAgent.fine_tuning method executes" in row["concise_evidence_note"]
+    assert "one gpt-4o-2024-08-06 job-create" in row["concise_evidence_note"]
+    assert "No remote upload/job occurs" in row["concise_evidence_note"]
+    assert "same agent object" in row["concise_evidence_note"]
+    assert "multi-agent fine-tuning blocks remain commented" in row[
+        "concise_evidence_note"
+    ]
     assert "Both accessible v1/v2 forks" in row["concise_evidence_note"]
     assert "zero commits, blobs, tags, or native result artifacts" in row["concise_evidence_note"]
 
