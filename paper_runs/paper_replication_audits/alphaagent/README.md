@@ -25,6 +25,9 @@ legacy tree; both omissions made it materially too pessimistic.
 - The same author commit contains seven Qlib/MLflow run directories (385 files),
   executed on 2025-01-28: four S&P500 and three CSI500 runs. Every directory has
   metrics, parameters, a serialized task/config, and a fitted LightGBM state.
+- All 30 multi-record mean/median candidates are enumerated. Only two use
+  exclusively full-period records, and they match zero paper cells. Thirteen
+  off-period candidates have numeric coincidences; none reproduces a full row.
 - The paper-era Qlib Dockerfile pins Qlib commit `c9ed050ef034fe6519c14b59f3d207abcb693282` and a
   PyTorch 2.2.1/CUDA 12.1 base image, then leaves CatBoost and XGBoost unpinned
   while pinning SciPy 1.11.4. The audit preserves this host/container split.

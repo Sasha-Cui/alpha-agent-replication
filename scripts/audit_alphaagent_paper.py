@@ -19,7 +19,9 @@ import argparse
 import csv
 import hashlib
 import io
+import itertools
 import json
+import statistics
 import os
 import pickletools
 import re
@@ -1305,6 +1307,106 @@ def paper_era_run_records(source_root: Path) -> list[dict[str, Any]]:
     if [row["run_id"] for row in rows if row["all_five_display_cells_match"]] != ["77b227f86e5a47bab48178cac409a98b"]:
         raise RuntimeError("Pinned AlphaAgent Table 2 MLflow correspondence changed")
     return rows
+
+
+def paper_era_run_aggregation_forensics(
+    run_records: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    """Test every multi-record mean/median hypothesis against the AlphaAgent paper row."""
+    records = list(run_records)
+    metric_specs = {
+        "IC": ("ic", 4),
+        "ICIR": ("icir", 4),
+        "AR_pct": ("annualized_return_pct", 2),
+        "IR": ("information_ratio", 4),
+        "MDD_pct": ("max_drawdown_pct", 2),
+    }
+    paper = {
+        (row["market"], row["metric"]): float(row["paper_value"])
+        for row in paper_numeric_rows()
+        if row["cell_role"] == "result" and row["entity"] == "AlphaAgent"
+    }
+    rows: list[dict[str, Any]] = []
+    for market in ("CSI500", "S&P500"):
+        market_records = [row for row in records if row["market"] == market]
+        for run_count in range(2, len(market_records) + 1):
+            for subset in itertools.combinations(market_records, run_count):
+                for aggregation, reducer in (
+                    ("mean", statistics.mean),
+                    ("median", statistics.median),
+                ):
+                    values = {
+                        metric: float(reducer(float(row[field]) for row in subset))
+                        for metric, (field, _decimals) in metric_specs.items()
+                    }
+                    matched_metrics = [
+                        metric
+                        for metric, (_field, decimals) in metric_specs.items()
+                        if round(values[metric], decimals)
+                        == round(paper[(market, metric)], decimals)
+                    ]
+                    full_period = all(bool(row["full_paper_period"]) for row in subset)
+                    valid_matches = len(matched_metrics) if full_period else 0
+                    rows.append(
+                        {
+                            "market": market,
+                            "aggregation": aggregation,
+                            "run_count": run_count,
+                            "run_ids": ";".join(str(row["run_id"]) for row in subset),
+                            "all_runs_cover_full_paper_period": full_period,
+                            "ic": values["IC"],
+                            "icir": values["ICIR"],
+                            "annualized_return_pct": values["AR_pct"],
+                            "information_ratio": values["IR"],
+                            "max_drawdown_pct": values["MDD_pct"],
+                            "display_metrics_matching": ";".join(matched_metrics),
+                            "display_cells_matching": len(matched_metrics),
+                            "valid_period_display_cells_matching": valid_matches,
+                            "all_five_display_cells_match": len(matched_metrics) == 5,
+                            "paper_result_credit": False,
+                            "interpretation": (
+                                "full-period released-record aggregation matches no displayed cell"
+                                if full_period and not matched_metrics
+                                else "partial-period aggregation numeric coincidence; no paper-period credit"
+                                if matched_metrics
+                                else "partial-period aggregation matches no displayed cell"
+                            ),
+                        }
+                    )
+    if len(rows) != 30 or Counter(row["market"] for row in rows) != {
+        "CSI500": 8,
+        "S&P500": 22,
+    }:
+        raise RuntimeError("AlphaAgent MLflow aggregation census changed")
+    if sum(row["all_runs_cover_full_paper_period"] for row in rows) != 2:
+        raise RuntimeError("AlphaAgent full-period aggregation census changed")
+    if sum(int(row["valid_period_display_cells_matching"]) for row in rows) != 0:
+        raise RuntimeError("A full-period AlphaAgent aggregation unexpectedly matches the paper")
+    if sum(bool(row["display_cells_matching"]) for row in rows) != 13:
+        raise RuntimeError("AlphaAgent aggregation coincidence census changed")
+    if any(row["all_five_display_cells_match"] for row in rows):
+        raise RuntimeError("A multi-record AlphaAgent aggregation unexpectedly matches a full row")
+    max_matches = {
+        market: max(int(row["display_cells_matching"]) for row in rows if row["market"] == market)
+        for market in ("CSI500", "S&P500")
+    }
+    if max_matches != {"CSI500": 1, "S&P500": 2}:
+        raise RuntimeError(f"AlphaAgent aggregation match maxima changed: {max_matches}")
+    csi_match = [
+        row
+        for row in rows
+        if row["market"] == "CSI500" and row["display_cells_matching"]
+    ]
+    if (
+        len(csi_match) != 1
+        or csi_match[0]["aggregation"] != "mean"
+        or csi_match[0]["run_count"] != 3
+        or csi_match[0]["display_metrics_matching"] != "IC"
+        or csi_match[0]["all_runs_cover_full_paper_period"]
+    ):
+        raise RuntimeError("AlphaAgent CSI500 aggregation coincidence changed")
+    return rows
+
 
 
 def paper_era_run_input_audit(
@@ -2797,6 +2899,7 @@ def build_audit(
     )
     table_rows = table_conformance()
     run_records = paper_era_run_records(source_root)
+    aggregation_rows = paper_era_run_aggregation_forensics(run_records)
     apply_run_record_conformance(table_rows, run_records)
     run_input_audit = paper_era_run_input_audit(
         source_root,
@@ -2878,6 +2981,7 @@ def build_audit(
     write_csv(output_dir / "paper_era_source_inventory.csv", paper_era_inventory)
     write_csv(output_dir / "paper_era_factor_artifacts.csv", paper_era_factors)
     write_csv(output_dir / "paper_era_mlflow_run_records.csv", run_records)
+    write_csv(output_dir / "paper_era_mlflow_aggregation_forensics.csv", aggregation_rows)
     write_csv(output_dir / "post_paper_registry_metrics.csv", registry)
     write_csv(output_dir / "data_release_provenance.csv", release)
     write_csv(output_dir / "synthetic_base_factor_component.csv", base_factors)
@@ -3001,6 +3105,23 @@ def build_audit(
         "paper_era_factor_csv_files": len(paper_era_factors),
         "paper_era_factor_expression_rows": sum(int(row["expression_rows"]) for row in paper_era_factors),
         "paper_era_qlib_mlflow_run_records": len(run_records),
+        "paper_era_mlflow_multi_record_aggregation_candidates": len(aggregation_rows),
+        "paper_era_mlflow_full_period_aggregation_candidates": sum(
+            row["all_runs_cover_full_paper_period"] for row in aggregation_rows
+        ),
+        "paper_era_mlflow_aggregation_candidates_with_numeric_coincidence": sum(
+            bool(row["display_cells_matching"]) for row in aggregation_rows
+        ),
+        "paper_era_mlflow_aggregation_valid_period_display_cells_matching": sum(
+            int(row["valid_period_display_cells_matching"]) for row in aggregation_rows
+        ),
+        "paper_era_mlflow_aggregation_full_table_row_matches": sum(
+            row["all_five_display_cells_match"] for row in aggregation_rows
+        ),
+        "paper_era_mlflow_aggregation_max_display_cells_matching": max(
+            int(row["display_cells_matching"]) for row in aggregation_rows
+        ),
+
         "paper_era_qlib_mlflow_records_with_fitted_models": sum(
             bool(row["fitted_lightgbm_state_shipped"]) for row in run_records
         ),
@@ -3108,8 +3229,11 @@ def build_audit(
             "factor-to-result lineage are missing or divergent. Seven extensionless Qlib/MLflow run "
             "records were recovered from the same author commit; one S&P500 record matches all five "
             "AlphaAgent Table 2 cells at display precision and ships its executed config plus fitted "
-            "LightGBM state. All seven fitted states load natively and deterministically, but without "
-            "the input panel they cannot regenerate predictions or metrics. Those 5/100 cells are "
+            "LightGBM state. All seven fitted states load natively and deterministically. Exhausting "
+            "every multi-record mean/median hypothesis yields 30 candidates: the only two composed "
+            "entirely of full-period records match zero cells, while 13 off-period candidates have "
+            "one- or two-cell numeric coincidences and no aggregate matches a full row. Without the "
+            "input panel the records cannot regenerate predictions or metrics. Those 5/100 cells are "
             "author-artifact corroborations, not regenerations: "
             "no predictions, holdings, returns, complete recorder artifacts, baseline outputs, or figure "
             "arrays survive. The exact Qlib downloader falls back to a hash-pinned 450,094,816-byte "
@@ -3162,6 +3286,9 @@ legacy tree; both omissions made it materially too pessimistic.
 - The same author commit contains seven Qlib/MLflow run directories (385 files),
   executed on 2025-01-28: four S&P500 and three CSI500 runs. Every directory has
   metrics, parameters, a serialized task/config, and a fitted LightGBM state.
+- All 30 multi-record mean/median candidates are enumerated. Only two use
+  exclusively full-period records, and they match zero paper cells. Thirteen
+  off-period candidates have numeric coincidences; none reproduces a full row.
 - The paper-era Qlib Dockerfile pins Qlib commit `{QLIB_SOURCE_COMMIT}` and a
   PyTorch 2.2.1/CUDA 12.1 base image, then leaves CatBoost and XGBoost unpinned
   while pinning SciPy 1.11.4. The audit preserves this host/container split.
