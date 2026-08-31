@@ -379,6 +379,12 @@ ARTIFACT_NOTES = {
         "only 1/8 historical metrics (1/7 current metrics), returning 1.44% rather than 2.66% "
         "with 13.77% rather than 10.15% drawdown. Alpha360 matches 0/8 historical metrics "
         "(0/7 current metrics) and returns -2.32% rather than +4.09%. The complete "
+        "A bounded primary-source protocol grid also runs Qlib v0.9.7's exact official "
+        "Alpha360/LightGBM preprocessing, model, and close-execution profile twice. It "
+        "yields IC 0.01093, ARR 6.74%, IR 0.76641, and MDD 12.31%, matching 0/8 paper "
+        "cells. The two coherent source profiles therefore match 0/16 profile-cell "
+        "checks; two model/preprocessing hybrids match 0/8 predictive profile-cell checks "
+        "and remain diagnostic-only. "
         "paper-configured QuantaAlpha/GPT rerun computes all 150 released custom factors plus "
         "Alpha158(20) after one disclosed "
         "cross-sectional-MEAN broadcast compatibility repair, but materially misses the headline "
@@ -1838,7 +1844,12 @@ TARGETED_EXECUTION = {
         "paper_audit:completed_zero_of_75_native_results_full_two_commit_history_"
         "component_gate_separate_4_forks_4_refs_1_official_head_exhausted"
     ),
-    "SYS-QUANTA-ALPHA": "paper_audit:partial_one_baseline_row_plus_alpha158_ic_26_of_644_versioned_main_table_cells_regenerated_alpha360_zero_matches_270_author_output_units_267_accessible_forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced",
+    "SYS-QUANTA-ALPHA": (
+        "paper_audit:partial_one_baseline_row_plus_alpha158_ic_26_of_644_versioned_main_table_cells_"
+        "regenerated_alpha360_zero_matches_2_coherent_profiles_0_of_16_profile_cells_"
+        "2_hybrids_0_of_8_predictive_profile_cells_270_author_output_units_267_accessible_"
+        "forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced"
+    ),
     "SYS-RAPTOR": (
         "paper_audit:completed_36_of_42_displayed_scalar_units_checked_29_verified_18_author_output_"
         "3_current_public_benchmark_8_paper_internal_5_conflicts_2_underspecified_6_unavailable_"
