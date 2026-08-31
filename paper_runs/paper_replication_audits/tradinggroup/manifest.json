@@ -1,9 +1,9 @@
 {
   "arxiv_id": "2508.17565",
   "attributable_implementation_source_files_recovered": 0,
-  "baseline_driver_sha256": "cd38787c7b08fb70e60cd8a4edaa5bda63da69157112e679b424fdeb2a4ea1ec",
+  "baseline_driver_sha256": "756405973714804c97544b49fdc0dbeff4b899db39b1fb61ed6db6c3f5d65e57",
   "baseline_execution_configuration_counts": {
-    "available_pretest_history_guard_bypass": 4,
+    "historical_one_year_model_window": 4,
     "historical_two_year_model_window": 32,
     "pinned_default": 96,
     "unused_prior_period_guard_bypass": 24
@@ -16,12 +16,15 @@
   "displayed_native_tradinggroup_table_cells": 140,
   "figure3_plotted_series": 25,
   "full_end_to_end_pipeline_reproduced": false,
-  "guard_adapter_cells_executed": 28,
+  "guard_adapter_cells_executed": 24,
   "historical_source_csv_cells_matching_paper": 59,
   "historical_source_csv_comparable_numeric_cells": 168,
   "model_baseline_cells_executed": 36,
-  "model_baseline_cells_matching_paper": 32,
-  "model_baseline_training_years_recovered": 2,
+  "model_baseline_cells_matching_paper": 36,
+  "model_baseline_training_years_recovered": [
+    1,
+    2
+  ],
   "native_tradinggroup_figure_series": 15,
   "native_tradinggroup_figure_series_regenerated": 0,
   "native_tradinggroup_table_cells_regenerated": 0,
@@ -29,19 +32,20 @@
   "official_pdf_and_source_recovered": true,
   "official_version_audited": "v1",
   "output_sha256": {
-    "README.md": "5f94d694c21156e2a57000b2aa8f86228ab8db7da5f4765c327fb0492f90a566",
+    "README.md": "6706cb621b1af3ca17f83d1d18e8ba16a37ab28c9dcf180498f52d4873c1edc0",
     "discovery_evidence.csv": "783c7686e396f644d3c826afedf2771e0e9eda10e3c883dcfacc0884507d548f",
     "figure_inventory.csv": "81cc41d947c367d875ce568722931e035e38ed2f47b8de0282a187f042acbf68",
-    "finsaber_execution_ledger.csv": "685ed9b6a001e18d1a94f281691697c38b41863c1a8aab24a3f3238d312196ef",
+    "finsaber_execution_ledger.csv": "1c0e936239b6e3353610897a14546c898eb42cf9df072b411c2c3a782d0dadcc",
     "finsaber_source_output_comparison.csv": "f97ad6718d92b97bdee650f689e919c1655792dc3578636f4d2145c32a76e389",
     "finsaber_xgboost_available_history_adapter.patch": "96ec70964c5ea13313264a6e91dd611de19219d3c279d9645e85f4f9383dfa98",
+    "finsaber_xgboost_training_window_grid.csv": "6d8336ffef80bd64c0c9922198ce502fc9ba78594049de4f936132857375d600",
     "formula_component_execution.json": "d484cd7c19dd3e42d2007f200a53cb3f95623d5e85b732157c5c0515bdf6771e",
     "formula_inventory.csv": "c681503741452cef0db4e8ebd459d4c5722c1d9cdb472bec331147e35d328887",
-    "internal_consistency_audit.csv": "33fb15d96160295c5e4e2bb55844a36a58eaf0c40e2f83607b703afae1c7a92c",
-    "method_specification_audit.csv": "fc277d1953c55d705e85467c723efa310c063dc0a40188cabf2d7237fecde605",
+    "internal_consistency_audit.csv": "7c7a2d5258281fdd8d902cc4bbda66399992f529e8c7c9ffb61f53ef3ec715e6",
+    "method_specification_audit.csv": "35a708533c6c11d6f7dd6b786825c6f9c3a34fd2878adb8b427aae19bd7445ab",
     "prompt_inventory.csv": "982c51be963f4976cd39ae0c8ccce62f4c985b99d7a528888dd52edc1d1c116c",
-    "published_result_ledger.csv": "31145e195164a18727b4fbd3ac946f4f48834f4d05b80f926e37624763fad943",
-    "source_provenance.json": "e8f245d260e6dc70b6f7b8bfafa3794e611bcff1929f8693a59679f07a8960ec",
+    "published_result_ledger.csv": "6afa1a1cbcebd0547ff5d307ca701538933b40ee85a80621673304765fd538be",
+    "source_provenance.json": "b4ad8fbdf1a1ee098a50e565d4c47ab0b210655b72f39c240aa905d2f51b4661",
     "table3_annotation_audit.csv": "31f39d0e532d4cbd31147843d0e5cf12e2d28b08c104d1f36069aeffb7304cf9",
     "test_dataset_audit.csv": "c891d802c5d5489883691b087fbd086842f114f6a18b68b7c983f78084b3ae1a"
   },
@@ -57,7 +61,7 @@
   "published_unique_numeric_table_cells": 340,
   "qwen3_trader_checkpoint_recovered": false,
   "source_adjacent_baseline_cells_executed": 156,
-  "source_adjacent_baseline_cells_matching_paper": 152,
+  "source_adjacent_baseline_cells_matching_paper": 156,
   "source_adjacent_baseline_cells_matching_pinned_default": 96,
   "system_id": "SYS-TRADING-GROUP",
   "test_ticker_data_claims_reproduced": 5,
@@ -66,5 +70,10 @@
   "work_id": "CensusArxiv250817565",
   "xgboost_available_history_evidence_sha256": "9db5ccfd2161f1fdc469a30524d4127364777a00fccf4aa4911a6e1edd92e981",
   "xgboost_coin_cells_executed": 4,
-  "xgboost_coin_cells_matching_paper": 0
+  "xgboost_coin_cells_matching_paper": 4,
+  "xgboost_one_year_evidence_sha256": "0086ca99799be8b04ab8b90b106437ed87eb128ccb95f25bfc1152e82b8cc776",
+  "xgboost_one_year_profile_cells_matching_paper": 4,
+  "xgboost_two_year_profile_cells_matching_paper": 16,
+  "xgboost_uniform_profile_cells_executed": 40,
+  "xgboost_uniform_profiles_fully_matching_paper": 0
 }

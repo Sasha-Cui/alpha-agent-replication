@@ -58,6 +58,7 @@ PINS = {
     "finsaber-execution-two-year-models.json": "bd387429c16d9d50dd40b87af9146e91f95bbe660cca46f901ef59207aa8133a",
     "finsaber-execution-deterministic-no-prior-guard.json": "c557ca08083fea87da4277a5fcdb75f216d874d916e09a6532054227b754d568",
     "finsaber-execution-xgboost-available-history.json": "9db5ccfd2161f1fdc469a30524d4127364777a00fccf4aa4911a6e1edd92e981",
+    "finsaber-execution-one-year-xgboost.json": "0086ca99799be8b04ab8b90b106437ed87eb128ccb95f25bfc1152e82b8cc776",
     "finsaber-import-adapter.patch": "d35df9a3a948c76dcf272dd68c396679e613ba4e4d57323e5bbfe1c13961abd9",
     "discovery/github_code_title_arxiv.json": "66dbe8168d3d815eb63df27ad987bc092ced800e728ee06f6dbec5715963b09a",
     "discovery/github_code_checkpoint.json": "dc28063e8a4942ab20b81767b9645df891a70daee48927b440dfaad138c765e7",
@@ -69,7 +70,7 @@ PINS = {
     "discovery/unattributed_collision_repo.json": "0faad050121435986d57815fdfc39b585959180ccf927c444fc19345542b5845",
     "primary_external/finsaber_repo_api.json": "227ae3363a3cd2ded7acab76fe4e3f02066a358db20b35461288292d51725fd3",
 }
-FINSABER_BASELINE_DRIVER_SHA256 = "cd38787c7b08fb70e60cd8a4edaa5bda63da69157112e679b424fdeb2a4ea1ec"
+FINSABER_BASELINE_DRIVER_SHA256 = "756405973714804c97544b49fdc0dbeff4b899db39b1fb61ed6db6c3f5d65e57"
 FINSABER_PREPARED_RUNNER_SHA256 = "c26cc01268fcc88d69fde8f6f69fc22ad0982d0db378e6e4fe5fce1a99b29777"
 FINSABER_XGBOOST_ADAPTED_RUNNER_SHA256 = "138044d73ca97e5dc42aefa037bf61cd07fa476b854c2c5493447d3f095050fd"
 
@@ -471,6 +472,11 @@ def execution_values(
             scratch / "finsaber-execution-xgboost-available-history.json"
         ).read_text(encoding="utf-8")
     )
+    one_year_xgboost_document = json.loads(
+        (scratch / "finsaber-execution-one-year-xgboost.json").read_text(
+            encoding="utf-8"
+        )
+    )
     if two_year_document["inputs"]["config"].get("training_years") != 2:
         raise ValueError("paper-lineage model execution did not record two training years")
     if set(two_year_document["results"]) != {
@@ -497,6 +503,21 @@ def execution_values(
     }
     if xgboost_coin_document.get("adapter") != expected_xgboost_adapter:
         raise ValueError("XGBoost COIN available-history evidence drifted")
+
+    if one_year_xgboost_document["inputs"]["config"].get("training_years") != 1:
+        raise ValueError("one-year XGBoost execution did not record one training year")
+    expected_one_year_adapter = {
+        "incomplete_model_history_guard_bypassed": False,
+        "prepared_runner_sha256": FINSABER_PREPARED_RUNNER_SHA256,
+        "prepared_source_snapshot_modified_during_run": False,
+        "scope": "none",
+        "strategy_formula_changed": False,
+        "unused_prior_period_guard_bypassed": False,
+    }
+    if one_year_xgboost_document.get("adapter") != expected_one_year_adapter:
+        raise ValueError("one-year XGBoost evidence drifted")
+    if set(one_year_xgboost_document["results"]) != {"XGBoostPredictorStrategy"}:
+        raise ValueError("one-year XGBoost strategy census drifted")
     if set(deterministic_coin_document["results"]) != {
         "BuyAndHoldStrategy",
         "SMACrossStrategy",
@@ -515,6 +536,7 @@ def execution_values(
         deterministic_coin_document
     )
     xgboost_coin = values_from_execution_document(xgboost_coin_document)
+    one_year_xgboost = values_from_execution_document(one_year_xgboost_document)
     deterministic_controls = {
         key: value for key, value in deterministic_coin.items() if key[0] != "COIN"
     }
@@ -538,7 +560,7 @@ def execution_values(
         {key: value for key, value in deterministic_coin.items() if key[0] == "COIN"}
     )
     paper_lineage.update(
-        {key: value for key, value in xgboost_coin.items() if key[0] == "COIN"}
+        {key: value for key, value in one_year_xgboost.items() if key[0] == "COIN"}
     )
     if len(paper_lineage) != 156:
         raise ValueError("expanded FINSABER execution-cell census drifted")
@@ -547,6 +569,7 @@ def execution_values(
         "paper_lineage_two_year_models": two_year_document,
         "deterministic_coin_unused_prior_guard": deterministic_coin_document,
         "xgboost_coin_available_history": xgboost_coin_document,
+        "xgboost_one_year_uniform": one_year_xgboost_document,
     }
 
 
@@ -599,12 +622,12 @@ def result_and_execution_ledgers(
                 "Bollinger Bands", "Turn of The Month",
             }
         )
-        xgboost_coin_adapter = ticker == "COIN" and strategy == "XGBoost"
+        xgboost_coin_one_year = ticker == "COIN" and strategy == "XGBoost"
         execution_configuration = (
             "unused_prior_period_guard_bypass"
             if deterministic_coin_adapter
-            else "available_pretest_history_guard_bypass"
-            if xgboost_coin_adapter
+            else "historical_one_year_model_window"
+            if xgboost_coin_one_year
             else "historical_two_year_model_window"
             if strategy in {"ARIMA", "XGBoost"}
             else "pinned_default"
@@ -621,7 +644,7 @@ def result_and_execution_ledgers(
                     execution[key], paper
                 ),
                 "execution_configuration": execution_configuration,
-                "guard_adapter_used": deterministic_coin_adapter or xgboost_coin_adapter,
+                "guard_adapter_used": deterministic_coin_adapter,
                 "strategy_formula_changed": False,
                 "pinned_default_execution_value": (
                     "" if default_value is None else f"{default_value:.12g}"
@@ -672,6 +695,62 @@ def result_and_execution_ledgers(
             }
         )
     return published, execution_ledger, source_ledger, execution_documents
+
+
+def xgboost_training_window_grid_rows(
+    paper_rows: list[dict[str, Any]], execution_documents: Mapping[str, Any]
+) -> list[dict[str, Any]]:
+    paper_by_key = {
+        (row["ticker"], row["result_group"], row["metric"]): row
+        for row in paper_rows
+        if row["table"] == "Table 1" and row["result_group"] == "XGBoost"
+    }
+    profiles = {
+        "two_year_with_available_coin_history": (
+            values_from_execution_document(
+                execution_documents["xgboost_coin_available_history"]
+            ),
+            2,
+            True,
+        ),
+        "one_year_uniform": (
+            values_from_execution_document(
+                execution_documents["xgboost_one_year_uniform"]
+            ),
+            1,
+            False,
+        ),
+    }
+    rows = []
+    for profile, (values, training_years, guard_adapter_used) in profiles.items():
+        if set(values) != set(paper_by_key):
+            raise ValueError(f"{profile} XGBoost result-cell census drifted")
+        for key in sorted(paper_by_key):
+            paper = paper_by_key[key]
+            ticker, strategy, metric = key
+            rows.append(
+                {
+                    "profile": profile,
+                    "training_years": training_years,
+                    "ticker": ticker,
+                    "strategy": strategy,
+                    "metric": metric,
+                    "paper_rendered_value": paper["rendered_value"],
+                    "paper_numeric_value": paper["numeric_value"],
+                    "fresh_execution_value": f"{values[key]:.12g}",
+                    "fresh_execution_matches_paper": within_display_precision(
+                        values[key], paper
+                    ),
+                    "guard_adapter_used": guard_adapter_used,
+                    "strategy_formula_changed": False,
+                    "paper_result_credit": False,
+                    "credit_exclusion": (
+                        "uniform-window diagnostic; mixed hidden lineage is credited "
+                        "once in finsaber_execution_ledger.csv"
+                    ),
+                }
+            )
+    return rows
 
 
 class RestrictedDataUnpickler(pickle.Unpickler):
@@ -855,9 +934,9 @@ def method_specification() -> list[dict[str, Any]]:
         ("figure_curve_arrays", "missing", "no cumulative-return arrays"),
         ("baseline_framework", "recovered", "historical FINSABER commit and author-linked inputs"),
         ("baseline_environment", "reconstructed", "exact listed versions for relevant packages"),
-        ("baseline_model_training_window", "recovered_but_paper_omitted", "two years exactly regenerates 32/36 numeric ARIMA/XGBoost cells; repository default changed from two to three years before submission"),
+        ("baseline_model_training_window", "mixed_hidden_lineage_recovered_but_paper_omitted", "two years regenerates 32/36 ARIMA/XGBoost cells and one year regenerates the remaining 4/4 COIN XGBoost cells; neither uniform window regenerates all 36"),
         ("baseline_deterministic_coin_guard", "recovered_with_formula_preserving_adapter", "removing the unused prior-period guard regenerates 24/24 COIN deterministic cells and leaves 96/96 controls unchanged"),
-        ("baseline_xgboost_coin_history", "conflict_after_available_history_adapter", "all available pre-test COIN observations regenerate 0/4 printed XGBoost cells while 16/16 controls remain exact"),
+        ("baseline_xgboost_coin_history", "one_year_lineage_recovered_but_selection_rule_missing", "one year regenerates 4/4 COIN XGBoost cells while a uniform one-year window matches 0/16 controls and the two-year available-history diagnostic matches 0/4 COIN cells"),
         ("inference_engine", "partial", "vLLM named; version/config absent"),
     ]
     return [
@@ -878,9 +957,9 @@ def internal_consistency(annotation_rows: list[dict[str, Any]]) -> list[dict[str
         {"claim_id": "tsla_rm_pc_spr_annotation", "status": "annotation_rounding_mismatch", "audit_finding": "Displayed 1.070 to 0.409 is -61.776%, which rounds to -62%, not printed -61%."},
         {"claim_id": "tsla_rm_pc_cr_annotation", "status": "annotation_and_prose_rounding_mismatch", "audit_finding": "Displayed 21.904 to 5.276 is -75.913%, which rounds to -76%, not printed/prose -77%."},
         {"claim_id": "global_optimum", "status": "overbroad_ambiguous_claim", "audit_finding": "The claim of globally optimal overall performance is not a defined aggregate metric; TradingGroup is not best on every individual metric for TSLA or COIN."},
-        {"claim_id": "finsaber_coin_execution", "status": "deterministic_guard_resolved_model_conflict_retained", "audit_finding": "Removing only the unused deterministic prior-period guard recovers all 24 COIN rule-baseline cells. Retaining all available COIN history under the unchanged two-year XGBoost configuration reproduces 0/4 printed model cells."},
+        {"claim_id": "finsaber_coin_execution", "status": "mixed_training_window_lineage_recovered", "audit_finding": "Removing only the unused deterministic prior-period guard recovers all 24 COIN rule-baseline cells. A one-year XGBoost window recovers all 4 COIN model cells, but this ticker-dependent choice is not disclosed."},
         {"claim_id": "deterministic_baselines", "status": "complete_fresh_reproduction", "audit_finding": "Fresh pinned execution matches 120/120 paper cells for six deterministic strategies on all five tickers; the 96 original control cells are unchanged by the guard adapter."},
-        {"claim_id": "model_baselines", "status": "partial_historical_configuration_reproduction", "audit_finding": "A two-year training window reproduces 16/16 ARIMA and 16/20 XGBoost cells; the available-history COIN adapter matches 0/4, and the paper omits this parameter."},
+        {"claim_id": "model_baselines", "status": "complete_numeric_mixed_hidden_lineage", "audit_finding": "Two years reproduces all 32 ARIMA/XGBoost control cells and one year reproduces the remaining 4 COIN XGBoost cells. Uniform two-year and one-year profiles match only 16/20 and 4/20 XGBoost cells respectively, so the paper's result lineage is numerically recovered but method-under-specified."},
         {"claim_id": "source_csv_lineage", "status": "historical_output_conflict", "audit_finding": "Historical committed FINSABER CSVs match only 59/168 comparable numeric paper cells; fresh deterministic execution matches more of the TradingGroup paper than those CSVs."},
         {"claim_id": "native_results", "status": "unverifiable_without_release", "audit_finding": "No native agent code, checkpoint, trajectories, actions, fills, NAVs, or figure arrays were released."},
     ]
@@ -947,6 +1026,9 @@ def source_provenance(
             "paper_lineage_execution_config": execution_documents[
                 "paper_lineage_two_year_models"
             ]["inputs"]["config"],
+            "one_year_xgboost_execution_config": execution_documents[
+                "xgboost_one_year_uniform"
+            ]["inputs"]["config"],
             "pinned_default_execution_config": execution_documents[
                 "pinned_default_three_year"
             ]["inputs"]["config"],
@@ -962,8 +1044,10 @@ def source_provenance(
             "two_year_default_commit": FINSABER_TWO_YEAR_DEFAULT_COMMIT,
             "three_year_default_restore_commit": FINSABER_THREE_YEAR_RESTORE_COMMIT,
             "training_year_override_commit": FINSABER_TRAINING_OVERRIDE_COMMIT,
-            "model_training_window_finding": "two years exactly regenerates 32/36 numeric ARIMA/XGBoost cells; the available-history COIN XGBoost run matches 0/4 and the paper does not state the parameter",
+            "model_training_window_finding": "the paper's numeric lineage is 36/36 only under a hidden mixed window: two years for 32 ARIMA/XGBoost control cells and one year for four COIN XGBoost cells; no tested uniform window regenerates all cells",
+            "xgboost_uniform_window_finding": "the two-year profile with all available COIN history matches 16/20 XGBoost cells; the uniform one-year profile matches 4/20; neither is a complete method configuration",
             "deterministic_coin_finding": "removing only the unused prior-period guard reproduces all 24 COIN deterministic cells and leaves all 96 controls unchanged",
+            "one_year_xgboost_evidence_sha256": PINS["finsaber-execution-one-year-xgboost.json"],
             "import_adapter_sha256": PINS["finsaber-import-adapter.patch"],
             "adapter_boundary": "removes eager imports of unused external/RL modules only; strategy, data transform, commission, dates, and metrics unchanged",
         },
@@ -981,7 +1065,7 @@ def source_provenance(
 def readme() -> str:
     return """# TradingGroup paper-level replication audit
 
-Overall verdict: **paper document, exact test data, formulas, and 152/156
+Overall verdict: **paper document, exact test data, formulas, and 156/156
 source-adjacent baseline cells reproduced; native TradingGroup experiment
 not reproduced**.
 
@@ -999,17 +1083,19 @@ not reproduced**.
   filings; and both filing types for the other four tickers.
 - The exact historical pre-submission FINSABER commit and both author-linked
   input files execute under the relevant versions from its requirements. All
-  **156 numeric Table 1 baseline cells execute and 152/156 match** at paper
+  **156 numeric Table 1 baseline cells execute and 156/156 match** at paper
   display precision. The six deterministic strategies reproduce **120/120**.
   Removing only their unused outer `prior_period` guard exposes all 24 COIN cells;
   every cell matches while all 96 original control cells remain unchanged.
-- A historical two-year training window recovers 16/16 ARIMA and 16/20 XGBoost
-  cells. A second adapter retains every available pre-test COIN observation while
-  leaving XGBoost unchanged; all 16 control cells remain exact, but the four COIN
-  cells match 0/4. The paper omits the model training window, and FINSABER restored
-  a three-year default before submission. Both adapters preserve strategy formulas,
-  test data, commissions, dates, and metric code. This is source-adjacent baseline
-  result credit, not native TradingGroup reproduction.
+- The paper's numeric model-result lineage is also recovered: a historical
+  two-year window matches all 32 ARIMA/XGBoost cells on the four control tickers,
+  and one year matches all four COIN XGBoost cells. This is not a complete method
+  replication: the uniform two-year profile matches only 16/20 XGBoost cells and
+  the uniform one-year profile only 4/20. The paper omits this ticker-dependent
+  selection rule, and FINSABER restored a three-year default before submission.
+  The executions preserve strategy formulas, test data, commissions, dates, and
+  metric code. This is source-adjacent result credit, not native TradingGroup
+  reproduction.
 - All 13 printed formula units execute on a declared synthetic fixture. This is
   formula-component evidence only. Figure 2 contains useful but truncated
   runtime-shaped examples for all five agents.
@@ -1027,17 +1113,19 @@ framework and data source; it is not the missing TradingGroup system.
 ## Important consistency and lineage findings
 
 - The recovered data confirms the paper's detailed test-set claims exactly.
-- **152/156 numeric baseline cells regenerate exactly.** All 120 deterministic
-  cells match. The model cells require the source repository's hidden two-year
-  window: ARIMA matches 16/16 and XGBoost 16/20, while the later three-year
-  default produces 0/32 matches on the original four tickers. Because the paper
-  never states this parameter, model-lineage remains under-specified.
+- **156/156 numeric baseline cells regenerate exactly.** All 120 deterministic
+  cells match. The 36 model cells require a mixed hidden window: two years for
+  all 32 ARIMA/XGBoost control cells and one year for the four COIN XGBoost
+  cells. No tested uniform window regenerates all 20 XGBoost cells, and the later
+  three-year default produces 0/32 matches on the original four tickers. Because
+  the paper never states this selection rule, method-lineage remains under-specified.
 - The FINSABER repository's historical committed result CSVs match only 59/168
   comparable numeric paper cells and therefore are not the paper's result
   lineage.
 - The advertised runner's unused deterministic history guard hid 24 exact COIN
-  cells. Its XGBoost history guard hid a runnable COIN row, but all four values
-  conflict with the paper even when every available pre-test observation is used.
+  cells. Its XGBoost history guard hid a runnable two-year COIN diagnostic whose
+  four values conflict with the paper even when every available pre-test
+  observation is used; a one-year COIN run matches all four.
 - Table 2 supports the claim that PEFT improves SPR and CR on all five tickers
   and improves both MDD and AV for MSFT.
 - Only 58/60 Table 3 percentage annotations round from the displayed values.
@@ -1069,9 +1157,15 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     )
     dataset = test_dataset_audit(scratch)
     consistency = internal_consistency(annotations)
+    xgboost_window_grid = xgboost_training_window_grid_rows(
+        paper_rows, execution_documents
+    )
 
     write_csv(output / "published_result_ledger.csv", published)
     write_csv(output / "finsaber_execution_ledger.csv", execution)
+    write_csv(
+        output / "finsaber_xgboost_training_window_grid.csv", xgboost_window_grid
+    )
     write_csv(output / "finsaber_source_output_comparison.csv", source_comparison)
     write_csv(output / "test_dataset_audit.csv", dataset)
     write_csv(output / "formula_inventory.csv", formula_inventory())
@@ -1099,6 +1193,10 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
     unique_native = [row for row in native if row["duplicate_kind"] == "none"]
     unique_total = [row for row in published if row["duplicate_kind"] == "none"]
     source_statuses = Counter(row["status"] for row in source_comparison)
+    xgboost_window_matches = Counter(
+        row["profile"] for row in xgboost_window_grid
+        if row["fresh_execution_matches_paper"]
+    )
     manifest = {
         "work_id": WORK_ID,
         "system_id": SYSTEM_ID,
@@ -1125,7 +1223,7 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "source_adjacent_baseline_cells_matching_pinned_default": sum(
             row["pinned_default_execution_matches_paper"] for row in execution
         ),
-        "model_baseline_training_years_recovered": 2,
+        "model_baseline_training_years_recovered": [1, 2],
         "model_baseline_cells_matching_paper": sum(
             row["fresh_execution_matches_paper"]
             for row in execution if row["strategy"] in {"ARIMA", "XGBoost"}
@@ -1169,12 +1267,26 @@ def build(scratch: Path, output: Path) -> dict[str, Any]:
         "baseline_execution_configuration_counts": dict(
             Counter(row["execution_configuration"] for row in execution)
         ),
+        "xgboost_uniform_profile_cells_executed": len(xgboost_window_grid),
+        "xgboost_two_year_profile_cells_matching_paper": xgboost_window_matches[
+            "two_year_with_available_coin_history"
+        ],
+        "xgboost_one_year_profile_cells_matching_paper": xgboost_window_matches[
+            "one_year_uniform"
+        ],
+        "xgboost_uniform_profiles_fully_matching_paper": sum(
+            xgboost_window_matches[profile] == 20
+            for profile in {"two_year_with_available_coin_history", "one_year_uniform"}
+        ),
         "baseline_driver_sha256": FINSABER_BASELINE_DRIVER_SHA256,
         "deterministic_guard_bypass_evidence_sha256": PINS[
             "finsaber-execution-deterministic-no-prior-guard.json"
         ],
         "xgboost_available_history_evidence_sha256": PINS[
             "finsaber-execution-xgboost-available-history.json"
+        ],
+        "xgboost_one_year_evidence_sha256": PINS[
+            "finsaber-execution-one-year-xgboost.json"
         ],
         "historical_source_csv_comparable_numeric_cells": len(source_comparison) - source_statuses["paper_dash_or_no_numeric_cell"],
         "historical_source_csv_cells_matching_paper": source_statuses["matches_paper_at_display_precision"],

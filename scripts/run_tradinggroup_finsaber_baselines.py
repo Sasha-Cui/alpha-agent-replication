@@ -157,6 +157,8 @@ def main() -> None:
                 "xgboost_available_pretest_history_only"
                 if args.allow_incomplete_model_history_adapter
                 else "deterministic_strategies_only"
+                if args.bypass_unused_prior_guard
+                else "none"
             ),
             "strategy_formula_changed": False,
             "prepared_runner_sha256": runner_sha256_before,

@@ -24,7 +24,7 @@
   },
   "finsaber": {
     "adapter_boundary": "removes eager imports of unused external/RL modules only; strategy, data transform, commission, dates, and metrics unchanged",
-    "baseline_driver_sha256": "cd38787c7b08fb70e60cd8a4edaa5bda63da69157112e679b424fdeb2a4ea1ec",
+    "baseline_driver_sha256": "756405973714804c97544b49fdc0dbeff4b899db39b1fb61ed6db6c3f5d65e57",
     "commit": "0e794285e48fd71a4d9579ef022ee726b1e36f8a",
     "commit_authored": "2025-08-09T13:43:15+01:00",
     "deterministic_coin_adapter": {
@@ -46,7 +46,23 @@
       "xgboost": "3.0.2"
     },
     "import_adapter_sha256": "d35df9a3a948c76dcf272dd68c396679e613ba4e4d57323e5bbfe1c13961abd9",
-    "model_training_window_finding": "two years exactly regenerates 32/36 numeric ARIMA/XGBoost cells; the available-history COIN XGBoost run matches 0/4 and the paper does not state the parameter",
+    "model_training_window_finding": "the paper's numeric lineage is 36/36 only under a hidden mixed window: two years for 32 ARIMA/XGBoost control cells and one year for four COIN XGBoost cells; no tested uniform window regenerates all cells",
+    "one_year_xgboost_evidence_sha256": "0086ca99799be8b04ab8b90b106437ed87eb128ccb95f25bfc1152e82b8cc776",
+    "one_year_xgboost_execution_config": {
+      "date_from": "2022-10-06",
+      "date_to": "2023-04-10",
+      "save_results": false,
+      "setup_name": "cherry_pick_both_finmem",
+      "silence": true,
+      "tickers": [
+        "TSLA",
+        "NFLX",
+        "AMZN",
+        "MSFT",
+        "COIN"
+      ],
+      "training_years": 1
+    },
     "origin": "https://github.com/waylonli/FINSABER.git",
     "paper_lineage_execution_config": {
       "date_from": "2022-10-06",
@@ -97,7 +113,8 @@
       "scope": "xgboost_available_pretest_history_only",
       "strategy_formula_changed": false,
       "unused_prior_period_guard_bypassed": false
-    }
+    },
+    "xgboost_uniform_window_finding": "the two-year profile with all available COIN history matches 16/20 XGBoost cells; the uniform one-year profile matches 4/20; neither is a complete method configuration"
   },
   "release_boundary": {
     "attributable_tradinggroup_implementation_recovered": false,

@@ -28,7 +28,7 @@ raw_table_arrays,missing,no raw results
 figure_curve_arrays,missing,no cumulative-return arrays
 baseline_framework,recovered,historical FINSABER commit and author-linked inputs
 baseline_environment,reconstructed,exact listed versions for relevant packages
-baseline_model_training_window,recovered_but_paper_omitted,two years exactly regenerates 32/36 numeric ARIMA/XGBoost cells; repository default changed from two to three years before submission
+baseline_model_training_window,mixed_hidden_lineage_recovered_but_paper_omitted,two years regenerates 32/36 ARIMA/XGBoost cells and one year regenerates the remaining 4/4 COIN XGBoost cells; neither uniform window regenerates all 36
 baseline_deterministic_coin_guard,recovered_with_formula_preserving_adapter,removing the unused prior-period guard regenerates 24/24 COIN deterministic cells and leaves 96/96 controls unchanged
-baseline_xgboost_coin_history,conflict_after_available_history_adapter,all available pre-test COIN observations regenerate 0/4 printed XGBoost cells while 16/16 controls remain exact
+baseline_xgboost_coin_history,one_year_lineage_recovered_but_selection_rule_missing,one year regenerates 4/4 COIN XGBoost cells while a uniform one-year window matches 0/16 controls and the two-year available-history diagnostic matches 0/4 COIN cells
 inference_engine,partial,vLLM named; version/config absent

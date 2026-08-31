@@ -215,10 +215,10 @@ Table 1,COIN,Turn of The Month,SPR,0.713,0.713,3,False,none,,True,True,False,Fal
 Table 1,COIN,Turn of The Month,CR,21.243,21.243,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,COIN,Turn of The Month,MDD,-21.522,-21.522,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,COIN,Turn of The Month,AV,49.36,49.36,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
-Table 1,COIN,XGBoost,SPR,1.52,1.52,2,False,none,,True,False,False,False,False,none
-Table 1,COIN,XGBoost,CR,84.256,84.256,3,False,none,,True,False,False,False,False,none
-Table 1,COIN,XGBoost,MDD,-31.901,-31.901,3,False,none,,True,False,False,False,False,none
-Table 1,COIN,XGBoost,AV,68.724,68.724,3,False,none,,True,False,False,False,False,none
+Table 1,COIN,XGBoost,SPR,1.52,1.52,2,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,XGBoost,CR,84.256,84.256,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,XGBoost,MDD,-31.901,-31.901,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
+Table 1,COIN,XGBoost,AV,68.724,68.724,3,False,none,,True,True,False,False,True,source_adjacent_baseline_execution
 Table 1,COIN,SAC,SPR,0.184,0.184,3,False,none,,False,False,False,False,False,none
 Table 1,COIN,SAC,CR,-13.011,-13.011,3,False,none,,False,False,False,False,False,none
 Table 1,COIN,SAC,MDD,-55.542,-55.542,3,False,none,,False,False,False,False,False,none
