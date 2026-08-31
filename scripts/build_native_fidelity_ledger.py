@@ -43,23 +43,24 @@ ARTIFACT_NOTES = {
         "startup loads 6,030 JSONL records plus 249 TA rows, and controlled stubs "
         "exercise the TSLA router/eight LLM call seams and BTC vote without paid or "
         "external calls. The organizer's public database recovers 97 paper-window "
-        "decisions, and its pinned scorer replays all 97. In total, 19/119 printed table "
+        "decisions, and its pinned scorer replays all 97. In total, 33/119 printed table "
         "cells regenerate at display precision: five live output cells (both TSLA/BTC "
         "acted-day exposure cells, both day-level hit rates, and BTC maximum drawdown) "
-        "plus all 14 cells in both offline Buy-and-Hold rows. The baseline rows require "
-        "different later official revisions: TSLA ends May 20 with 293 rows and BTC ends "
-        "May 21 with 294, contradicting the common May 10 endpoint printed in the paper. "
+        "plus all 28 cells in the offline Buy-and-Hold and deterministic Always-HOLD rows. "
+        "The four baseline rows require different later official revisions: TSLA ends May "
+        "20 with 293 rows and BTC ends May 21 with 294, contradicting the common May 10 "
+        "endpoint printed in the paper. "
         "Four composite long/short hit/PnL cells recover their hit-rate component but not "
         "PnL and receive no full-cell credit. This is strong source and dated-output "
         "verification, not an LLM action-generation rerun: 0/119 cells reproduce end to "
         "end and 0/2 full empirical panels regenerate. "
-        "Raw prices verify both plotted Buy-and-Hold endpoints only. Official actions "
+        "Raw prices verify both plotted Buy-and-Hold endpoints and both constant-cash rows. Official actions "
         "plus the scorer produce TSLA +4.79%, Sharpe 1.58, 45% win rate instead of "
         "+13.51%, 4.10, 88%; BTC replays -0.10%, agreeing with the figure/prose but "
         "contradicting the -5.30% table. Every one of the 20 official revisions per asset "
         "that fully covers the declared May 10 endpoint has the same period price path, "
         "which reproduces neither printed baseline return; the later mixed endpoints do. "
-        "The displayed N_tr values are total dataset rows, not executed trades. Native BTC "
+        "The Buy-and-Hold N_tr values are total dataset rows, not executed trades; Always HOLD has zero. Native BTC "
         "source converts three HOLD votes to BUY and double-counts momentum when Fear "
         "& Greed fails. The nine printed prompts are abridged despite the full-prompts "
         "claim; model/API calls, cache state, dependency/image pins, offline actions, "
@@ -1669,7 +1670,7 @@ PAPER_ONLY_AUDIT_NOTES = {
 
 TARGETED_EXECUTION = {
     "SYS-FACTOR-MAD": "paper_audit:completed_six_paper_derived_mechanics_seven_fail_closed_zero_of_30_table_cells_zero_of_8_empirical_panels_no_attributable_pipeline_local_m0_proxy_no_paper_credit",
-    "SYS-FIN-ANALYST": "paper_audit:partial_19_of_119_displayed_cells_regenerated_14_offline_baseline_mixed_endpoints_5_live_output_verified_97_official_decisions_replayed_zero_end_to_end_full_5_103_327_commit_histories_exhausted",
+    "SYS-FIN-ANALYST": "paper_audit:partial_33_of_119_displayed_cells_regenerated_28_deterministic_offline_baseline_mixed_endpoints_5_live_output_verified_97_official_decisions_replayed_zero_end_to_end_full_5_103_327_commit_histories_exhausted",
     "SYS-MACRO-ECONOMISTS-MACHINE": "paper_audit:completed_18_paper_derived_mechanics_four_fail_closed_zero_of_132_table_cells_zero_of_12_empirical_panels_no_attributable_pipeline_major_figure_table_conflicts",
     "SYS-JANUS-Q": "paper_audit:partial_61_of_130_table_cells_85_of_85_main_nav_metrics_full_10_commit_history_supplementary_output_edit_1_of_5_metrics_consistent_31999_of_31999_data_links_no_native_training_or_backtest",
     "SYS-METAPS": "paper_audit:completed_12_paper_derived_mechanics_zero_of_492_table_cells_zero_of_20_empirical_panels_no_attributable_pipeline",

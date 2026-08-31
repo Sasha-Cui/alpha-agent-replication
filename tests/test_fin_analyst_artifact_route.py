@@ -66,14 +66,14 @@ def test_native_ledger_credits_dated_outputs_but_not_common_task_or_paper_result
     assert row["blocking_stage"] == "A3_wrong_asset_scope_TSLA_BTC_not_six_country_security_panel"
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:partial_19_of_119_displayed_cells_regenerated_14_offline_baseline_"
-        "mixed_endpoints_5_live_output_verified_97_official_decisions_replayed_zero_end_"
+        "paper_audit:partial_33_of_119_displayed_cells_regenerated_28_deterministic_offline_"
+        "baseline_mixed_endpoints_5_live_output_verified_97_official_decisions_replayed_zero_end_"
         "to_end_full_5_103_327_commit_histories_exhausted"
     )
     note = row["concise_evidence_note"]
     for marker in (
-        "97 paper-window decisions", "19/119 printed table cells",
-        "all 14 cells in both offline Buy-and-Hold rows",
+        "97 paper-window decisions", "33/119 printed table cells",
+        "all 28 cells in the offline Buy-and-Hold and deterministic Always-HOLD rows",
         "TSLA ends May 20 with 293 rows", "BTC ends May 21 with 294",
         "20 official revisions per asset",
         "BTC maximum drawdown",
@@ -95,7 +95,7 @@ def test_paper_route_prioritizes_public_native_evidence_without_overclaiming() -
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_disposition"] == "availability_only_no_performance_inference"
     assert row["proxy_role"] == "no_proxy"
-    assert "19/119 printed table cells" in row["precise_native_or_access_blocker"]
+    assert "33/119 printed table cells" in row["precise_native_or_access_blocker"]
     assert "0/119 cells reproduce end to end" in row["precise_native_or_access_blocker"]
 
 
@@ -115,4 +115,4 @@ def test_static_assets_reflect_evidence_derived_counts() -> None:
     assert r"\newcommand{\PaperOnlyUnderspecifiedWorkCount}{34\xspace}" in routes
     failure = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
     assert "Fin-Analyst at FinMMEval Task 3 & reachable" in failure
-    assert "19/119 printed table cells" in failure
+    assert "33/119 printed table cells" in failure
