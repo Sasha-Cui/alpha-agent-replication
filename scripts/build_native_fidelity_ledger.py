@@ -564,16 +564,22 @@ ARTIFACT_NOTES = {
     ),
     "SYS-ALPHA-QUANTER": (
         "N",
-        "A pinned paper audit checks all 790 numeric cells in Tables 5--8 and "
-        "10--14. The release ships 2,615 training/validation prompt-label rows: "
-        "a current Yahoo retrieval reproduces 523 labels exactly and 2,612 reward "
-        "regimes. A released-semantics market-baseline reconstruction matches 1/34 "
-        "repeated Buy-and-Hold cells at display precision. These are components, "
-        "not agent outputs; all 756 non-market cells lack checkpoints, actions, "
-        "three-seed paths, logs, or human ratings, and the paper test split is absent. "
-        "The complete two-commit history plus all 11 accessible forks and 11 branch "
-        "refs resolve to the same two official-history heads, adding zero commits, "
-        "blobs, tags, checkpoints, actions, result payloads, or ratings.",
+        "A pinned paper audit checks all 790 numeric cells in Tables 5--8 and 10--14. "
+        "The release ships 2,615 training/validation prompt-label rows: a current "
+        "Yahoo retrieval reproduces 523 labels exactly and 2,612 reward regimes. A "
+        "released-semantics market-baseline reconstruction matches 1/34 repeated "
+        "Buy-and-Hold cells at display precision. The pinned current retrieval has the "
+        "paper-stated 122 sessions, so calendar count is not a blocker, but the original "
+        "prompts, actions, and paper-time snapshot remain absent. A fail-closed 84-cell "
+        "sensitivity tests adjusted/unadjusted closes under the full evaluator, released "
+        "60-observation/5-row rolling rule, and literal three-calendar-month/7-day paper "
+        "rule. The released rolling/unadjusted path is closest to Table 12 (aggregate "
+        "error 1.038 across eight cells versus 58.539 for the literal rule), but every "
+        "sensitivity row retains zero paper-time credit. These are components, not agent "
+        "outputs; all 756 non-market cells lack checkpoints, actions, three-seed paths, "
+        "logs, or human ratings. The complete two-commit history plus all 11 accessible "
+        "forks and 11 branch refs resolve to the same two official-history heads, adding "
+        "zero commits, blobs, tags, checkpoints, actions, result payloads, or ratings.",
     ),
     "SYS-CONTEST-TRADE": (
         "N",
@@ -1711,6 +1717,7 @@ TARGETED_EXECUTION = {
     ),
     "SYS-ALPHA-QUANTER": (
         "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match_"
+        "122_sessions_84_protocol_sensitivity_cells_zero_paper_time_credit_"
         "11_forks_11_refs_2_official_history_heads_exhausted"
     ),
     "SYS-CHAIN-OF-ALPHA": "paper_audit:completed_zero_of_180_result_cells_withdrawn_no_attributable_system",
