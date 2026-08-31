@@ -46,6 +46,11 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   the paper at display precision. Tables 3 and 5 match completely (55/55); Table 4
   matches cumulative return, Sharpe, and drawdown (12/20) but conflicts on the same
   eight volatility cells.
+- The exact historical parameterized `main` function also writes all three ablation
+  table CSVs. The audit changes no source formula: it only rebinds `get_price` to the
+  hash-pinned `TSLA_ablation.json` response and replaces author-local action paths with
+  exact Git blobs. All 75 written values agree with `calculate_metrics` within 1e-12,
+  all three output hashes are pinned, and the blocked live-download counter remains zero.
 - This is stronger than paper-value transcription: it connects the paper values to
   author-shipped outputs and independently replays the ablation metric path. It is
   still not an end-to-end rerun of FinMem's LLM decisions or five repeated trials.
@@ -89,10 +94,11 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   released. `Fake-Sample-Data.zip` explicitly contains Kaggle-derived fake news and
   sample pipeline objects, not paper inputs or agent outputs; pickle payloads were
   inventoried without execution.
-- The reusable metric function now executes, but the outer script entrypoint remains
-  non-operational: it references an undefined lowercase ticker, hard-codes author-local
-  result paths, and uses yfinance/pandas without declaring them in either locked
-  environment file.
+- The reusable metric function and its parameterized `main` now execute with the two
+  explicit input/path adapters above. The released hard-coded `if __name__ == "__main__"`
+  block remains non-operational: it references an undefined lowercase ticker, hard-codes
+  author-local result paths, and uses yfinance/pandas without declaring them in either
+  locked environment file.
 - The paper averages five repeated trials but provides no seeds or trial paths. It
   also reports whichever of three risk profiles has the highest cumulative return
   on the test period, an outcome-selected figure rather than a prespecified profile.

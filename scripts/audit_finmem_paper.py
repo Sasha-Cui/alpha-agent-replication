@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import contextlib
 import csv
 from datetime import datetime, timezone
 import hashlib
@@ -23,6 +24,8 @@ import re
 import subprocess
 import sys
 import tarfile
+import tempfile
+import warnings
 import zipfile
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Sequence, Tuple
@@ -39,6 +42,11 @@ HISTORICAL_NOTEBOOK_PATH = "Visualize-metrics-test/metrics.ipynb"
 HISTORICAL_NOTEBOOK_SHA256 = "3096d6a67336270b5b820bd92408733b641abe73edaf04fa9215ec36d3fcf6dc"
 HISTORICAL_METRICS_PATH = "Visualize-metrics-test/metrics.py"
 HISTORICAL_METRICS_SHA256 = "ffec58d7bdc4b9e94e9bdcf2205c98ab9bef27ce8ddb95e377e154efeae15f21"
+HISTORICAL_MAIN_OUTPUT_SHA256 = {
+    3: "85f523f7c53c5b949ed981b844b2509ad42326a1c9e48357fe726618ab2cfbe2",
+    4: "15f13301c590546bb7d35abba8f7e9f3d15c1d168ea97607f686c3cfdcaf0b2d",
+    5: "bdefc696e07efb74cb66a78d6818006ff336b8be9cefb42f09e3298d517822c1",
+}
 EXPECTED_REACHABLE_COMMITS = 55
 EXPECTED_REACHABLE_OBJECTS = 336
 EXPECTED_REACHABLE_BLOBS = 171
@@ -1001,9 +1009,7 @@ def historical_action_reproduction(source_root: Path, price_root: Path) -> List[
     return rows
 
 
-def historical_native_metric_function_execution(
-    source_root: Path, price_root: Path
-) -> List[Dict[str, Any]]:
+def historical_native_metric_function_execution(source_root: Path, price_root: Path) -> List[Dict[str, Any]]:
     metrics_blob = git_blob(
         source_root,
         HISTORICAL_ARTIFACT_COMMIT,
@@ -1021,10 +1027,13 @@ def historical_native_metric_function_execution(
         namespace,
     )
     calculate_metrics = namespace.get("calculate_metrics")
+    main_function = namespace.get("main")
     yfinance_module = namespace.get("yf")
-    if not callable(calculate_metrics) or getattr(
-        yfinance_module, "__version__", ""
-    ) != "0.2.32":
+    if (
+        not callable(calculate_metrics)
+        or not callable(main_function)
+        or getattr(yfinance_module, "__version__", "") != "0.2.32"
+    ):
         raise RuntimeError("Historical FinMem metric dependency contract changed")
 
     network_calls = 0
@@ -1037,8 +1046,7 @@ def historical_native_metric_function_execution(
     yfinance_module.download = blocked_download
     prices, timestamps = load_adjusted_prices(price_root / "TSLA_ablation.json")
     trading_dates = [
-        datetime.fromtimestamp(timestamp, timezone.utc).replace(tzinfo=None).date()
-        for timestamp in timestamps
+        datetime.fromtimestamp(timestamp, timezone.utc).replace(tzinfo=None).date() for timestamp in timestamps
     ]
     first_date, last_date = min(trading_dates), max(trading_dates)
     targets = [row for row in paper_table_rows() if row["paper_table"] in {3, 4, 5}]
@@ -1050,27 +1058,18 @@ def historical_native_metric_function_execution(
         "max_drawdown_pct",
     )
     rows: List[Dict[str, Any]] = []
-    for paper_table, strategy in sorted({
-        (int(row["paper_table"]), str(row["strategy_or_configuration"]))
-        for row in targets
-    }):
+    for paper_table, strategy in sorted(
+        {(int(row["paper_table"]), str(row["strategy_or_configuration"])) for row in targets}
+    ):
         path = HISTORICAL_ABLATION_ACTION_PATHS.get((paper_table, strategy), "")
         if strategy == "buy_and_hold":
             actions = np.ones(len(prices), dtype=float)
             action_evidence = "synthetic_all_ones_buy_and_hold_path"
         else:
-            parsed, _ = parse_action_csv(
-                git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, path)
-            )
-            filtered = [
-                (date.date(), value)
-                for date, value in parsed
-                if first_date <= date.date() <= last_date
-            ]
+            parsed, _ = parse_action_csv(git_blob(source_root, HISTORICAL_ARTIFACT_COMMIT, path))
+            filtered = [(date.date(), value) for date, value in parsed if first_date <= date.date() <= last_date]
             if [date for date, _ in filtered] != trading_dates:
-                raise RuntimeError(
-                    f"Historical action dates do not align for native metric run: {path}"
-                )
+                raise RuntimeError(f"Historical action dates do not align for native metric run: {path}")
             actions = np.asarray([value for _, value in filtered], dtype=float)
             action_evidence = f"{HISTORICAL_ARTIFACT_COMMIT}:{path}"
         native_tuple = calculate_metrics(prices.tolist(), actions.tolist())
@@ -1079,20 +1078,14 @@ def historical_native_metric_function_execution(
             for index, (metric, value) in enumerate(zip(metric_order, native_tuple))
         }
         adapter_values = source_action_metrics(prices, actions)
-        adapter_errors = {
-            metric: abs(native_values[metric] - adapter_values[metric])
-            for metric in metric_order
-        }
+        adapter_errors = {metric: abs(native_values[metric] - adapter_values[metric]) for metric in metric_order}
         paper_values = {
             str(row["metric"]): float(row["paper_value"])
             for row in targets
-            if int(row["paper_table"]) == paper_table
-            and row["strategy_or_configuration"] == strategy
+            if int(row["paper_table"]) == paper_table and row["strategy_or_configuration"] == strategy
         }
         paper_matches = {
-            metric: abs(native_values[metric] - paper_values[metric])
-            <= DISPLAY_TOLERANCE
-            for metric in metric_order
+            metric: abs(native_values[metric] - paper_values[metric]) <= DISPLAY_TOLERANCE for metric in metric_order
         }
         rows.append(
             {
@@ -1108,12 +1101,8 @@ def historical_native_metric_function_execution(
                 "price_input_sha256": PRICE_SHA256["TSLA_ablation.json"],
                 "action_evidence": action_evidence,
                 **{f"native_{metric}": native_values[metric] for metric in metric_order},
-                "maximum_absolute_error_against_audit_adapter": max(
-                    adapter_errors.values()
-                ),
-                "all_five_metrics_match_audit_adapter": all(
-                    error <= 1e-12 for error in adapter_errors.values()
-                ),
+                "maximum_absolute_error_against_audit_adapter": max(adapter_errors.values()),
+                "all_five_metrics_match_audit_adapter": all(error <= 1e-12 for error in adapter_errors.values()),
                 "paper_cells_matched": sum(paper_matches.values()),
                 "paper_cells_conflicted": len(paper_matches) - sum(paper_matches.values()),
                 "paper_row_fully_matched": all(paper_matches.values()),
@@ -1121,10 +1110,94 @@ def historical_native_metric_function_execution(
                 "native_agent_result_credit": False,
             }
         )
+
+    def pinned_get_price(start: str, end: str, ticker: str) -> List[float]:
+        return prices.tolist()
+
+    namespace["get_price"] = pinned_get_price
+    main_row_names = {
+        "cumulative_return_pct": "Cumulative Return",
+        "sharpe_ratio": "Sharpe Ratio",
+        "daily_volatility_pct": "Standard Deviation",
+        "annualized_volatility_pct": "Annualized Volatility",
+        "max_drawdown_pct": "Max Drawdown",
+    }
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        temporary_root = Path(temporary_directory)
+        for paper_table in (3, 4, 5):
+            df_paths: Dict[str, str] = {}
+            col_names: Dict[str, List[str]] = {}
+            strategies = sorted(
+                {
+                    str(row["strategy_or_configuration"])
+                    for row in targets
+                    if int(row["paper_table"]) == paper_table and row["strategy_or_configuration"] != "buy_and_hold"
+                }
+            )
+            for strategy in strategies:
+                source_path = HISTORICAL_ABLATION_ACTION_PATHS[(paper_table, strategy)]
+                action_blob = git_blob(
+                    source_root,
+                    HISTORICAL_ARTIFACT_COMMIT,
+                    source_path,
+                )
+                destination = temporary_root / f"{paper_table}_{strategy}.csv"
+                destination.write_bytes(action_blob)
+                header = next(csv.reader(io.StringIO(action_blob.decode("utf-8-sig"))))
+                date_field = next(field for field in ("date", "dates") if field in header)
+                action_field = next(field for field in ("direction", "action", "actions") if field in header)
+                df_paths[strategy] = str(destination)
+                col_names[strategy] = [date_field, action_field]
+            output_path = temporary_root / f"table_{paper_table}.csv"
+            captured_stdout = io.StringIO()
+            with warnings.catch_warnings(record=True) as captured_warnings:
+                warnings.simplefilter("always")
+                with contextlib.redirect_stdout(captured_stdout):
+                    main_function(
+                        "TSLA",
+                        "2022-06-16",
+                        "2022-12-28",
+                        df_paths,
+                        col_names,
+                        str(output_path),
+                    )
+            output_sha256 = hashlib.sha256(output_path.read_bytes()).hexdigest()
+            if output_sha256 != HISTORICAL_MAIN_OUTPUT_SHA256[paper_table]:
+                raise RuntimeError(f"FinMem parameterized main output changed: Table {paper_table}")
+            output_frame = namespace["pd"].read_csv(output_path, index_col=0)
+            for row in rows:
+                if int(row["paper_table"]) != paper_table:
+                    continue
+                strategy = str(row["strategy_or_configuration"])
+                column = "Buy & Hold" if strategy == "buy_and_hold" else strategy
+                main_errors = []
+                for metric in metric_order:
+                    main_value = float(output_frame.loc[main_row_names[metric], column])
+                    if metric != "sharpe_ratio":
+                        main_value *= 100.0
+                    main_errors.append(abs(main_value - float(row[f"native_{metric}"])))
+                row.update(
+                    {
+                        "parameterized_main_executed": True,
+                        "parameterized_main_output_sha256": output_sha256,
+                        "parameterized_main_warning_count": len(captured_warnings),
+                        "parameterized_main_stdout_nonempty": bool(captured_stdout.getvalue().strip()),
+                        "parameterized_main_maximum_function_error": max(main_errors),
+                        "parameterized_main_matches_calculate_metrics": all(error <= 1e-12 for error in main_errors),
+                        "parameterized_main_input_adapter": (
+                            "get_price_rebound_to_pinned_TSLA_ablation_json;"
+                            "author_local_action_paths_rebound_to_exact_git_blobs"
+                        ),
+                        "source_formula_changed": False,
+                        "hardcoded_dunder_main_block_executed": False,
+                    }
+                )
     if (
         len(rows) != 15
         or network_calls != 0
         or not all(row["all_five_metrics_match_audit_adapter"] for row in rows)
+        or not all(row["parameterized_main_executed"] for row in rows)
+        or not all(row["parameterized_main_matches_calculate_metrics"] for row in rows)
         or sum(row["paper_cells_matched"] for row in rows) != 67
         or sum(row["paper_row_fully_matched"] for row in rows) != 11
     ):
@@ -1642,9 +1715,7 @@ def build_audit(
     author_outputs = parse_notebook_author_outputs(source_root)
     action_inventory = historical_action_inventory(source_root)
     action_reproduction = historical_action_reproduction(source_root, price_root)
-    native_metric_runs = historical_native_metric_function_execution(
-        source_root, price_root
-    )
+    native_metric_runs = historical_native_metric_function_execution(source_root, price_root)
     paper_versions, paper_source_files = paper_version_audit(paper_version_root)
     table_4_forensics, table_4_forensic_summary = table_4_volatility_forensics(
         source_root, author_outputs, action_reproduction
@@ -1805,13 +1876,9 @@ def build_audit(
         "historical_native_metric_configurations_executed": len(native_metric_runs),
         "historical_native_metric_cells_executed": len(native_metric_runs) * 5,
         "historical_native_metric_cells_matching_audit_adapter": sum(
-            5
-            for row in native_metric_runs
-            if row["all_five_metrics_match_audit_adapter"]
+            5 for row in native_metric_runs if row["all_five_metrics_match_audit_adapter"]
         ),
-        "historical_native_metric_cells_matching_paper": sum(
-            row["paper_cells_matched"] for row in native_metric_runs
-        ),
+        "historical_native_metric_cells_matching_paper": sum(row["paper_cells_matched"] for row in native_metric_runs),
         "historical_native_metric_rows_fully_matching_paper": sum(
             row["paper_row_fully_matched"] for row in native_metric_runs
         ),
@@ -1819,11 +1886,21 @@ def build_audit(
             not row["paper_row_fully_matched"] for row in native_metric_runs
         ),
         "historical_native_metric_maximum_adapter_error": max(
-            row["maximum_absolute_error_against_audit_adapter"]
-            for row in native_metric_runs
+            row["maximum_absolute_error_against_audit_adapter"] for row in native_metric_runs
         ),
         "historical_native_metric_yfinance_version": "0.2.32",
         "historical_native_metric_live_yfinance_calls": 0,
+        "historical_parameterized_main_tables_executed": 3,
+        "historical_parameterized_main_configurations_executed": len(native_metric_runs),
+        "historical_parameterized_main_metric_cells_executed": len(native_metric_runs) * 5,
+        "historical_parameterized_main_cells_matching_calculate_metrics": sum(
+            5 for row in native_metric_runs if row["parameterized_main_matches_calculate_metrics"]
+        ),
+        "historical_parameterized_main_maximum_function_error": max(
+            row["parameterized_main_maximum_function_error"] for row in native_metric_runs
+        ),
+        "historical_parameterized_main_output_sha256": HISTORICAL_MAIN_OUTPUT_SHA256,
+        "historical_parameterized_main_live_yfinance_calls": 0,
         "buy_hold_cells_recomputed": matched + mismatched,
         "buy_hold_cells_matched": matched,
         "buy_hold_cells_mismatched_against_current_yahoo": mismatched,
@@ -1876,6 +1953,8 @@ def build_audit(
         "source_trial_seeds_shipped": False,
         "paper_selects_best_risk_profile_on_test_outcome": True,
         "source_calculate_metrics_function_operational": True,
+        "source_parameterized_metrics_main_operational_with_input_adapter": True,
+        "source_parameterized_metrics_main_formulas_changed": False,
         "source_metrics_entrypoint_operational_as_released": False,
         "paper_metric_is_self_financing_portfolio_return": False,
         "paper_metric_interpretation": (
@@ -1886,9 +1965,11 @@ def build_audit(
             "The full public Git history preserves an executed notebook that corroborates "
             "227/235 displayed paper cells (223 exact and four differing by one last-decimal "
             "unit) and 18 dated action CSVs. "
-            "The exact historical calculate_metrics function executes all 15 recovered "
-            "configurations with yfinance 0.2.32 imported, zero network calls, and all 75 "
-            "values matching the audit adapter within 1e-12. Replaying the ablation actions "
+            "The exact historical parameterized main writes all three ablation tables for "
+            "all 15 recovered configurations after only rebinding its author-local action "
+            "paths and get_price input to hash-pinned public artifacts. Its formulas are "
+            "unchanged, it makes zero live network calls, and all 75 values match the exact "
+            "calculate_metrics function within 1e-12. Replaying the ablation actions "
             "against a hash-pinned Yahoo response reproduces 67/75 displayed "
             "Table 3--5 cells. The remaining eight are both Table 4 volatility columns. Both "
             "official arXiv versions and their TeX sources retain them: four annualized cells "
@@ -1968,6 +2049,11 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   the paper at display precision. Tables 3 and 5 match completely (55/55); Table 4
   matches cumulative return, Sharpe, and drawdown (12/20) but conflicts on the same
   eight volatility cells.
+- The exact historical parameterized `main` function also writes all three ablation
+  table CSVs. The audit changes no source formula: it only rebinds `get_price` to the
+  hash-pinned `TSLA_ablation.json` response and replaces author-local action paths with
+  exact Git blobs. All 75 written values agree with `calculate_metrics` within 1e-12,
+  all three output hashes are pinned, and the blocked live-download counter remains zero.
 - This is stronger than paper-value transcription: it connects the paper values to
   author-shipped outputs and independently replays the ablation metric path. It is
   still not an end-to-end rerun of FinMem's LLM decisions or five repeated trials.
@@ -2011,10 +2097,11 @@ trained memories, complete five-trial paths, and exact paper configuration remai
   released. `Fake-Sample-Data.zip` explicitly contains Kaggle-derived fake news and
   sample pipeline objects, not paper inputs or agent outputs; pickle payloads were
   inventoried without execution.
-- The reusable metric function now executes, but the outer script entrypoint remains
-  non-operational: it references an undefined lowercase ticker, hard-codes author-local
-  result paths, and uses yfinance/pandas without declaring them in either locked
-  environment file.
+- The reusable metric function and its parameterized `main` now execute with the two
+  explicit input/path adapters above. The released hard-coded `if __name__ == "__main__"`
+  block remains non-operational: it references an undefined lowercase ticker, hard-codes
+  author-local result paths, and uses yfinance/pandas without declaring them in either
+  locked environment file.
 - The paper averages five repeated trials but provides no seeds or trial paths. It
   also reports whichever of three risk profiles has the highest cumulative return
   on the test period, an outcome-selected figure rather than a prespecified profile.
