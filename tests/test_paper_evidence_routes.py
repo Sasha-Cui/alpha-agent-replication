@@ -245,6 +245,7 @@ def test_maci_route_separates_both_incomplete_author_source_lineages() -> None:
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
         "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_"
+        "962_training_records_930_images_recovered_post_v2_no_job_lineage_"
         "zero_regenerated_2_forks_2_refs_2_official_history_heads_exhausted"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
@@ -255,6 +256,13 @@ def test_maci_route_separates_both_incomplete_author_source_lineages() -> None:
     assert "0/442 v3 table units regenerate" in blocker
     assert "author-output correspondence" in blocker
     assert "394/442 table units" in blocker
+    assert "962 deleted fine-tuning-format message records" in blocker
+    assert "All 930 distinct image URLs" in blocker
+    assert "53,574,400 bytes" in blocker
+    assert "every historical message and referenced image payload is recoverable" in blocker
+    assert "files were added post-v2" in blocker
+    assert "actual uploaded file" in blocker
+    assert "receive no paper-result credit" in blocker
     assert "three environ.data modules" in blocker
     assert "single-agent RAG and Skill" in blocker
     assert "Both accessible v1/v2 forks" in blocker

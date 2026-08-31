@@ -912,7 +912,13 @@ ARTIFACT_NOTES = {
         "experiment from the rewritten v3 multi-architecture experiment. The complete "
         "164-commit v1/v2 repository history recovers substantial source, all 21 "
         "published plotted units as author output, and 962 deleted fine-tuning-format "
-        "message records. The paper-listed anonymous v3 artifact resolves to the first "
+        "message records. All 930 distinct image URLs in those files map to valid "
+        "1000x800 RGBA PNGs tracked at the dataset commit; the 930 distinct Git blobs "
+        "remain byte-identical at the current official head and total 53,574,400 bytes. "
+        "Thus every historical message and referenced image payload is recoverable. "
+        "The files were added post-v2 in May 2025, and no evidence identifies them as "
+        "the actual uploaded file or recovers the fine-tuning job/selected checkpoint, "
+        "so they receive no paper-result credit. The paper-listed anonymous v3 artifact resolves to the first "
         "author's 20-commit cryptoMAS repository: all three architectures and 42 tracked "
         "files are recovered, 394/442 table units and 136/142 plotted units have pinned "
         "author-output correspondence, and nine non-RAG orchestration paths pass fixture "
@@ -1874,6 +1880,7 @@ TARGETED_EXECUTION = {
     "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
     "SYS-MACI": (
         "paper_audit:completed_v1_v2_zero_of_321_v3_394_table_136_plot_author_output_"
+        "962_training_records_930_images_recovered_post_v2_no_job_lineage_"
         "zero_regenerated_2_forks_2_refs_2_official_history_heads_exhausted"
     ),
     "SYS-MM-DREX": (

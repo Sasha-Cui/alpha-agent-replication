@@ -98,6 +98,17 @@ def test_native_and_paper_routes_keep_output_verification_below_reproduction() -
     assert "0/321 v1/v2 table units" in row["concise_evidence_note"]
     assert "0/442 v3 table units regenerate" in row["concise_evidence_note"]
     assert "394/442 table units" in row["concise_evidence_note"]
+    assert "962 deleted fine-tuning-format message records" in row[
+        "concise_evidence_note"
+    ]
+    assert "All 930 distinct image URLs" in row["concise_evidence_note"]
+    assert "53,574,400 bytes" in row["concise_evidence_note"]
+    assert "every historical message and referenced image payload is recoverable" in row[
+        "concise_evidence_note"
+    ]
+    assert "files were added post-v2" in row["concise_evidence_note"]
+    assert "actual uploaded file" in row["concise_evidence_note"]
+    assert "receive no paper-result credit" in row["concise_evidence_note"]
     assert "Both accessible v1/v2 forks" in row["concise_evidence_note"]
     assert "zero commits, blobs, tags, or native result artifacts" in row["concise_evidence_note"]
 
