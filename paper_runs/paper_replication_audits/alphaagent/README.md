@@ -66,9 +66,12 @@ legacy tree; both omissions made it materially too pessimistic.
   credit remains false.
 - All seven shipped LightGBM model strings load twice in that Qlib environment.
   The matching S&P500 artifact is a 9-feature, 3-tree fitted model; deterministic
-  zero/one-vector probes and feature-importance summaries are tracked. This proves
-  the fitted states are executable, not that their paper inputs or metrics were
-  regenerated.
+  zero/one-vector probes and feature-importance summaries are tracked. Qlib's native
+  MLflowRecorder also loads all seven author runs twice: 133 metrics, 189 params,
+  35 tags, and 21 config/dataset/task artifacts resolve with zero network calls.
+  A non-unpickling loader verifies the 21 artifact hashes and all 35 relevant scalar
+  values against the fail-closed parser. This proves the fitted states and recorder
+  metadata are executable, not that their missing paper inputs or backtests regenerate.
 - The exact Qlib downloader and its fallback route are now executed and pinned.
   The 450,094,816-byte US archive has 71,959 entries, 8,994 feature symbols,
   755 S&P500 membership rows, and 5,250 calendar dates from 1999-12-31 through
@@ -114,8 +117,8 @@ legacy tree; both omissions made it materially too pessimistic.
 ## Why the paper is still not replicated
 
 - Table 2 has **100 numeric result cells**. **5/100** are corroborated by one
-  released native author run artifact; **0/100** have been independently
-  regenerated. Eighteen more quantitative result claims in figures/text remain
+  released author run loaded through Qlib's native MLflowRecorder; **0/100**
+  have been independently regenerated. Eighteen more quantitative result claims in figures/text remain
   0/18. The run export omits predictions, daily returns, holdings/positions and
   complete portfolio-analysis artifacts, so its printed metrics cannot be
   recomputed from primitive outputs.

@@ -87,6 +87,9 @@ def test_committed_audit_is_fail_closed() -> None:
     paper_era_inventory = read_csv(output / "paper_era_source_inventory.csv")
     paper_era_factors = read_csv(output / "paper_era_factor_artifacts.csv")
     paper_era_runs = read_csv(output / "paper_era_mlflow_run_records.csv")
+    native_recorders = read_csv(
+        output / "paper_era_native_qlib_recorder_execution.csv"
+    )
     paper_era_aggregations = read_csv(output / "paper_era_mlflow_aggregation_forensics.csv")
     registry = read_csv(output / "post_paper_registry_metrics.csv")
     data_release = read_csv(output / "data_release_provenance.csv")
@@ -152,9 +155,26 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["paper_era_qlib_mlflow_records_with_fitted_models"] == 7
     assert manifest["paper_era_fitted_lightgbm_states_loaded"] == 7
     assert manifest["paper_era_fitted_lightgbm_state_execution_deterministic"] is True
+    assert manifest["paper_era_qlib_mlflow_records_loaded_via_native_recorder"] == 7
+    assert manifest["paper_era_native_recorder_execution_runs"] == 2
+    assert manifest["paper_era_native_recorder_execution_deterministic"] is True
+    assert manifest["paper_era_native_recorder_metrics_loaded"] == 133
+    assert manifest["paper_era_native_recorder_params_loaded"] == 189
+    assert manifest["paper_era_native_recorder_tags_loaded"] == 35
+    assert manifest["paper_era_native_recorder_artifacts_resolved"] == 21
+    assert (
+        manifest["paper_era_native_recorder_artifacts_loaded_as_raw_bytes"]
+        == 21
+    )
+    assert manifest["paper_era_native_recorder_artifacts_unpickled"] is False
+    assert manifest["paper_era_native_recorder_records_matching_manual_metrics"] == 7
+    assert manifest["paper_era_native_recorder_raw_artifact_hashes_matching"] == 7
+    assert manifest["paper_era_native_recorder_maximum_metric_parser_error"] < 1e-15
+    assert manifest["paper_era_native_recorder_paper_result_reproductions"] == 0
     assert manifest["paper_era_native_backtests_reexecuted"] == 0
     assert manifest["paper_era_qlib_mlflow_full_table_row_matches"] == 1
     assert manifest["paper_era_qlib_mlflow_display_cells_corroborated"] == 5
+    assert manifest["paper_era_native_recorder_display_cells_corroborated"] == 5
     assert manifest["paper_era_named_alpha101_reference_rows"] == 101
     assert manifest["paper_era_loaded_alpha101_csv_rows"] == 116
     assert manifest["paper_era_figure4_candidate_factor_rows"] == 15
@@ -231,7 +251,7 @@ def test_committed_audit_is_fail_closed() -> None:
     assert manifest["paper_era_matching_run_replayable_from_released_inputs"] is False
 
     assert Counter(row["status"] for row in table) == {
-        "corroborated_by_author_history_native_run_artifact": 5,
+        "corroborated_by_author_history_native_qlib_recorder": 5,
         "unavailable_missing_native_paper_result_path": 95,
         "paper_configuration_recovered_without_frozen_dataset": 6,
     }
@@ -374,6 +394,57 @@ def test_committed_audit_is_fail_closed() -> None:
     assert all(len(row["feature_names_sha256"]) == 64 for row in paper_era_runs)
     assert all(len(row["probe_predictions_sha256"]) == 64 for row in paper_era_runs)
     assert {row["predictions_returns_holdings_shipped"] for row in paper_era_runs} == {"False"}
+    assert {row["native_qlib_recorder_loaded"] for row in paper_era_runs} == {"True"}
+    assert {row["native_recorder_status"] for row in paper_era_runs} == {"FINISHED"}
+    assert {row["native_recorder_metric_count"] for row in paper_era_runs} == {"19"}
+    assert {row["native_recorder_param_count"] for row in paper_era_runs} == {"27"}
+    assert {row["native_recorder_tag_count"] for row in paper_era_runs} == {"5"}
+    assert {row["native_recorder_artifacts"] for row in paper_era_runs} == {
+        "config;dataset;task"
+    }
+    assert {
+        row["native_recorder_raw_artifact_hashes_match"]
+        for row in paper_era_runs
+    } == {"True"}
+    assert {
+        row["native_recorder_metrics_match_parsed_values"]
+        for row in paper_era_runs
+    } == {"True"}
+    assert max(
+        float(row["native_recorder_maximum_metric_parser_error"])
+        for row in paper_era_runs
+    ) < 1e-15
+    assert {row["native_recorder_artifacts_unpickled"] for row in paper_era_runs} == {
+        "False"
+    }
+    assert {
+        row["native_recorder_paper_result_reproduction"]
+        for row in paper_era_runs
+    } == {"False"}
+    assert len(native_recorders) == 7
+    assert {row["status"] for row in native_recorders} == {"FINISHED"}
+    assert sum(int(row["metrics_loaded"]) for row in native_recorders) == 133
+    assert sum(int(row["params_loaded"]) for row in native_recorders) == 189
+    assert sum(int(row["tags_loaded"]) for row in native_recorders) == 35
+    assert sum(int(row["artifacts_resolved"]) for row in native_recorders) == 21
+    assert sum(
+        int(row["raw_artifacts_loaded_without_unpickling"])
+        for row in native_recorders
+    ) == 21
+    assert {row["metric_values_match_manual_parser"] for row in native_recorders} == {
+        "True"
+    }
+    assert {row["raw_artifact_hashes_match"] for row in native_recorders} == {
+        "True"
+    }
+    assert {
+        row["native_recorder_paper_result_reproduction"]
+        for row in native_recorders
+    } == {"False"}
+    assert sum(
+        int(row["paper_result_cells_corroborated"])
+        for row in native_recorders
+    ) == 5
     assert len(paper_era_aggregations) == 30
     assert Counter(row["market"] for row in paper_era_aggregations) == {
         "CSI500": 8,
@@ -483,6 +554,15 @@ def test_committed_audit_is_fail_closed() -> None:
         "xgboost": "2.1.4",
     }
     assert qlib_environment["fitted_lightgbm_states_loaded"] == 7
+    assert qlib_environment["native_mlflow_recorders_loaded"] == 7
+    assert qlib_environment["native_mlflow_recorder_execution_runs"] == 2
+    assert qlib_environment["native_mlflow_recorder_execution_deterministic"] is True
+    assert qlib_environment["native_mlflow_metrics_loaded"] == 133
+    assert qlib_environment["native_mlflow_params_loaded"] == 189
+    assert qlib_environment["native_mlflow_tags_loaded"] == 35
+    assert qlib_environment["native_mlflow_artifacts_resolved"] == 21
+    assert qlib_environment["native_mlflow_artifacts_loaded_as_raw_bytes"] == 21
+    assert qlib_environment["native_mlflow_artifacts_unpickled"] is False
     assert qlib_environment["native_backtests_reexecuted"] == 0
     assert qlib_environment["network_attempts"] == []
     assert len(paper_era_component["fitted_model_executions"]) == 7
@@ -493,6 +573,21 @@ def test_committed_audit_is_fail_closed() -> None:
     )
     assert matching_model["model_features"] == 9
     assert matching_model["model_trees"] == 3
+    assert matching_model["native_recorder_status"] == "FINISHED"
+    assert matching_model["native_recorder_metric_count"] == 19
+    assert matching_model["native_recorder_relevant_metrics"] == {
+        "IC": 0.005635554500180115,
+        "ICIR": 0.055213454925421054,
+        "1day.excess_return_with_cost.annualized_return": 0.08743898075444394,
+        "1day.excess_return_with_cost.information_ratio": 1.0544926514004396,
+        "1day.excess_return_with_cost.max_drawdown": -0.09098193314326458,
+    }
+    assert matching_model["native_recorder_artifacts"] == [
+        "config",
+        "dataset",
+        "task",
+    ]
+    assert matching_model["native_recorder_artifacts_unpickled"] is False
     assert len(paper_host_freeze.splitlines()) == 153
     assert audit.sha256_bytes(paper_host_freeze.encode()) == (audit.PAPER_HOST_ENV_FREEZE_SHA256)
     assert len(paper_qlib_freeze.splitlines()) == 119

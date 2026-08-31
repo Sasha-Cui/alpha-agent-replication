@@ -2378,12 +2378,14 @@ def _run_paper_era_qlib_checks(
 ) -> tuple[dict[str, Any], str, list[dict[str, Any]]]:
     environment, freeze = _python_environment_snapshot(qlib_python, PAPER_QLIB_ENV_FREEZE_SHA256)
     program = r"""
-import hashlib, importlib.metadata, json, pickletools
+import hashlib, importlib.metadata, json, pickletools, shutil, tempfile
 from pathlib import Path
 import lightgbm as lgb
 import numpy as np
 import qlib
 import requests
+from mlflow.tracking import MlflowClient
+from qlib.workflow.recorder import MLflowRecorder
 
 network_attempts = []
 def block_requests(self, request, *args, **kwargs):
@@ -2392,8 +2394,61 @@ def block_requests(self, request, *args, **kwargs):
 requests.sessions.Session.send = block_requests
 
 root = Path('.')
+source_runs = root / 'saved_mlruns'
+
+class RawLoader:
+    def __init__(self, stream):
+        self.stream = stream
+    def load(self):
+        return self.stream.read()
+
+def canonical_sha256(value):
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, separators=(',', ':')).encode()
+    ).hexdigest()
+
+store_temp = tempfile.TemporaryDirectory()
+store = Path(store_temp.name) / 'mlruns'
+experiment = store / '1'
+experiment.mkdir(parents=True)
+(experiment / 'meta.yaml').write_text(
+    'artifact_location: file://' + str(experiment.resolve()) + '\n'
+    "experiment_id: '1\n'"
+    'lifecycle_stage: active\n'
+    'name: alphaagent-paper-era\n'
+)
+for source_run in sorted(source_runs.iterdir()):
+    target = experiment / source_run.name
+    shutil.copytree(source_run, target)
+    meta = target / 'meta.yaml'
+    lines = [
+        'artifact_uri: file://' + str((target / 'artifacts').resolve())
+        if line.startswith('artifact_uri:') else line
+        for line in meta.read_text().splitlines()
+    ]
+    meta.write_text('\n'.join(lines) + '\n')
+tracking_uri = 'file://' + str(store.resolve())
+mlflow_client = MlflowClient(tracking_uri=tracking_uri)
+
 executions = []
-for run_dir in sorted((root / 'saved_mlruns').iterdir()):
+for run_dir in sorted(source_runs.iterdir()):
+    mlflow_run = mlflow_client.get_run(run_dir.name)
+    recorder = MLflowRecorder('1', tracking_uri, mlflow_run=mlflow_run)
+    recorder_metrics = recorder.list_metrics()
+    recorder_params = recorder.list_params()
+    recorder_tags = recorder.list_tags()
+    recorder_artifacts = sorted(recorder.list_artifacts())
+    raw_artifacts = {}
+    for artifact_name in ('config', 'dataset', 'task'):
+        artifact_blob = recorder.load_object(
+            artifact_name,
+            unpickler=RawLoader,
+        )
+        raw_artifacts[artifact_name] = {
+            'bytes': len(artifact_blob),
+            'sha256': hashlib.sha256(artifact_blob).hexdigest(),
+        }
+
     blob = (run_dir / 'artifacts/config').read_bytes()
     strings = [
         argument
@@ -2422,7 +2477,34 @@ for run_dir in sorted((root / 'saved_mlruns').iterdir()):
         ).hexdigest(),
         'split_importance_sum': int(booster.feature_importance('split').sum()),
         'gain_importance_sum': float(booster.feature_importance('gain').sum()),
+        'native_recorder_status': recorder.status,
+        'native_recorder_start_time': recorder.start_time,
+        'native_recorder_end_time': recorder.end_time,
+        'native_recorder_metric_count': len(recorder_metrics),
+        'native_recorder_metrics_sha256': canonical_sha256(recorder_metrics),
+        'native_recorder_relevant_metrics': {
+            name: recorder_metrics[name]
+            for name in (
+                'IC',
+                'ICIR',
+                '1day.excess_return_with_cost.annualized_return',
+                '1day.excess_return_with_cost.information_ratio',
+                '1day.excess_return_with_cost.max_drawdown',
+            )
+        },
+        'native_recorder_param_count': len(recorder_params),
+        'native_recorder_params_sha256': canonical_sha256(recorder_params),
+        'native_recorder_tag_count': len(recorder_tags),
+        'native_recorder_tags_sha256': canonical_sha256(recorder_tags),
+        'native_recorder_artifacts': recorder_artifacts,
+        'native_recorder_raw_artifacts': raw_artifacts,
+        'native_recorder_path_adapter': (
+            'author_absolute_artifact_uri_rebound_to_temporary_local_file_store'
+        ),
+        'native_recorder_artifacts_unpickled': False,
     })
+
+store_temp.cleanup()
 
 packages = {
     name: importlib.metadata.version(name)
@@ -2479,6 +2561,31 @@ print('@@@' + json.dumps({
         or observed["qlib_direct_url"].get("vcs_info", {}).get("commit_id") != QLIB_SOURCE_COMMIT
         or matching_execution["model_features"] != 9
         or matching_execution["model_trees"] != 3
+        or any(row["native_recorder_status"] != "FINISHED" for row in executions)
+        or any(row["native_recorder_metric_count"] != 19 for row in executions)
+        or any(row["native_recorder_param_count"] != 27 for row in executions)
+        or any(row["native_recorder_tag_count"] != 5 for row in executions)
+        or any(
+            row["native_recorder_artifacts"] != ["config", "dataset", "task"]
+            for row in executions
+        )
+        or any(
+            set(row["native_recorder_relevant_metrics"])
+            != {
+                "IC",
+                "ICIR",
+                "1day.excess_return_with_cost.annualized_return",
+                "1day.excess_return_with_cost.information_ratio",
+                "1day.excess_return_with_cost.max_drawdown",
+            }
+            for row in executions
+        )
+        or any(
+            set(row["native_recorder_raw_artifacts"])
+            != {"config", "dataset", "task"}
+            for row in executions
+        )
+        or any(row["native_recorder_artifacts_unpickled"] for row in executions)
     ):
         raise RuntimeError(f"Paper-era Qlib/model boundary changed: {observed}")
     environment.update(
@@ -2496,6 +2603,29 @@ print('@@@' + json.dumps({
             "fitted_lightgbm_states_loaded": len(executions),
             "fitted_lightgbm_state_execution_runs": 2,
             "fitted_lightgbm_state_execution_deterministic": True,
+            "native_mlflow_recorders_loaded": len(executions),
+            "native_mlflow_recorder_execution_runs": 2,
+            "native_mlflow_recorder_execution_deterministic": True,
+            "native_mlflow_metrics_loaded": sum(
+                row["native_recorder_metric_count"] for row in executions
+            ),
+            "native_mlflow_params_loaded": sum(
+                row["native_recorder_param_count"] for row in executions
+            ),
+            "native_mlflow_tags_loaded": sum(
+                row["native_recorder_tag_count"] for row in executions
+            ),
+            "native_mlflow_artifacts_resolved": sum(
+                len(row["native_recorder_artifacts"]) for row in executions
+            ),
+            "native_mlflow_artifacts_loaded_as_raw_bytes": sum(
+                len(row["native_recorder_raw_artifacts"])
+                for row in executions
+            ),
+            "native_mlflow_artifacts_unpickled": False,
+            "native_mlflow_path_adapter": (
+                "author absolute artifact_uri rebound to temporary local file store"
+            ),
             "network_attempts": observed["network_attempts"],
             "native_backtests_reexecuted": 0,
             "paper_result_reproduction": False,
@@ -2932,8 +3062,41 @@ def build_audit(
         model_executions = {row["run_id"]: row for row in paper_era_component["fitted_model_executions"]}
         if set(model_executions) != {row["run_id"] for row in run_records}:
             raise RuntimeError("Fitted-model execution/run-record IDs differ")
+        native_recorder_rows: list[dict[str, Any]] = []
         for row in run_records:
             execution = model_executions[row["run_id"]]
+            recorder_metrics = execution["native_recorder_relevant_metrics"]
+            parsed_metrics = {
+                "IC": float(row["ic"]),
+                "ICIR": float(row["icir"]),
+                "1day.excess_return_with_cost.annualized_return": (
+                    float(row["annualized_return_pct"]) / 100.0
+                ),
+                "1day.excess_return_with_cost.information_ratio": float(
+                    row["information_ratio"]
+                ),
+                "1day.excess_return_with_cost.max_drawdown": (
+                    float(row["max_drawdown_pct"]) / 100.0
+                ),
+            }
+            metric_errors = {
+                name: abs(float(recorder_metrics[name]) - value)
+                for name, value in parsed_metrics.items()
+            }
+            raw_artifacts = execution["native_recorder_raw_artifacts"]
+            raw_hashes_match = {
+                "config": raw_artifacts["config"]["sha256"]
+                == row["config_sha256"],
+                "dataset": raw_artifacts["dataset"]["sha256"]
+                == row["dataset_sha256"],
+                "task": raw_artifacts["task"]["sha256"] == row["task_sha256"],
+            }
+            if max(metric_errors.values()) > 1e-15 or not all(
+                raw_hashes_match.values()
+            ):
+                raise RuntimeError(
+                    f"Native Qlib recorder/run record mismatch: {row['run_id']}"
+                )
             row.update(
                 {
                     "fitted_lightgbm_state_loaded": True,
@@ -2947,9 +3110,97 @@ def build_audit(
                     "probe_predictions_sha256": execution["probe_predictions_sha256"],
                     "split_importance_sum": execution["split_importance_sum"],
                     "gain_importance_sum": execution["gain_importance_sum"],
+                    "native_qlib_recorder_loaded": True,
+                    "native_recorder_status": execution[
+                        "native_recorder_status"
+                    ],
+                    "native_recorder_metric_count": execution[
+                        "native_recorder_metric_count"
+                    ],
+                    "native_recorder_metrics_sha256": execution[
+                        "native_recorder_metrics_sha256"
+                    ],
+                    "native_recorder_param_count": execution[
+                        "native_recorder_param_count"
+                    ],
+                    "native_recorder_params_sha256": execution[
+                        "native_recorder_params_sha256"
+                    ],
+                    "native_recorder_tag_count": execution[
+                        "native_recorder_tag_count"
+                    ],
+                    "native_recorder_tags_sha256": execution[
+                        "native_recorder_tags_sha256"
+                    ],
+                    "native_recorder_artifacts": ";".join(
+                        execution["native_recorder_artifacts"]
+                    ),
+                    "native_recorder_raw_artifact_hashes_match": all(
+                        raw_hashes_match.values()
+                    ),
+                    "native_recorder_maximum_metric_parser_error": max(
+                        metric_errors.values()
+                    ),
+                    "native_recorder_metrics_match_parsed_values": True,
+                    "native_recorder_path_adapter": execution[
+                        "native_recorder_path_adapter"
+                    ],
+                    "native_recorder_artifacts_unpickled": execution[
+                        "native_recorder_artifacts_unpickled"
+                    ],
+                    "native_recorder_paper_result_reproduction": False,
                     "fitted_model_execution_paper_result_credit": False,
                 }
             )
+            native_recorder_rows.append(
+                {
+                    "run_id": row["run_id"],
+                    "market": row["market"],
+                    "full_paper_period": row["full_paper_period"],
+                    "status": execution["native_recorder_status"],
+                    "metrics_loaded": execution[
+                        "native_recorder_metric_count"
+                    ],
+                    "params_loaded": execution[
+                        "native_recorder_param_count"
+                    ],
+                    "tags_loaded": execution["native_recorder_tag_count"],
+                    "artifacts_resolved": len(
+                        execution["native_recorder_artifacts"]
+                    ),
+                    "raw_artifacts_loaded_without_unpickling": len(
+                        execution["native_recorder_raw_artifacts"]
+                    ),
+                    "metric_values_match_manual_parser": True,
+                    "maximum_metric_parser_error": max(metric_errors.values()),
+                    "raw_artifact_hashes_match": all(
+                        raw_hashes_match.values()
+                    ),
+                    "display_cells_matching_alphaagent_row": row[
+                        "display_cells_matching_alphaagent_row"
+                    ],
+                    "paper_result_cells_corroborated": row[
+                        "paper_result_cells_corroborated"
+                    ],
+                    "native_recorder_paper_result_reproduction": False,
+                }
+            )
+
+        for table_row in table_rows:
+            if (
+                table_row["status"]
+                == "corroborated_by_author_history_native_run_artifact"
+            ):
+                table_row["status"] = (
+                    "corroborated_by_author_history_native_qlib_recorder"
+                )
+                table_row["reason"] = (
+                    "the official author's preprint-era Git history ships the "
+                    "exact Qlib/MLflow record; Qlib's native MLflowRecorder loads "
+                    "the scalar and config artifacts and all five S&P500 "
+                    "AlphaAgent cells match at display precision, but missing "
+                    "inputs/predictions/returns prevent regeneration"
+                )
 
     if len(inventory) != 141:
         raise RuntimeError(f"Expected 141 tracked source files, got {len(inventory)}")
@@ -2958,7 +3209,7 @@ def build_audit(
     if len(mechanisms) != 32 or len(current_mechanisms) != 32 or len(gaps) != 17 or len(base_factors) != 4:
         raise RuntimeError("Pinned audit dimension counts changed")
     if Counter(row["status"] for row in table_rows) != {
-        "corroborated_by_author_history_native_run_artifact": 5,
+        "corroborated_by_author_history_native_qlib_recorder": 5,
         "unavailable_missing_native_paper_result_path": 95,
         "paper_configuration_recovered_without_frozen_dataset": 6,
     }:
@@ -2981,6 +3232,10 @@ def build_audit(
     write_csv(output_dir / "paper_era_source_inventory.csv", paper_era_inventory)
     write_csv(output_dir / "paper_era_factor_artifacts.csv", paper_era_factors)
     write_csv(output_dir / "paper_era_mlflow_run_records.csv", run_records)
+    write_csv(
+        output_dir / "paper_era_native_qlib_recorder_execution.csv",
+        native_recorder_rows,
+    )
     write_csv(output_dir / "paper_era_mlflow_aggregation_forensics.csv", aggregation_rows)
     write_csv(output_dir / "post_paper_registry_metrics.csv", registry)
     write_csv(output_dir / "data_release_provenance.csv", release)
@@ -3131,6 +3386,56 @@ def build_audit(
         "paper_era_fitted_lightgbm_state_execution_deterministic": (
             paper_era_component["qlib_environment"]["fitted_lightgbm_state_execution_deterministic"]
         ),
+        "paper_era_qlib_mlflow_records_loaded_via_native_recorder": (
+            paper_era_component["qlib_environment"][
+                "native_mlflow_recorders_loaded"
+            ]
+        ),
+        "paper_era_native_recorder_execution_runs": paper_era_component[
+            "qlib_environment"
+        ]["native_mlflow_recorder_execution_runs"],
+        "paper_era_native_recorder_execution_deterministic": paper_era_component[
+            "qlib_environment"
+        ]["native_mlflow_recorder_execution_deterministic"],
+        "paper_era_native_recorder_metrics_loaded": paper_era_component[
+            "qlib_environment"
+        ]["native_mlflow_metrics_loaded"],
+        "paper_era_native_recorder_params_loaded": paper_era_component[
+            "qlib_environment"
+        ]["native_mlflow_params_loaded"],
+        "paper_era_native_recorder_tags_loaded": paper_era_component[
+            "qlib_environment"
+        ]["native_mlflow_tags_loaded"],
+        "paper_era_native_recorder_artifacts_resolved": paper_era_component[
+            "qlib_environment"
+        ]["native_mlflow_artifacts_resolved"],
+        "paper_era_native_recorder_artifacts_loaded_as_raw_bytes": (
+            paper_era_component["qlib_environment"][
+                "native_mlflow_artifacts_loaded_as_raw_bytes"
+            ]
+        ),
+        "paper_era_native_recorder_artifacts_unpickled": paper_era_component[
+            "qlib_environment"
+        ]["native_mlflow_artifacts_unpickled"],
+        "paper_era_native_recorder_path_adapter": paper_era_component[
+            "qlib_environment"
+        ]["native_mlflow_path_adapter"],
+        "paper_era_native_recorder_records_matching_manual_metrics": sum(
+            bool(row["metric_values_match_manual_parser"])
+            for row in native_recorder_rows
+        ),
+        "paper_era_native_recorder_raw_artifact_hashes_matching": sum(
+            bool(row["raw_artifact_hashes_match"])
+            for row in native_recorder_rows
+        ),
+        "paper_era_native_recorder_maximum_metric_parser_error": max(
+            float(row["maximum_metric_parser_error"])
+            for row in native_recorder_rows
+        ),
+        "paper_era_native_recorder_paper_result_reproductions": sum(
+            bool(row["native_recorder_paper_result_reproduction"])
+            for row in native_recorder_rows
+        ),
         "paper_era_native_backtests_reexecuted": paper_era_component["qlib_environment"]["native_backtests_reexecuted"],
         "paper_era_matching_run_id": run_input_audit["matching_run_id"],
         "paper_era_matching_run_generated_factor_features": run_input_audit["matching_run_generated_factor_features"],
@@ -3151,6 +3456,10 @@ def build_audit(
         ),
         "paper_era_qlib_mlflow_display_cells_corroborated": sum(
             int(row["paper_result_cells_corroborated"]) for row in run_records
+        ),
+        "paper_era_native_recorder_display_cells_corroborated": sum(
+            int(row["paper_result_cells_corroborated"])
+            for row in native_recorder_rows
         ),
         "paper_era_named_alpha101_reference_rows": paper_era_component["named_alpha101_reference_rows"],
         "paper_era_loaded_alpha101_csv_rows": paper_era_component["loaded_alpha101_csv_rows"],
@@ -3229,8 +3538,11 @@ def build_audit(
             "factor-to-result lineage are missing or divergent. Seven extensionless Qlib/MLflow run "
             "records were recovered from the same author commit; one S&P500 record matches all five "
             "AlphaAgent Table 2 cells at display precision and ships its executed config plus fitted "
-            "LightGBM state. All seven fitted states load natively and deterministically. Exhausting "
-            "every multi-record mean/median hypothesis yields 30 candidates: the only two composed "
+            "LightGBM state. All seven fitted states load natively and deterministically. Qlib's "
+            "native MLflowRecorder also loads all seven records twice with zero network attempts: "
+            "133 metrics, 189 params, 35 tags, and 21 config/dataset/task artifacts resolve, while "
+            "a non-unpickling loader verifies every artifact hash and all five relevant metrics. "
+            "Exhausting every multi-record mean/median hypothesis yields 30 candidates: the only two composed "
             "entirely of full-period records match zero cells, while 13 off-period candidates have "
             "one- or two-cell numeric coincidences and no aggregate matches a full row. Without the "
             "input panel the records cannot regenerate predictions or metrics. Those 5/100 cells are "
@@ -3327,9 +3639,12 @@ legacy tree; both omissions made it materially too pessimistic.
   credit remains false.
 - All seven shipped LightGBM model strings load twice in that Qlib environment.
   The matching S&P500 artifact is a 9-feature, 3-tree fitted model; deterministic
-  zero/one-vector probes and feature-importance summaries are tracked. This proves
-  the fitted states are executable, not that their paper inputs or metrics were
-  regenerated.
+  zero/one-vector probes and feature-importance summaries are tracked. Qlib's native
+  MLflowRecorder also loads all seven author runs twice: 133 metrics, 189 params,
+  35 tags, and 21 config/dataset/task artifacts resolve with zero network calls.
+  A non-unpickling loader verifies the 21 artifact hashes and all 35 relevant scalar
+  values against the fail-closed parser. This proves the fitted states and recorder
+  metadata are executable, not that their missing paper inputs or backtests regenerate.
 - The exact Qlib downloader and its fallback route are now executed and pinned.
   The 450,094,816-byte US archive has 71,959 entries, 8,994 feature symbols,
   755 S&P500 membership rows, and 5,250 calendar dates from 1999-12-31 through
@@ -3375,8 +3690,8 @@ legacy tree; both omissions made it materially too pessimistic.
 ## Why the paper is still not replicated
 
 - Table 2 has **100 numeric result cells**. **5/100** are corroborated by one
-  released native author run artifact; **0/100** have been independently
-  regenerated. Eighteen more quantitative result claims in figures/text remain
+  released author run loaded through Qlib's native MLflowRecorder; **0/100**
+  have been independently regenerated. Eighteen more quantitative result claims in figures/text remain
   0/18. The run export omits predictions, daily returns, holdings/positions and
   complete portfolio-analysis artifacts, so its printed metrics cannot be
   recomputed from primitive outputs.

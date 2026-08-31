@@ -1,0 +1,8 @@
+run_id,market,full_paper_period,status,metrics_loaded,params_loaded,tags_loaded,artifacts_resolved,raw_artifacts_loaded_without_unpickling,metric_values_match_manual_parser,maximum_metric_parser_error,raw_artifact_hashes_match,display_cells_matching_alphaagent_row,paper_result_cells_corroborated,native_recorder_paper_result_reproduction
+37716ba581664a6c865f52aec6449f40,S&P500,False,FINISHED,19,27,5,3,3,True,6.938893903907228e-18,True,0,0,False
+40264f4583ef4d4c93ccd2aae8d54536,CSI500,True,FINISHED,19,27,5,3,3,True,0.0,True,0,0,False
+60a7b861fc6d4fbd964c04bb414493eb,CSI500,True,FINISHED,19,27,5,3,3,True,0.0,True,0,0,False
+77b227f86e5a47bab48178cac409a98b,S&P500,True,FINISHED,19,27,5,3,3,True,0.0,True,5,5,False
+841183815fe44a69bd70b31cdff59969,CSI500,False,FINISHED,19,27,5,3,3,True,0.0,True,0,0,False
+db47a8ecacf541cc957fe5a4459a0fdc,S&P500,False,FINISHED,19,27,5,3,3,True,0.0,True,0,0,False
+efb8aaa80be0432988a62b2e0ce7b210,S&P500,False,FINISHED,19,27,5,3,3,True,0.0,True,0,0,False

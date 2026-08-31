@@ -227,6 +227,16 @@
     "fitted_lightgbm_states_loaded": 7,
     "fitted_lightgbm_state_execution_runs": 2,
     "fitted_lightgbm_state_execution_deterministic": true,
+    "native_mlflow_recorders_loaded": 7,
+    "native_mlflow_recorder_execution_runs": 2,
+    "native_mlflow_recorder_execution_deterministic": true,
+    "native_mlflow_metrics_loaded": 133,
+    "native_mlflow_params_loaded": 189,
+    "native_mlflow_tags_loaded": 35,
+    "native_mlflow_artifacts_resolved": 21,
+    "native_mlflow_artifacts_loaded_as_raw_bytes": 21,
+    "native_mlflow_artifacts_unpickled": false,
+    "native_mlflow_path_adapter": "author absolute artifact_uri rebound to temporary local file store",
     "network_attempts": [],
     "native_backtests_reexecuted": 0,
     "paper_result_reproduction": false
@@ -239,6 +249,43 @@
       "model_features": 8,
       "model_per_iteration": 1,
       "model_trees": 9,
+      "native_recorder_artifacts": [
+        "config",
+        "dataset",
+        "task"
+      ],
+      "native_recorder_artifacts_unpickled": false,
+      "native_recorder_end_time": "2025-01-28 03:00:07",
+      "native_recorder_metric_count": 19,
+      "native_recorder_metrics_sha256": "aee88a39283026a153ccbe50fc293f38f9105d3ae56f77e71eb8b24e63c6067c",
+      "native_recorder_param_count": 27,
+      "native_recorder_params_sha256": "5464aa772e28c033ae36f1af9676ea57aec42fcd6d93e4df4c7ed01bfc3da26a",
+      "native_recorder_path_adapter": "author_absolute_artifact_uri_rebound_to_temporary_local_file_store",
+      "native_recorder_raw_artifacts": {
+        "config": {
+          "bytes": 19637,
+          "sha256": "e1598070e323aa5454aa1b1532c971947ee971c74f521eb809fd3376c2b82bbb"
+        },
+        "dataset": {
+          "bytes": 1250,
+          "sha256": "2de49eccd5e6fec14d0d747505c1ed442a4c322dab4e9ebbd9d7d0f5257eafb9"
+        },
+        "task": {
+          "bytes": 2264,
+          "sha256": "85140c56e90ba29c2e8a7646e9e4301f70b8fc4d29896c8eb102457131bf1eb7"
+        }
+      },
+      "native_recorder_relevant_metrics": {
+        "1day.excess_return_with_cost.annualized_return": 0.05788673739505485,
+        "1day.excess_return_with_cost.information_ratio": 0.48942282283606675,
+        "1day.excess_return_with_cost.max_drawdown": -0.23397344879326495,
+        "IC": 0.005532049969218299,
+        "ICIR": 0.05098141740554662
+      },
+      "native_recorder_start_time": "2025-01-28 02:59:28",
+      "native_recorder_status": "FINISHED",
+      "native_recorder_tag_count": 5,
+      "native_recorder_tags_sha256": "3e2671adfc539a133c6ffc738d4949d74c3042a63b64950922c9f99c7811d0cf",
       "one_probe_prediction": 0.008834391897305468,
       "probe_predictions_sha256": "3a6e5e179722e1d5a1c91c3ea8ddba82ab6f63e2af84101d5e181d76c2af4e3b",
       "run_id": "37716ba581664a6c865f52aec6449f40",
@@ -252,6 +299,43 @@
       "model_features": 12,
       "model_per_iteration": 1,
       "model_trees": 55,
+      "native_recorder_artifacts": [
+        "config",
+        "dataset",
+        "task"
+      ],
+      "native_recorder_artifacts_unpickled": false,
+      "native_recorder_end_time": "2025-01-28 01:18:34",
+      "native_recorder_metric_count": 19,
+      "native_recorder_metrics_sha256": "21dfe55aac8eeeff1a39e31ed16a395f6f852a191af1d7d40a3b3f188291bbab",
+      "native_recorder_param_count": 27,
+      "native_recorder_params_sha256": "37d305eb6f5403599f9a04b68d2311152a40ef97ef336cbb74817aba4ce61f63",
+      "native_recorder_path_adapter": "author_absolute_artifact_uri_rebound_to_temporary_local_file_store",
+      "native_recorder_raw_artifacts": {
+        "config": {
+          "bytes": 75764,
+          "sha256": "77852cc7b95ce211483aa94573ab918d82f413c97da9553f50317fe178efe2a8"
+        },
+        "dataset": {
+          "bytes": 1251,
+          "sha256": "cf37b3e5c5ec40515c7199c7cb4b0bf2a23423042fe2f4ebdc2376476ea20412"
+        },
+        "task": {
+          "bytes": 2270,
+          "sha256": "2b0183368ae3b307f1dbe4f3202bbbd6a6539e2660910a02044a2daec63affd0"
+        }
+      },
+      "native_recorder_relevant_metrics": {
+        "1day.excess_return_with_cost.annualized_return": 0.12527798742704857,
+        "1day.excess_return_with_cost.information_ratio": 1.4517509063009877,
+        "1day.excess_return_with_cost.max_drawdown": -0.09607443248943576,
+        "IC": 0.020688402872121692,
+        "ICIR": 0.18731113903813182
+      },
+      "native_recorder_start_time": "2025-01-28 01:17:24",
+      "native_recorder_status": "FINISHED",
+      "native_recorder_tag_count": 5,
+      "native_recorder_tags_sha256": "e711f6483f3447c182a1cb2e580b065f7d76d7e232f7b4b15b5abbe82151f707",
       "one_probe_prediction": -0.030317528043140925,
       "probe_predictions_sha256": "280225a175878260f67c4bf1d6e70352e48c2975c23a195145d85c606027acbf",
       "run_id": "40264f4583ef4d4c93ccd2aae8d54536",
@@ -265,6 +349,43 @@
       "model_features": 13,
       "model_per_iteration": 1,
       "model_trees": 46,
+      "native_recorder_artifacts": [
+        "config",
+        "dataset",
+        "task"
+      ],
+      "native_recorder_artifacts_unpickled": false,
+      "native_recorder_end_time": "2025-01-28 01:21:29",
+      "native_recorder_metric_count": 19,
+      "native_recorder_metrics_sha256": "70595cd1fa4bb99bebdb12fe9a9185f5026e1a14f76a60eb5fa82a75a8564de6",
+      "native_recorder_param_count": 27,
+      "native_recorder_params_sha256": "37d305eb6f5403599f9a04b68d2311152a40ef97ef336cbb74817aba4ce61f63",
+      "native_recorder_path_adapter": "author_absolute_artifact_uri_rebound_to_temporary_local_file_store",
+      "native_recorder_raw_artifacts": {
+        "config": {
+          "bytes": 63712,
+          "sha256": "b617f78be63c0e58f0d84e36a999fb2ed95c6a88c547b945a410b16106159647"
+        },
+        "dataset": {
+          "bytes": 1251,
+          "sha256": "cf37b3e5c5ec40515c7199c7cb4b0bf2a23423042fe2f4ebdc2376476ea20412"
+        },
+        "task": {
+          "bytes": 2270,
+          "sha256": "2b0183368ae3b307f1dbe4f3202bbbd6a6539e2660910a02044a2daec63affd0"
+        }
+      },
+      "native_recorder_relevant_metrics": {
+        "1day.excess_return_with_cost.annualized_return": 0.10896134448083318,
+        "1day.excess_return_with_cost.information_ratio": 1.361420361607411,
+        "1day.excess_return_with_cost.max_drawdown": -0.09193581322475962,
+        "IC": 0.02135183066396856,
+        "ICIR": 0.195813168565124
+      },
+      "native_recorder_start_time": "2025-01-28 01:20:18",
+      "native_recorder_status": "FINISHED",
+      "native_recorder_tag_count": 5,
+      "native_recorder_tags_sha256": "35d7e62f3ecfabc95c347f3e7ed3b5a57aeceede1b5c11ff3138a494ca1d46a4",
       "one_probe_prediction": -0.03623491084716057,
       "probe_predictions_sha256": "a33232ba6655a2d7546d58bce5e6ef0a039dc7f2818e836df90237f562b9c0a1",
       "run_id": "60a7b861fc6d4fbd964c04bb414493eb",
@@ -278,6 +399,43 @@
       "model_features": 9,
       "model_per_iteration": 1,
       "model_trees": 3,
+      "native_recorder_artifacts": [
+        "config",
+        "dataset",
+        "task"
+      ],
+      "native_recorder_artifacts_unpickled": false,
+      "native_recorder_end_time": "2025-01-28 00:54:19",
+      "native_recorder_metric_count": 19,
+      "native_recorder_metrics_sha256": "2de5961cf1c64d744c53c8454d8d5e96ef02aa46c27fff042ec488ecf8f3c8c9",
+      "native_recorder_param_count": 27,
+      "native_recorder_params_sha256": "198c62b568bcf2e47e51c55b5f114f06771aa05eeff24f167d9df38ba6d66f2e",
+      "native_recorder_path_adapter": "author_absolute_artifact_uri_rebound_to_temporary_local_file_store",
+      "native_recorder_raw_artifacts": {
+        "config": {
+          "bytes": 11693,
+          "sha256": "4d82caa327e87fb56f38bb39ec1ed0258e135c41fdc8f42d6f4f93656aa02cf7"
+        },
+        "dataset": {
+          "bytes": 1250,
+          "sha256": "1d3bdd19a8d35420b59118393a30509e0224f65317cc9128124d91d7fc56adbe"
+        },
+        "task": {
+          "bytes": 2264,
+          "sha256": "efd2e4a041409a0375d0d31d0b5213f2fd77eb4201fcb7e1ef5bbce95aaa2737"
+        }
+      },
+      "native_recorder_relevant_metrics": {
+        "1day.excess_return_with_cost.annualized_return": 0.08743898075444394,
+        "1day.excess_return_with_cost.information_ratio": 1.0544926514004396,
+        "1day.excess_return_with_cost.max_drawdown": -0.09098193314326458,
+        "IC": 0.005635554500180115,
+        "ICIR": 0.055213454925421054
+      },
+      "native_recorder_start_time": "2025-01-28 00:53:44",
+      "native_recorder_status": "FINISHED",
+      "native_recorder_tag_count": 5,
+      "native_recorder_tags_sha256": "3850147412df560a78d6121aeaef34cfd944bd81f13ed8ac9687b46e069246b3",
       "one_probe_prediction": 0.0009656330245027275,
       "probe_predictions_sha256": "468f9db1b9f3e5cf85e87e5dfe94bfeeaa8e97567bb949a750dca02772eb5ef9",
       "run_id": "77b227f86e5a47bab48178cac409a98b",
@@ -291,6 +449,43 @@
       "model_features": 13,
       "model_per_iteration": 1,
       "model_trees": 46,
+      "native_recorder_artifacts": [
+        "config",
+        "dataset",
+        "task"
+      ],
+      "native_recorder_artifacts_unpickled": false,
+      "native_recorder_end_time": "2025-01-28 01:27:03",
+      "native_recorder_metric_count": 19,
+      "native_recorder_metrics_sha256": "16235f5b69580ba4d07139869a2496d9412bf451b3591ca97d71c734ed05f8a7",
+      "native_recorder_param_count": 27,
+      "native_recorder_params_sha256": "af9ea2c7f9260a6759857b6572f33d7602ecd92eb2821525045518e6eeca4e7e",
+      "native_recorder_path_adapter": "author_absolute_artifact_uri_rebound_to_temporary_local_file_store",
+      "native_recorder_raw_artifacts": {
+        "config": {
+          "bytes": 63712,
+          "sha256": "d1518f4486ef1f3fcb6efb573d32dd158f80eb8877a28f43a03687a4b0710f93"
+        },
+        "dataset": {
+          "bytes": 1251,
+          "sha256": "088e3a06f63f0edf24389d11b1fb12ac7ea2d5897fda89fcbb498de73d0df6cb"
+        },
+        "task": {
+          "bytes": 2270,
+          "sha256": "2d7f3431b70e3dfd7e5a8f765b189b6fe3de138b996c49808442dc2d74000818"
+        }
+      },
+      "native_recorder_relevant_metrics": {
+        "1day.excess_return_with_cost.annualized_return": 0.08413199951408984,
+        "1day.excess_return_with_cost.information_ratio": 1.030026973357253,
+        "1day.excess_return_with_cost.max_drawdown": -0.13137858977303477,
+        "IC": 0.02153700054627585,
+        "ICIR": 0.1921264367676249
+      },
+      "native_recorder_start_time": "2025-01-28 01:25:47",
+      "native_recorder_status": "FINISHED",
+      "native_recorder_tag_count": 5,
+      "native_recorder_tags_sha256": "c671efb61278c6a97dd9a5240b5a4f1964df0e8d0d38ffc5bbac052508dfa7be",
       "one_probe_prediction": -0.03623491084716057,
       "probe_predictions_sha256": "a33232ba6655a2d7546d58bce5e6ef0a039dc7f2818e836df90237f562b9c0a1",
       "run_id": "841183815fe44a69bd70b31cdff59969",
@@ -304,6 +499,43 @@
       "model_features": 9,
       "model_per_iteration": 1,
       "model_trees": 3,
+      "native_recorder_artifacts": [
+        "config",
+        "dataset",
+        "task"
+      ],
+      "native_recorder_artifacts_unpickled": false,
+      "native_recorder_end_time": "2025-01-28 01:55:39",
+      "native_recorder_metric_count": 19,
+      "native_recorder_metrics_sha256": "b2ea950c922a910a873c6a1fb58852ef01ac13eae535dfc65287564843d9b6e5",
+      "native_recorder_param_count": 27,
+      "native_recorder_params_sha256": "5464aa772e28c033ae36f1af9676ea57aec42fcd6d93e4df4c7ed01bfc3da26a",
+      "native_recorder_path_adapter": "author_absolute_artifact_uri_rebound_to_temporary_local_file_store",
+      "native_recorder_raw_artifacts": {
+        "config": {
+          "bytes": 11694,
+          "sha256": "b0f4f136f22824074588981365032bd6652d45306408a1525284d8abbdca77de"
+        },
+        "dataset": {
+          "bytes": 1250,
+          "sha256": "2de49eccd5e6fec14d0d747505c1ed442a4c322dab4e9ebbd9d7d0f5257eafb9"
+        },
+        "task": {
+          "bytes": 2264,
+          "sha256": "85140c56e90ba29c2e8a7646e9e4301f70b8fc4d29896c8eb102457131bf1eb7"
+        }
+      },
+      "native_recorder_relevant_metrics": {
+        "1day.excess_return_with_cost.annualized_return": 0.07756099485377929,
+        "1day.excess_return_with_cost.information_ratio": 0.6377838472373123,
+        "1day.excess_return_with_cost.max_drawdown": -0.27021521166724377,
+        "IC": 0.005630115896064784,
+        "ICIR": 0.053778418790127465
+      },
+      "native_recorder_start_time": "2025-01-28 01:55:00",
+      "native_recorder_status": "FINISHED",
+      "native_recorder_tag_count": 5,
+      "native_recorder_tags_sha256": "72e74dfd30293cb7c7016b121eedb5efe136cb94f5f9a23d2cb20bbf0c9666e5",
       "one_probe_prediction": 0.0009656330245027275,
       "probe_predictions_sha256": "0883dde811062f1aaa14d2027bfffe54090119e219abdf8b15a7720085b1c72f",
       "run_id": "db47a8ecacf541cc957fe5a4459a0fdc",
@@ -317,6 +549,43 @@
       "model_features": 10,
       "model_per_iteration": 1,
       "model_trees": 43,
+      "native_recorder_artifacts": [
+        "config",
+        "dataset",
+        "task"
+      ],
+      "native_recorder_artifacts_unpickled": false,
+      "native_recorder_end_time": "2025-01-28 06:39:18",
+      "native_recorder_metric_count": 19,
+      "native_recorder_metrics_sha256": "fa48666d54541d901dd6aeee5a6408a730db81a1c9039e077152f6f1e4042663",
+      "native_recorder_param_count": 27,
+      "native_recorder_params_sha256": "26ff6700cce2827a1763928a04652c0dc0bb70c35307bd2dd3768c22f8def9b9",
+      "native_recorder_path_adapter": "author_absolute_artifact_uri_rebound_to_temporary_local_file_store",
+      "native_recorder_raw_artifacts": {
+        "config": {
+          "bytes": 63370,
+          "sha256": "d81cdd8643825454b37e25031bcd982dedb665a285effeda63ce575ee58b3ff1"
+        },
+        "dataset": {
+          "bytes": 1250,
+          "sha256": "0879fbf3918db0d660ba5fd9c9ccafdbb758ee4c9fff01098ad7e19feb2d2a62"
+        },
+        "task": {
+          "bytes": 2264,
+          "sha256": "118831afba0e7e2e9885c79d331edda5e9c93021fff0d44b0c664dc7904c7746"
+        }
+      },
+      "native_recorder_relevant_metrics": {
+        "1day.excess_return_with_cost.annualized_return": 0.0705409604442004,
+        "1day.excess_return_with_cost.information_ratio": 0.6402712836796748,
+        "1day.excess_return_with_cost.max_drawdown": -0.20492867546467142,
+        "IC": 0.006991702711766981,
+        "ICIR": 0.07115421937626835
+      },
+      "native_recorder_start_time": "2025-01-28 06:38:40",
+      "native_recorder_status": "FINISHED",
+      "native_recorder_tag_count": 5,
+      "native_recorder_tags_sha256": "c02a5b1ad67cb2719e26d797775c02e56a3bc6c0a7153ad8f1eaa2275750efe1",
       "one_probe_prediction": 0.003048357883797393,
       "probe_predictions_sha256": "6a553da7d9ef08bd50b2638ef3c92705a399db846148d6669f0a48498174e9fd",
       "run_id": "efb8aaa80be0432988a62b2e0ce7b210",
