@@ -211,3 +211,34 @@ def test_buy_hold_reconstruction_preserves_released_accounting() -> None:
     assert [(row["paper_table"], row["method"], row["metric"]) for row in matches] == [
         ("12", "Buy & Hold", "TSLA_arr_pct")
     ]
+
+
+def test_global_evidence_route_includes_protocol_sensitivity_boundary() -> None:
+    status = (
+        "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match_"
+        "122_sessions_84_protocol_sensitivity_cells_zero_paper_time_credit_"
+        "11_forks_11_refs_2_official_history_heads_exhausted"
+    )
+    native = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
+    native_row = next(row for row in native if row["system_id"] == "SYS-ALPHA-QUANTER")
+    assert native_row["targeted_execution_audit_status"] == status
+    note = native_row["concise_evidence_note"]
+    assert "paper-stated 122 sessions" in note
+    assert "84-cell sensitivity" in note
+    assert "aggregate error 1.038" in note
+    assert "58.539 for the literal rule" in note
+    assert "zero paper-time credit" in note
+
+    routes = read_csv(
+        ROOT
+        / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
+    )
+    route = next(
+        row for row in routes
+        if row["reachable_public_code_system_ids"] == "SYS-ALPHA-QUANTER"
+    )
+    assert route["native_execution_audit_status"] == status
+    blocker = route["precise_native_or_access_blocker"]
+    assert "paper-stated 122 sessions" in blocker
+    assert "84-cell sensitivity" in blocker
+    assert "zero paper-time credit" in blocker
