@@ -1,0 +1,4 @@
+dimension,paper_claim,released_source_observation,shortfall,matches,paper_result_credit,evidence
+seed_alpha_count,100,37,63,False,False,Section 3.2 versus data/Seed Alpha.xlsx
+seed_alpha_category_count,9,7,2,False,False,Section 3.2 versus parsed workbook category labels
+table_2_category_coverage,five_table_columns_within_nine_category_saf,32_rows_in_five_table_categories_plus_five_rows_in_two_omitted_categories,,False,False,"Table 2 covers five categories and 32 released rows; the workbook also contains Quality and Technical, while the paper claims nine SAF categories"

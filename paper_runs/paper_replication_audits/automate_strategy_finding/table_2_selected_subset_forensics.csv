@@ -1,0 +1,193 @@
+category,paper_selected_mean_ic,released_category_alpha_count,selected_alpha_count,same_size_subsets_in_category,candidate_rank_by_absolute_error,candidate_indices,candidate_mean_absolute_ic,absolute_error,matches_paper_at_four_decimals,is_table_3_selected_subset,is_unique_closest_subset,paper_result_credit,interpretation
+Momentum,0.0208,9,3,84,1,1;3;9,0.02091725733333333,0.00011725733333333224,False,True,True,False,declared Table 3 subset is uniquely closest but does not reproduce the displayed Table 2 value
+Momentum,0.0208,9,3,84,2,1;2;3,0.019540397333333334,0.0012596026666666649,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,3,2;3;9,0.019021764666666666,0.0017782353333333327,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,4,1;2;9,0.018467786666666666,0.002332213333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,5,1;3;6,0.015973855333333332,0.004826144666666667,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,6,1;3;8,0.015797928666666666,0.0050020713333333335,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,7,1;3;7,0.015621528666666665,0.005178471333333334,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,8,3;6;9,0.015455222666666666,0.005344777333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,9,3;8;9,0.015279296,0.0055207039999999995,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,10,3;7;9,0.015102896,0.005697104,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,11,1;6;9,0.014901244666666666,0.0058987553333333335,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,12,1;3;5,0.014837755333333333,0.0059622446666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,13,1;3;4,0.014787433999999999,0.0060125660000000004,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,14,1;8;9,0.014725318,0.006074682,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,15,1;7;9,0.014548918,0.006251082,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,16,3;5;9,0.014319122666666666,0.006480877333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,17,3;4;9,0.014268801333333333,0.0065311986666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,18,2;3;6,0.014078362666666667,0.006721637333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,19,2;3;8,0.013902436,0.006897563999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,20,1;5;9,0.013765144666666666,0.007034855333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,21,2;3;7,0.013726036,0.0070739639999999986,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,22,1;4;9,0.013714823333333332,0.007085176666666667,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,23,1;2;6,0.013524384666666667,0.007275615333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,24,1;2;8,0.013348458,0.0074515419999999985,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,25,1;2;7,0.013172058,0.007627941999999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,26,2;6;9,0.013005751999999999,0.007794248,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,27,2;3;5,0.012942262666666666,0.007857737333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,28,2;3;4,0.012891941333333334,0.007908058666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,29,2;8;9,0.012829825333333333,0.007970174666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,30,2;7;9,0.012653425333333333,0.008146574666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,31,1;2;5,0.012388284666666666,0.008411715333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,32,1;2;4,0.012337963333333334,0.008462036666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,33,2;5;9,0.011869652,0.008930348,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,34,2;4;9,0.011819330666666666,0.008980669333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,35,3;6;8,0.010335894,0.010464105999999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,36,3;6;7,0.010159494,0.010640506,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,37,3;7;8,0.009983567333333334,0.010816432666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,38,1;6;8,0.009781916,0.011018084,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,39,1;6;7,0.009605516,0.011194484,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,40,1;7;8,0.009429589333333334,0.011370410666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,41,3;5;6,0.009375720666666667,0.011424279333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,42,3;4;6,0.009325399333333333,0.011474600666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,43,6;8;9,0.009263283333333334,0.011536716666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,44,3;5;8,0.009199794,0.011600205999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,45,3;4;8,0.009149472666666667,0.011650527333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,46,6;7;9,0.009086883333333334,0.011713116666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,47,3;5;7,0.009023394,0.011776605999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,48,3;4;7,0.008973072666666667,0.011826927333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,49,7;8;9,0.008910956666666666,0.011889043333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,50,1;5;6,0.008821742666666667,0.011978257333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,51,1;4;6,0.008771421333333333,0.012028578666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,52,1;5;8,0.008645816,0.012154183999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,53,1;4;8,0.008595494666666667,0.012204505333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,54,1;5;7,0.008469416,0.012330583999999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,55,1;4;7,0.008419094666666667,0.012380905333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,56,5;6;9,0.008303109999999999,0.01249689,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,57,4;6;9,0.008252788666666667,0.012547211333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,58,3;4;5,0.008189299333333334,0.012610700666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,59,5;8;9,0.008127183333333333,0.012672816666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,60,4;8;9,0.008076861999999999,0.012723138,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,61,5;7;9,0.007950783333333333,0.012849216666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,62,4;7;9,0.007900462,0.012899537999999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,63,2;6;8,0.007886423333333333,0.012913576666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,64,2;6;7,0.007710023333333333,0.013089976666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,65,1;4;5,0.007635321333333333,0.013164678666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,66,2;7;8,0.007534096666666667,0.013265903333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,67,4;5;9,0.007116688666666667,0.013683311333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,68,2;5;6,0.00692625,0.013873749999999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,69,2;4;6,0.006875928666666667,0.013924071333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,70,2;5;8,0.006750323333333334,0.014049676666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,71,2;4;8,0.006700002,0.014099997999999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,72,2;5;7,0.006573923333333334,0.014226076666666665,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,73,2;4;7,0.006523602,0.014276398,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,74,2;4;5,0.005739828666666667,0.015060171333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,75,6;7;8,0.003967554666666666,0.016832445333333335,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,76,5;6;8,0.0031837813333333333,0.017616218666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,77,4;6;8,0.00313346,0.017666539999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,78,5;6;7,0.003007381333333333,0.017792618666666666,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,79,4;6;7,0.00295706,0.017842939999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,80,5;7;8,0.002831454666666667,0.017968545333333332,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,81,4;7;8,0.0027811333333333335,0.018018866666666664,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,82,4;5;6,0.0021732866666666667,0.018626713333333333,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,83,4;5;8,0.00199736,0.01880264,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Momentum,0.0208,9,3,84,84,4;5;7,0.00182096,0.01897904,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,1,10;13;15;17,0.01877076575,7.076575000000002e-05,False,True,True,False,declared Table 3 subset is uniquely closest but does not reproduce the displayed Table 2 value
+Mean Reversion,0.0187,8,4,70,2,10;11;13;17,0.018446327,0.00025367300000000287,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,3,10;11;15;17,0.01842159,0.00027840999999999977,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,4,11;13;15;17,0.01842159,0.00027840999999999977,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,5,10;11;13;15,0.01822763725,0.0004723627500000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,6,10;13;16;17,0.01681921475,0.0018807852500000027,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,7,10;15;16;17,0.01679447775,0.0019055222499999996,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,8,13;15;16;17,0.01679447775,0.0019055222499999996,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,9,10;13;15;16,0.016600525,0.002099475,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,10,10;11;16;17,0.016470039,0.0022299610000000025,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,11,11;13;16;17,0.016470039,0.0022299610000000025,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,12,11;15;16;17,0.016445302,0.002254698000000003,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,13,10;11;13;16,0.016276086250000002,0.0024239137499999994,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,14,10;11;15;16,0.016251349249999998,0.002448650750000003,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,15,11;13;15;16,0.016251349249999998,0.002448650750000003,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,16,10;12;13;17,0.015131255750000001,0.0035687442500000003,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,17,10;12;15;17,0.01510651875,0.0035934812500000007,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,18,12;13;15;17,0.01510651875,0.0035934812500000007,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,19,10;12;13;15,0.014912566,0.003787434000000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,20,10;11;12;17,0.01478208,0.003917920000000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,21,11;12;13;17,0.01478208,0.003917920000000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,22,11;12;15;17,0.014757343,0.003942657000000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,23,10;11;12;13,0.014588127250000001,0.00411187275,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,24,10;11;12;15,0.01456339025,0.004136609750000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,25,11;12;13;15,0.01456339025,0.004136609750000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,26,10;13;14;17,0.0144886015,0.004211398500000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,27,10;14;15;17,0.0144638645,0.004236135500000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,28,13;14;15;17,0.0144638645,0.004236135500000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,29,10;13;14;15,0.014269911750000001,0.00443008825,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,30,10;11;14;17,0.01413942575,0.004560574250000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,31,11;13;14;17,0.01413942575,0.004560574250000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,32,11;14;15;17,0.01411468875,0.0045853112500000015,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,33,10;11;13;14,0.013945473,0.0047545270000000014,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,34,10;11;14;15,0.013920736,0.004779264000000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,35,11;13;14;15,0.013920736,0.004779264000000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,36,10;12;16;17,0.01315496775,0.005545032250000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,37,12;13;16;17,0.01315496775,0.005545032250000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,38,12;15;16;17,0.01313023075,0.005569769250000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,39,10;12;13;16,0.012961015000000001,0.005738985,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,40,10;12;15;16,0.012936278,0.005763722000000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,41,12;13;15;16,0.012936278,0.005763722000000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,42,11;12;16;17,0.012805792,0.0058942080000000015,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,43,10;11;12;16,0.01261183925,0.006088160750000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,44,11;12;13;16,0.01261183925,0.006088160750000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,45,11;12;15;16,0.01258710225,0.006112897750000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,46,10;14;16;17,0.0125123135,0.006187686500000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,47,13;14;16;17,0.0125123135,0.006187686500000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,48,14;15;16;17,0.0124875765,0.006212423500000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,49,10;13;14;16,0.01231836075,0.006381639250000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,50,10;14;15;16,0.01229362375,0.006406376250000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,51,13;14;15;16,0.01229362375,0.006406376250000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,52,11;14;16;17,0.012163137749999999,0.0065368622500000025,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,53,10;11;14;16,0.011969185,0.006730815000000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,54,11;13;14;16,0.011969185,0.006730815000000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,55,11;14;15;16,0.011944448,0.0067555520000000015,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,56,10;12;14;17,0.010824354500000001,0.0078756455,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,57,12;13;14;17,0.010824354500000001,0.0078756455,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,58,12;14;15;17,0.0107996175,0.0079003825,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,59,10;12;13;14,0.01063040175,0.00806959825,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,60,10;12;14;15,0.01060566475,0.008094335250000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,61,12;13;14;15,0.01060566475,0.008094335250000001,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,62,11;12;14;17,0.01047517875,0.008224821250000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,63,10;11;12;14,0.010281226000000001,0.008418774,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,64,11;12;13;14,0.010281226000000001,0.008418774,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,65,11;12;14;15,0.010256489,0.008443511,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,66,12;14;16;17,0.0088480665,0.009851933500000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,67,10;12;14;16,0.008654113750000001,0.01004588625,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,68,12;13;14;16,0.008654113750000001,0.01004588625,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,69,12;14;15;16,0.00862937675,0.01007062325,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Mean Reversion,0.0187,8,4,70,70,11;12;14;16,0.008304938,0.010395062000000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,1,20;21,0.025682583000000002,0.00011741699999999813,False,True,True,False,declared Table 3 subset is uniquely closest but does not reproduce the displayed Table 2 value
+Volatility,0.0258,6,2,15,2,21;23,0.024975492000000002,0.0008245079999999981,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,3,20;23,0.027098721,0.0012987209999999992,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,4,18;20,0.022338986999999998,0.0034610130000000024,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,5,18;23,0.021631895999999998,0.004168104000000002,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,6,18;21,0.020215758,0.005584242,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,7,20;22,0.0191448,0.0066552,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,8,22;23,0.018437709,0.007362291,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,9,21;22,0.017021571,0.008778429,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,10,19;20,0.014200463,0.011599537,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,11,18;22,0.013677975,0.012122025,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,12,19;23,0.013493372,0.012306628,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,13,19;21,0.012077234000000001,0.013722765999999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,14,18;19,0.008733638,0.017066362,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Volatility,0.0258,6,2,15,15,19;22,0.005539451000000001,0.020260549,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,1,27;30,0.0190441775,0.00015582249999999964,False,True,True,False,declared Table 3 subset is uniquely closest but does not reproduce the displayed Table 2 value
+Fundamental,0.0192,7,2,21,2,24;27,0.0174331075,0.0017668924999999988,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,3,24;30,0.017050091,0.0021499089999999985,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,4,27;29,0.0154780775,0.0037219224999999988,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,5,29;30,0.015095061,0.004104938999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,6,24;29,0.013483991,0.005716008999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,7,25;27,0.0133990425,0.005800957499999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,8,26;27,0.013198113499999999,0.006001886499999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,9,25;30,0.013016026,0.006183973999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,10,26;30,0.012815097,0.006384902999999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,11,24;25,0.011404956,0.0077950439999999975,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,12,27;28,0.011311515,0.007888484999999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,13,24;26,0.011204027,0.007995972999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,14,28;30,0.0109284985,0.008271501499999999,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,15,25;29,0.009449926,0.009750073999999997,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,16,24;28,0.0093174285,0.009882571499999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,17,26;29,0.009248997,0.009951002999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,18,28;29,0.007362398500000001,0.011837601499999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,19,25;26,0.007169962,0.012030037999999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,20,25;28,0.0052833635,0.0139166365,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Fundamental,0.0192,7,2,21,21,26;28,0.0050824345,0.014117565499999998,False,False,False,False,alternative same-size subset does not reproduce the displayed value
+Growth,0.0217,2,1,2,1,33,0.02147137,0.0002286300000000005,False,True,True,False,declared Table 3 subset is uniquely closest but does not reproduce the displayed Table 2 value
+Growth,0.0217,2,1,2,2,34,0.007658142,0.014041858,False,False,False,False,alternative same-size subset does not reproduce the displayed value

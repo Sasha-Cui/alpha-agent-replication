@@ -14,13 +14,23 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
 
 ## What the public artifacts establish
 
-- The 37-row seed workbook exposes factor names, formulas, signed ICs, and IRs.
+- The paper claims a 100-alpha, nine-category SAF. The released seed workbook
+  exposes only 37 alphas across seven categories, a 63-alpha and two-category
+  shortfall. Thirty-two released rows belong to Table 2's five categories; the
+  other five are Quality or Technical rows that Table 2 omits. This is an
+  incomplete source universe, not the paper's full SAF.
 - Seven individual-factor analysis workbooks contain IC summaries, five quantile
   cumulative-return paths, and turnover over 2022-09-30 through 2022-12-30.
 - The public prompt files and logs show a GPT-4o Assistant-based factor-comparison
   workflow. This is component evidence, not the paper's final strategy.
 - Recomputing Table 2 with the inferable mean-absolute-IC rule matches
-  3/10 displayed cells at four-decimal precision.
+  3/10 displayed cells at four-decimal precision;
+  all three matches are category-wide means from the incomplete workbook.
+- Exhausting all 192 same-size selected-alpha
+  subsets across the five released Table 2 categories finds zero subset whose
+  mean absolute IC matches a selected-SAF value at four decimals. The subset
+  printed in Table 3 is nevertheless the unique closest candidate in all five
+  categories. That supports selection identity, not the displayed IC values.
 - The seed workbook corroborates all 12/12 signed IC cells
   printed for Table 3's selected alphas at four-decimal precision. This is
   author-source component evidence, not an integrated portfolio replay.
@@ -60,6 +70,13 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
   contained a usable credential literal at the pinned historical commit. Current
   `main` redacts it, and that redaction is the only later main-branch change. This
   audit never prints, validates, or uses the historical value.
+
+## Added Table 2 evidence
+
+- `saf_universe_conformance.csv` records the 100-versus-37 alpha and
+  nine-versus-seven category boundaries from the paper and released workbook.
+- `table_2_selected_subset_forensics.csv` records all 192 same-size subset
+  candidates, zero displayed-value matches, and the five unique nearest subsets.
 
 Run `scripts/audit_automate_strategy_paper.py` to regenerate this package. Use
 `--strict` when a CI failure is desired until a native integrated return path exists.

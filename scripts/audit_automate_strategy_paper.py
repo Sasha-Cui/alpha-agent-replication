@@ -17,6 +17,8 @@ import re
 import subprocess
 import sys
 import zipfile
+from collections import Counter
+from itertools import combinations
 from datetime import date, timedelta
 from pathlib import Path
 from statistics import mean
@@ -46,9 +48,7 @@ PAPER_SHA256 = "6585377002a3b049a6bfadef3152a74adfe12d68ff5c48cccb8c76de4fd1b540
 PAPER_URL = "https://aclanthology.org/2025.findings-emnlp.1005.pdf"
 SOURCE_URL = "https://github.com/kouzhizhuo/Automate-Strategy-Finding-with-LLM-in-Quant-investment"
 PUBLIC_FORK_CENSUS_CHECKED_AT = "2026-08-14"
-PUBLIC_FORK_BRANCH_REF_SEQUENCE_SHA256 = (
-    "61c027bcfab368f1641f2d0f8e5b1901d5c6c89548464d6ef91922403cef8e2f"
-)
+PUBLIC_FORK_BRANCH_REF_SEQUENCE_SHA256 = "61c027bcfab368f1641f2d0f8e5b1901d5c6c89548464d6ef91922403cef8e2f"
 PUBLIC_FORK_BRANCH_REFS: Tuple[Tuple[str, str, str], ...] = (
     (
         "ALADIN99I/Automate-Strategy-Finding-with-LLM-in-Quant-investment",
@@ -183,6 +183,8 @@ PAPER_TABLE_2: Tuple[Tuple[str, float, float], ...] = (
     ("Fundamental", 0.0118, 0.0192),
     ("Growth", 0.0146, 0.0217),
 )
+PAPER_SAF_ALPHA_COUNT = 100
+PAPER_SAF_CATEGORY_COUNT = 9
 PAPER_TABLE_3_SELECTED_INDICES = (1, 3, 9, 10, 13, 15, 17, 20, 21, 27, 30, 33)
 PAPER_TABLE_3: Tuple[Tuple[int, int, float, float], ...] = (
     (1, 1, -0.1459, 0.0209),
@@ -306,10 +308,7 @@ def _sheet_paths(archive: zipfile.ZipFile) -> Dict[str, str]:
     main_ns = {"x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
     rel_ns = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     package_ns = "http://schemas.openxmlformats.org/package/2006/relationships"
-    targets = {
-        rel.attrib["Id"]: rel.attrib["Target"]
-        for rel in relationships.findall(f"{{{package_ns}}}Relationship")
-    }
+    targets = {rel.attrib["Id"]: rel.attrib["Target"] for rel in relationships.findall(f"{{{package_ns}}}Relationship")}
     result = {}
     for sheet in workbook.findall(".//x:sheet", main_ns):
         target = targets[sheet.attrib[f"{{{rel_ns}}}id"]]
@@ -346,8 +345,7 @@ def read_xlsx_matrix(path: Path, sheet_name: str) -> List[List[Any]]:
         matrix = []
         for row in root.findall(".//x:sheetData/x:row", ns):
             indexed = {
-                excel_column_index(cell.attrib["r"]): _cell_value(cell, strings, ns)
-                for cell in row.findall("x:c", ns)
+                excel_column_index(cell.attrib["r"]): _cell_value(cell, strings, ns) for cell in row.findall("x:c", ns)
             }
             matrix.append([indexed.get(index) for index in range(max(indexed, default=-1) + 1)])
     return matrix
@@ -389,6 +387,123 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequenc
         writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
+
+
+def saf_universe_conformance(
+    seed_rows: Sequence[Mapping[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Compare the paper's full SAF claims with the released seed workbook."""
+    categories = Counter(str(row["category"]) for row in seed_rows)
+    table_categories = {category for category, _mean, _selected in PAPER_TABLE_2}
+    source_table_2_rows = sum(count for category, count in categories.items() if category in table_categories)
+    source_categories_omitted_from_table_2 = sorted(set(categories) - table_categories)
+    if (
+        len(seed_rows) != 37
+        or len(categories) != 7
+        or source_table_2_rows != 32
+        or source_categories_omitted_from_table_2 != ["Quality", "Technical"]
+    ):
+        raise ValueError("released SAF workbook universe changed")
+    return [
+        {
+            "dimension": "seed_alpha_count",
+            "paper_claim": PAPER_SAF_ALPHA_COUNT,
+            "released_source_observation": len(seed_rows),
+            "shortfall": PAPER_SAF_ALPHA_COUNT - len(seed_rows),
+            "matches": False,
+            "paper_result_credit": False,
+            "evidence": "Section 3.2 versus data/Seed Alpha.xlsx",
+        },
+        {
+            "dimension": "seed_alpha_category_count",
+            "paper_claim": PAPER_SAF_CATEGORY_COUNT,
+            "released_source_observation": len(categories),
+            "shortfall": PAPER_SAF_CATEGORY_COUNT - len(categories),
+            "matches": False,
+            "paper_result_credit": False,
+            "evidence": "Section 3.2 versus parsed workbook category labels",
+        },
+        {
+            "dimension": "table_2_category_coverage",
+            "paper_claim": "five_table_columns_within_nine_category_saf",
+            "released_source_observation": (
+                f"{source_table_2_rows}_rows_in_five_table_categories_plus_"
+                "five_rows_in_two_omitted_categories"
+            ),
+            "shortfall": "",
+            "matches": False,
+            "paper_result_credit": False,
+            "evidence": (
+                "Table 2 covers five categories and 32 released rows; the workbook also "
+                "contains Quality and Technical, while the paper claims nine SAF categories"
+            ),
+        },
+    ]
+
+
+def table_2_selected_subset_forensics(
+    seed_rows: Sequence[Mapping[str, Any]],
+) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """Exhaust same-size source subsets against Table 2's selected-SAF means."""
+    selected = set(PAPER_TABLE_3_SELECTED_INDICES)
+    rows: List[Dict[str, Any]] = []
+    for category, _paper_all_mean, paper_selected_mean in PAPER_TABLE_2:
+        category_rows = sorted(
+            (row for row in seed_rows if row["category"] == category),
+            key=lambda row: int(row["index"]),
+        )
+        declared_indices = tuple(int(row["index"]) for row in category_rows if int(row["index"]) in selected)
+        candidate_values = []
+        for subset in combinations(category_rows, len(declared_indices)):
+            indices = tuple(int(row["index"]) for row in subset)
+            value = mean(abs(float(row["ic"])) for row in subset)
+            candidate_values.append((abs(value - paper_selected_mean), indices, value))
+        candidate_values.sort()
+        if len(candidate_values) < 2 or candidate_values[0][0] >= candidate_values[1][0]:
+            raise ValueError(f"{category} no longer has a unique closest subset")
+        for rank, (error, indices, value) in enumerate(candidate_values, start=1):
+            is_declared = indices == declared_indices
+            matches = error <= DISPLAY_TOLERANCE
+            rows.append(
+                {
+                    "category": category,
+                    "paper_selected_mean_ic": paper_selected_mean,
+                    "released_category_alpha_count": len(category_rows),
+                    "selected_alpha_count": len(declared_indices),
+                    "same_size_subsets_in_category": len(candidate_values),
+                    "candidate_rank_by_absolute_error": rank,
+                    "candidate_indices": ";".join(str(index) for index in indices),
+                    "candidate_mean_absolute_ic": value,
+                    "absolute_error": error,
+                    "matches_paper_at_four_decimals": matches,
+                    "is_table_3_selected_subset": is_declared,
+                    "is_unique_closest_subset": rank == 1,
+                    "paper_result_credit": False,
+                    "interpretation": (
+                        "declared Table 3 subset is uniquely closest but does not reproduce the displayed Table 2 value"
+                        if is_declared
+                        else "alternative same-size subset does not reproduce the displayed value"
+                    ),
+                }
+            )
+    summary = {
+        "candidate_subsets": len(rows),
+        "display_precision_matches": sum(bool(row["matches_paper_at_four_decimals"]) for row in rows),
+        "declared_table_3_subsets": sum(bool(row["is_table_3_selected_subset"]) for row in rows),
+        "declared_subsets_unique_closest": sum(
+            bool(row["is_table_3_selected_subset"]) and bool(row["is_unique_closest_subset"]) for row in rows
+        ),
+        "paper_result_credit": False,
+    }
+    if summary != {
+        "candidate_subsets": 192,
+        "display_precision_matches": 0,
+        "declared_table_3_subsets": 5,
+        "declared_subsets_unique_closest": 5,
+        "paper_result_credit": False,
+    }:
+        raise ValueError(f"Table 2 subset-forensics boundary changed: {summary}")
+    return rows, summary
 
 
 def table_2_audit(seed_rows: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
@@ -443,9 +558,7 @@ def table_3_audit(seed_rows: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]
                 "absolute_error": error,
                 "rounding_tolerance": DISPLAY_TOLERANCE,
                 "status": (
-                    "author_workbook_exact_rounding_match"
-                    if error <= DISPLAY_TOLERANCE
-                    else "author_workbook_mismatch"
+                    "author_workbook_exact_rounding_match" if error <= DISPLAY_TOLERANCE else "author_workbook_mismatch"
                 ),
                 "author_source_corroborated": error <= DISPLAY_TOLERANCE,
                 "native_integrated_portfolio_reproduced": False,
@@ -486,11 +599,7 @@ def table_3_audit(seed_rows: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]
             "evidence": "no released 12-alpha combined prediction or return path",
         }
     )
-    matched = [
-        row
-        for row in output
-        if row["status"] == "author_workbook_exact_rounding_match"
-    ]
+    matched = [row for row in output if row["status"] == "author_workbook_exact_rounding_match"]
     if len(output) != 25 or len(matched) != 12:
         raise RuntimeError("Automate Strategy Table 3 conformance census changed")
     return output
@@ -624,28 +733,16 @@ def released_source_history_audit(
     }
     result_pattern = re.compile(r"53[.]173|53[.]17|top-k|drop-n|2023-01|202301|2024-01|202401", re.I)
     for commit in commits:
-        authored_at, subject = git(
-            source_root, "show", "-s", "--format=%aI%x09%s", commit
-        ).rstrip().split("\t", 1)
-        paths = git(
-            source_root, "-c", "core.quotePath=false", "ls-tree", "-r", "--name-only", commit
-        ).splitlines()
-        text_paths = [
-            path
-            for path in paths
-            if Path(path).suffix.lower() in {".py", ".m", ".md", ".txt"}
-        ]
+        authored_at, subject = git(source_root, "show", "-s", "--format=%aI%x09%s", commit).rstrip().split("\t", 1)
+        paths = git(source_root, "-c", "core.quotePath=false", "ls-tree", "-r", "--name-only", commit).splitlines()
+        text_paths = [path for path in paths if Path(path).suffix.lower() in {".py", ".m", ".md", ".txt"}]
         integrated_literal_paths = []
         for path in text_paths:
-            text = git_bytes(source_root, "show", f"{commit}:{path}").decode(
-                "utf-8", errors="replace"
-            )
+            text = git_bytes(source_root, "show", f"{commit}:{path}").decode("utf-8", errors="replace")
             if result_pattern.search(text):
                 integrated_literal_paths.append(path)
         agent_text = (
-            git_bytes(source_root, "show", f"{commit}:AutoGPT/main.py").decode(
-                "utf-8", errors="replace"
-            )
+            git_bytes(source_root, "show", f"{commit}:AutoGPT/main.py").decode("utf-8", errors="replace")
             if "AutoGPT/main.py" in paths
             else ""
         )
@@ -669,9 +766,7 @@ def released_source_history_audit(
                 "xlsx_paths": sum(path.endswith(".xlsx") for path in paths),
                 "grail_component_paths": sum(path in grail_names for path in paths),
                 "integrated_result_or_portfolio_rule_literal_paths": len(integrated_literal_paths),
-                "usable_hardcoded_credential_literal_present": _contains_usable_credential_literal(
-                    agent_text
-                ),
+                "usable_hardcoded_credential_literal_present": _contains_usable_credential_literal(agent_text),
                 "evidence_role": evidence_roles[commit],
                 "integrated_native_portfolio_output_present": False,
                 "published_result_regenerated": False,
@@ -802,17 +897,14 @@ def historical_branch_runtime_observation() -> Dict[str, Any]:
             "input_shape": [1, 2],
             "batch_size": 32,
             "exception_type": "ZeroDivisionError",
-            "cause": (
-                "integer batch count is zero and the epoch returns total_loss / num_batches"
-            ),
+            "cause": ("integer batch count is zero and the epoch returns total_loss / num_batches"),
             "paper_result_credit": False,
         },
         "default_constructor_probe": {
             "status": "environment_crash_before_model_construction",
             "signal": "SIGILL",
             "boundary": (
-                "Bouchet's centrally supplied tokenizers binary crashed while loading the "
-                "downloaded GPT-2 tokenizer"
+                "Bouchet's centrally supplied tokenizers binary crashed while loading the downloaded GPT-2 tokenizer"
             ),
             "author_code_failure_inferred": False,
             "paper_result_credit": False,
@@ -841,6 +933,8 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     source_agent = (source_root / "AutoGPT/main.py").read_text(encoding="utf-8")
     source_dnn = (source_root / "train_dnn.m").read_text(encoding="utf-8")
     seeds = seed_alpha_rows(seed_path)
+    saf_universe = saf_universe_conformance(seeds)
+    subset_forensics, subset_summary = table_2_selected_subset_forensics(seeds)
     table_2 = table_2_audit(seeds)
     table_3 = table_3_audit(seeds)
     inventory = result_workbook_inventory(source_root)
@@ -848,6 +942,16 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         raise RuntimeError(f"Expected seven pinned factor-analysis workbooks, found {len(inventory)}")
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    write_csv(
+        output_dir / "saf_universe_conformance.csv",
+        saf_universe,
+        list(saf_universe[0]),
+    )
+    write_csv(
+        output_dir / "table_2_selected_subset_forensics.csv",
+        subset_forensics,
+        list(subset_forensics[0]),
+    )
     write_csv(output_dir / "table_2_conformance.csv", table_2, list(table_2[0]))
     write_csv(output_dir / "table_3_conformance.csv", table_3, list(table_3[0]))
     write_csv(
@@ -927,6 +1031,19 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "public_fork_paper_result_credit_paths_total": 0,
         "source_seed_workbook": str(seed_path.relative_to(source_root)),
         "source_seed_workbook_sha256": sha256(seed_path),
+        "paper_saf_alpha_count": PAPER_SAF_ALPHA_COUNT,
+        "released_seed_alpha_count": len(seeds),
+        "paper_saf_category_count": PAPER_SAF_CATEGORY_COUNT,
+        "released_seed_category_count": len({row["category"] for row in seeds}),
+        "released_seed_categories": sorted({str(row["category"]) for row in seeds}),
+        "released_table_2_category_alpha_count": sum(
+            str(row["category"]) in {category for category, _mean, _selected in PAPER_TABLE_2}
+            for row in seeds
+        ),
+        "released_saf_universe_complete_for_paper": False,
+        "table_2_same_size_selected_subsets_checked": subset_summary["candidate_subsets"],
+        "table_2_same_size_selected_subset_matches": subset_summary["display_precision_matches"],
+        "table_2_declared_subsets_unique_closest": subset_summary["declared_subsets_unique_closest"],
         "paper_table_2_cells_matched": table_2_matches,
         "paper_table_2_cells_total": len(table_2),
         "paper_table_4_cells_verified": 0,
@@ -951,17 +1068,14 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         and (source_root / "result/alpha").is_dir(),
         "paper_portfolio_top_k": 13,
         "paper_portfolio_drop_n": 5,
-        "source_portfolio_builder_present": "top-k" in source_main.lower()
-        or "drop-n" in source_main.lower(),
+        "source_portfolio_builder_present": "top-k" in source_main.lower() or "drop-n" in source_main.lower(),
         "source_factor_analysis_period_literal": (
             "20220930" if 'd1 = "20220930"' in source_main else "unresolved",
             "20221231" if 'd2 = "20221231"' in source_main else "unresolved",
         ),
         "source_requires_unbundled_rqdata_access": "rqdatac.init()" in source_main,
         "source_agent_model_literal": "gpt-4o" if 'model="gpt-4o"' in source_agent else "unresolved",
-        "source_agent_contains_hardcoded_credential": bool(
-            re.search(r"api_key\s*=\s*[\"'][^\"']+[\"']", source_agent)
-        ),
+        "source_agent_contains_hardcoded_credential": bool(re.search(r"api_key\s*=\s*[\"'][^\"']+[\"']", source_agent)),
         "source_agent_historical_credential_literal_present_at_pinned_commit": (
             _contains_usable_credential_literal(source_agent)
         ),
@@ -972,27 +1086,24 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "new_project_branch_component_attempt_is_paper_faithful": False,
         "new_project_branch_bounded_runtime_probe": {
             "package_import": runtime_observation["reconstructed_package_import"],
-            "multi_agent_synthetic_probe": runtime_observation["multi_agent_synthetic_probe"][
-                "status"
-            ],
-            "optimizer_short_batch_probe": runtime_observation[
-                "optimizer_short_batch_probe"
-            ]["status"],
-            "default_constructor_probe": runtime_observation["default_constructor_probe"][
-                "status"
-            ],
+            "multi_agent_synthetic_probe": runtime_observation["multi_agent_synthetic_probe"]["status"],
+            "optimizer_short_batch_probe": runtime_observation["optimizer_short_batch_probe"]["status"],
+            "default_constructor_probe": runtime_observation["default_constructor_probe"]["status"],
         },
         "new_project_branch_paper_result_credit": False,
         "paper_internal_numeric_inconsistencies_recorded": len(paper_inconsistencies),
         "interpretation": (
             "The public artifacts support a partial 2022Q4 factor-analysis and prompt-selection "
-            "component audit. They do not contain the 2023 integrated portfolio path required "
-            "to verify the paper's 53.173% Table 4 result. Complete public-history review also "
-            "finds a later generic Grail branch, but its components are disconnected from the "
-            "released data and materially differ from the paper's GPT-4o, CSA/RPA, and |A|-10-1 "
-            "MLP design. A dated census of 24 public forks and 25 branch refs finds that every "
-            "fork head is already an exact commit in the audited official history, so no fork "
-            "adds paper-result lineage."
+            "component audit. The released seed workbook covers only 37 of the paper's 100 "
+            "alphas and 7 of 9 claimed categories. All 192 same-size selected-alpha subsets "
+            "miss the five Table 2 selected means at display precision, although the Table 3 "
+            "subsets are uniquely closest in every category. They do not contain the 2023 "
+            "integrated portfolio path required to verify the paper's 53.173% Table 4 result. "
+            "Complete public-history review also finds a later generic Grail branch, but its "
+            "components are disconnected from the released data and materially differ from "
+            "the paper's GPT-4o, CSA/RPA, and |A|-10-1 MLP design. A dated census of 24 public "
+            "forks and 25 branch refs finds that every fork head is already an exact commit in "
+            "the audited official history, so no fork adds paper-result lineage."
         ),
     }
     report = f"""# Automate Strategy Finding paper-level conformance audit
@@ -1011,18 +1122,28 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
 
 ## What the public artifacts establish
 
-- The 37-row seed workbook exposes factor names, formulas, signed ICs, and IRs.
+- The paper claims a 100-alpha, nine-category SAF. The released seed workbook
+  exposes only 37 alphas across seven categories, a 63-alpha and two-category
+  shortfall. Thirty-two released rows belong to Table 2's five categories; the
+  other five are Quality or Technical rows that Table 2 omits. This is an
+  incomplete source universe, not the paper's full SAF.
 - Seven individual-factor analysis workbooks contain IC summaries, five quantile
   cumulative-return paths, and turnover over 2022-09-30 through 2022-12-30.
 - The public prompt files and logs show a GPT-4o Assistant-based factor-comparison
   workflow. This is component evidence, not the paper's final strategy.
 - Recomputing Table 2 with the inferable mean-absolute-IC rule matches
-  {table_2_matches}/{len(table_2)} displayed cells at four-decimal precision.
+  {table_2_matches}/{len(table_2)} displayed cells at four-decimal precision;
+  all three matches are category-wide means from the incomplete workbook.
+- Exhausting all {subset_summary["candidate_subsets"]} same-size selected-alpha
+  subsets across the five released Table 2 categories finds zero subset whose
+  mean absolute IC matches a selected-SAF value at four decimals. The subset
+  printed in Table 3 is nevertheless the unique closest candidate in all five
+  categories. That supports selection identity, not the displayed IC values.
 - The seed workbook corroborates all {table_3_corroborated}/12 signed IC cells
   printed for Table 3's selected alphas at four-decimal precision. This is
   author-source component evidence, not an integrated portfolio replay.
-- The complete public Git surface was reviewed: {history_summary['public_commits_reviewed']}
-  commits on {history_summary['public_branches_reviewed']} branches, 39 unique historical paths,
+- The complete public Git surface was reviewed: {history_summary["public_commits_reviewed"]}
+  commits on {history_summary["public_branches_reviewed"]} branches, 39 unique historical paths,
   zero tags/releases, and zero unreachable objects.
 - All {len(fork_refs)} branch refs across the 24 public forks resolve to those same
   official-history commits. See `public_fork_ref_inventory.csv`.
@@ -1058,6 +1179,13 @@ factor-analysis and prompt-selection component, not the integrated portfolio res
   `main` redacts it, and that redaction is the only later main-branch change. This
   audit never prints, validates, or uses the historical value.
 
+## Added Table 2 evidence
+
+- `saf_universe_conformance.csv` records the 100-versus-37 alpha and
+  nine-versus-seven category boundaries from the paper and released workbook.
+- `table_2_selected_subset_forensics.csv` records all 192 same-size subset
+  candidates, zero displayed-value matches, and the five unique nearest subsets.
+
 Run `scripts/audit_automate_strategy_paper.py` to regenerate this package. Use
 `--strict` when a CI failure is desired until a native integrated return path exists.
 """
@@ -1067,9 +1195,7 @@ Run `scripts/audit_automate_strategy_paper.py` to regenerate this package. Use
         for path in sorted(output_dir.iterdir())
         if path.is_file() and path.name != "manifest.json"
     }
-    (output_dir / "manifest.json").write_text(
-        json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
-    )
+    (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
 
 
@@ -1107,9 +1233,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    manifest = build_audit(
-        args.source_root.resolve(), args.paper_pdf.resolve(), args.output_dir.resolve()
-    )
+    manifest = build_audit(args.source_root.resolve(), args.paper_pdf.resolve(), args.output_dir.resolve())
     print(json.dumps(manifest, indent=2))
     return int(args.strict and manifest["overall_status"] != "reproduced")
 
