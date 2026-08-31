@@ -397,14 +397,22 @@ def test_global_evidence_route_preserves_current_yahoo_boundary() -> None:
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_77_of_77_author_table_cells_corroborated_16_of_17_"
         "vector_endpoints_conflict_14_of_42_"
-        "author_raster_series_cross_format_12_current_yahoo_cells_zero_matches_19445_"
-        "forks_24584_refs_4234_heads_exhausted_zero_native_regenerated"
+        "author_raster_series_cross_format_12_current_yahoo_cells_zero_matches_"
+        "3660_common_window_profiles_3_of_10980_isolated_return_cells_max1_asset_"
+        "zero_shared_windows_19445_forks_24584_refs_4234_heads_exhausted_zero_native_"
+        "regenerated"
     )
     note = row["concise_evidence_note"]
     assert "current Yahoo adjusted-close diagnostic" in note
     assert "all 12 Buy-and-Hold cells" in note
     assert "matches 0/12 at display precision" in note
     assert "no paper-time lineage" in note
+    assert "1,830 common Q1 trading-date windows" in note
+    assert "3,660 profiles and 10,980 asset-return checks" in note
+    assert "Only three isolated profile cells match" in note
+    assert "no profile matches more than one asset" in note
+    assert "AMZN never matches" in note
+    assert "zero common windows recover all three B&H returns" in note
     assert "19,445 accessible public forks" in note
     assert "14/42 paper series" in note
     assert "No fork provides a native paper run" in note
@@ -415,6 +423,9 @@ def test_global_evidence_route_preserves_current_yahoo_boundary() -> None:
     route_row = next(item for item in route if item["canonical_work_id"] == "CensusArxiv241220138")
     assert "matches 0/12 at display precision" in route_row["precise_native_or_access_blocker"]
     failures = (ROOT / "docs/paper/tables/artifact_failures.tex").read_text()
+    assert "3,660 profiles and 10,980 asset-return checks" in route_row[
+        "precise_native_or_access_blocker"
+    ]
     assert "matches 0/12 at display precision" in failures
 
 

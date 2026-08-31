@@ -977,6 +977,12 @@ ARTIFACT_NOTES = {
         "paper's literal window and matches 0/12 at display precision. The paper does "
         "not map prices to one of its several listed providers, and the 2026 response "
         "has no paper-time lineage, so this is adverse diagnostic evidence only. "
+        "Exhausting all 1,830 common Q1 trading-date windows under adjusted and "
+        "unadjusted Yahoo close produces 3,660 profiles and 10,980 asset-return "
+        "checks. Only three isolated profile cells match, no profile matches more "
+        "than one asset, AMZN never matches, and zero common windows recover all "
+        "three B&H returns. This rules out a hidden shared Q1 endpoint within the "
+        "pinned response but still receives zero paper-result credit. "
         "All 39 Python files compile and dependency-isolated native graph routing "
         "executes deterministically, while 14/45 paper mechanism dimensions match "
         "or have meaningful analogues. These are architecture components, not the "
@@ -1863,7 +1869,9 @@ TARGETED_EXECUTION = {
     "SYS-STRAT-LLM": "paper_audit:completed_zero_of_190_unique_empirical_units_live_forward_chronology_contradicted",
     "SYS-TRADING-AGENTS": (
         "paper_audit:completed_77_of_77_author_table_cells_corroborated_16_of_17_vector_endpoints_conflict_"
-        "14_of_42_author_raster_series_cross_format_12_current_yahoo_cells_zero_matches_19445_forks_24584_refs_4234_heads_exhausted_zero_native_regenerated"
+        "14_of_42_author_raster_series_cross_format_12_current_yahoo_cells_zero_matches_"
+        "3660_common_window_profiles_3_of_10980_isolated_return_cells_max1_asset_zero_shared_windows_"
+        "19445_forks_24584_refs_4234_heads_exhausted_zero_native_regenerated"
     ),
     "SYS-TRADING-GROUP": (
         "paper_audit:completed_128_of_128_source_adjacent_baseline_cells_"
