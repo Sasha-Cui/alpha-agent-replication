@@ -807,15 +807,20 @@ ARTIFACT_NOTES = {
     ),
     "SYS-GURU-AGENTS": (
         "Y",
-        "A pinned v1 paper audit executes the paper-era notebook and reproduces all "
-        "7 shipped workbook paths, but only 2/70 Table 1 cells (the two benchmark "
-        "MDDs), 0/7 complete rows, 0/42 figure units, and 0/5 verbatim prompts receive "
-        "paper-result credit. The 35 archived GPT runs retain their tool logs, but "
-        "the stated transaction cost is not applied, agent and benchmark frequencies "
-        "differ, QQQ/SPY stand in for indices, point-in-time filings are absent, the "
-        "claimed deterministic scorer is LLM-mediated, and no raw run satisfies the "
-        "strict output contract. Coverage is U.S.-only and not the six-country "
-        "common-task panel.",
+        "A pinned v1 paper audit executes the paper-era notebook and reproduces all 7 "
+        "shipped workbook paths as source-artifact evidence. Separately, one unique "
+        "common 2023-11-01 through 2025-08-01 window over the released QQQ/SPY cache "
+        "regenerates both complete benchmark rows: 20/20 benchmark cells, 20/70 total "
+        "Table 1 cells, and 2/7 full rows receive independent result credit. This "
+        "endpoint contradicts the Q2 2025 caption but agrees with Figure 1's horizon. "
+        "The five agent rows remain 0/50. A fail-closed census tests 640 coherent "
+        "current/older portfolio, CLOSE_/DIV_ADJ_CLOSE, and stated/no-cost variants; "
+        "none reproduces a complete agent row and the best candidate matches 2/10 cells. "
+        "The 95 archived GPT runs retain tool logs, but the released notebook does not "
+        "apply the stated cost, path frequencies differ, QQQ/SPY stand in for named "
+        "indices, point-in-time filings are absent, and the scorer is LLM-mediated. "
+        "Figure credit remains 0/42 and exact prompt credit 0/5. Coverage is U.S.-only "
+        "and not the six-country common-task panel.",
     ),
     "SYS-MACI": (
         "Y",
@@ -1752,7 +1757,9 @@ TARGETED_EXECUTION = {
     "SYS-HEDGE-AGENTS": "paper_audit:completed_zero_of_236_numeric_cells_static_site_not_system_source",
     "SYS-HUBBLE": "paper_audit:completed_v1_zero_of_47_unique_cells_v2_zero_of_102_unique_cells_zero_of_50_figure_series_formulas_intentionally_withheld",
     "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_80_accessible_forks_82_refs_10_heads_community_checkpoint_rerun_30_of_30_supplied_cells_mismatch",
-    "SYS-GURU-AGENTS": "paper_audit:completed_two_of_70_native_table_cells_source_workbook_only",
+    "SYS-GURU-AGENTS": (
+        "paper_audit:completed_20_of_70_table_cells_2_benchmark_rows_unique_effective_window_640_agent_variants_zero_agent_rows"
+    ),
     "SYS-GPT-SIGNAL": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
     "SYS-LLM-FACTOR": "paper_audit:completed_prompt_metric_components_zero_of_82_native_cells_zero_of_206_total_cells_no_author_code",
     "SYS-MACI": (
