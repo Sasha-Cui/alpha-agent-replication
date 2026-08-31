@@ -110,8 +110,9 @@ def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() ->
     assert row["static_fidelity_tiers"] == "R3"
     assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
     assert row["native_execution_audit_status"] == (
-        "paper_audit:completed_21_of_42_displayed_scalar_units_checked_18_"
-        "author_output_3_current_public_benchmark_3_of_3_raster_correspondences_"
+        "paper_audit:completed_36_of_42_displayed_scalar_units_checked_29_verified_18_"
+        "author_output_3_current_public_benchmark_8_paper_internal_5_conflicts_"
+        "2_underspecified_6_unavailable_3_of_3_raster_correspondences_"
         "zero_raw_series_zero_end_to_end_result_cells"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
@@ -119,7 +120,13 @@ def test_raptor_route_credits_shipped_outputs_without_claiming_reproduction() ->
     assert row["proxy_role"] == "no_proxy"
     blocker = row["precise_native_or_access_blocker"]
     assert "recover 18/42 scalar units" in blocker
-    assert "21/42 checked displayed units" in blocker
+    assert "29/42 displayed units verify" in blocker
+    assert "36/42 are checked" in blocker
+    assert "8/42 paper-internal" in blocker
+    assert "five rolling claims conflict" in blocker
+    assert "six unique table weights remain unavailable" in blocker
+    assert "All eight standard 20-day" in blocker
+    assert "Across 1,160 longer-window" in blocker
     assert "full 20-return window" in blocker
     assert "not paper-time input lineage" in blocker
     assert "7,313 blue portfolio pixels reproduce exactly" in blocker
