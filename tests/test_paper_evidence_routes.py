@@ -347,8 +347,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "contradictions_zero_of_12_native_agent_cells_end_to_end_lookahead_counterexample_1_fork_1_ref_official_head_exhausted"
         ),
         "CensusArxiv260620625": (
-            "paper_audit:completed_two_commit_history_1_coauthor_fork_provenance_only_"
-            "exhausted_seven_strategy_diagnostics_zero_of_474_native_results"
+            "paper_audit:completed_zero_of_474_native_results_two_commit_history_1_"
+            "coauthor_fork_exhausted_202_package_py311_current_14_asset_2511_day_"
+            "pipeline_raw_template_and_qrun_failures_2_compatible_end_to_end_runs_"
+            "19_metrics_zero_admitted"
         ),
         "CensusArxiv260505580": (
             "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_"

@@ -319,8 +319,18 @@ ARTIFACT_NOTES = {
         "test passes, all seven released CLI strategy names execute deterministically "
         "in bounded synthetic diagnostics, active AlphaMemo/SSPM/veto memory branches "
         "are observed, and all five published formulas execute in the native parser. "
-        "These are components, not paper outputs; the official 12-step smoke itself "
-        "never reaches its 30-step memory warmup. No Qlib data snapshot, search "
+        "A separate 202-package Python 3.11 environment recreates the declared direct "
+        "runtime pins. The released Yahoo builder freezes a 2,511-day current panel for "
+        "14 source-selected stocks plus the S&P 500 benchmark. Raw main-table execution "
+        "evaluates 12/12 factors before failing because template resolution points one "
+        "directory above the repository; the tracked qrun wrapper is also mode 100644. "
+        "A scratch-only template symlink and byte-identical executable wrapper copy let "
+        "two offline runs complete factor export, LightGBM, prediction, portfolio/cost "
+        "simulation, and 19 metrics. Search and formula outputs are byte-identical and "
+        "reported metrics repeat within 1e-12, with zero LLM or replay-network calls. "
+        "Zero factors pass the 0.10 gate, but main-table still backtests all 12 valid "
+        "candidates. These are current-input components, not paper outputs; the official "
+        "12-step smoke itself never reaches its 30-step memory warmup. No paper Qlib data snapshot, search "
         "trajectory, factor pool, prediction, return, or table output is shipped, so "
         "0/474 result cells count as native reproductions. The active runner's ICIR "
         "threshold is 0.02 versus the paper's 0.10, and source motif/context/gating "
@@ -1832,8 +1842,9 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-GPT": "paper_audit:completed_v1_zero_of_20_numeric_cells_zero_of_3_lines_final_zero_of_47_numeric_cells_zero_of_2_lines_alpha_gpt2_no_empirical_results",
     "SYS-ALPHA-JUNGLE": "paper_audit:completed_zero_of_64_published_cells_zero_native_results_three_of_six_formula_trees_conditionally_adapted",
     "SYS-ALPHA-MEMO": (
-        "paper_audit:completed_two_commit_history_1_coauthor_fork_provenance_only_exhausted_"
-        "seven_strategy_diagnostics_zero_of_474_native_results"
+        "paper_audit:completed_zero_of_474_native_results_two_commit_history_1_coauthor_"
+        "fork_exhausted_202_package_py311_current_14_asset_2511_day_pipeline_raw_template_"
+        "and_qrun_failures_2_compatible_end_to_end_runs_19_metrics_zero_admitted"
     ),
     "SYS-ALPHA-R1": (
         "paper_audit:completed_zero_of_652_native_results_official_placeholder_"

@@ -355,3 +355,28 @@ def test_real_data_probe_inputs_when_bouchet_assets_are_available() -> None:
     assert len(provider_rows) == real_probe.PROVIDER_FILE_COUNT
     assert len(env_rows) == real_probe.ENVIRONMENT_PACKAGE_COUNT
     assert summary["manifest_sha256"] == real_probe.ENVIRONMENT_MANIFEST_SHA256
+
+
+def test_global_native_ledger_reflects_real_pipeline_without_result_credit() -> None:
+    rows = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
+    row = next(item for item in rows if item["system_id"] == "SYS-ALPHA-MEMO")
+    assert row["public_artifact_status"] == "reachable_static_snapshot"
+    assert row["static_tier"] == "R3"
+    assert row["native_dated_signal_or_return_shipped"] == "N"
+    assert row["targeted_execution_audit_status"] == (
+        "paper_audit:completed_zero_of_474_native_results_two_commit_history_1_"
+        "coauthor_fork_exhausted_202_package_py311_current_14_asset_2511_day_"
+        "pipeline_raw_template_and_qrun_failures_2_compatible_end_to_end_runs_"
+        "19_metrics_zero_admitted"
+    )
+    assert row["fidelity_class"] == "F1_static_no_native_output"
+    note = row["concise_evidence_note"]
+    assert "202-package Python 3.11 environment" in note
+    assert "2,511-day current panel" in note
+    assert "evaluates 12/12 factors" in note
+    assert "tracked qrun wrapper is also mode 100644" in note
+    assert "two offline runs complete" in note
+    assert "19 metrics" in note
+    assert "Zero factors pass the 0.10 gate" in note
+    assert "current-input components, not paper outputs" in note
+    assert "0/474 result cells count as native reproductions" in note
