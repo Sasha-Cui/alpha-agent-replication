@@ -248,6 +248,7 @@ def test_maci_route_separates_both_incomplete_author_source_lineages() -> None:
         "962_training_records_930_images_recovered_post_v2_no_job_lineage_"
         "single_0510_961_records_native_contract_zero_network_same_agent_2_checkpoint_"
         "aliases_"
+        "pre_submission_gpt4o_id_zero_job_file_ids_7_searches_zero_"
         "zero_regenerated_2_forks_2_refs_2_official_history_heads_exhausted"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
@@ -272,6 +273,11 @@ def test_maci_route_separates_both_incomplete_author_source_lineages() -> None:
     assert "No remote upload/job occurs" in blocker
     assert "same agent object" in blocker
     assert "multi-agent fine-tuning blocks remain commented" in blocker
+    assert "scan of 7,262 reachable blobs / 424,295,149 bytes" in blocker
+    assert "GPT-4o fine-tuned model ID first committed on 2024-10-26" in blocker
+    assert "No ftjob identifier or genuine OpenAI file identifier" in blocker
+    assert "seven exact public searches" in blocker
+    assert "paper-era checkpoint evidence" in blocker
     assert "three environ.data modules" in blocker
     assert "single-agent RAG and Skill" in blocker
     assert "Both accessible v1/v2 forks" in blocker

@@ -120,6 +120,17 @@ def test_native_and_paper_routes_keep_output_verification_below_reproduction() -
     assert "multi-agent fine-tuning blocks remain commented" in row[
         "concise_evidence_note"
     ]
+    assert "scan of 7,262 reachable blobs / 424,295,149 bytes" in row[
+        "concise_evidence_note"
+    ]
+    assert "GPT-4o fine-tuned model ID first committed on 2024-10-26" in row[
+        "concise_evidence_note"
+    ]
+    assert "No ftjob identifier or genuine OpenAI file identifier" in row[
+        "concise_evidence_note"
+    ]
+    assert "seven exact public searches" in row["concise_evidence_note"]
+    assert "paper-era checkpoint evidence" in row["concise_evidence_note"]
     assert "Both accessible v1/v2 forks" in row["concise_evidence_note"]
     assert "zero commits, blobs, tags, or native result artifacts" in row["concise_evidence_note"]
 
