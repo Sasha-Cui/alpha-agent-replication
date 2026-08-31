@@ -337,12 +337,14 @@ def test_native_ledger_credits_historical_actions_without_claiming_common_task_f
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:partial_227_of_235_author_output_cells_corroborated_"
-        "67_of_75_ablation_cells_independently_replayed_zero_end_to_end_agent_cells_"
+        "67_of_75_native_metric_function_cells_reproduced_zero_end_to_end_agent_cells_"
         "181_accessible_forks_187_refs_20_unique_heads_exhausted"
     )
     note = row["concise_evidence_note"]
     assert "223 exact" in note
     assert "18 dated action CSVs" in note
+    assert "exact historical calculate_metrics function" in note
+    assert "all 75 values matching" in note
     assert "181 accessible forks" in note
     assert "19-row" in note
     assert "not end-to-end FinMem reproduction" in note
