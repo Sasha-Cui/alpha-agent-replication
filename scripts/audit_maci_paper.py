@@ -93,6 +93,22 @@ RECONSTRUCTED_SINGLE_0510_BYTES = 2_455_569
 OPENAI_VISION_FINE_TUNING_DOC = (
     "https://developers.openai.com/api/docs/guides/vision-fine-tuning"
 )
+PAPER_ERA_GPT4O_FINE_TUNED_MODEL_ID = (
+    "ft:gpt-4o-2024-08-06:nanyang-technological-university::ALsxWTzK"
+)
+HISTORICAL_GPT35_FINE_TUNED_MODEL_ID = (
+    "ft:gpt-3.5-turbo-0125:nanyang-technological-university::9vjD18u3"
+)
+FINE_TUNING_PUBLIC_SEARCH_DATE = "2026-08-31"
+FINE_TUNING_PUBLIC_SEARCH_QUERIES = (
+    PAPER_ERA_GPT4O_FINE_TUNED_MODEL_ID,
+    "ALsxWTzK",
+    HISTORICAL_GPT35_FINE_TUNED_MODEL_ID,
+    "9vjD18u3",
+    "single_0510.jsonl",
+    "cs_vision_0510.pkl",
+    "mkt_news_0510.pkl",
+)
 PUBLIC_FORK_HEADS = {
     "refs/remotes/forks/gelove/main": "2326185cc2d1eff02724cfeb88116ebb13f904e7",
     "refs/remotes/forks/jemxgw/main": "3ed387b3683d57eab04d36e1f18f3e49fdfc0bec",
@@ -1323,6 +1339,174 @@ def fine_tuning_procedure_reconstruction(
     return summary, rows
 
 
+def fine_tuning_identifier_census(
+    author_current: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]:
+    """Scan every reachable blob for model, job, file, and checkpoint identifiers."""
+    object_lines = git(
+        author_current,
+        "rev-list",
+        "--objects",
+        "--all",
+    ).splitlines()
+    paths_by_oid: dict[str, set[str]] = {}
+    for line in object_lines:
+        oid, *rest = line.split(" ", 1)
+        if rest:
+            paths_by_oid.setdefault(oid, set()).add(rest[0])
+    patterns = {
+        "fine_tuned_model_id": re.compile(
+            rb"ft:gpt-[A-Za-z0-9._-]+:[A-Za-z0-9._-]+::[A-Za-z0-9._-]+"
+        ),
+        "fine_tuning_job_id": re.compile(rb"ftjob-[A-Za-z0-9_-]{10,}"),
+        "openai_file_id": re.compile(rb"file-[A-Za-z0-9]{20,}"),
+    }
+    hits: dict[str, dict[str, set[str]]] = {
+        name: {} for name in patterns
+    }
+    process = subprocess.Popen(
+        ["git", "-C", str(author_current), "cat-file", "--batch"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+    )
+    assert process.stdin is not None and process.stdout is not None
+    blob_count = 0
+    blob_bytes = 0
+    for oid in sorted(paths_by_oid):
+        process.stdin.write(f"{oid}\n".encode())
+        process.stdin.flush()
+        header = process.stdout.readline().decode().strip().split()
+        if len(header) < 3:
+            continue
+        _observed_oid, object_type, size_text = header[:3]
+        size = int(size_text)
+        data = process.stdout.read(size)
+        process.stdout.read(1)
+        if object_type != "blob":
+            continue
+        blob_count += 1
+        blob_bytes += size
+        for kind, pattern in patterns.items():
+            for match in pattern.findall(data):
+                value = match.decode("utf-8")
+                hits[kind].setdefault(value, set()).add(oid)
+    process.stdin.close()
+    if process.wait() != 0:
+        raise RuntimeError("MACI Git object scan failed")
+    if blob_count != 7_262 or blob_bytes != 424_295_149:
+        raise ValueError("MACI reachable blob census changed")
+    if set(hits["fine_tuned_model_id"]) != {
+        PAPER_ERA_GPT4O_FINE_TUNED_MODEL_ID,
+        HISTORICAL_GPT35_FINE_TUNED_MODEL_ID,
+    }:
+        raise ValueError("MACI fine-tuned model identifier set changed")
+    if hits["fine_tuning_job_id"] or hits["openai_file_id"]:
+        raise ValueError("MACI unexpectedly recovered a fine-tuning job or file ID")
+
+    pre_submission_agent = git_bytes(
+        author_current,
+        "show",
+        f"{EXPECTED['author_v1_commit']}:environ/agent.py",
+    )
+    current_agent = (author_current / "environ/agent.py").read_bytes()
+    rows = []
+    identity_metadata = {
+        PAPER_ERA_GPT4O_FINE_TUNED_MODEL_ID: {
+            "base_model": "gpt-4o-2024-08-06",
+            "first_commit": "ef36ed9bb5b7abd4a72442db9e4dca31c9a474fb",
+            "first_author_date": "2024-10-26T19:19:53Z",
+            "present_at_pre_submission_commit": True,
+            "present_at_current_head": True,
+            "classification": "pre_submission_commented_identifier_no_job_link",
+        },
+        HISTORICAL_GPT35_FINE_TUNED_MODEL_ID: {
+            "base_model": "gpt-3.5-turbo-0125",
+            "first_commit": "d4565248d86e7104bf6c8b7e7c1613a38501091f",
+            "first_author_date": "2024-08-20T15:26:57Z",
+            "present_at_pre_submission_commit": False,
+            "present_at_current_head": False,
+            "classification": "obsolete_historical_identifier_removed_before_submission",
+        },
+    }
+    for identifier, metadata in identity_metadata.items():
+        oids = hits["fine_tuned_model_id"][identifier]
+        linked_paths = sorted(
+            {path for oid in oids for path in paths_by_oid.get(oid, set())}
+        )
+        if identifier == PAPER_ERA_GPT4O_FINE_TUNED_MODEL_ID:
+            if (
+                identifier.encode() not in pre_submission_agent
+                or identifier.encode() not in current_agent
+                or len(oids) != 5
+                or linked_paths != ["environ/agent.py"]
+            ):
+                raise ValueError("MACI paper-era GPT-4o identifier lineage changed")
+        else:
+            if len(oids) != 1 or linked_paths != ["scripts/fine-tuning/check.py"]:
+                raise ValueError("MACI historical GPT-3.5 identifier lineage changed")
+        rows.append(
+            {
+                "identifier_sha256": sha256_bytes(identifier.encode()),
+                "identifier": identifier,
+                "base_model": metadata["base_model"],
+                "blob_versions": len(oids),
+                "historical_paths": ";".join(linked_paths),
+                "first_commit": metadata["first_commit"],
+                "first_author_date": metadata["first_author_date"],
+                "present_at_pre_submission_commit": metadata[
+                    "present_at_pre_submission_commit"
+                ],
+                "present_at_current_head": metadata["present_at_current_head"],
+                "active_runtime_reference": False,
+                "classification": metadata["classification"],
+                "actual_job_link_recovered": False,
+                "paper_run_use_verified": False,
+                "paper_result_credit": False,
+            }
+        )
+
+    public_search_rows = [
+        {
+            "query": query,
+            "query_sha256": sha256_bytes(query.encode()),
+            "search_date": FINE_TUNING_PUBLIC_SEARCH_DATE,
+            "search_method": "authenticated GitHub global code search plus web exact-string search",
+            "complete": True,
+            "matches": 0,
+            "qualification": (
+                "bounded negative evidence; deleted, private, unindexed, or "
+                "service-internal artifacts may still exist"
+            ),
+            "paper_result_credit": False,
+        }
+        for query in FINE_TUNING_PUBLIC_SEARCH_QUERIES
+    ]
+    summary = {
+        "repository_head": EXPECTED["author_current_commit"],
+        "reachable_blobs_scanned": blob_count,
+        "reachable_blob_bytes_scanned": blob_bytes,
+        "full_fine_tuned_model_ids_recovered": len(rows),
+        "paper_era_gpt4o_fine_tuned_model_id_recovered": True,
+        "paper_era_gpt4o_identifier_first_commit": identity_metadata[
+            PAPER_ERA_GPT4O_FINE_TUNED_MODEL_ID
+        ]["first_commit"],
+        "paper_era_gpt4o_identifier_first_author_date": identity_metadata[
+            PAPER_ERA_GPT4O_FINE_TUNED_MODEL_ID
+        ]["first_author_date"],
+        "paper_era_gpt4o_identifier_is_commented_only": True,
+        "fine_tuning_job_ids_recovered": 0,
+        "openai_file_ids_recovered": 0,
+        "global_exact_search_queries": len(public_search_rows),
+        "global_exact_search_matches": 0,
+        "actual_uploaded_file_identity_recovered": False,
+        "actual_job_id_recovered": False,
+        "actual_selected_checkpoint_use_verified": False,
+        "paper_run_use_verified": False,
+        "paper_result_credit": False,
+    }
+    return rows, summary, public_search_rows
+
+
 def figure_rows(source: Path, author: Path, comparison: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
     comparison_by_name = {row["asset"]: row for row in comparison}
     result_units = {
@@ -1423,8 +1607,8 @@ def method_rows() -> list[dict[str, Any]]:
         (
             "v1/v2",
             "fine_tuned_model_ids",
-            "incomplete_unverified",
-            "One commented fine-tuned model ID appears in source; the actual job, selected model, and complete lineage are not released.",
+            "paper_era_commented_id_recovered_job_unverified",
+            "A fully qualified GPT-4o fine-tuned model ID first appears in October 2024 and is present in the pinned pre-submission source, but only in a comment. No file ID, job ID, active checkpoint selection, or paper-run link survives.",
         ),
         (
             "v1/v2",
@@ -2186,6 +2370,9 @@ def main() -> None:
         args.author_current,
         repository_history,
     )
+    fine_tuning_identifiers, identifier_summary, identifier_searches = (
+        fine_tuning_identifier_census(args.author_current)
+    )
     fork_branches, fork_summary = public_fork_audit(args.author_current)
     manuscripts = manuscript_provenance(args)
     source_inventory = author_source_inventory(args.author_v1, args.author_current, args.author_v3)
@@ -2204,6 +2391,7 @@ def main() -> None:
     execution["fine_tuning_procedure_reconstruction"] = fine_tuning_procedure[
         "native_zero_network_execution"
     ]
+    execution["fine_tuning_identifier_census"] = identifier_summary
     write_csv(output / "source_lineage.csv", source_rows())
     write_csv(output / "published_result_ledger_v1_v2.csv", v1)
     write_csv(output / "published_result_ledger_v3.csv", v3)
@@ -2221,6 +2409,14 @@ def main() -> None:
         output / "v1_v2_finetuning_procedure_conformance.csv",
         fine_tuning_procedure_rows,
     )
+    write_csv(
+        output / "v1_v2_finetuning_identifier_census.csv",
+        fine_tuning_identifiers,
+    )
+    write_csv(
+        output / "v1_v2_finetuning_public_code_search.csv",
+        identifier_searches,
+    )
     (output / "public_fork_census.json").write_text(
         json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
     )
@@ -2233,6 +2429,10 @@ def main() -> None:
     )
     (output / "v1_v2_finetuning_procedure.json").write_text(
         json.dumps(fine_tuning_procedure, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    (output / "v1_v2_finetuning_identifier_summary.json").write_text(
+        json.dumps(identifier_summary, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     (output / "v3_author_output_summary.json").write_text(
@@ -2339,6 +2539,35 @@ def main() -> None:
         ),
         "v1_v2_native_fine_tuning_remote_job_created": False,
         "v1_v2_native_fine_tuning_procedure_paper_result_credit": False,
+        "v1_v2_reachable_blobs_scanned_for_fine_tuning_identifiers": identifier_summary[
+            "reachable_blobs_scanned"
+        ],
+        "v1_v2_reachable_blob_bytes_scanned_for_fine_tuning_identifiers": (
+            identifier_summary["reachable_blob_bytes_scanned"]
+        ),
+        "v1_v2_full_fine_tuned_model_ids_recovered": identifier_summary[
+            "full_fine_tuned_model_ids_recovered"
+        ],
+        "v1_v2_paper_era_gpt4o_fine_tuned_model_id_recovered": identifier_summary[
+            "paper_era_gpt4o_fine_tuned_model_id_recovered"
+        ],
+        "v1_v2_paper_era_gpt4o_identifier_is_commented_only": identifier_summary[
+            "paper_era_gpt4o_identifier_is_commented_only"
+        ],
+        "v1_v2_fine_tuning_job_ids_recovered": identifier_summary[
+            "fine_tuning_job_ids_recovered"
+        ],
+        "v1_v2_openai_file_ids_recovered": identifier_summary[
+            "openai_file_ids_recovered"
+        ],
+        "v1_v2_fine_tuning_global_exact_search_queries": identifier_summary[
+            "global_exact_search_queries"
+        ],
+        "v1_v2_fine_tuning_global_exact_search_matches": identifier_summary[
+            "global_exact_search_matches"
+        ],
+        "v1_v2_fine_tuning_identifier_paper_run_use_verified": False,
+        "v1_v2_fine_tuning_identifier_paper_result_credit": False,
         "v1_v2_public_history_commits_audited": repository_history["v1_v2_repository_history"]["commit_count"],
         "v1_v2_public_fork_census_date": fork_summary["census_date"],
         "v1_v2_public_forks_accessible": fork_summary["accessible_public_forks"],
@@ -2438,6 +2667,16 @@ sockets, issuing one `purpose="fine-tune"` file call, one job-create call for
 is performed. Source then serializes the same agent object under both
 `cs_vision_0510.pkl` and `mkt_news_0510.pkl`; all multi-agent fine-tuning blocks
 are commented. This reconstructs the local procedure, not the paper's remote job.
+
+An exhaustive scan of all 7,262 reachable blobs (424,295,149 bytes) recovers two
+fully qualified historical fine-tuned model IDs. The GPT-4o ID first appears on
+2024-10-26 and remains in the pinned pre-submission source, but only in a comment;
+the older GPT-3.5 ID was removed before submission. No `ftjob-*` identifier or
+genuine OpenAI `file-*` identifier occurs in any reachable blob. Seven exact
+model-suffix, dataset, and checkpoint-name searches across current public code
+and the web return zero matches. This makes the GPT-4o string a real paper-era
+checkpoint clue, but still does not identify an uploaded file, job, active model
+selection, inference run, or paper result.
 
 The public GitHub fork surface is also exhausted as of 2026-08-14. Both
 accessible forks expose one `main` branch: one is exact at the official head

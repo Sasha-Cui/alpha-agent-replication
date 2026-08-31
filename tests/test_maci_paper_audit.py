@@ -84,6 +84,20 @@ def test_manifest_keeps_both_experiments_and_the_zero_result_boundary() -> None:
     assert manifest["v1_v2_native_fine_tuning_contract_job_create_calls"] == 1
     assert manifest["v1_v2_native_fine_tuning_remote_job_created"] is False
     assert manifest["v1_v2_native_fine_tuning_procedure_paper_result_credit"] is False
+    assert manifest["v1_v2_reachable_blobs_scanned_for_fine_tuning_identifiers"] == 7_262
+    assert (
+        manifest["v1_v2_reachable_blob_bytes_scanned_for_fine_tuning_identifiers"]
+        == 424_295_149
+    )
+    assert manifest["v1_v2_full_fine_tuned_model_ids_recovered"] == 2
+    assert manifest["v1_v2_paper_era_gpt4o_fine_tuned_model_id_recovered"] is True
+    assert manifest["v1_v2_paper_era_gpt4o_identifier_is_commented_only"] is True
+    assert manifest["v1_v2_fine_tuning_job_ids_recovered"] == 0
+    assert manifest["v1_v2_openai_file_ids_recovered"] == 0
+    assert manifest["v1_v2_fine_tuning_global_exact_search_queries"] == 7
+    assert manifest["v1_v2_fine_tuning_global_exact_search_matches"] == 0
+    assert manifest["v1_v2_fine_tuning_identifier_paper_run_use_verified"] is False
+    assert manifest["v1_v2_fine_tuning_identifier_paper_result_credit"] is False
     assert manifest["v3_non_rag_architecture_component_paths_passed"] == 9
     assert manifest["v3_non_rag_architecture_component_paths_denominator"] == 9
     assert manifest["v3_rag_architecture_paths_blocked_by_missing_source_module"] == 3
@@ -193,6 +207,14 @@ def test_raw_source_execution_fails_closed_and_overlay_remains_labelled() -> Non
     assert fine_tuning["remote_file_uploaded"] is False
     assert fine_tuning["remote_fine_tuning_job_created"] is False
     assert fine_tuning["paper_result_credit"] is False
+    identifiers = native["fine_tuning_identifier_census"]
+    assert identifiers["reachable_blobs_scanned"] == 7_262
+    assert identifiers["reachable_blob_bytes_scanned"] == 424_295_149
+    assert identifiers["paper_era_gpt4o_fine_tuned_model_id_recovered"] is True
+    assert identifiers["fine_tuning_job_ids_recovered"] == 0
+    assert identifiers["openai_file_ids_recovered"] == 0
+    assert identifiers["paper_run_use_verified"] is False
+    assert identifiers["paper_result_credit"] is False
 
 
 def test_v3_source_components_execute_but_raw_runner_and_rag_fail_closed() -> None:
@@ -254,7 +276,9 @@ def test_method_prompt_and_internal_consistency_gaps_remain_explicit() -> None:
     assert methods[("v1/v2", "fine_tuning_procedure")]["status"] == (
         "native_contract_reconstructed_remote_job_missing"
     )
-    assert methods[("v1/v2", "fine_tuned_model_ids")]["status"] == "incomplete_unverified"
+    assert methods[("v1/v2", "fine_tuned_model_ids")]["status"] == (
+        "paper_era_commented_id_recovered_job_unverified"
+    )
     assert methods[("v3", "system_architecture")]["status"] == ("source_present_component_verified")
     assert methods[("v3", "react_loop")]["status"] == "paper_source_conflict"
     assert methods[("v3", "single_agent_capabilities")]["status"] == ("hard_source_result_conflict")
@@ -414,6 +438,46 @@ def test_complete_public_histories_recover_training_records_not_results() -> Non
     assert procedure["paper_result_credit"] is False
     assert len(procedure_rows) == 5
     assert {row["paper_result_credit"] for row in procedure_rows} == {"False"}
+
+    identifier_rows = csv_rows("v1_v2_finetuning_identifier_census.csv")
+    identifier_summary = json.loads(
+        (OUTPUT / "v1_v2_finetuning_identifier_summary.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    public_searches = csv_rows("v1_v2_finetuning_public_code_search.csv")
+    assert len(identifier_rows) == 2
+    by_model = {row["base_model"]: row for row in identifier_rows}
+    assert by_model["gpt-4o-2024-08-06"]["identifier"] == (
+        audit.PAPER_ERA_GPT4O_FINE_TUNED_MODEL_ID
+    )
+    assert by_model["gpt-4o-2024-08-06"]["first_author_date"] == (
+        "2024-10-26T19:19:53Z"
+    )
+    assert by_model["gpt-4o-2024-08-06"][
+        "present_at_pre_submission_commit"
+    ] == "True"
+    assert by_model["gpt-4o-2024-08-06"]["active_runtime_reference"] == "False"
+    assert by_model["gpt-3.5-turbo-0125"]["identifier"] == (
+        audit.HISTORICAL_GPT35_FINE_TUNED_MODEL_ID
+    )
+    assert by_model["gpt-3.5-turbo-0125"][
+        "present_at_pre_submission_commit"
+    ] == "False"
+    assert all(row["actual_job_link_recovered"] == "False" for row in identifier_rows)
+    assert all(row["paper_run_use_verified"] == "False" for row in identifier_rows)
+    assert all(row["paper_result_credit"] == "False" for row in identifier_rows)
+    assert identifier_summary["reachable_blobs_scanned"] == 7_262
+    assert identifier_summary["full_fine_tuned_model_ids_recovered"] == 2
+    assert identifier_summary["paper_era_gpt4o_identifier_is_commented_only"] is True
+    assert identifier_summary["fine_tuning_job_ids_recovered"] == 0
+    assert identifier_summary["openai_file_ids_recovered"] == 0
+    assert identifier_summary["global_exact_search_queries"] == 7
+    assert identifier_summary["global_exact_search_matches"] == 0
+    assert len(public_searches) == 7
+    assert {row["matches"] for row in public_searches} == {"0"}
+    assert {row["complete"] for row in public_searches} == {"True"}
+    assert {row["paper_result_credit"] for row in public_searches} == {"False"}
     assert history["v3_missing_module_paths_present_in_any_commit"] == {
         "environ/data/coingecko.py": False,
         "environ/data/cointelegraph.py": False,
@@ -467,4 +531,8 @@ def test_manifest_hashes_cover_every_committed_audit_output() -> None:
     assert "one `purpose=\"fine-tune\"` file call" in readme
     assert "same agent object under both" in readme
     assert "reconstructs the local procedure, not the paper's remote job" in readme
+    assert "scan of all 7,262 reachable blobs" in readme
+    assert "GPT-4o ID first appears on 2024-10-26" in readme
+    assert "No `ftjob-*` identifier" in readme
+    assert "real paper-era checkpoint clue" in readme
     assert "do not fill any missing experimental data" in readme

@@ -1,7 +1,7 @@
 paper_version,dimension,status,evidence_boundary
 v1/v2,system_architecture,specified_and_source_present,"Four experts, team collaboration, and source classes are recoverable."
 v1/v2,base_model,exact_snapshot_in_source,"gpt-4o-2024-08-06, temperature 0."
-v1/v2,fine_tuned_model_ids,incomplete_unverified,"One commented fine-tuned model ID appears in source; the actual job, selected model, and complete lineage are not released."
+v1/v2,fine_tuned_model_ids,paper_era_commented_id_recovered_job_unverified,"A fully qualified GPT-4o fine-tuned model ID first appears in October 2024 and is present in the pinned pre-submission source, but only in a comment. No file ID, job ID, active checkpoint selection, or paper-run link survives."
 v1/v2,training_period,specified,June--October 2023 in paper; source fine-tuning bounds end November 1.
 v1/v2,test_period,conflicting,Paper says November 2023--September 2024; figures end August; source handlers end January 2025; metrics imply 43 weeks.
 v1/v2,universe,high_level_only,Weekly top-30 CoinGecko universe stated; exact memberships are absent.

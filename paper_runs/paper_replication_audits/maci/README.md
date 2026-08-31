@@ -36,6 +36,16 @@ is performed. Source then serializes the same agent object under both
 `cs_vision_0510.pkl` and `mkt_news_0510.pkl`; all multi-agent fine-tuning blocks
 are commented. This reconstructs the local procedure, not the paper's remote job.
 
+An exhaustive scan of all 7,262 reachable blobs (424,295,149 bytes) recovers two
+fully qualified historical fine-tuned model IDs. The GPT-4o ID first appears on
+2024-10-26 and remains in the pinned pre-submission source, but only in a comment;
+the older GPT-3.5 ID was removed before submission. No `ftjob-*` identifier or
+genuine OpenAI `file-*` identifier occurs in any reachable blob. Seven exact
+model-suffix, dataset, and checkpoint-name searches across current public code
+and the web return zero matches. This makes the GPT-4o string a real paper-era
+checkpoint clue, but still does not identify an uploaded file, job, active model
+selection, inference run, or paper result.
+
 The public GitHub fork surface is also exhausted as of 2026-08-14. Both
 accessible forks expose one `main` branch: one is exact at the official head
 and the other is a three-commit-behind ancestor within the already audited

@@ -114,5 +114,24 @@
     "remote_file_uploaded": false,
     "remote_fine_tuning_job_created": false,
     "paper_result_credit": false
+  },
+  "fine_tuning_identifier_census": {
+    "repository_head": "2326185cc2d1eff02724cfeb88116ebb13f904e7",
+    "reachable_blobs_scanned": 7262,
+    "reachable_blob_bytes_scanned": 424295149,
+    "full_fine_tuned_model_ids_recovered": 2,
+    "paper_era_gpt4o_fine_tuned_model_id_recovered": true,
+    "paper_era_gpt4o_identifier_first_commit": "ef36ed9bb5b7abd4a72442db9e4dca31c9a474fb",
+    "paper_era_gpt4o_identifier_first_author_date": "2024-10-26T19:19:53Z",
+    "paper_era_gpt4o_identifier_is_commented_only": true,
+    "fine_tuning_job_ids_recovered": 0,
+    "openai_file_ids_recovered": 0,
+    "global_exact_search_queries": 7,
+    "global_exact_search_matches": 0,
+    "actual_uploaded_file_identity_recovered": false,
+    "actual_job_id_recovered": false,
+    "actual_selected_checkpoint_use_verified": false,
+    "paper_run_use_verified": false,
+    "paper_result_credit": false
   }
 }
