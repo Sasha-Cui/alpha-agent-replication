@@ -602,6 +602,11 @@ def test_global_evidence_route_preserves_run_input_replay_failure() -> None:
     ledger = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
     row = next(item for item in ledger if item["system_id"] == "SYS-ALPHA-AGENT")
     note = row["concise_evidence_note"]
+    assert "Qlib's native MLflowRecorder also loads all seven records twice" in note
+    assert "133 metrics, 189 params, 35 tags" in note
+    assert "21 config/dataset/task artifacts" in note
+    assert "non-unpickling loader verifies every artifact hash" in note
+    assert "native Qlib-recorder author-artifact corroboration" in note
     assert "30 candidates in total" in note
     assert "Only two consist entirely of full-paper-period records" in note
     assert "both match zero displayed cells" in note
