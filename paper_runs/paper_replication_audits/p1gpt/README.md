@@ -17,6 +17,11 @@ regenerating the multi-agent experiment:
   printed 3.38. All three P1GPT Sharpe cells conditionally round as printed with
   251-day annualization, while all nine recomputed rule-baseline Sharpe cells
   jointly require 252 days; no single convention recovers all 12;
+  A method-specific formatter that truncates only P1GPT Sharpe would display all
+  12 P1GPT cells as printed, but it recovers only 47/48 recomputed cells overall,
+  has no released formatter-code support, and leaves the independent GOOGL B&H
+  MDD conflict. Global truncation performs worse (26/48), so the AAPL cell remains
+  a conditional formatting explanation rather than an extra verified result;
 - rule baselines: 35/36 cells for B&H, MACD, and SMA independently match; the
   same GOOGL close series that recovers B&H CR, AR, and SR gives 6.14% MDD,
   rather than the printed 6.41%;
@@ -98,10 +103,10 @@ excluded from native-method or result credit.
 - `author_figure_inventory.csv`: all seven embedded assets.
 - `strategy_raster_curve_forensics.csv`: six AAPL curve/MDD checks and two material table conflicts.
 - `published_result_ledger.csv`: all 72 Table 2 cells.
-- `result_recovery_checks.csv`: 48 exact displayed-cell checks and boundaries.
+- `result_recovery_checks.csv`: 48 recomputed displayed-cell checks, 46 exact under normal rounding.
 - `recovered_author_plot_positions.csv`: 498 author-rendered daily bar values.
 - `market_snapshot_checks.csv`: three pinned present-day Yahoo responses.
-- `metric_convention_forensics.json`: Sharpe annualization and GOOGL capital-interval bounds.
+- `metric_convention_forensics.json`: Sharpe annualization, display-format sensitivity, and GOOGL capital bounds.
 - `prompt_inventory.csv`: the sole paper prompt and missing runtime evidence.
 - `mechanism_conformance.csv`: 36 mechanism dimensions.
 - `specification_gaps.csv`: inputs required for exact replay.

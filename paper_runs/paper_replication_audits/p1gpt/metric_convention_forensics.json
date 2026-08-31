@@ -230,6 +230,36 @@
     "interpretation": "P1GPT rows jointly admit 251 days and rule baselines jointly admit 252; no shared annualization value recovers all displayed Sharpe cells",
     "paper_result_credit": false
   },
+  "display_format_sensitivity": {
+    "rounding_precision_decimals": 2,
+    "scope_counts": {
+      "all_recomputed_cells": {
+        "cells": 48,
+        "nearest_round_two_decimals": 46,
+        "truncate_all_two_decimals": 26,
+        "truncate_sharpe_round_other_metrics": 42,
+        "truncate_only_p1gpt_sharpe_round_everything_else": 47
+      },
+      "p1gpt_author_plot_cells": {
+        "cells": 12,
+        "nearest_round_two_decimals": 11,
+        "truncate_all_two_decimals": 8,
+        "truncate_sharpe_round_other_metrics": 12,
+        "truncate_only_p1gpt_sharpe_round_everything_else": 12
+      },
+      "rule_baseline_cells": {
+        "cells": 36,
+        "nearest_round_two_decimals": 35,
+        "truncate_all_two_decimals": 18,
+        "truncate_sharpe_round_other_metrics": 30,
+        "truncate_only_p1gpt_sharpe_round_everything_else": 35
+      }
+    },
+    "single_global_rule_recovers_all_48_cells": false,
+    "method_specific_p1gpt_sharpe_truncation_recovers_47_of_48": true,
+    "interpretation": "P1GPT-only Sharpe truncation fixes AAPL SR but is unsupported by released formatter code and still leaves the independent GOOGL B&H MDD conflict",
+    "paper_result_credit": false
+  },
   "googl_buy_hold_capital_consistency": {
     "price_field": "pinned_current_unadjusted_close",
     "first_date": "2025-02-03",

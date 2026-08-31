@@ -54,6 +54,11 @@ def test_manifest_separates_recalculation_from_native_reproduction() -> None:
     assert data["rule_baseline_sharpe_joint_admissible_integer_annualization_days"] == [252]
     assert data["single_sharpe_annualization_convention_recovers_all_recomputed_cells"] is False
     assert data["single_starting_capital_recovers_googl_buy_hold_cr_and_mdd"] is False
+    assert data["nearest_round_two_decimal_cells_verified"] == 46
+    assert data["truncate_all_two_decimal_cells_verified"] == 26
+    assert data["p1gpt_cells_under_sharpe_only_truncation"] == 12
+    assert data["all_cells_under_p1gpt_only_sharpe_truncation"] == 47
+    assert data["single_global_display_format_recovers_all_recomputed_cells"] is False
     assert data["unsupported_kdj_rsi_zmr_cells"] == 22
     assert data["unsupported_kdj_rsi_zmr_cells_with_author_raster_contradiction"] == 2
     assert data["strategy_raster_curve_mdd_rows_checked"] == 6
@@ -182,6 +187,21 @@ def test_metric_convention_forensics_do_not_promote_conditional_matches() -> Non
     ] is False
     assert sharpe["single_common_convention_recovers_all_12_cells"] is False
     assert sharpe["paper_result_credit"] is False
+    formatting = evidence["display_format_sensitivity"]
+    assert formatting["scope_counts"]["all_recomputed_cells"] == {
+        "cells": 48,
+        "nearest_round_two_decimals": 46,
+        "truncate_all_two_decimals": 26,
+        "truncate_sharpe_round_other_metrics": 42,
+        "truncate_only_p1gpt_sharpe_round_everything_else": 47,
+    }
+    assert formatting["scope_counts"]["p1gpt_author_plot_cells"][
+        "truncate_sharpe_round_other_metrics"
+    ] == 12
+    assert formatting["single_global_rule_recovers_all_48_cells"] is False
+    assert formatting["method_specific_p1gpt_sharpe_truncation_recovers_47_of_48"] is True
+    assert formatting["paper_result_credit"] is False
+
     googl = evidence["googl_buy_hold_capital_consistency"]
     cr_low, cr_high = googl["starting_capital_interval_matching_CR_at_two_decimals"]
     mdd_low, mdd_high = googl["starting_capital_interval_matching_MDD_at_two_decimals"]
@@ -341,6 +361,9 @@ def test_manifest_hashes_every_nonmanifest_output_and_readme_is_honest() -> None
     assert "byte-identical" in text
     assert "excluded from native-method or result credit" in text
     assert "no single convention recovers all 12" in text
+    assert "47/48 recomputed cells" in text
+    assert "Global truncation performs worse (26/48)" in text
+    assert "48 recomputed displayed-cell checks, 46 exact" in text
     assert "disjoint intervals" in text
     assert "Installing additional packages cannot recover" in text
 
@@ -367,3 +390,6 @@ def test_paper_routes_through_public_component_audit_without_proxy_credit() -> N
     assert "author-raster/table contradictions" in row["precise_native_or_access_blocker"]
     assert "lookahead" in row["precise_native_or_access_blocker"]
     assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
+    assert "P1GPT-only Sharpe truncation" in row["precise_native_or_access_blocker"]
+    assert "26/48 recalculated cells" in row["precise_native_or_access_blocker"]
+    assert "47/48 overall" in row["precise_native_or_access_blocker"]
