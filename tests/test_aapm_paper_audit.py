@@ -125,6 +125,9 @@ def test_method_audit_exposes_missing_hybrid_model_and_execution_defects() -> No
     rows = {row["dimension"]: row for row in csv_rows("method_specification_audit.csv")}
     assert len(rows) == 28
     assert rows["LLM iterative refinement"]["assessment"] == "present_component"
+    assert rows["vector retrieval memory"]["assessment"] == (
+        "present_component_public_model_pinned"
+    )
     assert rows["v1 default LLM"]["assessment"] == "match"
     assert rows["v2 default LLM"]["assessment"] == "different"
     assert rows["manual financial factors"]["assessment"] == "missing"
@@ -134,6 +137,9 @@ def test_method_audit_exposes_missing_hybrid_model_and_execution_defects() -> No
     assert rows["training entrypoint"]["assessment"] == "missing"
     assert rows["evaluation mode"]["assessment"] == "implementation_bug"
     assert rows["published outputs"]["assessment"] == "missing"
+    assert rows["news input"]["assessment"] == (
+        "metadata_index_reconstructed_article_analysis_missing"
+    )
     assert all(row["end_to_end_credit"] == "no" for row in rows.values())
 
 
@@ -241,6 +247,12 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     assert execution["model training"]["status"] == "not_reachable_no_entrypoint_and_inputs"
     assert execution["portfolio and pricing evaluation"]["status"] == "not_released"
     assert execution["end-to-end paper experiment"]["attempted"] == "no"
+    assert execution["analysis.py with reconstructed metadata index"]["status"] == (
+        "blocked_missing_private_article_analysis"
+    )
+    assert "65,733-row index" in execution[
+        "analysis.py with reconstructed metadata index"
+    ]["detail"]
 
     manifest = json.loads((OUTPUT / "manifest.json").read_text(encoding="utf-8"))
     raw = json.loads((OUTPUT / "native_execution.json").read_text(encoding="utf-8"))
@@ -257,6 +269,37 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     assert manifest["paper_era_model_module_entrypoint_passed"] is True
     assert manifest["paper_era_memory_component_runs"] == 2
     assert manifest["paper_era_model_forward_component_runs"] == 2
+    assert manifest["reconstructed_metadata_index_rows"] == 65_733
+    assert manifest["reconstructed_metadata_index_bytes"] == 1_901_562
+    assert manifest["reconstructed_metadata_index_sha256"] == audit.METADATA_INDEX_SHA256
+    assert manifest["paper_era_embedding_model_repository"] == (
+        audit.EMBEDDING_MODEL_REPOSITORY
+    )
+    assert manifest["paper_era_embedding_model_revision"] == (
+        audit.EMBEDDING_MODEL_REVISION
+    )
+    assert manifest["paper_era_embedding_model_files_pinned"] == 10
+    assert manifest["paper_era_embedding_model_bytes_pinned"] == 1_341_561_506
+    assert manifest["paper_era_embedding_model_manifest_sha256"] == (
+        audit.EMBEDDING_MODEL_MANIFEST_SHA256
+    )
+    assert manifest["metadata_index_analysis_probe_runs"] == 2
+    assert manifest["metadata_index_analysis_probe_network_attempts"] == 0
+    assert manifest["metadata_index_analysis_first_missing_private_path"] == (
+        "Data/library/news_analysis/2021_october_1_1.json"
+    )
+    assert manifest["metadata_index_analysis_missing_required_fields"] == [
+        "Tickers",
+        "Topics",
+        "Content",
+    ]
+    assert manifest["metadata_index_analysis_paper_result_cells_reproduced"] == 0
+    assert manifest["metadata_index_analysis_evidence_sha256"] == (
+        audit.METADATA_INDEX_EVIDENCE_SHA256
+    )
+    assert manifest["metadata_index_analysis_driver_sha256"] == (
+        audit.METADATA_INDEX_DRIVER_SHA256
+    )
     environment = raw["dependency environment"]
     assert environment["dependency_release_cutoff_utc"] == audit.PAPER_ERA_COMMIT_UTC
     assert environment["requirements_sha256"] == audit.REQUIREMENTS_SHA256
@@ -278,6 +321,37 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     assert environment["model_forward_component"]["finite"] is True
     assert environment["model_forward_cpu_cuda_noop_adaptation"] is True
     assert environment["paper_result_reproduction"] is False
+    probe = raw["metadata index analysis probe"]
+    assert probe["execution_runs"] == 2
+    assert probe["reconstructed_index"]["rows"] == 65_733
+    assert probe["reconstructed_index"]["sha256"] == audit.METADATA_INDEX_SHA256
+    assert probe["embedding_model_snapshot"]["revision"] == (
+        audit.EMBEDDING_MODEL_REVISION
+    )
+    assert probe["embedding_model_snapshot"]["manifest_sha256"] == (
+        audit.EMBEDDING_MODEL_MANIFEST_SHA256
+    )
+    assert {tuple(run["network_attempts"]) for run in probe["runs"]} == {()}
+    assert {run["first_observed_exception"] for run in probe["runs"]} == {
+        "KeyError: 'Tickers'"
+    }
+    assert {run["llm_calls_made"] for run in probe["runs"]} == {0}
+    model_rows = csv_rows("aapm_embedding_model_snapshot.csv")
+    conformance = csv_rows("aapm_metadata_index_conformance.csv")
+    index_rows = csv_rows("aapm_reconstructed_metadata_index.csv")
+    assert len(model_rows) == 10
+    assert sum(int(row["bytes"]) for row in model_rows) == 1_341_561_506
+    assert {row["paper_result_credit"] for row in model_rows} == {"False"}
+    assert len(conformance) == 4
+    assert {row["paper_result_credit"] for row in conformance} == {"False"}
+    assert len(index_rows) == 65_733
+    assert index_rows[0] == {"date": "2021-10-01", "path": "2021/october/1/1"}
+    assert index_rows[-1] == {
+        "date": "2023-11-30",
+        "path": "2023/november/30/107",
+    }
+    verified_probe = audit.verify_metadata_index_probe(OUTPUT)
+    assert verified_probe["driver_sha256"] == audit.METADATA_INDEX_DRIVER_SHA256
     assert len(freeze.splitlines()) == 135
     assert hashlib.sha256(freeze.encode()).hexdigest() == audit.PAPER_ENV_FREEZE_SHA256
     assert manifest["paper_result_credit"] == "no_result_credit_component_source_audit_only"
@@ -287,4 +361,8 @@ def test_native_execution_and_manifest_state_the_honest_boundary() -> None:
     assert "component code, not an executable paper replication" in readme
     assert "14 accessible forks, 14 branch refs, no tags, and four unique heads" in readme
     assert "zero unique commits and zero unique blobs" in readme
+    assert "reconstruct all 65,733 date/path rows" in readme
+    assert "immutable `BAAI/bge-large-en-v1.5` snapshot" in readme
+    assert "first absent `news_analysis` record" in readme
+    assert "fails on `Tickers` before any LLM call" in readme
     assert "adaptation, not a faithful replication" in readme

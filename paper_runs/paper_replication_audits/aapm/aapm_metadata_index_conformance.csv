@@ -1,0 +1,5 @@
+dimension,released_state,audit_adapter,execution_outcome,paper_result_credit
+released_metadata_index,"65,733 metadata records with date-encoded dictionary keys",date/path index reconstructed deterministically,"analysis.py accepts 65,733-row index",False
+embedding_model,unpinned BAAI/bge-large-en-v1.5 reference,immutable d4aa6901d3a41ba39fb536a557fa166f842b0e09 snapshot; 10 minimal files,"1,341,561,506-byte model constructs offline",False
+analysis_entrypoint,"missing index, article analyses, embeddings, and bodies",index plus immutable embedding model only; network blocked,2/2 reach first record then KeyError: Tickers,False
+next_private_boundary,news_analysis JSONs absent from every public artifact,none,"Tickers, Topics, and Content remain unavailable",False

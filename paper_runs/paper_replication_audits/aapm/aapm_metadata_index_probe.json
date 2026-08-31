@@ -1,0 +1,91 @@
+{
+  "analysis_runner_completed": false,
+  "embedding_model_snapshot": {
+    "bytes": 1341561506,
+    "duplicate_pytorch_and_onnx_weights_downloaded": false,
+    "files": 10,
+    "last_modified_before_paper_source_cutoff": true,
+    "manifest_sha256": "7b0b0c8f2a12c68ef6160da7d9e2b0a37404d35f3eded172a52856c0b6959a67",
+    "official_api_last_modified_utc": "2024-02-21T02:51:44.000Z",
+    "paper_result_credit": false,
+    "repository": "BAAI/bge-large-en-v1.5",
+    "revision": "d4aa6901d3a41ba39fb536a557fa166f842b0e09"
+  },
+  "execution_runs": 2,
+  "paper_inputs_recovered": false,
+  "paper_result_cells_reproduced": 0,
+  "paper_result_credit": false,
+  "reconstructed_index": {
+    "bytes": 1901562,
+    "columns": [
+      "date",
+      "path"
+    ],
+    "date_is_deterministically_derived_from_path": true,
+    "first_row": {
+      "date": "2021-10-01",
+      "path": "2021/october/1/1"
+    },
+    "last_row": {
+      "date": "2023-11-30",
+      "path": "2023/november/30/107"
+    },
+    "maximum_date": "2023-11-30",
+    "minimum_date": "2021-10-01",
+    "path_is_exact_released_metadata_key": true,
+    "rows": 65733,
+    "sha256": "aabf06376b8cf51ea02a42f90cc0aab0abcf46ed99ce52495aa70a8b5d9f149c",
+    "year_counts": {
+      "2021": 7889,
+      "2022": 32965,
+      "2023": 24879
+    }
+  },
+  "runs": [
+    {
+      "analysis_loop_started": true,
+      "chunk_end": 5000,
+      "chunk_start": 0,
+      "embedding_model_constructed_offline": true,
+      "first_missing_private_path": "Data/library/news_analysis/2021_october_1_1.json",
+      "first_observed_exception": "KeyError: 'Tickers'",
+      "first_record_date": "2021-10-01",
+      "first_record_path": "2021/october/1/1",
+      "llm_calls_made": 0,
+      "missing_required_fields": [
+        "Tickers",
+        "Topics",
+        "Content"
+      ],
+      "network_attempts": [],
+      "paper_result_credit": false,
+      "returncode": 1
+    },
+    {
+      "analysis_loop_started": true,
+      "chunk_end": 5000,
+      "chunk_start": 0,
+      "embedding_model_constructed_offline": true,
+      "first_missing_private_path": "Data/library/news_analysis/2021_october_1_1.json",
+      "first_observed_exception": "KeyError: 'Tickers'",
+      "first_record_date": "2021-10-01",
+      "first_record_path": "2021/october/1/1",
+      "llm_calls_made": 0,
+      "missing_required_fields": [
+        "Tickers",
+        "Topics",
+        "Content"
+      ],
+      "network_attempts": [],
+      "paper_result_credit": false,
+      "returncode": 1
+    }
+  ],
+  "source_files_modified": false,
+  "source_head": "cc54e4337fcd4089dc69e4a1173e82a675648475",
+  "source_pins": {
+    "analysis_sha256": "4e93971b07f30cd890dfde31e92e42482ba08c63604d72c1f792f6ee67bc6c2e",
+    "config_sha256": "7912a17f37f8a1bac3c8e679439c404ac927f67eb4ffa0e865645ee531058225",
+    "metadata_sha256": "0cf4923806f6c2d6b87aa06cae6a1651aa6ba4e146f90ee74d941592bdabc641"
+  }
+}

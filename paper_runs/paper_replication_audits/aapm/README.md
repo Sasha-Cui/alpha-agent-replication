@@ -14,8 +14,13 @@ complete nine-commit official GitHub history, every released file, all
   replication. A 135-package environment passes dependency checks; all four
   importable source modules load twice without HTTP, native Chroma memory and
   model-forward fixtures pass twice, and `model.py` exits cleanly offline.
-  `analysis.py` now reaches the unreleased `Data/library/index.csv`, while the
-  source still has no training entrypoint. The article bodies,
+  `analysis.py` first reaches the unreleased `Data/library/index.csv`. The
+  released metadata keys deterministically reconstruct all 65,733 date/path rows,
+  and an immutable `BAAI/bge-large-en-v1.5` snapshot last modified before the
+  source cutoff loads fully offline. Two copied-tree runs then enter the first
+  5,000-row chunk and stop at the first absent `news_analysis` record because
+  `Tickers`, `Topics`, and `Content` are unavailable. The source still has no
+  training entrypoint. The article bodies,
   returns, manual factors, generated embeddings, baselines, evaluation code,
   sweep histories, and native outputs are absent.
 - The central hybrid claim is not implemented in the released model:
@@ -67,6 +72,13 @@ complete nine-commit official GitHub history, every released file, all
   requirement is unpinned.
 - A supplied-embedding fixture executes the released Chroma add, query, filter,
   and pad paths without loading a model or calling an API.
+- A two-run source-faithful probe pins ten files / 1,341,561,506 bytes from the
+  immutable BGE commit `d4aa6901d3a41ba39fb536a557fa166f842b0e09` and reconstructs the
+  1,901,562-byte metadata index. The model constructs offline and `analysis.py`
+  starts deterministically with zero network attempts, but the first record lacks
+  its private `news_analysis` JSON and fails on `Tickers` before any LLM call.
+  This advances the native entrypoint without inventing article content and earns
+  no result credit.
 - A controlled six-date/two-asset fixture executes the released report-plus-asset
   embedding forward method with 49 parameters and finite outputs. The audit uses
   a disclosed CUDA no-op and seed 42 on CPU; this is component conformance, not

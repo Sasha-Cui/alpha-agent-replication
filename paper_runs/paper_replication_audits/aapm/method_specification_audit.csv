@@ -1,7 +1,7 @@
 dimension,paper_requirement,released_evidence,assessment,end_to_end_credit
 official code lineage,paper/source,paper-era commit contains code and metadata; current code differs only in README,pinned,no
 LLM iterative refinement,paper,dialog loop and retrieved documents are implemented,present_component,no
-vector retrieval memory,paper,ChromaDB/FlagEmbedding wrapper is implemented,present_component,no
+vector retrieval memory,paper,ChromaDB/FlagEmbedding wrapper is implemented and the immutable paper-era-compatible BGE model snapshot is pinned and loads offline,present_component_public_model_pinned,no
 analysis prompts,paper,"analysis, refinement, note, and summary prompts are released",present_component,no
 v1 default LLM,GPT-3.5-Turbo-1106,config uses gpt-3.5-turbo-1106,match,no
 v2 default LLM,GPT-4o-0806 plus O1-Preview,config still uses gpt-3.5-turbo-1106,different,no
@@ -16,7 +16,7 @@ best checkpoint,load best validation model,"model.pt is periodic/latest, not the
 seed,config seed 42,"seed is never applied to Python, NumPy, Torch, CUDA, or DataLoader",missing,no
 v1 temporal split,"9 months train, 3 months validation, 1 year test",hard-coded cutoffs match the v1 two-year interval,match_static,no
 v2 temporal split,three-year input but 9+3+12 months described,source has no end bound and paper-described durations total two years,different,no
-news input,filtered WSJ article bodies,only headline/category/time/url metadata is released,missing,no
+news input,filtered WSJ article bodies,"65,733 metadata keys deterministically reconstruct the date/path index; article bodies and derived Tickers/Topics/Content analyses remain absent",metadata_index_reconstructed_article_analysis_missing,no
 daily returns,CRSP and Kenneth French inputs,daily_ret_dapm.csv and all returns are absent,missing_external,no
 factor input,Jensen et al. characteristics with imputation,factor files and construction code are absent,missing_external,no
 analysis feature input,generated report embeddings,daily_emb_dapm.csv is absent,missing,no

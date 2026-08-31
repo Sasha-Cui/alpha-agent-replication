@@ -77,6 +77,25 @@ DEFAULT_PAPER_PYTHON = ROOT / "scripts/run_aapm_paper_python.sh"
 PAPER_ENV_FREEZE_SHA256 = (
     "b6010c0bca5dd6bb77adb1872e79c488f08679331ea04f34acacf75949028d7a"
 )
+METADATA_INDEX_DRIVER_SHA256 = (
+    "37f7308f6a3339f64693a832abc66b7a64cc3496bbdbd85f48490122f7bf8f10"
+)
+METADATA_INDEX_EVIDENCE_SHA256 = {
+    "aapm_embedding_model_snapshot.csv": "8e2724d206b22892751090a751a0c3c31ac40aaf926f519dfd60142da9076892",
+    "aapm_metadata_index_conformance.csv": "64cfed5af4d3d400ffb9293d8f609457c5e67fdc1d339ca9667637e5104430db",
+    "aapm_metadata_index_probe.json": "e1d265dbd7d469ae92f9173d2ff341fad92c1ac5802d1f886ca24aa12654c942",
+    "aapm_reconstructed_metadata_index.csv": "aabf06376b8cf51ea02a42f90cc0aab0abcf46ed99ce52495aa70a8b5d9f149c",
+}
+METADATA_INDEX_ROWS = 65_733
+METADATA_INDEX_BYTES = 1_901_562
+METADATA_INDEX_SHA256 = (
+    "aabf06376b8cf51ea02a42f90cc0aab0abcf46ed99ce52495aa70a8b5d9f149c"
+)
+EMBEDDING_MODEL_REPOSITORY = "BAAI/bge-large-en-v1.5"
+EMBEDDING_MODEL_REVISION = "d4aa6901d3a41ba39fb536a557fa166f842b0e09"
+EMBEDDING_MODEL_MANIFEST_SHA256 = (
+    "7b0b0c8f2a12c68ef6160da7d9e2b0a37404d35f3eded172a52856c0b6959a67"
+)
 
 TABLE_METRICS = {
     "table:sr": ["SR_TP", "SR_EW", "SR_VW", "MDD_TP", "MDD_EW", "MDD_VW"],
@@ -632,7 +651,7 @@ def method_audit(repo: Path) -> list[dict[str, str]]:
     checks = [
         ("official code lineage", "paper/source", "paper-era commit contains code and metadata; current code differs only in README", "pinned"),
         ("LLM iterative refinement", "paper", "dialog loop and retrieved documents are implemented", "present_component"),
-        ("vector retrieval memory", "paper", "ChromaDB/FlagEmbedding wrapper is implemented", "present_component"),
+        ("vector retrieval memory", "paper", "ChromaDB/FlagEmbedding wrapper is implemented and the immutable paper-era-compatible BGE model snapshot is pinned and loads offline", "present_component_public_model_pinned"),
         ("analysis prompts", "paper", "analysis, refinement, note, and summary prompts are released", "present_component"),
         ("v1 default LLM", "GPT-3.5-Turbo-1106", "config uses gpt-3.5-turbo-1106", "match"),
         ("v2 default LLM", "GPT-4o-0806 plus O1-Preview", "config still uses gpt-3.5-turbo-1106", "different"),
@@ -647,7 +666,7 @@ def method_audit(repo: Path) -> list[dict[str, str]]:
         ("seed", "config seed 42", "seed is never applied to Python, NumPy, Torch, CUDA, or DataLoader", "missing"),
         ("v1 temporal split", "9 months train, 3 months validation, 1 year test", "hard-coded cutoffs match the v1 two-year interval", "match_static"),
         ("v2 temporal split", "three-year input but 9+3+12 months described", "source has no end bound and paper-described durations total two years", "different"),
-        ("news input", "filtered WSJ article bodies", "only headline/category/time/url metadata is released", "missing"),
+        ("news input", "filtered WSJ article bodies", "65,733 metadata keys deterministically reconstruct the date/path index; article bodies and derived Tickers/Topics/Content analyses remain absent", "metadata_index_reconstructed_article_analysis_missing"),
         ("daily returns", "CRSP and Kenneth French inputs", "daily_ret_dapm.csv and all returns are absent", "missing_external"),
         ("factor input", "Jensen et al. characteristics with imputation", "factor files and construction code are absent", "missing_external"),
         ("analysis feature input", "generated report embeddings", "daily_emb_dapm.csv is absent", "missing"),
@@ -732,6 +751,73 @@ def _marked_json(stdout: str) -> dict[str, Any]:
         if line.startswith("@@@"):
             return json.loads(line.removeprefix("@@@"))
     raise RuntimeError(f"Subprocess did not emit marked JSON:\n{stdout}")
+
+
+def verify_metadata_index_probe(output: Path) -> dict[str, Any]:
+    """Fail closed on the two-run metadata-index and embedding-model evidence."""
+    for name, expected in METADATA_INDEX_EVIDENCE_SHA256.items():
+        if sha256(output / name) != expected:
+            raise RuntimeError(f"AAPM metadata-index evidence hash changed: {name}")
+    driver = Path(__file__).with_name("run_aapm_metadata_index_probe.py")
+    if sha256(driver) != METADATA_INDEX_DRIVER_SHA256:
+        raise RuntimeError("AAPM metadata-index probe driver changed")
+    payload = json.loads(
+        (output / "aapm_metadata_index_probe.json").read_text(encoding="utf-8")
+    )
+    index = payload.get("reconstructed_index", {})
+    model = payload.get("embedding_model_snapshot", {})
+    runs = payload.get("runs", [])
+    if (
+        payload.get("source_head") != CURRENT_HEAD
+        or payload.get("source_files_modified") is not False
+        or index.get("rows") != METADATA_INDEX_ROWS
+        or index.get("bytes") != METADATA_INDEX_BYTES
+        or index.get("sha256") != METADATA_INDEX_SHA256
+        or index.get("columns") != ["date", "path"]
+        or index.get("first_row")
+        != {"date": "2021-10-01", "path": "2021/october/1/1"}
+        or index.get("last_row")
+        != {"date": "2023-11-30", "path": "2023/november/30/107"}
+    ):
+        raise RuntimeError("AAPM reconstructed metadata index drifted")
+    if (
+        model.get("repository") != EMBEDDING_MODEL_REPOSITORY
+        or model.get("revision") != EMBEDDING_MODEL_REVISION
+        or model.get("files") != 10
+        or model.get("bytes") != 1_341_561_506
+        or model.get("manifest_sha256") != EMBEDDING_MODEL_MANIFEST_SHA256
+        or model.get("last_modified_before_paper_source_cutoff") is not True
+    ):
+        raise RuntimeError("AAPM immutable embedding-model snapshot drifted")
+    if len(runs) != 2 or payload.get("execution_runs") != 2:
+        raise RuntimeError("AAPM metadata-index probe repeat census drifted")
+    for run in runs:
+        if (
+            run.get("returncode") != 1
+            or run.get("network_attempts") != []
+            or run.get("embedding_model_constructed_offline") is not True
+            or run.get("analysis_loop_started") is not True
+            or run.get("first_missing_private_path")
+            != "Data/library/news_analysis/2021_october_1_1.json"
+            or run.get("first_observed_exception") != "KeyError: 'Tickers'"
+            or run.get("missing_required_fields")
+            != ["Tickers", "Topics", "Content"]
+            or run.get("llm_calls_made") != 0
+            or run.get("paper_result_credit") is not False
+        ):
+            raise RuntimeError("AAPM metadata-index analysis boundary drifted")
+    if (
+        payload.get("analysis_runner_completed") is not False
+        or payload.get("paper_inputs_recovered") is not False
+        or payload.get("paper_result_cells_reproduced") != 0
+        or payload.get("paper_result_credit") is not False
+    ):
+        raise RuntimeError("AAPM metadata-index result-credit boundary drifted")
+    return {
+        "evidence": payload,
+        "evidence_sha256": dict(METADATA_INDEX_EVIDENCE_SHA256),
+        "driver_sha256": METADATA_INDEX_DRIVER_SHA256,
+    }
 
 
 def run_native(repo: Path, python: Path) -> tuple[list[dict[str, str]], dict[str, Any]]:
@@ -1144,8 +1230,13 @@ complete nine-commit official GitHub history, every released file, all
   replication. A 135-package environment passes dependency checks; all four
   importable source modules load twice without HTTP, native Chroma memory and
   model-forward fixtures pass twice, and `model.py` exits cleanly offline.
-  `analysis.py` now reaches the unreleased `Data/library/index.csv`, while the
-  source still has no training entrypoint. The article bodies,
+  `analysis.py` first reaches the unreleased `Data/library/index.csv`. The
+  released metadata keys deterministically reconstruct all 65,733 date/path rows,
+  and an immutable `BAAI/bge-large-en-v1.5` snapshot last modified before the
+  source cutoff loads fully offline. Two copied-tree runs then enter the first
+  5,000-row chunk and stop at the first absent `news_analysis` record because
+  `Tickers`, `Topics`, and `Content` are unavailable. The source still has no
+  training entrypoint. The article bodies,
   returns, manual factors, generated embeddings, baselines, evaluation code,
   sweep histories, and native outputs are absent.
 - The central hybrid claim is not implemented in the released model:
@@ -1197,6 +1288,13 @@ complete nine-commit official GitHub history, every released file, all
   requirement is unpinned.
 - A supplied-embedding fixture executes the released Chroma add, query, filter,
   and pad paths without loading a model or calling an API.
+- A two-run source-faithful probe pins ten files / 1,341,561,506 bytes from the
+  immutable BGE commit `{EMBEDDING_MODEL_REVISION}` and reconstructs the
+  1,901,562-byte metadata index. The model constructs offline and `analysis.py`
+  starts deterministically with zero network attempts, but the first record lacks
+  its private `news_analysis` JSON and fails on `Tickers` before any LLM call.
+  This advances the native entrypoint without inventing article content and earns
+  no result credit.
 - A controlled six-date/two-asset fixture executes the released report-plus-asset
   embedding forward method with 49 parameters and finite outputs. The audit uses
   a disclosed CUDA no-op and seed 42 on CPU; this is component conformance, not
@@ -1216,6 +1314,7 @@ would create an adaptation, not a faithful replication of either paper version.
 def build(args: argparse.Namespace) -> dict[str, Any]:
     output: Path = args.output
     output.mkdir(parents=True, exist_ok=True)
+    metadata_probe = verify_metadata_index_probe(output)
     _, v1_links = validate_pdf(args.v1_pdf, "v1")
     _, v2_links = validate_pdf(args.v2_pdf, "v2")
     v1_tex, v2_tex = validate_sources(args.v1_source_archive, args.v2_source_archive, args.v1_source, args.v2_source)
@@ -1236,6 +1335,21 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     searches, github_facts = github_evidence(args.github_evidence_dir)
     execution, execution_raw = run_native(args.repo, args.python)
     dependency_freeze = execution_raw.pop("_dependency_freeze_text")
+    execution.append(
+        {
+            "component": "analysis.py with reconstructed metadata index",
+            "attempted": "yes_twice",
+            "command": "run_aapm_metadata_index_probe.py",
+            "returncode": "1",
+            "status": "blocked_missing_private_article_analysis",
+            "detail": (
+                "65,733-row index and immutable BGE model load; first record "
+                "fails on missing Tickers/Topics/Content"
+            ),
+            "end_to_end_result_credit": "no",
+        }
+    )
+    execution_raw["metadata index analysis probe"] = metadata_probe["evidence"]
 
     write_csv(output / "source_file_inventory.csv", inventory, list(inventory[0]))
     write_csv(output / "released_source_history_inventory.csv", history, list(history[0]))
@@ -1277,6 +1391,13 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         ),
         "v1_pdf_links": v1_links, "v2_pdf_links": v2_links, "github_snapshot": github_facts,
         "public_fork_boundary": fork_summary,
+        "metadata_index_probe": {
+            "embedding_model_repository": EMBEDDING_MODEL_REPOSITORY,
+            "embedding_model_revision": EMBEDDING_MODEL_REVISION,
+            "embedding_model_manifest_sha256": EMBEDDING_MODEL_MANIFEST_SHA256,
+            "reconstructed_index_sha256": METADATA_INDEX_SHA256,
+            "paper_result_credit": False,
+        },
     }
     write_json(output / "source_provenance.json", provenance)
     common_changed = sum(row["exact_value_match"] == "no" for row in comparison)
@@ -1329,6 +1450,39 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "paper_era_analysis_reached_missing_private_input": execution_raw[
             "dependency environment"
         ]["analysis_entrypoint_reached_missing_private_input"],
+        "reconstructed_metadata_index_rows": metadata_probe["evidence"][
+            "reconstructed_index"
+        ]["rows"],
+        "reconstructed_metadata_index_bytes": metadata_probe["evidence"][
+            "reconstructed_index"
+        ]["bytes"],
+        "reconstructed_metadata_index_sha256": metadata_probe["evidence"][
+            "reconstructed_index"
+        ]["sha256"],
+        "paper_era_embedding_model_repository": EMBEDDING_MODEL_REPOSITORY,
+        "paper_era_embedding_model_revision": EMBEDDING_MODEL_REVISION,
+        "paper_era_embedding_model_files_pinned": metadata_probe["evidence"][
+            "embedding_model_snapshot"
+        ]["files"],
+        "paper_era_embedding_model_bytes_pinned": metadata_probe["evidence"][
+            "embedding_model_snapshot"
+        ]["bytes"],
+        "paper_era_embedding_model_manifest_sha256": metadata_probe["evidence"][
+            "embedding_model_snapshot"
+        ]["manifest_sha256"],
+        "metadata_index_analysis_probe_runs": metadata_probe["evidence"][
+            "execution_runs"
+        ],
+        "metadata_index_analysis_probe_network_attempts": 0,
+        "metadata_index_analysis_first_missing_private_path": metadata_probe[
+            "evidence"
+        ]["runs"][0]["first_missing_private_path"],
+        "metadata_index_analysis_missing_required_fields": metadata_probe["evidence"][
+            "runs"
+        ][0]["missing_required_fields"],
+        "metadata_index_analysis_paper_result_cells_reproduced": 0,
+        "metadata_index_analysis_evidence_sha256": metadata_probe["evidence_sha256"],
+        "metadata_index_analysis_driver_sha256": metadata_probe["driver_sha256"],
         "paper_era_model_module_entrypoint_passed": execution_raw[
             "dependency environment"
         ]["model_module_entrypoint_passed"],

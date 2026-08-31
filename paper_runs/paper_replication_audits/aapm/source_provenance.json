@@ -12,6 +12,13 @@
     "official_repository": "https://github.com/chengjunyan1/AAPM"
   },
   "historical_paper_result_or_training_artifact_paths": 0,
+  "metadata_index_probe": {
+    "embedding_model_manifest_sha256": "7b0b0c8f2a12c68ef6160da7d9e2b0a37404d35f3eded172a52856c0b6959a67",
+    "embedding_model_repository": "BAAI/bge-large-en-v1.5",
+    "embedding_model_revision": "d4aa6901d3a41ba39fb536a557fa166f842b0e09",
+    "paper_result_credit": false,
+    "reconstructed_index_sha256": "aabf06376b8cf51ea02a42f90cc0aab0abcf46ed99ce52495aa70a8b5d9f149c"
+  },
   "official_repository": "https://github.com/chengjunyan1/AAPM",
   "paper_era_commit": "f7096b19c9387377b7f3c9ca9795345321968a7c",
   "paper_era_tree_sha256": "4617508f0c4fc984a97ca258d575963adeb589aef4db7b9bee86d48d9315856c",

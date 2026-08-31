@@ -8,3 +8,4 @@ native model forward,yes,/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/script
 model training,no,,,not_reachable_no_entrypoint_and_inputs,"No Model instantiation/trainloop call; daily embeddings, returns, factors, and valid W&B credentials are absent.",no
 portfolio and pricing evaluation,no,,,not_released,"No TP/EW/VW, alpha/t/GRS, baseline, or figure-generation code exists in the official repository.",no
 end-to-end paper experiment,no,,,blocked_missing_code_data_outputs_and_provenance,"Executing paid LLM calls cannot reconstruct missing articles, CRSP/factors, v2 model lineage, baselines, portfolios, or result arrays.",no
+analysis.py with reconstructed metadata index,yes_twice,run_aapm_metadata_index_probe.py,1,blocked_missing_private_article_analysis,"65,733-row index and immutable BGE model load; first record fails on missing Tickers/Topics/Content",no
