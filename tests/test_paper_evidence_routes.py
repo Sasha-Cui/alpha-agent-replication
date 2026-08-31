@@ -315,8 +315,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             ),
             "CensusArxiv240917266": (
                 "paper_audit:completed_zero_of_162_v2_table_results_runnable_135_package_"
-                "environment_4_modules_chroma_memory_model_forward_full_nine_commit_"
-                "history_missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_"
+                "environment_4_modules_chroma_memory_model_forward_reconstructed_65733_"
+                "row_index_pinned_bge_model_analysis_loop_starts_private_article_fields_"
+                "missing_full_nine_commit_history_missing_hybrid_pipeline_and_v2_lineage_"
+                "14_forks_14_refs_"
                 "4_official_history_heads_exhausted"
             ),
         "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",

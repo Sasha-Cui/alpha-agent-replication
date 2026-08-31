@@ -801,8 +801,13 @@ ARTIFACT_NOTES = {
         "source modules import twice with zero HTTP attempts, model.py loads offline, "
         "native Chroma add/query/filter/pad runs twice on supplied embeddings, and the "
         "released report-plus-asset model forward path emits finite values twice on a "
-        "disclosed CPU fixture. analysis.py advances to the missing private news-library "
-        "index. PyYAML and PEFT repairs plus a CUDA no-op make this compatible rather "
+        "disclosed CPU fixture. The 65,733 released metadata paths deterministically "
+        "reconstruct the missing news-library index, and a hash-pinned paper-era "
+        "BAAI/bge-large-en-v1.5 snapshot constructs offline. analysis.py then starts "
+        "chunk 0--5,000 twice before the first missing private article-analysis record "
+        "raises KeyError at Tickers; that record also requires Topics and Content, and "
+        "zero LLM calls occur. PyYAML and PEFT repairs plus a CUDA no-op make this "
+        "compatible rather "
         "than historically exact. This is runnable component evidence, not experiment "
         "output. Article bodies, "
         "CRSP returns, manual factors, report embeddings, checkpoints, baselines, "
@@ -1877,7 +1882,9 @@ TARGETED_EXECUTION = {
     ),
     "SYS-EMPIRICAL-ASSET-PRICING-LLM": (
         "paper_audit:completed_zero_of_162_v2_table_results_runnable_135_package_"
-        "environment_4_modules_chroma_memory_model_forward_full_nine_commit_history_"
+        "environment_4_modules_chroma_memory_model_forward_reconstructed_65733_row_"
+        "index_pinned_bge_model_analysis_loop_starts_private_article_fields_missing_"
+        "full_nine_commit_history_"
         "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_"
         "4_official_history_heads_exhausted"
     ),

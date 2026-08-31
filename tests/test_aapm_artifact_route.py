@@ -71,7 +71,9 @@ def test_native_ledger_keeps_static_components_at_zero_result_credit() -> None:
     assert row["blocking_stage"] == "A2_no_shipped_native_dated_output"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_zero_of_162_v2_table_results_runnable_135_package_"
-        "environment_4_modules_chroma_memory_model_forward_full_nine_commit_history_"
+        "environment_4_modules_chroma_memory_model_forward_reconstructed_65733_row_"
+        "index_pinned_bge_model_analysis_loop_starts_private_article_fields_missing_"
+        "full_nine_commit_history_"
         "missing_hybrid_pipeline_and_v2_lineage_14_forks_14_refs_"
         "4_official_history_heads_exhausted"
     )
@@ -81,6 +83,12 @@ def test_native_ledger_keeps_static_components_at_zero_result_credit() -> None:
     assert "135-package environment" in note
     assert "native Chroma" in note
     assert "finite values twice" in note
+    assert "65,733 released metadata paths" in note
+    assert "BAAI/bge-large-en-v1.5 snapshot constructs offline" in note
+    assert "starts chunk 0--5,000 twice" in note
+    assert "raises KeyError at Tickers" in note
+    assert "also requires Topics and Content" in note
+    assert "zero LLM calls occur" in note
     assert "complete nine-commit history" in note
     assert "14 accessible forks, 14 branch refs" in note
     assert "zero unique commits, zero unique blobs" in note
@@ -101,6 +109,8 @@ def test_paper_route_and_static_assets_reflect_aapm_without_overclaiming() -> No
     assert row["mapping_disposition"] == "availability_only_no_performance_inference"
     assert row["proxy_role"] == "no_proxy"
     assert "zero native paper results reproduced" in row["precise_native_or_access_blocker"]
+    assert "65,733 released metadata paths" in row["precise_native_or_access_blocker"]
+    assert "raises KeyError at Tickers" in row["precise_native_or_access_blocker"]
 
     generated = (ROOT / "docs/paper/generated_results.tex").read_text(encoding="utf-8")
     assert r"\newcommand{\ArtifactCountFT}{36}" in generated
