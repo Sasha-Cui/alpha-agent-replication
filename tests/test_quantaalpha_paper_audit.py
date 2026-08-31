@@ -38,9 +38,9 @@ def test_complete_numeric_table_census_is_fail_closed() -> None:
         "Appendix D Factor summary": 16,
     }
     assert sum(row["value_role"] == "displayed_delta" for row in rows) == 12
-    assert sum(row["paper_result_credit"] for row in rows) == 7
-    assert sum(row["independently_regenerated"] for row in rows) == 7
-    assert sum(row["native_reproduced_value"] != "" for row in rows) == 7
+    assert sum(row["paper_result_credit"] for row in rows) == 8
+    assert sum(row["independently_regenerated"] for row in rows) == 8
+    assert sum(row["native_reproduced_value"] != "" for row in rows) == 21
     assert Counter(row["author_output_correspondence"] for row in rows) == {
         False: 148,
         True: 196,
@@ -141,6 +141,9 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     recovered_data = read_csv(output / "recovered_data_provenance.csv")
     reruns = read_csv(output / "native_rerun_conformance.csv")
     regeneration = json.loads((output / "native_result_regeneration.json").read_text(encoding="utf-8"))
+    deterministic = json.loads(
+        (output / "deterministic_baseline_native_evidence.json").read_text(encoding="utf-8")
+    )
     complete_recovery = json.loads(
         (output / "complete_pool_factor_recovery.json").read_text(encoding="utf-8")
     )
@@ -151,11 +154,11 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
         (output / "complete_pool_repeatability.json").read_text(encoding="utf-8")
     )
     assert manifest["overall_status"] == (
-        "one_published_baseline_row_regenerated_main_quantaalpha_claim_not_reproduced"
+        "one_baseline_row_plus_one_alpha158_cell_regenerated_main_claim_not_reproduced"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_numeric_table_cells_total"] == 344
-    assert manifest["native_numeric_table_cells_reproduced"] == 7
+    assert manifest["native_numeric_table_cells_reproduced"] == 8
     assert manifest["author_output_numeric_table_cells_corroborated"] == 196
     assert manifest["paper_numeric_figure_labels_total"] == 40
     assert manifest["paper_discrete_unlabeled_marker_points_total"] == 47
@@ -184,10 +187,10 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
         "v3": 196,
     }
     assert manifest["versioned_main_table_cells_author_output_corroborated"] == 644
-    assert manifest["versioned_main_table_cells_independently_regenerated"] == 23
+    assert manifest["versioned_main_table_cells_independently_regenerated"] == 26
     assert manifest["distinct_author_rendered_main_table_cells_across_versions"] == 420
     assert manifest["historical_v1_v2_main_table_cells_corroborated"] == 224
-    assert manifest["historical_v1_v2_main_table_cells_independently_regenerated"] == 8
+    assert manifest["historical_v1_v2_main_table_cells_independently_regenerated"] == 9
     assert manifest["prepublication_quantaalpha_specific_commits_total"] == 28
     assert manifest["prepublication_unique_historical_paths_total"] == 851
     assert manifest["github_rest_reported_public_forks"] == 279
@@ -202,9 +205,19 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert manifest["public_fork_paper_result_artifacts_discovered_post_v1"] == 0
     assert manifest["prepublication_aggregate_result_cells_corresponding_at_paper_rounding"] == 74
     assert manifest["prepublication_aggregate_result_cells_examined"] == 88
-    assert manifest["native_rerun_metric_cells_examined"] == 16
-    assert manifest["native_rerun_metric_cells_independently_regenerated"] == 8
+    assert manifest["native_rerun_metric_cells_examined"] == 32
+    assert manifest["native_rerun_metric_cells_independently_regenerated"] == 9
     assert manifest["alpha158_20_published_metric_cells_independently_regenerated"] == 8
+    assert manifest["alpha158_published_metric_cells_independently_regenerated"] == 1
+    assert manifest["alpha360_published_metric_cells_independently_regenerated"] == 0
+    assert manifest["deterministic_baseline_native_metrics"] == audit.DETERMINISTIC_BASELINE_NATIVE_METRICS
+    assert manifest["deterministic_baseline_repeat_runs_each"] == 2
+    assert manifest["alpha158_repeat_max_abs_difference"] <= 6e-14
+    assert manifest["alpha360_repeat_max_abs_difference"] <= 6e-14
+    assert manifest["deterministic_baseline_evidence_sha256"] == audit.DETERMINISTIC_BASELINE_EVIDENCE_SHA256
+    assert manifest["deterministic_baseline_driver_sha256"] == audit.DETERMINISTIC_BASELINE_DRIVER_SHA256
+    assert manifest["deterministic_baseline_author_checkout_modified"] is False
+
     assert manifest["quantaalpha_gpt_v1_v2_published_metric_cells_independently_regenerated"] == 0
     assert manifest["quantaalpha_public_custom_factors_recomputed"] == 150
     assert manifest["quantaalpha_complete_pool_total_factors"] == 170
@@ -266,8 +279,8 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     }
     assert {row["author_output_correspondence"] for row in versioned_tables} == {"True"}
     assert Counter(row["independently_regenerated"] for row in versioned_tables) == {
-        "False": 621,
-        "True": 23,
+        "False": 618,
+        "True": 26,
     }
     assert history_summary["reachable_commits_total"] == 61
     assert history_summary["unique_historical_paths_total"] == 259
@@ -280,7 +293,7 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert native["component_checks"]["llm_or_market_api_called"] is False
     assert native["component_execution_is_paper_result_credit"] is False
     assert native["paper_experiment_executed"] is True
-    assert native["paper_result_cells_reproduced"] == 8
+    assert native["paper_result_cells_reproduced"] == 9
     assert len(prepublication_history) == 28
     assert {row["before_v1_submission"] for row in prepublication_history} == {"True"}
     assert len(fork_heads) == 77
@@ -309,10 +322,12 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert {row["independently_regenerated"] for row in prepublication_results} == {"False"}
     assert len(recovered_data) == 3
     assert recovered_data[0]["sha256"] == audit.AUTHOR_DAILY_PV_LFS_SHA256
-    assert len(reruns) == 16
-    assert Counter(row["independently_regenerated"] for row in reruns) == {"True": 8, "False": 8}
-    assert Counter(row["executed_factor_count"] for row in reruns) == {"20": 8, "170": 8}
-    assert Counter(row["compatibility_repairs"] for row in reruns) == {"0": 8, "1": 8}
+    assert len(reruns) == 32
+    assert Counter(row["independently_regenerated"] for row in reruns) == {"True": 9, "False": 23}
+    assert Counter(row["executed_factor_count"] for row in reruns) == {
+        "20": 8, "158": 8, "360": 8, "170": 8,
+    }
+    assert Counter(row["compatibility_repairs"] for row in reruns) == {"0": 24, "1": 8}
     assert regeneration["alpha158_20"]["paper_cells_independently_regenerated"] == 8
     assert regeneration["quantaalpha_gpt_v1_v2"]["paper_cells_independently_regenerated"] == 0
     assert regeneration["quantaalpha_gpt_v1_v2"]["publicly_recomputed_factor_count"] == 170
@@ -321,6 +336,15 @@ def test_committed_audit_is_self_hashing_and_separates_outputs_from_regeneration
     assert regeneration["quantaalpha_gpt_v1_v2"]["native_metrics"] == (
         audit.QA_GPT_COMPLETE_170_NATIVE_METRICS
     )
+    assert deterministic["author_source_modified"] is False
+    assert deterministic["source_commit"] == audit.PREPUBLICATION_RESULTS_COMMIT
+    assert deterministic["protocol"]["llm_or_market_api_called"] is False
+    assert deterministic["baselines"]["alpha158"]["paper_metrics_matching_at_display_precision"] == ["IC"]
+    assert deterministic["baselines"]["alpha360"]["paper_metrics_matching_at_display_precision"] == []
+    assert deterministic["baselines"]["alpha158"]["complete_paper_row_match"] is False
+    assert deterministic["baselines"]["alpha360"]["complete_paper_row_match"] is False
+    assert audit.verify_deterministic_baseline_evidence(output)["evidence"]["source_commit"] == audit.PREPUBLICATION_RESULTS_COMMIT
+
     assert complete_recovery["author_source_modified"] is False
     assert complete_recovery["complete_pool_factor_count"] == 170
     assert {row["factor_name"] for row in complete_recovery["factors"]} == set(

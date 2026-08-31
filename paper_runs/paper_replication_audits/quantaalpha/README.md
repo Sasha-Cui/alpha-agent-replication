@@ -1,7 +1,7 @@
 # QuantaAlpha paper-level conformance audit
 
-Overall verdict: **one complete published baseline row independently regenerated; the
-headline QuantaAlpha result does not reproduce**.
+Overall verdict: **one complete baseline row plus one isolated Alpha158 cell independently
+regenerated; the headline QuantaAlpha result does not reproduce**.
 
 ## Primary-source boundary
 
@@ -15,9 +15,10 @@ headline QuantaAlpha result does not reproduce**.
 
 ## Result evidence
 
-- The v3 paper contains **344 numeric table cells**. The README raster corroborates all 196 main-table cells as author output, but only the seven v3 Alpha158(20) cells are independently regenerated.
+- The v3 paper contains **344 numeric table cells**. The README raster corroborates all 196 main-table cells as author output; seven Alpha158(20) cells and the Alpha158 IC cell are independently regenerated.
 - The identical v1/v2 main tables contain 224 cells each. Native aggregate JSONs give rounded correspondence for **74/88 examined cells** across 11 rows. These are author-output lineage, not independent regeneration; filename/model conflicts are retained in the ledger.
-- The native Alpha158(20) run reproduces all **8/8** v1/v2 metrics, including training, prediction, IC/RankIC evaluation, and the Top50/drop5 portfolio. Across version-specific tables this is **23/644** regenerated cells (8 in v1, 8 in v2, 7 in v3).
+- The native Alpha158(20) run reproduces all **8/8** v1/v2 metrics, including training, prediction, IC/RankIC evaluation, and the Top50/drop5 portfolio. Adding the isolated Alpha158 IC match brings the version-specific total to **26/644** regenerated cells (9 in v1, 9 in v2, 8 in v3).
+- The same released pipeline rerun twice matches only **1/8** Alpha158 historical cells (**1/7** current cells) and **0/8** Alpha360 historical cells (**0/7** current cells). Alpha158 returns 1.44% rather than 2.66% with 13.77% rather than 10.15% drawdown; Alpha360 returns -2.32% rather than +4.09%. The two runs per baseline agree within **5.33e-14**.
 - The paper-configured QuantaAlpha/GPT diagnostic recomputes all **150/150 public custom factors plus Alpha158(20)** after one documented `MEAN` broadcast compatibility repair, but does not reproduce the claim: IC **0.04229 vs 0.15008**, ARR **3.61% vs 27.75%**, IR **0.51367 vs 3.32512**, and MDD **12.56% vs 7.98%**. Two complete runs agree within **1.44e-15** across all eight metrics. Adding the repaired factors lowers ARR and IR relative to the earlier 168-factor diagnostic, so the missing pair cannot explain the headline.
 - Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. The README ships the 17-label case-study raster and byte-identical copies of the paper-source Figure 3--5 assets, corroborating **17 labels, 47 markers, and 10 curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are regenerated.
 
@@ -26,6 +27,7 @@ headline QuantaAlpha result does not reproduce**.
 - The release is not pseudocode: **135/135** current Python files and **135/135** initial-release Python files compile. The audit executes native expression parsing/complexity/subtree matching, trajectory JSON round-trip, lineage round-trip, and performance/diversity-aware crossover selection without calling an LLM or market API.
 - Public prompt/config/source paths implement meaningful planning, full trajectory records, mutation/crossover generation, semantic consistency, AST complexity/redundancy checks, Qlib evaluation, and TopkDropout backtesting. **15/34** audited mechanism dimensions are implementation matches.
 - The recovered `backtest_v2` profile matches the paper split, label, LightGBM seed, Top-50/drop-5 portfolio, open execution, and 0.05%/0.15% costs closely enough to reproduce Alpha158(20) exactly at displayed precision.
+- `scripts/rerun_quantaalpha_deterministic_baselines.py` runs Alpha158 and Alpha360 twice in fresh processes, substitutes only the fingerprinted provider/output paths, leaves the author checkout clean, and emits normalized evidence without elapsed-time noise.
 - `scripts/rerun_quantaalpha_complete_pool.py` ships the complete-pool recovery path. Its factor-recovery record, result JSON, two native logs, and two-run repeatability record are hash-pinned in this audit; it leaves the author checkout unmodified and makes no LLM or market API call.
 - Pre-publication pools preserve IDs, formulas, descriptions, implementation code, backtest feedback, and cache lineage for the LLM-generated factors.
 

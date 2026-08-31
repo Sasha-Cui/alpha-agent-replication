@@ -187,6 +187,36 @@ ALPHA158_20_NATIVE_METRICS = {
     "ARR_pct": 4.629928329578073,
     "MDD_pct": 22.18958292110946,
 }
+ALPHA158_NATIVE_METRICS = {
+    "IC": 0.01305397960235499,
+    "ICIR": 0.08210642826875184,
+    "Rank_IC": 0.033109631113692355,
+    "Rank_ICIR": 0.21239426182508328,
+    "IR": 0.2195711489976865,
+    "CR": 0.10444408103622073,
+    "ARR_pct": 1.4382569080946412,
+    "MDD_pct": 13.770592778693322,
+}
+ALPHA360_NATIVE_METRICS = {
+    "IC": 0.003818284923497764,
+    "ICIR": 0.0241068757968068,
+    "Rank_IC": 0.023642529653072432,
+    "Rank_ICIR": 0.14681537138071488,
+    "IR": -0.29976955802381816,
+    "CR": -0.10058727852404369,
+    "ARR_pct": -2.317726425230115,
+    "MDD_pct": 23.04194386446296,
+}
+DETERMINISTIC_BASELINE_NATIVE_METRICS = {
+    "Alpha158": ALPHA158_NATIVE_METRICS,
+    "Alpha360": ALPHA360_NATIVE_METRICS,
+}
+DETERMINISTIC_BASELINE_EVIDENCE_SHA256 = (
+    "cbd6d0b155814a8814187c8d79f0c8878f5fbe3847e20808f7b0075afc4c4df5"
+)
+DETERMINISTIC_BASELINE_DRIVER_SHA256 = (
+    "32a1e8af6500b652978b4544cf72ee265d088022356611b25957cf17a75a2232"
+)
 QA_GPT_COMBINED_168_NATIVE_METRICS = {
     "IC": 0.04169854922210531,
     "ICIR": 0.24708259038837793,
@@ -1084,6 +1114,82 @@ def verify_complete_pool_evidence(output_dir: Path) -> dict[str, Any]:
     }
 
 
+def _method_native_metrics(method: str) -> Mapping[str, float] | None:
+    normalized = method.split(":", maxsplit=1)[-1]
+    if normalized == "Alpha158(20)":
+        return ALPHA158_20_NATIVE_METRICS
+    return DETERMINISTIC_BASELINE_NATIVE_METRICS.get(normalized)
+
+
+def _matches_displayed_paper_value(metric: str, observed: float, paper_value: float | str) -> bool:
+    decimals = 2 if metric in {"ARR_pct", "MDD_pct"} else 4
+    numeric_paper_value = float(paper_value)
+    return f"{observed:.{decimals}f}" == f"{numeric_paper_value:.{decimals}f}"
+
+
+def _native_cell(method: str, metric: str, paper_value: float | str) -> tuple[float | str, bool]:
+    metrics = _method_native_metrics(method)
+    if metrics is None:
+        return "", False
+    observed = metrics[metric]
+    return observed, _matches_displayed_paper_value(metric, observed, paper_value)
+
+
+def verify_deterministic_baseline_evidence(output_dir: Path) -> dict[str, Any]:
+    evidence_path = output_dir / "deterministic_baseline_native_evidence.json"
+    driver_path = Path(__file__).with_name("rerun_quantaalpha_deterministic_baselines.py")
+    if sha256(evidence_path) != DETERMINISTIC_BASELINE_EVIDENCE_SHA256:
+        raise RuntimeError("QuantaAlpha deterministic-baseline evidence drifted")
+    if sha256(driver_path) != DETERMINISTIC_BASELINE_DRIVER_SHA256:
+        raise RuntimeError("QuantaAlpha deterministic-baseline driver drifted")
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    if evidence.get("source_commit") != PREPUBLICATION_RESULTS_COMMIT:
+        raise RuntimeError("QuantaAlpha deterministic-baseline source commit drifted")
+    if evidence.get("author_source_modified") is not False:
+        raise RuntimeError("QuantaAlpha deterministic baselines used a modified author checkout")
+    if evidence.get("runtime") != RERUN_ENVIRONMENT:
+        raise RuntimeError("QuantaAlpha deterministic-baseline runtime drifted")
+    protocol = evidence.get("protocol", {})
+    expected_protocol = {
+        "data_fingerprint_sha256": RECOVERED_PROVIDER_MATRIX_SHA256,
+        "test_range": ["2022-01-01", "2025-12-26"],
+        "market": "csi300",
+        "benchmark": "SH000300",
+        "model": "released LightGBM configuration",
+        "portfolio": "TopkDropout top50/drop5",
+        "deal_price": "open",
+        "open_cost": 0.0005,
+        "close_cost": 0.0015,
+        "llm_or_market_api_called": False,
+    }
+    if any(protocol.get(key) != value for key, value in expected_protocol.items()):
+        raise RuntimeError("QuantaAlpha deterministic-baseline protocol drifted")
+    expected_matches = {"alpha158": ["IC"], "alpha360": []}
+    for key, expected_metrics in (
+        ("alpha158", ALPHA158_NATIVE_METRICS),
+        ("alpha360", ALPHA360_NATIVE_METRICS),
+    ):
+        baseline = evidence.get("baselines", {}).get(key, {})
+        runs = baseline.get("runs", [])
+        if len(runs) != 2 or baseline.get("factor_count") != int(key.removeprefix("alpha")):
+            raise RuntimeError(f"QuantaAlpha {key} repeat census drifted")
+        for metric, expected in expected_metrics.items():
+            if abs(float(runs[0]["native_metrics"][metric]) - expected) > 1e-15:
+                raise RuntimeError(f"QuantaAlpha {key} native metric drifted: {metric}")
+        if baseline.get("repeat_max_abs_difference", 1.0) > 6e-14:
+            raise RuntimeError(f"QuantaAlpha {key} repeats are not numerically stable")
+        if baseline.get("paper_metrics_matching_at_display_precision") != expected_matches[key]:
+            raise RuntimeError(f"QuantaAlpha {key} displayed-paper matches drifted")
+        if baseline.get("complete_paper_row_match") is not False:
+            raise RuntimeError(f"QuantaAlpha {key} unexpectedly matches a complete paper row")
+    return {
+        "evidence": evidence,
+        "evidence_sha256": DETERMINISTIC_BASELINE_EVIDENCE_SHA256,
+        "driver_sha256": DETERMINISTIC_BASELINE_DRIVER_SHA256,
+    }
+
+
+
 def native_rerun_conformance() -> list[dict[str, Any]]:
     paper_alpha = {
         "IC": 0.0051,
@@ -1094,6 +1200,26 @@ def native_rerun_conformance() -> list[dict[str, Any]]:
         "CR": 0.2087,
         "ARR_pct": 4.63,
         "MDD_pct": 22.19,
+    }
+    paper_alpha158 = {
+        "IC": 0.0131,
+        "ICIR": 0.0817,
+        "Rank_IC": 0.0334,
+        "Rank_ICIR": 0.2119,
+        "IR": 0.4099,
+        "CR": 0.2620,
+        "ARR_pct": 2.66,
+        "MDD_pct": 10.15,
+    }
+    paper_alpha360 = {
+        "IC": 0.0105,
+        "ICIR": 0.0636,
+        "Rank_IC": 0.0306,
+        "Rank_ICIR": 0.1889,
+        "IR": 0.6009,
+        "CR": 0.3550,
+        "ARR_pct": 4.09,
+        "MDD_pct": 11.52,
     }
     paper_qa_gpt = {
         "IC": 0.1501,
@@ -1113,9 +1239,33 @@ def native_rerun_conformance() -> list[dict[str, Any]]:
             20,
             paper_alpha,
             ALPHA158_20_NATIVE_METRICS,
-            True,
+            set(paper_alpha),
             "independently_regenerated_matches_paper_rounding",
             "unmodified_released_pipeline",
+            0,
+        ),
+        (
+            "Alpha158",
+            "v1;v2;v3",
+            158,
+            158,
+            paper_alpha158,
+            ALPHA158_NATIVE_METRICS,
+            {"IC"},
+            "independently_regenerated_conflicts_with_paper_except_displayed_ic",
+            "released_pipeline_with_provider_path_substitution_only",
+            0,
+        ),
+        (
+            "Alpha360",
+            "v1;v2;v3",
+            360,
+            360,
+            paper_alpha360,
+            ALPHA360_NATIVE_METRICS,
+            set(),
+            "independently_regenerated_conflicts_with_all_displayed_metrics",
+            "released_pipeline_with_provider_path_substitution_only",
             0,
         ),
         (
@@ -1125,7 +1275,7 @@ def native_rerun_conformance() -> list[dict[str, Any]]:
             170,
             paper_qa_gpt,
             QA_GPT_COMPLETE_170_NATIVE_METRICS,
-            False,
+            set(),
             "not_reproduced_all_public_expressions_execute_after_documented_operator_compatibility_repair",
             "released_pipeline_with_one_documented_mean_broadcast_compatibility_repair",
             1,
@@ -1139,12 +1289,18 @@ def native_rerun_conformance() -> list[dict[str, Any]]:
         executed_factors,
         paper_values,
         observed,
-        reproduced,
-        status,
+        matching_metrics,
+        mismatch_status,
         execution_basis,
         compatibility_repairs,
     ) in definitions:
         for metric, paper_value in paper_values.items():
+            reproduced = metric in matching_metrics
+            status = (
+                "independently_regenerated_matches_paper_rounding"
+                if reproduced
+                else mismatch_status
+            )
             rows.append(
                 {
                     "paper_versions": versions,
@@ -1163,12 +1319,15 @@ def native_rerun_conformance() -> list[dict[str, Any]]:
                     "data_fingerprint_sha256": RECOVERED_PROVIDER_MATRIX_SHA256,
                 }
             )
-    if len(rows) != 16 or sum(row["independently_regenerated"] for row in rows) != 8:
+    if len(rows) != 32 or sum(row["independently_regenerated"] for row in rows) != 9:
         raise RuntimeError("QuantaAlpha native-rerun evidence changed")
     return rows
 
 
-def native_result_regeneration_payload(complete_evidence: Mapping[str, Any]) -> dict[str, Any]:
+def native_result_regeneration_payload(
+    complete_evidence: Mapping[str, Any],
+    deterministic_evidence: Mapping[str, Any],
+) -> dict[str, Any]:
     return {
         "runtime": RERUN_ENVIRONMENT,
         "runtime_provenance": {
@@ -1191,6 +1350,35 @@ def native_result_regeneration_payload(complete_evidence: Mapping[str, Any]) -> 
             "paper_cells_independently_regenerated": 8,
             "status": "full_native_training_prediction_and_portfolio_path_matches_paper_rounding",
         },
+        "alpha158": {
+            "factor_count": 158,
+            "native_metrics": ALPHA158_NATIVE_METRICS,
+            "repeat_runs": 2,
+            "repeat_max_abs_difference": deterministic_evidence["evidence"]["baselines"][
+                "alpha158"
+            ]["repeat_max_abs_difference"],
+            "evidence_sha256": deterministic_evidence["evidence_sha256"],
+            "driver_sha256": deterministic_evidence["driver_sha256"],
+            "provider_path_substitution_only": True,
+            "paper_cells_independently_regenerated": 1,
+            "complete_paper_row_match": False,
+            "status": "native_rerun_matches_only_displayed_ic_and_conflicts_with_other_metrics",
+        },
+        "alpha360": {
+            "factor_count": 360,
+            "native_metrics": ALPHA360_NATIVE_METRICS,
+            "repeat_runs": 2,
+            "repeat_max_abs_difference": deterministic_evidence["evidence"]["baselines"][
+                "alpha360"
+            ]["repeat_max_abs_difference"],
+            "evidence_sha256": deterministic_evidence["evidence_sha256"],
+            "driver_sha256": deterministic_evidence["driver_sha256"],
+            "provider_path_substitution_only": True,
+            "paper_cells_independently_regenerated": 0,
+            "complete_paper_row_match": False,
+            "status": "native_rerun_conflicts_with_all_displayed_metrics",
+        },
+
         "quantaalpha_gpt_v1_v2": {
             "paper_factor_count": 170,
             "publicly_recomputed_factor_count": 170,
@@ -1434,8 +1622,7 @@ def paper_version_main_table_rows(source_root: Path, paper_source_root: Path) ->
     rows: list[dict[str, Any]] = []
     for version, cells in early_tables.items():
         for method, metric, value in cells:
-            regenerated = method == "row_11:Alpha158(20)"
-            native_value = ALPHA158_20_NATIVE_METRICS[metric] if regenerated else ""
+            native_value, regenerated = _native_cell(method, metric, value)
             rows.append(
                 {
                     "paper_version": version,
@@ -1455,8 +1642,7 @@ def paper_version_main_table_rows(source_root: Path, paper_source_root: Path) ->
     current_table_sha = sha256(paper_source_root / "tables/main_table.tex")
     for method, values in MAIN_RESULTS.items():
         for metric, value in zip(METRICS, values):
-            regenerated = method == "Alpha158(20)"
-            native_value = ALPHA158_20_NATIVE_METRICS[metric] if regenerated else ""
+            native_value, regenerated = _native_cell(method, metric, value)
             rows.append(
                 {
                     "paper_version": "v3",
@@ -1484,8 +1670,8 @@ def paper_version_main_table_rows(source_root: Path, paper_source_root: Path) ->
 
 def _result_row(table: str, item: str, metric: str, value: Any, role: str = "direct") -> dict[str, Any]:
     author_output = table == "Table 1 Main CSI300 results"
-    regenerated = author_output and item == "Alpha158(20)"
-    native_value = ALPHA158_20_NATIVE_METRICS[metric] if regenerated else ""
+    native_value, regenerated = _native_cell(item, metric, value) if author_output else ("", False)
+    native_attempted = native_value != ""
     return {
         "paper_table": table,
         "item": item,
@@ -1493,13 +1679,15 @@ def _result_row(table: str, item: str, metric: str, value: Any, role: str = "dir
         "value_role": role,
         "paper_value": value,
         "native_reproduced_value": native_value,
-        "absolute_difference": abs(native_value - value) if regenerated else "",
+        "absolute_difference": abs(native_value - value) if native_attempted else "",
         "author_output_value": value if author_output else "",
         "author_output_correspondence": author_output,
         "independently_regenerated": regenerated,
         "status": (
             "independently_regenerated_matches_paper_rounding"
             if regenerated
+            else "independently_regenerated_conflicts_with_paper_value"
+            if native_attempted
             else "corroborated_by_exact_author_readme_table_raster_not_regenerated"
             if author_output
             else "not_reproduced_no_released_result_derivation"
@@ -2540,8 +2728,11 @@ def native_execution(source_root: Path) -> dict[str, Any]:
         "full_native_environment_reproduced": False,
         "recovered_baseline_native_environment_reproduced": True,
         "paper_experiment_executed": True,
-        "paper_experiment_execution_scope": "Alpha158(20) full row and complete 170/170-factor QuantaAlpha/GPT diagnostic after one documented operator compatibility repair",
-        "paper_result_cells_reproduced": 8,
+        "paper_experiment_execution_scope": (
+            "Alpha158(20), Alpha158, and Alpha360 native baselines plus the complete "
+            "170/170-factor QuantaAlpha/GPT diagnostic after one operator compatibility repair"
+        ),
+        "paper_result_cells_reproduced": 9,
         "component_execution_is_paper_result_credit": False,
         "llm_or_market_api_called": False,
     }
@@ -2582,6 +2773,7 @@ def build_audit(
     verify_pins(source_root, papers, paper_source_root, dataset_api, debug_h5)
     output_dir.mkdir(parents=True, exist_ok=True)
     complete_pool_evidence = verify_complete_pool_evidence(output_dir)
+    deterministic_evidence = verify_deterministic_baseline_evidence(output_dir)
     tables = paper_table_rows()
     labels = figure_label_rows()
     points = plot_point_rows()
@@ -2601,7 +2793,7 @@ def build_audit(
     prepublication_results = prepublication_result_conformance(public_census_root, paper_source_root)
     recovered_data = recovered_data_provenance()
     rerun_rows = native_rerun_conformance()
-    regeneration = native_result_regeneration_payload(complete_pool_evidence)
+    regeneration = native_result_regeneration_payload(complete_pool_evidence, deterministic_evidence)
     branch_evidence = historical_branch_evidence(source_root)
     versioned_main_table = paper_version_main_table_rows(source_root, paper_source_root)
     paper_assets = paper_source_inventory(paper_source_root)
@@ -2649,7 +2841,7 @@ def build_audit(
     status_counts = Counter(row["status"] for row in mechanisms)
     manifest: dict[str, Any] = {
         "paper": "QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining",
-        "overall_status": "one_published_baseline_row_regenerated_main_quantaalpha_claim_not_reproduced",
+        "overall_status": "one_baseline_row_plus_one_alpha158_cell_regenerated_main_claim_not_reproduced",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_versions": PAPER_VERSIONS,
@@ -2720,7 +2912,7 @@ def build_audit(
         ),
         "distinct_author_rendered_main_table_cells_across_versions": 420,
         "historical_v1_v2_main_table_cells_corroborated": 224,
-        "historical_v1_v2_main_table_cells_independently_regenerated": 8,
+        "historical_v1_v2_main_table_cells_independently_regenerated": 9,
         "prepublication_quantaalpha_specific_commits_total": len(prepublication_commits),
         "prepublication_unique_historical_paths_total": prepublication_summary["unique_historical_paths"],
         "github_rest_reported_public_forks": fork_summary["github_rest_reported_forks"],
@@ -2748,6 +2940,22 @@ def build_audit(
             row["independently_regenerated"] for row in rerun_rows
         ),
         "alpha158_20_published_metric_cells_independently_regenerated": 8,
+        "alpha158_published_metric_cells_independently_regenerated": 1,
+        "alpha360_published_metric_cells_independently_regenerated": 0,
+        "deterministic_baseline_native_metrics": DETERMINISTIC_BASELINE_NATIVE_METRICS,
+        "deterministic_baseline_repeat_runs_each": 2,
+        "alpha158_repeat_max_abs_difference": deterministic_evidence["evidence"]["baselines"][
+            "alpha158"
+        ]["repeat_max_abs_difference"],
+        "alpha360_repeat_max_abs_difference": deterministic_evidence["evidence"]["baselines"][
+            "alpha360"
+        ]["repeat_max_abs_difference"],
+        "deterministic_baseline_evidence_sha256": deterministic_evidence["evidence_sha256"],
+        "deterministic_baseline_driver_sha256": deterministic_evidence["driver_sha256"],
+        "deterministic_baseline_author_checkout_modified": deterministic_evidence["evidence"][
+            "author_source_modified"
+        ],
+
         "quantaalpha_gpt_v1_v2_published_metric_cells_independently_regenerated": 0,
         "quantaalpha_public_custom_factors_recomputed": 150,
         "quantaalpha_complete_pool_total_factors": 170,
@@ -2800,7 +3008,8 @@ def build_audit(
             "author-attributed 28-commit lineage predates paper v1 and contains factor pools, aggregate result "
             "JSONs, logs, plots, and an official Git-LFS market-data object. The recovered native Python "
             "3.12/Qlib 0.9.7 pipeline independently reproduces all eight Alpha158(20) cells at paper rounding. "
-            "That is real paper-result credit, but it is only one baseline row. The complete paper-configured "
+            "That is real paper-result credit, but Alpha158 adds only its displayed IC while Alpha360 adds no "
+            "matching cell; both complete rows conflict, and the native Alpha360 return is negative. The complete "
             "QuantaAlpha/GPT rerun executes all 170 factors after one documented MEAN broadcast compatibility "
             "repair and materially misses the claimed v1/v2 result (IC 0.04229 versus 0.15008; ARR 3.61% "
             "versus 27.75%; IR 0.51367 versus 3.32512). Two complete reruns agree within 1.45e-15. The two "
@@ -2816,8 +3025,8 @@ def build_audit(
     }
     report = f"""# QuantaAlpha paper-level conformance audit
 
-Overall verdict: **one complete published baseline row independently regenerated; the
-headline QuantaAlpha result does not reproduce**.
+Overall verdict: **one complete baseline row plus one isolated Alpha158 cell independently
+regenerated; the headline QuantaAlpha result does not reproduce**.
 
 ## Primary-source boundary
 
@@ -2831,9 +3040,10 @@ headline QuantaAlpha result does not reproduce**.
 
 ## Result evidence
 
-- The v3 paper contains **344 numeric table cells**. The README raster corroborates all 196 main-table cells as author output, but only the seven v3 Alpha158(20) cells are independently regenerated.
+- The v3 paper contains **344 numeric table cells**. The README raster corroborates all 196 main-table cells as author output; seven Alpha158(20) cells and the Alpha158 IC cell are independently regenerated.
 - The identical v1/v2 main tables contain 224 cells each. Native aggregate JSONs give rounded correspondence for **{sum(row["rounded_match"] for row in prepublication_results)}/{len(prepublication_results)} examined cells** across 11 rows. These are author-output lineage, not independent regeneration; filename/model conflicts are retained in the ledger.
-- The native Alpha158(20) run reproduces all **8/8** v1/v2 metrics, including training, prediction, IC/RankIC evaluation, and the Top50/drop5 portfolio. Across version-specific tables this is **23/644** regenerated cells (8 in v1, 8 in v2, 7 in v3).
+- The native Alpha158(20) run reproduces all **8/8** v1/v2 metrics, including training, prediction, IC/RankIC evaluation, and the Top50/drop5 portfolio. Adding the isolated Alpha158 IC match brings the version-specific total to **26/644** regenerated cells (9 in v1, 9 in v2, 8 in v3).
+- The same released pipeline rerun twice matches only **1/8** Alpha158 historical cells (**1/7** current cells) and **0/8** Alpha360 historical cells (**0/7** current cells). Alpha158 returns 1.44% rather than 2.66% with 13.77% rather than 10.15% drawdown; Alpha360 returns -2.32% rather than +4.09%. The two runs per baseline agree within **{max(deterministic_evidence["evidence"]["baselines"]["alpha158"]["repeat_max_abs_difference"], deterministic_evidence["evidence"]["baselines"]["alpha360"]["repeat_max_abs_difference"]):.3g}**.
 - The paper-configured QuantaAlpha/GPT diagnostic recomputes all **150/150 public custom factors plus Alpha158(20)** after one documented `MEAN` broadcast compatibility repair, but does not reproduce the claim: IC **0.04229 vs 0.15008**, ARR **3.61% vs 27.75%**, IR **0.51367 vs 3.32512**, and MDD **12.56% vs 7.98%**. Two complete runs agree within **{complete_pool_evidence["repeat_max_abs_difference"]:.3g}** across all eight metrics. Adding the repaired factors lowers ARR and IR relative to the earlier 168-factor diagnostic, so the missing pair cannot explain the headline.
 - Numeric result figures add **40 visible labels**, **47 discrete unlabeled central markers**, and **10 raster return curves**. The README ships the 17-label case-study raster and byte-identical copies of the paper-source Figure 3--5 assets, corroborating **17 labels, 47 markers, and 10 curves**. Their underlying arrays are absent; **0/40**, **0/47**, and **0/10** are regenerated.
 
@@ -2842,6 +3052,7 @@ headline QuantaAlpha result does not reproduce**.
 - The release is not pseudocode: **{native["current_compile"]["compiled"]}/{native["current_compile"]["python_files"]}** current Python files and **{native["initial_compile"]["compiled"]}/{native["initial_compile"]["python_files"]}** initial-release Python files compile. The audit executes native expression parsing/complexity/subtree matching, trajectory JSON round-trip, lineage round-trip, and performance/diversity-aware crossover selection without calling an LLM or market API.
 - Public prompt/config/source paths implement meaningful planning, full trajectory records, mutation/crossover generation, semantic consistency, AST complexity/redundancy checks, Qlib evaluation, and TopkDropout backtesting. **{status_counts["implemented_match"]}/{len(mechanisms)}** audited mechanism dimensions are implementation matches.
 - The recovered `backtest_v2` profile matches the paper split, label, LightGBM seed, Top-50/drop-5 portfolio, open execution, and 0.05%/0.15% costs closely enough to reproduce Alpha158(20) exactly at displayed precision.
+- `scripts/rerun_quantaalpha_deterministic_baselines.py` runs Alpha158 and Alpha360 twice in fresh processes, substitutes only the fingerprinted provider/output paths, leaves the author checkout clean, and emits normalized evidence without elapsed-time noise.
 - `scripts/rerun_quantaalpha_complete_pool.py` ships the complete-pool recovery path. Its factor-recovery record, result JSON, two native logs, and two-run repeatability record are hash-pinned in this audit; it leaves the author checkout unmodified and makes no LLM or market API call.
 - Pre-publication pools preserve IDs, formulas, descriptions, implementation code, backtest feedback, and cache lineage for the LLM-generated factors.
 
