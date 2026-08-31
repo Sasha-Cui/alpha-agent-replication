@@ -5,10 +5,10 @@ v1/v2,fine_tuned_model_ids,incomplete_unverified,"One commented fine-tuned model
 v1/v2,training_period,specified,June--October 2023 in paper; source fine-tuning bounds end November 1.
 v1/v2,test_period,conflicting,Paper says November 2023--September 2024; figures end August; source handlers end January 2025; metrics imply 43 weeks.
 v1/v2,universe,high_level_only,Weekly top-30 CoinGecko universe stated; exact memberships are absent.
-v1/v2,raw_inputs,missing,data/ and processed_data/ are gitignored and absent.
-v1/v2,processed_inputs,missing,"Factors, news, charts, prices, and labels are absent."
-v1/v2,prompt_templates,templates_plus_deleted_training_messages,"Templates are released, and complete history recovers 962 fine-tuning-format system/user/assistant message records; the exact selected training job remains absent."
-v1/v2,model_requests_responses,training_examples_only,"Complete history recovers training messages, but no immutable inference requests/responses, token/logprob records, or retry logs."
+v1/v2,raw_inputs,market_inputs_missing_training_images_recovered,Market/factor data and processed_data are absent from every Git object; all 930 distinct image payloads referenced by the recovered fine-tuning-format files are present as tracked PNG blobs.
+v1/v2,processed_inputs,market_inputs_missing_historical_training_payload_complete,"Factors, news, prices, and weekly universes are absent; all 962 historical training message records and every referenced image payload are recoverable."
+v1/v2,prompt_templates,templates_plus_complete_historical_training_payload,"Templates plus 962 fine-tuning-format message records and all 930 distinct referenced image payloads are recovered. The files were added post-v2, and the actual uploaded file, job, and selected checkpoint remain absent."
+v1/v2,model_requests_responses,training_examples_only,"Complete history recovers the historical training messages and referenced image payloads, but no immutable inference requests/responses, token/logprob records, or retry logs."
 v1/v2,checkpoints,missing,"Runner names pickle checkpoints, but none are released."
 v1/v2,prediction_records,missing,"Runner names JSON records, but none are released."
 v1/v2,portfolio_rules,source_present,"Top-quintile, linear-probability ensemble, and market weights are inspectable."

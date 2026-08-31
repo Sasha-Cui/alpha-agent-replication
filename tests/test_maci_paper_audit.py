@@ -57,6 +57,19 @@ def test_manifest_keeps_both_experiments_and_the_zero_result_boundary() -> None:
     assert manifest["v1_v2_public_fork_native_result_artifacts_found"] == 0
     assert manifest["v3_public_history_commits_audited"] == 20
     assert manifest["v1_v2_deleted_fine_tuning_message_records_recovered"] == 962
+    assert manifest["v1_v2_fine_tuning_record_payloads_recovered"] == 962
+    assert manifest["v1_v2_fine_tuning_image_references"] == 931
+    assert manifest["v1_v2_fine_tuning_unique_image_payloads_recovered"] == 930
+    assert manifest["v1_v2_fine_tuning_image_payload_bytes"] == 53_574_400
+    assert manifest["v1_v2_fine_tuning_images_identical_at_current_head"] == 930
+    assert (
+        manifest["v1_v2_fine_tuning_image_manifest_sha256"]
+        == audit.TRAINING_IMAGE_MANIFEST_SHA256
+    )
+    assert manifest["v1_v2_historical_fine_tuning_payload_complete"] is True
+    assert manifest["v1_v2_historical_fine_tuning_files_added_after_paper_v2"] is True
+    assert manifest["v1_v2_actual_fine_tuning_upload_job_checkpoint_recovered"] is False
+    assert manifest["v1_v2_fine_tuning_payload_paper_result_credit"] is False
     assert manifest["v3_non_rag_architecture_component_paths_passed"] == 9
     assert manifest["v3_non_rag_architecture_component_paths_denominator"] == 9
     assert manifest["v3_rag_architecture_paths_blocked_by_missing_source_module"] == 3
@@ -195,7 +208,15 @@ def test_pinned_manuscripts_rebuild_deterministically_and_pass_visual_qa() -> No
 def test_method_prompt_and_internal_consistency_gaps_remain_explicit() -> None:
     methods = {(row["paper_version"], row["dimension"]): row for row in csv_rows("method_specification_audit.csv")}
     assert len(methods) == 35
-    assert methods[("v1/v2", "raw_inputs")]["status"] == "missing"
+    assert methods[("v1/v2", "raw_inputs")]["status"] == (
+        "market_inputs_missing_training_images_recovered"
+    )
+    assert methods[("v1/v2", "processed_inputs")]["status"] == (
+        "market_inputs_missing_historical_training_payload_complete"
+    )
+    assert methods[("v1/v2", "prompt_templates")]["status"] == (
+        "templates_plus_complete_historical_training_payload"
+    )
     assert methods[("v1/v2", "fine_tuned_model_ids")]["status"] == "incomplete_unverified"
     assert methods[("v3", "system_architecture")]["status"] == ("source_present_component_verified")
     assert methods[("v3", "react_loop")]["status"] == "paper_source_conflict"
@@ -263,6 +284,53 @@ def test_complete_public_histories_recover_training_records_not_results() -> Non
     assert training["files"][0]["image_week_min"] == "2023-W22"
     assert training["files"][0]["image_week_max"] == "2023-W52"
     assert all(row["paper_result_credit"] is False for row in training["files"])
+    lineage = csv_rows("v1_v2_finetuning_record_lineage.csv")
+    payload = json.loads(
+        (OUTPUT / "v1_v2_finetuning_payload_summary.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert len(lineage) == 962
+    assert Counter(row["dataset_path"] for row in lineage) == {
+        "test/single_cs_0510.jsonl": 930,
+        "test/single_mkt_0510.jsonl": 31,
+        "test/test.jsonl": 1,
+    }
+    assert Counter(row["assistant_label"] for row in lineage) == {
+        "Fall": 496,
+        "Rise": 466,
+    }
+    image_rows = [row for row in lineage if row["image_reference_present"] == "True"]
+    assert len(image_rows) == 931
+    assert len({row["image_url"] for row in image_rows}) == 930
+    assert len({row["image_path"] for row in image_rows}) == 930
+    assert len({row["image_dataset_blob_oid"] for row in image_rows}) == 930
+    assert {row["image_width"] for row in image_rows} == {"1000"}
+    assert {row["image_height"] for row in image_rows} == {"800"}
+    assert {row["image_mode"] for row in image_rows} == {"RGBA"}
+    assert {row["image_format"] for row in image_rows} == {"PNG"}
+    assert all(
+        row["image_dataset_blob_oid"] == row["image_current_blob_oid"]
+        for row in image_rows
+    )
+    assert all(row["complete_record_payload_recovered"] == "True" for row in lineage)
+    assert all(row["paper_run_use_verified"] == "False" for row in lineage)
+    assert all(row["paper_result_credit"] == "False" for row in lineage)
+    assert payload["fine_tuning_format_records"] == 962
+    assert payload["image_references"] == 931
+    assert payload["unique_image_paths"] == 930
+    assert payload["unique_image_git_blobs"] == 930
+    assert payload["image_payloads_recovered"] == 930
+    assert payload["image_payloads_identical_at_current_head"] == 930
+    assert payload["image_payload_bytes"] == 53_574_400
+    assert payload["image_dimensions"] == [1000, 800]
+    assert payload["image_manifest_sha256"] == audit.TRAINING_IMAGE_MANIFEST_SHA256
+    assert payload["all_referenced_image_payloads_recovered"] is True
+    assert payload["dataset_added_after_paper_v2"] is True
+    assert payload["actual_uploaded_file_identity_recovered"] is False
+    assert payload["fine_tuning_job_and_selected_checkpoint_recovered"] is False
+    assert payload["paper_run_use_verified"] is False
+    assert payload["paper_result_credit"] is False
     assert history["v3_missing_module_paths_present_in_any_commit"] == {
         "environ/data/coingecko.py": False,
         "environ/data/cointelegraph.py": False,
@@ -310,4 +378,6 @@ def test_manifest_hashes_cover_every_committed_audit_output() -> None:
     assert "not reproduced end to end" in readme
     assert "Zero of 321" in readme
     assert "Zero of 442" in readme
+    assert "all referenced images are therefore recoverable" in readme
+    assert "does not prove they were the uploaded paper training set" in readme
     assert "do not fill any missing experimental data" in readme

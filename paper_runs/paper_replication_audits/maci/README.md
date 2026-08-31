@@ -15,8 +15,12 @@ is audited. The pre-submission source is genuine and substantial, and all 16
 compiled manuscript figures have author-output correspondence, covering 21
 plotted quantitative units. Complete history also recovers three deleted
 fine-tuning-format JSONL files containing 962 system/user/assistant message
-records, including 930 unique image URLs spanning weeks 2023-W22--W52. This is
-materially better training-input provenance than the current tree exposes.
+records. Every one of the 930 distinct referenced image URLs maps to a tracked,
+valid 1000x800 RGBA PNG at the dataset commit; all 930 Git blobs are byte-identical
+at the current official head and total 53,574,400 bytes. The 962 record-level
+payloads and all referenced images are therefore recoverable, not merely URL
+provenance. The files were added in May 2025 after paper v2, however, so this does
+not prove they were the uploaded paper training set.
 
 The public GitHub fork surface is also exhausted as of 2026-08-14. Both
 accessible forks expose one `main` branch: one is exact at the official head
@@ -25,9 +29,9 @@ official history. Across two forks, two refs, and two unique heads, there are
 zero divergent commits, unique blobs, tags, or additional native result
 artifacts.
 
-It is still not a paper-result reproduction. The exact fine-tuning upload,
-job, selected checkpoint, test predictions, raw/processed inputs, weekly
-universe, inference request/response logs, and portfolio arrays are absent.
+It is still not a paper-result reproduction. The exact fine-tuning upload/job,
+selected checkpoint, test predictions, market/factor raw and processed inputs,
+weekly universe, inference request/response logs, and portfolio arrays are absent.
 **Zero of 321** table units and **zero of 21** plotted result units regenerate
 from released inputs. The raw pre-submission source also fails its declared
 Python 3.9 contract; a labelled later-constant overlay reaches deterministic

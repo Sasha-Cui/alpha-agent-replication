@@ -1,0 +1,40 @@
+{
+  "actual_uploaded_file_identity_recovered": false,
+  "all_referenced_image_payloads_recovered": true,
+  "assistant_label_counts": {
+    "Fall": 496,
+    "Rise": 466
+  },
+  "assistant_messages": 962,
+  "dataset_added_after_paper_v2": true,
+  "dataset_commit": "3236cd6929707315315f76240ec2f930e1e4f43f",
+  "dataset_commit_author_date": "2025-05-15T21:36:19Z",
+  "dataset_removed_commit": "0203a30817d258aad8afe92d9a044982619cfece",
+  "dataset_removed_commit_author_date": "2025-05-16T10:03:49Z",
+  "fine_tuning_format_records": 962,
+  "fine_tuning_job_and_selected_checkpoint_recovered": false,
+  "historical_fine_tuning_files_have_complete_message_and_image_payloads": true,
+  "image_assets": 33,
+  "image_dimensions": [
+    1000,
+    800
+  ],
+  "image_format": "PNG",
+  "image_manifest_sha256": "64d6cea8f5d3c5b52f720b9daa12764c440a2e652ac38da3c6baeb8422148f7b",
+  "image_mode": "RGBA",
+  "image_payload_bytes": 53574400,
+  "image_payloads_identical_at_current_head": 930,
+  "image_payloads_recovered": 930,
+  "image_references": 931,
+  "image_week_max": "2023-W52",
+  "image_week_min": "2023-W22",
+  "image_weeks": 31,
+  "jsonl_files": 3,
+  "paper_result_credit": false,
+  "paper_run_use_verified": false,
+  "system_messages": 962,
+  "unique_image_git_blobs": 930,
+  "unique_image_paths": 930,
+  "unique_image_urls": 930,
+  "user_messages": 962
+}

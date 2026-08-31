@@ -20,9 +20,13 @@ import re
 import subprocess
 from collections import Counter
 from difflib import SequenceMatcher
+from io import BytesIO
 from pathlib import Path
 from typing import Any, Mapping, Sequence
+from urllib.parse import unquote, urlparse
 from zipfile import ZipFile
+
+from PIL import Image
 
 
 EXPECTED = {
@@ -50,6 +54,28 @@ EXPECTED = {
 
 V1_V2_REPOSITORY = "https://github.com/lyc0603/multi-agent"
 PUBLIC_FORK_CENSUS_DATE = "2026-08-14"
+TRAINING_RECORDS_COMMIT = "3236cd6929707315315f76240ec2f930e1e4f43f"
+TRAINING_RECORDS_REMOVAL_COMMIT = "0203a30817d258aad8afe92d9a044982619cfece"
+TRAINING_JSONL_PINS = {
+    "test/single_cs_0510.jsonl": (
+        1_935_323,
+        "7b5fdd8ec44f631657e3211868bdd77da22991c0ae3e508d6a2082462ee055ee",
+        930,
+    ),
+    "test/single_mkt_0510.jsonl": (
+        520_246,
+        "ef7e0a5b7de4fd7ebc0e10e3fa7f6b3a64cad10ed46c150fe25afa835a242452",
+        31,
+    ),
+    "test/test.jsonl": (
+        2_068,
+        "c2cef4f998ad056d68a4e7a8d4c66ac0953d591b106be15fda0c7040d3ae8dba",
+        1,
+    ),
+}
+TRAINING_IMAGE_MANIFEST_SHA256 = (
+    "64d6cea8f5d3c5b52f720b9daa12764c440a2e652ac38da3c6baeb8422148f7b"
+)
 PUBLIC_FORK_HEADS = {
     "refs/remotes/forks/gelove/main": "2326185cc2d1eff02724cfeb88116ebb13f904e7",
     "refs/remotes/forks/jemxgw/main": "3ed387b3683d57eab04d36e1f18f3e49fdfc0bec",
@@ -69,6 +95,10 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
 def write_csv(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
     if not rows:
         raise ValueError(f"refusing to write empty CSV: {path}")
@@ -86,6 +116,14 @@ def git(root: Path, *args: str) -> str:
         capture_output=True,
         text=True,
     ).stdout.strip()
+
+
+def git_bytes(root: Path, *args: str) -> bytes:
+    return subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+    ).stdout
 
 
 def public_fork_audit(author_current: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
@@ -674,6 +712,255 @@ def validate_repository_history(payload: Mapping[str, Any]) -> None:
         raise ValueError(f"v3 missing-module history changed: {missing}")
 
 
+def fine_tuning_record_lineage(
+    author_current: Path,
+    repository_history: Mapping[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Recover every historical fine-tuning record and referenced image payload."""
+    training = repository_history["v1_v2_deleted_training_records"]
+    if (
+        training["added_commit"] != TRAINING_RECORDS_COMMIT
+        or training["removed_commit"] != TRAINING_RECORDS_REMOVAL_COMMIT
+    ):
+        raise ValueError("MACI fine-tuning record commit lineage changed")
+
+    def tree(ref: str) -> dict[str, str]:
+        rows = {}
+        for line in git(author_current, "ls-tree", "-r", ref).splitlines():
+            metadata, path = line.split("\t", 1)
+            rows[path] = metadata.split()[2]
+        return rows
+
+    dataset_tree = tree(TRAINING_RECORDS_COMMIT)
+    current_tree = tree(EXPECTED["author_current_commit"])
+    expected_files = {
+        item["path"]: (item["bytes"], item["sha256"], item["records"])
+        for item in training["files"]
+    }
+    if expected_files != TRAINING_JSONL_PINS:
+        raise ValueError("MACI fine-tuning JSONL history summary changed")
+
+    def canonical_content(value: Any) -> str:
+        if isinstance(value, str):
+            return value
+        return json.dumps(
+            value,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+
+    image_cache: dict[str, dict[str, Any]] = {}
+    records = []
+    label_counts: Counter[str] = Counter()
+    for dataset_path, (expected_bytes, expected_sha, expected_records) in sorted(
+        TRAINING_JSONL_PINS.items()
+    ):
+        raw = git_bytes(author_current, "show", f"{TRAINING_RECORDS_COMMIT}:{dataset_path}")
+        if len(raw) != expected_bytes or sha256_bytes(raw) != expected_sha:
+            raise ValueError(f"MACI historical fine-tuning file changed: {dataset_path}")
+        lines = raw.decode("utf-8").splitlines()
+        if len(lines) != expected_records:
+            raise ValueError(f"MACI fine-tuning record count changed: {dataset_path}")
+        dataset_blob_oid = dataset_tree.get(dataset_path, "")
+        if not dataset_blob_oid:
+            raise ValueError(f"MACI dataset path missing at its addition commit: {dataset_path}")
+
+        for record_index, line in enumerate(lines):
+            payload = json.loads(line)
+            messages = payload.get("messages", [])
+            if [message.get("role") for message in messages] != [
+                "system",
+                "user",
+                "assistant",
+            ]:
+                raise ValueError(
+                    f"MACI fine-tuning role order changed: {dataset_path}:{record_index}"
+                )
+            by_role = {message["role"]: message["content"] for message in messages}
+            assistant = canonical_content(by_role["assistant"])
+            label = re.search(r"(?:Price|Market) trend:\s*(Rise|Fall)", assistant)
+            if label is None:
+                raise ValueError(
+                    f"MACI assistant label missing: {dataset_path}:{record_index}"
+                )
+            assistant_label = label.group(1)
+            label_counts[assistant_label] += 1
+
+            image_urls = []
+            if isinstance(by_role["user"], list):
+                image_urls = [
+                    item["image_url"]["url"]
+                    for item in by_role["user"]
+                    if item.get("type") == "image_url"
+                ]
+            if len(image_urls) > 1:
+                raise ValueError(
+                    f"MACI fine-tuning record has multiple images: {dataset_path}:{record_index}"
+                )
+            image_url = image_urls[0] if image_urls else ""
+            image_path = ""
+            image = {
+                "dataset_blob_oid": "",
+                "current_blob_oid": "",
+                "sha256": "",
+                "bytes": "",
+                "width": "",
+                "height": "",
+                "mode": "",
+                "format": "",
+            }
+            if image_url:
+                parsed = urlparse(image_url)
+                prefix = "/lyc0603/multi-agent/refs/heads/main/"
+                if (
+                    parsed.scheme != "https"
+                    or parsed.netloc != "raw.githubusercontent.com"
+                    or not parsed.path.startswith(prefix)
+                ):
+                    raise ValueError(f"MACI fine-tuning image URL changed: {image_url}")
+                image_path = unquote(parsed.path[len(prefix) :])
+                if image_path not in image_cache:
+                    dataset_oid = dataset_tree.get(image_path, "")
+                    current_oid = current_tree.get(image_path, "")
+                    path = author_current / image_path
+                    if not dataset_oid or dataset_oid != current_oid or not path.is_file():
+                        raise ValueError(
+                            f"MACI fine-tuning image lineage changed: {image_path}"
+                        )
+                    image_bytes = path.read_bytes()
+                    git_oid = hashlib.sha1(  # noqa: S324 - Git object identity, not security.
+                        f"blob {len(image_bytes)}\0".encode() + image_bytes,
+                        usedforsecurity=False,
+                    ).hexdigest()
+                    if git_oid != dataset_oid:
+                        raise ValueError(
+                            f"MACI fine-tuning image worktree/blob mismatch: {image_path}"
+                        )
+                    with Image.open(BytesIO(image_bytes)) as opened:
+                        width, height = opened.size
+                        mode = opened.mode
+                        image_format = opened.format
+                        opened.verify()
+                    image_cache[image_path] = {
+                        "dataset_blob_oid": dataset_oid,
+                        "current_blob_oid": current_oid,
+                        "sha256": sha256_bytes(image_bytes),
+                        "bytes": len(image_bytes),
+                        "width": width,
+                        "height": height,
+                        "mode": mode,
+                        "format": image_format,
+                    }
+                image = image_cache[image_path]
+
+            records.append(
+                {
+                    "dataset_path": dataset_path,
+                    "dataset_blob_oid": dataset_blob_oid,
+                    "record_index": record_index,
+                    "record_sha256": sha256_bytes(line.encode()),
+                    "system_payload_sha256": sha256_bytes(
+                        canonical_content(by_role["system"]).encode()
+                    ),
+                    "user_payload_sha256": sha256_bytes(
+                        canonical_content(by_role["user"]).encode()
+                    ),
+                    "assistant_payload_sha256": sha256_bytes(assistant.encode()),
+                    "assistant_label": assistant_label,
+                    "image_reference_present": bool(image_url),
+                    "image_url": image_url,
+                    "image_path": image_path,
+                    "image_dataset_blob_oid": image["dataset_blob_oid"],
+                    "image_current_blob_oid": image["current_blob_oid"],
+                    "image_sha256": image["sha256"],
+                    "image_bytes": image["bytes"],
+                    "image_width": image["width"],
+                    "image_height": image["height"],
+                    "image_mode": image["mode"],
+                    "image_format": image["format"],
+                    "referenced_image_payload_recovered": bool(image_url),
+                    "complete_record_payload_recovered": True,
+                    "paper_run_use_verified": False,
+                    "paper_result_credit": False,
+                }
+            )
+
+    manifest_lines = [
+        "\t".join(
+            (
+                path,
+                str(image["bytes"]),
+                str(image["sha256"]),
+                f"{image['width']}x{image['height']}",
+                str(image["mode"]),
+                str(image["format"]),
+            )
+        )
+        for path, image in sorted(image_cache.items())
+    ]
+    manifest_hash = sha256_bytes("\n".join(manifest_lines).encode())
+    image_references = sum(bool(row["image_reference_present"]) for row in records)
+    if (
+        len(records) != 962
+        or image_references != 931
+        or len(image_cache) != 930
+        or sum(int(image["bytes"]) for image in image_cache.values()) != 53_574_400
+        or {image["width"] for image in image_cache.values()} != {1000}
+        or {image["height"] for image in image_cache.values()} != {800}
+        or {image["mode"] for image in image_cache.values()} != {"RGBA"}
+        or {image["format"] for image in image_cache.values()} != {"PNG"}
+        or manifest_hash != TRAINING_IMAGE_MANIFEST_SHA256
+        or label_counts != {"Fall": 496, "Rise": 466}
+    ):
+        raise ValueError("MACI fine-tuning message/image payload census changed")
+    image_names = [Path(path).stem for path in image_cache]
+    assets = {name.rsplit("_", 2)[0] for name in image_names}
+    weeks = {tuple(map(int, name.rsplit("_", 2)[-2:])) for name in image_names}
+    if len(assets) != 33 or len(weeks) != 31 or min(weeks) != (2023, 22) or max(weeks) != (2023, 52):
+        raise ValueError("MACI fine-tuning image asset/week coverage changed")
+    summary = {
+        "dataset_commit": TRAINING_RECORDS_COMMIT,
+        "dataset_commit_author_date": training["added_commit_author_date"],
+        "dataset_removed_commit": TRAINING_RECORDS_REMOVAL_COMMIT,
+        "dataset_removed_commit_author_date": training["removed_commit_author_date"],
+        "dataset_added_after_paper_v2": True,
+        "jsonl_files": len(TRAINING_JSONL_PINS),
+        "fine_tuning_format_records": len(records),
+        "system_messages": len(records),
+        "user_messages": len(records),
+        "assistant_messages": len(records),
+        "assistant_label_counts": dict(sorted(label_counts.items())),
+        "image_references": image_references,
+        "unique_image_urls": len({row["image_url"] for row in records if row["image_url"]}),
+        "unique_image_paths": len(image_cache),
+        "unique_image_git_blobs": len(
+            {image["dataset_blob_oid"] for image in image_cache.values()}
+        ),
+        "image_payloads_recovered": len(image_cache),
+        "image_payloads_identical_at_current_head": sum(
+            image["dataset_blob_oid"] == image["current_blob_oid"]
+            for image in image_cache.values()
+        ),
+        "image_payload_bytes": sum(int(image["bytes"]) for image in image_cache.values()),
+        "image_dimensions": [1000, 800],
+        "image_mode": "RGBA",
+        "image_format": "PNG",
+        "image_assets": len(assets),
+        "image_weeks": len(weeks),
+        "image_week_min": "2023-W22",
+        "image_week_max": "2023-W52",
+        "image_manifest_sha256": manifest_hash,
+        "all_referenced_image_payloads_recovered": True,
+        "historical_fine_tuning_files_have_complete_message_and_image_payloads": True,
+        "actual_uploaded_file_identity_recovered": False,
+        "fine_tuning_job_and_selected_checkpoint_recovered": False,
+        "paper_run_use_verified": False,
+        "paper_result_credit": False,
+    }
+    return records, summary
+
+
 def figure_rows(source: Path, author: Path, comparison: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
     comparison_by_name = {row["asset"]: row for row in comparison}
     result_units = {
@@ -795,19 +1082,29 @@ def method_rows() -> list[dict[str, Any]]:
             "high_level_only",
             "Weekly top-30 CoinGecko universe stated; exact memberships are absent.",
         ),
-        ("v1/v2", "raw_inputs", "missing", "data/ and processed_data/ are gitignored and absent."),
-        ("v1/v2", "processed_inputs", "missing", "Factors, news, charts, prices, and labels are absent."),
+        (
+            "v1/v2",
+            "raw_inputs",
+            "market_inputs_missing_training_images_recovered",
+            "Market/factor data and processed_data are absent from every Git object; all 930 distinct image payloads referenced by the recovered fine-tuning-format files are present as tracked PNG blobs.",
+        ),
+        (
+            "v1/v2",
+            "processed_inputs",
+            "market_inputs_missing_historical_training_payload_complete",
+            "Factors, news, prices, and weekly universes are absent; all 962 historical training message records and every referenced image payload are recoverable.",
+        ),
         (
             "v1/v2",
             "prompt_templates",
-            "templates_plus_deleted_training_messages",
-            "Templates are released, and complete history recovers 962 fine-tuning-format system/user/assistant message records; the exact selected training job remains absent.",
+            "templates_plus_complete_historical_training_payload",
+            "Templates plus 962 fine-tuning-format message records and all 930 distinct referenced image payloads are recovered. The files were added post-v2, and the actual uploaded file, job, and selected checkpoint remain absent.",
         ),
         (
             "v1/v2",
             "model_requests_responses",
             "training_examples_only",
-            "Complete history recovers training messages, but no immutable inference requests/responses, token/logprob records, or retry logs.",
+            "Complete history recovers the historical training messages and referenced image payloads, but no immutable inference requests/responses, token/logprob records, or retry logs.",
         ),
         ("v1/v2", "checkpoints", "missing", "Runner names pickle checkpoints, but none are released."),
         ("v1/v2", "prediction_records", "missing", "Runner names JSON records, but none are released."),
@@ -1502,6 +1799,10 @@ def main() -> None:
         raise ValueError("v3 figure comparison boundary changed")
     repository_history = json.loads(args.repository_history_json.read_text(encoding="utf-8"))
     validate_repository_history(repository_history)
+    training_records, training_payload = fine_tuning_record_lineage(
+        args.author_current,
+        repository_history,
+    )
     fork_branches, fork_summary = public_fork_audit(args.author_current)
     manuscripts = manuscript_provenance(args)
     source_inventory = author_source_inventory(args.author_v1, args.author_current, args.author_v3)
@@ -1522,12 +1823,17 @@ def main() -> None:
     write_csv(output / "artifact_access_audit.csv", artifact_rows())
     write_csv(output / "external_primary_source_audit.csv", external_primary_source_rows())
     write_csv(output / "public_fork_branch_ref_snapshot.csv", fork_branches)
+    write_csv(output / "v1_v2_finetuning_record_lineage.csv", training_records)
     (output / "public_fork_census.json").write_text(
         json.dumps(fork_summary, indent=2) + "\n", encoding="utf-8"
     )
     (output / "native_execution.json").write_text(json.dumps(execution, indent=2) + "\n", encoding="utf-8")
     (output / "native_execution_v3.json").write_text(json.dumps(v3_execution, indent=2) + "\n", encoding="utf-8")
     (output / "repository_history.json").write_text(json.dumps(repository_history, indent=2) + "\n", encoding="utf-8")
+    (output / "v1_v2_finetuning_payload_summary.json").write_text(
+        json.dumps(training_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     (output / "v3_author_output_summary.json").write_text(
         json.dumps(
             {
@@ -1577,6 +1883,30 @@ def main() -> None:
         "v1_v2_deleted_fine_tuning_message_records_recovered": repository_history["v1_v2_deleted_training_records"][
             "total_records"
         ],
+        "v1_v2_fine_tuning_record_payloads_recovered": training_payload[
+            "fine_tuning_format_records"
+        ],
+        "v1_v2_fine_tuning_image_references": training_payload["image_references"],
+        "v1_v2_fine_tuning_unique_image_payloads_recovered": training_payload[
+            "image_payloads_recovered"
+        ],
+        "v1_v2_fine_tuning_image_payload_bytes": training_payload[
+            "image_payload_bytes"
+        ],
+        "v1_v2_fine_tuning_images_identical_at_current_head": training_payload[
+            "image_payloads_identical_at_current_head"
+        ],
+        "v1_v2_fine_tuning_image_manifest_sha256": training_payload[
+            "image_manifest_sha256"
+        ],
+        "v1_v2_historical_fine_tuning_payload_complete": training_payload[
+            "historical_fine_tuning_files_have_complete_message_and_image_payloads"
+        ],
+        "v1_v2_historical_fine_tuning_files_added_after_paper_v2": training_payload[
+            "dataset_added_after_paper_v2"
+        ],
+        "v1_v2_actual_fine_tuning_upload_job_checkpoint_recovered": False,
+        "v1_v2_fine_tuning_payload_paper_result_credit": False,
         "v1_v2_public_history_commits_audited": repository_history["v1_v2_repository_history"]["commit_count"],
         "v1_v2_public_fork_census_date": fork_summary["census_date"],
         "v1_v2_public_forks_accessible": fork_summary["accessible_public_forks"],
@@ -1656,8 +1986,12 @@ is audited. The pre-submission source is genuine and substantial, and all 16
 compiled manuscript figures have author-output correspondence, covering 21
 plotted quantitative units. Complete history also recovers three deleted
 fine-tuning-format JSONL files containing 962 system/user/assistant message
-records, including 930 unique image URLs spanning weeks 2023-W22--W52. This is
-materially better training-input provenance than the current tree exposes.
+records. Every one of the 930 distinct referenced image URLs maps to a tracked,
+valid 1000x800 RGBA PNG at the dataset commit; all 930 Git blobs are byte-identical
+at the current official head and total 53,574,400 bytes. The 962 record-level
+payloads and all referenced images are therefore recoverable, not merely URL
+provenance. The files were added in May 2025 after paper v2, however, so this does
+not prove they were the uploaded paper training set.
 
 The public GitHub fork surface is also exhausted as of 2026-08-14. Both
 accessible forks expose one `main` branch: one is exact at the official head
@@ -1666,9 +2000,9 @@ official history. Across two forks, two refs, and two unique heads, there are
 zero divergent commits, unique blobs, tags, or additional native result
 artifacts.
 
-It is still not a paper-result reproduction. The exact fine-tuning upload,
-job, selected checkpoint, test predictions, raw/processed inputs, weekly
-universe, inference request/response logs, and portfolio arrays are absent.
+It is still not a paper-result reproduction. The exact fine-tuning upload/job,
+selected checkpoint, test predictions, market/factor raw and processed inputs,
+weekly universe, inference request/response logs, and portfolio arrays are absent.
 **Zero of 321** table units and **zero of 21** plotted result units regenerate
 from released inputs. The raw pre-submission source also fails its declared
 Python 3.9 contract; a labelled later-constant overlay reaches deterministic
