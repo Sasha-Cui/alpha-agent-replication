@@ -281,8 +281,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             ),
         "CensusArxiv241018448": "paper_audit:partial_1549_of_1554_published_units_author_thesis_source_recovery",
         "CensusArxiv250207393": (
-            "paper_audit:completed_zero_of_36_native_results_80_accessible_forks_"
-            "82_refs_10_heads_community_checkpoint_rerun_30_of_30_supplied_cells_mismatch"
+            "paper_audit:completed_zero_of_36_native_results_17_of_24_current_"
+            "rerun_records_exact_0_of_24_current_IR_matches_notebook_alignment_broken_"
+            "80_accessible_forks_82_refs_10_heads_community_checkpoint_rerun_"
+            "30_of_30_supplied_cells_mismatch"
         ),
         "CensusArxiv250510278": (
             "paper_audit:completed_zero_of_766_final_native_results_full_release_history_"

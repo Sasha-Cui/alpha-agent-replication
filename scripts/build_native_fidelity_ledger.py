@@ -839,10 +839,17 @@ ARTIFACT_NOTES = {
         "paper-era release is substantial: frozen train/trade CSVs, 15 checkpoints, "
         "training logs, and backtest code are available, and all eight table-relevant "
         "checkpoints execute on the released CSVs under three audited evaluation "
-        "protocols. But 0/36 paper table cells and 0/32 figure series receive result "
-        "credit. The stored notebook has 27/36 values, none matching the paper, and "
-        "reports six conflicting values for repeated identical series. Evaluation "
-        "seeds and the live Yahoo benchmark are unpinned, and the exact 100-epoch "
+        "protocols. Exact-runtime current reruns reproduce only 17/24 stored "
+        "protocol/configuration records (4/8 seed 0, 6/8 seed 42, 7/8 policy means); "
+        "the largest final-asset deviation is 31.60%. A canonical current Yahoo NDX "
+        "retrieval recovers the notebook's 937 valid benchmark rows, but the notebook "
+        "cannot index its 1,256 sliced asset values by 1,257 trade dates. The audit "
+        "repairs alignment with native asset/date memory and computes 24 current IRs; "
+        "0/24 match the paper at four decimals and none receives paper-time credit. "
+        "Overall, 0/36 paper table cells and 0/32 figure series receive result credit. "
+        "The stored notebook has 27/36 values, none matching the paper, and reports "
+        "six conflicting values for repeated identical series. Evaluation seeds and "
+        "the paper-time Yahoo benchmark remain unpinned, and the exact 100-epoch "
         "DeepSeek 10% CPPO training lineage is absent. A pinned census exhausts 80 "
         "accessible public forks, 82 refs, 10 unique heads, 69 divergent commits, "
         "84 changed paths, and 159 new blobs. One post-paper community notebook "
@@ -1830,7 +1837,7 @@ TARGETED_EXECUTION = {
     "SYS-FIN-VISION": "paper_audit:completed_zero_of_72_performance_cells_no_public_system_source",
     "SYS-HEDGE-AGENTS": "paper_audit:completed_zero_of_236_numeric_cells_static_site_not_system_source",
     "SYS-HUBBLE": "paper_audit:completed_v1_zero_of_47_unique_cells_v2_zero_of_102_unique_cells_zero_of_50_figure_series_formulas_intentionally_withheld",
-    "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_80_accessible_forks_82_refs_10_heads_community_checkpoint_rerun_30_of_30_supplied_cells_mismatch",
+    "SYS-FIN-RL-DEEPSEEK": "paper_audit:completed_zero_of_36_native_results_17_of_24_current_rerun_records_exact_0_of_24_current_IR_matches_notebook_alignment_broken_80_accessible_forks_82_refs_10_heads_community_checkpoint_rerun_30_of_30_supplied_cells_mismatch",
     "SYS-GURU-AGENTS": (
         "paper_audit:completed_20_of_70_table_cells_2_benchmark_rows_unique_effective_window_640_agent_variants_zero_agent_rows"
     ),
