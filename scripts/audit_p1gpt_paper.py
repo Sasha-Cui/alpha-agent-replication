@@ -983,6 +983,53 @@ def metric_convention_forensics(
         raise ValueError("one Sharpe annualization convention unexpectedly recovers all rows")
 
     googl = parse_yahoo_rows(audit_root, "GOOGL")
+    def truncates_to_paper(row: Mapping[str, Any]) -> bool:
+        calculated = float(row["calculated_value"])
+        truncated = math.trunc(calculated * 100) / 100
+        return truncated == float(row["paper_value"])
+
+    format_scopes = {
+        "all_recomputed_cells": list(recoveries),
+        "p1gpt_author_plot_cells": [row for row in recoveries if row["method"] == "P1GPT"],
+        "rule_baseline_cells": [row for row in recoveries if row["method"] != "P1GPT"],
+    }
+    format_counts: dict[str, dict[str, int]] = {}
+    for name, selected in format_scopes.items():
+        format_counts[name] = {
+            "cells": len(selected),
+            "nearest_round_two_decimals": sum(
+                bool(row["display_rounding_exact_match"]) for row in selected
+            ),
+            "truncate_all_two_decimals": sum(truncates_to_paper(row) for row in selected),
+            "truncate_sharpe_round_other_metrics": sum(
+                truncates_to_paper(row)
+                if row["metric"] == "SR"
+                else bool(row["display_rounding_exact_match"])
+                for row in selected
+            ),
+            "truncate_only_p1gpt_sharpe_round_everything_else": sum(
+                truncates_to_paper(row)
+                if row["method"] == "P1GPT" and row["metric"] == "SR"
+                else bool(row["display_rounding_exact_match"])
+                for row in selected
+            ),
+        }
+    expected_format_counts = {
+        "all_recomputed_cells": (48, 46, 26, 42, 47),
+        "p1gpt_author_plot_cells": (12, 11, 8, 12, 12),
+        "rule_baseline_cells": (36, 35, 18, 30, 35),
+    }
+    for name, expected in expected_format_counts.items():
+        observed = format_counts[name]
+        values = (
+            observed["cells"], observed["nearest_round_two_decimals"],
+            observed["truncate_all_two_decimals"],
+            observed["truncate_sharpe_round_other_metrics"],
+            observed["truncate_only_p1gpt_sharpe_round_everything_else"],
+        )
+        if values != expected:
+            raise ValueError(f"P1GPT display-format sensitivity changed for {name}: {values}")
+
     closes = [row["close"] for row in googl]
     base = closes[0]
     peak = closes[0]
@@ -1019,6 +1066,17 @@ def metric_convention_forensics(
             "interpretation": (
                 "P1GPT rows jointly admit 251 days and rule baselines jointly admit 252; "
                 "no shared annualization value recovers all displayed Sharpe cells"
+            ),
+            "paper_result_credit": False,
+        },
+        "display_format_sensitivity": {
+            "rounding_precision_decimals": 2,
+            "scope_counts": format_counts,
+            "single_global_rule_recovers_all_48_cells": False,
+            "method_specific_p1gpt_sharpe_truncation_recovers_47_of_48": True,
+            "interpretation": (
+                "P1GPT-only Sharpe truncation fixes AAPL SR but is unsupported by released formatter code "
+                "and still leaves the independent GOOGL B&H MDD conflict"
             ),
             "paper_result_credit": False,
         },
@@ -1359,6 +1417,11 @@ regenerating the multi-agent experiment:
   printed 3.38. All three P1GPT Sharpe cells conditionally round as printed with
   251-day annualization, while all nine recomputed rule-baseline Sharpe cells
   jointly require 252 days; no single convention recovers all 12;
+  A method-specific formatter that truncates only P1GPT Sharpe would display all
+  12 P1GPT cells as printed, but it recovers only 47/48 recomputed cells overall,
+  has no released formatter-code support, and leaves the independent GOOGL B&H
+  MDD conflict. Global truncation performs worse (26/48), so the AAPL cell remains
+  a conditional formatting explanation rather than an extra verified result;
 - rule baselines: 35/36 cells for B&H, MACD, and SMA independently match; the
   same GOOGL close series that recovers B&H CR, AR, and SR gives 6.14% MDD,
   rather than the printed 6.41%;
@@ -1440,10 +1503,10 @@ excluded from native-method or result credit.
 - `author_figure_inventory.csv`: all seven embedded assets.
 - `strategy_raster_curve_forensics.csv`: six AAPL curve/MDD checks and two material table conflicts.
 - `published_result_ledger.csv`: all 72 Table 2 cells.
-- `result_recovery_checks.csv`: 48 exact displayed-cell checks and boundaries.
+- `result_recovery_checks.csv`: 48 recomputed displayed-cell checks, 46 exact under normal rounding.
 - `recovered_author_plot_positions.csv`: 498 author-rendered daily bar values.
 - `market_snapshot_checks.csv`: three pinned present-day Yahoo responses.
-- `metric_convention_forensics.json`: Sharpe annualization and GOOGL capital-interval bounds.
+- `metric_convention_forensics.json`: Sharpe annualization, display-format sensitivity, and GOOGL capital bounds.
 - `prompt_inventory.csv`: the sole paper prompt and missing runtime evidence.
 - `mechanism_conformance.csv`: 36 mechanism dimensions.
 - `specification_gaps.csv`: inputs required for exact replay.
@@ -1580,6 +1643,23 @@ def build_audit(
         "single_starting_capital_recovers_googl_buy_hold_cr_and_mdd": metric_forensics[
             "googl_buy_hold_capital_consistency"
         ]["single_constant_starting_capital_recovers_both_cells"],
+        "nearest_round_two_decimal_cells_verified": metric_forensics[
+            "display_format_sensitivity"
+        ]["scope_counts"]["all_recomputed_cells"]["nearest_round_two_decimals"],
+        "truncate_all_two_decimal_cells_verified": metric_forensics[
+            "display_format_sensitivity"
+        ]["scope_counts"]["all_recomputed_cells"]["truncate_all_two_decimals"],
+        "p1gpt_cells_under_sharpe_only_truncation": metric_forensics[
+            "display_format_sensitivity"
+        ]["scope_counts"]["p1gpt_author_plot_cells"][
+            "truncate_sharpe_round_other_metrics"
+        ],
+        "all_cells_under_p1gpt_only_sharpe_truncation": metric_forensics[
+            "display_format_sensitivity"
+        ]["scope_counts"]["all_recomputed_cells"][
+            "truncate_only_p1gpt_sharpe_round_everything_else"
+        ],
+        "single_global_display_format_recovers_all_recomputed_cells": False,
         "unsupported_kdj_rsi_zmr_cells": 24 - len(raster_conflicts),
         "unsupported_kdj_rsi_zmr_cells_with_author_raster_contradiction": len(
             raster_conflicts
