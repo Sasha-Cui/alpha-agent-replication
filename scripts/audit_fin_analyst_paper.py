@@ -610,6 +610,78 @@ def offline_baseline_reproduction(
     return output
 
 
+def offline_always_hold_reproduction(
+    scratch: Path,
+) -> list[dict[str, Any]]:
+    """Regenerate both seven-cell Always-HOLD rows from the recovered baseline snapshots."""
+    import pandas as pd
+
+    payload_root = scratch / "historical/dataset_revisions"
+    printed = {
+        "TSLA": (0.000, -0.379, 0.00, 0.000, 0.000, 0.00, 0),
+        "BTC": (0.000, 0.315, 0.00, 0.000, 0.000, 0.00, 0),
+    }
+    metrics = ("CR", "alpha_BH", "Sharpe", "AR", "MDD", "WR", "N_tr")
+    formulas = (
+        "constant cash portfolio ending at its initial value",
+        "zero Always-HOLD return minus recovered Buy-and-Hold return",
+        "zero-return convention for the otherwise zero-over-zero Sharpe",
+        "constant cash portfolio has zero annualized return",
+        "constant cash portfolio has zero drawdown",
+        "paper's zero-trade convention reports zero win rate",
+        "Always HOLD executes zero trades",
+    )
+    decimals = (3, 3, 2, 3, 3, 2, 0)
+    output: list[dict[str, Any]] = []
+    for asset in ("TSLA", "BTC"):
+        revision = OFFLINE_BASELINE_REVISIONS[asset]
+        path = payload_root / f"{revision['commit']}_{asset}.parquet"
+        frame = pd.read_parquet(path, columns=["date", "prices"])
+        prices = frame["prices"].astype(float)
+        buy_hold_return = float(prices.iloc[-1] / prices.iloc[0] - 1)
+        reproduced = (0.0, -buy_hold_return, 0.0, 0.0, 0.0, 0.0, 0)
+        table_label = "tab:tsla" if asset == "TSLA" else "tab:btc"
+        for column_index, (metric, formula, expected, observed, digits) in enumerate(
+            zip(metrics, formulas, printed[asset], reproduced, decimals),
+            1,
+        ):
+            matches = round(float(observed), digits) == round(float(expected), digits)
+            output.append(
+                {
+                    "table_label": table_label,
+                    "row_label": "Always HOLD",
+                    "asset": asset,
+                    "quantitative_column_index": column_index,
+                    "metric": metric,
+                    "printed_value": expected,
+                    "reproduced_value": observed,
+                    "display_decimals": digits,
+                    "absolute_difference": abs(float(observed) - float(expected)),
+                    "matches_at_display_precision": matches,
+                    "formula": formula,
+                    "dataset_commit": revision["commit"],
+                    "dataset_start": str(frame["date"].iloc[0]),
+                    "dataset_end": str(frame["date"].iloc[-1]),
+                    "declared_dataset_end": DECLARED_OFFLINE_END,
+                    "paper_protocol_period_match": False,
+                    "author_native_agent_pipeline_reexecuted": False,
+                    "paper_result_credit": False,
+                    "verification_class": (
+                        "official_history_deterministic_hold_baseline_cell_regenerated_"
+                        "wrong_declared_endpoint"
+                        if matches
+                        else "official_history_deterministic_hold_baseline_cell_mismatch"
+                    ),
+                }
+            )
+    if len(output) != 14 or not all(
+        row["matches_at_display_precision"] for row in output
+    ):
+        raise ValueError("historical Always-HOLD baseline reproduction changed")
+    return output
+
+
+
 def release_history_audit(
     scratch: Path,
     revisions: list[dict[str, Any]],
@@ -1043,7 +1115,7 @@ def method_rows() -> list[dict[str, str]]:
         ("live result reproduction", "partial_output_verification", "headline return/alpha/Sharpe/win cells conflict, but five Table 7 cells reproduce from the official decisions and pinned organizer output"),
         ("offline dataset", "complete_103_commit_history", "all 204 TSLA/BTC LFS payloads verify; the 20 revisions per asset covering the declared May-10 endpoint share one identical period path that conflicts with both printed returns"),
         ("offline actions", "missing", "no immutable gpt-4o-mini calls/responses, historical Fear & Greed series, action path, seed, or cache state"),
-        ("offline results", "baseline_only_recovered_from_mislabeled_period", "all 14 Buy-and-Hold cells regenerate from asset-specific May-20/May-21 dataset endpoints, not the paper's declared May-10 endpoint; agent and ablation paths remain absent"),
+        ("offline results", "deterministic_baselines_only_recovered_from_mislabeled_period", "all 28 Buy-and-Hold and Always-HOLD cells regenerate from asset-specific May-20/May-21 dataset endpoints, not the paper's declared May-10 endpoint; random, momentum, agent, and ablation paths remain absent"),
         ("cost model", "paper_partial_source_current", "paper says net of fees but omits full implementation; current organizer source uses 6-bp fees plus 10-bp slippage"),
         ("rank provenance", "not_recoverable", "current dynamic leaderboard cannot prove historical ranks as displayed on 2026-07-05"),
         ("statistical inference", "absent", "paper explicitly reports no significance testing"),
@@ -1067,7 +1139,7 @@ def consistency_rows() -> list[dict[str, str]]:
         ("full_prompts_claim", "specification_conflict", "appendix says full prompts, but all nine rows are abridged versions of the released native constants"),
         ("live_error_attribution_denominators", "mixed_conventions_exactly_replayed", "TSLA uses 33 observable market-session transitions and excludes one zero next move; BTC counts all 50 rows including its terminal action with no within-window next move. These distinct conventions reproduce both printed exposure and hit-rate cells but are not one uniform rule."),
         ("declared_offline_period_vs_table_lineage", "major_protocol_conflict", "all 20 official revisions per asset covering the declared May-10 endpoint have identical period prices and yield +41.542% TSLA/-27.517% BTC, not +37.9%/-31.5%"),
-        ("offline_baseline_mixed_asset_endpoints", "exact_hidden_lineage_recovered", "all seven TSLA Buy-and-Hold cells require the May-20 endpoint, while all seven BTC cells require May-21; both are later than the common May-10 period printed in the paper"),
+        ("offline_baseline_mixed_asset_endpoints", "exact_hidden_lineage_recovered", "all 14 TSLA Buy-and-Hold and Always-HOLD cells require the May-20 endpoint, while all 14 BTC cells require May-21; both are later than the common May-10 period printed in the paper"),
         ("offline_ntr_semantics", "label_and_protocol_conflict", "the displayed N_tr values 293/294 equal total calendar rows in the recovered later snapshots, exceed the declared 283 calendar rows and 194 TSLA trading days, and are not an executed-trade count"),
         ("mutable_model_replay", "irrecoverable_exactness", "gpt-4o-mini alias, SDK/image dependencies, requests/responses, cache state, and API seed are not frozen"),
     )
@@ -1096,7 +1168,10 @@ def build(scratch: Path, output: Path) -> None:
     if overlap < 0.999:
         raise ValueError(f"source rebuild overlap regressed: {overlap}")
     dataset_revisions = dataset_revision_rows(scratch)
-    baseline_replay = offline_baseline_reproduction(scratch)
+    baseline_replay = [
+        *offline_baseline_reproduction(scratch),
+        *offline_always_hold_reproduction(scratch),
+    ]
     history = release_history_audit(scratch, dataset_revisions)
     error_replay = error_attribution_replay(scratch)
     tables = result_rows(source, error_replay, baseline_replay)
@@ -1139,11 +1214,11 @@ This audit uses the official 13-page arXiv-v1 paper and source, the complete fiv
 
 The paper has **119 displayed empirical table cells** and **two empirical figure panels**. The attributable R3 deployment materially improves source-level fidelity: its Docker/FastAPI runner, nine native prompts, seven corpora, TSLA routing, BTC vote and failure behavior are inspectable. A dependency-isolated controlled run loads all corpora and exercises the native endpoint and voting paths without paid or external model calls. The public organizer log recovers 97 paper-window decisions, and the pinned organizer scorer replays them.
 
-That evidence does **not** reproduce the headline empirical claims or the LLM action-generation pipeline. **Nineteen of 119 printed cells regenerate exactly:** five live error-attribution cells from official decisions and the pinned organizer postprocessor, plus all 14 cells in the two offline Buy-and-Hold rows. The baseline lineage exposes a major protocol conflict: the TSLA row requires the official May-21 revision ending May 20, while BTC requires the May-22 revision ending May 21; the paper declares one common May-10 endpoint. All 20 official revisions per asset that fully cover the declared period contain one identical May-10 price path, and none matches the printed Buy-and-Hold return. The displayed N_tr values 293/294 are the total rows of the later snapshots, not trades under the stated daily protocol. The four composite live hit/PnL cells recover their hit-rate components but not their PnL components. Zero of two full empirical panels regenerate. Current official decisions still yield TSLA +4.79%/Sharpe 1.58/45% rather than +13.51%/4.10/88%, while BTC replays essentially flat (-0.10%) rather than the table's -5.30%.
+That evidence does **not** reproduce the headline empirical claims or the LLM action-generation pipeline. **Thirty-three of 119 printed cells regenerate exactly:** five live error-attribution cells from official decisions and the pinned organizer postprocessor, plus all 28 cells in the Buy-and-Hold and deterministic Always-HOLD rows. The baseline lineage exposes a major protocol conflict: both TSLA rows require the official May-21 revision ending May 20, while both BTC rows require the May-22 revision ending May 21; the paper declares one common May-10 endpoint. All 20 official revisions per asset that fully cover the declared period contain one identical May-10 price path, and none matches the printed Buy-and-Hold return or the Always-HOLD alpha derived from it. The Buy-and-Hold N_tr values 293/294 are total rows of the later snapshots, not trades under the stated daily protocol; Always HOLD correctly yields zero trades. The four composite live hit/PnL cells recover their hit-rate components but not their PnL components. Zero of two full empirical panels regenerate. Current official decisions still yield TSLA +4.79%/Sharpe 1.58/45% rather than +13.51%/4.10/88%, while BTC replays essentially flat (-0.10%) rather than the table's -5.30%.
 
 Native inspection also finds method-level defects. Three BTC HOLD votes become BUY because the code compares only BUY and SELL counts; a failed Fear & Greed request double-counts momentum. All nine appendix prompt rows are abridged relative to the released constants despite being labeled full prompts. The deleted first-author LFS ZIP is recoverable but contains only four source files already represented in the surviving release. The complete dataset and organizer histories add no action, ablation, cache, database, or result artifact. The model alias, API calls, cache state, image, SDK and dependencies are not immutably frozen, and the released TA and WSB corpora are stale before the live window ends.
 
-Therefore `strict_success` is false. This is strong source, baseline and output-lineage recovery, not an end-to-end Fin-Analyst regeneration. The empirical record is materially closer than a paper-only proxy, but its two baseline rows reproduce only under asset-specific endpoints that contradict the paper, and no native agent or ablation result is regenerated.
+Therefore `strict_success` is false. This is strong source, baseline and output-lineage recovery, not an end-to-end Fin-Analyst regeneration. The empirical record is materially closer than a paper-only proxy, but its four deterministic baseline rows reproduce only under asset-specific endpoints that contradict the paper, and no native agent, random/momentum baseline, or ablation result is regenerated.
 """
     (output / "README.md").write_text(readme)
     generated_names = [path.name for path in output.iterdir() if path.name != "manifest.json"]
@@ -1175,9 +1250,11 @@ Therefore `strict_success` is false. This is strong source, baseline and output-
             row["published_result_regenerated_at_display_precision"] for row in tables
         ),
         "published_table_cells_verified_from_official_decisions_and_organizer_output": 5,
-        "published_baseline_cells_regenerated_from_official_history": 14,
+        "published_baseline_cells_regenerated_from_official_history": 28,
         "published_baseline_cells_regenerated_with_declared_endpoint": 0,
-        "published_baseline_cells_regenerated_with_recovered_mixed_endpoints": 14,
+        "published_baseline_cells_regenerated_with_recovered_mixed_endpoints": 28,
+        "published_buy_hold_cells_regenerated_with_recovered_mixed_endpoints": 14,
+        "published_always_hold_cells_regenerated_with_recovered_mixed_endpoints": 14,
         "published_table_cells_reproduced_end_to_end_from_native_llm_pipeline": 0,
         "full_empirical_figure_panels_regenerated": 0,
         "displayed_figure_endpoints_verified": 2,

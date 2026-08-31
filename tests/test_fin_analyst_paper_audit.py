@@ -61,19 +61,22 @@ def test_all_119_empirical_table_cells_separate_output_verification_from_llm_rep
         "tab:ablation": 20,
         "tab:error_attribution": 12,
     }
-    assert sum(row["official_input_or_result_record_recovered"] == "True" for row in results) == 34
+    assert sum(row["official_input_or_result_record_recovered"] == "True" for row in results) == 48
     assert all(row["source_document_recovered"] == "True" for row in results)
     assert all(row["author_native_decision_pipeline_reexecuted"] == "False" for row in results)
     verified = [
         row for row in results
         if row["published_result_regenerated_at_display_precision"] == "True"
     ]
-    assert len(verified) == 19
+    assert len(verified) == 33
     baseline = [row for row in verified if row["official_historical_dataset_replayed"] == "True"]
-    assert len(baseline) == 14
-    assert {(row["table_label"], row["quantitative_column_index"]) for row in baseline} == {
-        *{("tab:tsla", str(index)) for index in range(1, 8)},
-        *{("tab:btc", str(index)) for index in range(1, 8)},
+    assert len(baseline) == 28
+    assert {
+        (row["table_label"], row["row_label"], row["quantitative_column_index"])
+        for row in baseline
+    } == {
+        *{("tab:tsla", label, str(index)) for label in ("Buy & Hold", "Always HOLD") for index in range(1, 8)},
+        *{("tab:btc", label, str(index)) for label in ("Buy & Hold", "Always HOLD") for index in range(1, 8)},
     }
     assert {row["paper_protocol_period_match"] for row in baseline} == {"False"}
     live = [row for row in verified if row["official_historical_dataset_replayed"] == "False"]
@@ -181,8 +184,12 @@ def test_all_historical_dataset_payloads_pin_hidden_two_baseline_rows() -> None:
     assert recovered["BTC"]["dataset_rows"] == "294"
 
     baseline = rows("offline_baseline_reproduction.csv")
-    assert len(baseline) == 14
-    assert Counter(row["asset"] for row in baseline) == {"TSLA": 7, "BTC": 7}
+    assert len(baseline) == 28
+    assert Counter(row["asset"] for row in baseline) == {"TSLA": 14, "BTC": 14}
+    assert Counter(row["row_label"] for row in baseline) == {
+        "Buy & Hold": 14,
+        "Always HOLD": 14,
+    }
     assert {row["matches_at_display_precision"] for row in baseline} == {"True"}
     assert {row["paper_protocol_period_match"] for row in baseline} == {"False"}
     assert {row["paper_result_credit"] for row in baseline} == {"False"}
@@ -273,11 +280,13 @@ def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) ->
     assert manifest["empirical_figure_panels"] == 2
     assert manifest["paper_window_official_decision_rows_recovered"] == 97
     assert manifest["paper_window_official_rows_replayed_with_organizer_scorer"] == 97
-    assert manifest["published_table_cells_regenerated"] == 19
+    assert manifest["published_table_cells_regenerated"] == 33
     assert manifest["published_table_cells_verified_from_official_decisions_and_organizer_output"] == 5
-    assert manifest["published_baseline_cells_regenerated_from_official_history"] == 14
+    assert manifest["published_baseline_cells_regenerated_from_official_history"] == 28
     assert manifest["published_baseline_cells_regenerated_with_declared_endpoint"] == 0
-    assert manifest["published_baseline_cells_regenerated_with_recovered_mixed_endpoints"] == 14
+    assert manifest["published_baseline_cells_regenerated_with_recovered_mixed_endpoints"] == 28
+    assert manifest["published_buy_hold_cells_regenerated_with_recovered_mixed_endpoints"] == 14
+    assert manifest["published_always_hold_cells_regenerated_with_recovered_mixed_endpoints"] == 14
     assert manifest["author_space_history_commits"] == 5
     assert manifest["author_space_deleted_lfs_archive_recovered"] is True
     assert manifest["author_space_deleted_lfs_archive_contains_results"] is False
@@ -297,11 +306,11 @@ def test_manifest_hashes_readme_and_builder_are_deterministic(tmp_path: Path) ->
     }
     readme = " ".join((AUDIT_DIR / "README.md").read_text().split())
     for marker in (
-        "119 displayed empirical table cells", "Nineteen of 119 printed cells",
-        "all 14 cells in the two offline Buy-and-Hold rows",
+        "119 displayed empirical table cells", "Thirty-three of 119 printed cells",
+        "all 28 cells in the Buy-and-Hold and deterministic Always-HOLD rows",
         "May-21 revision ending May 20", "May-22 revision ending May 21",
         "Three BTC HOLD votes become BUY", "99.96% extracted-token overlap",
-        "strict_success` is false", "no native agent or ablation result is regenerated",
+        "strict_success` is false", "no native agent, random/momentum baseline, or ablation result is regenerated",
     ):
         assert marker in readme
     if not audit.DEFAULT_SCRATCH.is_dir() or not audit.NATIVE_ENV.is_dir():
