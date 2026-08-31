@@ -194,13 +194,24 @@ def test_quantaalpha_audit_credits_baseline_but_not_headline_result() -> None:
     assert row["native_execution_audit_status"] == (
         "paper_audit:partial_one_baseline_row_plus_alpha158_ic_26_of_644_versioned_main_"
         "table_cells_regenerated_alpha360_zero_matches_2_coherent_profiles_0_of_16_profile_"
-        "cells_2_hybrids_0_of_8_predictive_profile_cells_270_author_output_units_267_"
+        "cells_2_hybrids_0_of_8_predictive_profile_cells_upstream_test_2_of_2_48700_"
+        "points_zero_result_credit_270_author_output_units_267_"
         "accessible_forks_357_refs_77_unique_heads_exhausted_main_claim_not_reproduced"
     )
     assert row["full_prompt_search_training_pipeline_reproduced"] == "no"
     assert row["mapping_fidelity_tiers"] == "M0_narrative_translation"
     assert row["proxy_role"] == "secondary_diagnostic_after_native_review"
     assert "All 135 Python files" in row["precise_native_or_access_blocker"]
+    assert "complete 351-line declared-dependency environment" in row[
+        "precise_native_or_access_blocker"
+    ]
+    assert "template_debug.jinjia2 is absent" in row["precise_native_or_access_blocker"]
+    assert "official 48,700-row HDF" in row["precise_native_or_access_blocker"]
+    assert "original test then passes twice" in row["precise_native_or_access_blocker"]
+    assert "48,600 finite and 100 warm-up NaNs" in row[
+        "precise_native_or_access_blocker"
+    ]
+    assert "receives zero paper-result credit" in row["precise_native_or_access_blocker"]
     assert "28-commit author-attributed public lineage" in row["precise_native_or_access_blocker"]
     assert "all eight v1/v2 metrics" in row["precise_native_or_access_blocker"]
     assert "26/644 version-specific main-table cells" in row["precise_native_or_access_blocker"]
