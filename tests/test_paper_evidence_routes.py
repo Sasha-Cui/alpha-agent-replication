@@ -316,7 +316,8 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         ),
         "CensusArxiv260505580": (
             "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_"
-            "six_component_checks_broken_default_launcher_missing_research_lineage_"
+            "six_component_checks_registered_model_override_5_agents_4_requests_"
+            "zero_responses_broken_default_launcher_missing_research_lineage_"
             "6_forks_6_refs_4_unique_heads_exhausted"
         ),
         "CensusArxiv260515412": (
@@ -349,6 +350,16 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         row = routes.loc[work_id]
         assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
         assert row["native_execution_audit_status"] == status
+
+    alphacrafter_blocker = routes.loc[
+        "CensusArxiv260505580", "precise_native_or_access_blocker"
+    ]
+    assert "copied-tree probe" in alphacrafter_blocker
+    assert "all five native agents" in alphacrafter_blocker
+    assert "four model requests" in alphacrafter_blocker
+    assert "zero responses or paper outputs" in alphacrafter_blocker
+    assert "not the paper's GPT/Claude/Gemini protocol" in alphacrafter_blocker
+    assert "receives no result credit" in alphacrafter_blocker
 
     cryptotrade_blocker = routes.loc["CensusACL2024emnlpmain63", "precise_native_or_access_blocker"]
     assert "All 12 Table 5 values" in cryptotrade_blocker

@@ -224,8 +224,14 @@ ARTIFACT_NOTES = {
         "and return/drawdown metric components with the paper-stated 2-bp and 1-bp "
         "fees. These are component checks, not paper outputs. The full launcher "
         "fails before any API call because config.yaml requests gpt-5.3-codex while "
-        "the model registries contain only gpt-5 and gpt-5.2; it is OpenAI-only and "
-        "always injects A-share instructions/default trading tools. All 13 commits in "
+        "the model registries contain only gpt-5 and gpt-5.2. A network-blocked "
+        "copied-tree probe changes only the three role codes to the shipped gpt-5.2 "
+        "entry, initializes all five native agents and toolkits, loads both trader "
+        "strategy hooks, starts cycle 1, and attempts four model requests before the "
+        "guard stops three miners and the screener; zero responses or paper outputs "
+        "are received. This locates a deeper launcher boundary but is not the paper's "
+        "GPT/Claude/Gemini protocol and receives no result credit. The release is "
+        "OpenAI-only and always injects A-share instructions/default trading tools. All 13 commits in "
         "the complete non-shallow public history were checked: structured payloads are "
         "only templates/configs and two index input series, with zero agent result/run "
         "artifacts. GitHub's complete dated public-fork surface has six accessible forks, "
@@ -1773,7 +1779,8 @@ TARGETED_EXECUTION = {
     ),
     "SYS-ALPHA-CRAFTER": (
         "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_"
-        "six_component_checks_broken_default_launcher_missing_research_lineage_"
+        "six_component_checks_registered_model_override_5_agents_4_requests_zero_responses_"
+        "broken_default_launcher_missing_research_lineage_"
         "6_forks_6_refs_4_unique_heads_exhausted"
     ),
     "SYS-ALPHA-AGENT": (

@@ -68,12 +68,15 @@ def test_native_ledger_routes_components_without_output_or_result_credit() -> No
     assert row["fidelity_class"] == "F1_static_no_native_output"
     assert row["targeted_execution_audit_status"] == (
         "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_"
-        "history_six_component_checks_broken_default_launcher_missing_research_lineage_"
+        "history_six_component_checks_registered_model_override_5_agents_4_requests_"
+        "zero_responses_broken_default_launcher_missing_research_lineage_"
         "6_forks_6_refs_4_unique_heads_exhausted"
     )
     note = row["concise_evidence_note"]
     for marker in (
-        "176 v1", "304 v2", "controlled fixtures", "fails before any API call", "All 13 commits",
+        "176 v1", "304 v2", "controlled fixtures", "fails before any API call",
+        "copied-tree probe", "all five native agents", "four model requests",
+        "zero responses or paper outputs", "receives no result credit", "All 13 commits",
         "six accessible forks", "six branch refs", "four unique heads", "synthetic log-parser",
         "0/176 v1", "0/304 v2", "0/16 v1", "0/14 v2",
     ):
@@ -115,6 +118,9 @@ def test_static_paper_assets_reflect_alphacrafter_correction() -> None:
     assert "AlphaCrafter & reachable" in failure_table
     assert "0/176 v1" in failure_table
     assert "0/304 v2" in failure_table
+    assert "all five native agents" in failure_table
+    assert "four model requests" in failure_table
+    assert "zero responses or paper outputs" in failure_table
 
 
 def test_registries_route_attributable_release_and_honest_verdict() -> None:
