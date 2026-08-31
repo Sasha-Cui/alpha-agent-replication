@@ -224,7 +224,35 @@ def test_primary_sources_are_pinned_when_available() -> None:
     assert len(agent_variants) == 20
     assert max(row["best_display_precision_matches"] for row in agent_variants) == 2
     assert len(audit.overlapping_archived_run_rows(source, portfolios)) == 25
+
     history = audit.public_source_history_rows(source)
     assert history[0]["reachable_commits"] == 19
     assert (len(history[1]), len(history[2]), len(history[3]), len(history[4])) == (19, 592, 280, 4)
     assert len(audit.source_prompt_rows(source, paper)) == 5
+
+def test_global_evidence_route_uses_recovered_benchmark_boundary() -> None:
+    status = (
+        "paper_audit:completed_20_of_70_table_cells_2_benchmark_rows_unique_"
+        "effective_window_640_agent_variants_zero_agent_rows"
+    )
+    native = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
+    native_row = next(row for row in native if row["system_id"] == "SYS-GURU-AGENTS")
+    assert native_row["targeted_execution_audit_status"] == status
+    note = native_row["concise_evidence_note"]
+    assert "20/20 benchmark cells" in note
+    assert "20/70 total Table 1 cells" in note
+    assert "2/7 full rows" in note
+    assert "640 coherent" in note
+    assert "none reproduces a complete agent row" in note
+
+    routes = read_csv(
+        ROOT
+        / "paper_runs/submission_evidence/replication_scope/paper_evidence_route_ledger.csv"
+    )
+    route = next(
+        row for row in routes
+        if row["reachable_public_code_system_ids"] == "SYS-GURU-AGENTS"
+    )
+    assert route["native_execution_audit_status"] == status
+    assert "20/20 benchmark cells" in route["precise_native_or_access_blocker"]
+    assert "five agent rows remain 0/50" in route["precise_native_or_access_blocker"]
