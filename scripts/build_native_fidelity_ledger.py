@@ -710,6 +710,16 @@ ARTIFACT_NOTES = {
         "The README ships a dated one-step ETH action/ROI example. A pinned paper-level "
         "audit additionally recomputes 174/180 displayed deterministic traditional-baseline "
         "cells (43/45 complete rows) from the native crypto data and environment. A public "
+        "source-function replay executes the released ETH LSTM over seeds 0--9, two fixed-"
+        "lookback repeats, all six paper-listed look-backs, the validation interval, and all "
+        "three test regimes. All four bear metrics match across every one of 60 seed/look-back "
+        "combinations and receive native paper-result credit. Four bull metrics match all 20 "
+        "source-default look-back-5 observations, but receive no strict protocol credit because "
+        "all six look-backs tie on validation and the bull outputs change outside look-backs "
+        "5, 10, and 20. Sideways is seed/look-back sensitive; its printed 1.11 volatility "
+        "matches 0/60 grid observations. The compatible Torch 2.4.1 CPU runtime is not the "
+        "README's declared Torch 2.3.0/CUDA environment, so exact-runtime reproduction remains "
+        "false. A public "
         "branch controlled by paper coauthor Nuo Chen preserves 89 commits and 16 distinct "
         "paper-row-matching action traces. Ten rows (40 LLM table cells) receive author-output "
         "credit because the logged model matches the released paper mapping, the full paper "
@@ -724,7 +734,7 @@ ARTIFACT_NOTES = {
         "ETH-sideways daily statistics duplicate ETH-bear, while four SOL-bear cells require "
         "a 1-day SMA outside the disclosed and released [5,10,15,20,30] grid. The originally "
         "cited anonymous repository has expired, the 11-commit official history contains no "
-        "result/log path, and 248 main-table LLM/time-series cells remain unverifiable. All 83 "
+        "result/log path, and 244 main-table LLM/time-series cells remain unverifiable. All 83 "
         "unique coauthor-history output blobs (209,739,069 bytes) were scanned across 1,371 "
         "final return/Sharpe summaries; none contains a standalone released time-series model "
         "name or matches a published time-series return/Sharpe pair. All "
@@ -734,7 +744,7 @@ ARTIFACT_NOTES = {
         "census exhausts 37 accessible public forks and 39 fork refs: 35 refs are already in the "
         "audited official/coauthor histories, including the first-author fork, while all four "
         "divergent heads are unaffiliated post-paper extensions whose seven result/log-like paths "
-        "receive zero paper credit. In total, 260/480 cells remain method-faithfully unverifiable. "
+        "receive zero paper credit. In total, 256/480 cells remain method-faithfully unverifiable. "
         "The evidence remains crypto rather than six-country equity output.",
     ),
     "SYS-FIN-CON": (
@@ -1873,9 +1883,10 @@ TARGETED_EXECUTION = {
         "official_head_exhausted"
     ),
     "SYS-CRYPTO-TRADE": (
-        "paper_audit:partial_214_of_480_cells_corroborated_40_from_author_llm_traces_"
-        "12_ablation_correspondences_zero_credit_5_model_mismatch_traces_zero_declared_model_rows_"
-        "83_author_outputs_no_time_series_match_37_forks_exhausted"
+        "paper_audit:partial_218_of_480_cells_4_native_lstm_seed_lookback_robust_"
+        "4_lstm_source_default_only_40_author_llm_traces_12_ablation_correspondences_"
+        "zero_credit_5_model_mismatch_traces_zero_declared_model_rows_83_author_outputs_"
+        "no_other_time_series_match_37_forks_exhausted"
     ),
     "SYS-EFS": "paper_audit:completed_11_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",

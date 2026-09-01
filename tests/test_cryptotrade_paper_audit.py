@@ -366,3 +366,28 @@ def test_lstm_evidence_inputs_when_bouchet_assets_are_available() -> None:
     assert lstm_runner.SOURCE_HASHES["run_baseline.py"] == (
         "9baf6e13ce4c504d7dee0bfe3fa14d5e953b3276cd43cc11b91cb862243e606e"
     )
+
+
+def test_global_native_ledger_reflects_lstm_credit_boundary() -> None:
+    rows = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
+    row = next(item for item in rows if item["system_id"] == "SYS-CRYPTO-TRADE")
+    assert row["public_artifact_status"] == "reachable_static_snapshot"
+    assert row["static_tier"] == "R1"
+    assert row["native_dated_signal_or_return_shipped"] == "Y"
+    assert row["blocking_stage"] == "A3_wrong_asset_class_crypto"
+    assert row["targeted_execution_audit_status"] == (
+        "paper_audit:partial_218_of_480_cells_4_native_lstm_seed_lookback_robust_"
+        "4_lstm_source_default_only_40_author_llm_traces_12_ablation_correspondences_"
+        "zero_credit_5_model_mismatch_traces_zero_declared_model_rows_83_author_outputs_"
+        "no_other_time_series_match_37_forks_exhausted"
+    )
+    assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
+    note = row["concise_evidence_note"]
+    assert "All four bear metrics match" in note
+    assert "60 seed/look-back combinations" in note
+    assert "Four bull metrics match all 20" in note
+    assert "receive no strict protocol credit" in note
+    assert "printed 1.11 volatility matches 0/60" in note
+    assert "exact-runtime reproduction remains false" in note
+    assert "244 main-table LLM/time-series cells remain unverifiable" in note
+    assert "256/480 cells remain method-faithfully unverifiable" in note
