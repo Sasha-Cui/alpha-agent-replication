@@ -1,0 +1,100 @@
+{
+  "source_commit": "210da73af5f17992be425e61305524a5c24dae40",
+  "source_run_baseline_sha256": "9baf6e13ce4c504d7dee0bfe3fa14d5e953b3276cd43cc11b91cb862243e606e",
+  "compatible_environment": {
+    "numpy": "2.1.1",
+    "pandas": "2.2.3",
+    "python": "3.10.8",
+    "scikit_learn": "1.5.2",
+    "torch": "2.4.1+cpu",
+    "torch_cuda_available": false
+  },
+  "paper_declared_torch": "2.3.0",
+  "exact_declared_runtime_reproduced": false,
+  "fixed_source_default": {
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "repeats_per_seed": 2,
+    "lookback": 5,
+    "native_runs": 20,
+    "regime_runs": 60,
+    "cell_observations": 240,
+    "repeat_exact_groups": 120,
+    "stable_matching_cells": 8
+  },
+  "paper_validation_grid": {
+    "lookbacks": [
+      1,
+      3,
+      5,
+      10,
+      20,
+      30
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "repeats_per_seed": 2,
+    "native_runs": 120,
+    "repeat_exact_groups": 60,
+    "all_lookbacks_tie_for_every_seed": true,
+    "selection_metric_specified_by_paper": false
+  },
+  "paper_seed_lookback_grid": {
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "lookbacks": [
+      1,
+      3,
+      5,
+      10,
+      20,
+      30
+    ],
+    "native_runs": 60,
+    "regime_runs": 180,
+    "cell_observations": 720,
+    "seed0_repeat_cell_rows_exact": 72,
+    "protocol_robust_matching_cells": 4,
+    "source_default_only_matching_cells": 4
+  },
+  "source_compatibility": {
+    "removed_unused_matplotlib_import": true,
+    "cuda7_to_cpu": true,
+    "added_required_dataset_eth": true,
+    "return_only_instrumentation": true,
+    "pinned_source_modified": false
+  },
+  "network_attempts": 0,
+  "llm_calls": 0,
+  "paper_result_credit": "four_eth_bear_cells_source_native_seed_and_lookback_robust_under_compatible_runtime"
+}

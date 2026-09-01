@@ -5,3 +5,4 @@ eth,sma,select best validation performance,15,20,-4.168247666323999,False,10,12,
 eth,slma,select best validation performance,"(15, 30)","(15, 30)",8.8216262822431,True,12,12,selection_rule_match
 sol,sma,select best validation performance,15,10,8.056271978970763,False,8,12,selection_rule_mismatch
 sol,slma,select best validation performance,"(15, 30)","(5, 10)",18.50022790314567,False,12,12,selection_rule_mismatch
+eth,lstm,"select best validation performance from [1,3,5,10,20,30]",5,"all [1,3,5,10,20,30] tie",2.369788794633,True,8,12,selection_rule_nonidentifying_tie

@@ -44,6 +44,29 @@ PAPER_SHA256 = "376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf
 PAPER_URL = "https://aclanthology.org/2024.emnlp-main.63.pdf"
 SOURCE_URL = "https://github.com/Xtra-Computing/CryptoTrade"
 ORIGINAL_ANONYMOUS_SOURCE_URL = "https://anonymous.4open.science/r/CryptoTrade-Public-92FC/"
+DEFAULT_LSTM_RESULTS_ROOT = Path(
+    "/nfs/roberts/scratch/pi_btk22/zc362/cryptotrade_lstm_results"
+)
+DEFAULT_LSTM_PYTHON_WRAPPER = Path(__file__).with_name("run_aapm_paper_python.sh")
+LSTM_RESULT_SHA256 = {
+    "cryptotrade_lstm_cell_census.csv": "db111f794da535e7d91f2cf6e5afa620726f8b0667d4fb1f9be1d94be93391ca",
+    "cryptotrade_lstm_cell_summary.csv": "3ad76d582d7a5cb8cb1389956a412383e68df2c676d198e9bc11a5c3f05c491f",
+    "cryptotrade_lstm_paper_grid.csv": "1b4fe9662eef41154cac6e289b4efe5dc5f39d92c084eac94e67e2e1d7ed4b73",
+    "cryptotrade_lstm_paper_grid.json": "6402c7a7a127a896d039354a4ee408b696e073ca1d2940493f1568640f71498d",
+    "cryptotrade_lstm_paper_grid_seed0_repeat.csv": "1f5aa20173423928eea3d438262a31a1e06c6a73a0cdf536cc3870d39ac49ea3",
+    "cryptotrade_lstm_paper_grid_seed0_repeat.json": "fb84e66038ef2a7c9684dec1e9a76bbed199a5097b31f37afaa599db2d2d140c",
+    "cryptotrade_lstm_probe.json": "b6f82943df313ff93934b66c06192b0ff51458f1e7c56972bfe51e27908aa2fe",
+    "cryptotrade_lstm_validation_grid.csv": "dfed0873933f8efcb0d866f457f1e393dda664944fca21e3a76e4f5746ea1225",
+    "cryptotrade_lstm_validation_selection.json": "1900884d4cce8a7bf7328f9ec6365b3263ed35ee21c999e44f763bef351afe57",
+}
+LSTM_COMPATIBLE_ENVIRONMENT = {
+    "python": "3.10.8",
+    "torch": "2.4.1+cpu",
+    "numpy": "2.1.1",
+    "pandas": "2.2.3",
+    "scikit_learn": "1.5.2",
+    "torch_cuda_available": False,
+}
 PUBLIC_FORK_CENSUS_CHECKED_AT = "2026-08-14"
 PUBLIC_FORKS_TOTAL = 37
 PUBLIC_FORK_BRANCH_REFS_TOTAL = 39
@@ -903,6 +926,253 @@ def write_csv(path: Path, rows: Sequence[Mapping[str, Any]], fieldnames: Sequenc
         writer.writerows(rows)
 
 
+def read_csv(path: Path) -> List[Dict[str, str]]:
+    with path.open(newline="", encoding="utf-8") as handle:
+        return list(csv.DictReader(handle))
+
+
+def lstm_environment_snapshot(wrapper: Path) -> Dict[str, Any]:
+    program = (
+        "import json,sys,numpy,pandas,sklearn,torch;"
+        "print(json.dumps({'python':sys.version.split()[0],'torch':torch.__version__,"
+        "'numpy':numpy.__version__,'pandas':pandas.__version__,"
+        "'scikit_learn':sklearn.__version__,"
+        "'torch_cuda_available':torch.cuda.is_available()},sort_keys=True))"
+    )
+    environment = dict(os.environ)
+    for key in (
+        "CONDA_PREFIX",
+        "CONDA_DEFAULT_ENV",
+        "PYTHONHOME",
+        "PYTHONPATH",
+        "PYTHONUSERBASE",
+        "VIRTUAL_ENV",
+        "_OLD_VIRTUAL_PATH",
+        "__PYVENV_LAUNCHER__",
+    ):
+        environment.pop(key, None)
+    environment.update(
+        {
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONNOUSERSITE": "1",
+            "OMP_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+        }
+    )
+    result = subprocess.run(
+        [str(wrapper), "-c", program],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=environment,
+    )
+    snapshot = json.loads(result.stdout)
+    if snapshot != LSTM_COMPATIBLE_ENVIRONMENT:
+        raise RuntimeError(f"CryptoTrade LSTM environment changed: {snapshot}")
+    return snapshot
+
+
+def load_lstm_evidence(results_root: Path, wrapper: Path) -> Dict[str, Any]:
+    for filename, expected in LSTM_RESULT_SHA256.items():
+        observed = sha256(results_root / filename)
+        if observed != expected:
+            raise RuntimeError(f"CryptoTrade LSTM evidence changed: {filename}={observed}")
+
+    fixed_cells = read_csv(results_root / "cryptotrade_lstm_cell_census.csv")
+    fixed_summary = read_csv(results_root / "cryptotrade_lstm_cell_summary.csv")
+    fixed_payload = json.loads(
+        (results_root / "cryptotrade_lstm_probe.json").read_text(encoding="utf-8")
+    )
+    validation = read_csv(results_root / "cryptotrade_lstm_validation_grid.csv")
+    validation_payload = json.loads(
+        (results_root / "cryptotrade_lstm_validation_selection.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    paper_grid = read_csv(results_root / "cryptotrade_lstm_paper_grid.csv")
+    paper_grid_payload = json.loads(
+        (results_root / "cryptotrade_lstm_paper_grid.json").read_text(encoding="utf-8")
+    )
+    seed0_repeat = read_csv(
+        results_root / "cryptotrade_lstm_paper_grid_seed0_repeat.csv"
+    )
+    seed0_repeat_payload = json.loads(
+        (results_root / "cryptotrade_lstm_paper_grid_seed0_repeat.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    if len(fixed_cells) != 240 or len(fixed_summary) != 12:
+        raise RuntimeError("CryptoTrade fixed-lookback LSTM census changed")
+    if fixed_payload["native_runs"] != 20 or fixed_payload["regime_runs"] != 60:
+        raise RuntimeError("CryptoTrade fixed-lookback run count changed")
+    fixed_groups: Dict[Tuple[str, str, str], List[Tuple[str, str]]] = {}
+    for row in fixed_cells:
+        key = (row["seed"], row["regime"], row["metric"])
+        fixed_groups.setdefault(key, []).append(
+            (row["recomputed_value"], row["action_sha256"])
+        )
+    if len(fixed_groups) != 120 or any(len(set(values)) != 1 for values in fixed_groups.values()):
+        raise RuntimeError("CryptoTrade fixed-lookback repeats are not exact")
+
+    if len(validation) != 120 or validation_payload["grid_runs"] != 120:
+        raise RuntimeError("CryptoTrade LSTM validation grid changed")
+    if validation_payload["repeat_exact_groups"] != 60:
+        raise RuntimeError("CryptoTrade LSTM validation repeats changed")
+    expected_lookbacks = [1, 3, 5, 10, 20, 30]
+    if any(
+        row["return_selected"] != expected_lookbacks
+        or row["sharpe_selected"] != expected_lookbacks
+        for row in validation_payload["selections"]
+    ):
+        raise RuntimeError("CryptoTrade LSTM validation lookbacks no longer tie")
+
+    if len(paper_grid) != 720 or paper_grid_payload["native_seed_lookback_runs"] != 60:
+        raise RuntimeError("CryptoTrade LSTM paper grid changed")
+    seed0 = [row for row in paper_grid if row["seed"] == "0"]
+    if seed0 != seed0_repeat or seed0_repeat_payload["native_seed_lookback_runs"] != 6:
+        raise RuntimeError("CryptoTrade LSTM seed-0 paper-grid repeat changed")
+
+    fixed_map = {
+        (row["regime"], row["metric"]): row for row in fixed_summary
+    }
+    grid_map = {
+        (row["regime"], row["metric"]): row
+        for row in paper_grid_payload["summary"]
+    }
+    expected_cells = {
+        (regime, metric) for regime in REGIMES for metric in METRICS
+    }
+    if set(fixed_map) != expected_cells or set(grid_map) != expected_cells:
+        raise RuntimeError("CryptoTrade LSTM result-cell surface changed")
+    source_default_matches = {
+        key
+        for key, row in fixed_map.items()
+        if row["all_seeds_and_repeats_match"] == "True"
+    }
+    protocol_robust_matches = {
+        key for key, row in grid_map.items() if row["all_seeds_and_lookbacks_match"]
+    }
+    if source_default_matches != {
+        (regime, metric) for regime in ("bear", "bull") for metric in METRICS
+    }:
+        raise RuntimeError("CryptoTrade source-default LSTM matches changed")
+    if protocol_robust_matches != {("bear", metric) for metric in METRICS}:
+        raise RuntimeError("CryptoTrade protocol-robust LSTM matches changed")
+    sideways_std = grid_map[("sideways", "daily_return_std_pct")]
+    if (
+        sideways_std["matches"] != 0
+        or abs(sideways_std["min_recomputed_value"] - 0.11361322968) > 1e-12
+        or abs(sideways_std["max_recomputed_value"] - 1.892942965348) > 1e-12
+    ):
+        raise RuntimeError("CryptoTrade sideways LSTM volatility boundary changed")
+
+    adjudication = []
+    for regime in REGIMES:
+        for metric in METRICS:
+            key = (regime, metric)
+            fixed = fixed_map[key]
+            grid = grid_map[key]
+            source_default = key in source_default_matches
+            robust = key in protocol_robust_matches
+            if robust:
+                status = "native_lstm_seed_and_lookback_robust_match"
+            elif source_default:
+                status = "source_default_match_protocol_tie_sensitive_no_credit"
+            else:
+                status = "seed_or_lookback_sensitive_no_credit"
+            adjudication.append(
+                {
+                    "asset": "eth",
+                    "strategy": "lstm",
+                    "regime": regime,
+                    "metric": metric,
+                    "paper_value": float(fixed["paper_value"]),
+                    "fixed5_observations": int(fixed["observations"]),
+                    "fixed5_matches": int(fixed["matches"]),
+                    "fixed5_unique_values": int(fixed["unique_recomputed_values"]),
+                    "fixed5_min": float(fixed["min_recomputed_value"]),
+                    "fixed5_max": float(fixed["max_recomputed_value"]),
+                    "fixed5_unique_action_paths": int(fixed["unique_action_paths"]),
+                    "seed_lookback_observations": int(grid["observations"]),
+                    "seed_lookback_matches": int(grid["matches"]),
+                    "seed_lookback_unique_values": int(grid["unique_recomputed_values"]),
+                    "seed_lookback_min": float(grid["min_recomputed_value"]),
+                    "seed_lookback_max": float(grid["max_recomputed_value"]),
+                    "seed_lookback_unique_action_paths": int(grid["unique_action_paths"]),
+                    "source_default_correspondence": source_default,
+                    "protocol_robust_paper_result_credit": robust,
+                    "exact_declared_runtime_reproduced": False,
+                    "status": status,
+                }
+            )
+    environment = lstm_environment_snapshot(wrapper)
+    payload = {
+        "source_commit": SOURCE_COMMIT,
+        "source_run_baseline_sha256": sha256(results_root.parent / "cryptotrade_source/run_baseline.py")
+        if (results_root.parent / "cryptotrade_source/run_baseline.py").exists()
+        else "",
+        "compatible_environment": environment,
+        "paper_declared_torch": "2.3.0",
+        "exact_declared_runtime_reproduced": False,
+        "fixed_source_default": {
+            "seeds": list(range(10)),
+            "repeats_per_seed": 2,
+            "lookback": 5,
+            "native_runs": 20,
+            "regime_runs": 60,
+            "cell_observations": 240,
+            "repeat_exact_groups": 120,
+            "stable_matching_cells": len(source_default_matches),
+        },
+        "paper_validation_grid": {
+            "lookbacks": expected_lookbacks,
+            "seeds": list(range(10)),
+            "repeats_per_seed": 2,
+            "native_runs": 120,
+            "repeat_exact_groups": 60,
+            "all_lookbacks_tie_for_every_seed": True,
+            "selection_metric_specified_by_paper": False,
+        },
+        "paper_seed_lookback_grid": {
+            "seeds": list(range(10)),
+            "lookbacks": expected_lookbacks,
+            "native_runs": 60,
+            "regime_runs": 180,
+            "cell_observations": 720,
+            "seed0_repeat_cell_rows_exact": 72,
+            "protocol_robust_matching_cells": len(protocol_robust_matches),
+            "source_default_only_matching_cells": len(
+                source_default_matches - protocol_robust_matches
+            ),
+        },
+        "source_compatibility": {
+            "removed_unused_matplotlib_import": True,
+            "cuda7_to_cpu": True,
+            "added_required_dataset_eth": True,
+            "return_only_instrumentation": True,
+            "pinned_source_modified": False,
+        },
+        "network_attempts": 0,
+        "llm_calls": 0,
+        "paper_result_credit": (
+            "four_eth_bear_cells_source_native_seed_and_lookback_robust_under_"
+            "compatible_runtime"
+        ),
+    }
+    return {
+        "fixed_cells": fixed_cells,
+        "validation": validation,
+        "paper_grid": paper_grid,
+        "adjudication": adjudication,
+        "payload": payload,
+        "adjudication_map": {
+            (row["regime"], row["metric"]): row for row in adjudication
+        },
+    }
+
+
 def paper_result_rows() -> List[Dict[str, Any]]:
     rows: List[Dict[str, Any]] = []
     for line in PAPER_ROWS_TEXT.strip().splitlines():
@@ -1025,6 +1295,7 @@ def result_conformance(
     environment_module: Any,
     source_root: Path,
     author_traces: Mapping[Tuple[str, str, str], Mapping[str, Any]],
+    lstm_evidence: Mapping[str, Any],
 ) -> Tuple[List[Dict[str, Any]], Dict[Tuple[str, str, str], Dict[str, float]]]:
     reproduced: Dict[Tuple[str, str, str], Dict[str, float]] = {}
     for asset in PAPER_SPLITS:
@@ -1053,8 +1324,31 @@ def result_conformance(
             status = "exact_displayed_precision_match" if absolute_error <= DISPLAY_TOLERANCE else "mismatch"
             evidence = "pinned_native_environment_with_released_traditional_strategy_logic"
         elif strategy in TIME_SERIES_STRATEGIES:
-            status = "unverifiable_no_shipped_full_period_output"
-            evidence = "partial_lstm_code_only" if strategy == "lstm" else "implementation_not_released"
+            if target["asset"] == "eth" and strategy == "lstm":
+                item = lstm_evidence["adjudication_map"][(target["regime"], target["metric"])]
+                if item["fixed5_unique_values"] == 1:
+                    source_value = item["fixed5_min"]
+                    absolute_error = abs(source_value - target["paper_value"])
+                if item["protocol_robust_paper_result_credit"]:
+                    status = "native_lstm_seed_and_lookback_robust_match"
+                elif item["source_default_correspondence"]:
+                    status = "unverifiable_native_lstm_source_default_match_protocol_tie_sensitive"
+                else:
+                    status = "unverifiable_native_lstm_seed_or_lookback_sensitive"
+                evidence = (
+                    f"fixed5={item['fixed5_matches']}/{item['fixed5_observations']};"
+                    f"seed_lookback={item['seed_lookback_matches']}/"
+                    f"{item['seed_lookback_observations']};"
+                    f"range=[{item['seed_lookback_min']},{item['seed_lookback_max']}];"
+                    "compatible_torch_2.4.1_cpu_not_declared_torch_2.3.0_cuda"
+                )
+            else:
+                status = "unverifiable_no_shipped_full_period_output"
+                evidence = (
+                    "lstm_only_released_for_eth"
+                    if strategy == "lstm"
+                    else "implementation_not_released"
+                )
         elif strategy in LLM_STRATEGIES:
             trace = author_traces.get(key)
             if trace is None:
@@ -1365,8 +1659,8 @@ def source_execution_gaps(source_root: Path) -> List[Dict[str, str]]:
         ),
         (
             "time_series_baselines",
-            "incomplete_release",
-            "LSTM is embedded in a monolithic ETH runner; Informer/AutoFormer/TimesNet/PatchTST implementations and outputs are absent",
+            "partial_native_lstm_replay_other_models_missing",
+            "ETH LSTM source-function replay gives four seed/lookback-robust bear cells and four source-default-only bull correspondences; Informer/AutoFormer/TimesNet/PatchTST implementations and outputs are absent",
         ),
         (
             "model_identity",
@@ -1400,7 +1694,13 @@ def source_execution_gaps(source_root: Path) -> List[Dict[str, str]]:
     return [{"component": component, "status": status, "evidence": evidence} for component, status, evidence in gaps]
 
 
-def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[str, Any]:
+def build_audit(
+    source_root: Path,
+    paper_path: Path,
+    lstm_results_root: Path,
+    lstm_python_wrapper: Path,
+    output_dir: Path,
+) -> Dict[str, Any]:
     commit = git_head(source_root)
     if commit != SOURCE_COMMIT:
         raise RuntimeError(f"Expected source commit {SOURCE_COMMIT}, found {commit}")
@@ -1412,9 +1712,26 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     fork_divergence = public_fork_divergence_inventory(source_root)
     author_trace_rows, author_traces, author_output_artifacts = author_trace_audit(environment_module, source_root)
     ablation_trace_rows, ablation_conformance = ablation_trace_audit(source_root)
-    conformance, reproduced = result_conformance(environment_module, source_root, author_traces)
+    lstm = load_lstm_evidence(lstm_results_root, lstm_python_wrapper)
+    conformance, reproduced = result_conformance(
+        environment_module, source_root, author_traces, lstm
+    )
     splits = split_conformance(environment_module, source_root, reproduced)
     selection = parameter_selection_audit(environment_module, source_root, conformance)
+    selection.append(
+        {
+            "asset": "eth",
+            "strategy": "lstm",
+            "paper_rule": "select best validation performance from [1,3,5,10,20,30]",
+            "released_runner_fixed_parameter": 5,
+            "released_data_validation_argmax": "all [1,3,5,10,20,30] tie",
+            "released_data_validation_argmax_return_pct": 2.369788794633,
+            "fixed_parameter_equals_validation_argmax": True,
+            "paper_test_metric_cells_matching_with_fixed_parameter": 8,
+            "paper_test_metric_cells_total": 12,
+            "status": "selection_rule_nonidentifying_tie",
+        }
+    )
     diagnosis = mismatch_diagnosis(environment_module, source_root, conformance)
     inventory = data_inventory(source_root)
     gaps = source_execution_gaps(source_root)
@@ -1452,6 +1769,30 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     )
     write_csv(output_dir / "data_inventory.csv", inventory, list(inventory[0]))
     write_csv(output_dir / "source_execution_gaps.csv", gaps, list(gaps[0]))
+    fixed_lstm_rows = [{**row, "lookback": 5} for row in lstm["fixed_cells"]]
+    write_csv(
+        output_dir / "lstm_fixed5_cell_census.csv",
+        fixed_lstm_rows,
+        list(fixed_lstm_rows[0]),
+    )
+    write_csv(
+        output_dir / "lstm_validation_grid.csv",
+        lstm["validation"],
+        list(lstm["validation"][0]),
+    )
+    write_csv(
+        output_dir / "lstm_seed_lookback_grid.csv",
+        lstm["paper_grid"],
+        list(lstm["paper_grid"][0]),
+    )
+    write_csv(
+        output_dir / "lstm_cell_adjudication.csv",
+        lstm["adjudication"],
+        list(lstm["adjudication"][0]),
+    )
+    (output_dir / "lstm_execution.json").write_text(
+        json.dumps(lstm["payload"], indent=2) + "\n", encoding="utf-8"
+    )
     paper_inconsistencies = (
         {
             "claim": "Table 5 ablation market/asset label",
@@ -1472,16 +1813,31 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
 
     match_statuses = {
         "exact_displayed_precision_match",
+        "native_lstm_seed_and_lookback_robust_match",
         "author_trace_exact_metric_and_native_state_replay",
     }
     matched = sum(row["status"] in match_statuses for row in conformance)
     mismatched = sum(row["status"] == "mismatch" for row in conformance)
     unverifiable = sum(row["status"].startswith("unverifiable") for row in conformance)
-    deterministic_matched = sum(row["status"] == "exact_displayed_precision_match" for row in conformance)
+    traditional_matched = sum(
+        row["status"] == "exact_displayed_precision_match" for row in conformance
+    )
+    deterministic_matched = sum(
+        row["status"]
+        in {
+            "exact_displayed_precision_match",
+            "native_lstm_seed_and_lookback_robust_match",
+        }
+        for row in conformance
+    )
+    lstm_robust_matched = sum(
+        row["status"] == "native_lstm_seed_and_lookback_robust_match"
+        for row in conformance
+    )
     author_corroborated = sum(
         row["status"] == "author_trace_exact_metric_and_native_state_replay" for row in conformance
     )
-    deterministic = deterministic_matched + mismatched
+    deterministic = traditional_matched + mismatched
     grouped: Dict[Tuple[str, str, str], List[Mapping[str, Any]]] = {}
     for row in conformance:
         grouped.setdefault((row["asset"], row["strategy"], row["regime"]), []).append(row)
@@ -1494,7 +1850,7 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
     split_trend_matches = sum(row["trend_status"] == "exact_displayed_precision_match" for row in splits)
     manifest: Dict[str, Any] = {
         "audit": "CryptoTrade paper claims versus pinned public code and data",
-        "overall_status": "partial_reproduction_traditional_plus_author_llm_traces",
+        "overall_status": "partial_reproduction_traditional_lstm_plus_author_llm_traces",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_sha256": PAPER_SHA256,
@@ -1520,9 +1876,29 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
         "paper_result_metric_cells_total": len(conformance) + len(ablation_conformance),
         "paper_tables_2_4_metric_cells_total": len(conformance),
         "paper_table_5_metric_cells_total": len(ablation_conformance),
-        "native_deterministic_metric_cells_recomputed": 180,
+        "native_deterministic_metric_cells_recomputed": 192,
         "native_deterministic_metric_cells_matched": deterministic_matched,
         "native_deterministic_metric_cells_mismatched": mismatched,
+        "native_lstm_metric_cells_recomputed": 12,
+        "native_lstm_protocol_robust_metric_cells_reproduced": lstm_robust_matched,
+        "native_lstm_source_default_metric_cells_corresponding": 8,
+        "native_lstm_source_default_only_metric_cells": 4,
+        "native_lstm_fixed5_runs": 20,
+        "native_lstm_fixed5_regime_runs": 60,
+        "native_lstm_fixed5_cell_observations": 240,
+        "native_lstm_fixed5_repeat_groups_exact": 120,
+        "native_lstm_validation_grid_runs": 120,
+        "native_lstm_validation_repeat_groups_exact": 60,
+        "native_lstm_validation_all_lookbacks_tie": True,
+        "native_lstm_seed_lookback_grid_runs": 60,
+        "native_lstm_seed_lookback_regime_runs": 180,
+        "native_lstm_seed_lookback_cell_observations": 720,
+        "native_lstm_seed0_grid_repeat_cell_rows_exact": 72,
+        "native_lstm_sideways_volatility_grid_matches": 0,
+        "native_lstm_exact_declared_torch_runtime_reproduced": False,
+        "native_lstm_compatible_runtime": LSTM_COMPATIBLE_ENVIRONMENT,
+        "native_lstm_replay_llm_calls": 0,
+        "native_lstm_replay_network_attempts": 0,
         "paper_metric_cells_corroborated_total": matched,
         "paper_numeric_evidence_correspondences_total": matched + len(ablation_conformance),
         "author_history_numeric_metric_cells_corresponding": author_corroborated + len(ablation_conformance),
@@ -1576,6 +1952,10 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             row["status"] == "selection_rule_match" for row in selection
         ),
         "paper_described_validation_selections_total": len(selection),
+        "paper_described_validation_nonidentifying_ties": sum(
+            row["status"] == "selection_rule_nonidentifying_tie"
+            for row in selection
+        ),
         "paper_ablation_rows": len(PAPER_ABLATION),
         "paper_ablation_metric_cells_total": len(ablation_conformance),
         "paper_ablation_author_history_numeric_correspondences": sum(
@@ -1635,14 +2015,19 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             "The released market data, native environment, costs, and traditional-signal logic "
             "reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history "
             "additionally corroborates 40 LLM cells through exact metric and native state replay. "
+            "A compatible CPU replay of the released ETH LSTM source function adds four bear-market "
+            "cells that match across 10 seeds and all six paper-listed lookbacks. Four bull-market "
+            "cells match the source-default lookback 5 but receive no strict credit because all "
+            "lookbacks tie on validation and the bull outputs are lookback-sensitive. The compatible "
+            "Torch 2.4.1 CPU runtime is not the README's declared Torch 2.3.0 CUDA environment. "
             "The five full-period model-mismatched traces cannot be reassigned to their declared "
             "GPT-3.5 paper rows: only 1/20 declared-model cells and 0/5 complete rows match. "
             "All 12 Table 5 values also have exact author-history numeric correspondences and replay "
             "through their historical code snapshots, but every selected trace conflicts with the "
             "paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells "
             "receive zero method-faithful credit. This is strong component/output evidence, not a full "
-            "CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but "
-            "not method-faithful explanations, validation selection is not implemented as described, "
+            "CryptoTrade replication: 256 cells remain unverifiable, the six deterministic residuals have numeric but "
+            "not method-faithful explanations, LSTM validation is a non-identifying six-way tie, "
             "and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref "
             "census finds no additional attributable paper outputs. All 83 unique output blobs in the "
             "coauthor history were also scanned: none names a released time-series baseline or matches "
@@ -1662,12 +2047,12 @@ def build_audit(source_root: Path, paper_path: Path, output_dir: Path) -> Dict[s
             )
         },
     }
-    if (matched, mismatched, unverifiable) != (214, 6, 248):
+    if (matched, mismatched, unverifiable) != (218, 6, 244):
         raise RuntimeError(
             "Pinned CryptoTrade conformance counts changed: "
             f"matched={matched}, mismatched={mismatched}, unverifiable={unverifiable}"
         )
-    if (fully_matched_rows, mismatched_rows, unverifiable_rows) != (53, 2, 62):
+    if (fully_matched_rows, mismatched_rows, unverifiable_rows) != (54, 2, 61):
         raise RuntimeError("Pinned CryptoTrade row-level conformance counts changed")
 
     report = f"""# CryptoTrade paper-level conformance audit
@@ -1692,11 +2077,20 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 ## What reproduces
 
 - A safe adapter over the released environment, 0.4% exchange cost, fixed gas cost,
-  and traditional-signal logic matches {deterministic_matched}/{deterministic} displayed cells
+  and traditional-signal logic matches {traditional_matched}/{deterministic} displayed cells
   across Buy-and-Hold, SMA, SLMA, MACD, and Bollinger Bands.
 - 43/45 traditional strategy/asset/regime rows match all four
   displayed metrics (total return, daily mean, daily standard deviation, and
   Sharpe ratio). This includes every Buy-and-Hold, SLMA, MACD, and Bollinger row.
+- The released ETH LSTM source function was executed for seeds 0--9, two repeats,
+  all six paper-listed look-backs, the paper validation interval, and all three
+  test regimes. All 120 fixed-look-back repeat groups are exact. The four bear
+  metrics match across all 60 seed/look-back combinations and receive paper-result
+  credit. The four bull metrics match all 20 fixed-look-back-5 observations, but
+  only look-backs 5, 10, and 20 reproduce the full row. Because every look-back
+  ties on validation, those bull correspondences receive no strict protocol credit.
+  Sideways is seed/look-back sensitive, and its printed 1.11 volatility matches
+  0/60 grid observations (native range 0.114--1.893).
 - The coauthor history corroborates {author_corroborated}/108 LLM table cells across
   10/27 LLM rows. For each credited row, all four displayed values match and every
   recorded action replays through the pinned official data/environment with zero
@@ -1747,16 +2141,21 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   receive zero paper credit. See `public_fork_divergence_inventory.csv`.
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
-  on the full requested interval, and ships no result path.
+  on the full requested interval, and ships no result path. Its raw entrypoint also
+  omits the required `dataset` argument and hard-codes unavailable `cuda:7`. The
+  audit uses a compatible Torch 2.4.1 CPU runtime rather than the README's declared
+  Torch 2.3.0/CUDA environment, so exact-runtime reproduction remains false.
 - The complete coauthor history contains 83 unique `.out` blobs totaling
   209,739,069 bytes. An exhaustive scan of their 1,371 final return/Sharpe summaries
   finds no standalone LSTM, Informer, AutoFormer, TimesNet, or PatchTST model token
   and no return/Sharpe pair matching any of the 45 published time-series rows. See
   `author_history_output_artifact_census.csv`.
-- The paper says SMA/SLMA parameters are selected on validation performance. The
+- The paper says SMA/SLMA/LSTM parameters are selected on validation performance. The
   source prints candidate validation results and then hard-codes SMA=15 and
-  SLMA=15/30. Only {manifest["paper_described_validation_selections_matching_released_data_argmax"]}/6
-  fixed choices equal the released-data validation argmax.
+  SLMA=15/30; its LSTM branch hard-codes look-back 5. Only
+  {manifest["paper_described_validation_selections_matching_released_data_argmax"]}/7
+  fixed traditional choices equal the released-data validation argmax, while the
+  LSTM validation grid is a non-identifying six-way tie.
 - The paper does not disclose the transaction-fee rate. The source uses 0.4% of
   traded value plus a fixed gas charge, which is necessary to match the tables.
 - `run_agent.sh` is tracked as non-executable and redirects into an absent `logs/`
@@ -1820,6 +2219,25 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--lstm-results-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "CRYPTOTRADE_LSTM_RESULTS_ROOT", str(DEFAULT_LSTM_RESULTS_ROOT)
+            )
+        ),
+    )
+    parser.add_argument(
+        "--lstm-python-wrapper",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "CRYPTOTRADE_LSTM_PYTHON_WRAPPER",
+                str(DEFAULT_LSTM_PYTHON_WRAPPER),
+            )
+        ),
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=project_root / "paper_runs/paper_replication_audits/cryptotrade",
@@ -1830,7 +2248,13 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    manifest = build_audit(args.source_root.resolve(), args.paper_pdf.resolve(), args.output_dir.resolve())
+    manifest = build_audit(
+        args.source_root.resolve(),
+        args.paper_pdf.resolve(),
+        args.lstm_results_root.resolve(),
+        args.lstm_python_wrapper.absolute(),
+        args.output_dir.resolve(),
+    )
     print(json.dumps(manifest, indent=2))
     return int(args.strict and manifest["overall_status"] != "reproduced")
 

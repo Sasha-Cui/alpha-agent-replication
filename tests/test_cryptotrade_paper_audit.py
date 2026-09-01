@@ -16,6 +16,13 @@ audit = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = audit
 SPEC.loader.exec_module(audit)
 
+LSTM_RUNNER = ROOT / "scripts/run_cryptotrade_lstm_probe.py"
+LSTM_SPEC = importlib.util.spec_from_file_location("cryptotrade_lstm_probe", LSTM_RUNNER)
+assert LSTM_SPEC and LSTM_SPEC.loader
+lstm_runner = importlib.util.module_from_spec(LSTM_SPEC)
+sys.modules[LSTM_SPEC.name] = lstm_runner
+LSTM_SPEC.loader.exec_module(lstm_runner)
+
 
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8") as handle:
@@ -69,30 +76,59 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     output_artifacts = read_csv(output / "author_history_output_artifact_census.csv")
     ablation_traces = read_csv(output / "table_5_author_trace_audit.csv")
     ablation = read_csv(output / "table_5_conformance.csv")
+    lstm_fixed = read_csv(output / "lstm_fixed5_cell_census.csv")
+    lstm_validation = read_csv(output / "lstm_validation_grid.csv")
+    lstm_grid = read_csv(output / "lstm_seed_lookback_grid.csv")
+    lstm_cells = read_csv(output / "lstm_cell_adjudication.csv")
+    lstm_execution = json.loads((output / "lstm_execution.json").read_text(encoding="utf-8"))
 
-    assert manifest["overall_status"] == "partial_reproduction_traditional_plus_author_llm_traces"
+    assert manifest["overall_status"] == (
+        "partial_reproduction_traditional_lstm_plus_author_llm_traces"
+    )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_result_metric_cells_total"] == 480
     assert manifest["paper_tables_2_4_metric_cells_total"] == 468
     assert manifest["paper_table_5_metric_cells_total"] == 12
-    assert manifest["native_deterministic_metric_cells_recomputed"] == 180
-    assert manifest["native_deterministic_metric_cells_matched"] == 174
+    assert manifest["native_deterministic_metric_cells_recomputed"] == 192
+    assert manifest["native_deterministic_metric_cells_matched"] == 178
     assert manifest["native_deterministic_metric_cells_mismatched"] == 6
+    assert manifest["native_lstm_metric_cells_recomputed"] == 12
+    assert manifest["native_lstm_protocol_robust_metric_cells_reproduced"] == 4
+    assert manifest["native_lstm_source_default_metric_cells_corresponding"] == 8
+    assert manifest["native_lstm_source_default_only_metric_cells"] == 4
+    assert manifest["native_lstm_fixed5_runs"] == 20
+    assert manifest["native_lstm_fixed5_regime_runs"] == 60
+    assert manifest["native_lstm_fixed5_cell_observations"] == 240
+    assert manifest["native_lstm_fixed5_repeat_groups_exact"] == 120
+    assert manifest["native_lstm_validation_grid_runs"] == 120
+    assert manifest["native_lstm_validation_repeat_groups_exact"] == 60
+    assert manifest["native_lstm_validation_all_lookbacks_tie"] is True
+    assert manifest["native_lstm_seed_lookback_grid_runs"] == 60
+    assert manifest["native_lstm_seed_lookback_regime_runs"] == 180
+    assert manifest["native_lstm_seed_lookback_cell_observations"] == 720
+    assert manifest["native_lstm_seed0_grid_repeat_cell_rows_exact"] == 72
+    assert manifest["native_lstm_sideways_volatility_grid_matches"] == 0
+    assert manifest["native_lstm_exact_declared_torch_runtime_reproduced"] is False
+    assert manifest["native_lstm_compatible_runtime"] == audit.LSTM_COMPATIBLE_ENVIRONMENT
+    assert manifest["native_lstm_replay_llm_calls"] == 0
+    assert manifest["native_lstm_replay_network_attempts"] == 0
     assert manifest["author_history_llm_metric_cells_corroborated"] == 40
     assert manifest["author_history_llm_rows_corroborated"] == 10
     assert manifest["author_history_llm_rows_numeric_match_but_no_credit"] == 6
-    assert manifest["paper_metric_cells_corroborated_total"] == 214
+    assert manifest["paper_metric_cells_corroborated_total"] == 218
     assert manifest["author_history_model_mismatch_traces_reassignment_checked"] == 5
     assert manifest["author_history_declared_model_metric_cells_checked"] == 20
     assert manifest["author_history_declared_model_metric_cells_matching"] == 1
     assert manifest["author_history_declared_model_complete_rows_matching"] == 0
-    assert manifest["paper_numeric_evidence_correspondences_total"] == 226
+    assert manifest["paper_numeric_evidence_correspondences_total"] == 230
     assert manifest["author_history_numeric_metric_cells_corresponding"] == 52
-    assert manifest["paper_result_metric_cells_unverifiable"] == 260
+    assert manifest["paper_result_metric_cells_unverifiable"] == 256
     assert manifest["paper_strategy_regime_or_ablation_rows_total"] == 123
-    assert manifest["paper_strategy_regime_rows_fully_matched"] == 53
+    assert manifest["paper_strategy_regime_rows_fully_matched"] == 54
     assert manifest["paper_strategy_regime_rows_mismatched"] == 2
-    assert manifest["paper_strategy_regime_rows_unverifiable"] == 62
+    assert manifest["paper_strategy_regime_rows_unverifiable"] == 61
+    assert manifest["paper_described_validation_selections_total"] == 7
+    assert manifest["paper_described_validation_nonidentifying_ties"] == 1
     assert manifest["full_period_llm_result_logs_shipped_in_official_release"] is False
     assert manifest["matching_full_period_llm_result_traces_recovered_from_paper_author_history"] is True
     assert manifest["paper_author_history_commit"] == audit.AUTHOR_HISTORY_COMMIT
@@ -133,10 +169,13 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     statuses = Counter(row["status"] for row in conformance)
     assert statuses == {
         "exact_displayed_precision_match": 174,
+        "native_lstm_seed_and_lookback_robust_match": 4,
         "author_trace_exact_metric_and_native_state_replay": 40,
         "mismatch": 6,
         "unverifiable_no_recovered_author_trace": 44,
-        "unverifiable_no_shipped_full_period_output": 180,
+        "unverifiable_no_shipped_full_period_output": 168,
+        "unverifiable_native_lstm_source_default_match_protocol_tie_sensitive": 4,
+        "unverifiable_native_lstm_seed_or_lookback_sensitive": 4,
         "unverifiable_trace_model_or_period_conflict": 24,
     }
     mismatches = [row for row in conformance if row["status"] == "mismatch"]
@@ -246,10 +285,84 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert {row["historical_code_action_replay_exact"] for row in ablation} == {"True"}
     assert {row["paper_method_faithful_credit"] for row in ablation} == {"False"}
 
-    assert len(selection) == 6
+    assert len(selection) == 7
     assert Counter(row["status"] for row in selection) == {
         "selection_rule_mismatch": 5,
         "selection_rule_match": 1,
+        "selection_rule_nonidentifying_tie": 1,
     }
+    lstm_selection = next(row for row in selection if row["strategy"] == "lstm")
+    assert lstm_selection["released_data_validation_argmax"] == (
+        "all [1,3,5,10,20,30] tie"
+    )
+    assert lstm_selection["paper_test_metric_cells_matching_with_fixed_parameter"] == "8"
+
+    assert len(lstm_fixed) == 240
+    assert {row["lookback"] for row in lstm_fixed} == {"5"}
+    fixed_groups = {}
+    for row in lstm_fixed:
+        key = (row["seed"], row["regime"], row["metric"])
+        fixed_groups.setdefault(key, []).append(
+            (row["recomputed_value"], row["action_sha256"])
+        )
+    assert len(fixed_groups) == 120
+    assert all(len(set(values)) == 1 for values in fixed_groups.values())
+    assert len(lstm_validation) == 120
+    assert {row["lookback"] for row in lstm_validation} == {
+        "1",
+        "3",
+        "5",
+        "10",
+        "20",
+        "30",
+    }
+    assert len(lstm_grid) == 720
+    assert len(lstm_cells) == 12
+    assert Counter(row["status"] for row in lstm_cells) == {
+        "native_lstm_seed_and_lookback_robust_match": 4,
+        "source_default_match_protocol_tie_sensitive_no_credit": 4,
+        "seed_or_lookback_sensitive_no_credit": 4,
+    }
+    credited_lstm = [
+        row for row in lstm_cells if row["protocol_robust_paper_result_credit"] == "True"
+    ]
+    assert len(credited_lstm) == 4
+    assert {row["regime"] for row in credited_lstm} == {"bear"}
+    assert {row["metric"] for row in credited_lstm} == set(audit.METRICS)
+    sideways_std = next(
+        row
+        for row in lstm_cells
+        if row["regime"] == "sideways" and row["metric"] == "daily_return_std_pct"
+    )
+    assert sideways_std["seed_lookback_matches"] == "0"
+    assert sideways_std["seed_lookback_min"] == "0.11361322968"
+    assert sideways_std["seed_lookback_max"] == "1.892942965348"
+    assert lstm_execution["fixed_source_default"]["repeat_exact_groups"] == 120
+    assert lstm_execution["paper_validation_grid"]["all_lookbacks_tie_for_every_seed"] is True
+    assert lstm_execution["paper_seed_lookback_grid"]["protocol_robust_matching_cells"] == 4
+    assert lstm_execution["paper_seed_lookback_grid"]["source_default_only_matching_cells"] == 4
+    assert lstm_execution["exact_declared_runtime_reproduced"] is False
+    assert lstm_execution["network_attempts"] == 0
+    assert lstm_execution["llm_calls"] == 0
     for filename, expected in manifest["output_sha256"].items():
         assert audit.sha256(output / filename) == expected
+
+
+def test_lstm_evidence_inputs_when_bouchet_assets_are_available() -> None:
+    source = Path("/nfs/roberts/scratch/pi_btk22/zc362/cryptotrade_source")
+    results = audit.DEFAULT_LSTM_RESULTS_ROOT
+    wrapper = audit.DEFAULT_LSTM_PYTHON_WRAPPER
+    if not all(path.exists() for path in (source, results, wrapper)):
+        return
+    evidence = audit.load_lstm_evidence(results, wrapper)
+    assert len(evidence["fixed_cells"]) == 240
+    assert len(evidence["validation"]) == 120
+    assert len(evidence["paper_grid"]) == 720
+    assert sum(
+        row["protocol_robust_paper_result_credit"]
+        for row in evidence["adjudication"]
+    ) == 4
+    assert lstm_runner.SOURCE_COMMIT == audit.SOURCE_COMMIT
+    assert lstm_runner.SOURCE_HASHES["run_baseline.py"] == (
+        "9baf6e13ce4c504d7dee0bfe3fa14d5e953b3276cd43cc11b91cb862243e606e"
+    )

@@ -25,6 +25,15 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 - 43/45 traditional strategy/asset/regime rows match all four
   displayed metrics (total return, daily mean, daily standard deviation, and
   Sharpe ratio). This includes every Buy-and-Hold, SLMA, MACD, and Bollinger row.
+- The released ETH LSTM source function was executed for seeds 0--9, two repeats,
+  all six paper-listed look-backs, the paper validation interval, and all three
+  test regimes. All 120 fixed-look-back repeat groups are exact. The four bear
+  metrics match across all 60 seed/look-back combinations and receive paper-result
+  credit. The four bull metrics match all 20 fixed-look-back-5 observations, but
+  only look-backs 5, 10, and 20 reproduce the full row. Because every look-back
+  ties on validation, those bull correspondences receive no strict protocol credit.
+  Sideways is seed/look-back sensitive, and its printed 1.11 volatility matches
+  0/60 grid observations (native range 0.114--1.893).
 - The coauthor history corroborates 40/108 LLM table cells across
   10/27 LLM rows. For each credited row, all four displayed values match and every
   recorded action replays through the pinned official data/environment with zero
@@ -53,7 +62,7 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 
 ## Why this is not a full reproduction
 
-- 260/480 paper result cells remain unverifiable. The
+- 256/480 paper result cells remain unverifiable. The
   official release ships no complete LLM result paths; the recovered author history
   contains no matching GPT-3.5 paper row and no complete matching SOL-bear GPT-4o row.
 - Six additional LLM rows numerically match the paper but receive no credit: five
@@ -75,16 +84,21 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   receive zero paper credit. See `public_fork_divergence_inventory.csv`.
 - Informer, AutoFormer, TimesNet, and PatchTST implementations are absent. The
   included LSTM is embedded in an ETH-only monolithic runner, has no seed, trains
-  on the full requested interval, and ships no result path.
+  on the full requested interval, and ships no result path. Its raw entrypoint also
+  omits the required `dataset` argument and hard-codes unavailable `cuda:7`. The
+  audit uses a compatible Torch 2.4.1 CPU runtime rather than the README's declared
+  Torch 2.3.0/CUDA environment, so exact-runtime reproduction remains false.
 - The complete coauthor history contains 83 unique `.out` blobs totaling
   209,739,069 bytes. An exhaustive scan of their 1,371 final return/Sharpe summaries
   finds no standalone LSTM, Informer, AutoFormer, TimesNet, or PatchTST model token
   and no return/Sharpe pair matching any of the 45 published time-series rows. See
   `author_history_output_artifact_census.csv`.
-- The paper says SMA/SLMA parameters are selected on validation performance. The
+- The paper says SMA/SLMA/LSTM parameters are selected on validation performance. The
   source prints candidate validation results and then hard-codes SMA=15 and
-  SLMA=15/30. Only 1/6
-  fixed choices equal the released-data validation argmax.
+  SLMA=15/30; its LSTM branch hard-codes look-back 5. Only
+  1/7
+  fixed traditional choices equal the released-data validation argmax, while the
+  LSTM validation grid is a non-identifying six-way tie.
 - The paper does not disclose the transaction-fee rate. The source uses 0.4% of
   traded value plus a fixed gas charge, which is necessary to match the tables.
 - `run_agent.sh` is tracked as non-executable and redirects into an absent `logs/`
