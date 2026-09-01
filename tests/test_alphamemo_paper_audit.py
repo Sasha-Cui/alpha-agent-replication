@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import importlib.util
 import json
+import os
 import sys
 from collections import Counter
 from pathlib import Path
@@ -380,3 +381,14 @@ def test_global_native_ledger_reflects_real_pipeline_without_result_credit() -> 
     assert "Zero factors pass the 0.10 gate" in note
     assert "current-input components, not paper outputs" in note
     assert "0/474 result cells count as native reproductions" in note
+
+
+def test_environment_manifest_ignores_parent_pythonpath(monkeypatch) -> None:
+    source_python = Path(audit.DEFAULT_PAPER_SOURCE_PYTHON)
+    if not source_python.exists():
+        return
+    monkeypatch.setenv("PYTHONPATH", os.pathsep.join(sys.path))
+    rows, summary = real_probe.environment_manifest(source_python)
+    assert len(rows) == real_probe.ENVIRONMENT_PACKAGE_COUNT
+    assert summary["package_count"] == real_probe.ENVIRONMENT_PACKAGE_COUNT
+    assert summary["manifest_sha256"] == real_probe.ENVIRONMENT_MANIFEST_SHA256

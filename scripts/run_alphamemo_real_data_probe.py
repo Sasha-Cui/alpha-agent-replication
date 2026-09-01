@@ -125,12 +125,25 @@ rows = sorted(set(
 ))
 print(json.dumps({"python": sys.version.split()[0], "packages": rows}))
 '''
+    environment = dict(os.environ)
+    for key in (
+        "CONDA_PREFIX",
+        "CONDA_DEFAULT_ENV",
+        "PYTHONHOME",
+        "PYTHONPATH",
+        "PYTHONUSERBASE",
+        "VIRTUAL_ENV",
+        "_OLD_VIRTUAL_PATH",
+        "__PYVENV_LAUNCHER__",
+    ):
+        environment.pop(key, None)
+    environment.update({"PYTHONDONTWRITEBYTECODE": "1", "PYTHONNOUSERSITE": "1"})
     result = subprocess.run(
         [str(python), "-c", program],
         check=True,
         capture_output=True,
         text=True,
-        env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1", "PYTHONNOUSERSITE": "1"},
+        env=environment,
     )
     payload = json.loads(result.stdout)
     rows = [{"package": name, "version": version} for name, version in payload["packages"]]
