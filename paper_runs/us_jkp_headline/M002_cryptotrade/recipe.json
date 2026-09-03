@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M002",
+  "canonical_work_id": "CensusACL2024emnlpmain63",
+  "paper": "CryptoTrade: A Reflective LLM-based Agent to Guide Zero-shot Cryptocurrency Trading",
+  "paper_url": "https://aclanthology.org/2024.emnlp-main.63.pdf",
+  "paper_sha256": "376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf",
+  "source_url": "https://github.com/Xtra-Computing/CryptoTrade",
+  "source_commit": "210da73af5f17992be425e61305524a5c24dae40",
+  "headline_strategy": "Full reflective LLM agent with on-chain/technical, news, reflection, and trader stages",
+  "headline_configuration": {
+    "paper_model_setting": "GPT-4o",
+    "use_technical": true,
+    "use_transaction_statistics": true,
+    "use_news": true,
+    "use_reflection": true,
+    "price_window_daily_observations": 7,
+    "reflection_memory_entries": 3,
+    "decision": "single-asset signed fractional buy/sell/hold action"
+  },
+  "released_step_llm_calls": ["on-chain analyst", "news analyst", "reflection analyst", "trader"],
+  "paper_portability_to_common_task": "not defensible",
+  "common_calendar_months": 305,
+  "common_universe_securities_per_month": 1000,
+  "direct_port_decisions": 305000,
+  "direct_port_llm_calls": 1220000,
+  "missing_common_inputs": [
+    "point-in-time stock news text",
+    "stock analogues with source-defined semantics for unique addresses, transferred value, gas, transaction success, and gas price",
+    "an immutable GPT-4o snapshot/fingerprint",
+    "a source-defined mapping from 1,000 isolated cash/asset states to one cross-sectional portfolio"
+  ],
+  "source_execution_conflicts": [
+    "The active source prompts and state are cryptocurrency-specific and often hard-code ETH.",
+    "The source default is GPT-3.5 while paper-labelled GPT-4o output lineage is incomplete or model-conflicted.",
+    "The source loop is daily and stateful per one asset; batching or normalizing 1,000 actions changes both memory and portfolio semantics."
+  ],
+  "rejected_substitutes": [
+    {"route": "Use SMA, SLMA, MACD, Bollinger or LSTM output", "reason": "These are baselines, not CryptoTrade's proposed reflective LLM strategy; the released LSTM also uses future regime inputs."},
+    {"route": "Replay historical crypto actions on U.S. stocks", "reason": "The actions have crypto assets, dates and state, and do not define a cross-sectional stock score."},
+    {"route": "Fit a deterministic behavior-cloning model to recovered actions", "reason": "This removes the LLM analyses and reflection/memory mechanism and lacks corresponding U.S. state/action training data."},
+    {"route": "Rename JKP firm characteristics as on-chain/news inputs", "reason": "No paper or source mapping supports those semantics; this would be an invented generic proxy."},
+    {"route": "Batch all securities into one monthly modern-model prompt", "reason": "This replaces the four-call, per-asset, stateful decision process and its independent memories; it is a new method rather than a port."}
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/cryptotrade",
+  "result_policy": "No synthetic or zero return is created. The milestone is closed_not_evaluable for the common task; this is not evidence that the paper's original crypto performance claim is false.",
+  "status": "closed_not_evaluable"
+}

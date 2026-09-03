@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 1,
+    "closed": 2,
     "completed_adapted": 1,
     "completed_partial": 0,
-    "closed_not_evaluable": 0,
-    "in_progress": 0,
-    "queued": 68
+    "closed_not_evaluable": 1,
+    "in_progress": 1,
+    "queued": 66
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -43,16 +43,16 @@
       "title": "CryptoTrade: A Reflective LLM-based Agent to Guide Zero-shot Cryptocurrency Trading",
       "system_ids": "SYS-CRYPTO-TRADE",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M002_cryptotrade/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M002_cryptotrade/verdict.md",
+      "evaluated_scope": "No common-benchmark return: the central stateful four-call reflective agent has no defensible monthly U.S./JKP input, cross-sectional, or portfolio transfer without replacing most of its method.",
+      "next_action": "Closed. Preserve the deterministic crypto-baseline and author-output audits separately; do not relabel them as the headline agent.",
+      "closure_reason": "A direct common-universe port requires 1,220,000 stateful LLM calls plus invented stock analogues for crypto transaction/news state and a new portfolio aggregation rule; every bounded shortcut tested at the design boundary removes the central reflective-agent mechanism."
     },
     {
       "milestone_id": "M003",
@@ -60,7 +60,7 @@
       "title": "Can Large Language Models Mine Interpretable Financial Factors More Effectively? A Neural-Symbolic Factor Mining Agent Model",
       "system_ids": "SYS-FAMA",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

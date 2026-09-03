@@ -21,6 +21,9 @@ def test_headline_milestones_cover_exactly_the_existing_69_papers():
     assert sum(row["status"] == "in_progress" for row in rows) <= 1
     assert (ROOT / ledger["protocol_path"]).is_file()
     assert (ROOT / ledger["benchmark_contract_path"]).is_file()
+    counts = {status: sum(row["status"] == status for row in rows)
+              for status in ["completed_adapted", "completed_partial", "closed_not_evaluable", "in_progress", "queued"]}
+    assert ledger["progress_summary"] == {"closed": sum(counts[status] for status in ledger["terminal_statuses"]), **counts}
 
 
 def test_closed_milestones_require_evaluation_or_an_explicit_non_evaluability_record():

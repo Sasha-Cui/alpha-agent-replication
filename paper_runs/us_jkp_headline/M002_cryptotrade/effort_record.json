@@ -1,0 +1,25 @@
+{
+  "milestone_id": "M002",
+  "status": "bounded_common-task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/cryptotrade/README.md",
+    "paper_runs/paper_replication_audits/cryptotrade/manifest.json",
+    "paper_runs/paper_replication_audits/cryptotrade/author_history_llm_trace_audit.csv",
+    "paper_runs/paper_replication_audits/cryptotrade/traditional_selection_protocol.json"
+  ],
+  "source_files_checked_for_headline_transfer": {
+    "run_agent.py": "fc22e924c31fc357a19b6ccd7c413b58949614caad2b8270768ab63f189a23e7",
+    "eth_trial.py": "8154cefe78e6fa9af2774c4c2f402f16576c79adf1e1c36ef942ce14c220660c",
+    "env_history.py": "78cbc77b5c11ce024638a41f76f48a513a12b38c9d657431b3f76a3efcd8a7ab",
+    "eth_env.py": "a05443b96d6e86b13ee33adf1c5d6a16dac9195de6857a3e9c2916cf0c393f3f",
+    "generate_reflections.py": "checked through the pinned source history; its active reflection endpoint is GPT-3.5-turbo"
+  },
+  "bounded_checks": [
+    "Identified the full reflective agent—not deterministic baselines—as the paper headline.",
+    "Counted the released four LLM calls per asset-time decision.",
+    "Mapped every required observation family and found that JKP supplies neither text news nor source-defined analogues for crypto network state.",
+    "Checked direct per-security, batched, historical-action, behavior-clone, and baseline routes against the central-mechanism and common-portfolio requirements.",
+    "Kept prior traditional and historical-output achievements separate rather than rerunning them."
+  ],
+  "outcome": "No route produces a monthly U.S./JKP strategy while preserving enough of the proposed reflective LLM mechanism to attribute the result to CryptoTrade."
+}

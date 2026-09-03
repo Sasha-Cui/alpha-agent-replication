@@ -85,10 +85,12 @@ a live job. The benchmark contract records the private data and public factor
 hashes; completed run manifests pin the result artifacts.
 
 - Keep at most one milestone `in_progress`.
-- After closing a milestone, validate and release its coherent changes and
-  monitor the resulting CI before activating the next queued paper. This keeps
-  one failed check from being mixed with a second paper and avoids noisy retry
-  workflows.
+- After the M001 shared foundation release, focused validation and a coherent
+  commit are required for every milestone. Batch the full two-Python release
+  gate, one push, and one CI run after every ten newly closed milestones. Run it
+  earlier only after a material shared-infrastructure change, for final delivery,
+  or on explicit request. Do not activate another paper while a batch release is
+  live. This keeps progress moving without producing one workflow per paper.
 - Start with the existing dossier, the relevant primary method section, and
   official code; do not repeat the whole forensic audit.
 - Implement the most direct supported route, run it, and repair tractable bugs.

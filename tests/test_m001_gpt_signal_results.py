@@ -66,11 +66,9 @@ def test_m001_metrics_have_one_primary_and_fixed_diagnostics():
 
 def test_m001_closure_is_counted_separately_from_original_paper_reproduction():
     ledger = json.loads((ROOT / "paper_runs/us_jkp_headline/milestones.json").read_text())
-    counts = pd.Series(row["status"] for row in ledger["milestones"]).value_counts().to_dict()
-    summary = ledger["progress_summary"]
-    assert summary == {"closed": 1, "completed_adapted": 1, "completed_partial": 0,
-                       "closed_not_evaluable": 0, "in_progress": 0, "queued": 68}
-    assert counts == {"queued": 68, "completed_adapted": 1}
+    m001 = next(row for row in ledger["milestones"] if row["milestone_id"] == "M001")
+    assert m001["status"] == "completed_adapted"
+    assert ledger["progress_summary"]["completed_adapted"] >= 1
     report = (OUTPUT / "verdict.md").read_text()
     assert "not an original-paper or fresh-LLM reproduction" in report
     assert "No sign, factor formula or hyperparameter was changed after viewing the result" in report
