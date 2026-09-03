@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 23,
+    "closed": 24,
     "completed_adapted": 1,
     "completed_partial": 4,
-    "closed_not_evaluable": 18,
+    "closed_not_evaluable": 19,
     "in_progress": 1,
-    "queued": 45
+    "queued": 44
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -417,16 +417,16 @@
       "title": "MountainLion: A Multi-Modal LLM-Based Agent System for Interpretable and Adaptive Financial Trading",
       "system_ids": "SYS-MOUNTAIN-LION",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M024_mountainlion/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M024_mountainlion/verdict.md",
+      "evaluated_scope": "No common-task return: attributable frontend/platform components exist, but no public pipeline generates the crypto forecasts and the paper supplies no portfolio, actions, holdings, costs, return path or U.S.-stock transfer.",
+      "next_action": "Closed. Preserve product-component and forecasting evidence; do not promote private database rows, fresh prompt runs, formula-only fusion, paper figures, or a crypto-to-JKP mapping to MountainLion.",
+      "closure_reason": "Neither the forecast policy nor any trading strategy is identifiable from public artifacts. A forecast reconstruction would still lack the portfolio/execution object required by the common task, so every bounded alternative invents a strategy."
     },
     {
       "milestone_id": "M025",
@@ -434,7 +434,7 @@
       "title": "ContestTrade: A Multi-Agent Trading System Based on Internal Contest Mechanism",
       "system_ids": "SYS-CONTEST-TRADE",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

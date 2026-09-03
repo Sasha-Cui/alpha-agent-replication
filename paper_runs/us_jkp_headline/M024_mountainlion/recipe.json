@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M024",
+  "canonical_work_id": "CensusArxiv250720474",
+  "paper": "MountainLion: A Multi-Modal LLM-Based Agent System for Interpretable and Adaptive Financial Trading",
+  "paper_url": "https://arxiv.org/abs/2507.20474v3",
+  "paper_pdf_sha256": "6b898a90ad7d6d30c422cfc9b23c5bc4cc44a2d86744db0577253de3e8cd2018",
+  "paper_source_sha256": "54e9a568471bd73a036f37db6b61b89c25690d23ecc64b265bfd59321d49bf5e",
+  "attributable_frontend": "https://github.com/MountainLionAi/MountainLion",
+  "attributable_platform": "https://github.com/MountainLionAi/GenAI-Platform",
+  "platform_paper_time_commit": "98b98d31dec6d29a5c518943d980300612030a40",
+  "headline_strategy": "Four-agent crypto forecasting and recommendation system combining OHLCV windows, historical and real-time news, sentiment, GraphRAG/Perplexity retrieval, LLM and machine-learning forecast tracks, adaptive convex fusion, central reflection, and feedback-updated recommendations",
+  "paper_configuration": {
+    "tokens": ["ADA", "ARB", "BNB", "BTC", "DOGE", "ETH", "MATIC", "SOL", "TRX", "XRP"],
+    "price_windows": ["14 days", "48 hours"],
+    "named_base_model": "LLaMA2-13B",
+    "verbatim_prompt_templates": 7,
+    "forecast_horizon_status": "conflicting across 2-step, 24-step, and seven-day descriptions"
+  },
+  "paper_portability_to_common_task": "not defensibly executable and not directly a monthly U.S.-stock policy; public product components read precomputed crypto forecasts but do not generate the paper forecasts or positions",
+  "released_component_credit": {
+    "frontend_files": 153,
+    "frontend_repeated_build_artifacts": 67,
+    "paper_time_backend_files": 199,
+    "paper_corresponding_component_checks": 7,
+    "exact_native_paper_mechanisms": 0,
+    "public_history_commits_scanned": 2273
+  },
+  "missing_headline_objects": [
+    "forecast training panel, exchange, dates, candle frequency, preprocessing and split",
+    "ML estimator, fitted model, cross-validation folds/scores and prediction arrays",
+    "exact LLM snapshots, substituted prompts, requests/responses, tools, parameters and seeds",
+    "GraphRAG graph/data, retrieval provenance, sentiment embeddings and news recommendation records",
+    "adaptive-alpha optimizer, LLM/ML horizon alignment, reflection and feedback implementation",
+    "private ml4gp modules, plugin, MySQL/Redis schemas/state and service credentials",
+    "portfolio rule, actions, holdings, fills, cash, fees, returns and benchmark path"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Use the public kline_predictd database reader",
+      "reason": "It only reads three precomputed rows from private database state and contains no fitting, fusion, or Table 1 evaluation."
+    },
+    {
+      "route": "Run the seven paper prompts with current models",
+      "reason": "Runtime inputs, exact model identities, tools, retrieval state, requests, response parsing and forecast alignment are absent."
+    },
+    {
+      "route": "Implement the printed convex fusion equation",
+      "reason": "The underlying LLM/ML forecasts, horizon mapping, adaptive-alpha objective/window and fitted models are unidentified."
+    },
+    {
+      "route": "Use Table 1 predictions or author figures as trading signals",
+      "reason": "They provide neither aligned forecast arrays nor a portfolio/execution rule, and the paper reports no return path."
+    },
+    {
+      "route": "Map crypto forecasting components to JKP characteristics",
+      "reason": "This changes the token universe, multimodal inputs, intraday/daily horizons and recommendation policy and invents a stock portfolio."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/mountainlion",
+  "result_policy": "No database-reader output, fresh prompt run, formula-only fusion, table/figure inference, or generic JKP mapping is entered as a MountainLion return. The paper reports forecast errors but no auditable trading return; its forecasting claims remain unresolved.",
+  "status": "closed_not_evaluable"
+}
