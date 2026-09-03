@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M005",
+  "canonical_work_id": "CensusACL2026findingsacl456",
+  "paper": "AlphaQuanter: An End-to-End Tool-Augmented Agentic Reinforcement Learning Framework for Stock Trading",
+  "paper_url": "https://aclanthology.org/2026.findings-acl.456.pdf",
+  "paper_sha256": "433ff948a2a90cb7eb83cdb823d56ed49026795f7e2688bbe8b67bcdbd444fd5",
+  "source_url": "https://github.com/horizon-llm/AlphaQuanter",
+  "source_commit": "fac423cb1b45a3d0593e88a0f9805c338d7e0fea",
+  "headline_strategy": "Tool-augmented LLM trading policy trained with reinforcement learning from multi-horizon future-return reward labels",
+  "paper_portability_to_common_task": "not defensibly executable from released information",
+  "released_components": {
+    "dated_prompt_reward_rows": 2615,
+    "training_dates_per_ticker": 395,
+    "validation_dates_per_ticker": 128,
+    "numeric_reward_labels_recovered": 2615,
+    "paper_result_credit": 0
+  },
+  "missing_headline_objects": [
+    "the paper's 2025 test prompts and original multimodal inputs",
+    "paper-test actions and portfolio paths",
+    "complete VERL training/runtime modules",
+    "trained policy checkpoint and model/API snapshot",
+    "three-seed identities and outputs",
+    "token/cost logs and individual human ratings"
+  ],
+  "procedure_conflicts": [
+    "Released test.parquet is the paper's 2024 validation split, not the 2025 test.",
+    "The release entrypoint calls an absent VERL trainer and placeholder collected-data paths.",
+    "Paper inference temperature 0 conflicts with source validation temperature 1.0/top-p 0.6.",
+    "Paper and source Sharpe definitions, rolling-window length/step, and seed protocol conflict."
+  ],
+  "rejected_substitutes": [
+    {"route": "Use released reward labels directly as BUY/HOLD/SELL actions", "reason": "The labels are functions of seven future return horizons and would introduce direct lookahead."},
+    {"route": "Train a supervised classifier on the released labels", "reason": "This replaces the paper's tool-augmented RL policy and omits its multimodal test inputs and policy/value optimization."},
+    {"route": "Use reconstructed Buy-and-Hold", "reason": "It is a market baseline, not AlphaQuanter; 33/34 current-response cells also differ from the paper."},
+    {"route": "Complete the missing VERL scaffold with researcher choices", "reason": "The decisive trainer, policy checkpoint, test data, seeds, actions and selection rule would be supplied by us."}
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/alphaquanter",
+  "result_policy": "No future reward label, market baseline or newly trained surrogate is entered as AlphaQuanter. The closure does not imply that private paper results are false.",
+  "status": "closed_not_evaluable"
+}

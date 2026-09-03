@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 4,
+    "closed": 5,
     "completed_adapted": 1,
     "completed_partial": 0,
-    "closed_not_evaluable": 3,
+    "closed_not_evaluable": 4,
     "in_progress": 1,
-    "queued": 64
+    "queued": 63
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -94,16 +94,16 @@
       "title": "AlphaQuanter: An End-to-End Tool-Augmented Agentic Reinforcement Learning Framework for Stock Trading",
       "system_ids": "SYS-ALPHA-QUANTER",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M005_alphaquanter/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M005_alphaquanter/verdict.md",
+      "evaluated_scope": "No common-task return: released prompt/reward-label components do not identify the trained tool-augmented RL policy; using forward-looking reward labels as actions would be lookahead.",
+      "next_action": "Closed. Preserve released prompt/reward component evidence separately; do not train a new classifier or use future reward labels as an AlphaQuanter strategy.",
+      "closure_reason": "The release lacks the 2025 test prompts, actions, multimodal inputs, complete VERL runtime, policy checkpoint, three-seed outputs and ratings; reward labels are future-return training targets rather than a causal trading rule."
     },
     {
       "milestone_id": "M006",
@@ -111,7 +111,7 @@
       "title": "FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory and Character Design",
       "system_ids": "SYS-FIN-MEM",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

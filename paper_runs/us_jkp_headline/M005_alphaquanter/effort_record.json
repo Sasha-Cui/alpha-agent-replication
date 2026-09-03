@@ -1,0 +1,16 @@
+{
+  "milestone_id": "M005",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/alphaquanter/README.md",
+    "paper_runs/paper_replication_audits/alphaquanter/manifest.json",
+    "paper_runs/paper_replication_audits/alphaquanter/reward_label_lineage.csv",
+    "paper_runs/paper_replication_audits/alphaquanter/method_specification_audit.csv"
+  ],
+  "bounded_checks": [
+    "Separated the trained AlphaQuanter policy from its labels, prompts and Buy-and-Hold baseline.",
+    "Checked whether released train/validation rows, reward formula and partial VERL patch identify an inference policy or paper test path.",
+    "Rejected future-label trading, supervised-label imitation, market-baseline substitution and researcher-completed PPO as headline strategies."
+  ],
+  "outcome": "The public components define how some training rewards were made but do not define the policy that converts formation-time JKP information into actions."
+}
