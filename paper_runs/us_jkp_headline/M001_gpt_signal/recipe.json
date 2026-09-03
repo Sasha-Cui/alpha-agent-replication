@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M001",
+  "canonical_work_id": "CensusArxiv241018448",
+  "paper": "GPT-Signal: Generative AI for Semi-automated Feature Engineering in the Alpha Research Process",
+  "source_url": "https://arxiv.org/html/2410.18448v1",
+  "source_sections": ["4 Experimental Setup", "5.1 GPT-4 Output", "5.2 Overall Results", "5.3 Correlation Heat Maps Break-down"],
+  "headline_signal": "Efficiency Value Composite (EVC)",
+  "headline_selection_reason": "The paper identifies EVC as having the strongest absolute return correlation overall and in the highlighted IT experiment. It is selected from that paper claim, not by testing the six signals on JKP.",
+  "published_formula": "EVC = (1 / ROA) * (1 / (EV / EBITDA)) * (1 / (P / CF))",
+  "paper_signed_all_sector_correlation": -0.14,
+  "orientation_source": "paper_runs/paper_replication_audits/gpt_signal/correlation_cell_reproduction.csv: all_3m_all, row=EVC, column=Return",
+  "trading_score_direction": -1,
+  "trading_interpretation": "Lower EVC receives a higher score, preserving the paper's negative signed relationship.",
+  "implementation_path": "src/alpha_evolve/headline_strategies.py",
+  "input_mapping_status": "candidate_columns_present_definition_check_pending",
+  "candidate_jkp_mapping": {
+    "ROA": {"column": "ni_at", "check": "Net-income/assets definition, averaging denominator, accounting period and reporting availability."},
+    "reciprocal_EV_over_EBITDA": {"column": "ebitda_mev", "check": "EBITDA/market-enterprise-value definition, sign and accounting period."},
+    "reciprocal_P_over_CF": {"column": "ocf_me", "check": "Operating-cash-flow/market-equity definition versus the paper/vendor cash-flow convention and reporting period."}
+  },
+  "conditional_jkp_algebra": "EVC = ebitda_mev * ocf_me / ni_at after recording the input-definition mapping",
+  "missing_input_rule": "Do not fill across time or introduce arbitrary epsilon/absolute-value transforms. Record convention differences as adaptations when economically defensible.",
+  "benchmark_id": "us_jkp_headline_v1",
+  "portfolio_rule_scope": "researcher-supplied common monthly score-to-portfolio adapter; the paper evaluates signals and does not specify this trading portfolio",
+  "preserved": ["published EVC reciprocal algebra", "signed paper relationship", "fixed source-based headline selection"],
+  "adapted": ["JKP financial inputs and their conventions", "common U.S. universe", "monthly cadence", "common trading portfolio, costs and factor benchmark"],
+  "not_claimed": ["fresh GPT-4-1106-preview signal generation", "reproduction of original FactSet inputs or all published tables", "replication of the paper's Fama-MacBeth experiment", "an exact original-paper trading portfolio"],
+  "new_jkp_strategy_results_inspected": false,
+  "status": "formula_extracted_and_unit_test_ready_evaluation_pending"
+}
