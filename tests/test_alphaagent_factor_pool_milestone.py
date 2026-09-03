@@ -55,3 +55,20 @@ def test_source_feature_ranks_are_bounded_and_open_proxy_is_lagged():
     finite = finite[np.isfinite(finite)]
     assert finite.size > 0
     assert finite.min() >= -1 and finite.max() <= 1
+
+
+def test_learning_warmup_is_explicit_cash_not_a_missing_return():
+    path = pd.DataFrame({
+        "path_status": ["insufficient_formation_coverage", "ok"],
+        "gross_return": [np.nan, 0.02],
+        "total_security_return": [np.nan, 0.03],
+        "traded_notional": [0.0, 1.0],
+        "missing_forward_return_gross_weight": [np.nan, 0.0],
+        "missing_total_return_gross_weight": [np.nan, 0.0],
+    })
+    result = runner.cash_fill_warmup(path)
+    assert result.iloc[0][[
+        "gross_return", "total_security_return", "traded_notional",
+        "missing_forward_return_gross_weight", "missing_total_return_gross_weight",
+    ]].eq(0).all()
+    assert result.iloc[1].gross_return == 0.02

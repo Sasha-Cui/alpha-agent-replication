@@ -151,6 +151,21 @@ def chronological_ridge_scores(
     return scores, pd.DataFrame(coefficient_rows)
 
 
+def cash_fill_warmup(path: pd.DataFrame) -> pd.DataFrame:
+    """Represent the preregistered learning warmup as cash, not missing returns."""
+    result = path.copy()
+    warmup = result.path_status.eq("insufficient_formation_coverage")
+    cash_columns = [
+        "gross_return",
+        "total_security_return",
+        "traded_notional",
+        "missing_forward_return_gross_weight",
+        "missing_total_return_gross_weight",
+    ]
+    result.loc[warmup, cash_columns] = 0.0
+    return result
+
+
 def load_panel(path: Path, settings: dict) -> pd.DataFrame:
     warmup = pd.Timestamp(settings["formation_start"]) - pd.offsets.MonthEnd(130)
     end = pd.Timestamp(settings["realized_return_end"])
@@ -193,7 +208,8 @@ def evaluate(root: Path, output: Path) -> None:
     settings = contract["starting_settings_retained_from_corrected_us_study"]
     paths, holdings = {}, None
     for policy in ["zero", "adverse_100"]:
-        paths[policy], held = build_strategy_path(formed, score, settings, policy)
+        path, held = build_strategy_path(formed, score, settings, policy)
+        paths[policy] = cash_fill_warmup(path)
         if policy == "zero":
             holdings = held
     private_holdings = root / "artifacts/us_jkp_headline/v1/M019_formation_holdings.parquet"
