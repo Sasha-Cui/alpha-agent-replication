@@ -403,7 +403,8 @@ def test_global_native_ledger_reflects_real_pipeline_without_result_credit() -> 
         "paper_audit:completed_zero_of_474_native_results_two_commit_history_1_"
         "coauthor_fork_exhausted_202_package_py311_current_14_asset_2511_day_"
         "pipeline_raw_template_and_qrun_failures_2_compatible_end_to_end_runs_"
-        "19_metrics_zero_admitted"
+        "19_metrics_zero_admitted_20_guard_controls_11_attested_processes_"
+        "2_blocked_telemetry_dns"
     )
     assert row["fidelity_class"] == "F1_static_no_native_output"
     note = row["concise_evidence_note"]
@@ -411,11 +412,18 @@ def test_global_native_ledger_reflects_real_pipeline_without_result_credit() -> 
     assert "2,511-day current panel" in note
     assert "evaluates 12/12 factors" in note
     assert "tracked qrun wrapper is also mode 100644" in note
-    assert "two offline runs complete" in note
+    assert "two network-restricted runs complete" in note
     assert "19 metrics" in note
     assert "Zero factors pass the 0.10 gate" in note
     assert "current-input components, not paper outputs" in note
     assert "0/474 result cells count as native reproductions" in note
+    assert "empty log did not establish offline execution" in note
+    assert "20 parent/child socket/DNS positive controls" in note
+    assert "attests 11 replay interpreters" in note
+    assert "two blocked MLflow telemetry configuration-fetch DNS attempts" in note
+    assert "not network-silent" in note
+    assert "not an OS network sandbox" in note
+    assert "zero LLM or replay-network calls" not in note
 
 
 def test_environment_manifest_ignores_parent_pythonpath(monkeypatch) -> None:

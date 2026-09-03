@@ -325,9 +325,15 @@ ARTIFACT_NOTES = {
         "evaluates 12/12 factors before failing because template resolution points one "
         "directory above the repository; the tracked qrun wrapper is also mode 100644. "
         "A scratch-only template symlink and byte-identical executable wrapper copy let "
-        "two offline runs complete factor export, LightGBM, prediction, portfolio/cost "
+        "two network-restricted runs complete factor export, LightGBM, prediction, portfolio/cost "
         "simulation, and 19 metrics. Search and formula outputs are byte-identical and "
-        "reported metrics repeat within 1e-12, with zero LLM or replay-network calls. "
+        "reported metrics repeat within 1e-12, with no LLM calls. The previous generated "
+        "network guard had invalid syntax, so its empty log did not establish offline "
+        "execution. The repaired Python audit-hook guard blocks all 20 parent/child "
+        "socket/DNS positive controls and attests 11 replay interpreters. It records two "
+        "blocked MLflow telemetry configuration-fetch DNS attempts, one per compatible "
+        "run. The workload is not network-silent, and the Python guard is not an OS "
+        "network sandbox. "
         "Zero factors pass the 0.10 gate, but main-table still backtests all 12 valid "
         "candidates. These are current-input components, not paper outputs; the official "
         "12-step smoke itself never reaches its 30-step memory warmup. No paper Qlib data snapshot, search "
@@ -1859,7 +1865,8 @@ TARGETED_EXECUTION = {
     "SYS-ALPHA-MEMO": (
         "paper_audit:completed_zero_of_474_native_results_two_commit_history_1_coauthor_"
         "fork_exhausted_202_package_py311_current_14_asset_2511_day_pipeline_raw_template_"
-        "and_qrun_failures_2_compatible_end_to_end_runs_19_metrics_zero_admitted"
+        "and_qrun_failures_2_compatible_end_to_end_runs_19_metrics_zero_admitted_"
+        "20_guard_controls_11_attested_processes_2_blocked_telemetry_dns"
     ),
     "SYS-ALPHA-R1": (
         "paper_audit:completed_zero_of_652_native_results_official_placeholder_"

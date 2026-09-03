@@ -351,7 +351,8 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "paper_audit:completed_zero_of_474_native_results_two_commit_history_1_"
             "coauthor_fork_exhausted_202_package_py311_current_14_asset_2511_day_"
             "pipeline_raw_template_and_qrun_failures_2_compatible_end_to_end_runs_"
-            "19_metrics_zero_admitted"
+            "19_metrics_zero_admitted_20_guard_controls_11_attested_processes_"
+            "2_blocked_telemetry_dns"
         ),
         "CensusArxiv260505580": (
             "paper_audit:completed_v1_zero_of_176_v2_zero_of_304_full_13_commit_history_"
@@ -389,6 +390,14 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
         row = routes.loc[work_id]
         assert row["native_pipeline_disposition"] == "targeted_execution_recorded"
         assert row["native_execution_audit_status"] == status
+
+    alphamemo_blocker = routes.loc["CensusArxiv260620625", "precise_native_or_access_blocker"]
+    assert "20 parent/child socket/DNS positive controls" in alphamemo_blocker
+    assert "attests 11 replay interpreters" in alphamemo_blocker
+    assert "two blocked MLflow telemetry configuration-fetch DNS attempts" in alphamemo_blocker
+    assert "not network-silent" in alphamemo_blocker
+    assert "not an OS network sandbox" in alphamemo_blocker
+    assert "0/474 result cells count as native reproductions" in alphamemo_blocker
 
     alphacrafter_blocker = routes.loc[
         "CensusArxiv260505580", "precise_native_or_access_blocker"
