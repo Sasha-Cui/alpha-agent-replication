@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M017",
+  "canonical_work_id": "CensusArxiv250207393",
+  "paper": "FinRL-DeepSeek: LLM-Infused Risk-Sensitive Reinforcement Learning for Trading Agents",
+  "paper_url": "https://arxiv.org/abs/2502.07393",
+  "paper_pdf_sha256": "3a479199fac6b69525416028672288620009bb51c78381790821f4f42ce3e7ca",
+  "paper_source_sha256": "f8def8f2b873cce6c495813201b5d3b49cc2123f72b0004859f8a94c76862719",
+  "source_url": "https://github.com/benstaf/FinRL_DeepSeek",
+  "source_commit": "43e58573274c480e4d5f5b3c946073e2cb2e49a6",
+  "checkpoint_commit": "2153a7266aac75f9613fdae1bde09dbd38691c59",
+  "dataset_commit": "b80bc15e4320eac68f53cfdd2fff3365e55dfedd",
+  "headline_strategy": "DeepSeek-infused risk-sensitive CPPO strategy over a Nasdaq-100 survivor universe: append LLM sentiment/risk recommendations to the state, scale continuous actions by recommendation strength, and train a CVaR-aware actor-critic with 0.1% buy and sell costs",
+  "headline_variant": "100-epoch CPPO-DeepSeek with 10% recommendation multipliers, selected from the paper title/mechanism rather than released-checkpoint performance",
+  "paper_configuration": {
+    "training_period": "2013-01-01 through 2018-12-31",
+    "trading_period": "2019-01-01 through 2023-12-31",
+    "training_steps": 2000000,
+    "epochs": 100,
+    "universe": "Nasdaq-100",
+    "cost_each_side": 0.001,
+    "paper_cvar_tail": 0.05,
+    "recommendation_multiplier_range": [0.9, 1.1]
+  },
+  "paper_portability_to_common_task": "not defensibly executable on the full 1999-2024 monthly top-1,000 JKP panel because the trained policy is fixed to an 84-stock daily state and its LLM scores cover only released Nasdaq data",
+  "released_component_credit": {
+    "checkpoint_files": 15,
+    "dataset_files": 12,
+    "paper_relevant_checkpoints_executed": 8,
+    "native_evaluation_protocols_executed": 3,
+    "native_rerun_configurations_exact": 17,
+    "native_rerun_configurations_total": 24
+  },
+  "missing_or_conflicting_headline_objects": [
+    "the exact 100-epoch DeepSeek 10% CPPO training entrypoint and checkpoint-to-run manifest",
+    "the random article sample, selected FNSPID subset, request/response logs, and paper-era DeepSeek snapshot",
+    "paper evaluation RNG seeds/states and table-generating notebook/output",
+    "the paper-time Nasdaq benchmark and a non-lookahead constituent/reconstitution record",
+    "a CPPO implementation matching the displayed CVaR Lagrangian and alpha=0.05 tail",
+    "a model/input adapter from the fixed 84-stock daily state to monthly top-1,000 JKP securities",
+    "full-calendar 1999-2024 LLM recommendation scores required by the policy"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Resample the released 2019-2023 Nasdaq checkpoint path to monthly",
+      "reason": "It covers only a short lookahead-survivor universe and not the fixed 305-month top-1,000 JKP contract."
+    },
+    {
+      "route": "Apply the released checkpoint directly to JKP",
+      "reason": "Its network dimensions and state semantics are tied to 84 daily stocks and released sentiment/risk columns."
+    },
+    {
+      "route": "Retrain CPPO on JKP with generic characteristic scores",
+      "reason": "This replaces DeepSeek news recommendations, changes daily-to-monthly dynamics, and lacks a source mapping for the fixed policy state/action space."
+    },
+    {
+      "route": "Use stale notebook or community metrics",
+      "reason": "Zero stored/community table cells match the paper, and current reruns differ by as much as 31.60% in final assets."
+    },
+    {
+      "route": "Treat frozen derived sentiment/risk columns as a transferable formula",
+      "reason": "They are security/date-specific model outputs, not a causal rule for generating scores over other stocks and years."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/finrl_deepseek",
+  "result_policy": "No short-window Nasdaq path, dimension-incompatible checkpoint, newly retrained JKP policy, stale metric output, or historical score replay is entered as a common FinRL-DeepSeek return. The paper's positive results remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}

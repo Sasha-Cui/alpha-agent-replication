@@ -1,0 +1,20 @@
+{
+  "milestone_id": "M017",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/finrl_deepseek/README.md",
+    "paper_runs/paper_replication_audits/finrl_deepseek/manifest.json",
+    "paper_runs/paper_replication_audits/finrl_deepseek/native_released_agent_execution.json",
+    "paper_runs/paper_replication_audits/finrl_deepseek/source_mechanism_conformance.csv",
+    "paper_runs/paper_replication_audits/finrl_deepseek/source_config_conformance.csv",
+    "paper_runs/paper_replication_audits/finrl_deepseek/released_agent_inventory.csv",
+    "paper_runs/paper_replication_audits/finrl_deepseek/released_dataset_inventory.csv",
+    "paper_runs/paper_replication_audits/finrl_deepseek/native_current_rerun_conformance.csv"
+  ],
+  "bounded_checks": [
+    "Loaded and executed all eight paper-relevant checkpoints against frozen released data under stochastic seeds 0/42 and deterministic policy means.",
+    "Pinned and aligned the current Nasdaq benchmark diagnostic, audited notebook/training-log history and public forks, and compared stored/current/community metrics with paper cells.",
+    "Tested the common-task transfer boundary and rejected short-window resampling, direct dimension-mismatched inference, new JKP retraining, stale metrics, and historical-score replay."
+  ],
+  "outcome": "This is a runnable original artifact package, but its trained daily 84-stock policy cannot produce a full-calendar top-1,000 monthly JKP strategy. Its exact headline CPPO training lineage and paper evaluation protocol also remain unidentified."
+}

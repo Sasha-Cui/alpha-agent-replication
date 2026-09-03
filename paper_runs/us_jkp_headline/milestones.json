@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 16,
+    "closed": 17,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 14,
+    "closed_not_evaluable": 15,
     "in_progress": 1,
-    "queued": 52
+    "queued": 51
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -298,16 +298,16 @@
       "title": "FinRL-DeepSeek: LLM-Infused Risk-Sensitive Reinforcement Learning for Trading Agents",
       "system_ids": "SYS-FIN-RL-DEEPSEEK",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M017_finrl_deepseek/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M017_finrl_deepseek/verdict.md",
+      "evaluated_scope": "No common-task return: released checkpoints and data execute, but the trained daily 84-stock policy and its 2019-2023 DeepSeek columns cannot consume the 1999-2024 monthly top-1,000 JKP state; the exact headline CPPO training lineage is also absent.",
+      "next_action": "Closed. Preserve checkpoint/component execution and adverse correspondence evidence; do not resample the short survivor-universe path, force incompatible inference, retrain a new JKP policy, or replay historical scores.",
+      "closure_reason": "A common-calendar transfer requires a new model, score generator and state/action mapping, which would replace the central trained policy. The released original artifacts are runnable but neither dimensionally portable nor sufficient to identify the paper's headline CPPO result."
     },
     {
       "milestone_id": "M018",
@@ -315,7 +315,7 @@
       "title": "HedgeAgents: A Balanced-aware Multi-agent Financial Trading System",
       "system_ids": "SYS-HEDGE-AGENTS",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
