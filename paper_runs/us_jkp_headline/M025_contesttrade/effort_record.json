@@ -1,0 +1,20 @@
+{
+  "milestone_id": "M025",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/contesttrade/README.md",
+    "paper_runs/paper_replication_audits/contesttrade/manifest.json",
+    "paper_runs/paper_replication_audits/contesttrade/public_source_history.json",
+    "paper_runs/paper_replication_audits/contesttrade/source_entrypoint_reachability.csv",
+    "paper_runs/paper_replication_audits/contesttrade/source_config_conformance.csv",
+    "paper_runs/paper_replication_audits/contesttrade/shipped_lightgbm_model_inventory.csv",
+    "paper_runs/paper_replication_audits/contesttrade/zi_reward_semantics_audit.csv",
+    "paper_runs/paper_replication_audits/contesttrade/public_fork_census.json"
+  ],
+  "bounded_checks": [
+    "Audited all four paper versions, 130 official commits, every public ref, and 153 accessible forks for contest, portfolio and result paths.",
+    "Traced the real CLI and isolated contest components, safely inspected the two Data models, and compared the released ZI evaluator to the paper equation.",
+    "Rejected contest-bypassing execution, model-only and normalizer-only components, fork/figure replay, and researcher completion of the missing system."
+  ],
+  "outcome": "No public revision connects the two contests to a portfolio. The Research Contest cannot run, the Data Contest materially changes allocation/reward semantics, and no input/result path exists from which to evaluate a common monthly strategy."
+}

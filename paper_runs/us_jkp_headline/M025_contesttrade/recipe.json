@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M025",
+  "canonical_work_id": "CensusArxiv250800554",
+  "paper": "ContestTrade: A Multi-Agent Trading System Based on Internal Contest Mechanism",
+  "paper_url": "https://arxiv.org/abs/2508.00554v4",
+  "paper_sha256": "a2fd14e7e9074c535ab238a4a9028365c860169743e06223bd20302de549a15c",
+  "source_url": "https://github.com/FinStep-AI/ContestTrade",
+  "source_commit": "22432f9bbba5f1d6862d3b6b5508d4d882b40b94",
+  "headline_strategy": "Daily China A-share multi-agent pipeline in which data agents generate factor context, a token-budgeted diversity-aware Data Contest allocates information, research agents produce signals, a Research Contest scores and positive-Sharpe-weights them, and the resulting portfolio trades under T+1 and price-limit constraints",
+  "paper_configuration": {
+    "test_period": "2025-01-01 through 2025-06-30",
+    "market": "China A-share daily",
+    "data_history_days": 5,
+    "research_prediction_days": 5,
+    "data_token_budget_initial": 32000,
+    "data_token_budget_final": 16000,
+    "transaction_cost": 0.001,
+    "models": ["DeepSeek-V3", "DeepSeek-R1"]
+  },
+  "paper_portability_to_common_task": "not defensibly executable because the public entrypoint bypasses both contests and portfolio construction, while isolated contest code is incomplete and lacks experiment inputs/outputs",
+  "released_component_credit": {
+    "data_contest_models": 2,
+    "data_model_features": 5,
+    "research_positive_sharpe_normalizer": true,
+    "exact_author_raster_series": 9,
+    "active_contests_reached": 0
+  },
+  "missing_or_conflicting_headline_objects": [
+    "an active entrypoint connecting Data Contest, Research Contest and portfolio construction",
+    "the paper's facility-location/lazy-greedy token allocator and embedding-cosine diversity implementation",
+    "rolling Data Contest training data, dates, split, seed and model provenance",
+    "the two Research Contest models and its called predict_signal_scores method",
+    "paper input snapshot, point-in-time universe, model/API snapshots, prompts/responses and seeds",
+    "portfolio/backtester, baselines, ablation runner, metrics, holdings, returns and result logs",
+    "paper-consistent signed ZI reward and five-day research horizon"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Run the public SimpleTradeCompany CLI",
+      "reason": "Static reachability proves it invokes data agents, research agents and finalize only; neither contest nor portfolio allocator is called."
+    },
+    {
+      "route": "Use the two shipped Data Contest LightGBM models",
+      "reason": "They lack training provenance and implement top-three score sorting rather than the paper's token-budgeted facility-location allocator."
+    },
+    {
+      "route": "Use the isolated positive-Sharpe weight normalizer",
+      "reason": "It consumes missing research signals/scores and is not reachable from the entrypoint or an executed paper portfolio."
+    },
+    {
+      "route": "Replay a fork portfolio or author raster",
+      "reason": "The fork ledger mixes manual and AI trades in 2026, while the raster has no numeric arrays; neither is the paper experiment."
+    },
+    {
+      "route": "Repair missing methods/models with researcher implementations",
+      "reason": "The input panel, training protocol, contest scoring, factor allocation, portfolio, and result evaluator would all remain invented."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/contesttrade",
+  "result_policy": "No contest-bypassing CLI output, unproven Data model, isolated normalizer, fork portfolio, author raster, or researcher repair is entered as a ContestTrade return. The positive paper claims remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}

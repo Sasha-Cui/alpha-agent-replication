@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 24,
+    "closed": 25,
     "completed_adapted": 1,
     "completed_partial": 4,
-    "closed_not_evaluable": 19,
+    "closed_not_evaluable": 20,
     "in_progress": 1,
-    "queued": 44
+    "queued": 43
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -434,16 +434,16 @@
       "title": "ContestTrade: A Multi-Agent Trading System Based on Internal Contest Mechanism",
       "system_ids": "SYS-CONTEST-TRADE",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M025_contesttrade/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M025_contesttrade/verdict.md",
+      "evaluated_scope": "No common-task return: the active CLI bypasses both contests and portfolio allocation; isolated components are incomplete or conflict with the paper, and no input, action, holding, return or evaluation path is released.",
+      "next_action": "Closed. Preserve component/source and author-raster evidence; do not promote the contest-bypassing CLI, unproven models, isolated normalizer, fork portfolio, or researcher-completed system to ContestTrade.",
+      "closure_reason": "No public revision or fork connects paper-consistent Data and Research Contests to an executable portfolio. Repair would require inventing missing models, methods, allocator, reward, panel, backtester and output semantics."
     },
     {
       "milestone_id": "M026",
@@ -451,7 +451,7 @@
       "title": "Chain-of-Alpha: Unleashing the Power of Large Language Models for Alpha Mining in Quantitative Trading",
       "system_ids": "SYS-CHAIN-OF-ALPHA",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
