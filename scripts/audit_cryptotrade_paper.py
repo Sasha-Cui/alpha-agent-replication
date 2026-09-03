@@ -48,6 +48,14 @@ DEFAULT_LSTM_RESULTS_ROOT = Path(
     "/nfs/roberts/scratch/pi_btk22/zc362/cryptotrade_lstm_results"
 )
 DEFAULT_LSTM_PYTHON_WRAPPER = Path(__file__).with_name("run_aapm_paper_python.sh")
+DEFAULT_LSTM_TEMPORAL_ROOT = (
+    Path(__file__).resolve().parents[1] / "paper_runs/paper_replication_audits/cryptotrade"
+)
+LSTM_TEMPORAL_SHA256 = {
+    "lstm_decision_time_audit.csv": "f9f289d41fb46e58f029e605d0f2077dba056a0930751b8fa408a3d4a1767452",
+    "lstm_future_price_counterexamples.csv": "66f85a66013b7b732cd4c9ec3bea5f70979e4d46066f3ad630145465cc3e8677",
+    "lstm_temporality.json": "3fe83e530113b2466da83fae9e2142310bb9ddb7ca052569199ed4ce9aee0834",
+}
 LSTM_RESULT_SHA256 = {
     "cryptotrade_lstm_cell_census.csv": "db111f794da535e7d91f2cf6e5afa620726f8b0667d4fb1f9be1d94be93391ca",
     "cryptotrade_lstm_cell_summary.csv": "3ad76d582d7a5cb8cb1389956a412383e68df2c676d198e9bc11a5c3f05c491f",
@@ -974,7 +982,65 @@ def lstm_environment_snapshot(wrapper: Path) -> Dict[str, Any]:
     return snapshot
 
 
-def load_lstm_evidence(results_root: Path, wrapper: Path) -> Dict[str, Any]:
+def verify_lstm_temporality(root: Path) -> Dict[str, Any]:
+    for filename, expected in LSTM_TEMPORAL_SHA256.items():
+        if sha256(root / filename) != expected:
+            raise RuntimeError(f"CryptoTrade temporal evidence changed: {filename}")
+    payload = json.loads((root / "lstm_temporality.json").read_text())
+    census = read_csv(root / "lstm_decision_time_audit.csv")
+    probes = read_csv(root / "lstm_future_price_counterexamples.csv")
+    if len(census) != 198 or len(probes) != 24:
+        raise RuntimeError("Incomplete LSTM temporal audit")
+    if not all(
+        int(row["future_supervised_target_rows"]) > 0
+        and int(row["future_inference_rows"]) > 0
+        and row["comparison_price_date"] > row["decision_date"]
+        and row["temporally_valid"] == "False"
+        for row in census
+    ):
+        raise RuntimeError("LSTM future-input boundary changed")
+    if not all(
+        row["past_and_present_unchanged"] == "True"
+        and row["paper_result_credit"] == "False"
+        for row in probes
+    ):
+        raise RuntimeError("LSTM counterexample scope changed")
+    by_key = {(row["regime"], row["scenario"], row["repeat"]): row for row in probes}
+    for regime in REGIMES:
+        for scenario in ("original", "terminal_price_doubled", "terminal_price_halved", "post_regime_price_doubled_control"):
+            left = by_key[(regime, scenario, "0")]
+            right = by_key[(regime, scenario, "1")]
+            if {k: v for k, v in left.items() if k != "repeat"} != {k: v for k, v in right.items() if k != "repeat"}:
+                raise RuntimeError("LSTM temporal repeat changed")
+    if payload["source_commit"] != SOURCE_COMMIT or payload["paper_sha256"] != PAPER_SHA256:
+        raise RuntimeError("LSTM temporal primary-source pins changed")
+    if payload["decision_count"] != 198 or payload["paper_result_credit"] is not False:
+        raise RuntimeError("LSTM temporal credit boundary changed")
+    flips = payload["future_only_action_flips"]
+    if len(flips) != 3 or {row["regime"] for row in flips} != set(REGIMES):
+        raise RuntimeError("LSTM future-only action flips changed")
+    for flip in flips:
+        before = by_key[(flip["regime"], "original", "0")]
+        after = by_key[(flip["regime"], flip["scenario"], "0")]
+        if before["action"] == after["action"] or before["decision_price"] != after["decision_price"]:
+            raise RuntimeError("LSTM action flip lacks same-current-price evidence")
+    return {
+        "decision_count": len(census),
+        "future_training_target_decisions": 198,
+        "future_inference_input_decisions": 198,
+        "future_only_action_flip_regimes": 3,
+        "repeated_native_training_calls": 24,
+        "paper_daily_decision_rule_matched": False,
+        "paper_result_credit": False,
+        "evidence_sha256": LSTM_TEMPORAL_SHA256,
+    }
+
+
+def load_lstm_evidence(
+    results_root: Path, wrapper: Path,
+    temporal_root: Path = DEFAULT_LSTM_TEMPORAL_ROOT,
+) -> Dict[str, Any]:
+    temporal = verify_lstm_temporality(temporal_root)
     for filename, expected in LSTM_RESULT_SHA256.items():
         observed = sha256(results_root / filename)
         if observed != expected:
@@ -1051,15 +1117,15 @@ def load_lstm_evidence(results_root: Path, wrapper: Path) -> Dict[str, Any]:
         for key, row in fixed_map.items()
         if row["all_seeds_and_repeats_match"] == "True"
     }
-    protocol_robust_matches = {
+    invariant_numeric_matches = {
         key for key, row in grid_map.items() if row["all_seeds_and_lookbacks_match"]
     }
     if source_default_matches != {
         (regime, metric) for regime in ("bear", "bull") for metric in METRICS
     }:
         raise RuntimeError("CryptoTrade source-default LSTM matches changed")
-    if protocol_robust_matches != {("bear", metric) for metric in METRICS}:
-        raise RuntimeError("CryptoTrade protocol-robust LSTM matches changed")
+    if invariant_numeric_matches != {("bear", metric) for metric in METRICS}:
+        raise RuntimeError("CryptoTrade seed/lookback-invariant numeric LSTM matches changed")
     sideways_std = grid_map[("sideways", "daily_return_std_pct")]
     if (
         sideways_std["matches"] != 0
@@ -1075,13 +1141,13 @@ def load_lstm_evidence(results_root: Path, wrapper: Path) -> Dict[str, Any]:
             fixed = fixed_map[key]
             grid = grid_map[key]
             source_default = key in source_default_matches
-            robust = key in protocol_robust_matches
+            robust = key in invariant_numeric_matches
             if robust:
-                status = "native_lstm_seed_and_lookback_robust_match"
+                status = "seed_lookback_invariant_match_future_inputs_no_credit"
             elif source_default:
-                status = "source_default_match_protocol_tie_sensitive_no_credit"
+                status = "source_default_match_future_inputs_no_credit"
             else:
-                status = "seed_or_lookback_sensitive_no_credit"
+                status = "future_inputs_and_seed_or_lookback_sensitive_no_credit"
             adjudication.append(
                 {
                     "asset": "eth",
@@ -1102,7 +1168,9 @@ def load_lstm_evidence(results_root: Path, wrapper: Path) -> Dict[str, Any]:
                     "seed_lookback_max": float(grid["max_recomputed_value"]),
                     "seed_lookback_unique_action_paths": int(grid["unique_action_paths"]),
                     "source_default_correspondence": source_default,
-                    "protocol_robust_paper_result_credit": robust,
+                    "seed_lookback_invariant_numeric_match": robust,
+                    "temporal_validation_passed": False,
+                    "protocol_robust_paper_result_credit": False,
                     "exact_declared_runtime_reproduced": False,
                     "status": status,
                 }
@@ -1142,9 +1210,10 @@ def load_lstm_evidence(results_root: Path, wrapper: Path) -> Dict[str, Any]:
             "regime_runs": 180,
             "cell_observations": 720,
             "seed0_repeat_cell_rows_exact": 72,
-            "protocol_robust_matching_cells": len(protocol_robust_matches),
+            "seed_lookback_invariant_numeric_matches": len(invariant_numeric_matches),
+            "protocol_robust_matching_cells": 0,
             "source_default_only_matching_cells": len(
-                source_default_matches - protocol_robust_matches
+                source_default_matches - invariant_numeric_matches
             ),
         },
         "source_compatibility": {
@@ -1156,10 +1225,8 @@ def load_lstm_evidence(results_root: Path, wrapper: Path) -> Dict[str, Any]:
         },
         "network_attempts": 0,
         "llm_calls": 0,
-        "paper_result_credit": (
-            "four_eth_bear_cells_source_native_seed_and_lookback_robust_under_"
-            "compatible_runtime"
-        ),
+        "temporal_validity": temporal,
+        "paper_result_credit": "zero_lstm_cells_anticipative_source_numeric_correspondence_only",
     }
     return {
         "fixed_cells": fixed_cells,
@@ -1330,16 +1397,17 @@ def result_conformance(
                     source_value = item["fixed5_min"]
                     absolute_error = abs(source_value - target["paper_value"])
                 if item["protocol_robust_paper_result_credit"]:
-                    status = "native_lstm_seed_and_lookback_robust_match"
+                    raise RuntimeError("LSTM result credit requires a temporally valid native path")
                 elif item["source_default_correspondence"]:
-                    status = "unverifiable_native_lstm_source_default_match_protocol_tie_sensitive"
+                    status = "unverifiable_native_lstm_lookahead_numeric_match"
                 else:
-                    status = "unverifiable_native_lstm_seed_or_lookback_sensitive"
+                    status = "unverifiable_native_lstm_lookahead_seed_or_lookback_sensitive"
                 evidence = (
                     f"fixed5={item['fixed5_matches']}/{item['fixed5_observations']};"
                     f"seed_lookback={item['seed_lookback_matches']}/"
                     f"{item['seed_lookback_observations']};"
                     f"range=[{item['seed_lookback_min']},{item['seed_lookback_max']}];"
+                    "future_regime_prices_used_for_training_inference_and_comparison;"
                     "compatible_torch_2.4.1_cpu_not_declared_torch_2.3.0_cuda"
                 )
             else:
@@ -1659,8 +1727,8 @@ def source_execution_gaps(source_root: Path) -> List[Dict[str, str]]:
         ),
         (
             "time_series_baselines",
-            "partial_native_lstm_replay_other_models_missing",
-            "ETH LSTM source-function replay gives four seed/lookback-robust bear cells and four source-default-only bull correspondences; Informer/AutoFormer/TimesNet/PatchTST implementations and outputs are absent",
+            "anticipative_lstm_numeric_replay_other_models_missing",
+            "ETH LSTM has four seed/lookback-invariant bear and four source-default bull numeric matches, but all 198 decisions train/infer/compare with future regime prices; no faithful LSTM result credit. Other time-series implementations and outputs are absent",
         ),
         (
             "model_identity",
@@ -1813,7 +1881,6 @@ def build_audit(
 
     match_statuses = {
         "exact_displayed_precision_match",
-        "native_lstm_seed_and_lookback_robust_match",
         "author_trace_exact_metric_and_native_state_replay",
     }
     matched = sum(row["status"] in match_statuses for row in conformance)
@@ -1822,18 +1889,7 @@ def build_audit(
     traditional_matched = sum(
         row["status"] == "exact_displayed_precision_match" for row in conformance
     )
-    deterministic_matched = sum(
-        row["status"]
-        in {
-            "exact_displayed_precision_match",
-            "native_lstm_seed_and_lookback_robust_match",
-        }
-        for row in conformance
-    )
-    lstm_robust_matched = sum(
-        row["status"] == "native_lstm_seed_and_lookback_robust_match"
-        for row in conformance
-    )
+    deterministic_matched = traditional_matched
     author_corroborated = sum(
         row["status"] == "author_trace_exact_metric_and_native_state_replay" for row in conformance
     )
@@ -1850,7 +1906,7 @@ def build_audit(
     split_trend_matches = sum(row["trend_status"] == "exact_displayed_precision_match" for row in splits)
     manifest: Dict[str, Any] = {
         "audit": "CryptoTrade paper claims versus pinned public code and data",
-        "overall_status": "partial_reproduction_traditional_lstm_plus_author_llm_traces",
+        "overall_status": "partial_reproduction_traditional_plus_author_llm_traces_lstm_lookahead_uncredited",
         "full_paper_reproduced": False,
         "paper_url": PAPER_URL,
         "paper_sha256": PAPER_SHA256,
@@ -1876,11 +1932,17 @@ def build_audit(
         "paper_result_metric_cells_total": len(conformance) + len(ablation_conformance),
         "paper_tables_2_4_metric_cells_total": len(conformance),
         "paper_table_5_metric_cells_total": len(ablation_conformance),
-        "native_deterministic_metric_cells_recomputed": 192,
+        "native_deterministic_metric_cells_recomputed": 180,
         "native_deterministic_metric_cells_matched": deterministic_matched,
         "native_deterministic_metric_cells_mismatched": mismatched,
         "native_lstm_metric_cells_recomputed": 12,
-        "native_lstm_protocol_robust_metric_cells_reproduced": lstm_robust_matched,
+        "native_lstm_protocol_robust_metric_cells_reproduced": 0,
+        "native_lstm_seed_lookback_invariant_numeric_cells": 4,
+        "native_lstm_lookahead_withheld_cells_previously_credited": 4,
+        "native_lstm_decisions_with_future_training_targets": 198,
+        "native_lstm_decisions_with_future_inference_inputs": 198,
+        "native_lstm_future_only_action_flip_regimes": 3,
+        "native_lstm_temporal_validation_passed": False,
         "native_lstm_source_default_metric_cells_corresponding": 8,
         "native_lstm_source_default_only_metric_cells": 4,
         "native_lstm_fixed5_runs": 20,
@@ -1900,7 +1962,7 @@ def build_audit(
         "native_lstm_replay_llm_calls": 0,
         "native_lstm_replay_network_attempts": 0,
         "paper_metric_cells_corroborated_total": matched,
-        "paper_numeric_evidence_correspondences_total": matched + len(ablation_conformance),
+        "paper_numeric_evidence_correspondences_total": matched + len(ablation_conformance) + 8,
         "author_history_numeric_metric_cells_corresponding": author_corroborated + len(ablation_conformance),
         "author_history_llm_metric_cells_corroborated": author_corroborated,
         "author_history_llm_rows_corroborated": sum(
@@ -2015,10 +2077,11 @@ def build_audit(
             "The released market data, native environment, costs, and traditional-signal logic "
             "reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history "
             "additionally corroborates 40 LLM cells through exact metric and native state replay. "
-            "A compatible CPU replay of the released ETH LSTM source function adds four bear-market "
-            "cells that match across 10 seeds and all six paper-listed lookbacks. Four bull-market "
-            "cells match the source-default lookback 5 but receive no strict credit because all "
-            "lookbacks tie on validation and the bull outputs are lookback-sensitive. The compatible "
+            "A compatible CPU replay yields four seed/lookback-invariant bear and four source-default "
+            "bull numeric matches. None receives faithful LSTM result credit: all 198 decisions use "
+            "future regime prices for training targets, inference, and the comparison price. Twenty-four "
+            "native training probes reproduce action flips in all three regimes when only a future "
+            "terminal price is changed and all past/present inputs are held fixed. The compatible "
             "Torch 2.4.1 CPU runtime is not the README's declared Torch 2.3.0 CUDA environment. "
             "The five full-period model-mismatched traces cannot be reassigned to their declared "
             "GPT-3.5 paper rows: only 1/20 declared-model cells and 0/5 complete rows match. "
@@ -2026,7 +2089,7 @@ def build_audit(
             "through their historical code snapshots, but every selected trace conflicts with the "
             "paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells "
             "receive zero method-faithful credit. This is strong component/output evidence, not a full "
-            "CryptoTrade replication: 256 cells remain unverifiable, the six deterministic residuals have numeric but "
+            "CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but "
             "not method-faithful explanations, LSTM validation is a non-identifying six-way tie, "
             "and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref "
             "census finds no additional attributable paper outputs. All 83 unique output blobs in the "
@@ -2047,12 +2110,12 @@ def build_audit(
             )
         },
     }
-    if (matched, mismatched, unverifiable) != (218, 6, 244):
+    if (matched, mismatched, unverifiable) != (214, 6, 248):
         raise RuntimeError(
             "Pinned CryptoTrade conformance counts changed: "
             f"matched={matched}, mismatched={mismatched}, unverifiable={unverifiable}"
         )
-    if (fully_matched_rows, mismatched_rows, unverifiable_rows) != (54, 2, 61):
+    if (fully_matched_rows, mismatched_rows, unverifiable_rows) != (53, 2, 62):
         raise RuntimeError("Pinned CryptoTrade row-level conformance counts changed")
 
     report = f"""# CryptoTrade paper-level conformance audit
@@ -2085,12 +2148,13 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 - The released ETH LSTM source function was executed for seeds 0--9, two repeats,
   all six paper-listed look-backs, the paper validation interval, and all three
   test regimes. All 120 fixed-look-back repeat groups are exact. The four bear
-  metrics match across all 60 seed/look-back combinations and receive paper-result
-  credit. The four bull metrics match all 20 fixed-look-back-5 observations, but
+  metrics match numerically across all 60 seed/look-back combinations. The four
+  bull metrics match all 20 fixed-look-back-5 observations, but
   only look-backs 5, 10, and 20 reproduce the full row. Because every look-back
-  ties on validation, those bull correspondences receive no strict protocol credit.
+  ties on validation, those bull correspondences do not identify a unique protocol.
   Sideways is seed/look-back sensitive, and its printed 1.11 volatility matches
-  0/60 grid observations (native range 0.114--1.893).
+  0/60 grid observations (native range 0.114--1.893). **None of the LSTM cells
+  receives faithful result credit** because of the future-input defect below.
 - The coauthor history corroborates {author_corroborated}/108 LLM table cells across
   10/27 LLM rows. For each credited row, all four displayed values match and every
   recorded action replays through the pinned official data/environment with zero
@@ -2116,6 +2180,32 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   with a 1-day moving average, but the paper and source both define the candidate
   grid as [5, 10, 15, 20, 30]; every disclosed candidate loses 17.77%--22.19%.
   The numeric lineage is therefore diagnosed without claiming faithful replication.
+
+## LSTM temporal-validity correction
+
+The previous audit credited four bear LSTM cells solely because their numbers
+were invariant across seeds and look-backs. That was too strong. Appendix E,
+item 6 (printed page 1105) describes today's price versus a forecast for tomorrow.
+The released caller instead supplies the entire fixed test regime for every daily
+action. The native function fits its scaler and LSTM to that full regime, predicts
+from its final window, and compares against its final price rather than today's.
+
+An instrumented caller census records all 198 decision dates (65 bear, 72 sideways,
+61 bull); all have future supervised targets and future inference inputs. The
+census uses a hold sentinel to inspect call arguments only, not to claim another
+training or portfolio result. Separately, 24 actual native 100-epoch LSTM calls
+form 12 exact repeat pairs. Changing only a future terminal price flips the first
+action in each regime with all past/present rows unchanged: bear and bull Buy to
+Sell when the terminal price doubles; sideways Sell to Buy when it halves. A
+post-regime price perturbation leaves every observed model output unchanged.
+
+The four prior credits are therefore withdrawn; their numeric matches and the
+full seed/look-back evidence remain preserved. Credited/corroborated coverage is
+**214/480**, not 218/480. There are separately 234 stable numeric correspondences
+including 12 uncredited ablation and eight uncredited LSTM cells. This diagnoses
+the public source's noncausal path, not the authors' unavailable private runs or
+whether their claims are false. No causal rewrite has been substituted for the
+source or labelled an original-paper reproduction.
 
 ## Why this is not a full reproduction
 
@@ -2153,7 +2243,7 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 - The paper says SMA/SLMA/LSTM parameters are selected on validation performance. The
   source prints candidate validation results and then hard-codes SMA=15 and
   SLMA=15/30; its LSTM branch hard-codes look-back 5. Only
-  {manifest["paper_described_validation_selections_matching_released_data_argmax"]}/7
+  {manifest["paper_described_validation_selections_matching_released_data_argmax"]}/6
   fixed traditional choices equal the released-data validation argmax, while the
   LSTM validation grid is a non-identifying six-way tie.
 - The paper does not disclose the transaction-fee rate. The source uses 0.4% of

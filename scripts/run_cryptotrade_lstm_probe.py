@@ -5,8 +5,10 @@ The released baseline file is not directly runnable: it requires an unused
 plotting dependency, hard-codes an unavailable ``cuda:7`` device, omits the
 required ``dataset`` argument, and does not expose metrics as a return value.
 This driver applies only those four declared compatibility/instrumentation
-changes in memory.  It never edits the pinned source, calls an LLM, or accesses
-the network.
+changes in memory. It never edits the pinned source, calls an LLM, or accesses
+the network. The source trains on future regime prices at every daily decision;
+seed/look-back invariance establishes numeric correspondence, not faithful result
+credit. See audit_cryptotrade_lstm_temporality.py for executable counterexamples.
 """
 
 from __future__ import annotations
@@ -537,9 +539,11 @@ def paper_grid_mode(
                     "min_recomputed_value": min(row["recomputed_value"] for row in subset),
                     "max_recomputed_value": max(row["recomputed_value"] for row in subset),
                     "unique_action_paths": len({row["action_sha256"] for row in subset}),
-                    "protocol_robust_paper_result_credit": all(
+                    "seed_lookback_invariant_numeric_match": all(
                         row["display_match"] for row in subset
                     ),
+                    "temporal_validation_passed": False,
+                    "protocol_robust_paper_result_credit": False,
                 }
             )
     marker = f"_{suffix}" if suffix else ""
@@ -552,9 +556,12 @@ def paper_grid_mode(
         "native_seed_lookback_runs": len(jobs),
         "regime_runs": len(runs),
         "cell_observations": len(cells),
-        "protocol_robust_matching_cells": sum(
-            row["protocol_robust_paper_result_credit"] for row in summary
+        "seed_lookback_invariant_numeric_matches": sum(
+            row["seed_lookback_invariant_numeric_match"] for row in summary
         ),
+        "protocol_robust_matching_cells": 0,
+        "paper_result_credit": False,
+        "credit_blocker": "every daily model call uses the full future regime",
         "any_matching_cells": sum(row["matches"] > 0 for row in summary),
         "summary": summary,
     }

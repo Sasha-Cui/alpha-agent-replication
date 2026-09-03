@@ -1,0 +1,58 @@
+{
+  "source_commit": "210da73af5f17992be425e61305524a5c24dae40",
+  "source_sha256": {
+    "README.md": "af3e98ec66435814f195919abc1b0c6523b7aec02b93e10878c53de3159ade80",
+    "run_baseline.py": "9baf6e13ce4c504d7dee0bfe3fa14d5e953b3276cd43cc11b91cb862243e606e",
+    "eth_env.py": "a05443b96d6e86b13ee33adf1c5d6a16dac9195de6857a3e9c2916cf0c393f3f",
+    "data/eth_daily.csv": "d227fde2a131bea1508f5049da80611982dbae73256570eeb6bb3a1d28729339"
+  },
+  "paper_url": "https://aclanthology.org/2024.emnlp-main.63.pdf",
+  "paper_sha256": "376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf",
+  "paper_baseline_locator": "Appendix E, item 6, printed page 1105 (PDF page 12)",
+  "paper_decision_rule": "today price compared with forecast for tomorrow",
+  "decision_count": 198,
+  "regime_decision_counts": {
+    "bear": 65,
+    "sideways": 72,
+    "bull": 61
+  },
+  "decisions_with_future_training_targets": 198,
+  "decisions_with_future_inference_inputs": 198,
+  "comparison_uses_terminal_not_decision_date": true,
+  "native_training_calls": 24,
+  "exact_repeat_pairs": 12,
+  "post_regime_negative_controls_passed": 3,
+  "future_only_action_flips": [
+    {
+      "regime": "bear",
+      "scenario": "terminal_price_doubled",
+      "original_action": "Buy",
+      "changed_action": "Sell"
+    },
+    {
+      "regime": "sideways",
+      "scenario": "terminal_price_halved",
+      "original_action": "Sell",
+      "changed_action": "Buy"
+    },
+    {
+      "regime": "bull",
+      "scenario": "terminal_price_doubled",
+      "original_action": "Buy",
+      "changed_action": "Sell"
+    }
+  ],
+  "caller_census_uses_hold_sentinel_no_training_or_portfolio_credit": true,
+  "counterexamples_execute_native_lstm": true,
+  "compatible_environment": {
+    "python": "3.10.8",
+    "torch": "2.4.1+cpu",
+    "numpy": "2.1.1",
+    "pandas": "2.2.3",
+    "scikit_learn": "1.5.2",
+    "torch_cuda_available": false
+  },
+  "source_files_modified": false,
+  "paper_result_credit": false,
+  "interpretation": "Seed/lookback-stable numbers reproduce an anticipative source path, not the paper's daily predictive trading procedure. Retain numeric correspondences, withhold faithful LSTM result credit."
+}

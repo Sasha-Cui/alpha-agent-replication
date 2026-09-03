@@ -4,7 +4,7 @@ active_gpt4o_periods,two_of_nine_commands_mismatch_paper_splits,active_commands=
 baseline_entrypoint,fails_without_source_edits_and_dependencies,README omits required packages; run_baseline constructs Namespace without dataset
 asset_specific_prompts,mismatch_for_btc_and_sol,released prompt templates hard-code ETH instead of interpolating the dataset
 llm_result_evidence,absent_from_official_release_but_partly_recovered_from_author_history,official history has no result paths; a paper coauthor's public branch preserves partial paper-period traces
-time_series_baselines,partial_native_lstm_replay_other_models_missing,ETH LSTM source-function replay gives four seed/lookback-robust bear cells and four source-default-only bull correspondences; Informer/AutoFormer/TimesNet/PatchTST implementations and outputs are absent
+time_series_baselines,anticipative_lstm_numeric_replay_other_models_missing,"ETH LSTM has four seed/lookback-invariant bear and four source-default bull numeric matches, but all 198 decisions train/infer/compare with future regime prices; no faithful LSTM result credit. Other time-series implementations and outputs are absent"
 model_identity,paper_to_runner_mismatch,paper reports GPT-4 while released shell commands use gpt-4-turbo
 transaction_cost_specification,paper_underspecified,paper states a proportional fee but not its rate; source fixes EX_RATE=0.004 plus a fixed gas charge
 credential_hygiene,environment_variable_used,released utility reads OPENAI_API_KEY; the audit never imports or uses the API module

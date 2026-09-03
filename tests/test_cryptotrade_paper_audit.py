@@ -7,6 +7,8 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/audit_cryptotrade_paper.py"
@@ -83,17 +85,23 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     lstm_execution = json.loads((output / "lstm_execution.json").read_text(encoding="utf-8"))
 
     assert manifest["overall_status"] == (
-        "partial_reproduction_traditional_lstm_plus_author_llm_traces"
+        "partial_reproduction_traditional_plus_author_llm_traces_lstm_lookahead_uncredited"
     )
     assert manifest["full_paper_reproduced"] is False
     assert manifest["paper_result_metric_cells_total"] == 480
     assert manifest["paper_tables_2_4_metric_cells_total"] == 468
     assert manifest["paper_table_5_metric_cells_total"] == 12
-    assert manifest["native_deterministic_metric_cells_recomputed"] == 192
-    assert manifest["native_deterministic_metric_cells_matched"] == 178
+    assert manifest["native_deterministic_metric_cells_recomputed"] == 180
+    assert manifest["native_deterministic_metric_cells_matched"] == 174
     assert manifest["native_deterministic_metric_cells_mismatched"] == 6
     assert manifest["native_lstm_metric_cells_recomputed"] == 12
-    assert manifest["native_lstm_protocol_robust_metric_cells_reproduced"] == 4
+    assert manifest["native_lstm_protocol_robust_metric_cells_reproduced"] == 0
+    assert manifest["native_lstm_seed_lookback_invariant_numeric_cells"] == 4
+    assert manifest["native_lstm_lookahead_withheld_cells_previously_credited"] == 4
+    assert manifest["native_lstm_decisions_with_future_training_targets"] == 198
+    assert manifest["native_lstm_decisions_with_future_inference_inputs"] == 198
+    assert manifest["native_lstm_future_only_action_flip_regimes"] == 3
+    assert manifest["native_lstm_temporal_validation_passed"] is False
     assert manifest["native_lstm_source_default_metric_cells_corresponding"] == 8
     assert manifest["native_lstm_source_default_only_metric_cells"] == 4
     assert manifest["native_lstm_fixed5_runs"] == 20
@@ -115,18 +123,18 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert manifest["author_history_llm_metric_cells_corroborated"] == 40
     assert manifest["author_history_llm_rows_corroborated"] == 10
     assert manifest["author_history_llm_rows_numeric_match_but_no_credit"] == 6
-    assert manifest["paper_metric_cells_corroborated_total"] == 218
+    assert manifest["paper_metric_cells_corroborated_total"] == 214
     assert manifest["author_history_model_mismatch_traces_reassignment_checked"] == 5
     assert manifest["author_history_declared_model_metric_cells_checked"] == 20
     assert manifest["author_history_declared_model_metric_cells_matching"] == 1
     assert manifest["author_history_declared_model_complete_rows_matching"] == 0
-    assert manifest["paper_numeric_evidence_correspondences_total"] == 230
+    assert manifest["paper_numeric_evidence_correspondences_total"] == 234
     assert manifest["author_history_numeric_metric_cells_corresponding"] == 52
-    assert manifest["paper_result_metric_cells_unverifiable"] == 256
+    assert manifest["paper_result_metric_cells_unverifiable"] == 260
     assert manifest["paper_strategy_regime_or_ablation_rows_total"] == 123
-    assert manifest["paper_strategy_regime_rows_fully_matched"] == 54
+    assert manifest["paper_strategy_regime_rows_fully_matched"] == 53
     assert manifest["paper_strategy_regime_rows_mismatched"] == 2
-    assert manifest["paper_strategy_regime_rows_unverifiable"] == 61
+    assert manifest["paper_strategy_regime_rows_unverifiable"] == 62
     assert manifest["paper_described_validation_selections_total"] == 7
     assert manifest["paper_described_validation_nonidentifying_ties"] == 1
     assert manifest["full_period_llm_result_logs_shipped_in_official_release"] is False
@@ -169,13 +177,12 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     statuses = Counter(row["status"] for row in conformance)
     assert statuses == {
         "exact_displayed_precision_match": 174,
-        "native_lstm_seed_and_lookback_robust_match": 4,
         "author_trace_exact_metric_and_native_state_replay": 40,
         "mismatch": 6,
         "unverifiable_no_recovered_author_trace": 44,
         "unverifiable_no_shipped_full_period_output": 168,
-        "unverifiable_native_lstm_source_default_match_protocol_tie_sensitive": 4,
-        "unverifiable_native_lstm_seed_or_lookback_sensitive": 4,
+        "unverifiable_native_lstm_lookahead_numeric_match": 8,
+        "unverifiable_native_lstm_lookahead_seed_or_lookback_sensitive": 4,
         "unverifiable_trace_model_or_period_conflict": 24,
     }
     mismatches = [row for row in conformance if row["status"] == "mismatch"]
@@ -319,16 +326,19 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert len(lstm_grid) == 720
     assert len(lstm_cells) == 12
     assert Counter(row["status"] for row in lstm_cells) == {
-        "native_lstm_seed_and_lookback_robust_match": 4,
-        "source_default_match_protocol_tie_sensitive_no_credit": 4,
-        "seed_or_lookback_sensitive_no_credit": 4,
+        "seed_lookback_invariant_match_future_inputs_no_credit": 4,
+        "source_default_match_future_inputs_no_credit": 4,
+        "future_inputs_and_seed_or_lookback_sensitive_no_credit": 4,
     }
     credited_lstm = [
         row for row in lstm_cells if row["protocol_robust_paper_result_credit"] == "True"
     ]
-    assert len(credited_lstm) == 4
-    assert {row["regime"] for row in credited_lstm} == {"bear"}
-    assert {row["metric"] for row in credited_lstm} == set(audit.METRICS)
+    assert credited_lstm == []
+    invariant_numeric = [row for row in lstm_cells if row["seed_lookback_invariant_numeric_match"] == "True"]
+    assert len(invariant_numeric) == 4
+    assert {row["regime"] for row in invariant_numeric} == {"bear"}
+    assert {row["metric"] for row in invariant_numeric} == set(audit.METRICS)
+    assert {row["temporal_validation_passed"] for row in lstm_cells} == {"False"}
     sideways_std = next(
         row
         for row in lstm_cells
@@ -339,7 +349,8 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert sideways_std["seed_lookback_max"] == "1.892942965348"
     assert lstm_execution["fixed_source_default"]["repeat_exact_groups"] == 120
     assert lstm_execution["paper_validation_grid"]["all_lookbacks_tie_for_every_seed"] is True
-    assert lstm_execution["paper_seed_lookback_grid"]["protocol_robust_matching_cells"] == 4
+    assert lstm_execution["paper_seed_lookback_grid"]["protocol_robust_matching_cells"] == 0
+    assert lstm_execution["paper_seed_lookback_grid"]["seed_lookback_invariant_numeric_matches"] == 4
     assert lstm_execution["paper_seed_lookback_grid"]["source_default_only_matching_cells"] == 4
     assert lstm_execution["exact_declared_runtime_reproduced"] is False
     assert lstm_execution["network_attempts"] == 0
@@ -361,11 +372,70 @@ def test_lstm_evidence_inputs_when_bouchet_assets_are_available() -> None:
     assert sum(
         row["protocol_robust_paper_result_credit"]
         for row in evidence["adjudication"]
-    ) == 4
+    ) == 0
     assert lstm_runner.SOURCE_COMMIT == audit.SOURCE_COMMIT
     assert lstm_runner.SOURCE_HASHES["run_baseline.py"] == (
         "9baf6e13ce4c504d7dee0bfe3fa14d5e953b3276cd43cc11b91cb862243e606e"
     )
+
+
+def test_lstm_temporal_evidence_and_future_only_action_flips() -> None:
+    root = audit.DEFAULT_LSTM_TEMPORAL_ROOT
+    proof = audit.verify_lstm_temporality(root)
+    assert proof["decision_count"] == 198
+    assert proof["future_training_target_decisions"] == 198
+    assert proof["future_inference_input_decisions"] == 198
+    assert proof["future_only_action_flip_regimes"] == 3
+    assert proof["paper_result_credit"] is False
+    rows = read_csv(root / "lstm_future_price_counterexamples.csv")
+    by_key = {(r["regime"], r["scenario"], r["repeat"]): r for r in rows}
+    for regime, scenario in (
+        ("bear", "terminal_price_doubled"),
+        ("bull", "terminal_price_doubled"),
+        ("sideways", "terminal_price_halved"),
+    ):
+        before = by_key[(regime, "original", "0")]
+        after = by_key[(regime, scenario, "0")]
+        assert before["decision_price"] == after["decision_price"]
+        assert before["decision_date"] == after["decision_date"]
+        assert after["past_and_present_unchanged"] == "True"
+        assert after["changed_date"] > after["decision_date"]
+        assert before["action"] != after["action"]
+        assert before["train_Y_sha256"] != after["train_Y_sha256"]
+        control = by_key[(regime, "post_regime_price_doubled_control", "0")]
+        for field in ("action", "train_Y_sha256", "predicted_price", "comparison_price"):
+            assert control[field] == before[field]
+
+
+def test_lstm_temporal_evidence_fails_closed_when_missing_or_changed(tmp_path) -> None:
+    with pytest.raises(FileNotFoundError):
+        audit.verify_lstm_temporality(tmp_path)
+    for name in audit.LSTM_TEMPORAL_SHA256:
+        (tmp_path / name).write_bytes((audit.DEFAULT_LSTM_TEMPORAL_ROOT / name).read_bytes())
+    path = tmp_path / "lstm_temporality.json"
+    payload = json.loads(path.read_text())
+    payload["paper_result_credit"] = True
+    path.write_text(json.dumps(payload))
+    with pytest.raises(RuntimeError, match="temporal evidence changed"):
+        audit.verify_lstm_temporality(tmp_path)
+
+
+def test_invariant_numeric_grid_alone_cannot_earn_lstm_credit(monkeypatch, tmp_path) -> None:
+    # Even a hypothetical perfect numeric match must remain uncredited on the
+    # unchanged anticipative source path. No expensive model call is required.
+    runs = [
+        {"seed": 0, "repeat": 0, "lookback": lb, "regime": regime,
+         "metrics": dict(values), "actions": ["Buy"], "action_counts": {"Buy": 1}}
+        for lb in lstm_runner.LOOKBACKS
+        for regime, values in lstm_runner.PAPER_VALUES.items()
+    ]
+    monkeypatch.setattr(lstm_runner, "run_jobs", lambda *args: runs)
+    lstm_runner.paper_grid_mode(tmp_path, tmp_path, tmp_path, tmp_path, 1, [0], "")
+    payload = json.loads((tmp_path / "cryptotrade_lstm_paper_grid.json").read_text())
+    assert payload["seed_lookback_invariant_numeric_matches"] == 12
+    assert payload["protocol_robust_matching_cells"] == 0
+    assert payload["paper_result_credit"] is False
+    assert all(row["protocol_robust_paper_result_credit"] is False for row in payload["summary"])
 
 
 def test_global_native_ledger_reflects_lstm_credit_boundary() -> None:

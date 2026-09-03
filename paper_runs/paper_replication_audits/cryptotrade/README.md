@@ -28,12 +28,13 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 - The released ETH LSTM source function was executed for seeds 0--9, two repeats,
   all six paper-listed look-backs, the paper validation interval, and all three
   test regimes. All 120 fixed-look-back repeat groups are exact. The four bear
-  metrics match across all 60 seed/look-back combinations and receive paper-result
-  credit. The four bull metrics match all 20 fixed-look-back-5 observations, but
+  metrics match numerically across all 60 seed/look-back combinations. The four
+  bull metrics match all 20 fixed-look-back-5 observations, but
   only look-backs 5, 10, and 20 reproduce the full row. Because every look-back
-  ties on validation, those bull correspondences receive no strict protocol credit.
+  ties on validation, those bull correspondences do not identify a unique protocol.
   Sideways is seed/look-back sensitive, and its printed 1.11 volatility matches
-  0/60 grid observations (native range 0.114--1.893).
+  0/60 grid observations (native range 0.114--1.893). **None of the LSTM cells
+  receives faithful result credit** because of the future-input defect below.
 - The coauthor history corroborates 40/108 LLM table cells across
   10/27 LLM rows. For each credited row, all four displayed values match and every
   recorded action replays through the pinned official data/environment with zero
@@ -60,9 +61,35 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   grid as [5, 10, 15, 20, 30]; every disclosed candidate loses 17.77%--22.19%.
   The numeric lineage is therefore diagnosed without claiming faithful replication.
 
+## LSTM temporal-validity correction
+
+The previous audit credited four bear LSTM cells solely because their numbers
+were invariant across seeds and look-backs. That was too strong. Appendix E,
+item 6 (printed page 1105) describes today's price versus a forecast for tomorrow.
+The released caller instead supplies the entire fixed test regime for every daily
+action. The native function fits its scaler and LSTM to that full regime, predicts
+from its final window, and compares against its final price rather than today's.
+
+An instrumented caller census records all 198 decision dates (65 bear, 72 sideways,
+61 bull); all have future supervised targets and future inference inputs. The
+census uses a hold sentinel to inspect call arguments only, not to claim another
+training or portfolio result. Separately, 24 actual native 100-epoch LSTM calls
+form 12 exact repeat pairs. Changing only a future terminal price flips the first
+action in each regime with all past/present rows unchanged: bear and bull Buy to
+Sell when the terminal price doubles; sideways Sell to Buy when it halves. A
+post-regime price perturbation leaves every observed model output unchanged.
+
+The four prior credits are therefore withdrawn; their numeric matches and the
+full seed/look-back evidence remain preserved. Credited/corroborated coverage is
+**214/480**, not 218/480. There are separately 234 stable numeric correspondences
+including 12 uncredited ablation and eight uncredited LSTM cells. This diagnoses
+the public source's noncausal path, not the authors' unavailable private runs or
+whether their claims are false. No causal rewrite has been substituted for the
+source or labelled an original-paper reproduction.
+
 ## Why this is not a full reproduction
 
-- 256/480 paper result cells remain unverifiable. The
+- 260/480 paper result cells remain unverifiable. The
   official release ships no complete LLM result paths; the recovered author history
   contains no matching GPT-3.5 paper row and no complete matching SOL-bear GPT-4o row.
 - Six additional LLM rows numerically match the paper but receive no credit: five
@@ -96,7 +123,7 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
 - The paper says SMA/SLMA/LSTM parameters are selected on validation performance. The
   source prints candidate validation results and then hard-codes SMA=15 and
   SLMA=15/30; its LSTM branch hard-codes look-back 5. Only
-  1/7
+  1/6
   fixed traditional choices equal the released-data validation argmax, while the
   LSTM validation grid is a non-identifying six-way tie.
 - The paper does not disclose the transaction-fee rate. The source uses 0.4% of
