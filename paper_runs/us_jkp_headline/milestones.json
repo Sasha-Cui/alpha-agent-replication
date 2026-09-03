@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 12,
+    "closed": 13,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 10,
+    "closed_not_evaluable": 11,
     "in_progress": 1,
-    "queued": 56
+    "queued": 55
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -230,16 +230,16 @@
       "title": "FinVision: A Multi-Agent Framework for Stock Market Prediction",
       "system_ids": "SYS-FIN-VISION",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M013_finvision/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M013_finvision/verdict.md",
+      "evaluated_scope": "No common-task return: five prompt templates are public, but the LangGraph system, original news/prices, actual model traces, actions, execution rules and portfolio trajectory are unavailable.",
+      "next_action": "Closed. Preserve prompt/document and current-market diagnostic evidence; do not promote raster figures, Market/FinAgent baselines, prompt-only simulation, or an invented JKP agent to FinVision.",
+      "closure_reason": "The recovered templates do not identify a tradable policy without runtime inputs, model snapshots, responses, orchestration and accounting. Every bounded substitute either replays a baseline/output or invents the central multi-agent execution."
     },
     {
       "milestone_id": "M014",
@@ -247,7 +247,7 @@
       "title": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
       "system_ids": "SYS-TRADING-AGENTS",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M013",
+  "canonical_work_id": "CensusArxiv241108899",
+  "paper": "FinVision: A Multi-Agent Framework for Stock Market Prediction",
+  "paper_url": "https://arxiv.org/abs/2411.08899v1",
+  "paper_pdf_sha256": "8483714696f009ffecd5e818ce2b8937e88be03343476bb23344b4f38b080921",
+  "paper_source_sha256": "bc7a421b954b6a90c0a38374e6eb643333a127904916c4faa01d50ec2309a5fe",
+  "headline_strategy": "LangGraph multi-agent daily trading system in which GPT-4o-mini agents summarize news, analyze 60-day technical charts, and form short/medium reflections before an o1-mini prediction agent issues BUY/SELL/HOLD plus a 1-10 position size",
+  "paper_configuration": {
+    "assets": ["AAPL", "AMZN", "MSFT"],
+    "overall_period": "2023-04-01 through 2023-12-29",
+    "test_period": "2023-06-01 through 2023-12-29",
+    "chart_lookback_days": 60,
+    "reflection_signal_window_days": 30,
+    "nondecision_model": "gpt-4o-mini",
+    "nondecision_temperature": 0.3,
+    "decision_model": "o1-mini",
+    "decision_temperature": 1.0
+  },
+  "paper_portability_to_common_task": "not defensibly executable because only manuscript prompts are released, with no system code, frozen inputs, actions, or portfolio accounting",
+  "recovered_component_credit": {
+    "prompt_templates": 5,
+    "actual_llm_requests": 0,
+    "actual_llm_responses": 0,
+    "public_system_source_files": 0
+  },
+  "missing_headline_objects": [
+    "LangGraph implementation, dependency lock, runnable configuration and data pipeline",
+    "the original Yahoo/EODHD news rows, query parameters, timestamps, timezone and deduplication",
+    "the exact price snapshot, adjusted/unadjusted field, chart inputs and indicator implementation",
+    "immutable GPT-4o-mini/o1-mini snapshots, seeds, request IDs, requests and responses",
+    "daily BUY/SELL/HOLD actions, position sizes, fills, rewards, cash ledger and equity trajectory",
+    "trade timing, share rounding, long/short constraints, costs, slippage and cash equations",
+    "a paper-defined cross-sectional portfolio adapter for the monthly top-1,000 JKP universe"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Render the five prompt templates with invented runtime values",
+      "reason": "Templates without the original inputs, requests, model snapshots, responses and orchestration do not recover the decision policy."
+    },
+    {
+      "route": "Rebuild the commented result.png trajectory",
+      "reason": "The raster image is not an exact action, position, cash or equity record and cannot identify daily holdings."
+    },
+    {
+      "route": "Use the current-Yahoo market diagnostic",
+      "reason": "Only 3 of 9 market cells match and the feed/metric convention has no paper-time lineage or FinVision credit."
+    },
+    {
+      "route": "Use FinAgent comparison values",
+      "reason": "Those nine cells are externally transcribed baseline results, including one nonstandard truncation, and are not FinVision actions."
+    },
+    {
+      "route": "Build a new monthly JKP chart/news agent",
+      "reason": "JKP does not contain the required point-in-time news, and replacing the unavailable models, runtime traces, execution rules and portfolio would create a new system."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/finvision",
+  "result_policy": "No prompt-only simulation, raster reconstruction, current-market diagnostic, FinAgent baseline, or invented JKP agent is entered as a FinVision return. The positive paper results remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}

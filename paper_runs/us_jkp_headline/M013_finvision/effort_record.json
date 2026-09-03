@@ -1,0 +1,20 @@
+{
+  "milestone_id": "M013",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/finvision/README.md",
+    "paper_runs/paper_replication_audits/finvision/manifest.json",
+    "paper_runs/paper_replication_audits/finvision/native_execution.json",
+    "paper_runs/paper_replication_audits/finvision/source_provenance.json",
+    "paper_runs/paper_replication_audits/finvision/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/finvision/prompt_inventory.csv",
+    "paper_runs/paper_replication_audits/finvision/artifact_access_audit.csv",
+    "paper_runs/paper_replication_audits/finvision/dataset_statistics_audit.csv"
+  ],
+  "bounded_checks": [
+    "Checked the original paper/source, author thesis, all five prompts, author GitHub/Hugging Face inventories, exact-title and archive searches, and the current-price diagnostic for an executable action path.",
+    "Separated manuscript and thesis corroboration from system execution, and separated Market/FinAgent comparison cells from FinVision decisions.",
+    "Rejected prompt-only simulation, raster inference, current-input baseline replay, FinAgent-value promotion, and a newly invented JKP agent."
+  ],
+  "outcome": "No public implementation, original market/news snapshot, actual model request/response, action path, or portfolio trajectory was recovered. The printed prompts do not determine a tradable policy without these runtime objects and execution rules."
+}
