@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M022",
+  "canonical_work_id": "CensusArxiv250514738",
+  "paper": "R&D-Agent: An LLM-Agent Framework Towards Autonomous Data Science",
+  "paper_url": "https://arxiv.org/abs/2505.14738",
+  "paper_pdf_sha256": "36256d4e8a676259f1091f6b530416615179de2551e347fba55f0f395a0cb140",
+  "paper_source_sha256": "a33350c6405c7b252974f455e8cf7760704a725723e491faf2a7935d2ab286be",
+  "source_url": "https://github.com/microsoft/RD-Agent",
+  "source_commit": "f360d0a212793eb044c218b5e13b095e684a632d",
+  "headline_method": "Autonomous MLE-Bench data-science agent that plans, codes, evaluates, schedules, and selects machine-learning solutions across 75 Kaggle competitions",
+  "scope_finding": "The primary paper contains no stock signal, trading action, asset universe, portfolio construction, or investment return. It is the general MLE-Bench R&D-Agent report, not the separate R&D-Agent-Quant lineage.",
+  "common_task_portability": "not applicable without substituting a different paper and system",
+  "released_component_credit": {
+    "paper_mechanisms_with_source_implementation": 21,
+    "paper_era_python_files_compiled": 233,
+    "paper_era_modules_imported": 192,
+    "offline_tests_passed": 2,
+    "scheduler_and_interaction_kernel_executed": true
+  },
+  "missing_paper_result_objects": [
+    "the frozen 75-competition dataset/container manifest and grading revision",
+    "paper run configurations, prompts/responses, generated code, seeds and traces",
+    "three complete 12-hour runs for every main and ablation configuration",
+    "Azure deployment snapshots, credentials and exact historical package/container state",
+    "submissions, checkpoints, medal outcomes and complete published result rows"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Use R&D-Agent-Quant or an existing JKP factor proxy",
+      "reason": "That is a separate application lineage and cannot validate the general MLE-Bench paper."
+    },
+    {
+      "route": "Treat scheduler/interaction-kernel fixtures as a trading signal",
+      "reason": "They are generic agent-orchestration components with no security, time, score, or portfolio semantics."
+    },
+    {
+      "route": "Run one guessed modern Kaggle configuration",
+      "reason": "It would not reproduce the paper's 75-competition, three-seed, 12-hour protocol and still would not create an investment strategy."
+    },
+    {
+      "route": "Use developmental fork artifacts",
+      "reason": "No audited fork contains a complete published row or a monthly U.S. trading object."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/rd_agent",
+  "result_policy": "No monthly return is assigned because the primary record proposes no trading strategy. This closure is a scope finding, not a negative investment result and not evidence about R&D-Agent-Quant.",
+  "status": "closed_not_evaluable"
+}

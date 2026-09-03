@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 21,
+    "closed": 22,
     "completed_adapted": 1,
     "completed_partial": 3,
-    "closed_not_evaluable": 17,
+    "closed_not_evaluable": 18,
     "in_progress": 1,
-    "queued": 47
+    "queued": 46
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -383,16 +383,16 @@
       "title": "R&D-Agent: An LLM-Agent Framework Towards Autonomous Data Science",
       "system_ids": "SYS-RD-AGENT-QUANT",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M022_rd_agent/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M022_rd_agent/verdict.md",
+      "evaluated_scope": "No common-task return: the cited primary record is a general 75-competition MLE-Bench data-science agent with no stock signal, portfolio or investment result; R&D-Agent-Quant is a separate lineage.",
+      "next_action": "Closed. Preserve its extensive source/component and missing-run evidence; do not attach quant code, JKP proxies, generic orchestration fixtures, or guessed Kaggle runs to this paper.",
+      "closure_reason": "A monthly U.S. return would require replacing the primary paper with a different quant application. The native components have no security or portfolio semantics, so non-evaluability is a scope fact rather than a missing implementation shortcut."
     },
     {
       "milestone_id": "M023",
@@ -400,7 +400,7 @@
       "title": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
       "system_ids": "SYS-EFS",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
