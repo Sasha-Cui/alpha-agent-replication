@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M018",
+  "canonical_work_id": "CensusArxiv250213165",
+  "paper": "HedgeAgents: A Balanced-aware Multi-agent Financial Trading System",
+  "paper_url": "https://arxiv.org/abs/2502.13165v1",
+  "paper_pdf_sha256": "d51a97df37c27936ea69c3c951c7ac514c4dddd76bf509f866f2c647cd50505e",
+  "paper_source_sha256": "74609167076592c8d8d7344a09f470736c62992ae9b7540bf81f01510fab713b",
+  "source_url": "https://github.com/hedgeagents/hedgeagents.github.io",
+  "source_commit": "329c5cc8613d91e517de4fbdb0dbc8476a356db5",
+  "headline_strategy": "Four-agent cross-asset hedge-fund system: specialist agents Dave, Bob, and Emily trade crypto, DJ30 stocks, and FX, while manager Otto runs a 30-day budget-allocation conference using expected return, covariance risk, and CVaR, coordinates experience sharing, and triggers an extreme-market conference",
+  "paper_configuration": {
+    "model": "gpt-4-1106-preview",
+    "temperature": 0.7,
+    "embedding_model": "text-embedding-3-large",
+    "memory_top_k": 5,
+    "train_period": "2015-01-01 through 2020-12-31",
+    "test_period": "2021-01-01 through 2023-12-31",
+    "budget_cycle_days": 30,
+    "extreme_trigger": "daily amplitude >5% or cumulative three-day amplitude >10%"
+  },
+  "paper_portability_to_common_task": "not defensibly executable because only a static project site and screenshots are released, with no agent, tool, memory, allocation, order, or portfolio implementation",
+  "recovered_component_credit": {
+    "author_site_table_cells": 90,
+    "profile_screenshots": 4,
+    "unique_tool_names": 23,
+    "unique_action_names": 10,
+    "verbatim_simplified_prompts": 1,
+    "system_source_files": 0
+  },
+  "missing_headline_objects": [
+    "HedgeAgents code, runtime environment, agent/profile serialization, tool implementations, and runner",
+    "exact DJ30/FX/crypto universe and constituent vintage plus frozen Yahoo/Alpaca inputs",
+    "the 60 indicators, full prompts, model/embedding snapshots, memory database, seeds and repeated-run policy",
+    "budget-allocation lambdas, CVaR alpha, covariance window, solver, constraints and failure handling",
+    "experience-sharing cadence/rounds and extreme-market definition/execution logic",
+    "initial capital, sizing, fill timing, cash, short/leverage, costs and slippage",
+    "native actions, orders, fills, holdings, cash ledger, NAV/return paths and plot arrays"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Implement the printed expected-return/risk/CVaR objective",
+      "reason": "Its lambdas, alpha, covariance estimator, solver and bounds are absent and the equation itself has unresolved symbols and CVaR limits."
+    },
+    {
+      "route": "Use Bob's profile screenshot as a stock policy",
+      "reason": "Tool/action names do not define tool outputs, prompts, memory, decision logic, quantities, or execution."
+    },
+    {
+      "route": "Use the local balanced-risk or CVaR thematic proxy",
+      "reason": "A generic allocation heuristic contains none of the specialist decisions, conferences, experience sharing, or extreme-market mechanism."
+    },
+    {
+      "route": "Infer a return path from author tables or curve images",
+      "reason": "Static values and plots do not identify dated holdings, trades, fills or exact returns; the full-system MDD also conflicts across paper tables."
+    },
+    {
+      "route": "Run a current model on JKP characteristics",
+      "reason": "The historical model is unavailable and JKP does not replace the news, tools, memories, cross-asset agents and conferences defining the policy."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/hedgeagents",
+  "result_policy": "No incomplete risk equation, screenshot profile, thematic allocator, plot reconstruction, or invented JKP agent is entered as a HedgeAgents return. The positive paper results remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}

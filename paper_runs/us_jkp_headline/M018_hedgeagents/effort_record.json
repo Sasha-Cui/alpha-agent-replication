@@ -1,0 +1,20 @@
+{
+  "milestone_id": "M018",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/hedgeagents/README.md",
+    "paper_runs/paper_replication_audits/hedgeagents/manifest.json",
+    "paper_runs/paper_replication_audits/hedgeagents/native_execution.json",
+    "paper_runs/paper_replication_audits/hedgeagents/source_provenance.json",
+    "paper_runs/paper_replication_audits/hedgeagents/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/hedgeagents/prompt_inventory.csv",
+    "paper_runs/paper_replication_audits/hedgeagents/profile_permissions.csv",
+    "paper_runs/paper_replication_audits/hedgeagents/internal_consistency_audit.csv"
+  ],
+  "bounded_checks": [
+    "Checked the paper/source, complete static author site, profile/workflow screenshots, archival and author/model searches, and the later same-author temporal-leakage warning for executable policy evidence.",
+    "Separated named actions/tools and duplicated author tables from operational agent and portfolio artifacts.",
+    "Rejected implementing the incomplete optimizer, screenshot-policy inference, thematic-risk proxy, plot/table reconstruction, and a current-model JKP agent."
+  ],
+  "outcome": "The public artifact is static documentation with zero system source. Neither the specialist stock agent nor the portfolio manager can be executed from names, screenshots, one simplified prompt, and underspecified risk equations."
+}
