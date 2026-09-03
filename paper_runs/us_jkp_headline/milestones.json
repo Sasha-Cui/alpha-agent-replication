@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 15,
+    "closed": 16,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 13,
+    "closed_not_evaluable": 14,
     "in_progress": 1,
-    "queued": 53
+    "queued": 52
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -281,16 +281,16 @@
       "title": "MarketSenseAI 2.0: Enhancing Stock Analysis through LLM Agents",
       "system_ids": "SYS-MARKET-SENSE-AI",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M016_marketsenseai/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M016_marketsenseai/verdict.md",
+      "evaluated_scope": "No common-task return: the paper's monthly U.S. buy-signal portfolio shell is relevant, but the five-agent signal generator, prompts, point-in-time inputs, security ratings, holdings and execution path are not public.",
+      "next_action": "Closed. Preserve displayed arithmetic and manuscript evidence; do not infer security signals from aggregate outputs or substitute generic prompts, JKP-only agents, the later paper, or thematic proxies.",
+      "closure_reason": "Without monthly security-level buy/hold/sell records or an executable policy, equal/cap weighting has no holdings to consume. Every bounded alternative invents the central five-agent signal rather than adapting it."
     },
     {
       "milestone_id": "M017",
@@ -298,7 +298,7 @@
       "title": "FinRL-DeepSeek: LLM-Infused Risk-Sensitive Reinforcement Learning for Trading Agents",
       "system_ids": "SYS-FIN-RL-DEEPSEEK",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

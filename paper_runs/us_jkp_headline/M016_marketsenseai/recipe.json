@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M016",
+  "canonical_work_id": "CensusArxiv250200415",
+  "paper": "MarketSenseAI 2.0: Enhancing Stock Analysis through LLM Agents",
+  "paper_url": "https://arxiv.org/abs/2502.00415v2",
+  "paper_pdf_sha256": "3755b957dc366d0e9117fffb2ae6ddc241e682498bcd7b4ce1c830119d99db65",
+  "paper_source_sha256": "b1192cf20f1ca743f50724c2c955626d26aa1b6ec50b726a0b2882a6133e9f74",
+  "headline_strategy": "Five-agent GPT-4o stock-analysis pipeline in which News, Fundamentals, Dynamics, and Macroeconomic agents feed a Signal agent that issues monthly buy/hold/sell ratings; long-only equal- and capitalization-weighted portfolios hold the buy-rated S&P 100 or S&P 500 stocks",
+  "paper_configuration": {
+    "agent_count": 5,
+    "primary_model": "GPT-4o",
+    "rag_evaluator_model": "GPT-4o-mini",
+    "universes": ["S&P 100", "S&P 500"],
+    "signal_frequency": "monthly",
+    "portfolio_rules": ["equal-weight buy signals", "capitalization-weight buy signals"],
+    "transaction_cost_bps_per_trade": 10
+  },
+  "paper_portability_to_common_task": "the cadence and U.S. long-only portfolio are directly relevant, but the signal-generation policy is not executable because no operational release, prompts, frozen inputs, signals, or holdings are public",
+  "missing_headline_objects": [
+    "attributable operational code, dependency/runtime configuration, and exact five-agent graph",
+    "verbatim prompts, parser, GPT snapshots, inference parameters, seeds and repeated-run protocol",
+    "point-in-time S&P constituents and frozen price, news, SEC, transcript, and macro inputs",
+    "release-time/decision-time timestamps and execution lag",
+    "monthly buy/hold/sell generation records and confidence/explanation outputs",
+    "portfolio holdings, cap weights, trades, fills, cash, dividends, costs and NAV paths",
+    "VectorBTPro version/configuration, metric formulas, and factor-regression inputs/horizon"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Implement five generic LLM prompts over current public data",
+      "reason": "The paper provides no verbatim prompts, data snapshot, parser, model snapshot, timing, seeds, or repeated-run rule, so this would create a new policy."
+    },
+    {
+      "route": "Use JKP characteristics for all four analysis agents",
+      "reason": "This removes the paper's news, filing/transcript, price-dynamics, and macro-RAG mechanisms rather than adapting their data."
+    },
+    {
+      "route": "Infer buy stocks from aggregate signal counts or plotted portfolios",
+      "reason": "Counts, performance figures and raster assets do not identify security-level monthly signals or weights."
+    },
+    {
+      "route": "Use the later Signal or Noise validation paper",
+      "reason": "It is a separate 2026 empirical record with different live cohorts and cannot supply missing 2025 strategy outputs."
+    },
+    {
+      "route": "Reuse a thematic local MarketSenseAI proxy",
+      "reason": "Thematic characteristic mappings contain no native agent mechanism or result provenance."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/marketsenseai",
+  "result_policy": "No generic prompt system, JKP-only agent, aggregate-output reconstruction, later-paper result, or thematic proxy is entered as a MarketSenseAI 2.0 return. Its positive monthly portfolio claims remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}

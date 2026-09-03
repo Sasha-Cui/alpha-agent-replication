@@ -1,0 +1,19 @@
+{
+  "milestone_id": "M016",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/marketsenseai/README.md",
+    "paper_runs/paper_replication_audits/marketsenseai/manifest.json",
+    "paper_runs/paper_replication_audits/marketsenseai/paper_version_summary.csv",
+    "paper_runs/paper_replication_audits/marketsenseai/paper_mechanism_conformance.csv",
+    "paper_runs/paper_replication_audits/marketsenseai/paper_specification_gaps.csv",
+    "paper_runs/paper_replication_audits/marketsenseai/paper_internal_consistency_checks.csv",
+    "paper_runs/paper_replication_audits/marketsenseai/public_source_discovery.csv"
+  ],
+  "bounded_checks": [
+    "Checked both 2025 paper/source revisions, their complete result/figure ledgers, first-author and company repositories/sites, exact-title and identifier searches, and the distinct 2026 validation-paper lineage.",
+    "Separated the directly relevant monthly buy-signal portfolio rule from the unavailable five-agent signal generator.",
+    "Rejected generic-prompt, JKP-only, aggregate-output, later-paper, and thematic-proxy substitutions."
+  ],
+  "outcome": "The paper defines a common-task-compatible monthly portfolio shell, but no security-level signal generator or output is public. Without prompts, point-in-time inputs, model traces and monthly ratings, the buy portfolio cannot be reconstructed or transferred faithfully."
+}
