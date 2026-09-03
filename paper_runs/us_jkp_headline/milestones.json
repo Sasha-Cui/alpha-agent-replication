@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 9,
+    "closed": 10,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 7,
-    "in_progress": 1,
+    "closed_not_evaluable": 8,
+    "in_progress": 0,
     "queued": 59
   },
   "terminal_statuses": [
@@ -179,16 +179,16 @@
       "title": "LLMFactor: Extracting Profitable Factors through Prompts for Explainable Stock Movement Prediction",
       "system_ids": "SYS-LLM-FACTOR",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M010_llmfactor/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M010_llmfactor/verdict.md",
+      "evaluated_scope": "No common-task return: the headline three-stage relation/factor/prediction pipeline lacks author code, paper-time news, request/output traces, parser, predictions, and a portfolio rule; later community implementations materially change it.",
+      "next_action": "Closed. Preserve the prompt/metric component evidence and 0/82 native-result finding; do not promote community implementations, leaked outputs, or the local narrative proxy to LLMFactor.",
+      "closure_reason": "Prompt skeletons alone cannot generate a formation-time signal without the missing news, matcher, request envelope, model behavior and parser. Both bounded community alternatives change the method and reproduce no paper result; JKP does not contain the central text inputs."
     },
     {
       "milestone_id": "M011",

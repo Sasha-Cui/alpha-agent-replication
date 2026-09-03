@@ -1,0 +1,20 @@
+{
+  "milestone_id": "M010",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/llmfactor/README.md",
+    "paper_runs/paper_replication_audits/llmfactor/manifest.json",
+    "paper_runs/paper_replication_audits/llmfactor/native_execution.json",
+    "paper_runs/paper_replication_audits/llmfactor/source_provenance.json",
+    "paper_runs/paper_replication_audits/llmfactor/configuration_inventory.csv",
+    "paper_runs/paper_replication_audits/llmfactor/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/llmfactor/prompt_template_conformance.csv",
+    "paper_runs/paper_replication_audits/llmfactor/community_method_conformance.csv"
+  ],
+  "bounded_checks": [
+    "Separated deterministic prompt/metric component checks from the missing LLM prediction pipeline.",
+    "Checked the authoritative paper/source, six repository searches, both prominent community implementations and their complete histories, recovered community datasets/outputs, and the local narrative mapping.",
+    "Rejected local-proxy promotion, either community implementation, JKP-for-news substitution, metric-fixture returns, and sentiment-baseline promotion."
+  ],
+  "outcome": "The paper identifies a three-stage prediction idea but releases no author pipeline, request/output trace, paper-time text data, parser, predictions, or portfolio. The available community methods materially change the mechanism and do not reproduce any published result."
+}

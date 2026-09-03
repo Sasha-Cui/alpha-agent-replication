@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M010",
+  "canonical_work_id": "CensusArxiv240610811",
+  "paper": "LLMFactor: Extracting Profitable Factors through Prompts for Explainable Stock Movement Prediction",
+  "paper_url": "https://aclanthology.org/2024.findings-acl.185/",
+  "authoritative_pdf_sha256": "a9b0480bfb2387459cae2dcefef8e0d9a499331d0d2cf0efeedec7b0392ef635",
+  "official_arxiv_source_sha256": "38570581fa3727d9fd57b23159bf206472fabede7e6eca595a113aed7838a814",
+  "headline_strategy": "Three-stage LLMFactor pipeline that infers a related stock, extracts the top five factors from news, and combines those factors, the inferred relation, and five prior price movements to predict next-period rise or fall",
+  "paper_configuration": {
+    "lookback_periods": 5,
+    "factor_count": 5,
+    "target": "binary next stock movement: rise=1, fall=0",
+    "models": ["gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"],
+    "datasets": ["StockNet", "CMIN-US", "CMIN-CN", "EDT"]
+  },
+  "paper_portability_to_common_task": "not defensibly executable from the paper/source as a formation-time monthly U.S./JKP signal",
+  "conditionally_verified_components": {
+    "english_prompt_skeletons_rendered": 3,
+    "metric_formulas_executed": 2,
+    "llm_calls_made": 0
+  },
+  "missing_headline_objects": [
+    "author-linked implementation or executable pipeline",
+    "the exact point-in-time price/text snapshots and stock-universe membership",
+    "train, validation, and test splits plus preprocessing and news aggregation",
+    "complete request envelopes, generation settings, timestamps, and request/response logs",
+    "the company matcher, response parser, invalid-response policy, and flat-price label",
+    "raw daily predictions, confusion matrices, repeated runs, and uncertainty",
+    "a paper-defined portfolio converting binary predictions into cross-sectional holdings"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Use the local paper_llmfactor_explainable_price_news strategy",
+      "reason": "It is an M0 narrative translation with no news, prompts, relation/factor extraction, daily labels, or paper metrics."
+    },
+    {
+      "route": "Run tasoo-oos/LLMFactor",
+      "reason": "The non-author 2025 implementation changes the model and prompts, omits the relation stage, contains only partial CMIN-US lineage, and has no saved result path."
+    },
+    {
+      "route": "Run Kuon12138/SKGP or reuse its outputs",
+      "reason": "The non-author implementation changes the window from 5 to 30 and all prompts; one saved result has target leakage and no output reproduces a paper cell."
+    },
+    {
+      "route": "Apply the published prompt skeletons to JKP characteristics",
+      "reason": "JKP contains neither the point-in-time news corpus nor the related-company text required by the central mechanism, and the request envelope/parser are unspecified."
+    },
+    {
+      "route": "Use ACC/MCC fixtures or a sentiment baseline as returns",
+      "reason": "Metric fixtures and baselines generate no LLMFactor formation-time prediction and the paper supplies no native portfolio rule."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/llmfactor",
+  "result_policy": "No community prediction, local narrative proxy, prompt rendering, metric fixture, or generic JKP factor is entered as an LLMFactor return. The paper's positive classification claims therefore remain unresolved rather than classified as false or as benchmark underperformance.",
+  "status": "closed_not_evaluable"
+}
