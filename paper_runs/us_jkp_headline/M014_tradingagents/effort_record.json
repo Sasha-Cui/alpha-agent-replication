@@ -1,0 +1,19 @@
+{
+  "milestone_id": "M014",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/tradingagents/README.md",
+    "paper_runs/paper_replication_audits/tradingagents/manifest.json",
+    "paper_runs/paper_replication_audits/tradingagents/native_component.json",
+    "paper_runs/paper_replication_audits/tradingagents/source_mechanism_conformance.csv",
+    "paper_runs/paper_replication_audits/tradingagents/paper_specification_gaps.csv",
+    "paper_runs/paper_replication_audits/tradingagents/appendix_case_tool_conformance.csv",
+    "paper_runs/paper_replication_audits/tradingagents/current_source_conformance.csv"
+  ],
+  "bounded_checks": [
+    "Checked all seven paper versions, the complete official source/ref history, nearest post-paper release, author project-site lineage, and the already-exhaustive public-fork artifact census for a paper-time strategy path.",
+    "Executed the release's real graph-construction boundary with all declared dependency families while blocking external sends; verified 22 nodes, 30 edges and 16 tools.",
+    "Rejected post-paper isolated-date execution, author-output replay, baselines/current Yahoo, categorical-action allocation, and a reduced local JKP-agent substitution."
+  ],
+  "outcome": "The nearest release is a substantive architecture component, but it does not contain the paper experiment, data, decisions, portfolio/execution engine, backtester, metrics or outputs. Scaling it to the common task would require inventing the missing strategy semantics and hundreds of thousands of new agent decisions."
+}

@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 13,
+    "closed": 14,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 11,
+    "closed_not_evaluable": 12,
     "in_progress": 1,
-    "queued": 55
+    "queued": 54
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -247,16 +247,16 @@
       "title": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
       "system_ids": "SYS-TRADING-AGENTS",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M014_tradingagents/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M014_tradingagents/verdict.md",
+      "evaluated_scope": "No common-task return: a substantive post-paper graph release exists, but it lacks paper-time inputs, model/configuration lineage, sizing, portfolio/execution state, backtester, metrics, daily arrays and cross-sectional allocation.",
+      "next_action": "Closed. Preserve native topology and author-output correspondence separately; do not promote one-day post-paper runs, categorical actions, baselines, vectors, or a reduced JKP agent to TradingAgents.",
+      "closure_reason": "The nearest graph preserves several roles but materially differs from the experiment and stops before a tradable portfolio. A top-1,000 monthly port would require 305,000 new agent decisions and invented capital allocation/execution, while published outputs expose no recoverable holdings."
     },
     {
       "milestone_id": "M015",
@@ -264,7 +264,7 @@
       "title": "LLM-Powered Multi-Agent System for Automated Crypto Portfolio Management",
       "system_ids": "SYS-MACI",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
