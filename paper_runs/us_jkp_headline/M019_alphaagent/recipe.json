@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M019",
+  "canonical_work_id": "CensusArxiv250216789",
+  "paper": "AlphaAgent: LLM-Driven Alpha Mining with Regularized Exploration to Counteract Alpha Decay",
+  "paper_url": "https://arxiv.org/abs/2502.16789v2",
+  "paper_sha256": "cf620c3b33a98edd4124230458b65741e1767fa37a3a180828de1035ded52ab1",
+  "source_url": "https://github.com/RndmVariableQ/AlphaAgent",
+  "paper_mechanism_commit": "95e47882cbed3ba0cafd42e812fe0032a8ae0681",
+  "headline_strategy": "LLM-generated U.S. factor pool feeding a learned next-period return score and a Qlib long-only top-50/drop-5 portfolio",
+  "evaluated_component": "all six source-disclosed U.S. factor expressions in factor_zoo/us_factors.csv at the paper mechanism snapshot",
+  "component_selection_reason": "The exact five anonymous generated features used by the matching author run are unrecoverable. Using all six paper-snapshot U.S. expressions avoids outcome-based factor selection and is the strongest source-disclosed pool that can be transferred without claiming the full mining loop.",
+  "source_factor_file": "factor_zoo/us_factors.csv",
+  "source_factor_file_sha256": "5cd90288c6d4a2f327e0142ad2528bed876e7151911096a75bc0b4adfd695f70",
+  "source_expressions": [
+    "(0.3 * RANK($open)) + (0.2 * SUM($volume, 10)) + (0.2 * EMA($close, 20)) + (0.3 * (TS_RANK($high - $low, 5) > 0 ? 1 : 0))",
+    "(0.25 * SUM($volume, 5)) + (0.35 * EMA($close, 10)) + (0.4 * (TS_RANK($close - $open, 15) > 0 ? 1 : 0))",
+    "CORR($close - $open, $high - $low, 20)",
+    "CORR($high - $low, $volume, 30)",
+    "COUNT(($volume > (MEAN($volume, 30) * 1.5)) && ($close > $open), 5)",
+    "($close - MEAN($close, 10)) / (STD($close, 10) + 1e-8) * (MEDIAN(STD($close, 20), 20) < TS_MAX(MEDIAN(STD($close, 20), 20), 60))"
+  ],
+  "monthly_adapter": {
+    "inputs": "JKP monthly abs(prc), prc_high, prc_low, and tvol; previous-month close is the disclosed proxy for unavailable monthly open",
+    "formula_normalization": "each literal formula is cross-sectionally percentile-ranked to [-1,1] in the formation-date top-1,000 universe",
+    "learning": "fixed ridge=1 rolling 120-month linear score, requiring 24 prior formation months and using only realized outcomes from earlier formations",
+    "warmup": "cash until 24 prior formation months exist; all 305 common return months remain in the path",
+    "portfolio": "common value-weighted long-short deciles because this evaluates a score component, not the unrecoverable native fitted model/portfolio",
+    "costs": "common 10 bp one-way primary plus fixed sensitivity cases",
+    "missing_returns": "common zero primary and adverse-100 sensitivity without reranking"
+  },
+  "preserved": [
+    "all six source expressions without JKP-performance selection",
+    "learned combination using earlier outcomes only",
+    "U.S. equities and next-period return objective"
+  ],
+  "adapted": [
+    "daily bars to monthly JKP bars",
+    "previous close for unavailable open",
+    "ridge for unavailable exact LightGBM feature mapping",
+    "common decile portfolio for the score-only partial"
+  ],
+  "not_claimed": [
+    "AlphaAgent LLM factor-mining loop",
+    "regularized-exploration objective",
+    "the matching author run's anonymous five-factor identity",
+    "native Qlib LightGBM/top-50/drop-5 result",
+    "paper performance"
+  ],
+  "prior_jkp_outcomes_seen": true,
+  "component_mapping_selected_from_source_not_jkp_performance": true,
+  "mapping_frozen_before_new_component_outcome": true,
+  "inference_status": "exploratory_retrospective_partial",
+  "status": "fixed_before_evaluation"
+}
