@@ -1,0 +1,16 @@
+{
+  "milestone_id": "M004",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/flag_trader/README.md",
+    "paper_runs/paper_replication_audits/flag_trader/manifest.json",
+    "paper_runs/paper_replication_audits/flag_trader/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/flag_trader/paper_prompt_template.txt"
+  ],
+  "bounded_checks": [
+    "Separated the trainable fusion LLM/PPO policy from InvestorBench and Buy-and-Hold baselines.",
+    "Checked whether the prompt plus 22 paper settings uniquely determine state, action, reward, loss, optimizer, checkpoint and portfolio execution.",
+    "Checked the author-linked baseline release, unaffiliated exact-name repository and generic-PPO reconstruction routes and rejected their headline attribution."
+  ],
+  "outcome": "The public record does not determine an executable FLAG-Trader policy that could produce one monthly U.S./JKP strategy; source-free reimplementation would make the central learned policy researcher supplied."
+}

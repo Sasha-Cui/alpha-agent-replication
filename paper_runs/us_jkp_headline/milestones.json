@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 3,
+    "closed": 4,
     "completed_adapted": 1,
     "completed_partial": 0,
-    "closed_not_evaluable": 2,
+    "closed_not_evaluable": 3,
     "in_progress": 1,
-    "queued": 65
+    "queued": 64
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -77,16 +77,16 @@
       "title": "FLAG-TRADER: Fusion LLM-Agent with Gradient-based Reinforcement Learning for Financial Trading",
       "system_ids": "SYS-FLAG-TRADER",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M004_flag_trader/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M004_flag_trader/verdict.md",
+      "evaluated_scope": "No common-task return: the central LLM-policy/PPO training procedure, learned parameters and action policy are not released or unambiguously specified; InvestorBench buy-and-hold results are baselines only.",
+      "next_action": "Closed. Preserve the six author-linked baseline cells separately; do not use InvestorBench or the unaffiliated flag-trader repository as FLAG-Trader.",
+      "closure_reason": "Although the paper records a prompt and 22 settings, it releases no implementation, checkpoint, trajectory or native output, and conflicts in state, action mask, reward, KL/value losses and annualization do not identify one trainable policy."
     },
     {
       "milestone_id": "M005",
@@ -94,7 +94,7 @@
       "title": "AlphaQuanter: An End-to-End Tool-Augmented Agentic Reinforcement Learning Framework for Stock Trading",
       "system_ids": "SYS-ALPHA-QUANTER",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

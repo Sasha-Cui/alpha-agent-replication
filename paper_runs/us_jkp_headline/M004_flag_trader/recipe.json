@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M004",
+  "canonical_work_id": "CensusACL2025findingsacl716",
+  "paper": "FLAG-TRADER: Fusion LLM-Agent with Gradient-based Reinforcement Learning for Financial Trading",
+  "paper_url": "https://aclanthology.org/2025.findings-acl.716/",
+  "arxiv_url": "https://arxiv.org/abs/2502.11433v3",
+  "headline_strategy": "Fusion LLM trading agent trained with a PPO-like gradient reinforcement-learning policy/value objective",
+  "paper_portability_to_common_task": "not defensibly executable from released information",
+  "static_information_recovered": {"hyperparameter_settings": 22, "prompt_template": true},
+  "missing_executable_objects": [
+    "author-linked FLAG-Trader source",
+    "base-model revision and trainable-layer split",
+    "optimizer, initialization, seed count and checkpoint-selection procedure",
+    "learned policy/value checkpoint",
+    "training and test action trajectories",
+    "paper-time market/news/macro inputs and exact adjustment conventions",
+    "native result/PnL paths"
+  ],
+  "procedure_conflicts": [
+    "The displayed state and action-mask semantics do not determine one observation/action tensor.",
+    "Reward initialization, transaction-cost instruction and BTC annualization are inconsistent.",
+    "KL-penalty and value-clipping descriptions do not determine one PPO/value loss.",
+    "Run count, seed aggregation and checkpoint selection are unspecified."
+  ],
+  "rejected_substitutes": [
+    {"route": "Evaluate InvestorBench agents or Buy-and-Hold", "reason": "They are paper baselines, not the proposed FLAG-Trader policy."},
+    {"route": "Use the exact-name parkxlab/flag-trader repository", "reason": "The repository is unaffiliated and does not implement the paper's PPO/value-network method."},
+    {"route": "Implement generic PPO from the 22 settings", "reason": "State, action mask, reward, optimizer, model split, KL/value objectives and checkpoint rule materially determine the learned strategy and remain missing or conflicting."},
+    {"route": "Train a replacement LLM policy on JKP returns", "reason": "No supervised/RL action lineage or unambiguous reward implementation anchors such a policy to FLAG-Trader; this would be a new method."}
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/flag_trader",
+  "result_policy": "No baseline or fabricated generic-PPO return is entered as FLAG-Trader. The closure is common-task non-evaluability, not evidence that private paper results are false.",
+  "status": "closed_not_evaluable"
+}
