@@ -447,7 +447,7 @@ def test_invariant_numeric_grid_alone_cannot_earn_lstm_credit(monkeypatch, tmp_p
     assert all(row["protocol_robust_paper_result_credit"] is False for row in payload["summary"])
 
 
-def test_global_native_ledger_reflects_lstm_credit_boundary() -> None:
+def test_global_native_ledger_reflects_credit_and_selection_boundaries() -> None:
     rows = read_csv(ROOT / "paper_runs/submission_evidence/native_fidelity_ledger.csv")
     row = next(item for item in rows if item["system_id"] == "SYS-CRYPTO-TRADE")
     assert row["public_artifact_status"] == "reachable_static_snapshot"
@@ -458,7 +458,8 @@ def test_global_native_ledger_reflects_lstm_credit_boundary() -> None:
         "paper_audit:partial_214_of_480_cells_8_lstm_numeric_zero_faithful_lstm_"
         "198_future_input_decisions_3_future_only_action_flips_40_author_llm_traces_12_ablation_correspondences_"
         "zero_credit_5_model_mismatch_traces_zero_declared_model_rows_83_author_outputs_"
-        "no_other_time_series_match_37_forks_exhausted"
+        "no_other_time_series_match_37_forks_exhausted_"
+        "validation_selected_16_of_72_fixed_66_of_72_neutral_hold_corrected"
     )
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     note = row["concise_evidence_note"]
@@ -471,4 +472,7 @@ def test_global_native_ledger_reflects_lstm_credit_boundary() -> None:
     assert "printed 1.11 volatility matches 0/60" in note
     assert "exact-runtime reproduction remains false" in note
     assert "248 main-table LLM/time-series cells remain unverifiable" in note
-    assert "260/480 cells remain method-faithfully unverifiable" in note
+    assert "260/480 cells lack qualifying native-result or author-trace corroboration" in note
+    assert "each match 16/72 paper cells, versus 66/72" in note
+    assert "attribution was an audit-adapter bug" in note
+    assert "not 214 protocol-faithful results" in note

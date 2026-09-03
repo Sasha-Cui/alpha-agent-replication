@@ -740,10 +740,17 @@ ARTIFACT_NOTES = {
         "Reassigning the five full-period model-mismatch traces to their declared "
         "GPT-3.5 paper rows matches only 1/20 individual cells and 0/5 complete rows; "
         "the sixth diagnostic trace has matching GPT-4 identity but is truncated. "
-        "This verifies historical author outputs, not fresh LLM decision regeneration. The six "
-        "residual cells are numerically diagnosed but receive no method-faithful credit: two "
-        "ETH-sideways daily statistics duplicate ETH-bear, while four SOL-bear cells require "
-        "a 1-day SMA outside the disclosed and released [5,10,15,20,30] grid. The originally "
+        "This verifies historical author outputs, not fresh LLM decision regeneration. A native "
+        "validation-only SMA/SLMA selection check executes 45 validation candidates twice and "
+        "36 selected/fixed held-out configurations twice, retaining all ties (ETH SMA 20/30). "
+        "Return and Sharpe objectives each match 16/72 paper cells, versus 66/72 with released "
+        "fixed settings; the paper's objective and complete SLMA grid are unspecified, and "
+        "released validation prices differ, so the author tuning trace is not recovered. "
+        "The six residual fixed-setting cells receive no method-faithful credit: two "
+        "ETH-sideways daily statistics duplicate ETH-bear. Our previous SOL-bear SMA(1) "
+        "attribution was an audit-adapter bug: equal or undefined indicators must hold, not "
+        "sell. Native SMA(1) holds and returns -17.94%; a constant-sell counterfactual matches "
+        "the four paper numbers but is not native SMA(1) or a disclosed strategy. The originally "
         "cited anonymous repository has expired, the 11-commit official history contains no "
         "result/log path, and 248 main-table LLM/time-series cells remain unverifiable. All 83 "
         "unique coauthor-history output blobs (209,739,069 bytes) were scanned across 1,371 "
@@ -755,7 +762,9 @@ ARTIFACT_NOTES = {
         "census exhausts 37 accessible public forks and 39 fork refs: 35 refs are already in the "
         "audited official/coauthor histories, including the first-author fork, while all four "
         "divergent heads are unaffiliated post-paper extensions whose seven result/log-like paths "
-        "receive zero paper credit. In total, 260/480 cells remain method-faithfully unverifiable. "
+        "receive zero paper credit. In total, 260/480 cells lack qualifying native-result or "
+        "author-trace corroboration. The 214/480 aggregate is source-default numeric and "
+        "author-output corroboration, not 214 protocol-faithful results. "
         "The evidence remains crypto rather than six-country equity output.",
     ),
     "SYS-FIN-CON": (
@@ -1898,7 +1907,8 @@ TARGETED_EXECUTION = {
         "paper_audit:partial_214_of_480_cells_8_lstm_numeric_zero_faithful_lstm_"
         "198_future_input_decisions_3_future_only_action_flips_40_author_llm_traces_12_ablation_correspondences_"
         "zero_credit_5_model_mismatch_traces_zero_declared_model_rows_83_author_outputs_"
-        "no_other_time_series_match_37_forks_exhausted"
+        "no_other_time_series_match_37_forks_exhausted_"
+        "validation_selected_16_of_72_fixed_66_of_72_neutral_hold_corrected"
     ),
     "SYS-EFS": "paper_audit:completed_11_of_773_cited_baseline_cells_zero_efs_native_results_v2_revision_audited",
     "SYS-FAMA": "paper_audit:completed_zero_of_65_table_results_zero_of_38_figure_markers_no_native_pipeline_equation_conflicts",

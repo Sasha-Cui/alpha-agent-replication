@@ -293,7 +293,7 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
             "198_future_input_decisions_3_future_only_action_flips_40_author_llm_traces_12_ablation_correspondences_"
             "zero_credit_5_model_mismatch_traces_zero_declared_model_rows_83_author_outputs_"
             "no_other_time_series_match_"
-            "37_forks_exhausted"
+            "37_forks_exhausted_validation_selected_16_of_72_fixed_66_of_72_neutral_hold_corrected"
         ),
         "CensusACL2026findingsacl456": (
             "paper_audit:completed_one_of_790_current_snapshot_buy_hold_match_"
@@ -427,7 +427,10 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     assert "previous four LSTM credits are withdrawn" in cryptotrade_blocker
     assert "printed 1.11 volatility matches 0/60" in cryptotrade_blocker
     assert "exact-runtime reproduction remains false" in cryptotrade_blocker
-    assert "260/480 cells remain method-faithfully unverifiable" in cryptotrade_blocker
+    assert "260/480 cells lack qualifying native-result or author-trace corroboration" in cryptotrade_blocker
+    assert "each match 16/72 paper cells, versus 66/72" in cryptotrade_blocker
+    assert "attribution was an audit-adapter bug" in cryptotrade_blocker
+    assert "not 214 protocol-faithful results" in cryptotrade_blocker
 
     alphaquanter_blocker = routes.loc[
         "CensusACL2026findingsacl456", "precise_native_or_access_blocker"
