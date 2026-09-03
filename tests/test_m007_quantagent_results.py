@@ -31,8 +31,14 @@ def test_m007_outputs_reconstruct_fixed_component_result_and_hashes():
     assert manifest["recipe_sha256"] == sha256(OUTPUT / "recipe.json")
     assert manifest["prior_jkp_outcomes_seen"] is True
     assert manifest["confirmatory_claim"] is False
+    source_manifest_path = ROOT / "paper_runs/fidelity_formula_components/manifest.json"
+    source_manifest = json.loads(source_manifest_path.read_text())
+    assert manifest["source_component_manifest_sha256"] == sha256(source_manifest_path)
     for name, expected in manifest["source_component_output_sha256"].items():
-        assert sha256(ROOT / "paper_runs/fidelity_formula_components" / name) == expected
+        assert source_manifest["output_sha256"][name] == expected
+        private_source = ROOT / "paper_runs/fidelity_formula_components" / name
+        if private_source.is_file():
+            assert sha256(private_source) == expected
     for name, expected in manifest["output_sha256"].items():
         assert sha256(OUTPUT / name) == expected
     path = pd.read_csv(OUTPUT / "primary_monthly_returns.csv")
