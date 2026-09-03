@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M023",
+  "canonical_work_id": "CensusArxiv250717211",
+  "paper": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
+  "paper_url": "https://arxiv.org/abs/2507.17211v1",
+  "headline_agent": "LLM-guided evolutionary factor search followed by factor scoring and sparse portfolio optimization",
+  "headline_component": "Table VI US50 skew-gated breakout factor",
+  "component_selection_reason": "This is the only disclosed example formula explicitly labeled for a U.S. stock universe (US50). It is selected by paper market scope, not by its already-observed JKP performance; the CSI300 and HSI45 formulas are not searched for a better outcome.",
+  "candidate_id": "efs_skew_gated_breakout",
+  "source_formula": "cs_zscore((ts_max(prices,30)-ts_decay_linear(prices,21))/((ts_std(returns,3)+ts_std(returns,30))*if_else(ts_skew(returns,14)<0,ts_std(returns,7),ts_std(returns,21))))",
+  "source_scope": "one disclosed U.S. example factor, not the evolutionary search, Scores-to-Weights/RW step, or final sparse portfolio",
+  "monthly_adapter": {
+    "inputs": "JKP monthly abs(prc) and ret in the formation-date top-1,000 U.S. universe",
+    "operators": "source tree with sample rolling std, linear decay weights 1..n, conditional skew volatility gate, and monthly population cs_zscore",
+    "portfolio": "researcher top-10 equal-weight long-only score portfolio",
+    "costs": "common fixed cost cases with 10 bp primary",
+    "missing_returns": "fixed holdings re-accounted under common zero and adverse-100 policies without reranking"
+  },
+  "prior_outcomes_seen": true,
+  "mapping_was_frozen_before_prior_outcomes": false,
+  "new_primary_selection_uses_jkp_performance": false,
+  "inference_status": "exploratory_contaminated_mapping",
+  "preserved": [
+    "published US50 formula tree",
+    "30-period maximum",
+    "21-period linear decay",
+    "3/7/14/21/30-period volatility and skew gate",
+    "cross-sectional z-score"
+  ],
+  "adapted": ["daily US50 bars to monthly top-1,000 U.S. JKP bars", "researcher portfolio", "common costs and benchmark"],
+  "not_claimed": ["evolutionary search", "LLM generation", "Scores-to-Weights or RW", "sparse optimizer", "native portfolio", "paper result"],
+  "status": "fixed_before_new_reaccounting"
+}
