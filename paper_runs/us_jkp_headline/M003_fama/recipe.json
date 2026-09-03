@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M003",
+  "canonical_work_id": "CensusACL2024findingsacl233",
+  "paper": "Can Large Language Models Mine Interpretable Financial Factors More Effectively? A Neural-Symbolic Factor Mining Agent Model",
+  "paper_url": "https://aclanthology.org/2024.findings-acl.233.pdf",
+  "headline_strategy": "FAMA neural-symbolic agent that clusters initial factors, retrieves/crossovers experience, asks an LLM to generate executable factors, evaluates them, and iteratively adds improving factors",
+  "paper_portability_to_common_task": "not defensible from released information",
+  "missing_executable_objects": [
+    "author-linked FAMA implementation",
+    "runtime function definitions required by the recovered prompt",
+    "the actual initial factor pool (38 claimed versus 71 Appendix identifiers)",
+    "final mined factor expressions or checkpoint",
+    "search/experience trace and factor evaluation data",
+    "portfolio construction, cost treatment and random seeds"
+  ],
+  "method_conflicts": [
+    "The printed clustering correlation equation omits the Pearson denominator square root.",
+    "Algorithm 1 adds every generated factor outside the improvement conditional, contrary to the method narrative.",
+    "The fitting interval crosses the declared training/validation boundary.",
+    "The paper's RankICIR improvement differs between the abstract and table arithmetic."
+  ],
+  "rejected_substitutes": [
+    {"route": "Evaluate the repository's existing FAMA motif mapping", "reason": "Its value, profitability, size, equal-weight combination and decile portfolio are researcher supplied; it is not a disclosed FAMA factor."},
+    {"route": "Run the one recovered prompt with invented function definitions", "reason": "The function/operator interface determines executable factor semantics and is absent."},
+    {"route": "Implement one interpretation of Algorithm 1 and generate a new best factor", "reason": "The equation, insertion rule, factor universe, data and split conflicts leave multiple materially different algorithms; selecting one would create a new factor miner."},
+    {"route": "Use an Alpha101 factor as the headline", "reason": "Alpha101 is the starting pool/baseline, not the paper's proposed mined output, and no final FAMA selection is released."}
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/fama",
+  "result_policy": "No synthetic strategy or zero return is recorded. This is non-evaluability of the proposed common-task transfer, not a claim that the paper's private results are false.",
+  "status": "closed_not_evaluable"
+}

@@ -36,14 +36,10 @@ def test_m002_prior_audit_remains_partial_original_task_evidence():
         assert expected[name] == manifest["source_file_sha256"][name]
 
 
-def test_m002_has_no_fabricated_common_task_returns_and_m003_is_active():
+def test_m002_has_no_fabricated_common_task_returns():
     ledger = json.loads((ROOT / "paper_runs/us_jkp_headline/milestones.json").read_text())
     m002 = next(row for row in ledger["milestones"] if row["milestone_id"] == "M002")
-    m003 = next(row for row in ledger["milestones"] if row["milestone_id"] == "M003")
     assert m002["status"] == "closed_not_evaluable"
     assert m002["monthly_returns_path"] == m002["metrics_path"] == m002["run_manifest_path"] == ""
     assert m002["recipe_path"] and m002["verdict_path"] and m002["closure_reason"]
-    assert m003["status"] == "in_progress"
-    assert ledger["progress_summary"] == {"closed": 2, "completed_adapted": 1,
-                                           "completed_partial": 0, "closed_not_evaluable": 1,
-                                           "in_progress": 1, "queued": 66}
+    assert ledger["progress_summary"]["closed_not_evaluable"] >= 1

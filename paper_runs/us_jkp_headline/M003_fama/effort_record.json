@@ -1,0 +1,17 @@
+{
+  "milestone_id": "M003",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/fama/README.md",
+    "paper_runs/paper_replication_audits/fama/manifest.json",
+    "paper_runs/paper_replication_audits/fama/paper_prompt_template.txt",
+    "paper_runs/paper_replication_audits/fama/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/fama/paper_internal_consistency_audit.csv"
+  ],
+  "bounded_checks": [
+    "Identified the factor-mining/search agent rather than a generic momentum factor as the headline method.",
+    "Checked whether the prompt, function interface, initial pool, generated factor, evaluator and portfolio could define one executable path.",
+    "Checked the prior local motif, Alpha101 baseline and one chosen pseudocode interpretation as plausible shortcuts and rejected their attribution."
+  ],
+  "outcome": "The public paper does not identify one executable headline factor or one unambiguous factor-mining algorithm that can be run on JKP without supplying the central missing design choices."
+}

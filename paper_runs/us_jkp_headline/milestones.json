@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 2,
+    "closed": 3,
     "completed_adapted": 1,
     "completed_partial": 0,
-    "closed_not_evaluable": 1,
+    "closed_not_evaluable": 2,
     "in_progress": 1,
-    "queued": 66
+    "queued": 65
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -60,16 +60,16 @@
       "title": "Can Large Language Models Mine Interpretable Financial Factors More Effectively? A Neural-Symbolic Factor Mining Agent Model",
       "system_ids": "SYS-FAMA",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M003_fama/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M003_fama/verdict.md",
+      "evaluated_scope": "No common-task return: the headline is a factor-mining agent, but neither an executable miner nor a final mined factor/strategy is released, and the printed algorithm is internally inconsistent.",
+      "next_action": "Closed. Keep the prompt and paper formula/configuration findings as specification evidence; do not promote the old momentum/value motif mapping to FAMA.",
+      "closure_reason": "The only recovered prompt lacks its required function definition; the initial factor universe is 38 versus 71, the clustering equation changes the method, Algorithm 1 conflicts with the narrative, and no final factor or portfolio rule exists to evaluate without designing a new miner."
     },
     {
       "milestone_id": "M004",
@@ -77,7 +77,7 @@
       "title": "FLAG-TRADER: Fusion LLM-Agent with Gradient-based Reinforcement Learning for Financial Trading",
       "system_ids": "SYS-FLAG-TRADER",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
