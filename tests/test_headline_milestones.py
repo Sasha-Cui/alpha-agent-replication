@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 from pathlib import Path
 
@@ -46,6 +47,28 @@ def test_common_headline_contract_preserves_retrospective_and_no_lookahead_bound
     assert contract["inference_family_size"] == 69
     assert contract["primary_factor_benchmark"] == "ff5_mom_jkp132"
     assert contract["corrected_accounting_module"] == "src/alpha_evolve/submission_analysis.py"
+
+
+def test_frozen_common_benchmark_has_full_calendar_and_pinned_preflight():
+    contract = json.loads((STUDY / "benchmark_contract.json").read_text())
+    assert contract["status"] == "frozen"
+    preflight_path = ROOT / contract["preflight_path"]
+    factors_path = ROOT / contract["factor_panel_path"]
+    assert hashlib.sha256(preflight_path.read_bytes()).hexdigest() == contract["preflight_sha256"]
+    assert hashlib.sha256(factors_path.read_bytes()).hexdigest() == contract["factor_panel_sha256"]
+    preflight = json.loads(preflight_path.read_text())
+    assert preflight["status"] == "passed"
+    assert preflight["candidate_strategy_returns_computed"] is False
+    assert preflight["formation_months"] == 305
+    assert preflight["benchmark_factor_count"] == contract["factor_count"] == 133
+    assert preflight["corrected_market_max_absolute_error"] < 1e-12
+    assert preflight["legacy_market_clock_correlation"] > 0.99
+    with factors_path.open(newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    assert len(rows) == 305
+    assert rows[0]["month"] == "1999-08-31"
+    assert rows[-1]["month"] == "2024-12-31"
+    assert sum(name.startswith("char__") for name in rows[0]) == 132
 
 
 def test_first_headline_is_source_selected_evc_not_best_of_six_jkp_backtests():

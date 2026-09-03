@@ -76,6 +76,14 @@ Closed milestones are not all labelled successful replications.
 
 ## Bounded effort and sequencing
 
+The active runner holds an operating-system lock and records its phase, host,
+PID and Slurm allocation in `artifacts/us_jkp_headline/v1/operation.json`.
+Heartbeat checks must verify the recorded process/allocation rather than treating
+a status file alone as liveness. Current logs are
+`paper_runs/us_jkp_headline/M001_preflight.log` and `M001_run.log`. Do not duplicate
+a live job. The benchmark contract records the private data and public factor
+hashes; completed run manifests pin the result artifacts.
+
 - Keep at most one milestone `in_progress`.
 - Start with the existing dossier, the relevant primary method section, and
   official code; do not repeat the whole forensic audit.

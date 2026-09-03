@@ -4,7 +4,12 @@
   "canonical_work_id": "CensusArxiv241018448",
   "paper": "GPT-Signal: Generative AI for Semi-automated Feature Engineering in the Alpha Research Process",
   "source_url": "https://arxiv.org/html/2410.18448v1",
-  "source_sections": ["4 Experimental Setup", "5.1 GPT-4 Output", "5.2 Overall Results", "5.3 Correlation Heat Maps Break-down"],
+  "source_sections": [
+    "4 Experimental Setup",
+    "5.1 GPT-4 Output",
+    "5.2 Overall Results",
+    "5.3 Correlation Heat Maps Break-down"
+  ],
   "headline_signal": "Efficiency Value Composite (EVC)",
   "headline_selection_reason": "The paper identifies EVC as having the strongest absolute return correlation overall and in the highlighted IT experiment. It is selected from that paper claim, not by testing the six signals on JKP.",
   "published_formula": "EVC = (1 / ROA) * (1 / (EV / EBITDA)) * (1 / (P / CF))",
@@ -13,19 +18,53 @@
   "trading_score_direction": -1,
   "trading_interpretation": "Lower EVC receives a higher score, preserving the paper's negative signed relationship.",
   "implementation_path": "src/alpha_evolve/headline_strategies.py",
-  "input_mapping_status": "candidate_columns_present_definition_check_pending",
+  "input_mapping_status": "checked_defensible_accounting_convention_adaptation",
   "candidate_jkp_mapping": {
-    "ROA": {"column": "ni_at", "check": "Net-income/assets definition, averaging denominator, accounting period and reporting availability."},
-    "reciprocal_EV_over_EBITDA": {"column": "ebitda_mev", "check": "EBITDA/market-enterprise-value definition, sign and accounting period."},
-    "reciprocal_P_over_CF": {"column": "ocf_me", "check": "Operating-cash-flow/market-equity definition versus the paper/vendor cash-flow convention and reporting period."}
+    "ROA": {
+      "column": "ni_at",
+      "check": "Net-income/assets definition, averaging denominator, accounting period and reporting availability."
+    },
+    "reciprocal_EV_over_EBITDA": {
+      "column": "ebitda_mev",
+      "check": "EBITDA/market-enterprise-value definition, sign and accounting period."
+    },
+    "reciprocal_P_over_CF": {
+      "column": "ocf_me",
+      "check": "Operating-cash-flow/market-equity definition versus the paper/vendor cash-flow convention and reporting period."
+    }
   },
   "conditional_jkp_algebra": "EVC = ebitda_mev * ocf_me / ni_at after recording the input-definition mapping",
   "missing_input_rule": "Do not fill across time or introduce arbitrary epsilon/absolute-value transforms. Record convention differences as adaptations when economically defensible.",
   "benchmark_id": "us_jkp_headline_v1",
   "portfolio_rule_scope": "researcher-supplied common monthly score-to-portfolio adapter; the paper evaluates signals and does not specify this trading portfolio",
-  "preserved": ["published EVC reciprocal algebra", "signed paper relationship", "fixed source-based headline selection"],
-  "adapted": ["JKP financial inputs and their conventions", "common U.S. universe", "monthly cadence", "common trading portfolio, costs and factor benchmark"],
-  "not_claimed": ["fresh GPT-4-1106-preview signal generation", "reproduction of original FactSet inputs or all published tables", "replication of the paper's Fama-MacBeth experiment", "an exact original-paper trading portfolio"],
+  "preserved": [
+    "published EVC reciprocal algebra",
+    "signed paper relationship",
+    "fixed source-based headline selection"
+  ],
+  "adapted": [
+    "JKP financial inputs and their conventions",
+    "common U.S. universe",
+    "monthly cadence",
+    "common trading portfolio, costs and factor benchmark"
+  ],
+  "not_claimed": [
+    "fresh GPT-4-1106-preview signal generation",
+    "reproduction of original FactSet inputs or all published tables",
+    "replication of the paper's Fama-MacBeth experiment",
+    "an exact original-paper trading portfolio"
+  ],
   "new_jkp_strategy_results_inspected": false,
-  "status": "formula_extracted_and_unit_test_ready_evaluation_pending"
+  "status": "recipe_and_common_benchmark_fixed_before_strategy_run",
+  "input_definition_mapping": {
+    "ni_at": "ni_x / at_x (current standardized net income / assets); JKP definition is used, not an assertion of exact FactSet denominator/period equivalence.",
+    "ebitda_mev": "ebitda_x * fx / (me_company + netdebt_x * fx); JKP rejects nonpositive market enterprise value.",
+    "ocf_me": "ocf_x * fx / me_company; operating cash flow is the explicitly declared P/CF adaptation.",
+    "availability": "JKP main.py passes lag_to_public=4 and max_lag=18 for both annual and quarterly accounting characteristics before combining them. This is the supplied reporting-lag convention, not proof of historical as-reported vintages.",
+    "scope": "Financial-ratio concepts are retained; accounting periods, denominator conventions and the original vendor snapshot are adaptations, not blockers for the prescribed JKP transfer."
+  },
+  "input_definition_source_sha256": {
+    "/nfs/roberts/project/pi_btk22/zc362/jkp-data/code/main.py": "602b14bdb5ae3d6ea5fbb136642bee5bb47e36c1d8071db3892343df8facf1b9",
+    "/nfs/roberts/project/pi_btk22/zc362/jkp-data/code/aux_functions.py": "13cd29691301fb26419ae3f535ef9555e84a63614a2e8fc41a6a01fcbd379e00"
+  }
 }

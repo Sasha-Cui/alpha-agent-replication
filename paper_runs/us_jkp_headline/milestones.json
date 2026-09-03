@@ -3,6 +3,7 @@
   "governing_user_direction": "2026-09-03 monthly U.S./JKP headline-strategy comparison",
   "protocol_path": "docs/US_JKP_HEADLINE_PROTOCOL.md",
   "benchmark_contract_path": "paper_runs/us_jkp_headline/benchmark_contract.json",
+  "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "terminal_statuses": [
     "completed_adapted",
