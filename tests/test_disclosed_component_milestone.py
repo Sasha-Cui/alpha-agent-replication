@@ -44,3 +44,13 @@ def test_reaccounting_fails_on_nonpositive_strategy_nav():
                               "effective_excess_return": -1.0, "effective_total_return": -1.0}])
     with pytest.raises(ValueError, match="nonpositive"):
         runner.reconstruct_paths(months, holdings, "zero")
+
+
+def test_fresh_output_allows_recipe_directory_but_rejects_completed_run(tmp_path):
+    output = tmp_path / "M007_quantagent"
+    output.mkdir()
+    (output / "recipe.json").write_text("{}")
+    runner.require_fresh_output(output)
+    (output / "run_manifest.json").write_text("{}")
+    with pytest.raises(ValueError, match="already exists"):
+        runner.require_fresh_output(output)

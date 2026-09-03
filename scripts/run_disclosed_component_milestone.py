@@ -31,6 +31,12 @@ def digest(path: Path) -> str:
     return result.hexdigest()
 
 
+def require_fresh_output(output: Path) -> None:
+    """Allow a committed recipe directory, but never overwrite completed results."""
+    if (output / "run_manifest.json").exists():
+        raise ValueError("output run already exists; do not silently rerun")
+
+
 def load_component_holdings(path: Path, candidate_id: str) -> pd.DataFrame:
     pieces = []
     for chunk in pd.read_csv(path, chunksize=200_000):
@@ -83,8 +89,7 @@ def reconstruct_paths(months: pd.DataFrame, holdings: pd.DataFrame, missing_poli
 
 
 def evaluate(root: Path, milestone_id: str, candidate_id: str, output: Path) -> None:
-    if output.exists():
-        raise ValueError("output directory already exists; do not silently rerun")
+    require_fresh_output(output)
     study = root / "paper_runs/us_jkp_headline"
     contract_path = study / "benchmark_contract.json"
     recipe_path = study / f"{milestone_id}_{output.name.split('_', 1)[-1]}/recipe.json"
@@ -144,7 +149,7 @@ def evaluate(root: Path, milestone_id: str, candidate_id: str, output: Path) -> 
                              for month, value, fitted, remain, selected_lambda in
                              zip(eval_dates, net[attr["train_months"]:], reconstruction.fitted_values[:, column],
                                  residual, reconstruction.selected_lambdas[:, column]))
-    output.mkdir(parents=True)
+    output.mkdir(parents=True, exist_ok=True)
     pd.concat(paths.values(), ignore_index=True).to_csv(output / "monthly_returns.csv", index=False)
     pd.DataFrame(metrics).to_csv(output / "metrics.csv", index=False)
     pd.DataFrame(residual_rows).to_csv(output / "attribution_residuals.csv", index=False)
