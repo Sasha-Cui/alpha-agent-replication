@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 22,
+    "closed": 23,
     "completed_adapted": 1,
-    "completed_partial": 3,
+    "completed_partial": 4,
     "closed_not_evaluable": 18,
     "in_progress": 1,
-    "queued": 46
+    "queued": 45
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -400,16 +400,16 @@
       "title": "EFS: Evolutionary Factor Searching for Sparse Portfolio Optimization Using Large Language Models",
       "system_ids": "SYS-EFS",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M023_efs/recipe.json",
+      "implementation_path": "scripts/run_disclosed_component_milestone.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M023_efs/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M023_efs/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M023_efs/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M023_efs/verdict.md",
+      "evaluated_scope": "The paper's only explicitly U.S.-universe example, Table VI US50 skew-gated breakout, re-accounted under its existing literal-tree monthly U.S. top-10 adapter. This is not EFS search, Scores-to-Weights/RW, sparse optimization, or a native paper portfolio.",
+      "next_action": "Closed. Preserve the source-market selection and exploratory disclosure; do not search CSI300/HSI45 formula examples for a better JKP outcome or relabel this component as native EFS.",
+      "closure_reason": "The U.S.-labeled factor was selected before new re-accounting and produces a complete 305-month path. It is the strongest identifiable common-market partial while the generated pool, search, scoring-to-weight and sparse portfolio pipeline remain unavailable."
     },
     {
       "milestone_id": "M024",
@@ -417,7 +417,7 @@
       "title": "MountainLion: A Multi-Modal LLM-Based Agent System for Interpretable and Adaptive Financial Trading",
       "system_ids": "SYS-MOUNTAIN-LION",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
