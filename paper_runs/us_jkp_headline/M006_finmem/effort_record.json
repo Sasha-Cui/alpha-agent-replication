@@ -1,0 +1,16 @@
+{
+  "milestone_id": "M006",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/finmem/README.md",
+    "paper_runs/paper_replication_audits/finmem/manifest.json",
+    "paper_runs/paper_replication_audits/finmem/historical_action_metric_replay.csv",
+    "paper_runs/paper_replication_audits/finmem/method_specification_audit.csv"
+  ],
+  "bounded_checks": [
+    "Separated layered-memory policy generation from historical action and metric outputs.",
+    "Checked the paper configuration, current source configuration, recovered actions, input archive and metric-main execution for a transferable decision rule.",
+    "Rejected output replay, behavior cloning, metric-only replay, generic feature substitution and one batched modern-model prompt."
+  ],
+  "outcome": "The public evidence strongly verifies historical FinMem outputs but does not define the formation-time policy needed for a monthly cross-sectional JKP strategy."
+}

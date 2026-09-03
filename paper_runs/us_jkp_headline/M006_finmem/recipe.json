@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M006",
+  "canonical_work_id": "CensusArxiv231113743",
+  "paper": "FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory and Character Design",
+  "paper_url": "https://arxiv.org/abs/2311.13743",
+  "paper_sha256": "acb7527d02871cfad7d2754314b9a803f917b326847a456579df9cf7b0a648b9",
+  "source_url": "https://github.com/pipiku915/finmem-llm-stocktrading",
+  "source_commit": "be814aa47970de9bf2fdd6a1d5a60ae5cf361b46",
+  "headline_strategy": "GPT-4-Turbo stock-trading policy with layered short/intermediate/long memories, retrieved market intelligence, reflection, and risk-character conditioning",
+  "paper_configuration": {"model": "GPT-4-Turbo", "temperature": 0.7, "top_k_memories": 5, "tickers": 5, "trials": 5},
+  "paper_portability_to_common_task": "not defensibly executable from released information",
+  "missing_headline_objects": [
+    "paper-time Alpaca/Benzinga news and SEC-filing inputs",
+    "the exact Yahoo snapshot and five-stock processed inputs",
+    "trained layered memories and retrieval state",
+    "complete action paths for five tickers and all five trials",
+    "paper-model snapshot, complete prompt/configuration and seeds",
+    "a paper-defined portfolio combining independent ticker agents"
+  ],
+  "released_conflicts": [
+    "The released runnable configuration is TSLA/GPT-3.5-Turbo/top-K=3 rather than the paper's five-ticker GPT-4-Turbo/top-K=5 setting.",
+    "Current result/checkpoint directories are placeholders and the active example's required files are absent.",
+    "The paper selects the best of three risk characters on the test period, so no profile is prespecified for transfer.",
+    "The reported cumulative-return score is signed log return with no transaction-cost or self-financing portfolio semantics."
+  ],
+  "rejected_substitutes": [
+    {"route": "Replay the 18 recovered historical action CSVs", "reason": "They are stock/date/configuration-specific outputs and do not define decisions for the JKP universe."},
+    {"route": "Behavior-clone the recovered actions", "reason": "This replaces layered memory, retrieval, reflection and the LLM policy and lacks corresponding formation states."},
+    {"route": "Replace news/filings/memories with JKP characteristics", "reason": "No source mapping defines those textual memory contents; this would invent the central observation mechanism."},
+    {"route": "Use the complete TSLA ablation metric path", "reason": "It validates return calculations for already-known actions but generates no new FinMem action."},
+    {"route": "Run one modern-model prompt over all securities", "reason": "This changes independent stateful memories and the missing portfolio aggregation; a literal top-1,000 port would require 305,000 agent histories."}
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/finmem",
+  "result_policy": "No historical action, metric replay, behavior clone or generic characteristic policy is entered as a monthly FinMem return. This does not imply that the original paper results are false.",
+  "status": "closed_not_evaluable"
+}

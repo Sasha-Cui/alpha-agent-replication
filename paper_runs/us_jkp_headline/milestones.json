@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 5,
+    "closed": 6,
     "completed_adapted": 1,
     "completed_partial": 0,
-    "closed_not_evaluable": 4,
+    "closed_not_evaluable": 5,
     "in_progress": 1,
-    "queued": 63
+    "queued": 62
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -111,16 +111,16 @@
       "title": "FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory and Character Design",
       "system_ids": "SYS-FIN-MEM",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M006_finmem/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M006_finmem/verdict.md",
+      "evaluated_scope": "No common-task return: the central layered-memory LLM policy requires unreleased point-in-time text, memories, complete five-stock trials and a model/configuration that are not recoverable; historical actions are outputs, not a transferable rule.",
+      "next_action": "Closed. Preserve the 67/75 historical action/metric replay and 227/235 author-output correspondence separately; do not relabel them as monthly JKP strategy decisions.",
+      "closure_reason": "A top-1,000 monthly port would require hundreds of thousands of independent stateful agents, invented numerical substitutes for news/filing memories, and a new cross-sectional portfolio rule; behavior cloning or action replay removes FinMem's layered-memory mechanism."
     },
     {
       "milestone_id": "M007",
@@ -128,7 +128,7 @@
       "title": "QuantAgent: Seeking Holy Grail in Trading by Self-Improving Large Language Model",
       "system_ids": "SYS-QUANT-AGENT-SELF-IMPROVING",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
