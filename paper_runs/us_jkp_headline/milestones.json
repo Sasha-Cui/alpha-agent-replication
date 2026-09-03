@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 2,
     "closed_not_evaluable": 17,
-    "in_progress": 0,
-    "queued": 49
+    "in_progress": 1,
+    "queued": 48
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -366,7 +366,7 @@
       "title": "Navigating the Alpha Jungle: An LLM-Powered MCTS Framework for Formulaic Factor Mining",
       "system_ids": "SYS-ALPHA-JUNGLE",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
