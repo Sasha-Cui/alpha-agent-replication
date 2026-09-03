@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 14,
+    "closed": 15,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 12,
+    "closed_not_evaluable": 13,
     "in_progress": 1,
-    "queued": 54
+    "queued": 53
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -264,16 +264,16 @@
       "title": "LLM-Powered Multi-Agent System for Automated Crypto Portfolio Management",
       "system_ids": "SYS-MACI",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M015_maci/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M015_maci/verdict.md",
+      "evaluated_scope": "No common-task return: the v1/v2 four-expert crypto strategy has recovered training payloads and portfolio functions but no verified paper fine-tuning job/checkpoint, market inputs, expert predictions, holdings or stock-transfer rule; v3 is a different experiment.",
+      "next_action": "Closed. Preserve the fine-tuning payload/procedure recovery as component evidence; do not run a new fine-tune, use synthetic scores/data, substitute v3, or invent a crypto-to-JKP mapping.",
+      "closure_reason": "Without the selected fine-tuned experts and paper-time blockchain/market/news inputs, the released portfolio rules have no causal scores. Every bounded route either creates a new model, fabricates data, substitutes a different version, or abandons the crypto-specific mechanism."
     },
     {
       "milestone_id": "M016",
@@ -281,7 +281,7 @@
       "title": "MarketSenseAI 2.0: Enhancing Stock Analysis through LLM Agents",
       "system_ids": "SYS-MARKET-SENSE-AI",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

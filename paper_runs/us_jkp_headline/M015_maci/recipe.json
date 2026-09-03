@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M015",
+  "canonical_work_id": "CensusArxiv250100826",
+  "paper": "LLM-Powered Multi-Agent System for Automated Crypto Portfolio Management",
+  "paper_url": "https://arxiv.org/abs/2501.00826v2",
+  "paper_pdf_sha256": "14013a9d2af7585e00c8f3fcada0a745df15d3abf5fbd9adba03e64c408e7909",
+  "paper_source_sha256": "f4fae077906e28f97a0037235e4f9cf191c6c7994c5a92581b3dd9ff95b2fd74",
+  "source_url": "first-author repository pinned in the MACI source audit",
+  "source_commit": "962b83d7ca8908e675fc22c6d16ce24a0ec3e52f",
+  "version_scope": "v1/v2 four-expert GPT-4o experiment; v3 is a materially different 2025 experiment and is not substituted",
+  "headline_strategy": "Four-expert crypto allocation system using fine-tuned GPT-4o agents for cross-sectional coin/image analysis and market/news analysis, combining weekly expert probabilities over the CoinGecko top-30 universe into top-quintile, linear-probability, and market-weighted portfolios",
+  "paper_configuration": {
+    "base_model": "gpt-4o-2024-08-06",
+    "temperature": 0.0,
+    "universe": "weekly CoinGecko top 30",
+    "test_frequency": "weekly",
+    "portfolio_rules": ["top quintile", "linear probability ensemble", "market weighted"],
+    "test_lineage": "November 2023 through September 2024 stated; figures/source conflict on endpoint"
+  },
+  "paper_portability_to_common_task": "not defensibly executable because the trained expert checkpoints, inference records, market inputs, weekly universes and result portfolios are absent, and the method is crypto-specific",
+  "recovered_component_credit": {
+    "historical_training_messages": 962,
+    "distinct_training_images": 930,
+    "training_image_bytes": 53574400,
+    "reconstructed_finetuning_records": 961,
+    "native_finetuning_contract_file_calls": 1,
+    "native_finetuning_contract_job_calls": 1,
+    "remote_jobs_created": 0
+  },
+  "missing_headline_objects": [
+    "the actual uploaded fine-tuning file ID, job ID, active selected checkpoint, and paper-run linkage",
+    "paper-time coin prices, blockchain factors, market/news records, processed inputs, and weekly top-30 memberships",
+    "immutable inference requests/responses, predictions, token/logprob records, retries, and API-cost ledger",
+    "released expert checkpoint pickles and prediction JSON records required by the runner",
+    "paper portfolio arrays, holdings, costs/slippage, and result tables",
+    "a source-defined transfer from crypto/blockchain/image inputs to monthly U.S. stock characteristics"
+  ],
+  "source_conflicts": [
+    "The raw pre-submission source fails its declared Python 3.9 contract and omits a gitignored constants module.",
+    "Only one single-agent fine-tuning call is active; multi-agent expert blocks are commented.",
+    "The same fine-tuned agent object is serialized under both cross-sectional-vision and market-news checkpoint names.",
+    "Recovered 962-message payloads and 930 images were added after paper v2, so they do not prove paper-upload identity.",
+    "The test endpoint differs among paper prose, figures, and source handlers."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Fine-tune a new GPT-4o or accessible vision model on the recovered payload",
+      "reason": "The recovered training package postdates v2, the actual paper job/checkpoint is unverified, and a new remote training run would produce a different policy."
+    },
+    {
+      "route": "Run the source with researcher-inferred constants and synthetic blockchain data",
+      "reason": "The existing overlay reaches component checks only and stops at missing blockchain inputs; synthetic values cannot generate the paper policy."
+    },
+    {
+      "route": "Use the released top-quintile/linear/market portfolio functions with arbitrary scores",
+      "reason": "These rules consume missing expert predictions; arbitrary scores would not be MACI decisions."
+    },
+    {
+      "route": "Substitute the v3 cryptoMAS implementation",
+      "reason": "V3 changes the architectures, capabilities, model families, calendar and experimental lineage under the same arXiv identifier."
+    },
+    {
+      "route": "Map crypto experts to JKP stock factors",
+      "reason": "No source mapping exists from blockchain/coin images/news and weekly top-30 crypto selection to monthly U.S. stocks."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/maci",
+  "result_policy": "No new fine-tune, synthetic-data overlay, arbitrary-score portfolio, v3 strategy, or generic JKP mapping is entered as a v1/v2 MACI return. Its positive crypto results remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}

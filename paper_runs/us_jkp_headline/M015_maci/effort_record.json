@@ -1,0 +1,20 @@
+{
+  "milestone_id": "M015",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/maci/README.md",
+    "paper_runs/paper_replication_audits/maci/manifest.json",
+    "paper_runs/paper_replication_audits/maci/native_execution.json",
+    "paper_runs/paper_replication_audits/maci/manuscript_provenance.json",
+    "paper_runs/paper_replication_audits/maci/source_lineage.csv",
+    "paper_runs/paper_replication_audits/maci/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/maci/v1_v2_finetuning_procedure_conformance.csv",
+    "paper_runs/paper_replication_audits/maci/v1_v2_finetuning_identifier_census.csv"
+  ],
+  "bounded_checks": [
+    "Kept the v1/v2 four-expert experiment separate from the incompatible v3 lineage under the same arXiv identifier.",
+    "Audited the complete 164-commit v1/v2 source history and forks, recovered all historical fine-tuning messages/images, reconstructed the source-specified 961-record upload file, and executed the native upload/job API contract with blocked sockets.",
+    "Rejected a new fine-tune, synthetic-data overlay, arbitrary-score portfolio, v3 substitution, and crypto-to-JKP factor mapping."
+  ],
+  "outcome": "The training payload and fine-tuning call structure are unusually well recovered, but the actual job/checkpoint, paper-time market inputs, expert predictions and portfolios are not. Without these objects, neither the crypto result nor a mechanism-preserving U.S. transfer can execute."
+}
