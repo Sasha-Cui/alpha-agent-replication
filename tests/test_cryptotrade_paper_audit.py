@@ -446,18 +446,20 @@ def test_global_native_ledger_reflects_lstm_credit_boundary() -> None:
     assert row["native_dated_signal_or_return_shipped"] == "Y"
     assert row["blocking_stage"] == "A3_wrong_asset_class_crypto"
     assert row["targeted_execution_audit_status"] == (
-        "paper_audit:partial_218_of_480_cells_4_native_lstm_seed_lookback_robust_"
-        "4_lstm_source_default_only_40_author_llm_traces_12_ablation_correspondences_"
+        "paper_audit:partial_214_of_480_cells_8_lstm_numeric_zero_faithful_lstm_"
+        "198_future_input_decisions_3_future_only_action_flips_40_author_llm_traces_12_ablation_correspondences_"
         "zero_credit_5_model_mismatch_traces_zero_declared_model_rows_83_author_outputs_"
         "no_other_time_series_match_37_forks_exhausted"
     )
     assert row["fidelity_class"] == "F2_dated_output_task_incompatible"
     note = row["concise_evidence_note"]
-    assert "All four bear metrics match" in note
+    assert "Four bear metrics are numerically invariant" in note
     assert "60 seed/look-back combinations" in note
-    assert "Four bull metrics match all 20" in note
-    assert "receive no strict protocol credit" in note
+    assert "four bull metrics match all 20" in note
+    assert "None receives faithful LSTM result credit" in note
+    assert "all 198 native decision calls use future training targets" in note
+    assert "previous four LSTM credits are withdrawn" in note
     assert "printed 1.11 volatility matches 0/60" in note
     assert "exact-runtime reproduction remains false" in note
-    assert "244 main-table LLM/time-series cells remain unverifiable" in note
-    assert "256/480 cells remain method-faithfully unverifiable" in note
+    assert "248 main-table LLM/time-series cells remain unverifiable" in note
+    assert "260/480 cells remain method-faithfully unverifiable" in note

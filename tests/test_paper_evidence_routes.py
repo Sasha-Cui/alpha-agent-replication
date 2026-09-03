@@ -289,8 +289,8 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     routes = pd.read_csv(OUTPUT, keep_default_na=False).set_index("canonical_work_id")
     expected = {
         "CensusACL2024emnlpmain63": (
-            "paper_audit:partial_218_of_480_cells_4_native_lstm_seed_lookback_robust_"
-            "4_lstm_source_default_only_40_author_llm_traces_12_ablation_correspondences_"
+            "paper_audit:partial_214_of_480_cells_8_lstm_numeric_zero_faithful_lstm_"
+            "198_future_input_decisions_3_future_only_action_flips_40_author_llm_traces_12_ablation_correspondences_"
             "zero_credit_5_model_mismatch_traces_zero_declared_model_rows_83_author_outputs_"
             "no_other_time_series_match_"
             "37_forks_exhausted"
@@ -409,13 +409,16 @@ def test_completed_paper_audits_are_not_left_as_static_or_legacy_targets() -> No
     assert "1/20 individual cells" in cryptotrade_blocker
     assert "0/5 complete rows" in cryptotrade_blocker
     assert "37 accessible public forks and 39 fork refs" in cryptotrade_blocker
-    assert "All four bear metrics match" in cryptotrade_blocker
+    assert "Four bear metrics are numerically invariant" in cryptotrade_blocker
     assert "60 seed/look-back combinations" in cryptotrade_blocker
-    assert "Four bull metrics match all 20" in cryptotrade_blocker
-    assert "receive no strict protocol credit" in cryptotrade_blocker
+    assert "four bull metrics match all 20" in cryptotrade_blocker
+    assert "None receives faithful LSTM result credit" in cryptotrade_blocker
+    assert "all 198 native decision calls use future training targets" in cryptotrade_blocker
+    assert "future-only terminal-price changes flip the first action in all three regimes" in cryptotrade_blocker
+    assert "previous four LSTM credits are withdrawn" in cryptotrade_blocker
     assert "printed 1.11 volatility matches 0/60" in cryptotrade_blocker
     assert "exact-runtime reproduction remains false" in cryptotrade_blocker
-    assert "256/480 cells remain method-faithfully unverifiable" in cryptotrade_blocker
+    assert "260/480 cells remain method-faithfully unverifiable" in cryptotrade_blocker
 
     alphaquanter_blocker = routes.loc[
         "CensusACL2026findingsacl456", "precise_native_or_access_blocker"

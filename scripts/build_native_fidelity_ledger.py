@@ -712,11 +712,16 @@ ARTIFACT_NOTES = {
         "cells (43/45 complete rows) from the native crypto data and environment. A public "
         "source-function replay executes the released ETH LSTM over seeds 0--9, two fixed-"
         "lookback repeats, all six paper-listed look-backs, the validation interval, and all "
-        "three test regimes. All four bear metrics match across every one of 60 seed/look-back "
-        "combinations and receive native paper-result credit. Four bull metrics match all 20 "
-        "source-default look-back-5 observations, but receive no strict protocol credit because "
-        "all six look-backs tie on validation and the bull outputs change outside look-backs "
-        "5, 10, and 20. Sideways is seed/look-back sensitive; its printed 1.11 volatility "
+        "three test regimes. Four bear metrics are numerically invariant across 60 seed/look-back "
+        "combinations, and four bull metrics match all 20 source-default look-back-5 observations. "
+        "None receives faithful LSTM result credit: all 198 native decision calls use future "
+        "training targets and inference inputs, and compare against the regime's terminal "
+        "price instead of today's. Twenty-four native training probes in 12 exact repeat pairs "
+        "show future-only terminal-price changes flip the first action in all three regimes, "
+        "with past/present inputs fixed and post-regime controls unchanged. The previous four "
+        "LSTM credits are withdrawn; eight numeric correspondences remain preserved separately. "
+        "All six look-backs tie on validation, and bull outputs are also look-back-sensitive. "
+        "Sideways is seed/look-back sensitive; its printed 1.11 volatility "
         "matches 0/60 grid observations. The compatible Torch 2.4.1 CPU runtime is not the "
         "README's declared Torch 2.3.0/CUDA environment, so exact-runtime reproduction remains "
         "false. A public "
@@ -734,7 +739,7 @@ ARTIFACT_NOTES = {
         "ETH-sideways daily statistics duplicate ETH-bear, while four SOL-bear cells require "
         "a 1-day SMA outside the disclosed and released [5,10,15,20,30] grid. The originally "
         "cited anonymous repository has expired, the 11-commit official history contains no "
-        "result/log path, and 244 main-table LLM/time-series cells remain unverifiable. All 83 "
+        "result/log path, and 248 main-table LLM/time-series cells remain unverifiable. All 83 "
         "unique coauthor-history output blobs (209,739,069 bytes) were scanned across 1,371 "
         "final return/Sharpe summaries; none contains a standalone released time-series model "
         "name or matches a published time-series return/Sharpe pair. All "
@@ -744,7 +749,7 @@ ARTIFACT_NOTES = {
         "census exhausts 37 accessible public forks and 39 fork refs: 35 refs are already in the "
         "audited official/coauthor histories, including the first-author fork, while all four "
         "divergent heads are unaffiliated post-paper extensions whose seven result/log-like paths "
-        "receive zero paper credit. In total, 256/480 cells remain method-faithfully unverifiable. "
+        "receive zero paper credit. In total, 260/480 cells remain method-faithfully unverifiable. "
         "The evidence remains crypto rather than six-country equity output.",
     ),
     "SYS-FIN-CON": (
@@ -1883,8 +1888,8 @@ TARGETED_EXECUTION = {
         "official_head_exhausted"
     ),
     "SYS-CRYPTO-TRADE": (
-        "paper_audit:partial_218_of_480_cells_4_native_lstm_seed_lookback_robust_"
-        "4_lstm_source_default_only_40_author_llm_traces_12_ablation_correspondences_"
+        "paper_audit:partial_214_of_480_cells_8_lstm_numeric_zero_faithful_lstm_"
+        "198_future_input_decisions_3_future_only_action_flips_40_author_llm_traces_12_ablation_correspondences_"
         "zero_credit_5_model_mismatch_traces_zero_declared_model_rows_83_author_outputs_"
         "no_other_time_series_match_37_forks_exhausted"
     ),
