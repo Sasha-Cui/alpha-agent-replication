@@ -88,6 +88,25 @@ def reconstruct_paths(months: pd.DataFrame, holdings: pd.DataFrame, missing_poli
     return pd.DataFrame(rows)
 
 
+def build_report(milestone_id: str, recipe: dict, primary: dict) -> str:
+    """Render only claim boundaries supplied by the milestone recipe."""
+    headline = recipe.get("headline_agent", "full paper system")
+    preserved = "; ".join(recipe.get("preserved", []))
+    adapted = "; ".join(recipe.get("adapted", []))
+    not_claimed = "; ".join(recipe.get("not_claimed", []))
+    adapter = "; ".join(f"{key}: {value}" for key, value in recipe.get("monthly_adapter", {}).items())
+    return f'''# {milestone_id}: {recipe['paper']} disclosed component
+
+Status: **completed partial monthly U.S./JKP evaluation**, not the {headline}.
+
+The literal published {recipe['headline_component']} is evaluated from the fixed source formula `{recipe['source_formula']}`. Preserved: {preserved}. Adapted: {adapted}. The disclosed monthly adapter is: {adapter}. This component was already mapped and evaluated before the new study, so this result is exploratory rather than newly outcome-blind.
+
+At 10 bp one-way costs, the 305-month path has CAGR {primary['full_cagr']:.2%}, annualized Sharpe {primary['full_annualized_sharpe']:.3f}, and maximum drawdown {primary['full_maximum_drawdown']:.2%}. The 185-month rolling JKP133 residual mean is {primary['jkp_residual_mean_annualized']:.2%} annually (HAC t={primary['jkp_residual_t_hac']:.3f}, p={primary['jkp_residual_p_two_sided']:.4f}; descriptive 69-test bound={primary['exploratory_bonferroni69_p']:.4f}).
+
+The result is performance of one disclosed formula component after explicit adaptations. It does not reproduce or claim: {not_claimed}. It must not be used as evidence that the full paper system worked or failed.
+'''
+
+
 def evaluate(root: Path, milestone_id: str, candidate_id: str, output: Path) -> None:
     require_fresh_output(output)
     study = root / "paper_runs/us_jkp_headline"
@@ -157,16 +176,7 @@ def evaluate(root: Path, milestone_id: str, candidate_id: str, output: Path) -> 
     primary_path = paths["zero"].copy()
     primary_path["net_return"] = primary_path.gross_return - 0.001 * primary_path.traded_notional
     primary_path.to_csv(output / "primary_monthly_returns.csv", index=False)
-    report = f'''# {milestone_id}: {recipe['paper']} disclosed component
-
-Status: **completed partial monthly U.S./JKP evaluation**, not the paper's self-improving agent.
-
-The literal published {recipe['headline_component']} formula and its known two-bar-lag behavior are preserved. Monthly cadence, U.S. top-1,000 universe, positive-signal top-10 long-only portfolio, missing-return convention, costs, and benchmark are researcher adaptations. This component was already mapped and evaluated before the new study, so this result is exploratory rather than newly outcome-blind.
-
-At 10 bp one-way costs, the 305-month path has CAGR {primary['full_cagr']:.2%}, annualized Sharpe {primary['full_annualized_sharpe']:.3f}, and maximum drawdown {primary['full_maximum_drawdown']:.2%}. The 185-month rolling JKP133 residual mean is {primary['jkp_residual_mean_annualized']:.2%} annually (HAC t={primary['jkp_residual_t_hac']:.3f}, p={primary['jkp_residual_p_two_sided']:.4f}; descriptive 69-test bound={primary['exploratory_bonferroni69_p']:.4f}).
-
-The result is performance of one disclosed formula component after explicit adaptations. It does not reproduce QuantAgent's LLM idea generation, mentor feedback, self-improvement loop, native daily A-share data, XGBoost/evaluator, final agent strategy, or paper result. It must not be used as evidence that the full agent worked or failed.
-'''
+    report = build_report(milestone_id, recipe, primary)
     (output / "verdict.md").write_text(report)
     implementation = [Path(__file__).resolve(), root / "scripts/run_fidelity_formula_components.py",
                       root / "src/alpha_evolve/headline_backtest.py", root / "scripts/run_broad_jkp_crossfit.py"]

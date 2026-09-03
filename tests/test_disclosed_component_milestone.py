@@ -54,3 +54,31 @@ def test_fresh_output_allows_recipe_directory_but_rejects_completed_run(tmp_path
     (output / "run_manifest.json").write_text("{}")
     with pytest.raises(ValueError, match="already exists"):
         runner.require_fresh_output(output)
+
+
+def test_report_uses_recipe_claims_without_quantagent_leakage():
+    recipe = {
+        "paper": "Alpha-Jungle",
+        "headline_agent": "LLM-guided MCTS search",
+        "headline_component": "Table 7 formula 4",
+        "source_formula": "Diff(Ma(volume,20),3)/Ma(volume,60)",
+        "preserved": ["published formula tree"],
+        "adapted": ["daily China bars to monthly U.S. bars"],
+        "not_claimed": ["MCTS search", "paper result"],
+        "monthly_adapter": {"portfolio": "researcher top-10"},
+    }
+    primary = {
+        "full_cagr": -0.05,
+        "full_annualized_sharpe": 0.02,
+        "full_maximum_drawdown": -0.98,
+        "jkp_residual_mean_annualized": 0.03,
+        "jkp_residual_t_hac": 0.7,
+        "jkp_residual_p_two_sided": 0.48,
+        "exploratory_bonferroni69_p": 1.0,
+    }
+    report = runner.build_report("M021", recipe, primary)
+    assert "Alpha-Jungle" in report
+    assert "LLM-guided MCTS search" in report
+    assert "MCTS search; paper result" in report
+    assert "QuantAgent" not in report
+    assert "two-bar-lag" not in report
