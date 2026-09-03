@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 20,
+    "closed": 21,
     "completed_adapted": 1,
-    "completed_partial": 2,
+    "completed_partial": 3,
     "closed_not_evaluable": 17,
     "in_progress": 1,
-    "queued": 48
+    "queued": 47
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -366,16 +366,16 @@
       "title": "Navigating the Alpha Jungle: An LLM-Powered MCTS Framework for Formulaic Factor Mining",
       "system_ids": "SYS-ALPHA-JUNGLE",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M021_alpha_jungle/recipe.json",
+      "implementation_path": "scripts/run_disclosed_component_milestone.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M021_alpha_jungle/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M021_alpha_jungle/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M021_alpha_jungle/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M021_alpha_jungle/verdict.md",
+      "evaluated_scope": "The first paper-ordered Ours formula executable from approved JKP inputs, Table 7 formula 4 Diff(Ma(volume,20),3)/Ma(volume,60), under the existing monthly U.S. top-10 component adapter. This is not the LLM/MCTS search or native paper portfolio.",
+      "next_action": "Closed. Preserve the source-ordered selection, exploratory prior-outcome disclosure and severe drawdown result; do not search formulas 5-6 for a more favorable JKP outcome or relabel the component as Alpha-Jungle.",
+      "closure_reason": "Formula 4 was selected before new re-accounting because formulas 1-3 require unavailable VWAP and it is first among the remaining source outputs. Its fixed holdings produce a complete 305-month common-benchmark path with explicit partial-scope boundaries."
     },
     {
       "milestone_id": "M022",
@@ -383,7 +383,7 @@
       "title": "R&D-Agent: An LLM-Agent Framework Towards Autonomous Data Science",
       "system_ids": "SYS-RD-AGENT-QUANT",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
