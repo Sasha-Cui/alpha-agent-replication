@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M007",
+  "canonical_work_id": "CensusArxiv240203755",
+  "paper": "QuantAgent: Seeking Holy Grail in Trading by Self-Improving Large Language Model",
+  "paper_url": "https://arxiv.org/abs/2402.03755v1",
+  "headline_agent": "LLM idea generation, mentor feedback and iterative signal improvement",
+  "headline_component": "VolatilityBreakoutSignal",
+  "component_selection_reason": "The full agent/final strategy is unavailable. This is the only published executable strategy component; the other two Three Soldiers implementations fail and the mentor-passed V3 does not parse. It was not selected for JKP performance.",
+  "candidate_id": "quantagent_atr14_breakout_literal",
+  "source_formula": "where(high > high.shift(1) + 1.5*ATR14, (high-B)/ATR14, 0).clip(lower=0)",
+  "source_formula_sha256": "031082d5258de95017b47473255bec7a50c18596149e85ac7709f6f0cc69a773",
+  "known_literal_behavior": "pre_close is already prior close and is shifted again, preserving the published two-bar close lag",
+  "source_scope": "example alpha, not identified as a native QuantAgent result",
+  "monthly_adapter": {
+    "inputs": "JKP monthly prc/prc_high/prc_low on the formation-date top-1,000 U.S. universe",
+    "portfolio": "researcher positive-signal top-10 equal-weight long-only; cash when no positive signal",
+    "costs": "common fixed cost cases with 10 bp primary",
+    "missing_returns": "fixed holdings re-accounted under common zero and adverse-100 policies without reranking"
+  },
+  "prior_outcomes_seen": true,
+  "mapping_was_frozen_before_prior_outcomes": false,
+  "inference_status": "exploratory_contaminated_mapping",
+  "preserved": ["published formula", "two-bar lag", "ATR14", "1.5 barrier", "nonnegative signal"],
+  "adapted": ["daily A-shares to monthly U.S. JKP bars", "researcher portfolio", "common costs and benchmark"],
+  "not_claimed": ["self-improving agent", "LLM idea generation", "mentor process", "native data/evaluator", "paper result"],
+  "status": "fixed_before_new_reaccounting"
+}
