@@ -1,0 +1,20 @@
+{
+  "milestone_id": "M020",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/mass/README.md",
+    "paper_runs/paper_replication_audits/mass/manifest.json",
+    "paper_runs/paper_replication_audits/mass/native_signal_nonidentifiability.json",
+    "paper_runs/paper_replication_audits/mass/distribution_snapshot_audit.csv",
+    "paper_runs/paper_replication_audits/mass/released_dataset_inventory.csv",
+    "paper_runs/paper_replication_audits/mass/source_config_conformance.csv",
+    "paper_runs/paper_replication_audits/mass/official_release_lineage.json",
+    "paper_runs/paper_replication_audits/mass/public_fork_census.json"
+  ],
+  "bounded_checks": [
+    "Checked the named and anonymous author releases, complete 13-commit history, all 25 accessible public forks, released SSE50-like panel, distribution pickle, ignored/deleted paths, and final-paper U.S. extension claims.",
+    "Executed the native InvestmentAnalyzer twice with the same released distribution and two valid decision tensors, proving that distribution state does not identify signals.",
+    "Rejected distribution inference, label/feature replay, synthetic dry-run output, arbitrary JKP decision tensors, and table/figure reconstruction."
+  ],
+  "outcome": "The dated learned distribution is genuine optimizer state but is mathematically insufficient to recover signals without the missing agent decisions. No U.S. panel, decision cache, signal path, portfolio implementation, or return output exists."
+}

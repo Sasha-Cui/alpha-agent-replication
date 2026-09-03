@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M020",
+  "canonical_work_id": "CensusArxiv250510278",
+  "paper": "MASS: Multi-agent simulation scaling for portfolio construction",
+  "paper_url": "https://arxiv.org/abs/2505.10278",
+  "paper_sha256": "c31e68b722b6c4d33dd69833b48a34de8fc29ec4171498f320307ede554e6135",
+  "source_url": "https://github.com/gta0804/MASS",
+  "source_commit": "68edcaae9e6ac099d28eed90513219495b0852b7",
+  "headline_strategy": "Simulate 16 investor types with 32 LLM agents each, give every agent a 20-stock candidate pool and five selections, aggregate heterogeneous decisions with learned type-distribution weights and alpha=0.5, optimize that distribution by simulated annealing, and hold the weekly top 20% signals with 0.1% round-trip cost",
+  "paper_configuration": {
+    "investor_types": 16,
+    "agents_per_type": 32,
+    "candidate_pool_size": 20,
+    "stocks_selected_per_agent": 5,
+    "signal_alpha": 0.5,
+    "simulated_annealing_initial_temperature": 40,
+    "simulated_annealing_iterations": 100,
+    "portfolio": "weekly top 20%",
+    "round_trip_cost": 0.001
+  },
+  "paper_portability_to_common_task": "not defensibly executable because the release contains distribution state but no agent decisions, dated signals, U.S. input panel, portfolio, or return path",
+  "recovered_component_credit": {
+    "released_sse_like_dates": 242,
+    "released_cross_section_size": 50,
+    "dated_distribution_states": 263,
+    "changed_distribution_transitions": 216,
+    "native_signal_aggregation_source": true,
+    "native_signal_nonidentifiability_proved": true
+  },
+  "missing_headline_objects": [
+    "all per-agent prompts, multimodal inputs, decisions and candidate-pool assignments",
+    "dated aggregated signals and security rankings",
+    "Nasdaq-100/S&P-500 and other paper input panels, point-in-time memberships, and news",
+    "paper hyperparameter execution, run seeds, random draws, and metric horizon",
+    "weekly portfolio/backtest/cost code, baseline outputs, timing logs and API accounting",
+    "holdings, returns, risk-free rate, NAV paths and table/figure arrays"
+  ],
+  "source_conflicts": [
+    "Active source uses simulated-annealing temperature 0.5 and 20 iterations rather than paper values 40 and 100.",
+    "Active source resamples agent candidate pools daily although the main paper treats pools as static and daily updating as an ablation.",
+    "Source generates one strategy per agent/day rather than one per investor type/day.",
+    "Entrypoint has empty root constants, broken literal paths, missing data modules, and placeholder two-byte news files.",
+    "The paper does not identify which released 1/5/10-day label horizon produced its main table."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Convert the released ih_dist distribution snapshot into signals",
+      "reason": "A native two-scenario proof shows the identical distribution produces different signals when the missing agent decisions change."
+    },
+    {
+      "route": "Use the released SSE50-like labels or features as agent decisions",
+      "reason": "They are partial inputs/targets, not the missing heterogeneous agent outputs, and they cover only China in 2023."
+    },
+    {
+      "route": "Run the in-memory dry-run overlay",
+      "reason": "It uses synthetic decisions/data and establishes orchestration only, not a formation-time strategy."
+    },
+    {
+      "route": "Apply the aggregation source to arbitrary JKP characteristics",
+      "reason": "This invents 512 agent decisions and candidate pools per date and removes the distribution-learning mechanism's actual inputs."
+    },
+    {
+      "route": "Use author tables or figures as signals",
+      "reason": "The 766 numeric claims and five figures expose no dated decisions, rankings, holdings, or returns."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/mass",
+  "result_policy": "No distribution-only inference, label replay, synthetic dry run, arbitrary JKP decision tensor, or displayed output is entered as a MASS return. Its positive results remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}
