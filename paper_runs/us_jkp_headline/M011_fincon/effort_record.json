@@ -1,0 +1,19 @@
+{
+  "milestone_id": "M011",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/fincon/README.md",
+    "paper_runs/paper_replication_audits/fincon/manifest.json",
+    "paper_runs/paper_replication_audits/fincon/native_execution.json",
+    "paper_runs/paper_replication_audits/fincon/source_mechanism_conformance.csv",
+    "paper_runs/paper_replication_audits/fincon/source_config_conformance.csv",
+    "paper_runs/paper_replication_audits/fincon/paper_specification_gaps.csv",
+    "paper_runs/paper_replication_audits/fincon/paper_internal_and_source_checks.csv"
+  ],
+  "bounded_checks": [
+    "Checked the final proceedings paper, all arXiv revisions/source, complete official 11-commit history, and every accessible public-fork ref for implementation or decision artifacts.",
+    "Separated the central manager/analyst/CVRF policy from generic CVaR and mean-variance primitives, adjacent systems, baseline outputs, and the prior M0 proxy.",
+    "Rejected generic optimizer, adjacent-project, baseline/table replay, and newly invented JKP-agent substitutions."
+  ],
+  "outcome": "The official repository and all forks contain no implementation, data, model, configuration, action, or result artifact. The paper-level description is not operational enough to generate the central policy without inventing it."
+}

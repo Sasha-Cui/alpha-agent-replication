@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 10,
+    "closed": 11,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 8,
+    "closed_not_evaluable": 9,
     "in_progress": 1,
-    "queued": 58
+    "queued": 57
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -196,16 +196,16 @@
       "title": "FinCon: A Synthesized LLM Multi-Agent System with Conceptual Verbal Reinforcement for Enhanced Financial Decision Making",
       "system_ids": "SYS-FIN-CON",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M011_fincon/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M011_fincon/verdict.md",
+      "evaluated_scope": "No common-task return: the central manager/analyst hierarchy, multimodal memories, CVaR reflection, conceptual verbal reinforcement, actions and portfolio optimizer are not released; the official repository and forks contain no code.",
+      "next_action": "Closed. Preserve the paper/source audit and unresolved results; do not promote the M0 CVaR allocator, generic optimization, adjacent systems, or baseline replay to FinCon.",
+      "closure_reason": "The complete official history and all accessible forks are README-only, and the paper omits the prompts, data, models, memory/CVRF state, action semantics and optimizer needed to generate the headline policy. Every bounded substitute removes its central mechanism."
     },
     {
       "milestone_id": "M012",
@@ -213,7 +213,7 @@
       "title": "Empirical Asset Pricing with Large Language Model Agents",
       "system_ids": "SYS-EMPIRICAL-ASSET-PRICING-LLM",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M011",
+  "canonical_work_id": "CensusArxiv240706567",
+  "paper": "FinCon: A Synthesized LLM Multi-Agent System with Conceptual Verbal Reinforcement for Enhanced Financial Decision Making",
+  "paper_url": "https://proceedings.neurips.cc/paper_files/paper/2024/hash/f7ae4fe91d96f50abc2211f09b6a7e49-Abstract-Conference.html",
+  "authoritative_pdf_sha256": "82af0bc37198f1110ca5c4c1d79a7fd22512fe879b5219746a9dec922a034a42",
+  "source_url": "https://github.com/The-FinAI/FinCon",
+  "source_revision": "ca3256d037c497871c064bc2f5abab106993e189",
+  "headline_strategy": "GPT-4-Turbo manager/analyst hierarchy that distills multimodal news, filings, earnings-call audio, research and market data into long/short/neutral decisions, updates beliefs through conceptual verbal reinforcement, applies CVaR risk reflection, and uses direction-constrained mean-variance portfolio weights",
+  "paper_configuration": {
+    "model": "GPT-4-Turbo",
+    "temperature": 0.3,
+    "memory_top_k": 5,
+    "cvar_tail": "worst 1% daily PnL",
+    "candidate_pool": "42 stocks with more than 800 news articles",
+    "portfolio_value": 1000000,
+    "repetitions": 5
+  },
+  "paper_portability_to_common_task": "not defensibly executable because neither the decision policy nor any implementation/data/model artifact is released",
+  "official_release_boundary": {
+    "repository_commits_audited": 11,
+    "tracked_files_current": 1,
+    "source_code_files_current": 0,
+    "public_forks_audited": 6,
+    "public_fork_native_pipelines_found": 0
+  },
+  "missing_headline_objects": [
+    "FinCon source code, complete prompts, configurations, environment, and tests",
+    "frozen multimodal commercial/public inputs and exact 42-stock membership",
+    "paper-time GPT-4-Turbo and Whisper snapshots plus sampling and parsing rules",
+    "working, procedural, and episodic memory state and decay parameters",
+    "CVaR estimator, alert, reflection, and conceptual verbal reinforcement implementation",
+    "manager actions, analyst outputs, raw trajectories, beliefs, and checkpoints",
+    "the complete direction-constrained mean-variance objective, covariance estimator, solver and bounds",
+    "execution timing, position persistence, leverage/short rules and trading frictions"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Use results_repo_fincon_cvar_risk_controlled_allocator",
+      "reason": "It is a researcher-created M0 CVaR narrative translation and contains none of the manager/analyst, memory, reflection, or CVRF policy."
+    },
+    {
+      "route": "Implement a generic CVaR or mean-variance portfolio",
+      "reason": "Risk control consumes FinCon decisions; it is not the missing decision policy and the optimizer itself is underspecified."
+    },
+    {
+      "route": "Use InvestorBench or Agent Market Arena code",
+      "reason": "They are explicitly separate systems and cannot receive FinCon provenance."
+    },
+    {
+      "route": "Replay Buy-and-Hold or paper tables",
+      "reason": "The current-response baseline check has no paper-time lineage and published cells/plots are outputs, not a transferable policy."
+    },
+    {
+      "route": "Build a new multi-agent system using JKP characteristics",
+      "reason": "JKP does not replace the news, filings, audio, analyst research, memories and verbal reinforcement that define FinCon."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/fincon",
+  "result_policy": "No M0 CVaR proxy, generic optimizer, adjacent-system code, baseline replay, or invented agent is entered as a FinCon return. The positive paper results remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}
