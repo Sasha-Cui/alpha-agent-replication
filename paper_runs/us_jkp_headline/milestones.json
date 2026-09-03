@@ -5,6 +5,14 @@
   "benchmark_contract_path": "paper_runs/us_jkp_headline/benchmark_contract.json",
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
+  "progress_summary": {
+    "closed": 1,
+    "completed_adapted": 1,
+    "completed_partial": 0,
+    "closed_not_evaluable": 0,
+    "in_progress": 0,
+    "queued": 68
+  },
   "terminal_statuses": [
     "completed_adapted",
     "completed_partial",
@@ -18,16 +26,16 @@
       "title": "GPT-Signal: Generative AI for Semi-automated Feature Engineering in the Alpha Research Process",
       "system_ids": "SYS-GPT-SIGNAL",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
+      "status": "completed_adapted",
       "recipe_path": "paper_runs/us_jkp_headline/M001_gpt_signal/recipe.json",
-      "implementation_path": "src/alpha_evolve/headline_strategies.py",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Verify EVC input conventions; lock the common U.S. evaluation contract; implement the JKP adapter and run the one fixed-sign headline signal.",
-      "closure_reason": ""
+      "implementation_path": "scripts/run_us_jkp_headline.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M001_gpt_signal/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M001_gpt_signal/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M001_gpt_signal/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M001_gpt_signal/verdict.md",
+      "evaluated_scope": "Published EVC signal and source-signed direction; JKP ratio conventions, U.S. universe, monthly cadence, common value-weighted decile portfolio, costs and factor attribution are disclosed adaptations.",
+      "next_action": "Closed. Do not alter the sign, formula or benchmark after the observed result; reopen only for concrete new source evidence.",
+      "closure_reason": "One source-selected headline signal produced a complete 305-month common-benchmark path and verdict; the adaptation and non-claims are explicit."
     },
     {
       "milestone_id": "M002",

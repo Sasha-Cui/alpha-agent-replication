@@ -85,6 +85,10 @@ a live job. The benchmark contract records the private data and public factor
 hashes; completed run manifests pin the result artifacts.
 
 - Keep at most one milestone `in_progress`.
+- After closing a milestone, validate and release its coherent changes and
+  monitor the resulting CI before activating the next queued paper. This keeps
+  one failed check from being mixed with a second paper and avoids noisy retry
+  workflows.
 - Start with the existing dossier, the relevant primary method section, and
   official code; do not repeat the whole forensic audit.
 - Implement the most direct supported route, run it, and repair tractable bugs.
