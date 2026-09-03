@@ -19,6 +19,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -74,6 +75,128 @@ EXPECTED_METRICS = {
     "l2.valid": 0.9170045298192948,
 }
 FAILED_FIRST_TWENTY_SYMBOLS = ["ABC", "ABK", "ABMD", "ABS", "ACAS", "ADS"]
+
+GUARD_VERSION = "alphamemo-python-audit-hook-v2"
+GUARD_SOURCE = r'''"""Python socket/DNS guard; not an operating-system network sandbox."""
+import json
+import os
+import socket
+import sys
+
+GUARD_VERSION = "alphamemo-python-audit-hook-v2"
+
+
+class NetworkBlocked(PermissionError):
+    pass
+
+
+def install():
+    log = os.environ["ALPHAMEMO_NETWORK_LOG"]
+    stage = os.environ["ALPHAMEMO_GUARD_STAGE"]
+    phase = os.environ["ALPHAMEMO_GUARD_PHASE"]
+
+    def emit(event, **fields):
+        row = dict(event=event, version=GUARD_VERSION, pid=os.getpid(),
+                   stage=stage, phase=phase, **fields)
+        encoded = (json.dumps(row, sort_keys=True) + "\n").encode()
+        fd = os.open(log, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+        try:
+            if os.write(fd, encoded) != len(encoded):
+                raise OSError("incomplete AlphaMemo guard log write")
+        finally:
+            os.close(fd)
+
+    def call_stack():
+        frame = sys._getframe(2)
+        rows = []
+        while frame is not None and len(rows) < 32:
+            rows.append({"module": str(frame.f_globals.get("__name__", "")),
+                         "function": frame.f_code.co_name,
+                         "file": os.path.basename(frame.f_code.co_filename),
+                         "line": frame.f_lineno})
+            frame = frame.f_back
+        return rows
+
+    def hook(event, args):
+        if event in {"socket.getaddrinfo", "socket.gethostbyname",
+                     "socket.gethostbyaddr", "socket.getnameinfo"}:
+            emit("blocked", operation=event, call_stack=call_stack())
+            raise NetworkBlocked("AlphaMemo audit blocked DNS/name resolution")
+        if event in {"socket.connect", "socket.sendto", "socket.sendmsg"}:
+            sock = args[0]
+            if sock.family in (socket.AF_INET, socket.AF_INET6):
+                emit("blocked", operation=event, call_stack=call_stack())
+                raise NetworkBlocked("AlphaMemo audit blocked Internet socket operation")
+        if event == "cpython.run_module":
+            emit("entrypoint", entrypoint="module:" + str(args[0]))
+        elif event == "cpython.run_file":
+            emit("entrypoint", entrypoint="file:" + os.path.basename(os.fsdecode(args[0])))
+        elif event == "cpython.run_command":
+            # Do not log arbitrary command text, arguments, URLs, or credentials.
+            emit("entrypoint", entrypoint="command")
+
+    sys.addaudithook(hook)
+    emit("guard_loaded", python=sys.version.split()[0])
+    sys._alphamemo_network_guard_ready = GUARD_VERSION
+
+
+try:
+    install()
+except BaseException:
+    # site.py otherwise swallows ordinary sitecustomize errors and runs unguarded.
+    sys.stderr.write("AlphaMemo network guard initialization failed\n")
+    os._exit(97)
+'''
+
+GUARD_SELFTEST = r'''
+import json
+import socket
+import subprocess
+import sys
+import sitecustomize as guard
+
+if getattr(sys, "_alphamemo_network_guard_ready", None) != "alphamemo-python-audit-hook-v2":
+    raise RuntimeError("AlphaMemo network guard was not activated")
+
+blocked = []
+def expect_blocked(name, operation):
+    try:
+        operation()
+    except guard.NetworkBlocked:
+        blocked.append(name)
+    else:
+        raise RuntimeError("AlphaMemo guard failed to block " + name)
+
+for family, host, label in (
+    (socket.AF_INET, "127.0.0.1", "ipv4"),
+    (socket.AF_INET6, "::1", "ipv6"),
+):
+    for method in ("connect", "connect_ex"):
+        with socket.socket(family, socket.SOCK_STREAM) as sock:
+            sock.settimeout(0.2)
+            expect_blocked(label + "_" + method,
+                           lambda: getattr(sock, method)((host, 9)))
+    with socket.socket(family, socket.SOCK_DGRAM) as sock:
+        expect_blocked(label + "_sendto", lambda: sock.sendto(b"audit", (host, 9)))
+expect_blocked("getaddrinfo", lambda: socket.getaddrinfo("localhost", 9))
+expect_blocked("gethostbyname", lambda: socket.gethostbyname("localhost"))
+expect_blocked("gethostbyaddr", lambda: socket.gethostbyaddr("127.0.0.1"))
+expect_blocked("getnameinfo", lambda: socket.getnameinfo(("127.0.0.1", 9), 0))
+child = None
+if sys.argv[1] == "parent":
+    result = subprocess.run([sys.executable, "-c", sys.argv[2], "child"],
+                            check=True, capture_output=True, text=True)
+    if result.stderr:
+        raise RuntimeError("unexpected child guard startup output: " + result.stderr)
+    child = json.loads(result.stdout)
+print(json.dumps({"blocked": blocked, "child": child}, sort_keys=True))
+'''
+
+GUARD_SELFTEST_OPERATIONS = [
+    "ipv4_connect", "ipv4_connect_ex", "ipv4_sendto",
+    "ipv6_connect", "ipv6_connect_ex", "ipv6_sendto",
+    "getaddrinfo", "gethostbyname", "gethostbyaddr", "getnameinfo",
+]
 
 
 def sha256(path: Path) -> str:
@@ -170,24 +293,77 @@ def copy_source(source_root: Path, destination: Path) -> None:
 
 
 def network_guard(root: Path) -> Path:
+    # Compile the generated program itself, not just this generator module.
+    compile(GUARD_SOURCE, "sitecustomize.py", "exec")
     guard = root / "guard"
     guard.mkdir()
-    (guard / "sitecustomize.py").write_text(
-        """import json, os, socket\n"
-        "_original_connect = socket.socket.connect\n"
-        "def _blocked_connect(sock, address):\n"
-        "    if sock.family in (socket.AF_INET, socket.AF_INET6):\n"
-        "        path = os.environ.get('ALPHAMEMO_NETWORK_LOG')\n"
-        "        if path:\n"
-        "            with open(path, 'a', encoding='utf-8') as handle:\n"
-        "                handle.write(json.dumps({'address': repr(address)}) + '\\n')\n"
-        "        raise OSError('network disabled by AlphaMemo audit')\n"
-        "    return _original_connect(sock, address)\n"
-        "socket.socket.connect = _blocked_connect\n"
-        """,
-        encoding="utf-8",
-    )
+    (guard / "sitecustomize.py").write_text(GUARD_SOURCE, encoding="utf-8")
     return guard
+
+
+def read_guard_events(path: Path) -> list[dict[str, Any]]:
+    # A missing/empty log is absence of guard evidence, never zero attempts.
+    events = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    if not events or any(row.get("version") != GUARD_VERSION for row in events):
+        raise RuntimeError("Missing or invalid AlphaMemo guard activation evidence")
+    return events
+
+
+def verify_network_guard(source_python: Path, env: dict[str, str], guard: Path) -> dict[str, Any]:
+    code = (guard / "sitecustomize.py").read_text(encoding="utf-8")
+    compile(code, "sitecustomize.py", "exec")
+    if code != GUARD_SOURCE:
+        raise RuntimeError("AlphaMemo generated network guard changed")
+    control_log = guard / "positive-controls.jsonl"
+    control_env = {**env, "ALPHAMEMO_NETWORK_LOG": str(control_log),
+                   "ALPHAMEMO_GUARD_PHASE": "selftest", "ALPHAMEMO_GUARD_STAGE": "selftest"}
+    result = subprocess.run(
+        [str(source_python), "-c", GUARD_SELFTEST, "parent", GUARD_SELFTEST],
+        cwd=guard, env=control_env, capture_output=True, text=True, timeout=30,
+    )
+    if result.returncode or result.stderr:
+        raise RuntimeError(f"AlphaMemo guard self-test failed: {result.stderr[-3000:]}")
+    report = json.loads(result.stdout)
+    if report.get("blocked") != GUARD_SELFTEST_OPERATIONS or report.get("child", {}).get("blocked") != GUARD_SELFTEST_OPERATIONS:
+        raise RuntimeError("AlphaMemo guard self-test did not block all parent/child operations")
+    events = read_guard_events(control_log)
+    loaded = [row for row in events if row["event"] == "guard_loaded"]
+    blocked = [row for row in events if row["event"] == "blocked"]
+    expected = {"socket.connect": 8, "socket.sendto": 4,
+                "socket.getaddrinfo": 2, "socket.gethostbyname": 2,
+                "socket.gethostbyaddr": 2, "socket.getnameinfo": 2}
+    if len({row["pid"] for row in loaded}) != 2 or Counter(row["operation"] for row in blocked) != expected:
+        raise RuntimeError("AlphaMemo guard self-test activation/logging mismatch")
+    return {"interpreter_processes": 2, "blocked_operations": len(blocked),
+            "operations_per_interpreter": GUARD_SELFTEST_OPERATIONS,
+            "child_inherits_guard": True, "loopback_targets_only": True}
+
+
+def validate_replay_guard_events(events: list[dict[str, Any]]) -> dict[str, Any]:
+    if not events or any(row.get("phase") != "replay" or row.get("version") != GUARD_VERSION for row in events):
+        raise RuntimeError("Missing or mixed AlphaMemo replay guard evidence")
+    loaded = {(row["stage"], row["pid"]) for row in events if row["event"] == "guard_loaded"}
+    entries = [row for row in events if row["event"] == "entrypoint"]
+    blocked = [row for row in events if row["event"] == "blocked"]
+    if any((row["stage"], row["pid"]) not in loaded for row in entries):
+        raise RuntimeError("AlphaMemo entrypoint lacks guard activation")
+    stage_rows = []
+    for stage in ("raw", "compatible-1", "compatible-2"):
+        counts = Counter(row["entrypoint"] for row in entries if row["stage"] == stage)
+        required = {"module:sspm": 1}
+        if stage != "raw":
+            required.update({"module:qlib.cli.run": 1, "file:read_exp_res.py": 1, "command": 1})
+        if any((counts[key] < count if key == "command" else counts[key] != count)
+               for key, count in required.items()):
+            raise RuntimeError(f"AlphaMemo guarded entrypoint coverage incomplete for {stage}: {counts}")
+        stage_rows.append({"stage": stage, "guarded_interpreters": sum(s == stage for s, _ in loaded),
+                           "entrypoints": dict(sorted(counts.items()))})
+    return {"startup_attestation_required": True,
+            "replay_blocked_operations": len(blocked),
+            "replay_network_silent": not blocked,
+            "blocked_operation_counts": dict(sorted(Counter(row["operation"] for row in blocked).items())),
+            "blocked_attempts": [{key: value for key, value in row.items() if key != "pid"} for row in blocked],
+            "stages": stage_rows, "all_required_entrypoints_guarded": True}
 
 
 def run_environment(
@@ -198,6 +374,10 @@ def run_environment(
     network_log: Path,
     source_python: Path,
 ) -> dict[str, str]:
+    base = dict(base)
+    for key in ("PYTHONHOME", "PYTHONUSERBASE", "CONDA_PREFIX", "CONDA_DEFAULT_ENV",
+                "VIRTUAL_ENV", "_OLD_VIRTUAL_PATH", "__PYVENV_LAUNCHER__", "PYTHONINSPECT"):
+        base.pop(key, None)
     isolated_home = runtime_home.parent / "original_home"
     isolated_home.mkdir(parents=True, exist_ok=True)
     return {
@@ -210,6 +390,8 @@ def run_environment(
         "PYTHONPATH": os.pathsep.join([str(guard), str(source_copy)]),
         "QLIB_RUNTIME_HOME": str(runtime_home),
         "ALPHAMEMO_NETWORK_LOG": str(network_log),
+        "ALPHAMEMO_GUARD_PHASE": "replay",
+        "ALPHAMEMO_GUARD_STAGE": "pending",
         "OMP_NUM_THREADS": "1",
         "OPENBLAS_NUM_THREADS": "1",
         "MKL_NUM_THREADS": "1",
@@ -271,13 +453,20 @@ def run_once(
     env = run_environment(
         dict(os.environ), source_copy, guard, runtime_home, network_log, source_python
     )
-    return subprocess.run(
+    env["ALPHAMEMO_GUARD_STAGE"] = out_dir.name
+    result = subprocess.run(
         command(source_python, provider, out_dir, qrun),
         cwd=source_copy,
         env=env,
         capture_output=True,
         text=True,
     )
+    events = read_guard_events(network_log)
+    if "Error in sitecustomize" in result.stderr or not any(
+        row["event"] == "guard_loaded" and row["stage"] == out_dir.name for row in events
+    ):
+        raise RuntimeError("AlphaMemo native process did not activate the network guard")
+    return result
 
 
 def load_metrics(path: Path) -> dict[str, float]:
@@ -356,6 +545,10 @@ def build_probe(
         copy_source(source_root, source_copy)
         guard = network_guard(workspace)
         network_log = workspace / "network.jsonl"
+        control_env = run_environment(
+            dict(os.environ), source_copy, guard, workspace / "runtime-control", network_log, source_python
+        )
+        guard_controls = verify_network_guard(source_python, control_env, guard)
 
         raw_out = workspace / "raw"
         raw = run_once(
@@ -451,13 +644,8 @@ def build_probe(
             for key in reported_metrics[0]
         )
 
-        network_attempts = []
-        if network_log.exists():
-            network_attempts = [
-                json.loads(line) for line in network_log.read_text(encoding="utf-8").splitlines()
-            ]
-        if network_attempts:
-            raise RuntimeError(f"AlphaMemo replay attempted network access: {network_attempts}")
+        guard_evidence = validate_replay_guard_events(read_guard_events(network_log))
+        network_attempts = guard_evidence["blocked_attempts"]
 
         metric_rows = []
         for key in sorted(reported_metrics[0]):
@@ -530,6 +718,15 @@ def build_probe(
             ).stdout
             == "",
             "environment": env_summary,
+            "network_guard": {
+                "version": GUARD_VERSION,
+                "generated_source_sha256": sha256(guard / "sitecustomize.py"),
+                "scope": "CPython audit hooks for Internet socket connect/sendto/sendmsg and DNS/name resolution",
+                "os_network_sandbox": False,
+                "previous_empty_log_was_not_valid_offline_evidence": True,
+                "positive_controls": guard_controls,
+                **guard_evidence,
+            },
             "frozen_current_data": {
                 "acquisition_date": "2026-08-31",
                 "builder": "scripts/build_us_qlib_yfinance.py",

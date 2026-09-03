@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import importlib.util
 import json
 import os
@@ -125,7 +126,16 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert manifest["native_current_data_metrics_repeat_atol_1e_12"] is True
     assert manifest["native_current_data_max_reported_repeat_difference"] == 0.0
     assert manifest["native_current_data_replay_llm_calls"] == 0
-    assert manifest["native_current_data_replay_network_attempts"] == 0
+    assert manifest["native_current_data_replay_network_attempts"] == 2
+    assert manifest["native_current_data_network_guard_version"] == real_probe.GUARD_VERSION
+    assert manifest["native_current_data_network_guard_selftest_blocked_operations"] == 20
+    assert manifest["native_current_data_network_guard_child_inheritance_verified"] is True
+    assert manifest["native_current_data_network_guard_entrypoints_attested"] is True
+    assert manifest["native_current_data_network_guard_interpreters"] == 11
+    assert manifest["native_current_data_network_guard_is_os_sandbox"] is False
+    assert manifest["native_current_data_replay_network_silent"] is False
+    assert manifest["native_current_data_replay_blocked_dns_attempts"] == 2
+    assert manifest["native_current_data_blocked_network_origin"] == "mlflow.telemetry.client._get_config"
     assert manifest["native_current_data_probe_paper_configuration"] is False
     assert manifest["native_current_data_probe_paper_result_credit"] is False
     assert manifest["source_history_reachable_commits"] == 2
@@ -248,6 +258,26 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert real["source_unmodified"] is True
     assert real["environment"]["python"] == "3.11.11"
     assert real["environment"]["package_count"] == 202
+    guard = real["network_guard"]
+    assert guard["version"] == real_probe.GUARD_VERSION
+    assert guard["generated_source_sha256"] == hashlib.sha256(real_probe.GUARD_SOURCE.encode()).hexdigest()
+    assert guard["positive_controls"]["blocked_operations"] == 20
+    assert guard["positive_controls"]["interpreter_processes"] == 2
+    assert guard["positive_controls"]["child_inherits_guard"] is True
+    assert guard["startup_attestation_required"] is True
+    assert guard["all_required_entrypoints_guarded"] is True
+    assert guard["replay_blocked_operations"] == 2
+    assert guard["replay_network_silent"] is False
+    assert guard["blocked_operation_counts"] == {"socket.getaddrinfo": 2}
+    assert [row["guarded_interpreters"] for row in guard["stages"]] == [1, 5, 5]
+    assert guard["os_network_sandbox"] is False
+    assert guard["previous_empty_log_was_not_valid_offline_evidence"] is True
+    assert [row["stage"] for row in guard["stages"]] == ["raw", "compatible-1", "compatible-2"]
+    for row in guard["stages"]:
+        assert row["entrypoints"]["module:sspm"] == 1
+        if row["stage"] != "raw":
+            assert row["entrypoints"]["module:qlib.cli.run"] == 1
+            assert row["entrypoints"]["file:read_exp_res.py"] == 1
     assert real["frozen_current_data"]["provider_file_count"] == 93
     assert real["frozen_current_data"]["provider_total_bytes"] == 920_339
     assert real["frozen_current_data"]["paper_time_snapshot"] is False
@@ -267,7 +297,12 @@ def test_committed_audit_preserves_the_native_result_boundary() -> None:
     assert compatible["expected_metrics_atol_1e_12"] is True
     assert compatible["metrics_repeat_atol_1e_12"] is True
     assert compatible["max_reported_repeat_difference"] == 0.0
-    assert compatible["network_attempts"] == []
+    assert compatible["network_attempts"] == guard["blocked_attempts"]
+    assert len(compatible["network_attempts"]) == 2
+    assert {row["operation"] for row in compatible["network_attempts"]} == {"socket.getaddrinfo"}
+    for attempt in compatible["network_attempts"]:
+        assert any(frame["module"] == "mlflow.telemetry.client" and frame["function"] == "_get_config"
+                   for frame in attempt["call_stack"])
     assert compatible["llm_calls"] == 0
     assert compatible["paper_configuration"] is False
     assert compatible["paper_result_credit"] is False

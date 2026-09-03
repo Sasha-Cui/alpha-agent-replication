@@ -17,6 +17,279 @@
       "yfinance": "1.7.0"
     }
   },
+  "network_guard": {
+    "version": "alphamemo-python-audit-hook-v2",
+    "generated_source_sha256": "9c4a842879dcf6c3aa2c7cce30df8d87b574fd110494c7f3882c4473cfdf3653",
+    "scope": "CPython audit hooks for Internet socket connect/sendto/sendmsg and DNS/name resolution",
+    "os_network_sandbox": false,
+    "previous_empty_log_was_not_valid_offline_evidence": true,
+    "positive_controls": {
+      "interpreter_processes": 2,
+      "blocked_operations": 20,
+      "operations_per_interpreter": [
+        "ipv4_connect",
+        "ipv4_connect_ex",
+        "ipv4_sendto",
+        "ipv6_connect",
+        "ipv6_connect_ex",
+        "ipv6_sendto",
+        "getaddrinfo",
+        "gethostbyname",
+        "gethostbyaddr",
+        "getnameinfo"
+      ],
+      "child_inherits_guard": true,
+      "loopback_targets_only": true
+    },
+    "startup_attestation_required": true,
+    "replay_blocked_operations": 2,
+    "replay_network_silent": false,
+    "blocked_operation_counts": {
+      "socket.getaddrinfo": 2
+    },
+    "blocked_attempts": [
+      {
+        "call_stack": [
+          {
+            "file": "socket.py",
+            "function": "getaddrinfo",
+            "line": 974,
+            "module": "socket"
+          },
+          {
+            "file": "connection.py",
+            "function": "create_connection",
+            "line": 60,
+            "module": "urllib3.util.connection"
+          },
+          {
+            "file": "connection.py",
+            "function": "_new_conn",
+            "line": 204,
+            "module": "urllib3.connection"
+          },
+          {
+            "file": "connection.py",
+            "function": "connect",
+            "line": 759,
+            "module": "urllib3.connection"
+          },
+          {
+            "file": "connectionpool.py",
+            "function": "_prepare_proxy",
+            "line": 1055,
+            "module": "urllib3.connectionpool"
+          },
+          {
+            "file": "connectionpool.py",
+            "function": "urlopen",
+            "line": 774,
+            "module": "urllib3.connectionpool"
+          },
+          {
+            "file": "adapters.py",
+            "function": "send",
+            "line": 696,
+            "module": "requests.adapters"
+          },
+          {
+            "file": "sessions.py",
+            "function": "send",
+            "line": 784,
+            "module": "requests.sessions"
+          },
+          {
+            "file": "sessions.py",
+            "function": "request",
+            "line": 651,
+            "module": "requests.sessions"
+          },
+          {
+            "file": "api.py",
+            "function": "request",
+            "line": 71,
+            "module": "requests.api"
+          },
+          {
+            "file": "api.py",
+            "function": "get",
+            "line": 87,
+            "module": "requests.api"
+          },
+          {
+            "file": "client.py",
+            "function": "_get_config",
+            "line": 176,
+            "module": "mlflow.telemetry.client"
+          },
+          {
+            "file": "client.py",
+            "function": "_fetch",
+            "line": 152,
+            "module": "mlflow.telemetry.client"
+          },
+          {
+            "file": "threading.py",
+            "function": "run",
+            "line": 982,
+            "module": "threading"
+          },
+          {
+            "file": "threading.py",
+            "function": "_bootstrap_inner",
+            "line": 1045,
+            "module": "threading"
+          },
+          {
+            "file": "threading.py",
+            "function": "_bootstrap",
+            "line": 1002,
+            "module": "threading"
+          }
+        ],
+        "event": "blocked",
+        "operation": "socket.getaddrinfo",
+        "phase": "replay",
+        "stage": "compatible-1",
+        "version": "alphamemo-python-audit-hook-v2"
+      },
+      {
+        "call_stack": [
+          {
+            "file": "socket.py",
+            "function": "getaddrinfo",
+            "line": 974,
+            "module": "socket"
+          },
+          {
+            "file": "connection.py",
+            "function": "create_connection",
+            "line": 60,
+            "module": "urllib3.util.connection"
+          },
+          {
+            "file": "connection.py",
+            "function": "_new_conn",
+            "line": 204,
+            "module": "urllib3.connection"
+          },
+          {
+            "file": "connection.py",
+            "function": "connect",
+            "line": 759,
+            "module": "urllib3.connection"
+          },
+          {
+            "file": "connectionpool.py",
+            "function": "_prepare_proxy",
+            "line": 1055,
+            "module": "urllib3.connectionpool"
+          },
+          {
+            "file": "connectionpool.py",
+            "function": "urlopen",
+            "line": 774,
+            "module": "urllib3.connectionpool"
+          },
+          {
+            "file": "adapters.py",
+            "function": "send",
+            "line": 696,
+            "module": "requests.adapters"
+          },
+          {
+            "file": "sessions.py",
+            "function": "send",
+            "line": 784,
+            "module": "requests.sessions"
+          },
+          {
+            "file": "sessions.py",
+            "function": "request",
+            "line": 651,
+            "module": "requests.sessions"
+          },
+          {
+            "file": "api.py",
+            "function": "request",
+            "line": 71,
+            "module": "requests.api"
+          },
+          {
+            "file": "api.py",
+            "function": "get",
+            "line": 87,
+            "module": "requests.api"
+          },
+          {
+            "file": "client.py",
+            "function": "_get_config",
+            "line": 176,
+            "module": "mlflow.telemetry.client"
+          },
+          {
+            "file": "client.py",
+            "function": "_fetch",
+            "line": 152,
+            "module": "mlflow.telemetry.client"
+          },
+          {
+            "file": "threading.py",
+            "function": "run",
+            "line": 982,
+            "module": "threading"
+          },
+          {
+            "file": "threading.py",
+            "function": "_bootstrap_inner",
+            "line": 1045,
+            "module": "threading"
+          },
+          {
+            "file": "threading.py",
+            "function": "_bootstrap",
+            "line": 1002,
+            "module": "threading"
+          }
+        ],
+        "event": "blocked",
+        "operation": "socket.getaddrinfo",
+        "phase": "replay",
+        "stage": "compatible-2",
+        "version": "alphamemo-python-audit-hook-v2"
+      }
+    ],
+    "stages": [
+      {
+        "stage": "raw",
+        "guarded_interpreters": 1,
+        "entrypoints": {
+          "module:sspm": 1
+        }
+      },
+      {
+        "stage": "compatible-1",
+        "guarded_interpreters": 5,
+        "entrypoints": {
+          "command": 2,
+          "file:read_exp_res.py": 1,
+          "module:qlib.cli.run": 1,
+          "module:sspm": 1
+        }
+      },
+      {
+        "stage": "compatible-2",
+        "guarded_interpreters": 5,
+        "entrypoints": {
+          "command": 2,
+          "file:read_exp_res.py": 1,
+          "module:qlib.cli.run": 1,
+          "module:sspm": 1
+        }
+      }
+    ],
+    "all_required_entrypoints_guarded": true
+  },
   "frozen_current_data": {
     "acquisition_date": "2026-08-31",
     "builder": "scripts/build_us_qlib_yfinance.py",
@@ -78,7 +351,218 @@
     "expected_metrics_atol_1e_12": true,
     "metrics_repeat_atol_1e_12": true,
     "max_reported_repeat_difference": 0.0,
-    "network_attempts": [],
+    "network_attempts": [
+      {
+        "call_stack": [
+          {
+            "file": "socket.py",
+            "function": "getaddrinfo",
+            "line": 974,
+            "module": "socket"
+          },
+          {
+            "file": "connection.py",
+            "function": "create_connection",
+            "line": 60,
+            "module": "urllib3.util.connection"
+          },
+          {
+            "file": "connection.py",
+            "function": "_new_conn",
+            "line": 204,
+            "module": "urllib3.connection"
+          },
+          {
+            "file": "connection.py",
+            "function": "connect",
+            "line": 759,
+            "module": "urllib3.connection"
+          },
+          {
+            "file": "connectionpool.py",
+            "function": "_prepare_proxy",
+            "line": 1055,
+            "module": "urllib3.connectionpool"
+          },
+          {
+            "file": "connectionpool.py",
+            "function": "urlopen",
+            "line": 774,
+            "module": "urllib3.connectionpool"
+          },
+          {
+            "file": "adapters.py",
+            "function": "send",
+            "line": 696,
+            "module": "requests.adapters"
+          },
+          {
+            "file": "sessions.py",
+            "function": "send",
+            "line": 784,
+            "module": "requests.sessions"
+          },
+          {
+            "file": "sessions.py",
+            "function": "request",
+            "line": 651,
+            "module": "requests.sessions"
+          },
+          {
+            "file": "api.py",
+            "function": "request",
+            "line": 71,
+            "module": "requests.api"
+          },
+          {
+            "file": "api.py",
+            "function": "get",
+            "line": 87,
+            "module": "requests.api"
+          },
+          {
+            "file": "client.py",
+            "function": "_get_config",
+            "line": 176,
+            "module": "mlflow.telemetry.client"
+          },
+          {
+            "file": "client.py",
+            "function": "_fetch",
+            "line": 152,
+            "module": "mlflow.telemetry.client"
+          },
+          {
+            "file": "threading.py",
+            "function": "run",
+            "line": 982,
+            "module": "threading"
+          },
+          {
+            "file": "threading.py",
+            "function": "_bootstrap_inner",
+            "line": 1045,
+            "module": "threading"
+          },
+          {
+            "file": "threading.py",
+            "function": "_bootstrap",
+            "line": 1002,
+            "module": "threading"
+          }
+        ],
+        "event": "blocked",
+        "operation": "socket.getaddrinfo",
+        "phase": "replay",
+        "stage": "compatible-1",
+        "version": "alphamemo-python-audit-hook-v2"
+      },
+      {
+        "call_stack": [
+          {
+            "file": "socket.py",
+            "function": "getaddrinfo",
+            "line": 974,
+            "module": "socket"
+          },
+          {
+            "file": "connection.py",
+            "function": "create_connection",
+            "line": 60,
+            "module": "urllib3.util.connection"
+          },
+          {
+            "file": "connection.py",
+            "function": "_new_conn",
+            "line": 204,
+            "module": "urllib3.connection"
+          },
+          {
+            "file": "connection.py",
+            "function": "connect",
+            "line": 759,
+            "module": "urllib3.connection"
+          },
+          {
+            "file": "connectionpool.py",
+            "function": "_prepare_proxy",
+            "line": 1055,
+            "module": "urllib3.connectionpool"
+          },
+          {
+            "file": "connectionpool.py",
+            "function": "urlopen",
+            "line": 774,
+            "module": "urllib3.connectionpool"
+          },
+          {
+            "file": "adapters.py",
+            "function": "send",
+            "line": 696,
+            "module": "requests.adapters"
+          },
+          {
+            "file": "sessions.py",
+            "function": "send",
+            "line": 784,
+            "module": "requests.sessions"
+          },
+          {
+            "file": "sessions.py",
+            "function": "request",
+            "line": 651,
+            "module": "requests.sessions"
+          },
+          {
+            "file": "api.py",
+            "function": "request",
+            "line": 71,
+            "module": "requests.api"
+          },
+          {
+            "file": "api.py",
+            "function": "get",
+            "line": 87,
+            "module": "requests.api"
+          },
+          {
+            "file": "client.py",
+            "function": "_get_config",
+            "line": 176,
+            "module": "mlflow.telemetry.client"
+          },
+          {
+            "file": "client.py",
+            "function": "_fetch",
+            "line": 152,
+            "module": "mlflow.telemetry.client"
+          },
+          {
+            "file": "threading.py",
+            "function": "run",
+            "line": 982,
+            "module": "threading"
+          },
+          {
+            "file": "threading.py",
+            "function": "_bootstrap_inner",
+            "line": 1045,
+            "module": "threading"
+          },
+          {
+            "file": "threading.py",
+            "function": "_bootstrap",
+            "line": 1002,
+            "module": "threading"
+          }
+        ],
+        "event": "blocked",
+        "operation": "socket.getaddrinfo",
+        "phase": "replay",
+        "stage": "compatible-2",
+        "version": "alphamemo-python-audit-hook-v2"
+      }
+    ],
     "llm_calls": 0,
     "template_symlink_compatibility": true,
     "qrun_executable_bit_compatibility": true,

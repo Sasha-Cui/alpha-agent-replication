@@ -73,13 +73,34 @@ trajectories, factor pools, predictions, returns, or table outputs.
   LightGBM training, prediction, Top-k/drop portfolio simulation, costs, and all
   19 exported metrics. Search JSON and selected formulas are byte-identical; the
   maximum metric difference across repeats is below `1e-12`. Replay makes zero
-  LLM calls and zero network attempts.
+  LLM calls; the repaired guard blocks two MLflow telemetry configuration-fetch
+  DNS attempts, one per compatible replay.
 - This is not a paper configuration. It uses only 14 current-source stocks, a
   heuristic generator, budget 12, warmup 4, and no CSI500. Zero factors pass the
   released 0.10 admission threshold, yet `main-table` still exports and backtests
   all 12 merely valid candidates because `include_all_ok_candidates=True`.
   Therefore all current-input search, prediction, portfolio, and metric outputs
   receive **zero paper-result credit**.
+
+### Network-evidence correction
+
+The earlier generated `sitecustomize.py` contained stray quotes and could fail to
+import while Python continued running. Its empty attempt log therefore did not
+establish that the guard was active. The updated audit compiles the generated code
+and tests actual IPv4/IPv6 connect, connect-ex, UDP send, and four DNS/name-resolution
+operations in both parent and child interpreters: all 20 positive-control calls are
+blocked. These deliberate loopback-only controls are recorded separately from the
+native replay, not reported as workload network traffic.
+
+Every raw/compatible replay must now show startup activation and the required main,
+Qlib, and metric-reader entrypoints. Missing or empty logs, startup errors, missing
+child evidence, and unexpected attempt patterns fail closed. The corrected native
+replays retain the prior search/formula hashes and 19 metrics while recording two
+blocked DNS attempts originating at `mlflow.telemetry.client._get_config`, not at
+market-data or LLM calls. They are network-restricted, not
+network-silent. This is Python audit-hook evidence, **not an OS network sandbox**; it
+does not claim to control arbitrary external binaries or native-library syscalls.
+The source, current-data snapshot, and 0/474 paper-result boundary are unchanged.
 
 ## Why the paper is not replicated
 

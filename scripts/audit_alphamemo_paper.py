@@ -1095,6 +1095,36 @@ def run_native_real_data_probe(
     current = payload["frozen_current_data"]
     raw = payload["raw_execution"]
     compatible = payload["compatible_execution"]
+    guard = payload["network_guard"]
+    if (
+        guard["version"] != "alphamemo-python-audit-hook-v2"
+        or guard["os_network_sandbox"] is not False
+        or guard["positive_controls"]["interpreter_processes"] != 2
+        or guard["positive_controls"]["blocked_operations"] != 20
+        or guard["positive_controls"]["child_inherits_guard"] is not True
+        or guard["startup_attestation_required"] is not True
+        or guard["all_required_entrypoints_guarded"] is not True
+        or guard["replay_blocked_operations"] != 2
+        or guard["replay_network_silent"] is not False
+        or guard["blocked_operation_counts"] != {"socket.getaddrinfo": 2}
+    ):
+        raise RuntimeError("AlphaMemo offline claim lacks a working, attested Python network guard")
+    if [row["stage"] for row in guard["stages"]] != ["raw", "compatible-1", "compatible-2"]:
+        raise RuntimeError("AlphaMemo network guard stage coverage changed")
+    attempts = guard["blocked_attempts"]
+    if len(attempts) != 2 or {row["stage"] for row in attempts} != {"compatible-1", "compatible-2"}:
+        raise RuntimeError("AlphaMemo blocked-attempt stage coverage changed")
+    if not all(any(frame["module"] == "mlflow.telemetry.client" and frame["function"] == "_get_config"
+                   for frame in row["call_stack"]) for row in attempts):
+        raise RuntimeError("AlphaMemo blocked DNS calls are not the observed MLflow telemetry fetches")
+    for stage in guard["stages"]:
+        if stage["entrypoints"].get("module:sspm") != 1:
+            raise RuntimeError("AlphaMemo main process lacks guard evidence")
+        if stage["stage"] != "raw" and any(
+            stage["entrypoints"].get(entry) != 1
+            for entry in ("module:qlib.cli.run", "file:read_exp_res.py")
+        ):
+            raise RuntimeError("AlphaMemo child process lacks guard evidence")
     if payload["source_commit"] != SOURCE_COMMIT or not payload["source_unmodified"]:
         raise RuntimeError("AlphaMemo real-data probe changed the pinned source")
     if current["trading_days"] != 2511 or current["market_assets"] != 14:
@@ -1111,8 +1141,8 @@ def run_native_real_data_probe(
         raise RuntimeError("AlphaMemo compatible export/backtest surface changed")
     if not compatible["metrics_repeat_atol_1e_12"]:
         raise RuntimeError("AlphaMemo compatible real-data metrics are not repeatable")
-    if compatible["network_attempts"] or compatible["llm_calls"] != 0:
-        raise RuntimeError("AlphaMemo real-data replay crossed the offline boundary")
+    if compatible["network_attempts"] != guard["blocked_attempts"] or compatible["llm_calls"] != 0:
+        raise RuntimeError("AlphaMemo real-data replay network-attempt accounting changed")
     if compatible["paper_configuration"] or compatible["paper_result_credit"]:
         raise RuntimeError("AlphaMemo component probe received paper credit")
     if payload["paper_result_cells_reproduced"] != 0:
@@ -1288,6 +1318,19 @@ def build_audit(
         "native_current_data_replay_network_attempts": len(
             real_probe["compatible_execution"]["network_attempts"]
         ),
+        "native_current_data_network_guard_version": real_probe["network_guard"]["version"],
+        "native_current_data_network_guard_selftest_blocked_operations": real_probe[
+            "network_guard"
+        ]["positive_controls"]["blocked_operations"],
+        "native_current_data_network_guard_child_inheritance_verified": True,
+        "native_current_data_network_guard_entrypoints_attested": True,
+        "native_current_data_network_guard_interpreters": sum(
+            row["guarded_interpreters"] for row in real_probe["network_guard"]["stages"]
+        ),
+        "native_current_data_network_guard_is_os_sandbox": False,
+        "native_current_data_replay_network_silent": False,
+        "native_current_data_replay_blocked_dns_attempts": 2,
+        "native_current_data_blocked_network_origin": "mlflow.telemetry.client._get_config",
         "native_current_data_probe_paper_configuration": False,
         "native_current_data_probe_paper_result_credit": False,
         "native_synthetic_smoke_deterministic": True,
@@ -1331,7 +1374,12 @@ def build_audit(
             "parent above the repository; the tracked qrun wrapper is also non-executable. With a scratch-only "
             "template symlink and byte-identical executable wrapper copy, two runs complete native factor export, "
             "LightGBM training, predictions, portfolio/cost simulation, and 19 metrics. Search output is byte-"
-            "identical and metrics agree within 1e-12, with zero LLM or network calls during replay. This bounded "
+            "identical and metrics agree within 1e-12. The previous generated socket guard had invalid syntax, "
+            "so an empty log was not proof of offline execution. Revalidation uses a compiled CPython audit-hook "
+            "guard, 20 blocked loopback/socket/DNS positive controls across parent and child interpreters, and "
+            "startup/entrypoint attestations for the main, Qlib, reader, and helper processes. The guard blocks "
+            "two MLflow telemetry configuration-fetch DNS attempts, one per compatible run; the workloads are not network-"
+            "silent. This is not an operating-system network sandbox. This bounded "
             "14-stock heuristic diagnostic admits zero factors at the 0.10 threshold and receives zero paper "
             "credit. None of that reproduces the paper. "
             "The official 12-step smoke itself never reaches its 30-step memory warmup. No Qlib input snapshot, reported LLM "
@@ -1420,13 +1468,34 @@ trajectories, factor pools, predictions, returns, or table outputs.
   LightGBM training, prediction, Top-k/drop portfolio simulation, costs, and all
   19 exported metrics. Search JSON and selected formulas are byte-identical; the
   maximum metric difference across repeats is below `1e-12`. Replay makes zero
-  LLM calls and zero network attempts.
+  LLM calls; the repaired guard blocks two MLflow telemetry configuration-fetch
+  DNS attempts, one per compatible replay.
 - This is not a paper configuration. It uses only 14 current-source stocks, a
   heuristic generator, budget 12, warmup 4, and no CSI500. Zero factors pass the
   released 0.10 admission threshold, yet `main-table` still exports and backtests
   all 12 merely valid candidates because `include_all_ok_candidates=True`.
   Therefore all current-input search, prediction, portfolio, and metric outputs
   receive **zero paper-result credit**.
+
+### Network-evidence correction
+
+The earlier generated `sitecustomize.py` contained stray quotes and could fail to
+import while Python continued running. Its empty attempt log therefore did not
+establish that the guard was active. The updated audit compiles the generated code
+and tests actual IPv4/IPv6 connect, connect-ex, UDP send, and four DNS/name-resolution
+operations in both parent and child interpreters: all 20 positive-control calls are
+blocked. These deliberate loopback-only controls are recorded separately from the
+native replay, not reported as workload network traffic.
+
+Every raw/compatible replay must now show startup activation and the required main,
+Qlib, and metric-reader entrypoints. Missing or empty logs, startup errors, missing
+child evidence, and unexpected attempt patterns fail closed. The corrected native
+replays retain the prior search/formula hashes and 19 metrics while recording two
+blocked DNS attempts originating at `mlflow.telemetry.client._get_config`, not at
+market-data or LLM calls. They are network-restricted, not
+network-silent. This is Python audit-hook evidence, **not an OS network sandbox**; it
+does not claim to control arbitrary external binaries or native-library syscalls.
+The source, current-data snapshot, and 0/474 paper-result boundary are unchanged.
 
 ## Why the paper is not replicated
 
