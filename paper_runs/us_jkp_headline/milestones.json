@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 8,
+    "closed": 9,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 6,
+    "closed_not_evaluable": 7,
     "in_progress": 1,
-    "queued": 60
+    "queued": 59
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -162,16 +162,16 @@
       "title": "A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist",
       "system_ids": "SYS-FIN-AGENT",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M009_finagent/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M009_finagent/verdict.md",
+      "evaluated_scope": "No common-task return: the headline multimodal LLM decision policy has no released paper-time inputs, memories, trajectories, native actions, or portfolio rule; runnable metrics, environment mechanics, and technical baselines do not generate FinAgent decisions.",
+      "next_action": "Closed. Preserve the extensive runnable-component evidence and the unresolved 0/1,061 result-unit finding; do not promote baseline records, synthetic actions, or a reduced JKP prompt to FinAgent.",
+      "closure_reason": "The author-linked source is substantial, but its executable components stop short of the central policy and the native chart path exposes future prices. All bounded substitutes either use baselines/outputs, violate no-lookahead, or remove multimodal memory and reflection."
     },
     {
       "milestone_id": "M010",
@@ -179,7 +179,7 @@
       "title": "LLMFactor: Extracting Profitable Factors through Prompts for Explainable Stock Movement Prediction",
       "system_ids": "SYS-LLM-FACTOR",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

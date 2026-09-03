@@ -1,0 +1,19 @@
+{
+  "milestone_id": "M009",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/finagent/README.md",
+    "paper_runs/paper_replication_audits/finagent/manifest.json",
+    "paper_runs/paper_replication_audits/finagent/native_execution.json",
+    "paper_runs/paper_replication_audits/finagent/paper_mechanism_conformance.csv",
+    "paper_runs/paper_replication_audits/finagent/released_config_conformance.csv",
+    "paper_runs/paper_replication_audits/finagent/released_strategy_record_paper_conformance.csv",
+    "paper_runs/paper_replication_audits/finagent/paper_internal_consistency_checks.csv"
+  ],
+  "bounded_checks": [
+    "Separated the full multimodal decision policy from runnable environment, metrics, rule-baseline, and document components.",
+    "Checked the paper-era source, current source, released records, native component execution, current-input baseline replay, and no-lookahead boundary for a transferable decision stream.",
+    "Rejected baseline promotion, rule-record promotion, synthetic action replay, current-response metric replay, a reduced modern-model policy, and future-exposed chart execution."
+  ],
+  "outcome": "The release is substantial and partially runnable, but no artifact generates the paper's FinAgent actions without unavailable paper-time inputs, memory/trajectory state, and models. Its native chart path also violates the common no-lookahead rule."
+}

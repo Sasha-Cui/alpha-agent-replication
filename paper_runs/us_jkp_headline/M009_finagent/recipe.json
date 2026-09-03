@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M009",
+  "canonical_work_id": "CensusArxiv240218485",
+  "paper": "A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist",
+  "paper_url": "https://arxiv.org/abs/2402.18485v3",
+  "paper_pdf_sha256": "c5964450c7dd29c00cc92cbc845cd14223d08f04429f6b4b0c612c8678b69922",
+  "paper_source_sha256": "421e432111f5543c9f7c1ba1a2b65d1d8b3ba686ad5f02c937b0d60561eaf1a7",
+  "source_url": "https://github.com/DVampire/FinAgent",
+  "source_commit": "08fb217d374b6c923b0ab3e6dbd8213e1d0fcf1c",
+  "headline_strategy": "Multimodal LLM trading agent combining market-intelligence summaries, price charts, three-level memory with diversified retrieval, low- and high-level reflection, strategy tools, and a final BUY/HOLD/SELL decision",
+  "paper_configuration": {
+    "assets": ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA", "ETHUSD"],
+    "retrieval_horizons_days": [1, 7, 14],
+    "top_k_memories": 5,
+    "native_frequency": "daily single-asset decisions"
+  },
+  "paper_portability_to_common_task": "not defensibly executable from released inputs and outputs without replacing the central multimodal decision policy",
+  "released_component_credit": {
+    "paper_era_core_modules_imported": 65,
+    "paper_era_controlled_native_component_runs": 2,
+    "released_source_mechanisms_verified": 13,
+    "paper_mechanisms_audited": 31
+  },
+  "missing_headline_objects": [
+    "the exact Financial Modeling Prep price/news/fundamental input snapshot",
+    "paper-time multimodal market-intelligence records and rendered decision images",
+    "FinAgent memories, retrieval state, and reflection trajectories",
+    "paper-time model endpoints or an author-approved replacement policy",
+    "native agent decisions, action/equity paths, checkpoints, and result tables",
+    "a paper-defined cross-sectional portfolio combining 1,000 stock agents",
+    "stochastic trial seeds and variance"
+  ],
+  "material_source_conflicts": [
+    "Validation charts use mode=train and expose 14 future days to the vision-reflection path.",
+    "The released environment is long-only although the paper explains a TSLA short position.",
+    "Loaded optimized rule parameters are overwritten by a default-parameter signal call.",
+    "Twenty-one asset-list references and three processor/downloader routes are broken.",
+    "Released Sharpe, Calmar, and Sortino formulas do not match the paper equations."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Use the released Buy-and-Hold or technical-rule strategies",
+      "reason": "They are paper comparators/tool components, not outputs of the multimodal FinAgent decision policy; the 90 opaque rule records also match 0 of 288 comparable appendix cells."
+    },
+    {
+      "route": "Use the controlled BUY/HOLD/SELL environment run",
+      "reason": "It validates accounting mechanics on a synthetic action sequence but generates no agent decision."
+    },
+    {
+      "route": "Replay current Yahoo baseline correspondence",
+      "reason": "The 13 of 36 matched unique cells use present-day Yahoo responses, not the paper's FMP snapshot, and carry no FinAgent result credit."
+    },
+    {
+      "route": "Run a modern LLM using only JKP characteristics and monthly charts",
+      "reason": "This omits the paper's market-intelligence corpus, multimodal memories, diversified retrieval, reflection state, and native daily timing while adding a new portfolio rule."
+    },
+    {
+      "route": "Use the released validation chart path literally",
+      "reason": "It exposes future prices and would violate the common no-lookahead contract."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/finagent",
+  "result_policy": "No baseline, rule record, synthetic environment action, or generic JKP policy is entered as a FinAgent monthly return. This prevents either a false failure claim or unjustified credit for the paper's reported positive performance.",
+  "status": "closed_not_evaluable"
+}
