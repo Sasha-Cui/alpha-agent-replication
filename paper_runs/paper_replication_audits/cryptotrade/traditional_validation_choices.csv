@@ -1,0 +1,13 @@
+asset,strategy,objective,selected_parameters,tie_count,validation_score,released_fixed_parameter,fixed_parameter_is_winner,selection_uses_test_data
+btc,sma,total_return_pct,"[""10""]",1,3.2589667705520853,15,False,False
+btc,sma,sharpe_ratio,"[""10""]",1,0.04873367799419245,15,False,False
+btc,slma,total_return_pct,"[""[5,10]""]",1,3.402217911009564,"[15,30]",False,False
+btc,slma,sharpe_ratio,"[""[5,10]""]",1,0.04978175457237316,"[15,30]",False,False
+eth,sma,total_return_pct,"[""20"", ""30""]",2,-4.168247666323999,15,False,False
+eth,sma,sharpe_ratio,"[""20"", ""30""]",2,-0.01980650807131037,15,False,False
+eth,slma,total_return_pct,"[""[15,30]""]",1,8.8216262822431,"[15,30]",True,False
+eth,slma,sharpe_ratio,"[""[15,30]""]",1,0.06797755528617161,"[15,30]",True,False
+sol,sma,total_return_pct,"[""10""]",1,8.056271978970763,15,False,False
+sol,sma,sharpe_ratio,"[""10""]",1,0.04982184349583088,15,False,False
+sol,slma,total_return_pct,"[""[5,10]""]",1,18.50022790314567,"[15,30]",False,False
+sol,slma,sharpe_ratio,"[""[5,10]""]",1,0.08224776375357916,"[15,30]",False,False

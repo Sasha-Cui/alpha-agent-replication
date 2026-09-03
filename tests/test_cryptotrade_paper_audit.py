@@ -136,7 +136,7 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
     assert manifest["paper_strategy_regime_rows_mismatched"] == 2
     assert manifest["paper_strategy_regime_rows_unverifiable"] == 62
     assert manifest["paper_described_validation_selections_total"] == 7
-    assert manifest["paper_described_validation_nonidentifying_ties"] == 1
+    assert manifest["paper_described_validation_nonidentifying_ties"] == 2
     assert manifest["full_period_llm_result_logs_shipped_in_official_release"] is False
     assert manifest["matching_full_period_llm_result_traces_recovered_from_paper_author_history"] is True
     assert manifest["paper_author_history_commit"] == audit.AUTHOR_HISTORY_COMMIT
@@ -200,12 +200,17 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
 
     assert len(diagnosis) == 6
     assert Counter(row["numeric_lineage"] for row in diagnosis) == {
-        "released_data_counterfactual_not_method_faithful": 4,
+        "legacy_adapter_artifact_not_native_sma": 4,
         "paper_internal_copy_pattern": 2,
     }
     assert all(row["method_faithful_replication_credit"] == "no" for row in diagnosis)
     sol_diagnosis = [row for row in diagnosis if row["asset"] == "sol"]
-    assert all(row["period_1_display_match"] == "yes" for row in sol_diagnosis)
+    assert all(row["period_1_display_match"] == "no" for row in sol_diagnosis)
+    assert all(row["legacy_constant_sell_display_match"] == "yes" for row in sol_diagnosis)
+    assert manifest["sol_bear_sma_cells_matching_undisclosed_period_1"] == 0
+    assert manifest["sol_bear_sma1_previous_diagnosis_was_adapter_artifact"] is True
+    assert manifest["sol_bear_constant_sell_counterfactual_cells_matching"] == 4
+    assert manifest["traditional_selection_protocol"]["matching_cells_under_both_objectives"] == 16
     eth_diagnosis = [row for row in diagnosis if row["asset"] == "eth"]
     assert all(row["duplicated_paper_cell"].startswith("eth|sma|bear|") for row in eth_diagnosis)
 
@@ -303,6 +308,10 @@ def test_committed_audit_is_partial_and_fail_closed() -> None:
         "all [1,3,5,10,20,30] tie"
     )
     assert lstm_selection["paper_test_metric_cells_matching_with_fixed_parameter"] == "8"
+    assert lstm_selection["validation_argmax_tie_count"] == "6"
+    eth_sma_selection = next(row for row in selection if row["asset"] == "eth" and row["strategy"] == "sma")
+    assert json.loads(eth_sma_selection["all_validation_argmax_parameters"]) == [20, 30]
+    assert eth_sma_selection["validation_argmax_tie_count"] == "2"
 
     assert len(lstm_fixed) == 240
     assert {row["lookback"] for row in lstm_fixed} == {"5"}

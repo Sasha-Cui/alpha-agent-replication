@@ -1,0 +1,50 @@
+{
+  "source_commit": "210da73af5f17992be425e61305524a5c24dae40",
+  "native_baseline_sha256": "9baf6e13ce4c504d7dee0bfe3fa14d5e953b3276cd43cc11b91cb862243e606e",
+  "execution_runtime": {
+    "python": "3.12.4",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "platform": "linux"
+  },
+  "native_environment_sha256": "a05443b96d6e86b13ee33adf1c5d6a16dac9195de6857a3e9c2916cf0c393f3f",
+  "paper_url": "https://aclanthology.org/2024.emnlp-main.63.pdf",
+  "paper_sha256": "376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf",
+  "paper_locator": "Appendix E items 2-3, Tables 1-4",
+  "validation_candidates": 45,
+  "validation_native_runs": 90,
+  "selection_cases": 12,
+  "objectives": [
+    "total_return_pct",
+    "sharpe_ratio"
+  ],
+  "held_out_distinct_configurations": 36,
+  "held_out_native_runs": 72,
+  "all_native_repeats_exact": true,
+  "all_adapter_native_metrics_equal_atol_1e_12": true,
+  "selection_uses_test_data": false,
+  "tie_absolute_tolerance": 1e-12,
+  "compared_paper_cells_per_objective": 72,
+  "matching_cells_by_objective_all_ties_required": {
+    "total_return_pct": 16,
+    "sharpe_ratio": 16
+  },
+  "matching_cells_under_both_objectives": 16,
+  "fixed_settings_match_cells": 66,
+  "native_sma1_hold_diagnostic_runs": 2,
+  "native_sma1_sol_bear_metrics": {
+    "total_return_pct": -17.938344866190505,
+    "daily_return_mean_pct": -0.2854919678732996,
+    "daily_return_std_pct": 1.6419518324881228,
+    "sharpe_ratio": -0.1738735340613987
+  },
+  "constant_sell_counterfactual_metrics": {
+    "total_return_pct": 1.0350520767212767,
+    "daily_return_mean_pct": 0.01565348642954444,
+    "daily_return_std_pct": 0.10049084145377195,
+    "sharpe_ratio": 0.15577027919251124
+  },
+  "constant_sell_is_not_native_sma1": true,
+  "additional_paper_result_credit": 0,
+  "scope": "SMA uses the published grid; SLMA uses all short<long pairs from the released grid. Return and Sharpe are explicit alternative interpretations of the paper's unspecified best-performance objective. Released validation prices differ from the paper summary, so no exact author-protocol reconstruction is claimed."
+}

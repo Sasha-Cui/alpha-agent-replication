@@ -56,10 +56,44 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
 - SOL-bear SMA is the larger mismatch: the paper reports +1.04% return,
-  0.02+/-0.10 daily return, and 0.16 Sharpe. Those four cells exactly reproduce
-  with a 1-day moving average, but the paper and source both define the candidate
-  grid as [5, 10, 15, 20, 30]; every disclosed candidate loses 17.77%--22.19%.
-  The numeric lineage is therefore diagnosed without claiming faithful replication.
+  0.02+/-0.10 daily return, and 0.16 Sharpe. Our earlier attribution to SMA(1)
+  was an audit-adapter bug: it sold on equal or undefined indicators, whereas
+  the native source holds. Native SMA(1) holds throughout and returns -17.94%.
+  A constant-half-position-sell counterfactual matches the four paper numbers,
+  but it is neither native SMA(1) nor a disclosed paper strategy. Every disclosed
+  candidate [5, 10, 15, 20, 30] loses 17.77%--22.19%. The earlier attribution
+  is withdrawn, and the paper's numeric provenance remains unresolved.
+
+## Validation-selection protocol check
+
+Appendix E items 2--3 prescribe choosing SMA/SLMA parameters on validation
+performance. We now run the verbatim native `run_strategy` function, not only
+the audit adapter: 45 validation configurations twice, 36 selected/fixed held-out
+configurations twice, and the SMA(1) hold diagnostic twice (**164 native runs**).
+All repeats are exact and all native/adapter metrics agree within 1e-12. The
+82 retained action/wealth paths independently reconstruct their result metrics.
+The harness isolates that function from unused imports, supplies its omitted
+`dataset` argument and each asset's matching native environment/data frame, and
+records the Python/NumPy/pandas versions. It does not execute the monolithic
+ETH launcher or claim recovery of a missing per-asset author launcher.
+
+The paper does not define "best performance" or the complete SLMA search grid.
+We therefore evaluate return and Sharpe as separate explicit selection objectives,
+using the published five SMA periods and all ten short<long pairs of those periods.
+All validation ties are retained before evaluating held-out periods; in particular,
+ETH SMA periods 20 and 30 tie. Neither objective consults test results.
+
+Both objectives match **16/72 SMA/SLMA paper cells**, requiring every tied choice
+to match, versus **66/72 with the released fixed settings**. Only ETH SLMA's fixed
+15/30 setting is validation-optimal; the other five asset/strategy choices differ.
+These results expose a source/paper selection discrepancy, not an exact recovery
+of the missing author tuning trace: released validation prices also disagree with
+the paper summary. No new paper-result credit is awarded. The 214/480 aggregate
+continues to describe source-default numeric matches and author-trace
+corroboration, **not 214 fully protocol-faithful results**. See
+`traditional_selection_protocol.json`, `traditional_validation_grid.csv`,
+`traditional_validation_choices.csv`, `traditional_selected_test_cells.csv`, and
+`traditional_selection_paths.json`.
 
 ## LSTM temporal-validity correction
 

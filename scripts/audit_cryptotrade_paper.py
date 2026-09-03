@@ -56,6 +56,13 @@ LSTM_TEMPORAL_SHA256 = {
     "lstm_future_price_counterexamples.csv": "66f85a66013b7b732cd4c9ec3bea5f70979e4d46066f3ad630145465cc3e8677",
     "lstm_temporality.json": "3fe83e530113b2466da83fae9e2142310bb9ddb7ca052569199ed4ce9aee0834",
 }
+SELECTION_PROTOCOL_SHA256 = {
+    "traditional_selection_paths.json": "2f2a5e7b645440112890fa229d8ade35370de98daf628fdd5b5cd2fc2894f659",
+    "traditional_selection_protocol.json": "a984fb301284ff38c27fa1450c486754964f1cc466749c81abefda86a4c2a17a",
+    "traditional_validation_choices.csv": "786ac76c1e36ed8a35df31ae652b3a433af26eff89698e1bed241903581db306",
+    "traditional_validation_grid.csv": "08af622fdf13eff251eafb73436df02a3241c5df85d6cc7fef4402acaa6583c0",
+    "traditional_selected_test_cells.csv": "fff52345f7ccaa76a3bf33b4a89ca3a1bfe45b73c9c0ee9e00718f988b8d9db1",
+}
 LSTM_RESULT_SHA256 = {
     "cryptotrade_lstm_cell_census.csv": "db111f794da535e7d91f2cf6e5afa620726f8b0667d4fb1f9be1d94be93391ca",
     "cryptotrade_lstm_cell_summary.csv": "3ad76d582d7a5cb8cb1389956a412383e68df2c676d198e9bc11a5c3f05c491f",
@@ -939,6 +946,90 @@ def read_csv(path: Path) -> List[Dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def verify_selection_protocol(root: Path = DEFAULT_LSTM_TEMPORAL_ROOT) -> Dict[str, Any]:
+    for name, digest in SELECTION_PROTOCOL_SHA256.items():
+        if sha256(root / name) != digest:
+            raise RuntimeError(f"Traditional selection evidence changed: {name}")
+    summary = json.loads((root / "traditional_selection_protocol.json").read_text())
+    paths = json.loads((root / "traditional_selection_paths.json").read_text())
+    grid = read_csv(root / "traditional_validation_grid.csv")
+    choices = read_csv(root / "traditional_validation_choices.csv")
+    cells = read_csv(root / "traditional_selected_test_cells.csv")
+    if summary["source_commit"] != SOURCE_COMMIT or summary["paper_sha256"] != PAPER_SHA256:
+        raise RuntimeError("Selection protocol primary-source identity changed")
+    if len(grid) != 45 or len(choices) != 12 or len(cells) != 168 or len(paths) != 82:
+        raise RuntimeError("Selection protocol surface changed")
+    path_metrics = {}
+    path_hashes = {}
+    for name, rows in paths.items():
+        wealth = np.asarray([1_000_000.0, *[row["net_worth"] for row in rows]], dtype=float)
+        returns = np.r_[0.0, wealth[1:] / wealth[:-1] - 1] * 100
+        values = {"total_return_pct": (wealth[-1] / wealth[0] - 1) * 100,
+                  "daily_return_mean_pct": float(returns.mean()),
+                  "daily_return_std_pct": float(returns.std()),
+                  "sharpe_ratio": float(returns.mean() / returns.std())}
+        if not all(np.isfinite(value) for value in values.values()):
+            raise RuntimeError("Nonfinite source-path metrics")
+        path_metrics[name] = values
+        path_hashes[name] = hashlib.sha256((json.dumps(rows, sort_keys=True, separators=(",", ":")) + "\n").encode()).hexdigest()
+    for row in grid:
+        start, end, *_ = PAPER_SPLITS[row["asset"]]["validation"]
+        if row["split"] != "validation" or row["start"] != start or row["end"] != end:
+            raise RuntimeError("Validation selector consumed the wrong calendar")
+        name = f"validation|{row['asset']}|{row['strategy']}|{row['parameter']}"
+        if row["path_sha256"] != path_hashes[name] or any(abs(float(row[m]) - path_metrics[name][m]) > 1e-12 for m in METRICS):
+            raise RuntimeError("Validation metrics do not reconstruct from native paths")
+    objective_matches = {}
+    chosen = {}
+    for row in choices:
+        subset = [r for r in grid if r["asset"] == row["asset"] and r["strategy"] == row["strategy"]]
+        if row["objective"] not in {"total_return_pct", "sharpe_ratio"} or row["selection_uses_test_data"] != "False":
+            raise RuntimeError("Invalid validation-only selection objective")
+        best = max(float(r[row["objective"]]) for r in subset)
+        winners = {r["parameter"] for r in subset if abs(float(r[row["objective"]]) - best) <= 1e-12}
+        if set(json.loads(row["selected_parameters"])) != winners or int(row["tie_count"]) != len(winners):
+            raise RuntimeError("Selection did not retain every validation tie")
+        chosen[(row["asset"], row["strategy"], row["objective"])] = winners
+    paper = {(r["asset"], r["strategy"], r["regime"], r["metric"]): r["paper_value"] for r in paper_result_rows()}
+    grouped = {}
+    for row in cells:
+        key = (row["asset"], row["strategy"], row["regime"], row["metric"])
+        winners = chosen[(row["asset"], row["strategy"], row["objective"])]
+        if row["parameter"] not in winners:
+            raise RuntimeError("Held-out evaluation used a non-selected parameter")
+        name = "|".join([row["asset"], row["strategy"], row["parameter"], row["regime"]])
+        value = path_metrics[name][row["metric"]]
+        expected = paper[key]
+        match = abs(value - expected) <= DISPLAY_TOLERANCE
+        if row["path_sha256"] != path_hashes[name] or abs(float(row["recomputed_value"]) - value) > 1e-12:
+            raise RuntimeError("Selected-test metrics do not reconstruct from native paths")
+        if float(row["paper_value"]) != expected or (row["display_match"] == "True") != match:
+            raise RuntimeError("Selected-test paper comparison changed")
+        grouped.setdefault((row["objective"], key), {})[row["parameter"]] = match
+    for (objective, key), results in grouped.items():
+        if set(results) != chosen[(key[0], key[1], objective)]:
+            raise RuntimeError("Held-out results omitted a tied selection")
+        objective_matches.setdefault(objective, set())
+        if all(results.values()):
+            objective_matches[objective].add(key)
+    if {k: len(v) for k, v in objective_matches.items()} != {"total_return_pct": 16, "sharpe_ratio": 16}:
+        raise RuntimeError("Selection-rule match count changed")
+    if len(set.intersection(*objective_matches.values())) != 16 or summary["additional_paper_result_credit"] != 0:
+        raise RuntimeError("Selection protocol credit boundary changed")
+    fixed_matches = 0
+    for asset in PAPER_SPLITS:
+        for strategy in ("sma", "slma"):
+            parameter = json.dumps(fixed_parameter(strategy), separators=(",", ":"))
+            for regime in REGIMES:
+                metrics = path_metrics["|".join([asset, strategy, parameter, regime])]
+                fixed_matches += sum(abs(metrics[m] - paper[(asset, strategy, regime, m)]) <= DISPLAY_TOLERANCE for m in METRICS)
+    if fixed_matches != 66 or summary["fixed_settings_match_cells"] != fixed_matches:
+        raise RuntimeError("Fixed-setting comparison does not reconstruct from native paths")
+    if any(row["action"] != 0 for row in paths["diagnostic|sol|sma1_hold"]):
+        raise RuntimeError("Native SMA(1) must hold on every equal-indicator decision")
+    return summary
+
+
 def lstm_environment_snapshot(wrapper: Path) -> Dict[str, Any]:
     program = (
         "import json,sys,numpy,pandas,sklearn,torch;"
@@ -1316,15 +1407,22 @@ def source_simulation(
             elif strategy == "sma":
                 period = int(parameter)
                 buy = float(state["open"]) > float(row[f"SMA_{period}"])
-                action = 0.5 if buy and cash > 0 else -0.5 if not buy and held > 0 else 0.0
+                sell = float(state["open"]) < float(row[f"SMA_{period}"])
+                action = 0.5 if buy and cash > 0 else -0.5 if sell and held > 0 else 0.0
             elif strategy == "slma":
                 short, long = parameter
                 buy = float(row[f"SMA_{short}"]) > float(row[f"SMA_{long}"])
-                action = 0.5 if buy else -0.5 if held > 0 else 0.0
+                sell = float(row[f"SMA_{short}"]) < float(row[f"SMA_{long}"])
+                action = 0.5 if buy else -0.5 if sell and held > 0 else 0.0
             elif strategy == "macd":
                 # This intentionally preserves the released runner's signal direction.
                 buy = float(row["MACD"]) < float(row["Signal_Line"])
-                action = 0.5 if buy and cash > 0 else -0.5 if not buy and held > 0 else 0.0
+                sell = float(row["MACD"]) > float(row["Signal_Line"])
+                action = 0.5 if buy and cash > 0 else -0.5 if sell and held > 0 else 0.0
+            elif strategy == "constant_sell_counterfactual":
+                # Diagnostic only: this reproduces the old adapter's erroneous
+                # SMA(1) behavior, not a released or paper-described strategy.
+                action = -0.5 if held > 0 else 0.0
             elif strategy == "bollinger_bands":
                 lower = float(row["SMA_20"]) - 2 * float(row["STD_20"])
                 upper = float(row["SMA_20"]) + 2 * float(row["STD_20"])
@@ -1530,6 +1628,7 @@ def parameter_selection_audit(
                 for parameter in parameters
             ]
             best_parameter, best_return = max(results, key=lambda item: item[1])
+            all_best = [parameter for parameter, value in results if abs(value - best_return) <= 1e-12]
             released_fixed = fixed_parameter(strategy)
             relevant = [
                 row
@@ -1545,14 +1644,16 @@ def parameter_selection_audit(
                     "paper_rule": "select best validation performance",
                     "released_runner_fixed_parameter": str(released_fixed),
                     "released_data_validation_argmax": str(best_parameter),
+                    "all_validation_argmax_parameters": json.dumps(all_best),
+                    "validation_argmax_tie_count": len(all_best),
                     "released_data_validation_argmax_return_pct": best_return,
-                    "fixed_parameter_equals_validation_argmax": released_fixed == best_parameter,
+                    "fixed_parameter_equals_validation_argmax": released_fixed in all_best,
                     "paper_test_metric_cells_matching_with_fixed_parameter": sum(
                         row["status"] == "exact_displayed_precision_match" for row in relevant
                     ),
                     "paper_test_metric_cells_total": len(relevant),
                     "status": (
-                        "selection_rule_match" if released_fixed == best_parameter else "selection_rule_mismatch"
+                        "selection_rule_match" if released_fixed in all_best else "selection_rule_mismatch"
                     ),
                 }
             )
@@ -1590,9 +1691,15 @@ def mismatch_diagnosis(
                 duplicated_from = f"eth|sma|bear|{metric}"
                 classification = "exact_duplicate_of_eth_bear_paper_cell"
                 numeric_lineage = "paper_internal_copy_pattern"
-            elif asset == "sol" and regime == "bear" and outside_match:
-                classification = "exact_period_1_sma_match_outside_disclosed_and_released_grid"
-                numeric_lineage = "released_data_counterfactual_not_method_faithful"
+            legacy_value = ""
+            legacy_match = False
+            if asset == "sol" and regime == "bear":
+                legacy_value = source_simulation(environment_module, source_root, asset, start, end, "constant_sell_counterfactual")[metric]
+                legacy_match = abs(float(row["paper_value"]) - legacy_value) <= DISPLAY_TOLERANCE
+                if outside_match or not legacy_match:
+                    raise RuntimeError("SOL-bear native hold versus legacy constant-sell boundary changed")
+                classification = "prior_sma1_diagnosis_was_adapter_tie_handling_artifact"
+                numeric_lineage = "legacy_adapter_artifact_not_native_sma"
             diagnosed.append(
                 {
                     "asset": asset,
@@ -1603,6 +1710,8 @@ def mismatch_diagnosis(
                     "released_fixed_15_value": row["source_recomputed_value"],
                     "period_1_counterfactual_value": outside_grid,
                     "period_1_display_match": "yes" if outside_match else "no",
+                    "legacy_constant_sell_counterfactual_value": legacy_value,
+                    "legacy_constant_sell_display_match": "yes" if legacy_match else "no",
                     "duplicated_paper_cell": duplicated_from,
                     "classification": classification,
                     "numeric_lineage": numeric_lineage,
@@ -1613,11 +1722,11 @@ def mismatch_diagnosis(
         environment_module.SMA_PERIODS = released_periods
     counts = {
         "paper_copy": sum(row["numeric_lineage"] == "paper_internal_copy_pattern" for row in diagnosed),
-        "outside_grid": sum(
-            row["numeric_lineage"] == "released_data_counterfactual_not_method_faithful" for row in diagnosed
+        "legacy_adapter_artifact": sum(
+            row["numeric_lineage"] == "legacy_adapter_artifact_not_native_sma" for row in diagnosed
         ),
     }
-    if len(diagnosed) != 6 or counts != {"paper_copy": 2, "outside_grid": 4}:
+    if len(diagnosed) != 6 or counts != {"paper_copy": 2, "legacy_adapter_artifact": 4}:
         raise RuntimeError(f"CryptoTrade residual diagnosis changed: {counts}")
     return diagnosed
 
@@ -1793,6 +1902,8 @@ def build_audit(
             "paper_rule": "select best validation performance from [1,3,5,10,20,30]",
             "released_runner_fixed_parameter": 5,
             "released_data_validation_argmax": "all [1,3,5,10,20,30] tie",
+            "all_validation_argmax_parameters": "[1, 3, 5, 10, 20, 30]",
+            "validation_argmax_tie_count": 6,
             "released_data_validation_argmax_return_pct": 2.369788794633,
             "fixed_parameter_equals_validation_argmax": True,
             "paper_test_metric_cells_matching_with_fixed_parameter": 8,
@@ -1803,6 +1914,7 @@ def build_audit(
     diagnosis = mismatch_diagnosis(environment_module, source_root, conformance)
     inventory = data_inventory(source_root)
     gaps = source_execution_gaps(source_root)
+    selection_protocol = verify_selection_protocol()
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(output_dir / "tables_2_4_conformance.csv", conformance, list(conformance[0]))
@@ -2005,7 +2117,10 @@ def build_audit(
         "traditional_mismatches_numerically_diagnosed": len(diagnosis),
         "traditional_mismatches_method_faithfully_reproduced": 0,
         "eth_sideways_sma_cells_duplicating_eth_bear": 2,
-        "sol_bear_sma_cells_matching_undisclosed_period_1": 4,
+        "sol_bear_sma_cells_matching_undisclosed_period_1": 0,
+        "sol_bear_sma1_previous_diagnosis_was_adapter_artifact": True,
+        "sol_bear_constant_sell_counterfactual_cells_matching": 4,
+        "traditional_selection_protocol": selection_protocol,
         "dataset_split_price_cells_matched": split_price_matches,
         "dataset_split_price_cells_total": len(splits) * 2,
         "dataset_split_costed_trend_cells_matched": split_trend_matches,
@@ -2015,7 +2130,7 @@ def build_audit(
         ),
         "paper_described_validation_selections_total": len(selection),
         "paper_described_validation_nonidentifying_ties": sum(
-            row["status"] == "selection_rule_nonidentifying_tie"
+            row["validation_argmax_tie_count"] > 1
             for row in selection
         ),
         "paper_ablation_rows": len(PAPER_ABLATION),
@@ -2088,9 +2203,15 @@ def build_audit(
             "All 12 Table 5 values also have exact author-history numeric correspondences and replay "
             "through their historical code snapshots, but every selected trace conflicts with the "
             "paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells "
-            "receive zero method-faithful credit. This is strong component/output evidence, not a full "
-            "CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but "
-            "not method-faithful explanations, LSTM validation is a non-identifying six-way tie, "
+            "receive zero method-faithful credit. This is component/output evidence, not a full CryptoTrade replication. "
+            "A native validation-selection replay evaluates 45 candidates twice and 36 held-out configurations "
+            "twice. Return and Sharpe selection each match only 16/72 SMA/SLMA cells, versus 66/72 under the "
+            "released fixed settings. Every tied ETH SMA setting (20 and 30) is retained. The old adapter also "
+            "mistook equal/undefined indicators for sell signals; corrected SMA(1) holds and returns -17.94%, "
+            "while the prior +1.04% correspondence is a constant-sell counterfactual, not native SMA(1). "
+            "The 214-cell aggregate remains source-default/author-output corroboration, not 214 protocol-faithful "
+            "results; 260 cells lack that corroboration. No new faithful result credit is added. "
+            "LSTM validation is a non-identifying six-way tie, "
             "and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref "
             "census finds no additional attributable paper outputs. All 83 unique output blobs in the "
             "coauthor history were also scanned: none names a released time-series baseline or matches "
@@ -2176,10 +2297,44 @@ traces nor the official artifacts fully reproduce CryptoTrade's LLM/time-series 
   the released path produces -0.07+/-1.00 daily return rather than -0.15+/-1.64.
   The paper's daily cell exactly duplicates its ETH-bear SMA daily cell.
 - SOL-bear SMA is the larger mismatch: the paper reports +1.04% return,
-  0.02+/-0.10 daily return, and 0.16 Sharpe. Those four cells exactly reproduce
-  with a 1-day moving average, but the paper and source both define the candidate
-  grid as [5, 10, 15, 20, 30]; every disclosed candidate loses 17.77%--22.19%.
-  The numeric lineage is therefore diagnosed without claiming faithful replication.
+  0.02+/-0.10 daily return, and 0.16 Sharpe. Our earlier attribution to SMA(1)
+  was an audit-adapter bug: it sold on equal or undefined indicators, whereas
+  the native source holds. Native SMA(1) holds throughout and returns -17.94%.
+  A constant-half-position-sell counterfactual matches the four paper numbers,
+  but it is neither native SMA(1) nor a disclosed paper strategy. Every disclosed
+  candidate [5, 10, 15, 20, 30] loses 17.77%--22.19%. The earlier attribution
+  is withdrawn, and the paper's numeric provenance remains unresolved.
+
+## Validation-selection protocol check
+
+Appendix E items 2--3 prescribe choosing SMA/SLMA parameters on validation
+performance. We now run the verbatim native `run_strategy` function, not only
+the audit adapter: 45 validation configurations twice, 36 selected/fixed held-out
+configurations twice, and the SMA(1) hold diagnostic twice (**164 native runs**).
+All repeats are exact and all native/adapter metrics agree within 1e-12. The
+82 retained action/wealth paths independently reconstruct their result metrics.
+The harness isolates that function from unused imports, supplies its omitted
+`dataset` argument and each asset's matching native environment/data frame, and
+records the Python/NumPy/pandas versions. It does not execute the monolithic
+ETH launcher or claim recovery of a missing per-asset author launcher.
+
+The paper does not define "best performance" or the complete SLMA search grid.
+We therefore evaluate return and Sharpe as separate explicit selection objectives,
+using the published five SMA periods and all ten short<long pairs of those periods.
+All validation ties are retained before evaluating held-out periods; in particular,
+ETH SMA periods 20 and 30 tie. Neither objective consults test results.
+
+Both objectives match **16/72 SMA/SLMA paper cells**, requiring every tied choice
+to match, versus **66/72 with the released fixed settings**. Only ETH SLMA's fixed
+15/30 setting is validation-optimal; the other five asset/strategy choices differ.
+These results expose a source/paper selection discrepancy, not an exact recovery
+of the missing author tuning trace: released validation prices also disagree with
+the paper summary. No new paper-result credit is awarded. The 214/480 aggregate
+continues to describe source-default numeric matches and author-trace
+corroboration, **not 214 fully protocol-faithful results**. See
+`traditional_selection_protocol.json`, `traditional_validation_grid.csv`,
+`traditional_validation_choices.csv`, `traditional_selected_test_cells.csv`, and
+`traditional_selection_paths.json`.
 
 ## LSTM temporal-validity correction
 

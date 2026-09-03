@@ -82,14 +82,66 @@
   "traditional_mismatches_numerically_diagnosed": 6,
   "traditional_mismatches_method_faithfully_reproduced": 0,
   "eth_sideways_sma_cells_duplicating_eth_bear": 2,
-  "sol_bear_sma_cells_matching_undisclosed_period_1": 4,
+  "sol_bear_sma_cells_matching_undisclosed_period_1": 0,
+  "sol_bear_sma1_previous_diagnosis_was_adapter_artifact": true,
+  "sol_bear_constant_sell_counterfactual_cells_matching": 4,
+  "traditional_selection_protocol": {
+    "source_commit": "210da73af5f17992be425e61305524a5c24dae40",
+    "native_baseline_sha256": "9baf6e13ce4c504d7dee0bfe3fa14d5e953b3276cd43cc11b91cb862243e606e",
+    "execution_runtime": {
+      "python": "3.12.4",
+      "numpy": "2.0.2",
+      "pandas": "2.3.3",
+      "platform": "linux"
+    },
+    "native_environment_sha256": "a05443b96d6e86b13ee33adf1c5d6a16dac9195de6857a3e9c2916cf0c393f3f",
+    "paper_url": "https://aclanthology.org/2024.emnlp-main.63.pdf",
+    "paper_sha256": "376606b05f5398c9200b0a560690693ea0a023a97631175ae02528e4dffec5cf",
+    "paper_locator": "Appendix E items 2-3, Tables 1-4",
+    "validation_candidates": 45,
+    "validation_native_runs": 90,
+    "selection_cases": 12,
+    "objectives": [
+      "total_return_pct",
+      "sharpe_ratio"
+    ],
+    "held_out_distinct_configurations": 36,
+    "held_out_native_runs": 72,
+    "all_native_repeats_exact": true,
+    "all_adapter_native_metrics_equal_atol_1e_12": true,
+    "selection_uses_test_data": false,
+    "tie_absolute_tolerance": 1e-12,
+    "compared_paper_cells_per_objective": 72,
+    "matching_cells_by_objective_all_ties_required": {
+      "total_return_pct": 16,
+      "sharpe_ratio": 16
+    },
+    "matching_cells_under_both_objectives": 16,
+    "fixed_settings_match_cells": 66,
+    "native_sma1_hold_diagnostic_runs": 2,
+    "native_sma1_sol_bear_metrics": {
+      "total_return_pct": -17.938344866190505,
+      "daily_return_mean_pct": -0.2854919678732996,
+      "daily_return_std_pct": 1.6419518324881228,
+      "sharpe_ratio": -0.1738735340613987
+    },
+    "constant_sell_counterfactual_metrics": {
+      "total_return_pct": 1.0350520767212767,
+      "daily_return_mean_pct": 0.01565348642954444,
+      "daily_return_std_pct": 0.10049084145377195,
+      "sharpe_ratio": 0.15577027919251124
+    },
+    "constant_sell_is_not_native_sma1": true,
+    "additional_paper_result_credit": 0,
+    "scope": "SMA uses the published grid; SLMA uses all short<long pairs from the released grid. Return and Sharpe are explicit alternative interpretations of the paper's unspecified best-performance objective. Released validation prices differ from the paper summary, so no exact author-protocol reconstruction is claimed."
+  },
   "dataset_split_price_cells_matched": 18,
   "dataset_split_price_cells_total": 24,
   "dataset_split_costed_trend_cells_matched": 9,
   "dataset_split_costed_trend_cells_total": 12,
   "paper_described_validation_selections_matching_released_data_argmax": 1,
   "paper_described_validation_selections_total": 7,
-  "paper_described_validation_nonidentifying_ties": 1,
+  "paper_described_validation_nonidentifying_ties": 2,
   "paper_ablation_rows": 6,
   "paper_ablation_metric_cells_total": 12,
   "paper_ablation_author_history_numeric_correspondences": 12,
@@ -123,7 +175,7 @@
   "source_fixed_gas_fee_asset_units": 0.0014700000000000002,
   "source_contains_hardcoded_credential_literal": false,
   "audit_imported_or_used_credential_module": false,
-  "interpretation": "The released market data, native environment, costs, and traditional-signal logic reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history additionally corroborates 40 LLM cells through exact metric and native state replay. A compatible CPU replay yields four seed/lookback-invariant bear and four source-default bull numeric matches. None receives faithful LSTM result credit: all 198 decisions use future regime prices for training targets, inference, and the comparison price. Twenty-four native training probes reproduce action flips in all three regimes when only a future terminal price is changed and all past/present inputs are held fixed. The compatible Torch 2.4.1 CPU runtime is not the README's declared Torch 2.3.0 CUDA environment. The five full-period model-mismatched traces cannot be reassigned to their declared GPT-3.5 paper rows: only 1/20 declared-model cells and 0/5 complete rows match. All 12 Table 5 values also have exact author-history numeric correspondences and replay through their historical code snapshots, but every selected trace conflicts with the paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells receive zero method-faithful credit. This is strong component/output evidence, not a full CryptoTrade replication: 260 cells remain unverifiable, the six deterministic residuals have numeric but not method-faithful explanations, LSTM validation is a non-identifying six-way tie, and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref census finds no additional attributable paper outputs. All 83 unique output blobs in the coauthor history were also scanned: none names a released time-series baseline or matches a paper time-series return/Sharpe pair.",
+  "interpretation": "The released market data, native environment, costs, and traditional-signal logic reproduce 174/180 displayed traditional-baseline metric cells. Paper-author history additionally corroborates 40 LLM cells through exact metric and native state replay. A compatible CPU replay yields four seed/lookback-invariant bear and four source-default bull numeric matches. None receives faithful LSTM result credit: all 198 decisions use future regime prices for training targets, inference, and the comparison price. Twenty-four native training probes reproduce action flips in all three regimes when only a future terminal price is changed and all past/present inputs are held fixed. The compatible Torch 2.4.1 CPU runtime is not the README's declared Torch 2.3.0 CUDA environment. The five full-period model-mismatched traces cannot be reassigned to their declared GPT-3.5 paper rows: only 1/20 declared-model cells and 0/5 complete rows match. All 12 Table 5 values also have exact author-history numeric correspondences and replay through their historical code snapshots, but every selected trace conflicts with the paper's stated GPT-4o identity and the Full trace is BTC rather than ETH, so those cells receive zero method-faithful credit. This is component/output evidence, not a full CryptoTrade replication. A native validation-selection replay evaluates 45 candidates twice and 36 held-out configurations twice. Return and Sharpe selection each match only 16/72 SMA/SLMA cells, versus 66/72 under the released fixed settings. Every tied ETH SMA setting (20 and 30) is retained. The old adapter also mistook equal/undefined indicators for sell signals; corrected SMA(1) holds and returns -17.94%, while the prior +1.04% correspondence is a constant-sell counterfactual, not native SMA(1). The 214-cell aggregate remains source-default/author-output corroboration, not 214 protocol-faithful results; 260 cells lack that corroboration. No new faithful result credit is added. LSTM validation is a non-identifying six-way tie, and the documented entrypoints are not operational without repair. A dated 37-fork/39-ref census finds no additional attributable paper outputs. All 83 unique output blobs in the coauthor history were also scanned: none names a released time-series baseline or matches a paper time-series return/Sharpe pair.",
   "source_file_sha256": {
     "README.md": "af3e98ec66435814f195919abc1b0c6523b7aec02b93e10878c53de3159ade80",
     "env_history.py": "78cbc77b5c11ce024638a41f76f48a513a12b38c9d657431b3f76a3efcd8a7ab",
@@ -135,7 +187,7 @@
     "utils.py": "5c178dce5994e0914a94166e2e74e5f0cbae10fab945fd2eb3f5eb5ebe689abe"
   },
   "output_sha256": {
-    "README.md": "27bd07dc428e61068e29b424b0b5631eb9bf3a5f253d64b23d8e76d0472c1db4",
+    "README.md": "1e1b390fccfab9e63e2f915a34ad54ef63a0f38c81ae38112bff7c09c7bbc9b8",
     "author_history_llm_trace_audit.csv": "9a5ef331d48da805a028731eb0282260cfa903cbf234a545e30c665ce1442e26",
     "author_history_output_artifact_census.csv": "3d6d573ea4027ff171a88a6a263a3e0fcd2fba3297ceb94a15f3061d9c10d62f",
     "data_inventory.csv": "501a90ede31d0ac67d9a482c7ad7bf9d6685497ccbd14b57d014512e39bb56fe",
@@ -149,13 +201,18 @@
     "lstm_temporality.json": "3fe83e530113b2466da83fae9e2142310bb9ddb7ca052569199ed4ce9aee0834",
     "lstm_validation_grid.csv": "dfed0873933f8efcb0d866f457f1e393dda664944fca21e3a76e4f5746ea1225",
     "paper_internal_inconsistencies.csv": "5582d13bf21f6734459b4e0c628b9ffe38b6cc8aeb3e792bcb1f6f8fa042d930",
-    "parameter_selection_audit.csv": "028c1cf97c078176a65f16f8e27071c0a5289f30d5853df3c40d85479049683d",
+    "parameter_selection_audit.csv": "85f989f94dc5acd902639d918de7a811f428f6280af1e2e87554ee5d385977b0",
     "public_fork_divergence_inventory.csv": "c8907905c280f377a500de4147cfd80a551888a6c4db90176839ca70fe6095b3",
     "source_execution_gaps.csv": "83f759b693053e4e4669950eb462ead53a41e333167ef691f6b8d37ec42815b2",
     "source_history_inventory.csv": "d7c8bc62e33b8eefa57806fc860525c253ac8ce3ad724148164d2b139220b238",
     "table_5_author_trace_audit.csv": "94ecc9bc8fa74293e3bc09717c1badb4764fe0bf5301637561e82bd1ed2486af",
     "table_5_conformance.csv": "b500b5ad1c996a2b55eeffeb9441a85cb1147a9a03888fbaba254b43276b1974",
     "tables_2_4_conformance.csv": "6ca3bc1d4048207b92116a66f213b946b3072a8cc64a17a1f298b2665b1f22d6",
-    "traditional_mismatch_diagnosis.csv": "4f52b77a6193876313ff580a97e77ad37ca2328858dedc680f495e794eb6375f"
+    "traditional_mismatch_diagnosis.csv": "c98d5d9a108afcb7dcdfb36a1c591d5a891209636b310791e0e0c589d6c3d27c",
+    "traditional_selected_test_cells.csv": "fff52345f7ccaa76a3bf33b4a89ca3a1bfe45b73c9c0ee9e00718f988b8d9db1",
+    "traditional_selection_paths.json": "2f2a5e7b645440112890fa229d8ade35370de98daf628fdd5b5cd2fc2894f659",
+    "traditional_selection_protocol.json": "a984fb301284ff38c27fa1450c486754964f1cc466749c81abefda86a4c2a17a",
+    "traditional_validation_choices.csv": "786ac76c1e36ed8a35df31ae652b3a433af26eff89698e1bed241903581db306",
+    "traditional_validation_grid.csv": "08af622fdf13eff251eafb73436df02a3241c5df85d6cc7fef4402acaa6583c0"
   }
 }
