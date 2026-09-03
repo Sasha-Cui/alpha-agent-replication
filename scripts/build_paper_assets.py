@@ -1892,6 +1892,39 @@ def build_candidate_registry_table(metadata: pd.DataFrame, path: Path) -> None:
     write_text(path, tex)
 
 
+def native_evidence_table_cell(row: pd.Series) -> str:
+    """Keep the expanded CryptoTrade audit printable without dropping caveats.
+
+    The full narrative remains in the canonical ledger; this is only a compact
+    display view, with counts read from the same paper-audit manifest.
+    """
+    if row["system_id"] != "SYS-CRYPTO-TRADE":
+        return latex_escape(row["concise_evidence_note"])
+    relative = Path("paper_runs/paper_replication_audits/cryptotrade")
+    manifest = json.loads((REPO_ROOT / relative / "manifest.json").read_text())
+    if manifest["native_lstm_temporal_validation_passed"] or manifest["full_paper_reproduced"]:
+        raise ValueError("CryptoTrade compact fidelity summary requires re-audit")
+    selection = manifest["traditional_selection_protocol"]
+    note = (
+        f"Fixed-source traditional results: {manifest['native_deterministic_metric_cells_matched']}/"
+        f"{manifest['native_deterministic_metric_cells_recomputed']} numeric matches. "
+        f"Validation-selected SMA/SLMA: {selection['matching_cells_under_both_objectives']}/"
+        f"{selection['compared_paper_cells_per_objective']}, versus {selection['fixed_settings_match_cells']}/"
+        f"{selection['compared_paper_cells_per_objective']} fixed-setting matches. The selection objective, "
+        "complete SLMA grid, and validation-data disagreements prevent recovery of the author protocol. "
+        "LSTM has zero faithful-result credit because it uses future inputs. "
+        f"The {manifest['author_history_llm_metric_cells_corroborated']} LLM cells corroborate historical "
+        "author outputs, not fresh decisions. "
+        f"The aggregate {manifest['paper_metric_cells_corroborated_total']}/"
+        f"{manifest['paper_result_metric_cells_total']} is not full protocol-faithful credit. "
+        "The previous SOL-bear SMA(1) explanation was an adapter hold/sell bug: "
+        f"native SMA(1) returns {selection['native_sma1_sol_bear_metrics']['total_return_pct']:.2f}%; "
+        "the constant-sell correspondence is not a disclosed strategy. Table 5 has zero faithful credit. "
+    )
+    url = f"https://github.com/Sasha-Cui/alpha-agent-replication/blob/main/{relative.as_posix()}/README.md"
+    return latex_escape(note) + latex_href(url, "Full audit and limitations")
+
+
 def build_artifact_failure_table(
     native: pd.DataFrame,
     registry: pd.DataFrame,
@@ -1910,7 +1943,7 @@ def build_artifact_failure_table(
                 latex_escape(row["prespecified_G7_monthly_common_task_compatible"]),
                 latex_escape_breakable(row["blocking_stage"]),
                 latex_escape_breakable(row["fidelity_class"]),
-                latex_escape(row["concise_evidence_note"]),
+                native_evidence_table_cell(row),
                 latex_href(row["evidence_url"], "evidence"),
             ]
         )
