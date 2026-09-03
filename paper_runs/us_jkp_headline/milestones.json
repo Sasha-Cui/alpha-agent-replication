@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 11,
+    "closed": 12,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 9,
+    "closed_not_evaluable": 10,
     "in_progress": 1,
-    "queued": 57
+    "queued": 56
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -213,16 +213,16 @@
       "title": "Empirical Asset Pricing with Large Language Model Agents",
       "system_ids": "SYS-EMPIRICAL-ASSET-PRICING-LLM",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M012_aapm/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M012_aapm/verdict.md",
+      "evaluated_scope": "No common-task return: the headline hybrid news-report/manual-factor pricing model lacks paper inputs, training/pretraining, trained weights, predictions and portfolio code; runnable memory/model fixtures do not produce a strategy.",
+      "next_action": "Closed. Preserve the native component and metadata-index evidence; do not promote random forward outputs, metadata paths, JKP factors alone, synthetic reports, or paper displays to AAPM.",
+      "closure_reason": "The paper-era analysis reaches the first missing private news-analysis record before any LLM call, and no route exists from the released components to trained formation-time predictions or holdings. Bounded substitutes remove either the news-agent or trained hybrid mechanism."
     },
     {
       "milestone_id": "M013",
@@ -230,7 +230,7 @@
       "title": "FinVision: A Multi-Agent Framework for Stock Market Prediction",
       "system_ids": "SYS-FIN-VISION",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

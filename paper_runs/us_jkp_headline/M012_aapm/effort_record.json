@@ -1,0 +1,19 @@
+{
+  "milestone_id": "M012",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/aapm/README.md",
+    "paper_runs/paper_replication_audits/aapm/manifest.json",
+    "paper_runs/paper_replication_audits/aapm/native_execution.json",
+    "paper_runs/paper_replication_audits/aapm/source_provenance.json",
+    "paper_runs/paper_replication_audits/aapm/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/aapm/released_metadata_audit.csv",
+    "paper_runs/paper_replication_audits/aapm/paper_internal_consistency_audit.csv"
+  ],
+  "bounded_checks": [
+    "Checked both official paper/source versions, complete official history and public forks for training, prediction, portfolio, checkpoint, or result artifacts.",
+    "Advanced the native analysis path through a reconstructed metadata index and pinned offline embedding model to the first missing article-analysis record, with zero LLM calls.",
+    "Separated deterministic memory/model-forward components from the missing hybrid trained policy and rejected random-weight, metadata-only, JKP-only, synthetic-report, and displayed-output substitutions."
+  ],
+  "outcome": "The release proves that selected memory and model components run, but it cannot train or execute the headline asset-pricing strategy. The first native analysis chunk fails on unavailable private news-derived fields, and no trained prediction or portfolio object exists."
+}

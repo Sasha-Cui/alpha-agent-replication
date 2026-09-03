@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M012",
+  "canonical_work_id": "CensusArxiv240917266",
+  "paper": "Empirical Asset Pricing with Large Language Model Agents",
+  "paper_url": "https://arxiv.org/abs/2409.17266v2",
+  "paper_pdf_sha256": "7e485996d52da6e48b1ac253947b2e9e01904a744c79f5af5dc1b91d1c3f4ded",
+  "paper_source_sha256": "4c81eea6f0d9184258620ede7774350e94916f4e1cebc05fde8067942a81a782",
+  "source_url": "https://github.com/chengjunyan1/AAPM",
+  "source_commit": "f7096b19c9387377b7f3c9ca9795345321968a7c",
+  "headline_strategy": "AAPM hybrid asset-pricing model: iteratively refine stock-specific and macro reports from retrieved WSJ news with an LLM, embed the reports, combine them with asset embeddings and manual financial factors in a historically pretrained pricing network, predict returns, and form TP/EW/VW long-short portfolios",
+  "paper_configuration": {
+    "v1_default_llm": "gpt-3.5-turbo-1106",
+    "v2_reported_llms": ["GPT-4o-0806", "O1-Preview"],
+    "temperature": 0.2,
+    "v1_split": "9 months training, 3 months validation, 1 year test",
+    "portfolio_rules": ["TP", "EW", "VW"]
+  },
+  "paper_portability_to_common_task": "not defensibly executable because the release has components but no training path, paper inputs, trained weights, predictions, or portfolio implementation",
+  "released_component_credit": {
+    "source_modules_imported": 4,
+    "memory_component_runs": 2,
+    "model_forward_component_runs": 2,
+    "reconstructed_metadata_rows": 65733,
+    "pinned_embedding_model_bytes": 1341561506
+  },
+  "missing_headline_objects": [
+    "the filtered WSJ article bodies and derived Tickers, Topics, and Content records",
+    "CRSP daily returns, Jensen-et-al. characteristic inputs, imputation, and mappings",
+    "generated report embeddings and continuously updated macro-note outputs",
+    "historical-factor pretraining code, training entrypoint, sweep history, and trained checkpoint",
+    "v2 GPT-4o/O1 request-response traces, exact generation settings, and parser",
+    "native return predictions, decile assignments, portfolio returns, baselines, and result arrays",
+    "TP/EW/VW long-short portfolio and asset-pricing test implementation"
+  ],
+  "material_source_conflicts": [
+    "Model.forward combines report and asset embeddings but never consumes the paper's manual financial factors.",
+    "The macro note stores a formatted update instruction rather than an LLM response.",
+    "The SKIP path returns three values while its caller expects four.",
+    "Model.eval does not switch dropout and BatchNorm into evaluation mode, and the best-checkpoint path loads the periodic/latest checkpoint.",
+    "The current source still defaults to GPT-3.5-Turbo-1106 and is unchanged from paper-era code except README, so v2 model/result lineage is absent."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Run the released model-forward fixture as a strategy",
+      "reason": "It uses controlled supplied embeddings and random 49-parameter weights; it is not trained and omits manual factors."
+    },
+    {
+      "route": "Use the reconstructed 65,733-row metadata index",
+      "reason": "It contains dates and paths only; every article body and required Tickers/Topics/Content field is absent."
+    },
+    {
+      "route": "Use JKP characteristics alone",
+      "reason": "This preserves only one input family while removing the LLM news-retrieval/refinement and hybrid historical-pretraining mechanism."
+    },
+    {
+      "route": "Generate synthetic reports or call a modern LLM",
+      "reason": "Without the point-in-time WSJ corpus, requests, parser, training target and trained network, this would create a new strategy rather than an accessible-model substitution."
+    },
+    {
+      "route": "Transcribe paper deciles or displayed portfolio statistics",
+      "reason": "Published figures and table cells are outputs, not formation-time scores or holdings."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/aapm",
+  "result_policy": "No random model output, metadata-only index, JKP-only factor model, synthetic report, or displayed paper result is entered as an AAPM return. The positive performance claims remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}
