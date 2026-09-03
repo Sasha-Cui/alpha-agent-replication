@@ -1,5 +1,16 @@
 # Alpha Agent Replication
 
+## Current work: 69 U.S./JKP headline-strategy milestones
+
+The September 3, 2026 research direction is to implement each paper's central
+proposed trading strategy, or its strongest defensible partial version, on a
+common monthly U.S.-stock/JKP benchmark and then move to the next paper. The
+[working protocol](docs/US_JKP_HEADLINE_PROTOCOL.md) and
+[milestone ledger](paper_runs/us_jkp_headline/milestones.json) govern this work.
+The historical studies and submission artifact described below remain preserved
+as provenance; neither their full-paper flags nor software-test counts measure
+completion of the new 69-milestone study.
+
 This repository is the research artifact for an ICAIF 2026 submission asking
 whether public evidence substantiates claims that financial LLM agents discover
 alpha beyond familiar asset-pricing factors. The current study puts source
