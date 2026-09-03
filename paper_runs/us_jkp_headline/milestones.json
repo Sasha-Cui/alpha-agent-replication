@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 1,
     "closed_not_evaluable": 8,
-    "in_progress": 0,
-    "queued": 59
+    "in_progress": 1,
+    "queued": 58
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -196,7 +196,7 @@
       "title": "FinCon: A Synthesized LLM Multi-Agent System with Conceptual Verbal Reinforcement for Enhanced Financial Decision Making",
       "system_ids": "SYS-FIN-CON",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
