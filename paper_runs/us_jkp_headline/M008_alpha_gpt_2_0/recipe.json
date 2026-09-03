@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M008",
+  "canonical_work_id": "CensusArxiv240209746",
+  "paper": "Alpha-GPT 2.0: Human-in-the-Loop AI for Quantitative Investment",
+  "paper_url": "https://arxiv.org/abs/2402.09746v1",
+  "paper_pdf_sha256": "d4e540118939d4fe18e4ba2a4d76c34971059603690f37d8a450c01673912ded",
+  "paper_source_sha256": "024a8b75847160906aa81c936b8ee3d92d2879699ca65c97dc9476c9dc244c8a",
+  "headline_strategy": "Human-in-the-loop quantitative-research workflow in which Alpha Mining, Alpha Modeling, and Alpha Analysis agents collaborate through tools and memory to generate, model, and assess alphas",
+  "paper_state": "four-page Draft. Work in progress with no empirical experiment, displayed numeric result, plotted return series, final generated alpha, or portfolio rule",
+  "paper_portability_to_common_task": "not defensibly executable as a monthly U.S./JKP trading strategy from the authoritative paper and source",
+  "missing_headline_objects": [
+    "an implemented Alpha Mining, Alpha Modeling, or Alpha Analysis agent",
+    "the agents' system-of-procedure prompts and model configuration",
+    "tool implementations and API contracts",
+    "memory contents, retrieval state, and financial knowledge graph",
+    "a generated alpha set or selected final alpha",
+    "a causal score-to-position or portfolio construction rule",
+    "any native evaluation, return path, checkpoint, trace, or output"
+  ],
+  "source_boundaries": [
+    "The authoritative main document renders no experiment and explicitly identifies itself as work in progress.",
+    "Unused Alpha-GPT 1 experiment, table, UI, and architecture files bundled in the 2.0 source archive are not imported by main.tex and are not Alpha-GPT 2.0 evidence.",
+    "Ten repository searches found no author-linked implementation or data.",
+    "The unaffiliated parthmodi152/alpha-gpt project stops after LLM code generation and contains no genetic programming, backtest, market-data, or paper-result node."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Evaluate an Alpha-GPT 1 showcased formula",
+      "reason": "Those expressions belong to a different paper/version and the inactive files bundled with 2.0 are not rendered evidence for the proposed three-agent workflow."
+    },
+    {
+      "route": "Run the unaffiliated community implementation",
+      "reason": "It is a later paper-inspired work in progress without the central modeling, evaluation, or backtest stages and has no author provenance."
+    },
+    {
+      "route": "Implement three generic LLM prompts and a JKP factor search",
+      "reason": "The paper does not specify the SOP prompts, tools, memories, model zoo, search policy, final alpha, or portfolio; doing so would design a new system."
+    },
+    {
+      "route": "Assign zero returns or a generic JKP characteristic",
+      "reason": "Absence of an executable strategy is not a cash strategy and a generic factor would not preserve the paper's human-in-the-loop agent mechanism."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/alpha_gpt_lineage",
+  "result_policy": "No monthly return is fabricated. This closure means the paper proposes an architecture but supplies no empirical or executable trading object; it does not establish that the proposed system would succeed or fail.",
+  "status": "closed_not_evaluable"
+}

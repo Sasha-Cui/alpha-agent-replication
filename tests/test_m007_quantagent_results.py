@@ -69,10 +69,9 @@ def test_m007_diagnostics_and_partial_claim_boundary_are_explicit():
     assert "must not be used as evidence that the full agent worked or failed" in report
 
 
-def test_m007_is_closed_as_a_partial_and_m008_is_active():
+def test_m007_is_closed_as_a_partial():
     ledger = json.loads((ROOT / "paper_runs/us_jkp_headline/milestones.json").read_text())
     rows = {row["milestone_id"]: row for row in ledger["milestones"]}
     assert rows["M007"]["status"] == "completed_partial"
-    assert rows["M008"]["status"] == "in_progress"
-    assert ledger["progress_summary"]["closed"] == 7
-    assert ledger["progress_summary"]["completed_partial"] == 1
+    assert ledger["progress_summary"]["closed"] >= 7
+    assert ledger["progress_summary"]["completed_partial"] >= 1

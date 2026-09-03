@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 7,
+    "closed": 8,
     "completed_adapted": 1,
     "completed_partial": 1,
-    "closed_not_evaluable": 5,
+    "closed_not_evaluable": 6,
     "in_progress": 1,
-    "queued": 61
+    "queued": 60
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -145,16 +145,16 @@
       "title": "Alpha-GPT 2.0: Human-in-the-Loop AI for Quantitative Investment",
       "system_ids": "SYS-ALPHA-GPT",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M008_alpha_gpt_2_0/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M008_alpha_gpt_2_0/verdict.md",
+      "evaluated_scope": "No common-task return: Alpha-GPT 2.0 is an explicitly unfinished architecture proposal with no empirical experiment, executable agents, final alpha, causal trading rule, or portfolio; inactive Alpha-GPT 1 source files are not 2.0 evidence.",
+      "next_action": "Closed. Preserve the architecture/source audit, but do not substitute Alpha-GPT 1 formulas, unaffiliated community code, or a newly designed factor miner for Alpha-GPT 2.0.",
+      "closure_reason": "The authoritative four-page draft contains zero empirical result units and the source omits the agents, prompts, tools, memories, generated alpha and portfolio needed for execution. Every bounded substitute changes the system or attributes a different version's strategy to 2.0."
     },
     {
       "milestone_id": "M009",
@@ -162,7 +162,7 @@
       "title": "A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist",
       "system_ids": "SYS-FIN-AGENT",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",

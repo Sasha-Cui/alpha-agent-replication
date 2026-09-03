@@ -1,0 +1,19 @@
+{
+  "milestone_id": "M008",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/alpha_gpt_lineage/README.md",
+    "paper_runs/paper_replication_audits/alpha_gpt_lineage/manifest.json",
+    "paper_runs/paper_replication_audits/alpha_gpt_lineage/source_provenance.json",
+    "paper_runs/paper_replication_audits/alpha_gpt_lineage/version_lineage_audit.csv",
+    "paper_runs/paper_replication_audits/alpha_gpt_lineage/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/alpha_gpt_lineage/source_search_inventory.csv",
+    "paper_runs/paper_replication_audits/alpha_gpt_lineage/paper_internal_consistency_audit.csv"
+  ],
+  "bounded_checks": [
+    "Separated the 2.0 architecture proposal from Alpha-GPT 1 material carried but unused in its source archive.",
+    "Checked the primary document, authoritative source, method inventory, repository-search evidence, and unaffiliated implementation for an executable alpha or portfolio.",
+    "Rejected version substitution, community-code substitution, a newly invented three-agent system, and zero/generic-factor returns."
+  ],
+  "outcome": "Alpha-GPT 2.0 contains no empirical object and does not identify a formation-time signal or portfolio. A common-task return would necessarily be attributed to a different version or to a newly designed system."
+}
