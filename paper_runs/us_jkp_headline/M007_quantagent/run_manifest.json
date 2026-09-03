@@ -1,0 +1,62 @@
+{
+  "status": "evaluated_partial",
+  "milestone_id": "M007",
+  "candidate_id": "quantagent_atr14_breakout_literal",
+  "completed_at_utc": "2026-09-03T19:07:21.166874+00:00",
+  "benchmark_id": "us_jkp_headline_v1",
+  "code_commit": "3205478a10e02c6cd0e4de7575f0e303d960f1ea",
+  "contract_sha256": "9ce6783c8d4d303510173548088af66fc3add92602f404008c73212f8322ea77",
+  "recipe_sha256": "a81514e343cfa30f489e68e7be4d0a6497f178bb0c565402ad748b2702aa1668",
+  "source_component_manifest_sha256": "1ac9db9119e078726e84788debfe69542952a7abde62e473d3d70fba8b2deba2",
+  "source_component_output_sha256": {
+    "monthly_return_paths.csv": "fe3d1f75b826e54417a674763fb90d10bc5794530ad489a5893c1fd9ddebeef4",
+    "formation_holdings.csv": "6541aa041ce7c9d9b581c4a5c9d579fde388aac20350d2bd800fd0063cdefd02"
+  },
+  "runtime": {
+    "python": "3.9.21",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "platform": "Linux"
+  },
+  "primary_result": {
+    "case": "zero_cost_10",
+    "primary": true,
+    "missing_return_policy": "zero",
+    "cost_bps_one_way": 10.0,
+    "full_months": 305,
+    "full_arithmetic_annualized_return": 0.13648331599590102,
+    "full_cagr": 0.08570435239246565,
+    "full_cumulative_return": 7.084800271934478,
+    "full_annualized_volatility": 0.34873333873892726,
+    "full_annualized_sharpe": 0.391368707360889,
+    "full_maximum_drawdown": -0.6793935534298133,
+    "evaluation_months": 185,
+    "evaluation_start": "2009-08-31",
+    "evaluation_end": "2024-12-31",
+    "jkp_residual_mean_annualized": 0.015352162021429167,
+    "jkp_residual_se_annualized": 0.08553924658193535,
+    "jkp_residual_t_hac": 0.17947506711698488,
+    "jkp_residual_p_two_sided": 0.8575646930155906,
+    "exploratory_bonferroni69_p": 1.0,
+    "hac_lags": 4,
+    "average_traded_notional": 1.8312161351386946,
+    "annualized_linear_cost_drag": 0.021974593621664335,
+    "cash_months": 20,
+    "maximum_missing_forward_gross_weight": 0.125
+  },
+  "prior_jkp_outcomes_seen": true,
+  "confirmatory_claim": false,
+  "implementation_sha256": {
+    "scripts/run_disclosed_component_milestone.py": "3b7e0cb4873eacfc80e39ef36dca86cacd95328bd25ee25104ed9443398adf83",
+    "scripts/run_fidelity_formula_components.py": "43a89a5278daa0183a03f0d88dc2eeec8b9c4dbd56712191448402db5b6c9669",
+    "src/alpha_evolve/headline_backtest.py": "2e3be61a09b03bbf1d5059a823a8058aded4153980dd0ca30c301398958d6f9f",
+    "scripts/run_broad_jkp_crossfit.py": "6c84c990f39bd586b49c76812efb2f70a36823ada52c372e8483502e10379d73"
+  },
+  "output_sha256": {
+    "monthly_returns.csv": "9a2ad94fd9a74e27275ee8e5248ff2d02fee55cb0fa7823f7f0e784a76142e6a",
+    "primary_monthly_returns.csv": "bda585dbcbadcd67e65b6fc29b910b146621d5fce06400fc3c9d7e84caa06c9a",
+    "metrics.csv": "8a30a8d7b8e8759c54eacd15f6d5a29e2af51c4881d467d2e5bc2468070681f7",
+    "attribution_residuals.csv": "faea9a2487cb973b68e6f1c6800573da4d5f9d3611482aac4c761a0c80f28aff",
+    "verdict.md": "b4e6bfaa195b4ceb309e9ee5a9fbd1f0d5757234d557655cada15c79d4898336"
+  }
+}

@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 6,
+    "closed": 7,
     "completed_adapted": 1,
-    "completed_partial": 0,
+    "completed_partial": 1,
     "closed_not_evaluable": 5,
     "in_progress": 1,
-    "queued": 62
+    "queued": 61
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -128,16 +128,16 @@
       "title": "QuantAgent: Seeking Holy Grail in Trading by Self-Improving Large Language Model",
       "system_ids": "SYS-QUANT-AGENT-SELF-IMPROVING",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M007_quantagent/recipe.json",
+      "implementation_path": "scripts/run_disclosed_component_milestone.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M007_quantagent/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M007_quantagent/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M007_quantagent/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M007_quantagent/verdict.md",
+      "evaluated_scope": "The paper's only executable published strategy component, the literal VolatilityBreakoutSignal with its source two-bar close lag, evaluated as an explicitly adapted monthly U.S. top-1,000 long-only strategy. This is not the unreleased self-improving LLM agent.",
+      "next_action": "Closed. Preserve the fixed component path and exploratory disclosure; do not interpret it as performance of the full QuantAgent system.",
+      "closure_reason": "The full self-improving agent remains unavailable, but the only released executable strategy formula was preserved literally and produced a complete 305-month common-benchmark path. Researcher portfolio adaptations and the fact that earlier JKP outcomes were seen are explicit."
     },
     {
       "milestone_id": "M008",
@@ -145,7 +145,7 @@
       "title": "Alpha-GPT 2.0: Human-in-the-Loop AI for Quantitative Investment",
       "system_ids": "SYS-ALPHA-GPT",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
