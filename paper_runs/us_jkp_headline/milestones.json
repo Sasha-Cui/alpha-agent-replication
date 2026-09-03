@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 18,
+    "closed": 19,
     "completed_adapted": 1,
-    "completed_partial": 1,
+    "completed_partial": 2,
     "closed_not_evaluable": 16,
     "in_progress": 1,
-    "queued": 50
+    "queued": 49
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -332,16 +332,16 @@
       "title": "AlphaAgent: LLM-Driven Alpha Mining with Regularized Exploration to Counteract Alpha Decay",
       "system_ids": "SYS-ALPHA-AGENT",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M019_alphaagent/recipe.json",
+      "implementation_path": "scripts/run_alphaagent_factor_pool_milestone.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M019_alphaagent/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M019_alphaagent/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M019_alphaagent/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M019_alphaagent/verdict.md",
+      "evaluated_scope": "All six source-disclosed U.S. factor expressions from the paper-mechanism snapshot, combined by a strictly prior-trained rolling ridge score and the common monthly U.S. value-weighted decile adapter. This is not the LLM mining loop, anonymous native five-factor LightGBM run, or top-50/drop-5 paper result.",
+      "next_action": "Closed. Preserve the source-selected six-factor pool, 24-month cash warmup, exploratory disclosure and negative common-benchmark result; do not tune or relabel it as the full AlphaAgent system.",
+      "closure_reason": "The strongest identifiable central partial produced a complete 305-month common-benchmark path without selecting among source factors on JKP outcomes. The exact native five-factor identity is unrecoverable, so formula-pool performance is reported only as an adapted partial."
     },
     {
       "milestone_id": "M020",
@@ -349,7 +349,7 @@
       "title": "MASS: Muli-agent simulation scaling for portfolio construction",
       "system_ids": "SYS-MASS",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
