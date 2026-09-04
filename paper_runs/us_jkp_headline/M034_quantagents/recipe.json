@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M034",
+  "canonical_work_id": "CensusArxiv251004643",
+  "paper": "QuantAgents: Towards Multi-agent Financial System via Simulated Trading",
+  "paper_url": "https://arxiv.org/abs/2510.04643v1",
+  "paper_pdf_sha256": "a1cc7214ce25cab2b9cdfb6a771f1fb8606cb0fd7319bccf25d233e6c005fd73",
+  "paper_source_sha256": "b978a8d7be609ded462b8ed778fe45d2f4f5ef4014994589a2a0d8fbdfdcabab",
+  "source_url": "https://github.com/QuantAgents/quantagents.github.io",
+  "source_commit": "a1d0d56d04d2b73a5fbc472ec9af865a29be6ef7",
+  "headline_strategy": "A four-agent fund-management system uses weekly market-analysis, simulated-strategy-development, and triggered risk-alert meetings plus memory retrieval to let manager Otto select actions from an adaptively learned policy that combines simulated and real trading rewards.",
+  "headline_selection_basis": "Sections 3.1-3.4 and the original-paper framework identify the complete meeting/memory/dual-reward decision policy as QuantAgents. No single technical indicator or factor is presented as the proposed headline strategy.",
+  "paper_configuration": {
+    "agents": {
+      "Otto": "manager and decision executor",
+      "Bob": "simulated trading analyst and strategy tester",
+      "Dave": "risk control analyst",
+      "Emily": "market news analyst"
+    },
+    "named_tools": 26,
+    "described_indicators": 60,
+    "memory_types": ["market information", "strategy", "report"],
+    "retrieved_memories": 10,
+    "foundation_model": "gpt-4o-2024-05-13",
+    "temperature": 0.7,
+    "embedding_model": "text-embedding-3-large",
+    "native_universe": "NASDAQ-100 constituents",
+    "training_period": "2010-01-01 through 2020-12-31",
+    "test_period": "2021-01-01 through 2023-12-31",
+    "meeting_frequency": "weekly market-analysis and strategy-development meetings; risk meetings when risk score exceeds 0.75"
+  },
+  "released_component_credit": {
+    "paper_source_files": 16,
+    "paper_pages_rebuilt_and_visually_checked": 27,
+    "author_site_files": 41,
+    "author_site_commits": 7,
+    "author_site_rendered_algorithms": 4,
+    "author_site_rendered_profiles": 4,
+    "author_site_meeting_videos": 3,
+    "author_site_table_cells_corresponding_to_paper": 90,
+    "published_numeric_table_cells": 238,
+    "published_empirical_panels": 14,
+    "native_numeric_cells_regenerated": 0,
+    "native_empirical_panels_regenerated": 0
+  },
+  "live_source_recheck": {
+    "checked_at_utc": "2026-09-04T01:29:37Z",
+    "head_unchanged": true,
+    "head": "a1d0d56d04d2b73a5fbc472ec9af865a29be6ef7",
+    "commits": 7,
+    "branches": 1,
+    "tags": 0,
+    "releases": 0,
+    "forks": 0
+  },
+  "missing_headline_objects": [
+    "the complete runtime prompts, fills, response schema and action parser",
+    "the 26 callable tools and 60 indicator implementations",
+    "the three memory stores, update rules and retrieved records",
+    "the finite strategy-pool grammar, parameter grid and realized strategies",
+    "the four risk-score weights, component normalizations and risk-reward function",
+    "the policy parameterization, optimizer, simulated and real reward histories",
+    "point-in-time NASDAQ-100 membership, frozen Yahoo/Alpaca rows and news identifiers",
+    "capital, order, fill, cost, slippage, constraint, rebalance and corporate-action rules",
+    "actions, orders, fills, dated holdings, portfolio paths, seeds and repeated runs"
+  ],
+  "material_paper_conflicts": [
+    "The paper prints both eight-action and ten-action lists.",
+    "Full-system volatility is 1.43% in two tables but 1.23% in the all-meetings ablation.",
+    "The author site describes Bitcoin/FX/DJIA data for 2015-2023 while the paper specifies NASDAQ-100 for 2010-2023.",
+    "Live-test dates differ between the appendix and the table/prose/plot.",
+    "The printed annual-return equation annualizes terminal/initial minus one rather than the terminal/initial ratio."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Use the previous momentum/quality/liquidity/low-risk JKP factor score",
+      "reason": "Its characteristics and signs were selected by the researcher from narrative themes and do not execute QuantAgents meetings, memories, policy updates, or risk controls."
+    },
+    {
+      "route": "Implement the four rendered meeting algorithms",
+      "reason": "They are architectural pseudocode whose strategy pool, prompts, tool outputs, risk weights, policy and rewards remain free choices."
+    },
+    {
+      "route": "Treat the 90 site leaderboard cells as execution",
+      "reason": "They duplicate author-rendered paper values and provide no underlying actions, holdings, return arrays, or evaluator lineage."
+    },
+    {
+      "route": "Substitute a current GPT-4o model",
+      "reason": "The named 2024-05-13 snapshot is deprecated, and a replacement still cannot recover missing inputs, memories, tools, strategy pool, rewards, or policy state."
+    },
+    {
+      "route": "Use a named paper baseline or the market index",
+      "reason": "A comparator does not instantiate the proposed four-agent dual-reward policy."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/quantagents",
+  "result_policy": "No narrative factor proxy, filled-in pseudocode, rendered table, replacement model, or baseline result is entered as a QuantAgents monthly return. The positive results remain unresolved, not falsified.",
+  "status": "closed_not_evaluable"
+}
