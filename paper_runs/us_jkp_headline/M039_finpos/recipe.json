@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M039",
+  "canonical_work_id": "CensusArxiv251027251",
+  "paper": "FinPos: A Position-Aware Trading Agent System for Real Financial Markets",
+  "paper_url": "https://arxiv.org/abs/2510.27251v2",
+  "paper_pdf_sha256": "7bdcd7539e6b828bffe3a540b39d16c79a6c16e261240cec82729cdaf56b874b",
+  "paper_source_sha256": "26adbb25c6a28dd484a4ab3a48f58c98ac7a7e8b4ce72aff0a5397f7c3d5b4d9",
+  "source_url": "",
+  "headline_strategy": "FinPos filters and analyzes daily price, company/macro news and filings into hierarchical memory, then a GPT-4o Direction Agent and Quantity/Risk Agent jointly update a carried integer position; future 1/7/30-day price changes provide a training-only reflection reward and a 20-day CVaR reference is intended to cap trade quantity.",
+  "headline_selection_basis": "Sections 3-4 define the position-aware dual-agent policy with hierarchical memory and multi-timescale reward as FinPos. The printed return/reward/risk equations are training/accounting components, not a standalone action rule.",
+  "paper_configuration": {
+    "frequency": "daily close decision",
+    "position_update": "pos_t = pos_(t-1) + d_t*q_t",
+    "direction_set": [-1, 0, 1],
+    "quantity": "integer intended to be capped by 95% CVaR",
+    "training_reward_horizons_days": [1, 7, 30],
+    "training_reward_trend": "M_t=(price[t+1]-price[t])+(price[t+7]-price[t])+(price[t+30]-price[t])",
+    "training_reward": "-(M_t)^2 when position is unchanged, else pos_t*M_t",
+    "model": "GPT-4o family",
+    "temperature": 0.7,
+    "top_p_v2_default": 0.9,
+    "native_assets": ["TSLA", "AAPL", "AMZN", "NFLX", "COIN"],
+    "training_period": "2024-01 through 2025-02",
+    "test_period": "2025-03 through 2025-09",
+    "data_providers": ["Yahoo Finance OHLCV", "Finnhub company/macro news", "SEC EDGAR 10-K/10-Q"]
+  },
+  "paper_component_credit": {
+    "paper_derived_mechanics_executed": 11,
+    "controlled_checks_passed": 11,
+    "prompt_templates_printed": 12,
+    "valid_json_output_examples": 4,
+    "current_v2_empirical_table_cells": 294,
+    "v1_empirical_table_cells": 225,
+    "current_v2_empirical_panels": 11,
+    "v1_empirical_panels": 15,
+    "author_native_cells_regenerated": 0,
+    "author_native_panels_regenerated": 0
+  },
+  "missing_headline_objects": [
+    "the signal-filtering and analyst implementations and domain heuristics",
+    "hierarchical-memory allocation, retrieval, scoring, migration and persistence",
+    "the Direction Agent and Quantity/Risk Agent runtime prompts, responses and parser",
+    "the GPT-4o revision/API configuration, seeds and repeated trajectories",
+    "a dimensionally defined conversion from CVaR return/PnL to integer share quantity",
+    "initial cash/positions, account-value definition, leverage/shorting limits and liquidation",
+    "decision/fill timing, price, fees, spread, slippage and borrowing rules",
+    "immutable Yahoo/Finnhub/EDGAR rows, query timestamps and point-in-time alignment",
+    "daily actions, quantities, orders, fills, positions, PnL and account paths",
+    "the result generator, CR-percent mapping, metric conventions and uncertainty protocol"
+  ],
+  "material_paper_conflicts": [
+    "The reward uses total position rather than trade direction or position change, so a Sell can receive a positive rising-market reward while the account remains long.",
+    "Raw-dollar multi-horizon differences make the reward asset-price-scale dependent.",
+    "The 95% lower-tail CVaR convention, sign interpretation and conversion to shares conflict or are missing.",
+    "The printed log-return sum has no mapping to displayed CR percentages.",
+    "V2 figures retain v1 Calmar annotations despite changed v2 returns.",
+    "The v2 extreme-test period and U.S.-election timing conflict across sections/captions."
+  ],
+  "live_release_recheck": {
+    "checked_date_utc": "2026-09-04",
+    "github_repository_search_arxiv": 0,
+    "github_repository_search_title": 0,
+    "coauthor_profile": "Rh-Dang",
+    "coauthor_finpos_code_matches": 0,
+    "updated_coauthor_homepage_head": "66fa96c39340dfe706609e9e58470f5878b5de23",
+    "updated_homepage_contains_finpos": false,
+    "attributable_implementation_found": false
+  },
+  "rejected_substitutes": [
+    {
+      "route": "Trade the printed multi-timescale score",
+      "reason": "It uses future 1/7/30-day prices as a training reward and is explicitly unavailable at test time; treating it as an action is lookahead."
+    },
+    {
+      "route": "Use the paper-derived position/reward/CVaR equations as a strategy",
+      "reason": "They account for state or training feedback but do not choose direction or a dimensionally valid quantity."
+    },
+    {
+      "route": "Run the printed prompts through a current GPT-4o endpoint",
+      "reason": "Six JSON examples are invalid, two depend on an unreleased suffix, and the memory/input/runtime/model lineage remains absent."
+    },
+    {
+      "route": "Use a generic position-aware momentum/risk JKP proxy",
+      "reason": "No paper rule selects its characteristics, signs, or portfolio mapping, so it would be a thematic researcher strategy."
+    },
+    {
+      "route": "Infer actions from tables or static figures",
+      "reason": "Aggregate and stale-revision outputs do not identify daily directions, quantities, costs or account paths."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/finpos",
+  "result_policy": "No future reward score, paper-derived accounting component, current-model prompt completion, thematic proxy, or backcast output is entered as a FinPos monthly return.",
+  "status": "closed_not_evaluable"
+}

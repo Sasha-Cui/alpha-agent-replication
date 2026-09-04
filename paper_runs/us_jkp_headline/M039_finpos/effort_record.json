@@ -1,0 +1,23 @@
+{
+  "milestone_id": "M039",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/finpos/README.md",
+    "paper_runs/paper_replication_audits/finpos/manifest.json",
+    "paper_runs/paper_replication_audits/finpos/source_provenance.json",
+    "paper_runs/paper_replication_audits/finpos/component_execution_audit.csv",
+    "paper_runs/paper_replication_audits/finpos/prompt_contract_audit.csv",
+    "paper_runs/paper_replication_audits/finpos/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/finpos/internal_consistency_audit.csv",
+    "/nfs/roberts/scratch/pi_btk22/zc362/finpos_audit/primary/official-v2.pdf",
+    "/nfs/roberts/scratch/pi_btk22/zc362/finpos_audit/source-v2/sec/3_task_definition.tex",
+    "/nfs/roberts/scratch/pi_btk22/zc362/finpos_audit/source-v2/sec/4_Architecture_of_FinPos.tex"
+  ],
+  "bounded_checks": [
+    "Re-read the original v2 task, architecture and experiment TeX and visually inspected pages for position accounting, dual decision agents, multi-timescale reward and headline results.",
+    "Separated eleven executable paper-derived mechanics from the unreleased direction/quantity decision policy and rejected future reward values as test-time actions.",
+    "Reused the revision-aware prompt/release/result audit, including invalid JSON contracts, CVaR unit failure and v1/v2 static-result lineage conflicts.",
+    "Rechecked exact-title/arXiv repositories and the recently updated coauthor homepage; no attributable FinPos implementation appeared."
+  ],
+  "outcome": "The paper defines how a chosen position earns return and how future paths score training behavior, but not how observable formation state generates a direction and valid quantity. The missing agents, memory and execution/accounting contract prevent a causal JKP strategy."
+}
