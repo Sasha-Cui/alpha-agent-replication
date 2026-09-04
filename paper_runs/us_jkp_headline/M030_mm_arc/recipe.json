@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M030",
+  "canonical_work_id": "CensusArxiv250905080",
+  "paper": "MM-ARC: Multimodal Adaptive Routing of Capital with Robustness-Audited Strategy Pools",
+  "paper_url": "https://arxiv.org/abs/2509.05080v3",
+  "paper_pdf_sha256": "91aae07101aafcbb10e757cea1a2e63b55068d0467923ed6ab40daed9e73072c",
+  "paper_source_sha256": "4ca6dcfcd9dce3419b2c00b967406c423b5a337dcecebf117a73f0655684945c",
+  "source_url": "https://anonymous.4open.science/r/MM-ARC-32F7/",
+  "release_archive_sha256": "830e4257125e67f4f9c64c9ae2a446b02593f83b94bd81b19aae225f5014f317",
+  "headline_strategy": "MM-ARC routes capital adaptively across 60 robustness-audited multimodal strategy pools using Qwen3-VL generator/evaluator/regime adapters and a trained reinforcement-learning router over a 62-instrument universe",
+  "version_scope": "v3 MM-ARC wholesale replacement; legacy v1/v2 MM-DREX is a different method and is not substituted",
+  "paper_configuration": {
+    "base_model": "Qwen/Qwen3-VL-8B-Instruct",
+    "base_model_revision": "0c351dd01ed87e9c1b53cbc748cba10e6187ff3b",
+    "strategy_pools": 60,
+    "active_members": 300,
+    "instrument_universe": 62,
+    "reported_training_seeds": [42, 43, 44, 45, 46]
+  },
+  "paper_portability_to_common_task": "not executable because six paper-specific registered LFS payloads remain unavailable, including every trained adapter/router and both historical strategy-signal tables",
+  "released_component_credit": {
+    "repository_files": 107,
+    "pipeline_modules": 19,
+    "acceptance_rows": 7440,
+    "tests_passed": 111,
+    "registered_artifacts": 35,
+    "verified_artifacts": 29,
+    "remaining_lfs_files": 6,
+    "remaining_lfs_bytes": 306295258
+  },
+  "missing_headline_objects": [
+    "three trained adapter_model.safetensors payloads",
+    "the seed-42 reinforcement-learning router best_model.pt payload",
+    "the full strategy-signal and robustness-history tables",
+    "full benchmark market data beyond the 120-observation acceptance fixture",
+    "the training/experiment controller and private model history",
+    "trained seeds 43-46, full decision cycles, result arrays and report generator"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Treat 111 passing tests as strategy execution",
+      "reason": "The released CI disables LFS and model-facing tests use doubles; no full model forward or paper decision cycle runs."
+    },
+    {
+      "route": "Use the 7,440-row acceptance replay as the common backtest",
+      "reason": "The cards explicitly limit it to a short acceptance fixture, not the complete benchmark or published result lineage."
+    },
+    {
+      "route": "Use the independently recovered generic tokenizer",
+      "reason": "It has exact bytes but no MM-ARC author provenance and enables no adapter, router, signal, or portfolio execution."
+    },
+    {
+      "route": "Retrain or replace the missing adapters/router",
+      "reason": "The full training controller, histories, four seeds and strategy tables are private, so a replacement would create a new policy."
+    },
+    {
+      "route": "Substitute legacy MM-DREX",
+      "reason": "V3 changes the title, authors, backbone, method, dates, baselines, metrics and results wholesale."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/mm_arc",
+  "result_policy": "No test-double output, acceptance fixture, generic tokenizer, retrained replacement, or legacy MM-DREX result is entered as an MM-ARC monthly return. The substantial release remains deployment-incomplete and its positive results unresolved.",
+  "status": "closed_not_evaluable"
+}
