@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M016",
+  "canonical_work_id": "CensusArxiv250200415",
+  "paper": "MarketSenseAI 2.0: Enhancing Stock Analysis through LLM Agents",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/37_marketsenseai_2_0_enhancing_stock_analysis_through.pdf",
+    "sha256": "3755b957dc366d0e9117fffb2ae6ddc241e682498bcd7b4ce1c830119d99db65",
+    "primary_url": "https://arxiv.org/pdf/2502.00415v2"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M016_marketsenseai/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/marketsenseai/manifest.json",
+    "audit_manifest_sha256": "d8fe3bcf1adf616f06a1de3978493626b3a0bedfbceefa3e19a2697c87ef4170",
+    "mechanism_path": "paper_runs/paper_replication_audits/marketsenseai/paper_mechanism_conformance.csv",
+    "mechanism_sha256": "586c0c58db6656e933fa570dd820f9e9d5f45bc513d9cc7157f23c15bf479eb1",
+    "result_ledger_path": "paper_runs/paper_replication_audits/marketsenseai/published_2025_table_result_ledger.csv",
+    "result_ledger_sha256": "e928db4e9eca7e0ccf7b547042a5b413a3e1be70359271c1ebc23c59c860baf5"
+  },
+  "headline_mechanism": "MarketSenseAI 2.0 sends monthly News, Fundamentals, Dynamics, and Macroeconomic analyses to a Signal agent that emits Buy/Hold/Sell ratings used in long-only equal- and capitalization-weighted U.S. portfolios.",
+  "source_anchors": [
+    {
+      "section": "3 and Figure 1",
+      "role": "specialists",
+      "claim": "Four specialized agents analyze news, company fundamentals, price dynamics, and macroeconomic conditions."
+    },
+    {
+      "section": "3",
+      "role": "signal_agent",
+      "claim": "A fifth agent synthesizes specialist outputs into monthly Buy, Hold, or Sell ratings."
+    },
+    {
+      "section": "4",
+      "role": "portfolio",
+      "claim": "Buy-rated S&P 100 or S&P 500 constituents form equal- and capitalization-weighted long-only portfolios."
+    },
+    {
+      "section": "4",
+      "role": "cost",
+      "claim": "The backtest applies a 10 basis-point transaction fee to trades."
+    }
+  ],
+  "preserved_elements": [
+    "four distinct news, fundamental, dynamics, and macro specialist scores",
+    "one final signal agent",
+    "monthly decision cadence",
+    "Buy/Hold/Sell diagnostics",
+    "capitalization-aware portfolio construction",
+    "10 basis-point transaction-cost setting"
+  ],
+  "approximated_elements": [
+    "earnings surprise and attention characteristics replace unavailable news text",
+    "JKP valuation, quality, and distress characteristics replace filings and transcripts",
+    "formation-time momentum and volatility characteristics replace price-analysis prompts",
+    "market return, volatility, breadth, and beta interaction replace macro RAG",
+    "past RankIC-weighted numerical consensus replaces GPT-4o signal synthesis"
+  ],
+  "invented_elements": [
+    "the exact JKP specialist feature bundles",
+    "60-month specialist reliability window",
+    "softmax reliability temperature",
+    "Buy/Hold/Sell confidence thresholds",
+    "common long-short decile adapter for apples-to-apples comparison"
+  ],
+  "specialists": {
+    "news": ["niq_su", "saleq_su", "ret_1_0", "turnover_126d"],
+    "fundamentals": ["be_me", "gp_at", "ocf_at", "f_score", "o_score"],
+    "dynamics": ["ret_12_1", "ret_6_1", "prc_highprc_252d", "rvol_21d", "beta_60m"],
+    "macro": ["ret", "weight", "beta_60m", "rvol_21d"]
+  },
+  "signal_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "reliability_window_months": 60,
+    "minimum_rankic_months": 24,
+    "aggregation": "softmax_of_trailing_signed_specialist_rankic",
+    "softmax_temperature": 10.0,
+    "buy_threshold": 0.1,
+    "sell_threshold": -0.1,
+    "update_frequency": "monthly",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "For cross-paper comparability, the continuous signal-agent score is mapped to the frozen capitalization-weighted top/bottom deciles rather than the paper's long-only Buy subset; the common 10 bp one-way cost matches the paper setting.",
+  "claim_boundary": "This is a researcher-authored MarketSenseAI-inspired numerical five-agent policy, not the unavailable GPT prompts, RAG inputs, monthly signal records, native long-only holdings, VectorBTPro run, or paper results."
+}
