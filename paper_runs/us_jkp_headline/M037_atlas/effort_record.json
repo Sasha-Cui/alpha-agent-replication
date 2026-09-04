@@ -1,0 +1,21 @@
+{
+  "milestone_id": "M037",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/atlas/README.md",
+    "paper_runs/paper_replication_audits/atlas/manifest.json",
+    "paper_runs/paper_replication_audits/atlas/source_provenance.json",
+    "paper_runs/paper_replication_audits/atlas/release_execution_audit.json",
+    "paper_runs/paper_replication_audits/atlas/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/atlas/internal_consistency_audit.csv",
+    "/nfs/roberts/scratch/pi_btk22/zc362/atlas_audit/atlas-v5.pdf",
+    "/nfs/roberts/scratch/pi_btk22/zc362/atlas_audit/source-v5/acl_latex.tex"
+  ],
+  "bounded_checks": [
+    "Re-read the v5 TeX source and visually inspected original-paper pages for the ATLAS analyst/decision flow, Adaptive-OPRO state/update rule, five-day score, experiment setup, order interface and headline results.",
+    "Separated the defining Adaptive-OPRO policy from StockSim execution infrastructure and its historical XOM precursor output.",
+    "Reused the complete 20-commit/two-branch/five-fork source audit and verified the precise missing ATLAS objects and attribution failure of the XOM path.",
+    "Rechecked the official StockSim heads, branches, tags and releases on 2026-09-04; the upstream source remains unchanged and contains no ATLAS layer."
+  ],
+  "outcome": "StockSim supplies real execution components, but Adaptive-OPRO's initial prompt, optimizer, histories and paper trajectories are absent. The five-day score cannot generate orders by itself, and the precursor XOM path is not an ATLAS run."
+}

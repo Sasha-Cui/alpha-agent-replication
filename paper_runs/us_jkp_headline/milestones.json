@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 36,
+    "closed": 37,
     "completed_adapted": 1,
     "completed_partial": 6,
-    "closed_not_evaluable": 29,
-    "in_progress": 1,
+    "closed_not_evaluable": 30,
+    "in_progress": 0,
     "queued": 32
   },
   "terminal_statuses": [
@@ -638,16 +638,16 @@
       "title": "ATLAS: Adaptive Trading with LLM AgentS Through Dynamic Prompt Optimization and Multi-Agent Coordination",
       "system_ids": "SYS-ATLAS",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M037_atlas/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M037_atlas/verdict.md",
+      "evaluated_scope": "No common-task return: ATLAS is the daily analyst/CTA system with five-day Adaptive-OPRO prompt updates, but only the StockSim precursor is public; the ATLAS prompts, optimizer, histories, configs, data, seeds, orders and paths are absent.",
+      "next_action": "Closed. Preserve runnable StockSim and the historical XOM path as precursor credit; do not promote them, the five-day score equation, a demo, technical baselines, or printed tables to ATLAS.",
+      "closure_reason": "The defining policy is an evolving instruction prompt, yet neither its initial state nor update mechanism/trajectory and resulting orders are released. The recovered XOM output has no ATLAS identifier and matches no paper mean, so a monthly JKP run would require inventing the policy."
     },
     {
       "milestone_id": "M038",

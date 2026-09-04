@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M037",
+  "canonical_work_id": "CensusArxiv251015949",
+  "paper": "ATLAS: Adaptive Trading with LLM AgentS Through Dynamic Prompt Optimization and Multi-Agent Coordination",
+  "paper_url": "https://arxiv.org/abs/2510.15949v5",
+  "paper_pdf_sha256": "c648c9f58811dcad578b41d56e06760c715d3b8c6314aad01170536f62d84bf7",
+  "paper_source_sha256": "7b6ead28d2daed5f734b3b2d3c078e6051aa0a0e64fdddda53772f8fa9caad4f",
+  "source_url": "https://github.com/harrypapadakis/StockSim",
+  "source_commit": "c1a25c195df4c93b2db4a748f80ceae0f1c9fe50",
+  "headline_strategy": "ATLAS combines daily market, news, and fundamental analyst summaries with portfolio/execution state in a Central Trading Agent, then uses Adaptive-OPRO every five trading days to rewrite the agent's static instruction prompt from realized ROI feedback while preserving the order-level interface.",
+  "headline_selection_basis": "The abstract, Sections 3-5, and v5 headline tables identify Adaptive-OPRO applied to the Central Trading Agent—not StockSim alone or a technical baseline—as the proposed strategy.",
+  "paper_configuration": {
+    "analyst_agents": ["Market Analyst", "News Analyst", "Fundamental Analyst"],
+    "decision_agent": "Central Trading Agent",
+    "action_space": "order-level type, side, size, timing and price",
+    "execution_engine": "StockSim",
+    "decision_frequency": "daily",
+    "adaptive_window_trading_days": 5,
+    "adaptive_score": "clip(50 + 250*ROI, 0, 100)",
+    "initial_cash": 100000,
+    "assets_and_regimes": {
+      "LLY": "bearish-volatile",
+      "XOM": "sideways",
+      "NVDA": "bullish"
+    },
+    "evaluation_window": "2025-04-28 through 2025-06-28",
+    "runs_per_configuration": 3,
+    "evaluated_backbones": 7
+  },
+  "missing_atlas_objects": [
+    "the fixed baseline Central Trading Agent instruction and exact filled runtime prompts",
+    "the Adaptive-OPRO optimizer implementation, meta-prompt, model requests/responses and edit history",
+    "the complete optimization history of prompts, five-day outcome summaries and scores",
+    "the paper's promised o4-mini Adaptive-OPRO sample configuration",
+    "the exact three-asset experiment matrix, seeds and three-run artifacts",
+    "frozen Massive/Polygon market data plus aligned news and fundamental inputs",
+    "the paper's CTA actions, orders, fills, cash, positions and portfolio trajectories",
+    "provider snapshot/decoding parameters for all seven backbones",
+    "paper result arrays and report-generation lineage"
+  ],
+  "precursor_credit": {
+    "relationship": "paper-cited same-first-author StockSim precursor",
+    "repository_files": 81,
+    "python_modules": 43,
+    "modules_imported_after_removing_obsolete_asyncio_backport": 43,
+    "controlled_component_checks_passed": 4,
+    "demo_matches": ["XOM", "2025-04-28 through 2025-06-28", "daily cadence", "$100,000 cash", "three analyst roles"],
+    "recovered_xom_orders": 20,
+    "recovered_xom_portfolio_points": 43,
+    "recovered_xom_roi_percent": 5.01564,
+    "recovered_xom_attributable_to_atlas": false,
+    "recovered_xom_matches_published_atlas_mean": false
+  },
+  "live_source_recheck": {
+    "checked_date_utc": "2026-09-04",
+    "main_head_unchanged": true,
+    "main_head": "c1a25c195df4c93b2db4a748f80ceae0f1c9fe50",
+    "website_head": "49ea2e5bc850a2c2aee0172db2d072c46de82e60",
+    "branches": 2,
+    "tags": 0,
+    "releases": 0,
+    "forks": 5,
+    "new_official_atlas_layer_found": false
+  },
+  "paper_result_credit": {
+    "official_versions": 5,
+    "official_and_rebuilt_pages_visually_checked": 209,
+    "published_numeric_units": 1784,
+    "empirical_panels": 5,
+    "native_numeric_units_regenerated": 0,
+    "native_empirical_panels_regenerated": 0
+  },
+  "rejected_substitutes": [
+    {
+      "route": "Promote the recovered StockSim XOM path to ATLAS",
+      "reason": "It has no ATLAS, prompt-strategy, model, seed, optimizer or paper-run identifier and its +5.01564% ROI matches no published ATLAS XOM mean."
+    },
+    {
+      "route": "Run the released StockSim demo after supplying RabbitMQ and market-data credentials",
+      "reason": "That would execute the precursor demo, which lacks the ATLAS central agent and Adaptive-OPRO policy."
+    },
+    {
+      "route": "Implement Adaptive-OPRO from its five-day score equation",
+      "reason": "The score is only feedback; the initial prompt, meta-prompt, optimizer calls, edits, states, acceptance history and order decisions remain missing."
+    },
+    {
+      "route": "Use MACD, SMA, SLMA, Bollinger Bands or buy-and-hold",
+      "reason": "These are contextual baselines, not the proposed adaptive multi-agent strategy."
+    },
+    {
+      "route": "Infer a monthly policy from paper tables",
+      "reason": "Two-month aggregate means across models/regimes do not identify orders, prompts or a 1999-2024 stock-ranking rule."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/atlas",
+  "result_policy": "No StockSim precursor output, demo execution, feedback equation, technical baseline, or backcast table result is entered as an ATLAS monthly return. Reopen only for an attributable ATLAS/Adaptive-OPRO implementation or paper-run trajectory.",
+  "status": "closed_not_evaluable"
+}
