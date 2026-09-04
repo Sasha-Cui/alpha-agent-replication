@@ -16,7 +16,7 @@
     "audit_manifest_path": "paper_runs/paper_replication_audits/tradingagents/manifest.json",
     "audit_manifest_sha256": "7eb67d3e99bf61454e75a68b0136511fb0d7578769caff75131c61ac72aea2f3",
     "native_component_path": "paper_runs/paper_replication_audits/tradingagents/native_component.json",
-    "native_component_sha256": "4792643a32d139a5514c18e6464ed9f35ec22d0f418eac2d0d12603f435acaa2",
+    "native_component_sha256": "4792643a32d139a5513c18e6464ed9f35ec22d0f418eac2d0d12603f435acaa2",
     "mechanism_path": "paper_runs/paper_replication_audits/tradingagents/source_mechanism_conformance.csv",
     "mechanism_sha256": "b3f4145fa9a8ad0c32e152663396684940ef36205f086c9b62c19ff55d4975dc"
   },
