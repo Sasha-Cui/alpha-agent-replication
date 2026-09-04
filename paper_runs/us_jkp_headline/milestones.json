@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 66,
+    "closed": 67,
     "completed_adapted": 1,
     "completed_partial": 14,
-    "closed_not_evaluable": 51,
-    "in_progress": 1,
+    "closed_not_evaluable": 52,
+    "in_progress": 0,
     "queued": 2
   },
   "terminal_statuses": [
@@ -1148,16 +1148,16 @@
       "title": "RAPTOR: Reasoned Agentic Portfolio Trading with Orchestrated Rebalancing",
       "system_ids": "SYS-RAPTOR",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M067_raptor/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify RAPTOR's central reasoned portfolio/rebalancing policy, released actions or strongest attributable strategy component before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M067_raptor/verdict.md",
+      "evaluated_scope": "No common-task return: 166 author snapshots, 18 author-output scalar results, 29/42 verified scalars across all routes, and three raster curves provide strong output evidence, but the paper-time multimodal inputs, agent views, full actions/blackboard, and runnable backtest are absent. Output replay is not a transferable policy.",
+      "next_action": "Closed. Preserve output/raster and metric-postprocessor verification separately; do not promote snapshots, Day-0 decisions, supplied-view Black-Litterman code, or generic JKP views to RAPTOR. Reopen for complete input/action lineage or a causal policy.",
+      "closure_reason": "The author heads remain unchanged and still lack the missing price/API inputs and full decision traces. JKP cannot reconstruct multi-agent views, while extrapolating one 2025 output path or January decisions across the common history would fabricate actions."
     },
     {
       "milestone_id": "M068",

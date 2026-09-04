@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M067",
+  "canonical_work_id": "CensusORziuTkKhgT0",
+  "title": "RAPTOR: Reasoned Agentic Portfolio Trading with Orchestrated Rebalancing",
+  "central_strategy": "Run fundamental, technical, sentiment, valuation, bull/bear, risk, and execution agents over point-in-time price/news/filing/macro inputs; map categorical views into Black-Litterman returns; estimate covariance; solve a long-only constrained portfolio; and rebalance on the paper's orchestrated schedule.",
+  "paper_source": {
+    "version": "published CEUR",
+    "openreview_id": "ziuTkKhgT0",
+    "url": "https://ceur-ws.org/Vol-4162/paper8.pdf",
+    "official_pdf_sha256": "917b30a7ab49693c863720b4677de2f00329fd31f001f9a058c94298d81d6796",
+    "official_pages": 11
+  },
+  "official_repository": {
+    "url": "https://github.com/blakealmon/AI-Hedge-Fund-Driven-By-Multi-Agent-LLM-Based-Architecture",
+    "main_head_sha": "1793abf29ecde15597cb2bb4cb345accf655531f",
+    "validation_branch_head_sha": "9d1f10a89802bed8abd81cdda88081ef1f566a84",
+    "license": "Apache-2.0"
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/raptor/manifest.json",
+    "manifest_sha256": "b627a62461fb866e800c11566d38e620eafc8766834b8c353ffb82c4448c67a6",
+    "source_provenance_sha256": "6be98aa0484ee3e6e651531a95739b6d23b6ed2b46f39b971c8e98b9ae4115a6",
+    "native_execution_sha256": "726ab61cd1b11d7645b25cd44149320efe1fd1bf930f7a5527fba8325abee217",
+    "author_result_snapshots": 166,
+    "author_output_verified_scalar_results": 18,
+    "displayed_scalar_results_verified_all_routes": 29,
+    "displayed_scalar_results": 42,
+    "published_figure_raster_correspondences_verified": 3,
+    "end_to_end_result_cells_reproduced": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "main_head_matches_audited_release": true,
+    "validation_branch_matches_audited_release": true,
+    "new_price_input_decision_trace_or_backtest_release_found": false
+  },
+  "monthly_jkp_assessment": {
+    "preserved_components": [
+      "All 166 released daily portfolio snapshots and 18 scalar results verified directly from author output.",
+      "Current public benchmark response and paper-internal checks bring 29/42 displayed scalar units to verified status under explicit lineage boundaries.",
+      "Three published raster-curve correspondences and the native rolling Sharpe/Sortino/Calmar postprocessor are independently verified."
+    ],
+    "required_but_missing": [
+      "Paper-time equity prices and benchmark, Finnhub, Reddit, SimFin, Perplexity, point-in-time memberships, and exact API requests/responses.",
+      "Full blackboard messages/tool calls, per-date security decisions beyond January 1, prompts/model state, seeds, and agent rerun records.",
+      "A consistent cadence and configuration: the paper and runners conflict on frequency, lookback, risk aversion, tau, universe, and view construction.",
+      "The missing stock_prices.csv required by the candidate backtest, transaction fee/slippage deductions, WAB trace, and complete result generator.",
+      "A transferable rule for producing monthly top-1,000 U.S. security views and weights over 1999-2024."
+    ],
+    "why_snapshots_are_not_a_transferable_policy": "The 166 snapshots verify one 2025 portfolio output path. They do not expose the agent inputs or dated per-security decisions needed to generate holdings for other dates, names, or the JKP history.",
+    "why_day0_decisions_are_insufficient": "Only January 1 has 503 decision files; headers are long-only rewritten and some BUY outputs conflict with sell/reduce rationales. Reusing them every month would invent a persistence policy.",
+    "why_black_litterman_component_is_not_raptor": "The core allocator can consume supplied views, but JKP does not contain RAPTOR's agent views. Feeding generic characteristic scores into it would replace the multi-agent reasoning mechanism.",
+    "why_jkp_cannot_fill_the_gap": "JKP supplies price/characteristic histories, not the paper-time multimodal agent state, categorical views, or orchestration. Output snapshots cannot be extrapolated backward without fabricating actions.",
+    "result_credit_boundary": "Strong output/raster verification remains original-paper evidence, not a new common-benchmark strategy run or end-to-end agent reproduction."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote output replay, one-day decisions, the metric postprocessor, supplied-view Black-Litterman code, or generic JKP views to RAPTOR. Reopen for complete point-in-time inputs and action/blackboard lineage or a causal released policy."
+}
