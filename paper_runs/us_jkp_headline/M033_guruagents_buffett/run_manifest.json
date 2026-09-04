@@ -1,0 +1,61 @@
+{
+  "status": "evaluated_partial",
+  "milestone_id": "M033",
+  "candidate_id": "guruagents_buffett_deterministic_score",
+  "benchmark_id": "us_jkp_headline_v1",
+  "completed_at_utc": "2026-09-04T01:20:58.609324+00:00",
+  "hostname": "a1132u33n04.mghpcc.ycrc.yale.edu",
+  "code_commit": "a100bc04cc48c695fee2d5b8085a9a3e27c71912",
+  "contract_sha256": "9ce6783c8d4d303510173548088af66fc3add92602f404008c73212f8322ea77",
+  "recipe_sha256": "c7ad4ce9ca2eef83d813fa0b3411827b2cffd09adfe2be573e5277ee008cb73d",
+  "source_prompt_conformance_sha256": "4187fbc15b17c1f52aea0fae5c14fa6143e247b0cc05a00f0c410a483b9dbf0a",
+  "runtime": {
+    "python": "3.12.4",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "platform": "Linux"
+  },
+  "primary_result": {
+    "case": "zero_cost_10",
+    "primary": true,
+    "paper_cost": false,
+    "missing_return_policy": "zero",
+    "cost_bps_one_way": 10.0,
+    "full_months": 305,
+    "full_arithmetic_annualized_return": 0.09147386131628413,
+    "full_cagr": 0.07931531391034419,
+    "full_cumulative_return": 5.958574571386571,
+    "full_annualized_volatility": 0.17187944203226774,
+    "full_annualized_sharpe": 0.5321978023358448,
+    "full_maximum_drawdown": -0.5134746630857945,
+    "evaluation_months": 185,
+    "evaluation_start": "2009-08-31",
+    "evaluation_end": "2024-12-31",
+    "jkp_residual_mean_annualized": 0.006475457836175428,
+    "jkp_residual_se_annualized": 0.004746104577087843,
+    "jkp_residual_t_hac": 1.3643731887906898,
+    "jkp_residual_p_two_sided": 0.17245014175915052,
+    "exploratory_bonferroni69_p": 1.0,
+    "hac_lags": 4,
+    "average_traded_notional": 0.13790464294371066,
+    "annualized_linear_cost_drag": 0.001654855715324528,
+    "minimum_finite_signal_count": 1000,
+    "maximum_missing_forward_gross_weight": 0.02031049097576075
+  },
+  "private_holdings_path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/us_jkp_headline/v1/M033_formation_holdings.parquet",
+  "private_holdings_sha256": "ade0562058a3cca3996db3607c1cbe1fba5d6e64b14f0bb10aa58e680794cfa0",
+  "prior_jkp_outcomes_seen": true,
+  "confirmatory_claim": false,
+  "implementation_sha256": {
+    "scripts/run_guruagents_buffett_milestone.py": "e741bc37afd0184c405cf21b3f04b88d5555b6b69de2f6c848d9a3bba31bd4c9",
+    "src/alpha_evolve/headline_backtest.py": "2e3be61a09b03bbf1d5059a823a8058aded4153980dd0ca30c301398958d6f9f",
+    "src/alpha_evolve/submission_analysis.py": "24989a95c01cb7c4b9f933361a0fd1f50b5ece7e31a98f73359c47e32553d5d2",
+    "scripts/run_broad_jkp_crossfit.py": "6c84c990f39bd586b49c76812efb2f70a36823ada52c372e8483502e10379d73"
+  },
+  "output_sha256": {
+    "monthly_returns.csv": "c60e5fd6d35044031631f419ee5178cf057b557b2402af08c937bd3b8241d720",
+    "primary_monthly_returns.csv": "d7198e4558bc3a52e82f7455f5d621563aec02f3027867e53ceb087cd1e0b4ff",
+    "metrics.csv": "dc561fa97d58863a93dba8b0657d8085e747e5d43dbeb558775e01ae368d5b7f",
+    "attribution_residuals.csv": "b972f1e98775c8f5d1046666e2193a5135cb457d5b48e429d5bbaf7ac2f42d5c"
+  }
+}

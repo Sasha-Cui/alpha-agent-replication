@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 32,
+    "closed": 33,
     "completed_adapted": 1,
-    "completed_partial": 5,
+    "completed_partial": 6,
     "closed_not_evaluable": 26,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 36
   },
   "terminal_statuses": [
@@ -570,16 +570,16 @@
       "title": "GuruAgents: Emulating Wise Investors with Prompt-Guided LLM Agents",
       "system_ids": "SYS-GURU-AGENTS",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M033_guruagents_buffett/recipe.json",
+      "implementation_path": "scripts/run_guruagents_buffett_milestone.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M033_guruagents_buffett/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M033_guruagents_buffett/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M033_guruagents_buffett/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M033_guruagents_buffett/verdict.md",
+      "evaluated_scope": "Paper-highlighted Buffett sleeve; official deterministic prompt formula with fourteen direct/algebraic JKP mappings, two explicit omissions, monthly top-1,000 U.S. formation, continuous score-proportional long-only weights, common costs and rolling JKP133 attribution.",
+      "next_action": "Closed. Preserve the frozen formula and mappings; do not tune after the positive raw return or promote the partial deterministic adapter to a native GPT-4o/paper-result replication.",
+      "closure_reason": "The source-anchored partial produced a complete 305-month path. At 10 bp it has 7.93% CAGR and 0.532 Sharpe, but its +0.65% annual JKP133 residual is insignificant (HAC t=1.364, p=0.1725) and adverse missing-return sensitivity is materially weaker."
     },
     {
       "milestone_id": "M034",
