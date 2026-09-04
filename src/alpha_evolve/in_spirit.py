@@ -1469,3 +1469,101 @@ def tradingagents_debate_scores(
             row[f"reliability_weight__{name}"] = float(reliability[name])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def marketsenseai_signal_scores(
+    frame: pd.DataFrame,
+    specialists: dict[str, list[str]],
+    *,
+    common_start: str,
+    reliability_months: int = 60,
+    minimum_rankic_months: int = 24,
+    softmax_temperature: float = 10.0,
+    buy_threshold: float = 0.1,
+    sell_threshold: float = -0.1,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a numerical MarketSenseAI four-specialist signal agent."""
+    if list(specialists) != ["news", "fundamentals", "dynamics", "macro"]:
+        raise ValueError("MarketSenseAI requires the frozen specialist roles")
+    if buy_threshold <= sell_threshold or softmax_temperature <= 0:
+        raise ValueError("invalid MarketSenseAI signal configuration")
+    features = list(
+        dict.fromkeys(
+            feature
+            for name, values in specialists.items()
+            for feature in values
+            if name != "macro" and feature not in {"ret", "weight"}
+        )
+    )
+    features.extend(
+        feature
+        for feature in specialists["macro"]
+        if feature not in {"ret", "weight"} and feature not in features
+    )
+    missing = {"month", "weight", "ret", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing MarketSenseAI inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, features)
+    raw = pd.DataFrame(index=frame.index)
+    raw["news"] = ranked[["niq_su", "saleq_su", "ret_1_0", "turnover_126d"]].mean(axis=1)
+    raw["fundamentals"] = pd.concat(
+        [ranked["be_me"], ranked["gp_at"], ranked["ocf_at"], ranked["f_score"], -ranked["o_score"]],
+        axis=1,
+    ).mean(axis=1)
+    raw["dynamics"] = pd.concat(
+        [
+            ranked["ret_12_1"],
+            ranked["ret_6_1"],
+            ranked["prc_highprc_252d"],
+            -ranked["rvol_21d"],
+            ranked["beta_60m"],
+        ],
+        axis=1,
+    ).mean(axis=1)
+    market_rows = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        current_return = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        market_rows.append((pd.Timestamp(month), float(np.sum(weight * current_return) / weight.sum())))
+    market = pd.Series(dict(market_rows)).sort_index().rolling(6, min_periods=1).mean()
+    regime = frame["month"].map(np.sign(market).replace(0.0, 1.0))
+    raw["macro"] = regime.to_numpy() * ranked["beta_60m"] - ranked["rvol_21d"]
+    scores = cross_sectional_unit_rank(pd.concat([frame[["month"]], raw], axis=1), list(raw))
+    rankics = monthly_rankic(frame, scores)
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in months:
+        history = rankics.loc[rankics.index < month].tail(reliability_months)
+        if len(history) != reliability_months:
+            raise ValueError(f"MarketSenseAI reliability history is incomplete at {month.date()}")
+        count = history.count()
+        mean = history.mean().where(count >= minimum_rankic_months)
+        if mean.isna().any():
+            raise ValueError("MarketSenseAI specialist history is incomplete")
+        logits = softmax_temperature * mean
+        reliability = np.exp(logits - logits.max())
+        reliability /= reliability.sum()
+        indices = month_groups[month]
+        signal = scores.loc[indices].mul(reliability, axis=1).sum(
+            axis=1, min_count=len(scores.columns)
+        )
+        result.loc[indices] = signal
+        finite = signal.dropna()
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "reliability_start": str(history.index[0].date()),
+            "reliability_end": str(history.index[-1].date()),
+            "reliability_months": len(history),
+            "finite_scores": len(finite),
+            "buy_count": int((finite > buy_threshold).sum()),
+            "sell_count": int((finite < sell_threshold).sum()),
+            "hold_count": int(finite.between(sell_threshold, buy_threshold, inclusive="both").sum()),
+        }
+        for name in specialists:
+            row[f"specialist_rankic__{name}"] = float(mean[name])
+            row[f"reliability_weight__{name}"] = float(reliability[name])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
