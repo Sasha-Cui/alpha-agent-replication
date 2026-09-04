@@ -46,7 +46,10 @@ def test_m009_recipe_freezes_multimodal_memory_reflection_and_tools():
     assert len(recipe["invented_elements"]) >= 5
 
 
-def test_m009_is_the_only_active_in_spirit_milestone():
+def test_m009_recipe_remains_pinned_after_the_ledger_advances():
     ledger = json.loads((ROOT / "paper_runs/us_jkp_in_spirit/milestones.json").read_text())
-    active = [row["milestone_id"] for row in ledger["milestones"] if row["status"] == "in_progress_in_spirit"]
-    assert active == ["M009"]
+    milestone = next(row for row in ledger["milestones"] if row["milestone_id"] == "M009")
+    assert milestone["status"] in {"in_progress_in_spirit", "completed_in_spirit"}
+    if milestone["status"] == "completed_in_spirit":
+        manifest = json.loads((OUTPUT / "run_manifest.json").read_text())
+        assert manifest["recipe_sha256"] == digest(OUTPUT / "recipe.json")

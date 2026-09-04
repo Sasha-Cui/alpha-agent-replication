@@ -14,10 +14,10 @@
   "declared_inference_family_size": 69,
   "progress_summary": {
     "carried_common_evaluation": 17,
-    "completed_in_spirit": 5,
+    "completed_in_spirit": 6,
     "discarded_structural_mismatch": 7,
     "in_progress_in_spirit": 1,
-    "queued_in_spirit": 39
+    "queued_in_spirit": 38
   },
   "milestones": [
     {
@@ -181,15 +181,15 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M009_finagent/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M009_finagent/verdict.md",
       "strict_metrics_path": "",
-      "status": "in_progress_in_spirit",
+      "status": "completed_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "next_action": "Freeze one FinAgent-inspired researcher reconstruction before inspecting its JKP result."
+      "recipe_path": "paper_runs/us_jkp_in_spirit/M009_finagent/recipe.json",
+      "implementation_path": "scripts/run_finagent_in_spirit.py",
+      "run_manifest_path": "paper_runs/us_jkp_in_spirit/M009_finagent/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_in_spirit/M009_finagent/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_in_spirit/M009_finagent/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_in_spirit/M009_finagent/verdict.md",
+      "next_action": "Closed with one frozen FinAgent-inspired multimodal memory/reflection policy; do not retune after its observed JKP result."
     },
     {
       "milestone_id": "M010",
@@ -200,7 +200,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M010_llmfactor/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M010_llmfactor/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -208,7 +208,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one LLMFactor-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M011",
