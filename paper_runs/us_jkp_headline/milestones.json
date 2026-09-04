@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 61,
+    "closed": 62,
     "completed_adapted": 1,
-    "completed_partial": 12,
+    "completed_partial": 13,
     "closed_not_evaluable": 48,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 7
   },
   "terminal_statuses": [
@@ -1063,16 +1063,16 @@
       "title": "XALPHA: A Memory-Driven AI Quant Researcher for Hypothesis-to-Code Alpha Discovery",
       "system_ids": "SYS-XALPHA",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify XALPHA's central memory-driven hypothesis-to-code alpha output or strongest attributable source formula before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M062_xalpha/recipe.json",
+      "implementation_path": "scripts/run_xalpha_headline.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M062_xalpha/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M062_xalpha/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M062_xalpha/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M062_xalpha/verdict.md",
+      "evaluated_scope": "The main-text representative elite overshoot-pressure factor preserves its complete program and paper-reported positive IC direction on monthly JKP close bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missing-return policies, and JKP133 attribution. This is not the memory-driven search or fused strategy.",
+      "next_action": "Closed. Keep the source-selected representative-factor path fixed and exploratory; do not interpret it as XALPHA memory routing, hypothesis generation, complete library, Ridge fusion, Top-50/drop-5, or paper performance.",
+      "closure_reason": "The strongest attributable elite-factor partial produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is -1.71%, Sharpe -0.003, maximum drawdown -69.29%, and rolling JKP133 residual mean 3.84% annually (HAC t=1.029, p=0.3036)."
     },
     {
       "milestone_id": "M063",
