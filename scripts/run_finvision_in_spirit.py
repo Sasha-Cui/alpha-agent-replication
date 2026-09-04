@@ -52,7 +52,7 @@ def evaluate(root: Path, output: Path) -> None:
         raise ValueError("FinVision recipe is not frozen")
     if recipe["fidelity_label"] != "in_spirit_reconstruction":
         raise ValueError("FinVision result must remain explicitly in-spirit")
-    policy = recipe["chronological_policy"]
+    policy = recipe["prediction_policy"]
     if policy["final_common_returns_used_for_policy_choice"] is not False:
         raise ValueError("FinVision recipe permits final-result selection")
     if contract["status"] != "frozen":
