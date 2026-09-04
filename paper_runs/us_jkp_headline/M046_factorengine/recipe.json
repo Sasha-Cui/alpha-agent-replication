@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "status": "frozen_for_execution",
+  "milestone_id": "M046",
+  "canonical_work_id": "CensusArxiv260316365",
+  "title": "FactorEngine: A Program-level Knowledge-Infused Factor Mining Framework for Quantitative Investment",
+  "candidate_id": "factorengine_showcased_evolved_factor_40",
+  "selection_reason": "The current v2 paper's end-to-end example explicitly contrasts a seed with the representative factor produced after 40 FactorEngine evolution iterations. The evolved program is the strongest concrete source-produced factor and was selected before its monthly JKP return was computed.",
+  "paper_source": {
+    "version": "v2",
+    "url": "https://arxiv.org/abs/2603.16365v2",
+    "pdf_sha256": "d79130ffeab415aef06c718d5d51be221af820ff1e971fe48f1f144a2991b870",
+    "source_archive_sha256": "942e4c2e053ab912dd041ccf77282e9e58ffa69daeac2631ae6accbaa960a6eb",
+    "paper_tex_sha256": "8bd0907153512dc41dbce1272b3dd92aa301d3cb88770304aa414349d2e620e9",
+    "evolved_listing_sha256": "69977f4ef5ee18f0c4e071737dba62753a0f45bea5dca5e4215885d8f66d8b20"
+  },
+  "source_program": {
+    "function": "trend_factor",
+    "default_weights": {"w1": 0.25, "w2": 0.25, "w3": 0.5},
+    "smoothing_window": 5,
+    "mechanism": "Three turnover-weighted intrabar price-pressure components are cross-sectionally rank normalized, combined 0.25/0.25/0.50, exponentially smoothed by security, and cross-sectionally z-scored.",
+    "direction": "positive source output; no sign is selected on JKP",
+    "verbatim_failure": "NameError: daily_range_expr is not defined",
+    "compatibility_repair": "Restore daily_range_expr = high - low immediately before its first use, matching the executable seed listing directly above and every denominator described by the evolved program.",
+    "repair_changes_economic_logic": false
+  },
+  "jkp_mapping": {
+    "close": "abs(prc)",
+    "open": "abs(prc)/(1+ret) when ret>-1; prior-close-implied monthly open proxy",
+    "high": "abs(prc_high)",
+    "low": "abs(prc_low)",
+    "volume": "tvol, monthly share volume",
+    "turnover": "tvol*abs(prc), preserving the literal volume*close source expression",
+    "cadence": "one source observation and the five-period EWM become one month and five months",
+    "universe": "largest 1,000 eligible U.S. stocks by formation-date market equity"
+  },
+  "common_task_adaptations": {
+    "portfolio": "common value-weighted long/short deciles because the showcased program emits only a score",
+    "cost": "10 bp one-way primary",
+    "missing_returns": "zero primary and -100% adverse sensitivity",
+    "classification": "completed_partial if executed"
+  },
+  "full_system_not_reproduced": [
+    "The program-level LLM evolution, research-report ingestion, prompts/responses, and 40-iteration trajectory.",
+    "The unreleased generated factor pool and LightGBM synthesis behind headline tables.",
+    "The original Qlib A-share data, point-in-time constituents, predictions, holdings, and returns.",
+    "The author runtime and environment; the listing is translated directly into pandas arithmetic.",
+    "Any original-paper metric or figure.",
+    "A pristine confirmatory test; prior project and JKP outcomes were already visible."
+  ],
+  "outcome_selection_guard": "Do not change the one-line repair, default weights, smoothing, direction, field mapping, portfolio, or costs after observing JKP performance. A negative or benchmark-explained result closes the milestone."
+}
