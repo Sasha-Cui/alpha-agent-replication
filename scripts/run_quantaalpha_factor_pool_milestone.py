@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 from contextlib import redirect_stdout
 from datetime import datetime, timezone
+import fcntl
 import hashlib
 import importlib.util
 import io
@@ -62,6 +63,12 @@ def digest(path: Path) -> str:
         for chunk in iter(lambda: handle.read(8 * 1024 * 1024), b""):
             result.update(chunk)
     return result.hexdigest()
+
+
+def write_json(path: Path, value: dict[str, Any]) -> None:
+    temporary = path.with_name(path.name + ".tmp")
+    temporary.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
+    temporary.replace(path)
 
 
 def translate_expression(expression: str) -> str:
@@ -619,7 +626,30 @@ def main() -> None:
     os.umask(0o077)
     root = args.root.resolve()
     output = args.output if args.output.is_absolute() else root / args.output
-    evaluate(root, output.resolve(), args.source_root.resolve(), args.factor_json.resolve())
+    private = root / "artifacts/us_jkp_headline/v1"
+    private.mkdir(parents=True, exist_ok=True)
+    with (private / "operation.lock").open("a+") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        status_path = private / "operation.json"
+        status = {
+            "state": "running", "phase": "factor_pool_evaluation", "milestone_id": "M043",
+            "pid": os.getpid(), "hostname": socket.gethostname(),
+            "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
+            "started_at_utc": datetime.now(timezone.utc).isoformat(),
+            "command": [sys.executable, str(Path(__file__).resolve()), *sys.argv[1:]],
+        }
+        write_json(status_path, status)
+        try:
+            evaluate(root, output.resolve(), args.source_root.resolve(), args.factor_json.resolve())
+        except BaseException as error:
+            status.update(
+                state="failed", finished_at_utc=datetime.now(timezone.utc).isoformat(),
+                error_type=type(error).__name__, error=str(error),
+            )
+            write_json(status_path, status)
+            raise
+        status.update(state="complete", finished_at_utc=datetime.now(timezone.utc).isoformat())
+        write_json(status_path, status)
 
 
 if __name__ == "__main__":
