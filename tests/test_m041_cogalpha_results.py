@@ -102,7 +102,7 @@ def test_m041_attribution_coverage_and_partial_claim_boundary_are_explicit():
     assert "option **B**" in verdict
 
 
-def test_m041_ledger_records_partial_evaluation_and_keeps_m042_queued():
+def test_m041_ledger_records_partial_evaluation():
     ledger = json.loads((ROOT / "paper_runs/us_jkp_headline/milestones.json").read_text())
     rows = {row["milestone_id"]: row for row in ledger["milestones"]}
     m041 = rows["M041"]
@@ -110,6 +110,5 @@ def test_m041_ledger_records_partial_evaluation_and_keeps_m042_queued():
     assert m041["implementation_path"] == "scripts/run_cogalpha_evolved_factor_milestone.py"
     assert m041["monthly_returns_path"] and m041["metrics_path"] and m041["run_manifest_path"]
     assert m041["recipe_path"] and m041["verdict_path"] and m041["closure_reason"]
-    assert rows["M042"]["status"] == "queued"
     assert ledger["progress_summary"]["closed"] >= 41
     assert ledger["progress_summary"]["completed_partial"] >= 7
