@@ -47,7 +47,9 @@ def test_m020_recipe_freezes_agent_counts_pools_aggregation_and_annealing():
     assert len(recipe["invented_elements"]) >= 5
 
 
-def test_m020_is_the_only_active_in_spirit_milestone():
+def test_m020_recipe_remains_closed_as_the_ledger_advances():
     ledger = json.loads((ROOT / "paper_runs/us_jkp_in_spirit/milestones.json").read_text())
-    active = [row["milestone_id"] for row in ledger["milestones"] if row["status"] == "in_progress_in_spirit"]
-    assert active == ["M020"]
+    rows = {row["milestone_id"]: row for row in ledger["milestones"]}
+    assert rows["M020"]["status"] == "completed_in_spirit"
+    assert ledger["progress_summary"]["completed_in_spirit"] >= 14
+    assert sum(ledger["progress_summary"].values()) == 69
