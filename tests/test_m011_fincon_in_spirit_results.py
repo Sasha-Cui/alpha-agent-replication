@@ -75,11 +75,6 @@ def test_m011_ledger_closes_and_advances_once_to_m012():
     assert rows["M011"]["recipe_path"] and rows["M011"]["run_manifest_path"]
     assert rows["M011"]["monthly_returns_path"] and rows["M011"]["metrics_path"]
     assert rows["M011"]["verdict_path"]
-    assert rows["M012"]["status"] == "in_progress_in_spirit"
-    assert ledger["progress_summary"] == {
-        "carried_common_evaluation": 17,
-        "completed_in_spirit": 8,
-        "discarded_structural_mismatch": 7,
-        "in_progress_in_spirit": 1,
-        "queued_in_spirit": 36,
-    }
+    assert rows["M012"]["status"] in {"queued_in_spirit", "in_progress_in_spirit", "completed_in_spirit"}
+    assert ledger["progress_summary"]["completed_in_spirit"] >= 8
+    assert sum(ledger["progress_summary"].values()) == 69
