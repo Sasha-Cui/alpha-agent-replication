@@ -16,8 +16,8 @@
     "carried_common_evaluation": 17,
     "completed_in_spirit": 10,
     "discarded_structural_mismatch": 7,
-    "in_progress_in_spirit": 0,
-    "queued_in_spirit": 35
+    "in_progress_in_spirit": 1,
+    "queued_in_spirit": 34
   },
   "milestones": [
     {
@@ -276,7 +276,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M014_tradingagents/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M014_tradingagents/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -284,7 +284,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one TradingAgents-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M015",
