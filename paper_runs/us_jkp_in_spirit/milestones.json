@@ -14,10 +14,10 @@
   "declared_inference_family_size": 69,
   "progress_summary": {
     "carried_common_evaluation": 17,
-    "completed_in_spirit": 14,
+    "completed_in_spirit": 15,
     "discarded_structural_mismatch": 7,
     "in_progress_in_spirit": 1,
-    "queued_in_spirit": 30
+    "queued_in_spirit": 29
   },
   "milestones": [
     {
@@ -428,15 +428,15 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M022_rd_agent/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M022_rd_agent/verdict.md",
       "strict_metrics_path": "",
-      "status": "in_progress_in_spirit",
+      "status": "completed_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "next_action": "Freeze one R&D-Agent-inspired researcher reconstruction before inspecting its JKP result."
+      "recipe_path": "paper_runs/us_jkp_in_spirit/M022_rd_agent/recipe.json",
+      "implementation_path": "scripts/run_rd_agent_in_spirit.py",
+      "run_manifest_path": "paper_runs/us_jkp_in_spirit/M022_rd_agent/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_in_spirit/M022_rd_agent/monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_in_spirit/M022_rd_agent/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_in_spirit/M022_rd_agent/verdict.md",
+      "next_action": "Complete. Retain the frozen near-flat full-period result and negative evaluation-period result without retuning."
     },
     {
       "milestone_id": "M023",
@@ -466,7 +466,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M024_mountainlion/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M024_mountainlion/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -474,7 +474,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one MountainLion-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M025",
