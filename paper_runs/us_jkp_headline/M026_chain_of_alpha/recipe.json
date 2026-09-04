@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M026",
+  "canonical_work_id": "CensusArxiv250806312",
+  "paper": "Chain-of-Alpha: Unleashing the Power of Large Language Models for Alpha Mining in Quantitative Trading",
+  "paper_url": "https://ar5iv.labs.arxiv.org/html/2508.06312",
+  "historical_transformation_sha256": "aa7d79e1ab37a614ffd75d67b81cb514cf951ed0699004859cb1f160ef55776b",
+  "primary_record_status": "withdrawn; official PDF and source endpoints return 404 because the submitter lacked license rights",
+  "headline_strategy": "Dual-chain LLM factor generation and optimization pipeline producing a selected factor pool for LightGBM return prediction and a Qlib top-k/drop-n portfolio",
+  "evaluated_component": "Volume_Adjusted_Mean_Corr",
+  "component_selection_reason": "This is the only one of three exact showcased factors that does not require unavailable VWAP. Selection is by JKP input availability, not the paper's displayed RankIC or a new JKP outcome.",
+  "source_formula": "Corr(Rank($close, 5), Rank($amount, 5), 5)",
+  "paper_rankic_direction": 0.0375,
+  "source_scope": "one showcased generated factor, not either LLM chain, the selected 100-factor pool, LightGBM, or native portfolio",
+  "monthly_adapter": {
+    "close": "JKP abs(prc)",
+    "amount": "JKP dolvol, defined by the supplied JKP source as monthly USD dollar volume",
+    "operators": "five-period average-tie percentile ranks followed by five-period Pearson correlation",
+    "direction": "higher-is-better from the paper's positive displayed RankIC, fixed before evaluation",
+    "portfolio": "common value-weighted long-short deciles for a score-only component",
+    "costs": "common 10 bp one-way primary plus fixed sensitivity cases",
+    "missing_returns": "common zero primary and adverse-100 sensitivity without reranking"
+  },
+  "preserved": ["exact published formula tree", "five-period ranks", "five-period correlation", "paper-signed direction"],
+  "adapted": ["daily CSI-1000 bars to monthly U.S. JKP bars", "JKP dollar volume for amount", "common decile portfolio and benchmark"],
+  "not_claimed": ["native parser semantics", "generation or optimization chain", "1,000-candidate search", "selected 100-factor pool", "LightGBM", "native Qlib portfolio", "paper result"],
+  "prior_jkp_outcomes_seen": true,
+  "component_mapping_selected_from_source_not_jkp_performance": true,
+  "mapping_frozen_before_new_component_outcome": true,
+  "inference_status": "exploratory_retrospective_partial",
+  "status": "fixed_before_evaluation"
+}
