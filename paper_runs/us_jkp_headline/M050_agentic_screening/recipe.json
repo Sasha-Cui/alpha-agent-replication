@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M050",
+  "canonical_work_id": "CensusArxiv260323300",
+  "title": "Designing Agentic AI-Based Screening for Portfolio Investment",
+  "central_strategy": "A fundamental-rule LLM agent and a news-sentiment FinBERT agent screen the S&P 500 monthly, using intersection with union/default fallback. Candidate assets then enter high-dimensional precision-matrix estimation and GMV, 1%-monthly-target minimum-variance, or maximum-Sharpe portfolio optimization with a 180-month formation window and 10 bp costs.",
+  "paper_source": {
+    "version": "v2",
+    "url": "https://arxiv.org/abs/2603.23300v2",
+    "official_pdf_sha256": "cb708a65339640c7958bf602f67e3f0d6547071974074770e4b529553c6ab00f",
+    "source_archive_sha256": "11b2d0ccee0a607546cfd0a10c385ce2e4d217caec07ba175e123d5bc92de889",
+    "source_tex_sha256": "003d001f0d2e72331e93bb68e437eea79edf28917411b3d21e8a777e0cdfbe33"
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/agentic_ai_screening/manifest.json",
+    "manifest_sha256": "0194e2051ae94674f13d6273738a8016476226b2f1fd4828ed7c7527fafb88b8",
+    "method_specification_sha256": "bb22ebc91ed55dc6785d1d0292fd853d3fd8d35a49dfcbcb0640bf84463ddf61",
+    "linked_news_dataset_sha256": "01ae9b78c9b5c980fc6211eb4505e326efe025521a71ef9d1dcfc7f61287e123",
+    "independent_implementation_audit_sha256": "93ae9b413ed528f159637a436e2a67fb1896402dd0b8910963729c6cb154aea2",
+    "linked_news_rows": 4589,
+    "linked_news_symbols": 469,
+    "author_native_numeric_cells_regenerated": 0,
+    "complete_annual_prompt_output_sets_recovered": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "exact_title_repository_matches": 0,
+    "arxiv_id_native_code_matches": 0,
+    "unaffiliated_repository": "alanhsieh2000/agentic_portfolio@f6d056fae10e1ff2e77bf092e125ba09e93560d0",
+    "unaffiliated_repository_paper_result_credit": false
+  },
+  "monthly_jkp_assessment": {
+    "required_but_missing": [
+      "Point-in-time S&P 500 membership/identifiers and exact CRSP/Compustat, IBES/WRDS, factor, and news-to-security snapshots.",
+      "The FinBERT checkpoint/revision, tokenizer/inference settings, monthly probabilities, and sentiment signal ledger.",
+      "All annual LLM-S prompts, injected cross-sections/tool payloads, exact model snapshots/settings, responses, and buy/sell/hold rules.",
+      "Dated ensemble sets/fallback events and the full precision-estimator, optimizer, solver, deep-model, and seed configuration.",
+      "Fitted matrices, weights, returns, turnover, costs, paired-test samples, rerun outputs, and table-generating arrays."
+    ],
+    "why_one_date_prompt_is_insufficient": "The December-2023 listing supplies only one 2024 rule. It cannot identify the annual LLM-S rules for the medium and short windows or any dated monthly selection set.",
+    "why_finbert_only_is_not_the_headline": "FinBERT is one screening agent and a fallback/robustness component. A replacement FinBERT-only portfolio would omit the paper's agentic fundamental rule, ensemble intersection/fallback, and exact selected universe.",
+    "why_linked_news_does_not_close_the_gap": "The 4,589-row news file has text/symbol/date inputs but no paper sentiment scores or checkpoint lineage, and it does not supply the missing fundamental/IBES screen or portfolio outputs.",
+    "why_independent_code_is_not_a_replication": "The unaffiliated repository replaces Gemini with Claude, FinBERT with a custom LLM, five precision estimators with PyPortfolioOpt, the 180-month window with 60/24 months, and the paper data with current SEC/Yahoo inputs."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote the linked news file, one-date prompt, FinBERT-only substitute, logistic/Novy-Marx baseline, or unaffiliated rewrite to the paper's agentic screen. Reopen for author signal ledgers/runtime or a complete causal release."
+}
