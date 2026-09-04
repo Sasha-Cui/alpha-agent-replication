@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 7,
     "closed_not_evaluable": 33,
-    "in_progress": 0,
-    "queued": 28
+    "in_progress": 1,
+    "queued": 27
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -723,7 +723,7 @@
       "title": "Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning",
       "system_ids": "SYS-ALPHA-R1",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
