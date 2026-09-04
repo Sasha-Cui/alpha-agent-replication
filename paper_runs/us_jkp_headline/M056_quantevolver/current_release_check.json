@@ -1,0 +1,10 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "repository": "QuantLLM/QuantEvolver",
+  "default_branch": "main",
+  "audited_head_sha": "4eb0e78842138ada5334349585b114ad923564e8",
+  "current_head_sha": "4eb0e78842138ada5334349585b114ad923564e8",
+  "current_head_matches_audited_release": true,
+  "tag_count": 0,
+  "paper_checkpoint_or_mined_factor_release_found": false
+}

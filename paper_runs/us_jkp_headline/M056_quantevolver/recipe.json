@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M056",
+  "canonical_work_id": "CensusArxiv260515412",
+  "paper": "From Feedback Loops to Policy Updates: Reinforcement Fine-Tuning for LLM-Based Alpha Factor Discovery",
+  "paper_url": "https://arxiv.org/abs/2605.15412v1",
+  "headline_agent": "reinforcement-fine-tuned LLM factor discovery policy and its mined/fused factor library",
+  "headline_component": "first valid author-released example seed",
+  "component_selection_reason": "The paper-specific seed pool, trained checkpoint, mined factors, fusion output, and result arrays are withheld. The public quick-start places return_sharpe_60 first, validates it with the native DSL, and uses the same expression in its local-evaluation example. This source order fixes one attributable executable component without selecting on JKP performance.",
+  "candidate_id": "quantevolver_return_sharpe_60",
+  "source_seed_id": "seed_0001",
+  "source_seed_name": "return_sharpe_60",
+  "source_formula": "div(ts_mean(returns(60)), ts_std(returns(60)))",
+  "source_intuition": "Short-term risk-adjusted return momentum.",
+  "source_category": "momentum",
+  "source_repository": {
+    "url": "https://github.com/QuantLLM/QuantEvolver",
+    "commit": "4eb0e78842138ada5334349585b114ad923564e8",
+    "seed_snapshot_path": "tests/upstream_snapshots/quantevolver/examples/seed_candidates.yaml",
+    "seed_snapshot_sha256": "c8a20de0850156b8c831547a58239bb88b5d6486da50d6f9ecbaa2df0d13d718",
+    "evaluator_snapshot_path": "tests/upstream_snapshots/quantevolver/quant_evolver/dsl/evaluator.py",
+    "evaluator_snapshot_sha256": "8c6e8201b8794bb2166a118cb753231bca1379c8aff115c6d29799ce8400516c"
+  },
+  "paper_audit": {
+    "manifest_path": "paper_runs/paper_replication_audits/quantevolver/manifest.json",
+    "manifest_sha256": "feded6b9052288986203d000c9efb65a1f00d34c75f8837e379cc47f1a09decf",
+    "native_framework_modules_imported": 52,
+    "native_upstream_tests_passed": 3,
+    "paper_table_cells_regenerated": 0,
+    "paper_table_cells_total": 75
+  },
+  "monthly_adapter": {
+    "bar_mapping": "One source bar becomes one JKP month; 60 consecutive close-to-close monthly returns replace 60 intraday/daily bars.",
+    "close": "Absolute JKP formation-month prc, preserving the released evaluator's close-return definition and 1e-8 return denominator.",
+    "operators": "Population standard deviation plus the released nested 1e-8 safeguards; no cross-sectional reranking enters the score.",
+    "universe": "Fixed formation-date largest 1,000 U.S. equities from the common JKP contract.",
+    "portfolio": "Researcher-supplied common value-weighted long/short deciles; this replaces the released evaluator's equal-mean top/bottom quintile diagnostic.",
+    "costs": "Common 0/5/10/25/50 bp one-way cases with 10 bp primary.",
+    "missing_returns": "Fixed holdings re-accounted under zero and adverse-100 policies without reranking or reweighting.",
+    "warmup": "At least 60 consecutive monthly close returns (61 closes); a calendar gap breaks the rolling window."
+  },
+  "prior_outcomes_seen": true,
+  "mapping_was_frozen_before_prior_outcomes": false,
+  "inference_status": "exploratory_contaminated_mapping",
+  "preserved": [
+    "first source-listed valid seed",
+    "complete DSL operator tree",
+    "60-return window",
+    "close-derived simple returns",
+    "population volatility",
+    "positive momentum direction",
+    "released epsilon semantics"
+  ],
+  "adapted": [
+    "source bars to months",
+    "source symbols to monthly JKP top-1,000 U.S. universe",
+    "common value-weighted decile portfolio",
+    "common costs, missing-return policies, and rolling JKP133 attribution"
+  ],
+  "not_claimed": [
+    "reinforcement fine-tuning",
+    "trained miner checkpoint",
+    "paper seed/task bank",
+    "LLM factor search",
+    "DiCo/archive reward learning",
+    "mined factor library or fusion",
+    "native benchmark data",
+    "paper result"
+  ],
+  "preclassified_scope": "completed_partial_if_full_common_path_succeeds",
+  "status": "fixed_before_new_common_benchmark_run"
+}
