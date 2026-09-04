@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 42,
+    "closed": 43,
     "completed_adapted": 1,
-    "completed_partial": 7,
+    "completed_partial": 8,
     "closed_not_evaluable": 34,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 26
   },
   "terminal_statuses": [
@@ -740,16 +740,16 @@
       "title": "QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining",
       "system_ids": "SYS-QUANTA-ALPHA",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M043_quantaalpha/recipe.json",
+      "implementation_path": "scripts/run_quantaalpha_factor_pool_milestone.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M043_quantaalpha/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M043_quantaalpha/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M043_quantaalpha/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M043_quantaalpha/verdict.md",
+      "evaluated_scope": "The strongest executable author-attributed historical GPT pool: all 150 recovered QuantaAlpha expressions plus the released Alpha158(20) seed set, one causal fixed LightGBM fit, and monthly Top-50/drop-5 portfolio. The unreleased v3 pool and original LLM mining run are not claimed.",
+      "next_action": "Closed. Preserve the full fixed 170-feature result even though its positive active return is not statistically distinct from the JKP133 benchmark; reopen only if the exact v3 factor pool or predictions are released.",
+      "closure_reason": "The complete historical source pool produced a 305-month accounting path with 233 scored out-of-sample months. At 10 bp one-way costs the active CAGR is 1.38%, Sharpe 0.186, maximum drawdown -37.34%, and JKP133 residual 1.80% annually (HAC t=0.847, p=0.397); it is a central partial because the v3 headline pool is absent."
     },
     {
       "milestone_id": "M044",

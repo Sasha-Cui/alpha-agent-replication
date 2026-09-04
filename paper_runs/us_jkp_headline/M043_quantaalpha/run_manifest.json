@@ -1,0 +1,110 @@
+{
+  "status": "evaluated_partial",
+  "milestone_id": "M043",
+  "candidate_id": "quantaalpha_prepublication_gpt_complete_170",
+  "benchmark_id": "us_jkp_headline_v1",
+  "completed_at_utc": "2026-09-04T05:33:26.455818+00:00",
+  "hostname": "a1132u33n04.mghpcc.ycrc.yale.edu",
+  "code_commit": "6b2f046eeb1b6a47db78e171c96631023baa4cb3",
+  "contract_sha256": "9ce6783c8d4d303510173548088af66fc3add92602f404008c73212f8322ea77",
+  "recipe_sha256": "ebbb359a67d4694781229401cb392b59b6acd13f5ec96cafd21c06c88643247f",
+  "source_factor_sha256": "659baa259a909b5e5600dc0270c076d95f7e1d4fde6479e74cd4e3f558a0bf4e",
+  "source_commit": "8a034319ff925d9dc621077ebf97d48e1890dad2",
+  "runtime": {
+    "python": "3.12.3",
+    "numpy": "2.4.1",
+    "pandas": "2.3.3",
+    "platform": "Linux"
+  },
+  "primary_result": {
+    "case": "zero_cost_10",
+    "primary": true,
+    "missing_return_policy": "zero",
+    "cost_bps_one_way": 10.0,
+    "full_months": 305,
+    "full_arithmetic_annualized_return": 0.01905200614960572,
+    "full_cagr": 0.013847350860724417,
+    "full_cumulative_return": 0.4184134436307212,
+    "full_annualized_volatility": 0.10269226692278885,
+    "full_annualized_sharpe": 0.18552522717149025,
+    "full_maximum_drawdown": -0.37343240982704284,
+    "evaluation_months": 185,
+    "evaluation_start": "2009-08-31",
+    "evaluation_end": "2024-12-31",
+    "jkp_residual_mean_annualized": 0.01796864870004371,
+    "jkp_residual_se_annualized": 0.021222724951795016,
+    "jkp_residual_t_hac": 0.8466701962569573,
+    "jkp_residual_p_two_sided": 0.39717897537501157,
+    "exploratory_bonferroni69_p": 1.0,
+    "hac_lags": 4,
+    "average_traded_notional": 0.14011440264827105,
+    "annualized_linear_cost_drag": 0.0016813728317792527,
+    "cash_warmup_months": 72,
+    "scored_months": 233,
+    "minimum_active_finite_signal_count": 1000,
+    "maximum_missing_forward_gross_weight": 0.06012880665407545
+  },
+  "model": {
+    "train_start": "1999-07-31",
+    "train_end": "2004-06-30",
+    "train_months": 60,
+    "train_rows": 59638,
+    "validation_start": "2004-07-31",
+    "validation_end": "2005-06-30",
+    "validation_months": 12,
+    "validation_rows": 11955,
+    "test_start": "2005-07-31",
+    "test_end": "2024-11-30",
+    "test_months": 233,
+    "test_rows": 233000,
+    "feature_count": 170,
+    "best_iteration": 25,
+    "best_score": {
+      "train": {
+        "l2": 0.9312716751075346
+      },
+      "valid": {
+        "l2": 0.9954930153114474
+      }
+    },
+    "parameters": {
+      "objective": "mse",
+      "verbosity": -1,
+      "learning_rate": 0.1,
+      "max_depth": 8,
+      "num_leaves": 210,
+      "colsample_bytree": 0.8879,
+      "subsample": 0.8789,
+      "lambda_l1": 205.6999,
+      "lambda_l2": 580.9768,
+      "num_threads": 20,
+      "seed": 42,
+      "random_state": 42,
+      "min_child_samples": 100,
+      "feature_fraction_bynode": 0.8,
+      "num_boost_round": 500,
+      "early_stopping_rounds": 50
+    }
+  },
+  "private_factor_panel_path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/us_jkp_headline/v1/M043_formation_factor_panel.parquet",
+  "private_factor_panel_sha256": "ec02ef913bd5ba1217d810578ba4189b339101372223beb724345d97131dd300",
+  "private_holdings_path": "/nfs/roberts/project/pi_btk22/zc362/alpha_evolve/artifacts/us_jkp_headline/v1/M043_formation_holdings.parquet",
+  "private_holdings_sha256": "c8b31c420d6659e9877da80c536c752b92ba8effcf6e2fd282761dbb88b3c861",
+  "prior_jkp_outcomes_seen": true,
+  "confirmatory_claim": false,
+  "implementation_sha256": {
+    "scripts/run_quantaalpha_factor_pool_milestone.py": "212b739d940703063048338fc1d91473df3d0ec9344e8f83caa5f7d18d730668",
+    "src/alpha_evolve/headline_backtest.py": "2e3be61a09b03bbf1d5059a823a8058aded4153980dd0ca30c301398958d6f9f",
+    "src/alpha_evolve/submission_analysis.py": "24989a95c01cb7c4b9f933361a0fd1f50b5ece7e31a98f73359c47e32553d5d2",
+    "scripts/run_broad_jkp_crossfit.py": "6c84c990f39bd586b49c76812efb2f70a36823ada52c372e8483502e10379d73"
+  },
+  "output_sha256": {
+    "monthly_returns.csv": "4798b4ecbe2051365a77bd13c8f7f97cc4565d536e7e68f9505987ecce6f6335",
+    "primary_monthly_returns.csv": "2c9cb9f5be45e354cee71bf4f5b3200179d19a07bdc6faae27af579f6a877d18",
+    "metrics.csv": "5ba2baf2e38b86c028fbcdd582f2c3241272665ebbec661bbabed9379de98516",
+    "attribution_residuals.csv": "6b95c3b43c9f869dbfab5d567599d64eb921ab6acfd3f492194e85402a1ab1aa",
+    "feature_coverage.csv": "50b3775b9b36a1a3bc00f8bfa69a4aa62ee5028c0f77b53d45652bc09f645365",
+    "model_training.json": "66e7523836cb28ac26fe08e430b3aee2af179a8ab3188818d90c460fbb1fd10a",
+    "verdict.md": "30e445147f3d150f20188a4ce6338a0065da53ce463b80cab8a4f3748681063e"
+  }
+}
