@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M031",
+  "canonical_work_id": "CensusArxiv250909995",
+  "paper": "QuantHarness: Price-Driven Multi-Agent LLMs for High-Frequency Trading",
+  "paper_url": "https://arxiv.org/abs/2509.09995v4",
+  "paper_pdf_sha256": "751e6e7274bbf1fd5179153a28d2d29817c704b5d9b714b04ba57bd739cafda2",
+  "source_url": "https://github.com/Y-Research-SBU/QuantHarness",
+  "source_commit": "00a88cbbc3b946cbdf506038545d6b5c2df6a344",
+  "headline_strategy": "On each 1-hour or 4-hour decision, pass a recent OHLC candlestick window through Indicator, Pattern, and Trend LLM agents, synthesize their reports into a mandatory LONG or SHORT order, and attach an LLM-selected risk-reward ratio between 1.2 and 1.8 for a three-candle risk-constrained trade.",
+  "headline_selection_basis": "The abstract, Sections 3-4, and official LangGraph path all identify the price-only multi-agent pipeline—not the paper's LR/XGBoost baselines—as the proposed QuantHarness method.",
+  "paper_configuration": {
+    "native_bar_frequencies": ["1-hour", "4-hour"],
+    "released_analysis_window_bars": 45,
+    "pattern_chart_window_bars": 40,
+    "forecast_horizon_bars": 3,
+    "decision_set": ["LONG", "SHORT"],
+    "hold_allowed": false,
+    "paper_stop_loss": 0.0005,
+    "risk_reward_ratio_min": 1.2,
+    "risk_reward_ratio_max": 1.8,
+    "paper_agents": ["IndicatorAgent", "PatternAgent", "TrendAgent", "RiskAgent"],
+    "released_graph_nodes": ["Indicator Agent", "Pattern Agent", "Trend Agent", "Decision Maker"]
+  },
+  "required_formation_inputs": [
+    "a timestamped 45-bar OHLC sequence available before the decision",
+    "40-bar candlestick and support/resistance chart images",
+    "RSI, MACD, rate-of-change, stochastic and Williams %R computations",
+    "three LLM-generated specialist reports",
+    "a final LLM LONG/SHORT decision and risk-reward ratio"
+  ],
+  "common_task_schema_evidence": {
+    "jkp_rows": 4037778,
+    "jkp_columns": 444,
+    "frequency": "monthly formation rows",
+    "exact_source_fields_present": ["prc", "prc_high", "prc_low", "ret_exc", "ret_exc_lead1m"],
+    "exact_required_ohlc_fields_absent": ["Open", "High", "Low", "Close", "open", "high", "low", "close"],
+    "interpretation": "JKP supplies a month-end price and monthly high/low-style fields, not a timestamped 45-observation intraday OHLC path; it also has no opening-price field."
+  },
+  "released_component_credit": {
+    "released_sampled_segment_csvs": 1600,
+    "released_asset_horizon_sets": 16,
+    "segments_per_set": 100,
+    "rows_per_segment": 100,
+    "source_agents_and_graph_inspectable": true,
+    "current_v4_numeric_cells": 272,
+    "version_specific_numeric_cells": 600,
+    "native_result_cells_regenerated": 0
+  },
+  "paper_source_execution_gaps": [
+    "No released batch experiment or portfolio evaluator maps agent decisions into the paper's tables or Figure 5.",
+    "The paper does not disclose the trading-run LLM identities or temperatures; mutable source defaults do not identify the published policy.",
+    "The paper names a RiskAgent, while the released graph instead ends in decision_agent.py and has no risk_agent.py.",
+    "The active released run_analysis path takes df.tail(45) and does not enforce the paper's three-bar holdout.",
+    "No native predictions, risk ratios, return paths, seeds, or portfolio paths are released."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Reuse the prior rank(ret_1_0)+rank(ret_3_1)+microstructure-characteristic proxy",
+      "reason": "That score was a researcher-selected narrative translation with no exact paper or source support and does not execute any QuantHarness agent."
+    },
+    {
+      "route": "Use the paper's 40-close linear-regression baseline",
+      "reason": "LR is explicitly a comparison baseline, not the proposed multi-agent strategy; its released evaluator is also absent and its printed alignment requires an undocumented three-bar gap."
+    },
+    {
+      "route": "Treat monthly prc, prc_high and prc_low as a 45-bar OHLC chart",
+      "reason": "This would invent the missing opening prices, replace intraday bars with months, and change a three-candle HFT trade into a multi-year signal."
+    },
+    {
+      "route": "Run current source defaults on synthetic charts or current API models",
+      "reason": "Synthetic inputs and unpinned replacement model outputs jointly define a new policy rather than a defensible adapter of the released paper strategy."
+    },
+    {
+      "route": "Score the 1,600 released benchmark segments as the common result",
+      "reason": "They are non-JKP index, futures, commodity, volatility, or crypto samples and do not produce monthly U.S.-stock returns under the common contract."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/quantharness",
+  "result_policy": "No narrative factor proxy, paper baseline, synthetic OHLC history, current-model rerun, or non-JKP segment result is entered as a QuantHarness monthly return. The paper's positive claims remain untested on the common benchmark, not falsified.",
+  "status": "closed_not_evaluable"
+}

@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 30,
+    "closed": 31,
     "completed_adapted": 1,
     "completed_partial": 5,
-    "closed_not_evaluable": 24,
-    "in_progress": 1,
+    "closed_not_evaluable": 25,
+    "in_progress": 0,
     "queued": 38
   },
   "terminal_statuses": [
@@ -536,16 +536,16 @@
       "title": "QuantHarness: Price-Driven Multi-Agent LLMs for High-Frequency Trading",
       "system_ids": "SYS-QUANT-AGENT-HFT",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M031_quantharness/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M031_quantharness/verdict.md",
+      "evaluated_scope": "No common-task return: the paper's mandatory price-driven multi-agent decision needs a timestamped 45-bar intraday OHLC path, chart reasoning, and an identified LLM policy that monthly JKP and the release do not provide.",
+      "next_action": "Closed. Preserve the released prompt/component credit and prior audit; do not substitute the old narrative factor proxy, the LR baseline, synthetic OHLC histories, current-model outputs, or non-JKP segments.",
+      "closure_reason": "An honest monthly U.S./JKP run would require fabricating opening prices, changing 1h/4h bars and three-candle execution into a multi-year/monthly mechanism, and choosing an undisclosed LLM policy. Those changes define a new strategy rather than an adapter."
     },
     {
       "milestone_id": "M032",

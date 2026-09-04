@@ -1,0 +1,19 @@
+{
+  "milestone_id": "M031",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/quantharness/README.md",
+    "paper_runs/paper_replication_audits/quantharness/manifest.json",
+    "paper_runs/paper_replication_audits/quantharness/released_source_inventory.csv",
+    "paper_runs/paper_replication_audits/quantharness/source_config_conformance.csv",
+    "paper_runs/paper_replication_audits/quantharness/linear_regression_alignment_audit.csv",
+    "paper_runs/paper_replication_audits/quantharness/released_benchmark_inventory.csv",
+    "paper_runs/us_jkp_headline/benchmark_contract.json"
+  ],
+  "bounded_checks": [
+    "Re-read the v4 headline method and experiment protocol and inspected the paper-era Indicator, Pattern, Trend, Decision, graph, technical-tool, and web execution paths at the pinned source commit.",
+    "Inspected the 444-column JKP Parquet schema with the locked Python 3.12 environment: exact Open/High/Low/Close fields are absent; only monthly prc/prc_high/prc_low observations and returns are available.",
+    "Separated the proposed multi-agent method from the LR baseline and the earlier researcher-created factor proxy, then rejected synthetic histories and non-JKP released segments as common-task substitutes."
+  ],
+  "outcome": "The multi-agent strategy is inspectable at prompt/component level, but its required intraday OHLC state and identified LLM policy cannot be formed from monthly JKP. No honest common-task return can be assigned without constructing a materially different strategy."
+}
