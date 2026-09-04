@@ -995,3 +995,112 @@ def llmfactor_rolling_scores(
             row[f"factor_{number}_mean_rankic"] = float(mean[name])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def fincon_rolling_scores(
+    frame: pd.DataFrame,
+    analysts: dict[str, list[str]],
+    *,
+    common_start: str,
+    procedural_memory_months: int = 60,
+    minimum_rankic_months: int = 24,
+    belief_learning_rate: float = 0.25,
+    cvar_history_months: int = 60,
+    cvar_tail_probability: float = 0.05,
+    cvar_penalty: float = 0.5,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a numerical FinCon manager/analyst and dual-risk-control policy."""
+    if list(analysts) != ["market", "fundamental", "attention", "risk"]:
+        raise ValueError("FinCon requires the frozen four analyst roles")
+    features = list(dict.fromkeys(feature for values in analysts.values() for feature in values))
+    missing = {"month", "security_id", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing FinCon analyst inputs: {sorted(missing)}")
+    if not 0 < belief_learning_rate <= 1 or not 0 < cvar_tail_probability <= 0.5:
+        raise ValueError("invalid FinCon belief or CVaR parameter")
+    ranked = cross_sectional_unit_rank(frame, features)
+    raw_analysts = pd.DataFrame(index=frame.index)
+    raw_analysts["market"] = (
+        ranked["ret_12_1"] + ranked["ret_6_1"] - ranked["rvol_21d"]
+    ) / 3.0
+    raw_analysts["fundamental"] = ranked[
+        ["be_me", "gp_at", "ocf_at", "f_score"]
+    ].mean(axis=1)
+    raw_analysts["attention"] = ranked[
+        ["ret_1_0", "rmax5_21d", "turnover_126d"]
+    ].mean(axis=1)
+    raw_analysts["risk"] = (
+        ranked["z_score"] - ranked["o_score"] - ranked["rvol_21d"]
+    ) / 3.0
+    analyst_frame = pd.concat([frame[["month"]], raw_analysts], axis=1)
+    analyst_scores = cross_sectional_unit_rank(analyst_frame, list(analysts))
+    rankics = monthly_rankic(frame, analyst_scores)
+
+    cvar = pd.Series(np.nan, index=frame.index, dtype="float64")
+    outcomes_all = pd.to_numeric(frame["ret_exc_lead1m"], errors="coerce").to_numpy(dtype=float)
+    frame_months = pd.to_datetime(frame["month"])
+    month_number = (frame_months.dt.year * 12 + frame_months.dt.month).to_numpy(dtype=int)
+    for indices in frame.groupby("security_id", sort=False).groups.values():
+        positions = frame.index.get_indexer(indices)
+        positions = positions[np.argsort(month_number[positions], kind="mergesort")]
+        months = month_number[positions]
+        outcomes = outcomes_all[positions]
+        for current_position in range(len(positions)):
+            lag = months[current_position] - months[:current_position]
+            history_positions = np.flatnonzero((lag >= 1) & (lag <= cvar_history_months))
+            values = outcomes[history_positions]
+            values = values[np.isfinite(values)]
+            if len(values) < minimum_rankic_months:
+                continue
+            tail_count = max(1, int(np.ceil(cvar_tail_probability * len(values))))
+            cvar.iloc[positions[current_position]] = float(np.sort(values)[:tail_count].mean())
+    cvar_frame = pd.DataFrame({"month": frame["month"], "cvar": cvar}, index=frame.index)
+    cvar_rank = cross_sectional_unit_rank(cvar_frame, ["cvar"])["cvar"]
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    beliefs = pd.Series(0.25, index=list(analysts), dtype="float64")
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    previous_cvar = pd.Series(dtype="float64")
+    for month in months:
+        history = rankics.loc[rankics.index < month].tail(procedural_memory_months)
+        if len(history) != procedural_memory_months:
+            raise ValueError(f"FinCon warm-up is incomplete at {month.date()}")
+        count = history.count()
+        mean = history.mean().where(count >= minimum_rankic_months)
+        if mean.isna().any():
+            raise ValueError("FinCon analyst history is incomplete")
+        logits = mean - mean.max()
+        target_beliefs = np.exp(logits)
+        target_beliefs /= target_beliefs.sum()
+        beliefs = (1.0 - belief_learning_rate) * beliefs + belief_learning_rate * target_beliefs
+        beliefs /= beliefs.sum()
+        indices = month_groups[month]
+        manager = analyst_scores.loc[indices].mul(beliefs, axis=1).sum(axis=1, min_count=len(analysts))
+        current_cvar = cvar.loc[indices]
+        current_cvar_rank = cvar_rank.loc[indices]
+        score = manager + cvar_penalty * current_cvar_rank
+        score = score.where(manager.notna() & current_cvar.notna())
+        result.loc[indices] = score
+        current_by_security = pd.Series(
+            current_cvar.to_numpy(),
+            index=frame.loc[indices, "security_id"].to_numpy(),
+        )
+        prior = frame.loc[indices, "security_id"].map(previous_cvar)
+        alerts = current_cvar.notna() & prior.notna() & current_cvar.lt(prior.to_numpy())
+        previous_cvar = current_by_security
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "procedural_start": str(history.index[0].date()),
+            "procedural_end": str(history.index[-1].date()),
+            "procedural_months": len(history),
+            "cvar_coverage": int(current_cvar.notna().sum()),
+            "cvar_alerts": int(alerts.sum()),
+            "finite_scores": int(score.notna().sum()),
+        }
+        for name in analysts:
+            row[f"analyst_rankic__{name}"] = float(mean[name])
+            row[f"belief_weight__{name}"] = float(beliefs[name])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
