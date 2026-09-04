@@ -1,0 +1,20 @@
+{
+  "milestone_id": "M028",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/treevo/README.md",
+    "paper_runs/paper_replication_audits/treevo/manifest.json",
+    "paper_runs/paper_replication_audits/treevo/source_provenance.json",
+    "paper_runs/paper_replication_audits/treevo/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/treevo/prompt_inventory.csv",
+    "paper_runs/paper_replication_audits/treevo/operator_inventory.csv",
+    "paper_runs/paper_replication_audits/treevo/internal_consistency_audit.csv",
+    "paper_runs/paper_replication_audits/treevo/conditional_metric_execution.json"
+  ],
+  "bounded_checks": [
+    "Checked both paper/source revisions, author pages and bounded public searches for implementation, seed trees, generated expressions or raw result objects.",
+    "Separated seven exact prompt templates, 22 operator names and executable IC/RankIC equations from the missing search and factor outputs.",
+    "Rejected operator-based invention, fresh LLM search, metric-fixture promotion, figure/table inference and unrelated implementation substitution."
+  ],
+  "outcome": "TreEvo publishes enough structure to describe its search but no executable or generated alpha object. Without even one selected factor expression, no formation-time score can be mapped to JKP without inventing the result."
+}

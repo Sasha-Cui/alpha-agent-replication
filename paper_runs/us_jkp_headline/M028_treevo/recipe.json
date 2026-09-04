@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M028",
+  "canonical_work_id": "CensusArxiv250816334",
+  "paper": "From Flat to Hierarchical: Evolving Tree-structured Thoughts for Fine-grained Alpha Mining",
+  "paper_url": "https://arxiv.org/abs/2508.16334v2",
+  "paper_source_main_sha256": "dbc3c2da309d15f95a32162ed7c5a00f8c4f9c3446f25a618939f7e081684d3d",
+  "headline_strategy": "TreEvo evolves hierarchical thought trees with LLM initialization, crossover, three mutation modes and pruning; generated trees are converted into executable alpha factors, evaluated on future five-day returns, and selected into a daily Top-50/Drop-5 portfolio",
+  "paper_configuration": {
+    "population": 10,
+    "evaluation_budget": 200,
+    "mutation_probabilities": {"root": 0.4, "internal": 0.4, "fine": 0.2},
+    "train_period": "2016-01-01 through 2020-01-01",
+    "validation_period": "2020-01-01 through 2021-01-01",
+    "test_period": "2021-01-01 through 2024-01-01",
+    "target": "future five-day return",
+    "portfolio": "daily Top-50/Drop-5"
+  },
+  "paper_portability_to_common_task": "not defensibly executable because no implementation, seed trees, thought-to-code converter, generated factor expression, parser, trajectory, or portfolio output is released",
+  "recovered_component_credit": {
+    "prompt_templates": 7,
+    "traditional_operator_names": 22,
+    "conditional_metric_component_executed": true,
+    "attributable_implementation_files": 0,
+    "generated_factor_expressions": 0
+  },
+  "missing_headline_objects": [
+    "TreEvo implementation, dependency environment, execution sandbox and runner",
+    "actual seed trees, filled prompts, model snapshots, responses, seeds and search trajectories",
+    "the thought-tree-to-executable-code prompt, schema, parser and correction policy",
+    "generated factor expressions/code, factor scores, selected population and five-run outputs",
+    "point-in-time universe memberships, market-data snapshot, adjustment and calendar rules",
+    "portfolio weights, holdings, costs, daily returns and raw table/figure arrays"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Generate a factor from the 22 operator names",
+      "reason": "An operator vocabulary does not identify the paper's evolved tree, code-generation semantics, parser, parameters, or selected output."
+    },
+    {
+      "route": "Run the seven templates using invented seed trees and a current LLM",
+      "reason": "The crucial thought-to-code prompt and runtime fills are missing, and the v1 model has an unresolved pre-release timing conflict."
+    },
+    {
+      "route": "Use the synthetic IC/RankIC fixture as a strategy",
+      "reason": "It verifies metric equations only and contains no factor, security score, or holding."
+    },
+    {
+      "route": "Infer factors or returns from tables and figures",
+      "reason": "The displays contain aggregate outcomes, not expressions, dated predictions, holdings or return arrays, and several same-version values conflict."
+    },
+    {
+      "route": "Substitute an unrelated evolutionary alpha-mining implementation",
+      "reason": "No attributable implementation was found, so another system would not preserve TreEvo's exact tree operators and search."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/treevo",
+  "result_policy": "No operator-derived invention, fresh LLM tree, metric fixture, figure inference, or unrelated alpha miner is entered as a TreEvo return. The positive factor/portfolio claims remain unresolved rather than classified as false or as JKP underperformance.",
+  "status": "closed_not_evaluable"
+}
