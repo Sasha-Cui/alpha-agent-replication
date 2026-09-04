@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M059",
+  "canonical_work_id": "CensusArxiv260620625",
+  "paper": "AlphaMemo: Structured Search-Process Memory for Self-Evolving Alpha Mining Agents",
+  "paper_url": "https://arxiv.org/abs/2606.20625v1",
+  "headline_agent": "structured-search-memory alpha miner, admitted factor pool, LightGBM fusion, and Top-k/drop portfolio",
+  "headline_component": "first paper-listed representative evolved AlphaMemo factor",
+  "component_selection_reason": "The paper-specific trajectory, admitted pool, and final fusion are withheld, but Appendix Table 9 prints five representative selected AlphaMemo factors. SSPM_000 is the first listed factor and executes in the released parser, fixing one attributable evolved output without choosing on JKP performance.",
+  "candidate_id": "alphamemo_sspm_000",
+  "source_factor_id": "SSPM_000",
+  "source_formula": "CsRank(TsMin(Div(TsSum(Where(Greater($close,Delay($close,5)),Delta(Log(Add($volume,1.0)),5),0.0),10),TsStd(TsSum(Where(Greater($close,Delay($close,5)),Delta(Log(Add($volume,1.0)),5),0.0),10),60)),20))",
+  "source_interpretation": "Temporal positive-price gating of log-volume changes followed by 10-bar accumulation, 60-bar normalization, 20-bar minimum, and cross-sectional ranking.",
+  "source_metric_context": "Table 9 reports absolute selection-split IC metrics and says negative-IC factors can be sign-flipped; it does not disclose whether SSPM_000 was flipped. The common run therefore preserves the literal printed orientation and claims no recovered pool sign.",
+  "paper_source": {
+    "version": "v1",
+    "official_pdf_sha256": "64dbd4558ec63a88bbf8fc8245b7eb43443878969531a9661e15c31f6fcedcd0"
+  },
+  "official_repository": {
+    "url": "https://github.com/jarrettyu/AlphaMemo",
+    "commit": "412fee13d905bf5a25f0958aa572b7c668ccb925"
+  },
+  "paper_audit": {
+    "manifest_path": "paper_runs/paper_replication_audits/alphamemo/manifest.json",
+    "manifest_sha256": "c2b85b64e973ff6c22edbb47ad120e834044262d6891470bd64688f449780a9d",
+    "representative_formula_audit_path": "paper_runs/paper_replication_audits/alphamemo/representative_factor_parser_audit.csv",
+    "representative_formula_audit_sha256": "c9c010ef5c3aae9eb7b36aac52db2734ab20cc260c469f94fc957fd78acec27f",
+    "native_parser_executable_representative_factors": 5,
+    "native_paper_result_cells_reproduced": 0,
+    "paper_numeric_result_cells_total": 474
+  },
+  "monthly_adapter": {
+    "bar_mapping": "One source day becomes one JKP month; all 5/10/20/60-bar operators retain their integer windows as months.",
+    "inputs": "Absolute JKP formation-month prc as close and JKP tvol as volume, with released EPS=1e-6 and row-wise NaN-tolerant operator semantics.",
+    "universe": "Fixed formation-date largest 1,000 U.S. equities from the common JKP contract.",
+    "portfolio": "Researcher-supplied common value-weighted long/short deciles from the literal formula score.",
+    "costs": "Common 0/5/10/25/50 bp one-way cases with 10 bp primary.",
+    "missing_returns": "Fixed holdings re-accounted under zero and adverse-100 policies without reranking or reweighting.",
+    "history": "A 100-month pre-formation buffer supports the nested source windows; no future price, volume, or return enters a score."
+  },
+  "prior_outcomes_seen": true,
+  "mapping_was_frozen_before_prior_outcomes": false,
+  "inference_status": "exploratory_contaminated_mapping",
+  "preserved": [
+    "first printed representative factor",
+    "complete formula tree",
+    "literal output orientation",
+    "released EPS and population-statistic semantics",
+    "time-series then cross-sectional operator order"
+  ],
+  "adapted": [
+    "daily CSI500 bars to monthly U.S. JKP bars",
+    "source selection universe to common top-1,000 U.S. universe",
+    "common value-weighted decile portfolio",
+    "common costs, missing-return policies, and rolling JKP133 attribution"
+  ],
+  "not_claimed": [
+    "AlphaMemo search-process memory",
+    "paper search trajectory or admitted pool",
+    "source-confirmed factor sign",
+    "LightGBM factor fusion",
+    "Top-k/drop portfolio",
+    "paper CSI500 or S&P500 data",
+    "paper result"
+  ],
+  "preclassified_scope": "completed_partial_if_full_common_path_succeeds",
+  "status": "fixed_before_new_common_benchmark_run"
+}

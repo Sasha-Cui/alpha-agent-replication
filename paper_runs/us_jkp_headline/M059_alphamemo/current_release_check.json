@@ -1,0 +1,10 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "repository": "jarrettyu/AlphaMemo",
+  "default_branch": "main",
+  "audited_head_sha": "412fee13d905bf5a25f0958aa572b7c668ccb925",
+  "current_head_sha": "412fee13d905bf5a25f0958aa572b7c668ccb925",
+  "current_head_matches_audited_release": true,
+  "tag_count": 0,
+  "paper_trajectory_pool_or_result_release_found": false
+}
