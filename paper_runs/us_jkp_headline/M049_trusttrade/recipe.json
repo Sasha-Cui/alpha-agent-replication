@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M049",
+  "canonical_work_id": "CensusArxiv260322567",
+  "title": "TrustTrade: Human-Inspired Selective Consensus Reduces Decision Uncertainty in LLM Trading Agents",
+  "central_strategy": "Multiple independent report-generating LLM agents are filtered by semantic/numerical consensus and credibility, combined with deterministic multi-horizon temporal signals, then passed through sequential trader/risk-manager decisions and a short/long-term reflective memory bank to produce buy/sell/hold actions and discrete position sizes.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2603.22567v1",
+    "official_pdf_sha256": "6f9facfe101b3bf0e7ea8a0082bf7f72160e87ef9744c74eb53cf0cda5faaffa",
+    "source_archive_sha256": "53bc114b23ce00fc4a043c243c44bea11c0450036c21b93e288ff3a09506b965",
+    "source_tex_sha256": "d12f5e861fa170da387677682df248b9605c5bd38ec11b186a968902c15c8d4c"
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/trusttrade/manifest.json",
+    "manifest_sha256": "aa4d8234eba41f5a6347c54119c28612f26d7506808457c6a62e20e4ed13a010",
+    "method_specification_sha256": "0a0b49857577e3c13ae6f964f1778770299dcab5c04cc3025c1182a240c0379f",
+    "input_temporal_contamination_sha256": "0d9cdc70a85e5faf5968b771c7967d497d268e9a36c9874ead9547d754601b41",
+    "human_interface_protocol_sha256": "3b55efde66b07404540dd7a15b19571612761673c037bb0f541f8117ac68733c",
+    "paper_linked_interface_stock_days": 183,
+    "future_year_affected_stock_days": 68,
+    "author_native_result_panels_regenerated": 0,
+    "participant_outputs_recovered": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "paper_code_organization": "https://github.com/Harvard-AI-and-Robotics-Lab",
+    "author_attributable_trusttrade_pipeline_found": false,
+    "paper_linked_interfaces_recovered": true,
+    "interface_role": "human annotation/data-collection component only, not the selective-consensus temporal-memory agent"
+  },
+  "monthly_jkp_assessment": {
+    "required_but_missing": [
+      "Consensus agent count, exact models/revisions/prompts/settings, filled reports, and claim extraction schema.",
+      "Embedding model and the sigma/lambda/tau/alpha/high-consensus parameters that define filtering and weighting.",
+      "Temporal polynomial degree/fit, trend-score formula, forecast intervals, signal-combination weights, and action thresholds.",
+      "Reflective-memory window, retrieval rule, prompts/models, prior decisions, and risk-preference update logic.",
+      "2026 forward-run inputs/calls/timestamps, participant decisions, strategy actions, fills, costs, holdings, and NAV paths."
+    ],
+    "why_interface_is_not_trusttrade": "The deployed interface fixes a six-stage human experiment with $10,000, whole shares, and 25/50/75/100% sizing. It does not implement the paper's consensus graph, temporal model, sequential LLM trader/risk manager, or reflective memory.",
+    "temporal_validity_problem": "Sixty-eight of 183 nominal-2024 stock-days contain explicit later-year references, including strong realized 2025/2026 facts, and four reports retain a final transaction proposal despite the claimed decision-content removal.",
+    "why_jkp_cannot_fill_the_gap": "JKP can provide numeric price/characteristic histories, but not the missing reports, claims, embeddings, consensus weights, human memory observations, or learned/reflected decisions needed to identify a score."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not relabel the human interface, inactive baseline table, three-stock static inputs, or a generic temporal factor as TrustTrade. Reopen for an attributable consensus/temporal/memory pipeline and causal decision outputs."
+}

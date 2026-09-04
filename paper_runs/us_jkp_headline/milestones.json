@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 48,
+    "closed": 49,
     "completed_adapted": 1,
     "completed_partial": 10,
-    "closed_not_evaluable": 37,
-    "in_progress": 1,
+    "closed_not_evaluable": 38,
+    "in_progress": 0,
     "queued": 20
   },
   "terminal_statuses": [
@@ -842,16 +842,16 @@
       "title": "TrustTrade: Human-Inspired Selective Consensus Reduces Decision Uncertainty in LLM Trading Agents",
       "system_ids": "SYS-TRUST-TRADE",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M049_trusttrade/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify TrustTrade's central selective-consensus trading rule and any released policy/output before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M049_trusttrade/verdict.md",
+      "evaluated_scope": "No common-task return: the selective-consensus, temporal-scoring, trader/risk-manager, and reflective-memory policy is underidentified and has no public decisions. Recovered three-stock interfaces implement only the human-study widget and contain temporally contaminated inputs.",
+      "next_action": "Closed. Preserve the human-interface and input-contamination audits separately; do not relabel the widget, inactive baseline, or a generic temporal factor as TrustTrade. Reopen for an attributable causal pipeline and decision lineage.",
+      "closure_reason": "Consensus models/parameters, temporal score/action rules, reflection/memory implementation, participant outputs, 2026 traces, costs, fills and NAVs are missing. JKP cannot infer these stateful text/decision components, and 68/183 recovered nominal-2024 interface days contain explicit later-year references."
     },
     {
       "milestone_id": "M050",

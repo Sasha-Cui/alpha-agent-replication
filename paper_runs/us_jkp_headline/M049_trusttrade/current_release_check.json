@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "paper_version": "v1",
+  "paper_pdf_sha256": "6f9facfe101b3bf0e7ea8a0082bf7f72160e87ef9744c74eb53cf0cda5faaffa",
+  "paper_code_organization": "https://github.com/Harvard-AI-and-Robotics-Lab",
+  "author_attributable_pipeline_found": false,
+  "paper_linked_interfaces_found": 3,
+  "interface_stock_days": 183,
+  "participant_or_2026_forward_outputs_found": false,
+  "finding": "Public software remains limited to the human-interface component; no selective-consensus, temporal, or reflective-memory implementation/result lineage is exposed."
+}
