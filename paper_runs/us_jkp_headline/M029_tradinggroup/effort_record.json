@@ -1,0 +1,20 @@
+{
+  "milestone_id": "M029",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "paper_runs/paper_replication_audits/tradinggroup/README.md",
+    "paper_runs/paper_replication_audits/tradinggroup/manifest.json",
+    "paper_runs/paper_replication_audits/tradinggroup/source_provenance.json",
+    "paper_runs/paper_replication_audits/tradinggroup/finsaber_execution_ledger.csv",
+    "paper_runs/paper_replication_audits/tradinggroup/method_specification_audit.csv",
+    "paper_runs/paper_replication_audits/tradinggroup/prompt_inventory.csv",
+    "paper_runs/paper_replication_audits/tradinggroup/test_dataset_audit.csv",
+    "paper_runs/paper_replication_audits/tradinggroup/formula_component_execution.json"
+  ],
+  "bounded_checks": [
+    "Executed the exact historical FINSABER source and author-linked data, including a formula-preserving guard adapter and exhaustive one/two/three-year model-window checks.",
+    "Separated 156 reproduced baseline cells and five exact dataset claims from native TradingGroup evidence.",
+    "Checked for attributable source/checkpoint/trajectory/action artifacts and rejected baseline, equation-fragment, truncated-prompt, and JKP-proxy substitutions."
+  ],
+  "outcome": "The baseline layer is exceptionally reproducible, but it supplies no TradingGroup action policy. The fine-tuned agent, its training trajectories and every primitive portfolio result remain unavailable."
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M029",
+  "canonical_work_id": "CensusArxiv250817565",
+  "paper": "TradingGroup: A Multi-Agent Trading System with Self-Reflection and Data-Synthesis",
+  "paper_url": "https://arxiv.org/abs/2508.17565v1",
+  "headline_strategy": "Five-agent daily trading system combining news sentiment, financial-report RAG, stock forecasting, style preference, and a self-reflective trading-decision agent fine-tuned as Qwen3-Trader-8B-PEFT",
+  "paper_configuration": {
+    "test_tickers": ["TSLA", "NFLX", "AMZN", "MSFT", "COIN"],
+    "test_window": "2022-10-06 through 2023-04-10",
+    "training_trajectories": 1080,
+    "teacher": "DeepSeek-R1",
+    "comparison_model": "GPT-4o-mini",
+    "peft_base": "Qwen3-8B",
+    "inference_engine": "vLLM"
+  },
+  "paper_portability_to_common_task": "not defensibly executable because no attributable TradingGroup source, fine-tuned checkpoint, trajectories, complete prompts, actions, execution ledger, or repeatable policy is public",
+  "recovered_baseline_credit": {
+    "test_ticker_data_claims": "5/5",
+    "deterministic_baseline_cells": "120/120",
+    "model_baseline_cells": "36/36 under undisclosed mixed one/two-year windows",
+    "source_adjacent_baseline_cells": "156/156",
+    "native_tradinggroup_credit": 0
+  },
+  "missing_headline_objects": [
+    "attributable TradingGroup implementation and exact runtime dependency/configuration",
+    "Qwen3-Trader-8B-PEFT checkpoint and complete LoRA hyperparameters",
+    "the 1,080 training trajectories, teacher traces, full prompts and immutable requests/responses",
+    "complete news/RAG/forecast/style/reflection tool implementations and model snapshots",
+    "paper actions, quantities, fills, commissions, cash, NAV, daily returns and figure arrays",
+    "run seeds, repeated trials and a policy transferable beyond the five test tickers"
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Promote the 156 reproduced FINSABER cells to TradingGroup",
+      "reason": "FINSABER is the cited baseline/data framework, not the missing five-agent or fine-tuned policy."
+    },
+    {
+      "route": "Use deterministic or ARIMA/XGBoost baselines as the headline strategy",
+      "reason": "They are explicit comparators, and the model cells require an undisclosed ticker-dependent training window."
+    },
+    {
+      "route": "Implement the 13 printed equations as a policy",
+      "reason": "They are metric/reward/threshold fragments with missing parameters and do not generate agent actions or positions."
+    },
+    {
+      "route": "Recreate agents from truncated Figure 2 prompts",
+      "reason": "The checkpoint, complete prompts, chain-of-thought trajectories, tools, risk/style multipliers and execution rules are absent."
+    },
+    {
+      "route": "Map FINSABER outputs or local themes to monthly JKP stocks",
+      "reason": "This would transfer a baseline or narrative proxy, not the TradingGroup decision mechanism."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/tradinggroup",
+  "result_policy": "The 156/156 source-adjacent baseline reproductions remain credited as baseline results. No baseline, formula fragment, truncated-prompt reconstruction, or proxy is entered as a TradingGroup monthly return.",
+  "status": "closed_not_evaluable"
+}

@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 28,
+    "closed": 29,
     "completed_adapted": 1,
     "completed_partial": 5,
-    "closed_not_evaluable": 22,
+    "closed_not_evaluable": 23,
     "in_progress": 1,
-    "queued": 40
+    "queued": 39
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -502,16 +502,16 @@
       "title": "TradingGroup: A Multi-Agent Trading System with Self-Reflection and Data-Synthesis",
       "system_ids": "SYS-TRADING-GROUP",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M029_tradinggroup/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M029_tradinggroup/verdict.md",
+      "evaluated_scope": "No common-task TradingGroup return: exact FINSABER inputs and 156/156 baseline cells reproduce, but the five-agent source, checkpoint, trajectories, prompts, actions and portfolio path are unavailable; baseline success is tracked separately.",
+      "next_action": "Closed. Preserve the 156 baseline reproductions and five data claims; do not promote FINSABER, equation fragments, truncated prompts, or local/JPK proxies to TradingGroup.",
+      "closure_reason": "The complete baseline experiment does not generate TradingGroup decisions. Without the fine-tuned checkpoint, trajectories, agent implementation and execution ledger, every common-task strategy would substitute a comparator or invent the central policy."
     },
     {
       "milestone_id": "M030",
@@ -519,7 +519,7 @@
       "title": "MM-ARC: Multimodal Adaptive Routing of Capital with Robustness-Audited Strategy Pools",
       "system_ids": "SYS-MM-DREX",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
