@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 10,
     "closed_not_evaluable": 35,
-    "in_progress": 0,
-    "queued": 23
+    "in_progress": 1,
+    "queued": 22
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -808,7 +808,7 @@
       "title": "Can Blindfolded LLMs Still Trade? An Anonymization-First Framework for Portfolio Optimization",
       "system_ids": "SYS-BLIND-TRADE",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -816,7 +816,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and current paper/source; identify the central anonymization-first portfolio policy before any new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
       "closure_reason": ""
     },
     {
