@@ -492,65 +492,81 @@ def finmem_layered_scores(
         .groupby(frame["month"], sort=False)
         .rank(method="average", pct=True)
     )
-    votes = {name: pd.Series(np.nan, index=frame.index, dtype="float64") for name in layers}
-    retrieved = {name: pd.Series(0, index=frame.index, dtype="int64") for name in layers}
-    month_number = pd.to_datetime(frame["month"]).dt.year * 12 + pd.to_datetime(frame["month"]).dt.month
-    for _, indices in frame.groupby("security_id", sort=False).groups.items():
-        ordered_indices = frame.loc[indices].sort_values("month", kind="mergesort").index.to_numpy()
-        ordered_months = month_number.loc[ordered_indices].to_numpy(dtype=int)
-        ordered_returns = pd.to_numeric(
-            frame.loc[ordered_indices, "ret_exc_lead1m"], errors="coerce"
-        ).to_numpy(dtype=float)
-        ordered_importance = importance.loc[ordered_indices].to_numpy(dtype=float)
-        for position, current_index in enumerate(ordered_indices):
-            if pd.Timestamp(frame.at[current_index, "month"]) < pd.Timestamp(common_start):
-                continue
-            lag = ordered_months[position] - ordered_months[:position]
-            memory_positions = np.flatnonzero((lag >= 1) & (lag <= memory_horizon_months))
-            if len(memory_positions) == 0:
-                continue
-            for layer_name, specification in layers.items():
-                features = list(specification["features"])  # type: ignore[arg-type]
-                current_state = ranked.loc[current_index, features].to_numpy(dtype=float)
-                memory_state = ranked.loc[ordered_indices[memory_positions], features].to_numpy(dtype=float)
-                outcomes = ordered_returns[memory_positions]
-                event_importance = ordered_importance[memory_positions]
-                valid = (
-                    np.isfinite(current_state).all()
-                    & np.isfinite(memory_state).all(axis=1)
-                    & np.isfinite(outcomes)
-                    & np.isfinite(event_importance)
-                )
-                if not np.any(valid):
+    vote_arrays = {name: np.full(len(frame), np.nan) for name in layers}
+    retrieved_arrays = {name: np.zeros(len(frame), dtype=int) for name in layers}
+    frame_months = pd.to_datetime(frame["month"])
+    month_number = (frame_months.dt.year * 12 + frame_months.dt.month).to_numpy(dtype=int)
+    outcome_values = pd.to_numeric(frame["ret_exc_lead1m"], errors="coerce").to_numpy(dtype=float)
+    importance_values = importance.to_numpy(dtype=float)
+    common_timestamp = pd.Timestamp(common_start)
+    for indices in frame.groupby("security_id", sort=False).groups.values():
+        positions = frame.index.get_indexer(indices)
+        positions = positions[np.argsort(month_number[positions], kind="mergesort")]
+        months = month_number[positions]
+        lag = months[:, None] - months[None, :]
+        temporal = (lag >= 1) & (lag <= memory_horizon_months)
+        current_positions = np.flatnonzero(frame_months.iloc[positions].ge(common_timestamp).to_numpy())
+        if not len(current_positions):
+            continue
+        outcomes = outcome_values[positions]
+        event_importance = importance_values[positions]
+        for layer_name, specification in layers.items():
+            features = list(specification["features"])  # type: ignore[arg-type]
+            state = ranked.iloc[positions][features].to_numpy(dtype=float)
+            state_valid = np.isfinite(state).all(axis=1)
+            norms = np.linalg.norm(state, axis=1)
+            denominator = norms[:, None] * norms[None, :]
+            relevance = np.divide(
+                state @ state.T,
+                denominator,
+                out=np.zeros_like(denominator),
+                where=denominator > 0,
+            )
+            relevance = (np.clip(relevance, -1.0, 1.0) + 1.0) / 2.0
+            alpha = float(specification["daily_decay_alpha"])
+            recency = np.where(
+                temporal,
+                alpha ** (trading_days_per_month * np.maximum(lag, 0)),
+                0.0,
+            )
+            weights = specification["retrieval_weights"]
+            retrieval_score = (
+                float(weights["recency"]) * recency  # type: ignore[index]
+                + float(weights["relevance"]) * relevance  # type: ignore[index]
+                + float(weights["importance"]) * event_importance[None, :]  # type: ignore[index]
+            )
+            eligible = (
+                temporal
+                & state_valid[:, None]
+                & state_valid[None, :]
+                & np.isfinite(outcomes)[None, :]
+                & np.isfinite(event_importance)[None, :]
+            )
+            retrieval_score = np.where(eligible, retrieval_score, -np.inf)
+            for current_position in current_positions:
+                candidate_positions = np.flatnonzero(np.isfinite(retrieval_score[current_position]))
+                if not len(candidate_positions):
                     continue
-                positions = memory_positions[valid]
-                memory_state = memory_state[valid]
-                outcomes = outcomes[valid]
-                event_importance = event_importance[valid]
-                denominator = np.linalg.norm(memory_state, axis=1) * np.linalg.norm(current_state)
-                relevance = np.divide(
-                    memory_state @ current_state,
-                    denominator,
-                    out=np.zeros(len(memory_state)),
-                    where=denominator > 0,
-                )
-                relevance = (np.clip(relevance, -1.0, 1.0) + 1.0) / 2.0
-                alpha = float(specification["daily_decay_alpha"])
-                recency = alpha ** (trading_days_per_month * lag[positions])
-                weights = specification["retrieval_weights"]
-                retrieval_score = (
-                    float(weights["recency"]) * recency  # type: ignore[index]
-                    + float(weights["relevance"]) * relevance  # type: ignore[index]
-                    + float(weights["importance"]) * event_importance  # type: ignore[index]
-                )
-                chosen = np.lexsort((positions, -retrieval_score))[:top_k]
-                chosen_weight = retrieval_score[chosen]
+                ordered = candidate_positions[
+                    np.argsort(-retrieval_score[current_position, candidate_positions], kind="mergesort")
+                ][:top_k]
+                chosen_weight = retrieval_score[current_position, ordered]
                 if chosen_weight.sum() <= 0:
                     continue
-                votes[layer_name].at[current_index] = float(
-                    np.average(outcomes[chosen], weights=chosen_weight)
+                global_position = positions[current_position]
+                vote_arrays[layer_name][global_position] = float(
+                    np.average(outcomes[ordered], weights=chosen_weight)
                 )
-                retrieved[layer_name].at[current_index] = len(chosen)
+                retrieved_arrays[layer_name][global_position] = len(ordered)
+
+    votes = {
+        name: pd.Series(value, index=frame.index, dtype="float64")
+        for name, value in vote_arrays.items()
+    }
+    retrieved = {
+        name: pd.Series(value, index=frame.index, dtype="int64")
+        for name, value in retrieved_arrays.items()
+    }
 
     common = frame["month"] >= common_start
     vote_frame = pd.DataFrame({name: value for name, value in votes.items()})
