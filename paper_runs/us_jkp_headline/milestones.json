@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 55,
+    "closed": 56,
     "completed_adapted": 1,
-    "completed_partial": 10,
+    "completed_partial": 11,
     "closed_not_evaluable": 44,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 13
   },
   "terminal_statuses": [
@@ -961,16 +961,16 @@
       "title": "From Feedback Loops to Policy Updates: Reinforcement Fine-Tuning for LLM-Based Alpha Factor Discovery",
       "system_ids": "SYS-QUANT-EVOLVER",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify Quant-Evolver's central reinforcement-fine-tuned alpha discovery output or strongest attributable formula before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M056_quantevolver/recipe.json",
+      "implementation_path": "scripts/run_quantevolver_headline.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M056_quantevolver/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M056_quantevolver/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M056_quantevolver/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M056_quantevolver/verdict.md",
+      "evaluated_scope": "The first valid author-released seed, return_sharpe_60, preserves its complete DSL operator tree and positive risk-adjusted momentum direction on 60 monthly close-return bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missing-return policies, and JKP133 attribution. This is not the withheld RFT miner or paper result.",
+      "next_action": "Closed. Keep the source-order component path fixed and exploratory; do not interpret its weak transfer result as performance of the unreleased RFT policy, mined factor library, fusion, or native benchmarks.",
+      "closure_reason": "The strongest attributable executable partial produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is -0.80%, Sharpe 0.056, maximum drawdown -73.79%, and rolling JKP133 residual mean -0.70% annually (HAC t=-0.227, p=0.8205)."
     },
     {
       "milestone_id": "M057",
