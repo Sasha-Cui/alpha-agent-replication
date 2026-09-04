@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 7,
     "closed_not_evaluable": 34,
-    "in_progress": 0,
-    "queued": 27
+    "in_progress": 1,
+    "queued": 26
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -740,7 +740,7 @@
       "title": "QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining",
       "system_ids": "SYS-QUANTA-ALPHA",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
