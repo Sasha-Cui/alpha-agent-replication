@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 45,
+    "closed": 46,
     "completed_adapted": 1,
-    "completed_partial": 9,
+    "completed_partial": 10,
     "closed_not_evaluable": 35,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 23
   },
   "terminal_statuses": [
@@ -791,16 +791,16 @@
       "title": "FactorEngine: A Program-level Knowledge-Infused Factor Mining Framework for Quantitative Investment",
       "system_ids": "SYS-FACTOR-ENGINE",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify the central FactorEngine program or released factor pool before any new JKP outcome inspection, then execute the strongest defensible full or partial monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M046_factorengine/recipe.json",
+      "implementation_path": "scripts/run_factorengine_evolved_factor_milestone.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M046_factorengine/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M046_factorengine/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M046_factorengine/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M046_factorengine/verdict.md",
+      "evaluated_scope": "The representative factor printed after 40 FactorEngine evolution iterations, with its sole omitted high-minus-low range restored, source default weights and smoothing retained, and common monthly U.S. top-1,000 value-weighted deciles.",
+      "next_action": "Closed. Preserve the fixed negative result and do not reverse its source direction or retune smoothing; reopen only for the released evolved factor pool or native result pipeline.",
+      "closure_reason": "The strongest concrete evolved program produced a complete 305-month path. Zero-cost CAGR is -0.91%; at 10 bp one-way, CAGR is -3.67%, Sharpe -0.155, drawdown -69.57%, and JKP133 residual -1.67% annually (HAC t=-0.703, p=0.482), with 2.35 monthly traded notional."
     },
     {
       "milestone_id": "M047",
