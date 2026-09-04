@@ -1,0 +1,12 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "paper_version": "v1",
+  "paper_pdf_sha256": "3a4209a4b7530d2f8641ba3a63f13d44aeef1610c82a14e9e490fb09989a9416",
+  "exact_repository_query": "\"BlindTrade\" \"SemGAT\"",
+  "exact_repository_matches": 0,
+  "exact_code_query": "\"PPO-DSR\" \"BlindTrade\"",
+  "native_code_matches": 0,
+  "non_native_code_results": "paper digests and automated arXiv indexes only",
+  "author_attributable_release_found": false,
+  "paper_promised_feature_dataset_currently_exposed": false
+}

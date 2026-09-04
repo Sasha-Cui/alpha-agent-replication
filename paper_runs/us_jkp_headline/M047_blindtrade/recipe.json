@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M047",
+  "canonical_work_id": "CensusArxiv260317692",
+  "title": "Can Blindfolded LLMs Still Trade? An Anonymization-First Framework for Portfolio Optimization",
+  "central_strategy": "Daily point-in-time S&P 500 data and up to five lagged anonymized headlines feed four Gemini 2.5 Flash agents. Selected structured scores plus 384-dimensional embeddings of Momentum/Risk reasoning form a dynamic sector-and-semantic graph for a trained two-layer GATv2. A trained PPO-DSR policy selects intent and an equity-only Dirichlet Top-20 portfolio with execution inertia and 10 bp turnover cost.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2603.17692v1",
+    "official_pdf_sha256": "3a4209a4b7530d2f8641ba3a63f13d44aeef1610c82a14e9e490fb09989a9416",
+    "source_archive_sha256": "dbbc8be0a1370aacca6e7ac8690d646223774a085cf2b30621a4f235ed38997e",
+    "source_tex_sha256": "76bd511e836e7d2a5d46aa80eacc74a1a3d13c933c0305be5a48547b6a85b7bd",
+    "license": "CC BY 4.0"
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/blindtrade/manifest.json",
+    "manifest_sha256": "63155afcca3d08087321d06d949fcf0b38909a464919d08d64ac3afbbe25c758",
+    "method_specification_sha256": "f056b5d94166525ff4c9ceaf9a1683f346c4e13c12151d6bb06846bdb499785b",
+    "prompt_schema_sha256": "20f3d121631344c3c26659e8fb81187be5586dffbe30b66d9b6906ed7c0f2429",
+    "author_native_table_cells_regenerated": 0,
+    "author_native_empirical_panels_regenerated": 0,
+    "printed_prompt_schemas_valid_json": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "exact_github_repository_search_matches": 0,
+    "exact_github_code_search_native_matches": 0,
+    "search_observation": "The only exact-term code results were paper digests/indexes; no author-attributable source, feature dataset, checkpoint, predictions, or holdings were found.",
+    "paper_release_statement": "The LLM input/output datasets are planned for release upon publication, not currently exposed."
+  },
+  "monthly_jkp_assessment": {
+    "required_but_missing": [
+      "Point-in-time anonymized U.S. headlines, sentiment inputs, batch assignments, and proper-noun replacement outputs.",
+      "Immutable Gemini request settings and the 1,403-day four-agent output/reasoning dataset.",
+      "The GATv2 implementation, all loss weights/targets, trained weights, semantic graph edges, and predictions.",
+      "The PPO-DSR implementation, trained seed checkpoints, exact state/action construction, and Optuna search history.",
+      "Daily holdings, intent paths, turnover, returns, and seed-level output arrays."
+    ],
+    "scale_if_regenerated": "A monthly top-1,000 port would still require roughly 1.22 million agent-stock evaluations before graph/RL training; batching does not supply the missing historical news or released outputs.",
+    "why_raw_top20_is_not_blindtrade": "RAW Top-20 is an explicit active benchmark. It omits anonymized LLM reasoning, semantic graph learning, intent, Dirichlet allocation, PPO-DSR, and execution inertia, so promoting it would replace the central method.",
+    "why_jkp_is_insufficient": "JKP supplies monthly numeric characteristics and returns but not the paper's point-in-time headlines, LLM features, reasoning embeddings, sector/semantic graph, or learned GNN/RL policies.",
+    "holdout_leakage_note": "The paper screens LLM features for informativeness on the reported holdout; score shuffling tests score structure but cannot validate anonymization or exclude other leakage paths."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not relabel Momentum, RAW Top-20, MCap Top-20, shuffled scores, or a new technical proxy as BlindTrade. Reopen only for attributable feature outputs plus trained GNN/RL policy artifacts or an executable causal release."
+}
