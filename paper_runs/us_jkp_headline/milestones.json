@@ -6,12 +6,12 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 25,
+    "closed": 26,
     "completed_adapted": 1,
-    "completed_partial": 4,
+    "completed_partial": 5,
     "closed_not_evaluable": 20,
     "in_progress": 1,
-    "queued": 43
+    "queued": 42
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -451,16 +451,16 @@
       "title": "Chain-of-Alpha: Unleashing the Power of Large Language Models for Alpha Mining in Quantitative Trading",
       "system_ids": "SYS-CHAIN-OF-ALPHA",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M026_chain_of_alpha/recipe.json",
+      "implementation_path": "scripts/run_chain_of_alpha_formula_milestone.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M026_chain_of_alpha/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M026_chain_of_alpha/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M026_chain_of_alpha/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M026_chain_of_alpha/verdict.md",
+      "evaluated_scope": "The only showcased formula executable without unavailable VWAP, Volume_Adjusted_Mean_Corr, using its exact five-period rank/correlation tree, paper-positive direction, JKP close/dollar-volume inputs and common monthly value-weighted deciles. This is not the withdrawn paper's dual-chain search or native portfolio.",
+      "next_action": "Closed. Preserve the availability-based selection and negative result; do not approximate the two VWAP formulas, tune direction, or relabel the component as Chain-of-Alpha.",
+      "closure_reason": "The exact close/amount expression was frozen before its new outcome and produces a complete 305-month path. It is the strongest defensible source component while native search, selected pool, model, portfolio and result lineage remain unavailable."
     },
     {
       "milestone_id": "M027",
@@ -468,7 +468,7 @@
       "title": "AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions",
       "system_ids": "SYS-ALPHA-AGENTS",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
