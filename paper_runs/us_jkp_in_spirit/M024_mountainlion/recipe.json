@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M024",
+  "canonical_work_id": "CensusArxiv250720474",
+  "paper": "MountainLion: A Multi-Modal LLM-Based Agent System for Interpretable and Adaptive Financial Trading",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock instantiation of MountainLion's multi-agent, dual-track, adaptive-fusion mechanism; not a native crypto forecast replication and not a test of the paper's forecasting or platform claims.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2507.20474v3",
+    "version": "arXiv v3",
+    "pdf_path": "literature_review/papers/38_mountainlion_a_multi_modal_llm_based_agent_system_for.pdf",
+    "pdf_sha256": "6b898a90ad7d6d30c422cfc9b23c5bc4cc44a2d86744db0577253de3e8cd2018",
+    "source_sha256": "54e9a568471bd73a036f37db6b61b89c25690d23ecc64b265bfd59321d49bf5e",
+    "frontend_url": "https://github.com/MountainLionAi/MountainLion",
+    "platform_url": "https://github.com/MountainLionAi/GenAI-Platform",
+    "platform_paper_time_commit": "98b98d31dec6d29a5c518943d980300612030a40"
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 3.2 and Appendix B, equations 4-7 and 13-14",
+      "mechanism": "Four specialized agents perform technical analysis, market-dynamics analysis, recommendation integration, and semantic reflection before centralized report integration."
+    },
+    {
+      "anchor": "Section 3.3, Figure 4, and Appendix C.1-C.3, equations 15-23",
+      "mechanism": "A rule/LLM path and a classical machine-learning path forecast in parallel, then enter a convex fusion whose weight reflects rolling historical accuracy and directional correctness."
+    },
+    {
+      "anchor": "Appendix C.4, equations 24-26",
+      "mechanism": "A closed feedback loop monitors rolling performance and reduces the LLM-track weight when its accuracy deteriorates."
+    },
+    {
+      "anchor": "Section 3.4 and Figure 5",
+      "mechanism": "The recommendation system integrates multiple information modalities and refines their joint output into an interpretable action."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/mountainlion/manifest.json",
+    "audit_manifest_sha256": "80655ca8043161858178685b8a6d86c2d0ccdc3208026ade4cd1bb1f615657af",
+    "mechanism_conformance_path": "paper_runs/paper_replication_audits/mountainlion/mechanism_conformance.csv",
+    "mechanism_conformance_sha256": "b385fa1f5c48f29f67daa6b25d79e0a8e2fed365925be63d036cc0d7cd9c79ca",
+    "formula_checks_path": "paper_runs/paper_replication_audits/mountainlion/paper_formula_component_checks.csv",
+    "formula_checks_sha256": "1d68e436f9e16807b16e66b5601ee1a811c5cc7eb42d91e4b1a4fb5be9209b94",
+    "source_execution_path": "paper_runs/paper_replication_audits/mountainlion/source_component_execution.json",
+    "source_execution_sha256": "2dd968baaae625ad3798e41e19c9dbc1cea1f362139197ddb511f3e2051424e2"
+  },
+  "modalities": {
+    "technical": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1},
+      {"column": "rvol_21d", "sign": -1}
+    ],
+    "market_dynamics": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "turnover_126d", "sign": 1},
+      {"column": "beta_60m", "sign": 1}
+    ],
+    "fundamental_quality": [
+      {"column": "gp_at", "sign": 1},
+      {"column": "ocf_at", "sign": 1},
+      {"column": "f_score", "sign": 1},
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_prof", "sign": 1}
+    ],
+    "valuation_safety": [
+      {"column": "be_me", "sign": 1},
+      {"column": "at_me", "sign": 1},
+      {"column": "qmj_safety", "sign": 1},
+      {"column": "beta_60m", "sign": -1}
+    ]
+  },
+  "four_specialized_agents": {
+    "A1_technical": "Equal-rank integration of the technical modality.",
+    "A2_market_dynamics": "Equal-rank integration of surprise, attention, and market-sensitivity proxies.",
+    "A3_trading_recommendation": "Equal integration of all four modality reports.",
+    "A4_semantic_reflection": "Blend the A3 recommendation with the cross-modality median and shrink conviction when modality signs conflict."
+  },
+  "dual_track_policy": {
+    "prehistory_formation_start": "1992-07-31",
+    "ml_training_months": 60,
+    "ml_features": ["ret_12_1", "ret_6_1", "ret_1_0", "prc_highprc_252d", "rvol_21d"],
+    "ml_model": "monthly refitted ridge regression on cross-sectional unit ranks and month-demeaned next-month excess returns",
+    "ridge_lambda": 1.0,
+    "llm_track_proxy": "deterministic A4 semantic-reflection score from the four agent modalities",
+    "fusion_history_months": 24,
+    "minimum_fusion_rankic_months": 18,
+    "fusion_quality": "mean RankIC plus 0.10 times directional-win-rate minus 0.50",
+    "fusion_temperature": 10.0,
+    "alpha_floor": 0.1,
+    "alpha_ceiling": 0.9,
+    "fusion_rule": "alpha times LLM-track rank plus one-minus-alpha times ML-track rank",
+    "score_refresh": "monthly using only outcomes from formation months strictly before the current formation",
+    "common_portfolio_adapter": "frozen value-weighted long-short deciles with the six cost and missing-return paths",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "preserved_elements": [
+    "four sequential specialized agent roles",
+    "a technical-analysis agent",
+    "a market-dynamics agent",
+    "a recommendation agent integrating multiple pathways",
+    "a reflection agent that reconciles conflicting partial reports",
+    "parallel rule/LLM-like and classical machine-learning forecast tracks",
+    "convex fusion with an alpha weight bounded between zero and one",
+    "rolling historical performance feedback that updates alpha",
+    "directional correctness as part of adaptive track evaluation"
+  ],
+  "approximated_elements": [
+    "JKP momentum, surprise, quality, value, and risk characteristics replace OHLCV, news, social, regulatory, and on-chain inputs",
+    "a deterministic semantic-consensus rule replaces the unavailable LLM prompts and responses",
+    "cross-sectional ridge predictions replace the unidentified classical crypto estimator",
+    "RankIC and positive-RankIC frequency replace price-level accuracy and token win rate",
+    "monthly updates replace the paper's intraday and daily horizons",
+    "a stock score and common portfolio adapter replace narrative recommendations and unspecified trading execution"
+  ],
+  "invented_elements": [
+    "the four exact JKP modality definitions and their signed directions",
+    "equal weighting inside modalities and the recommendation agent",
+    "the reflection blend and sign-agreement shrinkage rule",
+    "the 60-month ridge training window and ridge penalty",
+    "the 24-month fusion-history window and 18-month eligibility threshold",
+    "the fusion quality formula, temperature, and 0.10/0.90 alpha bounds",
+    "the monthly U.S. top-1,000 score-to-portfolio mapping"
+  ],
+  "anti_leakage": {
+    "paper_results_used_as_formation_labels": false,
+    "future_returns_used_for_current_score": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m024_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
