@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M064",
+  "canonical_work_id": "CensusArxiv260726642",
+  "paper": "AlphaSchema: Exploring the Space of Trading Semantics for LLM-Based Alpha Mining",
+  "paper_url": "https://arxiv.org/abs/2607.26642v1",
+  "headline_agent": "semantic-schema search, LLM code realization, reward-model navigation, exported factor pools, LightGBM combination, and Qlib Top-50/drop-5 strategy",
+  "headline_component": "paper's complete example schema-realized factor",
+  "component_selection_reason": "The production factor pools and combiner are withheld, but Appendix D presents one complete cross-sectional factor program, identifies its source schema, fixes best_period=20, and reports positive train/validation/test Rank IC. It is the only source-selected executable factor output and was fixed before new JKP inspection.",
+  "candidate_id": "alphaschema_effort_result_reference_cooldown_memory_p20",
+  "source_factor_name": "effort_result_reference_cooldown_memory",
+  "source_plan_id": "event.cross_section_effort_result_breakout_rank|context.cross_section_reference_distance_rank|quality.event_cooldown|direction.continuation|output.event_decay_signal",
+  "source_period": 20,
+  "source_direction": "positive; paper test Rank IC = 0.0474",
+  "source_mechanism": "Cross-sectionally z-score price-volume synergy and distance from a moving-average reference, combine them, downweight repeated events through causal EWMA cooldown, preserve the synergy direction, and apply causal event-memory smoothing.",
+  "paper_source": {
+    "version": "v1",
+    "official_pdf_sha256": "85f0d13a673969c6b1b49c63c394fded2b7380583b6096028eb56d96ae8fb651",
+    "source_archive_sha256": "d00111b4fdf76197ca9b057df092f0a5316f5c7421c065acb337490c0dcd9722"
+  },
+  "official_repository": {
+    "url": "https://github.com/JingyangYi/AlphaSchema",
+    "audited_head_sha": "1206a094abfaad7cc53e6dff39f8fae43e851acb",
+    "current_head_sha": "1206a094abfaad7cc53e6dff39f8fae43e851acb"
+  },
+  "paper_audit": {
+    "manifest_path": "paper_runs/paper_replication_audits/alphaschema/manifest.json",
+    "manifest_sha256": "e270a848fb12d163d9dd2849144ea9fb3b7848265a9eb052d5b247d551a427c1",
+    "source_provenance_sha256": "771efec73fc491e2565e30238082cd58dafd2dab8c39f2278cf0cfe8d503be1a",
+    "release_execution_sha256": "7ec494c07a88a2ebfaf0320141e7e00f87e9985cf5992ec9b4f03e34320e7a71",
+    "author_tests_passed": 9,
+    "native_demo_plans": 48,
+    "appendix_factor_component_executed": true,
+    "native_numeric_units_regenerated": 0,
+    "published_numeric_result_units": 212
+  },
+  "monthly_adapter": {
+    "bar_mapping": "One source day becomes one JKP month; period=20 and both EWMA spans retain their source integer values as months.",
+    "inputs": "Absolute JKP formation-month prc supplies close; JKP tvol supplies volume; the source's explicit moving-average fallback replaces unavailable VWAP.",
+    "universe": "The common formation-date largest 1,000 U.S. equities; same-date cross-sectional normalization is calculated within that universe.",
+    "portfolio": "Researcher-supplied common value-weighted long/short deciles from the literal positive factor score.",
+    "costs": "Common 0/5/10/25/50 bp one-way cases with 10 bp primary.",
+    "missing_returns": "Fixed holdings re-accounted under zero and adverse-100 policies without reranking or reweighting.",
+    "history": "A 60-month pre-formation buffer initializes price changes and EWM state; unavailable monthly observations are not forward-filled."
+  },
+  "prior_outcomes_seen": true,
+  "mapping_was_frozen_before_prior_outcomes": false,
+  "inference_status": "exploratory_contaminated_mapping",
+  "preserved": [
+    "source-selected complete factor program",
+    "source schema identity and period 20",
+    "positive signed Rank IC direction",
+    "cross-sectional sample z-scores",
+    "cooldown and event-memory EWMAs",
+    "moving-average fallback when VWAP is absent"
+  ],
+  "adapted": [
+    "daily CSI300 bars to monthly U.S. JKP bars",
+    "dynamic common top-1,000 universe",
+    "explicit no-forward-fill monthly gap handling",
+    "common value-weighted decile portfolio, costs, missingness, and JKP133 attribution"
+  ],
+  "not_claimed": [
+    "AlphaSchema semantic search",
+    "LLM code generation/repair",
+    "reward-model exploitation or mutation",
+    "120/150-factor pools",
+    "LightGBM combination",
+    "Qlib Top-50/drop-5 strategy",
+    "paper result"
+  ],
+  "preclassified_scope": "completed_partial_if_full_common_path_succeeds",
+  "status": "fixed_before_new_common_benchmark_run"
+}
