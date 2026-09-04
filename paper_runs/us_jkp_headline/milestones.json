@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 58,
+    "closed": 59,
     "completed_adapted": 1,
-    "completed_partial": 11,
+    "completed_partial": 12,
     "closed_not_evaluable": 46,
-    "in_progress": 1,
+    "in_progress": 0,
     "queued": 10
   },
   "terminal_statuses": [
@@ -1012,16 +1012,16 @@
       "title": "AlphaMemo: Structured Search-Process Memory for Self-Evolving Alpha Mining Agents",
       "system_ids": "SYS-ALPHA-MEMO",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify AlphaMemo's central memory-guided alpha-mining output or strongest attributable source factor before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "status": "completed_partial",
+      "recipe_path": "paper_runs/us_jkp_headline/M059_alphamemo/recipe.json",
+      "implementation_path": "scripts/run_alphamemo_headline.py",
+      "run_manifest_path": "paper_runs/us_jkp_headline/M059_alphamemo/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_headline/M059_alphamemo/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_headline/M059_alphamemo/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_headline/M059_alphamemo/verdict.md",
+      "evaluated_scope": "The first paper-listed representative evolved factor, SSPM_000, preserves its complete nested price-volume formula and literal printed orientation on monthly JKP bars, then uses the common U.S. top-1,000 value-weighted decile portfolio, costs, missing-return policies, and JKP133 attribution. This is not the withheld memory-guided search or fused strategy.",
+      "next_action": "Closed. Keep the literal source-order factor path fixed and exploratory; do not infer the unreleased pool sign or interpret this result as AlphaMemo search-memory, LightGBM fusion, Top-k/drop, or paper performance.",
+      "closure_reason": "The strongest attributable evolved-factor partial produced a complete 305-month common-benchmark path. At 10 bp one-way costs its CAGR is -0.88%, Sharpe -0.002, maximum drawdown -56.09%, and rolling JKP133 residual mean 2.20% annually (HAC t=0.855, p=0.3923)."
     },
     {
       "milestone_id": "M060",
