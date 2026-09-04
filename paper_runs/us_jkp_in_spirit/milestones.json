@@ -14,10 +14,10 @@
   "declared_inference_family_size": 69,
   "progress_summary": {
     "carried_common_evaluation": 17,
-    "completed_in_spirit": 10,
+    "completed_in_spirit": 11,
     "discarded_structural_mismatch": 7,
     "in_progress_in_spirit": 1,
-    "queued_in_spirit": 34
+    "queued_in_spirit": 33
   },
   "milestones": [
     {
@@ -276,15 +276,15 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M014_tradingagents/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M014_tradingagents/verdict.md",
       "strict_metrics_path": "",
-      "status": "in_progress_in_spirit",
+      "status": "completed_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "next_action": "Freeze one TradingAgents-inspired researcher reconstruction before inspecting its JKP result."
+      "recipe_path": "paper_runs/us_jkp_in_spirit/M014_tradingagents/recipe.json",
+      "implementation_path": "scripts/run_tradingagents_in_spirit.py",
+      "run_manifest_path": "paper_runs/us_jkp_in_spirit/M014_tradingagents/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_in_spirit/M014_tradingagents/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_in_spirit/M014_tradingagents/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_in_spirit/M014_tradingagents/verdict.md",
+      "next_action": "Closed with one frozen TradingAgents-inspired numerical debate graph; do not retune after its observed JKP result."
     },
     {
       "milestone_id": "M015",
@@ -314,7 +314,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M016_marketsenseai/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M016_marketsenseai/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -322,7 +322,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one MarketSenseAI 2.0-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M017",
