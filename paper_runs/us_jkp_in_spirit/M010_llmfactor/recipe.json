@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M010",
+  "canonical_work_id": "CensusArxiv240610811",
+  "paper": "LLMFactor: Extracting Profitable Factors through Prompts for Explainable Stock Movement Prediction",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/19_llmfactor_extracting_profitable_factors_through_prompts_for_explainable_stock_movement_pre.pdf",
+    "sha256": "c8100b3c2f4b5bf2e3f033407f2bbb82b262d2fa4c1a0a83faff94c28e371ed8",
+    "primary_url": "https://aclanthology.org/2024.findings-acl.185/"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M010_llmfactor/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/llmfactor/manifest.json",
+    "audit_manifest_sha256": "21d678907355832cc90ee84ba7fd3792c352a6de32738229295b90fa546b5037",
+    "prompt_path": "paper_runs/paper_replication_audits/llmfactor/prompt_template_conformance.csv",
+    "prompt_sha256": "07490a6b0deae95be80f065d11f8e9a3b4c7e8ca8ad2cecc58a0744a726fdbca",
+    "method_path": "paper_runs/paper_replication_audits/llmfactor/method_specification_audit.csv",
+    "method_sha256": "c6b815c57acea00966534f7f058ca68fabacf8f549b8bc6dc4e6f0c9df701f14"
+  },
+  "headline_mechanism": "LLMFactor sequentially infers a related company, extracts the top five price-relevant factors from current news, and combines relation, factors, and five prior price movements to predict rise or fall with an explanation.",
+  "source_anchors": [
+    {
+      "section": "3.2.1",
+      "role": "relation",
+      "claim": "The first prompt identifies the relationship between the target and another company mentioned in its news."
+    },
+    {
+      "section": "3.2.2",
+      "role": "factor_extraction",
+      "claim": "The second prompt extracts the top k factors expected to affect the target stock price."
+    },
+    {
+      "section": "3.2.3",
+      "role": "prediction",
+      "claim": "Relation, factors, and a textual sequence of prior rose/fell movements jointly determine the next rise/fall prediction."
+    },
+    {
+      "section": "4.4 and Appendix A",
+      "role": "configuration",
+      "claim": "Both the price window and extracted factor count are fixed at five."
+    }
+  ],
+  "preserved_elements": [
+    "three sequential relation, factor, and prediction stages",
+    "one related-stock feature for every target formation",
+    "selection of exactly five price-relevant factors",
+    "five prior price movements",
+    "rolling binary rise/fall prediction trained only on earlier observations",
+    "public explanation diagnostics naming the relation and selected factors"
+  ],
+  "approximated_elements": [
+    "nearest fundamental/size peer replaces company-name matching in unavailable news",
+    "eight JKP attention, earnings, valuation, quality, and distress signals replace generated news factors",
+    "rolling RankICIR replaces LLM ranking of factor relevance",
+    "numeric monthly returns replace textual daily rose/fell sentences",
+    "rolling ridge classification replaces the unspecified LLM request, parser, and rationale"
+  ],
+  "invented_elements": [
+    "the peer-state distance and positive similar-company relation",
+    "the eight factor-candidate identities",
+    "60-month factor-selection and classifier window",
+    "ridge penalty and continuous classification margin",
+    "common value-weighted long/short decile portfolio adapter"
+  ],
+  "relation_stage": {
+    "peer_features": ["market_equity", "be_me", "gp_at"],
+    "peer_rule": "nearest_other_stock_by_euclidean_distance_of_cross_sectional_unit_ranks",
+    "peer_inputs": ["ret_1_0", "ret_6_1"],
+    "relation_orientation": "positive_similar_company"
+  },
+  "factor_stage": {
+    "candidates": ["ret_1_0", "rmax5_21d", "turnover_126d", "niq_su", "saleq_su", "be_me", "gp_at", "o_score"],
+    "selected_count": 5,
+    "selection": "highest_trailing_60_month_absolute_rankic_information_ratio"
+  },
+  "prediction_stage": {
+    "price_history": "current_and_four_lagged_monthly_total_returns",
+    "model": "rolling_ridge_binary_margin",
+    "target": "sign_of_next_month_excess_return",
+    "training_window_months": 60,
+    "ridge_penalty": 1.0,
+    "update_frequency": "monthly"
+  },
+  "chronological_policy": {
+    "prehistory_formation_start": "1994-03-31",
+    "common_formation_start": "1999-07-31",
+    "all_feature_selection_and_modeling_uses_strictly_earlier_formations": true,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The continuous rise/fall margin is ranked within the frozen monthly top-1,000 universe and mapped to common value-weighted long/short deciles with 10 bp one-way cost.",
+  "claim_boundary": "This is a researcher-authored LLMFactor-inspired numeric sequential predictor, not the unavailable news, company matcher, prompts, LLM responses, parser, rationales, daily labels, or native result tables."
+}
