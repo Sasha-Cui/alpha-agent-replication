@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 14,
     "closed_not_evaluable": 50,
-    "in_progress": 0,
-    "queued": 4
+    "in_progress": 1,
+    "queued": 3
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -1131,7 +1131,7 @@
       "title": "AlphaAgentEvo: Evolution-Oriented Alpha Mining via Self-Evolving Agentic Reinforcement Learning",
       "system_ids": "SYS-ALPHA-AGENT-EVO",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -1139,7 +1139,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and original paper/source; identify AlphaAgentEvo's central self-evolved alpha output or strongest attributable formula before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
       "closure_reason": ""
     },
     {
