@@ -91,6 +91,6 @@ def test_topk_dropout_preserves_incumbents_except_bottom_replacements():
     assert sold == ["s4", "s3", "s2", "s1", "s0"]
     assert bought == ["s54", "s53", "s52", "s51", "s50"]
     assert len(updated) == 50
-    assert sum(updated.values()) == 1.0
+    np.testing.assert_allclose(sum(updated.values()), 1.0, atol=1e-12, rtol=0)
     np.testing.assert_allclose(traded, 0.2)
     assert all(updated[f"s{i}"] == 0.02 for i in range(5, 50))
