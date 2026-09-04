@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M008",
+  "canonical_work_id": "CensusArxiv240209746",
+  "paper": "Alpha-GPT 2.0: Human-in-the-Loop AI for Quantitative Investment",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/12_alpha_gpt_2_0_human_in_the_loop_ai_for_quantitative_investment.pdf",
+    "sha256": "d4e540118939d4fe18e4ba2a4d76c34971059603690f37d8a450c01673912ded",
+    "primary_url": "https://arxiv.org/pdf/2402.09746v1"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M008_alpha_gpt_2_0/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/alpha_gpt_lineage/manifest.json",
+    "audit_manifest_sha256": "9799932dd5fba3c5eb83a670a03e43020919e83f599b61acaeca15175fc736a1",
+    "method_audit_path": "paper_runs/paper_replication_audits/alpha_gpt_lineage/method_specification_audit.csv",
+    "method_audit_sha256": "66da0c4d6776990e781a39c3d15cf7ebede163bb775b4bab3082454d9d1a9412",
+    "lineage_path": "paper_runs/paper_replication_audits/alpha_gpt_lineage/version_lineage_audit.csv",
+    "lineage_sha256": "ca60a8e72ef4b1220cf746c89d164222d161cdd7a4009e44dc5a229a28183413"
+  },
+  "headline_mechanism": "Alpha-GPT 2.0 links human-guided Alpha Mining, Alpha Modeling, and Alpha Analysis agents in an iterative research cycle that generates factors, combines them into predictive models, and filters portfolio risks.",
+  "source_anchors": [
+    {
+      "section": "Introduction and Section 2",
+      "role": "human_in_the_loop",
+      "claim": "Human insight guides automated experiments and experiment feedback guides the next research direction."
+    },
+    {
+      "section": "2.1 and Figure 2",
+      "role": "alpha_mining",
+      "claim": "The mining agent translates ideas into formula factors and can deploy a 20-round GP search using mean-reversion seeds and Sharpe fitness."
+    },
+    {
+      "section": "2.2 and Figure 2",
+      "role": "alpha_modeling",
+      "claim": "The modeling agent combines alpha factors with model training, feature selection, benchmarking, and portfolio generation."
+    },
+    {
+      "section": "2.3 and Figure 2",
+      "role": "alpha_analysis",
+      "claim": "The analysis agent screens fundamental/event risk and can reduce weights of high-risk holdings."
+    }
+  ],
+  "preserved_elements": [
+    "one explicit human research instruction fixed before evaluation",
+    "symbolic search from mean-reversion seed factors",
+    "past-only Sharpe-like factor fitness and top-five feature selection",
+    "a separate predictive modeling stage combining selected factors",
+    "a distinct fundamental and market-risk analysis stage",
+    "monthly feedback and re-estimation across the three-stage pipeline"
+  ],
+  "approximated_elements": [
+    "a deterministic arithmetic grammar replaces the unspecified Alpha Mining LLM/GP service",
+    "rolling rank-correlation information ratios replace the unspecified mining fitness implementation",
+    "rolling ridge regression replaces the model zoo and human model comparison",
+    "JKP volatility, distress, and quality characteristics replace news and knowledge-graph risk analysis",
+    "a fixed half-strength risk adjustment replaces natural-language blacklist and reweighting instructions"
+  ],
+  "invented_elements": [
+    "the six mean-reversion JKP seed identities",
+    "the exact identity, mean, difference, and product expression grammar",
+    "60-month training window and top-five selection rule",
+    "ridge penalty and 20 percent high-risk threshold",
+    "common value-weighted long/short decile portfolio adapter"
+  ],
+  "human_instruction": "Search from six price-reversal alphas, synthesize the five strongest past-only signals with a stable linear model, and halve conviction for the riskiest 20 percent of stocks.",
+  "mining_stage": {
+    "seed_features": ["ret_1_0", "ret_3_1", "ret_6_1", "ret_12_1", "prc_highprc_252d", "resff3_6_1"],
+    "seed_orientation": "negative_for_mean_reversion",
+    "grammar": ["identity", "pairwise_mean", "ordered_pairwise_difference", "pairwise_product"],
+    "candidate_count": 51,
+    "fitness": "absolute_trailing_rankic_information_ratio",
+    "selected_factors": 5
+  },
+  "modeling_stage": {
+    "model": "rolling_ridge",
+    "training_window_months": 60,
+    "ridge_penalty": 1.0,
+    "outcome": "next_month_excess_return",
+    "update_frequency": "monthly"
+  },
+  "analysis_stage": {
+    "risk_features": ["rvol_21d", "o_score", "z_score"],
+    "risk_score": "rank_rvol_plus_rank_o_score_minus_rank_z_score",
+    "high_risk_quantile": 0.2,
+    "high_risk_score_multiplier": 0.5
+  },
+  "chronological_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "training_window_months": 60,
+    "minimum_finite_rankic_months": 24,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The post-analysis modeled score is ranked within the frozen monthly top-1,000 universe and mapped to common value-weighted long/short deciles with 10 bp one-way cost.",
+  "claim_boundary": "This is a researcher-authored Alpha-GPT 2.0-inspired three-stage research pipeline, not an implementation of the proposed agents, private tools, human interactions, knowledge graph, or any native paper result."
+}
