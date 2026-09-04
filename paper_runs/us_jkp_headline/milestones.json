@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 53,
+    "closed": 54,
     "completed_adapted": 1,
     "completed_partial": 10,
-    "closed_not_evaluable": 42,
-    "in_progress": 1,
+    "closed_not_evaluable": 43,
+    "in_progress": 0,
     "queued": 15
   },
   "terminal_statuses": [
@@ -927,16 +927,16 @@
       "title": "Strat-LLM: Stratified Strategy Alignment for LLM-based Stock Trading with Real-time Multi-Source Signals",
       "system_ids": "SYS-STRAT-LLM",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M054_stratllm/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify Strat-LLM's central stratified alignment policy and released signal/action artifacts before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M054_stratllm/verdict.md",
+      "evaluated_scope": "No common-task return: the central multi-source LLM alignment policy has no attributable code, exact prompts, frozen inputs, complete S1-S4 rules, model requests/responses, actions, holdings, or broker/result arrays. One 3-day-high clause and a synthetic T+1 check do not define the strategy.",
+      "next_action": "Closed. Preserve the conditional timing component and source audit separately; do not promote an isolated breakout rule, a post-outcome model/mode, or generic JKP factors to Strat-LLM. Reopen for attributable prompts, data, actions, or executable code.",
+      "closure_reason": "The advertised project remains 404 and fresh exact repository searches found no native release. The paper does not preselect a universal model/mode, its four strategy motifs are operationally incomplete, and JKP cannot recreate the missing real-time multi-source LLM actions without replacing the headline mechanism."
     },
     {
       "milestone_id": "M055",

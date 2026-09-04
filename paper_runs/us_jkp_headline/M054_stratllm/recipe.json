@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M054",
+  "canonical_work_id": "CensusArxiv260506024",
+  "title": "Strat-LLM: Stratified Strategy Alignment for LLM-based Stock Trading with Real-time Multi-Source Signals",
+  "central_strategy": "For each decision date, combine sequential prices, real-time news, and annual reports into an LLM state; prompt the model in Free, Guided, or Strict mode relative to four expert strategy motifs; emit buy, hold, or sell plus rationale; and execute the action at the next-day open in a rolling broker simulation.",
+  "headline_selection_boundary": "The paper studies how constraint mode interacts with model architecture and market regime; it does not nominate one model/mode as a universal default. Selecting the highest displayed U.S. return after seeing Table 1 would be outcome-based specification choice rather than a source-fixed headline recipe.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2605.06024v1",
+    "official_pdf_sha256": "277597d5da577c628aa589bea40c77c2dfabe70e15b990466307aa1495ace9ab",
+    "source_archive_sha256": "902b798ce49e59d1f88b48a34219fbfcba25b6410f323bf060f502e07fd1585a",
+    "source_file_count": 6
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/stratllm/manifest.json",
+    "manifest_sha256": "a6f2fe70a78fac9ea2e0de43b71596c7eaf5fbba56141a0d659c2b78346717c6",
+    "source_provenance_sha256": "32a190512567f8a277afedab6c13f263fa7f7366b87c7ecf47d932fa14e93e84",
+    "method_specification_sha256": "bc92a90b18fae4b85c08c26b4bc6abd1c4ccc9d3cdfa4bd037cee39c1f466d17",
+    "strategy_specification_sha256": "70a6c42bd9d98463d7199bcbfa5075b64d8adf57a101899637cce96cbcf66146",
+    "procedure_component_sha256": "99bb96ff90ee8f26f59e0fc03f32e54061975c2702a9716cc5a34b3a1d2d9c57",
+    "published_unique_empirical_numeric_units": 190,
+    "native_empirical_units_regenerated": 0,
+    "procedure_component_executed": true,
+    "procedure_component_paper_result_credit": false
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "advertised_project_page": "https://Strat-LLM.github.io",
+    "advertised_project_page_status": 404,
+    "github_repository_exact_arxiv_id_matches": 0,
+    "github_repository_exact_title_matches": 0,
+    "attributable_implementation_or_dataset_found": false,
+    "attributable_action_or_result_release_found": false
+  },
+  "monthly_jkp_assessment": {
+    "required_but_missing": [
+      "A source-selected model and interaction mode, exact prompts, structured response schema, sampling configuration, retries, and immutable model requests/responses.",
+      "The stock lists, exact short-window dates, point-in-time minute prices, real-time news, annual reports, timestamps, preprocessing, and data snapshots.",
+      "Complete S1-S4 operational rules; only S2 supplies one numeric entry condition, while exits, sizes, thresholds, tie rules, and the other three strategy definitions remain incomplete.",
+      "The buy-volume rule, transaction-cost schedule, slippage, shorting/leverage, corporate actions, portfolio aggregation, and broker implementation.",
+      "Security-date actions, orders, fills, cash, holdings, NAV/return arrays, metric formulas, seeds, and raw result arrays."
+    ],
+    "why_s2_is_not_a_headline_partial": "The 3-day-high S2 entry is one incomplete clause in a four-strategy library. It omits price-field, exit, sizing, and tie rules and cannot reproduce the Strict multi-strategy policy or the LLM's multi-source action selection.",
+    "why_procedure_component_is_insufficient": "The synthetic T+1/action-mapping check validates only a conditional timing convention and cash truncation with a researcher-set zero cost; it uses no paper inputs, model, broker, action, or return.",
+    "why_jkp_cannot_fill_the_gap": "JKP supplies monthly U.S. characteristics and returns, not the paper's intraday prices, news, reports, prompts, or LLM decisions. Mapping a generic momentum or reversal factor to S1-S4 would replace the central alignment experiment.",
+    "temporal_claim_boundary": "All ten displayed model identities or families became public after at least part of the claimed 2025 live-forward windows, and eight first appeared in 2026. A post-hoc chronological replay could avoid look-ahead, but no frozen inputs, request times, or actions were released to verify it.",
+    "reported_us_result_context": "Every displayed U.S. total return is negative; GPT-5.4 Strict is least negative at -0.40%, but choosing it as the recipe from the result table would be post-outcome selection and still would not recover its actions."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote the synthetic timing check, isolated 3-day-high clause, post-outcome best model/mode, or generic JKP momentum/reversal proxies to Strat-LLM. Reopen for attributable prompts, frozen data, actions/holdings, or an executable release."
+}
