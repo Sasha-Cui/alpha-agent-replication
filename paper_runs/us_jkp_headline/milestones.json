@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 6,
     "closed_not_evaluable": 28,
-    "in_progress": 0,
-    "queued": 34
+    "in_progress": 1,
+    "queued": 33
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -621,7 +621,7 @@
       "title": "Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents",
       "system_ids": "SYS-FACTFIN; SYS-FINLAKE-BENCH",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
