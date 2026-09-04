@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M022",
+  "canonical_work_id": "CensusArxiv250514738",
+  "paper": "R&D-Agent: An LLM-Agent Framework Towards Autonomous Data Science",
+  "status": "frozen_before_jkp_result",
+  "fidelity_label": "in_spirit_reconstruction",
+  "claim_boundary": "A researcher-authored monthly U.S.-stock instantiation of the paper's general autonomous data-science workflow, not R&D-Agent-Quant and not a reproduction of the paper's MLE-Bench medal claims.",
+  "paper_source": {
+    "url": "https://arxiv.org/abs/2505.14738",
+    "version": "arXiv v2, 2025-10-01",
+    "pdf_sha256_from_pinned_audit": "36256d4e8a676259f1091f6b530416615179de2551e347fba55f0f395a0cb140",
+    "official_source_url": "https://github.com/microsoft/RD-Agent",
+    "paper_era_source_commit": "f360d0a212793eb044c218b5e13b095e684a632d"
+  },
+  "primary_source_anchors": [
+    {
+      "anchor": "Sections 3.1-3.2 and Algorithm 1",
+      "mechanism": "Iterate a decoupled Research phase (planning, exploration-path structure, memory, reasoning) and Development phase (coding, evaluation), store solutions in an exploration graph, then submit the best solution."
+    },
+    {
+      "anchor": "Section 3.3, MD-Planning and MD-Exploration Path Structuring",
+      "mechanism": "Start with diverse parallel directions, then exploit stronger branches, prune weaker paths, and merge strengths at the final stage."
+    },
+    {
+      "anchor": "Section 3.3, MD-Scientific Reasoning Pipeline and MD-Memory Context",
+      "mechanism": "Form explicit hypotheses, virtually evaluate alternatives before implementation, and share strong ideas across branches while retaining diversity."
+    },
+    {
+      "anchor": "Section 3.3, MD-Coding Workflow and MD-Evaluation Strategy",
+      "mechanism": "Prototype before full evaluation and compare top branch solutions using standardized fixed splits and an aggregated validation layer."
+    }
+  ],
+  "strict_evidence": {
+    "audit_manifest_path": "paper_runs/paper_replication_audits/rd_agent/manifest.json",
+    "audit_manifest_sha256": "9f40023c7f2c451fe5e6105de3e07dcbe199bf008dac41dcbec465b4949f34d1",
+    "mechanism_conformance_path": "paper_runs/paper_replication_audits/rd_agent/released_source_mechanism_conformance.csv",
+    "mechanism_conformance_sha256": "520e3a53de4fe78fdcc93dfef84988956443c72aafdbb4f7380b33f86f80299a",
+    "native_execution_path": "paper_runs/paper_replication_audits/rd_agent/native_execution.json",
+    "native_execution_sha256": "0686761b2acd40f1a08f044c21a1bc90205df565510b3622bacffd63162e5f47"
+  },
+  "hypothesis_branches": {
+    "momentum_trend": [
+      {"column": "ret_12_1", "sign": 1},
+      {"column": "ret_6_1", "sign": 1},
+      {"column": "ret_1_0", "sign": 1}
+    ],
+    "valuation": [
+      {"column": "be_me", "sign": 1},
+      {"column": "at_me", "sign": 1},
+      {"column": "prc_highprc_252d", "sign": 1}
+    ],
+    "profitability_quality": [
+      {"column": "gp_at", "sign": 1},
+      {"column": "ocf_at", "sign": 1},
+      {"column": "f_score", "sign": 1}
+    ],
+    "financial_safety": [
+      {"column": "z_score", "sign": 1},
+      {"column": "qmj_safety", "sign": 1},
+      {"column": "qmj_prof", "sign": 1}
+    ],
+    "fundamental_surprise": [
+      {"column": "niq_su", "sign": 1},
+      {"column": "saleq_su", "sign": 1},
+      {"column": "turnover_126d", "sign": 1}
+    ],
+    "low_risk": [
+      {"column": "rvol_21d", "sign": -1},
+      {"column": "beta_60m", "sign": -1},
+      {"column": "turnover_126d", "sign": -1}
+    ]
+  },
+  "research_development_policy": {
+    "prehistory_formation_start": "1989-07-31",
+    "history_months": 120,
+    "research_months": 96,
+    "validation_months": 24,
+    "minimum_rankic_months": 48,
+    "branch_candidate_operators": ["leader", "pair_mean", "all_mean", "consensus_median"],
+    "branch_training_score": "mean monthly Spearman RankIC minus one standard error over the 96-month research split",
+    "branch_winners_retained": 6,
+    "validation_folds": 3,
+    "validation_fold_months": 8,
+    "aggregated_validation_score": "mean of three fixed fold RankIC means minus one half of their population standard deviation",
+    "finalist_constructions": ["six branch winners", "equal blend of six branch winners", "equal blend of the three strongest branch winners on validation"],
+    "final_selection": "highest aggregated validation score with deterministic lexical tie-breaking",
+    "score_refresh": "monthly using only outcomes with realization dates before the formation month",
+    "common_portfolio_adapter": "frozen value-weighted long-short deciles with the six cost and missing-return paths",
+    "final_common_returns_used_for_search_or_selection": false
+  },
+  "preserved_elements": [
+    "a decoupled research phase and development/evaluation phase",
+    "multiple diverse exploration branches rather than one greedy chain",
+    "a structured exploration graph with within-branch exploitation",
+    "virtual evaluation that filters ideas before the final development stage",
+    "cross-branch memory through merged finalist solutions",
+    "standardized train-validation separation inaccessible to the final current-month score",
+    "aggregated evaluation of top solutions on identical validation folds",
+    "submission of one selected solution after the bounded search"
+  ],
+  "approximated_elements": [
+    "semantic JKP hypotheses replace arbitrary Kaggle task solutions",
+    "fixed formula operators replace LLM-generated research ideas",
+    "chronological RankIC replaces task-specific Kaggle metrics",
+    "monthly rolling windows replace a 12-hour wall-clock budget",
+    "deterministic branch merging replaces LLM collaborative communication",
+    "the common portfolio adapter replaces a Kaggle submission artifact"
+  ],
+  "invented_elements": [
+    "the six named financial hypothesis branches and their signed characteristics",
+    "the four formula operators within every branch",
+    "the 96-month research and 24-month validation split",
+    "three eight-month validation folds",
+    "the one-standard-error training penalty and half-standard-deviation validation penalty",
+    "the all-branch and top-three merged finalists",
+    "deterministic lexical tie-breaking"
+  ],
+  "anti_leakage": {
+    "paper_results_used_as_formation_labels": false,
+    "future_returns_used_for_current_score": false,
+    "current_month_forward_return_used_for_current_score": false,
+    "m022_common_result_seen_before_recipe_freeze": false,
+    "prior_other_paper_common_results_seen": true,
+    "retuning_after_common_result_permitted": false
+  }
+}
