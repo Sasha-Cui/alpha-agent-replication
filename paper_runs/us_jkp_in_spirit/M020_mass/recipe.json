@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M020",
+  "canonical_work_id": "CensusArxiv250510278",
+  "paper": "MASS: Multi-agent simulation scaling for portfolio construction",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "primary_url": "https://arxiv.org/pdf/2505.10278",
+    "sha256_from_pinned_audit": "c31e68b722b6c4d33dd69833b48a34de8fc29ec4171498f320307ede554e6135"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M020_mass/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/mass/manifest.json",
+    "audit_manifest_sha256": "6c78118e53d9b13cbfcaa7c74bfa435ea23b83aac5273c0c7aaa46c63a3b7fc0",
+    "nonidentifiability_path": "paper_runs/paper_replication_audits/mass/native_signal_nonidentifiability.json",
+    "nonidentifiability_sha256": "e795a9d68fe8890cd3ee20aa012aa9b7dd225323608f440f9b4b5f9c88a3cf9b",
+    "configuration_path": "paper_runs/paper_replication_audits/mass/source_config_conformance.csv",
+    "configuration_sha256": "258cac4ebc87ca1cdc9685b27eb71319807ecd034d776ca39f513852ffc35eaa"
+  },
+  "headline_mechanism": "MASS simulates 16 heterogeneous investor types with 32 agents each, aggregates their five-of-20 selections using learned type-distribution weights and alpha=0.5, optimizes the distribution with simulated annealing, and holds the highest signals.",
+  "source_anchors": [
+    {"role": "heterogeneity", "claim": "The system defines 16 investor types with 32 agents per type."},
+    {"role": "candidate_selection", "claim": "Each agent receives 20 candidate stocks and selects five."},
+    {"role": "aggregation", "claim": "Agent decisions are aggregated using an investor-type distribution and alpha equal to 0.5."},
+    {"role": "optimization", "claim": "The distribution is optimized by simulated annealing with initial temperature 40 and 100 iterations."}
+  ],
+  "preserved_elements": [
+    "16 heterogeneous investor-type signals",
+    "32 deterministic agents per type",
+    "20-stock candidate pools and five selections per agent",
+    "alpha=0.5 aggregation of learned distribution and shared base signal",
+    "simulated-annealing distribution optimization",
+    "cross-sectional ranking of aggregated agent decisions"
+  ],
+  "approximated_elements": [
+    "16 distinct JKP characteristics replace LLM investor personas",
+    "deterministic cyclic candidate pools replace unreleased random pool assignments",
+    "characteristic ranks replace missing per-agent decisions",
+    "trailing type RankIC histories replace the paper's unavailable optimization data",
+    "monthly common deciles replace weekly top-20% holdings"
+  ],
+  "invented_elements": [
+    "the 16 investor-type characteristic identities",
+    "deterministic pool offsets and tie-breaking",
+    "60-month annealing objective history",
+    "mean-minus-covariance-risk annealing objective scale and cooling rate",
+    "common value-weighted long/short decile portfolio adapter"
+  ],
+  "investor_type_features": [
+    "ret_12_1", "ret_6_1", "ret_1_0", "be_me", "gp_at", "ocf_at", "f_score", "z_score",
+    "qmj_safety", "qmj_prof", "rvol_21d", "beta_60m", "turnover_126d", "prc_highprc_252d", "niq_su", "saleq_su"
+  ],
+  "simulation_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "investor_types": 16,
+    "agents_per_type": 32,
+    "candidate_pool_size": 20,
+    "selections_per_agent": 5,
+    "aggregation_alpha": 0.5,
+    "history_months": 60,
+    "annealing_initial_temperature": 40.0,
+    "annealing_iterations": 100,
+    "annealing_cooling": 0.95,
+    "objective_scale": 1000.0,
+    "risk_penalty": 0.5,
+    "seed": "formation_yyyymm",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The aggregated MASS score is ranked within the frozen monthly top-1,000 U.S. universe and mapped to common value-weighted long/short deciles with 10 bp one-way cost.",
+  "claim_boundary": "This is a researcher-authored MASS-inspired heterogeneous-agent simulation, not the unavailable LLM decisions, paper pool assignments, learned distribution trajectory, weekly holdings, or native results."
+}
