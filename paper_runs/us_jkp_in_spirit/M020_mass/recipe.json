@@ -61,6 +61,7 @@
     "selections_per_agent": 5,
     "aggregation_alpha": 0.5,
     "history_months": 60,
+    "minimum_rankic_months": 24,
     "annealing_initial_temperature": 40.0,
     "annealing_iterations": 100,
     "annealing_cooling": 0.95,

@@ -38,6 +38,7 @@ def test_m020_recipe_freezes_agent_counts_pools_aggregation_and_annealing():
     assert policy["candidate_pool_size"] == 20
     assert policy["selections_per_agent"] == 5
     assert policy["aggregation_alpha"] == 0.5
+    assert policy["minimum_rankic_months"] == 24
     assert policy["annealing_initial_temperature"] == 40.0
     assert policy["annealing_iterations"] == 100
     assert policy["final_common_returns_used_for_policy_choice"] is False
