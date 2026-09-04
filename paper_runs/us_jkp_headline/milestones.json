@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 59,
+    "closed": 60,
     "completed_adapted": 1,
     "completed_partial": 12,
-    "closed_not_evaluable": 46,
-    "in_progress": 1,
+    "closed_not_evaluable": 47,
+    "in_progress": 0,
     "queued": 9
   },
   "terminal_statuses": [
@@ -1029,16 +1029,16 @@
       "title": "MetaPS: Adaptive Programmatic Strategy Selection for Market Agents",
       "system_ids": "SYS-METAPS",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M060_metaps/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify MetaPS's central programmatic strategy-selection policy, released strategy programs or action outputs, and any defensible monthly U.S. score before new JKP outcome inspection, then evaluate or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M060_metaps/verdict.md",
+      "evaluated_scope": "No common-task return: 12 paper-derived compact-strategy and label mechanics pass controlled checks, but no rankings, rollouts, SFT records, trained checkpoint, model outputs, size mapping, actions, holdings, or returns are released. A library momentum branch is not the adaptive selector.",
+      "next_action": "Closed pending the scheduled M060 batch release. Do not activate M061 until full Python 3.9/3.12 validation, one push, and one CI run succeed. Reopen MetaPS for SFT/checkpoint, simulator/ranking code, or dated selected actions.",
+      "closure_reason": "Fresh exact searches found no attributable release, and isolated snippets cannot identify the trained program-selection policy. The price-only branch changes both selection and execution under a JKP decile port, while the printed volatility breakout is unreachable without repair."
     },
     {
       "milestone_id": "M061",

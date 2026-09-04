@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M060",
+  "canonical_work_id": "CensusArxiv260622385",
+  "title": "MetaPS: Adaptive Programmatic Strategy Selection for Market Agents",
+  "central_strategy": "Rank a library of ten programmatic strategy specifications against the current market/news/order-flow state, use simulator rollouts to construct progressively richer V1/V2/V3 supervision views, have a teacher rewrite 528 examples per view, fine-tune a Qwen3.5 policy, and let that trained policy select a strategy, action, and exposure bucket for daily trading.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2606.22385v1",
+    "official_pdf_sha256": "fd2ce88b351e9abfc0c96103f7927ee9f365231bfce8df492beb4054777148f6",
+    "source_archive_sha256": "c6e3378c0cccf455c2dc7fa11bccda70b4c279bb7e16c3901f99df0237b46780",
+    "source_file_count": 31
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/metaps/manifest.json",
+    "manifest_sha256": "4075e9c1da2069cbe85b3b37105421037ea64dd70b65a5281243b23b925f6eb6",
+    "source_provenance_sha256": "91d7b0248c16996c196744d01378fcece753aa350508ca459d602657c2ada4ae",
+    "method_specification_sha256": "13b079ba12e884cdf5917b1b8338a5a57635f4553aa2f8badc983bda602db689",
+    "component_execution_sha256": "0c893ec8200be8aefaf5eecf92a94c60d5cdf58ee112cc1cce74298f2e479787",
+    "paper_derived_components_passing_controlled_checks": 12,
+    "active_quantitative_table_cells": 492,
+    "author_native_table_cells_regenerated": 0,
+    "active_empirical_figure_panels": 20,
+    "author_native_empirical_panels_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "paper_contains_native_implementation_url": false,
+    "paper_contains_dataset_or_checkpoint_url": false,
+    "github_repository_exact_arxiv_id_matches": 0,
+    "github_repository_exact_title_matches": 0,
+    "attributable_code_data_model_or_action_release_found": false
+  },
+  "monthly_jkp_assessment": {
+    "preserved_components": [
+      "Four unambiguous compact-strategy branches plus the literal volatility listing.",
+      "Four exposure/share-cap buckets and the candidate-ranking equation for supplied inputs.",
+      "V1/V2/V3 label/quality equations and displayed return identities for supplied inputs."
+    ],
+    "required_but_missing": [
+      "The immutable six-asset price/news/order-flow panel, strategy registry helpers/metadata, ranking coefficients and priors, and complete simulator rewards.",
+      "All 528 records per V1/V2/V3 view, labels, sample weights, rationales, split lineage, teacher model requests/responses, and validation records.",
+      "Fine-tuning hyperparameters, exact Qwen revisions, adapters/checkpoints, decoding settings, seeds, predictions, and parser logs.",
+      "Mappings from eight raw size modes to four exposure buckets, transaction costs/slippage, position limits, invalid-action behavior, orders, and fills.",
+      "Portfolio paths, daily returns, sandbox transitions/rewards/actions, random runs, table arrays, figure arrays, and result generator."
+    ],
+    "why_components_are_not_metaps": "The 12 controlled mechanics consume unreleased rankings, rollouts, labels, or model outputs. They validate printed branches/equations but do not identify the trained selector's dated strategy or action.",
+    "why_momentum_is_not_a_defensible_headline_partial": "The price-only momentum listing is one input program among ten, not a MetaPS-selected output. It selects a single maximum-absolute mover in the six-asset native universe and emits an unmapped 'scalable' size mode, so converting it to JKP deciles would replace both selection and execution.",
+    "why_volatility_listing_is_not_a_strategy": "Its current price is included in the same window defining the high and low, making both printed breakout branches mathematically unreachable; repairing the window would invent a different rule.",
+    "why_jkp_cannot_fill_the_gap": "JKP lacks the news/order-flow state, simulator rollouts, SFT records, and trained policy. Running a generic momentum or volatility score would test a library ingredient rather than adaptive programmatic strategy selection.",
+    "why_rendered_results_are_insufficient": "Tables and empirical PNGs expose aggregates but no action, holding, or return arrays from which the daily selector can be recovered."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote isolated strategy snippets, supplied-input equation checks, repaired volatility code, or generic JKP factors to MetaPS. Reopen for the SFT records/checkpoint, strategy-ranking and simulator code, or a dated selected-action ledger."
+}
