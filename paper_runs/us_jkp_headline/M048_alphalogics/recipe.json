@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M048",
+  "canonical_work_id": "CensusArxiv260320247",
+  "title": "AlphaLogics: A Market Logic-Driven Multi-Agent System for Scalable and Interpretable Alpha Factor Generation",
+  "central_strategy": "Eight LLM-agent roles reverse-extract market logic from Alpha101/191/158/360, compile each logic into constraints over a 59-operation factor DSL, generate and optimize factor expressions with backtest feedback, refine the market-logic library over five outer rounds, and synthesize selected factors through an unspecified LightGBM/Qlib Top-50/drop-5 trading stack.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2603.20247v1",
+    "official_pdf_sha256": "d6ae7ed961bc6d358607497f6815dc2c8f4081afb1c04203b3693f63d2929c01",
+    "source_archive_sha256": "1439c0b14100dd1d5261cff44b348ca705d949a088051f3168b3a41573538f1a",
+    "source_tex_sha256": "033535f009398e4998529b2ec37eeb14070aaae86cb193a7ed595e2abc2231f0"
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/alphalogics/manifest.json",
+    "manifest_sha256": "f1ee4692249d061a1406d037754d9009b2458a019141ad0e6445c5496c68689a",
+    "method_specification_sha256": "929df837d7181641463a2ab6c45175a47cff797aaefb971cc9d656eb00ae18ac",
+    "dsl_operation_ledger_sha256": "7de7ac8d6ee1c7bd77aaf182ac085b6a45186481fbc375b2b8ed578b3203f297",
+    "algorithm_conformance_sha256": "f1b92f17aa9cc6f838f19f677c73cf03a4eba64ed7d09a14c569dc1de7965564",
+    "dsl_operations_specified": 59,
+    "valid_json_prompt_templates": 8,
+    "author_native_table_units_regenerated": 0,
+    "author_native_factor_expressions_released": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "exact_repository_query_matches": 0,
+    "arxiv_id_code_results": "unaffiliated QuantNodes/component implementations and paper digests only",
+    "author_attributable_code_or_factor_pool_found": false
+  },
+  "monthly_jkp_assessment": {
+    "required_but_missing": [
+      "The initial and evolved market-logic libraries and the deterministic H-to-structured-H-to-Gamma compilation mapping.",
+      "Filled LLM requests/responses, model revisions/settings, selection objective J, budgets, and seeds.",
+      "The generated factor formulas, trial trajectories, accepted pool, signs, and LightGBM configuration/weights.",
+      "Frozen data/universe snapshots, Qlib handler, predictions, holdings, returns, and execution settings.",
+      "A resolved Top-50/drop-5 portfolio definition consistent with the claimed source implementation."
+    ],
+    "why_base_libraries_are_not_alphalogics": "Alpha101, Alpha191, Alpha158, and Alpha360 are seed/baseline libraries from which logic is mined. Evaluating one directly would omit the paper's defining logic generation, constraint compilation, factor evolution, and final pool.",
+    "why_independent_code_is_not_a_strategy": "QuantNodes passes component tests but substitutes IR for IC, runs four rather than five outer rounds, omits Alpha191/360 at initialization, and contains no paper-generated factors or result lineage.",
+    "why_jkp_does_not_resolve_the_gap": "JKP supplies suitable OHLCV-style monthly inputs only after a factor formula exists; it cannot infer the unreleased market logic, compiler output, evolved formulas, selection objective, or fitted model."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote seed libraries, an independent implementation, thematic market-logic prose, or generic JKP technical factors to AlphaLogics. Reopen for an author-attributable final factor pool or executable generation/model release."
+}

@@ -1,0 +1,12 @@
+{
+  "checked_at_utc": "2026-09-04",
+  "paper_version": "v1",
+  "paper_pdf_sha256": "d6ae7ed961bc6d358607497f6815dc2c8f4081afb1c04203b3693f63d2929c01",
+  "exact_repository_query": "\"AlphaLogics\" \"Market Logic\"",
+  "exact_repository_matches": 0,
+  "arxiv_code_query": "\"2603.20247\"",
+  "author_attributable_native_matches": 0,
+  "known_component_candidate": "sn0wfree/QuantNodes@6a168093528a0a578e99b03065dd5d5f1d2dcf4f",
+  "known_component_candidate_native_credit": false,
+  "author_factor_pool_or_model_release_found": false
+}

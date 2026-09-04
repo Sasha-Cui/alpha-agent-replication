@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 47,
+    "closed": 48,
     "completed_adapted": 1,
     "completed_partial": 10,
-    "closed_not_evaluable": 36,
-    "in_progress": 1,
+    "closed_not_evaluable": 37,
+    "in_progress": 0,
     "queued": 21
   },
   "terminal_statuses": [
@@ -825,16 +825,16 @@
       "title": "AlphaLogics: A Market Logic-Driven Multi-Agent System for Scalable and Interpretable Alpha Factor Generation",
       "system_ids": "SYS-ALPHA-LOGICS",
       "prior_evidence_route": "paper_only_underspecified",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M048_alphalogics/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier and current paper/source; identify the central AlphaLogics factor pool or strongest disclosed market-logic factor before any new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M048_alphalogics/verdict.md",
+      "evaluated_scope": "No common-task return: the paper releases no AlphaLogics-generated factor expression, logic library/compiler output, selected factor pool, fitted model, prediction, or holding. Alpha101/191/158/360 are seeds/baselines, and independent component code has no native lineage.",
+      "next_action": "Closed. Preserve the DSL/prompt/control-flow component audits; do not relabel seed libraries, QuantNodes, or generic technical proxies as AlphaLogics. Reopen for an author-generated factor pool or executable pipeline.",
+      "closure_reason": "The v1 paper remains the current source and a fresh exact GitHub search found no attributable release. JKP can evaluate disclosed formulas but cannot infer the missing market-logic library, compiler output, objective, evolved factors, or LightGBM model; no central partial signal is identifiable."
     },
     {
       "milestone_id": "M049",
