@@ -39,7 +39,7 @@ def test_m016_recipe_freezes_four_specialists_and_monthly_signal_agent():
     assert policy["buy_threshold"] == 0.1
     assert policy["sell_threshold"] == -0.1
     assert policy["final_common_returns_used_for_policy_choice"] is False
-    assert "long-short deciles" in recipe["portfolio_adapter"]
+    assert "top/bottom deciles" in recipe["portfolio_adapter"]
     assert len(recipe["preserved_elements"]) >= 6
     assert len(recipe["approximated_elements"]) >= 5
     assert len(recipe["invented_elements"]) >= 5
