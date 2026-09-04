@@ -1364,3 +1364,108 @@ def finvision_consensus_scores(
             row[f"reliability_weight__{name}"] = float(reliability[name])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def tradingagents_debate_scores(
+    frame: pd.DataFrame,
+    analysts: dict[str, list[str]],
+    *,
+    common_start: str,
+    reflection_months: int = 60,
+    minimum_rankic_months: int = 24,
+    softmax_temperature: float = 10.0,
+    risk_multipliers: dict[str, float] | None = None,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a numerical TradingAgents analyst/debate/risk/manager graph."""
+    if list(analysts) != ["market", "social", "news", "fundamental"]:
+        raise ValueError("TradingAgents requires the frozen analyst roles")
+    risk_multipliers = risk_multipliers or {
+        "risk_seeking": 1.25,
+        "neutral": 1.0,
+        "conservative": 0.75,
+    }
+    if risk_multipliers != {"risk_seeking": 1.25, "neutral": 1.0, "conservative": 0.75}:
+        raise ValueError("TradingAgents risk proposals differ from the frozen recipe")
+    features = list(dict.fromkeys(feature for values in analysts.values() for feature in values))
+    missing = {"month", "weight", "ret", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing TradingAgents inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, features)
+    raw = pd.DataFrame(index=frame.index)
+    raw["market"] = pd.concat(
+        [ranked["ret_12_1"], ranked["ret_6_1"], ranked["prc_highprc_252d"], -ranked["rvol_21d"]],
+        axis=1,
+    ).mean(axis=1)
+    raw["social"] = ranked[["ret_1_0", "rmax5_21d", "turnover_126d"]].mean(axis=1)
+    raw["news"] = ranked[["niq_su", "saleq_su", "ret_1_0"]].mean(axis=1)
+    raw["fundamental"] = pd.concat(
+        [ranked["be_me"], ranked["gp_at"], ranked["ocf_at"], ranked["f_score"], -ranked["o_score"]],
+        axis=1,
+    ).mean(axis=1)
+    analyst_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], raw], axis=1), list(raw)
+    )
+    rankics = monthly_rankic(frame, analyst_scores)
+    security_risk = cross_sectional_unit_rank(frame, ["rvol_21d"])["rvol_21d"]
+
+    market_volatility = {}
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        current_return = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce")
+        valid = weight.notna() & current_return.notna() & weight.gt(0)
+        normalized = weight.loc[valid] / weight.loc[valid].sum()
+        center = float(np.sum(normalized * current_return.loc[valid]))
+        market_volatility[pd.Timestamp(month)] = float(
+            np.sqrt(np.sum(normalized * (current_return.loc[valid] - center) ** 2))
+        )
+    volatility = pd.Series(market_volatility).sort_index()
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in months:
+        history = rankics.loc[rankics.index < month].tail(reflection_months)
+        if len(history) != reflection_months:
+            raise ValueError(f"TradingAgents reflection history is incomplete at {month.date()}")
+        count = history.count()
+        mean = history.mean().where(count >= minimum_rankic_months)
+        if mean.isna().any():
+            raise ValueError("TradingAgents analyst history is incomplete")
+        logits = softmax_temperature * mean
+        reliability = np.exp(logits - logits.max())
+        reliability /= reliability.sum()
+        trailing_volatility = volatility.loc[volatility.index <= month].tail(reflection_months)
+        lower, upper = trailing_volatility.quantile([1 / 3, 2 / 3])
+        current_volatility = volatility.loc[month]
+        risk_choice = (
+            "risk_seeking"
+            if current_volatility <= lower
+            else "conservative"
+            if current_volatility >= upper
+            else "neutral"
+        )
+        indices = month_groups[month]
+        weighted = analyst_scores.loc[indices].mul(reliability, axis=1)
+        bull_case = weighted.clip(lower=0).sum(axis=1, min_count=len(analysts))
+        bear_case = weighted.clip(upper=0).sum(axis=1, min_count=len(analysts))
+        trader = bull_case + bear_case
+        manager = trader + (risk_multipliers[risk_choice] - 1.0) * security_risk.loc[indices]
+        manager = manager.where(trader.notna() & security_risk.loc[indices].notna())
+        result.loc[indices] = manager
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "reflection_start": str(history.index[0].date()),
+            "reflection_end": str(history.index[-1].date()),
+            "reflection_months": len(history),
+            "market_volatility": current_volatility,
+            "risk_choice": risk_choice,
+            "risk_multiplier": risk_multipliers[risk_choice],
+            "mean_bull_case": float(bull_case.mean()),
+            "mean_bear_case": float(bear_case.mean()),
+            "finite_scores": int(manager.notna().sum()),
+        }
+        for name in analysts:
+            row[f"analyst_rankic__{name}"] = float(mean[name])
+            row[f"reliability_weight__{name}"] = float(reliability[name])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
