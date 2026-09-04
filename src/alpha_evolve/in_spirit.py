@@ -599,3 +599,100 @@ def finmem_layered_scores(
             row[f"{layer_name}_mean_retrieved"] = float(retrieved[layer_name].loc[indices].mean())
         diagnostics.append(row)
     return score, pd.DataFrame(diagnostics)
+
+
+def alpha_gpt2_rolling_scores(
+    frame: pd.DataFrame,
+    seeds: list[str],
+    risk_features: list[str],
+    *,
+    common_start: str,
+    training_months: int = 60,
+    minimum_rankic_months: int = 24,
+    selected_factors: int = 5,
+    ridge_penalty: float = 1.0,
+    high_risk_quantile: float = 0.2,
+    high_risk_multiplier: float = 0.5,
+) -> tuple[pd.Series, pd.DataFrame, pd.DataFrame]:
+    """Run a past-only Alpha-GPT 2.0 mining/modeling/analysis cycle."""
+    missing = {"month", "ret_exc_lead1m", *seeds, *risk_features} - set(frame)
+    if missing:
+        raise ValueError(f"missing Alpha-GPT 2.0 inputs: {sorted(missing)}")
+    if len(seeds) != 6 or len(set(seeds)) != 6:
+        raise ValueError("Alpha-GPT 2.0 requires six unique mining seeds")
+    if not 0 < high_risk_quantile < 0.5 or not 0 < high_risk_multiplier <= 1:
+        raise ValueError("invalid Alpha-GPT 2.0 risk adjustment")
+    oriented = frame.copy()
+    oriented[seeds] = -oriented[seeds]
+    candidates = fama_candidate_library(oriented, seeds)
+    rankics = monthly_rankic(frame, candidates)
+    risk_rank = cross_sectional_unit_rank(frame, risk_features)
+    risk_raw = risk_rank[risk_features[0]] + risk_rank[risk_features[1]] - risk_rank[risk_features[2]]
+    risk_frame = pd.DataFrame({"month": frame["month"], "risk": risk_raw}, index=frame.index)
+    risk_score = cross_sectional_unit_rank(risk_frame, ["risk"])["risk"]
+    high_risk_cutoff = 1.0 - 2.0 * high_risk_quantile
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in months:
+        history = rankics.loc[rankics.index < month].tail(training_months)
+        if len(history) != training_months:
+            raise ValueError(f"Alpha-GPT 2.0 warm-up is incomplete at {month.date()}")
+        mean, quality = _rankicir(history, minimum_rankic_months)
+        selected = sorted(
+            quality.dropna().index,
+            key=lambda name: (-float(quality[name]), name),
+        )[:selected_factors]
+        if len(selected) != selected_factors:
+            raise ValueError("too few eligible Alpha-GPT 2.0 mined factors")
+        training = frame["month"].isin(history.index)
+        x = candidates.loc[training, selected].to_numpy(dtype=float)
+        y = pd.to_numeric(frame.loc[training, "ret_exc_lead1m"], errors="coerce").to_numpy(dtype=float)
+        valid = np.isfinite(x).all(axis=1) & np.isfinite(y)
+        x, y = x[valid], y[valid]
+        if len(y) < 1000:
+            raise ValueError("too few Alpha-GPT 2.0 modeling observations")
+        design = np.column_stack([np.ones(len(x)), x])
+        penalty = np.eye(design.shape[1]) * ridge_penalty
+        penalty[0, 0] = 0.0
+        model = np.linalg.solve(design.T @ design + penalty, design.T @ y)
+        indices = month_groups[month]
+        current_x = candidates.loc[indices, selected].to_numpy(dtype=float)
+        current = np.full(len(indices), np.nan)
+        current_valid = np.isfinite(current_x).all(axis=1)
+        current[current_valid] = model[0] + current_x[current_valid] @ model[1:]
+        current_risk = risk_score.loc[indices].to_numpy(dtype=float)
+        analyzed = np.isfinite(current) & np.isfinite(current_risk) & (current_risk >= high_risk_cutoff)
+        current[analyzed] *= high_risk_multiplier
+        result.loc[indices] = current
+        predicted = design @ model
+        centered = y - y.mean()
+        r2 = 1.0 - float(np.sum((y - predicted) ** 2) / np.sum(centered**2))
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "training_start": str(history.index[0].date()),
+            "training_end": str(history.index[-1].date()),
+            "training_months": len(history),
+            "training_observations": len(y),
+            "eligible_candidates": int(quality.notna().sum()),
+            "selected_factors": len(selected),
+            "model_r2": r2,
+            "high_risk_count": int(analyzed.sum()),
+            "finite_scores": int(np.isfinite(current).sum()),
+        }
+        for number, name in enumerate(selected, start=1):
+            row[f"factor_{number}"] = name
+            row[f"factor_{number}_rankicir"] = float(quality[name])
+            row[f"factor_{number}_mean_rankic"] = float(mean[name])
+            row[f"factor_{number}_coefficient"] = float(model[number])
+        diagnostics.append(row)
+    catalog = pd.DataFrame(
+        {
+            "candidate_id": candidates.columns,
+            "operator": [name.split("__", 1)[0] for name in candidates.columns],
+            "seed_orientation": "negative_mean_reversion",
+        }
+    )
+    return result, pd.DataFrame(diagnostics), catalog
