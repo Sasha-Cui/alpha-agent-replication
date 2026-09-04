@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M018",
+  "canonical_work_id": "CensusArxiv250213165",
+  "paper": "HedgeAgents: A Balanced-aware Multi-agent Financial Trading System",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/44_hedgeagents_a_balanced_aware_multi_agent_financial_trading_system.pdf",
+    "sha256": "d51a97df37c27936ea69c3c951c7ac514c4dddd76bf509f866f2c647cd50505e",
+    "primary_url": "https://arxiv.org/pdf/2502.13165v1"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M018_hedgeagents/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/hedgeagents/manifest.json",
+    "audit_manifest_sha256": "ed0d7828ab6bf86ee907819789f80fc7741bebbaa95eea248d4b42116ec68edb",
+    "profiles_path": "paper_runs/paper_replication_audits/hedgeagents/profile_permissions.csv",
+    "profiles_sha256": "e023cb17a7188893ec76cc8b2f7ee630b07e8b1bc03c36c7319d302a64be7a28",
+    "method_path": "paper_runs/paper_replication_audits/hedgeagents/method_specification_audit.csv",
+    "method_sha256": "41e48f90130e3fb553cfe84ea073c775eace85c7cea0eafa8ed7f5d1da97bbac"
+  },
+  "headline_mechanism": "HedgeAgents combines crypto, equity, and FX specialists with a manager that reallocates budget through expected return, covariance, and CVaR conferences, shares experience, and reacts to extreme markets.",
+  "source_anchors": [
+    {
+      "section": "3 and Figure 1",
+      "role": "specialists",
+      "claim": "Dave, Bob, and Emily specialize in crypto, stocks, and foreign exchange before manager Otto allocates the hedge fund."
+    },
+    {
+      "section": "3",
+      "role": "allocation_conference",
+      "claim": "A 30-day conference reallocates budget using expected returns, covariance risk, and CVaR."
+    },
+    {
+      "section": "3",
+      "role": "experience_sharing",
+      "claim": "Specialists share trading experience to improve decisions across markets."
+    },
+    {
+      "section": "3",
+      "role": "extreme_market",
+      "claim": "An extraordinary conference is triggered by daily movement above 5% or cumulative three-day movement above 10%."
+    }
+  ],
+  "preserved_elements": [
+    "three distinct specialist sleeves",
+    "manager allocation using trailing expected effectiveness, covariance, and downside tail",
+    "monthly allocation-conference cadence",
+    "cross-specialist experience sharing",
+    "extreme-market conference trigger",
+    "defensive reallocation under extreme conditions"
+  ],
+  "approximated_elements": [
+    "speculative growth/high-beta stocks replace the crypto specialist",
+    "fundamental momentum stocks represent Bob's native equity specialist",
+    "quality low-risk stocks replace the FX specialist",
+    "RankIC histories replace cross-asset strategy return forecasts and covariance",
+    "softmax risk-adjusted utilities replace the unspecified constrained optimizer"
+  ],
+  "invented_elements": [
+    "the exact JKP specialist feature bundles",
+    "60-month conference history",
+    "variance and 5% tail utility penalties",
+    "10% equal-weight experience-sharing blend",
+    "minimum 50% defensive weight during extreme-market months and common decile adapter"
+  ],
+  "specialists": {
+    "speculative": ["beta_60m", "rvol_21d", "ret_12_1", "at_me"],
+    "equity": ["ret_12_1", "ret_6_1", "be_me", "gp_at", "f_score"],
+    "defensive": ["z_score", "qmj_safety", "qmj_prof", "rvol_21d", "beta_60m"]
+  },
+  "conference_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "history_months": 60,
+    "minimum_rankic_months": 24,
+    "cvar_tail_probability": 0.05,
+    "variance_penalty": 0.5,
+    "cvar_penalty": 0.5,
+    "allocation": "softmax_of_mean_rankic_minus_variance_and_absolute_cvar_penalties",
+    "experience_sharing_weight": 0.1,
+    "extreme_one_month_threshold": 0.05,
+    "extreme_three_month_threshold": 0.1,
+    "extreme_defensive_minimum_weight": 0.5,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The allocated specialist consensus is ranked within the frozen monthly top-1,000 U.S. universe and mapped to common value-weighted long/short deciles with 10 bp one-way cost.",
+  "claim_boundary": "This is a researcher-authored HedgeAgents-inspired U.S.-style-sleeve allocation, not the private cross-asset agents, prompts, memories, conference, optimizer, actions, or native results."
+}
