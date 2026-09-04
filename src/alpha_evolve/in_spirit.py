@@ -1567,3 +1567,114 @@ def marketsenseai_signal_scores(
             row[f"reliability_weight__{name}"] = float(reliability[name])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def hedgeagents_conference_scores(
+    frame: pd.DataFrame,
+    specialists: dict[str, list[str]],
+    *,
+    common_start: str,
+    history_months: int = 60,
+    minimum_rankic_months: int = 24,
+    cvar_tail_probability: float = 0.05,
+    variance_penalty: float = 0.5,
+    cvar_penalty: float = 0.5,
+    experience_sharing_weight: float = 0.1,
+    extreme_one_month_threshold: float = 0.05,
+    extreme_three_month_threshold: float = 0.1,
+    extreme_defensive_minimum_weight: float = 0.5,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a HedgeAgents-style specialist allocation conference on U.S. sleeves."""
+    if list(specialists) != ["speculative", "equity", "defensive"]:
+        raise ValueError("HedgeAgents requires speculative, equity, and defensive sleeves")
+    if not 0 <= experience_sharing_weight < 1 or not 0 < cvar_tail_probability <= 0.5:
+        raise ValueError("invalid HedgeAgents conference parameters")
+    features = list(dict.fromkeys(feature for values in specialists.values() for feature in values))
+    missing = {"month", "weight", "ret", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing HedgeAgents specialist inputs: {sorted(missing)}")
+    ranked = cross_sectional_unit_rank(frame, features)
+    raw = pd.DataFrame(index=frame.index)
+    raw["speculative"] = pd.concat(
+        [ranked["beta_60m"], ranked["rvol_21d"], ranked["ret_12_1"], -ranked["at_me"]],
+        axis=1,
+    ).mean(axis=1)
+    raw["equity"] = ranked[["ret_12_1", "ret_6_1", "be_me", "gp_at", "f_score"]].mean(axis=1)
+    raw["defensive"] = pd.concat(
+        [
+            ranked["z_score"],
+            ranked["qmj_safety"],
+            ranked["qmj_prof"],
+            -ranked["rvol_21d"],
+            -ranked["beta_60m"],
+        ],
+        axis=1,
+    ).mean(axis=1)
+    sleeve_scores = cross_sectional_unit_rank(pd.concat([frame[["month"]], raw], axis=1), list(raw))
+    rankics = monthly_rankic(frame, sleeve_scores)
+
+    market_rows = []
+    for month, indices in frame.groupby("month", sort=True).groups.items():
+        weight = pd.to_numeric(frame.loc[indices, "weight"], errors="coerce")
+        current_return = pd.to_numeric(frame.loc[indices, "ret"], errors="coerce").fillna(0.0)
+        market_rows.append((pd.Timestamp(month), float(np.sum(weight * current_return) / weight.sum())))
+    market = pd.Series(dict(market_rows)).sort_index()
+    market_three = (1.0 + market).rolling(3, min_periods=3).apply(np.prod, raw=True) - 1.0
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
+    for month in months:
+        history = rankics.loc[rankics.index < month].tail(history_months)
+        if len(history) != history_months:
+            raise ValueError(f"HedgeAgents conference history is incomplete at {month.date()}")
+        if (history.count() < minimum_rankic_months).any():
+            raise ValueError("HedgeAgents specialist history is incomplete")
+        mean = history.mean().to_numpy(dtype=float)
+        covariance = history.cov().to_numpy(dtype=float)
+        tail_count = max(1, int(np.ceil(cvar_tail_probability * len(history))))
+        cvar = np.sort(history.to_numpy(dtype=float), axis=0)[:tail_count].mean(axis=0)
+        adjusted_mean = mean - cvar_penalty * np.abs(cvar)
+        utility = np.linalg.solve(
+            covariance + variance_penalty * np.eye(len(specialists)),
+            adjusted_mean,
+        )
+        allocation = np.exp(utility - utility.max())
+        allocation /= allocation.sum()
+        allocation = (
+            (1.0 - experience_sharing_weight) * allocation
+            + experience_sharing_weight / len(specialists)
+        )
+        extreme = bool(
+            abs(market.loc[month]) > extreme_one_month_threshold
+            or abs(market_three.loc[month]) > extreme_three_month_threshold
+        )
+        defensive_index = list(specialists).index("defensive")
+        if extreme and allocation[defensive_index] < extreme_defensive_minimum_weight:
+            other = [index for index in range(len(allocation)) if index != defensive_index]
+            scale = (1.0 - extreme_defensive_minimum_weight) / allocation[other].sum()
+            allocation[other] *= scale
+            allocation[defensive_index] = extreme_defensive_minimum_weight
+        indices = month_groups[month]
+        weights = pd.Series(allocation, index=list(specialists))
+        score = sleeve_scores.loc[indices].mul(weights, axis=1).sum(
+            axis=1, min_count=len(specialists)
+        )
+        result.loc[indices] = score
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "conference_start": str(history.index[0].date()),
+            "conference_end": str(history.index[-1].date()),
+            "conference_months": len(history),
+            "market_return": float(market.loc[month]),
+            "three_month_market_return": float(market_three.loc[month]),
+            "extreme_conference": extreme,
+            "finite_scores": int(score.notna().sum()),
+        }
+        for position, name in enumerate(specialists):
+            row[f"mean_rankic__{name}"] = float(mean[position])
+            row[f"cvar__{name}"] = float(cvar[position])
+            row[f"allocation__{name}"] = float(allocation[position])
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
