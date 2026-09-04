@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M012",
+  "canonical_work_id": "CensusArxiv240917266",
+  "paper": "Empirical Asset Pricing with Large Language Model Agents",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/58_empirical_asset_pricing_with_large_language_model_agents_v2.pdf",
+    "sha256": "7e485996d52da6e48b1ac253947b2e9e01904a744c79f5af5dc1b91d1c3f4ded",
+    "primary_url": "https://arxiv.org/pdf/2409.17266v2"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M012_aapm/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/aapm/manifest.json",
+    "audit_manifest_sha256": "19ecf4fa046caf8940cdf8303e237bd356f8f72e439bc2637bc7370236b77800",
+    "method_path": "paper_runs/paper_replication_audits/aapm/method_specification_audit.csv",
+    "method_sha256": "e348a805bf12d7ce557b3c633c19bd077fab57a2aaa3d7899678b33298903221",
+    "native_execution_path": "paper_runs/paper_replication_audits/aapm/native_execution.json",
+    "native_execution_sha256": "45bddc2c7f1f06a97686a984b009985eba9a60bb4bf5d0c1d2e7ade2d5cea21a"
+  },
+  "headline_mechanism": "AAPM iteratively refines stock and macro news reports with memory, embeds and smooths those reports, combines them with asset embeddings and manual characteristics in a historically pretrained nonlinear pricing network, and ranks predicted excess returns into portfolios.",
+  "source_anchors": [
+    {
+      "section": "3.1 and Figure 1",
+      "role": "agent_reports",
+      "claim": "The agent iteratively refines latest-news analysis using external memory and continuously updated macro and micro notes."
+    },
+    {
+      "section": "3.2",
+      "role": "hybrid_state",
+      "claim": "Smoothed report embeddings are concatenated with manual financial factors and asset-specific embeddings."
+    },
+    {
+      "section": "3.2 and Figure 3",
+      "role": "historical_pretraining",
+      "claim": "The pricing network is pretrained on historical factor data before report embeddings become available and predicts next excess returns."
+    },
+    {
+      "section": "4.2",
+      "role": "portfolio",
+      "claim": "Expected returns form tangency, equal-weighted, and value-weighted long-short portfolios; VW uses top and bottom deciles."
+    }
+  ],
+  "preserved_elements": [
+    "separate stock-report and macro-report state blocks",
+    "iterative report-memory smoothing",
+    "manual financial factor block",
+    "asset-specific embedding block",
+    "historical pretraining before each prediction",
+    "nonlinear hybrid interactions and value-weighted decile portfolio"
+  ],
+  "approximated_elements": [
+    "price, attention, and quality characteristics replace unavailable WSJ stock reports",
+    "formation-time market return, volatility, and breadth replace macro notes and report embeddings",
+    "per-security smoothed characteristic states replace learned BGE report embeddings and memory retrieval",
+    "size, value, and profitability ranks replace learned asset embeddings",
+    "fixed tanh interaction features plus rolling ridge replace the deep pricing network"
+  ],
+  "invented_elements": [
+    "the exact JKP feature blocks",
+    "50 percent report-memory smoothing",
+    "120-month rolling historical pretraining window",
+    "the deterministic nonlinear interaction map and ridge penalty",
+    "common transaction costs and missing-return sensitivity"
+  ],
+  "stock_report_proxy": ["ret_1_0", "ret_6_1", "turnover_126d", "rmax5_21d", "gp_at"],
+  "macro_report_proxy": ["formation_market_return", "formation_market_volatility", "positive_return_breadth"],
+  "manual_factors": ["be_me", "f_score", "o_score", "beta_60m", "rvol_21d", "ocf_at"],
+  "asset_embedding_proxy": ["market_equity", "be_me", "gp_at"],
+  "hybrid_model": {
+    "prehistory_formation_start": "1989-07-31",
+    "common_formation_start": "1999-07-31",
+    "report_memory_weight": 0.5,
+    "pretraining_window_months": 120,
+    "nonlinear_map": "raw_blocks_plus_tanh_stock_times_macro_and_asset_times_manual_interactions",
+    "estimator": "rolling_ridge_next_month_excess_return",
+    "ridge_penalty": 10.0,
+    "update_frequency": "monthly"
+  },
+  "chronological_policy": {
+    "all_reports_smoothing_pretraining_and_prediction_use_formation_time_or_earlier_information": true,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The predicted excess-return score uses the paper's value-weighted top/bottom decile rule under the frozen top-1,000 monthly universe, with common 10 bp one-way cost and missingness handling.",
+  "claim_boundary": "This is a researcher-authored AAPM-inspired hybrid pricing model, not the unavailable WSJ corpus, LLM reports, BGE embeddings, trained network, native predictions, or paper results."
+}
