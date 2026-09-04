@@ -1,0 +1,21 @@
+{
+  "milestone_id": "M032",
+  "status": "bounded_common_task_feasibility_complete",
+  "reused_evidence": [
+    "literature_review/papers/33_trading_r1_llm_reasoning_in_financial_trading.pdf",
+    "paper_runs/paper_replication_audits/trading_r1/README.md",
+    "paper_runs/paper_replication_audits/trading_r1/manifest.json",
+    "paper_runs/paper_replication_audits/trading_r1/native_execution.json",
+    "paper_runs/paper_replication_audits/trading_r1/paper_mechanism_conformance.csv",
+    "paper_runs/paper_replication_audits/trading_r1/paper_specification_gaps.csv",
+    "paper_runs/paper_replication_audits/trading_r1/paper_internal_consistency_checks.csv",
+    "paper_runs/paper_replication_audits/trading_r1/public_fork_census.json"
+  ],
+  "bounded_checks": [
+    "Extracted and visually inspected original-paper pages covering the Qwen3-4B RFT policy, daily backtest, Algorithm S1, and decision reward matrix.",
+    "Reused the complete official and 29-accessible-fork audit, which found no executable pipeline or native result payload.",
+    "Rechecked the official GitHub repository and TauricResearch Hugging Face model/dataset namespaces on 2026-09-04 UTC; the Git head, one-file placeholder, zero tags/releases, and empty namespaces remain unchanged.",
+    "Separated the learned headline policy from its target-label and reward components and rejected the earlier narrative factor proxy."
+  ],
+  "outcome": "The paper specifies parts of the learning objective but releases none of the data, checkpoint, training/runtime code, action mapping, or backtest state required to generate Trading-R1 decisions. A monthly JKP result would require inventing the policy."
+}

@@ -6,11 +6,11 @@
   "active_operation_path": "artifacts/us_jkp_headline/v1/operation.json",
   "required_paper_count": 69,
   "progress_summary": {
-    "closed": 31,
+    "closed": 32,
     "completed_adapted": 1,
     "completed_partial": 5,
-    "closed_not_evaluable": 25,
-    "in_progress": 1,
+    "closed_not_evaluable": 26,
+    "in_progress": 0,
     "queued": 37
   },
   "terminal_statuses": [
@@ -553,16 +553,16 @@
       "title": "Trading-R1: Financial Trading with LLM Reasoning via Reinforcement Learning",
       "system_ids": "SYS-TRADING-R1",
       "prior_evidence_route": "public_code_available",
-      "status": "in_progress",
-      "recipe_path": "",
+      "status": "closed_not_evaluable",
+      "recipe_path": "paper_runs/us_jkp_headline/M032_trading_r1/recipe.json",
       "implementation_path": "",
       "run_manifest_path": "",
       "monthly_returns_path": "",
       "metrics_path": "",
-      "verdict_path": "",
-      "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
-      "closure_reason": ""
+      "verdict_path": "paper_runs/us_jkp_headline/M032_trading_r1/verdict.md",
+      "evaluated_scope": "No common-task return: the headline object is a three-stage SFT/RFT/self-distilled Qwen3-4B policy, but the official release and all audited forks contain no code, checkpoint, training data, action mapping, predictions, trades, or backtest paths.",
+      "next_action": "Closed. Preserve literal Algorithm S1 and reward-matrix specification credit; do not relabel them, the old narrative proxy, an untrained base model, a newly trained replacement, or printed table values as Trading-R1 returns.",
+      "closure_reason": "The learned policy is unreleased and underidentified: Tauric-TR1-DB, checkpoints, training/runtime code, reward parsers, action weights, portfolio rules, and per-date outputs are absent. Paper equations describe targets/rewards rather than an executable strategy."
     },
     {
       "milestone_id": "M033",

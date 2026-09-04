@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "milestone_id": "M032",
+  "canonical_work_id": "CensusArxiv250911420",
+  "paper": "Trading-R1: Financial Trading with LLM Reasoning via Reinforcement Learning",
+  "paper_url": "https://arxiv.org/abs/2509.11420v1",
+  "paper_pdf_sha256": "1b269a78756a50b9da1c86ab7ad2e9050a8a14134b057022bfca4944d51408d0",
+  "paper_source_sha256": "74b1b5e095d2fe471ca8341ff904209186abb4dceacd15e535ca600638d46760",
+  "source_url": "https://github.com/TauricResearch/Trading-R1",
+  "source_commit": "57810bfb4456ba1509a2a3c6d502d3085922bf83",
+  "headline_strategy": "Trading-R1 is a Qwen3-4B policy trained by an interleaved three-stage SFT, reinforcement fine-tuning, and self-distillation curriculum on daily multimodal Tauric-TR1-DB records; it emits Strong Sell/Sell/Hold/Buy/Strong Buy recommendations that the paper says are mapped to portfolio weights for roughly one-week holdings.",
+  "headline_selection_basis": "Sections 3.6-3.7 and 4 define the fully trained Trading-R1 checkpoint as the proposed method. Algorithm S1 generates volatility-adjusted target labels and the decision matrix supplies a training reward; neither is the deployed model policy.",
+  "paper_configuration": {
+    "backbone": "Qwen3-4B",
+    "input_frequency": "daily",
+    "target_holding_period": "approximately one week",
+    "input_tokens_per_asset_day": "20,000-30,000",
+    "training_corpus": "Tauric-TR1-DB",
+    "training_samples": 100000,
+    "training_tickers": 14,
+    "training_period": "2024-01-01 through 2025-05-31",
+    "reported_evaluation_period": "2024-06-01 through 2024-08-31",
+    "action_space": ["Strong Sell", "Sell", "Hold", "Buy", "Strong Buy"],
+    "training_stages": ["structured-thesis reasoning", "evidence-grounded claims", "market-aligned decision"],
+    "sft_hardware": "one 8xH100 96GB server",
+    "rft_hardware": "one 8xH200 141GB server"
+  },
+  "required_headline_objects": [
+    "the Tauric-TR1-DB daily multimodal corpus and point-in-time input snapshots",
+    "the Trading-R1 trained checkpoint and intermediate SFT/RFT policies",
+    "three-stage SFT/RFT/self-distillation training code, parsers, hyperparameters and seeds",
+    "the exact prompt/output-to-action parser and five-action portfolio-weight mapping",
+    "holding, entry, exit, rebalance, leverage, cash, cost and risk rules",
+    "per-date predictions, trades, equity curves and evaluation split manifest"
+  ],
+  "official_release": {
+    "paper_snapshot_repository_files": 1,
+    "paper_snapshot_repository_source_files": 0,
+    "paper_snapshot_repository_commits": 1,
+    "paper_snapshot_repository_tags": 0,
+    "live_recheck_utc": "2026-09-04T00:58:04Z",
+    "live_head_unchanged": true,
+    "live_repository_files": 1,
+    "live_repository_file": "README.md",
+    "live_repository_file_bytes": 49,
+    "live_repository_commits": 1,
+    "live_tags": 0,
+    "live_releases": 0,
+    "live_huggingface_models": 0,
+    "live_huggingface_datasets": 0
+  },
+  "paper_specification_credit": {
+    "literal_algorithm_s1_reconstructed": true,
+    "decision_reward_matrix_reconstructed": true,
+    "paper_mechanisms_total": 39,
+    "paper_mechanisms_verified_in_native_source": 0,
+    "published_numeric_result_units": 348,
+    "native_result_units_reproduced": 0
+  },
+  "material_specification_conflicts": [
+    "Algorithm S1 prose calls its labels forward-looking, but the printed EMA.shift formula uses trailing returns.",
+    "Algorithm S1 estimates percentile thresholds on the entire supplied series; appending future data changes 72 of 126 prior synthetic labels.",
+    "The decision-reward matrix orientation contradicts the prose's false-bullish penalty claim.",
+    "The reported evaluation interval lies within the reported data-collection interval and no split manifest is released.",
+    "Trading-R1/NVDA Sharpe is 2.72 in Table 3, 1.881 in Figure 5, and 1.88 in prose."
+  ],
+  "rejected_substitutes": [
+    {
+      "route": "Use the previous rank(ret_3_1)+rank(ret_12_1)-rank(ret_1_0)+quality/volatility proxy",
+      "reason": "The formula is a researcher-created narrative translation with no paper or source support and does not execute Trading-R1."
+    },
+    {
+      "route": "Trade literal Algorithm S1 labels",
+      "reason": "Algorithm S1 constructs training targets rather than model predictions, uses trailing returns despite a forward-return claim, and fits non-causal full-sample quantiles."
+    },
+    {
+      "route": "Use the published asymmetric decision matrix",
+      "reason": "The matrix scores predicted versus true labels during training; it supplies neither predictions nor portfolio weights."
+    },
+    {
+      "route": "Run untrained Qwen3-4B or train a new model on JKP",
+      "reason": "The base model is a paper baseline, while a new model without Tauric-TR1-DB, training recipes and reward parsers would be a new policy."
+    },
+    {
+      "route": "Backcast the paper's printed six-asset performance",
+      "reason": "The per-date actions, weights and return paths are absent, and the short 2024 paper window cannot identify a 1999-2024 monthly policy."
+    }
+  ],
+  "prior_evidence_retained": "paper_runs/paper_replication_audits/trading_r1",
+  "result_policy": "No narrative proxy, target-label generator, reward matrix, untrained base model, newly trained replacement, or backcast printed result is entered as a Trading-R1 monthly return. The reported positive claims remain unresolved, not falsified.",
+  "status": "closed_not_evaluable"
+}
