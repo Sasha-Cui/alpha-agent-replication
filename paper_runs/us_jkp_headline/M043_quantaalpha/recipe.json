@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "status": "frozen_for_execution",
+  "milestone_id": "M043",
+  "canonical_work_id": "CensusArxiv260207085",
+  "title": "QuantaAlpha: An Evolutionary Framework for LLM-Driven Alpha Mining",
+  "candidate_id": "quantaalpha_prepublication_gpt_complete_170",
+  "selection_reason": "The paper says its headline strategy is a LightGBM synthesis of approximately 150 validated factors, not a single best factor. The strongest executable author-attributed artifact is the complete 150-expression GPT pool at the prepublication results commit, combined by the released backtest profile with the public Alpha158(20) seed set. This pool was selected before its monthly JKP return was computed.",
+  "paper_version": {
+    "version": "v3",
+    "submitted_at_utc": "2026-05-18T16:57:08Z",
+    "pdf_sha256": "75e9c2ef5e8bb7fed78d27409e8252208e8fdacf6d10e1495dbc5b8767481848",
+    "url": "https://arxiv.org/abs/2602.07085"
+  },
+  "paper_headline": {
+    "factor_pool": "approximately 150 validated QuantaAlpha factors generated with GPT-5.2 and synthesized by the common downstream LightGBM model",
+    "reported_ic": 0.0472,
+    "reported_arr": 0.0468,
+    "reported_information_ratio": 0.6453,
+    "reported_maximum_drawdown": 0.118,
+    "portfolio": "daily equal-weight TopkDropoutStrategy with topk=50 and n_drop=5, next-day open execution",
+    "costs": "5 bp buys and 15 bp sells",
+    "source_sections": [
+      "Sections 5.1-5.2",
+      "Appendix A.2",
+      "Appendix B"
+    ]
+  },
+  "release_evidence": {
+    "current_official_source_commit": "b7ceb27b1001261d7a95b209a963664ae1f8ab23",
+    "prepublication_results_commit": "8a034319ff925d9dc621077ebf97d48e1890dad2",
+    "prepublication_factor_path": "factor_library/RANKIC_desc_150_QA_round11_best_gpt_123_csi300.json",
+    "prepublication_factor_sha256": "659baa259a909b5e5600dc0270c076d95f7e1d4fde6479e74cd4e3f558a0bf4e",
+    "custom_factor_count": 150,
+    "alpha158_seed_factor_count": 20,
+    "complete_source_profile_factor_count": 170,
+    "native_complete_pool_rerun": {
+      "ic": 0.04228714198020135,
+      "annualized_return": 0.03608321762580485,
+      "information_ratio": 0.5136689182304162,
+      "maximum_drawdown": -0.1255852125671344
+    },
+    "v3_factor_pool_released": false,
+    "current_official_source_contains_final_factor_pool_or_predictions": false
+  },
+  "frozen_model": {
+    "type": "LightGBM regression",
+    "training_months": 60,
+    "validation_months": 12,
+    "fit_policy": "one fixed chronological fit; the first 60 formation months train, the next 12 validate/early-stop, and every later month is strictly out of sample",
+    "preprocessing": "source-order Fillna(0), replace infinities by the same-month finite mean, then CSRankNorm=(percentile rank-0.5)*3.46 for features; drop missing labels and CSRankNorm labels",
+    "parameters": {
+      "objective": "mse",
+      "learning_rate": 0.1,
+      "max_depth": 8,
+      "num_leaves": 210,
+      "colsample_bytree": 0.8879,
+      "subsample": 0.8789,
+      "lambda_l1": 205.6999,
+      "lambda_l2": 580.9768,
+      "num_threads": 20,
+      "seed": 42,
+      "random_state": 42,
+      "min_child_samples": 100,
+      "feature_fraction_bynode": 0.8,
+      "num_boost_round": 500,
+      "early_stopping_rounds": 50
+    }
+  },
+  "jkp_mapping": {
+    "$close": "abs(prc) at formation month end",
+    "$high": "abs(prc_high) within the formation month",
+    "$low": "abs(prc_low) within the formation month",
+    "$open": "abs(prc)/(1+ret) when ret>-1; a prior-close-implied opening proxy because JKP has no monthly open",
+    "$volume": "tvol, JKP monthly total share volume",
+    "$return": "ret, the formation-month CRSP total return",
+    "$vwap": "not required by any of the 150 recovered expressions",
+    "period_translation": "Every source integer lookback is retained exactly and interpreted in monthly observations, consistent with the common monthly-cadence adapter; no horizon was selected or rescaled using JKP outcomes.",
+    "universe": "largest 1,000 eligible U.S. stocks by formation-date market equity each month",
+    "label": "next-month total return cross-sectional rank; excess versus risk-free is rank-equivalent within month"
+  },
+  "portfolio_adapter": {
+    "preserved": "TopkDropout ranking, topk=50, n_drop=5, equal-weight initial purchases, retained-position drift, and cash from sold positions split equally across replacements",
+    "cadence": "monthly rather than daily",
+    "execution": "formation-month-end scores followed by next-month returns rather than next-day open fills",
+    "primary_return": "long-only portfolio excess return over the fixed value-weighted JKP top-1,000 market",
+    "primary_cost": "common 10 bp one-way linear cost on total buys plus sells",
+    "missing_returns": "zero primary and -100% adverse sensitivity, without selecting between them"
+  },
+  "compatibility_repairs": [
+    "Broadcast cross-sectional MEAN back to the security index before nested time-series operators, the same isolated repair required by the complete native rerun.",
+    "Force the author's REGBETA/REGRESI joblib calls to one worker; this changes resource use, not formulas."
+  ],
+  "classification_if_executed": "completed_partial",
+  "full_system_not_reproduced": [
+    "The unreleased v3 GPT-5.2 factor pool, predictions, holdings, and raw returns.",
+    "The 1.8M-token, ten-direction, five-iteration LLM mining run and exact model snapshots.",
+    "The paper's daily CSI300 data and market microstructure.",
+    "The next-day open execution and Chinese price-limit rules.",
+    "The v3 headline numbers or an explanation for their large revision from v1/v2.",
+    "A pristine confirmatory test; earlier audit and JKP outcomes were already visible.",
+    "Proof that the historical prepublication GPT pool is the exact pool behind v3."
+  ],
+  "outcome_selection_guard": "Do not change the factor pool, model, period interpretation, direction, portfolio rule, costs, or status after observing the JKP result. A negative or benchmark-explained return still closes the milestone."
+}
