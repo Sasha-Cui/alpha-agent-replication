@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 15,
     "closed_not_evaluable": 52,
-    "in_progress": 0,
-    "queued": 1
+    "in_progress": 1,
+    "queued": 0
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -1182,7 +1182,7 @@
       "title": "Automate Strategy Finding with LLM in Quant Investment",
       "system_ids": "SYS-AUTOMATE-STRATEGY",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -1190,7 +1190,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and current paper/source; identify the central automated strategy-finding output or strongest attributable released strategy before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence. After closure, run final cross-paper checks and the full release gate before one push/CI.",
       "closure_reason": ""
     }
   ]
