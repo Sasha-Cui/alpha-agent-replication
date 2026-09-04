@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 5,
     "closed_not_evaluable": 26,
-    "in_progress": 0,
-    "queued": 37
+    "in_progress": 1,
+    "queued": 36
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -570,7 +570,7 @@
       "title": "GuruAgents: Emulating Wise Investors with Prompt-Guided LLM Agents",
       "system_ids": "SYS-GURU-AGENTS",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
