@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M005",
+  "canonical_work_id": "CensusACL2026findingsacl456",
+  "paper": "AlphaQuanter: An End-to-End Tool-Augmented Agentic Reinforcement Learning Framework for Stock Trading",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/27_alphaquanter_an_end_to_end_tool_augmented_agentic_reinforcement_learning_framework_for_stock_trading.pdf",
+    "sha256": "433ff948a2a90cb7eb83cdb823d56ed49026795f7e2688bbe8b67bcdbd444fd5",
+    "primary_url": "https://aclanthology.org/2026.findings-acl.456.pdf"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M005_alphaquanter/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/alphaquanter/manifest.json",
+    "audit_manifest_sha256": "eb47cb9eb39adb46cb6473eb464e5103506f156164b22a69bff0a838b91a1d77",
+    "reward_conformance_path": "paper_runs/paper_replication_audits/alphaquanter/reward_label_conformance.csv",
+    "reward_conformance_sha256": "c6107953fec07f152213c2422721cef36c873a5f98c6a8e266f5c412e94b8a1c",
+    "dataset_inventory_path": "paper_runs/paper_replication_audits/alphaquanter/released_dataset_inventory.csv",
+    "dataset_inventory_sha256": "8598663431f0f51f476c860932cbbdcc1b66352715a9bd844aebf68a6e817265"
+  },
+  "headline_mechanism": "AlphaQuanter learns a single ReAct-style policy that selectively queries market, fundamental, sentiment, and macro tools, then makes a high-conviction Buy/Sell/Hold decision using a multi-horizon outcome reward plus tool-efficiency incentives.",
+  "source_anchors": [
+    {
+      "section": "3 and Figure 1",
+      "role": "tool_augmented_mdp",
+      "claim": "The state accumulates query history and tool results; actions either query one of four information categories or terminate with Buy, Sell, or Hold."
+    },
+    {
+      "section": "4.1",
+      "role": "cognitive_workflow",
+      "claim": "The policy cycles through Plan, Acquire, Reason, and Act to gather evidence selectively before committing to a decision."
+    },
+    {
+      "section": "4.2 and Table 1",
+      "role": "reward",
+      "claim": "Outcome reward classifies an exponentially blended multi-horizon future return into bullish, bearish, or sideways regimes and favors high-conviction decisions."
+    },
+    {
+      "section": "6.2 and Appendix A",
+      "role": "tool_categories",
+      "claim": "The four information categories are market/technical, fundamentals, sentiment, and macroeconomic conditions."
+    }
+  ],
+  "preserved_elements": [
+    "four separately constructed information-tool scores",
+    "selective use of only two most informative tool categories per formation",
+    "multi-horizon exponentially weighted outcome target",
+    "high-conviction Buy/Sell/Hold diagnostic using the released 1.5 percent threshold",
+    "strictly chronological learning with a gap until every reward horizon is realized",
+    "common 0.1 percent one-way fee matching the released transaction-cost rate"
+  ],
+  "approximated_elements": [
+    "JKP characteristic bundles replace API calls and natural-language tool responses",
+    "recent price/attention characteristics replace unavailable news and Reddit sentiment",
+    "a market-regime and beta interaction replaces unavailable macro series and reasoning",
+    "rolling ridge tool weights replace the Qwen/GRPO policy and ReAct trace",
+    "continuous predicted confidence is retained for cross-sectional ranking while the native discrete threshold is reported diagnostically"
+  ],
+  "invented_elements": [
+    "the exact JKP features assigned to each tool category",
+    "monthly horizons of one, three, and six months",
+    "60-month rolling training window",
+    "ridge penalty and deterministic top-two coefficient selection",
+    "common value-weighted long/short decile portfolio adapter"
+  ],
+  "tool_definitions": {
+    "market_technical": ["ret_12_1", "ret_6_1", "rvol_21d"],
+    "fundamental": ["be_me", "gp_at", "f_score", "ocf_at"],
+    "sentiment_proxy": ["ret_1_0", "rmax5_21d", "turnover_126d"],
+    "macro_proxy": ["ret", "beta_60m", "rvol_21d"]
+  },
+  "chronological_policy": {
+    "prehistory_formation_start": "1994-01-31",
+    "common_formation_start": "1999-07-31",
+    "monthly_reward_horizons": [1, 3, 6],
+    "exponential_decay_eta": 0.8,
+    "reward_information_gap_months": 6,
+    "training_window_months": 60,
+    "ridge_penalty": 1.0,
+    "maximum_selected_tools": 2,
+    "decision_threshold": 0.015,
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "The continuous past-trained decision confidence is ranked within the monthly top-1,000 universe and mapped to common value-weighted long/short deciles; the paper threshold is retained as a diagnostic rather than creating deterministic-ID ties among HOLD decisions.",
+  "claim_boundary": "This is a researcher-authored AlphaQuanter-inspired selective-tool policy, not the unreleased Qwen/GRPO checkpoint, ReAct traces, multimodal test inputs, actions, or a reproduction of the paper's results."
+}
