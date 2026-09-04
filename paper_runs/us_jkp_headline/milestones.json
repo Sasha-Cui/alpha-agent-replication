@@ -10,8 +10,8 @@
     "completed_adapted": 1,
     "completed_partial": 14,
     "closed_not_evaluable": 51,
-    "in_progress": 0,
-    "queued": 3
+    "in_progress": 1,
+    "queued": 2
   },
   "terminal_statuses": [
     "completed_adapted",
@@ -1148,7 +1148,7 @@
       "title": "RAPTOR: Reasoned Agentic Portfolio Trading with Orchestrated Rebalancing",
       "system_ids": "SYS-RAPTOR",
       "prior_evidence_route": "public_code_available",
-      "status": "queued",
+      "status": "in_progress",
       "recipe_path": "",
       "implementation_path": "",
       "run_manifest_path": "",
@@ -1156,7 +1156,7 @@
       "metrics_path": "",
       "verdict_path": "",
       "evaluated_scope": "",
-      "next_action": "Reuse the existing dossier; select the central strategy before new JKP outcome inspection; implement and evaluate or close a justified partial/non-evaluable case.",
+      "next_action": "Reuse the existing dossier and current paper/source; identify RAPTOR's central reasoned portfolio/rebalancing policy, released actions or strongest attributable strategy component before new JKP outcome inspection, then execute the strongest defensible monthly adaptation or close with concrete evidence.",
       "closure_reason": ""
     },
     {
