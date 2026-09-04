@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "study_id": "us_jkp_in_spirit_v1",
+  "milestone_id": "M004",
+  "canonical_work_id": "CensusACL2025findingsacl716",
+  "paper": "FLAG-TRADER: Fusion LLM-Agent with Gradient-based Reinforcement Learning for Financial Trading",
+  "fidelity_label": "in_spirit_reconstruction",
+  "status": "frozen_before_jkp_result",
+  "paper_source": {
+    "path": "literature_review/papers/31_flag_trader_fusion_llm_agent_with_gradient_based.pdf",
+    "sha256": "38d188a03105f07911d05c6fc14ba7cb2333939f3871f45a48f9cc541401d099",
+    "primary_url": "https://aclanthology.org/2025.findings-acl.716/"
+  },
+  "strict_evidence": {
+    "verdict_path": "paper_runs/us_jkp_headline/M004_flag_trader/verdict.md",
+    "audit_manifest_path": "paper_runs/paper_replication_audits/flag_trader/manifest.json",
+    "audit_manifest_sha256": "e1e89baa1a4a6cfef0c221d1c336ebd5171c3c525320918601bfe4086dadaddb",
+    "prompt_path": "paper_runs/paper_replication_audits/flag_trader/paper_prompt_template.txt",
+    "prompt_sha256": "ae4880992690401385cf2cf60ca10cb5ee055c62e40c66e0598fa28ab5a0c701",
+    "hyperparameters_path": "paper_runs/paper_replication_audits/flag_trader/paper_hyperparameters.csv",
+    "hyperparameters_sha256": "158a95aa7c6c742713704f3eeeadb31d7f30d315d4fddae0ac67d0b72ffa47a3"
+  },
+  "headline_mechanism": "FLAG-TRADER fuses a semantic market-state encoder with separate actor and critic heads, then updates the policy online from trading rewards using clipped proximal policy optimization.",
+  "source_anchors": [
+    {
+      "section": "4.1 and Figure 3",
+      "role": "semantic_prior",
+      "claim": "The prompt directs buying undervalued stocks, selling overvalued or high-risk stocks, minimizing transaction costs, and aligning with momentum."
+    },
+    {
+      "section": "4.2.1 and Equations 4-8",
+      "role": "policy",
+      "claim": "Structured market state is encoded into a Buy/Hold/Sell action distribution through a policy head."
+    },
+    {
+      "section": "4.2.2 and Equation 9",
+      "role": "critic",
+      "claim": "A separate value head estimates expected return while sharing the state representation."
+    },
+    {
+      "section": "4.3, Algorithm 1, and Appendix A",
+      "role": "online_learning",
+      "claim": "Policy and value parameters update online from replayed experience, with PPO clipping used to limit policy divergence."
+    }
+  ],
+  "preserved_elements": [
+    "semantic fusion of valuation, historical trend, momentum, and risk state",
+    "three-action Buy/Hold/Sell latent policy represented by expected signed action",
+    "separate linear actor and critic heads over one shared state",
+    "monthly online reward-gradient updates using only previously realized outcomes",
+    "paper learning rate, clipping coefficient, and maximum gradient norm",
+    "persistent action-memory smoothing to reduce policy turnover"
+  ],
+  "approximated_elements": [
+    "cross-sectional JKP ranks replace textual single-asset market and account prompts",
+    "a fixed finance-semantic weight vector replaces frozen SmolLM2 representations",
+    "linear actor and ridge critic replace trainable LLM, policy MLP, and value MLP heads",
+    "a deterministic advantage gradient with clipped parameter movement replaces sampled PPO likelihood ratios",
+    "continuous expected signed action replaces sampled Buy/Hold/Sell orders"
+  ],
+  "invented_elements": [
+    "the four JKP state features and their semantic prior weights",
+    "60-month replay window and 24-month minimum training history",
+    "ridge penalty for the value head",
+    "20 percent prior-action memory weight",
+    "common cross-sectional score-to-decile portfolio adapter"
+  ],
+  "state_features": [
+    {
+      "column": "be_me",
+      "meaning": "undervaluation",
+      "semantic_prior_weight": 1.0
+    },
+    {
+      "column": "ret_12_1",
+      "meaning": "medium-term momentum",
+      "semantic_prior_weight": 1.0
+    },
+    {
+      "column": "ret_1_0",
+      "meaning": "recent historical trend",
+      "semantic_prior_weight": 0.5
+    },
+    {
+      "column": "rvol_21d",
+      "meaning": "risk",
+      "semantic_prior_weight": -1.0
+    }
+  ],
+  "chronological_policy": {
+    "prehistory_formation_start": "1994-07-31",
+    "common_formation_start": "1999-07-31",
+    "replay_window_months": 60,
+    "minimum_training_months": 24,
+    "actor_initialization": "normalized_semantic_prior",
+    "critic_fit": "ridge_on_past_next_month_excess_returns",
+    "ridge_penalty": 1.0,
+    "advantage": "realized_return_minus_critic_prediction_whitened_within_replay",
+    "actor_objective": "mean_expected_signed_action_times_advantage",
+    "learning_rate": 0.0005,
+    "update_epochs": 1,
+    "clip_coefficient": 0.2,
+    "maximum_gradient_norm": 0.5,
+    "action_memory_weight": 0.2,
+    "update_frequency": "monthly",
+    "final_common_returns_used_for_policy_choice": false
+  },
+  "portfolio_adapter": "Expected signed action is ranked within the frozen monthly top-1,000 universe and mapped to value-weighted long/short deciles; 10 bp one-way cost is primary.",
+  "claim_boundary": "This is a researcher-authored FLAG-TRADER-inspired actor-critic policy, not the unreleased SmolLM2/PPO checkpoint, single-asset action trajectory, or a reproduction of the paper's reported returns."
+}
