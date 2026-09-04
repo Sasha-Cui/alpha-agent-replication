@@ -1797,3 +1797,155 @@ def mass_simulation_scores(
             row[f"type_weight__{feature}"] = float(allocation[position])
         diagnostics.append(row)
     return result, pd.DataFrame(diagnostics)
+
+
+def rd_agent_search_scores(
+    frame: pd.DataFrame,
+    branches: dict[str, list[tuple[str, int]]],
+    *,
+    common_start: str,
+    history_months: int = 120,
+    research_months: int = 96,
+    validation_months: int = 24,
+    minimum_rankic_months: int = 48,
+    validation_folds: int = 3,
+    validation_fold_months: int = 8,
+) -> tuple[pd.Series, pd.DataFrame]:
+    """Run a deterministic R&D-Agent-style parallel formula search."""
+    if len(branches) != 6 or any(len(specifications) != 3 for specifications in branches.values()):
+        raise ValueError("R&D-Agent requires six branches with three hypotheses each")
+    if history_months != research_months + validation_months:
+        raise ValueError("research and validation windows must partition history")
+    if validation_months != validation_folds * validation_fold_months:
+        raise ValueError("validation folds must partition the validation window")
+    features = list(
+        dict.fromkeys(
+            feature
+            for specifications in branches.values()
+            for feature, _ in specifications
+        )
+    )
+    missing = {"month", "ret_exc_lead1m", *features} - set(frame)
+    if missing:
+        raise ValueError(f"missing R&D-Agent hypothesis inputs: {sorted(missing)}")
+    for specifications in branches.values():
+        if any(sign not in {-1, 1} for _, sign in specifications):
+            raise ValueError("R&D-Agent hypothesis signs must be -1 or 1")
+
+    ranked = cross_sectional_unit_rank(frame, features)
+    candidates: dict[str, pd.Series] = {}
+    branch_candidates: dict[str, list[str]] = {}
+    for branch, specifications in branches.items():
+        signed = pd.concat(
+            [ranked[feature] * sign for feature, sign in specifications],
+            axis=1,
+        )
+        signed.columns = [feature for feature, _ in specifications]
+        names = [
+            f"{branch}__leader",
+            f"{branch}__pair_mean",
+            f"{branch}__all_mean",
+            f"{branch}__consensus_median",
+        ]
+        candidates[names[0]] = signed.iloc[:, 0]
+        candidates[names[1]] = signed.iloc[:, :2].mean(axis=1, skipna=False)
+        candidates[names[2]] = signed.mean(axis=1, skipna=False)
+        candidates[names[3]] = signed.median(axis=1, skipna=False)
+        branch_candidates[branch] = names
+    candidate_frame = pd.DataFrame(candidates, index=frame.index)
+    candidate_scores = cross_sectional_unit_rank(
+        pd.concat([frame[["month"]], candidate_frame], axis=1),
+        list(candidate_frame),
+    )
+    rankics = monthly_rankic(frame, candidate_scores)
+
+    result = pd.Series(np.nan, index=frame.index, dtype="float64", name="score")
+    diagnostics: list[dict[str, object]] = []
+    month_groups = frame.groupby("month", sort=False).groups
+    months = sorted(
+        pd.Timestamp(month)
+        for month in frame.loc[frame["month"] >= common_start, "month"].unique()
+    )
+
+    def aggregate_validation(validation: pd.DataFrame, members: list[str]) -> float:
+        monthly = validation[members].mean(axis=1, skipna=False)
+        if monthly.notna().sum() != validation_months:
+            raise ValueError("R&D-Agent finalist has incomplete validation history")
+        values = monthly.to_numpy(dtype=float)
+        fold_means = np.asarray(
+            [
+                values[start : start + validation_fold_months].mean()
+                for start in range(0, validation_months, validation_fold_months)
+            ]
+        )
+        if len(fold_means) != validation_folds:
+            raise AssertionError("R&D-Agent validation fold count changed")
+        return float(fold_means.mean() - 0.5 * fold_means.std(ddof=0))
+
+    for month in months:
+        history = rankics.loc[rankics.index < month].tail(history_months)
+        if len(history) != history_months:
+            raise ValueError(f"R&D-Agent search history is incomplete at {month.date()}")
+        research = history.iloc[:research_months]
+        validation = history.iloc[research_months:]
+        counts = research.count()
+        training_scores = research.mean() - research.std(ddof=1) / np.sqrt(counts)
+        training_scores = training_scores.where(counts >= minimum_rankic_months)
+        winners: dict[str, str] = {}
+        winner_training: dict[str, float] = {}
+        winner_validation: dict[str, float] = {}
+        for branch, names in branch_candidates.items():
+            eligible = [name for name in names if np.isfinite(training_scores[name])]
+            if not eligible:
+                raise ValueError(f"R&D-Agent branch {branch} has no eligible hypothesis")
+            winner = sorted(eligible, key=lambda name: (-float(training_scores[name]), name))[0]
+            winners[branch] = winner
+            winner_training[branch] = float(training_scores[winner])
+            winner_validation[branch] = aggregate_validation(validation, [winner])
+        strongest = sorted(
+            winners,
+            key=lambda branch: (-winner_validation[branch], branch),
+        )[:3]
+        finalists = {
+            **{f"single__{branch}": [winner] for branch, winner in winners.items()},
+            "merge__all": list(winners.values()),
+            "merge__top3": [winners[branch] for branch in strongest],
+        }
+        finalist_scores = {
+            name: aggregate_validation(validation, members)
+            for name, members in finalists.items()
+        }
+        selected = sorted(
+            finalists,
+            key=lambda name: (-finalist_scores[name], name),
+        )[0]
+        selected_members = finalists[selected]
+        indices = month_groups[month]
+        score = candidate_scores.loc[indices, selected_members].mean(
+            axis=1,
+            skipna=False,
+        )
+        result.loc[indices] = score
+        row: dict[str, object] = {
+            "formation_month": str(month.date()),
+            "research_start": str(research.index[0].date()),
+            "research_end": str(research.index[-1].date()),
+            "research_months": len(research),
+            "validation_start": str(validation.index[0].date()),
+            "validation_end": str(validation.index[-1].date()),
+            "validation_months": len(validation),
+            "explored_candidate_count": len(candidate_frame.columns),
+            "branch_winner_count": len(winners),
+            "finalist_count": len(finalists),
+            "selected_solution": selected,
+            "selected_members": "|".join(selected_members),
+            "selected_solution_size": len(selected_members),
+            "selected_validation_score": finalist_scores[selected],
+            "finite_scores": int(score.notna().sum()),
+        }
+        for branch in branches:
+            row[f"winner__{branch}"] = winners[branch]
+            row[f"training_score__{branch}"] = winner_training[branch]
+            row[f"validation_score__{branch}"] = winner_validation[branch]
+        diagnostics.append(row)
+    return result, pd.DataFrame(diagnostics)
