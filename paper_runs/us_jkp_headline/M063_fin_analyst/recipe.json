@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "status": "closed_not_evaluable",
+  "milestone_id": "M063",
+  "canonical_work_id": "CensusArxiv260712233",
+  "title": "Fin-Analyst at FinMMEval 2026 Task 3: A Live Hybrid Trading Agent with LLM Specialists and Rule-Based Signals",
+  "central_strategy": "Route TSLA or BTC observations through asset-specific specialist prompts and static corpora, combine the LLM recommendations with technical/momentum and sentiment inputs through native vote logic, emit one daily BUY/HOLD/SELL action, and score the resulting single-asset path with the organizer's 6-bp fee and 10-bp slippage implementation.",
+  "paper_source": {
+    "version": "v1",
+    "url": "https://arxiv.org/abs/2607.12233v1",
+    "source_tex_sha256": "fcd407f9bb6ac4392575c46415094f20e2019badce97363e464d2239530e91c5"
+  },
+  "reused_audit_evidence": {
+    "manifest": "paper_runs/paper_replication_audits/fin_analyst/manifest.json",
+    "manifest_sha256": "0ffc643e326b3d7ae69426f3b151eb530dfc70d5c123d0b3c385ce85d4683334",
+    "source_provenance_sha256": "22a455592dbde3eaf2e9b5a59dcf660f82690d098e324d6577ebf71a96d41261",
+    "native_execution_sha256": "7aca9af1f774fda2151e2e696eac433a6cbd17d01dfe5b6dd99e92c48a8df4b7",
+    "organizer_scorer_execution_sha256": "a108d4332624985f3522947f8dd4b5f60e4e31983a1756376e8e60e307626f73",
+    "official_decision_rows_replayed": 97,
+    "organizer_equity_points_exact": 291,
+    "published_table_cells_regenerated": 33,
+    "published_cells_from_native_llm_pipeline": 0,
+    "active_empirical_table_cells": 119,
+    "full_empirical_figure_panels_regenerated": 0
+  },
+  "current_release_check": {
+    "checked_at_utc": "2026-09-04",
+    "author_space": "Mohotarema/Fin_Analyst",
+    "author_space_head_sha": "85ab4781e74ed3deb9a7ef49bca3fa23b1ed9738",
+    "organizer_dataset_head_sha": "eae085ce5b82fa3ca852e10372882b5ef2644705",
+    "organizer_space_head_sha": "70c388c317b22322145ca8c2a5fe7aa5fe89dba3",
+    "surfaces_public_and_enabled": true,
+    "new_cross_sectional_policy_or_security_score_release_found": false
+  },
+  "monthly_jkp_assessment": {
+    "preserved_components": [
+      "Substantive pre-live Docker/FastAPI implementation, nine native prompts, seven corpora, asset routing, and vote paths.",
+      "Ninety-seven official paper-window decisions and the exact organizer scorer with six equity arrays and 24 scalar outputs.",
+      "Thirty-three printed cells regenerated through decision/error or deterministic baseline lineage, with explicit endpoint conflicts."
+    ],
+    "required_but_missing": [
+      "Immutable gpt-4o-mini model/API state, requests/responses, cache, images, dependency lock, and full paper-time specialist outputs.",
+      "A causal security-level policy or dated recommendation panel beyond the two native TSLA/BTC assets.",
+      "Random and Momentum baseline generators, seeds, action paths, and the missing agent/ablation result lineages.",
+      "A consistent single declared-period price snapshot; the printed deterministic rows require asset-specific endpoints that contradict the paper's common May-10 endpoint.",
+      "A cross-sectional portfolio or mapping from the single-asset vote to monthly U.S. stocks, including formation-time inputs and weights."
+    ],
+    "why_action_replay_is_not_a_transferable_policy": "The 97 organizer decisions are historical outputs for TSLA and BTC. Replaying them verifies scoring but does not supply a rule that can generate formation-date actions for other U.S. securities or earlier JKP months.",
+    "why_rule_components_are_not_enough": "The technical vote is combined with asset-specific LLM, corpus, sentiment, and failure behavior. Extracting momentum alone would promote a component/baseline and remove the hybrid policy.",
+    "why_jkp_cannot_fill_the_gap": "JKP has monthly U.S. characteristics and returns but not the asset-specific prompts, texts, Fear & Greed/WSB state, or LLM votes. Applying the TSLA/BTC decisions or generic momentum to 1,000 stocks would fabricate actions.",
+    "native_defect_boundary": "Three BTC HOLD votes become BUY and a failed Fear & Greed call duplicates momentum; these are faithfully recorded native behaviors but do not create a cross-sectional policy.",
+    "reported_result_boundary": "The official current decisions reproduce five live error-attribution cells but not headline return/alpha/Sharpe/win cells; current TSLA and BTC paths materially differ from the paper tables."
+  },
+  "classification": "closed_not_evaluable",
+  "closure_rule": "Do not promote historical two-asset action replay, deterministic baseline cells, the technical-vote ingredient, or generic JKP momentum to a Fin-Analyst stock policy. Reopen for a causal cross-sectional policy or formation-time recommendation generator."
+}
