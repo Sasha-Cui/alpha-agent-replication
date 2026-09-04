@@ -14,10 +14,10 @@
   "declared_inference_family_size": 69,
   "progress_summary": {
     "carried_common_evaluation": 17,
-    "completed_in_spirit": 2,
+    "completed_in_spirit": 3,
     "discarded_structural_mismatch": 7,
     "in_progress_in_spirit": 1,
-    "queued_in_spirit": 42
+    "queued_in_spirit": 41
   },
   "milestones": [
     {
@@ -105,15 +105,15 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M005_alphaquanter/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M005_alphaquanter/verdict.md",
       "strict_metrics_path": "",
-      "status": "in_progress_in_spirit",
+      "status": "completed_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
-      "recipe_path": "",
-      "implementation_path": "",
-      "run_manifest_path": "",
-      "monthly_returns_path": "",
-      "metrics_path": "",
-      "verdict_path": "",
-      "next_action": "Freeze one AlphaQuanter-inspired researcher reconstruction before inspecting its JKP result."
+      "recipe_path": "paper_runs/us_jkp_in_spirit/M005_alphaquanter/recipe.json",
+      "implementation_path": "scripts/run_alphaquanter_in_spirit.py",
+      "run_manifest_path": "paper_runs/us_jkp_in_spirit/M005_alphaquanter/run_manifest.json",
+      "monthly_returns_path": "paper_runs/us_jkp_in_spirit/M005_alphaquanter/primary_monthly_returns.csv",
+      "metrics_path": "paper_runs/us_jkp_in_spirit/M005_alphaquanter/metrics.csv",
+      "verdict_path": "paper_runs/us_jkp_in_spirit/M005_alphaquanter/verdict.md",
+      "next_action": "Closed with one frozen AlphaQuanter-inspired selective-tool policy; do not retune after its observed JKP result."
     },
     {
       "milestone_id": "M006",
@@ -124,7 +124,7 @@
       "strict_recipe_path": "paper_runs/us_jkp_headline/M006_finmem/recipe.json",
       "strict_verdict_path": "paper_runs/us_jkp_headline/M006_finmem/verdict.md",
       "strict_metrics_path": "",
-      "status": "queued_in_spirit",
+      "status": "in_progress_in_spirit",
       "fidelity_label": "in_spirit_reconstruction",
       "recipe_path": "",
       "implementation_path": "",
@@ -132,7 +132,7 @@
       "monthly_returns_path": "",
       "metrics_path": "",
       "verdict_path": "",
-      "next_action": "Wait until prior active reconstruction is committed."
+      "next_action": "Freeze one FinMem-inspired researcher reconstruction before inspecting its JKP result."
     },
     {
       "milestone_id": "M007",
