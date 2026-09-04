@@ -1690,6 +1690,7 @@ def mass_simulation_scores(
     selections_per_agent: int = 5,
     aggregation_alpha: float = 0.5,
     history_months: int = 60,
+    minimum_rankic_months: int = 24,
     annealing_initial_temperature: float = 40.0,
     annealing_iterations: int = 100,
     annealing_cooling: float = 0.95,
@@ -1739,7 +1740,7 @@ def mass_simulation_scores(
     months = sorted(pd.Timestamp(month) for month in frame.loc[frame["month"] >= common_start, "month"].unique())
     for month in months:
         history = rankics.loc[rankics.index < month].tail(history_months)
-        if len(history) != history_months or history.isna().any().any():
+        if len(history) != history_months or (history.count() < minimum_rankic_months).any():
             raise ValueError(f"MASS annealing history is incomplete at {month.date()}")
         signs = np.where(history.mean().to_numpy(dtype=float) >= 0, 1.0, -1.0)
         oriented_history = history.to_numpy(dtype=float) * signs
